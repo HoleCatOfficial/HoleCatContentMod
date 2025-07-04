@@ -1,0 +1,1 @@
+"C:\Users\Helio\Documents\My Games\Terraria\tModLoader\FXC\fxc.exe" /T fx_2_0 /Fo TenebrousBlue.xnb TenebrousBlue.fx

@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "rL3aba/lhC8=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Helio\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\DestroyerTest\\DestroyerTest.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Helio\\.nuget\\packages\\tmodloader.codeassist\\0.1.5\\tmodloader.codeassist.0.1.5.nupkg.sha512"
+  ],
+  "logs": []
+}
