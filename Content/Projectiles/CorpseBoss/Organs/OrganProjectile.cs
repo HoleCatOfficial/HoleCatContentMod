@@ -106,7 +106,7 @@ namespace DestroyerTest.Content.Projectiles.CorpseBoss.Organs
 
 
             SoundEngine.PlaySound(SoundID.NPCDeath47, Projectile.Center);
-            Projectile.NewProjectile(Entity.GetSource_Death(), Projectile.Center, toPlayer * 0.5f, ProjectileID.GoldenShowerHostile, 16, 1);
+            Projectile.NewProjectile(Entity.GetSource_Death(), Projectile.Center, toPlayer * 0.2f, ProjectileID.GoldenShowerHostile, 16, 1);
         }
 
         public void DrawTelegraph(Vector2 start, Vector2 end, Texture2D texture)

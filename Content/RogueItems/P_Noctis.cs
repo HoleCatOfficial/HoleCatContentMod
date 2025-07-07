@@ -53,12 +53,13 @@ namespace DestroyerTest.Content.RogueItems
 		public override void AddRecipes() {
 			CreateRecipe()
 				.AddIngredient(ItemID.Bone, 200)
-                .AddIngredient(ItemID.Javelin, 5)
-                .AddIngredient(ItemID.BoneJavelin, 5)
+				.AddIngredient(ItemID.BoneFeather, 5)
+				.AddIngredient(ItemID.IceFeather, 5)
+				.AddIngredient(ItemID.FireFeather, 5)
+				.AddIngredient(ItemID.GiantHarpyFeather, 5)
+				.AddIngredient(ItemID.Feather, 5)
                 .AddIngredient(ItemID.DayBreak, 1)
                 .AddIngredient(ItemID.SoulofFright, 30)
-                .AddIngredient(ItemID.SilverBar, 10)
-                .AddIngredient(ItemID.LightsBane, 1)
 				.AddTile(TileID.BoneWelder)
 				.Register();
 		}

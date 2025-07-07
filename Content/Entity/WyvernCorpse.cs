@@ -47,6 +47,7 @@ namespace DestroyerTest.Content.Entity
             SummonAxes,
             BloodShoot,
             FleshBombShoot,
+            Clouds,
             Nodes,
             Desperation
         }
@@ -253,6 +254,8 @@ namespace DestroyerTest.Content.Entity
 
         public Vector2 Center;
         public int DeathInterval = 10;
+
+        public bool HasMultOnEnrage = false;
         public override void AI()
         {
             MusicCreditSystem.ShowCredit = true;
@@ -283,8 +286,15 @@ namespace DestroyerTest.Content.Entity
                 NPC.velocity += new Vector2(0, -400);
                 if (NPC.position.Y < Main.worldSurface * 16f)
                 {
-                    NPC.active = false;
-                    Main.NewText("CTA : The Wyvern Corpse can only be fought in the surface or space crimson biome.", 255, 35, 0);
+                    NPC.immortal = true;
+                    if (!HasMultOnEnrage)
+                    {
+                        NPC.velocity *= 3f;
+                        NPC.damage *= 2;
+                        HasMultOnEnrage = true;
+                    }
+                    
+                    //Main.NewText("CTA : The Wyvern Corpse can only be fought in the surface or space crimson biome.", 255, 35, 0);
                 }
             }
 

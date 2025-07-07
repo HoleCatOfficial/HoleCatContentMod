@@ -102,6 +102,75 @@ namespace DestroyerTest.Content.Entity
             return false;
         }
 
+        public static bool EternityIsActive()
+        {
+            if (ModLoader.TryGetMod("FranciumMultiCrossMod", out Mod MCM))
+            {
+                object result = MCM.Call("IsEternityMode");
+                if (result is bool b)
+                    return b;
+            }
+            return false;
+        }
+
+        #region Difficulty Attack Pools
+        /// <summary>
+        /// Attacks that are available on all difficulties. Will be selected from for classic mode AI.
+        /// </summary>
+        public enum BaseAttacks
+        {
+
+        }
+
+        /// <summary>
+        /// Attacks that are Exclusively available on Expert Mode and above. Will be selected from for Expert and Master AI.
+        /// </summary>
+        public enum ExpertAttacks
+        {
+
+        }
+
+        /// <summary>
+        /// Attacks that are Exclusively available on Master Mode. Will be selected from for Master AI.
+        /// </summary>
+        public enum MasterAttacks
+        {
+
+        }
+
+        /// <summary>
+        /// Attacks that are Exclusively available on Revengeance Mode. Will be selected from for Revengeance and Death AI.
+        /// </summary>
+        public enum RevenganceAttacks
+        {
+
+        }
+        
+        /// <summary>
+        /// Attacks that are Exclusively available on Death Mode. Will be selected from for Death AI.
+        /// </summary>
+        public enum DeathAttacks
+        {
+
+        }
+
+        /// <summary>
+        /// Attacks that are Exclusively available on Eternity Mode. Will be selected from for Eternity and Masochist AI.
+        /// </summary>
+        public enum EternityAttacks
+        {
+
+        }
+
+        /// <summary>
+        /// Attacks that are Exclusively available on Masochist Mode. Will be selected from for Masochist AI.
+        /// </summary>
+        public enum MasochistAttacks
+        {
+
+        }
+        #endregion
+
         public enum AttackState
         {
             Idle,
@@ -116,6 +185,8 @@ namespace DestroyerTest.Content.Entity
             Desperation,
             Nodes
         }
+
+        #region Vars
 
         public AttackState currentState = AttackState.Idle;
         public Vector2 PlayerCenter = Vector2.Zero;
@@ -183,6 +254,8 @@ namespace DestroyerTest.Content.Entity
             MinionFailsafe = reader.ReadInt32();
             HasBoosted = reader.ReadBoolean();
         }
+        
+        #endregion
 
         public override void OnSpawn(IEntitySource source)
         {
@@ -205,7 +278,7 @@ namespace DestroyerTest.Content.Entity
             {
                 float angle = Main.rand.NextFloat(MathHelper.TwoPi);
                 Vector2 velocity = new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle)) * Main.rand.NextFloat(2f, 6f);
-                
+
                 PRTLoader.NewParticle(
                     types[Main.rand.Next(types.Length)],
                     Main.rand.NextVector2FromRectangle(NPC.getRect()),
@@ -578,6 +651,62 @@ namespace DestroyerTest.Content.Entity
 
 
             }
+        }
+
+        /// <summary>
+        /// AI that runs on Classic Mode. Vanilla.
+        /// </summary>
+        public void ClassicAI()
+        {
+
+        }
+
+        /// <summary>
+        /// AI that runs on Expert Mode. Vanilla.
+        /// </summary>
+        public void ExpertAI()
+        {
+
+        }
+
+        /// <summary>
+        /// AI that runs on Master Mode. Vanilla.
+        /// </summary>
+        public void MasterAI()
+        {
+
+        }
+
+        /// <summary>
+        /// AI that runs on Revengeance Mode. Calamity.
+        /// </summary>
+        public void RevenganceAI()
+        {
+
+        }
+
+        /// <summary>
+        /// AI that runs on Death Mode. Calamity.
+        /// </summary>
+        public void DeathAI()
+        {
+
+        }
+
+        /// <summary>
+        /// AI that runs on Eternity Mode. Fargo's Souls.
+        /// </summary>
+        public void EternityAI()
+        {
+
+        }
+
+        /// <summary>
+        /// AI that runs on Masochist Mode. Fargo's Souls.
+        /// </summary>
+        public void MasochistAI()
+        {
+
         }
 
         public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)

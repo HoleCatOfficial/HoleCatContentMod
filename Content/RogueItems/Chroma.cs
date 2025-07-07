@@ -43,7 +43,6 @@ namespace DestroyerTest.Content.RogueItems
 		public override void AddRecipes() {
 			CreateRecipe()
 				.AddIngredient(ItemID.LunarBar, 10)
-                .AddIngredient(ItemID.Javelin, 5)
                 .AddIngredient(ItemID.Diamond, 8)
                 .AddIngredient(ItemID.FragmentStardust, 5)
                 .AddIngredient(ItemID.FragmentVortex, 5)

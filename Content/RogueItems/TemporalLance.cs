@@ -38,7 +38,7 @@ namespace DestroyerTest.Content.RogueItems
 
 		public override void AddRecipes() {
             CreateRecipe()
-                .AddIngredient(ItemID.SoulofFright, 20)
+                .AddIngredient(ItemID.SoulofFright, 10)
                 .AddIngredient(ItemID.LunarOre, 8)
                 .AddIngredient(ModContent.ItemType<GalantineLance>(), 1)
 				.AddTile(TileID.MythrilAnvil)
