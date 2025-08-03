@@ -49,13 +49,13 @@ namespace DestroyerTest.Content.Buffs
 			{
 				int[] types = new int[]
 				{
-				PRTLoader.GetParticleID<ShimmeringFlame1>(),
-				PRTLoader.GetParticleID<ShimmeringFlame2>(),
-				PRTLoader.GetParticleID<ShimmeringFlame3>(),
-				PRTLoader.GetParticleID<ShimmeringFlame4>(),
-				PRTLoader.GetParticleID<ShimmeringFlame5>(),
-				PRTLoader.GetParticleID<ShimmeringFlame6>(),
-				PRTLoader.GetParticleID<ShimmeringFlame7>()
+					PRTLoader.GetParticleID<ColoredFire1>(),
+					PRTLoader.GetParticleID<ColoredFire2>(),
+					PRTLoader.GetParticleID<ColoredFire3>(),
+					PRTLoader.GetParticleID<ColoredFire4>(),
+					PRTLoader.GetParticleID<ColoredFire5>(),
+					PRTLoader.GetParticleID<ColoredFire6>(),
+					PRTLoader.GetParticleID<ColoredFire7>()
 				};
 
 				PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], Main.rand.NextVector2FromRectangle(player.getRect()), new Vector2(0f, -0.1f), ColorLib.TenebrisGradient, 0.3f);

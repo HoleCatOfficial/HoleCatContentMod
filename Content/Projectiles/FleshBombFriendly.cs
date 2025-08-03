@@ -60,7 +60,7 @@ namespace DestroyerTest.Content.Projectiles
             for (int i = 0; i < 3; i++)
             {
                 launchVelocity = launchVelocity.RotatedBy(MathHelper.PiOver4);
-                Projectile.NewProjectile(Entity.GetSource_FromThis(), Projectile.Center, launchVelocity, ProjectileID.GoldenShowerFriendly, 35, 1);
+                Projectile.NewProjectile(Entity.GetSource_FromThis(), Projectile.Center, launchVelocity, ProjectileID.GoldenShowerFriendly, 65, 3);
             }
         }
     }

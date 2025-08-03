@@ -263,15 +263,15 @@ namespace DestroyerTest.Content.Entity
             currentState = AttackState.Idle;
             NPCHead = NPC.Center + new Vector2(0, -60);
             int[] types = new int[]
-            {
-                PRTLoader.GetParticleID<ScreenOverlayCloud1>(),
-                PRTLoader.GetParticleID<ScreenOverlayCloud2>(),
-                PRTLoader.GetParticleID<ScreenOverlayCloud3>(),
-                PRTLoader.GetParticleID<ScreenOverlayCloud4>(),
-                PRTLoader.GetParticleID<ScreenOverlayCloud5>(),
-                PRTLoader.GetParticleID<ScreenOverlayCloud6>(),
-                PRTLoader.GetParticleID<ScreenOverlayCloud7>()
-            };
+                {
+                PRTLoader.GetParticleID<BlackFire1>(),
+                PRTLoader.GetParticleID<BlackFire2>(),
+                PRTLoader.GetParticleID<BlackFire3>(),
+                PRTLoader.GetParticleID<BlackFire4>(),
+                PRTLoader.GetParticleID<BlackFire5>(),
+                PRTLoader.GetParticleID<BlackFire6>(),
+                PRTLoader.GetParticleID<BlackFire7>()
+                };
 
             // Spawn a particle that travels outward at a random angle from the boss center
             for (int b = 0; b < 70; b++)
@@ -938,15 +938,15 @@ namespace DestroyerTest.Content.Entity
             MusicCreditSystem.ShowCredit = false;
             DownedBossSystem.downedNightmareRoseBoss = true;
             int[] types = new int[]
-            {
-                PRTLoader.GetParticleID<ScreenOverlayCloud1>(),
-                PRTLoader.GetParticleID<ScreenOverlayCloud2>(),
-                PRTLoader.GetParticleID<ScreenOverlayCloud3>(),
-                PRTLoader.GetParticleID<ScreenOverlayCloud4>(),
-                PRTLoader.GetParticleID<ScreenOverlayCloud5>(),
-                PRTLoader.GetParticleID<ScreenOverlayCloud6>(),
-                PRTLoader.GetParticleID<ScreenOverlayCloud7>()
-            };
+                {
+                PRTLoader.GetParticleID<BlackFire1>(),
+                PRTLoader.GetParticleID<BlackFire2>(),
+                PRTLoader.GetParticleID<BlackFire3>(),
+                PRTLoader.GetParticleID<BlackFire4>(),
+                PRTLoader.GetParticleID<BlackFire5>(),
+                PRTLoader.GetParticleID<BlackFire6>(),
+                PRTLoader.GetParticleID<BlackFire7>()
+                };
 
             // Spawn a particle that travels outward at a random angle from the boss center
             for (int b = 0; b < 70; b++)

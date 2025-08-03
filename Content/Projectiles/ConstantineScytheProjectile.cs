@@ -1,3 +1,6 @@
+using DestroyerTest.Common;
+using DestroyerTest.Content.Particles;
+using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -235,7 +238,7 @@ namespace DestroyerTest.Content.Projectiles
 
 			if (Timer >= prepTime)
 			{
-				SoundEngine.PlaySound(SoundID.Item1); // Play sword sound here since playing it on spawn is too early
+				
 				CurrentStage = AttackStage.Execute; // If attack is over prep time, we go to next stage
 			}
 		}
@@ -249,11 +252,52 @@ namespace DestroyerTest.Content.Projectiles
 		}
 
 		public bool hascloned = false;
+		public Vector2 swordTip;
 
 		// Function facilitating the first half of the swing
 		private void ExecuteStrike()
 		{
 			Player player = Main.player[Projectile.owner];
+			swordTip = Projectile.Center + Projectile.rotation.ToRotationVector2() * (Projectile.Size.Length() * Projectile.scale);
+
+			int[] types = new int[]
+            {
+                PRTLoader.GetParticleID<ColoredFire1>(),
+                PRTLoader.GetParticleID<ColoredFire2>(),
+                PRTLoader.GetParticleID<ColoredFire3>(),
+                PRTLoader.GetParticleID<ColoredFire4>(),
+                PRTLoader.GetParticleID<ColoredFire5>(),
+                PRTLoader.GetParticleID<ColoredFire6>(),
+                PRTLoader.GetParticleID<ColoredFire7>()
+            };
+
+            
+            PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], swordTip, Vector2.Zero, ColorLib.RainbowGradient, 0.5f);
+            
+
+            int[] types2 = new int[]
+                {
+                PRTLoader.GetParticleID<BlackFire1>(),
+                PRTLoader.GetParticleID<BlackFire2>(),
+                PRTLoader.GetParticleID<BlackFire3>(),
+                PRTLoader.GetParticleID<BlackFire4>(),
+                PRTLoader.GetParticleID<BlackFire5>(),
+                PRTLoader.GetParticleID<BlackFire6>(),
+                PRTLoader.GetParticleID<BlackFire7>()
+                };
+
+            Color[] BackColors = new Color[]
+                {
+                new Color(13, 2, 2),
+                new Color(4, 4, 4),
+                new Color(10, 13, 12),
+                new Color(18, 10, 22),
+                new Color(86, 65, 82),
+                };
+
+           
+            PRTLoader.NewParticle(types2[Main.rand.Next(types2.Length)], swordTip, Vector2.Zero, BackColors[Main.rand.Next(BackColors.Length)], 1.0f);
+            
 
 
 			Progress = MathHelper.SmoothStep(0, SWINGRANGE, (1f - UNWIND) * Timer / execTime);
@@ -262,7 +306,7 @@ namespace DestroyerTest.Content.Projectiles
 			{
 				CurrentStage = AttackStage.Unwind;
 			}
-			
+
 
 			// Emit light during the swing
 			Lighting.AddLight(player.Center, 3.0f, 1.9f, 1.98f); // Adjust the color and intensity as needed

@@ -9,6 +9,7 @@ using Terraria.Audio;
 using DestroyerTest.Content.BossBars;
 using DestroyerTest.Content.Consumables;
 using DestroyerTest.Content.MeleeWeapons;
+using DestroyerTest.Content.Magic.ScepterSubclass;
 
 namespace DestroyerTest.Common.NPC_Folder
 {
@@ -84,14 +85,19 @@ namespace DestroyerTest.Common.NPC_Folder
         {
             if (shop.NpcType == NPCID.SantaClaus)
             {
-               
-                    shop.Add<WinterWonderland>(Condition.Hardmode);
-                
+
+                shop.Add<WinterWonderland>(Condition.Hardmode);
+
             }
-            
+
             if (shop.NpcType == NPCID.Merchant)
             {
                 shop.Add<CursedStar>(Condition.DownedSkeletron); // Or wherever your item is
+            }
+            
+            if (shop.NpcType == NPCID.TravellingMerchant)
+            {
+                shop.Add<FoxScepter>(Condition.DownedKingSlime); // Or wherever your item is
             }
         }
 

@@ -35,7 +35,7 @@ namespace DestroyerTest.Content.RiftArsenal
             Item.mana = 15;
 
 			Item.DamageType = DamageClass.Magic; // Whether your item is part of the melee class.
-			Item.damage = 120; // The damage your item deals.
+			Item.damage = 60; // The damage your item deals.
 			Item.knockBack = 0; // The force of knockback of the weapon. Maximum is 20
 			Item.crit = 4; // The critical strike chance the weapon has. The player, by default, has a 4% critical strike chance.
 
@@ -45,19 +45,32 @@ namespace DestroyerTest.Content.RiftArsenal
 		}
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-			int numberOfProjectiles = 5; // Number of projectiles to spawn
-			float skyHeight = 150f; // Height above the player where projectiles spawn
+			Vector2 target = Main.screenPosition + new Vector2(Main.mouseX, Main.mouseY);
+			float ceilingLimit = target.Y;
+			if (ceilingLimit > player.Center.Y - 200f) {
+				ceilingLimit = player.Center.Y - 200f;
+			}
+			// Loop these functions 3 times.
+			for (int i = 0; i < 6; i++) {
+				position = player.Center - new Vector2(Main.rand.NextFloat(401) * player.direction, 600f);
+				position.Y -= 100 * i;
+				Vector2 heading = target - position;
 
-			for (int i = 0; i < numberOfProjectiles; i++) {
-				// Randomize the X position slightly around the cursor's X position
-				float randomOffsetX = Main.rand.NextFloat(-100f, 100f);
-				Vector2 spawnPosition = new Vector2(Main.MouseWorld.X + randomOffsetX, player.Center.Y - skyHeight);
+				if (heading.Y < 0f) {
+					heading.Y *= -1f;
+				}
 
-				// Spawn the projectile
-				Projectile.NewProjectile(source, spawnPosition, new Vector2(0, 1), type, damage, knockback, player.whoAmI);
+				if (heading.Y < 20f) {
+					heading.Y = 20f;
+				}
+
+				heading.Normalize();
+				heading *= velocity.Length();
+				heading.Y += Main.rand.Next(-40, 41) * 0.02f;
+				Projectile.NewProjectile(source, position, heading, type, damage * 2, knockback, player.whoAmI, 0f, ceilingLimit);
 			}
 
-			return false; // Prevents the default projectile from being shot
+			return false;
 		}
 
         public override void AddRecipes() {

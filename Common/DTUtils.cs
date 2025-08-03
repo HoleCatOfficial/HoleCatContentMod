@@ -10,7 +10,10 @@ namespace DestroyerTest.Common
     public class DTUtils
     {
         public static bool PromiseEquipped = false;
-       public static bool StellarGogglesEquipped = false;
+        public static bool StellarGogglesEquipped = false;
+
+        
+        
     }
 
     public class DTWorldUpdating : ModSystem
@@ -105,6 +108,12 @@ namespace DestroyerTest.Common
         /// <para/> Note: This color is one of five and is the third lightest. 
         /// </summary>
         public static Color Ichor = new Color(254, 202, 80);
+
+        /// <summary>
+        /// An All-Purpose Neon Gradient cycling through all the colors of the rainbow.
+        /// </summary>
+        public static Color RainbowGradient => new Color(Main.DiscoR / 2, (byte)(Main.DiscoG / 1.25f), (byte)(Main.DiscoB / 1.5f));
+
 
         /// <summary>
         /// The color used for drawing the aura and hit effects of the Metallurgy System Javelins.

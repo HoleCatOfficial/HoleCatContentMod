@@ -29,7 +29,7 @@ namespace DestroyerTest.Content.RogueItems
             Item.crit = 96; // The critical strike chance the weapon has. The player, by default, has a 4% critical strike chance.
 
 			// Weapon Properties			
-			Item.damage = 4000;
+			Item.damage = 210;
 			Item.knockBack = 200f;
 			Item.noUseGraphic = true; // The item should not be visible when used
 			Item.noMelee = true; // The projectile will do the damage and not the item
@@ -43,9 +43,7 @@ namespace DestroyerTest.Content.RogueItems
 
 		public override void UpdateInventory(Player player) {
 			if (player.ZoneGraveyard) {
-				Item.damage = 8000;
-			} else {
-				Item.damage = 4000;
+				Item.damage = (int)(Item.damage * 1.75f);
 			}
 		}
 		

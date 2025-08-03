@@ -62,7 +62,7 @@ namespace DestroyerTest.Content.RiftArsenal
 		}
 
 		public override void SetDefaults() {
-			Item.damage = 120;
+			Item.damage = 40;
 			Item.knockBack = 0f;
 			Item.mana = 40; // mana cost
 			Item.width = 32;

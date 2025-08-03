@@ -683,12 +683,23 @@ Items: {
 
 	Goliath: {
 		DisplayName: Goliath
-		Tooltip: A far less powerful, yet far more elegant equivalent to the elusive Terra Blade.
+		Tooltip:
+			'''
+			Thanks to the usage of obsidian in the blade, it is very, very sharp. 
+			It rests in your hand in an eerily familar way.
+			~~~~~~~~~~~~~~~~~~
+			Shoots small energy blades that linger in the air for a moment before darting at a target.
+			'''
 	}
 
 	ConstantineScythe: {
-		DisplayName: Constantine's Scythe
-		Tooltip: Great for going the extra mile in impersonating Suicidal Devs!
+		DisplayName: HoleCat's Scythe
+		Tooltip:
+			'''
+			Are we not all looking for our own reflections?
+			.
+			Great for going the extra mile in impersonating Suicidal Devs!
+			'''
 	}
 
 	Memoriam_Placed: {
@@ -1154,7 +1165,15 @@ Items: {
 
 	Gargantua: {
 		DisplayName: Gargantua
-		Tooltip: A jewel atop the crown. A sword blending sultry red flames with a galactic obsidian blade, yet still held by a familiar hilt.
+		Tooltip:
+			'''
+			Despite having the same hilt as its inferior forme, it feels completely alien to you.
+			Perhaps it is the fact that it is ignited in a scarlet inferno, perhaps it is the increased size, perhaps it is indicative of some change within.
+			~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+			Swinging 5 times summons homing stars, 15 times spawns groups of Goliath Phantoms that shoot towards enemies after a short delay.
+			Swinging 30 times will empower Gargantua, but beware, if you change items while the boost is active, you will be inflicted with severe damage.
+			Goliath Phantoms will not search forever, and if no target is found in 6 seconds, they will turn around and shoot into you.
+			'''
 	}
 
 	Horizon: {
@@ -2491,11 +2510,11 @@ Items: {
 
 	WyvernsDestruction: {
 		DisplayName: Wyverns Destruction
-		Tooltip: Original Weapon from Ultraconyx
+		Tooltip: Original Weapon is from Ultraconyx
 	}
 
 	RibChainsaw: {
-		Tooltip: RIP AND TEAR. ITS BETTER FOR ME ANYWAY.
+		Tooltip: Rip and tear through your foes using.... the flesh of another foe.
 		DisplayName: Rib Chainsaw
 	}
 
@@ -2716,6 +2735,72 @@ Items: {
 	ShadeSeedBook: {
 		Tooltip: ""
 		DisplayName: Shade Seed Book
+	}
+
+	StarHammer: {
+		DisplayName: Star Hammer
+		Tooltip: ""
+	}
+
+	HoleCatTail: {
+		Tooltip:
+			'''
+			Are we not all still looking for our own reflection?
+			.
+			Great for Impersonating Devs!
+			'''
+		DisplayName: HoleCat's Tail
+	}
+
+	HoleCatSkirt: {
+		Tooltip:
+			'''
+			Are we not all still looking for our own reflection?
+			.
+			Great for Impersonating Devs!
+			'''
+		DisplayName: HoleCat's Skirt
+	}
+
+	HoleCatShawl: {
+		Tooltip:
+			'''
+			Are we not all still looking for our own reflection?
+			.
+			Great for Impersonating Devs!
+			'''
+		DisplayName: HoleCat's Shawl
+	}
+
+	HoleCatHood: {
+		Tooltip:
+			'''
+			Are we not all still looking for our own reflection?
+			.
+			Great for Impersonating Devs!
+			'''
+		DisplayName: HoleCat's Hood
+		SetBonus:
+			'''
+			25% Increased Damage across all classes.
+			5% Increased Use Speed.
+			10% Increased Knockback.
+			'''
+	}
+
+	WyvernSkullRose: {
+		Tooltip: ""
+		DisplayName: Wyvern Skull Rose
+	}
+
+	Vesper: {
+		DisplayName: Vesper
+		Tooltip: ""
+	}
+
+	VesperOre: {
+		DisplayName: Vesper Ore
+		Tooltip: ""
 	}
 }
 
@@ -2994,7 +3079,17 @@ Projectiles: {
 	GenesisButterfly.DisplayName: Genesis Butterfly
 	KnowledgeButterfly.DisplayName: Knowledge Butterfly
 	JnanaSwing.DisplayName: Jnana Swing
+	StarHammerSwing.DisplayName: Star Hammer Swing
+	StarHammerThrown.DisplayName: Star Hammer Thrown
+	AllPurposeHomingStar.DisplayName: All Purpose Homing Star
+	OilTentacle.DisplayName: Oil Tentacle
+	OilProjectile.DisplayName: Oil Projectile
+	GargantuaProjectile.DisplayName: Gargantua Projectile
+	GoliathPhantom.DisplayName: Goliath Phantom
+	GargantuaStar.DisplayName: Gargantua Star
 }
+
+ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.
 
 Buffs: {
 	HopeEnsemble_Buff: {
@@ -3004,7 +3099,7 @@ Buffs: {
 
 	DaylightOverload: {
 		DisplayName: Daylight Overload
-		Description: All you know right now is pain. YOU DESERVE THIS.
+		Description: All you know right now is pain.
 	}
 
 	NihilistBuff: {
@@ -3079,7 +3174,7 @@ Buffs: {
 
 	ShimmeringEmpowerment: {
 		DisplayName: Shimmering Empowerment
-		Description: GRIND YOUR FACE ON THE PAVEMENT. YOU DESERVE THIS.
+		Description: ""
 	}
 
 	ManaBurst: {
@@ -3132,6 +3227,16 @@ Buffs: {
 	DartRifleMinionBuff: {
 		DisplayName: Dart Rifle Minion Buff
 		Description: A cursed dart rifle is defending you!
+	}
+
+	MagicFatigue: {
+		DisplayName: Magic Fatigue
+		Description: You are unable to access your magic inside!
+	}
+
+	GargantuaBoost: {
+		Description: The Living Diamond empowers Gargantua!
+		DisplayName: Gargantua Boost
 	}
 }
 
@@ -3256,6 +3361,7 @@ Keybinds: {
 	"Mana Burst.DisplayName": Mana Burst
 	"Tenebrous Clone Teleort.DisplayName": Tenebrous Clone Teleort
 	"Deadly Blossom Spawn.DisplayName": Deadly  Blossom  Spawn
+	"HoleCat Oil Tentacle.DisplayName": Hole Cat  Oil  Tentacle
 }
 
 Tiles: {
@@ -3276,6 +3382,8 @@ Tiles: {
 		MapEntry1: Mods.DestroyerTest.Tiles.Tile_RiftCache.MapEntry1
 		MapEntry0: Mods.DestroyerTest.Tiles.Tile_RiftCache.MapEntry0
 	}
+
+	Tile_VesperOre.MapEntry: Tile_ Vesper Ore
 }
 
 Biomes: {
@@ -3293,6 +3401,8 @@ Biomes: {
 WorldGen: {
 	HelicitePassMessage: Putting the sky deep underground...
 	BlessedWithHeliciteMessage: Radiant Fragments of solar energy embed themselves in the rocks near to hell!
+	VesperOrePassMessage: Mods.DestroyerTest.WorldGen.VesperOrePassMessage
+	BlessedWithVesperOreMessage: Mods.DestroyerTest.WorldGen.BlessedWithVesperOreMessage
 }
 
 Emotes: {

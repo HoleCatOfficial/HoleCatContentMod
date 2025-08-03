@@ -28,7 +28,7 @@ namespace DestroyerTest.Content.RogueItems
 			Item.consumable = false;
 
 			// Weapon Properties			
-			Item.damage = 3000;
+			Item.damage = 180;
 			Item.knockBack = 15f;
 			Item.noUseGraphic = true; // The item should not be visible when used
 			Item.noMelee = true; // The projectile will do the damage and not the item

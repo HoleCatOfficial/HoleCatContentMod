@@ -1,4 +1,4 @@
-using DestroyerTest.Content.MetallurgySeries;
+  
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
@@ -6,6 +6,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using DestroyerTest.Rarity;
+using DestroyerTest.Content.Equips;
 
 
 
@@ -25,7 +26,7 @@ namespace DestroyerTest.Content.MeleeWeapons
 			Item.DamageType = DamageClass.Melee; // Whether your item is part of the melee class.
 			Item.damage = 28; // The damage your item deals.
 			Item.knockBack = 12; // The force of knockback of the weapon. Maximum is 20
-			Item.crit = 16; // The critical strike chance the weapon has. The player, by default, has a 4% critical strike chance.
+			Item.crit = 6; // The critical strike chance the weapon has. The player, by default, has a 4% critical strike chance.
 
 			Item.value = Item.buyPrice(gold: 16); // The value of the weapon in copper coins.
 			Item.rare = ModContent.RarityType<CorruptionSpecialRarity>();
@@ -45,11 +46,10 @@ namespace DestroyerTest.Content.MeleeWeapons
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
-    	CreateRecipe()
-        	.AddIngredient<UnholySteel>(10)
-            .AddIngredient<Steel>(6)
-        	.AddIngredient(ItemID.CrimtaneBar, 8)
-        	.AddTile(TileID.Anvils) // Use the correct TileID name if 16 is Anvils
+			CreateRecipe()
+			.AddIngredient(ItemID.DemoniteBar, 8)
+			.AddIngredient<GildedCross>()
+        	.AddTile(TileID.Anvils)
         	.Register();
 		}		
 	}

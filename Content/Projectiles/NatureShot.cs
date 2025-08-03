@@ -1,7 +1,9 @@
+using System.IO;
 using DestroyerTest.Common;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.Enums;
 using Terraria.GameContent;
 using Terraria.GameContent.Drawing;
@@ -43,6 +45,7 @@ public class NatureShot : ModProjectile
 			Projectile.netImportant = true;
 			Projectile.netUpdate = true;
 			}
+
 
 			public int trailLength = 10;
 			public override bool PreDraw(ref Color lightColor)
@@ -98,12 +101,14 @@ public class NatureShot : ModProjectile
 					Color trailColor = lightColor * fade * 0.3f;
 					trailColor.A = (byte)(fade * 100);
 
-					Vector2 drawPosition = Projectile.oldPos[i] + (Projectile.Size / 4f) - Main.screenPosition;
+					Vector2 drawPosition = Projectile.oldPos[i] + (Projectile.Size / 2f) - Main.screenPosition;
 					float scaleFactor = 0.1f;
 					Main.EntitySpriteDraw(longtrailTexture, drawPosition, null, trailColor, Projectile.rotation, trailOrigin, (Projectile.scale * fade) * scaleFactor, SpriteEffects.None, 0);
 				}
 
-				// Restore normal batch
+				spriteBatch.End();
+				spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+
 				spriteBatch.End();
 				spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 

@@ -44,16 +44,16 @@ namespace DestroyerTest.Content.Projectiles.NightmareRose
 			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
 			int[] types = new int[]
 			{
-				PRTLoader.GetParticleID<CursedFlame2Particle1>(),
-				PRTLoader.GetParticleID<CursedFlame2Particle2>(),
-				PRTLoader.GetParticleID<CursedFlame2Particle3>(),
-				PRTLoader.GetParticleID<CursedFlame2Particle4>(),
-				PRTLoader.GetParticleID<CursedFlame2Particle5>(),
-				PRTLoader.GetParticleID<CursedFlame2Particle6>(),
-				PRTLoader.GetParticleID<CursedFlame2Particle7>()
+				PRTLoader.GetParticleID<ColoredFire1>(),
+				PRTLoader.GetParticleID<ColoredFire2>(),
+				PRTLoader.GetParticleID<ColoredFire3>(),
+				PRTLoader.GetParticleID<ColoredFire4>(),
+				PRTLoader.GetParticleID<ColoredFire5>(),
+				PRTLoader.GetParticleID<ColoredFire6>(),
+				PRTLoader.GetParticleID<ColoredFire7>()
 			};
 
-			PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], Projectile.Center, Vector2.Zero, default, 1);
+			PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], Projectile.Center, Vector2.Zero, ColorLib.CursedFlames, 9.5f);
 			
 			if (gravityEnabled)
 			{

@@ -161,7 +161,15 @@ namespace DestroyerTest.Content.Equips
                     FleshBombTimer++;
                     if (FleshBombTimer == 5)
                     {
-                        Projectile.NewProjectile(Entity.GetSource_Accessory(Player.armor.FirstOrDefault(item => item.type == ModContent.ItemType<WyvernSkull>())), Player.oldPosition, Vector2.Zero, ModContent.ProjectileType<FleshBombFriendly>(), 16, 1, Main.LocalPlayer.whoAmI);
+                        Item skull = Player.armor.FirstOrDefault(item => item.type == ModContent.ItemType<WyvernSkull>());
+                        if (skull != null)
+                        {
+                            Projectile.NewProjectile(
+                                Player.GetSource_Accessory(skull),
+                                Player.oldPosition, Vector2.Zero,
+                                ModContent.ProjectileType<FleshBombFriendly>(), 46, 1, Main.LocalPlayer.whoAmI);
+                        }
+
                         FleshBombTimer = 0;
                     }
 

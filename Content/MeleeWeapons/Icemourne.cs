@@ -7,7 +7,6 @@ using Terraria.ModLoader;
 using Terraria.DataStructures;
 using static Terraria.ModLoader.ModContent;
 using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Content.MetallurgySeries; // Add this line if CT3_Swing is in the Projectiles namespace
 
 namespace DestroyerTest.Content.MeleeWeapons
 {
@@ -35,9 +34,9 @@ namespace DestroyerTest.Content.MeleeWeapons
 			// Weapon Properties
 			Item.knockBack = 30;  // The knockback of your sword, this is dynamically adjusted in the projectile code.
 			Item.autoReuse = true; // This determines whether the weapon has autoswing
-			Item.damage = 100; // The damage of your sword, this is dynamically adjusted in the projectile code.
+			Item.damage = 25; // The damage of your sword, this is dynamically adjusted in the projectile code.
 			Item.DamageType = DamageClass.Melee; // Deals melee damage
-            Item.crit = 46; // The critical strike chance the weapon has. The player, by default, has a 4% critical strike chance.
+            Item.crit = 16; // The critical strike chance the weapon has. The player, by default, has a 4% critical strike chance.
 
 			// Projectile Properties
 			Item.shoot = ModContent.ProjectileType<IcemourneWave>(); // The sword as a projectile
@@ -62,7 +61,6 @@ namespace DestroyerTest.Content.MeleeWeapons
 			CreateRecipe()
 				.AddIngredient(ItemID.IronBar, 6)
                 .AddIngredient(ItemID.IceBlock, 25)
-                .AddIngredient<Steel>(4)
 				.AddTile(TileID.MythrilAnvil)
 				.Register();
 		}

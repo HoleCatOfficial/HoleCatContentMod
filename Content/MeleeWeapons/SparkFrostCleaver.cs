@@ -1,4 +1,4 @@
-using DestroyerTest.Content.MetallurgySeries;
+  
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.Resources.Cloths;
@@ -37,7 +37,7 @@ namespace DestroyerTest.Content.MeleeWeapons
 			// Weapon Properties
 			Item.knockBack = 70;  // The knockback of your sword, this is dynamically adjusted in the projectile code.
 			Item.autoReuse = true; // This determines whether the weapon has autoswing
-			Item.damage = 115; // The damage of your sword, this is dynamically adjusted in the projectile code.
+			Item.damage = 95; // The damage of your sword, this is dynamically adjusted in the projectile code.
 			Item.DamageType = DamageClass.Melee; // Deals melee damage
 			Item.noMelee = true;  // This makes sure the item does not deal damage from the swinging animation
 			Item.noUseGraphic = true; // This makes sure the item does not get shown when the player swings his hand
@@ -52,8 +52,6 @@ namespace DestroyerTest.Content.MeleeWeapons
 
 		public override void AddRecipes() {
 			CreateRecipe()
-				.AddIngredient<ColdSnapSteel>(6)
-                .AddIngredient<EvermoltenSteel>(6)
                 .AddIngredient(ItemID.WandofSparking)
 				.AddIngredient(ItemID.WandofFrosting)
 				.AddIngredient(ItemID.SoulofMight, 12)

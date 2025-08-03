@@ -13,12 +13,12 @@ using DestroyerTest.Content.Dusts;
 using Terraria.ID;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using DestroyerTest.Content.MetallurgySeries;
 using Terraria.GameContent.UI;
 using DestroyerTest.Content.Magic;
 using DestroyerTest.Common;
 using ReLogic.Content;
 using DestroyerTest.Content.Equips;
+using Terraria.DataStructures;
 
 namespace DestroyerTest
 {
@@ -37,6 +37,7 @@ namespace DestroyerTest
         public static ModKeybind TenebrisTeleportKeybind { get; private set; }
 
         public static ModKeybind DeadlyBlossomKeybind { get; private set; }
+        public static ModKeybind OilTentacleKeybind { get; private set; }
 
         public static int RouletteTokenCurrencyId;
         public override void Load()
@@ -56,6 +57,8 @@ namespace DestroyerTest
             TenebrisTeleportKeybind = KeybindLoader.RegisterKeybind(this, "Tenebrous Clone Teleort", "L");
             // Divider.
             DeadlyBlossomKeybind = KeybindLoader.RegisterKeybind(this, "Deadly Blossom Spawn", "X");
+            // Divider.
+            OilTentacleKeybind = KeybindLoader.RegisterKeybind(this, "HoleCat Oil Tentacle", "OemTab");
             // Divider.
             RouletteTokenCurrencyId = CustomCurrencyManager.RegisterCurrency(new Content.Magic.RouletteToken(ModContent.ItemType<Content.Magic.RouletteTokenItem>(), 99L, "Mods.DestroyerTest.Content.Magic.RouletteToken"));
            
@@ -77,6 +80,7 @@ namespace DestroyerTest
             ManaBurstKeybind = null;
             TenebrisTeleportKeybind = null;
             DeadlyBlossomKeybind = null;
+            OilTentacleKeybind = null;
         
         }
 
@@ -109,8 +113,8 @@ namespace DestroyerTest
 
         
 		public class DestroyerTestSystem : ModSystem
-		{
-		}
+        {
+        }
 
         internal class GlobalNPC_Folder
         {

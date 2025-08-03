@@ -91,7 +91,7 @@ public class WondersWillTealShot : ModProjectile
 				Color trailColor = lightColor * fade * 0.3f;
 				trailColor.A = (byte)(fade * 100); // Transparency blending
 
-				Vector2 drawPosition = Projectile.oldPos[i] + (Projectile.Size / 4) - Main.screenPosition;
+				Vector2 drawPosition = Projectile.oldPos[i] + (Projectile.Size / 2f) - Main.screenPosition;
 				float scaleFactor = 0.1f; // Adjust size of the trail
 				Main.EntitySpriteDraw(longtrailTexture, drawPosition, null, trailColor, Projectile.rotation, trailOrigin, (Projectile.scale * fade) * scaleFactor, SpriteEffects.None, 0);
 			}

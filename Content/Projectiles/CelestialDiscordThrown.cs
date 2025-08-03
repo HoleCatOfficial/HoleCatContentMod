@@ -98,7 +98,7 @@ namespace DestroyerTest.Content.Projectiles
                 float timeOffset = Main.GameUpdateCount * 0.03f; // Adjust speed as needed
                 float dynamicAngle = angle + timeOffset;
                 Vector2 dustPos = Projectile.Center + radius * new Vector2((float)Math.Cos(dynamicAngle), (float)Math.Sin(dynamicAngle));
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<StarParticle>(), dustPos, Vector2.Zero, default, 1);
+                PRTLoader.NewParticle(PRTLoader.GetParticleID<StarParticle>(), dustPos, Vector2.Zero, ColorLib.CelestialGradient, 1);
             }
                     if (auraTimer <= 30)
                 {

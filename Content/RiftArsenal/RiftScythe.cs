@@ -1,4 +1,4 @@
-using DestroyerTest.Content.MetallurgySeries;
+  
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.Resources.Cloths;
@@ -45,7 +45,7 @@ namespace DestroyerTest.Content.RiftArsenal
 			// Weapon Properties
 			Item.knockBack = 7;  // The knockback of your sword, this is dynamically adjusted in the projectile code.
 			Item.autoReuse = true; // This determines whether the weapon has autoswing
-			Item.damage = 130; // The damage of your sword, this is dynamically adjusted in the projectile code.
+			Item.damage = 100; // The damage of your sword, this is dynamically adjusted in the projectile code.
 			Item.DamageType = DamageClass.Magic; // Deals melee damage
             Item.mana = 10;
 			Item.noMelee = true;  // This makes sure the item does not deal damage from the swinging animation

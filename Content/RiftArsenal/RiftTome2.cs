@@ -36,7 +36,7 @@ namespace DestroyerTest.Content.RiftArsenal
             Item.mana = 20;
 
 			Item.DamageType = DamageClass.Magic; // Whether your item is part of the melee class.
-			Item.damage = 190; // The damage your item deals.
+			Item.damage = 100; // The damage your item deals.
 			Item.knockBack = 0; // The force of knockback of the weapon. Maximum is 20
 			Item.crit = 4; // The critical strike chance the weapon has. The player, by default, has a 4% critical strike chance.
             Item.channel = true;

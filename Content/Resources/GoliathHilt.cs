@@ -1,4 +1,4 @@
-using DestroyerTest.Content.MetallurgySeries;
+  
 using DestroyerTest.Content.Resources.Cloths;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -13,7 +13,7 @@ namespace DestroyerTest.Content.Resources
 	{
 		public override void SetStaticDefaults() {
 			Item.ResearchUnlockCount = 1;
-			ItemID.Sets.SortingPriorityMaterials[Item.type] = 25; // Influences the inventory sort order. 59 is PlatinumBar, higher is more valuable.
+			ItemID.Sets.SortingPriorityMaterials[Item.type] = 12; // Influences the inventory sort order. 59 is PlatinumBar, higher is more valuable.
             
 		}
 
@@ -29,8 +29,8 @@ namespace DestroyerTest.Content.Resources
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
 			CreateRecipe()
-				.AddIngredient<CunifeBar>(5)
-                .AddIngredient(ItemID.Ruby, 1)
+				.AddIngredient(ItemID.Ruby, 1)
+				.AddIngredient<Vesper>(12)
                 .AddIngredient<RedCloth>(3)
                 .AddIngredient(ItemID.Cobweb, 2)
 				.AddTile(TileID.Anvils)

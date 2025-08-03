@@ -134,18 +134,18 @@ namespace DestroyerTest.Content.Projectiles
             Projectile.rotation += 0.6f * Projectile.direction;
 
             
-                int[] types = new int[]
-                {
-                    PRTLoader.GetParticleID<CursedFlame2Particle1>(),
-                    PRTLoader.GetParticleID<CursedFlame2Particle2>(),
-                    PRTLoader.GetParticleID<CursedFlame2Particle3>(),
-                    PRTLoader.GetParticleID<CursedFlame2Particle4>(),
-                    PRTLoader.GetParticleID<CursedFlame2Particle5>(),
-                    PRTLoader.GetParticleID<CursedFlame2Particle6>(),
-                    PRTLoader.GetParticleID<CursedFlame2Particle7>()
-                };
+            int[] types = new int[]
+			{
+				PRTLoader.GetParticleID<ColoredFire1>(),
+				PRTLoader.GetParticleID<ColoredFire2>(),
+				PRTLoader.GetParticleID<ColoredFire3>(),
+				PRTLoader.GetParticleID<ColoredFire4>(),
+				PRTLoader.GetParticleID<ColoredFire5>(),
+				PRTLoader.GetParticleID<ColoredFire6>(),
+				PRTLoader.GetParticleID<ColoredFire7>()
+			};
 
-                PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], Projectile.Center + new Vector2(82, -82).RotatedBy(Projectile.rotation), Vector2.Zero, ColorLib.CursedFlames, 0.4f);
+            PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], Projectile.Center + new Vector2(82, -82).RotatedBy(Projectile.rotation), Vector2.Zero, ColorLib.CursedFlames, 0.4f);
             
 
             ArmCatchAnimate(player);

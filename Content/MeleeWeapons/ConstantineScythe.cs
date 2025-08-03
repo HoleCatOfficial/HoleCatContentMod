@@ -43,7 +43,7 @@ namespace DestroyerTest.Content.MeleeWeapons
 			Item.autoReuse = true; // This determines whether the weapon has autoswing
 			Item.damage = 480; // The damage of your sword, this is dynamically adjusted in the projectile code.
 			Item.DamageType = DamageClass.Melee; // Deals melee damage
-			Item.crit = 46; // The critical strike chance the weapon has. The player, by default, has a 4% critical strike chance.
+			Item.crit = 16; // The critical strike chance the weapon has. The player, by default, has a 4% critical strike chance.
 			Item.noMelee = true;  // This makes sure the item does not deal damage from the swinging animation
 			Item.noUseGraphic = true; // This makes sure the item does not get shown when the player swings his hand
 
@@ -82,9 +82,8 @@ namespace DestroyerTest.Content.MeleeWeapons
 		{
 			var modPlayer = player.GetModPlayer<MeleeImmunityPlayer>();
 
-			if (player.HeldItem.DamageType == DamageClass.Melee || player.HeldItem.DamageType == DamageClass.MeleeNoSpeed)
+			if (player.HeldItem == Item)
 			{
-
 				if (modPlayer.Timer < modPlayer.ImmunityThreshold2)
 				{
 					FullCharge = false;

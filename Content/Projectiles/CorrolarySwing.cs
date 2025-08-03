@@ -260,13 +260,13 @@ namespace DestroyerTest.Content.Projectiles
             Vector2 swordTip = Projectile.Center + Projectile.rotation.ToRotationVector2() * (Projectile.Size.Length() * Projectile.scale);
             int[] types = new int[]
 			{
-				PRTLoader.GetParticleID<SF1>(),
-				PRTLoader.GetParticleID<SF2>(),
-				PRTLoader.GetParticleID<SF3>(),
-				PRTLoader.GetParticleID<SF4>(),
-				PRTLoader.GetParticleID<SF5>(),
-				PRTLoader.GetParticleID<SF6>(),
-				PRTLoader.GetParticleID<SF7>()
+				PRTLoader.GetParticleID<ColoredFire1>(),
+				PRTLoader.GetParticleID<ColoredFire2>(),
+				PRTLoader.GetParticleID<ColoredFire3>(),
+				PRTLoader.GetParticleID<ColoredFire4>(),
+				PRTLoader.GetParticleID<ColoredFire5>(),
+				PRTLoader.GetParticleID<ColoredFire6>(),
+				PRTLoader.GetParticleID<ColoredFire7>()
 			};
 
 			PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], swordTip, Vector2.Zero, new Color(182, 41, 172), 1);

@@ -33,7 +33,7 @@ namespace DestroyerTest.Content.MeleeWeapons
             // While we're at it, let's make our weapon's stats a bit stronger than the Meowmere, which can be done
             // by using math on each given stat.
 
-            Item.damage = 100; // Makes this weapon's damage half the Meowmere's damage.
+            Item.damage = 70; // Makes this weapon's damage half the Meowmere's damage.
             Item.shootSpeed = 10f; // Makes this weapon's projectiles shoot 25% faster than the Meowmere's projectiles.
             Item.useAnimation = 20; // The time span of the using animation of the weapon, suggest setting it the same as useTime.
             Item.useTime = 20;

@@ -1,6 +1,5 @@
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.MeleeWeapons;
-using DestroyerTest.Content.MetallurgySeries;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.Resources.Cloths;
@@ -65,15 +64,6 @@ namespace DestroyerTest.Content.Equips.NephilimSet
             player.armorEffectDrawOutlines = true;
         }
 
-		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
-		public override void AddRecipes() {
-			CreateRecipe()
-				.AddIngredient<GermanSilver>(2)
-                .AddIngredient<WhiteCloth>(20)
-                .AddIngredient<LifeEcho>(8)
-				.AddTile(TileID.Anvils)
-                .AddCondition(Condition.DownedSkeletron)
-				.Register();
-        }
+
 	}
 }

@@ -1,4 +1,4 @@
-using DestroyerTest.Content.MetallurgySeries;
+
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
@@ -25,7 +25,7 @@ namespace DestroyerTest.Content.MeleeWeapons
 			Item.DamageType = DamageClass.Melee; // Whether your item is part of the melee class.
 			Item.damage = 20; // The damage your item deals.
 			Item.knockBack = 12; // The force of knockback of the weapon. Maximum is 20
-			Item.crit = 16; // The critical strike chance the weapon has. The player, by default, has a 4% critical strike chance.
+			Item.crit = 6; // The critical strike chance the weapon has. The player, by default, has a 4% critical strike chance.
 
 			Item.value = Item.buyPrice(gold: 16); // The value of the weapon in copper coins.
 			Item.rare = ModContent.RarityType<CrimsonSpecialRarity>();
@@ -43,14 +43,5 @@ namespace DestroyerTest.Content.MeleeWeapons
             player.AddBuff(BuffID.Lifeforce, 360);
 		}
 
-		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
-		public override void AddRecipes() {
-    	CreateRecipe()
-        	.AddIngredient<WretchedSteel>(10)
-            .AddIngredient<Steel>(6)
-        	.AddIngredient(ItemID.CrimtaneBar, 8)
-        	.AddTile(TileID.Anvils) // Use the correct TileID name if 16 is Anvils
-        	.Register();
-		}		
 	}
 }

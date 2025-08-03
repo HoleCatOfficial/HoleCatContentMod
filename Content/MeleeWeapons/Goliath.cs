@@ -7,28 +7,30 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using DestroyerTest.Rarity;
+using DestroyerTest.Content.Projectiles;
 
 namespace DestroyerTest.Content.MeleeWeapons
 {
+    /*
     public class GoliathBeam : ModProjectile
     {
-    public override void SetDefaults()
-    {
-        Projectile.CloneDefaults(ProjectileID.TerraBeam);
-        Projectile.width = 40;
-        Projectile.height = 40;
-        Projectile.aiStyle = 27; // Terra Beam AI style
-        Projectile.friendly = true;
-        Projectile.hostile = false;
-        Projectile.DamageType = DamageClass.Melee;
-        Projectile.penetrate = 3;
-        Projectile.timeLeft = 600;
-        Projectile.light = 0.5f;
-        Projectile.ignoreWater = true;
-        Projectile.tileCollide = true;
-        Projectile.extraUpdates = 1;
-    }
-    public override bool PreDraw(ref Color lightColor)
+        public override void SetDefaults()
+        {
+            Projectile.CloneDefaults(ProjectileID.TerraBeam);
+            Projectile.width = 40;
+            Projectile.height = 40;
+            Projectile.aiStyle = 27; // Terra Beam AI style
+            Projectile.friendly = true;
+            Projectile.hostile = false;
+            Projectile.DamageType = DamageClass.Melee;
+            Projectile.penetrate = 3;
+            Projectile.timeLeft = 600;
+            Projectile.light = 0.5f;
+            Projectile.ignoreWater = true;
+            Projectile.tileCollide = true;
+            Projectile.extraUpdates = 1;
+        }
+        public override bool PreDraw(ref Color lightColor)
         {
             // Apply custom color to the projectile
             Color BeamColor = new Color(Main.DiscoR / 2, (byte)(Main.DiscoG / 1.25f), (byte)(Main.DiscoB / 1.5f));
@@ -39,6 +41,7 @@ namespace DestroyerTest.Content.MeleeWeapons
             return false; // Return false to prevent the default drawing logic
         }
     }
+    */
 	public class Goliath : ModItem
 	{
         public override void SetDefaults() {

@@ -53,15 +53,15 @@ namespace DestroyerTest.Content.Projectiles
             Player player = Main.LocalPlayer;
 			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
 			int[] types = new int[]
-			{
-				PRTLoader.GetParticleID<ScreenOverlayCloud1>(),
-				PRTLoader.GetParticleID<ScreenOverlayCloud2>(),
-				PRTLoader.GetParticleID<ScreenOverlayCloud3>(),
-				PRTLoader.GetParticleID<ScreenOverlayCloud4>(),
-				PRTLoader.GetParticleID<ScreenOverlayCloud5>(),
-				PRTLoader.GetParticleID<ScreenOverlayCloud6>(),
-				PRTLoader.GetParticleID<ScreenOverlayCloud7>()
-			};
+                {
+                PRTLoader.GetParticleID<BlackFire1>(),
+                PRTLoader.GetParticleID<BlackFire2>(),
+                PRTLoader.GetParticleID<BlackFire3>(),
+                PRTLoader.GetParticleID<BlackFire4>(),
+                PRTLoader.GetParticleID<BlackFire5>(),
+                PRTLoader.GetParticleID<BlackFire6>(),
+                PRTLoader.GetParticleID<BlackFire7>()
+                };
 
 			PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], Projectile.Center, Vector2.Zero, default, 1);
 

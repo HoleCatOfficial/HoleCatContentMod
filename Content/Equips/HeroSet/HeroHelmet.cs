@@ -1,6 +1,6 @@
 using System;
 using System.Configuration;
-using DestroyerTest.Content.MetallurgySeries;
+
 using DestroyerTest.Content.Resources;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -63,16 +63,6 @@ namespace DestroyerTest.Content.Equips.HeroSet
 		{
 			HeroHelmetPlayer modPlayer = player.GetModPlayer<HeroHelmetPlayer>();
 			modPlayer.HasHeroHelmet = true;  // Set a flag indicating the helmet is equipped
-		}
-
-
-		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
-		public override void AddRecipes() {
-			CreateRecipe()
-                .AddIngredient<CunifeBar>(16)
-				.AddIngredient(ItemID.Obsidian, 6)
-				.AddTile(TileID.Anvils)
-				.Register();
 		}
 	
 	}
