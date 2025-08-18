@@ -23,7 +23,7 @@ namespace DestroyerTest.Content.Projectiles
             Projectile.penetrate = -1;
             Projectile.tileCollide = false;
             Projectile.ignoreWater = true;
-            Projectile.timeLeft = 200; // persistent
+            Projectile.timeLeft = 2000; // persistent
             Projectile.netImportant = true;
 			Projectile.netUpdate = true;
         }
@@ -50,7 +50,7 @@ namespace DestroyerTest.Content.Projectiles
             Player player = Main.player[Projectile.owner];
 
             // Check if the player is holding the item and channeled
-            if (player.HeldItem.type == ModContent.ItemType<TenebrousTradewinds>() && player.itemTime > 0)
+            if (player.HeldItem.type == ModContent.ItemType<TenebrousTradewinds>() && player.channel == true)
             {
                 ShootTimer++;
 
@@ -68,12 +68,22 @@ namespace DestroyerTest.Content.Projectiles
                 Projectile.Center = desiredPos;
 
                 // Rotate to face the cursor
-                Projectile.rotation = toCursor.ToRotation(); //+ MathHelper.PiOver2;
+                Projectile.rotation = toCursor.ToRotation();
+
+                if (player.direction == -1)
+                {
+                    Projectile.spriteDirection = -1;
+                }
+                else
+                {
+                    Projectile.spriteDirection = 1;
+                }
 
                 // Constantly face the direction it's pointing
                 Projectile.direction = toCursor.X > 0 ? 1 : -1;
 
-                if (ShootTimer >= 80) // Adjust the value to control the shooting rate
+
+                if (ShootTimer >= 30) // Adjust the value to control the shooting rate
                 {
                     ShootTimer = 0;
                     SoundEngine.PlaySound(Shoot);

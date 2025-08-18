@@ -1,3 +1,4 @@
+using DestroyerTest.Common;
 using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.RiftBiome;
@@ -40,7 +41,7 @@ namespace DestroyerTest.Content.Entity
 		/// <param name="ilContext"> </param>
 
 		public override void SetStaticDefaults() {
-			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.OnFire] = true;
+			immunities();
             Main.npcFrameCount[NPC.type] = 2; // Set this to the number of frames in your sprite
 			// Influences how the NPC looks in the Bestiary
 			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers() {
@@ -52,27 +53,38 @@ namespace DestroyerTest.Content.Entity
 
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
 		}
+		
+		public void immunities()
+        {
+            NPCID.Sets.SpecificDebuffImmunity[Type][ModContent.BuffType<ShimmeringFlames>()] = true;
+            NPCID.Sets.SpecificDebuffImmunity[Type][ModContent.BuffType<HaepiensBlizzard>()] = true;
+            NPCID.Sets.SpecificDebuffImmunity[Type][ModContent.BuffType<HaepiensInferno>()] = true;
+            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.OnFire] = true;
+            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.OnFire3] = true;
+            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.CursedInferno] = true;
+            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Frostburn] = true;
+            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Frostburn2] = true;
+            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Bleeding] = true;
+            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Dazed] = true;
+            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Electrified] = true;
+            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Frozen] = true;
+            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Oiled] = true;
+            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.ShadowFlame] = true;
+            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Slimed] = true;
+            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.SoulDrain] = true;
+        }
 
-		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
-			// We can use AddRange instead of calling Add multiple times in order to add multiple items at once
+		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+		{
 			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
-				// Sets the preferred biomes of this town NPC listed in the bestiary.
-
-				// Sets your NPC's flavor text in the bestiary.
-				new FlavorTextBestiaryInfoElement("A conglomeration of Dark energies born of the Rift. Supposedly the one thing holding these energies back from this world was the cultists' ritual. Touching it will burn you severely."),
-
-				// You can add multiple elements if you really wanted to
-				// You can also use localization keys (see Localization/en-US.lang)
-				//new FlavorTextBestiaryInfoElement("Mods.ExampleMod.Bestiary.ExamplePerson")
-				
-			});
-			bestiaryEntry.Info.AddRange([
-				// Sets the spawning conditions of this NPC that is listed in the bestiary.
+				new FlavorTextBestiaryInfoElement("Originating from the Shade World, this mindless glob of sludge seeks to explore, but prefers not to be in the light, as is common with life in the shade world."),
+				new FlavorTextBestiaryInfoElement("In addition to freeing the moon lord from imprisonment, breaking the seal also tore open holes across space, allowing enemies from the shade world to enter yours."),
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Caverns
-			]);
+			});
 		}
 
-		public override void SetDefaults() {
+		public override void SetDefaults()
+		{
 			NPC.width = 32;
 			NPC.height = 52;
 			NPC.aiStyle = 1;
@@ -81,22 +93,20 @@ namespace DestroyerTest.Content.Entity
 			NPC.lifeMax = 300;
 			NPC.HitSound = SoundID.NPCHit1;
 			NPC.DeathSound = SoundID.NPCDeath1;
-            NPC.noGravity = false;
+			NPC.noGravity = false;
 			// Sets the above
 			NPC.lavaImmune = true;
 		}
 
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
-        {
-            Player player = spawnInfo.Player;
-
-            if (player.ZoneShimmer && DownedBossSystem.downedCultistBoss)
+		{
+            DTUtils Utility = new DTUtils();
+            if (spawnInfo.Player.ZoneShimmer == true && Utility.TenebrisCanSpawnInWorldEvilBiome == true)
             {
-                return 0.8f; // Or whatever spawn chance you want in the Dungeon
+                return 0.1f;
             }
-
-            return 0f; // Prevent spawning otherwise
-        }
+			return 0f;
+		}
 
 
 

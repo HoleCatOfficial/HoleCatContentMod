@@ -1177,7 +1177,7 @@ Items: {
 	}
 
 	Horizon: {
-		Tooltip: ""
+		Tooltip: Ignore this item. I use it to test projectiles.
 		DisplayName: Horizon
 	}
 
@@ -2802,6 +2802,78 @@ Items: {
 		DisplayName: Vesper Ore
 		Tooltip: ""
 	}
+
+	RevenantMask: {
+		DisplayName: Revenant Mask
+		Tooltip:
+			'''
+			Imbued with divine remains...
+			Increases Scepter Size by 45%.
+			Hitting an enemy with a scepter class projectile will have a 1/3 chance summon wrathful fireballs from the player that home in on enemies and explode on death.
+			'''
+	}
+
+	NobleBulwarkGold: {
+		DisplayName: Noble Bulwark
+		Tooltip:
+			'''
+			Increases Scepter Class damage by 8%.
+			Increases thrown scepter range by 8.
+			'''
+	}
+
+	NobleBulwarkPlatinum: {
+		DisplayName: Noble Bulwark
+		Tooltip:
+			'''
+			Increases Scepter Class damage by 8%.
+			Increases thrown scepter range by 8.
+			'''
+	}
+
+	ExampleScepterItem: {
+		DisplayName: Example Scepter Item
+		Tooltip: You arent supposed to have this you nosy little shit
+	}
+
+	MoltenScepter: {
+		Tooltip:
+			'''
+			Left Click to place two nodes.
+			A beam will appear between them that can absorb 10 enemy projectiles before breaking.
+			The beam can also hit an enemy 5 times before breaking.
+			Right click to throw the scepter, spewing molten lava every witch way.
+			'''
+		DisplayName: Molten Scepter
+	}
+
+	FrostScepter: {
+		DisplayName: Frost Scepter
+		Tooltip:
+			'''
+			Shoots Frost Fireballs
+			Thrown Scepters Spew Ice bolts as they travel.
+			'''
+	}
+
+	FungalScepter: {
+		DisplayName: Fungal Scepter
+		Tooltip:
+			'''
+			Shoots homing mushrooms.
+			Throws and Tile Collisions spawn rings of the homing mushrooms that will converge at the mouse position if no target is provided.
+			'''
+	}
+
+	PrismaticScepter: {
+		DisplayName: Prismatic Scepter
+		Tooltip: ""
+	}
+
+	OnyxScepter: {
+		Tooltip: ""
+		DisplayName: Onyx Scepter
+	}
 }
 
 Projectiles: {
@@ -3087,6 +3159,20 @@ Projectiles: {
 	GargantuaProjectile.DisplayName: Gargantua Projectile
 	GoliathPhantom.DisplayName: Goliath Phantom
 	GargantuaStar.DisplayName: Gargantua Star
+	RevenantFireball.DisplayName: Revenant Fireball
+	FlameNode.DisplayName: Flame Node
+	LavaBlob.DisplayName: Lava Blob
+	MoltenScepterSwing.DisplayName: Molten Scepter Swing
+	MoltenScepterThrown.DisplayName: Molten Scepter Thrown
+	FrostScepterThrown.DisplayName: Frost Scepter Thrown
+	FungalScepterMushroom.DisplayName: Fungal Scepter Mushroom
+	FungalScepterThrown.DisplayName: Fungal Scepter Thrown
+	OnyxScepterThrown.DisplayName: Onyx Scepter Thrown
+	OnyxWave.DisplayName: Onyx Wave
+	PrismaticScepterThrown.DisplayName: Prismatic Scepter Thrown
+	OnyxWaveCenter.DisplayName: Onyx Wave Center
+	CustomSwordMinion.DisplayName: Custom Sword Minion
+	SwordMinionTemplate.DisplayName: Sword Minion Template
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.
@@ -3350,6 +3436,13 @@ NPCs: {
 			Princess_LovesNPC: I like {NPCName}.
 		}
 	}
+
+	DarkPredatorTail.DisplayName: Dark Predator Tail
+	DarkPredatorHead.DisplayName: Dark Predator Head
+	DarkPredatorBody.DisplayName: Dark Predator Body
+	DarkGluttonBody.DisplayName: Dark Glutton Body
+	DarkGluttonHead.DisplayName: Dark Glutton Head
+	DarkGluttonTail.DisplayName: Dark Glutton Tail
 }
 
 Keybinds: {
@@ -3436,6 +3529,16 @@ Configs: {
 		UnnerfTenebrousKatana: {
 			Label: Unnerf Tenebrous Katana
 			Tooltip: The Tenebrous Katana used to be far more powerful, but it was rolled back to match it's pre-moonlord place in progression. Checking this off will restore it to its original damage statistic; no strings attatched.
+		}
+
+		EnableDebugMessages: {
+			Label: Enable Debug Messages
+			Tooltip: Turning this on will display inside information. Mostly used for testing, but can also help in bug reports.
+		}
+
+		ShowBugCommandMessage: {
+			Tooltip: Shows a massive advertisement for the new /bug command for bug reporting.
+			Label: Show Bug Command Message
 		}
 	}
 }

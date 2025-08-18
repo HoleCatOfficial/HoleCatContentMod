@@ -31,8 +31,7 @@ namespace DestroyerTest.Content.Particles
             PRTDrawMode = PRTDrawModeEnum.AdditiveBlend;
             Lifetime = MaxLifetime; // Lifetime of 220 to 360 ticks.
             Rotation = Main.rand.NextFloat(0, MathHelper.TwoPi); // Random rotation angle.
-            Scale = Main.rand.NextFloat(0.2f, 0.8f); // Random scale between 0.5 and 1.5.
-
+            Scale *= Main.rand.NextFloat(0.2f, 0.8f); // Random scale between 0.5 and 1.5.
         }
 
         public override void AI()

@@ -10,5 +10,11 @@ namespace DestroyerTest.Common
         public bool MinionExtrasToggle { get; set; }
         [DefaultValue(false)]
         public bool UnnerfTenebrousKatana { get; set; }
+
+        [DefaultValue(false)]
+        public bool EnableDebugMessages { get; set; }
+        
+        [DefaultValue(true)]
+        public bool ShowBugCommandMessage { get; set; }
     }
 }

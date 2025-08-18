@@ -37,8 +37,8 @@ namespace DestroyerTest.Content.Particles
 
         public override void AI()
         {
-            Velocity *= 0.99f;
-            Rotation += Velocity.ToRotation();
+            Rotation = Velocity.ToRotation();
+            Velocity.Y += 0.3f;
 
             // Adjust the rotation according to the movement direction.
             //Rotation += Main.rand.NextFloat(-0.1f, 0.1f);

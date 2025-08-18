@@ -30,7 +30,7 @@ namespace DestroyerTest.Content.Equips
 
 		// UpdateArmorSet allows you to give set bonuses to the armor.
 		public override void UpdateArmorSet(Player player) {
-			ScepterClassStats.Range += player.statDefense / 3;
+			ScepterClassStats.Range += 8;
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.

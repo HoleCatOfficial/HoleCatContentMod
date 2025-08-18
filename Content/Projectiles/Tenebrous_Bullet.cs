@@ -108,7 +108,7 @@ namespace DestroyerTest.Content.Projectiles
 			return target.CanBeChasedBy() && Collision.CanHit(Projectile.Center, 1, 1, target.position, target.width, target.height);
 		}
 		public void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone) {  
-				target.AddBuff(ModContent.BuffType<FriendlyShimmeringFlames>(), 600);
+				target.AddBuff(ModContent.BuffType<ShimmeringFlames>(), 600);
 		}
 
         public override void OnKill(int timeLeft)

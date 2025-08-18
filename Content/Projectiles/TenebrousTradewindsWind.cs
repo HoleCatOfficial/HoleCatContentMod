@@ -139,7 +139,7 @@ namespace DestroyerTest.Content.Projectiles
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
             {
                 SoundEngine.PlaySound(SoundID.Drown, Projectile.position); 
-                target.AddBuff(ModContent.BuffType<FriendlyShimmeringFlames>(), 120);
+                target.AddBuff(ModContent.BuffType<ShimmeringFlames>(), 120);
             }
     }
 

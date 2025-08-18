@@ -1,3 +1,4 @@
+using DestroyerTest.Common;
 using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Projectiles;
@@ -42,7 +43,7 @@ namespace DestroyerTest.Content.Entity
 		/// <param name="ilContext"> </param>
 
 		public override void SetStaticDefaults() {
-			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.OnFire] = true;
+			immunities();
 			// Influences how the NPC looks in the Bestiary
 			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers() {
 				Velocity = 1f, // Draws the NPC in the bestiary as if its walking +1 tiles in the x direction
@@ -53,18 +54,32 @@ namespace DestroyerTest.Content.Entity
 
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
 		}
+		public void immunities()
+        {
+            NPCID.Sets.SpecificDebuffImmunity[Type][ModContent.BuffType<ShimmeringFlames>()] = true;
+            NPCID.Sets.SpecificDebuffImmunity[Type][ModContent.BuffType<HaepiensBlizzard>()] = true;
+            NPCID.Sets.SpecificDebuffImmunity[Type][ModContent.BuffType<HaepiensInferno>()] = true;
+            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.OnFire] = true;
+            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.OnFire3] = true;
+            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.CursedInferno] = true;
+            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Frostburn] = true;
+            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Frostburn2] = true;
+            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Bleeding] = true;
+            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Dazed] = true;
+            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Electrified] = true;
+            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Frozen] = true;
+            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Oiled] = true;
+            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.ShadowFlame] = true;
+            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Slimed] = true;
+            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.SoulDrain] = true;
+        }
 
-		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
+		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+		{
 			// We can use AddRange instead of calling Add multiple times in order to add multiple items at once
 			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
-				// Sets the preferred biomes of this town NPC listed in the bestiary.
-
-				// Sets your NPC's flavor text in the bestiary.
-				new FlavorTextBestiaryInfoElement("A skittish cloud of Tenebris that has used the carcass of an Eater of Souls for protection. Supposedly the one thing holding these energies back from this world was the cultists' ritual. Touching it will burn you severely."),
-
-				// You can add multiple elements if you really wanted to
-				// You can also use localization keys (see Localization/en-US.lang)
-				//new FlavorTextBestiaryInfoElement("Mods.ExampleMod.Bestiary.ExamplePerson")
+				new FlavorTextBestiaryInfoElement("Originating from the Shade World, this clump of sludge has parasitized an eater of souls."),
+				new FlavorTextBestiaryInfoElement("In addition to freeing the moon lord from imprisonment, breaking the seal also tore open holes across space, allowing enemies from the shade world to enter yours."),
 			});
 
 			bestiaryEntry.Info.AddRange([
@@ -73,7 +88,8 @@ namespace DestroyerTest.Content.Entity
 			]);
 		}
 
-		public override void SetDefaults() {
+		public override void SetDefaults()
+		{
 			NPC.width = 42;
 			NPC.height = 78;
 			NPC.damage = 21;
@@ -81,20 +97,20 @@ namespace DestroyerTest.Content.Entity
 			NPC.lifeMax = 500;
 			NPC.HitSound = SoundID.NPCHit27;
 			NPC.DeathSound = SoundID.NPCDeath24;
-            NPC.noGravity = true;
+			NPC.noGravity = true;
 			// Sets the above
 			NPC.lavaImmune = true;
-			NPC.noTileCollide = false;
+			NPC.noTileCollide = true;
 		}
 
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
-			// Check if the player is in the Corruption zone and the Cultist Boss has been defeated
-			if (spawnInfo.Player.ZoneCorrupt && DownedBossSystem.downedCultistBoss)
-			{
-					return 0.8f; 
-			}
-			return 0f; // Prevent spawning otherwise
+            DTUtils Utility = new DTUtils();
+            if (spawnInfo.Player.ZoneCorrupt == true && Utility.TenebrisCanSpawnInWorldEvilBiome == true)
+            {
+                return 0.1f;
+            }
+			return 0f;
 		}
 
 		public override void AI()

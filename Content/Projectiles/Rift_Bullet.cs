@@ -107,7 +107,7 @@ namespace DestroyerTest.Content.Projectiles
 		}
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 			Player player = Main.player[Main.myPlayer];  // Accessing the current player
-			target.AddBuff(ModContent.BuffType<DaylightOverloadFriendly>(), 600);
+			target.AddBuff(ModContent.BuffType<DaylightOverload>(), 600);
 			if (damageDone > 1000 && (player.HasBuff<AirSeal>() || player.HasBuff<StoneLungs>()))
 			{
 				player.AddBuff(ModContent.BuffType<DaylightOverload>(), 360);

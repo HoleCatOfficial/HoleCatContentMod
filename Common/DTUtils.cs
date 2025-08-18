@@ -1,8 +1,11 @@
 
 using System;
 using System.Runtime.CompilerServices;
+using DestroyerTest.Common.Systems;
+using DestroyerTest.Content.Buffs;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Common
@@ -11,9 +14,58 @@ namespace DestroyerTest.Common
     {
         public static bool PromiseEquipped = false;
         public static bool StellarGogglesEquipped = false;
+        /// <summary>
+        /// An example of a Color Palette. It has a name and the required 5 colors.
+        /// <para/> The first color is the blue on the tip of the hood,
+        /// <para/> the second color is the shaded portion of the hood fabric,
+        /// <para/> the third color is the ruby color,
+        /// <para/> the fourth color is the gold color.
+        /// </summary>
+        public static readonly ColorPalette HoleCatColors = new("HoleCatColors", new Color(105, 161, 182), new Color(220, 200, 200), new Color(192, 67, 67), new Color(203, 179, 73), new Color(255, 255, 255));
 
-        
-        
+        public int[] TenebrisBuffImmunities;
+        public bool TenebrisCanSpawnInWorldEvilBiome = DownedBossSystem.downedCultistBoss;
+        public bool TenebrisCanSpawnInShimmerBiome = DownedBossSystem.downedCultistBoss;
+        public void DustsWhileItemIsInWorld(Rectangle itemRect, int DustType = -1, int ChancePerTick = 3, float DustScale = 1f, float DustVelX = 0f, float DustVelY = 0f, Color DustColor = default)
+        {
+            if (DustType == -1)
+                DustType = DustID.TintableDustLighted;
+
+
+            if (itemRect.Width <= 0 || itemRect.Height <= 0)
+                return;
+
+            if (Main.rand.NextBool(ChancePerTick))
+            {
+                Dust.NewDust(new Vector2(itemRect.Width / 2, itemRect.Height / 2), itemRect.Width, itemRect.Height, DustType, 0f, 0f, 100, DustColor, DustScale);
+            }
+        }
+    }
+
+    public class DTUtilLoading : ModSystem
+    {
+        DTUtils Utility = new DTUtils();
+        public override void Load()
+        {
+            Utility.TenebrisBuffImmunities = new int[]
+            {
+                ModContent.BuffType<ShimmeringFlames>(),
+                ModContent.BuffType<HaepiensInferno>(),
+                BuffID.OnFire,
+                BuffID.OnFire3,
+                BuffID.CursedInferno,
+                BuffID.Frostburn,
+                BuffID.Frostburn2,
+                BuffID.Bleeding,
+                BuffID.Dazed,
+                BuffID.Electrified,
+                BuffID.Frozen,
+                BuffID.Oiled,
+                BuffID.ShadowFlame,
+                BuffID.Slimed,
+                BuffID.SoulDrain
+            };
+        }
     }
 
     public class DTWorldUpdating : ModSystem
@@ -23,6 +75,35 @@ namespace DestroyerTest.Common
             DTUtils.StellarGogglesEquipped = false;
         }
     }
+
+    public class ColorPalette
+    {
+        public string Name { get; }
+        public Color[] Colors { get; }
+
+        public ColorPalette(string name, params Color[] colors)
+        {
+            if (colors.Length != 5)
+                throw new ArgumentException("A palette must contain exactly 5 colors.");
+
+            Name = name;
+            Colors = colors;
+        }
+
+        public Color GetColor(int index)
+        {
+            if (index < 0 || index >= Colors.Length)
+                throw new IndexOutOfRangeException("Palette index out of range.");
+
+            return Colors[index];
+        }
+    }
+
+
+        
+
+
+
     /// <summary>
     /// A static class containing a library of colors used in the mod in order to avoid having to manually enter the RGB values for them when drawing.
     /// </summary>

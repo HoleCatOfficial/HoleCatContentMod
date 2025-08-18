@@ -17,12 +17,10 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         public int WidthDim { get; set; }
         public int HeightDim { get; set; }
         public int DustType { get; set; }
-
-
-        private bool returning = false;
-        private int flightTime = 0;
+        public bool returning = false;
+        public int flightTime = 0;
         public int HitCount = 0;
-        private int soundCooldown = 0; // Initialize a cooldown timer
+        public int soundCooldown = 0; // Initialize a cooldown timer
         public int existenceTimer = 0;
         public int TileCollisions = 0;
 
@@ -40,10 +38,11 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             Projectile.penetrate = -1; // Infinite pierce
             Projectile.light = 0.5f;
             Projectile.ignoreWater = true;
-            Projectile.timeLeft = 600 + ScepterClassStats.Range; // 10 seconds max lifespan
+            Projectile.timeLeft = 9000; // 10 seconds max lifespan
             Projectile.DamageType = ModContent.GetInstance<ScepterClass>();
             Projectile.netImportant = true;
-			Projectile.netUpdate = true;
+            Projectile.netUpdate = true;
+            Projectile.tileCollide = true;
         }
 
         public override void SendExtraAI(BinaryWriter writer)
@@ -124,7 +123,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
 						Vector2 drawPosition = Projectile.oldPos[i] + (Projectile.Size / 2) - Main.screenPosition;
 						float scaleFactor = 0.3f; // Adjust the factor to make it smaller
-						Main.EntitySpriteDraw(longtrailTexture, drawPosition, null, trailColor, Projectile.velocity.ToRotation(), trailOrigin, (Projectile.scale * fade) * scaleFactor, SpriteEffects.None, 0);
+						Main.EntitySpriteDraw(longtrailTexture, drawPosition, null, trailColor, Projectile.velocity.ToRotation() + MathHelper.PiOver2, trailOrigin, (Projectile.scale * fade) * scaleFactor, SpriteEffects.None, 0);
 					}
 
 				// Finalize drawing
@@ -136,36 +135,6 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
         public override void AI()
         {
-            existenceTimer++;
-
-            // Check for duplicate projectiles
-            Projectile youngestProjectile = null;
-            int lowestExistenceTime = int.MaxValue;
-            int count = 0;
-
-            foreach (Projectile proj in Main.projectile)
-            {
-                if (proj.active && proj.type == Projectile.type && proj.owner == Projectile.owner)
-                {
-                    count++;
-                    if (proj.ModProjectile is EnchantedScepterThrown otherProj)
-                    {
-                        if (otherProj.existenceTimer < lowestExistenceTime)
-                        {
-                            lowestExistenceTime = otherProj.existenceTimer;
-                            youngestProjectile = proj;
-                        }
-                    }
-                }
-            }
-
-            // If more than one exists, kill the youngest (lowest existenceTimer)
-            if (count > 1 && youngestProjectile != null && youngestProjectile == Projectile)
-            {
-                Projectile.Kill();
-                return; // Exit early to prevent further execution
-            }
-
             // Decrease the cooldown timer on each tick
             if (soundCooldown > 0)
             {
@@ -178,11 +147,22 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
                 SoundEngine.PlaySound(SoundID.Item169);
                 soundCooldown = 30; // Reset the cooldown to 30 ticks
             }
+
+            Player player = Main.player[Projectile.owner];
+
+            if (Projectile.Distance(player.Center) < 25) // 8 pixels radius
+            {
+                Projectile.tileCollide = false;
+            }
+            else
+            {
+                Projectile.tileCollide = true;
+            }
             
             
 
             
-            Player player = Main.player[Projectile.owner];
+            
 
             // Access the player’s modded class
             ScepterAchievementPlayer modPlayer = player.GetModPlayer<ScepterAchievementPlayer>();
@@ -201,29 +181,39 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
                 dust.fadeIn = 1.5f;
             }
 
-            if (Projectile.Distance(player.Center) < 12) // 8 pixels radius
+            if (Projectile.Distance(player.Center) < 4) // 8 pixels radius
             {
                 Projectile.tileCollide = false;
             }
+            else
+            {
+                Projectile.tileCollide = true;
+            }
 
-            
+            DTConfig config = ModContent.GetInstance<DTConfig>();
 
             if (!returning)
+            {
+                
+                flightTime++;
+                float returnDelayMultiplier = 1f + (ScepterClassStats.Range * 0.01f);
+                int baseFlightTime = 60;
+                if (flightTime >= baseFlightTime * returnDelayMultiplier)
                 {
-                    // OutPhase: Count time before returning
-                    flightTime++;
-                    if (flightTime >= 60 + ScepterClassStats.Range)
+                    if (config.EnableDebugMessages)
                     {
-                        returning = true;
+                        Main.NewText($"Range: {ScepterClassStats.Range}, FlightTime: {flightTime}, Multiplier: {returnDelayMultiplier}");
                     }
+                    returning = true;
                 }
+            }
 
             if (returning)
             {
                 ArmCatchAnimate(player);
                 // InPhase: Smooth return using Lerp
                 Vector2 returnDirection = player.Center - Projectile.Center;
-                float speed = MathHelper.Lerp(Projectile.velocity.Length(), 15f, 0.08f); // Smooth acceleration
+                float speed = MathHelper.Lerp(Projectile.velocity.Length(), 15f, 0.8f); // Smooth acceleration
                 Projectile.velocity = returnDirection.SafeNormalize(Vector2.Zero) * speed;
 
                 // If close enough, remove the projectile
@@ -234,6 +224,11 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
                     Projectile.Kill();
                 }
             }
+        }
+
+        public override void OnKill(int timeLeft)
+        {
+            returning = false;
         }
 
         public void ArmCatchAnimate(Player player)
@@ -273,10 +268,13 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             returning = true; // Immediately start returning when hitting something
         }
 
-        public override bool OnTileCollide(Vector2 oldVelocity) {
+
+
+        public override bool OnTileCollide(Vector2 oldVelocity)
+        {
             SoundStyle Break = new SoundStyle("DestroyerTest/Assets/Audio/TO_Break") with
             {
-            PitchVariance = 0.5f
+                PitchVariance = 0.5f
             };
             // Play impact sound and spawn tile hit effects
             Collision.HitTiles(Projectile.position, Projectile.velocity, Projectile.width, Projectile.height);

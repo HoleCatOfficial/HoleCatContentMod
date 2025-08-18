@@ -23,8 +23,9 @@ namespace DestroyerTest.Common
         public static float DamageModifier { get; set; } = 1.0f;
 
         /// <summary>
-        /// An integer value that can be altered to increase or decrease the range of a thrown projectile (how far it goes before returning to the player).
-        /// <para/><b>Note:</b> Because the thrown projectiles run on a timer, range value measures in <b>In-Game ticks</b>. Also, it is recommended to use addition and subtraction for range. It defaults to <b>0</b>, so if you try to divide or multiply, it will cause problems.
+        /// An integer modifier affecting how far a scepter will fly before automatically returning to the player.
+        /// <para/> The formula is as follows: 1f + (ScepterClassStats.Range * 0.01f). As you can observe, it is impossible to decrease the range, not that it would be useful to. For debuffs you can just decrease the effectiveness of the range multiplier.
+        /// <para/><b>Note:</b> Because the thrown projectiles run on a timer, range value measures in <b>In-Game ticks</b>. 
         /// </summary>
         public static int Range { get; set; } = 0;
 
@@ -54,6 +55,19 @@ namespace DestroyerTest.Common
         public static bool VileCystItem { get; set; } = false;
     }
 
+    public class ScepterClassStatResetPlayer : ModPlayer
+    {
+        public override void ResetEffects()
+        {
+            ScepterClassStats.Range = 0;
+            ScepterClassStats.SizeModifier = 1;
+            ScepterClassStats.SizeMultiplier = 1;
+            ScepterClassStats.DamageModifier = 1;
+            ScepterClassStats.ManaBurstPower = 0;
+        }
+
+    }
+
     public class ApplyAccessoryStats : ModSystem
     {
         public override void PostUpdateTime()
@@ -71,7 +85,7 @@ namespace DestroyerTest.Common
                     if (ScepterClassStats.VileCystItem)
                     {
                         ScepterClassStats.BloodVialItem = false;
-                        Projectile.NewProjectile(projectile.GetSource_FromThis(), projectile.position, projectile.velocity / 4 , ModContent.ProjectileType<PusBlob>(), projectile.damage, 2f);
+                        Projectile.NewProjectile(projectile.GetSource_FromThis(), projectile.position, projectile.velocity / 4, ModContent.ProjectileType<PusBlob>(), projectile.damage, 2f);
                     }
                 }
             }

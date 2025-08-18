@@ -13,7 +13,8 @@ namespace DestroyerTest.Content.Magic
 	{
 
 		//Weapon Properties
-		public override void SetDefaults() {
+		public override void SetDefaults()
+		{
 			// Common Properties
 			Item.width = 34;
 			Item.height = 42;
@@ -34,15 +35,21 @@ namespace DestroyerTest.Content.Magic
 			Item.autoReuse = true; // This determines whether the weapon has autoswing
 			Item.damage = 350; // The damage of your sword, this is dynamically adjusted in the projectile code.
 			Item.DamageType = DamageClass.Magic; // Deals melee damage\
-            Item.channel = true;
-            Item.mana = 15;
-            Item.crit = 16; // The critical strike chance the weapon has. The player, by default, has a 4% critical strike chance.
+			Item.channel = true;
+			Item.mana = 15;
+			Item.crit = 16; // The critical strike chance the weapon has. The player, by default, has a 4% critical strike chance.
 			Item.noMelee = true;  // This makes sure the item does not deal damage from the swinging animation
 			Item.noUseGraphic = true; // This makes sure the item does not get shown when the player swings his hand
 
 			// Projectile Properties
 			Item.shoot = ModContent.ProjectileType<TenebrousTradewindsHoldout>(); // The sword as a projectile
 		}
+
+        public override bool CanUseItem(Player player)
+        {
+            return player.ownedProjectileCounts[Item.shoot] < 1;
+        }
+
 		
 
     }

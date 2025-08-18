@@ -20,8 +20,6 @@ namespace DestroyerTest.Content.Projectiles
 		{
 			Projectile.width = 14; // The width of projectile hitbox
 			Projectile.height = 42; // The height of projectile hitbox
-
-			Projectile.arrow = true;
 			Projectile.friendly = true;
 			Projectile.DamageType = ModContent.GetInstance<ScepterClass>();
 			Projectile.timeLeft = 600;

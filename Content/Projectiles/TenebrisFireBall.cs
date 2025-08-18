@@ -1,5 +1,7 @@
 using System;
 using DestroyerTest.Common;
+using DestroyerTest.Content.Particles;
+using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
@@ -33,21 +35,42 @@ namespace DestroyerTest.Content.Projectiles
 		public override void AI() {
 			Projectile.rotation += 0.4f * Projectile.direction;
 
+			int[] types = new int[]
+			{
+				PRTLoader.GetParticleID<ColoredFire1>(),
+				PRTLoader.GetParticleID<ColoredFire2>(),
+				PRTLoader.GetParticleID<ColoredFire3>(),
+				PRTLoader.GetParticleID<ColoredFire4>(),
+				PRTLoader.GetParticleID<ColoredFire5>(),
+				PRTLoader.GetParticleID<ColoredFire6>(),
+				PRTLoader.GetParticleID<ColoredFire7>()
+			};
+			PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], Projectile.Center, new Vector2(0f, -0.1f), ColorLib.TenebrisGradient, 1.0f);
+			if (TileCollideCount <= 0)
+			{
+				Projectile.Kill();
+			}
 		}
 
-		public override bool OnTileCollide(Vector2 oldVelocity) {
-				Collision.HitTiles(Projectile.position, Projectile.velocity, Projectile.width, Projectile.height);
-				SoundEngine.PlaySound(SoundID.Item10, Projectile.position);
+		public int TileCollideCount = 6;
 
-				// If the projectile hits the left or right side of the tile, reverse the X velocity
-				if (Math.Abs(Projectile.velocity.X - oldVelocity.X) > float.Epsilon) {
-					Projectile.velocity.X = -oldVelocity.X;
-				}
+		public override bool OnTileCollide(Vector2 oldVelocity)
+		{
+			Collision.HitTiles(Projectile.position, Projectile.velocity, Projectile.width, Projectile.height);
+			TileCollideCount--;
+			SoundEngine.PlaySound(SoundID.Item10, Projectile.position);
 
-				// If the projectile hits the top or bottom side of the tile, reverse the Y velocity
-				if (Math.Abs(Projectile.velocity.Y - oldVelocity.Y) > float.Epsilon) {
-					Projectile.velocity.Y = -oldVelocity.Y;
-				}
+			// If the projectile hits the left or right side of the tile, reverse the X velocity
+			if (Math.Abs(Projectile.velocity.X - oldVelocity.X) > float.Epsilon)
+			{
+				Projectile.velocity.X = -oldVelocity.X;
+			}
+
+			// If the projectile hits the top or bottom side of the tile, reverse the Y velocity
+			if (Math.Abs(Projectile.velocity.Y - oldVelocity.Y) > float.Epsilon)
+			{
+				Projectile.velocity.Y = -oldVelocity.Y;
+			}
 			return false;
 		}
 

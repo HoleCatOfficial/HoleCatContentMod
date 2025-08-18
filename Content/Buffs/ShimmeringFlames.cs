@@ -15,7 +15,8 @@ namespace DestroyerTest.Content.Buffs
 	// See ExampleLifeRegenDebuffPlayer.UpdateBadLifeRegen at the end of the file for more information
 	public class ShimmeringFlames : ModBuff
 	{
-		public override void SetStaticDefaults() {
+		public override void SetStaticDefaults()
+		{
 			Main.debuff[Type] = true;  // Is it a debuff?
 			Main.pvpBuff[Type] = true; // Players can give other players buffs, which are listed as pvpBuff
 			Main.buffNoSave[Type] = true; // Causes this buff not to persist when exiting and rejoining the world
@@ -23,12 +24,52 @@ namespace DestroyerTest.Content.Buffs
 		}
 
 		// Allows you to make this buff give certain effects to the given player
-		public override void Update(Player player, ref int buffIndex) {
+		public override void Update(Player player, ref int buffIndex)
+		{
 			player.GetModPlayer<SFPlayer>().lifeRegenDebuff = true;
+		}
+		
+		public override void Update(NPC target, ref int buffIndex)
+		{
+			if (target.TryGetGlobalNPC<SFTarget>(out var modNPC))
+			{
+				modNPC.lifeRegenDebuff = true;
+			}
 		}
 	}
 
-	
+	public class SFTarget : GlobalNPC
+    {
+        public override bool InstancePerEntity => true; // Ensures each NPC has its own instance
+
+        public bool lifeRegenDebuff;
+
+        public override void ResetEffects(NPC npc) {
+            lifeRegenDebuff = false;
+        }
+
+        public override void UpdateLifeRegen(NPC npc, ref int damage) {
+            if (lifeRegenDebuff) {
+            int[] types = new int[]
+			{
+				PRTLoader.GetParticleID<ColoredFire1>(),
+				PRTLoader.GetParticleID<ColoredFire2>(),
+				PRTLoader.GetParticleID<ColoredFire3>(),
+				PRTLoader.GetParticleID<ColoredFire4>(),
+				PRTLoader.GetParticleID<ColoredFire5>(),
+				PRTLoader.GetParticleID<ColoredFire6>(),
+				PRTLoader.GetParticleID<ColoredFire7>()
+			};
+
+				PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], Main.rand.NextVector2FromRectangle(npc.getRect()), new Vector2(0f, -0.1f), ColorLib.TenebrisGradient, 1.0f);
+
+                if (npc.lifeRegen > 0)
+                    npc.lifeRegen = 0;
+
+                npc.lifeRegen -= 24;
+            }
+        }
+    }
 
 	public class SFPlayer : ModPlayer
 	{
@@ -58,7 +99,7 @@ namespace DestroyerTest.Content.Buffs
 					PRTLoader.GetParticleID<ColoredFire7>()
 				};
 
-				PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], Main.rand.NextVector2FromRectangle(player.getRect()), new Vector2(0f, -0.1f), ColorLib.TenebrisGradient, 0.3f);
+				PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], Main.rand.NextVector2FromRectangle(player.getRect()), new Vector2(0f, -0.1f), ColorLib.TenebrisGradient, 1f);
 				// These lines zero out any positive lifeRegen. This is expected for all bad life regeneration effects
 				if (Player.lifeRegen > 0)
 					Player.lifeRegen = 0;

@@ -42,6 +42,7 @@ namespace DestroyerTest
         public static int RouletteTokenCurrencyId;
         public override void Load()
         {
+            ScepterClassStats.Range = 0;
             Config = ModContent.GetInstance<DTConfig>();
             // Divider.
             StarBlastKeybind = KeybindLoader.RegisterKeybind(this, "Conclusion Star Blast", "P");

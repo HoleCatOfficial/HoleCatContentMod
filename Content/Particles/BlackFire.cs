@@ -32,7 +32,7 @@ namespace DestroyerTest.Content.Particles
             //Color = new Color(0, 0, 0);
             Opacity *= 0.4f;
             Rotation = Main.rand.NextFloat(0, MathHelper.TwoPi); // Random rotation angle.
-            Scale = Main.rand.NextFloat(0.5f, 1.5f); // Random scale between 0.5 and 1.5.
+            Scale *= Main.rand.NextFloat(0.5f, 1.5f); // Random scale between 0.5 and 1.5.
         }
 
         public override void AI()

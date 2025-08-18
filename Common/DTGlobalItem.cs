@@ -506,7 +506,7 @@ namespace DestroyerTest.Common
             };
 
             // Add the custom tooltip to the end of the list
-            if (item.TryGetGlobalItem(out DevItems globalItem) && globalItem.isDevItem)
+            if (CustomItemSets.DevItem[item.type])
             {
                 tooltips.Add(line);
             }
@@ -516,7 +516,7 @@ namespace DestroyerTest.Common
         public override bool PreDrawTooltipLine(Item item, DrawableTooltipLine line, ref int yOffset)
         {
             // Check if it's our custom tooltip
-            if (line.Name == "CustomTooltip" && line.Mod == Mod.Name && item.TryGetGlobalItem(out DevItems globalItem) && globalItem.isDevItem)
+            if (line.Name == "CustomTooltip" && line.Mod == Mod.Name && CustomItemSets.DevItem[item.type])
             {
                 // Smoothly interpolate between stroke and text colors using sine wave
                 float lerpAmount = (float)(0.5 * (1 + Math.Sin(Main.GlobalTimeWrappedHourly * 2f * Math.PI)));
@@ -683,31 +683,6 @@ namespace DestroyerTest.Common
         }
         public bool isRiftArsenal = false;
     }
-    public class DevItems : GlobalItem
-    {
-        public override bool InstancePerEntity => true;
-        public override bool AppliesToEntity(Item entity, bool lateInstantiation)
-        {
-            // Apply this GlobalItem to specific items based on criteria
-            return entity.type == ModContent.ItemType<ConstantineScythe>() ||
-            entity.type == ModContent.ItemType<ConstantineMask>() ||
-            entity.type == ModContent.ItemType<CoatStantine>() ||
-            entity.type == ModContent.ItemType<ConstanJeans>();
-        }
-
-        public override void SetDefaults(Item item)
-        {
-            if (item.type == ModContent.ItemType<ConstantineScythe>() ||
-            item.type == ModContent.ItemType<ConstantineMask>() ||
-            item.type == ModContent.ItemType<CoatStantine>() ||
-            item.type == ModContent.ItemType<ConstanJeans>())
-            {
-                item.GetGlobalItem<DevItems>().isDevItem = true;
-            }
-        }
-        public bool isDevItem = false;
-    }
-
     public class InspiroItemList : GlobalItem
     {
         public override bool InstancePerEntity => true;

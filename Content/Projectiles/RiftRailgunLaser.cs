@@ -166,7 +166,7 @@ namespace DestroyerTest.Content.Projectiles
 			if (Projectile.damage <= 30) {
 				Projectile.damage = 30;
 			}
-            target.AddBuff(ModContent.BuffType<DaylightOverloadFriendly>(), 120);
+            target.AddBuff(ModContent.BuffType<DaylightOverload>(), 120);
 		}
 
 		public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {

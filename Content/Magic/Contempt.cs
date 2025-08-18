@@ -17,8 +17,8 @@ namespace DestroyerTest.Content.Magic
 		public override void SetDefaults()
 		{
 			// Common Properties
-			Item.width = 50;
-			Item.height = 50;
+			Item.width = 114;
+			Item.height = 114;
 			Item.value = Item.sellPrice(gold: 25, silver: 70);
 			Item.rare = ModContent.RarityType<CorruptionSpecialRarity>();
 
@@ -34,7 +34,7 @@ namespace DestroyerTest.Content.Magic
 			// Weapon Properties
 			Item.knockBack = 10;  // The knockback of your sword, this is dynamically adjusted in the projectile code.
 			Item.autoReuse = true; // This determines whether the weapon has autoswing
-			Item.damage = 80; // The damage of your sword, this is dynamically adjusted in the projectile code.
+			Item.damage = 120; // The damage of your sword, this is dynamically adjusted in the projectile code.
 			Item.DamageType = DamageClass.Magic; // Deals melee damage\
 			Item.channel = true;
 			Item.mana = 25;

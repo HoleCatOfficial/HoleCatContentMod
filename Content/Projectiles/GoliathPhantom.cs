@@ -159,6 +159,7 @@ namespace DestroyerTest.Content.Projectiles
 				float length = Projectile.velocity.Length();
 				Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(180)).ToRotationVector2() * (length + 5);
 				Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
+				MathHelper.Clamp(length, 0, 2);
 			}
 		}
 

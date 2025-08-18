@@ -62,6 +62,7 @@ namespace DestroyerTest.Content.MeleeWeapons.SwordLineage
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes()
 		{
+			/*
 			Recipe recipe = CreateRecipe();
 			recipe.AddIngredient(ItemID.FragmentNebula, 16);
 			recipe.AddIngredient(ModContent.ItemType<Conclusion>(), 1);
@@ -72,6 +73,7 @@ namespace DestroyerTest.Content.MeleeWeapons.SwordLineage
                 recipe.AddIngredient(ModdedNecessity, 4);
             }
 			recipe.Register();
+			*/
 		}	
 	}
 }

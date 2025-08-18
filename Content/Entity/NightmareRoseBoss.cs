@@ -354,13 +354,22 @@ namespace DestroyerTest.Content.Entity
             {
                 player.Hurt(PlayerDeathReason.LegacyDefault(), 90, 0, false, true, -1, false, 9, 9, 0);
             }
+            if (player.Distance(NPC.Center) < BorderRad && BorderActive)
+            {
+                // Infinite wing time
+                player.wingTime = player.wingTimeMax;
+
+                // Reduce wing speed to half
+                player.moveSpeed *= 0.5f; // baseWingSpeed should be stored somewhere
+            }
+
 
             if (NPC.life <= NPC.lifeMax * 0.05f)
-            {
-                // Make the NPC invincible to all damage not self-inflicted
+                {
+                    // Make the NPC invincible to all damage not self-inflicted
 
-                currentState = AttackState.Desperation;
-            }
+                    currentState = AttackState.Desperation;
+                }
 
             if (player.dead)
             {

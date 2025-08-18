@@ -207,7 +207,7 @@ namespace DestroyerTest.Content.Projectiles
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            target.AddBuff(ModContent.BuffType<DaylightOverloadFriendly>(), 120);
+            target.AddBuff(ModContent.BuffType<DaylightOverload>(), 120);
             HitCount += 1;
             returning = true; // Immediately start returning when hitting something
         }
