@@ -28,7 +28,7 @@ namespace DestroyerTest.Content.Projectiles.NightmareRose
             Projectile.hostile = true; // Can the projectile deal damage to the player?
             Projectile.ignoreWater = true; // Does the projectile's speed be influenced by water?
             Projectile.light = 1f; // How much light emit around the projectile
-            Projectile.timeLeft = 120; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
+            Projectile.timeLeft = 600; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
             Projectile.frame = 0; // Start at the first frame
             Projectile.netImportant = true;
 			Projectile.netUpdate = true;
@@ -57,7 +57,7 @@ namespace DestroyerTest.Content.Projectiles.NightmareRose
         public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(SoundID.Item14, Projectile.Center);
-            for (int g = 0; g < 10; g++)
+            for (int g = 0; g < 4; g++)
             {
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Demonite, Projectile.velocity.X * 0.2f, Projectile.velocity.Y * 0.2f, 100, default, 1.2f);
             }

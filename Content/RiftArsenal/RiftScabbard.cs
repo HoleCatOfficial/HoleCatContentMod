@@ -23,6 +23,8 @@ using DestroyerTest.Content.RiftArsenalNoCharge;
 using Terraria.Localization;
 using InnoVault.PRT;
 using DestroyerTest.Content.Particles;
+using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Dusts;
 
 namespace DestroyerTest.Content.RiftArsenal
 {
@@ -64,7 +66,7 @@ namespace DestroyerTest.Content.RiftArsenal
 		}
 
 		public override void SetDefaults() {
-			Item.damage = 40;
+			Item.damage = 100;
 			Item.knockBack = 0f;
 			Item.mana = 40; // mana cost
 			Item.width = 32;
@@ -73,12 +75,12 @@ namespace DestroyerTest.Content.RiftArsenal
 			Item.useAnimation = 36;
 			Item.useStyle = ItemUseStyleID.RaiseLamp; // how the player's arm moves when using the item
 			Item.value = 18000;
-						Item.rare = ModContent.RarityType<RiftRarity1>(); // The rarity of the item
+			Item.rare = ModContent.RarityType<RiftRarity1>(); // The rarity of the item
 			Item.UseSound = new SoundStyle($"DestroyerTest/Assets/Audio/Rift_Katana_Hold") with {
 				Volume = 1.0f, 
     			Pitch = 0.0f, 
     			PitchVariance = 0.5f, 
-			}; // The sound when the weapon is being used.
+			};
 			Item.accessory = true;
 
 			// These below are needed for a minion weapon
@@ -110,17 +112,14 @@ namespace DestroyerTest.Content.RiftArsenal
 			return false;
 		}
 
-		public int MinionCount = 0;
 
 		public void UpdateEquip(Player player, EntitySource_ItemUse_WithAmmo source, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
 		{
 			player.AddBuff(ModContent.BuffType<RiftSwordBuff>(), 60);
 
-			if (MinionCount <= 3)
+			if (player.slotsMinions < player.maxMinions)
 			{
-			var projectile = Projectile.NewProjectileDirect(player.GetSource_ItemUse(Item), position, velocity, ModContent.ProjectileType<RiftSwordMinion>(), damage, knockback, Main.myPlayer);
-			projectile.originalDamage = Item.damage;
-			MinionCount += 1;
+				Projectile.NewProjectile(player.GetSource_ItemUse(Item), position, velocity, ModContent.ProjectileType<RiftSwordMinion>(), damage, knockback, Main.myPlayer);
 			}
 		}
 
@@ -260,46 +259,85 @@ namespace DestroyerTest.Content.RiftArsenal
 			SpriteBatch spriteBatch = Main.spriteBatch;
 			Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
 
-			spriteBatch.End();
-			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-
-
-			// Draw the base projectile using the default drawing system (Deferred)
-			Main.EntitySpriteDraw(
-				projectileTexture,
-				Projectile.Center - Main.screenPosition,
-				null,
-				lightColor, 
-				Projectile.rotation,
-				projectileTexture.Size() / 2,
-				Projectile.scale,
-				SpriteEffects.None,
-				0
-			);
-
-			// Glow effect (Immediate drawing with Additive blending)
+			Texture2D pixel = Terraria.GameContent.TextureAssets.MagicPixel.Value;
+			
 			spriteBatch.End();
 			spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 
-			Texture2D glowTexture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/RiftSwordGlowmaskColor").Value;
-			Main.EntitySpriteDraw(
-				glowTexture,
-				Projectile.Center - Main.screenPosition,
-				null,
-				lightColor,
-				Projectile.rotation,
-				glowTexture.Size() / 2,
-				0.1f * Projectile.scale,
-				SpriteEffects.None,
-				0
-			);
+			for (int i = 0; i < TrailPositions.Count - 1; i++)
+			{
+				Vector2 start = TrailPositions[i] - Main.screenPosition;
+				Vector2 end = TrailPositions[i + 1] - Main.screenPosition;
+				Vector2 diff = end - start;
 
-			// Restore the deferred mode (for the next drawing of things)
-			spriteBatch.End();
-			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+				float length = diff.Length();
+				if (length < 0.5f)
+					continue; // skip tiny wiggle segments
 
-			return false; // Let the default system handle the base projectile drawing
-		}
+				float rotation = diff.ToRotation();
+
+				Vector2 DimensionMeasurement = Projectile.Hitbox.BottomLeft() - Projectile.Hitbox.TopRight();
+
+				float Width = DimensionMeasurement.Length();
+
+				float width = MathHelper.Lerp(0.01f, 0.0007f, i / (float)TrailLength);
+				float alpha = MathHelper.Lerp(1f, 0f, i / (float)TrailLength);
+				Color color = ColorLib.Rift * alpha;
+
+				// Instead of stepping pixel by pixel, just draw one scaled pixel segment:
+				Main.spriteBatch.Draw(
+					pixel,
+					start,
+					null,
+					color,
+					rotation,
+					new Vector2(pixel.Width / 2, pixel.Height / 2), // Origin is at the left-middle of the scaled pixel
+					new Vector2(length, width),
+					SpriteEffects.None,
+					0f
+				);
+			}
+
+				spriteBatch.End();
+				spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+
+
+				// Draw the base projectile using the default drawing system (Deferred)
+				Main.EntitySpriteDraw(
+					projectileTexture,
+					Projectile.Center - Main.screenPosition,
+					null,
+					lightColor,
+					Projectile.rotation,
+					projectileTexture.Size() / 2,
+					Projectile.scale,
+					SpriteEffects.None,
+					0
+				);
+
+				// Glow effect (Immediate drawing with Additive blending)
+				spriteBatch.End();
+				spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+
+				Texture2D glowTexture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/RiftSwordGlowmaskColor").Value;
+				Main.EntitySpriteDraw(
+					glowTexture,
+					Projectile.Center - Main.screenPosition,
+					null,
+					lightColor,
+					Projectile.rotation,
+					glowTexture.Size() / 2,
+					0.1f * Projectile.scale,
+					SpriteEffects.None,
+					0
+				);
+
+				// Restore the deferred mode (for the next drawing of things)
+				spriteBatch.End();
+				spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+
+				return false; // Let the default system handle the base projectile drawing
+			}
 
         public override void SetStaticDefaults()
         {
@@ -312,13 +350,14 @@ namespace DestroyerTest.Content.RiftArsenal
 			base.SetDefaults();
 			Projectile.width = 68;
 			Projectile.height = 68;
+			Projectile.minionSlots = 0.5f;
 			ThemeColor = ColorLib.Rift;
 			TintColor = Color.White;
-			IdleDustType = DustID.Lava;
-			DashDustType = DustID.Lava;
-			TeleDustType = DustID.Lava;
-			TeleSound = SoundID.Item4;
-			DashSound = SoundID.Item1;
+			IdleDustType = ModContent.DustType<RiftDust>();
+			DashDustType = ModContent.DustType<RiftDust>();
+			TeleDustType = ModContent.DustType<RiftDust>();
+			TeleSound = new SoundStyle("DestroyerTest/Assets/Audio/RiftSwordMinionTeleport") with { MaxInstances = 0, PitchVariance = 2 };
+			DashSound = new SoundStyle("DestroyerTest/Assets/Audio/RSDash") with { MaxInstances = 0, PitchVariance = 2 };
 			AfterImageColorless = true;
 			AfterImageTinted = false;
 			AfterImage = true;
@@ -327,24 +366,42 @@ namespace DestroyerTest.Content.RiftArsenal
 			UsesParticleOrchestratorOnTele = false;
 			TelePRTID = PRTLoader.GetParticleID<Boom1>();
 			UsesPRTOnTele = true;
-			TeleDist = 2000;
-			Range = 2000;
-			Style = IdleStyle.Defensive;
+			TeleDist = 8000;
+			Range = 8000;
+			Style = IdleStyle.Chevron;
 			ActiveBuff = ModContent.BuffType<RiftSwordBuff>();
+		}
+
+		private void IdlePRT()
+		{
+			//PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Projectile.velocity * 0.25f, DTColorUtils.WithAlpha(ColorLib.Rift, 0.25f), 0.5f);
 		}
 
 
 		private bool hasReplaced = false;
 		public int ChargeCheckTimer = 0;
 		public int SearchTimer = 240; // Unrelated to actually searching for targets. 
-		private bool EnterOrbitMode(Player owner) {
-			return SearchTimer <= 0;
-		}
+		
+		public List<Vector2> TrailPositions = new();
+        public List<float> TrailRotations = new();
+		private const int TrailLength = 30;
 
-		public override void AI() {
+		public override void AI()
+		{
 			SearchTimer--;
 
 			ChargeCheckTimer++;
+
+			TrailPositions.Insert(0, Projectile.Center);
+			TrailRotations.Insert(0, Projectile.rotation);
+
+			// Cap trail
+			while (TrailPositions.Count > TrailLength)
+				TrailPositions.RemoveAt(TrailPositions.Count - 1);
+			while (TrailRotations.Count > TrailLength)
+				TrailRotations.RemoveAt(TrailRotations.Count - 1);
+
+			IdlePRT();
 
 			if (ChargeCheckTimer >= 60)
 			{
@@ -367,24 +424,12 @@ namespace DestroyerTest.Content.RiftArsenal
 		{
 			// Call base method to set out parameters
 			base.GeneralBehavior(owner, out vectorToIdlePosition, out distanceToIdlePosition);
-
-			// Play teleport sound if far away
-			if (Main.myPlayer == owner.whoAmI && distanceToIdlePosition > 1000f)
-			{
-				SoundEngine.PlaySound(new SoundStyle($"DestroyerTest/Assets/Audio/RiftSwordMinionTeleport")
-				{
-					Volume = 1.0f,
-					Pitch = 0.0f,
-					PitchVariance = 0.5f,
-				});
-				Projectile.Center = owner.Center;
-			}
 		}
 		private HashSet<int> soundPlayedForNPCs = new HashSet<int>(); // Track NPCs that triggered the sound
 
 		private void PlayRadioINSound() {
 			SoundStyle RadioIN = new SoundStyle("DestroyerTest/Assets/Audio/RadioIN") {
-				Volume = 0.50f
+				Volume = 0.15f
 			};
 			SoundEngine.PlaySound(RadioIN, Projectile.Center);
 		}
@@ -513,6 +558,20 @@ namespace DestroyerTest.Content.RiftArsenal
 			}
 			
 		}
+
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+		{
+			base.OnHitNPC(target, hit, damageDone);
+			target.AddBuff(ModContent.BuffType<HeliouricShock>(), 600);
+			SoundEngine.PlaySound(SoundID.NPCHit43, target.Center);
+			for (int c = 0; c < 15; c++)
+			{
+				float offset = Main.rand.NextFloat(0.5f, -0.5f);
+				Vector2 velocity = (Projectile.velocity * 0.5f).RotatedBy(offset);
+				PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticle>(), target.Center, velocity, ColorLib.Rift, 1f);
+			}
+        }
+
 
 		private void CheckForZeroCharge()
 		{

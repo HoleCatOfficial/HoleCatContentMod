@@ -31,12 +31,6 @@ namespace DestroyerTest.Common.NPC_Folder
             // Check if the killed NPC is the Golem
             if (npc.type == NPCID.Golem)
             {
-                // The first time this boss is killed, spawn ExampleOre into the world. This code is above SetEventFlagCleared because that will set downedMinionBoss to true.
-                if (!DownedBossSystem.downedGolemBoss)
-                {
-                    ModContent.GetInstance<HeliciteSystem>().BlessWorldWithHelicite();
-                }
-
                 // This sets downedGolemBoss to true, and if it was false before, it initiates a lantern night
                 DownedBossSystem.downedGolemBoss = true;
 

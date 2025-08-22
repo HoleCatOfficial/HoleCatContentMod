@@ -87,7 +87,10 @@ namespace DestroyerTest.Content.Projectiles.NightmareRose
             Vector2 ToPlayer = Projectile.Center - Main.LocalPlayer.Center;
             Projectile.velocity *= 0.999f;
             Projectile.rotation += Main.rand.NextFloat(-1f, 1.1f) * 0.1f;
-            Dust.NewDust(Projectile.Center, Projectile.width, Projectile.height, DustID.CursedTorch, 0, 0, 70, default, 1.0f);
+            if (Main.rand.NextBool(12))
+            {
+                Dust.NewDust(Projectile.Center, Projectile.width, Projectile.height, DustID.CursedTorch, 0, 0, 70, default, 1.0f);
+            }
         }
 
         public override void OnHitPlayer(Player target, Player.HurtInfo info)
@@ -99,12 +102,12 @@ namespace DestroyerTest.Content.Projectiles.NightmareRose
         {
             Vector2 ToPlayer = Projectile.Center - Main.LocalPlayer.Center;
             SoundEngine.PlaySound(SoundID.Item14, Projectile.Center);
-            var launchVelocity = new Vector2(-8, 0); // Create a velocity moving the left.
+            var launchVelocity = new Vector2(-8, 0);
                 
             for (int i = 0; i < 8; i++)
             {
                 launchVelocity = launchVelocity.RotatedBy(MathHelper.PiOver4);
-                Projectile.NewProjectile(Entity.GetSource_FromThis(), Projectile.Center, launchVelocity, ProjectileID.CursedFlameHostile, 15, 1);
+                //Projectile.NewProjectile(Entity.GetSource_FromThis(), Projectile.Center, launchVelocity, ProjectileID.CursedFlameHostile, 15, 1);
                 Projectile.NewProjectile(Entity.GetSource_FromThis(), Projectile.Center, launchVelocity, ModContent.ProjectileType<CorruptPetalHostile>(), 35, 1);
             }
         }

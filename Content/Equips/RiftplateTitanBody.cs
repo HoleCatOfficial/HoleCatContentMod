@@ -34,7 +34,7 @@ namespace DestroyerTest.Content.Equips
 			Item.height = 18; 
 			Item.value = Item.sellPrice(gold: 1);
 			Item.rare = ModContent.RarityType<RiftRarity2>(); // The rarity of the item
-			Item.defense = 43;
+			Item.defense = 22;
 			// Now, in case you might be asking "Why use that special default when you can just copy what the original Hallowed Plate Mail does?"
 			// Unfortunately for you, while cloning the defaults does load a cape on the back, it loads the Hallowed Armor cape, and replaces your body armor textures with the Hallowed Plate Mail Textures.
 			//Item.CloneDefaults(ItemID.HallowedPlateMail);

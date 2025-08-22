@@ -40,6 +40,7 @@ using DestroyerTest.Content.Equips;
 using DestroyerTest.Content.Tiles;
 using DestroyerTest.Content.Consumables;
 using DestroyerTest.Content.SummonItems;
+using DestroyerTest.Content.BossBar;
 
 namespace DestroyerTest.Content.Entity
 {
@@ -85,8 +86,7 @@ namespace DestroyerTest.Content.Entity
             NPC.npcSlots = 90f;
             NPC.netUpdate = true;
             NPC.netID = ModContent.NPCType<NightmareRoseBoss>();
-
-
+            NPC.BossBar = ModContent.GetInstance<CorruptBossBar>();
         }
 
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)

@@ -2874,6 +2874,16 @@ Items: {
 		Tooltip: ""
 		DisplayName: Onyx Scepter
 	}
+
+	HaepienNodeCharm: {
+		DisplayName: Haepien Node Charm
+		Tooltip: ""
+	}
+
+	CursedNodeLootBag: {
+		Tooltip: ""
+		DisplayName: Cursed Node Loot Bag
+	}
 }
 
 Projectiles: {
@@ -3173,6 +3183,28 @@ Projectiles: {
 	OnyxWaveCenter.DisplayName: Onyx Wave Center
 	CustomSwordMinion.DisplayName: Custom Sword Minion
 	SwordMinionTemplate.DisplayName: Sword Minion Template
+	EnchantedShadowflame.DisplayName: Enchanted Shadowflame
+	EnchantedBlood.DisplayName: Enchanted Blood
+	Copper_Broadsword.DisplayName: Copper_ Broadsword
+	Gold_Broadsword.DisplayName: Gold_ Broadsword
+	Iron_Broadsword.DisplayName: Iron_ Broadsword
+	Lead_Broadsword.DisplayName: Lead_ Broadsword
+	Platinum_Broadsword.DisplayName: Platinum_ Broadsword
+	Silver_Broadsword.DisplayName: Silver_ Broadsword
+	Tin_Broadsword.DisplayName: Tin_ Broadsword
+	Tungsten_Broadsword.DisplayName: Tungsten_ Broadsword
+	CursedFlameWallVertical.DisplayName: Cursed Flame Wall Vertical
+	CursedFlameWallHorizontal.DisplayName: Cursed Flame Wall Horizontal
+	CursedFlameNapalm.DisplayName: Cursed Flame Napalm
+	CursedNodeCrystal.DisplayName: Cursed Node Crystal
+	Tooth.DisplayName: Tooth
+	BloodRain.DisplayName: Blood Rain
+	BloodCloud.DisplayName: Blood Cloud
+	ToothBomb.DisplayName: Tooth Bomb
+	IchorNodeCrystal.DisplayName: Ichor Node Crystal
+	NodeSlam.DisplayName: Node Slam
+	IchorNodeCrystal2.DisplayName: Ichor Node Crystal2
+	CrystalBomb.DisplayName: Crystal Bomb
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.
@@ -3298,7 +3330,10 @@ Buffs: {
 		Description: Mods.DestroyerTest.Buffs.SpiritDrift.Description
 	}
 
-	GalantineBurn.DisplayName: Galantine Burn
+	GalantineBurn: {
+		DisplayName: Galantine Burn
+		Description: The wrath of the stars has come upon you!
+	}
 
 	OminousPrescence: {
 		DisplayName: Ominous Prescence
@@ -3323,6 +3358,11 @@ Buffs: {
 	GargantuaBoost: {
 		Description: The Living Diamond empowers Gargantua!
 		DisplayName: Gargantua Boost
+	}
+
+	HeliouricShock: {
+		DisplayName: Heliouric Shock
+		Description: Riften Energy courses through your nerves!
 	}
 }
 
@@ -3443,6 +3483,8 @@ NPCs: {
 	DarkGluttonBody.DisplayName: Dark Glutton Body
 	DarkGluttonHead.DisplayName: Dark Glutton Head
 	DarkGluttonTail.DisplayName: Dark Glutton Tail
+	CursedFlameNodeMB.DisplayName: Cursed Flame Node
+	IchorNodeMB.DisplayName: Ichor Node
 }
 
 Keybinds: {
@@ -3638,8 +3680,7 @@ BookText: {
 			When I became a young man, I left the farm to pursue more
 			knowledge. That led me to a school in Ebüchmoon, a northern
 			territory of Museveria. I had to work some odd jobs, do a
-			few favors, and had to make a professor commit adultery by
-			sleeping with me; it was a necessary evil. My efforts did
+			few favors, multiple of which were regrettable, but necessary evils. My efforts did
 			pay off in the end, as I was allowed to study at that
 			school and prepare for a career in scholarly exploration.
 			'''

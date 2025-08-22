@@ -3,7 +3,10 @@ using System;
 using System.Runtime.CompilerServices;
 using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.Buffs;
+using InnoVault.PRT;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using rail;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -14,6 +17,7 @@ namespace DestroyerTest.Common
     {
         public static bool PromiseEquipped = false;
         public static bool StellarGogglesEquipped = false;
+        public static bool CursedNodePendantEquipped = false;
         /// <summary>
         /// An example of a Color Palette. It has a name and the required 5 colors.
         /// <para/> The first color is the blue on the tip of the hood,
@@ -39,6 +43,46 @@ namespace DestroyerTest.Common
             {
                 Dust.NewDust(new Vector2(itemRect.Width / 2, itemRect.Height / 2), itemRect.Width, itemRect.Height, DustType, 0f, 0f, 100, DustColor, DustScale);
             }
+        }
+
+        public void StartSpriteBatchWithBlending(SpriteBatch spriteBatch, BlendState blendState, SpriteSortMode ssm)
+        {
+            spriteBatch.End();
+            spriteBatch.Begin(ssm, blendState, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+        }
+
+        public void ReturnToDefaultDrawing(SpriteBatch spriteBatch)
+        {
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+        }
+
+        public void BurstParticle(int type, Vector2 Center, Color color, float Scale = 1f)
+        {
+            PRTLoader.NewParticle(type, Center, Vector2.Zero, color, Scale);
+        }
+    }
+
+    public static class DTColorUtils
+    {
+        /// <summary>
+        /// Returns a copy of the color with a different alpha.
+        /// </summary>
+        /// <param name="color">The original color.</param>
+        /// <param name="alpha">Alpha as a float from 0f–1f.</param>
+        public static Color WithAlpha(this Color color, float alpha)
+        {
+            return new Color(color.R, color.G, color.B, (byte)(MathHelper.Clamp(alpha, 0f, 1f) * 255));
+        }
+
+        /// <summary>
+        /// Returns a copy of the color with a different alpha.
+        /// </summary>
+        /// <param name="color">The original color.</param>
+        /// <param name="alpha">Alpha as a byte (0–255).</param>
+        public static Color WithAlpha(this Color color, byte alpha)
+        {
+            return new Color(color.R, color.G, color.B, alpha);
         }
     }
 

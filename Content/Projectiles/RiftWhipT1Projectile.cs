@@ -7,6 +7,10 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using DestroyerTest.Content.Buffs;
+using DestroyerTest.Common;
+using Terraria.Audio;
+using InnoVault.PRT;
+using DestroyerTest.Content.Particles;
 
 namespace DestroyerTest.Content.Projectiles
 {
@@ -38,29 +42,47 @@ namespace DestroyerTest.Content.Projectiles
 
 		// This example uses PreAI to implement a charging mechanic.
 		// If you remove this, also remove Item.channel = true from the item's SetDefaults.
-		public override bool PreAI() {
+		public bool SpawnPRTCharge = false;
+		public override bool PreAI()
+		{
 			Player owner = Main.player[Projectile.owner];
 
-			// Like other whips, this whip updates twice per frame (Projectile.extraUpdates = 1), so 120 is equal to 1 second.
-			if (!owner.channel || ChargeTime >= 120) {
-				return true; // Let the vanilla whip AI run.
+			// If channeling stopped *and* we’re fully charged → trigger effect
+			if (owner.channel && ChargeTime >= 120)
+			{
+				SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/RiftWhipPowerStrike") 
+				{ 
+					PitchVariance = 1 
+				}, Projectile.Center);
+
+				SpawnPRTCharge = true;
+				return true; // Let vanilla whip AI run after triggering
 			}
 
-			if (++ChargeTime % 12 == 0) // 1 segment per 12 ticks of charge.
+			// If charging stopped early (not fully charged) → just release normally
+			if (!owner.channel)
+			{
+				return true;
+			}
+
+			// Otherwise still charging
+			if (++ChargeTime % 12 == 0)
 				Projectile.WhipSettings.Segments++;
 
-			// Increase range up to 2x for full charge.
-			Projectile.WhipSettings.RangeMultiplier += 1 / 120f;
-
-			// Reset the animation and item timer while charging.
+			Projectile.WhipSettings.RangeMultiplier += 1 / 240f;
 			owner.itemAnimation = owner.itemAnimationMax;
 			owner.itemTime = owner.itemTimeMax;
 
-			return false; // Prevent the vanilla whip AI from running.
+			return false;
 		}
 
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
-			target.AddBuff(ModContent.BuffType<DaylightOverload>(), 240);
+			if (SpawnPRTCharge == true)
+			{
+				PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp3>(), target.Center, Vector2.Zero, ColorLib.Rift, 1.0f);
+				SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/HSZap") { PitchVariance = 1 }, Projectile.Center);
+			}
+			target.AddBuff(ModContent.BuffType<HeliouricShock>(), 240);
 			Main.player[Projectile.owner].MinionAttackTargetNPC = target.whoAmI;
 			Projectile.damage = (int)(Projectile.damage * 1.5f); // Multihit boost.
 		}
@@ -77,7 +99,7 @@ namespace DestroyerTest.Content.Projectiles
 				Vector2 diff = list[i + 1] - element;
 
 				float rotation = diff.ToRotation() - MathHelper.PiOver2;
-				Color color = Lighting.GetColor(element.ToTileCoordinates(), Color.White);
+				Color color = Lighting.GetColor(element.ToTileCoordinates(), ColorLib.Rift);
 				Vector2 scale = new Vector2(1, (diff.Length() + 2) / frame.Height);
 
 				Main.EntitySpriteDraw(texture, pos - Main.screenPosition, frame, color, rotation, origin, scale, SpriteEffects.None, 0);
@@ -92,12 +114,26 @@ namespace DestroyerTest.Content.Projectiles
 
 			DrawLine(list);
 
-			//Main.DrawWhip_WhipBland(Projectile, list);
-			// The code below is for custom drawing.
-			// If you don't want that, you can remove it all and instead call one of vanilla's DrawWhip methods, like above.
-			// However, you must adhere to how they draw if you do.
+			Vector2 tipPos = list[list.Count - 1];
 
-			SpriteEffects flip = Projectile.spriteDirection < 0 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
+			int[] types = new int[]
+                {
+                    PRTLoader.GetParticleID<Arc1>(),
+                    PRTLoader.GetParticleID<Arc2>(),
+                    PRTLoader.GetParticleID<Arc3>()
+                };
+
+			if (SpawnPRTCharge == true)
+			{
+				PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], tipPos, Vector2.Zero, ColorLib.Rift, 0.2f);
+			}
+
+			//Main.DrawWhip_WhipBland(Projectile, list);
+				// The code below is for custom drawing.
+				// If you don't want that, you can remove it all and instead call one of vanilla's DrawWhip methods, like above.
+				// However, you must adhere to how they draw if you do.
+
+				SpriteEffects flip = Projectile.spriteDirection < 0 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
 
 			Texture2D texture = TextureAssets.Projectile[Type].Value;
 

@@ -26,8 +26,6 @@ namespace DestroyerTest.Content.Equips
 		}
 
         public override void UpdateEquip(Player player) {
-            player.moveSpeed *= 0.40f;
-
 		}
 
 		public override void AddRecipes() //Added to make the item obtainable without needing cheat mods, since many swear by never using cheats, ever.
