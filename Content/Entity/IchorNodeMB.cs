@@ -7,6 +7,7 @@ using System.Security.Policy;
 using DestroyerTest.Common;
 using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.BossBar;
+using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Consumables;
 using DestroyerTest.Content.Equips;
 using DestroyerTest.Content.Particles;
@@ -102,6 +103,20 @@ namespace DestroyerTest.Content.Entity
 
         }
 
+        public override bool? CanBeHitByItem(Player player, Item item)
+        {
+            return !DTUtils.NodeCharmEquipped;
+        }
+
+        public override bool? CanBeHitByProjectile(Projectile projectile)
+        {
+            if (projectile.friendly)
+                return !DTUtils.NodeCharmEquipped; // prevent friendly damage when charm is equipped
+
+            // hostile projectiles behave normally
+            return null;
+        }
+
         public enum AttackState
         {
             Dormant,
@@ -115,8 +130,6 @@ namespace DestroyerTest.Content.Entity
         public AttackState CurrentAttack;
 
         public int DormantPulseTimer = 60;
-        public bool HasBuffed = false;
-        public bool HasDebuffed = false;
         public int IdleTimer = 60;
         public int BloodRainSpawnTimer = 180;
         public int BloodRainWaitTimer = 240;
@@ -140,6 +153,7 @@ namespace DestroyerTest.Content.Entity
             NPC.TargetClosest();
             Player player = Main.player[NPC.target];
             DTUtils Utility = new DTUtils();
+            DTConfig cfg = ModContent.GetInstance<DTConfig>();
 
             if (NPC.alpha > 0)
             {
@@ -151,18 +165,27 @@ namespace DestroyerTest.Content.Entity
                 NPC.immortal = false;
             }
 
+            if (player.active == false || player.dead == true)
+            {
+                CurrentAttack = AttackState.Dormant;
+            }
+
             if (CurrentAttack != AttackState.GroundSlam)
             {
                 TryFindTileBelow();
             }
 
-            if (!Main.dedServ && CurrentAttack != AttackState.Dormant)
-                {
-                    Music = MusicID.EmpressOfLight;
-                }
-            if (!Main.dedServ && CurrentAttack == AttackState.Dormant)
+            if (!Main.dedServ)
             {
-                Music = MusicID.Eerie;
+                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/NodeBoss");
+            }
+            if (!Main.dedServ && CurrentAttack == AttackState.Dormant && cfg.NodeIdleMusic == true)
+            {
+                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/NodeIdle");
+            }
+            if (!Main.dedServ && CurrentAttack == AttackState.Dormant && cfg.NodeIdleMusic == false)
+            {
+                Music = MusicID.Crimson;
             }
 
             Vector2 PRTPos;
@@ -185,39 +208,27 @@ namespace DestroyerTest.Content.Entity
                         NPC.velocity.Y = (float)Math.Sin(Main.GameUpdateCount * bobSpeed) * 0.5f;
                         NPC.position.Y += (float)Math.Sin(Main.GameUpdateCount * bobSpeed) * (bobHeight / 100f);
 
-
                         foreach (NPC npc in Main.npc)
                         {
-                            if (npc.Center.Distance(NPC.Center) < 1000)
+                            if (npc.Center.Distance(NPC.Center) < 1000
+                            && npc.type != ModContent.NPCType<IchorNodeMB>()
+                            && npc.type != ModContent.NPCType<CursedFlameNodeMB>()
+                            && npc.type != ModContent.NPCType<IchorNode>()
+                            && npc.type != ModContent.NPCType<CursedFlameNode>())
                             {
-                                if (HasBuffed == false)
-                                {
-                                    npc.damage *= 2;
-                                    npc.defense += 10;
-                                    HasBuffed = true;
-                                }
-                            }
-                            if (npc.Center.Distance(NPC.Center) >= 1000)
-                            {
-                                if (HasBuffed == true && HasDebuffed == false)
-                                {
-                                    npc.damage /= 2;
-                                    npc.defense -= 10;
-                                    HasDebuffed = true;
-                                }
+                                npc.AddBuff(ModContent.BuffType<NodePower>(), 60);
                             }
                         }
 
                         foreach (Player p in Main.player)
                         {
-                            if (p.Center.Distance(NPC.Center) < 1000 && DTUtils.CursedNodePendantEquipped)
+                            if (p.Center.Distance(NPC.Center) < 1000 && DTUtils.NodeCharmEquipped)
                             {
-                                var MP = player.GetModPlayer<NodePowerPlayer>();
-                                MP.Pendant = true;
+                                p.AddBuff(ModContent.BuffType<NodePower>(), 60);
                             }
                         }
-
-                        if (NPC.justHit)
+                        
+                        if (NPC.justHit && !DTUtils.NodeCharmEquipped)
                         {
                             CurrentAttack = AttackState.Idle;
                         }
@@ -243,7 +254,7 @@ namespace DestroyerTest.Content.Entity
                         KeepToPlayer(player.Center + new Vector2(0, -200));
                         if (BloodRainSpawnTimer > 0)
                         {
-                            if (BloodRainSpawnTimer % 4 == 0)
+                            if (BloodRainSpawnTimer % 8 == 0)
                             {
                                 SoundEngine.PlaySound(SoundID.Item66, NPC.Center);
                                 Vector2 Position = new Vector2(
@@ -369,6 +380,8 @@ namespace DestroyerTest.Content.Entity
                         {
                             NPC.velocity = Vector2.Zero;
                             SoundEngine.PlaySound(SoundID.Item88, NPC.Center);
+                            player.GetModPlayer<ScreenshakePlayer>().screenshakeTimer = 10;
+                            player.GetModPlayer<ScreenshakePlayer>().screenshakeMagnitude = 2;
                             SlamWave();
                             SlamSpray();
                             SlamCharge = 120;
@@ -410,7 +423,7 @@ namespace DestroyerTest.Content.Entity
             }
         }
 
-        public void TryFindAirTile(Vector2 Probe, out bool surrounded)
+        public bool TryFindAirTile(Vector2 Probe, out bool surrounded)
         {
             int left = (int)(Probe.X / 16);
             int right = (int)((Probe.X + 32) / 16);
@@ -423,6 +436,11 @@ namespace DestroyerTest.Content.Entity
                 Collision.SolidTiles(left, right, bottom + 1, bottom + 1) && // Below
                 Collision.SolidTiles(left - 1, left - 1, top, bottom) && // Left
                 Collision.SolidTiles(right + 1, right + 1, top, bottom); // Right
+            if (surrounded)
+            {
+                return false;
+            }
+            return true;
         }
 
         public void KeepToPlayer(Vector2 CTR)
@@ -435,7 +453,7 @@ namespace DestroyerTest.Content.Entity
             if (distance > 32f)
             {
                 // Move half-way towards target
-                NPC.velocity = toTarget * 0.5f;
+                NPC.velocity = toTarget * 0.25f;
             }
             else
             {
@@ -481,9 +499,9 @@ namespace DestroyerTest.Content.Entity
 
         public void SlamSpray()
         {
-            for (int f = 0; f < 5; f++)
+            for (int f = 0; f < 7; f++)
             {
-                Vector2 velo = new Vector2(Main.rand.Next(-20, 20), -9);
+                Vector2 velo = new Vector2(Main.rand.Next(-10, 10), -12);
                 Projectile.NewProjectile(Entity.GetSource_FromThis(), NPC.Center, velo, ProjectileID.GoldenShowerHostile, 15, 4);
             }
         }

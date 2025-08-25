@@ -11,7 +11,7 @@ namespace DestroyerTest.Content.Projectiles
     public class Tooth : ModProjectile
     {
 
-    
+        public override string GlowTexture => "DestroyerTest/Content/Projectiles/Tooth";
 
         public override void SetStaticDefaults() {
         }
@@ -32,7 +32,10 @@ namespace DestroyerTest.Content.Projectiles
 
         public override void OnSpawn(IEntitySource source)
         {
-           
+            for (int g = 0; g < 4; g++)
+            {
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Blood, Projectile.velocity.X * 0.2f, Projectile.velocity.Y * 0.2f, 100, default, 1.2f);
+            }
         }
 
 

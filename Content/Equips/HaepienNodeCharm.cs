@@ -8,7 +8,8 @@ namespace DestroyerTest.Content.Equips
 {
 	public class HaepienNodeCharm : ModItem
 	{
-		public override void SetDefaults() {
+		public override void SetDefaults()
+		{
 			Item.width = 38;
 			Item.height = 42;
 			Item.maxStack = 1;
@@ -16,9 +17,9 @@ namespace DestroyerTest.Content.Equips
 			Item.accessory = true;
 		}
 
-        public override void UpdateAccessory(Player player, bool hideVisual)
-        {
-            DTUtils.CursedNodePendantEquipped = true;
+		public override void UpdateAccessory(Player player, bool hideVisual)
+		{
+			DTUtils.NodeCharmEquipped = true;
 		}
 	}
 }

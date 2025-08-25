@@ -2421,7 +2421,7 @@ Items: {
 
 	ConstitutionLootBag: {
 		Tooltip: ""
-		DisplayName: Constitution Loot Bag
+		DisplayName: Treasure Bag (Constitution)
 	}
 
 	CursedStar: {
@@ -2569,12 +2569,12 @@ Items: {
 	}
 
 	NightmareRoseLootBag: {
-		DisplayName: Nightmare Rose Loot Bag
+		DisplayName: Treasure Bag (Nightmare Rose)
 		Tooltip: ""
 	}
 
 	WyvernCorpseLootBag: {
-		DisplayName: Wyvern Corpse Loot Bag
+		DisplayName: Treasure Bag (Wyvern Corpse)
 		Tooltip: ""
 	}
 
@@ -2876,13 +2876,102 @@ Items: {
 	}
 
 	HaepienNodeCharm: {
-		DisplayName: Haepien Node Charm
-		Tooltip: ""
+		DisplayName: Haepien's Charm
+		Tooltip:
+			'''
+			A long lost treasure of the nature sprite Haepien...
+			Makes Nodes in the evil biomes impossible to harm or enrage.
+			If you are in proximity to a node, you will benefit from its empowering properties.
+			'''
 	}
 
 	CursedNodeLootBag: {
 		Tooltip: ""
-		DisplayName: Cursed Node Loot Bag
+		DisplayName: Treasure Bag (Cursed Flame Node)
+	}
+
+	InfectedGrimoire: {
+		Tooltip: Shoots out two infected crystals that bounce off of tiles. One inflicts Ichor, the other, Cursed Flames.
+		DisplayName: Infected Grimoire
+	}
+
+	Item_EvilBossMusicBox: {
+		DisplayName: Music Box (Nightmare Rose / Wyvern Corpse)
+		Tooltip: Plays Track: 'Tribulation' by HoleCat
+	}
+
+	Item_NodeBossMusicBox: {
+		DisplayName: Music Box (Ichor / Cursed Flame Node)
+		Tooltip: Plays Track: 'Elemental Influence' by HoleCat
+	}
+
+	Item_NodeIdleMusicBox: {
+		DisplayName: Music Box (Dormant Node)
+		Tooltip: Plays Track: 'Elemental Presence' by HoleCat
+	}
+
+	ComaceraticFlask: {
+		DisplayName: Comaceratic Flask
+		Tooltip: ""
+	}
+
+	HeliouricFlask: {
+		DisplayName: Heliouric Flask
+		Tooltip: ""
+	}
+
+	RiftenCrate: {
+		DisplayName: Riften Crate
+		Tooltip: ""
+	}
+
+	RiftFlask: {
+		DisplayName: Rift Flask
+		Tooltip: ""
+	}
+
+	ComaceraticVial: {
+		DisplayName: Comaceratic Vial
+		Tooltip: ""
+	}
+
+	HeliouricVial: {
+		DisplayName: Heliouric Vial
+		Tooltip: ""
+	}
+
+	RiftVial: {
+		DisplayName: Rift Vial
+		Tooltip: ""
+	}
+
+	InfernalTiara: {
+		Tooltip: "'Bathe in regal hellfire'"
+		SetBonusText:
+			'''
+			You are immune to lava.
+			A 75 point shield will generate around you, blocking incoming harmful projectiles. 
+			Once the shield breaks, it will begin pulling from your health to regenerate.
+			'''
+		DisplayName: Infernal Tiara
+	}
+
+	InfernalDress: {
+		Tooltip: "'Bathe in regal hellfire'"
+		DisplayName: Infernal Dress
+	}
+
+	KeeperStaff: {
+		DisplayName: Keeper of the Great Wyvern's Soul
+		Tooltip:
+			'''
+			Calls upon the Soul of the Great Wyvern to assist in battle.
+			The wyvern will spin around a ball of energy, firing soul crystals in all directions for 20 seconds.
+			There can only be one in the entire world at any given moment.
+			Master
+
+			-Legendary Weapon-
+			'''
 	}
 }
 
@@ -3115,10 +3204,10 @@ Projectiles: {
 	ValiantDawnSwing.DisplayName: Valiant Dawn Swing
 	WyvernsDestructionSwing.DisplayName: Wyverns Destruction Swing
 	EternalAbyssSwing.DisplayName: Eternal Abyss Swing
-	OrganProjectile_Variant1.DisplayName: Organ Projectile_ Variant1
-	OrganProjectile_Variant2.DisplayName: Organ Projectile_ Variant2
-	OrganProjectile_Variant3.DisplayName: Organ Projectile_ Variant3
-	OrganProjectile_Variant4.DisplayName: Organ Projectile_ Variant4
+	OrganProjectile_Variant1.DisplayName: Organ Projectile
+	OrganProjectile_Variant2.DisplayName: Organ Projectile
+	OrganProjectile_Variant3.DisplayName: Organ Projectile
+	OrganProjectile_Variant4.DisplayName: Organ Projectile
 	FleshBomb.DisplayName: Flesh Bomb
 	CFP3.DisplayName: C F P3
 	CFP2.DisplayName: C F P2
@@ -3196,15 +3285,26 @@ Projectiles: {
 	CursedFlameWallVertical.DisplayName: Cursed Flame Wall Vertical
 	CursedFlameWallHorizontal.DisplayName: Cursed Flame Wall Horizontal
 	CursedFlameNapalm.DisplayName: Cursed Flame Napalm
-	CursedNodeCrystal.DisplayName: Cursed Node Crystal
+	CursedNodeCrystal.DisplayName: Cursed Crystal
 	Tooth.DisplayName: Tooth
 	BloodRain.DisplayName: Blood Rain
 	BloodCloud.DisplayName: Blood Cloud
 	ToothBomb.DisplayName: Tooth Bomb
-	IchorNodeCrystal.DisplayName: Ichor Node Crystal
+	IchorNodeCrystal.DisplayName: Ichor Crystal
 	NodeSlam.DisplayName: Node Slam
-	IchorNodeCrystal2.DisplayName: Ichor Node Crystal2
+	IchorNodeCrystal2.DisplayName: Ichor Crystal
 	CrystalBomb.DisplayName: Crystal Bomb
+	IchorNodeCrystalFriendly.DisplayName: Ichor Node Crystal Friendly
+	CursedNodeCrystalFriendly.DisplayName: Cursed Node Crystal Friendly
+	SoulCrystal.DisplayName: Soul Crystal
+	KeeperSoulProj.DisplayName: Soul
+	SoulCrystalFriendly.DisplayName: Soul Crystal
+	WyvernSoulBody.DisplayName: Wyvern Soul Body
+	WyvernSoulBody2.DisplayName: Wyvern Soul Body2
+	WyvernSoulBody3.DisplayName: Wyvern Soul Body3
+	WyvernSoulHead.DisplayName: Wyvern Soul Head
+	WyvernSoulLegs.DisplayName: Wyvern Soul Legs
+	WyvernSoulTail.DisplayName: Wyvern Soul Tail
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.
@@ -3364,6 +3464,56 @@ Buffs: {
 		DisplayName: Heliouric Shock
 		Description: Riften Energy courses through your nerves!
 	}
+
+	NodePower: {
+		Description: You benefit from a nearby node!
+		DisplayName: Node Power
+	}
+
+	ComaceraticBurn: {
+		Description: You are being eradicated by the energy of a hundred suns!
+		DisplayName: Comaceratic Burn
+	}
+
+	ScepterImbueCB: {
+		DisplayName: Scepter Imbue (Comaceratic Burn)
+		Description: Your scepters have been imbued with Comaceratic Burn!
+	}
+
+	ScepterImbueDO: {
+		DisplayName: Scepter Imbue (Daylight Overload)
+		Description: Your scepters have been imbued with Daylight Overload!
+	}
+
+	ScepterImbueHSk: {
+		DisplayName: Scepter Imbue (Heliouric Shock)
+		Description: Your scepters have been imbued with Heliouric Shock!
+	}
+
+	WeaponImbueCB: {
+		DisplayName: Weapon Imbue (Comaceratic Burn)
+		Description: Your Weapons have been imbued with Comaceratic Burn!
+	}
+
+	WeaponImbueDO: {
+		DisplayName: Weapon Imbue (Daylight Overload)
+		Description: Your Weapons have been imbued with Daylight Overload!
+	}
+
+	WeaponImbueHSk: {
+		DisplayName: Weapon Imbue (Heliouric Shock)
+		Description: Your Weapons have been imbued with Heliouric Shock!
+	}
+
+	SoulInferno: {
+		Description: You no longer feel any sense of self.
+		DisplayName: Soul Inferno
+	}
+
+	WyvernSoulPetBuff: {
+		DisplayName: Wyvern Soul Pet
+		Description: He is eternally grateful
+	}
 }
 
 NPCs: {
@@ -3414,8 +3564,8 @@ NPCs: {
 
 	WyvernCorpseHead: {
 		DisplayName: Wyvern Corpse
-		Bestiary: A great wyvern fell from the sky, and landed in the crimson. First away went its fur, then its cartillage, and finally, most of its fats. Now, all that remains is its rotten flesh, haning off the bones loosely with Ichor boils everywhere.
 		DespawnMessage: The Wyvern escapes to look for more food...
+		Bestiary: Mods.DestroyerTest.NPCs.WyvernCorpseHead.Bestiary
 	}
 
 	WyvernCorpseLegs.DisplayName: Wyvern Corpse
@@ -3424,6 +3574,7 @@ NPCs: {
 	NightmareRose: {
 		DisplayName: Nightmare Rose
 		DespawnMessage: The amalgamation disbands...
+		ExitBarrierDeath: "{0} attempted to flee."
 	}
 
 	EimvurNPC: {
@@ -3519,6 +3670,7 @@ Tiles: {
 	}
 
 	Tile_VesperOre.MapEntry: Tile_ Vesper Ore
+	Tile_RiftenCrate.MapEntry: Tile_ Riften Crate
 }
 
 Biomes: {
@@ -3536,7 +3688,7 @@ Biomes: {
 WorldGen: {
 	HelicitePassMessage: Putting the sky deep underground...
 	BlessedWithHeliciteMessage: Radiant Fragments of solar energy embed themselves in the rocks near to hell!
-	VesperOrePassMessage: Mods.DestroyerTest.WorldGen.VesperOrePassMessage
+	VesperOrePassMessage: Burying Fragments of Exotic properties...
 	BlessedWithVesperOreMessage: Mods.DestroyerTest.WorldGen.BlessedWithVesperOreMessage
 }
 
@@ -3581,6 +3733,11 @@ Configs: {
 		ShowBugCommandMessage: {
 			Tooltip: Shows a massive advertisement for the new /bug command for bug reporting.
 			Label: Show Bug Command Message
+		}
+
+		NodeIdleMusic: {
+			Tooltip: If true, when a node spawns, it will play music even when not attacking. The idle music is different from the battle music, but if they spawn too often for you liking, the ambience will get annoying.
+			Label: Nodes will play Music when Dormant
 		}
 	}
 }

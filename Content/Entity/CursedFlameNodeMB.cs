@@ -7,6 +7,7 @@ using System.Security.Policy;
 using DestroyerTest.Common;
 using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.BossBar;
+using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Consumables;
 using DestroyerTest.Content.Equips;
 using DestroyerTest.Content.Particles;
@@ -140,24 +141,18 @@ namespace DestroyerTest.Content.Entity
 
         public override bool? CanBeHitByItem(Player player, Item item)
         {
-            return !DTUtils.CursedNodePendantEquipped;
+            return !DTUtils.NodeCharmEquipped;
         }
 
         public override bool? CanBeHitByProjectile(Projectile projectile)
         {
             if (projectile.friendly)
-            {
-                if (DTUtils.CursedNodePendantEquipped == false)
-                {
-                    return true;
-                }
-            }
-            if (projectile.hostile)
-            {
-                return false;
-            }
+                return !DTUtils.NodeCharmEquipped; // prevent friendly damage when charm is equipped
+
+            // hostile projectiles behave normally
             return null;
         }
+
 
 
         public enum AttackState
@@ -200,6 +195,7 @@ namespace DestroyerTest.Content.Entity
             NPC.TargetClosest();
             Player player = Main.player[NPC.target];
             DTUtils Utility = new DTUtils();
+            DTConfig cfg = ModContent.GetInstance<DTConfig>();
 
             if (NPC.alpha > 0)
             {
@@ -211,16 +207,25 @@ namespace DestroyerTest.Content.Entity
                 NPC.immortal = false;
             }
 
+            if (player.active == false || player.dead == true)
+            {
+                CurrentAttack = AttackState.Dormant;
+            }
+
 
             TryFindTileBelow();
 
-            if (!Main.dedServ && CurrentAttack != AttackState.Dormant)
+            if (!Main.dedServ)
             {
-                Music = MusicID.EmpressOfLight;
+                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/NodeBoss");
             }
-            if (!Main.dedServ && CurrentAttack == AttackState.Dormant)
+            if (!Main.dedServ && CurrentAttack == AttackState.Dormant && cfg.NodeIdleMusic == true)
             {
-                Music = MusicID.Eerie;
+                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/NodeIdle");
+            }
+            if (!Main.dedServ && CurrentAttack == AttackState.Dormant && cfg.NodeIdleMusic == false)
+            {
+                Music = MusicID.Corruption;
             }
 
             if (Main.expertMode && !Main.masterMode)
@@ -259,36 +264,26 @@ namespace DestroyerTest.Content.Entity
 
                         foreach (NPC npc in Main.npc)
                         {
-                            if (npc.Center.Distance(NPC.Center) < 1000)
+                            if (npc.Center.Distance(NPC.Center) < 1000
+                            && npc.type != ModContent.NPCType<IchorNodeMB>()
+                            && npc.type != ModContent.NPCType<CursedFlameNodeMB>()
+                            && npc.type != ModContent.NPCType<IchorNode>()
+                            && npc.type != ModContent.NPCType<CursedFlameNode>())
                             {
-                                if (HasBuffed == false)
-                                {
-                                    npc.damage *= 2;
-                                    npc.defense += 10;
-                                    HasBuffed = true;
-                                }
-                            }
-                            if (npc.Center.Distance(NPC.Center) >= 1000)
-                            {
-                                if (HasBuffed == true && HasDebuffed == false)
-                                {
-                                    npc.damage /= 2;
-                                    npc.defense -= 10;
-                                    HasDebuffed = true;
-                                }
+                                npc.AddBuff(ModContent.BuffType<NodePower>(), 60);
                             }
                         }
 
                         foreach (Player p in Main.player)
                         {
-                            if (p.Center.Distance(NPC.Center) < 1000 && DTUtils.CursedNodePendantEquipped)
+                            
+                            if (p.Center.Distance(NPC.Center) < 1000 && DTUtils.NodeCharmEquipped)
                             {
-                                var MP = player.GetModPlayer<NodePowerPlayer>();
-                                MP.Pendant = true;
+                                p.AddBuff(ModContent.BuffType<NodePower>(), 60);
                             }
                         }
 
-                        if (NPC.justHit)
+                        if (NPC.justHit && !DTUtils.NodeCharmEquipped)
                         {
                             CurrentAttack = AttackState.Idle;
                         }
@@ -428,6 +423,8 @@ namespace DestroyerTest.Content.Entity
                         if (!ShotGrid && FlameGridWarnTimer <= 0)
                         {
                             SoundEngine.PlaySound(WallShoot1);
+                            player.GetModPlayer<ScreenshakePlayer>().screenshakeTimer = 10;
+                            player.GetModPlayer<ScreenshakePlayer>().screenshakeMagnitude = 2;
                             PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp2>(), NPC.Center, PRTPos, ColorLib.CursedFlames, 3f);
 
                             // Horizontal walls (one per row)
@@ -558,7 +555,7 @@ namespace DestroyerTest.Content.Entity
             if (distance > 32f)
             {
                 // Move half-way towards target
-                NPC.velocity = toTarget * 0.5f;
+                NPC.velocity = toTarget * 0.25f;
             }
             else
             {

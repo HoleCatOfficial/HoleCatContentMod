@@ -41,6 +41,7 @@ using DestroyerTest.Content.Tiles;
 using DestroyerTest.Content.Consumables;
 using DestroyerTest.Content.SummonItems;
 using DestroyerTest.Content.BossBar;
+using ReLogic.Localization.IME;
 
 namespace DestroyerTest.Content.Entity
 {
@@ -48,14 +49,32 @@ namespace DestroyerTest.Content.Entity
     public class NightmareRoseBoss : ModNPC
     {
         public override string BossHeadTexture => "DestroyerTest/Content/Entity/NightmareRoseBoss_Head_Boss";
+
+        public void immunities()
+        {
+            NPCID.Sets.SpecificDebuffImmunity[Type][ModContent.BuffType<ShimmeringFlames>()] = true;
+            NPCID.Sets.SpecificDebuffImmunity[Type][ModContent.BuffType<HaepiensBlizzard>()] = true;
+            NPCID.Sets.SpecificDebuffImmunity[Type][ModContent.BuffType<HaepiensInferno>()] = true;
+            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.OnFire] = true;
+            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.OnFire3] = true;
+            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.CursedInferno] = true;
+            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Frostburn] = true;
+            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Frostburn2] = true;
+            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Bleeding] = true;
+            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Dazed] = true;
+            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Electrified] = true;
+            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Frozen] = true;
+            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Oiled] = true;
+            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.ShadowFlame] = true;
+            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Slimed] = true;
+            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.SoulDrain] = true;
+        }
         public override void SetStaticDefaults()
         {
             NPCID.Sets.CanHitPastShimmer[Type] = true;
             NPCID.Sets.DontDoHardmodeScaling[Type] = true;
             NPCID.Sets.ImmuneToRegularBuffs[Type] = true;
-            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Burning] = false;
-            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Ichor] = false;
-            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Oiled] = false;
+            immunities();
             NPCID.Sets.TrailCacheLength[Type] = 20;
             NPCID.Sets.TrailingMode[Type] = 3;
             NPCID.Sets.MPAllowedEnemies[Type] = true;
@@ -216,6 +235,8 @@ namespace DestroyerTest.Content.Entity
         public int DesperationTimer = 0;
         public bool HasTriggeredNodes = false;
         public bool anyNodesAlive;
+        public int nodeCount = 0;
+        public int MineType = -1;
 
         public override void SendExtraAI(BinaryWriter writer)
         {
@@ -254,7 +275,7 @@ namespace DestroyerTest.Content.Entity
             MinionFailsafe = reader.ReadInt32();
             HasBoosted = reader.ReadBoolean();
         }
-        
+
         #endregion
 
         public override void OnSpawn(IEntitySource source)
@@ -287,6 +308,8 @@ namespace DestroyerTest.Content.Entity
                     1.0f
                 );
             }
+            
+            PRTLoader.NewParticle(PRTLoader.GetParticleID<NightmareRoseBarrier>(), NPCHead, Vector2.Zero, ColorLib.CursedFlames, 6.2f);
         }
 
 
@@ -327,9 +350,10 @@ namespace DestroyerTest.Content.Entity
         public int DeathInterval = 10;
         public override void AI()
         {
-            MusicCreditSystem.ShowCredit = true;
-            MusicCreditSystem.CreditText = "Track: 'Running From Demons' By Waterflame | https://www.youtube.com/channel/UCVuv5iaVR55QXIc_BHQLakA";
-            Player player = Main.LocalPlayer;
+            //MusicCreditSystem.ShowCredit = true;
+            //MusicCreditSystem.CreditText = "Track: 'Running From Demons' By Waterflame | https://www.youtube.com/channel/UCVuv5iaVR55QXIc_BHQLakA";
+            NPC.TargetClosest();
+            Player player = Main.player[NPC.target];
 
             DirectionToPlayerCenter = (player.Center - NPCHead).SafeNormalize(Vector2.UnitY);
 
@@ -337,6 +361,7 @@ namespace DestroyerTest.Content.Entity
 
             if (BorderActive)
             {
+                /*
                 int DustAmount = 90;
 
                 for (int i = 0; i < DustAmount; i++)
@@ -348,11 +373,12 @@ namespace DestroyerTest.Content.Entity
                     Border.fadeIn = 1f;
                     Border.scale = 3.5f;
                 }
+                */
             }
 
             if (player.Distance(NPC.Center) >= BorderRad && BorderActive)
             {
-                player.Hurt(PlayerDeathReason.LegacyDefault(), 90, 0, false, true, -1, false, 9, 9, 0);
+                player.Hurt(new PlayerDeathReason() { CustomReason = NetworkText.FromKey("Mods.DestroyerTest.NPCs.NightmareRose.ExitBarrierDeath", player.name) }, 90, 0, false, true, -1, false, 9, 9, 0);
             }
             if (player.Distance(NPC.Center) < BorderRad && BorderActive)
             {
@@ -382,6 +408,7 @@ namespace DestroyerTest.Content.Entity
 
             // Assuming this is inside your boss NPC code
             anyNodesAlive = Main.npc.Any(n => n.active && n.type == ModContent.NPCType<CursedFlameNode>());
+            nodeCount = Main.npc.Count(n => n.active && n.type == ModContent.NPCType<CursedFlameNode>());
 
             if (anyNodesAlive)
             {
@@ -422,7 +449,7 @@ namespace DestroyerTest.Content.Entity
 
 
 
-
+            Rotation--;
 
             PlayerCenter = player.Center;
 
@@ -433,7 +460,7 @@ namespace DestroyerTest.Content.Entity
 
             if (!Main.dedServ)
             {
-                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/RunningFromDemons");
+                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/EvilBoss1");
             }
 
 
@@ -448,13 +475,12 @@ namespace DestroyerTest.Content.Entity
             NPC.velocity = Vector2.Zero;
 
             int MinionSpawnType = Main.rand.Next(new int[]
-                            {
-                                NPCID.DevourerHead,
-                                NPCID.SeekerHead,
-                                NPCID.Clinger,
-                                NPCID.Slimer,
-                                NPCID.Corruptor
-                            });
+                {
+                    ModContent.NPCType<DarkGluttonHead>(),
+                    ModContent.NPCType<DarkPredatorHead>(),
+                    NPCID.Slimer,
+                    ModContent.NPCType<TenebrousPhantasm>()
+                });
 
 
 
@@ -529,9 +555,9 @@ namespace DestroyerTest.Content.Entity
                                 Projectile proj = Projectile.NewProjectileDirect(
                                         Entity.GetSource_FromThis(),
                                         NPCHead,
-                                        new Vector2(Main.rand.NextFloat(-2, 2), -15),
-                                        ProjectileID.CursedFlameFriendly,
-                                        10,
+                                        new Vector2(Main.rand.NextFloat(-5, 6), -15),
+                                        ModContent.ProjectileType<CursedFlameNapalm>(),
+                                        40,
                                         2
                                     );
                                 proj.tileCollide = true;
@@ -718,6 +744,7 @@ namespace DestroyerTest.Content.Entity
 
         }
 
+        float Rotation = 0f;
         public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             base.PostDraw(spriteBatch, screenPos, drawColor);
@@ -726,6 +753,15 @@ namespace DestroyerTest.Content.Entity
                 DrawTelegraph(NPCHead, PlayerCenter, ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/CursedFlamesTelegraph").Value);
             }
 
+            Texture2D Ring = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/NightmareRoseBarrier").Value;
+
+            DTUtils Utility = new DTUtils();
+            Utility.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+            if (BorderActive)
+            {
+                Main.EntitySpriteDraw(Ring, NPCHead - Main.screenPosition, null, ColorLib.CursedFlames, Rotation, new Vector2(Ring.Width / 2, Ring.Height / 2), 6.2f, SpriteEffects.None, 0);
+            }
+            Utility.ReturnToDefaultDrawing(spriteBatch);
         }
 
 
@@ -1072,10 +1108,8 @@ namespace DestroyerTest.Content.Entity
         }
     }
 
-    [AutoloadBossHead]
     public class CursedFlameNode : ModNPC
     {
-        public override string BossHeadTexture => "DestroyerTest/Content/Entity/CursedFlameNode_Head_Boss";
         public override void SetStaticDefaults()
         {
             NPCID.Sets.CanHitPastShimmer[Type] = true;
@@ -1107,11 +1141,13 @@ namespace DestroyerTest.Content.Entity
             NPC.noTileCollide = true;
             NPC.knockBackResist = 0f;
             NPC.timeLeft = 150000;
-            NPC.boss = true;
+            //NPC.boss = true;
             NPC.npcSlots = 12f;
             NPC.netUpdate = true;
             NPC.netID = ModContent.NPCType<CursedFlameNode>();
         }
+
+        public override bool? DrawHealthBar(byte hbPosition, ref float scale, ref Vector2 position) => new bool?(false);
 
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {

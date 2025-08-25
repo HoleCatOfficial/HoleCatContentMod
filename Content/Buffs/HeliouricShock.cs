@@ -61,14 +61,10 @@ namespace DestroyerTest.Content.Buffs
 				}
 
 				//Dust.NewDust(npc.position, npc.width, npc.height, DustID.Lava, 0.0f, 0.5f, 0, default, 1);
-				if (!npc.boss)
-				{
-					npc.velocity *= 0.85f;
-				}
-				if (npc.boss)
-				{
-					npc.velocity *= 0.95f;
-				}
+				if (npc.boss == false)
+                {
+                    npc.velocity *= 0.95f;
+                }
 
                 foreach (Player plr in Main.player)
 					{
@@ -135,7 +131,7 @@ namespace DestroyerTest.Content.Buffs
 				if (Player.lifeRegen > 0)
 					Player.lifeRegen = 0;
 				Player.lifeRegenTime = 0;
-				Player.lifeRegen -= 5;
+				Player.lifeRegen -= 8;
 			}
 		}
 	}

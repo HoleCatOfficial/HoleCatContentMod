@@ -1,4 +1,6 @@
 
+using System.Linq;
+using DestroyerTest.Content.Entity;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -33,6 +35,16 @@ namespace DestroyerTest.Content.BossBar
 
             life = npc.life;
             lifeMax = npc.lifeMax;
+
+            if (npc.ModNPC is WyvernCorpseHead head) {
+                shield = Main.npc
+                    .Where(n => n.active && n.type == ModContent.NPCType<IchorNode>())
+                    .Sum(n => n.life);
+
+                shieldMax = Main.npc
+                    .Where(n => n.active && n.type == ModContent.NPCType<IchorNode>())
+                    .Sum(n => n.lifeMax);
+            }
 
             return true;
         }

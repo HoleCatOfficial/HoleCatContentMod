@@ -13,8 +13,10 @@ namespace DestroyerTest.Common
 
         [DefaultValue(false)]
         public bool EnableDebugMessages { get; set; }
-        
+
         [DefaultValue(true)]
         public bool ShowBugCommandMessage { get; set; }
+        [DefaultValue(true)]
+        public bool NodeIdleMusic { get; set; }
     }
 }

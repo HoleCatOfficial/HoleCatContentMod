@@ -86,6 +86,8 @@ namespace DestroyerTest.Content.Projectiles.CorpseBoss.Organs
                 toPlayer = Main.LocalPlayer.Center - Projectile.Center;
             }
 
+            toPlayer.SafeNormalize(Vector2.UnitY);
+
         }
 
         public override void PostDraw(Color lightColor)
@@ -103,10 +105,8 @@ namespace DestroyerTest.Content.Projectiles.CorpseBoss.Organs
 
         public override void OnKill(int timeLeft)
         {
-
-
             SoundEngine.PlaySound(SoundID.NPCDeath47, Projectile.Center);
-            Projectile.NewProjectile(Entity.GetSource_Death(), Projectile.Center, toPlayer * 0.2f, ProjectileID.GoldenShowerHostile, 16, 1);
+            Projectile.NewProjectile(Entity.GetSource_Death(), Projectile.Center, toPlayer * 0.04f, ProjectileID.GoldenShowerHostile, 16, 1);
         }
 
         public void DrawTelegraph(Vector2 start, Vector2 end, Texture2D texture)

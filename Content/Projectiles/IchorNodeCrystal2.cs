@@ -20,12 +20,12 @@ namespace DestroyerTest.Content.Projectiles
         public override void SetDefaults()
         {
             Projectile.width = 14; // The width of projectile hitbox
-            Projectile.height = 30; // The height of projectile hitbox
+            Projectile.height = 14; // The height of projectile hitbox
             Projectile.friendly = false; // Can the projectile deal damage to enemies?
             Projectile.hostile = true; // Can the projectile deal damage to the player?
             Projectile.ignoreWater = true; // Does the projectile's speed be influenced by water?
             Projectile.light = 1f; // How much light emit around the projectile
-            Projectile.timeLeft = 600; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
+            Projectile.timeLeft = 180; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
             Projectile.netImportant = true;
             Projectile.netUpdate = true;
             Projectile.tileCollide = false;
@@ -38,8 +38,9 @@ namespace DestroyerTest.Content.Projectiles
             DTUtils Utility = new DTUtils();
             Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
             Texture2D GlowTexture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/SimpleParticle").Value;
-			
-			Texture2D pixel = Terraria.GameContent.TextureAssets.MagicPixel.Value;
+            Texture2D GlowTexture2 = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/SoulSparkle").Value;
+
+            Texture2D pixel = Terraria.GameContent.TextureAssets.MagicPixel.Value;
 
             Utility.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
             for (int i = 0; i < TrailPositions.Count - 1; i++)
@@ -97,6 +98,19 @@ namespace DestroyerTest.Content.Projectiles
                 );
 
 
+            Main.spriteBatch.Draw(
+                    GlowTexture2,
+                    Projectile.Center - Main.screenPosition,
+                    null,
+                    Color.White,
+                    0,
+                    new Vector2(GlowTexture2.Width / 2, GlowTexture2.Height / 2), // Origin is at the left-middle of the scaled pixel
+                    0.75f,
+                    SpriteEffects.None,
+                    0f
+                );
+
+
             Utility.ReturnToDefaultDrawing(spriteBatch);
             return false;
         }
@@ -131,6 +145,7 @@ namespace DestroyerTest.Content.Projectiles
         public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/CrystalBreak") with { MaxInstances = 0, PitchVariance = 0.5f }, Projectile.Center);
+            SoundEngine.PlaySound(SoundID.Item14);
             for (int g = 0; g < 4; g++)
             {
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Ichor, Projectile.velocity.X * 0.2f, Projectile.velocity.Y * 0.2f, 100, default, 1.2f);

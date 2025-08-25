@@ -17,7 +17,7 @@ namespace DestroyerTest.Common
     {
         public static bool PromiseEquipped = false;
         public static bool StellarGogglesEquipped = false;
-        public static bool CursedNodePendantEquipped = false;
+        public static bool NodeCharmEquipped = false;
         /// <summary>
         /// An example of a Color Palette. It has a name and the required 5 colors.
         /// <para/> The first color is the blue on the tip of the hood,
@@ -61,6 +61,15 @@ namespace DestroyerTest.Common
         {
             PRTLoader.NewParticle(type, Center, Vector2.Zero, color, Scale);
         }
+    }
+
+    public class DTPlayerUtil : ModPlayer
+    {
+        public override void ResetEffects()
+        {
+            DTUtils.NodeCharmEquipped = false;
+        }
+
     }
 
     public static class DTColorUtils
@@ -238,7 +247,21 @@ namespace DestroyerTest.Common
         /// An All-Purpose Neon Gradient cycling through all the colors of the rainbow.
         /// </summary>
         public static Color RainbowGradient => new Color(Main.DiscoR / 2, (byte)(Main.DiscoG / 1.25f), (byte)(Main.DiscoB / 1.5f));
+        
+        /// <summary>
+        /// The main color used in Soul related things. All other Soul colors derive from this.
+        /// </summary>
+        public static Color Soul = new Color(255, 235, 113);
 
+        /// <summary>
+        /// The main color used in Soul related things. All other Soul colors derive from this.
+        /// </summary>
+        public static Color Soul2 = new Color(197, 142, 31);
+
+        /// <summary>
+        /// The main color used in Soul related things. All other Soul colors derive from this.
+        /// </summary>
+        public static Color Soul3 = new Color(154, 99, 27);
 
         /// <summary>
         /// The color used for drawing the aura and hit effects of the Metallurgy System Javelins.

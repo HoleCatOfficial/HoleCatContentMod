@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
@@ -66,9 +67,51 @@ namespace DestroyerTest.Content.Projectiles
         {
 			SpriteBatch spriteBatch = Main.spriteBatch;
 			Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
+			Texture2D pixel = TextureAssets.MagicPixel.Value;
 
 			spriteBatch.End();
 			spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+
+			for (int i = 0; i < TrailPositions.Count - 1; i++)
+			{
+				Vector2 start = TrailPositions[i] - Main.screenPosition;
+				Vector2 end = TrailPositions[i + 1] - Main.screenPosition;
+				Vector2 diff = end - start;
+
+				float length = diff.Length();
+				if (length < 0.5f)
+					continue;
+
+				float rotation = diff.ToRotation();
+				float width = MathHelper.Lerp(0.01f, 0.0007f, i / (float)TrailLength);
+				float alpha = MathHelper.Lerp(1f, 0f, i / (float)TrailLength);
+
+				// --- Tenebris gradient with offset ---
+				float time = (Main.GlobalTimeWrappedHourly + i * 0.05f) % 3f;
+
+				Color tenebrisColor;
+				if (time < 1f)
+					tenebrisColor = Color.Lerp(ColorLib.TenebrisBeige, ColorLib.TenebrisMagenta, time);
+				else if (time < 2f)
+					tenebrisColor = Color.Lerp(ColorLib.TenebrisMagenta, ColorLib.TenebrisBlue, time - 1f);
+				else
+					tenebrisColor = Color.Lerp(ColorLib.TenebrisBlue, ColorLib.TenebrisBeige, time - 2f);
+
+				tenebrisColor *= alpha;
+
+				Main.spriteBatch.Draw(
+					pixel,
+					start,
+					null,
+					tenebrisColor,
+					rotation,
+					new Vector2(pixel.Width / 2, pixel.Height / 2),
+					new Vector2(length, width),
+					SpriteEffects.None,
+					0f
+				);
+			}
+
 
 			Main.EntitySpriteDraw(
 				projectileTexture,
@@ -77,7 +120,7 @@ namespace DestroyerTest.Content.Projectiles
 				lightColor, 
 				Projectile.rotation,
 				projectileTexture.Size() / 2,
-				Projectile.scale,
+				Projectile.scale * 2,
 				SpriteEffects.None,
 				0
 			);
@@ -95,9 +138,22 @@ namespace DestroyerTest.Content.Projectiles
 		/// <para/> Attempting to return an invalid value will kill the projectile.
 		/// </summary>
 		public int Mode;
+		
+		public List<Vector2> TrailPositions = new();
+        public List<float> TrailRotations = new();
+        private const int TrailLength = 40;
 
 		public override void AI()
 		{
+			TrailPositions.Insert(0, Projectile.Center);
+            TrailRotations.Insert(0, Projectile.rotation);
+
+            // Cap trail
+            while (TrailPositions.Count > TrailLength)
+                TrailPositions.RemoveAt(TrailPositions.Count - 1);
+            while (TrailRotations.Count > TrailLength)
+                TrailRotations.RemoveAt(TrailRotations.Count - 1);
+
 			DelayTimer++;
 			Mode = (int)Projectile.ai[2];
 
@@ -108,12 +164,7 @@ namespace DestroyerTest.Content.Projectiles
 				Mod.Logger.Warn("OilProjectile: Invalid Mode in ai[2]. Expected 1 or 2.");
 			}
 
-			Lighting.AddLight(Projectile.Center, Color.White.ToVector3() * 0.2f);
-
-			PRTLoader.NewParticle(PRTLoader.GetParticleID<StarParticle>(), Projectile.Center, Vector2.Zero, ColorLib.TenebrisGradient, 1f);
-
-
-
+			Lighting.AddLight(Projectile.Center, ColorLib.TenebrisGradient.ToVector3() * 0.2f);
 
 			if (DelayTimer < 10)
 			{
@@ -180,7 +231,7 @@ namespace DestroyerTest.Content.Projectiles
 				Projectile.friendly = false;
 				Projectile.hostile = true;
 			}
-        }
+		}
         public NPC FindClosestNPC(float maxDetectDistance)
         {
             NPC closestNPC = null;

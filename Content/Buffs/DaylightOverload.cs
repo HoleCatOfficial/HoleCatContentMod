@@ -44,7 +44,10 @@ namespace DestroyerTest.Content.Buffs
 			if (lifeRegenDebuff)
 			{
 				Dust.NewDust(npc.position, npc.width, npc.height, DustID.Lava, 0.0f, 0.5f, 0, default, 1);
-				npc.velocity *= 0.65f;
+				if (npc.boss == false)
+                {
+                    npc.velocity *= 0.65f;
+                }
 			}
             base.AI(npc);
         }
@@ -93,7 +96,7 @@ namespace DestroyerTest.Content.Buffs
 				if (Player.lifeRegen > 0)
 					Player.lifeRegen = 0;
 				Player.lifeRegenTime = 0;
-				Player.lifeRegen -= 8;
+				Player.lifeRegen -= 16;
 			}
 		}
 	}
