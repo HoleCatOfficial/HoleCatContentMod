@@ -198,7 +198,7 @@ namespace DestroyerTest.Content.Entity
                         Projectile.NewProjectile(Entity.GetSource_FromThis(), NPC.Center, Shootvel, ModContent.ProjectileType<TenebrisStar>(), 15, 1, ai1: player.whoAmI, ai2: 2);
                     }
                 }
-                AttackTimer = 240;
+                AttackTimer = 480;
             }
             if (AttackTimer > 0)
             {

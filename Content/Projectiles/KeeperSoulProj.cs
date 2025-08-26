@@ -1,6 +1,7 @@
 using DestroyerTest.Common;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles.WyvernSoul;
+using DestroyerTest.Content.Buffs;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -25,7 +26,7 @@ namespace DestroyerTest.Content.Projectiles
             Projectile.width = 38; // The width of projectile hitbox
             Projectile.height = 38; // The height of projectile hitbox
             Projectile.friendly = true;
-            Projectile.hostile = true;
+            Projectile.hostile = false;
             Projectile.DamageType = DamageClass.Magic;
             Projectile.timeLeft = 1200;
             Projectile.netImportant = true;
@@ -50,7 +51,7 @@ namespace DestroyerTest.Content.Projectiles
         public override void OnSpawn(IEntitySource source)
         {
             SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/Corpse/Desperation"));
-            Projectile.NewProjectile(Entity.GetSource_FromThis(), Projectile.Center, new Vector2(0.2f, 0.2f), ModContent.ProjectileType<WyvernSoulHead>(), 30, 3, ai2: 0);
+            Projectile.NewProjectile(Entity.GetSource_FromThis(), Projectile.Center, new Vector2(0.2f, 0.2f), ModContent.ProjectileType<WyvernSoulHead>(), Projectile.damage, 3, ai2: 0);
         }
 
         public float TextureRotationOffset = 0f;
@@ -66,7 +67,7 @@ namespace DestroyerTest.Content.Projectiles
                 {
                     var angle = SpiralRotationOffset + (i * MathHelper.TwoPi / 6f);
                     var launchVelocity = new Vector2(10, 0).RotatedBy(angle);
-                    Projectile.NewProjectile(Entity.GetSource_FromThis(), Projectile.Center, launchVelocity, ModContent.ProjectileType<SoulCrystalFriendly>(), 40, 4);
+                    Projectile.NewProjectile(Entity.GetSource_FromThis(), Projectile.Center, launchVelocity, ModContent.ProjectileType<SoulCrystalFriendly>(), Projectile.damage / 2, 4);
                 }
             }
             SpiralRotationOffset += 0.45f;
@@ -75,7 +76,7 @@ namespace DestroyerTest.Content.Projectiles
         public override void PostDraw(Color lightColor)
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
-            DrawCrystalCore(spriteBatch, Projectile.Center); 
+            DrawCrystalCore(spriteBatch, Projectile.Center);
         }
         public void DrawCrystalCore(SpriteBatch spriteBatch, Vector2 Center)
         {
@@ -109,6 +110,15 @@ namespace DestroyerTest.Content.Projectiles
             );
 
             Utility.ReturnToDefaultDrawing(spriteBatch);
+        }
+
+        public override void ModifyDamageHitbox(ref Rectangle hitbox)
+        {
+            hitbox.Inflate(60, 60);
+        }
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            target.AddBuff(ModContent.BuffType<SoulInferno>(), 480);
         }
 	}
 }

@@ -13,6 +13,7 @@ using Terraria.ModLoader.IO;
 using System.Collections.Generic;
 using DestroyerTest.Content.Entity;
 using Terraria.GameContent.Drawing;
+using DestroyerTest.Content.Buffs;
 
 namespace DestroyerTest.Content.Projectiles.WyvernSoul
 {
@@ -187,6 +188,14 @@ namespace DestroyerTest.Content.Projectiles.WyvernSoul
         {
             ParticleOrchestrator.RequestParticleSpawn(true, ParticleOrchestraType.Keybrand, new ParticleOrchestraSettings() { PositionInWorld = Projectile.Center });
         }
+
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            if (!Pet)
+            {
+                target.AddBuff(ModContent.BuffType<SoulInferno>(), 480);
+            }
+        }
     }
 
     public class WyvernSoulBody : ModProjectile
@@ -286,6 +295,14 @@ namespace DestroyerTest.Content.Projectiles.WyvernSoul
         public override void OnKill(int timeLeft)
         {
             ParticleOrchestrator.RequestParticleSpawn(true, ParticleOrchestraType.Keybrand, new ParticleOrchestraSettings() { PositionInWorld = Projectile.Center });
+        }
+
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            if (!Head.Pet)
+            {
+                target.AddBuff(ModContent.BuffType<SoulInferno>(), 480);
+            }
         }
     }
 

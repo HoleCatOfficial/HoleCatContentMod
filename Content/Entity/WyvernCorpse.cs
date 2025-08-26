@@ -451,7 +451,7 @@ namespace DestroyerTest.Content.Entity
                     {
                         NPC.aiStyle = NPCAIStyleID.Worm;
 
-                        if (!IsDashing && NPC.Distance(player.Center) < 600 && DashTime > 0)
+                        if (!IsDashing && NPC.Distance(player.Center) < 300 && DashTime > 0)
                         {
                             SoundEngine.PlaySound(Roar, NPC.Center);
                             Projectile FleshBomb = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<FleshBomb>(), 20, 1);
@@ -1013,8 +1013,8 @@ namespace DestroyerTest.Content.Entity
 
         public void DashParticle()
         {
-            PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticle>(), NPC.Center + new Vector2(NPC.width / 2, (NPC.height / 2) - NPC.height / 2).RotatedBy(NPC.rotation), new Vector2(10, -40).RotatedBy(NPC.rotation), ColorLib.Ichor, 1f);
-            PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticle>(), NPC.Center + new Vector2(NPC.width / 2, (NPC.height / 2) - NPC.height / 2).RotatedBy(NPC.rotation), new Vector2(-10, -40).RotatedBy(NPC.rotation), ColorLib.Ichor, 1f);
+            PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticle>(), NPC.Center + new Vector2(NPC.width / 2, (NPC.height / 2) - NPC.height / 2).RotatedBy(NPC.rotation), new Vector2(10, 80).RotatedBy(NPC.rotation), ColorLib.Ichor, 1f);
+            PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticle>(), NPC.Center + new Vector2(NPC.width / 2, (NPC.height / 2) - NPC.height / 2).RotatedBy(NPC.rotation), new Vector2(-10, 80).RotatedBy(NPC.rotation), ColorLib.Ichor, 1f);
         }
 
         public void NodeSpawn()

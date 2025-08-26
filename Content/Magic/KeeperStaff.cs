@@ -37,7 +37,7 @@ namespace DestroyerTest.Content.Magic
             // Weapon Properties
             Item.knockBack = 10;  // The knockback of your sword, this is dynamically adjusted in the projectile code.
             Item.autoReuse = false; // This determines whether the weapon has autoswing
-            Item.damage = 400; // The damage of your sword, this is dynamically adjusted in the projectile code.
+            Item.damage = 460; // The damage of your sword, this is dynamically adjusted in the projectile code.
             Item.DamageType = DamageClass.Magic; // Deals melee damage\
             Item.mana = 300;
             Item.crit = 16; // The critical strike chance the weapon has. The player, by default, has a 4% critical strike chance.

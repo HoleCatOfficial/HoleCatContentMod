@@ -21,7 +21,6 @@ namespace DestroyerTest.Common.Systems
 		public static bool downedDeerclopsMiniBoss = false;
 		public static bool downedSkeletronBoss = false;
 		public static bool downedConstitutionBoss = false;
-
 		public static bool downedWallBoss = false;
 		public static bool downedQueenSlimeBoss = false;
 		public static bool downedDestroyerBoss = false;

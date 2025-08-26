@@ -35,14 +35,15 @@ namespace DestroyerTest.Content.Entity
             NPC.height = 160;
             NPC.aiStyle = 23;
             NPC.damage = 100;
-            NPC.defense = 9999;
-            NPC.lifeMax = 160000;
+            NPC.defense = 9;
+            NPC.lifeMax = 160;
             NPC.HitSound = SoundID.NPCHit4;
             NPC.DeathSound = SoundID.NPCDeath39;
             NPC.noGravity = true;
             NPC.lavaImmune = true;
             NPC.noTileCollide = true;
             NPC.knockBackResist = 0f;
+            NPC.immortal = true;
         }
 
         public override void Load()

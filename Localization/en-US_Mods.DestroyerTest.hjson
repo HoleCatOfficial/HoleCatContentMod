@@ -2580,7 +2580,11 @@ Items: {
 
 	GreatFlayer: {
 		DisplayName: Great Flayer
-		Tooltip: Every third Swing is a spin, spraying ichor in all directions.
+		Tooltip:
+			'''
+			Every third Swing is a spin, shooting teeth in all directions.
+			Right click to do a short dash with this weapon.
+			'''
 	}
 
 	WyvernSkull: {
@@ -2912,12 +2916,12 @@ Items: {
 
 	ComaceraticFlask: {
 		DisplayName: Comaceratic Flask
-		Tooltip: ""
+		Tooltip: Imbues your weapons with Comaceratic Burn.
 	}
 
 	HeliouricFlask: {
 		DisplayName: Heliouric Flask
-		Tooltip: ""
+		Tooltip: Imbues your weapons with Comaceratic Burn.
 	}
 
 	RiftenCrate: {
@@ -2927,22 +2931,22 @@ Items: {
 
 	RiftFlask: {
 		DisplayName: Rift Flask
-		Tooltip: ""
+		Tooltip: Imbues your weapons with Comaceratic Burn.
 	}
 
 	ComaceraticVial: {
 		DisplayName: Comaceratic Vial
-		Tooltip: ""
+		Tooltip: Imbues your scepters with Comaceratic Burn. This effect is exclusive to scepters.
 	}
 
 	HeliouricVial: {
 		DisplayName: Heliouric Vial
-		Tooltip: ""
+		Tooltip: Imbues your scepters with Heliouric Shock. This effect is exclusive to scepters.
 	}
 
 	RiftVial: {
 		DisplayName: Rift Vial
-		Tooltip: ""
+		Tooltip: Imbues your scepters with Daylight Overload. This effect is exclusive to scepters.
 	}
 
 	InfernalTiara: {
@@ -2972,6 +2976,11 @@ Items: {
 
 			-Legendary Weapon-
 			'''
+	}
+
+	ShadeBow: {
+		Tooltip: ""
+		DisplayName: Shade Bow
 	}
 }
 
@@ -3305,6 +3314,10 @@ Projectiles: {
 	WyvernSoulHead.DisplayName: Wyvern Soul Head
 	WyvernSoulLegs.DisplayName: Wyvern Soul Legs
 	WyvernSoulTail.DisplayName: Wyvern Soul Tail
+	ToothFriendly.DisplayName: Tooth Friendly
+	GreatFlayerDash.DisplayName: Great Flayer Dash
+	SoulCrystalBomb.DisplayName: Soul Crystal Bomb
+	SoulExplosion.DisplayName: Soul Explosion
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.
@@ -3636,6 +3649,9 @@ NPCs: {
 	DarkGluttonTail.DisplayName: Dark Glutton Tail
 	CursedFlameNodeMB.DisplayName: Cursed Flame Node
 	IchorNodeMB.DisplayName: Ichor Node
+	ShadeThrowerMagenta.DisplayName: Shade Thrower Magenta
+	ShadeThrowerTan.DisplayName: Shade Thrower Tan
+	ShadeThrowerBlue.DisplayName: Shade Thrower Blue
 }
 
 Keybinds: {

@@ -138,9 +138,9 @@ namespace DestroyerTest.Content.Projectiles
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
         }
 
-        public override void OnHitPlayer(Player target, Player.HurtInfo info)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            target.AddBuff(ModContent.BuffType<SoulInferno>(), 240);
+            target.AddBuff(ModContent.BuffType<SoulInferno>(), 480);
         }
 
         public override void OnKill(int timeLeft)
