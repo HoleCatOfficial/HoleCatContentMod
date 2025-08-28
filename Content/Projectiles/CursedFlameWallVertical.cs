@@ -44,7 +44,7 @@ namespace DestroyerTest.Content.Projectiles
                 Projectile.Center - Main.screenPosition,
                 null,
                 ColorLib.CursedFlames,
-                Projectile.velocity.ToRotation(),
+                Projectile.rotation,
                 new Vector2(texture.Width / 2, texture.Height / 2),
                 1f,
                 SpriteEffects.None,

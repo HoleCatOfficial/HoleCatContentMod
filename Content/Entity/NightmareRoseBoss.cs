@@ -45,6 +45,7 @@ using ReLogic.Localization.IME;
 using System.Runtime.CompilerServices;
 using Microsoft.CodeAnalysis.FlowAnalysis;
 using Terraria.Graphics.CameraModifiers;
+using DestroyerTest.Content.Resources;
 
 namespace DestroyerTest.Content.Entity
 {
@@ -90,17 +91,22 @@ namespace DestroyerTest.Content.Entity
             Main.npcFrameCount[NPC.type] = 11;
         }
 
-        public SoundStyle Kill = new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/NightmareRoseKill") with { Volume = 2 };
+        public SoundStyle Kill = new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/NightmareRoseKill") with { Volume = 2, MaxInstances = 0 };
+        public SoundStyle Fire = new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/CursedFlameShoot") with { Volume = 2, PitchVariance = 1f, MaxInstances = 0 };
+        public SoundStyle ArenaDivide = new SoundStyle("DestroyerTest/Assets/Audio/TenebrisImpact") with { Volume = 2, PitchVariance = 1f, MaxInstances = 0 };
+        public SoundStyle DespShootMine = new SoundStyle("DestroyerTest/Assets/Audio/GoliathPhantomHit") with { Volume = 2, PitchVariance = 1f, MaxInstances = 0 };
+        public SoundStyle NodeSpawnSound = new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/NodeSpawn") with { PitchVariance = 1f, MaxInstances = 0 };
+        public SoundStyle Napalm = new SoundStyle("DestroyerTest/Assets/Audio/NodeAttackNapalm") with { PitchVariance = 1f, MaxInstances = 0 };
 
         public override void SetDefaults()
         {
             NPC.width = 144;
             NPC.height = 274;
             NPC.aiStyle = -1;
-            NPC.damage = 70;
-            NPC.defense = 17;
-            NPC.lifeMax = 300000;
-            NPC.HitSound = SoundID.NPCHit1;
+            NPC.damage = 0;
+            NPC.defense = 65;
+            NPC.lifeMax = 368000;
+            NPC.HitSound = SoundID.DD2_MonkStaffGroundImpact;
             NPC.noGravity = false;
             NPC.lavaImmune = true;
             NPC.noTileCollide = false;
@@ -116,8 +122,8 @@ namespace DestroyerTest.Content.Entity
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
-                new FlavorTextBestiaryInfoElement("An unholy amalgamation of Creatures, disguised poorly as a rose. Little is known of it other than that it seens to pop up randomly."),
-                BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface
+                new FlavorTextBestiaryInfoElement("Legends claim that Mother Darkness once birthed two children, Khebmál and Shoerluan. Their quarrels grew so fierce that Heqain intervened, fearing they would destroy each other. She cast Shoerluan, who had renamed himself to Vourtreán, into the shade world, and bound Khebmál into a corrupt seedling, giving him a new name: Remeon, to help him release himself from his past. To common folk, this creature is remembered only as the Botanist’s Curse: a blight that raises strange purple flora, drains fertile soil, and drives farmers to madness. But those who know the truth of its origin as Mother Darkness’s lost children are under close watch by Heqain, who sees to it that this violent matter remains history."),
+                BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.TheCorruption
             });
         }
 
@@ -238,6 +244,7 @@ namespace DestroyerTest.Content.Entity
             OvergrownHammer,
             DemoniteWhisper,
             CorruptSigil,
+            ArenaDivide,
             BlossomMine,
             Desperation,
             Nodes,
@@ -270,6 +277,9 @@ namespace DestroyerTest.Content.Entity
         public int SoulSpawnCount = 0;
         public bool HasSpawnedSigil = false;
         public bool HasSpawnedMines = false;
+        public bool Divided = false;
+        public int DivisionCooldown = 300;
+        public int CooldownAccountedForWallLifetime = -1;
         public int ProjSpawnTimer = 0;
         public int DesperationTimer = 0;
         public bool HasTriggeredNodes = false;
@@ -369,6 +379,10 @@ namespace DestroyerTest.Content.Entity
                 NPC.immortal = true;
                 modifiers.FinalDamage *= 0f;
             }
+            if (projectile.type == ProjectileID.LastPrism || projectile.type == ProjectileID.LastPrismLaser || projectile.type == ProjectileID.Meowmere || projectile.type == ProjectileID.PhantasmArrow)
+            {
+                modifiers.FinalDamage *= 0.65f;
+            }
         }
 
         public override bool? CanBeHitByItem(Player player, Item item)
@@ -457,6 +471,8 @@ namespace DestroyerTest.Content.Entity
 
                 // Reduce wing speed to half
                 player.moveSpeed *= 0.5f; // baseWingSpeed should be stored somewhere
+                player.GetModPlayer<ApplyArenaEffectsPlayer>().CurrentArenaBoss = ModContent.NPCType<NightmareRoseBoss>();
+                player.AddBuff(ModContent.BuffType<ArenaEffects>(), 20);
             }
 
 
@@ -509,6 +525,22 @@ namespace DestroyerTest.Content.Entity
                 OnKill();
             }
 
+            if (Divided)
+            {
+                if (CooldownAccountedForWallLifetime <= 0)
+                {
+                    CooldownAccountedForWallLifetime = DivisionCooldown + 1200;
+                }
+
+                CooldownAccountedForWallLifetime--;
+
+                if (CooldownAccountedForWallLifetime <= DivisionCooldown)
+                {
+                    Divided = false;
+                }
+            }
+
+
 
 
 
@@ -547,7 +579,7 @@ namespace DestroyerTest.Content.Entity
                 {
                     ModContent.NPCType<DarkGluttonHead>(),
                     ModContent.NPCType<DarkPredatorHead>(),
-                    NPCID.Slimer,
+                    ModContent.NPCType<DarkArchmage>(),
                     ModContent.NPCType<TenebrousPhantasm>()
                 });
 
@@ -574,16 +606,21 @@ namespace DestroyerTest.Content.Entity
                     if (NPC.type == ModContent.NPCType<NightmareRoseBoss>())
                     {
                         NPC.aiStyle = -1;
+                        SoundEngine.PlaySound(NodeSpawnSound);
                         NodeSpawn();
                         currentState = GetRandomState();
                     }
                     break;
                 case AttackState.CursedFlames:
                     {
-                        if (FlameStartTimer >= 60)
+                        if (Divided)
                         {
-                            SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/CursedFlamesWarn") with { Volume = 1.5f });
+                            ResetState();
                         }
+                        if (FlameStartTimer >= 60)
+                            {
+                                SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/CursedFlamesWarn") with { Volume = 1.5f });
+                            }
                         FlameStartTimer--;
                         if (HasBoosted == false)
                         {
@@ -601,6 +638,7 @@ namespace DestroyerTest.Content.Entity
                             Vector2 velocity = DirectionToPlayerCenter.SafeNormalize(Vector2.UnitY);
                             if (FlameInterval >= 10)
                             {
+                                SoundEngine.PlaySound(Fire);
                                 Projectile.NewProjectile(Entity.GetSource_FromThis(), NPCHead, velocity * 20f, ModContent.ProjectileType<CursedFlameProj>(), 50, 0);
                                 FlameInterval = 0;
                             }
@@ -618,9 +656,10 @@ namespace DestroyerTest.Content.Entity
                         if (VileThornCooldown > 30)
                         {
                             VileThornCount += 1;
-
+                            
                             for (int e = 0; e < 6; e++)
                             {
+                                SoundEngine.PlaySound(Napalm);
                                 Projectile proj = Projectile.NewProjectileDirect(
                                         Entity.GetSource_FromThis(),
                                         NPCHead,
@@ -711,17 +750,43 @@ namespace DestroyerTest.Content.Entity
                         }
                     }
                     break;
-
+                case AttackState.ArenaDivide:
+                    {
+                        //if (EternityIsActive())
+                        //{
+                            if (!Divided && CooldownAccountedForWallLifetime <= 0)
+                            {
+                                if (Main.rand.NextBool(9))
+                                {
+                                    ArenaDivision();
+                                }
+                                else
+                                {
+                                    currentState = AttackState.Idle;
+                                }
+                            }
+                        //}
+                        else
+                        {
+                            currentState = AttackState.Idle;
+                        }
+                        break;
+                    }
                 case AttackState.CorruptSigil:
                     {
                         SigilTimer--;
-                        if (HasSpawnedSigil == false)
+                        if (SigilTimer > 0)
                         {
-                            ManageSigil(Main.rand.NextVector2FromRectangle(new Rectangle(0, 0, BorderRad, BorderRad)));
-                            HasSpawnedSigil = true;
+                            if (Main.GameUpdateCount % 10 == 0)
+                            {
+
+                            }
+                            Main.windPhysics = true;
+                            Main.windPhysicsStrength = 12f;
                         }
                         if (SigilTimer <= 0)
                         {
+                            Main.windPhysics = false;
                             ResetState();
                         }
                     }
@@ -750,8 +815,9 @@ namespace DestroyerTest.Content.Entity
                         {
 
                             DesperationTimer++;
-                            if (Main.GameUpdateCount % 60 == 0 && DesperationTimer < 900)
+                            if (Main.GameUpdateCount % 100 == 0 && DesperationTimer < 900)
                             {
+                                SoundEngine.PlaySound(DespShootMine);
                                 SoulBombSpawn();
                             }
                             BorderRad = (int)MathHelper.SmoothStep(BorderRad, 0, 0.001f);
@@ -797,8 +863,13 @@ namespace DestroyerTest.Content.Entity
                             {
                                 Mod.Logger.Info($"Attempted Kill. Death Timer: {DeathIdleTimer}");
                             }
+                            if (!DownedBossSystem.downedNightmareRoseBoss)
+                            {
+                                Item.NewItem(Item.GetSource_None(), NPCHead, ModContent.ItemType<RoseSoul>(), 1, true, 0, false, false);
+                            }
                             NPC.immortal = false;
                             NPC.StrikeInstantKill();
+                            
                         }
                     }
                     break;
@@ -845,6 +916,7 @@ namespace DestroyerTest.Content.Entity
             { AttackState.Minions, 1.0f },
             { AttackState.OvergrownHammer, 1.0f },
             { AttackState.RottenPetals, 1.0f },
+            { AttackState.ArenaDivide, 1.0f },
             { AttackState.VilethornFloor, 1.0f },
             { AttackState.CorruptSigil, 1.0f },
             { AttackState.BlossomMine, 1.0f },
@@ -886,6 +958,7 @@ namespace DestroyerTest.Content.Entity
                 HasSpawnedMines = false;
                 HasSpawnedSigil = false;
                 HasBoosted = false;
+                Divided = false;
                 FlameTimer = 0;
                 FlameStartTimer = 60;
 
@@ -935,6 +1008,13 @@ namespace DestroyerTest.Content.Entity
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
         }
 
+        public void ArenaDivision()
+        {
+            Projectile Divider1 = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), NPCHead, Vector2.Zero, ModContent.ProjectileType<CursedFlameWallVertical>(), 60, 3);
+            
+            Divider1.timeLeft = 1200;
+        }
+
         public void GatherParticle()
         {
             for (int y = 0; y < 2; y++)
@@ -953,7 +1033,7 @@ namespace DestroyerTest.Content.Entity
                 Vector2 targetPos = NPCHead + Main.rand.NextVector2CircularEdge(BorderRad, BorderRad);
                 Vector2 direction = (targetPos - spawnPos).SafeNormalize(Vector2.Zero); // SafeNormalize prevents division by zero
 
-                Projectile SB = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), spawnPos, direction * 4, ModContent.ProjectileType<SoulCrystalBomb>(), 50, 1);
+                Projectile SB = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), spawnPos, direction * 6, ModContent.ProjectileType<SoulCrystalBomb>(), 50, 1);
                 SB.timeLeft = 60;
             }
         }
@@ -998,7 +1078,7 @@ namespace DestroyerTest.Content.Entity
             Player player = Main.LocalPlayer;
             SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/SoulSummon"));
             player.GetModPlayer<ScreenshakePlayer>().screenshakeTimer = 10;
-            player.GetModPlayer<ScreenshakePlayer>().screenshakeMagnitude = 1;
+            player.GetModPlayer<ScreenshakePlayer>().screenshakeMagnitude = 8;
             for (int a = 0; a < 10; a++)
             {
                 Vector2 SpawnPoint = new Vector2(NPC.Center.X + Main.rand.Next(-BorderRad, BorderRad), NPC.Center.Y + 600);

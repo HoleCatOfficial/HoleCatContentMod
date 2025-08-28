@@ -52,6 +52,17 @@ namespace DestroyerTest.Content.Entity
             return false;
         }
 
+        public override void ModifyHitByProjectile(Projectile projectile, ref NPC.HitModifiers modifiers)
+        {
+            if (projectile.penetrate > 2 || projectile.penetrate < 0)
+            {
+                modifiers.FinalDamage *= 0.10f;
+            }
+            if (projectile.type == ProjectileID.LastPrism || projectile.type == ProjectileID.LastPrismLaser || projectile.type == ProjectileID.Meowmere || projectile.type == ProjectileID.PhantasmArrow)
+            {
+                modifiers.FinalDamage *= 0.65f;
+            }
+        }
 
         public override void SetDefaults()
         {
@@ -61,7 +72,7 @@ namespace DestroyerTest.Content.Entity
             NPC.aiStyle = NPCAIStyleID.Worm;
 
             NPC.damage = 70;
-            NPC.defense = 40;
+            NPC.defense = 65;
             NPC.lifeMax = 8000;
 
             NPC.noGravity = true;

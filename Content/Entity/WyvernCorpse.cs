@@ -11,6 +11,7 @@ using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.CorpseBoss;
 using DestroyerTest.Content.Projectiles.CorpseBoss.Organs;
 using DestroyerTest.Content.Projectiles.VampireBoss;
+using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.SummonItems;
 using DestroyerTest.Content.Tiles;
 using InnoVault.PRT;
@@ -32,6 +33,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
+using UtfUnknown.Core.Models.SingleByte.Finnish;
 
 namespace DestroyerTest.Content.Entity
 {
@@ -110,8 +112,8 @@ namespace DestroyerTest.Content.Entity
             NPC.aiStyle = NPCAIStyleID.Worm;
 
             NPC.damage = 100;
-            NPC.defense = 40;
-            NPC.lifeMax = 380000;
+            NPC.defense = 65;
+            NPC.lifeMax = 420000;
 
             NPC.noGravity = true;
             NPC.noTileCollide = true;
@@ -157,7 +159,8 @@ namespace DestroyerTest.Content.Entity
         public int FollowTime = 0;
         public bool IsDashing = false;
         public int DashCount = 0;
-        public int DashTime = 40;
+        public int DashTime = 80;
+        public int DashOverrideTimer = 300;
         public int SpitTime = 0;
         public float circleradius = 800f;
         public float circlerotspeed = 0.05f;
@@ -414,14 +417,15 @@ namespace DestroyerTest.Content.Entity
                 Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/EvilBoss1");
             }
 
-            int MinionSpawnType = Main.rand.Next(new int[]
-                            {
-                                NPCID.IchorSticker,
-                                NPCID.Crimera,
-                                NPCID.BloodZombie,
-                                NPCID.LeechHead,
-                                NPCID.Crimslime
-                            });
+            int[] MinionSpawnType = new int[]
+                {
+                    ModContent.NPCType<ShadeThrowerBlue>(),
+                    ModContent.NPCType<ShadeThrowerMagenta>(),
+                    ModContent.NPCType<ShadeThrowerTan>(),
+                    ModContent.NPCType<TenebrousSlime>(),
+                    ModContent.NPCType<DarkArchmage>(),
+                    ModContent.NPCType<DarkPredatorHead>(),
+                };
 
             ImportantMathematics();
 
@@ -449,31 +453,40 @@ namespace DestroyerTest.Content.Entity
                     break;
                 case attackType.Dash:
                     {
-                        NPC.aiStyle = NPCAIStyleID.Worm;
-
-                        if (!IsDashing && NPC.Distance(player.Center) < 300 && DashTime > 0)
+                        NPC.aiStyle = NPCAIStyleID.Flocko;
+                        DashOverrideTimer--;
+                        if (DashOverrideTimer > 0)
                         {
-                            SoundEngine.PlaySound(Roar, NPC.Center);
-                            Projectile FleshBomb = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<FleshBomb>(), 20, 1);
-                            NPC.velocity *= 2.5f;
-                            IsDashing = true;
-                            DashCount++;
-                        }
 
-                        if (IsDashing)
-                        {
-                            DashTime--; // tick down every frame while dashing
-                            DashParticle();
-
-                            if (DashTime <= 0)
+                            if (!IsDashing && NPC.Distance(player.Center) < 300 && DashTime > 0)
                             {
-                                NPC.velocity /= 5;
-                                DashTime = 40; // reset cooldown
-                                IsDashing = false;
+                                SoundEngine.PlaySound(Roar, NPC.Center);
+                                Projectile FleshBomb = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<FleshBomb>(), 20, 1);
+                                NPC.velocity *= 3f;
+                                IsDashing = true;
+                                DashCount++;
+                            }
+
+                            if (IsDashing)
+                            {
+                                DashTime--; // tick down every frame while dashing
+                                DashParticle();
+
+                                if (DashTime <= 0)
+                                {
+                                    NPC.velocity /= 5;
+                                    DashTime = 40; // reset cooldown
+                                    IsDashing = false;
+                                }
+                            }
+
+                            if (DashCount >= 5)
+                            {
+                                CurrentAttack = attackType.IchorRam;
+                                ResetStats();
                             }
                         }
-
-                        if (DashCount >= 5)
+                        if (DashOverrideTimer <= 0)
                         {
                             CurrentAttack = attackType.IchorRam;
                             ResetStats();
@@ -484,12 +497,15 @@ namespace DestroyerTest.Content.Entity
                     {
                         NPC.aiStyle = NPCAIStyleID.Bat;
                         SpitTime++;
-                        Projectile IchorSpit = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), NPC.Center, NPC.velocity * 3, ProjectileID.GoldenShowerHostile, 40, 2);
-                        if (SpitTime >= 480)
+                        if (SpitTime % 20 == 0)
                         {
-                            CurrentAttack = attackType.OrganBurst;
-                            ResetStats();
+                            Projectile IchorSpit = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), NPC.Center, NPC.velocity * 3, ProjectileID.GoldenShowerHostile, 40, 2);
                         }
+                        if (SpitTime >= 480)
+                            {
+                                CurrentAttack = attackType.OrganBurst;
+                                ResetStats();
+                            }
                     }
                     break;
                 case attackType.Circle:
@@ -534,7 +550,7 @@ namespace DestroyerTest.Content.Entity
 
                         if (ToothCount < 2)
                         {
-                            CurrentAttack = attackType.BloodShoot;
+                            CurrentAttack = attackType.SummonCrimsonMinions;
                             ResetStats();
                         }
                     }
@@ -599,7 +615,21 @@ namespace DestroyerTest.Content.Entity
                     break;
                 case attackType.SummonCrimsonMinions:
                     {
+                        SoundEngine.PlaySound(Roar);
+                        for (int e = 0; e < 6; e++)
+                        {
+                            Vector2 MinionPosition = Main.rand.NextVector2FromRectangle(
+                            new Rectangle(
+                                (int)Main.LocalPlayer.Center.X - Main.screenWidth / 2,
+                                (int)Main.LocalPlayer.Center.Y - Main.screenHeight / 2,
+                                Main.screenWidth,
+                                Main.screenHeight
+                                )
+                            );
+                            NPC.NewNPC(Entity.GetSource_FromThis(), (int)MinionPosition.X, (int)MinionPosition.Y, MinionSpawnType[Main.rand.Next(MinionSpawnType.Length)], 0);
+                        }
                         CurrentAttack = attackType.BloodShoot;
+                        ResetStats();
                     }
                     break;
 
@@ -747,6 +777,10 @@ namespace DestroyerTest.Content.Entity
 
                         if (DesperationTimer >= 1200)
                         {
+                            if (!DownedBossSystem.downedNightmareRoseBoss)
+                            {
+                                Item.NewItem(Item.GetSource_None(), DesperationOrbitCenter, ModContent.ItemType<WyvernSoul>(), 1, true, 0, false, false);
+                            }
                             NPC.dontTakeDamage = false;
                             NPC.life = 0;
                             NPC.HitEffect();
@@ -771,7 +805,8 @@ namespace DestroyerTest.Content.Entity
             FollowTime = 0;
             IsDashing = false;
             DashCount = 0;
-            DashTime = 40;
+            DashTime = 80;
+            DashOverrideTimer = 300;
             SpitTime = 0;
             CircleTime = 0;
             circleradius = 1500f;

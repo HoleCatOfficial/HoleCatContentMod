@@ -47,10 +47,10 @@ namespace DestroyerTest.Content.Projectiles.NightmareRose
 
         public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
-            Vector2 mag = Projectile.Center + new Vector2(35, 0);
-            Vector2 KickVel = mag - Projectile.Center;
-            target.velocity += KickVel;
-            target.AddBuff(ModContent.BuffType<SoulInferno>(), 600);
+            //Vector2 mag = Projectile.Center + new Vector2(35, 0);
+            //Vector2 KickVel = mag - Projectile.Center;
+            //target.velocity += KickVel;
+            //target.AddBuff(ModContent.BuffType<SoulInferno>(), 600);
         }
     }
 }

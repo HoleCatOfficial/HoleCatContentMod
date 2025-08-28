@@ -18,6 +18,8 @@ namespace DestroyerTest.Common
         public static bool PromiseEquipped = false;
         public static bool StellarGogglesEquipped = false;
         public static bool NodeCharmEquipped = false;
+        public static bool ConsumeWyvernSoul = false;
+        public static bool ConsumeRoseSoul = false;
         /// <summary>
         /// An example of a Color Palette. It has a name and the required 5 colors.
         /// <para/> The first color is the blue on the tip of the hood,

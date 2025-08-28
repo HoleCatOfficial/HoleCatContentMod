@@ -64,34 +64,43 @@ namespace DestroyerTest.Content.Equips
 
         public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo)
         {
-            for (int y = 0; y < 4; y++)
+            if (Active)
+            {
+                for (int y = 0; y < 4; y++)
                 {
                     Vector2 ofst = new Vector2(100, 0);
                     Vector2 velocity = Player.Center + ofst.RotatedByRandom(MathHelper.Pi);
                     Projectile.NewProjectile(Entity.GetSource_OnHurt(hurtInfo.DamageSource), Player.Center, velocity, ProjectileID.Bee, 16, 2, Player.whoAmI);
                 }
+            }
             base.OnHitByNPC(npc, hurtInfo);
         }
 
         public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo)
         {
-            for (int y = 0; y < 4; y++)
+            if (Active)
+            {
+                for (int y = 0; y < 4; y++)
                 {
                     Vector2 ofst = new Vector2(100, 0);
                     Vector2 velocity = Player.Center + ofst.RotatedByRandom(MathHelper.Pi);
                     Projectile.NewProjectile(Entity.GetSource_OnHurt(hurtInfo.DamageSource), Player.Center, velocity, ProjectileID.Bee, 16, 2, Player.whoAmI);
                 }
+            }
             base.OnHitByProjectile(proj, hurtInfo);
         }
         public override void ModifyShootStats(Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
-            if (item.DamageType == ModContent.GetInstance<ScepterClass>())
+            if (Active)
             {
-                if (Player.altFunctionUse == 2)
+                if (item.DamageType == ModContent.GetInstance<ScepterClass>())
                 {
-                    for (int y = 0; y < 4; y++)
+                    if (Player.altFunctionUse == 2)
                     {
-                        Projectile.NewProjectile(Entity.GetSource_ItemUse(item), position, velocity, ProjectileID.Bee, damage / 2, knockback / 2, Player.whoAmI);
+                        for (int y = 0; y < 4; y++)
+                        {
+                            Projectile.NewProjectile(Entity.GetSource_ItemUse(item), position, velocity, ProjectileID.Bee, damage / 2, knockback / 2, Player.whoAmI);
+                        }
                     }
                 }
             }

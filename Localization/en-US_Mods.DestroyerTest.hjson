@@ -2982,6 +2982,67 @@ Items: {
 		Tooltip: ""
 		DisplayName: Shade Bow
 	}
+
+	BeeHeadress: {
+		Tooltip: ""
+		DisplayName: Bee Headress
+	}
+
+	RoseSoul: {
+		DisplayName: Soul of the Conglomerated Child of Mother Darkness
+		Tooltip: Living proof.
+	}
+
+	WyvernSoul: {
+		Tooltip: Unforseeable.
+		DisplayName: Soul of the Great Wyvern
+	}
+
+	ForgottenPendant: {
+		Tooltip:
+			'''
+			Increases Scepter Class damage by 4%.
+			Increases armor penetration for all classes by 1.
+			'The garnet inside it is faded and covered in hundreds of scrapes...'
+			'''
+		DisplayName: Forgotten Pendant
+	}
+
+	DetritizedPendant: {
+		Tooltip:
+			'''
+			Increases Scepter Class damage by 4%.
+			Increases armor penetration for all classes by 1.
+			Throwing a scepter has a chance to release a burst of 5 tiny eaters.
+			'It reeks of ammonia...'
+			'''
+		DisplayName: Detritized Pendant
+	}
+
+	AuraThiefHeadress: {
+		Tooltip: ""
+		DisplayName: Aura Thief Headress
+	}
+
+	VisceraPendant: {
+		DisplayName: Viscera Pendant
+		Tooltip:
+			'''
+			Increases Scepter Class damage by 4%.
+			Increases armor penetration for all classes by 1.
+			Throwing a scepter has a chance to release a burst of Enchanted Blood.
+			'It smells like coins...'
+			'''
+	}
+
+	TreasonScroll: {
+		Tooltip:
+			'''
+			Throwing a scepter has a chance to release multiple shadowflame mines.
+			These mines can deal damage to both players and enemies when they explode.
+			'''
+		DisplayName: Eunuch Advisor's Treasonous Scroll
+	}
 }
 
 Projectiles: {
@@ -3318,6 +3379,9 @@ Projectiles: {
 	GreatFlayerDash.DisplayName: Great Flayer Dash
 	SoulCrystalBomb.DisplayName: Soul Crystal Bomb
 	SoulExplosion.DisplayName: Soul Explosion
+	TenebrisFlames.DisplayName: Tenebris Flames
+	AuraThiefFireball.DisplayName: Aura Thief Fireball
+	TreasonScrollBomb.DisplayName: Treason Scroll Bomb
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.
@@ -3527,6 +3591,16 @@ Buffs: {
 		DisplayName: Wyvern Soul Pet
 		Description: He is eternally grateful
 	}
+
+	ArenaEffects: {
+		Description: The Boss is creating an effect in its vicinity!
+		DisplayName: Arena Effects
+	}
+
+	SoulErosion: {
+		Description: Mods.DestroyerTest.Buffs.SoulErosion.Description
+		DisplayName: Soul Erosion
+	}
 }
 
 NPCs: {
@@ -3652,6 +3726,8 @@ NPCs: {
 	ShadeThrowerMagenta.DisplayName: Shade Thrower Magenta
 	ShadeThrowerTan.DisplayName: Shade Thrower Tan
 	ShadeThrowerBlue.DisplayName: Shade Thrower Blue
+	TenebrisElemental.DisplayName: Tenebris Elemental
+	DarkArchmage.DisplayName: Dark Archmage
 }
 
 Keybinds: {
