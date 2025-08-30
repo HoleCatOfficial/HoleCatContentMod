@@ -20,8 +20,11 @@ namespace DestroyerTest.Rarity
             {
                 return ModContent.RarityType<WineRarity>(); // Upgrade to next rarity if necessary
             }
-
-            return ModContent.RarityType<PearlRarity>();
+            if (offset < 0)
+            {
+                return ModContent.RarityType<PearlRarity>();
+            }
+            return Type;
         }
     }
 	

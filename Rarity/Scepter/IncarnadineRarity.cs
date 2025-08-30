@@ -10,19 +10,19 @@ using DestroyerTest.Content.Tiles;
 
 namespace DestroyerTest.Rarity
 {
-	public class PearlRarity : ModRarity
+	public class IncarnadineRarity : ModRarity
     {
-        public override Color RarityColor => new Color(253, 242, 255); // Change color as needed
+        public override Color RarityColor => new Color(181, 0, 54); // Change color as needed
 
         public override int GetPrefixedRarity(int offset, float valueMult)
         {
             if (offset > 0)
             {
-                return ModContent.RarityType<PaleFuchsiaRarity>(); // Upgrade to next rarity if necessary
+                return ItemRarityID.Expert; // Upgrade to next rarity if necessary
             }
             if (offset < 0)
             {
-                return ItemRarityID.White;
+                return ModContent.RarityType<CerisePinkRarity>();
             }
             return Type;
         }
