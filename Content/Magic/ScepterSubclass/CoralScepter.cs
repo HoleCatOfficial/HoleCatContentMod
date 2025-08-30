@@ -28,10 +28,10 @@ namespace DestroyerTest.Content.Magic.ScepterSubclass
             base.SetDefaults();
 
             // Override stats unique to this scepter
-            ShootDMG = 9;
+            ShootDMG = 29;
             ShootCrit = 2;
             ThrowCrit = 8;
-            KB = 2;
+            KB = 8;
             AdditiveValue = Item.sellPrice(silver: 80);
             Rarity = ItemRarityID.LightRed;
 

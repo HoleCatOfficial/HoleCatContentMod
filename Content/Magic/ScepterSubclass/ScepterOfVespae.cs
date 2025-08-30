@@ -8,7 +8,8 @@ using Terraria.DataStructures;
 using static Terraria.ModLoader.ModContent;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Common;
-using Terraria.GameContent.ItemDropRules; // Add this line if CT3_Swing is in the Projectiles namespace
+using Terraria.GameContent.ItemDropRules;
+using DestroyerTest.Rarity; // Add this line if CT3_Swing is in the Projectiles namespace
 
 namespace DestroyerTest.Content.Magic.ScepterSubclass
 {
@@ -33,7 +34,7 @@ namespace DestroyerTest.Content.Magic.ScepterSubclass
             ThrowCrit = 14;
             KB = 2;
             AdditiveValue = Item.sellPrice(silver: 80);
-            Rarity = ItemRarityID.LightRed;
+            Rarity = ModContent.RarityType<PearlRarity>();
 
             // Assign projectile types
             ShootID = ProjectileID.Bee;
