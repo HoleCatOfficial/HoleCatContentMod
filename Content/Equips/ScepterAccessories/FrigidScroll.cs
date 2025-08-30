@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Equips.ScepterAccessories
 {
-    public class TreasonScroll : ModItem
+    public class FrigidScroll : ModItem
     {
         public override void SetDefaults()
         {
@@ -23,21 +23,14 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            if (player.TryGetModPlayer<TreasonScrollScepterUsePlayer>(out TreasonScrollScepterUsePlayer Scptr))
+            if (player.TryGetModPlayer<FrigidScrollScepterUsePlayer>(out FrigidScrollScepterUsePlayer Scptr))
 			{
 				Scptr.Active = true;
 			}
         }
-
-        public override void AddRecipes()
-        {
-            CreateRecipe()
-                .AddCustomShimmerResult(ItemID.ShadowFlameHexDoll)
-                .Register();
-        }
     }
 
-    public class TreasonScrollScepterUsePlayer : ModPlayer
+    public class FrigidScrollScepterUsePlayer : ModPlayer
 	{
 		public bool Active = false;
         public override void ResetEffects()
@@ -54,14 +47,11 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
                     {
                         for (int t = 0; t < 5; t++)
                         {
-                            Vector2 outer = Player.Center + Main.rand.NextVector2CircularEdge(5, 5);
-                            Vector2 motion = outer - position;
-
                             Projectile.NewProjectile(
                                 Player.GetSource_ItemUse(item),
                                 Player.Center,
-                                motion,
-                                ModContent.ProjectileType<TreasonScrollBomb>(),
+                                velocity.RotatedByRandom(4),
+                                ProjectileID.NorthPoleSpear,
                                 damage,
                                 knockback,
                                 Player.whoAmI

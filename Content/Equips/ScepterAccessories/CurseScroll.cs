@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Equips.ScepterAccessories
 {
-    public class TreasonScroll : ModItem
+    public class CurseScroll : ModItem
     {
         public override void SetDefaults()
         {
@@ -23,21 +23,14 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            if (player.TryGetModPlayer<TreasonScrollScepterUsePlayer>(out TreasonScrollScepterUsePlayer Scptr))
+            if (player.TryGetModPlayer<CurseScrollScepterUsePlayer>(out CurseScrollScepterUsePlayer Scptr))
 			{
 				Scptr.Active = true;
 			}
         }
-
-        public override void AddRecipes()
-        {
-            CreateRecipe()
-                .AddCustomShimmerResult(ItemID.ShadowFlameHexDoll)
-                .Register();
-        }
     }
 
-    public class TreasonScrollScepterUsePlayer : ModPlayer
+    public class CurseScrollScepterUsePlayer : ModPlayer
 	{
 		public bool Active = false;
         public override void ResetEffects()
@@ -52,17 +45,17 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
                 {
                     if (Main.rand.NextBool(3))
                     {
-                        for (int t = 0; t < 5; t++)
+                        for (int t = 0; t < 3; t++)
                         {
-                            Vector2 outer = Player.Center + Main.rand.NextVector2CircularEdge(5, 5);
+                            Vector2 outer = Player.Center + Main.rand.NextVector2CircularEdge(10, 10);
                             Vector2 motion = outer - position;
 
                             Projectile.NewProjectile(
                                 Player.GetSource_ItemUse(item),
                                 Player.Center,
                                 motion,
-                                ModContent.ProjectileType<TreasonScrollBomb>(),
-                                damage,
+                                ModContent.ProjectileType<CurseProjectile>(),
+                                damage / 3,
                                 knockback,
                                 Player.whoAmI
                             );

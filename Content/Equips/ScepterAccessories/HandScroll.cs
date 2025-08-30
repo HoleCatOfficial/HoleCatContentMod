@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Equips.ScepterAccessories
 {
-    public class TreasonScroll : ModItem
+    public class HandScroll : ModItem
     {
         public override void SetDefaults()
         {
@@ -23,21 +23,14 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            if (player.TryGetModPlayer<TreasonScrollScepterUsePlayer>(out TreasonScrollScepterUsePlayer Scptr))
+            if (player.TryGetModPlayer<HandScrollScepterUsePlayer>(out HandScrollScepterUsePlayer Scptr))
 			{
 				Scptr.Active = true;
 			}
         }
-
-        public override void AddRecipes()
-        {
-            CreateRecipe()
-                .AddCustomShimmerResult(ItemID.ShadowFlameHexDoll)
-                .Register();
-        }
     }
 
-    public class TreasonScrollScepterUsePlayer : ModPlayer
+    public class HandScrollScepterUsePlayer : ModPlayer
 	{
 		public bool Active = false;
         public override void ResetEffects()
@@ -61,7 +54,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
                                 Player.GetSource_ItemUse(item),
                                 Player.Center,
                                 motion,
-                                ModContent.ProjectileType<TreasonScrollBomb>(),
+                                ProjectileID.InsanityShadowFriendly,
                                 damage,
                                 knockback,
                                 Player.whoAmI

@@ -3043,6 +3043,71 @@ Items: {
 			'''
 		DisplayName: Eunuch Advisor's Treasonous Scroll
 	}
+
+	FadedHood: {
+		DisplayName: Faded Hood
+		Tooltip: ""
+	}
+
+	FadedRobes: {
+		DisplayName: Faded Robes
+		Tooltip: ""
+	}
+
+	ScepterEmblem: {
+		DisplayName: Scepter Emblem
+		Tooltip: ""
+	}
+
+	FrigidScroll: {
+		DisplayName: Frigid Scroll
+		Tooltip: Thrown Scepters have a chance to release ice tridents.
+	}
+
+	HandScroll: {
+		DisplayName: Grasping Scroll
+		Tooltip: Thrown Scepters have a chance to release shadow hands.
+	}
+
+	PurityScroll: {
+		DisplayName: Purity Scroll
+		Tooltip: Thrown Scepters have a chance to release terra beams and purify nearby tiles.
+	}
+
+	StarScroll: {
+		DisplayName: Star Scroll
+		Tooltip: Thrown Scepters have a chance to summon stars down onto the cursor.
+	}
+
+	TurbulenceScroll: {
+		DisplayName: Turbulence Scroll
+		Tooltip: Thrown Scepters have a chance to release a windy vortex.
+	}
+
+	CurseScroll: {
+		Tooltip: Thrown Scepters have a chance to release curses onto enemies.
+		DisplayName: Curse Scroll
+	}
+
+	StellarMatter: {
+		Tooltip: The source of Constitution's sentience. Without this, it is just a sword.
+		DisplayName: Stellar Matter
+	}
+
+	GalantineVial: {
+		Tooltip: ""
+		DisplayName: Galantine Vial
+	}
+
+	BrineVial: {
+		DisplayName: Brine Vial
+		Tooltip: ""
+	}
+
+	FrostFireVial: {
+		DisplayName: Frost Fire Vial
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
@@ -3382,6 +3447,8 @@ Projectiles: {
 	TenebrisFlames.DisplayName: Tenebris Flames
 	AuraThiefFireball.DisplayName: Aura Thief Fireball
 	TreasonScrollBomb.DisplayName: Treason Scroll Bomb
+	FakeAncientLight.DisplayName: Fake Ancient Light
+	CurseProjectile.DisplayName: Curse Projectile
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.
@@ -3598,8 +3665,28 @@ Buffs: {
 	}
 
 	SoulErosion: {
-		Description: Mods.DestroyerTest.Buffs.SoulErosion.Description
+		Description: You feel weak inside...
 		DisplayName: Soul Erosion
+	}
+
+	ScepterImbueGB: {
+		Description: Your scepter has been imbued with Galantine Burn!
+		DisplayName: Scepter Imbue (Galantine Burn)
+	}
+
+	Brine: {
+		DisplayName: Brine
+		Description: Mods.DestroyerTest.Buffs.Brine.Description
+	}
+
+	ScepterImbueBrine: {
+		DisplayName: Scepter Imbue Brine
+		Description: Mods.DestroyerTest.Buffs.ScepterImbueBrine.Description
+	}
+
+	ScepterImbueFF: {
+		DisplayName: Scepter Imbue F F
+		Description: Mods.DestroyerTest.Buffs.ScepterImbueFF.Description
 	}
 }
 

@@ -15,6 +15,13 @@ namespace DestroyerTest.Common
     public class WeaponImbueScepter : GlobalProjectile
     {
         public override bool InstancePerEntity => true;
+        public bool GalantineBurn = false;
+        public bool GalantineHoney = false;
+        public bool Brine = false;
+        public bool FrostBurn = false;
+        public bool Fire = false;
+        public bool Ichor = false;
+        public bool CursedFlame = false;
         public bool HeliouricShock = false;
         public bool DaylightOverload = false;
         public bool ComaceraticBurn = false;
@@ -53,6 +60,20 @@ namespace DestroyerTest.Common
                         Dust.NewDust(projectile.Center, projectile.Hitbox.Width, projectile.Hitbox.Height, ModContent.DustType<RiftDust>(), 0, 0, 40, ColorLib.Rift, 1.0f);
                     }
                 }
+                if (GalantineBurn)
+                {
+                    if (Main.rand.NextBool(5))
+                    {
+                        Dust.NewDust(projectile.Center, projectile.Hitbox.Width, projectile.Hitbox.Height, DustID.TintableDustLighted, 0, 0, 40, ColorLib.StellarColor, 1.0f);
+                    }
+                }
+                if (Brine)
+                {
+                    if (Main.rand.NextBool(5))
+                    {
+                        Dust.NewDust(projectile.Center, projectile.Hitbox.Width, projectile.Hitbox.Height, DustID.Water_Snow, 0, 0, 40, default, 1.0f);
+                    }
+                }
             }
         }
 
@@ -72,6 +93,14 @@ namespace DestroyerTest.Common
                 {
                     target.AddBuff(ModContent.BuffType<ComaceraticBurn>(), 60 * Main.rand.Next(10, 17));
                 }
+                if (GalantineBurn)
+                {
+                    target.AddBuff(ModContent.BuffType<GalantineBurn>(), 60 * Main.rand.Next(10, 17));
+                }
+                if (Brine)
+                {
+                    target.AddBuff(ModContent.BuffType<Brine>(), 60 * Main.rand.Next(10, 17));
+                }
             }
         }
 
@@ -90,6 +119,14 @@ namespace DestroyerTest.Common
                 if (ComaceraticBurn)
                 {
                     target.AddBuff(ModContent.BuffType<ComaceraticBurn>(), 60 * Main.rand.Next(10, 17));
+                }
+                if (GalantineBurn)
+                {
+                    target.AddBuff(ModContent.BuffType<GalantineBurn>(), 60 * Main.rand.Next(10, 17));
+                }
+                if (Brine)
+                {
+                    target.AddBuff(ModContent.BuffType<Brine>(), 60 * Main.rand.Next(10, 17));
                 }
             }
         }

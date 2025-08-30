@@ -88,7 +88,7 @@ namespace DestroyerTest.Content.Projectiles
                 Vector2 dustPos = Projectile.Center + Main.rand.NextVector2CircularEdge(Radius, Radius);
                 Dust.NewDustPerfect(dustPos, DustID.TintableDustLighted, Projectile.velocity, 100, Color.LavenderBlush, 1.2f);
             }
-            Projectile.velocity *= 0.995f;
+            Projectile.velocity *= 0.99f;
         }   
     }
 }
