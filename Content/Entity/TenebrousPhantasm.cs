@@ -88,6 +88,20 @@ namespace DestroyerTest.Content.Entity
 			]);
 		}
 
+		SoundStyle Kill = new SoundStyle("DestroyerTest/Assets/Audio/TPKill") // The sound played when the worm roars, can be overridden by the tail or body if desired
+		{
+			Volume = 0.3f,
+			PitchVariance = 1f,
+			MaxInstances = 0
+		};
+
+		SoundStyle Hit = new SoundStyle("DestroyerTest/Assets/Audio/TPHit") // The sound played when the worm roars, can be overridden by the tail or body if desired
+		{
+			Volume = 0.3f,
+			PitchVariance = 1f,
+			MaxInstances = 0
+		};
+
 		public override void SetDefaults()
 		{
 			NPC.width = 42;
@@ -95,12 +109,12 @@ namespace DestroyerTest.Content.Entity
 			NPC.damage = 21;
 			NPC.defense = 24;
 			NPC.lifeMax = 500;
-			NPC.HitSound = SoundID.NPCHit27;
-			NPC.DeathSound = SoundID.NPCDeath24;
+			NPC.HitSound = Hit;
+			NPC.DeathSound = Kill;
 			NPC.noGravity = true;
 			// Sets the above
 			NPC.lavaImmune = true;
-			NPC.noTileCollide = true;
+			NPC.noTileCollide = false;
 		}
 
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
@@ -115,6 +129,24 @@ namespace DestroyerTest.Content.Entity
 
 		public override void AI()
 		{
+			// Check if NPC is surrounded on all sides by solid tiles
+			int left = (int)(NPC.Center.X / 16);
+			int right = (int)((NPC.Center.X + NPC.width) / 16);
+			int top = (int)(NPC.Center.Y / 16);
+			int bottom = (int)((NPC.Center.Y + NPC.height) / 16);
+
+			bool surrounded =
+				Collision.SolidTiles(left - 1, right + 1, top - 1, bottom + 1) &&
+				Collision.SolidTiles(left, right, top - 1, top - 1) && // Above
+				Collision.SolidTiles(left, right, bottom + 1, bottom + 1) && // Below
+				Collision.SolidTiles(left - 1, left - 1, top, bottom) && // Left
+				Collision.SolidTiles(right + 1, right + 1, top, bottom); // Right
+
+			if (surrounded)
+			{
+				NPC.velocity.Y = -6f; // Push upwards
+				NPC.Center += new Vector2(0, -16); // Move up one tile
+			}
 			Player player = Main.player[NPC.target]; // Get the target player
 			NPC.TargetClosest(faceTarget: true); // Target the closest player and face them
 

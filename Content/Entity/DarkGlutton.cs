@@ -41,7 +41,7 @@ namespace DestroyerTest.Content.Entity
             immunities();
             var drawModifier = new NPCID.Sets.NPCBestiaryDrawModifiers()
             { // Influences how the NPC looks in the Bestiary
-                CustomTexturePath = "DestroyerTest/Content/Entity/RiftDiggerHeadBestiary", // If the NPC is multiple parts like a worm, a custom texture for the Bestiary is encouraged.
+                CustomTexturePath = "DestroyerTest/Content/Entity/DarkGluttonHeadBestiary", // If the NPC is multiple parts like a worm, a custom texture for the Bestiary is encouraged.
                 Position = new Vector2(40f, 24f),
                 PortraitPositionXOverride = 0f,
                 PortraitPositionYOverride = 12f
@@ -82,11 +82,17 @@ namespace DestroyerTest.Content.Entity
             NPC.DeathSound = Kill;
         }
 
-		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
+		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+		{
 			// We can use AddRange instead of calling Add multiple times in order to add multiple items at once
+			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
+				new FlavorTextBestiaryInfoElement("Originating from the Shade World, this clump of sludge has parasitized a devourer. The poor thing is still writhing in agony."),
+				new FlavorTextBestiaryInfoElement("In addition to freeing the moon lord from imprisonment, breaking the seal also tore open holes across space, allowing enemies from the shade world to enter yours."),
+			});
+
 			bestiaryEntry.Info.AddRange([
 				// Sets the spawning conditions of this NPC that is listed in the bestiary.
-				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface
+				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.TheCorruption
 			]);
 		}
 
@@ -192,7 +198,7 @@ namespace DestroyerTest.Content.Entity
                         Projectile.NewProjectile(Entity.GetSource_FromThis(), NPC.Center, Shootvel, ModContent.ProjectileType<TenebrisStar>(), 15, 1, ai1: player.whoAmI, ai2: 2);
                     }
                 }
-                AttackTimer = 240;
+                AttackTimer = 480;
             }
             if (AttackTimer > 0)
             {

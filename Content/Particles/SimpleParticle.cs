@@ -25,8 +25,9 @@ namespace DestroyerTest.Content.Particles
             }
         }
 
-        public override bool PreDraw(SpriteBatch spriteBatch) => true;
+        public override bool PreDraw(SpriteBatch spriteBatch)
+        {
+            return true;
+        }
     }
-
-    
 }

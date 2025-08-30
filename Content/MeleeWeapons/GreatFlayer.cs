@@ -8,6 +8,7 @@ using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
+using UtfUnknown.Core.Models.SingleByte.Finnish;
 
 namespace DestroyerTest.Content.MeleeWeapons
 {
@@ -46,11 +47,41 @@ namespace DestroyerTest.Content.MeleeWeapons
 			Item.shoot = ModContent.ProjectileType<GreatFlayerProjectile>(); // The sword as a projectile
 		}
 
-		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-			// Using the shoot function, we override the swing projectile to set ai[0] (which attack it is)
-			Projectile.NewProjectile(source, position, velocity, type, damage, knockback, Main.myPlayer, attackType);
-            attackType = (attackType + 1) % 3; // Increment attackType to cycle through three attack types
-			comboExpireTimer = 0; // Every time the weapon is used, we reset this so the combo does not expire
+        public override bool AltFunctionUse(Player player)
+        {
+            return true;
+        }
+
+
+		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+		{
+			if (player.altFunctionUse != 2)
+			{
+				// Using the shoot function, we override the swing projectile to set ai[0] (which attack it is)
+				Projectile.NewProjectile(source, position, velocity, type, damage, knockback, Main.myPlayer, attackType);
+				attackType = (attackType + 1) % 3; // Increment attackType to cycle through three attack types
+				comboExpireTimer = 0; // Every time the weapon is used, we reset this so the combo does not expire
+				return false;
+			}
+
+			if (player.altFunctionUse == 2)
+				{
+					Vector2 dashDir = Vector2.Normalize(Main.MouseWorld - player.Center);
+					float dashSpeed = 15f;
+					player.velocity = dashDir * dashSpeed;
+
+					// Spawn projectile for visuals/arm handling
+					Projectile.NewProjectile(
+						player.GetSource_ItemUse(Item),
+						player.Center,
+						Vector2.Zero,
+						ModContent.ProjectileType<GreatFlayerDash>(),
+						damage,
+						knockback,
+						player.whoAmI);
+
+					return false;
+				}
 			return false; // return false to prevent original projectile from being shot
 		}
 

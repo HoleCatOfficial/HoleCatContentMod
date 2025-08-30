@@ -78,15 +78,11 @@ namespace DestroyerTest.Content.Equips.AuraThiefSet
 
 		// UpdateArmorSet allows you to give set bonuses to the armor.
 		public override void UpdateArmorSet(Player player) {
-			ParticleSpawnTimer++; // Increment the timer each frame, used to control projectile spawn timing
-            bool isHoldingSoulEdge = player.HeldItem.type == ModContent.ItemType<SoulEdge>();
-			bool isHoldingTrueSoulEdge = player.HeldItem.type == ModContent.ItemType<TrueSoulEdge>();
-
-			if ((isHoldingSoulEdge|| isHoldingTrueSoulEdge) && ParticleSpawnTimer > 60) {
-				PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRing>(), player.Center, Vector2.Zero, Color.SkyBlue, 1);
-				ParticleSpawnTimer = 0; // Reset the timer after spawning the projectile
-			}
-			
+			player.GetDamage(DamageClass.Melee) += 8;
+			player.buffImmune[BuffID.Frostburn] = true;
+			player.buffImmune[BuffID.Frostburn2] = true;
+			player.buffImmune[BuffID.Frozen] = true;
+			player.buffImmune[BuffID.Chilled] = true;
 		}
 
          public override void ArmorSetShadows(Player player)

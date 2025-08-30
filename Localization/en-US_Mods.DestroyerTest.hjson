@@ -2421,7 +2421,7 @@ Items: {
 
 	ConstitutionLootBag: {
 		Tooltip: ""
-		DisplayName: Constitution Loot Bag
+		DisplayName: Treasure Bag (Constitution)
 	}
 
 	CursedStar: {
@@ -2550,7 +2550,11 @@ Items: {
 
 	CorruptPetalGun: {
 		DisplayName: Corrupt Petal Gun
-		Tooltip: Shoots out Corrupted Flower petals that have a chance to home in on an enemy.
+		Tooltip:'''
+				Shoots out Corrupted Flower petals that have a chance to home in on an enemy.
+				Uses vines as ammunition.
+				'''
+
 	}
 
 	TinyHammer: {
@@ -2569,18 +2573,22 @@ Items: {
 	}
 
 	NightmareRoseLootBag: {
-		DisplayName: Nightmare Rose Loot Bag
+		DisplayName: Treasure Bag (Nightmare Rose)
 		Tooltip: ""
 	}
 
 	WyvernCorpseLootBag: {
-		DisplayName: Wyvern Corpse Loot Bag
+		DisplayName: Treasure Bag (Wyvern Corpse)
 		Tooltip: ""
 	}
 
 	GreatFlayer: {
 		DisplayName: Great Flayer
-		Tooltip: Every third Swing is a spin, spraying ichor in all directions.
+		Tooltip:
+			'''
+			Every third Swing is a spin, shooting teeth in all directions.
+			Right click to do a short dash with this weapon.
+			'''
 	}
 
 	WyvernSkull: {
@@ -2874,6 +2882,236 @@ Items: {
 		Tooltip: ""
 		DisplayName: Onyx Scepter
 	}
+
+	HaepienNodeCharm: {
+		DisplayName: Haepien's Charm
+		Tooltip:
+			'''
+			A long lost treasure of the nature sprite Haepien...
+			Makes Nodes in the evil biomes impossible to harm or enrage.
+			If you are in proximity to a node, you will benefit from its empowering properties.
+			'''
+	}
+
+	CursedNodeLootBag: {
+		Tooltip: ""
+		DisplayName: Treasure Bag (Cursed Flame Node)
+	}
+
+	InfectedGrimoire: {
+		Tooltip: Shoots out two infected crystals that bounce off of tiles. One inflicts Ichor, the other, Cursed Flames.
+		DisplayName: Infected Grimoire
+	}
+
+	Item_EvilBossMusicBox: {
+		DisplayName: Music Box (Nightmare Rose / Wyvern Corpse)
+		Tooltip: Plays Track: 'Tribulation' by HoleCat
+	}
+
+	Item_NodeBossMusicBox: {
+		DisplayName: Music Box (Ichor / Cursed Flame Node)
+		Tooltip: Plays Track: 'Elemental Influence' by HoleCat
+	}
+
+	Item_NodeIdleMusicBox: {
+		DisplayName: Music Box (Dormant Node)
+		Tooltip: Plays Track: 'Elemental Presence' by HoleCat
+	}
+
+	ComaceraticFlask: {
+		DisplayName: Comaceratic Flask
+		Tooltip: Imbues your weapons with Comaceratic Burn.
+	}
+
+	HeliouricFlask: {
+		DisplayName: Heliouric Flask
+		Tooltip: Imbues your weapons with Comaceratic Burn.
+	}
+
+	RiftenCrate: {
+		DisplayName: Riften Crate
+		Tooltip: ""
+	}
+
+	RiftFlask: {
+		DisplayName: Rift Flask
+		Tooltip: Imbues your weapons with Comaceratic Burn.
+	}
+
+	ComaceraticVial: {
+		DisplayName: Comaceratic Vial
+		Tooltip: Imbues your scepters with Comaceratic Burn. This effect is exclusive to scepters.
+	}
+
+	HeliouricVial: {
+		DisplayName: Heliouric Vial
+		Tooltip: Imbues your scepters with Heliouric Shock. This effect is exclusive to scepters.
+	}
+
+	RiftVial: {
+		DisplayName: Rift Vial
+		Tooltip: Imbues your scepters with Daylight Overload. This effect is exclusive to scepters.
+	}
+
+	InfernalTiara: {
+		Tooltip: "'Bathe in regal hellfire'"
+		SetBonusText:
+			'''
+			You are immune to lava.
+			A 75 point shield will generate around you, blocking incoming harmful projectiles. 
+			Once the shield breaks, it will begin pulling from your health to regenerate.
+			'''
+		DisplayName: Infernal Tiara
+	}
+
+	InfernalDress: {
+		Tooltip: "'Bathe in regal hellfire'"
+		DisplayName: Infernal Dress
+	}
+
+	KeeperStaff: {
+		DisplayName: Keeper of the Great Wyvern's Soul
+		Tooltip:
+			'''
+			Calls upon the Soul of the Great Wyvern to assist in battle.
+			The wyvern will spin around a ball of energy, firing soul crystals in all directions for 20 seconds.
+			There can only be one in the entire world at any given moment.
+			Master
+
+			-Legendary Weapon-
+			'''
+	}
+
+	ShadeBow: {
+		Tooltip: ""
+		DisplayName: Shade Bow
+	}
+
+	BeeHeadress: {
+		Tooltip: ""
+		DisplayName: Bee Headress
+	}
+
+	RoseSoul: {
+		DisplayName: Soul of the Conglomerated Child of Mother Darkness
+		Tooltip: Living proof.
+	}
+
+	WyvernSoul: {
+		Tooltip: Unforseeable.
+		DisplayName: Soul of the Great Wyvern
+	}
+
+	ForgottenPendant: {
+		Tooltip:
+			'''
+			Increases Scepter Class damage by 4%.
+			Increases armor penetration for all classes by 1.
+			'The garnet inside it is faded and covered in hundreds of scrapes...'
+			'''
+		DisplayName: Forgotten Pendant
+	}
+
+	DetritizedPendant: {
+		Tooltip:
+			'''
+			Increases Scepter Class damage by 4%.
+			Increases armor penetration for all classes by 1.
+			Throwing a scepter has a chance to release a burst of 5 tiny eaters.
+			'It reeks of ammonia...'
+			'''
+		DisplayName: Detritized Pendant
+	}
+
+	AuraThiefHeadress: {
+		Tooltip: ""
+		DisplayName: Aura Thief Headress
+	}
+
+	VisceraPendant: {
+		DisplayName: Viscera Pendant
+		Tooltip:
+			'''
+			Increases Scepter Class damage by 4%.
+			Increases armor penetration for all classes by 1.
+			Throwing a scepter has a chance to release a burst of Enchanted Blood.
+			'It smells like coins...'
+			'''
+	}
+
+	TreasonScroll: {
+		Tooltip:
+			'''
+			Throwing a scepter has a chance to release multiple shadowflame mines.
+			These mines can deal damage to both players and enemies when they explode.
+			'''
+		DisplayName: Eunuch Advisor's Treasonous Scroll
+	}
+
+	FadedHood: {
+		DisplayName: Faded Hood
+		Tooltip: ""
+	}
+
+	FadedRobes: {
+		DisplayName: Faded Robes
+		Tooltip: ""
+	}
+
+	ScepterEmblem: {
+		DisplayName: Scepter Emblem
+		Tooltip: ""
+	}
+
+	FrigidScroll: {
+		DisplayName: Frigid Scroll
+		Tooltip: Thrown Scepters have a chance to release ice tridents.
+	}
+
+	HandScroll: {
+		DisplayName: Grasping Scroll
+		Tooltip: Thrown Scepters have a chance to release shadow hands.
+	}
+
+	PurityScroll: {
+		DisplayName: Purity Scroll
+		Tooltip: Thrown Scepters have a chance to release terra beams and purify nearby tiles.
+	}
+
+	StarScroll: {
+		DisplayName: Star Scroll
+		Tooltip: Thrown Scepters have a chance to summon stars down onto the cursor.
+	}
+
+	TurbulenceScroll: {
+		DisplayName: Turbulence Scroll
+		Tooltip: Thrown Scepters have a chance to release a windy vortex.
+	}
+
+	CurseScroll: {
+		Tooltip: Thrown Scepters have a chance to release curses onto enemies.
+		DisplayName: Curse Scroll
+	}
+
+	StellarMatter: {
+		Tooltip: The source of Constitution's sentience. Without this, it is just a sword.
+		DisplayName: Stellar Matter
+	}
+
+	GalantineVial: {
+		Tooltip: ""
+		DisplayName: Galantine Vial
+	}
+
+	BrineVial: {
+		DisplayName: Brine Vial
+		Tooltip: ""
+	}
+
+	FrostFireVial: {
+		DisplayName: Frost Fire Vial
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
@@ -3105,10 +3343,10 @@ Projectiles: {
 	ValiantDawnSwing.DisplayName: Valiant Dawn Swing
 	WyvernsDestructionSwing.DisplayName: Wyverns Destruction Swing
 	EternalAbyssSwing.DisplayName: Eternal Abyss Swing
-	OrganProjectile_Variant1.DisplayName: Organ Projectile_ Variant1
-	OrganProjectile_Variant2.DisplayName: Organ Projectile_ Variant2
-	OrganProjectile_Variant3.DisplayName: Organ Projectile_ Variant3
-	OrganProjectile_Variant4.DisplayName: Organ Projectile_ Variant4
+	OrganProjectile_Variant1.DisplayName: Organ Projectile
+	OrganProjectile_Variant2.DisplayName: Organ Projectile
+	OrganProjectile_Variant3.DisplayName: Organ Projectile
+	OrganProjectile_Variant4.DisplayName: Organ Projectile
 	FleshBomb.DisplayName: Flesh Bomb
 	CFP3.DisplayName: C F P3
 	CFP2.DisplayName: C F P2
@@ -3173,6 +3411,48 @@ Projectiles: {
 	OnyxWaveCenter.DisplayName: Onyx Wave Center
 	CustomSwordMinion.DisplayName: Custom Sword Minion
 	SwordMinionTemplate.DisplayName: Sword Minion Template
+	EnchantedShadowflame.DisplayName: Enchanted Shadowflame
+	EnchantedBlood.DisplayName: Enchanted Blood
+	Copper_Broadsword.DisplayName: Copper_ Broadsword
+	Gold_Broadsword.DisplayName: Gold_ Broadsword
+	Iron_Broadsword.DisplayName: Iron_ Broadsword
+	Lead_Broadsword.DisplayName: Lead_ Broadsword
+	Platinum_Broadsword.DisplayName: Platinum_ Broadsword
+	Silver_Broadsword.DisplayName: Silver_ Broadsword
+	Tin_Broadsword.DisplayName: Tin_ Broadsword
+	Tungsten_Broadsword.DisplayName: Tungsten_ Broadsword
+	CursedFlameWallVertical.DisplayName: Cursed Flame Wall Vertical
+	CursedFlameWallHorizontal.DisplayName: Cursed Flame Wall Horizontal
+	CursedFlameNapalm.DisplayName: Cursed Flame Napalm
+	CursedNodeCrystal.DisplayName: Cursed Crystal
+	Tooth.DisplayName: Tooth
+	BloodRain.DisplayName: Blood Rain
+	BloodCloud.DisplayName: Blood Cloud
+	ToothBomb.DisplayName: Tooth Bomb
+	IchorNodeCrystal.DisplayName: Ichor Crystal
+	NodeSlam.DisplayName: Node Slam
+	IchorNodeCrystal2.DisplayName: Ichor Crystal
+	CrystalBomb.DisplayName: Crystal Bomb
+	IchorNodeCrystalFriendly.DisplayName: Ichor Node Crystal Friendly
+	CursedNodeCrystalFriendly.DisplayName: Cursed Node Crystal Friendly
+	SoulCrystal.DisplayName: Soul Crystal
+	KeeperSoulProj.DisplayName: Soul
+	SoulCrystalFriendly.DisplayName: Soul Crystal
+	WyvernSoulBody.DisplayName: Wyvern Soul Body
+	WyvernSoulBody2.DisplayName: Wyvern Soul Body2
+	WyvernSoulBody3.DisplayName: Wyvern Soul Body3
+	WyvernSoulHead.DisplayName: Wyvern Soul Head
+	WyvernSoulLegs.DisplayName: Wyvern Soul Legs
+	WyvernSoulTail.DisplayName: Wyvern Soul Tail
+	ToothFriendly.DisplayName: Tooth Friendly
+	GreatFlayerDash.DisplayName: Great Flayer Dash
+	SoulCrystalBomb.DisplayName: Soul Crystal Bomb
+	SoulExplosion.DisplayName: Soul Explosion
+	TenebrisFlames.DisplayName: Tenebris Flames
+	AuraThiefFireball.DisplayName: Aura Thief Fireball
+	TreasonScrollBomb.DisplayName: Treason Scroll Bomb
+	FakeAncientLight.DisplayName: Fake Ancient Light
+	CurseProjectile.DisplayName: Curse Projectile
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.
@@ -3298,7 +3578,10 @@ Buffs: {
 		Description: Mods.DestroyerTest.Buffs.SpiritDrift.Description
 	}
 
-	GalantineBurn.DisplayName: Galantine Burn
+	GalantineBurn: {
+		DisplayName: Galantine Burn
+		Description: The wrath of the stars has come upon you!
+	}
 
 	OminousPrescence: {
 		DisplayName: Ominous Prescence
@@ -3323,6 +3606,91 @@ Buffs: {
 	GargantuaBoost: {
 		Description: The Living Diamond empowers Gargantua!
 		DisplayName: Gargantua Boost
+	}
+
+	HeliouricShock: {
+		DisplayName: Heliouric Shock
+		Description: Riften Energy courses through your nerves!
+	}
+
+	NodePower: {
+		Description: You benefit from a nearby node!
+		DisplayName: Node Power
+	}
+
+	ComaceraticBurn: {
+		Description: You are being eradicated by the energy of a hundred suns!
+		DisplayName: Comaceratic Burn
+	}
+
+	ScepterImbueCB: {
+		DisplayName: Scepter Imbue (Comaceratic Burn)
+		Description: Your scepters have been imbued with Comaceratic Burn!
+	}
+
+	ScepterImbueDO: {
+		DisplayName: Scepter Imbue (Daylight Overload)
+		Description: Your scepters have been imbued with Daylight Overload!
+	}
+
+	ScepterImbueHSk: {
+		DisplayName: Scepter Imbue (Heliouric Shock)
+		Description: Your scepters have been imbued with Heliouric Shock!
+	}
+
+	WeaponImbueCB: {
+		DisplayName: Weapon Imbue (Comaceratic Burn)
+		Description: Your Weapons have been imbued with Comaceratic Burn!
+	}
+
+	WeaponImbueDO: {
+		DisplayName: Weapon Imbue (Daylight Overload)
+		Description: Your Weapons have been imbued with Daylight Overload!
+	}
+
+	WeaponImbueHSk: {
+		DisplayName: Weapon Imbue (Heliouric Shock)
+		Description: Your Weapons have been imbued with Heliouric Shock!
+	}
+
+	SoulInferno: {
+		Description: You no longer feel any sense of self.
+		DisplayName: Soul Inferno
+	}
+
+	WyvernSoulPetBuff: {
+		DisplayName: Wyvern Soul Pet
+		Description: He is eternally grateful
+	}
+
+	ArenaEffects: {
+		Description: The Boss is creating an effect in its vicinity!
+		DisplayName: Arena Effects
+	}
+
+	SoulErosion: {
+		Description: You feel weak inside...
+		DisplayName: Soul Erosion
+	}
+
+	ScepterImbueGB: {
+		Description: Your scepter has been imbued with Galantine Burn!
+		DisplayName: Scepter Imbue (Galantine Burn)
+	}
+
+	Brine: {
+		DisplayName: Brine
+		Description: Mods.DestroyerTest.Buffs.Brine.Description
+	}
+
+	ScepterImbueBrine: {
+		DisplayName: Scepter Imbue Brine
+		Description: Mods.DestroyerTest.Buffs.ScepterImbueBrine.Description
+	}
+
+	ScepterImbueFF: {
+		DisplayName: Scepter Imbue F F
+		Description: Mods.DestroyerTest.Buffs.ScepterImbueFF.Description
 	}
 }
 
@@ -3374,8 +3742,8 @@ NPCs: {
 
 	WyvernCorpseHead: {
 		DisplayName: Wyvern Corpse
-		Bestiary: A great wyvern fell from the sky, and landed in the crimson. First away went its fur, then its cartillage, and finally, most of its fats. Now, all that remains is its rotten flesh, haning off the bones loosely with Ichor boils everywhere.
 		DespawnMessage: The Wyvern escapes to look for more food...
+		Bestiary: Mods.DestroyerTest.NPCs.WyvernCorpseHead.Bestiary
 	}
 
 	WyvernCorpseLegs.DisplayName: Wyvern Corpse
@@ -3384,6 +3752,7 @@ NPCs: {
 	NightmareRose: {
 		DisplayName: Nightmare Rose
 		DespawnMessage: The amalgamation disbands...
+		ExitBarrierDeath: "{0} attempted to flee."
 	}
 
 	EimvurNPC: {
@@ -3443,6 +3812,13 @@ NPCs: {
 	DarkGluttonBody.DisplayName: Dark Glutton Body
 	DarkGluttonHead.DisplayName: Dark Glutton Head
 	DarkGluttonTail.DisplayName: Dark Glutton Tail
+	CursedFlameNodeMB.DisplayName: Cursed Flame Node
+	IchorNodeMB.DisplayName: Ichor Node
+	ShadeThrowerMagenta.DisplayName: Shade Thrower Magenta
+	ShadeThrowerTan.DisplayName: Shade Thrower Tan
+	ShadeThrowerBlue.DisplayName: Shade Thrower Blue
+	TenebrisElemental.DisplayName: Tenebris Elemental
+	DarkArchmage.DisplayName: Dark Archmage
 }
 
 Keybinds: {
@@ -3477,6 +3853,7 @@ Tiles: {
 	}
 
 	Tile_VesperOre.MapEntry: Tile_ Vesper Ore
+	Tile_RiftenCrate.MapEntry: Tile_ Riften Crate
 }
 
 Biomes: {
@@ -3494,7 +3871,7 @@ Biomes: {
 WorldGen: {
 	HelicitePassMessage: Putting the sky deep underground...
 	BlessedWithHeliciteMessage: Radiant Fragments of solar energy embed themselves in the rocks near to hell!
-	VesperOrePassMessage: Mods.DestroyerTest.WorldGen.VesperOrePassMessage
+	VesperOrePassMessage: Burying Fragments of Exotic properties...
 	BlessedWithVesperOreMessage: Mods.DestroyerTest.WorldGen.BlessedWithVesperOreMessage
 }
 
@@ -3539,6 +3916,11 @@ Configs: {
 		ShowBugCommandMessage: {
 			Tooltip: Shows a massive advertisement for the new /bug command for bug reporting.
 			Label: Show Bug Command Message
+		}
+
+		NodeIdleMusic: {
+			Tooltip: If true, when a node spawns, it will play music even when not attacking. The idle music is different from the battle music, but if they spawn too often for you liking, the ambience will get annoying.
+			Label: Nodes will play Music when Dormant
 		}
 	}
 }
@@ -3638,8 +4020,7 @@ BookText: {
 			When I became a young man, I left the farm to pursue more
 			knowledge. That led me to a school in Ebüchmoon, a northern
 			territory of Museveria. I had to work some odd jobs, do a
-			few favors, and had to make a professor commit adultery by
-			sleeping with me; it was a necessary evil. My efforts did
+			few favors, multiple of which were regrettable, but necessary evils. My efforts did
 			pay off in the end, as I was allowed to study at that
 			school and prepare for a career in scholarly exploration.
 			'''

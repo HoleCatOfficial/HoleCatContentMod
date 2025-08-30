@@ -11,7 +11,7 @@ namespace DestroyerTest.Rarity
 {
 	public class RiftRarity1 : ModRarity
     {
-        public override Color RarityColor => new Color(0, 0, 0); // Change color as needed
+        public override Color RarityColor => new Color(255, 155, 0); // Change color as needed
 
         public override int GetPrefixedRarity(int offset, float valueMult)
         {

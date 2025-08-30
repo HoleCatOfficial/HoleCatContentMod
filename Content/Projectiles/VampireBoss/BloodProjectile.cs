@@ -48,7 +48,7 @@ public class BloodProjectile : ModProjectile
 		public override void AI()
 		{
 			Rectangle SpawnBox = new Rectangle((int)Projectile.position.X, (int)Projectile.position.Y, Projectile.width, Projectile.height);
-			PRTLoader.NewParticle(PRTLoader.GetParticleID<BloodParticle>(), Main.rand.NextVector2FromRectangle(SpawnBox), Vector2.Zero, Color.White, 1);
+			PRTLoader.NewParticle(PRTLoader.GetParticleID<BloodParticle>(), Main.rand.NextVector2FromRectangle(SpawnBox), Vector2.Zero, Color.White, 0.5f);
 			float maxDetectRadius = 40f; // The maximum radius at which a projectile can detect a target
 
 			// First, we find a homing target if we don't have one

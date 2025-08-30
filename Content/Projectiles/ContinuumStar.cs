@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Particles;
@@ -53,29 +55,50 @@ namespace DestroyerTest.Content.Projectiles
 
 		}
 
-		private RainbowRodDrawer rainbowDrawer;
-
 		public override bool PreDraw(ref Color lightColor)
 		{
-			lightColor = ColorLib.TenebrisGradient;
+			lightColor = ColorLib.StellarColor;
 			SpriteBatch spriteBatch = Main.spriteBatch;
+			DTUtils Utility = new DTUtils();
 			Texture2D projectileTexture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/StarParticle2").Value;
-			// Glow effect (Immediate drawing with Additive blending)
-			spriteBatch.End();
-			spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+			Texture2D pixel = Terraria.GameContent.TextureAssets.MagicPixel.Value;
 
-			// Draw the base projectile using the default drawing system (Deferred)
-			Main.EntitySpriteDraw(
-				projectileTexture,
-				Projectile.Center - Main.screenPosition,
-				null,
-				Color.White,
-				Projectile.rotation,
-				projectileTexture.Size() / 2,
-				Projectile.scale * 0.3f,
-				SpriteEffects.None,
-				0
-			);
+            Utility.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+            for (int i = 0; i < TrailPositions.Count - 1; i++)
+			{
+				Vector2 start = TrailPositions[i] - Main.screenPosition;
+				Vector2 end = TrailPositions[i + 1] - Main.screenPosition;
+				Vector2 diff = end - start;
+
+				float length = diff.Length();
+				if (length < 0.5f)
+					continue;
+
+				float rotation = diff.ToRotation();
+				float width = MathHelper.Lerp(0.01f, 0.0007f, i / (float)TrailLength);
+				float alpha = MathHelper.Lerp(1f, 0f, i / (float)TrailLength);
+
+				// Offset disco values by i + time, so it looks like bands traveling
+				float shift = (Main.GlobalTimeWrappedHourly * 60f + i * 10f) % 255f;
+
+				byte r = (byte)((Math.Sin((shift + 0) * 0.0245f) * 127 + 128) / 2);     // similar to Main.DiscoR /2
+				byte g = (byte)((Math.Sin((shift + 85) * 0.0245f) * 127 + 128) / 1.25); // offset phase
+				byte b = (byte)((Math.Sin((shift + 170) * 0.0245f) * 127 + 128) / 1.5); // offset phase
+
+				Color rainbowColor = new Color(r, g, b) * alpha;
+
+				Main.spriteBatch.Draw(
+					pixel,
+					start,
+					null,
+					rainbowColor,
+					rotation,
+					new Vector2(pixel.Width / 2, pixel.Height / 2),
+					new Vector2(length, width),
+					SpriteEffects.None,
+					0f
+				);
+			}
 
 			Texture2D glowTexture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/SimpleParticle").Value;
 			Main.EntitySpriteDraw(
@@ -90,27 +113,40 @@ namespace DestroyerTest.Content.Projectiles
 				0
 			);
 
-			// Restore the deferred mode (for the next drawing of things)
-			spriteBatch.End();
-			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+			// Draw the base projectile using the default drawing system (Deferred)
+			Main.EntitySpriteDraw(
+				projectileTexture,
+				Projectile.Center - Main.screenPosition,
+				null,
+				Color.White,
+				Projectile.rotation,
+				projectileTexture.Size() / 2,
+				Projectile.scale * 0.6f,
+				SpriteEffects.None,
+				0
+			);
 
-			//RainbowRodDrawer RodTrail = new RainbowRodDrawer();
-			//RodTrail.Draw(Projectile);
+			Utility.ReturnToDefaultDrawing(spriteBatch);
 
 			
 			return false; // Let the default system handle the base projectile drawing
 		}
 
-		// Custom AI
+		public List<Vector2> TrailPositions = new();
+        public List<float> TrailRotations = new();
+        private const int TrailLength = 40;
 		public override void AI()
 		{
-			// Draw the Rainbow Rod-like trail
+			TrailPositions.Insert(0, Projectile.Center);
+            TrailRotations.Insert(0, Projectile.rotation);
 
-
+            // Cap trail
+            while (TrailPositions.Count > TrailLength)
+                TrailPositions.RemoveAt(TrailPositions.Count - 1);
+            while (TrailRotations.Count > TrailLength)
+                TrailRotations.RemoveAt(TrailRotations.Count - 1);
 
 			Lighting.AddLight(Projectile.Center, ColorLib.StellarColor.ToVector3() * 1.0f);
-
-			PRTLoader.NewParticle(PRTLoader.GetParticleID<StarParticle>(), Projectile.Center, Vector2.Zero, ColorLib.StellarColor, 0.5f);
 
 			if (DelayTimer < 10)
 			{
@@ -187,29 +223,24 @@ namespace DestroyerTest.Content.Projectiles
 		}
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
-			Player player = Main.player[Main.myPlayer];
+			target.AddBuff(ModContent.BuffType<GalantineBurn>(), 120);
 
 		}
 
         public override void OnKill(int timeLeft)
         {
 			SoundEngine.PlaySound(SoundID.Item28, Projectile.Center);
-			Dust dust = Dust.NewDustDirect(
+			Dust.NewDust(
 				Projectile.Center,
 				Projectile.width,
 				Projectile.height,
-				DustID.RainbowTorch,
+				DustID.TintableDustLighted,
 				Projectile.velocity.X * 0.4f,
 				Projectile.velocity.Y * 0.4f,
-				80,
-				default,
+				0,
+				ColorLib.RainbowGradient,
 				1f
 			);
-			dust.noGravity = true; // Makes it float, optional
-			dust.scale = 0.8f;     // Start smaller if it feels too bloomy
-			dust.fadeIn = 0f;      // Prevents weird fade-in effect
-			dust.velocity *= 0.5f; // Slow down the dust
-			dust.noLight = true;  // Optional — depends on if you want light
 
         }
 		

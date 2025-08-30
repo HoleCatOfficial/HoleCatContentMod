@@ -20,6 +20,7 @@ namespace DestroyerTest.Content.Projectiles
 	public class GreatFlayerProjectile : ModProjectile
 	{
         public SoundStyle Swing = new SoundStyle("DestroyerTest/Assets/Audio/Constitution/ConSwing", 6);
+		public SoundStyle Tooth = new SoundStyle("DestroyerTest/Assets/Audio/Corpse/ToothShoot") with { MaxInstances = 0 };
 		private const float SWINGRANGE = 1.67f * (float)Math.PI; 
 		private const float FIRSTHALFSWING = 0.45f;
 		private const float WINDUP = 0.05f;
@@ -253,76 +254,93 @@ namespace DestroyerTest.Content.Projectiles
 			Size = MathHelper.SmoothStep(0, 1, Timer / prepTime); 
 
 			if (Timer >= prepTime) {
-				SoundEngine.PlaySound(SoundID.Item1); 
+				//SoundEngine.PlaySound(SoundID.Item1); 
 				CurrentStage = AttackStage.Execute; 
 			}
 		}
 
-
+		private bool Sound1 = false;
+        private bool Sound2 = false;
+        private bool Sound3 = false;
+		private bool Sound4 = false;
         private void ExecuteStrike()
-        {
+		{
 
-            Player player = Main.player[Projectile.owner];
+			Player player = Main.player[Projectile.owner];
 
-            if (CurrentAttack == AttackType.SwingDown)
-            {
+			if (CurrentAttack == AttackType.SwingDown)
+			{
 
-                Progress = MathHelper.SmoothStep(0, SWINGRANGE, (1f - UNWIND) * Timer / execTime);
-                SoundEngine.PlaySound(Swing, player.Center);
-
-
-
-                Lighting.AddLight(player.Center, ColorLib.StellarColor.ToVector3());
-
-                if (Timer >= execTime)
-                {
-                    CurrentStage = AttackStage.Unwind;
-                }
-            }
-            else if (CurrentAttack == AttackType.SwingUp)
-            {
-                if (player.direction == 1)
-                {
-                    Progress = MathHelper.SmoothStep(SWINGRANGE, 0, (1f - UNWIND) * Timer / execTime);
-                }
-                if (player.direction == -1)
-                {
-                    Progress = MathHelper.SmoothStep(SWINGRANGE, 2.0f, (1f - UNWIND) * Timer / execTime);
-                }
-
-                SoundEngine.PlaySound(Swing, player.Center);
+				Progress = MathHelper.SmoothStep(0, SWINGRANGE, (1f - UNWIND) * Timer / execTime);
+				if (!Sound1)
+				{
+					SoundEngine.PlaySound(Swing, player.Center);
+					Sound1 = true;
+				}
 
 
-                Lighting.AddLight(player.Center, ColorLib.StellarColor.ToVector3());
 
-                if (Timer >= execTime)
-                {
-                    CurrentStage = AttackStage.Unwind;
-                }
-            }
-            else if (CurrentAttack == AttackType.Spin)
-            {
-                Progress = MathHelper.SmoothStep(0, SPINRANGE, (1f - UNWIND / 2) * Timer / (execTime * SPINTIME));
-                
+				Lighting.AddLight(player.Center, ColorLib.Ichor.ToVector3());
 
-                if (Timer == (int)(execTime * SPINTIME * 3 / 4))
-                {
-                    SoundEngine.PlaySound(Swing, player.Center); // Play sword sound again
-                    Projectile.ResetLocalNPCHitImmunity(); // Reset the local npc hit immunity for second half of spin
-                    float angleIncrement = MathHelper.TwoPi / ProjectileAmount;
+				if (Timer >= execTime)
+				{
+					CurrentStage = AttackStage.Unwind;
+				}
+			}
+			else if (CurrentAttack == AttackType.SwingUp)
+			{
+				if (player.direction == 1)
+				{
+					Progress = MathHelper.SmoothStep(SWINGRANGE, 0, (1f - UNWIND) * Timer / execTime);
+				}
+				if (player.direction == -1)
+				{
+					Progress = MathHelper.SmoothStep(SWINGRANGE, 2.0f, (1f - UNWIND) * Timer / execTime);
+				}
+
+				if (!Sound2)
+				{
+					SoundEngine.PlaySound(Swing, player.Center);
+					Sound2 = true;
+				}
+
+
+				Lighting.AddLight(player.Center, ColorLib.Ichor.ToVector3());
+
+				if (Timer >= execTime)
+				{
+					CurrentStage = AttackStage.Unwind;
+				}
+			}
+			else if (CurrentAttack == AttackType.Spin)
+			{
+				Progress = MathHelper.SmoothStep(0, SPINRANGE, (1f - UNWIND / 2) * Timer / (execTime * SPINTIME));
+
+
+				if (Timer == (int)(execTime * SPINTIME * 3 / 4))
+				{
+					if (Sound3)
+					{
+						SoundEngine.PlaySound(Swing, player.Center); // Play sword sound again
+						Sound3 = true;
+					}
+					Projectile.ResetLocalNPCHitImmunity(); // Reset the local npc hit immunity for second half of spin
+					float angleIncrement = MathHelper.TwoPi / ProjectileAmount;
+					SoundEngine.PlaySound(Tooth, player.Center);
 					for (int i = 0; i < ProjectileAmount; i++)
 					{
 						Vector2 velocity = new Vector2(8, 0).RotatedBy(angleIncrement * i);
-						Projectile.NewProjectile(Entity.GetSource_FromThis(), Projectile.Center, velocity, ProjectileID.GoldenShowerFriendly, 35, 1);
+						Projectile.NewProjectile(Entity.GetSource_FromThis(), Projectile.Center, velocity, ModContent.ProjectileType<ToothFriendly>(), 35, 1);
 					}
 
-                }
+				}
 
-				if (Timer >= execTime * SPINTIME) {
+				if (Timer >= execTime * SPINTIME)
+				{
 					CurrentStage = AttackStage.Unwind;
 				}
-            }
-        }
+			}
+		}
 
         private void UnwindStrike()
         {

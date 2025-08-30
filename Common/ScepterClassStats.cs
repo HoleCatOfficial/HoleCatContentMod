@@ -64,6 +64,8 @@ namespace DestroyerTest.Common
             ScepterClassStats.SizeMultiplier = 1;
             ScepterClassStats.DamageModifier = 1;
             ScepterClassStats.ManaBurstPower = 0;
+            ScepterClassStats.BloodVialItem = false;
+            ScepterClassStats.VileCystItem = false;
         }
 
     }

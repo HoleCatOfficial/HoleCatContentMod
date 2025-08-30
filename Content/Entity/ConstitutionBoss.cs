@@ -31,6 +31,8 @@ using DestroyerTest.Content.MeleeWeapons.SwordLineage;
 using DestroyerTest.Content.RangedItems;
 using DestroyerTest.Content.Magic;
 using DestroyerTest.Content.Tiles;
+using Terraria.GameContent.ItemDropRules;
+using DestroyerTest.Content.Resources;
 
 namespace DestroyerTest.Content.Entity
 {
@@ -350,7 +352,7 @@ namespace DestroyerTest.Content.Entity
                     NPC.active = false;
                 }
             }
-            
+
             if (NPC.direction == -1)
             {
                 NPC.rotation += MathHelper.Pi + MathHelper.ToRadians(180);
@@ -1090,6 +1092,12 @@ namespace DestroyerTest.Content.Entity
             Phase2 = false;
             ColorGradientOverlaySystem.ColorVisibility = 0f;
         }
+
+        public override void ModifyNPCLoot(NPCLoot npcLoot)
+        {
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<StellarMatter>(), 2, 4, 35));
+        }
+
     }
 
 

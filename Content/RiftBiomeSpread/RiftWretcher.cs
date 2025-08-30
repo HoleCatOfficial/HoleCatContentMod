@@ -27,7 +27,7 @@ namespace DestroyerTest.Content.RiftBiomeSpread
 			Item.shootSpeed = 10f;
 			Item.useAnimation = 5;
 			Item.useTime = 5;
-			Item.UseSound = new Terraria.Audio.SoundStyle ("FranciumCalamityWeapons/Audio/NightFlameShoot") with
+			Item.UseSound = new Terraria.Audio.SoundStyle ("DestroyerTest/Assets/Audio/NightmareRose/CursedFlameShoot") with
 			{
 				Volume = 0.9f,
 				PitchVariance = 0.2f,

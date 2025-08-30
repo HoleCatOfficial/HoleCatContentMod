@@ -91,7 +91,7 @@ namespace DestroyerTest.Content.Projectiles.NightmareRose
             Vector2 start = IntialPos;
 
             float opacity = 0f;
-            int totalLifetime = 180; // The total lifetime of the projectile
+            int totalLifetime = 240; // The total lifetime of the projectile
 
             // Opacity goes from 1 (255) to 0, then back to 1 over the lifetime
             float t = Projectile.timeLeft / (float)totalLifetime;

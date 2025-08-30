@@ -7,6 +7,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Collections.Generic;
 using Terraria.Social.Steam;
 using Microsoft.Xna.Framework.Graphics;
+using DestroyerTest.Common.Systems;
 
 namespace DestroyerTest.Content.Resources;
 
@@ -40,7 +41,7 @@ namespace DestroyerTest.Content.Resources;
     public class LS_DROP_NPC : GlobalNPC
 	{
 		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot) {
-			if (npc.type == NPCID.Eyezor || 
+			if (DownedBossSystem.downedPlanteraBoss && (npc.type == NPCID.Eyezor || 
                 npc.type == NPCID.Frankenstein || 
                 npc.type == NPCID.SwampThing ||
                 npc.type == NPCID.Vampire ||
@@ -54,7 +55,7 @@ namespace DestroyerTest.Content.Resources;
                 npc.type == NPCID.DeadlySphere ||
                 npc.type == NPCID.DrManFly ||
                 npc.type == NPCID.Nailhead ||
-                npc.type == NPCID.Psycho) {
+                npc.type == NPCID.Psycho)) {
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Living_Shadow>(), 5, 10, 40));
 			}
 

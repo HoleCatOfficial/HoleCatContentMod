@@ -15,40 +15,165 @@ namespace DestroyerTest.Common.NPC_Folder
 {
 	internal class DTGlobal : GlobalNPC
 	{
-		// TODO, npc.netUpdate when this changes, and GlobalNPC gets a SendExtraAI hook
 		public override bool InstancePerEntity => true;
-        public bool DaylightOverload;
-        private bool hasNotified = false;
-
-		public override void ResetEffects(NPC npc)
-        {
-            DaylightOverload = true;
-        }
-
-       // Override the OnKill method for the Golem boss
+        private bool KilledSpaz = false;
+        private bool KilledRet = false;
         public override void OnKill(NPC npc)
         {
-            // Check if the killed NPC is the Golem
-            if (npc.type == NPCID.Golem)
+            if (npc.type == NPCID.KingSlime && !DownedBossSystem.downedKingSlimeBoss)
             {
-                // The first time this boss is killed, spawn ExampleOre into the world. This code is above SetEventFlagCleared because that will set downedMinionBoss to true.
-                if (!DownedBossSystem.downedGolemBoss)
-                {
-                    ModContent.GetInstance<HeliciteSystem>().BlessWorldWithHelicite();
-                }
-
-                // This sets downedGolemBoss to true, and if it was false before, it initiates a lantern night
-                DownedBossSystem.downedGolemBoss = true;
-
-                // If needed, manually sync the world when the boss is killed
+                DownedBossSystem.downedKingSlimeBoss = true;
                 if (Main.netMode == NetmodeID.Server)
                 {
                     NetMessage.SendData(MessageID.WorldData);
                 }
             }
-            if (npc.type == NPCID.CultistBoss)
+            if (npc.type == NPCID.EyeofCthulhu && !DownedBossSystem.downedEoCBoss)
             {
-                // The first time this boss is killed, spawn ExampleOre into the world. This code is above SetEventFlagCleared because that will set downedMinionBoss to true.
+                DownedBossSystem.downedEoCBoss = true;
+                if (Main.netMode == NetmodeID.Server)
+                {
+                    NetMessage.SendData(MessageID.WorldData);
+                }
+            }
+            if (npc.type == NPCID.EaterofWorldsHead  && !DownedBossSystem.downedEoWBoss)
+            {
+                DownedBossSystem.downedEoWBoss = true;
+                if (Main.netMode == NetmodeID.Server)
+                {
+                    NetMessage.SendData(MessageID.WorldData);
+                }
+            }
+            if (npc.type == NPCID.BrainofCthulhu && !DownedBossSystem.downedBoCBoss)
+            {
+                DownedBossSystem.downedBoCBoss = true;
+                if (Main.netMode == NetmodeID.Server)
+                {
+                    NetMessage.SendData(MessageID.WorldData);
+                }
+            }
+            if (npc.type == NPCID.QueenBee  && !DownedBossSystem.downedQueenBeeBoss)
+            {
+                DownedBossSystem.downedQueenBeeBoss = true;
+                if (Main.netMode == NetmodeID.Server)
+                {
+                    NetMessage.SendData(MessageID.WorldData);
+                }
+            }
+            if (npc.type == NPCID.Deerclops && !DownedBossSystem.downedDeerclopsMiniBoss)
+            {
+                DownedBossSystem.downedDeerclopsMiniBoss = true;
+                if (Main.netMode == NetmodeID.Server)
+                {
+                    NetMessage.SendData(MessageID.WorldData);
+                }
+            }
+            if (npc.type == NPCID.SkeletronHead && !DownedBossSystem.downedSkeletronBoss)
+            {
+                DownedBossSystem.downedSkeletronBoss = true;
+                if (Main.netMode == NetmodeID.Server)
+                {
+                    NetMessage.SendData(MessageID.WorldData);
+                }
+            }
+            if (npc.type == ModContent.NPCType<ConstitutionBoss>() && !DownedBossSystem.downedConstitutionBoss)
+            {
+                DownedBossSystem.downedConstitutionBoss = true;
+                if (Main.netMode == NetmodeID.Server)
+                {
+                    NetMessage.SendData(MessageID.WorldData);
+                }
+            }
+            if (npc.type == NPCID.WallofFlesh && !DownedBossSystem.downedWallBoss)
+            {
+                DownedBossSystem.downedWallBoss = true;
+                if (Main.netMode == NetmodeID.Server)
+                {
+                    NetMessage.SendData(MessageID.WorldData);
+                }
+            }
+            if (npc.type == NPCID.TheDestroyer && !DownedBossSystem.downedDestroyerBoss)
+            {
+                DownedBossSystem.downedDestroyerBoss = true;
+                if (Main.netMode == NetmodeID.Server)
+                {
+                    NetMessage.SendData(MessageID.WorldData);
+                }
+            }
+            if (npc.type == NPCID.Spazmatism && !DownedBossSystem.downedTwinsBoss)
+            {
+                KilledSpaz = true;
+                if (KilledRet == true)
+                {
+                    DownedBossSystem.downedTwinsBoss = true;
+                }
+                if (Main.netMode == NetmodeID.Server)
+                {
+                    NetMessage.SendData(MessageID.WorldData);
+                }
+            }
+            if (npc.type == NPCID.Retinazer && !DownedBossSystem.downedTwinsBoss)
+            {
+                KilledRet = true;
+                if (KilledSpaz == true)
+                {
+                    DownedBossSystem.downedTwinsBoss = true;
+                }
+                if (Main.netMode == NetmodeID.Server)
+                {
+                    NetMessage.SendData(MessageID.WorldData);
+                }
+            }
+            if (npc.type == NPCID.BloodNautilus && !DownedBossSystem.downedNautilusMiniBoss)
+            {
+                DownedBossSystem.downedNautilusMiniBoss = true;
+                if (Main.netMode == NetmodeID.Server)
+                {
+                    NetMessage.SendData(MessageID.WorldData);
+                }
+            }
+            if (npc.type == NPCID.QueenSlimeBoss && !DownedBossSystem.downedQueenSlimeBoss)
+            {
+                DownedBossSystem.downedQueenSlimeBoss = true;
+                if (Main.netMode == NetmodeID.Server)
+                {
+                    NetMessage.SendData(MessageID.WorldData);
+                }
+            }
+            if (npc.type == NPCID.Plantera && !DownedBossSystem.downedPlanteraBoss)
+            {
+                DownedBossSystem.downedPlanteraBoss = true;
+                if (Main.netMode == NetmodeID.Server)
+                {
+                    NetMessage.SendData(MessageID.WorldData);
+                }
+            }
+            if (npc.type == NPCID.Golem && !DownedBossSystem.downedGolemBoss)
+            {
+                DownedBossSystem.downedGolemBoss = true;
+                if (Main.netMode == NetmodeID.Server)
+                {
+                    NetMessage.SendData(MessageID.WorldData);
+                }
+            }
+            if (npc.type == NPCID.DukeFishron && !DownedBossSystem.downedFishronBoss)
+            {
+                DownedBossSystem.downedFishronBoss = true;
+                if (Main.netMode == NetmodeID.Server)
+                {
+                    NetMessage.SendData(MessageID.WorldData);
+                }
+            }
+            if (npc.type == NPCID.HallowBoss && !DownedBossSystem.downedEmpressBoss)
+            {
+                DownedBossSystem.downedEmpressBoss = true;
+                if (Main.netMode == NetmodeID.Server)
+                {
+                    NetMessage.SendData(MessageID.WorldData);
+                }
+            }
+            if (npc.type == NPCID.CultistBoss && !DownedBossSystem.downedCultistBoss)
+            {
                 if (!DownedBossSystem.downedCultistBoss)
                 {
                     SoundStyle TenebrisSpawn = new SoundStyle("DestroyerTest/Assets/Audio/TenebrisSpawn");
@@ -58,15 +183,35 @@ namespace DestroyerTest.Common.NPC_Folder
                         Main.NewText("Strange Energies have been released into your world...", ColorLib.TenebrisMagenta);
                     }
                 }
-
-                // This sets downedGolemBoss to true, and if it was false before, it initiates a lantern night
                 DownedBossSystem.downedCultistBoss = true;
-
-                // If needed, manually sync the world when the boss is killed
                 if (Main.netMode == NetmodeID.Server)
                 {
                     NetMessage.SendData(MessageID.WorldData);
                 }
+            }
+            if (npc.type == NPCID.MoonLordCore && !DownedBossSystem.downedLunarBoss)
+            {
+                DownedBossSystem.downedLunarBoss = true;
+                if (Main.netMode == NetmodeID.Server)
+                {
+                    NetMessage.SendData(MessageID.WorldData);
+                }
+            }
+            if (npc.type == ModContent.NPCType<WyvernCorpseHead>() && !DownedBossSystem.downedWyvernCorpseBoss)
+            {
+                DownedBossSystem.downedWyvernCorpseBoss = true;
+                if (Main.netMode == NetmodeID.Server)
+                {
+                    NetMessage.SendData(MessageID.WorldData);
+                }
+            }
+            if (npc.type == ModContent.NPCType<NightmareRoseBoss>() && !DownedBossSystem.downedNightmareRoseBoss)
+            {
+                DownedBossSystem.downedNightmareRoseBoss = true;
+                if (Main.netMode == NetmodeID.Server)
+                    {
+                        NetMessage.SendData(MessageID.WorldData);
+                    }
             }
         }
 
@@ -90,14 +235,5 @@ namespace DestroyerTest.Common.NPC_Folder
                 shop.Add<FoxScepter>(Condition.DownedKingSlime); // Or wherever your item is
             }
         }
-
-        public void SetupBossBar(NPC npc)
-        {
-            if (npc.boss)
-            {
-                npc.BossBar = ModContent.GetInstance<RiftBossBar>();
-            }
-        }
-
 	}
 }

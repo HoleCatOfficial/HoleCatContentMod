@@ -16,9 +16,6 @@ namespace DestroyerTest.Content.Equips
 	[AutoloadEquip(EquipType.Head)]
 	public class RiftPlateHoodedJaw : ModItem
 	{
-		public static readonly int AdditiveGenericDamageBonus = 20;
-
-		public static LocalizedText SetBonusText { get; private set; }
 
 		public override void SetStaticDefaults() {
 			// If your head equipment should draw hair while drawn, use one of the following:
@@ -26,11 +23,6 @@ namespace DestroyerTest.Content.Equips
 			ArmorIDs.Head.Sets.DrawHatHair[Item.headSlot] = true; // Draw hair as if a hat was covering the top. Used by Wizards Hat
 			// ArmorIDs.Head.Sets.DrawFullHair[Item.headSlot] = true; // Draw all hair as normal. Used by Mime Mask, Sunglasses
 			// ArmorIDs.Head.Sets.DrawsBackHairWithoutHeadgear[Item.headSlot] = true;
-
-			SetBonusText = this.GetLocalization("SetBonus").WithFormatArgs(AdditiveGenericDamageBonus);
-		}
-        	public override void UpdateEquip(Player player) {
-                player.maxMinions += 3;
 		}
 
 		public override void SetDefaults() {
@@ -38,27 +30,66 @@ namespace DestroyerTest.Content.Equips
 			Item.height = 18; // Height of the item
 			Item.value = Item.sellPrice(gold: 1); // How many coins the item is worth
 			Item.rare = ModContent.RarityType<RiftRarity2>(); // The rarity of the item
-			Item.defense = 5; // The amount of defense the item will give when equipped
+			Item.defense = 8; // The amount of defense the item will give when equipped
 		}
+		
+		public override bool IsArmorSet(Item head, Item body, Item legs)
+		{
+			// Titan set
+			if (body.type == ModContent.ItemType<RiftplateTitanBody>() &&
+				legs.type == ModContent.ItemType<RiftplateTitanGreaves>())
+			{
+				return true;
+			}
 
-		// IsArmorSet determines what armor pieces are needed for the setbonus to take effect
-		public override bool IsArmorSet(Item head, Item body, Item legs) {
-			return body.type == ModContent.ItemType<RiftplateTitanBody>() && legs.type == ModContent.ItemType<RiftplateAgilityArmor>() || body.type == ModContent.ItemType<RiftplateAgilityLeggings>() && legs.type == ModContent.ItemType<RiftplateTitanGreaves>();
+			// Agility set
+			if (body.type == ModContent.ItemType<RiftplateAgilityArmor>() &&
+				legs.type == ModContent.ItemType<RiftplateAgilityLeggings>())
+			{
+				return true;
+			}
+
+			// Anything else = not a valid set
+			return false;
 		}
 
 		// UpdateArmorSet allows you to give set bonuses to the armor.
 		public override void UpdateArmorSet(Player player) {
-			if (IsArmorSet(player.armor[0], player.armor[1], player.armor[2])) {
-			player.AddBuff(ModContent.BuffType<RiftBallBuff>(), 600);
-			player.AddBuff(ModContent.BuffType<AirSeal>(), 3600);
+			player.maxMinions += 3;
+			if (player.body == ModContent.ItemType<RiftplateTitanBody>() &&
+				player.legs == ModContent.ItemType<RiftplateTitanGreaves>())
+			{
+				TitanBonus(player);
 			}
+			else if (player.body == ModContent.ItemType<RiftplateAgilityArmor>() &&
+					player.legs == ModContent.ItemType<RiftplateAgilityLeggings>())
+			{
+				AgilityBonus(player);
+			}
+		}
+		
+		private void TitanBonus(Player player)
+		{
+			player.GetDamage(DamageClass.Summon) *= 1.25f;
+			player.statLifeMax2 += 15;
+			player.AddBuff(ModContent.BuffType<RiftBallBuff>(), 3600);
+			player.AddBuff(ModContent.BuffType<AirSeal>(), 3600);
+		}
+
+		private void AgilityBonus(Player player)
+		{
+			player.GetAttackSpeed(DamageClass.SummonMeleeSpeed) *= 1.4f;
+			player.moveSpeed *= 1.35f;
+			player.AddBuff(ModContent.BuffType<RiftBallBuff>(), 3600);
+			player.AddBuff(ModContent.BuffType<AirSeal>(), 3600);
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
-		public override void AddRecipes() {
+		public override void AddRecipes()
+		{
 			CreateRecipe()
 				.AddIngredient<Living_Shadow>(20)
-                .AddIngredient<Item_Riftplate>(20)
+				.AddIngredient<Item_Riftplate>(20)
 				.AddTile(TileID.MythrilAnvil)
 				.Register();
 		}

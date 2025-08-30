@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
@@ -14,70 +15,112 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles
 {
-    /// <summary>
-    /// Expermiental Class for an All-Purpose Homing Projectile.
-    /// <para/> Projectile ai slots 0 and 1 should not be set to anything when spawning, as they store NPC and Player values respectively.
-    /// <para/> Projectile ai slot 2 controls whether the projectile is friendly or harmful.
-    /// </summary>
+	/// <summary>
+	/// Expermiental Class for an All-Purpose Homing Projectile.
+	/// <para/> Projectile ai slots 0 and 1 should not be set to anything when spawning, as they store NPC and Player values respectively.
+	/// <para/> Projectile ai slot 2 controls whether the projectile is friendly or harmful.
+	/// </summary>
 	public class TenebrisStar : ModProjectile
-    {
-        private NPC NPCTarget
-        {
-            get => Projectile.ai[0] == 0 ? null : Main.npc[(int)Projectile.ai[0] - 1];
-            set
-            {
-                Projectile.ai[0] = value == null ? 0 : value.whoAmI + 1;
-            }
-        }
+	{
+		private NPC NPCTarget
+		{
+			get => Projectile.ai[0] == 0 ? null : Main.npc[(int)Projectile.ai[0] - 1];
+			set
+			{
+				Projectile.ai[0] = value == null ? 0 : value.whoAmI + 1;
+			}
+		}
 
-        private Player PLRTarget
-        {
-            get => Projectile.ai[1] == 0 ? null : Main.player[(int)Projectile.ai[1] - 1];
-            set
-            {
-                Projectile.ai[1] = value == null ? 0 : value.whoAmI + 1;
-            }
-        }
+		private Player PLRTarget
+		{
+			get => Projectile.ai[1] == 0 ? null : Main.player[(int)Projectile.ai[1] - 1];
+			set
+			{
+				Projectile.ai[1] = value == null ? 0 : value.whoAmI + 1;
+			}
+		}
 
-        public float DelayTimer;
+		public float DelayTimer;
 
-        public override void SetStaticDefaults()
-        {
-            ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true;
-        }
+		public override void SetStaticDefaults()
+		{
+			ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true;
+		}
 
-        public override void SetDefaults()
-        {
-            Projectile.width = 50;
-            Projectile.height = 50;
+		public override void SetDefaults()
+		{
+			Projectile.width = 50;
+			Projectile.height = 50;
 
-            Projectile.DamageType = DamageClass.Generic;
-            Projectile.friendly = false;
-            Projectile.hostile = false;
-            Projectile.ignoreWater = true;
-            Projectile.light = 1f;
-            Projectile.timeLeft = 600;
-            Projectile.tileCollide = false;
-            Projectile.netImportant = true;
-            Projectile.netUpdate = true;
-        }
+			Projectile.DamageType = DamageClass.Generic;
+			Projectile.friendly = false;
+			Projectile.hostile = false;
+			Projectile.ignoreWater = true;
+			Projectile.light = 1f;
+			Projectile.timeLeft = 300;
+			Projectile.tileCollide = false;
+			Projectile.netImportant = true;
+			Projectile.netUpdate = true;
+		}
 
-        public override bool PreDraw(ref Color lightColor)
-        {
+		public override bool PreDraw(ref Color lightColor)
+		{
 			SpriteBatch spriteBatch = Main.spriteBatch;
 			Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
+			Texture2D pixel = TextureAssets.MagicPixel.Value;
 
 			spriteBatch.End();
 			spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+
+			for (int i = 0; i < TrailPositions.Count - 1; i++)
+			{
+				Vector2 start = TrailPositions[i] - Main.screenPosition;
+				Vector2 end = TrailPositions[i + 1] - Main.screenPosition;
+				Vector2 diff = end - start;
+
+				float length = diff.Length();
+				if (length < 0.5f)
+					continue;
+
+				float rotation = diff.ToRotation();
+				float width = MathHelper.Lerp(0.01f, 0.0007f, i / (float)TrailLength);
+				float alpha = MathHelper.Lerp(1f, 0f, i / (float)TrailLength);
+
+				// --- Tenebris gradient with offset ---
+				float time = (Main.GlobalTimeWrappedHourly + i * 0.05f) % 3f;
+
+				Color tenebrisColor;
+				if (time < 1f)
+					tenebrisColor = Color.Lerp(ColorLib.TenebrisBeige, ColorLib.TenebrisMagenta, time);
+				else if (time < 2f)
+					tenebrisColor = Color.Lerp(ColorLib.TenebrisMagenta, ColorLib.TenebrisBlue, time - 1f);
+				else
+					tenebrisColor = Color.Lerp(ColorLib.TenebrisBlue, ColorLib.TenebrisBeige, time - 2f);
+
+				tenebrisColor *= alpha;
+
+				Main.spriteBatch.Draw(
+					pixel,
+					start,
+					null,
+					tenebrisColor,
+					rotation,
+					new Vector2(pixel.Width / 2, pixel.Height / 2),
+					new Vector2(length, width),
+					SpriteEffects.None,
+					0f
+				);
+			}
+
 
 			Main.EntitySpriteDraw(
 				projectileTexture,
 				Projectile.Center - Main.screenPosition,
 				null,
-				lightColor, 
+				lightColor,
 				Projectile.rotation,
 				projectileTexture.Size() / 2,
-				Projectile.scale,
+				Projectile.scale * 2,
 				SpriteEffects.None,
 				0
 			);
@@ -86,18 +129,31 @@ namespace DestroyerTest.Content.Projectiles
 			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 
 			return false;
-        }
+		}
 
 
-        /// <summary>
+		/// <summary>
 		/// Controls whether the Projectile is Hostile or Friendly.
 		/// <para/> 1 = Friendly, 2 = Hostile
 		/// <para/> Attempting to return an invalid value will kill the projectile.
 		/// </summary>
 		public int Mode;
 
+		public List<Vector2> TrailPositions = new();
+		public List<float> TrailRotations = new();
+		private const int TrailLength = 40;
+
 		public override void AI()
 		{
+			TrailPositions.Insert(0, Projectile.Center);
+			TrailRotations.Insert(0, Projectile.rotation);
+
+			// Cap trail
+			while (TrailPositions.Count > TrailLength)
+				TrailPositions.RemoveAt(TrailPositions.Count - 1);
+			while (TrailRotations.Count > TrailLength)
+				TrailRotations.RemoveAt(TrailRotations.Count - 1);
+
 			DelayTimer++;
 			Mode = (int)Projectile.ai[2];
 
@@ -108,12 +164,7 @@ namespace DestroyerTest.Content.Projectiles
 				Mod.Logger.Warn("OilProjectile: Invalid Mode in ai[2]. Expected 1 or 2.");
 			}
 
-			Lighting.AddLight(Projectile.Center, Color.White.ToVector3() * 0.2f);
-
-			PRTLoader.NewParticle(PRTLoader.GetParticleID<StarParticle>(), Projectile.Center, Vector2.Zero, ColorLib.TenebrisGradient, 1f);
-
-
-
+			Lighting.AddLight(Projectile.Center, ColorLib.TenebrisGradient.ToVector3() * 0.2f);
 
 			if (DelayTimer < 10)
 			{
@@ -168,7 +219,7 @@ namespace DestroyerTest.Content.Projectiles
 
 				float length = Projectile.velocity.Length();
 				float targetAngle = Projectile.AngleTo(PLRTarget.Center);
-				Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(15)).ToRotationVector2() * length;
+				Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(5)).ToRotationVector2() * length;
 			}
 			if (Mode == 3)
 			{
@@ -180,63 +231,63 @@ namespace DestroyerTest.Content.Projectiles
 				Projectile.friendly = false;
 				Projectile.hostile = true;
 			}
-        }
-        public NPC FindClosestNPC(float maxDetectDistance)
-        {
-            NPC closestNPC = null;
+		}
+		public NPC FindClosestNPC(float maxDetectDistance)
+		{
+			NPC closestNPC = null;
 
-            float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
+			float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
 
-            foreach (var target in Main.ActiveNPCs)
-            {
-                if (IsValidNPC(target))
-                {
+			foreach (var target in Main.ActiveNPCs)
+			{
+				if (IsValidNPC(target))
+				{
 
-                    float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, Projectile.Center);
+					float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, Projectile.Center);
 
-                    if (sqrDistanceToTarget < sqrMaxDetectDistance)
-                    {
-                        sqrMaxDetectDistance = sqrDistanceToTarget;
-                        closestNPC = target;
-                    }
-                }
-            }
+					if (sqrDistanceToTarget < sqrMaxDetectDistance)
+					{
+						sqrMaxDetectDistance = sqrDistanceToTarget;
+						closestNPC = target;
+					}
+				}
+			}
 
-            return closestNPC;
-        }
+			return closestNPC;
+		}
 
-        public bool IsValidNPC(NPC target)
-        {
-            return target.CanBeChasedBy();
-        }
+		public bool IsValidNPC(NPC target)
+		{
+			return target.CanBeChasedBy();
+		}
 
-        public Player FindClosestPlayer(float maxDetectDistance)
-        {
-            Player closestPlayer = null;
+		public Player FindClosestPlayer(float maxDetectDistance)
+		{
+			Player closestPlayer = null;
 
-            float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
+			float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
 
-            foreach (var target in Main.player)
-            {
-                if (IsValidPlayer(target))
-                {
-                    float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, Projectile.Center);
+			foreach (var target in Main.player)
+			{
+				if (IsValidPlayer(target))
+				{
+					float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, Projectile.Center);
 
-                    if (sqrDistanceToTarget < sqrMaxDetectDistance)
-                    {
-                        sqrMaxDetectDistance = sqrDistanceToTarget;
-                        closestPlayer = target;
-                    }
-                }
-            }
+					if (sqrDistanceToTarget < sqrMaxDetectDistance)
+					{
+						sqrMaxDetectDistance = sqrDistanceToTarget;
+						closestPlayer = target;
+					}
+				}
+			}
 
-            return closestPlayer;
-        }
+			return closestPlayer;
+		}
 
-        public bool IsValidPlayer(Player target)
-        {
-            return (target.active == true && target.statLife > 1);
-        }
+		public bool IsValidPlayer(Player target)
+		{
+			return target.active == true && target.statLife > 1;
+		}
 
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
@@ -245,16 +296,22 @@ namespace DestroyerTest.Content.Projectiles
 				PRTLoader.NewParticle(PRTLoader.GetParticleID<Boom1>(), target.Center, Vector2.Zero, ColorLib.TenebrisGradient, 0.05f);
 				target.AddBuff(ModContent.BuffType<ShimmeringFlames>(), 300);
 			}
-			
-        }
 
-        public override void OnHitPlayer(Player target, Player.HurtInfo info)
-        {
+		}
+
+		public override void OnHitPlayer(Player target, Player.HurtInfo info)
+		{
 			if (Mode == 2 || Mode == 4)
 			{
 				PRTLoader.NewParticle(PRTLoader.GetParticleID<Boom1>(), target.Center, Vector2.Zero, ColorLib.TenebrisGradient, 0.05f);
 				target.AddBuff(ModContent.BuffType<ShimmeringFlames>(), 300);
 			}
+		}
+
+        public override void OnKill(int timeLeft)
+        {
+			Dust.NewDust(Projectile.Center, Projectile.Hitbox.Width, Projectile.Hitbox.Height, DustID.TintableDustLighted, Main.rand.NextFloat(-1, 1.1f), Main.rand.NextFloat(-1, 1.1f), 0, ColorLib.TenebrisGradient, 2f);
         }
+
     }
 }

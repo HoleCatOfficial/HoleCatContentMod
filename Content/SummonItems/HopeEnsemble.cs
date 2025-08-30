@@ -1,8 +1,11 @@
 
 using DestroyerTest.Content.Particles;
+using DestroyerTest.Content.Projectiles;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Mono.Cecil;
+using Steamworks;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -32,7 +35,7 @@ namespace DestroyerTest.Content.SummonItems
 
 		public override void Update(Player player, ref int buffIndex) {
 			// If the minions exist reset the buff time, otherwise remove the buff from the player
-			if (player.ownedProjectileCounts[ModContent.ProjectileType<Copper_Shortsword>()] > 0) {
+			if (player.ownedProjectileCounts[ModContent.ProjectileType<Copper_Broadsword>()] > 0) {
 				player.buffTime[buffIndex] = 18000;
 			}
 			else {
@@ -53,7 +56,7 @@ namespace DestroyerTest.Content.SummonItems
 		}
 
 		public override void SetDefaults() {
-			Item.damage = 70;
+			Item.damage = 40;
 			Item.knockBack = 0f;
 			Item.mana = 100; // mana cost
 			Item.width = 32;
@@ -75,7 +78,7 @@ namespace DestroyerTest.Content.SummonItems
 			Item.DamageType = DamageClass.Summon; // Makes the damage register as summon. If your item does not have any damage type, it becomes true damage (which means that damage scalars will not affect it). Be sure to have a damage type
 			Item.buffType = ModContent.BuffType<HopeEnsemble_Buff>();
 			// No buffTime because otherwise the item tooltip would say something like "1 minute duration"
-			Item.shoot = ModContent.ProjectileType<Copper_Shortsword>(); // This item creates the minion projectile
+			Item.shoot = ModContent.ProjectileType<Copper_Broadsword>(); // This item creates the minion projectile
 		}
 
 		public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
@@ -85,16 +88,16 @@ namespace DestroyerTest.Content.SummonItems
 
        
        // Define minionTypes as a class field so both methods can access it
-    private static readonly List<int> minionTypes = new List<int>
+    public static readonly List<int> minionTypes = new List<int>
     {
-        ModContent.ProjectileType<Copper_Shortsword>(),
-        ModContent.ProjectileType<Tin_Shortsword>(),
-        ModContent.ProjectileType<Iron_Shortsword>(),
-        ModContent.ProjectileType<Lead_Shortsword>(),
-        ModContent.ProjectileType<Gold_Shortsword>(),
-        ModContent.ProjectileType<Silver_Shortsword>(),
-        ModContent.ProjectileType<Platinum_Shortsword>(),
-        ModContent.ProjectileType<Tungsten_Shortsword>(),
+        ModContent.ProjectileType<Copper_Broadsword>(),
+        ModContent.ProjectileType<Tin_Broadsword>(),
+        ModContent.ProjectileType<Iron_Broadsword>(),
+        ModContent.ProjectileType<Lead_Broadsword>(),
+        ModContent.ProjectileType<Gold_Broadsword>(),
+        ModContent.ProjectileType<Silver_Broadsword>(),
+        ModContent.ProjectileType<Platinum_Broadsword>(),
+        ModContent.ProjectileType<Tungsten_Broadsword>(),
         ModContent.ProjectileType<Blood_Butcherer>(),
         ModContent.ProjectileType<Lights_Bane>()
     };
@@ -129,13 +132,14 @@ namespace DestroyerTest.Content.SummonItems
 
 
 		
-		public override void AddRecipes() {
+		public override void AddRecipes()
+		{
 			CreateRecipe()
 				.AddIngredient(ItemID.CopperShortsword, 1)
-                .AddIngredient(ItemID.TinShortsword, 1)
-                .AddIngredient(ItemID.IronShortsword, 1)
-                .AddIngredient(ItemID.LeadShortsword, 1)
-                .AddIngredient(ItemID.GoldShortsword, 1)
+				.AddIngredient(ItemID.TinShortsword, 1)
+				.AddIngredient(ItemID.IronShortsword, 1)
+				.AddIngredient(ItemID.LeadShortsword, 1)
+				.AddIngredient(ItemID.GoldShortsword, 1)
 				.AddIngredient(ItemID.SilverShortsword, 1)
 				.AddIngredient(ItemID.PlatinumShortsword, 1)
 				.AddIngredient(ItemID.TungstenShortsword, 10)
@@ -461,8 +465,9 @@ namespace DestroyerTest.Content.SummonItems
 	}
 	*/
 
-	public class Copper_Shortsword : SwordMinionTemplate
+	public class Copper_Broadsword : SwordMinionTemplate
 	{
+		public SoundStyle Tele = new SoundStyle("DestroyerTest/Assets/Audio/HopeScabbardTele") with { PitchVariance = 1 };
 		public override void SetStaticDefaults()
 		{
 			base.SetStaticDefaults();
@@ -471,15 +476,15 @@ namespace DestroyerTest.Content.SummonItems
 		public override void SetDefaults()
 		{
 			base.SetDefaults();
-			Projectile.width = 32;
-			Projectile.height = 32;
+			Projectile.width = 36;
+			Projectile.height = 36;
 			ThemeColor = Color.OrangeRed;
 			TintColor = Color.White;
 			IdleDustType = DustID.Copper;
 			DashDustType = DustID.Torch;
 			TeleDustType = DustID.Torch;
-			TeleSound = SoundID.Item4;
-			DashSound = SoundID.Item1;
+			TeleSound = Tele;
+			DashSound = SoundID.Item66;
 			AfterImageColorless = true;
 			AfterImageTinted = false;
 			AfterImage = true;
@@ -490,2756 +495,539 @@ namespace DestroyerTest.Content.SummonItems
 			UsesPRTOnTele = true;
 			TeleDist = 2000;
 			Range = 2000;
-			Style = IdleStyle.Defensive;
+			Style = IdleStyle.Chevron;
 			ActiveBuff = ModContent.BuffType<HopeEnsemble_Buff>();
+			Projectile.minionSlots = 0.5f;
+			Group = Hope_Scabbard.minionTypes;
+			UsesGroup = true;
 		}
 	}
-	public class Tin_Shortsword : ModProjectile
+	public class Tin_Broadsword : SwordMinionTemplate
 	{
-		private void GenerateDust()
-		{
-
-			Dust dust = Dust.NewDustDirect(Projectile.position, Projectile.height, Projectile.width, DustID.Tin,
-				0, 0, 254, Scale: 1.0f);
-			dust.velocity += Projectile.velocity * 0.5f;
-			dust.velocity *= 0.5f;
-			dust.noGravity = true;
-
-		}
-
+		public SoundStyle Tele = new SoundStyle("DestroyerTest/Assets/Audio/HopeScabbardTele") with { PitchVariance = 1 };
 		public override void SetStaticDefaults()
 		{
-			ProjectileID.Sets.TrailingMode[Type] = 2;
-			ProjectileID.Sets.TrailCacheLength[Type] = 12;
-			// This is necessary for right-click targeting
-			ProjectileID.Sets.MinionTargettingFeature[Projectile.type] = true;
-
-			Main.projPet[Projectile.type] = true; // Denotes that this projectile is a pet or minion
-
-			ProjectileID.Sets.MinionSacrificable[Projectile.type] = true; // This is needed so your minion can properly spawn when summoned and replaced when other minions are summoned
-			ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true; // Make the cultist resistant to this projectile, as it's resistant to all homing projectiles.
+			base.SetStaticDefaults();
 		}
 
-		public sealed override void SetDefaults()
+		public override void SetDefaults()
 		{
-			Projectile.width = 18;
-			Projectile.height = 28;
-			Projectile.tileCollide = false; // Makes the minion go through tiles freely
+			base.SetDefaults();
+			Projectile.width = 36;
+			Projectile.height = 36;
+			ThemeColor = Color.Wheat;
+			TintColor = Color.White;
+			IdleDustType = DustID.Tin;
+			DashDustType = DustID.Torch;
+			TeleDustType = DustID.Torch;
+			TeleSound = Tele;
+			DashSound = SoundID.Item66;
+			AfterImageColorless = true;
+			AfterImageTinted = false;
+			AfterImage = true;
+			DefaultDraw = true;
+			TickSpeed = 3;
+			UsesParticleOrchestratorOnTele = false;
+			TelePRTID = PRTLoader.GetParticleID<Boom1>();
+			UsesPRTOnTele = true;
+			TeleDist = 2000;
+			Range = 2000;
+			Style = IdleStyle.Chevron;
+			ActiveBuff = ModContent.BuffType<HopeEnsemble_Buff>();
+			Projectile.minionSlots = 0.5f;
+			Group = Hope_Scabbard.minionTypes;
+			UsesGroup = true;
+		}
 
-			// These below are needed for a minion weapon
-			Projectile.friendly = true; // Only controls if it deals damage to enemies on contact (more on that later)
-			Projectile.minion = true; // Declares this as a minion (has many effects)
-			Projectile.DamageType = DamageClass.Summon; // Declares the damage type (needed for it to deal damage)
-			Projectile.minionSlots = 0.4f; // Amount of slots this minion occupies from the total minion slots available to the player (more on that later)
-			Projectile.penetrate = -1; // Needed so the minion doesn't despawn on collision with enemies or tiles
-			Projectile.netImportant = true;
-			Projectile.netUpdate = true;
+	}
+	public class Lead_Broadsword : SwordMinionTemplate
+	{
+		public SoundStyle Tele = new SoundStyle("DestroyerTest/Assets/Audio/HopeScabbardTele") with { PitchVariance = 1 };
+		public override void SetStaticDefaults()
+		{
+			base.SetStaticDefaults();
+		}
 
+		public override void SetDefaults()
+		{
+			base.SetDefaults();
+			Projectile.width = 36;
+			Projectile.height = 36;
+			ThemeColor = Color.Navy;
+			TintColor = Color.White;
+			IdleDustType = DustID.Lead;
+			DashDustType = DustID.Torch;
+			TeleDustType = DustID.Torch;
+			TeleSound = Tele;
+			DashSound = SoundID.Item66;
+			AfterImageColorless = true;
+			AfterImageTinted = false;
+			AfterImage = true;
+			DefaultDraw = true;
+			TickSpeed = 3;
+			UsesParticleOrchestratorOnTele = false;
+			TelePRTID = PRTLoader.GetParticleID<Boom1>();
+			UsesPRTOnTele = true;
+			TeleDist = 2000;
+			Range = 2000;
+			Style = IdleStyle.Chevron;
+			ActiveBuff = ModContent.BuffType<HopeEnsemble_Buff>();
+			Projectile.minionSlots = 0.5f;
+			Group = Hope_Scabbard.minionTypes;
+			UsesGroup = true;
+		}
+	}
+	public class Iron_Broadsword : SwordMinionTemplate
+	{
+		public SoundStyle Tele = new SoundStyle("DestroyerTest/Assets/Audio/HopeScabbardTele") with { PitchVariance = 1 };
+		public override void SetStaticDefaults()
+		{
+			base.SetStaticDefaults();
+		}
+
+		public override void SetDefaults()
+		{
+			base.SetDefaults();
+			Projectile.width = 36;
+			Projectile.height = 36;
+			ThemeColor = Color.Wheat;
+			TintColor = Color.White;
+			IdleDustType = DustID.Iron;
+			DashDustType = DustID.Torch;
+			TeleDustType = DustID.Torch;
+			TeleSound = Tele;
+			DashSound = SoundID.Item66;
+			AfterImageColorless = true;
+			AfterImageTinted = false;
+			AfterImage = true;
+			DefaultDraw = true;
+			TickSpeed = 3;
+			UsesParticleOrchestratorOnTele = false;
+			TelePRTID = PRTLoader.GetParticleID<Boom1>();
+			UsesPRTOnTele = true;
+			TeleDist = 2000;
+			Range = 2000;
+			Style = IdleStyle.Chevron;
+			ActiveBuff = ModContent.BuffType<HopeEnsemble_Buff>();
+			Projectile.minionSlots = 0.5f;
+			Group = Hope_Scabbard.minionTypes;
+			UsesGroup = true;
+		}
+	}
+	public class Gold_Broadsword : SwordMinionTemplate
+	{
+		public SoundStyle Tele = new SoundStyle("DestroyerTest/Assets/Audio/HopeScabbardTele") with { PitchVariance = 1 };
+		public override void SetStaticDefaults()
+		{
+			base.SetStaticDefaults();
+		}
+
+		public override void SetDefaults()
+		{
+			base.SetDefaults();
+			Projectile.width = 40;
+			Projectile.height = 40;
+			ThemeColor = Color.Gold;
+			TintColor = Color.White;
+			IdleDustType = DustID.GoldCoin;
+			DashDustType = DustID.Torch;
+			TeleDustType = DustID.Torch;
+			TeleSound = Tele;
+			DashSound = SoundID.Item66;
+			AfterImageColorless = true;
+			AfterImageTinted = false;
+			AfterImage = true;
+			DefaultDraw = true;
+			TickSpeed = 3;
+			UsesParticleOrchestratorOnTele = false;
+			TelePRTID = PRTLoader.GetParticleID<Boom1>();
+			UsesPRTOnTele = true;
+			TeleDist = 2000;
+			Range = 2000;
+			Style = IdleStyle.Chevron;
+			ActiveBuff = ModContent.BuffType<HopeEnsemble_Buff>();
+			Projectile.minionSlots = 0.5f;
+			Group = Hope_Scabbard.minionTypes;
+			UsesGroup = true;
+		}
+
+	}
+	public class Silver_Broadsword : SwordMinionTemplate
+	{
+		public SoundStyle Tele = new SoundStyle("DestroyerTest/Assets/Audio/HopeScabbardTele") with { PitchVariance = 1 };
+		public override void SetStaticDefaults()
+		{
+			base.SetStaticDefaults();
+		}
+
+		public override void SetDefaults()
+		{
+			base.SetDefaults();
+			Projectile.width = 38;
+			Projectile.height = 38;
+			ThemeColor = Color.White;
+			TintColor = Color.White;
+			IdleDustType = DustID.Silver;
+			DashDustType = DustID.Torch;
+			TeleDustType = DustID.Torch;
+			TeleSound = Tele;
+			DashSound = SoundID.Item66;
+			AfterImageColorless = true;
+			AfterImageTinted = false;
+			AfterImage = true;
+			DefaultDraw = true;
+			TickSpeed = 3;
+			UsesParticleOrchestratorOnTele = false;
+			TelePRTID = PRTLoader.GetParticleID<Boom1>();
+			UsesPRTOnTele = true;
+			TeleDist = 2000;
+			Range = 2000;
+			Style = IdleStyle.Chevron;
+			ActiveBuff = ModContent.BuffType<HopeEnsemble_Buff>();
+			Projectile.minionSlots = 0.5f;
+			Group = Hope_Scabbard.minionTypes;
+			UsesGroup = true;
+		}
+	}
+	public class Platinum_Broadsword : SwordMinionTemplate
+	{
+		public SoundStyle Tele = new SoundStyle("DestroyerTest/Assets/Audio/HopeScabbardTele") with { PitchVariance = 1 };
+		public override void SetStaticDefaults()
+		{
+			base.SetStaticDefaults();
+		}
+
+		public override void SetDefaults()
+		{
+			base.SetDefaults();
+			Projectile.width = 40;
+			Projectile.height = 40;
+			ThemeColor = Color.GhostWhite;
+			TintColor = Color.White;
+			IdleDustType = DustID.Platinum;
+			DashDustType = DustID.Torch;
+			TeleDustType = DustID.Torch;
+			TeleSound = Tele;
+			DashSound = SoundID.Item66;
+			AfterImageColorless = true;
+			AfterImageTinted = false;
+			AfterImage = true;
+			DefaultDraw = true;
+			TickSpeed = 3;
+			UsesParticleOrchestratorOnTele = false;
+			TelePRTID = PRTLoader.GetParticleID<Boom1>();
+			UsesPRTOnTele = true;
+			TeleDist = 2000;
+			Range = 2000;
+			Style = IdleStyle.Chevron;
+			ActiveBuff = ModContent.BuffType<HopeEnsemble_Buff>();
+			Projectile.minionSlots = 0.5f;
+			Group = Hope_Scabbard.minionTypes;
+			UsesGroup = true;
+		}
+	}
+	public class Tungsten_Broadsword : SwordMinionTemplate
+	{
+		public SoundStyle Tele = new SoundStyle("DestroyerTest/Assets/Audio/HopeScabbardTele") with { PitchVariance = 1 };
+		public override void SetStaticDefaults()
+		{
+			base.SetStaticDefaults();
+		}
+
+		public override void SetDefaults()
+		{
+			base.SetDefaults();
+			Projectile.width = 38;
+			Projectile.height = 38;
+			ThemeColor = Color.LightGreen;
+			TintColor = Color.White;
+			IdleDustType = DustID.Tungsten;
+			DashDustType = DustID.Torch;
+			TeleDustType = DustID.Torch;
+			TeleSound = Tele;
+			DashSound = SoundID.Item66;
+			AfterImageColorless = true;
+			AfterImageTinted = false;
+			AfterImage = true;
+			DefaultDraw = true;
+			TickSpeed = 3;
+			UsesParticleOrchestratorOnTele = false;
+			TelePRTID = PRTLoader.GetParticleID<Boom1>();
+			UsesPRTOnTele = true;
+			TeleDist = 2000;
+			Range = 2000;
+			Style = IdleStyle.Chevron;
+			ActiveBuff = ModContent.BuffType<HopeEnsemble_Buff>();
+			Projectile.minionSlots = 0.5f;
+			Group = Hope_Scabbard.minionTypes;
+			UsesGroup = true;
+		}
+	}
+	public class Blood_Butcherer : SwordMinionTemplate
+	{
+		public SoundStyle Tele = new SoundStyle("DestroyerTest/Assets/Audio/HopeScabbardTele") with { PitchVariance = 1 };
+		public override void SetStaticDefaults()
+		{
+			base.SetStaticDefaults();
+		}
+
+		public override void SetDefaults()
+		{
+			base.SetDefaults();
+			Projectile.width = 50;
+			Projectile.height = 58;
+			ThemeColor = Color.Red;
+			TintColor = Color.White;
+			IdleDustType = DustID.RedTorch;
+			DashDustType = DustID.Torch;
+			TeleDustType = DustID.Torch;
+			TeleSound = Tele;
+			DashSound = SoundID.Item66;
+			AfterImageColorless = true;
+			AfterImageTinted = false;
+			AfterImage = true;
+			DefaultDraw = true;
+			TickSpeed = 3;
+			UsesParticleOrchestratorOnTele = false;
+			TelePRTID = PRTLoader.GetParticleID<Boom1>();
+			UsesPRTOnTele = true;
+			TeleDist = 2000;
+			Range = 2000;
+			Style = IdleStyle.Chevron;
+			ActiveBuff = ModContent.BuffType<HopeEnsemble_Buff>();
+			Projectile.minionSlots = 0.5f;
+			noDrawTint = true;
+			Group = Hope_Scabbard.minionTypes;
+			UsesGroup = true;
 		}
 
 		public override bool PreDraw(ref Color lightColor)
 		{
-			// Draws an afterimage trail. See https://github.com/tModLoader/tModLoader/wiki/Basic-Projectile#afterimage-trail for more information.
+			//lightColor = ThemeColor;
+			SpriteBatch spriteBatch = Main.spriteBatch;
+			Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
 
-			Texture2D texture = TextureAssets.Projectile[Type].Value;
+			Texture2D pixel = TextureAssets.MagicPixel.Value;
 
-			Vector2 drawOrigin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
-			for (int k = Projectile.oldPos.Length - 1; k > 0; k--)
+			spriteBatch.End();
+			spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+
+			for (int i = 0; i < TrailPositions.Count - 1; i++)
 			{
-				Vector2 drawPos = (Projectile.oldPos[k] - Main.screenPosition) + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
-				Color color = Projectile.GetAlpha(lightColor) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
-				Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
+				Vector2 start = TrailPositions[i] - Main.screenPosition;
+				Vector2 end = TrailPositions[i + 1] - Main.screenPosition;
+				Vector2 diff = end - start;
+
+				float length = diff.Length();
+				if (length < 0.5f)
+					continue; // skip tiny wiggle segments
+
+				float rotation = diff.ToRotation();
+
+				Vector2 DimensionMeasurement = Projectile.Hitbox.BottomLeft() - Projectile.Hitbox.TopRight();
+
+				float Width = DimensionMeasurement.Length();
+
+				float width = MathHelper.Lerp(0.01f, 0.0007f, i / (float)TrailLength);
+				float alpha = MathHelper.Lerp(1f, 0f, i / (float)TrailLength);
+				Color color = ThemeColor * alpha;
+
+				// Instead of stepping pixel by pixel, just draw one scaled pixel segment:
+				Main.spriteBatch.Draw(
+					pixel,
+					start,
+					null,
+					color,
+					rotation,
+					new Vector2(pixel.Width / 2, pixel.Height / 2), // Origin is at the left-middle of the scaled pixel
+					new Vector2(length, width),
+					SpriteEffects.None,
+					0f
+				);
 			}
 
-			return true;
+			spriteBatch.End();
+			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+
+
+			return base.PreDraw(ref lightColor); // Let the default system handle the base projectile drawing
 		}
 
+		public List<Vector2> TrailPositions = new();
+		public List<float> TrailRotations = new();
+		private const int TrailLength = 30;
+		public int ShootTimer = 0;
 
-
-		// Here you can decide if your minion breaks things like grass or pots
-		public override bool? CanCutTiles()
-		{
-			return false;
-		}
-
-		// This is mandatory if your minion deals contact damage (further related stuff in AI() in the Movement region)
-		public override bool MinionContactDamage()
-		{
-			return true;
-		}
-
-		// The AI of this minion is split into multiple methods to avoid bloat. This method just passes values between calls actual parts of the AI.
 		public override void AI()
 		{
+			TrailPositions.Insert(0, Projectile.Center);
+			TrailRotations.Insert(0, Projectile.rotation);
 
+			// Cap trail
+			while (TrailPositions.Count > TrailLength)
+				TrailPositions.RemoveAt(TrailPositions.Count - 1);
+			while (TrailRotations.Count > TrailLength)
+				TrailRotations.RemoveAt(TrailRotations.Count - 1);
 
-			GenerateDust();
-
-			Player owner = Main.player[Projectile.owner];
-
-
-			if (!CheckActive(owner))
-			{
-				return;
-			}
-
-			GeneralBehavior(owner, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition);
-			SearchForTargets(owner, out bool foundTarget, out float distanceFromTarget, out Vector2 targetCenter);
-			Movement(foundTarget, distanceFromTarget, targetCenter, distanceToIdlePosition, vectorToIdlePosition);
-			Visuals();
-		}
-
-		// This is the "active check", makes sure the minion is alive while the player is alive, and despawns if not
-		private bool CheckActive(Player owner)
-		{
-			if (owner.dead || !owner.active)
-			{
-				owner.ClearBuff(ModContent.BuffType<HopeEnsemble_Buff>());
-
-				return false;
-			}
-
-			if (owner.HasBuff(ModContent.BuffType<HopeEnsemble_Buff>()))
-			{
-				Projectile.timeLeft = 2;
-			}
-
-
-			return true;
-		}
-
-
-
-
-		private void GeneralBehavior(Player owner, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition)
-		{
-
-			GenerateDust();
-
-			Vector2 idlePosition = owner.Center;
-			idlePosition.Y -= 48f; // Go up 48 coordinates (three tiles from the center of the player)
-
-
-			// If your minion doesn't aimlessly move around when it's idle, you need to "put" it into the line of other summoned minions
-			// The index is projectile.minionPos
-			float minionPositionOffsetX = (10 + Projectile.minionPos * 40) * -owner.direction;
-			idlePosition.X += minionPositionOffsetX; // Go behind the player
-
-			// All of this code below this line is adapted from Spazmamini code (ID 388, aiStyle 66)
-
-			// Teleport to player if distance is too big
-			vectorToIdlePosition = idlePosition - Projectile.Center;
-			distanceToIdlePosition = vectorToIdlePosition.Length();
-
-			if (Main.myPlayer == owner.whoAmI && distanceToIdlePosition > 1000f)
-			{
-				SoundEngine.PlaySound(SoundID.Item4);
-				// Whenever you deal with non-regular events that change the behavior or position drastically, make sure to only run the code on the owner of the projectile,
-				// and then set netUpdate to true
-				Projectile.position = idlePosition;
-				Projectile.velocity *= 0.1f;
-				Projectile.netUpdate = true;
-				ParticleOrchestrator.RequestParticleSpawn(clientOnly: false, ParticleOrchestraType.Excalibur,
-				new ParticleOrchestraSettings { PositionInWorld = Main.rand.NextVector2FromRectangle(Projectile.Hitbox) },
-				Projectile.owner);
-			}
-
-			// If your minion is flying, you want to do this independently of any conditions
-			float overlapVelocity = 0.04f;
-
-			// Fix overlap with other minions
-			foreach (var other in Main.ActiveProjectiles)
-			{
-				if (other.whoAmI != Projectile.whoAmI && other.owner == Projectile.owner && Math.Abs(Projectile.position.X - other.position.X) + Math.Abs(Projectile.position.Y - other.position.Y) < Projectile.width)
+			
+				if (TargFlag && ShootTimer <= 0)
 				{
-					if (Projectile.position.X < other.position.X)
+					float rotation = MathHelper.ToRadians(45);
+
+					Vector2 ShootOrig = Projectile.Center;
+					Vector2 Velocity = Projectile.velocity * 2;
+
+					ShootOrig += Vector2.Normalize(Velocity) * 5f;
+
+					for (int i = 0; i < 6; i++)
 					{
-						Projectile.velocity.X -= overlapVelocity;
+						Vector2 perturbedSpeed = Velocity.RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (6 - 1))); // Watch out for dividing by 0 if there is only 1 projectile.
+						Projectile.NewProjectile(Entity.GetSource_FromThis(), ShootOrig, perturbedSpeed, ModContent.ProjectileType<EnchantedBlood>(), Projectile.damage / 3, Projectile.knockBack);
 					}
-					else
-					{
-						Projectile.velocity.X += overlapVelocity;
-					}
-
-					if (Projectile.position.Y < other.position.Y)
-					{
-						Projectile.velocity.Y -= overlapVelocity;
-					}
-					else
-					{
-						Projectile.velocity.Y += overlapVelocity;
-					}
+					ShootTimer = 240;
 				}
-			}
+				if (TargFlag && ShootTimer > 0)
+				{
+
+				}
+				if (ShootTimer > 0)
+				{
+					ShootTimer--;
+				}
+			base.AI();
+		}
+	}
+    public class Lights_Bane : SwordMinionTemplate
+	{
+		public SoundStyle Tele = new SoundStyle("DestroyerTest/Assets/Audio/HopeScabbardTele") with { PitchVariance = 1 };
+		public override void SetStaticDefaults()
+		{
+			base.SetStaticDefaults();
 		}
 
-		private void SearchForTargets(Player owner, out bool foundTarget, out float distanceFromTarget, out Vector2 targetCenter)
+		public override void SetDefaults()
 		{
-			// Starting search distance
-			distanceFromTarget = 700f;
-			targetCenter = Projectile.position;
-			foundTarget = false;
+			base.SetDefaults();
+			Projectile.width = 50;
+			Projectile.height = 50;
+			ThemeColor = Color.Purple;
+			TintColor = Color.White;
+			IdleDustType = DustID.Shadowflame;
+			DashDustType = DustID.Torch;
+			TeleDustType = DustID.Torch;
+			TeleSound = Tele;
+			DashSound = SoundID.Item66;
+			AfterImageColorless = true;
+			AfterImageTinted = false;
+			AfterImage = true;
+			DefaultDraw = true;
+			TickSpeed = 3;
+			UsesParticleOrchestratorOnTele = false;
+			TelePRTID = PRTLoader.GetParticleID<Boom1>();
+			UsesPRTOnTele = true;
+			TeleDist = 2000;
+			Range = 2000;
+			Style = IdleStyle.Chevron;
+			ActiveBuff = ModContent.BuffType<HopeEnsemble_Buff>();
+			Projectile.minionSlots = 0.5f;
+			noDrawTint = true;
+			Group = Hope_Scabbard.minionTypes;
+			UsesGroup = true;
+		}
 
-			GenerateDust();
+		public override bool PreDraw(ref Color lightColor)
+		{
+			//lightColor = ThemeColor;
+			SpriteBatch spriteBatch = Main.spriteBatch;
+			Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
 
-			// This code is required if your minion weapon has the targeting feature
-			if (owner.HasMinionAttackTargetNPC)
+			Texture2D pixel = TextureAssets.MagicPixel.Value;
+
+			spriteBatch.End();
+			spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+
+			for (int i = 0; i < TrailPositions.Count - 1; i++)
 			{
-				NPC npc = Main.npc[owner.MinionAttackTargetNPC];
-				float between = Vector2.Distance(npc.Center, Projectile.Center);
+				Vector2 start = TrailPositions[i] - Main.screenPosition;
+				Vector2 end = TrailPositions[i + 1] - Main.screenPosition;
+				Vector2 diff = end - start;
 
-				// Reasonable distance away so it doesn't target across multiple screens
-				if (between < 2000f)
-				{
-					distanceFromTarget = between;
-					targetCenter = npc.Center;
-					foundTarget = true;
-				}
+				float length = diff.Length();
+				if (length < 0.5f)
+					continue; // skip tiny wiggle segments
+
+				float rotation = diff.ToRotation();
+
+				Vector2 DimensionMeasurement = Projectile.Hitbox.BottomLeft() - Projectile.Hitbox.TopRight();
+
+				float Width = DimensionMeasurement.Length();
+
+				float width = MathHelper.Lerp(0.01f, 0.0007f, i / (float)TrailLength);
+				float alpha = MathHelper.Lerp(1f, 0f, i / (float)TrailLength);
+				Color color = ThemeColor * alpha;
+
+				// Instead of stepping pixel by pixel, just draw one scaled pixel segment:
+				Main.spriteBatch.Draw(
+					pixel,
+					start,
+					null,
+					color,
+					rotation,
+					new Vector2(pixel.Width / 2, pixel.Height / 2), // Origin is at the left-middle of the scaled pixel
+					new Vector2(length, width),
+					SpriteEffects.None,
+					0f
+				);
 			}
 
-			if (!foundTarget)
-			{
-				// This code is required either way, used for finding a target
-				foreach (var npc in Main.ActiveNPCs)
+			spriteBatch.End();
+			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+			return base.PreDraw(ref lightColor); // Let the default system handle the base projectile drawing
+		}
+
+		public List<Vector2> TrailPositions = new();
+        public List<float> TrailRotations = new();
+		private const int TrailLength = 30;
+		public int ShootTimer = 0;
+
+		public override void AI()
+		{
+			TrailPositions.Insert(0, Projectile.Center);
+			TrailRotations.Insert(0, Projectile.rotation);
+
+			// Cap trail
+			while (TrailPositions.Count > TrailLength)
+				TrailPositions.RemoveAt(TrailPositions.Count - 1);
+			while (TrailRotations.Count > TrailLength)
+				TrailRotations.RemoveAt(TrailRotations.Count - 1);
+
+			
+				if (TargFlag && ShootTimer <= 0)
 				{
-					if (npc.CanBeChasedBy())
+					float rotation = MathHelper.ToRadians(45);
+
+					Vector2 ShootOrig = Projectile.Center;
+					Vector2 Velocity = Projectile.velocity *  2;
+
+					ShootOrig += Vector2.Normalize(Velocity) * 5f;
+
+					for (int i = 0; i < 6; i++)
 					{
-						float between = Vector2.Distance(npc.Center, Projectile.Center);
-						bool closest = Vector2.Distance(Projectile.Center, targetCenter) > between;
-						bool inRange = between < distanceFromTarget;
-						bool lineOfSight = Collision.CanHitLine(Projectile.position, Projectile.width, Projectile.height, npc.position, npc.width, npc.height);
-						// Additional check for this specific minion behavior, otherwise it will stop attacking once it dashed through an enemy while flying though tiles afterwards
-						// The number depends on various parameters seen in the movement code below. Test different ones out until it works alright
-						bool closeThroughWall = between < 100f;
-
-						if (((closest && inRange) || !foundTarget) && (lineOfSight || closeThroughWall))
-						{
-							distanceFromTarget = between;
-							targetCenter = npc.Center;
-							foundTarget = true;
-						}
+						Vector2 perturbedSpeed = Velocity.RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (6 - 1))); // Watch out for dividing by 0 if there is only 1 projectile.
+						Projectile.NewProjectile(Entity.GetSource_FromThis(), ShootOrig, perturbedSpeed, ModContent.ProjectileType<EnchantedShadowflame>(), Projectile.damage / 3, Projectile.knockBack);
 					}
+					ShootTimer = 240;
 				}
-			}
-
-			// friendly needs to be set to true so the minion can deal contact damage
-			// friendly needs to be set to false so it doesn't damage things like target dummies while idling
-			// Both things depend on if it has a target or not, so it's just one assignment here
-			// You don't need this assignment if your minion is shooting things instead of dealing contact damage
-			Projectile.friendly = foundTarget;
-		}
-
-		private void Movement(bool foundTarget, float distanceFromTarget, Vector2 targetCenter, float distanceToIdlePosition, Vector2 vectorToIdlePosition)
-		{
-			float speed = 50f;
-			float inertia = 140f;
-
-			GenerateDust();
-
-			if (foundTarget)
-			{
-				if (distanceFromTarget > 40f)
+				if (TargFlag && ShootTimer > 0)
 				{
-					// If not in "strike-through" mode, home in
-					if (Projectile.ai[1] == 0)
-					{
-						Vector2 direction = targetCenter - Projectile.Center;
-						direction.Normalize();
-						direction *= speed;
 
-						float targetAngle = Projectile.AngleTo(targetCenter * MathHelper.ToRadians(360));
-						Projectile.velocity = (Projectile.velocity * (inertia - 1) + direction) / inertia;
-
-						// If close enough, enter "strike-through" mode
-						if (distanceFromTarget < 50f)
-						{
-							SoundEngine.PlaySound(SoundID.Item66);
-							Projectile.ai[1] = 1; // Enter strike-through phase
-							Projectile.ai[0] = 0; // Reset timer
-						}
-						Projectile.rotation = targetAngle;
-					}
 				}
-			}
-
-			// If in "strike-through" mode, keep moving forward without changing direction
-			if (Projectile.ai[1] == 1)
-			{
-				Projectile.ai[0]++; // Increment timer
-
-				if (Projectile.ai[0] < 20)
+				if (ShootTimer > 0)
 				{
-					// Keep moving in the same direction for a bit
-					Projectile.velocity = Projectile.velocity.SafeNormalize(Vector2.Zero) * speed;
+					ShootTimer--;
 				}
-				else
-				{
-					// Exit "strike-through" mode after 20 ticks (~1/3 of a second)
-					Projectile.ai[1] = 0;
-				}
-			}
-
-			if (!foundTarget)
-			{
-				// Reset "strike-through" state when there's no target
-				Projectile.ai[1] = 0;
-
-				if (distanceToIdlePosition > 600f)
-				{
-					speed = 12f;
-					inertia = 60f;
-				}
-				else
-				{
-					speed = 4f;
-					inertia = 80f;
-				}
-
-				if (distanceToIdlePosition > 20f)
-				{
-					vectorToIdlePosition.Normalize();
-					vectorToIdlePosition *= speed;
-					Projectile.velocity = (Projectile.velocity * (inertia - 1) + vectorToIdlePosition) / inertia;
-				}
-				else if (Projectile.velocity == Vector2.Zero)
-				{
-					Projectile.velocity.X = -0.15f;
-					Projectile.velocity.Y = -0.05f;
-				}
-			}
-		}
-
-
-		private void Visuals()
-		{
-			// So it will lean slightly towards the direction it's moving
-			Projectile.rotation = Projectile.velocity.X * 0.5f;
-
-			GenerateDust();
-
-			// This is a simple "loop through all frames from top to bottom" animation
-			//int frameSpeed = 5;
-
-			//Projectile.frameCounter++;
-
-			//if (Projectile.frameCounter >= frameSpeed) {
-			//Projectile.frameCounter = 0;
-			//Projectile.frame++;
-
-			//if (Projectile.frame >= Main.projFrames[Projectile.type]) {
-			//Projectile.frame = 0;
-			//}
-			//}
-
-			// Some visuals here
-			Lighting.AddLight(Projectile.Center, Color.LightGoldenrodYellow.ToVector3() * 0.78f);
+			
+			base.AI();
 		}
 	}
-	public class Lead_Shortsword : ModProjectile
-	{
-		private void GenerateDust()
-		{
-			
-				Dust dust = Dust.NewDustDirect(Projectile.position, Projectile.height, Projectile.width, DustID.Lead,
-					0, 0, 254, Scale: 1.0f);
-				dust.velocity += Projectile.velocity * 0.5f;
-				dust.velocity *= 0.5f;
-				dust.noGravity = true;
-		
-		}
-
-		public override void SetStaticDefaults() {
-			ProjectileID.Sets.TrailingMode[Type] = 2;
-            ProjectileID.Sets.TrailCacheLength[Type] = 12;
-			// This is necessary for right-click targeting
-			ProjectileID.Sets.MinionTargettingFeature[Projectile.type] = true;
-
-			Main.projPet[Projectile.type] = true; // Denotes that this projectile is a pet or minion
-
-			ProjectileID.Sets.MinionSacrificable[Projectile.type] = true; // This is needed so your minion can properly spawn when summoned and replaced when other minions are summoned
-			ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true; // Make the cultist resistant to this projectile, as it's resistant to all homing projectiles.
-		}
-
-		public sealed override void SetDefaults()
-		{
-			Projectile.width = 18;
-			Projectile.height = 28;
-			Projectile.tileCollide = false; // Makes the minion go through tiles freely
-
-			// These below are needed for a minion weapon
-			Projectile.friendly = true; // Only controls if it deals damage to enemies on contact (more on that later)
-			Projectile.minion = true; // Declares this as a minion (has many effects)
-			Projectile.DamageType = DamageClass.Summon; // Declares the damage type (needed for it to deal damage)
-			Projectile.minionSlots = 0.4f; // Amount of slots this minion occupies from the total minion slots available to the player (more on that later)
-			Projectile.penetrate = -1; // Needed so the minion doesn't despawn on collision with enemies or tiles
-			Projectile.netImportant = true;
-			Projectile.netUpdate = true;
-			
-		}
-
-		public override bool PreDraw(ref Color lightColor) {
-			// Draws an afterimage trail. See https://github.com/tModLoader/tModLoader/wiki/Basic-Projectile#afterimage-trail for more information.
-
-			Texture2D texture = TextureAssets.Projectile[Type].Value;
-
-			Vector2 drawOrigin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
-			for (int k = Projectile.oldPos.Length - 1; k > 0; k--) {
-				Vector2 drawPos = (Projectile.oldPos[k] - Main.screenPosition) + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
-				Color color = Projectile.GetAlpha(lightColor) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
-				Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
-			}
-
-			return true;
-		}
-
-
-		// Here you can decide if your minion breaks things like grass or pots
-		public override bool? CanCutTiles() {
-			return false;
-		}
-
-		// This is mandatory if your minion deals contact damage (further related stuff in AI() in the Movement region)
-		public override bool MinionContactDamage() {
-			return true;
-		}
-
-		// The AI of this minion is split into multiple methods to avoid bloat. This method just passes values between calls actual parts of the AI.
-		public override void AI() {
-
-			
-			GenerateDust();
-			
-			Player owner = Main.player[Projectile.owner];
-
-			
-			if (!CheckActive(owner)) {
-				return;
-			}
-
-			GeneralBehavior(owner, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition);
-			SearchForTargets(owner, out bool foundTarget, out float distanceFromTarget, out Vector2 targetCenter);
-			Movement(foundTarget, distanceFromTarget, targetCenter, distanceToIdlePosition, vectorToIdlePosition);
-			Visuals();
-		}
-
-		// This is the "active check", makes sure the minion is alive while the player is alive, and despawns if not
-		private bool CheckActive(Player owner) {
-			if (owner.dead || !owner.active) {
-				owner.ClearBuff(ModContent.BuffType<HopeEnsemble_Buff>());
-
-				return false;
-			}
-
-			if (owner.HasBuff(ModContent.BuffType<HopeEnsemble_Buff>())) {
-				Projectile.timeLeft = 2;
-			}
-
-            
-			return true;
-		}
-
-
-
-		
-		private void GeneralBehavior(Player owner, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition) {
-			
-			GenerateDust();
-
-			Vector2 idlePosition = owner.Center;
-			idlePosition.Y -= 48f; // Go up 48 coordinates (three tiles from the center of the player)
-
-			
-			// If your minion doesn't aimlessly move around when it's idle, you need to "put" it into the line of other summoned minions
-			// The index is projectile.minionPos
-			float minionPositionOffsetX = (10 + Projectile.minionPos * 40) * -owner.direction;
-			idlePosition.X += minionPositionOffsetX; // Go behind the player
-
-			// All of this code below this line is adapted from Spazmamini code (ID 388, aiStyle 66)
-
-			// Teleport to player if distance is too big
-			vectorToIdlePosition = idlePosition - Projectile.Center;
-			distanceToIdlePosition = vectorToIdlePosition.Length();
-
-			if (Main.myPlayer == owner.whoAmI && distanceToIdlePosition > 1000f) {
-				SoundEngine.PlaySound(SoundID.Item4);
-				// Whenever you deal with non-regular events that change the behavior or position drastically, make sure to only run the code on the owner of the projectile,
-				// and then set netUpdate to true
-				Projectile.position = idlePosition;
-				Projectile.velocity *= 0.1f;
-				Projectile.netUpdate = true;
-				ParticleOrchestrator.RequestParticleSpawn(clientOnly: false, ParticleOrchestraType.Excalibur,
-				new ParticleOrchestraSettings { PositionInWorld = Main.rand.NextVector2FromRectangle(Projectile.Hitbox) },
-				Projectile.owner);
-			}
-
-			// If your minion is flying, you want to do this independently of any conditions
-			float overlapVelocity = 0.04f;
-
-			// Fix overlap with other minions
-			foreach (var other in Main.ActiveProjectiles) {
-				if (other.whoAmI != Projectile.whoAmI && other.owner == Projectile.owner && Math.Abs(Projectile.position.X - other.position.X) + Math.Abs(Projectile.position.Y - other.position.Y) < Projectile.width) {
-					if (Projectile.position.X < other.position.X) {
-						Projectile.velocity.X -= overlapVelocity;
-					}
-					else {
-						Projectile.velocity.X += overlapVelocity;
-					}
-
-					if (Projectile.position.Y < other.position.Y) {
-						Projectile.velocity.Y -= overlapVelocity;
-					}
-					else {
-						Projectile.velocity.Y += overlapVelocity;
-					}
-				}
-			}
-		}
-
-		private void SearchForTargets(Player owner, out bool foundTarget, out float distanceFromTarget, out Vector2 targetCenter) {
-			// Starting search distance
-			distanceFromTarget = 700f;
-			targetCenter = Projectile.position;
-			foundTarget = false;
-
-			GenerateDust();
-			
-			// This code is required if your minion weapon has the targeting feature
-			if (owner.HasMinionAttackTargetNPC) {
-				NPC npc = Main.npc[owner.MinionAttackTargetNPC];
-				float between = Vector2.Distance(npc.Center, Projectile.Center);
-
-				// Reasonable distance away so it doesn't target across multiple screens
-				if (between < 2000f) {
-					distanceFromTarget = between;
-					targetCenter = npc.Center;
-					foundTarget = true;
-				}
-			}
-
-			if (!foundTarget) {
-				// This code is required either way, used for finding a target
-				foreach (var npc in Main.ActiveNPCs) {
-					if (npc.CanBeChasedBy()) {
-						float between = Vector2.Distance(npc.Center, Projectile.Center);
-						bool closest = Vector2.Distance(Projectile.Center, targetCenter) > between;
-						bool inRange = between < distanceFromTarget;
-						bool lineOfSight = Collision.CanHitLine(Projectile.position, Projectile.width, Projectile.height, npc.position, npc.width, npc.height);
-						// Additional check for this specific minion behavior, otherwise it will stop attacking once it dashed through an enemy while flying though tiles afterwards
-						// The number depends on various parameters seen in the movement code below. Test different ones out until it works alright
-						bool closeThroughWall = between < 100f;
-
-						if (((closest && inRange) || !foundTarget) && (lineOfSight || closeThroughWall)) {
-							distanceFromTarget = between;
-							targetCenter = npc.Center;
-							foundTarget = true;
-						}
-					}
-				}
-			}
-			
-			// friendly needs to be set to true so the minion can deal contact damage
-			// friendly needs to be set to false so it doesn't damage things like target dummies while idling
-			// Both things depend on if it has a target or not, so it's just one assignment here
-			// You don't need this assignment if your minion is shooting things instead of dealing contact damage
-			Projectile.friendly = foundTarget;
-		}
-
-		private void Movement(bool foundTarget, float distanceFromTarget, Vector2 targetCenter, float distanceToIdlePosition, Vector2 vectorToIdlePosition) {
-			float speed = 50f;
-			float inertia = 140f;
-			
-			GenerateDust();
-
-			if (foundTarget) {
-				if (distanceFromTarget > 40f) {
-					// If not in "strike-through" mode, home in
-					if (Projectile.ai[1] == 0) {
-						Vector2 direction = targetCenter - Projectile.Center;
-						direction.Normalize();
-						direction *= speed;
-
-						float targetAngle = Projectile.AngleTo(targetCenter * MathHelper.ToRadians(360));
-						Projectile.velocity = (Projectile.velocity * (inertia - 1) + direction) / inertia;
-
-						// If close enough, enter "strike-through" mode
-						if (distanceFromTarget < 50f) {
-							SoundEngine.PlaySound(SoundID.Item66);
-							Projectile.ai[1] = 1; // Enter strike-through phase
-							Projectile.ai[0] = 0; // Reset timer
-						}
-						Projectile.rotation = targetAngle;
-					}
-				}
-			}
-
-			// If in "strike-through" mode, keep moving forward without changing direction
-			if (Projectile.ai[1] == 1) {
-				Projectile.ai[0]++; // Increment timer
-
-				if (Projectile.ai[0] < 20) {
-					// Keep moving in the same direction for a bit
-					Projectile.velocity = Projectile.velocity.SafeNormalize(Vector2.Zero) * speed;
-				} else {
-					// Exit "strike-through" mode after 20 ticks (~1/3 of a second)
-					Projectile.ai[1] = 0;
-				}
-			}
-
-			if (!foundTarget) {
-				// Reset "strike-through" state when there's no target
-				Projectile.ai[1] = 0;
-
-				if (distanceToIdlePosition > 600f) {
-					speed = 12f;
-					inertia = 60f;
-				}
-				else {
-					speed = 4f;
-					inertia = 80f;
-				}
-
-				if (distanceToIdlePosition > 20f) {
-					vectorToIdlePosition.Normalize();
-					vectorToIdlePosition *= speed;
-					Projectile.velocity = (Projectile.velocity * (inertia - 1) + vectorToIdlePosition) / inertia;
-				}
-				else if (Projectile.velocity == Vector2.Zero) {
-					Projectile.velocity.X = -0.15f;
-					Projectile.velocity.Y = -0.05f;
-				}
-			}
-		}
-
-
-		private void Visuals() {
-			// So it will lean slightly towards the direction it's moving
-			Projectile.rotation = Projectile.velocity.X * 0.5f;
-
-			GenerateDust();
-
-			// This is a simple "loop through all frames from top to bottom" animation
-			//int frameSpeed = 5;
-
-			//Projectile.frameCounter++;
-
-			//if (Projectile.frameCounter >= frameSpeed) {
-				//Projectile.frameCounter = 0;
-				//Projectile.frame++;
-
-				//if (Projectile.frame >= Main.projFrames[Projectile.type]) {
-					//Projectile.frame = 0;
-				//}
-			//}
-
-			// Some visuals here
-			Lighting.AddLight(Projectile.Center, Color.Navy.ToVector3() * 0.78f);
-		}
-	}
-	public class Iron_Shortsword : ModProjectile
-	{
-		private void GenerateDust()
-		{
-			
-				Dust dust = Dust.NewDustDirect(Projectile.position, Projectile.height, Projectile.width, DustID.Iron,
-					0, 0, 254, Scale: 1.0f);
-				dust.velocity += Projectile.velocity * 0.5f;
-				dust.velocity *= 0.5f;
-				dust.noGravity = true;
-		
-		}
-
-		public override void SetStaticDefaults() {
-			ProjectileID.Sets.TrailingMode[Type] = 2;
-            ProjectileID.Sets.TrailCacheLength[Type] = 12;
-			// This is necessary for right-click targeting
-			ProjectileID.Sets.MinionTargettingFeature[Projectile.type] = true;
-
-			Main.projPet[Projectile.type] = true; // Denotes that this projectile is a pet or minion
-
-			ProjectileID.Sets.MinionSacrificable[Projectile.type] = true; // This is needed so your minion can properly spawn when summoned and replaced when other minions are summoned
-			ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true; // Make the cultist resistant to this projectile, as it's resistant to all homing projectiles.
-		}
-
-		public sealed override void SetDefaults()
-		{
-			Projectile.width = 18;
-			Projectile.height = 28;
-			Projectile.tileCollide = false; // Makes the minion go through tiles freely
-
-			// These below are needed for a minion weapon
-			Projectile.friendly = true; // Only controls if it deals damage to enemies on contact (more on that later)
-			Projectile.minion = true; // Declares this as a minion (has many effects)
-			Projectile.DamageType = DamageClass.Summon; // Declares the damage type (needed for it to deal damage)
-			Projectile.minionSlots = 0.4f; // Amount of slots this minion occupies from the total minion slots available to the player (more on that later)
-			Projectile.penetrate = -1; // Needed so the minion doesn't despawn on collision with enemies or tiles
-			Projectile.netImportant = true;
-			Projectile.netUpdate = true;
-			
-		}
-
-		public override bool PreDraw(ref Color lightColor) {
-			// Draws an afterimage trail. See https://github.com/tModLoader/tModLoader/wiki/Basic-Projectile#afterimage-trail for more information.
-
-			Texture2D texture = TextureAssets.Projectile[Type].Value;
-
-			Vector2 drawOrigin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
-			for (int k = Projectile.oldPos.Length - 1; k > 0; k--) {
-				Vector2 drawPos = (Projectile.oldPos[k] - Main.screenPosition) + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
-				Color color = Projectile.GetAlpha(lightColor) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
-				Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
-			}
-
-			return true;
-		}
-
-
-		// Here you can decide if your minion breaks things like grass or pots
-		public override bool? CanCutTiles() {
-			return false;
-		}
-
-		// This is mandatory if your minion deals contact damage (further related stuff in AI() in the Movement region)
-		public override bool MinionContactDamage() {
-			return true;
-		}
-
-		// The AI of this minion is split into multiple methods to avoid bloat. This method just passes values between calls actual parts of the AI.
-		public override void AI() {
-
-			
-			GenerateDust();
-			
-			Player owner = Main.player[Projectile.owner];
-
-			
-			if (!CheckActive(owner)) {
-				return;
-			}
-
-			GeneralBehavior(owner, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition);
-			SearchForTargets(owner, out bool foundTarget, out float distanceFromTarget, out Vector2 targetCenter);
-			Movement(foundTarget, distanceFromTarget, targetCenter, distanceToIdlePosition, vectorToIdlePosition);
-			Visuals();
-		}
-
-		// This is the "active check", makes sure the minion is alive while the player is alive, and despawns if not
-		private bool CheckActive(Player owner) {
-			if (owner.dead || !owner.active) {
-				owner.ClearBuff(ModContent.BuffType<HopeEnsemble_Buff>());
-
-				return false;
-			}
-
-			if (owner.HasBuff(ModContent.BuffType<HopeEnsemble_Buff>())) {
-				Projectile.timeLeft = 2;
-			}
-
-            
-			return true;
-		}
-
-
-
-		
-		private void GeneralBehavior(Player owner, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition) {
-			
-			GenerateDust();
-
-			Vector2 idlePosition = owner.Center;
-			idlePosition.Y -= 48f; // Go up 48 coordinates (three tiles from the center of the player)
-
-			
-			// If your minion doesn't aimlessly move around when it's idle, you need to "put" it into the line of other summoned minions
-			// The index is projectile.minionPos
-			float minionPositionOffsetX = (10 + Projectile.minionPos * 40) * -owner.direction;
-			idlePosition.X += minionPositionOffsetX; // Go behind the player
-
-			// All of this code below this line is adapted from Spazmamini code (ID 388, aiStyle 66)
-
-			// Teleport to player if distance is too big
-			vectorToIdlePosition = idlePosition - Projectile.Center;
-			distanceToIdlePosition = vectorToIdlePosition.Length();
-
-			if (Main.myPlayer == owner.whoAmI && distanceToIdlePosition > 1000f) {
-				SoundEngine.PlaySound(SoundID.Item4);
-				// Whenever you deal with non-regular events that change the behavior or position drastically, make sure to only run the code on the owner of the projectile,
-				// and then set netUpdate to true
-				Projectile.position = idlePosition;
-				Projectile.velocity *= 0.1f;
-				Projectile.netUpdate = true;
-				ParticleOrchestrator.RequestParticleSpawn(clientOnly: false, ParticleOrchestraType.Excalibur,
-				new ParticleOrchestraSettings { PositionInWorld = Main.rand.NextVector2FromRectangle(Projectile.Hitbox) },
-				Projectile.owner);
-			}
-
-			// If your minion is flying, you want to do this independently of any conditions
-			float overlapVelocity = 0.04f;
-
-			// Fix overlap with other minions
-			foreach (var other in Main.ActiveProjectiles) {
-				if (other.whoAmI != Projectile.whoAmI && other.owner == Projectile.owner && Math.Abs(Projectile.position.X - other.position.X) + Math.Abs(Projectile.position.Y - other.position.Y) < Projectile.width) {
-					if (Projectile.position.X < other.position.X) {
-						Projectile.velocity.X -= overlapVelocity;
-					}
-					else {
-						Projectile.velocity.X += overlapVelocity;
-					}
-
-					if (Projectile.position.Y < other.position.Y) {
-						Projectile.velocity.Y -= overlapVelocity;
-					}
-					else {
-						Projectile.velocity.Y += overlapVelocity;
-					}
-				}
-			}
-		}
-
-		private void SearchForTargets(Player owner, out bool foundTarget, out float distanceFromTarget, out Vector2 targetCenter) {
-			// Starting search distance
-			distanceFromTarget = 700f;
-			targetCenter = Projectile.position;
-			foundTarget = false;
-
-			GenerateDust();
-			
-			// This code is required if your minion weapon has the targeting feature
-			if (owner.HasMinionAttackTargetNPC) {
-				NPC npc = Main.npc[owner.MinionAttackTargetNPC];
-				float between = Vector2.Distance(npc.Center, Projectile.Center);
-
-				// Reasonable distance away so it doesn't target across multiple screens
-				if (between < 2000f) {
-					distanceFromTarget = between;
-					targetCenter = npc.Center;
-					foundTarget = true;
-				}
-			}
-
-			if (!foundTarget) {
-				// This code is required either way, used for finding a target
-				foreach (var npc in Main.ActiveNPCs) {
-					if (npc.CanBeChasedBy()) {
-						float between = Vector2.Distance(npc.Center, Projectile.Center);
-						bool closest = Vector2.Distance(Projectile.Center, targetCenter) > between;
-						bool inRange = between < distanceFromTarget;
-						bool lineOfSight = Collision.CanHitLine(Projectile.position, Projectile.width, Projectile.height, npc.position, npc.width, npc.height);
-						// Additional check for this specific minion behavior, otherwise it will stop attacking once it dashed through an enemy while flying though tiles afterwards
-						// The number depends on various parameters seen in the movement code below. Test different ones out until it works alright
-						bool closeThroughWall = between < 100f;
-
-						if (((closest && inRange) || !foundTarget) && (lineOfSight || closeThroughWall)) {
-							distanceFromTarget = between;
-							targetCenter = npc.Center;
-							foundTarget = true;
-						}
-					}
-				}
-			}
-			
-			// friendly needs to be set to true so the minion can deal contact damage
-			// friendly needs to be set to false so it doesn't damage things like target dummies while idling
-			// Both things depend on if it has a target or not, so it's just one assignment here
-			// You don't need this assignment if your minion is shooting things instead of dealing contact damage
-			Projectile.friendly = foundTarget;
-		}
-
-		private void Movement(bool foundTarget, float distanceFromTarget, Vector2 targetCenter, float distanceToIdlePosition, Vector2 vectorToIdlePosition) {
-			float speed = 50f;
-			float inertia = 140f;
-			
-			GenerateDust();
-
-			if (foundTarget) {
-				if (distanceFromTarget > 40f) {
-					// If not in "strike-through" mode, home in
-					if (Projectile.ai[1] == 0) {
-						Vector2 direction = targetCenter - Projectile.Center;
-						direction.Normalize();
-						direction *= speed;
-
-						float targetAngle = Projectile.AngleTo(targetCenter * MathHelper.ToRadians(360));
-						Projectile.velocity = (Projectile.velocity * (inertia - 1) + direction) / inertia;
-
-						// If close enough, enter "strike-through" mode
-						if (distanceFromTarget < 50f) {
-							SoundEngine.PlaySound(SoundID.Item66);
-							Projectile.ai[1] = 1; // Enter strike-through phase
-							Projectile.ai[0] = 0; // Reset timer
-						}
-						Projectile.rotation = targetAngle;
-					}
-				}
-			}
-
-			// If in "strike-through" mode, keep moving forward without changing direction
-			if (Projectile.ai[1] == 1) {
-				Projectile.ai[0]++; // Increment timer
-
-				if (Projectile.ai[0] < 20) {
-					// Keep moving in the same direction for a bit
-					Projectile.velocity = Projectile.velocity.SafeNormalize(Vector2.Zero) * speed;
-				} else {
-					// Exit "strike-through" mode after 20 ticks (~1/3 of a second)
-					Projectile.ai[1] = 0;
-				}
-			}
-
-			if (!foundTarget) {
-				// Reset "strike-through" state when there's no target
-				Projectile.ai[1] = 0;
-
-				if (distanceToIdlePosition > 600f) {
-					speed = 12f;
-					inertia = 60f;
-				}
-				else {
-					speed = 4f;
-					inertia = 80f;
-				}
-
-				if (distanceToIdlePosition > 20f) {
-					vectorToIdlePosition.Normalize();
-					vectorToIdlePosition *= speed;
-					Projectile.velocity = (Projectile.velocity * (inertia - 1) + vectorToIdlePosition) / inertia;
-				}
-				else if (Projectile.velocity == Vector2.Zero) {
-					Projectile.velocity.X = -0.15f;
-					Projectile.velocity.Y = -0.05f;
-				}
-			}
-		}
-
-
-		private void Visuals() {
-			// So it will lean slightly towards the direction it's moving
-			Projectile.rotation = Projectile.velocity.X * 0.5f;
-
-			GenerateDust();
-
-			// This is a simple "loop through all frames from top to bottom" animation
-			//int frameSpeed = 5;
-
-			//Projectile.frameCounter++;
-
-			//if (Projectile.frameCounter >= frameSpeed) {
-				//Projectile.frameCounter = 0;
-				//Projectile.frame++;
-
-				//if (Projectile.frame >= Main.projFrames[Projectile.type]) {
-					//Projectile.frame = 0;
-				//}
-			//}
-
-			// Some visuals here
-			Lighting.AddLight(Projectile.Center, Color.Beige.ToVector3() * 0.78f);
-		}
-	}
-	public class Gold_Shortsword : ModProjectile
-	{
-		private void GenerateDust()
-		{
-			
-				Dust dust = Dust.NewDustDirect(Projectile.position, Projectile.height, Projectile.width, DustID.Gold,
-					0, 0, 254, Scale: 1.0f);
-				dust.velocity += Projectile.velocity * 0.5f;
-				dust.velocity *= 0.5f;
-				dust.noGravity = true;
-		
-		}
-
-		public override void SetStaticDefaults() {
-			ProjectileID.Sets.TrailingMode[Type] = 2;
-            ProjectileID.Sets.TrailCacheLength[Type] = 12;
-			// This is necessary for right-click targeting
-			ProjectileID.Sets.MinionTargettingFeature[Projectile.type] = true;
-
-			Main.projPet[Projectile.type] = true; // Denotes that this projectile is a pet or minion
-
-			ProjectileID.Sets.MinionSacrificable[Projectile.type] = true; // This is needed so your minion can properly spawn when summoned and replaced when other minions are summoned
-			ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true; // Make the cultist resistant to this projectile, as it's resistant to all homing projectiles.
-		}
-
-		public sealed override void SetDefaults()
-		{
-			Projectile.width = 18;
-			Projectile.height = 28;
-			Projectile.tileCollide = false; // Makes the minion go through tiles freely
-
-			// These below are needed for a minion weapon
-			Projectile.friendly = true; // Only controls if it deals damage to enemies on contact (more on that later)
-			Projectile.minion = true; // Declares this as a minion (has many effects)
-			Projectile.DamageType = DamageClass.Summon; // Declares the damage type (needed for it to deal damage)
-			Projectile.minionSlots = 0.4f; // Amount of slots this minion occupies from the total minion slots available to the player (more on that later)
-			Projectile.penetrate = -1; // Needed so the minion doesn't despawn on collision with enemies or tiles
-			Projectile.netImportant = true;
-			Projectile.netUpdate = true;
-			
-		}
-
-		public override bool PreDraw(ref Color lightColor) {
-			// Draws an afterimage trail. See https://github.com/tModLoader/tModLoader/wiki/Basic-Projectile#afterimage-trail for more information.
-
-			Texture2D texture = TextureAssets.Projectile[Type].Value;
-
-			Vector2 drawOrigin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
-			for (int k = Projectile.oldPos.Length - 1; k > 0; k--) {
-				Vector2 drawPos = (Projectile.oldPos[k] - Main.screenPosition) + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
-				Color color = Projectile.GetAlpha(lightColor) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
-				Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
-			}
-
-			return true;
-		}
-
-
-
-		// Here you can decide if your minion breaks things like grass or pots
-		public override bool? CanCutTiles() {
-			return false;
-		}
-
-		// This is mandatory if your minion deals contact damage (further related stuff in AI() in the Movement region)
-		public override bool MinionContactDamage() {
-			return true;
-		}
-
-		// The AI of this minion is split into multiple methods to avoid bloat. This method just passes values between calls actual parts of the AI.
-		public override void AI() {
-
-			
-			GenerateDust();
-			
-			Player owner = Main.player[Projectile.owner];
-
-			
-			if (!CheckActive(owner)) {
-				return;
-			}
-
-			GeneralBehavior(owner, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition);
-			SearchForTargets(owner, out bool foundTarget, out float distanceFromTarget, out Vector2 targetCenter);
-			Movement(foundTarget, distanceFromTarget, targetCenter, distanceToIdlePosition, vectorToIdlePosition);
-			Visuals();
-		}
-
-		// This is the "active check", makes sure the minion is alive while the player is alive, and despawns if not
-		private bool CheckActive(Player owner) {
-			if (owner.dead || !owner.active) {
-				owner.ClearBuff(ModContent.BuffType<HopeEnsemble_Buff>());
-
-				return false;
-			}
-
-			if (owner.HasBuff(ModContent.BuffType<HopeEnsemble_Buff>())) {
-				Projectile.timeLeft = 2;
-			}
-
-            
-			return true;
-		}
-
-
-
-		
-		private void GeneralBehavior(Player owner, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition) {
-			
-			GenerateDust();
-
-			Vector2 idlePosition = owner.Center;
-			idlePosition.Y -= 48f; // Go up 48 coordinates (three tiles from the center of the player)
-
-			
-			// If your minion doesn't aimlessly move around when it's idle, you need to "put" it into the line of other summoned minions
-			// The index is projectile.minionPos
-			float minionPositionOffsetX = (10 + Projectile.minionPos * 40) * -owner.direction;
-			idlePosition.X += minionPositionOffsetX; // Go behind the player
-
-			// All of this code below this line is adapted from Spazmamini code (ID 388, aiStyle 66)
-
-			// Teleport to player if distance is too big
-			vectorToIdlePosition = idlePosition - Projectile.Center;
-			distanceToIdlePosition = vectorToIdlePosition.Length();
-
-			if (Main.myPlayer == owner.whoAmI && distanceToIdlePosition > 1000f) {
-				SoundEngine.PlaySound(SoundID.Item4);
-				// Whenever you deal with non-regular events that change the behavior or position drastically, make sure to only run the code on the owner of the projectile,
-				// and then set netUpdate to true
-				Projectile.position = idlePosition;
-				Projectile.velocity *= 0.1f;
-				Projectile.netUpdate = true;
-				ParticleOrchestrator.RequestParticleSpawn(clientOnly: false, ParticleOrchestraType.Excalibur,
-				new ParticleOrchestraSettings { PositionInWorld = Main.rand.NextVector2FromRectangle(Projectile.Hitbox) },
-				Projectile.owner);
-			}
-
-			// If your minion is flying, you want to do this independently of any conditions
-			float overlapVelocity = 0.04f;
-
-			// Fix overlap with other minions
-			foreach (var other in Main.ActiveProjectiles) {
-				if (other.whoAmI != Projectile.whoAmI && other.owner == Projectile.owner && Math.Abs(Projectile.position.X - other.position.X) + Math.Abs(Projectile.position.Y - other.position.Y) < Projectile.width) {
-					if (Projectile.position.X < other.position.X) {
-						Projectile.velocity.X -= overlapVelocity;
-					}
-					else {
-						Projectile.velocity.X += overlapVelocity;
-					}
-
-					if (Projectile.position.Y < other.position.Y) {
-						Projectile.velocity.Y -= overlapVelocity;
-					}
-					else {
-						Projectile.velocity.Y += overlapVelocity;
-					}
-				}
-			}
-		}
-
-		private void SearchForTargets(Player owner, out bool foundTarget, out float distanceFromTarget, out Vector2 targetCenter) {
-			// Starting search distance
-			distanceFromTarget = 700f;
-			targetCenter = Projectile.position;
-			foundTarget = false;
-
-			GenerateDust();
-			
-			// This code is required if your minion weapon has the targeting feature
-			if (owner.HasMinionAttackTargetNPC) {
-				NPC npc = Main.npc[owner.MinionAttackTargetNPC];
-				float between = Vector2.Distance(npc.Center, Projectile.Center);
-
-				// Reasonable distance away so it doesn't target across multiple screens
-				if (between < 2000f) {
-					distanceFromTarget = between;
-					targetCenter = npc.Center;
-					foundTarget = true;
-				}
-			}
-
-			if (!foundTarget) {
-				// This code is required either way, used for finding a target
-				foreach (var npc in Main.ActiveNPCs) {
-					if (npc.CanBeChasedBy()) {
-						float between = Vector2.Distance(npc.Center, Projectile.Center);
-						bool closest = Vector2.Distance(Projectile.Center, targetCenter) > between;
-						bool inRange = between < distanceFromTarget;
-						bool lineOfSight = Collision.CanHitLine(Projectile.position, Projectile.width, Projectile.height, npc.position, npc.width, npc.height);
-						// Additional check for this specific minion behavior, otherwise it will stop attacking once it dashed through an enemy while flying though tiles afterwards
-						// The number depends on various parameters seen in the movement code below. Test different ones out until it works alright
-						bool closeThroughWall = between < 100f;
-
-						if (((closest && inRange) || !foundTarget) && (lineOfSight || closeThroughWall)) {
-							distanceFromTarget = between;
-							targetCenter = npc.Center;
-							foundTarget = true;
-						}
-					}
-				}
-			}
-			
-			// friendly needs to be set to true so the minion can deal contact damage
-			// friendly needs to be set to false so it doesn't damage things like target dummies while idling
-			// Both things depend on if it has a target or not, so it's just one assignment here
-			// You don't need this assignment if your minion is shooting things instead of dealing contact damage
-			Projectile.friendly = foundTarget;
-		}
-
-		private void Movement(bool foundTarget, float distanceFromTarget, Vector2 targetCenter, float distanceToIdlePosition, Vector2 vectorToIdlePosition) {
-			float speed = 50f;
-			float inertia = 140f;
-			
-			GenerateDust();
-
-			if (foundTarget) {
-				if (distanceFromTarget > 40f) {
-					// If not in "strike-through" mode, home in
-					if (Projectile.ai[1] == 0) {
-						Vector2 direction = targetCenter - Projectile.Center;
-						direction.Normalize();
-						direction *= speed;
-
-						float targetAngle = Projectile.AngleTo(targetCenter * MathHelper.ToRadians(360));
-						Projectile.velocity = (Projectile.velocity * (inertia - 1) + direction) / inertia;
-
-						// If close enough, enter "strike-through" mode
-						if (distanceFromTarget < 50f) {
-							SoundEngine.PlaySound(SoundID.Item66);
-							Projectile.ai[1] = 1; // Enter strike-through phase
-							Projectile.ai[0] = 0; // Reset timer
-						}
-						Projectile.rotation = targetAngle;
-					}
-				}
-			}
-
-			// If in "strike-through" mode, keep moving forward without changing direction
-			if (Projectile.ai[1] == 1) {
-				Projectile.ai[0]++; // Increment timer
-
-				if (Projectile.ai[0] < 20) {
-					// Keep moving in the same direction for a bit
-					Projectile.velocity = Projectile.velocity.SafeNormalize(Vector2.Zero) * speed;
-				} else {
-					// Exit "strike-through" mode after 20 ticks (~1/3 of a second)
-					Projectile.ai[1] = 0;
-				}
-			}
-
-			if (!foundTarget) {
-				// Reset "strike-through" state when there's no target
-				Projectile.ai[1] = 0;
-
-				if (distanceToIdlePosition > 600f) {
-					speed = 12f;
-					inertia = 60f;
-				}
-				else {
-					speed = 4f;
-					inertia = 80f;
-				}
-
-				if (distanceToIdlePosition > 20f) {
-					vectorToIdlePosition.Normalize();
-					vectorToIdlePosition *= speed;
-					Projectile.velocity = (Projectile.velocity * (inertia - 1) + vectorToIdlePosition) / inertia;
-				}
-				else if (Projectile.velocity == Vector2.Zero) {
-					Projectile.velocity.X = -0.15f;
-					Projectile.velocity.Y = -0.05f;
-				}
-			}
-		}
-
-
-		private void Visuals() {
-			// So it will lean slightly towards the direction it's moving
-			Projectile.rotation = Projectile.velocity.X * 0.5f;
-
-			GenerateDust();
-
-			// This is a simple "loop through all frames from top to bottom" animation
-			//int frameSpeed = 5;
-
-			//Projectile.frameCounter++;
-
-			//if (Projectile.frameCounter >= frameSpeed) {
-				//Projectile.frameCounter = 0;
-				//Projectile.frame++;
-
-				//if (Projectile.frame >= Main.projFrames[Projectile.type]) {
-					//Projectile.frame = 0;
-				//}
-			//}
-
-			// Some visuals here
-			Lighting.AddLight(Projectile.Center, Color.Yellow.ToVector3() * 0.78f);
-		}
-	}
-	public class Silver_Shortsword : ModProjectile
-	{
-		private void GenerateDust()
-		{
-			
-				Dust dust = Dust.NewDustDirect(Projectile.position, Projectile.height, Projectile.width, DustID.Silver,
-					0, 0, 254, Scale: 1.0f);
-				dust.velocity += Projectile.velocity * 0.5f;
-				dust.velocity *= 0.5f;
-				dust.noGravity = true;
-		
-		}
-
-		public override void SetStaticDefaults() {
-			ProjectileID.Sets.TrailingMode[Type] = 2;
-            ProjectileID.Sets.TrailCacheLength[Type] = 12;
-			// This is necessary for right-click targeting
-			ProjectileID.Sets.MinionTargettingFeature[Projectile.type] = true;
-
-			Main.projPet[Projectile.type] = true; // Denotes that this projectile is a pet or minion
-
-			ProjectileID.Sets.MinionSacrificable[Projectile.type] = true; // This is needed so your minion can properly spawn when summoned and replaced when other minions are summoned
-			ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true; // Make the cultist resistant to this projectile, as it's resistant to all homing projectiles.
-		}
-
-		public sealed override void SetDefaults()
-		{
-			Projectile.width = 18;
-			Projectile.height = 28;
-			Projectile.tileCollide = false; // Makes the minion go through tiles freely
-
-			// These below are needed for a minion weapon
-			Projectile.friendly = true; // Only controls if it deals damage to enemies on contact (more on that later)
-			Projectile.minion = true; // Declares this as a minion (has many effects)
-			Projectile.DamageType = DamageClass.Summon; // Declares the damage type (needed for it to deal damage)
-			Projectile.minionSlots = 0.4f; // Amount of slots this minion occupies from the total minion slots available to the player (more on that later)
-			Projectile.penetrate = -1; // Needed so the minion doesn't despawn on collision with enemies or tiles
-			Projectile.netImportant = true;
-			Projectile.netUpdate = true;
-			
-		}
-
-		public override bool PreDraw(ref Color lightColor) {
-			// Draws an afterimage trail. See https://github.com/tModLoader/tModLoader/wiki/Basic-Projectile#afterimage-trail for more information.
-
-			Texture2D texture = TextureAssets.Projectile[Type].Value;
-
-			Vector2 drawOrigin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
-			for (int k = Projectile.oldPos.Length - 1; k > 0; k--) {
-				Vector2 drawPos = (Projectile.oldPos[k] - Main.screenPosition) + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
-				Color color = Projectile.GetAlpha(lightColor) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
-				Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
-			}
-
-			return true;
-		}
-
-
-		// Here you can decide if your minion breaks things like grass or pots
-		public override bool? CanCutTiles() {
-			return false;
-		}
-
-		// This is mandatory if your minion deals contact damage (further related stuff in AI() in the Movement region)
-		public override bool MinionContactDamage() {
-			return true;
-		}
-
-		// The AI of this minion is split into multiple methods to avoid bloat. This method just passes values between calls actual parts of the AI.
-		public override void AI() {
-
-			
-			GenerateDust();
-			
-			Player owner = Main.player[Projectile.owner];
-
-			
-			if (!CheckActive(owner)) {
-				return;
-			}
-
-			GeneralBehavior(owner, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition);
-			SearchForTargets(owner, out bool foundTarget, out float distanceFromTarget, out Vector2 targetCenter);
-			Movement(foundTarget, distanceFromTarget, targetCenter, distanceToIdlePosition, vectorToIdlePosition);
-			Visuals();
-		}
-
-		// This is the "active check", makes sure the minion is alive while the player is alive, and despawns if not
-		private bool CheckActive(Player owner) {
-			if (owner.dead || !owner.active) {
-				owner.ClearBuff(ModContent.BuffType<HopeEnsemble_Buff>());
-
-				return false;
-			}
-
-			if (owner.HasBuff(ModContent.BuffType<HopeEnsemble_Buff>())) {
-				Projectile.timeLeft = 2;
-			}
-
-            
-			return true;
-		}
-
-
-
-		
-		private void GeneralBehavior(Player owner, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition) {
-			
-			GenerateDust();
-
-			Vector2 idlePosition = owner.Center;
-			idlePosition.Y -= 48f; // Go up 48 coordinates (three tiles from the center of the player)
-
-			
-			// If your minion doesn't aimlessly move around when it's idle, you need to "put" it into the line of other summoned minions
-			// The index is projectile.minionPos
-			float minionPositionOffsetX = (10 + Projectile.minionPos * 40) * -owner.direction;
-			idlePosition.X += minionPositionOffsetX; // Go behind the player
-
-			// All of this code below this line is adapted from Spazmamini code (ID 388, aiStyle 66)
-
-			// Teleport to player if distance is too big
-			vectorToIdlePosition = idlePosition - Projectile.Center;
-			distanceToIdlePosition = vectorToIdlePosition.Length();
-
-			if (Main.myPlayer == owner.whoAmI && distanceToIdlePosition > 1000f) {
-				SoundEngine.PlaySound(SoundID.Item4);
-				// Whenever you deal with non-regular events that change the behavior or position drastically, make sure to only run the code on the owner of the projectile,
-				// and then set netUpdate to true
-				Projectile.position = idlePosition;
-				Projectile.velocity *= 0.1f;
-				Projectile.netUpdate = true;
-				ParticleOrchestrator.RequestParticleSpawn(clientOnly: false, ParticleOrchestraType.Excalibur,
-				new ParticleOrchestraSettings { PositionInWorld = Main.rand.NextVector2FromRectangle(Projectile.Hitbox) },
-				Projectile.owner);
-			}
-
-			// If your minion is flying, you want to do this independently of any conditions
-			float overlapVelocity = 0.04f;
-
-			// Fix overlap with other minions
-			foreach (var other in Main.ActiveProjectiles) {
-				if (other.whoAmI != Projectile.whoAmI && other.owner == Projectile.owner && Math.Abs(Projectile.position.X - other.position.X) + Math.Abs(Projectile.position.Y - other.position.Y) < Projectile.width) {
-					if (Projectile.position.X < other.position.X) {
-						Projectile.velocity.X -= overlapVelocity;
-					}
-					else {
-						Projectile.velocity.X += overlapVelocity;
-					}
-
-					if (Projectile.position.Y < other.position.Y) {
-						Projectile.velocity.Y -= overlapVelocity;
-					}
-					else {
-						Projectile.velocity.Y += overlapVelocity;
-					}
-				}
-			}
-		}
-
-		private void SearchForTargets(Player owner, out bool foundTarget, out float distanceFromTarget, out Vector2 targetCenter) {
-			// Starting search distance
-			distanceFromTarget = 700f;
-			targetCenter = Projectile.position;
-			foundTarget = false;
-
-			GenerateDust();
-			
-			// This code is required if your minion weapon has the targeting feature
-			if (owner.HasMinionAttackTargetNPC) {
-				NPC npc = Main.npc[owner.MinionAttackTargetNPC];
-				float between = Vector2.Distance(npc.Center, Projectile.Center);
-
-				// Reasonable distance away so it doesn't target across multiple screens
-				if (between < 2000f) {
-					distanceFromTarget = between;
-					targetCenter = npc.Center;
-					foundTarget = true;
-				}
-			}
-
-			if (!foundTarget) {
-				// This code is required either way, used for finding a target
-				foreach (var npc in Main.ActiveNPCs) {
-					if (npc.CanBeChasedBy()) {
-						float between = Vector2.Distance(npc.Center, Projectile.Center);
-						bool closest = Vector2.Distance(Projectile.Center, targetCenter) > between;
-						bool inRange = between < distanceFromTarget;
-						bool lineOfSight = Collision.CanHitLine(Projectile.position, Projectile.width, Projectile.height, npc.position, npc.width, npc.height);
-						// Additional check for this specific minion behavior, otherwise it will stop attacking once it dashed through an enemy while flying though tiles afterwards
-						// The number depends on various parameters seen in the movement code below. Test different ones out until it works alright
-						bool closeThroughWall = between < 100f;
-
-						if (((closest && inRange) || !foundTarget) && (lineOfSight || closeThroughWall)) {
-							distanceFromTarget = between;
-							targetCenter = npc.Center;
-							foundTarget = true;
-						}
-					}
-				}
-			}
-			
-			// friendly needs to be set to true so the minion can deal contact damage
-			// friendly needs to be set to false so it doesn't damage things like target dummies while idling
-			// Both things depend on if it has a target or not, so it's just one assignment here
-			// You don't need this assignment if your minion is shooting things instead of dealing contact damage
-			Projectile.friendly = foundTarget;
-		}
-
-		private void Movement(bool foundTarget, float distanceFromTarget, Vector2 targetCenter, float distanceToIdlePosition, Vector2 vectorToIdlePosition) {
-			float speed = 50f;
-			float inertia = 140f;
-			
-			GenerateDust();
-
-			if (foundTarget) {
-				if (distanceFromTarget > 40f) {
-					// If not in "strike-through" mode, home in
-					if (Projectile.ai[1] == 0) {
-						Vector2 direction = targetCenter - Projectile.Center;
-						direction.Normalize();
-						direction *= speed;
-
-						float targetAngle = Projectile.AngleTo(targetCenter * MathHelper.ToRadians(360));
-						Projectile.velocity = (Projectile.velocity * (inertia - 1) + direction) / inertia;
-
-						// If close enough, enter "strike-through" mode
-						if (distanceFromTarget < 50f) {
-							SoundEngine.PlaySound(SoundID.Item66);
-							Projectile.ai[1] = 1; // Enter strike-through phase
-							Projectile.ai[0] = 0; // Reset timer
-						}
-						Projectile.rotation = targetAngle;
-					}
-				}
-			}
-
-			// If in "strike-through" mode, keep moving forward without changing direction
-			if (Projectile.ai[1] == 1) {
-				Projectile.ai[0]++; // Increment timer
-
-				if (Projectile.ai[0] < 20) {
-					// Keep moving in the same direction for a bit
-					Projectile.velocity = Projectile.velocity.SafeNormalize(Vector2.Zero) * speed;
-				} else {
-					// Exit "strike-through" mode after 20 ticks (~1/3 of a second)
-					Projectile.ai[1] = 0;
-				}
-			}
-
-			if (!foundTarget) {
-				// Reset "strike-through" state when there's no target
-				Projectile.ai[1] = 0;
-
-				if (distanceToIdlePosition > 600f) {
-					speed = 12f;
-					inertia = 60f;
-				}
-				else {
-					speed = 4f;
-					inertia = 80f;
-				}
-
-				if (distanceToIdlePosition > 20f) {
-					vectorToIdlePosition.Normalize();
-					vectorToIdlePosition *= speed;
-					Projectile.velocity = (Projectile.velocity * (inertia - 1) + vectorToIdlePosition) / inertia;
-				}
-				else if (Projectile.velocity == Vector2.Zero) {
-					Projectile.velocity.X = -0.15f;
-					Projectile.velocity.Y = -0.05f;
-				}
-			}
-		}
-
-
-		private void Visuals() {
-			// So it will lean slightly towards the direction it's moving
-			Projectile.rotation = Projectile.velocity.X * 0.5f;
-
-			GenerateDust();
-
-			// This is a simple "loop through all frames from top to bottom" animation
-			//int frameSpeed = 5;
-
-			//Projectile.frameCounter++;
-
-			//if (Projectile.frameCounter >= frameSpeed) {
-				//Projectile.frameCounter = 0;
-				//Projectile.frame++;
-
-				//if (Projectile.frame >= Main.projFrames[Projectile.type]) {
-					//Projectile.frame = 0;
-				//}
-			//}
-
-			// Some visuals here
-			Lighting.AddLight(Projectile.Center, Color.White.ToVector3() * 0.78f);
-		}
-	}
-	public class Platinum_Shortsword : ModProjectile
-	{
-		private void GenerateDust()
-		{
-			
-				Dust dust = Dust.NewDustDirect(Projectile.position, Projectile.height, Projectile.width, DustID.Platinum,
-					0, 0, 254, Scale: 1.0f);
-				dust.velocity += Projectile.velocity * 0.5f;
-				dust.velocity *= 0.5f;
-				dust.noGravity = true;
-		
-		}
-
-		public override void SetStaticDefaults() {
-			ProjectileID.Sets.TrailingMode[Type] = 2;
-            ProjectileID.Sets.TrailCacheLength[Type] = 12;
-			// This is necessary for right-click targeting
-			ProjectileID.Sets.MinionTargettingFeature[Projectile.type] = true;
-
-			Main.projPet[Projectile.type] = true; // Denotes that this projectile is a pet or minion
-
-			ProjectileID.Sets.MinionSacrificable[Projectile.type] = true; // This is needed so your minion can properly spawn when summoned and replaced when other minions are summoned
-			ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true; // Make the cultist resistant to this projectile, as it's resistant to all homing projectiles.
-		}
-
-		public sealed override void SetDefaults()
-		{
-			Projectile.width = 18;
-			Projectile.height = 28;
-			Projectile.tileCollide = false; // Makes the minion go through tiles freely
-
-			// These below are needed for a minion weapon
-			Projectile.friendly = true; // Only controls if it deals damage to enemies on contact (more on that later)
-			Projectile.minion = true; // Declares this as a minion (has many effects)
-			Projectile.DamageType = DamageClass.Summon; // Declares the damage type (needed for it to deal damage)
-			Projectile.minionSlots = 0.4f; // Amount of slots this minion occupies from the total minion slots available to the player (more on that later)
-			Projectile.penetrate = -1; // Needed so the minion doesn't despawn on collision with enemies or tiles
-			Projectile.netImportant = true;
-			Projectile.netUpdate = true;
-			
-		}
-
-		public override bool PreDraw(ref Color lightColor) {
-			// Draws an afterimage trail. See https://github.com/tModLoader/tModLoader/wiki/Basic-Projectile#afterimage-trail for more information.
-
-			Texture2D texture = TextureAssets.Projectile[Type].Value;
-
-			Vector2 drawOrigin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
-			for (int k = Projectile.oldPos.Length - 1; k > 0; k--) {
-				Vector2 drawPos = (Projectile.oldPos[k] - Main.screenPosition) + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
-				Color color = Projectile.GetAlpha(lightColor) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
-				Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
-			}
-
-			return true;
-		}
-
-
-
-		// Here you can decide if your minion breaks things like grass or pots
-		public override bool? CanCutTiles() {
-			return false;
-		}
-
-		// This is mandatory if your minion deals contact damage (further related stuff in AI() in the Movement region)
-		public override bool MinionContactDamage() {
-			return true;
-		}
-
-		// The AI of this minion is split into multiple methods to avoid bloat. This method just passes values between calls actual parts of the AI.
-		public override void AI() {
-
-			
-			GenerateDust();
-			
-			Player owner = Main.player[Projectile.owner];
-
-			
-			if (!CheckActive(owner)) {
-				return;
-			}
-
-			GeneralBehavior(owner, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition);
-			SearchForTargets(owner, out bool foundTarget, out float distanceFromTarget, out Vector2 targetCenter);
-			Movement(foundTarget, distanceFromTarget, targetCenter, distanceToIdlePosition, vectorToIdlePosition);
-			Visuals();
-		}
-
-		// This is the "active check", makes sure the minion is alive while the player is alive, and despawns if not
-		private bool CheckActive(Player owner) {
-			if (owner.dead || !owner.active) {
-				owner.ClearBuff(ModContent.BuffType<HopeEnsemble_Buff>());
-
-				return false;
-			}
-
-			if (owner.HasBuff(ModContent.BuffType<HopeEnsemble_Buff>())) {
-				Projectile.timeLeft = 2;
-			}
-
-            
-			return true;
-		}
-
-
-
-		
-		private void GeneralBehavior(Player owner, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition) {
-			
-			GenerateDust();
-
-			Vector2 idlePosition = owner.Center;
-			idlePosition.Y -= 48f; // Go up 48 coordinates (three tiles from the center of the player)
-
-			
-			// If your minion doesn't aimlessly move around when it's idle, you need to "put" it into the line of other summoned minions
-			// The index is projectile.minionPos
-			float minionPositionOffsetX = (10 + Projectile.minionPos * 40) * -owner.direction;
-			idlePosition.X += minionPositionOffsetX; // Go behind the player
-
-			// All of this code below this line is adapted from Spazmamini code (ID 388, aiStyle 66)
-
-			// Teleport to player if distance is too big
-			vectorToIdlePosition = idlePosition - Projectile.Center;
-			distanceToIdlePosition = vectorToIdlePosition.Length();
-
-			if (Main.myPlayer == owner.whoAmI && distanceToIdlePosition > 1000f) {
-				SoundEngine.PlaySound(SoundID.Item4);
-				// Whenever you deal with non-regular events that change the behavior or position drastically, make sure to only run the code on the owner of the projectile,
-				// and then set netUpdate to true
-				Projectile.position = idlePosition;
-				Projectile.velocity *= 0.1f;
-				Projectile.netUpdate = true;
-				ParticleOrchestrator.RequestParticleSpawn(clientOnly: false, ParticleOrchestraType.Excalibur,
-				new ParticleOrchestraSettings { PositionInWorld = Main.rand.NextVector2FromRectangle(Projectile.Hitbox) },
-				Projectile.owner);
-			}
-
-			// If your minion is flying, you want to do this independently of any conditions
-			float overlapVelocity = 0.04f;
-
-			// Fix overlap with other minions
-			foreach (var other in Main.ActiveProjectiles) {
-				if (other.whoAmI != Projectile.whoAmI && other.owner == Projectile.owner && Math.Abs(Projectile.position.X - other.position.X) + Math.Abs(Projectile.position.Y - other.position.Y) < Projectile.width) {
-					if (Projectile.position.X < other.position.X) {
-						Projectile.velocity.X -= overlapVelocity;
-					}
-					else {
-						Projectile.velocity.X += overlapVelocity;
-					}
-
-					if (Projectile.position.Y < other.position.Y) {
-						Projectile.velocity.Y -= overlapVelocity;
-					}
-					else {
-						Projectile.velocity.Y += overlapVelocity;
-					}
-				}
-			}
-		}
-
-		private void SearchForTargets(Player owner, out bool foundTarget, out float distanceFromTarget, out Vector2 targetCenter) {
-			// Starting search distance
-			distanceFromTarget = 700f;
-			targetCenter = Projectile.position;
-			foundTarget = false;
-
-			GenerateDust();
-			
-			// This code is required if your minion weapon has the targeting feature
-			if (owner.HasMinionAttackTargetNPC) {
-				NPC npc = Main.npc[owner.MinionAttackTargetNPC];
-				float between = Vector2.Distance(npc.Center, Projectile.Center);
-
-				// Reasonable distance away so it doesn't target across multiple screens
-				if (between < 2000f) {
-					distanceFromTarget = between;
-					targetCenter = npc.Center;
-					foundTarget = true;
-				}
-			}
-
-			if (!foundTarget) {
-				// This code is required either way, used for finding a target
-				foreach (var npc in Main.ActiveNPCs) {
-					if (npc.CanBeChasedBy()) {
-						float between = Vector2.Distance(npc.Center, Projectile.Center);
-						bool closest = Vector2.Distance(Projectile.Center, targetCenter) > between;
-						bool inRange = between < distanceFromTarget;
-						bool lineOfSight = Collision.CanHitLine(Projectile.position, Projectile.width, Projectile.height, npc.position, npc.width, npc.height);
-						// Additional check for this specific minion behavior, otherwise it will stop attacking once it dashed through an enemy while flying though tiles afterwards
-						// The number depends on various parameters seen in the movement code below. Test different ones out until it works alright
-						bool closeThroughWall = between < 100f;
-
-						if (((closest && inRange) || !foundTarget) && (lineOfSight || closeThroughWall)) {
-							distanceFromTarget = between;
-							targetCenter = npc.Center;
-							foundTarget = true;
-						}
-					}
-				}
-			}
-			
-			// friendly needs to be set to true so the minion can deal contact damage
-			// friendly needs to be set to false so it doesn't damage things like target dummies while idling
-			// Both things depend on if it has a target or not, so it's just one assignment here
-			// You don't need this assignment if your minion is shooting things instead of dealing contact damage
-			Projectile.friendly = foundTarget;
-		}
-
-		private void Movement(bool foundTarget, float distanceFromTarget, Vector2 targetCenter, float distanceToIdlePosition, Vector2 vectorToIdlePosition) {
-			float speed = 50f;
-			float inertia = 140f;
-			
-			GenerateDust();
-
-			if (foundTarget) {
-				if (distanceFromTarget > 40f) {
-					// If not in "strike-through" mode, home in
-					if (Projectile.ai[1] == 0) {
-						Vector2 direction = targetCenter - Projectile.Center;
-						direction.Normalize();
-						direction *= speed;
-
-						float targetAngle = Projectile.AngleTo(targetCenter * MathHelper.ToRadians(360));
-						Projectile.velocity = (Projectile.velocity * (inertia - 1) + direction) / inertia;
-
-						// If close enough, enter "strike-through" mode
-						if (distanceFromTarget < 50f) {
-							SoundEngine.PlaySound(SoundID.Item66);
-							Projectile.ai[1] = 1; // Enter strike-through phase
-							Projectile.ai[0] = 0; // Reset timer
-						}
-						Projectile.rotation = targetAngle;
-					}
-				}
-			}
-
-			// If in "strike-through" mode, keep moving forward without changing direction
-			if (Projectile.ai[1] == 1) {
-				Projectile.ai[0]++; // Increment timer
-
-				if (Projectile.ai[0] < 20) {
-					// Keep moving in the same direction for a bit
-					Projectile.velocity = Projectile.velocity.SafeNormalize(Vector2.Zero) * speed;
-				} else {
-					// Exit "strike-through" mode after 20 ticks (~1/3 of a second)
-					Projectile.ai[1] = 0;
-				}
-			}
-
-			if (!foundTarget) {
-				// Reset "strike-through" state when there's no target
-				Projectile.ai[1] = 0;
-
-				if (distanceToIdlePosition > 600f) {
-					speed = 12f;
-					inertia = 60f;
-				}
-				else {
-					speed = 4f;
-					inertia = 80f;
-				}
-
-				if (distanceToIdlePosition > 20f) {
-					vectorToIdlePosition.Normalize();
-					vectorToIdlePosition *= speed;
-					Projectile.velocity = (Projectile.velocity * (inertia - 1) + vectorToIdlePosition) / inertia;
-				}
-				else if (Projectile.velocity == Vector2.Zero) {
-					Projectile.velocity.X = -0.15f;
-					Projectile.velocity.Y = -0.05f;
-				}
-			}
-		}
-
-
-		private void Visuals() {
-			// So it will lean slightly towards the direction it's moving
-			Projectile.rotation = Projectile.velocity.X * 0.5f;
-
-			GenerateDust();
-
-			// This is a simple "loop through all frames from top to bottom" animation
-			//int frameSpeed = 5;
-
-			//Projectile.frameCounter++;
-
-			//if (Projectile.frameCounter >= frameSpeed) {
-				//Projectile.frameCounter = 0;
-				//Projectile.frame++;
-
-				//if (Projectile.frame >= Main.projFrames[Projectile.type]) {
-					//Projectile.frame = 0;
-				//}
-			//}
-
-			// Some visuals here
-			Lighting.AddLight(Projectile.Center, Color.GhostWhite.ToVector3() * 0.78f);
-		}
-	}
-	public class Tungsten_Shortsword : ModProjectile
-	{
-		private void GenerateDust()
-		{
-			
-				Dust dust = Dust.NewDustDirect(Projectile.position, Projectile.height, Projectile.width, DustID.Tungsten,
-					0, 0, 254, Scale: 1.0f);
-				dust.velocity += Projectile.velocity * 0.5f;
-				dust.velocity *= 0.5f;
-				dust.noGravity = true;
-		
-		}
-
-		public override void SetStaticDefaults() {
-			ProjectileID.Sets.TrailingMode[Type] = 2;
-            ProjectileID.Sets.TrailCacheLength[Type] = 12;
-			// This is necessary for right-click targeting
-			ProjectileID.Sets.MinionTargettingFeature[Projectile.type] = true;
-
-			Main.projPet[Projectile.type] = true; // Denotes that this projectile is a pet or minion
-
-			ProjectileID.Sets.MinionSacrificable[Projectile.type] = true; // This is needed so your minion can properly spawn when summoned and replaced when other minions are summoned
-			ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true; // Make the cultist resistant to this projectile, as it's resistant to all homing projectiles.
-		}
-
-		public sealed override void SetDefaults()
-		{
-			Projectile.width = 18;
-			Projectile.height = 28;
-			Projectile.tileCollide = false; // Makes the minion go through tiles freely
-
-			// These below are needed for a minion weapon
-			Projectile.friendly = true; // Only controls if it deals damage to enemies on contact (more on that later)
-			Projectile.minion = true; // Declares this as a minion (has many effects)
-			Projectile.DamageType = DamageClass.Summon; // Declares the damage type (needed for it to deal damage)
-			Projectile.minionSlots = 0.4f; // Amount of slots this minion occupies from the total minion slots available to the player (more on that later)
-			Projectile.penetrate = -1; // Needed so the minion doesn't despawn on collision with enemies or tiles
-			Projectile.netImportant = true;
-			Projectile.netUpdate = true;
-			
-		}
-
-		public override bool PreDraw(ref Color lightColor) {
-			// Draws an afterimage trail. See https://github.com/tModLoader/tModLoader/wiki/Basic-Projectile#afterimage-trail for more information.
-
-			Texture2D texture = TextureAssets.Projectile[Type].Value;
-
-			Vector2 drawOrigin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
-			for (int k = Projectile.oldPos.Length - 1; k > 0; k--) {
-				Vector2 drawPos = (Projectile.oldPos[k] - Main.screenPosition) + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
-				Color color = Projectile.GetAlpha(lightColor) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
-				Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
-			}
-
-			return true;
-		}
-
-
-
-		// Here you can decide if your minion breaks things like grass or pots
-		public override bool? CanCutTiles() {
-			return false;
-		}
-
-		// This is mandatory if your minion deals contact damage (further related stuff in AI() in the Movement region)
-		public override bool MinionContactDamage() {
-			return true;
-		}
-
-		// The AI of this minion is split into multiple methods to avoid bloat. This method just passes values between calls actual parts of the AI.
-		public override void AI() {
-
-			
-			GenerateDust();
-			
-			Player owner = Main.player[Projectile.owner];
-
-			
-			if (!CheckActive(owner)) {
-				return;
-			}
-
-			GeneralBehavior(owner, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition);
-			SearchForTargets(owner, out bool foundTarget, out float distanceFromTarget, out Vector2 targetCenter);
-			Movement(foundTarget, distanceFromTarget, targetCenter, distanceToIdlePosition, vectorToIdlePosition);
-			Visuals();
-		}
-
-		// This is the "active check", makes sure the minion is alive while the player is alive, and despawns if not
-		private bool CheckActive(Player owner) {
-			if (owner.dead || !owner.active) {
-				owner.ClearBuff(ModContent.BuffType<HopeEnsemble_Buff>());
-
-				return false;
-			}
-
-			if (owner.HasBuff(ModContent.BuffType<HopeEnsemble_Buff>())) {
-				Projectile.timeLeft = 2;
-			}
-
-            
-			return true;
-		}
-
-
-
-		
-		private void GeneralBehavior(Player owner, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition) {
-			
-			GenerateDust();
-
-			Vector2 idlePosition = owner.Center;
-			idlePosition.Y -= 48f; // Go up 48 coordinates (three tiles from the center of the player)
-
-			
-			// If your minion doesn't aimlessly move around when it's idle, you need to "put" it into the line of other summoned minions
-			// The index is projectile.minionPos
-			float minionPositionOffsetX = (10 + Projectile.minionPos * 40) * -owner.direction;
-			idlePosition.X += minionPositionOffsetX; // Go behind the player
-
-			// All of this code below this line is adapted from Spazmamini code (ID 388, aiStyle 66)
-
-			// Teleport to player if distance is too big
-			vectorToIdlePosition = idlePosition - Projectile.Center;
-			distanceToIdlePosition = vectorToIdlePosition.Length();
-
-			if (Main.myPlayer == owner.whoAmI && distanceToIdlePosition > 1000f) {
-				SoundEngine.PlaySound(SoundID.Item4);
-				// Whenever you deal with non-regular events that change the behavior or position drastically, make sure to only run the code on the owner of the projectile,
-				// and then set netUpdate to true
-				Projectile.position = idlePosition;
-				Projectile.velocity *= 0.1f;
-				Projectile.netUpdate = true;
-				ParticleOrchestrator.RequestParticleSpawn(clientOnly: false, ParticleOrchestraType.Excalibur,
-				new ParticleOrchestraSettings { PositionInWorld = Main.rand.NextVector2FromRectangle(Projectile.Hitbox) },
-				Projectile.owner);
-			}
-
-			// If your minion is flying, you want to do this independently of any conditions
-			float overlapVelocity = 0.04f;
-
-			// Fix overlap with other minions
-			foreach (var other in Main.ActiveProjectiles) {
-				if (other.whoAmI != Projectile.whoAmI && other.owner == Projectile.owner && Math.Abs(Projectile.position.X - other.position.X) + Math.Abs(Projectile.position.Y - other.position.Y) < Projectile.width) {
-					if (Projectile.position.X < other.position.X) {
-						Projectile.velocity.X -= overlapVelocity;
-					}
-					else {
-						Projectile.velocity.X += overlapVelocity;
-					}
-
-					if (Projectile.position.Y < other.position.Y) {
-						Projectile.velocity.Y -= overlapVelocity;
-					}
-					else {
-						Projectile.velocity.Y += overlapVelocity;
-					}
-				}
-			}
-		}
-
-		private void SearchForTargets(Player owner, out bool foundTarget, out float distanceFromTarget, out Vector2 targetCenter) {
-			// Starting search distance
-			distanceFromTarget = 700f;
-			targetCenter = Projectile.position;
-			foundTarget = false;
-
-			GenerateDust();
-			
-			// This code is required if your minion weapon has the targeting feature
-			if (owner.HasMinionAttackTargetNPC) {
-				NPC npc = Main.npc[owner.MinionAttackTargetNPC];
-				float between = Vector2.Distance(npc.Center, Projectile.Center);
-
-				// Reasonable distance away so it doesn't target across multiple screens
-				if (between < 2000f) {
-					distanceFromTarget = between;
-					targetCenter = npc.Center;
-					foundTarget = true;
-				}
-			}
-
-			if (!foundTarget) {
-				// This code is required either way, used for finding a target
-				foreach (var npc in Main.ActiveNPCs) {
-					if (npc.CanBeChasedBy()) {
-						float between = Vector2.Distance(npc.Center, Projectile.Center);
-						bool closest = Vector2.Distance(Projectile.Center, targetCenter) > between;
-						bool inRange = between < distanceFromTarget;
-						bool lineOfSight = Collision.CanHitLine(Projectile.position, Projectile.width, Projectile.height, npc.position, npc.width, npc.height);
-						// Additional check for this specific minion behavior, otherwise it will stop attacking once it dashed through an enemy while flying though tiles afterwards
-						// The number depends on various parameters seen in the movement code below. Test different ones out until it works alright
-						bool closeThroughWall = between < 100f;
-
-						if (((closest && inRange) || !foundTarget) && (lineOfSight || closeThroughWall)) {
-							distanceFromTarget = between;
-							targetCenter = npc.Center;
-							foundTarget = true;
-						}
-					}
-				}
-			}
-			
-			// friendly needs to be set to true so the minion can deal contact damage
-			// friendly needs to be set to false so it doesn't damage things like target dummies while idling
-			// Both things depend on if it has a target or not, so it's just one assignment here
-			// You don't need this assignment if your minion is shooting things instead of dealing contact damage
-			Projectile.friendly = foundTarget;
-		}
-
-		private void Movement(bool foundTarget, float distanceFromTarget, Vector2 targetCenter, float distanceToIdlePosition, Vector2 vectorToIdlePosition) {
-			float speed = 50f;
-			float inertia = 140f;
-			
-			GenerateDust();
-
-			if (foundTarget) {
-				if (distanceFromTarget > 40f) {
-					// If not in "strike-through" mode, home in
-					if (Projectile.ai[1] == 0) {
-						Vector2 direction = targetCenter - Projectile.Center;
-						direction.Normalize();
-						direction *= speed;
-
-						float targetAngle = Projectile.AngleTo(targetCenter * MathHelper.ToRadians(360));
-						Projectile.velocity = (Projectile.velocity * (inertia - 1) + direction) / inertia;
-
-						// If close enough, enter "strike-through" mode
-						if (distanceFromTarget < 50f) {
-							SoundEngine.PlaySound(SoundID.Item66);
-							Projectile.ai[1] = 1; // Enter strike-through phase
-							Projectile.ai[0] = 0; // Reset timer
-						}
-						Projectile.rotation = targetAngle;
-					}
-				}
-			}
-
-			// If in "strike-through" mode, keep moving forward without changing direction
-			if (Projectile.ai[1] == 1) {
-				Projectile.ai[0]++; // Increment timer
-
-				if (Projectile.ai[0] < 20) {
-					// Keep moving in the same direction for a bit
-					Projectile.velocity = Projectile.velocity.SafeNormalize(Vector2.Zero) * speed;
-				} else {
-					// Exit "strike-through" mode after 20 ticks (~1/3 of a second)
-					Projectile.ai[1] = 0;
-				}
-			}
-
-			if (!foundTarget) {
-				// Reset "strike-through" state when there's no target
-				Projectile.ai[1] = 0;
-
-				if (distanceToIdlePosition > 600f) {
-					speed = 12f;
-					inertia = 60f;
-				}
-				else {
-					speed = 4f;
-					inertia = 80f;
-				}
-
-				if (distanceToIdlePosition > 20f) {
-					vectorToIdlePosition.Normalize();
-					vectorToIdlePosition *= speed;
-					Projectile.velocity = (Projectile.velocity * (inertia - 1) + vectorToIdlePosition) / inertia;
-				}
-				else if (Projectile.velocity == Vector2.Zero) {
-					Projectile.velocity.X = -0.15f;
-					Projectile.velocity.Y = -0.05f;
-				}
-			}
-		}
-
-
-		private void Visuals() {
-			// So it will lean slightly towards the direction it's moving
-			Projectile.rotation = Projectile.velocity.X * 0.5f;
-
-			GenerateDust();
-
-			// This is a simple "loop through all frames from top to bottom" animation
-			//int frameSpeed = 5;
-
-			//Projectile.frameCounter++;
-
-			//if (Projectile.frameCounter >= frameSpeed) {
-				//Projectile.frameCounter = 0;
-				//Projectile.frame++;
-
-				//if (Projectile.frame >= Main.projFrames[Projectile.type]) {
-					//Projectile.frame = 0;
-				//}
-			//}
-
-			// Some visuals here
-			Lighting.AddLight(Projectile.Center, Color.MintCream.ToVector3() * 0.78f);
-		}
-	}	
-	public class Blood_Butcherer : ModProjectile
-	{
-		private void GenerateDust()
-		{
-			
-				Dust dust = Dust.NewDustDirect(Projectile.position, Projectile.height, Projectile.width, DustID.Blood,
-					0, 0, 254, Scale: 1.0f);
-				dust.velocity += Projectile.velocity * 0.5f;
-				dust.velocity *= 0.5f;
-				dust.noGravity = true;
-		
-		}
-
-		public override void SetStaticDefaults() {
-			ProjectileID.Sets.TrailingMode[Type] = 2;
-            ProjectileID.Sets.TrailCacheLength[Type] = 12;
-			// This is necessary for right-click targeting
-			ProjectileID.Sets.MinionTargettingFeature[Projectile.type] = true;
-
-			Main.projPet[Projectile.type] = true; // Denotes that this projectile is a pet or minion
-
-			ProjectileID.Sets.MinionSacrificable[Projectile.type] = true; // This is needed so your minion can properly spawn when summoned and replaced when other minions are summoned
-			ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true; // Make the cultist resistant to this projectile, as it's resistant to all homing projectiles.
-		}
-
-		public sealed override void SetDefaults()
-		{
-			Projectile.width = 18;
-			Projectile.height = 28;
-			Projectile.tileCollide = false; // Makes the minion go through tiles freely
-
-			// These below are needed for a minion weapon
-			Projectile.friendly = true; // Only controls if it deals damage to enemies on contact (more on that later)
-			Projectile.minion = true; // Declares this as a minion (has many effects)
-			Projectile.DamageType = DamageClass.Summon; // Declares the damage type (needed for it to deal damage)
-			Projectile.minionSlots = 0.4f; // Amount of slots this minion occupies from the total minion slots available to the player (more on that later)
-			Projectile.penetrate = -1; // Needed so the minion doesn't despawn on collision with enemies or tiles
-			Projectile.netImportant = true;
-			Projectile.netUpdate = true;
-			
-		}
-
-		public override bool PreDraw(ref Color lightColor) {
-			// Draws an afterimage trail. See https://github.com/tModLoader/tModLoader/wiki/Basic-Projectile#afterimage-trail for more information.
-
-			Texture2D texture = TextureAssets.Projectile[Type].Value;
-
-			Vector2 drawOrigin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
-			for (int k = Projectile.oldPos.Length - 1; k > 0; k--) {
-				Vector2 drawPos = (Projectile.oldPos[k] - Main.screenPosition) + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
-				Color color = Projectile.GetAlpha(lightColor) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
-				Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
-			}
-
-			return true;
-		}
-
-
-
-		// Here you can decide if your minion breaks things like grass or pots
-		public override bool? CanCutTiles() {
-			return false;
-		}
-
-		// This is mandatory if your minion deals contact damage (further related stuff in AI() in the Movement region)
-		public override bool MinionContactDamage() {
-			return true;
-		}
-
-		// The AI of this minion is split into multiple methods to avoid bloat. This method just passes values between calls actual parts of the AI.
-		public override void AI() {
-
-			
-			GenerateDust();
-			
-			Player owner = Main.player[Projectile.owner];
-
-			
-			if (!CheckActive(owner)) {
-				return;
-			}
-
-			GeneralBehavior(owner, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition);
-			SearchForTargets(owner, out bool foundTarget, out float distanceFromTarget, out Vector2 targetCenter);
-			Movement(foundTarget, distanceFromTarget, targetCenter, distanceToIdlePosition, vectorToIdlePosition);
-			Visuals();
-		}
-
-		// This is the "active check", makes sure the minion is alive while the player is alive, and despawns if not
-		private bool CheckActive(Player owner) {
-			if (owner.dead || !owner.active) {
-				owner.ClearBuff(ModContent.BuffType<HopeEnsemble_Buff>());
-
-				return false;
-			}
-
-			if (owner.HasBuff(ModContent.BuffType<HopeEnsemble_Buff>())) {
-				Projectile.timeLeft = 2;
-			}
-
-            
-			return true;
-		}
-
-
-
-		
-		private void GeneralBehavior(Player owner, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition) {
-			
-			GenerateDust();
-
-			Vector2 idlePosition = owner.Center;
-			idlePosition.Y -= 48f; // Go up 48 coordinates (three tiles from the center of the player)
-
-			// If your minion doesn't aimlessly move around when it's idle, you need to "put" it into the line of other summoned minions
-			// The index is projectile.minionPos
-			float minionPositionOffsetX = (10 + Projectile.minionPos * 40) * -owner.direction;
-			idlePosition.X += minionPositionOffsetX; // Go behind the player
-
-			// All of this code below this line is adapted from Spazmamini code (ID 388, aiStyle 66)
-
-			// Teleport to player if distance is too big
-			vectorToIdlePosition = idlePosition - Projectile.Center;
-			distanceToIdlePosition = vectorToIdlePosition.Length();
-
-			if (Main.myPlayer == owner.whoAmI && distanceToIdlePosition > 1000f) {
-				SoundEngine.PlaySound(SoundID.Item4);
-				// Whenever you deal with non-regular events that change the behavior or position drastically, make sure to only run the code on the owner of the projectile,
-				// and then set netUpdate to true
-				Projectile.position = idlePosition;
-				Projectile.velocity *= 0.1f;
-				Projectile.netUpdate = true;
-				ParticleOrchestrator.RequestParticleSpawn(clientOnly: false, ParticleOrchestraType.Excalibur,
-				new ParticleOrchestraSettings { PositionInWorld = Main.rand.NextVector2FromRectangle(Projectile.Hitbox), UniqueInfoPiece = 360 },
-				Projectile.owner);
-			}
-
-			// If your minion is flying, you want to do this independently of any conditions
-			float overlapVelocity = 0.04f;
-
-			// Fix overlap with other minions
-			foreach (var other in Main.ActiveProjectiles) {
-				if (other.whoAmI != Projectile.whoAmI && other.owner == Projectile.owner && Math.Abs(Projectile.position.X - other.position.X) + Math.Abs(Projectile.position.Y - other.position.Y) < Projectile.width) {
-					if (Projectile.position.X < other.position.X) {
-						Projectile.velocity.X -= overlapVelocity;
-					}
-					else {
-						Projectile.velocity.X += overlapVelocity;
-					}
-
-					if (Projectile.position.Y < other.position.Y) {
-						Projectile.velocity.Y -= overlapVelocity;
-					}
-					else {
-						Projectile.velocity.Y += overlapVelocity;
-					}
-				}
-			}
-		}
-
-		private void SearchForTargets(Player owner, out bool foundTarget, out float distanceFromTarget, out Vector2 targetCenter) {
-			// Starting search distance
-			distanceFromTarget = 700f;
-			targetCenter = Projectile.position;
-			foundTarget = false;
-
-			GenerateDust();
-			
-			// This code is required if your minion weapon has the targeting feature
-			if (owner.HasMinionAttackTargetNPC) {
-				NPC npc = Main.npc[owner.MinionAttackTargetNPC];
-				float between = Vector2.Distance(npc.Center, Projectile.Center);
-
-				// Reasonable distance away so it doesn't target across multiple screens
-				if (between < 2000f) {
-					distanceFromTarget = between;
-					targetCenter = npc.Center;
-					foundTarget = true;
-				}
-			}
-
-			if (!foundTarget) {
-				
-				// This code is required either way, used for finding a target
-				foreach (var npc in Main.ActiveNPCs) {
-					if (npc.CanBeChasedBy()) {
-						float between = Vector2.Distance(npc.Center, Projectile.Center);
-						bool closest = Vector2.Distance(Projectile.Center, targetCenter) > between;
-						bool inRange = between < distanceFromTarget;
-						bool lineOfSight = Collision.CanHitLine(Projectile.position, Projectile.width, Projectile.height, npc.position, npc.width, npc.height);
-						// Additional check for this specific minion behavior, otherwise it will stop attacking once it dashed through an enemy while flying though tiles afterwards
-						// The number depends on various parameters seen in the movement code below. Test different ones out until it works alright
-						bool closeThroughWall = between < 100f;
-
-						if (((closest && inRange) || !foundTarget) && (lineOfSight || closeThroughWall)) {
-							distanceFromTarget = between;
-							targetCenter = npc.Center;
-							foundTarget = true;
-						}
-					}
-				}
-			}
-			
-			// friendly needs to be set to true so the minion can deal contact damage
-			// friendly needs to be set to false so it doesn't damage things like target dummies while idling
-			// Both things depend on if it has a target or not, so it's just one assignment here
-			// You don't need this assignment if your minion is shooting things instead of dealing contact damage
-			Projectile.friendly = foundTarget;
-		}
-
-		private void Movement(bool foundTarget, float distanceFromTarget, Vector2 targetCenter, float distanceToIdlePosition, Vector2 vectorToIdlePosition) {
-			float speed = 50f;
-			float inertia = 140f;
-			
-			GenerateDust();
-
-			if (foundTarget) {
-				if (distanceFromTarget > 40f) {
-					// If not in "strike-through" mode, home in
-					if (Projectile.ai[1] == 0) {
-						Vector2 direction = targetCenter - Projectile.Center;
-						direction.Normalize();
-						direction *= speed;
-
-						float targetAngle = Projectile.AngleTo(targetCenter * MathHelper.ToRadians(360));
-						Projectile.velocity = (Projectile.velocity * (inertia - 1) + direction) / inertia;
-
-						// If close enough, enter "strike-through" mode
-						if (distanceFromTarget < 50f) {
-							SoundEngine.PlaySound(SoundID.Item66);
-							Projectile.ai[1] = 1; // Enter strike-through phase
-							Projectile.ai[0] = 0; // Reset timer
-						}
-						Projectile.rotation = targetAngle;
-					}
-				}
-			}
-
-			// If in "strike-through" mode, keep moving forward without changing direction
-			if (Projectile.ai[1] == 1) {
-				Projectile.ai[0]++; // Increment timer
-
-				if (Projectile.ai[0] < 20) {
-					// Keep moving in the same direction for a bit
-					Projectile.velocity = Projectile.velocity.SafeNormalize(Vector2.Zero) * speed;
-				} else {
-					// Exit "strike-through" mode after 20 ticks (~1/3 of a second)
-					Projectile.ai[1] = 0;
-				}
-			}
-
-			if (!foundTarget) {
-				// Reset "strike-through" state when there's no target
-				Projectile.ai[1] = 0;
-
-				if (distanceToIdlePosition > 600f) {
-					speed = 12f;
-					inertia = 60f;
-				}
-				else {
-					speed = 4f;
-					inertia = 80f;
-				}
-
-				if (distanceToIdlePosition > 20f) {
-					vectorToIdlePosition.Normalize();
-					vectorToIdlePosition *= speed;
-					Projectile.velocity = (Projectile.velocity * (inertia - 1) + vectorToIdlePosition) / inertia;
-				}
-				else if (Projectile.velocity == Vector2.Zero) {
-					Projectile.velocity.X = -0.15f;
-					Projectile.velocity.Y = -0.05f;
-				}
-			}
-		}
-
-
-		private void Visuals() {
-			// So it will lean slightly towards the direction it's moving
-			Projectile.rotation = Projectile.velocity.X * 0.5f;
-
-			GenerateDust();
-
-			// This is a simple "loop through all frames from top to bottom" animation
-			//int frameSpeed = 5;
-
-			//Projectile.frameCounter++;
-
-			//if (Projectile.frameCounter >= frameSpeed) {
-				//Projectile.frameCounter = 0;
-				//Projectile.frame++;
-
-				//if (Projectile.frame >= Main.projFrames[Projectile.type]) {
-					//Projectile.frame = 0;
-				//}
-			//}
-
-			// Some visuals here
-			Lighting.AddLight(Projectile.Center, Color.DarkRed.ToVector3() * 0.78f);
-		}
-	}
-	public class Lights_Bane : ModProjectile
-	{
-		private void GenerateDust()
-		{
-			
-				Dust dust = Dust.NewDustDirect(Projectile.position, Projectile.height, Projectile.width, DustID.Shadowflame,
-					0, 0, 254, Scale: 1.0f);
-				dust.velocity += Projectile.velocity * 0.5f;
-				dust.velocity *= 0.5f;
-				dust.noGravity = true;
-		
-		}
-
-		public override void SetStaticDefaults() {
-			ProjectileID.Sets.TrailingMode[Type] = 2;
-            ProjectileID.Sets.TrailCacheLength[Type] = 12;
-			// This is necessary for right-click targeting
-			ProjectileID.Sets.MinionTargettingFeature[Projectile.type] = true;
-
-			Main.projPet[Projectile.type] = true; // Denotes that this projectile is a pet or minion
-
-			ProjectileID.Sets.MinionSacrificable[Projectile.type] = true; // This is needed so your minion can properly spawn when summoned and replaced when other minions are summoned
-			ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true; // Make the cultist resistant to this projectile, as it's resistant to all homing projectiles.
-		}
-
-		public sealed override void SetDefaults()
-		{
-			Projectile.width = 18;
-			Projectile.height = 28;
-			Projectile.tileCollide = false; // Makes the minion go through tiles freely
-
-			// These below are needed for a minion weapon
-			Projectile.friendly = true; // Only controls if it deals damage to enemies on contact (more on that later)
-			Projectile.minion = true; // Declares this as a minion (has many effects)
-			Projectile.DamageType = DamageClass.Summon; // Declares the damage type (needed for it to deal damage)
-			Projectile.minionSlots = 0.4f; // Amount of slots this minion occupies from the total minion slots available to the player (more on that later)
-			Projectile.penetrate = -1; // Needed so the minion doesn't despawn on collision with enemies or tiles
-			Projectile.netImportant = true;
-			Projectile.netUpdate = true;
-			
-		}
-
-		public override bool PreDraw(ref Color lightColor) {
-			// Draws an afterimage trail. See https://github.com/tModLoader/tModLoader/wiki/Basic-Projectile#afterimage-trail for more information.
-
-			Texture2D texture = TextureAssets.Projectile[Type].Value;
-
-			Vector2 drawOrigin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
-			for (int k = Projectile.oldPos.Length - 1; k > 0; k--) {
-				Vector2 drawPos = (Projectile.oldPos[k] - Main.screenPosition) + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
-				Color color = Projectile.GetAlpha(lightColor) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
-				Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
-			}
-
-			return true;
-		}
-
-
-		// Here you can decide if your minion breaks things like grass or pots
-		public override bool? CanCutTiles() {
-			return false;
-		}
-
-		// This is mandatory if your minion deals contact damage (further related stuff in AI() in the Movement region)
-		public override bool MinionContactDamage() {
-			return true;
-		}
-
-		// The AI of this minion is split into multiple methods to avoid bloat. This method just passes values between calls actual parts of the AI.
-		public override void AI() {
-
-			
-			GenerateDust();
-			
-			Player owner = Main.player[Projectile.owner];
-
-			
-			if (!CheckActive(owner)) {
-				return;
-			}
-
-			GeneralBehavior(owner, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition);
-			SearchForTargets(owner, out bool foundTarget, out float distanceFromTarget, out Vector2 targetCenter);
-			Movement(foundTarget, distanceFromTarget, targetCenter, distanceToIdlePosition, vectorToIdlePosition);
-			Visuals();
-		}
-
-		// This is the "active check", makes sure the minion is alive while the player is alive, and despawns if not
-		private bool CheckActive(Player owner) {
-			if (owner.dead || !owner.active) {
-				owner.ClearBuff(ModContent.BuffType<HopeEnsemble_Buff>());
-
-				return false;
-			}
-
-			if (owner.HasBuff(ModContent.BuffType<HopeEnsemble_Buff>())) {
-				Projectile.timeLeft = 2;
-			}
-
-            
-			return true;
-		}
-
-
-
-		
-		private void GeneralBehavior(Player owner, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition) {
-			
-			GenerateDust();
-
-			Vector2 idlePosition = owner.Center;
-			idlePosition.Y -= 48f; // Go up 48 coordinates (three tiles from the center of the player)
-
-			
-			// If your minion doesn't aimlessly move around when it's idle, you need to "put" it into the line of other summoned minions
-			// The index is projectile.minionPos
-			float minionPositionOffsetX = (10 + Projectile.minionPos * 40) * -owner.direction;
-			idlePosition.X += minionPositionOffsetX; // Go behind the player
-
-			// All of this code below this line is adapted from Spazmamini code (ID 388, aiStyle 66)
-
-			// Teleport to player if distance is too big
-			vectorToIdlePosition = idlePosition - Projectile.Center;
-			distanceToIdlePosition = vectorToIdlePosition.Length();
-
-			if (Main.myPlayer == owner.whoAmI && distanceToIdlePosition > 1000f) {
-				SoundEngine.PlaySound(SoundID.Item4);
-				// Whenever you deal with non-regular events that change the behavior or position drastically, make sure to only run the code on the owner of the projectile,
-				// and then set netUpdate to true
-				Projectile.position = idlePosition;
-				Projectile.velocity *= 0.1f;
-				Projectile.netUpdate = true;
-				ParticleOrchestrator.RequestParticleSpawn(clientOnly: false, ParticleOrchestraType.Excalibur,
-				new ParticleOrchestraSettings { PositionInWorld = Main.rand.NextVector2FromRectangle(Projectile.Hitbox), UniqueInfoPiece = 284 },
-				Projectile.owner);
-			}
-
-			// If your minion is flying, you want to do this independently of any conditions
-			float overlapVelocity = 0.04f;
-
-			// Fix overlap with other minions
-			foreach (var other in Main.ActiveProjectiles) {
-				if (other.whoAmI != Projectile.whoAmI && other.owner == Projectile.owner && Math.Abs(Projectile.position.X - other.position.X) + Math.Abs(Projectile.position.Y - other.position.Y) < Projectile.width) {
-					if (Projectile.position.X < other.position.X) {
-						Projectile.velocity.X -= overlapVelocity;
-					}
-					else {
-						Projectile.velocity.X += overlapVelocity;
-					}
-
-					if (Projectile.position.Y < other.position.Y) {
-						Projectile.velocity.Y -= overlapVelocity;
-					}
-					else {
-						Projectile.velocity.Y += overlapVelocity;
-					}
-				}
-			}
-		}
-
-		private void SearchForTargets(Player owner, out bool foundTarget, out float distanceFromTarget, out Vector2 targetCenter) {
-			// Starting search distance
-			distanceFromTarget = 700f;
-			targetCenter = Projectile.position;
-			foundTarget = false;
-
-			GenerateDust();
-			
-			// This code is required if your minion weapon has the targeting feature
-			if (owner.HasMinionAttackTargetNPC) {
-				NPC npc = Main.npc[owner.MinionAttackTargetNPC];
-				float between = Vector2.Distance(npc.Center, Projectile.Center);
-
-				// Reasonable distance away so it doesn't target across multiple screens
-				if (between < 2000f) {
-					distanceFromTarget = between;
-					targetCenter = npc.Center;
-					foundTarget = true;
-				}
-			}
-
-			if (!foundTarget) {
-				// This code is required either way, used for finding a target
-				foreach (var npc in Main.ActiveNPCs) {
-					if (npc.CanBeChasedBy()) {
-						float between = Vector2.Distance(npc.Center, Projectile.Center);
-						bool closest = Vector2.Distance(Projectile.Center, targetCenter) > between;
-						bool inRange = between < distanceFromTarget;
-						bool lineOfSight = Collision.CanHitLine(Projectile.position, Projectile.width, Projectile.height, npc.position, npc.width, npc.height);
-						// Additional check for this specific minion behavior, otherwise it will stop attacking once it dashed through an enemy while flying though tiles afterwards
-						// The number depends on various parameters seen in the movement code below. Test different ones out until it works alright
-						bool closeThroughWall = between < 100f;
-
-						if (((closest && inRange) || !foundTarget) && (lineOfSight || closeThroughWall)) {
-							distanceFromTarget = between;
-							targetCenter = npc.Center;
-							foundTarget = true;
-						}
-					}
-				}
-			}
-			
-			// friendly needs to be set to true so the minion can deal contact damage
-			// friendly needs to be set to false so it doesn't damage things like target dummies while idling
-			// Both things depend on if it has a target or not, so it's just one assignment here
-			// You don't need this assignment if your minion is shooting things instead of dealing contact damage
-			Projectile.friendly = foundTarget;
-		}
-
-		private void Movement(bool foundTarget, float distanceFromTarget, Vector2 targetCenter, float distanceToIdlePosition, Vector2 vectorToIdlePosition) {
-			float speed = 50f;
-			float inertia = 140f;
-			
-			GenerateDust();
-
-			if (foundTarget) {
-				if (distanceFromTarget > 40f) {
-					// If not in "strike-through" mode, home in
-					if (Projectile.ai[1] == 0) {
-						Vector2 direction = targetCenter - Projectile.Center;
-						direction.Normalize();
-						direction *= speed;
-
-						float targetAngle = Projectile.AngleTo(targetCenter * MathHelper.ToRadians(360));
-						Projectile.velocity = (Projectile.velocity * (inertia - 1) + direction) / inertia;
-
-						// If close enough, enter "strike-through" mode
-						if (distanceFromTarget < 50f) {
-							SoundEngine.PlaySound(SoundID.Item66);
-							Projectile.ai[1] = 1; // Enter strike-through phase
-							Projectile.ai[0] = 0; // Reset timer
-						}
-						Projectile.rotation = targetAngle;
-					}
-				}
-			}
-
-			// If in "strike-through" mode, keep moving forward without changing direction
-			if (Projectile.ai[1] == 1) {
-				Projectile.ai[0]++; // Increment timer
-
-				if (Projectile.ai[0] < 20) {
-					// Keep moving in the same direction for a bit
-					Projectile.velocity = Projectile.velocity.SafeNormalize(Vector2.Zero) * speed;
-				} else {
-					// Exit "strike-through" mode after 20 ticks (~1/3 of a second)
-					Projectile.ai[1] = 0;
-				}
-			}
-
-			if (!foundTarget) {
-				// Reset "strike-through" state when there's no target
-				Projectile.ai[1] = 0;
-
-				if (distanceToIdlePosition > 600f) {
-					speed = 12f;
-					inertia = 60f;
-				}
-				else {
-					speed = 4f;
-					inertia = 80f;
-				}
-
-				if (distanceToIdlePosition > 20f) {
-					vectorToIdlePosition.Normalize();
-					vectorToIdlePosition *= speed;
-					Projectile.velocity = (Projectile.velocity * (inertia - 1) + vectorToIdlePosition) / inertia;
-				}
-				else if (Projectile.velocity == Vector2.Zero) {
-					Projectile.velocity.X = -0.15f;
-					Projectile.velocity.Y = -0.05f;
-				}
-			}
-		}
-
-
-		private void Visuals() {
-			// So it will lean slightly towards the direction it's moving
-			Projectile.rotation = Projectile.velocity.X * 0.5f;
-
-			GenerateDust();
-
-			// This is a simple "loop through all frames from top to bottom" animation
-			//int frameSpeed = 5;
-
-			//Projectile.frameCounter++;
-
-			//if (Projectile.frameCounter >= frameSpeed) {
-				//Projectile.frameCounter = 0;
-				//Projectile.frame++;
-
-				//if (Projectile.frame >= Main.projFrames[Projectile.type]) {
-					//Projectile.frame = 0;
-				//}
-			//}
-
-			// Some visuals here
-			Lighting.AddLight(Projectile.Center, Color.Violet.ToVector3() * 0.78f);
-		}
-	}
-
-
-
 }

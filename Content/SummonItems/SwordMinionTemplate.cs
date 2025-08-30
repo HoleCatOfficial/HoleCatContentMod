@@ -124,6 +124,11 @@ namespace DestroyerTest.Content.SummonItems
         public ParticleOrchestraType TeleParticleOrchestraType = ParticleOrchestraType.Excalibur;
 
         /// <summary>
+        /// Removes the themecolor tint from projectile drawing. Does not affect the afterimages.
+        /// </summary>
+        public bool noDrawTint = true;
+
+        /// <summary>
         /// How the blade(s) will idle near the player.
         /// <para/> LineUp = All blades form a relatively neat line behind the player. This option uses example mod code.
         /// <para/> Chevron = All Blades pointing up, evenly spaced, and slightly disinclined with each pair further out.
@@ -135,6 +140,16 @@ namespace DestroyerTest.Content.SummonItems
             Chevron,
             Defensive
         };
+
+        /// <summary>
+        /// Allows you to group different projectile types together for purposes of idling and effects across multiple minions. Seen in the Hope Scabbard.
+        /// </summary>
+        public List<int>? Group = null;
+
+        /// <summary>
+        /// Must be set to true if using a group list for your minions.
+        /// </summary>
+        public bool UsesGroup = false;
 
         private void IdleDust()
         {
@@ -223,6 +238,21 @@ namespace DestroyerTest.Content.SummonItems
                 }
             }
 
+            if (noDrawTint)
+            {
+                Main.EntitySpriteDraw(
+                    texture,
+                    Projectile.Center - Main.screenPosition,
+                    null,
+                    Color.White,
+                    Projectile.rotation,
+                    texture.Size() / 2,
+                    Projectile.scale,
+                    SpriteEffects.None,
+                    0
+                );
+            }
+
             return DefaultDraw;
         }
 
@@ -236,9 +266,15 @@ namespace DestroyerTest.Content.SummonItems
             return true;
         }
 
+
+        public Player owner;
+
         public override void AI()
         {
-            Player owner = Main.player[Projectile.owner];
+            if (Projectile.owner >= 0 && Projectile.owner < Main.maxPlayers)
+            {
+                owner = Main.player[Projectile.owner];
+            }
 
             UpdateAtkCooldown();
             if (!CheckActive(owner))
@@ -298,7 +334,11 @@ namespace DestroyerTest.Content.SummonItems
         public bool TargFlag = false;
         public virtual void GeneralBehavior(Player owner, out Vector2 vectorToIdlePosition, out float distanceToIdlePosition)
         {
-            IdleDust();
+            if (Main.GameUpdateCount % TickSpeed == 0) // just an example for every 2 ticks
+            {
+                IdleDust();
+            }
+            
 
             Vector2 idlePosition = owner.Center;
             vectorToIdlePosition = idlePosition - Projectile.Center;
@@ -341,24 +381,53 @@ namespace DestroyerTest.Content.SummonItems
 
                         foreach (var other in Main.ActiveProjectiles)
                         {
-                            if (other.whoAmI != Projectile.whoAmI && other.owner == Projectile.owner && Math.Abs(Projectile.position.X - other.position.X) + Math.Abs(Projectile.position.Y - other.position.Y) < Projectile.width)
+                            if (UsesGroup == false)
                             {
-                                if (Projectile.position.X < other.position.X)
+                                if (other.whoAmI != Projectile.whoAmI && other.owner == Projectile.owner && Math.Abs(Projectile.position.X - other.position.X) + Math.Abs(Projectile.position.Y - other.position.Y) < Projectile.width)
                                 {
-                                    Projectile.velocity.X -= overlapVelocity;
-                                }
-                                else
-                                {
-                                    Projectile.velocity.X += overlapVelocity;
-                                }
+                                    if (Projectile.position.X < other.position.X)
+                                    {
+                                        Projectile.velocity.X -= overlapVelocity;
+                                    }
+                                    else
+                                    {
+                                        Projectile.velocity.X += overlapVelocity;
+                                    }
 
-                                if (Projectile.position.Y < other.position.Y)
-                                {
-                                    Projectile.velocity.Y -= overlapVelocity;
+                                    if (Projectile.position.Y < other.position.Y)
+                                    {
+                                        Projectile.velocity.Y -= overlapVelocity;
+                                    }
+                                    else
+                                    {
+                                        Projectile.velocity.Y += overlapVelocity;
+                                    }
                                 }
-                                else
+                            }
+                            if (UsesGroup == true)
+                            {
+                                if (Group != null && other.whoAmI != Projectile.whoAmI &&
+                                    other.owner == Projectile.owner &&
+                                    Group.Contains(other.type) &&
+                                    Math.Abs(Projectile.position.X - other.position.X) + Math.Abs(Projectile.position.Y - other.position.Y) < Projectile.width)
                                 {
-                                    Projectile.velocity.Y += overlapVelocity;
+                                    if (Projectile.position.X < other.position.X)
+                                    {
+                                        Projectile.velocity.X -= overlapVelocity;
+                                    }
+                                    else
+                                    {
+                                        Projectile.velocity.X += overlapVelocity;
+                                    }
+
+                                    if (Projectile.position.Y < other.position.Y)
+                                    {
+                                        Projectile.velocity.Y -= overlapVelocity;
+                                    }
+                                    else
+                                    {
+                                        Projectile.velocity.Y += overlapVelocity;
+                                    }
                                 }
                             }
                         }
@@ -367,32 +436,56 @@ namespace DestroyerTest.Content.SummonItems
                 case IdleStyle.Chevron:
                     {
 
-                        Vector2 MainPos = idlePosition + new Vector2(0, -100);
-                        int totalMinions = owner.ownedProjectileCounts[Projectile.type];
+                        
+                        List<Projectile> minions = new List<Projectile>();
+                        if (UsesGroup) {
+                            for (int i = 0; i < Main.maxProjectiles; i++) {
+                                if (Main.projectile[i].active &&
+                                    Main.projectile[i].owner == Projectile.owner &&
+                                    Group.Contains(Main.projectile[i].type)) {
+                                    minions.Add(Main.projectile[i]);
+                                }
+                            }
+                        } else {
+                            for (int i = 0; i < Main.maxProjectiles; i++) {
+                                if (Main.projectile[i].active &&
+                                    Main.projectile[i].owner == Projectile.owner &&
+                                    Main.projectile[i].type == Projectile.type) {
+                                    minions.Add(Main.projectile[i]);
+                                }
+                            }
+                        }
+
+                        int totalMinions = minions.Count;
+                        int myIndex = minions.FindIndex(p => p.whoAmI == Projectile.whoAmI);
+
                         int centerIndex = totalMinions / 2;
+
+                        ModProjectile centeringProj = minions[centerIndex].ModProjectile;
+                        Vector2 MainPos = owner.Center + new Vector2(centeringProj.Projectile.width / 2, -100);
 
                         float chevronSpacing = 40f;
                         float chevronHeight = 32f;
-                        int pos = Projectile.minionPos;
 
                         Vector2 chevronOffset = Vector2.Zero;
 
-                        if (totalMinions % 2 == 1 && pos == 0)
+                        if (totalMinions % 2 == 1 && myIndex == 0)
                         {
                             chevronOffset.X = -chevronSpacing * (centerIndex + 1);
                             chevronOffset.Y = chevronHeight * (centerIndex + 1);
                         }
                         else
                         {
-                            int side = (pos <= centerIndex) ? -1 : 1;
-                            int offsetIndex = side == -1 ? centerIndex - pos : pos - centerIndex;
+                            int side = (myIndex <= centerIndex) ? -1 : 1;
+                            int offsetIndex = side == -1 ? centerIndex - myIndex : myIndex - centerIndex;
                             chevronOffset.X = side * chevronSpacing * (offsetIndex + 1);
                             chevronOffset.Y = chevronHeight * (offsetIndex + 1);
                         }
 
-                        idlePosition += chevronOffset;
 
-                        vectorToIdlePosition = idlePosition - Projectile.Center;
+                        MainPos += chevronOffset;
+
+                        vectorToIdlePosition = MainPos - Projectile.Center;
                         distanceToIdlePosition = vectorToIdlePosition.Length();
 
                         if (Main.myPlayer == owner.whoAmI && distanceToIdlePosition > TeleDist)
@@ -406,7 +499,7 @@ namespace DestroyerTest.Content.SummonItems
                             {
                                 TeleParticle_ParticleOrchestrator((int)TeleParticleOrchestraType);
                             }
-                            Projectile.position = idlePosition;
+                            Projectile.Center = MainPos;
                             Projectile.velocity *= 0.1f;
                             Projectile.netUpdate = true;
                         }
@@ -415,24 +508,53 @@ namespace DestroyerTest.Content.SummonItems
 
                         foreach (var other in Main.ActiveProjectiles)
                         {
-                            if (other.whoAmI != Projectile.whoAmI && other.owner == Projectile.owner && Math.Abs(Projectile.position.X - other.position.X) + Math.Abs(Projectile.position.Y - other.position.Y) < Projectile.width)
+                            if (UsesGroup == false)
                             {
-                                if (Projectile.position.X < other.position.X)
+                                if (other.whoAmI != Projectile.whoAmI && other.owner == Projectile.owner && Math.Abs(Projectile.position.X - other.position.X) + Math.Abs(Projectile.position.Y - other.position.Y) < Projectile.width)
                                 {
-                                    Projectile.velocity.X -= overlapVelocity;
-                                }
-                                else
-                                {
-                                    Projectile.velocity.X += overlapVelocity;
-                                }
+                                    if (Projectile.position.X < other.position.X)
+                                    {
+                                        Projectile.velocity.X -= overlapVelocity;
+                                    }
+                                    else
+                                    {
+                                        Projectile.velocity.X += overlapVelocity;
+                                    }
 
-                                if (Projectile.position.Y < other.position.Y)
-                                {
-                                    Projectile.velocity.Y -= overlapVelocity;
+                                    if (Projectile.position.Y < other.position.Y)
+                                    {
+                                        Projectile.velocity.Y -= overlapVelocity;
+                                    }
+                                    else
+                                    {
+                                        Projectile.velocity.Y += overlapVelocity;
+                                    }
                                 }
-                                else
+                            }
+                            if (UsesGroup == true)
+                            {
+                                if (Group != null && other.whoAmI != Projectile.whoAmI &&
+                                    other.owner == Projectile.owner &&
+                                    Group.Contains(other.type) &&
+                                    Math.Abs(Projectile.position.X - other.position.X) + Math.Abs(Projectile.position.Y - other.position.Y) < Projectile.width)
                                 {
-                                    Projectile.velocity.Y += overlapVelocity;
+                                    if (Projectile.position.X < other.position.X)
+                                    {
+                                        Projectile.velocity.X -= overlapVelocity;
+                                    }
+                                    else
+                                    {
+                                        Projectile.velocity.X += overlapVelocity;
+                                    }
+
+                                    if (Projectile.position.Y < other.position.Y)
+                                    {
+                                        Projectile.velocity.Y -= overlapVelocity;
+                                    }
+                                    else
+                                    {
+                                        Projectile.velocity.Y += overlapVelocity;
+                                    }
                                 }
                             }
                         }
@@ -445,12 +567,27 @@ namespace DestroyerTest.Content.SummonItems
                     {
                         // Collect all active minions of this type for this owner
                         List<Projectile> minions = new List<Projectile>();
-                        for (int i = 0; i < Main.maxProjectiles; i++)
+                        if (UsesGroup == false)
                         {
-                            if (Main.projectile[i].active && Main.projectile[i].owner == Projectile.owner &&
-                                Main.projectile[i].type == Projectile.type)
+                            for (int i = 0; i < Main.maxProjectiles; i++)
                             {
-                                minions.Add(Main.projectile[i]);
+                                if (Main.projectile[i].active && Main.projectile[i].owner == Projectile.owner &&
+                                    Main.projectile[i].type == Projectile.type)
+                                {
+                                    minions.Add(Main.projectile[i]);
+                                }
+                            }
+                        }
+                        if (UsesGroup == true)
+                        {
+                            for (int i = 0; i < Main.maxProjectiles; i++)
+                            {
+                                if (Main.projectile[i].active &&
+                                    Main.projectile[i].owner == Projectile.owner &&
+                                    Group.Contains(Main.projectile[i].type))
+                                {
+                                    minions.Add(Main.projectile[i]);
+                                }
                             }
                         }
                         int totalMinions = minions.Count;
@@ -466,6 +603,14 @@ namespace DestroyerTest.Content.SummonItems
                         Vector2 offset = new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle)) * orbitRadius;
 
                         Vector2 desiredPosition = owner.Center + offset;
+
+                        
+                        // Force back to correct orbit radius, even if shoved
+                        Vector2 actualOffset = Projectile.Center - owner.Center;
+                        if (Math.Abs(actualOffset.Length() - orbitRadius) > 5f) // tolerance
+                        {
+                            Projectile.Center = owner.Center + Vector2.Normalize(actualOffset) * orbitRadius;
+                        }
 
                         Vector2 toPosition = desiredPosition - Projectile.Center;
                         float speed = 8f;
@@ -569,10 +714,10 @@ namespace DestroyerTest.Content.SummonItems
             Projectile.friendly = true;
         }
 
-        private void Movement(bool foundTarget, float distanceFromTarget, Vector2 targetCenter, float distanceToIdlePosition, Vector2 vectorToIdlePosition)
+        public virtual void Movement(bool foundTarget, float distanceFromTarget, Vector2 targetCenter, float distanceToIdlePosition, Vector2 vectorToIdlePosition)
         {
             float speed = 50f;
-            float inertia = 140f;
+            float inertia = 100f;
             Player owner = Main.player[Projectile.owner];
 
             if (Projectile.Distance(owner.Center) > TeleDist)
@@ -591,15 +736,15 @@ namespace DestroyerTest.Content.SummonItems
                         Vector2 direction = targetCenter - Projectile.Center;
                         direction.Normalize();
                         direction *= speed;
-                        float targetAngle = Projectile.AngleTo(targetCenter * MathHelper.ToRadians(360));
+                        float targetAngle = Projectile.AngleTo(targetCenter);
                         Projectile.velocity = (Projectile.velocity * (inertia - 1) + direction) / inertia;
                         if (distanceFromTarget < 50f)
                         {
-                            SoundEngine.PlaySound(SoundID.Item66);
+                            SoundEngine.PlaySound(DashSound);
                             Projectile.ai[1] = 1; // Enter strike-through phase
                             Projectile.ai[0] = 0; // Reset timer
                         }
-                        Projectile.rotation = targetAngle;
+                        Projectile.rotation = Projectile.rotation.AngleTowards(targetAngle, MathHelper.ToRadians(100)) + MathHelper.PiOver4;
                     }
                 }
             }
@@ -651,13 +796,13 @@ namespace DestroyerTest.Content.SummonItems
 
         private void Visuals()
         {
-            Projectile.rotation = Projectile.velocity.X * 0.5f;
+            //Projectile.rotation = Projectile.velocity.X * 0.5f;
             Lighting.AddLight(Projectile.Center, ThemeColor.ToVector3() * 0.7f);
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            StartAtkCooldown(80);
+            StartAtkCooldown(120);
         }
 
     }
