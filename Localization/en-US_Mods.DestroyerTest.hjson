@@ -3122,6 +3122,36 @@ Items: {
 		DisplayName: Honey Vial
 		Tooltip: Covers your scepter in honey, which spawns bees as it travels. This effect is exclusive to scepters.
 	}
+
+	Item_HardenedRiftSilt: {
+		DisplayName: Hardened Rift Silt
+		Tooltip: ""
+	}
+
+	Item_HardenedRiftSiltWall: {
+		DisplayName: Hardened Rift Silt Wall
+		Tooltip: ""
+	}
+
+	Item_RiftCactus: {
+		DisplayName: Rift Cactus
+		Tooltip: ""
+	}
+
+	Item_RiftSiltStone: {
+		DisplayName: Rift Silt Stone
+		Tooltip: ""
+	}
+
+	Item_RiftDirt: {
+		DisplayName: Rift Dirt
+		Tooltip: ""
+	}
+
+	Item_RiftStone: {
+		DisplayName: Rift Stone
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
