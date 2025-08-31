@@ -5,7 +5,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace DestroyerTest.Content.RiftBiome.RiftSurfaceResources
+namespace DestroyerTest.Content.RiftBiome.RiftDesertResources
 {
 	public class Item_RiftSiltStone : ModItem
 	{
