@@ -4,9 +4,9 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace DestroyerTest.Content.RiftBiome.RiftSurfaceResources
+namespace DestroyerTest.Content.RiftBiome.RiftDesertResources
 {
-	public class Item_DangerousRiftWall : ModItem
+	public class Item_HardenedRiftSiltWall : ModItem
 	{
 		public override void SetStaticDefaults() {
 			Item.ResearchUnlockCount = 400;
@@ -16,13 +16,13 @@ namespace DestroyerTest.Content.RiftBiome.RiftSurfaceResources
 			// ModContent.WallType<Walls.ExampleWall>() retrieves the id of the wall that this item should place when used.
 			// DefaultToPlaceableWall handles setting various Item values that placeable wall items use.
 			// Hover over DefaultToPlaceableWall in Visual Studio to read the documentation!
-			Item.DefaultToPlaceableWall(ModContent.WallType<Wall_DangerousRiftWall>());
+			Item.DefaultToPlaceableWall(ModContent.WallType<Wall_HardenedRiftSiltWall>());
 		}
 
-		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
-			CreateRecipe(4)
-				.AddIngredient<Living_Shadow>(1)
+			CreateRecipe(8)
+				.AddIngredient<Living_Shadow>(2)
+                .AddIngredient(ItemID.HardenedSandWall, 2)
 				.AddTile(TileID.Blendomatic)
 				.Register();
 		}

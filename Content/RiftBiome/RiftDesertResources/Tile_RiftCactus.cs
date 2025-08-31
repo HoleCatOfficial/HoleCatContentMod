@@ -4,7 +4,7 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.RiftBiome.RiftDesertResources
 {
-	public class RiftCactus : ModCactus
+	public class Tile_RiftCactus : ModCactus
 	{
 		private Asset<Texture2D> texture;
 		private Asset<Texture2D> fruitTexture;
@@ -12,8 +12,8 @@ namespace DestroyerTest.Content.RiftBiome.RiftDesertResources
 		public override void SetStaticDefaults() {
 			// Makes Example Cactus grow on ExampleSand. You will need to use ExampleSolution to convert regular sand since ExampleCactus will not grow naturally yet.
 			GrowsOnTileId = new int[1] { ModContent.TileType<Tile_RiftSilt>() };
-			texture = ModContent.Request<Texture2D>("DestroyerTest/Content/RiftBiome/RiftDesertResources/RiftCactus");
-			fruitTexture = ModContent.Request<Texture2D>("DestroyerTest/Content/RiftBiome/RiftDesertResources/RiftCactus_Fruit");
+			texture = ModContent.Request<Texture2D>("DestroyerTest/Content/RiftBiome/RiftDesertResources/Tile_RiftCactus");
+			fruitTexture = ModContent.Request<Texture2D>("DestroyerTest/Content/RiftBiome/RiftDesertResources/Tile_RiftCactus_Fruit");
 		}
 
 		public override Asset<Texture2D> GetTexture() => texture;
