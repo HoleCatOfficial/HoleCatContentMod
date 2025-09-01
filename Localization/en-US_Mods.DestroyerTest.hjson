@@ -3152,6 +3152,11 @@ Items: {
 		DisplayName: Rift Stone
 		Tooltip: ""
 	}
+
+	Item_RiftClay: {
+		Tooltip: ""
+		DisplayName: Item_ Rift Clay
+	}
 }
 
 Projectiles: {
