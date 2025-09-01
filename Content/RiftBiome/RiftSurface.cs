@@ -47,13 +47,21 @@ namespace DestroyerTest.Content.RiftBiome
 				}
 				else
 				{
-					return MusicLoader.GetMusicSlot(Mod, "Assets/Music/RiftV1");
+					return MusicLoader.GetMusicSlot(Mod, "Assets/Music/RiftV2");
 				}
-				
+
 			}
 		}
 
-		public void ModifyMusic(ref int music, ref SceneEffectPriority priority)
+		public override void OnInBiome(Player player)
+		{
+			ModifyMusic(Music, Priority);
+			if (!player.HasBuff<StoneLungs>() && !player.HasBuff<AirSeal>()) {
+				player.AddBuff(BuffID.Suffocation, 360); // Apply the suffocation buff if all conditions are met
+			}
+		}
+
+		public void ModifyMusic(int music, SceneEffectPriority priority)
 		{
 			if (Main.snowMoon || Main.pumpkinMoon)
 			{
@@ -77,7 +85,7 @@ namespace DestroyerTest.Content.RiftBiome
 		public void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
 			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface, // Define biome appearance
-				new FlavorTextBestiaryInfoElement("A lifeless void, populeted by naught but anerobic bacterium. The reason being all the smalll flames springing up in any crevice where combustible material gathers. Living shadows are very unstable, and letting them encase the land was likely never intended by nature.") // Modify description
+				new FlavorTextBestiaryInfoElement("A lifeless void, populeted by naught but anerobic bacterium. The reason being all the small flames springing up in any crevice where combustible material gathers. Living shadows are very unstable, and letting them encase the land was likely never intended by nature.") // Modify description
 			});
 		}
 
@@ -91,10 +99,6 @@ namespace DestroyerTest.Content.RiftBiome
 
 			// Finally, we will limit the height at which this biome can be active to above ground (ie sky and surface). Most (if not all) surface biomes will use this condition.
 			bool b3 = player.ZoneSkyHeight || player.ZoneOverworldHeight;
-
-			if (b1 && b3 && !player.HasBuff<StoneLungs>() && !player.HasBuff<AirSeal>()) {
-				player.AddBuff(BuffID.Suffocation, 360); // Apply the suffocation buff if all conditions are met
-			    }
 
 			return b1 && b3;
 		}

@@ -56,7 +56,7 @@ namespace DestroyerTest.Content.RiftBiome
                 }
 				else
 				{
-					return MusicLoader.GetMusicSlot(Mod, "Assets/Music/RiftV1");
+					return MusicLoader.GetMusicSlot(Mod, "Assets/Music/RiftV2");
 				}
 				
 			}
@@ -67,15 +67,23 @@ namespace DestroyerTest.Content.RiftBiome
             if (Sandstorm.Happening)
             {
                 Main.moonPhase = 4; // Hide the moon
-                SkyManager.Instance.Activate("MyMod:RiftDarkSky"); // Enable the black sky
+                SkyManager.Instance.Activate("DestroyerTest:RiftDarkSky"); // Enable the black sky
             }
             else
             {
-                SkyManager.Instance.Deactivate("MyMod:RiftDarkSky"); // Restore normal sky
+                SkyManager.Instance.Deactivate("DestroyerTest:RiftDarkSky"); // Restore normal sky
             }
         }
 
-		public void ModifyMusic(ref int music, ref SceneEffectPriority priority)
+		public override void OnInBiome(Player player)
+		{
+			ModifyMusic(Music, Priority);
+			if (!player.HasBuff<StoneLungs>() && !player.HasBuff<AirSeal>()) {
+				player.AddBuff(BuffID.Suffocation, 360); // Apply the suffocation buff if all conditions are met
+			}
+		}
+
+		public void ModifyMusic(int music, SceneEffectPriority priority)
 		{
 			if (Main.snowMoon || Main.pumpkinMoon)
 			{
@@ -113,10 +121,6 @@ namespace DestroyerTest.Content.RiftBiome
 
 			// Finally, we will limit the height at which this biome can be active to above ground (ie sky and surface). Most (if not all) surface biomes will use this condition.
 			bool b3 = player.ZoneSkyHeight || player.ZoneOverworldHeight;
-
-            if (b1 && b3 && !player.HasBuff<StoneLungs>() && !player.HasBuff<AirSeal>()) {
-				player.AddBuff(BuffID.Suffocation, 360); // Apply the suffocation buff if all conditions are met
-			    }
 
 			return b1 && b3;
 		}

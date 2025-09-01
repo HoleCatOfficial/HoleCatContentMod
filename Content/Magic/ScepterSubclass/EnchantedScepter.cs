@@ -7,7 +7,8 @@ using Terraria.ModLoader;
 using Terraria.DataStructures;
 using static Terraria.ModLoader.ModContent;
 using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Common; // Add this line if CT3_Swing is in the Projectiles namespace
+using DestroyerTest.Common;
+using DestroyerTest.Rarity; // Add this line if CT3_Swing is in the Projectiles namespace
 
 namespace DestroyerTest.Content.Magic.ScepterSubclass
 {
@@ -27,12 +28,12 @@ namespace DestroyerTest.Content.Magic.ScepterSubclass
             base.SetDefaults();
 
             // Override stats unique to this scepter
-            ShootDMG = 7;
+            ShootDMG = 27;
             ShootCrit = 4;
             ThrowCrit = 14;
-            KB = 2;
+            KB = 6;
             AdditiveValue = Item.sellPrice(silver: 80);
-            Rarity = ItemRarityID.LightRed;
+            Rarity = ModContent.RarityType<PaleFuchsiaRarity>();
 
             // Assign projectile types
             ShootID = ModContent.ProjectileType<EnchantedShot>();

@@ -13,6 +13,7 @@ using DestroyerTest.Content.Resources.Cloths;
 using Terraria.GameContent.ItemDropRules;
 using DestroyerTest.Content.Entity;
 using DestroyerTest.Common.Systems;
+using DestroyerTest.Rarity;
 
 namespace DestroyerTest.Content.Magic.ScepterSubclass
 {
@@ -37,7 +38,7 @@ namespace DestroyerTest.Content.Magic.ScepterSubclass
             ThrowCrit = 14;
             KB = 4;
             AdditiveValue = Item.sellPrice(silver: 80);
-            Rarity = ItemRarityID.LightRed;
+            Item.rare = ModContent.RarityType<CerisePinkRarity>();
 
             // Assign projectile types
             ShootID = ModContent.ProjectileType<GhoulProjectile>();

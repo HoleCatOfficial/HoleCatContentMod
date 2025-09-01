@@ -7,7 +7,8 @@ using Terraria.ModLoader;
 using Terraria.DataStructures;
 using static Terraria.ModLoader.ModContent;
 using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Common; // Add this line if CT3_Swing is in the Projectiles namespace
+using DestroyerTest.Common;
+using DestroyerTest.Rarity; // Add this line if CT3_Swing is in the Projectiles namespace
 
 namespace DestroyerTest.Content.Magic.ScepterSubclass
 {
@@ -23,7 +24,7 @@ namespace DestroyerTest.Content.Magic.ScepterSubclass
 			Item.width = 34;
 			Item.height = 34;
 			Item.value = Item.sellPrice(gold: 2, silver: 50);
-			Item.rare = ItemRarityID.Pink;
+			Item.rare = ModContent.RarityType<CerisePinkRarity>();
 			Item.useTime = 40;
 			Item.useAnimation = 40;
 			Item.useStyle = ItemUseStyleID.Shoot;
@@ -64,7 +65,7 @@ namespace DestroyerTest.Content.Magic.ScepterSubclass
 			Item.width = 34;
 			Item.height = 34;
 			Item.value = Item.sellPrice(gold: 2, silver: 50);
-			Item.rare = ItemRarityID.Pink;
+			Item.rare = ModContent.RarityType<CerisePinkRarity>();
 			Item.useTime = 40;
 			Item.useAnimation = 40;
 			Item.useStyle = ItemUseStyleID.Shoot;

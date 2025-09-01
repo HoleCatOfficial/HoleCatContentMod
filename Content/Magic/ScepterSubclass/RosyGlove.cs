@@ -1,5 +1,6 @@
 
 using DestroyerTest.Common;
+using DestroyerTest.Rarity;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
@@ -17,7 +18,7 @@ namespace DestroyerTest.Content.Magic.ScepterSubclass
 			Item.width = 22; // Width of the item
 			Item.height = 28; // Height of the item
 			Item.value = Item.sellPrice(gold: 86); // How many coins the item is worth
-			Item.rare = ItemRarityID.Green; // The rarity of the item
+			Item.rare = ModContent.RarityType<PearlRarity>(); // The rarity of the item
             Item.vanity = false;
             Item.accessory = true;
 		}

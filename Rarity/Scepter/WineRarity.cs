@@ -16,12 +16,15 @@ namespace DestroyerTest.Rarity
 
         public override int GetPrefixedRarity(int offset, float valueMult)
         {
-            if (offset > 0) 
+            if (offset > 0)
             {
-                return ItemRarityID.White; // Upgrade to next rarity if necessary
+                return ModContent.RarityType<CerisePinkRarity>(); // Upgrade to next rarity if necessary
             }
-
-            return ItemRarityID.White;
+            if (offset < 0)
+            {
+                return ModContent.RarityType<PaleFuchsiaRarity>();
+            }
+            return Type;
         }
     }
 	

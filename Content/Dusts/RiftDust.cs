@@ -14,7 +14,7 @@ namespace DestroyerTest.Content.Dusts
 			dust.velocity *= 1.0f;
 			dust.noGravity = true;
 			dust.noLight = false;
-			dust.scale *= 1.5f;
+			dust.scale *= 1.11f;
 		}
 
         public override bool PreDraw(Dust dust)
@@ -60,7 +60,7 @@ namespace DestroyerTest.Content.Dusts
 			dust.position += dust.velocity;
 			dust.velocity *= 0.995f;
 			dust.rotation += dust.velocity.X * 0.15f;
-			dust.scale *= 0.99f;
+			dust.scale *= 0.9f;
 
 			float light = 0.005f * dust.scale;
 

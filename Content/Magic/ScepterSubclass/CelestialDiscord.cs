@@ -11,6 +11,7 @@ using DestroyerTest.Common;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.Resources.Cloths;
 using DestroyerTest.Content.Projectiles.DiscordScepter;
+using DestroyerTest.Rarity;
 
 namespace DestroyerTest.Content.Magic.ScepterSubclass
 {
@@ -26,7 +27,7 @@ namespace DestroyerTest.Content.Magic.ScepterSubclass
 			Item.width = 52;
 			Item.height = 52;
 			Item.value = Item.sellPrice(gold: 2, silver: 50);
-			Item.rare = ItemRarityID.Pink;
+			Item.rare = ModContent.RarityType<IncarnadineRarity>();
 			Item.useTime = 40;
 			Item.useAnimation = 40;
 			Item.useStyle = ItemUseStyleID.Shoot;
@@ -67,7 +68,7 @@ namespace DestroyerTest.Content.Magic.ScepterSubclass
 			Item.width = 52;
 			Item.height = 52;
 			Item.value = Item.sellPrice(gold: 2, silver: 50);
-			Item.rare = ItemRarityID.Pink;
+			Item.rare = ModContent.RarityType<IncarnadineRarity>();
 			Item.useTime = 40;
 			Item.useAnimation = 40;
 			Item.useStyle = ItemUseStyleID.Shoot;

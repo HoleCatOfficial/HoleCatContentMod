@@ -34,7 +34,7 @@ namespace DestroyerTest.Content.Magic.ScepterSubclass
 			Item.width = 22; // Width of the item
 			Item.height = 14; // Height of the item
 			Item.value = Item.sellPrice(platinum: 25); // How many coins the item is worth
-			Item.rare = ItemRarityID.Expert; // The rarity of the item
+			Item.rare = ModContent.RarityType<PearlRarity>(); // The rarity of the item
 			Item.defense = 60; // The amount of defense the item will give when equipped
             Item.vanity = true;
 		}

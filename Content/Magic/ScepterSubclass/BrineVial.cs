@@ -21,7 +21,6 @@ namespace DestroyerTest.Content.Magic.ScepterSubclass
 				Color.SkyBlue
 			];
 		}
-
 		public override void SetDefaults() {
 			Item.UseSound = SoundID.Item3;
 			Item.useStyle = ItemUseStyleID.DrinkLiquid;

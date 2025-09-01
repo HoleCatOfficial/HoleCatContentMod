@@ -1,6 +1,7 @@
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.Tiles.Riftplate;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.RiftBiome.RiftSurfaceResources
@@ -21,8 +22,8 @@ namespace DestroyerTest.Content.RiftBiome.RiftSurfaceResources
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
 			CreateRecipe(4)
-				.AddIngredient<Living_Shadow>(25)
-				.AddTile<Tile_RiftCrucible>()
+				.AddIngredient<Living_Shadow>(1)
+				.AddTile(TileID.Blendomatic)
 				.Register();
 		}
 	}

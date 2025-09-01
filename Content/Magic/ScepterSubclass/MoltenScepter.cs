@@ -8,6 +8,7 @@ using Terraria.DataStructures;
 using static Terraria.ModLoader.ModContent;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Common;
+using DestroyerTest.Rarity;
 
 namespace DestroyerTest.Content.Magic.ScepterSubclass
 {
@@ -32,7 +33,7 @@ namespace DestroyerTest.Content.Magic.ScepterSubclass
             ThrowCrit = 14;
             KB = 2;
             AdditiveValue = Item.sellPrice(silver: 80);
-            Rarity = ItemRarityID.LightRed;
+            Rarity = ModContent.RarityType<PaleFuchsiaRarity>();
 
             // Assign projectile types
             ShootID = ModContent.ProjectileType<FlameNode>();

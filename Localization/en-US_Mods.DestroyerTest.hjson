@@ -2550,7 +2550,11 @@ Items: {
 
 	CorruptPetalGun: {
 		DisplayName: Corrupt Petal Gun
-		Tooltip: Shoots out Corrupted Flower petals that have a chance to home in on an enemy.
+		Tooltip:
+			'''
+			Shoots out Corrupted Flower petals that have a chance to home in on an enemy.
+			Uses vines as ammunition.
+			'''
 	}
 
 	TinyHammer: {
@@ -2951,7 +2955,7 @@ Items: {
 
 	InfernalTiara: {
 		Tooltip: "'Bathe in regal hellfire'"
-		SetBonusText:
+		SetBonus:
 			'''
 			You are immune to lava.
 			A 75 point shield will generate around you, blocking incoming harmful projectiles. 
@@ -3095,18 +3099,63 @@ Items: {
 	}
 
 	GalantineVial: {
-		Tooltip: ""
+		Tooltip: Imbues your scepters with Galantine Burn. This effect is exclusive to scepters.
 		DisplayName: Galantine Vial
 	}
 
 	BrineVial: {
 		DisplayName: Brine Vial
-		Tooltip: ""
+		Tooltip: Imbues your scepters with Brine. This effect is exclusive to scepters.
 	}
 
 	FrostFireVial: {
 		DisplayName: Frost Fire Vial
+		Tooltip: Imbues your scepters with Frostburn. This effect is exclusive to scepters.
+	}
+
+	GalantineHoneyVial: {
+		Tooltip: Covers your scepter in enchanted honey, which spawns enchanted bees as it travels. This effect is exclusive to scepters.
+		DisplayName: Galantine Honey Vial
+	}
+
+	HoneyVial: {
+		DisplayName: Honey Vial
+		Tooltip: Covers your scepter in honey, which spawns bees as it travels. This effect is exclusive to scepters.
+	}
+
+	Item_HardenedRiftSilt: {
+		DisplayName: Hardened Rift Silt
 		Tooltip: ""
+	}
+
+	Item_HardenedRiftSiltWall: {
+		DisplayName: Hardened Rift Silt Wall
+		Tooltip: ""
+	}
+
+	Item_RiftCactus: {
+		DisplayName: Rift Cactus
+		Tooltip: ""
+	}
+
+	Item_RiftSiltStone: {
+		DisplayName: Rift Silt Stone
+		Tooltip: ""
+	}
+
+	Item_RiftDirt: {
+		DisplayName: Rift Dirt
+		Tooltip: ""
+	}
+
+	Item_RiftStone: {
+		DisplayName: Rift Stone
+		Tooltip: ""
+	}
+
+	Item_RiftClay: {
+		Tooltip: ""
+		DisplayName: Item_ Rift Clay
 	}
 }
 
@@ -3449,6 +3498,7 @@ Projectiles: {
 	TreasonScrollBomb.DisplayName: Treason Scroll Bomb
 	FakeAncientLight.DisplayName: Fake Ancient Light
 	CurseProjectile.DisplayName: Curse Projectile
+	GalantineBee.DisplayName: Galantine Bee
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.
@@ -3676,17 +3726,27 @@ Buffs: {
 
 	Brine: {
 		DisplayName: Brine
-		Description: Mods.DestroyerTest.Buffs.Brine.Description
+		Description: Salty water irritates your skin!
 	}
 
 	ScepterImbueBrine: {
-		DisplayName: Scepter Imbue Brine
-		Description: Mods.DestroyerTest.Buffs.ScepterImbueBrine.Description
+		DisplayName: Scepter Imbue (Brine)
+		Description: Your scepter has been imbued with salty water!
 	}
 
 	ScepterImbueFF: {
-		DisplayName: Scepter Imbue F F
-		Description: Mods.DestroyerTest.Buffs.ScepterImbueFF.Description
+		DisplayName: Scepter Imbue (Frostburn)
+		Description: Your scepter has been imbued with Frozen Flames!
+	}
+
+	ScepterImbueHoney: {
+		Description: Your scepter has honey all over it!
+		DisplayName: Scepter Imbue (Honey)
+	}
+
+	ScepterImbueGH: {
+		Description: Your scepter has enchanted honey all over it!
+		DisplayName: Scepter Imbue (Galantine Honey)
 	}
 }
 

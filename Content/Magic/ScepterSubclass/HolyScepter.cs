@@ -10,6 +10,7 @@ using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.Resources.Cloths;
+using DestroyerTest.Rarity;
 
 namespace DestroyerTest.Content.Magic.ScepterSubclass
 {
@@ -34,7 +35,7 @@ namespace DestroyerTest.Content.Magic.ScepterSubclass
             ThrowCrit = 34;
             KB = 2;
             AdditiveValue = Item.sellPrice(silver: 80);
-            Rarity = ItemRarityID.LightRed;
+            Item.rare = ModContent.RarityType<WineRarity>();
 
             // Assign projectile types
             ShootID = ModContent.ProjectileType<HolyOrb>();

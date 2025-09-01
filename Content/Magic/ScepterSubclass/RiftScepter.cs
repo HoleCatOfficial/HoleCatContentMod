@@ -39,7 +39,7 @@ namespace DestroyerTest.Content.Magic.ScepterSubclass
             ThrowCrit = 14;
             KB = 2;
             AdditiveValue = Item.sellPrice(silver: 80);
-            Rarity = ItemRarityID.LightRed;
+            Rarity = ModContent.RarityType<RiftRarity1>();
 
             // Assign projectile types
             ShootID = ModContent.ProjectileType<RiftBolt>();
