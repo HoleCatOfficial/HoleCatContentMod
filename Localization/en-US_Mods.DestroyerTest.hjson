@@ -3157,6 +3157,16 @@ Items: {
 		Tooltip: ""
 		DisplayName: Item_ Rift Clay
 	}
+
+	DarkFireSword: {
+		DisplayName: Dark Fire Sword
+		Tooltip: ""
+	}
+
+	TwilightInferno: {
+		DisplayName: Twilight Inferno
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
@@ -3499,6 +3509,10 @@ Projectiles: {
 	FakeAncientLight.DisplayName: Fake Ancient Light
 	CurseProjectile.DisplayName: Curse Projectile
 	GalantineBee.DisplayName: Galantine Bee
+	DarkFireSwordProjectile.DisplayName: Dark Fire Sword Projectile
+	DarkFireball.DisplayName: Dark Fireball
+	TwilightInfernoProjectile.DisplayName: Twilight Inferno Projectile
+	ConstantineScytheMinionProjectile.DisplayName: Constantine Scythe Minion Projectile
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.

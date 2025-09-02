@@ -37,6 +37,7 @@ namespace DestroyerTest.Content.Magic.ScepterSubclass
         public override void SetStaticDefaults()
         {
             Item.staff[Type] = true;
+            ItemID.Sets.ItemsThatAllowRepeatedRightClick[Type] = true;
         }
         public override void SetDefaults()
         {

@@ -13,6 +13,17 @@ namespace DestroyerTest.Content.MeleeWeapons
 {
 	public class ConstantineScythe : ModItem
 	{
+        public override void SetStaticDefaults()
+        {
+        }
+
+		private enum ScytheMode
+		{
+			Melee,
+			Minion
+		}
+
+		private ScytheMode currentMode = ScytheMode.Melee;
 
 		//Weapon Properties
 		public override void SetDefaults()
@@ -50,22 +61,87 @@ namespace DestroyerTest.Content.MeleeWeapons
 			// Projectile Properties
 			Item.shoot = ModContent.ProjectileType<ConstantineScytheProjectile>(); // The sword as a projectile
 		}
-		/*
-		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-				float numberProjectiles = 3 + Main.rand.Next(3); // 3, 4, or 5 shots
-				float rotation = MathHelper.ToRadians(45);
 
-				position += Vector2.Normalize(velocity) * 45f;
-				velocity *= 0.2f; // Slow the projectile down to 1/5th speed so we can see it. This is only here because this example shares ModItem.SetDefaults code with other examples. If you are making your own weapon just change Item.shootSpeed as normal.
+        public override bool AltFunctionUse(Player player)
+		{
+			return true; // Right click is always allowed
+		}
 
-				for (int i = 0; i < numberProjectiles; i++) {
-					Vector2 perturbedSpeed = velocity.RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1))); // Watch out for dividing by 0 if there is only 1 projectile.
-					Projectile.NewProjectile(source, position, perturbedSpeed, type, damage, knockback, player.whoAmI);
+		public override bool CanUseItem(Player player)
+		{
+			int minionType = ModContent.ProjectileType<ConstantineScytheMinionProjectile>();
+			bool minionAlive = player.ownedProjectileCounts[minionType] > 0;
+
+			if (player.altFunctionUse == 2) // Right click
+			{
+				if (minionAlive)
+				{
+					// Kill the minion
+					for (int i = 0; i < Main.maxProjectiles; i++)
+					{
+						Projectile proj = Main.projectile[i];
+						if (proj.active && proj.owner == player.whoAmI && proj.type == minionType)
+						{
+							proj.Kill();
+						}
+					}
+					//SoundEngine.PlaySound(SoundID.Item14, player.Center);
+				}
+				else
+				{
+					currentMode = currentMode == ScytheMode.Melee ? ScytheMode.Minion : ScytheMode.Melee;
+					string modeText = currentMode == ScytheMode.Melee ? "Melee Mode" : "Minion Mode";
+					CombatText.NewText(player.getRect(), Color.LightGreen, modeText, true, false);
 				}
 
-				return false; // return false to stop vanilla from calling Projectile.NewProjectile.
+				return false; // Do not use the item directly on right click
 			}
-		*/
+
+			// Left click behavior depends on mode
+			if (currentMode == ScytheMode.Melee)
+			{
+				// Prevent swinging if minion exists
+				if (minionAlive)
+					return false;
+
+				Item.useStyle = ItemUseStyleID.Shoot;
+				Item.UseSound = new SoundStyle($"DestroyerTest/Assets/Audio/CS_Slice")
+				{
+					Volume = 1f,
+					Pitch = 0f,
+					PitchVariance = 0.5f
+				};
+			}
+			else // Minion mode
+			{
+				if (minionAlive) // Prevent multiple minions
+					return false;
+
+				Item.UseSound = SoundID.Item119;
+			}
+
+			return true;
+		}
+
+		public override bool? UseItem(Player player)
+		{
+			FullChargeImmunity(player);
+			return true;
+		}
+
+
+		
+		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+		{
+			if (currentMode == ScytheMode.Minion)
+			{
+				player.SpawnMinionOnCursor(source, player.whoAmI, ModContent.ProjectileType<ConstantineScytheMinionProjectile>(), damage, knockback);
+				return false;
+			}
+
+			return true; // Melee mode uses the normal scythe projectile
+		}
+		
 		public override void MeleeEffects(Player player, Rectangle hitbox)
 		{
 			if (Main.rand.NextBool(2))
@@ -105,13 +181,6 @@ namespace DestroyerTest.Content.MeleeWeapons
 			}
 
 			base.UpdateInventory(player);
-		}
-
-
-		public override bool? UseItem(Player player)
-		{
-			FullChargeImmunity(player);
-			return true;
 		}
 
 		public bool FullCharge = false;
