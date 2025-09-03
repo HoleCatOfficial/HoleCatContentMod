@@ -58,12 +58,15 @@ namespace DestroyerTest.Content.Projectiles
         public int DashCooldown = -1;
         private Dictionary<int, int> npcHitCooldowns = new Dictionary<int, int>();
         private const int HitCooldownTicks = 100;
+        public Vector2 Eyepoint;
 
         public override void AI()
         {
             Player player = Main.player[Projectile.owner];
             CheckActive(player);
             Projectile.spriteDirection = Projectile.velocity.X > 0 ? 1 : -1;
+            Eyepoint = (Projectile.position + new Vector2(45, 15)).RotatedBy(Projectile.rotation, Projectile.Center);
+            UpdateDanglingBead(Eyepoint);
 
 
             Vector2 toPlayer = player.Center - Projectile.Center;
@@ -120,8 +123,8 @@ namespace DestroyerTest.Content.Projectiles
                 return;
 
             if (DashCooldown > 0)
-            DashCooldown--;
-            
+                DashCooldown--;
+
             if (HomingTarget != null)
             {
                 int npcID = HomingTarget.whoAmI;
@@ -141,7 +144,7 @@ namespace DestroyerTest.Content.Projectiles
                     Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(18)).ToRotationVector2() * length;
                     Projectile.rotation += 0.03f * Projectile.velocity.X;
                 }
-                
+
             }
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
@@ -219,7 +222,7 @@ namespace DestroyerTest.Content.Projectiles
             Gore.NewGore(entitySource, Projectile.position, new Vector2(Main.rand.Next(-4, 4), Main.rand.Next(0, 10)), Gore3);
             SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/NodeExplode"), Projectile.position);
         }
-        
+
         public override void PostDraw(Color lightColor)
         {
             if (Main.mapFullscreen) return;
@@ -227,6 +230,84 @@ namespace DestroyerTest.Content.Projectiles
             Vector2 mapPos = Main.mapFullscreen ? Vector2.Zero : Main.LocalPlayer.Center; // adjust for map offset
             Asset<Texture2D> icon = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/ScytheMapIcon");
             Main.spriteBatch.Draw(icon.Value, mapPos - Main.screenPosition, Color.White);
+            DrawDanglingBead(Main.spriteBatch);
         }
+
+		const int SegmentCount = 12;
+		const float SegmentLength = 2f;
+		const float GravityStrength = 0.20f;
+		const float SwingResponsiveness = 0.8f;
+		const float Damping = 0.9f;
+
+		Vector2[] ropeSegments = new Vector2[SegmentCount];
+		Vector2[] ropeVelocities = new Vector2[SegmentCount];
+		bool initialized = false;
+
+		void UpdateDanglingBead(Vector2 anchor)
+		{
+			if (!initialized)
+			{
+				for (int i = 0; i < SegmentCount; i++)
+				{
+					ropeSegments[i] = anchor + Vector2.UnitY * SegmentLength * i;
+					ropeVelocities[i] = Vector2.Zero;
+				}
+				initialized = true;
+			}
+
+			// Apply physics to each segment
+			for (int i = 0; i < SegmentCount; i++)
+			{
+				// Gravity
+				ropeVelocities[i].Y += GravityStrength;
+
+				// Swing from movement of anchor
+				if (i == 0)
+					ropeVelocities[i] += (anchor - ropeSegments[i]) * SwingResponsiveness;
+
+				// Integrate velocity
+				ropeSegments[i] += ropeVelocities[i];
+
+				// Dampen
+				ropeVelocities[i] *= Damping;
+			}
+
+			// Constraints to keep segments connected
+			for (int j = 0; j < 3; j++) // run multiple times for stability
+			{
+				for (int i = 0; i < SegmentCount - 1; i++)
+				{
+					Vector2 diff = ropeSegments[i + 1] - ropeSegments[i];
+					float dist = diff.Length();
+					float error = SegmentLength - dist;
+					Vector2 correction = diff.SafeNormalize(Vector2.Zero) * (error * 0.5f);
+
+					ropeSegments[i] -= correction;
+					ropeSegments[i + 1] += correction;
+				}
+
+				// Anchor top segment to parent
+				ropeSegments[0] = anchor;
+			}
+		}
+		
+		void DrawDanglingBead(SpriteBatch spriteBatch)
+		{
+			Texture2D segmentTex = ModContent.Request<Texture2D>("DestroyerTest/Content/Projectiles/ConstantineScytheString").Value;
+			Texture2D beadTex = ModContent.Request<Texture2D>("DestroyerTest/Content/Projectiles/ConstantineScytheBead").Value;
+
+			for (int i = 1; i < SegmentCount; i++)
+			{
+				Vector2 from = ropeSegments[i - 1];
+				Vector2 to = ropeSegments[i];
+				Vector2 center = (from + to) / 2f;
+				float rotation = (to - from).ToRotation();
+
+				spriteBatch.Draw(segmentTex, center - Main.screenPosition, null, Color.White, rotation + MathHelper.PiOver2, new Vector2(segmentTex.Width / 2f, segmentTex.Height / 2f), 1f, SpriteEffects.None, 0f);
+			}
+
+			// Draw the bead at the last segment
+			spriteBatch.Draw(beadTex, ropeSegments[^1] - Main.screenPosition, null, Color.White, 0f, new Vector2(beadTex.Width / 2f, beadTex.Height / 2f), 1f, SpriteEffects.None, 0f);
+		}
     }
 }

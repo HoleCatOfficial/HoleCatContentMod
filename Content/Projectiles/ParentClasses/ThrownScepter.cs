@@ -135,6 +135,11 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
         public override void AI()
         {
+            DefaultBehaviour();
+        }
+
+        public virtual void DefaultBehaviour()
+        {
             // Decrease the cooldown timer on each tick
             if (soundCooldown > 0)
             {

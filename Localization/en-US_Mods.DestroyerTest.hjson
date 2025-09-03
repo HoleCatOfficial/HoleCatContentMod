@@ -3167,6 +3167,16 @@ Items: {
 		DisplayName: Twilight Inferno
 		Tooltip: ""
 	}
+
+	EmberCane: {
+		Tooltip: ""
+		DisplayName: Ember Cane
+	}
+
+	ThunderScepter: {
+		DisplayName: Thunder Scepter
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
@@ -3513,6 +3523,8 @@ Projectiles: {
 	DarkFireball.DisplayName: Dark Fireball
 	TwilightInfernoProjectile.DisplayName: Twilight Inferno Projectile
 	ConstantineScytheMinionProjectile.DisplayName: Constantine Scythe Minion Projectile
+	EmberCaneThrown.DisplayName: Ember Cane Thrown
+	ThunderScepterThrown.DisplayName: Thunder Scepter Thrown
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.
