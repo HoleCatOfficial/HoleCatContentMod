@@ -147,6 +147,15 @@ namespace DestroyerTest.Content.Projectiles
             {
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.CursedTorch, Projectile.velocity.X * 0.2f, Projectile.velocity.Y * 0.2f, 100, default, 1.2f);
             }
+
+            int Gore1 = Mod.Find<ModGore>("CursedShard1").Type;
+            int Gore2 = Mod.Find<ModGore>("CursedShard2").Type;
+            int Gore3 = Mod.Find<ModGore>("CursedShard3").Type;
+
+            var entitySource = Projectile.GetSource_Death();
+            Gore.NewGore(entitySource, Projectile.position, new Vector2(Main.rand.Next(-4, 4), Main.rand.Next(-4, 4)), Gore1);
+            Gore.NewGore(entitySource, Projectile.position, new Vector2(Main.rand.Next(-4, 4), Main.rand.Next(-4, 4)), Gore2);
+            Gore.NewGore(entitySource, Projectile.position, new Vector2(Main.rand.Next(-4, 4), Main.rand.Next(-4, 4)), Gore3);
         }
     }
 }
