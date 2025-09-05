@@ -20,8 +20,6 @@ namespace DestroyerTest.Content.Projectiles
 			Projectile.friendly = true;
 			Projectile.DamageType = DamageClass.Generic;
 			Projectile.timeLeft = 1200;
-			Projectile.netImportant = true;
-			Projectile.netUpdate = true;
 		}
 
 		public override void AI() {

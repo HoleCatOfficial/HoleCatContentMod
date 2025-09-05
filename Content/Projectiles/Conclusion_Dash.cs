@@ -33,8 +33,6 @@ namespace DestroyerTest.Content.Projectiles
 			Projectile.extraUpdates = 1; // Update 1+extraUpdates times per tick
 			Projectile.timeLeft = 360; // This value does not matter since we manually kill it earlier
 			Projectile.hide = false; // Ensure the projectile is visible
-			Projectile.netImportant = true;
-			Projectile.netUpdate = true;
 		}
 		public bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
 				float numberProjectiles = 3 + Main.rand.Next(3); // 3, 4, or 5 shots

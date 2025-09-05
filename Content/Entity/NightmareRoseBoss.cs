@@ -686,6 +686,7 @@ namespace DestroyerTest.Content.Entity
 
                 case AttackState.Minions:
                     {
+                        /*
                         MinionFailsafe++;
                         MinionSpawnTimer++;
 
@@ -709,8 +710,10 @@ namespace DestroyerTest.Content.Entity
                         {
                             currentState = AttackState.Idle;
                             ResetState();
-                        }
+                        }*/
                     }
+                    
+                    ResetState();
                     break;
                 case AttackState.RottenPetals:
                     {

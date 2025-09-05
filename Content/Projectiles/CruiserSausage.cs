@@ -30,8 +30,6 @@ namespace DestroyerTest.Content.Projectiles
 			Projectile.ignoreWater = true; // Does the projectile's speed be influenced by water?
 			Projectile.tileCollide = false; // Can the projectile collide with tiles?
 			Projectile.extraUpdates = 1; // Set to above 0 if you want the projectile to update multiple time in a frame
-			Projectile.netImportant = true;
-			Projectile.netUpdate = true;
 
 			AIType = ProjectileID.Bullet; // Act exactly like default Bullet
 		}

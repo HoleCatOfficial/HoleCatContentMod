@@ -33,8 +33,6 @@ namespace DestroyerTest.Content.Projectiles.ConstitutionBoss
             Projectile.timeLeft = 600; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
             Projectile.tileCollide = true;
             Projectile.alpha = 160;
-            Projectile.netImportant = true;
-            Projectile.netUpdate = true;
         }
         public bool DrawTrail = true;
         public bool fading = false;

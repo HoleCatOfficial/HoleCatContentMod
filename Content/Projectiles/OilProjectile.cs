@@ -58,8 +58,6 @@ namespace DestroyerTest.Content.Projectiles
             Projectile.light = 1f;
             Projectile.timeLeft = 600;
             Projectile.tileCollide = false;
-            Projectile.netImportant = true;
-            Projectile.netUpdate = true;
             Projectile.extraUpdates = 3;
         }
 

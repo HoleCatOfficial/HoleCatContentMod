@@ -23,8 +23,6 @@ namespace DestroyerTest.Content.Projectiles
 			Projectile.DamageType = DamageClass.Ranged;
 			Projectile.timeLeft = 1200;
 			Projectile.tileCollide = false;
-			Projectile.netImportant = true;
-			Projectile.netUpdate = true;
 		}
 
 		public override void AI() {

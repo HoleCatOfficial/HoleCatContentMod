@@ -25,8 +25,6 @@ namespace DestroyerTest.Content.Particles
             Projectile.penetrate = -1;
             Projectile.timeLeft = MaxLifetime;
             Projectile.scale = 0.1f; // Start small
-            Projectile.netImportant = true;
-			Projectile.netUpdate = true;
         }
 
         public override void AI()

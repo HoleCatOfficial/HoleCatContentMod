@@ -38,7 +38,6 @@ namespace DestroyerTest.Content.Projectiles
             Projectile.tileCollide = false;
             Projectile.penetrate = -1;
             Projectile.hide = false;
-            Projectile.netImportant = true;
         }
 
         public override void SendExtraAI(BinaryWriter writer)

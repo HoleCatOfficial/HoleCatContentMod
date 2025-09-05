@@ -615,6 +615,7 @@ namespace DestroyerTest.Content.Entity
                     break;
                 case attackType.SummonCrimsonMinions:
                     {
+                        /*
                         SoundEngine.PlaySound(Roar);
                         for (int e = 0; e < 6; e++)
                         {
@@ -628,6 +629,7 @@ namespace DestroyerTest.Content.Entity
                             );
                             NPC.NewNPC(Entity.GetSource_FromThis(), (int)MinionPosition.X, (int)MinionPosition.Y, MinionSpawnType[Main.rand.Next(MinionSpawnType.Length)], 0);
                         }
+                        */
                         CurrentAttack = attackType.BloodShoot;
                         ResetStats();
                     }

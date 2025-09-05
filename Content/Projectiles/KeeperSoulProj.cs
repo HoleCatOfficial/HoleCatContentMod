@@ -29,8 +29,6 @@ namespace DestroyerTest.Content.Projectiles
             Projectile.hostile = false;
             Projectile.DamageType = DamageClass.Magic;
             Projectile.timeLeft = 1200;
-            Projectile.netImportant = true;
-            Projectile.netUpdate = true;
             Projectile.penetrate = -1;
             Projectile.tileCollide = false;
         }

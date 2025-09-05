@@ -36,8 +36,6 @@ namespace DestroyerTest.Content.Projectiles
 			Projectile.height = DefaultWidthHeight;
 			Projectile.friendly = true;
 			Projectile.penetrate = -1;
-			Projectile.netImportant = true;
-			Projectile.netUpdate = true;
 
 			// 5 second fuse.
 			Projectile.timeLeft = 100;

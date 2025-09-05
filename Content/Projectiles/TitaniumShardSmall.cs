@@ -41,8 +41,6 @@ public class TitaniumShardSmall : ModProjectile
 			Projectile.light = 1f; // How much light emit around the projectile
 			Projectile.timeLeft = 600; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
 			Projectile.tileCollide = true;
-			Projectile.netImportant = true;
-			Projectile.netUpdate = true;
 			}
 
 		int trailLength = 10; // Adjust for desired effect

@@ -33,8 +33,6 @@ namespace DestroyerTest.Content.Projectiles
             Projectile.timeLeft = 180; // 10 seconds max lifespan
             Projectile.DamageType = DamageClass.MeleeNoSpeed;
             Projectile.tileCollide = false;
-            Projectile.netImportant = true;
-			Projectile.netUpdate = true;
         }
 
     

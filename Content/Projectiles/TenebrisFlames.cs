@@ -59,8 +59,6 @@ namespace DestroyerTest.Content.Projectiles
             Projectile.light = 1f;
             Projectile.timeLeft = 300;
             Projectile.tileCollide = false;
-            Projectile.netImportant = true;
-            Projectile.netUpdate = true;
             Projectile.alpha = 255;
 		}
 

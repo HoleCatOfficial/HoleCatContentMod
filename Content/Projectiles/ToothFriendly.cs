@@ -24,8 +24,6 @@ namespace DestroyerTest.Content.Projectiles
             Projectile.hostile = false; // Can the projectile deal damage to the player?
             Projectile.ignoreWater = true; // Does the projectile's speed be influenced by water?
             Projectile.timeLeft = 600; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
-            Projectile.netImportant = true;
-            Projectile.netUpdate = true;
             Projectile.DamageType = DamageClass.Generic;
         }
 

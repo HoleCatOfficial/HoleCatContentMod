@@ -30,8 +30,6 @@ namespace DestroyerTest.Content.Projectiles
 			Projectile.penetrate = -1;
 			Projectile.timeLeft = 600;
 			Projectile.tileCollide = false;
-			Projectile.netImportant = true;
-			Projectile.netUpdate = true;
 		}
 
         public override void SetStaticDefaults()

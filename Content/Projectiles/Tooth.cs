@@ -7,7 +7,6 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles
 {
-    // This Example shows how to implement a simple homing projectile with animation
     public class Tooth : ModProjectile
     {
 
@@ -23,9 +22,7 @@ namespace DestroyerTest.Content.Projectiles
             Projectile.friendly = false; // Can the projectile deal damage to enemies?
             Projectile.hostile = true; // Can the projectile deal damage to the player?
             Projectile.ignoreWater = true; // Does the projectile's speed be influenced by water?
-            Projectile.timeLeft = 600; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
-            Projectile.netImportant = true;
-			Projectile.netUpdate = true;
+            Projectile.timeLeft = 180; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
         }
 
 

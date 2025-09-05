@@ -4004,6 +4004,11 @@ Configs: {
 			Tooltip: If true, when a node spawns, it will play music even when not attacking. The idle music is different from the battle music, but if they spawn too often for you liking, the ambience will get annoying.
 			Label: Nodes will play Music when Dormant
 		}
+
+		OptimizeGame: {
+			Label: Optimize Game
+			Tooltip: ""
+		}
 	}
 }
 

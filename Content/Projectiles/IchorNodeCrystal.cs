@@ -27,8 +27,6 @@ namespace DestroyerTest.Content.Projectiles
             Projectile.ignoreWater = true; // Does the projectile's speed be influenced by water?
             Projectile.light = 1f; // How much light emit around the projectile
             Projectile.timeLeft = 180; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
-            Projectile.netImportant = true;
-            Projectile.netUpdate = true;
             Projectile.tileCollide = true;
         }
 
@@ -154,9 +152,13 @@ namespace DestroyerTest.Content.Projectiles
             int Gore3 = Mod.Find<ModGore>("IchorShard3").Type;
 
             var entitySource = Projectile.GetSource_Death();
-            Gore.NewGore(entitySource, Projectile.position, new Vector2(Main.rand.Next(-4, 4), Main.rand.Next(-4, 4)), Gore1);
-            Gore.NewGore(entitySource, Projectile.position, new Vector2(Main.rand.Next(-4, 4), Main.rand.Next(-4, 4)), Gore2);
-            Gore.NewGore(entitySource, Projectile.position, new Vector2(Main.rand.Next(-4, 4), Main.rand.Next(-4, 4)), Gore3);
+            DTConfig cfg = ModContent.GetInstance<DTConfig>();
+            if (cfg.OptimizeGame == false)
+            {
+                Gore.NewGore(entitySource, Projectile.position, new Vector2(Main.rand.Next(-4, 4), Main.rand.Next(-4, 4)), Gore1);
+                Gore.NewGore(entitySource, Projectile.position, new Vector2(Main.rand.Next(-4, 4), Main.rand.Next(-4, 4)), Gore2);
+                Gore.NewGore(entitySource, Projectile.position, new Vector2(Main.rand.Next(-4, 4), Main.rand.Next(-4, 4)), Gore3);
+            }
         }
     }
 }

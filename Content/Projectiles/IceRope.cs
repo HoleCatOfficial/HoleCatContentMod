@@ -17,8 +17,6 @@ namespace DestroyerTest.Content.Projectiles
             Projectile.penetrate = -1; // Infinite penetration
             Projectile.tileCollide = false; // Doesn't collide with tiles
             Projectile.ignoreWater = true; // Ignores water slowdown
-            Projectile.netImportant = true;
-			Projectile.netUpdate = true;
         }
 
         public override void AI()

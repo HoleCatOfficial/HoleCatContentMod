@@ -21,8 +21,6 @@ namespace DestroyerTest.Content.Projectiles
             Projectile.ignoreWater = true;
             Projectile.tileCollide = true;
             Projectile.extraUpdates = 1;
-            Projectile.netImportant = true;
-			Projectile.netUpdate = true;
         }
     }
 }
