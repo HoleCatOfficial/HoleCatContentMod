@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using DestroyerTest.Common;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -36,9 +37,9 @@ namespace DestroyerTest.Content.Projectiles
             lightColor = ColorLib.Ichor;
             SpriteBatch spriteBatch = Main.spriteBatch;
             DTUtils Utility = new DTUtils();
-            Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
-            Texture2D GlowTexture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/SimpleParticle").Value;
-            Texture2D GlowTexture2 = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/SoulSparkle").Value;
+            Asset<Texture2D> projectileTexture = TextureAssets.Projectile[Projectile.type];
+            Asset<Texture2D> GlowTexture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/SimpleParticle");
+            Asset<Texture2D> GlowTexture2 = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/SoulSparkle");
 
             Texture2D pixel = Terraria.GameContent.TextureAssets.MagicPixel.Value;
 
@@ -74,24 +75,24 @@ namespace DestroyerTest.Content.Projectiles
             }
 
             Main.spriteBatch.Draw(
-                    GlowTexture,
+                    GlowTexture.Value,
                     Projectile.Center - Main.screenPosition,
                     null,
                     lightColor,
                     Projectile.rotation,
-                    new Vector2(GlowTexture.Width / 2, GlowTexture.Height / 2), // Origin is at the left-middle of the scaled pixel
+                    new Vector2(GlowTexture.Value.Width / 2, GlowTexture.Value.Height / 2), // Origin is at the left-middle of the scaled pixel
                     1f,
                     SpriteEffects.None,
                     0f
                 );
 
             Main.spriteBatch.Draw(
-                    projectileTexture,
+                    projectileTexture.Value,
                     Projectile.Center - Main.screenPosition,
                     null,
                     lightColor,
                     Projectile.rotation,
-                    new Vector2(projectileTexture.Width / 2, projectileTexture.Height / 2), // Origin is at the left-middle of the scaled pixel
+                    new Vector2(projectileTexture.Value.Width / 2, projectileTexture.Value.Height / 2), // Origin is at the left-middle of the scaled pixel
                     1f,
                     SpriteEffects.None,
                     0f
@@ -99,12 +100,12 @@ namespace DestroyerTest.Content.Projectiles
 
 
             Main.spriteBatch.Draw(
-                    GlowTexture2,
+                    GlowTexture2.Value,
                     Projectile.Center - Main.screenPosition,
                     null,
                     Color.White,
                     0,
-                    new Vector2(GlowTexture2.Width / 2, GlowTexture2.Height / 2), // Origin is at the left-middle of the scaled pixel
+                    new Vector2(GlowTexture2.Value.Width / 2, GlowTexture2.Value.Height / 2), // Origin is at the left-middle of the scaled pixel
                     0.75f,
                     SpriteEffects.None,
                     0f

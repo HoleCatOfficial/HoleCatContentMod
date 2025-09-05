@@ -7,6 +7,7 @@ using DestroyerTest.Content.Particles;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -66,8 +67,8 @@ namespace DestroyerTest.Content.Projectiles
 		public override bool PreDraw(ref Color lightColor)
 		{
 			SpriteBatch spriteBatch = Main.spriteBatch;
-			Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
-			Texture2D pixel = TextureAssets.MagicPixel.Value;
+			Asset<Texture2D> projectileTexture = TextureAssets.Projectile[Projectile.type];
+			Asset<Texture2D> pixel = TextureAssets.MagicPixel;
 
 			spriteBatch.End();
 			spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
@@ -100,12 +101,12 @@ namespace DestroyerTest.Content.Projectiles
 				tenebrisColor *= alpha;
 
 				Main.spriteBatch.Draw(
-					pixel,
+					pixel.Value,
 					start,
 					null,
 					tenebrisColor,
 					rotation,
-					new Vector2(pixel.Width / 2, pixel.Height / 2),
+					new Vector2(pixel.Value.Width / 2, pixel.Value.Height / 2),
 					new Vector2(length, width),
 					SpriteEffects.None,
 					0f
@@ -114,7 +115,7 @@ namespace DestroyerTest.Content.Projectiles
 
 
 			Main.EntitySpriteDraw(
-				projectileTexture,
+				projectileTexture.Value,
 				Projectile.Center - Main.screenPosition,
 				null,
 				lightColor,
