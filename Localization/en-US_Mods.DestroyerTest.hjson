@@ -3177,6 +3177,26 @@ Items: {
 		DisplayName: Thunder Scepter
 		Tooltip: ""
 	}
+
+	DistendedBodyArmor: {
+		DisplayName: Distended Body Armor
+		Tooltip: ""
+	}
+
+	DistendedCuisses: {
+		DisplayName: Distended Cuisses
+		Tooltip: ""
+	}
+
+	DistendedHeadgear: {
+		DisplayName: Distended Headgear
+		Tooltip: ""
+	}
+
+	MalevolenceMantra: {
+		DisplayName: Malevolence Mantra
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
@@ -3525,6 +3545,8 @@ Projectiles: {
 	ConstantineScytheMinionProjectile.DisplayName: Constantine Scythe Minion Projectile
 	EmberCaneThrown.DisplayName: Ember Cane Thrown
 	ThunderScepterThrown.DisplayName: Thunder Scepter Thrown
+	EternityBGController.DisplayName: Eternity B G Controller
+	Hellfire.DisplayName: Hellfire
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.
@@ -3901,6 +3923,7 @@ NPCs: {
 	ShadeThrowerBlue.DisplayName: Shade Thrower Blue
 	TenebrisElemental.DisplayName: Tenebris Elemental
 	DarkArchmage.DisplayName: Dark Archmage
+	TenebrousConstruct.DisplayName: Tenebrous Construct
 }
 
 Keybinds: {
@@ -3947,6 +3970,16 @@ Biomes: {
 	RiftDesert: {
 		DisplayName: Rift Desert
 		TownNPCDialogueName: the Rift Desert
+	}
+
+	ShadeWorldBestiary: {
+		TownNPCDialogueName: the Shade World Bestiary
+		DisplayName: Shade World Bestiary
+	}
+
+	RiftBestiary: {
+		TownNPCDialogueName: the Rift Bestiary
+		DisplayName: Rift Bestiary
 	}
 }
 

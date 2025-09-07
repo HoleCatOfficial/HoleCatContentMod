@@ -150,22 +150,24 @@ namespace DestroyerTest.Content.Equips
                         }
                     }
 
-                    if (Main.rand.NextBool(200))
+                    if (Main.rand.NextBool(400))
                     {
-                        SoundEngine.PlaySound(SoundID.Pixie with { Pitch = -5 }, Player.Center);
+                        SoundEngine.PlaySound(SoundID.Pixie with { Pitch = -2 }, Player.Center);
                     }
 
                     for (int r = 0; r < 3; r++)
                     {
-                        PRTLoader.NewParticle(
-                            PRTLoader.GetParticleID<SimpleParticle>(),
-                            Player.Center + Main.rand.NextVector2CircularEdge(Radius, Radius),
-                            Vector2.Zero, Color.OrangeRed, 0.4f
-                        );
-                        Dust.NewDustPerfect(
-                            Player.Center + Main.rand.NextVector2CircularEdge(Radius, Radius),
-                            DustID.TintableDustLighted, Vector2.Zero, 0, Color.OrangeRed, 1.0f
-                        );
+                    BasePRT WallPRT = PRTLoader.NewParticle(
+                        PRTLoader.GetParticleID<SimpleParticle>(),
+                        Player.Center + Main.rand.NextVector2CircularEdge(Radius, Radius),
+                        Vector2.Zero, Color.OrangeRed, 0.4f
+                    );
+                    WallPRT.Velocity += Player.velocity;
+                    Dust WallDust = Dust.NewDustPerfect(
+                        Player.Center + Main.rand.NextVector2CircularEdge(Radius, Radius),
+                        DustID.TintableDustLighted, Vector2.Zero, 0, Color.OrangeRed, 1.0f
+                    );
+                    WallDust.velocity += Player.velocity;
                     }
 
                     if (Durability <= 0)

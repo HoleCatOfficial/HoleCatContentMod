@@ -19,12 +19,12 @@ namespace DestroyerTest.Content.Projectiles.NightmareRose
     {
 
         
-			private Player HomingTarget {
-				get => Projectile.ai[0] == 0 ? null : Main.player[(int)Projectile.ai[0] - 1];
-				set {
-					Projectile.ai[0] = value == null ? 0 : value.whoAmI + 1;
-				}
-			}
+        private Player HomingTarget {
+            get => Projectile.ai[0] == 0 ? null : Main.player[(int)Projectile.ai[0] - 1];
+            set {
+                Projectile.ai[0] = value == null ? 0 : value.whoAmI + 1;
+            }
+        }
 
         public override void SetStaticDefaults()
         {
@@ -40,10 +40,7 @@ namespace DestroyerTest.Content.Projectiles.NightmareRose
             Projectile.light = 0.5f;
             Projectile.ignoreWater = true;
             Projectile.timeLeft = 600; // 10 seconds max lifespan
-            Projectile.DamageType = DamageClass.Magic;
             Projectile.tileCollide = false;
-            Projectile.netImportant = true;
-            Projectile.netUpdate = true;
             Projectile.alpha = 255;
         }
 
@@ -126,51 +123,29 @@ namespace DestroyerTest.Content.Projectiles.NightmareRose
 
             CurrentCenter = Projectile.Center;
 
-            
-          
+            float rad = 1000;
+            Vector2 Spawn = Projectile.Center + Main.rand.NextVector2CircularEdge(rad, rad);
+            Vector2 toOrigin = CurrentCenter - Spawn;
+            toOrigin = toOrigin.SafeNormalize(Vector2.UnitY); // fallback to downwards if zero
 
-            if (player.HeldItem.type == ModContent.ItemType<Contempt>() && player.channel)
+            if (Main.GameUpdateCount % 10 == 0)
             {
-                Projectile.timeLeft = 120;
-                
-                if (HasSpawned == false)
+                SoundEngine.PlaySound(SoundID.Item20);
+
+                for (int a = 0; a < 8; a++)
                 {
-                    PRTLoader.NewParticle(PRTLoader.GetParticleID<RuneCircle1>(), Projectile.Center, Projectile.velocity, ColorLib.CursedFlames, 0.4f);
-                    HasSpawned = true;
-                }
-
-
-
-
-                float rad = 1000;
-                Vector2 Spawn = Projectile.Center + Main.rand.NextVector2CircularEdge(rad, rad);
-                Vector2 toOrigin = CurrentCenter - Spawn;
-                toOrigin = toOrigin.SafeNormalize(Vector2.UnitY); // fallback to downwards if zero
-
-                if (ProjSpawnTimer >= 30)
-                {
-                    SoundEngine.PlaySound(SoundID.Item20);
-
-                    for (int a = 0; a < 8; a++)
+                    Spawn = Projectile.Center + Main.rand.NextVector2CircularEdge(rad, rad);
+                    toOrigin = CurrentCenter - Spawn;
+                    toOrigin = toOrigin.SafeNormalize(Vector2.UnitY);
+                    Projectile Flames = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), Spawn, toOrigin * 20f, ModContent.ProjectileType<CursedFlameProj>(), 60, 2);
+                    if (Flames.Center == Projectile.Center)
                     {
-                        Spawn = Projectile.Center + Main.rand.NextVector2CircularEdge(rad, rad);
-                        toOrigin = CurrentCenter - Spawn;
-                        toOrigin = toOrigin.SafeNormalize(Vector2.UnitY);
-                        Projectile Flames = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), Spawn, toOrigin * 20f, ModContent.ProjectileType<CursedFlameProj>(), 60, 2);
-                        if (Flames.Center == Projectile.Center)
-                        {
-                            Flames.Kill();
-                        }
+                        Flames.Kill();
                     }
-                    PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp1>(), Projectile.Center, Projectile.velocity, ColorLib.CursedFlames, 0.4f);
-                    ProjSpawnTimer = 0;
                 }
-
-
-
+                PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp1>(), Projectile.Center, Projectile.velocity, ColorLib.CursedFlames, 0.4f);
+                ProjSpawnTimer = 0;
             }
-
-
         }
         
         public Player FindClosestPlayer(float maxDetectDistance) {
