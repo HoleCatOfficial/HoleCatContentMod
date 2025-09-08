@@ -1,5 +1,7 @@
 
 using System;
+using System.Media;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.Buffs;
@@ -85,7 +87,7 @@ namespace DestroyerTest.Common
         /// <param name="color"></param>
         /// <param name="RotateWithProj"></param>
         /// <param name="Rot"></param>
-        public void DrawTextureOnProj(Asset<Texture2D> Tex, Projectile projectile, Color color, bool RotateWithProj, float Rot = 0)
+        public void DrawTextureOnProj(Asset<Texture2D> Tex, Projectile projectile, Color color, bool RotateWithProj, float Rot = 0, float ScaleX = 1f, float ScaleY = 1f)
         {
             if (RotateWithProj)
             {
@@ -99,7 +101,7 @@ namespace DestroyerTest.Common
                 color,
                 Rot,
                 Tex.Value.Size() / 2,
-                projectile.scale,
+                new Vector2(ScaleX, ScaleY),
                 SpriteEffects.None,
                 0
             );
@@ -457,12 +459,72 @@ namespace DestroyerTest.Common
         //
         //Textures with more niche use cases.
         //
-        public static Asset<Texture2D> NightmareRoseArenaBorder = ModContent.Request<Texture2D>($"{ParticlePath}/NightmareRoseArenaBorder");
+        public static Asset<Texture2D> NightmareRoseArenaBorder = ModContent.Request<Texture2D>($"{ParticlePath}/NightmareRoseBarrier");
         public static Asset<Texture2D> ConstitutionBeamGlow = ModContent.Request<Texture2D>($"{ExtrasPath}/ConstitutionBeamGlow");
         public static Asset<Texture2D> GalantineLanceGlow = ModContent.Request<Texture2D>($"{ExtrasPath}/GalantineLanceGlow");
         public static Asset<Texture2D> TenebrousConstructWingLeft = ModContent.Request<Texture2D>($"{ExtrasPath}/TenebrousConstructWingLeft");
         public static Asset<Texture2D> TenebrousConstructWingRight = ModContent.Request<Texture2D>($"{ExtrasPath}/TenebrousConstructWingRight");
         public static Asset<Texture2D> WyvernSoulDash = ModContent.Request<Texture2D>($"{ExtrasPath}/WyvernSoulDash");
         public static Asset<Texture2D> CorruptSigil = ModContent.Request<Texture2D>($"{ExtrasPath}/CorruptSigil");
+    }
+
+    public class AssetVerifierSystem : ModSystem
+    {
+        public override void OnModLoad()
+        {
+            var fields = typeof(DTAssetLib).GetFields(
+                BindingFlags.Public | BindingFlags.Static
+            );
+
+            foreach (var field in fields)
+            {
+                if (field.FieldType.IsGenericType &&
+                    field.FieldType.GetGenericTypeDefinition() == typeof(Asset<>))
+                {
+                    try
+                    {
+                        var value = field.GetValue(null);
+                        if (value is Asset<Texture2D> tex)
+                        {
+                            _ = tex.Value; // force load
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        /*
+                        string filePath = @"DestroyerTest/Assets/Music/DTAssetLibError.wav";
+
+                        #if WINDOWS
+                                                using (SoundPlayer player = new SoundPlayer(filePath))
+                                                {
+                                                    player.Play();
+                                                    Console.WriteLine("Do not panic. This sound was triggered by a mod. Not by a virus.");
+                                                    Console.ReadLine();
+                                                }
+                        #else
+                                                Console.WriteLine("Asset verification failed and sound notification is only available on Windows.");
+                        #endif
+                        */
+                        throw new Exception(
+                            $"Asset verification failed for {field.Name} in DTAssetLib. Path may be invalid.",
+                            ex
+                        );
+                    }
+                }
+            }
+
+            TestMethodAssets();
+        }
+
+        private void TestMethodAssets()
+        {
+            _ = DTAssetLib.BloomRing(1).Value;
+            _ = DTAssetLib.Sparkle(1).Value;
+            _ = DTAssetLib.Star(1).Value;
+            _ = DTAssetLib.Cyclone(1).Value;
+            _ = DTAssetLib.Trail(1).Value;
+            _ = DTAssetLib.Line(1).Value;
+            _ = DTAssetLib.TilableNoise(1).Value;
+        }
     }
 }

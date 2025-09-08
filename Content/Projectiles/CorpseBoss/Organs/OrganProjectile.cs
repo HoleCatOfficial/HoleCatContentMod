@@ -92,7 +92,7 @@ namespace DestroyerTest.Content.Projectiles.CorpseBoss.Organs
         public override void PostDraw(Color lightColor)
         {
             base.PostDraw(lightColor);
-            DrawTelegraph(Projectile.Center, Main.LocalPlayer.Center, DTAssetLib.Line(3).Value);
+            DrawTelegraph(Projectile.Center, Main.LocalPlayer.Center, DTAssetLib.Line(1).Value);
         }
 
         public override void OnHitPlayer(Player target, Player.HurtInfo info)

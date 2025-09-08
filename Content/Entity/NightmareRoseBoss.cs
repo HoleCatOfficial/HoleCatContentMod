@@ -933,23 +933,22 @@ namespace DestroyerTest.Content.Entity
             base.PostDraw(spriteBatch, screenPos, drawColor);
             if (FlameTimer < 240 && FlameTimer >= 0 && currentState == AttackState.CursedFlames)
             {
-                DrawTelegraph(NPCHead, PlayerCenter, ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/CursedFlamesTelegraph").Value);
+                DrawTelegraph(NPCHead, PlayerCenter, DTAssetLib.FlameTelegraph.Value);
             }
 
-            Texture2D Ring = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/NightmareRoseBarrier").Value;
 
             DTUtils Utility = new DTUtils();
             Utility.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
             if (BorderActive)
             {
-                Main.EntitySpriteDraw(Ring, NPCHead - Main.screenPosition, null, ColorLib.CursedFlames, Rotation, new Vector2(Ring.Width / 2, Ring.Height / 2), RingScale, SpriteEffects.None, 0);
+                Main.EntitySpriteDraw(DTAssetLib.NightmareRoseArenaBorder.Value, NPCHead - Main.screenPosition, null, ColorLib.CursedFlames, Rotation, new Vector2(DTAssetLib.NightmareRoseArenaBorder.Value.Width / 2, DTAssetLib.NightmareRoseArenaBorder.Value.Height / 2), RingScale, SpriteEffects.None, 0);
             }
             Utility.ReturnToDefaultDrawing(spriteBatch);
 
-            Texture2D White = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/NightmareRoseDeathFade").Value;
+            Asset<Texture2D> White = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/NightmareRoseDeathFade");
             if (currentState == AttackState.KillIdle)
             {
-                Main.EntitySpriteDraw(White, NPC.Center - Main.screenPosition, null, DTColorUtils.WithAlpha(Color.White, OverlayAlpha), 0f, new Vector2(White.Width / 2, White.Height / 2), 1f, SpriteEffects.None, 0);
+                Main.EntitySpriteDraw(White.Value, NPC.Center - Main.screenPosition, null, DTColorUtils.WithAlpha(Color.White, OverlayAlpha), 0f, new Vector2(White.Value.Width / 2, White.Value.Height / 2), 1f, SpriteEffects.None, 0);
             }
 
         }

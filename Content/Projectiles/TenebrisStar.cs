@@ -67,7 +67,6 @@ namespace DestroyerTest.Content.Projectiles
 			lightColor = ColorLib.TenebrisGradient;
 			SpriteBatch spriteBatch = Main.spriteBatch;
 			DTUtils Utility = new DTUtils();
-			var projectileTexture = DTAssetLib.Star(1).Value;
 
             Utility.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
@@ -113,19 +112,9 @@ namespace DestroyerTest.Content.Projectiles
 
 			Utility.DrawGlowOnProj(Projectile, lightColor, true);
 
-			Main.EntitySpriteDraw(
-				projectileTexture,
-				Projectile.Center - Main.screenPosition,
-				null,
-				lightColor,
-				Projectile.rotation,
-				projectileTexture.Size() / 2,
-				Projectile.scale * 2,
-				SpriteEffects.None,
-				0
-			);
-
 			Utility.ReturnToDefaultDrawing(spriteBatch);
+			
+			Utility.DrawTextureOnProj(DTAssetLib.Star(1), Projectile, Color.White, true, 0f, 0.35f, 0.35f);
 
 			return false;
 		}

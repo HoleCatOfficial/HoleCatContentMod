@@ -173,7 +173,9 @@ namespace DestroyerTest.Content.Entity
         public int MinionSpawnTimer = 0;
         public int MinionSpawnCount = 0;
         public int MinionSpawnType = 0;
-        public int ToothCount = 10;
+        public int ToothCount = 5;
+        public bool flag1 = false;
+        public Vector2 ToothCenter;
         public int BombSpawnTimer = 0;
         public int BombSpawnCount = 0;
         public bool HasTriggeredNodes = false;
@@ -499,7 +501,7 @@ namespace DestroyerTest.Content.Entity
                         SpitTime++;
                         if (SpitTime % 20 == 0)
                         {
-                            Projectile IchorSpit = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), NPC.Center, NPC.velocity * 3, ProjectileID.GoldenShowerHostile, 40, 2);
+                            Projectile IchorSpit = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), NPC.Center, NPC.velocity * 1.5f, ProjectileID.GoldenShowerHostile, 40, 2);
                         }
                         if (SpitTime >= 480)
                             {
@@ -515,38 +517,50 @@ namespace DestroyerTest.Content.Entity
                         // Make sure these are initialized outside the case so they persist
                         MinionSpawnTimer++;
                         
-                        if (MinionSpawnTimer % 20 == 0) 
-                        {
-                            SoundEngine.PlaySound(Teeth, NPC.Center);
-
-                            float radius = 700f; // distance from player for spawning
-                            Vector2 playerCenter = player.Center;
-
-                            for (int i = 0; i < ToothCount; i++)
+                        
+                        if (MinionSpawnTimer % 20 == 0)
                             {
-                                // angle around the circle
-                                float angle = MathHelper.TwoPi * i / ToothCount;
+                                SoundEngine.PlaySound(Teeth, NPC.Center);
 
-                                // spawn position around the player
-                                Vector2 spawnPos = playerCenter + radius * new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
+                                float radius = 700f; // distance from player for spawning
 
-                                // velocity toward player
-                                Vector2 velocity = (playerCenter - spawnPos).SafeNormalize(Vector2.UnitY) * 8f;
 
-                                Projectile Tooth = Projectile.NewProjectileDirect(
-                                    NPC.GetSource_FromAI(),
-                                    spawnPos,
-                                    velocity,
-                                    ModContent.ProjectileType<Tooth>(),
-                                    30,
-                                    0f,
-                                    Main.myPlayer
-                                );
-                                Tooth.tileCollide = false;
+
+                                if (!flag1)
+                                {
+                                    ToothCenter = player.Center;
+                                    flag1 = true;
+                                }
+                                for (int i = 0; i < ToothCount; i++)
+                                {
+                                    // angle around the circle
+                                    float angle = MathHelper.TwoPi * i / ToothCount;
+
+                                    // spawn position around the player
+                                    Vector2 spawnPos = ToothCenter + radius * new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
+
+                                    // velocity toward player
+                                    Vector2 velocity = (ToothCenter - spawnPos).SafeNormalize(Vector2.UnitY) * 8f;
+
+                                    Projectile Tooth = Projectile.NewProjectileDirect(
+                                        NPC.GetSource_FromAI(),
+                                        spawnPos,
+                                        velocity,
+                                        ModContent.ProjectileType<Tooth>(),
+                                        30,
+                                        0f,
+                                        Main.myPlayer
+                                    );
+                                    Tooth.tileCollide = false;
+
+                                    if (Tooth.Center.Distance(ToothCenter) < 20)
+                                    {
+                                        Tooth.Kill();
+                                    }
+                                }
+
+                                ToothCount--;
                             }
-
-                            ToothCount--;
-                        }
 
                         if (ToothCount < 2)
                         {
@@ -579,27 +593,12 @@ namespace DestroyerTest.Content.Entity
                             SoundEngine.PlaySound(Roar, NPC.Center);
                             for (int i = 0; i < numberProjectiles; i++)
                             {
-                                Vector2 perturbedSpeed = (NPC.velocity).RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1)));
-                                Projectile Organ = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), position, perturbedSpeed, type, 44, 2);
+                                Vector2 perturbedSpeed = NPC.velocity.RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1)));
+                                Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), position, perturbedSpeed, type, 44, 2);
                             }
 
-                            // Find the first WyvernCorpseBody1 segment belonging to this boss
-                            NPC B1 = null;
-                            for (int n = 0; n < Main.maxNPCs; n++)
-                            {
-                                if (Main.npc[n].active && Main.npc[n].type == ModContent.NPCType<WyvernCorpseBody1>() && Main.npc[n].realLife == NPC.whoAmI)
-                                {
-                                    B1 = Main.npc[n];
-                                    break;
-                                }
-                            }
-
-                            if (B1 != null)
-                            {
-                                Projectile OrganBody = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), B1.Center, (B1.Center - player.Center) * 2f, type, 44, 2);
-                            }
                             OrganBurstIntervalTimer = 0;
-                            OrganBurstCount += 1;
+                            OrganBurstCount++;
                         }
                         if (OrganBurstCount >= 10 && NPC.life > NPC.lifeMax * 0.4f)
                         {
@@ -820,6 +819,7 @@ namespace DestroyerTest.Content.Entity
             BombSpawnTimer = 0;
             BombSpawnCount = 0;
             ToothCount = 10;
+            flag1 = false;
         }
 
         public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)

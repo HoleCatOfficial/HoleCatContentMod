@@ -57,7 +57,6 @@ namespace DestroyerTest.Content.Projectiles
 			lightColor = ColorLib.StellarColor;
 			SpriteBatch spriteBatch = Main.spriteBatch;
 			DTUtils Utility = new DTUtils();
-			var projectileTexture = DTAssetLib.Star(1).Value;
 
             Utility.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
             for (int i = 0; i < TrailPositions.Count - 1; i++)
@@ -98,21 +97,9 @@ namespace DestroyerTest.Content.Projectiles
 
 			Utility.DrawGlowOnProj(Projectile, lightColor, true);
 
-			Main.EntitySpriteDraw(
-				projectileTexture,
-				Projectile.Center - Main.screenPosition,
-				null,
-				Color.White,
-				Projectile.rotation,
-				projectileTexture.Size() / 2,
-				Projectile.scale * 0.6f,
-				SpriteEffects.None,
-				0
-			);
-
 			Utility.ReturnToDefaultDrawing(spriteBatch);
 
-			
+			Utility.DrawTextureOnProj(DTAssetLib.Star(1), Projectile, Color.White, true, 0f, 0.35f, 0.35f);
 			return false;
 		}
 
