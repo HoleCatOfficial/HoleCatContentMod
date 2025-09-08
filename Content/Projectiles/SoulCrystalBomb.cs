@@ -50,7 +50,6 @@ namespace DestroyerTest.Content.Projectiles
 
         public void TelegraphLine(SpriteBatch SB)
         {
-            Texture2D telegraphTexture = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/FlowerBombTelegraphLine").Value;
             Vector2 start = Projectile.Center;
 
             if (Projectile.active)
@@ -62,9 +61,9 @@ namespace DestroyerTest.Content.Projectiles
 
                     Vector2 drawPos = start - Main.screenPosition;
                     float length = 3600f;
-                    Vector2 scale = new Vector2(1f, length / telegraphTexture.Height);
+                    Vector2 scale = new Vector2(1f, length / DTAssetLib.Line(1).Value.Height);
 
-                    SB.Draw(telegraphTexture, drawPos, null, ColorLib.Ichor, angle + MathHelper.PiOver2, new Vector2(telegraphTexture.Width / 2f, 0), scale, SpriteEffects.None, 0f);
+                    SB.Draw(DTAssetLib.Line(1).Value, drawPos, null, ColorLib.Ichor, angle + MathHelper.PiOver2, new Vector2(DTAssetLib.Line(1).Value.Width / 2f, 0), scale, SpriteEffects.None, 0f);
                 }
             }
         }
@@ -78,28 +77,26 @@ namespace DestroyerTest.Content.Projectiles
         {
             DTUtils Utility = new DTUtils();
             Utility.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-            Texture2D texture1 = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/GlowCircle").Value;
-            Texture2D texture2 = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/Cyclone2").Value;
 
             Main.spriteBatch.Draw(
-                texture2,
+                DTAssetLib.Cyclone(2).Value,
                 Center - Main.screenPosition,
                 null,
                 ColorLib.Soul,
                 TextureRotationOffset,
-                new Vector2(texture2.Width / 2f, texture2.Height / 2f),
+                new Vector2(DTAssetLib.Cyclone(2).Value.Width / 2f, DTAssetLib.Cyclone(2).Value.Height / 2f),
                 0.2f,
                 SpriteEffects.None,
                 1f
             );
 
             Main.spriteBatch.Draw(
-                texture1,
+                DTAssetLib.FeatheredCircle.Value,
                 Center - Main.screenPosition,
                 null,
                 Color.White,
                 0f,
-                new Vector2(texture1.Width / 2f, texture1.Height / 2f),
+                new Vector2(DTAssetLib.FeatheredCircle.Value.Width / 2f, DTAssetLib.FeatheredCircle.Value.Height / 2f),
                 0.4f,
                 SpriteEffects.None,
                 1f

@@ -93,13 +93,12 @@ namespace DestroyerTest
 
             public override void OnEnterWorld()
             {
-                Main.NewText("CONSTANTINE'S ARSENAL /// [i:DestroyerTest/Crucible] Submit Ideas for new uses for the Alloys here! https://forms.gle/5SgJNiyrBehMkLxZ9", Color.Orange);
+                Main.NewText("IMPORTANT INFO: The Wyvern Corpse Bossfight has been optimized the most it possibly could. It is unfortunately just a laggy boss.", Color.OrangeRed);
                 firstJoin = true;
             }
 
             public override void UpdateDead()
             {
-                // Ensures the flag doesn't reset on respawn
                 firstJoin = false;
             }
         }
