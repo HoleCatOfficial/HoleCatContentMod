@@ -53,29 +53,17 @@ namespace DestroyerTest.Content.Projectiles
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
             Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
-            // Glow effect (Immediate drawing with Additive blending)
-
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 
+            DTUtils Utility = new DTUtils();
 
-            Texture2D glowTexture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/SimpleParticle").Value;
-            Main.EntitySpriteDraw(
-                glowTexture,
-                Projectile.Center - Main.screenPosition,
-                null,
-                lightColor,
-                Projectile.rotation,
-                glowTexture.Size() / 2,
-                Projectile.scale,
-                SpriteEffects.None,
-                0
-            );
+            Utility.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+            Utility.DrawGlowOnProj(Projectile, Color.BlueViolet, false, 0);
 
-            // Draw the base projectile using the default drawing system (Deferred)
+            Utility.ReturnToDefaultDrawing(spriteBatch);
+
             Main.EntitySpriteDraw(
                 projectileTexture,
                 Projectile.Center - Main.screenPosition,
@@ -87,11 +75,6 @@ namespace DestroyerTest.Content.Projectiles
                 SpriteEffects.None,
                 0
             );
-            
-            // Restore the deferred mode (for the next drawing of things)
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-
             return false; // Let the default system handle the base projectile drawing
         }
 

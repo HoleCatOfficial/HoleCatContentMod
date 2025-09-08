@@ -44,8 +44,8 @@ namespace DestroyerTest.Content.Projectiles.ConstitutionBoss
         {
             DTUtils Utility = new DTUtils();
             SpriteBatch spriteBatch = Main.spriteBatch;
-            Texture2D trail = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/Trail3").Value;
-            Texture2D MainTexture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/GlowCircle").Value;
+            var trail = DTAssetLib.Trail(3).Value;
+            var MainTexture = DTAssetLib.FeatheredCircle.Value;
 
             // Calculate a scale based on velocity
 

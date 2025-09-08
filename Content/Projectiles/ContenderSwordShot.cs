@@ -45,13 +45,12 @@ public class ContenderSwordShot : ModProjectile
 			Projectile.tileCollide = false;
 			}
 
-		int trailLength = 10; // Adjust for desired effect
+		int trailLength = 10;
 		public override bool PreDraw(ref Color lightColor)
 		{
 			SpriteBatch spriteBatch = Main.spriteBatch;
 			Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
 
-			// Draw the base projectile using the default drawing system (Deferred)
 			Main.EntitySpriteDraw(
 				projectileTexture,
 				Projectile.Center - Main.screenPosition,
@@ -64,26 +63,24 @@ public class ContenderSwordShot : ModProjectile
 				0
 			);
 
-			// Glow effect (Immediate drawing with Additive blending)
-			spriteBatch.End();
-			spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+			DTUtils Utility = new DTUtils();
 
-			Texture2D glowTexture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/SimpleParticle").Value;
+            Utility.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+
 			Main.EntitySpriteDraw(
-				glowTexture,
+				DTAssetLib.PointGlow.Value,
 				Projectile.Center - Main.screenPosition,
 				null,
 				lightColor,
 				Projectile.rotation,
-				glowTexture.Size() / 2,
+				DTAssetLib.PointGlow.Value.Size() / 2,
 				0.1f * Projectile.scale,
 				SpriteEffects.None,
 				0
 			);
 
-			// Now, render the **low-opacity red TRAIL** (Immediate drawing)
-			Texture2D longtrailTexture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/Trail2").Value;
-			Vector2 trailOrigin = new Vector2(longtrailTexture.Width / 2, longtrailTexture.Height / 2);
+			var Trail = DTAssetLib.Trail(2).Value;
+			Vector2 trailOrigin = new Vector2(Trail.Width / 2, Trail.Height / 2);
 
 			for (int i = 0; i < trailLength && i < Projectile.oldPos.Length; i++)
 			{
@@ -93,18 +90,14 @@ public class ContenderSwordShot : ModProjectile
 
 				Vector2 drawPosition = Projectile.oldPos[i] + (Projectile.Size / 4) - Main.screenPosition;
 				float scaleFactor = 0.1f; // Adjust size of the trail
-				Main.EntitySpriteDraw(longtrailTexture, drawPosition, null, trailColor, Projectile.rotation, trailOrigin, (Projectile.scale * fade) * scaleFactor, SpriteEffects.None, 0);
+				Main.EntitySpriteDraw(Trail, drawPosition, null, trailColor, Projectile.rotation, trailOrigin, (Projectile.scale * fade) * scaleFactor, SpriteEffects.None, 0);
 			}
 
-			// Restore the deferred mode (for the next drawing of things)
-			spriteBatch.End();
-			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+			Utility.ReturnToDefaultDrawing(spriteBatch);
 
-			return false; // Let the default system handle the base projectile drawing
+			return false;
 		}
 
-
-			// Custom AI
 			public override void AI() {
                 Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
 				float maxDetectRadius = 400f; // The maximum radius at which a projectile can detect a target

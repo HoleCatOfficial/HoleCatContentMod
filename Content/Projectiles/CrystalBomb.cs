@@ -37,20 +37,17 @@ namespace DestroyerTest.Content.Projectiles
         public override bool PreDrawExtras()
         {
             SpriteBatch sb = Main.spriteBatch;
+            DTUtils Utility = new DTUtils();
 
-            sb.End(); // End vanilla drawing
-            sb.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-
+            Utility.StartSpriteBatchWithBlending(sb, BlendState.Additive, SpriteSortMode.Immediate);
             TelegraphLine(sb);
-
-            sb.End(); // End additive
-            sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+            Utility.ReturnToDefaultDrawing(sb);
             return false;
         }
 
         public void TelegraphLine(SpriteBatch SB)
         {
-            Texture2D telegraphTexture = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/FlowerBombTelegraphLine").Value;
+            var LineTex = DTAssetLib.Line(1).Value;
             Vector2 start = Projectile.Center;
 
             if (Projectile.active)
@@ -62,9 +59,9 @@ namespace DestroyerTest.Content.Projectiles
 
                     Vector2 drawPos = start - Main.screenPosition;
                     float length = 3600f;
-                    Vector2 scale = new Vector2(1f, length / telegraphTexture.Height);
+                    Vector2 scale = new Vector2(1f, length / LineTex.Height);
 
-                    SB.Draw(telegraphTexture, drawPos, null, ColorLib.Ichor, angle + MathHelper.PiOver2, new Vector2(telegraphTexture.Width / 2f, 0), scale, SpriteEffects.None, 0f);
+                    SB.Draw(LineTex, drawPos, null, ColorLib.Ichor, angle + MathHelper.PiOver2, new Vector2(LineTex.Width / 2f, 0), scale, SpriteEffects.None, 0f);
                 }
             }
         }

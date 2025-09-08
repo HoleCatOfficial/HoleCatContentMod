@@ -12,6 +12,7 @@ using DestroyerTest.Content.Magic;
 using InnoVault.PRT;
 using DestroyerTest.Content.Particles;
 using System.Text;
+using ReLogic.Content;
 
 namespace DestroyerTest.Content.Projectiles.NightmareRose
 {
@@ -48,30 +49,23 @@ namespace DestroyerTest.Content.Projectiles.NightmareRose
         {
             SpriteBatch sb = Main.spriteBatch;
 
-            sb.End(); // End vanilla drawing
-            sb.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, 
-                    DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-
+            DTUtils Utility = new DTUtils();
+            Utility.StartSpriteBatchWithBlending(sb, BlendState.Additive, SpriteSortMode.Immediate);
             DrawSigil(sb);
-
-            sb.End(); // End additive
-            sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp,
-                    DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-
+            Utility.ReturnToDefaultDrawing(sb);
             return false;
         }
 
         public void DrawSigil(SpriteBatch sb)
         {
-            Texture2D glowTexture = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/CorruptSigil").Value;
 
             Main.EntitySpriteDraw(
-                glowTexture,
+                DTAssetLib.CorruptSigil.Value,
                 Projectile.Center - Main.screenPosition,
                 null,
                 ColorLib.CursedFlames,
                 Projectile.rotation,
-                glowTexture.Size() / 2,
+                DTAssetLib.CorruptSigil.Value.Size() / 2,
                 Projectile.scale * 0.4f,
                 SpriteEffects.None,
                 0

@@ -57,8 +57,7 @@ namespace DestroyerTest.Content.Projectiles
 			lightColor = ColorLib.StellarColor;
 			SpriteBatch spriteBatch = Main.spriteBatch;
 			DTUtils Utility = new DTUtils();
-			Texture2D projectileTexture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/StarParticle2").Value;
-			Texture2D pixel = Terraria.GameContent.TextureAssets.MagicPixel.Value;
+			var projectileTexture = DTAssetLib.Star(1).Value;
 
             Utility.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
             for (int i = 0; i < TrailPositions.Count - 1; i++)
@@ -85,32 +84,20 @@ namespace DestroyerTest.Content.Projectiles
 				Color rainbowColor = new Color(r, g, b) * alpha;
 
 				Main.spriteBatch.Draw(
-					pixel,
+					DTAssetLib.Square.Value,
 					start,
 					null,
 					rainbowColor,
 					rotation,
-					new Vector2(pixel.Width / 2, pixel.Height / 2),
+					new Vector2(DTAssetLib.Square.Value.Width / 2, DTAssetLib.Square.Value.Height / 2),
 					new Vector2(length, width),
 					SpriteEffects.None,
 					0f
 				);
 			}
 
-			Texture2D glowTexture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/SimpleParticle").Value;
-			Main.EntitySpriteDraw(
-				glowTexture,
-				Projectile.Center - Main.screenPosition,
-				null,
-				lightColor,
-				Projectile.rotation,
-				glowTexture.Size() / 2,
-				Projectile.scale,
-				SpriteEffects.None,
-				0
-			);
+			Utility.DrawGlowOnProj(Projectile, lightColor, true);
 
-			// Draw the base projectile using the default drawing system (Deferred)
 			Main.EntitySpriteDraw(
 				projectileTexture,
 				Projectile.Center - Main.screenPosition,
@@ -126,7 +113,7 @@ namespace DestroyerTest.Content.Projectiles
 			Utility.ReturnToDefaultDrawing(spriteBatch);
 
 			
-			return false; // Let the default system handle the base projectile drawing
+			return false;
 		}
 
 		public List<Vector2> TrailPositions = new();

@@ -71,6 +71,7 @@ namespace DestroyerTest.Content.Projectiles
             SpiralRotationOffset += 0.45f;
         }
 
+        // This here is a case I'd excuse, since there can only ever be one of these. Who cares about expensive draw calls at that point?
         public override void PostDraw(Color lightColor)
         {
             SpriteBatch spriteBatch = Main.spriteBatch;

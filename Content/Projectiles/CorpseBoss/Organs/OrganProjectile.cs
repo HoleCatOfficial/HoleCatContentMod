@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Xml;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Projectiles.CorpseBoss;
@@ -19,8 +20,6 @@ namespace DestroyerTest.Content.Projectiles.CorpseBoss.Organs
     public abstract class OrganProjectile : ModProjectile
     {
         public override string Texture => "DestroyerTest/Content/Particles/ParticleDrawEntity";
-
-
         public override void SetDefaults()
         {
             Projectile.width = 20; // The width of projectile hitbox
@@ -93,7 +92,7 @@ namespace DestroyerTest.Content.Projectiles.CorpseBoss.Organs
         public override void PostDraw(Color lightColor)
         {
             base.PostDraw(lightColor);
-            DrawTelegraph(Projectile.Center, Main.LocalPlayer.Center, ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/LaserGlow").Value);
+            DrawTelegraph(Projectile.Center, Main.LocalPlayer.Center, DTAssetLib.Line(3).Value);
         }
 
         public override void OnHitPlayer(Player target, Player.HurtInfo info)
@@ -114,15 +113,14 @@ namespace DestroyerTest.Content.Projectiles.CorpseBoss.Organs
             Vector2 direction = end - start;
             float length = direction.Length();
             direction.Normalize();
-            texture ??= ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/LaserGlow").Value;
             SpriteBatch spriteBatch = Main.spriteBatch;
+            DTUtils Utility = new DTUtils();
 
             float rotation = direction.ToRotation();
 
             // Assuming your texture is a chain segment, like 16px long
             float segmentLength = texture.Height * 0.75f; // or Width, depending on the texture orientation
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+            Utility.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
             for (float i = 0; i < length; i += segmentLength)
             {
@@ -135,14 +133,13 @@ namespace DestroyerTest.Content.Projectiles.CorpseBoss.Organs
                     Color.Goldenrod * 0.2f,
                     rotation + MathHelper.PiOver2, // Adjust if your texture points upward
                     new Vector2(texture.Width / 2f, texture.Height / 2f), // Origin at center
-                    1f, // Scale
+                    new Vector2(0.5f, 1f),
                     SpriteEffects.None,
                     0f
                 );
             }
-            
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+
+            Utility.ReturnToDefaultDrawing(spriteBatch);
         }       
     }
 

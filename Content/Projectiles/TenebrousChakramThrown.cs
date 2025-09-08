@@ -140,7 +140,8 @@ namespace DestroyerTest.Content.Projectiles
                     ModContent.ProjectileType<TenebrisStar>(),
                     Projectile.damage,
                     0,
-                    player.whoAmI
+                    player.whoAmI,
+                    ai2: 1
                 );
 
             }

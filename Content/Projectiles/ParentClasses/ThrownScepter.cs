@@ -78,40 +78,22 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 				// Prepare for sprite drawing
 				SpriteBatch spriteBatch = Main.spriteBatch;
 				Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
+				DTUtils Utility = new DTUtils();
 
-				// End previous spriteBatch before starting new ones
-				spriteBatch.End();
-				spriteBatch.Begin(SpriteSortMode.Immediate, null, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+                Utility.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
-				// Draw the main projectile
-				Main.EntitySpriteDraw(projectileTexture, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, projectileTexture.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
-
-				// End the AlphaBlend draw and start the Additive blend for the glow effect
-				spriteBatch.End();
-				spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-
-				// Draw the large colored glow
-				Texture2D glowTexture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/Cyclone1").Value;
                 if (returning)
                 {
-                    Main.EntitySpriteDraw(glowTexture, Projectile.Center - Main.screenPosition, null, lightColor * 0.4f, Projectile.rotation, glowTexture.Size() / 2, 0.1f * Projectile.scale, SpriteEffects.None, 0);
+                    Main.EntitySpriteDraw(DTAssetLib.Cyclone(1).Value, Projectile.Center - Main.screenPosition, null, lightColor * 0.4f, Projectile.rotation, DTAssetLib.Cyclone(1).Value.Size() / 2, 0.1f * Projectile.scale, SpriteEffects.None, 0);
                 }
                 else
                 {
-                    Main.EntitySpriteDraw(glowTexture, Projectile.Center - Main.screenPosition, null, lightColor * 0.4f, Projectile.rotation, glowTexture.Size() / 2, 0.1f * Projectile.scale, SpriteEffects.FlipHorizontally, 0);
+                    Main.EntitySpriteDraw(DTAssetLib.Cyclone(1).Value, Projectile.Center - Main.screenPosition, null, lightColor * 0.4f, Projectile.rotation, DTAssetLib.Cyclone(1).Value.Size() / 2, 0.1f * Projectile.scale, SpriteEffects.FlipHorizontally, 0);
                 }
-
-                spriteBatch.End();
-				spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-
-				// Draw the large colored glow
-				Texture2D glowTexture2 = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/BloomRing").Value;
                     
-                Main.EntitySpriteDraw(glowTexture2, Projectile.Center - Main.screenPosition, null, lightColor * 0.4f, Projectile.rotation, glowTexture2.Size() / 2, 0.4f * Projectile.scale, SpriteEffects.None, 0);
-
-				// Now, render the **low-opacity red TRAIL** (no white trail)
-				Texture2D longtrailTexture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/Trail2").Value; 
-				Vector2 trailOrigin = new Vector2(longtrailTexture.Width / 2, longtrailTexture.Height / 2);
+                Main.EntitySpriteDraw(DTAssetLib.BloomRing(1).Value, Projectile.Center - Main.screenPosition, null, lightColor * 0.4f, Projectile.rotation, DTAssetLib.BloomRing(1).Value.Size() / 2, 0.4f * Projectile.scale, SpriteEffects.None, 0);
+                var Trail = DTAssetLib.Trail(2).Value;
+				Vector2 trailOrigin = new Vector2(Trail.Width / 2, Trail.Height / 2);
 
 				for (int i = 0; i < trailLength && i < Projectile.oldPos.Length; i++)
 					{
@@ -123,14 +105,13 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
 						Vector2 drawPosition = Projectile.oldPos[i] + (Projectile.Size / 2) - Main.screenPosition;
 						float scaleFactor = 0.3f; // Adjust the factor to make it smaller
-						Main.EntitySpriteDraw(longtrailTexture, drawPosition, null, trailColor, Projectile.velocity.ToRotation() + MathHelper.PiOver2, trailOrigin, (Projectile.scale * fade) * scaleFactor, SpriteEffects.None, 0);
+						Main.EntitySpriteDraw(Trail, drawPosition, null, trailColor, Projectile.velocity.ToRotation() + MathHelper.PiOver2, trailOrigin, (Projectile.scale * fade) * scaleFactor, SpriteEffects.None, 0);
 					}
 
-				// Finalize drawing
-				spriteBatch.End();
-				spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+                Utility.ReturnToDefaultDrawing(spriteBatch);
 
-				return false; // Prevents default projectile rendering
+                Main.EntitySpriteDraw(projectileTexture, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, projectileTexture.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
+				return false;
 			}
 
         public override void AI()

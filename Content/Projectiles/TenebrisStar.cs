@@ -64,12 +64,12 @@ namespace DestroyerTest.Content.Projectiles
 
 		public override bool PreDraw(ref Color lightColor)
 		{
+			lightColor = ColorLib.TenebrisGradient;
 			SpriteBatch spriteBatch = Main.spriteBatch;
-			Asset<Texture2D> projectileTexture = TextureAssets.Projectile[Projectile.type];
-			Asset<Texture2D> pixel = TextureAssets.MagicPixel;
+			DTUtils Utility = new DTUtils();
+			var projectileTexture = DTAssetLib.Star(1).Value;
 
-			spriteBatch.End();
-			spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+            Utility.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
 			for (int i = 0; i < TrailPositions.Count - 1; i++)
 			{
@@ -99,21 +99,22 @@ namespace DestroyerTest.Content.Projectiles
 				tenebrisColor *= alpha;
 
 				Main.spriteBatch.Draw(
-					pixel.Value,
+					DTAssetLib.Square.Value,
 					start,
 					null,
 					tenebrisColor,
 					rotation,
-					new Vector2(pixel.Value.Width / 2, pixel.Value.Height / 2),
+					new Vector2(DTAssetLib.Square.Value.Width / 2, DTAssetLib.Square.Value.Height / 2),
 					new Vector2(length, width),
 					SpriteEffects.None,
 					0f
 				);
 			}
 
+			Utility.DrawGlowOnProj(Projectile, lightColor, true);
 
 			Main.EntitySpriteDraw(
-				projectileTexture.Value,
+				projectileTexture,
 				Projectile.Center - Main.screenPosition,
 				null,
 				lightColor,
@@ -124,8 +125,7 @@ namespace DestroyerTest.Content.Projectiles
 				0
 			);
 
-			spriteBatch.End();
-			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+			Utility.ReturnToDefaultDrawing(spriteBatch);
 
 			return false;
 		}

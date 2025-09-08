@@ -43,19 +43,21 @@ public class TitaniumShardSmall : ModProjectile
 			Projectile.tileCollide = true;
 			}
 
-		int trailLength = 10; // Adjust for desired effect
+		public int trailLength = 10;
 		public override bool PreDraw(ref Color lightColor)
 		{
 			lightColor = new Color(29, 61, 72);
+
 			SpriteBatch spriteBatch = Main.spriteBatch;
 			Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
+			DTUtils Utility = new DTUtils();
 
-			// Draw the base projectile using the default drawing system (Deferred)
+            Utility.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 			Main.EntitySpriteDraw(
 				projectileTexture,
 				Projectile.Center - Main.screenPosition,
 				null,
-				Color.White, 
+				lightColor,
 				Projectile.rotation,
 				projectileTexture.Size() / 2,
 				Projectile.scale,
@@ -63,26 +65,10 @@ public class TitaniumShardSmall : ModProjectile
 				0
 			);
 
-			// Glow effect (Immediate drawing with Additive blending)
-			spriteBatch.End();
-			spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+			Utility.DrawGlowOnProj(Projectile, lightColor, false, 0);
 
-			Texture2D glowTexture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/SimpleParticle").Value;
-			Main.EntitySpriteDraw(
-				glowTexture,
-				Projectile.Center - Main.screenPosition,
-				null,
-				lightColor,
-				Projectile.rotation,
-				glowTexture.Size() / 2,
-				Projectile.scale,
-				SpriteEffects.None,
-				0
-			);
-
-			// Now, render the **low-opacity red TRAIL** (Immediate drawing)
-			Texture2D longtrailTexture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/Trail2").Value;
-			Vector2 trailOrigin = new Vector2(longtrailTexture.Width / 2, longtrailTexture.Height / 2);
+			var Trail = DTAssetLib.Trail(2).Value;
+			Vector2 trailOrigin = new Vector2(Trail.Width / 2, Trail.Height / 2);
 
 			for (int i = 0; i < trailLength && i < Projectile.oldPos.Length; i++)
 			{
@@ -90,16 +76,14 @@ public class TitaniumShardSmall : ModProjectile
 				Color trailColor = lightColor * fade * 0.3f;
 				trailColor.A = (byte)(fade * 100); // Transparency blending
 
-				Vector2 drawPosition = Projectile.oldPos[i] + (Projectile.Size / 2) - Main.screenPosition;
+				Vector2 drawPosition = Projectile.oldPos[i] + (Projectile.Size / 4) - Main.screenPosition;
 				float scaleFactor = 0.1f; // Adjust size of the trail
-				Main.EntitySpriteDraw(longtrailTexture, drawPosition, null, trailColor, Projectile.rotation, trailOrigin, (Projectile.scale * fade) * scaleFactor, SpriteEffects.None, 0);
+				Main.EntitySpriteDraw(Trail, drawPosition, null, trailColor, Projectile.rotation, trailOrigin, (Projectile.scale * fade) * scaleFactor, SpriteEffects.None, 0);
 			}
 
-			// Restore the deferred mode (for the next drawing of things)
-			spriteBatch.End();
-			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-
-			return false; // Let the default system handle the base projectile drawing
+			Utility.ReturnToDefaultDrawing(spriteBatch);
+			
+			return false;
 		}
 
 

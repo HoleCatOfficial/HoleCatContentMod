@@ -150,7 +150,7 @@ namespace DestroyerTest.Content.Equips
                         }
                     }
 
-                    if (Main.rand.NextBool(400))
+                    if (Main.rand.NextBool(1200))
                     {
                         SoundEngine.PlaySound(SoundID.Pixie with { Pitch = -2 }, Player.Center);
                     }

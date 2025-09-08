@@ -6,8 +6,11 @@ using DestroyerTest.Content.Buffs;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Mono.Cecil.Cil;
 using rail;
+using ReLogic.Content;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -45,6 +48,61 @@ namespace DestroyerTest.Common
             {
                 Dust.NewDust(new Vector2(itemRect.Width / 2, itemRect.Height / 2), itemRect.Width, itemRect.Height, DustType, 0f, 0f, 100, DustColor, DustScale);
             }
+        }
+
+        /// <summary>
+        /// Easy-to-call method for drawing a point glow over the center of a projectile.
+        /// </summary>
+        /// <param name="projectile"></param>
+        /// <param name="color"></param>
+        /// <param name="RotateWithProj"></param>
+        /// <param name="Rot"></param>
+        public void DrawGlowOnProj(Projectile projectile, Color color, bool RotateWithProj, float Rot = 0)
+        {
+            if (RotateWithProj)
+            {
+                Rot = projectile.rotation;
+            }
+
+            Main.EntitySpriteDraw(
+                DTAssetLib.PointGlow.Value,
+                projectile.Center - Main.screenPosition,
+                null,
+                color,
+                Rot,
+                DTAssetLib.PointGlow.Value.Size() / 2,
+                projectile.scale,
+                SpriteEffects.None,
+                0
+            );
+        }
+
+        /// <summary>
+        /// Easy-to-call method for drawing any texture over the center of a projectile.
+        /// </summary>
+        /// <param name="Tex"></param>
+        /// <param name="projectile"></param>
+        /// <param name="color"></param>
+        /// <param name="RotateWithProj"></param>
+        /// <param name="Rot"></param>
+        public void DrawTextureOnProj(Asset<Texture2D> Tex, Projectile projectile, Color color, bool RotateWithProj, float Rot = 0)
+        {
+            if (RotateWithProj)
+            {
+                Rot = projectile.rotation;
+            }
+
+            Main.EntitySpriteDraw(
+                Tex.Value,
+                projectile.Center - Main.screenPosition,
+                null,
+                color,
+                Rot,
+                Tex.Value.Size() / 2,
+                projectile.scale,
+                SpriteEffects.None,
+                0
+            );
         }
 
         public void StartSpriteBatchWithBlending(SpriteBatch spriteBatch, BlendState blendState, SpriteSortMode ssm)
@@ -155,7 +213,7 @@ namespace DestroyerTest.Common
     }
 
 
-        
+
 
 
 
@@ -249,7 +307,7 @@ namespace DestroyerTest.Common
         /// An All-Purpose Neon Gradient cycling through all the colors of the rainbow.
         /// </summary>
         public static Color RainbowGradient => new Color(Main.DiscoR / 2, (byte)(Main.DiscoG / 1.25f), (byte)(Main.DiscoB / 1.5f));
-        
+
         /// <summary>
         /// The main color used in Soul related things. All other Soul colors derive from this.
         /// </summary>
@@ -317,5 +375,94 @@ namespace DestroyerTest.Common
                     return Color.Lerp(new Color(190, 30, 209), new Color(0, 174, 238), time - 3f);
             }
         }
+    }
+
+    /// <summary>
+    /// The central repository from which most drawn textures in the mod are sourced. If a texture appears more than once in the mod, it will likely have its place here.
+    /// <para/> By sharing assets from AssetLib instead of loading them individually, draw calls can be optimised.
+    /// </summary>
+    public class DTAssetLib
+    {
+        public const string ParticlePath = "DestroyerTest/Content/Particles";
+        public const string ExtrasPath = "DestroyerTest/Content/Extras";
+        //
+        //Practical, Every-Day VFX Textures
+        //
+        public static Asset<Texture2D> Square = TextureAssets.MagicPixel;
+        public static Asset<Texture2D> PointGlow = ModContent.Request<Texture2D>($"{ParticlePath}/SimpleParticle");
+        public static Asset<Texture2D> AreaGlow = ModContent.Request<Texture2D>($"{ParticlePath}/Glow");
+        public static Asset<Texture2D> BloomRing(int Variant)
+        {
+            if (Variant <= 0)
+            {
+                Variant = 1;
+            }
+            return ModContent.Request<Texture2D>($"{ParticlePath}/BloomRing{Variant}");
+        }
+        public static Asset<Texture2D> FeatheredCircle = ModContent.Request<Texture2D>($"{ParticlePath}/GlowCircle");
+        public static Asset<Texture2D> Vingette = ModContent.Request<Texture2D>($"{ExtrasPath}/BigVingette");
+        public static Asset<Texture2D> Sparkle(int Variant)
+        {
+            if (Variant <= 0)
+            {
+                Variant = 1;
+            }
+            return ModContent.Request<Texture2D>($"{ParticlePath}/Shine{Variant}");
+        }
+
+        public static Asset<Texture2D> Star(int Variant)
+        {
+            if (Variant <= 0)
+            {
+                Variant = 1;
+            }
+            return ModContent.Request<Texture2D>($"{ParticlePath}/Star{Variant}");
+        }
+
+        public static Asset<Texture2D> Cyclone(int Variant)
+        {
+            if (Variant <= 0)
+            {
+                Variant = 1;
+            }
+            return ModContent.Request<Texture2D>($"{ParticlePath}/Cyclone{Variant}");
+        }
+        public static Asset<Texture2D> FlameTelegraph = ModContent.Request<Texture2D>($"{ParticlePath}/CursedFlamesTelegraph");
+        public static Asset<Texture2D> ArrowTelegraph = ModContent.Request<Texture2D>($"{ParticlePath}/ArrowTelegraph");
+        public static Asset<Texture2D> Warning = ModContent.Request<Texture2D>($"{ParticlePath}/WarningTriangle");
+        public static Asset<Texture2D> Trail(int Variant)
+        {
+            if (Variant <= 0)
+            {
+                Variant = 1;
+            }
+            return ModContent.Request<Texture2D>($"{ParticlePath}/Trail{Variant}");
+        }
+        public static Asset<Texture2D> Line(int Variant)
+        {
+            if (Variant <= 0)
+            {
+                Variant = 1;
+            }
+            return ModContent.Request<Texture2D>($"{ExtrasPath}/Line{Variant}");
+        }
+        public static Asset<Texture2D> TilableNoise(int Variant)
+        {
+            if (Variant <= 0)
+            {
+                Variant = 1;
+            }
+            return ModContent.Request<Texture2D>($"{ExtrasPath}/Noise{Variant}");
+        }
+        //
+        //Textures with more niche use cases.
+        //
+        public static Asset<Texture2D> NightmareRoseArenaBorder = ModContent.Request<Texture2D>($"{ParticlePath}/NightmareRoseArenaBorder");
+        public static Asset<Texture2D> ConstitutionBeamGlow = ModContent.Request<Texture2D>($"{ExtrasPath}/ConstitutionBeamGlow");
+        public static Asset<Texture2D> GalantineLanceGlow = ModContent.Request<Texture2D>($"{ExtrasPath}/GalantineLanceGlow");
+        public static Asset<Texture2D> TenebrousConstructWingLeft = ModContent.Request<Texture2D>($"{ExtrasPath}/TenebrousConstructWingLeft");
+        public static Asset<Texture2D> TenebrousConstructWingRight = ModContent.Request<Texture2D>($"{ExtrasPath}/TenebrousConstructWingRight");
+        public static Asset<Texture2D> WyvernSoulDash = ModContent.Request<Texture2D>($"{ExtrasPath}/WyvernSoulDash");
+        public static Asset<Texture2D> CorruptSigil = ModContent.Request<Texture2D>($"{ExtrasPath}/CorruptSigil");
     }
 }

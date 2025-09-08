@@ -1,6 +1,8 @@
 using System;
+using DestroyerTest.Common;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.Enums;
@@ -61,6 +63,7 @@ namespace DestroyerTest.Content.Projectiles.NightmareRose
         {
             SpriteBatch sb = Main.spriteBatch;
             Texture2D texture = Terraria.GameContent.TextureAssets.Projectile[Projectile.type].Value;
+            DTUtils Utility = new DTUtils();
 
             // Calculate source rectangle for current frame
             int frameHeight = texture.Height / Main.projFrames[Projectile.type];
@@ -69,22 +72,18 @@ namespace DestroyerTest.Content.Projectiles.NightmareRose
             Vector2 origin = new Vector2(texture.Width / 2f, frameHeight / 2f);
             Vector2 drawPos = Projectile.Center - Main.screenPosition;
 
-            sb.End(); // End vanilla drawing
-            sb.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+            Utility.StartSpriteBatchWithBlending(sb, BlendState.Additive, SpriteSortMode.Immediate);
 
             TelegraphLine(sb);
             sb.Draw(texture, drawPos, sourceRect, Color.White, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0f);
-            
 
-            sb.End(); // End additive
-            sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+            Utility.ReturnToDefaultDrawing(sb);
 
-            return false; // We handled drawing
+            return false;
         }
 
         public void TelegraphLine(SpriteBatch SB)
         {
-            Texture2D telegraphTexture = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/FlowerBombTelegraphLine").Value;
             float totalLength = 2400f;
             Vector2 start = IntialPos;
 
@@ -100,19 +99,19 @@ namespace DestroyerTest.Content.Projectiles.NightmareRose
             if (Projectile.active)
             {
                 Vector2 drawPos = start - Main.screenPosition;
-                float segmentHeight = telegraphTexture.Height;
+                float segmentHeight = DTAssetLib.Line(4).Value.Height;
                 int numSegments = (int)(totalLength / segmentHeight);
 
                 for (int i = 0; i < numSegments; i++)
                 {
                     Vector2 segmentPos = drawPos - new Vector2(0, i * segmentHeight);
                     SB.Draw(
-                        telegraphTexture,
+                        DTAssetLib.Line(4).Value,
                         segmentPos,
                         null,
                         Color.MediumPurple * opacity,
                         0f,
-                        new Vector2(telegraphTexture.Width / 2f, 0f), // origin: middle bottom of each tile
+                        new Vector2(DTAssetLib.Line(4).Value.Width / 2f, 0f), // origin: middle bottom of each tile
                         1f,
                         SpriteEffects.None,
                         0f
