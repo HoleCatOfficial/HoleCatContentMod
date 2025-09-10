@@ -1,10 +1,13 @@
 using System;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Particles;
+using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.Enums;
 using Terraria.GameContent;
@@ -52,7 +55,14 @@ namespace DestroyerTest.Content.Projectiles
             return true;
         }
 
+        public override void OnSpawn(IEntitySource source)
+        {
+            BasePRT Tele = PRTLoader.NewParticle(PRTLoader.GetParticleID<DartTeleLine>(), Projectile.Center, Vector2.Zero, ColorLib.TenebrisGradient, 2f);
+            Tele.Rotation = Projectile.rotation;
+        }
+
         public int WaitTimer = 0;
+        public bool SoundFlag = false;
         public override void AI()
         {
             if (Main.rand.NextBool(3))
@@ -68,8 +78,13 @@ namespace DestroyerTest.Content.Projectiles
 
             if (WaitTimer >= 20)
             {
-                if (Projectile.velocity.Length() < 32)
+                if (Projectile.velocity.Length() < 24)
                 {
+                    if (!SoundFlag)
+                    {
+                        SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/ManaBurst") with { MaxInstances = 0, PitchVariance = 0.3f }, Projectile.Center);
+                        SoundFlag = true;
+                    }
                     Projectile.velocity *= 1.2f;
                 }
             }
@@ -83,6 +98,7 @@ namespace DestroyerTest.Content.Projectiles
 
         public override void OnKill(int timeLeft)
         {
+            SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/StarBurst2") with { MaxInstances = 0, PitchVariance = 0.3f }, Projectile.Center);
             Dust.NewDust(Projectile.Center, Projectile.width, Projectile.height, DustID.TintableDustLighted, Projectile.velocity.X * 0.7f, Projectile.velocity.Y * 0.7f, 0, ColorLib.TenebrisGradient, 1);
         }
 

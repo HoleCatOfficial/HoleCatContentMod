@@ -261,6 +261,7 @@ namespace DestroyerTest.Content.Entity
             Nodes,
             FlameRing,
             Lances,
+            WallDarts,
             KillIdle
         }
 
@@ -287,6 +288,7 @@ namespace DestroyerTest.Content.Entity
         public int MinionFailsafe = 0;
         public bool HasBoosted = false;
         public int SigilTimer = 600;
+        public int DartTimer = 0;
         public int SoulInterval = 0;
         public int SoulSpawnCount = 0;
         public bool HasSpawnedSigil = false;
@@ -437,6 +439,14 @@ namespace DestroyerTest.Content.Entity
             Main.StartRain();
         }
 
+        public void ModifyClouds()
+        {
+            Main main = ModContent.GetInstance<Main>();
+            Main.cloudAlpha = 0.2f;
+            Main.eclipseLight = 1;
+            Main.ColorOfTheSkies = Color.Black;
+        }
+
         public void KillSentry()
         {
             foreach (Projectile p in Main.projectile)
@@ -457,6 +467,7 @@ namespace DestroyerTest.Content.Entity
             NPC.TargetClosest();
             Player player = Main.player[NPC.target];
             DTConfig cfg = ModContent.GetInstance<DTConfig>();
+            
 
             DirectionToPlayerCenter = (player.Center - NPCHead).SafeNormalize(Vector2.UnitY);
 
@@ -495,10 +506,15 @@ namespace DestroyerTest.Content.Entity
                     Border.scale = Main.rand.NextFloat(0.2f, 4.0f);
                 }
 
-                if (Main.masterMode)
+                if (!Main.masterMode && (Main.expertMode || EternityIsActive()))
                 {
-                    ModifyWeather();
+                    ModifyClouds();
                 }
+
+                if (Main.masterMode)
+                    {
+                        ModifyWeather();
+                    }
             }
 
             FlameRingAngleStep = MathHelper.TwoPi / FlameRingVectorCount;
@@ -602,21 +618,25 @@ namespace DestroyerTest.Content.Entity
 
             // Removed unused 'effects' variable.
 
-            if (!Main.dedServ)
+            if (!Main.dedServ && !EternityIsActive())
             {
                 Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/EvilBoss1");
+            }
+            if (!Main.dedServ && EternityIsActive())
+            {
+                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Placeholder3");
             }
 
 
 
             /*
-            if (NPC.Center.DistanceSQ(player.Center) > 40000)
-            {
-                TeleManager(player, ref TeleCircumferencePoint);
-            }
-            */
+                if (NPC.Center.DistanceSQ(player.Center) > 40000)
+                {
+                    TeleManager(player, ref TeleCircumferencePoint);
+                }
+                */
 
-            NPC.velocity = Vector2.Zero;
+                NPC.velocity = Vector2.Zero;
 
             int MinionSpawnType = Main.rand.Next(new int[]
                 {
@@ -723,11 +743,31 @@ namespace DestroyerTest.Content.Entity
                         }
                     }
                     break;
+                case AttackState.WallDarts:
+                    {
+                        if (EternityIsActive())
+                        {
+                            if (DartTimer < 800)
+                            {
+                                DartTimer++;
+                                DartAttack();
+                            }
+                            if (DartTimer >= 800)
+                            {
+                                ResetState();
+                            }
+                        }
+                        else
+                        {
+                            ResetState();
+                        }
+                        break;
+                }
                 case AttackState.FlameRing:
                     {
                         if (EternityIsActive())
                         {
-                            SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/ChargeBreak") with { PitchVariance = 1f, Volume = 3f });
+                            SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/ChargeBreak") with { PitchVariance = 1f });
 
                             for (int i = 0; i < FlameRingVectorCount; i++)
                             {
@@ -749,7 +789,7 @@ namespace DestroyerTest.Content.Entity
                         }
                         else
                         {
-                            SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/ChargeBreak") with { PitchVariance = 1f, Volume = 3f });
+                            SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/Constitution_Jab") with { PitchVariance = 1f, Volume = 3f });
 
                             for (int i = 0; i < FlameRingVectorCount; i++)
                             {
@@ -1096,6 +1136,7 @@ namespace DestroyerTest.Content.Entity
             { AttackState.ArenaDivide, 1.0f },
             { AttackState.Napalm, 1.0f },
             { AttackState.FlameRing, 1.0f },
+            { AttackState.WallDarts, 1.0f },
             { AttackState.Lances, 1.0f },
             { AttackState.CorruptSigil, 1.0f },
             { AttackState.BlossomMine, 1.0f },
@@ -1140,8 +1181,8 @@ namespace DestroyerTest.Content.Entity
                 HasBoosted = false;
                 Divided = false;
                 FlameTimer = 0;
+                DartTimer = 0;
                 FlameStartTimer = 60;
-
                 VileThornCooldown = 0;
                 VileThornCount = 0;
                 MinionSpawnTimer = 0;
@@ -1317,11 +1358,10 @@ namespace DestroyerTest.Content.Entity
             float radius = BorderRad;
             int projectileCount = 6;
             float rotationOffset = (float)(Main.GameUpdateCount % 360) * MathHelper.ToRadians(0.5f);
-            // ^^^ rotates the whole formation over time. You can tweak the 1.5f for rotation speed.
 
-            if (Main.GameUpdateCount % 15 == 0)
+            if (Main.GameUpdateCount % 10 == 0)
             {
-                SoundEngine.PlaySound(SoundID.Item20);
+                SoundEngine.PlaySound(Fire);
 
                 for (int i = 0; i < projectileCount; i++)
                 {
@@ -1352,6 +1392,39 @@ namespace DestroyerTest.Content.Entity
 
                 PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp1>(), NPCHead, Vector2.Zero, ColorLib.CursedFlames, 0.4f);
                 ProjSpawnTimer = 0;
+            }
+        }
+
+        public void DartAttack()
+        {
+            float radius = BorderRad;
+            int projectileCount = 6;
+            float rotationOffset = (float)(Main.GameUpdateCount % 360) * MathHelper.ToRadians(0.5f);
+
+            if (Main.GameUpdateCount % 5 == 0)
+            {
+                SoundEngine.PlaySound(Fire);
+
+                for (int i = 0; i < projectileCount; i++)
+                {
+                    // Get evenly spaced angle with rotation offset
+                    float angle = MathHelper.TwoPi * i / projectileCount + rotationOffset;
+                    Vector2 spawnOffset = radius * angle.ToRotationVector2(); // position on the circle
+                    Vector2 spawnPosition = NPCHead + spawnOffset;
+
+                    Vector2 toOrigin = NPCHead - spawnPosition;
+                    toOrigin = toOrigin.SafeNormalize(Vector2.UnitY);
+
+                    Projectile.NewProjectile(
+                        Entity.GetSource_FromThis(),
+                        spawnPosition,
+                        toOrigin * 2f,
+                        ModContent.ProjectileType<TenebrisDart>(),
+                        20,
+                        2,
+                        Main.LocalPlayer.whoAmI
+                    );
+                }
             }
         }
 
