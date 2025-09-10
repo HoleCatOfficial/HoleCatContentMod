@@ -18,6 +18,7 @@ namespace DestroyerTest.Common
         public override bool InstancePerEntity => true;
         public bool GalantineBurn = false;
         public bool Honey;
+        public bool Mud;
         public bool GalantineHoney = false;
         public bool Brine = false;
         public bool FrostBurn = false;
@@ -76,6 +77,13 @@ namespace DestroyerTest.Common
                         Dust.NewDust(projectile.Center, projectile.Hitbox.Width, projectile.Hitbox.Height, DustID.Water_Snow, 0, 0, 40, default, 1.0f);
                     }
                 }
+                if (Mud)
+                {
+                    if (Main.rand.NextBool(5))
+                    {
+                        Dust.NewDust(projectile.Center, projectile.Hitbox.Width, projectile.Hitbox.Height, DustID.Mud, 0, 0, 40, default, 1.0f);
+                    }
+                }
                 if (Honey)
                 {
                     if (Main.rand.NextBool(5))
@@ -126,6 +134,10 @@ namespace DestroyerTest.Common
                 {
                     target.AddBuff(ModContent.BuffType<Brine>(), 60 * Main.rand.Next(10, 17));
                 }
+                if (Mud)
+                {
+                    target.AddBuff(ModContent.BuffType<Muddy>(), 60 * Main.rand.Next(10, 17));
+                }
             }
         }
 
@@ -152,6 +164,10 @@ namespace DestroyerTest.Common
                 if (Brine)
                 {
                     target.AddBuff(ModContent.BuffType<Brine>(), 60 * Main.rand.Next(10, 17));
+                }
+                if (Mud)
+                {
+                    target.AddBuff(ModContent.BuffType<Muddy>(), 60 * Main.rand.Next(10, 17));
                 }
             }
         }

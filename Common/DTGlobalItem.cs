@@ -17,6 +17,7 @@ using DestroyerTest.Content.RiftArsenal;
 using Terraria.GameContent.ItemDropRules;
 using System.Linq;
 using DestroyerTest.Content.Magic.ScepterSubclass;
+using DestroyerTest.Content.Consumables;
 
 namespace DestroyerTest.Common
 {

@@ -59,66 +59,93 @@ namespace DestroyerTest.Content.Projectiles.NightmareRose
             }
         }
 
+        Vector2 SoulCenter;
         public override bool PreDraw(ref Color lightColor)
         {
             SpriteBatch sb = Main.spriteBatch;
-            Texture2D texture = Terraria.GameContent.TextureAssets.Projectile[Projectile.type].Value;
+            Asset<Texture2D> texture = Terraria.GameContent.TextureAssets.Projectile[Projectile.type];
             DTUtils Utility = new DTUtils();
 
             // Calculate source rectangle for current frame
-            int frameHeight = texture.Height / Main.projFrames[Projectile.type];
-            Rectangle sourceRect = new Rectangle(0, Projectile.frame * frameHeight, texture.Width, frameHeight);
+            int frameHeight = texture.Value.Height / Main.projFrames[Projectile.type];
+            Rectangle sourceRect = new Rectangle(0, Projectile.frame * frameHeight, texture.Value.Width, frameHeight);
 
-            Vector2 origin = new Vector2(texture.Width / 2f, frameHeight / 2f);
+            Vector2 origin = new Vector2(texture.Value.Width / 2f, frameHeight / 2f);
             Vector2 drawPos = Projectile.Center - Main.screenPosition;
 
             Utility.StartSpriteBatchWithBlending(sb, BlendState.Additive, SpriteSortMode.Immediate);
-
-            TelegraphLine(sb);
-            sb.Draw(texture, drawPos, sourceRect, Color.White, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0f);
+            if (HomingTarget == null)
+            {
+                SoulCenter = Projectile.Center;
+            }
+            TelegraphLine(sb, SoulCenter);
+            Utility.DrawGlowOnProj(Projectile, Color.Purple, false, 0f);
+            sb.Draw(texture.Value, drawPos, sourceRect, Color.White, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0f);
 
             Utility.ReturnToDefaultDrawing(sb);
 
             return false;
         }
 
-        public void TelegraphLine(SpriteBatch SB)
+        public void TelegraphLine(SpriteBatch SB, Vector2 soulPos)
         {
-            float totalLength = 2400f;
+            float totalLength = 3600f;
             Vector2 start = IntialPos;
 
-            float opacity = 0f;
-            int totalLifetime = 240; // The total lifetime of the projectile
 
-            // Opacity goes from 1 (255) to 0, then back to 1 over the lifetime
-            float t = Projectile.timeLeft / (float)totalLifetime;
-            // t goes from 1 (spawn) to 0 (death)
-            // Use SmoothStep for smooth fade in/out
-            opacity = 4f * t * (1f - t);
+            float opacity = 0f;
+            if (Projectile.timeLeft > 210)
+            {
+                // fade in
+                float fadeProgress = (240f - Projectile.timeLeft) / 30f; // goes 0 → 1 between 240 and 210
+                opacity = MathHelper.Lerp(0f, 1f, fadeProgress);
+            }
+            else if (Projectile.timeLeft < 30)
+            {
+                // fade out
+                float fadeProgress = (30f - Projectile.timeLeft) / 30f; // goes 0 → 1 between 30 and 0
+                opacity = MathHelper.Lerp(1f, 0f, fadeProgress);
+            }
+            else
+            {
+                // fully visible in between
+                opacity = 1f;
+            }
+
 
             if (Projectile.active)
-            {
-                Vector2 drawPos = start - Main.screenPosition;
-                float segmentHeight = DTAssetLib.Line(4).Value.Height;
-                int numSegments = (int)(totalLength / segmentHeight);
-
-                for (int i = 0; i < numSegments; i++)
                 {
-                    Vector2 segmentPos = drawPos - new Vector2(0, i * segmentHeight);
-                    SB.Draw(
-                        DTAssetLib.Line(4).Value,
-                        segmentPos,
-                        null,
-                        Color.MediumPurple * opacity,
-                        0f,
-                        new Vector2(DTAssetLib.Line(4).Value.Width / 2f, 0f), // origin: middle bottom of each tile
-                        1f,
-                        SpriteEffects.None,
-                        0f
-                    );
+                    // Direction from start to soul
+                    Vector2 dir = soulPos - start;
+                    if (dir != Vector2.Zero)
+                        dir.Normalize();
+
+                    float segmentLength = DTAssetLib.Line(4).Value.Height; // reuse asset’s height as step
+                    int numSegments = (int)(totalLength / segmentLength);
+
+                    float rotation = dir.ToRotation() - MathHelper.PiOver2;
+                    // Pi/2 offset because your texture seems "upward" by default
+
+                    for (int i = 0; i < numSegments; i++)
+                    {
+                        Vector2 segmentPos = start + dir * (i * segmentLength);
+                        Vector2 drawPos = segmentPos - Main.screenPosition;
+
+                        SB.Draw(
+                            DTAssetLib.Line(4).Value,
+                            drawPos,
+                            null,
+                            Color.MediumPurple * opacity,
+                            rotation,
+                            new Vector2(DTAssetLib.Line(4).Value.Width / 2f, 0f), // middle-bottom origin
+                            1f,
+                            SpriteEffects.None,
+                            0f
+                        );
+                    }
                 }
-            }
         }
+
 
 
         public Vector2 IntialPos;
@@ -132,8 +159,11 @@ namespace DestroyerTest.Content.Projectiles.NightmareRose
         public override void AI()
         {
             AnimateProjectile();
+            Dust.NewDustPerfect(Projectile.Center, DustID.DemonTorch, Scale: 1.8f);
 
             float maxDetectRadius = 120f; // The maximum radius at which a projectile can detect a target
+
+            Projectile.rotation = Projectile.velocity.ToRotation() - MathHelper.PiOver2;
 
             // First, we find a homing target if we don't have one
             if (HomingTarget == null)
@@ -155,12 +185,10 @@ namespace DestroyerTest.Content.Projectiles.NightmareRose
             // We only rotate by 3 degrees an update to give it a smooth trajectory. Increase the rotation speed here to make tighter turns
             float length = Projectile.velocity.Length();
             float targetAngle = Projectile.AngleTo(HomingTarget.Center);
-            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.ToRadians(180) + MathHelper.PiOver2;
             Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(30)).ToRotationVector2() * length;
-
-
-
-            Dust.NewDust(Projectile.Center, Projectile.width, Projectile.height, DustID.DemonTorch, 0, 0, 70, default, 1.0f);
+            Projectile.rotation = Projectile.velocity.ToRotation() - MathHelper.PiOver2;
+            
+            
 
         }
 

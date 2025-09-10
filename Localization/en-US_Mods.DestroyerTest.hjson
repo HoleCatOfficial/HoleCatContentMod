@@ -3197,6 +3197,16 @@ Items: {
 		DisplayName: Malevolence Mantra
 		Tooltip: ""
 	}
+
+	ShiningObelisk: {
+		DisplayName: Obelisk of Stolen Light
+		Tooltip: A massive pillar with a basin of plasma at the top. Holding this to the air can dispel certain powerful enemies for a short time.
+	}
+
+	WoodBracelet: {
+		Tooltip: ""
+		DisplayName: Wood Bracelet
+	}
 }
 
 Projectiles: {
@@ -3547,6 +3557,10 @@ Projectiles: {
 	ThunderScepterThrown.DisplayName: Thunder Scepter Thrown
 	EternityBGController.DisplayName: Eternity B G Controller
 	Hellfire.DisplayName: Hellfire
+	BigSoul.DisplayName: Big Soul
+	TormentedSoul2.DisplayName: Tormented Soul2
+	TenebrisLance.DisplayName: Tenebris Lance
+	TenebrisDart.DisplayName: Tenebris Dart
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.
@@ -3796,6 +3810,16 @@ Buffs: {
 		Description: Your scepter has enchanted honey all over it!
 		DisplayName: Scepter Imbue (Galantine Honey)
 	}
+
+	Muddy: {
+		Description: Mods.DestroyerTest.Buffs.Muddy.Description
+		DisplayName: Muddy
+	}
+
+	ScepterImbueMud: {
+		DisplayName: Scepter Imbue Mud
+		Description: Mods.DestroyerTest.Buffs.ScepterImbueMud.Description
+	}
 }
 
 NPCs: {
@@ -3924,6 +3948,7 @@ NPCs: {
 	TenebrisElemental.DisplayName: Tenebris Elemental
 	DarkArchmage.DisplayName: Dark Archmage
 	TenebrousConstruct.DisplayName: Tenebrous Construct
+	CorruptSigil.DisplayName: Corrupt Sigil
 }
 
 Keybinds: {

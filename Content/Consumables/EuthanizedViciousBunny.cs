@@ -1,10 +1,16 @@
 
+using System;
+using System.Collections.Generic;
 using DestroyerTest.Content.Entity;
+using Microsoft.Xna.Framework;
+using ReLogic.Graphics;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.UI.Chat;
 
 namespace DestroyerTest.Content.Consumables
 {
@@ -74,6 +80,46 @@ namespace DestroyerTest.Content.Consumables
 
             return true;
         }
+
+        public override void ModifyTooltips(List<TooltipLine> tooltips)
+        {
+            string customText = "WARNING: THIS FIGHT CAN CAUSE MAJOR LAG SPIKES EVEN ON THE LOWEST SETTINGS. I HAVE DONE ALL THAT I CAN.";
+
+            TooltipLine line = new TooltipLine(Mod, "CustomTooltip", customText)
+            {
+                OverrideColor = Color.DarkSlateGray
+            };
+            tooltips.Add(line);
+        }
+
+
+        public override bool PreDrawTooltipLine(DrawableTooltipLine line, ref int yOffset)
+        {
+            if (line.Name == "CustomTooltip" && line.Mod == Mod.Name)
+            {
+                // Smoothly interpolate between stroke and text colors using sine wave
+                float lerpAmount = (float)(0.5 * (1 + Math.Sin(Main.GlobalTimeWrappedHourly * 2f * Math.PI)));
+                Color strokeColor = Color.Lerp(Color.Red, Color.OrangeRed, lerpAmount);
+                Color textColor = Color.Lerp(Color.Black, Color.DarkSlateGray, lerpAmount);
+
+                // Define the font and position
+                DynamicSpriteFont font = FontAssets.MouseText.Value;
+                Vector2 position = new Vector2(line.X, line.Y);
+                for (int i = -1; i <= 1; i++)
+                {
+                    for (int j = -1; j <= 1; j++)
+                    {
+                        if (i == 0 && j == 0) continue;
+                        Vector2 offsetPosition = position + new Vector2(i, j);
+                        ChatManager.DrawColorCodedString(Main.spriteBatch, font, line.Text, offsetPosition, strokeColor, 0f, Vector2.Zero, Vector2.One);
+                    }
+                }
+                ChatManager.DrawColorCodedString(Main.spriteBatch, font, line.Text, position, textColor, 0f, Vector2.Zero, Vector2.One);
+                return false;
+            }
+            return true;
+        }
+
 
     }
     
