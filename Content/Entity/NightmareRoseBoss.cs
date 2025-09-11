@@ -618,13 +618,9 @@ namespace DestroyerTest.Content.Entity
 
             // Removed unused 'effects' variable.
 
-            if (!Main.dedServ && !EternityIsActive())
+            if (!Main.dedServ)
             {
                 Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/EvilBoss1");
-            }
-            if (!Main.dedServ && EternityIsActive())
-            {
-                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Placeholder3");
             }
 
 
@@ -720,7 +716,7 @@ namespace DestroyerTest.Content.Entity
                                 if (FlameInterval >= 10)
                                 {
                                     SoundEngine.PlaySound(Fire);
-                                    Projectile.NewProjectile(Entity.GetSource_FromThis(), NPCHead, velocity * 20f, ModContent.ProjectileType<CursedFlameProj>(), 50, 0);
+                                    Projectile.NewProjectile(Entity.GetSource_FromThis(), NPCHead, velocity * 20f, ModContent.ProjectileType<CursedFlameProj>(), 25, 0);
                                     FlameInterval = 0;
                                 }
                             }
@@ -815,7 +811,7 @@ namespace DestroyerTest.Content.Entity
                     {
                         if (EternityIsActive())
                         {
-                            int numProjectiles = 6;
+                            int numProjectiles = 10;
                             float rotationStep = MathHelper.TwoPi / numProjectiles;
 
                             SoundEngine.PlaySound(SoundID.Item14, NPC.Center);
@@ -827,7 +823,7 @@ namespace DestroyerTest.Content.Entity
                                     NPCHead,
                                     velocity,
                                     ModContent.ProjectileType<TenebrisLance>(),
-                                    40,
+                                    20,
                                     6
                                 );
                             }
@@ -871,7 +867,7 @@ namespace DestroyerTest.Content.Entity
                                         NPCHead,
                                         new Vector2(Main.rand.NextFloat(-5, 6), -15),
                                         ModContent.ProjectileType<CursedFlameNapalm>(),
-                                        40,
+                                        30,
                                         2
                                     );
                                 proj.tileCollide = true;
@@ -969,7 +965,7 @@ namespace DestroyerTest.Content.Entity
                                 {
                                     float rot = angle + MathHelper.Pi * f; // 180° apart
                                     Vector2 dir = rot.ToRotationVector2();
-                                    Projectile.NewProjectile(Entity.GetSource_FromAI(), NPCHead, dir * 5f, ModContent.ProjectileType<BigSoul>(), 40, 7);
+                                    Projectile.NewProjectile(Entity.GetSource_FromAI(), NPCHead, dir * 5f, ModContent.ProjectileType<BigSoul>(), 25, 7);
                                 }
                             }
                         }
@@ -1075,7 +1071,7 @@ namespace DestroyerTest.Content.Entity
                         }
                         if (DeathIdleTimer <= 0)
                         {
-                            Projectile.NewProjectile(Entity.GetSource_FromThis(), NPCHead, Vector2.Zero, ModContent.ProjectileType<SoulExplosion>(), 600, 18);
+                            Projectile.NewProjectile(Entity.GetSource_FromThis(), NPCHead, Vector2.Zero, ModContent.ProjectileType<SoulExplosion>(), 200, 18);
                             if (cfg.EnableDebugMessages)
                             {
                                 Mod.Logger.Info($"Attempted Kill. Death Timer: {DeathIdleTimer}");
@@ -1231,7 +1227,7 @@ namespace DestroyerTest.Content.Entity
 
         public void ArenaDivision()
         {
-            Projectile Divider1 = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), NPCHead, Vector2.Zero, ModContent.ProjectileType<CursedFlameWallVertical>(), 60, 3);
+            Projectile Divider1 = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), NPCHead, Vector2.Zero, ModContent.ProjectileType<CursedFlameWallVertical>(), 30, 3);
 
             Divider1.timeLeft = 1200;
         }
@@ -1254,7 +1250,7 @@ namespace DestroyerTest.Content.Entity
                 Vector2 targetPos = NPCHead + Main.rand.NextVector2CircularEdge(BorderRad, BorderRad);
                 Vector2 direction = (targetPos - spawnPos).SafeNormalize(Vector2.Zero); // SafeNormalize prevents division by zero
 
-                Projectile SB = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), spawnPos, direction * 6, ModContent.ProjectileType<SoulCrystalBomb>(), 50, 1);
+                Projectile SB = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), spawnPos, direction * 6, ModContent.ProjectileType<SoulCrystalBomb>(), 20, 1);
                 SB.timeLeft = 60;
             }
         }
@@ -1297,16 +1293,16 @@ namespace DestroyerTest.Content.Entity
             {
                 for (int a = 0; a < 10; a++)
                 {
-                    Vector2 SpawnPoint = new Vector2(NPC.Center.X + Main.rand.Next(-BorderRad, BorderRad), NPC.Center.Y + 600);
-                    Projectile.NewProjectile(Entity.GetSource_FromThis(), SpawnPoint, new Vector2(0, -8), ModContent.ProjectileType<TormentedSoul>(), 20, 2);
+                    Vector2 SpawnPoint = new Vector2(NPC.Center.X + Main.rand.Next(-BorderRad, BorderRad), NPC.Center.Y + 1800);
+                    Projectile.NewProjectile(Entity.GetSource_FromThis(), SpawnPoint, new Vector2(0, -8), ModContent.ProjectileType<TormentedSoul>(), 15, 2);
                 }
             }
             if (EternityIsActive())
             {
                 for (int a = 0; a < 5; a++)
                 {
-                    Vector2 SpawnPoint = new Vector2(NPC.Center.X + Main.rand.Next(-BorderRad, BorderRad), NPC.Center.Y + 600);
-                    Projectile.NewProjectile(Entity.GetSource_FromThis(), SpawnPoint, new Vector2(0, -8), ModContent.ProjectileType<TormentedSoul>(), 20, 2);
+                    Vector2 SpawnPoint = new Vector2(NPC.Center.X + Main.rand.Next(-BorderRad, BorderRad), NPC.Center.Y + 1800);
+                    Projectile.NewProjectile(Entity.GetSource_FromThis(), SpawnPoint, new Vector2(0, -16), ModContent.ProjectileType<TormentedSoul>(), 15, 2);
                 }
                 for (int a = 0; a < 5; a++)
                 {
@@ -1324,7 +1320,7 @@ namespace DestroyerTest.Content.Entity
                         SpawnPoint = new Vector2(NPC.Center.X - 1800, NPC.Center.Y + Main.rand.Next(-BorderRad, BorderRad));
                     }
                     
-                    Projectile.NewProjectile(Entity.GetSource_FromThis(), SpawnPoint, MoveDir, ModContent.ProjectileType<TormentedSoul>(), 20, 2);
+                    Projectile.NewProjectile(Entity.GetSource_FromThis(), SpawnPoint, MoveDir, ModContent.ProjectileType<TormentedSoul>(), 15, 2);
                 }
             }
         }
@@ -1358,6 +1354,7 @@ namespace DestroyerTest.Content.Entity
             float radius = BorderRad;
             int projectileCount = 6;
             float rotationOffset = (float)(Main.GameUpdateCount % 360) * MathHelper.ToRadians(0.5f);
+            Projectile flame = null;
 
             if (Main.GameUpdateCount % 10 == 0)
             {
@@ -1373,37 +1370,37 @@ namespace DestroyerTest.Content.Entity
                     Vector2 toOrigin = NPCHead - spawnPosition;
                     toOrigin = toOrigin.SafeNormalize(Vector2.UnitY);
 
-                    Projectile flame = Projectile.NewProjectileDirect(
+                    flame = Projectile.NewProjectileDirect(
                         Entity.GetSource_FromThis(),
                         spawnPosition,
                         toOrigin * 20f,
                         ModContent.ProjectileType<CursedFlameProj>(),
-                        40,
+                        30,
                         2,
                         Main.LocalPlayer.whoAmI
                     );
                     flame.timeLeft = 60;
 
-                    if (flame.Center.Distance(NPCHead) <= 100)
-                    {
-                        flame.Kill();
-                    }
+
                 }
 
                 PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp1>(), NPCHead, Vector2.Zero, ColorLib.CursedFlames, 0.4f);
-                ProjSpawnTimer = 0;
             }
+            if (flame != null && flame.Center == NPCHead)
+                {
+                    flame.Kill();
+                }
         }
 
         public void DartAttack()
         {
             float radius = BorderRad;
-            int projectileCount = 6;
+            int projectileCount = 4;
             float rotationOffset = (float)(Main.GameUpdateCount % 360) * MathHelper.ToRadians(0.5f);
+            Projectile Dart = null;
 
             if (Main.GameUpdateCount % 5 == 0)
             {
-                SoundEngine.PlaySound(Fire);
 
                 for (int i = 0; i < projectileCount; i++)
                 {
@@ -1415,14 +1412,37 @@ namespace DestroyerTest.Content.Entity
                     Vector2 toOrigin = NPCHead - spawnPosition;
                     toOrigin = toOrigin.SafeNormalize(Vector2.UnitY);
 
-                    Projectile.NewProjectile(
+                    Dart = Projectile.NewProjectileDirect(
                         Entity.GetSource_FromThis(),
                         spawnPosition,
                         toOrigin * 2f,
                         ModContent.ProjectileType<TenebrisDart>(),
+                        10,
+                        2
+                    );
+                }
+            }
+            if (Dart != null && Dart.Center == NPCHead)
+            {
+                Dart.Kill();
+            }
+
+            if (Main.GameUpdateCount % 240 == 0)
+            {
+                int numProjectiles = 6;
+                float rotationStep = MathHelper.TwoPi / numProjectiles;
+
+                SoundEngine.PlaySound(SoundID.Item14, NPC.Center);
+                for (int i = 0; i < numProjectiles; i++)
+                {
+                    Vector2 velocity = new Vector2(12f, 0f).RotatedBy(rotationStep * i);
+                    Projectile.NewProjectile(
+                        Entity.GetSource_FromThis(),
+                        NPCHead,
+                        velocity,
+                        ModContent.ProjectileType<TenebrisLance>(),
                         20,
-                        2,
-                        Main.LocalPlayer.whoAmI
+                        6
                     );
                 }
             }

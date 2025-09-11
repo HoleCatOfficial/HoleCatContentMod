@@ -3558,9 +3558,10 @@ Projectiles: {
 	EternityBGController.DisplayName: Eternity B G Controller
 	Hellfire.DisplayName: Hellfire
 	BigSoul.DisplayName: Big Soul
-	TormentedSoul2.DisplayName: Tormented Soul2
+	TormentedSoul2.DisplayName: Tormented Soul
 	TenebrisLance.DisplayName: Tenebris Lance
 	TenebrisDart.DisplayName: Tenebris Dart
+	DarkEnergyOrb.DisplayName: Dark Energy Orb
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.

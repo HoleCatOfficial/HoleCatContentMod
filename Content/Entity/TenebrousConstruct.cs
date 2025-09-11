@@ -168,14 +168,17 @@ namespace DestroyerTest.Content.Entity
         public enum State
         {
             IdleChase,
+            DartCross,
             Stunned,
-            Lance
+            RetaliatoryLance
         }
 
         public State CurrentState;
         public bool Stunned = false;
         public int StunTimer = 1200;
         public bool ShootFlag1 = false;
+        public int OrbCount = 0;
+        public int MinimumIdle = 600;
         public override void AI()
         {
             NPC.TargetClosest(faceTarget: true);
@@ -251,6 +254,56 @@ namespace DestroyerTest.Content.Entity
                                 StunTimer = 1200;
                                 NPC.netUpdate = true;
                             }
+                            if (MinimumIdle > 0)
+                            {
+                                MinimumIdle--;
+                            }
+                            if (MinimumIdle <= 0)
+                            {
+                                if (Main.rand.NextBool(600))
+                                {
+                                    CurrentState = State.DartCross;
+                                    MinimumIdle = 600;
+                                }
+                            }
+                        }
+                        break;
+                    }
+                case State.DartCross:
+                    {
+                        NPC.velocity = Vector2.Lerp(NPC.velocity, direction * 3f, 0.05f);
+                        WingXScale = 0.5f + 0.3f * (float)Math.Sin(Main.GameUpdateCount * 0.05f);
+                        if (player.HeldItem.type == ModContent.ItemType<ShiningObelisk>() && player.itemAnimation == player.itemAnimationMax - 10)
+                            {
+                                ScreenFlashSystem.FlashIntensity = 1.0f;
+                                SoundEngine.PlaySound(Stun, NPC.Center);
+                                CurrentState = State.Stunned;
+                                StunTimer = 1200;
+                                NPC.netUpdate = true;
+                            }
+                        if (Main.GameUpdateCount % 240 == 0)
+                        {
+                            int numProjectiles = 3;
+                            float rotationStep = MathHelper.TwoPi / numProjectiles;
+
+                            for (int i = 0; i < numProjectiles; i++)
+                            {
+                                Vector2 velocity = new Vector2(12f, 0f).RotatedBy(rotationStep * i);
+                                Projectile.NewProjectile(
+                                    Entity.GetSource_FromThis(),
+                                    NPC.Center,
+                                    velocity,
+                                    ModContent.ProjectileType<DarkEnergyOrb>(),
+                                    16,
+                                    3
+                                );
+                            }
+                            OrbCount++;
+                        }
+                        if (OrbCount >= 10)
+                        {
+                            CurrentState = State.IdleChase;
+                            OrbCount = 0;
                         }
                         break;
                     }
@@ -269,14 +322,14 @@ namespace DestroyerTest.Content.Entity
 
                             if (StunTimer <= 0)
                             {
-                                CurrentState = State.Lance;
+                                CurrentState = State.RetaliatoryLance;
                                 StunTimer = 1200;
                                 NPC.netUpdate = true;
                             }
                         }
                         break;
                     }
-                case State.Lance:
+                case State.RetaliatoryLance:
                     {
                         {
                             if (!ShootFlag1)

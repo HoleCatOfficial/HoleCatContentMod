@@ -85,7 +85,7 @@ namespace DestroyerTest.Content.Projectiles.NightmareRose
 
         public override void OnKill(int timeLeft)
         {
-            int numProjectiles = 24;
+            int numProjectiles = 20;
             float rotationStep = MathHelper.TwoPi / numProjectiles;
 
             SoundEngine.PlaySound(SoundID.Item14, Projectile.Center);

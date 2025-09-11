@@ -42,10 +42,19 @@ namespace DestroyerTest.Content.Projectiles
         public override bool PreDraw(ref Color lightColor)
         {
             lightColor = ColorLib.TenebrisGradient;
+            DTUtils Utility = new DTUtils();
+            SpriteBatch sb = Main.spriteBatch;
 
             Texture2D texture = TextureAssets.Projectile[Type].Value;
 
             Vector2 drawOrigin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
+
+            Utility.StartSpriteBatchWithBlending(sb, BlendState.Additive, SpriteSortMode.Immediate);
+            if (WaitTimer < 20)
+            {
+                Main.EntitySpriteDraw(DTAssetLib.FadeLine.Value, Projectile.Center - Main.screenPosition, null, ColorLib.TenebrisGradient, Projectile.rotation + MathHelper.PiOver2, new Vector2(DTAssetLib.FadeLine.Value.Width / 2, DTAssetLib.FadeLine.Value.Height / 2), 2, SpriteEffects.None, 0);
+            }
+            Utility.ReturnToDefaultDrawing(sb);
             for (int k = Projectile.oldPos.Length - 1; k > 0; k--)
             {
                 Vector2 drawPos = (Projectile.oldPos[k] - Main.screenPosition) + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
@@ -57,8 +66,7 @@ namespace DestroyerTest.Content.Projectiles
 
         public override void OnSpawn(IEntitySource source)
         {
-            BasePRT Tele = PRTLoader.NewParticle(PRTLoader.GetParticleID<DartTeleLine>(), Projectile.Center, Vector2.Zero, ColorLib.TenebrisGradient, 2f);
-            Tele.Rotation = Projectile.rotation;
+            
         }
 
         public int WaitTimer = 0;
@@ -66,9 +74,9 @@ namespace DestroyerTest.Content.Projectiles
         public override void AI()
         {
             if (Main.rand.NextBool(3))
-            {
-                Dust.NewDustPerfect(Projectile.Center, DustID.TintableDustLighted, newColor: ColorLib.TenebrisGradient, Scale: 1.8f, Velocity: Vector2.Zero);
-            }
+                {
+                    Dust.NewDustPerfect(Projectile.Center, DustID.TintableDustLighted, newColor: ColorLib.TenebrisGradient, Scale: 1.8f, Velocity: Vector2.Zero);
+                }
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
 
             if (WaitTimer < 20)
@@ -78,11 +86,11 @@ namespace DestroyerTest.Content.Projectiles
 
             if (WaitTimer >= 20)
             {
-                if (Projectile.velocity.Length() < 24)
+                if (Projectile.velocity.Length() < 16)
                 {
                     if (!SoundFlag)
                     {
-                        SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/ManaBurst") with { MaxInstances = 0, PitchVariance = 0.3f }, Projectile.Center);
+                        SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/ManaBurst") with { MaxInstances = 0, PitchVariance = 0.3f, Volume = 0.45f }, Projectile.Center);
                         SoundFlag = true;
                     }
                     Projectile.velocity *= 1.2f;

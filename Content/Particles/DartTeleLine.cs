@@ -14,12 +14,13 @@ namespace DestroyerTest.Content.Particles
         public override void SetProperty()
         {
             PRTDrawMode = PRTDrawModeEnum.AdditiveBlend;
-            Lifetime = MaxLifetime;  
+            Lifetime = MaxLifetime; 
+            Rotation = Rot; 
         }
-
+        public float Rot = 0f;
         public override void AI()
         {
-            Rotation = Rotation;
+            Rotation = Rot;
             if (LifetimeCompletion > 0.3f)
             {
                 Color *= 0.9f;

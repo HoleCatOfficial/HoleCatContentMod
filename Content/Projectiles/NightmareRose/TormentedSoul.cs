@@ -41,7 +41,7 @@ namespace DestroyerTest.Content.Projectiles.NightmareRose
             Projectile.hostile = true; // Can the projectile deal damage to the player?
             Projectile.ignoreWater = true; // Does the projectile's speed be influenced by water?
             Projectile.light = 1f; // How much light emit around the projectile
-            Projectile.timeLeft = 240; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
+            Projectile.timeLeft = 300; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
             Projectile.tileCollide = false;
             Projectile.penetrate = 1;
         }
@@ -97,12 +97,11 @@ namespace DestroyerTest.Content.Projectiles.NightmareRose
             if (Projectile.timeLeft > 210)
             {
                 // fade in
-                float fadeProgress = (240f - Projectile.timeLeft) / 30f; // goes 0 → 1 between 240 and 210
+                float fadeProgress = (270f - Projectile.timeLeft) / 30f;
                 opacity = MathHelper.Lerp(0f, 1f, fadeProgress);
             }
             else if (Projectile.timeLeft < 30)
             {
-                // fade out
                 float fadeProgress = (30f - Projectile.timeLeft) / 30f; // goes 0 → 1 between 30 and 0
                 opacity = MathHelper.Lerp(1f, 0f, fadeProgress);
             }
