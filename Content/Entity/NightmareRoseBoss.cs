@@ -247,6 +247,7 @@ namespace DestroyerTest.Content.Entity
 
         public enum AttackState
         {
+            SpawnIdle,
             Idle,
             CursedFlames,
             Napalm,
@@ -309,6 +310,10 @@ namespace DestroyerTest.Content.Entity
         public int MineType = -1;
         public int DeathIdleTimer = 120;
         public bool DeathSoundFlag = false;
+        public int SpawnIdleTimer = 60 * 16;
+        public int SpawnIdleRoarFlag = 60 * 8;
+        public byte SpawnDarknessAlpha = 0;
+        public int SpawnCount = 0;
 
         public override void SendExtraAI(BinaryWriter writer)
         {
@@ -353,7 +358,7 @@ namespace DestroyerTest.Content.Entity
         public override void OnSpawn(IEntitySource source)
         {
             BorderActive = true;
-            currentState = AttackState.Idle;
+            currentState = AttackState.SpawnIdle;
             NPCHead = NPC.Center + new Vector2(0, -60);
             int[] types = new int[]
                 {
@@ -506,12 +511,12 @@ namespace DestroyerTest.Content.Entity
                     Border.scale = Main.rand.NextFloat(0.2f, 4.0f);
                 }
 
-                if (!Main.masterMode && (Main.expertMode || EternityIsActive()))
+                if (!Main.masterMode && (Main.expertMode || EternityIsActive())  && currentState != AttackState.SpawnIdle)
                 {
                     ModifyClouds();
                 }
 
-                if (Main.masterMode)
+                if (Main.masterMode  && currentState != AttackState.SpawnIdle)
                     {
                         ModifyWeather();
                     }
@@ -616,23 +621,21 @@ namespace DestroyerTest.Content.Entity
 
             PlayerCenter = player.Center;
 
-            // Removed unused 'effects' variable.
 
-            if (!Main.dedServ)
+            if (!Main.dedServ && currentState == AttackState.SpawnIdle)
+            {
+                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/RiftEmptiness");
+            }
+            if (!Main.dedServ && !EternityIsActive() && currentState != AttackState.SpawnIdle)
             {
                 Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/EvilBoss1");
             }
+            if (!Main.dedServ && EternityIsActive() && currentState != AttackState.SpawnIdle)
+            {
+                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Placeholder3");
+            }
 
-
-
-            /*
-                if (NPC.Center.DistanceSQ(player.Center) > 40000)
-                {
-                    TeleManager(player, ref TeleCircumferencePoint);
-                }
-                */
-
-                NPC.velocity = Vector2.Zero;
+            NPC.velocity = Vector2.Zero;
 
             int MinionSpawnType = Main.rand.Next(new int[]
                 {
@@ -650,6 +653,30 @@ namespace DestroyerTest.Content.Entity
 
             switch (currentState)
             {
+                case AttackState.SpawnIdle:
+                    {
+                        
+                        if (SpawnCount <= 0)
+                        {
+                            SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/RoseSpawnIdle"));
+                        }
+                        SpawnCount++;
+                        if (SpawnCount < SpawnIdleRoarFlag)
+                        {
+                            SpawnDarknessAlpha = (byte)MathHelper.Clamp(
+                                255f * (1f - (SpawnIdleTimer / 120f)),
+                                0f,
+                                255f
+                            );
+                        }
+                        if (SpawnCount >= SpawnIdleRoarFlag)
+                        {
+                            SpawnDarknessAlpha = 0;
+                            currentState = AttackState.Idle;
+                            SpawnCount = 0;
+                        }
+                        break;
+                    }
                 case AttackState.Idle:
                     if (NPC.type == ModContent.NPCType<NightmareRoseBoss>())
                     {
@@ -965,7 +992,7 @@ namespace DestroyerTest.Content.Entity
                                 {
                                     float rot = angle + MathHelper.Pi * f; // 180° apart
                                     Vector2 dir = rot.ToRotationVector2();
-                                    Projectile.NewProjectile(Entity.GetSource_FromAI(), NPCHead, dir * 5f, ModContent.ProjectileType<BigSoul>(), 25, 7);
+                                    Projectile.NewProjectile(Entity.GetSource_FromAI(), NPCHead, dir * 6f, ModContent.ProjectileType<BigSoul>(), 25, 7);
                                 }
                             }
                         }
@@ -1116,6 +1143,11 @@ namespace DestroyerTest.Content.Entity
             if (currentState == AttackState.KillIdle)
             {
                 Main.EntitySpriteDraw(White.Value, NPC.Center - Main.screenPosition, null, DTColorUtils.WithAlpha(Color.White, OverlayAlpha), 0f, new Vector2(White.Value.Width / 2, White.Value.Height / 2), 1f, SpriteEffects.None, 0);
+            }
+
+            if (currentState == AttackState.SpawnIdle)
+            {
+                Main.EntitySpriteDraw(TextureAssets.MagicPixel.Value, Main.screenPosition + new Vector2(Main.screenWidth / 2, Main.screenHeight / 2), null, DTColorUtils.WithAlpha(Color.Black, SpawnDarknessAlpha), 0f, new Vector2(White.Value.Width / 2, White.Value.Height / 2), 5000f, SpriteEffects.None, 0);
             }
 
         }

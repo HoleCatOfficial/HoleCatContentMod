@@ -74,9 +74,9 @@ namespace DestroyerTest.Content.Projectiles
         public override void AI()
         {
             if (Main.rand.NextBool(3))
-                {
-                    Dust.NewDustPerfect(Projectile.Center, DustID.TintableDustLighted, newColor: ColorLib.TenebrisGradient, Scale: 1.8f, Velocity: Vector2.Zero);
-                }
+            {
+                Dust.NewDustPerfect(Projectile.Center, DustID.TintableDustLighted, newColor: ColorLib.TenebrisGradient, Scale: 1.8f, Velocity: Vector2.Zero);
+            }
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
 
             if (WaitTimer < 20)
@@ -90,7 +90,7 @@ namespace DestroyerTest.Content.Projectiles
                 {
                     if (!SoundFlag)
                     {
-                        SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/ManaBurst") with { MaxInstances = 0, PitchVariance = 0.3f, Volume = 0.45f }, Projectile.Center);
+                        SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/ManaBurst") with { MaxInstances = 0, PitchVariance = 0.3f, Volume = 0.15f }, Projectile.Center);
                         SoundFlag = true;
                     }
                     Projectile.velocity *= 1.2f;
@@ -106,7 +106,7 @@ namespace DestroyerTest.Content.Projectiles
 
         public override void OnKill(int timeLeft)
         {
-            SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/StarBurst2") with { MaxInstances = 0, PitchVariance = 0.3f }, Projectile.Center);
+            SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/StarBurst2") with { MaxInstances = 0, PitchVariance = 0.3f, Volume = 0.35f }, Projectile.Center);
             Dust.NewDust(Projectile.Center, Projectile.width, Projectile.height, DustID.TintableDustLighted, Projectile.velocity.X * 0.7f, Projectile.velocity.Y * 0.7f, 0, ColorLib.TenebrisGradient, 1);
         }
 

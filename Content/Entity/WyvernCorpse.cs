@@ -153,9 +153,31 @@ namespace DestroyerTest.Content.Entity
             return new bool?();
         }
 
+        public static bool EternityIsActive()
+        {
+            Mod FargosCompat = ModLoader.GetMod("FranciumMultiCrossMod");
+            if (FargosCompat != null)
+            {
+                object result = FargosCompat.Call("CheckEternity");
+                if (result is bool enabled)
+                {
+                    if (enabled)
+                        return true;
+                    else
+                        Main.NewText("Fargos Crossmod found but Eternity not detected.");
+                        return false;
+                }
+            }
+            else
+            {
+                Main.NewText("Fargos Crossmod not found.");
+            }
+            return false;
+        }
+
         // Multiplayer-synced fields
         public attackType CurrentAttack = attackType.Follow;
-
+        public bool SpawnFlag = false;
         public int FollowTime = 0;
         public bool IsDashing = false;
         public int DashCount = 0;
@@ -165,6 +187,7 @@ namespace DestroyerTest.Content.Entity
         public float circleradius = 800f;
         public float circlerotspeed = 0.05f;
         public int CircleTime = 0;
+        public int CircleLanceCount = 0;
         public int OrganBurstIntervalTimer = 0;
         public int OrganBurstCount = 0;
         public bool HasSummoned40PercentMinions = false;
@@ -378,45 +401,54 @@ namespace DestroyerTest.Content.Entity
 
 
 
-            if (Main.netMode != NetmodeID.MultiplayerClient)
+            if (Main.netMode != NetmodeID.MultiplayerClient && SpawnFlag == false)
             {
                 if (NPC.ai[0] == 0f)
                 {
                     NPC.ai[2] = NPC.whoAmI;
                     NPC.realLife = NPC.whoAmI;
+
                     int num96 = NPC.whoAmI;
                     for (int num97 = 0; num97 < 20; num97++)
                     {
                         int WyvBodyInt = ModContent.NPCType<WyvernCorpseBody1>();
-                        if (num97 == 4 || num97 == 16) WyvBodyInt = ModContent.NPCType<WyvernCorpseLegs>();
-                        else
-                        {
-                            if (num97 == 17) WyvBodyInt = ModContent.NPCType<WyvernCorpseBody2>();
-                            else
-                            {
-                                if (num97 == 18) WyvBodyInt = ModContent.NPCType<WyvernCorpseBody3>();
-                                else
-                                {
-                                    if (num97 == 19) WyvBodyInt = ModContent.NPCType<WyvernCorpseTail>();
-                                }
-                            }
-                        }
-                        int num99 = NPC.NewNPC(NPC.GetSource_FromAI(), ((int)NPC.position.X + (NPC.width / 2)), (int)(NPC.position.Y + NPC.height), WyvBodyInt, NPC.whoAmI);
+                        if (num97 == 4 || num97 == 16)
+                            WyvBodyInt = ModContent.NPCType<WyvernCorpseLegs>();
+                        else if (num97 == 17)
+                            WyvBodyInt = ModContent.NPCType<WyvernCorpseBody2>();
+                        else if (num97 == 18)
+                            WyvBodyInt = ModContent.NPCType<WyvernCorpseBody3>();
+                        else if (num97 == 19)
+                            WyvBodyInt = ModContent.NPCType<WyvernCorpseTail>();
+
+                        int num99 = NPC.NewNPC(NPC.GetSource_FromAI(),
+                            (int)(NPC.position.X + NPC.width / 2),
+                            (int)(NPC.position.Y + NPC.height),
+                            WyvBodyInt, NPC.whoAmI);
+
                         Main.npc[num99].ai[2] = NPC.whoAmI;
                         Main.npc[num99].realLife = NPC.whoAmI;
                         Main.npc[num99].ai[1] = num96;
                         Main.npc[num96].ai[0] = num99;
+
                         NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, num99);
                         num96 = num99;
                     }
+                    NPC.netUpdate = true;
+                    SpawnFlag = true;
                 }
             }
 
+
             Mod.Logger.Info($"Current State: {CurrentAttack}");
 
-            if (!Main.dedServ)
+            if (!Main.dedServ && !EternityIsActive())
             {
                 Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/EvilBoss1");
+            }
+            if (!Main.dedServ && EternityIsActive())
+            {
+                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Placeholder3");
             }
 
             int[] MinionSpawnType = new int[]
@@ -449,13 +481,12 @@ namespace DestroyerTest.Content.Entity
                         NPC.aiStyle = -1;
                         NodeSpawn();
 
-                        CurrentAttack = attackType.IchorRam;
+                        CurrentAttack = attackType.Dash;
                         ResetStats();
                     }
                     break;
                 case attackType.Dash:
                     {
-                        NPC.aiStyle = NPCAIStyleID.Flocko;
                         DashOverrideTimer--;
                         if (DashOverrideTimer > 0)
                         {
@@ -474,10 +505,22 @@ namespace DestroyerTest.Content.Entity
                                 DashTime--; // tick down every frame while dashing
                                 DashParticle();
 
+                                Vector2 FlankLeft = NPC.velocity.RotatedBy(MathHelper.PiOver2);
+                                Vector2 FlankRight = NPC.velocity.RotatedBy(-MathHelper.PiOver2);
+
+                                if (Main.GameUpdateCount % 5 == 0 && NPC.velocity.Length() > 2)
+                                {
+                                    SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/HopeScabbardTele") with { MaxInstances = 0, PitchVariance = 0.3f, Volume = 0.15f }, NPC.Center);
+                                    Projectile.NewProjectile(Entity.GetSource_FromAI(), NPC.Center, FlankLeft * 0.02f, ModContent.ProjectileType<TenebrisDart>(), 15, 3);
+                                    Projectile.NewProjectile(Entity.GetSource_FromAI(), NPC.Center, FlankRight * 0.02f, ModContent.ProjectileType<TenebrisDart>(), 15, 3);
+                                }
+
                                 if (DashTime <= 0)
                                 {
                                     NPC.velocity /= 5;
                                     DashTime = 40; // reset cooldown
+                                    Projectile.NewProjectile(Entity.GetSource_FromAI(), NPC.Center, FlankLeft * 0.5f, ModContent.ProjectileType<TenebrisLance>(), 15, 3);
+                                    Projectile.NewProjectile(Entity.GetSource_FromAI(), NPC.Center, FlankRight * 0.5f, ModContent.ProjectileType<TenebrisLance>(), 15, 3);
                                     IsDashing = false;
                                 }
                             }
@@ -497,7 +540,6 @@ namespace DestroyerTest.Content.Entity
                     break;
                 case attackType.IchorRam:
                     {
-                        NPC.aiStyle = NPCAIStyleID.Bat;
                         SpitTime++;
                         if (SpitTime % 20 == 0)
                         {
@@ -516,15 +558,15 @@ namespace DestroyerTest.Content.Entity
                         circleradius--;
                         // Make sure these are initialized outside the case so they persist
                         MinionSpawnTimer++;
-                        
-                        
-                        if (MinionSpawnTimer % 20 == 0)
+
+                        if (!EternityIsActive())
+                        {
+                            if (Main.GameUpdateCount % 20 == 0)
                             {
                                 SoundEngine.PlaySound(Teeth, NPC.Center);
 
                                 float radius = 700f; // distance from player for spawning
-
-
+                                circleradius = 700f;
 
                                 if (!flag1)
                                 {
@@ -533,13 +575,8 @@ namespace DestroyerTest.Content.Entity
                                 }
                                 for (int i = 0; i < ToothCount; i++)
                                 {
-                                    // angle around the circle
                                     float angle = MathHelper.TwoPi * i / ToothCount;
-
-                                    // spawn position around the player
                                     Vector2 spawnPos = ToothCenter + radius * new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
-
-                                    // velocity toward player
                                     Vector2 velocity = (ToothCenter - spawnPos).SafeNormalize(Vector2.UnitY) * 8f;
 
                                     Projectile Tooth = Projectile.NewProjectileDirect(
@@ -562,7 +599,38 @@ namespace DestroyerTest.Content.Entity
                                 ToothCount--;
                             }
 
-                        if (ToothCount < 2)
+                            if (ToothCount < 2)
+                            {
+                                CurrentAttack = attackType.SummonCrimsonMinions;
+                                circleradius = 800f;
+                                ResetStats();
+                            }
+                        }
+                        if (EternityIsActive())
+                        {
+                            if (Main.GameUpdateCount % 180 == 0)
+                            {
+                                for (int i = 0; i < ToothCount; i++)
+                                {
+                                    float angle = MathHelper.TwoPi * i / ToothCount;
+                                    Vector2 spawnPos = player.Center + 900 * new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
+                                    Vector2 velocity = (player.Center - spawnPos).SafeNormalize(Vector2.UnitY) * 10f;
+
+                                    Projectile Lance = Projectile.NewProjectileDirect(
+                                        NPC.GetSource_FromAI(),
+                                        spawnPos,
+                                        velocity,
+                                        ModContent.ProjectileType<TenebrisLance>(),
+                                        30,
+                                        0f,
+                                        Main.myPlayer
+                                    );
+                                    Lance.timeLeft = 80;
+                                }
+                                CircleLanceCount++;
+                            }
+                        }
+                        if (CircleLanceCount >= 6)
                         {
                             CurrentAttack = attackType.SummonCrimsonMinions;
                             ResetStats();
@@ -653,7 +721,6 @@ namespace DestroyerTest.Content.Entity
                     break;
                 case attackType.BloodShoot:
                     {
-                        NPC.aiStyle = NPCAIStyleID.Worm;
 
                         if (HasShotTeeth == false)
                         {
@@ -664,16 +731,33 @@ namespace DestroyerTest.Content.Entity
                             {
                                 Vector2 velocity = NPC.velocity.RotatedBy(RotOffset);
 
-                                if (Main.netMode != NetmodeID.MultiplayerClient)
+                                if (!EternityIsActive())
                                 {
-                                    Projectile.NewProjectile(
-                                        NPC.GetSource_FromAI(),
-                                        origin,
-                                        velocity,
-                                        ModContent.ProjectileType<Tooth>(),
-                                        40,
-                                        1
-                                    );
+                                    if (Main.netMode != NetmodeID.MultiplayerClient)
+                                    {
+                                        Projectile.NewProjectile(
+                                            NPC.GetSource_FromAI(),
+                                            origin,
+                                            velocity,
+                                            ModContent.ProjectileType<Tooth>(),
+                                            40,
+                                            1
+                                        );
+                                    }
+                                }
+                                if (EternityIsActive())
+                                {
+                                    if (Main.netMode != NetmodeID.MultiplayerClient)
+                                    {
+                                        Projectile.NewProjectile(
+                                            NPC.GetSource_FromAI(),
+                                            origin,
+                                            velocity,
+                                            ModContent.ProjectileType<TenebrisFlames>(),
+                                            40,
+                                            1
+                                        );
+                                    }
                                 }
                             }
 
@@ -711,17 +795,41 @@ namespace DestroyerTest.Content.Entity
                             DesperationOrbitCenter = NPC.Center;
                         }
                         BombSpawnTimer++;
-                        if (BombSpawnTimer >= 40)
+                        if (!EternityIsActive())
                         {
-                            Projectile FleshBomb = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<CrystalBomb>(), 20, 1);
-                            BombSpawnCount += 1;
-                            BombSpawnTimer = 0;
+                            if (Main.GameUpdateCount % 40 == 0)
+                            {
+                                Projectile FleshBomb = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<CrystalBomb>(), 20, 1);
+                                BombSpawnCount += 1;
+                            }
+                        }
+                        if (EternityIsActive())
+                        {
+                            if (Main.GameUpdateCount % 40 == 0)
+                            {
+                                int numProjectiles = Main.rand.Next(2, 5);
+                                float rotationStep = MathHelper.TwoPi / numProjectiles;
+
+                                for (int i = 0; i < numProjectiles; i++)
+                                {
+                                    Vector2 velocity = new Vector2(6f, 0f).RotatedBy(rotationStep * i);
+                                    Projectile.NewProjectile(
+                                        Entity.GetSource_FromThis(),
+                                        NPC.Center,
+                                        velocity,
+                                        ModContent.ProjectileType<CrystalBomb>(),
+                                        50,
+                                        4
+                                    );
+                                }
+                                BombSpawnCount += 1;
+                            }
                         }
                         if (BombSpawnCount >= 8)
-                        {
-                            CurrentAttack = attackType.Follow;
-                            ResetStats();
-                        }
+                            {
+                                CurrentAttack = attackType.Follow;
+                                ResetStats();
+                            }
                     }
                     break;
 
@@ -778,7 +886,7 @@ namespace DestroyerTest.Content.Entity
 
                         if (DesperationTimer >= 1200)
                         {
-                            if (!DownedBossSystem.downedNightmareRoseBoss)
+                            if (!DownedBossSystem.downedWyvernCorpseBoss)
                             {
                                 Item.NewItem(Item.GetSource_None(), DesperationOrbitCenter, ModContent.ItemType<WyvernSoul>(), 1, true, 0, false, false);
                             }
@@ -818,6 +926,7 @@ namespace DestroyerTest.Content.Entity
             MinionSpawnCount = 0;
             BombSpawnTimer = 0;
             BombSpawnCount = 0;
+            CircleLanceCount = 0;
             ToothCount = 10;
             flag1 = false;
         }
@@ -834,14 +943,13 @@ namespace DestroyerTest.Content.Entity
 
         public void DrawVingette(SpriteBatch spriteBatch, Vector2 Center, float Scale)
         {
-            Texture2D texture = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/BigVingette").Value;
             Main.spriteBatch.Draw(
-                    texture,
+                    DTAssetLib.Vingette.Value,
                     Center - Main.screenPosition,
                     null,
                     DTColorUtils.WithAlpha(Color.Black, DesperationVingetteAlpha),
                     TextureRotationOffset,
-                    new Vector2(texture.Width / 2f, texture.Height / 2f),
+                    new Vector2(DTAssetLib.Vingette.Value.Width / 2f, DTAssetLib.Vingette.Value.Height / 2f),
                     Scale,
                     SpriteEffects.None,
                     1f
@@ -851,28 +959,26 @@ namespace DestroyerTest.Content.Entity
         {
             DTUtils Utility = new DTUtils();
             Utility.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-            Texture2D texture1 = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/GlowCircle").Value;
-            Texture2D texture2 = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/Cyclone2").Value;
 
             Main.spriteBatch.Draw(
-                texture2,
+                DTAssetLib.Cyclone(2).Value,
                 Center - Main.screenPosition,
                 null,
                 ColorLib.Soul,
                 TextureRotationOffset,
-                new Vector2(texture2.Width / 2f, texture2.Height / 2f),
+                new Vector2(DTAssetLib.Cyclone(2).Value.Width / 2f, DTAssetLib.Cyclone(2).Value.Height / 2f),
                 0.5f,
                 SpriteEffects.None,
                 1f
             );
 
             Main.spriteBatch.Draw(
-                texture1,
+                DTAssetLib.FeatheredCircle.Value,
                 Center - Main.screenPosition,
                 null,
                 Color.White,
                 0f,
-                new Vector2(texture1.Width / 2f, texture1.Height / 2f),
+                new Vector2(DTAssetLib.FeatheredCircle.Value.Width / 2f, DTAssetLib.FeatheredCircle.Value.Height / 2f),
                 1f,
                 SpriteEffects.None,
                 1f
@@ -880,12 +986,12 @@ namespace DestroyerTest.Content.Entity
 
                 
             Main.spriteBatch.Draw(
-                texture2,
+                DTAssetLib.Cyclone(2).Value,
                 Center - Main.screenPosition,
                 null,
                 ColorLib.Soul,
                 TextureRotationOffset,
-                new Vector2(texture2.Width / 2f, texture2.Height / 2f),
+                new Vector2(DTAssetLib.Cyclone(2).Value.Width / 2f, DTAssetLib.Cyclone(2).Value.Height / 2f),
                 4.7f,
                 SpriteEffects.None,
                 1f

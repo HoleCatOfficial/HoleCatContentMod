@@ -89,7 +89,7 @@ namespace DestroyerTest.Content.Projectiles.NightmareRose
             float rotationStep = MathHelper.TwoPi / numProjectiles;
 
             SoundEngine.PlaySound(SoundID.Item14, Projectile.Center);
-            SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/TPKill"), Projectile.Center);
+            SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/TPKill") with { Volume = 0.5f }, Projectile.Center);
             for (int i = 0; i < numProjectiles; i++)
             {
                 Vector2 velocity = new Vector2(8f, 0f).RotatedBy(rotationStep * i);

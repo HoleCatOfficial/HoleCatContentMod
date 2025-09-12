@@ -69,7 +69,7 @@ namespace DestroyerTest.Content.Projectiles
         public override void AI()
         {
             Vector2 ToPlayer = Projectile.Center - Main.LocalPlayer.Center;
-            Projectile.velocity *= 0.999f;
+            Projectile.velocity *= 0.99f;
             Projectile.rotation += Main.rand.NextFloat(-1f, 1.1f) * 0.1f;
         }
 

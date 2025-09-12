@@ -7,11 +7,13 @@ using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.Buffs;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Mono.Cecil.Cil;
 using rail;
 using ReLogic.Content;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -387,6 +389,7 @@ namespace DestroyerTest.Common
     {
         public const string ParticlePath = "DestroyerTest/Content/Particles";
         public const string ExtrasPath = "DestroyerTest/Content/Extras";
+        public const string AudioPath = "DestroyerTest/Assets/Audio";
         //
         //Practical, Every-Day VFX Textures
         //
@@ -467,6 +470,11 @@ namespace DestroyerTest.Common
         public static Asset<Texture2D> TenebrousConstructWingRight = ModContent.Request<Texture2D>($"{ExtrasPath}/TenebrousConstructWingRight");
         public static Asset<Texture2D> WyvernSoulDash = ModContent.Request<Texture2D>($"{ExtrasPath}/WyvernSoulDash");
         public static Asset<Texture2D> CorruptSigil = ModContent.Request<Texture2D>($"{ExtrasPath}/CorruptSigil");
+        //
+        // Sounds
+        //
+        public static Asset<SoundEffect> ChargeBreak = ModContent.Request<SoundEffect>($"{AudioPath}/ChargeBreak");
+        public static Asset<SoundEffect> CrystalBreak = ModContent.Request<SoundEffect>($"{AudioPath}/CrystalBreak");
     }
 
     public class AssetVerifierSystem : ModSystem

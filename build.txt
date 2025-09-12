@@ -3,4 +3,4 @@ author = HoleCat
 version = 2.1.696
 modReferences = InnoVault
 dependencies = InnoVault
-
+hideResources = true
