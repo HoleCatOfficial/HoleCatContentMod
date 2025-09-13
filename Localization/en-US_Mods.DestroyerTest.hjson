@@ -2436,12 +2436,12 @@ Items: {
 
 	FoxScepter: {
 		DisplayName: Fox Scepter
-		Tooltip: ""
+		Tooltip: Dedicated to: TopFox6 the PipeBomb Fox, for motivating me to follow through with this mod by making me want to impress him.
 	}
 
 	StellarFoxScepter: {
 		DisplayName: Stellar Fox Scepter
-		Tooltip: ""
+		Tooltip: Dedicated to: TopFox6 the PipeBomb Fox, for motivating me to follow through with this mod by making me want to impress him.
 	}
 
 	StellarBow: {
@@ -3207,6 +3207,16 @@ Items: {
 		Tooltip: ""
 		DisplayName: Wood Bracelet
 	}
+
+	RiftHalo: {
+		DisplayName: Rift Halo
+		Tooltip: ""
+	}
+
+	RiftVeil: {
+		DisplayName: Rift Veil
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
@@ -3562,6 +3572,8 @@ Projectiles: {
 	TenebrisLance.DisplayName: Tenebris Lance
 	TenebrisDart.DisplayName: Tenebris Dart
 	DarkEnergyOrb.DisplayName: Dark Energy Orb
+	TenebrisMine.DisplayName: Tenebris Mine
+	RiftStar.DisplayName: Rift Star
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.
@@ -4066,6 +4078,11 @@ Configs: {
 
 		OptimizeGame: {
 			Label: Optimize Game
+			Tooltip: ""
+		}
+
+		EternityMusic: {
+			Label: Eternity Music
 			Tooltip: ""
 		}
 	}

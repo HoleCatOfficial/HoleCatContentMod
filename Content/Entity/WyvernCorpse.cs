@@ -155,22 +155,30 @@ namespace DestroyerTest.Content.Entity
 
         public static bool EternityIsActive()
         {
-            Mod FargosCompat = ModLoader.GetMod("FranciumMultiCrossMod");
-            if (FargosCompat != null)
+            if (ModLoader.HasMod("FranciumMultiCrossMod"))
             {
-                object result = FargosCompat.Call("CheckEternity");
-                if (result is bool enabled)
+                Mod FargosCompat = ModLoader.GetMod("FranciumMultiCrossMod");
+                if (FargosCompat != null)
                 {
-                    if (enabled)
-                        return true;
-                    else
-                        Main.NewText("Fargos Crossmod found but Eternity not detected.");
+                    object result = FargosCompat.Call("CheckEternity");
+                    if (result is bool enabled)
+                    {
+                        if (enabled)
+                            return true;
+                        else
+                            Main.NewText("Fargos Crossmod found but Eternity not detected.");
                         return false;
+                    }
+                }
+                else
+                {
+                    Main.NewText("Fargos Crossmod not found.");
                 }
             }
             else
             {
-                Main.NewText("Fargos Crossmod not found.");
+                Main.NewText("Fargos Crossmod not found. Eternity Support not enabled.");
+                return false;
             }
             return false;
         }
@@ -182,7 +190,7 @@ namespace DestroyerTest.Content.Entity
         public bool IsDashing = false;
         public int DashCount = 0;
         public int DashTime = 80;
-        public int DashOverrideTimer = 300;
+        public int DashOverrideTimer = 1800;
         public int SpitTime = 0;
         public float circleradius = 800f;
         public float circlerotspeed = 0.05f;
@@ -446,7 +454,11 @@ namespace DestroyerTest.Content.Entity
             {
                 Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/EvilBoss1");
             }
-            if (!Main.dedServ && EternityIsActive())
+            if (!Main.dedServ && EternityIsActive() && !cfg.EternityMusic)
+            {
+                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/EvilBoss1");
+            }
+            if (!Main.dedServ && EternityIsActive() && cfg.EternityMusic)
             {
                 Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Placeholder3");
             }
@@ -491,7 +503,7 @@ namespace DestroyerTest.Content.Entity
                         if (DashOverrideTimer > 0)
                         {
 
-                            if (!IsDashing && NPC.Distance(player.Center) < 300 && DashTime > 0)
+                            if (!IsDashing && NPC.Distance(player.Center) < 350 && DashTime > 0)
                             {
                                 SoundEngine.PlaySound(Roar, NPC.Center);
                                 Projectile FleshBomb = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<FleshBomb>(), 20, 1);
@@ -518,7 +530,7 @@ namespace DestroyerTest.Content.Entity
                                 if (DashTime <= 0)
                                 {
                                     NPC.velocity /= 5;
-                                    DashTime = 40; // reset cooldown
+                                    DashTime = 80;
                                     Projectile.NewProjectile(Entity.GetSource_FromAI(), NPC.Center, FlankLeft * 0.5f, ModContent.ProjectileType<TenebrisLance>(), 15, 3);
                                     Projectile.NewProjectile(Entity.GetSource_FromAI(), NPC.Center, FlankRight * 0.5f, ModContent.ProjectileType<TenebrisLance>(), 15, 3);
                                     IsDashing = false;
@@ -555,9 +567,12 @@ namespace DestroyerTest.Content.Entity
                 case attackType.Circle:
                     {
                         NPC.position = player.Center + offset - new Vector2(NPC.width / 2, NPC.height / 2);
-                        circleradius--;
+                        if (circleradius > 400)
+                        {
+                            circleradius--;
+                        }
                         // Make sure these are initialized outside the case so they persist
-                        MinionSpawnTimer++;
+                            MinionSpawnTimer++;
 
                         if (!EternityIsActive())
                         {
@@ -600,19 +615,19 @@ namespace DestroyerTest.Content.Entity
                             }
 
                             if (ToothCount < 2)
-                            {
-                                CurrentAttack = attackType.SummonCrimsonMinions;
-                                circleradius = 800f;
-                                ResetStats();
-                            }
+                                {
+                                    CurrentAttack = attackType.SummonCrimsonMinions;
+                                    circleradius = 880f;
+                                    ResetStats();
+                                }
                         }
                         if (EternityIsActive())
                         {
-                            if (Main.GameUpdateCount % 180 == 0)
+                            if (Main.GameUpdateCount % 300 == 0)
                             {
-                                for (int i = 0; i < ToothCount; i++)
+                                for (int i = 0; i < 5; i++)
                                 {
-                                    float angle = MathHelper.TwoPi * i / ToothCount;
+                                    float angle = MathHelper.TwoPi * i / 5;
                                     Vector2 spawnPos = player.Center + 900 * new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
                                     Vector2 velocity = (player.Center - spawnPos).SafeNormalize(Vector2.UnitY) * 10f;
 
@@ -629,9 +644,19 @@ namespace DestroyerTest.Content.Entity
                                 }
                                 CircleLanceCount++;
                             }
+                            if (Main.GameUpdateCount % 60 == 0)
+                            {
+                                for (int e = 0; e < 3; e++)
+                                {
+                                    Vector2 Outer = NPC.Center + Main.rand.NextVector2CircularEdge(10, 10);
+                                    Vector2 Dir = Outer - NPC.Center;
+                                    Projectile.NewProjectile(Entity.GetSource_FromThis(), NPC.Center, Dir * 0.25f, ModContent.ProjectileType<TenebrisStar>(), 20, 5, ai2: 2);
+                                }
+                            }
                         }
                         if (CircleLanceCount >= 6)
                         {
+                            circleradius = 880f;
                             CurrentAttack = attackType.SummonCrimsonMinions;
                             ResetStats();
                         }
@@ -647,36 +672,61 @@ namespace DestroyerTest.Content.Entity
 
                         position += Vector2.Normalize(velocity) * 45f;
 
-
-                        int type = Main.rand.Next(new int[]
-                            {
+                        if (!EternityIsActive())
+                        {
+                            int type = Main.rand.Next(new int[]
+                                {
                                 ModContent.ProjectileType<OrganProjectile_Variant1>(),
                                 ModContent.ProjectileType<OrganProjectile_Variant2>(),
                                 ModContent.ProjectileType<OrganProjectile_Variant3>(),
                                 ModContent.ProjectileType<OrganProjectile_Variant4>()
-                            });
-                        OrganBurstIntervalTimer++;
-                        if (OrganBurstIntervalTimer == 20)
-                        {
-                            SoundEngine.PlaySound(Roar, NPC.Center);
-                            for (int i = 0; i < numberProjectiles; i++)
+                                });
+                            OrganBurstIntervalTimer++;
+                            if (OrganBurstIntervalTimer == 20)
                             {
-                                Vector2 perturbedSpeed = NPC.velocity.RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1)));
-                                Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), position, perturbedSpeed, type, 44, 2);
-                            }
+                                SoundEngine.PlaySound(Roar, NPC.Center);
+                                for (int i = 0; i < numberProjectiles; i++)
+                                {
+                                    Vector2 perturbedSpeed = NPC.velocity.RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1)));
+                                    Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), position, perturbedSpeed, type, 44, 2);
+                                }
 
-                            OrganBurstIntervalTimer = 0;
-                            OrganBurstCount++;
+                                OrganBurstIntervalTimer = 0;
+                                OrganBurstCount++;
+                            }
+                            if (OrganBurstCount >= 10 && NPC.life > NPC.lifeMax * 0.4f)
+                            {
+                                CurrentAttack = attackType.Circle;
+                                ResetStats();
+                            }
+                            if (OrganBurstCount > 10 && NPC.life <= NPC.lifeMax * 0.4f)
+                            {
+                                CurrentAttack = attackType.SummonAxes;
+                                ResetStats();
+                            }
                         }
-                        if (OrganBurstCount >= 10 && NPC.life > NPC.lifeMax * 0.4f)
+                        if (EternityIsActive())
                         {
-                            CurrentAttack = attackType.Circle;
-                            ResetStats();
-                        }
-                        if (OrganBurstCount > 10 && NPC.life <= NPC.lifeMax * 0.4f)
-                        {
-                            CurrentAttack = attackType.SummonAxes;
-                            ResetStats();
+                            if (Main.GameUpdateCount % 20 == 0)
+                            {
+                                SoundEngine.PlaySound(Roar, NPC.Center);
+                                for (int i = 0; i < numberProjectiles; i++)
+                                {
+                                    Vector2 perturbedSpeed = NPC.velocity.RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1)));
+                                    Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), position, perturbedSpeed, ModContent.ProjectileType<TenebrisMine>(), 44, 2);
+                                }
+                                OrganBurstCount++;
+                            }
+                            if (OrganBurstCount >= 10 && NPC.life > NPC.lifeMax * 0.4f)
+                            {
+                                CurrentAttack = attackType.Circle;
+                                ResetStats();
+                            }
+                            if (OrganBurstCount > 10 && NPC.life <= NPC.lifeMax * 0.4f)
+                            {
+                                CurrentAttack = attackType.SummonAxes;
+                                ResetStats();
+                            }
                         }
                     }
                     break;

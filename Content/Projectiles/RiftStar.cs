@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
@@ -17,11 +18,11 @@ using Terraria.ModLoader;
 namespace DestroyerTest.Content.Projectiles
 {
 	/// <summary>
-	/// Expermiental Class for an All-Purpose Homing Projectile.
+	/// Multipurpose Projectile.
 	/// <para/> Projectile ai slots 0 and 1 should not be set to anything when spawning, as they store NPC and Player values respectively.
 	/// <para/> Projectile ai slot 2 controls whether the projectile is friendly or harmful.
 	/// </summary>
-	public class TenebrisStar : ModProjectile
+	public class RiftStar : ModProjectile
 	{
 		private NPC NPCTarget
 		{
@@ -64,7 +65,7 @@ namespace DestroyerTest.Content.Projectiles
 
 		public override bool PreDraw(ref Color lightColor)
 		{
-			lightColor = ColorLib.TenebrisGradient;
+			lightColor = ColorLib.Rift;
 			SpriteBatch spriteBatch = Main.spriteBatch;
 			DTUtils Utility = new DTUtils();
 
@@ -84,24 +85,31 @@ namespace DestroyerTest.Content.Projectiles
 				float width = MathHelper.Lerp(0.01f, 0.0007f, i / (float)TrailLength);
 				float alpha = MathHelper.Lerp(1f, 0f, i / (float)TrailLength);
 
-				// --- Tenebris gradient with offset ---
 				float time = (Main.GlobalTimeWrappedHourly + i * 0.05f) % 3f;
 
-				Color tenebrisColor;
+				Color RiftColor;
 				if (time < 1f)
-					tenebrisColor = Color.Lerp(ColorLib.TenebrisBeige, ColorLib.TenebrisMagenta, time);
+					RiftColor = Color.Lerp(ColorLib.Rift, ColorLib.DarkRift4, time);
 				else if (time < 2f)
-					tenebrisColor = Color.Lerp(ColorLib.TenebrisMagenta, ColorLib.TenebrisBlue, time - 1f);
+					RiftColor = Color.Lerp(ColorLib.DarkRift4, ColorLib.DarkRift3, time - 1f);
+                else if (time < 3f)
+					RiftColor = Color.Lerp(ColorLib.DarkRift3, ColorLib.DarkRift2, time - 2f);
+                else if (time < 4f)
+					RiftColor = Color.Lerp(ColorLib.DarkRift2, ColorLib.DarkRift1, time - 3f);
+                else if (time < 5f)
+					RiftColor = Color.Lerp(ColorLib.DarkRift1, ColorLib.DarkRift2, time - 4f);
+                else if (time < 6f)
+					RiftColor = Color.Lerp(ColorLib.DarkRift2, ColorLib.DarkRift3, time - 5f);
 				else
-					tenebrisColor = Color.Lerp(ColorLib.TenebrisBlue, ColorLib.TenebrisBeige, time - 2f);
+                    RiftColor = Color.Lerp(ColorLib.DarkRift3, ColorLib.DarkRift4, time - 6f);
 
-				tenebrisColor *= alpha;
+				RiftColor *= alpha;
 
 				Main.spriteBatch.Draw(
 					DTAssetLib.Square.Value,
 					start,
 					null,
-					tenebrisColor,
+					RiftColor,
 					rotation,
 					new Vector2(DTAssetLib.Square.Value.Width / 2, DTAssetLib.Square.Value.Height / 2),
 					new Vector2(length, width),
@@ -144,7 +152,7 @@ namespace DestroyerTest.Content.Projectiles
 
 			DelayTimer++;
 			Mode = (int)Projectile.ai[2];
-			Projectile.rotation += Projectile.direction * 0.07f;
+			Projectile.rotation += Projectile.direction * Main.rand.NextFloat(0.01f, 0.07f);
 
 			if (Mode > 4 || Mode <= 0)
 			{
@@ -155,7 +163,7 @@ namespace DestroyerTest.Content.Projectiles
 
 			Lighting.AddLight(Projectile.Center, ColorLib.TenebrisGradient.ToVector3() * 0.2f);
 
-			if (DelayTimer < 10)
+			if (DelayTimer < 20)
 			{
 				DelayTimer += 1;
 				return;
@@ -280,26 +288,24 @@ namespace DestroyerTest.Content.Projectiles
 
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
-			if (Mode == 1 || Mode == 1)
+			if (Mode == 1 || Mode == 3)
 			{
-				PRTLoader.NewParticle(PRTLoader.GetParticleID<Boom1>(), target.Center, Vector2.Zero, ColorLib.TenebrisGradient, 0.05f);
-				target.AddBuff(ModContent.BuffType<ShimmeringFlames>(), 300);
+				target.AddBuff(ModContent.BuffType<DaylightOverload>(), 300);
 			}
-
 		}
 
 		public override void OnHitPlayer(Player target, Player.HurtInfo info)
 		{
 			if (Mode == 2 || Mode == 4)
 			{
-				PRTLoader.NewParticle(PRTLoader.GetParticleID<Boom1>(), target.Center, Vector2.Zero, ColorLib.TenebrisGradient, 0.05f);
-				target.AddBuff(ModContent.BuffType<ShimmeringFlames>(), 300);
+				target.AddBuff(ModContent.BuffType<DaylightOverload>(), 300);
 			}
 		}
 
         public override void OnKill(int timeLeft)
         {
-			Dust.NewDust(Projectile.Center, Projectile.Hitbox.Width, Projectile.Hitbox.Height, DustID.TintableDustLighted, Main.rand.NextFloat(-1, 1.1f), Main.rand.NextFloat(-1, 1.1f), 0, ColorLib.TenebrisGradient, 2f);
+            PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp1>(), Projectile.Center, Vector2.Zero, ColorLib.Rift, 0.05f);
+			Dust.NewDust(Projectile.position, Projectile.Hitbox.Width, Projectile.Hitbox.Height, ModContent.DustType<RiftDust>(), Main.rand.NextFloat(-1, 1.1f), Main.rand.NextFloat(-1, 1.1f), 0, default, 2f);
         }
 
     }

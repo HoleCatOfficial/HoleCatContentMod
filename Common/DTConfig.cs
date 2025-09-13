@@ -6,7 +6,7 @@ namespace DestroyerTest.Common
     public class DTConfig : ModConfig
     {
         public override ConfigScope Mode => ConfigScope.ClientSide;
-        
+
         [DefaultValue(true)]
         public bool MinionExtrasToggle { get; set; }
 
@@ -24,5 +24,7 @@ namespace DestroyerTest.Common
 
         [DefaultValue(false)]
         public bool OptimizeGame { get; set; }
+        [DefaultValue(false)]
+        public bool EternityMusic { get; set; }
     }
 }

@@ -626,11 +626,15 @@ namespace DestroyerTest.Content.Entity
             {
                 Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/RiftEmptiness");
             }
-            if (!Main.dedServ && !EternityIsActive() && currentState != AttackState.SpawnIdle)
+            if (!Main.dedServ && !EternityIsActive())
             {
                 Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/EvilBoss1");
             }
-            if (!Main.dedServ && EternityIsActive() && currentState != AttackState.SpawnIdle)
+            if (!Main.dedServ && EternityIsActive() && !cfg.EternityMusic)
+            {
+                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/EvilBoss1");
+            }
+            if (!Main.dedServ && EternityIsActive() && cfg.EternityMusic)
             {
                 Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Placeholder3");
             }
