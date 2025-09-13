@@ -626,6 +626,7 @@ namespace DestroyerTest.Content.Entity
             {
                 Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/RiftEmptiness");
             }
+<<<<<<< HEAD
             if (!Main.dedServ && !EternityIsActive() && currentState != AttackState.SpawnIdle)
             {
                 Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/EvilBoss1");
@@ -635,6 +636,17 @@ namespace DestroyerTest.Content.Entity
                 Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/EvilBoss1");
             }
             if (!Main.dedServ && EternityIsActive() && cfg.EternityMusic && currentState != AttackState.SpawnIdle)
+=======
+            if (!Main.dedServ && !EternityIsActive())
+            {
+                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/EvilBoss1");
+            }
+            if (!Main.dedServ && EternityIsActive() && !cfg.EternityMusic)
+            {
+                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/EvilBoss1");
+            }
+            if (!Main.dedServ && EternityIsActive() && cfg.EternityMusic)
+>>>>>>> c317c64b5797c753d6df3bb8246b8eb86e338551
             {
                 Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Placeholder3");
             }
