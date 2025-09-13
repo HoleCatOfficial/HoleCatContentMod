@@ -1,4 +1,4 @@
-using System.Numerics;
+using DestroyerTest.Common;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -9,64 +9,70 @@ namespace DestroyerTest.Content.Dusts
 {
 	public class SoulDust : ModDust
 	{
-		public override void OnSpawn(Dust dust) {
-			dust.velocity *= 0.8f; // Multiply the dust's start velocity by 0.4, slowing it down
-			dust.noGravity = true; // Makes the dust have no gravity.
-			dust.noLight = true; // Makes the dust emit no light.
-			dust.scale *= 1.5f; // Multiplies the dust's initial scale by 1.5.
-		}
-
-		public void PreDraw(ref Color lightColor)
+		public override void OnSpawn(Dust dust)
 		{
-			lightColor = new Color(184, 228, 242);
-			
-			SpriteBatch spriteBatch = Main.spriteBatch;
-			Texture2D DustTexture = TextureAssets.Dust.Value;
-			
-			spriteBatch.End();
-			spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-
-			foreach (Dust dust in Main.dust)
-            {
-                if (dust != null && dust.active && dust.type == this.Type) // Ensure it's active and the correct type
-                {
-                    Main.EntitySpriteDraw(
-                        DustTexture,
-                        dust.position - Main.screenPosition,
-                        null,
-                        lightColor,
-                        dust.rotation,
-                        DustTexture.Size() / 2,
-                        dust.scale,
-                        SpriteEffects.None,
-                        0
-                    );
-                }
-            }
-
-			// Restore normal batch
-			spriteBatch.End();
-			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+			dust.velocity *= 1.0f;
+			dust.noGravity = true;
+			dust.noLight = false;
+			dust.scale *= 1.11f;
 		}
-		public override bool Update(Dust dust) { // Calls every frame the dust is active
-			Color lightColor = new Color(184, 228, 242);
+
+        public override bool PreDraw(Dust dust)
+        {
+			SpriteBatch spriteBatch = Main.spriteBatch;
+			DTUtils Utility = new DTUtils();
+			Texture2D DustTexture = TextureAssets.Dust.Value;
+			var GlowTex = DTAssetLib.PointGlow.Value;
+
+			Utility.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+
+			Main.EntitySpriteDraw(
+				GlowTex,
+				dust.position - Main.screenPosition,
+				dust.frame,
+				ColorLib.Soul3,
+				dust.rotation,
+				new Vector2(dust.frame.Width / 2, dust.frame.Height / 2),
+				dust.scale,
+				SpriteEffects.None,
+				0
+			);
+
+			Main.EntitySpriteDraw(
+				DustTexture,
+				dust.position - Main.screenPosition,
+				dust.frame,
+				ColorLib.Soul,
+				dust.rotation,
+				new Vector2(dust.frame.Width / 2, dust.frame.Height / 2),
+				dust.scale,
+				SpriteEffects.None,
+				0
+			);
+			Utility.ReturnToDefaultDrawing(spriteBatch);
+
+            return false;
+        }
+
+
+		public override bool Update(Dust dust)
+		{
 			dust.position += dust.velocity;
+			dust.velocity *= 0.995f;
 			dust.rotation += dust.velocity.X * 0.15f;
-			dust.scale *= 0.99f;
-			dust.velocity -= new Microsoft.Xna.Framework.Vector2(0, 0.12f);
+			dust.scale *= 0.9f;
 
-			float light = 0.35f * dust.scale;
+			float light = 0.005f * dust.scale;
 
-			Lighting.AddLight(dust.position, light, light, light);
+			Lighting.AddLight(dust.position, ColorLib.Soul.ToVector3() * 0.5f);
 
-			if (dust.scale < 0.5f) {
+			if (dust.scale < 0.75f)
+			{
 				dust.active = false;
 			}
 
 			return false; // Return false to prevent vanilla behavior.
 		}
-
-		
 
 	}
 }

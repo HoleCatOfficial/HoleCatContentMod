@@ -33,8 +33,6 @@ namespace DestroyerTest.Content.Projectiles
 			Projectile.timeLeft = 600; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
 			Projectile.tileCollide = false;
 			Projectile.alpha = 255;
-			Projectile.netImportant = true;
-			Projectile.netUpdate = true;
 			Projectile.penetrate = 2;
 		}
 

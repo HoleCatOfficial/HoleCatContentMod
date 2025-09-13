@@ -65,11 +65,9 @@ public class TrailBlazer : ModProjectile
 
 				SpriteBatch spriteBatch = Main.spriteBatch;
 				Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
+				DTUtils Utility = new DTUtils();
 
-				// --- Draw the main projectile ---
-				spriteBatch.End();
-				spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-
+            	Utility.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 				int frameHeight = projectileTexture.Height / Main.projFrames[Projectile.type];
                 Rectangle sourceRect = new Rectangle(0, Projectile.frame * frameHeight, projectileTexture.Width, frameHeight);
 
@@ -85,32 +83,20 @@ public class TrailBlazer : ModProjectile
                     0
                 );
 
-				// --- Draw glow + trail ---
-				spriteBatch.End();
-				spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-
-				Texture2D glowTexture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/SimpleParticle").Value;
+				
 				Main.EntitySpriteDraw(
-					glowTexture,
+					DTAssetLib.PointGlow.Value,
 					Projectile.Center - Main.screenPosition,
 					null,
 					lightColor,
 					Projectile.rotation,
-					glowTexture.Size() / 2,
+					DTAssetLib.PointGlow.Value.Size() / 2,
 					Projectile.scale,
 					SpriteEffects.None,
 					0
 				);
 
-				spriteBatch.End();
-				spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-
-
-				
-
-				// Restore normal batch
-				spriteBatch.End();
-				spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+				Utility.ReturnToDefaultDrawing(spriteBatch);
 
 				return false;
 			}

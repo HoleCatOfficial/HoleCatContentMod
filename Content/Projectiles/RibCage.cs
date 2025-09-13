@@ -17,8 +17,6 @@ namespace DestroyerTest.Content.Projectiles
             Projectile.DamageType = DamageClass.Generic;  // This can be changed based on the type of projectile you want
             Projectile.penetrate = -1;  // So it doesn't disappear after hitting an NPC
             Projectile.timeLeft = 300;  // Adjust lifespan as needed
-            Projectile.netImportant = true;
-			Projectile.netUpdate = true;
         }
 
         public override void AI()

@@ -40,7 +40,8 @@ namespace DestroyerTest.Content.Projectiles
 			}
 		}
 
-		public float DelayTimer;
+		public float DelayTimer = 0;
+		public float HomeTimer = 0;
 
 		public override void SetStaticDefaults()
 		{
@@ -59,8 +60,6 @@ namespace DestroyerTest.Content.Projectiles
             Projectile.light = 1f;
             Projectile.timeLeft = 300;
             Projectile.tileCollide = false;
-            Projectile.netImportant = true;
-            Projectile.netUpdate = true;
             Projectile.alpha = 255;
 		}
 
@@ -84,7 +83,7 @@ namespace DestroyerTest.Content.Projectiles
 			}
 
 			Lighting.AddLight(Projectile.Center, ColorLib.TenebrisGradient.ToVector3() * 0.2f);
-            int[] types = new int[]
+			int[] types = new int[]
 			{
 				PRTLoader.GetParticleID<ColoredFire1>(),
 				PRTLoader.GetParticleID<ColoredFire2>(),
@@ -97,69 +96,96 @@ namespace DestroyerTest.Content.Projectiles
 			PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], Projectile.Center, new Vector2(0f, -0.1f), ColorLib.TenebrisGradient, 0.5f);
 
 			if (DelayTimer < 20)
-            {
-                DelayTimer += 1;
-                return;
-            }
+			{
+				DelayTimer += 1;
+				return;
+			}
 
 			float maxDetectRadius = 1400f;
 
-			if (Mode == 1)
+			HomeTimer++;
+			if (HomeTimer < 60)
 			{
-				Projectile.friendly = true;
-				Projectile.hostile = false;
-
-				if (NPCTarget == null)
+				if (Mode == 1)
 				{
-					NPCTarget = FindClosestNPC(maxDetectRadius);
+					Projectile.friendly = true;
+					Projectile.hostile = false;
+
+					if (NPCTarget == null)
+					{
+						NPCTarget = FindClosestNPC(maxDetectRadius);
+					}
+
+
+					if (NPCTarget != null && !IsValidNPC(NPCTarget))
+					{
+						NPCTarget = null;
+					}
+
+
+					if (NPCTarget == null)
+						return;
+
+					float length = Projectile.velocity.Length();
+					float targetAngle = Projectile.AngleTo(NPCTarget.Center);
+					Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(15)).ToRotationVector2() * length;
 				}
-
-
-				if (NPCTarget != null && !IsValidNPC(NPCTarget))
+				if (Mode == 2)
 				{
-					NPCTarget = null;
+					Projectile.friendly = false;
+					Projectile.hostile = true;
+
+					if (PLRTarget == null)
+					{
+						PLRTarget = FindClosestPlayer(maxDetectRadius);
+					}
+
+
+					if (PLRTarget != null && !IsValidPlayer(PLRTarget))
+					{
+						PLRTarget = null;
+					}
+
+					if (PLRTarget == null)
+						return;
+
+					float length = Projectile.velocity.Length();
+					float targetAngle = Projectile.AngleTo(PLRTarget.Center);
+					Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(5)).ToRotationVector2() * length;
 				}
-
-
-				if (NPCTarget == null)
-					return;
-
-				float length = Projectile.velocity.Length();
-				float targetAngle = Projectile.AngleTo(NPCTarget.Center);
-				Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(15)).ToRotationVector2() * length;
+				if (Mode == 3)
+				{
+					Projectile.friendly = true;
+					Projectile.hostile = false;
+				}
+				if (Mode == 4)
+				{
+					Projectile.friendly = false;
+					Projectile.hostile = true;
+				}
 			}
-			if (Mode == 2)
+			else
 			{
-				Projectile.friendly = false;
-				Projectile.hostile = true;
-
-				if (PLRTarget == null)
+				if (Mode == 1)
 				{
-					PLRTarget = FindClosestPlayer(maxDetectRadius);
+					Projectile.friendly = true;
+					Projectile.hostile = false;
 				}
-
-
-				if (PLRTarget != null && !IsValidPlayer(PLRTarget))
+				if (Mode == 2)
 				{
-					PLRTarget = null;
+					Projectile.friendly = false;
+					Projectile.hostile = true;
 				}
-
-				if (PLRTarget == null)
-					return;
-
-				float length = Projectile.velocity.Length();
-				float targetAngle = Projectile.AngleTo(PLRTarget.Center);
-				Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(5)).ToRotationVector2() * length;
-			}
-			if (Mode == 3)
-			{
-				Projectile.friendly = true;
-				Projectile.hostile = false;
-			}
-			if (Mode == 4)
-			{
-				Projectile.friendly = false;
-				Projectile.hostile = true;
+				if (Mode == 3)
+				{
+					Projectile.friendly = true;
+					Projectile.hostile = false;
+				}
+				if (Mode == 4)
+				{
+					Projectile.friendly = false;
+					Projectile.hostile = true;
+				}
 			}
 		}
 		public NPC FindClosestNPC(float maxDetectDistance)

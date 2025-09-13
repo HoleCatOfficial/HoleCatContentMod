@@ -56,8 +56,6 @@ namespace DestroyerTest.Content.MeleeWeapons
                 Projectile.light = 1f; // How much light emit around the projectile
                 Projectile.timeLeft = 600; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
                 Projectile.tileCollide = false;
-                Projectile.netImportant = true;
-                Projectile.netUpdate = true;
             }
 
             public override bool PreDraw(ref Color lightColor)

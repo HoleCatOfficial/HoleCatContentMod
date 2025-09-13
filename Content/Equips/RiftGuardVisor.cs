@@ -35,13 +35,11 @@ namespace DestroyerTest.Content.Equips
 
 		// UpdateArmorSet allows you to give set bonuses to the armor.
 		public override void UpdateArmorSet(Player player) {
-			if (IsArmorSet(player.armor[0], player.armor[1], player.armor[2])) {
-			player.addDPS(15); // Increase dealt damage for all weapon classes by 25%
 			player.AddBuff(ModContent.BuffType<RiftBallBuff>(), 3600); // Adds the RiftBallBuff for 60 seconds (3600 ticks)
-			}
+			player.GetDamage(DamageClass.Ranged) += 0.20f;
+			player.moveSpeed *= 1.75f;
 		}
 
-		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
 			CreateRecipe()
 				.AddIngredient<Living_Shadow>(8)

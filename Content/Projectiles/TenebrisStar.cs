@@ -7,6 +7,7 @@ using DestroyerTest.Content.Particles;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -59,18 +60,15 @@ namespace DestroyerTest.Content.Projectiles
 			Projectile.light = 1f;
 			Projectile.timeLeft = 300;
 			Projectile.tileCollide = false;
-			Projectile.netImportant = true;
-			Projectile.netUpdate = true;
 		}
 
 		public override bool PreDraw(ref Color lightColor)
 		{
+			lightColor = ColorLib.TenebrisGradient;
 			SpriteBatch spriteBatch = Main.spriteBatch;
-			Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
-			Texture2D pixel = TextureAssets.MagicPixel.Value;
+			DTUtils Utility = new DTUtils();
 
-			spriteBatch.End();
-			spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+            Utility.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
 			for (int i = 0; i < TrailPositions.Count - 1; i++)
 			{
@@ -100,33 +98,23 @@ namespace DestroyerTest.Content.Projectiles
 				tenebrisColor *= alpha;
 
 				Main.spriteBatch.Draw(
-					pixel,
+					DTAssetLib.Square.Value,
 					start,
 					null,
 					tenebrisColor,
 					rotation,
-					new Vector2(pixel.Width / 2, pixel.Height / 2),
+					new Vector2(DTAssetLib.Square.Value.Width / 2, DTAssetLib.Square.Value.Height / 2),
 					new Vector2(length, width),
 					SpriteEffects.None,
 					0f
 				);
 			}
 
+			Utility.DrawGlowOnProj(Projectile, lightColor, true);
 
-			Main.EntitySpriteDraw(
-				projectileTexture,
-				Projectile.Center - Main.screenPosition,
-				null,
-				lightColor,
-				Projectile.rotation,
-				projectileTexture.Size() / 2,
-				Projectile.scale * 2,
-				SpriteEffects.None,
-				0
-			);
-
-			spriteBatch.End();
-			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+			Utility.ReturnToDefaultDrawing(spriteBatch);
+			
+			Utility.DrawTextureOnProj(DTAssetLib.Star(1), Projectile, Color.White, true, 0f, 0.35f, 0.35f);
 
 			return false;
 		}
@@ -156,6 +144,7 @@ namespace DestroyerTest.Content.Projectiles
 
 			DelayTimer++;
 			Mode = (int)Projectile.ai[2];
+			Projectile.rotation += Projectile.direction * 0.07f;
 
 			if (Mode > 4 || Mode <= 0)
 			{
@@ -172,7 +161,7 @@ namespace DestroyerTest.Content.Projectiles
 				return;
 			}
 
-			float maxDetectRadius = 1400f;
+			float maxDetectRadius = 2800f;
 
 			if (Mode == 1)
 			{

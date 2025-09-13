@@ -28,8 +28,6 @@ namespace DestroyerTest.Content.Projectiles
 			Projectile.hostile = true; // Make it hostile, so it can damage players
 			Projectile.DamageType = DamageClass.Generic;
 			Projectile.timeLeft = 600;
-			Projectile.netImportant = true;
-			Projectile.netUpdate = true;
 		}
 
 		public override void AI() {

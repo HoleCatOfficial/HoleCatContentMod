@@ -94,8 +94,6 @@ namespace DestroyerTest.Content.Projectiles
 			Projectile.localNPCHitCooldown = -1; // We set this to -1 to make sure the projectile doesn't hit twice
 			Projectile.ownerHitCheck = true; // Make sure the owner of the projectile has line of sight to the target (aka can't hit things through tile).
 			Projectile.DamageType = DamageClass.Melee; // Projectile is a melee projectile
-			Projectile.netImportant = true;
-			Projectile.netUpdate = true;
 		}
 
 		public override void OnSpawn(IEntitySource source) {

@@ -34,27 +34,22 @@ namespace DestroyerTest.Content.Projectiles.NightmareRose
             Projectile.timeLeft = 600; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
             Projectile.tileCollide = false;
             Projectile.alpha = 0;
-            Projectile.netImportant = true;
-			Projectile.netUpdate = true;
         }
 
         public override bool PreDrawExtras()
         {
             SpriteBatch sb = Main.spriteBatch;
+            DTUtils Utility = new DTUtils();
 
-            sb.End(); // End vanilla drawing
-            sb.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-
+            Utility.StartSpriteBatchWithBlending(sb, BlendState.Additive, SpriteSortMode.Immediate);
             TelegraphLine(sb);
-
-            sb.End(); // End additive
-            sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+            Utility.ReturnToDefaultDrawing(sb);
             return false;
         }
 
         public void TelegraphLine(SpriteBatch SB)
         {
-            Texture2D telegraphTexture = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/FlowerBombTelegraphLine").Value;
+            var LineTex = DTAssetLib.Line(1).Value;
             Vector2 start = IntialPos;
 
             if (Projectile.active)
@@ -66,9 +61,9 @@ namespace DestroyerTest.Content.Projectiles.NightmareRose
 
                     Vector2 drawPos = start - Main.screenPosition;
                     float length = 3600f;
-                    Vector2 scale = new Vector2(1f, length / telegraphTexture.Height);
+                    Vector2 scale = new Vector2(1f, length / LineTex.Height);
 
-                    SB.Draw(telegraphTexture, drawPos, null, ColorLib.CursedFlames, angle + MathHelper.PiOver2, new Vector2(telegraphTexture.Width / 2f, 0), scale, SpriteEffects.None, 0f);
+                    SB.Draw(LineTex, drawPos, null, ColorLib.CursedFlames, angle + MathHelper.PiOver2, new Vector2(LineTex.Width / 2f, 0), scale, SpriteEffects.None, 0f);
                 }
             }
         }

@@ -70,8 +70,6 @@ namespace DestroyerTest.Content.Projectiles
             Projectile.tileCollide = false;
             Projectile.scale = 0.1f;
             Projectile.hide = true; // Optional: hide if just visual
-            Projectile.netImportant = true;
-			Projectile.netUpdate = true;
             }
 
             public override void AI()

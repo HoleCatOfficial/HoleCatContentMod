@@ -2436,12 +2436,12 @@ Items: {
 
 	FoxScepter: {
 		DisplayName: Fox Scepter
-		Tooltip: ""
+		Tooltip: Dedicated to: TopFox6 the PipeBomb Fox, for motivating me to follow through with this mod by making me want to impress him.
 	}
 
 	StellarFoxScepter: {
 		DisplayName: Stellar Fox Scepter
-		Tooltip: ""
+		Tooltip: Dedicated to: TopFox6 the PipeBomb Fox, for motivating me to follow through with this mod by making me want to impress him.
 	}
 
 	StellarBow: {
@@ -3157,6 +3157,66 @@ Items: {
 		Tooltip: ""
 		DisplayName: Item_ Rift Clay
 	}
+
+	DarkFireSword: {
+		DisplayName: Dark Fire Sword
+		Tooltip: ""
+	}
+
+	TwilightInferno: {
+		DisplayName: Twilight Inferno
+		Tooltip: ""
+	}
+
+	EmberCane: {
+		Tooltip: ""
+		DisplayName: Ember Cane
+	}
+
+	ThunderScepter: {
+		DisplayName: Thunder Scepter
+		Tooltip: ""
+	}
+
+	DistendedBodyArmor: {
+		DisplayName: Distended Body Armor
+		Tooltip: ""
+	}
+
+	DistendedCuisses: {
+		DisplayName: Distended Cuisses
+		Tooltip: ""
+	}
+
+	DistendedHeadgear: {
+		DisplayName: Distended Headgear
+		Tooltip: ""
+	}
+
+	MalevolenceMantra: {
+		DisplayName: Malevolence Mantra
+		Tooltip: ""
+	}
+
+	ShiningObelisk: {
+		DisplayName: Obelisk of Stolen Light
+		Tooltip: A massive pillar with a basin of plasma at the top. Holding this to the air can dispel certain powerful enemies for a short time.
+	}
+
+	WoodBracelet: {
+		Tooltip: ""
+		DisplayName: Wood Bracelet
+	}
+
+	RiftHalo: {
+		DisplayName: Rift Halo
+		Tooltip: ""
+	}
+
+	RiftVeil: {
+		DisplayName: Rift Veil
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
@@ -3499,6 +3559,21 @@ Projectiles: {
 	FakeAncientLight.DisplayName: Fake Ancient Light
 	CurseProjectile.DisplayName: Curse Projectile
 	GalantineBee.DisplayName: Galantine Bee
+	DarkFireSwordProjectile.DisplayName: Dark Fire Sword Projectile
+	DarkFireball.DisplayName: Dark Fireball
+	TwilightInfernoProjectile.DisplayName: Twilight Inferno Projectile
+	ConstantineScytheMinionProjectile.DisplayName: Constantine Scythe Minion Projectile
+	EmberCaneThrown.DisplayName: Ember Cane Thrown
+	ThunderScepterThrown.DisplayName: Thunder Scepter Thrown
+	EternityBGController.DisplayName: Eternity B G Controller
+	Hellfire.DisplayName: Hellfire
+	BigSoul.DisplayName: Big Soul
+	TormentedSoul2.DisplayName: Tormented Soul
+	TenebrisLance.DisplayName: Tenebris Lance
+	TenebrisDart.DisplayName: Tenebris Dart
+	DarkEnergyOrb.DisplayName: Dark Energy Orb
+	TenebrisMine.DisplayName: Tenebris Mine
+	RiftStar.DisplayName: Rift Star
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.
@@ -3748,6 +3823,16 @@ Buffs: {
 		Description: Your scepter has enchanted honey all over it!
 		DisplayName: Scepter Imbue (Galantine Honey)
 	}
+
+	Muddy: {
+		Description: Mods.DestroyerTest.Buffs.Muddy.Description
+		DisplayName: Muddy
+	}
+
+	ScepterImbueMud: {
+		DisplayName: Scepter Imbue Mud
+		Description: Mods.DestroyerTest.Buffs.ScepterImbueMud.Description
+	}
 }
 
 NPCs: {
@@ -3875,6 +3960,8 @@ NPCs: {
 	ShadeThrowerBlue.DisplayName: Shade Thrower Blue
 	TenebrisElemental.DisplayName: Tenebris Elemental
 	DarkArchmage.DisplayName: Dark Archmage
+	TenebrousConstruct.DisplayName: Tenebrous Construct
+	CorruptSigil.DisplayName: Corrupt Sigil
 }
 
 Keybinds: {
@@ -3921,6 +4008,16 @@ Biomes: {
 	RiftDesert: {
 		DisplayName: Rift Desert
 		TownNPCDialogueName: the Rift Desert
+	}
+
+	ShadeWorldBestiary: {
+		TownNPCDialogueName: the Shade World Bestiary
+		DisplayName: Shade World Bestiary
+	}
+
+	RiftBestiary: {
+		TownNPCDialogueName: the Rift Bestiary
+		DisplayName: Rift Bestiary
 	}
 }
 
@@ -3977,6 +4074,16 @@ Configs: {
 		NodeIdleMusic: {
 			Tooltip: If true, when a node spawns, it will play music even when not attacking. The idle music is different from the battle music, but if they spawn too often for you liking, the ambience will get annoying.
 			Label: Nodes will play Music when Dormant
+		}
+
+		OptimizeGame: {
+			Label: Optimize Game
+			Tooltip: ""
+		}
+
+		EternityMusic: {
+			Label: Eternity Music
+			Tooltip: ""
 		}
 	}
 }

@@ -49,8 +49,6 @@ public class HolyOrb : ModProjectile
 			Projectile.light = 1f; // How much light emit around the projectile
 			Projectile.timeLeft = 600; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
 			Projectile.tileCollide = false;
-			Projectile.netImportant = true;
-			Projectile.netUpdate = true;
 			}
 		public int trailLength = 10;
 		public override bool PreDraw(ref Color lightColor)
@@ -59,11 +57,9 @@ public class HolyOrb : ModProjectile
 
 			SpriteBatch spriteBatch = Main.spriteBatch;
 			Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
+			DTUtils Utility = new DTUtils();
 
-			// --- Draw the main projectile ---
-			spriteBatch.End();
-			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-
+            Utility.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 			Main.EntitySpriteDraw(
 				projectileTexture,
 				Projectile.Center - Main.screenPosition,
@@ -76,45 +72,24 @@ public class HolyOrb : ModProjectile
 				0
 			);
 
-			// --- Draw glow + trail ---
-			spriteBatch.End();
-			spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+			Utility.DrawGlowOnProj(Projectile, Color.Aquamarine, false, 0);
 
-			Texture2D glowTexture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/SimpleParticle").Value;
-			Main.EntitySpriteDraw(
-				glowTexture,
-				Projectile.Center - Main.screenPosition,
-				null,
-				lightColor,
-				Projectile.rotation,
-				glowTexture.Size() / 2,
-				Projectile.scale,
-				SpriteEffects.None,
-				0
-			);
-
-			spriteBatch.End();
-			spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-
-
-			Texture2D longtrailTexture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/Trail2").Value;
-			Vector2 trailOrigin = new(longtrailTexture.Width / 2f, longtrailTexture.Height / 2f);
+			var Trail = DTAssetLib.Trail(2).Value;
+			Vector2 trailOrigin = new Vector2(Trail.Width / 2, Trail.Height / 2);
 
 			for (int i = 0; i < trailLength && i < Projectile.oldPos.Length; i++)
 			{
 				float fade = (float)(trailLength - i) / trailLength;
 				Color trailColor = lightColor * fade * 0.3f;
-				trailColor.A = (byte)(fade * 100);
+				trailColor.A = (byte)(fade * 100); // Transparency blending
 
-				Vector2 drawPosition = Projectile.oldPos[i] + (Projectile.Size / 4f) - Main.screenPosition;
-				float scaleFactor = 0.1f;
-				Main.EntitySpriteDraw(longtrailTexture, drawPosition, null, trailColor, Projectile.rotation, trailOrigin, (Projectile.scale * fade) * scaleFactor, SpriteEffects.None, 0);
+				Vector2 drawPosition = Projectile.oldPos[i] + (Projectile.Size / 4) - Main.screenPosition;
+				float scaleFactor = 0.1f; // Adjust size of the trail
+				Main.EntitySpriteDraw(Trail, drawPosition, null, trailColor, Projectile.rotation, trailOrigin, (Projectile.scale * fade) * scaleFactor, SpriteEffects.None, 0);
 			}
 
-			// Restore normal batch
-			spriteBatch.End();
-			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-
+			Utility.ReturnToDefaultDrawing(spriteBatch);
+			
 			return false;
 		}
 

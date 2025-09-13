@@ -50,9 +50,6 @@ namespace DestroyerTest.Content.Projectiles
 			Projectile.light = 0.4f; // How much light emit around the projectile
 			Projectile.timeLeft = 240; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
 			Projectile.tileCollide = false;
-			Projectile.netImportant = true;
-			Projectile.netUpdate = true;
-
 		}
 
 		public override bool PreDraw(ref Color lightColor)
@@ -60,8 +57,6 @@ namespace DestroyerTest.Content.Projectiles
 			lightColor = ColorLib.StellarColor;
 			SpriteBatch spriteBatch = Main.spriteBatch;
 			DTUtils Utility = new DTUtils();
-			Texture2D projectileTexture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/StarParticle2").Value;
-			Texture2D pixel = Terraria.GameContent.TextureAssets.MagicPixel.Value;
 
             Utility.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
             for (int i = 0; i < TrailPositions.Count - 1; i++)
@@ -88,48 +83,24 @@ namespace DestroyerTest.Content.Projectiles
 				Color rainbowColor = new Color(r, g, b) * alpha;
 
 				Main.spriteBatch.Draw(
-					pixel,
+					DTAssetLib.Square.Value,
 					start,
 					null,
 					rainbowColor,
 					rotation,
-					new Vector2(pixel.Width / 2, pixel.Height / 2),
+					new Vector2(DTAssetLib.Square.Value.Width / 2, DTAssetLib.Square.Value.Height / 2),
 					new Vector2(length, width),
 					SpriteEffects.None,
 					0f
 				);
 			}
 
-			Texture2D glowTexture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/SimpleParticle").Value;
-			Main.EntitySpriteDraw(
-				glowTexture,
-				Projectile.Center - Main.screenPosition,
-				null,
-				lightColor,
-				Projectile.rotation,
-				glowTexture.Size() / 2,
-				Projectile.scale,
-				SpriteEffects.None,
-				0
-			);
-
-			// Draw the base projectile using the default drawing system (Deferred)
-			Main.EntitySpriteDraw(
-				projectileTexture,
-				Projectile.Center - Main.screenPosition,
-				null,
-				Color.White,
-				Projectile.rotation,
-				projectileTexture.Size() / 2,
-				Projectile.scale * 0.6f,
-				SpriteEffects.None,
-				0
-			);
+			Utility.DrawGlowOnProj(Projectile, lightColor, true);
 
 			Utility.ReturnToDefaultDrawing(spriteBatch);
 
-			
-			return false; // Let the default system handle the base projectile drawing
+			Utility.DrawTextureOnProj(DTAssetLib.Star(1), Projectile, Color.White, true, 0f, 0.35f, 0.35f);
+			return false;
 		}
 
 		public List<Vector2> TrailPositions = new();

@@ -42,8 +42,6 @@ namespace DestroyerTest.Content.Projectiles
             Projectile.ignoreWater = true;
             Projectile.timeLeft = 600; // 10 seconds max lifespan
             Projectile.DamageType = DamageClass.Generic;
-            Projectile.netImportant = true;
-			Projectile.netUpdate = true;
         }
 
         public override void SendExtraAI(BinaryWriter writer)

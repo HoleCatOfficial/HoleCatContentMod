@@ -12,6 +12,7 @@ using DestroyerTest.Content.Magic;
 using InnoVault.PRT;
 using DestroyerTest.Content.Particles;
 using System.Text;
+using ReLogic.Content;
 
 namespace DestroyerTest.Content.Projectiles.NightmareRose
 {
@@ -19,12 +20,12 @@ namespace DestroyerTest.Content.Projectiles.NightmareRose
     {
 
         
-			private Player HomingTarget {
-				get => Projectile.ai[0] == 0 ? null : Main.player[(int)Projectile.ai[0] - 1];
-				set {
-					Projectile.ai[0] = value == null ? 0 : value.whoAmI + 1;
-				}
-			}
+        private Player HomingTarget {
+            get => Projectile.ai[0] == 0 ? null : Main.player[(int)Projectile.ai[0] - 1];
+            set {
+                Projectile.ai[0] = value == null ? 0 : value.whoAmI + 1;
+            }
+        }
 
         public override void SetStaticDefaults()
         {
@@ -40,10 +41,7 @@ namespace DestroyerTest.Content.Projectiles.NightmareRose
             Projectile.light = 0.5f;
             Projectile.ignoreWater = true;
             Projectile.timeLeft = 600; // 10 seconds max lifespan
-            Projectile.DamageType = DamageClass.Magic;
             Projectile.tileCollide = false;
-            Projectile.netImportant = true;
-            Projectile.netUpdate = true;
             Projectile.alpha = 255;
         }
 
@@ -51,30 +49,23 @@ namespace DestroyerTest.Content.Projectiles.NightmareRose
         {
             SpriteBatch sb = Main.spriteBatch;
 
-            sb.End(); // End vanilla drawing
-            sb.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, 
-                    DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-
+            DTUtils Utility = new DTUtils();
+            Utility.StartSpriteBatchWithBlending(sb, BlendState.Additive, SpriteSortMode.Immediate);
             DrawSigil(sb);
-
-            sb.End(); // End additive
-            sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp,
-                    DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-
+            Utility.ReturnToDefaultDrawing(sb);
             return false;
         }
 
         public void DrawSigil(SpriteBatch sb)
         {
-            Texture2D glowTexture = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/CorruptSigil").Value;
 
             Main.EntitySpriteDraw(
-                glowTexture,
+                DTAssetLib.CorruptSigil.Value,
                 Projectile.Center - Main.screenPosition,
                 null,
                 ColorLib.CursedFlames,
                 Projectile.rotation,
-                glowTexture.Size() / 2,
+                DTAssetLib.CorruptSigil.Value.Size() / 2,
                 Projectile.scale * 0.4f,
                 SpriteEffects.None,
                 0
@@ -126,51 +117,29 @@ namespace DestroyerTest.Content.Projectiles.NightmareRose
 
             CurrentCenter = Projectile.Center;
 
-            
-          
+            float rad = 1000;
+            Vector2 Spawn = Projectile.Center + Main.rand.NextVector2CircularEdge(rad, rad);
+            Vector2 toOrigin = CurrentCenter - Spawn;
+            toOrigin = toOrigin.SafeNormalize(Vector2.UnitY); // fallback to downwards if zero
 
-            if (player.HeldItem.type == ModContent.ItemType<Contempt>() && player.channel)
+            if (Main.GameUpdateCount % 10 == 0)
             {
-                Projectile.timeLeft = 120;
-                
-                if (HasSpawned == false)
+                SoundEngine.PlaySound(SoundID.Item20);
+
+                for (int a = 0; a < 8; a++)
                 {
-                    PRTLoader.NewParticle(PRTLoader.GetParticleID<RuneCircle1>(), Projectile.Center, Projectile.velocity, ColorLib.CursedFlames, 0.4f);
-                    HasSpawned = true;
-                }
-
-
-
-
-                float rad = 1000;
-                Vector2 Spawn = Projectile.Center + Main.rand.NextVector2CircularEdge(rad, rad);
-                Vector2 toOrigin = CurrentCenter - Spawn;
-                toOrigin = toOrigin.SafeNormalize(Vector2.UnitY); // fallback to downwards if zero
-
-                if (ProjSpawnTimer >= 30)
-                {
-                    SoundEngine.PlaySound(SoundID.Item20);
-
-                    for (int a = 0; a < 8; a++)
+                    Spawn = Projectile.Center + Main.rand.NextVector2CircularEdge(rad, rad);
+                    toOrigin = CurrentCenter - Spawn;
+                    toOrigin = toOrigin.SafeNormalize(Vector2.UnitY);
+                    Projectile Flames = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), Spawn, toOrigin * 20f, ModContent.ProjectileType<CursedFlameProj>(), 60, 2);
+                    if (Flames.Center == Projectile.Center)
                     {
-                        Spawn = Projectile.Center + Main.rand.NextVector2CircularEdge(rad, rad);
-                        toOrigin = CurrentCenter - Spawn;
-                        toOrigin = toOrigin.SafeNormalize(Vector2.UnitY);
-                        Projectile Flames = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), Spawn, toOrigin * 20f, ModContent.ProjectileType<CursedFlameProj>(), 60, 2);
-                        if (Flames.Center == Projectile.Center)
-                        {
-                            Flames.Kill();
-                        }
+                        Flames.Kill();
                     }
-                    PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp1>(), Projectile.Center, Projectile.velocity, ColorLib.CursedFlames, 0.4f);
-                    ProjSpawnTimer = 0;
                 }
-
-
-
+                PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp1>(), Projectile.Center, Projectile.velocity, ColorLib.CursedFlames, 0.4f);
+                ProjSpawnTimer = 0;
             }
-
-
         }
         
         public Player FindClosestPlayer(float maxDetectDistance) {

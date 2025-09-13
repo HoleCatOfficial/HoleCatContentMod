@@ -40,8 +40,6 @@ namespace DestroyerTest.Content.Projectiles
             Projectile.ignoreWater = true;
             Projectile.timeLeft = 600; // 10 seconds max lifespan
             Projectile.DamageType = DamageClass.Ranged;
-            Projectile.netImportant = true;
-			Projectile.netUpdate = true;
         }
 
         public override void AI()

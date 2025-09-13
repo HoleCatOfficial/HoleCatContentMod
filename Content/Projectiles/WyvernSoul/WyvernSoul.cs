@@ -151,7 +151,7 @@ namespace DestroyerTest.Content.Projectiles.WyvernSoul
                         Vector2 rotatedOffset = offset.RotatedBy(RotationOffset);
                         Vector2 finalPos = proj.Center + rotatedOffset;
                         Projectile.Center = finalPos;
-                        Projectile.rotation = Projectile.Center.ToRotation() + MathHelper.PiOver2;
+                        Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
                     }
                     if (!proj.active && proj.type == ModContent.ProjectileType<KeeperSoulProj>())
                     {

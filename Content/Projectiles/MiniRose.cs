@@ -55,11 +55,7 @@ namespace DestroyerTest.Content.Projectiles
 
             for (int i = 0; i < dustAmount; i++)
             {
-                float angle = MathHelper.TwoPi * i / dustAmount;
-                // Offset the angle each tick so the dust rotates around the circle over time
-                float timeOffset = Main.GameUpdateCount * 0.6f; // Adjust speed as needed
-                float dynamicAngle = angle + timeOffset;
-                Vector2 dustPos = Projectile.Center + Radius * new Vector2((float)Math.Cos(dynamicAngle), (float)Math.Sin(dynamicAngle));
+                Vector2 dustPos = Projectile.Center + Main.rand.NextVector2CircularEdge(Radius, Radius);
                 PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], dustPos, Vector2.Zero, ColorLib.CursedFlames, 1.0f);
             }
 

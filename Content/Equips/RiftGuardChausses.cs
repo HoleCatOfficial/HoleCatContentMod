@@ -22,11 +22,6 @@ namespace DestroyerTest.Content.Equips
 			Item.defense = 15; // The amount of defense the item will give when equipped
 		}
 
-		public override void UpdateEquip(Player player) {
-			player.moveSpeed *= 1.75f; // Make the player immune to Fire
-		}
-
-
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
 			CreateRecipe()

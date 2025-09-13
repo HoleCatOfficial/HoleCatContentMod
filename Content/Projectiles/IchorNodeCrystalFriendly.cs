@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using DestroyerTest.Common;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -26,8 +27,6 @@ namespace DestroyerTest.Content.Projectiles
             Projectile.ignoreWater = true; // Does the projectile's speed be influenced by water?
             Projectile.light = 1f; // How much light emit around the projectile
             Projectile.timeLeft = 600; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
-            Projectile.netImportant = true;
-            Projectile.netUpdate = true;
             Projectile.tileCollide = true;
             Projectile.penetrate = 4;
         }
@@ -37,10 +36,6 @@ namespace DestroyerTest.Content.Projectiles
             lightColor = ColorLib.Ichor;
             SpriteBatch spriteBatch = Main.spriteBatch;
             DTUtils Utility = new DTUtils();
-            Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
-            Texture2D GlowTexture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/SimpleParticle").Value;
-			
-			Texture2D pixel = Terraria.GameContent.TextureAssets.MagicPixel.Value;
 
             Utility.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
             for (int i = 0; i < TrailPositions.Count - 1; i++)
@@ -51,7 +46,7 @@ namespace DestroyerTest.Content.Projectiles
 
                 float length = diff.Length();
                 if (length < 0.5f)
-                    continue; // skip tiny wiggle segments
+                    continue;
 
                 float rotation = diff.ToRotation();
 
@@ -59,31 +54,20 @@ namespace DestroyerTest.Content.Projectiles
                 float alpha = MathHelper.Lerp(1f, 0f, i / (float)TrailLength);
                 Color color = lightColor * alpha;
 
-                // Instead of stepping pixel by pixel, just draw one scaled pixel segment:
                 Main.spriteBatch.Draw(
-                    pixel,
+                    DTAssetLib.Square.Value,
                     start,
                     null,
                     color,
                     rotation,
-                    new Vector2(pixel.Width / 2, pixel.Height / 2), // Origin is at the left-middle of the scaled pixel
+                    new Vector2(DTAssetLib.Square.Value.Width / 2, DTAssetLib.Square.Value.Height / 2),
                     new Vector2(length, width),
                     SpriteEffects.None,
                     0f
                 );
             }
 
-            Main.spriteBatch.Draw(
-                    GlowTexture,
-                    Projectile.Center - Main.screenPosition,
-                    null,
-                    lightColor,
-                    Projectile.rotation,
-                    new Vector2(GlowTexture.Width / 2, GlowTexture.Height / 2), // Origin is at the left-middle of the scaled pixel
-                    1f,
-                    SpriteEffects.None,
-                    0f
-                );
+            Utility.DrawGlowOnProj(Projectile, lightColor, false, 0);
 
 
             Utility.ReturnToDefaultDrawing(spriteBatch);
@@ -147,6 +131,18 @@ namespace DestroyerTest.Content.Projectiles
             for (int g = 0; g < 4; g++)
             {
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Ichor, Projectile.velocity.X * 0.2f, Projectile.velocity.Y * 0.2f, 100, default, 1.2f);
+            }
+            int Gore1 = Mod.Find<ModGore>("IchorShard1").Type;
+            int Gore2 = Mod.Find<ModGore>("IchorShard2").Type;
+            int Gore3 = Mod.Find<ModGore>("IchorShard3").Type;
+
+            var entitySource = Projectile.GetSource_Death();
+            DTConfig cfg = ModContent.GetInstance<DTConfig>();
+            if (cfg.OptimizeGame == false)
+            {
+                Gore.NewGore(entitySource, Projectile.position, new Vector2(Main.rand.Next(-4, 4), Main.rand.Next(-4, 4)), Gore1);
+                Gore.NewGore(entitySource, Projectile.position, new Vector2(Main.rand.Next(-4, 4), Main.rand.Next(-4, 4)), Gore2);
+                Gore.NewGore(entitySource, Projectile.position, new Vector2(Main.rand.Next(-4, 4), Main.rand.Next(-4, 4)), Gore3);
             }
         }
     }

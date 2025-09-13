@@ -45,6 +45,15 @@ namespace DestroyerTest.Content.Particles
 
             Scale += 0.1f;
 
+            if (Scale >= 2)
+            {
+                Color *= 0.9f;
+                
+            }
+            if (Scale >= 4)
+            {
+                Kill();
+            }
             
 
 

@@ -36,8 +36,6 @@ namespace DestroyerTest.Content.Projectiles
             Projectile.timeLeft = 180; // 10 seconds max lifespan
             Projectile.DamageType = DamageClass.Magic;
             Projectile.tileCollide = false;
-            Projectile.netImportant = true;
-            Projectile.netUpdate = true;
             Projectile.alpha = 255;
         }
 

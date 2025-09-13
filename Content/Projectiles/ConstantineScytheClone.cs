@@ -43,8 +43,6 @@ namespace DestroyerTest.Content.Projectiles
             Projectile.timeLeft = 120; // 10 seconds max lifespan
             Projectile.tileCollide = false;
             Projectile.DamageType = DamageClass.Melee;
-            Projectile.netImportant = true;
-            Projectile.netUpdate = true;
         }
 
         public override void SendExtraAI(BinaryWriter writer)

@@ -23,8 +23,6 @@ namespace DestroyerTest.Content.Projectiles
             Projectile.tileCollide = false;
             Projectile.ignoreWater = true;
             Projectile.timeLeft = 20; // persistent
-            Projectile.netImportant = true;
-			Projectile.netUpdate = true;
         }
 
         private void AnimateProjectile() {

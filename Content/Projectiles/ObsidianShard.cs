@@ -23,8 +23,6 @@ namespace DestroyerTest.Content.Projectiles
 			Projectile.friendly = true;
 			Projectile.DamageType = ModContent.GetInstance<ScepterClass>();
 			Projectile.timeLeft = 600;
-			Projectile.netImportant = true;
-			Projectile.netUpdate = true;
 		}
 
 		public override void AI() {

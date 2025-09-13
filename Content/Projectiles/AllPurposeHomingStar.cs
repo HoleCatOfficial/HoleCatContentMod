@@ -43,17 +43,15 @@ namespace DestroyerTest.Content.Projectiles
 			Projectile.light = 1f; // How much light emit around the projectile
 			Projectile.timeLeft = 600; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
 			Projectile.tileCollide = false;
-			Projectile.netImportant = true;
-			Projectile.netUpdate = true;
 		}
         
 		public override bool PreDraw(ref Color lightColor)
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
             Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
-             // Glow effect (Immediate drawing with Additive blending)
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+            DTUtils Utility = new DTUtils();
+
+            Utility.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
             // Draw the base projectile using the default drawing system (Deferred)
             Main.EntitySpriteDraw(
@@ -68,14 +66,13 @@ namespace DestroyerTest.Content.Projectiles
                 0
             );
 
-            Texture2D glowTexture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/SimpleParticle").Value;
             Main.EntitySpriteDraw(
-                glowTexture,
+                DTAssetLib.PointGlow.Value,
                 Projectile.Center - Main.screenPosition,
                 null,
                 lightColor,
                 Projectile.rotation,
-                glowTexture.Size() / 2,
+                DTAssetLib.PointGlow.Value.Size() / 2,
                 Projectile.scale,
                 SpriteEffects.None,
                 0

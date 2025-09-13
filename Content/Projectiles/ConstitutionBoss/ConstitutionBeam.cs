@@ -43,13 +43,11 @@ namespace DestroyerTest.Content.Projectiles.ConstitutionBoss
             Color BeamColor = ColorLib.StellarColor;
             lightColor = BeamColor;
             SpriteBatch SB = Main.spriteBatch;
+            DTUtils Utility = new DTUtils();
 
-            SB.End();
-            SB.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-            Main.EntitySpriteDraw(ModContent.Request<Texture2D>("DestroyerTest/Content/Entity/ConstitutionBossOutline").Value, Projectile.Center, null, BeamColor * 0.2f, Projectile.rotation, new Vector2(Projectile.width / 2, Projectile.height / 2), Projectile.scale * 1.4f, SpriteEffects.None, 0);
-            Main.EntitySpriteDraw(ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/ConstitutionBeamGlow").Value, Projectile.Center, null, BeamColor * 0.7f, Projectile.rotation, new Vector2(Projectile.width / 2, Projectile.height / 2), Projectile.scale * 0.5f, SpriteEffects.None, 0);
-            SB.End();
-            SB.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+            Utility.StartSpriteBatchWithBlending(SB, BlendState.Additive, SpriteSortMode.Immediate);
+            Main.EntitySpriteDraw(DTAssetLib.ConstitutionBeamGlow.Value, Projectile.Center, null, BeamColor * 0.7f, Projectile.rotation, new Vector2(Projectile.width / 2, Projectile.height / 2), Projectile.scale * 0.5f, SpriteEffects.None, 0);
+            Utility.ReturnToDefaultDrawing(SB);
             Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, Projectile.Center - Main.screenPosition, null, BeamColor, Projectile.rotation, new Vector2(Projectile.width / 2, Projectile.height / 2), Projectile.scale, SpriteEffects.None, 0);
             return false;
         }

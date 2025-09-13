@@ -34,7 +34,7 @@ namespace DestroyerTest.Content.Particles.CurseRunes
 
         public override void AI()
         {
-            Rotation += Main.rand.NextFloat(0, MathHelper.TwoPi);
+            //Rotation += Main.rand.NextFloat(0, MathHelper.TwoPi);
             if (LifetimeCompletion > 0.3f)
             {
                 Color *= 0.9f;

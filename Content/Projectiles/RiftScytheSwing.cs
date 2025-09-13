@@ -237,20 +237,6 @@ namespace DestroyerTest.Content.Projectiles
 				CurrentStage = AttackStage.Execute; // If attack is over prep time, we go to next stage
 			}
 		}
-		// What if I wanted multiple projectiles in a even spread? (Vampire Knives)
-			// Even Arc style: Multiple Projectile, Even Spread
-			
-			private int lastUsedTime = 0;
-
-            public bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback) {
-                if (lastUsedTime != player.itemTime) { // Ensures it only fires once per use
-                    Projectile.NewProjectile(source, position, velocity * 4.5f, ModContent.ProjectileType<RiftScytheEnergy>(), Projectile.damage, knockback, player.whoAmI);
-                    lastUsedTime = player.itemTime;
-                }
-                return false; 
-            }
-
-
 			
 		// Function facilitating the first half of the swing
         private void ExecuteStrike() {
@@ -260,18 +246,9 @@ namespace DestroyerTest.Content.Projectiles
                 Progress = MathHelper.SmoothStep(0, SWINGRANGE, (1f - UNWIND) * Timer / execTime);
 
                 if (Timer >= execTime) {
+					Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Main.MouseWorld - Projectile.Center, ModContent.ProjectileType<RiftScytheEnergy>(), Projectile.damage, Projectile.knockBack, Projectile.owner);
                     CurrentStage = AttackStage.Unwind;
                 }
-				// Give the player immunity
-				player.immune = true;
-				player.immuneTime = 60; // Set the immunity time (60 ticks = 1 second)
-
-				// Emit light during the swing
-				Lighting.AddLight(player.Center, 3.0f, 1.9f, 1.98f); // Adjust the color and intensity as needed
-
-				
-				
-				
             }
             else {
                 Progress = MathHelper.SmoothStep(0, SPINRANGE, (1f - UNWIND / 2) * Timer / (execTime * SPINTIME));
@@ -293,24 +270,6 @@ namespace DestroyerTest.Content.Projectiles
 				Progress = MathHelper.SmoothStep(0, SWINGRANGE, (1f - UNWIND) + UNWIND * Timer / hideTime);
 				Size = 1f - MathHelper.SmoothStep(0, 1, Timer / hideTime); // Make sword slowly decrease in size as we end the swing to make a smooth hiding animation
 
-				Player player = Main.player[Projectile.owner];
-				// Call the Shoot method
-				Vector2 position = player.Center; // Start at the player's center
-
-				// Calculate direction based on the player's facing direction
-				Vector2 direction = player.DirectionTo(Main.MouseWorld); // Direction towards the mouse position
-				Vector2 velocity = direction * 20f; // Adjust the speed multiplier (20f is an example)
-
-				// Define the projectile type and parameters
-				int type = ModContent.ProjectileType<ConstantineBlob>(); // Your custom projectile
-				int damage = 200; // Example damage
-				float knockback = 2f; // Example knockback
-
-				// Create the source for the projectile
-				EntitySource_ItemUse_WithAmmo source = new EntitySource_ItemUse_WithAmmo(player, null, Type);
-
-				// Call the Shoot function
-				Shoot(player, source, position, velocity, type, damage, knockback);
 				if (Timer >= hideTime) {
 					Projectile.Kill();
 				}

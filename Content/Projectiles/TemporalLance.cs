@@ -28,8 +28,6 @@ namespace DestroyerTest.Content.Projectiles
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;
             Projectile.extraUpdates = 1;
-            Projectile.netImportant = true;
-			Projectile.netUpdate = true;
         }
 
         public override void AI()

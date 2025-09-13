@@ -8,6 +8,7 @@ using DestroyerTest.Common;
 using Microsoft.Build.Execution;
 using DestroyerTest.Content.Buffs;
 using Terraria.ID;
+using DestroyerTest.Content.Dusts;
 
 namespace DestroyerTest.Content.Projectiles.NightmareRose
 {
@@ -40,7 +41,7 @@ namespace DestroyerTest.Content.Projectiles.NightmareRose
 
         public override void AI()
         {
-            Dust.NewDust(Projectile.Center, Projectile.Hitbox.Width, Projectile.Hitbox.Height, DustID.Pixie, 0, 0, 0, ColorLib.Soul, 5f);
+            Dust.NewDust(Projectile.position, Projectile.Hitbox.Width, Projectile.Hitbox.Height, ModContent.DustType<SoulDust>(), 0, 0, 0, ColorLib.Soul, 5f);
             
             
         }

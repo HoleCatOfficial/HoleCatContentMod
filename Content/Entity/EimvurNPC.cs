@@ -105,7 +105,8 @@ namespace DestroyerTest.Content.Entity
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.TheCrimson,
 
 				// Sets your NPC's flavor text in the bestiary.
-				new FlavorTextBestiaryInfoElement("The Blood Goddess herself, condensed to a human form. Her more natural form is a little... Uncomfortable... to most townspeople. She cares a lot for her son."),
+				new FlavorTextBestiaryInfoElement("After a particularly rowdy night messing with village people, Eimvur and a good friend, Heqain; the Goddess of Witchcraft, decided it would be funny to force a random townswoman bear a child for them. While Heqain saw little value in the child, mostly treating all of this as a joke if anything, Eimvur felt a pang of regret for having partaken. The least she can do is stay behind and watch her son live his life."),
+				new FlavorTextBestiaryInfoElement("Their more natural form is a little... Uncomfortable... to most townspeople, so they assume a more humanoid form and express femininity as to fit in better."),
 
 				// You can add multiple elements if you really wanted to
 				// You can also use localization keys (see Localization/en-US.lang)

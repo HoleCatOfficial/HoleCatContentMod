@@ -21,8 +21,6 @@ public class ZoneRingDrawEntity : ModProjectile
 			Projectile.penetrate = -1;
 			Projectile.timeLeft = 120000;
 			Projectile.scale = 1.0f; // Start small
-			Projectile.netImportant = true;
-			Projectile.netUpdate = true;
         }
 
         public override void AI()

@@ -84,8 +84,6 @@ namespace DestroyerTest.Content.Projectiles
 			Projectile.localNPCHitCooldown = -1;
 			Projectile.ownerHitCheck = true;
 			Projectile.DamageType = DamageClass.Melee; 
-			Projectile.netImportant = true;
-			Projectile.netUpdate = true;
 		}
 
 		public override void OnSpawn(IEntitySource source) {
