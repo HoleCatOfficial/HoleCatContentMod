@@ -26,6 +26,24 @@ namespace DestroyerTest.Content.Projectiles.NightmareRose
 
         public ref float DelayTimer => ref Projectile.ai[1];
 
+        public static bool EternityIsActive()
+        {
+            Mod FargosCompat = ModLoader.GetMod("FranciumMultiCrossMod");
+            if (FargosCompat != null)
+            {
+                object result = FargosCompat.Call("CheckEternity");
+                if (result is bool enabled)
+                {
+                    if (enabled)
+                        return true;
+                    else
+                        Main.NewText("Fargos Crossmod found but Eternity not detected.");
+                        return false;
+                }
+            }
+            return false;
+        }
+
         public override void SetStaticDefaults()
         {
             Main.projFrames[Type] = 3;
@@ -180,13 +198,13 @@ namespace DestroyerTest.Content.Projectiles.NightmareRose
             if (HomingTarget == null)
                 return;
 
-            // If found, we rotate the projectile velocity in the direction of the target.
-            // We only rotate by 3 degrees an update to give it a smooth trajectory. Increase the rotation speed here to make tighter turns
-            float length = Projectile.velocity.Length();
-            float targetAngle = Projectile.AngleTo(HomingTarget.Center);
-            Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(30)).ToRotationVector2() * length;
-            Projectile.rotation = Projectile.velocity.ToRotation() - MathHelper.PiOver2;
-            
+            if (!EternityIsActive())
+            {
+                float length = Projectile.velocity.Length();
+                float targetAngle = Projectile.AngleTo(HomingTarget.Center);
+                Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(30)).ToRotationVector2() * length;
+                Projectile.rotation = Projectile.velocity.ToRotation() - MathHelper.PiOver2;
+            }
             
 
         }

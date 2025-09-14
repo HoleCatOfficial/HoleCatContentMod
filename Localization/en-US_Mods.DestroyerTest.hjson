@@ -3217,6 +3217,21 @@ Items: {
 		DisplayName: Rift Veil
 		Tooltip: ""
 	}
+
+	RadiantRose: {
+		Tooltip:'''
+				You will consume a Healing Potion every 2 seconds when below 50% health.
+				Your highest rank healing potions will be used first.
+				If you have potion sickness, your damage will be decreased by 30% every time you auto-heal.
+				When drinking a healing potion manually, the duration of potion sickness to be applied will be reduced by 10%.
+				'''
+		DisplayName: Radiant Rose
+	}
+
+	LifeTalisman: {
+		Tooltip: "Increases pickup range for hearts."
+		DisplayName: Life Talisman
+	}
 }
 
 Projectiles: {
