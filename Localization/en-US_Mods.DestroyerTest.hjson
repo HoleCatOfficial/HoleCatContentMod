@@ -3219,18 +3219,39 @@ Items: {
 	}
 
 	RadiantRose: {
-		Tooltip:'''
-				You will consume a Healing Potion every 2 seconds when below 50% health.
-				Your highest rank healing potions will be used first.
-				If you have potion sickness, your damage will be decreased by 30% every time you auto-heal.
-				When drinking a healing potion manually, the duration of potion sickness to be applied will be reduced by 10%.
-				'''
+		Tooltip:
+			'''
+			You will consume a Healing Potion every 10 seconds when below 50% health.
+			Your highest rank healing potions will be used first.
+			Potions used automatically will inflict Potion Sickness for 30 seconds instead of a minute.
+			If you have potion sickness, your damage will be decreased by 30% and your defense by 25% until potion sickness is lifted.
+			When drinking a healing potion manually, the duration of potion sickness to be applied will be reduced by 10%.
+			Passive life regen is increased.
+			'''
 		DisplayName: Radiant Rose
 	}
 
 	LifeTalisman: {
-		Tooltip: "Increases pickup range for hearts."
+		Tooltip: Increases pickup range for hearts.
 		DisplayName: Life Talisman
+	}
+
+	EphemeralSolvent: {
+		DisplayName: Ephemeral Solvent
+		Tooltip:
+			'''
+			You will consume a Healing Potion every 10 seconds when below 50% health.
+			Your highest rank healing potions will be used first.
+			Potions used automatically will inflict Potion Sickness for 30 seconds instead of a minute.
+			If you have potion sickness, your damage will be decreased by 30% and your defense by 25% until potion sickness is lifted.
+			When drinking a healing potion manually, the duration of potion sickness to be applied will be reduced by 10%.
+			Passive life regen and heart pickup range are massively increased.
+			'''
+	}
+
+	TenebrousSniperRifle: {
+		DisplayName: Tenebrous Sniper Rifle
+		Tooltip: ""
 	}
 }
 
@@ -3589,6 +3610,9 @@ Projectiles: {
 	DarkEnergyOrb.DisplayName: Dark Energy Orb
 	TenebrisMine.DisplayName: Tenebris Mine
 	RiftStar.DisplayName: Rift Star
+	TenebrousBullet1.DisplayName: Tenebrous Bullet1
+	TenebrousBullet2.DisplayName: Tenebrous Bullet2
+	TenebrousBullet3.DisplayName: Tenebrous Bullet3
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.

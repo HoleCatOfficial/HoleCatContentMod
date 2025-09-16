@@ -98,6 +98,7 @@ namespace DestroyerTest.Content.Entity
         public SoundStyle DespShootMine = new SoundStyle("DestroyerTest/Assets/Audio/GoliathPhantomHit") with { Volume = 2, PitchVariance = 1f, MaxInstances = 0 };
         public SoundStyle NodeSpawnSound = new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/NodeSpawn") with { PitchVariance = 1f, MaxInstances = 0 };
         public SoundStyle Napalm = new SoundStyle("DestroyerTest/Assets/Audio/NodeAttackNapalm") with { PitchVariance = 1f, MaxInstances = 0 };
+        public SoundStyle Desperation = new SoundStyle("DestroyerTest/Assets/Audio/RoseDesperation") with { PitchVariance = 1f, MaxInstances = 0 };
 
         public override void SetDefaults()
         {
@@ -302,6 +303,7 @@ namespace DestroyerTest.Content.Entity
         public bool HasTriggeredNodes = false;
         public bool anyNodesAlive;
         public int nodeCount = 0;
+        public int FlameRingCount = 0;
         public int FlameRingVectorCount = Main.rand.Next(8, 23);
         public float FlameRingAngleStep;
         public float FlameRingBaseAngle = 0f;
@@ -546,6 +548,14 @@ namespace DestroyerTest.Content.Entity
 
             if (NPC.life <= NPC.lifeMax * 0.05f && currentState != AttackState.Desperation && currentState != AttackState.KillIdle)
             {
+                foreach (NPC Const in Main.npc)
+                {
+                    if (Const.active && (Const.type == ModContent.NPCType<TenebrousConstruct>() || Const.type == ModContent.NPCType<GigaCursedHammer>()))
+                    {
+                        Const.StrikeInstantKill();
+                    }
+                }
+                SoundEngine.PlaySound(Desperation);
                 currentState = AttackState.Desperation;
                 DesperationTimer = 0; // reset on entry
             }
@@ -814,48 +824,55 @@ namespace DestroyerTest.Content.Entity
                     {
                         if (EternityIsActive())
                         {
-                            SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/ChargeBreak") with { PitchVariance = 1f });
-
-                            for (int i = 0; i < FlameRingVectorCount; i++)
+                            if (FlameRingCount < 9 && Main.GameUpdateCount % 60 == 0)
                             {
-                                float randomOffset = Main.rand.NextFloat(-0.4f, 0.4f);
-                                float angle = FlameRingBaseAngle + i * FlameRingAngleStep + randomOffset;
+                                SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/ChargeBreak") with { PitchVariance = 1f });
 
-                                float radius = FlameRingStartRad;
-                                float curvedAngle = angle - FlameRingRotSpeed * MathHelper.PiOver2;
+                                for (int i = 0; i < FlameRingVectorCount; i++)
+                                {
+                                    float randomOffset = Main.rand.NextFloat(-0.4f, 0.4f);
+                                    float angle = FlameRingBaseAngle + i * FlameRingAngleStep + randomOffset;
 
-                                Vector2 startPos = NPC.Center + radius * new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
-                                Vector2 outwardVel = new Vector2((float)Math.Cos(curvedAngle), (float)Math.Sin(curvedAngle)) * 0.5f; // outward speed
-                                Vector2 spinVel = outwardVel.RotatedBy(MathHelper.PiOver2) * 0.8f; // tangential spin
+                                    float radius = FlameRingStartRad;
+                                    float curvedAngle = angle - FlameRingRotSpeed * MathHelper.PiOver2;
 
-                                Vector2 finalVel = (outwardVel + spinVel).SafeNormalize(Vector2.UnitY) * FlameRingRotSpeed;
+                                    Vector2 startPos = NPC.Center + radius * new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
+                                    Vector2 outwardVel = new Vector2((float)Math.Cos(curvedAngle), (float)Math.Sin(curvedAngle)) * 0.5f; // outward speed
+                                    Vector2 spinVel = outwardVel.RotatedBy(MathHelper.PiOver2) * 0.8f; // tangential spin
 
-                                Projectile.NewProjectile(Entity.GetSource_FromThis(), startPos, finalVel, ModContent.ProjectileType<TenebrisFlames>(), 20, 5, ai2: 2);
+                                    Vector2 finalVel = (outwardVel + spinVel).SafeNormalize(Vector2.UnitY) * FlameRingRotSpeed;
+
+                                    Projectile.NewProjectile(Entity.GetSource_FromThis(), startPos, finalVel, ModContent.ProjectileType<TenebrisFlames>(), 20, 5, ai2: 2);
+                                }
+                                FlameRingCount++;
                             }
-                            ResetState();
-                        }
-                        else
-                        {
-                            SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/Constitution_Jab") with { PitchVariance = 1f, Volume = 3f });
-
-                            for (int i = 0; i < FlameRingVectorCount; i++)
+                            if (FlameRingCount >= 9)
                             {
-                                float randomOffset = Main.rand.NextFloat(-0.4f, 0.4f);
-                                float angle = FlameRingBaseAngle + i * FlameRingAngleStep + randomOffset;
-
-                                float radius = FlameRingStartRad;
-                                float curvedAngle = angle - FlameRingRotSpeed * MathHelper.PiOver2;
-
-                                Vector2 startPos = NPC.Center + radius * new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
-                                Vector2 outwardVel = new Vector2((float)Math.Cos(curvedAngle), (float)Math.Sin(curvedAngle)) * 0.5f; // outward speed
-                                Vector2 spinVel = outwardVel.RotatedBy(MathHelper.PiOver2) * 0.8f; // tangential spin
-
-                                Vector2 finalVel = (outwardVel + spinVel).SafeNormalize(Vector2.UnitY) * FlameRingRotSpeed;
-
-                                Projectile.NewProjectile(Entity.GetSource_FromThis(), startPos, finalVel, ModContent.ProjectileType<CursedNodeCrystal>(), 15, 5, ai2: 2);
+                                ResetState();
                             }
-                            ResetState();
                         }
+                            else
+                            {
+                                SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/Constitution_Jab") with { PitchVariance = 1f, Volume = 3f });
+
+                                for (int i = 0; i < FlameRingVectorCount; i++)
+                                {
+                                    float randomOffset = Main.rand.NextFloat(-0.4f, 0.4f);
+                                    float angle = FlameRingBaseAngle + i * FlameRingAngleStep + randomOffset;
+
+                                    float radius = FlameRingStartRad;
+                                    float curvedAngle = angle - FlameRingRotSpeed * MathHelper.PiOver2;
+
+                                    Vector2 startPos = NPC.Center + radius * new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
+                                    Vector2 outwardVel = new Vector2((float)Math.Cos(curvedAngle), (float)Math.Sin(curvedAngle)) * 0.5f; // outward speed
+                                    Vector2 spinVel = outwardVel.RotatedBy(MathHelper.PiOver2) * 0.8f; // tangential spin
+
+                                    Vector2 finalVel = (outwardVel + spinVel).SafeNormalize(Vector2.UnitY) * FlameRingRotSpeed;
+
+                                    Projectile.NewProjectile(Entity.GetSource_FromThis(), startPos, finalVel, ModContent.ProjectileType<CursedNodeCrystal>(), 15, 5, ai2: 2);
+                                }
+                                ResetState();
+                            }
                         break;
                     }
                 case AttackState.Lances:
@@ -1068,7 +1085,7 @@ namespace DestroyerTest.Content.Entity
                         {
 
                             DesperationTimer++;
-                            if (Main.GameUpdateCount % 100 == 0 && DesperationTimer < 900)
+                            if (Main.GameUpdateCount % 80 == 0 && DesperationTimer < 900)
                             {
                                 SoundEngine.PlaySound(DespShootMine);
                                 SoulBombSpawn();
@@ -1254,23 +1271,41 @@ namespace DestroyerTest.Content.Entity
                 currentState = AttackState.Idle;
                 NPC.ai[0] = NPC.ai[1] = NPC.ai[2] = NPC.ai[3] = 0;
 
-                // Reset public bools and integers (except HammerActive)
-                HasSpawnedMines = false;
-                HasSpawnedSigil = false;
-                HasBoosted = false;
-                Divided = false;
                 FlameTimer = 0;
-                DartTimer = 0;
+                FlameInterval = 0;
                 FlameStartTimer = 60;
                 VileThornCooldown = 0;
                 VileThornCount = 0;
                 MinionSpawnTimer = 0;
                 MinionSpawnCount = 0;
+                MinionFailsafe = 0;
                 SigilTimer = 600;
+                DartTimer = 0;
                 SoulInterval = 0;
                 SoulSpawnCount = 0;
+                DivisionCooldown = 300;
+                ProjSpawnTimer = 0;
+                DesperationTimer = 0;
+                nodeCount = 0;
+                FlameRingCount = 0;
+                FlameRingVectorCount = Main.rand.Next(8, 23);
+                FlameRingAngleStep = 0f;
+                FlameRingBaseAngle = 0f;
+                FlameRingStartRad = 22;
+                FlameRingRotSpeed = Main.rand.NextFloat(-16f, -8f);
+                MineType = -1;
+                DeathIdleTimer = 120;
+                SpawnIdleTimer = 60 * 16;
+                SpawnIdleRoarFlag = 60 * 8;
+                SpawnDarknessAlpha = 0;
+                SpawnCount = 0;
+
+                HasBoosted = false;
+                HasSpawnedSigil = false;
+                HasSpawnedMines = false;
             }
         }
+
 
         public void DrawTelegraph(Vector2 start, Vector2 end, Texture2D texture)
         {

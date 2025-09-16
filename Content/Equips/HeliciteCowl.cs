@@ -8,6 +8,8 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using DestroyerTest.Rarity;
 using DestroyerTest.Content.Tiles.Riftplate;
+using DestroyerTest.Content.Tiles.RiftConfigurator;
+using DestroyerTest.Content.RiftBiome.RiftSurfaceResources;
 
 namespace DestroyerTest.Content.Equips
 {
@@ -49,13 +51,12 @@ namespace DestroyerTest.Content.Equips
 
 		public override void AddRecipes() {
 			CreateRecipe()
-				.AddIngredient<Living_Shadow>(5)
-                .AddIngredient<Item_HeliciteCrystal>(20)
+				.AddIngredient<Living_Shadow>(50)
+				.AddIngredient<Item_HeliciteCrystal>(10)
+				.AddIngredient<Item_RiftClay>(16)
                 .AddIngredient(ItemID.Silk, 15)
-				.AddTile<Tile_RiftCrucible>()
-                .AddCondition(Condition.DownedGolem)
+				.AddTile<Tile_RiftConfiguratorArmory>()
 				.Register();
-            
 		}
 	}
 }

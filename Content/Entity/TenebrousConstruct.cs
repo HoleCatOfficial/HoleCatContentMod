@@ -2,9 +2,11 @@ using DestroyerTest.Common;
 using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
+using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.RiftBiome;
 using DestroyerTest.Content.Tools;
+using InnoVault.PRT;
 using Microsoft.Build.Evaluation;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -363,6 +365,8 @@ namespace DestroyerTest.Content.Entity
 
         public override void OnKill()
         {
+            PRTLoader.NewParticle<Boom5>(NPC.Center, Vector2.Zero, ColorLib.TenebrisGradient, 1f);
+            PRTLoader.NewParticle<BloomRing>(NPC.Center, Vector2.Zero, ColorLib.TenebrisGradient, 1f);
             int Gore1 = Mod.Find<ModGore>("TenebrousConstructGore1").Type;
             int Gore2 = Mod.Find<ModGore>("TenebrousConstructGore2").Type;
             int Gore3 = Mod.Find<ModGore>("TenebrousConstructGore3").Type;

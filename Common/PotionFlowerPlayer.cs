@@ -29,8 +29,9 @@ namespace DestroyerTest.Common
                         if (item.stack <= 0)
                             item.TurnToAir(); // remove if empty
 
-                        player.statLife += heal;
+                        player.statLife = Math.Min(player.statLife + heal, player.statLifeMax2);
                         player.HealEffect(heal);
+                        player.AddBuff(BuffID.PotionSickness, 30 * 60);
                         return true;
                     }
                 }
@@ -40,41 +41,59 @@ namespace DestroyerTest.Common
 
 
         public bool RadiantRose = false;
+        public bool EphemeralSolvent = false;
         public bool LifeTalisman = false;
         public override void ResetEffects()
         {
             RadiantRose = false;
+            EphemeralSolvent = false;
             LifeTalisman = false;
-            Item.lifeGrabRange -= 36;
+            Item.lifeGrabRange = 0;
         }
         public int UseCooldown = 120;
         public override void PostUpdateMiscEffects()
         {
-            if (RadiantRose)
+            if (RadiantRose || EphemeralSolvent)
             {
                 if (Player.statLife < Player.statLifeMax2 / 2)
                 {
-                    if (UseCooldown >= 120)
+                    if (Main.rand.NextBool(5))
+                    {
+                        Dust.NewDust(Player.position, Player.Hitbox.Width, Player.Hitbox.Height, DustID.YellowTorch, Player.velocity.X * 0.5f, Player.velocity.Y * 0.5f, 0, default, 2.25f);
+                        if (EphemeralSolvent)
+                        {
+                            Dust.NewDust(Player.position, Player.Hitbox.Width, Player.Hitbox.Height, DustID.PinkTorch, Player.velocity.X * 0.5f, Player.velocity.Y * 0.5f, 0, default, 2.25f);
+                        }
+                    }
+                    if (UseCooldown >= 600)
                     {
                         if (TryConsumeBestHealingPotion(Player))
                         {
+                            UseCooldown = 0;
                         }
-                        UseCooldown = 0;
                     }
                 }
 
-                if (UseCooldown < 120)
+                if (UseCooldown < 600)
                 {
                     UseCooldown++;
                 }
 
                 if (Player.HasBuff(BuffID.PotionSickness))
+                {
                     Player.GetDamage(DamageClass.Generic) *= 0.70f;
+                    Player.statDefense *= 0.75f;
+                }
             }
             if (LifeTalisman)
             {
                 Player.lifeMagnet = true;
-                Item.lifeGrabRange += 36;
+                Item.lifeGrabRange = 80;
+            }
+            if (EphemeralSolvent)
+            {
+                Player.lifeMagnet = true;
+                Item.lifeGrabRange = 180;
             }
         }
 
@@ -84,6 +103,10 @@ namespace DestroyerTest.Common
             {
                 Player.lifeRegen += 8;
             }
+            if (EphemeralSolvent)
+            {
+                Player.lifeRegen += 24;
+            }
         }
     }
 
@@ -91,14 +114,14 @@ namespace DestroyerTest.Common
     {
         public override bool InstancePerEntity => true;
         public bool RadiantRose = false;
+        public bool EphemeralSolvent = false;
 
         public override void UpdateInventory(Item item, Player player)
         {
             if (item.type == ItemID.LesserHealingPotion ||
-                item.type == ItemID.HealingPotion ||
-                item.type == ItemID.GreaterHealingPotion ||
-                item.type == ItemID.SuperHealingPotion ||
-                item.type == ItemID.RegenerationPotion)
+            item.type == ItemID.HealingPotion ||
+            item.type == ItemID.GreaterHealingPotion ||
+            item.type == ItemID.SuperHealingPotion)
             {
                 if (!item.TryGetGlobalItem<ModifyPotionsItem>(out var g))
                     return;
@@ -109,7 +132,7 @@ namespace DestroyerTest.Common
                 }
                 else
                 {
-                    item.buffTime = 60 * 60; 
+                    item.buffTime = 60 * 60;
                 }
             }
         }

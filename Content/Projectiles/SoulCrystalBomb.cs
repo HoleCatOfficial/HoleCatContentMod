@@ -116,7 +116,7 @@ namespace DestroyerTest.Content.Projectiles
 
         public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
-            target.moveSpeed *= 0.6f;
+            target.AddBuff(ModContent.BuffType<SoulInferno>(), 600);
         }
         
         public override bool OnTileCollide(Vector2 oldVelocity)
@@ -139,7 +139,7 @@ namespace DestroyerTest.Content.Projectiles
             for (int i = 0; i < 8; i++)
             {
                 launchVelocity = launchVelocity.RotatedBy(MathHelper.PiOver4);
-                Projectile.NewProjectile(Entity.GetSource_FromThis(), Projectile.Center, launchVelocity, ModContent.ProjectileType<SoulCrystal>(), 35, 1);
+                Projectile.NewProjectile(Entity.GetSource_FromThis(), Projectile.Center, launchVelocity, ModContent.ProjectileType<SoulCrystal>(), 15, 1);
             }
         }
     }

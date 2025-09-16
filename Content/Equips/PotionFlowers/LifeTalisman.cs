@@ -18,8 +18,16 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            
+
         }
         
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient(ItemID.LifeCrystal, 1)
+                .AddIngredient(ItemID.SunBanner, 1)
+                .AddIngredient(ItemID.OmegaBanner, 1)
+                .Register();
+        }
 	}
 }

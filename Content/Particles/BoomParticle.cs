@@ -180,30 +180,93 @@ namespace DestroyerTest.Content.Particles
             if (Scale >= 29)
             {
                 Color *= 0.9f;
-                
+
             }
             if (Scale >= 34)
             {
                 Kill();
             }
 
-            
+
 
 
 
             //// Relative position change
-                //Position += Main.LocalPlayer.velocity;
+            //Position += Main.LocalPlayer.velocity;
 
 
-                // Apply a fading effect near the end of its life.
-                if (LifetimeCompletion > 0.9f)
-                {
-                    Color *= 0.9f;
-                }
+            // Apply a fading effect near the end of its life.
+            if (LifetimeCompletion > 0.9f)
+            {
+                Color *= 0.9f;
+            }
         }
 
         // Override this drawing function. If you want to customize the drawing, return false here,
         // and the default drawing will not be applied.
         public override bool PreDraw(SpriteBatch spriteBatch) => true;
     }
+
+    internal class Boom4 : BasePRT
+    {
+        public float MaxScale => ai[0] <= 0f ? 1.0f : ai[0];
+
+        public int MaxLifetime => 60;
+
+        public override void SetProperty()
+        {
+            PRTDrawMode = PRTDrawModeEnum.AdditiveBlend;
+            Lifetime = MaxLifetime;
+            Rotation = Main.rand.NextFloat(0, MathHelper.TwoPi);
+            Scale = 0.01f;
+        }
+
+        public override void AI()
+        {
+            Scale += 0.025f;
+
+            if (Scale >= MaxScale * 0.8f)
+                Color *= 0.9f;
+
+            if (Scale >= MaxScale)
+                Kill();
+
+            if (LifetimeCompletion > 0.6f)
+                Color *= 0.9f;
+        }
+
+        public override bool PreDraw(SpriteBatch spriteBatch) => true;
+    }
+    
+    internal class Boom5 : BasePRT
+    {
+        public float MaxScale => ai[0] <= 0f ? 1.0f : ai[0];
+
+        public int MaxLifetime => 60;
+
+        public override void SetProperty()
+        {
+            PRTDrawMode = PRTDrawModeEnum.AdditiveBlend;
+            Lifetime = MaxLifetime;
+            Rotation = Main.rand.NextFloat(0, MathHelper.TwoPi);
+            Scale = 0.01f;
+        }
+
+        public override void AI()
+        {
+            Scale += 0.025f;
+
+            if (Scale >= MaxScale * 0.8f)
+                Color *= 0.9f;
+
+            if (Scale >= MaxScale)
+                Kill();
+
+            if (LifetimeCompletion > 0.6f)
+                Color *= 0.9f;
+        }
+
+        public override bool PreDraw(SpriteBatch spriteBatch) => true;
+    }
+
 }

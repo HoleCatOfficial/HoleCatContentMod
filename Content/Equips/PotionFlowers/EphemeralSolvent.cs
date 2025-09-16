@@ -1,16 +1,17 @@
 using DestroyerTest.Common;
+using DestroyerTest.Content.Resources;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Equips.PotionFlowers
 {
-    public class RadiantRose : ModItem
+    public class EphemeralSolvent : ModItem
     {
         public override void SetDefaults()
         {
-            Item.width = 40;
-            Item.height = 64;
+            Item.width = 56;
+            Item.height = 106;
             Item.maxStack = 1;
             Item.value = 1000;
             Item.accessory = true;
@@ -21,21 +22,21 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
         {
             if (player.TryGetModPlayer<PotionFlowerPlayer>(out PotionFlowerPlayer flower))
             {
-                flower.RadiantRose = true;
+                flower.EphemeralSolvent = true;
             }
             if (Item.TryGetGlobalItem<ModifyPotionsItem>(out ModifyPotionsItem Potions))
             {
-                Potions.RadiantRose = true;
+                Potions.EphemeralSolvent = true;
             }
-
         }
         
         public override void AddRecipes()
         {
             CreateRecipe()
-                .AddIngredient(ItemID.JungleRose, 1)
-                .AddIngredient(ItemID.GreaterHealingPotion, 1)
-                .AddIngredient(ItemID.FallenStar, 6)
+                .AddIngredient<RadiantRose>(1)
+                .AddIngredient<LifeTalisman>(1)
+                .AddIngredient<LifeEcho>(8)
+                .AddIngredient<StellarMatter>(12)
                 .Register();
         }
 	}
