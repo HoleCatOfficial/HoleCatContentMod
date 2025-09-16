@@ -24,7 +24,7 @@ namespace DestroyerTest.Content.RangedItems
             Item.useAnimation = 20;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.autoReuse = true;
-            Item.reuseDelay = 80;
+            Item.reuseDelay = 60;
 
             Item.UseSound = new SoundStyle($"DestroyerTest/Assets/Audio/GoliathPhantomHit")
             {
@@ -34,7 +34,7 @@ namespace DestroyerTest.Content.RangedItems
             };
 
             Item.DamageType = DamageClass.Ranged;
-            Item.damage = 179;
+            Item.damage = 2800;
             Item.knockBack = 9f;
             Item.noMelee = true;
 
@@ -59,7 +59,7 @@ namespace DestroyerTest.Content.RangedItems
 		public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
             if (type == ProjectileID.Bullet)
             {
-                type = Main.rand.Next(new int[] { type, ModContent.ProjectileType<TenebrousBullet2>(), ModContent.ProjectileType<TenebrousBullet3>() });
+                type = Main.rand.Next(new int[] { ModContent.ProjectileType<TenebrousBullet1>(), ModContent.ProjectileType<TenebrousBullet2>(), ModContent.ProjectileType<TenebrousBullet3>() });
             }
         }
 	}
