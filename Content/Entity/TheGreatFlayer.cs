@@ -26,7 +26,7 @@ namespace DestroyerTest.Content.Entity
 
         public override void SetStaticDefaults()
         {
-            
+
         }
 
         public override void SetDefaults()

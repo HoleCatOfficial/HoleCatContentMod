@@ -3253,6 +3253,18 @@ Items: {
 		DisplayName: Tenebrous Sniper Rifle
 		Tooltip: ""
 	}
+
+	LilliesOfImmortality: {
+		DisplayName: Lillies Of Immortality
+		Tooltip:
+			'''
+			You will consume a Healing Potion every 10 seconds when below 50% health.
+			Your highest rank healing potions will be used first.
+			You are immune to potions sickness.
+			When drinking a healing potion manually, the duration of potion sickness to be applied will be reduced by 10%.
+			Passive life regen and heart pickup range are massively increased.
+			'''
+	}
 }
 
 Projectiles: {

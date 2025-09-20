@@ -43,48 +43,58 @@ namespace DestroyerTest.Common
         public bool RadiantRose = false;
         public bool EphemeralSolvent = false;
         public bool LifeTalisman = false;
+        public bool Lillies = false;
         public override void ResetEffects()
         {
             RadiantRose = false;
             EphemeralSolvent = false;
             LifeTalisman = false;
             Item.lifeGrabRange = 0;
+            Lillies = false;
         }
         public int UseCooldown = 120;
         public override void PostUpdateMiscEffects()
         {
-            if (RadiantRose || EphemeralSolvent)
+            if (Lillies)
             {
-                if (Player.statLife < Player.statLifeMax2 / 2)
-                {
-                    if (Main.rand.NextBool(5))
-                    {
-                        Dust.NewDust(Player.position, Player.Hitbox.Width, Player.Hitbox.Height, DustID.YellowTorch, Player.velocity.X * 0.5f, Player.velocity.Y * 0.5f, 0, default, 2.25f);
-                        if (EphemeralSolvent)
-                        {
-                            Dust.NewDust(Player.position, Player.Hitbox.Width, Player.Hitbox.Height, DustID.PinkTorch, Player.velocity.X * 0.5f, Player.velocity.Y * 0.5f, 0, default, 2.25f);
-                        }
-                    }
-                    if (UseCooldown >= 600)
-                    {
-                        if (TryConsumeBestHealingPotion(Player))
-                        {
-                            UseCooldown = 0;
-                        }
-                    }
-                }
-
-                if (UseCooldown < 600)
-                {
-                    UseCooldown++;
-                }
-
-                if (Player.HasBuff(BuffID.PotionSickness))
-                {
-                    Player.GetDamage(DamageClass.Generic) *= 0.70f;
-                    Player.statDefense *= 0.75f;
-                }
+                Player.buffImmune[BuffID.PotionSickness] = true;
             }
+            if (RadiantRose || EphemeralSolvent || Lillies)
+                {
+                    if (Player.statLife < Player.statLifeMax2 / 2)
+                    {
+                        if (Main.rand.NextBool(5))
+                        {
+                            Dust.NewDust(Player.position, Player.Hitbox.Width, Player.Hitbox.Height, DustID.YellowTorch, Player.velocity.X * 0.5f, Player.velocity.Y * 0.5f, 0, default, 2.25f);
+                            if (EphemeralSolvent)
+                            {
+                                Dust.NewDust(Player.position, Player.Hitbox.Width, Player.Hitbox.Height, DustID.PinkTorch, Player.velocity.X * 0.5f, Player.velocity.Y * 0.5f, 0, default, 2.25f);
+                            }
+                            if (Lillies)
+                            {
+                                Dust.NewDust(Player.position, Player.Hitbox.Width, Player.Hitbox.Height, DustID.LastPrism, Player.velocity.X * 0.5f, Player.velocity.Y * 0.5f, 0, default, 2.25f);
+                            }
+                        }
+                        if (UseCooldown >= 600)
+                        {
+                            if (TryConsumeBestHealingPotion(Player))
+                            {
+                                UseCooldown = 0;
+                            }
+                        }
+                    }
+
+                    if (UseCooldown < 600)
+                    {
+                        UseCooldown++;
+                    }
+
+                    if (Player.HasBuff(BuffID.PotionSickness))
+                    {
+                        Player.GetDamage(DamageClass.Generic) *= 0.70f;
+                        Player.statDefense *= 0.75f;
+                    }
+                }
             if (LifeTalisman)
             {
                 Player.lifeMagnet = true;
@@ -115,6 +125,7 @@ namespace DestroyerTest.Common
         public override bool InstancePerEntity => true;
         public bool RadiantRose = false;
         public bool EphemeralSolvent = false;
+        public bool Lillies;
 
         public override void UpdateInventory(Item item, Player player)
         {
@@ -126,7 +137,7 @@ namespace DestroyerTest.Common
                 if (!item.TryGetGlobalItem<ModifyPotionsItem>(out var g))
                     return;
 
-                if (RadiantRose)
+                if (RadiantRose || EphemeralSolvent | Lillies)
                 {
                     item.buffTime = 54 * 60;
                 }
