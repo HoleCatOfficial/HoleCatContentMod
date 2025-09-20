@@ -3933,6 +3933,7 @@ NPCs: {
 		DisplayName: Nightmare Rose
 		DespawnMessage: The amalgamation disbands...
 		ExitBarrierDeath: "{0} attempted to flee."
+		EternityBarrierDeath: "{0} was eradicated."
 	}
 
 	EimvurNPC: {

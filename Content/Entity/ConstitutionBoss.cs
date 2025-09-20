@@ -138,8 +138,27 @@ namespace DestroyerTest.Content.Entity
             }
             return true;
         }
-
-        // Network-synced AI variables
+        public static bool EternityIsActive()
+        {
+            Mod FargosCompat = ModLoader.GetMod("FranciumMultiCrossMod");
+            if (FargosCompat != null)
+            {
+                object result = FargosCompat.Call("CheckEternity");
+                if (result is bool enabled)
+                {
+                    if (enabled)
+                        return true;
+                    else
+                        Main.NewText("Fargos Crossmod found but Eternity not detected.");
+                    return false;
+                }
+            }
+            else
+            {
+                Main.NewText("Fargos Crossmod not found.");
+            }
+            return false;
+        }
         public enum AttackState
         {
             idlefloat,
@@ -1133,7 +1152,7 @@ namespace DestroyerTest.Content.Entity
 
         public override void AI()
         {
-            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
+            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
             float maxDetectRadius = 2000f; // The maximum radius at which a projectile can detect a target
 
             if (DelayTimer < 20)

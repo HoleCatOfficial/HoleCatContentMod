@@ -89,7 +89,7 @@ namespace DestroyerTest.Content.Entity
                 Position = Vector2.Zero,
             };
             NPCID.Sets.NPCBestiaryDrawOffset.Add(NPC.type, drawModifier);
-            Main.npcFrameCount[NPC.type] = 11;
+            Main.npcFrameCount[NPC.type] = 21;
         }
 
         public SoundStyle Kill = new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/NightmareRoseKill") with { Volume = 2, MaxInstances = 0 };
@@ -98,7 +98,7 @@ namespace DestroyerTest.Content.Entity
         public SoundStyle DespShootMine = new SoundStyle("DestroyerTest/Assets/Audio/GoliathPhantomHit") with { Volume = 2, PitchVariance = 1f, MaxInstances = 0 };
         public SoundStyle NodeSpawnSound = new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/NodeSpawn") with { PitchVariance = 1f, MaxInstances = 0 };
         public SoundStyle Napalm = new SoundStyle("DestroyerTest/Assets/Audio/NodeAttackNapalm") with { PitchVariance = 1f, MaxInstances = 0 };
-        public SoundStyle Desperation = new SoundStyle("DestroyerTest/Assets/Audio/RoseDesperation") with { PitchVariance = 1f, MaxInstances = 0 };
+        public SoundStyle Desperation = new SoundStyle("DestroyerTest/Assets/Audio/RoseDesperation") with { MaxInstances = 0 };
 
         public override void SetDefaults()
         {
@@ -137,30 +137,43 @@ namespace DestroyerTest.Content.Entity
 
         public override void FindFrame(int frameHeight)
         {
-            if (currentState == AttackState.Desperation || currentState == AttackState.KillIdle)
+            if (currentState != AttackState.SpawnIdle)
             {
-                NPC.frameCounter++;
-                if (NPC.frameCounter >= 10) // slower desperation animation
+                if (currentState == AttackState.Desperation || currentState == AttackState.KillIdle)
                 {
-                    NPC.frameCounter = 0;
-                    frameIndex++;
-                    if (frameIndex > 10) // clamp at frame 10
-                        frameIndex = 9;
+                    NPC.frameCounter++;
+                    if (NPC.frameCounter >= 10) // slower desperation animation
+                    {
+                        NPC.frameCounter = 0;
+                        frameIndex++;
+                        if (frameIndex > 10) // clamp at frame 10
+                            frameIndex = 9;
+                    }
+                }
+                else
+                {
+                    NPC.frameCounter++;
+                    if (NPC.frameCounter >= 5) // faster normal animation
+                    {
+                        NPC.frameCounter = 0;
+                        frameIndex++;
+                        if (frameIndex > 8) // loop back
+                            frameIndex = 0;
+                    }
                 }
             }
             else
             {
                 NPC.frameCounter++;
-                if (NPC.frameCounter >= 5) // faster normal animation
-                {
-                    NPC.frameCounter = 0;
-                    frameIndex++;
-                    if (frameIndex > 8) // loop back
-                        frameIndex = 0;
-                }
+                    if (NPC.frameCounter >= 30)
+                    {
+                        NPC.frameCounter = 0;
+                        frameIndex++;
+                        if (frameIndex > 20 || frameIndex < 12)
+                            frameIndex = 11;
+                    }
             }
 
-            // Apply frame
             NPC.frame.Y = frameIndex * frameHeight;
         }
 
@@ -529,7 +542,14 @@ namespace DestroyerTest.Content.Entity
 
             if (player.Distance(NPC.Center) >= BorderRad && BorderActive && BorderRad > 150)
             {
-                player.Hurt(new PlayerDeathReason() { CustomReason = NetworkText.FromKey("Mods.DestroyerTest.NPCs.NightmareRose.ExitBarrierDeath", player.name) }, 90, 0, false, true, -1, false, 9, 9, 0);
+                if (!EternityIsActive())
+                {
+                    player.Hurt(new PlayerDeathReason() { CustomReason = NetworkText.FromKey("Mods.DestroyerTest.NPCs.NightmareRose.ExitBarrierDeath", player.name) }, 90, 0, false, true, -1, false, 9, 9, 0);
+                }
+                else
+                {
+                    player.KillMe(new PlayerDeathReason() { CustomReason = NetworkText.FromKey("Mods.DestroyerTest.NPCs.NightmareRose.EternityBarrierDeath", player.name) }, 28000, 0, false);
+                }
             }
             if (player.Distance(NPC.Center) < BorderRad && BorderActive)
             {
