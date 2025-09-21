@@ -1371,8 +1371,8 @@ namespace DestroyerTest.Content.Entity
             NPC.height = 100;
             NPC.aiStyle = -1;
             NPC.damage = 25;
-            NPC.defense = 20;
-            NPC.lifeMax = 10000;
+            NPC.defense = 50;
+            NPC.lifeMax = 17000;
             NPC.HitSound = new SoundStyle("DestroyerTest/Assets/Audio/NodeHit");
             NPC.DeathSound = new SoundStyle("DestroyerTest/Assets/Audio/NodeExplode");
             NPC.noGravity = true;
@@ -1444,8 +1444,11 @@ namespace DestroyerTest.Content.Entity
                     Orbit(300f, 0.05f, OrbitCenter);
                     if (--AwakenTimer <= 0)
                     {
-                        AwakenTimer = 1200;
-                        currentState = AIState.CrystalX;
+                        if (Main.rand.NextBool(5))
+                        {
+                            AwakenTimer = 1200;
+                            currentState = AIState.CrystalX;
+                        }
                     }
                     break;
 
@@ -1517,10 +1520,10 @@ namespace DestroyerTest.Content.Entity
             NPC.Center = Vector2.Lerp(NPC.Center, targetPos, 0.1f);
 
             // once close, drop straight down
-            if (!HasSlammed && Vector2.Distance(NPC.Center, targetPos) < 10f)
+            if (!HasSlammed && Vector2.Distance(NPC.Center, targetPos) < 20f)
             {
                 HasSlammed = true;
-                NPC.velocity = new Vector2(0f, 30f);
+                NPC.velocity += new Vector2(0f, 30f);
             }
 
             // impact check
