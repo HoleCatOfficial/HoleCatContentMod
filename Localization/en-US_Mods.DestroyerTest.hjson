@@ -3265,6 +3265,31 @@ Items: {
 			Passive life regen and heart pickup range are massively increased.
 			'''
 	}
+
+	Scroll: {
+		DisplayName: Scroll
+		Tooltip: ""
+	}
+
+	ChristmasCarol1: {
+		DisplayName: Christmas Carol1
+		Tooltip: ""
+	}
+
+	ChristmasCarol2: {
+		DisplayName: Christmas Carol2
+		Tooltip: ""
+	}
+
+	ChristmasCarol3: {
+		DisplayName: Christmas Carol3
+		Tooltip: ""
+	}
+
+	EtherScroll: {
+		DisplayName: Ether Scroll
+		Tooltip: ""
+	}
 }
 
 Projectiles: {

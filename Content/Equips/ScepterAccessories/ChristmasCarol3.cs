@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Equips.ScepterAccessories
 {
-    public class TreasonScroll : ModItem
+    public class ChristmasCarol3 : ModItem
     {
         public override void SetDefaults()
         {
@@ -23,17 +23,13 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            if (player.TryGetModPlayer<ScrollScepterUsePlayer>(out ScrollScepterUsePlayer Scptr))
-			{
-				Scptr.TreasonScroll = true;
-			}
-        }
-
-        public override void AddRecipes()
-        {
-            CreateRecipe()
-                .AddCustomShimmerResult(ItemID.ShadowFlameHexDoll)
-                .Register();
+            foreach (Projectile proj in Main.projectile)
+            {
+                if (proj.TryGetGlobalProjectile<ScrollScepterProj>(out ScrollScepterProj Scptr))
+                {
+                    Scptr.ChristmasScroll3 = true;
+                }
+            }
         }
     }
 }

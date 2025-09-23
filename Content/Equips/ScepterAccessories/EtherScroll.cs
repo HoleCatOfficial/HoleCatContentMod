@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Equips.ScepterAccessories
 {
-    public class TreasonScroll : ModItem
+    public class EtherScroll : ModItem
     {
         public override void SetDefaults()
         {
@@ -25,15 +25,8 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
         {
             if (player.TryGetModPlayer<ScrollScepterUsePlayer>(out ScrollScepterUsePlayer Scptr))
 			{
-				Scptr.TreasonScroll = true;
+				Scptr.EtherScroll = true;
 			}
-        }
-
-        public override void AddRecipes()
-        {
-            CreateRecipe()
-                .AddCustomShimmerResult(ItemID.ShadowFlameHexDoll)
-                .Register();
         }
     }
 }
