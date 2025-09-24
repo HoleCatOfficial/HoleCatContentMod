@@ -41,10 +41,12 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
         public bool ChristmasScroll3 = false;
         public bool CurseScroll = false;
         public bool EtherScroll = false;
-        public bool FrigidScroll = false;
+        public bool FrigidScroll1 = false;
+        public bool FrigidScroll2 = false;
         public bool HandScroll = false;
         public bool HellfireScroll1 = false;
         public bool PurityScroll = false;
+        public bool SandScroll = false;
         public bool StarScroll = false;
         public bool TreasonScroll = false;
         public bool TurbulenceScroll = false;
@@ -55,10 +57,12 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
             ChristmasScroll3 = false;
             CurseScroll = false;
             EtherScroll = false;
-            FrigidScroll = false;
+            FrigidScroll1 = false;
+            FrigidScroll2 = false;
             HandScroll = false;
             HellfireScroll1 = false;
             PurityScroll = false;
+            SandScroll = false;
             StarScroll = false;
             TreasonScroll = false;
             TurbulenceScroll = false;
@@ -110,7 +114,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
                     }
                 }
             }
-            if (FrigidScroll)
+            if (FrigidScroll1)
             {
                 if (item.DamageType == ModContent.GetInstance<ScepterClass>() && Player.altFunctionUse == 2)
                 {
@@ -123,6 +127,48 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
                                 Player.Center,
                                 velocity.RotatedByRandom(4),
                                 ProjectileID.NorthPoleSpear,
+                                damage,
+                                knockback,
+                                Player.whoAmI
+                            );
+                        }
+                    }
+                }
+            }
+            if (FrigidScroll2)
+            {
+                if (item.DamageType == ModContent.GetInstance<ScepterClass>() && Player.altFunctionUse == 2)
+                {
+                    if (Main.rand.NextBool(3))
+                    {
+                        for (int t = 0; t < 3; t++)
+                        {
+                            Projectile.NewProjectile(
+                                Player.GetSource_ItemUse(item),
+                                Player.Center,
+                                velocity.RotatedByRandom(0.5f),
+                                ModContent.ProjectileType<SnowStormProjectile>(),
+                                damage,
+                                knockback,
+                                Player.whoAmI
+                            );
+                        }
+                    }
+                }
+            }
+            if (SandScroll)
+            {
+                if (item.DamageType == ModContent.GetInstance<ScepterClass>() && Player.altFunctionUse == 2)
+                {
+                    if (Main.rand.NextBool(3))
+                    {
+                        for (int t = 0; t < 3; t++)
+                        {
+                            Projectile.NewProjectile(
+                                Player.GetSource_ItemUse(item),
+                                Player.Center,
+                                velocity.RotatedByRandom(0.5f),
+                                ModContent.ProjectileType<SandStormProjectile>(),
                                 damage,
                                 knockback,
                                 Player.whoAmI

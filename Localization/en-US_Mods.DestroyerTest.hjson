@@ -3325,6 +3325,16 @@ Items: {
 		DisplayName: Mechanical Enhancements
 		Tooltip: ""
 	}
+
+	SandSurgeScroll: {
+		DisplayName: Sand Surge Scroll
+		Tooltip: ""
+	}
+
+	SnowSurgeScroll: {
+		DisplayName: Snow Surge Scroll
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
@@ -3685,6 +3695,8 @@ Projectiles: {
 	TenebrousBullet1.DisplayName: Tenebrous Bullet1
 	TenebrousBullet2.DisplayName: Tenebrous Bullet2
 	TenebrousBullet3.DisplayName: Tenebrous Bullet3
+	SandStormProjectile.DisplayName: Sand Storm Projectile
+	SnowStormProjectile.DisplayName: Snow Storm Projectile
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.

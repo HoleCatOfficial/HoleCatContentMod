@@ -60,7 +60,7 @@ namespace DestroyerTest.Content.Projectiles
 
 		
 
-		public override void OnHitPlayer(Player target, Player.HurtInfo info)
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
 			target.AddBuff(BuffID.CursedInferno, 120);
 		}

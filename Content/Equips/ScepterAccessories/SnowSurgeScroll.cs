@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Equips.ScepterAccessories
 {
-    public class FrigidScroll : ModItem
+    public class SnowSurgeScroll : ModItem
     {
         public override void SetDefaults()
         {
@@ -25,7 +25,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
         {
             if (player.TryGetModPlayer<ScrollScepterUsePlayer>(out ScrollScepterUsePlayer Scptr))
 			{
-				Scptr.FrigidScroll1 = true;
+				Scptr.FrigidScroll2 = true;
 			}
         }
     }
