@@ -1,0 +1,62 @@
+using System.Security.Cryptography.X509Certificates;
+using DestroyerTest.Common;
+using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Magic.ScepterSubclass;
+using DestroyerTest.Content.Resources;
+using DestroyerTest.Content.Tiles;
+using DestroyerTest.Rarity;
+using Microsoft.Xna.Framework;
+using Newtonsoft.Json.Linq;
+using Terraria;
+using Terraria.ID;
+using Terraria.ModLoader;
+
+namespace DestroyerTest.Content.Consumables
+{
+    public class MechanicalEnhancements : ModItem
+    {
+        public override void SetStaticDefaults()
+        {
+            Item.ResearchUnlockCount = 20;
+        }
+
+        public override void SetDefaults()
+        {
+            Item.UseSound = SoundID.DD2_DefenseTowerSpawn;
+            Item.useStyle = ItemUseStyleID.Guitar;
+            Item.useTurn = true;
+            Item.useAnimation = 120;
+            Item.useTime = 120;
+            Item.maxStack = Item.CommonMaxStack;
+            Item.consumable = true;
+            Item.width = 54;
+            Item.height = 40;
+            Item.value = Item.sellPrice(0, 8, 50);
+            Item.rare = ItemRarityID.Red;
+            Item.noUseGraphic = true;
+        }
+
+        public override bool ConsumeItem(Player player)
+        {
+
+            return true;
+        }
+    }
+
+    public class MechanicalEnhancementsPlayer : ModPlayer
+    {
+        public bool EnhancedJorkingMethods = false;
+        public override void ResetEffects()
+        {
+            EnhancedJorkingMethods = false;
+        }
+
+        public override void PostUpdate()
+        {
+            if (EnhancedJorkingMethods)
+            {
+                ScepterClassStats.Range += 8;
+            }
+        }
+    }
+}

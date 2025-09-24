@@ -246,9 +246,9 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
         {
             if (ChristmasScroll1 && IsAThrownScepter)
             {
-                if (Main.rand.NextBool(3))
+                if (Main.rand.NextBool(4))
                 {
-                    for (int t = 0; t < 18; t++)
+                    for (int t = 0; t < 9; t++)
                     {
                         Vector2 outer = projectile.Center + Main.rand.NextVector2CircularEdge(12, 12);
                         Vector2 motion = outer - projectile.Center;
@@ -267,7 +267,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
             }
             if (ChristmasScroll2 && IsAThrownScepter)
             {
-                if (Main.rand.NextBool(3))
+                if (Main.rand.NextBool(12))
                 {
                     for (int t = 0; t < 7; t++)
                     {
@@ -288,9 +288,9 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
             }
             if (ChristmasScroll3 && IsAThrownScepter)
             {
-                if (Main.rand.NextBool(3))
+                if (Main.rand.NextBool(13))
                 {
-                    new DTUtils().RadialSpreadProjectile(ProjectileID.Blizzard, 4, projectile.Center, projectile.damage / 2, (int)projectile.knockBack, 12);
+                    new DTUtils().RadialSpreadProjectile(ProjectileID.Blizzard, 4, projectile.Center, (int)(projectile.damage * 1.75f), (int)projectile.knockBack, 12);
                 }
             }
         }

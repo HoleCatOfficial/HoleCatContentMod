@@ -3290,6 +3290,41 @@ Items: {
 		DisplayName: Ether Scroll
 		Tooltip: ""
 	}
+
+	AdamantPendant: {
+		DisplayName: Adamant Pendant
+		Tooltip: ""
+	}
+
+	AzurePendant: {
+		DisplayName: Azure Pendant
+		Tooltip: ""
+	}
+
+	MythicPendant: {
+		DisplayName: Mythic Pendant
+		Tooltip: ""
+	}
+
+	OrchidPendant: {
+		DisplayName: Orchid Pendant
+		Tooltip: ""
+	}
+
+	RadiantPendant: {
+		DisplayName: Radiant Pendant
+		Tooltip: ""
+	}
+
+	TitanPendant: {
+		DisplayName: Titan Pendant
+		Tooltip: ""
+	}
+
+	MechanicalEnhancements: {
+		DisplayName: Mechanical Enhancements
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
