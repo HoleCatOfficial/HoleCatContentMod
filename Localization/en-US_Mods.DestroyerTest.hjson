@@ -3251,7 +3251,7 @@ Items: {
 
 	TenebrousSniperRifle: {
 		DisplayName: Tenebrous Sniper Rifle
-		Tooltip: ""
+		Tooltip: Because a certain someone likes High Velocity bullets over homing bullets.
 	}
 
 	LilliesOfImmortality: {
@@ -3272,17 +3272,17 @@ Items: {
 	}
 
 	ChristmasCarol1: {
-		DisplayName: Christmas Carol1
+		DisplayName: Christmas Carol
 		Tooltip: ""
 	}
 
 	ChristmasCarol2: {
-		DisplayName: Christmas Carol2
+		DisplayName: Christmas Carol
 		Tooltip: ""
 	}
 
 	ChristmasCarol3: {
-		DisplayName: Christmas Carol3
+		DisplayName: Christmas Carol
 		Tooltip: ""
 	}
 
@@ -3333,6 +3333,11 @@ Items: {
 
 	SnowSurgeScroll: {
 		DisplayName: Snow Surge Scroll
+		Tooltip: ""
+	}
+
+	TenebrisBullet: {
+		DisplayName: Tenebris Bullet
 		Tooltip: ""
 	}
 }
@@ -3697,6 +3702,8 @@ Projectiles: {
 	TenebrousBullet3.DisplayName: Tenebrous Bullet3
 	SandStormProjectile.DisplayName: Sand Storm Projectile
 	SnowStormProjectile.DisplayName: Snow Storm Projectile
+	TenebrisBulletProjectile.DisplayName: Tenebris Bullet Projectile
+	TenebrisSniperBullet.DisplayName: Tenebris Sniper Bullet
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.

@@ -432,7 +432,7 @@ namespace DestroyerTest.Common
                 Variant = 1;
             }
             return ModContent.Request<Texture2D>($"{ParticlePath}/Shine{Variant}");
-        }
+        } 
 
         public static Asset<Texture2D> Star(int Variant)
         {

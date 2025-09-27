@@ -156,30 +156,20 @@ namespace DestroyerTest.Content.Entity
 
         public static bool EternityIsActive()
         {
-            if (ModLoader.HasMod("FranciumMultiCrossMod"))
+            if (ModLoader.TryGetMod("FargowiltasSouls", out Mod frgo))
             {
-                Mod FargosCompat = ModLoader.GetMod("FranciumMultiCrossMod");
-                if (FargosCompat != null)
+                object result = frgo.Call("EternityMode");
+                if (result is bool enabled)
                 {
-                    object result = FargosCompat.Call("CheckEternity");
-                    if (result is bool enabled)
-                    {
-                        if (enabled)
-                            return true;
-                        else
-                            Main.NewText("Fargos Crossmod found but Eternity not detected.");
+                    if (enabled)
+                        return true;
+                    else
                         return false;
-                    }
-                }
-                else
-                {
-                    Main.NewText("Fargos Crossmod not found.");
                 }
             }
             else
             {
-                Main.NewText("Fargos Crossmod not found. Eternity Support not enabled.");
-                return false;
+
             }
             return false;
         }

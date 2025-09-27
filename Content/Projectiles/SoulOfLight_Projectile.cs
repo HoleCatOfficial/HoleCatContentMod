@@ -1,9 +1,11 @@
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 using InnoVault.PRT;
 using DestroyerTest.Content.Particles;
+using System;
 
 namespace DestroyerTest.Content.Projectiles
 {
@@ -71,7 +73,8 @@ namespace DestroyerTest.Content.Projectiles
 
             if (Main.rand.NextBool(3))
             {}
-            Dust.NewDustPerfect(Projectile.Center, DustID.PinkTorch, new Vector2(0, 0.01f), 0, default, 2f);
+            Dust Trail = Dust.NewDustPerfect(Projectile.Center, DustID.PinkTorch, Vector2.Zero, 0, default, 2f);
+            Trail.noGravity = true;
             //PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Projectile.Center, new Vector2(0, 0.01f), Color.Pink, 1f);
 
             float maxDetectRadius = 1600f;
@@ -155,9 +158,62 @@ namespace DestroyerTest.Content.Projectiles
 
         public override void OnKill(int timeLeft)
         {
+            SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/StarBurst2") with {MaxInstances = 0});
             if (ExplodesWithPattern)
             {
-                //A swirl, spiral, or star of some kind made of dusts.
+                Vector2 center = Projectile.Center;
+
+                int points = 300;              // total dusts
+                float a = 2.5f;                // base radius factor
+                float[] exponents = { 0.5f, 1f, -0.4f }; // Fermat, Archimedean, inward spiral
+                float[] ks = { 0.15f, -0.2f }; // for logarithmic r = a e^{kφ}
+
+                for (int i = 0; i < points; i++)
+                {
+                    // pick a spiral type at random
+                    int style = Main.rand.Next(4);
+                    float φ = i * 0.1f + Main.rand.NextFloat(0f, 0.3f); // add jitter
+                    float r = 0f;
+
+                    switch (style)
+                    {
+                        case 0: // power spiral
+                            float n = exponents[Main.rand.Next(exponents.Length)];
+                            r = a * (float)Math.Pow(φ, n);
+                            break;
+                        case 1: // logarithmic
+                            float k = ks[Main.rand.Next(ks.Length)];
+                            r = a * (float)Math.Exp(k * φ);
+                            break;
+                        case 2: // simple Archimedean
+                            r = a * φ;
+                            break;
+                        default: // tight lituus-style
+                            r = a / (float)Math.Sqrt(Math.Max(φ, 0.1f));
+                            break;
+                    }
+
+                    // position on the chosen spiral
+                    Vector2 offset = new Vector2(r, 0f).RotatedBy(φ);
+                    Vector2 spawnPos = center + offset;
+
+                    // outward velocity with some tangent twist
+                    // tangent angle α: tan α = r'/r  (approx here with small delta)
+                    float drdφ = (a * (float)Math.Pow(φ + 0.01f, 1) - r) / 0.01f;
+                    float alpha = (float)Math.Atan2(drdφ, r);
+                    Vector2 vel =
+                        offset.SafeNormalize(Vector2.UnitY).RotatedBy(alpha * 0.5f) *
+                        Main.rand.NextFloat(2f, 6f);
+
+                    int dustType = Main.rand.NextBool() ? DustID.PinkTorch
+                                                        : DustID.PinkCrystalShard;
+
+                    Dust d = Dust.NewDustPerfect(spawnPos, dustType, vel, 150,
+                                                default, Main.rand.NextFloat(1f, 2f));
+                    d.noGravity = true;
+                    d.fadeIn = Main.rand.NextFloat(0.5f, 1.2f);
+
+                }
             }
         }
     }

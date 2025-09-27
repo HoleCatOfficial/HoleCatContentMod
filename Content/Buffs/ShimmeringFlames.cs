@@ -61,12 +61,16 @@ namespace DestroyerTest.Content.Buffs
 				PRTLoader.GetParticleID<ColoredFire7>()
 			};
 
-				PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], Main.rand.NextVector2FromRectangle(npc.getRect()), new Vector2(0f, -0.1f), ColorLib.TenebrisGradient, 1.0f);
+				PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], Main.rand.NextVector2FromRectangle(npc.Hitbox), new Vector2(0f, -0.1f), ColorLib.TenebrisGradient * 0.35f, 1.0f);
+				if (Main.rand.NextBool(6))
+				{
+					PRTLoader.NewParticle(PRTLoader.GetParticleID<SmallShine>(), Main.rand.NextVector2FromRectangle(npc.Hitbox), Vector2.Zero, Color.White, 0.25f);
+				}
 
                 if (npc.lifeRegen > 0)
-                    npc.lifeRegen = 0;
+					npc.lifeRegen = 0;
 
-                npc.lifeRegen -= 24;
+                npc.lifeRegen -= 32;
             }
         }
     }
@@ -99,7 +103,11 @@ namespace DestroyerTest.Content.Buffs
 					PRTLoader.GetParticleID<ColoredFire7>()
 				};
 
-				PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], Main.rand.NextVector2FromRectangle(player.getRect()), new Vector2(0f, -0.1f), ColorLib.TenebrisGradient, 1f);
+				PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], Main.rand.NextVector2FromRectangle(player.Hitbox), new Vector2(0f, -0.1f), ColorLib.TenebrisGradient * 0.35f, 1f);
+				if (Main.rand.NextBool(6))
+				{
+					PRTLoader.NewParticle(PRTLoader.GetParticleID<SmallShine>(), Main.rand.NextVector2FromRectangle(player.Hitbox), Vector2.Zero, Color.White, 0.5f);
+				} 
 				// These lines zero out any positive lifeRegen. This is expected for all bad life regeneration effects
 				if (Player.lifeRegen > 0)
 					Player.lifeRegen = 0;
@@ -107,7 +115,7 @@ namespace DestroyerTest.Content.Buffs
 				// So we set it to 0, and while this debuff is active, it never reaches it
 				Player.lifeRegenTime = 0;
 				// lifeRegen is measured in 1/2 life per second. Therefore, this effect causes 8 life lost per second
-				Player.lifeRegen -= 20;
+				Player.lifeRegen -= 28;
 			}
 		}
 	}

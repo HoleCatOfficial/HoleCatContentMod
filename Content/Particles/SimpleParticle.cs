@@ -14,7 +14,7 @@ namespace DestroyerTest.Content.Particles
         {
             PRTDrawMode = PRTDrawModeEnum.AdditiveBlend;
             Lifetime = MaxLifetime;
-            Scale = Main.rand.NextFloat(0.5f, 1.5f);
+            Scale += Main.rand.NextFloat(0.15f, 0.5f);
         }
 
         public override void AI()

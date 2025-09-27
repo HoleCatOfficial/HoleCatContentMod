@@ -12,8 +12,8 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.RangedItems
 {
-	public class TenebrousSniperRifle : ModItem
-	{
+    public class TenebrousSniperRifle : ModItem
+    {
         public override void SetDefaults()
         {
             Item.width = 226;
@@ -38,10 +38,10 @@ namespace DestroyerTest.Content.RangedItems
             Item.knockBack = 9f;
             Item.noMelee = true;
 
-            Item.shoot = ModContent.ProjectileType<TenebrousBullet1>();
+            Item.shoot = ModContent.ProjectileType<TenebrisSniperBullet>();
             Item.useAmmo = AmmoID.Bullet;
             Item.shootSpeed = 50f;
-		}
+        }
 
         public override void AddRecipes()
         {
@@ -52,15 +52,14 @@ namespace DestroyerTest.Content.RangedItems
                 .Register();
         }
 
-		public override Vector2? HoldoutOffset() {
-			return new Vector2(-50f, 0f);
-		}
+        public override Vector2? HoldoutOffset()
+        {
+            return new Vector2(-50f, 0f);
+        }
 
-		public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
-            if (type == ProjectileID.Bullet)
-            {
-                type = Main.rand.Next(new int[] { ModContent.ProjectileType<TenebrousBullet1>(), ModContent.ProjectileType<TenebrousBullet2>(), ModContent.ProjectileType<TenebrousBullet3>() });
-            }
+        public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
+        {
+            type = ModContent.ProjectileType<TenebrisSniperBullet>();
         }
 	}
 }

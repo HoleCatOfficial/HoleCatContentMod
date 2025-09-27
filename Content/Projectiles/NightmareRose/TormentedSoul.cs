@@ -28,18 +28,20 @@ namespace DestroyerTest.Content.Projectiles.NightmareRose
 
         public static bool EternityIsActive()
         {
-            Mod FargosCompat = ModLoader.GetMod("FranciumMultiCrossMod");
-            if (FargosCompat != null)
+            if (ModLoader.TryGetMod("FargowiltasSouls", out Mod frgo))
             {
-                object result = FargosCompat.Call("CheckEternity");
+                object result = frgo.Call("EternityMode");
                 if (result is bool enabled)
                 {
                     if (enabled)
                         return true;
                     else
-                        Main.NewText("Fargos Crossmod found but Eternity not detected.");
                         return false;
                 }
+            }
+            else
+            {
+
             }
             return false;
         }

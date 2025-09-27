@@ -32,7 +32,7 @@ namespace DestroyerTest.Content.Particles
             Lifetime = MaxLifetime; // Lifetime of 220 to 360 ticks.
             //Color = ColorLib.CelestialGradient;
             //Rotation = Main.rand.NextFloat(0, MathHelper.TwoPi); // Random rotation angle.
-            Scale = Main.rand.NextFloat(0.5f, 1.5f); // Random scale between 0.5 and 1.5.
+            Scale += Main.rand.NextFloat(0.15f, 0.5f);
         }
 
         public override void AI()

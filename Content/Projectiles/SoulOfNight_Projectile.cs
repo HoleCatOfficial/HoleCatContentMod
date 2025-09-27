@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 using InnoVault.PRT;
@@ -70,7 +71,8 @@ namespace DestroyerTest.Content.Projectiles
             AnimateProjectile();
             DeathPrep();
 
-            Dust.NewDustPerfect(Projectile.Center, DustID.DemonTorch, new Vector2(0, 0.01f), 0, default, 2f);
+            Dust Trail = Dust.NewDustPerfect(Projectile.Center, DustID.DemonTorch, Vector2.Zero, 0, default, 2f);
+            Trail.noGravity = true;
             //PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Projectile.Center, new Vector2(0, 0.01f), Color.Purple, 1f);
 
             float maxDetectRadius = 1600f;
@@ -153,6 +155,7 @@ namespace DestroyerTest.Content.Projectiles
 
         public override void OnKill(int timeLeft)
         {
+            SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/StarBurst2") with {MaxInstances = 0});
             if (ExplodesWithPattern)
             {
                 Vector2 center = Projectile.Center;
