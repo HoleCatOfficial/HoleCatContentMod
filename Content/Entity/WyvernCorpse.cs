@@ -456,9 +456,7 @@ namespace DestroyerTest.Content.Entity
 
             int[] MinionSpawnType = new int[]
                 {
-                    ModContent.NPCType<ShadeThrowerBlue>(),
-                    ModContent.NPCType<ShadeThrowerMagenta>(),
-                    ModContent.NPCType<ShadeThrowerTan>(),
+                    ModContent.NPCType<ShadeThrower>(),
                     ModContent.NPCType<TenebrousSlime>(),
                     ModContent.NPCType<DarkArchmage>(),
                     ModContent.NPCType<DarkPredatorHead>(),

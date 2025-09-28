@@ -2,6 +2,7 @@ using DestroyerTest.Common;
 using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Projectiles;
+using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.RiftBiome;
 using Microsoft.Xna.Framework;
 using MonoMod.Cil;
@@ -12,14 +13,15 @@ using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
 
 namespace DestroyerTest.Content.Entity
 {
-	public class DarkArchmage : ModNPC
-	{
+    public class DarkArchmage : ModNPC
+    {
 
         public override void SetStaticDefaults()
         {
@@ -31,8 +33,8 @@ namespace DestroyerTest.Content.Entity
             };
             NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
             Main.npcFrameCount[Type] = 4;
-		}
-		public void immunities()
+        }
+        public void immunities()
         {
             NPCID.Sets.SpecificDebuffImmunity[Type][ModContent.BuffType<ShimmeringFlames>()] = true;
             NPCID.Sets.SpecificDebuffImmunity[Type][ModContent.BuffType<HaepiensBlizzard>()] = true;
@@ -52,32 +54,32 @@ namespace DestroyerTest.Content.Entity
             NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.SoulDrain] = true;
         }
 
-		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
-		{
-			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
-				new FlavorTextBestiaryInfoElement("Originating from the Shade World, they are one of the few sentient beings with a will. They are frightened and disoriented by how bright it is here, and lash out at the slightest disturbance."),
-				new FlavorTextBestiaryInfoElement("In addition to freeing the moon lord from imprisonment, breaking the seal also tore open holes across space, allowing enemies from the shade world to enter yours."),
-			});
+        public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+        {
+            bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
+                new FlavorTextBestiaryInfoElement("Originating from the Shade World, they are one of the few sentient beings with a will. They are frightened and disoriented by how bright it is here, and lash out at the slightest disturbance."),
+                new FlavorTextBestiaryInfoElement("In addition to freeing the moon lord from imprisonment, breaking the seal also tore open holes across space, allowing enemies from the shade world to enter yours."),
+            });
 
-			bestiaryEntry.Info.AddRange([
+            bestiaryEntry.Info.AddRange([
 				// Sets the spawning conditions of this NPC that is listed in the bestiary.
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.TheCrimson
-			]);
-		}
+            ]);
+        }
 
-		SoundStyle Kill = new SoundStyle("DestroyerTest/Assets/Audio/TPKill")
-		{
-			Volume = 0.3f,
-			PitchVariance = 1f,
-			MaxInstances = 0
-		};
+        SoundStyle Kill = new SoundStyle("DestroyerTest/Assets/Audio/TPKill")
+        {
+            Volume = 0.3f,
+            PitchVariance = 1f,
+            MaxInstances = 0
+        };
 
-		SoundStyle Hit = new SoundStyle("DestroyerTest/Assets/Audio/DAHit")
-		{
-			Volume = 0.3f,
-			PitchVariance = 1f,
-			MaxInstances = 0
-		};
+        SoundStyle Hit = new SoundStyle("DestroyerTest/Assets/Audio/DAHit")
+        {
+            Volume = 0.3f,
+            PitchVariance = 1f,
+            MaxInstances = 0
+        };
 
         public override void SetDefaults()
         {
@@ -94,36 +96,40 @@ namespace DestroyerTest.Content.Entity
             NPC.lavaImmune = false;
             NPC.noTileCollide = true;
             NPC.knockBackResist = 0.25f;
-		}
+        }
 
-		public override float SpawnChance(NPCSpawnInfo spawnInfo)
-		{
+        public override float SpawnChance(NPCSpawnInfo spawnInfo)
+        {
             DTUtils Utility = new DTUtils();
             if (spawnInfo.Player.ZoneCrimson && (spawnInfo.Player.ZoneDirtLayerHeight || spawnInfo.Player.ZoneRockLayerHeight) == true && Utility.TenebrisCanSpawnInWorldEvilBiome == true)
             {
                 return 0.1f;
             }
-			return 0f;
-		}
-        
-        public override void FindFrame(int frameHeight) {
-			int startFrame = 0;
-			int finalFrame = 3;
-			int frameSpeed = 5;
-			NPC.frameCounter += 0.5f;
-			NPC.frameCounter += NPC.velocity.Length() / 10f;
-			if (NPC.frameCounter > frameSpeed) {
-				NPC.frameCounter = 0;
-				NPC.frame.Y += frameHeight;
+            return 0f;
+        }
 
-				if (NPC.frame.Y > finalFrame * frameHeight) {
-					NPC.frame.Y = startFrame * frameHeight;
-				}
-			}
-		}
+        public override void FindFrame(int frameHeight)
+        {
+            int startFrame = 0;
+            int finalFrame = 3;
+            int frameSpeed = 5;
+            NPC.frameCounter += 0.5f;
+            NPC.frameCounter += NPC.velocity.Length() / 10f;
+            if (NPC.frameCounter > frameSpeed)
+            {
+                NPC.frameCounter = 0;
+                NPC.frame.Y += frameHeight;
+
+                if (NPC.frame.Y > finalFrame * frameHeight)
+                {
+                    NPC.frame.Y = startFrame * frameHeight;
+                }
+            }
+        }
 
 
-        public override void AI() {
+        public override void AI()
+        {
             NPC.TargetClosest(faceTarget: true);
             Player player = Main.player[NPC.target];
 
@@ -137,11 +143,17 @@ namespace DestroyerTest.Content.Entity
             }
         }
 
-		
+
 
         public override void OnHitPlayer(Player target, Player.HurtInfo hurtInfo)
         {
             target.AddBuff(ModContent.BuffType<ShimmeringFlames>(), 120, true, false);
+        }
+        
+        public override void ModifyNPCLoot(NPCLoot npcLoot)
+        {
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ShadeParticle>(), 3, 6, 14));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ShimmeringSludge>(), 4, 8, 20));
         }
     }
 }

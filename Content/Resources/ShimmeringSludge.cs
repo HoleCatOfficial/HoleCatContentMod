@@ -29,18 +29,4 @@ namespace DestroyerTest.Content.Resources
 			Lighting.AddLight(Item.Center, Color.WhiteSmoke.ToVector3() * 0.55f * Main.essScale);
 		}
 	}
-
-	public class SS_DROP_NPC : GlobalNPC
-	{
-		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot) {
-
-			if (npc.type == ModContent.NPCType<TenebrousSlime>()) {
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ShimmeringSludge>(), 1, 1, 15));
-			}
-			else
-			{
-				Main.NewText("SS drop attempted", Color.Red);
-			}
-		}
-	}
 }

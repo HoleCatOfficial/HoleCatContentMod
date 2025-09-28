@@ -2,6 +2,7 @@ using DestroyerTest.Common;
 using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Projectiles;
+using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.RiftBiome;
 using Microsoft.Xna.Framework;
 using MonoMod.Cil;
@@ -12,6 +13,7 @@ using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
@@ -42,37 +44,39 @@ namespace DestroyerTest.Content.Entity
 		/// </summary>
 		/// <param name="ilContext"> </param>
 
-		public override void SetStaticDefaults() {
+		public override void SetStaticDefaults()
+		{
 			immunities();
 			// Influences how the NPC looks in the Bestiary
-			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers() {
+			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers()
+			{
 				Velocity = 1f, // Draws the NPC in the bestiary as if its walking +1 tiles in the x direction
 				Direction = 1 // -1 is left and 1 is right. NPCs are drawn facing the left by default but ExamplePerson will be drawn facing the right
-				// Rotation = MathHelper.ToRadians(180) // You can also change the rotation of an NPC. Rotation is measured in radians
-				// If you want to see an example of manually modifying these when the NPC is drawn, see PreDraw
+							  // Rotation = MathHelper.ToRadians(180) // You can also change the rotation of an NPC. Rotation is measured in radians
+							  // If you want to see an example of manually modifying these when the NPC is drawn, see PreDraw
 			};
 
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
 		}
 		public void immunities()
-        {
-            NPCID.Sets.SpecificDebuffImmunity[Type][ModContent.BuffType<ShimmeringFlames>()] = true;
-            NPCID.Sets.SpecificDebuffImmunity[Type][ModContent.BuffType<HaepiensBlizzard>()] = true;
-            NPCID.Sets.SpecificDebuffImmunity[Type][ModContent.BuffType<HaepiensInferno>()] = true;
-            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.OnFire] = true;
-            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.OnFire3] = true;
-            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.CursedInferno] = true;
-            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Frostburn] = true;
-            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Frostburn2] = true;
-            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Bleeding] = true;
-            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Dazed] = true;
-            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Electrified] = true;
-            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Frozen] = true;
-            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Oiled] = true;
-            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.ShadowFlame] = true;
-            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Slimed] = true;
-            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.SoulDrain] = true;
-        }
+		{
+			NPCID.Sets.SpecificDebuffImmunity[Type][ModContent.BuffType<ShimmeringFlames>()] = true;
+			NPCID.Sets.SpecificDebuffImmunity[Type][ModContent.BuffType<HaepiensBlizzard>()] = true;
+			NPCID.Sets.SpecificDebuffImmunity[Type][ModContent.BuffType<HaepiensInferno>()] = true;
+			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.OnFire] = true;
+			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.OnFire3] = true;
+			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.CursedInferno] = true;
+			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Frostburn] = true;
+			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Frostburn2] = true;
+			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Bleeding] = true;
+			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Dazed] = true;
+			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Electrified] = true;
+			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Frozen] = true;
+			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Oiled] = true;
+			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.ShadowFlame] = true;
+			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Slimed] = true;
+			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.SoulDrain] = true;
+		}
 
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
 		{
@@ -119,11 +123,11 @@ namespace DestroyerTest.Content.Entity
 
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
-            DTUtils Utility = new DTUtils();
-            if (spawnInfo.Player.ZoneCorrupt == true && Utility.TenebrisCanSpawnInWorldEvilBiome == true)
-            {
-                return 0.1f;
-            }
+			DTUtils Utility = new DTUtils();
+			if (spawnInfo.Player.ZoneCorrupt == true && Utility.TenebrisCanSpawnInWorldEvilBiome == true)
+			{
+				return 0.1f;
+			}
 			return 0f;
 		}
 
@@ -208,11 +212,17 @@ namespace DestroyerTest.Content.Entity
 				}
 			}
 		}
-		
 
-        public override void OnHitPlayer(Player target, Player.HurtInfo hurtInfo)
+
+		public override void OnHitPlayer(Player target, Player.HurtInfo hurtInfo)
+		{
+			target.AddBuff(ModContent.BuffType<ShimmeringFlames>(), 120, true, false);
+		}
+		
+		public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-            target.AddBuff(ModContent.BuffType<ShimmeringFlames>(), 120, true, false);
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ShadeParticle>(), 3, 3, 10));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ShimmeringSludge>(), 4, 3, 13));
         }
     }
 }

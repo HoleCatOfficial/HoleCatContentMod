@@ -3340,6 +3340,16 @@ Items: {
 		DisplayName: Tenebris Bullet
 		Tooltip: ""
 	}
+
+	ShadeParticle: {
+		DisplayName: Shade Particle
+		Tooltip: ""
+	}
+
+	ShimmeringShards: {
+		DisplayName: Shimmering Shards
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
@@ -4089,10 +4099,12 @@ NPCs: {
 	ShadeThrowerMagenta.DisplayName: Shade Thrower Magenta
 	ShadeThrowerTan.DisplayName: Shade Thrower Tan
 	ShadeThrowerBlue.DisplayName: Shade Thrower Blue
+	ShadeThrower.DisplayName: Shade Thrower
 	TenebrisElemental.DisplayName: Tenebris Elemental
 	DarkArchmage.DisplayName: Dark Archmage
 	TenebrousConstruct.DisplayName: Tenebrous Construct
 	CorruptSigil.DisplayName: Corrupt Sigil
+	TenebrousSlinger.DisplayName: Tenebrous Slinger
 }
 
 Keybinds: {
