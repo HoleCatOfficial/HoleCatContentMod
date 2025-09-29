@@ -3343,12 +3343,12 @@ Items: {
 
 	ShadeParticle: {
 		DisplayName: Shade Particle
-		Tooltip: ""
+		Tooltip: A condensed, gritty particle. It smells like asphalt and osmanthus.
 	}
 
 	ShimmeringShards: {
 		DisplayName: Shimmering Shards
-		Tooltip: ""
+		Tooltip: Powerful shards from the Shade World, containing a small amount of energy in each one. Combined, these can accomplish immense things.
 	}
 }
 

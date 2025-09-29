@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Formats.Tar;
 using System.Runtime.CompilerServices;
 using DestroyerTest.Common;
@@ -53,13 +54,17 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
         public void ColorAffectedFX(Color color)
         {
             Lighting.AddLight(Projectile.Center, color.ToVector3() * 0.6f);
-            Dust.NewDustPerfect(Projectile.Center, DustID.TintableDustLighted, Vector2.Zero, 50, color, 1f);
             PRTLoader.NewParticle(Projectile.Center, new Vector2((Projectile.velocity.X / 2) + Main.rand.NextFloat(-1, 1), (Projectile.velocity.Y / 2) + Main.rand.NextFloat(-1, 1)), PRTLoader.GetParticleID<SimpleParticle>(), color, 0.25f);
             if (Main.rand.NextBool(5))
             {
                 PRTLoader.NewParticle(Projectile.Center, new Vector2((Projectile.velocity.X / 2) + Main.rand.NextFloat(-0.5f, 0.5f), (Projectile.velocity.Y / 2) + Main.rand.NextFloat(-0.5f, 0.5f)), PRTLoader.GetParticleID<StarParticle>(), Color.White, 0.25f);
             }
         }
+
+        private List<Vector2> trailPoints = new List<Vector2>();
+        private Vector2 lastTickPosition;
+        private const int MaxTrailCount = 60;
+        private const int DustSpawnStep = 1; 
 
         public override void AI()
         {
@@ -74,6 +79,41 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
             if (Variant == 3)
             {
                 ColorAffectedFX(ColorLib.TenebrisBeige);
+            }
+
+            int subdivisions = Projectile.extraUpdates + 1;
+            Vector2 start = lastTickPosition;
+            Vector2 end = Projectile.Center;
+
+            if (start == Vector2.Zero) // safety for first frame
+                start = end;
+
+            // Insert interpolated points between last tick and this tick.
+            // We append newest at the end, and trim the oldest at index 0 when full.
+            for (int s = 1; s <= subdivisions; s++)
+            {
+                float t = s / (float)subdivisions;
+                Vector2 pos = Vector2.Lerp(start, end, t);
+                trailPoints.Add(pos);
+                if (trailPoints.Count > MaxTrailCount)
+                    trailPoints.RemoveAt(0); // drop oldest
+            }
+
+            lastTickPosition = end;
+
+            // Spawn dust along the trail (tweak DustSpawnStep for performance)
+            Color color = Variant switch
+            {
+                1 => ColorLib.TenebrisBlue,
+                2 => ColorLib.TenebrisMagenta,
+                _ => ColorLib.TenebrisBeige
+            };
+
+            for (int i = 0; i < trailPoints.Count; i += DustSpawnStep)
+            {
+                Vector2 p = trailPoints[i];
+                var d = Dust.NewDustPerfect(p, DustID.TintableDustLighted, Vector2.Zero, 50, color, 1f);
+                d.noGravity = true;
             }
 
             if (DelayTimer < 10)
@@ -102,6 +142,7 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
             int turnspeed = 8;
             Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(turnspeed)).ToRotationVector2() * length;
         }
+
 
         public NPC FindClosestNPC(float maxDetectDistance)
         {
