@@ -44,7 +44,7 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
             Projectile.friendly = true; // Can the projectile deal damage to enemies?
             Projectile.hostile = false; // Can the projectile deal damage to the player?
             Projectile.ignoreWater = true; // Does the projectile's speed be influenced by water?
-            Projectile.timeLeft = 240; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
+            Projectile.timeLeft = 360; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
             Projectile.tileCollide = false;
             Projectile.penetrate = 1;
             Projectile.hide = true;
@@ -64,7 +64,7 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
         private List<Vector2> trailPoints = new List<Vector2>();
         private Vector2 lastTickPosition;
         private const int MaxTrailCount = 60;
-        private const int DustSpawnStep = 1; 
+        private const int DustSpawnStep = 3; 
 
         public override void AI()
         {
@@ -139,7 +139,8 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
 
             float length = Projectile.velocity.Length();
             float targetAngle = Projectile.AngleTo(HomingTarget.Center);
-            int turnspeed = 8;
+            int turnspeed = 5;
+            turnspeed += 10;
             Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(turnspeed)).ToRotationVector2() * length;
         }
 

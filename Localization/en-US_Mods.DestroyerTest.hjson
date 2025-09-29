@@ -3714,6 +3714,7 @@ Projectiles: {
 	SnowStormProjectile.DisplayName: Snow Storm Projectile
 	TenebrisBulletProjectile.DisplayName: Tenebris Bullet Projectile
 	TenebrisSniperBullet.DisplayName: Tenebris Sniper Bullet
+	TenebrisGemstone.DisplayName: Tenebris Gemstone
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.

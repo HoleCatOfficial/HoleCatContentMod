@@ -481,6 +481,8 @@ namespace DestroyerTest.Content.Entity
         public int DeathInterval = 10;
         public int BorderDustType;
         public static bool ShouldCenterCameraOnNPC = false;
+        public float VolumeOnSpawn = 0f;
+        public bool RecordedVolume = false;
         public override void AI()
         {
             NPC.TargetClosest();
@@ -656,24 +658,29 @@ namespace DestroyerTest.Content.Entity
 
             if (!Main.dedServ && currentState == AttackState.SpawnIdle)
             {
+                if (!RecordedVolume)
+                {
+                    VolumeOnSpawn = Main.musicVolume;
+                    RecordedVolume = true;
+                }
                 Main.musicVolume -= 0.1f;
                 Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/RoseIdle");
             }
             if (!Main.dedServ && !EternityIsActive() && currentState != AttackState.SpawnIdle)
             {
-                Main.musicVolume = 1;
+                Main.musicVolume = VolumeOnSpawn;
                 Main.musicFade[Music] = 1;
                 Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Tribulation");
             }
             if (!Main.dedServ && EternityIsActive() && !cfg.EternityMusic && currentState != AttackState.SpawnIdle)
             {
-                Main.musicVolume = 1;
+                Main.musicVolume = VolumeOnSpawn;
                 Main.musicFade[Music] = 1;
                 Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Tribulation");
             }
             if (!Main.dedServ && EternityIsActive() && cfg.EternityMusic && currentState != AttackState.SpawnIdle)
             {
-                Main.musicVolume = 1;
+                Main.musicVolume = VolumeOnSpawn;
                 Main.musicFade[Music] = 1;
                 Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Placeholder3");
             }
@@ -727,7 +734,7 @@ namespace DestroyerTest.Content.Entity
                         {
                             VingetteScale += 0.75f;
                         }
-                        
+
 
                         int IdleMax = -1;
                         if (!Main.expertMode && !Main.masterMode && !EternityIsActive())
@@ -869,28 +876,28 @@ namespace DestroyerTest.Content.Entity
                                 ResetState();
                             }
                         }
-                            else
+                        else
+                        {
+                            SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/Constitution_Jab") with { PitchVariance = 1f, Volume = 3f });
+
+                            for (int i = 0; i < FlameRingVectorCount; i++)
                             {
-                                SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/Constitution_Jab") with { PitchVariance = 1f, Volume = 3f });
+                                float randomOffset = Main.rand.NextFloat(-0.4f, 0.4f);
+                                float angle = FlameRingBaseAngle + i * FlameRingAngleStep + randomOffset;
 
-                                for (int i = 0; i < FlameRingVectorCount; i++)
-                                {
-                                    float randomOffset = Main.rand.NextFloat(-0.4f, 0.4f);
-                                    float angle = FlameRingBaseAngle + i * FlameRingAngleStep + randomOffset;
+                                float radius = FlameRingStartRad;
+                                float curvedAngle = angle - FlameRingRotSpeed * MathHelper.PiOver2;
 
-                                    float radius = FlameRingStartRad;
-                                    float curvedAngle = angle - FlameRingRotSpeed * MathHelper.PiOver2;
+                                Vector2 startPos = NPC.Center + radius * new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
+                                Vector2 outwardVel = new Vector2((float)Math.Cos(curvedAngle), (float)Math.Sin(curvedAngle)) * 0.5f; // outward speed
+                                Vector2 spinVel = outwardVel.RotatedBy(MathHelper.PiOver2) * 0.8f; // tangential spin
 
-                                    Vector2 startPos = NPC.Center + radius * new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
-                                    Vector2 outwardVel = new Vector2((float)Math.Cos(curvedAngle), (float)Math.Sin(curvedAngle)) * 0.5f; // outward speed
-                                    Vector2 spinVel = outwardVel.RotatedBy(MathHelper.PiOver2) * 0.8f; // tangential spin
+                                Vector2 finalVel = (outwardVel + spinVel).SafeNormalize(Vector2.UnitY) * FlameRingRotSpeed;
 
-                                    Vector2 finalVel = (outwardVel + spinVel).SafeNormalize(Vector2.UnitY) * FlameRingRotSpeed;
-
-                                    Projectile.NewProjectile(Entity.GetSource_FromThis(), startPos, finalVel, ModContent.ProjectileType<CursedNodeCrystal>(), 15, 5, ai2: 2);
-                                }
-                                ResetState();
+                                Projectile.NewProjectile(Entity.GetSource_FromThis(), startPos, finalVel, ModContent.ProjectileType<CursedNodeCrystal>(), 15, 5, ai2: 2);
                             }
+                            ResetState();
+                        }
                         break;
                     }
                 case AttackState.Lances:

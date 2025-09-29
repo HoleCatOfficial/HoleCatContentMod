@@ -11,6 +11,7 @@ using Terraria.Audio;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using DestroyerTest.Content.Projectiles;
 
 namespace DestroyerTest.Content.Equips
 {
@@ -125,10 +126,9 @@ namespace DestroyerTest.Content.Equips
 					SoundEngine.PlaySound(SoundID.DD2_EtherianPortalDryadTouch with { Pitch = 0 }, Player.Center);
 					SoundFlag1 = true;
 				}
-				//Player.GetDamage(DamageClass.Ranged) *= 1.2f;
+				Player.GetDamage(DamageClass.Ranged) *= 1.1f;
 				Player.GetCritChance(DamageClass.Ranged) += 6;
-				Player.GetAttackSpeed(DamageClass.Ranged) += 0.1f;
-				Dust.NewDust(Player.position, Player.Hitbox.Width, Player.Hitbox.Height, ModContent.DustType<TintableDustElectric>(), (Player.velocity.X / 2) + Main.rand.NextFloat(-2, 2), (Player.velocity.Y / 2) + Main.rand.NextFloat(-2, 2), 200, ColorLib.TenebrisGradient, 0.2f);
+				Dust.NewDust(Player.position, Player.Hitbox.Width, Player.Hitbox.Height, ModContent.DustType<TintableDustElectric>(), (Player.velocity.X / 2) + Main.rand.NextFloat(-2, 2), (Player.velocity.Y / 2) + Main.rand.NextFloat(-2, 2), 200, ColorLib.TenebrisGradient, 0.4f);
 			}
 			if (Charge2)
 			{
@@ -137,10 +137,9 @@ namespace DestroyerTest.Content.Equips
 					SoundEngine.PlaySound(SoundID.DD2_EtherianPortalDryadTouch with { Pitch = 1 }, Player.Center);
 					SoundFlag2 = true;
 				}
-				//Player.GetDamage(DamageClass.Ranged) *= 1.3f;
+				Player.GetDamage(DamageClass.Ranged) *= 1.2f;
 				Player.GetCritChance(DamageClass.Ranged) += 12;
-				Player.GetAttackSpeed(DamageClass.Ranged) += 0.15f;
-				Dust.NewDust(Player.position, Player.Hitbox.Width, Player.Hitbox.Height, ModContent.DustType<TintableDustElectric>(), (Player.velocity.X / 2) + Main.rand.NextFloat(-2, 2), (Player.velocity.Y / 2) + Main.rand.NextFloat(-2, 2), 100, ColorLib.TenebrisGradient, 0.4f);
+				Dust.NewDust(Player.position, Player.Hitbox.Width, Player.Hitbox.Height, ModContent.DustType<TintableDustElectric>(), (Player.velocity.X / 2) + Main.rand.NextFloat(-2, 2), (Player.velocity.Y / 2) + Main.rand.NextFloat(-2, 2), 100, ColorLib.TenebrisGradient, 0.6f);
 			}
 			if (Charge3)
 			{
@@ -150,26 +149,49 @@ namespace DestroyerTest.Content.Equips
 					SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/Destitute") with { PitchVariance = 0.2f }, Player.Center);
 					SoundFlag3 = true;
 				}
-				//Player.GetDamage(DamageClass.Ranged) *= 1.4f;
+				Player.GetDamage(DamageClass.Ranged) *= 1.4f;
 				Player.GetCritChance(DamageClass.Ranged) += 18;
-				Player.GetAttackSpeed(DamageClass.Ranged) += 0.2f;
-				Dust.NewDust(Player.position, Player.Hitbox.Width, Player.Hitbox.Height, ModContent.DustType<TintableDustElectric>(), (Player.velocity.X / 2) + Main.rand.NextFloat(-2, 2), (Player.velocity.Y / 2) + Main.rand.NextFloat(-2, 2), 0, ColorLib.TenebrisGradient, 0.6f);
+				Dust.NewDust(Player.position, Player.Hitbox.Width, Player.Hitbox.Height, ModContent.DustType<TintableDustElectric>(), (Player.velocity.X / 2) + Main.rand.NextFloat(-2, 2), (Player.velocity.Y / 2) + Main.rand.NextFloat(-2, 2), 0, ColorLib.TenebrisGradient, 1f);
+				if (ComboCounter >= 120)
+				{
+					SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/NodeSpawn") with { PitchVariance = 0.2f }, Player.Center);
+					Charge1 = Charge2 = Charge3 = false;
+					SoundFlag1 = SoundFlag2 = SoundFlag3 = false;
+					ComboCounter = 0;
+				}
 			}
 		}
 		
 		public override void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
-        {
-            Vector2 drawPos = Player.Center - Main.screenPosition;
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            drawPos.Y -= 200;
+		{
+			Vector2 drawPos = Player.Center - Main.screenPosition;
+			SpriteBatch spriteBatch = Main.spriteBatch;
+			drawPos.Y -= 200;
 
-            string text = $"Combo: {ComboCounter.ToString()}";
+			string text = $"Combo: {ComboCounter.ToString()}";
 
-            if (Active)
-            {
-                Utils.DrawBorderString(spriteBatch, text, drawPos, ColorLib.TenebrisGradient, 1f, 0.5f, 0.5f);
-            }
-        }
+			if (Active)
+			{
+				Utils.DrawBorderString(spriteBatch, text, drawPos, ColorLib.TenebrisGradient, 1f, 0.5f, 0.5f);
+			}
+		}
+
+	}
+
+	public class TenebrousDemonItemModifier : GlobalItem
+	{
+		public override bool InstancePerEntity => true;
+        public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+		{
+			if (player.TryGetModPlayer<TenebrousDemon>(out TenebrousDemon Demon) && item.DamageType == DamageClass.Ranged)
+			{
+				if (Demon.Charge3)
+				{
+					Projectile.NewProjectile(source, position, velocity.RotatedByRandom(1f), ModContent.ProjectileType<TenebrisStar>(), damage / 2, knockback, player.whoAmI, ai2: 1);
+				}
+			}
+			return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
+		}
 
 	}
 
@@ -181,12 +203,16 @@ namespace DestroyerTest.Content.Equips
 			if (player.TryGetModPlayer<TenebrousDemon>(out TenebrousDemon Demon) && projectile.DamageType == DamageClass.Ranged)
 			{
 				Demon.ComboExpireTimer = 0;
-				if (Demon.ComboCounter < TenebrousDemon.ComboTierThreshold)
+				if (Demon.ComboCounter < TenebrousDemon.ComboTierThreshold && !Demon.Charge3)
+				{
+					Demon.ComboCounter++;
+				}
+				if (Demon.ComboCounter <= 120 && Demon.Charge3)
 				{
 					Demon.ComboCounter++;
 				}
 			}
-        }
+		}
 
 	}
 }
