@@ -62,6 +62,7 @@ namespace DestroyerTest.Content.Entity
         public SoundStyle Roar = new SoundStyle("DestroyerTest/Assets/Audio/Corpse/CorpseRoar1") with { PitchVariance = 1.0f };
         public SoundStyle Kill = new SoundStyle("DestroyerTest/Assets/Audio/Corpse/CorpseRoar2") with { PitchVariance = 1.0f, Volume = 4 };
         public SoundStyle Teeth = new SoundStyle("DestroyerTest/Assets/Audio/Corpse/ToothShoot") with { PitchVariance = 1.0f };
+        public SoundStyle Kill2 = new SoundStyle("DestroyerTest/Assets/Audio/Corpse/CorpseRoar3") with { };
         public SoundStyle Desperation = new SoundStyle("DestroyerTest/Assets/Audio/Corpse/Desperation");
         public static LocalizedText BestiaryText
         {
@@ -155,30 +156,20 @@ namespace DestroyerTest.Content.Entity
 
         public static bool EternityIsActive()
         {
-            if (ModLoader.HasMod("FranciumMultiCrossMod"))
+            if (ModLoader.TryGetMod("FargowiltasSouls", out Mod frgo))
             {
-                Mod FargosCompat = ModLoader.GetMod("FranciumMultiCrossMod");
-                if (FargosCompat != null)
+                object result = frgo.Call("EternityMode");
+                if (result is bool enabled)
                 {
-                    object result = FargosCompat.Call("CheckEternity");
-                    if (result is bool enabled)
-                    {
-                        if (enabled)
-                            return true;
-                        else
-                            Main.NewText("Fargos Crossmod found but Eternity not detected.");
+                    if (enabled)
+                        return true;
+                    else
                         return false;
-                    }
-                }
-                else
-                {
-                    Main.NewText("Fargos Crossmod not found.");
                 }
             }
             else
             {
-                Main.NewText("Fargos Crossmod not found. Eternity Support not enabled.");
-                return false;
+
             }
             return false;
         }
@@ -452,11 +443,11 @@ namespace DestroyerTest.Content.Entity
 
             if (!Main.dedServ && !EternityIsActive())
             {
-                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/EvilBoss1");
+                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Tribulation");
             }
             if (!Main.dedServ && EternityIsActive() && !cfg.EternityMusic)
             {
-                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/EvilBoss1");
+                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Tribulation");
             }
             if (!Main.dedServ && EternityIsActive() && cfg.EternityMusic)
             {
@@ -465,9 +456,7 @@ namespace DestroyerTest.Content.Entity
 
             int[] MinionSpawnType = new int[]
                 {
-                    ModContent.NPCType<ShadeThrowerBlue>(),
-                    ModContent.NPCType<ShadeThrowerMagenta>(),
-                    ModContent.NPCType<ShadeThrowerTan>(),
+                    ModContent.NPCType<ShadeThrower>(),
                     ModContent.NPCType<TenebrousSlime>(),
                     ModContent.NPCType<DarkArchmage>(),
                     ModContent.NPCType<DarkPredatorHead>(),
@@ -479,7 +468,6 @@ namespace DestroyerTest.Content.Entity
             {
                 case attackType.Follow:
                     {
-                        NPC.aiStyle = NPCAIStyleID.Worm;
                         FollowTime++;
                         if (FollowTime == 360)
                         {
@@ -664,7 +652,6 @@ namespace DestroyerTest.Content.Entity
                     break;
                 case attackType.OrganBurst:
                     {
-                        NPC.aiStyle = NPCAIStyleID.CursedSkull;
                         float numberProjectiles = 5 + Main.rand.Next(3); // 3, 4, or 5 shots
                         float rotation = MathHelper.ToRadians(45);
                         Vector2 position = NPC.Center;
@@ -777,9 +764,9 @@ namespace DestroyerTest.Content.Entity
                             SoundEngine.PlaySound(Teeth);
                             float RotOffset = MathHelper.PiOver2;
                             // Helper method to spawn teeth from an origin point
-                            void ShootTeeth(Vector2 origin)
+                            void ShootTeeth(Vector2 origin, float Offset)
                             {
-                                Vector2 velocity = NPC.velocity.RotatedBy(RotOffset);
+                                Vector2 velocity = NPC.velocity.RotatedBy(Offset);
 
                                 if (!EternityIsActive())
                                 {
@@ -805,27 +792,26 @@ namespace DestroyerTest.Content.Entity
                                             velocity,
                                             ModContent.ProjectileType<TenebrisFlames>(),
                                             40,
-                                            1
+                                            1,
+                                            ai2: 2
                                         );
                                     }
                                 }
                             }
 
                             // Shoot from the head
-                            ShootTeeth(NPC.Center);
+                            ShootTeeth(NPC.Center, RotOffset);
 
                             // Shoot from all body segments that belong to this NPC
                             for (int n = 0; n < Main.maxNPCs; n++)
                             {
                                 if (Main.npc[n].active && Main.npc[n].realLife == NPC.whoAmI)
                                 {
-                                    if (n % 2 != 0)
-                                    {
-                                        RotOffset = -MathHelper.PiOver2;
-                                    }
-                                    ShootTeeth(Main.npc[n].Center);
+                                    float segOffset = (n % 2 != 0) ? -MathHelper.PiOver2 : MathHelper.PiOver2;
+                                    ShootTeeth(Main.npc[n].Center, segOffset);
                                 }
                             }
+
                             HasShotTeeth = true;
                         }
 
@@ -839,10 +825,9 @@ namespace DestroyerTest.Content.Entity
 
                 case attackType.FleshBombShoot:
                     {
-                        NPC.aiStyle = NPCAIStyleID.Worm;
                         if (BombSpawnTimer == 0 && BombSpawnCount == 0)
                         {
-                            DesperationOrbitCenter = NPC.Center;
+                            DesperationOrbitCenter = player.Center;
                         }
                         BombSpawnTimer++;
                         if (!EternityIsActive())
@@ -908,7 +893,7 @@ namespace DestroyerTest.Content.Entity
                         if (SoundFlag1 == false)
                         {
                             Main.NewText("The Wyvern is channeling its soul energy!", ColorLib.Soul);
-                            SoundEngine.PlaySound(Kill);
+                            SoundEngine.PlaySound(Kill2);
                             SoundEngine.PlaySound(Desperation);
                             SoundFlag1 = true;
                         }
@@ -978,6 +963,7 @@ namespace DestroyerTest.Content.Entity
             BombSpawnCount = 0;
             CircleLanceCount = 0;
             ToothCount = 10;
+            HasShotTeeth = false;
             flag1 = false;
         }
 
@@ -1352,7 +1338,7 @@ namespace DestroyerTest.Content.Entity
             // Other bosses or additional Mod.Call can be made here.
         }
     }
-    
+
 
     public class IchorNode : ModNPC
     {
@@ -1373,8 +1359,8 @@ namespace DestroyerTest.Content.Entity
             NPC.height = 100;
             NPC.aiStyle = -1;
             NPC.damage = 25;
-            NPC.defense = 20;
-            NPC.lifeMax = 10000;
+            NPC.defense = 50;
+            NPC.lifeMax = 17000;
             NPC.HitSound = new SoundStyle("DestroyerTest/Assets/Audio/NodeHit");
             NPC.DeathSound = new SoundStyle("DestroyerTest/Assets/Audio/NodeExplode");
             NPC.noGravity = true;
@@ -1384,7 +1370,6 @@ namespace DestroyerTest.Content.Entity
             NPC.timeLeft = 150000;
             //NPC.boss = true;
             NPC.npcSlots = 12f;
-            NPC.netUpdate = true;
             NPC.netID = ModContent.NPCType<IchorNode>();
         }
 
@@ -1398,83 +1383,162 @@ namespace DestroyerTest.Content.Entity
         {
             return false;
         }
-        
-        
 
+        public enum AIState
+        {
+            Idle,
+            Slam,
+            CrystalX
+        }
+
+        public AIState currentState;
+        public List<NPC> allNodes = new List<NPC>();
+        public bool InPositionToSlam = false;
+        public bool HasSlammed = false;
+        public int ScreenIntervals;
+        public int AwakenTimer = 1200;
+        public Vector2 OrbitCenter;
         public override void AI()
         {
+            NPC.TargetClosest();
+            Player player = Main.player[NPC.target];
 
-
-            NPC bossNPC = null;
-
-            for (int i = 0; i < Main.maxNPCs; i++)
-            {
-                NPC n = Main.npc[i];
-                if (n.active && n.type == ModContent.NPCType<WyvernCorpseHead>())
-                {
-                    bossNPC = n;
-                    break;
-                }
-            }
+            // Find the boss once per tick
+            NPC bossNPC = Main.npc.FirstOrDefault(n =>
+                n.active && n.type == ModContent.NPCType<WyvernCorpseHead>());
 
             if (bossNPC == null)
             {
-                NPC.active = false;
+                NPC.active = false; // despawn if parent is gone
                 return;
             }
-            else
+
+            // cache orbit center
+            
+
+            // rebuild node list fresh each tick
+            allNodes.Clear();
+            for (int i = 0; i < Main.maxNPCs; i++)
+                if (Main.npc[i].active && Main.npc[i].type == Type)
+                    allNodes.Add(Main.npc[i]);
+
+            ScreenIntervals = allNodes.Count;
+
+            // --- state machine ---
+            switch (currentState)
             {
-                NPC.active = true;
+                case AIState.Idle:
+                    OrbitCenter = bossNPC.Center;
+                    Orbit(300f, 0.05f, OrbitCenter);
+                    if (--AwakenTimer <= 0)
+                    {
+                        if (Main.rand.NextBool(5))
+                        {
+                            AwakenTimer = 1200;
+                            currentState = AIState.CrystalX;
+                        }
+                    }
+                    break;
+
+                case AIState.CrystalX:
+                    OrbitCenter = player.Center;
+                    Cross();
+                    break;
+
+                case AIState.Slam:
+                    OrbitCenter = bossNPC.Center;
+                    Slam();
+                    break;
+            }
+        }
+
+
+        public int CrossCount = 0;
+        public void Cross()
+        {
+            // drift slowly toward the player instead of orbiting
+            Player player = Main.player[NPC.target];
+            Vector2 direction = player.Center - NPC.Center;
+            if (direction != Vector2.Zero)
+                direction.Normalize();
+
+            // gentle glide speed
+            NPC.velocity = direction * 2f;
+
+            // fire crystals every 3 seconds
+            if (Main.GameUpdateCount % 180 == 0)
+            {
+                new DTUtils().RadialSpreadProjectile(
+                    ModContent.ProjectileType<IchorNodeCrystal2>(),
+                    4, NPC.Center, 20, 4, 8);
+                CrossCount++;
             }
 
-            // Access ModNPC safely
-            WyvernCorpseHead modBoss = bossNPC.ModNPC as WyvernCorpseHead;
-
-            // If NPCHead is a custom property
-            Vector2 OrbitCenter = modBoss != null ? modBoss.Center : bossNPC.Center;
-
-            bool ParentAlive = Main.npc.Any(n => n.active && n.type == ModContent.NPCType<WyvernCorpseHead>());
-
-            if (ParentAlive)
+            // after a few volleys, switch to Slam
+            if (CrossCount > 4)
             {
-                NPC.active = true;
+                CrossCount = 0;
+                currentState = AIState.Slam;
+                NPC.velocity = Vector2.Zero; // stop drifting
             }
-            else
-            {
-                NPC.active = false;
-            }
+        }
 
-            // Orbit settings
-            float radius = 300f;
-            float speed = 0.05f;
+        public void Orbit(float radius, float speed, Vector2 center)
+        {
             float angle = Main.GameUpdateCount * speed;
 
-            // Get a list of all active CursedFlameNode NPCs
-            List<NPC> allNodes = new List<NPC>();
-
-            for (int i = 0; i < Main.maxNPCs; i++)
-            {
-                NPC node = Main.npc[i];
-                if (node.active && node.type == ModContent.NPCType<IchorNode>())
-                {
-                    allNodes.Add(node);
-                }
-            }
-
-            // Sort the list by whoAmI to ensure consistent order across clients and frames
+            // Sort nodes to get stable order across clients
             allNodes.Sort((a, b) => a.whoAmI.CompareTo(b.whoAmI));
-
             int index = allNodes.IndexOf(NPC);
-            int total = allNodes.Count;
+            int total = Math.Max(allNodes.Count, 1);
 
-            // Calculate spacing
-            float spacing = MathHelper.TwoPi / (total == 0 ? 1 : total);
+            float spacing = MathHelper.TwoPi / total;
             float myAngle = angle + index * spacing;
 
-            // Final orbit
             Vector2 offset = new Vector2(MathF.Cos(myAngle), MathF.Sin(myAngle)) * radius;
-            NPC.Center = OrbitCenter + offset - new Vector2(NPC.width / 2, NPC.height / 2);
-
+            NPC.Center = center + offset - new Vector2(NPC.width / 2, NPC.height / 2);
         }
+
+        public void Slam()
+        {
+
+            Vector2 targetPos = Main.player[NPC.target].Center + new Vector2(0, -120f);
+
+            // slide horizontally toward your random target
+            NPC.Center = Vector2.Lerp(NPC.Center, targetPos, 0.1f);
+
+            // once close, drop straight down
+            if (!HasSlammed && Vector2.Distance(NPC.Center, targetPos) < 20f)
+            {
+                HasSlammed = true;
+                NPC.velocity += new Vector2(0f, 30f);
+            }
+
+            // impact check
+            if (HasSlammed)
+            {
+                int tileX = (int)(NPC.Center.X / 16f);
+                int tileY = (int)((NPC.Center.Y + NPC.height / 2) / 16f);
+                if (WorldGen.SolidTile(tileX, tileY))
+                {
+                    new DTUtils().RadialSpreadProjectile(
+                        ProjectileID.GoldenShowerHostile, 5,
+                        NPC.Bottom, 15, 3, 10);
+
+                    SoundEngine.PlaySound(
+                        new SoundStyle("DestroyerTest/Assets/Audio/StarHammerThrow"),
+                        NPC.Center);
+
+                    NPC.velocity = Vector2.Zero;
+                    HasSlammed   = false;
+                    currentState = AIState.Idle;
+                    AwakenTimer  = 1200; // reset for next cycle
+                }
+            }
+}
+
+
+
+
     }
 }

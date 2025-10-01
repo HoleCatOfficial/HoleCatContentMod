@@ -67,10 +67,10 @@ namespace DestroyerTest.Content.MeleeWeapons
             Vector2 velocity2 = new Vector2(speed * (float)Math.Cos(MathHelper.ToRadians(angle2)), speed * (float)Math.Sin(MathHelper.ToRadians(angle2)));
 
             // Fire the first projectile (SoulOfLight_Projectile)
-            Projectile.NewProjectile(source, position, velocity1, ModContent.ProjectileType<SoulOfLight_Projectile>(), damage, knockback, player.whoAmI);
+            Projectile.NewProjectile(source, position, velocity1 * 2, ModContent.ProjectileType<SoulOfLight_Projectile>(), damage, knockback, player.whoAmI);
 
             // Fire the second projectile (SoulOfNight_Projectile)
-            Projectile.NewProjectile(source, position, velocity2, ModContent.ProjectileType<SoulOfNight_Projectile>(), damage, knockback, player.whoAmI);
+            Projectile.NewProjectile(source, position, velocity2 * 2, ModContent.ProjectileType<SoulOfNight_Projectile>(), damage, knockback, player.whoAmI);
 
             // Return false to prevent the default projectile from being fired
             return false;

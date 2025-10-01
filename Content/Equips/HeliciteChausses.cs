@@ -6,6 +6,8 @@ using DestroyerTest.Content.Tiles;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Rarity;
 using DestroyerTest.Content.Tiles.Riftplate;
+using DestroyerTest.Content.Tiles.RiftConfigurator;
+using DestroyerTest.Content.RiftBiome.RiftSurfaceResources;
 
 namespace DestroyerTest.Content.Equips
 {
@@ -23,17 +25,15 @@ namespace DestroyerTest.Content.Equips
 		}
 
 		public override void UpdateEquip(Player player) {
-			player.jumpBoost = true;
+			
 		}
-
-		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
 			CreateRecipe()
-				.AddIngredient<Living_Shadow>(5)
-                .AddIngredient<Item_HeliciteCrystal>(20)
+				.AddIngredient<Living_Shadow>(50)
+				.AddIngredient<Item_HeliciteCrystal>(15)
+				.AddIngredient<Item_RiftClay>(10)
                 .AddIngredient(ItemID.Silk, 15)
-				.AddTile<Tile_RiftCrucible>()
-                .AddCondition(Condition.DownedGolem)
+				.AddTile<Tile_RiftConfiguratorArmory>()
 				.Register();
 		}
 	}

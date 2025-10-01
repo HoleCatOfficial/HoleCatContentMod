@@ -7,6 +7,8 @@ using DestroyerTest.Content.Tiles;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Rarity;
 using DestroyerTest.Content.Tiles.Riftplate;
+using DestroyerTest.Content.Tiles.RiftConfigurator;
+using DestroyerTest.Content.RiftBiome.RiftSurfaceResources;
 
 namespace DestroyerTest.Content.Equips
 {
@@ -25,12 +27,11 @@ namespace DestroyerTest.Content.Equips
         
 		public override void AddRecipes() {
 			CreateRecipe()
-				.AddIngredient<Living_Shadow>(10)
-                .AddIngredient<Item_HeliciteCrystal>(25)
+				.AddIngredient<Living_Shadow>(60)
+				.AddIngredient<Item_HeliciteCrystal>(30)
+				.AddIngredient<Item_RiftClay>(22)
                 .AddIngredient(ItemID.Silk, 15)
-                .AddIngredient(ItemID.Robe)
-				.AddTile<Tile_RiftCrucible>()
-                .AddCondition(Condition.DownedGolem)
+				.AddTile<Tile_RiftConfiguratorArmory>()
 				.Register();
 		}
 	}

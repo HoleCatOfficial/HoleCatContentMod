@@ -13,30 +13,32 @@ using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Common;
 using Terraria.DataStructures;
 using DestroyerTest.Content.Buffs;
+using Terraria.GameContent.ItemDropRules;
+using DestroyerTest.Content.Resources;
 
 namespace DestroyerTest.Content.Entity
 {
-	// These three class showcase usage of the WormHead, WormBody and WormTail classes from Worm.cs
-	internal class DarkGluttonHead : WormHead
-	{
-		public override int BodyType => ModContent.NPCType<DarkGluttonBody>();
+    // These three class showcase usage of the WormHead, WormBody and WormTail classes from Worm.cs
+    internal class DarkGluttonHead : WormHead
+    {
+        public override int BodyType => ModContent.NPCType<DarkGluttonBody>();
 
-		public override int TailType => ModContent.NPCType<DarkGluttonTail>();
+        public override int TailType => ModContent.NPCType<DarkGluttonTail>();
 
-		SoundStyle Roar = new SoundStyle("DestroyerTest/Assets/Audio/DPRoar") // The sound played when the worm roars, can be overridden by the tail or body if desired
-		{
-			Volume = 0.3f,
-			PitchVariance = 1f,
-			MaxInstances = 0
-		};
+        SoundStyle Roar = new SoundStyle("DestroyerTest/Assets/Audio/DPRoar") // The sound played when the worm roars, can be overridden by the tail or body if desired
+        {
+            Volume = 0.3f,
+            PitchVariance = 1f,
+            MaxInstances = 0
+        };
         SoundStyle Kill = new SoundStyle("DestroyerTest/Assets/Audio/DPKill") // The sound played when the worm roars, can be overridden by the tail or body if desired
-		{
-			Volume = 0.3f,
-			PitchVariance = 1f,
-			MaxInstances = 0
-		};
+        {
+            Volume = 0.3f,
+            PitchVariance = 1f,
+            MaxInstances = 0
+        };
 
-		public override void SetStaticDefaults()
+        public override void SetStaticDefaults()
         {
             immunities();
             var drawModifier = new NPCID.Sets.NPCBestiaryDrawModifiers()
@@ -68,7 +70,7 @@ namespace DestroyerTest.Content.Entity
             NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Slimed] = true;
             NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.SoulDrain] = true;
         }
-		public override void SetDefaults()
+        public override void SetDefaults()
         {
 
             // Head is 10 defense, body 20, tail 30.
@@ -82,37 +84,37 @@ namespace DestroyerTest.Content.Entity
             NPC.DeathSound = Kill;
         }
 
-		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
-		{
-			// We can use AddRange instead of calling Add multiple times in order to add multiple items at once
-			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
-				new FlavorTextBestiaryInfoElement("Originating from the Shade World, this clump of sludge has parasitized a devourer. The poor thing is still writhing in agony."),
-				new FlavorTextBestiaryInfoElement("In addition to freeing the moon lord from imprisonment, breaking the seal also tore open holes across space, allowing enemies from the shade world to enter yours."),
-			});
+        public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+        {
+            // We can use AddRange instead of calling Add multiple times in order to add multiple items at once
+            bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
+                new FlavorTextBestiaryInfoElement("Originating from the Shade World, this clump of sludge has parasitized a devourer. The poor thing is still writhing in agony."),
+                new FlavorTextBestiaryInfoElement("In addition to freeing the moon lord from imprisonment, breaking the seal also tore open holes across space, allowing enemies from the shade world to enter yours."),
+            });
 
-			bestiaryEntry.Info.AddRange([
+            bestiaryEntry.Info.AddRange([
 				// Sets the spawning conditions of this NPC that is listed in the bestiary.
 				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.TheCorruption
-			]);
-		}
+            ]);
+        }
 
-		public override float SpawnChance(NPCSpawnInfo spawnInfo)
-		{
+        public override float SpawnChance(NPCSpawnInfo spawnInfo)
+        {
             DTUtils Utility = new DTUtils();
             if (spawnInfo.Player.ZoneCorrupt == true && Utility.TenebrisCanSpawnInWorldEvilBiome == true)
             {
                 return 0.1f;
             }
-			return 0f;
-		}
-        
+            return 0f;
+        }
+
         public override void OnSpawn(IEntitySource source)
         {
-            
+
             base.OnSpawn(source);
         }
 
-		public override void Init()
+        public override void Init()
         {
             // Set the segment variance
             // If you want the segment length to be constant, set these two properties to the same value
@@ -122,12 +124,13 @@ namespace DestroyerTest.Content.Entity
             CommonWormInit(this);
         }
 
-		// This method is invoked from ExampleWormHead, ExampleWormBody and ExampleWormTail
-		public static void CommonWormInit(Worm worm) {
-			// These two properties handle the movement of the worm
-			worm.MoveSpeed = 5.5f;
-			worm.Acceleration = 0.045f;
-		}
+        // This method is invoked from ExampleWormHead, ExampleWormBody and ExampleWormTail
+        public static void CommonWormInit(Worm worm)
+        {
+            // These two properties handle the movement of the worm
+            worm.MoveSpeed = 5.5f;
+            worm.Acceleration = 0.045f;
+        }
 
         public int AttackTimer = 0;
         public bool DashFlag = false;
@@ -206,6 +209,12 @@ namespace DestroyerTest.Content.Entity
             }
 
         }
+        
+        public override void ModifyNPCLoot(NPCLoot npcLoot)
+        {
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ShadeParticle>(), 3, 4, 17));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ShimmeringSludge>(), 4, 2, 9));
+        }
 	}
 
     internal class DarkGluttonBody : WormBody
@@ -249,7 +258,7 @@ namespace DestroyerTest.Content.Entity
             NPC.defense = 30;
             NPC.aiStyle = -1;
         }
-       
+
 
         public override void OnSpawn(IEntitySource source)
         {
@@ -283,6 +292,12 @@ namespace DestroyerTest.Content.Entity
                 Dust.NewDust(NPC.Center, 50, 50, DustID.TintableDustLighted, NPC.velocity.X * 0.4f, NPC.velocity.Y * 0.4f, 100, Colors[Main.rand.Next(Colors.Length)], Main.rand.NextFloat(0.01f, 1.0f));
             }
             base.AI();
+        }
+        
+        public override void ModifyNPCLoot(NPCLoot npcLoot)
+        {
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ShadeParticle>(), 3, 4, 17));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ShimmeringSludge>(), 4, 2, 9));
         }
 	}
 

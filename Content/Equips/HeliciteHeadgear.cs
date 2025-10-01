@@ -8,6 +8,8 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using DestroyerTest.Rarity;
+using DestroyerTest.Content.RiftBiome.RiftSurfaceResources;
+using DestroyerTest.Content.Tiles.RiftConfigurator;
 
 namespace DestroyerTest.Content.Equips
 {
@@ -47,16 +49,14 @@ namespace DestroyerTest.Content.Equips
 			player.AddBuff(ModContent.BuffType<RiftBallBuff>(), 3600); // Adds the RiftBallBuff for 60 seconds (3600 ticks)
 			}
 		}
-
-		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
 			CreateRecipe()
-				.AddIngredient<Living_Shadow>(5)
-                .AddIngredient<Item_HeliciteCrystal>(20)
-                .AddIngredient<Item_Riftplate>(5)
-				.AddTile<Tile_RiftCrucible>()
-                .AddCondition(Condition.DownedGolem)
+				.AddIngredient<Living_Shadow>(15)
+				.AddIngredient<Item_HeliciteCrystal>(5)
+				.AddIngredient<Item_RiftClay>(3)
+                .AddIngredient(ItemID.Silk, 15)
+				.AddTile<Tile_RiftConfiguratorArmory>()
 				.Register();
-        }
+		}
 	}
 }

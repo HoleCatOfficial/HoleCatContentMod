@@ -89,7 +89,7 @@ namespace DestroyerTest.Content.Entity
                 Position = Vector2.Zero,
             };
             NPCID.Sets.NPCBestiaryDrawOffset.Add(NPC.type, drawModifier);
-            Main.npcFrameCount[NPC.type] = 11;
+            Main.npcFrameCount[NPC.type] = 21;
         }
 
         public SoundStyle Kill = new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/NightmareRoseKill") with { Volume = 2, MaxInstances = 0 };
@@ -98,6 +98,7 @@ namespace DestroyerTest.Content.Entity
         public SoundStyle DespShootMine = new SoundStyle("DestroyerTest/Assets/Audio/GoliathPhantomHit") with { Volume = 2, PitchVariance = 1f, MaxInstances = 0 };
         public SoundStyle NodeSpawnSound = new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/NodeSpawn") with { PitchVariance = 1f, MaxInstances = 0 };
         public SoundStyle Napalm = new SoundStyle("DestroyerTest/Assets/Audio/NodeAttackNapalm") with { PitchVariance = 1f, MaxInstances = 0 };
+        public SoundStyle Desperation = new SoundStyle("DestroyerTest/Assets/Audio/RoseDesperation") with { MaxInstances = 0 };
 
         public override void SetDefaults()
         {
@@ -136,30 +137,43 @@ namespace DestroyerTest.Content.Entity
 
         public override void FindFrame(int frameHeight)
         {
-            if (currentState == AttackState.Desperation || currentState == AttackState.KillIdle)
+            if (currentState != AttackState.SpawnIdle)
             {
-                NPC.frameCounter++;
-                if (NPC.frameCounter >= 10) // slower desperation animation
+                if (currentState == AttackState.Desperation || currentState == AttackState.KillIdle)
                 {
-                    NPC.frameCounter = 0;
-                    frameIndex++;
-                    if (frameIndex > 10) // clamp at frame 10
-                        frameIndex = 9;
+                    NPC.frameCounter++;
+                    if (NPC.frameCounter >= 10) // slower desperation animation
+                    {
+                        NPC.frameCounter = 0;
+                        frameIndex++;
+                        if (frameIndex > 10) // clamp at frame 10
+                            frameIndex = 9;
+                    }
+                }
+                else
+                {
+                    NPC.frameCounter++;
+                    if (NPC.frameCounter >= 5) // faster normal animation
+                    {
+                        NPC.frameCounter = 0;
+                        frameIndex++;
+                        if (frameIndex > 8) // loop back
+                            frameIndex = 0;
+                    }
                 }
             }
             else
             {
                 NPC.frameCounter++;
-                if (NPC.frameCounter >= 5) // faster normal animation
-                {
-                    NPC.frameCounter = 0;
-                    frameIndex++;
-                    if (frameIndex > 8) // loop back
-                        frameIndex = 0;
-                }
+                    if (NPC.frameCounter >= 30)
+                    {
+                        NPC.frameCounter = 0;
+                        frameIndex++;
+                        if (frameIndex > 20 || frameIndex < 12)
+                            frameIndex = 11;
+                    }
             }
 
-            // Apply frame
             NPC.frame.Y = frameIndex * frameHeight;
         }
 
@@ -167,22 +181,20 @@ namespace DestroyerTest.Content.Entity
 
         public static bool EternityIsActive()
         {
-            Mod FargosCompat = ModLoader.GetMod("FranciumMultiCrossMod");
-            if (FargosCompat != null)
+            if (ModLoader.TryGetMod("FargowiltasSouls", out Mod frgo))
             {
-                object result = FargosCompat.Call("CheckEternity");
+                object result = frgo.Call("EternityMode");
                 if (result is bool enabled)
                 {
                     if (enabled)
                         return true;
                     else
-                        Main.NewText("Fargos Crossmod found but Eternity not detected.");
                         return false;
                 }
             }
             else
             {
-                Main.NewText("Fargos Crossmod not found.");
+
             }
             return false;
         }
@@ -302,6 +314,7 @@ namespace DestroyerTest.Content.Entity
         public bool HasTriggeredNodes = false;
         public bool anyNodesAlive;
         public int nodeCount = 0;
+        public int FlameRingCount = 0;
         public int FlameRingVectorCount = Main.rand.Next(8, 23);
         public float FlameRingAngleStep;
         public float FlameRingBaseAngle = 0f;
@@ -402,9 +415,9 @@ namespace DestroyerTest.Content.Entity
                 NPC.immortal = true;
                 modifiers.FinalDamage *= 0f;
             }
-            if (projectile.type == ProjectileID.LastPrism || projectile.type == ProjectileID.LastPrismLaser || projectile.type == ProjectileID.Meowmere || projectile.type == ProjectileID.PhantasmArrow)
+            if (projectile.type == ProjectileID.LastPrismLaser || projectile.type == ProjectileID.Meowmere || projectile.type == ProjectileID.SolarWhipSword || projectile.type == ProjectileID.SolarWhipSwordExplosion || projectile.type == ProjectileID.PhantasmArrow || projectile.type == ProjectileID.VortexBeaterRocket || projectile.type == ProjectileID.StardustCellMinion || projectile.type == ProjectileID.StardustGuardian)
             {
-                modifiers.FinalDamage *= 0.65f;
+                modifiers.FinalDamage *= 0.5f;
             }
         }
 
@@ -466,13 +479,16 @@ namespace DestroyerTest.Content.Entity
 
 
         public int DeathInterval = 10;
-        int BorderDustType;
+        public int BorderDustType;
+        public static bool ShouldCenterCameraOnNPC = false;
+        public float VolumeOnSpawn = 0f;
+        public bool RecordedVolume = false;
         public override void AI()
         {
             NPC.TargetClosest();
             Player player = Main.player[NPC.target];
             DTConfig cfg = ModContent.GetInstance<DTConfig>();
-            
+
 
             DirectionToPlayerCenter = (player.Center - NPCHead).SafeNormalize(Vector2.UnitY);
 
@@ -511,22 +527,29 @@ namespace DestroyerTest.Content.Entity
                     Border.scale = Main.rand.NextFloat(0.2f, 4.0f);
                 }
 
-                if (!Main.masterMode && (Main.expertMode || EternityIsActive())  && currentState != AttackState.SpawnIdle)
+                if (!Main.masterMode && (Main.expertMode || EternityIsActive()) && currentState != AttackState.SpawnIdle)
                 {
                     ModifyClouds();
                 }
 
-                if (Main.masterMode  && currentState != AttackState.SpawnIdle)
-                    {
-                        ModifyWeather();
-                    }
+                if (Main.masterMode && currentState != AttackState.SpawnIdle)
+                {
+                    ModifyWeather();
+                }
             }
 
             FlameRingAngleStep = MathHelper.TwoPi / FlameRingVectorCount;
 
             if (player.Distance(NPC.Center) >= BorderRad && BorderActive && BorderRad > 150)
             {
-                player.Hurt(new PlayerDeathReason() { CustomReason = NetworkText.FromKey("Mods.DestroyerTest.NPCs.NightmareRose.ExitBarrierDeath", player.name) }, 90, 0, false, true, -1, false, 9, 9, 0);
+                if (!EternityIsActive())
+                {
+                    player.Hurt(new PlayerDeathReason() { CustomReason = NetworkText.FromKey("Mods.DestroyerTest.NPCs.NightmareRose.ExitBarrierDeath", player.name) }, 90, 0, false, true, -1, false, 9, 9, 0);
+                }
+                else
+                {
+                    player.KillMe(new PlayerDeathReason() { CustomReason = NetworkText.FromKey("Mods.DestroyerTest.NPCs.NightmareRose.EternityBarrierDeath", player.name) }, 28000, 0, false);
+                }
             }
             if (player.Distance(NPC.Center) < BorderRad && BorderActive)
             {
@@ -545,6 +568,14 @@ namespace DestroyerTest.Content.Entity
 
             if (NPC.life <= NPC.lifeMax * 0.05f && currentState != AttackState.Desperation && currentState != AttackState.KillIdle)
             {
+                foreach (NPC Const in Main.npc)
+                {
+                    if (Const.active && (Const.type == ModContent.NPCType<TenebrousConstruct>() || Const.type == ModContent.NPCType<GigaCursedHammer>()))
+                    {
+                        Const.StrikeInstantKill();
+                    }
+                }
+                SoundEngine.PlaySound(Desperation);
                 currentState = AttackState.Desperation;
                 DesperationTimer = 0; // reset on entry
             }
@@ -604,6 +635,8 @@ namespace DestroyerTest.Content.Entity
 
             if (Divided)
             {
+                stateWeights[AttackState.WallDarts] = 0.00f;
+                stateWeights[AttackState.CursedFlames] = 0.00f;
                 if (CooldownAccountedForWallLifetime <= 0)
                 {
                     CooldownAccountedForWallLifetime = DivisionCooldown + 1200;
@@ -615,6 +648,7 @@ namespace DestroyerTest.Content.Entity
                 {
                     Divided = false;
                 }
+
             }
 
             Rotation--;
@@ -624,18 +658,30 @@ namespace DestroyerTest.Content.Entity
 
             if (!Main.dedServ && currentState == AttackState.SpawnIdle)
             {
-                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/RiftEmptiness");
+                if (!RecordedVolume)
+                {
+                    VolumeOnSpawn = Main.musicVolume;
+                    RecordedVolume = true;
+                }
+                Main.musicVolume -= 0.1f;
+                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/RoseIdle");
             }
-            if (!Main.dedServ && !EternityIsActive())
+            if (!Main.dedServ && !EternityIsActive() && currentState != AttackState.SpawnIdle)
             {
-                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/EvilBoss1");
+                Main.musicVolume = VolumeOnSpawn;
+                Main.musicFade[Music] = 1;
+                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Tribulation");
             }
-            if (!Main.dedServ && EternityIsActive() && !cfg.EternityMusic)
+            if (!Main.dedServ && EternityIsActive() && !cfg.EternityMusic && currentState != AttackState.SpawnIdle)
             {
-                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/EvilBoss1");
+                Main.musicVolume = VolumeOnSpawn;
+                Main.musicFade[Music] = 1;
+                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Tribulation");
             }
-            if (!Main.dedServ && EternityIsActive() && cfg.EternityMusic)
+            if (!Main.dedServ && EternityIsActive() && cfg.EternityMusic && currentState != AttackState.SpawnIdle)
             {
+                Main.musicVolume = VolumeOnSpawn;
+                Main.musicFade[Music] = 1;
                 Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Placeholder3");
             }
 
@@ -659,7 +705,8 @@ namespace DestroyerTest.Content.Entity
             {
                 case AttackState.SpawnIdle:
                     {
-                        
+                        NPC.dontTakeDamage = true;
+                        ShouldCenterCameraOnNPC = true;
                         if (SpawnCount <= 0)
                         {
                             SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/RoseSpawnIdle"));
@@ -667,16 +714,13 @@ namespace DestroyerTest.Content.Entity
                         SpawnCount++;
                         if (SpawnCount < SpawnIdleRoarFlag)
                         {
-                            SpawnDarknessAlpha = (byte)MathHelper.Clamp(
-                                255f * (1f - (SpawnIdleTimer / 120f)),
-                                0f,
-                                255f
-                            );
+                            VingetteScale *= 0.99f;
                         }
                         if (SpawnCount >= SpawnIdleRoarFlag)
                         {
                             SpawnDarknessAlpha = 0;
                             currentState = AttackState.Idle;
+                            NPC.dontTakeDamage = false;
                             SpawnCount = 0;
                         }
                         break;
@@ -685,6 +729,12 @@ namespace DestroyerTest.Content.Entity
                     if (NPC.type == ModContent.NPCType<NightmareRoseBoss>())
                     {
                         NPC.aiStyle = -1;
+                        ShouldCenterCameraOnNPC = false;
+                        if (VingetteScale < 10)
+                        {
+                            VingetteScale += 0.75f;
+                        }
+
 
                         int IdleMax = -1;
                         if (!Main.expertMode && !Main.masterMode && !EternityIsActive())
@@ -709,6 +759,7 @@ namespace DestroyerTest.Content.Entity
                         {
                             currentState = GetRandomState();
                             IdleTimer = 0;
+
                         }
                     }
                     break;
@@ -727,7 +778,7 @@ namespace DestroyerTest.Content.Entity
                         {
                             ResetState();
                         }
-                        if (!EternityIsActive())
+                        if (!EternityIsActive() && !Divided)
                         {
                             if (FlameStartTimer >= 60)
                             {
@@ -747,7 +798,7 @@ namespace DestroyerTest.Content.Entity
                                 if (FlameInterval >= 10)
                                 {
                                     SoundEngine.PlaySound(Fire);
-                                    Projectile.NewProjectile(Entity.GetSource_FromThis(), NPCHead, velocity * 20f, ModContent.ProjectileType<CursedFlameProj>(), 25, 0);
+                                    Projectile.NewProjectile(Entity.GetSource_FromThis(), NPCHead, velocity * 20f, ModContent.ProjectileType<CursedFlameProj>(), 15, 0);
                                     FlameInterval = 0;
                                 }
                             }
@@ -756,7 +807,7 @@ namespace DestroyerTest.Content.Entity
                                 ResetState();
                             }
                         }
-                        if (EternityIsActive())
+                        if (EternityIsActive() && !Divided)
                         {
                             if (FlameTimer < 240)
                             {
@@ -772,7 +823,11 @@ namespace DestroyerTest.Content.Entity
                     break;
                 case AttackState.WallDarts:
                     {
-                        if (EternityIsActive())
+                        if (Divided)
+                        {
+                            ResetState();
+                        }
+                        if (EternityIsActive() && !Divided)
                         {
                             if (DartTimer < 800)
                             {
@@ -789,30 +844,37 @@ namespace DestroyerTest.Content.Entity
                             ResetState();
                         }
                         break;
-                }
+                    }
                 case AttackState.FlameRing:
                     {
                         if (EternityIsActive())
                         {
-                            SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/ChargeBreak") with { PitchVariance = 1f });
-
-                            for (int i = 0; i < FlameRingVectorCount; i++)
+                            if (FlameRingCount < 9 && Main.GameUpdateCount % 60 == 0)
                             {
-                                float randomOffset = Main.rand.NextFloat(-0.4f, 0.4f);
-                                float angle = FlameRingBaseAngle + i * FlameRingAngleStep + randomOffset;
+                                SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/ChargeBreak") with { PitchVariance = 1f });
 
-                                float radius = FlameRingStartRad;
-                                float curvedAngle = angle - FlameRingRotSpeed * MathHelper.PiOver2;
+                                for (int i = 0; i < FlameRingVectorCount; i++)
+                                {
+                                    float randomOffset = Main.rand.NextFloat(-0.4f, 0.4f);
+                                    float angle = FlameRingBaseAngle + i * FlameRingAngleStep + randomOffset;
 
-                                Vector2 startPos = NPC.Center + radius * new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
-                                Vector2 outwardVel = new Vector2((float)Math.Cos(curvedAngle), (float)Math.Sin(curvedAngle)) * 0.5f; // outward speed
-                                Vector2 spinVel = outwardVel.RotatedBy(MathHelper.PiOver2) * 0.8f; // tangential spin
+                                    float radius = FlameRingStartRad;
+                                    float curvedAngle = angle - FlameRingRotSpeed * MathHelper.PiOver2;
 
-                                Vector2 finalVel = (outwardVel + spinVel).SafeNormalize(Vector2.UnitY) * FlameRingRotSpeed;
+                                    Vector2 startPos = NPC.Center + radius * new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
+                                    Vector2 outwardVel = new Vector2((float)Math.Cos(curvedAngle), (float)Math.Sin(curvedAngle)) * 0.5f; // outward speed
+                                    Vector2 spinVel = outwardVel.RotatedBy(MathHelper.PiOver2) * 0.8f; // tangential spin
 
-                                Projectile.NewProjectile(Entity.GetSource_FromThis(), startPos, finalVel, ModContent.ProjectileType<TenebrisFlames>(), 20, 5, ai2: 2);
+                                    Vector2 finalVel = (outwardVel + spinVel).SafeNormalize(Vector2.UnitY) * FlameRingRotSpeed;
+
+                                    Projectile.NewProjectile(Entity.GetSource_FromThis(), startPos, finalVel, ModContent.ProjectileType<TenebrisFlames>(), 20, 5, ai2: 2);
+                                }
+                                FlameRingCount++;
                             }
-                            ResetState();
+                            if (FlameRingCount >= 9)
+                            {
+                                ResetState();
+                            }
                         }
                         else
                         {
@@ -832,7 +894,7 @@ namespace DestroyerTest.Content.Entity
 
                                 Vector2 finalVel = (outwardVel + spinVel).SafeNormalize(Vector2.UnitY) * FlameRingRotSpeed;
 
-                                Projectile.NewProjectile(Entity.GetSource_FromThis(), startPos, finalVel, ModContent.ProjectileType<CursedNodeCrystal>(), 20, 5, ai2: 2);
+                                Projectile.NewProjectile(Entity.GetSource_FromThis(), startPos, finalVel, ModContent.ProjectileType<CursedNodeCrystal>(), 15, 5, ai2: 2);
                             }
                             ResetState();
                         }
@@ -854,7 +916,7 @@ namespace DestroyerTest.Content.Entity
                                     NPCHead,
                                     velocity,
                                     ModContent.ProjectileType<TenebrisLance>(),
-                                    20,
+                                    15,
                                     6
                                 );
                             }
@@ -876,7 +938,7 @@ namespace DestroyerTest.Content.Entity
 
                                 Vector2 finalVel = (outwardVel + spinVel).SafeNormalize(Vector2.UnitY) * FlameRingRotSpeed;
 
-                                Projectile.NewProjectile(Entity.GetSource_FromThis(), startPos, finalVel, ModContent.ProjectileType<BlossomMine>(), 20, 5, ai2: 2);
+                                Projectile.NewProjectile(Entity.GetSource_FromThis(), startPos, finalVel, ModContent.ProjectileType<BlossomMine>(), 16, 5, ai2: 2);
                             }
                             ResetState();
                         }
@@ -886,7 +948,7 @@ namespace DestroyerTest.Content.Entity
                     {
                         player.wingTime = 0;
                         VileThornCooldown++;
-                        if (VileThornCooldown > 30)
+                        if (Main.GameUpdateCount % 30 == 0)
                         {
                             VileThornCount += 1;
 
@@ -898,7 +960,7 @@ namespace DestroyerTest.Content.Entity
                                         NPCHead,
                                         new Vector2(Main.rand.NextFloat(-5, 6), -15),
                                         ModContent.ProjectileType<CursedFlameNapalm>(),
-                                        30,
+                                        18,
                                         2
                                     );
                                 proj.tileCollide = true;
@@ -907,8 +969,6 @@ namespace DestroyerTest.Content.Entity
                                 proj.timeLeft = 480;
                             }
 
-                            // Reset cooldown and count if needed
-                            VileThornCooldown = 0;
                             if (VileThornCount >= 8)
                             {
                                 ResetState();
@@ -983,26 +1043,25 @@ namespace DestroyerTest.Content.Entity
                     break;
                 case AttackState.DemoniteWhisper:
                     {
-                        SoulInterval++;
-                        if (SoulInterval >= 120)
+                        if (Main.GameUpdateCount % 180 == 0)
                         {
                             SummonSouls();
                             SoulSpawnCount++;
-                            SoulInterval = 0;
                             if (EternityIsActive())
                             {
                                 float angle = Main.rand.NextFloat(MathHelper.TwoPi);
                                 for (int f = 0; f < 2; f++)
                                 {
-                                    float rot = angle + MathHelper.Pi * f; // 180° apart
+                                    float rot = angle + MathHelper.Pi * f;
                                     Vector2 dir = rot.ToRotationVector2();
-                                    Projectile.NewProjectile(Entity.GetSource_FromAI(), NPCHead, dir * 6f, ModContent.ProjectileType<BigSoul>(), 25, 7);
+                                    Projectile.NewProjectile(Entity.GetSource_FromAI(), NPCHead, dir * 6f, ModContent.ProjectileType<BigSoul>(), 18, 7);
                                 }
                             }
                         }
                         if (SoulSpawnCount >= 4)
                         {
                             ResetState();
+
                         }
                     }
                     break;
@@ -1012,7 +1071,7 @@ namespace DestroyerTest.Content.Entity
                         {
                             if (!Divided && CooldownAccountedForWallLifetime <= 0)
                             {
-                                if (Main.rand.NextBool(9))
+                                if (Main.rand.NextBool(3))
                                 {
                                     ArenaDivision();
                                 }
@@ -1036,15 +1095,8 @@ namespace DestroyerTest.Content.Entity
                     break;
                 case AttackState.BlossomMine:
                     {
-                        if (HasSpawnedMines == false)
-                        {
-                            BlossomMines(Main.rand.NextVector2FromRectangle(new Rectangle(0, 0, BorderRad, BorderRad)));
-                            HasSpawnedMines = true;
-                        }
-                        if (HasSpawnedMines == true)
-                        {
-                            ResetState();
-                        }
+                        BlossomMines(Main.rand.NextVector2FromRectangle(new Rectangle(0, 0, BorderRad, BorderRad)));
+                        ResetState();
                     }
                     break;
                 case AttackState.Desperation:
@@ -1058,7 +1110,7 @@ namespace DestroyerTest.Content.Entity
                         {
 
                             DesperationTimer++;
-                            if (Main.GameUpdateCount % 100 == 0 && DesperationTimer < 900)
+                            if (Main.GameUpdateCount % 80 == 0 && DesperationTimer < 900)
                             {
                                 SoundEngine.PlaySound(DespShootMine);
                                 SoulBombSpawn();
@@ -1126,10 +1178,11 @@ namespace DestroyerTest.Content.Entity
         float Rotation = 0f;
         byte OverlayAlpha = 0;
         public Color BorderCol;
+        public float VingetteScale = 2f;
         public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             base.PostDraw(spriteBatch, screenPos, drawColor);
-            if (FlameTimer < 240 && FlameTimer >= 0 && currentState == AttackState.CursedFlames)
+            if (FlameTimer < 240 && FlameTimer >= 0 && currentState == AttackState.CursedFlames && !EternityIsActive())
             {
                 DrawTelegraph(NPCHead, PlayerCenter, DTAssetLib.FlameTelegraph.Value);
             }
@@ -1149,11 +1202,6 @@ namespace DestroyerTest.Content.Entity
                 Main.EntitySpriteDraw(White.Value, NPC.Center - Main.screenPosition, null, DTColorUtils.WithAlpha(Color.White, OverlayAlpha), 0f, new Vector2(White.Value.Width / 2, White.Value.Height / 2), 1f, SpriteEffects.None, 0);
             }
 
-            if (currentState == AttackState.SpawnIdle)
-            {
-                Main.EntitySpriteDraw(TextureAssets.MagicPixel.Value, Main.screenPosition + new Vector2(Main.screenWidth / 2, Main.screenHeight / 2), null, DTColorUtils.WithAlpha(Color.Black, SpawnDarknessAlpha), 0f, new Vector2(White.Value.Width / 2, White.Value.Height / 2), 5000f, SpriteEffects.None, 0);
-            }
-
         }
 
 
@@ -1171,12 +1219,34 @@ namespace DestroyerTest.Content.Entity
             { AttackState.WallDarts, 1.0f },
             { AttackState.Lances, 1.0f },
             { AttackState.CorruptSigil, 1.0f },
-            { AttackState.BlossomMine, 1.0f },
-            };
+            { AttackState.BlossomMine, 0.65f },
+        };
+
+        public AttackState? lastAttack = null;
 
 
         private AttackState GetRandomState()
         {
+            if (lastAttack == AttackState.DemoniteWhisper)
+            {
+                stateWeights[AttackState.CursedFlames] = 0f;
+                stateWeights[AttackState.WallDarts] = 0f;
+                stateWeights[AttackState.Lances] = 0f;
+            }
+            else
+            {
+                ResetWeights();
+            }
+
+            if (Divided)
+            {
+                stateWeights[AttackState.CursedFlames] = 0f;
+                stateWeights[AttackState.WallDarts] = 0f;
+            }
+            else
+            {
+                ResetWeights();
+            }
 
             // Exclude the current state
             var validStates = stateWeights
@@ -1194,8 +1264,27 @@ namespace DestroyerTest.Content.Entity
                     return pair.Key;
             }
 
+
+
             // Fallback (should never happen unless all weights are 0)
             return currentState;
+        }
+
+        private void ResetWeights()
+        {
+            stateWeights[AttackState.Idle] = 1f;
+            stateWeights[AttackState.CursedFlames] = 1f;
+            stateWeights[AttackState.DemoniteWhisper] = 1f;
+            stateWeights[AttackState.Minions] = 1f;
+            stateWeights[AttackState.OvergrownHammer] = 1f;
+            stateWeights[AttackState.RottenPetals] = 1f;
+            stateWeights[AttackState.ArenaDivide] = 1f;
+            stateWeights[AttackState.Napalm] = 1f;
+            stateWeights[AttackState.FlameRing] = 1f;
+            stateWeights[AttackState.WallDarts] = 1f;
+            stateWeights[AttackState.Lances] = 1f;
+            stateWeights[AttackState.CorruptSigil] = 1f;
+            stateWeights[AttackState.BlossomMine] = 1f;
         }
 
 
@@ -1207,23 +1296,41 @@ namespace DestroyerTest.Content.Entity
                 currentState = AttackState.Idle;
                 NPC.ai[0] = NPC.ai[1] = NPC.ai[2] = NPC.ai[3] = 0;
 
-                // Reset public bools and integers (except HammerActive)
-                HasSpawnedMines = false;
-                HasSpawnedSigil = false;
-                HasBoosted = false;
-                Divided = false;
                 FlameTimer = 0;
-                DartTimer = 0;
+                FlameInterval = 0;
                 FlameStartTimer = 60;
                 VileThornCooldown = 0;
                 VileThornCount = 0;
                 MinionSpawnTimer = 0;
                 MinionSpawnCount = 0;
+                MinionFailsafe = 0;
                 SigilTimer = 600;
+                DartTimer = 0;
                 SoulInterval = 0;
                 SoulSpawnCount = 0;
+                DivisionCooldown = 300;
+                ProjSpawnTimer = 0;
+                DesperationTimer = 0;
+                nodeCount = 0;
+                FlameRingCount = 0;
+                FlameRingVectorCount = Main.rand.Next(8, 23);
+                FlameRingAngleStep = 0f;
+                FlameRingBaseAngle = 0f;
+                FlameRingStartRad = 22;
+                FlameRingRotSpeed = Main.rand.NextFloat(-16f, -8f);
+                MineType = -1;
+                DeathIdleTimer = 120;
+                SpawnIdleTimer = 60 * 16;
+                SpawnIdleRoarFlag = 60 * 8;
+                SpawnDarknessAlpha = 0;
+                SpawnCount = 0;
+
+                HasBoosted = false;
+                HasSpawnedSigil = false;
+                HasSpawnedMines = false;
             }
         }
+
 
         public void DrawTelegraph(Vector2 start, Vector2 end, Texture2D texture)
         {
@@ -1330,7 +1437,7 @@ namespace DestroyerTest.Content.Entity
                 for (int a = 0; a < 10; a++)
                 {
                     Vector2 SpawnPoint = new Vector2(NPC.Center.X + Main.rand.Next(-BorderRad, BorderRad), NPC.Center.Y + 1800);
-                    Projectile.NewProjectile(Entity.GetSource_FromThis(), SpawnPoint, new Vector2(0, -8), ModContent.ProjectileType<TormentedSoul>(), 15, 2);
+                    Projectile.NewProjectile(Entity.GetSource_FromThis(), SpawnPoint, new Vector2(0, -8), ModContent.ProjectileType<TormentedSoul>(), 10, 2);
                 }
             }
             if (EternityIsActive())
@@ -1338,7 +1445,7 @@ namespace DestroyerTest.Content.Entity
                 for (int a = 0; a < 5; a++)
                 {
                     Vector2 SpawnPoint = new Vector2(NPC.Center.X + Main.rand.Next(-BorderRad, BorderRad), NPC.Center.Y + 1800);
-                    Projectile.NewProjectile(Entity.GetSource_FromThis(), SpawnPoint, new Vector2(0, -16), ModContent.ProjectileType<TormentedSoul>(), 15, 2);
+                    Projectile.NewProjectile(Entity.GetSource_FromThis(), SpawnPoint, new Vector2(0, -16), ModContent.ProjectileType<TormentedSoul>(), 10, 2);
                 }
                 for (int a = 0; a < 5; a++)
                 {
@@ -1355,8 +1462,8 @@ namespace DestroyerTest.Content.Entity
                         MoveDir = new Vector2(16, 0);
                         SpawnPoint = new Vector2(NPC.Center.X - 1800, NPC.Center.Y + Main.rand.Next(-BorderRad, BorderRad));
                     }
-                    
-                    Projectile.NewProjectile(Entity.GetSource_FromThis(), SpawnPoint, MoveDir, ModContent.ProjectileType<TormentedSoul>(), 15, 2);
+
+                    Projectile.NewProjectile(Entity.GetSource_FromThis(), SpawnPoint, MoveDir, ModContent.ProjectileType<TormentedSoul>(), 10, 2);
                 }
             }
         }
@@ -1411,7 +1518,7 @@ namespace DestroyerTest.Content.Entity
                         spawnPosition,
                         toOrigin * 20f,
                         ModContent.ProjectileType<CursedFlameProj>(),
-                        30,
+                        15,
                         2,
                         Main.LocalPlayer.whoAmI
                     );
@@ -1423,9 +1530,9 @@ namespace DestroyerTest.Content.Entity
                 PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp1>(), NPCHead, Vector2.Zero, ColorLib.CursedFlames, 0.4f);
             }
             if (flame != null && flame.Center == NPCHead)
-                {
-                    flame.Kill();
-                }
+            {
+                flame.Kill();
+            }
         }
 
         public void DartAttack()
@@ -1477,7 +1584,7 @@ namespace DestroyerTest.Content.Entity
                         NPCHead,
                         velocity,
                         ModContent.ProjectileType<TenebrisLance>(),
-                        20,
+                        10,
                         6
                     );
                 }
@@ -1500,6 +1607,55 @@ namespace DestroyerTest.Content.Entity
         }
 
     }
+
+    public class NightmareRoseCameraModification : ModSystem
+    {
+        private Vector2 camPos; // our own camera position
+        private bool hasCamPos = false;
+
+        public override void ModifyScreenPosition()
+        {
+            if (Main.dedServ) return;
+
+            // initialize our camPos the first time
+            if (!hasCamPos) { camPos = Main.screenPosition; hasCamPos = true; }
+
+            Vector2 target;
+            if (NightmareRoseBoss.ShouldCenterCameraOnNPC &&
+                TryGetBoss(out NPC boss))
+            {
+                target = boss.Center - new Vector2(Main.screenWidth * 0.5f,
+                                                Main.screenHeight * 0.5f);
+            }
+            else
+            {
+                target = Main.LocalPlayer.Center - new Vector2(Main.screenWidth * 0.5f,
+                                                            Main.screenHeight * 0.5f);
+            }
+
+            // do the smoothing on our own state
+            camPos = Vector2.Lerp(camPos, target, 0.1f);
+
+            // tell tModLoader where the camera should be this frame
+            Main.screenPosition = camPos;
+        }
+
+        private bool TryGetBoss(out NPC boss)
+        {
+            for (int i = 0; i < Main.maxNPCs; i++)
+            {
+                if (Main.npc[i].active &&
+                    Main.npc[i].type == ModContent.NPCType<NightmareRoseBoss>())
+                {
+                    boss = Main.npc[i];
+                    return true;
+                }
+            }
+            boss = default;
+            return false;
+        }
+    }
+
 
     public class NightmareRoseBCL : ModSystem
     {

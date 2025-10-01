@@ -9,6 +9,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using DestroyerTest.Rarity;
 using DestroyerTest.Content.Tiles.Riftplate;
+using DestroyerTest.Common;
 
 namespace DestroyerTest.Content.Resources
 {
@@ -32,14 +33,16 @@ namespace DestroyerTest.Content.Resources
 		}
 
 		public override void PostUpdate() {
-			Lighting.AddLight(Item.Center, Color.WhiteSmoke.ToVector3() * 0.55f * Main.essScale);
+			Lighting.AddLight(Item.Center, ColorLib.TenebrisGradient.ToVector3() * 0.55f * Main.essScale);
 		}
 
         public override void AddRecipes()
         {
-            CreateRecipe()
-                .AddIngredient<Item_Riftplate>(4)
-                .AddIngredient<ShimmeringSludge>(4)
+			CreateRecipe()
+				.AddIngredient<Item_Riftplate>(4)
+				.AddIngredient<ShimmeringSludge>(4)
+				.AddIngredient<ShimmeringShards>(4)
+				.AddIngredient<ShadeParticle>(4)
 				.AddTile(TileID.LunarCraftingStation)
 				.Register();
         }

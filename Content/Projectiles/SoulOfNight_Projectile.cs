@@ -1,27 +1,31 @@
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
+using InnoVault.PRT;
+using DestroyerTest.Content.Particles;
+using System;
 
 namespace DestroyerTest.Content.Projectiles
 {
-    // This Example shows how to implement a simple homing projectile with animation
     public class SoulOfNight_Projectile : ModProjectile
     {
-        // Correct asset path
         public override string Texture => "DestroyerTest/Content/Projectiles/SoulOfNight_Projectile";
 
-        // Store the target NPC using Projectile.ai[0]
-        private NPC HomingTarget {
+        private NPC HomingTarget
+        {
             get => Projectile.ai[0] == 0 ? null : Main.npc[(int)Projectile.ai[0] - 1];
-            set {
+            set
+            {
                 Projectile.ai[0] = value == null ? 0 : value.whoAmI + 1;
             }
         }
 
         public ref float DelayTimer => ref Projectile.ai[1];
 
-        public override void SetStaticDefaults() {
+        public override void SetStaticDefaults()
+        {
             ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true; // Make the cultist resistant to this projectile, as it's resistant to all homing projectiles.
             Main.projFrames[Projectile.type] = 4; // Set the number of frames in the sprite sheet
         }
@@ -40,68 +44,101 @@ namespace DestroyerTest.Content.Projectiles
             Projectile.frame = 0; // Start at the first frame
         }
 
-        // Custom AI
-        public override void AI() {
-            // Handle animation
-            AnimateProjectile();
-
-            float maxDetectRadius = 400f; // The maximum radius at which a projectile can detect a target
-
-            // A short delay to homing behavior after being fired
-            if (DelayTimer < 10) {
-                DelayTimer += 1;
+        public bool ExplodesWithPattern = false;
+        public void DeathPrep(float Threshold = 60)
+        {
+            if (Projectile.timeLeft > Threshold)
+            {
                 return;
             }
 
-            // First, we find a homing target if we don't have one
-            if (HomingTarget == null) {
-                HomingTarget = FindClosestNPC(maxDetectRadius);
+            if (Projectile.timeLeft <= Threshold)
+            {
+                if (Projectile.velocity.Length() > 0.01f)
+                {
+                    Projectile.velocity *= 0.999f;
+                }
+
+                if (Projectile.timeLeft < 10)
+                {
+                    ExplodesWithPattern = true;
+                }
             }
-
-            // If we have a homing target, make sure it is still valid. If the NPC dies or moves away, we'll want to find a new target
-            if (HomingTarget != null && !IsValidTarget(HomingTarget)) {
-                HomingTarget = null;
-            }
-
-            // If we don't have a target, don't adjust trajectory
-            if (HomingTarget == null)
-                return;
-
-            // If found, we rotate the projectile velocity in the direction of the target.
-            // We only rotate by 3 degrees an update to give it a smooth trajectory. Increase the rotation speed here to make tighter turns
-            float length = Projectile.velocity.Length();
-            float targetAngle = Projectile.AngleTo(HomingTarget.Center);
-            Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(3)).ToRotationVector2() * length;
-            Projectile.rotation = Projectile.velocity.ToRotation();
         }
 
-        public void AnimateProjectile() {
-            // Loop through the frames, assuming each frame lasts 5 ticks
-            if (++Projectile.frameCounter >= 5) {
+        public override void AI()
+        {
+            AnimateProjectile();
+            DeathPrep();
+
+            Dust Trail = Dust.NewDustPerfect(Projectile.Center, DustID.DemonTorch, Vector2.Zero, 0, default, 2f);
+            Trail.noGravity = true;
+            //PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Projectile.Center, new Vector2(0, 0.01f), Color.Purple, 1f);
+
+            float maxDetectRadius = 1600f;
+
+            if (DelayTimer < 10)
+            {
+                DelayTimer++;
+                return;
+            }
+
+            // acquire or validate target
+            if (HomingTarget == null || !IsValidTarget(HomingTarget))
+                HomingTarget = FindClosestNPC(maxDetectRadius);
+
+            if (HomingTarget == null)
+                return; // no target? just hover
+
+            // we have a valid target at this point
+            float targetAngle = Projectile.AngleTo(HomingTarget.Center);
+            float speed = Projectile.velocity.Length();
+
+            if (speed < 0.01f)
+            {
+                // give it an initial push toward the target
+                float startSpeed = 6f;   // pick whatever feels right
+                Projectile.velocity = targetAngle.ToRotationVector2() * startSpeed;
+            }
+            else
+            {
+                // steer current velocity toward target without changing speed
+                float turnRate = MathHelper.ToRadians(9);
+                Projectile.velocity =
+                    Projectile.velocity
+                        .ToRotation()
+                        .AngleTowards(targetAngle, turnRate)
+                        .ToRotationVector2() * speed;
+            }
+
+            Projectile.rotation = Projectile.velocity.ToRotation() * 0.05f;
+        }
+
+        public void AnimateProjectile()
+        {
+            if (++Projectile.frameCounter >= 5)
+            {
                 Projectile.frameCounter = 0;
-                if (++Projectile.frame >= Main.projFrames[Projectile.type]) {
+                if (++Projectile.frame >= Main.projFrames[Projectile.type])
+                {
                     Projectile.frame = 0;
                 }
             }
         }
 
-        // Finding the closest NPC to attack within maxDetectDistance range
-        // If not found then returns null
-        public NPC FindClosestNPC(float maxDetectDistance) {
+        public NPC FindClosestNPC(float maxDetectDistance)
+        {
             NPC closestNPC = null;
 
-            // Using squared values in distance checks will let us skip square root calculations, drastically improving this method's speed.
             float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
 
-            // Loop through all NPCs
-            foreach (var target in Main.ActiveNPCs) {
-                // Check if NPC able to be targeted. 
-                if (IsValidTarget(target)) {
-                    // The DistanceSquared function returns a squared distance between 2 points, skipping relatively expensive square root calculations
+            foreach (var target in Main.ActiveNPCs)
+            {
+                if (IsValidTarget(target))
+                {
                     float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, Projectile.Center);
-
-                    // Check if it is within the radius
-                    if (sqrDistanceToTarget < sqrMaxDetectDistance) {
+                    if (sqrDistanceToTarget < sqrMaxDetectDistance)
+                    {
                         sqrMaxDetectDistance = sqrDistanceToTarget;
                         closestNPC = target;
                     }
@@ -111,16 +148,71 @@ namespace DestroyerTest.Content.Projectiles
             return closestNPC;
         }
 
-        public bool IsValidTarget(NPC target) {
-            // This method checks that the NPC is:
-            // 1. active (alive)
-            // 2. chaseable (e.g. not a cultist archer)
-            // 3. max life bigger than 5 (e.g. not a critter)
-            // 4. can take damage (e.g. moonlord core after all it's parts are downed)
-            // 5. hostile (!friendly)
-            // 6. not immortal (e.g. not a target dummy)
-            // 7. doesn't have solid tiles blocking a line of sight between the projectile and NPC
-            return target.CanBeChasedBy() && Collision.CanHit(Projectile.Center, 1, 1, target.position, target.width, target.height);
+        public bool IsValidTarget(NPC target)
+        {
+            return target.CanBeChasedBy();
         }
+
+        public override void OnKill(int timeLeft)
+        {
+            SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/StarBurst2") with {MaxInstances = 0});
+            if (ExplodesWithPattern)
+            {
+                Vector2 center = Projectile.Center;
+
+                int points = 300;              // total dusts
+                float a = 2.5f;                // base radius factor
+                float[] exponents = { 0.5f, 1f, -0.4f }; // Fermat, Archimedean, inward spiral
+                float[] ks = { 0.15f, -0.2f }; // for logarithmic r = a e^{kφ}
+
+                for (int i = 0; i < points; i++)
+                {
+                    // pick a spiral type at random
+                    int style = Main.rand.Next(4);
+                    float φ = i * 0.1f + Main.rand.NextFloat(0f, 0.3f); // add jitter
+                    float r = 0f;
+
+                    switch (style)
+                    {
+                        case 0: // power spiral
+                            float n = exponents[Main.rand.Next(exponents.Length)];
+                            r = a * (float)Math.Pow(φ, n);
+                            break;
+                        case 1: // logarithmic
+                            float k = ks[Main.rand.Next(ks.Length)];
+                            r = a * (float)Math.Exp(k * φ);
+                            break;
+                        case 2: // simple Archimedean
+                            r = a * φ;
+                            break;
+                        default: // tight lituus-style
+                            r = a / (float)Math.Sqrt(Math.Max(φ, 0.1f));
+                            break;
+                    }
+
+                    // position on the chosen spiral
+                    Vector2 offset = new Vector2(r, 0f).RotatedBy(φ);
+                    Vector2 spawnPos = center + offset;
+
+                    // outward velocity with some tangent twist
+                    // tangent angle α: tan α = r'/r  (approx here with small delta)
+                    float drdφ = (a * (float)Math.Pow(φ + 0.01f, 1) - r) / 0.01f;
+                    float alpha = (float)Math.Atan2(drdφ, r);
+                    Vector2 vel =
+                        offset.SafeNormalize(Vector2.UnitY).RotatedBy(alpha * 0.5f) *
+                        Main.rand.NextFloat(2f, 6f);
+
+                    int dustType = Main.rand.NextBool() ? DustID.DemonTorch
+                                                        : DustID.PurpleCrystalShard;
+
+                    Dust d = Dust.NewDustPerfect(spawnPos, dustType, vel, 150,
+                                                default, Main.rand.NextFloat(1f, 2f));
+                    d.noGravity = true;
+                    d.fadeIn = Main.rand.NextFloat(0.5f, 1.2f);
+
+                }
+            }
+        }
+
     }
 }

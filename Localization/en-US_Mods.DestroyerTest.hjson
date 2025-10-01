@@ -3217,6 +3217,139 @@ Items: {
 		DisplayName: Rift Veil
 		Tooltip: ""
 	}
+
+	RadiantRose: {
+		Tooltip:
+			'''
+			You will consume a Healing Potion every 10 seconds when below 50% health.
+			Your highest rank healing potions will be used first.
+			Potions used automatically will inflict Potion Sickness for 30 seconds instead of a minute.
+			If you have potion sickness, your damage will be decreased by 30% and your defense by 25% until potion sickness is lifted.
+			When drinking a healing potion manually, the duration of potion sickness to be applied will be reduced by 10%.
+			Passive life regen is increased.
+			'''
+		DisplayName: Radiant Rose
+	}
+
+	LifeTalisman: {
+		Tooltip: Increases pickup range for hearts.
+		DisplayName: Life Talisman
+	}
+
+	EphemeralSolvent: {
+		DisplayName: Ephemeral Solvent
+		Tooltip:
+			'''
+			You will consume a Healing Potion every 10 seconds when below 50% health.
+			Your highest rank healing potions will be used first.
+			Potions used automatically will inflict Potion Sickness for 30 seconds instead of a minute.
+			If you have potion sickness, your damage will be decreased by 30% and your defense by 25% until potion sickness is lifted.
+			When drinking a healing potion manually, the duration of potion sickness to be applied will be reduced by 10%.
+			Passive life regen and heart pickup range are massively increased.
+			'''
+	}
+
+	TenebrousSniperRifle: {
+		DisplayName: Tenebrous Sniper Rifle
+		Tooltip: Because a certain someone likes High Velocity bullets over homing bullets.
+	}
+
+	LilliesOfImmortality: {
+		DisplayName: Lillies Of Immortality
+		Tooltip:
+			'''
+			You will consume a Healing Potion every 10 seconds when below 50% health.
+			Your highest rank healing potions will be used first.
+			You are immune to potions sickness.
+			When drinking a healing potion manually, the duration of potion sickness to be applied will be reduced by 10%.
+			Passive life regen and heart pickup range are massively increased.
+			'''
+	}
+
+	Scroll: {
+		DisplayName: Scroll
+		Tooltip: ""
+	}
+
+	ChristmasCarol1: {
+		DisplayName: Christmas Carol
+		Tooltip: ""
+	}
+
+	ChristmasCarol2: {
+		DisplayName: Christmas Carol
+		Tooltip: ""
+	}
+
+	ChristmasCarol3: {
+		DisplayName: Christmas Carol
+		Tooltip: ""
+	}
+
+	EtherScroll: {
+		DisplayName: Ether Scroll
+		Tooltip: ""
+	}
+
+	AdamantPendant: {
+		DisplayName: Adamant Pendant
+		Tooltip: ""
+	}
+
+	AzurePendant: {
+		DisplayName: Azure Pendant
+		Tooltip: ""
+	}
+
+	MythicPendant: {
+		DisplayName: Mythic Pendant
+		Tooltip: ""
+	}
+
+	OrchidPendant: {
+		DisplayName: Orchid Pendant
+		Tooltip: ""
+	}
+
+	RadiantPendant: {
+		DisplayName: Radiant Pendant
+		Tooltip: ""
+	}
+
+	TitanPendant: {
+		DisplayName: Titan Pendant
+		Tooltip: ""
+	}
+
+	MechanicalEnhancements: {
+		DisplayName: Mechanical Enhancements
+		Tooltip: ""
+	}
+
+	SandSurgeScroll: {
+		DisplayName: Sand Surge Scroll
+		Tooltip: ""
+	}
+
+	SnowSurgeScroll: {
+		DisplayName: Snow Surge Scroll
+		Tooltip: ""
+	}
+
+	TenebrisBullet: {
+		DisplayName: Tenebris Bullet
+		Tooltip: ""
+	}
+
+	ShadeParticle: {
+		DisplayName: Shade Particle
+		Tooltip: A condensed, gritty particle. It smells like asphalt and osmanthus.
+	}
+
+	ShimmeringShards: {
+		DisplayName: Shimmering Shards
+		Tooltip: Powerful shards from the Shade World, containing a small amount of energy in each one. Combined, these can accomplish immense things.
+	}
 }
 
 Projectiles: {
@@ -3574,6 +3707,14 @@ Projectiles: {
 	DarkEnergyOrb.DisplayName: Dark Energy Orb
 	TenebrisMine.DisplayName: Tenebris Mine
 	RiftStar.DisplayName: Rift Star
+	TenebrousBullet1.DisplayName: Tenebrous Bullet1
+	TenebrousBullet2.DisplayName: Tenebrous Bullet2
+	TenebrousBullet3.DisplayName: Tenebrous Bullet3
+	SandStormProjectile.DisplayName: Sand Storm Projectile
+	SnowStormProjectile.DisplayName: Snow Storm Projectile
+	TenebrisBulletProjectile.DisplayName: Tenebris Bullet Projectile
+	TenebrisSniperBullet.DisplayName: Tenebris Sniper Bullet
+	TenebrisGemstone.DisplayName: Tenebris Gemstone
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.
@@ -3894,6 +4035,7 @@ NPCs: {
 		DisplayName: Nightmare Rose
 		DespawnMessage: The amalgamation disbands...
 		ExitBarrierDeath: "{0} attempted to flee."
+		EternityBarrierDeath: "{0} was eradicated."
 	}
 
 	EimvurNPC: {
@@ -3958,10 +4100,12 @@ NPCs: {
 	ShadeThrowerMagenta.DisplayName: Shade Thrower Magenta
 	ShadeThrowerTan.DisplayName: Shade Thrower Tan
 	ShadeThrowerBlue.DisplayName: Shade Thrower Blue
+	ShadeThrower.DisplayName: Shade Thrower
 	TenebrisElemental.DisplayName: Tenebris Elemental
 	DarkArchmage.DisplayName: Dark Archmage
 	TenebrousConstruct.DisplayName: Tenebrous Construct
 	CorruptSigil.DisplayName: Corrupt Sigil
+	TenebrousSlinger.DisplayName: Tenebrous Slinger
 }
 
 Keybinds: {

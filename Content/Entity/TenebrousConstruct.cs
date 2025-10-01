@@ -2,9 +2,12 @@ using DestroyerTest.Common;
 using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
+using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles;
+using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.RiftBiome;
 using DestroyerTest.Content.Tools;
+using InnoVault.PRT;
 using Microsoft.Build.Evaluation;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -19,6 +22,7 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.Cinematics;
 using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
@@ -361,8 +365,17 @@ namespace DestroyerTest.Content.Entity
             target.AddBuff(ModContent.BuffType<ShimmeringFlames>(), 120, true, false);
         }
 
+        public override void ModifyNPCLoot(NPCLoot npcLoot)
+        {
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ShadeParticle>(), 3, 24, 36));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ShimmeringShards>(), 3, 13, 23));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ShimmeringSludge>(), 4, 2, 9));
+        }
+
         public override void OnKill()
         {
+            PRTLoader.NewParticle<Boom5>(NPC.Center, Vector2.Zero, ColorLib.TenebrisGradient, 1f);
+            PRTLoader.NewParticle<BloomRing>(NPC.Center, Vector2.Zero, ColorLib.TenebrisGradient, 1f);
             int Gore1 = Mod.Find<ModGore>("TenebrousConstructGore1").Type;
             int Gore2 = Mod.Find<ModGore>("TenebrousConstructGore2").Type;
             int Gore3 = Mod.Find<ModGore>("TenebrousConstructGore3").Type;

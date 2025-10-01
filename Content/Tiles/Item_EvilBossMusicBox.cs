@@ -16,7 +16,7 @@ namespace DestroyerTest.Content.Tiles
 			//   When an item with the given item type is equipped, it will play the music that has musicSlot as its ID.
 			//   When a tile with the given type and Y-frame is nearby, if its X-frame is >= 36, it will play the music that has musicSlot as its ID.
 			// When getting the music slot, you should not add the file extensions!
-			MusicLoader.AddMusicBox(Mod, MusicLoader.GetMusicSlot(Mod, "Assets/Music/EvilBoss1"), ModContent.ItemType<Item_EvilBossMusicBox>(), ModContent.TileType<Tile_EvilBossMusicBox>());
+			MusicLoader.AddMusicBox(Mod, MusicLoader.GetMusicSlot(Mod, "Assets/Music/Tribulation"), ModContent.ItemType<Item_EvilBossMusicBox>(), ModContent.TileType<Tile_EvilBossMusicBox>());
 		}
 
 		public override void SetDefaults() {

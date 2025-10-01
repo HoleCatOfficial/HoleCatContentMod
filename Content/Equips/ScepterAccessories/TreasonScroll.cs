@@ -23,9 +23,9 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            if (player.TryGetModPlayer<TreasonScrollScepterUsePlayer>(out TreasonScrollScepterUsePlayer Scptr))
+            if (player.TryGetModPlayer<ScrollScepterUsePlayer>(out ScrollScepterUsePlayer Scptr))
 			{
-				Scptr.Active = true;
+				Scptr.TreasonScroll = true;
 			}
         }
 
@@ -36,40 +36,4 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
                 .Register();
         }
     }
-
-    public class TreasonScrollScepterUsePlayer : ModPlayer
-	{
-		public bool Active = false;
-        public override void ResetEffects()
-        {
-            Active = false;
-        }
-		public override void ModifyShootStats(Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
-        {
-            if (Active)
-            {
-                if (item.DamageType == ModContent.GetInstance<ScepterClass>() && Player.altFunctionUse == 2)
-                {
-                    if (Main.rand.NextBool(3))
-                    {
-                        for (int t = 0; t < 5; t++)
-                        {
-                            Vector2 outer = Player.Center + Main.rand.NextVector2CircularEdge(5, 5);
-                            Vector2 motion = outer - position;
-
-                            Projectile.NewProjectile(
-                                Player.GetSource_ItemUse(item),
-                                Player.Center,
-                                motion,
-                                ModContent.ProjectileType<TreasonScrollBomb>(),
-                                damage,
-                                knockback,
-                                Player.whoAmI
-                            );
-                        }
-                    }
-                }
-            }
-        }
-	}
 }

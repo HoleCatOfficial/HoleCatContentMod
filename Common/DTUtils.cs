@@ -54,6 +54,24 @@ namespace DestroyerTest.Common
             }
         }
 
+        public void RadialSpreadProjectile(int ID, int Amount, Vector2 CTR, int Dmg = 0, int KB = 0, int Speed = 2)
+        {
+            float rotationStep = MathHelper.TwoPi / Amount;
+
+            for (int i = 0; i < Amount; i++)
+            {
+                Vector2 velocity = new Vector2(Speed, 0f).RotatedBy(rotationStep * i);
+                Projectile.NewProjectile(
+                    Projectile.GetSource_None(),
+                    CTR,
+                    velocity,
+                    ID,
+                    Dmg,
+                    KB
+                );
+            }
+        }
+
         /// <summary>
         /// Easy-to-call method for drawing a point glow over the center of a projectile.
         /// </summary>
@@ -414,7 +432,7 @@ namespace DestroyerTest.Common
                 Variant = 1;
             }
             return ModContent.Request<Texture2D>($"{ParticlePath}/Shine{Variant}");
-        }
+        } 
 
         public static Asset<Texture2D> Star(int Variant)
         {

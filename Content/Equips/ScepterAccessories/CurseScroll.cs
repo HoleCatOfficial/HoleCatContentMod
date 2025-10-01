@@ -23,46 +23,10 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            if (player.TryGetModPlayer<CurseScrollScepterUsePlayer>(out CurseScrollScepterUsePlayer Scptr))
+            if (player.TryGetModPlayer<ScrollScepterUsePlayer>(out ScrollScepterUsePlayer Scptr))
 			{
-				Scptr.Active = true;
+				Scptr.CurseScroll = true;
 			}
         }
     }
-
-    public class CurseScrollScepterUsePlayer : ModPlayer
-	{
-		public bool Active = false;
-        public override void ResetEffects()
-        {
-            Active = false;
-        }
-		public override void ModifyShootStats(Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
-        {
-            if (Active)
-            {
-                if (item.DamageType == ModContent.GetInstance<ScepterClass>() && Player.altFunctionUse == 2)
-                {
-                    if (Main.rand.NextBool(3))
-                    {
-                        for (int t = 0; t < 3; t++)
-                        {
-                            Vector2 outer = Player.Center + Main.rand.NextVector2CircularEdge(10, 10);
-                            Vector2 motion = outer - position;
-
-                            Projectile.NewProjectile(
-                                Player.GetSource_ItemUse(item),
-                                Player.Center,
-                                motion,
-                                ModContent.ProjectileType<CurseProjectile>(),
-                                damage / 3,
-                                knockback,
-                                Player.whoAmI
-                            );
-                        }
-                    }
-                }
-            }
-        }
-	}
 }
