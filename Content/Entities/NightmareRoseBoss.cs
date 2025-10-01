@@ -53,7 +53,7 @@ namespace DestroyerTest.Content.Entities
     [AutoloadBossHead]
     public class NightmareRoseBoss : ModNPC
     {
-        public override string BossHeadTexture => "DestroyerTest/Content/Entity/NightmareRoseBoss_Head_Boss";
+        public override string BossHeadTexture => "DestroyerTest/Content/Entities/NightmareRoseBoss_Head_Boss";
 
         public void immunities()
         {
@@ -85,7 +85,7 @@ namespace DestroyerTest.Content.Entities
             NPCID.Sets.MPAllowedEnemies[Type] = true;
             var drawModifier = new NPCID.Sets.NPCBestiaryDrawModifiers()
             { // Influences how the NPC looks in the Bestiary
-                CustomTexturePath = "DestroyerTest/Content/Entity/NightmareRoseBossBestiary", // If the NPC is multiple parts like a worm, a custom texture for the Bestiary is encouraged.
+                CustomTexturePath = "DestroyerTest/Content/Entities/NightmareRoseBossBestiary", // If the NPC is multiple parts like a worm, a custom texture for the Bestiary is encouraged.
                 Position = Vector2.Zero,
             };
             NPCID.Sets.NPCBestiaryDrawOffset.Add(NPC.type, drawModifier);
@@ -1766,7 +1766,7 @@ namespace DestroyerTest.Content.Entities
             NPCID.Sets.MPAllowedEnemies[Type] = true;
             var drawModifier = new NPCID.Sets.NPCBestiaryDrawModifiers()
             { // Influences how the NPC looks in the Bestiary
-                CustomTexturePath = "DestroyerTest/Content/Entity/NodesBestiary", // If the NPC is multiple parts like a worm, a custom texture for the Bestiary is encouraged.
+                CustomTexturePath = "DestroyerTest/Content/Entities/NodesBestiary", // If the NPC is multiple parts like a worm, a custom texture for the Bestiary is encouraged.
                 Position = Vector2.Zero,
             };
             NPCID.Sets.NPCBestiaryDrawOffset.Add(NPC.type, drawModifier);

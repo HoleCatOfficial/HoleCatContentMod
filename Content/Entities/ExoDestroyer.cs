@@ -32,7 +32,7 @@ namespace DestroyerTest.Content.Entities
 
 		public override void SetStaticDefaults() {
 			var drawModifier = new NPCID.Sets.NPCBestiaryDrawModifiers() { // Influences how the NPC looks in the Bestiary
-				CustomTexturePath = "DestroyerTest/Content/Entity/ExoDestroyerBestiary", // If the NPC is multiple parts like a worm, a custom texture for the Bestiary is encouraged.
+				CustomTexturePath = "DestroyerTest/Content/Entities/ExoDestroyerBestiary", // If the NPC is multiple parts like a worm, a custom texture for the Bestiary is encouraged.
 				Position = new Vector2(40f, 24f),
 				PortraitPositionXOverride = 0f,
 				PortraitPositionYOverride = 12f
@@ -204,7 +204,7 @@ namespace DestroyerTest.Content.Entities
 
 	internal class ExoDestroyerBody : WormBody
 	{
-        public override string Texture => "DestroyerTest/Content/Entity/ExoDestroyerBody_T1";
+        public override string Texture => "DestroyerTest/Content/Entities/ExoDestroyerBody_T1";
 		public override void SetStaticDefaults() {
 			NPCID.Sets.NPCBestiaryDrawModifiers value = new NPCID.Sets.NPCBestiaryDrawModifiers() {
 				Hide = true // Hides this NPC from the Bestiary, useful for multi-part NPCs whom you only want one entry.
@@ -240,7 +240,7 @@ namespace DestroyerTest.Content.Entities
 
 	internal class ExoDestroyerTail : WormTail
 	{
-		public override string Texture => "DestroyerTest/Content/Entity/ExoDestroyerTail";
+		public override string Texture => "DestroyerTest/Content/Entities/ExoDestroyerTail";
 		public override void SetStaticDefaults() {
 			NPCID.Sets.NPCBestiaryDrawModifiers value = new NPCID.Sets.NPCBestiaryDrawModifiers() {
 				Hide = true // Hides this NPC from the Bestiary, useful for multi-part NPCs whom you only want one entry.

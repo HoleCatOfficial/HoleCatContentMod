@@ -51,7 +51,7 @@ namespace DestroyerTest.Content.Entities
             if (!Main.dedServ)
             {
                 // This gives you a valid texture index
-                int headSlot = Mod.AddBossHeadTexture("DestroyerTest/Content/Entity/TheGreatFlayer_Head", ModContent.NPCType<TheGreatFlayer>());
+                int headSlot = Mod.AddBossHeadTexture("DestroyerTest/Content/Entities/TheGreatFlayer_Head", ModContent.NPCType<TheGreatFlayer>());
 
                 // Assign it to the NPC type
                 NPCID.Sets.BossHeadTextures[ModContent.NPCType<TheGreatFlayer>()] = headSlot;

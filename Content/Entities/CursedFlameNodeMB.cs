@@ -32,7 +32,7 @@ namespace DestroyerTest.Content.Entities
     [AutoloadBossHead]
     public class CursedFlameNodeMB : ModNPC
     {
-        public override string BossHeadTexture => "DestroyerTest/Content/Entity/CursedFlameNode_Head_Boss";
+        public override string BossHeadTexture => "DestroyerTest/Content/Entities/CursedFlameNode_Head_Boss";
         public override void SetStaticDefaults()
         {
             NPCID.Sets.CanHitPastShimmer[Type] = true;
@@ -43,7 +43,7 @@ namespace DestroyerTest.Content.Entities
             NPCID.Sets.MPAllowedEnemies[Type] = true;
             var drawModifier = new NPCID.Sets.NPCBestiaryDrawModifiers()
             { // Influences how the NPC looks in the Bestiary
-                CustomTexturePath = "DestroyerTest/Content/Entity/NodesBestiary", // If the NPC is multiple parts like a worm, a custom texture for the Bestiary is encouraged.
+                CustomTexturePath = "DestroyerTest/Content/Entities/NodesBestiary", // If the NPC is multiple parts like a worm, a custom texture for the Bestiary is encouraged.
                 Position = Vector2.Zero,
             };
             NPCID.Sets.NPCBestiaryDrawOffset.Add(NPC.type, drawModifier);

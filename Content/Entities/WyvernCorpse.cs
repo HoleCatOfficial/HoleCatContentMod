@@ -93,7 +93,7 @@ namespace DestroyerTest.Content.Entities
         {
             NPCID.Sets.NPCBestiaryDrawModifiers value = new NPCID.Sets.NPCBestiaryDrawModifiers()
             {
-                CustomTexturePath = "DestroyerTest/Content/Entity/WyvernCorpseBestiary",
+                CustomTexturePath = "DestroyerTest/Content/Entities/WyvernCorpseBestiary",
 
                 PortraitPositionXOverride = -25f,
                 PortraitPositionYOverride = 0f

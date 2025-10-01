@@ -39,7 +39,7 @@ namespace DestroyerTest.Content.Entities
     [AutoloadBossHead]
     public class ConstitutionBoss : ModNPC
     {
-        public override string BossHeadTexture => "DestroyerTest/Content/Entity/ConstitutionBoss_Head_Boss";
+        public override string BossHeadTexture => "DestroyerTest/Content/Entities/ConstitutionBoss_Head_Boss";
         public override void SetStaticDefaults()
         {
             NPCID.Sets.CanHitPastShimmer[Type] = true;
@@ -53,7 +53,7 @@ namespace DestroyerTest.Content.Entities
             NPCID.Sets.MPAllowedEnemies[Type] = true;
             var drawModifier = new NPCID.Sets.NPCBestiaryDrawModifiers()
             { // Influences how the NPC looks in the Bestiary
-                CustomTexturePath = "DestroyerTest/Content/Entity/ConstitutionBestiary", // If the NPC is multiple parts like a worm, a custom texture for the Bestiary is encouraged.
+                CustomTexturePath = "DestroyerTest/Content/Entities/ConstitutionBestiary", // If the NPC is multiple parts like a worm, a custom texture for the Bestiary is encouraged.
                 Position = Vector2.Zero,
             };
             NPCID.Sets.NPCBestiaryDrawOffset.Add(NPC.type, drawModifier);
@@ -98,7 +98,7 @@ namespace DestroyerTest.Content.Entities
             if (NPC.type == ModContent.NPCType<ConstitutionBoss>())
             {
                 Texture2D texture = TextureAssets.Npc[Type].Value;
-                Texture2D WhiteOutline = ModContent.Request<Texture2D>("DestroyerTest/Content/Entity/ConstitutionBossOutline").Value;
+                Texture2D WhiteOutline = ModContent.Request<Texture2D>("DestroyerTest/Content/Entities/ConstitutionBossOutline").Value;
 
                 Vector2 drawOrigin = new(texture.Width * 0.5f, NPC.height * 0.5f);
                 //Effect shader = ModContent.Request<Effect>("DestroyerTest/Assets/HSHLShaders/SlashTrans", AssetRequestMode.ImmediateLoad).Value;
@@ -1123,8 +1123,8 @@ namespace DestroyerTest.Content.Entities
 
     public class ConstitutionClone : ModProjectile
     {
-        public override string Texture => "DestroyerTest/Content/Entity/ConstitutionBossClone";
-        public override string GlowTexture => "DestroyerTest/Content/Entity/ConstitutionBossClone";
+        public override string Texture => "DestroyerTest/Content/Entities/ConstitutionBossClone";
+        public override string GlowTexture => "DestroyerTest/Content/Entities/ConstitutionBossClone";
 
 
 

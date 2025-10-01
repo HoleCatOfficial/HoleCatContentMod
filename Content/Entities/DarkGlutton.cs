@@ -43,7 +43,7 @@ namespace DestroyerTest.Content.Entities
             immunities();
             var drawModifier = new NPCID.Sets.NPCBestiaryDrawModifiers()
             { // Influences how the NPC looks in the Bestiary
-                CustomTexturePath = "DestroyerTest/Content/Entity/DarkGluttonHeadBestiary", // If the NPC is multiple parts like a worm, a custom texture for the Bestiary is encouraged.
+                CustomTexturePath = "DestroyerTest/Content/Entities/DarkGluttonHeadBestiary", // If the NPC is multiple parts like a worm, a custom texture for the Bestiary is encouraged.
                 Position = new Vector2(40f, 24f),
                 PortraitPositionXOverride = 0f,
                 PortraitPositionYOverride = 12f

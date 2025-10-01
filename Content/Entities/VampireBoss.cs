@@ -32,7 +32,7 @@ namespace DestroyerTest.Content.Entities
     [AutoloadBossHead]
     public class VampireBoss : ModNPC
     {
-        public override string BossHeadTexture => "DestroyerTest/Content/Entity/VampireBoss_Head_Boss";
+        public override string BossHeadTexture => "DestroyerTest/Content/Entities/VampireBoss_Head_Boss";
         public override void SetStaticDefaults()
         {
             NPCID.Sets.CanHitPastShimmer[Type] = true;
@@ -46,7 +46,7 @@ namespace DestroyerTest.Content.Entities
             NPCID.Sets.MPAllowedEnemies[Type] = true;
             var drawModifier = new NPCID.Sets.NPCBestiaryDrawModifiers()
             { // Influences how the NPC looks in the Bestiary
-                CustomTexturePath = "DestroyerTest/Content/Entity/VampireBossBestiary", // If the NPC is multiple parts like a worm, a custom texture for the Bestiary is encouraged.
+                CustomTexturePath = "DestroyerTest/Content/Entities/VampireBossBestiary", // If the NPC is multiple parts like a worm, a custom texture for the Bestiary is encouraged.
                 Position = Vector2.Zero,
             };
             NPCID.Sets.NPCBestiaryDrawOffset.Add(NPC.type, drawModifier);
