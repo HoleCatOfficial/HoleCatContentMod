@@ -1,6 +1,6 @@
 
 using System.Linq;
-using DestroyerTest.Content.Entity;
+using DestroyerTest.Content.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;

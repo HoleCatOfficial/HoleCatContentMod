@@ -4,7 +4,7 @@ using Terraria.ModLoader.IO;
 using Terraria.ID;
 using DestroyerTest.Content.Tiles;
 using DestroyerTest.Common.Systems;
-using DestroyerTest.Content.Entity;
+using DestroyerTest.Content.Entities;
 using Terraria.Audio;
 using DestroyerTest.Content.BossBars;
 using DestroyerTest.Content.Consumables;

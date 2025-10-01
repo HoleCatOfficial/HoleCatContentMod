@@ -1,5 +1,5 @@
 using DestroyerTest.Content.Consumables;
-using DestroyerTest.Content.Entity;
+using DestroyerTest.Content.Entities;
 using DestroyerTest.Content.Equips;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;

@@ -1,5 +1,5 @@
 
-using DestroyerTest.Content.Entity;
+using DestroyerTest.Content.Entities;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;

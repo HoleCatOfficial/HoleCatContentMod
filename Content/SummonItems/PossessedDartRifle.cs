@@ -17,7 +17,7 @@ using DestroyerTest.Content.SummonItems;
 using DestroyerTest.Content.MeleeWeapons;
 
 using Terraria.Localization;
-using DestroyerTest.Content.Entity;
+using DestroyerTest.Content.Entities;
 using System.Linq;
 using DestroyerTest.Content.Projectiles;
 

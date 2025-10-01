@@ -4,7 +4,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using DestroyerTest.Content.Consumables;
 using Microsoft.Xna.Framework;
-using DestroyerTest.Content.Entity;
+using DestroyerTest.Content.Entities;
 
 namespace DestroyerTest.Content.Buffs
 {

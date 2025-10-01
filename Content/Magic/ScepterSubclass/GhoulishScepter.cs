@@ -11,7 +11,7 @@ using DestroyerTest.Common;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.Resources.Cloths;
 using Terraria.GameContent.ItemDropRules;
-using DestroyerTest.Content.Entity;
+using DestroyerTest.Content.Entities;
 using DestroyerTest.Common.Systems;
 using DestroyerTest.Rarity;
 

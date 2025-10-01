@@ -1,16 +1,14 @@
-/*
 using Terraria.ModLoader;
+using DestroyerTest.Content.Entities;
 
-namespace DestroyerTest.Content.Achievement;
+namespace DestroyerTest.Content.Achievement
 {
-public class WyvernCorpseDefeat : ModAchievement
-{
+	public class WyvernCorpseDefeat : ModAchievement
+	{
 	public override void SetStaticDefaults() {
-		// Achievement.SetCategory(AchievementCategory.Collector);
 		AddNPCKilledCondition(ModContent.NPCType<WyvernCorpseHead>());
 	}
     
-	public override Position GetDefaultPosition() => new After("CHAMPION_OF_TERRARIA)");
+	public override Position GetDefaultPosition() => new After("CHAMPION_OF_TERRARIA");
     }
 }
-*/

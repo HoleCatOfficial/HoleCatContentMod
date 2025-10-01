@@ -8,7 +8,7 @@ using Terraria.Enums;
 using Terraria.Audio;
 using Terraria.Localization;
 using System;
-using DestroyerTest.Content.Entity;
+using DestroyerTest.Content.Entities;
 using DestroyerTest.Rarity;
 
 namespace DestroyerTest.Content.Tiles

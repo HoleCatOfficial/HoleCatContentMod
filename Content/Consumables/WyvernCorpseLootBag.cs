@@ -1,6 +1,6 @@
 
 using DestroyerTest.Common;
-using DestroyerTest.Content.Entity;
+using DestroyerTest.Content.Entities;
 using DestroyerTest.Content.Equips;
 using DestroyerTest.Content.Magic;
 using DestroyerTest.Content.Magic.ScepterSubclass;
