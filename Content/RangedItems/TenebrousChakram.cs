@@ -13,7 +13,7 @@ using DestroyerTest.Content.Tiles.Riftplate;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.Tools;
 using System.Collections.Generic;
-using DestroyerTest.Content.RiftArsenalNoCharge;
+
 using Terraria.Localization;
   
 

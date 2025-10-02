@@ -6,10 +6,11 @@ using Terraria.ModLoader;
 using DestroyerTest.Rarity;
 using DestroyerTest.Content.RogueItems;
 using DestroyerTest.Content.Tiles.Riftplate;
+using DestroyerTest.Content.Tiles.RiftConfigurator;
 
 namespace DestroyerTest.Content.RiftArsenal
 {
-	public class RiftTeardrop : ModItem
+	public class RiftTeardrop : RechargeItem
 	{
 		public override void SetStaticDefaults() {
 			ItemID.Sets.ItemsThatCountAsBombsForDemolitionistToSpawn[Type] = true;
@@ -39,8 +40,7 @@ namespace DestroyerTest.Content.RiftArsenal
 			CreateRecipe()
 				.AddIngredient<RiftMaker>(2)
                 .AddIngredient<Living_Shadow>(15)
-				.AddTile<Tile_RiftCrucible>()
-                .AddCondition(Condition.DownedGolem)
+				.AddTile<Tile_RiftConfiguratorWeaponry>()
 				.Register();
 		}
 	}

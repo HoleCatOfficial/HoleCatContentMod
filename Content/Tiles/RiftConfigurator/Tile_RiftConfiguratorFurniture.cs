@@ -1,3 +1,4 @@
+using DestroyerTest.Content.Dusts;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -27,6 +28,12 @@ namespace DestroyerTest.Content.Tiles.RiftConfigurator
 			LocalizedText name = CreateMapEntryName();
 			AddMapEntry(new Color(255, 155, 0), name);
 
+            HitSound = new SoundStyle("DestroyerTest/Assets/Audio/TenebrousConstruct/Hit", 5)
+            {
+                PitchVariance = 0.2f,
+                MaxInstances = 0
+            };
+            DustType = ModContent.DustType<RiftDust>();
 
 			AnimationFrameHeight = 54;
 		}
@@ -55,12 +62,5 @@ namespace DestroyerTest.Content.Tiles.RiftConfigurator
             Tile tile = Main.tile[i, j];
             frameYOffset = (tile.TileFrameY / AnimationFrameHeight) * AnimationFrameHeight;
         }
-
-
-		public override bool KillSound(int i, int j, bool fail) {
-				SoundEngine.PlaySound(SoundID.Item178, new Vector2(i, j).ToWorldCoordinates());
-                return true;
-
-		}
 	}
 }

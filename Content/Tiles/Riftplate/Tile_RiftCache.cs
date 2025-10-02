@@ -10,6 +10,7 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
 using DestroyerTest.Content.Resources;
+using DestroyerTest.Content.Dusts;
 
 namespace DestroyerTest.Content.Tiles.Riftplate
 {
@@ -17,7 +18,12 @@ namespace DestroyerTest.Content.Tiles.Riftplate
 	{
 		public override void SetStaticDefaults() {
 			// Properties
-            HitSound = SoundID.Item178;
+            HitSound = new SoundStyle("DestroyerTest/Assets/Audio/TenebrousConstruct/Hit", 5)
+            {
+                PitchVariance = 0.2f,
+                MaxInstances = 0
+            };
+            DustType = ModContent.DustType<RiftDust>();
 			Main.tileSpelunker[Type] = true;
 			Main.tileContainer[Type] = true;
 			Main.tileShine2[Type] = true;
@@ -270,7 +276,7 @@ namespace DestroyerTest.Content.Tiles.Riftplate
 			Player player = Main.LocalPlayer;
 			if (player.cursorItemIconText == "") {
 				player.cursorItemIconEnabled = false;
-				player.cursorItemIconID = 0;
+				player.cursorItemIconID = ItemID.None;
 			}
 		}
 	}

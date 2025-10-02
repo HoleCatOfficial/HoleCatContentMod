@@ -5,7 +5,7 @@ using DestroyerTest.Common;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.AmmoProjectiles;
 using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.RiftArsenalNoCharge;
+
 using DestroyerTest.Content.Tiles;
 using DestroyerTest.Content.Tiles.Riftplate;
 using DestroyerTest.Content.Tools;

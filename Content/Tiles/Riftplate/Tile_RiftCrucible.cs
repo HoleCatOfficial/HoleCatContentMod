@@ -1,5 +1,6 @@
 
 using DestroyerTest.Common;
+using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.Tools;
@@ -7,6 +8,7 @@ using DestroyerTest.Content.Tools;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
@@ -28,7 +30,12 @@ namespace DestroyerTest.Content.Tiles.Riftplate
 			TileID.Sets.DisableSmartCursor[Type] = true;
 			TileID.Sets.IgnoredByNpcStepUp[Type] = true; // This line makes NPCs not try to step up this tile during their movement. Only use this for furniture with solid tops.
 
-			DustType = DustID.Lava;
+			HitSound = new SoundStyle("DestroyerTest/Assets/Audio/TenebrousConstruct/Hit", 5)
+            {
+                PitchVariance = 0.2f,
+                MaxInstances = 0
+            };
+            DustType = ModContent.DustType<RiftDust>();
 			AdjTiles = new int[] { TileID.WorkBenches + TileID.LihzahrdFurnace };
 
 			// Placement

@@ -519,7 +519,7 @@ namespace DestroyerTest.Content.Entities
                     angle += Main.rand.NextFloat(-0.05f, 0.05f); // adjust range for more/less distortion
 
                     // Keep them on the same circumference
-                    Vector2 Pos = NPCHead + BorderRad * new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
+                    Vector2 Pos = NPCHead + Main.rand.NextVector2CircularEdge(BorderRad, BorderRad);
 
                     Dust Border = Dust.NewDustPerfect(Pos, BorderDustType, Vector2.Zero, 0, default, 1f);
                     Border.noGravity = true;

@@ -26,7 +26,7 @@ namespace DestroyerTest.Content.RiftBiome.RiftDesertResources
 		public override void AddRecipes() {
 			CreateRecipe(10)
 				.AddIngredient<Living_Shadow>()
-                .AddIngredient(TileID.Silt)
+                .AddIngredient(ItemID.SiltBlock)
 				.AddTile(TileID.Blendomatic)
 				.Register();
 		}

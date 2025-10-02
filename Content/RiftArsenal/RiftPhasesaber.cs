@@ -14,11 +14,15 @@ using DestroyerTest.Content.Tiles.Riftplate;
 using DestroyerTest.Common;
 using System.Collections.Generic;
 using DestroyerTest.Content.Tools;
-using DestroyerTest.Content.RiftArsenalNoCharge;
+using DestroyerTest.Content.Resources.Blueprints;
+using InnoVault.PRT;
+using DestroyerTest.Content.Particles;
+using DestroyerTest.Content.Buffs;
+
 
 namespace DestroyerTest.Content.RiftArsenal
 {
-    public class RiftPhasesaber : ModItem
+    public class RiftPhasesaber : RechargeItem
     {
         private bool isThrowingMode = false; // Tracks the current mode
 
@@ -72,13 +76,7 @@ namespace DestroyerTest.Content.RiftArsenal
             } else {
                 SetSwingModeDefaults();
             }
-
-            var modPlayer = Main.LocalPlayer.GetModPlayer<LivingShadowPlayer>();
-            if (modPlayer.LivingShadowCurrent == 0)
-			{
-				return false;
-			}
-            return base.CanUseItem(player);
+            return player.ownedProjectileCounts[Item.shoot] < 1;
         }
 
         public override bool AltFunctionUse(Player player) {
@@ -115,118 +113,47 @@ namespace DestroyerTest.Content.RiftArsenal
             }
         }
 
-        public override void MeleeEffects(Player player, Rectangle hitbox) {
-            if (Main.rand.NextBool(3)) {
+        public override void MeleeEffects(Player player, Rectangle hitbox)
+        {
+            if (Main.rand.NextBool(3))
+            {
+                // Emit dusts when the sword is swung
                 Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, ModContent.DustType<Dusts.RiftDust>());
             }
-        }
 
-        public override void AddRecipes() {
-			CreateRecipe()
-                .AddCondition(Language.GetText("Mods.DestroyerTest.RecipeCondition.Charge"), () => Main.LocalPlayer.HasItem(ModContent.ItemType<Husk_RiftPhasesaber>()))
-				.Register();
+            if (Energized)
+            {
+                int[] types = new int[]
+                {
+                    PRTLoader.GetParticleID<Arc1>(),
+                    PRTLoader.GetParticleID<Arc2>(),
+                    PRTLoader.GetParticleID<Arc3>()
+                };
+
+				if (Main.rand.NextBool(3))
+				{
+					PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], Main.rand.NextVector2FromRectangle(hitbox), Vector2.Zero, ColorLib.Rift, 0.3f);
+				}
+            }
 		}
 
-        public override void UpdateInventory(Player player)
+        public override void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone)
         {
-            NoChargeLeft(player);
-        }
-
-		public override bool CanRightClick() {
-                return true;
-            }
-
-        private const int CrucibleProximityRange = 3;
-        private const int RequiredBatteries = 2;
-
-        public override void RightClick(Player player)
-        {
-            SoundStyle zapSound = new SoundStyle("DestroyerTest/Assets/Audio/RiftCharge");
-
-            if (player.HeldItem != null && player.HeldItem.type == ModContent.ItemType<RiftElectrifier>())
+            if (Energized)
             {
-                if (IsNearRiftCrucible(player))
-                {
-                    ReplenishLivingShadow(player, zapSound, consumeBatteries: false);
-                }
-                else if (player.CountItem(ModContent.ItemType<RiftBattery>(), RequiredBatteries) >= RequiredBatteries)
-                {
-                    ConsumeBatteries(player, RequiredBatteries);
-                    ReplenishLivingShadow(player, zapSound, consumeBatteries: true);
-                }
-                else
-                {
-                    CombatText.NewText(player.Hitbox, ColorLib.Rift, $"{RequiredBatteries} Rift Batteries needed, or, plug the Electrifier into a rift crucible.", true);
-                }
-            }
-            else
-			{
-				return;
-			}
-        }
-
-        public override bool ConsumeItem(Player player)
-        {
-            return false; // Prevents the item from being consumed on use
-        }
-
-        private bool IsNearRiftCrucible(Player player)
-        {
-            Point playerTilePosition = player.Center.ToTileCoordinates();
-            int riftCrucibleTileType = ModContent.TileType<Tile_RiftCrucible>();
-
-            for (int x = -CrucibleProximityRange; x <= CrucibleProximityRange; x++)
-            {
-                for (int y = -CrucibleProximityRange; y <= CrucibleProximityRange; y++)
-                {
-                    Point checkPosition = new Point(playerTilePosition.X + x, playerTilePosition.Y + y);
-                    if (Main.tile[checkPosition.X, checkPosition.Y].TileType == riftCrucibleTileType)
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
-
-        private void ConsumeBatteries(Player player, int count)
-        {
-            int riftBatteryType = ModContent.ItemType<RiftBattery>();
-            for (int i = 0; i < count; i++)
-            {
-                player.ConsumeItem(riftBatteryType);
+                target.AddBuff(ModContent.BuffType<HeliouricShock>(), 300);
             }
         }
 
-        private void ReplenishLivingShadow(Player player, SoundStyle zapSound, bool consumeBatteries)
+        public override void AddRecipes()
         {
-            
-            SoundEngine.PlaySound(zapSound, player.position);
-            ScreenFlashSystem.FlashIntensity = 0.9f;
-
-            var modPlayer = player.GetModPlayer<LivingShadowPlayer>();
-            modPlayer.LivingShadowCurrent = modPlayer.LivingShadowMax2;
+            CreateRecipe()
+                .AddIngredient<BroadswordData>()
+                .AddIngredient<ShadowCircuitry>(12)
+                .AddIngredient<Item_Riftplate>(7)
+                .AddIngredient<Living_Shadow>(7)
+                .AddTile<Tile_RiftConfiguratorWeaponry>()
+			.Register();
         }
-
-        private bool hasReplaced = false;
-        private void NoChargeLeft(Player player)
-        {
-            var modPlayer = player.GetModPlayer<LivingShadowPlayer>();
-            if (modPlayer.LivingShadowCurrent == 0 && hasReplaced == false)
-			{
-            hasReplaced = true;
-            Item.NewItem(player.GetSource_FromThis(), player.position, ModContent.ItemType<Husk_RiftPhasesaber>());
-            Item.TurnToAir();
-            }
-        }
-
-        public override void ModifyTooltips(List<TooltipLine> tooltips)
-		{
-			string batteryTooltip = $"Requires {RequiredBatteries} Rift Batteries to recharge.";
-			tooltips.Add(new TooltipLine(Mod, "RiftBatteryRequirement", batteryTooltip)
-			{
-				OverrideColor = ColorLib.Rift // Optional: Set a custom color for the tooltip text
-			});
-		}
     }
 }

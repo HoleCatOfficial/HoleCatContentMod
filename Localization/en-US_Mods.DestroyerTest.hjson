@@ -4399,3 +4399,20 @@ BookText: {
 			'''
 	}
 }
+
+Achievements: {
+	ConstitutionDefeat: {
+		FriendlyName: Constitution Defeat
+		Description: Mods.DestroyerTest.Achievements.ConstitutionDefeat.Description
+	}
+
+	NightmareRoseDefeat: {
+		FriendlyName: Nightmare Rose Defeat
+		Description: Mods.DestroyerTest.Achievements.NightmareRoseDefeat.Description
+	}
+
+	WyvernCorpseDefeat: {
+		FriendlyName: Wyvern Corpse Defeat
+		Description: Mods.DestroyerTest.Achievements.WyvernCorpseDefeat.Description
+	}
+}

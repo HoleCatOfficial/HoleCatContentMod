@@ -1,6 +1,7 @@
 using DestroyerTest.Content.Dusts;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
@@ -24,7 +25,12 @@ namespace DestroyerTest.Content.Tiles.Riftplate
 			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsDoor);
 			AddMapEntry(new Color(200, 100, 00));
 
-			DustType = ModContent.DustType<RiftDust>();
+			HitSound = new SoundStyle("DestroyerTest/Assets/Audio/TenebrousConstruct/Hit", 5)
+            {
+                PitchVariance = 0.2f,
+                MaxInstances = 0
+            };
+            DustType = ModContent.DustType<RiftDust>();
 			AdjTiles = [TileID.Platforms];
 
 			// Placement

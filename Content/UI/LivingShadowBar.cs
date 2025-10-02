@@ -1,7 +1,9 @@
 using DestroyerTest.Common;
+using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.RiftArsenal;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent;
@@ -20,6 +22,8 @@ namespace DestroyerTest.Content.UI
 		private UIText text;
 		private UIElement area;
 		private UIImage barFrame;
+		private Asset<Texture2D> barBack;
+		private Asset<Texture2D> fillCap;
 		private Color gradientA;
 		private Color gradientB;
 
@@ -38,6 +42,9 @@ namespace DestroyerTest.Content.UI
 			barFrame.Width.Set(138, 0f);
 			barFrame.Height.Set(34, 0f);
 
+			barBack = ModContent.Request<Texture2D>("DestroyerTest/Assets/Textures/LivingShadowFrameBack");
+			fillCap = ModContent.Request<Texture2D>("DestroyerTest/Assets/Textures/LivingShadowCap");
+
 			text = new UIText("0/0", 0.8f); // text to show stat
 			text.Width.Set(138, 0f);
 			text.Height.Set(34, 0f);
@@ -54,7 +61,7 @@ namespace DestroyerTest.Content.UI
 
 		public override void Draw(SpriteBatch spriteBatch) {
 			// This prevents drawing unless we are using one of the specified items
-			if (!IsHoldingRiftItem())
+			if (!Main.LocalPlayer.HasItemInInventoryOrOpenVoidBag(ModContent.ItemType<RiftBattery>()))
 				return;
 
 			base.Draw(spriteBatch);
@@ -65,31 +72,49 @@ namespace DestroyerTest.Content.UI
 			base.DrawSelf(spriteBatch);
 
 			var modPlayer = Main.LocalPlayer.GetModPlayer<LivingShadowPlayer>();
-			// Calculate quotient
-			float quotient = (float)modPlayer.LivingShadowCurrent / modPlayer.LivingShadowMax2; // Creating a quotient that represents the difference of your currentResource vs your maximumResource, resulting in a float of 0-1f.
-			quotient = Utils.Clamp(quotient, 0f, 1f); // Clamping it to 0-1f so it doesn't go over that.
+			float quotient = (float)modPlayer.LivingShadowCurrent / modPlayer.LivingShadowMax2;
+			quotient = Utils.Clamp(quotient, 0f, 1f);
 
-			// Here we get the screen dimensions of the barFrame element, then tweak the resulting rectangle to arrive at a rectangle within the barFrame texture that we will draw the gradient. These values were measured in a drawing program.
+			// Get frame hitbox to align the inside stuff
 			Rectangle hitbox = barFrame.GetInnerDimensions().ToRectangle();
 			hitbox.X += 8;
 			hitbox.Width -= 16;
 			hitbox.Y += 4;
 			hitbox.Height -= 10;
 
-			// Now, using this hitbox, we draw a gradient by drawing vertical lines while slowly interpolating between the 2 colors.
+			// --- 1. BACK TEXTURE ---
+			var dims = barFrame.GetDimensions();
+			Vector2 pos = dims.Position(); // Top-left of the frame in UI-scaled coords
+			spriteBatch.Draw(barBack.Value, pos, Color.White);
+
+
+			// --- 2. RESOURCE BAR (Gradient) ---
 			int left = hitbox.Left;
 			int right = hitbox.Right;
 			int steps = (int)((right - left) * quotient);
-			for (int i = 0; i < steps; i += 1) {
-				// float percent = (float)i / steps; // Alternate Gradient Approach
+			for (int i = 0; i < steps; i++) {
 				float percent = (float)i / (right - left);
-				spriteBatch.Draw(TextureAssets.MagicPixel.Value, new Rectangle(left + i, hitbox.Y, 1, hitbox.Height), Color.Lerp(gradientA, gradientB, percent));
+				spriteBatch.Draw(TextureAssets.MagicPixel.Value,
+					new Rectangle(left + i, hitbox.Y, 1, hitbox.Height),
+					Color.Lerp(gradientA, gradientB, percent));
 			}
+
+			// --- 3. FILL CAP ---
+			if (quotient > 0f) {
+				// Where the filled bar ends
+				int capX = left + steps - (fillCap.Value.Width / 2);
+				int capY = hitbox.Y + (hitbox.Height / 2);
+				spriteBatch.Draw(fillCap.Value, new Vector2(capX, capY), Color.White);
+			}
+
+			// --- 4. FRAME (drawn normally via UI tree) ---
+			// barFrame itself draws after this since it's appended in OnInitialize.
 		}
+
 
 		public override void Update(GameTime gameTime) {
 			// This prevents updating unless we are using one of the specified items
-			if (!IsHoldingRiftItem())
+			if (!Main.LocalPlayer.HasItemInInventoryOrOpenVoidBag(ModContent.ItemType<RiftBattery>()))
 				return;
 
 			var modPlayer = Main.LocalPlayer.GetModPlayer<LivingShadowPlayer>();
@@ -101,9 +126,7 @@ namespace DestroyerTest.Content.UI
 			base.Update(gameTime);
 		}
 
-		private bool IsHoldingRiftItem() {
-			return Main.LocalPlayer.HeldItem.ModItem is RiftBroadsword or RiftChakram or RiftClaymore or RiftGreatsword or RiftPhasesaber or RiftRevolver or RiftScythe or RiftStaff or RiftThrowingKnife or RiftZapinator or RiftScabbard;
-		}
+		
 	}
 
 	// This class will only be autoloaded/registered if we're not loading on a server

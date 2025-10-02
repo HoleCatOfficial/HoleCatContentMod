@@ -19,7 +19,7 @@ namespace DestroyerTest.Content.Tiles
 			TileObjectData.addTile(Type);
 
 			AddMapEntry(new Color(78, 86, 95), Language.GetText("MapObject.Trophy"));
-			DustType = 37;
+			DustType = DustID.Obsidian;
 		}
 	}
 }

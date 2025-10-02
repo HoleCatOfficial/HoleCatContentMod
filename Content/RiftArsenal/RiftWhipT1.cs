@@ -22,7 +22,6 @@ namespace DestroyerTest.Content.RiftArsenal
 			Item.channel = true;
 		}
 
-		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
 			CreateRecipe()
 				.AddIngredient<Living_Shadow>(8)

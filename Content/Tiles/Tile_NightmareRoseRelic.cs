@@ -126,7 +126,7 @@ namespace DestroyerTest.Content.Tiles
 		}
 
 		// One drawback of relic tiles is that the placement preview doesn't show the relic itself (only the pedestal) since the relic would normally be manually drawn. We can use PostDrawPlacementPreview to draw the relic during tile placement.
-		public void PostDrawPlacementPreview(int i, int j, SpriteBatch spriteBatch, Rectangle frame, Vector2 position, Color color, bool validPlacement, SpriteEffects spriteEffects) {
+		public override void PostDrawPlacementPreview(int i, int j, SpriteBatch spriteBatch, Rectangle frame, Vector2 position, Color color, bool validPlacement, SpriteEffects spriteEffects) {
 			// Adjust the draw coordinates in case the preview is drawing the placement facing right.
 			bool facingRight = frame.Y / FrameHeight != 0;
 			spriteEffects = facingRight ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
