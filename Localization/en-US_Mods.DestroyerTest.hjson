@@ -16,6 +16,7 @@ Items: {
 	# Section Divider
 	Constitution: {
 		Tooltip: A blade descending from the heavens. Without its Galantine coating, it is incapable of complex attacks.
+		Tooltip: A blade descending from the heavens. Without its Galantine coating, it is incapable of complex attacks.
 		DisplayName: Constitution
 	}
 
@@ -39,6 +40,8 @@ Items: {
 		DisplayName: Conclusion
 		Tooltip:
 			'''
+			Just one of many fates for the Heaven-Descendant blade.
+			It pulses with the essence of Terraria.
 			Just one of many fates for the Heaven-Descendant blade.
 			It pulses with the essence of Terraria.
 			'''
@@ -304,6 +307,7 @@ Items: {
 	LifeEcho: {
 		DisplayName: Life Echo
 		Tooltip: The energy of simple creatures.
+		Tooltip: The energy of simple creatures.
 	}
 
 	Living_Shadow: {
@@ -336,15 +340,18 @@ Items: {
 	Rift_Katana: {
 		DisplayName: Rift Katana
 		Tooltip: Swings in a large range in front of you.
+		Tooltip: Swings in a large range in front of you.
 	}
 
 	RiftMaker: {
 		DisplayName: Riftmaker
 		Tooltip: A small javelin that explodes after a short time.
+		Tooltip: A small javelin that explodes after a short time.
 	}
 
 	RiftWretcher: {
 		DisplayName: Rift Wretcher
+		Tooltip: A specialized flamethrower made to handle Riften Energy.
 		Tooltip: A specialized flamethrower made to handle Riften Energy.
 	}
 
@@ -694,6 +701,7 @@ Items: {
 	LungShot: {
 		DisplayName: Lung Shot
 		Tooltip: Turns your Lungs to stone, making you immune to suffocaton in the Rift.
+		Tooltip: Turns your Lungs to stone, making you immune to suffocaton in the Rift.
 	}
 
 	HeroBreastplate: {
@@ -783,6 +791,7 @@ Items: {
 	SoulEdge: {
 		DisplayName: Soul Edge
 		Tooltip: A dried-out, cold sword. Listening closely to the nooks of the wood makes you the audience of the wails of lost souls.
+		Tooltip: A dried-out, cold sword. Listening closely to the nooks of the wood makes you the audience of the wails of lost souls.
 	}
 
 	BiCape: {
@@ -829,6 +838,7 @@ Items: {
 
 	TrueSoulEdge: {
 		DisplayName: True Soul Edge
+		Tooltip: Shoots a phantom that slows down before stabbing into an enemy at high speed.
 		Tooltip: Shoots a phantom that slows down before stabbing into an enemy at high speed.
 	}
 
@@ -884,6 +894,7 @@ Items: {
 		DisplayName: Tenebris
 		Tooltip:
 			'''
+			A heavy, pitch black ingot with flickering stars swimming inside and arcs of Shade Energy roaring along its sharp edges.
 			A heavy, pitch black ingot with flickering stars swimming inside and arcs of Shade Energy roaring along its sharp edges.
 			You have eclipsed the Sun.
 			'''
@@ -943,6 +954,7 @@ Items: {
 
 	Tenebrous_Katana: {
 		DisplayName: Tenebrous Katana
+		Tooltip: Instead of warm, electrified metal, the plates are so incredibly cold that your hands prickle and freeze if you hold it for too long.
 		Tooltip: Instead of warm, electrified metal, the plates are so incredibly cold that your hands prickle and freeze if you hold it for too long.
 	}
 
@@ -1803,7 +1815,9 @@ Items: {
 		Tooltip:
 			'''
 			A wired apparatus designed to transfer the solar energy in living shadows into a Rift Fuse as an electrical current, empowering Riften Items.
+			A wired apparatus designed to transfer the solar energy in living shadows into a Rift Fuse as an electrical current, empowering Riften Items.
 			Requires Rift Batteries or a close enough proximity to a Rift Crucible to obtain the solar energy.
+			Disclaimer: Helicite Crystals, Solar Fragments, and other sun-centric items do not work as a power source.
 			Disclaimer: Helicite Crystals, Solar Fragments, and other sun-centric items do not work as a power source.
 			'''
 	}
@@ -2926,6 +2940,7 @@ Items: {
 	TenebrisBullet: {
 		DisplayName: Tenebris Bullet
 		Tooltip: Homes in on enemies with increasing accuracy over time. Has a chance to inflict Shimmering Flames on hit.
+		Tooltip: Homes in on enemies with increasing accuracy over time. Has a chance to inflict Shimmering Flames on hit.
 	}
 
 	ShadeParticle: {
@@ -3321,6 +3336,8 @@ Projectiles: {
 	TenebrisBulletProjectile.DisplayName: Tenebris Bullet Projectile
 	TenebrisSniperBullet.DisplayName: Tenebris Sniper Bullet
 	TenebrisGemstone.DisplayName: Tenebris Gemstone
+	RiftClaymoreSlashEnergized.DisplayName: Rift Claymore Slash Energized
+	RiftClaymoreSlash.DisplayName: Rift Claymore Slash
 	RiftClaymoreSlashEnergized.DisplayName: Rift Claymore Slash Energized
 	RiftClaymoreSlash.DisplayName: Rift Claymore Slash
 }
@@ -4005,6 +4022,23 @@ BookText: {
 
 			You guessed it, Newline placeholder text.
 			'''
+	}
+}
+
+Achievements: {
+	ConstitutionDefeat: {
+		FriendlyName: Constitution Defeat
+		Description: Defeat Constitution, the Heaven Descendant Blade.
+	}
+
+	NightmareRoseDefeat: {
+		FriendlyName: Nightmare Rose Defeat
+		Description: Free the Conglomerate Child of Mother Darkness.
+	}
+
+	WyvernCorpseDefeat: {
+		FriendlyName: Wyvern Corpse Defeat
+		Description: Return the Great Wyvern to their place among the clouds.
 	}
 }
 
