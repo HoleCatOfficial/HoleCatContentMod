@@ -4,14 +4,19 @@ using Terraria.ID;
 using Terraria.Audio;
 using Terraria;
 using Terraria.ModLoader;
+using DestroyerTest.Content.Dusts;
 
 namespace DestroyerTest.Content.Tiles.Riftplate
 {
 	public class Wall_RiftplateWall : ModWall
 	{
 		public override void SetStaticDefaults() {
-            HitSound = SoundID.Item37;
-			DustType = DustID.Wraith;
+            HitSound = new SoundStyle("DestroyerTest/Assets/Audio/TenebrousConstruct/Hit", 5)
+            {
+                PitchVariance = 0.2f,
+                MaxInstances = 0
+            };
+            DustType = ModContent.DustType<RiftDust>();
 			Main.wallHouse[Type] = true;
 
 			AddMapEntry(new Color(12, 12, 12));

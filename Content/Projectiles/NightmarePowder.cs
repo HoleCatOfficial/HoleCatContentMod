@@ -1,6 +1,6 @@
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Entity;
+using DestroyerTest.Content.Entities;
 using DestroyerTest.Content.Particles;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;

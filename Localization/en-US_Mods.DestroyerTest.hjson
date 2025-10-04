@@ -15,7 +15,7 @@ Items: {
 	# - -
 	# Section Divider
 	Constitution: {
-		Tooltip: A blade from another world, seemingly though, it is incomplete...
+		Tooltip: A blade descending from the heavens. Without its Galantine coating, it is incapable of complex attacks.
 		DisplayName: Constitution
 	}
 
@@ -34,25 +34,13 @@ Items: {
 		Tooltip: Crafted in the night with the Essence of raw strength, this blade posesses enough power in it's swing to throw you forward.
 	}
 
-	ConstitutionT3Lash: {
-		DisplayName: Constitution T3 Lash
-		Tooltip: ""
-	}
-
-	Lizhard_Claymore: {
-		Displayname: Corrolary
-		Tooltip: Much heavier than your previous blade, this one is adorned in stone and posesses the power to split even the strongest stones.
-		DisplayName: Lizhard_ Claymore
-	}
-
 	Conclusion: {
 		UsesDashResource: Mods.DestroyerTest.Items.Conclusion.UsesDashResource
 		DisplayName: Conclusion
 		Tooltip:
 			'''
-			At last, the blade feels complete, and its handle rests comfortably in your grip.
-			All attacks grant immunity frames, but dashes will disorient the player momentarily.
-			Press [StarBlastKeybind] to create a burst of Celestial Stars that home in on enemies.
+			Just one of many fates for the Heaven-Descendant blade.
+			It pulses with the essence of Terraria.
 			'''
 	}
 
@@ -315,7 +303,7 @@ Items: {
 
 	LifeEcho: {
 		DisplayName: Life Echo
-		Tooltip: The energy of simple creatures. Note: This is not their soul, simply their energy.
+		Tooltip: The energy of simple creatures.
 	}
 
 	Living_Shadow: {
@@ -347,21 +335,17 @@ Items: {
 	
 	Rift_Katana: {
 		DisplayName: Rift Katana
-		Tooltip:
-			'''
-			Small flames lick the wooden tang. You have tamed them.
-			Right Click to fire a stream of homing darts that follow your mouse cursor.
-			'''
+		Tooltip: Swings in a large range in front of you.
 	}
 
 	RiftMaker: {
 		DisplayName: Riftmaker
-		Tooltip: Flames Eat away at the wooden tang. Careful holding it!
+		Tooltip: A small javelin that explodes after a short time.
 	}
 
 	RiftWretcher: {
 		DisplayName: Rift Wretcher
-		Tooltip: A specialized clentaminator made to handle the intense energy let out by Living Shadows.
+		Tooltip: A specialized flamethrower made to handle Riften Energy.
 	}
 
 	RiftShiv: {
@@ -709,7 +693,7 @@ Items: {
 
 	LungShot: {
 		DisplayName: Lung Shot
-		Tooltip: The price for protection is often pain.
+		Tooltip: Turns your Lungs to stone, making you immune to suffocaton in the Rift.
 	}
 
 	HeroBreastplate: {
@@ -736,25 +720,6 @@ Items: {
 		Tooltip: A defender of their people must also be able to come to their aide promptly!
 	}
 
-	CunifeBar: {
-		DisplayName: Cunife Bar
-		Tooltip:
-			'''
-			Part of the Metallurgy System.
-			Alloy of Iron and Copper.
-			'''
-	}
-
-	Flux: {
-		DisplayName: Flux
-		Tooltip:
-			'''
-			Part of the Metallurgy System.
-			Used for combining ores into alloy bars.
-			Composed of unrefined calcium.
-			'''
-	}
-
 	GoliathHilt: {
 		DisplayName: Cunife Hilt
 		Tooltip:
@@ -778,193 +743,9 @@ Items: {
 		Tooltip: You shouldn't have this...
 	}
 
-	_comment: Metallurgy
-
-	Tempering_Station: {
-		DisplayName: Tempering Station
-		Tooltip:
-			'''
-			Part of the Metallurgy System.
-			Some alloys are weak when theyre forged. By tempering them, you can make them stronger without chainging their composition.
-			'''
-	}
-
-	Crucible: {
-		DisplayName: Crucible
-		Tooltip:
-			'''
-			Part of the Metallurgy System.
-			There are some jobs a furnace just can't do.
-			'''
-	}
-
 	Fire: {
 		DisplayName: Fire
 		Tooltip: ""
-	}
-
-	AluminumOre: {
-		DisplayName: Aluminum Ore
-		Tooltip:
-			'''
-			Part of the Metallurgy System.
-			Light, sturdy, and abundant!
-			'''
-	}
-
-	BerylliumOre: {
-		DisplayName: Beryllium Ore
-		Tooltip:
-			'''
-			Part of the Metallurgy System.
-			Oxidizes quickly and bonds with metals readily.
-			'''
-	}
-
-	Carbon: {
-		DisplayName: Carbon
-		Tooltip:
-			'''
-			Part of the Metallurgy System.
-			It leaves soot on your gloves...
-			'''
-	}
-
-	ManganeseOre: {
-		DisplayName: Manganese Ore
-		Tooltip:
-			'''
-			Part of the Metallurgy System.
-			Highly Reactive in its pure state. Keep this away from water!
-			(I'm too lazy to code a whole explosion when it hits water.)
-			'''
-	}
-
-	NickelOre: {
-		DisplayName: Nickel Ore
-		Tooltip:
-			'''
-			Part of the Metallurgy System.
-			Very hard, with a high melting point.
-			'''
-	}
-
-	Phosphorite: {
-		DisplayName: Phosphorite
-		Tooltip:
-			'''
-			Part of the Metallurgy System.
-			Somewhat useless, if not dangerous, in this state.
-			'''
-	}
-
-	ZincOre: {
-		DisplayName: Zinc Ore
-		Tooltip:
-			'''
-			Part of the Metallurgy System.
-			Doest rust, but does oxidize!
-			'''
-	}
-
-	AluminumBronze: {
-		DisplayName: Aluminum Bronze
-		Tooltip:
-			'''
-			Part of the Metallurgy System.
-			All-Purpose metal. Recommended for simple things like axe heads.
-			'''
-	}
-
-	BerylliumCopper: {
-		DisplayName: Beryllium Copper
-		Tooltip:
-			'''
-			Part of the Metallurgy System.
-			Great for handling pressure force and has a low melting point, allowing it to be welded easily!
-			'''
-	}
-
-	CartridgeBrass: {
-		DisplayName: Cartridge Brass
-		Tooltip:
-			'''
-			Part of the Metallurgy System.
-			Light, and retains some level of strength when rolled thin. Good for bullet cartridges and radiators.
-			'''
-	}
-
-	CuproNickel: {
-		DisplayName: Cupro Nickel
-		Tooltip:
-			'''
-			Part of the Metallurgy System.
-			All-Purpose metal. Recommended for simple, sturdy things such as pipes, claymores, and hammers.
-			'''
-	}
-
-	GermanSilver: {
-		DisplayName: German Silver
-		Tooltip:
-			'''
-			Part of the Metallurgy System.
-			All-Purpose metal. Remarkably cheap and can be used for either light or heavy tools.
-			Also has Applications in Jewelery making!
-			'''
-	}
-
-	GildingMetal: {
-		DisplayName: Gilding Metal
-		Tooltip:
-			'''
-			Part of the Metallurgy System.
-			All-Purpose metal. Good for bullet cartridges in conjunction with Cartridge Brass.
-			'''
-	}
-
-	Gunmetal: {
-		DisplayName: Gunmetal
-		Tooltip:
-			'''
-			Part of the Metallurgy System.
-			All-Purpose metal. Resistant to corrosion even after extended use.
-			'''
-	}
-
-	ManganeseBronze: {
-		DisplayName: Manganese Bronze
-		Tooltip:
-			'''
-			Part of the Metallurgy System.
-			All-Purpose metal. Not much of note here.
-			'''
-	}
-
-	MuntzMetal: {
-		DisplayName: Muntz Metal
-		Tooltip:
-			'''
-			Part of the Metallurgy System.
-			Useful for stopping organic life from attatching to your tools.
-			'''
-	}
-
-	NavalBrass: {
-		DisplayName: Naval Brass
-		Tooltip:
-			'''
-			Part of the Metallurgy System.
-			All-Purpose metal. Resistant to Corrosion.
-			'''
-	}
-
-	PhosphorBronze: {
-		DisplayName: Phosphor Bronze
-		Tooltip:
-			'''
-			Part of the Metallurgy System.
-			All-Purpose metal. Recommended for simple, sturdy things.
-			'''
 	}
 
 	ColdSnapSteel: {
@@ -985,123 +766,6 @@ Items: {
 			'''
 	}
 
-	ManganeseBlade: {
-		DisplayName: Manganese Blade
-		Tooltip:
-			'''
-			Part of the Metallurgy System.
-			A simple claymore.
-			'''
-	}
-
-	CunifeBlade: {
-		DisplayName: Cunife Blade
-		Tooltip:
-			'''
-			Part of the Metallurgy System.
-			A simple claymore.
-			'''
-	}
-
-	BabylonianPlates: {
-		DisplayName: Babylonian Plates
-		Tooltip:
-			'''
-			Part of the Metallurgy System.
-			Oriental plates used to adorn tangs.
-			'''
-	}
-
-	SturdyTang: {
-		DisplayName: Sturdy Tang
-		Tooltip:
-			'''
-			Part of the Metallurgy System.
-			A tang for certain swords.
-			'''
-	}
-
-	CappedTang: {
-		DisplayName: Capped Tang
-		Tooltip:
-			'''
-			Part of the Metallurgy System.
-			A tang for certain swords.
-			'''
-	}
-
-	HornedTang: {
-		DisplayName: Horned Tang
-		Tooltip:
-			'''
-			Part of the Metallurgy System.
-			A tang for certain swords.
-			'''
-	}
-
-	SapphireTang: {
-		DisplayName: Sapphire Tang
-		Tooltip:
-			'''
-			Part of the Metallurgy System.
-			A tang for certain swords.
-			'''
-	}
-
-	SpikeCappedTang: {
-		DisplayName: Spike Capped Tang
-		Tooltip:
-			'''
-			Part of the Metallurgy System.
-			A tang for certain swords.
-			'''
-	}
-
-	CappedMold: {
-		DisplayName: Capped Mold
-		Tooltip:
-			'''
-			Part of the Metallurgy System.
-			A tang for certain swords.
-			'''
-	}
-
-	ClassicMold: {
-		DisplayName: Classic Mold
-		Tooltip:
-			'''
-			Part of the Metallurgy System.
-			A tang for certain swords.
-			'''
-	}
-
-	DMold: {
-		DisplayName: D Mold
-		Tooltip:
-			'''
-			Part of the Metallurgy System.
-			A tang for certain swords.
-			'''
-	}
-
-	HornedMold: {
-		DisplayName: Horned Mold
-		Tooltip:
-			'''
-			Part of the Metallurgy System.
-			A tang for certain swords.
-			'''
-	}
-
-	SpikeCappedMold: {
-		DisplayName: Spike Capped Mold
-		Tooltip:
-			'''
-			Part of the Metallurgy System.
-			A tang for certain swords.
-			'''
-	}
-
 	ReinforcedCompoundBow: {
 		DisplayName: Reinforced Compound Bow
 		Tooltip:
@@ -1118,7 +782,7 @@ Items: {
 
 	SoulEdge: {
 		DisplayName: Soul Edge
-		Tooltip: A powerful sword, akin to a chisel, that is forged from the wills of many dead warriors.
+		Tooltip: A dried-out, cold sword. Listening closely to the nooks of the wood makes you the audience of the wails of lost souls.
 	}
 
 	BiCape: {
@@ -1133,24 +797,6 @@ Items: {
 	PartySword: {
 		DisplayName: Party Sword
 		Tooltip: ""
-	}
-
-	CunifeWire: {
-		Tooltip:
-			'''
-			Part of the Metallurgy System.
-			Cunife that has been stretched into a sturdy cable. It is most useful in this form if not tempered.
-			'''
-		DisplayName: Cunife Wire
-	}
-
-	RegalTang: {
-		DisplayName: Regal Tang
-		Tooltip:
-			'''
-			A very elegant tang made with expensive fabric.
-			It seems to be part of a greater whole.
-			'''
 	}
 
 	Laevateinn: {
@@ -1183,7 +829,7 @@ Items: {
 
 	TrueSoulEdge: {
 		DisplayName: True Soul Edge
-		Tooltip: A fearsome brand, less holding and now utilizing the souls of the unfortunate.
+		Tooltip: Shoots a phantom that slows down before stabbing into an enemy at high speed.
 	}
 
 	Extruder: {
@@ -1238,7 +884,7 @@ Items: {
 		DisplayName: Tenebris
 		Tooltip:
 			'''
-			A heavy ingot of darkness with flickering stars swimming inside.
+			A heavy, pitch black ingot with flickering stars swimming inside and arcs of Shade Energy roaring along its sharp edges.
 			You have eclipsed the Sun.
 			'''
 	}
@@ -1297,11 +943,7 @@ Items: {
 
 	Tenebrous_Katana: {
 		DisplayName: Tenebrous Katana
-		Tooltip:
-			'''
-			Instead of warm, electrified metal, the plates are so incredibly cold that your hands prickle and freeze if you hold it for too long.
-			Each swing, empowered by a torrent of stars, creates a [cosmetic] boom across the screen.
-			'''
+		Tooltip: Instead of warm, electrified metal, the plates are so incredibly cold that your hands prickle and freeze if you hold it for too long.
 	}
 
 	HeliciteGreatbow: {
@@ -2156,74 +1798,19 @@ Items: {
 		Tooltip: A small canister of living shadows with a special port at the end for another device to plug in to.
 	}
 
-	Husk_RiftBroadsword: {
-		DisplayName: Rift Broadsword Husk
-		Tooltip: A heavy, dead sword. It functions as intended in this state, but definitely feels underwhelming.
-	}
-
 	RiftElectrifier: {
 		DisplayName: Rift Electrifier
 		Tooltip:
 			'''
-			A wired apparatus designed to transfer the solar energy in living shadows into riftplate items as an electrical current, activating them for a short time.
+			A wired apparatus designed to transfer the solar energy in living shadows into a Rift Fuse as an electrical current, empowering Riften Items.
 			Requires Rift Batteries or a close enough proximity to a Rift Crucible to obtain the solar energy.
-			Disclaimer: Helicite Crystals, Solar Fragments, and other sun-centric items do not work as a power source. Only Rift Batteries.
+			Disclaimer: Helicite Crystals, Solar Fragments, and other sun-centric items do not work as a power source.
 			'''
-	}
-
-	Husk_RiftChakram: {
-		Tooltip: A heavy, dead chakram. It functions as intended in this state, but definitely feels underwhelming.
-		DisplayName: Rift Chakram Husk
-	}
-
-	Husk_RiftClaymore: {
-		DisplayName: Rift Claymore Husk
-		Tooltip: A heavy, dead sword. It functions as intended in this state, but definitely feels underwhelming.
-	}
-
-	Husk_RiftGreatsword: {
-		Tooltip: A heavy, dead sword. It functions as intended in this state, but definitely feels underwhelming.
-		DisplayName: Rift Greatsword Husk
 	}
 
 	HeliciteShank: {
 		Tooltip: A small, crystalline blade imbued with the Ancient Sun's essence.
 		DisplayName: Helicite Shank
-	}
-
-	Husk_RiftScabbard: {
-		Tooltip: A heavy, dead scabbard. It does nothing in this state.
-		DisplayName: Rift Scabbard Husk
-	}
-
-	Husk_RiftPhasesaber: {
-		DisplayName: Rift Phasesaber Hilt
-		Tooltip: A heavy, dead hunk of junk. It does nothing in this state.
-	}
-
-	Husk_RiftRevolver: {
-		DisplayName: Rift Revolver Husk
-		Tooltip: A heavy, dead gun. It does nothing in this state.
-	}
-
-	Husk_RiftScythe: {
-		DisplayName: Rift Scythe Husk
-		Tooltip: A heavy, dead scythe. It does nothing in this state.
-	}
-
-	Husk_RiftStaff: {
-		DisplayName: Rift Staff Husk
-		Tooltip: A heavy, dead scabbard. Even your arcane power cannot will this thing to life.
-	}
-
-	Husk_RiftThrowingKnife: {
-		DisplayName: Rift Throwing Knife Husk
-		Tooltip: A heavy, dead knife. If you tried throwing this, it probably wouldnt go very far.
-	}
-
-	Husk_RiftZapinator: {
-		DisplayName: Rift Zapinator Husk
-		Tooltip: A heavy, dead gun. Even your arcane power cannot will this thing to life.
 	}
 
 	AuraThiefBreastplate: {
@@ -3338,7 +2925,7 @@ Items: {
 
 	TenebrisBullet: {
 		DisplayName: Tenebris Bullet
-		Tooltip: ""
+		Tooltip: Homes in on enemies with increasing accuracy over time. Has a chance to inflict Shimmering Flames on hit.
 	}
 
 	ShadeParticle: {
@@ -3349,6 +2936,25 @@ Items: {
 	ShimmeringShards: {
 		DisplayName: Shimmering Shards
 		Tooltip: Powerful shards from the Shade World, containing a small amount of energy in each one. Combined, these can accomplish immense things.
+	}
+
+	RiftFuse: {
+		Tooltip: An apparatus for empowering Rift Items. Weapons inflict Heliouric Shock when empowered, armor gains increased bonuses, and tools get higher mining power.
+		DisplayName: Rift Fuse
+	}
+
+	RechargeItem: {
+		Tooltip: You shouldn't have this.
+		DisplayName: Recharge Item
+	}
+
+	DjedPillarCharm: {
+		Tooltip:
+			'''
+			You are immune to most debuffs.
+			Double tapping in the left or right direction allows you to dash, leaving behind a trail of spirit flames that home in on enemies.
+			'''
+		DisplayName: Djed Pillar Charm
 	}
 }
 
@@ -3715,6 +3321,8 @@ Projectiles: {
 	TenebrisBulletProjectile.DisplayName: Tenebris Bullet Projectile
 	TenebrisSniperBullet.DisplayName: Tenebris Sniper Bullet
 	TenebrisGemstone.DisplayName: Tenebris Gemstone
+	RiftClaymoreSlashEnergized.DisplayName: Rift Claymore Slash Energized
+	RiftClaymoreSlash.DisplayName: Rift Claymore Slash
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.
@@ -4397,5 +4005,22 @@ BookText: {
 
 			You guessed it, Newline placeholder text.
 			'''
+	}
+}
+
+Achievements: {
+	ConstitutionDefeat: {
+		FriendlyName: Constitution Defeat
+		Description: Defeat Constitution, the Heaven Descendant Blade.
+	}
+
+	NightmareRoseDefeat: {
+		FriendlyName: Nightmare Rose Defeat
+		Description: Free the Conglomerate Child of Mother Darkness.
+	}
+
+	WyvernCorpseDefeat: {
+		FriendlyName: Wyvern Corpse Defeat
+		Description: Return the Great Wyvern to their place among the clouds.
 	}
 }

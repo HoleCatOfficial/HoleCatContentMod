@@ -1,7 +1,9 @@
+using DestroyerTest.Content.Dusts;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Graphics.PackedVector;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -14,8 +16,12 @@ namespace DestroyerTest.Content.Tiles.Riftplate
 			Main.tileSolid[Type] = true;
 			Main.tileMergeDirt[Type] = false;
 			Main.tileBlockLight[Type] = false;
-            HitSound = SoundID.Item178;
-			DustType = DustID.Lava;
+            HitSound = new SoundStyle("DestroyerTest/Assets/Audio/TenebrousConstruct/Hit", 5)
+            {
+                PitchVariance = 0.2f,
+                MaxInstances = 0
+            };
+            DustType = ModContent.DustType<RiftDust>();
 
 			AddMapEntry(new Color(200, 200, 200));
 		}

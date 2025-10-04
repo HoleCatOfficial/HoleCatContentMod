@@ -176,7 +176,7 @@ namespace DestroyerTest.Content.Projectiles
             SpriteEffects effects;
             SpriteBatch Spritebatch = Main.spriteBatch;
             Texture2D texture = TextureAssets.Projectile[Type].Value;
-            Texture2D Trailtexture = ModContent.Request<Texture2D>("DestroyerTest/Content/Entity/ConstitutionBossOutline").Value;
+            Texture2D Trailtexture = ModContent.Request<Texture2D>("DestroyerTest/Content/Entities/ConstitutionBossOutline").Value;
 
             if (Projectile.spriteDirection > 0)
             {

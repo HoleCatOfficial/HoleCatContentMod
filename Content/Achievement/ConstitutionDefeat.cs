@@ -1,16 +1,14 @@
-/*
 using Terraria.ModLoader;
+using DestroyerTest.Content.Entities;
 
-namespace DestroyerTest.Content.Achievement;
+namespace DestroyerTest.Content.Achievement
 {
 public class ConstitutionDefeat : ModAchievement
 {
 	public override void SetStaticDefaults() {
-		// Achievement.SetCategory(AchievementCategory.Collector);
 		AddNPCKilledCondition(ModContent.NPCType<ConstitutionBoss>());
 	}
 
 	public override Position GetDefaultPosition() => new After("BONED");
     }
 }
-*/

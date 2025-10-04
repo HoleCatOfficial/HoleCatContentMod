@@ -14,11 +14,12 @@ using DestroyerTest.Rarity;
 using DestroyerTest.Content.Projectiles.AmmoProjectiles;
 using DestroyerTest.Content.Tiles;
 using DestroyerTest.Content.Tiles.Riftplate;
+using DestroyerTest.Content.Tiles.RiftConfigurator;
 
 
 namespace DestroyerTest.Content.RiftArsenal
 {
-    public class RiftTome : ModItem
+    public class RiftTome : RechargeItem
 	{
         public override void SetStaticDefaults()
         { 
@@ -78,10 +79,8 @@ namespace DestroyerTest.Content.RiftArsenal
 				.AddIngredient<Living_Shadow>(8)
 				.AddIngredient<Item_Riftplate>(12)
                 .AddIngredient(ItemID.SpellTome)
-				.AddTile<Tile_RiftCrucible>()
+				.AddTile<Tile_RiftConfiguratorWeaponry>()
 				.Register();
 		}
-
-		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 	}
 }

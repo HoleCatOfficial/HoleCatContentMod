@@ -15,14 +15,13 @@ namespace DestroyerTest.Content.RiftArsenal
 	{
 
 		public override void SetDefaults() {
-			// This method quickly sets the whip's properties.
-			// Mouse over to see its parameters.
+			Item.width = 38;
+			Item.height = 34;
 			Item.DefaultToWhip(ModContent.ProjectileType<RiftWhipT1Projectile>(), 70, 2, 4);
 			Item.rare = ModContent.RarityType<RiftRarity2>();
 			Item.channel = true;
 		}
 
-		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
 			CreateRecipe()
 				.AddIngredient<Living_Shadow>(8)

@@ -13,6 +13,7 @@ using Terraria.ModLoader;
 using DestroyerTest.Rarity;
 using DestroyerTest.Content.Tiles;
 using DestroyerTest.Content.Tiles.Riftplate;
+using DestroyerTest.Content.Tiles.RiftConfigurator;
 
 
 namespace DestroyerTest.Content.RiftArsenal
@@ -52,7 +53,7 @@ namespace DestroyerTest.Content.RiftArsenal
 				.AddIngredient<Item_HeliciteCrystal>(12)
 				.AddIngredient<Item_Riftplate>(12)
                 .AddIngredient(ItemID.SpellTome)
-				.AddTile<Tile_RiftCrucible>()
+				.AddTile<Tile_RiftConfiguratorWeaponry>()
 				.Register();
 		}
 
@@ -71,7 +72,7 @@ namespace DestroyerTest.Content.RiftArsenal
 					SoundEngine.PlaySound(TPSound);
 					
                     Player.Center = Main.MouseWorld;
-                    Player.Hurt(PlayerDeathReason.ByCustomReason($"{Player.name} spent too much time warping the fabric of reality."), 25, 0);
+					Player.Hurt(PlayerDeathReason.ByCustomReason(Terraria.Localization.NetworkText.FromLiteral($"{Player.name} spent too much time warping the fabric of reality.")), 25, 0);
                     Player.AddBuff(BuffID.ChaosState, 6000);
 				}
 			

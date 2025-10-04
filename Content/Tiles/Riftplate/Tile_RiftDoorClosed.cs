@@ -1,6 +1,8 @@
+using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Tiles;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent.ObjectInteractions;
 using Terraria.ID;
 using Terraria.Localization;
@@ -29,7 +31,12 @@ namespace DestroyerTest.Content.Tiles.Riftplate
 
 			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsDoor);
 
-			DustType = DustID.Wraith;
+			HitSound = new SoundStyle("DestroyerTest/Assets/Audio/TenebrousConstruct/Hit", 5)
+            {
+                PitchVariance = 0.2f,
+                MaxInstances = 0
+            };
+            DustType = ModContent.DustType<RiftDust>();
 			AdjTiles = new int[] { TileID.ClosedDoor };
 
 			// Names

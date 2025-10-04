@@ -1,3 +1,4 @@
+using DestroyerTest.Content.Dusts;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -18,28 +19,29 @@ namespace DestroyerTest.Content.Tiles.RiftConfigurator
 
 		// If you want to know more about tiles, please follow this link
 		// https://github.com/tModLoader/tModLoader/wiki/Basic-Tile
-		public override void SetStaticDefaults() {
+		public override void SetStaticDefaults()
+		{
 			Main.tileFrameImportant[Type] = true;
-            Main.tileNoAttach[Type] = true;
-            Main.tileSolidTop[Type] = false;
-            
+			Main.tileNoAttach[Type] = true;
+			Main.tileSolidTop[Type] = false;
+
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style3x3);
 			TileObjectData.newTile.CoordinateWidth = 16;
-            TileObjectData.newTile.CoordinateHeights = [16, 16, 16];
-            TileObjectData.newTile.CoordinatePadding = 2;
-            TileObjectData.newTile.AnchorBottom = new AnchorData(AnchorType.SolidTile | AnchorType.SolidWithTop | AnchorType.Table | AnchorType.SolidSide, TileObjectData.newTile.Width, 0);
-            // Additional edits here, such as lava immunity, alternate placements, and subtiles
-            TileObjectData.addTile(Type);
+			TileObjectData.newTile.CoordinateHeights = [16, 16, 16];
+			TileObjectData.newTile.CoordinatePadding = 2;
+			TileObjectData.newTile.AnchorBottom = new AnchorData(AnchorType.SolidTile | AnchorType.SolidWithTop | AnchorType.Table | AnchorType.SolidSide, TileObjectData.newTile.Width, 0);
+			// Additional edits here, such as lava immunity, alternate placements, and subtiles
+			TileObjectData.addTile(Type);
 
 			LocalizedText name = CreateMapEntryName();
 			AddMapEntry(new Color(255, 155, 0), name);
-
-		}
-
-		// This method allows you to change the sound a tile makes when hit
-		public override bool KillSound(int i, int j, bool fail) {
-				SoundEngine.PlaySound(SoundID.Item178, new Vector2(i, j).ToWorldCoordinates());
-                return true;
+			
+			HitSound = new SoundStyle("DestroyerTest/Assets/Audio/TenebrousConstruct/Hit", 5)
+            {
+                PitchVariance = 0.2f,
+                MaxInstances = 0
+            };
+            DustType = ModContent.DustType<RiftDust>();
 
 		}
 	}

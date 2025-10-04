@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.RiftArsenal
 {
-	public class RiftYoyoT2 : ModItem
+	public class RiftYoyoT2 : RechargeItem
 	{
 		public override void SetStaticDefaults() {
 			// These are all related to gamepad controls and don't seem to affect anything else

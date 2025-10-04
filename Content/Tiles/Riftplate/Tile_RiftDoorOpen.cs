@@ -1,6 +1,8 @@
 
+using DestroyerTest.Content.Dusts;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.Enums;
 using Terraria.GameContent.ObjectInteractions;
@@ -25,7 +27,12 @@ namespace DestroyerTest.Content.Tiles.Riftplate
 
 			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsDoor);
 
-			DustType = DustID.Wraith;
+			HitSound = new SoundStyle("DestroyerTest/Assets/Audio/TenebrousConstruct/Hit", 5)
+            {
+                PitchVariance = 0.2f,
+                MaxInstances = 0
+            };
+            DustType = ModContent.DustType<RiftDust>();
 			AdjTiles = new int[] { TileID.OpenDoor };
 			// Tiles usually drop their corresponding item automatically, but RegisterItemDrop is needed here since the ExampleDoor item places ExampleDoorClosed, not this tile.
 			RegisterItemDrop(ModContent.ItemType<Item_RiftDoor>(), 0);

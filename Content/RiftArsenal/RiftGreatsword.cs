@@ -13,14 +13,16 @@ using System.Collections.Generic;
 using DestroyerTest.Common;
 using Terraria.Audio;
 using DestroyerTest.Content.Tools;
-using DestroyerTest.Content.RiftArsenalNoCharge;
+
 using Terraria.Localization;
+using DestroyerTest.Content.Resources.Blueprints;
+using DestroyerTest.Content.Tiles.RiftConfigurator;
 
 namespace DestroyerTest.Content.RiftArsenal
 {
 	// ExampleCustomSwingSword is an example of a sword with a custom swing using a held projectile
 	// This is great if you want to make melee weapons with complex swing behavior
-	public class RiftGreatsword : ModItem
+	public class RiftGreatsword : RechargeItem
 	{
 		public int attackType = 0; // keeps track of which attack it is
 		public int comboExpireTimer = 0; // we want the attack pattern to reset if the weapon is not used for certain period of time
@@ -62,7 +64,6 @@ namespace DestroyerTest.Content.RiftArsenal
 		}
 
 		public override void UpdateInventory(Player player) {
-			NoChargeLeft(player);
 			if (comboExpireTimer++ >= 120) // after 120 ticks (== 2 seconds) in inventory, reset the attack pattern
 				attackType = 0; // Reset to the first attack type
 		}
@@ -71,106 +72,13 @@ namespace DestroyerTest.Content.RiftArsenal
 			return true; // return true to allow weapon to have melee prefixes (e.g. Legendary)
 		}
 
-		public override void AddRecipes() {
-			CreateRecipe()
-                .AddCondition(Language.GetText("Mods.DestroyerTest.RecipeCondition.Charge"), () => Main.LocalPlayer.HasItem(ModContent.ItemType<Husk_RiftScythe>()))
-				.Register();
-		}
-		public override bool CanRightClick() {
-                return true;
-            }
-
-        private const int CrucibleProximityRange = 3;
-        private const int RequiredBatteries = 2;
-
-        public override void RightClick(Player player)
+		public override void AddRecipes()
         {
-            SoundStyle zapSound = new SoundStyle("DestroyerTest/Assets/Audio/RiftCharge");
-
-            if (player.HeldItem != null && player.HeldItem.type == ModContent.ItemType<RiftElectrifier>())
-            {
-                if (IsNearRiftCrucible(player))
-                {
-                    ReplenishLivingShadow(player, zapSound, consumeBatteries: false);
-                }
-                else if (player.CountItem(ModContent.ItemType<RiftBattery>(), RequiredBatteries) >= RequiredBatteries)
-                {
-                    ConsumeBatteries(player, RequiredBatteries);
-                    ReplenishLivingShadow(player, zapSound, consumeBatteries: true);
-                }
-                else
-                {
-                    CombatText.NewText(player.Hitbox, ColorLib.Rift, $"{RequiredBatteries} Rift Batteries needed, or, plug the Electrifier into a rift crucible.", true);
-                }
-            }
-            else
-			{
-				return;
-			}
+            CreateRecipe()
+                .AddIngredient<GreatSwordData>()
+                .AddIngredient<Item_Riftplate>(12)
+                .AddTile<Tile_RiftConfiguratorWeaponry>()
+			.Register();
         }
-
-        public override bool ConsumeItem(Player player)
-        {
-            return false; // Prevents the item from being consumed on use
-        }
-
-        private bool IsNearRiftCrucible(Player player)
-        {
-            Point playerTilePosition = player.Center.ToTileCoordinates();
-            int riftCrucibleTileType = ModContent.TileType<Tile_RiftCrucible>();
-
-            for (int x = -CrucibleProximityRange; x <= CrucibleProximityRange; x++)
-            {
-                for (int y = -CrucibleProximityRange; y <= CrucibleProximityRange; y++)
-                {
-                    Point checkPosition = new Point(playerTilePosition.X + x, playerTilePosition.Y + y);
-                    if (Main.tile[checkPosition.X, checkPosition.Y].TileType == riftCrucibleTileType)
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
-
-        private void ConsumeBatteries(Player player, int count)
-        {
-            int riftBatteryType = ModContent.ItemType<RiftBattery>();
-            for (int i = 0; i < count; i++)
-            {
-                player.ConsumeItem(riftBatteryType);
-            }
-        }
-
-        private void ReplenishLivingShadow(Player player, SoundStyle zapSound, bool consumeBatteries)
-        {
-            
-            SoundEngine.PlaySound(zapSound, player.position);
-            ScreenFlashSystem.FlashIntensity = 0.9f;
-
-            var modPlayer = player.GetModPlayer<LivingShadowPlayer>();
-            modPlayer.LivingShadowCurrent = modPlayer.LivingShadowMax2;
-        }
-
-        private bool hasReplaced = false;
-        private void NoChargeLeft(Player player)
-        {
-            var modPlayer = player.GetModPlayer<LivingShadowPlayer>();
-            if (modPlayer.LivingShadowCurrent == 0 && hasReplaced == false)
-			{
-            hasReplaced = true;
-            Item.NewItem(player.GetSource_FromThis(), player.position, ModContent.ItemType<Husk_RiftGreatsword>());
-            Item.TurnToAir();
-            }
-        }
-
-        public override void ModifyTooltips(List<TooltipLine> tooltips)
-		{
-			string batteryTooltip = $"Requires {RequiredBatteries} Rift Batteries to recharge.";
-			tooltips.Add(new TooltipLine(Mod, "RiftBatteryRequirement", batteryTooltip)
-			{
-				OverrideColor = ColorLib.Rift // Optional: Set a custom color for the tooltip text
-			});
-		}
 	}
 }

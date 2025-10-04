@@ -2,7 +2,7 @@
 using Terraria.ModLoader.IO;
 using Terraria.ModLoader;
 using Terraria;
-using DestroyerTest.Content.Entity;
+using DestroyerTest.Content.Entities;
 
 namespace DestroyerTest.Common.Systems
 {

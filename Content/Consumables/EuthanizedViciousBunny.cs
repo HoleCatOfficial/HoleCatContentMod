@@ -1,7 +1,7 @@
 
 using System;
 using System.Collections.Generic;
-using DestroyerTest.Content.Entity;
+using DestroyerTest.Content.Entities;
 using Microsoft.Xna.Framework;
 using ReLogic.Graphics;
 using Terraria;
