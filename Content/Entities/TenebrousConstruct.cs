@@ -79,6 +79,12 @@ namespace DestroyerTest.Content.Entities
 
         };
 
+        SoundStyle Idle = new SoundStyle("DestroyerTest/Assets/Audio/TenebrousConstruct/Idle", 8)
+        {
+            PitchVariance = 0.2f,
+            MaxInstances = 0,
+        };
+
         SoundStyle Kill = new SoundStyle("DestroyerTest/Assets/Audio/TenebrousConstruct/Kill", 3)
         {
             PitchVariance = 0.2f,
@@ -250,6 +256,12 @@ namespace DestroyerTest.Content.Entities
                                 player.velocity += suckDirection * suckStrength;
                             }
 
+                            
+                            if (Main.rand.NextBool(6) && Main.GameUpdateCount % 60 == 0)
+                            {
+                                SoundEngine.PlaySound(Idle, NPC.Center);
+                            }
+
                             if (player.HeldItem.type == ModContent.ItemType<ShiningObelisk>() && player.itemAnimation == player.itemAnimationMax - 10)
                             {
                                 ScreenFlashSystem.FlashIntensity = 1.0f;
@@ -285,6 +297,13 @@ namespace DestroyerTest.Content.Entities
                                 StunTimer = 1200;
                                 NPC.netUpdate = true;
                             }
+
+                            
+                            if (Main.rand.NextBool(6) && Main.GameUpdateCount % 60 == 0)
+                            {
+                                SoundEngine.PlaySound(Idle, NPC.Center);
+                            }
+
                         if (Main.GameUpdateCount % 240 == 0)
                         {
                             int numProjectiles = 3;

@@ -2947,6 +2947,14 @@ Items: {
 		Tooltip: You shouldn't have this.
 		DisplayName: Recharge Item
 	}
+
+	DjedPillarCharm: {
+		Tooltip:'''
+				You are immune to most debuffs.
+				Double tapping in the left or right direction allows you to dash, leaving behind a trail of spirit flames that home in on enemies.
+				'''
+		DisplayName: Djed Pillar Charm
+	}
 }
 
 Projectiles: {
