@@ -74,6 +74,11 @@ namespace DestroyerTest.Content.Equips
 		public int ComboExpireTimer = 0;
 		public int ComboCounter = 0;
 
+		public override void ResetEffects()
+		{
+			Active = false;
+		}
+
 		public override void PostUpdateEquips()
 		{
 			if (Active)

@@ -19,14 +19,14 @@ namespace DestroyerTest.Content.RiftArsenal
 {
     public class RechargeItem : ModItem
     {
-        public bool Energized = false;
+        public static bool Energized = false;
 
         public override void UpdateInventory(Player player)
         {
             var modPlayer = player.GetModPlayer<LivingShadowPlayer>();
-            if (modPlayer.LivingShadowCurrent < 0)
+            if (modPlayer.LivingShadowCurrent > 0)
             {
-                Energized = false;
+                Energized = true;
             }
             if (modPlayer.LivingShadowCurrent <= 0)
             {

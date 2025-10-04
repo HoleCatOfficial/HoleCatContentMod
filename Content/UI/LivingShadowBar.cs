@@ -103,7 +103,7 @@ namespace DestroyerTest.Content.UI
 			if (quotient > 0f) {
 				// Where the filled bar ends
 				int capX = left + steps - (fillCap.Value.Width / 2);
-				int capY = hitbox.Y + (hitbox.Height / 2);
+				int capY = hitbox.Y;
 				spriteBatch.Draw(fillCap.Value, new Vector2(capX, capY), Color.White);
 			}
 
