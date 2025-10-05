@@ -16,7 +16,6 @@ Items: {
 	# Section Divider
 	Constitution: {
 		Tooltip: A blade descending from the heavens. Without its Galantine coating, it is incapable of complex attacks.
-		Tooltip: A blade descending from the heavens. Without its Galantine coating, it is incapable of complex attacks.
 		DisplayName: Constitution
 	}
 
@@ -307,7 +306,6 @@ Items: {
 	LifeEcho: {
 		DisplayName: Life Echo
 		Tooltip: The energy of simple creatures.
-		Tooltip: The energy of simple creatures.
 	}
 
 	Living_Shadow: {
@@ -340,18 +338,15 @@ Items: {
 	Rift_Katana: {
 		DisplayName: Rift Katana
 		Tooltip: Swings in a large range in front of you.
-		Tooltip: Swings in a large range in front of you.
 	}
 
 	RiftMaker: {
 		DisplayName: Riftmaker
 		Tooltip: A small javelin that explodes after a short time.
-		Tooltip: A small javelin that explodes after a short time.
 	}
 
 	RiftWretcher: {
 		DisplayName: Rift Wretcher
-		Tooltip: A specialized flamethrower made to handle Riften Energy.
 		Tooltip: A specialized flamethrower made to handle Riften Energy.
 	}
 
@@ -701,7 +696,6 @@ Items: {
 	LungShot: {
 		DisplayName: Lung Shot
 		Tooltip: Turns your Lungs to stone, making you immune to suffocaton in the Rift.
-		Tooltip: Turns your Lungs to stone, making you immune to suffocaton in the Rift.
 	}
 
 	HeroBreastplate: {
@@ -791,7 +785,6 @@ Items: {
 	SoulEdge: {
 		DisplayName: Soul Edge
 		Tooltip: A dried-out, cold sword. Listening closely to the nooks of the wood makes you the audience of the wails of lost souls.
-		Tooltip: A dried-out, cold sword. Listening closely to the nooks of the wood makes you the audience of the wails of lost souls.
 	}
 
 	BiCape: {
@@ -838,7 +831,6 @@ Items: {
 
 	TrueSoulEdge: {
 		DisplayName: True Soul Edge
-		Tooltip: Shoots a phantom that slows down before stabbing into an enemy at high speed.
 		Tooltip: Shoots a phantom that slows down before stabbing into an enemy at high speed.
 	}
 
@@ -954,7 +946,6 @@ Items: {
 
 	Tenebrous_Katana: {
 		DisplayName: Tenebrous Katana
-		Tooltip: Instead of warm, electrified metal, the plates are so incredibly cold that your hands prickle and freeze if you hold it for too long.
 		Tooltip: Instead of warm, electrified metal, the plates are so incredibly cold that your hands prickle and freeze if you hold it for too long.
 	}
 
@@ -2940,7 +2931,6 @@ Items: {
 	TenebrisBullet: {
 		DisplayName: Tenebris Bullet
 		Tooltip: Homes in on enemies with increasing accuracy over time. Has a chance to inflict Shimmering Flames on hit.
-		Tooltip: Homes in on enemies with increasing accuracy over time. Has a chance to inflict Shimmering Flames on hit.
 	}
 
 	ShadeParticle: {
@@ -2970,6 +2960,56 @@ Items: {
 			Double tapping in the left or right direction allows you to dash, leaving behind a trail of spirit flames that home in on enemies.
 			'''
 		DisplayName: Djed Pillar Charm
+	}
+
+	EndlessHeliciteRounds: {
+		DisplayName: Endless Helicite Rounds
+		Tooltip: ""
+	}
+
+	EndlessRiftRounds: {
+		DisplayName: Endless Rift Rounds
+		Tooltip: ""
+	}
+
+	EndlessTenebrisBullets: {
+		DisplayName: Endless Tenebris Bullets
+		Tooltip: ""
+	}
+
+	HeliciteRound: {
+		DisplayName: Helicite Round
+		Tooltip: ""
+	}
+
+	RiftRound: {
+		DisplayName: Rift Round
+		Tooltip: ""
+	}
+
+	HeliciteCrate: {
+		DisplayName: Helicite Crate
+		Tooltip: ""
+	}
+
+	IchorNodeLootBag: {
+		DisplayName: Ichor Node Loot Bag
+		Tooltip: ""
+	}
+
+	HeliciteStaff: {
+		DisplayName: Helicite Staff
+		Tooltip: ""
+	}
+
+	PrimalShards: {
+		DisplayName: Primal Shards
+		Tooltip: ""
+	}
+
+	WretchedShards: {
+		DisplayName: Wretched Shards
+		Tooltip: ""
 	}
 }
 
@@ -3338,8 +3378,10 @@ Projectiles: {
 	TenebrisGemstone.DisplayName: Tenebris Gemstone
 	RiftClaymoreSlashEnergized.DisplayName: Rift Claymore Slash Energized
 	RiftClaymoreSlash.DisplayName: Rift Claymore Slash
-	RiftClaymoreSlashEnergized.DisplayName: Rift Claymore Slash Energized
-	RiftClaymoreSlash.DisplayName: Rift Claymore Slash
+	DesertFlame.DisplayName: Desert Flame
+	HeliciteRoundProjectile.DisplayName: Helicite Round Projectile
+	RiftRoundProjectile.DisplayName: Rift Round Projectile
+	RiftStar2.DisplayName: Rift Star2
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.
@@ -3766,6 +3808,7 @@ Tiles: {
 
 	Tile_VesperOre.MapEntry: Tile_ Vesper Ore
 	Tile_RiftenCrate.MapEntry: Tile_ Riften Crate
+	Tile_HeliciteCrate.MapEntry: Tile_ Helicite Crate
 }
 
 Biomes: {
@@ -4022,23 +4065,6 @@ BookText: {
 
 			You guessed it, Newline placeholder text.
 			'''
-	}
-}
-
-Achievements: {
-	ConstitutionDefeat: {
-		FriendlyName: Constitution Defeat
-		Description: Defeat Constitution, the Heaven Descendant Blade.
-	}
-
-	NightmareRoseDefeat: {
-		FriendlyName: Nightmare Rose Defeat
-		Description: Free the Conglomerate Child of Mother Darkness.
-	}
-
-	WyvernCorpseDefeat: {
-		FriendlyName: Wyvern Corpse Defeat
-		Description: Return the Great Wyvern to their place among the clouds.
 	}
 }
 

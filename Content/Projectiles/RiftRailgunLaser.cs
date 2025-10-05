@@ -51,45 +51,19 @@ namespace DestroyerTest.Content.Projectiles
 			Projectile.netUpdate = true;
 		}
 
-		/*
-		public override bool PreDraw(ref Color lightColor) {
-			lightColor = ColorLib.Rift;
-			if (IsAtMaxCharge) {
-				// Draw the main laser
-				DrawLaser(Main.spriteBatch, TextureAssets.Projectile[Projectile.type].Value, Main.player[Projectile.owner].Center, Projectile.velocity, 10f, Projectile.damage, -1.57f, 1f, 1000f, Color.White, 60);
-
-				// Draw the glow laser overlay
-				Texture2D glowTexture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/SimpleParticle").Value; // Replace with your glow texture path
-				DrawLaser(Main.spriteBatch, glowTexture, Main.player[Projectile.owner].Center, Projectile.velocity, 10f, Projectile.damage, -1.57f, 1.2f, 1000f, ColorLib.LightRift2 * 0.6f, 60); // Adjust scale and color for the glow
-			}
-
-			return false;
-		}
-		*/
-
 		
 		public override bool PreDraw(ref Color lightColor) {
 			lightColor = ColorLib.Rift;
-
 			if (IsAtMaxCharge) {
 				// Draw the main laser
 				DrawLaser(Main.spriteBatch, TextureAssets.Projectile[Projectile.type].Value, Main.player[Projectile.owner].Center, Projectile.velocity, 10f, Projectile.damage, -1.57f, 1f, 1000f, Color.White, 60);
-
-				// Set up additive blending for the glow
-				Main.spriteBatch.End();
-				Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-
-				// Draw the glow laser overlay
-				Texture2D glowTexture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/SimpleParticle").Value; // Replace with your glow texture path
-				DrawLaser(Main.spriteBatch, glowTexture, Main.player[Projectile.owner].Center, Projectile.velocity, 10f, Projectile.damage, -1.57f, 1.2f, 1000f, ColorLib.LightRift1 * 0.6f, 60);
-
-				// Restore default blending
-				Main.spriteBatch.End();
-				Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 			}
 
 			return false;
 		}
+		
+
+		
 		
 
 

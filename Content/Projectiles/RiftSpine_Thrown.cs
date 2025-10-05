@@ -42,8 +42,8 @@ namespace DestroyerTest.Content.Projectiles
             if (Main.GameUpdateCount % 10 == 0 && Projectile.velocity.Length() > 2)
             {
                 SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/StarShot") with { MaxInstances = 0, PitchVariance = 0.3f, Volume = 0.15f }, Projectile.Center);
-                Projectile.NewProjectile(Entity.GetSource_FromAI(), Projectile.Center, FlankLeft * 0.25f, ModContent.ProjectileType<RiftStar>(), Projectile.damage / 2, 3, ai2: 1);
-                Projectile.NewProjectile(Entity.GetSource_FromAI(), Projectile.Center, FlankRight * 0.25f, ModContent.ProjectileType<RiftStar>(), Projectile.damage / 2, 3, ai2: 1);
+                Projectile.NewProjectile(Entity.GetSource_FromAI(), Projectile.Center, FlankLeft * 0.25f, ModContent.ProjectileType<RiftStar2>(), Projectile.damage / 2, 3, ai2: 1);
+                Projectile.NewProjectile(Entity.GetSource_FromAI(), Projectile.Center, FlankRight * 0.25f, ModContent.ProjectileType<RiftStar2>(), Projectile.damage / 2, 3, ai2: 1);
             }
 
             if (Main.rand.NextBool(3))

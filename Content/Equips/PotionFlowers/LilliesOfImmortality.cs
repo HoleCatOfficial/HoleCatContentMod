@@ -37,13 +37,17 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
             {
                 Potions.Lillies = true;
             }
+            if(player.TryGetModPlayer<DjedPillarCharmPlayer>(out DjedPillarCharmPlayer modPlayer))
+            {
+                modPlayer.Active = true;
+            }
         }
         
         public override void AddRecipes()
         {
             CreateRecipe()
                 .AddIngredient<EphemeralSolvent>(1)
-                .AddIngredient(ItemID.AnkhCharm, 1)
+                .AddIngredient<DjedPillarCharm>(1)
                 .AddIngredient(ItemID.LunarOre, 8)
                 .AddIngredient<Tenebris>(6)
                 .Register();

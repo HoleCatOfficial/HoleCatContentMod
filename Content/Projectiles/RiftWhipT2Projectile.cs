@@ -7,6 +7,10 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using DestroyerTest.Content.Buffs;
+using DestroyerTest.Common;
+using Terraria.Audio;
+using InnoVault.PRT;
+using DestroyerTest.Content.Particles;
 
 namespace DestroyerTest.Content.Projectiles
 {
@@ -38,28 +42,46 @@ namespace DestroyerTest.Content.Projectiles
 
 		// This example uses PreAI to implement a charging mechanic.
 		// If you remove this, also remove Item.channel = true from the item's SetDefaults.
-		public override bool PreAI() {
+		public bool SpawnPRTCharge = false;
+		public override bool PreAI()
+		{
 			Player owner = Main.player[Projectile.owner];
 
-			// Like other whips, this whip updates twice per frame (Projectile.extraUpdates = 1), so 120 is equal to 1 second.
-			if (!owner.channel || ChargeTime >= 120) {
-				return true; // Let the vanilla whip AI run.
+			// If channeling stopped *and* we’re fully charged → trigger effect
+			if (owner.channel && ChargeTime >= 120)
+			{
+				SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/RiftWhipPowerStrike") 
+				{ 
+					PitchVariance = 1 
+				}, Projectile.Center);
+
+				SpawnPRTCharge = true;
+				return true; // Let vanilla whip AI run after triggering
 			}
 
-			if (++ChargeTime % 12 == 0) // 1 segment per 12 ticks of charge.
+			// If charging stopped early (not fully charged) → just release normally
+			if (!owner.channel)
+			{
+				return true;
+			}
+
+			// Otherwise still charging
+			if (++ChargeTime % 12 == 0)
 				Projectile.WhipSettings.Segments++;
 
-			// Increase range up to 2x for full charge.
-			Projectile.WhipSettings.RangeMultiplier += 1 / 120f;
-
-			// Reset the animation and item timer while charging.
+			Projectile.WhipSettings.RangeMultiplier += 1 / 240f;
 			owner.itemAnimation = owner.itemAnimationMax;
 			owner.itemTime = owner.itemTimeMax;
 
-			return false; // Prevent the vanilla whip AI from running.
+			return false;
 		}
 
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
+			if (SpawnPRTCharge == true)
+			{
+				PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp3>(), target.Center, Vector2.Zero, ColorLib.Rift, 1.0f);
+				SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/HSZap") { PitchVariance = 1 }, Projectile.Center);
+			}
 			target.AddBuff(ModContent.BuffType<DaylightOverload>(), 240);
 			Main.player[Projectile.owner].MinionAttackTargetNPC = target.whoAmI;
 			Projectile.damage = (int)(Projectile.damage * 1.5f); // Multihit boost.
@@ -77,7 +99,7 @@ namespace DestroyerTest.Content.Projectiles
 				Vector2 diff = list[i + 1] - element;
 
 				float rotation = diff.ToRotation() - MathHelper.PiOver2;
-				Color color = Lighting.GetColor(element.ToTileCoordinates(), Color.White);
+				Color color = Lighting.GetColor(element.ToTileCoordinates(), ColorLib.Rift);
 				Vector2 scale = new Vector2(1, (diff.Length() + 2) / frame.Height);
 
 				Main.EntitySpriteDraw(texture, pos - Main.screenPosition, frame, color, rotation, origin, scale, SpriteEffects.None, 0);
@@ -92,12 +114,26 @@ namespace DestroyerTest.Content.Projectiles
 
 			DrawLine(list);
 
-			//Main.DrawWhip_WhipBland(Projectile, list);
-			// The code below is for custom drawing.
-			// If you don't want that, you can remove it all and instead call one of vanilla's DrawWhip methods, like above.
-			// However, you must adhere to how they draw if you do.
+			Vector2 tipPos = list[list.Count - 1];
 
-			SpriteEffects flip = Projectile.spriteDirection < 0 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
+			int[] types = new int[]
+                {
+                    PRTLoader.GetParticleID<Arc1>(),
+                    PRTLoader.GetParticleID<Arc2>(),
+                    PRTLoader.GetParticleID<Arc3>()
+                };
+
+			if (SpawnPRTCharge == true)
+			{
+				PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], tipPos, Vector2.Zero, ColorLib.Rift, 0.2f);
+			}
+
+			//Main.DrawWhip_WhipBland(Projectile, list);
+				// The code below is for custom drawing.
+				// If you don't want that, you can remove it all and instead call one of vanilla's DrawWhip methods, like above.
+				// However, you must adhere to how they draw if you do.
+
+				SpriteEffects flip = Projectile.spriteDirection < 0 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
 
 			Texture2D texture = TextureAssets.Projectile[Type].Value;
 
@@ -107,14 +143,14 @@ namespace DestroyerTest.Content.Projectiles
 				// These two values are set to suit this projectile's sprite, but won't necessarily work for your own.
 				// You can change them if they don't!
 				Rectangle frame = new Rectangle(0, 0, 14, 30); // The size of the Handle (measured in pixels)
-				Vector2 origin = new Vector2(10, 14); // Offset for where the player's hand will start measured from the top left of the image.
+				Vector2 origin = new Vector2(7, 15); // Offset for where the player's hand will start measured from the top left of the image.
 				float scale = 1;
 
 				// These statements determine what part of the spritesheet to draw for the current segment.
 				// They can also be changed to suit your sprite.
 				if (i == list.Count - 2) {
 					// This is the head of the whip. You need to measure the sprite to figure out these values.
-					frame.Y = 70; // Distance from the top of the sprite to the start of the frame.
+					frame.Y = 72; // Distance from the top of the sprite to the start of the frame.
 					frame.Height = 24; // Height of the frame.
 
 					// For a more impactful look, this scales the tip of the whip up when fully extended, and down when curled up.
@@ -124,12 +160,12 @@ namespace DestroyerTest.Content.Projectiles
 				}
 				else if (i > 10) {
 					// Third segment
-					frame.Y = 62;
-					frame.Height = 8;
+					frame.Y = 54;
+					frame.Height = 18;
 				}
 				else if (i > 5) {
 					// Second Segment
-					frame.Y = 46;
+					frame.Y = 38;
 					frame.Height = 16;
 				}
 				else if (i > 0) {

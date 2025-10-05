@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Security.AccessControl;
 using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Projectiles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -26,31 +27,10 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.buffImmune[BuffID.Poisoned] = true;
-            player.buffImmune[BuffID.Darkness] = true;
-            player.buffImmune[BuffID.Cursed] = true;
-            player.buffImmune[BuffID.OnFire] = true;
-            player.buffImmune[BuffID.Bleeding] = true;
-            player.buffImmune[BuffID.Confused] = true;
-            player.buffImmune[BuffID.Slow] = true;
-            player.buffImmune[BuffID.Weak] = true;
-            player.buffImmune[BuffID.Silenced] = true;
-            player.buffImmune[BuffID.BrokenArmor] = true;
-            player.buffImmune[BuffID.CursedInferno] = true;
-            player.buffImmune[BuffID.Frostburn] = true;
-            player.buffImmune[BuffID.Chilled] = true;
-            player.buffImmune[BuffID.Frozen] = true;
-            player.buffImmune[BuffID.Burning] = true;
-            player.buffImmune[BuffID.Ichor] = true;
-            player.buffImmune[BuffID.Venom] = true;
-            player.buffImmune[BuffID.Blackout] = true;
-            player.buffImmune[BuffID.Electrified] = true;
-            player.buffImmune[BuffID.Rabies] = true;
-            player.buffImmune[BuffID.ShadowFlame] = true;
-            player.buffImmune[ModContent.BuffType<Brine>()] = true;
-            player.buffImmune[ModContent.BuffType<GalantineBurn>()] = true;
-            player.buffImmune[ModContent.BuffType<HeliouricShock>()] = true;
-            player.buffImmune[ModContent.BuffType<Muddy>()] = true;
+            if(player.TryGetModPlayer<DjedPillarCharmPlayer>(out DjedPillarCharmPlayer modPlayer))
+            {
+                modPlayer.Active = true;
+            }
         }
 
         public override void AddRecipes()
@@ -66,13 +46,53 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
         }
     }
 
+    public class DjedPillarCharmPlayer : ModPlayer
+    {
+        public bool Active = false;
+        public override void ResetEffects()
+        {
+            Active = false;
+        }
+        public override void PostUpdateEquips()
+        {
+            if (Active)
+            {
+                Player.buffImmune[BuffID.Poisoned] = true;
+                Player.buffImmune[BuffID.Darkness] = true;
+                Player.buffImmune[BuffID.Cursed] = true;
+                Player.buffImmune[BuffID.OnFire] = true;
+                Player.buffImmune[BuffID.Bleeding] = true;
+                Player.buffImmune[BuffID.Confused] = true;
+                Player.buffImmune[BuffID.Slow] = true;
+                Player.buffImmune[BuffID.Weak] = true;
+                Player.buffImmune[BuffID.Silenced] = true;
+                Player.buffImmune[BuffID.BrokenArmor] = true;
+                Player.buffImmune[BuffID.CursedInferno] = true;
+                Player.buffImmune[BuffID.Frostburn] = true;
+                Player.buffImmune[BuffID.Chilled] = true;
+                Player.buffImmune[BuffID.Frozen] = true;
+                Player.buffImmune[BuffID.Burning] = true;
+                Player.buffImmune[BuffID.Ichor] = true;
+                Player.buffImmune[BuffID.Venom] = true;
+                Player.buffImmune[BuffID.Blackout] = true;
+                Player.buffImmune[BuffID.Electrified] = true;
+                Player.buffImmune[BuffID.Rabies] = true;
+                Player.buffImmune[BuffID.ShadowFlame] = true;
+                Player.buffImmune[ModContent.BuffType<Brine>()] = true;
+                Player.buffImmune[ModContent.BuffType<GalantineBurn>()] = true;
+                Player.buffImmune[ModContent.BuffType<HeliouricShock>()] = true;
+                Player.buffImmune[ModContent.BuffType<Muddy>()] = true;
+            }
+        }
+    }
+
     public class SpiritFlameDash : ModPlayer
     {
         bool HasDjedPillarEquipped()
         {
             for (int i = 3; i < Player.armor.Length; i++)
             {
-                if (Player.armor[i].type == ModContent.ItemType<DjedPillarCharm>())
+                if (Player.armor[i].type == ModContent.ItemType<DjedPillarCharm>() || Player.armor[i].type == ModContent.ItemType<LilliesOfImmortality>())
                 {
                     return true;
                 }
@@ -149,11 +169,12 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
                 DashTimer = DashDuration;
                 Player.velocity = newVelocity;
 
-                // Here you'd be able to set an effect that happens when the dash first activates
-                // Some examples include:  the larger smoke effect from the Master Ninja Gear and Tabi
-                Dust.NewDust(Player.position, Player.Hitbox.Width, Player.Hitbox.Height, DustID.DemonTorch, Player.velocity.X * 0.75f, 1f, 0, default, 10f);
-                Dust.NewDust(Player.position, Player.Hitbox.Width, Player.Hitbox.Height, DustID.GoldCoin, Player.velocity.X * 0.75f, 1f, 0, default, 6f);
-                SoundEngine.PlaySound(new SoundStyle($"DestroyerTest/Assets/Audio/DjedDash"));
+                for (int i = 0; i < 10; i++)
+                {
+                    Dust.NewDust(Player.position, Player.Hitbox.Width, Player.Hitbox.Height, DustID.DemonTorch, Player.velocity.X * 0.75f, 1f, 0, default, 6f);
+                    Dust.NewDust(Player.position, Player.Hitbox.Width, Player.Hitbox.Height, DustID.GoldCoin, Player.velocity.X * 0.75f, 1f, 0, default, 4f);
+                }
+                SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/DjedDash"));
             }
 
             if (DashDelay > 0)
@@ -172,10 +193,8 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
                     Item skull = Player.armor.FirstOrDefault(item => item.type == ModContent.ItemType<DjedPillarCharm>());
                     if (skull != null)
                     {
-                        for (int i = 0; i < 6; i++)
-                        {
-                            Projectile.NewProjectile(Player.GetSource_Accessory(skull), Main.rand.NextVector2FromRectangle(Player.Hitbox), Vector2.Zero, ModContent.ProjectileType<>(), 30, 8, Main.LocalPlayer.whoAmI);
-                        }
+                        Projectile.NewProjectile(Player.GetSource_Accessory(skull), Main.rand.NextVector2FromRectangle(Player.Hitbox), Vector2.Zero, ProjectileID.SandnadoFriendly, 30, 8, Main.LocalPlayer.whoAmI);
+                        SoundEngine.PlaySound(SoundID.DD2_BetsyWindAttack, Player.position);
                     }
 
                 }
@@ -199,7 +218,7 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
             {
                 Main.EntitySpriteDraw(
                     Djed.Value,
-                    Player.Center - Main.screenPosition + new Vector2(6, Player.gfxOffY),
+                    Player.Center - Main.screenPosition + new Vector2(12, Player.gfxOffY),
                     null,
                     new Color(255, 255, 255) * ((float)DashTimer / DashDuration),
                     Player.bodyRotation,
@@ -212,7 +231,7 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
             {
                 Main.EntitySpriteDraw(
                     Djed.Value,
-                    Player.Center - Main.screenPosition + new Vector2(-6, Player.gfxOffY),
+                    Player.Center - Main.screenPosition + new Vector2(-12, Player.gfxOffY),
                     null,
                     new Color(255, 255, 255) * ((float)DashTimer / DashDuration),
                     Player.bodyRotation,

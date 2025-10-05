@@ -54,13 +54,5 @@ namespace DestroyerTest.Content.MeleeWeapons
 		public override bool MeleePrefix() {
 			return true; // return true to allow weapon to have melee prefixes (e.g. Legendary)
 		}
-
-		public override void AddRecipes() {
-			CreateRecipe()
-				.AddIngredient<Item_HeliciteCrystal>(26)
-                .AddIngredient<Item_Riftplate>(10)
-				.AddTile<Tile_RiftConfiguratorWeaponry>()
-				.Register();
-		}
 	}
 }
