@@ -41,6 +41,8 @@ Items: {
 			'''
 			Just one of many fates for the Heaven-Descendant blade.
 			It pulses with the essence of Terraria.
+			Just one of many fates for the Heaven-Descendant blade.
+			It pulses with the essence of Terraria.
 			'''
 	}
 
@@ -884,6 +886,7 @@ Items: {
 		DisplayName: Tenebris
 		Tooltip:
 			'''
+			A heavy, pitch black ingot with flickering stars swimming inside and arcs of Shade Energy roaring along its sharp edges.
 			A heavy, pitch black ingot with flickering stars swimming inside and arcs of Shade Energy roaring along its sharp edges.
 			You have eclipsed the Sun.
 			'''
@@ -1803,7 +1806,9 @@ Items: {
 		Tooltip:
 			'''
 			A wired apparatus designed to transfer the solar energy in living shadows into a Rift Fuse as an electrical current, empowering Riften Items.
+			A wired apparatus designed to transfer the solar energy in living shadows into a Rift Fuse as an electrical current, empowering Riften Items.
 			Requires Rift Batteries or a close enough proximity to a Rift Crucible to obtain the solar energy.
+			Disclaimer: Helicite Crystals, Solar Fragments, and other sun-centric items do not work as a power source.
 			Disclaimer: Helicite Crystals, Solar Fragments, and other sun-centric items do not work as a power source.
 			'''
 	}
@@ -2949,11 +2954,62 @@ Items: {
 	}
 
 	DjedPillarCharm: {
-		Tooltip:'''
-				You are immune to most debuffs.
-				Double tapping in the left or right direction allows you to dash, leaving behind a trail of spirit flames that home in on enemies.
-				'''
+		Tooltip:
+			'''
+			You are immune to most debuffs.
+			Double tapping in the left or right direction allows you to dash, leaving behind a trail of spirit flames that home in on enemies.
+			'''
 		DisplayName: Djed Pillar Charm
+	}
+
+	EndlessHeliciteRounds: {
+		DisplayName: Endless Helicite Rounds
+		Tooltip: ""
+	}
+
+	EndlessRiftRounds: {
+		DisplayName: Endless Rift Rounds
+		Tooltip: ""
+	}
+
+	EndlessTenebrisBullets: {
+		DisplayName: Endless Tenebris Bullets
+		Tooltip: ""
+	}
+
+	HeliciteRound: {
+		DisplayName: Helicite Round
+		Tooltip: ""
+	}
+
+	RiftRound: {
+		DisplayName: Rift Round
+		Tooltip: ""
+	}
+
+	HeliciteCrate: {
+		DisplayName: Helicite Crate
+		Tooltip: ""
+	}
+
+	IchorNodeLootBag: {
+		DisplayName: Ichor Node Loot Bag
+		Tooltip: ""
+	}
+
+	HeliciteStaff: {
+		DisplayName: Helicite Staff
+		Tooltip: ""
+	}
+
+	PrimalShards: {
+		DisplayName: Primal Shards
+		Tooltip: ""
+	}
+
+	WretchedShards: {
+		DisplayName: Wretched Shards
+		Tooltip: ""
 	}
 }
 
@@ -3322,6 +3378,11 @@ Projectiles: {
 	TenebrisGemstone.DisplayName: Tenebris Gemstone
 	RiftClaymoreSlashEnergized.DisplayName: Rift Claymore Slash Energized
 	RiftClaymoreSlash.DisplayName: Rift Claymore Slash
+	DesertFlame.DisplayName: Desert Flame
+	HeliciteRoundProjectile.DisplayName: Helicite Round Projectile
+	RiftRoundProjectile.DisplayName: Rift Round Projectile
+	RiftStar2.DisplayName: Rift Star2
+	NightmareeRoseBackgroundProj.DisplayName: Nightmaree Rose Background Proj
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.
@@ -3748,6 +3809,7 @@ Tiles: {
 
 	Tile_VesperOre.MapEntry: Tile_ Vesper Ore
 	Tile_RiftenCrate.MapEntry: Tile_ Riften Crate
+	Tile_HeliciteCrate.MapEntry: Tile_ Helicite Crate
 }
 
 Biomes: {

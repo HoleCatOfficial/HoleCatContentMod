@@ -6,6 +6,7 @@ using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.AmmoProjectiles;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.Resources.Blueprints;
+using DestroyerTest.Content.RiftBiome;
 
 using DestroyerTest.Content.Tiles;
 using DestroyerTest.Content.Tiles.RiftConfigurator;
@@ -74,15 +75,18 @@ namespace DestroyerTest.Content.RiftArsenal
 			return new Vector2(2f, -2f);
 		}
 
-		public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
-		{
-			if (Main.rand.NextBool(5) && !Energized)
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
+			if (Main.rand.NextBool(4) && Energized)
 			{
-				type = ModContent.ProjectileType<Rift_Bullet>();
+				Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<RiftStar>(), damage + 15, knockback, player.whoAmI, ai2: 1);
 			}
-			if (Main.rand.NextBool(3) && Energized) {
-				type = ModContent.ProjectileType<RiftStar>();
+			else
+			{
+				Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI);
 			}
-		}
+			return false;
+        }
+
 	}
 }

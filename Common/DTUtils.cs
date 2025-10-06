@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Particles;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
@@ -143,6 +144,24 @@ namespace DestroyerTest.Common
         {
             PRTLoader.NewParticle(type, Center, Vector2.Zero, color, Scale);
         }
+
+        public static int[] ElectricArcs = new int[]
+        {
+            PRTLoader.GetParticleID<Arc1>(),
+            PRTLoader.GetParticleID<Arc2>(),
+            PRTLoader.GetParticleID<Arc3>()
+        };
+
+        public static int[] Fire =
+        {
+            PRTLoader.GetParticleID<ColoredFire1>(),
+            PRTLoader.GetParticleID<ColoredFire2>(),
+            PRTLoader.GetParticleID<ColoredFire3>(),
+            PRTLoader.GetParticleID<ColoredFire4>(),
+            PRTLoader.GetParticleID<ColoredFire5>(),
+            PRTLoader.GetParticleID<ColoredFire6>(),
+            PRTLoader.GetParticleID<ColoredFire7>()
+        };
     }
 
     public class DTPlayerUtil : ModPlayer
@@ -481,6 +500,7 @@ namespace DestroyerTest.Common
         //
         //Textures with more niche use cases.
         //
+        public static Asset<Texture2D> RiftStar = ModContent.Request<Texture2D>($"{ParticlePath}/RiftStar");
         public static Asset<Texture2D> NightmareRoseArenaBorder = ModContent.Request<Texture2D>($"{ParticlePath}/NightmareRoseBarrier");
         public static Asset<Texture2D> ConstitutionBeamGlow = ModContent.Request<Texture2D>($"{ExtrasPath}/ConstitutionBeamGlow");
         public static Asset<Texture2D> GalantineLanceGlow = ModContent.Request<Texture2D>($"{ExtrasPath}/GalantineLanceGlow");

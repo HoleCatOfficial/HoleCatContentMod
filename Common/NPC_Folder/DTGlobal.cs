@@ -10,6 +10,7 @@ using DestroyerTest.Content.BossBars;
 using DestroyerTest.Content.Consumables;
 using DestroyerTest.Content.MeleeWeapons;
 using DestroyerTest.Content.Magic.ScepterSubclass;
+using DestroyerTest.Content.Ammunitions;
 
 namespace DestroyerTest.Common.NPC_Folder
 {
@@ -229,10 +230,17 @@ namespace DestroyerTest.Common.NPC_Folder
             {
                 shop.Add<CursedStar>(Condition.DownedSkeletron); // Or wherever your item is
             }
-            
+
             if (shop.NpcType == NPCID.TravellingMerchant)
             {
                 shop.Add<FoxScepter>(Condition.DownedKingSlime); // Or wherever your item is
+            }
+
+            if (shop.NpcType == NPCID.ArmsDealer && (DownedBossSystem.downedNightmareRoseBoss || DownedBossSystem.downedWyvernCorpseBoss))
+            {
+                shop.Add<EndlessTenebrisBullets>(Condition.DownedCultist);
+                shop.Add<EndlessHeliciteRounds>(Condition.DownedGolem);
+                shop.Add<EndlessTenebrisBullets>(Condition.DownedMechBossAll);
             }
         }
 	}

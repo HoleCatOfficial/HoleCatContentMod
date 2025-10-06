@@ -9,6 +9,7 @@ using DestroyerTest.Content.Tiles;
 using DestroyerTest.Content.Tiles.RiftConfigurator;
 using DestroyerTest.Content.Tiles.Riftplate;
 using DestroyerTest.Content.Tools;
+using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
@@ -26,7 +27,9 @@ namespace DestroyerTest.Content.RiftArsenal
 	public class RiftStaff : RechargeItem
 	{
         public override string Texture => "DestroyerTest/Content/RiftArsenal/RiftStaff";
-		public override void SetStaticDefaults() {
+		public override void SetStaticDefaults()
+		{
+			Item.staff[Type] = true;
 		}
 
 		public override void SetDefaults() {
@@ -35,34 +38,49 @@ namespace DestroyerTest.Content.RiftArsenal
 			Item.shoot = ModContent.ProjectileType<RiftStar>();
             Item.useTime = 30;
             Item.useAnimation = 30;
-			Item.width = 18;
-			Item.height = 50;
+			Item.width = 92;
+			Item.height = 92;
 			Item.autoReuse = true;
 			Item.crit = 12;
-			Item.rare = ItemRarityID.Green;
+			Item.rare = ModContent.RarityType<RiftRarity1>();
 			Item.useStyle = ItemUseStyleID.Shoot;
 
 			// Customize the UseSound. DefaultToStaff sets UseSound to SoundID.Item43, but we want SoundID.Item2.
-			Item.UseSound = new SoundStyle($"DestroyerTest/Assets/Audio/Rift_Katana_Hold");
+			Item.UseSound = new SoundStyle($"DestroyerTest/Assets/Audio/RiftClaymorePowerStrike");
 
 			Item.DamageType = DamageClass.Magic;
-            Item.mana = 10;
-            Item.damage = 110;
-
-			// Set rarity and value
-			Item.SetShopValues(ItemRarityColor.Green2, 10000);
+            Item.mana = 50;
+            Item.damage = 70;
 		}
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-			int Count = 8;
+			int Count = 0;
+
+			if (!Energized)
+			{
+				Count = 6;
+			}
+			if (Energized)
+			{
+				Count = 12;
+			}
 			for (int i = 0; i < Count; i++)
 			{
 				float angle = MathHelper.TwoPi * i / Count;
 				Vector2 projPos = Main.MouseWorld + 80 * new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
-                Vector2 Inward = Main.MouseWorld - projPos;
-                Inward.Normalize();
-				Projectile.NewProjectile(source, projPos, Inward * 0.5f, type, damage, knockback);
+				Vector2 dustStart = position;
+				Vector2 dustEnd = projPos;
+				int dustSteps = 20;
+				for (int j = 0; j <= dustSteps; j++)
+				{
+					Vector2 dustPos = Vector2.Lerp(dustStart, dustEnd, j / (float)dustSteps);
+					Dust.NewDustPerfect(dustPos, DustID.TintableDustLighted, Vector2.Zero, 150, ColorLib.Rift, 1.2f);
+				}
+
+				Vector2 Inward = Main.MouseWorld - projPos;
+				Inward.Normalize();
+				Projectile.NewProjectile(source, projPos, Inward * 0.5f, type, damage, knockback, ai2: 1);
 			}
             return false;
         }

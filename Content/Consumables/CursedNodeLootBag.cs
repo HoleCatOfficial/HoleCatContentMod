@@ -17,6 +17,7 @@ using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
+using DestroyerTest.Content.Resources;
 
 namespace DestroyerTest.Content.Consumables
 {
@@ -50,6 +51,7 @@ namespace DestroyerTest.Content.Consumables
             // We have to replicate the expert drops from MinionBossBody here
 
             itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<HaepienNodeCharm>(), 24, 1, 1));
+            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<WretchedShards>(), 2, 4, 16));
             itemLoot.Add(ItemDropRule.NotScalingWithLuck(ItemID.CursedFlame, 2, 20, 60));
             itemLoot.Add(ItemDropRule.Coins(1250, true));
         }

@@ -122,7 +122,7 @@ namespace DestroyerTest.Content.Projectiles
 
 			Utility.ReturnToDefaultDrawing(spriteBatch);
 			
-			Utility.DrawTextureOnProj(DTAssetLib.Star(1), Projectile, Color.White, true, 0f, 0.35f, 0.35f);
+			Utility.DrawTextureOnProj(DTAssetLib.RiftStar, Projectile, Color.White, true, 0f, 0.35f, 0.35f);
 
 			return false;
 		}
@@ -154,12 +154,16 @@ namespace DestroyerTest.Content.Projectiles
 			Mode = (int)Projectile.ai[2];
 			Projectile.rotation += Projectile.direction * Main.rand.NextFloat(0.01f, 0.07f);
 
+            if (Main.rand.NextBool(12))
+            {
+                PRTLoader.NewParticle(DTUtils.ElectricArcs[Main.rand.Next(DTUtils.ElectricArcs.Length)], Projectile.Center + Main.rand.NextVector2Circular(10, 10), Vector2.Zero, ColorLib.Rift, 0.1f);
+            }
 			if (Mode > 4 || Mode <= 0)
-			{
-				Projectile.Kill();
-				//throw new Exception("Non-Fatal Error in Oil Projectile Targeting. Value must be 1 or 2.");
-				Mod.Logger.Warn("OilProjectile: Invalid Mode in ai[2]. Expected 1 or 2.");
-			}
+                {
+                    Projectile.Kill();
+                    //throw new Exception("Non-Fatal Error in Oil Projectile Targeting. Value must be 1 or 2.");
+                    Mod.Logger.Warn("OilProjectile: Invalid Mode in ai[2]. Expected 1 or 2.");
+                }
 
 			Lighting.AddLight(Projectile.Center, ColorLib.TenebrisGradient.ToVector3() * 0.2f);
 
@@ -191,9 +195,16 @@ namespace DestroyerTest.Content.Projectiles
 				if (NPCTarget == null)
 					return;
 
-				float length = Projectile.velocity.Length();
 				float targetAngle = Projectile.AngleTo(NPCTarget.Center);
-				Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(15)).ToRotationVector2() * length;
+				Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(15)).ToRotationVector2() * Projectile.velocity.Length();
+
+				// Acceleration
+				float speed = Projectile.velocity.Length();
+				float desiredSpeed = 20f; // your top speed
+				float acceleration = 0.3f; // how quickly it ramps up
+				if (speed < desiredSpeed)
+					speed += acceleration;
+				Projectile.velocity = Projectile.velocity.SafeNormalize(Vector2.Zero) * speed;
 			}
 			if (Mode == 2)
 			{
@@ -214,9 +225,17 @@ namespace DestroyerTest.Content.Projectiles
 				if (PLRTarget == null)
 					return;
 
-				float length = Projectile.velocity.Length();
 				float targetAngle = Projectile.AngleTo(PLRTarget.Center);
-				Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(5)).ToRotationVector2() * length;
+				Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(5)).ToRotationVector2() * Projectile.velocity.Length();
+
+				// Acceleration
+				float speed = Projectile.velocity.Length();
+				float desiredSpeed = 18f;
+				float acceleration = 0.25f;
+				if (speed < desiredSpeed)
+					speed += acceleration;
+				Projectile.velocity = Projectile.velocity.SafeNormalize(Vector2.Zero) * speed;
+
 			}
 			if (Mode == 3)
 			{
@@ -290,7 +309,8 @@ namespace DestroyerTest.Content.Projectiles
 		{
 			if (Mode == 1 || Mode == 3)
 			{
-				target.AddBuff(ModContent.BuffType<DaylightOverload>(), 300);
+                SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/RiftCharge") with { MaxInstances = 0, PitchVariance = 0.3f, Volume = 0.25f }, target.Center);
+				target.AddBuff(ModContent.BuffType<HeliouricShock>(), 300);
 			}
 		}
 
@@ -298,7 +318,8 @@ namespace DestroyerTest.Content.Projectiles
 		{
 			if (Mode == 2 || Mode == 4)
 			{
-				target.AddBuff(ModContent.BuffType<DaylightOverload>(), 300);
+                SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/RiftCharge") with { MaxInstances = 0, PitchVariance = 0.3f, Volume = 0.25f }, target.Center);
+				target.AddBuff(ModContent.BuffType<HeliouricShock>(), 300);
 			}
 		}
 
