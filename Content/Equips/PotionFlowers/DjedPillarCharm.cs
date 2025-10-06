@@ -194,7 +194,7 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
                     Item Lillies = Player.armor.FirstOrDefault(item => item.type == ModContent.ItemType<LilliesOfImmortality>());
                     if (Pillar != null || Lillies != null)
                     {
-                        Projectile.NewProjectile(Player.GetSource_Accessory(skull), Main.rand.NextVector2FromRectangle(Player.Hitbox), Vector2.Zero, ProjectileID.SandnadoFriendly, 30, 8, Main.LocalPlayer.whoAmI);
+                        Projectile.NewProjectile(Player.GetSource_Accessory(Pillar), Main.rand.NextVector2FromRectangle(Player.Hitbox), Vector2.Zero, ProjectileID.SandnadoFriendly, 30, 8, Main.LocalPlayer.whoAmI);
                         SoundEngine.PlaySound(SoundID.DD2_BetsyWindAttack, Player.position);
                     }
 

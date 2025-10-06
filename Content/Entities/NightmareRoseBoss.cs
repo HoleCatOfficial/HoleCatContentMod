@@ -716,7 +716,6 @@ namespace DestroyerTest.Content.Entities
             {
                 if (!SetVolume)
                 {
-                    Main.musicNoCrossFade[Music] = true;
                     Main.musicFade[Music] = 1;
                     Main.musicVolume = VolumeOnSpawn;
                     SetVolume = true;
@@ -727,7 +726,6 @@ namespace DestroyerTest.Content.Entities
             {
                 if (!SetVolume)
                 {
-                    Main.musicNoCrossFade[Music] = true;
                     Main.musicFade[Music] = 1;
                     Main.musicVolume = VolumeOnSpawn;
                     SetVolume = true;
@@ -738,7 +736,6 @@ namespace DestroyerTest.Content.Entities
             {
                 if (!SetVolume)
                 {
-                    Main.musicNoCrossFade[Music] = true;
                     Main.musicFade[Music] = 1;
                     Main.musicVolume = VolumeOnSpawn;
                     SetVolume = true;
