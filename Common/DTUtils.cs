@@ -146,11 +146,22 @@ namespace DestroyerTest.Common
         }
 
         public static int[] ElectricArcs = new int[]
-            {
-                PRTLoader.GetParticleID<Arc1>(),
-                PRTLoader.GetParticleID<Arc2>(),
-                PRTLoader.GetParticleID<Arc3>()
-            };
+        {
+            PRTLoader.GetParticleID<Arc1>(),
+            PRTLoader.GetParticleID<Arc2>(),
+            PRTLoader.GetParticleID<Arc3>()
+        };
+
+        public static int[] Fire =
+        {
+            PRTLoader.GetParticleID<ColoredFire1>(),
+            PRTLoader.GetParticleID<ColoredFire2>(),
+            PRTLoader.GetParticleID<ColoredFire3>(),
+            PRTLoader.GetParticleID<ColoredFire4>(),
+            PRTLoader.GetParticleID<ColoredFire5>(),
+            PRTLoader.GetParticleID<ColoredFire6>(),
+            PRTLoader.GetParticleID<ColoredFire7>()
+        };
     }
 
     public class DTPlayerUtil : ModPlayer

@@ -235,10 +235,12 @@ namespace DestroyerTest.Common.NPC_Folder
             {
                 shop.Add<FoxScepter>(Condition.DownedKingSlime); // Or wherever your item is
             }
-            
+
             if (shop.NpcType == NPCID.ArmsDealer && (DownedBossSystem.downedNightmareRoseBoss || DownedBossSystem.downedWyvernCorpseBoss))
             {
-                shop.Add<EndlessTenebrisBullets>(Condition.DownedCultist); // Or wherever your item is
+                shop.Add<EndlessTenebrisBullets>(Condition.DownedCultist);
+                shop.Add<EndlessHeliciteRounds>(Condition.DownedGolem);
+                shop.Add<EndlessTenebrisBullets>(Condition.DownedMechBossAll);
             }
         }
 	}

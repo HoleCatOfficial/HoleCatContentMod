@@ -118,6 +118,7 @@ namespace DestroyerTest.Content.Entities
             NPC.npcSlots = 90f;
             NPC.netID = ModContent.NPCType<NightmareRoseBoss>();
             NPC.BossBar = ModContent.GetInstance<CorruptBossBar>();
+            GeneralEternityChanges(EternityIsActive());
         }
 
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
@@ -165,13 +166,13 @@ namespace DestroyerTest.Content.Entities
             else
             {
                 NPC.frameCounter++;
-                    if (NPC.frameCounter >= 30)
-                    {
-                        NPC.frameCounter = 0;
-                        frameIndex++;
-                        if (frameIndex > 20 || frameIndex < 12)
-                            frameIndex = 11;
-                    }
+                if (NPC.frameCounter >= 30)
+                {
+                    NPC.frameCounter = 0;
+                    frameIndex++;
+                    if (frameIndex > 20 || frameIndex < 12)
+                        frameIndex = 11;
+                }
             }
 
             NPC.frame.Y = frameIndex * frameHeight;
@@ -397,6 +398,10 @@ namespace DestroyerTest.Content.Entities
                     1.0f
                 );
             }
+
+            
+
+            
         }
 
 
@@ -408,6 +413,28 @@ namespace DestroyerTest.Content.Entities
             return base.CanBeHitByProjectile(projectile);
         }
 
+        public List<int> ImmuneProjectiles = new List<int>()
+        {
+            ProjectileID.LastPrismLaser,
+            ProjectileID.Meowmere,
+            ProjectileID.SolarWhipSword,
+            ProjectileID.SolarWhipSwordExplosion,
+            ProjectileID.PhantasmArrow,
+            ProjectileID.LunarFlare,
+            ProjectileID.MoonlordArrow,
+            ProjectileID.MoonlordArrowTrail,
+            ProjectileID.VortexBeaterRocket,
+            ProjectileID.StardustCellMinion,
+            ProjectileID.StardustGuardian,
+            ProjectileID.EmpressBlade,
+            ProjectileID.NebulaArcanum,
+            ProjectileID.NebulaArcanumExplosionShot,
+            ProjectileID.NebulaArcanumExplosionShotShard,
+            ProjectileID.NebulaArcanumSubshot,
+            ProjectileID.NebulaBlaze1,
+            ProjectileID.NebulaBlaze2,
+        };
+
         public override void ModifyHitByProjectile(Projectile projectile, ref NPC.HitModifiers modifiers)
         {
             if (currentState == AttackState.Desperation || anyNodesAlive)
@@ -415,7 +442,7 @@ namespace DestroyerTest.Content.Entities
                 NPC.immortal = true;
                 modifiers.FinalDamage *= 0f;
             }
-            if (projectile.type == ProjectileID.LastPrismLaser || projectile.type == ProjectileID.Meowmere || projectile.type == ProjectileID.SolarWhipSword || projectile.type == ProjectileID.SolarWhipSwordExplosion || projectile.type == ProjectileID.PhantasmArrow || projectile.type == ProjectileID.VortexBeaterRocket || projectile.type == ProjectileID.StardustCellMinion || projectile.type == ProjectileID.StardustGuardian)
+            if (ImmuneProjectiles.Contains(projectile.type))
             {
                 modifiers.FinalDamage *= 0.5f;
             }
@@ -437,6 +464,8 @@ namespace DestroyerTest.Content.Entities
                 modifiers.FinalDamage *= 0f;
             }
         }
+
+
 
         public void ModifyWeather()
         {
@@ -476,13 +505,33 @@ namespace DestroyerTest.Content.Entities
             }
         }
 
+        public void GeneralEternityChanges(bool Active)
+        {
+            if (Active)
+            {
+                NPC.defense = 245;
+                //NPC.takenDamageMultiplier = 0.85f;
+                NPC.lifeMax = 736000;
+                NPC.life = NPC.lifeMax;
+                HealAmount = 35;
+            }
+            else
+            {
+                NPC.defense = 85;
+                NPC.lifeMax = 368000;
+                NPC.life = NPC.lifeMax;
+                HealAmount = 20;
+            }
+        }
 
-
+        public int HealAmount = 0;
         public int DeathInterval = 10;
         public int BorderDustType;
         public static bool ShouldCenterCameraOnNPC = false;
         public float VolumeOnSpawn = 0f;
         public bool RecordedVolume = false;
+        public bool SetVolume = false;
+        public bool Flag2 = false;
         public override void AI()
         {
             NPC.TargetClosest();
@@ -597,7 +646,7 @@ namespace DestroyerTest.Content.Entities
             {
                 NPC.dontTakeDamage = true;
                 NPC.immortal = true;
-                NPC.life += 20;
+                NPC.life += HealAmount;
                 if (Main.rand.NextBool(26))
                 {
                     PRTLoader.NewParticle(
@@ -614,9 +663,6 @@ namespace DestroyerTest.Content.Entities
                 NPC.immortal = false;
                 NPC.dontTakeDamage = false;
             }
-
-
-
 
 
             if (NPC.life >= NPC.lifeMax * 0.24f && NPC.life <= NPC.lifeMax * 0.25f)
@@ -668,21 +714,36 @@ namespace DestroyerTest.Content.Entities
             }
             if (!Main.dedServ && !EternityIsActive() && currentState != AttackState.SpawnIdle)
             {
-                Main.musicVolume = VolumeOnSpawn;
-                Main.musicFade[Music] = 1;
+                if (!SetVolume)
+                {
+                    Main.musicNoCrossFade[Music] = true;
+                    Main.musicFade[Music] = 1;
+                    Main.musicVolume = VolumeOnSpawn;
+                    SetVolume = true;
+                }
                 Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Tribulation");
             }
             if (!Main.dedServ && EternityIsActive() && !cfg.EternityMusic && currentState != AttackState.SpawnIdle)
             {
-                Main.musicVolume = VolumeOnSpawn;
-                Main.musicFade[Music] = 1;
+                if (!SetVolume)
+                {
+                    Main.musicNoCrossFade[Music] = true;
+                    Main.musicFade[Music] = 1;
+                    Main.musicVolume = VolumeOnSpawn;
+                    SetVolume = true;
+                }
                 Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Tribulation");
             }
             if (!Main.dedServ && EternityIsActive() && cfg.EternityMusic && currentState != AttackState.SpawnIdle)
             {
-                Main.musicVolume = VolumeOnSpawn;
-                Main.musicFade[Music] = 1;
-                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Placeholder3");
+                if (!SetVolume)
+                {
+                    Main.musicNoCrossFade[Music] = true;
+                    Main.musicFade[Music] = 1;
+                    Main.musicVolume = VolumeOnSpawn;
+                    SetVolume = true;
+                }
+                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Placeholder4");
             }
 
             NPC.velocity = Vector2.Zero;
@@ -719,6 +780,10 @@ namespace DestroyerTest.Content.Entities
                         if (SpawnCount >= SpawnIdleRoarFlag)
                         {
                             SpawnDarknessAlpha = 0;
+                            if (EternityIsActive())
+                            {
+                                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<NightmareeRoseBackgroundProj>(), 0, 0f);
+                            }
                             currentState = AttackState.Idle;
                             NPC.dontTakeDamage = false;
                             SpawnCount = 0;
@@ -739,11 +804,11 @@ namespace DestroyerTest.Content.Entities
                         int IdleMax = -1;
                         if (!Main.expertMode && !Main.masterMode && !EternityIsActive())
                         {
-                            IdleMax = 360;
+                            IdleMax = 100;
                         }
                         if (Main.expertMode && !Main.masterMode && !EternityIsActive())
                         {
-                            IdleMax = 120;
+                            IdleMax = 80;
                         }
                         if (Main.masterMode || EternityIsActive())
                         {
@@ -1102,6 +1167,7 @@ namespace DestroyerTest.Content.Entities
                 case AttackState.Desperation:
                     {
                         NPC.dontTakeDamage = true;
+                        ShouldCenterCameraOnNPC = true;
                         if (cfg.EnableDebugMessages)
                         {
                             Mod.Logger.Info($"Desperation Timer: {DesperationTimer}");
@@ -1130,6 +1196,7 @@ namespace DestroyerTest.Content.Entities
                     break;
                 case AttackState.KillIdle:
                     {
+                        ShouldCenterCameraOnNPC = false;
                         if (cfg.EnableDebugMessages)
                         {
                             Mod.Logger.Info($"Death Timer: {DeathIdleTimer}");
@@ -1902,6 +1969,91 @@ namespace DestroyerTest.Content.Entities
             NPC.Center = OrbitCenter + offset - new Vector2(NPC.width / 2, NPC.height / 2);
 
         }
+    }
+
+    public class NightmareeRoseBackgroundProj : ModProjectile
+    {
+        public override string Texture => "DestroyerTest/Content/Extras/FadeLine";
+        public override void SetDefaults()
+        {
+            Projectile.width = 10;
+            Projectile.height = 10;
+            Projectile.aiStyle = 0;
+            Projectile.friendly = false;
+            Projectile.hostile = false;
+            Projectile.penetrate = -1;
+            Projectile.timeLeft = 248000;
+            Projectile.tileCollide = false;
+            Projectile.ignoreWater = true;
+            Projectile.hide = true;
+        }
+
+        public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
+        {
+            behindNPCsAndTiles.Add(index);
+        }
+
+        public override void AI()
+        {
+            bool ParentAlive = Main.npc.Any(n => n.active && n.type == ModContent.NPCType<NightmareRoseBoss>());
+            if (ParentAlive)
+            {
+                Projectile.active = true;
+            }
+            else
+            {
+                Projectile.active = false;
+            }
+        }
+
+        public override bool PreDraw(ref Color lightColor)
+        {
+            Texture2D BGTex = DTAssetLib.TilableNoise(8).Value;
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            DTUtils Utility = new DTUtils();
+            float t = (float)Math.Sin(Main.GameUpdateCount / 60f) * 0.5f + 0.5f;
+            Color drawColor = Color.Lerp(Color.Black, ColorLib.TenebrisGradient * 0.5f, t);
+            Utility.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+
+            float scrollSpeedX = 80f;
+            float scrollSpeedY = 20f;
+            float time = (float)Main.GameUpdateCount / 60f;
+
+            float scrollOffsetX = (time * scrollSpeedX) % BGTex.Width;
+            float scrollOffsetY = (time * scrollSpeedY) % BGTex.Height;
+
+            int screenW = Main.screenWidth;
+            int screenH = Main.screenHeight;
+
+            // --- draw one tile beyond each edge ---
+            float startX = -scrollOffsetX - BGTex.Width;
+            float startY = -scrollOffsetY - BGTex.Height;
+            float endX = screenW + BGTex.Width;
+            float endY = screenH + BGTex.Height;
+
+            for (float x = startX; x < endX; x += BGTex.Width)
+            {
+                for (float y = startY; y < endY; y += BGTex.Height)
+                {
+                    spriteBatch.Draw(
+                        BGTex,
+                        new Vector2(x, y),
+                        null,
+                        drawColor,
+                        0f,
+                        Vector2.Zero,
+                        1f,
+                        SpriteEffects.None,
+                        0f
+                    );
+                }
+            }
+
+            Utility.ReturnToDefaultDrawing(spriteBatch);
+            return false;
+        }
+
+
     }
 
 }

@@ -18,7 +18,7 @@ namespace DestroyerTest.Content.Ammunitions
 		public override void SetDefaults() {
 			Item.width = 26;
 			Item.height = 34;
-			Item.damage = 25;
+			Item.damage = 20;
 			Item.DamageType = DamageClass.Ranged;
 			Item.maxStack = 1;
 			Item.consumable = false;

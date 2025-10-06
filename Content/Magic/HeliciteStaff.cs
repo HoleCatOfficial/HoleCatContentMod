@@ -45,8 +45,8 @@ namespace DestroyerTest.Content.Magic
 			Item.UseSound = new SoundStyle($"DestroyerTest/Assets/Audio/RiftClaymorePowerStrike");
 
 			Item.DamageType = DamageClass.Magic;
-            Item.mana = 70;
-            Item.damage = 30;
+            Item.mana = 60;
+            Item.damage = 90;
 		}
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)

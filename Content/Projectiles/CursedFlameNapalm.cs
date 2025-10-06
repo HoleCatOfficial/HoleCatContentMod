@@ -32,12 +32,31 @@ namespace DestroyerTest.Content.Projectiles.ConstitutionBoss
 			Projectile.alpha = 160;
 		}
 
+		public bool DrawTrail = true;
+		private bool FadingTrail = false;
+		private float trailFadeSpeed = 0.5f; // how fast the trail collapses
+
+
 		public override void AI()
 		{
-			// Record position
-			trailPositions.Insert(0, Projectile.Center);
-			if (trailPositions.Count > TrailCacheLength)
-				trailPositions.RemoveAt(trailPositions.Count - 1);
+			// Record position only if not fading
+			if (DrawTrail && !FadingTrail)
+			{
+				trailPositions.Insert(0, Projectile.Center);
+				if (trailPositions.Count > TrailCacheLength)
+					trailPositions.RemoveAt(trailPositions.Count - 1);
+			}
+			else if (FadingTrail)
+			{
+				// Gradually remove old points to collapse the trail
+				if (trailPositions.Count > 0)
+				{
+					// You can tune how many points are removed per frame
+					int collapseCount = (int)Math.Ceiling(trailFadeSpeed);
+					for (int i = 0; i < collapseCount && trailPositions.Count > 0; i++)
+						trailPositions.RemoveAt(trailPositions.Count - 1);
+				}
+			}
 
 			// Gravity + motion
 			Projectile.ai[0]++;
@@ -113,11 +132,20 @@ namespace DestroyerTest.Content.Projectiles.ConstitutionBoss
 			return false; // we handled drawing ourselves
 		}
 
+		public bool Flag1 = false;
 		public override bool OnTileCollide(Vector2 oldVelocity)
 		{
 			Projectile.velocity = Vector2.Zero;
+			DrawTrail = true; // keep drawing while it fades
+			FadingTrail = true; // start collapse
+			if (!Flag1)
+			{
+				Projectile.netUpdate = true;
+				Flag1 = true;
+			}
 			return false;
 		}
+
 
 		public override void OnHitPlayer(Player target, Player.HurtInfo info)
 		{
