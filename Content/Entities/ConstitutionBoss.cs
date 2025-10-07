@@ -140,22 +140,20 @@ namespace DestroyerTest.Content.Entities
         }
         public static bool EternityIsActive()
         {
-            Mod FargosCompat = ModLoader.GetMod("FranciumMultiCrossMod");
-            if (FargosCompat != null)
+            if (ModLoader.TryGetMod("FargowiltasSouls", out Mod frgo))
             {
-                object result = FargosCompat.Call("CheckEternity");
+                object result = frgo.Call("EternityMode");
                 if (result is bool enabled)
                 {
                     if (enabled)
                         return true;
                     else
-                        Main.NewText("Fargos Crossmod found but Eternity not detected.");
-                    return false;
+                        return false;
                 }
             }
             else
             {
-                Main.NewText("Fargos Crossmod not found.");
+
             }
             return false;
         }
@@ -179,7 +177,7 @@ namespace DestroyerTest.Content.Entities
         public int RotTime = 60;
         public int JabTime = 20;
         public int StarsCount1 = 3;
-        public int StarsCount2 = 8;
+        public int StarsCount2 = 16;
         public int StarsCount3 = 2;
         public int SwordCount = 4;
         public Vector2 Chargedir;
@@ -230,6 +228,8 @@ namespace DestroyerTest.Content.Entities
         public int MaxFlameCount = 900;
         public int FlameTimer = 0;
         public bool HasPlayedFlameSound = false;
+
+        public int AttackIntervalDefault = 20;
         public AttackState currentState = AttackState.idlefloat;
         // Sync AI variables across the network
         public override void SendExtraAI(BinaryWriter writer)
@@ -347,6 +347,7 @@ namespace DestroyerTest.Content.Entities
         {
 
             Player player = Main.LocalPlayer;
+            DTUtils Utility = new DTUtils();
 
             Chargedir = (player.Center - NPC.Center).SafeNormalize(Vector2.Zero);
 
@@ -377,16 +378,21 @@ namespace DestroyerTest.Content.Entities
                 NPC.rotation += MathHelper.Pi + MathHelper.ToRadians(180);
             }
 
+            if (EternityIsActive())
+            {
+                AttackIntervalDefault = 8;
+            }
+
 
 
             /*
-            if (NPC.Center.DistanceSQ(player.Center) > 40000)
-            {
-                TeleManager(player, ref TeleCircumferencePoint);
-            }
-            */
+                if (NPC.Center.DistanceSQ(player.Center) > 40000)
+                {
+                    TeleManager(player, ref TeleCircumferencePoint);
+                }
+                */
 
-            NPC.rotation = (Chargedir * 4f).ToRotation() + MathHelper.PiOver4;
+                NPC.rotation = (Chargedir * 4f).ToRotation() + MathHelper.PiOver4;
 
 
             if (NPC.life <= 0.50f * NPC.lifeMax && !HasPlayedPhase2Roar)
@@ -462,6 +468,10 @@ namespace DestroyerTest.Content.Entities
                                 NPC.ai[2] = 0;
                                 NPC.ai[3]++;
                             }
+                            if (EternityIsActive() && Main.GameUpdateCount % AttackIntervalDefault == 0)
+                            {
+                                Projectile.NewProjectile(Entity.GetSource_FromThis(), NPC.Center, NPC.velocity * 0.005f, ModContent.ProjectileType<ConstitutionStar>(), 15, 2f, ai2: 2);
+                            }
                         }
                         else
                         {
@@ -477,11 +487,9 @@ namespace DestroyerTest.Content.Entities
                         NPC.aiStyle = 10;
                         if (!HasShotStars1)
                         {
-                            shootStarsTimer1++;
-                            if (shootStarsTimer1 == 20)
+                            if (Main.GameUpdateCount % AttackIntervalDefault == 0)
                             {
                                 ShootStar1(player);
-                                shootStarsTimer1 = 0;
                                 starsShotCount1++; // you might want to track count in separate var
                             }
 
@@ -503,6 +511,7 @@ namespace DestroyerTest.Content.Entities
                             if (CloneTimer == 60)
                             {
                                 CloneMe();
+                                Utility.RadialSpreadProjectile(ModContent.ProjectileType<StellarFlameHostile>(), 9, NPC.Center, 17, 8, 10);
                                 HasCloned = true;
                             }
                             if (HasCloned == true)
@@ -523,10 +532,9 @@ namespace DestroyerTest.Content.Entities
                         if (!HasShotStars2)
                         {
                             shootStarsTimer2++;
-                            if (shootStarsTimer2 == 30)
+                            if (Main.GameUpdateCount % AttackIntervalDefault == 0)
                             {
                                 ShootStar2();
-                                shootStarsTimer2 = 0;
                                 starsShotCount2++;
                             }
 
@@ -557,12 +565,10 @@ namespace DestroyerTest.Content.Entities
 
                             if (!HasShotStars3)
                             {
-                                shootStarsTimer3++;
-                                if (shootStarsTimer3 == 20)
+                                if (Main.GameUpdateCount % AttackIntervalDefault == 0)
                                 {
                                     SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/ConstitutionBoss/ConstitutionBossShootStars3") with { PitchVariance = 1, MaxInstances = 1, Volume = 3 });
                                     ShootStar3(player);
-                                    shootStarsTimer3 = 0;
                                     starsShotCount3++; // you might want to track count in separate var
                                 }
 
@@ -588,11 +594,9 @@ namespace DestroyerTest.Content.Entities
                         {
                             if (!HasShotSwords)
                             {
-                                shootSwordsTimer++;
-                                if (shootSwordsTimer == 30)
+                                if (Main.GameUpdateCount % AttackIntervalDefault == 0)
                                 {
                                     ShootSwords();
-                                    shootSwordsTimer = 0;
                                     swordsShotCount++;
                                 }
 
@@ -634,7 +638,7 @@ namespace DestroyerTest.Content.Entities
                         if (!HasShotStars1)
                         {
                             lightningTimer++;
-                            if (lightningTimer == 10)
+                            if (Main.GameUpdateCount % AttackIntervalDefault == 0)
                             {
                                 Lightning(player);
                                 lightningTimer = 0;
@@ -657,11 +661,9 @@ namespace DestroyerTest.Content.Entities
                         OrbitTimer2++;
                         if (!HasSpawnedLightbird)
                         {
-                            lightbirdTimer++;
-                            if (lightbirdTimer == Main.rand.Next(26))
+                            if (Main.GameUpdateCount % AttackIntervalDefault + 10 == 0)
                             {
                                 ShootLightBird();
-                                lightbirdTimer = 0;
                                 LightbirdCount++;
                             }
 
@@ -682,35 +684,44 @@ namespace DestroyerTest.Content.Entities
                     {
                         NPC.aiStyle = 10;
 
-                        if (!WarnedSound)
+                        if (!EternityIsActive())
                         {
-                            SoundEngine.PlaySound(SoundID.Item90);
-                            WarnedSound = true;
-                        }
 
-                        if (!HasBlownMinefield)
-                        {
-                            // Generate unique positions for each mine
-                            for (int e = 0; e < MineCount; e++)
+                            if (!WarnedSound)
                             {
-                                Vector2 minePosition = Main.rand.NextVector2FromRectangle(
-                                    new Rectangle(
-                                        (int)Main.LocalPlayer.Center.X - Main.screenWidth / 2,
-                                        (int)Main.LocalPlayer.Center.Y - Main.screenHeight / 2,
-                                        Main.screenWidth,
-                                        Main.screenHeight
-                                    )
-                                );
-                                MineSpots.Add(minePosition);
+                                SoundEngine.PlaySound(SoundID.Item90);
+                                WarnedSound = true;
                             }
 
-                            Minefield(player);
-                            HasBlownMinefield = true;
-                        }
+                            if (!HasBlownMinefield)
+                            {
+                                // Generate unique positions for each mine
+                                for (int e = 0; e < MineCount; e++)
+                                {
+                                    Vector2 minePosition = Main.rand.NextVector2FromRectangle(
+                                        new Rectangle(
+                                            (int)Main.LocalPlayer.Center.X - Main.screenWidth / 2,
+                                            (int)Main.LocalPlayer.Center.Y - Main.screenHeight / 2,
+                                            Main.screenWidth,
+                                            Main.screenHeight
+                                        )
+                                    );
+                                    MineSpots.Add(minePosition);
+                                }
 
-                        if (HasBlownMinefield)
+                                Minefield(player);
+                                HasBlownMinefield = true;
+                            }
+
+                            if (HasBlownMinefield)
+                            {
+                                stateWeights[AttackState.Minefield] = 0.2f;
+                                ResetState();
+                            }
+                        }
+                        if (EternityIsActive())
                         {
-                            stateWeights[AttackState.Minefield] = 0.2f;
+                            Utility.RadialSpreadProjectile(ModContent.ProjectileType<StellarBomb>(), 5, NPC.Center, 20, 6, 6);
                             ResetState();
                         }
                     }
@@ -768,11 +779,15 @@ namespace DestroyerTest.Content.Entities
 
             }
 
-            if (!Main.dedServ && NPC.life > NPC.lifeMax * 0.15f)
+            if (!Main.dedServ && NPC.life > NPC.lifeMax * 0.15f && !EternityIsActive())
             {
                 Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/ConstitutionBoss");
             }
-            if (!Main.dedServ && NPC.life <= NPC.lifeMax * 0.15f)
+            if (!Main.dedServ && NPC.life > NPC.lifeMax * 0.15f && EternityIsActive())
+            {
+                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Placeholder5");
+            }
+            if (!Main.dedServ && NPC.life <= NPC.lifeMax * 0.15f && !EternityIsActive())
             {
                 Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/ConstitutionDespiration");
             }
@@ -900,8 +915,8 @@ namespace DestroyerTest.Content.Entities
 
                     Projectile harmStar = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), spawnPosition, velocity, ProjectileID.Starfury, 8, 2);
 
-
-                    harmStar.friendly = false;
+                    harmStar.timeLeft = 600;
+                    harmStar.friendly = false;  
                     harmStar.hostile = true;
                     harmStar.Name = "Stellar Star";
 
@@ -980,10 +995,7 @@ namespace DestroyerTest.Content.Entities
                     Vector2 spawnOffset = directionToTarget.RotatedBy(MathHelper.Pi + angle) * arcRadius;
                     Vector2 spawnPosition = NPC.Center + spawnOffset;
                     Vector2 velocity = (player.Center - spawnPosition).SafeNormalize(Vector2.UnitY) * 10f;
-                    Projectile BadStar = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), spawnPosition, velocity * 0.4f, ProjectileID.HallowBossRainbowStreak, 10, 2);
-                    BadStar.friendly = false;
-                    BadStar.hostile = true;
-                    BadStar.Name = "Darkmatter Star";
+                    Projectile.NewProjectile(Entity.GetSource_FromThis(), spawnPosition, velocity * 0.4f, ModContent.ProjectileType<MiniComet>(), 10, 2, ai2: 2);
                 }
             }
         }
@@ -1031,7 +1043,8 @@ namespace DestroyerTest.Content.Entities
                 heading.Normalize();
                 heading *= velocity.Length();
                 heading.Y += Main.rand.Next(-40, 41) * 0.02f;
-                Projectile.NewProjectile(Entity.GetSource_FromThis(), position, heading, ProjectileID.Starfury, 16, 4);
+                Projectile Rain = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), position, heading, ProjectileID.Starfury, 16, 4);
+                Rain.timeLeft = 600;
             }
 
         }
@@ -1052,12 +1065,7 @@ namespace DestroyerTest.Content.Entities
                     Vector2 spawnOffset = directionToTarget.RotatedBy(MathHelper.Pi + angle) * arcRadius;
                     Vector2 spawnPosition = NPC.Center + spawnOffset;
                     Vector2 velocity = (player.Center - spawnPosition).SafeNormalize(Vector2.UnitY);
-                    Projectile Lightning = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), spawnPosition, velocity * 12f, ProjectileID.CultistBossLightningOrbArc, 8, 2);
-                    Lightning.friendly = false;
-                    Lightning.hostile = true;
-                    Lightning.GetAlpha(ColorLib.StellarColor);
-                    Lightning.Name = "Darkmatter Thunder";
-
+                    Projectile.NewProjectile(Entity.GetSource_FromThis(), spawnPosition, velocity * 12f, ModContent.ProjectileType<StarfuryClone>(), 8, 2);
                 }
             }
         }
@@ -1068,7 +1076,7 @@ namespace DestroyerTest.Content.Entities
             {
                 var launchVelocity = new Vector2(-8, 0); // Create a velocity moving the left.
                 SoundEngine.PlaySound(SoundID.Item125, NPC.Center);
-                for (int i = 0; i < 8; i++)
+                for (int i = 0; i < Main.rand.Next(2, 7); i++)
                 {
                     launchVelocity = launchVelocity.RotatedBy(MathHelper.PiOver4);
                     ParticleOrchestrator.RequestParticleSpawn(false, ParticleOrchestraType.RainbowRodHit, new ParticleOrchestraSettings { PositionInWorld = NPC.Center });
@@ -1083,11 +1091,22 @@ namespace DestroyerTest.Content.Entities
         {
             foreach (var minePosition in MineSpots)
             {
-                Projectile mine = Projectile.NewProjectileDirect(
-                    Projectile.InheritSource(NPC),
-                    minePosition, Vector2.Zero,
-                    ModContent.ProjectileType<StarMine>(), 0, 0
-                );
+                if (!EternityIsActive())
+                {
+                    Projectile mine = Projectile.NewProjectileDirect(
+                        Projectile.InheritSource(NPC),
+                        minePosition, Vector2.Zero,
+                        ModContent.ProjectileType<StarMine>(), 0, 0
+                    );
+                }
+                if (EternityIsActive())
+                {
+                    Projectile mine = Projectile.NewProjectileDirect(
+                        Projectile.InheritSource(NPC),
+                        minePosition, Vector2.Zero,
+                        ModContent.ProjectileType<StellarBomb>(), 0, 0
+                    );
+                }
             }
         }
 

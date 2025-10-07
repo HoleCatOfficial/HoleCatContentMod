@@ -130,7 +130,7 @@ namespace DestroyerTest.Content.Projectiles
                             Flames.Kill();
                         }
                     }
-                    PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp1>(), Projectile.Center, Projectile.velocity, ColorLib.CursedFlames, 0.4f);
+                    PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp>(), Projectile.Center, Projectile.velocity, ColorLib.CursedFlames, 0.4f);
                     ProjSpawnTimer = 0;
                 }
 

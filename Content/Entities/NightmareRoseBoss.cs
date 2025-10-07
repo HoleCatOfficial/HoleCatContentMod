@@ -1187,7 +1187,7 @@ namespace DestroyerTest.Content.Entities
                             currentState = AttackState.KillIdle;
                             BorderActive = false;
                             Main.NewText("Get away from the Rose!!", ColorLib.Soul);
-                            PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp4>(), NPC.Center, Vector2.Zero, Color.White, 4f);
+                            PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp>(), NPC.Center, Vector2.Zero, Color.White, 1f);
                         }
                     }
                     break;
@@ -1479,7 +1479,7 @@ namespace DestroyerTest.Content.Entities
 
                 NPC.NewNPC(Entity.GetSource_FromThis(), (int)spawnPosition.X, (int)spawnPosition.Y, ModContent.NPCType<CursedFlameNode>());
 
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp1>(), NPC.Center, Vector2.Zero, ColorLib.CursedFlames, 0.4f);
+                PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp>(), NPC.Center, Vector2.Zero, ColorLib.CursedFlames, 0.4f);
 
             }
             Main.NewText("The Nightmare Rose calls upon the Corruption for Help!", ColorLib.CursedFlames);
@@ -1591,7 +1591,7 @@ namespace DestroyerTest.Content.Entities
 
                 }
 
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp1>(), NPCHead, Vector2.Zero, ColorLib.CursedFlames, 0.4f);
+                PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp>(), NPCHead, Vector2.Zero, ColorLib.CursedFlames, 0.4f);
             }
             if (flame != null && flame.Center == NPCHead)
             {
@@ -2012,7 +2012,7 @@ namespace DestroyerTest.Content.Entities
             Color drawColor = Color.Lerp(Color.Black, ColorLib.TenebrisGradient * 0.5f, t);
             Utility.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
-            float scrollSpeedX = 80f;
+            float scrollSpeedX = 160f;
             float scrollSpeedY = 20f;
             float time = (float)Main.GameUpdateCount / 60f;
 

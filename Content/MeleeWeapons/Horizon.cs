@@ -7,6 +7,7 @@ using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using DestroyerTest.Common;
 using System;
+using DestroyerTest.Content.Projectiles.ConstitutionBoss;
 
 namespace DestroyerTest.Content.MeleeWeapons
 {
@@ -35,13 +36,9 @@ namespace DestroyerTest.Content.MeleeWeapons
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-			int Count = 8;
-			for (int i = 0; i < Count; i++)
-			{
-				float angle = MathHelper.TwoPi * i / Count;
-				Vector2 projPos = Main.MouseWorld + 80 * new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
-				Projectile.NewProjectile(source, projPos, Vector2.Zero, ModContent.ProjectileType<SoulOfNight_Projectile>(), damage, knockback);
-			}
+			
+			Projectile.NewProjectile(source, Main.MouseWorld, new Vector2(0.001f, 0), ModContent.ProjectileType<ConstitutionStar>(), damage, knockback, ai2: 1);
+			
             return false;
         }
 

@@ -199,7 +199,7 @@ namespace DestroyerTest.Content.Entities
                         if (DormantPulseTimer <= 0)
                         {
                             SoundEngine.PlaySound(SoundID.DD2_WitherBeastAuraPulse, NPC.Center);
-                            PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp4>(), NPC.Center, Vector2.Zero, ColorLib.Ichor, 5f);
+                            PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp>(), NPC.Center, Vector2.Zero, ColorLib.Ichor, 1f);
                             DormantPulseTimer = 120;
                         }
 

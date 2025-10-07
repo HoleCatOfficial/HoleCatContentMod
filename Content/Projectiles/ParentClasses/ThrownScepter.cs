@@ -91,7 +91,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
                     Main.EntitySpriteDraw(DTAssetLib.Cyclone(1).Value, Projectile.Center - Main.screenPosition, null, lightColor * 0.4f, Projectile.rotation, DTAssetLib.Cyclone(1).Value.Size() / 2, 0.1f * Projectile.scale, SpriteEffects.FlipHorizontally, 0);
                 }
                     
-                Main.EntitySpriteDraw(DTAssetLib.BloomRing(1).Value, Projectile.Center - Main.screenPosition, null, lightColor * 0.4f, Projectile.rotation, DTAssetLib.BloomRing(1).Value.Size() / 2, 0.4f * Projectile.scale, SpriteEffects.None, 0);
+                Main.EntitySpriteDraw(DTAssetLib.BloomRing.Value, Projectile.Center - Main.screenPosition, null, lightColor * 0.4f, Projectile.rotation, DTAssetLib.BloomRing.Value.Size() / 2, 0.4f * Projectile.scale, SpriteEffects.None, 0);
                 var Trail = DTAssetLib.Trail(2).Value;
 				Vector2 trailOrigin = new Vector2(Trail.Width / 2, Trail.Height / 2);
 

@@ -433,14 +433,8 @@ namespace DestroyerTest.Common
         public static Asset<Texture2D> Square = TextureAssets.MagicPixel;
         public static Asset<Texture2D> PointGlow = ModContent.Request<Texture2D>($"{ParticlePath}/SimpleParticle");
         public static Asset<Texture2D> AreaGlow = ModContent.Request<Texture2D>($"{ParticlePath}/Glow");
-        public static Asset<Texture2D> BloomRing(int Variant)
-        {
-            if (Variant <= 0)
-            {
-                Variant = 1;
-            }
-            return ModContent.Request<Texture2D>($"{ParticlePath}/BloomRing{Variant}");
-        }
+        public static Asset<Texture2D> BloomRing = ModContent.Request<Texture2D>($"{ParticlePath}/BloomRing");
+        public static Asset<Texture2D> BloomRingSharp = ModContent.Request<Texture2D>($"{ParticlePath}/BloomRingSharp");
         public static Asset<Texture2D> FeatheredCircle = ModContent.Request<Texture2D>($"{ParticlePath}/GlowCircle");
         public static Asset<Texture2D> Vingette = ModContent.Request<Texture2D>($"{ExtrasPath}/BigVingette");
         public static Asset<Texture2D> FadeLine = ModContent.Request<Texture2D>($"{ExtrasPath}/FadeLine");
@@ -451,7 +445,7 @@ namespace DestroyerTest.Common
                 Variant = 1;
             }
             return ModContent.Request<Texture2D>($"{ParticlePath}/Shine{Variant}");
-        } 
+        }
 
         public static Asset<Texture2D> Star(int Variant)
         {
@@ -511,8 +505,9 @@ namespace DestroyerTest.Common
         //
         // Sounds
         //
-        public static Asset<SoundEffect> ChargeBreak = ModContent.Request<SoundEffect>($"{AudioPath}/ChargeBreak");
-        public static Asset<SoundEffect> CrystalBreak = ModContent.Request<SoundEffect>($"{AudioPath}/CrystalBreak");
+        public static SoundStyle ChargeBreak = new SoundStyle($"{AudioPath}/ChargeBreak");
+        public static SoundStyle CrystalBreak = new SoundStyle($"{AudioPath}/CrystalBreak");
+        public static SoundStyle ConstitutionStarKill = new SoundStyle($"{AudioPath}/ConstitutionBoss/ConstitutionStar/Kill", 14) { PitchVariance = 0.2f, Volume = 0.85f, MaxInstances = 0 };
     }
 
     public class AssetVerifierSystem : ModSystem
@@ -565,7 +560,7 @@ namespace DestroyerTest.Common
 
         private void TestMethodAssets()
         {
-            _ = DTAssetLib.BloomRing(1).Value;
+            _ = DTAssetLib.BloomRing.Value;
             _ = DTAssetLib.Sparkle(1).Value;
             _ = DTAssetLib.Star(1).Value;
             _ = DTAssetLib.Cyclone(1).Value;

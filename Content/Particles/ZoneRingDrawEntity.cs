@@ -64,7 +64,7 @@ public class ZoneRingDrawEntity : ModProjectile
 			spriteBatch.End();
 			spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 
-			Texture2D glowTexture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/BloomRingSharp1").Value;
+			Texture2D glowTexture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/BloomRingSharp").Value;
 			Main.EntitySpriteDraw(
 				glowTexture,
 				Projectile.Center - Main.screenPosition,
