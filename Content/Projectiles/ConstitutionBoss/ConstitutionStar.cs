@@ -103,7 +103,9 @@ namespace DestroyerTest.Content.Projectiles.ConstitutionBoss
 
             Utility.ReturnToDefaultDrawing(spriteBatch);
 
-            Utility.DrawTextureOnProj(ProjTex, Projectile, lightColor, true, Projectile.rotation, 1f, 1f);
+            Utility.DrawTextureOnProj(DTAssetLib.StarAura, Projectile, lightColor, false, Projectile.velocity.ToRotation(), 1f, 1f);
+
+            Utility.DrawTextureOnProj(ProjTex, Projectile, Color.White, true, Projectile.rotation, 1f, 1f);
 
             return false;
         }
@@ -332,7 +334,7 @@ namespace DestroyerTest.Content.Projectiles.ConstitutionBoss
 
         public override void OnKill(int timeLeft)
         {
-            SoundEngine.PlaySound(DTAssetLib.ConstitutionStarKill);
+            SoundEngine.PlaySound(DTAssetLib.ConstitutionStarKill, Projectile.Center);
             PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp>(), Projectile.Center, Vector2.Zero, ColorLib.StellarColor, 0.05f);
 			Dust.NewDust(Projectile.position, Projectile.Hitbox.Width, Projectile.Hitbox.Height, DustID.TintableDustLighted, Main.rand.NextFloat(-1, 1.1f), Main.rand.NextFloat(-1, 1.1f), 0, ColorLib.StellarColor, 2f);
         }

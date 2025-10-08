@@ -29,9 +29,6 @@ namespace DestroyerTest.Content.Projectiles.ConstitutionBoss
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;
             Projectile.extraUpdates = 1;
-            Projectile.netImportant = true;
-            Projectile.netImportant = true;
-			Projectile.netUpdate = true;
         }
 
         public override void AI()

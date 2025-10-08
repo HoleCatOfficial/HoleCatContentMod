@@ -29,3 +29,4 @@ Placeholder Text
 - **Tenebrous Construct:** An inanimate construct of darkmatter originating from the Shade World. (See the dedicated section for more.) It's purpose is unknown.
 - **Tenebrous Slinger:** A reanimation of a long-lost bow, rumored to have shot the stars into the sky. It now loyally serves the needs of whomever calls upon it from the shade world.
 
+

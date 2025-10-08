@@ -33,6 +33,7 @@ using DestroyerTest.Content.Magic;
 using DestroyerTest.Content.Tiles;
 using Terraria.GameContent.ItemDropRules;
 using DestroyerTest.Content.Resources;
+using Humanizer.Localisation.DateToOrdinalWords;
 
 namespace DestroyerTest.Content.Entities
 {
@@ -468,9 +469,10 @@ namespace DestroyerTest.Content.Entities
                                 NPC.ai[2] = 0;
                                 NPC.ai[3]++;
                             }
-                            if (EternityIsActive() && Main.GameUpdateCount % AttackIntervalDefault == 0)
+                            if (EternityIsActive() && Main.GameUpdateCount % (AttackIntervalDefault + 4) == 0)
                             {
-                                Projectile.NewProjectile(Entity.GetSource_FromThis(), NPC.Center, NPC.velocity * 0.005f, ModContent.ProjectileType<ConstitutionStar>(), 15, 2f, ai2: 2);
+                                Vector2 velocity = new Vector2(5, 0f).RotatedByRandom(MathHelper.TwoPi);
+                                Projectile.NewProjectile(Projectile.GetSource_None(), NPC.Center, velocity, ModContent.ProjectileType<ConstitutionStar>(), 15, 2f, ai2: 2);
                             }
                         }
                         else
@@ -531,21 +533,42 @@ namespace DestroyerTest.Content.Entities
                         OrbitTimer1++;
                         if (!HasShotStars2)
                         {
-                            shootStarsTimer2++;
-                            if (Main.GameUpdateCount % AttackIntervalDefault == 0)
+                            if (!EternityIsActive())
                             {
-                                ShootStar2();
-                                starsShotCount2++;
-                            }
+                                if (Main.GameUpdateCount % AttackIntervalDefault == 0)
+                                {
+                                    LanceBurst();
+                                    starsShotCount2++;
+                                }
 
-                            if (starsShotCount2 >= StarsCount2)
-                            {
-                                HasShotStars2 = true;
-                                ResetState();
+                                if (starsShotCount2 >= StarsCount2)
+                                {
+                                    HasShotStars2 = true;
+                                    ResetState();
+                                }
+                                if (OrbitTimer1 >= 600)
+                                {
+                                    ResetState();
+                                }
                             }
-                            if (OrbitTimer1 >= 480)
+                            if (EternityIsActive())
                             {
-                                ResetState();
+                                if (Main.GameUpdateCount % AttackIntervalDefault == 0)
+                                {
+                                    LanceCross(player, Main.rand.NextFloat(-MathHelper.Pi, MathHelper.Pi));
+                                    LanceCrossSpawnFlag = false;
+                                    starsShotCount2++;
+                                }
+
+                                if (starsShotCount2 >= StarsCount2)
+                                {
+                                    HasShotStars2 = true;
+                                    ResetState();
+                                }
+                                if (OrbitTimer1 >= 600)
+                                {
+                                    ResetState();
+                                }
                             }
                         }
                     }
@@ -561,14 +584,14 @@ namespace DestroyerTest.Content.Entities
                         }
                         if (Phase2 == true)
                         {
-                            ShootStar3(player);
+                            StarSwarm(player);
 
                             if (!HasShotStars3)
                             {
                                 if (Main.GameUpdateCount % AttackIntervalDefault == 0)
                                 {
                                     SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/ConstitutionBoss/ConstitutionBossShootStars3") with { PitchVariance = 1, MaxInstances = 1, Volume = 3 });
-                                    ShootStar3(player);
+                                    StarSwarm(player);
                                     starsShotCount3++; // you might want to track count in separate var
                                 }
 
@@ -617,18 +640,11 @@ namespace DestroyerTest.Content.Entities
                         StarIndex += 10;
                         SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/ConstitutionBoss/ConstitutionBossShootStars3") with { PitchVariance = 1, MaxInstances = 1, Volume = 3 });
                         RainStars(player, velocity: new Vector2(0, 16));
-                        if (Main.rand.NextBool(3))
+                        if (Main.rand.NextBool(3) && EternityIsActive())
                         {
-                            if (Main.rand.NextBool())
-                            {
-                                ShootStar3(player);
-                            }
-                            else
-                            {
-                                currentState = GetRandomState();
-                            }
-
+                            StarFury(player, 12);
                         }
+                        currentState = GetRandomState();
                     }
                     break;
                 case AttackState.Lightning:
@@ -637,12 +653,10 @@ namespace DestroyerTest.Content.Entities
                         NPC.aiStyle = 10;
                         if (!HasShotStars1)
                         {
-                            lightningTimer++;
                             if (Main.GameUpdateCount % AttackIntervalDefault == 0)
                             {
-                                Lightning(player);
-                                lightningTimer = 0;
-                                LightningCount++; // you might want to track count in separate var
+                                StarFury(player, Main.rand.Next(10, 15));
+                                LightningCount++;
                             }
 
                             if (LightningCount >= 4)
@@ -721,7 +735,9 @@ namespace DestroyerTest.Content.Entities
                         }
                         if (EternityIsActive())
                         {
+                            SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/NodeSpawn") with { PitchVariance = 0.4f, MaxInstances = 0 });
                             Utility.RadialSpreadProjectile(ModContent.ProjectileType<StellarBomb>(), 5, NPC.Center, 20, 6, 6);
+                            StarFury2(10);
                             ResetState();
                         }
                     }
@@ -814,7 +830,7 @@ namespace DestroyerTest.Content.Entities
             { AttackState.Jab, 1.0f },
             { AttackState.LightBird, 1.0f },
             { AttackState.Lightning, 1.0f },
-            { AttackState.Minefield, 0.5f },
+            { AttackState.Minefield, 1.0f },
             { AttackState.RainStars, 1.0f },
             { AttackState.ShootClone, 1.0f },
             { AttackState.ShootStars, 1.0f },
@@ -874,10 +890,18 @@ namespace DestroyerTest.Content.Entities
                 HasSpawnedLighting = false;
                 HasTeleportedandShotStars = false;
                 HasPlayedFlameSound = false;
+                LanceCrossGetPlayerCenterFlag = false;
+                LanceCrossSpawnFlag = false;
             }
         }
 
+        #region Attack Methods
 
+        /// <summary>
+        /// Teleports near the player.
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="TeleCircumferencePoint"></param>
         public void TeleManager(Player player, ref Vector2 TeleCircumferencePoint)
         {
             if (NPC.type == ModContent.NPCType<ConstitutionBoss>())
@@ -895,6 +919,11 @@ namespace DestroyerTest.Content.Entities
                 Chargedir = (player.Center - NPC.Center).SafeNormalize(Vector2.Zero);
             }
         }
+        
+        /// <summary>
+        /// Shoots Stars directly towards the player.
+        /// </summary>
+        /// <param name="player"></param>
 
         public void ShootStar1(Player player)
         {
@@ -913,12 +942,10 @@ namespace DestroyerTest.Content.Entities
                     Vector2 spawnPosition = NPC.Center + spawnOffset;
                     Vector2 velocity = (player.Center - spawnPosition).SafeNormalize(Vector2.UnitY) * 10f;
 
-                    Projectile harmStar = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), spawnPosition, velocity, ProjectileID.Starfury, 8, 2);
-
+                    Projectile harmStar = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), spawnPosition, velocity, ProjectileID.StarWrath, 8, 2);
                     harmStar.timeLeft = 600;
-                    harmStar.friendly = false;  
+                    harmStar.friendly = false;
                     harmStar.hostile = true;
-                    harmStar.Name = "Stellar Star";
 
 
                 }
@@ -926,7 +953,9 @@ namespace DestroyerTest.Content.Entities
         }
 
 
-
+        /// <summary>
+        /// Spawns a clone to chase the player.
+        /// </summary>
         public void CloneMe()
         {
             if (NPC.type == ModContent.NPCType<ConstitutionBoss>())
@@ -960,30 +989,85 @@ namespace DestroyerTest.Content.Entities
         }
 
 
-
-        public void ShootStar2()
+        /// <summary>
+        /// Shoots a radial spread of Galantine Lances. The Count is randomized between 4 and 13.
+        /// </summary>
+        public void LanceBurst()
         {
             if (NPC.type == ModContent.NPCType<ConstitutionBoss>())
             {
-
-                var launchVelocity = new Vector2(-8, 0); // Create a velocity moving the left.
                 SoundEngine.PlaySound(SoundID.Item125, NPC.Center);
-                for (int i = 0; i < 8; i++)
-                {
-                    launchVelocity = launchVelocity.RotatedBy(MathHelper.PiOver4);
-                    ParticleOrchestrator.RequestParticleSpawn(false, ParticleOrchestraType.RainbowRodHit, new ParticleOrchestraSettings { PositionInWorld = NPC.Center });
-                    Projectile.NewProjectile(Projectile.InheritSource(NPC), NPC.Center, launchVelocity, ModContent.ProjectileType<GalantineLance>(), 15, 1);
-
-                }
-
+                DTUtils Utility = new DTUtils();
+                Utility.RadialSpreadProjectile(ModContent.ProjectileType<GalantineLance>(), Main.rand.Next(4, 14), NPC.Center, 15, 4, 10);
             }
         }
 
-        public void ShootStar3(Player player)
+        public bool LanceCrossGetPlayerCenterFlag = false;
+        public bool LanceCrossSpawnFlag = false;
+        public Vector2 StaticPlayerCenter = Vector2.Zero;
+        /// <summary>
+        /// Spawns four lances offscreen. The lances converge at a 90 degree angle, creating a momentary box around the player.
+        /// <para/> Eternity Exclusive.
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="Rotation"></param>
+        /// <param name="Speed"></param>
+        public void LanceCross(Player player, float Rotation, float Speed = 30f)
+        {
+            if (!LanceCrossGetPlayerCenterFlag)
+            {
+                StaticPlayerCenter = player.Center;
+                LanceCrossGetPlayerCenterFlag = true;
+            }
+
+            float HalfWidth = 80;
+            float DistFromCenter = 4000;
+            //Set Spawn positions. Lances spawn 160 units apart with the player in the middle of the two. They spawn and travel parallel to one another.
+            Vector2[] spawnPoints = new Vector2[]
+            {
+                StaticPlayerCenter + new Vector2(DistFromCenter, -HalfWidth),
+                StaticPlayerCenter + new Vector2(DistFromCenter, HalfWidth),
+                StaticPlayerCenter + new Vector2(HalfWidth, DistFromCenter),
+                StaticPlayerCenter + new Vector2(-HalfWidth, DistFromCenter)
+            };
+
+
+            //For these its quite easy, since  we used double negative quadrants, we can just use negative speed for them.
+            //The screen area is rectangular, but the lances need to cross at the same time to create the ideal circle effect, so they are spaced the same distance away, and use the same velocities.
+            Vector2[] velocities = new Vector2[]
+            {
+                new Vector2(-Speed, 0),
+                new Vector2(-Speed, 0),
+                new Vector2(0, -Speed),
+                new Vector2(0, -Speed)
+            };
+
+            if (LanceCrossSpawnFlag == false)
+            {
+                int type = ModContent.ProjectileType<GalantineLance>();
+                //We need to account for our rotation here. It would be boring if the crosses were always vertical and horizontal to a tee.
+                //Rotating our spawn points and velocities should allow us to have functional crossings no matter the rotation.
+
+                for (int i = 0; i < spawnPoints.Length; i++)
+                {
+                    Vector2 rotatedSpawn = StaticPlayerCenter + (spawnPoints[i] - StaticPlayerCenter).RotatedBy(Rotation);
+                    Vector2 rotatedVelocity = velocities[i].RotatedBy(Rotation);
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), rotatedSpawn, rotatedVelocity, type, 30, 3f, player.whoAmI);
+                }
+
+                LanceCrossSpawnFlag = true;
+                LanceCrossGetPlayerCenterFlag = false;
+            }
+        }
+
+        /// <summary>
+        /// Summons multiple Mini-comet projectiles from above the screen down towards the player.
+        /// </summary>
+        /// <param name="player"></param>
+        public void StarSwarm(Player player)
         {
             if (NPC.type == ModContent.NPCType<ConstitutionBoss>())
             {
-
                 int StarAmount = StarsCount3;
                 float arcRadius = 200f; // Distance behind the player
                 float arcAngle = MathHelper.ToRadians(60); // Total arc angle (e.g., 60 degrees)
@@ -1000,30 +1084,36 @@ namespace DestroyerTest.Content.Entities
             }
         }
 
-
+        /// <summary>
+        /// Fires a radial spread of small phantom blades.
+        /// <para/> Note from HoleCat: Find a more interesting implementation for this. This is just the lances all over again.
+        /// </summary>
         public void ShootSwords()
         {
             if (NPC.type == ModContent.NPCType<ConstitutionBoss>())
             {
-                var launchVelocity = new Vector2(-8, 0); // Create a velocity moving the left.
-                for (int i = 0; i < 8; i++)
-                {
-                    launchVelocity = launchVelocity.RotatedBy(MathHelper.PiOver4);
-                    ParticleOrchestrator.RequestParticleSpawn(false, ParticleOrchestraType.TrueExcalibur, new ParticleOrchestraSettings { PositionInWorld = NPC.Center });
-                    Projectile.NewProjectile(Projectile.InheritSource(NPC), NPC.Center, launchVelocity, ModContent.ProjectileType<ConstitutionBeam>(), 15, 1);
-                }
+                SoundEngine.PlaySound(SoundID.Item125, NPC.Center);
+                DTUtils Utility = new DTUtils();
+                Utility.RadialSpreadProjectile(ModContent.ProjectileType<GalantineLance>(), Main.rand.Next(4, 14), NPC.Center, 15, 4, 10);
+                ParticleOrchestrator.RequestParticleSpawn(false, ParticleOrchestraType.TrueExcalibur, new ParticleOrchestraSettings { PositionInWorld = NPC.Center });;
             }
         }
 
+        /// <summary>
+        /// Summons a massive amount of stars from the sky to rain down on the player.
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="velocity"></param>
         public void RainStars(Player player, Vector2 velocity)
         {
+            //Code taken from ExampleShootingSword.
+
             Vector2 target = player.Center;
             float ceilingLimit = target.Y;
             if (ceilingLimit > player.Center.Y - 200f)
             {
                 ceilingLimit = player.Center.Y - 200f;
             }
-            // Loop these functions 3 times.
             for (int i = 0; i < 6; i++)
             {
                 Vector2 position = player.Center - new Vector2(Main.rand.NextFloat(401) * player.direction, 600f);
@@ -1043,84 +1133,88 @@ namespace DestroyerTest.Content.Entities
                 heading.Normalize();
                 heading *= velocity.Length();
                 heading.Y += Main.rand.Next(-40, 41) * 0.02f;
-                Projectile Rain = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), position, heading, ProjectileID.Starfury, 16, 4);
+                Projectile Rain = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), position, heading, ProjectileID.StarWrath, 16, 4);
                 Rain.timeLeft = 600;
+                Rain.hostile = true;
+                Rain.friendly = false;
             }
-
         }
 
-        public void Lightning(Player player)
+        /// <summary>
+        /// Throws out multiple Starfury Clones, which slow down before dashing to the player.
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="Amount"></param>
+        public void StarFury(Player player, int Amount)
         {
             if (NPC.type == ModContent.NPCType<ConstitutionBoss>())
             {
                 SoundEngine.PlaySound(SoundID.Item90, NPC.position);
-                int LightningAmount = LightningCount;
-                float arcRadius = 60f; // Distance behind the player
-                float arcAngle = MathHelper.ToRadians(60); // Total arc angle (e.g., 60 degrees)
-                Vector2 directionToTarget = (NPC.Center - player.Center).SafeNormalize(Vector2.UnitY);
-                for (int i = 0; i < LightningAmount; i++)
-                {
-                    float t = (LightningAmount == 1) ? 0.5f : (float)i / (LightningAmount - 1);
-                    float angle = MathHelper.Lerp(-arcAngle / 2, arcAngle / 2, t);
-                    Vector2 spawnOffset = directionToTarget.RotatedBy(MathHelper.Pi + angle) * arcRadius;
-                    Vector2 spawnPosition = NPC.Center + spawnOffset;
-                    Vector2 velocity = (player.Center - spawnPosition).SafeNormalize(Vector2.UnitY);
-                    Projectile.NewProjectile(Entity.GetSource_FromThis(), spawnPosition, velocity * 12f, ModContent.ProjectileType<StarfuryClone>(), 8, 2);
-                }
+                DTUtils Utility = new DTUtils();
+                Utility.RadialProjectileRandomDir(ModContent.ProjectileType<StarfuryClone>(), Main.rand.Next(10, 15), NPC.Center, 15, 4, 10);
             }
         }
 
+        /// <summary>
+        /// Selects random positions from the screen and spawns bursts of StarFury clones from them.
+        /// </summary>
+        /// <param name="Amount"></param>
+        public void StarFury2(int Amount)
+        {
+            Rectangle Screen = new Rectangle((int)Main.screenPosition.X, (int)Main.screenPosition.Y, Main.screenWidth, Main.screenHeight);
+            DTUtils Utility = new DTUtils();
+            for (int t = 0; t < Amount; t++)
+            {
+                Vector2 SpawnPos = Main.rand.NextVector2FromRectangle(Screen);
+                Utility.RadialSpreadProjectile(ModContent.ProjectileType<StarfuryClone>(), Main.rand.Next(4, 14), SpawnPos, 5, 4, Main.rand.Next(10, 25));
+            }
+        }
+
+        /// <summary>
+        /// Shoots a radial spread of light brids.
+        /// </summary>
         public void ShootLightBird()
         {
             if (NPC.type == ModContent.NPCType<ConstitutionBoss>())
             {
-                var launchVelocity = new Vector2(-8, 0); // Create a velocity moving the left.
                 SoundEngine.PlaySound(SoundID.Item125, NPC.Center);
-                for (int i = 0; i < Main.rand.Next(2, 7); i++)
-                {
-                    launchVelocity = launchVelocity.RotatedBy(MathHelper.PiOver4);
-                    ParticleOrchestrator.RequestParticleSpawn(false, ParticleOrchestraType.RainbowRodHit, new ParticleOrchestraSettings { PositionInWorld = NPC.Center });
-                    Projectile.NewProjectile(Projectile.InheritSource(NPC), NPC.Center, launchVelocity, ModContent.ProjectileType<TrailBlazer>(), 6, 1);
-                }
-
+                DTUtils Utility = new DTUtils();
+                Utility.RadialSpreadProjectile(ModContent.ProjectileType<TrailBlazer>(), 8, NPC.Center, 15, 4, 10);
+                ParticleOrchestrator.RequestParticleSpawn(false, ParticleOrchestraType.TrueExcalibur, new ParticleOrchestraSettings { PositionInWorld = NPC.Center }); ;
             }
         }
 
-
+        /// <summary>
+        /// Spawns a randomized field of mines. Is unused in eternity mode.
+        /// </summary>
+        /// <param name="player"></param>
         public void Minefield(Player player)
         {
             foreach (var minePosition in MineSpots)
             {
-                if (!EternityIsActive())
-                {
-                    Projectile mine = Projectile.NewProjectileDirect(
-                        Projectile.InheritSource(NPC),
-                        minePosition, Vector2.Zero,
-                        ModContent.ProjectileType<StarMine>(), 0, 0
-                    );
-                }
-                if (EternityIsActive())
-                {
-                    Projectile mine = Projectile.NewProjectileDirect(
-                        Projectile.InheritSource(NPC),
-                        minePosition, Vector2.Zero,
-                        ModContent.ProjectileType<StellarBomb>(), 0, 0
-                    );
-                }
+                Projectile mine = Projectile.NewProjectileDirect(
+                    Projectile.InheritSource(NPC),
+                    minePosition, Vector2.Zero,
+                    ModContent.ProjectileType<StarMine>(), 0, 0
+                );
             }
         }
 
+        /// <summary>
+        /// Constitution's Desperation Attack. A stand in for a laser if anything.
+        /// </summary>
+        /// <param name="player"></param>
         public void StellarFlame(Player player)
         {
             if (NPC.type == ModContent.NPCType<ConstitutionBoss>())
             {
-
-
                 Vector2 spawnPosition = NPC.Center;
                 Vector2 velocity = (player.Center - spawnPosition).SafeNormalize(Vector2.UnitY);
                 Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), spawnPosition, velocity * 20, ModContent.ProjectileType<StellarFlameHostile>(), 8, 2);
             }
         }
+
+        #endregion
 
 
 

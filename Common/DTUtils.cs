@@ -73,6 +73,23 @@ namespace DestroyerTest.Common
             }
         }
 
+        public void RadialProjectileRandomDir(int ID, int Amount, Vector2 CTR, int Dmg = 0, int KB = 0, float Speed = 2f)
+        {
+            for (int i = 0; i < Amount; i++)
+            {
+                Vector2 velocity = new Vector2(Speed, 0f).RotatedByRandom(MathHelper.TwoPi);
+                Projectile.NewProjectile(
+                    Projectile.GetSource_None(),
+                    CTR,
+                    velocity,
+                    ID,
+                    Dmg,
+                    KB
+                );
+            }
+        }
+
+
         /// <summary>
         /// Easy-to-call method for drawing a point glow over the center of a projectile.
         /// </summary>
@@ -438,6 +455,7 @@ namespace DestroyerTest.Common
         public static Asset<Texture2D> FeatheredCircle = ModContent.Request<Texture2D>($"{ParticlePath}/GlowCircle");
         public static Asset<Texture2D> Vingette = ModContent.Request<Texture2D>($"{ExtrasPath}/BigVingette");
         public static Asset<Texture2D> FadeLine = ModContent.Request<Texture2D>($"{ExtrasPath}/FadeLine");
+        public static Asset<Texture2D> StarAura = ModContent.Request<Texture2D>($"{ExtrasPath}/StarWrathAura");
         public static Asset<Texture2D> Sparkle(int Variant)
         {
             if (Variant <= 0)
@@ -502,6 +520,7 @@ namespace DestroyerTest.Common
         public static Asset<Texture2D> TenebrousConstructWingRight = ModContent.Request<Texture2D>($"{ExtrasPath}/TenebrousConstructWingRight");
         public static Asset<Texture2D> WyvernSoulDash = ModContent.Request<Texture2D>($"{ExtrasPath}/WyvernSoulDash");
         public static Asset<Texture2D> CorruptSigil = ModContent.Request<Texture2D>($"{ExtrasPath}/CorruptSigil");
+        public static Asset<Texture2D> StarFuryOutline = ModContent.Request<Texture2D>($"{ExtrasPath}/StarfuryCloneOutline");
         //
         // Sounds
         //

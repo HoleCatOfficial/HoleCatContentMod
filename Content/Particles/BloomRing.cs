@@ -75,7 +75,7 @@ namespace DestroyerTest.Content.Particles
             float t = LifetimeCompletion; // 0 → 1 across particle lifetime
             float startScale = 0.01f;
             float endScale = Scale * 1.25f; // 3x initial scale
-            float currentScale = MathHelper.Lerp(startScale, endScale, t);
+            float currentScale = MathHelper.SmoothStep(startScale, endScale, t);
             Scale = currentScale;
 
             // Optional fading near the end of life

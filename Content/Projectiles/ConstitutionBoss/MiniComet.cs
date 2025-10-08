@@ -72,6 +72,7 @@ namespace DestroyerTest.Content.Projectiles.ConstitutionBoss
 
             Utility.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
+            /*
             for (int i = 0; i < TrailPositions.Count - 1; i++)
             {
                 Vector2 start = TrailPositions[i] - Main.screenPosition;
@@ -98,13 +99,25 @@ namespace DestroyerTest.Content.Projectiles.ConstitutionBoss
                     0f
                 );
             }
+            */
 
             for (int k = TrailPositions.Count - 1; k > 0; k--)
             {
-                Vector2 drawPos = (TrailPositions[k] - Main.screenPosition) + new Vector2(ProjTex.Value.Width / 2, ProjTex.Value.Height / 2) + new Vector2(0f, Projectile.gfxOffY);
+                Vector2 drawPos = TrailPositions[k] - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY);
                 Color color = Projectile.GetAlpha(lightColor) * ((TrailPositions.Count - k) / (float)TrailPositions.Count);
-                Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, drawPos, null, color, Projectile.rotation, new Vector2(ProjTex.Value.Width / 2, ProjTex.Value.Height / 2), Projectile.scale, SpriteEffects.None, 0);
+                Main.EntitySpriteDraw(
+                    ProjTex.Value,
+                    drawPos,
+                    null,
+                    color,
+                    Projectile.rotation,
+                    ProjTex.Size() / 2f,  // proper origin
+                    Projectile.scale,
+                    SpriteEffects.None,
+                    0
+                );
             }
+
 
             //Utility.DrawGlowOnProj(Projectile, lightColor, true);
 
