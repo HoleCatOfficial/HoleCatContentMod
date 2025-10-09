@@ -1,3 +1,4 @@
+using System;
 using DestroyerTest.Common;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -12,8 +13,8 @@ namespace DestroyerTest.Content.Projectiles.ConstitutionBoss
     {
         public override void SetStaticDefaults()
         {
-            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 5; 
-			ProjectileID.Sets.TrailingMode[Projectile.type] = 3;
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 5;
+            ProjectileID.Sets.TrailingMode[Projectile.type] = 3;
         }
         public override void SetDefaults()
         {
@@ -59,6 +60,11 @@ namespace DestroyerTest.Content.Projectiles.ConstitutionBoss
             Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, Projectile.Center - Main.screenPosition, null, BeamColor, Projectile.rotation, new Vector2(Projectile.width / 2, Projectile.height / 2), Projectile.scale, SpriteEffects.None, 0);
             Utility.ReturnToDefaultDrawing(SB);
             return false;
+        }
+
+        public override void OnKill(int timeLeft)
+        {
+            DTUtils.ConstitutionStarExplosionEffects(Projectile);
         }
     }
 }

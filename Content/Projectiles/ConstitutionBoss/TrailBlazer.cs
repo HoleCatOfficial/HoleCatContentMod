@@ -129,31 +129,7 @@ public class TrailBlazer : ModProjectile
 			Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(15)).ToRotationVector2() * length;
 			Projectile.rotation = Projectile.velocity.ToRotation();
 
-			Vector2 vector2_2 = new Vector2(Projectile.spriteDirection == -1 ? -6f : -2f, -26f).RotatedBy((double)Projectile.rotation, new Vector2());
-			if (Main.rand.Next(24) == 0)
-			{
-				Dust dust = Dust.NewDustDirect(Projectile.Center + vector2_2, 4, 4, DustID.TintableDustLighted, 0.0f, 0.0f, 100, ColorLib.StellarColor, 2f);
-				if (Main.rand.Next(3) != 0)
-				{
-					dust.noGravity = true;
-					dust.velocity.Y -= 3f;
-					dust.noLight = true;
-				}
-				else if (Main.rand.Next(2) != 0)
-				{
-					dust.noLight = true;
-					dust.velocity *= 0.5f;
-					dust.velocity.Y -= 0.9f;
-					dust.scale += (float)(0.100000001490116 + (double)Main.rand.NextFloat() * 0.600000023841858);
-				}
-			}
-			
-			DelegateMethods.v3_1 = new Vector3(0.3f, 0.5f, 1f);
-            Utils.PlotTileLine(Projectile.Center, Projectile.Center + Projectile.velocity * 6f, 20f, new Utils.TileActionAttempt(DelegateMethods.CastLightOpen));
-            Utils.PlotTileLine(Projectile.Left, Projectile.Right, 20f, new Utils.TileActionAttempt(DelegateMethods.CastLightOpen));
-            Utils.PlotTileLine(player.Center, player.Center + player.velocity * 6f, 40f, new Utils.TileActionAttempt(DelegateMethods.CastLightOpen));
-            Utils.PlotTileLine(player.Left, player.Right, 40f, new Utils.TileActionAttempt(DelegateMethods.CastLightOpen));
-			}
+		}
 
 			// Finding the closest NPC to attack within maxDetectDistance range
 			// If not found then returns null

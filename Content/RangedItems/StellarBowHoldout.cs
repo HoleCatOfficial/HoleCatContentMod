@@ -10,6 +10,7 @@ using DestroyerTest.Content.Projectiles;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent;
 using System;
+using Terraria.DataStructures;
 
 namespace DestroyerTest.Content.RangedItems
 {
@@ -17,7 +18,6 @@ namespace DestroyerTest.Content.RangedItems
     {
         private int aiState = 0; // 0 = Lances, 1 = Stars
         private int stateTimer = 0; // Generic timer used in both states
-
         public override string Texture => "DestroyerTest/Content/RangedItems/StellarBow";
         public override void SetStaticDefaults()
         {
@@ -65,27 +65,35 @@ namespace DestroyerTest.Content.RangedItems
         }
 
 
-        
+       
 
-        int lanceTimer = 0;
-        int starTimer = 0;
+        SoundStyle ShootRegular = new SoundStyle($"DestroyerTest/Assets/Audio/StellarBow/StellarBowShoot", 3) with
+        {
+            PitchVariance = 0.2f,
+            MaxInstances = 0
+        };
 
+        SoundStyle ShootEmpowered = new SoundStyle($"DestroyerTest/Assets/Audio/StellarBow/StellarBowEmpoweredShoot", 3) with
+        {
+            PitchVariance = 0.2f,
+            MaxInstances = 0
+        };
 
-        public int LancesShot = 0;
+        public int ShotCount = 0;
+        public int type = -1;
+        public SoundStyle Shot;
+        public enum State
+        {
+            Default,
+            Empowered
+        }
+        public State state;
 
-        public int StarsShot = 0;
-        
-        SoundStyle Shoot1 = new SoundStyle($"DestroyerTest/Assets/Audio/ConstitutionBoss/ConstitutionBossShootStars3") with
-            {
-                //Volume = 0.5f,
-                PitchVariance = 1.0f,
-            };
-            SoundStyle Shoot2 = new SoundStyle($"DestroyerTest/Assets/Audio/StarShot") with
-            {
-                Volume = 2f,
-                PitchVariance = 1.0f,
-                MaxInstances = 100
-            };
+        public override void OnSpawn(IEntitySource source)
+        {
+            state = State.Default;
+        }
+
 
         public override void AI()
         {
@@ -104,69 +112,33 @@ namespace DestroyerTest.Content.RangedItems
                 Projectile.rotation = toCursor.ToRotation();
                 Projectile.direction = toCursor.X > 0 ? 1 : -1;
 
-                // State Machine
-                switch (aiState)
+                if (Main.GameUpdateCount % player.HeldItem.useTime == 0)
                 {
-                    case 0: // Lance Firing
-                        stateTimer++;
-                        if (stateTimer >= 30 && LancesShot < 3)
-                        {
-                            stateTimer = 0;
-                            LancesShot++;
-                            SoundEngine.PlaySound(Shoot1);
-
-                            Projectile.NewProjectile(
-                                Projectile.GetSource_FromThis(),
-                                Projectile.Center,
-                                toCursor * 20f,
-                                ModContent.ProjectileType<GalantineLanceFriendly>(),
-                                60,
-                                2f,
-                                player.whoAmI
-                            );
-                        }
-                        if (LancesShot >= 3)
-                        {
-                            aiState = 1;
-                            stateTimer = 0;
-                        }
-                        break;
-
-                    case 1: // Star Helix Firing
-                        stateTimer++;
-                        if (stateTimer >= 5 && StarsShot < 10)
-                        {
-                            stateTimer = 0;
-                            StarsShot++;
-                            SoundEngine.PlaySound(Shoot2);
-
-                            float[] helixOffsets = { -1f, -0.5f, 0f, 0.5f, 1f };
-                            int step = StarsShot % helixOffsets.Length;
-
-                            float helixRadius = 32f;
-                            Vector2 perp = new Vector2(-toCursor.Y, toCursor.X);
-                            perp.Normalize();
-                            Vector2 spawnOffset = perp * helixOffsets[step] * helixRadius;
-
-                            Projectile.NewProjectileDirect(
-                                Projectile.GetSource_FromThis(),
-                                Projectile.Center + spawnOffset,
-                                toCursor * 10f,
-                                ProjectileID.Starfury,
-                                60,
-                                2f,
-                                player.whoAmI
-                            );
-                        }
-                        if (StarsShot >= 10)
-                        {
-                            LancesShot = 0;
-                            StarsShot = 0;
-                            aiState = 0;
-                            stateTimer = 0;
-                        }
-                        break;
+                    SoundEngine.PlaySound(Shot);
+                    Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Projectile.rotation.ToRotationVector2() * 12, type, Projectile.damage, Projectile.knockBack, player.whoAmI);
+                    ShotCount++;
                 }
+
+                if (ShotCount >= 10)
+                {
+                    state = State.Empowered;
+                }
+
+                switch (state)
+                    {
+                        case State.Default:
+                            {
+                                type = ModContent.ProjectileType<GalantineArrow>();
+                                Shot = ShootRegular;
+                                break;
+                            }
+                        case State.Empowered:
+                            {
+                                Shot = ShootEmpowered;
+                                type = ModContent.ProjectileType<GalantineLanceFriendly>();
+                                break;
+                            }
+                    }
             }
             else
             {

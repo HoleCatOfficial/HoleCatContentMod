@@ -123,7 +123,7 @@ namespace DestroyerTest.Content.Projectiles.ConstitutionBoss
 
             Utility.ReturnToDefaultDrawing(spriteBatch);
 
-            Utility.DrawTextureOnProj(ProjTex, Projectile, lightColor, true, Projectile.rotation, 1f, 1f);
+            Utility.DrawTextureOnProj(ProjTex, Projectile, Color.White, true, Projectile.rotation, 1f, 1f);
 
             return false;
         }

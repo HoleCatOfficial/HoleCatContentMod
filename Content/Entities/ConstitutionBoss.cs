@@ -34,6 +34,8 @@ using DestroyerTest.Content.Tiles;
 using Terraria.GameContent.ItemDropRules;
 using DestroyerTest.Content.Resources;
 using Humanizer.Localisation.DateToOrdinalWords;
+using InnoVault.PRT;
+using DestroyerTest.Content.Particles;
 
 namespace DestroyerTest.Content.Entities
 {
@@ -393,7 +395,7 @@ namespace DestroyerTest.Content.Entities
                 }
                 */
 
-                NPC.rotation = (Chargedir * 4f).ToRotation() + MathHelper.PiOver4;
+            NPC.rotation = (Chargedir * 4f).ToRotation() + MathHelper.PiOver4;
 
 
             if (NPC.life <= 0.50f * NPC.lifeMax && !HasPlayedPhase2Roar)
@@ -919,7 +921,7 @@ namespace DestroyerTest.Content.Entities
                 Chargedir = (player.Center - NPC.Center).SafeNormalize(Vector2.Zero);
             }
         }
-        
+
         /// <summary>
         /// Shoots Stars directly towards the player.
         /// </summary>
@@ -1095,7 +1097,7 @@ namespace DestroyerTest.Content.Entities
                 SoundEngine.PlaySound(SoundID.Item125, NPC.Center);
                 DTUtils Utility = new DTUtils();
                 Utility.RadialSpreadProjectile(ModContent.ProjectileType<GalantineLance>(), Main.rand.Next(4, 14), NPC.Center, 15, 4, 10);
-                ParticleOrchestrator.RequestParticleSpawn(false, ParticleOrchestraType.TrueExcalibur, new ParticleOrchestraSettings { PositionInWorld = NPC.Center });;
+                ParticleOrchestrator.RequestParticleSpawn(false, ParticleOrchestraType.TrueExcalibur, new ParticleOrchestraSettings { PositionInWorld = NPC.Center }); ;
             }
         }
 
@@ -1230,6 +1232,12 @@ namespace DestroyerTest.Content.Entities
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<StellarMatter>(), 2, 4, 35));
         }
 
+        public override void HitEffect(NPC.HitInfo hit)
+        {
+            PRTLoader.NewParticle(PRTLoader.GetParticleID<FlatStar>(), Main.rand.NextVector2FromRectangle(NPC.Hitbox), Vector2.Zero, ColorLib.StellarColor, 0.15f);
+        }
+
+
     }
 
 
@@ -1294,7 +1302,7 @@ namespace DestroyerTest.Content.Entities
             float length = Projectile.velocity.Length();
             float targetAngle = Projectile.AngleTo(HomingTarget.Center);
             Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(15)).ToRotationVector2() * length;
-            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
+            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
 
 
             Lighting.AddLight(Projectile.Center, 105, 68, 186);

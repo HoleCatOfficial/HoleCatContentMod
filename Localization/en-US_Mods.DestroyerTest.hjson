@@ -3011,6 +3011,27 @@ Items: {
 		DisplayName: Wretched Shards
 		Tooltip: ""
 	}
+
+	SynergyWrap: {
+		Tooltip:
+			'''
+			A signature dish of Joan's Home Country, now with favors developed beyond anyones imagination.
+			Permanently increases move speed by 20%.
+			Permanently increases melee speed by 12%.
+			'''
+		DisplayName: Synergy Wrap
+	}
+
+	Dalmon: {
+		Tooltip:
+			'''
+			A signature dish of Joan's Home Country.
+			Increases move speed by 10%.
+			Increases melee speed by 8%.
+			4 minute duration.
+			'''
+		DisplayName: Dalmon
+	}
 }
 
 Projectiles: {
@@ -3388,6 +3409,7 @@ Projectiles: {
 	StellarBomb.DisplayName: Stellar Bomb
 	StarfuryClone.DisplayName: Starfury Clone
 	MiniComet.DisplayName: Mini Comet
+	GalantineArrow.DisplayName: Galantine Arrow
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.
@@ -3646,6 +3668,11 @@ Buffs: {
 	ScepterImbueMud: {
 		DisplayName: Scepter Imbue Mud
 		Description: Mods.DestroyerTest.Buffs.ScepterImbueMud.Description
+	}
+
+	Vigor: {
+		Description: Mods.DestroyerTest.Buffs.Vigor.Description
+		DisplayName: Vigor
 	}
 }
 

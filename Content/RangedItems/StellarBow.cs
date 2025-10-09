@@ -25,14 +25,14 @@ namespace DestroyerTest.Content.RangedItems
 			// Each attack takes a different amount of time to execute
 			// Conforming to the item useTime and useAnimation makes it much harder to design
 			// It does, however, affect the item tooltip, so don't leave it out.
-			Item.useTime = 120;
-			Item.useAnimation = 120;
+			Item.useTime = 60;
+			Item.useAnimation = 60;
 			Item.useStyle = ItemUseStyleID.Shoot;
 
 			// Weapon Properties
 			Item.knockBack = 10;  // The knockback of your sword, this is dynamically adjusted in the projectile code.
 			Item.autoReuse = true; // This determines whether the weapon has autoswing
-			Item.damage = 350; // The damage of your sword, this is dynamically adjusted in the projectile code.
+			Item.damage = 35; // The damage of your sword, this is dynamically adjusted in the projectile code.
 			Item.DamageType = DamageClass.Ranged; // Deals melee damage\
             Item.channel = true;
 

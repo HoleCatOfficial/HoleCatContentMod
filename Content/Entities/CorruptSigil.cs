@@ -80,6 +80,25 @@ namespace DestroyerTest.Content.Entities
                 SpriteEffects.None,
                 0
             );
+            
+            Texture2D tex = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/LongLaser").Value;
+
+            DTUtils.DrawLaser(Main.spriteBatch, tex, NPC.Center, Color.White, NPC.rotation);
+
+            // Optional: get AABBV line for collisions or visual debugging
+            var (start, end) = DTUtils.GetLaserLine(tex, NPC.Center, NPC.rotation);
+
+            // Check if the player intersects the laser line
+            if (Collision.CheckAABBvLineCollision(
+                Main.player[NPC.target].Hitbox.TopLeft(),
+                Main.player[NPC.target].Hitbox.Size(),
+                start,
+                end))
+            {
+                // Optionally, you could apply effects or debug draw here
+                Main.player[NPC.target].AddBuff(BuffID.Cursed, 120);
+            }
+
             Utility.ReturnToDefaultDrawing(spriteBatch);
 
             return true;

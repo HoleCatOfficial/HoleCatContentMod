@@ -121,7 +121,7 @@ namespace DestroyerTest.Content.Projectiles.ConstitutionBoss
 		public List<Vector2> TrailPositions = new();
 		public List<float> TrailRotations = new();
 		private const int TrailLength = 40;
-        public SoundStyle Chase = new SoundStyle($"DestroyerTest/Assets/Audio/ConstitutionBoss/ConstitutionStar/Chase") { PitchVariance = 0.2f, MaxInstances = 0 };
+        public SoundStyle Chase = new SoundStyle($"DestroyerTest/Assets/Audio/ConstitutionBoss/ConstitutionStar/Chase") { PitchVariance = 1f, MaxInstances = 0 };
 
         public bool Flag1 = false;
         public int HomingTime = 60;
@@ -190,7 +190,7 @@ namespace DestroyerTest.Content.Projectiles.ConstitutionBoss
 
                 if (!Flag1)
                     {
-                        SoundEngine.PlaySound(Chase, Projectile.Center);
+                        SoundEngine.PlaySound(SoundID.AbigailUpgrade, Projectile.Center);
                         Flag1 = true;
                     }
 
@@ -232,7 +232,7 @@ namespace DestroyerTest.Content.Projectiles.ConstitutionBoss
 
                 if (!Flag1)
                 {
-                    SoundEngine.PlaySound(Chase, Projectile.Center);
+                    SoundEngine.PlaySound(SoundID.AbigailUpgrade, Projectile.Center);
                     Flag1 = true;
                 }
 
@@ -336,7 +336,8 @@ namespace DestroyerTest.Content.Projectiles.ConstitutionBoss
         {
             SoundEngine.PlaySound(DTAssetLib.ConstitutionStarKill, Projectile.Center);
             PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp>(), Projectile.Center, Vector2.Zero, ColorLib.StellarColor, 0.05f);
-			Dust.NewDust(Projectile.position, Projectile.Hitbox.Width, Projectile.Hitbox.Height, DustID.TintableDustLighted, Main.rand.NextFloat(-1, 1.1f), Main.rand.NextFloat(-1, 1.1f), 0, ColorLib.StellarColor, 2f);
+            Dust.NewDust(Projectile.position, Projectile.Hitbox.Width, Projectile.Hitbox.Height, DustID.TintableDustLighted, Main.rand.NextFloat(-1, 1.1f), Main.rand.NextFloat(-1, 1.1f), 0, ColorLib.StellarColor, 2f);
+            DTUtils.ConstitutionStarExplosionEffects(Projectile);
         }
 
     }

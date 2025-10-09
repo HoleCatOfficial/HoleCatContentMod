@@ -99,6 +99,8 @@ namespace DestroyerTest.Content.Projectiles.ConstitutionBoss
                 Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.TintableDustLighted, Outward.X, Outward.Y, 100, ColorLib.StellarColor, 1.5f).noGravity = true;
             }
 
+            DTUtils.ConstitutionStarExplosionEffects(Projectile);
+
             foreach (Player player in Main.player)
             {
                 if (player.active && !player.dead && Vector2.Distance(player.Center, Projectile.Center) < 150)

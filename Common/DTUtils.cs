@@ -162,6 +162,101 @@ namespace DestroyerTest.Common
             PRTLoader.NewParticle(type, Center, Vector2.Zero, color, Scale);
         }
 
+        /// <summary>
+        /// Contrary to what the name suggests, this code was first used in the Hollow Star code, and the name comes from this effect only being used for projectiles used by Constitution.
+        /// </summary>
+        /// <param name="projectile"></param>
+        public static void ConstitutionStarExplosionEffects(Projectile projectile)
+        {
+            int points = 10; // 5 outer + 5 inner
+            float outerRadius = 16f;
+            float innerRadius = outerRadius * 0.4f;
+            float rotationOffset = projectile.rotation; // could also add MathHelper.PiOver2 if the sprite is rotated visually
+
+            for (int i = 0; i < points; i++)
+            {
+                float angle = MathHelper.TwoPi * i / points + rotationOffset;
+                float radius = (i % 2 == 0) ? outerRadius : innerRadius;
+
+                Vector2 direction = new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
+                Vector2 spawnPos = projectile.Center + direction * radius;
+                Vector2 velocity = direction * 3f;
+
+                Dust dust = Dust.NewDustPerfect(spawnPos, DustID.TintableDustLighted, velocity, 0, ColorLib.StellarColor, 2f);
+                Dust dust1 = Dust.NewDustPerfect(spawnPos, DustID.TintableDustLighted, Vector2.Zero, 0, ColorLib.StellarColor, 2f);
+                dust.noGravity = true;
+                dust1.noGravity = true;
+            }
+            PRTLoader.NewParticle(PRTLoader.GetParticleID<FlatStar>(), projectile.Center, Vector2.Zero, ColorLib.StellarColor, 0.15f);
+        }
+
+        /// <summary>
+        /// Draws a laser texture anchored at its center-bottom, with an internal AABBV line 
+        /// from (Tex.Width/2, Tex.Height) to (Tex.Width/2, 0).
+        /// </summary>
+        /// <param name="spriteBatch">The SpriteBatch to draw with.</param>
+        /// <param name="texture">The laser texture to draw.</param>
+        /// <param name="center">The world-space center point of the laser.</param>
+        /// <param name="color">The color to draw the laser with.</param>
+        /// <param name="rotation">Rotation in radians.</param>
+        /// <param name="scale">Scale factor (default 1f).</param>
+        /// <param name="sourceRect">Optional source rectangle (null for full texture).</param>
+        public static void DrawLaser(SpriteBatch spriteBatch, Texture2D texture, Vector2 center, Color color, float rotation = 0f, float scale = 1f, Rectangle? sourceRect = null)
+        {
+            if (texture == null)
+                return;
+
+            Rectangle source = sourceRect ?? texture.Bounds;
+
+            // Anchor: bottom-center of the texture
+            Vector2 origin = new Vector2(source.Width / 2f, source.Height);
+
+            // Convert world-space to screen-space
+            Vector2 screenPos = center - Main.screenPosition;
+
+            // Draw the laser texture
+            spriteBatch.Draw(
+                texture,
+                screenPos,
+                source,
+                color,
+                rotation,
+                origin,
+                scale,
+                SpriteEffects.None,
+                0f
+            );
+        }
+
+        /// <summary>
+        /// Returns the AABBV line segment for the laser’s internal direction,
+        /// based on its texture dimensions and optional scaling/rotation.
+        /// </summary>
+        public static (Vector2 Start, Vector2 End) GetLaserLine(Texture2D texture, Vector2 center, float rotation = 0f, float scale = 1f)
+        {
+            if (texture == null)
+                return (center, center);
+
+            // Local positions
+            Vector2 localStart = new Vector2(texture.Width / 2f, texture.Height);
+            Vector2 localEnd = new Vector2(texture.Width / 2f, 0);
+
+            // Translate local line to world-space relative to the center
+            Vector2 offset = localStart - new Vector2(texture.Width / 2f, texture.Height);
+            localStart -= offset;
+            localEnd -= offset;
+
+            // Apply rotation and scale
+            Matrix transform = Matrix.CreateRotationZ(rotation) * Matrix.CreateScale(scale);
+            localStart = Vector2.Transform(localStart, transform);
+            localEnd = Vector2.Transform(localEnd, transform);
+
+            Vector2 worldStart = center + localStart;
+            Vector2 worldEnd = center + localEnd;
+
+            return (worldStart, worldEnd);
+        }
+
         public static int[] ElectricArcs = new int[]
         {
             PRTLoader.GetParticleID<Arc1>(),
