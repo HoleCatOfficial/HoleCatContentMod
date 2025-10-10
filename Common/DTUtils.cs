@@ -145,6 +145,18 @@ namespace DestroyerTest.Common
             );
         }
 
+        public static bool BossNearby()
+        {
+            foreach (NPC boss in Main.npc)
+            {
+                if (boss.active && boss.boss)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public void StartSpriteBatchWithBlending(SpriteBatch spriteBatch, BlendState blendState, SpriteSortMode ssm)
         {
             spriteBatch.End();

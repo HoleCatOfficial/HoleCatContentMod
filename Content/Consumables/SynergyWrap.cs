@@ -17,8 +17,8 @@ namespace DestroyerTest.Content.Consumables
 
         public override void SetDefaults()
         {
-            Item.width = 40;
-            Item.height = 48;
+            Item.width = 56;
+			Item.height = 22;
             Item.useStyle = ItemUseStyleID.HoldUp;
             Item.useAnimation = 15;
             Item.useTime = 90;

@@ -1,8 +1,10 @@
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -25,6 +27,12 @@ namespace DestroyerTest.Content.Projectiles
             Projectile.tileCollide = false;
         }
 
+        public SoundStyle kill = new SoundStyle($"DestroyerTest/Assets/Audio/StellarBow/StellarBowArrowImpact", 4) with
+        {
+            PitchVariance = 0.2f,
+            MaxInstances = 0
+        };
+
         public override void AI()
         {
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
@@ -45,6 +53,7 @@ namespace DestroyerTest.Content.Projectiles
         {
             DTUtils.ConstitutionStarExplosionEffects(Projectile);
             target.AddBuff(ModContent.BuffType<GalantineBurn>(), 600);
+            SoundEngine.PlaySound(kill, target.Center);
         }
     }
 }

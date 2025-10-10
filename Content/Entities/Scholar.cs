@@ -222,6 +222,13 @@ namespace DestroyerTest.Content.Entities
 				chat.Add(Language.GetTextValue("Dude! Can you leave me alone!? Go talk to someone else!"));
 			}
 
+			if (ShieldIsActive)
+            {
+				chat.Add(Language.GetTextValue("Pretty neat, eh? I dabbled in magic during my youth, and I guess it comes in handy in the face of danger!"));
+				chat.Add(Language.GetTextValue("This is taking a lot of magic out of me, but the last thing I want is anyone else getting hurt!"));
+				chat.Add(Language.GetTextValue("Goddamn I need his cock... OH! Hey! What do you need?"));
+            }
+
 			string chosenChat = chat; // chat is implicitly cast to a string. This is where the random choice is made.
 
 			// Here is some additional logic based on the chosen chat line. In this case, we want to display an item in the corner for StandardDialogue4.
@@ -351,9 +358,77 @@ namespace DestroyerTest.Content.Entities
 			NumberOfTimesTalkedTo = tag.GetInt("numberOfTimesTalkedTo");
 		}
 
-		public override void SaveData(TagCompound tag) {
+		public override void SaveData(TagCompound tag)
+		{
 			tag["numberOfTimesTalkedTo"] = NumberOfTimesTalkedTo;
 		}
+
+        public override void ModifyIncomingHit(ref NPC.HitModifiers modifiers)
+        {
+			foreach (Projectile shield in Main.projectile)
+			{
+				if (shield.active && shield.type == ModContent.ProjectileType<ScholarShield>())
+				{
+					modifiers.FinalDamage *= 0;
+				}
+				else
+				{
+					modifiers.FinalDamage = default;
+				}
+			}
+        }
+
+		public bool ShieldIsActive = false;
+		public bool SpawnShield = false;
+        public override void AI()
+		{
+			DTUtils Utility = new DTUtils();
+			// Step 1 — Update shield status first.
+			ShieldIsActive = false;
+			foreach (Projectile shield in Main.projectile)
+			{
+				if (shield.active && shield.type == ModContent.ProjectileType<ScholarShield>())
+				{
+					ShieldIsActive = true;
+					break;
+				}
+			}
+
+			// Step 2 — If below half health, spawn if not yet done.
+			if (NPC.life < NPC.lifeMax / 2 || DTUtils.BossNearby())
+			{
+				if (!SpawnShield)
+				{
+					int proj = Projectile.NewProjectile(
+						NPC.GetSource_FromAI(),
+						NPC.Center,
+						NPC.velocity * 0.25f,
+						ModContent.ProjectileType<ScholarShield>(),
+						0,
+						0
+					);
+					SpawnShield = true;
+				}
+			}
+
+			// Step 3 — If above half, clean up shield.
+			else // equivalent to (NPC.life >= NPC.lifeMax / 2)
+			{
+				if (ShieldIsActive)
+				{
+					foreach (Projectile shield in Main.projectile)
+					{
+						if (shield.active && shield.type == ModContent.ProjectileType<ScholarShield>())
+							shield.Kill();
+					}
+				}
+
+				ShieldIsActive = false;
+				SpawnShield = false;
+			}
+		}
+
+
 
 	}
 }

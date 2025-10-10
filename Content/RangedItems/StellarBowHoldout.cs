@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent;
 using System;
 using Terraria.DataStructures;
+using DestroyerTest.Content.Projectiles.ConstitutionBoss;
 
 namespace DestroyerTest.Content.RangedItems
 {
@@ -31,7 +32,7 @@ namespace DestroyerTest.Content.RangedItems
             Projectile.penetrate = -1;
             Projectile.tileCollide = false;
             Projectile.ignoreWater = true;
-            Projectile.timeLeft = 200; // persistent
+            Projectile.timeLeft = 2; // persistent
         }
 
         public override bool PreDraw(ref Color lightColor)
@@ -101,6 +102,7 @@ namespace DestroyerTest.Content.RangedItems
 
             if (player.HeldItem.type == ModContent.ItemType<StellarBow>() && player.channel)
             {
+                Projectile.timeLeft = 2;
                 // Lock projectile to player/cursor
                 float holdDistance = 15f;
                 Vector2 mountedCenter = player.MountedCenter;
@@ -115,7 +117,16 @@ namespace DestroyerTest.Content.RangedItems
                 if (Main.GameUpdateCount % player.HeldItem.useTime == 0)
                 {
                     SoundEngine.PlaySound(Shot);
-                    Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Projectile.rotation.ToRotationVector2() * 12, type, Projectile.damage, Projectile.knockBack, player.whoAmI);
+                    Vector2 Launch = Projectile.rotation.ToRotationVector2() * 24;
+                    Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Launch, type, Projectile.damage, Projectile.knockBack, player.whoAmI);
+                    if (state == State.Empowered)
+                    {
+                        Vector2 LaunchRand = Launch.RotatedByRandom(2);
+                        for (int r = 0; r < Main.rand.Next(3, 10); r++)
+                        {
+                            Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, LaunchRand, ModContent.ProjectileType<ConstitutionStar>(), Projectile.damage / 10, Projectile.knockBack, player.whoAmI, ai2: 1);
+                        }
+                    }
                     ShotCount++;
                 }
 

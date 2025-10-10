@@ -740,7 +740,7 @@ namespace DestroyerTest.Content.Entities
                     Main.musicVolume = VolumeOnSpawn;
                     SetVolume = true;
                 }
-                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Placeholder4");
+                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/TribulationEternity");
             }
 
             NPC.velocity = Vector2.Zero;

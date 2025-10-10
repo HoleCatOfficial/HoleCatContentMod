@@ -3032,6 +3032,11 @@ Items: {
 			'''
 		DisplayName: Dalmon
 	}
+
+	Borvis: {
+		Tooltip: ""
+		DisplayName: Borvis
+	}
 }
 
 Projectiles: {
@@ -3410,6 +3415,7 @@ Projectiles: {
 	StarfuryClone.DisplayName: Starfury Clone
 	MiniComet.DisplayName: Mini Comet
 	GalantineArrow.DisplayName: Galantine Arrow
+	ScholarShield.DisplayName: Scholar Shield
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.

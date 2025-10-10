@@ -28,7 +28,7 @@ namespace DestroyerTest.Content.Particles
             // Smooth lifetime-based scale growth:
             float t = LifetimeCompletion; // 0 → 1 across particle lifetime
             float startScale = 0.01f;
-            float endScale = Scale * 1.25f; // 3x initial scale
+            float endScale = Scale * 1.15f; // 3x initial scale
             float currentScale = MathHelper.SmoothStep(startScale, endScale, t);
             Scale = currentScale;
 
@@ -74,7 +74,7 @@ namespace DestroyerTest.Content.Particles
             // Smooth lifetime-based scale growth:
             float t = LifetimeCompletion; // 0 → 1 across particle lifetime
             float startScale = 0.01f;
-            float endScale = Scale * 1.25f; // 3x initial scale
+            float endScale = Scale * 1.15f; // 3x initial scale
             float currentScale = MathHelper.SmoothStep(startScale, endScale, t);
             Scale = currentScale;
 

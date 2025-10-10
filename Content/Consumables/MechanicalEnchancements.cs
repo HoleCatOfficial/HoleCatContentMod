@@ -27,33 +27,33 @@ namespace DestroyerTest.Content.Consumables
             Item.useTurn = true;
             Item.useAnimation = 120;
             Item.useTime = 120;
-            Item.maxStack = Item.CommonMaxStack;
             Item.consumable = true;
             Item.width = 54;
             Item.height = 40;
             Item.value = Item.sellPrice(0, 8, 50);
             Item.rare = ItemRarityID.Red;
             Item.noUseGraphic = true;
-        }
-
-        public override bool ConsumeItem(Player player)
-        {
-
-            return true;
+            Item.maxStack = 1;
         }
     }
 
     public class MechanicalEnhancementsPlayer : ModPlayer
     {
         public bool EnhancedJorkingMethods = false;
+        public bool Effects = false;
         public override void ResetEffects()
         {
-            EnhancedJorkingMethods = false;
+            Effects = false;
         }
 
-        public override void PostUpdate()
+        public override void PostUpdateMiscEffects()
         {
             if (EnhancedJorkingMethods)
+            {
+                Effects = true;
+            }
+
+            if (Effects)
             {
                 ScepterClassStats.Range += 8;
             }
