@@ -315,6 +315,8 @@ namespace DestroyerTest.Content.Entities
         {
             TextureRotationOffset -= 0.25f;
             DTConfig cfg = ModContent.GetInstance<DTConfig>();
+            DTMusicConfig muscfg = ModContent.GetInstance<DTMusicConfig>();
+            DTOptimizationsConfig optcfg = ModContent.GetInstance<DTOptimizationsConfig>();
 
             NPC.TargetClosest();
             Player player = Main.player[NPC.target];
@@ -445,11 +447,11 @@ namespace DestroyerTest.Content.Entities
             {
                 Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Tribulation");
             }
-            if (!Main.dedServ && EternityIsActive() && !cfg.EternityMusic)
+            if (!Main.dedServ && EternityIsActive() && !muscfg.EternityMusic)
             {
                 Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Tribulation");
             }
-            if (!Main.dedServ && EternityIsActive() && cfg.EternityMusic)
+            if (!Main.dedServ && EternityIsActive() && muscfg.EternityMusic)
             {
                 Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Placeholder3");
             }

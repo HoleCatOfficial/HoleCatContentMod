@@ -537,6 +537,8 @@ namespace DestroyerTest.Content.Entities
             NPC.TargetClosest();
             Player player = Main.player[NPC.target];
             DTConfig cfg = ModContent.GetInstance<DTConfig>();
+            DTMusicConfig muscfg = ModContent.GetInstance<DTMusicConfig>();
+            DTOptimizationsConfig optcfg = ModContent.GetInstance<DTOptimizationsConfig>();
 
 
             DirectionToPlayerCenter = (player.Center - NPCHead).SafeNormalize(Vector2.UnitY);
@@ -722,7 +724,7 @@ namespace DestroyerTest.Content.Entities
                 }
                 Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Tribulation");
             }
-            if (!Main.dedServ && EternityIsActive() && !cfg.EternityMusic && currentState != AttackState.SpawnIdle)
+            if (!Main.dedServ && EternityIsActive() && !muscfg.EternityMusic && currentState != AttackState.SpawnIdle)
             {
                 if (!SetVolume)
                 {
@@ -732,7 +734,7 @@ namespace DestroyerTest.Content.Entities
                 }
                 Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Tribulation");
             }
-            if (!Main.dedServ && EternityIsActive() && cfg.EternityMusic && currentState != AttackState.SpawnIdle)
+            if (!Main.dedServ && EternityIsActive() && muscfg.EternityMusic && currentState != AttackState.SpawnIdle)
             {
                 if (!SetVolume)
                 {
@@ -1877,6 +1879,8 @@ namespace DestroyerTest.Content.Entities
         {
             NPC bossNPC = null;
             DTConfig cfg = ModContent.GetInstance<DTConfig>();
+            DTMusicConfig muscfg = ModContent.GetInstance<DTMusicConfig>();
+            DTOptimizationsConfig optcfg = ModContent.GetInstance<DTOptimizationsConfig>();
 
             for (int i = 0; i < Main.maxNPCs; i++)
             {
@@ -1904,7 +1908,7 @@ namespace DestroyerTest.Content.Entities
             // If NPCHead is a custom property
             Vector2 OrbitCenter = modBoss != null ? modBoss.NPCHead : bossNPC.Center;
 
-            if (Main.rand.NextBool(3) && cfg.OptimizeGame == false)
+            if (Main.rand.NextBool(3) && optcfg.DisableExcessDusts == false)
             {
                 int dustCount = 12;
                 Vector2 start = NPC.Center;

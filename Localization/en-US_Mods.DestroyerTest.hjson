@@ -3667,17 +3667,17 @@ Buffs: {
 	}
 
 	Muddy: {
-		Description: Mods.DestroyerTest.Buffs.Muddy.Description
+		Description: You are bogged down by thick mud!
 		DisplayName: Muddy
 	}
 
 	ScepterImbueMud: {
-		DisplayName: Scepter Imbue Mud
-		Description: Mods.DestroyerTest.Buffs.ScepterImbueMud.Description
+		DisplayName: Scepter Imbue (Mud)
+		Description: Your scepter has thick mud all over it!
 	}
 
 	Vigor: {
-		Description: Mods.DestroyerTest.Buffs.Vigor.Description
+		Description: Move speed and Melee Attack speed increased!
 		DisplayName: Vigor
 	}
 }
@@ -3905,7 +3905,7 @@ Configs: {
 			Label: Lose your Sanity a little more by the day
 		}
 
-		DisplayName: Client side Configs
+		DisplayName: Miscellaneous Configs
 
 		UnnerfTenebrousKatana: {
 			Label: Unnerf Tenebrous Katana
@@ -3921,21 +3921,53 @@ Configs: {
 			Tooltip: Shows a massive advertisement for the new /bug command for bug reporting.
 			Label: Show Bug Command Message
 		}
+	}
 
+	DTOptimizationsConfig: {
+		OptimizeGame: {
+			Label: General Optimizations
+			Tooltip: Disables the drawing of unncessary textures and effects.
+		}
+
+		DisplayName: Optimizations Config
+
+		DisableExcessDusts: {
+			Label: Disable Excess Dusts
+			Tooltip: ""
+		}
+
+		DisableExcessParticles: {
+			Label: Disable Excess Particles
+			Tooltip: ""
+		}
+	}
+
+	DTMusicConfig: {
 		NodeIdleMusic: {
 			Tooltip: If true, when a node spawns, it will play music even when not attacking. The idle music is different from the battle music, but if they spawn too often for you liking, the ambience will get annoying.
 			Label: Nodes will play Music when Dormant
 		}
 
-		OptimizeGame: {
-			Label: Optimize Game
-			Tooltip: ""
+		EternityMusic: {
+			Label: Mod bosses have Eternity Mode music
+			Tooltip: Separate Eternity Exclusive music tracks will play for all three of the mod's Bosses (Not all tracks may be finished on release.)
 		}
 
-		EternityMusic: {
-			Label: Eternity Music
-			Tooltip: ""
+		DisplayName: Music Config
+	}
+
+	DTUIConfig: {
+		RiftBarXPos: {
+			Label: Living Shadow Bar: X Offset
+			Tooltip: The offset-positive for the right, negative for the left-that the bar will use for its draw position.
 		}
+
+		RiftBarYPos: {
+			Label: Living Shadow Bar: Y Offset
+			Tooltip: The offset-positive for down, negative for up-that the bar will use for its draw position.
+		}
+
+		DisplayName: UI Config
 	}
 }
 

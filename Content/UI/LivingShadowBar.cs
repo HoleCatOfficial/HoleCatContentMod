@@ -36,10 +36,6 @@ namespace DestroyerTest.Content.UI
 			area.Width.Set(182, 0f); // We will be placing the following 2 UIElements within this 182x60 area.
 			area.Height.Set(60, 0f);
 
-			area.OnLeftMouseDown += StartDrag;
-            area.OnLeftMouseUp += EndDrag;
-            area.OnMouseOver += EnableMouseInterface;
-
 			barFrame = new UIImage(ModContent.Request<Texture2D>("DestroyerTest/Assets/Textures/LivingShadowFrame")); // Frame of our resource bar
 			barFrame.Left.Set(22, 0f);
 			barFrame.Top.Set(0, 0f);
@@ -118,49 +114,40 @@ namespace DestroyerTest.Content.UI
 
 		public override void Update(GameTime gameTime)
 		{
-			// This prevents updating unless we are using one of the specified items
 			if (!Main.LocalPlayer.HasItemInInventoryOrOpenVoidBag(ModContent.ItemType<RiftBattery>()))
 				return;
 
 			var modPlayer = Main.LocalPlayer.GetModPlayer<LivingShadowPlayer>();
 
-			// Update the text to show the resource values
-			float percentage = (float)modPlayer.LivingShadowCurrent / modPlayer.LivingShadowMax2 * 100;
-			text.SetText(Language.GetTextValue("Mods.DestroyerTest.UI.LivingShadow", percentage.ToString("0.##"), modPlayer.LivingShadowCurrent, modPlayer.LivingShadowMax2));
+			float percentage = (float)modPlayer.LivingShadowCurrent / modPlayer.LivingShadowMax2 * 100f;
+			text.SetText(Language.GetTextValue("Mods.DestroyerTest.UI.LivingShadow",
+				percentage.ToString("0.##"),
+				modPlayer.LivingShadowCurrent,
+				modPlayer.LivingShadowMax2));
 
-			
-			if (dragging)
-			{
-				Vector2 mouse = Main.MouseScreen; // ✅ use this instead
-				area.Left.Set(mouse.X - offset.X, 0f);
-				area.Top.Set(mouse.Y - offset.Y, 0f);
-				area.Recalculate();
-			}
+			// Grab config values
+			var config = ModContent.GetInstance<DTUIConfig>();
 
-			if (IsMouseHovering)
-				Main.LocalPlayer.mouseInterface = true;
+			// Default center position on screen, then apply config offsets
+			float baseX = (Main.screenWidth / 2f) - (area.Width.Pixels / 2f);
+			float baseY = 120f; // Just below the top edge
+			float offsetX = config.RiftBarXPos;
+			float offsetY = config.RiftBarYPos;
+
+			// Set final position
+			area.Left.Set(baseX + offsetX, 0f);
+			area.Top.Set(baseY + offsetY, 0f);
+			area.Recalculate();
+
+			// Center the text horizontally on the bar frame
+			var frameDims = barFrame.GetDimensions();
+			float centerX = frameDims.Position().X + (frameDims.Width / 2f);
+			float textWidth = text.GetDimensions().Width;
+			text.Left.Set(centerX - (textWidth / 2f) - area.Left.Pixels, 0f);
 
 			base.Update(gameTime);
 		}
 
-		private bool dragging = false;
-        private Vector2 offset;
-		
-		private void StartDrag(UIMouseEvent evt, UIElement listeningElement)
-		{
-			dragging = true;
-			offset = evt.MousePosition - new Vector2(area.Left.Pixels, area.Top.Pixels);
-		}
-
-		private void EndDrag(UIMouseEvent evt, UIElement listeningElement)
-		{
-			dragging = false;
-		}
-
-        private void EnableMouseInterface(UIMouseEvent evt, UIElement listeningElement)
-        {
-            Main.LocalPlayer.mouseInterface = true;
-        }
 
 		
 	}
@@ -189,7 +176,7 @@ namespace DestroyerTest.Content.UI
 		}
 
 		public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers) {
-			int resourceBarIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Resource Bars"));
+			int resourceBarIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Mouse Text"));
 			if (resourceBarIndex != -1) {
 				layers.Insert(resourceBarIndex, new LegacyGameInterfaceLayer(
 					"DestroyerTest: Living Shadow Bar",

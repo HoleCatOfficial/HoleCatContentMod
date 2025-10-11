@@ -113,8 +113,8 @@ namespace DestroyerTest.Content.Projectiles
             int Gore3 = Mod.Find<ModGore>("IchorShard3").Type;
 
             var entitySource = Projectile.GetSource_Death();
-            DTConfig cfg = ModContent.GetInstance<DTConfig>();
-            if (cfg.OptimizeGame == false)
+            DTOptimizationsConfig optcfg = ModContent.GetInstance<DTOptimizationsConfig>();
+            if (optcfg.OptimizeGame == false)
             {
                 Gore.NewGore(entitySource, Projectile.position, new Vector2(Main.rand.Next(-4, 4), Main.rand.Next(-4, 4)), Gore1);
                 Gore.NewGore(entitySource, Projectile.position, new Vector2(Main.rand.Next(-4, 4), Main.rand.Next(-4, 4)), Gore2);

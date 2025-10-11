@@ -153,7 +153,7 @@ namespace DestroyerTest.Content.Entities
             NPC.TargetClosest();
             Player player = Main.player[NPC.target];
             DTUtils Utility = new DTUtils();
-            DTConfig cfg = ModContent.GetInstance<DTConfig>();
+            DTMusicConfig muscfg = ModContent.GetInstance<DTMusicConfig>();
 
             if (NPC.alpha > 0)
             {
@@ -179,11 +179,11 @@ namespace DestroyerTest.Content.Entities
             {
                 Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/NodeBoss");
             }
-            if (!Main.dedServ && CurrentAttack == AttackState.Dormant && cfg.NodeIdleMusic == true)
+            if (!Main.dedServ && CurrentAttack == AttackState.Dormant && muscfg.NodeIdleMusic == true)
             {
                 Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/NodeIdle");
             }
-            if (!Main.dedServ && CurrentAttack == AttackState.Dormant && cfg.NodeIdleMusic == false)
+            if (!Main.dedServ && CurrentAttack == AttackState.Dormant && muscfg.NodeIdleMusic == false)
             {
                 Music = MusicID.Crimson;
             }

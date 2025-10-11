@@ -177,6 +177,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             }
 
             DTConfig config = ModContent.GetInstance<DTConfig>();
+            DTOptimizationsConfig optcfg = ModContent.GetInstance<DTOptimizationsConfig>();
 
             if (!returning)
             {
