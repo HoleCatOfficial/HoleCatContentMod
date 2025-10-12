@@ -489,6 +489,11 @@ namespace DestroyerTest.Common
         public static Color Soul3 = new Color(154, 99, 27);
 
         /// <summary>
+        /// Used for all things Hellfire!
+        /// </summary>
+        public static Color HellFire = new Color(254, 121, 2);
+
+        /// <summary>
         /// The color used for drawing the aura and hit effects of the Metallurgy System Javelins.
         /// </summary>
         public static Color JavelinEnergy

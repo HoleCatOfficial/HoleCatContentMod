@@ -1,3 +1,4 @@
+using System;
 using DestroyerTest.Common;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
@@ -29,7 +30,8 @@ namespace DestroyerTest.Content.Particles
             float t = LifetimeCompletion; // 0 → 1 across particle lifetime
             float startScale = 0.01f;
             float endScale = Scale * 1.15f; // 3x initial scale
-            float currentScale = MathHelper.SmoothStep(startScale, endScale, t);
+            float easedT = MathF.Pow(t, 0.5f); // fast linearization for decaying visuals
+            float currentScale = MathHelper.Lerp(startScale, endScale, easedT);
             Scale = currentScale;
 
             // Optional fading near the end of life

@@ -55,14 +55,16 @@ namespace DestroyerTest.Content.Entities
             BloodShoot,
             FleshBombShoot,
             Clouds,
+            TeleDash,
             Nodes,
             Desperation
         }
 
-        public SoundStyle Roar = new SoundStyle("DestroyerTest/Assets/Audio/Corpse/CorpseRoar1") with { PitchVariance = 1.0f };
-        public SoundStyle Kill = new SoundStyle("DestroyerTest/Assets/Audio/Corpse/CorpseRoar2") with { PitchVariance = 1.0f, Volume = 4 };
+        public SoundStyle Roar = new SoundStyle("DestroyerTest/Assets/Audio/Corpse/CorpseRoar1") with { PitchVariance = 1.0f, MaxInstances = 0  };
+        public SoundStyle Kill = new SoundStyle("DestroyerTest/Assets/Audio/Corpse/Enrage") with { PitchVariance = 1.0f, Volume = 4 };
         public SoundStyle Teeth = new SoundStyle("DestroyerTest/Assets/Audio/Corpse/ToothShoot") with { PitchVariance = 1.0f };
-        public SoundStyle Kill2 = new SoundStyle("DestroyerTest/Assets/Audio/Corpse/CorpseRoar3") with { };
+        public SoundStyle Attack = new SoundStyle("DestroyerTest/Assets/Audio/Corpse/Attack", 10) with { PitchVariance = 1.0f, MaxInstances = 0 };
+        public SoundStyle Kill2 = new SoundStyle("DestroyerTest/Assets/Audio/Corpse/DespRoar");
         public SoundStyle Desperation = new SoundStyle("DestroyerTest/Assets/Audio/Corpse/Desperation");
         public static LocalizedText BestiaryText
         {
@@ -132,7 +134,7 @@ namespace DestroyerTest.Content.Entities
             NPC.netID = ModContent.NPCType<WyvernCorpseHead>();
             NPC.BossBar = ModContent.GetInstance<CrimsonBossBar>();
 
-            NPC.alpha = 255;
+            NPC.hide = true;
             NPC.value = Item.buyPrice(gold: 1, silver: 75);
         }
 
@@ -176,39 +178,58 @@ namespace DestroyerTest.Content.Entities
 
         // Multiplayer-synced fields
         public attackType CurrentAttack = attackType.Follow;
+
         public bool SpawnFlag = false;
         public int FollowTime = 0;
+
         public bool IsDashing = false;
         public int DashCount = 0;
         public int DashTime = 80;
         public int DashOverrideTimer = 1800;
+
         public int SpitTime = 0;
+
         public float circleradius = 800f;
         public float circlerotspeed = 0.05f;
         public int CircleTime = 0;
         public int CircleLanceCount = 0;
+
         public int OrganBurstIntervalTimer = 0;
         public int OrganBurstCount = 0;
+
         public bool HasSummoned40PercentMinions = false;
+
         public int BloodTimer = 0;
         public int BloodInterval = 0;
+
         public int MinionSpawnTimer = 0;
         public int MinionSpawnCount = 0;
         public int MinionSpawnType = 0;
+
         public int ToothCount = 5;
         public bool flag1 = false;
         public Vector2 ToothCenter;
+
         public int BombSpawnTimer = 0;
         public int BombSpawnCount = 0;
+
+        public int TeleDashCount = 0;
+        public bool TeleDashGetTelePosition = false;
+        public int TeleDashWaitTime = 240;
+        public Vector2 TelePos;
+
         public bool HasTriggeredNodes = false;
+
         public Vector2 DesperationOrbitCenter;
         public int DesperationTimer = 0;
         public float DesperationVingetteScale = 15;
         public byte DesperationVingetteAlpha = 255;
+
         public float IchorSpiralRotationOffset = 0;
         public float TextureRotationOffset = 0;
         public bool anyNodesAlive;
         public int nodeCount;
+
         public bool SoundFlag1 = false;
         public bool HasShotTeeth = false;
 
@@ -268,7 +289,11 @@ namespace DestroyerTest.Content.Entities
             anyNodesAlive = reader.ReadBoolean();
         }
 
-        
+        public override void DrawBehind(int index)
+        {
+            Main.instance.DrawCacheNPCsBehindNonSolidTiles.Add(index);
+        }
+
 
         public override bool? CanBeHitByProjectile(Projectile projectile)
             {
@@ -568,7 +593,7 @@ namespace DestroyerTest.Content.Entities
                         {
                             if (Main.GameUpdateCount % 20 == 0)
                             {
-                                SoundEngine.PlaySound(Teeth, NPC.Center);
+                                SoundEngine.PlaySound(Attack);
 
                                 float radius = 700f; // distance from player for spawning
                                 circleradius = 700f;
@@ -615,6 +640,7 @@ namespace DestroyerTest.Content.Entities
                         {
                             if (Main.GameUpdateCount % 300 == 0)
                             {
+                                SoundEngine.PlaySound(Attack);
                                 for (int i = 0; i < 5; i++)
                                 {
                                     float angle = MathHelper.TwoPi * i / 5;
@@ -673,7 +699,7 @@ namespace DestroyerTest.Content.Entities
                             OrganBurstIntervalTimer++;
                             if (OrganBurstIntervalTimer == 20)
                             {
-                                SoundEngine.PlaySound(Roar, NPC.Center);
+                                SoundEngine.PlaySound(Attack, NPC.Center);
                                 for (int i = 0; i < numberProjectiles; i++)
                                 {
                                     Vector2 perturbedSpeed = NPC.velocity.RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1)));
@@ -698,7 +724,7 @@ namespace DestroyerTest.Content.Entities
                         {
                             if (Main.GameUpdateCount % 20 == 0)
                             {
-                                SoundEngine.PlaySound(Roar, NPC.Center);
+                                SoundEngine.PlaySound(Attack, NPC.Center);
                                 for (int i = 0; i < numberProjectiles; i++)
                                 {
                                     Vector2 perturbedSpeed = NPC.velocity.RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1)));
@@ -740,6 +766,62 @@ namespace DestroyerTest.Content.Entities
                         ResetStats();
                     }
                     break;
+                case attackType.TeleDash:
+                    {
+                        if (EternityIsActive())
+                        {
+                            Rectangle Screen = new Rectangle((int)Main.screenPosition.X, (int)Main.screenPosition.Y, Main.screenWidth, Main.screenHeight);
+                            DTUtils Utility = new DTUtils();
+                            
+                            if (!TeleDashGetTelePosition)
+                            {
+                                Vector2 Teleoffset = Main.rand.NextVector2Circular(1200f, 1200f);
+                                TelePos = player.Center + Teleoffset;
+                                TeleDashGetTelePosition = true;
+                            }
+                            int type = Main.rand.Next(new int[]
+                                {
+                                ModContent.ProjectileType<OrganProjectile_Variant1>(),
+                                ModContent.ProjectileType<OrganProjectile_Variant2>(),
+                                ModContent.ProjectileType<OrganProjectile_Variant3>(),
+                                ModContent.ProjectileType<OrganProjectile_Variant4>()
+                                });
+
+                            if (TeleDashGetTelePosition)
+                            {
+                                Dust.NewDust(new Vector2(TelePos.X - 20, TelePos.Y - 20), 40, 40, DustID.IchorTorch, Main.rand.NextFloat(-2, 2), Main.rand.NextFloat(-2, 2), 0, default, 2f);
+                            }
+
+                            if (TeleDashWaitTime > 0 && TeleDashGetTelePosition)
+                            {
+                                TeleDashWaitTime--;
+                            }
+
+                            if (TeleDashGetTelePosition && TeleDashWaitTime <= 0)
+                            {
+                                SoundEngine.PlaySound(Attack);
+                                TeleDashCount++;
+                                NPC.Center = TelePos;
+                                float DashDir = (player.Center - NPC.Center).ToRotation();
+                                NPC.velocity = DashDir.ToRotationVector2() * 45;
+                                Utility.RadialSpreadProjectile(type, Main.rand.Next(4, 14), TelePos, 5, 4, Main.rand.Next(10, 25));
+                                TeleDashWaitTime = 240;
+                                TeleDashGetTelePosition = false;
+                            }
+
+                            if (TeleDashCount > 9)
+                            {
+                                CurrentAttack = attackType.BloodShoot;
+                                ResetStats();
+                            }
+                        }
+                        else
+                        {
+                            CurrentAttack = attackType.BloodShoot;
+                            ResetStats();
+                        }
+                        break;
+                    }
 
                 case attackType.SummonAxes:
                     {
@@ -753,7 +835,7 @@ namespace DestroyerTest.Content.Entities
                         }
                         else
                         {
-                            CurrentAttack = attackType.BloodShoot;
+                            CurrentAttack = attackType.TeleDash;
                             ResetStats();
                         }
                     }
@@ -844,6 +926,7 @@ namespace DestroyerTest.Content.Entities
                         {
                             if (Main.GameUpdateCount % 40 == 0)
                             {
+                                SoundEngine.PlaySound(Attack, NPC.Center);
                                 int numProjectiles = Main.rand.Next(2, 5);
                                 float rotationStep = MathHelper.TwoPi / numProjectiles;
 
@@ -964,6 +1047,7 @@ namespace DestroyerTest.Content.Entities
             BombSpawnTimer = 0;
             BombSpawnCount = 0;
             CircleLanceCount = 0;
+            TeleDashCount = 0;
             ToothCount = 10;
             HasShotTeeth = false;
             flag1 = false;
@@ -1222,6 +1306,14 @@ namespace DestroyerTest.Content.Entities
 
         public override void HitEffect(NPC.HitInfo hit)
         {
+            DTOptimizationsConfig optcfg = ModContent.GetInstance<DTOptimizationsConfig>();
+            if (!optcfg.DisableExcessDusts)
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    Dust.NewDust(Main.rand.NextVector2FromRectangle(NPC.Hitbox), 20, 20, DustID.Blood, Main.rand.NextFloat(-1, 1), Main.rand.NextFloat(-1, 1), 0, default, 2);
+                }
+            }
             if (NPC.life <= 0)
             {
                 for (int i = 0; i < 4; i++)

@@ -1,5 +1,6 @@
 ﻿using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Dusts;
 using DetroyerTest.Content.RiftBiome;
 using Microsoft.Xna.Framework;
 using System;
@@ -56,9 +57,14 @@ namespace DestroyerTest.Content.RiftBiome
 		public override void OnInBiome(Player player)
 		{
 			ModifyMusic(Music, Priority);
-			if (!player.HasBuff<StoneLungs>() && !player.HasBuff<AirSeal>()) {
+			if (!player.HasBuff<StoneLungs>() && !player.HasBuff<AirSeal>())
+			{
 				player.AddBuff(BuffID.Suffocation, 360); // Apply the suffocation buff if all conditions are met
 			}
+			for (int t = 0; t < 5; t++)
+            {
+				Dust.NewDust(Main.screenPosition, Main.screenWidth, Main.screenHeight, ModContent.DustType<RiftDust>(), Main.rand.NextFloat(-2, 2), Main.rand.NextFloat(-1, -3));
+            }
 		}
 
 		public void ModifyMusic(int music, SceneEffectPriority priority)

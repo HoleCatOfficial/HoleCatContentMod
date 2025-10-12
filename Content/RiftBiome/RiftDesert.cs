@@ -1,7 +1,10 @@
+using DestroyerTest.Common;
 using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Resources.Cloths;
 using DetroyerTest.Content.RiftBiome;
+using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Steamworks;
 using System;
@@ -52,35 +55,28 @@ namespace DestroyerTest.Content.RiftBiome
 				}
                 if (Sandstorm.Happening)
                 {
-                    return MusicLoader.GetMusicSlot(Mod, "Assets/Music/RiftEmptiness");
+                    return MusicLoader.GetMusicSlot(Mod, "Assets/Music/RiftSandstorm");
                 }
 				else
 				{
-					return MusicLoader.GetMusicSlot(Mod, "Assets/Music/RiftV2");
+					return MusicLoader.GetMusicSlot(Mod, "Assets/Music/RiftDesert");
 				}
 				
 			}
 		}
 
-       public void SandstormSkyFX()
-        {
-            if (Sandstorm.Happening)
-            {
-                Main.moonPhase = 4; // Hide the moon
-                SkyManager.Instance.Activate("DestroyerTest:RiftDarkSky"); // Enable the black sky
-            }
-            else
-            {
-                SkyManager.Instance.Deactivate("DestroyerTest:RiftDarkSky"); // Restore normal sky
-            }
-        }
-
 		public override void OnInBiome(Player player)
 		{
 			ModifyMusic(Music, Priority);
-			if (!player.HasBuff<StoneLungs>() && !player.HasBuff<AirSeal>()) {
+			if (!player.HasBuff<StoneLungs>() && !player.HasBuff<AirSeal>())
+			{
 				player.AddBuff(BuffID.Suffocation, 360); // Apply the suffocation buff if all conditions are met
 			}
+			Rectangle ScreenRect = new Rectangle((int)Main.screenPosition.X, (int)Main.screenPosition.Y, Main.screenWidth, Main.screenHeight);
+			for (int t = 0; t < 5; t++)
+            {
+				Dust.NewDust(Main.screenPosition, Main.screenWidth, Main.screenHeight, ModContent.DustType<RiftDust>(), Main.rand.NextFloat(-2, 2), Main.rand.NextFloat(-1, -3));
+            }
 		}
 
 		public void ModifyMusic(int music, SceneEffectPriority priority)
@@ -103,13 +99,6 @@ namespace DestroyerTest.Content.RiftBiome
 		public override string BackgroundPath => base.BackgroundPath;
 		public override Color? BackgroundColor => base.BackgroundColor;
 		public override string MapBackground => BackgroundPath; // Re-uses Bestiary Background for Map Background
-
-		public void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
-			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
-				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface, // Define biome appearance
-				new FlavorTextBestiaryInfoElement("A lifeless void, populeted by naught but anerobic bacterium. The reason being all the smalll flames springing up in any crevice where combustible material gathers. Living shadows are very unstable, and letting them encase the land was likely never intended by nature.") // Modify description
-			});
-		}
 
 		// Calculate when the biome is active.
 		public override bool IsBiomeActive(Player player) {

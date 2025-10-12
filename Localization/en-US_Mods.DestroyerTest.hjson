@@ -3037,6 +3037,31 @@ Items: {
 		Tooltip: ""
 		DisplayName: Borvis
 	}
+
+	PetrifiedChaplet: {
+		DisplayName: Petrified Chaplet
+		Tooltip: ""
+	}
+
+	PetrifiedChestplate: {
+		DisplayName: Petrified Chestplate
+		Tooltip: ""
+	}
+
+	PetrifiedGreaves: {
+		DisplayName: Petrified Greaves
+		Tooltip: ""
+	}
+
+	Item_RiftIce: {
+		DisplayName: Item_ Rift Ice
+		Tooltip: ""
+	}
+
+	Item_RiftSnow: {
+		DisplayName: Item_ Rift Snow
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
@@ -3812,6 +3837,8 @@ NPCs: {
 	TenebrousConstruct.DisplayName: Tenebrous Construct
 	CorruptSigil.DisplayName: Corrupt Sigil
 	TenebrousSlinger.DisplayName: Tenebrous Slinger
+	RiftSlime.DisplayName: Rift Slime
+	PetrifiedHead.DisplayName: Petrified Head
 }
 
 Keybinds: {
@@ -3869,6 +3896,16 @@ Biomes: {
 	RiftBestiary: {
 		TownNPCDialogueName: the Rift Bestiary
 		DisplayName: Rift Bestiary
+	}
+
+	RiftTundra: {
+		DisplayName: Rift Tundra
+		TownNPCDialogueName: the Rift Tundra
+	}
+
+	RiftUnderground: {
+		DisplayName: Rift Underground
+		TownNPCDialogueName: the Rift Underground
 	}
 }
 

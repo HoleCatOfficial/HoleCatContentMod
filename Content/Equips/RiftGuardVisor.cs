@@ -35,7 +35,7 @@ namespace DestroyerTest.Content.Equips
 
 		// UpdateArmorSet allows you to give set bonuses to the armor.
 		public override void UpdateArmorSet(Player player) {
-			player.AddBuff(ModContent.BuffType<RiftBallBuff>(), 3600); // Adds the RiftBallBuff for 60 seconds (3600 ticks)
+			player.AddBuff(ModContent.BuffType<RiftBallBuff>(), 3600);
 			player.GetDamage(DamageClass.Ranged) += 0.20f;
 			player.moveSpeed *= 1.75f;
 		}

@@ -479,8 +479,6 @@ namespace DestroyerTest.Content.Entities
                         }
                         else
                         {
-                            stateWeights[AttackState.ShootClone] = 0.1f;
-                            stateWeights[AttackState.Lightning] = 1.0f;
                             ResetState();
                         }
                     }
@@ -520,7 +518,6 @@ namespace DestroyerTest.Content.Entities
                             }
                             if (HasCloned == true)
                             {
-                                stateWeights[AttackState.Minefield] = 0.2f;
                                 ResetState();
                             }
                         }
@@ -731,7 +728,6 @@ namespace DestroyerTest.Content.Entities
 
                             if (HasBlownMinefield)
                             {
-                                stateWeights[AttackState.Minefield] = 0.2f;
                                 ResetState();
                             }
                         }
@@ -761,7 +757,6 @@ namespace DestroyerTest.Content.Entities
 
                         if (HasTeleportedandShotStars)
                         {
-                            stateWeights[AttackState.Minefield] = 0.2f;
                             ResetState();
                         }
 
@@ -839,7 +834,7 @@ namespace DestroyerTest.Content.Entities
             { AttackState.ShootStars2, 1.0f },
             { AttackState.ShootStars3, 1.0f },
             { AttackState.ShootSwords, 1.0f },
-            { AttackState.TeleStars, 0.7f },
+            { AttackState.TeleStars, 1f },
             { AttackState.StellarFlame, 1.0f }
             // Add more states as needed
         };

@@ -1,4 +1,5 @@
 using System.Linq;
+using DestroyerTest.Common;
 using DestroyerTest.Content.BossBar;
 using DestroyerTest.Content.Buffs;
 using Microsoft.Xna.Framework;
@@ -84,6 +85,8 @@ namespace DestroyerTest.Content.Entities
 
             NPC.netAlways = true;
             NPC.dontCountMe = true;
+            NPC.hide = true;
+            NPC.realLife = ModContent.NPCType<WyvernCorpseHead>();
         }
 
         public override bool? DrawHealthBar(byte hbPosition, ref float scale, ref Vector2 position) => new bool?(false);
@@ -127,11 +130,24 @@ namespace DestroyerTest.Content.Entities
 
         public override void HitEffect(NPC.HitInfo hit)
         {
+            DTOptimizationsConfig optcfg = ModContent.GetInstance<DTOptimizationsConfig>();
+            if (!optcfg.DisableExcessDusts)
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    Dust.NewDust(Main.rand.NextVector2FromRectangle(NPC.Hitbox), 20, 20, DustID.Blood, Main.rand.NextFloat(-1, 1), Main.rand.NextFloat(-1, 1), 0, default, 2);
+                }
+            }
             if (NPC.life <= 0)
             {
                 for (int i = 0; i < 4; i++)
                     Gore.NewGore(NPC.GetSource_Death(), NPC.position, Vector2.Zero, Main.rand.Next(61, 64), 1f);
             }
+        }
+
+        public override void DrawBehind(int index)
+        {
+            Main.instance.DrawCacheNPCsBehindNonSolidTiles.Add(index);
         }
     }
 }
