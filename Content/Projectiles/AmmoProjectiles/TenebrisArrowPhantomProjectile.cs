@@ -14,7 +14,7 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
 {
-    public class TenebrisArrowProjectile : ModProjectile
+    public class TenebrisArrowPhantomProjectile : ModProjectile
     {
         public override void SetStaticDefaults()
         {
@@ -31,7 +31,7 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
 
         public override void SetDefaults()
         {
-            Projectile.width = 54;
+            Projectile.width = 50;
             Projectile.height = 22;
             Projectile.friendly = true;
             Projectile.DamageType = DamageClass.Ranged;
@@ -92,10 +92,6 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
             }
             Projectile.rotation = Projectile.velocity.ToRotation();
             Lighting.AddLight(Projectile.Center, colorofLight.ToVector3());
-            if (Projectile.timeLeft <= 120)
-            {
-                Projectile.velocity.Y += 0.015f;
-            }
         }
 
         public override bool PreDraw(ref Color lightColor)
@@ -114,7 +110,9 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
 
                 float width = MathHelper.Lerp(0.01f, 0.000007f, i / 30);
                 float alpha = MathHelper.Lerp(1f, 0f, i / 30);
-                Color color = colorofLight * alpha;
+                Vector3 pastelvec = colorofLight.ToVector3() + new Vector3(20, 20, 20);
+                Color pastel = new Color(pastelvec.X, pastelvec.Y, pastelvec.Z);
+                Color color = pastel * alpha;
 
                 Main.spriteBatch.Draw(
                     DTAssetLib.Square.Value,
@@ -138,24 +136,6 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
             if (Mode == 1)
             {
                 target.AddBuff(ModContent.BuffType<ShimmeringFlames>(), 240);
-                for (int i = 0; i < 4; i++)
-                {
-                    float angle = MathHelper.PiOver4 + i * MathHelper.PiOver2;
-                    Vector2 spawnOffset = new Vector2(80, 0).RotatedBy(angle);
-                    Vector2 spawnPos = target.Center + spawnOffset;
-                    Vector2 velocity = (target.Center - spawnPos).SafeNormalize(Vector2.UnitY) * 8f;
-
-                    Projectile.NewProjectile(
-                        Projectile.GetSource_FromThis(),
-                        spawnPos,
-                        velocity,
-                        ModContent.ProjectileType<TenebrisArrowPhantomProjectile>(),
-                        Projectile.damage / 2,
-                        Projectile.knockBack * 0.5f,
-                        Projectile.owner,
-                        ai0: Mode
-                    );
-                }
             }
         }
 
@@ -166,7 +146,6 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
             if (Mode == 2)
             {
                 target.AddBuff(ModContent.BuffType<ShimmeringFlames>(), 240);
-                
             }
         }
 

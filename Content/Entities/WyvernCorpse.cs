@@ -376,6 +376,17 @@ namespace DestroyerTest.Content.Entities
             NPC.TargetClosest();
             Player player = Main.player[NPC.target];
 
+            if (Main.netMode == NetmodeID.Server && Main.GameUpdateCount % 1200 == 0)
+            {
+                var alivePlayers = Main.player.Where(p => p.active && !p.dead).ToList();
+                if (alivePlayers.Count > 0)
+                {
+                    var newTarget = Main.rand.Next(alivePlayers.Count);
+                    NPC.target = alivePlayers[newTarget].whoAmI;
+                    NPC.netUpdate = true;
+                }
+            }
+
             Center = NPC.Center;
 
             float circleangle = Main.GameUpdateCount * circlerotspeed;
@@ -601,7 +612,16 @@ namespace DestroyerTest.Content.Entities
                 case attackType.IchorRam:
                     {
                         SpitTime++;
-                        if (SpitTime % 20 == 0)
+                        int interval = 10;
+                        if (EternityIsActive())
+                        {
+                            interval = 8;
+                        }
+                        if (!EternityIsActive())
+                        {
+                            interval = 20;
+                        }
+                        if (SpitTime % interval == 0)
                         {
                             Projectile IchorSpit = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), NPC.Center, NPC.velocity * 1.5f, ProjectileID.GoldenShowerHostile, 40, 2);
                         }
@@ -837,9 +857,9 @@ namespace DestroyerTest.Content.Entities
                                 TeleDashCount++;
                                 NPC.Center = TelePos;
                                 float DashDir = (player.Center - NPC.Center).ToRotation();
-                                if (TeleDashCount < 8)
+                                if (TeleDashCount < 9)
                                 {
-                                    NPC.velocity = DashDir.ToRotationVector2() * 65;
+                                    NPC.velocity = DashDir.ToRotationVector2() * 85;
                                 }
                                 else
                                 {
