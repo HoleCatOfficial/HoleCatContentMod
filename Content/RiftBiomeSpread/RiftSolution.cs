@@ -5,6 +5,7 @@ using DestroyerTest.Content.RiftBiome.RiftSurfaceResources;
 using DestroyerTest.Content.RiftBiome.RiftTundraResources;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -15,6 +16,7 @@ namespace DestroyerTest.Content.RiftBiomeSpread
 		public override void SetStaticDefaults() {
 			Item.ResearchUnlockCount = 99;
 			ItemID.Sets.SortingPriorityTerraforming[Type] = 101; // One past dirt solution
+			Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(5, 7));
 		}
 
 		public override void SetDefaults() {
