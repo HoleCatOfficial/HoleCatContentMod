@@ -23,6 +23,7 @@ namespace DestroyerTest.Common
 {
     public class DTUtils
     {
+        public static DTUtils instance = new DTUtils();
         public static bool PromiseEquipped = false;
         public static bool StellarGogglesEquipped = false;
         public static bool NodeCharmEquipped = false;
@@ -545,6 +546,32 @@ namespace DestroyerTest.Common
                     return Color.Lerp(new Color(190, 30, 209), new Color(0, 174, 238), time - 3f);
             }
         }
+
+        public static Color IchorCrystal1 = new Color(129, 64, 0);
+        public static Color IchorCrystal2 = new Color(169, 101, 0);
+        public static Color IchorCrystal3 = new Color(197, 165, 13);
+        public static Color IchorCrystal4 = new Color(255, 205, 90);
+
+        public static Color IchorCrystalGradient
+        {
+            get
+            {
+                float time = (Main.GlobalTimeWrappedHourly % 3f);
+
+                if (time < 1f)
+                    return Color.Lerp(IchorCrystal1, IchorCrystal2, time);
+                else if (time < 2f)
+                    return Color.Lerp(IchorCrystal2, IchorCrystal3, time - 1f);
+                else if (time < 3f)
+                    return Color.Lerp(IchorCrystal3, IchorCrystal4, time - 2f);
+                else if (time < 4f)
+                    return Color.Lerp(IchorCrystal4, IchorCrystal3, time - 3f);
+                else if (time < 5f)
+                    return Color.Lerp(IchorCrystal3, IchorCrystal2, time - 4f);
+                else
+                    return Color.Lerp(IchorCrystal2, IchorCrystal1, time - 5f);
+            }
+        }
     }
 
     /// <summary>
@@ -595,7 +622,8 @@ namespace DestroyerTest.Common
             return ModContent.Request<Texture2D>($"{ParticlePath}/Cyclone{Variant}");
         }
         public static Asset<Texture2D> FlameTelegraph = ModContent.Request<Texture2D>($"{ParticlePath}/CursedFlamesTelegraph");
-        public static Asset<Texture2D> ArrowTelegraph = ModContent.Request<Texture2D>($"{ParticlePath}/ArrowTelegraph");
+        public static Asset<Texture2D> ArrowTelegraph = ModContent.Request<Texture2D>($"{ExtrasPath}/DashTelegraphArrow");
+        public static Asset<Texture2D> ArrowTelegraphCont = ModContent.Request<Texture2D>($"{ExtrasPath}/DashTelegraphArrowContinuous");
         public static Asset<Texture2D> Warning = ModContent.Request<Texture2D>($"{ParticlePath}/WarningTriangle");
         public static Asset<Texture2D> Trail(int Variant)
         {
@@ -632,7 +660,9 @@ namespace DestroyerTest.Common
         public static Asset<Texture2D> TenebrousConstructWingRight = ModContent.Request<Texture2D>($"{ExtrasPath}/TenebrousConstructWingRight");
         public static Asset<Texture2D> WyvernSoulDash = ModContent.Request<Texture2D>($"{ExtrasPath}/WyvernSoulDash");
         public static Asset<Texture2D> CorruptSigil = ModContent.Request<Texture2D>($"{ExtrasPath}/CorruptSigil");
+        public static Asset<Texture2D> CrimsonSigil = ModContent.Request<Texture2D>($"{ExtrasPath}/CrimsonSigil");
         public static Asset<Texture2D> StarFuryOutline = ModContent.Request<Texture2D>($"{ExtrasPath}/StarfuryCloneOutline");
+        public static Asset<Texture2D> NodeBossPikeOutline = ModContent.Request<Texture2D>($"{ExtrasPath}/NodeBossDistendedPikeOutline");
         //
         // Sounds
         //

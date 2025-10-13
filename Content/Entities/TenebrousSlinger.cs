@@ -4,6 +4,7 @@ using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles;
+using DestroyerTest.Content.Projectiles.AmmoProjectiles;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.RiftBiome;
 using DestroyerTest.Content.Tools;
@@ -71,7 +72,19 @@ namespace DestroyerTest.Content.Entities
             });
         }
 
+        SoundStyle Shot = new SoundStyle("DestroyerTest/Assets/Audio/TenebrisSlinger/TenebrisSlingerShoot", 3)
+        {
+            PitchVariance = 0.2f,
+            MaxInstances = 0,
+        };
+
         SoundStyle Stun = new SoundStyle("DestroyerTest/Assets/Audio/TenebrousConstruct/Stun", 5)
+        {
+            PitchVariance = 0.2f,
+            MaxInstances = 0,
+        };
+
+        SoundStyle Idle = new SoundStyle("DestroyerTest/Assets/Audio/TenebrousConstruct/Idle", 8)
         {
             PitchVariance = 0.2f,
             MaxInstances = 0,
@@ -149,6 +162,8 @@ namespace DestroyerTest.Content.Entities
                 NPC.dontTakeDamage = false;
             }
 
+            Lighting.AddLight(NPC.Center, ColorLib.TenebrisGradient.ToVector3());
+
             
 
             switch (CurrentState)
@@ -158,10 +173,16 @@ namespace DestroyerTest.Content.Entities
                         {
                             NPC.velocity = Vector2.Lerp(NPC.velocity, direction * 4f, 0.05f);
 
-                            if (Main.GameUpdateCount % 120 == 0)
+                            if (Main.GameUpdateCount % 60 == 0)
                             {
-                                Vector2 Shoot = new Vector2(10, 0).RotatedBy(NPC.rotation);
-                                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Shoot, ModContent.ProjectileType<TenebrisDart>(), 30, 1);
+                                Vector2 Shoot = new Vector2(50, 0).RotatedBy(NPC.rotation);
+                                SoundEngine.PlaySound(Shot, NPC.Center);
+                                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Shoot * 0.75f, ModContent.ProjectileType<TenebrisArrowProjectile>(), 30, 1, ai0: 2);
+                            }
+
+                            if (Main.rand.NextBool(6) && Main.GameUpdateCount % 60 == 0)
+                            {
+                                SoundEngine.PlaySound(Idle, NPC.Center);
                             }
 
                             if (player.HeldItem.type == ModContent.ItemType<ShiningObelisk>() && player.itemAnimation == player.itemAnimationMax - 10)
@@ -191,13 +212,17 @@ namespace DestroyerTest.Content.Entities
                     {
                         NPC.velocity = Vector2.Lerp(NPC.velocity, direction * 3f, 0.05f);
                         if (player.HeldItem.type == ModContent.ItemType<ShiningObelisk>() && player.itemAnimation == player.itemAnimationMax - 10)
-                            {
-                                ScreenFlashSystem.FlashIntensity = 1.0f;
-                                SoundEngine.PlaySound(Stun, NPC.Center);
-                                CurrentState = State.Stunned;
-                                StunTimer = 1200;
-                                NPC.netUpdate = true;
-                            }
+                        {
+                            ScreenFlashSystem.FlashIntensity = 1.0f;
+                            SoundEngine.PlaySound(Stun, NPC.Center);
+                            CurrentState = State.Stunned;
+                            StunTimer = 1200;
+                            NPC.netUpdate = true;
+                        }
+                        if (Main.rand.NextBool(6) && Main.GameUpdateCount % 60 == 0)
+                        {
+                            SoundEngine.PlaySound(Idle, NPC.Center);
+                        }
                         if (Main.GameUpdateCount % 240 == 0)
                         {
                             for (int e = 0; e < 4; e++)
@@ -217,6 +242,7 @@ namespace DestroyerTest.Content.Entities
                 case State.Stunned:
                     {
                         {
+                            NPC.rotation = direction.ToRotation();
                             if (StunTimer > 0)
                             {
                                 NPC.velocity *= 0.7f;
@@ -241,8 +267,7 @@ namespace DestroyerTest.Content.Entities
                         {
                             if (!ShootFlag1)
                             {
-                                Vector2 Shoot = new Vector2(10, 0).RotatedBy(NPC.rotation);
-                                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Shoot * 2, ModContent.ProjectileType<TenebrisLance>(), 30, 1);
+                                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, direction * 20, ModContent.ProjectileType<TenebrisLance>(), 30, 1);
                                 ShootFlag1 = true;
                             }
                             if (ShootFlag1)
@@ -257,6 +282,11 @@ namespace DestroyerTest.Content.Entities
 
         }
 
+        public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            Asset<Texture2D> GlowMask = ModContent.Request<Texture2D>($"{Texture}_GlowMask");
+            Main.EntitySpriteDraw(GlowMask.Value, NPC.Center - Main.screenPosition, null, Color.White, NPC.rotation, new Vector2(NPC.width / 2, NPC.height / 2), NPC.scale, SpriteEffects.None, 0);
+        }
 
 
         public override void OnHitPlayer(Player target, Player.HurtInfo hurtInfo)
@@ -275,18 +305,14 @@ namespace DestroyerTest.Content.Entities
         {
             PRTLoader.NewParticle<Boom5>(NPC.Center, Vector2.Zero, ColorLib.TenebrisGradient, 1f);
             PRTLoader.NewParticle<BloomRing>(NPC.Center, Vector2.Zero, ColorLib.TenebrisGradient, 1f);
-            int Gore1 = Mod.Find<ModGore>("TenebrousConstructGore1").Type;
-            int Gore2 = Mod.Find<ModGore>("TenebrousConstructGore2").Type;
-            int Gore3 = Mod.Find<ModGore>("TenebrousConstructGore3").Type;
-            int Gore4 = Mod.Find<ModGore>("TenebrousConstructGore4").Type;
-            int Gore5 = Mod.Find<ModGore>("TenebrousConstructGore5").Type;
+            int Gore1 = Mod.Find<ModGore>("TenebrousSlingerGore1").Type;
+            int Gore2 = Mod.Find<ModGore>("TenebrousSlingerGore2").Type;
+            int Gore3 = Mod.Find<ModGore>("TenebrousSlingerGore3").Type;
 
             var entitySource = NPC.GetSource_Death();
             Gore.NewGore(entitySource, NPC.position, new Vector2(Main.rand.Next(-4, 4), Main.rand.Next(0, 10)), Gore1);
             Gore.NewGore(entitySource, NPC.position, new Vector2(Main.rand.Next(-4, 4), Main.rand.Next(0, 10)), Gore2);
             Gore.NewGore(entitySource, NPC.position, new Vector2(Main.rand.Next(-4, 4), Main.rand.Next(0, 10)), Gore3);
-            Gore.NewGore(entitySource, NPC.position, new Vector2(Main.rand.Next(-4, 4), Main.rand.Next(0, 10)), Gore4);
-            Gore.NewGore(entitySource, NPC.position, new Vector2(Main.rand.Next(-4, 4), Main.rand.Next(0, 10)), Gore5);
 
             Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.TintableDustLighted, NPC.velocity.X * 0.7f, NPC.velocity.Y * 0.7f, 0, ColorLib.TenebrisGradient, 1);
             int numProjectiles = 36;

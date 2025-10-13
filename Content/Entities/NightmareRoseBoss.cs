@@ -1248,6 +1248,17 @@ namespace DestroyerTest.Content.Entities
         public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             base.PostDraw(spriteBatch, screenPos, drawColor);
+            Asset<Texture2D> GlowMask = ModContent.Request<Texture2D>($"{Texture}_GlowMask");
+            SpriteEffects FX = SpriteEffects.None;
+            if (NPC.spriteDirection == 1)
+            {
+                FX = SpriteEffects.None;
+            }
+            if (NPC.spriteDirection == -1)
+            {
+                FX = SpriteEffects.FlipHorizontally;
+            }
+            Main.EntitySpriteDraw(GlowMask.Value, NPC.Center - Main.screenPosition, null, Color.White, NPC.rotation, GlowMask.Value.Size() / 2, NPC.scale, FX, 0);
             if (FlameTimer < 240 && FlameTimer >= 0 && currentState == AttackState.CursedFlames && !EternityIsActive())
             {
                 DrawTelegraph(NPCHead, PlayerCenter, DTAssetLib.FlameTelegraph.Value);
@@ -1996,7 +2007,7 @@ namespace DestroyerTest.Content.Entities
 
         public override void AI()
         {
-            bool ParentAlive = Main.npc.Any(n => n.active && n.type == ModContent.NPCType<NightmareRoseBoss>());
+            bool ParentAlive = Main.npc.Any(n => n.active && (n.type == ModContent.NPCType<NightmareRoseBoss>() || n.type == ModContent.NPCType<WyvernCorpseHead>()));
             if (ParentAlive)
             {
                 Projectile.active = true;
@@ -2005,54 +2016,73 @@ namespace DestroyerTest.Content.Entities
             {
                 Projectile.active = false;
             }
+            Projectile.Center = Main.LocalPlayer.Center;
         }
 
         public override bool PreDraw(ref Color lightColor)
         {
             Texture2D BGTex = DTAssetLib.TilableNoise(8).Value;
+            Texture2D BGTex2 = DTAssetLib.TilableNoise(8).Value;
             SpriteBatch spriteBatch = Main.spriteBatch;
             DTUtils Utility = new DTUtils();
+            DTOptimizationsConfig optcfg = ModContent.GetInstance<DTOptimizationsConfig>();
+
             float t = (float)Math.Sin(Main.GameUpdateCount / 60f) * 0.5f + 0.5f;
             Color drawColor = Color.Lerp(Color.Black, ColorLib.TenebrisGradient * 0.5f, t);
-            Utility.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
-            float scrollSpeedX = 160f;
-            float scrollSpeedY = 20f;
-            float time = (float)Main.GameUpdateCount / 60f;
-
-            float scrollOffsetX = (time * scrollSpeedX) % BGTex.Width;
-            float scrollOffsetY = (time * scrollSpeedY) % BGTex.Height;
-
-            int screenW = Main.screenWidth;
-            int screenH = Main.screenHeight;
-
-            // --- draw one tile beyond each edge ---
-            float startX = -scrollOffsetX - BGTex.Width;
-            float startY = -scrollOffsetY - BGTex.Height;
-            float endX = screenW + BGTex.Width;
-            float endY = screenH + BGTex.Height;
-
-            for (float x = startX; x < endX; x += BGTex.Width)
+            if (!optcfg.OptimizeGame)
             {
-                for (float y = startY; y < endY; y += BGTex.Height)
-                {
-                    spriteBatch.Draw(
-                        BGTex,
-                        new Vector2(x, y),
-                        null,
-                        drawColor,
-                        0f,
-                        Vector2.Zero,
-                        1f,
-                        SpriteEffects.None,
-                        0f
-                    );
-                }
-            }
+                Utility.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
-            Utility.ReturnToDefaultDrawing(spriteBatch);
+                float time = (float)Main.GameUpdateCount / 60f;
+
+                // --- Layer 1 scroll parameters ---
+                float scrollSpeedX1 = 600f;
+                float scrollSpeedY1 = 30f;
+
+                float scrollOffsetX1 = (time * scrollSpeedX1) % BGTex.Width;
+                float scrollOffsetY1 = (time * scrollSpeedY1) % BGTex.Height;
+
+                int screenW = Main.screenWidth;
+                int screenH = Main.screenHeight;
+
+                // --- draw one tile beyond each edge ---
+                float startX = -BGTex.Width;
+                float startY = -BGTex.Height;
+                float endX = screenW + BGTex.Width;
+                float endY = screenH + BGTex.Height;
+
+                // --- Draw first layer ---
+                for (float x = -scrollOffsetX1 + startX; x < endX; x += BGTex.Width)
+                {
+                    for (float y = -scrollOffsetY1 + startY; y < endY; y += BGTex.Height)
+                    {
+                        spriteBatch.Draw(BGTex, new Vector2(x, y), null, drawColor, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+                    }
+                }
+
+                float scrollSpeedX2 = 250f;
+                float scrollSpeedY2 = -60f; // opposite direction for contrast
+
+                float scrollOffsetX2 = (time * scrollSpeedX2) % BGTex2.Width;
+                float scrollOffsetY2 = (time * scrollSpeedY2) % BGTex2.Height;
+
+                Color drawColor2 = drawColor * 0.8f; // slightly dimmer to layer properly
+
+                // --- Draw second layer ---
+                for (float x = -scrollOffsetX2 + startX; x < endX; x += BGTex2.Width)
+                {
+                    for (float y = -scrollOffsetY2 + startY; y < endY; y += BGTex2.Height)
+                    {
+                        spriteBatch.Draw(BGTex2, new Vector2(x, y), null, drawColor2, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+                    }
+                }
+
+                Utility.ReturnToDefaultDrawing(spriteBatch);
+            }
             return false;
         }
+
 
 
     }

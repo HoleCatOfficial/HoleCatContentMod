@@ -4,6 +4,7 @@ using DestroyerTest.Content.BossBar;
 using DestroyerTest.Content.Buffs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 
 using Terraria;
 using Terraria.ID;
@@ -124,6 +125,21 @@ namespace DestroyerTest.Content.Entities
             if (NPC.spriteDirection == 1) effects = SpriteEffects.FlipHorizontally;
             spriteBatch.Draw(texture, new Vector2(NPC.position.X - Main.screenPosition.X + (NPC.width / 2) - texture.Width * NPC.scale / 2f + origin.X * NPC.scale, NPC.position.Y - Main.screenPosition.Y + NPC.height - texture.Height * NPC.scale + 4f + origin.Y * NPC.scale + 56f), new Rectangle?(NPC.frame), drawColor, NPC.rotation, origin, NPC.scale, effects, 0f);
             return false;
+        }
+
+        public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            Asset<Texture2D> GlowMask = ModContent.Request<Texture2D>($"{Texture}_GlowMask");
+            SpriteEffects FX = SpriteEffects.None;
+            if (NPC.spriteDirection == 1)
+            {
+                FX = SpriteEffects.None;
+            }
+            if (NPC.spriteDirection == -1)
+            {
+                FX = SpriteEffects.FlipHorizontally;
+            }
+            Main.EntitySpriteDraw(GlowMask.Value, NPC.Center - Main.screenPosition, null, Color.White, NPC.rotation, GlowMask.Value.Size() / 2, NPC.scale, FX, 0);
         }
 
         public override void HitEffect(NPC.HitInfo hit)

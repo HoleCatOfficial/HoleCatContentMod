@@ -50,8 +50,6 @@ namespace DestroyerTest.Content.Projectiles
             lightColor = Color.Red;
             SpriteBatch spriteBatch = Main.spriteBatch;
             Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
-			
-			Texture2D pixel = Terraria.GameContent.TextureAssets.MagicPixel.Value;
 
             for (int i = 0; i < TrailPositions.Count - 1; i++)
             {
@@ -69,14 +67,13 @@ namespace DestroyerTest.Content.Projectiles
                 float alpha = MathHelper.Lerp(1f, 0f, i / (float)TrailLength);
                 Color color = Color.Red * alpha;
 
-                // Instead of stepping pixel by pixel, just draw one scaled pixel segment:
                 Main.spriteBatch.Draw(
-                    pixel,
+                    DTAssetLib.Square.Value,
                     start,
                     null,
                     color,
                     rotation,
-                    new Vector2(pixel.Width / 2, pixel.Height / 2), // Origin is at the left-middle of the scaled pixel
+                    new Vector2(DTAssetLib.Square.Value.Width / 2, DTAssetLib.Square.Value.Height / 2),
                     new Vector2(length, width),
                     SpriteEffects.None,
                     0f
