@@ -57,6 +57,7 @@ namespace DestroyerTest.Content.Entities
             FleshBombShoot,
             Clouds,
             TeleDash,
+            HeartMatrix,
             Nodes,
             Desperation
         }
@@ -221,6 +222,10 @@ namespace DestroyerTest.Content.Entities
         public Vector2 TelePos;
         public Vector2 DashDirection;
         public Vector2 Outer;
+
+        public bool HeartMatrixGetPositions = false;
+        public Vector2 HeartPos;
+
 
         public bool HasTriggeredNodes = false;
 
@@ -621,9 +626,21 @@ namespace DestroyerTest.Content.Entities
                         {
                             interval = 20;
                         }
-                        if (SpitTime % interval == 0)
+                        if (!EternityIsActive())
                         {
-                            Projectile IchorSpit = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), NPC.Center, NPC.velocity * 1.5f, ProjectileID.GoldenShowerHostile, 40, 2);
+                            if (SpitTime % interval == 0)
+                            {
+                                Projectile IchorSpit = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), NPC.Center, NPC.velocity * 1.5f, ProjectileID.GoldenShowerHostile, 40, 2);
+                            }
+                        }
+                        if (EternityIsActive())
+                        {
+                            float Sine = (float)Math.Sin(SpitTime * 0.1f) * 0.01f;
+                            if (SpitTime % interval == 0)
+                            {
+                                Projectile.NewProjectile(Entity.GetSource_FromThis(), NPC.Center, NPC.velocity * 1.5f, ModContent.ProjectileType<PrimalIchor>(), 40, 2, ai0: 1, ai1: Sine);
+                                Projectile.NewProjectile(Entity.GetSource_FromThis(), NPC.Center, NPC.velocity * 1.5f, ModContent.ProjectileType<PrimalIchor>(), 40, 2, ai0: 0, ai1: Sine);
+                            }
                         }
                         if (SpitTime >= 480)
                             {
@@ -723,14 +740,54 @@ namespace DestroyerTest.Content.Entities
                                 }
                             }
                         }
-                        if (CircleLanceCount >= 6)
+                        if (CircleLanceCount >= 6 && NPC.life < NPC.lifeMax * 0.4f)
                         {
                             circleradius = 880f;
                             CurrentAttack = attackType.SummonCrimsonMinions;
                             ResetStats();
                         }
+                        if (CircleLanceCount >= 6 && NPC.life > NPC.lifeMax * 0.4f)
+                        {
+                            circleradius = 880f;
+                            CurrentAttack = attackType.IchorRam;
+                            ResetStats();
+                        }
                     }
                     break;
+                case attackType.HeartMatrix:
+                    {
+                        if (EternityIsActive())
+                        {
+                            if (!HeartMatrixGetPositions)
+                            {
+                                SoundEngine.PlaySound(Teeth);
+                                for (int f = 0; f < 15; f++)
+                                {
+                                    Vector2 HeartPosoffset = Main.rand.NextVector2Circular(1200f, 1200f);
+                                    HeartPos = player.Center + HeartPosoffset;
+                                    PRTLoader.NewParticle(PRTLoader.GetParticleID<CrimsonBloodRuneParticle>(), HeartPos, Vector2.Zero, Color.White, 3);
+                                    Projectile.NewProjectile(NPC.GetSource_FromAI(), HeartPos, Vector2.Zero, ModContent.ProjectileType<HeartNode>(), 20, 3);
+                                }
+                                HeartMatrixGetPositions = true;
+
+                                if (HeartMatrixGetPositions == true && NPC.life > NPC.lifeMax * 0.4f)
+                                {
+                                    CurrentAttack = attackType.IchorRam;
+                                }
+                                if (HeartMatrixGetPositions == true && NPC.life <= NPC.lifeMax * 0.4f)
+                                {
+                                    CurrentAttack = attackType.SummonAxes;
+                                }
+                                ResetStats();
+                            }
+                        }
+                        if (!EternityIsActive())
+                        {
+                            CurrentAttack = attackType.Circle;
+                            ResetStats();
+                        }
+                        break;
+                    }
                 case attackType.OrganBurst:
                     {
                         float numberProjectiles = 5 + Main.rand.Next(3); // 3, 4, or 5 shots
@@ -792,7 +849,7 @@ namespace DestroyerTest.Content.Entities
                             }
                             if (OrganBurstCount > 10 && NPC.life <= NPC.lifeMax * 0.4f)
                             {
-                                CurrentAttack = attackType.SummonAxes;
+                                CurrentAttack = attackType.HeartMatrix;
                                 ResetStats();
                             }
                         }
@@ -856,6 +913,14 @@ namespace DestroyerTest.Content.Entities
                                 SoundEngine.PlaySound(Attack);
                                 TeleDashCount++;
                                 NPC.Center = TelePos;
+                                for (int n = 0; n < Main.maxNPCs; n++)
+                                {
+                                    if (Main.npc[n].active && Main.npc[n].realLife == NPC.whoAmI)
+                                    {
+                                        float segOffset = (n % 2 != 0) ? -MathHelper.PiOver2 : MathHelper.PiOver2;
+                                        Main.npc[n].Center = TelePos;
+                                    }
+                                }
                                 float DashDir = (player.Center - NPC.Center).ToRotation();
                                 if (TeleDashCount < 9)
                                 {
@@ -1118,6 +1183,7 @@ namespace DestroyerTest.Content.Entities
             CircleLanceCount = 0;
             TeleDashCount = 0;
             ToothCount = 10;
+            HeartMatrixGetPositions = false;
             HasShotTeeth = false;
             flag1 = false;
         }

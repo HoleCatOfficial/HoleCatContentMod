@@ -3067,6 +3067,21 @@ Items: {
 		Tooltip: ""
 		DisplayName: Tenebrous Arrow
 	}
+
+	SpectralThiefBreastplate: {
+		DisplayName: Spectral Thief Breastplate
+		Tooltip: ""
+	}
+
+	SpectralThiefCuisses: {
+		DisplayName: Spectral Thief Cuisses
+		Tooltip: ""
+	}
+
+	SpectralThiefHeadgear: {
+		DisplayName: Spectral Thief Headgear
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
@@ -3449,6 +3464,12 @@ Projectiles: {
 	NodeBossDistendedPike.DisplayName: Node Boss Distended Pike
 	TenebrisArrowProjectile.DisplayName: Tenebris Arrow Projectile
 	TenebrisArrowPhantomProjectile.DisplayName: Tenebris Arrow Phantom Projectile
+	PossessedTooth.DisplayName: Possessed Tooth
+	HeartNode.DisplayName: Heart Node
+	PhantomScepter.DisplayName: Phantom Scepter
+	PhantomScepter2.DisplayName: Phantom Scepter2
+	PrimalBlood.DisplayName: Primal Blood
+	PrimalIchor.DisplayName: Primal Ichor
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.
@@ -3712,6 +3733,11 @@ Buffs: {
 	Vigor: {
 		Description: Move speed and Melee Attack speed increased!
 		DisplayName: Vigor
+	}
+
+	BloodHex: {
+		DisplayName: Blood Hex
+		Description: Mods.DestroyerTest.Buffs.BloodHex.Description
 	}
 }
 

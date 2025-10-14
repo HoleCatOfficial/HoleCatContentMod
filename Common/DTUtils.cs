@@ -56,7 +56,7 @@ namespace DestroyerTest.Common
             }
         }
 
-        public void RadialSpreadProjectile(int ID, int Amount, Vector2 CTR, int Dmg = 0, int KB = 0, int Speed = 2)
+        public void RadialSpreadProjectile(int ID, int Amount, Vector2 CTR, int Dmg = 0, int KB = 0, int Speed = 2, float AI0 = 0, float AI1 = 0, float AI2 = 0)
         {
             float rotationStep = MathHelper.TwoPi / Amount;
 
@@ -69,12 +69,15 @@ namespace DestroyerTest.Common
                     velocity,
                     ID,
                     Dmg,
-                    KB
+                    KB,
+                    ai0: AI0,
+                    ai1: AI1,
+                    ai2: AI2
                 );
             }
         }
 
-        public void RadialProjectileRandomDir(int ID, int Amount, Vector2 CTR, int Dmg = 0, int KB = 0, float Speed = 2f)
+        public void RadialProjectileRandomDir(int ID, int Amount, Vector2 CTR, int Dmg = 0, int KB = 0, float Speed = 2f, float AI0 = 0, float AI1 = 0, float AI2 = 0)
         {
             for (int i = 0; i < Amount; i++)
             {
@@ -85,7 +88,10 @@ namespace DestroyerTest.Common
                     velocity,
                     ID,
                     Dmg,
-                    KB
+                    KB,
+                    ai0: AI0,
+                    ai1: AI1,
+                    ai2: AI2
                 );
             }
         }
@@ -661,8 +667,11 @@ namespace DestroyerTest.Common
         public static Asset<Texture2D> WyvernSoulDash = ModContent.Request<Texture2D>($"{ExtrasPath}/WyvernSoulDash");
         public static Asset<Texture2D> CorruptSigil = ModContent.Request<Texture2D>($"{ExtrasPath}/CorruptSigil");
         public static Asset<Texture2D> CrimsonSigil = ModContent.Request<Texture2D>($"{ExtrasPath}/CrimsonSigil");
+        public static Asset<Texture2D> CrimsonBloodRune = ModContent.Request<Texture2D>($"{ExtrasPath}/CrimsonSigil");
+        public static Asset<Texture2D> BloodHexHeart = ModContent.Request<Texture2D>($"{ExtrasPath}/BloodHexHeart");
         public static Asset<Texture2D> StarFuryOutline = ModContent.Request<Texture2D>($"{ExtrasPath}/StarfuryCloneOutline");
         public static Asset<Texture2D> NodeBossPikeOutline = ModContent.Request<Texture2D>($"{ExtrasPath}/NodeBossDistendedPikeOutline");
+        public static Asset<Texture2D> PossessedToothOutline = ModContent.Request<Texture2D>($"{ExtrasPath}/PossessedToothOutline");
         //
         // Sounds
         //
