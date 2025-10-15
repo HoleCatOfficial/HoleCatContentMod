@@ -2787,7 +2787,7 @@ Items: {
 
 	MalevolenceMantra: {
 		DisplayName: Malevolence Mantra
-		Tooltip: ""
+		Tooltip: Throwing a scepter has a hance to release a burst of hellfire.
 	}
 
 	ShiningObelisk: {
@@ -2865,22 +2865,22 @@ Items: {
 
 	ChristmasCarol1: {
 		DisplayName: Christmas Carol
-		Tooltip: ""
+		Tooltip: Thrown Scepters have a chance to release tens of pine needles outward as they travel.
 	}
 
 	ChristmasCarol2: {
 		DisplayName: Christmas Carol
-		Tooltip: ""
+		Tooltip: Thrown Scepters have a chance to release multiple ornaments outward as they travel that explode after a moment.
 	}
 
 	ChristmasCarol3: {
 		DisplayName: Christmas Carol
-		Tooltip: ""
+		Tooltip: Thrown Scepters have a chance to release tens of snowflakes outward as they travel.
 	}
 
 	EtherScroll: {
 		DisplayName: Ether Scroll
-		Tooltip: ""
+		Tooltip: Throwing a scepter has a chance to release fiery birds.
 	}
 
 	AdamantPendant: {
@@ -3040,31 +3040,31 @@ Items: {
 
 	PetrifiedChaplet: {
 		DisplayName: Petrified Chaplet
-		Tooltip: ""
+		Tooltip: Wooden armor that has become solid and dense from the constant interplay of flame and frost.
 	}
 
 	PetrifiedChestplate: {
 		DisplayName: Petrified Chestplate
-		Tooltip: ""
+		Tooltip: Wooden armor that has become solid and dense from the constant interplay of flame and frost.
 	}
 
 	PetrifiedGreaves: {
 		DisplayName: Petrified Greaves
-		Tooltip: ""
+		Tooltip: Wooden armor that has become solid and dense from the constant interplay of flame and frost.
 	}
 
 	Item_RiftIce: {
-		DisplayName: Item_ Rift Ice
+		DisplayName: Rift Ice
 		Tooltip: ""
 	}
 
 	Item_RiftSnow: {
-		DisplayName: Item_ Rift Snow
+		DisplayName: Rift Snow
 		Tooltip: ""
 	}
 
 	TenebrousArrow: {
-		Tooltip: ""
+		Tooltip: Hits spawn Phantom Arrows in an X formation.
 		DisplayName: Tenebrous Arrow
 	}
 
@@ -3081,6 +3081,37 @@ Items: {
 	SpectralThiefHeadgear: {
 		DisplayName: Spectral Thief Headgear
 		Tooltip: ""
+		SetBonus:
+			'''
+			Thrown scepters spawn clones that home in on enemies.
+			Scepter Class and Melee Class Damage increased by 18%.
+			If the moon lord is defeated, that number rises to 30%.
+			'''
+	}
+
+	CursedFlameScroll: {
+		DisplayName: Cursed Flame Scroll
+		Tooltip: Englufs your scepter in an aura. All enemies inside the aura are afflicted with Cursed Inferno.
+	}
+
+	IchorScroll: {
+		DisplayName: Ichor Scroll
+		Tooltip: Englufs your scepter in an aura. All enemies inside the aura are afflicted with Ichor.
+	}
+
+	InfectedManuscript: {
+		DisplayName: Infected Manuscript
+		Tooltip: Englufs your scepter in an aura. All enemies inside the aura are afflicted with both Cursed Inferno and Ichor.
+	}
+
+	StellarManuscript: {
+		Tooltip: ""
+		DisplayName: Stellar Manuscript
+	}
+
+	GalantineScroll: {
+		Tooltip: ""
+		DisplayName: Galantine Scroll
 	}
 }
 

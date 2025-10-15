@@ -1,7 +1,9 @@
 
 using System.Collections.Generic;
+using System.Security.Permissions;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Projectiles;
+using DestroyerTest.Content.Projectiles.ConstitutionBoss;
 using DestroyerTest.Content.Resources;
 using Microsoft.Xna.Framework;
 using Steamworks;
@@ -36,9 +38,6 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
 
     public class ScrollScepterUsePlayer : ModPlayer
     {
-        public bool ChristmasScroll1 = false;
-        public bool ChristmasScroll2 = false;
-        public bool ChristmasScroll3 = false;
         public bool CurseScroll = false;
         public bool EtherScroll = false;
         public bool FrigidScroll1 = false;
@@ -50,11 +49,9 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
         public bool StarScroll = false;
         public bool TreasonScroll = false;
         public bool TurbulenceScroll = false;
+        public bool GalantineScroll = false;
         public override void ResetEffects()
         {
-            ChristmasScroll1 = false;
-            ChristmasScroll2 = false;
-            ChristmasScroll3 = false;
             CurseScroll = false;
             EtherScroll = false;
             FrigidScroll1 = false;
@@ -66,6 +63,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
             StarScroll = false;
             TreasonScroll = false;
             TurbulenceScroll = false;
+            GalantineScroll = false;
         }
         public override void ModifyShootStats(Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
@@ -208,7 +206,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
                             heading.Normalize();
                             heading *= velocity.Length();
                             heading.Y += Main.rand.Next(-40, 41) * 0.02f;
-                            Projectile Star = Projectile.NewProjectileDirect(Player.GetSource_ItemUse(item), position2, heading, ProjectileID.Starfury, damage / 2, knockback, Player.whoAmI, 0f, ceilingLimit);
+                            Projectile Star = Projectile.NewProjectileDirect(Player.GetSource_ItemUse(item), position2, heading, ProjectileID.StarWrath, damage / 2, knockback, Player.whoAmI, 0f, ceilingLimit);
                             Star.timeLeft = 600;
                         }
                     }
@@ -237,7 +235,8 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
                         }
                     }
                 }
-                if (TurbulenceScroll)
+            }
+            if (TurbulenceScroll)
                 {
                     if (item.DamageType == ModContent.GetInstance<ScepterClass>() && Player.altFunctionUse == 2)
                     {
@@ -258,7 +257,28 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
                         }
                     }
                 }
-            }
+            if (GalantineScroll)
+                {
+                    if (item.DamageType == ModContent.GetInstance<ScepterClass>() && Player.altFunctionUse == 2)
+                    {
+                        if (Main.rand.NextBool(3))
+                        {
+                            for (int t = 0; t < 5; t++)
+                            {
+                                Projectile.NewProjectile(
+                                    Player.GetSource_ItemUse(item),
+                                    Player.Center,
+                                    velocity.RotatedByRandom(0.5f),
+                                    ModContent.ProjectileType<ConstitutionStar>(),
+                                    damage,
+                                    knockback,
+                                    Player.whoAmI,
+                                    ai2: 1
+                                );
+                            }
+                        }
+                    }
+                }
         }
     }
 
@@ -270,6 +290,8 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
         public bool ChristmasScroll1 = false;
         public bool ChristmasScroll2 = false;
         public bool ChristmasScroll3 = false;
+        public bool IchorScroll = false;
+        public bool CursedFlameScroll = false;
         public override void SetDefaults(Projectile entity)
         {
             if (entity.DamageType == ModContent.GetInstance<ScepterClass>() && entity.Name.Contains("Thrown"))
@@ -337,6 +359,38 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
                 if (Main.rand.NextBool(13))
                 {
                     new DTUtils().RadialSpreadProjectile(ProjectileID.Blizzard, 4, projectile.Center, (int)(projectile.damage * 1.75f), (int)projectile.knockBack, 12);
+                }
+            }
+            if (IchorScroll && IsAThrownScepter)
+            {
+                for (int y = 0; y < 26; y++)
+                {
+                    Vector2 Outer = projectile.Center + Main.rand.NextVector2CircularEdge(400, 400);
+                    Dust.NewDustPerfect(Outer, DustID.IchorTorch, projectile.velocity, 0, default, 1.5f);
+                }
+
+                foreach (NPC npc in Main.npc)
+                {
+                    if (npc.active && !npc.friendly && npc.Distance(projectile.Center) < 400)
+                    {
+                        npc.AddBuff(BuffID.Ichor, 600);
+                    }
+                }
+            }
+            if (CursedFlameScroll && IsAThrownScepter)
+            {
+                for (int y = 0; y < 26; y++)
+                {
+                    Vector2 Outer = projectile.Center + Main.rand.NextVector2CircularEdge(400, 400);
+                    Dust.NewDustPerfect(Outer, DustID.CursedTorch, projectile.velocity, 0, default, 1.5f);
+                }
+
+                foreach (NPC npc in Main.npc)
+                {
+                    if (npc.active && !npc.friendly && npc.Distance(projectile.Center) < 400)
+                    {
+                        npc.AddBuff(BuffID.CursedInferno, 600);
+                    }
                 }
             }
         }

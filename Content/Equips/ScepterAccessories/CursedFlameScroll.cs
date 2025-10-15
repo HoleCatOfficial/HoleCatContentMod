@@ -1,5 +1,6 @@
 
 using DestroyerTest.Common;
+using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Resources;
 using Microsoft.Xna.Framework;
 using Steamworks;
@@ -9,12 +10,12 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Equips.ScepterAccessories
 {
-    public class ForgottenPendant : ModItem
+    public class CursedFlameScroll : ModItem
     {
         public override void SetDefaults()
         {
-            Item.width = 30;
-            Item.height = 20;
+            Item.width = 32;
+            Item.height = 30;
             Item.value = Item.buyPrice(10);
             Item.rare = ItemRarityID.Green;
             Item.accessory = true;
@@ -22,8 +23,13 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.GetDamage(ModContent.GetInstance<ScepterClass>()) *= 1.02f;
-            ScepterClassStats.Range += 1;
+            foreach (Projectile proj in Main.projectile)
+            {
+                if (proj.TryGetGlobalProjectile<ScrollScepterProj>(out ScrollScepterProj Scptr))
+                {
+                    Scptr.CursedFlameScroll = true;
+                }
+            }
         }
     }
 }
