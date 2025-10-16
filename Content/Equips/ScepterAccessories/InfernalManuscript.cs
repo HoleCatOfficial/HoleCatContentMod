@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Equips.ScepterAccessories
 {
-    public class InfectedManuscript : ModItem
+    public class InfernalManuscript : ModItem
     {
         public override void SetDefaults()
         {
@@ -25,22 +25,26 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
         {
             foreach (Projectile proj in Main.projectile)
             {
-                if (proj.TryGetGlobalProjectile<ScrollScepterProj>(out ScrollScepterProj Scptr))
+                if (player.TryGetModPlayer<ScrollScepterUsePlayer>(out ScrollScepterUsePlayer Scptr))
                 {
-                    Scptr.IchorScroll = true;
-                    Scptr.CursedFlameScroll = true;
+                    Scptr.HellfireScroll1 = true;
+                    Scptr.IncendiaryScroll = true;
                 }
-                
+                if (proj.TryGetGlobalProjectile<ScrollScepterProj>(out ScrollScepterProj Scptr2))
+                {
+                    Scptr2.DiabolicScroll = true;
+                }
             }
         }
 
         public override void AddRecipes()
         {
             CreateRecipe()
-                .AddIngredient(ModContent.ItemType<IchorScroll>(), 1)
-                .AddIngredient(ModContent.ItemType<CursedFlameScroll>(), 1)
-                .AddIngredient(ModContent.ItemType<WretchedShards>(), 3)
-                .AddIngredient(ModContent.ItemType<PrimalShards>(), 3)
+                .AddIngredient(ModContent.ItemType<MalevolenceMantra>(), 1)
+                .AddIngredient(ModContent.ItemType<IncendiaryScroll>(), 1)
+                .AddIngredient(ModContent.ItemType<DiabolicScroll>(), 1)
+                .AddIngredient(ItemID.SoulofNight, 30)
+                .AddIngredient(ItemID.HellstoneBar, 10)
                 .AddTile(TileID.MythrilAnvil)
                 .Register();
         }

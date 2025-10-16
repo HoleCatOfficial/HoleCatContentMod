@@ -4,10 +4,12 @@ using System.Security.Permissions;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.ConstitutionBoss;
+using DestroyerTest.Content.Projectiles.HellWeapons;
 using DestroyerTest.Content.Resources;
 using Microsoft.Xna.Framework;
 using Steamworks;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -50,6 +52,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
         public bool TreasonScroll = false;
         public bool TurbulenceScroll = false;
         public bool GalantineScroll = false;
+        public bool IncendiaryScroll = false;
         public override void ResetEffects()
         {
             CurseScroll = false;
@@ -198,9 +201,9 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
                                 heading.Y *= -1f;
                             }
 
-                            if (heading.Y < 20f)
+                            if (heading.Y < 40f)
                             {
-                                heading.Y = 20f;
+                                heading.Y = 40f;
                             }
 
                             heading.Normalize();
@@ -258,27 +261,60 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
                     }
                 }
             if (GalantineScroll)
+            {
+                if (item.DamageType == ModContent.GetInstance<ScepterClass>() && Player.altFunctionUse == 2)
                 {
-                    if (item.DamageType == ModContent.GetInstance<ScepterClass>() && Player.altFunctionUse == 2)
+                    if (Main.rand.NextBool(3))
                     {
-                        if (Main.rand.NextBool(3))
+                        for (int t = 0; t < 5; t++)
                         {
-                            for (int t = 0; t < 5; t++)
-                            {
-                                Projectile.NewProjectile(
-                                    Player.GetSource_ItemUse(item),
-                                    Player.Center,
-                                    velocity.RotatedByRandom(0.5f),
-                                    ModContent.ProjectileType<ConstitutionStar>(),
-                                    damage,
-                                    knockback,
-                                    Player.whoAmI,
-                                    ai2: 1
-                                );
-                            }
+                            Projectile.NewProjectile(
+                                Player.GetSource_ItemUse(item),
+                                Player.Center,
+                                velocity.RotatedByRandom(0.5f),
+                                ModContent.ProjectileType<ConstitutionStar>(),
+                                damage,
+                                knockback,
+                                Player.whoAmI,
+                                ai2: 1
+                            );
                         }
                     }
                 }
+            }
+            if (IncendiaryScroll)
+            {
+                if (item.DamageType == ModContent.GetInstance<ScepterClass>() && Player.altFunctionUse == 2)
+                {
+                    if (Main.rand.NextBool(2))
+                    {
+                        Vector2 target = Main.screenPosition + new Vector2(Main.mouseX, Main.mouseY);
+                        float screenBottom = Main.screenPosition.Y + Main.screenHeight - 32f;
+                        SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/SwordSounds/HellSword", 3));
+                        for (int i = 0; i < 5; i++)
+                        {
+                            float spread = MathHelper.Lerp(0f, Main.screenWidth, i / 4f);
+                            Vector2 position2 = new Vector2(Main.screenPosition.X + spread, screenBottom);
+
+                            Vector2 heading = target - position2;
+                            if (heading.Length() < 80f)
+                                heading = heading.SafeNormalize(Vector2.UnitY) * 80f;
+                            else
+                                heading = heading.SafeNormalize(Vector2.UnitY) * velocity.Length();
+
+                            int[] types = new int[]
+                            {
+                                ModContent.ProjectileType<HellHalberd>(),
+                                ModContent.ProjectileType<HellScimitar>(),
+                                ModContent.ProjectileType<HellSickle>(),        
+                                ModContent.ProjectileType<HellTrident>()
+                            };
+
+                            Projectile.NewProjectileDirect(Player.GetSource_ItemUse(item), position2, heading, types[Main.rand.Next(types.Length)], damage / 2, knockback, Player.whoAmI);
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -292,6 +328,8 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
         public bool ChristmasScroll3 = false;
         public bool IchorScroll = false;
         public bool CursedFlameScroll = false;
+        public bool TemporalGlove = false;
+        public bool DiabolicScroll = false;
         public override void SetDefaults(Projectile entity)
         {
             if (entity.DamageType == ModContent.GetInstance<ScepterClass>() && entity.Name.Contains("Thrown"))
@@ -393,6 +431,31 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
                     }
                 }
             }
+            if (TemporalGlove && IsAThrownScepter)
+            {
+                for (int y = 0; y < 26; y++)
+                {
+                    Vector2 Outer = projectile.Center + Main.rand.NextVector2CircularEdge(300, 300);
+                    Dust.NewDustPerfect(Outer, DustID.MagicMirror, projectile.velocity, 0, default, 1.5f);
+                }
+
+                foreach (NPC npc in Main.npc)
+                {
+                    if (npc.active && !npc.friendly && npc.Distance(projectile.Center) < 400)
+                    {
+                        npc.velocity *= 0.90f;
+                    }
+                }
+            }
         }
+        public override void OnHitNPC(Projectile projectile, NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            base.OnHitNPC(projectile, target, hit, damageDone);
+            if (IsScepterClassButNotThrown && DiabolicScroll)
+            {
+                Projectile.NewProjectile(projectile.GetSource_OnHit(target), projectile.Center, Vector2.Zero, ProjectileID.InfernoFriendlyBlast, (int)(projectile.damage * 0.75f), 2, projectile.owner);
+            }
+        }
+
     }
 }

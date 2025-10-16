@@ -2395,12 +2395,12 @@ Items: {
 
 	Vesper: {
 		DisplayName: Vesper
-		Tooltip: ""
+		Tooltip: The ingot radiates substantial magical potential...
 	}
 
 	VesperOre: {
 		DisplayName: Vesper Ore
-		Tooltip: ""
+		Tooltip: Fragments of the dreams of creatures and people of Terraria.
 	}
 
 	RevenantMask: {
@@ -2747,7 +2747,7 @@ Items: {
 
 	Item_RiftClay: {
 		Tooltip: ""
-		DisplayName: Item_ Rift Clay
+		DisplayName: Rift Clay
 	}
 
 	DarkFireSword: {
@@ -3101,17 +3101,49 @@ Items: {
 
 	InfectedManuscript: {
 		DisplayName: Infected Manuscript
-		Tooltip: Englufs your scepter in an aura. All enemies inside the aura are afflicted with both Cursed Inferno and Ichor.
+		Tooltip:'''
+				Combines the effects of the Ichor Scroll and Cursed Flame Scroll.
+				Englufs your scepter in an aura. All enemies inside the aura are afflicted with both Cursed Inferno and Ichor.
+				'''
 	}
 
 	StellarManuscript: {
-		Tooltip: ""
+		Tooltip:'''
+				Combines the effects of the Star Scroll and Galantine Scroll
+				Throwing a scepter has a chance to summon a burst of Galantine Stars, inflicting Galantine Burn.
+				Throwing a scepter has a chance to rain down stars from the sky.
+				'''
 		DisplayName: Stellar Manuscript
 	}
 
 	GalantineScroll: {
-		Tooltip: ""
+		Tooltip: "Throwing a scepter has a chance to summon a burst of Galantine Stars, inflicting Galantine Burn."
 		DisplayName: Galantine Scroll
+	}
+
+	TemporalGlove: {
+		DisplayName: Temporal Glove
+		Tooltip: "Engulfs your scepter in an aura. All enemies inside the aura are slowed to a stop the longer they remain inside."
+	}
+
+	DiabolicScroll: {
+		DisplayName: Diabolic Scroll
+		Tooltip: "Primary shots from scepters (LMB attacks) spawn a fiery blast on collision with an enemy."
+	}
+
+	InfernalManuscript: {
+		Tooltip:'''
+				Combines the effects of the Malevolence Mantra, Diabolic Scroll, and Incendiary Scroll.
+				Throwing a scepter has a hance to release a burst of hellfire.
+				Primary shots from scepters (LMB attacks) spawn a fiery blast on collision with an enemy.
+				Throwing a scepter has a chance to summon weapons from hell that converge on enemies, inflicting Hellfire.
+				'''
+		DisplayName: Infernal Manuscript
+	}
+
+	IncendiaryScroll: {
+		Tooltip: "Throwing a scepter has a chance to summon weapons from hell that converge on enemies, inflicting Hellfire."
+		DisplayName: Incendiary Scroll
 	}
 }
 
@@ -3501,6 +3533,10 @@ Projectiles: {
 	PhantomScepter2.DisplayName: Phantom Scepter2
 	PrimalBlood.DisplayName: Primal Blood
 	PrimalIchor.DisplayName: Primal Ichor
+	HellTrident.DisplayName: Hell Trident
+	HellSickle.DisplayName: Hell Sickle
+	HellScimitar.DisplayName: Hell Scimitar
+	HellHalberd.DisplayName: Hell Halberd
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.

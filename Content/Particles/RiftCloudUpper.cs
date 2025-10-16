@@ -36,9 +36,10 @@ namespace DestroyerTest.Content.Particles
         // and the default drawing will not be applied.
         public override bool PreDraw(SpriteBatch spriteBatch)
         {
+            spriteBatch.Draw(TexValue, Frame, Color.Black);
             Texture2D LowerLayer = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/RiftCloudLower").Value;
             spriteBatch.Draw(LowerLayer, Frame, ColorLib.Rift);
-            return true;
+            return false;
         }
     }
 

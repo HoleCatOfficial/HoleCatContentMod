@@ -6,6 +6,7 @@ using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent.ObjectInteractions;
 using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.Localization;
@@ -29,16 +30,9 @@ namespace DestroyerTest.Content.Equips
 
         public override void UpdateEquip(Player player)
         {
-            foreach (Projectile projectile in Main.projectile)
+            if (player.TryGetModPlayer<DBPlayer>(out DBPlayer Blossom))
             {
-                if (projectile.active && projectile.owner == player.whoAmI && projectile.type == ModContent.ProjectileType<MiniRose>())
-                {
-                    CanSpawnBlossom = false;
-                }
-                else 
-                {
-                    CanSpawnBlossom = true;
-                }
+                Blossom.Active = true;
             }
             
         }
@@ -48,17 +42,20 @@ namespace DestroyerTest.Content.Equips
     
     public class DBPlayer : ModPlayer
     {
+        public bool Active = false;
+        public override void ResetEffects()
+        {
+            Active = false;
+        }
+
         public override void ProcessTriggers(TriggersSet triggersSet)
 		{
 			foreach (Projectile projectile in Main.projectile)
 			{
-				if (DestroyerTestMod.DeadlyBlossomKeybind.JustPressed && DeadlyBlossom.CanSpawnBlossom == true)
+				if (DestroyerTestMod.DeadlyBlossomKeybind.JustPressed && Player.ownedProjectileCounts[ModContent.ProjectileType<MiniRose>()] < 1 && Active)
 				{
-					
 					SoundEngine.PlaySound(SoundID.Item79, Player.Center);
-
-					Projectile.NewProjectile(Entity.GetSource_Accessory(Player.armor.FirstOrDefault(item => item.type == ModContent.ItemType<DeadlyBlossom>())), Player.Center, Vector2.Zero, ModContent.ProjectileType<MiniRose>(), 0, 0, Main.LocalPlayer.whoAmI);
-					
+					Projectile.NewProjectile(Entity.GetSource_Accessory(Player.armor.FirstOrDefault(item => item.type == ModContent.ItemType<DeadlyBlossom>())), Player.Center, Vector2.Zero, ModContent.ProjectileType<MiniRose>(), 0, 0, Main.LocalPlayer.whoAmI);	
 				}
 			}
 		}

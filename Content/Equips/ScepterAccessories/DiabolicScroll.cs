@@ -10,12 +10,12 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Equips.ScepterAccessories
 {
-    public class InfectedManuscript : ModItem
+    public class DiabolicScroll : ModItem
     {
         public override void SetDefaults()
         {
-            Item.width = 44;
-            Item.height = 32;
+            Item.width = 32;
+            Item.height = 30;
             Item.value = Item.buyPrice(10);
             Item.rare = ItemRarityID.Green;
             Item.accessory = true;
@@ -27,22 +27,9 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
             {
                 if (proj.TryGetGlobalProjectile<ScrollScepterProj>(out ScrollScepterProj Scptr))
                 {
-                    Scptr.IchorScroll = true;
-                    Scptr.CursedFlameScroll = true;
+                    Scptr.DiabolicScroll = true;
                 }
-                
             }
-        }
-
-        public override void AddRecipes()
-        {
-            CreateRecipe()
-                .AddIngredient(ModContent.ItemType<IchorScroll>(), 1)
-                .AddIngredient(ModContent.ItemType<CursedFlameScroll>(), 1)
-                .AddIngredient(ModContent.ItemType<WretchedShards>(), 3)
-                .AddIngredient(ModContent.ItemType<PrimalShards>(), 3)
-                .AddTile(TileID.MythrilAnvil)
-                .Register();
         }
     }
 }
