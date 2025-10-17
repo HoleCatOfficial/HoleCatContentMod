@@ -10,8 +10,13 @@ using Microsoft.Xna.Framework;
 using Steamworks;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Opus.Content.Helpers;
+using System;
+using System.Linq;
+using Terraria.GameContent.ItemDropRules;
 
 namespace DestroyerTest.Content.Equips.ScepterAccessories
 {
@@ -457,5 +462,24 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
             }
         }
 
+    }
+
+    public class ScrollDrops : GlobalNPC
+    {
+        public override bool InstancePerEntity => true;
+
+        public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
+        {
+            base.ModifyNPCLoot(npc, npcLoot);
+            OpusNPCDropHelper DH = new OpusNPCDropHelper();
+            
+
+            if (DH.MoltenLegionEnemiesExclusive.Contains(npc.type))
+            {
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<IncendiaryScroll>(), 8, 1, 1));
+            }
+        }
+
+        
     }
 }
