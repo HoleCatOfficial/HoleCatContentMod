@@ -3101,49 +3101,57 @@ Items: {
 
 	InfectedManuscript: {
 		DisplayName: Infected Manuscript
-		Tooltip:'''
-				Combines the effects of the Ichor Scroll and Cursed Flame Scroll.
-				Englufs your scepter in an aura. All enemies inside the aura are afflicted with both Cursed Inferno and Ichor.
-				'''
+		Tooltip:
+			'''
+			Combines the effects of the Ichor Scroll and Cursed Flame Scroll.
+			Englufs your scepter in an aura. All enemies inside the aura are afflicted with both Cursed Inferno and Ichor.
+			'''
 	}
 
 	StellarManuscript: {
-		Tooltip:'''
-				Combines the effects of the Star Scroll and Galantine Scroll
-				Throwing a scepter has a chance to summon a burst of Galantine Stars, inflicting Galantine Burn.
-				Throwing a scepter has a chance to rain down stars from the sky.
-				'''
+		Tooltip:
+			'''
+			Combines the effects of the Star Scroll and Galantine Scroll
+			Throwing a scepter has a chance to summon a burst of Galantine Stars, inflicting Galantine Burn.
+			Throwing a scepter has a chance to rain down stars from the sky.
+			'''
 		DisplayName: Stellar Manuscript
 	}
 
 	GalantineScroll: {
-		Tooltip: "Throwing a scepter has a chance to summon a burst of Galantine Stars, inflicting Galantine Burn."
+		Tooltip: Throwing a scepter has a chance to summon a burst of Galantine Stars, inflicting Galantine Burn.
 		DisplayName: Galantine Scroll
 	}
 
 	TemporalGlove: {
 		DisplayName: Temporal Glove
-		Tooltip: "Engulfs your scepter in an aura. All enemies inside the aura are slowed to a stop the longer they remain inside."
+		Tooltip: Engulfs your scepter in an aura. All enemies inside the aura are slowed to a stop the longer they remain inside.
 	}
 
 	DiabolicScroll: {
 		DisplayName: Diabolic Scroll
-		Tooltip: "Primary shots from scepters (LMB attacks) spawn a fiery blast on collision with an enemy."
+		Tooltip: Primary shots from scepters (LMB attacks) spawn a fiery blast on collision with an enemy.
 	}
 
 	InfernalManuscript: {
-		Tooltip:'''
-				Combines the effects of the Malevolence Mantra, Diabolic Scroll, and Incendiary Scroll.
-				Throwing a scepter has a hance to release a burst of hellfire.
-				Primary shots from scepters (LMB attacks) spawn a fiery blast on collision with an enemy.
-				Throwing a scepter has a chance to summon weapons from hell that converge on enemies, inflicting Hellfire.
-				'''
-		DisplayName: Infernal Manuscript
+		Tooltip:
+			'''
+			Combines the effects of the Malevolence Mantra, Diabolic Scroll, and Incendiary Scroll.
+			Throwing a scepter has a hance to release a burst of hellfire.
+			Primary shots from scepters (LMB attacks) spawn a fiery blast on collision with an enemy.
+			Throwing a scepter has a chance to summon weapons from hell that converge on enemies, inflicting Hellfire.
+			'''
+		DisplayName: Blighted Vows
 	}
 
 	IncendiaryScroll: {
-		Tooltip: "Throwing a scepter has a chance to summon weapons from hell that converge on enemies, inflicting Hellfire."
+		Tooltip: Throwing a scepter has a chance to summon weapons from hell that converge on enemies, inflicting Hellfire.
 		DisplayName: Incendiary Scroll
+	}
+
+	RustyPendant: {
+		DisplayName: Rusty Pendant
+		Tooltip: ""
 	}
 }
 

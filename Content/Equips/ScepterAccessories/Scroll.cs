@@ -17,6 +17,7 @@ using Opus.Content.Helpers;
 using System;
 using System.Linq;
 using Terraria.GameContent.ItemDropRules;
+using DestroyerTest.Content.Magic.ScepterSubclass;
 
 namespace DestroyerTest.Content.Equips.ScepterAccessories
 {
@@ -472,11 +473,27 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
         {
             base.ModifyNPCLoot(npc, npcLoot);
             OpusNPCDropHelper DH = new OpusNPCDropHelper();
-            
+
 
             if (DH.MoltenLegionEnemiesExclusive.Contains(npc.type))
             {
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<IncendiaryScroll>(), 8, 1, 1));
+            }
+            if (DH.DiabolicFactionEnemiesExclusive.Contains(npc.type))
+            {
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<DiabolicScroll>(), 8, 1, 1));
+            }
+            if (DH.RustedCompanyEnemiesExclusive.Contains(npc.type))
+            {
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<RustyPendant>(), 8, 1, 1));
+            }
+            if (DH.MarchingBonesFactionEnemies.Contains(npc.type))
+            {
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<TemporalGlove>(), 8, 1, 1));
+            }
+            if (DH.NecromanticFactionEnemies.Contains(npc.type))
+            {
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CurseScroll>(), 8, 1, 1));
             }
         }
 
