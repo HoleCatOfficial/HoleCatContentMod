@@ -1806,10 +1806,7 @@ Items: {
 		Tooltip:
 			'''
 			A wired apparatus designed to transfer the solar energy in living shadows into a Rift Fuse as an electrical current, empowering Riften Items.
-			A wired apparatus designed to transfer the solar energy in living shadows into a Rift Fuse as an electrical current, empowering Riften Items.
 			Requires Rift Batteries or a close enough proximity to a Rift Crucible to obtain the solar energy.
-			Disclaimer: Helicite Crystals, Solar Fragments, and other sun-centric items do not work as a power source.
-			Disclaimer: Helicite Crystals, Solar Fragments, and other sun-centric items do not work as a power source.
 			'''
 	}
 
@@ -3163,6 +3160,11 @@ Items: {
 			'''
 		DisplayName: Shade Armada
 	}
+
+	RiftenOverloader: {
+		DisplayName: Riften Overloader
+		Tooltip: Grants immunity to Heliouric Shock.
+	}
 }
 
 Projectiles: {
@@ -3556,6 +3558,7 @@ Projectiles: {
 	HellScimitar.DisplayName: Hell Scimitar
 	HellHalberd.DisplayName: Hell Halberd
 	TenebrisElementalMinion.DisplayName: Tenebris Elemental Minion
+	RiftSandstormBackgroundProj.DisplayName: Rift Sandstorm Background Proj
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.
@@ -4280,17 +4283,27 @@ BookText: {
 
 Achievements: {
 	ConstitutionDefeat: {
-		FriendlyName: Constitution Defeat
+		FriendlyName: All that for a drop of blood...
 		Description: Defeat Constitution, the Heaven Descendant Blade.
 	}
 
 	NightmareRoseDefeat: {
-		FriendlyName: Nightmare Rose Defeat
+		FriendlyName: Weed Whacker
 		Description: Free the Conglomerate Child of Mother Darkness.
 	}
 
 	WyvernCorpseDefeat: {
-		FriendlyName: Wyvern Corpse Defeat
+		FriendlyName: Morticide
 		Description: Return the Great Wyvern to their place among the clouds.
+	}
+
+	RiftEmpower: {
+		Description: Charge a riften weapon using a Rift Electrifier and unlock its full potential.
+		FriendlyName: Topped Off
+	}
+
+	LivingShadowObtain: {
+		Description: Obtain a Living Shadow, the source of nightmares come to life, in the umbra of an eclipse...
+		FriendlyName: (Day)Night Life
 	}
 }

@@ -37,6 +37,7 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
         {
             CreateRecipe()
                 .AddIngredient(ItemID.AnkhCharm, 1)
+                .AddIngredient<RiftenOverloader>(1)
                 .AddIngredient(ItemID.SpiritFlame, 1)
                 .AddIngredient(ItemID.OmegaBanner, 1)
                 .AddIngredient(ItemID.AnkhBanner, 1)

@@ -1189,7 +1189,7 @@ namespace DestroyerTest.Content.Entities
                             currentState = AttackState.KillIdle;
                             BorderActive = false;
                             Main.NewText("Get away from the Rose!!", ColorLib.Soul);
-                            PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp>(), NPC.Center, Vector2.Zero, Color.White, 1f);
+                            PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp>(), NPC.Center, Vector2.Zero, Color.White, 0.001f, 1);
                         }
                     }
                     break;
@@ -1492,7 +1492,7 @@ namespace DestroyerTest.Content.Entities
 
                 NPC.NewNPC(Entity.GetSource_FromThis(), (int)spawnPosition.X, (int)spawnPosition.Y, ModContent.NPCType<CursedFlameNode>());
 
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp>(), NPC.Center, Vector2.Zero, ColorLib.CursedFlames, 0.4f);
+                PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp>(), NPC.Center, Vector2.Zero, ColorLib.CursedFlames, 0.001f, 1);
 
             }
             Main.NewText("The Nightmare Rose calls upon the Corruption for Help!", ColorLib.CursedFlames);
@@ -1604,7 +1604,7 @@ namespace DestroyerTest.Content.Entities
 
                 }
 
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp>(), NPCHead, Vector2.Zero, ColorLib.CursedFlames, 0.4f);
+                PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp>(), NPCHead, Vector2.Zero, ColorLib.CursedFlames, 0.001f, 1);
             }
             if (flame != null && flame.Center == NPCHead)
             {

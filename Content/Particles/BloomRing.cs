@@ -10,44 +10,37 @@ namespace DestroyerTest.Content.Particles
 {
     internal class BloomRingSharp : BasePRT
     {
-
-        public int MaxLifetime => 120;
-
         public override void SetProperty()
         {
             PRTDrawMode = PRTDrawModeEnum.AdditiveBlend;
-            Lifetime = MaxLifetime;
+            Lifetime = 9999;
             Scale = 0.01f;
         }
 
-
         public override void AI()
         {
-            Velocity *= 0.99f;
-            Rotation += Velocity.ToRotation();
+            float endScale = ai[0]; // allow dynamic sizing
+            float growSpeed = 0.02f; // how fast it grows each tick
 
-            // Smooth lifetime-based scale growth:
-            float t = LifetimeCompletion; // 0 → 1 across particle lifetime
-            float startScale = 0.01f;
-            float endScale = Scale * 1.15f; // 3x initial scale
-            float easedT = MathF.Pow(t, 0.06f); // fast linearization for decaying visuals
-            float currentScale = MathHelper.Lerp(startScale, endScale, easedT);
-            Scale = currentScale;
+            if (Scale < endScale)
+            {
+                Scale += growSpeed;
+            }
 
-            // Optional fading near the end of life
-            if (t > 0.8f)
+            float fadeStart = endScale * 0.8f;
+            if (Scale >= fadeStart)
+            {
                 Color *= 0.9f;
+            }
 
-            // Kill particle when its lifetime runs out
-            if (Lifetime <= 0)
+            // Kill once scale is basically done growing
+            if (Scale >= endScale)
                 Kill();
         }
 
-
-        // Override this drawing function. If you want to customize the drawing, return false here,
-        // and the default drawing will not be applied.
         public override bool PreDraw(SpriteBatch spriteBatch) => true;
     }
+
 
     internal class BloomRingZap : BasePRT
     {

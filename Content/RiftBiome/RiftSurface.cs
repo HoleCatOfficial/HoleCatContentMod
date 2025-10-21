@@ -46,6 +46,14 @@ namespace DestroyerTest.Content.RiftBiome
 				{
 					return MusicLoader.GetMusicSlot(Mod, "Assets/Music/RiftEvent");
 				}
+				if (Main.maxRaining < 0.5f && Main.maxRaining > 0f)
+				{
+					return MusicLoader.GetMusicSlot(Mod, "Assets/Music/RiftRain");
+				}
+				if (Main.maxRaining >= 0.5f)
+				{
+					return MusicLoader.GetMusicSlot(Mod, "Assets/Music/RiftThunderstorm");
+				}
 				else
 				{
 					return MusicLoader.GetMusicSlot(Mod, "Assets/Music/RiftV2");

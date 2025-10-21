@@ -20,6 +20,7 @@ namespace DestroyerTest.Content.Projectiles
             Main.projFrames[Type] = 8;
             ProjectileID.Sets.MinionSacrificable[Type] = true;
             ProjectileID.Sets.MinionTargettingFeature[Type] = true;
+            Main.projPet[Type] = true;
         }
 
         public override void SetDefaults()
@@ -36,7 +37,7 @@ namespace DestroyerTest.Content.Projectiles
             Projectile.penetrate = -1;
             Projectile.timeLeft = 18000; // stays alive indefinitely while buff is active
             Projectile.usesLocalNPCImmunity = true;
-            Projectile.localNPCHitCooldown = 20;
+            Projectile.localNPCHitCooldown = 10;
             Projectile.minionSlots = 1f;
         }
 

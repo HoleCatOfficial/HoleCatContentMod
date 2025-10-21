@@ -335,7 +335,7 @@ namespace DestroyerTest.Content.Projectiles.ConstitutionBoss
         public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(DTAssetLib.ConstitutionStarKill, Projectile.Center);
-            PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp>(), Projectile.Center, Vector2.Zero, ColorLib.StellarColor, 0.025f);
+            PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp>(), Projectile.Center, Vector2.Zero, ColorLib.StellarColor, 0.005f);
             Dust.NewDust(Projectile.position, Projectile.Hitbox.Width, Projectile.Hitbox.Height, DustID.TintableDustLighted, Main.rand.NextFloat(-1, 1.1f), Main.rand.NextFloat(-1, 1.1f), 0, ColorLib.StellarColor, 2f);
             DTUtils.ConstitutionStarExplosionEffects(Projectile);
         }

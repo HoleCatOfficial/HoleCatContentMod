@@ -5,13 +5,15 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using DestroyerTest.Rarity;
+using DestroyerTest.Common;
+using DestroyerTest.Content.RiftArsenal;
 
 namespace DestroyerTest.Content.Equips
 {
 	// The AutoloadEquip attribute automatically attaches an equip texture to this item.
 	// Providing the EquipType.Head value here will result in TML expecting a X_Head.png file to be placed next to the item's main texture.
 	[AutoloadEquip(EquipType.Head)]
-	public class RiftGuardVisor : ModItem
+	public class RiftGuardVisor : RechargeItem
 	{
 
 
@@ -36,8 +38,18 @@ namespace DestroyerTest.Content.Equips
 		// UpdateArmorSet allows you to give set bonuses to the armor.
 		public override void UpdateArmorSet(Player player) {
 			player.AddBuff(ModContent.BuffType<RiftBallBuff>(), 3600);
-			player.GetDamage(DamageClass.Ranged) += 0.20f;
-			player.moveSpeed *= 1.75f;
+			if (!Energized)
+			{
+				player.GetDamage(DamageClass.Ranged) += 0.20f;
+				player.moveSpeed *= 1.75f;
+			}
+			if (Energized)
+			{
+				player.GetDamage(DamageClass.Ranged) += 0.35f;
+				player.moveSpeed *= 1.80f;
+			}
+                
+			
 		}
 
 		public override void AddRecipes() {

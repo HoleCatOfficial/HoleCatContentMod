@@ -34,7 +34,7 @@ namespace DestroyerTest.Content.Projectiles
             target.AddBuff(ModContent.BuffType<PowerTrade>(), 120);
             SoundEngine.PlaySound(SoundID.Item113, Projectile.position);
             HitCount += 1;
-            PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp>(), target.Center, Vector2.Zero, Color.Red, 1);
+            PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp>(), target.Center, Vector2.Zero, Color.Red, 0.025f);
             base.OnHitNPC(target, hit, damageDone);
         }
     }

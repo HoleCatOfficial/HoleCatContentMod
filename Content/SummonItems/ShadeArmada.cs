@@ -37,7 +37,7 @@ namespace DestroyerTest.Content.SummonItems
 		public override void SetDefaults() {
 			Item.damage = 85;
 			Item.knockBack = 9f;
-			Item.mana = 10; // mana cost
+			Item.mana = 70; // mana cost
 			Item.width = 84;
 			Item.height = 84;
 			Item.useTime = 36;
@@ -46,7 +46,6 @@ namespace DestroyerTest.Content.SummonItems
 			Item.value = 18000;
 			Item.rare = ItemRarityID.Green; // The rarity of the item
 			Item.UseSound = new SoundStyle("DestroyerTest/Assets/Audio/SwordSounds/HellSword", 3);
-			Item.accessory = true;
 
 			// These below are needed for a minion weapon
 			Item.noMelee = true; // this item doesn't do any melee damage

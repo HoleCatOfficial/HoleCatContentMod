@@ -197,7 +197,7 @@ namespace DestroyerTest.Content.Projectiles
 		{
 			Player player = Main.player[Main.myPlayer];
 			//SoundEngine.PlaySound(SoundID.Item88, target.Center);
-			PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp>(), target.Center, Vector2.Zero, Color.Red, 1f);
+			PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp>(), target.Center, Vector2.Zero, Color.Red, 0.010f);
 		}
 	}
 }

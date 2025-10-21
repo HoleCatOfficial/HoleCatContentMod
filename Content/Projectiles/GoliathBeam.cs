@@ -86,7 +86,7 @@ namespace DestroyerTest.Content.Projectiles
                 if (DelayTimer < 32 && DelayTimer >= 31)
                 {
                     SoundEngine.PlaySound(SoundID.Item60, Projectile.Center);
-                    PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp>(), Projectile.Center, Vector2.Zero, new Color(Main.DiscoR / 2, (byte)(Main.DiscoG / 1.25f), (byte)(Main.DiscoB / 1.5f)), 0.2f);
+                    PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp>(), Projectile.Center, Vector2.Zero, new Color(Main.DiscoR / 2, (byte)(Main.DiscoG / 1.25f), (byte)(Main.DiscoB / 1.5f)), 0.010f);
                 }
                 if (DelayTimer < 32)
                 {

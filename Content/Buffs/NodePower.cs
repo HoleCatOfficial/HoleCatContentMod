@@ -63,7 +63,7 @@ namespace DestroyerTest.Content.Buffs
                         npc.Center,
                         Vector2.Zero,
                         ColorLib.RainbowGradient,
-                        0.5f
+                        0.005f
                     );
                 }
             }

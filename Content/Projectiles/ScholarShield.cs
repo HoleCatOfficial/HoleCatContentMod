@@ -34,7 +34,7 @@ namespace DestroyerTest.Content.Projectiles
         public SoundStyle Deflect = new SoundStyle("DestroyerTest/Assets/Audio/Scholar/ShieldHit", 3) with { PitchVariance = 0.3f };
         public SoundStyle Spawn = new SoundStyle("DestroyerTest/Assets/Audio/Scholar/ShieldActivate", 3) with { PitchVariance = 0.3f };
 
-        private Asset<Texture2D> ShieldTex = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/BloomRingSharp");
+        private Asset<Texture2D> ShieldTex = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/BloomRingSharp_FullScale");
         public override void PostDraw(Color lightColor)
         {
             SpriteBatch sb = Main.spriteBatch;
