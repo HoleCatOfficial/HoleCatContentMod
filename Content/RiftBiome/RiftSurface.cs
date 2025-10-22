@@ -86,6 +86,7 @@ namespace DestroyerTest.Content.RiftBiome
 			}
 		}
 
+		public static Condition InRift = new Condition("InRift", () => Main.LocalPlayer.InModBiome<RiftSurface>() || Main.LocalPlayer.InModBiome<RiftUnderground>() || Main.LocalPlayer.InModBiome<RiftDesert>() || Main.LocalPlayer.InModBiome<RiftTundra>());
 
 		// public override int BiomeTorchItemType => ModContent.ItemType<ExampleTorch>();
 		// public override int BiomeCampfireItemType => ModContent.ItemType<ExampleCampfire>();

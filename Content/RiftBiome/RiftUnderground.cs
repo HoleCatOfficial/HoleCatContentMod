@@ -15,54 +15,49 @@ namespace DestroyerTest.Content.RiftBiome
 {
 	public class RiftUnderground : ModBiome
 	{
-		// Select all the scenery
-		public override ModWaterStyle WaterStyle => ModContent.GetInstance<RiftWaterStyle>(); // Sets a water style for when inside this biome
+
+		public bool CavernLayer;
+		public bool Desert;
+
+		public override ModWaterStyle WaterStyle => ModContent.GetInstance<RiftWaterStyle>();
 		public override ModUndergroundBackgroundStyle UndergroundBackgroundStyle => ModContent.GetInstance<RiftUndergroundBackgroundStyle>();
-		public override CaptureBiome.TileColorStyle TileColorStyle => CaptureBiome.TileColorStyle.Mushroom;
+		public override CaptureBiome.TileColorStyle TileColorStyle => CaptureBiome.TileColorStyle.Jungle;
 
 		public override int Music
 		{
 			get
 			{
-				if (Main.eclipse == true)
-				{
+				// Event overrides first
+				if (Main.eclipse || Main.bloodMoon || Main.snowMoon || Main.pumpkinMoon || Main.getGoodWorld)
 					return MusicLoader.GetMusicSlot(Mod, "Assets/Music/RiftEvent");
-				}
-				if (Main.bloodMoon == true)
-				{
-					return MusicLoader.GetMusicSlot(Mod, "Assets/Music/RiftEvent");
-				}
-				if (Main.snowMoon == true)
-				{
-					return MusicLoader.GetMusicSlot(Mod, "Assets/Music/RiftEvent");
-				}
-				if (Main.pumpkinMoon == true)
-				{
-					return MusicLoader.GetMusicSlot(Mod, "Assets/Music/RiftEvent");
-				}
-				if (Main.getGoodWorld == true)
-				{
-					return MusicLoader.GetMusicSlot(Mod, "Assets/Music/RiftEvent");
-				}
-				else
-				{
-					return MusicLoader.GetMusicSlot(Mod, "Assets/Music/RiftUnderground");
-				}
 
+				// Environmental priority next
+				if (Desert && CavernLayer)
+					return MusicLoader.GetMusicSlot(Mod, "Assets/Music/RiftCaverns");
+
+				if (Desert)
+					return MusicLoader.GetMusicSlot(Mod, "Assets/Music/RiftDesertUnderground");
+
+				if (CavernLayer)
+					return MusicLoader.GetMusicSlot(Mod, "Assets/Music/RiftCaverns");
+
+				// Default underground
+				return MusicLoader.GetMusicSlot(Mod, "Assets/Music/RiftUnderground");
 			}
 		}
 
 		public override void OnInBiome(Player player)
 		{
-			ModifyMusic(Music, Priority);
-            if (!player.HasBuff<StoneLungs>() && !player.HasBuff<AirSeal>())
-            {
-                player.AddBuff(BuffID.Suffocation, 360); // Apply the suffocation buff if all conditions are met
-            }
-            for (int t = 0; t < 5; t++)
-            {
+			CavernLayer = player.ZoneRockLayerHeight;
+			Desert = player.ZoneDesert || player.InModBiome<RiftDesert>();
+
+			// suffocation logic
+			if (!player.HasBuff<StoneLungs>() && !player.HasBuff<AirSeal>())
+				player.AddBuff(BuffID.Suffocation, 360);
+
+			// ambiance dust
+			for (int t = 0; t < 5; t++)
 				Dust.NewDust(Main.screenPosition, Main.screenWidth, Main.screenHeight, ModContent.DustType<RiftDust>(), Main.rand.NextFloat(-2, 2), Main.rand.NextFloat(-1, -3));
-            }
 		}
 
 		public void ModifyMusic(int music, SceneEffectPriority priority)

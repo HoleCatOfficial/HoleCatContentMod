@@ -3165,6 +3165,11 @@ Items: {
 		DisplayName: Riften Overloader
 		Tooltip: Grants immunity to Heliouric Shock.
 	}
+
+	Item_RiftPylon: {
+		DisplayName: Rift Pylon
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
@@ -3980,6 +3985,7 @@ Tiles: {
 	Tile_VesperOre.MapEntry: Tile_ Vesper Ore
 	Tile_RiftenCrate.MapEntry: Tile_ Riften Crate
 	Tile_HeliciteCrate.MapEntry: Tile_ Helicite Crate
+	Tile_RiftPylon.MapEntry: Tile_ Rift Pylon
 }
 
 Biomes: {
@@ -4011,6 +4017,11 @@ Biomes: {
 	RiftUnderground: {
 		DisplayName: Rift Underground
 		TownNPCDialogueName: the Rift Underground
+	}
+
+	RiftDesertUnderground: {
+		DisplayName: Rift Desert Underground
+		TownNPCDialogueName: the Rift Desert Underground
 	}
 }
 

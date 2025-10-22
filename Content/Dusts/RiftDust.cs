@@ -22,7 +22,7 @@ namespace DestroyerTest.Content.Dusts
 			dust.position += dust.velocity;
 			dust.velocity *= 0.995f;
 			dust.rotation += dust.velocity.X * 0.15f;
-			dust.scale *= 0.9f;
+			dust.scale *= 0.99f;
 
 			float light = 0.001f * dust.scale;
 
