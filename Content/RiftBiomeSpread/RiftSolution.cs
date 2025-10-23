@@ -113,6 +113,37 @@ namespace DestroyerTest.Content.RiftBiomeSpread
 		public static int ClayType;
 		public static int SnowType;
 		public static int IceType;
+		public static int[] Grasses = new int[]
+		{
+			TileID.Grass,
+			TileID.GolfGrass,
+			TileID.GolfGrassHallowed,
+			TileID.CorruptGrass,
+			TileID.CrimsonGrass,
+			TileID.HallowedGrass,
+		};
+
+		public static int[] Mosses = new int[]
+		{
+			TileID.RedMoss,
+			TileID.BlueMoss,
+			TileID.LavaMoss,
+			TileID.LavaMossBlock,
+			TileID.LongMoss,
+			TileID.ArgonMoss,
+			TileID.ArgonMossBlock,
+			TileID.BrownMoss,
+			TileID.GreenMoss,
+			TileID.XenonMoss,
+			TileID.XenonMossBlock,
+			TileID.PurpleMoss,
+			TileID.VioletMoss,
+			TileID.VioletMossBlock,
+			TileID.KryptonMoss,
+			TileID.KryptonMossBlock,
+			TileID.RainbowMoss,
+			TileID.RainbowMossBlock
+		};
 
 		public override void PostSetupContent() {
 
@@ -150,6 +181,14 @@ namespace DestroyerTest.Content.RiftBiomeSpread
 			// This registers a conversion from Sand to ExampleSand, as well as a fallback from ExampleSand to Sand, so other solutions can convert ExampleSand (eg to Crimsand)
 			TileLoader.RegisterSimpleConversion(TileID.Sand, Type, SandType);
 			TileLoader.RegisterSimpleConversion(TileID.Dirt, Type, DirtType);
+			foreach (int g in Grasses)
+			{
+				TileLoader.RegisterSimpleConversion(g, Type, DirtType);
+			}
+			foreach (int m in Mosses)
+			{
+				TileLoader.RegisterSimpleConversion(m, Type, StoneType);
+			}
 			TileLoader.RegisterSimpleConversion(TileID.Stone, Type, StoneType);
 			TileLoader.RegisterSimpleConversion(TileID.HardenedSand, Type, HardenedSandType);
 			TileLoader.RegisterSimpleConversion(TileID.Sandstone, Type, SandstoneType);

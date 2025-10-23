@@ -18,6 +18,7 @@ using System;
 using System.Linq;
 using Terraria.GameContent.ItemDropRules;
 using DestroyerTest.Content.Magic.ScepterSubclass;
+using Opus;
 
 namespace DestroyerTest.Content.Equips.ScepterAccessories
 {
@@ -59,6 +60,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
         public bool TurbulenceScroll = false;
         public bool GalantineScroll = false;
         public bool IncendiaryScroll = false;
+        public bool SharkronPendant = false;
         public override void ResetEffects()
         {
             CurseScroll = false;
@@ -73,6 +75,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
             TreasonScroll = false;
             TurbulenceScroll = false;
             GalantineScroll = false;
+            SharkronPendant = false;
         }
         public override void ModifyShootStats(Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
@@ -312,12 +315,23 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
                             {
                                 ModContent.ProjectileType<HellHalberd>(),
                                 ModContent.ProjectileType<HellScimitar>(),
-                                ModContent.ProjectileType<HellSickle>(),        
+                                ModContent.ProjectileType<HellSickle>(),
                                 ModContent.ProjectileType<HellTrident>()
                             };
 
                             Projectile.NewProjectileDirect(Player.GetSource_ItemUse(item), position2, heading, types[Main.rand.Next(types.Length)], damage / 2, knockback, Player.whoAmI);
                         }
+                    }
+                }
+            }
+            if (SharkronPendant)
+            {
+                if (item.DamageType == ModContent.GetInstance<ScepterClass>() && Player.altFunctionUse == 2)
+                {
+                    if (Main.rand.NextBool(3))
+                    {
+                        Opus.Opus opus = new Opus.Opus();
+                        opus.RadialSpreadProjectile(ModContent.ProjectileType<SharkronNecklaceMinion>(), 8, position, damage / 2, 3, 4);
                     }
                 }
             }
