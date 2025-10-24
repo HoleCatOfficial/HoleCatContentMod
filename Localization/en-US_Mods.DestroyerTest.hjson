@@ -3175,6 +3175,11 @@ Items: {
 		DisplayName: Sharkron Pendant
 		Tooltip: ""
 	}
+
+	HoleCatHook: {
+		Tooltip: ""
+		DisplayName: Hole Cat Hook
+	}
 }
 
 Projectiles: {
@@ -3572,6 +3577,10 @@ Projectiles: {
 	SharkronNecklaceMinion.DisplayName: Sharkron Necklace Minion
 	TempestProj.DisplayName: Tempest Proj
 	TempestWaterSpout.DisplayName: Tempest Water Spout
+	HoleCatHookSwing.DisplayName: Hole Cat Hook Swing
+	HoleCatFireSwirl.DisplayName: Hole Cat Fire Swirl
+	HoleCatFireSmall.DisplayName: Hole Cat Fire Small
+	HoleCatHookJab.DisplayName: Hole Cat Hook Jab
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.
@@ -3845,6 +3854,11 @@ Buffs: {
 	TenebrisCrystalMinionBuff: {
 		Description: It hums with faint energy...
 		DisplayName: Tenebris Elemental
+	}
+
+	HoleCatFire: {
+		Description: Mods.DestroyerTest.Buffs.HoleCatFire.Description
+		DisplayName: Hole Cat Fire
 	}
 }
 

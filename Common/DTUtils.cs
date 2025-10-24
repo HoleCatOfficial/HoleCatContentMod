@@ -540,7 +540,7 @@ namespace DestroyerTest.Common
         {
             get
             {
-                float time = (Main.GlobalTimeWrappedHourly % 3f);
+                float time = (Main.GlobalTimeWrappedHourly % 4f);
 
                 if (time < 1f)
                     return Color.Lerp(new Color(0, 174, 238), new Color(0, 242, 170), time);
@@ -562,7 +562,7 @@ namespace DestroyerTest.Common
         {
             get
             {
-                float time = (Main.GlobalTimeWrappedHourly % 3f);
+                float time = (Main.GlobalTimeWrappedHourly % 6f);
 
                 if (time < 1f)
                     return Color.Lerp(IchorCrystal1, IchorCrystal2, time);
@@ -576,6 +576,37 @@ namespace DestroyerTest.Common
                     return Color.Lerp(IchorCrystal3, IchorCrystal2, time - 4f);
                 else
                     return Color.Lerp(IchorCrystal2, IchorCrystal1, time - 5f);
+            }
+        }
+
+        public static Color HoleCatFireBeige = new Color(241, 140, 72);
+        public static Color HoleCatFireOrange = new Color(245, 102, 4);
+        public static Color HoleCatFireRed = new Color(197, 9, 26);
+        public static Color HoleCatFireMaroon = new Color(164, 0, 59);
+        public static Color HoleCatFireDeepRed = new Color(106, 0, 0);
+
+        public static Color HoleCatFireGradient
+        {
+            get
+            {
+                float time = (Main.GlobalTimeWrappedHourly % 8f);
+
+                if (time < 1f)
+                    return Color.Lerp(HoleCatFireBeige, HoleCatFireOrange, time);
+                else if (time < 2f)
+                    return Color.Lerp(HoleCatFireOrange, HoleCatFireRed, time - 1f);
+                else if (time < 3f)
+                    return Color.Lerp(HoleCatFireRed, HoleCatFireMaroon, time - 2f);
+                else if (time < 4f)
+                    return Color.Lerp(HoleCatFireMaroon, HoleCatFireDeepRed, time - 3f);
+                else if (time < 5f)
+                    return Color.Lerp(HoleCatFireDeepRed, HoleCatFireMaroon, time - 4f);
+                else if (time < 6f)
+                    return Color.Lerp(HoleCatFireMaroon, HoleCatFireRed, time - 5f);
+                else if (time < 7f)
+                    return Color.Lerp(HoleCatFireRed, HoleCatFireOrange, time - 6f);
+                else
+                    return Color.Lerp(HoleCatFireOrange, HoleCatFireBeige, time - 7f);
             }
         }
     }
@@ -601,6 +632,8 @@ namespace DestroyerTest.Common
         public static Asset<Texture2D> Vingette = ModContent.Request<Texture2D>($"{ExtrasPath}/BigVingette");
         public static Asset<Texture2D> FadeLine = ModContent.Request<Texture2D>($"{ExtrasPath}/FadeLine");
         public static Asset<Texture2D> StarAura = ModContent.Request<Texture2D>($"{ExtrasPath}/StarWrathAura");
+        public static Asset<Texture2D> Swirl = ModContent.Request<Texture2D>($"{ParticlePath}/Swirl");
+        public static Asset<Texture2D> FireRing = ModContent.Request<Texture2D>($"{ParticlePath}/Boom2");
         public static Asset<Texture2D> Sparkle(int Variant)
         {
             if (Variant <= 0)
