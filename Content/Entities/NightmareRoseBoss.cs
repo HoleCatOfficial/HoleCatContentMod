@@ -200,6 +200,7 @@ namespace DestroyerTest.Content.Entities
             return false;
         }
 
+
         #region Difficulty Attack Pools
         /// <summary>
         /// Attacks that are available on all difficulties. Will be selected from for classic mode AI.

@@ -41,7 +41,6 @@ namespace DestroyerTest.Content.Projectiles
             Projectile.localNPCHitCooldown = 30;
             Projectile.penetrate = 4;
             Projectile.tileCollide = true;
-            Projectile.hide = true;
         }
 
         public void AnimateProjectile()
@@ -57,7 +56,7 @@ namespace DestroyerTest.Content.Projectiles
         public override void AI()
         {
             AnimateProjectile();
-            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
+            Projectile.rotation = Projectile.velocity.ToRotation() * 0.2f;
             float maxDetectRadius = 400f;
 
             if (DelayTimer < 10)
@@ -120,7 +119,10 @@ namespace DestroyerTest.Content.Projectiles
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.AddBuff(BuffID.Wet, 300);
-            Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<TempestWaterSpout>(), Projectile.damage, 1, Projectile.owner);
+            if (Main.rand.NextBool(5))
+            {
+                Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<TempestWaterSpout>(), Projectile.damage, 1, Projectile.owner);
+            }
         }
     }
 }

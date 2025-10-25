@@ -3177,8 +3177,18 @@ Items: {
 	}
 
 	HoleCatHook: {
+		Tooltip: The one and only hook of the elusive cat...
+		DisplayName: Temaud
+	}
+
+	TempestScroll: {
+		DisplayName: Tempest Scroll
 		Tooltip: ""
-		DisplayName: Hole Cat Hook
+	}
+
+	HexBook: {
+		Tooltip: ""
+		DisplayName: Hex Book
 	}
 }
 
@@ -3857,8 +3867,13 @@ Buffs: {
 	}
 
 	HoleCatFire: {
-		Description: Mods.DestroyerTest.Buffs.HoleCatFire.Description
-		DisplayName: Hole Cat Fire
+		Description: Attempting to put it out only makes it worse...
+		DisplayName: Otherworldly Inferno
+	}
+
+	MobilityHex: {
+		Description: Your body has been hexxed, stopping you from moving!
+		DisplayName: Mobility Hex
 	}
 }
 
@@ -4340,3 +4355,5 @@ Achievements: {
 		FriendlyName: (Day)Night Life
 	}
 }
+
+Infernum.NightmareRoseIntroText: NIGHTMARE ROSE

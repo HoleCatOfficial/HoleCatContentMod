@@ -83,6 +83,10 @@ namespace DestroyerTest.Content.Projectiles
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.AddBuff(ModContent.BuffType<HoleCatFire>(), 120);
+            if (target.HasBuff<HoleCatFire>())
+            {
+                HCFTarget.instance.Level++;
+            }
         }
 
     }

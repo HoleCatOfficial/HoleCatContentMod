@@ -28,7 +28,7 @@ namespace DestroyerTest.Content.Projectiles
 		private const float WINDUP = 0.05f;
 		private const float UNWIND = 0.4f;
         private const float SPINRANGE = 3.5f * (float)Math.PI; // The angle a spin attack covers (630 degrees)
-        private const float SPINTIME = 2.5f; // How much longer a spin is than a swing
+        private const float SPINTIME = 3.5f; // How much longer a spin is than a swing
 
         private enum AttackType
         {
@@ -225,7 +225,11 @@ namespace DestroyerTest.Content.Projectiles
             if (CurrentAttack == AttackType.SwingUp)
             {
                 SoundEngine.PlaySound(FireHit, target.Center);
-                target.AddBuff(ModContent.BuffType<HoleCatFire>(), 300);
+				target.AddBuff(ModContent.BuffType<HoleCatFire>(), 300);
+				if (target.HasBuff<HoleCatFire>())
+				{
+					HCFTarget.instance.Level++;
+				}
             }
             if (CurrentAttack == AttackType.Spin)
             {

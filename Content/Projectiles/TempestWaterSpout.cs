@@ -27,19 +27,21 @@ namespace DestroyerTest.Content.Projectiles
             Projectile.timeLeft = 1200;
             Projectile.penetrate = -1;
             Projectile.tileCollide = false;
+            Projectile.usesLocalNPCImmunity = true;
+            Projectile.localNPCHitCooldown = 20;
             Projectile.alpha = 255;
 		}
 
 
         public override void AI()
         {
-            Vector2 Out = new Vector2(Main.rand.Next(-4, 4), 35);
-            Vector2 BottomCenter = new Vector2(Projectile.Center.X, Projectile.Center.Y + (Projectile.height / 2));
+            Vector2 Out = Projectile.Bottom + new Vector2(Main.rand.Next(-2, 2), -6);
+            Vector2 BottomCenter = Projectile.Bottom;
             Vector2 Dir = Out - BottomCenter;
 
             for (int t = 0; t < 36; t++)
             {
-                Dust.NewDustPerfect(BottomCenter, DustID.Water, Dir, 100, default, 4f);
+                Dust.NewDustPerfect(BottomCenter, DustID.Water_Snow, Dir, 100, default, 1f);
             }
         }
 

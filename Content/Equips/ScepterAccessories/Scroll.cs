@@ -61,6 +61,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
         public bool GalantineScroll = false;
         public bool IncendiaryScroll = false;
         public bool SharkronPendant = false;
+        public bool TempestScroll = false;
         public override void ResetEffects()
         {
             CurseScroll = false;
@@ -76,6 +77,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
             TurbulenceScroll = false;
             GalantineScroll = false;
             SharkronPendant = false;
+            TempestScroll = false;
         }
         public override void ModifyShootStats(Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
@@ -332,6 +334,27 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
                     {
                         Opus.Opus opus = new Opus.Opus();
                         opus.RadialSpreadProjectile(ModContent.ProjectileType<SharkronNecklaceMinion>(), 8, position, damage / 2, 3, 4);
+                    }
+                }
+            }
+            if (TempestScroll)
+            {
+                if (item.DamageType == ModContent.GetInstance<ScepterClass>() && Player.altFunctionUse == 2)
+                {
+                    if (Main.rand.NextBool(3))
+                    {
+                        Vector2 outer = Player.Center + Main.rand.NextVector2CircularEdge(5, 5);
+                        Vector2 motion = outer - position;
+
+                        Projectile.NewProjectile(
+                            Player.GetSource_ItemUse(item),
+                            Player.Center,
+                            motion,
+                            ModContent.ProjectileType<TempestProj>(),
+                            damage,
+                            knockback,
+                            Player.whoAmI
+                        );
                     }
                 }
             }

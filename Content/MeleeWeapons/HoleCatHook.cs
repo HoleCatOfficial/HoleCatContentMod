@@ -17,6 +17,13 @@ namespace DestroyerTest.Content.MeleeWeapons
 	{
 		public int attackType = 0; // keeps track of which attack it is
 		public int comboExpireTimer = 0; // we want the attack pattern to reset if the weapon is not used for certain period of time
+		public int jabHitCount = 0;
+
+
+        public override void SetStaticDefaults()
+        {
+			ItemID.Sets.ItemsThatAllowRepeatedRightClick[Type] = true;
+        }
 
 		public override void SetDefaults()
         {
@@ -29,7 +36,7 @@ namespace DestroyerTest.Content.MeleeWeapons
             Item.autoReuse = true; // Whether the weapon can be used more than once automatically by holding the use button.
 
             Item.DamageType = DamageClass.Melee; // Whether your item is part of the melee class.
-            Item.damage = 1200; // The damage your item deals.
+            Item.damage = 170; // The damage your item deals.
             Item.knockBack = 9f; // The force of knockback of the weapon. Maximum is 20
             Item.crit = 66; // The critical strike chance the weapon has. The player, by default, has a 4% critical strike chance.
 
@@ -62,20 +69,22 @@ namespace DestroyerTest.Content.MeleeWeapons
 			}
 
 			if (player.altFunctionUse == 2)
-            {
-                    Vector2 jabVelocity = velocity.SafeNormalize(Vector2.Zero) * 3.7f;
-					// Spawn projectile for visuals/arm handling
-					Projectile.NewProjectile(
-						player.GetSource_ItemUse(Item),
-						player.Center,
-						jabVelocity,
-						ModContent.ProjectileType<HoleCatHookJab>(),
-						damage,
-						knockback,
-						player.whoAmI);
+			{
+				Item.shootSpeed = 3.3f;
+				Projectile jab = Projectile.NewProjectileDirect(
+					player.GetSource_ItemUse(Item),
+					player.Center,
+					velocity,
+					ModContent.ProjectileType<HoleCatHookJab>(),
+					damage,
+					knockback,
+					player.whoAmI
+				);
 
-					return false;
-				}
+				jab.ai[1] = player.selectedItem; // store which slot created it
+				return false;
+			}
+
 			return false; // return false to prevent original projectile from being shot
 		}
 

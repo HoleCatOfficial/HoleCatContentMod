@@ -39,15 +39,24 @@ namespace DestroyerTest.Content.Buffs
 	}
 
 	public class HCFTarget : GlobalNPC
-    {
+	{
+		public static HCFTarget instance = ModContent.GetInstance<HCFTarget>();
+		public int Level = 0;
+		public const int Maximum = 10;
+
         public override bool InstancePerEntity => true; // Ensures each NPC has its own instance
 
         public bool lifeRegenDebuff;
 
-        public override void ResetEffects(NPC npc) {
-            lifeRegenDebuff = false;
-        }
+		public override void ResetEffects(NPC npc)
+		{
+			lifeRegenDebuff = false;
+		}
 
+        public override void AI(NPC npc)
+        {
+			MathHelper.Clamp(Level, 0, Maximum);
+        }
         public override void UpdateLifeRegen(NPC npc, ref int damage) {
             if (lifeRegenDebuff) {
             int[] types = new int[]
@@ -66,7 +75,7 @@ namespace DestroyerTest.Content.Buffs
                 if (npc.lifeRegen > 0)
 					npc.lifeRegen = 0;
 
-                npc.lifeRegen -= 32;
+                npc.lifeRegen -= (int)(32 + 0.25f * Level);
             }
         }
     }
