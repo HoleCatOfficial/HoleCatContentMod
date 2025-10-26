@@ -1,3 +1,4 @@
+using DestroyerTest.Content.Consumables;
 using Microsoft.Xna.Framework;
 using Stubble.Core;
 using System;
@@ -10,8 +11,23 @@ namespace DestroyerTest.Common
 {
     public class ScholarHelperPlayer : ModPlayer
     {
-        public static bool LifeEcho = false;
-        public static bool Daybloom = false;
-        public static bool Blinkroot = false;
+        public bool LifeEcho = false;
+        public bool Daybloom = false;
+        public bool Blinkroot = false;
+        public bool Dalmon = false;
+        public bool SynergyWrap = false;
+
+        public override void PostUpdate()
+        {
+            if (Player.HeldItem.type == ModContent.ItemType<Dalmon>())
+            {
+                Dalmon = true;
+            }
+            if (Player.HeldItem.type == ModContent.ItemType<SynergyWrap>())
+            {
+                SynergyWrap = true;
+            }
+        }
+
     }
 }

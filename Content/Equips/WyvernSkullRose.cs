@@ -30,9 +30,16 @@ namespace DestroyerTest.Content.Equips
 		}
         
         public override void UpdateAccessory(Player player, bool hideVisual)
+        {
+            if (player.TryGetModPlayer<WyvernSkullRoseDash>(out WyvernSkullRoseDash Dash))
             {
-                player.GetModPlayer<WyvernSkullRoseDash>().DashAccessoryEquipped = true;
+                Dash.DashAccessoryEquipped = true;
             }
+            if (player.TryGetModPlayer<DBPlayer>(out DBPlayer Blossom))
+            {
+                Blossom.Active = true;
+            }
+        }
 
 		
 

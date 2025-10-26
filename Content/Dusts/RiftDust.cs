@@ -17,56 +17,18 @@ namespace DestroyerTest.Content.Dusts
 			dust.scale *= 1.11f;
 		}
 
-        public override bool PreDraw(Dust dust)
-        {
-			SpriteBatch spriteBatch = Main.spriteBatch;
-			DTUtils Utility = new DTUtils();
-			Texture2D DustTexture = TextureAssets.Dust.Value;
-			Texture2D GlowTex = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/SimpleParticle").Value;
-
-			Utility.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-
-			Main.EntitySpriteDraw(
-				GlowTex,
-				dust.position - Main.screenPosition,
-				dust.frame,
-				ColorLib.Rift,
-				dust.rotation,
-				new Vector2(dust.frame.Width / 2, dust.frame.Height / 2),
-				dust.scale,
-				SpriteEffects.None,
-				0
-			);
-
-			Main.EntitySpriteDraw(
-				DustTexture,
-				dust.position - Main.screenPosition,
-				dust.frame,
-				ColorLib.Rift,
-				dust.rotation,
-				new Vector2(dust.frame.Width / 2, dust.frame.Height / 2),
-				dust.scale,
-				SpriteEffects.None,
-				0
-			);
-			Utility.ReturnToDefaultDrawing(spriteBatch);
-
-            return false;
-        }
-
-
 		public override bool Update(Dust dust)
 		{
 			dust.position += dust.velocity;
 			dust.velocity *= 0.995f;
 			dust.rotation += dust.velocity.X * 0.15f;
-			dust.scale *= 0.9f;
+			dust.scale *= 0.99f;
 
-			float light = 0.005f * dust.scale;
+			float light = 0.001f * dust.scale;
 
 			Lighting.AddLight(dust.position, ColorLib.Rift.R * light, ColorLib.Rift.G * light, ColorLib.Rift.B * light);
 
-			if (dust.scale < 0.75f)
+			if (dust.scale < 0.1f)
 			{
 				dust.active = false;
 			}

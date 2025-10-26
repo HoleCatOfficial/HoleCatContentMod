@@ -33,13 +33,11 @@ namespace DestroyerTest.Assets.Menu.V2
 		public override Asset<Texture2D> MoonTexture => moonTexture ??= ModContent.Request<Texture2D>($"{menuAssetPath}/ExampliumMoon");
 		*/
 
-		public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/RiftV1");
-
-		
+		public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/RiftDesert");
 
 		public override ModSurfaceBackgroundStyle MenuBackgroundStyle => ModContent.GetInstance<RiftDesertBackgroundStyle>();
 
-		public override string DisplayName => "Update 2.1.4: Rift (Desert)";
+		public override string DisplayName => "Update 2.1.4: Rift (Desert) (With 2.1.6 updated music)";
 
 		public override void OnSelected() {
 			SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/RiftSwordMinionTeleport")); // Plays a thunder sound when this ModMenu is selected

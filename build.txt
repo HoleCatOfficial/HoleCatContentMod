@@ -1,6 +1,6 @@
 displayName = HoleCat's Content Mod
 author = HoleCat
 version = 2.1.696
-modReferences = InnoVault
-dependencies = InnoVault
+modReferences = InnoVault, Opus
+dependencies = InnoVault, Opus
 hideResources = true

@@ -18,6 +18,7 @@ using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 using DestroyerTest.Content.Resources;
+using DestroyerTest.Content.Equips.ScepterAccessories;
 
 namespace DestroyerTest.Content.Consumables
 {
@@ -48,10 +49,10 @@ namespace DestroyerTest.Content.Consumables
 
         public override void ModifyItemLoot(ItemLoot itemLoot)
         {
-            // We have to replicate the expert drops from MinionBossBody here
-
             itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<HaepienNodeCharm>(), 24, 1, 1));
-            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<PrimalShards>(), 2, 4, 16));
+            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<PrimalShards>(), 1, 4, 16));
+            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<IchorScroll>(), 1, 1, 1));
+            itemLoot.Add(ItemDropRule.Common(ItemID.FlaskofIchor, 3, 1, 9));
             itemLoot.Add(ItemDropRule.NotScalingWithLuck(ItemID.Ichor, 2, 20, 60));
             itemLoot.Add(ItemDropRule.Coins(1250, true));
         }

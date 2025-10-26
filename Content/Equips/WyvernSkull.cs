@@ -4,6 +4,8 @@ using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.Tiles;
 using DestroyerTest.Content.Tiles.Riftplate;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -34,9 +36,9 @@ namespace DestroyerTest.Content.Equips
                 player.GetModPlayer<WyvernSkullDash>().DashAccessoryEquipped = true;
             }
 
-		
 
-    public class WyvernSkullDash : ModPlayer
+
+        public class WyvernSkullDash : ModPlayer
         {
             bool HasWyvernSkullEquipped()
             {
@@ -86,7 +88,7 @@ namespace DestroyerTest.Content.Equips
                     DashDir = DashUp;
                 }
                 else if (Player.controlRight && Player.releaseRight && Player.doubleTapCardinalTimer[DashRight] < 15 && HasWyvernSkullEquipped())
-                DashDir = DashRight;
+                    DashDir = DashRight;
 
                 else if (Player.controlLeft && Player.releaseLeft && Player.doubleTapCardinalTimer[DashLeft] < 15 && HasWyvernSkullEquipped())
                 {
@@ -149,7 +151,7 @@ namespace DestroyerTest.Content.Equips
 
                 if (DashDelay > 0)
                     DashDelay--;
-                
+
 
                 if (DashTimer > 0)
                 { // dash is active
@@ -186,6 +188,37 @@ namespace DestroyerTest.Content.Equips
                     && HasWyvernSkullEquipped()
                     && !Player.setSolar // player isn't wearing solar armor
                     && !Player.mount.Active; // player isn't mounted, since dashes on a mount look weird
+            }
+            
+            private Asset<Texture2D> Wyvern => ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/WyvernSoulDash");
+            public override void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
+            {
+                if (Player.direction == 1 && DashTimer > 0)
+                {
+                    Main.EntitySpriteDraw(
+                        Wyvern.Value,
+                        Player.Center - Main.screenPosition + new Vector2(12, Player.gfxOffY),
+                        null,
+                        new Color(255, 255, 255) * ((float)DashTimer / DashDuration),
+                        Player.bodyRotation,
+                        Wyvern.Value.Size() / 2f,
+                        1f,
+                        SpriteEffects.None,
+                        0);
+                }
+                if (Player.direction == -1 && DashTimer > 0)
+                {
+                    Main.EntitySpriteDraw(
+                        Wyvern.Value,
+                        Player.Center - Main.screenPosition + new Vector2(-12, Player.gfxOffY),
+                        null,
+                        new Color(255, 255, 255) * ((float)DashTimer / DashDuration),
+                        Player.bodyRotation,
+                        Wyvern.Value.Size() / 2f,
+                        1f,
+                        SpriteEffects.FlipHorizontally,
+                        0);
+                }
             }
         }
 

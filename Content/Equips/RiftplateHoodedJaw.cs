@@ -67,13 +67,12 @@ namespace DestroyerTest.Content.Equips
 				AgilityBonus(player);
 			}
 		}
-		
+
 		private void TitanBonus(Player player)
 		{
 			player.GetDamage(DamageClass.Summon) *= 1.25f;
 			player.statLifeMax2 += 15;
 			player.AddBuff(ModContent.BuffType<RiftBallBuff>(), 3600);
-			player.AddBuff(ModContent.BuffType<AirSeal>(), 3600);
 		}
 
 		private void AgilityBonus(Player player)
@@ -81,7 +80,6 @@ namespace DestroyerTest.Content.Equips
 			player.GetAttackSpeed(DamageClass.SummonMeleeSpeed) *= 1.4f;
 			player.moveSpeed *= 1.35f;
 			player.AddBuff(ModContent.BuffType<RiftBallBuff>(), 3600);
-			player.AddBuff(ModContent.BuffType<AirSeal>(), 3600);
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.

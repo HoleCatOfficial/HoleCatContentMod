@@ -37,6 +37,7 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
         {
             CreateRecipe()
                 .AddIngredient(ItemID.AnkhCharm, 1)
+                .AddIngredient<RiftenOverloader>(1)
                 .AddIngredient(ItemID.SpiritFlame, 1)
                 .AddIngredient(ItemID.OmegaBanner, 1)
                 .AddIngredient(ItemID.AnkhBanner, 1)
@@ -190,10 +191,11 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
                 Player.armorEffectDrawShadowEOCShield = true;
                 if (Main.GameUpdateCount % 5 == 0)
                 {
-                    Item skull = Player.armor.FirstOrDefault(item => item.type == ModContent.ItemType<DjedPillarCharm>());
-                    if (skull != null)
+                    Item Pillar = Player.armor.FirstOrDefault(item => item.type == ModContent.ItemType<DjedPillarCharm>());
+                    Item Lillies = Player.armor.FirstOrDefault(item => item.type == ModContent.ItemType<LilliesOfImmortality>());
+                    if (Pillar != null || Lillies != null)
                     {
-                        Projectile.NewProjectile(Player.GetSource_Accessory(skull), Main.rand.NextVector2FromRectangle(Player.Hitbox), Vector2.Zero, ProjectileID.SandnadoFriendly, 30, 8, Main.LocalPlayer.whoAmI);
+                        Projectile.NewProjectile(Player.GetSource_Accessory(Pillar), Main.rand.NextVector2FromRectangle(Player.Hitbox), Vector2.Zero, ProjectileID.SandnadoFriendly, 30, 8, Main.LocalPlayer.whoAmI);
                         SoundEngine.PlaySound(SoundID.DD2_BetsyWindAttack, Player.position);
                     }
 

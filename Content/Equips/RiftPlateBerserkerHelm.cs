@@ -75,7 +75,6 @@ namespace DestroyerTest.Content.Equips
 			player.GetDamage(DamageClass.Melee) *= 1.35f;
             player.moveSpeed *= 0.85f;
 			player.AddBuff(ModContent.BuffType<RiftBallBuff>(), 3600);
-			player.AddBuff(ModContent.BuffType<AirSeal>(), 3600);
 		}
 
 		private void AgilityBonus(Player player)
@@ -85,7 +84,6 @@ namespace DestroyerTest.Content.Equips
 			player.GetAttackSpeed(DamageClass.SummonMeleeSpeed) *= 1.2f;
 			player.moveSpeed *= 1.15f;
 			player.AddBuff(ModContent.BuffType<RiftBallBuff>(), 3600);
-			player.AddBuff(ModContent.BuffType<AirSeal>(), 3600);
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.

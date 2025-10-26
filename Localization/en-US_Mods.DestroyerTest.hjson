@@ -1806,10 +1806,7 @@ Items: {
 		Tooltip:
 			'''
 			A wired apparatus designed to transfer the solar energy in living shadows into a Rift Fuse as an electrical current, empowering Riften Items.
-			A wired apparatus designed to transfer the solar energy in living shadows into a Rift Fuse as an electrical current, empowering Riften Items.
 			Requires Rift Batteries or a close enough proximity to a Rift Crucible to obtain the solar energy.
-			Disclaimer: Helicite Crystals, Solar Fragments, and other sun-centric items do not work as a power source.
-			Disclaimer: Helicite Crystals, Solar Fragments, and other sun-centric items do not work as a power source.
 			'''
 	}
 
@@ -2395,12 +2392,12 @@ Items: {
 
 	Vesper: {
 		DisplayName: Vesper
-		Tooltip: ""
+		Tooltip: The ingot radiates substantial magical potential...
 	}
 
 	VesperOre: {
 		DisplayName: Vesper Ore
-		Tooltip: ""
+		Tooltip: Fragments of the dreams of creatures and people of Terraria.
 	}
 
 	RevenantMask: {
@@ -2747,7 +2744,7 @@ Items: {
 
 	Item_RiftClay: {
 		Tooltip: ""
-		DisplayName: Item_ Rift Clay
+		DisplayName: Rift Clay
 	}
 
 	DarkFireSword: {
@@ -2787,7 +2784,7 @@ Items: {
 
 	MalevolenceMantra: {
 		DisplayName: Malevolence Mantra
-		Tooltip: ""
+		Tooltip: Throwing a scepter has a hance to release a burst of hellfire.
 	}
 
 	ShiningObelisk: {
@@ -2865,22 +2862,22 @@ Items: {
 
 	ChristmasCarol1: {
 		DisplayName: Christmas Carol
-		Tooltip: ""
+		Tooltip: Thrown Scepters have a chance to release tens of pine needles outward as they travel.
 	}
 
 	ChristmasCarol2: {
 		DisplayName: Christmas Carol
-		Tooltip: ""
+		Tooltip: Thrown Scepters have a chance to release multiple ornaments outward as they travel that explode after a moment.
 	}
 
 	ChristmasCarol3: {
 		DisplayName: Christmas Carol
-		Tooltip: ""
+		Tooltip: Thrown Scepters have a chance to release tens of snowflakes outward as they travel.
 	}
 
 	EtherScroll: {
 		DisplayName: Ether Scroll
-		Tooltip: ""
+		Tooltip: Throwing a scepter has a chance to release fiery birds.
 	}
 
 	AdamantPendant: {
@@ -3009,6 +3006,193 @@ Items: {
 
 	WretchedShards: {
 		DisplayName: Wretched Shards
+		Tooltip: ""
+	}
+
+	SynergyWrap: {
+		Tooltip:
+			'''
+			A signature dish of Joan's Home Country, now with favors developed beyond anyones imagination.
+			Permanently increases move speed by 20%.
+			Permanently increases melee speed by 12%.
+			'''
+		DisplayName: Synergy Wrap
+	}
+
+	Dalmon: {
+		Tooltip:
+			'''
+			A signature dish of Joan's Home Country.
+			Increases move speed by 10%.
+			Increases melee speed by 8%.
+			4 minute duration.
+			'''
+		DisplayName: Dalmon
+	}
+
+	Borvis: {
+		Tooltip: ""
+		DisplayName: Borvis
+	}
+
+	PetrifiedChaplet: {
+		DisplayName: Petrified Chaplet
+		Tooltip: Wooden armor that has become solid and dense from the constant interplay of flame and frost.
+	}
+
+	PetrifiedChestplate: {
+		DisplayName: Petrified Chestplate
+		Tooltip: Wooden armor that has become solid and dense from the constant interplay of flame and frost.
+	}
+
+	PetrifiedGreaves: {
+		DisplayName: Petrified Greaves
+		Tooltip: Wooden armor that has become solid and dense from the constant interplay of flame and frost.
+	}
+
+	Item_RiftIce: {
+		DisplayName: Rift Ice
+		Tooltip: ""
+	}
+
+	Item_RiftSnow: {
+		DisplayName: Rift Snow
+		Tooltip: ""
+	}
+
+	TenebrousArrow: {
+		Tooltip: Hits spawn Phantom Arrows in an X formation.
+		DisplayName: Tenebrous Arrow
+	}
+
+	SpectralThiefBreastplate: {
+		DisplayName: Spectral Thief Breastplate
+		Tooltip: ""
+	}
+
+	SpectralThiefCuisses: {
+		DisplayName: Spectral Thief Cuisses
+		Tooltip: ""
+	}
+
+	SpectralThiefHeadgear: {
+		DisplayName: Spectral Thief Headgear
+		Tooltip: ""
+		SetBonus:
+			'''
+			Thrown scepters spawn clones that home in on enemies.
+			Scepter Class and Melee Class Damage increased by 18%.
+			If the moon lord is defeated, that number rises to 30%.
+			'''
+	}
+
+	CursedFlameScroll: {
+		DisplayName: Cursed Flame Scroll
+		Tooltip: Englufs your scepter in an aura. All enemies inside the aura are afflicted with Cursed Inferno.
+	}
+
+	IchorScroll: {
+		DisplayName: Ichor Scroll
+		Tooltip: Englufs your scepter in an aura. All enemies inside the aura are afflicted with Ichor.
+	}
+
+	InfectedManuscript: {
+		DisplayName: Infected Manuscript
+		Tooltip:
+			'''
+			Combines the effects of the Ichor Scroll and Cursed Flame Scroll.
+			Englufs your scepter in an aura. All enemies inside the aura are afflicted with both Cursed Inferno and Ichor.
+			'''
+	}
+
+	StellarManuscript: {
+		Tooltip:
+			'''
+			Combines the effects of the Star Scroll and Galantine Scroll
+			Throwing a scepter has a chance to summon a burst of Galantine Stars, inflicting Galantine Burn.
+			Throwing a scepter has a chance to rain down stars from the sky.
+			'''
+		DisplayName: Stellar Manuscript
+	}
+
+	GalantineScroll: {
+		Tooltip: Throwing a scepter has a chance to summon a burst of Galantine Stars, inflicting Galantine Burn.
+		DisplayName: Galantine Scroll
+	}
+
+	TemporalGlove: {
+		DisplayName: Temporal Glove
+		Tooltip: Engulfs your scepter in an aura. All enemies inside the aura are slowed to a stop the longer they remain inside.
+	}
+
+	DiabolicScroll: {
+		DisplayName: Diabolic Scroll
+		Tooltip: Primary shots from scepters (LMB attacks) spawn a fiery blast on collision with an enemy.
+	}
+
+	InfernalManuscript: {
+		Tooltip:
+			'''
+			Combines the effects of the Malevolence Mantra, Diabolic Scroll, and Incendiary Scroll.
+			Throwing a scepter has a hance to release a burst of hellfire.
+			Primary shots from scepters (LMB attacks) spawn a fiery blast on collision with an enemy.
+			Throwing a scepter has a chance to summon weapons from hell that converge on enemies, inflicting Hellfire.
+			'''
+		DisplayName: Blighted Vows
+	}
+
+	IncendiaryScroll: {
+		Tooltip: Throwing a scepter has a chance to summon weapons from hell that converge on enemies, inflicting Hellfire.
+		DisplayName: Incendiary Scroll
+	}
+
+	RustyPendant: {
+		DisplayName: Rusty Pendant
+		Tooltip: ""
+	}
+
+	ShadeArmada: {
+		Tooltip:
+			'''
+			Summons a Tenebris Elemental to fight for you.
+			Each minion consumes 1 slot.
+			Minions will not auto-target, and the item must be right clicked or a whip used.
+			'''
+		DisplayName: Shade Armada
+	}
+
+	RiftenOverloader: {
+		DisplayName: Riften Overloader
+		Tooltip: Grants immunity to Heliouric Shock.
+	}
+
+	Item_RiftPylon: {
+		DisplayName: Rift Pylon
+		Tooltip: ""
+	}
+
+	SharkronPendant: {
+		DisplayName: Sharkron Pendant
+		Tooltip: ""
+	}
+
+	HoleCatHook: {
+		Tooltip: The one and only hook of the elusive cat...
+		DisplayName: Temaud
+	}
+
+	TempestScroll: {
+		DisplayName: Tempest Scroll
+		Tooltip: ""
+	}
+
+	HexBook: {
+		Tooltip: ""
+		DisplayName: Hex Book
+	}
+
+	ScholarShirt: {
+		DisplayName: Scholar Shirt
 		Tooltip: ""
 	}
 }
@@ -3383,6 +3567,35 @@ Projectiles: {
 	RiftRoundProjectile.DisplayName: Rift Round Projectile
 	RiftStar2.DisplayName: Rift Star2
 	NightmareeRoseBackgroundProj.DisplayName: Nightmaree Rose Background Proj
+	ConstitutionStar.DisplayName: Constitution Star
+	HollowStar.DisplayName: Hollow Star
+	StellarBomb.DisplayName: Stellar Bomb
+	StarfuryClone.DisplayName: Starfury Clone
+	MiniComet.DisplayName: Mini Comet
+	GalantineArrow.DisplayName: Galantine Arrow
+	ScholarShield.DisplayName: Scholar Shield
+	NodeBossDistendedPike.DisplayName: Node Boss Distended Pike
+	TenebrisArrowProjectile.DisplayName: Tenebris Arrow Projectile
+	TenebrisArrowPhantomProjectile.DisplayName: Tenebris Arrow Phantom Projectile
+	PossessedTooth.DisplayName: Possessed Tooth
+	HeartNode.DisplayName: Heart Node
+	PhantomScepter.DisplayName: Phantom Scepter
+	PhantomScepter2.DisplayName: Phantom Scepter2
+	PrimalBlood.DisplayName: Primal Blood
+	PrimalIchor.DisplayName: Primal Ichor
+	HellTrident.DisplayName: Hell Trident
+	HellSickle.DisplayName: Hell Sickle
+	HellScimitar.DisplayName: Hell Scimitar
+	HellHalberd.DisplayName: Hell Halberd
+	TenebrisElementalMinion.DisplayName: Tenebris Elemental Minion
+	RiftSandstormBackgroundProj.DisplayName: Rift Sandstorm Background Proj
+	SharkronNecklaceMinion.DisplayName: Sharkron Necklace Minion
+	TempestProj.DisplayName: Tempest Proj
+	TempestWaterSpout.DisplayName: Tempest Water Spout
+	HoleCatHookSwing.DisplayName: Hole Cat Hook Swing
+	HoleCatFireSwirl.DisplayName: Hole Cat Fire Swirl
+	HoleCatFireSmall.DisplayName: Hole Cat Fire Small
+	HoleCatHookJab.DisplayName: Hole Cat Hook Jab
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.
@@ -3634,13 +3847,38 @@ Buffs: {
 	}
 
 	Muddy: {
-		Description: Mods.DestroyerTest.Buffs.Muddy.Description
+		Description: You are bogged down by thick mud!
 		DisplayName: Muddy
 	}
 
 	ScepterImbueMud: {
-		DisplayName: Scepter Imbue Mud
-		Description: Mods.DestroyerTest.Buffs.ScepterImbueMud.Description
+		DisplayName: Scepter Imbue (Mud)
+		Description: Your scepter has thick mud all over it!
+	}
+
+	Vigor: {
+		Description: Move speed and Melee Attack speed increased!
+		DisplayName: Vigor
+	}
+
+	BloodHex: {
+		DisplayName: Blood Hex
+		Description: You cannot regenerate life!
+	}
+
+	TenebrisCrystalMinionBuff: {
+		Description: It hums with faint energy...
+		DisplayName: Tenebris Elemental
+	}
+
+	HoleCatFire: {
+		Description: Attempting to put it out only makes it worse...
+		DisplayName: Otherworldly Inferno
+	}
+
+	MobilityHex: {
+		Description: Your body has been hexxed, stopping you from moving!
+		DisplayName: Mobility Hex
 	}
 }
 
@@ -3650,29 +3888,6 @@ NPCs: {
 	ExoDestroyerTail.DisplayName: HM-05
 	ExoProbe.DisplayName: HM-05 Defense Module
 	VectorsTestEntity.DisplayName: Vectors Test Entity
-
-	Prospector: {
-		DisplayName: Prospector
-
-		TownNPCMood: {
-			Content: Besides not having my pet cat Felix anymore (rest in peace...), I feel quite alright!
-			NoHome: I'm not too bothered by staying out here, since I spend a lot of time away from 'home' anyway. That said, I would definitely appreciate a place to call my own.
-			FarFromHome: Gee, my knees are killing me. Cruel of you to make me walk this far knowing I'd have to walk the same distance back.
-			LoveSpace: Finally, I can offload my inventory for a while!
-			DislikeCrowded: While I love the ready consumers nearby, does it not seem a slight bit... packed?
-			HateCrowded: Is it that hard to make the rooms just a wee bit larger?
-			LoveBiome: Ah, the vast caverns. Much to see, much to do, much to sell, to acquaintances such as you!
-			LikeBiome: I can't complain about an open, temperate environment, though there are places I'd prefer to be at the moment.
-			DislikeBiome: It's hot, it's dry, the only good wares below are amber and fossils, and the sun never lets up. And you expect me to be HAPPY here?
-			LoveNPC: Mmmm, {NPCName}, just thinking about him makes my day.
-			LikeNPC: Me and {NPCName} have common interests. I can respect a man of business.
-			DislikeNPC: Yknow, {NPCName} really gets on my nerves sometimes. He's always nagging about the prominence of magic and how I'd probably attract more customers if I sold magical things. What kind of a self-absorbed snob must you be to tell another man how to run his business?
-			HateNPC: "{NPCName}, oh {NPCName}. He thinks life is all about games and scores and having fun. He needs to be put to work for a day if you ask me."
-			LikeNPC_Princess: So regal, {NPCName} is. That satin must be imported!
-			Princess_LovesNPC: "{NPCName} is one of my more favored constituents. When I request a new gilding for my scepter, he offers cheaper alternatives to the usual gold and silver, which spares me the coinage."
-		}
-	}
-
 	TenebrousSlime.DisplayName: Tenebrous Slime
 	TenebrousPhantasm.DisplayName: Tenebrous Phantasm
 	RiftSchade.DisplayName: Rift Schade
@@ -3715,7 +3930,7 @@ NPCs: {
 			FarFromHome: It seems I'm a long way from home.
 			LoveSpace: It is Comfortably Spacious here.
 			DislikeCrowded: Walking as a goddess amongst men I would think I'd be treated a little more highly than this compaction.
-			HateCrowded: I need fresh air.
+			HateCrowded: This is deplorable. I ought to kill you at this point.
 			LoveBiome: "{BiomeName} Makes me quite happy. Its the closest I can get to a bloody world."
 			LikeBiome: "{BiomeName}. Not much to say here."
 			DislikeBiome: I'd rather be elsewhere...
@@ -3725,7 +3940,7 @@ NPCs: {
 			DislikeNPC: I dislike {NPCName}.
 			HateNPC: I hate {NPCName}.
 			LikeNPC_Princess: I like {NPCName}. Pink cutie. Heh...
-			Princess_LovesNPC: I feel enamored by {NPCName} and her divine prescence. Though, I fear she may be a lesbian. Help.
+			Princess_LovesNPC: I feel enamored by {NPCName} and her divine prescence. Though, I fear she may want me around more often than I would be comfortable with...
 		}
 	}
 
@@ -3774,6 +3989,8 @@ NPCs: {
 	TenebrousConstruct.DisplayName: Tenebrous Construct
 	CorruptSigil.DisplayName: Corrupt Sigil
 	TenebrousSlinger.DisplayName: Tenebrous Slinger
+	RiftSlime.DisplayName: Rift Slime
+	PetrifiedHead.DisplayName: Petrified Head
 }
 
 Keybinds: {
@@ -3810,6 +4027,7 @@ Tiles: {
 	Tile_VesperOre.MapEntry: Tile_ Vesper Ore
 	Tile_RiftenCrate.MapEntry: Tile_ Riften Crate
 	Tile_HeliciteCrate.MapEntry: Tile_ Helicite Crate
+	Tile_RiftPylon.MapEntry: Tile_ Rift Pylon
 }
 
 Biomes: {
@@ -3831,6 +4049,21 @@ Biomes: {
 	RiftBestiary: {
 		TownNPCDialogueName: the Rift Bestiary
 		DisplayName: Rift Bestiary
+	}
+
+	RiftTundra: {
+		DisplayName: Rift Tundra
+		TownNPCDialogueName: the Rift Tundra
+	}
+
+	RiftUnderground: {
+		DisplayName: Rift Underground
+		TownNPCDialogueName: the Rift Underground
+	}
+
+	RiftDesertUnderground: {
+		DisplayName: Rift Desert Underground
+		TownNPCDialogueName: the Rift Desert Underground
 	}
 }
 
@@ -3867,7 +4100,7 @@ Configs: {
 			Label: Lose your Sanity a little more by the day
 		}
 
-		DisplayName: Client side Configs
+		DisplayName: Miscellaneous Configs
 
 		UnnerfTenebrousKatana: {
 			Label: Unnerf Tenebrous Katana
@@ -3883,21 +4116,53 @@ Configs: {
 			Tooltip: Shows a massive advertisement for the new /bug command for bug reporting.
 			Label: Show Bug Command Message
 		}
+	}
 
+	DTOptimizationsConfig: {
+		OptimizeGame: {
+			Label: General Optimizations
+			Tooltip: Disables the drawing of unncessary textures and effects.
+		}
+
+		DisplayName: Optimizations Config
+
+		DisableExcessDusts: {
+			Label: Disable Excess Dusts
+			Tooltip: ""
+		}
+
+		DisableExcessParticles: {
+			Label: Disable Excess Particles
+			Tooltip: ""
+		}
+	}
+
+	DTMusicConfig: {
 		NodeIdleMusic: {
 			Tooltip: If true, when a node spawns, it will play music even when not attacking. The idle music is different from the battle music, but if they spawn too often for you liking, the ambience will get annoying.
 			Label: Nodes will play Music when Dormant
 		}
 
-		OptimizeGame: {
-			Label: Optimize Game
-			Tooltip: ""
+		EternityMusic: {
+			Label: Mod bosses have Eternity Mode music
+			Tooltip: Separate Eternity Exclusive music tracks will play for all three of the mod's Bosses (Not all tracks may be finished on release.)
 		}
 
-		EternityMusic: {
-			Label: Eternity Music
-			Tooltip: ""
+		DisplayName: Music Config
+	}
+
+	DTUIConfig: {
+		RiftBarXPos: {
+			Label: Living Shadow Bar: X Offset
+			Tooltip: The offset-positive for the right, negative for the left-that the bar will use for its draw position.
 		}
+
+		RiftBarYPos: {
+			Label: Living Shadow Bar: Y Offset
+			Tooltip: The offset-positive for down, negative for up-that the bar will use for its draw position.
+		}
+
+		DisplayName: UI Config
 	}
 }
 
@@ -4071,17 +4336,29 @@ BookText: {
 
 Achievements: {
 	ConstitutionDefeat: {
-		FriendlyName: Constitution Defeat
+		FriendlyName: All that for a drop of blood...
 		Description: Defeat Constitution, the Heaven Descendant Blade.
 	}
 
 	NightmareRoseDefeat: {
-		FriendlyName: Nightmare Rose Defeat
+		FriendlyName: Weed Whacker
 		Description: Free the Conglomerate Child of Mother Darkness.
 	}
 
 	WyvernCorpseDefeat: {
-		FriendlyName: Wyvern Corpse Defeat
+		FriendlyName: Morticide
 		Description: Return the Great Wyvern to their place among the clouds.
 	}
+
+	RiftEmpower: {
+		Description: Charge a riften weapon using a Rift Electrifier and unlock its full potential.
+		FriendlyName: Topped Off
+	}
+
+	LivingShadowObtain: {
+		Description: Obtain a Living Shadow, the source of nightmares come to life, in the umbra of an eclipse...
+		FriendlyName: (Day)Night Life
+	}
 }
+
+Infernum.NightmareRoseIntroText: NIGHTMARE ROSE

@@ -95,6 +95,12 @@ namespace DestroyerTest.Content.Projectiles
 			};
 			PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], Projectile.Center, new Vector2(0f, -0.1f), ColorLib.TenebrisGradient, 0.5f);
 
+			for(int u = 0; u < 8; u++)
+			{
+				Vector2 Pos = Projectile.position + new Vector2(12, 12);
+				Dust.NewDust(Pos, 20, 20, DustID.TintableDustLighted, Projectile.velocity.X * 0.25f, Projectile.velocity.Y * 0.25f, 100, ColorLib.TenebrisGradient, 8);
+            }
+
 			if (DelayTimer < 20)
 			{
 				DelayTimer += 1;

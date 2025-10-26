@@ -59,11 +59,11 @@ namespace DestroyerTest.Content.Buffs
                 if (Empower && Main.GameUpdateCount % 10 == 0) // throttle particles
                 {
                     PRTLoader.NewParticle(
-                        PRTLoader.GetParticleID<BloomRingSharp2>(),
+                        PRTLoader.GetParticleID<BloomRingSharp>(),
                         npc.Center,
                         Vector2.Zero,
                         ColorLib.RainbowGradient,
-                        1.5f
+                        0.005f
                     );
                 }
             }

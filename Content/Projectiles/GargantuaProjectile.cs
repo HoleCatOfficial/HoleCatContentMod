@@ -26,8 +26,8 @@ namespace DestroyerTest.Content.Projectiles
 	// Aside from the custom animation, the custom collision code in Colliding is very important to this weapon
 	public class GargantuaProjectile : ModProjectile
 	{
-		public SoundStyle Swing = new SoundStyle("DestroyerTest/Assets/Audio/ConstitutionT3Slash") with { Volume = 1.0f, PitchVariance = 0.4f, Pitch = -1.0f, MaxInstances = 0 };
-		public SoundStyle Hit = new SoundStyle("DestroyerTest/Assets/Audio/StarHammerThrow") with { Volume = 2.0f, PitchVariance = 0.4f };
+		public SoundStyle Swing = new SoundStyle("DestroyerTest/Assets/Audio/SwordSounds/HeavySwing", 3) with { Volume = 1.0f, PitchVariance = 0.4f, Pitch = -1.0f, MaxInstances = 0 };
+		public SoundStyle Hit = new SoundStyle("DestroyerTest/Assets/Audio/Impacts/MetalImpactV1_", 3) with { PitchVariance = 0.4f, MaxInstances = 0 };
 		// We define some constants that determine the swing range of the sword
 		// Not that we use multipliers here since that simplifies the amount of tweaks for these interactions
 		// You could change the values or even replace them entirely, but they are tweaked with looks in mind
@@ -265,11 +265,13 @@ namespace DestroyerTest.Content.Projectiles
 		// Function facilitating the taking out of the sword
 		private void PrepareStrike()
 		{
+			Player player = Main.player[Projectile.owner];
 			Progress = WINDUP * SWINGRANGE * (1f - Timer / prepTime); // Calculates rotation from initial angle
 			Size = MathHelper.SmoothStep(0, 1, Timer / prepTime); // Make sword slowly increase in size as we prepare to strike until it reaches max
 
 			if (Timer >= prepTime)
 			{
+				
 				CurrentStage = AttackStage.Execute; // If attack is over prep time, we go to next stage
 			}
 		}
@@ -281,12 +283,19 @@ namespace DestroyerTest.Content.Projectiles
 		//private int AuraDustCooldown = 0;
 		public bool HasWarned = false;
 		public bool HasBoosted = false;
+		public bool Sound = false;
 
 
 		// Function facilitating the first half of the swing
 		private void ExecuteStrike()
 		{
 			Player player = Main.player[Projectile.owner];
+
+			if (!Sound)
+            {
+				SoundEngine.PlaySound(Swing, player.Center);
+				Sound = true;
+            }
 
 			Vector2 swordTip = Projectile.Center + Projectile.rotation.ToRotationVector2() * (Projectile.Size.Length() * Projectile.scale);
 			Vector2 sword1 = Projectile.Center + Projectile.rotation.ToRotationVector2() * ((Projectile.Size.Length() * Projectile.scale) - 8);
@@ -324,7 +333,7 @@ namespace DestroyerTest.Content.Projectiles
 			// Sound + immunity refresh
 			if (Timer == (int)(spinDuration * 3 / 4))
 			{
-				SoundEngine.PlaySound(SoundID.Item71, player.Center);
+				
 				Projectile.ResetLocalNPCHitImmunity();
 
 				if (SpinCount >= 5)
@@ -395,6 +404,7 @@ namespace DestroyerTest.Content.Projectiles
 			if (Timer >= spinDuration)
 			{
 				SpinCount++;
+				Sound = false;
 
 				if (player.channel)
 				{

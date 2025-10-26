@@ -112,19 +112,42 @@ namespace DestroyerTest.Content.UI
 		}
 
 
-		public override void Update(GameTime gameTime) {
-			// This prevents updating unless we are using one of the specified items
+		public override void Update(GameTime gameTime)
+		{
 			if (!Main.LocalPlayer.HasItemInInventoryOrOpenVoidBag(ModContent.ItemType<RiftBattery>()))
 				return;
 
 			var modPlayer = Main.LocalPlayer.GetModPlayer<LivingShadowPlayer>();
 
-			// Update the text to show the resource values
-			float percentage = (float)modPlayer.LivingShadowCurrent / modPlayer.LivingShadowMax2 * 100;
-			text.SetText(Language.GetTextValue("Mods.DestroyerTest.UI.LivingShadow", percentage.ToString("0.##"), modPlayer.LivingShadowCurrent, modPlayer.LivingShadowMax2));
+			float percentage = (float)modPlayer.LivingShadowCurrent / modPlayer.LivingShadowMax2 * 100f;
+			text.SetText(Language.GetTextValue("Mods.DestroyerTest.UI.LivingShadow",
+				percentage.ToString("0.##"),
+				modPlayer.LivingShadowCurrent,
+				modPlayer.LivingShadowMax2));
+
+			// Grab config values
+			var config = ModContent.GetInstance<DTUIConfig>();
+
+			// Default center position on screen, then apply config offsets
+			float baseX = (Main.screenWidth / 2f) - (area.Width.Pixels / 2f);
+			float baseY = 120f; // Just below the top edge
+			float offsetX = config.RiftBarXPos;
+			float offsetY = config.RiftBarYPos;
+
+			// Set final position
+			area.Left.Set(baseX + offsetX, 0f);
+			area.Top.Set(baseY + offsetY, 0f);
+			area.Recalculate();
+
+			// Center the text horizontally on the bar frame
+			var frameDims = barFrame.GetDimensions();
+			float centerX = frameDims.Position().X + (frameDims.Width / 2f);
+			float textWidth = text.GetDimensions().Width;
+			text.Left.Set(centerX - (textWidth / 2f) - area.Left.Pixels, 0f);
 
 			base.Update(gameTime);
 		}
+
 
 		
 	}
@@ -153,7 +176,7 @@ namespace DestroyerTest.Content.UI
 		}
 
 		public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers) {
-			int resourceBarIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Resource Bars"));
+			int resourceBarIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Mouse Text"));
 			if (resourceBarIndex != -1) {
 				layers.Insert(resourceBarIndex, new LegacyGameInterfaceLayer(
 					"DestroyerTest: Living Shadow Bar",

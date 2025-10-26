@@ -34,8 +34,10 @@ namespace DestroyerTest.Content.Projectiles.CorpseBoss.Organs
             Projectile.tileCollide = false;
             Projectile.alpha = 0;
             Projectile.netImportant = true;
-			Projectile.netUpdate = true;
+            Projectile.netUpdate = true;
         }
+        
+        
         
         public List<Vector2> PlayerOldPos = new List<Vector2>();
         
@@ -92,7 +94,7 @@ namespace DestroyerTest.Content.Projectiles.CorpseBoss.Organs
         public override void PostDraw(Color lightColor)
         {
             base.PostDraw(lightColor);
-            DrawTelegraph(Projectile.Center, Main.LocalPlayer.Center, DTAssetLib.Line(1).Value);
+            DrawTelegraph(Projectile.Center, Main.LocalPlayer.Center, DTAssetLib.Line(5).Value);
         }
 
         public override void OnHitPlayer(Player target, Player.HurtInfo info)
@@ -119,7 +121,7 @@ namespace DestroyerTest.Content.Projectiles.CorpseBoss.Organs
             float rotation = direction.ToRotation();
 
             // Assuming your texture is a chain segment, like 16px long
-            float segmentLength = texture.Height * 0.75f; // or Width, depending on the texture orientation
+            float segmentLength = texture.Height; // or Width, depending on the texture orientation
             Utility.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
             for (float i = 0; i < length; i += segmentLength)
@@ -130,7 +132,7 @@ namespace DestroyerTest.Content.Projectiles.CorpseBoss.Organs
                     texture,
                     position - Main.screenPosition,
                     null,
-                    Color.Goldenrod * 0.2f,
+                    ColorLib.IchorCrystalGradient,
                     rotation + MathHelper.PiOver2, // Adjust if your texture points upward
                     new Vector2(texture.Width / 2f, texture.Height / 2f), // Origin at center
                     new Vector2(0.5f, 1f),

@@ -195,7 +195,7 @@ namespace DestroyerTest.Content.Entities
             NPC.TargetClosest();
             Player player = Main.player[NPC.target];
             DTUtils Utility = new DTUtils();
-            DTConfig cfg = ModContent.GetInstance<DTConfig>();
+            DTMusicConfig muscfg = ModContent.GetInstance<DTMusicConfig>();
 
             if (NPC.alpha > 0)
             {
@@ -219,11 +219,11 @@ namespace DestroyerTest.Content.Entities
             {
                 Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/NodeBoss");
             }
-            if (!Main.dedServ && CurrentAttack == AttackState.Dormant && cfg.NodeIdleMusic == true)
+            if (!Main.dedServ && CurrentAttack == AttackState.Dormant && muscfg.NodeIdleMusic == true)
             {
                 Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/NodeIdle");
             }
-            if (!Main.dedServ && CurrentAttack == AttackState.Dormant && cfg.NodeIdleMusic == false)
+            if (!Main.dedServ && CurrentAttack == AttackState.Dormant && muscfg.NodeIdleMusic == false)
             {
                 Music = MusicID.Corruption;
             }
@@ -252,7 +252,7 @@ namespace DestroyerTest.Content.Entities
                         if (DormantPulseTimer <= 0)
                         {
                             SoundEngine.PlaySound(SoundID.DD2_WitherBeastAuraPulse, NPC.Center);
-                            PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp2>(), NPC.Center, Vector2.Zero, ColorLib.CursedFlames, 5f);
+                            PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp>(), NPC.Center, Vector2.Zero, ColorLib.CursedFlames, 0.025f);
                             DormantPulseTimer = 120;
                         }
 
@@ -334,7 +334,7 @@ namespace DestroyerTest.Content.Entities
                         if (StarShootInterval <= 0)
                         {
                             SoundEngine.PlaySound(StarShoot, NPC.Center);
-                            PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp4>(), NPC.Center, PRTPos, ColorLib.CursedFlames, 5f);
+                            PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp>(), NPC.Center, PRTPos, ColorLib.CursedFlames, 0.025f);
                             for (int i = 0; i < numVectors; i++)
                             {
                                 float randomOffset = Main.rand.NextFloat(-0.4f, 0.4f);
@@ -425,7 +425,7 @@ namespace DestroyerTest.Content.Entities
                             SoundEngine.PlaySound(WallShoot1);
                             player.GetModPlayer<ScreenshakePlayer>().screenshakeTimer = 10;
                             player.GetModPlayer<ScreenshakePlayer>().screenshakeMagnitude = 2;
-                            PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp2>(), NPC.Center, PRTPos, ColorLib.CursedFlames, 3f);
+                            PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp>(), NPC.Center, PRTPos, ColorLib.CursedFlames, 0.025f);
 
                             // Horizontal walls (one per row)
                             for (int y = 0; y < rows; y++)

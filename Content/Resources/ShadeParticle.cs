@@ -22,7 +22,7 @@ namespace DestroyerTest.Content.Resources
 
 		public override void SetDefaults() {
 			Item.width = 10;
-			Item.height = 10;
+			Item.height = 12;
 			Item.maxStack = Item.CommonMaxStack;
 			Item.value = 1000;
 			Item.alpha = 0;

@@ -4,6 +4,7 @@ using Terraria;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
+using Terraria.Audio;
 
 namespace DestroyerTest.Content.Tiles
 {
@@ -21,15 +22,17 @@ namespace DestroyerTest.Content.Tiles
 			TileObjectData.newTile.StyleHorizontal = true; // Optional, if you add more placeStyles for the item 
 			TileObjectData.addTile(Type);
 
+			DustType = ModContent.DustType<HeliciteCrystalDust>();
+
 			// Etc
 			LocalizedText name = CreateMapEntryName();
 			AddMapEntry(new Color(255, 155, 0), name);
 		}
-
-        public override bool CreateDust(int i, int j, ref int type)
+		
+		public override void WalkDust(ref int dustType, ref bool makeDust, ref Color color)
         {
-            type = ModContent.DustType<RiftDust>();
-            return true;
-		}
+			makeDust = true;
+			dustType = ModContent.DustType<RiftDust>();
+        }
 	}
 }

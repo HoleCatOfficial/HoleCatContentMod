@@ -38,8 +38,8 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
 
         public override void SetDefaults()
         {
-            Projectile.width = 6; // The width of projectile hitbox
-            Projectile.height = 6; // The height of projectile hitbox
+            Projectile.width = 36; // The width of projectile hitbox
+            Projectile.height = 36; // The height of projectile hitbox
             Projectile.DamageType = DamageClass.Ranged; // What type of damage does this projectile affect?
             Projectile.friendly = true; // Can the projectile deal damage to enemies?
             Projectile.hostile = false; // Can the projectile deal damage to the player?

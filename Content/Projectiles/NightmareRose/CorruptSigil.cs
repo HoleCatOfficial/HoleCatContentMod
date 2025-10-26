@@ -137,7 +137,7 @@ namespace DestroyerTest.Content.Projectiles.NightmareRose
                         Flames.Kill();
                     }
                 }
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp1>(), Projectile.Center, Projectile.velocity, ColorLib.CursedFlames, 0.4f);
+                PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp>(), Projectile.Center, Projectile.velocity, ColorLib.CursedFlames, 0.005f);
                 ProjSpawnTimer = 0;
             }
         }

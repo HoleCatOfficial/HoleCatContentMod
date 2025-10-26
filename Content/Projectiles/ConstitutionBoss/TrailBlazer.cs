@@ -24,7 +24,7 @@ public class TrailBlazer : ModProjectile
 
         public override void SetStaticDefaults()
         {
-            ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true; // Make the cultist resistant to this projectile, as it's resistant to all homing projectiles.
+            ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true; // Make the cultist resistant to Projectile projectile, as it's resistant to all homing projectiles.
             ProjectileID.Sets.TrailingMode[Type] = 2;
             ProjectileID.Sets.TrailCacheLength[Type] = 20;
             Main.projFrames[Type] = 8;
@@ -40,12 +40,9 @@ public class TrailBlazer : ModProjectile
 			Projectile.hostile = true; // Can the projectile deal damage to the player?
 			Projectile.ignoreWater = true; // Does the projectile's speed be influenced by water?
 			Projectile.light = 1f; // How much light emit around the projectile
-			Projectile.timeLeft = 600; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
+			Projectile.timeLeft = 240; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
 			Projectile.tileCollide = false;
-			Projectile.damage += 15;
-			Projectile.netImportant = true;
-			Projectile.netUpdate = true;
-			}
+		}
 
             private void AnimateProjectile() {
             // Loop through the frames, assuming each frame lasts 5 ticks
@@ -101,50 +98,45 @@ public class TrailBlazer : ModProjectile
 				return false;
 			}
 
-        // Custom AI
-        public override void AI()
-        {
-            AnimateProjectile();
-            Projectile.rotation = Projectile.velocity.ToRotation();
-            float maxDetectRadius = 400f; // The maximum radius at which a projectile can detect a target
+		// Custom AI
+		public override void AI()
+		{
+			AnimateProjectile();
+			Player player = Main.LocalPlayer;
+			Projectile.rotation = Projectile.velocity.ToRotation();
+			float maxDetectRadius = 400f; // The maximum radius at which a projectile can detect a target
 
-            // First, we find a homing target if we don't have one
-            if (HomingTarget == null)
-            {
-                HomingTarget = FindPlayer(maxDetectRadius);
-            }
-
-            // If we have a homing target, make sure it is still valid. If the NPC dies or moves away, we'll want to find a new target
-            if (HomingTarget != null && !IsValidTarget(HomingTarget))
-            {
-                HomingTarget = null;
-            }
-
-            // If we don't have a target, don't adjust trajectory
-            if (HomingTarget == null)
-                return;
-
-            // If found, we rotate the projectile velocity in the direction of the target.
-            // We only rotate by 3 degrees an update to give it a smooth trajectory. Increase the rotation speed here to make tighter turns
-            float length = Projectile.velocity.Length();
-            float targetAngle = Projectile.AngleTo(HomingTarget.Center);
-            Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(30)).ToRotationVector2() * length;
-            Projectile.rotation = Projectile.velocity.ToRotation();
-
-            if (Main.rand.NextBool(3))
-            {
-                Dust dust = Dust.NewDustPerfect(Projectile.Center, DustID.TintableDustLighted, Projectile.velocity * 0.2f, 100, ColorLib.StellarColor, 1.2f);
-                dust.noGravity = true;
-                dust.fadeIn = 1.5f;
-            }
+			// First, we find a homing target if we don't have one
+			if (HomingTarget == null)
+			{
+				HomingTarget = FindPlayer(maxDetectRadius);
 			}
+
+			// If we have a homing target, make sure it is still valid. If the NPC dies or moves away, we'll want to find a new target
+			if (HomingTarget != null && !IsValidTarget(HomingTarget))
+			{
+				HomingTarget = null;
+			}
+
+			// If we don't have a target, don't adjust trajectory
+			if (HomingTarget == null)
+				return;
+
+			// If found, we rotate the projectile velocity in the direction of the target.
+			// We only rotate by 3 degrees an update to give it a smooth trajectory. Increase the rotation speed here to make tighter turns
+			float length = Projectile.velocity.Length();
+			float targetAngle = Projectile.AngleTo(HomingTarget.Center);
+			Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(15)).ToRotationVector2() * length;
+			Projectile.rotation = Projectile.velocity.ToRotation();
+
+		}
 
 			// Finding the closest NPC to attack within maxDetectDistance range
 			// If not found then returns null
 			public Player FindPlayer(float maxDetectDistance) {
 				Player ClosestTarget = null;
 
-				// Using squared values in distance checks will let us skip square root calculations, drastically improving this method's speed.
+				// Using squared values in distance checks will let us skip square root calculations, drastically improving Projectile method's speed.
 				float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
 
 				// Loop through all NPCs
@@ -166,7 +158,7 @@ public class TrailBlazer : ModProjectile
 			}
 
 			public bool IsValidTarget(Player target) {
-				// This method checks that the NPC is:
+				// Projectile method checks that the NPC is:
 				// 1. active (alive)
 				// 2. chaseable (e.g. not a cultist archer)
 				// 3. max life bigger than 5 (e.g. not a critter)

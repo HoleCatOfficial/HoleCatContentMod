@@ -16,6 +16,8 @@ using Terraria.Audio;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using DestroyerTest.Content.RiftArsenal;
+using Steamworks;
 
 namespace DestroyerTest.Content.Equips
 {
@@ -85,143 +87,27 @@ namespace DestroyerTest.Content.Equips
         }
     }
 
-    public class InfernalShieldPlayer : ModPlayer
+    public class InfernalShieldPlayer : ShieldPlayer
     {
-        public const int MaxDurability = 75;
-        public int Durability = 75;
-        public const int Radius = 100;
-        public bool Active = false;
-        public bool Absorb = false;
-        public bool Recharge = false;
-
-        public override void ResetEffects()
+        public override int MaxDurability => 136;
+        private int _durability = 136;
+		public override int Durability
+		{
+			get => _durability;
+			set => _durability = Math.Clamp(value, 0, MaxDurability);
+		}
+        public override int Radius => 120;
+        public override Color themeColor => ColorLib.HellFire;
+        public override SoundStyle Regen => SoundID.Research;
+        public override SoundStyle Break => new SoundStyle("DestroyerTest/Assets/Audio/TO_Break") with { PitchVariance = 0.3f };
+        public override SoundStyle Hit => new SoundStyle("DestroyerTest/Assets/Audio/Impacts/IceImpact", 3);
+        public override NetworkText[] DeathMSGs => new NetworkText[]
         {
-            Active = false;
-        }
-
-        public override void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
-        {
-            Vector2 drawPos = Player.Center - Main.screenPosition;
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            drawPos.Y -= 200;
-
-            string text = $"{Durability.ToString()} / {MaxDurability.ToString()}";
-
-            if (Active)
-            {
-                Utils.DrawBorderString(spriteBatch, text, drawPos, Color.OrangeRed, 2f, 0.5f, 0.5f);
-            }
-        }
-
-        public override void PostUpdateEquips()
-        {
-            if (Active)
-            {
-                if (Durability == MaxDurability && !Recharge)
-                {
-                    Absorb = true;
-                }
-            }
-            // --- Absorption phase ---
-                if (Active && Absorb && !Recharge)
-                {
-                    foreach (Projectile p in Main.projectile)
-                    {
-                        if (p.active && p.hostile && p.Distance(Player.Center) <= Radius)
-                        {
-                            if (p.TryGetGlobalProjectile<InfernalShieldGlobal>(out InfernalShieldGlobal Hostile))
-                            {
-                                if (!Hostile.Blocked)
-                                {
-                                    SoundEngine.PlaySound(SoundID.Item96, Player.Center);
-                                    for (int y = 0; y < 9; y++)
-                                        {
-                                            PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticle>(), p.Center, new Vector2(Main.rand.NextFloat(-2f, 2.1f), Main.rand.NextFloat(-4f, -6.1f)), new Color(253, 62, 3), 0.4f);
-                                        }
-                                    p.Kill();
-                                    Hostile.Blocked = true;
-                                    Durability = Math.Max(Durability - p.damage, 0);
-                                    if (p.damage > Durability)
-                                    {
-                                        SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/TO_Break"), Player.Center);
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    if (Main.rand.NextBool(1200))
-                    {
-                        SoundEngine.PlaySound(SoundID.Pixie with { Pitch = -2 }, Player.Center);
-                    }
-
-                    for (int r = 0; r < 3; r++)
-                    {
-                    BasePRT WallPRT = PRTLoader.NewParticle(
-                        PRTLoader.GetParticleID<SimpleParticle>(),
-                        Player.Center + Main.rand.NextVector2CircularEdge(Radius, Radius),
-                        Vector2.Zero, Color.OrangeRed, 0.4f
-                    );
-                    WallPRT.Velocity += Player.velocity;
-                    Dust WallDust = Dust.NewDustPerfect(
-                        Player.Center + Main.rand.NextVector2CircularEdge(Radius, Radius),
-                        DustID.TintableDustLighted, Vector2.Zero, 0, Color.OrangeRed, 1.0f
-                    );
-                    WallDust.velocity += Player.velocity;
-                    }
-
-                    if (Durability <= 0)
-                    {
-                        
-                        Absorb = false;   // shield can’t block anymore
-                        Recharge = true;  // enter recharge mode
-                    }
-                }
-
-            // --- Recharge phase ---
-            if (Recharge)
-            {
-                if (Main.GameUpdateCount % 20 == 0)
-                {
-                    NetworkText[] DeathMSGs = new NetworkText[]
-                    {
-                        NetworkText.FromLiteral($"{Player.name} sacrificed themselves to the inferno."),
-                        NetworkText.FromLiteral($"{Player.name} gave a little too much in return for too little."),
-                        NetworkText.FromLiteral($"{Player.name} succumbed under the burden of the inferno."),
-                        NetworkText.FromLiteral($"{Player.name} didnt have it in them to sustain their shield.")
-                    };
-                    SoundEngine.PlaySound(SoundID.Unlock with { Pitch = -2 }, Player.Center);
-
-                    Player.HurtInfo Steal = new Player.HurtInfo()
-                    {
-                        Damage = 1,
-                        HitDirection = 0,
-                        Dodgeable = false,
-                        SoundDisabled = true,
-                        Knockback = 0,
-                        DamageSource = PlayerDeathReason.ByCustomReason(DeathMSGs[Main.rand.Next(DeathMSGs.Length)])
-                    };
-
-                    Player.Hurt(Steal, quiet: true);
-                    Durability++;
-                }
-
-
-                if (Durability >= MaxDurability)
-                {
-                    SoundEngine.PlaySound(SoundID.Research, Player.Center);
-                    Recharge = false;
-                    Absorb = true; // shield comes back online
-                }
-            }
-        }
-
+            NetworkText.FromLiteral($"{Player.name} sacrificed themselves to the inferno."),
+            NetworkText.FromLiteral($"{Player.name} gave a little too much in return for too little."),
+            NetworkText.FromLiteral($"{Player.name} succumbed under the burden of the inferno."),
+            NetworkText.FromLiteral($"{Player.name} didnt have it in them to sustain their shield.")
+        };
+        public override int RechargeHealthTax => 2;
     }
-
-    public class InfernalShieldGlobal : GlobalProjectile
-    {
-        public bool Blocked;
-        public override bool InstancePerEntity => true;
-    }
-
 }

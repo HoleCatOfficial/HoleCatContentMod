@@ -119,7 +119,7 @@ namespace DestroyerTest.Content.Entities
             }
             if (Variant == 2)
             {
-                NPC.frame.Y = NPC.width;
+                NPC.frame.X = NPC.width;
             }
             if (Variant == 3)
             {

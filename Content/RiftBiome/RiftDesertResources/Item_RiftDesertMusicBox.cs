@@ -19,7 +19,7 @@ namespace DestroyerTest.Content.RiftBiome.RiftDesertResources
 			//   When an item with the given item type is equipped, it will play the music that has musicSlot as its ID.
 			//   When a tile with the given type and Y-frame is nearby, if its X-frame is >= 36, it will play the music that has musicSlot as its ID.
 			// When getting the music slot, you should not add the file extensions!
-			MusicLoader.AddMusicBox(Mod, MusicLoader.GetMusicSlot(Mod, "Assets/Music/V1_Title"), ModContent.ItemType<Item_RiftDesertMusicBox>(), ModContent.TileType<Tile_RiftDesertMusicBox>());
+			MusicLoader.AddMusicBox(Mod, MusicLoader.GetMusicSlot(Mod, "Assets/Music/RiftDesert"), ModContent.ItemType<Item_RiftDesertMusicBox>(), ModContent.TileType<Tile_RiftDesertMusicBox>());
 		}
 
 		public override void SetDefaults() {
@@ -31,7 +31,6 @@ namespace DestroyerTest.Content.RiftBiome.RiftDesertResources
             CreateRecipe()
 				.AddIngredient(ItemID.MusicBox)
 				.AddIngredient<Item_RiftSilt>(10)
-                .AddIngredient(ItemID.SoulofNight, 5)
 				.AddTile<Tile_RiftConfiguratorCore>()
 				.Register();
         }

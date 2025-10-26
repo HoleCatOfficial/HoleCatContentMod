@@ -113,7 +113,7 @@ namespace DestroyerTest.Content.MeleeWeapons
                     if (previewTarget != null)
                     {
                         SoundEngine.PlaySound(SoundID.Item60, Projectile.Center);
-                        PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp2>(), Projectile.Center, Vector2.Zero, Color.SkyBlue, 0.2f);
+                        PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp>(), Projectile.Center, Vector2.Zero, Color.SkyBlue, 0.010f);
                     }
                 }
                 if (DelayTimer < 32)

@@ -31,6 +31,7 @@ namespace DestroyerTest.Content.Tools
             Item.useTime = 60;
             Item.useStyle = ItemUseStyleID.HoldUp;
             Item.UseSound = new SoundStyle("DestroyerTest/Assets/Audio/TenebrisImpact");
+            Item.maxStack = 1;
         }
     }
 }

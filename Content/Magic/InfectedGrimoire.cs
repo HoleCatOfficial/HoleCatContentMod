@@ -49,7 +49,7 @@ namespace DestroyerTest.Content.Magic
             {
                 PRTcolor = ColorLib.CursedFlames;
             }
-            PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp2>(), Item.Center, Vector2.Zero, PRTcolor, 1f);
+            PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp>(), Item.Center, Vector2.Zero, PRTcolor, 0.001f, 1);
         }
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)

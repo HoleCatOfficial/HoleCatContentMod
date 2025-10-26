@@ -13,6 +13,7 @@ using DestroyerTest.Content.Tools;
 
 using System.Collections.Generic;
 using DestroyerTest.Content.Tiles.RiftConfigurator;
+using DestroyerTest.Common.Systems;
 
 
 namespace DestroyerTest.Content.Tools
@@ -110,6 +111,11 @@ namespace DestroyerTest.Content.Tools
 
         private void ReplenishLivingShadow(Player player, SoundStyle zapSound, bool consumeBatteries)
         {
+            if (!DTAchievement.LivingShadowEmpower)
+            {
+                DTAchievement.LivingShadowEmpowerCondition.Complete();
+                DTAchievement.LivingShadowEmpower = true;
+            }
             SoundEngine.PlaySound(zapSound, player.position);
             ScreenFlashSystem.FlashIntensity = 0.9f;
 

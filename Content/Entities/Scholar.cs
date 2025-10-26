@@ -23,6 +23,8 @@ using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Lorebooks;
+using DestroyerTest.Content.Consumables;
+using DestroyerTest.Content.SummonItems;
 
 namespace DestroyerTest.Content.Entities
 {
@@ -197,16 +199,35 @@ namespace DestroyerTest.Content.Entities
 			// These are things that the NPC has a chance of telling you when you talk to it.
 			chat.Add(Language.GetTextValue("Hm? Oh, hello!"));
 			chat.Add(Language.GetTextValue("Man, sometimes I miss my older brother. He was a character for sure."));
+			chat.Add(Language.GetTextValue("I met a talking fish yesterday. I don’t wanna talk about it."));
+			chat.Add(Language.GetTextValue("I miss when the weirdest part of my day was finding sand in my shoes."));
+			chat.Add(Language.GetTextValue("Sometimes I wake up and everything’s fine. That’s how I know something’s about to go wrong."));
+			chat.Add(Language.GetTextValue("The merchant said the sun’s been looking at him funny. I told him to stop looking back."));
 			chat.Add(Language.GetTextValue("Have I been taking notes? Goodness, as if I'd ever be able to get through all the wierd stuff on your island!"));
-			chat.Add(Language.GetTextValue("Everyone thinks I'm a trans woman. Can a guy not put his hair up!?"));
+			chat.Add(Language.GetTextValue("Everyone thinks I'm a trans woman. Can a guy not have long hair? Then again, I'm not opposed to people seeing a feminine side of me."));
 			chat.Add(Language.GetTextValue("Yknow, its wierd how this island is both modern and medieval."));
 			chat.Add(Language.GetTextValue("Goddamn I need his cock... OH! Hey! What do you need?"));
 
 			NumberOfTimesTalkedTo++;
-			if (NumberOfTimesTalkedTo >= 10) {
+			if (NumberOfTimesTalkedTo >= 10)
+			{
 				//This counter is linked to a single instance of the NPC, so if ExamplePerson is killed, the counter will reset.
-				chat.Add(Language.GetTextValue("If youre flirting, you are supremely bad at it."));
+				chat.Add(Language.GetTextValue("If you're flirting, you are supremely bad at it."));
+				chat.Add(Language.GetTextValue("Is there something you're trying to tell me?"));
+				chat.Add(Language.GetTextValue("Can I help you?."));
 			}
+			else if (NumberOfTimesTalkedTo >= 20)
+			{
+				chat.Add(Language.GetTextValue("You're really getting on my nerves."));
+				chat.Add(Language.GetTextValue("Dude! Can you leave me alone!? Go talk to someone else!"));
+			}
+
+			if (ShieldIsActive)
+            {
+				chat.Add(Language.GetTextValue("Pretty neat, eh? I dabbled in magic during my youth, and I guess it comes in handy in the face of danger!"));
+				chat.Add(Language.GetTextValue("This is taking a lot of magic out of me, but the last thing I want is anyone else getting hurt!"));
+				chat.Add(Language.GetTextValue("Goddamn I need his cock... OH! Hey! What do you need?"));
+            }
 
 			string chosenChat = chat; // chat is implicitly cast to a string. This is where the random choice is made.
 
@@ -234,10 +255,19 @@ namespace DestroyerTest.Content.Entities
             }
             else
             {
-                if (player.HeldItem.type == ItemID.TissueSample)
-                {
-                    Main.npcChatText = "Oh! This will be interesting! Thank you for this!";
-                    player.HeldItem.TurnToAir();
+				if (player.TryGetModPlayer<ScholarHelperPlayer>(out ScholarHelperPlayer helper))
+				{
+					if (helper.Dalmon)
+					{
+						Main.npcChatText = "Ooooh! This is a food from my home country! It's delicious, well seasoned ground lamb, lettuces, bulb plants, and a certain kind of sauce all stuffed into a curled flatbread!";
+						//Normally, we would make the item vanish to give the illusion that we gave Joan the item,  but here, Joan can just explain it to us here.
+						//player.HeldItem.TurnToAir();
+					}
+					if (helper.SynergyWrap)
+					{
+						Main.npcChatText = "Woah! This is quite the modified dalmon! Thank you for giving me this! I'll definitely be telling you my thoughts on it!";
+						player.HeldItem.TurnToAir();
+					}
                 }
             }
 			}
@@ -245,6 +275,7 @@ namespace DestroyerTest.Content.Entities
 		// Not completely finished, but below is what the NPC will sell
 		public override void AddShops() {
             var npcShop = new NPCShop(Type, ShopName)
+				.Add(new Item(ModContent.ItemType<Dalmon>()) { shopCustomPrice = Item.buyPrice(silver: 1, copper: 60) })
                 .Add(new Item(ModContent.ItemType<NightmareRoseArenaBook>()) { shopCustomPrice = Item.buyPrice(silver: 46) })
 				.Add(new Item(ModContent.ItemType<ShadeSeedBook>()) { shopCustomPrice = Item.buyPrice(gold: 3, silver: 59) });
 			npcShop.Register(); // Name of this shop tab
@@ -327,9 +358,77 @@ namespace DestroyerTest.Content.Entities
 			NumberOfTimesTalkedTo = tag.GetInt("numberOfTimesTalkedTo");
 		}
 
-		public override void SaveData(TagCompound tag) {
+		public override void SaveData(TagCompound tag)
+		{
 			tag["numberOfTimesTalkedTo"] = NumberOfTimesTalkedTo;
 		}
+
+        public override void ModifyIncomingHit(ref NPC.HitModifiers modifiers)
+        {
+			foreach (Projectile shield in Main.projectile)
+			{
+				if (shield.active && shield.type == ModContent.ProjectileType<ScholarShield>())
+				{
+					modifiers.FinalDamage *= 0;
+				}
+				else
+				{
+					modifiers.FinalDamage = default;
+				}
+			}
+        }
+
+		public bool ShieldIsActive = false;
+		public bool SpawnShield = false;
+        public override void AI()
+		{
+			DTUtils Utility = new DTUtils();
+			// Step 1 — Update shield status first.
+			ShieldIsActive = false;
+			foreach (Projectile shield in Main.projectile)
+			{
+				if (shield.active && shield.type == ModContent.ProjectileType<ScholarShield>())
+				{
+					ShieldIsActive = true;
+					break;
+				}
+			}
+
+			// Step 2 — If below half health, spawn if not yet done.
+			if (NPC.life < NPC.lifeMax / 2 || DTUtils.BossNearby())
+			{
+				if (!SpawnShield)
+				{
+					int proj = Projectile.NewProjectile(
+						NPC.GetSource_FromAI(),
+						NPC.Center,
+						NPC.velocity * 0.25f,
+						ModContent.ProjectileType<ScholarShield>(),
+						0,
+						0
+					);
+					SpawnShield = true;
+				}
+			}
+
+			// Step 3 — If above half, clean up shield.
+			else // equivalent to (NPC.life >= NPC.lifeMax / 2)
+			{
+				if (ShieldIsActive)
+				{
+					foreach (Projectile shield in Main.projectile)
+					{
+						if (shield.active && shield.type == ModContent.ProjectileType<ScholarShield>())
+							shield.Kill();
+					}
+				}
+
+				ShieldIsActive = false;
+				SpawnShield = false;
+			}
+		}
+
+
 
 	}
 }

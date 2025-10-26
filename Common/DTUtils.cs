@@ -23,6 +23,7 @@ namespace DestroyerTest.Common
 {
     public class DTUtils
     {
+        public static DTUtils instance = new DTUtils();
         public static bool PromiseEquipped = false;
         public static bool StellarGogglesEquipped = false;
         public static bool NodeCharmEquipped = false;
@@ -55,7 +56,7 @@ namespace DestroyerTest.Common
             }
         }
 
-        public void RadialSpreadProjectile(int ID, int Amount, Vector2 CTR, int Dmg = 0, int KB = 0, int Speed = 2)
+        public void RadialSpreadProjectile(int ID, int Amount, Vector2 CTR, int Dmg = 0, int KB = 0, int Speed = 2, float AI0 = 0, float AI1 = 0, float AI2 = 0)
         {
             float rotationStep = MathHelper.TwoPi / Amount;
 
@@ -68,10 +69,33 @@ namespace DestroyerTest.Common
                     velocity,
                     ID,
                     Dmg,
-                    KB
+                    KB,
+                    ai0: AI0,
+                    ai1: AI1,
+                    ai2: AI2
                 );
             }
         }
+
+        public void RadialProjectileRandomDir(int ID, int Amount, Vector2 CTR, int Dmg = 0, int KB = 0, float Speed = 2f, float AI0 = 0, float AI1 = 0, float AI2 = 0)
+        {
+            for (int i = 0; i < Amount; i++)
+            {
+                Vector2 velocity = new Vector2(Speed, 0f).RotatedByRandom(MathHelper.TwoPi);
+                Projectile.NewProjectile(
+                    Projectile.GetSource_None(),
+                    CTR,
+                    velocity,
+                    ID,
+                    Dmg,
+                    KB,
+                    ai0: AI0,
+                    ai1: AI1,
+                    ai2: AI2
+                );
+            }
+        }
+
 
         /// <summary>
         /// Easy-to-call method for drawing a point glow over the center of a projectile.
@@ -128,6 +152,18 @@ namespace DestroyerTest.Common
             );
         }
 
+        public static bool BossNearby()
+        {
+            foreach (NPC boss in Main.npc)
+            {
+                if (boss.active && boss.boss)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public void StartSpriteBatchWithBlending(SpriteBatch spriteBatch, BlendState blendState, SpriteSortMode ssm)
         {
             spriteBatch.End();
@@ -143,6 +179,101 @@ namespace DestroyerTest.Common
         public void BurstParticle(int type, Vector2 Center, Color color, float Scale = 1f)
         {
             PRTLoader.NewParticle(type, Center, Vector2.Zero, color, Scale);
+        }
+
+        /// <summary>
+        /// Contrary to what the name suggests, this code was first used in the Hollow Star code, and the name comes from this effect only being used for projectiles used by Constitution.
+        /// </summary>
+        /// <param name="projectile"></param>
+        public static void ConstitutionStarExplosionEffects(Projectile projectile)
+        {
+            int points = 10; // 5 outer + 5 inner
+            float outerRadius = 16f;
+            float innerRadius = outerRadius * 0.4f;
+            float rotationOffset = projectile.rotation; // could also add MathHelper.PiOver2 if the sprite is rotated visually
+
+            for (int i = 0; i < points; i++)
+            {
+                float angle = MathHelper.TwoPi * i / points + rotationOffset;
+                float radius = (i % 2 == 0) ? outerRadius : innerRadius;
+
+                Vector2 direction = new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
+                Vector2 spawnPos = projectile.Center + direction * radius;
+                Vector2 velocity = direction * 3f;
+
+                Dust dust = Dust.NewDustPerfect(spawnPos, DustID.TintableDustLighted, velocity, 0, ColorLib.StellarColor, 2f);
+                Dust dust1 = Dust.NewDustPerfect(spawnPos, DustID.TintableDustLighted, Vector2.Zero, 0, ColorLib.StellarColor, 2f);
+                dust.noGravity = true;
+                dust1.noGravity = true;
+            }
+            PRTLoader.NewParticle(PRTLoader.GetParticleID<FlatStar>(), projectile.Center, Vector2.Zero, ColorLib.StellarColor, 0.15f);
+        }
+
+        /// <summary>
+        /// Draws a laser texture anchored at its center-bottom, with an internal AABBV line 
+        /// from (Tex.Width/2, Tex.Height) to (Tex.Width/2, 0).
+        /// </summary>
+        /// <param name="spriteBatch">The SpriteBatch to draw with.</param>
+        /// <param name="texture">The laser texture to draw.</param>
+        /// <param name="center">The world-space center point of the laser.</param>
+        /// <param name="color">The color to draw the laser with.</param>
+        /// <param name="rotation">Rotation in radians.</param>
+        /// <param name="scale">Scale factor (default 1f).</param>
+        /// <param name="sourceRect">Optional source rectangle (null for full texture).</param>
+        public static void DrawLaser(SpriteBatch spriteBatch, Texture2D texture, Vector2 center, Color color, float rotation = 0f, float scale = 1f, Rectangle? sourceRect = null)
+        {
+            if (texture == null)
+                return;
+
+            Rectangle source = sourceRect ?? texture.Bounds;
+
+            // Anchor: bottom-center of the texture
+            Vector2 origin = new Vector2(source.Width / 2f, source.Height);
+
+            // Convert world-space to screen-space
+            Vector2 screenPos = center - Main.screenPosition;
+
+            // Draw the laser texture
+            spriteBatch.Draw(
+                texture,
+                screenPos,
+                source,
+                color,
+                rotation,
+                origin,
+                scale,
+                SpriteEffects.None,
+                0f
+            );
+        }
+
+        /// <summary>
+        /// Returns the AABBV line segment for the laser’s internal direction,
+        /// based on its texture dimensions and optional scaling/rotation.
+        /// </summary>
+        public static (Vector2 Start, Vector2 End) GetLaserLine(Texture2D texture, Vector2 center, float rotation = 0f, float scale = 1f)
+        {
+            if (texture == null)
+                return (center, center);
+
+            // Local positions
+            Vector2 localStart = new Vector2(texture.Width / 2f, texture.Height);
+            Vector2 localEnd = new Vector2(texture.Width / 2f, 0);
+
+            // Translate local line to world-space relative to the center
+            Vector2 offset = localStart - new Vector2(texture.Width / 2f, texture.Height);
+            localStart -= offset;
+            localEnd -= offset;
+
+            // Apply rotation and scale
+            Matrix transform = Matrix.CreateRotationZ(rotation) * Matrix.CreateScale(scale);
+            localStart = Vector2.Transform(localStart, transform);
+            localEnd = Vector2.Transform(localEnd, transform);
+
+            Vector2 worldStart = center + localStart;
+            Vector2 worldEnd = center + localEnd;
+
+            return (worldStart, worldEnd);
         }
 
         public static int[] ElectricArcs = new int[]
@@ -365,6 +496,11 @@ namespace DestroyerTest.Common
         public static Color Soul3 = new Color(154, 99, 27);
 
         /// <summary>
+        /// Used for all things Hellfire!
+        /// </summary>
+        public static Color HellFire = new Color(254, 121, 2);
+
+        /// <summary>
         /// The color used for drawing the aura and hit effects of the Metallurgy System Javelins.
         /// </summary>
         public static Color JavelinEnergy
@@ -404,7 +540,7 @@ namespace DestroyerTest.Common
         {
             get
             {
-                float time = (Main.GlobalTimeWrappedHourly % 3f);
+                float time = (Main.GlobalTimeWrappedHourly % 4f);
 
                 if (time < 1f)
                     return Color.Lerp(new Color(0, 174, 238), new Color(0, 242, 170), time);
@@ -414,6 +550,63 @@ namespace DestroyerTest.Common
                     return Color.Lerp(new Color(254, 158, 35), new Color(190, 30, 209), time - 2f);
                 else
                     return Color.Lerp(new Color(190, 30, 209), new Color(0, 174, 238), time - 3f);
+            }
+        }
+
+        public static Color IchorCrystal1 = new Color(129, 64, 0);
+        public static Color IchorCrystal2 = new Color(169, 101, 0);
+        public static Color IchorCrystal3 = new Color(197, 165, 13);
+        public static Color IchorCrystal4 = new Color(255, 205, 90);
+
+        public static Color IchorCrystalGradient
+        {
+            get
+            {
+                float time = (Main.GlobalTimeWrappedHourly % 6f);
+
+                if (time < 1f)
+                    return Color.Lerp(IchorCrystal1, IchorCrystal2, time);
+                else if (time < 2f)
+                    return Color.Lerp(IchorCrystal2, IchorCrystal3, time - 1f);
+                else if (time < 3f)
+                    return Color.Lerp(IchorCrystal3, IchorCrystal4, time - 2f);
+                else if (time < 4f)
+                    return Color.Lerp(IchorCrystal4, IchorCrystal3, time - 3f);
+                else if (time < 5f)
+                    return Color.Lerp(IchorCrystal3, IchorCrystal2, time - 4f);
+                else
+                    return Color.Lerp(IchorCrystal2, IchorCrystal1, time - 5f);
+            }
+        }
+
+        public static Color HoleCatFireBeige = new Color(241, 140, 72);
+        public static Color HoleCatFireOrange = new Color(245, 102, 4);
+        public static Color HoleCatFireRed = new Color(197, 9, 26);
+        public static Color HoleCatFireMaroon = new Color(164, 0, 59);
+        public static Color HoleCatFireDeepRed = new Color(106, 0, 0);
+
+        public static Color HoleCatFireGradient
+        {
+            get
+            {
+                float time = (Main.GlobalTimeWrappedHourly % 8f);
+
+                if (time < 1f)
+                    return Color.Lerp(HoleCatFireBeige, HoleCatFireOrange, time);
+                else if (time < 2f)
+                    return Color.Lerp(HoleCatFireOrange, HoleCatFireRed, time - 1f);
+                else if (time < 3f)
+                    return Color.Lerp(HoleCatFireRed, HoleCatFireMaroon, time - 2f);
+                else if (time < 4f)
+                    return Color.Lerp(HoleCatFireMaroon, HoleCatFireDeepRed, time - 3f);
+                else if (time < 5f)
+                    return Color.Lerp(HoleCatFireDeepRed, HoleCatFireMaroon, time - 4f);
+                else if (time < 6f)
+                    return Color.Lerp(HoleCatFireMaroon, HoleCatFireRed, time - 5f);
+                else if (time < 7f)
+                    return Color.Lerp(HoleCatFireRed, HoleCatFireOrange, time - 6f);
+                else
+                    return Color.Lerp(HoleCatFireOrange, HoleCatFireBeige, time - 7f);
             }
         }
     }
@@ -433,17 +626,14 @@ namespace DestroyerTest.Common
         public static Asset<Texture2D> Square = TextureAssets.MagicPixel;
         public static Asset<Texture2D> PointGlow = ModContent.Request<Texture2D>($"{ParticlePath}/SimpleParticle");
         public static Asset<Texture2D> AreaGlow = ModContent.Request<Texture2D>($"{ParticlePath}/Glow");
-        public static Asset<Texture2D> BloomRing(int Variant)
-        {
-            if (Variant <= 0)
-            {
-                Variant = 1;
-            }
-            return ModContent.Request<Texture2D>($"{ParticlePath}/BloomRing{Variant}");
-        }
+        public static Asset<Texture2D> BloomRing = ModContent.Request<Texture2D>($"{ParticlePath}/BloomRing");
+        public static Asset<Texture2D> BloomRingSharp = ModContent.Request<Texture2D>($"{ParticlePath}/BloomRingSharp_FullScale");
         public static Asset<Texture2D> FeatheredCircle = ModContent.Request<Texture2D>($"{ParticlePath}/GlowCircle");
         public static Asset<Texture2D> Vingette = ModContent.Request<Texture2D>($"{ExtrasPath}/BigVingette");
         public static Asset<Texture2D> FadeLine = ModContent.Request<Texture2D>($"{ExtrasPath}/FadeLine");
+        public static Asset<Texture2D> StarAura = ModContent.Request<Texture2D>($"{ExtrasPath}/StarWrathAura");
+        public static Asset<Texture2D> Swirl = ModContent.Request<Texture2D>($"{ParticlePath}/Swirl");
+        public static Asset<Texture2D> FireRing = ModContent.Request<Texture2D>($"{ParticlePath}/Boom2");
         public static Asset<Texture2D> Sparkle(int Variant)
         {
             if (Variant <= 0)
@@ -451,7 +641,7 @@ namespace DestroyerTest.Common
                 Variant = 1;
             }
             return ModContent.Request<Texture2D>($"{ParticlePath}/Shine{Variant}");
-        } 
+        }
 
         public static Asset<Texture2D> Star(int Variant)
         {
@@ -471,7 +661,8 @@ namespace DestroyerTest.Common
             return ModContent.Request<Texture2D>($"{ParticlePath}/Cyclone{Variant}");
         }
         public static Asset<Texture2D> FlameTelegraph = ModContent.Request<Texture2D>($"{ParticlePath}/CursedFlamesTelegraph");
-        public static Asset<Texture2D> ArrowTelegraph = ModContent.Request<Texture2D>($"{ParticlePath}/ArrowTelegraph");
+        public static Asset<Texture2D> ArrowTelegraph = ModContent.Request<Texture2D>($"{ExtrasPath}/DashTelegraphArrow");
+        public static Asset<Texture2D> ArrowTelegraphCont = ModContent.Request<Texture2D>($"{ExtrasPath}/DashTelegraphArrowContinuous");
         public static Asset<Texture2D> Warning = ModContent.Request<Texture2D>($"{ParticlePath}/WarningTriangle");
         public static Asset<Texture2D> Trail(int Variant)
         {
@@ -508,11 +699,19 @@ namespace DestroyerTest.Common
         public static Asset<Texture2D> TenebrousConstructWingRight = ModContent.Request<Texture2D>($"{ExtrasPath}/TenebrousConstructWingRight");
         public static Asset<Texture2D> WyvernSoulDash = ModContent.Request<Texture2D>($"{ExtrasPath}/WyvernSoulDash");
         public static Asset<Texture2D> CorruptSigil = ModContent.Request<Texture2D>($"{ExtrasPath}/CorruptSigil");
+        public static Asset<Texture2D> CrimsonSigil = ModContent.Request<Texture2D>($"{ExtrasPath}/CrimsonSigil");
+        public static Asset<Texture2D> CrimsonBloodRune = ModContent.Request<Texture2D>($"{ExtrasPath}/CrimsonSigil");
+        public static Asset<Texture2D> BloodHexHeart = ModContent.Request<Texture2D>($"{ExtrasPath}/BloodHexHeart");
+        public static Asset<Texture2D> MobilityHexDoll = ModContent.Request<Texture2D>($"{ExtrasPath}/MobilityHexDoll");
+        public static Asset<Texture2D> StarFuryOutline = ModContent.Request<Texture2D>($"{ExtrasPath}/StarfuryCloneOutline");
+        public static Asset<Texture2D> NodeBossPikeOutline = ModContent.Request<Texture2D>($"{ExtrasPath}/NodeBossDistendedPikeOutline");
+        public static Asset<Texture2D> PossessedToothOutline = ModContent.Request<Texture2D>($"{ExtrasPath}/PossessedToothOutline");
         //
         // Sounds
         //
-        public static Asset<SoundEffect> ChargeBreak = ModContent.Request<SoundEffect>($"{AudioPath}/ChargeBreak");
-        public static Asset<SoundEffect> CrystalBreak = ModContent.Request<SoundEffect>($"{AudioPath}/CrystalBreak");
+        public static SoundStyle ChargeBreak = new SoundStyle($"{AudioPath}/ChargeBreak");
+        public static SoundStyle CrystalBreak = new SoundStyle($"{AudioPath}/CrystalBreak");
+        public static SoundStyle ConstitutionStarKill = new SoundStyle($"{AudioPath}/ConstitutionBoss/ConstitutionStar/Kill", 14) { PitchVariance = 0.2f, Volume = 0.85f, MaxInstances = 0 };
     }
 
     public class AssetVerifierSystem : ModSystem
@@ -565,7 +764,7 @@ namespace DestroyerTest.Common
 
         private void TestMethodAssets()
         {
-            _ = DTAssetLib.BloomRing(1).Value;
+            _ = DTAssetLib.BloomRing.Value;
             _ = DTAssetLib.Sparkle(1).Value;
             _ = DTAssetLib.Star(1).Value;
             _ = DTAssetLib.Cyclone(1).Value;

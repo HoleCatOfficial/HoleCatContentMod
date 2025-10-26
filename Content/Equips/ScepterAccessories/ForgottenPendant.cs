@@ -25,13 +25,5 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
             player.GetDamage(ModContent.GetInstance<ScepterClass>()) *= 1.02f;
             ScepterClassStats.Range += 1;
         }
-
-        public override void AddRecipes()
-        {
-            CreateRecipe()
-                .AddIngredient(ItemID.EbonstoneBlock, 12)
-                .AddTile(TileID.DemonAltar)
-                .Register();
-        }
     }
 }

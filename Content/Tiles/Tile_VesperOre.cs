@@ -10,6 +10,8 @@ using Terraria.IO;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.WorldBuilding;
+using InnoVault.PRT;
+using DestroyerTest.Content.Particles;
 
 namespace DestroyerTest.Content.Tiles
 {
@@ -22,7 +24,7 @@ namespace DestroyerTest.Content.Tiles
             Main.tileSpelunker[Type] = true; // The tile will be affected by spelunker highlighting
             Main.tileOreFinderPriority[Type] = 235; // Metal Detector value, see https://terraria.wiki.gg/wiki/Metal_Detector
             Main.tileShine2[Type] = true; // Modifies the draw color slightly.
-            Main.tileShine[Type] = 780; // How often tiny dust appear off this tile. Larger is less frequently
+            Main.tileShine[Type] = 600; // How often tiny dust appear off this tile. Larger is less frequently
             Main.tileMergeDirt[Type] = true;
             Main.tileSolid[Type] = true;
             Main.tileBlockLight[Type] = true;
@@ -30,34 +32,35 @@ namespace DestroyerTest.Content.Tiles
             LocalizedText name = CreateMapEntryName();
             AddMapEntry(new Color(119, 104, 86), name);
 
-            DustType = ModContent.DustType<VesperOreDust>();
-            VanillaFallbackOnModDeletion = TileID.Silver;
+			DustType = ModContent.DustType<VesperOreDust>();
+			
+            VanillaFallbackOnModDeletion = TileID.Iron;
             HitSound = SoundID.Tink;
             MineResist = 1.5f;
             MinPick = 10;
         }
 
-        // Example of how to enable the Biome Sight buff to highlight this tile. Biome Sight is technically intended to show "infected" tiles, so this example is purely for demonstration purposes.
-        public override bool IsTileBiomeSightable(int i, int j, ref Color sightColor)
-        {
-            sightColor = new Color(119, 104, 86);
-            return true;
-        }
-        
-        public override void PostDraw(int i, int j, SpriteBatch spriteBatch)
+		public override void PostDraw(int i, int j, SpriteBatch spriteBatch)
 		{
-            Texture2D Glow = ModContent.Request<Texture2D>("DestroyerTest/Content/Tiles/Tile_VesperOre_Glow").Value;
+			Texture2D Glow = ModContent.Request<Texture2D>("DestroyerTest/Content/Tiles/Tile_VesperOre_Glow").Value;
 			Tile tile = Main.tile[i, j];
 			Vector2 zero = new Vector2(Main.offScreenRange, Main.offScreenRange);
-			if (Main.drawToScreen) {
+			if (Main.drawToScreen)
+			{
 				zero = Vector2.Zero;
 			}
 			int height = tile.TileFrameY == 36 ? 18 : 16;
-			if (tile.Slope == 0 && !tile.IsHalfBlock) 
+			if (tile.Slope == 0 && !tile.IsHalfBlock)
 			{
 				Main.spriteBatch.Draw(Glow, new Vector2(i * 16 - (int)Main.screenPosition.X, j * 16 - (int)Main.screenPosition.Y + 2) + zero, new Rectangle(tile.TileFrameX, tile.TileFrameY, 16, height), Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
 			}
 		}
+
+        public override void KillTile(int i, int j, ref bool fail, ref bool effectOnly, ref bool noItem)
+        {
+            PRTLoader.NewParticle(PRTLoader.GetParticleID<StarParticle>(), new Vector2(i * 16 + Main.rand.Next(1, 9), j * 16 + Main.rand.Next(1, 9)), Vector2.Zero, Color.White, 0.5f);
+        }
+
 	}
 
 	// ExampleOreSystem contains code related to spawning ExampleOre. It contains both spawning ore during world generation, seen in ModifyWorldGenTasks, and spawning ore after defeating a boss, seen in BlessWorldWithExampleOre and MinionBossBody.OnKill.

@@ -148,12 +148,12 @@ namespace DestroyerTest.Content.Entities
             Vector2 originLeft = new Vector2(WingLeft.Width(), WingLeft.Height() / 2);
             Main.EntitySpriteDraw(
                 WingLeft.Value,
-                NPC.Center - screenPos + new Vector2(-20, -10),
+                NPC.Center - screenPos + new Vector2(-30, -30),
                 null,
                 Color.White,
                 0f,
                 originLeft,
-                new Vector2(WingXScale, 1f),
+                new Vector2(WingXScale * 2, 2f),
                 SpriteEffects.None,
                 0
             );
@@ -162,12 +162,12 @@ namespace DestroyerTest.Content.Entities
             Vector2 originRight = new Vector2(0, WingRight.Height() / 2);
             Main.EntitySpriteDraw(
                 WingRight.Value,
-                NPC.Center - screenPos + new Vector2(20, -10),
+                NPC.Center - screenPos + new Vector2(30, -30),
                 null,
                 Color.White,
                 0f,
                 originRight,
-                new Vector2(WingXScale, 1f),
+                new Vector2(WingXScale * 2, 2f),
                 SpriteEffects.None,
                 0
             );

@@ -16,6 +16,7 @@ namespace DestroyerTest.Content.RiftBiome.RiftSurfaceResources
 			Main.tileMerge[ModContent.TileType<Tile_RiftStone>()][Type] = true;
 			Main.tileMerge[ModContent.TileType<Tile_RiftSilt>()][Type] = true;
 			
+
 			Main.tileBlockLight[Type] = true;
 
 			DustType = DustID.Wraith;

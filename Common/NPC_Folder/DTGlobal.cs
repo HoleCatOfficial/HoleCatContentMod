@@ -152,6 +152,9 @@ namespace DestroyerTest.Common.NPC_Folder
             if (npc.type == NPCID.Golem && !DownedBossSystem.downedGolemBoss)
             {
                 DownedBossSystem.downedGolemBoss = true;
+                ModContent.GetInstance<HeliciteSystem>().BlessWorldWithHelicite();
+                Main.NewText("Fragments of the ancient sun embed themselves in the rock deep down...", ColorLib.TenebrisMagenta);
+                
                 if (Main.netMode == NetmodeID.Server)
                 {
                     NetMessage.SendData(MessageID.WorldData);
