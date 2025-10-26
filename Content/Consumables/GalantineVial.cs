@@ -1,6 +1,6 @@
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Scepter;
+using DestroyerTest.Content.Consumables;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.Tiles;
 using DestroyerTest.Rarity;
@@ -12,15 +12,13 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Consumables
 {
-	public class RiftFlask : ModItem
+	public class GalantineVial : ModItem
 	{
 		public override void SetStaticDefaults() {
 			Item.ResearchUnlockCount = 20;
 
 			ItemID.Sets.DrinkParticleColors[Type] = [
-				ColorLib.Rift,
-				ColorLib.DarkRift3,
-				ColorLib.LightRift2
+				ColorLib.StellarColor
 			];
 		}
 
@@ -34,20 +32,20 @@ namespace DestroyerTest.Content.Consumables
 			Item.consumable = true;
 			Item.width = 22;
 			Item.height = 32;
-			Item.buffType = ModContent.BuffType<WeaponImbueDO>();
+			Item.buffType = ModContent.BuffType<ScepterImbueGB>();
 			Item.buffTime = Item.flaskTime;
-			Item.value = Item.sellPrice(0, 0, 5);
-			Item.rare = ModContent.RarityType<RiftRarity1>();
+			Item.value = Item.sellPrice(0, 2, 5);
+            Item.rare = ItemRarityID.Blue;
 		}
 
         public override void AddRecipes()
         {
             CreateRecipe()
                 .AddIngredient(ItemID.BottledWater)
-                .AddIngredient<Item_HeliciteCrystal>(8)
+                .AddIngredient<StellarMatter>(4)
                 .AddTile(TileID.ImbuingStation)
                 .Register();
-            Recipe.Create(ModContent.ItemType<RiftVial>(), 1)
+            Recipe.Create(ModContent.ItemType<RiftFlask>(), 1)
                 .AddIngredient(Type)
                 .Register();
 		}

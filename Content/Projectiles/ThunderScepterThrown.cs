@@ -10,7 +10,7 @@ using DestroyerTest.Common;
 using DestroyerTest.Content.Dusts;
 using System.IO;
 using DestroyerTest.Content.Projectiles.ParentClasses;
-using DestroyerTest.Content.Magic.ScepterSubclass;
+using DestroyerTest.Content.Scepter;
 
 namespace DestroyerTest.Content.Projectiles
 {

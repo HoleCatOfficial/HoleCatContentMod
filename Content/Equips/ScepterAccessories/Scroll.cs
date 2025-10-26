@@ -17,7 +17,7 @@ using Opus.Content.Helpers;
 using System;
 using System.Linq;
 using Terraria.GameContent.ItemDropRules;
-using DestroyerTest.Content.Magic.ScepterSubclass;
+using DestroyerTest.Content.Scepter;
 using Opus;
 
 namespace DestroyerTest.Content.Equips.ScepterAccessories

@@ -1,5 +1,5 @@
 
-using DestroyerTest.Content.Magic.ScepterSubclass;
+using DestroyerTest.Content.Scepter;
 using DestroyerTest.Content.Tiles.AchievementPaintingTiles;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;

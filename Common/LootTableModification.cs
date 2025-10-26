@@ -3,8 +3,8 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.GameContent.ItemDropRules;
 using DestroyerTest.Content.Equips.ScepterAccessories;
-using DestroyerTest.Content.Magic.ScepterSubclass;
 using DestroyerTest.Common.Systems;
+using DestroyerTest.Content.Scepter;
 
 namespace DestroyerTest.Common
 {

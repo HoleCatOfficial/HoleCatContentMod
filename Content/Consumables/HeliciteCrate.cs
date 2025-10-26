@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using DestroyerTest.Common.Systems;
-using DestroyerTest.Content.Magic.ScepterSubclass;
+using DestroyerTest.Content.Scepter;
 using DestroyerTest.Content.Tiles;
 using DestroyerTest.Content.Tiles.Riftplate;
 using DestroyerTest.Content.MeleeWeapons;
