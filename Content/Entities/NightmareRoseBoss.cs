@@ -47,10 +47,12 @@ using Microsoft.CodeAnalysis.FlowAnalysis;
 using Terraria.Graphics.CameraModifiers;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.Dusts;
+using GlowmaskHelper.Content;
 
 namespace DestroyerTest.Content.Entities
 {
     [AutoloadBossHead]
+    [AutoloadGlowmask]
     public class NightmareRoseBoss : ModNPC
     {
         public override string BossHeadTexture => "DestroyerTest/Content/Entities/NightmareRoseBoss_Head_Boss";
@@ -1249,17 +1251,6 @@ namespace DestroyerTest.Content.Entities
         public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             base.PostDraw(spriteBatch, screenPos, drawColor);
-            Asset<Texture2D> GlowMask = ModContent.Request<Texture2D>($"{Texture}_GlowMask");
-            SpriteEffects FX = SpriteEffects.None;
-            if (NPC.spriteDirection == 1)
-            {
-                FX = SpriteEffects.None;
-            }
-            if (NPC.spriteDirection == -1)
-            {
-                FX = SpriteEffects.FlipHorizontally;
-            }
-            Main.EntitySpriteDraw(GlowMask.Value, NPC.Center - Main.screenPosition, null, Color.White, NPC.rotation, GlowMask.Value.Size() / 2, NPC.scale, FX, 0);
             if (FlameTimer < 240 && FlameTimer >= 0 && currentState == AttackState.CursedFlames && !EternityIsActive())
             {
                 DrawTelegraph(NPCHead, PlayerCenter, DTAssetLib.FlameTelegraph.Value);

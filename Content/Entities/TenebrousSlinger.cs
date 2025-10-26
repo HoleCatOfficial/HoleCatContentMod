@@ -28,9 +28,11 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
 using UtfUnknown.Core.Models.SingleByte.Finnish;
+using GlowmaskHelper.Content;
 
 namespace DestroyerTest.Content.Entities
 {
+    [AutoloadGlowmask]
     public class TenebrousSlinger : ModNPC
     {
 
@@ -281,13 +283,6 @@ namespace DestroyerTest.Content.Entities
             }
 
         }
-
-        public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-        {
-            Asset<Texture2D> GlowMask = ModContent.Request<Texture2D>($"{Texture}_GlowMask");
-            Main.EntitySpriteDraw(GlowMask.Value, NPC.Center - Main.screenPosition, null, Color.White, NPC.rotation, new Vector2(NPC.width / 2, NPC.height / 2), NPC.scale, SpriteEffects.None, 0);
-        }
-
 
         public override void OnHitPlayer(Player target, Player.HurtInfo hurtInfo)
         {

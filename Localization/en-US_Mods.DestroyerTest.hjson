@@ -3190,14 +3190,11 @@ Items: {
 		Tooltip: ""
 		DisplayName: Hex Book
 	}
-<<<<<<< HEAD
 
 	ScholarShirt: {
 		DisplayName: Scholar Shirt
 		Tooltip: ""
 	}
-=======
->>>>>>> df18bcebf1b4ff6bc4e97a60383e749575b0b506
 }
 
 Projectiles: {

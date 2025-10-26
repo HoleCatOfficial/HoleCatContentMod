@@ -9,6 +9,7 @@ using ReLogic.Content;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using GlowmaskHelper.Content;
 
 /// <summary>
     /// This is the code from Consolaria's Arch Wyvern. I do not own any of this except for the textures I paint over it. This code will be replaced in the future, when I am capable of modding something so advanced. (Trust me. I tried many times with the example worm. It did not go well.)
@@ -16,9 +17,9 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Entities
 {
+    [AutoloadGlowmask]
     public class WyvernCorpseBody3 : ModNPC
     {
-
         public void immunities()
         {
             NPCID.Sets.SpecificDebuffImmunity[Type][ModContent.BuffType<ShimmeringFlames>()] = true;
@@ -129,20 +130,7 @@ namespace DestroyerTest.Content.Entities
             return false;
         }
 
-        public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-        {
-            Asset<Texture2D> GlowMask = ModContent.Request<Texture2D>($"{Texture}_GlowMask");
-            SpriteEffects FX = SpriteEffects.None;
-            if (NPC.spriteDirection == 1)
-            {
-                FX = SpriteEffects.None;
-            }
-            if (NPC.spriteDirection == -1)
-            {
-                FX = SpriteEffects.FlipHorizontally;
-            }
-            Main.EntitySpriteDraw(GlowMask.Value, NPC.Center - Main.screenPosition, null, Color.White, NPC.rotation, GlowMask.Value.Size() / 2, NPC.scale, FX, 0);
-        }
+         
 
         public override void HitEffect(NPC.HitInfo hit)
         {
