@@ -8,8 +8,11 @@ using Terraria.GameContent;
 using Terraria.ID;
 using DestroyerTest.Content.Tiles;
 
-namespace DestroyerTest.Rarity
+namespace DestroyerTest.Rarity.Scepter
 {
+    /// <summary>
+    /// The fourth rarity, spanning from Plantera to the Lunar Event.
+    /// </summary>
 	public class CerisePinkRarity : ModRarity
     {
         public override Color RarityColor => new Color(236, 59, 131); // Change color as needed

@@ -85,13 +85,8 @@ namespace DestroyerTest.Content.Projectiles
 			Lighting.AddLight(Projectile.Center, ColorLib.TenebrisGradient.ToVector3() * 0.2f);
 
 			PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center, Vector2.Zero, ColorLib.TenebrisGradient, 0.75f);
-			PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Projectile.Center, Vector2.Zero, ColorLib.TenebrisGradient, 1.25f);
-
-			for(int u = 0; u < 8; u++)
-			{
-				Vector2 Pos = Projectile.Center + new Vector2(-10, -10);
-				Dust.NewDust(Pos, 20, 20, DustID.TintableDustLighted, 0, 0, 100, ColorLib.TenebrisGradient, 8);
-            }
+			PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center, Vector2.Zero, ColorLib.TenebrisGradient * 0.45f, 1.25f);
+			PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Projectile.Center, Vector2.Zero, ColorLib.TenebrisGradient * 0.5f, 1.25f);
 
 			if (DelayTimer < 20)
 			{

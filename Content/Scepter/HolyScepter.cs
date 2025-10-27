@@ -11,6 +11,7 @@ using DestroyerTest.Common;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.Resources.Cloths;
 using DestroyerTest.Rarity;
+using DestroyerTest.Rarity.Scepter;
 
 namespace DestroyerTest.Content.Scepter
 {

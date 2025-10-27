@@ -96,9 +96,9 @@ namespace DestroyerTest.Content.Entities
 
         public SoundStyle Kill = new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/NightmareRoseKill") with { Volume = 2, MaxInstances = 0 };
         public SoundStyle Fire = new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/CursedFlameShoot") with { Volume = 2, PitchVariance = 1f, MaxInstances = 0 };
-        public SoundStyle ArenaDivide = new SoundStyle("DestroyerTest/Assets/Audio/TenebrisImpact") with { Volume = 2, PitchVariance = 1f, MaxInstances = 0 };
-        public SoundStyle DespShootMine = new SoundStyle("DestroyerTest/Assets/Audio/GoliathPhantomHit") with { Volume = 2, PitchVariance = 1f, MaxInstances = 0 };
-        public SoundStyle NodeSpawnSound = new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/NodeSpawn") with { PitchVariance = 1f, MaxInstances = 0 };
+        public SoundStyle ArenaDivide = new SoundStyle("DestroyerTest/Assets/Audio/Impacts/HellWeaponImpact") with { Volume = 2, PitchVariance = 1f, MaxInstances = 0 };
+        public SoundStyle DespShootMine = new SoundStyle("DestroyerTest/Assets/Audio/Impacts/MetalImpactV1_", 3) with { Volume = 2, PitchVariance = 1f, MaxInstances = 0 };
+        public SoundStyle NodeSpawnSound = new SoundStyle("DestroyerTest/Infernum/Assets/Audio/NightmareRoseIntroFinish") with { PitchVariance = 1f, MaxInstances = 0 };
         public SoundStyle Napalm = new SoundStyle("DestroyerTest/Assets/Audio/NodeAttackNapalm") with { PitchVariance = 1f, MaxInstances = 0 };
         public SoundStyle Desperation = new SoundStyle("DestroyerTest/Assets/Audio/RoseDesperation") with { MaxInstances = 0 };
 
@@ -1437,11 +1437,17 @@ namespace DestroyerTest.Content.Entities
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
         }
 
+        public bool Flag3 = false;
         public void ArenaDivision()
         {
-            Projectile Divider1 = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), NPCHead, Vector2.Zero, ModContent.ProjectileType<CursedFlameWallVertical>(), 30, 3);
+            if (!Flag3)
+            {
+                SoundEngine.PlaySound(ArenaDivide);
+                Projectile Divider1 = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), NPCHead, Vector2.Zero, ModContent.ProjectileType<CursedFlameWallVertical>(), 30, 3);
 
-            Divider1.timeLeft = 1200;
+                Divider1.timeLeft = 1200;
+                Flag3 = true;
+            }
         }
 
         public void GatherParticle()

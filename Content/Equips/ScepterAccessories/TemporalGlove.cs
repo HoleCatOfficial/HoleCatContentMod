@@ -2,6 +2,7 @@
 using DestroyerTest.Common;
 using DestroyerTest.Content.Equips.ScepterAccessories;
 using DestroyerTest.Rarity;
+using DestroyerTest.Rarity.Scepter;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;

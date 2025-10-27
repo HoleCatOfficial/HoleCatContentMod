@@ -8,8 +8,11 @@ using Terraria.GameContent;
 using Terraria.ID;
 using DestroyerTest.Content.Tiles;
 
-namespace DestroyerTest.Rarity
+namespace DestroyerTest.Rarity.Scepter
 {
+    /// <summary>
+    /// The major pre-hardmode rarity, spanning from King Slime's tier to the Wall of Flesh.
+    /// </summary>
     public class PaleFuchsiaRarity : ModRarity
     {
         public override Color RarityColor => new Color(199, 67, 118); // Change color as needed

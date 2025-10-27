@@ -9,6 +9,7 @@ using static Terraria.ModLoader.ModContent;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Common;
 using DestroyerTest.Rarity;
+using DestroyerTest.Rarity.Scepter;
 
 namespace DestroyerTest.Content.Scepter
 {

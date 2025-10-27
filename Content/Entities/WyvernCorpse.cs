@@ -69,6 +69,7 @@ namespace DestroyerTest.Content.Entities
         public SoundStyle Teeth = new SoundStyle("DestroyerTest/Assets/Audio/Corpse/ToothShoot") with { PitchVariance = 1.0f };
         public SoundStyle TeleportSetPosition = new SoundStyle("DestroyerTest/Assets/Audio/Corpse/TeleportSetPosition") with { PitchVariance = 1.0f };
         public SoundStyle Attack = new SoundStyle("DestroyerTest/Assets/Audio/Corpse/Attack", 10) with { PitchVariance = 1.0f, MaxInstances = 0 };
+        public SoundStyle NodeSpawnSound = new SoundStyle("DestroyerTest/Infernum/Assets/Audio/WyvernCorpseIntroFinish") with { PitchVariance = 1f, MaxInstances = 0 };
         public SoundStyle Kill2 = new SoundStyle("DestroyerTest/Assets/Audio/Corpse/DespRoar");
         public SoundStyle Desperation = new SoundStyle("DestroyerTest/Assets/Audio/Corpse/Desperation");
         public static LocalizedText BestiaryText
@@ -140,7 +141,7 @@ namespace DestroyerTest.Content.Entities
             NPC.BossBar = ModContent.GetInstance<CrimsonBossBar>();
 
             NPC.hide = true;
-            NPC.value = Item.buyPrice(gold: 1, silver: 75);
+            NPC.value = Item.buyPrice(platinum: 1, gold: 15, silver: 75);
         }
 
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
@@ -1521,7 +1522,7 @@ namespace DestroyerTest.Content.Entities
             int projectileCount = 6;
 
 
-            SoundEngine.PlaySound(SoundID.Item20);
+            SoundEngine.PlaySound(NodeSpawnSound);
 
             for (int i = 0; i < projectileCount; i++)
             {

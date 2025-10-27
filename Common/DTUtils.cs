@@ -293,6 +293,17 @@ namespace DestroyerTest.Common
             PRTLoader.GetParticleID<ColoredFire6>(),
             PRTLoader.GetParticleID<ColoredFire7>()
         };
+
+        public static int[] FireFlat =
+        {
+            PRTLoader.GetParticleID<BlackFire1>(),
+            PRTLoader.GetParticleID<BlackFire2>(),
+            PRTLoader.GetParticleID<BlackFire3>(),
+            PRTLoader.GetParticleID<BlackFire4>(),
+            PRTLoader.GetParticleID<BlackFire5>(),
+            PRTLoader.GetParticleID<BlackFire6>(),
+            PRTLoader.GetParticleID<BlackFire7>()
+        };
     }
 
     public class DTPlayerUtil : ModPlayer

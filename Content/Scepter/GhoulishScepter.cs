@@ -14,6 +14,7 @@ using Terraria.GameContent.ItemDropRules;
 using DestroyerTest.Content.Entities;
 using DestroyerTest.Common.Systems;
 using DestroyerTest.Rarity;
+using DestroyerTest.Rarity.Scepter;
 
 namespace DestroyerTest.Content.Scepter
 {

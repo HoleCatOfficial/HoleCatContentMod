@@ -12,6 +12,7 @@ using DestroyerTest.Content.Resources;
 using Microsoft.Xna.Framework;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Buffs;
+using DestroyerTest.Rarity.Scepter;
 
 namespace DestroyerTest.Content.Scepter
 {

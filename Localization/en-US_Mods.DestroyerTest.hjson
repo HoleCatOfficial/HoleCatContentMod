@@ -3195,6 +3195,21 @@ Items: {
 		DisplayName: Scholar Shirt
 		Tooltip: ""
 	}
+
+	NightBodyArmor: {
+		DisplayName: Night Body Armor
+		Tooltip: ""
+	}
+
+	NightHood: {
+		DisplayName: Night Hood
+		Tooltip: ""
+	}
+
+	NightLegArmor: {
+		DisplayName: Night Leg Armor
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
@@ -4163,6 +4178,16 @@ Configs: {
 		}
 
 		DisplayName: UI Config
+
+		NightBarXPos: {
+			Label: Night Bar X Pos
+			Tooltip: ""
+		}
+
+		NightBarYPos: {
+			Label: Night Bar Y Pos
+			Tooltip: ""
+		}
 	}
 }
 
