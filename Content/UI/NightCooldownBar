@@ -1,0 +1,93 @@
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Terraria;
+using Terraria.ModLoader;
+using Terraria.UI;
+using DestroyerTest.Common;
+
+namespace DestroyerTest.Content.UI
+{
+    public class NightCooldownBar : UIState
+    {
+        private Texture2D barTexture;
+        private const int totalFrames = 4;
+        private Player player;
+
+        public override void OnInitialize()
+        {
+            // Load your bar texture
+            barTexture = ModContent.Request<Texture2D>("DestroyerTest/Assets/Textures/NightSetCooldownBar").Value;
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            base.Update(gameTime);
+            player = Main.LocalPlayer;
+        }
+
+        protected override void DrawSelf(SpriteBatch spriteBatch)
+        {
+
+            base.DrawSelf(spriteBatch);
+
+            DTUIConfig cfg = ModContent.GetInstance<DTUIConfig>();
+            if (player.GetModPlayer<NightPlayer>().Cooldown)
+            {
+                NightPlayer nightPlayer = player.GetModPlayer<NightPlayer>();
+
+                // Calculate which frame to show
+                int frame = (int)MathHelper.Clamp(
+                    totalFrames - 1 - ((float)nightPlayer.CooldownTime / 360 * (totalFrames - 1)),
+                    0,
+                    totalFrames - 1
+                );
+
+                Rectangle sourceRect = new Rectangle(0, frame * (barTexture.Height / totalFrames), barTexture.Width, barTexture.Height / totalFrames);
+
+                // Screen center with offset
+                Vector2 position = new Vector2((Main.screenWidth / 2 - 25) + cfg.NightBarXPos, (Main.screenHeight / 2 - (sourceRect.Height / 2)) + cfg.NightBarYPos);
+
+                spriteBatch.Draw(barTexture, position, sourceRect, Color.White);
+            }
+        }
+
+        public class NightCooldownBarDraw : ModSystem
+        {
+            private UserInterface nightUI;
+            private NightCooldownUI nightCooldownUI;
+
+            public override void Load()
+            {
+                if (!Main.dedServ)
+                {
+                    nightCooldownUI = new NightCooldownUI();
+                    nightUI = new UserInterface();
+                    nightUI.SetState(nightCooldownUI);
+                }
+            }
+
+            public override void UpdateUI(GameTime gameTime)
+            {
+                nightUI?.Update(gameTime);
+            }
+
+            public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
+            {
+                int mouseTextIndex = layers.FindIndex(layer => layer.Name.Equals("Vanilla: Mouse Text"));
+                if (mouseTextIndex != -1)
+                {
+                    layers.Insert(mouseTextIndex, new LegacyGameInterfaceLayer(
+                        "DestroyerTest: NightCooldown",
+                        delegate
+                        {
+                            nightUI.Draw(Main.spriteBatch, new GameTime());
+                            return true;
+                        },
+                        InterfaceScaleType.UI)
+                    );
+                }
+            }
+        }
+
+    }
+}
