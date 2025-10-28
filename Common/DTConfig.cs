@@ -61,6 +61,20 @@ namespace DestroyerTest.Common
         [Range(-1800f, 1800f)]
         [DefaultValue(0f)]
         public float RiftBarYPos { get; set; }
+
+        /// <summary>
+        /// An additive value to the default position. Is not absolute, so setting this to a negative will move it to the left.
+        /// </summary>
+        [Range(-1800f, 1800f)]
+        [DefaultValue(0f)]
+        public float NightBarXPos { get; set; }
+        /// <summary>
+        /// An additive value to the default position. Is not absolute, so setting this to a negative will move it up.
+        /// </summary>
+
+        [Range(-1800f, 1800f)]
+        [DefaultValue(0f)]
+        public float NightBarYPos { get; set; }
     }
     
     public class DTConfigDataModifications : ModSystem

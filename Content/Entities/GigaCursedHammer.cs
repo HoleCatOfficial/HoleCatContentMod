@@ -15,10 +15,12 @@ using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
+using GlowmaskHelper.Content;
 
 namespace DestroyerTest.Content.Entities
 {
     [AutoloadHead]
+    [AutoloadGlowmask]
     public class GigaCursedHammer : ModNPC
     {
         public override void SetStaticDefaults()

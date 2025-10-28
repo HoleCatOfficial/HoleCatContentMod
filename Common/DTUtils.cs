@@ -77,12 +77,12 @@ namespace DestroyerTest.Common
             }
         }
 
-        public void RadialProjectileRandomDir(int ID, int Amount, Vector2 CTR, int Dmg = 0, int KB = 0, float Speed = 2f, float AI0 = 0, float AI1 = 0, float AI2 = 0)
+        public void RadialProjectileRandomDir(int ID, int Amount, Vector2 CTR, int Dmg = 0, int KB = 0, float Speed = 2f, float AI0 = 0, float AI1 = 0, float AI2 = 0, bool friendly = false, bool hostile = false)
         {
             for (int i = 0; i < Amount; i++)
             {
                 Vector2 velocity = new Vector2(Speed, 0f).RotatedByRandom(MathHelper.TwoPi);
-                Projectile.NewProjectile(
+                Projectile Pr = Projectile.NewProjectileDirect(
                     Projectile.GetSource_None(),
                     CTR,
                     velocity,
@@ -93,6 +93,8 @@ namespace DestroyerTest.Common
                     ai1: AI1,
                     ai2: AI2
                 );
+                Pr.friendly = friendly;
+                Pr.hostile = hostile;
             }
         }
 
@@ -292,6 +294,17 @@ namespace DestroyerTest.Common
             PRTLoader.GetParticleID<ColoredFire5>(),
             PRTLoader.GetParticleID<ColoredFire6>(),
             PRTLoader.GetParticleID<ColoredFire7>()
+        };
+
+        public static int[] FireFlat =
+        {
+            PRTLoader.GetParticleID<BlackFire1>(),
+            PRTLoader.GetParticleID<BlackFire2>(),
+            PRTLoader.GetParticleID<BlackFire3>(),
+            PRTLoader.GetParticleID<BlackFire4>(),
+            PRTLoader.GetParticleID<BlackFire5>(),
+            PRTLoader.GetParticleID<BlackFire6>(),
+            PRTLoader.GetParticleID<BlackFire7>()
         };
     }
 

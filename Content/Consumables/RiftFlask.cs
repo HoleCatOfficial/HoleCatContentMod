@@ -1,6 +1,6 @@
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Magic.ScepterSubclass;
+using DestroyerTest.Content.Scepter;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.Tiles;
 using DestroyerTest.Rarity;

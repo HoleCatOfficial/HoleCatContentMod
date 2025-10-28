@@ -8,8 +8,11 @@ using Terraria.GameContent;
 using Terraria.ID;
 using DestroyerTest.Content.Tiles;
 
-namespace DestroyerTest.Rarity
+namespace DestroyerTest.Rarity.Scepter
 {
+    /// <summary>
+    /// The first scepter rarity tier. Everything pre-Boss.
+    /// </summary>
 	public class PearlRarity : ModRarity
     {
         public override Color RarityColor => new Color(253, 242, 255); // Change color as needed

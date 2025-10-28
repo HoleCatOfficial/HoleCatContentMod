@@ -8,8 +8,11 @@ using Terraria.GameContent;
 using Terraria.ID;
 using DestroyerTest.Content.Tiles;
 
-namespace DestroyerTest.Rarity
+namespace DestroyerTest.Rarity.Scepter
 {
+    /// <summary>
+    /// The third rarity, spanning from pre-mech to plantera.
+    /// </summary>
 	public class WineRarity : ModRarity
     {
         public override Color RarityColor => new Color(157, 7, 89); // Change color as needed

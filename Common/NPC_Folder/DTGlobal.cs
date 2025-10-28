@@ -9,8 +9,8 @@ using Terraria.Audio;
 using DestroyerTest.Content.BossBars;
 using DestroyerTest.Content.Consumables;
 using DestroyerTest.Content.MeleeWeapons;
-using DestroyerTest.Content.Magic.ScepterSubclass;
 using DestroyerTest.Content.Ammunitions;
+using DestroyerTest.Content.Scepter;
 
 namespace DestroyerTest.Common.NPC_Folder
 {

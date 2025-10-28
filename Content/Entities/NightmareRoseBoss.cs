@@ -47,10 +47,12 @@ using Microsoft.CodeAnalysis.FlowAnalysis;
 using Terraria.Graphics.CameraModifiers;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.Dusts;
+using GlowmaskHelper.Content;
 
 namespace DestroyerTest.Content.Entities
 {
     [AutoloadBossHead]
+    [AutoloadGlowmask]
     public class NightmareRoseBoss : ModNPC
     {
         public override string BossHeadTexture => "DestroyerTest/Content/Entities/NightmareRoseBoss_Head_Boss";
@@ -94,9 +96,9 @@ namespace DestroyerTest.Content.Entities
 
         public SoundStyle Kill = new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/NightmareRoseKill") with { Volume = 2, MaxInstances = 0 };
         public SoundStyle Fire = new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/CursedFlameShoot") with { Volume = 2, PitchVariance = 1f, MaxInstances = 0 };
-        public SoundStyle ArenaDivide = new SoundStyle("DestroyerTest/Assets/Audio/TenebrisImpact") with { Volume = 2, PitchVariance = 1f, MaxInstances = 0 };
-        public SoundStyle DespShootMine = new SoundStyle("DestroyerTest/Assets/Audio/GoliathPhantomHit") with { Volume = 2, PitchVariance = 1f, MaxInstances = 0 };
-        public SoundStyle NodeSpawnSound = new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/NodeSpawn") with { PitchVariance = 1f, MaxInstances = 0 };
+        public SoundStyle ArenaDivide = new SoundStyle("DestroyerTest/Assets/Audio/Impacts/HellWeaponImpact") with { Volume = 2, PitchVariance = 1f, MaxInstances = 0 };
+        public SoundStyle DespShootMine = new SoundStyle("DestroyerTest/Assets/Audio/Impacts/MetalImpactV1_", 3) with { Volume = 2, PitchVariance = 1f, MaxInstances = 0 };
+        public SoundStyle NodeSpawnSound = new SoundStyle("DestroyerTest/Infernum/Assets/Audio/NightmareRoseIntroFinish") with { PitchVariance = 1f, MaxInstances = 0 };
         public SoundStyle Napalm = new SoundStyle("DestroyerTest/Assets/Audio/NodeAttackNapalm") with { PitchVariance = 1f, MaxInstances = 0 };
         public SoundStyle Desperation = new SoundStyle("DestroyerTest/Assets/Audio/RoseDesperation") with { MaxInstances = 0 };
 
@@ -1249,17 +1251,6 @@ namespace DestroyerTest.Content.Entities
         public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             base.PostDraw(spriteBatch, screenPos, drawColor);
-            Asset<Texture2D> GlowMask = ModContent.Request<Texture2D>($"{Texture}_GlowMask");
-            SpriteEffects FX = SpriteEffects.None;
-            if (NPC.spriteDirection == 1)
-            {
-                FX = SpriteEffects.None;
-            }
-            if (NPC.spriteDirection == -1)
-            {
-                FX = SpriteEffects.FlipHorizontally;
-            }
-            Main.EntitySpriteDraw(GlowMask.Value, NPC.Center - Main.screenPosition, null, Color.White, NPC.rotation, GlowMask.Value.Size() / 2, NPC.scale, FX, 0);
             if (FlameTimer < 240 && FlameTimer >= 0 && currentState == AttackState.CursedFlames && !EternityIsActive())
             {
                 DrawTelegraph(NPCHead, PlayerCenter, DTAssetLib.FlameTelegraph.Value);
@@ -1446,11 +1437,17 @@ namespace DestroyerTest.Content.Entities
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
         }
 
+        public bool Flag3 = false;
         public void ArenaDivision()
         {
-            Projectile Divider1 = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), NPCHead, Vector2.Zero, ModContent.ProjectileType<CursedFlameWallVertical>(), 30, 3);
+            if (!Flag3)
+            {
+                SoundEngine.PlaySound(ArenaDivide);
+                Projectile Divider1 = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), NPCHead, Vector2.Zero, ModContent.ProjectileType<CursedFlameWallVertical>(), 30, 3);
 
-            Divider1.timeLeft = 1200;
+                Divider1.timeLeft = 1200;
+                Flag3 = true;
+            }
         }
 
         public void GatherParticle()

@@ -17,7 +17,7 @@ using Opus.Content.Helpers;
 using System;
 using System.Linq;
 using Terraria.GameContent.ItemDropRules;
-using DestroyerTest.Content.Magic.ScepterSubclass;
+using DestroyerTest.Content.Scepter;
 using Opus;
 
 namespace DestroyerTest.Content.Equips.ScepterAccessories
@@ -373,6 +373,10 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
         public bool CursedFlameScroll = false;
         public bool TemporalGlove = false;
         public bool DiabolicScroll = false;
+        public bool SpookyScroll1 = false;
+        public bool SpookyScroll2 = false;
+        public bool SpookyScroll3 = false;
+        public bool SpookyScroll4 = false;
         public override void SetDefaults(Projectile entity)
         {
             if (entity.DamageType == ModContent.GetInstance<ScepterClass>() && entity.Name.Contains("Thrown"))
@@ -391,6 +395,14 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
             ProjectileID.OrnamentStar
         };
 
+        public int[] FireVariants = new int[]
+        {
+            ProjectileID.GreekFire1,
+            ProjectileID.GreekFire2,
+            ProjectileID.GreekFire3
+        };
+
+        public bool Flag1;
         public override void AI(Projectile projectile)
         {
             if (ChristmasScroll1 && IsAThrownScepter)
@@ -490,7 +502,39 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
                     }
                 }
             }
+            if (SpookyScroll1 && IsAThrownScepter)
+            {
+                for (int y = 0; y < 26; y++)
+                {
+                    Vector2 Outer = projectile.Center + Main.rand.NextVector2CircularEdge(300, 300);
+                    Dust.NewDustPerfect(Outer, DustID.Torch, projectile.velocity, 0, default, 1.5f);
+                }
+
+                foreach (NPC npc in Main.npc)
+                {
+                    if (npc.active && !npc.friendly && npc.Distance(projectile.Center) < 400)
+                    {
+                        npc.AddBuff(BuffID.OnFire3, 600);
+                    }
+                }
+
+                if (!Flag1)
+                {
+                    for (int f = 0; f < 6; f++)
+                    {
+                        Projectile.NewProjectile(projectile.GetSource_FromAI(), projectile.Center, projectile.velocity, ModContent.ProjectileType<SpookyFirewood>(), (int)(projectile.damage * 0.65f), 4, projectile.owner, projectile.whoAmI);
+                    }
+                    Flag1 = true;
+                }
+                
+            }
         }
+
+        public override void OnSpawn(Projectile projectile, IEntitySource source)
+        {
+            
+        }
+
         public override void OnHitNPC(Projectile projectile, NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPC(projectile, target, hit, damageDone);

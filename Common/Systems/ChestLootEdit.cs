@@ -1,6 +1,7 @@
 
 using DestroyerTest.Content.Equips.ScepterAccessories;
-using DestroyerTest.Content.Magic.ScepterSubclass;
+using DestroyerTest.Content.Scepter;
+
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;

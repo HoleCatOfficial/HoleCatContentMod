@@ -16,10 +16,12 @@ using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
+using GlowmaskHelper.Content;
 
 namespace DestroyerTest.Content.Entities
 {
     [AutoloadHead]
+    [AutoloadGlowmask]
     public class TheGreatFlayer : ModNPC
     {
 
@@ -167,17 +169,6 @@ namespace DestroyerTest.Content.Entities
 
         public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            Asset<Texture2D> GlowMask = ModContent.Request<Texture2D>($"{Texture}_GlowMask");
-            SpriteEffects FX = SpriteEffects.None;
-            if (NPC.spriteDirection == 1)
-            {
-                FX = SpriteEffects.None;
-            }
-            if (NPC.spriteDirection == -1)
-            {
-                FX = SpriteEffects.FlipHorizontally;
-            }
-            Main.EntitySpriteDraw(GlowMask.Value, NPC.Center - Main.screenPosition, null, Color.White, NPC.rotation, GlowMask.Value.Size() / 2, NPC.scale, FX, 0);
             base.PostDraw(spriteBatch, screenPos, drawColor);
 
             Vector2 drawPos = NPC.Center - screenPos;

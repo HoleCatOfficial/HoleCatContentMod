@@ -6,6 +6,7 @@ using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.RiftBiome;
+using DestroyerTest.Content.SHADEMANAGEMENT;
 using DestroyerTest.Content.Tools;
 using InnoVault.PRT;
 using Microsoft.Build.Evaluation;
@@ -194,6 +195,7 @@ namespace DestroyerTest.Content.Entities
             NPC.TargetClosest(faceTarget: true);
             Player player;
             player = Main.player[NPC.target];
+           
 
             NPC.rotation = 0.05f * NPC.velocity.Length();
             Vector2 direction = player.Center - NPC.Center;
@@ -213,8 +215,6 @@ namespace DestroyerTest.Content.Entities
             {
                 NPC.dontTakeDamage = false;
             }
-
-
 
 
 
@@ -256,7 +256,7 @@ namespace DestroyerTest.Content.Entities
                                 player.velocity += suckDirection * suckStrength;
                             }
 
-                            
+
                             if (Main.rand.NextBool(6) && Main.GameUpdateCount % 60 == 0)
                             {
                                 SoundEngine.PlaySound(Idle, NPC.Center);
@@ -290,19 +290,19 @@ namespace DestroyerTest.Content.Entities
                         NPC.velocity = Vector2.Lerp(NPC.velocity, direction * 3f, 0.05f);
                         WingXScale = 0.5f + 0.3f * (float)Math.Sin(Main.GameUpdateCount * 0.05f);
                         if (player.HeldItem.type == ModContent.ItemType<ShiningObelisk>() && player.itemAnimation == player.itemAnimationMax - 10)
-                            {
-                                ScreenFlashSystem.FlashIntensity = 1.0f;
-                                SoundEngine.PlaySound(Stun, NPC.Center);
-                                CurrentState = State.Stunned;
-                                StunTimer = 1200;
-                                NPC.netUpdate = true;
-                            }
+                        {
+                            ScreenFlashSystem.FlashIntensity = 1.0f;
+                            SoundEngine.PlaySound(Stun, NPC.Center);
+                            CurrentState = State.Stunned;
+                            StunTimer = 1200;
+                            NPC.netUpdate = true;
+                        }
 
-                            
-                            if (Main.rand.NextBool(6) && Main.GameUpdateCount % 60 == 0)
-                            {
-                                SoundEngine.PlaySound(Idle, NPC.Center);
-                            }
+
+                        if (Main.rand.NextBool(6) && Main.GameUpdateCount % 60 == 0)
+                        {
+                            SoundEngine.PlaySound(Idle, NPC.Center);
+                        }
 
                         if (Main.GameUpdateCount % 240 == 0)
                         {
@@ -425,5 +425,38 @@ namespace DestroyerTest.Content.Entities
                 );
             }
         }
+    }
+    
+    public class ShadeBattle : ModSceneEffect
+    {
+        public override bool IsSceneEffectActive(Player player)
+        {
+            DTMusicConfig musCFG = ModContent.GetInstance<DTMusicConfig>();
+            if (!ShadeSystem.InDarkness && !musCFG.EternityMusic)
+                return false;
+
+            foreach (var npc in Main.npc)
+            {
+                
+                if (!npc.active)
+                    continue;
+
+                // Replace with your actual NPC types
+                if (npc.type == ModContent.NPCType<TenebrousConstruct>() ||
+                    npc.type == ModContent.NPCType<TenebrousSlinger>())
+                {
+                    if (player.Center.Distance(npc.Center) < 3600f && musCFG.EternityMusic)
+                        return true;
+                    if (player.Center.Distance(npc.Center) < 3600f && ShadeSystem.InDarkness)
+                        return true;
+                }
+            }
+
+            return false;
+        }
+
+        public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/TenebrousConstruct");
+
+        public override SceneEffectPriority Priority => SceneEffectPriority.BossMedium;
     }
 }

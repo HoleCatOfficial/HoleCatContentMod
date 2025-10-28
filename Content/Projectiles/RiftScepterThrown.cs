@@ -10,7 +10,7 @@ using DestroyerTest.Common;
 using Terraria.DataStructures;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Magic.ScepterSubclass;
+using DestroyerTest.Content.Scepter;
 using System.IO;
 using DestroyerTest.Content.Projectiles.ParentClasses;
 

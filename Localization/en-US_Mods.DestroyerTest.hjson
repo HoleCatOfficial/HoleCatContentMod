@@ -3190,6 +3190,40 @@ Items: {
 		Tooltip: ""
 		DisplayName: Hex Book
 	}
+
+	ScholarShirt: {
+		DisplayName: Scholar Shirt
+		Tooltip: ""
+	}
+
+	NightBodyArmor: {
+		DisplayName: Night Body Armor
+		Tooltip: Imbued with the darkness of your world's evil...
+	}
+
+	NightHood: {
+		DisplayName: Night Hood
+		Tooltip:
+			'''
+			Thrown scepters within a certain range to the player can be teleported to by pressing the down key.
+			Upon teleporting, you recieve a second of immunity and release a homing burst of souls of night.
+			Teleportation has a 6 second cooldown, as displayed by the cooldown bar.
+
+			If moving fast enough horizontally, you will spawn homing souls of night as you travel.
+
+			"Imbued with the darkness of your world's evil..."
+			'''
+	}
+
+	NightLegArmor: {
+		DisplayName: Night Leg Armor
+		Tooltip: Imbued with the darkness of your world's evil...
+	}
+
+	SpookyScroll1: {
+		DisplayName: Spooky Scroll1
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
@@ -3591,6 +3625,7 @@ Projectiles: {
 	HoleCatFireSwirl.DisplayName: Hole Cat Fire Swirl
 	HoleCatFireSmall.DisplayName: Hole Cat Fire Small
 	HoleCatHookJab.DisplayName: Hole Cat Hook Jab
+	SpookyFirewood.DisplayName: Spooky Firewood
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.
@@ -4158,6 +4193,16 @@ Configs: {
 		}
 
 		DisplayName: UI Config
+
+		NightBarXPos: {
+			Label: Night Bar X Pos
+			Tooltip: ""
+		}
+
+		NightBarYPos: {
+			Label: Night Bar Y Pos
+			Tooltip: ""
+		}
 	}
 }
 

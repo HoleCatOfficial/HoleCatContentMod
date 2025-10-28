@@ -28,9 +28,12 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
 using UtfUnknown.Core.Models.SingleByte.Finnish;
+using GlowmaskHelper.Content;
+using DestroyerTest.Content.SHADEMANAGEMENT;
 
 namespace DestroyerTest.Content.Entities
 {
+    [AutoloadGlowmask]
     public class TenebrousSlinger : ModNPC
     {
 
@@ -164,27 +167,51 @@ namespace DestroyerTest.Content.Entities
 
             Lighting.AddLight(NPC.Center, ColorLib.TenebrisGradient.ToVector3());
 
-            
-
-            switch (CurrentState)
-            {
-                case State.IdleChase:
-                    {
+                switch (CurrentState)
+                {
+                    case State.IdleChase:
                         {
-                            NPC.velocity = Vector2.Lerp(NPC.velocity, direction * 4f, 0.05f);
-
-                            if (Main.GameUpdateCount % 60 == 0)
                             {
-                                Vector2 Shoot = new Vector2(50, 0).RotatedBy(NPC.rotation);
-                                SoundEngine.PlaySound(Shot, NPC.Center);
-                                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Shoot * 0.75f, ModContent.ProjectileType<TenebrisArrowProjectile>(), 30, 1, ai0: 2);
-                            }
+                                NPC.velocity = Vector2.Lerp(NPC.velocity, direction * 4f, 0.05f);
 
-                            if (Main.rand.NextBool(6) && Main.GameUpdateCount % 60 == 0)
-                            {
-                                SoundEngine.PlaySound(Idle, NPC.Center);
-                            }
+                                if (Main.GameUpdateCount % 60 == 0)
+                                {
+                                    Vector2 Shoot = new Vector2(50, 0).RotatedBy(NPC.rotation);
+                                    SoundEngine.PlaySound(Shot, NPC.Center);
+                                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Shoot * 0.75f, ModContent.ProjectileType<TenebrisArrowProjectile>(), 30, 1, ai0: 2);
+                                }
 
+                                if (Main.rand.NextBool(6) && Main.GameUpdateCount % 60 == 0)
+                                {
+                                    SoundEngine.PlaySound(Idle, NPC.Center);
+                                }
+
+                                if (player.HeldItem.type == ModContent.ItemType<ShiningObelisk>() && player.itemAnimation == player.itemAnimationMax - 10)
+                                {
+                                    ScreenFlashSystem.FlashIntensity = 1.0f;
+                                    SoundEngine.PlaySound(Stun, NPC.Center);
+                                    CurrentState = State.Stunned;
+                                    StunTimer = 1200;
+                                    NPC.netUpdate = true;
+                                }
+                                if (MinimumIdle > 0)
+                                {
+                                    MinimumIdle--;
+                                }
+                                if (MinimumIdle <= 0)
+                                {
+                                    if (Main.rand.NextBool(600))
+                                    {
+                                        CurrentState = State.DartCross;
+                                        MinimumIdle = 600;
+                                    }
+                                }
+                            }
+                            break;
+                        }
+                    case State.DartCross:
+                        {
+                            NPC.velocity = Vector2.Lerp(NPC.velocity, direction * 3f, 0.05f);
                             if (player.HeldItem.type == ModContent.ItemType<ShiningObelisk>() && player.itemAnimation == player.itemAnimationMax - 10)
                             {
                                 ScreenFlashSystem.FlashIntensity = 1.0f;
@@ -193,101 +220,68 @@ namespace DestroyerTest.Content.Entities
                                 StunTimer = 1200;
                                 NPC.netUpdate = true;
                             }
-                            if (MinimumIdle > 0)
+                            if (Main.rand.NextBool(6) && Main.GameUpdateCount % 60 == 0)
                             {
-                                MinimumIdle--;
+                                SoundEngine.PlaySound(Idle, NPC.Center);
                             }
-                            if (MinimumIdle <= 0)
+                            if (Main.GameUpdateCount % 240 == 0)
                             {
-                                if (Main.rand.NextBool(600))
+                                for (int e = 0; e < 4; e++)
                                 {
-                                    CurrentState = State.DartCross;
-                                    MinimumIdle = 600;
+                                    Vector2 Shoot = new Vector2(10, 0).RotatedBy(NPC.rotation + Main.rand.NextFloat(-0.5f, 0.5f));
+                                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Shoot, ModContent.ProjectileType<TenebrisMine>(), 30, 1);
                                 }
+                                OrbCount++;
                             }
-                        }
-                        break;
-                    }
-                case State.DartCross:
-                    {
-                        NPC.velocity = Vector2.Lerp(NPC.velocity, direction * 3f, 0.05f);
-                        if (player.HeldItem.type == ModContent.ItemType<ShiningObelisk>() && player.itemAnimation == player.itemAnimationMax - 10)
-                        {
-                            ScreenFlashSystem.FlashIntensity = 1.0f;
-                            SoundEngine.PlaySound(Stun, NPC.Center);
-                            CurrentState = State.Stunned;
-                            StunTimer = 1200;
-                            NPC.netUpdate = true;
-                        }
-                        if (Main.rand.NextBool(6) && Main.GameUpdateCount % 60 == 0)
-                        {
-                            SoundEngine.PlaySound(Idle, NPC.Center);
-                        }
-                        if (Main.GameUpdateCount % 240 == 0)
-                        {
-                            for (int e = 0; e < 4; e++)
-                            {
-                                Vector2 Shoot = new Vector2(10, 0).RotatedBy(NPC.rotation + Main.rand.NextFloat(-0.5f, 0.5f));
-                                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Shoot, ModContent.ProjectileType<TenebrisMine>(), 30, 1);
-                            }
-                            OrbCount++;
-                        }
-                        if (OrbCount >= 10)
-                        {
-                            CurrentState = State.IdleChase;
-                            OrbCount = 0;
-                        }
-                        break;
-                    }
-                case State.Stunned:
-                    {
-                        {
-                            NPC.rotation = direction.ToRotation();
-                            if (StunTimer > 0)
-                            {
-                                NPC.velocity *= 0.7f;
-                                if (Main.rand.NextBool(4))
-                                {
-                                    NPC.Center += new Vector2(Main.rand.Next(-2, 2), Main.rand.Next(-2, 2));
-                                }
-                                StunTimer--;
-                            }
-
-                            if (StunTimer <= 0)
-                            {
-                                CurrentState = State.RetaliatoryLance;
-                                StunTimer = 1200;
-                                NPC.netUpdate = true;
-                            }
-                        }
-                        break;
-                    }
-                case State.RetaliatoryLance:
-                    {
-                        {
-                            if (!ShootFlag1)
-                            {
-                                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, direction * 20, ModContent.ProjectileType<TenebrisLance>(), 30, 1);
-                                ShootFlag1 = true;
-                            }
-                            if (ShootFlag1)
+                            if (OrbCount >= 10)
                             {
                                 CurrentState = State.IdleChase;
-                                ShootFlag1 = false;
+                                OrbCount = 0;
                             }
+                            break;
                         }
-                        break;
-                    }
-            }
+                    case State.Stunned:
+                        {
+                            {
+                                NPC.rotation = direction.ToRotation();
+                                if (StunTimer > 0)
+                                {
+                                    NPC.velocity *= 0.7f;
+                                    if (Main.rand.NextBool(4))
+                                    {
+                                        NPC.Center += new Vector2(Main.rand.Next(-2, 2), Main.rand.Next(-2, 2));
+                                    }
+                                    StunTimer--;
+                                }
+
+                                if (StunTimer <= 0)
+                                {
+                                    CurrentState = State.RetaliatoryLance;
+                                    StunTimer = 1200;
+                                    NPC.netUpdate = true;
+                                }
+                            }
+                            break;
+                        }
+                    case State.RetaliatoryLance:
+                        {
+                            {
+                                if (!ShootFlag1)
+                                {
+                                    Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, direction * 20, ModContent.ProjectileType<TenebrisLance>(), 30, 1);
+                                    ShootFlag1 = true;
+                                }
+                                if (ShootFlag1)
+                                {
+                                    CurrentState = State.IdleChase;
+                                    ShootFlag1 = false;
+                                }
+                            }
+                            break;
+                        }
+                }
 
         }
-
-        public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-        {
-            Asset<Texture2D> GlowMask = ModContent.Request<Texture2D>($"{Texture}_GlowMask");
-            Main.EntitySpriteDraw(GlowMask.Value, NPC.Center - Main.screenPosition, null, Color.White, NPC.rotation, new Vector2(NPC.width / 2, NPC.height / 2), NPC.scale, SpriteEffects.None, 0);
-        }
-
 
         public override void OnHitPlayer(Player target, Player.HurtInfo hurtInfo)
         {
