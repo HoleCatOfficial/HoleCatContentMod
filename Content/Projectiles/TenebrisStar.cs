@@ -69,7 +69,7 @@ namespace DestroyerTest.Content.Projectiles
 			SpriteBatch spriteBatch = Main.spriteBatch;
 			DTUtils Utility = new DTUtils();
 
-            Utility.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+			Utility.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
 			for (int i = 0; i < TrailPositions.Count - 1; i++)
 			{
@@ -114,11 +114,17 @@ namespace DestroyerTest.Content.Projectiles
 			Utility.DrawGlowOnProj(Projectile, lightColor, true);
 
 			Utility.ReturnToDefaultDrawing(spriteBatch);
-			
+
 			Utility.DrawTextureOnProj(DTAssetLib.Star(1), Projectile, Color.White, true, 0f, 0.35f, 0.35f);
 
 			return false;
 		}
+
+        public override bool? CanHitNPC(NPC target)
+        {
+            return DelayTimer >= 10;
+        }
+
 
 
 		/// <summary>
@@ -156,7 +162,7 @@ namespace DestroyerTest.Content.Projectiles
 
 			Lighting.AddLight(Projectile.Center, ColorLib.TenebrisGradient.ToVector3() * 0.2f);
 
-			if (DelayTimer < 10)
+			if (DelayTimer < 60)
 			{
 				DelayTimer += 1;
 				return;
@@ -284,7 +290,7 @@ namespace DestroyerTest.Content.Projectiles
 			if (Mode == 1 || Mode == 1)
 			{
 				//PRTLoader.NewParticle(PRTLoader.GetParticleID<Boom1>(), target.Center, Vector2.Zero, ColorLib.TenebrisGradient, 0.05f);
-				Dust.NewDust(Projectile.position, Projectile.Hitbox.Width, Projectile.Hitbox.Height, ModContent.DustType<TintableDustElectric>(), Main.rand.NextFloat(-1, 1.1f), Main.rand.NextFloat(-1, 1.1f), 0, ColorLib.TenebrisGradient, 2f);
+				Dust.NewDust(Projectile.position, Projectile.Hitbox.Width, Projectile.Hitbox.Height, DustID.TintableDustLighted, Main.rand.NextFloat(-1, 1.1f), Main.rand.NextFloat(-1, 1.1f), 0, ColorLib.TenebrisGradient, 2f);
 				target.AddBuff(ModContent.BuffType<ShimmeringFlames>(), 300);
 			}
 
@@ -295,7 +301,7 @@ namespace DestroyerTest.Content.Projectiles
 			if (Mode == 2 || Mode == 4)
 			{
 				//PRTLoader.NewParticle(PRTLoader.GetParticleID<Boom1>(), target.Center, Vector2.Zero, ColorLib.TenebrisGradient, 0.05f);
-				Dust.NewDust(Projectile.position, Projectile.Hitbox.Width, Projectile.Hitbox.Height, ModContent.DustType<TintableDustElectric>(), Main.rand.NextFloat(-1, 1.1f), Main.rand.NextFloat(-1, 1.1f), 0, ColorLib.TenebrisGradient, 2f);
+				Dust.NewDust(Projectile.position, Projectile.Hitbox.Width, Projectile.Hitbox.Height, DustID.TintableDustLighted, Main.rand.NextFloat(-1, 1.1f), Main.rand.NextFloat(-1, 1.1f), 0, ColorLib.TenebrisGradient, 2f);
 				target.AddBuff(ModContent.BuffType<ShimmeringFlames>(), 300);
 			}
 		}

@@ -3224,6 +3224,11 @@ Items: {
 		DisplayName: Spooky Scroll1
 		Tooltip: ""
 	}
+
+	TenebrisWaraxe: {
+		Tooltip: Throws a returning War Axe that pierces 4 times and spawns a burst of Tenebris Stars on hit.
+		DisplayName: Tenebris Waraxe
+	}
 }
 
 Projectiles: {
@@ -3626,6 +3631,7 @@ Projectiles: {
 	HoleCatFireSmall.DisplayName: Hole Cat Fire Small
 	HoleCatHookJab.DisplayName: Hole Cat Hook Jab
 	SpookyFirewood.DisplayName: Spooky Firewood
+	TenebrisWaraxeProjectile.DisplayName: Tenebris Waraxe Projectile
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.

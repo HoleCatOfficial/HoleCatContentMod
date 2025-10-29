@@ -190,6 +190,7 @@ namespace DestroyerTest.Content.Entities
         public bool ShootFlag1 = false;
         public int OrbCount = 0;
         public int MinimumIdle = 600;
+        public bool RoseAlive;
         public override void AI()
         {
             NPC.TargetClosest(faceTarget: true);
@@ -206,7 +207,7 @@ namespace DestroyerTest.Content.Entities
                 Dust.NewDust(NPC.Center, NPC.width, NPC.height, ModContent.DustType<TenebrisDarkmatterDust>(), 0, 0, 0, default, 1.0f);
             }
 
-            bool RoseAlive = Main.npc.Any(n => n.active && n.type == ModContent.NPCType<NightmareRoseBoss>());
+            RoseAlive = Main.npc.Any(n => n.active && n.type == ModContent.NPCType<NightmareRoseBoss>());
             if (RoseAlive)
             {
                 NPC.dontTakeDamage = true;
@@ -432,28 +433,37 @@ namespace DestroyerTest.Content.Entities
         public override bool IsSceneEffectActive(Player player)
         {
             DTMusicConfig musCFG = ModContent.GetInstance<DTMusicConfig>();
+
+            // Don't play this scene's music if Rose is alive.
+            bool roseAlive = Main.npc.Any(n => n.active && n.type == ModContent.NPCType<NightmareRoseBoss>());
+            bool corpseAlive = Main.npc.Any(n => n.active && n.type == ModContent.NPCType<WyvernCorpseHead>());
+            if (roseAlive || corpseAlive)
+                return false;
+
             if (!ShadeSystem.InDarkness && !musCFG.EternityMusic)
                 return false;
 
             foreach (var npc in Main.npc)
             {
-                
                 if (!npc.active)
                     continue;
 
-                // Replace with your actual NPC types
+                // Check for your construct or slinger.
                 if (npc.type == ModContent.NPCType<TenebrousConstruct>() ||
                     npc.type == ModContent.NPCType<TenebrousSlinger>())
                 {
-                    if (player.Center.Distance(npc.Center) < 3600f && musCFG.EternityMusic)
+                    float dist = player.Center.Distance(npc.Center);
+
+                    if (dist < 3600f && musCFG.EternityMusic)
                         return true;
-                    if (player.Center.Distance(npc.Center) < 3600f && ShadeSystem.InDarkness)
+                    if (dist < 3600f && ShadeSystem.InDarkness)
                         return true;
                 }
             }
 
             return false;
         }
+
 
         public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/TenebrousConstruct");
 

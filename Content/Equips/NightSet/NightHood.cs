@@ -63,7 +63,7 @@ namespace DestroyerTest.Content.Equips.NightSet
             }
             ScepterClassStats.Range += 6;
 
-            if (player.velocity.X > 5.5)
+            if (Math.Abs(player.velocity.X)> 5.5)
             {
                 for (int d = 0; d < 3; d++)
                 {

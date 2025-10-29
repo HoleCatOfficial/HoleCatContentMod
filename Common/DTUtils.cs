@@ -166,6 +166,20 @@ namespace DestroyerTest.Common
             return false;
         }
 
+        public static BasePRT NewParticleFloatAI(int prtID, Vector2 position, Vector2 velocity, Color color = default(Color), float scale = 1f, float ai0 = 0, float ai1 = 0, float ai2 = 0)
+        {
+            BasePRT basePRT = PRTLoader.PRT_IDToInstances[prtID].Clone();
+            basePRT.Position = position;
+            basePRT.Velocity = velocity;
+            basePRT.Scale = scale;
+            basePRT.Color = color;
+            basePRT.ai[0] = ai0;
+            basePRT.ai[1] = ai1;
+            basePRT.ai[2] = ai2;
+            PRTLoader.AddParticle(basePRT);
+            return basePRT;
+        }
+
         public void StartSpriteBatchWithBlending(SpriteBatch spriteBatch, BlendState blendState, SpriteSortMode ssm)
         {
             spriteBatch.End();
@@ -647,6 +661,7 @@ namespace DestroyerTest.Common
         public static Asset<Texture2D> StarAura = ModContent.Request<Texture2D>($"{ExtrasPath}/StarWrathAura");
         public static Asset<Texture2D> Swirl = ModContent.Request<Texture2D>($"{ParticlePath}/Swirl");
         public static Asset<Texture2D> FireRing = ModContent.Request<Texture2D>($"{ParticlePath}/Boom2");
+        public static Asset<Texture2D> SwingFX = ModContent.Request<Texture2D>($"{ExtrasPath}/CircularSlash");
         public static Asset<Texture2D> Sparkle(int Variant)
         {
             if (Variant <= 0)
