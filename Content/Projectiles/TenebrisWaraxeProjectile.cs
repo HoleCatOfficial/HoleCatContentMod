@@ -78,6 +78,8 @@ namespace DestroyerTest.Content.Projectiles
             return true;
         }
 
+        public bool RangeOfPlayer = false;
+
         public override void AI()
         {
             if (Variant == 0)
@@ -105,11 +107,13 @@ namespace DestroyerTest.Content.Projectiles
                 soundCooldown = 10;
             }
 
-            
-            
 
-            
+
+
+
             Player player = Main.player[Projectile.owner];
+
+            RangeOfPlayer = Projectile.Center.Distance(player.Center) < 20;
 
             // Always spinning
             Projectile.rotation += 0.4f * Projectile.direction;
@@ -134,7 +138,7 @@ namespace DestroyerTest.Content.Projectiles
                 
 
                 // If close enough, remove the projectile
-                if (returnDirection.LengthSquared() < 45f || Projectile.Center.Distance(player.Center) < 20) // 4 pixels radius
+                if (returnDirection.LengthSquared() < 45f || RangeOfPlayer) // 4 pixels radius
                 {
                     Projectile.Kill();
                 }
@@ -190,11 +194,14 @@ namespace DestroyerTest.Content.Projectiles
 
         public override void OnKill(int timeLeft)
         {
-            SoundEngine.PlaySound(SoundID.Item14, Projectile.Center);
-
-            for (int i = 0; i < 10; i++)
+            if (!RangeOfPlayer)
             {
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.TintableDustLighted, 0, 0, 150, clr, 5f);
+                SoundEngine.PlaySound(SoundID.Item14, Projectile.Center);
+
+                for (int i = 0; i < 10; i++)
+                {
+                    Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.TintableDustLighted, 0, 0, 150, clr, 5f);
+                }
             }
             
         }

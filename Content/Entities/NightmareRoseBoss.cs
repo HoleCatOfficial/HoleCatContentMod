@@ -91,7 +91,7 @@ namespace DestroyerTest.Content.Entities
                 Position = Vector2.Zero,
             };
             NPCID.Sets.NPCBestiaryDrawOffset.Add(NPC.type, drawModifier);
-            Main.npcFrameCount[NPC.type] = 21;
+            Main.npcFrameCount[NPC.type] = 12;
         }
 
         public SoundStyle Kill = new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/NightmareRoseKill") with { Volume = 2, MaxInstances = 0 };
@@ -108,7 +108,7 @@ namespace DestroyerTest.Content.Entities
             NPC.height = 274;
             NPC.aiStyle = -1;
             NPC.damage = 0;
-            NPC.defense = 85;
+            NPC.defense = 45;
             NPC.lifeMax = 368000;
             NPC.HitSound = SoundID.DD2_MonkStaffGroundImpact;
             NPC.noGravity = false;
@@ -167,14 +167,7 @@ namespace DestroyerTest.Content.Entities
             }
             else
             {
-                NPC.frameCounter++;
-                if (NPC.frameCounter >= 30)
-                {
-                    NPC.frameCounter = 0;
-                    frameIndex++;
-                    if (frameIndex > 20 || frameIndex < 12)
-                        frameIndex = 11;
-                }
+                frameIndex = 11;
             }
 
             NPC.frame.Y = frameIndex * frameHeight;
@@ -201,65 +194,6 @@ namespace DestroyerTest.Content.Entities
             }
             return false;
         }
-
-
-        #region Difficulty Attack Pools
-        /// <summary>
-        /// Attacks that are available on all difficulties. Will be selected from for classic mode AI.
-        /// </summary>
-        public enum BaseAttacks
-        {
-
-        }
-
-        /// <summary>
-        /// Attacks that are Exclusively available on Expert Mode and above. Will be selected from for Expert and Master AI.
-        /// </summary>
-        public enum ExpertAttacks
-        {
-
-        }
-
-        /// <summary>
-        /// Attacks that are Exclusively available on Master Mode. Will be selected from for Master AI.
-        /// </summary>
-        public enum MasterAttacks
-        {
-
-        }
-
-        /// <summary>
-        /// Attacks that are Exclusively available on Revengeance Mode. Will be selected from for Revengeance and Death AI.
-        /// </summary>
-        public enum RevenganceAttacks
-        {
-
-        }
-
-        /// <summary>
-        /// Attacks that are Exclusively available on Death Mode. Will be selected from for Death AI.
-        /// </summary>
-        public enum DeathAttacks
-        {
-
-        }
-
-        /// <summary>
-        /// Attacks that are Exclusively available on Eternity Mode. Will be selected from for Eternity and Masochist AI.
-        /// </summary>
-        public enum EternityAttacks
-        {
-
-        }
-
-        /// <summary>
-        /// Attacks that are Exclusively available on Masochist Mode. Will be selected from for Masochist AI.
-        /// </summary>
-        public enum MasochistAttacks
-        {
-
-        }
-        #endregion
 
         public enum AttackState
         {
@@ -377,34 +311,7 @@ namespace DestroyerTest.Content.Entities
             BorderActive = true;
             currentState = AttackState.SpawnIdle;
             NPCHead = NPC.Center + new Vector2(0, -60);
-            int[] types = new int[]
-                {
-                PRTLoader.GetParticleID<BlackFire1>(),
-                PRTLoader.GetParticleID<BlackFire2>(),
-                PRTLoader.GetParticleID<BlackFire3>(),
-                PRTLoader.GetParticleID<BlackFire4>(),
-                PRTLoader.GetParticleID<BlackFire5>(),
-                PRTLoader.GetParticleID<BlackFire6>(),
-                PRTLoader.GetParticleID<BlackFire7>()
-                };
-
-            for (int b = 0; b < 70; b++)
-            {
-                float angle = Main.rand.NextFloat(MathHelper.TwoPi);
-                Vector2 velocity = new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle)) * Main.rand.NextFloat(2f, 6f);
-
-                PRTLoader.NewParticle(
-                    types[Main.rand.Next(types.Length)],
-                    Main.rand.NextVector2FromRectangle(NPC.Hitbox),
-                    velocity,
-                    default,
-                    1.0f
-                );
-            }
-
-            
-
-            
+            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Bottom, Vector2.Zero, ModContent.ProjectileType<SpawnSoul>(), 0, 0);
         }
 
 
@@ -438,8 +345,28 @@ namespace DestroyerTest.Content.Entities
             ProjectileID.NebulaBlaze2,
         };
 
+        public int HitCount = 0;
+        public int MaxHits = 20;
+        public float decayTimer = 10f;
+
+        private void ApplyAdaptiveReduction(ref NPC.HitModifiers modifiers)
+        {
+            //Since this runs each time the npc is hit, increment the count and reset the decay timer.
+            if (HitCount < MaxHits)
+            {
+                HitCount++;
+            }
+            decayTimer = 10;
+
+            float reductionFactor = 1f - 0.02f * HitCount; // 2% per hit
+            reductionFactor = MathHelper.Clamp(reductionFactor, 0.2f, 1f);
+            modifiers.FinalDamage.Base *= reductionFactor;
+        }
+
+
         public override void ModifyHitByProjectile(Projectile projectile, ref NPC.HitModifiers modifiers)
         {
+            ApplyAdaptiveReduction(ref modifiers);
             if (currentState == AttackState.Desperation || anyNodesAlive)
             {
                 NPC.immortal = true;
@@ -461,6 +388,7 @@ namespace DestroyerTest.Content.Entities
 
         public override void ModifyHitByItem(Player player, Item item, ref NPC.HitModifiers modifiers)
         {
+            ApplyAdaptiveReduction(ref modifiers);
             if (currentState == AttackState.Desperation || anyNodesAlive)
             {
                 NPC.immortal = true;
@@ -616,6 +544,20 @@ namespace DestroyerTest.Content.Entities
                 if (Main.masterMode)
                 {
                     player.AddBuff(ModContent.BuffType<ArenaEffects>(), 20);
+                }
+            }
+
+            if (HitCount > 0)
+            {
+                if (decayTimer > 0)
+                {
+                    decayTimer--;
+                }
+
+                if (decayTimer <= 0)
+                {
+                    HitCount--;
+                    decayTimer = 10;
                 }
             }
 

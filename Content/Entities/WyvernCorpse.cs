@@ -737,10 +737,23 @@ namespace DestroyerTest.Content.Entities
                             {
                                 for (int e = 0; e < 3; e++)
                                 {
-                                    Vector2 Outer = NPC.Center + Main.rand.NextVector2CircularEdge(10, 10);
-                                    Vector2 Dir = Outer - NPC.Center;
-                                    Projectile.NewProjectile(Entity.GetSource_FromThis(), NPC.Center, Dir * 0.25f, ModContent.ProjectileType<TenebrisStar>(), 20, 5, ai2: 2);
+                                    Projectile.NewProjectile(Entity.GetSource_FromThis(), NPC.Center, ToPlayer * 0.25f, ModContent.ProjectileType<TenebrisStar>(), 20, 5, ai2: 2);
                                 }
+                            }
+                        }
+                        if (CircleLanceCount == 5 && NPC.life <= NPC.lifeMax * 0.8f)
+                        {
+                            if (!HeartMatrixGetPositions)
+                            {
+                                SoundEngine.PlaySound(Teeth);
+                                for (int f = 0; f < 15; f++)
+                                {
+                                    Vector2 HeartPosoffset = Main.rand.NextVector2Circular(1200f, 1200f);
+                                    HeartPos = player.Center + HeartPosoffset;
+                                    PRTLoader.NewParticle(PRTLoader.GetParticleID<CrimsonBloodRuneParticle>(), HeartPos, Vector2.Zero, Color.White, 3);
+                                    Projectile.NewProjectile(NPC.GetSource_FromAI(), HeartPos, Vector2.Zero, ModContent.ProjectileType<HeartNode>(), 20, 3);
+                                }
+                                HeartMatrixGetPositions = true;
                             }
                         }
                         if (CircleLanceCount >= 6 && NPC.life < NPC.lifeMax * 0.4f)

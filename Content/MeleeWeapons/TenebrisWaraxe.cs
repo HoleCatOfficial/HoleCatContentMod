@@ -37,9 +37,9 @@ namespace DestroyerTest.Content.MeleeWeapons
             Item.noUseGraphic = true;
 
             Item.DamageType = DamageClass.Melee; // Whether your item is part of the melee class.
-            Item.damage = 160; // The damage your item deals.
-            Item.knockBack = 6; // The force of knockback of the weapon. Maximum is 20
-            Item.crit = 20; // The critical strike chance the weapon has. The player, by default, has a 4% critical strike chance.
+            Item.damage = 300; // The damage your item deals.
+            Item.knockBack = 17; // The force of knockback of the weapon. Maximum is 20
+            Item.crit = 4; // The critical strike chance the weapon has. The player, by default, has a 4% critical strike chance.
 
             Item.value = Item.buyPrice(gold: 1); // The value of the weapon in copper coins.
             Item.rare = ModContent.RarityType<ShimmeringRarity>(); // Give this item our custom rarity.
