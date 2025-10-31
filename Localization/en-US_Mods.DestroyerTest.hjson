@@ -3229,6 +3229,15 @@ Items: {
 		Tooltip: Throws a returning War Axe that pierces 4 times and spawns a burst of Tenebris Stars on hit.
 		DisplayName: Tenebris Waraxe
 	}
+
+	GalantineKnife: {
+		DisplayName: Galantine Knife
+		Tooltip:'''
+				Throws a Stellar Knife that falls to the ground after a second.
+				Tile collisions explode into homing Galantine Stars.
+				Hitting an NPC will lodge the blade in them for 2 seconds of continuous damage and inflicting Galantine Burn.
+				'''
+	}
 }
 
 Projectiles: {
@@ -3633,6 +3642,7 @@ Projectiles: {
 	SpookyFirewood.DisplayName: Spooky Firewood
 	TenebrisWaraxeProjectile.DisplayName: Tenebris Waraxe Projectile
 	SpawnSoul.DisplayName: Spawn Soul
+	GalantineKnifeThrown.DisplayName: Galantine Knife Thrown
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.

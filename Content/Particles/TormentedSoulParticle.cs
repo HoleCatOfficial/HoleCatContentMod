@@ -39,7 +39,7 @@ namespace DestroyerTest.Content.Particles
                 Color color = Color.Purple * ((oldPositions.Length - k) / (float)oldPositions.Length);
                 Main.EntitySpriteDraw(TexValue, drawPos, null, color, Rotation, drawOrigin, Scale, SpriteEffects.None, 0);
             }
-            return false;
+            return true;
         }
     }
 }

@@ -56,13 +56,17 @@ namespace DestroyerTest.Common
             }
         }
 
-        public void RadialSpreadProjectile(int ID, int Amount, Vector2 CTR, int Dmg = 0, int KB = 0, int Speed = 2, float AI0 = 0, float AI1 = 0, float AI2 = 0)
+        public void RadialSpreadProjectile(int ID, int Amount, Vector2 CTR, int Dmg = 0, int KB = 0, int Speed = 2, float AI0 = 0, float AI1 = 0, float AI2 = 0, bool RandomOffset = false)
         {
             float rotationStep = MathHelper.TwoPi / Amount;
 
             for (int i = 0; i < Amount; i++)
             {
                 Vector2 velocity = new Vector2(Speed, 0f).RotatedBy(rotationStep * i);
+                if (RandomOffset)
+                {
+                    velocity = velocity.RotatedByRandom(MathHelper.TwoPi);
+                }
                 Projectile.NewProjectile(
                     Projectile.GetSource_None(),
                     CTR,
@@ -539,12 +543,31 @@ namespace DestroyerTest.Common
             }
         }
 
+        public static Color StellarMagenta = new Color(143, 39, 120);
+        public static Color StellarYellow = new Color(247, 233, 141);
         public static Color StellarColor
         {
             get
             {
                 float lerpAmount = (float)(0.5 * (1 + Math.Sin(Main.GlobalTimeWrappedHourly * 2f * Math.PI)));
-                return Color.Lerp(new Color(247, 233, 141), new Color(143, 39, 120), lerpAmount);
+                return Color.Lerp(StellarYellow, StellarMagenta, lerpAmount);
+            }
+        }
+
+        public static Color StellarRarityColor
+        {
+            get
+            {
+                float time = (Main.GlobalTimeWrappedHourly % 4f);
+
+                if (time < 1f)
+                    return Color.Lerp(Color.Black, StellarYellow, time);
+                else if (time < 2f)
+                    return Color.Lerp(StellarYellow, Color.Black, time - 1f);
+                else if (time < 3f)
+                    return Color.Lerp(Color.Black, StellarMagenta, time - 2f);
+                else
+                    return Color.Lerp(StellarMagenta, Color.Black, time - 3f);
             }
         }
 
@@ -636,6 +659,7 @@ namespace DestroyerTest.Common
                     return Color.Lerp(HoleCatFireOrange, HoleCatFireBeige, time - 7f);
             }
         }
+        
     }
 
     /// <summary>

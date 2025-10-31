@@ -58,7 +58,7 @@ namespace DestroyerTest.Content.Projectiles.NightmareRose
             AnimateProjectile();
             for (int g = 0; g < 4; g++)
             {
-                Vector2 Outer = Projectile.Center + Main.rand.NextVector2CircularEdge(300, 300);
+                Vector2 Outer = Projectile.Center + Main.rand.NextVector2CircularEdge(400, 400);
                 Vector2 Dir = Projectile.Center - Outer;
                 PRTLoader.NewParticle(PRTLoader.GetParticleID<TormentedSoulParticle>(), Outer, Dir * 0.05f, Color.White, Main.rand.NextFloat(0.5f, 4.5f));
                 PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Outer, Dir * 0.05f, ColorLib.Soul, Main.rand.NextFloat(0.5f, 4.5f));

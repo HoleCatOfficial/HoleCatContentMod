@@ -18,7 +18,7 @@ namespace DestroyerTest.Content.RangedItems
 			Item.width = 22;
 			Item.height = 56;
 			Item.value = Item.sellPrice(gold: 25, silver: 70);
-			Item.rare = ModContent.RarityType<ShimmeringRarity>();
+			Item.rare = ModContent.RarityType<StellarRarity>();
 
 			// Use Properties
 			// Note that useTime and useAnimation for this item don't actually affect the behavior because the held projectile handles that. 

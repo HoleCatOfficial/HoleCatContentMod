@@ -15,6 +15,7 @@ namespace DestroyerTest.Content.Equips
 			Item.maxStack = 1;
 			Item.value = 100;
 			Item.accessory = true;
+			Item.rare = ModContent.RarityType<StellarRarity>();
 		}
 
 		

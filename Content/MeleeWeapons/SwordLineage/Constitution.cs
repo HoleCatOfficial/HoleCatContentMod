@@ -1,4 +1,5 @@
 using DestroyerTest.Content.Projectiles;
+using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
@@ -32,7 +33,7 @@ namespace DestroyerTest.Content.MeleeWeapons.SwordLineage
 			Item.crit = 6; // The critical strike chance the weapon has. The player, by default, has a 4% critical strike chance.
 
 			Item.value = Item.buyPrice(gold: 16); // The value of the weapon in copper coins.
-			Item.rare = ItemRarityID.Blue;
+			Item.rare = ModContent.RarityType<StellarRarity>();
 			Item.noUseGraphic = true;
 			Item.noMelee = true;
 			Item.shoot = ModContent.ProjectileType<ConstitutionSwing>();

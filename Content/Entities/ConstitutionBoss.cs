@@ -83,6 +83,18 @@ namespace DestroyerTest.Content.Entities
             NPC.netID = ModContent.NPCType<ConstitutionBoss>();
         }
 
+        public void DamageScaling()
+        {
+            if(EternityIsActive())
+            {
+                StarDamage = 30;
+                HomingStarDamage = 18;
+                CloneDamage = 40;
+                LightBoltDamage = 25;
+                StarFuryDamage = 35;
+            }
+        }
+
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
@@ -175,8 +187,25 @@ namespace DestroyerTest.Content.Entities
             LightBird,
             Minefield,
             TeleStars,
-            StellarFlame
+            StellarFlame,
+            LanceSweep
         }
+
+        public int StarDamage = 15;
+        public int HomingStarDamage = 10;
+        public int CloneDamage = 30;
+        public int LightBoltDamage = 15;
+        public int StarFuryDamage = 20;
+        public int LanceCrossDamage = 10;
+        public int LanceBurstDamage = 20;
+        public int LanceSweepDamage = 30;
+        public int MineDamage = 20;
+        public int LightBirdDamage = 15;
+
+
+
+
+
         public int RotTime = 60;
         public int JabTime = 20;
         public int StarsCount1 = 3;
@@ -231,6 +260,9 @@ namespace DestroyerTest.Content.Entities
         public int MaxFlameCount = 900;
         public int FlameTimer = 0;
         public bool HasPlayedFlameSound = false;
+        public int LanceSweepTimer = 180;
+        public Vector2 LanceSweepStartPos = Main.screenPosition;
+        public bool LanceSweepTeleFlag = false;
 
         public int AttackIntervalDefault = 20;
         public AttackState currentState = AttackState.idlefloat;
@@ -789,6 +821,35 @@ namespace DestroyerTest.Content.Entities
                         }
                     }
                     break;
+                case AttackState.LanceSweep:
+                    {
+                        if (!EternityIsActive())
+                        {
+                            ResetState();
+                        }
+
+                        if (!LanceSweepTeleFlag)
+                        {
+                            NPC.Center = LanceSweepStartPos;
+                            LanceSweepTeleFlag = true;
+                        }
+
+                        if (LanceSweepTeleFlag && LanceSweepTimer > 0)
+                        {
+                            LanceSweepTimer--;
+                            NPC.velocity = new Vector2(16, 0);
+                            if (Main.GameUpdateCount % 6 == 0)
+                            {
+                                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, new Vector2(0, 25), ModContent.ProjectileType<GalantineLance>(), 15, 4);
+                            }
+                        }
+
+                        if (LanceSweepTimer <= 0)
+                        {
+                            ResetState();
+                        }
+                        break;
+                    }
 
             }
 
@@ -835,6 +896,7 @@ namespace DestroyerTest.Content.Entities
             { AttackState.ShootStars3, 1.0f },
             { AttackState.ShootSwords, 1.0f },
             { AttackState.TeleStars, 1f },
+            { AttackState.LanceSweep, 1.0f },
             { AttackState.StellarFlame, 1.0f }
             // Add more states as needed
         };
@@ -874,6 +936,7 @@ namespace DestroyerTest.Content.Entities
                 starsShotCount1 = starsShotCount2 = starsShotCount3 =
                 CloneTimer = AmountofCloning = swordsShotCount =
                 shootSwordsTimer = FlameTimer = 0;
+                LanceSweepTimer = default;
                 MineSpots.Clear();
                 HasCharged = false;
                 HasShotStars1 = false;
@@ -889,6 +952,7 @@ namespace DestroyerTest.Content.Entities
                 HasPlayedFlameSound = false;
                 LanceCrossGetPlayerCenterFlag = false;
                 LanceCrossSpawnFlag = false;
+                LanceSweepTeleFlag = false;
             }
         }
 

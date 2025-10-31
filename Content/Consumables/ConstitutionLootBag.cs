@@ -5,6 +5,7 @@ using DestroyerTest.Content.Equips;
 using DestroyerTest.Content.Magic;
 using DestroyerTest.Content.Scepter;
 using DestroyerTest.Content.MeleeWeapons.SwordLineage;
+using DestroyerTest.Content.RogueItems;
 using DestroyerTest.Content.RangedItems;
 using DestroyerTest.Content.Tiles.AchievementPaintingTiles;
 using Microsoft.Xna.Framework;
@@ -70,6 +71,7 @@ namespace DestroyerTest.Content.Consumables
             itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<StellarTintedGoggles>(), 4, 1, 1));
             itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<StellarBow>(), 2, 1, 1));
             itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<StellarFlames>(), 3, 1, 1));
+            itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<GalantineKnife>(), 3, 1, 1));
             itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<StellarFoxScepter>(), 3, 1, 1));
             itemLoot.Add(ItemDropRule.Coins(350, true));
         }
