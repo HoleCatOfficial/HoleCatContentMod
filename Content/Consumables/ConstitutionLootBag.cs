@@ -73,6 +73,7 @@ namespace DestroyerTest.Content.Consumables
             itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<StellarFlames>(), 3, 1, 1));
             itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<GalantineKnife>(), 3, 1, 1));
             itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<StellarFoxScepter>(), 3, 1, 1));
+            itemLoot.Add(ItemDropRule.NormalvsExpertNotScalingWithLuck(ModContent.ItemType<GalantineIncense>(), 100, 1));
             itemLoot.Add(ItemDropRule.Coins(350, true));
         }
     }

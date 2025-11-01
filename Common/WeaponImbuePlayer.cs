@@ -11,13 +11,15 @@ using Terraria.ModLoader;
 namespace DestroyerTest.Common
 {
 	public class WeaponImbuePlayer : ModPlayer
-	{
+    {
+        public bool GalantineBurn = false;
 		public bool HeliouricShock = false;
         public bool DaylightOverload = false;
         public bool ComaceraticBurn = false;
 
         public override void ResetEffects()
         {
+            GalantineBurn = false;
             HeliouricShock = false;
             DaylightOverload = false;
             ComaceraticBurn = false;
@@ -25,6 +27,10 @@ namespace DestroyerTest.Common
 
         public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)
         {
+            if (GalantineBurn && item.DamageType.CountsAsClass<MeleeDamageClass>())
+            {
+                target.AddBuff(ModContent.BuffType<GalantineBurn>(), 60 * Main.rand.Next(10, 17));
+            }
             if (HeliouricShock && item.DamageType.CountsAsClass<MeleeDamageClass>())
             {
                 target.AddBuff(ModContent.BuffType<HeliouricShock>(), 60 * Main.rand.Next(10, 17));
@@ -40,6 +46,10 @@ namespace DestroyerTest.Common
 
         public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
         {
+            if (GalantineBurn && (proj.DamageType.CountsAsClass<MeleeDamageClass>() || ProjectileID.Sets.IsAWhip[proj.type]) && !proj.noEnchantments)
+            {
+                target.AddBuff(ModContent.BuffType<GalantineBurn>(), 60 * Main.rand.Next(10, 17));
+            }
             if (HeliouricShock && (proj.DamageType.CountsAsClass<MeleeDamageClass>() || ProjectileID.Sets.IsAWhip[proj.type]) && !proj.noEnchantments)
             {
                 target.AddBuff(ModContent.BuffType<HeliouricShock>(), 60 * Main.rand.Next(10, 17));
@@ -65,6 +75,14 @@ namespace DestroyerTest.Common
                 if (Main.rand.NextBool(5))
                 {
                     PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], new Vector2(hitbox.Width, (hitbox.Height / 2) - (hitbox.Height / 2)), Vector2.Zero, ColorLib.Rift, 0.05f);
+                }
+            }
+            if (GalantineBurn && item.DamageType.CountsAsClass<MeleeDamageClass>() && !item.noMelee && !item.noUseGraphic)
+            {
+                if (Main.rand.NextBool(5))
+                {
+                    Dust dust = Dust.NewDustDirect(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, DustID.TintableDustLighted, 0, 0, 100, ColorLib.StellarColor, 1.85f);
+                    dust.velocity *= 0.5f;
                 }
             }
             if (DaylightOverload && item.DamageType.CountsAsClass<MeleeDamageClass>() && !item.noMelee && !item.noUseGraphic)

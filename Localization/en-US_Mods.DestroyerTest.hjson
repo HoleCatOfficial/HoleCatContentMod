@@ -3232,11 +3232,21 @@ Items: {
 
 	GalantineKnife: {
 		DisplayName: Galantine Knife
+		Tooltip:
+			'''
+			Throws a Stellar Knife that falls to the ground after a second.
+			Tile collisions explode into homing Galantine Stars.
+			Hitting an NPC will lodge the blade in them for 2 seconds of continuous damage and inflicting Galantine Burn.
+			'''
+	}
+
+	GalantineIncense: {
 		Tooltip:'''
-				Throws a Stellar Knife that falls to the ground after a second.
-				Tile collisions explode into homing Galantine Stars.
-				Hitting an NPC will lodge the blade in them for 2 seconds of continuous damage and inflicting Galantine Burn.
+				Being hit by a NPC or Projectile will create  a small burst of homing stars.
+				Melee weapons are imbued with Galantine Burn.
+				You are immune to Galantine Burn.
 				'''
+		DisplayName: Galantine Incense
 	}
 }
 

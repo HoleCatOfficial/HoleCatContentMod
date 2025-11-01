@@ -3,6 +3,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using DestroyerTest.Common;
+using DestroyerTest.Rarity;
 
 namespace DestroyerTest.Content.Equips
 {

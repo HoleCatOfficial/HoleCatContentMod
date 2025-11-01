@@ -56,17 +56,20 @@ namespace DestroyerTest.Common
             }
         }
 
-        public void RadialSpreadProjectile(int ID, int Amount, Vector2 CTR, int Dmg = 0, int KB = 0, int Speed = 2, float AI0 = 0, float AI1 = 0, float AI2 = 0, bool RandomOffset = false)
+        public void RadialSpreadProjectile(
+            int ID, int Amount, Vector2 CTR,
+            int Dmg = 0, int KB = 0, int Speed = 2,
+            float AI0 = 0, float AI1 = 0, float AI2 = 0,
+            bool RandomOffset = false)
         {
             float rotationStep = MathHelper.TwoPi / Amount;
+            float baseRotation = RandomOffset ? Main.rand.NextFloat(MathHelper.TwoPi) : 0f;
 
             for (int i = 0; i < Amount; i++)
             {
-                Vector2 velocity = new Vector2(Speed, 0f).RotatedBy(rotationStep * i);
-                if (RandomOffset)
-                {
-                    velocity = velocity.RotatedByRandom(MathHelper.TwoPi);
-                }
+                float angle = rotationStep * i + baseRotation;
+                Vector2 velocity = new Vector2(Speed, 0f).RotatedBy(angle);
+
                 Projectile.NewProjectile(
                     Projectile.GetSource_None(),
                     CTR,
@@ -80,6 +83,7 @@ namespace DestroyerTest.Common
                 );
             }
         }
+
 
         public void RadialProjectileRandomDir(int ID, int Amount, Vector2 CTR, int Dmg = 0, int KB = 0, float Speed = 2f, float AI0 = 0, float AI1 = 0, float AI2 = 0, bool friendly = false, bool hostile = false)
         {
