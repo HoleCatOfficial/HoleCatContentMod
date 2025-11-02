@@ -8,6 +8,7 @@ using Terraria.GameContent;
 using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
+using OpusLib;
 
 namespace DestroyerTest.Content.Projectiles
 {
@@ -52,7 +53,7 @@ public class TitaniumShardSmall : ModProjectile
 			Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
 			DTUtils Utility = new DTUtils();
 
-            Utility.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+			Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 			Main.EntitySpriteDraw(
 				projectileTexture,
 				Projectile.Center - Main.screenPosition,
@@ -65,7 +66,7 @@ public class TitaniumShardSmall : ModProjectile
 				0
 			);
 
-			Utility.DrawGlowOnProj(Projectile, lightColor, false, 0);
+			Opus.DrawGlowOnProj(Projectile, lightColor, false, 0);
 
 			var Trail = DTAssetLib.Trail(2).Value;
 			Vector2 trailOrigin = new Vector2(Trail.Width / 2, Trail.Height / 2);
@@ -81,10 +82,14 @@ public class TitaniumShardSmall : ModProjectile
 				Main.EntitySpriteDraw(Trail, drawPosition, null, trailColor, Projectile.rotation, trailOrigin, (Projectile.scale * fade) * scaleFactor, SpriteEffects.None, 0);
 			}
 
-			Utility.ReturnToDefaultDrawing(spriteBatch);
-			
+			Opus.ReturnToDefaultDrawing(spriteBatch);
+
 			return false;
 		}
+		public override bool? CanHitNPC(NPC target)
+        {
+            return DelayTimer < 20;
+        }
 
 
 			// Custom AI

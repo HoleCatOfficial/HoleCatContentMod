@@ -11,6 +11,7 @@ using Terraria.Enums;
 using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
+using OpusLib;
 
 namespace DestroyerTest.Content.Projectiles.NightmareRose
 {
@@ -62,11 +63,11 @@ namespace DestroyerTest.Content.Projectiles.NightmareRose
             Vector2 origin = new Vector2(texture.Value.Width / 2f, frameHeight / 2f);
             Vector2 drawPos = Projectile.Center - Main.screenPosition;
 
-            Utility.StartSpriteBatchWithBlending(sb, BlendState.Additive, SpriteSortMode.Immediate);
-            Utility.DrawGlowOnProj(Projectile, Color.Purple, false, 0f);
+            Opus.StartSpriteBatchWithBlending(sb, BlendState.Additive, SpriteSortMode.Immediate);
+            Opus.DrawGlowOnProj(Projectile, Color.Purple, false, 0f);
             sb.Draw(texture.Value, drawPos, sourceRect, Color.White, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0f);
 
-            Utility.ReturnToDefaultDrawing(sb);
+            Opus.ReturnToDefaultDrawing(sb);
 
             return false;
         }

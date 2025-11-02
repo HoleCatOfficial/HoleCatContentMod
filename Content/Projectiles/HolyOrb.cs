@@ -9,7 +9,7 @@ using Terraria.GameContent;
 using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
-
+using OpusLib;
 using System.Collections.Generic;
 using DestroyerTest.Content.Buffs;
 
@@ -59,7 +59,7 @@ public class HolyOrb : ModProjectile
 			Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
 			DTUtils Utility = new DTUtils();
 
-            Utility.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 			Main.EntitySpriteDraw(
 				projectileTexture,
 				Projectile.Center - Main.screenPosition,
@@ -72,7 +72,7 @@ public class HolyOrb : ModProjectile
 				0
 			);
 
-			Utility.DrawGlowOnProj(Projectile, Color.Aquamarine, false, 0);
+			Opus.DrawGlowOnProj(Projectile, Color.Aquamarine, false, 0);
 
 			var Trail = DTAssetLib.Trail(2).Value;
 			Vector2 trailOrigin = new Vector2(Trail.Width / 2, Trail.Height / 2);
@@ -88,7 +88,7 @@ public class HolyOrb : ModProjectile
 				Main.EntitySpriteDraw(Trail, drawPosition, null, trailColor, Projectile.rotation, trailOrigin, (Projectile.scale * fade) * scaleFactor, SpriteEffects.None, 0);
 			}
 
-			Utility.ReturnToDefaultDrawing(spriteBatch);
+			Opus.ReturnToDefaultDrawing(spriteBatch);
 			
 			return false;
 		}

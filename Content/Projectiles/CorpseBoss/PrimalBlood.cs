@@ -15,6 +15,7 @@ using Terraria.GameContent;
 using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
+using OpusLib;
 
 namespace DestroyerTest.Content.Projectiles.CorpseBoss
 {
@@ -44,7 +45,7 @@ namespace DestroyerTest.Content.Projectiles.CorpseBoss
         public void DrawCrystalCore(SpriteBatch spriteBatch, Vector2 Center)
         {
             DTUtils Utility = new DTUtils();
-            Utility.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
             for (int i = 0; i < TrailPositions.Count; i++)
             {
@@ -108,7 +109,7 @@ namespace DestroyerTest.Content.Projectiles.CorpseBoss
                 1f
             );
 
-            Utility.ReturnToDefaultDrawing(spriteBatch);
+            Opus.ReturnToDefaultDrawing(spriteBatch);
         }
         
         public List<Vector2> TrailPositions = new();

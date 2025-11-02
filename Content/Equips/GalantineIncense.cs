@@ -1,4 +1,5 @@
 
+using System;
 using System.Linq;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
@@ -15,6 +16,7 @@ using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
+using OpusLib;
 
 namespace DestroyerTest.Content.Equips
 {
@@ -30,6 +32,8 @@ namespace DestroyerTest.Content.Equips
             Item.rare = ModContent.RarityType<StellarRarity>(); // The rarity of the item
             Item.vanity = false;
             Item.accessory = true;
+            Item.expertOnly = true;
+            Item.expert = true;
         }
 
         public override void UpdateEquip(Player player)
@@ -38,7 +42,6 @@ namespace DestroyerTest.Content.Equips
             {
                 Incense.Active = true;
             }
-            
         }
 
 
@@ -70,7 +73,7 @@ namespace DestroyerTest.Content.Equips
         {
             if (Active)
             {
-                DTUtils.instance.RadialSpreadProjectile(ModContent.ProjectileType<ConstitutionStar>(), 5, Player.Center, 14, 4, 6, AI2: 1, RandomOffset: true);
+                Opus.RadialSpreadProjectile(ModContent.ProjectileType<ConstitutionStar>(), 5, Player.Center, 14, 4, 6, AI2: 1, RandomOffset: true);
             }
         }
 
@@ -78,7 +81,7 @@ namespace DestroyerTest.Content.Equips
         {
             if (Active)
             {
-                DTUtils.instance.RadialSpreadProjectile(ModContent.ProjectileType<ConstitutionStar>(), 3, Player.Center, 10, 4, 6, AI2: 1, RandomOffset: true);
+                Opus.RadialSpreadProjectile(ModContent.ProjectileType<ConstitutionStar>(), 3, Player.Center, 10, 4, 6, AI2: 1, RandomOffset: true);
             }
         }
 
@@ -86,10 +89,19 @@ namespace DestroyerTest.Content.Equips
         {
             if (Active)
             {
-                DTUtils.instance.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-                Main.EntitySpriteDraw(DTAssetLib.FireRing.Value, Player.Center - Main.screenPosition, null, ColorLib.StellarColor * 0.5f, -TexRot, DTAssetLib.FireRing.Value.Size() / 2, 0.24f, SpriteEffects.None, 0);
-                Main.EntitySpriteDraw(DTAssetLib.FireRing.Value, Player.Center - Main.screenPosition, null, ColorLib.StellarColor, TexRot, DTAssetLib.FireRing.Value.Size() / 2, 0.18f, SpriteEffects.None, 0);
-                DTUtils.instance.ReturnToDefaultDrawing(Main.spriteBatch);
+                Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+                Main.EntitySpriteDraw(DTAssetLib.FireRing.Value, Player.Center - Main.screenPosition, null, ColorLib.StellarColor * 0.5f, -TexRot, DTAssetLib.FireRing.Value.Size() / 2, 0.095f, SpriteEffects.None, 0);
+                Main.EntitySpriteDraw(DTAssetLib.FireRing.Value, Player.Center - Main.screenPosition, null, ColorLib.StellarColor * 0.25f, -TexRot * 2, DTAssetLib.FireRing.Value.Size() / 2, 0.085f, SpriteEffects.None, 0);
+                Main.EntitySpriteDraw(DTAssetLib.FireRing.Value, Player.Center - Main.screenPosition, null, ColorLib.StellarColor * 0.25f, TexRot * 1.5f, DTAssetLib.FireRing.Value.Size() / 2, 0.0805f, SpriteEffects.None, 0);
+                Main.EntitySpriteDraw(DTAssetLib.FireRing.Value, Player.Center - Main.screenPosition, null, ColorLib.StellarColor * 0.7f, -TexRot * 0.5f, DTAssetLib.FireRing.Value.Size() / 2, 0.08f, SpriteEffects.None, 0);
+                Main.EntitySpriteDraw(DTAssetLib.FireRing.Value, Player.Center - Main.screenPosition, null, ColorLib.StellarColor * 0.7f, TexRot, DTAssetLib.FireRing.Value.Size() / 2, 0.08f, SpriteEffects.None, 0);
+                Opus.ReturnToDefaultDrawing(Main.spriteBatch);
+
+                if (Math.Abs(Player.velocity.X) > 5f)
+                {
+                    int dustIndex = Dust.NewDust(Player.position, Player.width, Player.height, DustID.TintableDustLighted, Player.velocity.X * 0.2f, Player.velocity.Y * 0.2f, 100, ColorLib.StellarColor, 1.2f);
+                    drawInfo.DustCache.Add(dustIndex);
+                }
             }
         }
     }

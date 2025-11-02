@@ -10,6 +10,7 @@ using Terraria.GameContent;
 using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
+using OpusLib;
 
 namespace DestroyerTest.Content.Projectiles
 {
@@ -65,7 +66,7 @@ public class ContenderSwordShot : ModProjectile
 
 			DTUtils Utility = new DTUtils();
 
-            Utility.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
 			Main.EntitySpriteDraw(
 				DTAssetLib.PointGlow.Value,
@@ -93,7 +94,7 @@ public class ContenderSwordShot : ModProjectile
 				Main.EntitySpriteDraw(Trail, drawPosition, null, trailColor, Projectile.rotation, trailOrigin, (Projectile.scale * fade) * scaleFactor, SpriteEffects.None, 0);
 			}
 
-			Utility.ReturnToDefaultDrawing(spriteBatch);
+			Opus.ReturnToDefaultDrawing(spriteBatch);
 
 			return false;
 		}

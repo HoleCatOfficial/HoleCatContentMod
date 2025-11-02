@@ -15,6 +15,8 @@ using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
+using System.Collections.Generic;
+using Terraria.Localization;
 
 namespace DestroyerTest.Content.Consumables
 {
@@ -71,10 +73,27 @@ namespace DestroyerTest.Content.Consumables
             itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<StellarTintedGoggles>(), 4, 1, 1));
             itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<StellarBow>(), 2, 1, 1));
             itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<StellarFlames>(), 3, 1, 1));
-            itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<GalantineKnife>(), 3, 1, 1));
+            itemLoot.Add(new PityChanceDropRule(Type, ModContent.ItemType<GalantineKnife>(), 0.02f, 0.05f)); // +1% chance per fail
             itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<StellarFoxScepter>(), 3, 1, 1));
             itemLoot.Add(ItemDropRule.NormalvsExpertNotScalingWithLuck(ModContent.ItemType<GalantineIncense>(), 100, 1));
+            itemLoot.Add(new PityAmountDropRule(Type, ModContent.ItemType<StellarFlamesFlask>(), 0.5f, 1, 2, 20));
             itemLoot.Add(ItemDropRule.Coins(350, true));
+        }
+
+        public override void ModifyTooltips(List<TooltipLine> tooltips)
+        {
+            DTConfig cfg = ModContent.GetInstance<DTConfig>();
+            var pityText = Language.GetText("Mods.DestroyerTest.PitySystem.UsesPity");
+            int kPity = PitySystem.GetPity(Type, ModContent.ItemType<GalantineKnife>());
+            int fPity = PitySystem.GetPity(Type, ModContent.ItemType<StellarFlamesFlask>());
+
+            tooltips.Add(new TooltipLine(Mod, "PityIndicator", pityText.Value));
+
+            if (cfg.EnableDebugMessages)
+            {
+                tooltips.Add(new TooltipLine(Mod, "KnifePityDebug", $"[i:DestroyerTest/PityMarkSmall][i:DestroyerTest/GalantineKnife] Galantine Knife pity: {kPity}"));
+                tooltips.Add(new TooltipLine(Mod, "FlaskPityDebug", $"[i:DestroyerTest/PityMarkSmall][i:DestroyerTest/StellarFlamesFlask] Stellar Flames Flask pity: {fPity}"));
+            }
         }
     }
     

@@ -36,6 +36,7 @@ using DestroyerTest.Content.Resources;
 using Humanizer.Localisation.DateToOrdinalWords;
 using InnoVault.PRT;
 using DestroyerTest.Content.Particles;
+using OpusLib;
 
 namespace DestroyerTest.Content.Entities
 {
@@ -545,7 +546,7 @@ namespace DestroyerTest.Content.Entities
                             if (CloneTimer == 60)
                             {
                                 CloneMe();
-                                Utility.RadialSpreadProjectile(ModContent.ProjectileType<StellarFlameHostile>(), 9, NPC.Center, 17, 8, 10);
+                                Opus.RadialSpreadProjectile(ModContent.ProjectileType<StellarFlameHostile>(), 9, NPC.Center, 17, 8, 10);
                                 HasCloned = true;
                             }
                             if (HasCloned == true)
@@ -766,7 +767,7 @@ namespace DestroyerTest.Content.Entities
                         if (EternityIsActive())
                         {
                             SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/NodeSpawn") with { PitchVariance = 0.4f, MaxInstances = 0 });
-                            Utility.RadialSpreadProjectile(ModContent.ProjectileType<StellarBomb>(), 5, NPC.Center, 20, 6, 6);
+                            Opus.RadialSpreadProjectile(ModContent.ProjectileType<StellarBomb>(), 5, NPC.Center, 20, 6, 6);
                             StarFury2(10);
                             ResetState();
                         }
@@ -823,6 +824,7 @@ namespace DestroyerTest.Content.Entities
                     break;
                 case AttackState.LanceSweep:
                     {
+                        LanceSweepStartPos = Main.screenPosition;
                         if (!EternityIsActive())
                         {
                             ResetState();
@@ -936,7 +938,7 @@ namespace DestroyerTest.Content.Entities
                 starsShotCount1 = starsShotCount2 = starsShotCount3 =
                 CloneTimer = AmountofCloning = swordsShotCount =
                 shootSwordsTimer = FlameTimer = 0;
-                LanceSweepTimer = default;
+                LanceSweepTimer = 180;
                 MineSpots.Clear();
                 HasCharged = false;
                 HasShotStars1 = false;
@@ -1058,8 +1060,7 @@ namespace DestroyerTest.Content.Entities
             if (NPC.type == ModContent.NPCType<ConstitutionBoss>())
             {
                 SoundEngine.PlaySound(SoundID.Item125, NPC.Center);
-                DTUtils Utility = new DTUtils();
-                Utility.RadialSpreadProjectile(ModContent.ProjectileType<GalantineLance>(), Main.rand.Next(4, 14), NPC.Center, 15, 4, 10);
+                Opus.RadialSpreadProjectile(ModContent.ProjectileType<GalantineLance>(), Main.rand.Next(4, 14), NPC.Center, 15, 4, 10);
             }
         }
 
@@ -1154,8 +1155,7 @@ namespace DestroyerTest.Content.Entities
             if (NPC.type == ModContent.NPCType<ConstitutionBoss>())
             {
                 SoundEngine.PlaySound(SoundID.Item125, NPC.Center);
-                DTUtils Utility = new DTUtils();
-                Utility.RadialSpreadProjectile(ModContent.ProjectileType<GalantineLance>(), Main.rand.Next(4, 14), NPC.Center, 15, 4, 10);
+                Opus.RadialSpreadProjectile(ModContent.ProjectileType<GalantineLance>(), Main.rand.Next(4, 14), NPC.Center, 15, 4, 10);
                 ParticleOrchestrator.RequestParticleSpawn(false, ParticleOrchestraType.TrueExcalibur, new ParticleOrchestraSettings { PositionInWorld = NPC.Center }); ;
             }
         }
@@ -1211,8 +1211,7 @@ namespace DestroyerTest.Content.Entities
             if (NPC.type == ModContent.NPCType<ConstitutionBoss>())
             {
                 SoundEngine.PlaySound(SoundID.Item90, NPC.position);
-                DTUtils Utility = new DTUtils();
-                Utility.RadialProjectileRandomDir(ModContent.ProjectileType<StarfuryClone>(), Main.rand.Next(10, 15), NPC.Center, 15, 4, 10);
+                Opus.RadialProjectileRandomDir(ModContent.ProjectileType<StarfuryClone>(), Main.rand.Next(10, 15), NPC.Center, 15, 4, 10);
             }
         }
 
@@ -1223,11 +1222,10 @@ namespace DestroyerTest.Content.Entities
         public void StarFury2(int Amount)
         {
             Rectangle Screen = new Rectangle((int)Main.screenPosition.X, (int)Main.screenPosition.Y, Main.screenWidth, Main.screenHeight);
-            DTUtils Utility = new DTUtils();
             for (int t = 0; t < Amount; t++)
             {
                 Vector2 SpawnPos = Main.rand.NextVector2FromRectangle(Screen);
-                Utility.RadialSpreadProjectile(ModContent.ProjectileType<StarfuryClone>(), Main.rand.Next(4, 14), SpawnPos, 5, 4, Main.rand.Next(10, 25));
+                Opus.RadialSpreadProjectile(ModContent.ProjectileType<StarfuryClone>(), Main.rand.Next(4, 14), SpawnPos, 5, 4, Main.rand.Next(10, 25));
             }
         }
 
@@ -1239,8 +1237,7 @@ namespace DestroyerTest.Content.Entities
             if (NPC.type == ModContent.NPCType<ConstitutionBoss>())
             {
                 SoundEngine.PlaySound(SoundID.Item125, NPC.Center);
-                DTUtils Utility = new DTUtils();
-                Utility.RadialSpreadProjectile(ModContent.ProjectileType<TrailBlazer>(), 8, NPC.Center, 15, 4, 10);
+                Opus.RadialSpreadProjectile(ModContent.ProjectileType<TrailBlazer>(), 8, NPC.Center, 15, 4, 10);
                 ParticleOrchestrator.RequestParticleSpawn(false, ParticleOrchestraType.TrueExcalibur, new ParticleOrchestraSettings { PositionInWorld = NPC.Center }); ;
             }
         }

@@ -13,12 +13,12 @@ using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Opus.Content.Helpers;
+using OpusLib.Content.Helpers;
 using System;
 using System.Linq;
 using Terraria.GameContent.ItemDropRules;
 using DestroyerTest.Content.Scepter;
-using Opus;
+using OpusLib;
 
 namespace DestroyerTest.Content.Equips.ScepterAccessories
 {
@@ -332,8 +332,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
                 {
                     if (Main.rand.NextBool(3))
                     {
-                        Opus.Opus opus = new Opus.Opus();
-                        opus.RadialSpreadProjectile(ModContent.ProjectileType<SharkronNecklaceMinion>(), 8, position, damage / 2, 3, 4);
+                        Opus.RadialSpreadProjectile(ModContent.ProjectileType<SharkronNecklaceMinion>(), 8, position, damage / 2, 3, 4);
                     }
                 }
             }
@@ -451,7 +450,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
             {
                 if (Main.rand.NextBool(13))
                 {
-                    new DTUtils().RadialSpreadProjectile(ProjectileID.Blizzard, 4, projectile.Center, (int)(projectile.damage * 1.75f), (int)projectile.knockBack, 12);
+                    Opus.RadialSpreadProjectile(ProjectileID.Blizzard, 4, projectile.Center, (int)(projectile.damage * 1.75f), (int)projectile.knockBack, 12);
                 }
             }
             if (IchorScroll && IsAThrownScepter)

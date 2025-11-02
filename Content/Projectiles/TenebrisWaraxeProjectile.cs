@@ -13,6 +13,7 @@ using DestroyerTest.Content.Buffs;
 using System.IO;
 using InnoVault.PRT;
 using Terraria.GameContent.UI.Chat;
+using OpusLib;
 
 namespace DestroyerTest.Content.Projectiles
 {
@@ -70,11 +71,10 @@ namespace DestroyerTest.Content.Projectiles
 
         public override bool PreDraw(ref Color lightColor)
         {
-            Opus.Opus opus = new Opus.Opus();
 
-            opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+            Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
             Main.EntitySpriteDraw(DTAssetLib.SwingFX.Value, Projectile.Center - Main.screenPosition, null, clr, Projectile.rotation, DTAssetLib.SwingFX.Value.Size() / 2, 0.65f, SpriteEffects.None, 0);
-            opus.ReturnToDefaultDrawing(Main.spriteBatch);
+            Opus.ReturnToDefaultDrawing(Main.spriteBatch);
             return true;
         }
 
@@ -162,13 +162,13 @@ namespace DestroyerTest.Content.Projectiles
                 PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticle>(), Projectile.Center, new Vector2(Main.rand.NextFloat(-8, 8), Main.rand.NextFloat(-15, -10)), clr, 2);
 
             }
-            DTUtils.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), Projectile.Center, Vector2.Zero, Color.White, 0.01f, ai0: 0.8f);
-            DTUtils.NewParticleFloatAI(PRTLoader.GetParticleID<Boom5>(), Projectile.Center, Vector2.Zero, clr, 0.01f, ai0: 1.5f);
+            Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), Projectile.Center, Vector2.Zero, Color.White, 0.01f, ai0: 0.8f);
+            Opus.NewParticleFloatAI(PRTLoader.GetParticleID<Boom5>(), Projectile.Center, Vector2.Zero, clr, 0.01f, ai0: 1.5f);
             if (Projectile.penetrate == 1)
             {
                 returning = true;
             }
-            DTUtils.instance.RadialSpreadProjectile(ModContent.ProjectileType<TenebrisStar>(), 9, Projectile.Center, Projectile.damage / 3, 4, 15, AI2: 1);
+            Opus.RadialSpreadProjectile(ModContent.ProjectileType<TenebrisStar>(), 9, Projectile.Center, Projectile.damage / 3, 4, 15, AI2: 1);
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)
@@ -183,9 +183,9 @@ namespace DestroyerTest.Content.Projectiles
                 PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticle>(), Projectile.Center, new Vector2(Main.rand.NextFloat(-8, 8), Main.rand.NextFloat(-15, -10)), clr, 2);
 
             }
-            DTUtils.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), Projectile.Center, Vector2.Zero, Color.White, 0.01f, ai0: 0.8f);
-            DTUtils.NewParticleFloatAI(PRTLoader.GetParticleID<Boom5>(), Projectile.Center, Vector2.Zero, clr, 0.01f, ai0: 1.5f);
-            DTUtils.instance.RadialSpreadProjectile(ModContent.ProjectileType<TenebrisStar>(), 9, Projectile.Center, Projectile.damage / 3, 4, 15, AI2: 1);
+            Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), Projectile.Center, Vector2.Zero, Color.White, 0.01f, ai0: 0.8f);
+            Opus.NewParticleFloatAI(PRTLoader.GetParticleID<Boom5>(), Projectile.Center, Vector2.Zero, clr, 0.01f, ai0: 1.5f);
+            Opus.RadialSpreadProjectile(ModContent.ProjectileType<TenebrisStar>(), 9, Projectile.Center, Projectile.damage / 3, 4, 15, AI2: 1);
 
             returning = true;
 

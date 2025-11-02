@@ -9,6 +9,7 @@ using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
+using OpusLib;
 
 namespace DestroyerTest.Content.Projectiles
 {
@@ -110,7 +111,7 @@ namespace DestroyerTest.Content.Projectiles
         public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/NodeExplode"), Projectile.Center);
-            DTUtils.instance.RadialProjectileRandomDir(FireVariants[Main.rand.Next(FireVariants.Length)], Main.rand.Next(8, 13), Projectile.Center, Projectile.damage / 2, 5, 10, friendly: true);
+            Opus.RadialProjectileRandomDir(FireVariants[Main.rand.Next(FireVariants.Length)], Main.rand.Next(8, 13), Projectile.Center, Projectile.damage / 2, 5, 10, friendly: true);
         }
     }
 }

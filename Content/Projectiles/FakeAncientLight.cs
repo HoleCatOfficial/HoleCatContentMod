@@ -12,6 +12,7 @@ using Terraria.GameContent;
 using Terraria.Graphics;
 using Terraria.ID;
 using Terraria.ModLoader;
+using OpusLib;
 
 namespace DestroyerTest.Content.Projectiles
 {
@@ -57,7 +58,7 @@ namespace DestroyerTest.Content.Projectiles
 			Texture2D projectileTexture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/StarParticle2").Value;
 			Texture2D pixel = Terraria.GameContent.TextureAssets.MagicPixel.Value;
 
-            Utility.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
             for (int i = 0; i < TrailPositions.Count - 1; i++)
 			{
 				Vector2 start = TrailPositions[i] - Main.screenPosition;
@@ -112,7 +113,7 @@ namespace DestroyerTest.Content.Projectiles
 				0
 			);
 
-			Utility.ReturnToDefaultDrawing(spriteBatch);
+			Opus.ReturnToDefaultDrawing(spriteBatch);
 
 			
 			return false; // Let the default system handle the base projectile drawing

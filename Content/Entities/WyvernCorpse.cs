@@ -36,6 +36,7 @@ using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
 using UtfUnknown.Core.Models.SingleByte.Finnish;
 using GlowmaskHelper.Content;
+using OpusLib;
 
 namespace DestroyerTest.Content.Entities
 {
@@ -947,7 +948,7 @@ namespace DestroyerTest.Content.Entities
                                     NPC.velocity = DashDir.ToRotationVector2() * 25;
                                 }
                                 DashParticle();
-                                Utility.RadialSpreadProjectile(type, Main.rand.Next(4, 14), TelePos, 5, 4, Main.rand.Next(4, 13));
+                                Opus.RadialSpreadProjectile(type, Main.rand.Next(4, 14), TelePos, 5, 4, Main.rand.Next(4, 13));
                                 TeleDashWaitTime = 100;
                                 TeleDashGetTelePosition = false;
                             }
@@ -1231,7 +1232,7 @@ namespace DestroyerTest.Content.Entities
         public void DrawCrystalCore(SpriteBatch spriteBatch, Vector2 Center)
         {
             DTUtils Utility = new DTUtils();
-            Utility.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
             Main.spriteBatch.Draw(
                 DTAssetLib.Cyclone(2).Value,
@@ -1272,7 +1273,7 @@ namespace DestroyerTest.Content.Entities
 
 
 
-            Utility.ReturnToDefaultDrawing(spriteBatch);
+            Opus.ReturnToDefaultDrawing(spriteBatch);
         }
         
         
@@ -1449,7 +1450,7 @@ namespace DestroyerTest.Content.Entities
             float segmentLength = texture.Height * 0.75f; // adjust if your texture is oriented differently
 
             // Begin additive blending (glowy telegraph)
-            Utility.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
             for (float distance = 0f; distance < totalLength; distance += segmentLength)
             {
@@ -1474,13 +1475,13 @@ namespace DestroyerTest.Content.Entities
                 );
             }
 
-            Utility.ReturnToDefaultDrawing(spriteBatch);
+            Opus.ReturnToDefaultDrawing(spriteBatch);
         }
 
         public void DrawTelePoint(SpriteBatch spriteBatch, Vector2 Center)
         {
             DTUtils Utility = new DTUtils();
-            Utility.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
             Main.spriteBatch.Draw(
                 DTAssetLib.Cyclone(2).Value,
@@ -1518,7 +1519,7 @@ namespace DestroyerTest.Content.Entities
                 1f
             );
 
-            Utility.ReturnToDefaultDrawing(spriteBatch);
+            Opus.ReturnToDefaultDrawing(spriteBatch);
         }
 
         
@@ -1825,7 +1826,7 @@ namespace DestroyerTest.Content.Entities
             // fire crystals every 3 seconds
             if (Main.GameUpdateCount % 180 == 0)
             {
-                new DTUtils().RadialSpreadProjectile(
+                Opus.RadialSpreadProjectile(
                     ModContent.ProjectileType<IchorNodeCrystal2>(),
                     4, NPC.Center, 20, 4, 8);
                 CrossCount++;
@@ -1886,7 +1887,7 @@ namespace DestroyerTest.Content.Entities
                 int tileY = (int)((NPC.Center.Y + NPC.height / 2) / 16f);
                 if (WorldGen.SolidTile(tileX, tileY))
                 {
-                    new DTUtils().RadialSpreadProjectile(
+                    Opus.RadialSpreadProjectile(
                         ProjectileID.GoldenShowerHostile, 5,
                         NPC.Bottom, 15, 3, 10);
 
@@ -1924,7 +1925,7 @@ namespace DestroyerTest.Content.Entities
             if (Main.GameUpdateCount % 180 == 0)
             {
                 SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/Scholar/ShieldActivate", 3) with { PitchVariance = 0.4f });
-                DTUtils.instance.RadialProjectileRandomDir(ModContent.ProjectileType<NodeBossDistendedPike>(), Main.rand.Next(2, 5), NPC.Center, NPC.damage / 2, 7, 20);
+                Opus.RadialProjectileRandomDir(ModContent.ProjectileType<NodeBossDistendedPike>(), Main.rand.Next(2, 5), NPC.Center, NPC.damage / 2, 7, 20);
                 PikeCount++;
             }
 

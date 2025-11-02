@@ -14,6 +14,7 @@ using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
+using OpusLib;
 
 namespace DestroyerTest.Content.Projectiles.ConstitutionBoss
 {
@@ -70,7 +71,7 @@ namespace DestroyerTest.Content.Projectiles.ConstitutionBoss
             SpriteBatch spriteBatch = Main.spriteBatch;
             DTUtils Utility = new DTUtils();
 
-            Utility.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
             /*
             for (int i = 0; i < TrailPositions.Count - 1; i++)
@@ -119,11 +120,11 @@ namespace DestroyerTest.Content.Projectiles.ConstitutionBoss
             }
 
 
-            //Utility.DrawGlowOnProj(Projectile, lightColor, true);
+            //Opus.DrawGlowOnProj(Projectile, lightColor, true);
 
-            Utility.ReturnToDefaultDrawing(spriteBatch);
+            Opus.ReturnToDefaultDrawing(spriteBatch);
 
-            Utility.DrawTextureOnProj(ProjTex, Projectile, Color.White, true, Projectile.rotation, 1f, 1f);
+            Opus.DrawTextureOnProj(ProjTex, Projectile, Color.White, true, Projectile.rotation, 1f, 1f);
 
             return false;
         }

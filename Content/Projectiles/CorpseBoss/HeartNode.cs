@@ -12,6 +12,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
+using OpusLib;
 
 namespace DestroyerTest.Content.Projectiles.CorpseBoss
 {
@@ -278,7 +279,7 @@ namespace DestroyerTest.Content.Projectiles.CorpseBoss
             if (Projectile.timeLeft <= 1)
             {
                 PRTLoader.NewParticle(PRTLoader.GetParticleID<SmallShine>(), Projectile.Center, Vector2.Zero, Color.Red, 1f);
-                DTUtils.instance.RadialSpreadProjectile(ModContent.ProjectileType<PrimalBlood>(), Main.rand.Next(6, 9), Projectile.Center, Projectile.damage, 4, 7, AI0: 0, AI1: 0.03f);
+                Opus.RadialSpreadProjectile(ModContent.ProjectileType<PrimalBlood>(), Main.rand.Next(6, 9), Projectile.Center, Projectile.damage, 4, 7, AI0: 0, AI1: 0.03f);
             }
         }
     }

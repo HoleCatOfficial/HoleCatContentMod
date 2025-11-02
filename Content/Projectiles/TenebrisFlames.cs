@@ -48,20 +48,26 @@ namespace DestroyerTest.Content.Projectiles
 			ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true;
 		}
 
-        public override void SetDefaults()
-        {
-            Projectile.width = 32;
-            Projectile.height = 32;
+		public override void SetDefaults()
+		{
+			Projectile.width = 32;
+			Projectile.height = 32;
 
-            Projectile.DamageType = DamageClass.Generic;
-            Projectile.friendly = false;
-            Projectile.hostile = false;
-            Projectile.ignoreWater = true;
-            Projectile.light = 1f;
-            Projectile.timeLeft = 300;
-            Projectile.tileCollide = false;
-            Projectile.alpha = 255;
+			Projectile.DamageType = DamageClass.Generic;
+			Projectile.friendly = false;
+			Projectile.hostile = false;
+			Projectile.ignoreWater = true;
+			Projectile.light = 1f;
+			Projectile.timeLeft = 300;
+			Projectile.tileCollide = false;
+			Projectile.alpha = 255;
 		}
+
+        public override bool? CanHitNPC(NPC target)
+        {
+            return DelayTimer < 20;
+        }
+
 
 		/// <summary>
 		/// Controls whether the Projectile is Hostile or Friendly.

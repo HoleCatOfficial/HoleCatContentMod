@@ -10,6 +10,7 @@ using DestroyerTest.Content.Buffs;
 using Terraria.ID;
 using DestroyerTest.Content.Dusts;
 using FullSerializer;
+using OpusLib;
 
 namespace DestroyerTest.Content.Projectiles.NightmareRose
 {
@@ -70,7 +71,7 @@ namespace DestroyerTest.Content.Projectiles.NightmareRose
 
         public override void OnKill(int timeLeft)
         {
-            DTUtils.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), Projectile.Center, Vector2.Zero, Color.White, 0.01f, ai0: 2.6f);
+            Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), Projectile.Center, Vector2.Zero, Color.White, 0.01f, ai0: 2.6f);
         }
 
         

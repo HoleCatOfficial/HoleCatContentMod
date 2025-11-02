@@ -14,6 +14,7 @@ using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
+using OpusLib;
 
 namespace DestroyerTest.Content.Projectiles
 {
@@ -69,7 +70,7 @@ namespace DestroyerTest.Content.Projectiles
 			SpriteBatch spriteBatch = Main.spriteBatch;
 			DTUtils Utility = new DTUtils();
 
-            Utility.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
 			for (int i = 0; i < TrailPositions.Count - 1; i++)
 			{
@@ -118,11 +119,11 @@ namespace DestroyerTest.Content.Projectiles
 				);
 			}
 
-			Utility.DrawGlowOnProj(Projectile, lightColor, true);
+			Opus.DrawGlowOnProj(Projectile, lightColor, true);
 
-			Utility.ReturnToDefaultDrawing(spriteBatch);
+			Opus.ReturnToDefaultDrawing(spriteBatch);
 			
-			Utility.DrawTextureOnProj(DTAssetLib.RiftStar, Projectile, Color.White, true, 0f, 0.35f, 0.35f);
+			Opus.DrawTextureOnProj(DTAssetLib.RiftStar, Projectile, Color.White, true, 0f, 0.35f, 0.35f);
 
 			return false;
 		}

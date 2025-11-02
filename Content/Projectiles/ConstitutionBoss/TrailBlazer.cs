@@ -7,6 +7,7 @@ using Terraria.GameContent;
 using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
+using OpusLib;
 
 namespace DestroyerTest.Content.Projectiles.ConstitutionBoss
 {
@@ -64,7 +65,7 @@ public class TrailBlazer : ModProjectile
 				Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
 				DTUtils Utility = new DTUtils();
 
-            	Utility.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+            	Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 				int frameHeight = projectileTexture.Height / Main.projFrames[Projectile.type];
                 Rectangle sourceRect = new Rectangle(0, Projectile.frame * frameHeight, projectileTexture.Width, frameHeight);
 
@@ -93,7 +94,7 @@ public class TrailBlazer : ModProjectile
 					0
 				);
 
-				Utility.ReturnToDefaultDrawing(spriteBatch);
+				Opus.ReturnToDefaultDrawing(spriteBatch);
 
 				return false;
 			}

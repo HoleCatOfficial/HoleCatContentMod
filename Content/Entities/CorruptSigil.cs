@@ -21,6 +21,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
 using UtfUnknown.Core.Models.SingleByte.Finnish;
+using OpusLib;
 
 namespace DestroyerTest.Content.Entities
 {
@@ -68,7 +69,7 @@ namespace DestroyerTest.Content.Entities
             Asset<Texture2D> Sigil = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/CorruptSigil");
             DTUtils Utility = new DTUtils();
 
-            Utility.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
             Main.EntitySpriteDraw(
                 Sigil.Value,
                 NPC.Center - screenPos,
@@ -99,7 +100,7 @@ namespace DestroyerTest.Content.Entities
                 Main.player[NPC.target].AddBuff(BuffID.Cursed, 120);
             }
 
-            Utility.ReturnToDefaultDrawing(spriteBatch);
+            Opus.ReturnToDefaultDrawing(spriteBatch);
 
             return true;
         }

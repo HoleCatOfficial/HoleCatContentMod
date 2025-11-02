@@ -25,6 +25,7 @@ using DestroyerTest.Common;
 using DestroyerTest.Content.Lorebooks;
 using DestroyerTest.Content.Consumables;
 using DestroyerTest.Content.SummonItems;
+using OpusLib;
 
 namespace DestroyerTest.Content.Entities
 {
@@ -395,7 +396,7 @@ namespace DestroyerTest.Content.Entities
 			}
 
 			// Step 2 — If below half health, spawn if not yet done.
-			if (NPC.life < NPC.lifeMax / 2 || DTUtils.BossNearby())
+			if (NPC.life < NPC.lifeMax / 2 || Opus.BossNearby())
 			{
 				if (!SpawnShield)
 				{

@@ -17,6 +17,7 @@ using Terraria.DataStructures;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using OpusLib;
 
 namespace DestroyerTest.Common
 {
@@ -93,7 +94,7 @@ namespace DestroyerTest.Common
                 Utils.DrawBorderString(spriteBatch, text, drawPos, themeColor, 2f, 0.5f, 0.5f);
                 if (Absorb && !Recharge)
                 {
-                    Utility.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+                    Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
                     Main.EntitySpriteDraw(
                         DTAssetLib.BloomRingSharp.Value,
                         Player.Center - Main.screenPosition,
@@ -105,7 +106,7 @@ namespace DestroyerTest.Common
                         SpriteEffects.None,
                         0f
                     );
-                    Utility.ReturnToDefaultDrawing(spriteBatch);
+                    Opus.ReturnToDefaultDrawing(spriteBatch);
                 }
             }
         }

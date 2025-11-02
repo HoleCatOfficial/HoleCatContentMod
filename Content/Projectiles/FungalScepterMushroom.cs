@@ -11,6 +11,7 @@ using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
+using OpusLib;
 
 namespace DestroyerTest.Content.Projectiles
 {
@@ -58,11 +59,11 @@ namespace DestroyerTest.Content.Projectiles
 
             DTUtils Utility = new DTUtils();
 
-            Utility.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
-            Utility.DrawGlowOnProj(Projectile, Color.BlueViolet, false, 0);
+            Opus.DrawGlowOnProj(Projectile, Color.BlueViolet, false, 0);
 
-            Utility.ReturnToDefaultDrawing(spriteBatch);
+            Opus.ReturnToDefaultDrawing(spriteBatch);
 
             Main.EntitySpriteDraw(
                 projectileTexture,

@@ -10,6 +10,7 @@ using GlowmaskHelper.Content;
 using ReLogic.Content;
 using DestroyerTest.Content.Projectiles.ConstitutionBoss;
 using Terraria.Audio;
+using OpusLib;
 
 namespace DestroyerTest.Content.Projectiles
 {
@@ -18,7 +19,7 @@ namespace DestroyerTest.Content.Projectiles
         public override void SetDefaults()
         {
             Projectile.width = 34;
-            Projectile.height = 72;
+            Projectile.height = 34;
             Projectile.friendly = true;
             Projectile.hostile = false;
             Projectile.DamageType = DamageClass.Melee;
@@ -29,6 +30,12 @@ namespace DestroyerTest.Content.Projectiles
             Projectile.tileCollide = true;
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = 6;
+        }
+
+        public override bool PreDraw(ref Color lightColor)
+        {
+            Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, Projectile.Center - Main.screenPosition, null, lightColor, Projectile.rotation, TextureAssets.Projectile[Projectile.type].Value.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
+            return false;
         }
 
         public float LifeTime => Projectile.ai[0];
@@ -85,7 +92,7 @@ namespace DestroyerTest.Content.Projectiles
                 else
                 {
                     if (Main.GameUpdateCount % 6 == 0)
-                        SoundEngine.PlaySound(SoundID.Item1 with { Pitch = -2 }, Projectile.Center);
+                        SoundEngine.PlaySound(SoundID.Item1 with { Pitch = -0.75f, MaxInstances = 0 }, Projectile.Center);
 
                     Projectile.velocity.Y += 0.2f;
                     Projectile.rotation += 0.5f * Projectile.direction;
@@ -146,7 +153,7 @@ namespace DestroyerTest.Content.Projectiles
 
             if (!Stick)
             {
-                DTUtils.instance.RadialSpreadProjectile(ModContent.ProjectileType<ConstitutionStar>(), 3, Projectile.Center, 8, 4, 8, AI2: 1, RandomOffset: true);
+                Opus.RadialSpreadProjectile(ModContent.ProjectileType<ConstitutionStar>(), 3, Projectile.Center, 8, 4, 8, AI2: 1, RandomOffset: true);
             }
         }
     }

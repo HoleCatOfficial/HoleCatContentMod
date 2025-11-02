@@ -52,7 +52,7 @@ namespace DestroyerTest.Content.Particles
 
 
             // Apply a fading effect near the end of its life.
-            if (LifetimeCompletion > 0.3f)
+            if (LifetimeCompletion > 0.5f)
             {
                 Color *= 0.9f;
             }

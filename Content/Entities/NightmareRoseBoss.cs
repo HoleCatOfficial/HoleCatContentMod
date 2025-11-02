@@ -48,6 +48,7 @@ using Terraria.Graphics.CameraModifiers;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.Dusts;
 using GlowmaskHelper.Content;
+using OpusLib;
 
 namespace DestroyerTest.Content.Entities
 {
@@ -1200,12 +1201,12 @@ namespace DestroyerTest.Content.Entities
 
 
             DTUtils Utility = new DTUtils();
-            Utility.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
             if (BorderActive)
             {
                 Main.EntitySpriteDraw(DTAssetLib.NightmareRoseArenaBorder.Value, NPCHead - Main.screenPosition, null, BorderCol, Rotation, new Vector2(DTAssetLib.NightmareRoseArenaBorder.Value.Width / 2, DTAssetLib.NightmareRoseArenaBorder.Value.Height / 2), RingScale, SpriteEffects.None, 0);
             }
-            Utility.ReturnToDefaultDrawing(spriteBatch);
+            Opus.ReturnToDefaultDrawing(spriteBatch);
 
             Asset<Texture2D> White = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/NightmareRoseDeathFade");
             if (currentState == AttackState.KillIdle)
@@ -1972,7 +1973,7 @@ namespace DestroyerTest.Content.Entities
 
             if (!optcfg.OptimizeGame)
             {
-                Utility.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+                Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
                 float time = (float)Main.GameUpdateCount / 60f;
 
@@ -2018,7 +2019,7 @@ namespace DestroyerTest.Content.Entities
                     }
                 }
 
-                Utility.ReturnToDefaultDrawing(spriteBatch);
+                Opus.ReturnToDefaultDrawing(spriteBatch);
             }
             return false;
         }

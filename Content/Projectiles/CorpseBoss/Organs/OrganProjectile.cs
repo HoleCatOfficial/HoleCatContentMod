@@ -14,6 +14,7 @@ using Terraria.GameContent;
 using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
+using OpusLib;
 
 namespace DestroyerTest.Content.Projectiles.CorpseBoss.Organs
 {
@@ -122,7 +123,7 @@ namespace DestroyerTest.Content.Projectiles.CorpseBoss.Organs
 
             // Assuming your texture is a chain segment, like 16px long
             float segmentLength = texture.Height; // or Width, depending on the texture orientation
-            Utility.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
             for (float i = 0; i < length; i += segmentLength)
             {
@@ -141,7 +142,7 @@ namespace DestroyerTest.Content.Projectiles.CorpseBoss.Organs
                 );
             }
 
-            Utility.ReturnToDefaultDrawing(spriteBatch);
+            Opus.ReturnToDefaultDrawing(spriteBatch);
         }       
     }
 

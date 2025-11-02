@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using DestroyerTest.Content.MeleeWeapons;
-using Opus.Content.Helpers;
-using Opus.Content.OpusBook;
+using OpusLib.Content.Helpers;
+using OpusLib.Content.OpusBook;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;

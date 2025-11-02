@@ -14,6 +14,7 @@ using Terraria.GameContent;
 using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
+using OpusLib;
 
 namespace DestroyerTest.Content.Projectiles
 {
@@ -39,9 +40,9 @@ namespace DestroyerTest.Content.Projectiles
             SpriteBatch sb = Main.spriteBatch;
             DTUtils Utility = new DTUtils();
 
-            Utility.StartSpriteBatchWithBlending(sb, BlendState.Additive, SpriteSortMode.Immediate);
+            Opus.StartSpriteBatchWithBlending(sb, BlendState.Additive, SpriteSortMode.Immediate);
             TelegraphLine(sb);
-            Utility.ReturnToDefaultDrawing(sb);
+            Opus.ReturnToDefaultDrawing(sb);
             return false;
         }
 

@@ -3241,12 +3241,28 @@ Items: {
 	}
 
 	GalantineIncense: {
-		Tooltip:'''
-				Being hit by a NPC or Projectile will create  a small burst of homing stars.
-				Melee weapons are imbued with Galantine Burn.
-				You are immune to Galantine Burn.
-				'''
+		Tooltip:
+			'''
+			Being hit by a NPC or Projectile will create  a small burst of homing stars.
+			Melee weapons are imbued with Galantine Burn.
+			You are immune to Galantine Burn.
+			'''
 		DisplayName: Galantine Incense
+	}
+
+	StellarFlamesFlask: {
+		DisplayName: Flask of Stellar Flames
+		Tooltip: Imbues your weapons with Galantine Burn.
+	}
+
+	PityMarkBig: {
+		DisplayName: Pity Mark Big
+		Tooltip: ""
+	}
+
+	PityMarkSmall: {
+		DisplayName: Pity Mark Small
+		Tooltip: ""
 	}
 }
 
@@ -3937,6 +3953,11 @@ Buffs: {
 		Description: Your body has been hexxed, stopping you from moving!
 		DisplayName: Mobility Hex
 	}
+
+	WeaponImbueGB: {
+		DisplayName: Weapon Imbue (Galantine Burn)
+		Description: Your Weapons have been imbued with Galantine Burn!
+	}
 }
 
 NPCs: {
@@ -4429,3 +4450,9 @@ Achievements: {
 }
 
 Infernum.NightmareRoseIntroText: NIGHTMARE ROSE
+PitySystem.UsesPity:
+	'''
+	This item implements a pity system.
+	Opening the bag multiple times increases the chances of getting rare items from it, and increases the quantity of normal resource drops from it.
+	Successfully getting a rare drop will reset your pity.
+	'''

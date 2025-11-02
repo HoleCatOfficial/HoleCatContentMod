@@ -19,6 +19,7 @@ using InnoVault;
 using DestroyerTest.Content.Projectiles;
 using System.Security.Authentication.ExtendedProtection;
 using Mono.CompilerServices.SymbolWriter;
+using OpusLib;
 
 namespace DestroyerTest.Content.Equips.NightSet
 {
@@ -56,7 +57,6 @@ namespace DestroyerTest.Content.Equips.NightSet
         // UpdateArmorSet allows you to give set bonuses to the armor.
         public override void UpdateArmorSet(Player player)
         {
-            Opus.Opus opus = new Opus.Opus();
             if (player.TryGetModPlayer<NightPlayer>(out NightPlayer Night))
             {
                 Night.Active = true;
@@ -71,7 +71,7 @@ namespace DestroyerTest.Content.Equips.NightSet
                 }
                 if (Main.rand.NextBool(60))
                 {
-                    opus.RadialSpreadProjectile(ModContent.ProjectileType<SoulOfNight_Projectile>(), Main.rand.Next(1, 4), player.Center, 20, 3, 3);
+                    Opus.RadialSpreadProjectile(ModContent.ProjectileType<SoulOfNight_Projectile>(), Main.rand.Next(1, 4), player.Center, 20, 3, 3);
                 }
             }
         }
@@ -158,7 +158,6 @@ namespace DestroyerTest.Content.Equips.NightSet
         public override void AI(Projectile projectile)
         {
             Player player = Main.player[projectile.owner];
-            Opus.Opus opus = new Opus.Opus();
             if (IsAThrownScepter)
             {
                 if (projectile.Distance(player.Center) < 1300 && player.TryGetModPlayer<NightPlayer>(out NightPlayer pl))
@@ -181,7 +180,7 @@ namespace DestroyerTest.Content.Equips.NightSet
                         {
                             player.Center = projectile.Center;
                             SoundEngine.PlaySound(Tele, player.Center);
-                            opus.RadialSpreadProjectile(ModContent.ProjectileType<SoulOfNight_Projectile>(), 8, player.Center, 35, 3, 6);
+                            Opus.RadialSpreadProjectile(ModContent.ProjectileType<SoulOfNight_Projectile>(), 8, player.Center, 35, 3, 6);
                             pl.Cooldown = true;
                             CanTele = false;
                         }   

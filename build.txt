@@ -1,6 +1,5 @@
 displayName = HoleCat's Content Mod
 author = HoleCat
-version = 2.1.696
-modReferences = InnoVault, Opus, GlowmaskHelper
-dependencies = InnoVault, Opus, GlowmaskHelper
-hideResources = true
+version = 2.1.697
+modReferences = InnoVault, OpusLib, GlowmaskHelper
+dependencies = InnoVault, OpusLib, GlowmaskHelper
