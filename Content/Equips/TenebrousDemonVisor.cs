@@ -51,6 +51,7 @@ namespace DestroyerTest.Content.Equips
 			{
 				Demon.Active = true;
 			}
+			player.setBonus = Language.GetTextValue("Mods.DestroyerTest.Items.TenebrousDemonVisor.SetBonus");
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
@@ -122,9 +123,29 @@ namespace DestroyerTest.Content.Equips
 		public bool SoundFlag1 = false;
 		public bool SoundFlag2 = false;
 		public bool SoundFlag3 = false;
+		public float MultiplicativeDamageBonus = 1f;
+		public int AdditiveCritBonus = 0;
 
 		public void ChargeEffects()
 		{
+			DTConfig cfg = ModContent.GetInstance<DTConfig>();
+			if (cfg.EnableDebugMessages && Main.GameUpdateCount % 60 == 0)
+            {
+				Main.NewText($"Charge1: {Charge1} | Charge2: {Charge2} | Charge3: {Charge3} | Damage Multiplier: {MultiplicativeDamageBonus} | Crit Bonus: {AdditiveCritBonus} | Ranged Damage: {Player.GetDamage(DamageClass.Ranged).Base} | Ranged Crit: {Player.GetCritChance(DamageClass.Ranged)}");
+            }
+			if (Charge3)
+			{
+				Charge2 = false;
+				Charge1 = false;
+			}
+			else if (Charge2)
+			{
+				Charge1 = false;
+			}
+
+			Player.GetDamage(DamageClass.Ranged) *= MultiplicativeDamageBonus;
+			Player.GetCritChance(DamageClass.Ranged) += AdditiveCritBonus;
+	
 			if (Charge1)
 			{
 				if (!SoundFlag1)
@@ -132,24 +153,24 @@ namespace DestroyerTest.Content.Equips
 					SoundEngine.PlaySound(SoundID.DD2_EtherianPortalDryadTouch with { Pitch = 0 }, Player.Center);
 					SoundFlag1 = true;
 				}
-				Player.GetDamage(DamageClass.Ranged) *= 1.1f;
-				Player.GetCritChance(DamageClass.Ranged) += 6;
+				MultiplicativeDamageBonus = 1.1f;
+				AdditiveCritBonus = 6;
 				Dust.NewDust(Player.position, Player.Hitbox.Width, Player.Hitbox.Height, DustID.TintableDustLighted, (Player.velocity.X / 2) + Main.rand.NextFloat(-2, 2), (Player.velocity.Y / 2) + Main.rand.NextFloat(-2, 2), 200, ColorLib.TenebrisGradient, 0.4f);
 				PRTLoader.NewParticle(DTUtils.ElectricArcs[Main.rand.Next(DTUtils.ElectricArcs.Length)], Main.rand.NextVector2FromRectangle(Player.Hitbox), Vector2.Zero, ColorLib.TenebrisGradient * 0.4f, 0.05f);
 			}
-			if (Charge2)
+			else if (Charge2)
 			{
 				if (!SoundFlag2)
 				{
 					SoundEngine.PlaySound(SoundID.DD2_EtherianPortalDryadTouch with { Pitch = 1 }, Player.Center);
 					SoundFlag2 = true;
 				}
-				Player.GetDamage(DamageClass.Ranged) *= 1.2f;
-				Player.GetCritChance(DamageClass.Ranged) += 12;
+				MultiplicativeDamageBonus = 1.2f;
+				AdditiveCritBonus = 12;
 				Dust.NewDust(Player.position, Player.Hitbox.Width, Player.Hitbox.Height, DustID.TintableDustLighted, (Player.velocity.X / 2) + Main.rand.NextFloat(-2, 2), (Player.velocity.Y / 2) + Main.rand.NextFloat(-2, 2), 100, ColorLib.TenebrisGradient, 0.6f);
 				PRTLoader.NewParticle(DTUtils.ElectricArcs[Main.rand.Next(DTUtils.ElectricArcs.Length)], Main.rand.NextVector2FromRectangle(Player.Hitbox), Vector2.Zero, ColorLib.TenebrisGradient * 0.6f, 0.1f);
 			}
-			if (Charge3)
+			else if (Charge3)
 			{
 				if (!SoundFlag3)
 				{
@@ -157,8 +178,8 @@ namespace DestroyerTest.Content.Equips
 					SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/Destitute") with { PitchVariance = 0.2f }, Player.Center);
 					SoundFlag3 = true;
 				}
-				Player.GetDamage(DamageClass.Ranged) *= 1.4f;
-				Player.GetCritChance(DamageClass.Ranged) += 18;
+				MultiplicativeDamageBonus = 1.4f;
+				AdditiveCritBonus = 18;
 				Dust.NewDust(Player.position, Player.Hitbox.Width, Player.Hitbox.Height, DustID.TintableDustLighted, (Player.velocity.X / 2) + Main.rand.NextFloat(-2, 2), (Player.velocity.Y / 2) + Main.rand.NextFloat(-2, 2), 0, ColorLib.TenebrisGradient, 1f);
 				PRTLoader.NewParticle(DTUtils.ElectricArcs[Main.rand.Next(DTUtils.ElectricArcs.Length)], Main.rand.NextVector2FromRectangle(Player.Hitbox), Vector2.Zero, ColorLib.TenebrisGradient, 0.2f);
 				if (ComboCounter >= 120)

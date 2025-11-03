@@ -168,36 +168,25 @@ namespace DestroyerTest.Content.Projectiles
 
 		public override bool PreDraw(ref Color lightColor)
         {
-            lightColor = ColorLib.StellarColor;
-           
             Vector2 origin;
-            Vector2 originUsingTex;
             float rotationOffset;
             SpriteEffects effects;
-            SpriteBatch Spritebatch = Main.spriteBatch;
             Texture2D texture = TextureAssets.Projectile[Type].Value;
-            Texture2D Trailtexture = ModContent.Request<Texture2D>("DestroyerTest/Content/Entities/ConstitutionBossOutline").Value;
 
             if (Projectile.spriteDirection > 0)
             {
                 origin = new Vector2(0, Projectile.height);
-                originUsingTex = new Vector2(0, texture.Height);
                 rotationOffset = MathHelper.ToRadians(45f);
                 effects = SpriteEffects.None;
             }
             else
             {
                 origin = new Vector2(Projectile.width, Projectile.height);
-                originUsingTex = new Vector2(texture.Width, texture.Height);
                 rotationOffset = MathHelper.ToRadians(135f);
                 effects = SpriteEffects.FlipHorizontally;
             }
 
-            
-            Main.EntitySpriteDraw(Trailtexture, Projectile.Center - Main.screenPosition, default, ColorLib.StellarColor * Projectile.Opacity, Projectile.rotation + rotationOffset, origin, Projectile.scale, effects, 0);
             Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, default, Color.White * Projectile.Opacity, Projectile.rotation + rotationOffset, origin, Projectile.scale, effects, 0);
-           
-
          
             return false;
         }

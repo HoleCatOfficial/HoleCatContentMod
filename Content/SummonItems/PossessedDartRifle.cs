@@ -27,10 +27,10 @@ namespace DestroyerTest.Content.SummonItems
     {
         public override void SetStaticDefaults()
         {
-            ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true; // This lets the player target anywhere on the whole screen while using a controller
+            ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true;
             ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
 
-            ItemID.Sets.StaffMinionSlotsRequired[Type] = 10f; // The default value is 1, but other values are supported. See the docs for more guidance. 
+            ItemID.Sets.StaffMinionSlotsRequired[Type] = 3f; // The default value is 1, but other values are supported. See the docs for more guidance. 
         }
 
         public override void SetDefaults()

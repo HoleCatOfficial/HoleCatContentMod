@@ -35,7 +35,7 @@ namespace DestroyerTest.Content.Projectiles
             Projectile.netImportant = true;
             Projectile.netUpdate = true;
             Projectile.minion = true;
-            Projectile.minionSlots = 10;
+            Projectile.minionSlots = 3;
         }
 
         public int ShootTimer = 0;

@@ -31,7 +31,7 @@ namespace DestroyerTest.Content.RogueItems
             Item.noUseGraphic = true;
             Item.noMelee = true;
             Item.value = Item.buyPrice(0, 0, 20, 0);
-            Item.rare = ItemRarityID.Blue;
+            Item.rare = ModContent.RarityType<StellarRarity>();
             Item.damage = 160;
             Item.autoReuse = false; // Prevents animation overlap
         }

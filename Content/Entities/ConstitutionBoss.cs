@@ -264,8 +264,11 @@ namespace DestroyerTest.Content.Entities
         public int LanceSweepTimer = 180;
         public Vector2 LanceSweepStartPos = Main.screenPosition;
         public bool LanceSweepTeleFlag = false;
+        public bool SLeft = false;
+        public bool SRight = false;
 
         public int AttackIntervalDefault = 20;
+        public float TexRot = 0f;
         public AttackState currentState = AttackState.idlefloat;
         // Sync AI variables across the network
         public override void SendExtraAI(BinaryWriter writer)
@@ -398,6 +401,8 @@ namespace DestroyerTest.Content.Entities
             Vector2 lancecenter = Main.LocalPlayer.Center;
 
             Vector2 DesperationPos = new Vector2(player.Center.X, player.Center.Y - 1000);
+
+            TexRot += 0.05f * NPC.direction;
 
 
             if (player.dead)
@@ -824,34 +829,49 @@ namespace DestroyerTest.Content.Entities
                     break;
                 case AttackState.LanceSweep:
                     {
-                        LanceSweepStartPos = Main.screenPosition;
-                        if (!EternityIsActive())
+                        if (!LanceSweepTeleFlag) // first entry into sweep
                         {
-                            ResetState();
-                        }
+                            if (Main.rand.Next(2) == 0)
+                            {
+                                LanceSweepStartPos = Main.screenPosition;
+                                SRight = true;
+                            }
+                            else
+                            {
+                                LanceSweepStartPos = Main.screenPosition + new Vector2(Main.screenWidth, 0);
+                                SLeft = true;
+                            }
 
-                        if (!LanceSweepTeleFlag)
-                        {
                             NPC.Center = LanceSweepStartPos;
+                            LanceSweepTimer = 180; // or however long the sweep lasts
                             LanceSweepTeleFlag = true;
                         }
 
-                        if (LanceSweepTeleFlag && LanceSweepTimer > 0)
+                        if (LanceSweepTimer > 0)
                         {
                             LanceSweepTimer--;
-                            NPC.velocity = new Vector2(16, 0);
+
+                            NPC.velocity = SRight ? new Vector2(10, 0) : new Vector2(-10, 0);
+
                             if (Main.GameUpdateCount % 6 == 0)
                             {
-                                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, new Vector2(0, 25), ModContent.ProjectileType<GalantineLance>(), 15, 4);
+                                SoundEngine.PlaySound(SoundID.Item125, NPC.Center);
+                                Projectile.NewProjectile(
+                                    NPC.GetSource_FromAI(),
+                                    NPC.Center,
+                                    new Vector2(0, 25),
+                                    ModContent.ProjectileType<GalantineLance>(),
+                                    15, 4);
                             }
                         }
-
-                        if (LanceSweepTimer <= 0)
+                        else
                         {
                             ResetState();
                         }
+
                         break;
                     }
+
 
             }
 
@@ -955,6 +975,8 @@ namespace DestroyerTest.Content.Entities
                 LanceCrossGetPlayerCenterFlag = false;
                 LanceCrossSpawnFlag = false;
                 LanceSweepTeleFlag = false;
+                SLeft = false;
+                SRight = false;
             }
         }
 
@@ -1225,7 +1247,7 @@ namespace DestroyerTest.Content.Entities
             for (int t = 0; t < Amount; t++)
             {
                 Vector2 SpawnPos = Main.rand.NextVector2FromRectangle(Screen);
-                Opus.RadialSpreadProjectile(ModContent.ProjectileType<StarfuryClone>(), Main.rand.Next(4, 14), SpawnPos, 5, 4, Main.rand.Next(10, 25));
+                Opus.RadialSpreadProjectile(ModContent.ProjectileType<StarfuryClone>(), Main.rand.Next(4, 9), SpawnPos, 5, 4, Main.rand.Next(10, 25));
             }
         }
 
@@ -1273,6 +1295,21 @@ namespace DestroyerTest.Content.Entities
         }
 
         #endregion
+
+        public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            if (EternityIsActive())
+            {
+                Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+                Main.EntitySpriteDraw(DTAssetLib.FireRing.Value, NPC.Center - Main.screenPosition, null, ColorLib.StellarColor * 0.5f, -TexRot, DTAssetLib.FireRing.Value.Size() / 2, 0.095f, SpriteEffects.None, 0);
+                Main.EntitySpriteDraw(DTAssetLib.FireRing.Value, NPC.Center - Main.screenPosition, null, ColorLib.StellarColor * 0.25f, -TexRot * 2, DTAssetLib.FireRing.Value.Size() / 2, 0.085f, SpriteEffects.None, 0);
+                Main.EntitySpriteDraw(DTAssetLib.FireRing.Value, NPC.Center - Main.screenPosition, null, ColorLib.StellarColor * 0.25f, TexRot * 1.5f, DTAssetLib.FireRing.Value.Size() / 2, 0.0805f, SpriteEffects.None, 0);
+                Main.EntitySpriteDraw(DTAssetLib.FireRing.Value, NPC.Center - Main.screenPosition, null, ColorLib.StellarColor * 0.7f, -TexRot * 0.5f, DTAssetLib.FireRing.Value.Size() / 2, 0.08f, SpriteEffects.None, 0);
+                Main.EntitySpriteDraw(DTAssetLib.FireRing.Value, NPC.Center - Main.screenPosition, null, ColorLib.StellarColor * 0.7f, TexRot, DTAssetLib.FireRing.Value.Size() / 2, 0.08f, SpriteEffects.None, 0);
+                Opus.ReturnToDefaultDrawing(Main.spriteBatch);
+            }
+        }
+
 
 
 

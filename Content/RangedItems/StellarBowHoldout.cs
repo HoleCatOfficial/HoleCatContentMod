@@ -17,8 +17,6 @@ namespace DestroyerTest.Content.RangedItems
 {
     public class StellarBowHoldout : ModProjectile
     {
-        private int aiState = 0; // 0 = Lances, 1 = Stars
-        private int stateTimer = 0; // Generic timer used in both states
         public override string Texture => "DestroyerTest/Content/RangedItems/StellarBow";
         public override void SetStaticDefaults()
         {
@@ -32,41 +30,8 @@ namespace DestroyerTest.Content.RangedItems
             Projectile.penetrate = -1;
             Projectile.tileCollide = false;
             Projectile.ignoreWater = true;
-            Projectile.timeLeft = 2; // persistent
+            Projectile.timeLeft = 2;
         }
-
-        public override bool PreDraw(ref Color lightColor)
-        {
-            Texture2D texture = TextureAssets.Projectile[Type].Value;
-            Texture2D whiteOutline = ModContent.Request<Texture2D>("DestroyerTest/Content/RangedItems/StellarBowOutline").Value;
-
-            Vector2 origin = new(texture.Width * 0.5f, texture.Height * 0.5f);
-            SpriteEffects effects = Projectile.direction == -1 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-
-            float outlineRotation = Projectile.rotation;
-            if (Projectile.direction == -1)
-            {
-                outlineRotation += MathHelper.Pi; // 180 degrees
-            }
-
-            // Draw the outline first
-            Main.EntitySpriteDraw(
-                whiteOutline,
-                Projectile.Center - Main.screenPosition,
-                null,
-                ColorLib.StellarColor,
-                outlineRotation,
-                origin,
-                Projectile.scale,
-                effects,
-                0
-            );
-
-            return true; // Let the base projectile texture draw as usual
-        }
-
-
-       
 
         SoundStyle ShootRegular = new SoundStyle($"DestroyerTest/Assets/Audio/StellarBow/StellarBowShoot", 3) with
         {
@@ -121,8 +86,8 @@ namespace DestroyerTest.Content.RangedItems
                     Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Launch, type, Projectile.damage, Projectile.knockBack, player.whoAmI);
                     if (state == State.Empowered)
                     {
-                        Vector2 LaunchRand = Launch.RotatedByRandom(2);
-                        for (int r = 0; r < Main.rand.Next(3, 10); r++)
+                        Vector2 LaunchRand = Launch.RotatedByRandom(1.35);
+                        for (int r = 0; r < Main.rand.Next(3, 6); r++)
                         {
                             Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, LaunchRand, ModContent.ProjectileType<ConstitutionStar>(), Projectile.damage / 10, Projectile.knockBack, player.whoAmI, ai2: 1);
                         }

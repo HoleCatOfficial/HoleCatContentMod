@@ -2034,7 +2034,12 @@ Items: {
 	}
 
 	StellarBow: {
-		Tooltip: ""
+		Tooltip:
+			'''
+			Converts regular arrows into Stellar Arrows.
+			After firing 10 arrows, the bow becomes empowered, and will fire Galantine Lances and Stars.
+			"Unlike the blade, the bow has retained some stellar energy..." 
+			'''
 		DisplayName: Stellar Bow
 	}
 
@@ -2152,7 +2157,7 @@ Items: {
 	}
 
 	Contempt: {
-		Tooltip: Creates a corrupt Sigil at the cursor position. Cursed flames will fly towards the marker from all around.
+		Tooltip: Creates a corrupt Sigil at the cursor position. Cursed flames will fly towards the Sigil from all around.
 		DisplayName: Contempt
 	}
 
@@ -2176,7 +2181,7 @@ Items: {
 		Tooltip:
 			'''
 			Every third Swing is a spin, shooting teeth in all directions.
-			Right click to do a short dash with this weapon.
+			Right click to perform a short dash.
 			'''
 	}
 
@@ -2230,7 +2235,7 @@ Items: {
 		Tooltip:
 			'''
 			Summons a Possessed Dart Rifle that orbits you and shoots cursed darts at your foes.
-			Uses 10 Minion Slots
+			Uses 3 Minion Slots
 			'''
 	}
 
@@ -2252,6 +2257,14 @@ Items: {
 	TenebrousDemonVisor: {
 		DisplayName: Tenebrous Demon Visor
 		Tooltip: ""
+		SetBonus:
+			'''
+			Shooting enemies builds charge up to three tiers.
+			Tier 1 increases Ranged Damage by 10% and Ranged Crit chance by 6%.
+			Tier 2 increases Ranged Damage by 20% and Ranged Crit chance by 12%.
+			Tier 3 increases Ranged Damage by 40% and Ranged Crit chance by 18%, and your weapon will fire a barrage of homing Tenerbis Stars.
+			Not using your weapon, or charging to 120 charge on Tier 3 will reset charge.
+			'''
 	}
 
 	TenebrousChakram: {
@@ -3264,6 +3277,11 @@ Items: {
 		DisplayName: Pity Mark Small
 		Tooltip: ""
 	}
+
+	StarConstruct: {
+		DisplayName: Star Construct
+		Tooltip: Throws an inactive Star Husk, which turns into a Star Construct. Each construct takes half a minion slot.
+	}
 }
 
 Projectiles: {
@@ -3669,6 +3687,9 @@ Projectiles: {
 	TenebrisWaraxeProjectile.DisplayName: Tenebris Waraxe Projectile
 	SpawnSoul.DisplayName: Spawn Soul
 	GalantineKnifeThrown.DisplayName: Galantine Knife Thrown
+	StarConstructInactive.DisplayName: Star Construct Inactive
+	StarConstructMinion.DisplayName: Star Construct Minion
+	StellarEmber.DisplayName: Stellar Ember
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.
@@ -3957,6 +3978,11 @@ Buffs: {
 	WeaponImbueGB: {
 		DisplayName: Weapon Imbue (Galantine Burn)
 		Description: Your Weapons have been imbued with Galantine Burn!
+	}
+
+	StarConstructMinionBuff: {
+		DisplayName: Star Construct
+		Description: The Star Construct will protect you!
 	}
 }
 
