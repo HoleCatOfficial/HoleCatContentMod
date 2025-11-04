@@ -10,17 +10,15 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Equips.ScepterAccessories
 {
-	// The AutoloadEquip attribute automatically attaches an equip texture to this item.
-	// Providing the EquipType.Body value here will result in TML expecting a X_Body.png file to be placed next to the item's main texture.
 	[AutoloadEquip(EquipType.HandsOn)]
 	public class TemporalGlove : ModItem
 	{
 
 		public override void SetDefaults() {
-			Item.width = 22; // Width of the item
-			Item.height = 28; // Height of the item
-			Item.value = Item.sellPrice(gold: 86); // How many coins the item is worth
-			Item.rare = ModContent.RarityType<PearlRarity>(); // The rarity of the item
+			Item.width = 22;
+			Item.height = 28;
+			Item.value = Item.sellPrice(gold: 86);
+			Item.rare = ModContent.RarityType<CerisePinkRarity>();
             Item.vanity = false;
             Item.accessory = true;
 		}

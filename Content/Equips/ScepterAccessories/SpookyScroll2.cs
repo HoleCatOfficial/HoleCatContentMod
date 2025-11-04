@@ -10,7 +10,7 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Equips.ScepterAccessories
 {
-	public class SpookyScroll1 : LateHardmodeScroll
+	public class SpookyScroll2 : LateHardmodeScroll
 	{
 
 		public override void SetDefaults() {
@@ -20,12 +20,9 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
 		}
 
 		public override void UpdateEquip(Player player) {
-            foreach (Projectile proj in Main.projectile)
+            if (player.TryGetModPlayer<ScrollScepterUsePlayer>(out ScrollScepterUsePlayer Scptr))
             {
-                if (proj.TryGetGlobalProjectile<ScrollScepterProj>(out ScrollScepterProj Scptr))
-                {
-                    Scptr.SpookyScroll1 = true;
-                }
+                Scptr.SpookyScroll2 = true;
             }
 		}
 	}

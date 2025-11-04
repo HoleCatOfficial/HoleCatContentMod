@@ -10,14 +10,12 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Equips.ScepterAccessories
 {
-    public class FrigidScroll : ModItem
+    public class FrigidScroll : PreHardmodeScroll
     {
         public override void SetDefaults()
         {
             Item.width = 32;
             Item.height = 30;
-            Item.value = Item.buyPrice(10);
-            Item.rare = ItemRarityID.Green;
             Item.accessory = true;
         }
 
