@@ -61,7 +61,8 @@ namespace DestroyerTest.Content.Equips.NightSet
             {
                 Night.Active = true;
             }
-            ScepterClassStats.Range += 6;
+            ScepterClassStats.Range += 36;
+            ScepterClassStats.ThrowSpeedModifier = 4f;
 
             if (Math.Abs(player.velocity.X)> 5.5)
             {

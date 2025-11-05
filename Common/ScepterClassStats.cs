@@ -48,11 +48,15 @@ namespace DestroyerTest.Common
         /// </summary>
         public static bool BloodVialItem { get; set; } = false;
 
-         /// <summary>
+        /// <summary>
         /// The scepter class has boolean values for certain accessories to more easily determine associated behavior. Some Accessories only alter stats, while others introduce new behaviors and projectiles.
         /// <para/> This boolean is for the Vile Cyst accessory.
         /// </summary>
         public static bool VileCystItem { get; set; } = false;
+        /// <summary>
+        /// A multiplicative modifer that affects how fast thrown scepters travel.
+        /// </summary>
+        public static float ThrowSpeedModifier { get; set; } = 1f;
     }
 
     public class ScepterClassStatResetPlayer : ModPlayer
@@ -64,6 +68,7 @@ namespace DestroyerTest.Common
             ScepterClassStats.SizeMultiplier = 1;
             ScepterClassStats.DamageModifier = 1;
             ScepterClassStats.ManaBurstPower = 0;
+            ScepterClassStats.ThrowSpeedModifier = 1f;
             ScepterClassStats.BloodVialItem = false;
             ScepterClassStats.VileCystItem = false;
         }

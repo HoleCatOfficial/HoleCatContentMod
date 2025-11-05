@@ -136,8 +136,12 @@ namespace DestroyerTest.Content.Equips
 
 		private void ResetCharges()
 		{
-			Charge1 = Charge2 = Charge3 = false;
-			SoundFlag1 = SoundFlag2 = SoundFlag3 = false;
+			Charge1 = false;
+			Charge2 = false;
+			Charge3 = false;
+			SoundFlag1 = false;
+			SoundFlag2 = false;
+			SoundFlag3 = false;
 			ComboCounter = 0;
 			ComboExpireTimer = 0;
 			MultiplicativeDamageBonus = 1f;
@@ -153,7 +157,7 @@ namespace DestroyerTest.Content.Equips
 			}
 
 			// Clamp counter just in case.
-			ComboCounter = Utils.Clamp(ComboCounter, 0, ComboTierThreshold);
+			ComboCounter = Utils.Clamp(ComboCounter, 0, ComboTierThreshold + 1);
 
 			// Apply bonuses.
 			if (Charge3)
@@ -167,7 +171,7 @@ namespace DestroyerTest.Content.Equips
 				MultiplicativeDamageBonus = 1.4f;
 				AdditiveCritBonus = 18;
 				DustBurst(1f, 0);
-				if (ComboCounter >= ComboTierThreshold)
+				if (ComboCounter >= ComboTierThreshold + 1)
 				{
 					SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/NodeSpawn") with { PitchVariance = 0.2f }, Player.Center);
 					ResetCharges();

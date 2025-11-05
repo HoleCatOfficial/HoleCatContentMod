@@ -33,7 +33,7 @@ namespace DestroyerTest.Content.Scepter
         public bool ChannelingDuringThrow = false;
         public int ShootID = -1;
         public int ThrowID = -1;
-        public float ThrowVelocity = 10f;
+        public float ThrowVelocity = 10f * ScepterClassStats.ThrowSpeedModifier;
         public override void SetStaticDefaults()
         {
             Item.staff[Type] = true;

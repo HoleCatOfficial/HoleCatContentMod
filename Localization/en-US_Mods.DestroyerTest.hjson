@@ -3322,6 +3322,11 @@ Items: {
 		DisplayName: Spooky Scroll4
 		Tooltip: ""
 	}
+
+	StarBadge: {
+		Tooltip: ""
+		DisplayName: Star Badge
+	}
 }
 
 Projectiles: {
@@ -3732,6 +3737,10 @@ Projectiles: {
 	StellarEmber.DisplayName: Stellar Ember
 	SpookySickle.DisplayName: Spooky Sickle
 	SpookySickleExplosion.DisplayName: Spooky Sickle Explosion
+	Condemnation.DisplayName: Condemnation
+	ShadowflameAOE.DisplayName: Shadowflame A O E
+	ConstitutionPet.DisplayName: Constitution Pet
+	RosePet.DisplayName: Rose Pet
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.
@@ -4025,6 +4034,16 @@ Buffs: {
 	StarConstructMinionBuff: {
 		DisplayName: Star Construct
 		Description: The Star Construct will protect you!
+	}
+
+	ConstitutionPetBuff: {
+		DisplayName: Constitution Pet Buff
+		Description: Mods.DestroyerTest.Buffs.ConstitutionPetBuff.Description
+	}
+
+	RosePetBuff: {
+		DisplayName: Rose Pet Buff
+		Description: Mods.DestroyerTest.Buffs.RosePetBuff.Description
 	}
 }
 

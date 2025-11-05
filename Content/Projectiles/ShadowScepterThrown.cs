@@ -17,10 +17,10 @@ namespace DestroyerTest.Content.Projectiles
     {
         public override void SetDefaults()
         {
-            ThemeColor = Color.White;
-            WidthDim = 34;
-            HeightDim = 34;
-            DustType = DustID.Glass;
+            ThemeColor = new Color(179, 54, 201);
+            WidthDim = 40;
+            HeightDim = 40;
+            DustType = DustID.Shadowflame;
             base.SetDefaults();
         }
 

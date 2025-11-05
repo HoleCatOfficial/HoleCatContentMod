@@ -1,5 +1,6 @@
 
 using DestroyerTest.Content.Entities;
+using DestroyerTest.Content.Resources;
 using DestroyerTest.Rarity;
 using Terraria;
 using Terraria.Audio;
@@ -78,7 +79,7 @@ namespace DestroyerTest.Content.Consumables
 
         public override void AddRecipes() {
             CreateRecipe()
-                .AddIngredient<NightmarePowder>()
+                .AddIngredient<Tenebris>(3)
                 .AddIngredient(ItemID.DemoniteOre, 8)
                 .AddIngredient(ItemID.CorruptSeeds, 1)
                 .AddIngredient(ItemID.Book)

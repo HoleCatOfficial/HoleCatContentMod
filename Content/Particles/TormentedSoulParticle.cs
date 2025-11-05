@@ -21,7 +21,7 @@ namespace DestroyerTest.Content.Particles
 
         public override void AI()
         {
-            Rotation = Velocity.ToRotation();
+            Rotation = Velocity.ToRotation() - MathHelper.PiOver2;
             UpdatePositionCache(oldPositions.Length);
 
             if (LifetimeCompletion > 0.5f)
