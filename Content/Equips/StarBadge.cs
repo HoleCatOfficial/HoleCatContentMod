@@ -11,7 +11,11 @@ namespace DestroyerTest.Content.Equips
 	public class StarBadge : ModItem
 	{
 		public override void SetDefaults() {
-			Item.DefaultToVanitypet(ModContent.ProjectileType<ConstitutionPet>(), ModContent.BuffType<ConstitutionPetBuff>());
+            //Item.DefaultToVanitypet(ModContent.ProjectileType<ConstitutionPet>(), ModContent.BuffType<ConstitutionPetBuff>());
+
+            Item.CloneDefaults(ItemID.ZephyrFish);
+            Item.shoot = ModContent.ProjectileType<ConstitutionPet>();
+            Item.buffType = ModContent.BuffType<ConstitutionPetBuff>();
 
 			Item.width = 22;
 			Item.height = 26;
@@ -20,21 +24,13 @@ namespace DestroyerTest.Content.Equips
 			Item.value = Item.sellPrice(0, 5);
 		}
 
-        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        public override bool? UseItem(Player player)
         {
-            player.AddBuff(Item.buffType, 2);
-
-            return true;
-        }
-        
-        public override void UpdateEquip(Player player)
-        {
-            player.AddBuff(Item.buffType, 2);
-            if (player.ownedProjectileCounts[Item.shoot] < 1)
+            if (player.whoAmI == Main.myPlayer && player.itemTime == 0)
             {
-                EntitySource_ItemUse source = new EntitySource_ItemUse(player, Item);
-                Projectile.NewProjectile(source, player.Center, Vector2.One, Item.shoot, Item.damage, Item.knockBack, player.whoAmI);
+                player.AddBuff(Item.buffType, 3600, true);
             }
+            return true;
         }
 	}
 }

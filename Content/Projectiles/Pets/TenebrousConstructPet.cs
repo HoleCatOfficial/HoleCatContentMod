@@ -1,26 +1,39 @@
 using System;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Particles;
+using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
+using GlowmaskHelper.Content;
+using ReLogic.Content;
+using Microsoft.Xna.Framework.Graphics;
+
 
 namespace DestroyerTest.Content.Projectiles.Pets
 {
-    public class ConstitutionPet : ModProjectile
+    [AutoloadGlowmask]
+    public class TenebrousConstructPet : ModProjectile
     {
         public override void SetStaticDefaults()
         {
             Main.projPet[Type] = true;
+            Main.projFrames[Type] = 30;
         }
+        public SoundStyle TP = new SoundStyle("DestroyerTest/Assets/Audio/TenebrousConstruct/Idle", 8)
+        {
+            PitchRange = (0.5f, 1f),
+            MaxInstances = 0
+        };
 
         public override void SetDefaults()
         {
-            Projectile.width = 28;
-            Projectile.height = 26;
+            Projectile.width = 24;
+            Projectile.height = 24;
             Projectile.friendly = true;
             Projectile.tileCollide = false;
             Projectile.penetrate = -1;
@@ -28,36 +41,81 @@ namespace DestroyerTest.Content.Projectiles.Pets
             Projectile.timeLeft = 2;
         }
 
+        public float WingXScale = 1f;
+        public override bool PreDraw(ref Color lightColor)
+        {
+            Asset<Texture2D> WingLeft = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/TenebrousConstructPetWingLeft");
+            Asset<Texture2D> WingRight = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/TenebrousConstructPetWingRight");
+
+            // Left wing: origin at RIGHT edge, middle vertically
+            Vector2 originLeft = new Vector2(WingLeft.Width(), WingLeft.Height() / 2);
+            Main.EntitySpriteDraw(
+                WingLeft.Value,
+                Projectile.Center - Main.screenPosition + new Vector2(-16, -20),
+                null,
+                Color.White,
+                0f,
+                originLeft,
+                new Vector2(WingXScale * 2, 2f),
+                SpriteEffects.None,
+                0
+            );
+
+            // Right wing: origin at LEFT edge, middle vertically
+            Vector2 originRight = new Vector2(0, WingRight.Height() / 2);
+            Main.EntitySpriteDraw(
+                WingRight.Value,
+                Projectile.Center - Main.screenPosition + new Vector2(16, -20),
+                null,
+                Color.White,
+                0f,
+                originRight,
+                new Vector2(WingXScale * 2, 2f),
+                SpriteEffects.None,
+                0
+            );
+            return true;
+        }
+
         public override void OnSpawn(IEntitySource source)
         {
             SoundEngine.PlaySound(TP, Projectile.Center);
-            for(int f = 0; f < 8; f++)
-                {
-                    Vector2 Outer = Projectile.Center + Main.rand.NextVector2Circular(120, 120);
-                    Vector2 Dir = Projectile.Center - Outer;
-                    if (!Main.dedServ)
-                    {
-                        Gore.NewGore(Entity.GetSource_FromThis(), Projectile.Center, Dir, 16, Main.rand.NextFloat(0.25f, 1f));
-                        Gore.NewGore(Entity.GetSource_FromThis(), Projectile.Center, Dir, 16, Main.rand.NextFloat(0.25f, 1f));
-                    }
-                }
+            for (int f = 0; f < 8; f++)
+            {
+                Vector2 Outer = Projectile.Center + Main.rand.NextVector2CircularEdge(3, 3);
+                Vector2 Dir = Projectile.Center - Outer;
+                PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Projectile.Center, Dir, ColorLib.TenebrisGradient, Main.rand.NextFloat(0.15f, 1f));
+            }
         }
 
+        private void AnimateProjectile()
+        {
+            if (++Projectile.frameCounter >= 3)
+            {
+                Projectile.frameCounter = 0;
+                if (++Projectile.frame >= Main.projFrames[Projectile.type])
+                {
+                    Projectile.frame = 0;
+                }
+            }
+        }
+        
         public float Randomizer => Projectile.localAI[0];
-        private const int IdleModeSwitchTime = 480; // every 8 seconds
-
+        private const int IdleModeSwitchTime = 480;
         public override void AI()
         {
             Player player = Main.player[Projectile.owner];
-            Projectile.ai[0]++; // timer
+            WingXScale = 0.5f + 0.3f * (float)Math.Sin(Main.GameUpdateCount * 0.05f);
+            Projectile.ai[0] += 0.5f;
+
+            AnimateProjectile();
 
             if (player.dead || !player.active)
-                player.ClearBuff(ModContent.BuffType<ConstitutionPetBuff>());
+                player.ClearBuff(ModContent.BuffType<TenebrousConstructPetBuff>());
 
-            if (player.HasBuff(ModContent.BuffType<ConstitutionPetBuff>()))
+            if (player.HasBuff(ModContent.BuffType<TenebrousConstructPetBuff>()))
                 Projectile.timeLeft = 2;
 
-            // Choose an idle style every few seconds.
             int mode = (int)((Projectile.ai[0] / IdleModeSwitchTime) % 3);
             DoIdleMovement(player, mode);
             KeepUp(1200f, 2400f, player);
@@ -66,28 +124,25 @@ namespace DestroyerTest.Content.Projectiles.Pets
         private void DoIdleMovement(Player player, int mode)
         {
             Vector2 idlePos = player.Center;
-            float time = Projectile.ai[0] / 60f; // seconds in float
-            float offsetRadius = 100f; // base distance from player
+            float time = Projectile.ai[0] / 60f;
+            float offsetRadius = 100f;
 
             Vector2 targetPos = idlePos;
 
             switch (mode)
             {
                 case 0:
-                    // Sweep left and right behind the player 2–3 times, deltaY changes slightly
                     float sweep = (float)Math.Sin(time * 2f) * 120f;
                     float verticalOffset = -40f + (float)Math.Sin(time * 0.3f) * 20f;
                     targetPos = player.Center + new Vector2(-sweep, verticalOffset);
                     break;
 
                 case 1:
-                    // Circle the player once per 5 seconds
                     float angle = time * MathHelper.TwoPi / 5f;
                     targetPos = player.Center + new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle)) * offsetRadius;
                     break;
 
                 case 2:
-                    // Hover overhead with a subtle figure-eight
                     float figX = (float)Math.Sin(time * 1.5f) * 50f;
                     float figY = (float)Math.Sin(time * 3f) * 25f - 70f;
                     targetPos = player.Center + new Vector2(figX, figY);
@@ -96,29 +151,22 @@ namespace DestroyerTest.Content.Projectiles.Pets
 
             Projectile.spriteDirection = 1;
 
-            // Smoothly move toward target position
             Vector2 desiredVelocity = (targetPos - Projectile.Center) * 0.08f;
             Projectile.velocity = Vector2.Lerp(Projectile.velocity, desiredVelocity, 0.1f);
 
-            float Ob = (Projectile.velocity.ToRotation() - MathHelper.PiOver4) * 0.05f;
+            float Ob = Projectile.velocity.ToRotation() * 0.05f;
             if (Projectile.velocity.LengthSquared() > 0.01f)
                 Projectile.rotation = float.Lerp(Projectile.rotation, Ob, 0.15f);
         }
 
-        public SoundStyle TP = new SoundStyle("DestroyerTest/Assets/Audio/ConstitutionBoss/ConstitutionBossKill")
-        {
-            PitchRange = (0.5f, 1f),
-            MaxInstances = 0
-        };
+       
 
         private void KeepUp(float distSpeed, float distTeleport, Player master)
         {
             float dist = Projectile.Distance(master.Center);
 
-            // If close enough, do nothing
             if (dist < distSpeed) return;
 
-            // Speed up if lagging but not too far
             if (dist < distTeleport)
             {
                 int maxSpeed = 35;
@@ -133,20 +181,15 @@ namespace DestroyerTest.Content.Projectiles.Pets
                 return;
             }
 
-            // Too far — teleport back
             if (dist > distTeleport)
             {
-                SoundEngine.PlaySound(TP, Projectile.Center);
-                for(int f = 0; f < 8; f++)
+                for (int f = 0; f < 8; f++)
                 {
-                    Vector2 Outer = Projectile.Center + Main.rand.NextVector2Circular(120, 120);
+                    Vector2 Outer = Projectile.Center + Main.rand.NextVector2CircularEdge(3, 3);
                     Vector2 Dir = Projectile.Center - Outer;
-                    if (!Main.dedServ)
-                    {
-                        Gore.NewGore(Entity.GetSource_FromThis(), Projectile.Center, Dir, 16, Main.rand.NextFloat(0.25f, 1f));
-                        Gore.NewGore(Entity.GetSource_FromThis(), Projectile.Center, Dir, 16, Main.rand.NextFloat(0.25f, 1f));
-                    }
+                    PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Projectile.Center, Dir, ColorLib.TenebrisGradient, Main.rand.NextFloat(0.15f, 1f));
                 }
+                SoundEngine.PlaySound(TP, Projectile.Center);
                 Projectile.Center = master.Center;
                 Projectile.velocity *= 0.1f;
             }

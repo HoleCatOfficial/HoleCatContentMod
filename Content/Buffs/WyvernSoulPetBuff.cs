@@ -17,7 +17,7 @@ using Terraria.ModLoader;
 namespace DestroyerTest.Content.Buffs
 {
 
-	public class RosePetBuff : ModBuff
+	public class WyvernSoulPetBuff : ModBuff
     {
      
         public override void SetStaticDefaults()
@@ -28,7 +28,7 @@ namespace DestroyerTest.Content.Buffs
         }
 		public override void Update(Player player, ref int buffIndex) { // This method gets called every frame your buff is active on your player.
 			bool unused = false;
-			player.BuffHandle_SpawnPetIfNeededAndSetTime(buffIndex, ref unused, ModContent.ProjectileType<RosePet>());
+			player.BuffHandle_SpawnPetIfNeededAndSetTime(buffIndex, ref unused, ModContent.ProjectileType<BabyWyvernPet>());
 		}
 	}
 }

@@ -9,9 +9,12 @@ using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
+using GlowmaskHelper.Content;
+
 
 namespace DestroyerTest.Content.Projectiles.Pets
 {
+    [AutoloadGlowmask]
     public class RosePet : ModProjectile
     {
         public override void SetStaticDefaults()
@@ -41,9 +44,10 @@ namespace DestroyerTest.Content.Projectiles.Pets
             SoundEngine.PlaySound(TP, Projectile.Center);
             for(int f = 0; f < 8; f++)
             {
-                Vector2 Outer = Projectile.Center + Main.rand.NextVector2Circular(600, 600);
+                Vector2 Outer = Projectile.Center + Main.rand.NextVector2CircularEdge(3, 3);
                 Vector2 Dir = Projectile.Center - Outer;
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<TormentedSoulParticle>(), Projectile.Center, Dir, default, Main.rand.NextFloat(0.15f, 1f));
+                PRTLoader.NewParticle(PRTLoader.GetParticleID<TormentedSoulParticle>(), Projectile.Center, Dir, default, Main.rand.NextFloat(0.15f, 2.5f));
+                PRTLoader.NewParticle(PRTLoader.GetParticleID<TormentedSoulParticle2>(), Projectile.Center, Dir, default, Main.rand.NextFloat(0.15f, 2.5f));
             }
         }
 
@@ -60,12 +64,12 @@ namespace DestroyerTest.Content.Projectiles.Pets
         }
         
         public float Randomizer => Projectile.localAI[0];
-        private const int IdleModeSwitchTime = 480; // every 8 seconds
+        private const int IdleModeSwitchTime = 480;
 
         public override void AI()
         {
             Player player = Main.player[Projectile.owner];
-            Projectile.ai[0]++; // timer
+            Projectile.ai[0] += 0.5f;
 
             AnimateProjectile();
 
@@ -75,7 +79,6 @@ namespace DestroyerTest.Content.Projectiles.Pets
             if (player.HasBuff(ModContent.BuffType<RosePetBuff>()))
                 Projectile.timeLeft = 2;
 
-            // Choose an idle style every few seconds.
             int mode = (int)((Projectile.ai[0] / IdleModeSwitchTime) % 3);
             DoIdleMovement(player, mode);
             KeepUp(1200f, 2400f, player);
@@ -84,40 +87,39 @@ namespace DestroyerTest.Content.Projectiles.Pets
         private void DoIdleMovement(Player player, int mode)
         {
             Vector2 idlePos = player.Center;
-            float time = Projectile.ai[0] / 60f; // seconds in float
-            float offsetRadius = 100f; // base distance from player
+            float time = Projectile.ai[0] / 60f;
+            float offsetRadius = 100f;
 
             Vector2 targetPos = idlePos;
 
             switch (mode)
             {
                 case 0:
-                    // Sweep left and right behind the player 2–3 times, deltaY changes slightly
                     float sweep = (float)Math.Sin(time * 2f) * 120f;
                     float verticalOffset = -40f + (float)Math.Sin(time * 0.3f) * 20f;
                     targetPos = player.Center + new Vector2(-sweep, verticalOffset);
                     break;
 
                 case 1:
-                    // Circle the player once per 5 seconds
                     float angle = time * MathHelper.TwoPi / 5f;
                     targetPos = player.Center + new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle)) * offsetRadius;
                     break;
 
                 case 2:
-                    // Hover overhead with a subtle figure-eight
                     float figX = (float)Math.Sin(time * 1.5f) * 50f;
                     float figY = (float)Math.Sin(time * 3f) * 25f - 70f;
                     targetPos = player.Center + new Vector2(figX, figY);
                     break;
             }
 
-            // Smoothly move toward target position
+            Projectile.spriteDirection = 1;
+
             Vector2 desiredVelocity = (targetPos - Projectile.Center) * 0.08f;
             Projectile.velocity = Vector2.Lerp(Projectile.velocity, desiredVelocity, 0.1f);
 
+            float Ob = Projectile.velocity.ToRotation() * 0.05f;
             if (Projectile.velocity.LengthSquared() > 0.01f)
-                Projectile.rotation = Projectile.velocity.ToRotation() * 0.7f;
+                Projectile.rotation = float.Lerp(Projectile.rotation, Ob, 0.15f);
         }
 
        
@@ -126,10 +128,8 @@ namespace DestroyerTest.Content.Projectiles.Pets
         {
             float dist = Projectile.Distance(master.Center);
 
-            // If close enough, do nothing
             if (dist < distSpeed) return;
 
-            // Speed up if lagging but not too far
             if (dist < distTeleport)
             {
                 int maxSpeed = 35;
@@ -144,14 +144,14 @@ namespace DestroyerTest.Content.Projectiles.Pets
                 return;
             }
 
-            // Too far — teleport back
             if (dist > distTeleport)
             {
                 for(int f = 0; f < 8; f++)
                 {
-                    Vector2 Outer = Projectile.Center + Main.rand.NextVector2Circular(600, 600);
+                    Vector2 Outer = Projectile.Center + Main.rand.NextVector2CircularEdge(3, 3);
                     Vector2 Dir = Projectile.Center - Outer;
-                    PRTLoader.NewParticle(PRTLoader.GetParticleID<TormentedSoulParticle>(), Projectile.Center, Dir, default, Main.rand.NextFloat(0.15f, 1f));
+                    PRTLoader.NewParticle(PRTLoader.GetParticleID<TormentedSoulParticle>(), Projectile.Center, Dir, default, Main.rand.NextFloat(0.15f, 2.5f));
+                    PRTLoader.NewParticle(PRTLoader.GetParticleID<TormentedSoulParticle2>(), Projectile.Center, Dir, default, Main.rand.NextFloat(0.15f, 2.5f));
                 }
                 SoundEngine.PlaySound(TP, Projectile.Center);
                 Projectile.Center = master.Center;

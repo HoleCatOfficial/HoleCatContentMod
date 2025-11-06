@@ -1,4 +1,3 @@
-
 using DestroyerTest.Common;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
@@ -16,10 +15,8 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Buffs
 {
-
-	public class RosePetBuff : ModBuff
+	public class TenebrousConstructPetBuff : ModBuff
     {
-     
         public override void SetStaticDefaults()
         {
             Main.buffNoSave[Type] = true; // This buff won't save when you exit the world
@@ -28,7 +25,7 @@ namespace DestroyerTest.Content.Buffs
         }
 		public override void Update(Player player, ref int buffIndex) { // This method gets called every frame your buff is active on your player.
 			bool unused = false;
-			player.BuffHandle_SpawnPetIfNeededAndSetTime(buffIndex, ref unused, ModContent.ProjectileType<RosePet>());
+			player.BuffHandle_SpawnPetIfNeededAndSetTime(buffIndex, ref unused, ModContent.ProjectileType<TenebrousConstructPet>());
 		}
 	}
 }

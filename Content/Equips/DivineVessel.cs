@@ -1,5 +1,6 @@
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Projectiles.Pets;
+using DestroyerTest.Content.Projectiles.WyvernSoul;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
@@ -8,20 +9,20 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Equips
 {
-	public class NightmarePowder : ModItem
-    {
+	public class DivineVessel : ModItem
+	{
 		public override void SetDefaults() {
-            //Item.DefaultToVanitypet(ModContent.ProjectileType<RosePet>(), ModContent.BuffType<RosePetBuff>());
+            //Item.DefaultToVanitypet(ModContent.ProjectileType<ConstitutionPet>(), ModContent.BuffType<ConstitutionPetBuff>());
 
             Item.CloneDefaults(ItemID.ZephyrFish);
-            Item.shoot = ModContent.ProjectileType<RosePet>();
-            Item.buffType = ModContent.BuffType<RosePetBuff>();
+            Item.shoot = ModContent.ProjectileType<BabyWyvernPet>();
+            Item.buffType = ModContent.BuffType<WyvernSoulPetBuff>();
 
 			Item.width = 22;
 			Item.height = 26;
 			Item.rare = ItemRarityID.Master;
 			Item.master = true;
-            Item.value = Item.sellPrice(0, 5);
+			Item.value = Item.sellPrice(0, 5);
 		}
 
         public override bool? UseItem(Player player)

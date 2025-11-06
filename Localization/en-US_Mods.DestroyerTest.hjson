@@ -3324,8 +3324,26 @@ Items: {
 	}
 
 	StarBadge: {
-		Tooltip: ""
+		Tooltip: Summons a tiny Stellar Stabber to follow you around.
 		DisplayName: Star Badge
+	}
+
+	AmalgamatedFragments: {
+		DisplayName: Amalgamated Fragments
+		Tooltip: "Summons two Mini Nodes to orbit you."
+	}
+
+	DivineVessel: {
+		Tooltip:'''
+				Summons a tiny, gilded wyvern.
+				A shimmering fragment of the Great Wyvern's Will, gifted in return for setting them free.
+				'''
+		DisplayName: Divine Vessel
+	}
+
+	MiniConstruct: {
+		DisplayName: Mini Construct
+		Tooltip: "Summons a mini construct to fly around you."
 	}
 }
 
@@ -3738,9 +3756,13 @@ Projectiles: {
 	SpookySickle.DisplayName: Spooky Sickle
 	SpookySickleExplosion.DisplayName: Spooky Sickle Explosion
 	Condemnation.DisplayName: Condemnation
-	ShadowflameAOE.DisplayName: Shadowflame A O E
-	ConstitutionPet.DisplayName: Constitution Pet
-	RosePet.DisplayName: Rose Pet
+	ShadowflameAOE.DisplayName: Shadowflame Field
+	ConstitutionPet.DisplayName: StellarStabber
+	RosePet.DisplayName: Mini Rose (Pet)
+	CursedNodePet.DisplayName: Cursed Node (Pet)
+	IchorNodePet.DisplayName: Ichor Node (Pet)
+	BabyWyvernPet.DisplayName: Baby Wyvern
+	TenebrousConstructPet.DisplayName: Tenebrous Construct (Pet)
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.
@@ -4037,13 +4059,23 @@ Buffs: {
 	}
 
 	ConstitutionPetBuff: {
-		DisplayName: Constitution Pet Buff
-		Description: Mods.DestroyerTest.Buffs.ConstitutionPetBuff.Description
+		DisplayName: Stellar Stabber
+		Description: It yearns for the stars...
 	}
 
 	RosePetBuff: {
-		DisplayName: Rose Pet Buff
-		Description: Mods.DestroyerTest.Buffs.RosePetBuff.Description
+		DisplayName: Itty-bitty Rose
+		Description: It twitches insidiously...
+	}
+
+	NodesPetBuff: {
+		DisplayName: Mini Nodes
+		Description: Far too weak to boost your power meaningfully, but hey, two-for-one deal!
+	}
+
+	TenebrousConstructPetBuff: {
+		DisplayName: Mini Construct
+		Description: The silence is unnerving...
 	}
 }
 
