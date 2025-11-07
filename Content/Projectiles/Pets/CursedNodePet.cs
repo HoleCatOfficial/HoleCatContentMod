@@ -13,6 +13,7 @@ using GlowmaskHelper.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent;
 using System.Collections.Generic;
+using OpusLib;
 
 
 namespace DestroyerTest.Content.Projectiles.Pets
@@ -54,10 +55,10 @@ namespace DestroyerTest.Content.Projectiles.Pets
         
         public override bool PreDraw(ref Color lightColor)
         {
-            lightColor = ColorLib.CursedFlames;
             SpriteBatch spriteBatch = Main.spriteBatch;
             Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
 
+            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
             for (int i = 0; i < TrailPositions.Count - 1; i++)
             {
                 Vector2 start = TrailPositions[i] - Main.screenPosition;
@@ -72,7 +73,7 @@ namespace DestroyerTest.Content.Projectiles.Pets
 
                 float width = MathHelper.Lerp(0.005f, 0.0007f, i / (float)TrailLength);
                 float alpha = MathHelper.Lerp(1f, 0f, i / (float)TrailLength);
-                Color color = lightColor * alpha;
+                Color color = ColorLib.CursedFlames * alpha;
 
                 Main.spriteBatch.Draw(
                     DTAssetLib.Square.Value,
@@ -86,6 +87,7 @@ namespace DestroyerTest.Content.Projectiles.Pets
                     0f
                 );
             }
+            Opus.ReturnToDefaultDrawing(spriteBatch);
             return true;
         }
 

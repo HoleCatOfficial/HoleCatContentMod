@@ -3330,20 +3330,26 @@ Items: {
 
 	AmalgamatedFragments: {
 		DisplayName: Amalgamated Fragments
-		Tooltip: "Summons two Mini Nodes to orbit you."
+		Tooltip: Summons two Mini Nodes to orbit you.
 	}
 
 	DivineVessel: {
-		Tooltip:'''
-				Summons a tiny, gilded wyvern.
-				A shimmering fragment of the Great Wyvern's Will, gifted in return for setting them free.
-				'''
+		Tooltip:
+			'''
+			Summons a tiny, gilded wyvern.
+			A shimmering fragment of the Great Wyvern's Will, gifted in return for setting them free.
+			'''
 		DisplayName: Divine Vessel
 	}
 
 	MiniConstruct: {
 		DisplayName: Mini Construct
-		Tooltip: "Summons a mini construct to fly around you."
+		Tooltip: Summons a mini construct to fly around you.
+	}
+
+	ShimmeringCable: {
+		Tooltip: Summons a miniature Tenebrous Slinger to follow you around.
+		DisplayName: Shimmering Cable
 	}
 }
 
@@ -3763,6 +3769,12 @@ Projectiles: {
 	IchorNodePet.DisplayName: Ichor Node (Pet)
 	BabyWyvernPet.DisplayName: Baby Wyvern
 	TenebrousConstructPet.DisplayName: Tenebrous Construct (Pet)
+	TenebrousSlingerPet.DisplayName: Tenebrous Slinger Pet
+	ShadeThrasherFriendlyHead.DisplayName: Shade Thrasher Friendly Head
+	ShadeThrasherFriendlyBody4.DisplayName: Shade Thrasher Friendly Body4
+	ShadeThrasherFriendlyBody3.DisplayName: Shade Thrasher Friendly Body3
+	ShadeThrasherFriendlyBody2.DisplayName: Shade Thrasher Friendly Body2
+	ShadeThrasherFriendlyBody1.DisplayName: Shade Thrasher Friendly Body1
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.
@@ -4076,6 +4088,16 @@ Buffs: {
 	TenebrousConstructPetBuff: {
 		DisplayName: Mini Construct
 		Description: The silence is unnerving...
+	}
+
+	TenebrousSlingerPetBuff: {
+		Description: Unfortunately, this measley little bow won't help you fight.
+		DisplayName: Tenebrous Slinger
+	}
+
+	ShadeThrasherBuff: {
+		Description: Mods.DestroyerTest.Buffs.ShadeThrasherBuff.Description
+		DisplayName: Shade Thrasher Buff
 	}
 }
 
