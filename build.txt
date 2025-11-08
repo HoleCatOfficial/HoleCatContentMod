@@ -3,3 +3,5 @@ author = HoleCat
 version = 2.1.697
 modReferences = InnoVault, OpusLib, GlowmaskHelper
 dependencies = InnoVault, OpusLib, GlowmaskHelper
+playableOnPreview = false
+homepage = https://linktr.ee/HoleCat
