@@ -17,6 +17,7 @@ using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
+using DestroyerTest.Content.Tiles;
 
 namespace DestroyerTest.Content.Consumables
 {
@@ -36,6 +37,7 @@ namespace DestroyerTest.Content.Consumables
             Item.consumable = true;
             Item.width = 32;
             Item.height = 32;
+            Item.expert = true;
             Item.rare = ModContent.RarityType<CorruptionSpecialRarity>();
         }
 
@@ -55,6 +57,9 @@ namespace DestroyerTest.Content.Consumables
             itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<DeadlyBlossom>(), 2, 1, 1));
             itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<PossessedDartRifleItem>(), 2, 1, 1));
             itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<HaepienNodeCharm>(), 6, 1, 1));
+            itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<Item_NightmareRoseTrophy>(), 3, 1, 1));
+            itemLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<NightmarePowder>()));
+            itemLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Item_NightmareRoseRelic>()));
             itemLoot.Add(ItemDropRule.NotScalingWithLuck(ItemID.CursedFlame, 2, 20, 60));
             itemLoot.Add(ItemDropRule.Coins(1250, true));
         }
@@ -64,7 +69,7 @@ namespace DestroyerTest.Content.Consumables
 	{
 		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot) {
 
-			if (npc.type == ModContent.NPCType<NightmareRoseBoss>()) {
+			if (npc.type == ModContent.NPCType<NightmareRoseBoss>() && Main.expertMode) {
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<NightmareRoseLootBag>(), 1, 1, 1));
 			}
 		}

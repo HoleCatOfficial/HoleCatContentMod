@@ -1,49 +1,161 @@
-
-using System.Collections.Generic;
-using System.Security.Permissions;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.ConstitutionBoss;
 using DestroyerTest.Content.Projectiles.HellWeapons;
-using DestroyerTest.Content.Resources;
 using Microsoft.Xna.Framework;
-using Steamworks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Opus.Content.Helpers;
+using OpusLib.Content.Helpers;
 using System;
 using System.Linq;
 using Terraria.GameContent.ItemDropRules;
-using DestroyerTest.Content.Scepter;
-using Opus;
+using OpusLib;
+using DestroyerTest.Rarity.Scepter;
 
 namespace DestroyerTest.Content.Equips.ScepterAccessories
 {
+    /// <summary>
+    /// If the base sell price values are never set, the base sell price defaults to 3 silver and 10 copper.
+    /// </summary>
     public class Scroll : ModItem
     {
+        // Base coin values
+        public int BaseCopper { get; set; } = 10;
+        public int BaseSilver { get; set; } = 3;
+        public int BaseGold { get; set; } = 0;
+        public int BasePlatinum { get; set; } = 0;
+
+        // Positive luck modifier (Classic Mode)
+        private const float PositiveLuckModifier = 1.05f;
+
+        // Difficulty multipliers
+        private const float ExpertValueModifier = 1.5f;
+        private const float MasterValueModifier = 2f;
+        private const float EternityValueModifier = 1.5f;
+
+        // Negative luck modifiers
+        private const float ExpertPenaltyModifier = 0.95f;
+        private const float MasterPenaltyModifier = 0.90f;
+        private const float EternityPenaltyModifier = 0.85f;
+
         public override void SetDefaults()
         {
             Item.width = 32;
             Item.height = 30;
-            Item.value = Item.buyPrice(10);
-            Item.rare = ItemRarityID.Green;
             Item.accessory = true;
+
+            UpdateItemValue(null);
         }
 
-        public virtual void RegisterScroll(Player player)
+        public override void UpdateInventory(Player player)
         {
-            if (player.TryGetModPlayer<ScrollScepterUsePlayer>(out ScrollScepterUsePlayer Scptr))
-            {
-            }
+            UpdateItemValue(player);
         }
-        public override void UpdateAccessory(Player player, bool hideVisual)
+
+        private void UpdateItemValue(Player player)
         {
-            RegisterScroll(player);
+            int copper = BaseCopper;
+            int silver = BaseSilver;
+            int gold = BaseGold;
+            int platinum = BasePlatinum;
+
+            // --- Luck modifiers (mutually exclusive) ---
+            if (player != null && player.luck > 0f)
+            {
+                // Positive luck increases value by 5%
+                MultiplyAmounts(ref copper, ref silver, ref gold, ref platinum, PositiveLuckModifier);
+            }
+            else if (player != null && player.luck < 0f)
+            {
+                // Negative luck reduces value based on difficulty
+                if (Main.expertMode) MultiplyAmounts(ref copper, ref silver, ref gold, ref platinum, ExpertPenaltyModifier);
+                else if (Main.masterMode) MultiplyAmounts(ref copper, ref silver, ref gold, ref platinum, MasterPenaltyModifier);
+                else if (DestroyerTestMod.EternityIsActive()) MultiplyAmounts(ref copper, ref silver, ref gold, ref platinum, EternityPenaltyModifier);
+                // Classic Mode with negative luck does nothing
+            }
+
+            // --- Difficulty modifiers (stacked on top of luck) ---
+            if (Main.expertMode) MultiplyAmounts(ref copper, ref silver, ref gold, ref platinum, ExpertValueModifier);
+            if (Main.masterMode) MultiplyAmounts(ref copper, ref silver, ref gold, ref platinum, MasterValueModifier);
+            if (DestroyerTestMod.EternityIsActive()) MultiplyAmounts(ref copper, ref silver, ref gold, ref platinum, EternityValueModifier);
+
+            // Apply final value
+            Item.value = Item.buyPrice(platinum, gold, silver, copper);
+        }
+
+        private void MultiplyAmounts(ref int copper, ref int silver, ref int gold, ref int platinum, float multiplier)
+        {
+            copper = (int)(copper * multiplier);
+            silver = (int)(silver * multiplier);
+            gold = (int)(gold * multiplier);
+            platinum = (int)(platinum * multiplier);
         }
     }
+
+    public abstract class PreBossScroll : Scroll
+    {
+        public override void SetDefaults()
+        {
+            Item.rare = ModContent.RarityType<PearlRarity>();
+            base.SetDefaults();
+        }
+    }
+
+    public abstract class PreHardmodeScroll : Scroll
+    {
+
+        public override void SetDefaults()
+        {
+            BaseCopper = 20;
+            BaseSilver = 16;
+            BaseGold = 3;
+            Item.rare = ModContent.RarityType<PaleFuchsiaRarity>();
+            base.SetDefaults();
+        }
+    }
+
+    public abstract class EarlyHardmodeScroll : Scroll
+    {
+
+        public override void SetDefaults()
+        {
+            BaseCopper = 60;
+            BaseSilver = 24;
+            BaseGold = 5;
+            Item.rare = ModContent.RarityType<WineRarity>();
+            base.SetDefaults();
+        }
+    }
+
+    public abstract class LateHardmodeScroll : Scroll
+    {
+        public override void SetDefaults()
+        {
+            BaseCopper = 80;
+            BaseSilver = 36;
+            BaseGold = 12;
+            BasePlatinum = 2;
+            Item.rare = ModContent.RarityType<CerisePinkRarity>();
+            base.SetDefaults();
+        }
+    }
+    
+    public abstract class PostMoonlordScroll : Scroll
+    {
+        public override void SetDefaults()
+        {
+            BaseCopper = 80;
+            BaseSilver = 80;
+            BaseGold = 24;
+            BasePlatinum = 4;
+            Item.rare = ModContent.RarityType<IncarnadineRarity>();
+            base.SetDefaults();
+        }
+    }
+
 
     public class ScrollScepterUsePlayer : ModPlayer
     {
@@ -62,6 +174,8 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
         public bool IncendiaryScroll = false;
         public bool SharkronPendant = false;
         public bool TempestScroll = false;
+        public bool SpookyScroll2 = false;
+        public bool SpookyScroll3 = false;
         public override void ResetEffects()
         {
             CurseScroll = false;
@@ -78,6 +192,8 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
             GalantineScroll = false;
             SharkronPendant = false;
             TempestScroll = false;
+            SpookyScroll2 = false;
+            SpookyScroll3 = false;
         }
         public override void ModifyShootStats(Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
@@ -332,8 +448,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
                 {
                     if (Main.rand.NextBool(3))
                     {
-                        Opus.Opus opus = new Opus.Opus();
-                        opus.RadialSpreadProjectile(ModContent.ProjectileType<SharkronNecklaceMinion>(), 8, position, damage / 2, 3, 4);
+                        Opus.RadialSpreadProjectile(ModContent.ProjectileType<SharkronNecklaceMinion>(), 8, position, damage / 2, 3, 4);
                     }
                 }
             }
@@ -358,6 +473,50 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
                     }
                 }
             }
+            if (SpookyScroll2)
+            {
+                if (item.DamageType == ModContent.GetInstance<ScepterClass>() && Player.altFunctionUse == 2)
+                {
+                    if (Main.rand.NextBool(2))
+                    {
+                        for (int t = 0; t < 6; t++)
+                        {
+                            Projectile.NewProjectile(
+                                Player.GetSource_ItemUse(item),
+                                Player.Center,
+                                velocity.RotatedByRandom(0.75),
+                                ProjectileID.FlamingJack,
+                                damage,
+                                knockback,
+                                Player.whoAmI
+                            );
+                        }
+                    }
+                }
+            }
+            if (SpookyScroll3)
+            {
+                if (item.DamageType == ModContent.GetInstance<ScepterClass>() && Player.altFunctionUse != 2)
+                {
+                    if (Main.rand.NextBool(2))
+                    {
+                        for (int t = 0; t < 6; t++)
+                        {
+                            Projectile HotWood = Projectile.NewProjectileDirect(
+                                Player.GetSource_ItemUse(item),
+                                Player.Center,
+                                velocity,
+                                ProjectileID.FlamingWood,
+                                damage,
+                                knockback,
+                                Player.whoAmI
+                            );
+                            HotWood.friendly = true;
+                            HotWood.hostile = false;
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -373,6 +532,8 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
         public bool CursedFlameScroll = false;
         public bool TemporalGlove = false;
         public bool DiabolicScroll = false;
+        public bool SpookyScroll1 = false;
+        public bool SpookyScroll4 = false;
         public override void SetDefaults(Projectile entity)
         {
             if (entity.DamageType == ModContent.GetInstance<ScepterClass>() && entity.Name.Contains("Thrown"))
@@ -391,6 +552,14 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
             ProjectileID.OrnamentStar
         };
 
+        public int[] FireVariants = new int[]
+        {
+            ProjectileID.GreekFire1,
+            ProjectileID.GreekFire2,
+            ProjectileID.GreekFire3
+        };
+
+        public bool Flag1;
         public override void AI(Projectile projectile)
         {
             if (ChristmasScroll1 && IsAThrownScepter)
@@ -439,7 +608,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
             {
                 if (Main.rand.NextBool(13))
                 {
-                    new DTUtils().RadialSpreadProjectile(ProjectileID.Blizzard, 4, projectile.Center, (int)(projectile.damage * 1.75f), (int)projectile.knockBack, 12);
+                    Opus.RadialSpreadProjectile(ProjectileID.Blizzard, 4, projectile.Center, (int)(projectile.damage * 1.75f), (int)projectile.knockBack, 12);
                 }
             }
             if (IchorScroll && IsAThrownScepter)
@@ -490,13 +659,64 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
                     }
                 }
             }
+            if (SpookyScroll1 && IsAThrownScepter)
+            {
+                for (int y = 0; y < 26; y++)
+                {
+                    Vector2 Outer = projectile.Center + Main.rand.NextVector2CircularEdge(300, 300);
+                    Dust.NewDustPerfect(Outer, DustID.Torch, projectile.velocity, 0, default, 1.5f);
+                }
+
+                foreach (NPC npc in Main.npc)
+                {
+                    if (npc.active && !npc.friendly && npc.Distance(projectile.Center) < 400)
+                    {
+                        npc.AddBuff(BuffID.OnFire3, 600);
+                    }
+                }
+
+                if (!Flag1)
+                {
+                    for (int f = 0; f < 6; f++)
+                    {
+                        Projectile.NewProjectile(projectile.GetSource_FromAI(), projectile.Center, projectile.velocity, ModContent.ProjectileType<SpookyFirewood>(), (int)(projectile.damage * 0.65f), 4, projectile.owner, projectile.whoAmI);
+                    }
+                    Flag1 = true;
+                }
+
+            }
+            if (SpookyScroll4 && IsAThrownScepter)
+            {
+                if (Main.rand.NextBool(3))
+                {
+                    Projectile.NewProjectile(projectile.GetSource_FromAI(), projectile.Center, projectile.velocity * 0.05f, ModContent.ProjectileType<SpookySickle>(), (int)(projectile.damage * 0.8f), 3);
+
+                }
+            }
+               
         }
+
+        public override void OnSpawn(Projectile projectile, IEntitySource source)
+        {
+            
+        }
+
         public override void OnHitNPC(Projectile projectile, NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPC(projectile, target, hit, damageDone);
             if (IsScepterClassButNotThrown && DiabolicScroll)
             {
                 Projectile.NewProjectile(projectile.GetSource_OnHit(target), projectile.Center, Vector2.Zero, ProjectileID.InfernoFriendlyBlast, (int)(projectile.damage * 0.75f), 2, projectile.owner);
+            }
+            if (SpookyScroll4 && IsAThrownScepter)
+            {
+                Opus.RingProjectileInwardRandomDir(ProjectileID.FlamingScythe, 7, target.Center, 300, projectile.damage / 3, 3, 6);
+                for (int i = 0; i < 7; i++)
+                {
+                    Vector2 vector = target.Center + Main.rand.NextVector2CircularEdge(800, 800);
+                    Vector2 velocity = (target.Center - vector) * 1;
+                    Projectile.NewProjectile(Entity.GetSource_None(), vector, velocity, ModContent.ProjectileType<SpookySickle>(), projectile.damage / 3, 3);
+                }
             }
         }
 
@@ -531,6 +751,10 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
             if (DH.NecromanticFactionEnemies.Contains(npc.type))
             {
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CurseScroll>(), 8, 1, 1));
+            }
+            if (npc.type == NPCID.Pumpking)
+            {
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<SpookyScroll4>(), 5, 1, 1));
             }
         }
 

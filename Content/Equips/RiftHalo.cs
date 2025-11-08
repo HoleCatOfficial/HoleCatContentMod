@@ -53,7 +53,7 @@ namespace DestroyerTest.Content.Equips
 		public override void UpdateArmorSet(Player player) {
 			player.GetDamage(ModContent.GetInstance<ScepterClass>()) *= 1.12f;
 			ScepterClassStats.Range += 4;
-			player.buffImmune[ModContent.BuffType <HeliouricShock>()] = true;
+			player.buffImmune[ModContent.BuffType<HeliouricShock>()] = true;
 		}
 
         public override void ArmorSetShadows(Player player)

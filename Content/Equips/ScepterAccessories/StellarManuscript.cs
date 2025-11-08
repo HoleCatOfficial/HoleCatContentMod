@@ -10,14 +10,12 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Equips.ScepterAccessories
 {
-    public class StellarManuscript : ModItem
+    public class StellarManuscript : PreHardmodeScroll
     {
         public override void SetDefaults()
         {
             Item.width = 44;
             Item.height = 32;
-            Item.value = Item.buyPrice(10);
-            Item.rare = ItemRarityID.Green;
             Item.accessory = true;
         }
 

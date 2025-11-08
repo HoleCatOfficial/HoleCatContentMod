@@ -41,145 +41,7 @@ namespace DestroyerTest.Common
         public int[] TenebrisBuffImmunities;
         public bool TenebrisCanSpawnInWorldEvilBiome = DownedBossSystem.downedCultistBoss;
         public bool TenebrisCanSpawnInShimmerBiome = DownedBossSystem.downedCultistBoss;
-        public void DustsWhileItemIsInWorld(Rectangle itemRect, int DustType = -1, int ChancePerTick = 3, float DustScale = 1f, float DustVelX = 0f, float DustVelY = 0f, Color DustColor = default)
-        {
-            if (DustType == -1)
-                DustType = DustID.TintableDustLighted;
-
-
-            if (itemRect.Width <= 0 || itemRect.Height <= 0)
-                return;
-
-            if (Main.rand.NextBool(ChancePerTick))
-            {
-                Dust.NewDust(new Vector2(itemRect.Width / 2, itemRect.Height / 2), itemRect.Width, itemRect.Height, DustType, 0f, 0f, 100, DustColor, DustScale);
-            }
-        }
-
-        public void RadialSpreadProjectile(int ID, int Amount, Vector2 CTR, int Dmg = 0, int KB = 0, int Speed = 2, float AI0 = 0, float AI1 = 0, float AI2 = 0)
-        {
-            float rotationStep = MathHelper.TwoPi / Amount;
-
-            for (int i = 0; i < Amount; i++)
-            {
-                Vector2 velocity = new Vector2(Speed, 0f).RotatedBy(rotationStep * i);
-                Projectile.NewProjectile(
-                    Projectile.GetSource_None(),
-                    CTR,
-                    velocity,
-                    ID,
-                    Dmg,
-                    KB,
-                    ai0: AI0,
-                    ai1: AI1,
-                    ai2: AI2
-                );
-            }
-        }
-
-        public void RadialProjectileRandomDir(int ID, int Amount, Vector2 CTR, int Dmg = 0, int KB = 0, float Speed = 2f, float AI0 = 0, float AI1 = 0, float AI2 = 0)
-        {
-            for (int i = 0; i < Amount; i++)
-            {
-                Vector2 velocity = new Vector2(Speed, 0f).RotatedByRandom(MathHelper.TwoPi);
-                Projectile.NewProjectile(
-                    Projectile.GetSource_None(),
-                    CTR,
-                    velocity,
-                    ID,
-                    Dmg,
-                    KB,
-                    ai0: AI0,
-                    ai1: AI1,
-                    ai2: AI2
-                );
-            }
-        }
-
-
-        /// <summary>
-        /// Easy-to-call method for drawing a point glow over the center of a projectile.
-        /// </summary>
-        /// <param name="projectile"></param>
-        /// <param name="color"></param>
-        /// <param name="RotateWithProj"></param>
-        /// <param name="Rot"></param>
-        public void DrawGlowOnProj(Projectile projectile, Color color, bool RotateWithProj, float Rot = 0)
-        {
-            if (RotateWithProj)
-            {
-                Rot = projectile.rotation;
-            }
-
-            Main.EntitySpriteDraw(
-                DTAssetLib.PointGlow.Value,
-                projectile.Center - Main.screenPosition,
-                null,
-                color,
-                Rot,
-                DTAssetLib.PointGlow.Value.Size() / 2,
-                projectile.scale,
-                SpriteEffects.None,
-                0
-            );
-        }
-
-        /// <summary>
-        /// Easy-to-call method for drawing any texture over the center of a projectile.
-        /// </summary>
-        /// <param name="Tex"></param>
-        /// <param name="projectile"></param>
-        /// <param name="color"></param>
-        /// <param name="RotateWithProj"></param>
-        /// <param name="Rot"></param>
-        public void DrawTextureOnProj(Asset<Texture2D> Tex, Projectile projectile, Color color, bool RotateWithProj, float Rot = 0, float ScaleX = 1f, float ScaleY = 1f)
-        {
-            if (RotateWithProj)
-            {
-                Rot = projectile.rotation;
-            }
-
-            Main.EntitySpriteDraw(
-                Tex.Value,
-                projectile.Center - Main.screenPosition,
-                null,
-                color,
-                Rot,
-                Tex.Value.Size() / 2,
-                new Vector2(ScaleX, ScaleY),
-                SpriteEffects.None,
-                0
-            );
-        }
-
-        public static bool BossNearby()
-        {
-            foreach (NPC boss in Main.npc)
-            {
-                if (boss.active && boss.boss)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        public void StartSpriteBatchWithBlending(SpriteBatch spriteBatch, BlendState blendState, SpriteSortMode ssm)
-        {
-            spriteBatch.End();
-            spriteBatch.Begin(ssm, blendState, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-        }
-
-        public void ReturnToDefaultDrawing(SpriteBatch spriteBatch)
-        {
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-        }
-
-        public void BurstParticle(int type, Vector2 Center, Color color, float Scale = 1f)
-        {
-            PRTLoader.NewParticle(type, Center, Vector2.Zero, color, Scale);
-        }
+        
 
         /// <summary>
         /// Contrary to what the name suggests, this code was first used in the Hollow Star code, and the name comes from this effect only being used for projectiles used by Constitution.
@@ -523,12 +385,31 @@ namespace DestroyerTest.Common
             }
         }
 
+        public static Color StellarMagenta = new Color(143, 39, 120);
+        public static Color StellarYellow = new Color(247, 233, 141);
         public static Color StellarColor
         {
             get
             {
                 float lerpAmount = (float)(0.5 * (1 + Math.Sin(Main.GlobalTimeWrappedHourly * 2f * Math.PI)));
-                return Color.Lerp(new Color(247, 233, 141), new Color(143, 39, 120), lerpAmount);
+                return Color.Lerp(StellarYellow, StellarMagenta, lerpAmount);
+            }
+        }
+
+        public static Color StellarRarityColor
+        {
+            get
+            {
+                float time = (Main.GlobalTimeWrappedHourly % 4f);
+
+                if (time < 1f)
+                    return Color.Lerp(Color.Black, StellarYellow, time);
+                else if (time < 2f)
+                    return Color.Lerp(StellarYellow, Color.Black, time - 1f);
+                else if (time < 3f)
+                    return Color.Lerp(Color.Black, StellarMagenta, time - 2f);
+                else
+                    return Color.Lerp(StellarMagenta, Color.Black, time - 3f);
             }
         }
 
@@ -620,6 +501,7 @@ namespace DestroyerTest.Common
                     return Color.Lerp(HoleCatFireOrange, HoleCatFireBeige, time - 7f);
             }
         }
+        
     }
 
     /// <summary>
@@ -645,6 +527,7 @@ namespace DestroyerTest.Common
         public static Asset<Texture2D> StarAura = ModContent.Request<Texture2D>($"{ExtrasPath}/StarWrathAura");
         public static Asset<Texture2D> Swirl = ModContent.Request<Texture2D>($"{ParticlePath}/Swirl");
         public static Asset<Texture2D> FireRing = ModContent.Request<Texture2D>($"{ParticlePath}/Boom2");
+        public static Asset<Texture2D> SwingFX = ModContent.Request<Texture2D>($"{ExtrasPath}/CircularSlash");
         public static Asset<Texture2D> Sparkle(int Variant)
         {
             if (Variant <= 0)
@@ -709,6 +592,7 @@ namespace DestroyerTest.Common
         public static Asset<Texture2D> TenebrousConstructWingLeft = ModContent.Request<Texture2D>($"{ExtrasPath}/TenebrousConstructWingLeft");
         public static Asset<Texture2D> TenebrousConstructWingRight = ModContent.Request<Texture2D>($"{ExtrasPath}/TenebrousConstructWingRight");
         public static Asset<Texture2D> WyvernSoulDash = ModContent.Request<Texture2D>($"{ExtrasPath}/WyvernSoulDash");
+        public static Asset<Texture2D> RuneCircle = ModContent.Request<Texture2D>($"{ParticlePath}/RuneCircle1");
         public static Asset<Texture2D> CorruptSigil = ModContent.Request<Texture2D>($"{ExtrasPath}/CorruptSigil");
         public static Asset<Texture2D> CrimsonSigil = ModContent.Request<Texture2D>($"{ExtrasPath}/CrimsonSigil");
         public static Asset<Texture2D> CrimsonBloodRune = ModContent.Request<Texture2D>($"{ExtrasPath}/CrimsonSigil");

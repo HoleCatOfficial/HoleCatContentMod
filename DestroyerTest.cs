@@ -85,7 +85,25 @@ namespace DestroyerTest
         
         }
 
-        
+        public static bool EternityIsActive()
+        {
+            if (ModLoader.TryGetMod("FargowiltasSouls", out Mod frgo))
+            {
+                object result = frgo.Call("EternityMode");
+                if (result is bool enabled)
+                {
+                    if (enabled)
+                        return true;
+                    else
+                        return false;
+                }
+            }
+            else
+            {
+
+            }
+            return false;
+        }
 
         public class WorldEnterPlayer : ModPlayer
         {

@@ -6,6 +6,7 @@ using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.RiftBiome;
+using DestroyerTest.Content.SHADEMANAGEMENT;
 using DestroyerTest.Content.Tools;
 using InnoVault.PRT;
 using Microsoft.Build.Evaluation;
@@ -189,11 +190,13 @@ namespace DestroyerTest.Content.Entities
         public bool ShootFlag1 = false;
         public int OrbCount = 0;
         public int MinimumIdle = 600;
+        public bool RoseAlive;
         public override void AI()
         {
             NPC.TargetClosest(faceTarget: true);
             Player player;
             player = Main.player[NPC.target];
+           
 
             NPC.rotation = 0.05f * NPC.velocity.Length();
             Vector2 direction = player.Center - NPC.Center;
@@ -204,7 +207,7 @@ namespace DestroyerTest.Content.Entities
                 Dust.NewDust(NPC.Center, NPC.width, NPC.height, ModContent.DustType<TenebrisDarkmatterDust>(), 0, 0, 0, default, 1.0f);
             }
 
-            bool RoseAlive = Main.npc.Any(n => n.active && n.type == ModContent.NPCType<NightmareRoseBoss>());
+            RoseAlive = Main.npc.Any(n => n.active && n.type == ModContent.NPCType<NightmareRoseBoss>());
             if (RoseAlive)
             {
                 NPC.dontTakeDamage = true;
@@ -213,8 +216,6 @@ namespace DestroyerTest.Content.Entities
             {
                 NPC.dontTakeDamage = false;
             }
-
-
 
 
 
@@ -256,7 +257,7 @@ namespace DestroyerTest.Content.Entities
                                 player.velocity += suckDirection * suckStrength;
                             }
 
-                            
+
                             if (Main.rand.NextBool(6) && Main.GameUpdateCount % 60 == 0)
                             {
                                 SoundEngine.PlaySound(Idle, NPC.Center);
@@ -290,19 +291,19 @@ namespace DestroyerTest.Content.Entities
                         NPC.velocity = Vector2.Lerp(NPC.velocity, direction * 3f, 0.05f);
                         WingXScale = 0.5f + 0.3f * (float)Math.Sin(Main.GameUpdateCount * 0.05f);
                         if (player.HeldItem.type == ModContent.ItemType<ShiningObelisk>() && player.itemAnimation == player.itemAnimationMax - 10)
-                            {
-                                ScreenFlashSystem.FlashIntensity = 1.0f;
-                                SoundEngine.PlaySound(Stun, NPC.Center);
-                                CurrentState = State.Stunned;
-                                StunTimer = 1200;
-                                NPC.netUpdate = true;
-                            }
+                        {
+                            ScreenFlashSystem.FlashIntensity = 1.0f;
+                            SoundEngine.PlaySound(Stun, NPC.Center);
+                            CurrentState = State.Stunned;
+                            StunTimer = 1200;
+                            NPC.netUpdate = true;
+                        }
 
-                            
-                            if (Main.rand.NextBool(6) && Main.GameUpdateCount % 60 == 0)
-                            {
-                                SoundEngine.PlaySound(Idle, NPC.Center);
-                            }
+
+                        if (Main.rand.NextBool(6) && Main.GameUpdateCount % 60 == 0)
+                        {
+                            SoundEngine.PlaySound(Idle, NPC.Center);
+                        }
 
                         if (Main.GameUpdateCount % 240 == 0)
                         {
@@ -425,5 +426,47 @@ namespace DestroyerTest.Content.Entities
                 );
             }
         }
+    }
+    
+    public class ShadeBattle : ModSceneEffect
+    {
+        public override bool IsSceneEffectActive(Player player)
+        {
+            DTMusicConfig musCFG = ModContent.GetInstance<DTMusicConfig>();
+
+            // Don't play this scene's music if Rose is alive.
+            bool roseAlive = Main.npc.Any(n => n.active && n.type == ModContent.NPCType<NightmareRoseBoss>());
+            bool corpseAlive = Main.npc.Any(n => n.active && n.type == ModContent.NPCType<WyvernCorpseHead>());
+            if (roseAlive || corpseAlive)
+                return false;
+
+            if (!ShadeSystem.InDarkness && !musCFG.EternityMusic)
+                return false;
+
+            foreach (var npc in Main.npc)
+            {
+                if (!npc.active)
+                    continue;
+
+                // Check for your construct or slinger.
+                if (npc.type == ModContent.NPCType<TenebrousConstruct>() ||
+                    npc.type == ModContent.NPCType<TenebrousSlinger>())
+                {
+                    float dist = player.Center.Distance(npc.Center);
+
+                    if (dist < 3600f && musCFG.EternityMusic)
+                        return true;
+                    if (dist < 3600f && ShadeSystem.InDarkness)
+                        return true;
+                }
+            }
+
+            return false;
+        }
+
+
+        public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/TenebrousConstruct");
+
+        public override SceneEffectPriority Priority => SceneEffectPriority.BossMedium;
     }
 }

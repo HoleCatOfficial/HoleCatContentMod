@@ -8,6 +8,7 @@ using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
+using OpusLib;
 
 namespace DestroyerTest.Content.Projectiles
 {
@@ -54,7 +55,7 @@ namespace DestroyerTest.Content.Projectiles
             }
 
             // Apply diagonal sprite rotation correction
-            
+
         }
 
         private void DoSlowingPhase(Player target)
@@ -112,7 +113,7 @@ namespace DestroyerTest.Content.Projectiles
         public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/Impacts/IceImpact", 3) with { PitchVariance = 0.4f });
-            DTUtils.instance.RadialProjectileRandomDir(ModContent.ProjectileType<IchorNodeCrystal2>(), Main.rand.Next(2, 9), Projectile.Center, Projectile.damage / 2, 7, 20);
+            Opus.RadialProjectileRandomDir(ModContent.ProjectileType<IchorNodeCrystal2>(), Main.rand.Next(2, 9), Projectile.Center, Projectile.damage / 2, 7, 20);
         }
         public override bool PreDraw(ref Color lightColor)
         {

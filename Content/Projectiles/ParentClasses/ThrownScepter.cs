@@ -8,6 +8,7 @@ using Terraria.Audio;
 using DestroyerTest.Content.Consumables;
 using DestroyerTest.Common;
 using System.IO;
+using OpusLib;
 
 namespace DestroyerTest.Content.Projectiles.ParentClasses
 {
@@ -80,7 +81,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 				Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
 				DTUtils Utility = new DTUtils();
 
-                Utility.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+                Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
                 if (returning)
                 {
@@ -108,7 +109,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 						Main.EntitySpriteDraw(Trail, drawPosition, null, trailColor, Projectile.velocity.ToRotation() + MathHelper.PiOver2, trailOrigin, (Projectile.scale * fade) * scaleFactor, SpriteEffects.None, 0);
 					}
 
-                Utility.ReturnToDefaultDrawing(spriteBatch);
+                Opus.ReturnToDefaultDrawing(spriteBatch);
 
                 Main.EntitySpriteDraw(projectileTexture, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, projectileTexture.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
 				return false;

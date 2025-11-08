@@ -19,6 +19,7 @@ using Terraria.Graphics.Capture;
 using Terraria.Graphics.Effects;
 using Terraria.ID;
 using Terraria.ModLoader;
+using OpusLib;
 
 namespace DestroyerTest.Content.RiftBiome
 {
@@ -248,7 +249,7 @@ namespace DestroyerTest.Content.RiftBiome
 					}
 				}
 
-				Utility.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+				Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
                 float scrollSpeedX2 = 600f;
                 float scrollSpeedY2 = -60f; // opposite direction for contrast
 
@@ -266,7 +267,7 @@ namespace DestroyerTest.Content.RiftBiome
                     }
                 }
 
-                Utility.ReturnToDefaultDrawing(spriteBatch);
+                Opus.ReturnToDefaultDrawing(spriteBatch);
             }
             return false;
         }

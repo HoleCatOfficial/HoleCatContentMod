@@ -13,6 +13,7 @@ using InnoVault.PRT;
 using DestroyerTest.Content.Particles;
 using System.Text;
 using ReLogic.Content;
+using OpusLib;
 
 namespace DestroyerTest.Content.Projectiles.NightmareRose
 {
@@ -50,9 +51,9 @@ namespace DestroyerTest.Content.Projectiles.NightmareRose
             SpriteBatch sb = Main.spriteBatch;
 
             DTUtils Utility = new DTUtils();
-            Utility.StartSpriteBatchWithBlending(sb, BlendState.Additive, SpriteSortMode.Immediate);
+            Opus.StartSpriteBatchWithBlending(sb, BlendState.Additive, SpriteSortMode.Immediate);
             DrawSigil(sb);
-            Utility.ReturnToDefaultDrawing(sb);
+            Opus.ReturnToDefaultDrawing(sb);
             return false;
         }
 

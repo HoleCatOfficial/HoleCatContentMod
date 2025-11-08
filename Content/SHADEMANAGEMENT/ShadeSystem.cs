@@ -59,7 +59,7 @@ namespace DestroyerTest.Content.SHADEMANAGEMENT
             public override ModWaterStyle WaterStyle => ModContent.GetInstance<ShadeWater>();
 
             public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/RiftEmptiness");
-            public override SceneEffectPriority Priority => SceneEffectPriority.BossMedium;
+            public override SceneEffectPriority Priority => SceneEffectPriority.BiomeLow;
         }
     }
 }

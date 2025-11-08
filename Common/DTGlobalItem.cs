@@ -475,6 +475,33 @@ namespace DestroyerTest.Common
 
                 return false; // Prevents Terraria from drawing the default text
             }
+            if (item.rare == ModContent.RarityType<StellarRarity>() && line.Name == "ItemName")
+            {
+                
+                Color strokeColor = ColorLib.StellarRarityColor;
+
+                // Main text color
+                Color textColor = Color.Black;
+
+                // Extract the correct font reference
+                DynamicSpriteFont font = FontAssets.MouseText.Value;
+
+                // Draw the outline first by offsetting in all directions
+                Vector2 position = new Vector2(line.X, line.Y);
+                for (int i = -1; i <= 1; i++)
+                {
+                    for (int j = -1; j <= 1; j++)
+                    {
+                        if (i == 0 && j == 0) continue; // Skip center (main text)
+                        ChatManager.DrawColorCodedString(Main.spriteBatch, font, line.Text, position + new Vector2(i, j), strokeColor, 0f, Vector2.Zero, Vector2.One);
+                    }
+                }
+
+                // Draw the actual text on top
+                ChatManager.DrawColorCodedString(Main.spriteBatch, font, line.Text, position, textColor, 0f, Vector2.Zero, Vector2.One);
+
+                return false; // Prevents Terraria from drawing the default text
+            }
             return true; // Default behavior for other rarities 
         }
     }

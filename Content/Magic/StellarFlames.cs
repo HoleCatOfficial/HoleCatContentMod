@@ -1,4 +1,5 @@
 using DestroyerTest.Content.Projectiles;
+using DestroyerTest.Rarity;
 using Terraria;
 using Terraria.Enums;
 using Terraria.ID;
@@ -27,7 +28,7 @@ namespace DestroyerTest.Content.Magic
 			// This weapon has a crit of 32% which is added to the players default crit chance of 4%
 			Item.SetWeaponValues(12, 2, 32);
 
-			Item.SetShopValues(ItemRarityColor.LightRed4, 10000);
+			Item.rare = ModContent.RarityType<StellarRarity>();
 		}
 
 		

@@ -15,6 +15,7 @@ using Terraria.GameContent;
 using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
+using OpusLib;
 
 namespace DestroyerTest.Content.Projectiles.ConstitutionBoss
 {
@@ -43,7 +44,7 @@ namespace DestroyerTest.Content.Projectiles.ConstitutionBoss
         public void DrawCrystalCore(SpriteBatch spriteBatch, Vector2 Center)
         {
             DTUtils Utility = new DTUtils();
-            Utility.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
             Main.spriteBatch.Draw(
                 DTAssetLib.Cyclone(2).Value,
@@ -69,7 +70,7 @@ namespace DestroyerTest.Content.Projectiles.ConstitutionBoss
                 1f
             );
 
-            Utility.ReturnToDefaultDrawing(spriteBatch);
+            Opus.ReturnToDefaultDrawing(spriteBatch);
         }
 
         public float TextureRotationOffset = 0f;
@@ -91,7 +92,7 @@ namespace DestroyerTest.Content.Projectiles.ConstitutionBoss
             SoundEngine.PlaySound(SoundID.Item14, Projectile.Center);
             DTUtils Utility = new DTUtils();
 
-            Utility.RadialSpreadProjectile(ModContent.ProjectileType<HollowStar>(), 5, Projectile.Center, Projectile.damage, (int)Projectile.knockBack, 20);
+            Opus.RadialSpreadProjectile(ModContent.ProjectileType<HollowStar>(), 5, Projectile.Center, Projectile.damage, (int)Projectile.knockBack, 20);
 
             Vector2 Outward = new Vector2(0, -1).RotatedByRandom(MathHelper.TwoPi) * Main.rand.NextFloat(3, 6);
             for (int i = 0; i < 10; i++)

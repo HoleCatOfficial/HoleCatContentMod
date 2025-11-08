@@ -20,18 +20,16 @@ namespace DestroyerTest.Content.Projectiles
     {
         public override void SetDefaults()
         {
-            ThemeColor = Color.White;
-            WidthDim = 34;
-            HeightDim = 34;
-            DustType = DustID.Glass;
+            ThemeColor = Color.Red;
+            WidthDim = 46;
+            HeightDim = 46;
+            DustType = DustID.RedTorch;
             base.SetDefaults();
         }
     
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             Player player = Main.player[Main.myPlayer];  // Accessing the current player
-            target.StrikeNPC(hit); // This bypasses i-frames
-            target.AddBuff(ModContent.BuffType<PowerTrade>(), 120);
             SoundEngine.PlaySound(SoundID.Item113, Projectile.position);
             HitCount += 1;
             PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp>(), target.Center, Vector2.Zero, Color.Red, 0.025f);

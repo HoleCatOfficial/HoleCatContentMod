@@ -36,6 +36,7 @@ using DestroyerTest.Content.Resources;
 using Humanizer.Localisation.DateToOrdinalWords;
 using InnoVault.PRT;
 using DestroyerTest.Content.Particles;
+using OpusLib;
 
 namespace DestroyerTest.Content.Entities
 {
@@ -81,6 +82,18 @@ namespace DestroyerTest.Content.Entities
             NPC.npcSlots = 90f;
             NPC.netUpdate = true;
             NPC.netID = ModContent.NPCType<ConstitutionBoss>();
+        }
+
+        public void DamageScaling()
+        {
+            if(EternityIsActive())
+            {
+                StarDamage = 30;
+                HomingStarDamage = 18;
+                CloneDamage = 40;
+                LightBoltDamage = 25;
+                StarFuryDamage = 35;
+            }
         }
 
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
@@ -175,8 +188,25 @@ namespace DestroyerTest.Content.Entities
             LightBird,
             Minefield,
             TeleStars,
-            StellarFlame
+            StellarFlame,
+            LanceSweep
         }
+
+        public int StarDamage = 15;
+        public int HomingStarDamage = 10;
+        public int CloneDamage = 30;
+        public int LightBoltDamage = 15;
+        public int StarFuryDamage = 20;
+        public int LanceCrossDamage = 10;
+        public int LanceBurstDamage = 20;
+        public int LanceSweepDamage = 30;
+        public int MineDamage = 20;
+        public int LightBirdDamage = 15;
+
+
+
+
+
         public int RotTime = 60;
         public int JabTime = 20;
         public int StarsCount1 = 3;
@@ -231,8 +261,14 @@ namespace DestroyerTest.Content.Entities
         public int MaxFlameCount = 900;
         public int FlameTimer = 0;
         public bool HasPlayedFlameSound = false;
+        public int LanceSweepTimer = 180;
+        public Vector2 LanceSweepStartPos = Main.screenPosition;
+        public bool LanceSweepTeleFlag = false;
+        public bool SLeft = false;
+        public bool SRight = false;
 
         public int AttackIntervalDefault = 20;
+        public float TexRot = 0f;
         public AttackState currentState = AttackState.idlefloat;
         // Sync AI variables across the network
         public override void SendExtraAI(BinaryWriter writer)
@@ -365,6 +401,8 @@ namespace DestroyerTest.Content.Entities
             Vector2 lancecenter = Main.LocalPlayer.Center;
 
             Vector2 DesperationPos = new Vector2(player.Center.X, player.Center.Y - 1000);
+
+            TexRot += 0.05f * NPC.direction;
 
 
             if (player.dead)
@@ -513,7 +551,7 @@ namespace DestroyerTest.Content.Entities
                             if (CloneTimer == 60)
                             {
                                 CloneMe();
-                                Utility.RadialSpreadProjectile(ModContent.ProjectileType<StellarFlameHostile>(), 9, NPC.Center, 17, 8, 10);
+                                Opus.RadialSpreadProjectile(ModContent.ProjectileType<StellarFlameHostile>(), 9, NPC.Center, 17, 8, 10);
                                 HasCloned = true;
                             }
                             if (HasCloned == true)
@@ -734,7 +772,7 @@ namespace DestroyerTest.Content.Entities
                         if (EternityIsActive())
                         {
                             SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/NodeSpawn") with { PitchVariance = 0.4f, MaxInstances = 0 });
-                            Utility.RadialSpreadProjectile(ModContent.ProjectileType<StellarBomb>(), 5, NPC.Center, 20, 6, 6);
+                            Opus.RadialSpreadProjectile(ModContent.ProjectileType<StellarBomb>(), 5, NPC.Center, 20, 6, 6);
                             StarFury2(10);
                             ResetState();
                         }
@@ -789,6 +827,51 @@ namespace DestroyerTest.Content.Entities
                         }
                     }
                     break;
+                case AttackState.LanceSweep:
+                    {
+                        if (!LanceSweepTeleFlag) // first entry into sweep
+                        {
+                            if (Main.rand.Next(2) == 0)
+                            {
+                                LanceSweepStartPos = Main.screenPosition;
+                                SRight = true;
+                            }
+                            else
+                            {
+                                LanceSweepStartPos = Main.screenPosition + new Vector2(Main.screenWidth, 0);
+                                SLeft = true;
+                            }
+
+                            NPC.Center = LanceSweepStartPos;
+                            LanceSweepTimer = 180; // or however long the sweep lasts
+                            LanceSweepTeleFlag = true;
+                        }
+
+                        if (LanceSweepTimer > 0)
+                        {
+                            LanceSweepTimer--;
+
+                            NPC.velocity = SRight ? new Vector2(10, 0) : new Vector2(-10, 0);
+
+                            if (Main.GameUpdateCount % 6 == 0)
+                            {
+                                SoundEngine.PlaySound(SoundID.Item125, NPC.Center);
+                                Projectile.NewProjectile(
+                                    NPC.GetSource_FromAI(),
+                                    NPC.Center,
+                                    new Vector2(0, 25),
+                                    ModContent.ProjectileType<GalantineLance>(),
+                                    15, 4);
+                            }
+                        }
+                        else
+                        {
+                            ResetState();
+                        }
+
+                        break;
+                    }
+
 
             }
 
@@ -835,6 +918,7 @@ namespace DestroyerTest.Content.Entities
             { AttackState.ShootStars3, 1.0f },
             { AttackState.ShootSwords, 1.0f },
             { AttackState.TeleStars, 1f },
+            { AttackState.LanceSweep, 1.0f },
             { AttackState.StellarFlame, 1.0f }
             // Add more states as needed
         };
@@ -874,6 +958,7 @@ namespace DestroyerTest.Content.Entities
                 starsShotCount1 = starsShotCount2 = starsShotCount3 =
                 CloneTimer = AmountofCloning = swordsShotCount =
                 shootSwordsTimer = FlameTimer = 0;
+                LanceSweepTimer = 180;
                 MineSpots.Clear();
                 HasCharged = false;
                 HasShotStars1 = false;
@@ -889,6 +974,9 @@ namespace DestroyerTest.Content.Entities
                 HasPlayedFlameSound = false;
                 LanceCrossGetPlayerCenterFlag = false;
                 LanceCrossSpawnFlag = false;
+                LanceSweepTeleFlag = false;
+                SLeft = false;
+                SRight = false;
             }
         }
 
@@ -994,8 +1082,7 @@ namespace DestroyerTest.Content.Entities
             if (NPC.type == ModContent.NPCType<ConstitutionBoss>())
             {
                 SoundEngine.PlaySound(SoundID.Item125, NPC.Center);
-                DTUtils Utility = new DTUtils();
-                Utility.RadialSpreadProjectile(ModContent.ProjectileType<GalantineLance>(), Main.rand.Next(4, 14), NPC.Center, 15, 4, 10);
+                Opus.RadialSpreadProjectile(ModContent.ProjectileType<GalantineLance>(), Main.rand.Next(4, 14), NPC.Center, 15, 4, 10);
             }
         }
 
@@ -1090,8 +1177,7 @@ namespace DestroyerTest.Content.Entities
             if (NPC.type == ModContent.NPCType<ConstitutionBoss>())
             {
                 SoundEngine.PlaySound(SoundID.Item125, NPC.Center);
-                DTUtils Utility = new DTUtils();
-                Utility.RadialSpreadProjectile(ModContent.ProjectileType<GalantineLance>(), Main.rand.Next(4, 14), NPC.Center, 15, 4, 10);
+                Opus.RadialSpreadProjectile(ModContent.ProjectileType<GalantineLance>(), Main.rand.Next(4, 14), NPC.Center, 15, 4, 10);
                 ParticleOrchestrator.RequestParticleSpawn(false, ParticleOrchestraType.TrueExcalibur, new ParticleOrchestraSettings { PositionInWorld = NPC.Center }); ;
             }
         }
@@ -1147,8 +1233,7 @@ namespace DestroyerTest.Content.Entities
             if (NPC.type == ModContent.NPCType<ConstitutionBoss>())
             {
                 SoundEngine.PlaySound(SoundID.Item90, NPC.position);
-                DTUtils Utility = new DTUtils();
-                Utility.RadialProjectileRandomDir(ModContent.ProjectileType<StarfuryClone>(), Main.rand.Next(10, 15), NPC.Center, 15, 4, 10);
+                Opus.RadialProjectileRandomDir(ModContent.ProjectileType<StarfuryClone>(), Main.rand.Next(10, 15), NPC.Center, 15, 4, 10);
             }
         }
 
@@ -1159,11 +1244,10 @@ namespace DestroyerTest.Content.Entities
         public void StarFury2(int Amount)
         {
             Rectangle Screen = new Rectangle((int)Main.screenPosition.X, (int)Main.screenPosition.Y, Main.screenWidth, Main.screenHeight);
-            DTUtils Utility = new DTUtils();
             for (int t = 0; t < Amount; t++)
             {
                 Vector2 SpawnPos = Main.rand.NextVector2FromRectangle(Screen);
-                Utility.RadialSpreadProjectile(ModContent.ProjectileType<StarfuryClone>(), Main.rand.Next(4, 14), SpawnPos, 5, 4, Main.rand.Next(10, 25));
+                Opus.RadialSpreadProjectile(ModContent.ProjectileType<StarfuryClone>(), Main.rand.Next(4, 9), SpawnPos, 5, 4, Main.rand.Next(10, 25));
             }
         }
 
@@ -1175,8 +1259,7 @@ namespace DestroyerTest.Content.Entities
             if (NPC.type == ModContent.NPCType<ConstitutionBoss>())
             {
                 SoundEngine.PlaySound(SoundID.Item125, NPC.Center);
-                DTUtils Utility = new DTUtils();
-                Utility.RadialSpreadProjectile(ModContent.ProjectileType<TrailBlazer>(), 8, NPC.Center, 15, 4, 10);
+                Opus.RadialSpreadProjectile(ModContent.ProjectileType<TrailBlazer>(), 8, NPC.Center, 15, 4, 10);
                 ParticleOrchestrator.RequestParticleSpawn(false, ParticleOrchestraType.TrueExcalibur, new ParticleOrchestraSettings { PositionInWorld = NPC.Center }); ;
             }
         }
@@ -1212,6 +1295,21 @@ namespace DestroyerTest.Content.Entities
         }
 
         #endregion
+
+        public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            if (EternityIsActive())
+            {
+                Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+                Main.EntitySpriteDraw(DTAssetLib.FireRing.Value, NPC.Center - Main.screenPosition, null, ColorLib.StellarColor * 0.5f, -TexRot, DTAssetLib.FireRing.Value.Size() / 2, 0.095f, SpriteEffects.None, 0);
+                Main.EntitySpriteDraw(DTAssetLib.FireRing.Value, NPC.Center - Main.screenPosition, null, ColorLib.StellarColor * 0.25f, -TexRot * 2, DTAssetLib.FireRing.Value.Size() / 2, 0.085f, SpriteEffects.None, 0);
+                Main.EntitySpriteDraw(DTAssetLib.FireRing.Value, NPC.Center - Main.screenPosition, null, ColorLib.StellarColor * 0.25f, TexRot * 1.5f, DTAssetLib.FireRing.Value.Size() / 2, 0.0805f, SpriteEffects.None, 0);
+                Main.EntitySpriteDraw(DTAssetLib.FireRing.Value, NPC.Center - Main.screenPosition, null, ColorLib.StellarColor * 0.7f, -TexRot * 0.5f, DTAssetLib.FireRing.Value.Size() / 2, 0.08f, SpriteEffects.None, 0);
+                Main.EntitySpriteDraw(DTAssetLib.FireRing.Value, NPC.Center - Main.screenPosition, null, ColorLib.StellarColor * 0.7f, TexRot, DTAssetLib.FireRing.Value.Size() / 2, 0.08f, SpriteEffects.None, 0);
+                Opus.ReturnToDefaultDrawing(Main.spriteBatch);
+            }
+        }
+
 
 
 

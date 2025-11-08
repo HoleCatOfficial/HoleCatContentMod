@@ -31,13 +31,29 @@ namespace DestroyerTest.Content.Equips.NightSet
 		public override void SetDefaults() // Simple item properties. Nothing new here.
 		{
 			Item.width = 50;
-			Item.height = 24; 
+			Item.height = 24;
 			Item.value = Item.sellPrice(gold: 1);
 			Item.rare = ModContent.RarityType<WineRarity>(); // The rarity of the item
-			Item.defense = 12;
+			Item.defense = 10;
 			// Now, in case you might be asking "Why use that special default when you can just copy what the original Hallowed Plate Mail does?"
 			// Unfortunately for you, while cloning the defaults does load a cape on the back, it loads the Hallowed Armor cape, and replaces your body armor textures with the Hallowed Plate Mail Textures.
 			//Item.CloneDefaults(ItemID.HallowedPlateMail);
 		}
+		
+		public override void AddRecipes()
+        {
+			CreateRecipe()
+				.AddIngredient(ItemID.DarkShard, 6)
+				.AddIngredient(ItemID.SoulofNight, 16)
+				.AddIngredient(ItemID.CobaltBar, 9)
+				.AddTile(TileID.DemonAltar)
+				.Register();
+			CreateRecipe()
+                .AddIngredient(ItemID.DarkShard, 6)
+				.AddIngredient(ItemID.SoulofNight, 16)
+				.AddIngredient(ItemID.PalladiumBar, 9)
+                .AddTile(TileID.DemonAltar)
+                .Register();
+        }
 	}
 }

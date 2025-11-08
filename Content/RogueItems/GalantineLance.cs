@@ -32,11 +32,18 @@ namespace DestroyerTest.Content.RogueItems
             Item.noUseGraphic = true;
             Item.noMelee = true;
             Item.value = Item.buyPrice(0, 0, 20, 0);
-            Item.rare = ItemRarityID.Blue;
+            Item.rare = ModContent.RarityType<StellarRarity>();
             Item.damage = 30;
             Item.autoReuse = false; // Prevents animation overlap
         }
 
-		
+		public override void AddRecipes()
+		{
+			CreateRecipe()
+				.AddIngredient(ModContent.ItemType<StellarMatter>(), 10)
+                .AddIngredient(ItemID.Javelin, 1)
+				.AddTile(TileID.WorkBenches)
+				.Register();
+		}
 	}
 }

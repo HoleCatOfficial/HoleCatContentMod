@@ -10,14 +10,12 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Equips.ScepterAccessories
 {
-    public class TurbulenceScroll : ModItem
+    public class TurbulenceScroll : PreBossScroll
     {
         public override void SetDefaults()
         {
             Item.width = 32;
             Item.height = 30;
-            Item.value = Item.buyPrice(10);
-            Item.rare = ItemRarityID.Green;
             Item.accessory = true;
         }
 
@@ -32,7 +30,9 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
         public override void AddRecipes()
         {
             CreateRecipe()
-                .AddCustomShimmerResult(ItemID.ShadowFlameHexDoll)
+                .AddIngredient(ItemID.SunplateBlock, 5)
+                .AddCondition(Condition.HappyWindyDay)
+                .AddCondition(Condition.InSkyHeight)
                 .Register();
         }
     }

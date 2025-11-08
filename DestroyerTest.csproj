@@ -6,7 +6,8 @@
 
 	<!-- General -->
 	<PropertyGroup>
-		
+		<IgnoreBuildErrors>true</IgnoreBuildErrors>
+		<ContinueOnError>true</ContinueOnError>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -14,10 +15,10 @@
 	    <HintPath>..\ModAssemblies\GlowmaskHelper_v1.0.0.dll</HintPath>
 	  </Reference>
 	  <Reference Include="InnoVault">
-	    <HintPath>..\ModAssemblies\InnoVault_v1.9.26.dll</HintPath>
+	    <HintPath>..\ModAssemblies\InnoVault_v1.9.72.dll</HintPath>
 	  </Reference>
-	  <Reference Include="Opus">
-	    <HintPath>..\ModAssemblies\Opus_v0.1.dll</HintPath>
+	  <Reference Include="OpusLib">
+	    <HintPath>..\ModAssemblies\OpusLib_v0.1.1.dll</HintPath>
 	  </Reference>
 	</ItemGroup>
 	

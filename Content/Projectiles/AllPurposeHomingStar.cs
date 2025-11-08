@@ -10,6 +10,7 @@ using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
+using OpusLib;
 
 namespace DestroyerTest.Content.Projectiles
 {
@@ -51,7 +52,7 @@ namespace DestroyerTest.Content.Projectiles
             Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
             DTUtils Utility = new DTUtils();
 
-            Utility.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
             // Draw the base projectile using the default drawing system (Deferred)
             Main.EntitySpriteDraw(

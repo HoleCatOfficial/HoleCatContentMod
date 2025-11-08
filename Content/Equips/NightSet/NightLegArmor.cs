@@ -21,8 +21,24 @@ namespace DestroyerTest.Content.Equips.NightSet
 			Item.defense = 10; // The amount of defense the item will give when equipped
 		}
 
-		public override void UpdateEquip(Player player) {
-        }
+		public override void UpdateEquip(Player player)
+		{
+		}
 
+		public override void AddRecipes()
+        {
+            CreateRecipe()
+				.AddIngredient(ItemID.DarkShard, 5)
+				.AddIngredient(ItemID.SoulofNight, 14)
+				.AddIngredient(ItemID.CobaltBar, 4)
+				.AddTile(TileID.DemonAltar)
+				.Register();
+			CreateRecipe()
+                .AddIngredient(ItemID.DarkShard, 5)
+				.AddIngredient(ItemID.SoulofNight, 14)
+				.AddIngredient(ItemID.PalladiumBar, 4)
+                .AddTile(TileID.DemonAltar)
+                .Register();
+        }
 	}
 }

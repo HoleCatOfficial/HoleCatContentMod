@@ -17,43 +17,6 @@ namespace DestroyerTest.Content.Dusts
 			dust.scale *= 1.11f;
 		}
 
-        public override bool PreDraw(Dust dust)
-        {
-			SpriteBatch spriteBatch = Main.spriteBatch;
-			DTUtils Utility = new DTUtils();
-			Texture2D DustTexture = TextureAssets.Dust.Value;
-			var GlowTex = DTAssetLib.PointGlow.Value;
-
-			Utility.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-
-			Main.EntitySpriteDraw(
-				GlowTex,
-				dust.position - Main.screenPosition,
-				dust.frame,
-				ColorLib.Soul3,
-				dust.rotation,
-				new Vector2(dust.frame.Width / 2, dust.frame.Height / 2),
-				dust.scale,
-				SpriteEffects.None,
-				0
-			);
-
-			Main.EntitySpriteDraw(
-				DustTexture,
-				dust.position - Main.screenPosition,
-				dust.frame,
-				ColorLib.Soul,
-				dust.rotation,
-				new Vector2(dust.frame.Width / 2, dust.frame.Height / 2),
-				dust.scale,
-				SpriteEffects.None,
-				0
-			);
-			Utility.ReturnToDefaultDrawing(spriteBatch);
-
-            return false;
-        }
-
 
 		public override bool Update(Dust dust)
 		{
@@ -66,7 +29,7 @@ namespace DestroyerTest.Content.Dusts
 
 			Lighting.AddLight(dust.position, ColorLib.Soul.ToVector3() * 0.5f);
 
-			if (dust.scale < 0.75f)
+			if (dust.scale < 0.05f)
 			{
 				dust.active = false;
 			}

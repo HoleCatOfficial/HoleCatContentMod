@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -48,20 +49,56 @@ namespace DestroyerTest.Content.Projectiles
 			ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true;
 		}
 
-        public override void SetDefaults()
-        {
-            Projectile.width = 32;
-            Projectile.height = 32;
+		public override void SetDefaults()
+		{
+			Projectile.width = 32;
+			Projectile.height = 32;
 
-            Projectile.DamageType = DamageClass.Generic;
-            Projectile.friendly = false;
-            Projectile.hostile = false;
-            Projectile.ignoreWater = true;
-            Projectile.light = 1f;
-            Projectile.timeLeft = 300;
-            Projectile.tileCollide = false;
-            Projectile.alpha = 255;
+			Projectile.DamageType = DamageClass.Generic;
+			Projectile.friendly = false;
+			Projectile.hostile = false;
+			Projectile.ignoreWater = true;
+			Projectile.light = 1f;
+			Projectile.timeLeft = 300;
+			Projectile.tileCollide = false;
+			Projectile.alpha = 255;
 		}
+
+		public override bool? CanHitNPC(NPC target)
+		{
+			return DelayTimer >= 20;
+		}
+		
+		public override void OnSpawn(IEntitySource source)
+		{
+			Mode = (int)Projectile.ai[2];
+
+			switch (Mode)
+			{
+				// Friendly modes
+				case 1:
+				case 3:
+					Projectile.friendly = true;
+					Projectile.hostile = false;
+					break;
+
+				// Hostile modes
+				case 2:
+				case 4:
+					Projectile.friendly = false;
+					Projectile.hostile = true;
+					break;
+
+				// Invalid mode safety
+				default:
+					Mod.Logger.Warn($"TenebrisFlames: Invalid Mode ({Mode}) on spawn, killing projectile.");
+					Projectile.Kill();
+					break;
+			}
+
+			Projectile.netUpdate = true;
+		}
+
 
 		/// <summary>
 		/// Controls whether the Projectile is Hostile or Friendly.
@@ -88,98 +125,66 @@ namespace DestroyerTest.Content.Projectiles
 			PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center, Vector2.Zero, ColorLib.TenebrisGradient * 0.45f, 1.25f);
 			PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Projectile.Center, Vector2.Zero, ColorLib.TenebrisGradient * 0.5f, 1.25f);
 
-			if (DelayTimer < 20)
-			{
-				DelayTimer += 1;
-				return;
-			}
-
 			float maxDetectRadius = 1400f;
 
 			HomeTimer++;
-			if (HomeTimer < 60)
+			
+			if (Mode == 1)
 			{
-				if (Mode == 1)
+				if (NPCTarget == null)
 				{
-					Projectile.friendly = true;
-					Projectile.hostile = false;
-
-					if (NPCTarget == null)
-					{
-						NPCTarget = FindClosestNPC(maxDetectRadius);
-					}
+					NPCTarget = FindClosestNPC(maxDetectRadius);
+				}
 
 
-					if (NPCTarget != null && !IsValidNPC(NPCTarget))
-					{
-						NPCTarget = null;
-					}
+				if (NPCTarget != null && !IsValidNPC(NPCTarget))
+				{
+					NPCTarget = null;
+				}
 
 
-					if (NPCTarget == null)
-						return;
+				if (NPCTarget == null)
+					return;
 
+				if (DelayTimer < 60)
+				{
 					float length = Projectile.velocity.Length();
 					float targetAngle = Projectile.AngleTo(NPCTarget.Center);
 					Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(15)).ToRotationVector2() * length;
 				}
-				if (Mode == 2)
+			}
+			if (Mode == 2)
+			{
+
+				if (PLRTarget == null)
 				{
-					Projectile.friendly = false;
-					Projectile.hostile = true;
-
-					if (PLRTarget == null)
-					{
-						PLRTarget = FindClosestPlayer(maxDetectRadius);
-					}
+					PLRTarget = FindClosestPlayer(maxDetectRadius);
+				}
 
 
-					if (PLRTarget != null && !IsValidPlayer(PLRTarget))
-					{
-						PLRTarget = null;
-					}
+				if (PLRTarget != null && !IsValidPlayer(PLRTarget))
+				{
+					PLRTarget = null;
+				}
 
-					if (PLRTarget == null)
-						return;
+				if (PLRTarget == null)
+					return;
 
+				if (DelayTimer < 60)
+				{
 					float length = Projectile.velocity.Length();
 					float targetAngle = Projectile.AngleTo(PLRTarget.Center);
 					Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(5)).ToRotationVector2() * length;
 				}
-				if (Mode == 3)
-				{
-					Projectile.friendly = true;
-					Projectile.hostile = false;
-				}
-				if (Mode == 4)
-				{
-					Projectile.friendly = false;
-					Projectile.hostile = true;
-				}
 			}
-			else
+			if (Mode == 3)
 			{
-				if (Mode == 1)
-				{
-					Projectile.friendly = true;
-					Projectile.hostile = false;
-				}
-				if (Mode == 2)
-				{
-					Projectile.friendly = false;
-					Projectile.hostile = true;
-				}
-				if (Mode == 3)
-				{
-					Projectile.friendly = true;
-					Projectile.hostile = false;
-				}
-				if (Mode == 4)
-				{
-					Projectile.friendly = false;
-					Projectile.hostile = true;
-				}
 			}
+			if (Mode == 4)
+			{
+			}
+			
+			
 		}
 		public NPC FindClosestNPC(float maxDetectDistance)
 		{
@@ -240,7 +245,7 @@ namespace DestroyerTest.Content.Projectiles
 
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
-			if (Mode == 1 || Mode == 1)
+			if (Mode == 1 || Mode == 3)
 			{
 				target.AddBuff(ModContent.BuffType<ShimmeringFlames>(), 300);
 			}

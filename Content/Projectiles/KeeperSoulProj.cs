@@ -11,6 +11,7 @@ using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
+using OpusLib;
 
 namespace DestroyerTest.Content.Projectiles
 {
@@ -80,7 +81,7 @@ namespace DestroyerTest.Content.Projectiles
         public void DrawCrystalCore(SpriteBatch spriteBatch, Vector2 Center)
         {
             DTUtils Utility = new DTUtils();
-            Utility.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
             
             Main.spriteBatch.Draw(
                 DTAssetLib.Cyclone(2).Value,
@@ -106,7 +107,7 @@ namespace DestroyerTest.Content.Projectiles
                 1f
             );
 
-            Utility.ReturnToDefaultDrawing(spriteBatch);
+            Opus.ReturnToDefaultDrawing(spriteBatch);
         }
 
         public override void ModifyDamageHitbox(ref Rectangle hitbox)

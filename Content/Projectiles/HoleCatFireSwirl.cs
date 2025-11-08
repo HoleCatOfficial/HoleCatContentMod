@@ -10,6 +10,7 @@ using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using InnoVault.PRT;
 using DestroyerTest.Content.Particles;
+using OpusLib;
 
 namespace DestroyerTest.Content.Projectiles
 {
@@ -56,20 +57,18 @@ namespace DestroyerTest.Content.Projectiles
 
         public override void PostDraw(Color lightColor)
         {
-            Opus.Opus opus = new Opus.Opus();
             SpriteBatch spriteBatch = Main.spriteBatch;
-            opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-            opus.DrawTextureOnProj(DTAssetLib.Swirl, Projectile, ColorLib.HoleCatFireGradient, true, Projectile.rotation, 2f, 2f);
-            opus.DrawTextureOnProj(DTAssetLib.FireRing, Projectile, ColorLib.HoleCatFireGradient * 0.85f, false, -Projectile.rotation, 0.2f, 0.2f);
-            opus.DrawTextureOnProj(DTAssetLib.FireRing, Projectile, ColorLib.HoleCatFireGradient * 0.85f, false, Projectile.rotation, 0.2f, 0.2f);
-            opus.ReturnToDefaultDrawing(spriteBatch);
+            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+            Opus.DrawTextureOnProj(DTAssetLib.Swirl, Projectile, ColorLib.HoleCatFireGradient, true, Projectile.rotation, 2f, 2f);
+            Opus.DrawTextureOnProj(DTAssetLib.FireRing, Projectile, ColorLib.HoleCatFireGradient * 0.85f, false, -Projectile.rotation, 0.2f, 0.2f);
+            Opus.DrawTextureOnProj(DTAssetLib.FireRing, Projectile, ColorLib.HoleCatFireGradient * 0.85f, false, Projectile.rotation, 0.2f, 0.2f);
+            Opus.ReturnToDefaultDrawing(spriteBatch);
         }
 
         public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(Fire, Projectile.Center);
-            Opus.Opus opus = new Opus.Opus();
-            opus.RadialSpreadProjectile(ModContent.ProjectileType<HoleCatFireSmall>(), 8, Projectile.Center, Projectile.damage / 3, 3, 10);
+            Opus.RadialSpreadProjectile(ModContent.ProjectileType<HoleCatFireSmall>(), 8, Projectile.Center, Projectile.damage / 3, 3, 10);
             for (int u = 0; u < 20; u++)
             {
                 int speed = 10;

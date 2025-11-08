@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Xml;
 using DestroyerTest.Common;
+using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Particles;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
@@ -11,6 +12,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
+using OpusLib;
 
 namespace DestroyerTest.Content.Projectiles.CorpseBoss
 {
@@ -203,6 +205,8 @@ namespace DestroyerTest.Content.Projectiles.CorpseBoss
             }
         }
 
+        public int HitCount = 4;
+
         private void HandlePlayerHits(int index, Projectile node)
         {
             if (hitCooldown < 40) return;
@@ -228,11 +232,19 @@ namespace DestroyerTest.Content.Projectiles.CorpseBoss
 
                     player.Hurt(new Player.HurtInfo
                     {
-                        Damage = 70,
+                        Damage = 50,
                         DamageSource = PlayerDeathReason.ByCustomReason(NetworkText.FromLiteral($"{player.name} got caught up in unholy wires.")),
                         Knockback = player.noKnockback ? 0f : 5f,
                         HitDirection = 1
                     });
+                    player.AddBuff(ModContent.BuffType<BloodHex>(), 360);
+
+                    HitCount--;
+                    if (HitCount <= 0)
+                    {
+                        player.AddBuff(ModContent.BuffType<MobilityHex>(), 360);
+                        HitCount = 4;
+                    }
 
                     SoundEngine.PlaySound(DurabilityDown, player.Center);
                     connections[index].npcDurability--;
@@ -267,7 +279,7 @@ namespace DestroyerTest.Content.Projectiles.CorpseBoss
             if (Projectile.timeLeft <= 1)
             {
                 PRTLoader.NewParticle(PRTLoader.GetParticleID<SmallShine>(), Projectile.Center, Vector2.Zero, Color.Red, 1f);
-                DTUtils.instance.RadialSpreadProjectile(ModContent.ProjectileType<PrimalBlood>(), Main.rand.Next(6, 9), Projectile.Center, Projectile.damage, 4, 7, AI0: 0, AI1: 0.03f);
+                Opus.RadialSpreadProjectile(ModContent.ProjectileType<PrimalBlood>(), Main.rand.Next(6, 9), Projectile.Center, Projectile.damage, 4, 7, AI0: 0, AI1: 0.03f);
             }
         }
     }

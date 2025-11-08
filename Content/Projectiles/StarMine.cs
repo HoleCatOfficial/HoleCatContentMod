@@ -14,6 +14,7 @@ using Terraria.GameContent;
 using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
+using OpusLib;
 
 namespace DestroyerTest.Content.Projectiles
 {
@@ -39,11 +40,11 @@ namespace DestroyerTest.Content.Projectiles
             SpriteBatch sb = Main.spriteBatch;
             DTUtils Utility = new DTUtils();
 
-            Utility.StartSpriteBatchWithBlending(sb, BlendState.Additive, SpriteSortMode.Immediate);
+            Opus.StartSpriteBatchWithBlending(sb, BlendState.Additive, SpriteSortMode.Immediate);
 
             Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, Projectile.Center - Main.screenPosition, null, Color.White, 0f, new Vector2(TextureAssets.Projectile[Projectile.type].Value.Width / 2, TextureAssets.Projectile[Projectile.type].Value.Height / 2), 0.5f, SpriteEffects.None, 0f);
 
-            Utility.ReturnToDefaultDrawing(sb);
+            Opus.ReturnToDefaultDrawing(sb);
             return false;
         }
 
@@ -57,7 +58,7 @@ namespace DestroyerTest.Content.Projectiles
         public void DrawCrystalCore(SpriteBatch spriteBatch, Vector2 Center)
         {
             DTUtils Utility = new DTUtils();
-            Utility.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
             Main.spriteBatch.Draw(
                 DTAssetLib.Cyclone(2).Value,
@@ -71,7 +72,7 @@ namespace DestroyerTest.Content.Projectiles
                 1f
             );
 
-            Utility.ReturnToDefaultDrawing(spriteBatch);
+            Opus.ReturnToDefaultDrawing(spriteBatch);
         }
 
         public float TextureRotationOffset = 0f;

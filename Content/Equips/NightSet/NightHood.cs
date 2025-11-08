@@ -18,6 +18,8 @@ using DestroyerTest.Common;
 using InnoVault;
 using DestroyerTest.Content.Projectiles;
 using System.Security.Authentication.ExtendedProtection;
+using Mono.CompilerServices.SymbolWriter;
+using OpusLib;
 
 namespace DestroyerTest.Content.Equips.NightSet
 {
@@ -39,7 +41,7 @@ namespace DestroyerTest.Content.Equips.NightSet
             Item.height = 22; // Height of the item
             Item.value = Item.sellPrice(gold: 1); // How many coins the item is worth
             Item.rare = ModContent.RarityType<WineRarity>(); // The rarity of the item
-            Item.defense = 8; // The amount of defense the item will give when equipped
+            Item.defense = 12; // The amount of defense the item will give when equipped
         }
 
         public override void UpdateEquip(Player player)
@@ -59,7 +61,20 @@ namespace DestroyerTest.Content.Equips.NightSet
             {
                 Night.Active = true;
             }
-            ScepterClassStats.Range += 6;
+            ScepterClassStats.Range += 36;
+            ScepterClassStats.ThrowSpeedModifier = 4f;
+
+            if (Math.Abs(player.velocity.X)> 5.5)
+            {
+                for (int d = 0; d < 3; d++)
+                {
+                    Dust.NewDust(player.Hitbox.TopLeft(), player.Hitbox.Width, player.Hitbox.Height, DustID.DemonTorch, 0f, 0f, 100, default, 2);
+                }
+                if (Main.rand.NextBool(60))
+                {
+                    Opus.RadialSpreadProjectile(ModContent.ProjectileType<SoulOfNight_Projectile>(), Main.rand.Next(1, 4), player.Center, 20, 3, 3);
+                }
+            }
         }
 
         public override void ArmorSetShadows(Player player)
@@ -67,6 +82,21 @@ namespace DestroyerTest.Content.Equips.NightSet
             player.armorEffectDrawOutlinesForbidden = true; // or whatever action you're trying to trigger
         }
 
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+				.AddIngredient(ItemID.DarkShard, 4)
+				.AddIngredient(ItemID.SoulofNight, 16)
+				.AddIngredient(ItemID.CobaltBar, 5)
+				.AddTile(TileID.DemonAltar)
+				.Register();
+			CreateRecipe()
+                .AddIngredient(ItemID.DarkShard, 4)
+				.AddIngredient(ItemID.SoulofNight, 16)
+				.AddIngredient(ItemID.PalladiumBar, 5)
+                .AddTile(TileID.DemonAltar)
+                .Register();
+        }
     }
 
     public class NightPlayer : ModPlayer
@@ -74,6 +104,7 @@ namespace DestroyerTest.Content.Equips.NightSet
         public bool Active = false;
         public bool Cooldown = false;
         public int CooldownTime = 360;
+        public SoundStyle Regen = new SoundStyle("DestroyerTest/Assets/Audio/DAHit");
         public override void ResetEffects()
         {
             Active = false;
@@ -89,9 +120,15 @@ namespace DestroyerTest.Content.Equips.NightSet
                     CooldownTime--;
                 }
 
+                if (CooldownTime < 360 && CooldownTime > 358)
+                {
+                    Player.immuneTime = 60;
+                }
+
                 if (CooldownTime <= 0)
                 {
                     Cooldown = false;
+                    SoundEngine.PlaySound(Regen, Player.Center);
                     CooldownTime = 360;
                 }
             }
@@ -122,10 +159,9 @@ namespace DestroyerTest.Content.Equips.NightSet
         public override void AI(Projectile projectile)
         {
             Player player = Main.player[projectile.owner];
-            Opus.Opus opus = new Opus.Opus();
             if (IsAThrownScepter)
             {
-                if (projectile.Distance(player.Center) < 900 && player.TryGetModPlayer<NightPlayer>(out NightPlayer pl))
+                if (projectile.Distance(player.Center) < 1300 && player.TryGetModPlayer<NightPlayer>(out NightPlayer pl))
                 {
                     if (pl.Active && !pl.Cooldown)
                     {
@@ -145,7 +181,7 @@ namespace DestroyerTest.Content.Equips.NightSet
                         {
                             player.Center = projectile.Center;
                             SoundEngine.PlaySound(Tele, player.Center);
-                            opus.RadialSpreadProjectile(ModContent.ProjectileType<SoulOfNight_Projectile>(), 8, player.Center, 15, 3, 6);
+                            Opus.RadialSpreadProjectile(ModContent.ProjectileType<SoulOfNight_Projectile>(), 8, player.Center, 35, 3, 6);
                             pl.Cooldown = true;
                             CanTele = false;
                         }   

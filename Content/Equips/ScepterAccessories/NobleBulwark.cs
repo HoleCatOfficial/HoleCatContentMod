@@ -1,6 +1,7 @@
 
 using DestroyerTest.Common;
 using DestroyerTest.Content.Resources;
+using DestroyerTest.Rarity.Scepter;
 using Microsoft.Xna.Framework;
 using Steamworks;
 using Terraria;
@@ -17,7 +18,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
             Item.width = 26;
             Item.height = 23;
             Item.value = Item.buyPrice(10);
-            Item.rare = ItemRarityID.Green;
+            Item.rare = ModContent.RarityType<PearlRarity>();
             Item.accessory = true;
             Item.defense = 12;
         }
@@ -49,7 +50,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
 			Item.width = 26;
 			Item.height = 23;
 			Item.value = Item.buyPrice(10);
-			Item.rare = ItemRarityID.Green;
+			Item.rare = ModContent.RarityType<PearlRarity>();
 			Item.accessory = true;
 			Item.defense = 12;
 		}

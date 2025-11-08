@@ -2034,7 +2034,12 @@ Items: {
 	}
 
 	StellarBow: {
-		Tooltip: ""
+		Tooltip:
+			'''
+			Converts regular arrows into Stellar Arrows.
+			After firing 10 arrows, the bow becomes empowered, and will fire Galantine Lances and Stars.
+			"Unlike the blade, the bow has retained some stellar energy..." 
+			'''
 		DisplayName: Stellar Bow
 	}
 
@@ -2152,7 +2157,7 @@ Items: {
 	}
 
 	Contempt: {
-		Tooltip: Creates a corrupt Sigil at the cursor position. Cursed flames will fly towards the marker from all around.
+		Tooltip: Creates a corrupt Sigil at the cursor position. Cursed flames will fly towards the Sigil from all around.
 		DisplayName: Contempt
 	}
 
@@ -2176,7 +2181,7 @@ Items: {
 		Tooltip:
 			'''
 			Every third Swing is a spin, shooting teeth in all directions.
-			Right click to do a short dash with this weapon.
+			Right click to perform a short dash.
 			'''
 	}
 
@@ -2230,7 +2235,7 @@ Items: {
 		Tooltip:
 			'''
 			Summons a Possessed Dart Rifle that orbits you and shoots cursed darts at your foes.
-			Uses 10 Minion Slots
+			Uses 3 Minion Slots
 			'''
 	}
 
@@ -2252,6 +2257,14 @@ Items: {
 	TenebrousDemonVisor: {
 		DisplayName: Tenebrous Demon Visor
 		Tooltip: ""
+		SetBonus:
+			'''
+			Shooting enemies builds charge up to three tiers.
+			Tier 1 increases Ranged Damage by 10% and Ranged Crit chance by 6%.
+			Tier 2 increases Ranged Damage by 20% and Ranged Crit chance by 12%.
+			Tier 3 increases Ranged Damage by 40% and Ranged Crit chance by 18%, and your weapon will fire a barrage of homing Tenerbis Stars.
+			Not using your weapon, or charging to 120 charge on Tier 3 will reset charge.
+			'''
 	}
 
 	TenebrousChakram: {
@@ -3198,17 +3211,145 @@ Items: {
 
 	NightBodyArmor: {
 		DisplayName: Night Body Armor
-		Tooltip: ""
+		Tooltip: Imbued with the darkness of your world's evil...
 	}
 
 	NightHood: {
 		DisplayName: Night Hood
-		Tooltip: ""
+		Tooltip:
+			'''
+			Thrown scepters within a certain range to the player can be teleported to by pressing the down key.
+			Upon teleporting, you recieve a second of immunity and release a homing burst of souls of night.
+			Teleportation has a 6 second cooldown, as displayed by the cooldown bar.
+
+			If moving fast enough horizontally, you will spawn homing souls of night as you travel.
+
+			"Imbued with the darkness of your world's evil..."
+			'''
 	}
 
 	NightLegArmor: {
 		DisplayName: Night Leg Armor
+		Tooltip: Imbued with the darkness of your world's evil...
+	}
+
+	SpookyScroll1: {
+		DisplayName: Spooky Scroll1
 		Tooltip: ""
+	}
+
+	TenebrisWaraxe: {
+		Tooltip: Throws a returning War Axe that pierces 4 times and spawns a burst of Tenebris Stars on hit.
+		DisplayName: Tenebris Waraxe
+	}
+
+	GalantineKnife: {
+		DisplayName: Galantine Knife
+		Tooltip:
+			'''
+			Throws a Stellar Knife that falls to the ground after a second.
+			Tile collisions explode into homing Galantine Stars.
+			Hitting an NPC will lodge the blade in them for 2 seconds of continuous damage and inflicting Galantine Burn.
+			'''
+	}
+
+	GalantineIncense: {
+		Tooltip:
+			'''
+			Being hit by a NPC or Projectile will create  a small burst of homing stars.
+			Melee weapons are imbued with Galantine Burn.
+			You are immune to Galantine Burn.
+			'''
+		DisplayName: Galantine Incense
+	}
+
+	StellarFlamesFlask: {
+		DisplayName: Flask of Stellar Flames
+		Tooltip: Imbues your weapons with Galantine Burn.
+	}
+
+	PityMarkBig: {
+		DisplayName: Pity Mark Big
+		Tooltip: ""
+	}
+
+	PityMarkSmall: {
+		DisplayName: Pity Mark Small
+		Tooltip: ""
+	}
+
+	StarConstruct: {
+		DisplayName: Star Construct
+		Tooltip: Throws an inactive Star Husk, which turns into a Star Construct. Each construct takes half a minion slot.
+	}
+
+	EarlyHardmodeScroll: {
+		DisplayName: Early Hardmode Scroll
+		Tooltip: ""
+	}
+
+	LateHardmodeScroll: {
+		DisplayName: Late Hardmode Scroll
+		Tooltip: ""
+	}
+
+	PostMoonlordScroll: {
+		DisplayName: Post Moonlord Scroll
+		Tooltip: ""
+	}
+
+	PreBossScroll: {
+		DisplayName: Pre Boss Scroll
+		Tooltip: ""
+	}
+
+	PreHardmodeScroll: {
+		DisplayName: Pre Hardmode Scroll
+		Tooltip: ""
+	}
+
+	SpookyScroll2: {
+		DisplayName: Spooky Scroll2
+		Tooltip: ""
+	}
+
+	SpookyScroll3: {
+		DisplayName: Spooky Scroll3
+		Tooltip: ""
+	}
+
+	SpookyScroll4: {
+		DisplayName: Spooky Scroll4
+		Tooltip: ""
+	}
+
+	StarBadge: {
+		Tooltip: Summons a tiny Stellar Stabber to follow you around.
+		DisplayName: Star Badge
+	}
+
+	AmalgamatedFragments: {
+		DisplayName: Amalgamated Fragments
+		Tooltip: Summons two Mini Nodes to orbit you.
+	}
+
+	DivineVessel: {
+		Tooltip:
+			'''
+			Summons a tiny, gilded wyvern.
+			A shimmering fragment of the Great Wyvern's Will, gifted in return for setting them free.
+			'''
+		DisplayName: Divine Vessel
+	}
+
+	MiniConstruct: {
+		DisplayName: Mini Construct
+		Tooltip: Summons a mini construct to fly around you.
+	}
+
+	ShimmeringCable: {
+		Tooltip: Summons a miniature Tenebrous Slinger to follow you around.
+		DisplayName: Shimmering Cable
 	}
 }
 
@@ -3611,6 +3752,29 @@ Projectiles: {
 	HoleCatFireSwirl.DisplayName: Hole Cat Fire Swirl
 	HoleCatFireSmall.DisplayName: Hole Cat Fire Small
 	HoleCatHookJab.DisplayName: Hole Cat Hook Jab
+	SpookyFirewood.DisplayName: Spooky Firewood
+	TenebrisWaraxeProjectile.DisplayName: Tenebris Waraxe Projectile
+	SpawnSoul.DisplayName: Spawn Soul
+	GalantineKnifeThrown.DisplayName: Galantine Knife Thrown
+	StarConstructInactive.DisplayName: Star Construct Inactive
+	StarConstructMinion.DisplayName: Star Construct Minion
+	StellarEmber.DisplayName: Stellar Ember
+	SpookySickle.DisplayName: Spooky Sickle
+	SpookySickleExplosion.DisplayName: Spooky Sickle Explosion
+	Condemnation.DisplayName: Condemnation
+	ShadowflameAOE.DisplayName: Shadowflame Field
+	ConstitutionPet.DisplayName: StellarStabber
+	RosePet.DisplayName: Mini Rose (Pet)
+	CursedNodePet.DisplayName: Cursed Node (Pet)
+	IchorNodePet.DisplayName: Ichor Node (Pet)
+	BabyWyvernPet.DisplayName: Baby Wyvern
+	TenebrousConstructPet.DisplayName: Tenebrous Construct (Pet)
+	TenebrousSlingerPet.DisplayName: Tenebrous Slinger Pet
+	ShadeThrasherFriendlyHead.DisplayName: Shade Thrasher Friendly Head
+	ShadeThrasherFriendlyBody4.DisplayName: Shade Thrasher Friendly Body4
+	ShadeThrasherFriendlyBody3.DisplayName: Shade Thrasher Friendly Body3
+	ShadeThrasherFriendlyBody2.DisplayName: Shade Thrasher Friendly Body2
+	ShadeThrasherFriendlyBody1.DisplayName: Shade Thrasher Friendly Body1
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.
@@ -3894,6 +4058,46 @@ Buffs: {
 	MobilityHex: {
 		Description: Your body has been hexxed, stopping you from moving!
 		DisplayName: Mobility Hex
+	}
+
+	WeaponImbueGB: {
+		DisplayName: Weapon Imbue (Galantine Burn)
+		Description: Your Weapons have been imbued with Galantine Burn!
+	}
+
+	StarConstructMinionBuff: {
+		DisplayName: Star Construct
+		Description: The Star Construct will protect you!
+	}
+
+	ConstitutionPetBuff: {
+		DisplayName: Stellar Stabber
+		Description: It yearns for the stars...
+	}
+
+	RosePetBuff: {
+		DisplayName: Itty-bitty Rose
+		Description: It twitches insidiously...
+	}
+
+	NodesPetBuff: {
+		DisplayName: Mini Nodes
+		Description: Far too weak to boost your power meaningfully, but hey, two-for-one deal!
+	}
+
+	TenebrousConstructPetBuff: {
+		DisplayName: Mini Construct
+		Description: The silence is unnerving...
+	}
+
+	TenebrousSlingerPetBuff: {
+		Description: Unfortunately, this measley little bow won't help you fight.
+		DisplayName: Tenebrous Slinger
+	}
+
+	ShadeThrasherBuff: {
+		Description: Mods.DestroyerTest.Buffs.ShadeThrasherBuff.Description
+		DisplayName: Shade Thrasher Buff
 	}
 }
 
@@ -4387,3 +4591,9 @@ Achievements: {
 }
 
 Infernum.NightmareRoseIntroText: NIGHTMARE ROSE
+PitySystem.UsesPity:
+	'''
+	This item implements a pity system.
+	Opening the bag multiple times increases the chances of getting rare items from it, and increases the quantity of normal resource drops from it.
+	Successfully getting a rare drop will reset your pity.
+	'''

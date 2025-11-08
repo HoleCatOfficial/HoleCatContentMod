@@ -3,6 +3,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using DestroyerTest.Common;
+using DestroyerTest.Rarity;
 
 namespace DestroyerTest.Content.Equips
 {
@@ -15,6 +16,7 @@ namespace DestroyerTest.Content.Equips
 			Item.maxStack = 1;
 			Item.value = 100;
 			Item.accessory = true;
+			Item.rare = ModContent.RarityType<StellarRarity>();
 		}
 
 		

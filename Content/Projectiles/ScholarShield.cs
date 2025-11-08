@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Audio;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
+using OpusLib;
 
 namespace DestroyerTest.Content.Projectiles
 {
@@ -40,9 +41,9 @@ namespace DestroyerTest.Content.Projectiles
             SpriteBatch sb = Main.spriteBatch;
             DTUtils Utility = new DTUtils();
 
-            Utility.StartSpriteBatchWithBlending(sb, BlendState.Additive, SpriteSortMode.Immediate);
+            Opus.StartSpriteBatchWithBlending(sb, BlendState.Additive, SpriteSortMode.Immediate);
             Main.EntitySpriteDraw(ShieldTex.Value, Projectile.Center - Main.screenPosition, null, ColorLib.JavelinEnergy, Projectile.rotation, ShieldTex.Value.Size() / 2, ShieldTexScale, SpriteEffects.None, 0);
-            Utility.ReturnToDefaultDrawing(sb);
+            Opus.ReturnToDefaultDrawing(sb);
         }
 
         public override void OnSpawn(IEntitySource source)

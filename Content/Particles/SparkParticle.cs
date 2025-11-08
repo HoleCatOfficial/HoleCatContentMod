@@ -21,7 +21,7 @@ namespace DestroyerTest.Content.Particles
         // Override this function, it will be called once when the particle is generated.
         // PRT entities are independent instances, so the settings in this function
         // can also be applied to each instance individually, similar to ModProjectile.SetDefaults.
-        public int MaxLifetime => 20;
+        public int MaxLifetime => 120;
         public override void SetProperty()
         {
             // PRTDrawMode determines which rendering mode the instance will be batched into.
@@ -30,8 +30,6 @@ namespace DestroyerTest.Content.Particles
             // and it will batch all PRT instances in each draw call.
             PRTDrawMode = PRTDrawModeEnum.AdditiveBlend;
             Lifetime = MaxLifetime; // Lifetime of 220 to 360 ticks.
-            //Rotation = Main.rand.NextFloat(0, MathHelper.TwoPi); // Random rotation angle.
-            Scale = Main.rand.NextFloat(0.5f, 1.5f); // Random scale between 0.5 and 1.5.
             
         }
 

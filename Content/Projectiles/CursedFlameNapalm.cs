@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using OpusLib;
 
 namespace DestroyerTest.Content.Projectiles.ConstitutionBoss
 {
@@ -93,7 +94,7 @@ namespace DestroyerTest.Content.Projectiles.ConstitutionBoss
 			var glowTex = DTAssetLib.FeatheredCircle.Value;
 			DTUtils Utility = new DTUtils();
 
-			Utility.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+			Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 			// draw trail first
 			for (int i = 0; i < trailPositions.Count; i++)
 			{
@@ -127,7 +128,7 @@ namespace DestroyerTest.Content.Projectiles.ConstitutionBoss
 				0
 			);
 
-			Utility.ReturnToDefaultDrawing(spriteBatch);
+			Opus.ReturnToDefaultDrawing(spriteBatch);
 
 			return false; // we handled drawing ourselves
 		}
