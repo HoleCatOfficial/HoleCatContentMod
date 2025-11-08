@@ -266,6 +266,7 @@ namespace DestroyerTest.Content.Entities
         public bool LanceSweepTeleFlag = false;
         public bool SLeft = false;
         public bool SRight = false;
+        public int SF2Timer = 600;
 
         public int AttackIntervalDefault = 20;
         public float TexRot = 0f;
@@ -773,8 +774,19 @@ namespace DestroyerTest.Content.Entities
                         {
                             SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/NodeSpawn") with { PitchVariance = 0.4f, MaxInstances = 0 });
                             Opus.RadialSpreadProjectile(ModContent.ProjectileType<StellarBomb>(), 5, NPC.Center, 20, 6, 6);
-                            StarFury2(10);
-                            ResetState();
+                            if (SF2Timer > 0)
+                            {
+                                SF2Timer--;
+                                NPC.Center = player.Center + new Vector2(0, -350);
+                            }
+                            if (SF2Timer > 0 && Main.GameUpdateCount % 20 == 0)
+                            {
+                                StarFury2(player);
+                            }
+                            if (SF2Timer > 0)
+                            {
+                                ResetState();
+                            }
                         }
                     }
                     break;
@@ -959,6 +971,7 @@ namespace DestroyerTest.Content.Entities
                 CloneTimer = AmountofCloning = swordsShotCount =
                 shootSwordsTimer = FlameTimer = 0;
                 LanceSweepTimer = 180;
+                SF2Timer = 600;
                 MineSpots.Clear();
                 HasCharged = false;
                 HasShotStars1 = false;
@@ -1237,18 +1250,14 @@ namespace DestroyerTest.Content.Entities
             }
         }
 
+
         /// <summary>
         /// Selects random positions from the screen and spawns bursts of StarFury clones from them.
         /// </summary>
         /// <param name="Amount"></param>
-        public void StarFury2(int Amount)
+        public void StarFury2(Player player)
         {
-            Rectangle Screen = new Rectangle((int)Main.screenPosition.X, (int)Main.screenPosition.Y, Main.screenWidth, Main.screenHeight);
-            for (int t = 0; t < Amount; t++)
-            {
-                Vector2 SpawnPos = Main.rand.NextVector2FromRectangle(Screen);
-                Opus.RadialSpreadProjectile(ModContent.ProjectileType<StarfuryClone>(), Main.rand.Next(4, 9), SpawnPos, 5, 4, Main.rand.Next(10, 25));
-            }
+            Opus.RadialProjectileRandomDir(ModContent.ProjectileType<StarfuryClone>(), Main.rand.Next(1, 4), NPC.Center, 15, 4, 10);
         }
 
         /// <summary>
