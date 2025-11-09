@@ -26,7 +26,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
 
 		public override void UpdateEquip(Player player) {
 			player.GetAttackSpeed<ScepterClass>() *= 1.05f;
-            player.GetDamage<ScepterClass>() += 0.10f;
+            player.GetDamage<ScepterClass>() *= 1.05f;
 		}
 	}
 }

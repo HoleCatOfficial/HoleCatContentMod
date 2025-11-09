@@ -1336,7 +1336,14 @@ namespace DestroyerTest.Content.Entities
 
         public override void HitEffect(NPC.HitInfo hit)
         {
+            Player plr = Main.player[NPC.target];
             PRTLoader.NewParticle(PRTLoader.GetParticleID<FlatStar>(), Main.rand.NextVector2FromRectangle(NPC.Hitbox), Vector2.Zero, ColorLib.StellarColor, 0.15f);
+            IEntitySource src = NPC.GetSource_OnHurt(plr);
+            for (int u = 0; u < 4; u++)
+            {
+                Gore.NewGore(src, NPC.Center, Main.rand.NextVector2Circular(2, 2), 16);
+                Gore.NewGore(src, NPC.Center, Main.rand.NextVector2Circular(2, 2), 17);
+            }                
         }
 
 
@@ -1375,7 +1382,7 @@ namespace DestroyerTest.Content.Entities
 
         public override void AI()
         {
-            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
+            Projectile.rotation = Projectile.velocity.ToRotation() - MathHelper.PiOver4;
             float maxDetectRadius = 2000f; // The maximum radius at which a projectile can detect a target
 
             if (DelayTimer < 20)
@@ -1404,18 +1411,18 @@ namespace DestroyerTest.Content.Entities
             float length = Projectile.velocity.Length();
             float targetAngle = Projectile.AngleTo(HomingTarget.Center);
             Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(15)).ToRotationVector2() * length;
-            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
+            Projectile.rotation = Projectile.velocity.ToRotation() - MathHelper.PiOver4;
 
-
-            Lighting.AddLight(Projectile.Center, 105, 68, 186);
+            Color clr = new Color(105, 68, 186);
+            Lighting.AddLight(Projectile.Center, (clr * 0.4f).ToVector3());
 
             if (Main.rand.NextBool(3))
             {
                 int DustAmount = 8;
                 for (int g = 0; g < DustAmount; g++)
                 {
-                    Dust.NewDust(Projectile.Center, Projectile.width - 10, Projectile.height - 10, DustID.Enchanted_Pink, 0, 0, 0, default, 1f);
-                    Dust.NewDust(Projectile.Center, Projectile.width - 10, Projectile.height - 10, DustID.Enchanted_Gold, 0, 0, 0, default, 1f);
+                    Dust.NewDust(Projectile.position, Projectile.width - 10, Projectile.height - 10, DustID.Enchanted_Pink, 0, 0, 0, default, 1f);
+                    Dust.NewDust(Projectile.position, Projectile.width - 10, Projectile.height - 10, DustID.Enchanted_Gold, 0, 0, 0, default, 1f);
                 }
             }
 

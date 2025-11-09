@@ -52,9 +52,7 @@ namespace DestroyerTest.Content.Scepter
 
 		public override void AddRecipes() {
 			CreateRecipe()
-				.AddIngredient(ItemID.WhitePearl)
 				.AddIngredient(ItemID.HallowedBar, 16)
-				.AddIngredient<RedCloth>(4)
 				.AddTile(TileID.MythrilAnvil)
 				.Register();
 		}

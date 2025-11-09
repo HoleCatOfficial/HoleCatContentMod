@@ -48,5 +48,13 @@ namespace DestroyerTest.Content.Scepter
             base.SetDefaults();
         }
 
+        public override void AddRecipes() {
+			CreateRecipe()
+                .AddIngredient(ItemID.Wood, 25)
+                .AddIngredient(ItemID.JungleGrassSeeds, 2)
+                .AddTile(TileID.WorkBenches)
+				.Register();
+		}
+
     }
 } 
