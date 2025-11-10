@@ -36,7 +36,7 @@ namespace DestroyerTest.Content.Projectiles
 				direction.Normalize();
 
 				// Set the projectile's velocity
-				Projectile.velocity = direction * 10f; // Adjust speed as needed
+				Projectile.velocity = direction * 16f; // Adjust speed as needed
 
 				// Mark the projectile as initialized
 				Projectile.ai[0] = 1;

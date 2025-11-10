@@ -86,10 +86,9 @@ namespace DestroyerTest.Content.Scepter
 
 		public override void AddRecipes() {
 			CreateRecipe()
-				.AddIngredient(ItemID.BlackPearl)
 				.AddIngredient(ItemID.Bone, 18)
 				.AddIngredient<LifeEcho>(12)
-				.AddTile(TileID.BoneWelder)
+                .AddTile(TileID.Anvils)
 				.AddCondition(Condition.DownedSkeletron)
 				.Register();
 		}

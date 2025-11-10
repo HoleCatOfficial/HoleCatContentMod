@@ -34,7 +34,14 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
         {
             CreateRecipe()
                 .AddIngredient(ItemID.JungleRose, 1)
-                .AddIngredient(ItemID.GreaterHealingPotion, 1)
+                .AddIngredient(ItemID.HealingPotion, 10)
+                .AddIngredient(ItemID.TissueSample, 10)
+                .AddIngredient(ItemID.FallenStar, 6)
+                .Register();
+            CreateRecipe()
+                .AddIngredient(ItemID.JungleRose, 1)
+                .AddIngredient(ItemID.HealingPotion, 10)
+                .AddIngredient(ItemID.ShadowScale, 10)
                 .AddIngredient(ItemID.FallenStar, 6)
                 .Register();
         }

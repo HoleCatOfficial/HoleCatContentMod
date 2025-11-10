@@ -1,3 +1,5 @@
+using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Dusts;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
@@ -6,13 +8,10 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles
 {
-	// This example is similar to the Wooden Arrow projectile
 	public class RiftBolt : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
-			// If this arrow would have strong effects (like Holy Arrow pierce), we can make it fire fewer projectiles from Daedalus Stormbow for game balance considerations like this:
-			//ProjectileID.Sets.FiresFewerFromDaedalusStormbow[Type] = true;
 		}
 
 		public override void SetDefaults()
@@ -26,21 +25,13 @@ namespace DestroyerTest.Content.Projectiles
 		}
 
 		public override void AI() {
-			// The code below was adapted from the ProjAIStyleID.Arrow behavior. Rather than copy an existing aiStyle using Projectile.aiStyle and AIType,
-			// like some examples do, this example has custom AI code that is better suited for modifying directly.
-			// See https://github.com/tModLoader/tModLoader/wiki/Basic-Projectile#what-is-ai for more information on custom projectile AI.
-
-            // The projectile is rotated to face the direction of travel
 			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
-
-
 		}
 
 		public override void OnKill(int timeLeft) {
-			SoundEngine.PlaySound(SoundID.Item20, Projectile.position); // Plays the basic sound most projectiles make when hitting blocks.
-			for (int i = 0; i < 5; i++) // Creates a splash of dust around the position the projectile dies.
+			for (int i = 0; i < 5; i++)
 			{
-				Dust dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.Lava);
+				Dust dust = Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<RiftDust>(), Main.rand.NextVector2Circular(120, 120));
 				dust.noGravity = true;
 				dust.velocity *= 1.5f;
 				dust.scale *= 0.9f;
@@ -49,7 +40,7 @@ namespace DestroyerTest.Content.Projectiles
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            target.AddBuff(BuffID.OnFire, 60);
+            target.AddBuff(ModContent.BuffType<HeliouricShock>(), 60);
         }
     }
 }

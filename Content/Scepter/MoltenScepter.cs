@@ -61,7 +61,7 @@ namespace DestroyerTest.Content.Scepter
         public override void AddRecipes() {
 			CreateRecipe()
 				.AddIngredient(ItemID.HellstoneBar, 16)
-				.AddTile(TileID.WorkBenches)
+				.AddTile(TileID.Anvils)
 				.Register();
 		}
 
