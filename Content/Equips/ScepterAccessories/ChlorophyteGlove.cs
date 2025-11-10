@@ -33,7 +33,6 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
         public override void AddRecipes() {
 			CreateRecipe()
 				.AddIngredient(ItemID.ChlorophyteBar, 12)
-				.AddCondition(Condition.InJungle)
                 .AddTile(TileID.MythrilAnvil)
 				.Register();
 		}

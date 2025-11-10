@@ -22,9 +22,18 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             if (player.TryGetModPlayer<ScrollScepterUsePlayer>(out ScrollScepterUsePlayer Scptr))
-			{
-				Scptr.FrigidScroll1 = true;
-			}
+            {
+                Scptr.FrigidScroll1 = true;
+            }
+        }
+        
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient(ItemID.IceBlock, 12)
+                .AddIngredient(ItemID.Shiverthorn, 4)
+                .AddTile(TileID.IceMachine)
+                .Register();
         }
     }
 }

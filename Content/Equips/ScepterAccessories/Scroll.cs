@@ -213,7 +213,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
                                 Player.Center,
                                 motion,
                                 ModContent.ProjectileType<CurseProjectile>(),
-                                damage / 3,
+                                damage / 2,
                                 knockback,
                                 Player.whoAmI
                             );
@@ -731,7 +731,6 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
             base.ModifyNPCLoot(npc, npcLoot);
             OpusNPCDropHelper DH = new OpusNPCDropHelper();
 
-
             if (DH.MoltenLegionEnemiesExclusive.Contains(npc.type))
             {
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<IncendiaryScroll>(), 8, 1, 1));
@@ -755,6 +754,26 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
             if (npc.type == NPCID.Pumpking)
             {
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<SpookyScroll4>(), 5, 1, 1));
+            }
+            if (npc.type == NPCID.ZombieEskimo)
+            {
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<FrigidScroll>(), 5, 1, 1));
+            }
+            if (npc.type == NPCID.Plantera)
+            {
+                npcLoot.Add(ItemDropRule.NormalvsExpertNotScalingWithLuck(ModContent.ItemType<PurityScroll>(), 99, 1));
+            }
+            if (npc.type == NPCID.SandElemental)
+            {
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<SandSurgeScroll>(), 5, 1, 1));
+            }
+            if (npc.type == NPCID.IceGolem)
+            {
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<SnowSurgeScroll>(), 5, 1, 1));
+            }
+            if (npc.type == NPCID.Deerclops)
+            {
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<HandScroll>(), 1, 1, 1));
             }
         }
 

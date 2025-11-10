@@ -58,5 +58,12 @@ namespace DestroyerTest.Content.Scepter
             return true;
         }
 
+        public override void AddRecipes() {
+			CreateRecipe()
+				.AddIngredient(ItemID.HellstoneBar, 16)
+				.AddTile(TileID.WorkBenches)
+				.Register();
+		}
+
     }
 } 
