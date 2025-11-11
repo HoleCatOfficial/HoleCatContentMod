@@ -5,6 +5,7 @@ using Terraria.DataStructures;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
+using OpusLib.Content.Helpers;
 
 namespace DestroyerTest.Content.Resources
 {
@@ -33,15 +34,14 @@ namespace DestroyerTest.Content.Resources
 
 	public class LE_DROP_NPC : GlobalNPC
 	{
-		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot) {
+		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
+        {
+			OpusNPCDropHelper Drophelper = new OpusNPCDropHelper();
 
-			if (npc.type == NPCID.Zombie || npc.type == NPCID.Skeleton || npc.type == NPCID.Nymph) {
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<LifeEcho>(), 1, 1, 5));
-			}
-			else
-			{
-				Main.NewText("LifeEcho drop attempted", Color.Red);
-			}
-		}
+			if (Drophelper.Zombies.Contains(npc.type))
+            {
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<LifeEcho>(), 1, 1, 5));
+            }
+        }
 	}
 }
