@@ -12,6 +12,7 @@ using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Buffs;
 using System.IO;
 using DestroyerTest.Content.Projectiles.ParentClasses;
+using OpusLib;
 
 namespace DestroyerTest.Content.Projectiles
 {
@@ -26,6 +27,7 @@ namespace DestroyerTest.Content.Projectiles
             base.SetDefaults();
         }
 
+        /*
         public override void OnSpawn(IEntitySource source)
         {
             for (int i = 0; i < 9; i++)
@@ -47,37 +49,17 @@ namespace DestroyerTest.Content.Projectiles
                 }
             base.OnSpawn(source);
         }
+        */
 
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
-            for (int i = 0; i < 9; i++)
-            {
-                float angle = MathHelper.TwoPi * i / 9f;
-                Vector2 spawnOffset = new Vector2(0, -120f).RotatedBy(angle);
-                Vector2 spawnPos = Projectile.Center + spawnOffset;
-                Vector2 toMouse = (Main.MouseWorld - spawnPos).SafeNormalize(Vector2.Zero) * 2f; // slow speed
-
-                Projectile.NewProjectile(
-                    Entity.GetSource_FromThis(),
-                    spawnPos,
-                    toMouse,
-                    ModContent.ProjectileType<FungalScepterMushroom>(),
-                    (int)(Projectile.damage * 0.5f),
-                    (int)(Projectile.knockBack * 0.5f),
-                    Projectile.owner
-                );
-            }
+            Opus.RingProjectileOutward(ModContent.ProjectileType<FungalScepterMushroom>(), 9, Projectile.Center, 200, Projectile.damage / 4, 4, 7);
             return base.OnTileCollide(oldVelocity);
         }
 
         public override void AI()
         {
 
-            
-                
-            
-                
-            
             base.AI();
         }
     }

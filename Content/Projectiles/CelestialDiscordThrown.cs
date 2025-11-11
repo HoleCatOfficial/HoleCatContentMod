@@ -23,10 +23,10 @@ namespace DestroyerTest.Content.Projectiles
     {
         public override void SetDefaults()
         {
-            ThemeColor = Color.White;
+            ThemeColor = ColorLib.CelestialGradient;
             WidthDim = 34;
             HeightDim = 34;
-            DustType = DustID.Glass;
+            DustType = DustID.LunarOre;
             base.SetDefaults();
         }
 

@@ -6,6 +6,7 @@ using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 using OpusLib.Content.Helpers;
+using System.Linq;
 
 namespace DestroyerTest.Content.Resources
 {
@@ -23,7 +24,7 @@ namespace DestroyerTest.Content.Resources
 			Item.height = 18;
 			Item.maxStack = Item.CommonMaxStack;
 			Item.value = 1000;
-			Item.alpha = 200;
+			Item.alpha = 100;
 			Item.rare = ItemRarityID.White;
 		}
 

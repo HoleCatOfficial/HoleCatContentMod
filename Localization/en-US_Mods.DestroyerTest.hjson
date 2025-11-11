@@ -2793,6 +2793,7 @@ Items: {
 	DistendedHeadgear: {
 		DisplayName: Distended Headgear
 		Tooltip: ""
+		SetBonus: ""
 	}
 
 	MalevolenceMantra: {
@@ -2806,7 +2807,11 @@ Items: {
 	}
 
 	WoodBracelet: {
-		Tooltip: ""
+		Tooltip:
+			'''
+			Increases Scepter Class Damage by 2%.
+			Increases Scepter Class Crit Chance by 4%.
+			'''
 		DisplayName: Wood Bracelet
 	}
 
@@ -2895,32 +2900,62 @@ Items: {
 
 	AdamantPendant: {
 		DisplayName: Adamant Pendant
-		Tooltip: ""
+		Tooltip:
+			'''
+			Increases Scepter Class damage by {0}%.
+			Increases Scepter Class Crit Chance by {1}%.
+			Increases Scepter Throw Range by {2}.
+			'''
 	}
 
 	AzurePendant: {
 		DisplayName: Azure Pendant
-		Tooltip: ""
+		Tooltip:
+			'''
+			Increases Scepter Class damage by {0}%.
+			Increases Scepter Class Crit Chance by {1}%.
+			Increases Scepter Throw Range by {2}.
+			'''
 	}
 
 	MythicPendant: {
 		DisplayName: Mythic Pendant
-		Tooltip: ""
+		Tooltip:
+			'''
+			Increases Scepter Class damage by {0}%.
+			Increases Scepter Class Crit Chance by {1}%.
+			Increases Scepter Throw Range by {2}.
+			'''
 	}
 
 	OrchidPendant: {
 		DisplayName: Orchid Pendant
-		Tooltip: ""
+		Tooltip:
+			'''
+			Increases Scepter Class damage by {0}%.
+			Increases Scepter Class Crit Chance by {1}%.
+			Increases Scepter Throw Range by {2}.
+			'''
 	}
 
 	RadiantPendant: {
 		DisplayName: Radiant Pendant
-		Tooltip: ""
+		Tooltip:
+			'''
+			Increases Scepter Class damage by {0}%.
+			Increases Scepter Class Crit Chance by {1}%.
+			Increases Scepter Throw Range by {2}.
+			'''
 	}
 
 	TitanPendant: {
 		DisplayName: Titan Pendant
-		Tooltip: ""
+		Tooltip:
+			'''
+			Increases Scepter Class damage by {0}%.
+			Increases Scepter Class Crit Chance by {1}%.
+			Increases Scepter Throw Range by {2}.
+			'''
 	}
 
 	MechanicalEnhancements: {
@@ -3775,6 +3810,8 @@ Projectiles: {
 	ShadeThrasherFriendlyBody3.DisplayName: Shade Thrasher Friendly Body3
 	ShadeThrasherFriendlyBody2.DisplayName: Shade Thrasher Friendly Body2
 	ShadeThrasherFriendlyBody1.DisplayName: Shade Thrasher Friendly Body1
+	FrozenFireball.DisplayName: Frozen Fireball
+	FungusSporeExplosion.DisplayName: Fungus Spore Explosion
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.
@@ -4098,6 +4135,11 @@ Buffs: {
 	ShadeThrasherBuff: {
 		Description: Mods.DestroyerTest.Buffs.ShadeThrasherBuff.Description
 		DisplayName: Shade Thrasher Buff
+	}
+
+	Spored: {
+		DisplayName: Spored
+		Description: Mods.DestroyerTest.Buffs.Spored.Description
 	}
 }
 

@@ -22,7 +22,7 @@ namespace DestroyerTest.Content.Projectiles
             ThemeColor = Color.SkyBlue;
             WidthDim = 58;
             HeightDim = 48;
-            DustType = DustID.Ice;
+            DustType = DustID.Frost;
             base.SetDefaults();
         }
 
@@ -51,7 +51,7 @@ namespace DestroyerTest.Content.Projectiles
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            target.AddBuff(BuffID.Frostburn2, 600);
+            target.AddBuff(BuffID.Frostburn, 600);
             base.OnHitNPC(target, hit, damageDone);
         }
     }

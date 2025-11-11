@@ -216,6 +216,13 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
         public override void OnKill(int timeLeft)
         {
+            if (!returning && TileCollisions >= 5)
+            {
+                for (int u = 0; u < 6; u++)
+                {
+                    Dust.NewDustPerfect(Projectile.Center, DustType, Main.rand.NextVector2CircularEdge(60, 60), 0, default, 1.35f);
+                }
+            }
             returning = false;
         }
 
@@ -277,10 +284,10 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
                 TileCollisions = 0;
             }
 
-            // Create a burst of dust on impact
+
             for (int i = 0; i < 10; i++)
             {
-                Dust dust = Dust.NewDustPerfect(Projectile.position, DustID.Glass, oldVelocity.RotatedByRandom(MathHelper.PiOver4) * 0.5f, 150, default, 1.5f);
+                Dust dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustType, oldVelocity.X * 0.5f, oldVelocity.Y * 0.5f, 0, default, 1.5f);
                 dust.noGravity = true;
                 dust.fadeIn = 1.5f;
             }

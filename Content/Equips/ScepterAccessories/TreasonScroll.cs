@@ -5,13 +5,20 @@ using DestroyerTest.Content.Resources;
 using Microsoft.Xna.Framework;
 using Steamworks;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Equips.ScepterAccessories
 {
-    public class TreasonScroll : ModItem
+    public class TreasonScroll : PreHardmodeScroll
     {
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            ItemID.Sets.ShimmerTransformToItem[ItemID.ShadowFlameHexDoll] = ModContent.ItemType<TreasonScroll>();
+        }
+
         public override void SetDefaults()
         {
             Item.width = 32;
@@ -27,13 +34,6 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
 			{
 				Scptr.TreasonScroll = true;
 			}
-        }
-
-        public override void AddRecipes()
-        {
-            CreateRecipe()
-                .AddCustomShimmerResult(ItemID.ShadowFlameHexDoll)
-                .Register();
         }
     }
 }

@@ -1,4 +1,4 @@
-using System.Formats.Tar;
+
 using System.Runtime.CompilerServices;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
@@ -163,7 +163,13 @@ namespace DestroyerTest.Content.Projectiles
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            target.AddBuff(BuffID.Confused, 120);
+            target.AddBuff(ModContent.BuffType<Spored>(), 600);
         }
+
+        public override void OnKill(int timeLeft)
+        {
+            Projectile.NewProjectile(Projectile.InheritSource(Projectile), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<FungusSporeExplosion>(), (int)(Projectile.damage * 0.1f), 4);
+        }
+
 	}
 }

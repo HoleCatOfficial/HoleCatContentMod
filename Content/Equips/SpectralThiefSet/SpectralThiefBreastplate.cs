@@ -4,6 +4,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using DestroyerTest.Rarity;
+using DestroyerTest.Content.Equips.AuraThiefSet;
 
 namespace DestroyerTest.Content.Equips.SpectralThiefSet
 {
@@ -33,20 +34,19 @@ namespace DestroyerTest.Content.Equips.SpectralThiefSet
 			Item.height = 20; 
 			Item.value = Item.sellPrice(gold: 1);
 			Item.rare = ModContent.RarityType<LifeEchoRarity>(); // The rarity of the item
-			Item.defense = 10;
+			Item.defense = 18;
 			// Now, in case you might be asking "Why use that special default when you can just copy what the original Hallowed Plate Mail does?"
 			// Unfortunately for you, while cloning the defaults does load a cape on the back, it loads the Hallowed Armor cape, and replaces your body armor textures with the Hallowed Plate Mail Textures.
 			//Item.CloneDefaults(ItemID.HallowedPlateMail);
 		}
 
-		public override void AddRecipes() //Added to make the item obtainable without needing cheat mods, since many swear by never using cheats, ever.
-		{
-			CreateRecipe()
-                .AddIngredient<LifeEcho>(15)
-                .AddIngredient(ItemID.Wood, 20)
-                .AddIngredient(ItemID.FlinxFur, 8)
-				.AddTile(TileID.Anvils)
-				.Register();
-		}
+		public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient(ItemID.Ectoplasm, 24)
+                .AddIngredient<AuraThiefBreastplate>(1)
+                .AddTile(TileID.MythrilAnvil)
+                .Register();
+        }
 	}
 }

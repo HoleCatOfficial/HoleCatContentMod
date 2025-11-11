@@ -20,10 +20,10 @@ namespace DestroyerTest.Content.Projectiles
     {
         public override void SetDefaults()
         {
-            ThemeColor = Color.White;
+            ThemeColor = ColorLib.Rift;
             WidthDim = 34;
             HeightDim = 34;
-            DustType = DustID.Glass;
+            DustType = ModContent.DustType<RiftDust>();
             base.SetDefaults();
         }
 

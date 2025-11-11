@@ -17,22 +17,16 @@ namespace DestroyerTest.Content.Projectiles
     {
         public override void SetDefaults()
         {
-            ThemeColor = Color.White;
+            ThemeColor = Color.LightGoldenrodYellow;
             WidthDim = 34;
             HeightDim = 34;
-            DustType = DustID.Glass;
+            DustType = DustID.Honey;
             base.SetDefaults();
         }
 
         public override void AI()
         {
-
-
-
-
             Player player = Main.player[Projectile.owner];
-
-
 
             // Generate flying dust effect
             if (Main.rand.NextBool(3)) // 33% chance per tick

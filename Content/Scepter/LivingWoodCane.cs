@@ -51,8 +51,7 @@ namespace DestroyerTest.Content.Scepter
         public override void AddRecipes() {
 			CreateRecipe()
                 .AddIngredient(ItemID.Wood, 25)
-                .AddIngredient(ItemID.JungleGrassSeeds, 2)
-                .AddTile(TileID.WorkBenches)
+                .AddTile(TileID.LivingLoom)
 				.Register();
 		}
 

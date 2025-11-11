@@ -18,6 +18,7 @@ using Terraria.GameContent.ItemDropRules;
 using System.Linq;
 using DestroyerTest.Content.Consumables;
 using DestroyerTest.Content.Scepter;
+using DestroyerTest.Content.Equips.ScepterAccessories;
 
 namespace DestroyerTest.Common
 {
@@ -831,6 +832,11 @@ namespace DestroyerTest.Common
                         val.options = hashSet.ToArray();
                     }
                 }
+            }
+
+            if (item.type == ItemID.OasisCrate || item.type == ItemID.OasisCrateHard)
+            {
+                itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<ThunderScepter>(), 8, 1, 1));
             }
         }
 

@@ -5,10 +5,10 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
-using static Terraria.ModLoader.ModContent;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Resources; // Add this line if CT3_Swing is in the Projectiles namespace
+using DestroyerTest.Content.Resources;
+using DestroyerTest.Rarity.Scepter; // Add this line if CT3_Swing is in the Projectiles namespace
 
 namespace DestroyerTest.Content.Scepter
 {
@@ -34,7 +34,7 @@ namespace DestroyerTest.Content.Scepter
             ThrowCrit = 8;
             KB = 8;
             AdditiveValue = Item.sellPrice(silver: 80);
-            Rarity = ItemRarityID.LightRed;
+            Rarity = ModContent.RarityType<PearlRarity>();
 
             // Assign projectile types
             ShootID = ProjectileID.ThunderStaffShot;
@@ -50,11 +50,5 @@ namespace DestroyerTest.Content.Scepter
             // Refresh defaults after overriding values
             base.SetDefaults();
         }
-
-        public override void AddRecipes() {
-			CreateRecipe()
-				.AddIngredient(ItemID.AshWood, 12)
-				.Register();
-		}
     }
 } 

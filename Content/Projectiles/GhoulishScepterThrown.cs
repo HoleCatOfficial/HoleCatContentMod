@@ -22,7 +22,7 @@ namespace DestroyerTest.Content.Projectiles
             ThemeColor = Color.White;
             WidthDim = 34;
             HeightDim = 34;
-            DustType = DustID.Glass;
+            DustType = DustID.DungeonSpirit;
             base.SetDefaults();
         }
     }

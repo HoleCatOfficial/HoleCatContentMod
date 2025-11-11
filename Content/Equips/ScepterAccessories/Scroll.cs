@@ -248,14 +248,14 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
                 {
                     if (Main.rand.NextBool(3))
                     {
-                        for (int t = 0; t < 5; t++)
+                        for (int t = 0; t < 4; t++)
                         {
                             Projectile.NewProjectile(
                                 Player.GetSource_ItemUse(item),
                                 Player.Center,
                                 velocity.RotatedByRandom(4),
                                 ProjectileID.NorthPoleSpear,
-                                damage,
+                                (int)(damage * 0.75f),
                                 knockback,
                                 Player.whoAmI
                             );

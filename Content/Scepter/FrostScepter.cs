@@ -39,7 +39,7 @@ namespace DestroyerTest.Content.Scepter
             Rarity = ModContent.RarityType<PearlRarity>();
 
             // Assign projectile types
-            ShootID = ProjectileID.BallofFrost;
+            ShootID = ModContent.ProjectileType<FrozenFireball>();
             ThrowID = ModContent.ProjectileType<FrostScepterThrown>();
 
             // Optional: change sounds

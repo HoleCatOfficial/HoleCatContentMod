@@ -10,6 +10,7 @@ using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
 using OpusLib;
+using System.Collections.Generic;
 
 namespace DestroyerTest.Content.Projectiles
 {
@@ -43,26 +44,23 @@ public class NatureShot : ModProjectile
 			Projectile.light = 1f; // How much light emit around the projectile
 			Projectile.timeLeft = 600; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
 			Projectile.tileCollide = false;
-			}
+		}
 
 
-			public int trailLength = 10;
 		public override bool PreDraw(ref Color lightColor)
 		{
 			lightColor = new Color(121, 182, 64);
 
 			SpriteBatch spriteBatch = Main.spriteBatch;
-			Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
-			DTUtils Utility = new DTUtils();
-
-            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+			
+			Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 			Main.EntitySpriteDraw(
-				projectileTexture,
+				TextureAssets.Projectile[Projectile.type].Value,
 				Projectile.Center - Main.screenPosition,
 				null,
 				lightColor,
 				Projectile.rotation,
-				projectileTexture.Size() / 2,
+				TextureAssets.Projectile[Projectile.type].Value.Size() / 2,
 				Projectile.scale,
 				SpriteEffects.None,
 				0
@@ -70,89 +68,98 @@ public class NatureShot : ModProjectile
 
 			Opus.DrawGlowOnProj(Projectile, lightColor, false, 0);
 
-			var Trail = DTAssetLib.Trail(2).Value;
-			Vector2 trailOrigin = new Vector2(Trail.Width / 2, Trail.Height / 2);
+			for (int i = 0; i < TrailPositions.Count; i++)
+            {
+                float progress = i / (float)TrailLength;
+                float scale = MathHelper.Lerp(1f, 0.0005f, progress);
+                Color color = lightColor;
 
-			for (int i = 0; i < trailLength && i < Projectile.oldPos.Length; i++)
-			{
-				float fade = (float)(trailLength - i) / trailLength;
-				Color trailColor = lightColor * fade * 0.3f;
-				trailColor.A = (byte)(fade * 100); // Transparency blending
-
-				Vector2 drawPosition = Projectile.oldPos[i] + (Projectile.Size / 4) - Main.screenPosition;
-				float scaleFactor = 0.1f; // Adjust size of the trail
-				Main.EntitySpriteDraw(Trail, drawPosition, null, trailColor, Projectile.rotation, trailOrigin, (Projectile.scale * fade) * scaleFactor, SpriteEffects.None, 0);
-			}
+                Main.EntitySpriteDraw(
+                    TextureAssets.Projectile[Projectile.type].Value,
+                    TrailPositions[i] - Main.screenPosition,
+                    null,
+                    color,
+                    Projectile.rotation,
+                    TextureAssets.Projectile[Projectile.type].Value.Size() / 2,
+                    scale,
+                    SpriteEffects.None,
+                    0
+                );
+            }
 
 			Opus.ReturnToDefaultDrawing(spriteBatch);
-			
+
 			return false;
 		}
 
+		public List<Vector2> TrailPositions = new();
+		public List<float> TrailRotations = new();
+		private const int TrailLength = 40;
 			// Custom AI
-			public override void AI() {
-                Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
-				float maxDetectRadius = 400f; // The maximum radius at which a projectile can detect a target
+		public override void AI() {
+			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
 
-				// First, we find a homing target if we don't have one
-				if (HomingTarget == null) {
-					HomingTarget = FindClosestNPC(maxDetectRadius);
-				}
+			TrailPositions.Insert(0, Projectile.Center);
+			TrailRotations.Insert(0, Projectile.rotation);
 
-				// If we have a homing target, make sure it is still valid. If the NPC dies or moves away, we'll want to find a new target
-				if (HomingTarget != null && !IsValidTarget(HomingTarget)) {
-					HomingTarget = null;
-				}
+			while (TrailPositions.Count > TrailLength)
+				TrailPositions.RemoveAt(TrailPositions.Count - 1);
+			while (TrailRotations.Count > TrailLength)
+				TrailRotations.RemoveAt(TrailRotations.Count - 1);
 
-				// If we don't have a target, don't adjust trajectory
-				if (HomingTarget == null)
-					return;
+			float maxDetectRadius = 400f; // The maximum radius at which a projectile can detect a target
 
-				// If found, we rotate the projectile velocity in the direction of the target.
-				// We only rotate by 3 degrees an update to give it a smooth trajectory. Increase the rotation speed here to make tighter turns
-				float length = Projectile.velocity.Length();
-				float targetAngle = Projectile.AngleTo(HomingTarget.Center);
-				Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(30)).ToRotationVector2() * length;
-				Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
+			// First, we find a homing target if we don't have one
+			if (HomingTarget == null) {
+				HomingTarget = FindClosestNPC(maxDetectRadius);
 			}
 
-			// Finding the closest NPC to attack within maxDetectDistance range
-			// If not found then returns null
-			public NPC FindClosestNPC(float maxDetectDistance) {
-				NPC closestNPC = null;
+			// If we have a homing target, make sure it is still valid. If the NPC dies or moves away, we'll want to find a new target
+			if (HomingTarget != null && !IsValidTarget(HomingTarget)) {
+				HomingTarget = null;
+			}
 
-				// Using squared values in distance checks will let us skip square root calculations, drastically improving this method's speed.
-				float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
+			// If we don't have a target, don't adjust trajectory
+			if (HomingTarget == null)
+				return;
 
-				// Loop through all NPCs
-				foreach (var target in Main.ActiveNPCs) {
-					// Check if NPC able to be targeted. 
-					if (IsValidTarget(target)) {
-						// The DistanceSquared function returns a squared distance between 2 points, skipping relatively expensive square root calculations
-						float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, Projectile.Center);
+			// If found, we rotate the projectile velocity in the direction of the target.
+			// We only rotate by 3 degrees an update to give it a smooth trajectory. Increase the rotation speed here to make tighter turns
+			float length = Projectile.velocity.Length();
+			float targetAngle = Projectile.AngleTo(HomingTarget.Center);
+			Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(30)).ToRotationVector2() * length;
+			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
+		}
 
-						// Check if it is within the radius
-						if (sqrDistanceToTarget < sqrMaxDetectDistance) {
-							sqrMaxDetectDistance = sqrDistanceToTarget;
-							closestNPC = target;
-						}
+		// Finding the closest NPC to attack within maxDetectDistance range
+		// If not found then returns null
+		public NPC FindClosestNPC(float maxDetectDistance) {
+			NPC closestNPC = null;
+
+			// Using squared values in distance checks will let us skip square root calculations, drastically improving this method's speed.
+			float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
+
+			// Loop through all NPCs
+			foreach (var target in Main.ActiveNPCs) {
+				// Check if NPC able to be targeted. 
+				if (IsValidTarget(target)) {
+					// The DistanceSquared function returns a squared distance between 2 points, skipping relatively expensive square root calculations
+					float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, Projectile.Center);
+
+					// Check if it is within the radius
+					if (sqrDistanceToTarget < sqrMaxDetectDistance) {
+						sqrMaxDetectDistance = sqrDistanceToTarget;
+						closestNPC = target;
 					}
 				}
-
-				return closestNPC;
 			}
 
-			public bool IsValidTarget(NPC target) {
-				// This method checks that the NPC is:
-				// 1. active (alive)
-				// 2. chaseable (e.g. not a cultist archer)
-				// 3. max life bigger than 5 (e.g. not a critter)
-				// 4. can take damage (e.g. moonlord core after all it's parts are downed)
-				// 5. hostile (!friendly)
-				// 6. not immortal (e.g. not a target dummy)
-				// 7. doesn't have solid tiles blocking a line of sight between the projectile and NPC
-				return target.CanBeChasedBy() && Collision.CanHit(Projectile.Center, 1, 1, target.position, target.width, target.height);
-			}
+			return closestNPC;
+		}
+
+		public bool IsValidTarget(NPC target) {
+			return target.CanBeChasedBy();
+		}
 			
     }
 }
