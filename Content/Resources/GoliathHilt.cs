@@ -23,7 +23,7 @@ namespace DestroyerTest.Content.Resources
 			Item.height = 16;
 			Item.value = 120; // The cost of the item in copper coins. (1 = 1 copper, 100 = 1 silver, 1000 = 1 gold, 10000 = 1 platinum)
 			Item.maxStack = 1;
-            Item.rare = ModContent.RarityType<GoliathRarity>();
+            Item.rare = ModContent.RarityType<VesperRarity>();
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.

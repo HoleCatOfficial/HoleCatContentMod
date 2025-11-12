@@ -8,10 +8,10 @@ using DestroyerTest.Content.Resources;
 
 using DestroyerTest.Rarity;
 
-namespace DestroyerTest.Content.Equips.HeroSet
+namespace DestroyerTest.Content.Equips.MalakhimSet
 {
 	[AutoloadEquip(EquipType.Wings)]
-	public class HeroWings : ModItem
+	public class MalakhimWings : ModItem
 	{
 		public override void SetStaticDefaults()
 		{
@@ -19,20 +19,19 @@ namespace DestroyerTest.Content.Equips.HeroSet
 			// Fly time: 180 ticks = 3 seconds
 			// Fly speed: 9
 			// Acceleration multiplier: 2.5
-			ArmorIDs.Wing.Sets.Stats[Item.wingSlot] = new WingStats(180, 16f, 0.5f);
+			ArmorIDs.Wing.Sets.Stats[Item.wingSlot] = new WingStats(120, 5f, 1.4f);
 		}
 
 		public override void SetDefaults()
 		{
-			Item.width = 40;
-			Item.height = 36;
+			Item.width = 32;
+			Item.height = 34;
 			Item.value = 10000;
-			Item.rare = ModContent.RarityType<GoliathRarity>(); // The rarity of the item
+			Item.rare = ModContent.RarityType<VesperRarity>(); // The rarity of the item
 			Item.accessory = true;
 		}
 
-		public override void VerticalWingSpeeds(Player player, ref float ascentWhenFalling, ref float ascentWhenRising,
-			ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend)
+		public override void VerticalWingSpeeds(Player player, ref float ascentWhenFalling, ref float ascentWhenRising, ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend)
 		{
 			ascentWhenFalling = 3.0f; // Falling glide speed
 			ascentWhenRising = 3.0f; // Rising speed

@@ -713,6 +713,8 @@ namespace DestroyerTest.Content.Entities
                     {
                         NPC.dontTakeDamage = true;
                         ShouldCenterCameraOnNPC = true;
+                        player.channel = false;
+                        player.moveSpeed *= 0;
                         if (SpawnCount <= 0)
                         {
                             SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/RoseSpawnIdle"));
@@ -1628,54 +1630,85 @@ namespace DestroyerTest.Content.Entities
 
     public class NightmareRoseCameraModification : ModSystem
     {
-        private Vector2 camPos; 
+        private Vector2 camPos;
         private bool hasCamPos = false;
 
         public override void ModifyScreenPosition()
         {
+            if (Main.dedServ)
+                return;
+
             DTConfig cfg = ModContent.GetInstance<DTConfig>();
-            if (Main.dedServ) return;
-            if (!cfg.DragCamera) return;
+            if (!cfg.DragCamera)
+                return;
 
-            // initialize our camPos the first time
-            if (!hasCamPos) { camPos = Main.screenPosition; hasCamPos = true; }
-
-            Vector2 target;
-            if (NightmareRoseBoss.ShouldCenterCameraOnNPC &&
-                TryGetBoss(out NPC boss))
+            if (!hasCamPos)
             {
-                target = boss.Center - new Vector2(Main.screenWidth * 0.5f, Main.screenHeight * 0.5f);
+                camPos = Main.screenPosition;
+                hasCamPos = true;
+            }
+
+            Vector2 screenHalf = new Vector2(Main.screenWidth * 0.5f, Main.screenHeight * 0.5f);
+            Vector2 playerCenter = Main.LocalPlayer.Center;
+
+            bool anyBossActive = IsAnyBossActive();
+
+            // initialize to default to silence compiler warnings
+            NPC nightmareBoss = default!;
+            bool hasNightmareBoss = NightmareRoseBoss.ShouldCenterCameraOnNPC && TryGetNightmareRoseBoss(out nightmareBoss);
+
+            Vector2 target = hasNightmareBoss
+                ? nightmareBoss.Center - screenHalf
+                : playerCenter - screenHalf;
+
+            float distToPlayer = Vector2.Distance(camPos + screenHalf, playerCenter);
+
+            if (!anyBossActive && distToPlayer > Main.screenWidth)
+            {
+                // snap if too far and no boss is active
+                camPos = playerCenter - screenHalf;
             }
             else
             {
-                target = Main.LocalPlayer.Center - new Vector2(Main.screenWidth * 0.5f, Main.screenHeight * 0.5f);
+                // smooth follow
+                float lerpFactor = anyBossActive ? 0.08f : 0.12f;
+                camPos = Vector2.Lerp(camPos, target, lerpFactor);
             }
-
-            if (camPos.Distance(Main.LocalPlayer.Center) > 40)
-            {
-                camPos = Main.LocalPlayer.Center - new Vector2(Main.screenWidth * 0.5f, Main.screenHeight * 0.5f);
-            }
-
-            camPos = Vector2.Lerp(camPos, target, 0.1f);
 
             Main.screenPosition = camPos;
         }
 
-        private bool TryGetBoss(out NPC boss)
+        private bool IsAnyBossActive()
         {
             for (int i = 0; i < Main.maxNPCs; i++)
             {
-                if (Main.npc[i].active &&
-                    Main.npc[i].type == ModContent.NPCType<NightmareRoseBoss>())
+                NPC n = Main.npc[i];
+                if (n != null && n.active && n.boss)
+                    return true;
+            }
+            return false;
+        }
+
+        private bool TryGetNightmareRoseBoss(out NPC boss)
+        {
+            for (int i = 0; i < Main.maxNPCs; i++)
+            {
+                NPC n = Main.npc[i];
+                if (n.active && n.type == ModContent.NPCType<NightmareRoseBoss>())
                 {
-                    boss = Main.npc[i];
+                    boss = n;
                     return true;
                 }
             }
+
             boss = default;
             return false;
         }
     }
+
+
+
+
 
 
     public class NightmareRoseBCL : ModSystem

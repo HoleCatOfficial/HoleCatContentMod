@@ -33,7 +33,7 @@ namespace DestroyerTest.Content.Equips.SaviorSet
 			Item.width = 18;
 			Item.height = 18; 
 			Item.value = Item.sellPrice(gold: 1);
-			Item.rare = ModContent.RarityType<GoliathRarity>(); // The rarity of the item
+			Item.rare = ModContent.RarityType<VesperRarity>(); // The rarity of the item
 			Item.defense = 12;
 			// Now, in case you might be asking "Why use that special default when you can just copy what the original Hallowed Plate Mail does?"
 			// Unfortunately for you, while cloning the defaults does load a cape on the back, it loads the Hallowed Armor cape, and replaces your body armor textures with the Hallowed Plate Mail Textures.

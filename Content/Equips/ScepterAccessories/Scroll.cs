@@ -336,7 +336,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
                             heading.Normalize();
                             heading *= velocity.Length();
                             heading.Y += Main.rand.Next(-40, 41) * 0.02f;
-                            Projectile Star = Projectile.NewProjectileDirect(Player.GetSource_ItemUse(item), position2, heading, ProjectileID.StarWrath, damage / 2, knockback, Player.whoAmI, 0f, ceilingLimit);
+                            Projectile Star = Projectile.NewProjectileDirect(Player.GetSource_ItemUse(item), position2, heading, ProjectileID.StarWrath, damage / 8, knockback, Player.whoAmI, 0f, ceilingLimit);
                             Star.timeLeft = 600;
                         }
                     }
@@ -379,7 +379,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
                                     Player.Center,
                                     velocity,
                                     ProjectileID.WeatherPainShot,
-                                    damage / 2,
+                                    damage / 4,
                                     knockback,
                                     Player.whoAmI
                                 );

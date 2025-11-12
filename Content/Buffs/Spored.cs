@@ -47,15 +47,18 @@ namespace DestroyerTest.Content.Buffs
 			if (Spored)
 			{
                 Dust.NewDust(npc.position, npc.width, npc.height, DustID.GlowingMushroom, 0.0f, 0.0f, 0, default, 1);
-                if (Main.rand.NextBool(4))
-                {
-                    for (int g = 0; g < 8; g++)
-                    {
-                        PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), npc.Center, Main.rand.NextVector2Circular(3, 3), new Color(63, 66, 207) * 0.5f, 1f);
-                        PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), npc.Center, Main.rand.NextVector2Circular(3, 3), new Color(63, 66, 207), 0.5f);
-                    }
-                }
-                npc.velocity.X *= 0.35f;
+				if (Main.rand.NextBool(4))
+				{
+					for (int g = 0; g < 8; g++)
+					{
+						PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), npc.Center, Main.rand.NextVector2Circular(3, 3), new Color(63, 66, 207) * 0.5f, 1f);
+						PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), npc.Center, Main.rand.NextVector2Circular(3, 3), new Color(63, 66, 207), 0.5f);
+					}
+				}
+				if (!npc.boss)
+				{
+					npc.velocity.X *= 0.95f;
+				}
                 npc.AddBuff(BuffID.Confused, 240);
 			}
             base.AI(npc);

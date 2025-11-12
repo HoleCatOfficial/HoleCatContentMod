@@ -3386,6 +3386,26 @@ Items: {
 		Tooltip: Summons a miniature Tenebrous Slinger to follow you around.
 		DisplayName: Shimmering Cable
 	}
+
+	MalakhimChaplet: {
+		DisplayName: Mal'akhim Chaplet
+		Tooltip: ""
+		SetBonus:
+			'''
+			Scepter Class projectiles have a chance to spawn homing vesper darts as they travel.
+			Getting hit grants a little over 1 seconds of immunity.
+			'''
+	}
+
+	MalakhimPlates: {
+		DisplayName: Mal'akhim Plates
+		Tooltip: ""
+	}
+
+	MalakhimWings: {
+		DisplayName: Mal'akhim Wings
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
@@ -3812,6 +3832,7 @@ Projectiles: {
 	ShadeThrasherFriendlyBody1.DisplayName: Shade Thrasher Friendly Body1
 	FrozenFireball.DisplayName: Frozen Fireball
 	FungusSporeExplosion.DisplayName: Fungus Spore Explosion
+	VesperDart.DisplayName: Vesper Dart
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.
@@ -4379,8 +4400,8 @@ Configs: {
 		}
 
 		DragCamera: {
-			Tooltip: ""
-			Label: Drag Camera
+			Tooltip: If enabled, the camera will lag behind the player a bit when they move. This can mess with things drawn directly to the screen that expect the player to be at the center.
+			Label: Use reworked camera
 		}
 	}
 

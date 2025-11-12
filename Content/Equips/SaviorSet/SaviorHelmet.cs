@@ -32,7 +32,7 @@ namespace DestroyerTest.Content.Equips.SaviorSet
 			Item.width = 18; // Width of the item
 			Item.height = 18; // Height of the item
 			Item.value = Item.sellPrice(gold: 1); // How many coins the item is worth
-			Item.rare = ModContent.RarityType<GoliathRarity>(); // The rarity of the item
+			Item.rare = ModContent.RarityType<VesperRarity>(); // The rarity of the item
 			Item.defense = 8; // The amount of defense the item will give when equipped
 		}
 
