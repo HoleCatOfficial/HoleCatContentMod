@@ -30,13 +30,13 @@ namespace DestroyerTest.Content.Projectiles
             Player player = Main.player[Projectile.owner];
             Projectile.rotation += 0.4f * Projectile.direction;
 
-            if (Main.rand.NextBool(7))
+            if (Main.rand.NextBool(12))
             {
                 for (int r = 0; r < 5; r++)
                 {
                     Vector2 Offset = Projectile.Center + new Vector2(10, 0).RotatedByRandom(MathHelper.TwoPi);
                     Vector2 shootdir = Offset - Projectile.Center;
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, shootdir * 0.2f, ProjectileID.ThunderStaffShot, 9, 0, Projectile.owner);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, shootdir * 0.2f, ProjectileID.ThunderStaffShot, (int)(Projectile.damage * 0.15), 0, Projectile.owner);
                 }
             }
             if (player.channel && player.HeldItem.type == ModContent.ItemType<ThunderScepter>())

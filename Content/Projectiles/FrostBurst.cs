@@ -1,8 +1,11 @@
+using System.Collections.Generic;
+using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Particles;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -31,85 +34,91 @@ namespace DestroyerTest.Content.Projectiles
 
 		public override void SetDefaults()
 		{
-			Projectile.width = 10; // The width of projectile hitbox
-			Projectile.height = 10; // The height of projectile hitbox
+			Projectile.width = 10;
+			Projectile.height = 10; 
 
-			Projectile.DamageType = DamageClass.Melee; // What type of damage does this projectile affect?
-			Projectile.friendly = true; // Can the projectile deal damage to enemies?
-			Projectile.hostile = false; // Can the projectile deal damage to the player?
-			Projectile.ignoreWater = true; // Does the projectile's speed be influenced by water?
-			Projectile.light = 1f; // How much light emit around the projectile
-			Projectile.timeLeft = 600; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
-			Projectile.netUpdate = true;
+			Projectile.DamageType = DamageClass.Melee;
+			Projectile.friendly = true;
+			Projectile.hostile = false;
+			Projectile.ignoreWater = true;
+			Projectile.light = 1f;
+			Projectile.timeLeft = 600;
+			Projectile.tileCollide = false;
 		}
 
-		public int trailLength = 10; // Adjust for desired effect
 		public override bool PreDraw(ref Color lightColor)
 		{
 			lightColor = Color.SkyBlue;
+
 			SpriteBatch spriteBatch = Main.spriteBatch;
 			Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
 
-			// Draw the base projectile using the default drawing system (Deferred)
-			Main.EntitySpriteDraw(
-				projectileTexture,
-				Projectile.Center - Main.screenPosition,
-				null,
-				lightColor, 
-				Projectile.rotation,
-				projectileTexture.Size() / 2,
-				Projectile.scale,
-				SpriteEffects.None,
-				0
-			);
+			Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
-			// Glow effect (Immediate drawing with Additive blending)
-			spriteBatch.End();
-			spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+			Opus.DrawGlowOnProj(Projectile, lightColor, false, 0);
 
-			Texture2D glowTexture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/Shine1").Value;
+			for (int i = 0; i < TrailPositions.Count; i++)
+			{
+				float progress = i / (float)TrailLength;
+				float scale = MathHelper.Lerp(0.15f, 0.0005f, progress);
+				Color color = lightColor;
+
+				Main.EntitySpriteDraw(
+					DTAssetLib.FeatheredCircle.Value,
+					TrailPositions[i] - Main.screenPosition,
+					null,
+					color,
+					Projectile.rotation,
+					DTAssetLib.FeatheredCircle.Value.Size() / 2,
+					scale,
+					SpriteEffects.None,
+					0
+				);
+			}
+
 			Main.EntitySpriteDraw(
-				glowTexture,
+				DTAssetLib.FeatheredCircle.Value,
 				Projectile.Center - Main.screenPosition,
 				null,
 				lightColor,
 				Projectile.rotation,
-				glowTexture.Size() / 2,
-				0.2f * Projectile.scale,
+				DTAssetLib.FeatheredCircle.Value.Size() / 2,
+				0.15f,
 				SpriteEffects.None,
 				0
 			);
 
-			// Now, render the **low-opacity red TRAIL** (Immediate drawing)
-			Texture2D longtrailTexture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/Trail2").Value;
-			Vector2 trailOrigin = new Vector2(longtrailTexture.Width / 2, longtrailTexture.Height / 2);
+			Opus.ReturnToDefaultDrawing(spriteBatch);
 
-			for (int i = 0; i < trailLength && i < Projectile.oldPos.Length; i++)
-			{
-				float fade = (float)(trailLength - i) / trailLength;
-				Color trailColor = lightColor * fade * 0.3f;
-				trailColor.A = (byte)(fade * 100); // Transparency blending
-
-				Vector2 drawPosition = Projectile.oldPos[i] + (Projectile.Size / 4) - Main.screenPosition;
-				float scaleFactor = 0.1f; // Adjust size of the trail
-				Main.EntitySpriteDraw(longtrailTexture, drawPosition, null, trailColor, Projectile.rotation, trailOrigin, (Projectile.scale * fade) * scaleFactor, SpriteEffects.None, 0);
-			}
-
-			// Restore the deferred mode (for the next drawing of things)
-			spriteBatch.End();
-			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-
-			return false; // Let the default system handle the base projectile drawing
+			return false;
 		}
 
-		// Custom AI
-		public override void AI() {
+        public override bool? CanHitNPC(NPC target)
+        {
+            return DelayTimer >= 15;
+        }
+
+		public List<Vector2> TrailPositions = new();
+		public List<float> TrailRotations = new();
+		private const int TrailLength = 40;
+		
+		public override void AI()
+		{
+			TrailPositions.Insert(0, Projectile.Center);
+			TrailRotations.Insert(0, Projectile.rotation);
+
+			while (TrailPositions.Count > TrailLength)
+				TrailPositions.RemoveAt(TrailPositions.Count - 1);
+			while (TrailRotations.Count > TrailLength)
+				TrailRotations.RemoveAt(TrailRotations.Count - 1);
+
 			Lighting.AddLight(Projectile.Center, Color.SkyBlue.ToVector3() * 1.0f);
-            if (Main.rand.NextBool(4)) // 33% chance per tick
-            {
-            Dust dust = Dust.NewDustPerfect(Projectile.Center, DustID.Frost, Projectile.velocity * 0.2f, 100, default, 2.0f);
-            dust.noGravity = true;
-            }
+			
+			if (DelayTimer < 15)
+			{
+				DelayTimer += 1;
+				return;
+			}
 			
 			float maxDetectRadius = 400f; // The maximum radius at which a projectile can detect a target
 
@@ -127,29 +136,19 @@ namespace DestroyerTest.Content.Projectiles
 			if (HomingTarget == null)
 				return;
 
-			// If found, we rotate the projectile velocity in the direction of the target.
-			// We only rotate by 3 degrees an update to give it a smooth trajectory. Increase the rotation speed here to make tighter turns
 			float length = Projectile.velocity.Length();
 			float targetAngle = Projectile.AngleTo(HomingTarget.Center);
-			Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(3)).ToRotationVector2() * length;
-            Projectile.velocity *= 1.006f;
-			Projectile.velocity *= 1.02f; // Adjust this multiplier to control the speed increase
+			Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(10)).ToRotationVector2() * length;
 			Projectile.rotation = Projectile.velocity.ToRotation();
 		}
 
-		// Finding the closest NPC to attack within maxDetectDistance range
-		// If not found then returns null
 		public NPC FindClosestNPC(float maxDetectDistance) {
 			NPC closestNPC = null;
 
-			// Using squared values in distance checks will let us skip square root calculations, drastically improving this method's speed.
 			float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
 
-			// Loop through all NPCs
 			foreach (var target in Main.ActiveNPCs) {
-				// Check if NPC able to be targeted. 
 				if (IsValidTarget(target)) {
-					// The DistanceSquared function returns a squared distance between 2 points, skipping relatively expensive square root calculations
 					float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, Projectile.Center);
 
 					// Check if it is within the radius
@@ -164,15 +163,7 @@ namespace DestroyerTest.Content.Projectiles
 		}
 
 		public bool IsValidTarget(NPC target) {
-			// This method checks that the NPC is:
-			// 1. active (alive)
-			// 2. chaseable (e.g. not a cultist archer)
-			// 3. max life bigger than 5 (e.g. not a critter)
-			// 4. can take damage (e.g. moonlord core after all it's parts are downed)
-			// 5. hostile (!friendly)
-			// 6. not immortal (e.g. not a target dummy)
-			// 7. doesn't have solid tiles blocking a line of sight between the projectile and NPC
-			return target.CanBeChasedBy() && Collision.CanHit(Projectile.Center, 1, 1, target.position, target.width, target.height);
+			return target.CanBeChasedBy();
 		}
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 			Player player = Main.player[Main.myPlayer];  // Accessing the current player

@@ -838,6 +838,19 @@ namespace DestroyerTest.Common
             {
                 itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<ThunderScepter>(), 8, 1, 1));
             }
+            if (item.type == ItemID.WoodenCrate || item.type == ItemID.WoodenCrateHard)
+            {
+                itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<ThunderScepter>(), 8, 1, 1));
+            }
+            if (item.type == ItemID.FloatingIslandFishingCrate || item.type == ItemID.FloatingIslandFishingCrateHard)
+            {
+                itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<StarScroll>(), 8, 1, 1));
+                itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<TurbulenceScroll>(), 12, 1, 1));
+            }
+            if (item.type == ItemID.LavaCrate || item.type == ItemID.LavaCrateHard)
+            {
+                itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<MalevolenceMantra>(), 4, 1, 1));
+            }
         }
 
         private static bool CheckIfAtleastOneWithin(IItemDropRule[] rules, params int[] items)

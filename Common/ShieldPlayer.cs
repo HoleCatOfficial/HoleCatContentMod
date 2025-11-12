@@ -208,17 +208,8 @@ namespace DestroyerTest.Common
                 {
                     SoundEngine.PlaySound(SoundID.Unlock with { Pitch = -2 }, Player.Center);
 
-                    Player.HurtInfo Steal = new Player.HurtInfo()
-                    {
-                        Damage = RechargeHealthTax,
-                        HitDirection = 0,
-                        Dodgeable = false,
-                        SoundDisabled = true,
-                        Knockback = 0,
-                        DamageSource = PlayerDeathReason.ByCustomReason(DeathMSGs[Main.rand.Next(DeathMSGs.Length)])
-                    };
-
-                    Player.Hurt(Steal, quiet: true);
+                    PlayerDeathReason deathReason = PlayerDeathReason.ByCustomReason(DeathMSGs[Main.rand.Next(DeathMSGs.Length)]);
+                    Player.Hurt(deathReason, RechargeHealthTax, 0, false, true, -1, false);
                     Durability += RechargeHealthTax;
                 }
 

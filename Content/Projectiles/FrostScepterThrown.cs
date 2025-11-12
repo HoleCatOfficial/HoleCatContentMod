@@ -40,7 +40,7 @@ namespace DestroyerTest.Content.Projectiles
                         Projectile.Center,
                         velocity,
                         ProjectileID.IceBolt,
-                        (int)(Projectile.damage * 0.5f),
+                        (int)(Projectile.damage * 0.15f),
                         (int)(Projectile.knockBack * 0.5f),
                         Projectile.owner
                     );

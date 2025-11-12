@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Particles;
+using DestroyerTest.Rarity.Scepter;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
@@ -166,6 +167,30 @@ namespace DestroyerTest.Common
             PRTLoader.GetParticleID<BlackFire6>(),
             PRTLoader.GetParticleID<BlackFire7>()
         };
+
+        public static int GetScepterArmorSellPricePerRarity(int rarity)
+        {
+            switch (rarity)
+            {
+                case var _ when rarity == ModContent.RarityType<PearlRarity>():
+                    return Item.sellPrice(0, 0, 4, 65);
+
+                case var _ when rarity == ModContent.RarityType<PaleFuchsiaRarity>():
+                    return Item.sellPrice(0, 2, 8, 65);
+
+                case var _ when rarity == ModContent.RarityType<WineRarity>():
+                    return Item.sellPrice(0, 4, 12, 85);
+
+                case var _ when rarity == ModContent.RarityType<CerisePinkRarity>():
+                    return Item.sellPrice(0, 12, 36, 85);
+
+                case var _ when rarity == ModContent.RarityType<IncarnadineRarity>():
+                    return Item.sellPrice(1, 24, 60, 85);
+
+                default:
+                    return -1;
+            }
+        }
     }
 
     public class DTPlayerUtil : ModPlayer
