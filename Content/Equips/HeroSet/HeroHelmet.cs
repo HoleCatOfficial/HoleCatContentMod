@@ -37,8 +37,7 @@ namespace DestroyerTest.Content.Equips.HeroSet
 		}
 
         public override void UpdateEquip(Player player) {
-            player.GetDamage(DamageClass.Melee) += 0.12f; // 12% more melee damage
-			
+            player.GetDamage(DamageClass.Melee) += 0.12f;
 		}
 
 		// IsArmorSet determines what armor pieces are needed for the setbonus to take effect
@@ -47,62 +46,16 @@ namespace DestroyerTest.Content.Equips.HeroSet
 		}
 
 		// UpdateArmorSet allows you to give set bonuses to the armor.
-		public override void UpdateArmorSet(Player player) {
-			ParticleSpawnTimer++; // Increment the timer each frame, used to control projectile spawn timing
-			player.addDPS(25); // Increase dealt damage for all weapon classes by 25%
-            player.moveSpeed *= 0.75f;
-			bool isHoldingGoliath = player.HeldItem.type == ModContent.ItemType<Goliath>();
-			bool isHoldingGargantua = player.HeldItem.type == ModContent.ItemType<Gargantua>();
-
-			if ((isHoldingGoliath || isHoldingGargantua) && ParticleSpawnTimer > 60) {
-				PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRing>(), player.Center, Vector2.Zero, Color.SkyBlue, 1);
-				ParticleSpawnTimer = 0; // Reset the timer after spawning the projectile
-			}
-		}
-		public override void UpdateAccessory(Player player, bool hideVisual)
+		public override void UpdateArmorSet(Player player)
 		{
-			HeroHelmetPlayer modPlayer = player.GetModPlayer<HeroHelmetPlayer>();
-			modPlayer.HasHeroHelmet = true;  // Set a flag indicating the helmet is equipped
+			ParticleSpawnTimer++;
+			player.addDPS(25);
+			player.moveSpeed *= 0.75f;
 		}
-	
 	}
 	public class HeroHelmetPlayer : ModPlayer
     {
-		public bool HasHeroHelmet;
-		public bool IsHeroHelmetGuarding;
-
-		public override void ResetEffects()
-		{
-			HasHeroHelmet = false;
-			IsHeroHelmetGuarding = false;
-		}
-        public override void ProcessTriggers(TriggersSet triggersSet)
-				{
-					if (DestroyerTestMod.HeroHelmetKeybind.JustPressed && Player.GetModPlayer<HeroHelmetPlayer>().HasHeroHelmet)
-					{
-						HeroHelmetPlayer modPlayer = Player.GetModPlayer<HeroHelmetPlayer>();
-						modPlayer.IsHeroHelmetGuarding = !modPlayer.IsHeroHelmetGuarding;
-
-						SoundStyle toggleSound = new SoundStyle($"DestroyerTest/Assets/Audio/HeroHelmetToggle");
-						SoundEngine.PlaySound(toggleSound);
-
-						if (modPlayer.IsHeroHelmetGuarding)
-						{
-							Player.head = HeroHelmetHeadSlots.Guarding;
-							Player.statDefense += 4;
-						}
-						else
-						{
-							Player.head = HeroHelmetHeadSlots.Default;
-							Player.statDefense -= 4;
-						}
-					}
-				}
+        
     }
-		public static class HeroHelmetHeadSlots
-		{
-			public static int Default => ModContent.GetModHeadSlot("DestroyerTest/Content/Equips/HeroSet/HeroHelmet_Head");
-			public static int Guarding => ModContent.GetModHeadSlot("DestroyerTest/Content/Equips/HeroSet/HeroHelmetGuarding_Head");
-		}
 
 }

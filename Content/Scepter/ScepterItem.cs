@@ -48,8 +48,7 @@ namespace DestroyerTest.Content.Scepter
             Item.height = Height;
             Item.value = Item.sellPrice(gold: 1) + AdditiveValue;
             Item.rare = Rarity;
-            Item.useTime = 40;
-            Item.useAnimation = 40;
+            
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.autoReuse = true;
             Item.DamageType = ModContent.GetInstance<ScepterClass>();
@@ -126,6 +125,8 @@ namespace DestroyerTest.Content.Scepter
             Item.channel = ChannelingDuringShoot;
             Item.damage = ShootDMG;
             Item.crit = ShootCrit;
+            Item.useTime = 40;
+            Item.useAnimation = 40;
             Item.UseSound = ShootSound;
             Item.shootSpeed = 10f;
             Item.noUseGraphic = false;
@@ -137,6 +138,8 @@ namespace DestroyerTest.Content.Scepter
             Item.channel = ChannelingDuringThrow;
             Item.damage = ThrowDMG;
             Item.crit = ThrowCrit;
+            Item.useTime = 100;
+            Item.useAnimation = 40;
             Item.UseSound = ThrowSound;
             Item.shootSpeed = ThrowVelocity;
             Item.noUseGraphic = true;

@@ -4377,6 +4377,11 @@ Configs: {
 			Tooltip: Shows a massive advertisement for the new /bug command for bug reporting.
 			Label: Show Bug Command Message
 		}
+
+		DragCamera: {
+			Tooltip: ""
+			Label: Drag Camera
+		}
 	}
 
 	DTOptimizationsConfig: {

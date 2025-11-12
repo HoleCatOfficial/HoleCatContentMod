@@ -1628,12 +1628,14 @@ namespace DestroyerTest.Content.Entities
 
     public class NightmareRoseCameraModification : ModSystem
     {
-        private Vector2 camPos; // our own camera position
+        private Vector2 camPos; 
         private bool hasCamPos = false;
 
         public override void ModifyScreenPosition()
         {
+            DTConfig cfg = ModContent.GetInstance<DTConfig>();
             if (Main.dedServ) return;
+            if (!cfg.DragCamera) return;
 
             // initialize our camPos the first time
             if (!hasCamPos) { camPos = Main.screenPosition; hasCamPos = true; }
@@ -1642,19 +1644,20 @@ namespace DestroyerTest.Content.Entities
             if (NightmareRoseBoss.ShouldCenterCameraOnNPC &&
                 TryGetBoss(out NPC boss))
             {
-                target = boss.Center - new Vector2(Main.screenWidth * 0.5f,
-                                                Main.screenHeight * 0.5f);
+                target = boss.Center - new Vector2(Main.screenWidth * 0.5f, Main.screenHeight * 0.5f);
             }
             else
             {
-                target = Main.LocalPlayer.Center - new Vector2(Main.screenWidth * 0.5f,
-                                                            Main.screenHeight * 0.5f);
+                target = Main.LocalPlayer.Center - new Vector2(Main.screenWidth * 0.5f, Main.screenHeight * 0.5f);
             }
 
-            // do the smoothing on our own state
+            if (camPos.Distance(Main.LocalPlayer.Center) > 40)
+            {
+                camPos = Main.LocalPlayer.Center - new Vector2(Main.screenWidth * 0.5f, Main.screenHeight * 0.5f);
+            }
+
             camPos = Vector2.Lerp(camPos, target, 0.1f);
 
-            // tell tModLoader where the camera should be this frame
             Main.screenPosition = camPos;
         }
 
