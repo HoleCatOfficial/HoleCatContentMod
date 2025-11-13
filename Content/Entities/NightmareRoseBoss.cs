@@ -1963,6 +1963,7 @@ namespace DestroyerTest.Content.Entities
     public class NightmareeRoseBackgroundProj : ModProjectile
     {
         public override string Texture => "DestroyerTest/Content/Extras/FadeLine";
+        private Asset<Texture2D> WindTex;
         public override void SetDefaults()
         {
             Projectile.width = 10;
@@ -1975,6 +1976,7 @@ namespace DestroyerTest.Content.Entities
             Projectile.tileCollide = false;
             Projectile.ignoreWater = true;
             Projectile.hide = true;
+            WindTex = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/EvilBossWind", AssetRequestMode.AsyncLoad);
         }
 
         public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
@@ -1998,8 +2000,6 @@ namespace DestroyerTest.Content.Entities
 
         public override bool PreDraw(ref Color lightColor)
         {
-            Texture2D BGTex = DTAssetLib.TilableNoise(8).Value;
-            Texture2D BGTex2 = DTAssetLib.TilableNoise(8).Value;
             SpriteBatch spriteBatch = Main.spriteBatch;
             DTUtils Utility = new DTUtils();
             DTOptimizationsConfig optcfg = ModContent.GetInstance<DTOptimizationsConfig>();
@@ -2017,41 +2017,41 @@ namespace DestroyerTest.Content.Entities
                 float scrollSpeedX1 = 600f;
                 float scrollSpeedY1 = 30f;
 
-                float scrollOffsetX1 = (time * scrollSpeedX1) % BGTex.Width;
-                float scrollOffsetY1 = (time * scrollSpeedY1) % BGTex.Height;
+                float scrollOffsetX1 = (time * scrollSpeedX1) % WindTex.Value.Width;
+                float scrollOffsetY1 = (time * scrollSpeedY1) % WindTex.Value.Height;
 
                 int screenW = Main.screenWidth;
                 int screenH = Main.screenHeight;
 
                 // --- draw one tile beyond each edge ---
-                float startX = -BGTex.Width;
-                float startY = -BGTex.Height;
-                float endX = screenW + BGTex.Width;
-                float endY = screenH + BGTex.Height;
+                float startX = -WindTex.Value.Width;
+                float startY = -WindTex.Value.Height;
+                float endX = screenW + WindTex.Value.Width;
+                float endY = screenH + WindTex.Value.Height;
 
                 // --- Draw first layer ---
-                for (float x = -scrollOffsetX1 + startX; x < endX; x += BGTex.Width)
+                for (float x = -scrollOffsetX1 + startX; x < endX; x += WindTex.Value.Width)
                 {
-                    for (float y = -scrollOffsetY1 + startY; y < endY; y += BGTex.Height)
+                    for (float y = -scrollOffsetY1 + startY; y < endY; y += WindTex.Value.Height)
                     {
-                        spriteBatch.Draw(BGTex, new Vector2(x, y), null, drawColor, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+                        spriteBatch.Draw(WindTex.Value, new Vector2(x, y), null, drawColor, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
                     }
                 }
 
                 float scrollSpeedX2 = 250f;
                 float scrollSpeedY2 = -60f; // opposite direction for contrast
 
-                float scrollOffsetX2 = (time * scrollSpeedX2) % BGTex2.Width;
-                float scrollOffsetY2 = (time * scrollSpeedY2) % BGTex2.Height;
+                float scrollOffsetX2 = (time * scrollSpeedX2) % WindTex.Value.Width;
+                float scrollOffsetY2 = (time * scrollSpeedY2) % WindTex.Value.Height;
 
                 Color drawColor2 = drawColor * 0.8f; // slightly dimmer to layer properly
 
                 // --- Draw second layer ---
-                for (float x = -scrollOffsetX2 + startX; x < endX; x += BGTex2.Width)
+                for (float x = -scrollOffsetX2 + startX; x < endX; x += WindTex.Value.Width)
                 {
-                    for (float y = -scrollOffsetY2 + startY; y < endY; y += BGTex2.Height)
+                    for (float y = -scrollOffsetY2 + startY; y < endY; y += WindTex.Value.Height)
                     {
-                        spriteBatch.Draw(BGTex2, new Vector2(x, y), null, drawColor2, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+                        spriteBatch.Draw(WindTex.Value, new Vector2(x, y), null, drawColor2, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
                     }
                 }
 

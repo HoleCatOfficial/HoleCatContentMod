@@ -2578,9 +2578,7 @@ Items: {
 			Calls upon the Soul of the Great Wyvern to assist in battle.
 			The wyvern will spin around a ball of energy, firing soul crystals in all directions for 20 seconds.
 			There can only be one in the entire world at any given moment.
-			Master
-
-			-Legendary Weapon-
+			Eternity
 			'''
 	}
 
@@ -2590,6 +2588,11 @@ Items: {
 	}
 
 	BeeHeadress: {
+		SetBonus:
+			'''
+			You release friendly bees when hit.
+			Scepters create bees on attacks, both shooting and throwing.
+			'''
 		Tooltip: ""
 		DisplayName: Bee Headress
 	}
@@ -3086,6 +3089,11 @@ Items: {
 	PetrifiedChaplet: {
 		DisplayName: Petrified Chaplet
 		Tooltip: Wooden armor that has become solid and dense from the constant interplay of flame and frost.
+		SetBonus:
+			'''
+			You are surrounded by a 400 point shield.
+			Shooting Scepters shoots fire and frost blasts as well, which inflict Haepien's Inferno and Blizzard respectively.
+			'''
 	}
 
 	PetrifiedChestplate: {
@@ -3405,6 +3413,16 @@ Items: {
 	MalakhimWings: {
 		DisplayName: Mal'akhim Wings
 		Tooltip: ""
+	}
+
+	ShieldMarkSmall: {
+		Tooltip: ""
+		DisplayName: Shield Mark Small
+	}
+
+	ShieldMarkBig: {
+		Tooltip: ""
+		DisplayName: Shield Mark Big
 	}
 }
 
@@ -4661,7 +4679,14 @@ Achievements: {
 Infernum.NightmareRoseIntroText: NIGHTMARE ROSE
 PitySystem.UsesPity:
 	'''
-	This item implements a pity system.
-	Opening the bag multiple times increases the chances of getting rare items from it, and increases the quantity of normal resource drops from it.
-	Successfully getting a rare drop will reset your pity.
+	[i:DestroyerTest/PityMarkBig] This item implements a pity system.
+	[i:DestroyerTest/PityMarkBig] Opening the bag multiple times increases the chances of getting rare items from it, and increases the quantity of normal resource drops from it.
+	[i:DestroyerTest/PityMarkBig] Successfully getting a rare drop will reset your pity.
+	'''
+ShieldPlayer.ShieldLine:
+	'''
+	[i:DestroyerTest/ShieldMarkBig] This item implements a special shield.
+	[i:DestroyerTest/ShieldMarkBig] These Shields kill harmful projectiles inside their radius and do not protect from NPC contact damage.
+	[i:DestroyerTest/ShieldMarkBig] Shields do not regenerate until they break, and pull from your health to regenerate.
+	[i:DestroyerTest/ShieldMarkBig] Shields have priorities, and will be overridden by ones with higher priorities.
 	'''

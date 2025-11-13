@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.MeleeWeapons;
@@ -64,6 +65,19 @@ namespace DestroyerTest.Content.Equips.PetrifiedSet
 		{
 			player.armorEffectDrawOutlines = true;
 		}
+
+		public override void ModifyTooltips(List<TooltipLine> tooltips)
+		{
+			Item body = new Item();
+			body.SetDefaults(ModContent.ItemType<PetrifiedChestplate>());
+			Item legs = new Item();
+			legs.SetDefaults(ModContent.ItemType<PetrifiedGreaves>());
+			if (IsArmorSet(Item, body, legs))
+			{
+				var pityText = Language.GetText("Mods.DestroyerTest.ShieldPlayer.ShieldLine");
+				tooltips.Add(new TooltipLine(Mod, "ShieldInfo", pityText.Value));
+			}
+		}
 	}
 
 	public class PetrifiedScepterPlayer : ModPlayer
@@ -101,9 +115,9 @@ namespace DestroyerTest.Content.Equips.PetrifiedSet
         {
             NetworkText.FromLiteral($"{Player.name} was sucked dry."),
             NetworkText.FromLiteral($"{Player.name} gave a little too much in return for too little."),
-            NetworkText.FromLiteral($"{Player.name} got folded like a chair."),
+            NetworkText.FromLiteral($"{Player.name} was consumed by fire and frost."),
             NetworkText.FromLiteral($"{Player.name} didnt have it in them to sustain their shield.")
         };
-        public override int RechargeHealthTax => 5;
+        public override int RechargeHealthTax => 25;
     }
 }

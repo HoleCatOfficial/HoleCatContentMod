@@ -68,13 +68,10 @@ namespace DestroyerTest.Content.Scepter
 
 	public class SoV_DROP_NPC : GlobalNPC
 	{
-		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot) {
-
+		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot) 
+        {
 			if (npc.type == NPCID.QueenBee) {
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ScepterOfVespae>(), 5, 1, 1));
-			}
-			if (npc.type == NPCID.Hornet) {
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ScepterOfVespae>(), 100, 1, 1));
 			}
 		}
 	}
