@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Reflection;
 using Hjson;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Terraria;
@@ -19,6 +20,8 @@ using DestroyerTest.Common;
 using ReLogic.Content;
 using DestroyerTest.Content.Equips;
 using Terraria.DataStructures;
+using DestroyerTest.Content.MeleeWeapons;
+using static Terraria.Graphics.FinalFractalHelper;
 
 namespace DestroyerTest
 {
@@ -30,8 +33,6 @@ namespace DestroyerTest
         public static ModKeybind StarBlastKeybind { get; private set; }
         public static ModKeybind HeroHelmetKeybind { get; private set; }
         public static ModKeybind RiftTeleportKeybind { get; private set; }
-
-        public static ModKeybind OpenBookKeybind { get; private set; }
 
         public static ModKeybind ManaBurstKeybind { get; private set; }
         public static ModKeybind TenebrisTeleportKeybind { get; private set; }
@@ -51,7 +52,6 @@ namespace DestroyerTest
             // Divider.
             RiftTeleportKeybind = KeybindLoader.RegisterKeybind(this, "Shadow Tome Teleport", "T");
             // Divider.
-            OpenBookKeybind = KeybindLoader.RegisterKeybind(this, "Open Achievement Book", "M");
             // Divider.
             ManaBurstKeybind = KeybindLoader.RegisterKeybind(this, "Mana Burst", "C");
             // Divider.
@@ -63,7 +63,9 @@ namespace DestroyerTest
             // Divider.
             RouletteTokenCurrencyId = CustomCurrencyManager.RegisterCurrency(new Content.Magic.RouletteToken(ModContent.ItemType<Content.Magic.RouletteTokenItem>(), 99L, "Mods.DestroyerTest.Content.Magic.RouletteToken"));
            
-           
+            var fractalProfiles = (Dictionary<int, FinalFractalProfile>)typeof(Terraria.Graphics.FinalFractalHelper).GetField("_fractalProfiles", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
+			fractalProfiles.Add(ModContent.ItemType<GargantuaZenith>(), new FinalFractalProfile(140f, new Color(255, 0, 0)));
+			fractalProfiles.Add(ModContent.ItemType<Conclusion>(), new FinalFractalProfile(140f, ColorLib.StellarColor));
         }
 
 
@@ -77,12 +79,14 @@ namespace DestroyerTest
             StarBlastKeybind = null;
             HeroHelmetKeybind = null;
             RiftTeleportKeybind = null;
-            OpenBookKeybind = null;
             ManaBurstKeybind = null;
             TenebrisTeleportKeybind = null;
             DeadlyBlossomKeybind = null;
             OilTentacleKeybind = null;
-        
+
+            var fractalProfiles = (Dictionary<int, FinalFractalProfile>)typeof(Terraria.Graphics.FinalFractalHelper).GetField("_fractalProfiles", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
+			fractalProfiles.Remove(ModContent.ItemType<GargantuaZenith>());
+			fractalProfiles.Remove(ModContent.ItemType<Conclusion>());
         }
 
         public static bool EternityIsActive()

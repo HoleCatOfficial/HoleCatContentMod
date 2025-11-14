@@ -3424,6 +3424,11 @@ Items: {
 		Tooltip: ""
 		DisplayName: Shield Mark Big
 	}
+
+	GargantuaZenith: {
+		DisplayName: Gargantua Zenith
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
