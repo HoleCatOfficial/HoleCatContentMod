@@ -19,6 +19,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.Equips.ScepterAccessories;
+using DestroyerTest.Content.Tiles;
 
 namespace DestroyerTest.Content.Consumables
 {
@@ -52,6 +53,7 @@ namespace DestroyerTest.Content.Consumables
             itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<HaepienNodeCharm>(), 24, 1, 1));
             itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<PrimalShards>(), 1, 4, 16));
             itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<IchorScroll>(), 1, 1, 1));
+            itemLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Item_IchorNodeRelic>()));
             itemLoot.Add(ItemDropRule.Common(ItemID.FlaskofIchor, 3, 1, 9));
             itemLoot.Add(ItemDropRule.NotScalingWithLuck(ItemID.Ichor, 2, 20, 60));
             itemLoot.Add(ItemDropRule.Coins(1250, true));

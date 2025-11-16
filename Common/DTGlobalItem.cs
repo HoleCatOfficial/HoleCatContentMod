@@ -838,10 +838,6 @@ namespace DestroyerTest.Common
             {
                 itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<ThunderScepter>(), 8, 1, 1));
             }
-            if (item.type == ItemID.WoodenCrate || item.type == ItemID.WoodenCrateHard)
-            {
-                itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<ThunderScepter>(), 8, 1, 1));
-            }
             if (item.type == ItemID.FloatingIslandFishingCrate || item.type == ItemID.FloatingIslandFishingCrateHard)
             {
                 itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<StarScroll>(), 8, 1, 1));

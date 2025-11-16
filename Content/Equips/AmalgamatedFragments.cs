@@ -1,5 +1,6 @@
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Projectiles.Pets;
+using DestroyerTest.Content.Resources;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
@@ -31,6 +32,15 @@ namespace DestroyerTest.Content.Equips
                 player.AddBuff(Item.buffType, 3600, true);
             }
             return true;
+        }
+
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient<WretchedShards>(9)
+                .AddIngredient<PrimalShards>(9)
+                .Register();
+
         }
 	}
 }

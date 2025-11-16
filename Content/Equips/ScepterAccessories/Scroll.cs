@@ -729,25 +729,24 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
         public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
         {
             base.ModifyNPCLoot(npc, npcLoot);
-            OpusNPCDropHelper DH = new OpusNPCDropHelper();
 
-            if (DH.MoltenLegionEnemiesExclusive.Contains(npc.type))
+            if (OpusNPCDropHelper.MoltenLegionEnemiesExclusive.Contains(npc.type))
             {
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<IncendiaryScroll>(), 8, 1, 1));
             }
-            if (DH.DiabolicFactionEnemiesExclusive.Contains(npc.type))
+            if (OpusNPCDropHelper.DiabolicFactionEnemiesExclusive.Contains(npc.type))
             {
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<DiabolicScroll>(), 8, 1, 1));
             }
-            if (DH.RustedCompanyEnemiesExclusive.Contains(npc.type))
+            if (OpusNPCDropHelper.RustedCompanyEnemiesExclusive.Contains(npc.type))
             {
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<RustyPendant>(), 8, 1, 1));
             }
-            if (DH.MarchingBonesFactionEnemies.Contains(npc.type))
+            if (OpusNPCDropHelper.MarchingBonesFactionEnemies.Contains(npc.type))
             {
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<TemporalGlove>(), 8, 1, 1));
             }
-            if (DH.NecromanticFactionEnemies.Contains(npc.type))
+            if (OpusNPCDropHelper.NecromanticFactionEnemies.Contains(npc.type))
             {
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CurseScroll>(), 8, 1, 1));
             }

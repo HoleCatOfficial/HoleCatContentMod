@@ -3429,6 +3429,21 @@ Items: {
 		DisplayName: Gargantua Zenith
 		Tooltip: ""
 	}
+
+	Item_CursedFlameNodeRelic: {
+		DisplayName: Item_ Cursed Flame Node Relic
+		Tooltip: ""
+	}
+
+	Item_IchorNodeRelic: {
+		DisplayName: Item_ Ichor Node Relic
+		Tooltip: ""
+	}
+
+	DistendedPike: {
+		DisplayName: Distended Pike
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
@@ -3856,6 +3871,8 @@ Projectiles: {
 	FrozenFireball.DisplayName: Frozen Fireball
 	FungusSporeExplosion.DisplayName: Fungus Spore Explosion
 	VesperDart.DisplayName: Vesper Dart
+	DistendedPikeProjectile.DisplayName: Distended Pike Projectile
+	DistendedPikeShard.DisplayName: Distended Pike Shard
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.

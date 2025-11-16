@@ -37,9 +37,8 @@ namespace DestroyerTest.Content.Resources
 	{
 		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
         {
-			OpusNPCDropHelper Drophelper = new OpusNPCDropHelper();
 
-			if (Drophelper.Zombies.Contains(npc.type))
+			if (OpusNPCDropHelper.Zombies.Contains(npc.type))
             {
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<LifeEcho>(), 1, 1, 5));
             }
