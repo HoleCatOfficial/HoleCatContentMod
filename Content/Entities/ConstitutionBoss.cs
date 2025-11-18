@@ -189,7 +189,127 @@ namespace DestroyerTest.Content.Entities
             Minefield,
             TeleStars,
             StellarFlame,
-            LanceSweep
+            LanceSweep,
+
+            // New Attacks
+            
+            Piechart,
+            StarTrace,
+            StellarVolley,
+            DoubleStar,
+            Dash,
+            LanceCross,
+            MinefieldLegacy,
+            StarFall,
+            Constellations
+        }
+
+        /// <summary>
+        /// Runs on classic difficulty and is the easiest. Attacks will use their classic mode variants.
+        /// </summary>
+        /// <param name="Phase2"></param>
+        /// <returns></returns>
+        public List<int> ClassicAI(bool Phase2)
+        {
+            if (!Phase2)
+            {
+                return new List<int> { 0, 1, 18, 15, 1, 19, 15, 0, 20, 19, 0, 17};
+            }
+            else
+            {
+                return new List<int> { 0, 20, 0, 19, 18, 22, 1 };
+            }
+        }
+
+        /// <summary>
+        /// Runs on Expert difficulty. Attacks use Expert Mode Variants, classic mode attacks can also be used.
+        /// </summary>
+        /// <param name="Phase2"></param>
+        /// <returns></returns>
+        public List<int> ExpertAI(bool Phase2)
+        {
+            if (!Phase2)
+            {
+                return new List<int> { 0};
+            }
+            else
+            {
+                return new List<int> { 0 };
+            }
+        }
+
+        /// <summary>
+        /// Runs on master mode difficulty. Attacks can use Classic, Expert, or Master variants.
+        /// </summary>
+        /// <param name="Phase2"></param>
+        /// <returns></returns>
+        public List<int> MasterAI(bool Phase2)
+        {
+            if (!Phase2)
+            {
+                return new List<int> { 0};
+            }
+            else
+            {
+                return new List<int> { 0 };
+            }
+        }
+
+        /// <summary>
+        /// Runs on eternity mode. Attacks can use Classic, Expert, Master, or Eternity variants.
+        /// </summary>
+        /// <param name="Phase2"></param>
+        /// <returns></returns>
+        
+        public List<int> EternityAI(bool Phase2)
+        {
+            if (!Phase2)
+            {
+                return new List<int> { 0};
+            }
+            else
+            {
+                return new List<int> { 0 };
+            }
+        }
+
+        /// <summary>
+        /// A catch-all AI for if the world is Running Masochist (Master + Eternity), A secret seed (such as For the Worthy), or Legendary mode (Master + For the Worthy).
+        /// </summary>
+        /// <param name="Phase2"></param>
+        /// <returns></returns>
+
+        public List<int> AI_LegendaryMasoAndFTW(bool Phase2)
+        {
+            if (!Phase2)
+            {
+                return new List<int> { 0};
+            }
+            else
+            {
+                return new List<int> { 0 };
+            }
+        }
+
+        public int CurrentAI = 0;
+        public void RunAI(List<int> AItoUse)
+        {
+            if (!Main.expertMode && !Main.masterMode && !DestroyerTestMod.EternityIsActive())
+            {
+                AItoUse = ClassicAI(Phase2);
+            }
+            else if (Main.expertMode && !Main.masterMode && !DestroyerTestMod.EternityIsActive())
+            {
+                AItoUse = ExpertAI(Phase2);
+            }
+            else if (Main.expertMode && Main.masterMode && !DestroyerTestMod.EternityIsActive())
+            {
+                
+            }
+            else
+            {
+                
+            }
         }
 
         public int StarDamage = 15;
@@ -994,6 +1114,65 @@ namespace DestroyerTest.Content.Entities
         }
 
         #region Attack Methods
+
+        public void PieChart(int Mode = 0, int NumLances = 3, float Radius = 1000f, int ClassicExpertMasterWaitForLances = 120, int ClassicDelay = 60)
+        {
+            Vector2 ClassicCenter;
+            Vector2[] ExpertCenters = new Vector2[5];
+            if (Mode == 0)
+            {
+                //Classic AI
+
+                //--------------------------------------
+                /*
+                Sets ClassicCenter once.
+                Counts ClassicDelay down to 0.
+                Once ClassicDelay reaches 0, spawn NumLances number of lances equdistantly along the edges facing towards the center.
+                Count down ClassicExperMasterWaitForLances to 0.
+                Once it reaches 0, the attack is complete and the AI state can move to the next index of the AI list.
+
+                During all of this, the NPC's center remains equal to the ClassicCenter
+                */
+                //--------------------------------------
+            }
+            if (Mode == 1)
+            {
+                //Expert AI
+
+                //--------------------------------------
+                /*
+                Sets 5 centers to fill ExpertCenters.
+                Around each Center, run the classic AI.
+                Lances though will have a higher speed modifier set, causing them all to intersect.
+                
+
+                NPC's center is not affected.
+                */
+                //--------------------------------------
+            }
+            if (Mode == 2)
+            {
+                //Master AI
+            }
+            if (Mode == 3)
+            {
+                //Eternity AI
+            }
+            if (Mode == 4)
+            {
+                //Catch-all AI. Hardest / most unfair variation.
+            }
+            if (Mode > 4)
+            {
+                throw new Exception("Difficulty not Recognized. Use 4 for Masochist, Legendary, Death Mode, etc.");
+            }
+        }
+
+
+
+
+
+
 
         /// <summary>
         /// Teleports near the player.

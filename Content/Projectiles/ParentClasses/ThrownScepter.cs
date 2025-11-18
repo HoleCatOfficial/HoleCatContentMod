@@ -9,6 +9,7 @@ using DestroyerTest.Content.Consumables;
 using DestroyerTest.Common;
 using System.IO;
 using OpusLib;
+using Terraria.Graphics.Shaders;
 
 namespace DestroyerTest.Content.Projectiles.ParentClasses
 {
@@ -81,6 +82,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 				Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
 				DTUtils Utility = new DTUtils();
 
+
                 Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
                 if (returning)
@@ -93,6 +95,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
                 }
                     
                 Main.EntitySpriteDraw(DTAssetLib.BloomRing.Value, Projectile.Center - Main.screenPosition, null, lightColor * 0.4f, Projectile.rotation, DTAssetLib.BloomRing.Value.Size() / 2, 0.4f * Projectile.scale, SpriteEffects.None, 0);
+                /*
                 var Trail = DTAssetLib.Trail(2).Value;
 				Vector2 trailOrigin = new Vector2(Trail.Width / 2, Trail.Height / 2);
 
@@ -110,6 +113,81 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 					}
 
                 Opus.ReturnToDefaultDrawing(spriteBatch);
+                */
+
+                // Build a vertex triangle-strip ribbon for a smooth Zenith-like trail, and feed the shader
+                // Start an immediate-mode batch for shader parameter setting (required by many shaders)
+                Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+
+                // Attempt to get the vanilla Zenith/trail shader. Replace this key with the runtime-discovered key if needed.
+                string shaderKey = "ZenithTrailKey"; // <-- replace this with the key you find at runtime
+                if (GameShaders.Misc.TryGetValue(shaderKey, out var shaderData))
+                {
+                    shaderData.UseColor(ThemeColor.ToVector3());
+                    // Bind a trail texture to the graphics device if the shader samples a texture
+                    Texture2D trailTexture = DTAssetLib.Trail(2).Value;
+                    Main.graphics.GraphicsDevice.Textures[0] = trailTexture;
+
+                    // Apply shader so it affects subsequent primitive draws
+                    shaderData.Apply(null);
+
+                    // Collect non-zero old positions into a list (closest first)
+                    var points = new System.Collections.Generic.List<Vector2>();
+                    for (int i = 0; i < Projectile.oldPos.Length; i++)
+                    {
+                        if (Projectile.oldPos[i] != Vector2.Zero)
+                            points.Add(Projectile.oldPos[i] + Projectile.Size / 2f);
+                    }
+
+                    if (points.Count >= 2)
+                    {
+                        GraphicsDevice gd = Main.graphics.GraphicsDevice;
+                        // Ensure the shader's texture is bound to slot 0 for the primitive draw
+                        gd.Textures[0] = DTAssetLib.Trail(2).Value;
+
+                        int count = points.Count;
+                        // Two vertices per point (left and right edge), ordered for TriangleStrip
+                        var verts = new VertexPositionColorTexture[count * 2];
+
+                        float maxWidth = 18f * Projectile.scale; // width at the base of the trail
+                        float minWidth = 2f * Projectile.scale;  // width at the tail
+
+                        for (int i = 0; i < count; i++)
+                        {
+                            float t = i / (float)(count - 1);
+                            // Interpolate width so ribbon tapers
+                            float width = MathHelper.Lerp(maxWidth, minWidth, t);
+
+                            Vector2 dir;
+                            if (i < count - 1)
+                                dir = points[i + 1] - points[i];
+                            else
+                                dir = points[i] - points[i - 1];
+
+                            if (dir == Vector2.Zero)
+                                dir = new Vector2(0, -1);
+
+                            Vector2 normal = Vector2.Normalize(new Vector2(-dir.Y, dir.X));
+                            Vector2 left = points[i] + normal * width;
+                            Vector2 right = points[i] - normal * width;
+
+                            Color col = ThemeColor * (1f - t) * 1.0f;
+                            col.A = (byte)(255 * (1f - t));
+
+                            verts[i * 2] = new VertexPositionColorTexture(new Vector3(left, 0f), col, new Vector2(t, 0f));
+                            verts[i * 2 + 1] = new VertexPositionColorTexture(new Vector3(right, 0f), col, new Vector2(t, 1f));
+                        }
+
+                        // Draw the triangle strip (primitiveCount = verts.Length - 2)
+                        gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, verts, 0, verts.Length - 2);
+                    }
+                }
+
+                // Return to default batch / blending
+                Opus.ReturnToDefaultDrawing(spriteBatch);
+
+
+                // Zenith trail
 
                 Main.EntitySpriteDraw(projectileTexture, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, projectileTexture.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
 				return false;

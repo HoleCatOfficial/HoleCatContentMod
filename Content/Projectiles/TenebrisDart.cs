@@ -35,9 +35,10 @@ namespace DestroyerTest.Content.Projectiles
             Projectile.hostile = true; // Can the projectile deal damage to the player?
             Projectile.ignoreWater = true; // Does the projectile's speed be influenced by water?
             Projectile.light = 1f; // How much light emit around the projectile
-            Projectile.timeLeft = 240; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
+            Projectile.timeLeft = 360; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
             Projectile.tileCollide = false;
             Projectile.penetrate = 1;
+            Projectile.alpha = 255;
         }
 
         public override bool PreDraw(ref Color lightColor)
@@ -65,15 +66,44 @@ namespace DestroyerTest.Content.Projectiles
             return true;
         }
 
+        public int InitTime = 0;
+        public int InitAlpha = 0;
         public override void OnSpawn(IEntitySource source)
         {
-            
+            InitTime = Projectile.timeLeft;
+            InitAlpha = Projectile.alpha;
+        }
+        public void ManageAlpha(ref int timeLeft)
+        {
+            // Use elapsed ticks since spawn so we can compute a stable progress value
+            int elapsed = InitTime - timeLeft; // how many ticks have passed since spawn
+
+            // Fade OUT: start after 20 ticks have passed, and perform the fade across the next 60 ticks
+            if (elapsed >= 20 && elapsed < 80)
+            {
+                float progress = (elapsed - 20) / 60f; // 0 -> 1 across 60 ticks
+                progress = MathHelper.Clamp(progress, 0f, 1f);
+                Projectile.alpha = (int)MathHelper.Lerp(InitAlpha, 0f, progress);
+            }
+
+            // Fade IN (or restore): during the final 60 ticks of life, interpolate back to InitAlpha
+            else if (timeLeft <= 60)
+            {
+                float progress = (60 - timeLeft) / 60f; // 0 -> 1 across last 60 ticks
+                progress = MathHelper.Clamp(progress, 0f, 1f);
+                Projectile.alpha = (int)MathHelper.Lerp(0f, InitAlpha, progress);
+            }
+
+            // Keep alpha within valid byte range
+            if (Projectile.alpha < 0) Projectile.alpha = 0;
+            if (Projectile.alpha > 255) Projectile.alpha = 255;
         }
 
         public int WaitTimer = 0;
         public bool SoundFlag = false;
         public override void AI()
         {
+            ManageAlpha(ref Projectile.timeLeft);
             if (Main.rand.NextBool(3))
             {
                 Dust.NewDustPerfect(Projectile.Center, DustID.TintableDustLighted, newColor: ColorLib.TenebrisGradient, Scale: 1.8f, Velocity: Vector2.Zero);
@@ -96,6 +126,7 @@ namespace DestroyerTest.Content.Projectiles
                     }
                     Projectile.velocity *= 1.2f;
                 }
+                Projectile.netUpdate = true;
             }
 
         }
@@ -104,12 +135,5 @@ namespace DestroyerTest.Content.Projectiles
         {
             target.AddBuff(ModContent.BuffType<ShimmeringFlames>(), 240);
         }
-
-        public override void OnKill(int timeLeft)
-        {
-            SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/StarBurst2") with { MaxInstances = 0, PitchVariance = 0.3f, Volume = 0.35f }, Projectile.Center);
-            Dust.NewDust(Projectile.Center, Projectile.width, Projectile.height, DustID.TintableDustLighted, Projectile.velocity.X * 0.7f, Projectile.velocity.Y * 0.7f, 0, ColorLib.TenebrisGradient, 1);
-        }
-
     }
 }

@@ -840,8 +840,11 @@ namespace DestroyerTest.Common
             }
             if (item.type == ItemID.FloatingIslandFishingCrate || item.type == ItemID.FloatingIslandFishingCrateHard)
             {
-                itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<StarScroll>(), 8, 1, 1));
-                itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<TurbulenceScroll>(), 12, 1, 1));
+                itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<StarScroll>(), 4, 1, 1));
+                itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<TurbulenceScroll>(), 6, 1, 1));
+                itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<TurbulenceScroll>(), 6, 1, 1));
+                itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<TurbulenceScroll>(), 6, 1, 1));
+                itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<TurbulenceScroll>(), 6, 1, 1));
             }
             if (item.type == ItemID.LavaCrate || item.type == ItemID.LavaCrateHard)
             {

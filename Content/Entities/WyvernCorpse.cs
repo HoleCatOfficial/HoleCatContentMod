@@ -655,13 +655,15 @@ namespace DestroyerTest.Content.Entities
                     break;
                 case attackType.Circle:
                     {
-                        NPC.position = player.Center + offset - new Vector2(NPC.width / 2, NPC.height / 2);
+                        //NPC.velocity += player.Center + offset - new Vector2(NPC.width / 2, NPC.height / 2);
+                        Vector2 targetPos = player.Center + offset;
+                        Vector2 toTarget = targetPos - NPC.Center;
+                        NPC.velocity = Vector2.Lerp(NPC.velocity, toTarget * 0.1f, 0.6f);
+
                         if (circleradius > 400)
                         {
                             circleradius--;
                         }
-                        // Make sure these are initialized outside the case so they persist
-                            MinionSpawnTimer++;
 
                         if (!EternityIsActive())
                         {
@@ -1124,7 +1126,7 @@ namespace DestroyerTest.Content.Entities
                         NPC.aiStyle = -1;
                         NPC.rotation = NPC.velocity.ToRotation();
                         circlerotspeed = 0.15f;
-                        NPC.Center = DesperationOrbitCenter + offsetDes - new Vector2(NPC.width / 2, NPC.height / 2);
+                        NPC.velocity += DesperationOrbitCenter + offsetDes - new Vector2(NPC.width / 2, NPC.height / 2);
                         DesperationOrbitCenter = Vector2.Lerp(DesperationOrbitCenter, player.Center, 0.01f);
                         if (SoundFlag1 == false)
                         {
@@ -1782,12 +1784,15 @@ namespace DestroyerTest.Content.Entities
                 case AIState.Idle:
                     OrbitCenter = bossNPC.Center;
                     Orbit(300f, 0.05f, OrbitCenter);
-                    if (--AwakenTimer <= 0)
+                    if (DestroyerTestMod.EternityIsActive())
                     {
-                        if (Main.rand.NextBool(5))
+                        if (--AwakenTimer <= 0)
                         {
-                            AwakenTimer = 1200;
-                            currentState = AIState.CrystalX;
+                            if (Main.rand.NextBool(5))
+                            {
+                                AwakenTimer = 1200;
+                                currentState = AIState.CrystalX;
+                            }
                         }
                     }
                     break;
