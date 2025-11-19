@@ -15,6 +15,7 @@ using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
 using OpusLib;
+using InnoVault.PRT;
 
 namespace DestroyerTest.Content.Projectiles.NightmareRose
 {
@@ -31,7 +32,7 @@ namespace DestroyerTest.Content.Projectiles.NightmareRose
             Projectile.friendly = false; // Can the projectile deal damage to enemies?
             Projectile.hostile = true; // Can the projectile deal damage to the player?
             Projectile.ignoreWater = true; // Does the projectile's speed be influenced by water?
-            Projectile.light = 1f; // How much light emit around the projectile
+            Projectile.light = 0.5f; // How much light emit around the projectile
             Projectile.timeLeft = 600; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
             Projectile.tileCollide = false;
             Projectile.alpha = 0;
@@ -43,6 +44,7 @@ namespace DestroyerTest.Content.Projectiles.NightmareRose
             DTUtils Utility = new DTUtils();
 
             Opus.StartSpriteBatchWithBlending(sb, BlendState.Additive, SpriteSortMode.Immediate);
+            Opus.DrawGlowOnProj(Projectile, Color.Purple, false);
             TelegraphLine(sb);
             Opus.ReturnToDefaultDrawing(sb);
             return false;
@@ -77,28 +79,35 @@ namespace DestroyerTest.Content.Projectiles.NightmareRose
             SoundEngine.PlaySound(SoundID.Zombie94, Projectile.Center);
             IntialPos = Projectile.Center;
         }
-
+        
+        int DustAlpha = 255;
+        float SoundPitch = 0f;
         public override void AI()
         {
             Vector2 ToPlayer = Projectile.Center - Main.LocalPlayer.Center;
             Projectile.velocity *= 0.999f;
             Projectile.rotation += Main.rand.NextFloat(-1f, 1.1f) * 0.1f;
+
+            if (Main.GameUpdateCount % 20 == 0)
+            {
+                Opus.RadialSpreadDust(DustID.ShadowbeamStaff, 18, Projectile.Center, DustAlpha, default, 2.3f, 3, true);
+                DustAlpha -= (255 / 30);
+                Projectile.scale *= 1.05f;
+                SoundPitch += (1 / 30);
+                SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/NodeAttackTS") with {Volume = 0.5f, Pitch = SoundPitch, MaxInstances = 0});
+            }
             if (Main.rand.NextBool(12))
             {
-                Dust.NewDust(Projectile.Center, Projectile.width, Projectile.height, DustID.CursedTorch, 0, 0, 70, default, 1.0f);
+                Dust Idle = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.ShadowbeamStaff, 0, 0, 70, default, 1.0f);
+                Idle.noGravity = true;
             }
-        }
-
-        public override void OnHitPlayer(Player target, Player.HurtInfo info)
-        {
-            target.moveSpeed *= 0.6f;
         }
 
         public override void OnKill(int timeLeft)
         {
             Vector2 ToPlayer = Projectile.Center - Main.LocalPlayer.Center;
             SoundEngine.PlaySound(SoundID.Item14, Projectile.Center);
-            var launchVelocity = new Vector2(-8, 0);
+            var launchVelocity = new Vector2(-12, 0);
                 
             for (int i = 0; i < 8; i++)
             {

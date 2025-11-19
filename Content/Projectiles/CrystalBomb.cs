@@ -93,7 +93,7 @@ namespace DestroyerTest.Content.Projectiles
         public override void OnKill(int timeLeft)
         {
             Vector2 ToPlayer = Projectile.Center - Main.LocalPlayer.Center;
-            var launchVelocity = new Vector2(-8, 0);
+            var launchVelocity = new Vector2(-20, 0);
             SoundEngine.PlaySound(SoundID.Item14, Projectile.Center);
 
             for (int i = 0; i < 8; i++)

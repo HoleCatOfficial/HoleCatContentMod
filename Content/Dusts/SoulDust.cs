@@ -1,6 +1,7 @@
 using DestroyerTest.Common;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ModLoader;
@@ -29,7 +30,7 @@ namespace DestroyerTest.Content.Dusts
 
 			Lighting.AddLight(dust.position, ColorLib.Soul.ToVector3() * 0.5f);
 
-			if (dust.scale < 0.05f)
+			if (dust.scale < 0.005f)
 			{
 				dust.active = false;
 			}

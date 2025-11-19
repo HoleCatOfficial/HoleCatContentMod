@@ -1,4 +1,6 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -34,11 +36,12 @@ namespace DestroyerTest.Content.Projectiles.NightmareRose
 			Projectile.netUpdate = true;
         }
 
-
-
-        public override void OnSpawn(IEntitySource source)
+        public override bool PreDraw(ref Color lightColor)
         {
-           
+            Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+            Opus.DrawGlowOnProj(Projectile, Color.Purple, false);
+            Opus.ReturnToDefaultDrawing(Main.spriteBatch);
+            return true;
         }
 
 
@@ -47,9 +50,6 @@ namespace DestroyerTest.Content.Projectiles.NightmareRose
         {
             // Handle animation
             AnimateProjectile();
-
-          
-            
             Projectile.rotation = Projectile.velocity.ToRotation();
             
         }
@@ -59,7 +59,8 @@ namespace DestroyerTest.Content.Projectiles.NightmareRose
             SoundEngine.PlaySound(SoundID.Item14, Projectile.Center);
             for (int g = 0; g < 4; g++)
             {
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Demonite, Projectile.velocity.X * 0.2f, Projectile.velocity.Y * 0.2f, 100, default, 1.2f);
+                Dust Trail = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.ShadowbeamStaff, Projectile.velocity.X * 0.2f, Projectile.velocity.Y * 0.2f, 100, default, 2f);
+                Trail.noGravity = true;
             }
         }
 

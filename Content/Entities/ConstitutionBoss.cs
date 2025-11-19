@@ -230,11 +230,11 @@ namespace DestroyerTest.Content.Entities
         {
             if (!Phase2)
             {
-                return new List<int> { 0};
+                return new List<int> { 0, 15};
             }
             else
             {
-                return new List<int> { 0 };
+                return new List<int> { 0, 15 };
             }
         }
 
@@ -247,11 +247,11 @@ namespace DestroyerTest.Content.Entities
         {
             if (!Phase2)
             {
-                return new List<int> { 0};
+                return new List<int> { 0, 15};
             }
             else
             {
-                return new List<int> { 0 };
+                return new List<int> { 0, 15 };
             }
         }
 
@@ -265,11 +265,11 @@ namespace DestroyerTest.Content.Entities
         {
             if (!Phase2)
             {
-                return new List<int> { 0};
+                return new List<int> { 0, 15};
             }
             else
             {
-                return new List<int> { 0 };
+                return new List<int> { 0, 15 };
             }
         }
 
@@ -283,11 +283,11 @@ namespace DestroyerTest.Content.Entities
         {
             if (!Phase2)
             {
-                return new List<int> { 0};
+                return new List<int> { 0, 15};
             }
             else
             {
-                return new List<int> { 0 };
+                return new List<int> { 0, 15 };
             }
         }
 
@@ -304,11 +304,11 @@ namespace DestroyerTest.Content.Entities
             }
             else if (Main.expertMode && Main.masterMode && !DestroyerTestMod.EternityIsActive())
             {
-                
+                AItoUse = MasterAI(Phase2);
             }
             else
             {
-                
+                AItoUse = AI_LegendaryMasoAndFTW(Phase2);
             }
         }
 
@@ -597,16 +597,18 @@ namespace DestroyerTest.Content.Entities
                 case AttackState.idlefloat:
                     if (NPC.type == ModContent.NPCType<ConstitutionBoss>())
                     {
-                        NPC.aiStyle = 10;
+                        NPC.aiStyle = NPCAIStyleID.CursedSkull;
 
                         if (Main.rand.NextBool(Chance))
                         {
-                            currentState = GetRandomState();
+                            currentState = AttackState.Piechart;
                         }
 
                     }
                     break;
                 case AttackState.idlespin:
+                    currentState = AttackState.Piechart;
+
                     if (NPC.type == ModContent.NPCType<ConstitutionBoss>())
                     {
                         NPC.aiStyle = 5;
@@ -615,6 +617,8 @@ namespace DestroyerTest.Content.Entities
                     }
                     break;
                 case AttackState.Jab:
+                    currentState = AttackState.Piechart;
+
                     if (NPC.type == ModContent.NPCType<ConstitutionBoss>())
                     {
 
@@ -644,6 +648,8 @@ namespace DestroyerTest.Content.Entities
                     }
                     break;
                 case AttackState.ShootStars:
+                    currentState = AttackState.Piechart;
+
                     if (NPC.type == ModContent.NPCType<ConstitutionBoss>())
                     {
                         NPC.aiStyle = 10;
@@ -664,6 +670,8 @@ namespace DestroyerTest.Content.Entities
                     }
                     break;
                 case AttackState.ShootClone:
+                    currentState = AttackState.Piechart;
+
                     if (NPC.type == ModContent.NPCType<ConstitutionBoss>())
                     {
                         NPC.aiStyle = 10;
@@ -685,6 +693,8 @@ namespace DestroyerTest.Content.Entities
                     break;
 
                 case AttackState.ShootStars2:
+                    currentState = AttackState.Piechart;
+
                     if (NPC.type == ModContent.NPCType<ConstitutionBoss>())
                     {
                         NPC.aiStyle = 10;
@@ -734,6 +744,7 @@ namespace DestroyerTest.Content.Entities
                     break;
                 case AttackState.ShootStars3:
 
+                    currentState = AttackState.Piechart;
                     if (NPC.type == ModContent.NPCType<ConstitutionBoss>())
                     {
                         NPC.aiStyle = 10;
@@ -765,6 +776,8 @@ namespace DestroyerTest.Content.Entities
                     }
                     break;
                 case AttackState.ShootSwords:
+                    currentState = AttackState.Piechart;
+
                     if (NPC.type == ModContent.NPCType<ConstitutionBoss>())
                     {
                         NPC.aiStyle = 10;
@@ -793,6 +806,8 @@ namespace DestroyerTest.Content.Entities
                     }
                     break;
                 case AttackState.RainStars:
+                    currentState = AttackState.Piechart;
+
                     if (NPC.type == ModContent.NPCType<ConstitutionBoss>())
                     {
                         NPC.Center = DesperationPos;
@@ -807,6 +822,8 @@ namespace DestroyerTest.Content.Entities
                     }
                     break;
                 case AttackState.Lightning:
+                    currentState = AttackState.Piechart;
+
                     if (NPC.type == ModContent.NPCType<ConstitutionBoss>())
                     {
                         NPC.aiStyle = 10;
@@ -827,6 +844,8 @@ namespace DestroyerTest.Content.Entities
                     }
                     break;
                 case AttackState.LightBird:
+
+                    currentState = AttackState.Piechart;
                     if (NPC.type == ModContent.NPCType<ConstitutionBoss>())
                     {
                         NPC.aiStyle = 10;
@@ -853,6 +872,8 @@ namespace DestroyerTest.Content.Entities
                     }
                     break;
                 case AttackState.Minefield:
+
+                    currentState = AttackState.Piechart;
                     if (NPC.type == ModContent.NPCType<ConstitutionBoss>())
                     {
                         NPC.aiStyle = 10;
@@ -912,6 +933,8 @@ namespace DestroyerTest.Content.Entities
                     }
                     break;
                 case AttackState.TeleStars:
+
+                    currentState = AttackState.Piechart;
                     if (NPC.type == ModContent.NPCType<ConstitutionBoss>())
                     {
                         NPC.aiStyle = 10;
@@ -934,6 +957,8 @@ namespace DestroyerTest.Content.Entities
                     }
                     break;
                 case AttackState.StellarFlame:
+                    currentState = AttackState.Piechart;
+
                     if (NPC.type == ModContent.NPCType<ConstitutionBoss>())
                     {
                         if (NPC.life < NPC.lifeMax * 0.15f)
@@ -962,6 +987,8 @@ namespace DestroyerTest.Content.Entities
                     break;
                 case AttackState.LanceSweep:
                     {
+                        currentState = AttackState.Piechart;
+
                         if (!LanceSweepTeleFlag) // first entry into sweep
                         {
                             if (Main.rand.Next(2) == 0)
@@ -1002,6 +1029,11 @@ namespace DestroyerTest.Content.Entities
                             ResetState();
                         }
 
+                        break;
+                    }
+                case AttackState.Piechart:
+                    {
+                        PieChart(0);
                         break;
                     }
 
@@ -1117,9 +1149,10 @@ namespace DestroyerTest.Content.Entities
         #region Attack Methods
         bool CenterFlag = false;
         bool PieChartClassicFlag = false;
+        Vector2 ClassicCenter;
         public void PieChart(int Mode = 0, int NumLances = 3, float Radius = 1000f, int ClassicExpertMasterWaitForLances = 100, int ClassicDelay = 60)
         {
-            Vector2 ClassicCenter = Targetplayer.Center;
+            
             Vector2[] ExpertCenters = new Vector2[5];
             if (Mode == 0)
             {
@@ -1149,13 +1182,13 @@ namespace DestroyerTest.Content.Entities
                 if (ClassicDelay > 0)
                 {
                     ClassicDelay--;
+                    PieChartClassicFlag = false;
                 }
                 if (ClassicDelay <= 0)
                 {
                     if (!PieChartClassicFlag)
                     {
-                        Opus.RingProjectileInward(ModContent.ProjectileType<GalantineLance>(), 3, ClassicCenter, 500, 25, 3, 0.01f, 4f);
-                        ClassicDelay = default;
+                        Opus.RingProjectileInward(ModContent.ProjectileType<GalantineLance>(), 3, ClassicCenter, 500, 25, 3, 0.01f, 4f, RandomOffset: true);
                         PieChartClassicFlag = true;
                     }
                     else
@@ -1166,9 +1199,10 @@ namespace DestroyerTest.Content.Entities
                         }
                         if (ClassicExpertMasterWaitForLances <= 0)
                         {
-                            ClassicExpertMasterWaitForLances = default;
+                            ClassicExpertMasterWaitForLances = 100;
                         }
                     }
+                    ClassicDelay = 60;
                 }
             }
             if (Mode == 1)

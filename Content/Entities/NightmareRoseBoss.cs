@@ -504,7 +504,7 @@ namespace DestroyerTest.Content.Entities
                     // Keep them on the same circumference
                     Vector2 Pos = NPCHead + Main.rand.NextVector2CircularEdge(BorderRad, BorderRad);
 
-                    Dust Border = Dust.NewDustPerfect(Pos, BorderDustType, Vector2.Zero, 0, default, 1f);
+                    Dust Border = Dust.NewDustPerfect(Pos, BorderDustType, Vector2.Zero, 0, BorderCol, 1f);
                     Border.noGravity = true;
                     Border.fadeIn = 1f;
                     Border.scale = Main.rand.NextFloat(0.2f, 4.0f);
