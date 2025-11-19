@@ -5,6 +5,7 @@ using DestroyerTest.Common;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.AmmoProjectiles;
 using DestroyerTest.Content.Resources;
+using DestroyerTest.Content.Resources.Blueprints;
 
 using DestroyerTest.Content.Tiles;
 using DestroyerTest.Content.Tiles.Riftplate;
@@ -57,6 +58,15 @@ namespace DestroyerTest.Content.RiftArsenal
 		public override Vector2? HoldoutOffset()
 		{
 			return new Vector2(2f, -2f);
+		}
+
+		public override void AddRecipes() {
+			CreateRecipe()
+				.AddIngredient<Item_Riftplate>(16)
+				.AddIngredient<ShadowCircuitry>(7)
+                .AddIngredient<ZapinatorData>()
+				.AddTile(TileID.MythrilAnvil)
+				.Register();
 		}
 	}
 }

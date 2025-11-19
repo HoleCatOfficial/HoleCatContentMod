@@ -503,30 +503,31 @@ namespace DestroyerTest.Content.Entities
         }
 
         public int DeathInterval = 10;
+        public Player Targetplayer;
         public override void AI()
         {
-
-            Player player = Main.LocalPlayer;
+            NPC.TargetClosestUpgraded(true);
+            Targetplayer = Main.player[NPC.target];
             DTUtils Utility = new DTUtils();
 
-            Chargedir = (player.Center - NPC.Center).SafeNormalize(Vector2.Zero);
+            Chargedir = (Targetplayer.Center - NPC.Center).SafeNormalize(Vector2.Zero);
 
             float TeleAngle = Main.rand.NextFloat(0, MathHelper.TwoPi);
 
-            Vector2 TeleCircumferencePoint = player.Center + TeleRadius * new Vector2((float)Math.Cos(TeleAngle), (float)Math.Sin(TeleAngle));
+            Vector2 TeleCircumferencePoint = Targetplayer.Center + TeleRadius * new Vector2((float)Math.Cos(TeleAngle), (float)Math.Sin(TeleAngle));
 
             float lanceangle = Main.GameUpdateCount * lancerotspeed;
 
             Vector2 offset = new Vector2(MathF.Cos(lanceangle), MathF.Sin(lanceangle)) * lanceradius;
 
-            Vector2 lancecenter = Main.LocalPlayer.Center;
+            Vector2 lancecenter = Targetplayer.Center;
 
-            Vector2 DesperationPos = new Vector2(player.Center.X, player.Center.Y - 1000);
+            Vector2 DesperationPos = new Vector2(Targetplayer.Center.X, Targetplayer.Center.Y - 1000);
 
             TexRot += 0.05f * NPC.direction;
 
 
-            if (player.dead)
+            if (Targetplayer.dead)
             {
                 DeathInterval--;
                 if (DeathInterval <= 0)
@@ -548,9 +549,9 @@ namespace DestroyerTest.Content.Entities
 
 
             /*
-                if (NPC.Center.DistanceSQ(player.Center) > 40000)
+                if (NPC.Center.DistanceSQ(Targetplayer.Center) > 40000)
                 {
-                    TeleManager(player, ref TeleCircumferencePoint);
+                    TeleManager(Targetplayer, ref TeleCircumferencePoint);
                 }
                 */
 
@@ -561,7 +562,7 @@ namespace DestroyerTest.Content.Entities
             {
                 SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/ConstitutionBoss/ConstitutionBossKill") with { PitchVariance = 1, MaxInstances = 1, Volume = 8 });
                 //SoundEngine.PlaySound(SoundID.Roar);
-                MoonlordDeathDrama.RequestLight(1.0f, Main.LocalPlayer.Center);
+                MoonlordDeathDrama.RequestLight(1.0f, Targetplayer.Center);
                 Phase2 = true;
                 HasPlayedPhase2Roar = true;
             }
@@ -622,8 +623,8 @@ namespace DestroyerTest.Content.Entities
                             NPC.ai[2]++;
                             if (NPC.ai[2] == 80)
                             {
-                                TeleManager(player, ref TeleCircumferencePoint);
-                                Chargedir = (player.Center - NPC.Center).SafeNormalize(Vector2.Zero);
+                                TeleManager(Targetplayer, ref TeleCircumferencePoint);
+                                Chargedir = (Targetplayer.Center - NPC.Center).SafeNormalize(Vector2.Zero);
                                 SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/ConstitutionBoss/ConstitutionBossJab") with { PitchVariance = 1, MaxInstances = 1, Volume = 9 });
                                 NPC.velocity = Chargedir * 24f;
                                 NPC.rotation = NPC.velocity.ToRotation() + MathHelper.PiOver2;
@@ -650,7 +651,7 @@ namespace DestroyerTest.Content.Entities
                         {
                             if (Main.GameUpdateCount % AttackIntervalDefault == 0)
                             {
-                                ShootStar1(player);
+                                ShootStar1(Targetplayer);
                                 starsShotCount1++; // you might want to track count in separate var
                             }
 
@@ -713,7 +714,7 @@ namespace DestroyerTest.Content.Entities
                             {
                                 if (Main.GameUpdateCount % AttackIntervalDefault == 0)
                                 {
-                                    LanceCross(player, Main.rand.NextFloat(-MathHelper.Pi, MathHelper.Pi));
+                                    LanceCross(Targetplayer, Main.rand.NextFloat(-MathHelper.Pi, MathHelper.Pi));
                                     LanceCrossSpawnFlag = false;
                                     starsShotCount2++;
                                 }
@@ -742,14 +743,14 @@ namespace DestroyerTest.Content.Entities
                         }
                         if (Phase2 == true)
                         {
-                            StarSwarm(player);
+                            StarSwarm(Targetplayer);
 
                             if (!HasShotStars3)
                             {
                                 if (Main.GameUpdateCount % AttackIntervalDefault == 0)
                                 {
                                     SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/ConstitutionBoss/ConstitutionBossShootStars3") with { PitchVariance = 1, MaxInstances = 1, Volume = 3 });
-                                    StarSwarm(player);
+                                    StarSwarm(Targetplayer);
                                     starsShotCount3++; // you might want to track count in separate var
                                 }
 
@@ -797,10 +798,10 @@ namespace DestroyerTest.Content.Entities
                         NPC.Center = DesperationPos;
                         StarIndex += 10;
                         SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/ConstitutionBoss/ConstitutionBossShootStars3") with { PitchVariance = 1, MaxInstances = 1, Volume = 3 });
-                        RainStars(player, velocity: new Vector2(0, 16));
+                        RainStars(Targetplayer, velocity: new Vector2(0, 16));
                         if (Main.rand.NextBool(3) && EternityIsActive())
                         {
-                            StarFury(player, 12);
+                            StarFury(Targetplayer, 12);
                         }
                         currentState = GetRandomState();
                     }
@@ -813,7 +814,7 @@ namespace DestroyerTest.Content.Entities
                         {
                             if (Main.GameUpdateCount % AttackIntervalDefault == 0)
                             {
-                                StarFury(player, Main.rand.Next(10, 15));
+                                StarFury(Targetplayer, Main.rand.Next(10, 15));
                                 LightningCount++;
                             }
 
@@ -872,8 +873,8 @@ namespace DestroyerTest.Content.Entities
                                 {
                                     Vector2 minePosition = Main.rand.NextVector2FromRectangle(
                                         new Rectangle(
-                                            (int)Main.LocalPlayer.Center.X - Main.screenWidth / 2,
-                                            (int)Main.LocalPlayer.Center.Y - Main.screenHeight / 2,
+                                            (int)Targetplayer.Center.X - Main.screenWidth / 2,
+                                            (int)Targetplayer.Center.Y - Main.screenHeight / 2,
                                             Main.screenWidth,
                                             Main.screenHeight
                                         )
@@ -881,7 +882,7 @@ namespace DestroyerTest.Content.Entities
                                     MineSpots.Add(minePosition);
                                 }
 
-                                Minefield(player);
+                                Minefield(Targetplayer);
                                 HasBlownMinefield = true;
                             }
 
@@ -897,11 +898,11 @@ namespace DestroyerTest.Content.Entities
                             if (SF2Timer > 0)
                             {
                                 SF2Timer--;
-                                NPC.Center = player.Center + new Vector2(0, -350);
+                                NPC.Center = Targetplayer.Center + new Vector2(0, -350);
                             }
                             if (SF2Timer > 0 && Main.GameUpdateCount % 20 == 0)
                             {
-                                StarFury2(player);
+                                StarFury2(Targetplayer);
                             }
                             if (SF2Timer > 0)
                             {
@@ -916,8 +917,8 @@ namespace DestroyerTest.Content.Entities
                         NPC.aiStyle = 10;
                         if (TeleStarCount < TeleStarMax)
                         {
-                            TeleManager(player, ref TeleCircumferencePoint);
-                            ShootStar1(player);
+                            TeleManager(Targetplayer, ref TeleCircumferencePoint);
+                            ShootStar1(Targetplayer);
                             TeleStarCount++;
                         }
                         if (TeleStarCount >= TeleStarMax)
@@ -946,7 +947,7 @@ namespace DestroyerTest.Content.Entities
                             }
                             if (FlameTimer < 600)
                             {
-                                StellarFlame(player);
+                                StellarFlame(Targetplayer);
                             }
                             if (FlameTimer > 600)
                             {
@@ -1114,10 +1115,11 @@ namespace DestroyerTest.Content.Entities
         }
 
         #region Attack Methods
-
-        public void PieChart(int Mode = 0, int NumLances = 3, float Radius = 1000f, int ClassicExpertMasterWaitForLances = 120, int ClassicDelay = 60)
+        bool CenterFlag = false;
+        bool PieChartClassicFlag = false;
+        public void PieChart(int Mode = 0, int NumLances = 3, float Radius = 1000f, int ClassicExpertMasterWaitForLances = 100, int ClassicDelay = 60)
         {
-            Vector2 ClassicCenter;
+            Vector2 ClassicCenter = Targetplayer.Center;
             Vector2[] ExpertCenters = new Vector2[5];
             if (Mode == 0)
             {
@@ -1134,6 +1136,40 @@ namespace DestroyerTest.Content.Entities
                 During all of this, the NPC's center remains equal to the ClassicCenter
                 */
                 //--------------------------------------
+                if (!CenterFlag)
+                {
+                    ClassicCenter = Targetplayer.Center + Main.rand.NextVector2Circular(600, 600);
+                    CenterFlag = true;
+                }
+
+                if (ClassicExpertMasterWaitForLances > 0 && CenterFlag)
+                {
+                    NPC.Center = ClassicCenter;
+                }
+                if (ClassicDelay > 0)
+                {
+                    ClassicDelay--;
+                }
+                if (ClassicDelay <= 0)
+                {
+                    if (!PieChartClassicFlag)
+                    {
+                        Opus.RingProjectileInward(ModContent.ProjectileType<GalantineLance>(), 3, ClassicCenter, 500, 25, 3, 0.01f, 4f);
+                        ClassicDelay = default;
+                        PieChartClassicFlag = true;
+                    }
+                    else
+                    {
+                        if (ClassicExpertMasterWaitForLances > 0)
+                        {
+                            ClassicExpertMasterWaitForLances--;
+                        }
+                        if (ClassicExpertMasterWaitForLances <= 0)
+                        {
+                            ClassicExpertMasterWaitForLances = default;
+                        }
+                    }
+                }
             }
             if (Mode == 1)
             {

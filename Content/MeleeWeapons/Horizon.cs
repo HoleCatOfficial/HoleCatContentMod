@@ -32,7 +32,7 @@ namespace DestroyerTest.Content.MeleeWeapons
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-			RingProjectileInward(type, 3, Main.MouseWorld, 500, damage, (int)knockback, 0.01f, 40f);
+			RingProjectileInward(type, 3, Main.MouseWorld, 500, damage, (int)knockback, 0.01f, 4f);
 			
             return false;
         }
@@ -46,7 +46,7 @@ namespace DestroyerTest.Content.MeleeWeapons
 				float num3 = num * (float)i + num2;
 				Vector2 vector = CTR + new Vector2(Radius, 0f).RotatedBy(num3);
 				Vector2 velocity1 = (CTR - vector).SafeNormalize(Vector2.Zero) * Speed;
-				float rotation = velocity1.ToRotation() - MathHelper.PiOver2;
+				float rotation = velocity1.ToRotation();
 				Projectile.NewProjectile(Entity.GetSource_FromThis(), vector, velocity1, ID, Dmg, KB, Main.myPlayer, AI0, rotation, AI2);
 			}
 		}

@@ -1,6 +1,9 @@
 ﻿
+using DestroyerTest.Common;
 using DestroyerTest.Content.Dusts;
+using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.RogueItems;
+using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria;
@@ -133,7 +136,7 @@ namespace DestroyerTest.Content.Projectiles
 
 		public override void OnKill(int timeLeft) {
 			SoundEngine.PlaySound(new SoundStyle($"DestroyerTest/Assets/Audio/RiftMaker_Boom"), Projectile.position); // Play a death sound
-			ScreenFlashSystem.FlashIntensity = 0.7f; // Set to full brightness
+			PRTLoader.NewParticle(PRTLoader.GetParticleID<SmallShine>(), Projectile.Center, Vector2.Zero, ColorLib.Rift, 8);
 			Vector2 usePos = Projectile.position; // Position to use for dusts
 
 			// Offset the rotation by 90 degrees because the sprite is oriented vertically.

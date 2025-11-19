@@ -50,7 +50,6 @@ namespace DestroyerTest.Content.RiftArsenal
 
 		public override void AddRecipes() {
 			CreateRecipe()
-				.AddIngredient<Item_HeliciteCrystal>(12)
 				.AddIngredient<Item_Riftplate>(12)
                 .AddIngredient(ItemID.SpellTome)
 				.AddTile<Tile_RiftConfiguratorWeaponry>()

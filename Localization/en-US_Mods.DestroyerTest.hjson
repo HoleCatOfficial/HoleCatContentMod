@@ -457,7 +457,14 @@ Items: {
 
 	RiftSolution: {
 		DisplayName: Rift Solution
-		Tooltip: A small bottle of Solar Light.
+		Tooltip: Spreads the Rift Biome.
+		RiftWarning:
+			'''
+			WARNING:
+			RIFT DIRT CANNOT GROW GRASS OR TREES, SO WHEN YOU CONVERT IT BACK, THE GRASS MUST REGROW AND TREES MUST BE REPLANTED.
+			THE RIFT IMPLEMENTS A SUFFOCATION MECHANIC. THIS CAN ONLY BE AVOIDED WITH CERTAIN EQUIPS, OR, USING A LUNG SHOT.
+			The Jungle is immune to rift conversaion
+			'''
 	}
 
 	RiftBookcase: {

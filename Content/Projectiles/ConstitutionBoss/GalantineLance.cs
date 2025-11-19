@@ -9,6 +9,7 @@ using OpusLib;
 using System;
 using Terraria.DataStructures;
 using Terraria.Audio;
+using OpusLib;
 
 namespace DestroyerTest.Content.Projectiles.ConstitutionBoss
 {
@@ -21,7 +22,7 @@ namespace DestroyerTest.Content.Projectiles.ConstitutionBoss
         /// <summary>
         /// The speed, in units per tick, that the projectile will move in the specified direction if no modifiers are applied. It's guaranteed to move.
         /// </summary>
-        public const int BaseSpeed = 50;
+        public const int BaseSpeed = 10;
         /// <summary>
         /// The name explains it all, to be entirely honest.
         /// </summary>
@@ -56,7 +57,6 @@ namespace DestroyerTest.Content.Projectiles.ConstitutionBoss
         public int Warn = 0;
 
         private bool initialized = false;
-        private Vector2 storedDirection;
 
         public override void SetStaticDefaults()
         {
@@ -65,8 +65,8 @@ namespace DestroyerTest.Content.Projectiles.ConstitutionBoss
         {
             Projectile.width = 18;
             Projectile.height = 18;
-            Projectile.friendly = true;
-            Projectile.hostile = false;
+            Projectile.friendly = false;
+            Projectile.hostile = true;
             Projectile.penetrate = -1;
             Projectile.timeLeft = 360;
             Projectile.light = 0.5f;
@@ -94,31 +94,21 @@ namespace DestroyerTest.Content.Projectiles.ConstitutionBoss
             Move
         }
         public State state = State.Idle;
-
-        public int InitTime = 0;
-        public int InitAlpha = 0;
         public void ManageAlpha(ref int timeLeft)
         {
-            // Use elapsed ticks since spawn so we can compute a stable progress value
-            int elapsed = InitTime - timeLeft; // how many ticks have passed since spawn
-
-            // Fade OUT: start after 20 ticks have passed, and perform the fade across the next 60 ticks
-            if (elapsed >= 20 && elapsed < 80)
+            if (FadeOut >= FadeOutTimer)
             {
-                float progress = (elapsed - 20) / 60f; // 0 -> 1 across 60 ticks
+                float progress = (FadeOut - 20) / 60f; // 0 -> 1 across 60 ticks
                 progress = MathHelper.Clamp(progress, 0f, 1f);
-                Projectile.alpha = (int)MathHelper.Lerp(InitAlpha, 0f, progress);
+                Projectile.alpha = (int)MathHelper.Lerp(255, 0f, progress);
+            }
+            else if (FadeIn < FadeInTimer)
+            {
+                float progress = (FadeInTimer - timeLeft) / 60;
+                progress = MathHelper.Clamp(progress, 0f, 1f);
+                Projectile.alpha = (int)MathHelper.Lerp(0f, 255, progress);
             }
 
-            // Fade IN (or restore): during the final 60 ticks of life, interpolate back to InitAlpha
-            else if (timeLeft <= 60)
-            {
-                float progress = (60 - timeLeft) / 60f; // 0 -> 1 across last 60 ticks
-                progress = MathHelper.Clamp(progress, 0f, 1f);
-                Projectile.alpha = (int)MathHelper.Lerp(0f, InitAlpha, progress);
-            }
-
-            // Keep alpha within valid byte range
             if (Projectile.alpha < 0) Projectile.alpha = 0;
             if (Projectile.alpha > 255) Projectile.alpha = 255;
         }
@@ -130,11 +120,8 @@ namespace DestroyerTest.Content.Projectiles.ConstitutionBoss
             if (!initialized)
             {
                 initialized = true;
-                InitTime = Projectile.timeLeft;
-                InitAlpha = Projectile.alpha;
-
-                storedDirection = Projectile.velocity.RotatedBy(Projectile.ai[1]);
-                Projectile.rotation = storedDirection.ToRotation();
+                Projectile.velocity = Vector2.Zero;
+                Projectile.rotation = Projectile.ai[1];
             }
 
 
@@ -153,13 +140,12 @@ namespace DestroyerTest.Content.Projectiles.ConstitutionBoss
             {
                 state = State.Move;
                 FadeOut = Math.Min(FadeOutTimer, FadeOut + 1);
+                
             }
-
-            Projectile.rotation = storedDirection.ToRotation();
 
             if (state == State.Move)
             {
-                Projectile.velocity = storedDirection * FinalSpeed;
+                Projectile.velocity = Projectile.rotation.ToRotationVector2() * FinalSpeed;
                 if (!Sound1)
                 {
                     SoundEngine.PlaySound(SoundID.Item68);

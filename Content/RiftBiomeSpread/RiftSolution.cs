@@ -1,5 +1,8 @@
 ﻿
+using System.Collections.Generic;
+using DestroyerTest.Common;
 using DestroyerTest.Content.Dusts;
+using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.RiftBiome.RiftDesertResources;
 using DestroyerTest.Content.RiftBiome.RiftSurfaceResources;
 using DestroyerTest.Content.RiftBiome.RiftTundraResources;
@@ -7,6 +10,7 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.RiftBiomeSpread
@@ -25,6 +29,22 @@ namespace DestroyerTest.Content.RiftBiomeSpread
 
 		public override void ModifyResearchSorting(ref ContentSamples.CreativeHelper.ItemGroup itemGroup) {
 			itemGroup = ContentSamples.CreativeHelper.ItemGroup.Solutions;
+		}
+
+        public override void ModifyTooltips(List<TooltipLine> tooltips)
+        {
+            DTConfig cfg = ModContent.GetInstance<DTConfig>();
+            var RW = Language.GetText("Mods.DestroyerTest.Items.RiftSolution.RiftWarning");
+			var riftTip = new TooltipLine(Mod, "Rift Warning", RW.Value) { OverrideColor = ColorLib.Rift };
+			tooltips.Add(riftTip);
+        }
+
+
+		public override void AddRecipes() {
+			CreateRecipe(3)
+				.AddIngredient<Living_Shadow>(6)
+                .AddIngredient(ItemID.BottledWater, 1)
+				.Register();
 		}
 	}
 
