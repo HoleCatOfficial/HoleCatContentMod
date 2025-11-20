@@ -311,7 +311,7 @@ namespace DestroyerTest.Content.Entities
         {
             BorderActive = true;
             currentState = AttackState.SpawnIdle;
-            NPCHead = NPC.Center + new Vector2(0, -60);
+            NPCHead = NPC.Center + new Vector2(0, -79);
             Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Bottom, Vector2.Zero, ModContent.ProjectileType<SpawnSoul>(), 0, 0);
         }
 
@@ -472,7 +472,7 @@ namespace DestroyerTest.Content.Entities
             DTMusicConfig muscfg = ModContent.GetInstance<DTMusicConfig>();
             DTOptimizationsConfig optcfg = ModContent.GetInstance<DTOptimizationsConfig>();
 
-
+            NPCHead = NPC.Center + new Vector2(0, -79);
             DirectionToPlayerCenter = (player.Center - NPCHead).SafeNormalize(Vector2.UnitY);
 
             if (currentState != AttackState.Desperation && currentState != AttackState.KillIdle)
@@ -865,6 +865,20 @@ namespace DestroyerTest.Content.Entities
                             {
                                 SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/ChargeBreak") with { PitchVariance = 1f });
 
+                                Opus.RingProjectileOutwardRandomDir(ModContent.ProjectileType<TenebrisFlames>(), 7, player.Center, 300, 25, 1, 8, AI2: 2);
+                                FlameRingCount++;
+                            }
+                            if (FlameRingCount >= 9)
+                            {
+                                ResetState();
+                            }
+                        }
+                        else
+                        {
+                            SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/Constitution_Jab") with { PitchVariance = 1f, Volume = 3f });
+
+                            if (FlameRingCount < 9 && Main.GameUpdateCount % 60 == 0)
+                            {
                                 for (int i = 0; i < FlameRingVectorCount; i++)
                                 {
                                     float randomOffset = Main.rand.NextFloat(-0.4f, 0.4f);
@@ -879,36 +893,13 @@ namespace DestroyerTest.Content.Entities
 
                                     Vector2 finalVel = (outwardVel + spinVel).SafeNormalize(Vector2.UnitY) * FlameRingRotSpeed;
 
-                                    Projectile.NewProjectile(Entity.GetSource_FromThis(), startPos, finalVel, ModContent.ProjectileType<TenebrisFlames>(), 20, 5, ai2: 2);
+                                    Projectile.NewProjectile(Entity.GetSource_FromThis(), startPos, finalVel, ModContent.ProjectileType<CursedNodeCrystal>(), 15, 5, ai2: 2);
                                 }
-                                FlameRingCount++;
                             }
                             if (FlameRingCount >= 9)
                             {
                                 ResetState();
                             }
-                        }
-                        else
-                        {
-                            SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/Constitution_Jab") with { PitchVariance = 1f, Volume = 3f });
-
-                            for (int i = 0; i < FlameRingVectorCount; i++)
-                            {
-                                float randomOffset = Main.rand.NextFloat(-0.4f, 0.4f);
-                                float angle = FlameRingBaseAngle + i * FlameRingAngleStep + randomOffset;
-
-                                float radius = FlameRingStartRad;
-                                float curvedAngle = angle - FlameRingRotSpeed * MathHelper.PiOver2;
-
-                                Vector2 startPos = NPC.Center + radius * new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
-                                Vector2 outwardVel = new Vector2((float)Math.Cos(curvedAngle), (float)Math.Sin(curvedAngle)) * 0.5f; // outward speed
-                                Vector2 spinVel = outwardVel.RotatedBy(MathHelper.PiOver2) * 0.8f; // tangential spin
-
-                                Vector2 finalVel = (outwardVel + spinVel).SafeNormalize(Vector2.UnitY) * FlameRingRotSpeed;
-
-                                Projectile.NewProjectile(Entity.GetSource_FromThis(), startPos, finalVel, ModContent.ProjectileType<CursedNodeCrystal>(), 15, 5, ai2: 2);
-                            }
-                            ResetState();
                         }
                         break;
                     }
@@ -950,7 +941,7 @@ namespace DestroyerTest.Content.Entities
 
                                 Vector2 finalVel = (outwardVel + spinVel).SafeNormalize(Vector2.UnitY) * FlameRingRotSpeed;
 
-                                Projectile.NewProjectile(Entity.GetSource_FromThis(), startPos, finalVel, ModContent.ProjectileType<BlossomMine>(), 16, 5, ai2: 2);
+                                Projectile.NewProjectile(Entity.GetSource_FromThis(), startPos, finalVel, ModContent.ProjectileType<CorruptPetalHostile>(), 16, 5, ai2: 2);
                             }
                             ResetState();
                         }
@@ -1490,6 +1481,7 @@ namespace DestroyerTest.Content.Entities
 
         public void BlossomMines(Vector2 SpawnPos)
         {
+            SoundEngine.PlaySound(SoundID.Item163);
             for (int e = 0; e < 6; e++)
             {
                 Vector2 minePosition = Main.rand.NextVector2FromRectangle(

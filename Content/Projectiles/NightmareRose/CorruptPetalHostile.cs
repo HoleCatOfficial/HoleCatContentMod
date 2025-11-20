@@ -1,3 +1,4 @@
+using DestroyerTest.Content.Projectiles.Gores;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
@@ -39,7 +40,7 @@ namespace DestroyerTest.Content.Projectiles.NightmareRose
         public override bool PreDraw(ref Color lightColor)
         {
             Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-            Opus.DrawGlowOnProj(Projectile, Color.Purple, false);
+            Opus.DrawGlowOnProj(Projectile, new Color(43, 37, 154), false);
             Opus.ReturnToDefaultDrawing(Main.spriteBatch);
             return true;
         }
@@ -56,7 +57,11 @@ namespace DestroyerTest.Content.Projectiles.NightmareRose
 
         public override void OnKill(int timeLeft)
         {
-            SoundEngine.PlaySound(SoundID.Item14, Projectile.Center);
+            SoundEngine.PlaySound(SoundID.Grass, Projectile.Center);
+            for (int u = 0; u < 12; u++)
+            {
+                Gore.NewGore(Projectile.GetSource_Death(), Projectile.Center, new Vector2(Main.rand.NextFloat(-6, 6), Main.rand.NextFloat(-6, 6)), ModContent.GoreType<RosePetalGore1>(), 2f);
+            }
             for (int g = 0; g < 4; g++)
             {
                 Dust Trail = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.ShadowbeamStaff, Projectile.velocity.X * 0.2f, Projectile.velocity.Y * 0.2f, 100, default, 2f);

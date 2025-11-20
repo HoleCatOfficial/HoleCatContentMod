@@ -73,11 +73,6 @@ namespace DestroyerTest.Content.Projectiles
             Projectile.velocity *= 0.99f;
             Projectile.rotation += Main.rand.NextFloat(-1f, 1.1f) * 0.1f;
         }
-
-        public override void OnHitPlayer(Player target, Player.HurtInfo info)
-        {
-            target.moveSpeed *= 0.6f;
-        }
         
         public override bool OnTileCollide(Vector2 oldVelocity)
         {

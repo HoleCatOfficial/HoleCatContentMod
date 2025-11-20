@@ -35,7 +35,7 @@ namespace DestroyerTest.Content.Projectiles
             Projectile.hostile = true; // Can the projectile deal damage to the player?
             Projectile.ignoreWater = true; // Does the projectile's speed be influenced by water?
             Projectile.light = 1f; // How much light emit around the projectile
-            Projectile.timeLeft = 360; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
+            Projectile.timeLeft = 180; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
             Projectile.tileCollide = false;
             Projectile.penetrate = 1;
             Projectile.alpha = 255;
@@ -57,12 +57,6 @@ namespace DestroyerTest.Content.Projectiles
                 Main.EntitySpriteDraw(DTAssetLib.FadeLine.Value, Projectile.Center - Main.screenPosition, null, ColorLib.TenebrisGradient, Projectile.rotation + MathHelper.PiOver2, new Vector2(DTAssetLib.FadeLine.Value.Width / 2, DTAssetLib.FadeLine.Value.Height / 2), 2, SpriteEffects.None, 0);
             }
             Opus.ReturnToDefaultDrawing(sb);
-            for (int k = Projectile.oldPos.Length - 1; k > 0; k--)
-            {
-                Vector2 drawPos = (Projectile.oldPos[k] - Main.screenPosition) + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
-                Color color = Projectile.GetAlpha(lightColor) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
-                Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
-            }
             return true;
         }
 
@@ -78,10 +72,9 @@ namespace DestroyerTest.Content.Projectiles
             // Use elapsed ticks since spawn so we can compute a stable progress value
             int elapsed = InitTime - timeLeft; // how many ticks have passed since spawn
 
-            // Fade OUT: start after 20 ticks have passed, and perform the fade across the next 60 ticks
-            if (elapsed >= 20 && elapsed < 80)
+            if (elapsed >= 5 && elapsed < 45)
             {
-                float progress = (elapsed - 20) / 60f; // 0 -> 1 across 60 ticks
+                float progress = (elapsed - 5) / 40f;
                 progress = MathHelper.Clamp(progress, 0f, 1f);
                 Projectile.alpha = (int)MathHelper.Lerp(InitAlpha, 0f, progress);
             }

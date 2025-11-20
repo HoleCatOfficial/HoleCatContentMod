@@ -53,10 +53,8 @@ namespace DestroyerTest.Content.Projectiles
 		{
 			Projectile.width = 32;
 			Projectile.height = 32;
-
-			Projectile.DamageType = DamageClass.Generic;
 			Projectile.friendly = false;
-			Projectile.hostile = false;
+			Projectile.hostile = true;
 			Projectile.ignoreWater = true;
 			Projectile.light = 1f;
 			Projectile.timeLeft = 300;

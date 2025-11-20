@@ -12,6 +12,8 @@ using Terraria.GameContent;
 using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
+using InnoVault.PRT;
+using DestroyerTest.Content.Particles;
 
 namespace DestroyerTest.Content.Projectiles
 {
@@ -24,8 +26,8 @@ namespace DestroyerTest.Content.Projectiles
 
         public override void SetDefaults()
         {
-            Projectile.width = 26; // The width of projectile hitbox
-            Projectile.height = 102; // The height of projectile hitbox
+            Projectile.width = 50; // The width of projectile hitbox
+            Projectile.height = 50; // The height of projectile hitbox
             Projectile.DamageType = DamageClass.Generic; // What type of damage does this projectile affect?
             Projectile.friendly = false; // Can the projectile deal damage to enemies?
             Projectile.hostile = true; // Can the projectile deal damage to the player?
@@ -33,7 +35,7 @@ namespace DestroyerTest.Content.Projectiles
             Projectile.light = 1f; // How much light emit around the projectile
             Projectile.timeLeft = 120; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
             Projectile.tileCollide = false;
-            Projectile.penetrate = 1;
+            Projectile.penetrate = -1;
         }
 
         public override bool PreDraw(ref Color lightColor)
@@ -43,17 +45,45 @@ namespace DestroyerTest.Content.Projectiles
             Texture2D texture = TextureAssets.Projectile[Type].Value;
 
             Vector2 drawOrigin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
-            for (int k = Projectile.oldPos.Length - 1; k > 0; k--)
+            Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, null, lightColor, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
+            return false;
+        }
+
+        public int InitTime = 0;
+        public int InitAlpha = 0;
+        public override void OnSpawn(IEntitySource source)
+        {
+            InitTime = Projectile.timeLeft;
+            InitAlpha = Projectile.alpha;
+        }
+        public void ManageAlpha(ref int timeLeft)
+        {
+            // Use elapsed ticks since spawn so we can compute a stable progress value
+            int elapsed = InitTime - timeLeft; // how many ticks have passed since spawn
+
+            if (elapsed >= 5 && elapsed < 25)
             {
-                Vector2 drawPos = (Projectile.oldPos[k] - Main.screenPosition) + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
-                Color color = Projectile.GetAlpha(lightColor) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
-                Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
+                float progress = (elapsed - 5) / 20f;
+                progress = MathHelper.Clamp(progress, 0f, 1f);
+                Projectile.alpha = (int)MathHelper.Lerp(InitAlpha, 0f, progress);
             }
-            return true;
+
+            // Fade IN (or restore): during the final 60 ticks of life, interpolate back to InitAlpha
+            else if (timeLeft <= 60)
+            {
+                float progress = (60 - timeLeft) / 60f; // 0 -> 1 across last 60 ticks
+                progress = MathHelper.Clamp(progress, 0f, 1f);
+                Projectile.alpha = (int)MathHelper.Lerp(0f, InitAlpha, progress);
+            }
+
+            // Keep alpha within valid byte range
+            if (Projectile.alpha < 0) Projectile.alpha = 0;
+            if (Projectile.alpha > 255) Projectile.alpha = 255;
         }
 
         public override void AI()
         {
+            ManageAlpha(ref Projectile.timeLeft);
             if (Main.rand.NextBool(3))
             {
                 Dust.NewDustPerfect(Projectile.Center, DustID.TintableDustLighted, newColor: ColorLib.TenebrisGradient, Scale: 1.8f, Velocity: Vector2.Zero);
@@ -64,7 +94,8 @@ namespace DestroyerTest.Content.Projectiles
 
             if (Main.GameUpdateCount % 10 == 0 && Projectile.velocity.Length() > 2)
             {
-                SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/HopeScabbardTele") with { MaxInstances = 0, PitchVariance = 0.3f, Volume = 0.15f }, Projectile.Center);
+                PRTLoader.NewParticle(PRTLoader.GetParticleID<SmallShine>(), Projectile.Center, Vector2.Zero, Color.White * 0.5f, 0.5f);
+                SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/TenebrisBlock") with { MaxInstances = 0, PitchVariance = 0.3f, Volume = 0.15f }, Projectile.Center);
                 Projectile.NewProjectile(Entity.GetSource_FromAI(), Projectile.Center, FlankLeft * 0.02f, ModContent.ProjectileType<TenebrisDart>(), Projectile.damage / 2, 3);
                 Projectile.NewProjectile(Entity.GetSource_FromAI(), Projectile.Center, FlankRight * 0.02f, ModContent.ProjectileType<TenebrisDart>(), Projectile.damage / 2, 3);
             }
@@ -81,7 +112,6 @@ namespace DestroyerTest.Content.Projectiles
             int numProjectiles = 12;
             float rotationStep = MathHelper.TwoPi / numProjectiles;
 
-            SoundEngine.PlaySound(SoundID.Item14, Projectile.Center);
             for (int i = 0; i < numProjectiles; i++)
             {
                 Vector2 velocity = new Vector2(8f, 0f).RotatedBy(rotationStep * i);

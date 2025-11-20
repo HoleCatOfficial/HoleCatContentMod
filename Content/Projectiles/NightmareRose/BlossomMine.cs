@@ -16,6 +16,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using OpusLib;
 using InnoVault.PRT;
+using DestroyerTest.Content.Projectiles.Gores;
 
 namespace DestroyerTest.Content.Projectiles.NightmareRose
 {
@@ -44,7 +45,7 @@ namespace DestroyerTest.Content.Projectiles.NightmareRose
             DTUtils Utility = new DTUtils();
 
             Opus.StartSpriteBatchWithBlending(sb, BlendState.Additive, SpriteSortMode.Immediate);
-            Opus.DrawGlowOnProj(Projectile, Color.Purple, false);
+            Opus.DrawGlowOnProj(Projectile, new Color(43, 37, 154), false);
             TelegraphLine(sb);
             Opus.ReturnToDefaultDrawing(sb);
             return false;
@@ -66,7 +67,7 @@ namespace DestroyerTest.Content.Projectiles.NightmareRose
                     float length = 3600f;
                     Vector2 scale = new Vector2(1f, length / LineTex.Height);
 
-                    SB.Draw(LineTex, drawPos, null, ColorLib.CursedFlames, angle + MathHelper.PiOver2, new Vector2(LineTex.Width / 2f, 0), scale, SpriteEffects.None, 0f);
+                    SB.Draw(LineTex, drawPos, null, new Color(43, 37, 154), angle + MathHelper.PiOver2, new Vector2(LineTex.Width / 2f, 0), scale, SpriteEffects.None, 0f);
                 }
             }
         }
@@ -76,7 +77,10 @@ namespace DestroyerTest.Content.Projectiles.NightmareRose
 
         public override void OnSpawn(IEntitySource source)
         {
-            SoundEngine.PlaySound(SoundID.Zombie94, Projectile.Center);
+            for (int u = 0; u < 12; u++)
+            {
+                Gore.NewGore(source, Projectile.Center, new Vector2(Main.rand.NextFloat(-6, 6), Main.rand.NextFloat(-6, 6)), ModContent.GoreType<RosePetalGore1>(), 2f);
+            }
             IntialPos = Projectile.Center;
         }
         
@@ -88,13 +92,18 @@ namespace DestroyerTest.Content.Projectiles.NightmareRose
             Projectile.velocity *= 0.999f;
             Projectile.rotation += Main.rand.NextFloat(-1f, 1.1f) * 0.1f;
 
-            if (Main.GameUpdateCount % 20 == 0)
+            if (Projectile.timeLeft % 20 == 0)
             {
-                Opus.RadialSpreadDust(DustID.ShadowbeamStaff, 18, Projectile.Center, DustAlpha, default, 2.3f, 3, true);
-                DustAlpha -= (255 / 30);
-                Projectile.scale *= 1.05f;
-                SoundPitch += (1 / 30);
-                SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/NodeAttackTS") with {Volume = 0.5f, Pitch = SoundPitch, MaxInstances = 0});
+                Opus.RadialSpreadDust(DustID.ShadowbeamStaff, 18, Projectile.Center, DustAlpha, default, 2.3f, 7, true);
+                DustAlpha -= 255 / 30;
+                Projectile.scale *= 1.005f;
+                SoundPitch += 1f / 30f;
+                SoundEngine.PlaySound(SoundID.Item42 with {Volume = 0.5f, Pitch = SoundPitch, MaxInstances = 0});
+                if (Projectile.timeLeft <= 20)
+                {
+                    Opus.RadialSpreadDust(DustID.ShadowbeamStaff, 18, Projectile.Center, DustAlpha, default, 5f, 10, true);
+                    SoundEngine.PlaySound(SoundID.Item167 with { MaxInstances = 0});
+                }
             }
             if (Main.rand.NextBool(12))
             {
@@ -107,6 +116,11 @@ namespace DestroyerTest.Content.Projectiles.NightmareRose
         {
             Vector2 ToPlayer = Projectile.Center - Main.LocalPlayer.Center;
             SoundEngine.PlaySound(SoundID.Item14, Projectile.Center);
+            for (int u = 0; u < 12; u++)
+            {
+                Gore.NewGore(Projectile.GetSource_Death(), Projectile.Center, new Vector2(Main.rand.NextFloat(-6, 6), Main.rand.NextFloat(-6, 6)), ModContent.GoreType<RosePetalGore1>(), 2f);
+            }
+
             var launchVelocity = new Vector2(-12, 0);
                 
             for (int i = 0; i < 8; i++)
