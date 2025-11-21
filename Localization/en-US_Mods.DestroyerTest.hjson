@@ -3451,6 +3451,21 @@ Items: {
 		DisplayName: Distended Pike
 		Tooltip: ""
 	}
+
+	Item_RootedDirtWall: {
+		Tooltip: ""
+		DisplayName: Item_ Rooted Dirt Wall
+	}
+
+	Item_RootedDirt: {
+		Tooltip: ""
+		DisplayName: Item_ Rooted Dirt
+	}
+
+	Item_RiftSiltStoneWall: {
+		Tooltip: ""
+		DisplayName: Item_ Rift Silt Stone Wall
+	}
 }
 
 Projectiles: {
@@ -4357,6 +4372,7 @@ Tiles: {
 	Tile_RiftenCrate.MapEntry: Tile_ Riften Crate
 	Tile_HeliciteCrate.MapEntry: Tile_ Helicite Crate
 	Tile_RiftPylon.MapEntry: Tile_ Rift Pylon
+	Tile_RootedDirt.MapEntry: Tile_ Rooted Dirt
 }
 
 Biomes: {
