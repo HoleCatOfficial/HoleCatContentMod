@@ -29,7 +29,7 @@ namespace DestroyerTest.Content.Tiles.RoseGarden
 			LocalizedText name = CreateMapEntryName();
 			AddMapEntry(new Color(111, 86, 101), name);
 
-			DustType = 24;
+			DustType = DustID.CorruptionThorns;
 			HitSound = SoundID.DD2_MonkStaffGroundImpact;
 			MineResist = 1.15f;
 			MinPick = 35;
