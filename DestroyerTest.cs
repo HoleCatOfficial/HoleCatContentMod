@@ -25,6 +25,7 @@ using DestroyerTest.Content.Scepter;
 using static Terraria.Graphics.FinalFractalHelper;
 using OpusLib.Content.Helpers;
 using DestroyerTest.Content.Equips.ScepterAccessories;
+using DestroyerTest.Content.Tiles.RoseGarden;
 
 namespace DestroyerTest
 {
@@ -155,7 +156,88 @@ namespace DestroyerTest
 				stack: 1,
 				rarity: 0.25f
 			);
+            NightmareChestLoot();
         }
+
+        public void NightmareChestLoot()
+        {
+            ChestLootSystem.RegisterChestLoot(
+				new ChestID(ModContent.TileType<Tile_NightmareChest>(), 0),
+				ModContent.ItemType<DefloweredFaith>(),
+				stack: 1,
+				rarity: 0.25f
+			);
+            ChestLootSystem.RegisterChestLoot(
+				new ChestID(ModContent.TileType<Tile_NightmareChest>(), 0),
+				ItemID.GreaterManaPotion,
+				Min: 4,
+				Max: 12,
+				rarity: 0.4f
+			);
+			ChestLootSystem.RegisterChestLoot(
+				new ChestID(ModContent.TileType<Tile_NightmareChest>(), 0),
+				ItemID.CopperCoin,
+				Min: 10,
+				Max: 90,
+				rarity: 0.7f
+			);
+			ChestLootSystem.RegisterChestLoot(
+				new ChestID(ModContent.TileType<Tile_NightmareChest>(), 0),
+				ItemID.SilverCoin,
+				Min: 10,
+				Max: 65,
+				rarity: 0.7f
+			);
+			ChestLootSystem.RegisterChestLoot(
+				new ChestID(ModContent.TileType<Tile_NightmareChest>(), 0),
+				ItemID.GoldCoin,
+				Min: 5,
+				Max: 15,
+				rarity: 0.7f
+			);
+			ChestLootSystem.RegisterChestLoot(
+				new ChestID(ModContent.TileType<Tile_NightmareChest>(), 0),
+				ItemID.PlatinumCoin,
+				Min: 1,
+				Max: 10,
+				rarity: 0.7f
+			);
+            ChestLootSystem.RegisterChestLoot(
+				new ChestID(ModContent.TileType<Tile_NightmareChest>(), 0),
+				ItemID.GreaterHealingPotion,
+				Min: 4,
+				Max: 12,
+				rarity: 0.7f
+			);
+            ChestLootSystem.RegisterChestLoot(
+				new ChestID(ModContent.TileType<Tile_NightmareChest>(), 0),
+				ItemID.GreaterManaPotion,
+				Min: 4,
+				Max: 12,
+				rarity: 0.7f
+			);
+            ChestLootSystem.RegisterChestLoot(
+				new ChestID(ModContent.TileType<Tile_NightmareChest>(), 0),
+				ItemID.MagicMirror,
+				stack: 1,
+				rarity: 0.10f
+			);
+            ChestLootSystem.RegisterChestLoot(
+				new ChestID(ModContent.TileType<Tile_NightmareChest>(), 0),
+				ItemID.UnholyArrow,
+				Min: 6,
+				Max: 22,
+				rarity: 0.5f
+			);
+            ChestLootSystem.RegisterChestLoot(
+				new ChestID(ModContent.TileType<Tile_NightmareChest>(), 0),
+				ItemID.WoodenArrow,
+				Min: 10,
+				Max: 40,
+				rarity: 0.5f
+			);
+        }
+
         public override void Load()
         {
             Config = ModContent.GetInstance<DTConfig>();

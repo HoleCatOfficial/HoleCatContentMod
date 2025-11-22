@@ -3438,12 +3438,12 @@ Items: {
 	}
 
 	Item_CursedFlameNodeRelic: {
-		DisplayName: Item_ Cursed Flame Node Relic
+		DisplayName: Cursed Flame Node Relic
 		Tooltip: ""
 	}
 
 	Item_IchorNodeRelic: {
-		DisplayName: Item_ Ichor Node Relic
+		DisplayName: Ichor Node Relic
 		Tooltip: ""
 	}
 
@@ -3454,17 +3454,22 @@ Items: {
 
 	Item_RootedDirtWall: {
 		Tooltip: ""
-		DisplayName: Item_ Rooted Dirt Wall
+		DisplayName: Rooted Dirt Wall
 	}
 
 	Item_RootedDirt: {
 		Tooltip: ""
-		DisplayName: Item_ Rooted Dirt
+		DisplayName: Rooted Dirt
 	}
 
 	Item_RiftSiltStoneWall: {
 		Tooltip: ""
-		DisplayName: Item_ Rift Silt Stone Wall
+		DisplayName: Rift Siltstone Wall
+	}
+
+	Item_NightmareChest: {
+		Tooltip: ""
+		DisplayName: Item_ Nightmare Chest
 	}
 }
 
@@ -4373,6 +4378,12 @@ Tiles: {
 	Tile_HeliciteCrate.MapEntry: Tile_ Helicite Crate
 	Tile_RiftPylon.MapEntry: Tile_ Rift Pylon
 	Tile_RootedDirt.MapEntry: Tile_ Rooted Dirt
+
+	Tile_NightmareChest: {
+		Locked: Mods.DestroyerTest.Tiles.Tile_NightmareChest.Locked
+		MapEntry1: Mods.DestroyerTest.Tiles.Tile_NightmareChest.MapEntry1
+		MapEntry0: Mods.DestroyerTest.Tiles.Tile_NightmareChest.MapEntry0
+	}
 }
 
 Biomes: {
@@ -4409,6 +4420,11 @@ Biomes: {
 	RiftDesertUnderground: {
 		DisplayName: Rift Desert Underground
 		TownNPCDialogueName: the Rift Desert Underground
+	}
+
+	RoseGardenUnderground: {
+		DisplayName: Rose Garden Underground
+		TownNPCDialogueName: the Rose Garden Underground
 	}
 }
 

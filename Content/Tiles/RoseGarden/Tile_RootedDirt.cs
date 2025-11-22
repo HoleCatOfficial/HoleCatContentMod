@@ -37,17 +37,19 @@ namespace DestroyerTest.Content.Tiles.RoseGarden
 
 		public override void NearbyEffects(int i, int j, bool closer)
 		{
-			Player player = Main.LocalPlayer;
-			Vector2 tileWorldPos = new Vector2(i * 16 + 8, j * 16 + 8); // center of tile
-
-			float distance = Vector2.Distance(player.Center, tileWorldPos);
-
-			if (distance < 700f)
+			for (int f = 0; f < Main.maxPlayers; f++)
 			{
-				if (player.HasBuff(BuffID.Sunflower))
-                {
-                    player.DelBuff(BuffID.Sunflower);
-                }
+				Player player = Main.player[f];
+				if (player == null || !player.active)
+					continue;
+
+				Vector2 tileWorldPos = new Vector2(i * 16 + 8, j * 16 + 8); // center of tile
+				float distance = Vector2.Distance(player.Center, tileWorldPos);
+
+				if (distance < 700f && player.HasBuff(BuffID.Sunflower))
+				{
+					player.DelBuff(BuffID.Sunflower);
+				}
 			}
 		}
 
