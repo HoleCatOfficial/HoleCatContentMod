@@ -3949,6 +3949,7 @@ Projectiles: {
 	HekateStaffProj.DisplayName: Hekate Staff Proj
 	HekateStaffEmber.DisplayName: Hekate Staff Ember
 	HekatesMystiqueHoldout.DisplayName: Hekates Mystique Holdout
+	HekateStaffExplosion.DisplayName: Hekate Staff Explosion
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.
@@ -4344,7 +4345,30 @@ NPCs: {
 
 	GigaCursedHammer.DisplayName: Giga Cursed Hammer
 	TheGreatFlayer.DisplayName: The Great Flayer
-	NightmareRoseBoss.DisplayName: Nightmare Rose
+
+	NightmareRoseBoss: {
+		DisplayName: Nightmare Rose
+		BestiaryEntry1:
+			'''
+			"Mother Darkness is never too cut-and-dry, and that extends to her motivations and actions.
+			Many, many years ago, Mother Darkness took a son under her wing. Nobody knew how old, nobody knew his name.
+			To both himself and observers, his destiny was forever postponed, year after year. He had nothing waiting for him in some distant future,
+			as all mother darkness needed from him was his warm, bubbly personality to brighten her days and when it served her interests.
+			Since word rarely ever escapes the shade world, nobody knew how, when, or even if, certain things developed.
+			One thing is known, though. Hekate, the Deity of Witchcraft and Mischief, saw more potential in the boy than his mother did."
+			- Transcripts of the late Terníf the Holy.
+			'''
+		BestiaryEntry2:
+			'''
+			"The boy had a humanity to him when he wasnt living the sweet life around his mother. He enjoyed observing bugs, designing jewelery, and drawing silt mandalas.
+			This, Hekate took the greatest note of during their brief visits to the shade world. This boy had an appreciation for the fleeting, something Hekate often sought out
+			in order to find like-minded co-conspirators for their many stunts. On one particular visit to the shade world, Hekate was disguised as a miserly, elderly churl.
+			They said to the boy 'You are not loved here. You are merely a tool for her satisfaction. You know this, do you not?' It was on that day that Mother Darkness would no
+			longer locate her son in the shade world, as he had left to become an apprentice of Hekate, under the guise of seizing his true potential..."
+			- Excerpt from 'Folk Tales of Terraria: Volume 73', by Uriel XXV.
+			'''
+	}
+
 	CursedFlameNode.DisplayName: Cursed Flame Node
 	IchorNode.DisplayName: Ichor Node
 

@@ -19,6 +19,7 @@ using OpusLib;
 using ReLogic.Utilities;
 using DestroyerTest.Content.Particles;
 using InnoVault.PRT;
+using Humanizer;
 
 namespace DestroyerTest.Content.Projectiles
 {
@@ -127,6 +128,7 @@ namespace DestroyerTest.Content.Projectiles
             IsLooped = true,
             PauseBehavior = PauseBehavior.PauseWithGame
         };
+        public float PitchVal = -3;
         public override void AI()
         {
             TrailPositions.Insert(0, Projectile.Center);
@@ -148,15 +150,25 @@ namespace DestroyerTest.Content.Projectiles
 
             if (!SoundEngine.TryGetActiveSound(LoopSlot, out var activeSound)) {
                 var tracker = new ProjectileAudioTracker(Projectile);
-                LoopSlot = SoundEngine.PlaySound(Loop, Projectile.position, soundInstance => {
-                    soundInstance.Position = Projectile.position;
+                LoopSlot = SoundEngine.PlaySound(Loop, Projectile.Center, soundInstance => {
+                    soundInstance.Position = Projectile.Center;
+                    soundInstance.Pitch = PitchVal;
                     return tracker.IsActiveAndInGame();
                 });
+            }
+            else
+            {
+                activeSound.Position = Projectile.Center;
+                activeSound.Pitch = PitchVal;
             }
 
             Player player = Main.player[Projectile.owner];
             if (player.channel)
             {
+                if (PitchVal < 0)
+                {
+                    PitchVal += 0.1f;
+                }
                 Projectile.timeLeft = 10;
                 Projectile.velocity = Vector2.Lerp(Projectile.velocity, (Main.MouseWorld - Projectile.Center).SafeNormalize(Vector2.Zero) * 12f, 0.1f);
 

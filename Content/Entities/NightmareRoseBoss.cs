@@ -127,7 +127,8 @@ namespace DestroyerTest.Content.Entities
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
-                new FlavorTextBestiaryInfoElement("Legends claim that Mother Darkness once birthed two children, Khebmál and Shoerluan. Their quarrels grew so fierce that Heqain intervened, fearing they would destroy each other. She cast Shoerluan, who had renamed himself to Vourtreán, into the shade world, and bound Khebmál into a corrupt seedling, giving him a new name: Remeon, to help him release himself from his past. To common folk, this creature is remembered only as the Botanist’s Curse: a blight that raises strange purple flora, drains fertile soil, and drives farmers to madness. But those who know the truth of its origin as Mother Darkness’s lost children are under close watch by Heqain, who sees to it that this violent matter remains history."),
+                new FlavorTextBestiaryInfoElement(Language.GetTextValue("Mods.DestroyerTest.NPCs.NightmareRoseBoss.BestiaryEntry1")),
+                new FlavorTextBestiaryInfoElement(Language.GetTextValue("Mods.DestroyerTest.NPCs.NightmareRoseBoss.BestiaryEntry2")),
                 BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.TheCorruption
             });
         }
