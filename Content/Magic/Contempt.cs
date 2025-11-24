@@ -51,6 +51,10 @@ namespace DestroyerTest.Content.Magic
 			if (player.channel)
 			{
 				int manaCost = Item.mana;
+				if (Main.GameUpdateCount % Item.useTime == 0)
+                {
+                    player.statMana -= manaCost;
+                }
 				if (player.statMana < manaCost)
 				{
 					player.channel = false; // Stop channeling if not enough mana
@@ -60,7 +64,7 @@ namespace DestroyerTest.Content.Magic
 		
 		public override bool CanUseItem(Player player)
 		{
-			return !Main.projectile.Any(proj => proj.active && proj.owner == player.whoAmI && proj.type == ModContent.ProjectileType<ContemptCursorProjectile>());
+			return player.ownedProjectileCounts[Item.shoot] < 1;
 		}
 
 

@@ -3,6 +3,7 @@ using DestroyerTest.Common;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
+using ReLogic.Utilities;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -24,7 +25,7 @@ namespace DestroyerTest.Content.Projectiles
             Projectile.friendly = true;
             Projectile.hostile = false;
             Projectile.penetrate = -1;
-            Projectile.timeLeft = 600;
+            Projectile.timeLeft = 240;
             Projectile.tileCollide = false;
             Projectile.ignoreWater = true;
             Projectile.DamageType = DamageClass.Generic;
@@ -41,16 +42,23 @@ namespace DestroyerTest.Content.Projectiles
             Opus.ReturnToDefaultDrawing(spriteBatch);
         }
 
-        public float LoopTimer = 0f;
-        public const float LoopPoint = 3.726f * 60f; //Whatever number times the 60 ticks in one second. Audio clip is 3 seconds and 726 milliseconds.
-        public SoundStyle Loop = new SoundStyle("DestroyerTest/Assets/Audio/AuraLoop/ShadowflameAuraLoop") with { MaxInstances = 0 };
+        SlotId LoopSlot;
+        public SoundStyle Loop = new SoundStyle("DestroyerTest/Assets/Audio/AuraLoop/ShadowflameAuraLoop") 
+        { 
+            MaxInstances = 0,
+            IsLooped = true,
+            PauseBehavior = PauseBehavior.PauseWithGame
+        };
+            
         public override void AI()
         {
-            LoopTimer += 1.25f;
-            if (LoopTimer > LoopPoint)
-            {
-                SoundEngine.PlaySound(Loop, Projectile.Center);
-                LoopTimer = 0f;
+
+            if (!SoundEngine.TryGetActiveSound(LoopSlot, out var activeSound)) {
+                var tracker = new ProjectileAudioTracker(Projectile);
+                LoopSlot = SoundEngine.PlaySound(Loop, Projectile.position, soundInstance => {
+                    soundInstance.Position = Projectile.position;
+                    return tracker.IsActiveAndInGame();
+                });
             }
 
             Projectile.rotation += 0.05f;

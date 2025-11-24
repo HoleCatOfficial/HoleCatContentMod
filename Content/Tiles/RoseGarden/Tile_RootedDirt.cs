@@ -22,6 +22,7 @@ namespace DestroyerTest.Content.Tiles.RoseGarden
 		{
 			TileID.Sets.ChecksForMerge[Type] = true;
 			TileID.Sets.BlockMergesWithMergeAllBlock[Type] = true;
+			TileID.Sets.BlockMergesWithMergeAllBlockOverride[Type] = true;
 			Main.tileMergeDirt[Type] = true;
 			Main.tileSolid[Type] = true;
 			Main.tileBlockLight[Type] = true;
@@ -46,9 +47,16 @@ namespace DestroyerTest.Content.Tiles.RoseGarden
 				Vector2 tileWorldPos = new Vector2(i * 16 + 8, j * 16 + 8); // center of tile
 				float distance = Vector2.Distance(player.Center, tileWorldPos);
 
-				if (distance < 700f && player.HasBuff(BuffID.Sunflower))
+				if (distance < 700f)
 				{
-					player.DelBuff(BuffID.Sunflower);
+					for (int k = 0; k < Player.MaxBuffs; k++)
+					{
+						if (player.buffType[k] == BuffID.Sunflower)
+						{
+							player.DelBuff(k);
+							break;
+						}
+					}
 				}
 			}
 		}

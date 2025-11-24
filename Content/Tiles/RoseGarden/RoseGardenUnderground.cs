@@ -1,3 +1,4 @@
+using DestroyerTest.Common;
 using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
@@ -6,6 +7,7 @@ using Microsoft.Xna.Framework;
 using System;
 using System.Reflection;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent.Bestiary;
 using Terraria.Graphics.Capture;
 using Terraria.ID;
@@ -16,7 +18,7 @@ namespace DestroyerTest.Content.Tiles.RoseGarden
 	public class RoseGardenUnderground : ModBiome
 	{
 
-		public override ModWaterStyle WaterStyle => ModContent.GetInstance<RiftWaterStyle>();
+        public override ModWaterStyle WaterStyle => ModContent.GetModWaterStyle(WaterStyleID.Corrupt);  
 		public override ModUndergroundBackgroundStyle UndergroundBackgroundStyle => ModContent.GetInstance<RoseGardenUndergroundBackgroundStyle>();
 		public override CaptureBiome.TileColorStyle TileColorStyle => CaptureBiome.TileColorStyle.Corrupt;
 
@@ -24,20 +26,26 @@ namespace DestroyerTest.Content.Tiles.RoseGarden
 		{
 			get
 			{
-                //return MusicLoader.GetMusicSlot(Mod, "Assets/Music/RiftDesertUnderground");
-                return MusicID.Graveyard;
+                return MusicLoader.GetMusicSlot(Mod, "Assets/Music/Placeholder6");
 			}
 		}
 
+        public override void OnEnter(Player player)
+        {
+			Main.NewText("IMPORTANT: The Song Used here is a placeholder. 'I, Am the First Flower' from Desolo Zantas's 'Omniphobia'. I claim no ownership of this track. It will be replaced in due time.");
+			SoundStyle Entry = new SoundStyle("DestroyerTest/Assets/Audio/EnterRoseGarden") with { PitchVariance = 0.5f, MaxInstances = 0 };
+            SoundEngine.PlaySound(Entry);
+        }
+
+		public override void OnLeave(Player player)
+        {
+			SoundStyle Exit = new SoundStyle("DestroyerTest/Assets/Audio/ExitRoseGarden") with { PitchVariance = 0.5f, MaxInstances = 0 };
+            SoundEngine.PlaySound(Exit);
+        }
+
 		public override void OnInBiome(Player player)
 		{
-            if (Main.rand.NextBool(4))
-            {
-                for (int t = 0; t < 5; t++)
-                {
-                    Dust.NewDust(Main.screenPosition, Main.screenWidth, Main.screenHeight, DustID.CursedTorch, Main.rand.NextFloat(-2, 2), Main.rand.NextFloat(-1, -3));
-                }
-            }
+            
         }
 
 
@@ -50,12 +58,9 @@ namespace DestroyerTest.Content.Tiles.RoseGarden
 
 		public override bool IsBiomeActive(Player player) {
 			if (player.TryGetModPlayer<RoseGardenPlayer>(out RoseGardenPlayer Garden))
-            {
-                if (Garden.Active)
-                {
-                    return true;
-                }
-            }
+				{
+					return Garden.Active;
+				}
 			return false;
 		}
 

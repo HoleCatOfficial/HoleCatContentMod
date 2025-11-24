@@ -20,12 +20,6 @@ namespace DestroyerTest.Content.Tiles.RoseGarden
 	{
 		public override void SetStaticDefaults()
 		{
-			Main.tileSolid[Type] = true;
-			Main.tileBlockLight[Type] = true;
-
-			//LocalizedText name = CreateMapEntryName();
-			//AddMapEntry(new Color(111, 86, 101), name);
-
 			DustType = DustID.CorruptionThorns;
 			HitSound = SoundID.DD2_MonkStaffGroundImpact;
 			MineResist = 16000f;
@@ -34,23 +28,29 @@ namespace DestroyerTest.Content.Tiles.RoseGarden
 
 		public override void NearbyEffects(int i, int j, bool closer)
 		{
-			for (int f = 0; f < Main.maxPlayers; f++)
+            for (int f = 0; f < Main.maxPlayers; f++)
 			{
 				Player player = Main.player[f];
-				Vector2 tileWorldPos = new Vector2(i * 16 + 8, j * 16 + 8); // center of tile
-				
-				if (f < Main.maxPlayers && f > -1)
-				{
-					float distance = Vector2.Distance(player.Center, tileWorldPos);
+				if (player == null || !player.active)
+					continue;
 
-					if (distance < 1200f)
+				Vector2 tileWorldPos = new Vector2(i * 16 + 8, j * 16 + 8); // center of tile
+				float distance = Vector2.Distance(player.Center, tileWorldPos);
+
+				if (distance < 1200f)
 					{
 						if (player.TryGetModPlayer<RoseGardenPlayer>(out RoseGardenPlayer Garden))
                         {
                             Garden.Active = true;
                         }
 					}
-				}
+                else
+                    {
+                        if (player.TryGetModPlayer<RoseGardenPlayer>(out RoseGardenPlayer Garden))
+                        {
+                            Garden.Active = false;
+                        }
+                    }
 			}
 		}
 	}
@@ -58,10 +58,6 @@ namespace DestroyerTest.Content.Tiles.RoseGarden
     public class RoseGardenPlayer : ModPlayer
     {
         public bool Active = false;
-        public override void ResetEffects()
-        {
-            Active = false;
-        }
 
         public override void PostUpdateMiscEffects()
         {
@@ -69,19 +65,23 @@ namespace DestroyerTest.Content.Tiles.RoseGarden
             {
                 RemoveBuffs(Player);
                 Player.AddBuff(BuffID.NoBuilding, 4);
+                Player.AddBuff(BuffID.Blackout, 4);
             }
         }
         
         public void RemoveBuffs(Player player)
         {
-            if (player.HasBuff(BuffID.Sunflower))
-            {
-                player.DelBuff(BuffID.Sunflower);
-            }
-            if (player.HasBuff(BuffID.Titan))
-            {
-                player.DelBuff(BuffID.Titan);
-            }
+            for (int k = 0; k < Player.MaxBuffs; k++)
+                {
+                    if (player.buffType[k] == BuffID.Sunflower ||
+                    player.buffType[k] == BuffID.Shine ||
+                    player.buffType[k] == BuffID.NightOwl ||
+                    player.buffType[k] == BuffID.Spelunker)
+                    {
+                        player.DelBuff(k);
+                        break;
+                    }
+                }
         }
     }
 }

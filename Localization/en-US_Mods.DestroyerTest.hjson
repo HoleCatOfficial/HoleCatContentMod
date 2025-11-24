@@ -2032,12 +2032,12 @@ Items: {
 
 	FoxScepter: {
 		DisplayName: Fox Scepter
-		Tooltip: Dedicated to: TopFox6 the PipeBomb Fox, for motivating me to follow through with this mod by making me want to impress him.
+		Tooltip: Dedicated to: TopFox6 the PipeBomb Fox, for being a part of what motivates me to follow through with this mod by making me want to impress him.
 	}
 
 	StellarFoxScepter: {
 		DisplayName: Stellar Fox Scepter
-		Tooltip: Dedicated to: TopFox6 the PipeBomb Fox, for motivating me to follow through with this mod by making me want to impress him.
+		Tooltip: Dedicated to: TopFox6 the PipeBomb Fox, for being a part of what motivates me to follow through with this mod by making me want to impress him.
 	}
 
 	StellarBow: {
@@ -2606,11 +2606,21 @@ Items: {
 
 	RoseSoul: {
 		DisplayName: Soul of the Conglomerated Child of Mother Darkness
-		Tooltip: Living proof.
+		Tooltip:
+			'''
+			Increases max health to 240 when consumed.
+			You can only get one per world, and it can only be consumed once.
+			"The shade world weeps."
+			'''
 	}
 
 	WyvernSoul: {
-		Tooltip: Unforseeable.
+		Tooltip:
+			'''
+			Increases max health to 360 when consumed.
+			You can only get one per world, and it can only be consumed once.
+			"Unforseeable."
+			'''
 		DisplayName: Soul of the Great Wyvern
 	}
 
@@ -3469,7 +3479,40 @@ Items: {
 
 	Item_NightmareChest: {
 		Tooltip: ""
-		DisplayName: Item_ Nightmare Chest
+		DisplayName: Nightmare Chest
+	}
+
+	TwistedFaith: {
+		DisplayName: Twisted Faith
+		Tooltip:
+			'''
+			Creates a large, sweeping slash that flies out towards the mouse.
+			Slashes inflict Soul Erosion, which lowers enemy damage.
+			"A weapon I forged from the roses that Mother Darkness sent for her son alongside a scroll begging him to return.
+			I didn't have the heart to tell her what had become of him."
+			'''
+	}
+
+	MalachiteKnives: {
+		DisplayName: Malachite Knives
+		Tooltip:
+			'''
+			Throws a volley of tiny Defiled Knives. 
+			Knives inflict Soul Erosion, which lowers enemy damage.
+			'''
+	}
+
+	HekatesMystique: {
+		DisplayName: Hekate's Mystique
+		Tooltip:
+			'''
+			Casts a controllable ball of light.
+			The ball creates small embers around it that don't move and inflict Soul Erosion, which lowers enemy damage.
+			Releasing the mouse button kills all embers and the light ball.
+
+			Hekate's personal weapon for dealing with small scale threats.
+			Though, after she fled consequence, it has been left unused for decades.
+			'''
 	}
 }
 
@@ -3900,6 +3943,12 @@ Projectiles: {
 	VesperDart.DisplayName: Vesper Dart
 	DistendedPikeProjectile.DisplayName: Distended Pike Projectile
 	DistendedPikeShard.DisplayName: Distended Pike Shard
+	TwistedFaithProj.DisplayName: Twisted Faith Proj
+	TwistedFaithSwing.DisplayName: Twisted Faith Swing
+	MalachiteKnife.DisplayName: Malachite Knife
+	HekateStaffProj.DisplayName: Hekate Staff Proj
+	HekateStaffEmber.DisplayName: Hekate Staff Ember
+	HekatesMystiqueHoldout.DisplayName: Hekates Mystique Holdout
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.
@@ -4355,34 +4404,28 @@ Keybinds: {
 }
 
 Tiles: {
-	RiftCache: {
-		MapEntry0: RiftCache
-		MapEntry1: RiftCache
-	}
-
-	Helicite_Crystal.MapEntry: Helicite Crystal
-	Tile_RiftConfiguratorArmory.MapEntry: Tile_ Rift Configurator Armory
-	Tile_RiftConfiguratorCore.MapEntry: Tile_ Rift Configurator Core
-	Tile_RiftConfiguratorWeaponry.MapEntry: Tile_ Rift Configurator Weaponry
-	Tile_RiftConfiguratorTools.MapEntry: Tile_ Rift Configurator Tools
-	Tile_RiftConfiguratorFurniture.MapEntry: Tile_ Rift Configurator Furniture
-	Tile_HeliciteCrystal.MapEntry: Tile_ Helicite Crystal
+	Tile_RiftConfiguratorArmory.MapEntry: Rift Configurator Armory
+	Tile_RiftConfiguratorCore.MapEntry: Rift Configurator Core
+	Tile_RiftConfiguratorWeaponry.MapEntry: Rift Configurator Weaponry
+	Tile_RiftConfiguratorTools.MapEntry: Rift Configurator Tools
+	Tile_RiftConfiguratorFurniture.MapEntry: Rift Configurator Furniture
+	Tile_HeliciteCrystal.MapEntry: Helicite Crystal
 
 	Tile_RiftCache: {
-		MapEntry1: Mods.DestroyerTest.Tiles.Tile_RiftCache.MapEntry1
-		MapEntry0: Mods.DestroyerTest.Tiles.Tile_RiftCache.MapEntry0
+		MapEntry1: Rift Cache
+		MapEntry0: Rift Cace
 	}
 
-	Tile_VesperOre.MapEntry: Tile_ Vesper Ore
-	Tile_RiftenCrate.MapEntry: Tile_ Riften Crate
-	Tile_HeliciteCrate.MapEntry: Tile_ Helicite Crate
-	Tile_RiftPylon.MapEntry: Tile_ Rift Pylon
-	Tile_RootedDirt.MapEntry: Tile_ Rooted Dirt
+	Tile_VesperOre.MapEntry: Vesper Ore
+	Tile_RiftenCrate.MapEntry: Riften Crate
+	Tile_HeliciteCrate.MapEntry: Helicite Crate
+	Tile_RiftPylon.MapEntry: Rift Pylon
+	Tile_RootedDirt.MapEntry: Rooted Dirt
 
 	Tile_NightmareChest: {
-		Locked: Mods.DestroyerTest.Tiles.Tile_NightmareChest.Locked
-		MapEntry1: Mods.DestroyerTest.Tiles.Tile_NightmareChest.MapEntry1
-		MapEntry0: Mods.DestroyerTest.Tiles.Tile_NightmareChest.MapEntry0
+		Locked: Locked Nightmare Chest
+		MapEntry1: Nightmare Chest
+		MapEntry0: Nightmare Chest
 	}
 }
 
@@ -4409,22 +4452,22 @@ Biomes: {
 
 	RiftTundra: {
 		DisplayName: Rift Tundra
-		TownNPCDialogueName: the Rift Tundra
+		TownNPCDialogueName: a riften tundra
 	}
 
 	RiftUnderground: {
 		DisplayName: Rift Underground
-		TownNPCDialogueName: the Rift Underground
+		TownNPCDialogueName: Underground, in the Rift
 	}
 
 	RiftDesertUnderground: {
 		DisplayName: Rift Desert Underground
-		TownNPCDialogueName: the Rift Desert Underground
+		TownNPCDialogueName: Underground, in a Riften Desert
 	}
 
 	RoseGardenUnderground: {
-		DisplayName: Rose Garden Underground
-		TownNPCDialogueName: the Rose Garden Underground
+		DisplayName: Hekate's Garden
+		TownNPCDialogueName: The Evil Garden
 	}
 }
 

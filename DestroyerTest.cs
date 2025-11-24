@@ -26,6 +26,7 @@ using static Terraria.Graphics.FinalFractalHelper;
 using OpusLib.Content.Helpers;
 using DestroyerTest.Content.Equips.ScepterAccessories;
 using DestroyerTest.Content.Tiles.RoseGarden;
+using OpusLib;
 
 namespace DestroyerTest
 {
@@ -161,19 +162,6 @@ namespace DestroyerTest
 
         public void NightmareChestLoot()
         {
-            ChestLootSystem.RegisterChestLoot(
-				new ChestID(ModContent.TileType<Tile_NightmareChest>(), 0),
-				ModContent.ItemType<DefloweredFaith>(),
-				stack: 1,
-				rarity: 0.25f
-			);
-            ChestLootSystem.RegisterChestLoot(
-				new ChestID(ModContent.TileType<Tile_NightmareChest>(), 0),
-				ItemID.GreaterManaPotion,
-				Min: 4,
-				Max: 12,
-				rarity: 0.4f
-			);
 			ChestLootSystem.RegisterChestLoot(
 				new ChestID(ModContent.TileType<Tile_NightmareChest>(), 0),
 				ItemID.CopperCoin,
@@ -204,20 +192,6 @@ namespace DestroyerTest
 			);
             ChestLootSystem.RegisterChestLoot(
 				new ChestID(ModContent.TileType<Tile_NightmareChest>(), 0),
-				ItemID.GreaterHealingPotion,
-				Min: 4,
-				Max: 12,
-				rarity: 0.7f
-			);
-            ChestLootSystem.RegisterChestLoot(
-				new ChestID(ModContent.TileType<Tile_NightmareChest>(), 0),
-				ItemID.GreaterManaPotion,
-				Min: 4,
-				Max: 12,
-				rarity: 0.7f
-			);
-            ChestLootSystem.RegisterChestLoot(
-				new ChestID(ModContent.TileType<Tile_NightmareChest>(), 0),
 				ItemID.MagicMirror,
 				stack: 1,
 				rarity: 0.10f
@@ -235,6 +209,11 @@ namespace DestroyerTest
 				Min: 10,
 				Max: 40,
 				rarity: 0.5f
+			);
+			ChestLootSystem.RegisterChestLoot(
+				new ChestID(ModContent.TileType<Tile_NightmareChest>(), 0),
+				Opus.CommonPotion,
+				rarity: 0.8f
 			);
         }
 
