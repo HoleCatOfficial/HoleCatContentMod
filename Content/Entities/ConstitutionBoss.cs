@@ -37,6 +37,7 @@ using Humanizer.Localisation.DateToOrdinalWords;
 using InnoVault.PRT;
 using DestroyerTest.Content.Particles;
 using OpusLib;
+using System.Data;
 
 namespace DestroyerTest.Content.Entities
 {
@@ -176,23 +177,6 @@ namespace DestroyerTest.Content.Entities
         public enum AttackState
         {
             idlefloat,
-            idlespin,
-            Jab,
-            ShootStars,
-            ShootClone,
-            ShootStars2,
-            ShootStars3,
-            ShootSwords,
-            RainStars,
-            Lightning,
-            LightBird,
-            Minefield,
-            TeleStars,
-            StellarFlame,
-            LanceSweep,
-
-            // New Attacks
-            
             Piechart,
             StarTrace,
             StellarVolley,
@@ -204,37 +188,50 @@ namespace DestroyerTest.Content.Entities
             Constellations
         }
 
+        public static int IdleFloat = (int)AttackState.idlefloat;
+        public static int PieChart = (int)AttackState.Piechart;
+        public static int StarTrace = (int)AttackState.StarTrace;
+        public static int StellarVolley = (int)AttackState.StellarVolley;
+        public static int DoubleStar = (int)AttackState.DoubleStar;
+        public static int Dash = (int)AttackState.Dash;
+        public static int LanceCross = (int)AttackState.LanceCross;
+        public static int Minefield = (int)AttackState.LanceCross;
+        public static int StarFall = (int)AttackState.StarFall;
+        public static int Constellations = (int)AttackState.Constellations;
+
         /// <summary>
         /// Runs on classic difficulty and is the easiest. Attacks will use their classic mode variants.
+        /// <para/> Is the most lax fight, with lots of Idle Time and only a small pool of attacks. Though their speed will pick up in the second phase.
         /// </summary>
         /// <param name="Phase2"></param>
         /// <returns></returns>
-        public List<int> ClassicAI(bool Phase2)
+        public static List<int> ClassicAI(bool Phase2)
         {
             if (!Phase2)
             {
-                return new List<int> { 0, 1, 18, 15, 1, 19, 15, 0, 20, 19, 0, 17};
+                return new List<int> { IdleFloat, DoubleStar, IdleFloat, PieChart, IdleFloat, StellarVolley };
             }
             else
             {
-                return new List<int> { 0, 20, 0, 19, 18, 22, 1 };
+                return new List<int> { IdleFloat, Dash, DoubleStar, Dash, IdleFloat, PieChart, IdleFloat, StellarVolley };
             }
         }
 
         /// <summary>
         /// Runs on Expert difficulty. Attacks use Expert Mode Variants, classic mode attacks can also be used.
+        /// <para/> The base experience. Runs attacks in pairs, doing two one after another before resting and doing another two in sequence.
         /// </summary>
         /// <param name="Phase2"></param>
         /// <returns></returns>
-        public List<int> ExpertAI(bool Phase2)
+        public static List<int> ExpertAI(bool Phase2)
         {
             if (!Phase2)
             {
-                return new List<int> { 0, 15};
+                return new List<int> { IdleFloat, DoubleStar, Dash, IdleFloat, Minefield, LanceCross, IdleFloat, StellarVolley, Dash };
             }
             else
             {
-                return new List<int> { 0, 15 };
+                return new List<int> { IdleFloat, PieChart, Dash, IdleFloat, PieChart, LanceCross, IdleFloat, StellarVolley, Constellations, Dash, Dash };
             }
         }
 
@@ -243,15 +240,15 @@ namespace DestroyerTest.Content.Entities
         /// </summary>
         /// <param name="Phase2"></param>
         /// <returns></returns>
-        public List<int> MasterAI(bool Phase2)
+        public static List<int> MasterAI(bool Phase2)
         {
             if (!Phase2)
             {
-                return new List<int> { 0, 15};
+                return new List<int> { Dash, DoubleStar, Dash, StellarVolley, Minefield, LanceCross, StarTrace, StellarVolley, Dash };
             }
             else
             {
-                return new List<int> { 0, 15 };
+                return new List<int> { Constellations, PieChart, Dash, StarFall, PieChart, LanceCross, Constellations, StellarVolley, Dash };
             }
         }
 
@@ -261,15 +258,15 @@ namespace DestroyerTest.Content.Entities
         /// <param name="Phase2"></param>
         /// <returns></returns>
         
-        public List<int> EternityAI(bool Phase2)
+        public static List<int> EternityAI(bool Phase2)
         {
             if (!Phase2)
             {
-                return new List<int> { 0, 15};
+                return new List<int> { 0, 1 };
             }
             else
             {
-                return new List<int> { 0, 15 };
+                return new List<int> { 0, 1 };
             }
         }
 
@@ -279,36 +276,53 @@ namespace DestroyerTest.Content.Entities
         /// <param name="Phase2"></param>
         /// <returns></returns>
 
-        public List<int> AI_LegendaryMasoAndFTW(bool Phase2)
+        public static List<int> AI_LegendaryMasoAndFTW(bool Phase2)
         {
             if (!Phase2)
             {
-                return new List<int> { 0, 15};
+                return new List<int> { 0, 1};
             }
             else
             {
-                return new List<int> { 0, 15 };
+                return new List<int> { 0, 1 };
             }
         }
 
-        public int CurrentAI = 0;
-        public void RunAI(List<int> AItoUse)
+        #region AI Machine
+       
+
+
+        
+
+        #endregion
+
+        #region Music
+        public void ModifyMusic()
         {
-            if (!Main.expertMode && !Main.masterMode && !DestroyerTestMod.EternityIsActive())
+            if (!Main.dedServ && NPC.life > NPC.lifeMax * 0.15f && !EternityIsActive())
             {
-                AItoUse = ClassicAI(Phase2);
+                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/ConstitutionBoss");
             }
-            else if (Main.expertMode && !Main.masterMode && !DestroyerTestMod.EternityIsActive())
+            if (!Main.dedServ && NPC.life > NPC.lifeMax * 0.15f && EternityIsActive())
             {
-                AItoUse = ExpertAI(Phase2);
+                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Placeholder5");
             }
-            else if (Main.expertMode && Main.masterMode && !DestroyerTestMod.EternityIsActive())
+            if (!Main.dedServ && NPC.life <= NPC.lifeMax * 0.15f && !EternityIsActive())
             {
-                AItoUse = MasterAI(Phase2);
+                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/ConstitutionDespiration");
             }
-            else
+        }
+        #endregion
+
+        public void Success()
+        {
+            if (Targetplayer.dead)
             {
-                AItoUse = AI_LegendaryMasoAndFTW(Phase2);
+                DeathInterval--;
+                if (DeathInterval <= 0)
+                {
+                    NPC.active = false;
+                }
             }
         }
 
@@ -324,221 +338,44 @@ namespace DestroyerTest.Content.Entities
         public int LightBirdDamage = 15;
 
 
-
-
-
-        public int RotTime = 60;
-        public int JabTime = 20;
         public int StarsCount1 = 3;
-        public int StarsCount2 = 16;
-        public int StarsCount3 = 2;
-        public int SwordCount = 4;
         public Vector2 Chargedir;
         public float TeleRadius = 600f;
-        public int JabCount = 4;
-        public int CloneRepeat = 2;
-        public float AmountofCloning = 0;
-        public float shootStarsTimer1 = 0f;
-        public float starsShotCount1 = 0f;
-        public float CloneTimer = 0f;
-        public float shootStarsTimer2 = 0f;
-        public float starsShotCount2 = 0f;
-        public bool HasCharged = false;
-        public bool HasShotStars1 = false;
-        public bool HasCloned = false;
-        public bool HasShotStars2 = false;
-        public bool HasShotStars3 = false;
-        public float shootStarsTimer3 = 0f;
-        public float starsShotCount3 = 0f;
-        public float shootSwordsTimer = 0f;
-        public float swordsShotCount = 0f;
-        public bool HasShotSwords = false;
         public bool Phase2 = false;
         public int Chance = 4;
         public float lanceradius = 500f;
         public float lancerotspeed = 0.05f;
         public bool HasPlayedPhase2Roar = false;
-        public int StarIndex = 10;
-        public int LightningCount = 4;
-        public float lightningTimer = 0;
-        public bool HasSpawnedLighting = false;
-        public float lightbirdTimer = 0;
-        public bool HasSpawnedLightbird = false;
-        public int LightbirdCount = 0;
-        public int LightbirdCountMax = 8;
-        public float OrbitTimer1 = 0;
-        public float OrbitTimer2 = 0;
-        public float OrbitTimer3 = 0;
-        public bool WarnedSound = false;
-        public bool boomedSound = false;
-        public bool HasBlownMinefield = false;
-        public Vector2 MineSpot;
-        public int MineCount = 100;
-        public List<Vector2> MineSpots = new List<Vector2>();
-        public int TeleStarCount = 0;
-        public int TeleStarMax = 12;
-        public bool HasTeleportedandShotStars = false;
-        public int MaxFlameCount = 900;
-        public int FlameTimer = 0;
-        public bool HasPlayedFlameSound = false;
-        public int LanceSweepTimer = 180;
-        public Vector2 LanceSweepStartPos = Main.screenPosition;
-        public bool LanceSweepTeleFlag = false;
-        public bool SLeft = false;
-        public bool SRight = false;
-        public int SF2Timer = 600;
 
         public int AttackIntervalDefault = 20;
         public float TexRot = 0f;
         public AttackState currentState = AttackState.idlefloat;
-        // Sync AI variables across the network
-        public override void SendExtraAI(BinaryWriter writer)
-        {
-            writer.Write((int)currentState);
-            writer.Write(RotTime);
-            writer.Write(JabTime);
-            writer.Write(StarsCount1);
-            writer.Write(StarsCount2);
-            writer.Write(StarsCount3);
-            writer.Write(SwordCount);
-            writer.WriteVector2(Chargedir);
-            writer.Write(TeleRadius);
-
-            writer.Write(JabCount);
-            writer.Write(CloneRepeat);
-            writer.Write(AmountofCloning);
-            writer.Write(shootStarsTimer1);
-            writer.Write(starsShotCount1);
-            writer.Write(CloneTimer);
-            writer.Write(shootStarsTimer2);
-            writer.Write(starsShotCount2);
-            writer.Write(HasCharged);
-            writer.Write(HasShotStars1);
-            writer.Write(HasCloned);
-            writer.Write(HasShotStars2);
-            writer.Write(HasShotStars3);
-            writer.Write(shootStarsTimer3);
-            writer.Write(starsShotCount3);
-            writer.Write(shootSwordsTimer);
-            writer.Write(swordsShotCount);
-            writer.Write(HasShotSwords);
-            writer.Write(Phase2);
-            writer.Write(Chance);
-            writer.Write(lanceradius);
-            writer.Write(lancerotspeed);
-            writer.Write(HasPlayedPhase2Roar);
-            writer.Write(StarIndex);
-            writer.Write(LightningCount);
-            writer.Write(lightningTimer);
-            writer.Write(HasSpawnedLighting);
-            writer.Write(lightbirdTimer);
-            writer.Write(HasSpawnedLightbird);
-            writer.Write(LightbirdCount);
-            writer.Write(LightbirdCountMax);
-            writer.Write(OrbitTimer1);
-            writer.Write(OrbitTimer2);
-            writer.Write(OrbitTimer3);
-
-            writer.Write(WarnedSound);
-            writer.Write(boomedSound);
-            writer.Write(HasBlownMinefield);
-        }
-
-        public override void ReceiveExtraAI(BinaryReader reader)
-        {
-            currentState = (AttackState)reader.ReadInt32();
-            RotTime = reader.ReadInt32();
-            JabTime = reader.ReadInt32();
-            StarsCount1 = reader.ReadInt32();
-            StarsCount2 = reader.ReadInt32();
-            StarsCount3 = reader.ReadInt32();
-            SwordCount = reader.ReadInt32();
-            Chargedir = reader.ReadVector2();
-            TeleRadius = reader.ReadSingle();
-
-            JabCount = reader.ReadInt32();
-            CloneRepeat = reader.ReadInt32();
-            AmountofCloning = reader.ReadSingle();
-            shootStarsTimer1 = reader.ReadSingle();
-            starsShotCount1 = reader.ReadSingle();
-            CloneTimer = reader.ReadSingle();
-            shootStarsTimer2 = reader.ReadSingle();
-            starsShotCount2 = reader.ReadSingle();
-            HasCharged = reader.ReadBoolean();
-            HasShotStars1 = reader.ReadBoolean();
-            HasCloned = reader.ReadBoolean();
-            HasShotStars2 = reader.ReadBoolean();
-            HasShotStars3 = reader.ReadBoolean();
-            shootStarsTimer3 = reader.ReadSingle();
-            starsShotCount3 = reader.ReadSingle();
-            shootSwordsTimer = reader.ReadSingle();
-            swordsShotCount = reader.ReadSingle();
-            HasShotSwords = reader.ReadBoolean();
-            Phase2 = reader.ReadBoolean();
-            Chance = reader.ReadInt32();
-            lanceradius = reader.ReadSingle();
-            lancerotspeed = reader.ReadSingle();
-            HasPlayedPhase2Roar = reader.ReadBoolean();
-            StarIndex = reader.ReadInt32();
-            LightningCount = reader.ReadInt32();
-            lightningTimer = reader.ReadSingle();
-            HasSpawnedLighting = reader.ReadBoolean();
-            lightbirdTimer = reader.ReadSingle();
-            HasSpawnedLightbird = reader.ReadBoolean();
-            LightbirdCount = reader.ReadInt32();
-            LightbirdCountMax = reader.ReadInt32();
-            OrbitTimer1 = reader.ReadSingle();
-            OrbitTimer2 = reader.ReadSingle();
-            OrbitTimer3 = reader.ReadSingle();
-
-            WarnedSound = reader.ReadBoolean();
-            boomedSound = reader.ReadBoolean();
-            HasBlownMinefield = reader.ReadBoolean();
-        }
 
         public override void OnSpawn(IEntitySource source)
         {
             Mod.Logger.Info("Constitution Spawned!");
-            NPC.velocity = Chargedir;
         }
 
         public int DeathInterval = 10;
         public Player Targetplayer;
         public override void AI()
         {
-            NPC.TargetClosestUpgraded(true);
-            Targetplayer = Main.player[NPC.target];
+            NPC.TargetClosest(true);
+            if (NPC.HasValidTarget)
+            {
+                Targetplayer = Main.player[NPC.target];
+            }
+            else
+            {
+                Targetplayer = Main.player[0];
+            }
             DTUtils Utility = new DTUtils();
 
-            Chargedir = (Targetplayer.Center - NPC.Center).SafeNormalize(Vector2.Zero);
-
-            float TeleAngle = Main.rand.NextFloat(0, MathHelper.TwoPi);
-
-            Vector2 TeleCircumferencePoint = Targetplayer.Center + TeleRadius * new Vector2((float)Math.Cos(TeleAngle), (float)Math.Sin(TeleAngle));
-
-            float lanceangle = Main.GameUpdateCount * lancerotspeed;
-
-            Vector2 offset = new Vector2(MathF.Cos(lanceangle), MathF.Sin(lanceangle)) * lanceradius;
-
-            Vector2 lancecenter = Targetplayer.Center;
-
-            Vector2 DesperationPos = new Vector2(Targetplayer.Center.X, Targetplayer.Center.Y - 1000);
-
-            TexRot += 0.05f * NPC.direction;
-
-
-            if (Targetplayer.dead)
-            {
-                DeathInterval--;
-                if (DeathInterval <= 0)
-                {
-                    NPC.active = false;
-                }
-            }
+            
 
             if (NPC.direction == -1)
             {
-                NPC.rotation += MathHelper.Pi + MathHelper.ToRadians(180);
+                NPC.rotation += MathHelper.Pi;
             }
 
             if (EternityIsActive())
@@ -546,7 +383,7 @@ namespace DestroyerTest.Content.Entities
                 AttackIntervalDefault = 8;
             }
 
-
+            Success();
 
             /*
                 if (NPC.Center.DistanceSQ(Targetplayer.Center) > 40000)
@@ -558,501 +395,32 @@ namespace DestroyerTest.Content.Entities
             NPC.rotation = (Chargedir * 4f).ToRotation() + MathHelper.PiOver4;
 
 
-            if (NPC.life <= 0.50f * NPC.lifeMax && !HasPlayedPhase2Roar)
+            if (NPC.life <= 0.50f * NPC.lifeMax)
             {
-                SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/ConstitutionBoss/ConstitutionBossKill") with { PitchVariance = 1, MaxInstances = 1, Volume = 8 });
-                //SoundEngine.PlaySound(SoundID.Roar);
-                MoonlordDeathDrama.RequestLight(1.0f, Targetplayer.Center);
                 Phase2 = true;
-                HasPlayedPhase2Roar = true;
             }
 
             if (Phase2)
             {
-                StarsCount1 = 12;
-                Chance = 2;
+                if (!HasPlayedPhase2Roar)
+                {
+                    SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/ConstitutionBoss/ConstitutionBossKill") with { PitchVariance = 1, MaxInstances = 1 });
+                    HasPlayedPhase2Roar = true;
+                }
                 ColorGradientOverlaySystem.ColorVisibility = 0.7f;
             }
 
             if (NPC.life < NPC.lifeMax * 0.15f)
             {
-                stateWeights[AttackState.Jab] = 0.0f;
-                stateWeights[AttackState.LightBird] = 0.0f;
-                stateWeights[AttackState.Lightning] = 0.0f;
-                stateWeights[AttackState.Minefield] = 0.5f;
-                stateWeights[AttackState.RainStars] = 1.0f;
-                stateWeights[AttackState.ShootClone] = 0.0f;
-                stateWeights[AttackState.ShootStars] = 0.3f;
-                stateWeights[AttackState.ShootStars2] = 0.0f;
-                stateWeights[AttackState.ShootStars3] = 1.0f;
-                stateWeights[AttackState.ShootSwords] = 0.0f;
-                stateWeights[AttackState.StellarFlame] = 1.0f;
-                stateWeights[AttackState.TeleStars] = 0.5f;
+                
             }
 
             Mod.Logger.Info($"Current State: {currentState}");
 
-            switch (currentState)
-            {
-                case AttackState.idlefloat:
-                    if (NPC.type == ModContent.NPCType<ConstitutionBoss>())
-                    {
-                        NPC.aiStyle = NPCAIStyleID.CursedSkull;
-
-                        if (Main.rand.NextBool(Chance))
-                        {
-                            currentState = AttackState.Piechart;
-                        }
-
-                    }
-                    break;
-                case AttackState.idlespin:
-                    currentState = AttackState.Piechart;
-
-                    if (NPC.type == ModContent.NPCType<ConstitutionBoss>())
-                    {
-                        NPC.aiStyle = 5;
-                        NPC.rotation += 0.4f * NPC.direction;
-                        currentState = GetRandomState();
-                    }
-                    break;
-                case AttackState.Jab:
-                    currentState = AttackState.Piechart;
-
-                    if (NPC.type == ModContent.NPCType<ConstitutionBoss>())
-                    {
-
-                        if (NPC.ai[3] < JabCount)
-                        {
-                            NPC.ai[2]++;
-                            if (NPC.ai[2] == 80)
-                            {
-                                TeleManager(Targetplayer, ref TeleCircumferencePoint);
-                                Chargedir = (Targetplayer.Center - NPC.Center).SafeNormalize(Vector2.Zero);
-                                SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/ConstitutionBoss/ConstitutionBossJab") with { PitchVariance = 1, MaxInstances = 1, Volume = 9 });
-                                NPC.velocity = Chargedir * 24f;
-                                NPC.rotation = NPC.velocity.ToRotation() + MathHelper.PiOver2;
-                                NPC.ai[2] = 0;
-                                NPC.ai[3]++;
-                            }
-                            if (EternityIsActive() && Main.GameUpdateCount % (AttackIntervalDefault + 4) == 0)
-                            {
-                                Vector2 velocity = new Vector2(5, 0f).RotatedByRandom(MathHelper.TwoPi);
-                                Projectile.NewProjectile(Projectile.GetSource_None(), NPC.Center, velocity, ModContent.ProjectileType<ConstitutionStar>(), 15, 2f, ai2: 2);
-                            }
-                        }
-                        else
-                        {
-                            ResetState();
-                        }
-                    }
-                    break;
-                case AttackState.ShootStars:
-                    currentState = AttackState.Piechart;
-
-                    if (NPC.type == ModContent.NPCType<ConstitutionBoss>())
-                    {
-                        NPC.aiStyle = 10;
-                        if (!HasShotStars1)
-                        {
-                            if (Main.GameUpdateCount % AttackIntervalDefault == 0)
-                            {
-                                ShootStar1(Targetplayer);
-                                starsShotCount1++; // you might want to track count in separate var
-                            }
-
-                            if (starsShotCount1 >= StarsCount1)
-                            {
-                                HasShotStars1 = true;
-                                ResetState();
-                            }
-                        }
-                    }
-                    break;
-                case AttackState.ShootClone:
-                    currentState = AttackState.Piechart;
-
-                    if (NPC.type == ModContent.NPCType<ConstitutionBoss>())
-                    {
-                        NPC.aiStyle = 10;
-                        if (!HasCloned)
-                        {
-                            CloneTimer++;
-                            if (CloneTimer == 60)
-                            {
-                                CloneMe();
-                                Opus.RadialSpreadProjectile(ModContent.ProjectileType<StellarFlameHostile>(), 9, NPC.Center, 17, 8, 10);
-                                HasCloned = true;
-                            }
-                            if (HasCloned == true)
-                            {
-                                ResetState();
-                            }
-                        }
-                    }
-                    break;
-
-                case AttackState.ShootStars2:
-                    currentState = AttackState.Piechart;
-
-                    if (NPC.type == ModContent.NPCType<ConstitutionBoss>())
-                    {
-                        NPC.aiStyle = 10;
-                        NPC.position = lancecenter + offset - new Vector2(NPC.width / 2, NPC.height / 2);
-                        OrbitTimer1++;
-                        if (!HasShotStars2)
-                        {
-                            if (!EternityIsActive())
-                            {
-                                if (Main.GameUpdateCount % AttackIntervalDefault == 0)
-                                {
-                                    LanceBurst();
-                                    starsShotCount2++;
-                                }
-
-                                if (starsShotCount2 >= StarsCount2)
-                                {
-                                    HasShotStars2 = true;
-                                    ResetState();
-                                }
-                                if (OrbitTimer1 >= 600)
-                                {
-                                    ResetState();
-                                }
-                            }
-                            if (EternityIsActive())
-                            {
-                                if (Main.GameUpdateCount % AttackIntervalDefault == 0)
-                                {
-                                    LanceCross(Targetplayer, Main.rand.NextFloat(-MathHelper.Pi, MathHelper.Pi));
-                                    LanceCrossSpawnFlag = false;
-                                    starsShotCount2++;
-                                }
-
-                                if (starsShotCount2 >= StarsCount2)
-                                {
-                                    HasShotStars2 = true;
-                                    ResetState();
-                                }
-                                if (OrbitTimer1 >= 600)
-                                {
-                                    ResetState();
-                                }
-                            }
-                        }
-                    }
-                    break;
-                case AttackState.ShootStars3:
-
-                    currentState = AttackState.Piechart;
-                    if (NPC.type == ModContent.NPCType<ConstitutionBoss>())
-                    {
-                        NPC.aiStyle = 10;
-                        if (Phase2 == false)
-                        {
-                            currentState = AttackState.idlefloat;
-                        }
-                        if (Phase2 == true)
-                        {
-                            StarSwarm(Targetplayer);
-
-                            if (!HasShotStars3)
-                            {
-                                if (Main.GameUpdateCount % AttackIntervalDefault == 0)
-                                {
-                                    SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/ConstitutionBoss/ConstitutionBossShootStars3") with { PitchVariance = 1, MaxInstances = 1, Volume = 3 });
-                                    StarSwarm(Targetplayer);
-                                    starsShotCount3++; // you might want to track count in separate var
-                                }
-
-                                if (starsShotCount3 >= StarsCount3)
-                                {
-
-                                    HasShotStars3 = true;
-                                    ResetState();
-                                }
-                            }
-                        }
-                    }
-                    break;
-                case AttackState.ShootSwords:
-                    currentState = AttackState.Piechart;
-
-                    if (NPC.type == ModContent.NPCType<ConstitutionBoss>())
-                    {
-                        NPC.aiStyle = 10;
-                        if (Phase2 == false)
-                        {
-                            currentState = AttackState.idlefloat;
-                        }
-                        if (Phase2 == true)
-                        {
-                            if (!HasShotSwords)
-                            {
-                                if (Main.GameUpdateCount % AttackIntervalDefault == 0)
-                                {
-                                    ShootSwords();
-                                    swordsShotCount++;
-                                }
-
-                                if (swordsShotCount >= SwordCount)
-                                {
-                                    stateWeights[AttackState.Minefield] = 1.0f;
-                                    HasShotSwords = true;
-                                    ResetState();
-                                }
-                            }
-                        }
-                    }
-                    break;
-                case AttackState.RainStars:
-                    currentState = AttackState.Piechart;
-
-                    if (NPC.type == ModContent.NPCType<ConstitutionBoss>())
-                    {
-                        NPC.Center = DesperationPos;
-                        StarIndex += 10;
-                        SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/ConstitutionBoss/ConstitutionBossShootStars3") with { PitchVariance = 1, MaxInstances = 1, Volume = 3 });
-                        RainStars(Targetplayer, velocity: new Vector2(0, 16));
-                        if (Main.rand.NextBool(3) && EternityIsActive())
-                        {
-                            StarFury(Targetplayer, 12);
-                        }
-                        currentState = GetRandomState();
-                    }
-                    break;
-                case AttackState.Lightning:
-                    currentState = AttackState.Piechart;
-
-                    if (NPC.type == ModContent.NPCType<ConstitutionBoss>())
-                    {
-                        NPC.aiStyle = 10;
-                        if (!HasShotStars1)
-                        {
-                            if (Main.GameUpdateCount % AttackIntervalDefault == 0)
-                            {
-                                StarFury(Targetplayer, Main.rand.Next(10, 15));
-                                LightningCount++;
-                            }
-
-                            if (LightningCount >= 4)
-                            {
-                                HasSpawnedLighting = true;
-                                ResetState();
-                            }
-                        }
-                    }
-                    break;
-                case AttackState.LightBird:
-
-                    currentState = AttackState.Piechart;
-                    if (NPC.type == ModContent.NPCType<ConstitutionBoss>())
-                    {
-                        NPC.aiStyle = 10;
-                        NPC.position = lancecenter + offset - new Vector2(NPC.width / 2, NPC.height / 2);
-                        OrbitTimer2++;
-                        if (!HasSpawnedLightbird)
-                        {
-                            if (Main.GameUpdateCount % AttackIntervalDefault + 10 == 0)
-                            {
-                                ShootLightBird();
-                                LightbirdCount++;
-                            }
-
-                            if (LightbirdCount >= LightbirdCountMax)
-                            {
-                                HasSpawnedLightbird = true;
-                                ResetState();
-                            }
-                            if (OrbitTimer2 >= 480)
-                            {
-                                ResetState();
-                            }
-                        }
-                    }
-                    break;
-                case AttackState.Minefield:
-
-                    currentState = AttackState.Piechart;
-                    if (NPC.type == ModContent.NPCType<ConstitutionBoss>())
-                    {
-                        NPC.aiStyle = 10;
-
-                        if (!EternityIsActive())
-                        {
-
-                            if (!WarnedSound)
-                            {
-                                SoundEngine.PlaySound(SoundID.Item90);
-                                WarnedSound = true;
-                            }
-
-                            if (!HasBlownMinefield)
-                            {
-                                // Generate unique positions for each mine
-                                for (int e = 0; e < MineCount; e++)
-                                {
-                                    Vector2 minePosition = Main.rand.NextVector2FromRectangle(
-                                        new Rectangle(
-                                            (int)Targetplayer.Center.X - Main.screenWidth / 2,
-                                            (int)Targetplayer.Center.Y - Main.screenHeight / 2,
-                                            Main.screenWidth,
-                                            Main.screenHeight
-                                        )
-                                    );
-                                    MineSpots.Add(minePosition);
-                                }
-
-                                Minefield(Targetplayer);
-                                HasBlownMinefield = true;
-                            }
-
-                            if (HasBlownMinefield)
-                            {
-                                ResetState();
-                            }
-                        }
-                        if (EternityIsActive())
-                        {
-                            SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/NodeSpawn") with { PitchVariance = 0.4f, MaxInstances = 0 });
-                            Opus.RadialSpreadProjectile(ModContent.ProjectileType<StellarBomb>(), 5, NPC.Center, 20, 6, 6);
-                            if (SF2Timer > 0)
-                            {
-                                SF2Timer--;
-                                NPC.Center = Targetplayer.Center + new Vector2(0, -350);
-                            }
-                            if (SF2Timer > 0 && Main.GameUpdateCount % 20 == 0)
-                            {
-                                StarFury2(Targetplayer);
-                            }
-                            if (SF2Timer > 0)
-                            {
-                                ResetState();
-                            }
-                        }
-                    }
-                    break;
-                case AttackState.TeleStars:
-
-                    currentState = AttackState.Piechart;
-                    if (NPC.type == ModContent.NPCType<ConstitutionBoss>())
-                    {
-                        NPC.aiStyle = 10;
-                        if (TeleStarCount < TeleStarMax)
-                        {
-                            TeleManager(Targetplayer, ref TeleCircumferencePoint);
-                            ShootStar1(Targetplayer);
-                            TeleStarCount++;
-                        }
-                        if (TeleStarCount >= TeleStarMax)
-                        {
-                            HasTeleportedandShotStars = true;
-                        }
-
-                        if (HasTeleportedandShotStars)
-                        {
-                            ResetState();
-                        }
-
-                    }
-                    break;
-                case AttackState.StellarFlame:
-                    currentState = AttackState.Piechart;
-
-                    if (NPC.type == ModContent.NPCType<ConstitutionBoss>())
-                    {
-                        if (NPC.life < NPC.lifeMax * 0.15f)
-                        {
-                            NPC.aiStyle = 10;
-                            FlameTimer++;
-                            if (HasPlayedFlameSound == false)
-                            {
-                                SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/ConstitutionBoss/FlameShoot") with { Volume = 2, MaxInstances = 1, PitchVariance = 1 });
-                                HasPlayedFlameSound = true;
-                            }
-                            if (FlameTimer < 600)
-                            {
-                                StellarFlame(Targetplayer);
-                            }
-                            if (FlameTimer > 600)
-                            {
-                                ResetState();
-                            }
-                        }
-                        else
-                        {
-                            ResetState();
-                        }
-                    }
-                    break;
-                case AttackState.LanceSweep:
-                    {
-                        currentState = AttackState.Piechart;
-
-                        if (!LanceSweepTeleFlag) // first entry into sweep
-                        {
-                            if (Main.rand.Next(2) == 0)
-                            {
-                                LanceSweepStartPos = Main.screenPosition;
-                                SRight = true;
-                            }
-                            else
-                            {
-                                LanceSweepStartPos = Main.screenPosition + new Vector2(Main.screenWidth, 0);
-                                SLeft = true;
-                            }
-
-                            NPC.Center = LanceSweepStartPos;
-                            LanceSweepTimer = 180; // or however long the sweep lasts
-                            LanceSweepTeleFlag = true;
-                        }
-
-                        if (LanceSweepTimer > 0)
-                        {
-                            LanceSweepTimer--;
-
-                            NPC.velocity = SRight ? new Vector2(10, 0) : new Vector2(-10, 0);
-
-                            if (Main.GameUpdateCount % 6 == 0)
-                            {
-                                SoundEngine.PlaySound(SoundID.Item125, NPC.Center);
-                                Projectile.NewProjectile(
-                                    NPC.GetSource_FromAI(),
-                                    NPC.Center,
-                                    new Vector2(0, 25),
-                                    ModContent.ProjectileType<GalantineLance>(),
-                                    15, 4);
-                            }
-                        }
-                        else
-                        {
-                            ResetState();
-                        }
-
-                        break;
-                    }
-                case AttackState.Piechart:
-                    {
-                        PieChart(0);
-                        break;
-                    }
 
 
-            }
-
-            if (!Main.dedServ && NPC.life > NPC.lifeMax * 0.15f && !EternityIsActive())
-            {
-                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/ConstitutionBoss");
-            }
-            if (!Main.dedServ && NPC.life > NPC.lifeMax * 0.15f && EternityIsActive())
-            {
-                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Placeholder5");
-            }
-            if (!Main.dedServ && NPC.life <= NPC.lifeMax * 0.15f && !EternityIsActive())
-            {
-                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/ConstitutionDespiration");
-            }
-
+            ModifyMusic();
+            Attack();
 
             int DustAmount = 3;
             if (NPC.type == ModContent.NPCType<ConstitutionBoss>())
@@ -1061,96 +429,229 @@ namespace DestroyerTest.Content.Entities
                 {
                     for (int g = 0; g < DustAmount; g++)
                     {
-                        Dust.NewDust(NPC.Center, NPC.width + 10, NPC.height + 10, DustID.Enchanted_Pink, 0, 0, 0, default, 1f);
-                        Dust.NewDust(NPC.Center, NPC.width + 10, NPC.height + 10, DustID.Enchanted_Gold, 0, 0, 0, default, 1f);
+                        Dust.NewDust(NPC.position, NPC.Hitbox.Width + 10, NPC.Hitbox.Height + 10, DustID.Enchanted_Pink, 0, 0, 0, default, 1f);
+                        Dust.NewDust(NPC.position, NPC.Hitbox.Width + 10, NPC.Hitbox.Height + 10, DustID.Enchanted_Gold, 0, 0, 0, default, 1f);
                     }
                 }
             }
         }
 
-        private Dictionary<AttackState, float> stateWeights = new()
+        
+        private void Attack()
         {
-            { AttackState.idlefloat, 1.0f },
-            { AttackState.idlespin, 1.0f },
-            { AttackState.Jab, 1.0f },
-            { AttackState.LightBird, 1.0f },
-            { AttackState.Lightning, 1.0f },
-            { AttackState.Minefield, 1.0f },
-            { AttackState.RainStars, 1.0f },
-            { AttackState.ShootClone, 1.0f },
-            { AttackState.ShootStars, 1.0f },
-            { AttackState.ShootStars2, 1.0f },
-            { AttackState.ShootStars3, 1.0f },
-            { AttackState.ShootSwords, 1.0f },
-            { AttackState.TeleStars, 1f },
-            { AttackState.LanceSweep, 1.0f },
-            { AttackState.StellarFlame, 1.0f }
-            // Add more states as needed
-        };
-
-
-        private AttackState GetRandomState()
-        {
-
-            // Exclude the current state
-            var validStates = stateWeights
-                .Where(pair => pair.Key != currentState && pair.Value > 0)
-                .ToList();
-
-            float totalWeight = validStates.Sum(pair => pair.Value);
-            float roll = Main.rand.NextFloat() * totalWeight;
-
-            float cumulative = 0f;
-            foreach (var pair in validStates)
+            switch (currentState)
             {
-                cumulative += pair.Value;
-                if (roll <= cumulative)
-                    return pair.Key;
+                case AttackState.idlefloat:
+                    {
+                        AI_IdleFloat();
+                        if (AI_IdleFloat() == true)
+                        {
+                            currentState = AttackState.Piechart;
+                            Reset();
+                        }
+                        break;
+                    }
+                case AttackState.Piechart:
+                    {
+                        AI_PieChartClassic();
+                        if (AI_PieChartClassic() == true)
+                        {
+                            currentState = AttackState.StellarVolley;
+                            Reset();
+                        }
+                        break;
+                    }
+                case AttackState.StellarVolley:
+                    {
+                        AI_StellarVolleyClassic();
+                        if (AI_StellarVolleyClassic() == true)
+                        {
+                            currentState = AttackState.DoubleStar;
+                            Reset();
+                        }
+                        break;
+                    }
+                case AttackState.DoubleStar:
+                    {
+                        AI_DoubleStarClassic();
+                        if (AI_DoubleStarClassic() == true)
+                        {
+                            currentState = AttackState.idlefloat;
+                            Reset();
+                        }
+                        break;
+                    }
             }
-
-            // Fallback (should never happen unless all weights are 0)
-            return currentState;
         }
 
-
-        private void ResetState()
+        private void Reset()
         {
-            if (NPC.type == ModContent.NPCType<ConstitutionBoss>())
-            {
-                currentState = GetRandomState();
-                NPC.ai[0] = NPC.ai[1] = NPC.ai[2] = NPC.ai[3] = 0;
-                shootStarsTimer1 = shootStarsTimer2 = shootStarsTimer3 =
-                starsShotCount1 = starsShotCount2 = starsShotCount3 =
-                CloneTimer = AmountofCloning = swordsShotCount =
-                shootSwordsTimer = FlameTimer = 0;
-                LanceSweepTimer = 180;
-                SF2Timer = 600;
-                MineSpots.Clear();
-                HasCharged = false;
-                HasShotStars1 = false;
-                HasCloned = false;
-                HasShotStars2 = false;
-                HasShotStars3 = false;
-                HasShotSwords = false;
-                HasBlownMinefield = false;
-                WarnedSound = false;
-                HasSpawnedLightbird = false;
-                HasSpawnedLighting = false;
-                HasTeleportedandShotStars = false;
-                HasPlayedFlameSound = false;
-                LanceCrossGetPlayerCenterFlag = false;
-                LanceCrossSpawnFlag = false;
-                LanceSweepTeleFlag = false;
-                SLeft = false;
-                SRight = false;
-            }
+            AI_IdleFloat_Timer = default;
+            AI_IdleFloat_GetRandPos = default;
+            //----------------------------
+            AI_DoubleStarClassic_Count = default;
+            //----------------------------
+            AI_PieChartClassic_SetLocationFlag = default;
+            AI_PieChartClassic_Timer = default;
+            //----------------------------
+            AI_StellarVolleyClassic_DecideLR = default;
+            AI_StellarVolleyClassic_Timer = default;
         }
 
         #region Attack Methods
+
+        public bool AI_IdleFloat_GetRandPos = false;
+        public int AI_IdleFloat_Timer = 240;
+        public bool AI_IdleFloat()
+        {
+            NPC.aiStyle = NPCAIStyleID.CursedSkull;
+            if (AI_IdleFloat_Timer > 0)
+            {
+                if (NPC.Distance(Targetplayer.Center) > 30)
+                {
+                    NPC.velocity = Vector2.Lerp(NPC.Center, Targetplayer.Center, 0.05f);
+                }
+                else
+                {
+                    Vector2 RandPos = Targetplayer.Center;
+                    if (!AI_IdleFloat_GetRandPos)
+                    {
+                        RandPos = Targetplayer.Center + Main.rand.NextVector2Circular(1000, 1000);
+                        AI_IdleFloat_GetRandPos = true;
+                    }
+                    NPC.velocity = Vector2.Lerp(NPC.Center, RandPos, 0.01f);
+                }
+                AI_IdleFloat_Timer--;
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        public bool AI_PieChartClassic_SetLocationFlag = false;
+        public int AI_PieChartClassic_Timer = 120;
+        public Vector2 AI_PieChartClassic_Center;
+        public bool AI_PieChartClassic()
+        {
+            if (!AI_PieChartClassic_SetLocationFlag)
+            {
+                AI_PieChartClassic_Center = Targetplayer.Center + Main.rand.NextVector2Circular(600, 600);
+                AI_PieChartClassic_SetLocationFlag = true;
+            }
+
+            if (AI_PieChartClassic_Timer > 0 && AI_PieChartClassic_SetLocationFlag)
+            {
+                NPC.Center = AI_PieChartClassic_Center;
+                AI_PieChartClassic_Timer--;
+                return false;
+            }
+
+            if (AI_PieChartClassic_Timer <= 0)
+            {
+                ShootLanceInward(ModContent.ProjectileType<GalantineLance>(), 3, AI_PieChartClassic_Center, 600, 15, 3, 0.05f, 3f, RandomOffset: true);
+                return true;
+            }
+            return false;
+        }
+
+        public void ShootLanceInward(int ID, int Amount, Vector2 CTR, float Radius, int Dmg = 0, int KB = 0, float Speed = 2f, float AI0 = 0f, float AI1 = 0f, float AI2 = 0f, bool RandomOffset = false)
+        {
+            float num = MathF.PI * 2f / (float)Amount;
+            float num2 = (RandomOffset ? Main.rand.NextFloat(MathF.PI * 2f) : 0f);
+            for (int i = 0; i < Amount; i++)
+            {
+                float num3 = num * (float)i + num2;
+                Vector2 vector = CTR + new Vector2(Radius, 0f).RotatedBy(num3);
+                Vector2 velocity = (CTR - vector).SafeNormalize(Vector2.Zero) * Speed;
+                float Rot = velocity.ToRotation();
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), vector, velocity, ID, Dmg, KB, -1, AI0, Rot, AI2);
+            }
+        }
+
+        public int AI_DoubleStarClassic_Count = 0;
+        public const int AI_DoubleStarClassic_Interval = 60;
+        public Vector2 AI_DoubleStarClassic_FlankUp;
+        public Vector2 AI_DoubleStarClassic_FlankDown;
+        public Vector2 AI_DoubleStarClassic_FlankUpToPlayer;
+        public Vector2 AI_DoubleStarClassic_FlankDownToPlayer;
+        public bool AI_DoubleStarClassic()
+        {
+            AI_DoubleStarClassic_FlankUp = NPC.Center + new Vector2(0, -25);
+            AI_DoubleStarClassic_FlankUp = AI_DoubleStarClassic_FlankUp.RotatedBy(NPC.rotation);
+
+            AI_DoubleStarClassic_FlankDown = NPC.Center + new Vector2(0, 25);
+            AI_DoubleStarClassic_FlankDown = AI_DoubleStarClassic_FlankDown.RotatedBy(NPC.rotation);
+
+            AI_DoubleStarClassic_FlankUpToPlayer = AI_DoubleStarClassic_FlankUp.AngleTo(Targetplayer.Center).ToRotationVector2() * 3;
+            AI_DoubleStarClassic_FlankDownToPlayer = AI_DoubleStarClassic_FlankDown.AngleTo(Targetplayer.Center).ToRotationVector2() * 3;
+
+            if (Main.GameUpdateCount % AI_DoubleStarClassic_Interval == 0)
+            {
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), AI_DoubleStarClassic_FlankUp, AI_DoubleStarClassic_FlankUpToPlayer, ModContent.ProjectileType<ConstitutionStar>(), StarDamage, 4, ai2: 4);
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), AI_DoubleStarClassic_FlankDown, AI_DoubleStarClassic_FlankDownToPlayer, ModContent.ProjectileType<ConstitutionStar>(), StarDamage, 4, ai2: 4);
+                AI_DoubleStarClassic_Count++;
+            }
+
+            if (AI_DoubleStarClassic_Count >= 6)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public Vector2 AI_StellarVolleyPositionLeft;
+        public Vector2 AI_StellarVolleyPositionRight;
+        public bool AI_StellarVolleyClassic_LeftOrRight;
+        public bool AI_StellarVolleyClassic_DecideLR = false;
+        public Vector2 AI_StellarVolleyClassicShootDir;
+        public int AI_StellarVolleyClassic_Timer = 240;
+
+        public bool AI_StellarVolleyClassic()
+        {
+            AI_StellarVolleyPositionLeft = Targetplayer.Center + new Vector2(-300, -100);
+            AI_StellarVolleyPositionRight = Targetplayer.Center + new Vector2(300, -100);
+
+            
+            if (!AI_StellarVolleyClassic_DecideLR)
+            {
+                AI_StellarVolleyClassic_LeftOrRight = Main.rand.NextBool(2);
+                AI_StellarVolleyClassic_DecideLR = true;
+            }
+
+            if (AI_StellarVolleyClassic_DecideLR)
+            {
+                if (AI_StellarVolleyClassic_LeftOrRight)
+                {
+                    NPC.Center = AI_StellarVolleyPositionLeft;
+                    AI_StellarVolleyClassicShootDir = NPC.Center + new Vector2(Main.rand.Next(100, 400), Main.rand.Next(1, 31));
+                }
+                else
+                {
+                    NPC.Center = AI_StellarVolleyPositionRight;
+                    AI_StellarVolleyClassicShootDir = NPC.Center + new Vector2(Main.rand.Next(-400, -100), Main.rand.Next(1, 31));
+                }
+
+                if (AI_StellarVolleyClassic_Timer > 0)
+                {
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, AI_StellarVolleyClassicShootDir, ModContent.ProjectileType<StellarVolley>(), 15, 2);
+                    AI_StellarVolleyClassic_Timer--;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /*
         bool CenterFlag = false;
         bool PieChartClassicFlag = false;
         Vector2 ClassicCenter;
-        public void PieChart(int Mode = 0, int NumLances = 3, float Radius = 1000f, int ClassicExpertMasterWaitForLances = 100, int ClassicDelay = 60)
+        List<int> StellarJunkForSuckin = new List<int>{ ModContent.ProjectileType<StellarFlameHostile>(), ModContent.ProjectileType<GalantineLance>() };
+        public void PieChart(Player player, int Mode = 0, int NumLances = 3, float Radius = 1000f, int ClassicExpertMasterWaitForLances = 100, int ClassicDelay = 60)
         {
             
             Vector2[] ExpertCenters = new Vector2[5];
@@ -1167,7 +668,7 @@ namespace DestroyerTest.Content.Entities
                 Once it reaches 0, the attack is complete and the AI state can move to the next index of the AI list.
 
                 During all of this, the NPC's center remains equal to the ClassicCenter
-                */
+
                 //--------------------------------------
                 if (!CenterFlag)
                 {
@@ -1217,16 +718,26 @@ namespace DestroyerTest.Content.Entities
                 
 
                 NPC's center is not affected.
-                */
+
                 //--------------------------------------
             }
             if (Mode == 2)
             {
-                //Master AI
+                //Runs in master, but just uses Expert AI
             }
             if (Mode == 3)
             {
                 //Eternity AI
+
+                //--------------------------------------
+                /*
+                Sets ClassicCenter once.
+                Player is confined inside the piechart while constitution begins sucking in matter, requiring you to dodge incoming projectiles.
+                This creates a ball of light that, after the attack concludes, shrinks and explodes into Galantine Stars radially.
+
+                During all of this, the NPC's center remains equal to the ClassicCenter
+ 
+                //--------------------------------------
             }
             if (Mode == 4)
             {
@@ -1238,115 +749,6 @@ namespace DestroyerTest.Content.Entities
             }
         }
 
-
-
-
-
-
-
-        /// <summary>
-        /// Teleports near the player.
-        /// </summary>
-        /// <param name="player"></param>
-        /// <param name="TeleCircumferencePoint"></param>
-        public void TeleManager(Player player, ref Vector2 TeleCircumferencePoint)
-        {
-            if (NPC.type == ModContent.NPCType<ConstitutionBoss>())
-            {
-                NPC.ai[3] += 1;
-                int DustAmount = 8;
-                SoundEngine.PlaySound(SoundID.Item29, NPC.position);
-                ParticleOrchestrator.RequestParticleSpawn(false, ParticleOrchestraType.RainbowRodHit, new ParticleOrchestraSettings { PositionInWorld = TeleCircumferencePoint }, player.whoAmI);
-                for (int g = 0; g < DustAmount; g++)
-                {
-                    Dust.NewDust(NPC.Center, NPC.width + 10, NPC.height + 10, DustID.Enchanted_Pink, 0, 0, 0, default, 1f);
-                    Dust.NewDust(NPC.Center, NPC.width + 10, NPC.height + 10, DustID.Enchanted_Gold, 0, 0, 0, default, 1f);
-                }
-                NPC.Center = TeleCircumferencePoint;
-                Chargedir = (player.Center - NPC.Center).SafeNormalize(Vector2.Zero);
-            }
-        }
-
-        /// <summary>
-        /// Shoots Stars directly towards the player.
-        /// </summary>
-        /// <param name="player"></param>
-
-        public void ShootStar1(Player player)
-        {
-            if (NPC.type == ModContent.NPCType<ConstitutionBoss>())
-            {
-                SoundEngine.PlaySound(SoundID.Item29, NPC.position);
-                int StarAmount = StarsCount3;
-                float arcRadius = 200f; // Distance behind the player
-                float arcAngle = MathHelper.ToRadians(60); // Total arc angle (e.g., 60 degrees)
-                Vector2 directionToTarget = (NPC.Center - player.Center).SafeNormalize(Vector2.UnitY);
-                for (int i = 0; i < StarAmount; i++)
-                {
-                    float t = (StarAmount == 1) ? 0.5f : (float)i / (StarAmount - 1);
-                    float angle = MathHelper.Lerp(-arcAngle / 2, arcAngle / 2, t);
-                    Vector2 spawnOffset = directionToTarget.RotatedBy(MathHelper.Pi + angle) * arcRadius;
-                    Vector2 spawnPosition = NPC.Center + spawnOffset;
-                    Vector2 velocity = (player.Center - spawnPosition).SafeNormalize(Vector2.UnitY) * 10f;
-
-                    Projectile harmStar = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), spawnPosition, velocity, ProjectileID.StarWrath, 8, 2);
-                    harmStar.timeLeft = 600;
-                    harmStar.friendly = false;
-                    harmStar.hostile = true;
-
-
-                }
-            }
-        }
-
-
-        /// <summary>
-        /// Spawns a clone to chase the player.
-        /// </summary>
-        public void CloneMe()
-        {
-            if (NPC.type == ModContent.NPCType<ConstitutionBoss>())
-            {
-                int DustAmount = 12;
-                SoundEngine.PlaySound(SoundID.Item109, NPC.Center);
-
-                // Create the projectile directly and modify it immediately
-                Projectile cloneProj = Projectile.NewProjectileDirect(
-                    Entity.GetSource_FromThis(),
-                    NPC.position,
-                    NPC.velocity * 1.2f,
-                    ModContent.ProjectileType<ConstitutionClone>(),
-                    4,
-                    2
-
-                );
-
-                // Make it explicitly hostile
-
-                cloneProj.friendly = false;
-                cloneProj.hostile = true;
-
-
-                for (int g = 0; g < DustAmount; g++)
-                {
-                    Dust.NewDust(NPC.Center, NPC.width + 10, NPC.height + 10, DustID.Enchanted_Pink, 0, 0, 0, default, 1f);
-                    Dust.NewDust(NPC.Center, NPC.width + 10, NPC.height + 10, DustID.Enchanted_Gold, 0, 0, 0, default, 1f);
-                }
-            }
-        }
-
-
-        /// <summary>
-        /// Shoots a radial spread of Galantine Lances. The Count is randomized between 4 and 13.
-        /// </summary>
-        public void LanceBurst()
-        {
-            if (NPC.type == ModContent.NPCType<ConstitutionBoss>())
-            {
-                SoundEngine.PlaySound(SoundID.Item125, NPC.Center);
-                Opus.RadialSpreadProjectile(ModContent.ProjectileType<GalantineLance>(), Main.rand.Next(4, 14), NPC.Center, 15, 4, 10);
-            }
-        }
 
         public bool LanceCrossGetPlayerCenterFlag = false;
         public bool LanceCrossSpawnFlag = false;
@@ -1431,98 +833,6 @@ namespace DestroyerTest.Content.Entities
         }
 
         /// <summary>
-        /// Fires a radial spread of small phantom blades.
-        /// <para/> Note from HoleCat: Find a more interesting implementation for this. This is just the lances all over again.
-        /// </summary>
-        public void ShootSwords()
-        {
-            if (NPC.type == ModContent.NPCType<ConstitutionBoss>())
-            {
-                SoundEngine.PlaySound(SoundID.Item125, NPC.Center);
-                Opus.RadialSpreadProjectile(ModContent.ProjectileType<GalantineLance>(), Main.rand.Next(4, 14), NPC.Center, 15, 4, 10);
-                ParticleOrchestrator.RequestParticleSpawn(false, ParticleOrchestraType.TrueExcalibur, new ParticleOrchestraSettings { PositionInWorld = NPC.Center }); ;
-            }
-        }
-
-        /// <summary>
-        /// Summons a massive amount of stars from the sky to rain down on the player.
-        /// </summary>
-        /// <param name="player"></param>
-        /// <param name="velocity"></param>
-        public void RainStars(Player player, Vector2 velocity)
-        {
-            //Code taken from ExampleShootingSword.
-
-            Vector2 target = player.Center;
-            float ceilingLimit = target.Y;
-            if (ceilingLimit > player.Center.Y - 200f)
-            {
-                ceilingLimit = player.Center.Y - 200f;
-            }
-            for (int i = 0; i < 6; i++)
-            {
-                Vector2 position = player.Center - new Vector2(Main.rand.NextFloat(401) * player.direction, 600f);
-                position.Y -= 100 * i;
-                Vector2 heading = target - position;
-
-                if (heading.Y < 0f)
-                {
-                    heading.Y *= -1f;
-                }
-
-                if (heading.Y < 20f)
-                {
-                    heading.Y = 20f;
-                }
-
-                heading.Normalize();
-                heading *= velocity.Length();
-                heading.Y += Main.rand.Next(-40, 41) * 0.02f;
-                Projectile Rain = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), position, heading, ProjectileID.StarWrath, 16, 4);
-                Rain.timeLeft = 600;
-                Rain.hostile = true;
-                Rain.friendly = false;
-            }
-        }
-
-        /// <summary>
-        /// Throws out multiple Starfury Clones, which slow down before dashing to the player.
-        /// </summary>
-        /// <param name="player"></param>
-        /// <param name="Amount"></param>
-        public void StarFury(Player player, int Amount)
-        {
-            if (NPC.type == ModContent.NPCType<ConstitutionBoss>())
-            {
-                SoundEngine.PlaySound(SoundID.Item90, NPC.position);
-                Opus.RadialProjectileRandomDir(ModContent.ProjectileType<StarfuryClone>(), Main.rand.Next(10, 15), NPC.Center, 15, 4, 10);
-            }
-        }
-
-
-        /// <summary>
-        /// Selects random positions from the screen and spawns bursts of StarFury clones from them.
-        /// </summary>
-        /// <param name="Amount"></param>
-        public void StarFury2(Player player)
-        {
-            Opus.RadialProjectileRandomDir(ModContent.ProjectileType<StarfuryClone>(), Main.rand.Next(1, 4), NPC.Center, 15, 4, 10);
-        }
-
-        /// <summary>
-        /// Shoots a radial spread of light brids.
-        /// </summary>
-        public void ShootLightBird()
-        {
-            if (NPC.type == ModContent.NPCType<ConstitutionBoss>())
-            {
-                SoundEngine.PlaySound(SoundID.Item125, NPC.Center);
-                Opus.RadialSpreadProjectile(ModContent.ProjectileType<TrailBlazer>(), 8, NPC.Center, 15, 4, 10);
-                ParticleOrchestrator.RequestParticleSpawn(false, ParticleOrchestraType.TrueExcalibur, new ParticleOrchestraSettings { PositionInWorld = NPC.Center }); ;
-            }
-        }
-
-        /// <summary>
         /// Spawns a randomized field of mines. Is unused in eternity mode.
         /// </summary>
         /// <param name="player"></param>
@@ -1551,6 +861,7 @@ namespace DestroyerTest.Content.Entities
                 Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), spawnPosition, velocity * 20, ModContent.ProjectileType<StellarFlameHostile>(), 8, 2);
             }
         }
+        */
 
         #endregion
 

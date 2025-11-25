@@ -21,7 +21,7 @@ namespace DestroyerTest.Content.Projectiles.ConstitutionBoss
 	/// <summary>
 	/// Multipurpose Projectile.
 	/// <para/> Projectile ai slots 0 and 1 should not be set to anything when spawning, as they store NPC and Player values respectively.
-	/// <para/> Projectile ai slot 2 controls whether the projectile is friendly or harmful.
+	/// <para/> ai[2]: 1 = Homes in and is friendly. 2 = Homes in and is hostile. 3 = Doesnt home and is friendly. 4 = doesnt home and is hostile.
 	/// </summary>
 	public class ConstitutionStar : ModProjectile
 	{

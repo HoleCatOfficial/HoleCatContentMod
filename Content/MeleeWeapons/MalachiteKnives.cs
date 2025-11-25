@@ -31,7 +31,7 @@ namespace DestroyerTest.Content.MeleeWeapons
             Item.UseSound = new SoundStyle("DestroyerTest/Assets/Audio/MCTrident", 2) with { PitchVariance = 0.5f, MaxInstances = 0 };
 
 			Item.DamageType = DamageClass.Melee;
-			Item.damage = 6;
+			Item.damage = 4;
 			Item.knockBack = 1f;
 			Item.noMelee = true; 
             Item.noUseGraphic = true;

@@ -3950,6 +3950,7 @@ Projectiles: {
 	HekateStaffEmber.DisplayName: Hekate Staff Ember
 	HekatesMystiqueHoldout.DisplayName: Hekates Mystique Holdout
 	HekateStaffExplosion.DisplayName: Hekate Staff Explosion
+	StellarVolley.DisplayName: Stellar Volley
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.
@@ -4775,6 +4776,78 @@ BookText: {
 			You guessed it, Newline placeholder text.
 			'''
 	}
+
+	HekateBook1: {
+		Page1:
+			'''
+			Idri's been concerning me as of late. I've had to treat hives
+			on his skin day-in and day-out. He hasnt been able to meet with
+			the group for weeks, citing a newfound lethargy, and it's been
+			detrimental to the planning some of our more ambitious plans,
+			since he tended to be our voice of reason.
+			'''
+		Page2:
+			'''
+			I write this as I lay beside him in bed. He's fallen asleep, but
+			the restless shuddering of his torso tells me he isn't sleeping easy.
+			I've gotten him soups from all varieties of market, but nothing cures
+			his mysterious aliment, and no text could ever categorize diseases
+			affecting demideities.
+			'''
+		Page3:
+			'''
+			I may consult mother darkness on the matter, but I'm hesitant. 
+			Justifiedly so. She would be furious if she knew it had been me
+			that had taken her son from her, and I get the feeling her
+			mercy to old friends only extends so far. Goodness, I don't
+			know how many other options I have.
+			'''
+	}
+
+	HekateBook2: {
+		Page1:
+			'''
+			I wept for the first time in centuries this morning. And not the
+			usual sob or choke-up. I had gotten a new understaning of mortality
+			as I lay against the wall, wailing a discordant chime and clenching
+			my eyes shut. It was as if I didnt want to face the reality that
+			already had turned to face me.
+			'''
+		Page2:
+			'''
+			As I had predicted, yet so foolishly ignored, Idri's breathing has
+			become more strained, and his gangrene has worsened depsite my
+			regenerative talismans. Foolish of me. Demigod or not, I should have
+			stayed by his side all through that night instead of leaving him
+			in this cold, lonely room.
+			'''
+		Page3:
+			'''
+			I haven't felt things so rawly in so long a time. It perplexes me
+			as much as it moves me. Deities are beyond emotion; that's a commonly
+			known fact. So how is it that I grieve? How is it that I weep so loud
+			and so long that my chest throbs sorely and my eyes are burned by
+			my caustic fluids? Perhaps we need to rethink our defintions of
+			Deitism.
+			'''
+	}
+
+	HekateBook3: {
+		Page1:
+			'''
+			
+			'''
+		Page2:
+			'''
+			
+			'''
+		Page3:
+			'''
+			
+			'''
+	}
+
+
 }
 
 Achievements: {
