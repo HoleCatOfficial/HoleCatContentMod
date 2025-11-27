@@ -122,17 +122,8 @@ namespace DestroyerTest.Content.Projectiles
                     4,
                     Projectile.owner
                 );
-
-                Projectile.ai[0]++;
-                if (Projectile.ai[0] > 3)
-                {
-                    shouldDie = true;
-                }
             }
 
-            
-
-            // --- FINAL ACTION ---
             if (shouldDie)
                 Projectile.Kill();
         }

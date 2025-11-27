@@ -120,6 +120,7 @@ namespace DestroyerTest.Content.Projectiles
 		public List<float> TrailRotations = new();
         private const int TrailLength = 40;
         public float TextureRotationOffset = 0f;
+        public int Leeway = 15;
 
         SlotId LoopSlot;
         public SoundStyle Loop = new SoundStyle("DestroyerTest/Assets/Audio/AuraLoop/ShadowflameAuraLoop") 
@@ -169,7 +170,8 @@ namespace DestroyerTest.Content.Projectiles
                 {
                     PitchVal += 0.1f;
                 }
-                Projectile.timeLeft = 10;
+                Projectile.timeLeft = 100;
+                Leeway = 60;
                 Projectile.velocity = Vector2.Lerp(Projectile.velocity, (Main.MouseWorld - Projectile.Center).SafeNormalize(Vector2.Zero) * 12f, 0.1f);
 
 
@@ -181,7 +183,12 @@ namespace DestroyerTest.Content.Projectiles
             }
             else
             {
-                Projectile.Kill();
+                Leeway--;
+                Projectile.velocity = Vector2.Lerp(Projectile.velocity, (Main.MouseWorld - Projectile.Center).SafeNormalize(Vector2.Zero) * 12f, 0.1f);
+                if (Leeway <= 0)
+                {
+                    Projectile.Kill();
+                }
             }
         }
 

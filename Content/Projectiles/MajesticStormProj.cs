@@ -30,7 +30,6 @@ namespace DestroyerTest.Content.Projectiles
         {
             Projectile.width = 30;
             Projectile.height = 30;
-
             Projectile.DamageType = DamageClass.Magic;
             Projectile.friendly = true;
             Projectile.hostile = false;
@@ -48,7 +47,7 @@ namespace DestroyerTest.Content.Projectiles
         }
         public void DrawCrystalCore(SpriteBatch spriteBatch, Vector2 Center)
         {
-            DTUtils Utility = new DTUtils();
+            // Helper method from a utility mod.
             Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
             for (int i = 0; i < TrailPositions.Count; i++)
@@ -120,6 +119,7 @@ namespace DestroyerTest.Content.Projectiles
 		public List<float> TrailRotations = new();
         private const int TrailLength = 40;
         public float TextureRotationOffset = 0f;
+        public int Leeway = 15;
 
         SlotId LoopSlot;
         public SoundStyle Loop = new SoundStyle("DestroyerTest/Assets/Audio/AuraLoop/MagesticStormLoop") 
@@ -176,19 +176,27 @@ namespace DestroyerTest.Content.Projectiles
                 {
                     PitchVal += 0.1f;
                 }
-                Projectile.timeLeft = 10;
+                Projectile.timeLeft = 100;
+                Leeway = 60;
                 Projectile.velocity = Vector2.Lerp(Projectile.velocity, (Main.MouseWorld - Projectile.Center).SafeNormalize(Vector2.Zero) * 12f, 0.1f);
 
 
                 if (Main.rand.NextBool(10))
                 {
                     Vector2 OuterPos = Projectile.Center + Main.rand.NextVector2CircularEdge(100, 100);
-                    Projectile.NewProjectile(Projectile.InheritSource(Projectile), OuterPos, Vector2.Zero, ModContent.ProjectileType<MajesticStormOrb>(), Projectile.damage / 10, 4, Projectile.owner);
+                    Projectile.NewProjectile(Projectile.InheritSource(Projectile), OuterPos, Vector2.Zero, ModContent.ProjectileType<MajesticStormOrb>(), Projectile.damage / 2, 4, Projectile.owner);
                 }
             }
             else
             {
-                Projectile.Kill();
+                // Leeway is used for Mana flower support, since the weapon is functionally useless if the channel is constantly breaking on you due to lack of mana.
+                // Ideally, this should allow a window to return to the channeling behaviour, since it likely takes more than a few ticks for the mana flower to consume a mana potion.
+                Leeway--;
+                Projectile.velocity = Vector2.Lerp(Projectile.velocity, (Main.MouseWorld - Projectile.Center).SafeNormalize(Vector2.Zero) * 12f, 0.1f);
+                if (Leeway <= 0)
+                {
+                    Projectile.Kill();
+                }
             }
         }
 
