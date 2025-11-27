@@ -30,7 +30,7 @@ namespace DestroyerTest.Content.Projectiles
             Projectile.penetrate = -1;
             Projectile.light = 0.5f;
             Projectile.ignoreWater = true;
-            Projectile.timeLeft = 120;
+            Projectile.timeLeft = 240;
             Projectile.DamageType = DamageClass.Melee;
             Projectile.tileCollide = false;
             Projectile.alpha = 255;
@@ -127,7 +127,7 @@ namespace DestroyerTest.Content.Projectiles
         }
 
         private void AnimateProjectile() {
-            if (++Projectile.frameCounter >= 30) {
+            if (++Projectile.frameCounter >= 60) {
                 Projectile.frameCounter = 0;
                 if (++Projectile.frame >= Main.projFrames[Projectile.type]) {
                     Projectile.frame = 0;

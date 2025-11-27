@@ -19,11 +19,11 @@ using OpusLib;
 using ReLogic.Utilities;
 using DestroyerTest.Content.Particles;
 using InnoVault.PRT;
-using Humanizer;
+
 
 namespace DestroyerTest.Content.Projectiles
 {
-    public class HekateStaffProj : ModProjectile
+    public class MajesticStormProj : ModProjectile
     {
             
         public override void SetDefaults()
@@ -55,7 +55,7 @@ namespace DestroyerTest.Content.Projectiles
             {
                 float progress = i / (float)TrailLength;
                 float scale = MathHelper.Lerp(0.1f, 0.0005f, progress);
-                Color color = new Color(184, 45, 117);
+                Color color = new Color(29, 226, 186);
 
                 Main.EntitySpriteDraw(
                     DTAssetLib.Cyclone(2).Value,
@@ -93,7 +93,7 @@ namespace DestroyerTest.Content.Projectiles
                 DTAssetLib.Cyclone(2).Value,
                 Center - Main.screenPosition,
                 null,
-                new Color(184, 45, 117),
+                new Color(29, 226, 186),
                 TextureRotationOffset,
                 new Vector2(DTAssetLib.Cyclone(2).Value.Width / 2f, DTAssetLib.Cyclone(2).Value.Height / 2f),
                 0.1f,
@@ -122,11 +122,17 @@ namespace DestroyerTest.Content.Projectiles
         public float TextureRotationOffset = 0f;
 
         SlotId LoopSlot;
-        public SoundStyle Loop = new SoundStyle("DestroyerTest/Assets/Audio/AuraLoop/ShadowflameAuraLoop") 
+        public SoundStyle Loop = new SoundStyle("DestroyerTest/Assets/Audio/AuraLoop/MagesticStormLoop") 
         { 
             MaxInstances = 0,
             IsLooped = true,
             PauseBehavior = PauseBehavior.PauseWithGame
+        };
+
+        public SoundStyle Killed = new SoundStyle("DestroyerTest/Assets/Audio/RiftCharge") 
+        { 
+            MaxInstances = 0,
+            PitchVariance = 0.5f
         };
         public float PitchVal = -3;
         public override void AI()
@@ -140,12 +146,13 @@ namespace DestroyerTest.Content.Projectiles
                 TrailRotations.RemoveAt(TrailRotations.Count - 1);
 
             TextureRotationOffset -= 0.5f;
-            Lighting.AddLight(Projectile.Center, new Color(184, 45, 117).ToVector3());
-            PRTLoader.NewParticle(Projectile.Center, Projectile.velocity * 0.5f, PRTLoader.GetParticleID<SimpleParticle>(), new Color(184, 45, 117) * 0.5f, 2f);
+            Lighting.AddLight(Projectile.Center, new Color(29, 226, 186).ToVector3());
+            PRTLoader.NewParticle(Projectile.Center, Projectile.velocity * 0.5f, PRTLoader.GetParticleID<SimpleParticle>(), new Color(29, 226, 186) * 0.5f, 2f);
+            PRTLoader.NewParticle(Projectile.Center, Vector2.Zero, DTUtils.ElectricArcs[Main.rand.Next(DTUtils.ElectricArcs.Length)], new Color(29, 226, 186) * 0.75f, 0.5f);
 
             for (int i = 0; i < 4; i++)
             {
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.FireworksRGB, 0f, 0f, 0, new Color(184, 45, 117), 0.5f);
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.FireworksRGB, 0f, 0f, 0, new Color(29, 226, 186), 0.5f);
             }
 
             if (!SoundEngine.TryGetActiveSound(LoopSlot, out var activeSound)) {
@@ -176,7 +183,7 @@ namespace DestroyerTest.Content.Projectiles
                 if (Main.rand.NextBool(10))
                 {
                     Vector2 OuterPos = Projectile.Center + Main.rand.NextVector2CircularEdge(100, 100);
-                    Projectile.NewProjectile(Projectile.InheritSource(Projectile), OuterPos, Vector2.Zero, ModContent.ProjectileType<HekateStaffEmber>(), Projectile.damage / 10, 4, Projectile.owner);
+                    Projectile.NewProjectile(Projectile.InheritSource(Projectile), OuterPos, Vector2.Zero, ModContent.ProjectileType<MajesticStormOrb>(), Projectile.damage / 10, 4, Projectile.owner);
                 }
             }
             else
@@ -193,10 +200,10 @@ namespace DestroyerTest.Content.Projectiles
 
         public override void OnKill(int timeLeft)
         {
-            SoundEngine.PlaySound(SoundID.Item60, Projectile.Center);
+            SoundEngine.PlaySound(Killed, Projectile.Center);
             for (int u = 0; u < 15; u++)
             {
-                Dust.NewDustPerfect(Projectile.Center, DustID.FireworksRGB, Main.rand.NextVector2CircularEdge(10, 10), 0, new Color(184, 45, 117), 2);
+                Dust.NewDustPerfect(Projectile.Center, DustID.FireworksRGB, Main.rand.NextVector2CircularEdge(10, 10), 0, new Color(29, 226, 186), 2);
             }
         }
     }

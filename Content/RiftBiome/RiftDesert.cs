@@ -141,7 +141,7 @@ namespace DestroyerTest.Content.RiftBiome
 		public override bool IsBiomeActive(Player player)
 		{
 			// First, we will use the exampleBlockCount from our added ModSystem for our first custom condition
-			bool b1 = ModContent.GetInstance<RiftDesertTileCount>().RiftDesertBlockCount >= 15;
+			bool b1 = ModContent.GetInstance<RiftDesertTileCount>().RiftDesertBlockCount >= 40;
 
 			// Second, we will limit this biome to the inner horizontal third of the map as our second custom condition
 			//bool b2 = Math.Abs(player.position.ToTileCoordinates().X - Main.maxTilesX / 2) < Main.maxTilesX / 6;

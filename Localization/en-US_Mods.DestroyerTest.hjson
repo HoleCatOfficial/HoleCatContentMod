@@ -3514,6 +3514,26 @@ Items: {
 			Though, after she fled consequence, it has been left unused for decades.
 			'''
 	}
+
+	HekateBook1: {
+		DisplayName: Hekate Book1
+		Tooltip: ""
+	}
+
+	HekateBook2: {
+		DisplayName: Hekate Book2
+		Tooltip: ""
+	}
+
+	MagesticStorm: {
+		DisplayName: Magestic Storm
+		Tooltip: ""
+	}
+
+	MajesticStorm: {
+		DisplayName: Majestic Storm
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
@@ -3951,6 +3971,12 @@ Projectiles: {
 	HekatesMystiqueHoldout.DisplayName: Hekates Mystique Holdout
 	HekateStaffExplosion.DisplayName: Hekate Staff Explosion
 	StellarVolley.DisplayName: Stellar Volley
+	MagesticStormHoldout.DisplayName: Magestic Storm Holdout
+	MajesticStormProj.DisplayName: Majestic Storm Proj
+	ElectricBolt.DisplayName: Electric Bolt
+	MajesticStormExplosion.DisplayName: Majestic Storm Explosion
+	MajesticStormHoldout.DisplayName: Majestic Storm Holdout
+	MajesticStormOrb.DisplayName: Majestic Storm Orb
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.
@@ -4807,6 +4833,19 @@ BookText: {
 	HekateBook2: {
 		Page1:
 			'''
+			Idri's aliment seems to have become a particular issue. He's left his
+			quarters less frequently, and his hives have spread to his arms.
+			He has begun to refuse my help in treating the hives, but has not
+			said why. Unfortunately, I must do what I can to help him, and have had
+			to restrain him on multiple occasions to apply the ointment.
+			'''
+		Page2: ""
+		Page3: ""
+	}
+
+	HekateBook3: {
+		Page1:
+			'''
 			I wept for the first time in centuries this morning. And not the
 			usual sob or choke-up. I had gotten a new understaning of mortality
 			as I lay against the wall, wailing a discordant chime and clenching
@@ -4831,23 +4870,6 @@ BookText: {
 			Deitism.
 			'''
 	}
-
-	HekateBook3: {
-		Page1:
-			'''
-			
-			'''
-		Page2:
-			'''
-			
-			'''
-		Page3:
-			'''
-			
-			'''
-	}
-
-
 }
 
 Achievements: {
@@ -4891,3 +4913,55 @@ ShieldPlayer.ShieldLine:
 	[i:DestroyerTest/ShieldMarkBig] Shields do not regenerate until they break, and pull from your health to regenerate.
 	[i:DestroyerTest/ShieldMarkBig] Shields have priorities, and will be overridden by ones with higher priorities.
 	'''
+ModName: "[c/ff9900:HoleCat's Content Mod (Private Beta)]"
+
+Music: {
+	Author1: FRANCIUMKILLA
+	Author2: Desolo Zantas
+	Author3: Xi
+	Author4: RD Shrissy
+
+	EvilBoss: {
+		Default: Tribulation (New Mix)
+		Eternity: Tribulation (New Mix)
+		SecretSeed: Indestructible Dih
+	}
+
+	ConstitutionBoss: {
+		Default: Duel Against the Sacred Blade
+		Desperate: The Sacred Blade's Desperate Spasm
+		Eternity: Freedom Dive
+	}
+
+	NodeBoss: {
+		Fight: Elemental Influence
+		Idle: Elemental Presence
+	}
+
+	TenebrousConstruct: Darkness Encroaching
+	RoseSoulAmbience: Rest easy, my beloved
+	WyvernSoulAmbience: Unending fervor of the unending azure
+	HekateGarden: I, Am the First Flower
+
+	Rift: {
+		Surface: Deoxygenation
+		Underground: Trepidation
+		Caverns: Disquietude
+
+		Desert: {
+			Surface: Blistering Silt
+			Underground: Sweltering Trap
+			Sandstorm: Scalding Squall
+		}
+
+		Event: Synthetic Sporadia
+
+		Ice: {
+			Surface: Amid the Sun-streaked Wastes
+			Underground: Beneath the shadow-slicked ice
+		}
+
+		Rain: Prevailing Tempest
+		Thunder: Wrathful Tempest
+	}
+}
