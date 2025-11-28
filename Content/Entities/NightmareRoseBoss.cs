@@ -1632,6 +1632,8 @@ namespace DestroyerTest.Content.Entities
                 return;
 
             DTConfig cfg = ModContent.GetInstance<DTConfig>();
+            ScreenshakePlayer ScreenShake = ModContent.GetInstance<ScreenshakePlayer>();
+
             if (!cfg.DragCamera)
                 return;
 
@@ -1667,6 +1669,11 @@ namespace DestroyerTest.Content.Entities
                 float lerpFactor = anyBossActive ? 0.08f : 0.12f;
                 camPos = Vector2.Lerp(camPos, target, lerpFactor);
             }
+
+            Vector2 shakeOffset = ScreenShake.GetShakeOffset();
+
+            // Apply after smoothing, before assigning
+            camPos += shakeOffset;
 
             Main.screenPosition = camPos;
         }

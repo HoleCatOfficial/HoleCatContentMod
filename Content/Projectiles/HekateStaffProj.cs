@@ -64,7 +64,7 @@ namespace DestroyerTest.Content.Projectiles
                     color,
                     TextureRotationOffset,
                     DTAssetLib.Cyclone(2).Value.Size() / 2f,
-                    scale,
+                    scale * TextureScale,
                     SpriteEffects.None,
                     0
                 );
@@ -83,7 +83,7 @@ namespace DestroyerTest.Content.Projectiles
 					color,
 					Projectile.rotation,
 					DTAssetLib.FeatheredCircle.Value.Size() / 2f,
-					scale,
+					scale * TextureScale,
 					SpriteEffects.None,
 					0
 				);
@@ -96,7 +96,7 @@ namespace DestroyerTest.Content.Projectiles
                 new Color(184, 45, 117),
                 TextureRotationOffset,
                 new Vector2(DTAssetLib.Cyclone(2).Value.Width / 2f, DTAssetLib.Cyclone(2).Value.Height / 2f),
-                0.1f,
+                0.1f * TextureScale,
                 SpriteEffects.None,
                 1f
             );
@@ -108,7 +108,7 @@ namespace DestroyerTest.Content.Projectiles
                 Color.White,
                 0f,
                 new Vector2(DTAssetLib.FeatheredCircle.Value.Width / 2f, DTAssetLib.FeatheredCircle.Value.Height / 2f),
-                0.2f,
+                0.2f * TextureScale,
                 SpriteEffects.None,
                 1f
             );
@@ -122,6 +122,7 @@ namespace DestroyerTest.Content.Projectiles
         public float TextureRotationOffset = 0f;
         public int Leeway = 15;
 
+        public float TextureScale = 1f;
         SlotId LoopSlot;
         public SoundStyle Loop = new SoundStyle("DestroyerTest/Assets/Audio/AuraLoop/ShadowflameAuraLoop") 
         { 
@@ -130,6 +131,38 @@ namespace DestroyerTest.Content.Projectiles
             PauseBehavior = PauseBehavior.PauseWithGame
         };
         public float PitchVal = -3;
+        public int manaTimer = 0;
+
+        public bool shouldActAsChanneling(Player player)
+        {
+            // Basic: must be channeling
+            if (!player.channel || player.noItems || player.CCed)
+                return false;
+
+            int useTime = player.inventory[player.selectedItem].useTime;
+            int manaCost = player.inventory[player.selectedItem].mana;
+
+            // Increment the timer each call (AI calls this every tick)
+            manaTimer++;
+
+            // If we reached the mana drain point…
+            if (manaTimer >= useTime)
+            {
+                manaTimer = 0;
+
+                // Attempt to consume mana
+                if (!player.CheckMana(manaCost, true, false))
+                {
+                    // Not enough mana → stop channeling immediately
+                    return false;
+                }
+            }
+
+            // If we are between drain intervals → continue normally
+            return true;
+        }
+
+        public List<Projectile> ownedEmbers = new List<Projectile>();
         public override void AI()
         {
             TrailPositions.Insert(0, Projectile.Center);
@@ -164,6 +197,7 @@ namespace DestroyerTest.Content.Projectiles
             }
 
             Player player = Main.player[Projectile.owner];
+            /*
             if (player.channel)
             {
                 if (PitchVal < 0)
@@ -189,6 +223,43 @@ namespace DestroyerTest.Content.Projectiles
                 {
                     Projectile.Kill();
                 }
+            }
+            */
+
+            if (shouldActAsChanneling(player))
+            {
+                if (!player.channel)
+                {
+                    TextureScale -= 0.1f;
+                    Leeway--;
+                }
+
+                Projectile.timeLeft = 100;
+                Projectile.velocity = Vector2.Lerp(Projectile.velocity, (Main.MouseWorld - Projectile.Center).SafeNormalize(Vector2.Zero) * 12f, 0.1f);
+
+                if (PitchVal < 0)
+                {
+                    PitchVal += 0.1f;
+                }
+
+                if (player.channel)
+                {
+                    if (Main.rand.NextBool(10) && ownedEmbers.Count <= 30)
+                    {
+                        Vector2 OuterPos = Projectile.Center + Main.rand.NextVector2CircularEdge(100, 100);
+                        Projectile Ember = Projectile.NewProjectileDirect(Projectile.InheritSource(Projectile), OuterPos, Vector2.Zero, ModContent.ProjectileType<HekateStaffEmber>(), Projectile.damage / 4, 4, Projectile.owner);
+                        if (Ember.owner == Projectile.owner)
+                        {
+                            ownedEmbers.Add(Ember);
+                        }
+                    }
+                    Leeway = 60;
+                    TextureScale = 1f;
+                }
+            }
+            else
+            {
+                Projectile.Kill();
             }
         }
 

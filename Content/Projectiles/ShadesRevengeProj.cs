@@ -19,11 +19,12 @@ using OpusLib;
 using ReLogic.Utilities;
 using DestroyerTest.Content.Particles;
 using InnoVault.PRT;
+using Terraria.Graphics.CameraModifiers;
 
 
 namespace DestroyerTest.Content.Projectiles
 {
-    public class MajesticStormProj : ModProjectile
+    public class ShadesRevengeProj : ModProjectile
     {
             
         public override void SetDefaults()
@@ -54,7 +55,7 @@ namespace DestroyerTest.Content.Projectiles
             {
                 float progress = i / (float)TrailLength;
                 float scale = MathHelper.Lerp(0.1f, 0.0005f, progress);
-                Color color = new Color(29, 226, 186);
+                Color color = ColorLib.TenebrisGradient;
 
                 Main.EntitySpriteDraw(
                     DTAssetLib.Cyclone(2).Value,
@@ -68,12 +69,26 @@ namespace DestroyerTest.Content.Projectiles
                     0
                 );
             }
+
+            Main.spriteBatch.Draw(
+                DTAssetLib.Cyclone(2).Value,
+                Center - Main.screenPosition,
+                null,
+                ColorLib.TenebrisGradient,
+                TextureRotationOffset,
+                new Vector2(DTAssetLib.Cyclone(2).Value.Width / 2f, DTAssetLib.Cyclone(2).Value.Height / 2f),
+                0.1f * TextureScale,
+                SpriteEffects.None,
+                1f
+            );
+
+            Opus.ReturnToDefaultDrawing(spriteBatch);
             
             for (int i = 0; i < TrailPositions.Count; i++)
 			{
 				float progress = i / (float)TrailLength;
 				float scale = MathHelper.Lerp(0.2f, 0.001f, progress);
-				Color color = Color.White;
+				Color color = Color.Black;
 
 				Main.EntitySpriteDraw(
 					DTAssetLib.FeatheredCircle.Value,
@@ -89,22 +104,10 @@ namespace DestroyerTest.Content.Projectiles
 			}
 
             Main.spriteBatch.Draw(
-                DTAssetLib.Cyclone(2).Value,
-                Center - Main.screenPosition,
-                null,
-                new Color(29, 226, 186),
-                TextureRotationOffset,
-                new Vector2(DTAssetLib.Cyclone(2).Value.Width / 2f, DTAssetLib.Cyclone(2).Value.Height / 2f),
-                0.1f * TextureScale,
-                SpriteEffects.None,
-                1f
-            );
-
-            Main.spriteBatch.Draw(
                 DTAssetLib.FeatheredCircle.Value,
                 Center - Main.screenPosition,
                 null,
-                Color.White,
+                Color.Black,
                 0f,
                 new Vector2(DTAssetLib.FeatheredCircle.Value.Width / 2f, DTAssetLib.FeatheredCircle.Value.Height / 2f),
                 0.2f * TextureScale,
@@ -112,7 +115,7 @@ namespace DestroyerTest.Content.Projectiles
                 1f
             );
 
-            Opus.ReturnToDefaultDrawing(spriteBatch);
+            
         }
 
         
@@ -125,14 +128,14 @@ namespace DestroyerTest.Content.Projectiles
         public int Leeway = 15;
 
         SlotId LoopSlot;
-        public SoundStyle Loop = new SoundStyle("DestroyerTest/Assets/Audio/AuraLoop/MagesticStormLoop") 
+        public SoundStyle Loop = new SoundStyle("DestroyerTest/Assets/Audio/AuraLoop/TenebrisLoop") 
         { 
             MaxInstances = 0,
             IsLooped = true,
             PauseBehavior = PauseBehavior.PauseWithGame
         };
 
-        public SoundStyle Killed = new SoundStyle("DestroyerTest/Assets/Audio/RiftCharge") 
+        public SoundStyle Killed = new SoundStyle("DestroyerTest/Assets/Audio/TenebrisTesticleKill") 
         { 
             MaxInstances = 0,
             PitchVariance = 0.5f
@@ -170,8 +173,6 @@ namespace DestroyerTest.Content.Projectiles
             return true;
         }
 
-        public List<Projectile> ownedOrbs = new List<Projectile>();
-
         public override void AI()
         {
             TrailPositions.Insert(0, Projectile.Center);
@@ -183,13 +184,15 @@ namespace DestroyerTest.Content.Projectiles
                 TrailRotations.RemoveAt(TrailRotations.Count - 1);
 
             TextureRotationOffset -= 0.5f;
-            Lighting.AddLight(Projectile.Center, new Color(29, 226, 186).ToVector3());
-            PRTLoader.NewParticle(Projectile.Center, Projectile.velocity * 0.5f, PRTLoader.GetParticleID<SimpleParticle>(), new Color(29, 226, 186) * 0.5f, 2f);
-            PRTLoader.NewParticle(Projectile.Center, Vector2.Zero, DTUtils.ElectricArcs[Main.rand.Next(DTUtils.ElectricArcs.Length)], new Color(29, 226, 186) * 0.75f, 0.5f);
+            Lighting.AddLight(Projectile.Center, ColorLib.TenebrisGradient.ToVector3());
+            if (Main.rand.NextBool(6))
+            {
+                PRTLoader.NewParticle(Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Vector2.Zero, PRTLoader.GetParticleID<SmallShine>(), Color.White, 0.75f);
+            }
 
             for (int i = 0; i < 4; i++)
             {
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.FireworksRGB, 0f, 0f, 0, new Color(29, 226, 186), 0.5f);
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.FireworksRGB, 0f, 0f, 0, ColorLib.TenebrisGradient, 0.85f);
             }
 
             if (!SoundEngine.TryGetActiveSound(LoopSlot, out var activeSound)) {
@@ -254,14 +257,10 @@ namespace DestroyerTest.Content.Projectiles
 
                 if (player.channel)
                 {
-                    if (Main.rand.NextBool(10) && ownedOrbs.Count <= 40)
+                    if (Main.rand.NextBool(10))
                     {
-                        Vector2 OuterPos = Projectile.Center + Main.rand.NextVector2CircularEdge(100, 100);
-                        Projectile Orb = Projectile.NewProjectileDirect(Projectile.InheritSource(Projectile), OuterPos, Vector2.Zero, ModContent.ProjectileType<MajesticStormOrb>(), Projectile.damage / 2, 4, Projectile.owner);
-                        if (Orb.owner == Projectile.owner)
-                        {
-                            ownedOrbs.Add(Orb);
-                        }
+                        Vector2 OuterVel = Main.rand.NextVector2CircularEdge(10, 10);
+                        Projectile.NewProjectileDirect(Projectile.InheritSource(Projectile), Projectile.Center, OuterVel, ModContent.ProjectileType<TenebrisStar>(), Projectile.damage / 2, 4, Projectile.owner, ai2: 1);
                     }
                     Leeway = 60;
                     TextureScale = 1f;
@@ -284,11 +283,15 @@ namespace DestroyerTest.Content.Projectiles
 
         public override void OnKill(int timeLeft)
         {
+            Player player = Main.player[Projectile.owner];
             SoundEngine.PlaySound(Killed, Projectile.Center);
+            PRTLoader.NewParticle(PRTLoader.GetParticleID<SmallShine>(), Projectile.Center, Vector2.Zero, Color.White, 2);
             for (int u = 0; u < 15; u++)
             {
-                Dust.NewDustPerfect(Projectile.Center, DustID.FireworksRGB, Main.rand.NextVector2CircularEdge(10, 10), 0, new Color(29, 226, 186), 2);
+                Dust.NewDustPerfect(Projectile.Center, DustID.FireworksRGB, Main.rand.NextVector2CircularEdge(10, 10), 0, ColorLib.TenebrisGradient, 2);
             }
+            player.GetModPlayer<ScreenshakePlayer>().screenshakeTimer = 30;
+            player.GetModPlayer<ScreenshakePlayer>().screenshakeMagnitude = 8;
         }
     }
 }

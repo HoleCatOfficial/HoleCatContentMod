@@ -93,7 +93,7 @@ namespace DestroyerTest.Content.Projectiles
             Lighting.AddLight(Projectile.Center, new Color(29, 226, 186).ToVector3() * 0.6f);
 
             // --- CHANNELING LOGIC ---
-            bool shouldDie = !player.channel;
+            bool shouldDie = (!player.channel || Projectile.ai[1] > 3);
             if (!shouldDie)
                 Projectile.timeLeft = 120;
 
@@ -122,6 +122,7 @@ namespace DestroyerTest.Content.Projectiles
                     4,
                     Projectile.owner
                 );
+                Projectile.ai[1]++;
             }
 
             if (shouldDie)
@@ -159,7 +160,7 @@ namespace DestroyerTest.Content.Projectiles
 
         public override void OnKill(int timeLeft)
         {
-            SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/ChargeBreak") { PitchVariance = 0.2f, MaxInstances = 0 });
+            SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/MagnetOrbBreak") { PitchVariance = 0.2f, MaxInstances = 0 });
             Projectile.NewProjectile(Projectile.GetSource_Death(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<MajesticStormExplosion>(), Projectile.damage, 12, Projectile.owner);
         }
 

@@ -11,16 +11,16 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace DestroyerTest.Content.Projectiles
 {
-    public class MajesticStormHoldout : ModProjectile
+    public class ShadesRevengeHoldout : ModProjectile
     {
-        public override string Texture => "DestroyerTest/Content/Magic/MajesticStorm";
+        public override string Texture => "DestroyerTest/Content/Magic/ShadesRevenge";
         public override void SetStaticDefaults()
         {
         }
         public override void SetDefaults()
         {
-            Projectile.width = 76;
-            Projectile.height = 78;
+            Projectile.width = 124;
+            Projectile.height = 120;
             Projectile.friendly = true;
             Projectile.penetrate = -1;
             Projectile.tileCollide = false;
@@ -45,7 +45,7 @@ namespace DestroyerTest.Content.Projectiles
         {
             Player player = Main.player[Projectile.owner];
 
-            if (player.HeldItem.type == ModContent.ItemType<MajesticStorm>() && player.channel == true)
+            if (player.HeldItem.type == ModContent.ItemType<ShadesRevenge>() && player.channel == true)
             {
                 float holdDistance = 60f;
                 Vector2 mountedCenter = player.MountedCenter;
@@ -73,7 +73,7 @@ namespace DestroyerTest.Content.Projectiles
 
                 Vector2 dustPos = Projectile.Center + offset;
 
-                Dust.NewDustPerfect(dustPos, DustID.FireworksRGB, null, 0, new Color(29, 226, 186), 0.75f);
+                Dust.NewDustPerfect(dustPos, DustID.FireworksRGB, null, 0, ColorLib.TenebrisGradient, 0.75f);
             }
             else
             {

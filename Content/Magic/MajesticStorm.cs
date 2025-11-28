@@ -24,8 +24,8 @@ namespace DestroyerTest.Content.Magic
 			Item.value = Item.sellPrice(gold: 25, silver: 70);
 			Item.rare = ItemRarityID.Blue;
 
-			Item.useTime = 5;
-			Item.useAnimation = 5;
+			Item.useTime = 10;
+			Item.useAnimation = 10;
 			Item.useStyle = ItemUseStyleID.Shoot;
 
 			Item.knockBack = 10;
@@ -33,7 +33,7 @@ namespace DestroyerTest.Content.Magic
 			Item.damage = 55;
 			Item.DamageType = DamageClass.Magic;
 			Item.channel = true;
-			Item.mana = 35;
+			Item.mana = 60;
 			Item.crit = 5;
 			Item.noMelee = true;
 			Item.noUseGraphic = true;
@@ -48,24 +48,6 @@ namespace DestroyerTest.Content.Magic
 			Projectile.NewProjectile(source, position, Vector2.Zero, ModContent.ProjectileType<MajesticStormHoldout>(), 0, 0, player.whoAmI);
             return true;
         }
-		public override void HoldItem(Player player)
-		{
-			if (player.channel)
-			{
-				int manaCost = Item.mana;
-				if (Main.GameUpdateCount % Item.useTime == 0)
-				{
-					if (player.statMana >= manaCost)
-					{
-						player.statMana -= manaCost;
-					}
-					else
-					{
-						player.channel = false;
-					}
-				}
-			}
-		}
 		
 		public override bool CanUseItem(Player player)
 		{

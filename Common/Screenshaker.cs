@@ -14,4 +14,17 @@ public class ScreenshakePlayer : ModPlayer
             Main.screenPosition += new Vector2(Main.rand.Next(screenshakeMagnitude * -1, screenshakeMagnitude + 1), Main.rand.Next(screenshakeMagnitude * -1, screenshakeMagnitude + 1));
         }
     }
+    
+    public Vector2 GetShakeOffset()
+    {
+        if (screenshakeTimer <= 0)
+            return Vector2.Zero;
+
+        screenshakeTimer--;
+
+        return new Vector2(
+            Main.rand.Next(-screenshakeMagnitude, screenshakeMagnitude + 1),
+            Main.rand.Next(-screenshakeMagnitude, screenshakeMagnitude + 1)
+        );
+    }
 }

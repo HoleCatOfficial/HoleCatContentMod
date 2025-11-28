@@ -68,7 +68,13 @@ namespace DestroyerTest.Content.Projectiles
 
                 player.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, Projectile.rotation - (MathHelper.PiOver2 + MathHelper.PiOver4));
 
-                Dust.NewDustPerfect(Projectile.Hitbox.TopRight().RotatedBy(Projectile.rotation), DustID.FireworksRGB, null, 0, new Color(184, 45, 117), 0.75f);
+                Vector2 offset = new Vector2(Projectile.width / 2f, -Projectile.height / 2f);
+                offset = offset.RotatedBy(Projectile.rotation);
+
+                Vector2 dustPos = Projectile.Center + offset;
+
+                Dust.NewDustPerfect(dustPos, DustID.FireworksRGB, null, 0, new Color(184, 45, 117), 0.75f);
+
             }
             else
             {

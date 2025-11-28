@@ -3508,7 +3508,7 @@ Items: {
 			'''
 			Casts a controllable ball of light.
 			The ball creates small embers around it that don't move and inflict Soul Erosion, which lowers enemy damage.
-			Releasing the mouse button kills all embers and the light ball.
+			Releasing the mouse button kills all owned embers and the owned ball.
 
 			Hekate's personal weapon for dealing with small scale threats.
 			Though, after she fled consequence, it has been left unused for decades.
@@ -3525,13 +3525,19 @@ Items: {
 		Tooltip: ""
 	}
 
-	MagesticStorm: {
-		DisplayName: Magestic Storm
-		Tooltip: ""
-	}
-
 	MajesticStorm: {
 		DisplayName: Majestic Storm
+		Tooltip:
+			'''
+			Casts a controllable electromagnetic ball.
+			The ball creates magnet speheres around it that don't move and shoot electric bolts at nearby enemies, self-destructing after firing thrice.
+			If 40 or more Magnet Spheres belonging to you are active in the world at a time, no new magnet spheres will be created until the channeling is broken.
+			Releasing the mouse button destroys all owned magnet spheres and the owned ball.
+			'''
+	}
+
+	ShadesRevenge: {
+		DisplayName: Shades Revenge
 		Tooltip: ""
 	}
 }
@@ -3977,6 +3983,9 @@ Projectiles: {
 	MajesticStormExplosion.DisplayName: Majestic Storm Explosion
 	MajesticStormHoldout.DisplayName: Majestic Storm Holdout
 	MajesticStormOrb.DisplayName: Majestic Storm Orb
+	ShadesRevengeExplosion.DisplayName: Shades Revenge Explosion
+	ShadesRevengeHoldout.DisplayName: Shades Revenge Holdout
+	ShadesRevengeProj.DisplayName: Shades Revenge Proj
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.
