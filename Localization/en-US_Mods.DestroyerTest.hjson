@@ -3986,6 +3986,7 @@ Projectiles: {
 	ShadesRevengeExplosion.DisplayName: Shades Revenge Explosion
 	ShadesRevengeHoldout.DisplayName: Shades Revenge Holdout
 	ShadesRevengeProj.DisplayName: Shades Revenge Proj
+	NightmareRoseCursedCrystal.DisplayName: Nightmare Rose Cursed Crystal
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.

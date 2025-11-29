@@ -21,8 +21,8 @@ namespace DestroyerTest.Content.Projectiles
 
         public override void SetDefaults()
         {
-            Projectile.width = 14; // The width of projectile hitbox
-            Projectile.height = 14; // The height of projectile hitbox
+            Projectile.width = 30; // The width of projectile hitbox
+            Projectile.height = 30; // The height of projectile hitbox
             Projectile.friendly = false; // Can the projectile deal damage to enemies?
             Projectile.hostile = true; // Can the projectile deal damage to the player?
             Projectile.ignoreWater = true; // Does the projectile's speed be influenced by water?
@@ -71,7 +71,9 @@ namespace DestroyerTest.Content.Projectiles
             Opus.DrawTextureOnProj(DTAssetLib.Sparkle(3), Projectile, Color.White, false, 0);
             
             Opus.ReturnToDefaultDrawing(spriteBatch);
-            return true;
+            
+            Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, TextureAssets.Projectile[Projectile.type].Value.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
+            return false;
         }
 
         public override void OnSpawn(IEntitySource source)

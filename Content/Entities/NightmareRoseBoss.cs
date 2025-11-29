@@ -748,15 +748,14 @@ namespace DestroyerTest.Content.Entities
                             VingetteScale += 0.75f;
                         }
 
-
                         int IdleMax = -1;
                         if (!Main.expertMode && !Main.masterMode && !EternityIsActive())
                         {
-                            IdleMax = 100;
+                            IdleMax = 80;
                         }
                         if (Main.expertMode && !Main.masterMode && !EternityIsActive())
                         {
-                            IdleMax = 80;
+                            IdleMax = 70;
                         }
                         if (Main.masterMode || EternityIsActive())
                         {
@@ -876,26 +875,14 @@ namespace DestroyerTest.Content.Entities
                         }
                         else
                         {
-                            SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/Constitution_Jab") with { PitchVariance = 1f, Volume = 3f });
+                            
 
                             if (FlameRingCount < 9 && Main.GameUpdateCount % 60 == 0)
                             {
-                                for (int i = 0; i < FlameRingVectorCount; i++)
-                                {
-                                    float randomOffset = Main.rand.NextFloat(-0.4f, 0.4f);
-                                    float angle = FlameRingBaseAngle + i * FlameRingAngleStep + randomOffset;
-
-                                    float radius = FlameRingStartRad;
-                                    float curvedAngle = angle - FlameRingRotSpeed * MathHelper.PiOver2;
-
-                                    Vector2 startPos = NPC.Center + radius * new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
-                                    Vector2 outwardVel = new Vector2((float)Math.Cos(curvedAngle), (float)Math.Sin(curvedAngle)) * 0.5f; // outward speed
-                                    Vector2 spinVel = outwardVel.RotatedBy(MathHelper.PiOver2) * 0.8f; // tangential spin
-
-                                    Vector2 finalVel = (outwardVel + spinVel).SafeNormalize(Vector2.UnitY) * FlameRingRotSpeed;
-
-                                    Projectile.NewProjectile(Entity.GetSource_FromThis(), startPos, finalVel, ModContent.ProjectileType<CursedNodeCrystal>(), 15, 5, ai2: 2);
-                                }
+                                SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/NodeAttackTS") with { PitchVariance = 1f, Volume = 3f });
+                                Opus.RadialSpreadProjectile(ModContent.ProjectileType<NightmareRoseCursedCrystal>(), 9, NPC.Center, 16, 4, 12, AI1: 1, RandomOffset: true);
+                                Opus.RadialSpreadProjectile(ModContent.ProjectileType<NightmareRoseCursedCrystal>(), 9, NPC.Center, 16, 4, 12, AI1: -1, RandomOffset: true);
+                                FlameRingCount++;
                             }
                             if (FlameRingCount >= 9)
                             {
@@ -928,22 +915,7 @@ namespace DestroyerTest.Content.Entities
                         }
                         else
                         {
-                            for (int i = 0; i < FlameRingVectorCount; i++)
-                            {
-                                float randomOffset = Main.rand.NextFloat(-0.4f, 0.4f);
-                                float angle = FlameRingBaseAngle + i * FlameRingAngleStep + randomOffset;
-
-                                float radius = FlameRingStartRad;
-                                float curvedAngle = angle - FlameRingRotSpeed * MathHelper.PiOver2;
-
-                                Vector2 startPos = NPC.Center + radius * new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
-                                Vector2 outwardVel = new Vector2((float)Math.Cos(curvedAngle), (float)Math.Sin(curvedAngle)) * 1.5f; // outward speed
-                                Vector2 spinVel = outwardVel.RotatedBy(MathHelper.PiOver2) * 0.8f; // tangential spin
-
-                                Vector2 finalVel = (outwardVel + spinVel).SafeNormalize(Vector2.UnitY) * FlameRingRotSpeed;
-
-                                Projectile.NewProjectile(Entity.GetSource_FromThis(), startPos, finalVel, ModContent.ProjectileType<CorruptPetalHostile>(), 16, 5, ai2: 2);
-                            }
+                            Opus.RingProjectileOutwardRandomDir(ModContent.ProjectileType<TormentedSoul2>(), 7, NPCHead, 30, 20, 1, 12);
                             ResetState();
                         }
                         break;
@@ -1665,17 +1637,19 @@ namespace DestroyerTest.Content.Entities
             }
             else
             {
-                // smooth follow
-                float lerpFactor = anyBossActive ? 0.08f : 0.12f;
-                camPos = Vector2.Lerp(camPos, target, lerpFactor);
+                if (!ScreenShake.isShaking)
+                {
+                    // smooth follow
+                    float lerpFactor = anyBossActive ? 0.08f : 0.12f;
+                    camPos = Vector2.Lerp(camPos, target, lerpFactor);
+                }
             }
 
             Vector2 shakeOffset = ScreenShake.GetShakeOffset();
 
-            // Apply after smoothing, before assigning
-            camPos += shakeOffset;
-
             Main.screenPosition = camPos;
+            camPos += shakeOffset;
+            Main.screenPosition += shakeOffset;
         }
 
         private bool IsAnyBossActive()

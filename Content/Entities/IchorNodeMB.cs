@@ -18,7 +18,9 @@ using InnoVault;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using rail;
+using ReLogic.Content;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -117,6 +119,7 @@ namespace DestroyerTest.Content.Entities
             return null;
         }
 
+
         public enum AttackState
         {
             Dormant,
@@ -133,6 +136,8 @@ namespace DestroyerTest.Content.Entities
         public int IdleTimer = 60;
         public int BloodRainSpawnTimer = 180;
         public int BloodRainWaitTimer = 240;
+        public int IchorSpiralWarnTimer = 180;
+        public bool IchorSpiralWarnParticleFlag = false;
         public int IchorSpiralTimer = 240;
         public int IchorSpiralCooldownTimer = 120;
         public float IchorSpiralRotationOffset = 0;
@@ -144,10 +149,9 @@ namespace DestroyerTest.Content.Entities
         public int WaveTimer = 0;
         public int WaveIndex = 0;
         public bool SoundFlag1 = false;
-        public SoundStyle StarShoot = new SoundStyle("DestroyerTest/Assets/Audio/NodeAttackTS") with { MaxInstances = 0, PitchVariance = 1, Volume = 2 };
-        public SoundStyle Wallwarn = new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/CursedFlamesWarn") with { MaxInstances = 0, PitchVariance = 1 };
-        public SoundStyle WallShoot1 = new SoundStyle("DestroyerTest/Assets/Audio/FlameWall") with { MaxInstances = 0, PitchVariance = 1, Volume = 2 };
-        public SoundStyle NapalmShoot = new SoundStyle("DestroyerTest/Assets/Audio/NodeAttackNapalm") with { MaxInstances = 0, PitchVariance = 1 };
+        public SoundStyle SlamWarn = new SoundStyle("DestroyerTest/Assets/Audio/ChimeIn") with { MaxInstances = 0, PitchVariance = 1 };
+        public SoundStyle Spiralwarn = new SoundStyle("DestroyerTest/Assets/Audio/RailGunCharge") with { MaxInstances = 0 };
+        public SoundStyle GroundImpact = new SoundStyle("DestroyerTest/Assets/Audio/TenebrisTesticleKill") with { MaxInstances = 0, PitchVariance = 0.5f };
         public override void AI()
         {
             NPC.TargetClosest();
@@ -199,7 +203,7 @@ namespace DestroyerTest.Content.Entities
                         if (DormantPulseTimer <= 0)
                         {
                             SoundEngine.PlaySound(SoundID.DD2_WitherBeastAuraPulse, NPC.Center);
-                            PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp>(), NPC.Center, Vector2.Zero, ColorLib.Ichor, 0.025f);
+                            Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), NPC.Center, Vector2.Zero, ColorLib.Ichor, 0.025f, 1.0f);
                             DormantPulseTimer = 120;
                         }
 
@@ -280,38 +284,55 @@ namespace DestroyerTest.Content.Entities
                 case AttackState.IchorSpiral:
                     {
                         NPC.velocity = Vector2.Zero;
-                        if (IchorSpiralTimer > 0)
+                        if (IchorSpiralWarnTimer > 0)
                         {
-                            IchorSpiralRotationOffset += 1f;
-                            //var launchVelocity = new Vector2(-8, 0);
-                            NPC.rotation = IchorSpiralRotationOffset;
-
-                            if (IchorSpiralTimer % 4 == 0)
+                            IchorSpiralWarnTimer--;
+                            if (!IchorSpiralWarnParticleFlag)
                             {
-                                SoundEngine.PlaySound(StarShoot, NPC.Center);
-
-                                for (int i = 0; i < 6; i++)
-                                {
-                                    var angle = IchorSpiralRotationOffset + (i * MathHelper.TwoPi / 6f);
-                                    var launchVelocity = new Vector2(8, 0).RotatedBy(angle);
-                                    Projectile Crys = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), NPC.Center, launchVelocity, ModContent.ProjectileType<IchorNodeCrystal2>(), 15, 4);
-                                    Crys.timeLeft = 120;
-                                }
-
-                                IchorSpiralRotationOffset += 1f; // spiral effect
+                                SoundEngine.PlaySound(Spiralwarn);
+                                Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), NPC.Center, Vector2.Zero, Color.Red, 0.01f, ai0: 3.75f);
+                                IchorSpiralWarnParticleFlag = true;
                             }
-                            IchorSpiralTimer--;
                         }
-                        if (IchorSpiralTimer <= 0 && IchorSpiralCooldownTimer > 0)
+                        if (IchorSpiralWarnTimer <= 0)
                         {
-                            IchorSpiralCooldownTimer--;
-                        }
-                        if (IchorSpiralTimer <= 0 && IchorSpiralCooldownTimer <= 0)
-                        {
-                            CurrentAttack = AttackState.ToothBombs;
-                            IchorSpiralTimer = 240;
-                            IchorSpiralCooldownTimer = 120;
-                            NPC.rotation = 0f;
+                            Spiral_BindPlayer(player, 500);
+                            Opus.RingDustOutward(DustID.TintableDustLighted, 30, NPC.Center, 500f, 0, ColorLib.IchorCrystalGradient, 1.5f, 3, true);
+                            if (IchorSpiralTimer > 0)
+                            {
+                                IchorSpiralRotationOffset += 1f;
+                                //var launchVelocity = new Vector2(-8, 0);
+                                NPC.rotation = IchorSpiralRotationOffset;
+
+                                if (IchorSpiralTimer % 4 == 0)
+                                {
+                                    SoundEngine.PlaySound(SoundID.Item156, NPC.Center);
+
+                                    for (int i = 0; i < 6; i++)
+                                    {
+                                        var angle = IchorSpiralRotationOffset + (i * MathHelper.TwoPi / 6f);
+                                        var launchVelocity = new Vector2(8, 0).RotatedBy(angle);
+                                        Projectile Crys = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), NPC.Center, launchVelocity, ModContent.ProjectileType<IchorNodeCrystal2>(), 15, 4);
+                                        Crys.timeLeft = 120;
+                                    }
+
+                                    IchorSpiralRotationOffset += 0.75f; // spiral effect
+                                }
+                                IchorSpiralTimer--;
+                            }
+                            if (IchorSpiralTimer <= 0 && IchorSpiralCooldownTimer > 0)
+                            {
+                                IchorSpiralCooldownTimer--;
+                            }
+                            if (IchorSpiralTimer <= 0 && IchorSpiralCooldownTimer <= 0)
+                            {
+                                CurrentAttack = AttackState.ToothBombs;
+                                IchorSpiralWarnTimer = 180;
+                                IchorSpiralWarnParticleFlag = false;
+                                IchorSpiralTimer = 240;
+                                IchorSpiralCooldownTimer = 120;
+                                NPC.rotation = 0f;
+                            }
                         }
                         break;
                     }
@@ -355,10 +376,15 @@ namespace DestroyerTest.Content.Entities
                         if (SlamCharge > 0)
                         {
                             NPC.noTileCollide = true;
-                            Vector2 toTarget = new Vector2(player.Center.X, player.Center.Y - 180f) - NPC.Center;
+                            Vector2 toTarget = new Vector2(player.Center.X, player.Center.Y - 300f) - NPC.Center;
                             float speed = 10f;
                             NPC.velocity = toTarget.SafeNormalize(Vector2.Zero) * speed;
                             SlamCharge--;
+                            if (SlamCharge == 20)
+                            {
+                                SoundEngine.PlaySound(SlamWarn, NPC.Center);
+                                PRTLoader.NewParticle(PRTLoader.GetParticleID<ArrowTelegraphMobile>(), NPC.Center, new Vector2(0, 15), ColorLib.Ichor, 3);
+                            }
                         }
                         if (SlamCharge <= 0)
                         {
@@ -379,7 +405,7 @@ namespace DestroyerTest.Content.Entities
                         if (NPC.collideY && NPC.velocity.Y >= 0f)
                         {
                             NPC.velocity = Vector2.Zero;
-                            SoundEngine.PlaySound(SoundID.Item88, NPC.Center);
+                            SoundEngine.PlaySound(GroundImpact, NPC.Center);
                             player.GetModPlayer<ScreenshakePlayer>().screenshakeTimer = 10;
                             player.GetModPlayer<ScreenshakePlayer>().screenshakeMagnitude = 2;
                             SlamWave();
@@ -430,6 +456,7 @@ namespace DestroyerTest.Content.Entities
             int top = (int)(Probe.Y / 16);
             int bottom = (int)((Probe.Y + 32) / 16);
 
+            
             surrounded =
                 Collision.SolidTiles(left - 1, right + 1, top - 1, bottom + 1) &&
                 Collision.SolidTiles(left, right, top - 1, top - 1) && // Above
@@ -442,6 +469,7 @@ namespace DestroyerTest.Content.Entities
             }
             return true;
         }
+        
 
         public void KeepToPlayer(Vector2 CTR)
         {
@@ -470,10 +498,16 @@ namespace DestroyerTest.Content.Entities
             int bottom = (int)((NPC.position.Y + NPC.height) / 16);
 
             WaveTimer++;
-            if (WaveTimer % 10 == 0) // spawn interval
+            if (WaveTimer % 10 == 0)
             {
                 int x = left + WaveIndex;
-                if (x <= right && WorldGen.SolidTile(x, bottom))
+                Tile tile = Framing.GetTileSafely(x, bottom);
+                bool isGround =
+                    tile.HasUnactuatedTile &&
+                    Main.tileSolid[tile.TileType] &&
+                    !Main.tileSolidTop[tile.TileType];
+
+                if (x <= right && isGround)
                 {
                     Vector2 spawnPos = new Vector2(x * 16 + 8, bottom * 16);
                     Projectile.NewProjectile(
@@ -486,7 +520,8 @@ namespace DestroyerTest.Content.Entities
                     );
                 }
 
-                WaveIndex++; // move to next tile column
+
+                WaveIndex++;
 
                 if (x > right)
                 {
@@ -506,9 +541,32 @@ namespace DestroyerTest.Content.Entities
             }
         }
 
+        public void Spiral_BindPlayer(Player playerToBind, float radius)
+        {
+            if (playerToBind == null)
+            {
+                return;
+            }
+
+            Vector2 offset = playerToBind.Center - NPC.Center;
+            float dist = offset.Length();
+
+            if (dist > radius)
+            {
+                offset.Normalize();
+                offset *= radius;
+                playerToBind.Center = NPC.Center + offset;
+            }
+        }
+
+        public override bool? CanFallThroughPlatforms()
+        {
+            return true;
+        }
+
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-            npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<CursedNodeLootBag>()));
+            npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<IchorNodeLootBag>()));
         }
     }
 }

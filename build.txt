@@ -1,6 +1,6 @@
 displayName = [c/ff9900:HoleCat's Content Mod (Private Beta)]
 author = HoleCat
-version = 2.1.698
+version = 2.1.71
 modReferences = InnoVault, OpusLib, GlowmaskHelper
 dependencies = InnoVault, OpusLib, GlowmaskHelper
 playableOnPreview = false

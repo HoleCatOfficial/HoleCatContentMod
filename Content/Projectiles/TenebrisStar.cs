@@ -15,6 +15,7 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using OpusLib;
+using DestroyerTest.Content.Equips;
 
 namespace DestroyerTest.Content.Projectiles
 {
@@ -288,11 +289,28 @@ namespace DestroyerTest.Content.Projectiles
 
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
+			Player player = Main.player[0];
+			if (Projectile.owner > -1)
+			{
+				player = Main.player[Projectile.owner];
+			}
 			if (Mode == 1 || Mode == 1)
 			{
 				//PRTLoader.NewParticle(PRTLoader.GetParticleID<Boom1>(), target.Center, Vector2.Zero, ColorLib.TenebrisGradient, 0.05f);
 				Dust.NewDust(Projectile.position, Projectile.Hitbox.Width, Projectile.Hitbox.Height, DustID.TintableDustLighted, Main.rand.NextFloat(-1, 1.1f), Main.rand.NextFloat(-1, 1.1f), 0, ColorLib.TenebrisGradient, 2f);
-				target.AddBuff(ModContent.BuffType<ShimmeringFlames>(), 300);
+				target.AddBuff(ModContent.BuffType<ShimmeringFlames>(), 30 * 60);
+				if (player.TryGetModPlayer<TenebrisMagicPlayer>(out var magicPlayer))
+                {
+                    if (magicPlayer.Active)
+                    {
+                        player.statMana += (int)(damageDone / 10);
+						player.ManaEffect((int)(damageDone / 10));
+						for (int u = 0; u < 16; u++)
+                        {
+                            Dust.NewDustPerfect(player.Center, DustID.FireworksRGB, Main.rand.NextVector2CircularEdge(6, 6), 0, ColorLib.TenebrisGradient);
+                        }
+                    }
+                }
 			}
 
 		}
@@ -303,7 +321,7 @@ namespace DestroyerTest.Content.Projectiles
 			{
 				//PRTLoader.NewParticle(PRTLoader.GetParticleID<Boom1>(), target.Center, Vector2.Zero, ColorLib.TenebrisGradient, 0.05f);
 				Dust.NewDust(Projectile.position, Projectile.Hitbox.Width, Projectile.Hitbox.Height, DustID.TintableDustLighted, Main.rand.NextFloat(-1, 1.1f), Main.rand.NextFloat(-1, 1.1f), 0, ColorLib.TenebrisGradient, 2f);
-				target.AddBuff(ModContent.BuffType<ShimmeringFlames>(), 300);
+				target.AddBuff(ModContent.BuffType<ShimmeringFlames>(), 30 * 60);
 			}
 		}
 

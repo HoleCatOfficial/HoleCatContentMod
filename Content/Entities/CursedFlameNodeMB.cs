@@ -18,6 +18,7 @@ using InnoVault;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -252,7 +253,7 @@ namespace DestroyerTest.Content.Entities
                         if (DormantPulseTimer <= 0)
                         {
                             SoundEngine.PlaySound(SoundID.DD2_WitherBeastAuraPulse, NPC.Center);
-                            PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp>(), NPC.Center, Vector2.Zero, ColorLib.CursedFlames, 0.025f);
+                            Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), NPC.Center, Vector2.Zero, ColorLib.CursedFlames, 0.01f, 1f);
                             DormantPulseTimer = 120;
                         }
 
@@ -334,24 +335,10 @@ namespace DestroyerTest.Content.Entities
                         if (StarShootInterval <= 0)
                         {
                             SoundEngine.PlaySound(StarShoot, NPC.Center);
-                            PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp>(), NPC.Center, PRTPos, ColorLib.CursedFlames, 0.025f);
-                            for (int i = 0; i < numVectors; i++)
-                            {
-                                float randomOffset = Main.rand.NextFloat(-0.4f, 0.4f);
-                                float angle = baseAngle + i * angleStep + randomOffset;
-
-                                float radius = StartRad;
-                                float curvedAngle = angle - RotSpeed * MathHelper.PiOver2;
-
-                                Vector2 startPos = NPC.Center + radius * new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
-                                Vector2 outwardVel = new Vector2((float)Math.Cos(curvedAngle), (float)Math.Sin(curvedAngle)) * 0.5f; // outward speed
-                                Vector2 spinVel = outwardVel.RotatedBy(MathHelper.PiOver2) * 0.8f; // tangential spin
-
-                                Vector2 finalVel = (outwardVel + spinVel).SafeNormalize(Vector2.UnitY) * RotSpeed;
-
-                                Projectile.NewProjectile(Entity.GetSource_FromThis(), startPos, finalVel, StarShootID, 20, 5, ai2: 4);
-                            }
-                            StarShootInterval = 30;
+                            Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), NPC.Center, Vector2.Zero, ColorLib.CursedFlames, 0.01f, 1f);
+                            Opus.RadialSpreadProjectile(ModContent.ProjectileType<NightmareRoseCursedCrystal>(), 9, NPC.Center, 16, 4, 10, AI1: 1, RandomOffset: true);
+                            Opus.RadialSpreadProjectile(ModContent.ProjectileType<NightmareRoseCursedCrystal>(), 9, NPC.Center, 16, 4, 10, AI1: -1, RandomOffset: true);
+                            StarShootInterval = 60;
                             StarShootCount += 1;
                         }
 
@@ -425,7 +412,7 @@ namespace DestroyerTest.Content.Entities
                             SoundEngine.PlaySound(WallShoot1);
                             player.GetModPlayer<ScreenshakePlayer>().screenshakeTimer = 10;
                             player.GetModPlayer<ScreenshakePlayer>().screenshakeMagnitude = 2;
-                            PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp>(), NPC.Center, PRTPos, ColorLib.CursedFlames, 0.025f);
+                            Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), NPC.Center, Vector2.Zero, ColorLib.CursedFlames, 0.01f, 1f);
 
                             // Horizontal walls (one per row)
                             for (int y = 0; y < rows; y++)
@@ -479,7 +466,7 @@ namespace DestroyerTest.Content.Entities
                     {
                         KeepToPlayer(player.Center + new Vector2(0, -200));
 
-                        Vector2 Velocity = new Vector2(Main.rand.Next(-20, 20), -10);
+                        Vector2 Velocity = new Vector2(Main.rand.Next(-20, 20), -15);
 
                         if (NapalmRainTimer > 0)
                         {

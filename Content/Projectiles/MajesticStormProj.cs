@@ -206,6 +206,8 @@ namespace DestroyerTest.Content.Projectiles
                 activeSound.Pitch = PitchVal;
             }
 
+            UpdateOwnedSubProj();
+
             Player player = Main.player[Projectile.owner];
             /*
             if (player.channel)
@@ -274,7 +276,16 @@ namespace DestroyerTest.Content.Projectiles
 
         }
 
-        
+        public void UpdateOwnedSubProj()
+        {
+            foreach (Projectile p in Main.projectile)
+            {
+                if (ownedOrbs.Contains(p) && !p.active)
+                {
+                    ownedOrbs.Remove(p);
+                }
+            }
+        }
 
         public override void ModifyDamageHitbox(ref Rectangle hitbox)
         {

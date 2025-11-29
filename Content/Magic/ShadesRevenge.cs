@@ -31,7 +31,7 @@ namespace DestroyerTest.Content.Magic
 
 			Item.knockBack = 10;
 			Item.autoReuse = true;
-			Item.damage = 100;
+			Item.damage = 240;
 			Item.DamageType = DamageClass.Magic;
 			Item.channel = true;
 			Item.mana = 75;

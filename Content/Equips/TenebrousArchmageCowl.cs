@@ -11,6 +11,8 @@ using DestroyerTest.Content.Resources;
 using Microsoft.Xna.Framework;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Buffs;
+using Terraria.DataStructures;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace DestroyerTest.Content.Equips
 {
@@ -34,7 +36,7 @@ namespace DestroyerTest.Content.Equips
 			Item.height = 22; // Height of the item
 			Item.value = Item.sellPrice(gold: 70); // How many coins the item is worth
 			Item.rare = ModContent.RarityType<ShimmeringRarity>(); // The rarity of the item
-			Item.defense = 60; // The amount of defense the item will give when equipped
+			Item.defense = 13; // The amount of defense the item will give when equipped
             Item.vanity = true;
 		}
 
@@ -45,23 +47,46 @@ namespace DestroyerTest.Content.Equips
 
 		// UpdateArmorSet allows you to give set bonuses to the armor.
 		public override void UpdateArmorSet(Player player) {
-			if (IsArmorSet(player.armor[0], player.armor[1], player.armor[2])) {
-            player.GetDamage(DamageClass.Magic) *= 2f; // Increase dealt damage for all weapon classes by 20%
-            player.GetDamage(DamageClass.MagicSummonHybrid) *= 1.5f;
-            player.moveSpeed += 0.6f;
-            player.statDefense -= 28;
+			if (player.TryGetModPlayer<TenebrisMagicPlayer>(out var Magic))
+            {
+                Magic.Active = true;
+            }
             player.AddBuff(ModContent.BuffType<ShimmeringEmpowerment>(), 1200);
-			}
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
 			CreateRecipe()
-                .AddIngredient<HeliciteCowl>(14)
-                .AddIngredient<ShimmeringSludge>(3)
                 .AddIngredient<Tenebris>(8)
 				.AddTile(TileID.LunarCraftingStation)
 				.Register();
 		}
 	}
+
+	public class TenebrisMagicPlayer : ModPlayer
+    {
+		public bool Active = false;
+		public override void ResetEffects()
+		{
+			Active = false;
+		}
+
+		public float Rot = 0;
+		public override void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
+		{
+			if (Active)
+			{
+				Main.EntitySpriteDraw(DTAssetLib.RuneCircle.Value, Player.Center - Main.screenPosition, null, Color.White, Rot, DTAssetLib.RuneCircle.Value.Size() / 2, 0.25f, SpriteEffects.None, 0);
+			}
+		}
+
+		public override void UpdateEquips()
+		{
+			Rot += 0.05f * Player.direction;
+			if (Active)
+			{
+				
+			}
+		}
+    }
 }

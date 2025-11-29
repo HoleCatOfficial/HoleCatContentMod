@@ -196,6 +196,8 @@ namespace DestroyerTest.Content.Projectiles
                 activeSound.Pitch = PitchVal;
             }
 
+            UpdateOwnedSubProj();
+
             Player player = Main.player[Projectile.owner];
             /*
             if (player.channel)
@@ -260,6 +262,16 @@ namespace DestroyerTest.Content.Projectiles
             else
             {
                 Projectile.Kill();
+            }
+        }
+        public void UpdateOwnedSubProj()
+        {
+            foreach (Projectile p in Main.projectile)
+            {
+                if (ownedEmbers.Contains(p) && !p.active)
+                {
+                    ownedEmbers.Remove(p);
+                }
             }
         }
 

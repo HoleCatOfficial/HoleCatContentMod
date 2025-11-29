@@ -45,7 +45,7 @@ namespace DestroyerTest.Content.Tiles.RoseGarden
 
 		public override void OnInBiome(Player player)
 		{
-            
+            player.ZoneCorrupt = true;
         }
 
 
