@@ -215,49 +215,11 @@ namespace DestroyerTest.Content.Projectiles
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
 			Player player = Main.player[Projectile.owner];
-			float Yoffset = 3.5f;
-			Vector2 OffsetCenter = new Vector2(player.Center.X, player.Center.Y + Yoffset);
-			Vector2 ToNPC = OffsetCenter + target.Center;
-			if (!target.active)
-			{
-				ToNPC = OffsetCenter + target.oldPos[0];
-			}
-			int numberProjectiles = 8;
-			float arcRadius = 100f; 
-			float arcAngle = MathHelper.ToRadians(60); 
-			Vector2 directionToNPC = (target.Center - player.Center).SafeNormalize(Vector2.UnitY);
-			Vector2 arcCenter = player.Center - directionToNPC * arcRadius; // Center of the arc behind the player
-			for (int i = 0; i < 8; i++)
-			{
-				PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticle>(), target.Center, new Vector2(hit.HitDirection * 2f, 0f), ColorLib.StellarColor, 1);
-			}
-
-			if (hit.Crit)
-				{
-					for (int i = 0; i < numberProjectiles; i++)
-					{
-						float t = (numberProjectiles == 1) ? 0.5f : (float)i / (numberProjectiles - 1);
-						float angle = MathHelper.Lerp(-arcAngle / 2, arcAngle / 2, t);
-						Vector2 spawnOffset = directionToNPC.RotatedBy(MathHelper.Pi + angle) * arcRadius;
-						Vector2 spawnPosition = player.Center + spawnOffset;
-						Vector2 velocity = (target.Center - spawnPosition).SafeNormalize(Vector2.UnitY) * 10f;
-
-						Projectile.NewProjectile(
-							player.GetSource_FromThis(),
-							spawnPosition,
-							velocity,
-							ProjectileID.Starfury,
-							6,
-							1f,
-							player.whoAmI
-						);
-					}
-				}
+			
 		}
 
 		public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
         {
-        
             modifiers.HitDirectionOverride = (int?)(target.position.Y + 15);
         }
 
@@ -265,17 +227,17 @@ namespace DestroyerTest.Content.Projectiles
 		public void SetSwordPosition()
 		{
 
-				Projectile.rotation = InitialAngle + Projectile.spriteDirection * Progress;
+			Projectile.rotation = InitialAngle + Projectile.spriteDirection * Progress;
 
 
-				Owner.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, Projectile.rotation - MathHelper.ToRadians(90f));
-				Vector2 armPosition = Owner.GetFrontHandPosition(Player.CompositeArmStretchAmount.Full, Projectile.rotation - (float)Math.PI / 2);
+			Owner.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, Projectile.rotation - MathHelper.ToRadians(90f));
+			Vector2 armPosition = Owner.GetFrontHandPosition(Player.CompositeArmStretchAmount.Full, Projectile.rotation - (float)Math.PI / 2);
 
-				armPosition.Y += Owner.gfxOffY;
-				Projectile.Center = armPosition;
-				Projectile.scale = Size * 1.2f * Owner.GetAdjustedItemScale(Owner.HeldItem);
+			armPosition.Y += Owner.gfxOffY;
+			Projectile.Center = armPosition;
+			Projectile.scale = Size * 1.2f * Owner.GetAdjustedItemScale(Owner.HeldItem);
 
-				Owner.heldProj = Projectile.whoAmI;
+			Owner.heldProj = Projectile.whoAmI;
 			
 			
 		}
@@ -292,18 +254,27 @@ namespace DestroyerTest.Content.Projectiles
 			}
 		}
 
-		
+		private bool Sound1 = false;
+        private bool Sound2 = false;
+		public Vector2 swordTip;
         private void ExecuteStrike() {
-           
+			swordTip = Projectile.Center + Projectile.rotation.ToRotationVector2() * (Projectile.Size.Length() * Projectile.scale);
             Player player = Main.player[Projectile.owner];
 
             if (CurrentAttack == AttackType.SwingDown) {
-             
+				
                 Progress = MathHelper.SmoothStep(0, SWINGRANGE, (1f - UNWIND) * Timer / execTime);
-                SoundEngine.PlaySound(Swing, player.Center);
+				if (!Sound1)
+				{
+                	SoundEngine.PlaySound(Swing, player.Center);
+					Sound1 = true;
+				}
 
-              
-              
+				Vector2 Velocity = (Main.MouseWorld - Projectile.Center).ToRotation().ToRotationVector2() * 8f;
+
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), swordTip, Velocity, ModContent.ProjectileType<StellarFireDart>(), Projectile.damage / 3, 2, Main.player[Projectile.owner].whoAmI);
+
+
 				Lighting.AddLight(player.Center, ColorLib.StellarColor.ToVector3());
 
                 if (Timer >= execTime) {
@@ -320,7 +291,16 @@ namespace DestroyerTest.Content.Projectiles
 					Progress = MathHelper.SmoothStep(SWINGRANGE, 2.0f, (1f - UNWIND) * Timer / execTime);
 				}
 
-                SoundEngine.PlaySound(Swing, player.Center);
+                if (!Sound2)
+				{
+                	SoundEngine.PlaySound(Swing, player.Center);
+					Sound2 = true;
+				}
+
+				Vector2 Velocity = (Main.MouseWorld - Projectile.Center).ToRotation().ToRotationVector2() * 8f;
+
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), swordTip, Velocity, ModContent.ProjectileType<StellarFireDart>(), Projectile.damage / 3, 2, Main.player[Projectile.owner].whoAmI);
+
 
                
                 Lighting.AddLight(player.Center, ColorLib.StellarColor.ToVector3());
@@ -340,6 +320,8 @@ namespace DestroyerTest.Content.Projectiles
 
                 if (Timer >= hideTime)
                 {
+					Sound1 = false;
+					Sound2 = false;
                     Projectile.Kill();
                 }
             }
@@ -357,6 +339,8 @@ namespace DestroyerTest.Content.Projectiles
 
                 if (Timer >= hideTime)
                 {
+					Sound1 = false;
+					Sound2 = false;
                     Projectile.Kill();
                 }
             }

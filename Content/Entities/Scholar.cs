@@ -366,18 +366,21 @@ namespace DestroyerTest.Content.Entities
 
         public override void ModifyIncomingHit(ref NPC.HitModifiers modifiers)
         {
-			foreach (Projectile shield in Main.projectile)
+			if (ShieldIsActive)
 			{
-				if (shield.active && shield.type == ModContent.ProjectileType<ScholarShield>())
-				{
-					modifiers.FinalDamage *= 0;
-				}
-				else
-				{
-					modifiers.FinalDamage = default;
-				}
+				modifiers.FinalDamage *= 0;
+			}
+			else
+			{
+				modifiers.FinalDamage = default;
 			}
         }
+
+        public override bool CanBeHitByNPC(NPC attacker)
+        {
+            return !ShieldIsActive;
+        }
+
 
 		public bool ShieldIsActive = false;
 		public bool SpawnShield = false;
@@ -395,7 +398,6 @@ namespace DestroyerTest.Content.Entities
 				}
 			}
 
-			// Step 2 — If below half health, spawn if not yet done.
 			if (NPC.life < NPC.lifeMax / 2 || Opus.BossNearby())
 			{
 				if (!SpawnShield)

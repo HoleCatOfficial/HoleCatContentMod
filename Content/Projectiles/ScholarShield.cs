@@ -54,7 +54,7 @@ namespace DestroyerTest.Content.Projectiles
         public float ShieldTexScale = 0.00001f;
         public override void AI()
         {
-            if (ShieldTexScale < 0.5f)
+            if (ShieldTexScale < 0.15f)
             {
                 ShieldTexScale += 0.005f;
             }
@@ -71,10 +71,10 @@ namespace DestroyerTest.Content.Projectiles
 
             if (Main.rand.NextBool(5))
             {
-                Vector2 Edge = Main.rand.NextVector2CircularEdge((ShieldTex.Value.Width * ShieldTexScale) / 2, (ShieldTex.Value.Width * ShieldTexScale) / 2);
+                Vector2 Edge = Projectile.Center + Main.rand.NextVector2CircularEdge((ShieldTex.Value.Width * ShieldTexScale) / 2, (ShieldTex.Value.Width * ShieldTexScale) / 2);
                 for(int i = 0; i < 3; i++)
                 {
-                    Dust.NewDustPerfect(Edge, DustID.TintableDustLighted, Vector2.Zero, 0, ColorLib.JavelinEnergy, 2);
+                    Dust.NewDustPerfect(Edge, DustID.FireworksRGB, Vector2.Zero, 0, ColorLib.JavelinEnergy, 2);
                 }
             }
 
@@ -90,7 +90,7 @@ namespace DestroyerTest.Content.Projectiles
                 }
             }
 
-            if (scholar == null)
+            if (scholar == null || scholar.life > (int)(scholar.lifeMax / 2))
             {
                 return;
             }
