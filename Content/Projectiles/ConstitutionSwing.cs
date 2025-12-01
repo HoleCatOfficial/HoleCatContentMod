@@ -1,6 +1,7 @@
 using DestroyerTest.Common;
 using DestroyerTest.Content.Particles;
 using InnoVault.PRT;
+using InnoVault.Trails;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -19,7 +20,7 @@ namespace DestroyerTest.Content.Projectiles
 
 	public class ConstitutionSwing : ModProjectile
 	{
-        public SoundStyle Swing = new SoundStyle("DestroyerTest/Assets/Audio/Constitution/ConSwing", 6);
+        public SoundStyle Swing = new SoundStyle("DestroyerTest/Assets/Audio/SwordSounds/MagicSwing", 3){ PitchVariance = 0.2f, MaxInstances = 0 };
 		private const float SWINGRANGE = 1.67f * (float)Math.PI; 
 		private const float FIRSTHALFSWING = 0.45f;
 		private const float WINDUP = 0.05f;
@@ -72,8 +73,8 @@ namespace DestroyerTest.Content.Projectiles
 
 		public override void SetDefaults()
 		{
-			Projectile.width = 66;
-			Projectile.height = 60;
+			Projectile.width = 52;
+			Projectile.height = 50;
 			Projectile.friendly = true;
 			Projectile.timeLeft = 10000;
 			Projectile.penetrate = -1;
@@ -133,9 +134,7 @@ namespace DestroyerTest.Content.Projectiles
 
 		public override void AI()
         {
-
-            
-        
+			
             Owner.itemAnimation = 2;
             Owner.itemTime = 2;
 
@@ -272,7 +271,10 @@ namespace DestroyerTest.Content.Projectiles
 
 				Vector2 Velocity = (Main.MouseWorld - Projectile.Center).ToRotation().ToRotationVector2() * 8f;
 
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), swordTip, Velocity, ModContent.ProjectileType<StellarFireDart>(), Projectile.damage / 3, 2, Main.player[Projectile.owner].whoAmI);
+                if (Timer == execTime / 2)
+				{
+                	Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Velocity, ModContent.ProjectileType<StellarFireSlash>(), Projectile.damage / 3, 2, Main.player[Projectile.owner].whoAmI, ai0: 0);
+				}
 
 
 				Lighting.AddLight(player.Center, ColorLib.StellarColor.ToVector3());
@@ -299,8 +301,10 @@ namespace DestroyerTest.Content.Projectiles
 
 				Vector2 Velocity = (Main.MouseWorld - Projectile.Center).ToRotation().ToRotationVector2() * 8f;
 
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), swordTip, Velocity, ModContent.ProjectileType<StellarFireDart>(), Projectile.damage / 3, 2, Main.player[Projectile.owner].whoAmI);
-
+				if (Timer == execTime / 2)
+				{
+                	Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Velocity, ModContent.ProjectileType<StellarFireSlash>(), Projectile.damage / 3, 2, Main.player[Projectile.owner].whoAmI, ai0: 1);
+				}
 
                
                 Lighting.AddLight(player.Center, ColorLib.StellarColor.ToVector3());
@@ -345,5 +349,11 @@ namespace DestroyerTest.Content.Projectiles
                 }
             }
 		}
+		public override void OnKill(int timeLeft)
+        {
+        }
 	}
+
+	
+
 }

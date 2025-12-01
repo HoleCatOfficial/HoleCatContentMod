@@ -282,8 +282,8 @@ namespace DestroyerTest.Content.Projectiles
 
                 Vector2 Velocity = Main.MouseWorld - Projectile.Center;
 
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Velocity * Main.rand.NextFloat(0.1f, 1.0f), ModContent.ProjectileType<CorrolaryProj1>(), Projectile.damage / 2, 2, Main.player[Projectile.owner].whoAmI);
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Velocity * Main.rand.NextFloat(0.1f, 1.0f), ModContent.ProjectileType<CorrolaryProj2>(), Projectile.damage / 2, 2, Main.player[Projectile.owner].whoAmI);
+                //Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Velocity * Main.rand.NextFloat(0.1f, 1.0f), ModContent.ProjectileType<CorrolaryProj1>(), Projectile.damage / 2, 2, Main.player[Projectile.owner].whoAmI);
+                //Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Velocity * Main.rand.NextFloat(0.1f, 1.0f), ModContent.ProjectileType<CorrolaryProj2>(), Projectile.damage / 2, 2, Main.player[Projectile.owner].whoAmI);
 
 
                 Lighting.AddLight(player.Center, ColorLib.StellarColor.ToVector3());
@@ -308,8 +308,8 @@ namespace DestroyerTest.Content.Projectiles
 
                 Vector2 Velocity = Main.MouseWorld - Projectile.Center;
 
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Velocity * Main.rand.NextFloat(0.1f, 1.0f), ModContent.ProjectileType<CorrolaryProj1>(), Projectile.damage / 2, 2, Main.player[Projectile.owner].whoAmI);
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Velocity * Main.rand.NextFloat(0.1f, 1.0f), ModContent.ProjectileType<CorrolaryProj2>(), Projectile.damage / 2, 2, Main.player[Projectile.owner].whoAmI);
+                //Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Velocity * Main.rand.NextFloat(0.1f, 1.0f), ModContent.ProjectileType<CorrolaryProj1>(), Projectile.damage / 2, 2, Main.player[Projectile.owner].whoAmI);
+                //Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Velocity * Main.rand.NextFloat(0.1f, 1.0f), ModContent.ProjectileType<CorrolaryProj2>(), Projectile.damage / 2, 2, Main.player[Projectile.owner].whoAmI);
 
 
                 Lighting.AddLight(player.Center, ColorLib.StellarColor.ToVector3());
@@ -334,8 +334,8 @@ namespace DestroyerTest.Content.Projectiles
 						Vector2 velocity = new Vector2(8, 0).RotatedBy(angleIncrement * i);
 
 
-                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity * Main.rand.NextFloat(0.1f, 1.0f), ModContent.ProjectileType<CorrolaryProj1>(), Projectile.damage / 2, 2, Main.player[Projectile.owner].whoAmI);
-                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity * Main.rand.NextFloat(0.1f, 1.0f), ModContent.ProjectileType<CorrolaryProj2>(), Projectile.damage / 2, 2, Main.player[Projectile.owner].whoAmI);
+                        //Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity * Main.rand.NextFloat(0.1f, 1.0f), ModContent.ProjectileType<CorrolaryProj1>(), Projectile.damage / 2, 2, Main.player[Projectile.owner].whoAmI);
+                        //Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, velocity * Main.rand.NextFloat(0.1f, 1.0f), ModContent.ProjectileType<CorrolaryProj2>(), Projectile.damage / 2, 2, Main.player[Projectile.owner].whoAmI);
 					}
 
                 }

@@ -94,7 +94,7 @@ namespace DestroyerTest.Content.Projectiles
         public override void AI()
         {
             AnimateProjectile();
-            Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, ModContent.DustType<ConstitutionDust1>(), Projectile.velocity.X * 0.2f, Projectile.velocity.Y * 0.2f, 0, default, 1.2f);
+            Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Torch, Projectile.velocity.X * 0.2f, Projectile.velocity.Y * 0.2f, 0, default, 1.2f);
             Projectile.rotation = Projectile.velocity.ToRotation();
 
             if (DelayTimer < 10)
@@ -156,7 +156,7 @@ namespace DestroyerTest.Content.Projectiles
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/Impacts/FlameImpact", 4) {MaxInstances = 0, PitchVariance = 0.2f }, Projectile.position);
+            SoundEngine.PlaySound(SoundID.Item74, Projectile.Center);
             target.AddBuff(ModContent.BuffType<GalantineBurn>(), 20 * 60);
         }
     }

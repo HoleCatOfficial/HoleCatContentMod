@@ -3988,6 +3988,8 @@ Projectiles: {
 	ShadesRevengeProj.DisplayName: Shades Revenge Proj
 	NightmareRoseCursedCrystal.DisplayName: Nightmare Rose Cursed Crystal
 	StellarFireDart.DisplayName: Stellar Fire Dart
+	StellarFireSlash.DisplayName: Stellar Fire Slash
+	RGBSlash.DisplayName: R G B Slash
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.

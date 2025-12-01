@@ -339,7 +339,7 @@ namespace DestroyerTest.Content.Projectiles
 
 						SoundEngine.PlaySound(Starburst, player.Center);
 						Projectile.NewProjectile(Projectile.GetSource_FromThis(), swordTip, velocity * Main.rand.NextFloat(0.1f, 1.0f), ModContent.ProjectileType<ContinuumStar>(), Projectile.damage / 2, 2, Main.player[Projectile.owner].whoAmI);
-						Projectile.NewProjectile(Projectile.GetSource_FromThis(), swordTip, velocity * Main.rand.NextFloat(0.1f, 1.0f), ModContent.ProjectileType<CorrolaryProj1>(), Projectile.damage / 2, 2, Main.player[Projectile.owner].whoAmI);
+						//Projectile.NewProjectile(Projectile.GetSource_FromThis(), swordTip, velocity * Main.rand.NextFloat(0.1f, 1.0f), ModContent.ProjectileType<CorrolaryProj1>(), Projectile.damage / 2, 2, Main.player[Projectile.owner].whoAmI);
 						
 					}
 

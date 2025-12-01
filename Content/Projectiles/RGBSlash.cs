@@ -18,22 +18,22 @@ using DestroyerTest.Content.Projectiles.ParentClasses;
 
 namespace DestroyerTest.Content.Projectiles
 {
-    public class TwistedFaithProj : SpinningSlash
+    public class RGBSlash : LinearSlash
     {
         public override string Texture => "DestroyerTest/Content/Extras/144Slash";
         public override void SetDefaults()
         {
             base.SetDefaults();
             Blending = true;
-            themeColor = new Color(184, 45, 117);
+            themeColor = Main.DiscoColor;
             DustType = DustID.FireworksRGB;
             DustUsesColor = true;
-            DustScale = 0.5f;
+            DustScale = 3f;
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            target.AddBuff(ModContent.BuffType<SoulErosion>(), 600);
+            target.AddBuff(ModContent.BuffType<SoulInferno>(), 600);
         }
     }
 }
