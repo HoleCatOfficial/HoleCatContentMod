@@ -30,6 +30,7 @@ using Terraria.ModLoader.Utilities;
 using UtfUnknown.Core.Models.SingleByte.Finnish;
 using GlowmaskHelper.Content;
 using DestroyerTest.Content.SHADEMANAGEMENT;
+using DestroyerTest.Content.Projectiles.Boss;
 
 namespace DestroyerTest.Content.Entities
 {

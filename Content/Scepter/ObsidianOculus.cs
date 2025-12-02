@@ -12,6 +12,7 @@ using DestroyerTest.Common;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Rarity;
 using DestroyerTest.Rarity.Scepter;
+using DestroyerTest.Content.Projectiles.Weapon.Scepter;
 
 namespace DestroyerTest.Content.Scepter
 {

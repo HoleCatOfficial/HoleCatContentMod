@@ -8,6 +8,7 @@ using DestroyerTest.Content.Projectiles; // Add this line if CT3_Swing is in the
 using DestroyerTest.Rarity;
 using DestroyerTest.Common;
 using System;
+using DestroyerTest.Content.Projectiles.Weapon.Melee;
 
 namespace DestroyerTest.Content.MeleeWeapons
 {

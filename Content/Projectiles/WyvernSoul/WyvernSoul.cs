@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using DestroyerTest.Content.Entities;
 using Terraria.GameContent.Drawing;
 using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Projectiles.Weapon.Magic;
 
 namespace DestroyerTest.Content.Projectiles.WyvernSoul
 {

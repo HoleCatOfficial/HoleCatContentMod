@@ -9,6 +9,7 @@ using DestroyerTest.Rarity;
 using DestroyerTest.Content.Equips;
 using DestroyerTest.Content.Projectiles;
 using Terraria.DataStructures;
+using DestroyerTest.Content.Projectiles.Weapon.Melee;
 
 namespace DestroyerTest.Content.MeleeWeapons
 {

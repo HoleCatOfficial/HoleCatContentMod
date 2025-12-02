@@ -18,6 +18,7 @@ using Terraria.Audio;
 
 using System.Collections.Generic;
 using DestroyerTest.Content.Resources.Blueprints;
+using DestroyerTest.Content.Projectiles.Weapon.Magic;
 
 namespace DestroyerTest.Content.RiftArsenal
 {

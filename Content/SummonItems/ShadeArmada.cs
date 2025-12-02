@@ -22,6 +22,7 @@ using DestroyerTest.Content.Entities;
 using System.Linq;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Projectiles.Weapon.Summon;
 
 namespace DestroyerTest.Content.SummonItems
 {

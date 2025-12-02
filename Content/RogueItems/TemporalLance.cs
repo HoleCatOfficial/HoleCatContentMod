@@ -22,7 +22,7 @@ namespace DestroyerTest.Content.RogueItems
         {
             Item.useStyle = ItemUseStyleID.Swing;
             Item.shootSpeed = 12f;
-            Item.shoot = ModContent.ProjectileType<Projectiles.TemporalLance>();
+            Item.shoot = ModContent.ProjectileType<Projectiles.Weapon.Rogue.TemporalLance>();
             Item.width = 18;
             Item.height = 98;
             Item.UseSound = SoundID.Item71;

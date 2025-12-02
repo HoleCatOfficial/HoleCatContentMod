@@ -11,7 +11,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent;
 using System;
 using Terraria.DataStructures;
-using DestroyerTest.Content.Projectiles.ConstitutionBoss;
+using DestroyerTest.Content.Projectiles.Weapon.Rogue;
+using DestroyerTest.Content.Projectiles.Weapon.Ranged;
+using DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss;
 
 namespace DestroyerTest.Content.RangedItems
 {

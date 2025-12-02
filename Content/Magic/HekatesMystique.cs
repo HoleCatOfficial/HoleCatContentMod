@@ -8,6 +8,7 @@ using DestroyerTest.Content.Projectiles; // Add this line if CT3_Swing is in the
 using DestroyerTest.Rarity;
 using System.Linq;
 using UtfUnknown.Core.Models.SingleByte.Italian;
+using DestroyerTest.Content.Projectiles.Weapon.Magic;
 
 namespace DestroyerTest.Content.Magic
 {

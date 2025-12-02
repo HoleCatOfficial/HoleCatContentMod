@@ -10,9 +10,10 @@ using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.Resources.Cloths;
-using DestroyerTest.Content.Projectiles.DiscordScepter;
 using DestroyerTest.Rarity;
 using DestroyerTest.Rarity.Scepter;
+using DestroyerTest.Content.Projectiles.Weapon.Scepter;
+using DestroyerTest.Content.Projectiles.Weapon.Scepter.DiscordScepter;
 
 namespace DestroyerTest.Content.Scepter
 {

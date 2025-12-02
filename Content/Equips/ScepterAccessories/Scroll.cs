@@ -1,6 +1,5 @@
 using DestroyerTest.Common;
 using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Content.Projectiles.ConstitutionBoss;
 using DestroyerTest.Content.Projectiles.HellWeapons;
 using Microsoft.Xna.Framework;
 using Terraria;
@@ -14,6 +13,8 @@ using System.Linq;
 using Terraria.GameContent.ItemDropRules;
 using OpusLib;
 using DestroyerTest.Rarity.Scepter;
+using DestroyerTest.Content.Projectiles.player.Accessory;
+using DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss;
 
 namespace DestroyerTest.Content.Equips.ScepterAccessories
 {

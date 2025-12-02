@@ -1,4 +1,5 @@
 using DestroyerTest.Content.Projectiles;
+using DestroyerTest.Content.Projectiles.player.Accessory;
 using Terraria;
 using Terraria.Localization;
 using Terraria.ModLoader;

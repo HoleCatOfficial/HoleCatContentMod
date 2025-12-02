@@ -13,9 +13,10 @@ using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Rarity;
 using Terraria.GameInput;
-using DestroyerTest.Content.Projectiles.Tenebrouskatana;
+
 using DestroyerTest.Common;
 using DestroyerTest.Content.Particles;
+using DestroyerTest.Content.Projectiles.Weapon.Melee;
 
 namespace DestroyerTest.Content.MeleeWeapons
 {

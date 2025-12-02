@@ -5,6 +5,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using DestroyerTest.Rarity;
 using DestroyerTest.Content.Tiles.Riftplate;
+using DestroyerTest.Content.Projectiles.Weapon.Rogue;
 
 namespace DestroyerTest.Content.RogueItems
 {
@@ -18,7 +19,7 @@ namespace DestroyerTest.Content.RogueItems
 		public override void SetDefaults() {
 			Item.useStyle = ItemUseStyleID.Swing;
 			Item.shootSpeed = 12f;
-			Item.shoot = ModContent.ProjectileType<Projectiles.RiftMaker_Thrown>();
+			Item.shoot = ModContent.ProjectileType<RiftMaker_Thrown>();
 			Item.width = 14;
 			Item.height = 56;
 			Item.maxStack = Item.CommonMaxStack;

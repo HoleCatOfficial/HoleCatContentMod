@@ -45,7 +45,7 @@ namespace DestroyerTest.Content.MeleeWeapons.SwordLineage
             Item.damage = 22; // The damage of your sword, this is dynamically adjusted in the projectile code.
             Item.DamageType = DamageClass.Generic; // Deals melee damage
 
-            Item.shoot = ModContent.ProjectileType<Projectiles.GenesisButterfly>();
+            Item.shoot = ModContent.ProjectileType<Projectiles.Weapon.Melee.GenesisButterfly>();
             Item.shootSpeed = 23f;
         }
 

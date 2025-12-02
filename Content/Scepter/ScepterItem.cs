@@ -6,6 +6,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Common;
+using DestroyerTest.Content.Projectiles.Weapon.Scepter;
 
 namespace DestroyerTest.Content.Scepter
 {

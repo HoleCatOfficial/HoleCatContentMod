@@ -8,6 +8,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using DestroyerTest.Rarity;
+using DestroyerTest.Content.Projectiles.Weapon.Summon;
 
 namespace DestroyerTest.Content.RiftArsenal
 {

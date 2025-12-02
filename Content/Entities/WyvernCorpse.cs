@@ -8,9 +8,8 @@ using DestroyerTest.Content.Equips;
 using DestroyerTest.Content.MeleeWeapons;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Content.Projectiles.CorpseBoss;
-using DestroyerTest.Content.Projectiles.CorpseBoss.Organs;
-using DestroyerTest.Content.Projectiles.VampireBoss;
+using DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss;
+using DestroyerTest.Content.Projectiles.Boss.VampireBoss;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.SummonItems;
 using DestroyerTest.Content.Tiles;
@@ -37,6 +36,8 @@ using Terraria.ModLoader.Utilities;
 using UtfUnknown.Core.Models.SingleByte.Finnish;
 using GlowmaskHelper.Content;
 using OpusLib;
+using DestroyerTest.Content.Projectiles.Boss;
+using DestroyerTest.Content.Projectiles.Boss.NodeBoss.Ichor;
 
 namespace DestroyerTest.Content.Entities
 {
@@ -818,13 +819,6 @@ namespace DestroyerTest.Content.Entities
 
                         if (!EternityIsActive())
                         {
-                            int type = Main.rand.Next(new int[]
-                                {
-                                ModContent.ProjectileType<OrganProjectile_Variant1>(),
-                                ModContent.ProjectileType<OrganProjectile_Variant2>(),
-                                ModContent.ProjectileType<OrganProjectile_Variant3>(),
-                                ModContent.ProjectileType<OrganProjectile_Variant4>()
-                                });
                             OrganBurstIntervalTimer++;
                             if (OrganBurstIntervalTimer == 20)
                             {
@@ -832,7 +826,7 @@ namespace DestroyerTest.Content.Entities
                                 for (int i = 0; i < numberProjectiles; i++)
                                 {
                                     Vector2 perturbedSpeed = NPC.velocity.RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1)));
-                                    Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), position, perturbedSpeed, type, 44, 2);
+                                    Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), position, perturbedSpeed, ModContent.ProjectileType<OrganProjectile>(), 44, 2);
                                 }
 
                                 OrganBurstIntervalTimer = 0;
@@ -909,13 +903,6 @@ namespace DestroyerTest.Content.Entities
                                 PRTLoader.NewParticle(PRTLoader.GetParticleID<SmallShine>(), TelePos, Vector2.Zero, Color.White, 10);
                                 TeleDashGetTelePosition = true;
                             }
-                            int type = Main.rand.Next(new int[]
-                                {
-                                ModContent.ProjectileType<OrganProjectile_Variant1>(),
-                                ModContent.ProjectileType<OrganProjectile_Variant2>(),
-                                ModContent.ProjectileType<OrganProjectile_Variant3>(),
-                                ModContent.ProjectileType<OrganProjectile_Variant4>()
-                                });
 
                             if (TeleDashGetTelePosition)
                             {
@@ -950,7 +937,7 @@ namespace DestroyerTest.Content.Entities
                                     NPC.velocity = DashDir.ToRotationVector2() * 25;
                                 }
                                 DashParticle();
-                                Opus.RadialSpreadProjectile(type, Main.rand.Next(4, 14), TelePos, 5, 4, Main.rand.Next(4, 13));
+                                Opus.RadialSpreadProjectile(ModContent.ProjectileType<OrganProjectile>(), Main.rand.Next(4, 14), TelePos, 5, 4, Main.rand.Next(4, 13));
                                 TeleDashWaitTime = 100;
                                 TeleDashGetTelePosition = false;
                             }

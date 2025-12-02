@@ -1,5 +1,4 @@
 using DestroyerTest.Common;
-using DestroyerTest.Content.Projectiles.ConstitutionBoss;
 using DestroyerTest.Content.RiftBiome;
 using DestroyerTest.Content.Buffs;
 using log4net.Repository.Hierarchy;
@@ -25,7 +24,7 @@ using System.Collections.Generic;
 using static DestroyerTest.Content.Entities.ConstitutionClone;
 using System.Linq;
 using ReLogic.Content;
-using DestroyerTest.Content.Projectiles.VampireBoss;
+using DestroyerTest.Content.Projectiles.Boss.VampireBoss;
 
 namespace DestroyerTest.Content.Entities
 {

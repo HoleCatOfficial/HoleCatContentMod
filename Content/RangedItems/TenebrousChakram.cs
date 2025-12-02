@@ -15,7 +15,9 @@ using DestroyerTest.Content.Tools;
 using System.Collections.Generic;
 
 using Terraria.Localization;
-  
+using DestroyerTest.Content.Projectiles.Weapon.Rogue;
+
+
 
 namespace DestroyerTest.Content.RangedItems
 {

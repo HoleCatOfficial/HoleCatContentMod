@@ -16,6 +16,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
 using GlowmaskHelper.Content;
+using DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame;
 
 namespace DestroyerTest.Content.Entities
 {

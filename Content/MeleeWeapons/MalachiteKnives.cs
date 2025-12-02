@@ -4,6 +4,7 @@ using System.Linq;
   
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.AmmoProjectiles;
+using DestroyerTest.Content.Projectiles.Weapon.Melee;
 using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
 using Terraria;

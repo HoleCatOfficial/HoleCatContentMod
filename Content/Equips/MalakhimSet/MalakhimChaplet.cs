@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework;
 using DestroyerTest.Content.Projectiles;
 using OpusLib;
 using DestroyerTest.Content.Resources;
+using DestroyerTest.Content.Projectiles.player.ArmorSet;
 
 namespace DestroyerTest.Content.Equips.MalakhimSet
 {

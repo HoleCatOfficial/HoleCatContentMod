@@ -9,8 +9,8 @@ namespace DestroyerTest.Content.Projectiles
 {
     public class ToothFriendly : ModProjectile
     {
-        public override string GlowTexture => "DestroyerTest/Content/Projectiles/Tooth";
-        public override string Texture => "DestroyerTest/Content/Projectiles/Tooth";
+        public override string GlowTexture => "DestroyerTest/Content/Projectiles/Boss/WyvernCorpseBoss/Tooth";
+        public override string Texture => "DestroyerTest/Content/Projectiles/Boss/WyvernCorpseBoss/Tooth";
 
         public override void SetStaticDefaults()
         {

@@ -6,7 +6,9 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using DestroyerTest.Content.Projectiles;
-  
+using DestroyerTest.Content.Projectiles.Weapon.Melee;
+
+
 
 namespace DestroyerTest.Content.MeleeWeapons.SwordLineage
 {

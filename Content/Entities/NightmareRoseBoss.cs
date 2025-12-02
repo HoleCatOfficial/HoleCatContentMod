@@ -1,5 +1,4 @@
 using DestroyerTest.Common;
-using DestroyerTest.Content.Projectiles.ConstitutionBoss;
 using DestroyerTest.Content.RiftBiome;
 using DestroyerTest.Content.Buffs;
 using log4net.Repository.Hierarchy;
@@ -24,8 +23,8 @@ using System.Collections.Generic;
 using static DestroyerTest.Content.Entities.ConstitutionClone;
 using System.Linq;
 using ReLogic.Content;
-using DestroyerTest.Content.Projectiles.VampireBoss;
-using DestroyerTest.Content.Projectiles.NightmareRose;
+using DestroyerTest.Content.Projectiles.Boss.VampireBoss;
+using DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss;
 using Terraria.Graphics;
 using DestroyerTest.Content.Projectiles;
 using rail;
@@ -49,6 +48,8 @@ using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.Dusts;
 using GlowmaskHelper.Content;
 using OpusLib;
+using DestroyerTest.Content.Projectiles.Boss;
+using DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame;
 
 namespace DestroyerTest.Content.Entities
 {

@@ -18,6 +18,7 @@ using InnoVault.PRT;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Projectiles;
 using Terraria.Audio;
+using DestroyerTest.Content.Projectiles.player.ArmorSet;
 
 namespace DestroyerTest.Content.Equips.AuraThiefSet
 {

@@ -1,5 +1,4 @@
 using DestroyerTest.Common;
-using DestroyerTest.Content.Projectiles.ConstitutionBoss;
 using DestroyerTest.Content.RiftBiome;
 using DestroyerTest.Content.Buffs;
 using log4net.Repository.Hierarchy;
@@ -38,6 +37,7 @@ using InnoVault.PRT;
 using DestroyerTest.Content.Particles;
 using OpusLib;
 using System.Data;
+using DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss;
 
 namespace DestroyerTest.Content.Entities
 {

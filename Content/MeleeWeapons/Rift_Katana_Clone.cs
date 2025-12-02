@@ -11,7 +11,7 @@ using DestroyerTest.Content.Dusts;
 using System;
 using Terraria.DataStructures;
 
-namespace DestroyerTest.Content.Projectiles
+namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 {
     public class Rift_Katana_Clone : ModProjectile
     {

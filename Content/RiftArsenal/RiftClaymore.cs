@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using Terraria.Localization;
 using DestroyerTest.Content.Resources.Blueprints;
 using DestroyerTest.Content.Tiles.RiftConfigurator;
+using DestroyerTest.Content.Projectiles.Weapon.Melee;
 
 namespace DestroyerTest.Content.RiftArsenal
 {

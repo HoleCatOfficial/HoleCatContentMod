@@ -26,6 +26,7 @@ using DestroyerTest.Content.Lorebooks;
 using DestroyerTest.Content.Consumables;
 using DestroyerTest.Content.SummonItems;
 using OpusLib;
+using DestroyerTest.Content.Projectiles.EntitiesProjectiles;
 
 namespace DestroyerTest.Content.Entities
 {

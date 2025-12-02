@@ -7,7 +7,6 @@ using Terraria.DataStructures;
 using Microsoft.Xna.Framework;
 using DestroyerTest.Common;
 using System;
-using DestroyerTest.Content.Projectiles.ConstitutionBoss;
 using OpusLib;
 
 namespace DestroyerTest.Content.MeleeWeapons

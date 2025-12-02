@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Graphics;
 using GlowmaskHelper.Content;
 using Terraria.Audio;
 using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Projectiles.Weapon.Summon;
 
 namespace DestroyerTest.Content.SummonItems
 {

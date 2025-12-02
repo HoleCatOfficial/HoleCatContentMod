@@ -15,6 +15,7 @@ using DestroyerTest.Content.Entities;
 using DestroyerTest.Common.Systems;
 using DestroyerTest.Rarity;
 using DestroyerTest.Rarity.Scepter;
+using DestroyerTest.Content.Projectiles.Weapon.Scepter;
 
 namespace DestroyerTest.Content.Scepter
 {

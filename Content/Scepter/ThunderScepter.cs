@@ -8,7 +8,8 @@ using Terraria.DataStructures;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Resources;
-using DestroyerTest.Rarity.Scepter; // Add this line if CT3_Swing is in the Projectiles namespace
+using DestroyerTest.Rarity.Scepter;
+using DestroyerTest.Content.Projectiles.Weapon.Scepter; // Add this line if CT3_Swing is in the Projectiles namespace
 
 namespace DestroyerTest.Content.Scepter
 {

@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using DestroyerTest.Content.Projectiles.Weapon.Rogue;
+using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -36,7 +37,7 @@ namespace DestroyerTest.Content.RogueItems
 
 			// Projectile Properties
 			Item.shootSpeed = 25f;
-			Item.shoot = ModContent.ProjectileType<Projectiles.Chroma_Projectile>(); // The projectile that will be thrown
+			Item.shoot = ModContent.ProjectileType<Chroma_Projectile>(); // The projectile that will be thrown
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.

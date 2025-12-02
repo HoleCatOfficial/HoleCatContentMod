@@ -18,6 +18,7 @@ using DestroyerTest.Content.Resources.Blueprints;
 using InnoVault.PRT;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Projectiles.Weapon.Melee;
 
 
 namespace DestroyerTest.Content.RiftArsenal

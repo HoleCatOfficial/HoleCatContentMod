@@ -9,6 +9,7 @@ using DestroyerTest.Rarity;
 using System.Linq;
 using UtfUnknown.Core.Models.SingleByte.Italian;
 using DestroyerTest.Content.Resources;
+using DestroyerTest.Content.Projectiles.Weapon.Magic;
 
 namespace DestroyerTest.Content.Magic
 {

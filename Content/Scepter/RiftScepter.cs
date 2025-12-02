@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using DestroyerTest.Content.RiftArsenal;
 using DestroyerTest.Content.Resources.Blueprints;
 using System.Security.Cryptography.X509Certificates;
+using DestroyerTest.Content.Projectiles.Weapon.Scepter;
 
 namespace DestroyerTest.Content.Scepter
 {

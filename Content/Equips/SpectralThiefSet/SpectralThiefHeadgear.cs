@@ -21,6 +21,7 @@ using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.Projectiles;
 using InnoVault;
 using DestroyerTest.Content.Equips.AuraThiefSet;
+using DestroyerTest.Content.Projectiles.player.ArmorSet;
 
 namespace DestroyerTest.Content.Equips.SpectralThiefSet
 {

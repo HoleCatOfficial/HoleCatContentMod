@@ -6,6 +6,7 @@ using Terraria.ModLoader;
 using Terraria.DataStructures;
 using DestroyerTest.Content.Projectiles; // Add this line if CT3_Swing is in the Projectiles namespace
 using DestroyerTest.Rarity;
+using DestroyerTest.Content.Projectiles.Weapon.Magic;
 
 namespace DestroyerTest.Content.Magic
 {

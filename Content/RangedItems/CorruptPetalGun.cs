@@ -4,6 +4,7 @@ using System.Linq;
   
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.AmmoProjectiles;
+using DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
