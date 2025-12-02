@@ -15,6 +15,7 @@ using Terraria.Audio;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
 
@@ -57,8 +58,8 @@ namespace DestroyerTest.Content.Entities
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
-                new FlavorTextBestiaryInfoElement("Originating from the Shade World, they are one of the few sentient beings with a will. They are frightened and disoriented by how bright it is here, and lash out at the slightest disturbance."),
-                new FlavorTextBestiaryInfoElement("In addition to freeing the moon lord from imprisonment, breaking the seal also tore open holes across space, allowing enemies from the shade world to enter yours."),
+                new FlavorTextBestiaryInfoElement(DTUtils.GetModNPCLocalizationEntry(this, 1)),
+                new FlavorTextBestiaryInfoElement(Language.GetTextValue("Mods.DestroyerTest.Extras.ShadeWorldCommonBestiary")),
             });
 
             bestiaryEntry.Info.AddRange([

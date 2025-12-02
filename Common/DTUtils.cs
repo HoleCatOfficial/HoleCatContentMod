@@ -18,6 +18,7 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Common
@@ -42,6 +43,11 @@ namespace DestroyerTest.Common
         public int[] TenebrisBuffImmunities;
         public bool TenebrisCanSpawnInWorldEvilBiome = DownedBossSystem.downedCultistBoss;
         public bool TenebrisCanSpawnInShimmerBiome = DownedBossSystem.downedCultistBoss;
+
+        public static string GetModNPCLocalizationEntry(ModNPC npc, int variant = 1)
+        {
+            return Language.GetTextValue($"Mods.DestroyerTest.NPCs.{npc.Name}.BestiaryEntry{variant}");
+        }
         
 
         /// <summary>

@@ -4383,8 +4383,14 @@ NPCs: {
 		}
 	}
 
-	GigaCursedHammer.DisplayName: Giga Cursed Hammer
-	TheGreatFlayer.DisplayName: The Great Flayer
+	GigaCursedHammer: {
+		DisplayName: Giga Cursed Hammer
+		BestiaryEntry1: ""
+	}
+	TheGreatFlayer: {
+		DisplayName: The Great Flayer
+		BestiaryEntry1: ""
+	}
 
 	NightmareRoseBoss: {
 		DisplayName: Nightmare Rose
@@ -4409,11 +4415,19 @@ NPCs: {
 			'''
 	}
 
-	CursedFlameNode.DisplayName: Cursed Flame Node
-	IchorNode.DisplayName: Ichor Node
+	CursedFlameNode: { 
+		DisplayName: Cursed Flame Node
+		BestiaryEntry1: ""
+	}
+	IchorNode: { 
+		DisplayName: Ichor Node
+		BestiaryEntry1: ""
+	}
 
 	Scholar: {
 		DisplayName: Scholar
+		BestiaryEntry1: ""
+		BestiaryEntry2: ""
 
 		TownNPCMood: {
 			Content: I feel comforable here.
@@ -4435,22 +4449,54 @@ NPCs: {
 	}
 
 	DarkPredatorTail.DisplayName: Dark Predator Tail
-	DarkPredatorHead.DisplayName: Dark Predator Head
+	DarkPredatorHead: {
+		DisplayName: Dark Predator Head
+		BestiaryEntry1: ""
+	}
 	DarkPredatorBody.DisplayName: Dark Predator Body
+
 	DarkGluttonBody.DisplayName: Dark Glutton Body
-	DarkGluttonHead.DisplayName: Dark Glutton Head
+	DarkGluttonHead: {
+		DisplayName: Dark Glutton Head
+	}
 	DarkGluttonTail.DisplayName: Dark Glutton Tail
-	CursedFlameNodeMB.DisplayName: Cursed Flame Node
-	IchorNodeMB.DisplayName: Ichor Node
-	ShadeThrowerMagenta.DisplayName: Shade Thrower Magenta
-	ShadeThrowerTan.DisplayName: Shade Thrower Tan
-	ShadeThrowerBlue.DisplayName: Shade Thrower Blue
-	ShadeThrower.DisplayName: Shade Thrower
-	TenebrisElemental.DisplayName: Tenebris Elemental
-	DarkArchmage.DisplayName: Dark Archmage
-	TenebrousConstruct.DisplayName: Tenebrous Construct
+
+	CursedFlameNodeMB: {
+		DisplayName: Cursed Flame Node
+		BestiaryEntry1: ""
+	}
+	IchorNodeMB: {
+		DisplayName: Ichor Node
+		BestiaryEntry1: ""
+	}
+
+	ShadeThrower: {
+		DisplayName: Shade Thrower
+		BestiaryEntry1: ""
+	}
+
+	TenebrisElemental: {
+		DisplayName: Tenebris Elemental
+		BestiaryEntry1: ""
+	}
+
+	DarkArchmage: {
+		DisplayName: Dark Archmage
+		BestiaryEntry1: "Originating from the Shade World, they are one of the few sentient beings with a will. They are frightened and disoriented by how bright it is here, and lash out at the slightest disturbance."
+	}
+
+	TenebrousConstruct: {
+		DisplayName: Tenebrous Construct
+		BestiaryEntry1: ""
+	}
+
 	CorruptSigil.DisplayName: Corrupt Sigil
-	TenebrousSlinger.DisplayName: Tenebrous Slinger
+
+	TenebrousSlinger: {
+		DisplayName: Tenebrous Slinger
+		BestiaryEntry1: ""
+	}
+
 	RiftSlime.DisplayName: Rift Slime
 	PetrifiedHead.DisplayName: Petrified Head
 }
@@ -4977,4 +5023,10 @@ Music: {
 		Rain: Prevailing Tempest
 		Thunder: Wrathful Tempest
 	}
+}
+
+Extras: {
+	ShadeWorldCommonBestiary: "In addition to freeing the moon lord from imprisonment, breaking the seal also tore open holes across space, allowing enemies from the shade world to enter yours."
+	ShadeWorldRareBestiary: "All creatures of shade share some level of similarity to the creatures of your own world, as the shade world retains many such similarities. It is not known why mother darkness has created the shade world in this image."
+	ShadeWorldEpicBestiary: "Mother darkness is the giver of Dark Life. Though ever since she lost her beloved son, no amount of biodiversity and unique specimens has brought her enough joy to put a smile on her face."
 }
