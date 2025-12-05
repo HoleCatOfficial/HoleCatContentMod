@@ -7,9 +7,9 @@ using DestroyerTest.Content.Buffs;
 using Terraria.GameContent;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace DestroyerTest.Content.Projectiles
+namespace DestroyerTest.Content.Projectiles.EntitiesProjectiles
 {
-	public class RiftLaser : ModProjectile
+	public class PetrifiedHeadRiftLaser : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
@@ -19,7 +19,7 @@ namespace DestroyerTest.Content.Projectiles
 		{
 			Projectile.width = 18;
 			Projectile.height = 18;
-			Projectile.friendly = true;
+			Projectile.hostile = true;
 			Projectile.DamageType = DamageClass.Generic;
 			Projectile.timeLeft = 240;
 			Projectile.tileCollide = false;

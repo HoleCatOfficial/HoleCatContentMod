@@ -4,11 +4,13 @@ using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss;
+using DestroyerTest.Content.Projectiles.EntitiesProjectiles;
 using DestroyerTest.Content.RiftBiome;
 using DestroyerTest.Content.Tools;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoMod.Cil;
+using OpusLib;
 using ReLogic.Content;
 using System;
 using System.Collections.Generic;
@@ -16,6 +18,7 @@ using System.Collections.Specialized;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -41,8 +44,7 @@ namespace DestroyerTest.Content.Entities
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
-                new FlavorTextBestiaryInfoElement("A head, ripped from its body long ago. It covered in a film of rift solution."),
-                ModContent.GetInstance<RiftUnderground>().ModBiomeBestiaryInfoElement,
+                new FlavorTextBestiaryInfoElement(DTUtils.GetModNPCLocalizationEntry(this, 1)),
             });
 		}
 
@@ -51,28 +53,77 @@ namespace DestroyerTest.Content.Entities
             NPC.width = 20;
             NPC.height = 28;
             NPC.damage = 55;
-            NPC.defense = 50;
-            NPC.lifeMax = 100;
+            NPC.defense = 5;
+            NPC.lifeMax = 500;
             NPC.noGravity = true;
-            NPC.aiStyle = -1;
+            NPC.damage = 15;
+            NPC.aiStyle = NPCAIStyleID.CursedSkull;
+            AIType = NPCID.CursedSkull;
             // Sets the above
             NPC.lavaImmune = true;
             NPC.noTileCollide = true;
             NPC.knockBackResist = 0.0f;
-            NPC.dontTakeDamage = true;
+            NPC.HitSound = SoundID.Item52;
+            NPC.DeathSound = SoundID.Item110;
 		}
+
+        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            SpriteEffects effects = SpriteEffects.None;
+
+            // Horizontal flip still based on direction
+            if (NPC.spriteDirection == -1)
+                effects |= SpriteEffects.FlipHorizontally;
+
+            // Determine if rotation goes past "upside-down"
+            float rot = MathHelper.WrapAngle(NPC.rotation);
+
+            // If upside-down (between 90° and 270°), flip vertically
+            if (rot > MathHelper.PiOver2 || rot < -MathHelper.PiOver2)
+                effects |= SpriteEffects.FlipVertically;
+
+            Main.EntitySpriteDraw(TextureAssets.Npc[NPC.type].Value, NPC.Center - screenPos, NPC.frame, drawColor, NPC.rotation, new Vector2(TextureAssets.Npc[NPC.type].Value.Width / 2, TextureAssets.Npc[NPC.type].Value.Height / Main.npcFrameCount[NPC.type] / 2), NPC.scale, effects, 0);
+            return false;
+        }
+
 
         public override void AI()
         {
-            NPC.TargetClosest(faceTarget: true);
+            NPC.TargetClosest();
             Player player;
             player = Main.player[NPC.target];
 
-            NPC.rotation = 0.05f * NPC.velocity.Length();
+            int basespd = 3;
+
+            if (NPC.velocity.Length() > basespd)
+            {
+                NPC.velocity *= 0.99f;
+            }
+
+            Vector2 look = player.Center - NPC.Center;
+            NPC.rotation = look.ToRotation() + MathHelper.PiOver2;
+            NPC.spriteDirection = look.X > 0 ? 1 : -1;
+
             Vector2 direction = player.Center - NPC.Center;
             direction.Normalize();
 
-            NPC.velocity = Vector2.Lerp(NPC.velocity, direction * 3f, 0.05f);
+            if (NPC.Center.Distance(player.Center) < 200f)
+            {
+                if (Main.GameUpdateCount % 120 == 0)
+                {
+                    SoundEngine.PlaySound(SoundID.Item72);
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, direction.ToRotation().ToRotationVector2() * 10f, ModContent.ProjectileType<PetrifiedHeadRiftLaser>(), 16, 5f);
+                }
+            }
+
+            if (NPC.Center.Distance(player.Center) > 200f)
+            {
+                if (Main.rand.NextBool(200))
+                {
+                    Opus.RingDustOutward(ModContent.DustType<RiftDust>(), 30, NPC.Center, 10, 0, default, 1.2f, 3f);
+                    NPC.velocity += direction.ToRotation().ToRotationVector2() * 5f;
+                }
+            }
 
             if (Main.rand.NextBool(12))
             {
@@ -80,9 +131,22 @@ namespace DestroyerTest.Content.Entities
             }
         }
 
-        public override void OnHitPlayer(Player target, Player.HurtInfo hurtInfo)
+        public override void HitEffect(NPC.HitInfo hit)
         {
-            target.AddBuff(BuffID.CursedInferno, 120, true, false);
+            if (NPC.life > 0)
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.Wraith);
+                }
+            }
+            if (NPC.life <= 0)
+            {
+                for (int i = 0; i < 5; i++)
+                {
+                    Dust.NewDustPerfect(NPC.Center, ModContent.DustType<RiftDust>(), new Vector2(Main.rand.NextFloat(-4, 4), Main.rand.NextFloat(-8, -12)), 0, default, 1.5f);
+                }
+            }
         }
     }
 }

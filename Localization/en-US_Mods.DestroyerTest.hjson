@@ -3990,6 +3990,7 @@ Projectiles: {
 	StellarFireDart.DisplayName: Stellar Fire Dart
 	StellarFireSlash.DisplayName: Stellar Fire Slash
 	RGBSlash.DisplayName: R G B Slash
+	PetrifiedHeadRiftLaser.DisplayName: Petrified Head Rift Laser
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.
@@ -4387,6 +4388,7 @@ NPCs: {
 		DisplayName: Giga Cursed Hammer
 		BestiaryEntry1: ""
 	}
+
 	TheGreatFlayer: {
 		DisplayName: The Great Flayer
 		BestiaryEntry1: ""
@@ -4415,11 +4417,12 @@ NPCs: {
 			'''
 	}
 
-	CursedFlameNode: { 
+	CursedFlameNode: {
 		DisplayName: Cursed Flame Node
 		BestiaryEntry1: ""
 	}
-	IchorNode: { 
+
+	IchorNode: {
 		DisplayName: Ichor Node
 		BestiaryEntry1: ""
 	}
@@ -4449,22 +4452,22 @@ NPCs: {
 	}
 
 	DarkPredatorTail.DisplayName: Dark Predator Tail
+
 	DarkPredatorHead: {
 		DisplayName: Dark Predator Head
 		BestiaryEntry1: ""
 	}
-	DarkPredatorBody.DisplayName: Dark Predator Body
 
+	DarkPredatorBody.DisplayName: Dark Predator Body
 	DarkGluttonBody.DisplayName: Dark Glutton Body
-	DarkGluttonHead: {
-		DisplayName: Dark Glutton Head
-	}
+	DarkGluttonHead.DisplayName: Dark Glutton Head
 	DarkGluttonTail.DisplayName: Dark Glutton Tail
 
 	CursedFlameNodeMB: {
 		DisplayName: Cursed Flame Node
 		BestiaryEntry1: ""
 	}
+
 	IchorNodeMB: {
 		DisplayName: Ichor Node
 		BestiaryEntry1: ""
@@ -4482,7 +4485,7 @@ NPCs: {
 
 	DarkArchmage: {
 		DisplayName: Dark Archmage
-		BestiaryEntry1: "Originating from the Shade World, they are one of the few sentient beings with a will. They are frightened and disoriented by how bright it is here, and lash out at the slightest disturbance."
+		BestiaryEntry1: Originating from the Shade World, they are one of the few sentient beings with a will. They are frightened and disoriented by how bright it is here, and lash out at the slightest disturbance.
 	}
 
 	TenebrousConstruct: {
@@ -4499,6 +4502,9 @@ NPCs: {
 
 	RiftSlime.DisplayName: Rift Slime
 	PetrifiedHead.DisplayName: Petrified Head
+	PetrifiedLurker.DisplayName: Petrified Lurker
+	RiftOculus.DisplayName: Rift Oculus
+	RiftObserver.DisplayName: Rift Observer
 }
 
 Keybinds: {
@@ -5026,7 +5032,7 @@ Music: {
 }
 
 Extras: {
-	ShadeWorldCommonBestiary: "In addition to freeing the moon lord from imprisonment, breaking the seal also tore open holes across space, allowing enemies from the shade world to enter yours."
-	ShadeWorldRareBestiary: "All creatures of shade share some level of similarity to the creatures of your own world, as the shade world retains many such similarities. It is not known why mother darkness has created the shade world in this image."
-	ShadeWorldEpicBestiary: "Mother darkness is the giver of Dark Life. Though ever since she lost her beloved son, no amount of biodiversity and unique specimens has brought her enough joy to put a smile on her face."
+	ShadeWorldCommonBestiary: In addition to freeing the moon lord from imprisonment, breaking the seal also tore open holes across space, allowing enemies from the shade world to enter yours.
+	ShadeWorldRareBestiary: All creatures of shade share some level of similarity to the creatures of your own world, as the shade world retains many such similarities. It is not known why mother darkness has created the shade world in this image.
+	ShadeWorldEpicBestiary: Mother darkness is the giver of Dark Life. Though ever since she lost her beloved son, no amount of biodiversity and unique specimens has brought her enough joy to put a smile on her face.
 }

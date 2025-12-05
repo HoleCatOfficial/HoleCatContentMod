@@ -32,11 +32,6 @@ namespace DestroyerTest.Content.Resources;
 			Item.maxStack = Item.CommonMaxStack; // The item's max stack value
 			Item.value = Item.buyPrice(silver: 1); // The value of the item in copper coins. Item.buyPrice & Item.sellPrice are helper methods that returns costs in copper coins based on platinum/gold/silver/copper arguments provided to it.
         }
-        public override void Update(ref float gravity, ref float maxFallSpeed)
-        {
-            gravity = 2f; // Disables gravity for this item
-        }
-
 
     public class LS_DROP_NPC : GlobalNPC
 	{

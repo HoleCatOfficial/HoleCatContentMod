@@ -62,6 +62,7 @@ namespace DestroyerTest.Content.Projectiles
 			Projectile.light = 1f;
 			Projectile.timeLeft = 300;
 			Projectile.tileCollide = false;
+			Projectile.penetrate = 1;
 		}
 
 		public override bool PreDraw(ref Color lightColor)
@@ -170,7 +171,6 @@ namespace DestroyerTest.Content.Projectiles
 
 			if (DelayTimer < 20)
 			{
-				DelayTimer += 1;
 				return;
 			}
 
@@ -306,12 +306,23 @@ namespace DestroyerTest.Content.Projectiles
 			return target.active == true && target.statLife > 1;
 		}
 
+        public override void ModifyDamageHitbox(ref Rectangle hitbox)
+        {
+            if (Mode == 2 || Mode == 4)
+            {
+                hitbox.Inflate(20, 20);
+            }
+        }
+
+
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
 			if (Mode == 1 || Mode == 3)
 			{
                 SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/RiftCharge") with { MaxInstances = 0, PitchVariance = 0.3f, Volume = 0.25f }, target.Center);
 				target.AddBuff(ModContent.BuffType<HeliouricShock>(), 300);
+				Projectile.penetrate = 0;
+				Projectile.Kill();
 			}
 		}
 
@@ -321,6 +332,8 @@ namespace DestroyerTest.Content.Projectiles
 			{
                 SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/RiftCharge") with { MaxInstances = 0, PitchVariance = 0.3f, Volume = 0.25f }, target.Center);
 				target.AddBuff(ModContent.BuffType<HeliouricShock>(), 300);
+				Projectile.penetrate = 0;
+				Projectile.Kill();
 			}
 		}
 
