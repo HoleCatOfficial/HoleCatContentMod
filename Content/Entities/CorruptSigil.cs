@@ -3,7 +3,7 @@ using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Content.Projectiles.NightmareRose;
+using DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss;
 using DestroyerTest.Content.RiftBiome;
 using DestroyerTest.Content.Tools;
 using Microsoft.Xna.Framework;

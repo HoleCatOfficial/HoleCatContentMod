@@ -11,6 +11,7 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
+using DestroyerTest.Content.Projectiles.Weapon.Magic;
 
 
 namespace DestroyerTest.Content.RangedItems

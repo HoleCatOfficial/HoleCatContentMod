@@ -31,7 +31,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
         {
             CreateRecipe()
                 .AddIngredient(ItemID.SunplateBlock, 5)
-                .AddCondition(Condition.HappyWindyDay)
+                .AddTile(TileID.SkyMill)
                 .AddCondition(Condition.InSkyHeight)
                 .Register();
         }

@@ -18,6 +18,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using DestroyerTest.Content.RiftArsenal;
 using Steamworks;
+using System.Collections.Generic;
 
 namespace DestroyerTest.Content.Equips
 {
@@ -77,6 +78,19 @@ namespace DestroyerTest.Content.Equips
             player.lavaImmune = true;
             player.setBonus = Language.GetText("Mods.DestroyerTest.Items.InfernalTiara.SetBonus").Value;
         }
+
+        public override void ModifyTooltips(List<TooltipLine> tooltips)
+		{
+			Item body = new Item();
+			body.SetDefaults(ModContent.ItemType<InfernalDress>());
+			Item legs = new Item();
+			legs.SetDefaults(0);
+			if (IsArmorSet(Item, body, legs))
+			{
+				var pityText = Language.GetText("Mods.DestroyerTest.ShieldPlayer.ShieldLine");
+				tooltips.Add(new TooltipLine(Mod, "ShieldInfo", pityText.Value));
+			}
+		}
 
         public override void AddRecipes()
         {

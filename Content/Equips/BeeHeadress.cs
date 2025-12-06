@@ -11,6 +11,7 @@ using DestroyerTest.Content.Tiles.Riftplate;
 using DestroyerTest.Common;
 using Microsoft.Xna.Framework;
 using System.IO;
+using DestroyerTest.Content.Scepter;
 
 namespace DestroyerTest.Content.Equips
 {
@@ -27,7 +28,7 @@ namespace DestroyerTest.Content.Equips
             Item.height = 12; // Height of the item
             Item.value = Item.sellPrice(gold: 1); // How many coins the item is worth
             Item.rare = ItemRarityID.White;
-            Item.defense = 7; // The amount of defense the item will give when equipped
+            Item.defense = 10; // The amount of defense the item will give when equipped
         }
 
         // IsArmorSet determines what armor pieces are needed for the setbonus to take effect
@@ -93,14 +94,11 @@ namespace DestroyerTest.Content.Equips
         {
             if (Active)
             {
-                if (item.DamageType == ModContent.GetInstance<ScepterClass>())
+                if (item.DamageType == ModContent.GetInstance<ScepterClass>() && item.type != ModContent.ItemType<ScepterOfVespae>())
                 {
-                    if (Player.altFunctionUse == 2)
+                    for (int y = 0; y < 4; y++)
                     {
-                        for (int y = 0; y < 4; y++)
-                        {
-                            Projectile.NewProjectile(Entity.GetSource_ItemUse(item), position, velocity, ProjectileID.Bee, damage / 2, knockback / 2, Player.whoAmI);
-                        }
+                        Projectile.NewProjectile(Entity.GetSource_ItemUse(item), position, velocity, ProjectileID.Bee, damage / 6, knockback / 2, Player.whoAmI);
                     }
                 }
             }

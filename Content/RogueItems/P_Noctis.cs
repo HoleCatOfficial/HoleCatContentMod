@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using DestroyerTest.Content.Projectiles.Weapon.Rogue;
+using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -37,7 +38,7 @@ namespace DestroyerTest.Content.RogueItems
 
 			// Projectile Properties
 			Item.shootSpeed = 25f;
-			Item.shoot = ModContent.ProjectileType<Projectiles.P_Noctis_Projectile>(); // The projectile that will be thrown
+			Item.shoot = ModContent.ProjectileType<P_Noctis_Projectile>(); // The projectile that will be thrown
 			
 		}
 

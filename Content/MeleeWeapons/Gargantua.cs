@@ -12,6 +12,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using DestroyerTest.Rarity;
 using DestroyerTest.Content.Projectiles;
+using DestroyerTest.Content.Projectiles.Weapon.Melee;
 
 namespace DestroyerTest.Content.MeleeWeapons
 {
@@ -81,7 +82,7 @@ namespace DestroyerTest.Content.MeleeWeapons
             Item.crit = 6; // The critical strike chance the weapon has. The player, by default, has a 4% critical strike chance.
 
             Item.value = Item.buyPrice(gold: 1); // The value of the weapon in copper coins.
-            Item.rare = ModContent.RarityType<GoliathRarity>(); // Give this item our custom rarity.
+            Item.rare = ModContent.RarityType<VesperRarity>(); // Give this item our custom rarity.
             Item.channel = true;
             Item.shoot = ModContent.ProjectileType<GargantuaProjectile>();
             Item.noUseGraphic = true;

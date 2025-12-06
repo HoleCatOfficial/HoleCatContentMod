@@ -1,4 +1,5 @@
 using DestroyerTest.Content.Projectiles;
+using DestroyerTest.Content.Projectiles.Weapon.Melee;
 using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
 using Terraria;
@@ -19,8 +20,8 @@ namespace DestroyerTest.Content.MeleeWeapons.SwordLineage
 
 		public override void SetDefaults()
 		{
-			Item.width = 66; // The item texture's width.
-			Item.height = 60; // The item texture's height.
+			Item.width = 52; // The item texture's width.
+			Item.height = 50; // The item texture's height.
 
 			Item.useStyle = ItemUseStyleID.Shoot; // The useStyle of the Item.
 			Item.useTime = 30; // The time span of using the weapon. Remember in terraria, 60 frames is a second.

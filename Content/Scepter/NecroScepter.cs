@@ -10,7 +10,8 @@ using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Rarity;
-using DestroyerTest.Rarity.Scepter; // Add this line if CT3_Swing is in the Projectiles namespace
+using DestroyerTest.Rarity.Scepter;
+using DestroyerTest.Content.Projectiles.Weapon.Scepter; // Add this line if CT3_Swing is in the Projectiles namespace
 
 namespace DestroyerTest.Content.Scepter
 {
@@ -86,10 +87,9 @@ namespace DestroyerTest.Content.Scepter
 
 		public override void AddRecipes() {
 			CreateRecipe()
-				.AddIngredient(ItemID.BlackPearl)
 				.AddIngredient(ItemID.Bone, 18)
 				.AddIngredient<LifeEcho>(12)
-				.AddTile(TileID.BoneWelder)
+                .AddTile(TileID.Anvils)
 				.AddCondition(Condition.DownedSkeletron)
 				.Register();
 		}

@@ -44,14 +44,18 @@ namespace DestroyerTest.Content.Buffs
         public override void UpdateLifeRegen(NPC npc, ref int damage) {
             if (lifeRegenDebuff) {
                 // Spawn dust around NPC and make it gravitate toward the center
-                for (int i = 0; i < 5; i++) {
+                for (int i = 0; i < 5; i++)
+                {
                     Vector2 spawnPosition = npc.Center + Main.rand.NextVector2Circular(30f, 30f);
                     Vector2 velocity = Vector2.Normalize(npc.Center - spawnPosition) * 2f; // Moves toward center
                     int dustIndex = Dust.NewDust(spawnPosition, 0, 0, DustID.Frost, velocity.X, velocity.Y, 0, default, 1.5f);
                     Main.dust[dustIndex].noGravity = true;
                 }
 
-                npc.velocity = new Vector2(0, 0);
+                if (!npc.boss)
+                {
+                    npc.velocity = new Vector2(0, 0);
+                }
 
                 if (npc.lifeRegen > 0)
                     npc.lifeRegen = 0;

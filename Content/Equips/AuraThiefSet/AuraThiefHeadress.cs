@@ -18,6 +18,7 @@ using InnoVault.PRT;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Projectiles;
 using Terraria.Audio;
+using DestroyerTest.Content.Projectiles.player.ArmorSet;
 
 namespace DestroyerTest.Content.Equips.AuraThiefSet
 {
@@ -56,6 +57,8 @@ namespace DestroyerTest.Content.Equips.AuraThiefSet
 			{
 				Scptr.Active = true;
 			}
+			player.GetDamage(ModContent.GetInstance<ScepterClass>()) *= 1.08f;
+			ScepterClassStats.ThrowSpeedModifier = 1.75f;
 			player.buffImmune[BuffID.Frostburn] = true;
 			player.buffImmune[BuffID.Frostburn2] = true;
 			player.buffImmune[BuffID.Frozen] = true;

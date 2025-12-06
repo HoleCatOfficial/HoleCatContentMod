@@ -10,6 +10,7 @@ using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Common;
 using DestroyerTest.Rarity;
 using DestroyerTest.Rarity.Scepter;
+using DestroyerTest.Content.Projectiles.Weapon.Scepter;
 
 namespace DestroyerTest.Content.Scepter
 {
@@ -51,8 +52,7 @@ namespace DestroyerTest.Content.Scepter
         public override void AddRecipes() {
 			CreateRecipe()
                 .AddIngredient(ItemID.Wood, 25)
-                .AddIngredient(ItemID.JungleGrassSeeds, 2)
-                .AddTile(TileID.WorkBenches)
+                .AddTile(TileID.LivingLoom)
 				.Register();
 		}
 

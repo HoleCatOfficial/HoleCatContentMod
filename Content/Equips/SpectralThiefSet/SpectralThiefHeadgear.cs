@@ -20,6 +20,8 @@ using Terraria.GameContent.Creative;
 using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.Projectiles;
 using InnoVault;
+using DestroyerTest.Content.Equips.AuraThiefSet;
+using DestroyerTest.Content.Projectiles.player.ArmorSet;
 
 namespace DestroyerTest.Content.Equips.SpectralThiefSet
 {
@@ -45,7 +47,7 @@ namespace DestroyerTest.Content.Equips.SpectralThiefSet
             Item.height = 28; // Height of the item
             Item.value = Item.sellPrice(gold: 1); // How many coins the item is worth
             Item.rare = ModContent.RarityType<LifeEchoRarity>(); // The rarity of the item
-            Item.defense = 4; // The amount of defense the item will give when equipped
+            Item.defense = 8; // The amount of defense the item will give when equipped
         }
 
         // IsArmorSet determines what armor pieces are needed for the setbonus to take effect
@@ -76,14 +78,12 @@ namespace DestroyerTest.Content.Equips.SpectralThiefSet
             player.armorEffectDrawOutlinesForbidden = true;
         }
 
-        // Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
         public override void AddRecipes()
         {
             CreateRecipe()
-                .AddIngredient<LifeEcho>(16)
-                .AddIngredient(ItemID.Wood, 10)
-                .AddIngredient(ItemID.FlinxFur, 10)
-                .AddTile(TileID.Anvils)
+                .AddIngredient(ItemID.Ectoplasm, 16)
+                .AddIngredient<AuraThiefHeadgear>(1)
+                .AddTile(TileID.MythrilAnvil)
                 .Register();
         }
     }

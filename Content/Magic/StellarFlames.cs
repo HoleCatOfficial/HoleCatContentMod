@@ -1,4 +1,5 @@
 using DestroyerTest.Content.Projectiles;
+using DestroyerTest.Content.Projectiles.Weapon.Magic;
 using DestroyerTest.Rarity;
 using Terraria;
 using Terraria.Enums;

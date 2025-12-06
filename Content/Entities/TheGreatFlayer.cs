@@ -17,6 +17,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
 using GlowmaskHelper.Content;
+using DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss;
 
 namespace DestroyerTest.Content.Entities
 {

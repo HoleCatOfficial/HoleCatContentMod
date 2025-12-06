@@ -457,7 +457,14 @@ Items: {
 
 	RiftSolution: {
 		DisplayName: Rift Solution
-		Tooltip: A small bottle of Solar Light.
+		Tooltip: Spreads the Rift Biome.
+		RiftWarning:
+			'''
+			WARNING:
+			RIFT DIRT CANNOT GROW GRASS OR TREES, SO WHEN YOU CONVERT IT BACK, THE GRASS MUST REGROW AND TREES MUST BE REPLANTED.
+			THE RIFT IMPLEMENTS A SUFFOCATION MECHANIC. THIS CAN ONLY BE AVOIDED WITH CERTAIN EQUIPS, OR, USING A LUNG SHOT.
+			THE JUNGLE AND HELL ARE IMMUNE TO RIFEN CONVERSION.
+			'''
 	}
 
 	RiftBookcase: {
@@ -2025,12 +2032,12 @@ Items: {
 
 	FoxScepter: {
 		DisplayName: Fox Scepter
-		Tooltip: Dedicated to: TopFox6 the PipeBomb Fox, for motivating me to follow through with this mod by making me want to impress him.
+		Tooltip: Dedicated to: TopFox6 the PipeBomb Fox, for being a part of what motivates me to follow through with this mod by making me want to impress him.
 	}
 
 	StellarFoxScepter: {
 		DisplayName: Stellar Fox Scepter
-		Tooltip: Dedicated to: TopFox6 the PipeBomb Fox, for motivating me to follow through with this mod by making me want to impress him.
+		Tooltip: Dedicated to: TopFox6 the PipeBomb Fox, for being a part of what motivates me to follow through with this mod by making me want to impress him.
 	}
 
 	StellarBow: {
@@ -2578,9 +2585,7 @@ Items: {
 			Calls upon the Soul of the Great Wyvern to assist in battle.
 			The wyvern will spin around a ball of energy, firing soul crystals in all directions for 20 seconds.
 			There can only be one in the entire world at any given moment.
-			Master
-
-			-Legendary Weapon-
+			Eternity
 			'''
 	}
 
@@ -2590,17 +2595,32 @@ Items: {
 	}
 
 	BeeHeadress: {
+		SetBonus:
+			'''
+			You release friendly bees when hit.
+			Scepters create bees on attacks, both shooting and throwing.
+			'''
 		Tooltip: ""
 		DisplayName: Bee Headress
 	}
 
 	RoseSoul: {
 		DisplayName: Soul of the Conglomerated Child of Mother Darkness
-		Tooltip: Living proof.
+		Tooltip:
+			'''
+			Increases max health to 240 when consumed.
+			You can only get one per world, and it can only be consumed once.
+			"The shade world weeps."
+			'''
 	}
 
 	WyvernSoul: {
-		Tooltip: Unforseeable.
+		Tooltip:
+			'''
+			Increases max health to 360 when consumed.
+			You can only get one per world, and it can only be consumed once.
+			"Unforseeable."
+			'''
 		DisplayName: Soul of the Great Wyvern
 	}
 
@@ -2793,6 +2813,7 @@ Items: {
 	DistendedHeadgear: {
 		DisplayName: Distended Headgear
 		Tooltip: ""
+		SetBonus: ""
 	}
 
 	MalevolenceMantra: {
@@ -2806,7 +2827,11 @@ Items: {
 	}
 
 	WoodBracelet: {
-		Tooltip: ""
+		Tooltip:
+			'''
+			Increases Scepter Class Damage by 2%.
+			Increases Scepter Class Crit Chance by 4%.
+			'''
 		DisplayName: Wood Bracelet
 	}
 
@@ -2895,32 +2920,62 @@ Items: {
 
 	AdamantPendant: {
 		DisplayName: Adamant Pendant
-		Tooltip: ""
+		Tooltip:
+			'''
+			Increases Scepter Class damage by {0}%.
+			Increases Scepter Class Crit Chance by {1}%.
+			Increases Scepter Throw Range by {2}.
+			'''
 	}
 
 	AzurePendant: {
 		DisplayName: Azure Pendant
-		Tooltip: ""
+		Tooltip:
+			'''
+			Increases Scepter Class damage by {0}%.
+			Increases Scepter Class Crit Chance by {1}%.
+			Increases Scepter Throw Range by {2}.
+			'''
 	}
 
 	MythicPendant: {
 		DisplayName: Mythic Pendant
-		Tooltip: ""
+		Tooltip:
+			'''
+			Increases Scepter Class damage by {0}%.
+			Increases Scepter Class Crit Chance by {1}%.
+			Increases Scepter Throw Range by {2}.
+			'''
 	}
 
 	OrchidPendant: {
 		DisplayName: Orchid Pendant
-		Tooltip: ""
+		Tooltip:
+			'''
+			Increases Scepter Class damage by {0}%.
+			Increases Scepter Class Crit Chance by {1}%.
+			Increases Scepter Throw Range by {2}.
+			'''
 	}
 
 	RadiantPendant: {
 		DisplayName: Radiant Pendant
-		Tooltip: ""
+		Tooltip:
+			'''
+			Increases Scepter Class damage by {0}%.
+			Increases Scepter Class Crit Chance by {1}%.
+			Increases Scepter Throw Range by {2}.
+			'''
 	}
 
 	TitanPendant: {
 		DisplayName: Titan Pendant
-		Tooltip: ""
+		Tooltip:
+			'''
+			Increases Scepter Class damage by {0}%.
+			Increases Scepter Class Crit Chance by {1}%.
+			Increases Scepter Throw Range by {2}.
+			'''
 	}
 
 	MechanicalEnhancements: {
@@ -3051,6 +3106,11 @@ Items: {
 	PetrifiedChaplet: {
 		DisplayName: Petrified Chaplet
 		Tooltip: Wooden armor that has become solid and dense from the constant interplay of flame and frost.
+		SetBonus:
+			'''
+			You are surrounded by a 400 point shield.
+			Shooting Scepters shoots fire and frost blasts as well, which inflict Haepien's Inferno and Blizzard respectively.
+			'''
 	}
 
 	PetrifiedChestplate: {
@@ -3351,6 +3411,135 @@ Items: {
 		Tooltip: Summons a miniature Tenebrous Slinger to follow you around.
 		DisplayName: Shimmering Cable
 	}
+
+	MalakhimChaplet: {
+		DisplayName: Mal'akhim Chaplet
+		Tooltip: ""
+		SetBonus:
+			'''
+			Scepter Class projectiles have a chance to spawn homing vesper darts as they travel.
+			Getting hit grants a little over 1 seconds of immunity.
+			'''
+	}
+
+	MalakhimPlates: {
+		DisplayName: Mal'akhim Plates
+		Tooltip: ""
+	}
+
+	MalakhimWings: {
+		DisplayName: Mal'akhim Wings
+		Tooltip: ""
+	}
+
+	ShieldMarkSmall: {
+		Tooltip: ""
+		DisplayName: Shield Mark Small
+	}
+
+	ShieldMarkBig: {
+		Tooltip: ""
+		DisplayName: Shield Mark Big
+	}
+
+	GargantuaZenith: {
+		DisplayName: Gargantua Zenith
+		Tooltip: ""
+	}
+
+	Item_CursedFlameNodeRelic: {
+		DisplayName: Cursed Flame Node Relic
+		Tooltip: ""
+	}
+
+	Item_IchorNodeRelic: {
+		DisplayName: Ichor Node Relic
+		Tooltip: ""
+	}
+
+	DistendedPike: {
+		DisplayName: Distended Pike
+		Tooltip: ""
+	}
+
+	Item_RootedDirtWall: {
+		Tooltip: ""
+		DisplayName: Rooted Dirt Wall
+	}
+
+	Item_RootedDirt: {
+		Tooltip: ""
+		DisplayName: Rooted Dirt
+	}
+
+	Item_RiftSiltStoneWall: {
+		Tooltip: ""
+		DisplayName: Rift Siltstone Wall
+	}
+
+	Item_NightmareChest: {
+		Tooltip: ""
+		DisplayName: Nightmare Chest
+	}
+
+	TwistedFaith: {
+		DisplayName: Twisted Faith
+		Tooltip:
+			'''
+			Creates a large, sweeping slash that flies out towards the mouse.
+			Slashes inflict Soul Erosion, which lowers enemy damage.
+			"A weapon I forged from the roses that Mother Darkness sent for her son alongside a scroll begging him to return.
+			I didn't have the heart to tell her what had become of him."
+			'''
+	}
+
+	MalachiteKnives: {
+		DisplayName: Malachite Knives
+		Tooltip:
+			'''
+			Throws a volley of tiny Defiled Knives. 
+			Knives inflict Soul Erosion, which lowers enemy damage.
+			'''
+	}
+
+	HekatesMystique: {
+		DisplayName: Hekate's Mystique
+		Tooltip:
+			'''
+			Casts a controllable ball of light.
+			The ball creates small embers around it that don't move and inflict Soul Erosion, which lowers enemy damage.
+			Releasing the mouse button kills all owned embers and the owned ball.
+
+			Hekate's personal weapon for dealing with small scale threats.
+			Though, after she fled consequence, it has been left unused for decades.
+			'''
+	}
+
+	HekateBook1: {
+		DisplayName: Hekate Book1
+		Tooltip: ""
+	}
+
+	HekateBook2: {
+		DisplayName: Hekate Book2
+		Tooltip: ""
+	}
+
+	MajesticStorm: {
+		DisplayName: Majestic Storm
+		Tooltip:
+			'''
+			Casts a controllable electromagnetic ball.
+			The ball creates magnet speheres around it that don't move and shoot electric bolts at nearby enemies, self-destructing after firing thrice.
+			If 40 or more Magnet Spheres belonging to you are active in the world at a time, no new magnet spheres will be created until the channeling is broken.
+			Releasing the mouse button destroys all owned magnet spheres and the owned ball.
+			'''
+	}
+
+	ShadesRevenge: {
+		DisplayName: Shades Revenge
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
@@ -3613,7 +3802,8 @@ Projectiles: {
 	GigaCursedHammerThrown.DisplayName: Giga Cursed Hammer Thrown
 	NightmarePowderProjectile.DisplayName: Nightmare Powder Projectile
 	PossessedDartRifle.DisplayName: Possessed Dart Rifle
-	TenebrisStar.DisplayName: Tenebris Star
+	TenebrisStarFriendly.DisplayName: Tenebris Star
+	TenebrisStarHostile.DisplayName: Tenebris Star
 	TenebrousChakramThrown.DisplayName: Tenebrous Chakram Thrown
 	CorrolarySwing.DisplayName: Corrolary Swing
 	CorrolaryProj2.DisplayName: Corrolary Proj2
@@ -3707,7 +3897,8 @@ Projectiles: {
 	TenebrisDart.DisplayName: Tenebris Dart
 	DarkEnergyOrb.DisplayName: Dark Energy Orb
 	TenebrisMine.DisplayName: Tenebris Mine
-	RiftStar.DisplayName: Rift Star
+	RiftStarFriendly.DisplayName: Rift Star
+	RiftStarHostile.DisplayName: Rift Star
 	TenebrousBullet1.DisplayName: Tenebrous Bullet1
 	TenebrousBullet2.DisplayName: Tenebrous Bullet2
 	TenebrousBullet3.DisplayName: Tenebrous Bullet3
@@ -3721,7 +3912,8 @@ Projectiles: {
 	DesertFlame.DisplayName: Desert Flame
 	HeliciteRoundProjectile.DisplayName: Helicite Round Projectile
 	RiftRoundProjectile.DisplayName: Rift Round Projectile
-	RiftStar2.DisplayName: Rift Star2
+	RiftStarFriendly2.DisplayName: Rift Star
+	RiftStarHostile2.DisplayName: Rift Star
 	NightmareeRoseBackgroundProj.DisplayName: Nightmaree Rose Background Proj
 	ConstitutionStar.DisplayName: Constitution Star
 	HollowStar.DisplayName: Hollow Star
@@ -3775,6 +3967,35 @@ Projectiles: {
 	ShadeThrasherFriendlyBody3.DisplayName: Shade Thrasher Friendly Body3
 	ShadeThrasherFriendlyBody2.DisplayName: Shade Thrasher Friendly Body2
 	ShadeThrasherFriendlyBody1.DisplayName: Shade Thrasher Friendly Body1
+	FrozenFireball.DisplayName: Frozen Fireball
+	FungusSporeExplosion.DisplayName: Fungus Spore Explosion
+	VesperDart.DisplayName: Vesper Dart
+	DistendedPikeProjectile.DisplayName: Distended Pike Projectile
+	DistendedPikeShard.DisplayName: Distended Pike Shard
+	TwistedFaithProj.DisplayName: Twisted Faith Proj
+	TwistedFaithSwing.DisplayName: Twisted Faith Swing
+	MalachiteKnife.DisplayName: Malachite Knife
+	HekateStaffProj.DisplayName: Hekate Staff Proj
+	HekateStaffEmber.DisplayName: Hekate Staff Ember
+	HekatesMystiqueHoldout.DisplayName: Hekates Mystique Holdout
+	HekateStaffExplosion.DisplayName: Hekate Staff Explosion
+	StellarVolley.DisplayName: Stellar Volley
+	MagesticStormHoldout.DisplayName: Magestic Storm Holdout
+	MajesticStormProj.DisplayName: Majestic Storm Proj
+	ElectricBolt.DisplayName: Electric Bolt
+	MajesticStormExplosion.DisplayName: Majestic Storm Explosion
+	MajesticStormHoldout.DisplayName: Majestic Storm Holdout
+	MajesticStormOrb.DisplayName: Majestic Storm Orb
+	ShadesRevengeExplosion.DisplayName: Shades Revenge Explosion
+	ShadesRevengeHoldout.DisplayName: Shades Revenge Holdout
+	ShadesRevengeProj.DisplayName: Shades Revenge Proj
+	NightmareRoseCursedCrystal.DisplayName: Nightmare Rose Cursed Crystal
+	StellarFireDart.DisplayName: Stellar Fire Dart
+	StellarFireSlash.DisplayName: Stellar Fire Slash
+	RGBSlash.DisplayName: R G B Slash
+	PetrifiedHeadRiftLaser.DisplayName: Petrified Head Rift Laser
+	TenebrisStarHostile_NoHoming.DisplayName: Tenebris Star Hostile_ No Homing
+	TenebrisStarFriendly_NoHoming.DisplayName: Tenebris Star Friendly_ No Homing
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.
@@ -4099,6 +4320,11 @@ Buffs: {
 		Description: Mods.DestroyerTest.Buffs.ShadeThrasherBuff.Description
 		DisplayName: Shade Thrasher Buff
 	}
+
+	Spored: {
+		DisplayName: Spored
+		Description: Mods.DestroyerTest.Buffs.Spored.Description
+	}
 }
 
 NPCs: {
@@ -4163,14 +4389,53 @@ NPCs: {
 		}
 	}
 
-	GigaCursedHammer.DisplayName: Giga Cursed Hammer
-	TheGreatFlayer.DisplayName: The Great Flayer
-	NightmareRoseBoss.DisplayName: Nightmare Rose
-	CursedFlameNode.DisplayName: Cursed Flame Node
-	IchorNode.DisplayName: Ichor Node
+	GigaCursedHammer: {
+		DisplayName: Giga Cursed Hammer
+		BestiaryEntry1: ""
+	}
+
+	TheGreatFlayer: {
+		DisplayName: The Great Flayer
+		BestiaryEntry1: ""
+	}
+
+	NightmareRoseBoss: {
+		DisplayName: Nightmare Rose
+		BestiaryEntry1:
+			'''
+			"Mother Darkness is never too cut-and-dry, and that extends to her motivations and actions.
+			Many, many years ago, Mother Darkness took a son under her wing. Nobody knew how old, nobody knew his name.
+			To both himself and observers, his destiny was forever postponed, year after year. He had nothing waiting for him in some distant future,
+			as all mother darkness needed from him was his warm, bubbly personality to brighten her days and when it served her interests.
+			Since word rarely ever escapes the shade world, nobody knew how, when, or even if, certain things developed.
+			One thing is known, though. Hekate, the Deity of Witchcraft and Mischief, saw more potential in the boy than his mother did."
+			- Transcripts of the late Terníf the Holy.
+			'''
+		BestiaryEntry2:
+			'''
+			"The boy had a humanity to him when he wasnt living the sweet life around his mother. He enjoyed observing bugs, designing jewelery, and drawing silt mandalas.
+			This, Hekate took the greatest note of during their brief visits to the shade world. This boy had an appreciation for the fleeting, something Hekate often sought out
+			in order to find like-minded co-conspirators for their many stunts. On one particular visit to the shade world, Hekate was disguised as a miserly, elderly churl.
+			They said to the boy 'You are not loved here. You are merely a tool for her satisfaction. You know this, do you not?' It was on that day that Mother Darkness would no
+			longer locate her son in the shade world, as he had left to become an apprentice of Hekate, under the guise of seizing his true potential..."
+			- Excerpt from 'Folk Tales of Terraria: Volume 73', by Uriel XXV.
+			'''
+	}
+
+	CursedFlameNode: {
+		DisplayName: Cursed Flame Node
+		BestiaryEntry1: ""
+	}
+
+	IchorNode: {
+		DisplayName: Ichor Node
+		BestiaryEntry1: ""
+	}
 
 	Scholar: {
 		DisplayName: Scholar
+		BestiaryEntry1: ""
+		BestiaryEntry2: ""
 
 		TownNPCMood: {
 			Content: I feel comforable here.
@@ -4192,24 +4457,59 @@ NPCs: {
 	}
 
 	DarkPredatorTail.DisplayName: Dark Predator Tail
-	DarkPredatorHead.DisplayName: Dark Predator Head
+
+	DarkPredatorHead: {
+		DisplayName: Dark Predator Head
+		BestiaryEntry1: ""
+	}
+
 	DarkPredatorBody.DisplayName: Dark Predator Body
 	DarkGluttonBody.DisplayName: Dark Glutton Body
 	DarkGluttonHead.DisplayName: Dark Glutton Head
 	DarkGluttonTail.DisplayName: Dark Glutton Tail
-	CursedFlameNodeMB.DisplayName: Cursed Flame Node
-	IchorNodeMB.DisplayName: Ichor Node
-	ShadeThrowerMagenta.DisplayName: Shade Thrower Magenta
-	ShadeThrowerTan.DisplayName: Shade Thrower Tan
-	ShadeThrowerBlue.DisplayName: Shade Thrower Blue
-	ShadeThrower.DisplayName: Shade Thrower
-	TenebrisElemental.DisplayName: Tenebris Elemental
-	DarkArchmage.DisplayName: Dark Archmage
-	TenebrousConstruct.DisplayName: Tenebrous Construct
+
+	CursedFlameNodeMB: {
+		DisplayName: Cursed Flame Node
+		BestiaryEntry1: ""
+	}
+
+	IchorNodeMB: {
+		DisplayName: Ichor Node
+		BestiaryEntry1: ""
+	}
+
+	ShadeThrower: {
+		DisplayName: Shade Thrower
+		BestiaryEntry1: ""
+	}
+
+	TenebrisElemental: {
+		DisplayName: Tenebris Elemental
+		BestiaryEntry1: ""
+	}
+
+	DarkArchmage: {
+		DisplayName: Dark Archmage
+		BestiaryEntry1: Originating from the Shade World, they are one of the few sentient beings with a will. They are frightened and disoriented by how bright it is here, and lash out at the slightest disturbance.
+	}
+
+	TenebrousConstruct: {
+		DisplayName: Tenebrous Construct
+		BestiaryEntry1: ""
+	}
+
 	CorruptSigil.DisplayName: Corrupt Sigil
-	TenebrousSlinger.DisplayName: Tenebrous Slinger
+
+	TenebrousSlinger: {
+		DisplayName: Tenebrous Slinger
+		BestiaryEntry1: ""
+	}
+
 	RiftSlime.DisplayName: Rift Slime
 	PetrifiedHead.DisplayName: Petrified Head
+	PetrifiedLurker.DisplayName: Petrified Lurker
+	RiftOculus.DisplayName: Rift Oculus
+	RiftObserver.DisplayName: Rift Observer
 }
 
 Keybinds: {
@@ -4225,28 +4525,29 @@ Keybinds: {
 }
 
 Tiles: {
-	RiftCache: {
-		MapEntry0: RiftCache
-		MapEntry1: RiftCache
-	}
-
-	Helicite_Crystal.MapEntry: Helicite Crystal
-	Tile_RiftConfiguratorArmory.MapEntry: Tile_ Rift Configurator Armory
-	Tile_RiftConfiguratorCore.MapEntry: Tile_ Rift Configurator Core
-	Tile_RiftConfiguratorWeaponry.MapEntry: Tile_ Rift Configurator Weaponry
-	Tile_RiftConfiguratorTools.MapEntry: Tile_ Rift Configurator Tools
-	Tile_RiftConfiguratorFurniture.MapEntry: Tile_ Rift Configurator Furniture
-	Tile_HeliciteCrystal.MapEntry: Tile_ Helicite Crystal
+	Tile_RiftConfiguratorArmory.MapEntry: Rift Configurator Armory
+	Tile_RiftConfiguratorCore.MapEntry: Rift Configurator Core
+	Tile_RiftConfiguratorWeaponry.MapEntry: Rift Configurator Weaponry
+	Tile_RiftConfiguratorTools.MapEntry: Rift Configurator Tools
+	Tile_RiftConfiguratorFurniture.MapEntry: Rift Configurator Furniture
+	Tile_HeliciteCrystal.MapEntry: Helicite Crystal
 
 	Tile_RiftCache: {
-		MapEntry1: Mods.DestroyerTest.Tiles.Tile_RiftCache.MapEntry1
-		MapEntry0: Mods.DestroyerTest.Tiles.Tile_RiftCache.MapEntry0
+		MapEntry1: Rift Cache
+		MapEntry0: Rift Cace
 	}
 
-	Tile_VesperOre.MapEntry: Tile_ Vesper Ore
-	Tile_RiftenCrate.MapEntry: Tile_ Riften Crate
-	Tile_HeliciteCrate.MapEntry: Tile_ Helicite Crate
-	Tile_RiftPylon.MapEntry: Tile_ Rift Pylon
+	Tile_VesperOre.MapEntry: Vesper Ore
+	Tile_RiftenCrate.MapEntry: Riften Crate
+	Tile_HeliciteCrate.MapEntry: Helicite Crate
+	Tile_RiftPylon.MapEntry: Rift Pylon
+	Tile_RootedDirt.MapEntry: Rooted Dirt
+
+	Tile_NightmareChest: {
+		Locked: Locked Nightmare Chest
+		MapEntry1: Nightmare Chest
+		MapEntry0: Nightmare Chest
+	}
 }
 
 Biomes: {
@@ -4272,17 +4573,22 @@ Biomes: {
 
 	RiftTundra: {
 		DisplayName: Rift Tundra
-		TownNPCDialogueName: the Rift Tundra
+		TownNPCDialogueName: a riften tundra
 	}
 
 	RiftUnderground: {
 		DisplayName: Rift Underground
-		TownNPCDialogueName: the Rift Underground
+		TownNPCDialogueName: Underground, in the Rift
 	}
 
 	RiftDesertUnderground: {
 		DisplayName: Rift Desert Underground
-		TownNPCDialogueName: the Rift Desert Underground
+		TownNPCDialogueName: Underground, in a Riften Desert
+	}
+
+	RoseGardenUnderground: {
+		DisplayName: Hekate's Garden
+		TownNPCDialogueName: The Evil Garden
 	}
 }
 
@@ -4334,6 +4640,11 @@ Configs: {
 		ShowBugCommandMessage: {
 			Tooltip: Shows a massive advertisement for the new /bug command for bug reporting.
 			Label: Show Bug Command Message
+		}
+
+		DragCamera: {
+			Tooltip: If enabled, the camera will lag behind the player a bit when they move. This can mess with things drawn directly to the screen that expect the player to be at the center.
+			Label: Use reworked camera
 		}
 	}
 
@@ -4561,6 +4872,74 @@ BookText: {
 			You guessed it, Newline placeholder text.
 			'''
 	}
+
+	HekateBook1: {
+		Page1:
+			'''
+			Idri's been concerning me as of late. I've had to treat hives
+			on his skin day-in and day-out. He hasnt been able to meet with
+			the group for weeks, citing a newfound lethargy, and it's been
+			detrimental to the planning some of our more ambitious plans,
+			since he tended to be our voice of reason.
+			'''
+		Page2:
+			'''
+			I write this as I lay beside him in bed. He's fallen asleep, but
+			the restless shuddering of his torso tells me he isn't sleeping easy.
+			I've gotten him soups from all varieties of market, but nothing cures
+			his mysterious aliment, and no text could ever categorize diseases
+			affecting demideities.
+			'''
+		Page3:
+			'''
+			I may consult mother darkness on the matter, but I'm hesitant. 
+			Justifiedly so. She would be furious if she knew it had been me
+			that had taken her son from her, and I get the feeling her
+			mercy to old friends only extends so far. Goodness, I don't
+			know how many other options I have.
+			'''
+	}
+
+	HekateBook2: {
+		Page1:
+			'''
+			Idri's aliment seems to have become a particular issue. He's left his
+			quarters less frequently, and his hives have spread to his arms.
+			He has begun to refuse my help in treating the hives, but has not
+			said why. Unfortunately, I must do what I can to help him, and have had
+			to restrain him on multiple occasions to apply the ointment.
+			'''
+		Page2: ""
+		Page3: ""
+	}
+
+	HekateBook3: {
+		Page1:
+			'''
+			I wept for the first time in centuries this morning. And not the
+			usual sob or choke-up. I had gotten a new understaning of mortality
+			as I lay against the wall, wailing a discordant chime and clenching
+			my eyes shut. It was as if I didnt want to face the reality that
+			already had turned to face me.
+			'''
+		Page2:
+			'''
+			As I had predicted, yet so foolishly ignored, Idri's breathing has
+			become more strained, and his gangrene has worsened depsite my
+			regenerative talismans. Foolish of me. Demigod or not, I should have
+			stayed by his side all through that night instead of leaving him
+			in this cold, lonely room.
+			'''
+		Page3:
+			'''
+			I haven't felt things so rawly in so long a time. It perplexes me
+			as much as it moves me. Deities are beyond emotion; that's a commonly
+			known fact. So how is it that I grieve? How is it that I weep so loud
+			and so long that my chest throbs sorely and my eyes are burned by
+			my caustic fluids? Perhaps we need to rethink our defintions of
+			Deitism.
+			'''
+	}
 }
 
 Achievements: {
@@ -4593,7 +4972,72 @@ Achievements: {
 Infernum.NightmareRoseIntroText: NIGHTMARE ROSE
 PitySystem.UsesPity:
 	'''
-	This item implements a pity system.
-	Opening the bag multiple times increases the chances of getting rare items from it, and increases the quantity of normal resource drops from it.
-	Successfully getting a rare drop will reset your pity.
+	[i:DestroyerTest/PityMarkBig] This item implements a pity system.
+	[i:DestroyerTest/PityMarkBig] Opening the bag multiple times increases the chances of getting rare items from it, and increases the quantity of normal resource drops from it.
+	[i:DestroyerTest/PityMarkBig] Successfully getting a rare drop will reset your pity.
 	'''
+ShieldPlayer.ShieldLine:
+	'''
+	[i:DestroyerTest/ShieldMarkBig] This item implements a special shield.
+	[i:DestroyerTest/ShieldMarkBig] These Shields kill harmful projectiles inside their radius and do not protect from NPC contact damage.
+	[i:DestroyerTest/ShieldMarkBig] Shields do not regenerate until they break, and pull from your health to regenerate.
+	[i:DestroyerTest/ShieldMarkBig] Shields have priorities, and will be overridden by ones with higher priorities.
+	'''
+ModName: "[c/ff9900:HoleCat's Content Mod (Private Beta)]"
+
+Music: {
+	Author1: FRANCIUMKILLA
+	Author2: Desolo Zantas
+	Author3: Xi
+	Author4: RD Shrissy
+
+	EvilBoss: {
+		Default: Tribulation (New Mix)
+		Eternity: Tribulation (New Mix)
+		SecretSeed: Indestructible Dih
+	}
+
+	ConstitutionBoss: {
+		Default: Duel Against the Sacred Blade
+		Desperate: The Sacred Blade's Desperate Spasm
+		Eternity: Freedom Dive
+	}
+
+	NodeBoss: {
+		Fight: Elemental Influence
+		Idle: Elemental Presence
+	}
+
+	TenebrousConstruct: Darkness Encroaching
+	RoseSoulAmbience: Rest easy, my beloved
+	WyvernSoulAmbience: Unending fervor of the unending azure
+	HekateGarden: I, Am the First Flower
+
+	Rift: {
+		Surface: Deoxygenation
+		Underground: Trepidation
+		Caverns: Disquietude
+
+		Desert: {
+			Surface: Blistering Silt
+			Underground: Sweltering Trap
+			Sandstorm: Scalding Squall
+		}
+
+		Event: Synthetic Sporadia
+
+		Ice: {
+			Surface: Amid the Sun-streaked Wastes
+			Underground: Beneath the shadow-slicked ice
+		}
+
+		Rain: Prevailing Tempest
+		Thunder: Wrathful Tempest
+	}
+}
+
+Extras: {
+	ShadeWorldCommonBestiary: In addition to freeing the moon lord from imprisonment, breaking the seal also tore open holes across space, allowing enemies from the shade world to enter yours.
+	ShadeWorldRareBestiary: All creatures of shade share some level of similarity to the creatures of your own world, as the shade world retains many such similarities. It is not known why mother darkness has created the shade world in this image.
+	ShadeWorldEpicBestiary: Mother darkness is the giver of Dark Life. Though ever since she lost her beloved son, no amount of biodiversity and unique specimens has brought her enough joy to put a smile on her face.
+}

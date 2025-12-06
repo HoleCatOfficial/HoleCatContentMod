@@ -20,6 +20,9 @@ namespace DestroyerTest.Common
 
         [DefaultValue(true)]
         public bool ShowBugCommandMessage { get; set; }
+
+        [DefaultValue(true)]
+        public bool DragCamera { get; set; }
         
     }
 

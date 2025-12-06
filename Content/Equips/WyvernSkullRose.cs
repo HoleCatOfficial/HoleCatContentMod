@@ -11,6 +11,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using DestroyerTest.Rarity;
 using DestroyerTest.Content.Projectiles;
+using DestroyerTest.Content.Projectiles.player.Accessory;
 
 namespace DestroyerTest.Content.Equips
 {

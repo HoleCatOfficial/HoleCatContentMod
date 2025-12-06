@@ -14,6 +14,7 @@ using DestroyerTest.Rarity;
 using DestroyerTest.Content.Tiles;
 using DestroyerTest.Content.Tiles.Riftplate;
 using DestroyerTest.Content.Tiles.RiftConfigurator;
+using DestroyerTest.Content.Projectiles.Weapon.Magic;
 
 
 namespace DestroyerTest.Content.RiftArsenal
@@ -50,7 +51,6 @@ namespace DestroyerTest.Content.RiftArsenal
 
 		public override void AddRecipes() {
 			CreateRecipe()
-				.AddIngredient<Item_HeliciteCrystal>(12)
 				.AddIngredient<Item_Riftplate>(12)
                 .AddIngredient(ItemID.SpellTome)
 				.AddTile<Tile_RiftConfiguratorWeaponry>()

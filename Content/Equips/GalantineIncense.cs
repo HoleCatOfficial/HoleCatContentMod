@@ -4,7 +4,6 @@ using System.Linq;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Content.Projectiles.ConstitutionBoss;
 using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -17,6 +16,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using OpusLib;
+using DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss;
 
 namespace DestroyerTest.Content.Equips
 {

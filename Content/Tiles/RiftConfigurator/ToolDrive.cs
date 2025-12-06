@@ -22,7 +22,7 @@ namespace DestroyerTest.Content.Tiles.RiftConfigurator
 			CreateRecipe()
 				.AddIngredient<Item_Riftplate>(2)
                 .AddIngredient<Item_Riftpane>(8)
-                .AddIngredient(ItemID.Nanites, 2)
+                .AddIngredient<ShadowCircuitry>(8)
 				.AddTile<Tile_RiftCrucible>()
 				.Register();
 		}

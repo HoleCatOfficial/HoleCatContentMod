@@ -4,6 +4,8 @@ using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles;
+using DestroyerTest.Content.Projectiles.Boss;
+using DestroyerTest.Content.Projectiles.Boss.TenebrousConstruct;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.RiftBiome;
 using DestroyerTest.Content.SHADEMANAGEMENT;
@@ -227,7 +229,7 @@ namespace DestroyerTest.Content.Entities
                     Vector2 toOrigin = NPC.Center - Outer;
                     toOrigin = toOrigin.SafeNormalize(Vector2.UnitY);
                     Vector2 shootdirection = toOrigin * 7f;
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), Outer, shootdirection, ModContent.ProjectileType<TenebrisStar>(), 30, 1, ai2: 4);
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), Outer, shootdirection, ModContent.ProjectileType<TenebrisStarHostile>(), 30, 1, ai2: 4);
                 }
             }
 

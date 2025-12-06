@@ -55,15 +55,15 @@ namespace DestroyerTest.Common
         /// <summary>
         /// The sound that plays when the shield recharges fully and operates again.
         /// </summary>
-        public virtual SoundStyle Regen { get; set; } = new SoundStyle("DestroyerTest/Assets/Audio/Scholar/ShieldActivate", 3) with { PitchVariance = 0.3f };
+        public virtual SoundStyle Regen { get; set; } = new SoundStyle("DestroyerTest/Assets/Audio/Scholar/ShieldActivate", 3) with { PitchVariance = 0.3f, MaxInstances = 0 };
         /// <summary>
         /// The sound that plays when the shield absorbs a projectile.
         /// </summary>
-        public virtual SoundStyle Hit { get; set; } = new SoundStyle("DestroyerTest/Assets/Audio/Scholar/ShieldHit", 3) with { PitchVariance = 0.3f };
+        public virtual SoundStyle Hit { get; set; } = new SoundStyle("DestroyerTest/Assets/Audio/Scholar/ShieldHit", 3) with { PitchVariance = 0.3f, MaxInstances = 0 };
         /// <summary>
         /// The sound that plays when the shield is broken.
         /// </summary>
-        public virtual SoundStyle Break { get; set; } = new SoundStyle("DestroyerTest/Assets/Audio/Scholar/ShieldBreak") with { PitchVariance = 0.3f };
+        public virtual SoundStyle Break { get; set; } = new SoundStyle("DestroyerTest/Assets/Audio/Scholar/ShieldBreak") with { PitchVariance = 0.3f, MaxInstances = 0 };
         /// <summary>
         /// The death message that is used if the player expends too much health recharging their shield.
         /// <para/> You can only have 4 different messages.
@@ -74,7 +74,7 @@ namespace DestroyerTest.Common
         /// </summary>
         public virtual int RechargeHealthTax { get; set; } = 5;
 
-        
+
         public override void ResetEffects()
         {
             Active = false;
@@ -91,7 +91,9 @@ namespace DestroyerTest.Common
 
             if (Active)
             {
+
                 Utils.DrawBorderString(spriteBatch, text, drawPos, themeColor, 2f, 0.5f, 0.5f);
+                /*
                 if (Absorb && !Recharge)
                 {
                     Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
@@ -108,6 +110,7 @@ namespace DestroyerTest.Common
                     );
                     Opus.ReturnToDefaultDrawing(spriteBatch);
                 }
+                */
             }
         }
 
@@ -186,9 +189,12 @@ namespace DestroyerTest.Common
                         Vector2.Zero, themeColor, 0.4f
                     );
                     WallPRT.Velocity += Player.velocity;
+                }
+                for (int ds = 0; ds < 6; ds++)
+                {
                     Dust WallDust = Dust.NewDustPerfect(
                         Player.Center + Main.rand.NextVector2CircularEdge(Radius, Radius),
-                        DustID.TintableDustLighted, Vector2.Zero, 0, themeColor, 1.0f
+                        DustID.TintableDustLighted, Vector2.Zero, 0, themeColor, 1.35f
                     );
                     WallDust.velocity += Player.velocity;
                 }
@@ -206,19 +212,20 @@ namespace DestroyerTest.Common
             {
                 if (Main.GameUpdateCount % 20 == 0)
                 {
-                    SoundEngine.PlaySound(SoundID.Unlock with { Pitch = -2 }, Player.Center);
+                    SoundEngine.PlaySound(SoundID.Unlock with { Pitch = -2, MaxInstances = 0 }, Player.Center);
 
-                    Player.HurtInfo Steal = new Player.HurtInfo()
+                    PlayerDeathReason deathReason = PlayerDeathReason.ByCustomReason(DeathMSGs[Main.rand.Next(DeathMSGs.Length)]);
+                    int Decrement = (int)(RechargeHealthTax - (0.5f * Player.statDefense));
+                    if (RechargeHealthTax < 0.5f * Player.statDefense)
                     {
-                        Damage = RechargeHealthTax,
-                        HitDirection = 0,
-                        Dodgeable = false,
-                        SoundDisabled = true,
-                        Knockback = 0,
-                        DamageSource = PlayerDeathReason.ByCustomReason(DeathMSGs[Main.rand.Next(DeathMSGs.Length)])
-                    };
-
-                    Player.Hurt(Steal, quiet: true);
+                        Decrement = (int)(0.2f * Player.statDefense);
+                    }
+                    Player.statLife -= Decrement;
+                    if (Player.statLife <= 0)
+                    {
+                        Player.KillMe(deathReason, (double)RechargeHealthTax, 0, false);
+                        Durability = MaxDurability;
+                    }
                     Durability += RechargeHealthTax;
                 }
 
@@ -244,6 +251,48 @@ namespace DestroyerTest.Common
             }
         }
 
+        public override void OnRespawn()
+        {
+            Durability = MaxDurability;
+        }
+
+
+    }
+    
+    public class ShieldDrawLayer : PlayerDrawLayer
+    {
+        public override bool GetDefaultVisibility(PlayerDrawSet drawInfo)
+        {
+            if (drawInfo.drawPlayer.TryGetModPlayer<ShieldPlayer>(out ShieldPlayer Shield))
+            {
+                return Shield.Active && Shield.Absorb;
+            }
+            return false;
+        }
+
+        public override Position GetDefaultPosition() => new AfterParent(PlayerDrawLayers.LastVanillaLayer);
+
+        protected override void Draw(ref PlayerDrawSet drawInfo)
+        {
+            if (drawInfo.drawPlayer.TryGetModPlayer<ShieldPlayer>(out ShieldPlayer Shield))
+            {
+                Color color = Shield.themeColor;
+                var position = drawInfo.Center - Main.screenPosition;
+                position = new Vector2((int)position.X, (int)position.Y);
+
+                drawInfo.DrawDataCache.Add(new DrawData(
+                    DTAssetLib.BloomRingSharp.Value,
+                    position,
+                    null,
+                    Color.White,
+                    0f,
+                    DTAssetLib.BloomRingSharp.Size() * 0.5f, // Origin. Uses the texture's center.
+                    Shield.Radius / (DTAssetLib.BloomRingSharp.Value.Width / 2f),
+                    SpriteEffects.None,
+                    0
+                ));
+            }
+        }
     }
 
     public class ShieldGlobal : GlobalProjectile

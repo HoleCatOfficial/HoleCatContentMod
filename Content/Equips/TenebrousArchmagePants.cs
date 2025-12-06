@@ -20,7 +20,7 @@ namespace DestroyerTest.Content.Equips
 			Item.height = 18; // Height of the item
 			Item.value = Item.sellPrice(gold: 1); // How many coins the item is worth
 			Item.rare = ModContent.RarityType<ShimmeringRarity>(); // The rarity of the item
-			Item.defense = 45; // The amount of defense the item will give when equipped
+			Item.defense = 15; // The amount of defense the item will give when equipped
 		}
 
 		public override void UpdateEquip(Player player) {
@@ -31,8 +31,6 @@ namespace DestroyerTest.Content.Equips
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
 			CreateRecipe()
-                .AddIngredient<HeliciteChausses>(1)
-                .AddIngredient<ShimmeringSludge>(3)
                 .AddIngredient<Tenebris>(8)
 				.AddTile(TileID.LunarCraftingStation)
 				.Register();

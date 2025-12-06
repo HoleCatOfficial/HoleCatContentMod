@@ -8,6 +8,7 @@ using DestroyerTest.Content.Tiles.Riftplate;
 using DestroyerTest.Content.Projectiles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using DestroyerTest.Content.Projectiles.Weapon.Rogue;
 
 namespace DestroyerTest.Content.RogueItems
 {

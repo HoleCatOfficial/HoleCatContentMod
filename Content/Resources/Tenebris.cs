@@ -39,7 +39,6 @@ namespace DestroyerTest.Content.Resources
         public override void AddRecipes()
         {
 			CreateRecipe()
-				.AddIngredient<Item_Riftplate>(4)
 				.AddIngredient<ShimmeringSludge>(4)
 				.AddIngredient<ShimmeringShards>(4)
 				.AddIngredient<ShadeParticle>(4)

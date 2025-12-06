@@ -13,6 +13,7 @@ namespace DestroyerTest.Content.Consumables
 	public class HeliouricFlask : ModItem
 	{
 		public override void SetStaticDefaults() {
+			ItemID.Sets.ShimmerTransformToItem[ModContent.ItemType<HeliouricVial>()] = Type;
 			Item.ResearchUnlockCount = 20;
 
 			ItemID.Sets.DrinkParticleColors[Type] = [
@@ -44,9 +45,6 @@ namespace DestroyerTest.Content.Consumables
                 .AddIngredient(ItemID.Bottle)
                 .AddIngredient<Living_Shadow>(180)
                 .AddTile(TileID.ImbuingStation)
-                .Register();
-            Recipe.Create(ModContent.ItemType<HeliouricFlask>(), 1)
-                .AddIngredient(Type)
                 .Register();
 		}
 	}

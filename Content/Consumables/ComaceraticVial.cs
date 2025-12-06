@@ -15,6 +15,7 @@ namespace DestroyerTest.Content.Consumables
 	public class ComaceraticVial : ModItem
 	{
 		public override void SetStaticDefaults() {
+			ItemID.Sets.ShimmerTransformToItem[ModContent.ItemType<ComaceraticFlask>()] = Type;
 			Item.ResearchUnlockCount = 20;
 
 			ItemID.Sets.DrinkParticleColors[Type] = [
@@ -47,9 +48,6 @@ namespace DestroyerTest.Content.Consumables
                 .AddIngredient<Item_HeliciteCrystal>(8)
                 .AddIngredient(ItemID.FragmentSolar, 3)
                 .AddTile(TileID.ImbuingStation)
-                .Register();
-            Recipe.Create(ModContent.ItemType<ComaceraticFlask>(), 1)
-                .AddIngredient(Type)
                 .Register();
 		}
 	}

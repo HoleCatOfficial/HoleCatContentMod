@@ -15,6 +15,7 @@ using InnoVault.PRT;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.MeleeWeapons;
 using DestroyerTest.Content.Projectiles;
+using DestroyerTest.Content.Projectiles.Weapon.Rogue;
 
 namespace DestroyerTest.Content.MeleeWeapons
 {

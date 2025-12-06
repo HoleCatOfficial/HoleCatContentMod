@@ -11,7 +11,8 @@ using DestroyerTest.Common;
 using DestroyerTest.Content.Resources;
 using System.IO.Pipelines;
 using DestroyerTest.Rarity;
-using DestroyerTest.Rarity.Scepter; // Add this line if CT3_Swing is in the Projectiles namespace
+using DestroyerTest.Rarity.Scepter;
+using DestroyerTest.Content.Projectiles.Weapon.Scepter; // Add this line if CT3_Swing is in the Projectiles namespace
 
 namespace DestroyerTest.Content.Scepter
 {
@@ -31,7 +32,7 @@ namespace DestroyerTest.Content.Scepter
             base.SetDefaults();
 
             // Override stats unique to this scepter
-            ShootDMG = 17;
+            ShootDMG = 8;
             ShootCrit = 14;
             ThrowCrit = 36;
             KB = 2;
@@ -39,7 +40,7 @@ namespace DestroyerTest.Content.Scepter
             Rarity = ModContent.RarityType<PearlRarity>();
 
             // Assign projectile types
-            ShootID = ProjectileID.BallofFrost;
+            ShootID = ModContent.ProjectileType<FrozenFireball>();
             ThrowID = ModContent.ProjectileType<FrostScepterThrown>();
 
             // Optional: change sounds

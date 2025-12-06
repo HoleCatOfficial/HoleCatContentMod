@@ -11,6 +11,7 @@ using DestroyerTest.Content.Tiles.Riftplate;
 using DestroyerTest.Common;
 using Microsoft.Xna.Framework;
 using DestroyerTest.Content.Projectiles;
+using DestroyerTest.Content.Projectiles.player.ArmorSet;
 
 namespace DestroyerTest.Content.Equips
 {

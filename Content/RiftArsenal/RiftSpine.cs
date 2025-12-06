@@ -7,6 +7,7 @@ using DestroyerTest.Rarity;
 using DestroyerTest.Content.RogueItems;
 using DestroyerTest.Content.Tiles.Riftplate;
 using DestroyerTest.Content.Tiles.RiftConfigurator;
+using DestroyerTest.Content.Projectiles.Weapon.Rogue;
 
 namespace DestroyerTest.Content.RiftArsenal
 {
@@ -20,7 +21,7 @@ namespace DestroyerTest.Content.RiftArsenal
 		public override void SetDefaults() {
 			Item.useStyle = ItemUseStyleID.Swing;
 			Item.shootSpeed = 22f;
-			Item.shoot = ModContent.ProjectileType<Projectiles.RiftSpine_Thrown>();
+			Item.shoot = ModContent.ProjectileType<RiftSpine_Thrown>();
 			Item.width = 24;
 			Item.height = 96;
 			Item.maxStack = 1;

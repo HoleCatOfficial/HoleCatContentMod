@@ -22,7 +22,7 @@ namespace DestroyerTest.Content.Equips
 			// Fly time: 180 ticks = 3 seconds
 			// Fly speed: 9
 			// Acceleration multiplier: 2.5
-			ArmorIDs.Wing.Sets.Stats[Item.wingSlot] = new WingStats(180, 9f, 2.5f);
+			ArmorIDs.Wing.Sets.Stats[Item.wingSlot] = new WingStats(180, 6f, 2.5f, true);
             
 		}
 
@@ -65,7 +65,7 @@ namespace DestroyerTest.Content.Equips
 		public const int DashDuration = 35; // Duration of the dash afterimage effect in frames
 
 		// The initial velocity.  10 velocity is about 37.5 tiles/second or 50 mph
-		public const float DashVelocity = 30f;
+		public const float DashVelocity = 20f;
 
 		// The direction the player has double tapped.  Defaults to -1 for no dash double tap
 		public int DashDir = -1;

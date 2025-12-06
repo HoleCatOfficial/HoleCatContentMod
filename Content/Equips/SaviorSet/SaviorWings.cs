@@ -7,7 +7,6 @@ using Terraria.ModLoader;
 using DestroyerTest.Content.Resources;
   
 using DestroyerTest.Rarity;
-using DestroyerTest.Content.Equips.HeroSet;
 using DestroyerTest.Content.Tiles;
 
 namespace DestroyerTest.Content.Equips.SaviorSet
@@ -27,7 +26,7 @@ namespace DestroyerTest.Content.Equips.SaviorSet
 			Item.width = 40;
 			Item.height = 36;
 			Item.value = 10000;
-			Item.rare = ModContent.RarityType<GoliathRarity>(); // The rarity of the item
+			Item.rare = ModContent.RarityType<VesperRarity>(); // The rarity of the item
 			Item.accessory = true;
 		}
 

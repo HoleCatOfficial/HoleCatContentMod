@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Particles;
+using DestroyerTest.Rarity.Scepter;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
@@ -17,6 +18,7 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Common
@@ -41,6 +43,13 @@ namespace DestroyerTest.Common
         public int[] TenebrisBuffImmunities;
         public bool TenebrisCanSpawnInWorldEvilBiome = DownedBossSystem.downedCultistBoss;
         public bool TenebrisCanSpawnInShimmerBiome = DownedBossSystem.downedCultistBoss;
+
+        public static string GetModNPCLocalizationEntry(ModNPC npc, int variant = 1)
+        {
+            return Language.GetTextValue($"Mods.DestroyerTest.NPCs.{npc.Name}.BestiaryEntry{variant}");
+        }
+
+        public static string NoTexture = "DestroyerTest/Content/Extras/NoTexture";
         
 
         /// <summary>
@@ -166,6 +175,30 @@ namespace DestroyerTest.Common
             PRTLoader.GetParticleID<BlackFire6>(),
             PRTLoader.GetParticleID<BlackFire7>()
         };
+
+        public static int GetScepterArmorSellPricePerRarity(int rarity)
+        {
+            switch (rarity)
+            {
+                case var _ when rarity == ModContent.RarityType<PearlRarity>():
+                    return Item.sellPrice(0, 0, 4, 65);
+
+                case var _ when rarity == ModContent.RarityType<PaleFuchsiaRarity>():
+                    return Item.sellPrice(0, 2, 8, 65);
+
+                case var _ when rarity == ModContent.RarityType<WineRarity>():
+                    return Item.sellPrice(0, 4, 12, 85);
+
+                case var _ when rarity == ModContent.RarityType<CerisePinkRarity>():
+                    return Item.sellPrice(0, 12, 36, 85);
+
+                case var _ when rarity == ModContent.RarityType<IncarnadineRarity>():
+                    return Item.sellPrice(1, 24, 60, 85);
+
+                default:
+                    return -1;
+            }
+        }
     }
 
     public class DTPlayerUtil : ModPlayer
@@ -501,6 +534,30 @@ namespace DestroyerTest.Common
                     return Color.Lerp(HoleCatFireOrange, HoleCatFireBeige, time - 7f);
             }
         }
+
+        private static Color StellarFire1 = new Color(247, 233, 141);
+        private static Color StellarFire2 = new Color(207, 120, 90);
+        private static Color StellarFire3 = new Color(183, 61, 114);
+        private static Color StellarFire4 = new Color(143, 39, 120);
+        private static Color StellarFire5 = new Color(80, 38, 91);
+        private static Color StellarFire6 = new Color(33, 36, 37);
+        private static Color StellarFire7 = new Color(25, 33, 38);
+        private static Color StellarFire8 = new Color(18, 23, 24);
+
+        public static Color StellarFireGradient(float t)
+        {
+            
+            t = MathHelper.Clamp(t, 0f, 3f);
+
+            if (t < 1f)
+                return Color.Lerp(StellarFire1, StellarFire2, t);
+            else if (t < 2f)
+                return Color.Lerp(StellarFire3, StellarFire4, t - 1f);
+            else if (t < 3f)
+                return Color.Lerp(StellarFire5, StellarFire6, t - 2f);
+            else
+                    return Color.Lerp(StellarFire7, StellarFire8, t - 3f);
+        }
         
     }
 
@@ -528,6 +585,7 @@ namespace DestroyerTest.Common
         public static Asset<Texture2D> Swirl = ModContent.Request<Texture2D>($"{ParticlePath}/Swirl");
         public static Asset<Texture2D> FireRing = ModContent.Request<Texture2D>($"{ParticlePath}/Boom2");
         public static Asset<Texture2D> SwingFX = ModContent.Request<Texture2D>($"{ExtrasPath}/CircularSlash");
+        public static Asset<Texture2D> Slash144 = ModContent.Request<Texture2D>($"{ExtrasPath}/144Slash");
         public static Asset<Texture2D> Sparkle(int Variant)
         {
             if (Variant <= 0)
@@ -535,6 +593,15 @@ namespace DestroyerTest.Common
                 Variant = 1;
             }
             return ModContent.Request<Texture2D>($"{ParticlePath}/Shine{Variant}");
+        }
+
+        public static Asset<Texture2D> Streak(int Variant)
+        {
+            if (Variant <= 0)
+            {
+                Variant = 1;
+            }
+            return ModContent.Request<Texture2D>($"{ExtrasPath}/Streak{Variant}");
         }
 
         public static Asset<Texture2D> Star(int Variant)

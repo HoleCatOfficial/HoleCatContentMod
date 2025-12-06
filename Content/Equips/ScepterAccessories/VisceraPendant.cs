@@ -1,6 +1,7 @@
 
 using DestroyerTest.Common;
 using DestroyerTest.Content.Projectiles;
+using DestroyerTest.Content.Projectiles.player.Accessory;
 using DestroyerTest.Content.Resources;
 using Microsoft.Xna.Framework;
 using Steamworks;

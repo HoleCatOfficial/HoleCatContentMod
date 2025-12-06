@@ -1,5 +1,4 @@
 using DestroyerTest.Common;
-using DestroyerTest.Content.Projectiles.ConstitutionBoss;
 using DestroyerTest.Content.RiftBiome;
 using DestroyerTest.Content.Buffs;
 using log4net.Repository.Hierarchy;
@@ -24,8 +23,8 @@ using System.Collections.Generic;
 using static DestroyerTest.Content.Entities.ConstitutionClone;
 using System.Linq;
 using ReLogic.Content;
-using DestroyerTest.Content.Projectiles.VampireBoss;
-using DestroyerTest.Content.Projectiles.NightmareRose;
+using DestroyerTest.Content.Projectiles.Boss.VampireBoss;
+using DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss;
 using Terraria.Graphics;
 using DestroyerTest.Content.Projectiles;
 using rail;
@@ -49,6 +48,8 @@ using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.Dusts;
 using GlowmaskHelper.Content;
 using OpusLib;
+using DestroyerTest.Content.Projectiles.Boss;
+using DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame;
 
 namespace DestroyerTest.Content.Entities
 {
@@ -127,7 +128,8 @@ namespace DestroyerTest.Content.Entities
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
-                new FlavorTextBestiaryInfoElement("Legends claim that Mother Darkness once birthed two children, Khebmál and Shoerluan. Their quarrels grew so fierce that Heqain intervened, fearing they would destroy each other. She cast Shoerluan, who had renamed himself to Vourtreán, into the shade world, and bound Khebmál into a corrupt seedling, giving him a new name: Remeon, to help him release himself from his past. To common folk, this creature is remembered only as the Botanist’s Curse: a blight that raises strange purple flora, drains fertile soil, and drives farmers to madness. But those who know the truth of its origin as Mother Darkness’s lost children are under close watch by Heqain, who sees to it that this violent matter remains history."),
+                new FlavorTextBestiaryInfoElement(Language.GetTextValue("Mods.DestroyerTest.NPCs.NightmareRoseBoss.BestiaryEntry1")),
+                new FlavorTextBestiaryInfoElement(Language.GetTextValue("Mods.DestroyerTest.NPCs.NightmareRoseBoss.BestiaryEntry2")),
                 BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.TheCorruption
             });
         }
@@ -311,7 +313,7 @@ namespace DestroyerTest.Content.Entities
         {
             BorderActive = true;
             currentState = AttackState.SpawnIdle;
-            NPCHead = NPC.Center + new Vector2(0, -60);
+            NPCHead = NPC.Center + new Vector2(0, -79);
             Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Bottom, Vector2.Zero, ModContent.ProjectileType<SpawnSoul>(), 0, 0);
         }
 
@@ -472,7 +474,7 @@ namespace DestroyerTest.Content.Entities
             DTMusicConfig muscfg = ModContent.GetInstance<DTMusicConfig>();
             DTOptimizationsConfig optcfg = ModContent.GetInstance<DTOptimizationsConfig>();
 
-
+            NPCHead = NPC.Center + new Vector2(0, -79);
             DirectionToPlayerCenter = (player.Center - NPCHead).SafeNormalize(Vector2.UnitY);
 
             if (currentState != AttackState.Desperation && currentState != AttackState.KillIdle)
@@ -504,7 +506,7 @@ namespace DestroyerTest.Content.Entities
                     // Keep them on the same circumference
                     Vector2 Pos = NPCHead + Main.rand.NextVector2CircularEdge(BorderRad, BorderRad);
 
-                    Dust Border = Dust.NewDustPerfect(Pos, BorderDustType, Vector2.Zero, 0, default, 1f);
+                    Dust Border = Dust.NewDustPerfect(Pos, BorderDustType, Vector2.Zero, 0, BorderCol, 1f);
                     Border.noGravity = true;
                     Border.fadeIn = 1f;
                     Border.scale = Main.rand.NextFloat(0.2f, 4.0f);
@@ -713,6 +715,8 @@ namespace DestroyerTest.Content.Entities
                     {
                         NPC.dontTakeDamage = true;
                         ShouldCenterCameraOnNPC = true;
+                        player.channel = false;
+                        player.moveSpeed *= 0;
                         if (SpawnCount <= 0)
                         {
                             SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/RoseSpawnIdle"));
@@ -745,15 +749,14 @@ namespace DestroyerTest.Content.Entities
                             VingetteScale += 0.75f;
                         }
 
-
                         int IdleMax = -1;
                         if (!Main.expertMode && !Main.masterMode && !EternityIsActive())
                         {
-                            IdleMax = 100;
+                            IdleMax = 80;
                         }
                         if (Main.expertMode && !Main.masterMode && !EternityIsActive())
                         {
-                            IdleMax = 80;
+                            IdleMax = 70;
                         }
                         if (Main.masterMode || EternityIsActive())
                         {
@@ -863,22 +866,7 @@ namespace DestroyerTest.Content.Entities
                             {
                                 SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/ChargeBreak") with { PitchVariance = 1f });
 
-                                for (int i = 0; i < FlameRingVectorCount; i++)
-                                {
-                                    float randomOffset = Main.rand.NextFloat(-0.4f, 0.4f);
-                                    float angle = FlameRingBaseAngle + i * FlameRingAngleStep + randomOffset;
-
-                                    float radius = FlameRingStartRad;
-                                    float curvedAngle = angle - FlameRingRotSpeed * MathHelper.PiOver2;
-
-                                    Vector2 startPos = NPC.Center + radius * new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
-                                    Vector2 outwardVel = new Vector2((float)Math.Cos(curvedAngle), (float)Math.Sin(curvedAngle)) * 0.5f; // outward speed
-                                    Vector2 spinVel = outwardVel.RotatedBy(MathHelper.PiOver2) * 0.8f; // tangential spin
-
-                                    Vector2 finalVel = (outwardVel + spinVel).SafeNormalize(Vector2.UnitY) * FlameRingRotSpeed;
-
-                                    Projectile.NewProjectile(Entity.GetSource_FromThis(), startPos, finalVel, ModContent.ProjectileType<TenebrisFlames>(), 20, 5, ai2: 2);
-                                }
+                                Opus.RingProjectileOutwardRandomDir(ModContent.ProjectileType<TenebrisFlames>(), 7, player.Center, 300, 25, 1, 8, AI2: 2);
                                 FlameRingCount++;
                             }
                             if (FlameRingCount >= 9)
@@ -888,25 +876,19 @@ namespace DestroyerTest.Content.Entities
                         }
                         else
                         {
-                            SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/Constitution_Jab") with { PitchVariance = 1f, Volume = 3f });
+                            
 
-                            for (int i = 0; i < FlameRingVectorCount; i++)
+                            if (FlameRingCount < 9 && Main.GameUpdateCount % 60 == 0)
                             {
-                                float randomOffset = Main.rand.NextFloat(-0.4f, 0.4f);
-                                float angle = FlameRingBaseAngle + i * FlameRingAngleStep + randomOffset;
-
-                                float radius = FlameRingStartRad;
-                                float curvedAngle = angle - FlameRingRotSpeed * MathHelper.PiOver2;
-
-                                Vector2 startPos = NPC.Center + radius * new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
-                                Vector2 outwardVel = new Vector2((float)Math.Cos(curvedAngle), (float)Math.Sin(curvedAngle)) * 0.5f; // outward speed
-                                Vector2 spinVel = outwardVel.RotatedBy(MathHelper.PiOver2) * 0.8f; // tangential spin
-
-                                Vector2 finalVel = (outwardVel + spinVel).SafeNormalize(Vector2.UnitY) * FlameRingRotSpeed;
-
-                                Projectile.NewProjectile(Entity.GetSource_FromThis(), startPos, finalVel, ModContent.ProjectileType<CursedNodeCrystal>(), 15, 5, ai2: 2);
+                                SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/NodeAttackTS") with { PitchVariance = 1f, Volume = 3f });
+                                Opus.RadialSpreadProjectile(ModContent.ProjectileType<NightmareRoseCursedCrystal>(), 9, NPC.Center, 16, 4, 12, AI1: 1, RandomOffset: true);
+                                Opus.RadialSpreadProjectile(ModContent.ProjectileType<NightmareRoseCursedCrystal>(), 9, NPC.Center, 16, 4, 12, AI1: -1, RandomOffset: true);
+                                FlameRingCount++;
                             }
-                            ResetState();
+                            if (FlameRingCount >= 9)
+                            {
+                                ResetState();
+                            }
                         }
                         break;
                     }
@@ -934,22 +916,7 @@ namespace DestroyerTest.Content.Entities
                         }
                         else
                         {
-                            for (int i = 0; i < FlameRingVectorCount; i++)
-                            {
-                                float randomOffset = Main.rand.NextFloat(-0.4f, 0.4f);
-                                float angle = FlameRingBaseAngle + i * FlameRingAngleStep + randomOffset;
-
-                                float radius = FlameRingStartRad;
-                                float curvedAngle = angle - FlameRingRotSpeed * MathHelper.PiOver2;
-
-                                Vector2 startPos = NPC.Center + radius * new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
-                                Vector2 outwardVel = new Vector2((float)Math.Cos(curvedAngle), (float)Math.Sin(curvedAngle)) * 1.5f; // outward speed
-                                Vector2 spinVel = outwardVel.RotatedBy(MathHelper.PiOver2) * 0.8f; // tangential spin
-
-                                Vector2 finalVel = (outwardVel + spinVel).SafeNormalize(Vector2.UnitY) * FlameRingRotSpeed;
-
-                                Projectile.NewProjectile(Entity.GetSource_FromThis(), startPos, finalVel, ModContent.ProjectileType<BlossomMine>(), 16, 5, ai2: 2);
-                            }
+                            Opus.RingProjectileOutwardRandomDir(ModContent.ProjectileType<TormentedSoul2>(), 7, NPCHead, 30, 20, 1, 12);
                             ResetState();
                         }
                         break;
@@ -1488,6 +1455,7 @@ namespace DestroyerTest.Content.Entities
 
         public void BlossomMines(Vector2 SpawnPos)
         {
+            SoundEngine.PlaySound(SoundID.Item163);
             for (int e = 0; e < 6; e++)
             {
                 Vector2 minePosition = Main.rand.NextVector2FromRectangle(
@@ -1628,51 +1596,94 @@ namespace DestroyerTest.Content.Entities
 
     public class NightmareRoseCameraModification : ModSystem
     {
-        private Vector2 camPos; // our own camera position
+        private Vector2 camPos;
         private bool hasCamPos = false;
 
         public override void ModifyScreenPosition()
         {
-            if (Main.dedServ) return;
+            if (Main.dedServ)
+                return;
 
-            // initialize our camPos the first time
-            if (!hasCamPos) { camPos = Main.screenPosition; hasCamPos = true; }
+            DTConfig cfg = ModContent.GetInstance<DTConfig>();
+            ScreenshakePlayer ScreenShake = ModContent.GetInstance<ScreenshakePlayer>();
 
-            Vector2 target;
-            if (NightmareRoseBoss.ShouldCenterCameraOnNPC &&
-                TryGetBoss(out NPC boss))
+            if (!cfg.DragCamera)
+                return;
+
+            if (!hasCamPos)
             {
-                target = boss.Center - new Vector2(Main.screenWidth * 0.5f,
-                                                Main.screenHeight * 0.5f);
+                camPos = Main.screenPosition;
+                hasCamPos = true;
+            }
+
+            Vector2 screenHalf = new Vector2(Main.screenWidth * 0.5f, Main.screenHeight * 0.5f);
+            Vector2 playerCenter = Main.LocalPlayer.Center;
+
+            bool anyBossActive = IsAnyBossActive();
+
+            // initialize to default to silence compiler warnings
+            NPC nightmareBoss = default!;
+            bool hasNightmareBoss = NightmareRoseBoss.ShouldCenterCameraOnNPC && TryGetNightmareRoseBoss(out nightmareBoss);
+
+            Vector2 target = hasNightmareBoss
+                ? nightmareBoss.Center - screenHalf
+                : playerCenter - screenHalf;
+
+            float distToPlayer = Vector2.Distance(camPos + screenHalf, playerCenter);
+
+            if (!anyBossActive && distToPlayer > Main.screenWidth)
+            {
+                // snap if too far and no boss is active
+                camPos = playerCenter - screenHalf;
             }
             else
             {
-                target = Main.LocalPlayer.Center - new Vector2(Main.screenWidth * 0.5f,
-                                                            Main.screenHeight * 0.5f);
+                if (!ScreenShake.isShaking)
+                {
+                    // smooth follow
+                    float lerpFactor = anyBossActive ? 0.08f : 0.12f;
+                    camPos = Vector2.Lerp(camPos, target, lerpFactor);
+                }
             }
 
-            // do the smoothing on our own state
-            camPos = Vector2.Lerp(camPos, target, 0.1f);
+            Vector2 shakeOffset = ScreenShake.GetShakeOffset();
 
-            // tell tModLoader where the camera should be this frame
             Main.screenPosition = camPos;
+            camPos += shakeOffset;
+            Main.screenPosition += shakeOffset;
         }
 
-        private bool TryGetBoss(out NPC boss)
+        private bool IsAnyBossActive()
         {
             for (int i = 0; i < Main.maxNPCs; i++)
             {
-                if (Main.npc[i].active &&
-                    Main.npc[i].type == ModContent.NPCType<NightmareRoseBoss>())
+                NPC n = Main.npc[i];
+                if (n != null && n.active && n.boss)
+                    return true;
+            }
+            return false;
+        }
+
+        private bool TryGetNightmareRoseBoss(out NPC boss)
+        {
+            for (int i = 0; i < Main.maxNPCs; i++)
+            {
+                NPC n = Main.npc[i];
+                if (n.active && n.type == ModContent.NPCType<NightmareRoseBoss>())
                 {
-                    boss = Main.npc[i];
+                    boss = n;
                     return true;
                 }
             }
+
             boss = default;
             return false;
         }
     }
+
+
+
+
 
 
     public class NightmareRoseBCL : ModSystem
@@ -1927,6 +1938,7 @@ namespace DestroyerTest.Content.Entities
     public class NightmareeRoseBackgroundProj : ModProjectile
     {
         public override string Texture => "DestroyerTest/Content/Extras/FadeLine";
+        private Asset<Texture2D> WindTex;
         public override void SetDefaults()
         {
             Projectile.width = 10;
@@ -1939,6 +1951,7 @@ namespace DestroyerTest.Content.Entities
             Projectile.tileCollide = false;
             Projectile.ignoreWater = true;
             Projectile.hide = true;
+            WindTex = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/EvilBossWind", AssetRequestMode.AsyncLoad);
         }
 
         public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
@@ -1962,8 +1975,6 @@ namespace DestroyerTest.Content.Entities
 
         public override bool PreDraw(ref Color lightColor)
         {
-            Texture2D BGTex = DTAssetLib.TilableNoise(8).Value;
-            Texture2D BGTex2 = DTAssetLib.TilableNoise(8).Value;
             SpriteBatch spriteBatch = Main.spriteBatch;
             DTUtils Utility = new DTUtils();
             DTOptimizationsConfig optcfg = ModContent.GetInstance<DTOptimizationsConfig>();
@@ -1981,41 +1992,41 @@ namespace DestroyerTest.Content.Entities
                 float scrollSpeedX1 = 600f;
                 float scrollSpeedY1 = 30f;
 
-                float scrollOffsetX1 = (time * scrollSpeedX1) % BGTex.Width;
-                float scrollOffsetY1 = (time * scrollSpeedY1) % BGTex.Height;
+                float scrollOffsetX1 = (time * scrollSpeedX1) % WindTex.Value.Width;
+                float scrollOffsetY1 = (time * scrollSpeedY1) % WindTex.Value.Height;
 
                 int screenW = Main.screenWidth;
                 int screenH = Main.screenHeight;
 
                 // --- draw one tile beyond each edge ---
-                float startX = -BGTex.Width;
-                float startY = -BGTex.Height;
-                float endX = screenW + BGTex.Width;
-                float endY = screenH + BGTex.Height;
+                float startX = -WindTex.Value.Width;
+                float startY = -WindTex.Value.Height;
+                float endX = screenW + WindTex.Value.Width;
+                float endY = screenH + WindTex.Value.Height;
 
                 // --- Draw first layer ---
-                for (float x = -scrollOffsetX1 + startX; x < endX; x += BGTex.Width)
+                for (float x = -scrollOffsetX1 + startX; x < endX; x += WindTex.Value.Width)
                 {
-                    for (float y = -scrollOffsetY1 + startY; y < endY; y += BGTex.Height)
+                    for (float y = -scrollOffsetY1 + startY; y < endY; y += WindTex.Value.Height)
                     {
-                        spriteBatch.Draw(BGTex, new Vector2(x, y), null, drawColor, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+                        spriteBatch.Draw(WindTex.Value, new Vector2(x, y), null, drawColor, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
                     }
                 }
 
                 float scrollSpeedX2 = 250f;
                 float scrollSpeedY2 = -60f; // opposite direction for contrast
 
-                float scrollOffsetX2 = (time * scrollSpeedX2) % BGTex2.Width;
-                float scrollOffsetY2 = (time * scrollSpeedY2) % BGTex2.Height;
+                float scrollOffsetX2 = (time * scrollSpeedX2) % WindTex.Value.Width;
+                float scrollOffsetY2 = (time * scrollSpeedY2) % WindTex.Value.Height;
 
                 Color drawColor2 = drawColor * 0.8f; // slightly dimmer to layer properly
 
                 // --- Draw second layer ---
-                for (float x = -scrollOffsetX2 + startX; x < endX; x += BGTex2.Width)
+                for (float x = -scrollOffsetX2 + startX; x < endX; x += WindTex.Value.Width)
                 {
-                    for (float y = -scrollOffsetY2 + startY; y < endY; y += BGTex2.Height)
+                    for (float y = -scrollOffsetY2 + startY; y < endY; y += WindTex.Value.Height)
                     {
-                        spriteBatch.Draw(BGTex2, new Vector2(x, y), null, drawColor2, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+                        spriteBatch.Draw(WindTex.Value, new Vector2(x, y), null, drawColor2, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
                     }
                 }
 

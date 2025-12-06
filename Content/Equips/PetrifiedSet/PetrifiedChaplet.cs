@@ -1,12 +1,16 @@
 using System;
+using System.Collections.Generic;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.MeleeWeapons;
 using DestroyerTest.Content.Particles;
+using DestroyerTest.Content.Projectiles;
+using DestroyerTest.Content.Projectiles.Weapon.Melee;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.Resources.Cloths;
 using DestroyerTest.Content.SummonItems;
 using DestroyerTest.Content.Tiles;
+using DestroyerTest.Rarity.Scepter;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -19,48 +23,43 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Equips.PetrifiedSet
 {
-	// The AutoloadEquip attribute automatically attaches an equip texture to this item.
-	// Providing the EquipType.Head value here will result in TML expecting a X_Head.png file to be placed next to the item's main texture.
 	[AutoloadEquip(EquipType.Head)]
 	public class PetrifiedChaplet : ModItem
 	{
-
-
 		public override void SetStaticDefaults()
 		{
-			// If your head equipment should draw hair while drawn, use one of the following:
-			//ArmorIDs.Head.Sets.DrawHead[Item.headSlot] = false; // Don't draw the head at all. Used by Space Creature Mask
-			// ArmorIDs.Head.Sets.DrawHatHair[Item.headSlot] = true; // Draw hair as if a hat was covering the top. Used by Wizards Hat
-			ArmorIDs.Head.Sets.DrawFullHair[Item.headSlot] = true; // Draw all hair as normal. Used by Mime Mask, Sunglasses
-			// ArmorIDs.Head.Sets.DrawsBackHairWithoutHeadgear[Item.headSlot] = true;
-
+			ArmorIDs.Head.Sets.DrawFullHair[Item.headSlot] = true;
 		}
-
 		public override void SetDefaults()
 		{
-			Item.width = 32; // Width of the item
-			Item.height = 28; // Height of the item
-			Item.value = Item.sellPrice(gold: 1); // How many coins the item is worth
-			Item.rare = ItemRarityID.Green; // The rarity of the item
-			Item.defense = 5; // The amount of defense the item will give when equipped
+			Item.width = 32;
+			Item.height = 28;
+			Item.value = DTUtils.GetScepterArmorSellPricePerRarity(Item.rare);
+			Item.rare = ModContent.RarityType<WineRarity>();
+			Item.defense = 8;
 		}
 
-		// IsArmorSet determines what armor pieces are needed for the setbonus to take effect
 		public override bool IsArmorSet(Item head, Item body, Item legs)
 		{
 			return body.type == ModContent.ItemType<PetrifiedChestplate>() && legs.type == ModContent.ItemType<PetrifiedGreaves>();
 		}
-
-		// UpdateArmorSet allows you to give set bonuses to the armor.
 		public override void UpdateArmorSet(Player player)
 		{
 			if (player.TryGetModPlayer<PetrifiedShieldPlayer>(out PetrifiedShieldPlayer Shield))
-            {
-                Shield.Active = true;
-            }
-            ScepterClassStats.Range += 8;
-            player.lavaImmune = true;
-            player.setBonus = Language.GetText("Mods.DestroyerTest.Items.PetrifiedChaplet.SetBonus").Value;
+			{
+				Shield.Active = true;
+			}
+			if (player.TryGetModPlayer<PetrifiedScepterPlayer>(out PetrifiedScepterPlayer Scepter))
+			{
+				Scepter.Active = true;
+			}
+			ScepterClassStats.ThrowSpeedModifier = 2.5f;
+			player.buffImmune[BuffID.OnFire] = true;
+			player.buffImmune[BuffID.Burning] = true;
+			player.buffImmune[BuffID.OnFire3] = true;
+			player.buffImmune[BuffID.Frostburn] = true;
+			player.buffImmune[BuffID.Frostburn2] = true;
+			player.setBonus = Language.GetText("Mods.DestroyerTest.Items.PetrifiedChaplet.SetBonus").Value;
 		}
 
 		public override void ArmorSetShadows(Player player)
@@ -68,8 +67,39 @@ namespace DestroyerTest.Content.Equips.PetrifiedSet
 			player.armorEffectDrawOutlines = true;
 		}
 
-
+		public override void ModifyTooltips(List<TooltipLine> tooltips)
+		{
+			Item body = new Item();
+			body.SetDefaults(ModContent.ItemType<PetrifiedChestplate>());
+			Item legs = new Item();
+			legs.SetDefaults(ModContent.ItemType<PetrifiedGreaves>());
+			if (IsArmorSet(Item, body, legs))
+			{
+				var pityText = Language.GetText("Mods.DestroyerTest.ShieldPlayer.ShieldLine");
+				tooltips.Add(new TooltipLine(Mod, "ShieldInfo", pityText.Value));
+			}
+		}
 	}
+
+	public class PetrifiedScepterPlayer : ModPlayer
+    {
+		public bool Active = false;
+		public override void ResetEffects()
+		{
+			Active = false;
+		}
+
+        public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+		{
+			if (Active && Player.altFunctionUse != 2 && (Player.HeldItem.DamageType == ModContent.GetInstance<ScepterClass>() || Main.projectile[Player.heldProj].DamageType == ModContent.GetInstance<ScepterClass>()))
+			{
+				Projectile.NewProjectile(source, position, velocity.RotatedBy(-0.5), ModContent.ProjectileType<FlameBurst>(), damage / 3, 4, Player.whoAmI);
+				Projectile.NewProjectile(source, position, velocity.RotatedBy(0.5), ModContent.ProjectileType<FrostBurst>(), damage / 3, 4, Player.whoAmI);
+				return true;
+            }
+            return true;
+        }
+    }
 	
 	public class PetrifiedShieldPlayer : ShieldPlayer
     {
@@ -80,16 +110,15 @@ namespace DestroyerTest.Content.Equips.PetrifiedSet
 			get => _durability;
 			set => _durability = Math.Clamp(value, 0, MaxDurability);
 		}
-
         public override int Radius => 160;
         public override Color themeColor => ColorLib.JavelinEnergy;
         public override NetworkText[] DeathMSGs => new NetworkText[]
         {
             NetworkText.FromLiteral($"{Player.name} was sucked dry."),
             NetworkText.FromLiteral($"{Player.name} gave a little too much in return for too little."),
-            NetworkText.FromLiteral($"{Player.name} got folded like a chair."),
+            NetworkText.FromLiteral($"{Player.name} was consumed by fire and frost."),
             NetworkText.FromLiteral($"{Player.name} didnt have it in them to sustain their shield.")
         };
-        public override int RechargeHealthTax => 5;
+        public override int RechargeHealthTax => 25;
     }
 }

@@ -85,47 +85,10 @@ namespace DestroyerTest.Content.Buffs
 			*/
 		}
 
-        public int GlyphRelease = 0;
-        public int GlyphReleaseSmall = 0;
-
-        public static bool RingActive = false;
+        
 
         public override void Update(Player player, ref int buffIndex)
         {
-
-
-            // Check if the player is still wearing the full armor set
-            bool hasFullArmorSet = player.armor[0].type == ModContent.ItemType<TenebrousArchmageHat>() &&
-                                player.armor[1].type == ModContent.ItemType<TenebrousArchmageCoat>() &&
-                                player.armor[2].type == ModContent.ItemType<TenebrousArchmagePants>();
-
-            if (hasFullArmorSet)
-            {
-                // If the projectile is already present, keep the buff going
-                if (RingActive == false)
-                {
-                    PRTLoader.NewParticle(PRTLoader.GetParticleID<RuneCircle2>(), player.Center, new Vector2(0.01f, 0.01f), ColorLib.TenebrisGradient, 1);
-                    RingActive = true;
-                }
-            }
-            else
-            {
-                // If the armor set is not equipped, let the buff expire naturally
-                player.DelBuff(buffIndex); // Remove the buff immediately
-            }
-
-            GlyphRelease++;
-
-            if (player.HasBuff(ModContent.BuffType<ShimmeringEmpowerment>()) && GlyphRelease >= 120)
-            {
-                CombatText.NewText(player.Hitbox, Color.SkyBlue, CrazyText.scrambledString_Small, true);
-                GlyphRelease = 0;
-            }
-            if (player.HasBuff(ModContent.BuffType<ShimmeringEmpowerment>()) && GlyphReleaseSmall >= 60)
-            {
-                CombatText.NewText(player.Hitbox, Color.Navy, CrazyText.scrambledString_Single, true);
-                GlyphReleaseSmall = 0;
-            }
 
         }
 

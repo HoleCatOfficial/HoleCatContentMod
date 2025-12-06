@@ -54,35 +54,35 @@ namespace DestroyerTest.Content.UI
         {
             base.DrawSelf(spriteBatch);
 
-            NightPlayer nightPlayer = player.GetModPlayer<NightPlayer>();
+            if (player.TryGetModPlayer<NightPlayer>(out NightPlayer nightPlayer))
+            {
+                // Fade logic
+                if (nightPlayer.Cooldown)
+                    opacity = MathHelper.Clamp(opacity + 0.05f, 0f, 1f); // fade in
+                else
+                    opacity = MathHelper.Clamp(opacity - 0.05f, 0f, 1f); // fade out
 
-            // Fade logic
-            if (nightPlayer.Cooldown)
-                opacity = MathHelper.Clamp(opacity + 0.05f, 0f, 1f); // fade in
-            else
-                opacity = MathHelper.Clamp(opacity - 0.05f, 0f, 1f); // fade out
+                Color clr = Color.White * opacity;
 
-            Color clr = Color.White * opacity;
+                if (barTexture == null)
+                    barTexture = ModContent.Request<Texture2D>("DestroyerTest/Assets/Textures/NightSetCooldownBar").Value;
 
-            if (barTexture == null)
-                barTexture = ModContent.Request<Texture2D>("DestroyerTest/Assets/Textures/NightSetCooldownBar").Value;
+                DTUIConfig cfg = ModContent.GetInstance<DTUIConfig>();
 
-            DTUIConfig cfg = ModContent.GetInstance<DTUIConfig>();
+                // Calculate the frame based on cooldown
+                float progress = 1f - (float)nightPlayer.CooldownTime / 360f;
+                int frame = (int)MathHelper.Clamp(progress * totalFrames, 0, totalFrames - 1); // <-- changed
 
-            // Calculate the frame based on cooldown
-            float progress = 1f - (float)nightPlayer.CooldownTime / 360f;
-            int frame = (int)MathHelper.Clamp(progress * totalFrames, 0, totalFrames - 1); // <-- changed
+                Rectangle sourceRect = new Rectangle(
+                    0, frame * (barTexture.Height / totalFrames), barTexture.Width, barTexture.Height / totalFrames
+                );
 
-            Rectangle sourceRect = new Rectangle(
-                0, frame * (barTexture.Height / totalFrames), barTexture.Width, barTexture.Height / totalFrames
-            );
-
-            Vector2 position = new Vector2(
-                (Main.screenWidth / 2f - barTexture.Width / 2f) + cfg.NightBarXPos,
-                (Main.screenHeight / 2f + 200) + cfg.NightBarYPos
-            );
-
-            spriteBatch.Draw(barTexture, position, sourceRect, clr);
+                Vector2 position = new Vector2(
+                    (Main.screenWidth / 2f - barTexture.Width / 2f) + cfg.NightBarXPos,
+                    (Main.screenHeight / 2f + 200) + cfg.NightBarYPos
+                );
+                spriteBatch.Draw(barTexture, position, sourceRect, clr);
+            }
         }
 
     }

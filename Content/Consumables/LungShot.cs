@@ -3,6 +3,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.Audio;
+using DestroyerTest.Content.Resources;
 
 namespace DestroyerTest.Content.Consumables
 {
@@ -35,6 +36,15 @@ namespace DestroyerTest.Content.Consumables
 			Item.value = Item.buyPrice(gold: 1);
 			Item.buffType = ModContent.BuffType<Buffs.StoneLungs>(); // Specify an existing buff to be applied when used.
 			Item.buffTime = BuffTimeInt; // The amount of time the buff declared in Item.buffType will last in ticks. 5400 / 60 is 90, so this buff will last 90 seconds.
+		}
+
+		public override void AddRecipes()
+        {
+            CreateRecipe(5)
+                .AddIngredient(ItemID.BottledWater)
+                .AddIngredient<Living_Shadow>(8)
+                .AddTile(TileID.ImbuingStation)
+                .Register();
 		}
 	}
 }

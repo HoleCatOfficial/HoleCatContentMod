@@ -43,7 +43,7 @@ namespace DestroyerTest.Content.Buffs
         {
 			if (lifeRegenDebuff)
 			{
-				Dust.NewDust(npc.position, npc.width, npc.height, DustID.Water_Snow, 0.0f, -1f, 0, default, 1);
+				Dust.NewDust(npc.position, npc.width, npc.height, DustID.Water_Snow, 0.0f, 1f, 0, default, 1);
 			}
             base.AI(npc);
         }
@@ -75,7 +75,7 @@ namespace DestroyerTest.Content.Buffs
         {
             if (lifeRegenDebuff)
             {
-                Dust.NewDust(Player.position, Player.width, Player.height, DustID.Water_Snow, 0.0f, -1f, 0, default, 1);
+                Dust.NewDust(Player.position, Player.width, Player.height, DustID.Water_Snow, 0.0f, 1f, 0, default, 1);
 			}
             base.PostUpdateBuffs();
         }

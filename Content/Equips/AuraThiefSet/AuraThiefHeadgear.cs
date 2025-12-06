@@ -14,7 +14,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using System;
-using InnoVault.PRT;
+using DestroyerTest.Common;
 
 namespace DestroyerTest.Content.Equips.AuraThiefSet
 {
@@ -78,7 +78,7 @@ namespace DestroyerTest.Content.Equips.AuraThiefSet
 
 		// UpdateArmorSet allows you to give set bonuses to the armor.
 		public override void UpdateArmorSet(Player player) {
-			player.GetDamage(DamageClass.Melee) += 8;
+			player.GetDamage(DamageClass.Melee) *= 0.08f;
 			player.buffImmune[BuffID.Frostburn] = true;
 			player.buffImmune[BuffID.Frostburn2] = true;
 			player.buffImmune[BuffID.Frozen] = true;

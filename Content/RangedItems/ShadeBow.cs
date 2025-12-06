@@ -68,7 +68,7 @@ namespace DestroyerTest.Content.RangedItems
         // Uzi/Molten Fury style: Replace normal Bullets with High Velocity
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<TenebrisStar>(), Item.damage / 2, 2, player.whoAmI, ai2: 1);
+            Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<TenebrisStarFriendly>(), Item.damage / 2, 2, player.whoAmI, ai2: 1);
             return true;
         }
 		// What if I wanted multiple projectiles in a even spread? (Vampire Knives)

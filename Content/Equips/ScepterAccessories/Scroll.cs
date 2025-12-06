@@ -1,6 +1,5 @@
 using DestroyerTest.Common;
 using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Content.Projectiles.ConstitutionBoss;
 using DestroyerTest.Content.Projectiles.HellWeapons;
 using Microsoft.Xna.Framework;
 using Terraria;
@@ -14,6 +13,8 @@ using System.Linq;
 using Terraria.GameContent.ItemDropRules;
 using OpusLib;
 using DestroyerTest.Rarity.Scepter;
+using DestroyerTest.Content.Projectiles.player.Accessory;
+using DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss;
 
 namespace DestroyerTest.Content.Equips.ScepterAccessories
 {
@@ -248,14 +249,14 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
                 {
                     if (Main.rand.NextBool(3))
                     {
-                        for (int t = 0; t < 5; t++)
+                        for (int t = 0; t < 4; t++)
                         {
                             Projectile.NewProjectile(
                                 Player.GetSource_ItemUse(item),
                                 Player.Center,
                                 velocity.RotatedByRandom(4),
                                 ProjectileID.NorthPoleSpear,
-                                damage,
+                                (int)(damage * 0.75f),
                                 knockback,
                                 Player.whoAmI
                             );
@@ -336,7 +337,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
                             heading.Normalize();
                             heading *= velocity.Length();
                             heading.Y += Main.rand.Next(-40, 41) * 0.02f;
-                            Projectile Star = Projectile.NewProjectileDirect(Player.GetSource_ItemUse(item), position2, heading, ProjectileID.StarWrath, damage / 2, knockback, Player.whoAmI, 0f, ceilingLimit);
+                            Projectile Star = Projectile.NewProjectileDirect(Player.GetSource_ItemUse(item), position2, heading, ProjectileID.StarWrath, damage / 8, knockback, Player.whoAmI, 0f, ceilingLimit);
                             Star.timeLeft = 600;
                         }
                     }
@@ -379,7 +380,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
                                     Player.Center,
                                     velocity,
                                     ProjectileID.WeatherPainShot,
-                                    damage / 2,
+                                    damage / 4,
                                     knockback,
                                     Player.whoAmI
                                 );
@@ -729,25 +730,24 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
         public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
         {
             base.ModifyNPCLoot(npc, npcLoot);
-            OpusNPCDropHelper DH = new OpusNPCDropHelper();
 
-            if (DH.MoltenLegionEnemiesExclusive.Contains(npc.type))
+            if (OpusNPCDropHelper.MoltenLegionEnemiesExclusive.Contains(npc.type))
             {
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<IncendiaryScroll>(), 8, 1, 1));
             }
-            if (DH.DiabolicFactionEnemiesExclusive.Contains(npc.type))
+            if (OpusNPCDropHelper.DiabolicFactionEnemiesExclusive.Contains(npc.type))
             {
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<DiabolicScroll>(), 8, 1, 1));
             }
-            if (DH.RustedCompanyEnemiesExclusive.Contains(npc.type))
+            if (OpusNPCDropHelper.RustedCompanyEnemiesExclusive.Contains(npc.type))
             {
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<RustyPendant>(), 8, 1, 1));
             }
-            if (DH.MarchingBonesFactionEnemies.Contains(npc.type))
+            if (OpusNPCDropHelper.MarchingBonesFactionEnemies.Contains(npc.type))
             {
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<TemporalGlove>(), 8, 1, 1));
             }
-            if (DH.NecromanticFactionEnemies.Contains(npc.type))
+            if (OpusNPCDropHelper.NecromanticFactionEnemies.Contains(npc.type))
             {
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CurseScroll>(), 8, 1, 1));
             }

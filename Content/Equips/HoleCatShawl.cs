@@ -122,13 +122,13 @@ namespace DestroyerTest.Content.Equips
                                 Entity.GetSource_Accessory(Player.armor.FirstOrDefault(item => item.type == ModContent.ItemType<HoleCatShawl>())),
                                 Player.Center,
                                 direction,
-                                ModContent.ProjectileType<OilProjectile>(),
+                                ModContent.ProjectileType<TenebrisFlames>(),
                                 160,
                                 4,
                                 Main.myPlayer,
                                 default,
                                 default,
-                                1
+                                ai2: 2
                             );
                         }
                     }

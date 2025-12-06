@@ -20,7 +20,7 @@ namespace DestroyerTest.Content.Particles
         // Override this function, it will be called once when the particle is generated.
         // PRT entities are independent instances, so the settings in this function
         // can also be applied to each instance individually, similar to ModProjectile.SetDefaults.
-        public int MaxLifetime => 40;
+        public int MaxLifetime => 100;
         public override void SetProperty()
         {
             // PRTDrawMode determines which rendering mode the instance will be batched into.

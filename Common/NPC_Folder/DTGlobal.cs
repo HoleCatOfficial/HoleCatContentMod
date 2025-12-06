@@ -11,6 +11,7 @@ using DestroyerTest.Content.Consumables;
 using DestroyerTest.Content.MeleeWeapons;
 using DestroyerTest.Content.Ammunitions;
 using DestroyerTest.Content.Scepter;
+using DestroyerTest.Content.Tools;
 
 namespace DestroyerTest.Common.NPC_Folder
 {
@@ -224,9 +225,7 @@ namespace DestroyerTest.Common.NPC_Folder
         {
             if (shop.NpcType == NPCID.SantaClaus)
             {
-
                 shop.Add<WinterWonderland>(Condition.Hardmode);
-
             }
 
             if (shop.NpcType == NPCID.Merchant)
@@ -237,6 +236,11 @@ namespace DestroyerTest.Common.NPC_Folder
             if (shop.NpcType == NPCID.TravellingMerchant)
             {
                 shop.Add<FoxScepter>(Condition.DownedKingSlime); // Or wherever your item is
+            }
+
+            if (shop.NpcType == ModContent.NPCType<Scholar>())
+            {
+                shop.Add<ShiningObelisk>(Condition.DownedCultist);
             }
 
             if (shop.NpcType == NPCID.ArmsDealer && (DownedBossSystem.downedNightmareRoseBoss || DownedBossSystem.downedWyvernCorpseBoss))

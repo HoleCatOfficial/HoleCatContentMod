@@ -198,7 +198,7 @@ namespace DestroyerTest.Content.Entities
                     for (int i = 0; i < 5; i++)
                     {
                         Shootvel = Shootvel.RotatedBy(MathHelper.PiOver4);
-                        Projectile.NewProjectile(Entity.GetSource_FromThis(), NPC.Center, Shootvel, ModContent.ProjectileType<TenebrisStar>(), 15, 1, ai1: player.whoAmI, ai2: 4);
+                        Projectile.NewProjectile(Entity.GetSource_FromThis(), NPC.Center, Shootvel, ModContent.ProjectileType<TenebrisStarHostile>(), 15, 1, ai1: player.whoAmI, ai2: 4);
                     }
                 }
                 AttackTimer = 120;

@@ -91,8 +91,8 @@ namespace DestroyerTest.Common
 
                     if (Player.HasBuff(BuffID.PotionSickness))
                     {
-                        Player.GetDamage(DamageClass.Generic) *= 0.70f;
-                        Player.statDefense *= 0.75f;
+                        Player.GetDamage(DamageClass.Generic) *= 0.85f;
+                        Player.statDefense *= 0.95f;
                     }
                 }
             if (LifeTalisman)

@@ -1,6 +1,7 @@
 
 using System;
 using DestroyerTest.Content.Projectiles;
+using DestroyerTest.Content.Projectiles.Weapon.Melee;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Rarity;
 using Terraria;

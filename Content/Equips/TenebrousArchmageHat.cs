@@ -41,7 +41,7 @@ namespace DestroyerTest.Content.Equips
 			Item.height = 20; // Height of the item
 			Item.value = Item.sellPrice(gold: 70); // How many coins the item is worth
 			Item.rare = ModContent.RarityType<ShimmeringRarity>(); // The rarity of the item
-			Item.defense = 60; // The amount of defense the item will give when equipped
+			Item.defense = 16; // The amount of defense the item will give when equipped
 			Item.vanity = true;
 		}
 
@@ -64,8 +64,6 @@ namespace DestroyerTest.Content.Equips
 		public override void AddRecipes()
 		{
 			CreateRecipe()
-				.AddIngredient<Item_HeliciteCrystal>(14)
-				.AddIngredient<ShimmeringSludge>(3)
 				.AddIngredient<Tenebris>(8)
 				.AddTile(TileID.LunarCraftingStation)
 				.Register();
@@ -112,7 +110,7 @@ namespace DestroyerTest.Content.Equips
         {
             if (Active)
             {
-                Opus.RadialSpreadProjectile(ModContent.ProjectileType<TenebrisStar>(), 5, Player.Center, 14, 4, 6, AI2: 1, RandomOffset: true);
+                Opus.RadialSpreadProjectile(ModContent.ProjectileType<TenebrisStarHostile>(), 5, Player.Center, 14, 4, 6, AI2: 1, RandomOffset: true);
             }
         }
 
@@ -120,7 +118,7 @@ namespace DestroyerTest.Content.Equips
         {
             if (Active)
             {
-                Opus.RadialSpreadProjectile(ModContent.ProjectileType<TenebrisStar>(), 3, Player.Center, 10, 4, 6, AI2: 1, RandomOffset: true);
+                Opus.RadialSpreadProjectile(ModContent.ProjectileType<TenebrisStarHostile>(), 3, Player.Center, 10, 4, 6, AI2: 1, RandomOffset: true);
             }
         }
     }

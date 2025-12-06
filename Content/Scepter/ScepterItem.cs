@@ -6,6 +6,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Common;
+using DestroyerTest.Content.Projectiles.Weapon.Scepter;
 
 namespace DestroyerTest.Content.Scepter
 {
@@ -33,7 +34,7 @@ namespace DestroyerTest.Content.Scepter
         public bool ChannelingDuringThrow = false;
         public int ShootID = -1;
         public int ThrowID = -1;
-        public float ThrowVelocity = 10f * ScepterClassStats.ThrowSpeedModifier;
+        public float ThrowVelocity = 15f * ScepterClassStats.ThrowSpeedModifier;
         public override void SetStaticDefaults()
         {
             Item.staff[Type] = true;
@@ -48,8 +49,7 @@ namespace DestroyerTest.Content.Scepter
             Item.height = Height;
             Item.value = Item.sellPrice(gold: 1) + AdditiveValue;
             Item.rare = Rarity;
-            Item.useTime = 40;
-            Item.useAnimation = 40;
+            
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.autoReuse = true;
             Item.DamageType = ModContent.GetInstance<ScepterClass>();
@@ -126,6 +126,8 @@ namespace DestroyerTest.Content.Scepter
             Item.channel = ChannelingDuringShoot;
             Item.damage = ShootDMG;
             Item.crit = ShootCrit;
+            Item.useTime = 40;
+            Item.useAnimation = 40;
             Item.UseSound = ShootSound;
             Item.shootSpeed = 10f;
             Item.noUseGraphic = false;
@@ -137,6 +139,8 @@ namespace DestroyerTest.Content.Scepter
             Item.channel = ChannelingDuringThrow;
             Item.damage = ThrowDMG;
             Item.crit = ThrowCrit;
+            Item.useTime = 100;
+            Item.useAnimation = 40;
             Item.UseSound = ThrowSound;
             Item.shootSpeed = ThrowVelocity;
             Item.noUseGraphic = true;

@@ -10,7 +10,8 @@ using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Common;
 using Terraria.GameContent.ItemDropRules;
 using DestroyerTest.Rarity;
-using DestroyerTest.Rarity.Scepter; // Add this line if CT3_Swing is in the Projectiles namespace
+using DestroyerTest.Rarity.Scepter;
+using DestroyerTest.Content.Projectiles.Weapon.Scepter; // Add this line if CT3_Swing is in the Projectiles namespace
 
 namespace DestroyerTest.Content.Scepter
 {
@@ -68,13 +69,10 @@ namespace DestroyerTest.Content.Scepter
 
 	public class SoV_DROP_NPC : GlobalNPC
 	{
-		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot) {
-
+		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot) 
+        {
 			if (npc.type == NPCID.QueenBee) {
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ScepterOfVespae>(), 5, 1, 1));
-			}
-			if (npc.type == NPCID.Hornet) {
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ScepterOfVespae>(), 100, 1, 1));
 			}
 		}
 	}
