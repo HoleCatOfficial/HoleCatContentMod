@@ -260,7 +260,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
                     if (Main.rand.NextBool(10))
                     {
                         Vector2 OuterVel = Main.rand.NextVector2CircularEdge(10, 10);
-                        Projectile.NewProjectileDirect(Projectile.InheritSource(Projectile), Projectile.Center, OuterVel, ModContent.ProjectileType<TenebrisStar>(), Projectile.damage / 2, 4, Projectile.owner, ai2: 1);
+                        Projectile.NewProjectileDirect(Projectile.InheritSource(Projectile), Projectile.Center, OuterVel, ModContent.ProjectileType<TenebrisStarFriendly>(), Projectile.damage / 2, 4, Projectile.owner, ai2: 1);
                     }
                     Leeway = 60;
                     TextureScale = 1f;

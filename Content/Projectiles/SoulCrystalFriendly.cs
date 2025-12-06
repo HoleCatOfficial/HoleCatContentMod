@@ -39,6 +39,42 @@ namespace DestroyerTest.Content.Projectiles
             DTUtils Utility = new DTUtils();
 
             Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+
+            if (TrailPositions.Count > 1)
+			{
+				List<ColoredVertex> ve = new List<ColoredVertex>();
+				float a = 0;
+
+				for (int i = TrailPositions.Count - 1; i > 0; i--)
+				{
+					float t = 1f - (i / (float)TrailPositions.Count); // fade toward tail
+					Color b = lightColor * t;
+
+					Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
+					Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * 16;
+                    Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * 16;
+
+					ve.Add(new ColoredVertex(
+						TrailPositions[i] - Main.screenPosition + offset,
+						new Vector3(t, 1, 1),
+						b));
+
+					ve.Add(new ColoredVertex(
+						TrailPositions[i] - Main.screenPosition + offset2,
+						new Vector3(t, 0, 1),
+						b));
+				}
+
+
+				GraphicsDevice gd = Main.graphics.GraphicsDevice;
+				if (ve.Count >= 3)
+				{
+					gd.Textures[0] = DTAssetLib.Streak(4).Value;
+					gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2);
+				}
+			}
+
+            /*
             for (int i = 0; i < TrailPositions.Count - 1; i++)
             {
                 Vector2 start = TrailPositions[i] - Main.screenPosition;
@@ -67,6 +103,7 @@ namespace DestroyerTest.Content.Projectiles
                     0f
                 );
             }
+            */
 
             Opus.DrawGlowOnProj(Projectile, lightColor, false, 0);
             Opus.DrawTextureOnProj(DTAssetLib.Sparkle(3), Projectile, Color.White, false, 0);
@@ -85,14 +122,35 @@ namespace DestroyerTest.Content.Projectiles
         private const int TrailLength = 40;
         public override void AI()
         {
-            TrailPositions.Insert(0, Projectile.Center);
-            TrailRotations.Insert(0, Projectile.rotation);
+            Vector2 lastPos = TrailPositions.Count > 0 ? TrailPositions[0] : Projectile.Center;
+			Vector2 newPos  = Projectile.Center;
 
-            // Cap trail
-            while (TrailPositions.Count > TrailLength)
-                TrailPositions.RemoveAt(TrailPositions.Count - 1);
-            while (TrailRotations.Count > TrailLength)
-                TrailRotations.RemoveAt(TrailRotations.Count - 1);
+			float dist = Vector2.Distance(lastPos, newPos);
+			float step = 8f; // how closely to sample. tweak this!
+
+			if (dist > 0f)
+			{
+				int segments = (int)(dist / step);
+
+				for (int i = 1; i <= segments; i++)
+				{
+					Vector2 pos = Vector2.Lerp(lastPos, newPos, i / (float)segments);
+					TrailPositions.Insert(0, pos);
+					TrailRotations.Insert(0, Projectile.rotation);
+				}
+			}
+			else
+			{
+				TrailPositions.Insert(0, newPos);
+				TrailRotations.Insert(0, Projectile.rotation);
+			}
+
+
+			// Cap trail
+			while (TrailPositions.Count > TrailLength)
+				TrailPositions.RemoveAt(TrailPositions.Count - 1);
+			while (TrailRotations.Count > TrailLength)
+				TrailRotations.RemoveAt(TrailRotations.Count - 1);
             
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
         }

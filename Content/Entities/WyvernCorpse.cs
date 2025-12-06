@@ -692,8 +692,7 @@ namespace DestroyerTest.Content.Entities
                                         velocity,
                                         ModContent.ProjectileType<Tooth>(),
                                         30,
-                                        0f,
-                                        Main.myPlayer
+                                        0f
                                     );
                                     Tooth.tileCollide = false;
 
@@ -730,8 +729,7 @@ namespace DestroyerTest.Content.Entities
                                         velocity,
                                         ModContent.ProjectileType<TenebrisLance>(),
                                         30,
-                                        0f,
-                                        Main.myPlayer
+                                        0f
                                     );
                                     Lance.timeLeft = 80;
                                 }
@@ -739,10 +737,7 @@ namespace DestroyerTest.Content.Entities
                             }
                             if (Main.GameUpdateCount % 60 == 0)
                             {
-                                for (int e = 0; e < 3; e++)
-                                {
-                                    Projectile.NewProjectile(Entity.GetSource_FromThis(), NPC.Center, ToPlayer * 0.25f, ModContent.ProjectileType<TenebrisStar>(), 20, 5, ai2: 2);
-                                }
+                                Opus.RadialProjectileRandomDir(ModContent.ProjectileType<TenebrisStarHostile>(), 3, NPC.Center, 20, 5, 2);
                             }
                         }
                         if (CircleLanceCount == 5 && NPC.life <= NPC.lifeMax * 0.8f)

@@ -35,7 +35,7 @@ namespace DestroyerTest.Content.RiftArsenal
 		public override void SetDefaults() {
 			// DefaultToStaff handles setting various Item values that magic staff weapons use.
 			// Hover over DefaultToStaff in Visual Studio to read the documentation!
-			Item.shoot = ModContent.ProjectileType<RiftStar>();
+			Item.shoot = ModContent.ProjectileType<RiftStarFriendly>();
             Item.useTime = 30;
             Item.useAnimation = 30;
 			Item.width = 92;

@@ -149,7 +149,7 @@ namespace DestroyerTest.Content.Entities
                 SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/ChargeBreak") with { PitchVariance = 1f, Volume = 3f });
                 Projectile.NewProjectile(Entity.GetSource_FromAI(), NPC.Center,
                     (player.Center - NPC.Center) * 0.005f,
-                    ModContent.ProjectileType<TenebrisStar>(), 26, 8, ai2: 2);
+                    ModContent.ProjectileType<TenebrisStarHostile>(), 26, 8, ai2: 2);
             }
         }
 

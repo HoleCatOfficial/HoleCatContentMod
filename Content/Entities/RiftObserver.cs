@@ -151,10 +151,7 @@ namespace DestroyerTest.Content.Entities
                 SoundEngine.PlaySound(SoundID.ForceRoarPitched with { PitchVariance = 0.5f } , NPC.Center);
                 Opus.RingDustOutward(ModContent.DustType<RiftDust>(), 30, NPC.Center, 10, 0, default, 1.2f, 3f);
                 NPC.velocity += look.ToRotation().ToRotationVector2() * 3f;
-                for (int i = 0; i < 3; i++)
-                {
-                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, look.ToRotation().ToRotationVector2() * 2f, ModContent.ProjectileType<RiftStar>(), 14, 5f, ai2: 2);
-                }
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, look.ToRotation().ToRotationVector2() * 2f, ModContent.ProjectileType<RiftStarHostile>(), 14, 5f);
             }
         }
 

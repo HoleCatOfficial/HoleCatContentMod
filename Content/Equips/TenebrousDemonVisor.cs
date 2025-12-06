@@ -239,7 +239,7 @@ namespace DestroyerTest.Content.Equips
 			{
 				if (Demon.Charge3)
 				{
-					Projectile.NewProjectile(source, position, velocity.RotatedByRandom(1f), ModContent.ProjectileType<TenebrisStar>(), damage / 2, knockback, player.whoAmI, ai2: 1);
+					Projectile.NewProjectile(source, position, velocity.RotatedByRandom(1f), ModContent.ProjectileType<TenebrisStarHostile>(), damage / 2, knockback, player.whoAmI, ai2: 1);
 				}
 			}
 			return base.Shoot(item, player, source, position, velocity, type, damage, knockback);

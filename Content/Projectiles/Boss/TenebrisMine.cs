@@ -99,7 +99,7 @@ namespace DestroyerTest.Content.Projectiles.Boss
             Vector2 ToPlayer = Main.LocalPlayer.Center - Projectile.Center;
             float Dir = ToPlayer.ToRotation();
             SoundEngine.PlaySound(SoundID.Item14, Projectile.Center);
-            Projectile.NewProjectile(Entity.GetSource_FromThis(), Projectile.Center, Dir.ToRotationVector2() * 16f, ModContent.ProjectileType<TenebrisStar>(), 35, 1, ai2: 4);
+            Projectile.NewProjectile(Entity.GetSource_FromThis(), Projectile.Center, Dir.ToRotationVector2() * 16f, ModContent.ProjectileType<TenebrisStarHostile_NoHoming>(), 35, 1, ai2: 4);
         }
     }
 }

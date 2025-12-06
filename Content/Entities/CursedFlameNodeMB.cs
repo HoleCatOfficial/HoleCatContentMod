@@ -173,7 +173,7 @@ namespace DestroyerTest.Content.Entities
         public bool HasDebuffed = false;
         public int IdleTimer = 60;
         public float RotSpeed;
-        public int StarShootID = ModContent.ProjectileType<TenebrisStar>();
+        public int StarShootID = ModContent.ProjectileType<TenebrisStarHostile>();
         public int StarShootInterval = 0;
         public int StarShootCount = 0;
         public int MineInterval = 0;
@@ -235,7 +235,7 @@ namespace DestroyerTest.Content.Entities
             }
             if ((Main.expertMode && DownedBossSystem.downedLunarBoss) || Main.masterMode)
             {
-                StarShootID = ModContent.ProjectileType<TenebrisStar>();
+                StarShootID = ModContent.ProjectileType<TenebrisStarHostile>();
             }
             if (!Main.expertMode && !Main.masterMode)
             {

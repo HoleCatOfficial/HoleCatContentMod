@@ -110,7 +110,7 @@ namespace DestroyerTest.Content.Equips
         {
             if (Active)
             {
-                Opus.RadialSpreadProjectile(ModContent.ProjectileType<TenebrisStar>(), 5, Player.Center, 14, 4, 6, AI2: 1, RandomOffset: true);
+                Opus.RadialSpreadProjectile(ModContent.ProjectileType<TenebrisStarHostile>(), 5, Player.Center, 14, 4, 6, AI2: 1, RandomOffset: true);
             }
         }
 
@@ -118,7 +118,7 @@ namespace DestroyerTest.Content.Equips
         {
             if (Active)
             {
-                Opus.RadialSpreadProjectile(ModContent.ProjectileType<TenebrisStar>(), 3, Player.Center, 10, 4, 6, AI2: 1, RandomOffset: true);
+                Opus.RadialSpreadProjectile(ModContent.ProjectileType<TenebrisStarHostile>(), 3, Player.Center, 10, 4, 6, AI2: 1, RandomOffset: true);
             }
         }
     }

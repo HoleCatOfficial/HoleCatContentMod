@@ -18,28 +18,15 @@ using OpusLib;
 
 namespace DestroyerTest.Content.Projectiles
 {
-	/// <summary>
-	/// Multipurpose Projectile.
-	/// <para/> Projectile ai slots 0 and 1 should not be set to anything when spawning, as they store NPC and Player values respectively.
-	/// <para/> Projectile ai slot 2 controls whether the projectile is friendly or harmful.
-	/// </summary>
-	public class RiftStar2 : ModProjectile
+	public class RiftStarFriendly2 : ModProjectile
 	{
+		public override string Texture => DTUtils.NoTexture;
 		private NPC NPCTarget
 		{
 			get => Projectile.ai[0] == 0 ? null : Main.npc[(int)Projectile.ai[0] - 1];
 			set
 			{
 				Projectile.ai[0] = value == null ? 0 : value.whoAmI + 1;
-			}
-		}
-
-		private Player PLRTarget
-		{
-			get => Projectile.ai[1] == 0 ? null : Main.player[(int)Projectile.ai[1] - 1];
-			set
-			{
-				Projectile.ai[1] = value == null ? 0 : value.whoAmI + 1;
 			}
 		}
 
@@ -56,7 +43,7 @@ namespace DestroyerTest.Content.Projectiles
 			Projectile.height = 50;
 
 			Projectile.DamageType = DamageClass.Generic;
-			Projectile.friendly = false;
+			Projectile.friendly = true;
 			Projectile.hostile = false;
 			Projectile.ignoreWater = true;
 			Projectile.light = 1f;
@@ -71,6 +58,42 @@ namespace DestroyerTest.Content.Projectiles
 			DTUtils Utility = new DTUtils();
 
             Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+
+			if (TrailPositions.Count > 1)
+			{
+				List<ColoredVertex> ve = new List<ColoredVertex>();
+				float a = 0;
+
+				for (int i = TrailPositions.Count - 1; i > 0; i--)
+				{
+					float t = 1f - (i / (float)TrailPositions.Count); // fade toward tail
+					Color b = lightColor * t;
+
+					Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
+					Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * 16;
+                    Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * 16;
+
+					ve.Add(new ColoredVertex(
+						TrailPositions[i] - Main.screenPosition + offset,
+						new Vector3(t, 1, 1),
+						b));
+
+					ve.Add(new ColoredVertex(
+						TrailPositions[i] - Main.screenPosition + offset2,
+						new Vector3(t, 0, 1),
+						b));
+				}
+
+
+				GraphicsDevice gd = Main.graphics.GraphicsDevice;
+				if (ve.Count >= 3)
+				{
+					gd.Textures[0] = DTAssetLib.Streak(5).Value;
+					gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2);
+				}
+			}
+
+			/*
 
 			for (int i = 0; i < TrailPositions.Count - 1; i++)
 			{
@@ -118,6 +141,7 @@ namespace DestroyerTest.Content.Projectiles
 					0f
 				);
 			}
+			*/
 
 			Opus.DrawGlowOnProj(Projectile, lightColor, true);
 
@@ -128,22 +152,35 @@ namespace DestroyerTest.Content.Projectiles
 			return false;
 		}
 
-
-		/// <summary>
-		/// Controls whether the Projectile is Hostile or Friendly.
-		/// <para/> 1 = Friendly, 2 = Hostile
-		/// <para/> Attempting to return an invalid value will kill the projectile.
-		/// </summary>
-		public int Mode;
-
 		public List<Vector2> TrailPositions = new();
 		public List<float> TrailRotations = new();
 		private const int TrailLength = 40;
 
 		public override void AI()
 		{
-			TrailPositions.Insert(0, Projectile.Center);
-			TrailRotations.Insert(0, Projectile.rotation);
+			Vector2 lastPos = TrailPositions.Count > 0 ? TrailPositions[0] : Projectile.Center;
+			Vector2 newPos  = Projectile.Center;
+
+			float dist = Vector2.Distance(lastPos, newPos);
+			float step = 8f; // how closely to sample. tweak this!
+
+			if (dist > 0f)
+			{
+				int segments = (int)(dist / step);
+
+				for (int i = 1; i <= segments; i++)
+				{
+					Vector2 pos = Vector2.Lerp(lastPos, newPos, i / (float)segments);
+					TrailPositions.Insert(0, pos);
+					TrailRotations.Insert(0, Projectile.rotation);
+				}
+			}
+			else
+			{
+				TrailPositions.Insert(0, newPos);
+				TrailRotations.Insert(0, Projectile.rotation);
+			}
+
 
 			// Cap trail
 			while (TrailPositions.Count > TrailLength)
@@ -152,98 +189,42 @@ namespace DestroyerTest.Content.Projectiles
 				TrailRotations.RemoveAt(TrailRotations.Count - 1);
 
 			DelayTimer++;
-			Mode = (int)Projectile.ai[2];
 			Projectile.rotation += Projectile.direction * Main.rand.NextFloat(0.01f, 0.07f);
 
-			if (Mode > 4 || Mode <= 0)
-			{
-				Projectile.Kill();
-				//throw new Exception("Non-Fatal Error in Oil Projectile Targeting. Value must be 1 or 2.");
-				Mod.Logger.Warn("OilProjectile: Invalid Mode in ai[2]. Expected 1 or 2.");
-			}
+			Lighting.AddLight(Projectile.Center, ColorLib.Rift.ToVector3() * 0.2f);
 
-			Lighting.AddLight(Projectile.Center, ColorLib.TenebrisGradient.ToVector3() * 0.2f);
-
-			if (DelayTimer < 20)
+			if (DelayTimer < 20 || DelayTimer > 180)
 			{
-				DelayTimer += 1;
 				return;
 			}
 
 			float maxDetectRadius = 2800f;
 
-			if (Mode == 1)
+			if (NPCTarget == null)
 			{
-				Projectile.friendly = true;
-				Projectile.hostile = false;
-
-				if (NPCTarget == null)
-				{
-					NPCTarget = FindClosestNPC(maxDetectRadius);
-				}
-
-
-				if (NPCTarget != null && !IsValidNPC(NPCTarget))
-				{
-					NPCTarget = null;
-				}
-
-
-				if (NPCTarget == null)
-					return;
-
-				float targetAngle = Projectile.AngleTo(NPCTarget.Center);
-				Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(15)).ToRotationVector2() * Projectile.velocity.Length();
-
-				// Acceleration
-				float speed = Projectile.velocity.Length();
-				float desiredSpeed = 20f; // your top speed
-				float acceleration = 0.3f; // how quickly it ramps up
-				if (speed < desiredSpeed)
-					speed += acceleration;
-				Projectile.velocity = Projectile.velocity.SafeNormalize(Vector2.Zero) * speed;
+				NPCTarget = FindClosestNPC(maxDetectRadius);
 			}
-			if (Mode == 2)
+
+
+			if (NPCTarget != null && !IsValidNPC(NPCTarget))
 			{
-				Projectile.friendly = false;
-				Projectile.hostile = true;
-
-				if (PLRTarget == null)
-				{
-					PLRTarget = FindClosestPlayer(maxDetectRadius);
-				}
-
-
-				if (PLRTarget != null && !IsValidPlayer(PLRTarget))
-				{
-					PLRTarget = null;
-				}
-
-				if (PLRTarget == null)
-					return;
-
-				float targetAngle = Projectile.AngleTo(PLRTarget.Center);
-				Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(5)).ToRotationVector2() * Projectile.velocity.Length();
-
-				// Acceleration
-				float speed = Projectile.velocity.Length();
-				float desiredSpeed = 18f;
-				float acceleration = 0.25f;
-				if (speed < desiredSpeed)
-					speed += acceleration;
-				Projectile.velocity = Projectile.velocity.SafeNormalize(Vector2.Zero) * speed;
-
+				NPCTarget = null;
 			}
-			if (Mode == 3)
-			{
-				Projectile.friendly = true;
-				Projectile.hostile = false;
-			}
-			if (Mode == 4)
-			{
-				Projectile.friendly = false;
-				Projectile.hostile = true;
-			}
+
+
+			if (NPCTarget == null)
+				return;
+
+			float targetAngle = Projectile.AngleTo(NPCTarget.Center);
+			Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(15)).ToRotationVector2() * Projectile.velocity.Length();
+
+			// Acceleration
+			float speed = Projectile.velocity.Length();
+			float desiredSpeed = 35f; // your top speed
+			float acceleration = 0.3f; // how quickly it ramps up
+			if (speed < desiredSpeed)
+				speed += acceleration;
+			Projectile.velocity = Projectile.velocity.SafeNormalize(Vector2.Zero) * speed;
 		}
 		public NPC FindClosestNPC(float maxDetectDistance)
 		{
@@ -274,48 +255,10 @@ namespace DestroyerTest.Content.Projectiles
 			return target.CanBeChasedBy();
 		}
 
-		public Player FindClosestPlayer(float maxDetectDistance)
-		{
-			Player closestPlayer = null;
-
-			float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
-
-			foreach (var target in Main.player)
-			{
-				if (IsValidPlayer(target))
-				{
-					float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, Projectile.Center);
-
-					if (sqrDistanceToTarget < sqrMaxDetectDistance)
-					{
-						sqrMaxDetectDistance = sqrDistanceToTarget;
-						closestPlayer = target;
-					}
-				}
-			}
-
-			return closestPlayer;
-		}
-
-		public bool IsValidPlayer(Player target)
-		{
-			return target.active == true && target.statLife > 1;
-		}
 
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
-			if (Mode == 1 || Mode == 3)
-			{
-				target.AddBuff(ModContent.BuffType<DaylightOverload>(), 300);
-			}
-		}
-
-		public override void OnHitPlayer(Player target, Player.HurtInfo info)
-		{
-			if (Mode == 2 || Mode == 4)
-			{
-				target.AddBuff(ModContent.BuffType<DaylightOverload>(), 300);
-			}
+			target.AddBuff(ModContent.BuffType<DaylightOverload>(), 300);
 		}
 
         public override void OnKill(int timeLeft)

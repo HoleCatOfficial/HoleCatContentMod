@@ -77,7 +77,7 @@ namespace DestroyerTest.Content.Scepter
             base.ModifyShootStats(player, ref position, ref velocity, ref type, ref damage, ref knockback);
             if (Energized && player.altFunctionUse != 2)
             {
-                type = ModContent.ProjectileType<RiftStar>();
+                type = ModContent.ProjectileType<RiftStarFriendly>();
             }
         }
 

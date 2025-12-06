@@ -48,6 +48,8 @@ namespace DestroyerTest.Common
         {
             return Language.GetTextValue($"Mods.DestroyerTest.NPCs.{npc.Name}.BestiaryEntry{variant}");
         }
+
+        public static string NoTexture = "DestroyerTest/Content/Extras/NoTexture";
         
 
         /// <summary>
@@ -591,6 +593,15 @@ namespace DestroyerTest.Common
                 Variant = 1;
             }
             return ModContent.Request<Texture2D>($"{ParticlePath}/Shine{Variant}");
+        }
+
+        public static Asset<Texture2D> Streak(int Variant)
+        {
+            if (Variant <= 0)
+            {
+                Variant = 1;
+            }
+            return ModContent.Request<Texture2D>($"{ExtrasPath}/Streak{Variant}");
         }
 
         public static Asset<Texture2D> Star(int Variant)

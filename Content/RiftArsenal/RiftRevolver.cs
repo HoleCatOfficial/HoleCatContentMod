@@ -79,7 +79,7 @@ namespace DestroyerTest.Content.RiftArsenal
         {
 			if (Main.rand.NextBool(4) && Energized)
 			{
-				Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<RiftStar>(), damage + 15, knockback, player.whoAmI, ai2: 1);
+				Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<RiftStarFriendly>(), damage + 15, knockback, player.whoAmI, ai2: 1);
 			}
 			else
 			{

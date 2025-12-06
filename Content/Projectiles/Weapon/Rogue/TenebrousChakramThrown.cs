@@ -137,7 +137,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
                     Projectile.GetSource_FromThis(),
                     Projectile.Center + new Vector2(Main.rand.NextFloat(-3, 3), Main.rand.NextFloat(-3, 3)),
                     velocity,
-                    ModContent.ProjectileType<TenebrisStar>(),
+                    ModContent.ProjectileType<TenebrisStarFriendly>(),
                     Projectile.damage,
                     0,
                     player.whoAmI,

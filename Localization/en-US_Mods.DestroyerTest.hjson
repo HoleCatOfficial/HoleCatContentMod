@@ -3802,7 +3802,8 @@ Projectiles: {
 	GigaCursedHammerThrown.DisplayName: Giga Cursed Hammer Thrown
 	NightmarePowderProjectile.DisplayName: Nightmare Powder Projectile
 	PossessedDartRifle.DisplayName: Possessed Dart Rifle
-	TenebrisStar.DisplayName: Tenebris Star
+	TenebrisStarFriendly.DisplayName: Tenebris Star
+	TenebrisStarHostile.DisplayName: Tenebris Star
 	TenebrousChakramThrown.DisplayName: Tenebrous Chakram Thrown
 	CorrolarySwing.DisplayName: Corrolary Swing
 	CorrolaryProj2.DisplayName: Corrolary Proj2
@@ -3896,7 +3897,8 @@ Projectiles: {
 	TenebrisDart.DisplayName: Tenebris Dart
 	DarkEnergyOrb.DisplayName: Dark Energy Orb
 	TenebrisMine.DisplayName: Tenebris Mine
-	RiftStar.DisplayName: Rift Star
+	RiftStarFriendly.DisplayName: Rift Star
+	RiftStarHostile.DisplayName: Rift Star
 	TenebrousBullet1.DisplayName: Tenebrous Bullet1
 	TenebrousBullet2.DisplayName: Tenebrous Bullet2
 	TenebrousBullet3.DisplayName: Tenebrous Bullet3
@@ -3910,7 +3912,8 @@ Projectiles: {
 	DesertFlame.DisplayName: Desert Flame
 	HeliciteRoundProjectile.DisplayName: Helicite Round Projectile
 	RiftRoundProjectile.DisplayName: Rift Round Projectile
-	RiftStar2.DisplayName: Rift Star2
+	RiftStarFriendly2.DisplayName: Rift Star
+	RiftStarHostile2.DisplayName: Rift Star
 	NightmareeRoseBackgroundProj.DisplayName: Nightmaree Rose Background Proj
 	ConstitutionStar.DisplayName: Constitution Star
 	HollowStar.DisplayName: Hollow Star
@@ -3991,6 +3994,8 @@ Projectiles: {
 	StellarFireSlash.DisplayName: Stellar Fire Slash
 	RGBSlash.DisplayName: R G B Slash
 	PetrifiedHeadRiftLaser.DisplayName: Petrified Head Rift Laser
+	TenebrisStarHostile_NoHoming.DisplayName: Tenebris Star Hostile_ No Homing
+	TenebrisStarFriendly_NoHoming.DisplayName: Tenebris Star Friendly_ No Homing
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.

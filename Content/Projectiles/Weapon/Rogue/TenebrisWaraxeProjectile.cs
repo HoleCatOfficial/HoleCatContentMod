@@ -158,7 +158,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             SoundEngine.PlaySound(Hit, Projectile.position);
             for (int i = 0; i < 10; i++)
             {
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.TintableDustLighted, 0, 0, 150, clr, 5f);
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.FireworksRGB, 0, 0, 150, clr, 5f);
                 PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticle>(), Projectile.Center, new Vector2(Main.rand.NextFloat(-8, 8), Main.rand.NextFloat(-15, -10)), clr, 2);
 
             }
@@ -168,7 +168,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             {
                 returning = true;
             }
-            Opus.RadialSpreadProjectile(ModContent.ProjectileType<TenebrisStar>(), 9, Projectile.Center, Projectile.damage / 3, 4, 15, AI2: 1);
+            Opus.RadialSpreadProjectile(ModContent.ProjectileType<TenebrisStarFriendly>(), 9, Projectile.Center, Projectile.damage / 3, 4, 15, AI2: 1);
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)
@@ -179,14 +179,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 
             for (int i = 0; i < 10; i++)
             {
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.TintableDustLighted, 0, 0, 150, clr, 5f);
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.FireworksRGB, 0, 0, 150, clr, 5f);
                 PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticle>(), Projectile.Center, new Vector2(Main.rand.NextFloat(-8, 8), Main.rand.NextFloat(-15, -10)), clr, 2);
 
             }
             Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), Projectile.Center, Vector2.Zero, Color.White, 0.01f, ai0: 0.8f);
             Opus.NewParticleFloatAI(PRTLoader.GetParticleID<Boom5>(), Projectile.Center, Vector2.Zero, clr, 0.01f, ai0: 1.5f);
-            Opus.RadialSpreadProjectile(ModContent.ProjectileType<TenebrisStar>(), 9, Projectile.Center, Projectile.damage / 3, 4, 15, AI2: 1);
-
             returning = true;
 
             return false;

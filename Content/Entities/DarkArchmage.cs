@@ -140,7 +140,7 @@ namespace DestroyerTest.Content.Entities
             if (Main.GameUpdateCount % 120 == 0)
             {
                 SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/ChargeBreak") with { PitchVariance = 1f, Volume = 3f });
-                Projectile.NewProjectile(Entity.GetSource_FromAI(), NPC.Center, (player.Center - NPC.Center).RotatedByRandom(1) * 0.005f, ModContent.ProjectileType<TenebrisStar>(), 26, 8, ai2: 4);
+                Projectile.NewProjectile(Entity.GetSource_FromAI(), NPC.Center, (player.Center - NPC.Center).RotatedByRandom(1) * 0.005f, ModContent.ProjectileType<TenebrisStarHostile>(), 26, 8, ai2: 4);
             }
         }
 
