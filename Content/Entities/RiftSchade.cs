@@ -71,18 +71,6 @@ namespace DestroyerTest.Content.Entities
                 
 			});
 		}
-
-        public override float SpawnChance(NPCSpawnInfo spawnInfo)
-		{
-			// Check if the player is in the Shimmer zone and the Cultist Boss has been defeated
-			if (ModContent.GetInstance<RiftSurface>().IsBiomeActive(spawnInfo.Player)) // Ensure the Cultist Boss has been defeated
-			{
-					// Set spawn chance relative to standard overworld night monsters
-					return SpawnCondition.OverworldDaySlime.Chance; // 10% of regular zombie spawn rate
-			
-			}
-			return 0f; // Prevent spawning otherwise
-		}
         internal int MoveForwardForce = 2;
         internal int radiusofselection = 100;
         private Vector2 targetPosition;

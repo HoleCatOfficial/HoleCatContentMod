@@ -31,13 +31,11 @@ namespace DestroyerTest.Content.Entities
 		}
 
 		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
-		{
-			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
-				new FlavorTextBestiaryInfoElement("Originating from the Shade World, this mindless glob of sludge seeks to explore, but prefers not to be in the light, as is common with life in the shade world."),
-				new FlavorTextBestiaryInfoElement("In addition to freeing the moon lord from imprisonment, breaking the seal also tore open holes across space, allowing enemies from the shade world to enter yours."),
-				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Caverns
-			});
-		}
+        {
+            bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
+                new FlavorTextBestiaryInfoElement(DTUtils.GetModNPCLocalizationEntry(this, 1)),
+            });
+        }
 
 		public override void SetDefaults()
 		{
@@ -56,9 +54,14 @@ namespace DestroyerTest.Content.Entities
 
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
-			if (ModContent.GetInstance<RiftSurface>().IsBiomeActive(spawnInfo.Player))
+            bool v = (ModContent.GetInstance<RiftSurface>().IsBiomeActive(spawnInfo.Player) || 
+            ModContent.GetInstance<RiftUnderground>().IsBiomeActive(spawnInfo.Player) ||
+            ModContent.GetInstance<RiftDesert>().IsBiomeActive(spawnInfo.Player) ||
+            ModContent.GetInstance<RiftDesertUnderground>().IsBiomeActive(spawnInfo.Player) ||
+            ModContent.GetInstance<RiftTundra>().IsBiomeActive(spawnInfo.Player));
+			if (v)
 			{
-                return 0.1f;
+				return 0.5f;
 			}
 			return 0f;
 		}
