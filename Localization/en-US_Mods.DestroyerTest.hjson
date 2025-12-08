@@ -3996,6 +3996,7 @@ Projectiles: {
 	PetrifiedHeadRiftLaser.DisplayName: Petrified Head Rift Laser
 	TenebrisStarHostile_NoHoming.DisplayName: Tenebris Star Hostile_ No Homing
 	TenebrisStarFriendly_NoHoming.DisplayName: Tenebris Star Friendly_ No Homing
+	TeslaScuttlerScaredExplosion.DisplayName: Tesla Scuttler Scared Explosion
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.
@@ -4510,6 +4511,15 @@ NPCs: {
 	PetrifiedLurker.DisplayName: Petrified Lurker
 	RiftOculus.DisplayName: Rift Oculus
 	RiftObserver.DisplayName: Rift Observer
+
+	PetrifiedWisp1: {
+		DisplayName: Petrified Wisp
+		BestiaryEntry1: Every now and then, Living Shadows can escape from wherever theyve been trapped inside, and coalesce into new life.
+	}
+
+	PetrifiedWisp2.DisplayName: Petrified Wisp
+	PetrifiedWisp3.DisplayName: Petrified Wisp
+	TeslaScuttler.DisplayName: Tesla Scuttler
 }
 
 Keybinds: {

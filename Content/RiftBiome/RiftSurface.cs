@@ -10,6 +10,8 @@ using Terraria.GameContent.Bestiary;
 using Terraria.Graphics.Capture;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.DataStructures;
+using System.Collections.Generic;
 
 namespace DestroyerTest.Content.RiftBiome
 {
@@ -69,11 +71,101 @@ namespace DestroyerTest.Content.RiftBiome
 			{
 				player.AddBuff(BuffID.Suffocation, 360); // Apply the suffocation buff if all conditions are met
 			}
-			for (int t = 0; t < 5; t++)
-            {
-				Dust.NewDust(Main.screenPosition, Main.screenWidth, Main.screenHeight, ModContent.DustType<RiftDust>(), Main.rand.NextFloat(-2, 2), Main.rand.NextFloat(-1, -3));
-            }
+
+			SetBiomeProperties(player);
+			if (!Main.dedServ)
+			{
+				for (int t = 0; t < 5; t++)
+				{
+					Dust.NewDust(Main.screenPosition, Main.screenWidth, Main.screenHeight, ModContent.DustType<RiftDust>(), Main.rand.NextFloat(-2, 2), Main.rand.NextFloat(-1, -3));
+				}
+			}
 		}
+
+		public void SetBiomeProperties(Player player)
+        {
+			player.ZoneDesert = false;
+			player.ZonePurity = false;
+			player.ZoneCorrupt = false;
+			player.ZoneCrimson = false;
+			player.ZoneDungeon = false;
+			player.ZoneHallow = false;
+			player.ZoneJungle = false;
+			player.ZoneSnow = false;
+			player.ZoneGlowshroom = false;
+			player.ZoneBeach = false;
+			player.ZoneGranite = false;
+			player.ZoneMarble = false;
+			player.ZoneHive = false;
+			player.ZoneLihzhardTemple = false;
+			player.ZoneShimmer = false;
+
+			if (Main.IsItRaining && !Main.dedServ)
+            {
+				List<int> GraveyardClouds = new List<int>
+                {
+                  GoreID.AmbientFloorCloud1,
+				  GoreID.AmbientFloorCloud2,
+				  GoreID.AmbientFloorCloud3,
+				  GoreID.AmbientFloorCloud4
+                };
+                Vector2 OpenTileCoords = GetAirTileOnGround();
+				if (OpenTileCoords != Vector2.Zero)
+                {
+                    Gore.NewGore(Entity.GetSource_None(), OpenTileCoords, new Vector2(Main.rand.NextFloat(-2, 2), 0), GraveyardClouds[Main.rand.Next(GraveyardClouds.Count)], 3);
+                }
+            }
+        }
+
+		public Vector2 GetAirTileOnGround()
+		{
+			int playerTileX = (int)(Main.LocalPlayer.Center.X / 16);
+			int playerTileY = (int)(Main.LocalPlayer.Center.Y / 16);
+			int searchRadius = 200;
+
+			for (int x = playerTileX - searchRadius; x < playerTileX + searchRadius; x++)
+			{
+				for (int y = playerTileY - searchRadius; y < playerTileY + searchRadius; y++)
+				{
+					if (x < 0 || x >= Main.maxTilesX || y < 0 || y >= Main.maxTilesY)
+						continue;
+
+					Tile tile = Main.tile[x, y];
+
+					// Must be air
+					if (tile.HasTile)
+						continue;
+
+					// Must have solid tile directly below
+					if (y + 1 >= Main.maxTilesY || !Main.tile[x, y + 1].HasTile)
+						continue;
+
+					// Must have 30 tiles of air ABOVE
+					bool openAbove = true;
+					for (int checkY = y - 1; checkY > y - 30; checkY--)
+					{
+						if (checkY < 0)
+							break;
+
+						if (Main.tile[x, checkY].HasTile)
+						{
+							openAbove = false;
+							break;
+						}
+					}
+
+					if (!openAbove)
+						continue;
+
+					// Found a valid open-air-above tile
+					return new Vector2((x + 0.5f) * 16f, (y + 0.5f) * 16f);
+				}
+			}
+
+			return Vector2.Zero;
+		}
+
+
 
 		public void ModifyMusic(int music, SceneEffectPriority priority)
 		{

@@ -84,11 +84,15 @@ namespace DestroyerTest.Content.RiftBiome
 				player.AddBuff(BuffID.Suffocation, 360); // Apply the suffocation buff if all conditions are met
 			}
 			Rectangle ScreenRect = new Rectangle((int)Main.screenPosition.X, (int)Main.screenPosition.Y, Main.screenWidth, Main.screenHeight);
-			for (int t = 0; t < 5; t++)
+			if (!Main.dedServ)
 			{
-				Dust.NewDust(Main.screenPosition, Main.screenWidth, Main.screenHeight, ModContent.DustType<RiftDust>(), Main.rand.NextFloat(-2, 2), Main.rand.NextFloat(-1, -3));
+				for (int t = 0; t < 5; t++)
+				{
+					Dust.NewDust(Main.screenPosition, Main.screenWidth, Main.screenHeight, ModContent.DustType<RiftDust>(), Main.rand.NextFloat(-2, 2), Main.rand.NextFloat(-1, -3));
+				}
 			}
-
+			
+			SetBiomeProperties(player);
 			if (Sandstorm.Happening)
 			{
 				SandStormFX(ScreenRect, 30, Main.rand.NextFloat(-1.5f, -3));
@@ -98,6 +102,26 @@ namespace DestroyerTest.Content.RiftBiome
 				}
 			}
 		}
+
+		public void SetBiomeProperties(Player player)
+        {
+			player.ZoneDesert = true;
+
+			player.ZonePurity = false;
+			player.ZoneCorrupt = false;
+			player.ZoneCrimson = false;
+			player.ZoneDungeon = false;
+			player.ZoneHallow = false;
+			player.ZoneJungle = false;
+			player.ZoneSnow = false;
+			player.ZoneGlowshroom = false;
+			player.ZoneBeach = false;
+			player.ZoneGranite = false;
+			player.ZoneMarble = false;
+			player.ZoneHive = false;
+			player.ZoneLihzhardTemple = false;
+			player.ZoneShimmer = false;
+        }
 
 		public void SandStormFX(Rectangle area, float speedX, float speedY)
 		{

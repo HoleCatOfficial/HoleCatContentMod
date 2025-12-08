@@ -229,7 +229,7 @@ namespace DestroyerTest.Content.Entities
                     Vector2 toOrigin = NPC.Center - Outer;
                     toOrigin = toOrigin.SafeNormalize(Vector2.UnitY);
                     Vector2 shootdirection = toOrigin * 7f;
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), Outer, shootdirection, ModContent.ProjectileType<TenebrisStarHostile>(), 30, 1, ai2: 4);
+                    Projectile.NewProjectile(NPC.GetSource_FromThis(), Outer, shootdirection, ModContent.ProjectileType<TenebrisStarHostile_NoHoming>(), 30, 1);
                 }
             }
 

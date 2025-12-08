@@ -56,8 +56,8 @@ namespace DestroyerTest.Content.Projectiles.Boss.TenebrousConstruct
             if (Main.GameUpdateCount % 10 == 0 && Projectile.velocity.Length() > 2)
             {
                 SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/ChargeBreak") with { MaxInstances = 0, PitchVariance = 0.3f }, Projectile.Center);
-                Projectile.NewProjectile(Entity.GetSource_FromAI(), Projectile.Center, FlankLeft, ModContent.ProjectileType<TenebrisStarHostile>(), Projectile.damage / 2, 3, ai2: 4);
-                Projectile.NewProjectile(Entity.GetSource_FromAI(), Projectile.Center, FlankRight, ModContent.ProjectileType<TenebrisStarHostile>(), Projectile.damage / 2, 3, ai2: 4);
+                Projectile.NewProjectile(Entity.GetSource_FromAI(), Projectile.Center, FlankLeft, ModContent.ProjectileType<TenebrisStarHostile_NoHoming>(), Projectile.damage / 2, 3);
+                Projectile.NewProjectile(Entity.GetSource_FromAI(), Projectile.Center, FlankRight, ModContent.ProjectileType<TenebrisStarHostile_NoHoming>(), Projectile.damage / 2, 3);
             }
         }
     }

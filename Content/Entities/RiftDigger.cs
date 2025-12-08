@@ -9,6 +9,7 @@ using Terraria.Audio;
 using System;
 using DestroyerTest.Content.RiftBiome;
 using Terraria.ModLoader.Utilities;
+using DestroyerTest.Common;
 
 namespace DestroyerTest.Content.Entities
 {
@@ -44,13 +45,12 @@ namespace DestroyerTest.Content.Entities
             NPC.DeathSound = SoundID.NPCDeath26;
 		}
 
-		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
-			// We can use AddRange instead of calling Add multiple times in order to add multiple items at once
-			bestiaryEntry.Info.AddRange([
-				// Sets the spawning conditions of this NPC that is listed in the bestiary.
-				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface
-			]);
-		}
+		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+        {
+            bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
+                new FlavorTextBestiaryInfoElement(DTUtils.GetModNPCLocalizationEntry(this, 1)),
+            });
+        }
 
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{

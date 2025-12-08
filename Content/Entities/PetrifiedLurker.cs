@@ -78,7 +78,7 @@ namespace DestroyerTest.Content.Entities
             ModContent.GetInstance<RiftTundra>().IsBiomeActive(spawnInfo.Player));
 			if (v)
 			{
-				return 0.3f;
+				return 0.5f;
 			}
 			return 0f;
 		}

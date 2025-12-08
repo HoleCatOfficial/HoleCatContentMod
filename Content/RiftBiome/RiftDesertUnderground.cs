@@ -42,14 +42,40 @@ namespace DestroyerTest.Content.RiftBiome
 		{
 			CavernLayer = player.ZoneRockLayerHeight;
 
-			// suffocation logic
 			if (!player.HasBuff<StoneLungs>() && !player.HasBuff<AirSeal>())
+			{
 				player.AddBuff(BuffID.Suffocation, 360);
-
-			// ambiance dust
-			for (int t = 0; t < 5; t++)
-				Dust.NewDust(Main.screenPosition, Main.screenWidth, Main.screenHeight, ModContent.DustType<RiftDust>(), Main.rand.NextFloat(-2, 2), Main.rand.NextFloat(-1, -3));
+			}
+			
+			SetBiomeProperties(player);
+			if (!Main.dedServ)
+			{
+				for (int t = 0; t < 5; t++)
+				{
+					Dust.NewDust(Main.screenPosition, Main.screenWidth, Main.screenHeight, ModContent.DustType<RiftDust>(), Main.rand.NextFloat(-2, 2), Main.rand.NextFloat(-1, -3));
+				}
+			}
 		}
+
+		public void SetBiomeProperties(Player player)
+        {
+			player.ZoneDesert = true;
+
+			player.ZonePurity = false;
+			player.ZoneCorrupt = false;
+			player.ZoneCrimson = false;
+			player.ZoneDungeon = false;
+			player.ZoneHallow = false;
+			player.ZoneJungle = false;
+			player.ZoneSnow = false;
+			player.ZoneGlowshroom = false;
+			player.ZoneBeach = false;
+			player.ZoneGranite = false;
+			player.ZoneMarble = false;
+			player.ZoneHive = false;
+			player.ZoneLihzhardTemple = false;
+			player.ZoneShimmer = false;
+        }
 
 		public void ModifyMusic(int music, SceneEffectPriority priority)
 		{
