@@ -30,7 +30,7 @@ namespace DestroyerTest.Content.Equips
             CreateRecipe()
                 .AddIngredient<RiftGuardChausses>(1)
                 .AddIngredient<Tenebris>(6)
-				.AddTile(TileID.MythrilAnvil)
+				.AddTile(TileID.LunarCraftingStation)
 				.Register();
 		}
 	}

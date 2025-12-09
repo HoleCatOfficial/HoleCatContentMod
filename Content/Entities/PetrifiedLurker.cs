@@ -51,6 +51,27 @@ namespace DestroyerTest.Content.Entities
             }
         }
 
+        public override void AI()
+        {
+            base.AI();
+
+            float stepSpeed = 0.6f;
+            float gfxOffY = 0f;
+
+            if (NPC.collideX && NPC.velocity.Y == 0f) {
+                Collision.StepUp(
+                    ref NPC.position,
+                    ref NPC.velocity,
+                    NPC.width,
+                    NPC.height,
+                    ref stepSpeed,
+                    ref gfxOffY
+                );
+                NPC.gfxOffY = gfxOffY;
+            }
+        }
+
+
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             SpriteEffects effects = SpriteEffects.None;
@@ -82,6 +103,9 @@ namespace DestroyerTest.Content.Entities
 			}
 			return 0f;
 		}
+
+        
+
 
         public override void HitEffect(NPC.HitInfo hit)
         {
