@@ -3540,6 +3540,31 @@ Items: {
 		DisplayName: Shades Revenge
 		Tooltip: ""
 	}
+
+	DarkVesselSkull: {
+		DisplayName: Dark Vessel Skull
+		Tooltip: ""
+	}
+
+	ShadePaladinBodyArmor: {
+		DisplayName: Shade Paladin Body Armor
+		Tooltip: ""
+	}
+
+	ShadePaladinHelm: {
+		DisplayName: Shade Paladin Helm
+		Tooltip: ""
+	}
+
+	ShadePaladinLegArmor: {
+		DisplayName: Shade Paladin Leg Armor
+		Tooltip: ""
+	}
+
+	ParticleTester: {
+		DisplayName: Particle Tester
+		Tooltip: ""
+	}
 }
 
 Projectiles: {

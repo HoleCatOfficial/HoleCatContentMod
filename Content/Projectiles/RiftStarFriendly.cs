@@ -104,56 +104,6 @@ namespace DestroyerTest.Content.Projectiles
 				}
 			}
 
-			/*
-
-			for (int i = 0; i < TrailPositions.Count - 1; i++)
-			{
-				Vector2 start = TrailPositions[i] - Main.screenPosition;
-				Vector2 end = TrailPositions[i + 1] - Main.screenPosition;
-				Vector2 diff = end - start;
-
-				float length = diff.Length();
-				if (length < 0.5f)
-					continue;
-
-				float rotation = diff.ToRotation();
-				float width = MathHelper.Lerp(0.01f, 0.0007f, i / (float)TrailLength);
-				float alpha = MathHelper.Lerp(1f, 0f, i / (float)TrailLength);
-
-				float time = (Main.GlobalTimeWrappedHourly + i * 0.05f) % 3f;
-
-				Color RiftColor;
-				if (time < 1f)
-					RiftColor = Color.Lerp(ColorLib.Rift, ColorLib.DarkRift4, time);
-				else if (time < 2f)
-					RiftColor = Color.Lerp(ColorLib.DarkRift4, ColorLib.DarkRift3, time - 1f);
-                else if (time < 3f)
-					RiftColor = Color.Lerp(ColorLib.DarkRift3, ColorLib.DarkRift2, time - 2f);
-                else if (time < 4f)
-					RiftColor = Color.Lerp(ColorLib.DarkRift2, ColorLib.DarkRift1, time - 3f);
-                else if (time < 5f)
-					RiftColor = Color.Lerp(ColorLib.DarkRift1, ColorLib.DarkRift2, time - 4f);
-                else if (time < 6f)
-					RiftColor = Color.Lerp(ColorLib.DarkRift2, ColorLib.DarkRift3, time - 5f);
-				else
-                    RiftColor = Color.Lerp(ColorLib.DarkRift3, ColorLib.DarkRift4, time - 6f);
-
-				RiftColor *= alpha;
-
-				Main.spriteBatch.Draw(
-					DTAssetLib.Square.Value,
-					start,
-					null,
-					RiftColor,
-					rotation,
-					new Vector2(DTAssetLib.Square.Value.Width / 2, DTAssetLib.Square.Value.Height / 2),
-					new Vector2(length, width),
-					SpriteEffects.None,
-					0f
-				);
-			}
-			*/
-
 			Opus.DrawGlowOnProj(Projectile, lightColor, true);
 
 			Opus.ReturnToDefaultDrawing(spriteBatch);

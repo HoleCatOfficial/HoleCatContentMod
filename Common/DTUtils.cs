@@ -176,6 +176,17 @@ namespace DestroyerTest.Common
             PRTLoader.GetParticleID<BlackFire7>()
         };
 
+        public static int[] AnimatedFireAdditive =
+        {
+            PRTLoader.GetParticleID<AnimatedFireAdditive1>(),
+            PRTLoader.GetParticleID<AnimatedFireAdditive2>(),
+            PRTLoader.GetParticleID<AnimatedFireAdditive3>(),
+            PRTLoader.GetParticleID<AnimatedFireAdditive4>(),
+            PRTLoader.GetParticleID<AnimatedFireAdditive5>(),
+            PRTLoader.GetParticleID<AnimatedFireAdditive6>(),
+            PRTLoader.GetParticleID<AnimatedFireAdditive7>()
+        };
+
         public static int GetScepterArmorSellPricePerRarity(int rarity)
         {
             switch (rarity)
