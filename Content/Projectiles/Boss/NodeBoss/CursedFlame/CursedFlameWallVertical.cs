@@ -56,20 +56,9 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame
 
 		public override void AI()
         {
-            int[] types = new int[]
-            {
-                PRTLoader.GetParticleID<ColoredFire1>(),
-                PRTLoader.GetParticleID<ColoredFire2>(),
-                PRTLoader.GetParticleID<ColoredFire3>(),
-                PRTLoader.GetParticleID<ColoredFire4>(),
-                PRTLoader.GetParticleID<ColoredFire5>(),
-                PRTLoader.GetParticleID<ColoredFire6>(),
-                PRTLoader.GetParticleID<ColoredFire7>()
-            };
-
             for (int v = 0; v < 20; v++)
             {
-                PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Vector2.Zero, ColorLib.CursedFlames, 1.5f);
+                PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Vector2.Zero, ColorLib.CursedFlames, 1.5f, 60, 2);
             }
         }
 	}

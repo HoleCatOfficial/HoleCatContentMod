@@ -74,17 +74,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame
 
 			if (Main.rand.NextBool(3))
 			{
-				int[] types =
-				{
-					PRTLoader.GetParticleID<ColoredFire1>(),
-					PRTLoader.GetParticleID<ColoredFire2>(),
-					PRTLoader.GetParticleID<ColoredFire3>(),
-					PRTLoader.GetParticleID<ColoredFire4>(),
-					PRTLoader.GetParticleID<ColoredFire5>(),
-					PRTLoader.GetParticleID<ColoredFire6>(),
-					PRTLoader.GetParticleID<ColoredFire7>()
-				};
-				PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], Projectile.Center, Vector2.Zero, ColorLib.CursedFlames, 1.5f);
+				PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center, new Vector2(0, -0.1f), ColorLib.CursedFlames, 2.5f, 60, 2);
 			}
 		}
 

@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Particles;
+using DestroyerTest.Content.Particles.fire;
 using DestroyerTest.Rarity.Scepter;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
@@ -156,35 +157,13 @@ namespace DestroyerTest.Common
 
         public static int[] Fire =
         {
-            PRTLoader.GetParticleID<ColoredFire1>(),
-            PRTLoader.GetParticleID<ColoredFire2>(),
-            PRTLoader.GetParticleID<ColoredFire3>(),
-            PRTLoader.GetParticleID<ColoredFire4>(),
-            PRTLoader.GetParticleID<ColoredFire5>(),
-            PRTLoader.GetParticleID<ColoredFire6>(),
-            PRTLoader.GetParticleID<ColoredFire7>()
-        };
-
-        public static int[] FireFlat =
-        {
-            PRTLoader.GetParticleID<BlackFire1>(),
-            PRTLoader.GetParticleID<BlackFire2>(),
-            PRTLoader.GetParticleID<BlackFire3>(),
-            PRTLoader.GetParticleID<BlackFire4>(),
-            PRTLoader.GetParticleID<BlackFire5>(),
-            PRTLoader.GetParticleID<BlackFire6>(),
-            PRTLoader.GetParticleID<BlackFire7>()
-        };
-
-        public static int[] AnimatedFireAdditive =
-        {
-            PRTLoader.GetParticleID<AnimatedFireAdditive1>(),
-            PRTLoader.GetParticleID<AnimatedFireAdditive2>(),
-            PRTLoader.GetParticleID<AnimatedFireAdditive3>(),
-            PRTLoader.GetParticleID<AnimatedFireAdditive4>(),
-            PRTLoader.GetParticleID<AnimatedFireAdditive5>(),
-            PRTLoader.GetParticleID<AnimatedFireAdditive6>(),
-            PRTLoader.GetParticleID<AnimatedFireAdditive7>()
+            PRTLoader.GetParticleID<Fire1>(),
+            PRTLoader.GetParticleID<Fire2>(),
+            PRTLoader.GetParticleID<Fire3>(),
+            PRTLoader.GetParticleID<Fire4>(),
+            PRTLoader.GetParticleID<Fire5>(),
+            PRTLoader.GetParticleID<Fire6>(),
+            PRTLoader.GetParticleID<Fire7>()
         };
 
         public static int GetScepterArmorSellPricePerRarity(int rarity)
@@ -581,29 +560,30 @@ namespace DestroyerTest.Common
         public const string ParticlePath = "DestroyerTest/Content/Particles";
         public const string ExtrasPath = "DestroyerTest/Content/Extras";
         public const string AudioPath = "DestroyerTest/Assets/Audio";
+        public const string EffectPath = "DestroyerTest/Assets/Effects";
         //
         //Practical, Every-Day VFX Textures
         //
         public static Asset<Texture2D> Square = TextureAssets.MagicPixel;
-        public static Asset<Texture2D> PointGlow = ModContent.Request<Texture2D>($"{ParticlePath}/SimpleParticle");
-        public static Asset<Texture2D> AreaGlow = ModContent.Request<Texture2D>($"{ParticlePath}/Glow");
-        public static Asset<Texture2D> BloomRing = ModContent.Request<Texture2D>($"{ParticlePath}/BloomRing");
-        public static Asset<Texture2D> BloomRingSharp = ModContent.Request<Texture2D>($"{ParticlePath}/BloomRingSharp_FullScale");
-        public static Asset<Texture2D> FeatheredCircle = ModContent.Request<Texture2D>($"{ParticlePath}/GlowCircle");
-        public static Asset<Texture2D> Vingette = ModContent.Request<Texture2D>($"{ExtrasPath}/BigVingette");
-        public static Asset<Texture2D> FadeLine = ModContent.Request<Texture2D>($"{ExtrasPath}/FadeLine");
-        public static Asset<Texture2D> StarAura = ModContent.Request<Texture2D>($"{ExtrasPath}/StarWrathAura");
-        public static Asset<Texture2D> Swirl = ModContent.Request<Texture2D>($"{ParticlePath}/Swirl");
-        public static Asset<Texture2D> FireRing = ModContent.Request<Texture2D>($"{ParticlePath}/Boom2");
-        public static Asset<Texture2D> SwingFX = ModContent.Request<Texture2D>($"{ExtrasPath}/CircularSlash");
-        public static Asset<Texture2D> Slash144 = ModContent.Request<Texture2D>($"{ExtrasPath}/144Slash");
+        public static Asset<Texture2D> PointGlow = ModContent.Request<Texture2D>($"{ParticlePath}/SimpleParticle", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> AreaGlow = ModContent.Request<Texture2D>($"{ParticlePath}/Glow", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> BloomRing = ModContent.Request<Texture2D>($"{ParticlePath}/BloomRing", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> BloomRingSharp = ModContent.Request<Texture2D>($"{ParticlePath}/BloomRingSharp_FullScale", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> FeatheredCircle = ModContent.Request<Texture2D>($"{ParticlePath}/GlowCircle", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> Vingette = ModContent.Request<Texture2D>($"{ExtrasPath}/BigVingette", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> FadeLine = ModContent.Request<Texture2D>($"{ExtrasPath}/FadeLine", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> StarAura = ModContent.Request<Texture2D>($"{ExtrasPath}/StarWrathAura", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> Swirl = ModContent.Request<Texture2D>($"{ParticlePath}/Swirl", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> FireRing = ModContent.Request<Texture2D>($"{ParticlePath}/Boom2", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> SwingFX = ModContent.Request<Texture2D>($"{ExtrasPath}/CircularSlash", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> Slash144 = ModContent.Request<Texture2D>($"{ExtrasPath}/144Slash", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> Sparkle(int Variant)
         {
             if (Variant <= 0)
             {
                 Variant = 1;
             }
-            return ModContent.Request<Texture2D>($"{ParticlePath}/Shine{Variant}");
+            return ModContent.Request<Texture2D>($"{ParticlePath}/Shine{Variant}", AssetRequestMode.AsyncLoad);
         }
 
         public static Asset<Texture2D> Streak(int Variant)
@@ -612,7 +592,7 @@ namespace DestroyerTest.Common
             {
                 Variant = 1;
             }
-            return ModContent.Request<Texture2D>($"{ExtrasPath}/Streak{Variant}");
+            return ModContent.Request<Texture2D>($"{ExtrasPath}/Streak{Variant}", AssetRequestMode.AsyncLoad);
         }
 
         public static Asset<Texture2D> Star(int Variant)
@@ -621,7 +601,7 @@ namespace DestroyerTest.Common
             {
                 Variant = 1;
             }
-            return ModContent.Request<Texture2D>($"{ParticlePath}/Star{Variant}");
+            return ModContent.Request<Texture2D>($"{ParticlePath}/Star{Variant}", AssetRequestMode.AsyncLoad);
         }
 
         public static Asset<Texture2D> Cyclone(int Variant)
@@ -630,19 +610,19 @@ namespace DestroyerTest.Common
             {
                 Variant = 1;
             }
-            return ModContent.Request<Texture2D>($"{ParticlePath}/Cyclone{Variant}");
+            return ModContent.Request<Texture2D>($"{ParticlePath}/Cyclone{Variant}", AssetRequestMode.AsyncLoad);
         }
-        public static Asset<Texture2D> FlameTelegraph = ModContent.Request<Texture2D>($"{ParticlePath}/CursedFlamesTelegraph");
-        public static Asset<Texture2D> ArrowTelegraph = ModContent.Request<Texture2D>($"{ExtrasPath}/DashTelegraphArrow");
-        public static Asset<Texture2D> ArrowTelegraphCont = ModContent.Request<Texture2D>($"{ExtrasPath}/DashTelegraphArrowContinuous");
-        public static Asset<Texture2D> Warning = ModContent.Request<Texture2D>($"{ParticlePath}/WarningTriangle");
+        public static Asset<Texture2D> FlameTelegraph = ModContent.Request<Texture2D>($"{ParticlePath}/CursedFlamesTelegraph", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> ArrowTelegraph = ModContent.Request<Texture2D>($"{ExtrasPath}/DashTelegraphArrow", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> ArrowTelegraphCont = ModContent.Request<Texture2D>($"{ExtrasPath}/DashTelegraphArrowContinuous", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> Warning = ModContent.Request<Texture2D>($"{ParticlePath}/WarningTriangle", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> Trail(int Variant)
         {
             if (Variant <= 0)
             {
                 Variant = 1;
             }
-            return ModContent.Request<Texture2D>($"{ParticlePath}/Trail{Variant}");
+            return ModContent.Request<Texture2D>($"{ParticlePath}/Trail{Variant}", AssetRequestMode.AsyncLoad);
         }
         public static Asset<Texture2D> Line(int Variant)
         {
@@ -650,7 +630,7 @@ namespace DestroyerTest.Common
             {
                 Variant = 1;
             }
-            return ModContent.Request<Texture2D>($"{ExtrasPath}/Line{Variant}");
+            return ModContent.Request<Texture2D>($"{ExtrasPath}/Line{Variant}", AssetRequestMode.AsyncLoad);
         }
         public static Asset<Texture2D> TilableNoise(int Variant)
         {
@@ -658,33 +638,39 @@ namespace DestroyerTest.Common
             {
                 Variant = 1;
             }
-            return ModContent.Request<Texture2D>($"{ExtrasPath}/Noise{Variant}");
+            return ModContent.Request<Texture2D>($"{ExtrasPath}/Noise{Variant}", AssetRequestMode.AsyncLoad);
         }
         //
         //Textures with more niche use cases.
         //
-        public static Asset<Texture2D> RiftStar = ModContent.Request<Texture2D>($"{ParticlePath}/RiftStar");
-        public static Asset<Texture2D> NightmareRoseArenaBorder = ModContent.Request<Texture2D>($"{ParticlePath}/NightmareRoseBarrier");
-        public static Asset<Texture2D> ConstitutionBeamGlow = ModContent.Request<Texture2D>($"{ExtrasPath}/ConstitutionBeamGlow");
-        public static Asset<Texture2D> GalantineLanceGlow = ModContent.Request<Texture2D>($"{ExtrasPath}/GalantineLanceGlow");
-        public static Asset<Texture2D> TenebrousConstructWingLeft = ModContent.Request<Texture2D>($"{ExtrasPath}/TenebrousConstructWingLeft");
-        public static Asset<Texture2D> TenebrousConstructWingRight = ModContent.Request<Texture2D>($"{ExtrasPath}/TenebrousConstructWingRight");
-        public static Asset<Texture2D> WyvernSoulDash = ModContent.Request<Texture2D>($"{ExtrasPath}/WyvernSoulDash");
-        public static Asset<Texture2D> RuneCircle = ModContent.Request<Texture2D>($"{ParticlePath}/RuneCircle1");
-        public static Asset<Texture2D> CorruptSigil = ModContent.Request<Texture2D>($"{ExtrasPath}/CorruptSigil");
-        public static Asset<Texture2D> CrimsonSigil = ModContent.Request<Texture2D>($"{ExtrasPath}/CrimsonSigil");
-        public static Asset<Texture2D> CrimsonBloodRune = ModContent.Request<Texture2D>($"{ExtrasPath}/CrimsonSigil");
-        public static Asset<Texture2D> BloodHexHeart = ModContent.Request<Texture2D>($"{ExtrasPath}/BloodHexHeart");
-        public static Asset<Texture2D> MobilityHexDoll = ModContent.Request<Texture2D>($"{ExtrasPath}/MobilityHexDoll");
-        public static Asset<Texture2D> StarFuryOutline = ModContent.Request<Texture2D>($"{ExtrasPath}/StarfuryCloneOutline");
-        public static Asset<Texture2D> NodeBossPikeOutline = ModContent.Request<Texture2D>($"{ExtrasPath}/NodeBossDistendedPikeOutline");
-        public static Asset<Texture2D> PossessedToothOutline = ModContent.Request<Texture2D>($"{ExtrasPath}/PossessedToothOutline");
+        public static Asset<Texture2D> RiftStar = ModContent.Request<Texture2D>($"{ParticlePath}/RiftStar", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> NightmareRoseArenaBorder = ModContent.Request<Texture2D>($"{ParticlePath}/NightmareRoseBarrier", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> ConstitutionBeamGlow = ModContent.Request<Texture2D>($"{ExtrasPath}/ConstitutionBeamGlow", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> GalantineLanceGlow = ModContent.Request<Texture2D>($"{ExtrasPath}/GalantineLanceGlow", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> TenebrousConstructWingLeft = ModContent.Request<Texture2D>($"{ExtrasPath}/TenebrousConstructWingLeft", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> TenebrousConstructWingRight = ModContent.Request<Texture2D>($"{ExtrasPath}/TenebrousConstructWingRight", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> WyvernSoulDash = ModContent.Request<Texture2D>($"{ExtrasPath}/WyvernSoulDash", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> RuneCircle = ModContent.Request<Texture2D>($"{ParticlePath}/RuneCircle1", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> CorruptSigil = ModContent.Request<Texture2D>($"{ExtrasPath}/CorruptSigil", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> CrimsonSigil = ModContent.Request<Texture2D>($"{ExtrasPath}/CrimsonSigil", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> CrimsonBloodRune = ModContent.Request<Texture2D>($"{ExtrasPath}/CrimsonSigil", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> BloodHexHeart = ModContent.Request<Texture2D>($"{ExtrasPath}/BloodHexHeart", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> MobilityHexDoll = ModContent.Request<Texture2D>($"{ExtrasPath}/MobilityHexDoll", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> StarFuryOutline = ModContent.Request<Texture2D>($"{ExtrasPath}/StarfuryCloneOutline", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> NodeBossPikeOutline = ModContent.Request<Texture2D>($"{ExtrasPath}/NodeBossDistendedPikeOutline", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> PossessedToothOutline = ModContent.Request<Texture2D>($"{ExtrasPath}/PossessedToothOutline", AssetRequestMode.AsyncLoad);
         //
         // Sounds
         //
         public static SoundStyle ChargeBreak = new SoundStyle($"{AudioPath}/ChargeBreak");
         public static SoundStyle CrystalBreak = new SoundStyle($"{AudioPath}/CrystalBreak");
         public static SoundStyle ConstitutionStarKill = new SoundStyle($"{AudioPath}/ConstitutionBoss/ConstitutionStar/Kill", 14) { PitchVariance = 0.2f, Volume = 0.85f, MaxInstances = 0 };
+    
+        //
+        // Effects
+        //
+
+        public static Asset<Effect> TrailScroller = ModContent.Request<Effect>($"{EffectPath}/TrailScroll", AssetRequestMode.AsyncLoad);
     }
 
     public class AssetVerifierSystem : ModSystem

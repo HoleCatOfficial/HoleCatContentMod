@@ -80,18 +80,9 @@ namespace DestroyerTest.Content.Buffs
             Player player = Main.LocalPlayer;
             if (lifeRegenDebuff)
             {
-                int[] types = new int[]
-                {
-                    PRTLoader.GetParticleID<BlackFire1>(),
-                    PRTLoader.GetParticleID<BlackFire2>(),
-                    PRTLoader.GetParticleID<BlackFire3>(),
-                    PRTLoader.GetParticleID<BlackFire4>(),
-                    PRTLoader.GetParticleID<BlackFire5>(),
-                    PRTLoader.GetParticleID<BlackFire6>(),
-                    PRTLoader.GetParticleID<BlackFire7>()
-                };
+                
 
-                PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], Main.rand.NextVector2FromRectangle(player.getRect()), Vector2.Zero, Color.Red, 1f);
+                PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Main.rand.NextVector2FromRectangle(player.getRect()), new Vector2(0, -1.5f), Color.Red, 1f, 60, ai2: 1);
                 // These lines zero out any positive lifeRegen. This is expected for all bad life regeneration effects
                 if (Player.lifeRegen > 0)
                     Player.lifeRegen = 0;

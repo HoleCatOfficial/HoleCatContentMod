@@ -29,7 +29,7 @@ namespace DestroyerTest.Content.CheatItems
 
         public override bool? UseItem(Player player)
         {
-            PRTLoader.NewParticle(DTUtils.AnimatedFireAdditive[Main.rand.Next(DTUtils.AnimatedFireAdditive.Length)], player.Center, (Main.MouseWorld - player.Center).ToRotation().ToRotationVector2() * 16, Color.Red, 4f);
+            PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], player.Center, (Main.MouseWorld - player.Center).ToRotation().ToRotationVector2() * 16, Color.Red, 4f, 60, ai2: 2);
             return true;
         }
 	}

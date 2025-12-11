@@ -258,18 +258,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         private void ExecuteStrike()
         {
             Vector2 swordTip = Projectile.Center + Projectile.rotation.ToRotationVector2() * (Projectile.Size.Length() * Projectile.scale);
-            int[] types = new int[]
-			{
-				PRTLoader.GetParticleID<ColoredFire1>(),
-				PRTLoader.GetParticleID<ColoredFire2>(),
-				PRTLoader.GetParticleID<ColoredFire3>(),
-				PRTLoader.GetParticleID<ColoredFire4>(),
-				PRTLoader.GetParticleID<ColoredFire5>(),
-				PRTLoader.GetParticleID<ColoredFire6>(),
-				PRTLoader.GetParticleID<ColoredFire7>()
-			};
+            
 
-			PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], swordTip, Vector2.Zero, new Color(182, 41, 172), 1);
+			PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], swordTip, Vector2.Zero, new Color(182, 41, 172), 1, 60, 2);
 
 
             Player player = Main.player[Projectile.owner];

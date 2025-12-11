@@ -19,8 +19,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 {
 	public class GoliathPhantom : ModProjectile
 	{
-		public SoundStyle Hit = new SoundStyle("DestroyerTest/Assets/Audio/GoliathPhantomHit") with { Volume = 2.0f, PitchVariance = 1.0f };
-		// Store the target NPC using Projectile.ai[0]
+		public SoundStyle Hit = new SoundStyle("DestroyerTest/Assets/Audio/TenebrisSlinger/TenebrisSlingerArrowImpact", 4) with { PitchVariance = 1.0f };
+		
 		private NPC HomingTarget
 		{
 			get => Projectile.ai[0] == 0 ? null : Main.npc[(int)Projectile.ai[0] - 1];
@@ -38,10 +38,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 			ProjectileID.Sets.TrailingMode[Type] = 2;
 			ProjectileID.Sets.TrailCacheLength[Type] = 12;
 		}
-		//public Effect distortion = null;
 		public override void Load()
 		{
-			//distortion = ModContent.Request<Effect>("DestroyerTest/Effects/TestDistortion").Value;
+
 		}
 
 		public override void SetDefaults()
@@ -62,16 +61,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 		{
 			if (!Projectile.active || Projectile.timeLeft <= 0)
 				return false;
-			// Draws an afterimage trail. See https://github.com/tModLoader/tModLoader/wiki/Basic-Projectile#afterimage-trail for more information.
 
-			//var effect = distortion;
 			Texture2D texture = TextureAssets.Projectile[Type].Value;
 			SpriteBatch spriteBatch = Main.spriteBatch;
-
-			//effect.Parameters["time"].SetValue((float)Main.GlobalTimeWrappedHourly);
-			//effect.Parameters["intensity"].SetValue(0.03f);
-			//effect.Parameters["noiseTexture"].SetValue(ModContent.Request<Texture2D>("DestroyerTest/Effects/turbulentnoise").Value);
-			//effect.CurrentTechnique.Passes[0].Apply();
 
 			if (Projectile.active == true)
 			{
@@ -114,51 +106,53 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 				{
 					SoundEngine.PlaySound(SoundID.Item60, Projectile.Center);
 					PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp>(), Projectile.Center, Vector2.Zero, Color.Red, 0.025f);
+					
 				}
 			}
 			if (DelayTimer < 32)
 			{
+				if (HomingTarget == null)
+                {
+                    if (Projectile.alpha < 255)
+                    {
+                        Projectile.alpha++;
+                    }
+
+					if (Projectile.alpha >= 255)
+                    {
+                        Projectile.Kill();
+                    }
+                }
 				Projectile.velocity *= 0.9f;
 				DelayTimer++;
 				return;
 			}
 
-			SearchTimer--;
+			Dust.NewDust(Projectile.position, Projectile.Hitbox.Width, Projectile.Hitbox.Height, DustID.FireworksRGB, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f, 0, Color.Red, 0.6f);
 
-			if (SearchTimer > 0)
+			
+			// First, we find a homing target if we don't have one
+			if (HomingTarget == null)
 			{
-				// First, we find a homing target if we don't have one
-				if (HomingTarget == null)
-				{
-					HomingTarget = FindClosestNPC(maxDetectRadius);
-				}
-
-				// If we have a homing target, make sure it is still valid. If the NPC dies or moves away, we'll want to find a new target
-				if (HomingTarget != null && !IsValidTarget(HomingTarget))
-				{
-					HomingTarget = null;
-				}
-
-				// If we don't have a target, don't adjust trajectory
-				if (HomingTarget == null)
-					return;
-
-				// If found, we rotate the projectile velocity in the direction of the target.
-				// We only rotate by 3 degrees an update to give it a smooth trajectory. Increase the rotation speed here to make tighter turns
-				float targetAngle = Projectile.AngleTo(HomingTarget.Center);
-				float length = Projectile.velocity.Length();
-				Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(30)).ToRotationVector2() * (length + 5);
-				Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
+				HomingTarget = FindClosestNPC(maxDetectRadius);
 			}
-			if (SearchTimer <= 0)
+
+			// If we have a homing target, make sure it is still valid. If the NPC dies or moves away, we'll want to find a new target
+			if (HomingTarget != null && !IsValidTarget(HomingTarget))
 			{
-				Projectile.hostile = true;
-				float targetAngle = Projectile.AngleTo(player.Center);
-				float length = Projectile.velocity.Length();
-				Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(180)).ToRotationVector2() * (length + 5);
-				Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
-				MathHelper.Clamp(length, 0, 2);
+				HomingTarget = null;
 			}
+
+			// If we don't have a target, don't adjust trajectory
+			if (HomingTarget == null)
+				return;
+
+			// If found, we rotate the projectile velocity in the direction of the target.
+			// We only rotate by 3 degrees an update to give it a smooth trajectory. Increase the rotation speed here to make tighter turns
+			float targetAngle = Projectile.AngleTo(HomingTarget.Center);
+			float length = Projectile.velocity.Length();
+			Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(30)).ToRotationVector2() * (length + 5);
+			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
 		}
 
 		// Finding the closest NPC to attack within maxDetectDistance range

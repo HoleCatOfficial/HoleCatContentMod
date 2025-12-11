@@ -259,31 +259,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 			Player player = Main.player[Projectile.owner];
 			swordTip = Projectile.Center + Projectile.rotation.ToRotationVector2() * (Projectile.Size.Length() * Projectile.scale);
 
-			int[] types = new int[]
-            {
-                PRTLoader.GetParticleID<ColoredFire1>(),
-                PRTLoader.GetParticleID<ColoredFire2>(),
-                PRTLoader.GetParticleID<ColoredFire3>(),
-                PRTLoader.GetParticleID<ColoredFire4>(),
-                PRTLoader.GetParticleID<ColoredFire5>(),
-                PRTLoader.GetParticleID<ColoredFire6>(),
-                PRTLoader.GetParticleID<ColoredFire7>()
-            };
-
             
-            PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], swordTip, Vector2.Zero, ColorLib.RainbowGradient, 0.5f);
-            
-
-            int[] types2 = new int[]
-                {
-                PRTLoader.GetParticleID<BlackFire1>(),
-                PRTLoader.GetParticleID<BlackFire2>(),
-                PRTLoader.GetParticleID<BlackFire3>(),
-                PRTLoader.GetParticleID<BlackFire4>(),
-                PRTLoader.GetParticleID<BlackFire5>(),
-                PRTLoader.GetParticleID<BlackFire6>(),
-                PRTLoader.GetParticleID<BlackFire7>()
-                };
+            PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], swordTip, Vector2.Zero, ColorLib.RainbowGradient, 0.5f, 60, 2);
+    
 
             Color[] BackColors = new Color[]
                 {
@@ -295,7 +273,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 };
 
            
-            PRTLoader.NewParticle(types2[Main.rand.Next(types2.Length)], swordTip, Vector2.Zero, BackColors[Main.rand.Next(BackColors.Length)], 1.0f);
+            PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], swordTip, Vector2.Zero, BackColors[Main.rand.Next(BackColors.Length)], 1.0f, 60, 2);
             
 
 

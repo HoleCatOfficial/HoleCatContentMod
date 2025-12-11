@@ -17,6 +17,7 @@ using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
+using DestroyerTest.Common;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 {
@@ -89,8 +90,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
 		public override void SetDefaults()
 		{
-			Projectile.width = 102; // Hitbox width of projectile
-			Projectile.height = 102; // Hitbox height of projectile
+			Projectile.width = 122; // Hitbox width of projectile
+			Projectile.height = 122; // Hitbox height of projectile
 			Projectile.friendly = true; // Projectile hits enemies
 			Projectile.timeLeft = 10000; // Time it takes for projectile to expire
 			Projectile.penetrate = -1; // Projectile pierces infinitely
@@ -302,22 +303,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 			Vector2 sword2 = Projectile.Center + Projectile.rotation.ToRotationVector2() * ((Projectile.Size.Length() * Projectile.scale) - 32);
 			Vector2 sword3 = Projectile.Center + Projectile.rotation.ToRotationVector2() * ((Projectile.Size.Length() * Projectile.scale) - 64);
 			Vector2 sword4 = Projectile.Center + Projectile.rotation.ToRotationVector2() * ((Projectile.Size.Length() * Projectile.scale) - 84);
-			int[] types = new int[]
-			{
-				PRTLoader.GetParticleID<BlackFire1>(),
-				PRTLoader.GetParticleID<BlackFire2>(),
-				PRTLoader.GetParticleID<BlackFire3>(),
-				PRTLoader.GetParticleID<BlackFire4>(),
-				PRTLoader.GetParticleID<BlackFire5>(),
-				PRTLoader.GetParticleID<BlackFire6>(),
-				PRTLoader.GetParticleID<BlackFire7>()
-			};
 
-			PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], swordTip, Vector2.Zero, new Color(255, 0, 0, 255), 2.0f);
-			PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], sword1, Vector2.Zero, new Color(255, 0, 0, 204), 1.8f);
-			PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], sword2, Vector2.Zero, new Color(255, 0, 0, 153), 1.6f);
-			PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], sword3, Vector2.Zero, new Color(255, 0, 0, 102), 1.4f);
-			PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], sword4, Vector2.Zero, new Color(255, 0, 0, 51), 1.2f);
+			PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], swordTip, Vector2.Zero, new Color(255, 0, 0), 3.0f, 40, ai2: 1);
+			PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], sword1, Vector2.Zero, new Color(255, 0, 0) * 0.8f, 2.5f, 40, ai2: 1);
+			PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], sword2, Vector2.Zero, new Color(255, 0, 0) * 0.6f, 2f, 40, ai2: 1);
+			PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], sword3, Vector2.Zero, new Color(255, 0, 0) * 0.4f, 1.5f, 40, ai2: 1);
+			PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], sword4, Vector2.Zero, new Color(255, 0, 0) * 0.2f, 1f, 40, ai2: 1);
 
 			int rad = (int)(Projectile.Size.Length() * Projectile.scale);
 
@@ -417,11 +408,6 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 			}
 		}
 
-
-
-
-
-		// Function facilitating the latter half of the swing where the sword disappears
 		private void UnwindStrike()
 		{
 			if (CurrentAttack == AttackType.Spin)

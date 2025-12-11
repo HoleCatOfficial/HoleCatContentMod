@@ -6,17 +6,31 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace DestroyerTest.Content.Particles
+namespace DestroyerTest.Content.Particles.fire
 {
-    internal class AnimatedFireAdditive_Base : BasePRT
+    internal class Fire : BasePRT
     {
-        public int MaxLifetime => 60;
+        public int MaxLifetime => (int)ai[0];
+        public int DrawMode => (int)ai[2];
+        public bool LR;
         public override void SetProperty()
         {
-            PRTDrawMode = PRTDrawModeEnum.AdditiveBlend;
+            if (DrawMode == 0)
+            {
+                PRTDrawMode = PRTDrawModeEnum.AlphaBlend;
+            }
+            if (DrawMode == 1)
+            {
+                PRTDrawMode = PRTDrawModeEnum.NonPremultiplied;
+            }
+            if (DrawMode == 2)
+            {
+                PRTDrawMode = PRTDrawModeEnum.AdditiveBlend;
+            }
             Lifetime = MaxLifetime;
             Rotation = Main.rand.NextFloat(0, MathHelper.TwoPi);
             Scale *= Main.rand.NextFloat(0.1f, 0.9f);
+            LR = Main.rand.NextBool(2);
         }
                 
         //Since all of the particles deriving from this class use the same spritesheet format, the frame height and frame count are the same for all of them. 80x80 frame dimensions, 6 frames.
@@ -27,9 +41,30 @@ namespace DestroyerTest.Content.Particles
         public int CurrentFrame = 0;
         public void Anim()
         {
-            ai[0]++;
+            ai[1]++;
+            if (LR)
+            {
+                Rotation += 0.05f;
+            }
+            if (!LR)
+            {
+                Rotation -= 0.05f;
+            }
 
-            if (ai[0] % (MaxLifetime / FrameCount) == 0)
+            if (DrawMode == 0)
+            {
+                PRTDrawMode = PRTDrawModeEnum.AlphaBlend;
+            }
+            if (DrawMode == 1)
+            {
+                PRTDrawMode = PRTDrawModeEnum.NonPremultiplied;
+            }
+            if (DrawMode == 2)
+            {
+                PRTDrawMode = PRTDrawModeEnum.AdditiveBlend;
+            }
+
+            if (ai[1] % (MaxLifetime / FrameCount) == 0)
             {
                 CurrentFrame++;
                 if (CurrentFrame >= FrameCount)
@@ -42,7 +77,7 @@ namespace DestroyerTest.Content.Particles
         public override void AI()
         {
             Anim();
-            if (LifetimeCompletion > 0.85f)
+            if (CurrentFrame >= (FrameCount - 1))
             {
                 Color *= 0.9f;
             }
@@ -73,32 +108,32 @@ namespace DestroyerTest.Content.Particles
         }
     }
 
-    internal class AnimatedFireAdditive1 : AnimatedFireAdditive_Base
+    internal class Fire1 : Fire
     {
 
     }
 
-    internal class AnimatedFireAdditive2 : AnimatedFireAdditive_Base
+    internal class Fire2 : Fire
     {
 
     }
-    internal class AnimatedFireAdditive3 : AnimatedFireAdditive_Base
+    internal class Fire3 : Fire
     {
 
     }
-    internal class AnimatedFireAdditive4 : AnimatedFireAdditive_Base
+    internal class Fire4 : Fire
     {
 
     }
-    internal class AnimatedFireAdditive5 : AnimatedFireAdditive_Base
+    internal class Fire5 : Fire
     {
 
     }
-    internal class AnimatedFireAdditive6 : AnimatedFireAdditive_Base
+    internal class Fire6 : Fire
     {
 
     }
-    internal class AnimatedFireAdditive7 : AnimatedFireAdditive_Base
+    internal class Fire7 : Fire
     {
 
     }

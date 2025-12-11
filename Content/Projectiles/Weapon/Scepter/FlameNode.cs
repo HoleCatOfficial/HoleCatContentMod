@@ -48,18 +48,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
             Projectile.velocity = Vector2.Zero;
             Projectile.rotation -= 0.3f;
 
-            int[] types = new int[]
-            {
-                PRTLoader.GetParticleID<ColoredFire1>(),
-                PRTLoader.GetParticleID<ColoredFire2>(),
-                PRTLoader.GetParticleID<ColoredFire3>(),
-                PRTLoader.GetParticleID<ColoredFire4>(),
-                PRTLoader.GetParticleID<ColoredFire5>(),
-                PRTLoader.GetParticleID<ColoredFire6>(),
-                PRTLoader.GetParticleID<ColoredFire7>()
-            };
 
-            PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], Projectile.Center, Vector2.Zero, new Color(253, 62, 3) * 0.9f, 0.4f);
+            PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center, new Vector2(0, -1f), new Color(253, 62, 3) * 0.9f, 0.4f, 60, 2);
 
             foreach (Projectile node in Main.projectile)
             {

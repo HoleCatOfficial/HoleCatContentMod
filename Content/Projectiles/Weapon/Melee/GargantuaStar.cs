@@ -142,7 +142,6 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
 			DelayTimer++;
 			Projectile.rotation += Projectile.direction * Main.rand.NextFloat(0.01f, 0.07f);
-            PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center + Main.rand.NextVector2Circular(10, 10), Vector2.Zero, Color.Red * 0.75f, 0.4f);
 			Lighting.AddLight(Projectile.Center, Color.Red.ToVector3() * 0.2f);
 
 			if (DelayTimer < 20 || DelayTimer > 180)
