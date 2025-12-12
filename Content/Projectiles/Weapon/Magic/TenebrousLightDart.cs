@@ -89,15 +89,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 				GraphicsDevice gd = Main.graphics.GraphicsDevice;
 				if (ve.Count >= 3)
 				{
-					gd.Textures[0] = DTAssetLib.Streak(7).Value;
-                    effect.CurrentTechnique.Passes["ScrollingUV"].Apply();
-                    spriteBatch.End();
-                    spriteBatch.Begin(0, BlendState.Additive, spriteBatch.GraphicsDevice.SamplerStates[0], spriteBatch.GraphicsDevice.DepthStencilState, spriteBatch.GraphicsDevice.RasterizerState, effect, Main.GameViewMatrix.TransformationMatrix);
+
+                    gd.Textures[0] = DTAssetLib.Streak(7).Value;
+
+                    effect.CurrentTechnique.Passes["DestroyerTest.ScrollingUV"].Apply();
                 
 					gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2);
-
-                    spriteBatch.End();
-                    spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 
 				}
 			}

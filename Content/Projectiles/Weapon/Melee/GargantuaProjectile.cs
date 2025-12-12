@@ -124,9 +124,13 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 			Projectile.spriteDirection = reader.ReadSByte();
 		}
 
+		public List<Vector2> TrailPositions = new();
+		public List<float> TrailRotations = new();
+		private const int TrailLength = 40;
+		public Vector2 swordTip;
 		public override void AI()
 		{
-
+			swordTip = Projectile.Center + Projectile.rotation.ToRotationVector2() * (Projectile.Size.Length() * Projectile.scale);
 
 			// Extend use animation until projectile is killed
 			Owner.itemAnimation = 2;
@@ -156,11 +160,44 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 			}
 
 			SetSwordPosition();
+
+			Vector2 lastPos = TrailPositions.Count > 0 ? TrailPositions[0] : swordTip;
+			Vector2 newPos  = swordTip;
+
+			Vector2 TR_Dir = newPos - lastPos;
+			float TR_Rot = TR_Dir.ToRotation();
+
+			float dist = Vector2.Distance(lastPos, newPos);
+			float step = 8f;
+
+			if (dist > 0f)
+			{
+				int segments = (int)(dist / step);
+
+				for (int i = 1; i <= segments; i++)
+				{
+					Vector2 pos = Vector2.Lerp(lastPos, newPos, i / (float)segments);
+					TrailPositions.Insert(0, pos);
+					TrailRotations.Insert(0, TR_Rot);
+				}
+			}
+			else
+			{
+				TrailPositions.Insert(0, newPos);
+				TrailRotations.Insert(0, TR_Rot);
+			}
+
+			while (TrailPositions.Count > TrailLength)
+				TrailPositions.RemoveAt(TrailPositions.Count - 1);
+			while (TrailRotations.Count > TrailLength)
+				TrailRotations.RemoveAt(TrailRotations.Count - 1);
+
 			Timer++;
 		}
 
 		public override bool PreDraw(ref Color lightColor)
 		{
+			Trail();
 			// Draw the sword sprite itself
 			Vector2 origin;
 			float rotationOffset;
@@ -184,6 +221,43 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 			Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null, lightColor * Projectile.Opacity, Projectile.rotation + rotationOffset, origin, Projectile.scale, effects, 0);
 
 			return false;  // prevent default drawing
+		}
+
+		public void Trail()
+		{
+			if (TrailPositions.Count > 1)
+			{
+				List<ColoredVertex> ve = new List<ColoredVertex>();
+				float a = 0;
+
+				for (int i = TrailPositions.Count - 1; i > 0; i--)
+				{
+					float t = 1f - (i / (float)TrailPositions.Count); // fade toward tail
+					Color b = Color.Red * t;
+
+					Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
+					Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * 16;
+                    Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * 16;
+
+					ve.Add(new ColoredVertex(
+						TrailPositions[i] - Main.screenPosition + offset,
+						new Vector3(t, 1, 1),
+						b));
+
+					ve.Add(new ColoredVertex(
+						TrailPositions[i] - Main.screenPosition + offset2,
+						new Vector3(t, 0, 1),
+						b));
+				}
+
+
+				GraphicsDevice gd = Main.graphics.GraphicsDevice;
+				if (ve.Count >= 3)
+				{
+					gd.Textures[0] = DTAssetLib.SwordTrail(1).Value;
+					gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2);
+				}
+			}
 		}
 
 		public override void PostDraw(Color lightColor)

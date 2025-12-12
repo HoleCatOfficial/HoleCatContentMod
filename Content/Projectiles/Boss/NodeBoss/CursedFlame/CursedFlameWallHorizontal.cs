@@ -58,7 +58,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame
         {
             for (int v = 0; v < 20; v++)
             {
-                PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Vector2.Zero, ColorLib.CursedFlames, 1.5f, 60, 2);
+                PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Vector2.Zero, ColorLib.CursedFlames, 1.5f, 60, ai2: 2);
             }
         }
 	}

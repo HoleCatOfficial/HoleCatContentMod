@@ -595,6 +595,15 @@ namespace DestroyerTest.Common
             return ModContent.Request<Texture2D>($"{ExtrasPath}/Streak{Variant}", AssetRequestMode.AsyncLoad);
         }
 
+        public static Asset<Texture2D> SwordTrail(int Variant)
+        {
+            if (Variant <= 0)
+            {
+                Variant = 1;
+            }
+            return ModContent.Request<Texture2D>($"{ExtrasPath}/SwordTrail{Variant}", AssetRequestMode.AsyncLoad);
+        }
+
         public static Asset<Texture2D> Star(int Variant)
         {
             if (Variant <= 0)

@@ -74,7 +74,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame
 
 			if (Main.rand.NextBool(3))
 			{
-				PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center, new Vector2(0, -0.1f), ColorLib.CursedFlames, 2.5f, 60, 2);
+				PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center, new Vector2(0, -0.1f), ColorLib.CursedFlames, 2.5f, 60, ai2: 2);
 			}
 		}
 
