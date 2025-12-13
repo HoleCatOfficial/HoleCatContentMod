@@ -60,6 +60,7 @@ namespace DestroyerTest.Content.MeleeWeapons
 	{
         public override void SetStaticDefaults()
         {
+            ItemID.Sets.ItemsThatAllowRepeatedRightClick[Type] = true;
         }
         public override void SetDefaults()
         {
@@ -67,7 +68,7 @@ namespace DestroyerTest.Content.MeleeWeapons
             Item.width = 122;
             Item.height = 122;
 
-            Item.useStyle = ItemUseStyleID.Swing;
+            Item.useStyle = ItemUseStyleID.Shoot;
             Item.useTime = 20;
             Item.useAnimation = 20;
             Item.autoReuse = true;
@@ -80,16 +81,48 @@ namespace DestroyerTest.Content.MeleeWeapons
 
             Item.value = Item.buyPrice(gold: 1);
             Item.rare = ModContent.RarityType<VesperRarity>();
-            Item.channel = true;
             Item.shoot = ModContent.ProjectileType<GargantuaProjectile>();
             Item.noUseGraphic = true;
-
+            Item.channel = true;
 		}
+
+        public override bool AltFunctionUse(Player player)
+        {
+            return true;
+        }
+
+        public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
+        {
+            if (player.altFunctionUse == 2)
+            {
+                type = ModContent.ProjectileType<GargantuaProjectile2>();
+                damage = 380;
+            }
+            if (player.altFunctionUse == 1)
+            {
+                type = ModContent.ProjectileType<GargantuaProjectile>();
+            }
+        }
+
+        public override bool CanUseItem(Player player)
+        {
+            if (player.altFunctionUse == 2)
+            {
+                Item.channel = true;
+            }
+            if (player.altFunctionUse == 1)
+            {
+                Item.channel = true;
+            }
+            return player.ownedProjectileCounts[ModContent.ProjectileType<GargantuaProjectile>()] < 1 && player.ownedProjectileCounts[ModContent.ProjectileType<GargantuaProjectile2>()] < 1;
+        }
+
+
 
 		public override void AddRecipes() {
 			CreateRecipe()
                 .AddIngredient<Goliath>(1)
-                .AddIngredient<PrimalShards>(14)
+                .AddIngredient<LivingDiamond>(14)
                 .AddIngredient(ItemID.SpectreBar, 10)
 				.AddTile(TileID.Anvils)
 				.Register();

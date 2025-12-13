@@ -307,46 +307,21 @@ namespace DestroyerTest.Content.Entities
                     }
                 case AttackState.Stars:
                     {
-                        KeepToPlayer(player.Center + new Vector2(0, -200));
-
-                        int numVectors = Main.rand.Next(8, 23);
-                        float angleStep = MathHelper.TwoPi / numVectors;
-                        float baseAngle = 0f;
-                        int StartRad = 22;
-
-
-                        // Decide randomly if it's negative or positive
-                        if (Main.rand.NextBool()) // 50/50 chance
-                        {
-                            // Negative range: -24 to -12
-                            RotSpeed = Main.rand.NextFloat(-16f, -8f);
-                        }
-                        else
-                        {
-                            // Positive range: 12 to 24
-                            RotSpeed = Main.rand.NextFloat(8f, 16f);
-                        }
-
-                        if (StarShootInterval > 0)
-                        {
-                            StarShootInterval--;
-                        }
-
-                        if (StarShootInterval <= 0)
-                        {
-                            SoundEngine.PlaySound(StarShoot, NPC.Center);
-                            Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), NPC.Center, Vector2.Zero, ColorLib.CursedFlames, 0.01f, 1f);
-                            Opus.RadialSpreadProjectile(ModContent.ProjectileType<NightmareRoseCursedCrystal>(), 9, NPC.Center, 16, 4, 10, AI1: 1, RandomOffset: true);
-                            Opus.RadialSpreadProjectile(ModContent.ProjectileType<NightmareRoseCursedCrystal>(), 9, NPC.Center, 16, 4, 10, AI1: -1, RandomOffset: true);
-                            StarShootInterval = 60;
-                            StarShootCount += 1;
-                        }
+                        RandTele(player);
 
                         if (StarShootCount >= 6)
                         {
+                            // Reset teleport flags so the next Stars cycle can teleport again
+                            HasDisposablePos = false;
+                            HasTeled = false;
+                            AlphaOut = false;
+                            AlphaIn = false;
+                            MoveTime = 120;
+
                             CurrentAttack = AttackState.Mines;
                             StarShootCount = 0;
                         }
+
                         break;
                     }
                 case AttackState.Mines:
@@ -548,6 +523,105 @@ namespace DestroyerTest.Content.Entities
             {
                 // Move slower if close
                 NPC.velocity = toTarget * 0.25f;
+            }
+        }
+
+        public bool HasDisposablePos;
+        public Vector2 DisposableTelePos;
+        public bool HasTeled = false;
+        public bool AlphaOut;
+        public bool AlphaIn;
+        public int MoveTime = 120;
+        public void RandTele(Player player)
+        {
+            AlphaIn = NPC.alpha <= 0;
+            AlphaOut = NPC.alpha >= 255;
+
+            Vector2 Outer = player.Center + Main.rand.NextVector2Circular(600, 600);
+            if (!HasDisposablePos)
+            {
+                DisposableTelePos = player.Center;
+                HasDisposablePos = true;
+            }
+            Vector2 dir = DisposableTelePos - NPC.Center;
+            dir.Normalize();
+            
+
+            if (!AlphaOut)
+            {
+                NPC.alpha += 5;
+                if (NPC.alpha >= 255)
+                {
+                    AlphaOut = true;
+                }
+            }
+
+            if (!AlphaIn && HasTeled)
+            {
+                NPC.alpha -= 5;
+                if (NPC.alpha <= 0)
+                {
+                    AlphaIn = true;
+                }
+            }
+
+            if (!HasTeled)
+            {
+                NPC.Center = Outer;
+                HasTeled = true;
+            }
+
+            if (MoveTime > 0 && HasTeled)
+            {
+                MoveTime--;
+                NPC.velocity = dir * 10f;
+            }
+
+            if (MoveTime == 60)
+            {
+                Stars();
+            }
+
+            if (MoveTime > 90)
+            {
+                AlphaOut = false;
+            }
+
+        }
+
+        public void Stars()
+        {
+            int numVectors = Main.rand.Next(8, 23);
+            float angleStep = MathHelper.TwoPi / numVectors;
+            float baseAngle = 0f;
+            int StartRad = 22;
+
+
+            // Decide randomly if it's negative or positive
+            if (Main.rand.NextBool()) // 50/50 chance
+            {
+                // Negative range: -24 to -12
+                RotSpeed = Main.rand.NextFloat(-16f, -8f);
+            }
+            else
+            {
+                // Positive range: 12 to 24
+                RotSpeed = Main.rand.NextFloat(8f, 16f);
+            }
+
+            if (StarShootInterval > 0)
+            {
+                StarShootInterval--;
+            }
+
+            if (StarShootInterval <= 0)
+            {
+                SoundEngine.PlaySound(StarShoot, NPC.Center);
+                Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), NPC.Center, Vector2.Zero, ColorLib.CursedFlames, 0.01f, 1f);
+                Opus.RadialSpreadProjectile(ModContent.ProjectileType<NightmareRoseCursedCrystal>(), 9, NPC.Center, 16, 4, 10, AI1: 1, RandomOffset: true);
+                Opus.RadialSpreadProjectile(ModContent.ProjectileType<NightmareRoseCursedCrystal>(), 9, NPC.Center, 16, 4, 10, AI1: -1, RandomOffset: true);
+                StarShootInterval = 60;
+                StarShootCount += 1;
             }
         }
 

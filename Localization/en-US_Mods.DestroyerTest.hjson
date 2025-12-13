@@ -4023,6 +4023,8 @@ Projectiles: {
 	TenebrisStarFriendly_NoHoming.DisplayName: Tenebris Star Friendly_ No Homing
 	TeslaScuttlerScaredExplosion.DisplayName: Tesla Scuttler Scared Explosion
 	TenebrousLightDart.DisplayName: Tenebrous Light Dart
+	GargantuaProjectile2.DisplayName: Gargantua Projectile2
+	GargantuaExplosion.DisplayName: Gargantua Explosion
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.

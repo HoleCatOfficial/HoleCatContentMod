@@ -1,10 +1,12 @@
 using System;
+using System.Collections.Generic;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Particles;
 using InnoVault.PRT;
 using Microsoft.Build.Evaluation;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using ReLogic.Peripherals.RGB;
 using Terraria;
 using Terraria.Audio;
@@ -59,27 +61,59 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
 		public override bool PreDraw(ref Color lightColor)
 		{
+			lightColor = Color.Red;
 			if (!Projectile.active || Projectile.timeLeft <= 0)
 				return false;
 
 			Texture2D texture = TextureAssets.Projectile[Type].Value;
 			SpriteBatch spriteBatch = Main.spriteBatch;
 
-			if (Projectile.active == true)
+			Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.NonPremultiplied, SpriteSortMode.Immediate);
+
+			if (TrailPositions.Count > 1)
 			{
-				Vector2 drawOrigin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
-				for (int k = Projectile.oldPos.Length - 1; k > 0; k--)
+				List<ColoredVertex> ve = new List<ColoredVertex>();
+				float a = 0;
+
+				for (int i = TrailPositions.Count - 1; i > 0; i--)
 				{
-					Vector2 drawPos = (Projectile.oldPos[k] - Main.screenPosition) + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
-					Color color = Projectile.GetAlpha(lightColor) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
-					Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
+					float t = 1f - (i / (float)TrailPositions.Count); // fade toward tail
+					Color b = lightColor * t;
+
+					Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
+					Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * 16;
+                    Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * 16;
+
+					ve.Add(new ColoredVertex(
+						TrailPositions[i] - Main.screenPosition + offset,
+						new Vector3(t, 1, 1),
+						b));
+
+					ve.Add(new ColoredVertex(
+						TrailPositions[i] - Main.screenPosition + offset2,
+						new Vector3(t, 0, 1),
+						b));
+				}
+
+
+				GraphicsDevice gd = Main.graphics.GraphicsDevice;
+				if (ve.Count >= 3)
+				{
+					gd.Textures[0] = DTAssetLib.Streak(8).Value;
+					gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2);
 				}
 			}
+			
+			Opus.ReturnToDefaultDrawing(spriteBatch);
 
 			return true;
 		}
 
 		public int SearchTimer = 360;
+
+		public List<Vector2> TrailPositions = new();
+		public List<float> TrailRotations = new();
+		private const int TrailLength = 40;
 
 		// Custom AI
 		public override void AI()
@@ -87,6 +121,35 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 			Player player = Main.player[Projectile.owner];
 			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
 
+			Vector2 lastPos = TrailPositions.Count > 0 ? TrailPositions[0] : Projectile.Center;
+			Vector2 newPos  = Projectile.Center;
+
+			float dist = Vector2.Distance(lastPos, newPos);
+			float step = 8f; // how closely to sample. tweak this!
+
+			if (dist > 0f)
+			{
+				int segments = (int)(dist / step);
+
+				for (int i = 1; i <= segments; i++)
+				{
+					Vector2 pos = Vector2.Lerp(lastPos, newPos, i / (float)segments);
+					TrailPositions.Insert(0, pos);
+					TrailRotations.Insert(0, Projectile.rotation);
+				}
+			}
+			else
+			{
+				TrailPositions.Insert(0, newPos);
+				TrailRotations.Insert(0, Projectile.rotation);
+			}
+
+
+			// Cap trail
+			while (TrailPositions.Count > TrailLength)
+				TrailPositions.RemoveAt(TrailPositions.Count - 1);
+			while (TrailRotations.Count > TrailLength)
+				TrailRotations.RemoveAt(TrailRotations.Count - 1);
 
 			float maxDetectRadius = 800f; // The maximum radius at which a projectile can detect a target
 			if (DelayTimer < 32 && DelayTimer > 2)

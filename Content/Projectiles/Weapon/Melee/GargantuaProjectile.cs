@@ -18,6 +18,7 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using DestroyerTest.Common;
+using OpusLib;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 {
@@ -128,9 +129,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 		public List<float> TrailRotations = new();
 		private const int TrailLength = 40;
 		public Vector2 swordTip;
+		public Vector2 ToTip;
 		public override void AI()
 		{
 			swordTip = Projectile.Center + Projectile.rotation.ToRotationVector2() * (Projectile.Size.Length() * Projectile.scale);
+			ToTip = swordTip - Projectile.Center;
+
 
 			// Extend use animation until projectile is killed
 			Owner.itemAnimation = 2;
@@ -167,6 +171,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 			Vector2 TR_Dir = newPos - lastPos;
 			float TR_Rot = TR_Dir.ToRotation();
 
+			
+
 			float dist = Vector2.Distance(lastPos, newPos);
 			float step = 8f;
 
@@ -177,6 +183,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 				for (int i = 1; i <= segments; i++)
 				{
 					Vector2 pos = Vector2.Lerp(lastPos, newPos, i / (float)segments);
+
 					TrailPositions.Insert(0, pos);
 					TrailRotations.Insert(0, TR_Rot);
 				}
@@ -225,6 +232,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
 		public void Trail()
 		{
+			Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.NonPremultiplied, SpriteSortMode.Immediate);
 			if (TrailPositions.Count > 1)
 			{
 				List<ColoredVertex> ve = new List<ColoredVertex>();
@@ -235,9 +243,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 					float t = 1f - (i / (float)TrailPositions.Count); // fade toward tail
 					Color b = Color.Red * t;
 
-					Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
-					Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * 16;
-                    Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * 16;
+					//Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
+					float rot = TrailRotations[i];
+					Vector2 dir = rot.ToRotationVector2();
+					Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * 150;
+                    Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * 150;
 
 					ve.Add(new ColoredVertex(
 						TrailPositions[i] - Main.screenPosition + offset,
@@ -254,10 +264,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 				GraphicsDevice gd = Main.graphics.GraphicsDevice;
 				if (ve.Count >= 3)
 				{
-					gd.Textures[0] = DTAssetLib.SwordTrail(1).Value;
+					gd.Textures[0] = DTAssetLib.Streak(6).Value;
 					gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2);
 				}
 			}
+			Opus.ReturnToDefaultDrawing(Main.spriteBatch);
 		}
 
 		public override void PostDraw(Color lightColor)
@@ -372,6 +383,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 				Sound = true;
             }
 
+			
 			Vector2 swordTip = Projectile.Center + Projectile.rotation.ToRotationVector2() * (Projectile.Size.Length() * Projectile.scale);
 			Vector2 sword1 = Projectile.Center + Projectile.rotation.ToRotationVector2() * ((Projectile.Size.Length() * Projectile.scale) - 8);
 			Vector2 sword2 = Projectile.Center + Projectile.rotation.ToRotationVector2() * ((Projectile.Size.Length() * Projectile.scale) - 32);
@@ -383,6 +395,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 			PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], sword2, Vector2.Zero, new Color(255, 0, 0) * 0.6f, 2f, 40, ai2: 1);
 			PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], sword3, Vector2.Zero, new Color(255, 0, 0) * 0.4f, 1.5f, 40, ai2: 1);
 			PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], sword4, Vector2.Zero, new Color(255, 0, 0) * 0.2f, 1f, 40, ai2: 1);
+			
+
+			//PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center, ToTip * 0.05f, Color.Red, 3.0f, 40, ai2: 1);
 
 			int rad = (int)(Projectile.Size.Length() * Projectile.scale);
 
@@ -403,8 +418,6 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
 				if (SpinCount >= 5)
 				{
-
-
 					//SoundEngine.PlaySound(SoundID.Item67, player.Center);
 					for (int i = 0; i < 4; i++)
 					{
@@ -426,7 +439,6 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
 				if (SpinCount >= 15)
 				{
-					Swing.Pitch += 0.05f;
 					for (int i = 0; i < 4; i++)
 					{
 						Vector2 Direction = Main.rand.NextVector2CircularEdge(1f, 1f); // Random unit vector on circle edge
@@ -499,6 +511,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
 			SoundEngine.PlaySound(Hit, target.Center);
+			for (int i = 0; i < 10; i++)
+			{
+				Vector2 ToTarget = Projectile.Center - target.Center;
+				Vector2 Dir = ToTarget.ToRotation().ToRotationVector2() * -16;
+				PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), target.Center, Dir.RotatedByRandom(1), Color.Red, 1f);
+			}
 		}
 	}
 }
