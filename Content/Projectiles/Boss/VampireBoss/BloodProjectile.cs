@@ -39,7 +39,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.VampireBoss
 			Projectile.hostile = true;
 			Projectile.ignoreWater = true;
 			Projectile.light = 0.1f;
-			Projectile.timeLeft = 180;
+			Projectile.timeLeft = 600;
 			Projectile.tileCollide = true;
 			Projectile.penetrate = 1;
 		}
@@ -124,7 +124,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.VampireBoss
 			while (TrailRotations.Count > TrailLength)
 				TrailRotations.RemoveAt(TrailRotations.Count - 1);
 
-			float maxDetectRadius = 100f;
+			float maxDetectRadius = 400f;
 
 			if (HomingTarget == null)
 			{
