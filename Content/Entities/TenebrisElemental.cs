@@ -6,6 +6,7 @@ using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.RiftBiome;
 using Microsoft.Xna.Framework;
 using MonoMod.Cil;
+using OpusLib;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -138,27 +139,7 @@ namespace DestroyerTest.Content.Entities
             if (Main.GameUpdateCount % 180 == 0)
             {
                 SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/ChargeBreak") with { PitchVariance = 1f, Volume = 3f });
-                int numVectors = Main.rand.Next(8, 23);
-                float angleStep = MathHelper.TwoPi / numVectors;
-                float baseAngle = 0f;
-                int StartRad = 22;
-                float RotSpeed = Main.rand.NextFloat(-16f, -8f);
-                for (int i = 0; i < numVectors; i++)
-                {
-                    float randomOffset = Main.rand.NextFloat(-0.4f, 0.4f);
-                    float angle = baseAngle + i * angleStep + randomOffset;
-
-                    float radius = StartRad;
-                    float curvedAngle = angle - RotSpeed * MathHelper.PiOver2;
-
-                    Vector2 startPos = NPC.Center + radius * new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
-                    Vector2 outwardVel = new Vector2((float)Math.Cos(curvedAngle), (float)Math.Sin(curvedAngle)) * 0.5f; // outward speed
-                    Vector2 spinVel = outwardVel.RotatedBy(MathHelper.PiOver2) * 0.8f; // tangential spin
-
-                    Vector2 finalVel = (outwardVel + spinVel).SafeNormalize(Vector2.UnitY) * RotSpeed;
-
-                    Projectile.NewProjectile(Entity.GetSource_FromThis(), startPos, finalVel, ModContent.ProjectileType<TenebrisFlames>(), 20, 5, ai2: 2);
-                }
+                Opus.RingProjectileOutward(ModContent.ProjectileType<TenebrisFlamesHostile>(), 12, NPC.Center, 120, 20, 5, 8);
             }
         }
 

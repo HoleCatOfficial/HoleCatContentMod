@@ -728,7 +728,7 @@ namespace DestroyerTest.Content.Entities
                                         spawnPos,
                                         velocity,
                                         ModContent.ProjectileType<TenebrisLance>(),
-                                        30,
+                                        18,
                                         0f
                                     );
                                     Lance.timeLeft = 80;
@@ -737,7 +737,7 @@ namespace DestroyerTest.Content.Entities
                             }
                             if (Main.GameUpdateCount % 60 == 0)
                             {
-                                Opus.RadialProjectileRandomDir(ModContent.ProjectileType<TenebrisStarHostile>(), 3, NPC.Center, 20, 5, 2);
+                                Opus.RadialProjectileRandomDir(ModContent.ProjectileType<TenebrisStarHostile>(), 3, NPC.Center, 8, 5, 2);
                             }
                         }
                         if (CircleLanceCount == 5 && NPC.life <= NPC.lifeMax * 0.8f)
@@ -750,7 +750,7 @@ namespace DestroyerTest.Content.Entities
                                     Vector2 HeartPosoffset = Main.rand.NextVector2Circular(1200f, 1200f);
                                     HeartPos = player.Center + HeartPosoffset;
                                     PRTLoader.NewParticle(PRTLoader.GetParticleID<CrimsonBloodRuneParticle>(), HeartPos, Vector2.Zero, Color.White, 3);
-                                    Projectile.NewProjectile(NPC.GetSource_FromAI(), HeartPos, Vector2.Zero, ModContent.ProjectileType<HeartNode>(), 20, 3);
+                                    Projectile.NewProjectile(NPC.GetSource_FromAI(), HeartPos, Vector2.Zero, ModContent.ProjectileType<HeartNode>(), 10, 3);
                                 }
                                 HeartMatrixGetPositions = true;
                             }
@@ -1009,7 +1009,7 @@ namespace DestroyerTest.Content.Entities
                                             NPC.GetSource_FromAI(),
                                             origin,
                                             velocity,
-                                            ModContent.ProjectileType<TenebrisFlames>(),
+                                            ModContent.ProjectileType<TenebrisFlamesHostile>(),
                                             40,
                                             1,
                                             ai2: 2

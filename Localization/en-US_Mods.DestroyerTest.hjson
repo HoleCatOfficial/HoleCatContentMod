@@ -3565,6 +3565,43 @@ Items: {
 		DisplayName: Particle Tester
 		Tooltip: ""
 	}
+
+	HekateBurrPotion: {
+		DisplayName: Hekate's Thorns Potion
+		Tooltip:
+			'''
+			Creates a ring of Burrs around the player.
+			The Burrs lodge into enemies and inflict the Poison Debuff (Venom in Hardmode).
+			When a burr gets lodged, it will be 10 seconds until a replacement spawns for it.
+			Only one replacement can spawn at a time.
+			'''
+	}
+
+	Dyrn: {
+		DisplayName: Dyrn
+		Tooltip: If you listen closely, you can hear faint screams inside.
+	}
+
+	IdriPotion: {
+		DisplayName: Idri's Concoction
+		Tooltip:
+			'''
+			Grants 1 of 3 buffs, cycled by right clicking with the item or right clicking it in the inventory.
+			Black Guard: Increased defense and damage reduction.
+			Bravado: Increased armor penetration and damage.
+			Lightfooted: Increased jump height, acceleration, and run speed.
+			The potion cannot be consumed again while its buffs are active.
+			'''
+	}
+
+	LunarInsignia: {
+		DisplayName: Lunar Insignia
+		Tooltip:
+			'''
+			Grants infinite flight.
+			"So the Calamity Team doesn't like infinite flight? This. Means. War."
+			'''
+	}
 }
 
 Projectiles: {
@@ -3902,7 +3939,10 @@ Projectiles: {
 	GreatFlayerDash.DisplayName: Great Flayer Dash
 	SoulCrystalBomb.DisplayName: Soul Crystal Bomb
 	SoulExplosion.DisplayName: Soul Explosion
-	TenebrisFlames.DisplayName: Tenebris Flames
+	TenebrisFlamesFriendly.DisplayName: Tenebris Flames
+	TenebrisFlamesFriendly_NoHoming.DisplayName: Tenebris Flames
+	TenebrisFlamesHostile.DisplayName: Tenebris Flames
+	TenebrisFlamesHostile_NoHoming.DisplayName: Tenebris Flames
 	AuraThiefFireball.DisplayName: Aura Thief Fireball
 	TreasonScrollBomb.DisplayName: Treason Scroll Bomb
 	FakeAncientLight.DisplayName: Fake Ancient Light
@@ -4025,6 +4065,7 @@ Projectiles: {
 	TenebrousLightDart.DisplayName: Tenebrous Light Dart
 	GargantuaProjectile2.DisplayName: Gargantua Projectile2
 	GargantuaExplosion.DisplayName: Gargantua Explosion
+	HekateBurr.DisplayName: Hekate Burr
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.
@@ -4041,13 +4082,13 @@ Buffs: {
 	}
 
 	NihilistBuff: {
-		DisplayName: Nihilist Buff
+		DisplayName: Nihilist
 		Description: Download Calamity Entropy for the epic version!
 	}
 
 	RiftBallBuff: {
-		DisplayName: Rift Ball Buff
-		Description: An itsy bitsy black hole! And its all yours!
+		DisplayName: Riften Ball
+		Description: It's very warm.
 	}
 
 	StoneLungs: {
@@ -4352,7 +4393,32 @@ Buffs: {
 
 	Spored: {
 		DisplayName: Spored
-		Description: Mods.DestroyerTest.Buffs.Spored.Description
+		Description: Spores are eroding you!
+	}
+
+	HekateBurrBuff: {
+		DisplayName: Hekate's Thorns
+		Description: You are protected by poisonous bramble!
+	}
+
+	BlackGuard: {
+		DisplayName: Black Guard
+		Description: 15% increased defense and 7% increased damage reduction
+	}
+
+	Bravado: {
+		DisplayName: Bravado
+		Description: 15% increased armor penetration for all classes and 10% increased damage for all classes
+	}
+
+	Lightfooted: {
+		DisplayName: Lightfooted
+		Description: 4% increased jump speed, 40% increased acceleration, and 10% increased speed.
+	}
+
+	TaintedBrew: {
+		DisplayName: Tainted Brew
+		Description: Cannot Consume Idri's Concoction again.
 	}
 }
 
@@ -5049,7 +5115,8 @@ Music: {
 	TenebrousConstruct: Darkness Encroaching
 	RoseSoulAmbience: Rest easy, my beloved
 	WyvernSoulAmbience: Unending fervor of the unending azure
-	HekateGarden: I, Am the First Flower
+	HekateGardenOld: I, Am the First Flower
+	HekateGarden: Drown My Sorrows In Flora!
 
 	Rift: {
 		Surface: Deoxygenation

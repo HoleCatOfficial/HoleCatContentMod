@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using ReLogic.Reflection;
 using Terraria;
 using Terraria.ID;
@@ -6,31 +7,44 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Common
 {
+    public class PotionProfile
+    {
+        public string Name;
+        public int ItemID;
+        public int HealAmount;
+        public PotionProfile(string name, int itemID, int healAmount)
+        {
+            Name = name;
+            ItemID = itemID;
+            HealAmount = healAmount;
+        }
+    }
     public class PotionFlowerPlayer : ModPlayer
     {
-        private static readonly (int itemID, int heal)[] HealingPotions =
+
+        public List<PotionProfile> Potions = new List<PotionProfile>
         {
-            (ItemID.SuperHealingPotion, 200),
-            (ItemID.GreaterHealingPotion, 150),
-            (ItemID.HealingPotion, 100),
-            (ItemID.LesserHealingPotion, 50)
+            new PotionProfile("LesserHealing", ItemID.SuperHealingPotion, 200),
+            new PotionProfile("Healing", ItemID.SuperHealingPotion, 100),
+            new PotionProfile("GreaterHealing", ItemID.SuperHealingPotion, 150),
+            new PotionProfile("SuperHealing", ItemID.SuperHealingPotion, 200),
         };
 
         private bool TryConsumeBestHealingPotion(Player player)
         {
-            foreach (var (id, heal) in HealingPotions)
+            foreach (PotionProfile potion in Potions)
             {
                 for (int i = 0; i < player.inventory.Length; i++) // Main inventory
                 {
                     Item item = player.inventory[i];
-                    if (item.type == id && item.stack > 0)
+                    if (item.type == potion.ItemID && item.stack > 0)
                     {
-                        item.stack--; // manually consume one
+                        item.stack--;
                         if (item.stack <= 0)
-                            item.TurnToAir(); // remove if empty
+                            item.TurnToAir();
 
-                        player.statLife = Math.Min(player.statLife + heal, player.statLifeMax2);
-                        player.HealEffect(heal);
+                        player.statLife = Math.Min(player.statLife + potion.HealAmount, player.statLifeMax2);
+                        player.HealEffect(potion.HealAmount);
                         player.AddBuff(BuffID.PotionSickness, 30 * 60);
                         return true;
                     }
@@ -105,6 +119,11 @@ namespace DestroyerTest.Common
                 Player.lifeMagnet = true;
                 Item.lifeGrabRange = 180;
             }
+            if (Lillies)
+            {
+                Player.lifeMagnet = true;
+                Item.lifeGrabRange = 260;
+            }
         }
 
         public override void UpdateLifeRegen()
@@ -116,6 +135,10 @@ namespace DestroyerTest.Common
             if (EphemeralSolvent)
             {
                 Player.lifeRegen += 24;
+            }
+            if (Lillies)
+            {
+                Player.lifeRegen += 36;
             }
         }
     }

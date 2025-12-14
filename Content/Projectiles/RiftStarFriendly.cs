@@ -61,14 +61,15 @@ namespace DestroyerTest.Content.Projectiles
 			Projectile.penetrate = 1;
 		}
 
+		public float trailOffset = 0f;
 		public override bool PreDraw(ref Color lightColor)
 		{
 			lightColor = ColorLib.Rift;
-			
+			trailOffset += 0.04f;
 			SpriteBatch spriteBatch = Main.spriteBatch;
 			DTUtils Utility = new DTUtils();
 
-            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+            Opus.StartSpriteBatchForTrails(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
 			if (TrailPositions.Count > 1)
 			{
@@ -81,9 +82,10 @@ namespace DestroyerTest.Content.Projectiles
 					Color b = lightColor * t;
 
 					Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
-					Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * 16;
-                    Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * 16;
+					Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * 32;
+                    Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * 32;
 
+					/*
 					ve.Add(new ColoredVertex(
 						TrailPositions[i] - Main.screenPosition + offset,
 						new Vector3(t, 1, 1),
@@ -93,6 +95,9 @@ namespace DestroyerTest.Content.Projectiles
 						TrailPositions[i] - Main.screenPosition + offset2,
 						new Vector3(t, 0, 1),
 						b));
+						*/
+						
+					DTUtils.AddStrips(ve, TrailPositions, i, offset, offset2, t, b, trailOffset);
 				}
 
 
@@ -108,7 +113,7 @@ namespace DestroyerTest.Content.Projectiles
 
 			Opus.ReturnToDefaultDrawing(spriteBatch);
 			
-			Opus.DrawTextureOnProj(DTAssetLib.RiftStar, Projectile, Color.White, true, 0f, 0.35f, 0.35f);
+			Opus.DrawTextureOnProj(DTAssetLib.RiftStar, Projectile, ColorLib.Rift, true, 0f, 0.9f, 0.9f);
 
 			return false;
 		}

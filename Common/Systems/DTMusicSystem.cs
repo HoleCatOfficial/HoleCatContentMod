@@ -32,7 +32,7 @@ internal class MusicDisplayCalls : ModSystem
         AddMusic("Assets/Music/TenebrousConstruct", "TenebrousConstruct", "Author1");
         AddMusic("Assets/Music/RoseSoulAmbience", "RoseSoulAmbience", "Author1");
         AddMusic("Assets/Music/WyvernSoulAmbience", "WyvernSoulAmbience", "Author1");
-        AddMusic("Assets/Music/Placeholder6", "HekateGarden", "Author2");
+        AddMusic("Assets/Music/HekateGarden", "HekateGarden", "Author1");
 
         //Rift Biome
         AddMusic("Assets/Music/RiftV2", "Rift.Surface", "Author1");

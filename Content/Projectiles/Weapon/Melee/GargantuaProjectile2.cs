@@ -51,6 +51,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         public bool Sound1 = false;
         public bool Sound2 = false;
         public Vector2 swordTip;
+        public Vector2 bladeBase;
         public override void AI()
         {
             Player player = Main.player[Projectile.owner];
@@ -58,7 +59,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             swordTip = Projectile.Center + Projectile.rotation.ToRotationVector2() * bladeLength;
 
             Vector2 bladeDir = Projectile.rotation.ToRotationVector2();
-            Vector2 bladeBase = Projectile.Center - bladeDir * 20f;
+            bladeBase = Projectile.Center - bladeDir * 20f;
             Vector2 bladeTip  = Projectile.Center + bladeDir * 60f;
 
 
@@ -95,8 +96,6 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 Vector2 toCursor = Main.MouseWorld - player.MountedCenter;
                 Projectile.rotation = toCursor.ToRotation() + MathHelper.PiOver4;
 
-                
-
                 if (!player.controlUseTile)
                 {
                     int Speed = 50;
@@ -124,6 +123,13 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         public void RotationFX(Player player)
         {
             float holdDistance = 100f;
+            if (Charge > 150)
+            {
+                if (holdDistance > 50)
+                {
+                    holdDistance -= 1f;
+                }
+            }
             Vector2 mountedCenter = player.MountedCenter;
             Vector2 toCursor = Main.MouseWorld - mountedCenter;
             toCursor.Normalize();
@@ -136,7 +142,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
             Vector2 PRTDir = toCursor * 5;
             
-            PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center + new Vector2(-Projectile.width / 2, Projectile.height / 2).RotatedBy(Projectile.rotation + MathHelper.PiOver4), PRTDir, Color.Red, 1f, 60, ai2: 1);
+            PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], bladeBase, PRTDir, Color.Red, 1f, 60, ai2: 1);
+
+            player.SetCompositeArmFront((player.controlUseTile && player.HeldItem.type == ModContent.ItemType<Gargantua>()), Player.CompositeArmStretchAmount.ThreeQuarters, toCursor.ToRotation() - MathHelper.PiOver2);
         }
 
         public void FullChargeThrowEffects()

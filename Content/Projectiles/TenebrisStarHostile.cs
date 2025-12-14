@@ -53,38 +53,34 @@ namespace DestroyerTest.Content.Projectiles
 			Projectile.tileCollide = false;
 		}
 
+		public float trailOffset = 0f;
 		public override bool PreDraw(ref Color lightColor)
 		{
 			lightColor = ColorLib.TenebrisGradient;
+			trailOffset += 0.04f;
+
+
 			SpriteBatch spriteBatch = Main.spriteBatch;
 			DTUtils Utility = new DTUtils();
 
-			Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-
+			Opus.StartSpriteBatchForTrails(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+			
 			if (TrailPositions.Count > 1)
 			{
 				List<ColoredVertex> ve = new List<ColoredVertex>();
 				float a = 0;
 
 				for (int i = TrailPositions.Count - 1; i > 0; i--)
-                {
-                    float t = 1f - (i / (float)TrailPositions.Count); // fade toward tail
-                    Color b = ColorLib.TenebrisGradient * t;
+				{
+					float t = 1f - (i / (float)TrailPositions.Count); // fade toward tail
+					Color b = ColorLib.TenebrisGradient * t;
 
-                    Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
-                    Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * 20;
+					Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
+					Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * 20;
                     Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * 20;
 
-                    ve.Add(new ColoredVertex(
-                        TrailPositions[i] - Main.screenPosition + offset,
-                        new Vector3(t, 1, 1),
-                        b));
-
-                    ve.Add(new ColoredVertex(
-                        TrailPositions[i] - Main.screenPosition + offset2,
-                        new Vector3(t, 0, 1),
-                        b));
-                }
+					DTUtils.AddStrips(ve, TrailPositions, i, offset, offset2, t, b, trailOffset);
+				}
 
 
 				GraphicsDevice gd = Main.graphics.GraphicsDevice;
@@ -95,53 +91,11 @@ namespace DestroyerTest.Content.Projectiles
 				}
 			}
 
-            /*
-			for (int i = 0; i < TrailPositions.Count - 1; i++)
-			{
-				Vector2 start = TrailPositions[i] - Main.screenPosition;
-				Vector2 end = TrailPositions[i + 1] - Main.screenPosition;
-				Vector2 diff = end - start;
-
-				float length = diff.Length();
-				if (length < 0.5f)
-					continue;
-
-				float rotation = diff.ToRotation();
-				float width = MathHelper.Lerp(0.01f, 0.0007f, i / (float)TrailLength);
-				float alpha = MathHelper.Lerp(1f, 0f, i / (float)TrailLength);
-
-				// --- Tenebris gradient with offset ---
-				float time = (Main.GlobalTimeWrappedHourly + i * 0.05f) % 3f;
-
-				Color tenebrisColor;
-				if (time < 1f)
-					tenebrisColor = Color.Lerp(ColorLib.TenebrisBeige, ColorLib.TenebrisMagenta, time);
-				else if (time < 2f)
-					tenebrisColor = Color.Lerp(ColorLib.TenebrisMagenta, ColorLib.TenebrisBlue, time - 1f);
-				else
-					tenebrisColor = Color.Lerp(ColorLib.TenebrisBlue, ColorLib.TenebrisBeige, time - 2f);
-
-				tenebrisColor *= alpha;
-
-				Main.spriteBatch.Draw(
-					DTAssetLib.Square.Value,
-					start,
-					null,
-					tenebrisColor,
-					rotation,
-					new Vector2(DTAssetLib.Square.Value.Width / 2, DTAssetLib.Square.Value.Height / 2),
-					new Vector2(length, width),
-					SpriteEffects.None,
-					0f
-				);
-			}
-            */
-
 			Opus.DrawGlowOnProj(Projectile, lightColor, true);
 
 			Opus.ReturnToDefaultDrawing(spriteBatch);
 
-			Opus.DrawTextureOnProj(DTAssetLib.Star(1), Projectile, Color.White, true, 0f, 0.35f, 0.35f);
+			Opus.DrawTextureOnProj(DTAssetLib.Star(3), Projectile, Color.White, true, 0f, 0.9f, 0.9f);
 
 			return false;
 		}
@@ -287,38 +241,34 @@ namespace DestroyerTest.Content.Projectiles
 			Projectile.tileCollide = false;
 		}
 
+		public float trailOffset = 0f;
 		public override bool PreDraw(ref Color lightColor)
 		{
 			lightColor = ColorLib.TenebrisGradient;
+			trailOffset += 0.04f;
+
+
 			SpriteBatch spriteBatch = Main.spriteBatch;
 			DTUtils Utility = new DTUtils();
 
-			Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-
+			Opus.StartSpriteBatchForTrails(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+			
 			if (TrailPositions.Count > 1)
 			{
 				List<ColoredVertex> ve = new List<ColoredVertex>();
 				float a = 0;
 
 				for (int i = TrailPositions.Count - 1; i > 0; i--)
-                {
-                    float t = 1f - (i / (float)TrailPositions.Count); // fade toward tail
-                    Color b = ColorLib.TenebrisGradient * t;
+				{
+					float t = 1f - (i / (float)TrailPositions.Count); // fade toward tail
+					Color b = ColorLib.TenebrisGradient * t;
 
-                    Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
-                    Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * 20;
+					Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
+					Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * 20;
                     Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * 20;
 
-                    ve.Add(new ColoredVertex(
-                        TrailPositions[i] - Main.screenPosition + offset,
-                        new Vector3(t, 1, 1),
-                        b));
-
-                    ve.Add(new ColoredVertex(
-                        TrailPositions[i] - Main.screenPosition + offset2,
-                        new Vector3(t, 0, 1),
-                        b));
-                }
+					DTUtils.AddStrips(ve, TrailPositions, i, offset, offset2, t, b, trailOffset);
+				}
 
 
 				GraphicsDevice gd = Main.graphics.GraphicsDevice;
@@ -329,53 +279,11 @@ namespace DestroyerTest.Content.Projectiles
 				}
 			}
 
-            /*
-			for (int i = 0; i < TrailPositions.Count - 1; i++)
-			{
-				Vector2 start = TrailPositions[i] - Main.screenPosition;
-				Vector2 end = TrailPositions[i + 1] - Main.screenPosition;
-				Vector2 diff = end - start;
-
-				float length = diff.Length();
-				if (length < 0.5f)
-					continue;
-
-				float rotation = diff.ToRotation();
-				float width = MathHelper.Lerp(0.01f, 0.0007f, i / (float)TrailLength);
-				float alpha = MathHelper.Lerp(1f, 0f, i / (float)TrailLength);
-
-				// --- Tenebris gradient with offset ---
-				float time = (Main.GlobalTimeWrappedHourly + i * 0.05f) % 3f;
-
-				Color tenebrisColor;
-				if (time < 1f)
-					tenebrisColor = Color.Lerp(ColorLib.TenebrisBeige, ColorLib.TenebrisMagenta, time);
-				else if (time < 2f)
-					tenebrisColor = Color.Lerp(ColorLib.TenebrisMagenta, ColorLib.TenebrisBlue, time - 1f);
-				else
-					tenebrisColor = Color.Lerp(ColorLib.TenebrisBlue, ColorLib.TenebrisBeige, time - 2f);
-
-				tenebrisColor *= alpha;
-
-				Main.spriteBatch.Draw(
-					DTAssetLib.Square.Value,
-					start,
-					null,
-					tenebrisColor,
-					rotation,
-					new Vector2(DTAssetLib.Square.Value.Width / 2, DTAssetLib.Square.Value.Height / 2),
-					new Vector2(length, width),
-					SpriteEffects.None,
-					0f
-				);
-			}
-            */
-
 			Opus.DrawGlowOnProj(Projectile, lightColor, true);
 
 			Opus.ReturnToDefaultDrawing(spriteBatch);
 
-			Opus.DrawTextureOnProj(DTAssetLib.Star(1), Projectile, Color.White, true, 0f, 0.35f, 0.35f);
+			Opus.DrawTextureOnProj(DTAssetLib.Star(3), Projectile, Color.White, true, 0f, 0.9f, 0.9f);
 
 			return false;
 		}

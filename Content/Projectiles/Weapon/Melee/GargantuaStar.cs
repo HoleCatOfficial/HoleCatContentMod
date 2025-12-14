@@ -51,15 +51,18 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 			Projectile.penetrate = 1;
 		}
 
+		public float trailOffset = 0;
 		public override bool PreDraw(ref Color lightColor)
 		{
 			lightColor = Color.Red;
+			trailOffset += 0.04f;
 			
 			SpriteBatch spriteBatch = Main.spriteBatch;
 			DTUtils Utility = new DTUtils();
 
-            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+            Opus.StartSpriteBatchForTrails(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
+			
 			if (TrailPositions.Count > 1)
 			{
 				List<ColoredVertex> ve = new List<ColoredVertex>();
@@ -74,15 +77,18 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 					Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * 16;
                     Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * 16;
 
+					/*
 					ve.Add(new ColoredVertex(
 						TrailPositions[i] - Main.screenPosition + offset,
-						new Vector3(t, 1, 1),
+						new Vector3(t + trailOffset, 1, 1),
 						b));
 
 					ve.Add(new ColoredVertex(
 						TrailPositions[i] - Main.screenPosition + offset2,
-						new Vector3(t, 0, 1),
+						new Vector3(t + trailOffset, 0, 1),
 						b));
+						*/
+					DTUtils.AddStrips(ve, TrailPositions, i, offset, offset2, t, b, trailOffset);
 				}
 
 

@@ -1,5 +1,6 @@
 
 using System;
+using System.Collections.Generic;
 using System.Media;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -146,6 +147,12 @@ namespace DestroyerTest.Common
             Vector2 worldEnd = center + localEnd;
 
             return (worldStart, worldEnd);
+        }
+
+        public static void AddStrips(List<ColoredVertex> List, List<Vector2> Vex, int Index, Vector2 off1, Vector2 off2, float Fade, Color CLR, float stripMotion = 0f)
+        {
+            List.Add(new ColoredVertex(Vex[Index] - Main.screenPosition + off1, new Vector3(Fade - stripMotion, 1, 1), CLR));
+            List.Add(new ColoredVertex(Vex[Index] - Main.screenPosition + off2, new Vector3(Fade - stripMotion, 0, 1), CLR));
         }
 
         public static int[] ElectricArcs = new int[]

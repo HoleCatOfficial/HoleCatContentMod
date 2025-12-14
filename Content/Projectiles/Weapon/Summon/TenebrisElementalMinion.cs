@@ -220,7 +220,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
                         Projectile.GetSource_FromThis(),
                         startPos,
                         finalVel,
-                        ModContent.ProjectileType<TenebrisFlames>(),
+                        ModContent.ProjectileType<TenebrisFlamesFriendly>(),
                         Projectile.damage / numVectors,
                         5,
                         Projectile.owner,

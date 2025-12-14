@@ -46,25 +46,20 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             Projectile.penetrate = 1;
         }
 
+        public float trailOffset = 0;
         public override bool PreDraw(ref Color lightColor)
 		{
 			lightColor = ColorLib.TenebrisGradient;
+            trailOffset += 0.04f;
 			
 			SpriteBatch spriteBatch = Main.spriteBatch;
 			DTUtils Utility = new DTUtils();
-            Effect effect = DTAssetLib.TrailScroller.Value;
 
-            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-
+            Opus.StartSpriteBatchForTrails(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 			if (TrailPositions.Count > 1)
 			{
 				List<ColoredVertex> ve = new List<ColoredVertex>();
 				float a = 0;
-
-                effect.Parameters["TotalTime"].SetValue((float)Main.GameUpdateCount / 60f);
-                effect.Parameters["ScrollSpeed"].SetValue(1.0f);
-
-                
 
 				for (int i = TrailPositions.Count - 1; i > 0; i--)
 				{
@@ -77,25 +72,20 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 
 					ve.Add(new ColoredVertex(
 						TrailPositions[i] - Main.screenPosition + offset,
-						new Vector3(t, 1, 1),
+						new Vector3(t - trailOffset, 1, 1),
 						b));
 
 					ve.Add(new ColoredVertex(
 						TrailPositions[i] - Main.screenPosition + offset2,
-						new Vector3(t, 0, 1),
+						new Vector3(t - trailOffset, 0, 1),
 						b));
 				}
 
 				GraphicsDevice gd = Main.graphics.GraphicsDevice;
 				if (ve.Count >= 3)
 				{
-
                     gd.Textures[0] = DTAssetLib.Streak(7).Value;
-
-                    effect.CurrentTechnique.Passes["DestroyerTest.ScrollingUV"].Apply();
-                
 					gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2);
-
 				}
 			}
         
@@ -107,6 +97,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 
 			return false;
 		}
+
+        
 
         public override bool? CanHitNPC(NPC target)
         {

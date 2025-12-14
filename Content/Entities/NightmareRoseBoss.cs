@@ -866,7 +866,7 @@ namespace DestroyerTest.Content.Entities
                             {
                                 SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/ChargeBreak") with { PitchVariance = 1f });
 
-                                Opus.RingProjectileOutwardRandomDir(ModContent.ProjectileType<TenebrisFlames>(), 7, player.Center, 300, 25, 1, 8, AI2: 2);
+                                Opus.RingProjectileOutwardRandomDir(ModContent.ProjectileType<TenebrisFlamesHostile>(), 7, player.Center, 300, 25, 1, 8);
                                 FlameRingCount++;
                             }
                             if (FlameRingCount >= 9)

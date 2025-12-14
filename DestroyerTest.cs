@@ -243,6 +243,8 @@ namespace DestroyerTest
 			fractalProfiles.Add(ModContent.ItemType<Conclusion>(), new FinalFractalProfile(140f, ColorLib.StellarColor));
 
             AddChestLoot();
+
+			DTCrossMod.LoadMods();
         }
 
 
@@ -264,6 +266,8 @@ namespace DestroyerTest
             var fractalProfiles = (Dictionary<int, FinalFractalProfile>)typeof(Terraria.Graphics.FinalFractalHelper).GetField("_fractalProfiles", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
 			fractalProfiles.Remove(ModContent.ItemType<GargantuaZenith>());
 			fractalProfiles.Remove(ModContent.ItemType<Conclusion>());
+
+			DTCrossMod.UnloadMods();
         }
 
         public static bool EternityIsActive()

@@ -1,6 +1,11 @@
+using System;
+using System.Collections.Generic;
+using DestroyerTest.Common;
 using DestroyerTest.Content.Particles;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using Terraria;
 using Terraria.Enums;
 using Terraria.GameContent.Drawing;
@@ -9,110 +14,163 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Boss.VampireBoss
 {
-public class BloodProjectile : ModProjectile
-		{
-
-			private Player HomingTarget {
-				get => Projectile.ai[0] == 0 ? null : Main.player[(int)Projectile.ai[0] - 1];
-				set {
-					Projectile.ai[0] = value == null ? 0 : value.whoAmI + 1;
-				}
+	public class BloodProjectile : ModProjectile
+	{
+		public override string Texture => DTUtils.NoTexture;
+		private Player HomingTarget {
+			get => Projectile.ai[0] == 0 ? null : Main.player[(int)Projectile.ai[0] - 1];
+			set {
+				Projectile.ai[0] = value == null ? 0 : value.whoAmI + 1;
 			}
+		}
 
-			public ref float DelayTimer => ref Projectile.ai[1];
+		public ref float DelayTimer => ref Projectile.ai[1];
 
-			public override void SetStaticDefaults() {
-				
-			}
+		public override void SetStaticDefaults() {
+			
+		}
 
 		public override void SetDefaults()
 		{
-			Projectile.width = 16; // The width of projectile hitbox
-			Projectile.height = 16; // The height of projectile hitbox
+			Projectile.width = 16;
+			Projectile.height = 16;
 			Projectile.alpha = 255;
-
-			Projectile.DamageType = DamageClass.Generic; // What type of damage does this projectile affect?
-			Projectile.friendly = false; // Can the projectile deal damage to enemies?
-			Projectile.hostile = true; // Can the projectile deal damage to the player?
-			Projectile.ignoreWater = true; // Does the projectile's speed be influenced by water?
-			Projectile.light = 1f; // How much light emit around the projectile
-			Projectile.timeLeft = 180; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
+			Projectile.friendly = false;
+			Projectile.hostile = true;
+			Projectile.ignoreWater = true;
+			Projectile.light = 0.1f;
+			Projectile.timeLeft = 180;
 			Projectile.tileCollide = true;
 			Projectile.penetrate = 1;
-			Projectile.velocity *= 0.01f;
-			Projectile.netImportant = true;
-			Projectile.netUpdate = true;
+		}
+
+		public float trailOffset = 0f;
+		public override bool PreDraw(ref Color lightColor)
+		{
+			lightColor = Color.Red;
+			trailOffset += 0.04f;
+
+
+			SpriteBatch spriteBatch = Main.spriteBatch;
+			DTUtils Utility = new DTUtils();
+
+			Opus.StartSpriteBatchForTrails(spriteBatch, BlendState.NonPremultiplied, SpriteSortMode.Immediate);
+			
+			if (TrailPositions.Count > 1)
+			{
+				List<ColoredVertex> ve = new List<ColoredVertex>();
+				float a = 0;
+
+				for (int i = TrailPositions.Count - 1; i > 0; i--)
+				{
+					float u = i / (float)(TrailPositions.Count - 1);
+					float widthFactor = (float)Math.Sin(u * MathHelper.Pi);
+
+					float width = 32f * widthFactor;
+
+					Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
+					Vector2 perp = dir.RotatedBy(MathHelper.PiOver2);
+					Vector2 offset  = perp * width;
+					Vector2 offset2 = -perp * width;
+
+					DTUtils.AddStrips(ve, TrailPositions, i, offset, offset2, u, lightColor, trailOffset);
+				}
+
+				GraphicsDevice gd = Main.graphics.GraphicsDevice;
+				if (ve.Count >= 3)
+				{
+					gd.Textures[0] = DTAssetLib.Streak(8).Value;
+					gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2);
+				}
 			}
 
-		// Custom AI
+			Opus.ReturnToDefaultDrawing(spriteBatch);
+
+			return false;
+		}
+
+		public List<Vector2> TrailPositions = new();
+		public List<float> TrailRotations = new();
+		private const int TrailLength = 40;
 		public override void AI()
 		{
-			Rectangle SpawnBox = new Rectangle((int)Projectile.position.X, (int)Projectile.position.Y, Projectile.width, Projectile.height);
-			if (Main.rand.NextBool(8))
-			{
-				PRTLoader.NewParticle(PRTLoader.GetParticleID<BloodParticle>(), Main.rand.NextVector2FromRectangle(SpawnBox), Vector2.Zero, Color.Red * 0.4f, 0.5f);
-			}
-			float maxDetectRadius = 40f; // The maximum radius at which a projectile can detect a target
+			Vector2 lastPos = TrailPositions.Count > 0 ? TrailPositions[0] : Projectile.Center;
+			Vector2 newPos  = Projectile.Center;
 
-			// First, we find a homing target if we don't have one
+			float dist = Vector2.Distance(lastPos, newPos);
+			float step = 8f; // how closely to sample. tweak this!
+
+			if (dist > 0f)
+			{
+				int segments = (int)(dist / step);
+
+				for (int i = 1; i <= segments; i++)
+				{
+					Vector2 pos = Vector2.Lerp(lastPos, newPos, i / (float)segments);
+					TrailPositions.Insert(0, pos);
+					TrailRotations.Insert(0, Projectile.rotation);
+				}
+			}
+			else
+			{
+				TrailPositions.Insert(0, newPos);
+				TrailRotations.Insert(0, Projectile.rotation);
+			}
+
+
+			// Cap trail
+			while (TrailPositions.Count > TrailLength)
+				TrailPositions.RemoveAt(TrailPositions.Count - 1);
+			while (TrailRotations.Count > TrailLength)
+				TrailRotations.RemoveAt(TrailRotations.Count - 1);
+
+			float maxDetectRadius = 100f;
+
 			if (HomingTarget == null)
 			{
 				HomingTarget = FindClosestPlayer(maxDetectRadius);
 			}
 
-			// If we have a homing target, make sure it is still valid. If the NPC dies or moves away, we'll want to find a new target
 			if (HomingTarget != null && !IsValidTarget(HomingTarget))
 			{
 				HomingTarget = null;
 			}
 
-			// If we don't have a target, don't adjust trajectory
 			if (HomingTarget == null)
 				return;
 
-			// If found, we rotate the projectile velocity in the direction of the target.
-			// We only rotate by 3 degrees an update to give it a smooth trajectory. Increase the rotation speed here to make tighter turns
 			float length = Projectile.velocity.Length();
 			float targetAngle = Projectile.AngleTo(HomingTarget.Center);
 			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
-			Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(10)).ToRotationVector2() * length;
-			}
+			Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(4)).ToRotationVector2() * length;
+		}
 
-			// Finding the closest NPC to attack within maxDetectDistance range
-			// If not found then returns null
-			public Player FindClosestPlayer(float maxDetectDistance) {
-				Player closestPlayer = null;
 
-				// Using squared values in distance checks will let us skip square root calculations, drastically improving this method's speed.
-				float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
+		public Player FindClosestPlayer(float maxDetectDistance) {
+			Player closestPlayer = null;
 
-				// Loop through all NPCs
-				foreach (var target in Main.player) {
-					// Check if NPC able to be targeted. 
-					if (IsValidTarget(target)) {
-						// The DistanceSquared function returns a squared distance between 2 points, skipping relatively expensive square root calculations
-						float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, Projectile.Center);
+			float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
 
-						// Check if it is within the radius
-						if (sqrDistanceToTarget < sqrMaxDetectDistance) {
-							sqrMaxDetectDistance = sqrDistanceToTarget;
-							closestPlayer = target;
-						}
+			// Loop through all NPCs
+			foreach (var target in Main.player) {
+				// Check if NPC able to be targeted. 
+				if (IsValidTarget(target)) {
+					// The DistanceSquared function returns a squared distance between 2 points, skipping relatively expensive square root calculations
+					float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, Projectile.Center);
+
+					// Check if it is within the radius
+					if (sqrDistanceToTarget < sqrMaxDetectDistance) {
+						sqrMaxDetectDistance = sqrDistanceToTarget;
+						closestPlayer = target;
 					}
 				}
-
-				return closestPlayer;
 			}
 
-			public bool IsValidTarget(Player target) {
-				
-				return (target.active == true && target.statLife > 1);
-			}
-		public override void OnHitPlayer(Player target, Player.HurtInfo info)
-		{
-		
-					Projectile.Kill();
-			}
+			return closestPlayer;
+		}
 
+		public bool IsValidTarget(Player target) {
+			return (target.active == true && target.statLife > 1);
+		}
     }
 }

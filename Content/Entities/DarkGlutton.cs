@@ -210,7 +210,7 @@ namespace DestroyerTest.Content.Entities
                 if (Main.GameUpdateCount % 10 == 0)
                 {
                     SoundEngine.PlaySound(SoundID.Item20, NPC.Center);
-                    Projectile Fire = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, NPC.velocity, ModContent.ProjectileType<TenebrisFlames>(), 20, 0f, ai2: 4);
+                    Projectile Fire = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, NPC.velocity, ModContent.ProjectileType<TenebrisFlamesHostile_NoHoming>(), 20, 0f, ai2: 4);
                     Fire.scale = 0.65f;
                     Fire.timeLeft = 60;
                 }

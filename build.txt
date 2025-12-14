@@ -3,5 +3,6 @@ author = HoleCat
 version = 2.1.711
 modReferences = InnoVault, OpusLib, GlowmaskHelper
 dependencies = InnoVault, OpusLib, GlowmaskHelper
+weakReferences = FargowiltasSouls
 playableOnPreview = false
 homepage = https://linktr.ee/HoleCat
