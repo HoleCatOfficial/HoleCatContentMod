@@ -1,8 +1,7 @@
-
 using System.Linq;
-using System.Security.AccessControl;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Projectiles;
+using DestroyerTest.Content.Projectiles.player.Accessory;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -175,7 +174,7 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
                     Dust.NewDust(Player.position, Player.Hitbox.Width, Player.Hitbox.Height, DustID.DemonTorch, Player.velocity.X * 0.75f, 1f, 0, default, 6f);
                     Dust.NewDust(Player.position, Player.Hitbox.Width, Player.Hitbox.Height, DustID.GoldCoin, Player.velocity.X * 0.75f, 1f, 0, default, 4f);
                 }
-                SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/DjedDash"));
+                SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/SwordSounds/HellSword", 3) { MaxInstances = 0, PitchVariance = 0.4f });
             }
 
             if (DashDelay > 0)
@@ -191,14 +190,8 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
                 Player.armorEffectDrawShadowEOCShield = true;
                 if (Main.GameUpdateCount % 5 == 0)
                 {
-                    Item Pillar = Player.armor.FirstOrDefault(item => item.type == ModContent.ItemType<DjedPillarCharm>());
-                    Item Lillies = Player.armor.FirstOrDefault(item => item.type == ModContent.ItemType<LilliesOfImmortality>());
-                    if (Pillar != null || Lillies != null)
-                    {
-                        Projectile.NewProjectile(Player.GetSource_Accessory(Pillar), Main.rand.NextVector2FromRectangle(Player.Hitbox), Vector2.Zero, ModContent.ProjectileType<TenebrisFlamesFriendly_NoHoming>(), 30, 8, Main.LocalPlayer.whoAmI);
-                        SoundEngine.PlaySound(SoundID.DD2_BetsyWindAttack, Player.position);
-                    }
-
+                    Projectile.NewProjectile(Player.GetSource_Misc("DjedPillar"), Main.rand.NextVector2FromRectangle(Player.Hitbox), (Player.velocity * 0.5f).RotatedByRandom(1), ModContent.ProjectileType<DesertSpiritDart>(), 25, 8, Player.whoAmI);
+                    SoundEngine.PlaySound(SoundID.DD2_BetsyWindAttack, Player.position);
                 }
                 DashTimer--;
             }

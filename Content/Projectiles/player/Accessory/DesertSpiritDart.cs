@@ -15,9 +15,9 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace DestroyerTest.Content.Projectiles.Weapon.Magic
+namespace DestroyerTest.Content.Projectiles.player.Accessory
 {
-    public class TenebrousLightDart : ModProjectile
+    public class DesertSpiritDart : ModProjectile
     {
         private NPC HomingTarget
         {
@@ -46,10 +46,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             Projectile.penetrate = 1;
         }
 
+        public Color FireColor;
+
         public float trailOffset = 0;
         public override bool PreDraw(ref Color lightColor)
 		{
-			lightColor = ColorLib.TenebrisGradient;
+			lightColor = FireColor;
             trailOffset += 0.04f;
 			
 			SpriteBatch spriteBatch = Main.spriteBatch;
@@ -67,8 +69,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 					Color b = lightColor * t;
 
 					Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
-					Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * 16;
-                    Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * 16;
+					Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * 40;
+                    Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * 40;
 
 					ve.Add(new ColoredVertex(
 						TrailPositions[i] - Main.screenPosition + offset,
@@ -84,7 +86,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 				GraphicsDevice gd = Main.graphics.GraphicsDevice;
 				if (ve.Count >= 3)
 				{
-                    gd.Textures[0] = DTAssetLib.Streak(7).Value;
+                    gd.Textures[0] = DTAssetLib.Streak(4).Value;
 					gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2);
 				}
 			}
@@ -105,17 +107,25 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             return DelayTimer >= 10;
         }
 
-        private List<Vector2> TrailPositions = new List<Vector2>();
-        public List<float> TrailRotations = new();
-        private const int TrailLength = 400;
-
-        public override void AI()
+        public float spiritFireTime;
+        public override bool PreAI()
         {
-            Vector2 lastPos = TrailPositions.Count > 0 ? TrailPositions[0] : Projectile.Center;
+            spiritFireTime += 0.025f;
+            FireColor = ColorLib.SpiritFireGradient(spiritFireTime);
+            return true;
+        }
+
+        public List<Vector2> TrailPositions = new();
+		public List<float> TrailRotations = new();
+		private const int TrailLength = 500;
+
+		public override void AI()
+		{
+			Vector2 lastPos = TrailPositions.Count > 0 ? TrailPositions[0] : Projectile.Center;
 			Vector2 newPos  = Projectile.Center;
 
 			float dist = Vector2.Distance(lastPos, newPos);
-			float step = 1f;
+			float step = 1f; // how closely to sample. tweak this!
 
 			if (dist > 0f)
 			{
@@ -206,7 +216,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             SoundEngine.PlaySound(SoundID.DD2_WyvernDiveDown);
-            target.AddBuff(ModContent.BuffType<ShimmeringFlames>(), 480);
+            target.AddBuff(BuffID.ShadowFlame, 600);
         }
 	}
 }

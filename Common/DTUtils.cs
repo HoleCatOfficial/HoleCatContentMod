@@ -553,7 +553,28 @@ namespace DestroyerTest.Common
             else if (t < 3f)
                 return Color.Lerp(StellarFire5, StellarFire6, t - 2f);
             else
-                    return Color.Lerp(StellarFire7, StellarFire8, t - 3f);
+                return Color.Lerp(StellarFire7, StellarFire8, t - 3f);
+        }
+
+        private static Color SpiritFire1 = new Color(255, 245, 198);
+        private static Color SpiritFire2 = new Color(244, 173, 255);
+        private static Color SpiritFire3 = new Color(236, 107, 255);
+        private static Color SpiritFire4 = new Color(184, 37, 253);
+        private static Color SpiritFire5 = new Color(124, 0, 202);
+
+        public static Color SpiritFireGradient(float t)
+        {
+            
+            t = MathHelper.Clamp(t, 0f, 3f);
+
+            if (t < 1f)
+                return Color.Lerp(SpiritFire1, SpiritFire2, t);
+            else if (t < 2f)
+                return Color.Lerp(SpiritFire2, SpiritFire3, t - 1f);
+            else if (t < 3f)
+                return Color.Lerp(SpiritFire3, SpiritFire4, t - 2f);
+            else
+                return Color.Lerp(SpiritFire4, SpiritFire5, t - 3f);
         }
         
     }
@@ -584,6 +605,8 @@ namespace DestroyerTest.Common
         public static Asset<Texture2D> FireRing = ModContent.Request<Texture2D>($"{ParticlePath}/Boom2", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> SwingFX = ModContent.Request<Texture2D>($"{ExtrasPath}/CircularSlash", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> Slash144 = ModContent.Request<Texture2D>($"{ExtrasPath}/144Slash", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> ZapTrail = ModContent.Request<Texture2D>($"{ExtrasPath}/ZapTrail", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> SoulStreak = ModContent.Request<Texture2D>($"{ExtrasPath}/SoulStreak", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> Sparkle(int Variant)
         {
             if (Variant <= 0)

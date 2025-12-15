@@ -66,7 +66,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
             }
 
             Dust.NewDust(Projectile.position, Projectile.Hitbox.Width, Projectile.Hitbox.Height, ModContent.DustType<SoulDust>(), 0, 0, 0, ColorLib.Soul * 0.5f, 5f);
-            Projectile.velocity = new Vector2(0, -0.5f);
+            Projectile.velocity = new Vector2(0, -0.4f);
         }
 
         public override void OnKill(int timeLeft)

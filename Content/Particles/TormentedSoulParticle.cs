@@ -18,6 +18,7 @@ namespace DestroyerTest.Content.Particles
             Lifetime = MaxLifetime;
             InitializePositionCache(10);
             Color = Color.White;
+            ShouldKillWhenOffScreen = false;
         }
 
         public override void AI()

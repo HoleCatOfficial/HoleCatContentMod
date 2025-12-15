@@ -72,6 +72,20 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.Ichor
             Vector2 ToPlayer = Projectile.Center - Main.LocalPlayer.Center;
             Projectile.velocity *= 0.99f;
             Projectile.rotation += Main.rand.NextFloat(-1f, 1.1f) * 0.1f;
+            if (Projectile.timeLeft % 60 == 0)
+            {
+                if (Projectile.timeLeft >= 60)
+                {
+                    SoundEngine.PlaySound(SoundID.DD2_WitherBeastDeath, Projectile.Center);
+                    Opus.RadialSpreadDust(DustID.Ichor, 10, Projectile.Center, 0, default, 1, 8, true);
+                }
+
+                if (Projectile.timeLeft <= 60)
+                {
+                    SoundEngine.PlaySound(SoundID.DD2_WitherBeastDeath, Projectile.Center);
+                    Opus.RadialSpreadDust(DustID.Ichor, 10, Projectile.Center, 0, default, 2, 10, true);
+                }
+            }
         }
         
         public override bool OnTileCollide(Vector2 oldVelocity)
@@ -88,7 +102,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.Ichor
         public override void OnKill(int timeLeft)
         {
             Vector2 ToPlayer = Projectile.Center - Main.LocalPlayer.Center;
-            var launchVelocity = new Vector2(-20, 0);
+            var launchVelocity = new Vector2(-30, 0);
             SoundEngine.PlaySound(SoundID.Item14, Projectile.Center);
 
             for (int i = 0; i < 8; i++)

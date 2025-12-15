@@ -173,9 +173,9 @@ namespace DestroyerTest.Content.Equips
                         if (skull != null)
                         {
                             Projectile.NewProjectile(
-                                Player.GetSource_Accessory(skull),
-                                Player.oldPosition, Vector2.Zero,
-                                ModContent.ProjectileType<FleshBombFriendly>(), 46, 1, Main.LocalPlayer.whoAmI);
+                            Player.GetSource_Accessory(skull),
+                            Player.oldPosition, Vector2.Zero,
+                            ModContent.ProjectileType<FleshBombFriendly>(), 46, 1, Main.LocalPlayer.whoAmI);
                         }
 
                         FleshBombTimer = 0;

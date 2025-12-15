@@ -31,6 +31,7 @@ namespace DestroyerTest.Content.Particles.fire
             Rotation = Main.rand.NextFloat(0, MathHelper.TwoPi);
             Scale *= Main.rand.NextFloat(0.1f, 0.9f);
             LR = Main.rand.NextBool(2);
+            ShouldKillWhenOffScreen = false;
         }
                 
         //Since all of the particles deriving from this class use the same spritesheet format, the frame height and frame count are the same for all of them. 80x80 frame dimensions, 6 frames.

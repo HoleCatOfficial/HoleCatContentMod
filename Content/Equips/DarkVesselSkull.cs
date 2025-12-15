@@ -245,7 +245,10 @@ namespace DestroyerTest.Content.Equips
 
         public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo)
         {
-            Opus.RadialSpreadProjectile(ModContent.ProjectileType<TenebrisStarFriendly>(), 6, Player.Center, (int)Player.GetDamage(DamageClass.Summon).Flat, 2, 8);
+            if (Active)
+            {
+                Opus.RadialSpreadProjectile(ModContent.ProjectileType<TenebrisStarFriendly>(), 6, Player.Center, (int)Player.GetDamage(DamageClass.Summon).Flat, 2, 8);
+            }
         }
     }
 }

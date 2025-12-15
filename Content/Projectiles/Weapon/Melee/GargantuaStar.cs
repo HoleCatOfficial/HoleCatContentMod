@@ -66,29 +66,31 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 			if (TrailPositions.Count > 1)
 			{
 				List<ColoredVertex> ve = new List<ColoredVertex>();
+				List<ColoredVertex> ve2 = new List<ColoredVertex>();
 				float a = 0;
 
 				for (int i = TrailPositions.Count - 1; i > 0; i--)
 				{
-					float t = 1f - (i / (float)TrailPositions.Count); // fade toward tail
+					float t = 1f - (i / (float)TrailPositions.Count);
 					Color b = lightColor * t;
 
 					Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
 					Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * 16;
                     Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * 16;
 
-					/*
-					ve.Add(new ColoredVertex(
-						TrailPositions[i] - Main.screenPosition + offset,
-						new Vector3(t + trailOffset, 1, 1),
-						b));
-
-					ve.Add(new ColoredVertex(
-						TrailPositions[i] - Main.screenPosition + offset2,
-						new Vector3(t + trailOffset, 0, 1),
-						b));
-						*/
 					DTUtils.AddStrips(ve, TrailPositions, i, offset, offset2, t, b, trailOffset);
+				}
+
+				for (int i = TrailPositions2.Count - 1; i > 0; i--)
+				{
+					float t = 1f - (i / (float)TrailPositions2.Count);
+					Color b = Color.White * t;
+
+					Vector2 dir = (TrailPositions2[i] - TrailPositions2[i - 1]).ToRotation().ToRotationVector2();
+					Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * 24;
+                    Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * 24;
+
+					DTUtils.AddStrips(ve2, TrailPositions2, i, offset, offset2, t, b, trailOffset);
 				}
 
 
@@ -97,6 +99,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 				{
 					gd.Textures[0] = DTAssetLib.Streak(2).Value;
 					gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2);
+					gd.Textures[0] = DTAssetLib.ZapTrail.Value;
+					gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve2.ToArray(), 0, ve2.Count - 2);
 				}
 			}
 
@@ -112,7 +116,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
 		public List<Vector2> TrailPositions = new();
 		public List<float> TrailRotations = new();
-		private const int TrailLength = 40;
+		private const int TrailLength = 400;
+
+		public List<Vector2> TrailPositions2 = new();
+		public List<float> TrailRotations2 = new();
+		private const int TrailLength2 = 200;
 
 		public override void AI()
 		{
@@ -120,7 +128,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 			Vector2 newPos  = Projectile.Center;
 
 			float dist = Vector2.Distance(lastPos, newPos);
-			float step = 8f; // how closely to sample. tweak this!
+			float step = 1f; // how closely to sample. tweak this!
 
 			if (dist > 0f)
 			{
@@ -131,20 +139,26 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 					Vector2 pos = Vector2.Lerp(lastPos, newPos, i / (float)segments);
 					TrailPositions.Insert(0, pos);
 					TrailRotations.Insert(0, Projectile.rotation);
+					TrailPositions2.Insert(0, pos);
+					TrailRotations2.Insert(0, Projectile.rotation);
 				}
 			}
 			else
 			{
 				TrailPositions.Insert(0, newPos);
 				TrailRotations.Insert(0, Projectile.rotation);
+				TrailPositions2.Insert(0, newPos);
+				TrailRotations2.Insert(0, Projectile.rotation);
 			}
 
-
-			// Cap trail
 			while (TrailPositions.Count > TrailLength)
 				TrailPositions.RemoveAt(TrailPositions.Count - 1);
 			while (TrailRotations.Count > TrailLength)
 				TrailRotations.RemoveAt(TrailRotations.Count - 1);
+			while (TrailPositions2.Count > TrailLength2)
+				TrailPositions2.RemoveAt(TrailPositions2.Count - 1);
+			while (TrailRotations2.Count > TrailLength2)
+				TrailRotations2.RemoveAt(TrailRotations2.Count - 1);
 
 			DelayTimer++;
 			Projectile.rotation += Projectile.direction * Main.rand.NextFloat(0.01f, 0.07f);

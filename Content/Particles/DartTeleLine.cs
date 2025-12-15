@@ -16,6 +16,7 @@ namespace DestroyerTest.Content.Particles
             PRTDrawMode = PRTDrawModeEnum.AdditiveBlend;
             Lifetime = MaxLifetime; 
             Rotation = Rot; 
+            ShouldKillWhenOffScreen = false;
         }
         public float Rot = 0f;
         public override void AI()

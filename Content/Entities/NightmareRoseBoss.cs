@@ -902,7 +902,7 @@ namespace DestroyerTest.Content.Entities
                             SoundEngine.PlaySound(SoundID.Item14, NPC.Center);
                             for (int i = 0; i < numProjectiles; i++)
                             {
-                                Vector2 velocity = new Vector2(12f, 0f).RotatedBy(rotationStep * i);
+                                Vector2 velocity = new Vector2(20f, 0f).RotatedBy(rotationStep * i);
                                 Projectile.NewProjectile(
                                     Entity.GetSource_FromThis(),
                                     NPCHead,
@@ -1521,16 +1521,20 @@ namespace DestroyerTest.Content.Entities
             }
         }
 
+        private float dartRotation;
         public void DartAttack()
         {
             float radius = BorderRad;
             int projectileCount = 4;
-            float rotationOffset = (float)(Main.GameUpdateCount % 360) * MathHelper.ToRadians(0.5f);
+            //float rotationOffset = (float)(Main.GameUpdateCount % 360) * MathHelper.ToRadians(0.5f);
+            dartRotation += 0.01f; // <-- rotation speed (radians per tick)
+            float rotationOffset = dartRotation;
+
+
             Projectile Dart = null;
 
             if (Main.GameUpdateCount % 5 == 0)
             {
-
                 for (int i = 0; i < projectileCount; i++)
                 {
                     // Get evenly spaced angle with rotation offset
@@ -1549,6 +1553,7 @@ namespace DestroyerTest.Content.Entities
                         10,
                         2
                     );
+                    Dart.timeLeft = 100;
                 }
             }
             if (Dart != null && Dart.Center == NPCHead)
@@ -1564,7 +1569,7 @@ namespace DestroyerTest.Content.Entities
                 SoundEngine.PlaySound(SoundID.Item14, NPC.Center);
                 for (int i = 0; i < numProjectiles; i++)
                 {
-                    Vector2 velocity = new Vector2(12f, 0f).RotatedBy(rotationStep * i);
+                    Vector2 velocity = new Vector2(20f, 0f).RotatedBy(rotationStep * i);
                     Projectile.NewProjectile(
                         Entity.GetSource_FromThis(),
                         NPCHead,

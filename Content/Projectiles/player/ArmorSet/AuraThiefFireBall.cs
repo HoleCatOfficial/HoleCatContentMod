@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Formats.Tar;
 using System.Runtime.CompilerServices;
 using DestroyerTest.Common;
@@ -6,6 +8,7 @@ using DestroyerTest.Content.Particles;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -16,7 +19,8 @@ namespace DestroyerTest.Content.Projectiles.player.ArmorSet
 {
     public class AuraThiefFireball : ModProjectile
     {
-        // Store the target NPC using Projectile.ai[0]
+        public override string Texture => DTUtils.NoTexture;
+
         private NPC HomingTarget
         {
             get => Projectile.ai[0] == 0 ? null : Main.npc[(int)Projectile.ai[0] - 1];
@@ -31,39 +35,104 @@ namespace DestroyerTest.Content.Projectiles.player.ArmorSet
         public override void SetStaticDefaults()
         {
             ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true; // Make the cultist resistant to this projectile, as it's resistant to all homing projectiles.
-            Main.projFrames[Type] = 6;
+
         }
 
         public override void SetDefaults()
         {
-            Projectile.width = 20; // The width of projectile hitbox
-            Projectile.height = 32; // The height of projectile hitbox
+            Projectile.width = 32;
+            Projectile.height = 32;
 
-            Projectile.DamageType = DamageClass.Generic; // What type of damage does this projectile affect?
-            Projectile.friendly = true; // Can the projectile deal damage to enemies?
-            Projectile.hostile = false; // Can the projectile deal damage to the player?
-            Projectile.ignoreWater = true; // Does the projectile's speed be influenced by water?
-            Projectile.light = 1f; // How much light emit around the projectile
-            Projectile.timeLeft = 600; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
+            Projectile.DamageType = DamageClass.Generic;
+            Projectile.friendly = true;
+            Projectile.hostile = false;
+            Projectile.ignoreWater = true;
+            Projectile.light = 0.5f;
+            Projectile.timeLeft = 600;
             Projectile.tileCollide = false;
             Projectile.penetrate = 1;
         }
 
-        private void AnimateProjectile()
-        {
-            // Loop through the frames, assuming each frame lasts 5 ticks
-            if (++Projectile.frameCounter >= 4)
-            {
-                Projectile.frameCounter = 0;
-                if (++Projectile.frame >= Main.projFrames[Projectile.type])
-                {
-                    Projectile.frame = 0;
-                }
-            }
-        }
+        public float trailOffset = 0f;
+		public override bool PreDraw(ref Color lightColor)
+		{
+			lightColor = Color.SkyBlue;
+			trailOffset += 0.04f;
+
+
+			SpriteBatch spriteBatch = Main.spriteBatch;
+			DTUtils Utility = new DTUtils();
+
+			Opus.StartSpriteBatchForTrails(spriteBatch, BlendState.NonPremultiplied, SpriteSortMode.Immediate);
+			
+			if (TrailPositions.Count > 1)
+			{
+				List<ColoredVertex> ve = new List<ColoredVertex>();
+				float a = 0;
+
+				for (int i = TrailPositions.Count - 1; i > 0; i--)
+				{
+					float u = i / (float)(TrailPositions.Count - 1);
+					float widthFactor = (float)Math.Sin(u * MathHelper.Pi);
+
+					float width = 32f * widthFactor;
+
+					Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
+					Vector2 perp = dir.RotatedBy(MathHelper.PiOver2);
+					Vector2 offset  = perp * width;
+					Vector2 offset2 = -perp * width;
+
+					DTUtils.AddStrips(ve, TrailPositions, i, offset, offset2, u, lightColor, trailOffset);
+				}
+
+				GraphicsDevice gd = Main.graphics.GraphicsDevice;
+				if (ve.Count >= 3)
+				{
+					gd.Textures[0] = DTAssetLib.Streak(8).Value;
+					gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2);
+				}
+			}
+
+			Opus.ReturnToDefaultDrawing(spriteBatch);
+
+			return false;
+		}
+
+        public List<Vector2> TrailPositions = new();
+		public List<float> TrailRotations = new();
+		private const int TrailLength = 400;
         public override void AI()
         {
-            AnimateProjectile();
+            Vector2 lastPos = TrailPositions.Count > 0 ? TrailPositions[0] : Projectile.Center;
+			Vector2 newPos  = Projectile.Center;
+
+			float dist = Vector2.Distance(lastPos, newPos);
+			float step = 1f; // how closely to sample. tweak this!
+
+			if (dist > 0f)
+			{
+				int segments = (int)(dist / step);
+
+				for (int i = 1; i <= segments; i++)
+				{
+					Vector2 pos = Vector2.Lerp(lastPos, newPos, i / (float)segments);
+					TrailPositions.Insert(0, pos);
+					TrailRotations.Insert(0, Projectile.rotation);
+				}
+			}
+			else
+			{
+				TrailPositions.Insert(0, newPos);
+				TrailRotations.Insert(0, Projectile.rotation);
+			}
+
+
+			// Cap trail
+			while (TrailPositions.Count > TrailLength)
+				TrailPositions.RemoveAt(TrailPositions.Count - 1);
+			while (TrailRotations.Count > TrailLength)
+				TrailRotations.RemoveAt(TrailRotations.Count - 1);
+
             Lighting.AddLight(Projectile.Center, Color.White.ToVector3() * 0.6f);
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
 

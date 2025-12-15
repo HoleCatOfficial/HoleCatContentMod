@@ -534,59 +534,64 @@ namespace DestroyerTest.Content.Entities
         public int MoveTime = 120;
         public void RandTele(Player player)
         {
-            AlphaIn = NPC.alpha <= 0;
-            AlphaOut = NPC.alpha >= 255;
-
-            Vector2 Outer = player.Center + Main.rand.NextVector2Circular(600, 600);
-            if (!HasDisposablePos)
-            {
-                DisposableTelePos = player.Center;
-                HasDisposablePos = true;
-            }
-            Vector2 dir = DisposableTelePos - NPC.Center;
-            dir.Normalize();
-            
-
+            // Fade out
             if (!AlphaOut)
             {
                 NPC.alpha += 5;
                 if (NPC.alpha >= 255)
                 {
+                    NPC.alpha = 255;
                     AlphaOut = true;
+                }
+                return; // stop here until fully faded out
+            }
+
+            if (!HasDisposablePos)
+            {
+                DisposableTelePos = player.Center;
+                HasDisposablePos = true;
+            }
+
+            // Teleport ONCE
+            if (!HasTeled)
+            {
+                NPC.Center = DisposableTelePos + Main.rand.NextVector2Circular(600, 600);
+                HasTeled = true;
+            }
+
+            // Movement
+            if (MoveTime > 0)
+            {
+                MoveTime--;
+                Vector2 dir = DisposableTelePos - NPC.Center;
+                dir.Normalize();
+                NPC.velocity = dir * 10f;
+
+                if (MoveTime == 60)
+                {
+                    Stars();
                 }
             }
 
-            if (!AlphaIn && HasTeled)
+            // Fade in
+            if (HasTeled && !AlphaIn)
             {
                 NPC.alpha -= 5;
                 if (NPC.alpha <= 0)
                 {
+                    NPC.alpha = 0;
                     AlphaIn = true;
                 }
             }
 
-            if (!HasTeled)
+            if (AlphaIn && MoveTime <= 0)
             {
-                NPC.Center = Outer;
-                HasTeled = true;
-            }
-
-            if (MoveTime > 0 && HasTeled)
-            {
-                MoveTime--;
-                NPC.velocity = dir * 10f;
-            }
-
-            if (MoveTime == 60)
-            {
-                Stars();
-            }
-
-            if (MoveTime > 90)
-            {
+                HasTeled = false;
+                HasDisposablePos = false;
                 AlphaOut = false;
+                AlphaIn = false;
+                MoveTime = 120;
             }
-
         }
 
         public void Stars()

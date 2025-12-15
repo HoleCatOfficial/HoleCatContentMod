@@ -62,7 +62,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 		public float trailOffset = 0;
 		public override bool PreDraw(ref Color lightColor)
 		{
-			lightColor = Color.Red;
+			lightColor = Color.DarkRed;
 			trailOffset += 0.04f;
 
 			if (!Projectile.active || Projectile.timeLeft <= 0)
@@ -71,7 +71,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 			Texture2D texture = TextureAssets.Projectile[Type].Value;
 			SpriteBatch spriteBatch = Main.spriteBatch;
 
-			Opus.StartSpriteBatchForTrails(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+			Opus.StartSpriteBatchForTrails(spriteBatch, BlendState.NonPremultiplied, SpriteSortMode.Immediate);
 
 			if (TrailPositions.Count > 1)
 			{
@@ -86,18 +86,6 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 					Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
 					Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * 16;
                     Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * 16;
-
-					/*
-					ve.Add(new ColoredVertex(
-						TrailPositions[i] - Main.screenPosition + offset,
-						new Vector3(t, 1, 1),
-						b));
-
-					ve.Add(new ColoredVertex(
-						TrailPositions[i] - Main.screenPosition + offset2,
-						new Vector3(t, 0, 1),
-						b));
-					*/
 
 					DTUtils.AddStrips(ve, TrailPositions, i, offset, offset2, t, b, trailOffset);
 				}
@@ -120,7 +108,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
 		public List<Vector2> TrailPositions = new();
 		public List<float> TrailRotations = new();
-		private const int TrailLength = 40;
+		private const int TrailLength = 400;
 
 		// Custom AI
 		public override void AI()
@@ -132,7 +120,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 			Vector2 newPos  = Projectile.Center;
 
 			float dist = Vector2.Distance(lastPos, newPos);
-			float step = 8f; // how closely to sample. tweak this!
+			float step = 1f; // how closely to sample. tweak this!
 
 			if (dist > 0f)
 			{

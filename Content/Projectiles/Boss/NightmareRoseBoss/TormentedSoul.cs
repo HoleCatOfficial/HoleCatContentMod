@@ -10,6 +10,7 @@ using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
 using OpusLib;
+using System.Collections.Generic;
 
 namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
 {
@@ -81,11 +82,15 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
         }
 
         Vector2 SoulCenter;
+
+        public float trailOffset = 0f;
         public override bool PreDraw(ref Color lightColor)
         {
             SpriteBatch sb = Main.spriteBatch;
             Asset<Texture2D> texture = Terraria.GameContent.TextureAssets.Projectile[Projectile.type];
             DTUtils Utility = new DTUtils();
+            lightColor = Color.Lavender;
+            trailOffset += 0.04f;
 
             // Calculate source rectangle for current frame
             int frameHeight = texture.Value.Height / Main.projFrames[Projectile.type];
@@ -100,10 +105,39 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
                 SoulCenter = Projectile.Center;
             }
             TelegraphLine(sb, SoulCenter);
-            Opus.DrawGlowOnProj(Projectile, Color.Purple, false, 0f);
-            sb.Draw(texture.Value, drawPos, sourceRect, Color.White, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0f);
 
+            Opus.StartSpriteBatchForTrails(sb, BlendState.NonPremultiplied, SpriteSortMode.Immediate);
+
+            if (TrailPositions.Count > 1)
+			{
+				List<ColoredVertex> ve = new List<ColoredVertex>();
+				float a = 0;
+
+				for (int i = TrailPositions.Count - 1; i > 0; i--)
+				{
+					float t = 1f - (i / (float)TrailPositions.Count);
+					Color b = lightColor * t;
+
+					Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
+					Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * 40;
+                    Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * 40;
+
+					DTUtils.AddStrips(ve, TrailPositions, i, offset, offset2, t, b, trailOffset);
+				}
+
+				GraphicsDevice gd = Main.graphics.GraphicsDevice;
+				if (ve.Count >= 3)
+				{
+					gd.Textures[0] = DTAssetLib.SoulStreak.Value;
+					gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2);
+				}
+			}
+
+            Opus.DrawGlowOnProj(Projectile, lightColor, false, 0);
+            
             Opus.ReturnToDefaultDrawing(sb);
+
+            sb.Draw(texture.Value, drawPos, sourceRect, Color.White, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0f);
 
             return false;
         }
@@ -175,11 +209,43 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
             IntialPos = Projectile.Center;
         }
 
-        // Custom AI
+        public List<Vector2> TrailPositions = new();
+        public List<float> TrailRotations = new();
+        private const int TrailLength = 300;
         public override void AI()
         {
             AnimateProjectile();
             Dust.NewDustPerfect(Projectile.Center, DustID.DemonTorch, Scale: 1.8f);
+
+            Vector2 lastPos = TrailPositions.Count > 0 ? TrailPositions[0] : Projectile.Center;
+			Vector2 newPos  = Projectile.Center;
+
+			float dist = Vector2.Distance(lastPos, newPos);
+			float step = 1f; // how closely to sample. tweak this!
+
+			if (dist > 0f)
+			{
+				int segments = (int)(dist / step);
+
+				for (int i = 1; i <= segments; i++)
+				{
+					Vector2 pos = Vector2.Lerp(lastPos, newPos, i / (float)segments);
+					TrailPositions.Insert(0, pos);
+					TrailRotations.Insert(0, Projectile.rotation);
+				}
+			}
+			else
+			{
+				TrailPositions.Insert(0, newPos);
+				TrailRotations.Insert(0, Projectile.rotation);
+			}
+
+
+			// Cap trail
+			while (TrailPositions.Count > TrailLength)
+				TrailPositions.RemoveAt(TrailPositions.Count - 1);
+			while (TrailRotations.Count > TrailLength)
+				TrailRotations.RemoveAt(TrailRotations.Count - 1);
 
             float maxDetectRadius = 120f; // The maximum radius at which a projectile can detect a target
 

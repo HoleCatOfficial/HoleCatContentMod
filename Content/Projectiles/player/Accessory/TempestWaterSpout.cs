@@ -35,13 +35,13 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
 
         public override void AI()
         {
-            Vector2 Out = Projectile.Bottom + new Vector2(Main.rand.Next(-2, 2), -6);
+            Vector2 Out = Projectile.Bottom + new Vector2(Main.rand.NextFloat(-2, 2), -6);
             Vector2 BottomCenter = Projectile.Bottom;
             Vector2 Dir = Out - BottomCenter;
 
             for (int t = 0; t < 36; t++)
             {
-                Dust.NewDustPerfect(BottomCenter, DustID.Water_Snow, Dir, 100, default, 1f);
+                Dust.NewDustPerfect(BottomCenter, DustID.Water_Snow, Dir, 100, default, 3f);
             }
         }
 

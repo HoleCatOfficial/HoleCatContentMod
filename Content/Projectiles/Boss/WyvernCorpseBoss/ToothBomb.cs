@@ -70,11 +70,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
             Vector2 ToPlayer = Projectile.Center - Main.LocalPlayer.Center;
             Projectile.velocity *= 0.999f;
             Projectile.rotation += Main.rand.NextFloat(-1f, 1.1f) * 0.1f;
-        }
-
-        public override void OnHitPlayer(Player target, Player.HurtInfo info)
-        {
-            target.moveSpeed *= 0.6f;
+            Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Blood, 0, 0, 0, default, 1.0f);
         }
         
         public override bool OnTileCollide(Vector2 oldVelocity)

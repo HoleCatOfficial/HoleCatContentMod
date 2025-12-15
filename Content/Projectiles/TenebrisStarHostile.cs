@@ -73,7 +73,7 @@ namespace DestroyerTest.Content.Projectiles
 				for (int i = TrailPositions.Count - 1; i > 0; i--)
 				{
 					float t = 1f - (i / (float)TrailPositions.Count); // fade toward tail
-					Color b = ColorLib.TenebrisGradient * t;
+					Color b = lightColor * t;
 
 					Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
 					Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * 20;
@@ -261,7 +261,7 @@ namespace DestroyerTest.Content.Projectiles
 				for (int i = TrailPositions.Count - 1; i > 0; i--)
 				{
 					float t = 1f - (i / (float)TrailPositions.Count); // fade toward tail
-					Color b = ColorLib.TenebrisGradient * t;
+					Color b = lightColor * t;
 
 					Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
 					Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * 20;
@@ -291,15 +291,17 @@ namespace DestroyerTest.Content.Projectiles
 
 		public List<Vector2> TrailPositions = new();
 		public List<float> TrailRotations = new();
-		private const int TrailLength = 40;
+		private const int TrailLength = 400;
 
 		public override void AI()
 		{
+
+
 			Vector2 lastPos = TrailPositions.Count > 0 ? TrailPositions[0] : Projectile.Center;
 			Vector2 newPos  = Projectile.Center;
 
 			float dist = Vector2.Distance(lastPos, newPos);
-			float step = 8f; // how closely to sample. tweak this!
+			float step = 1f; // how closely to sample. tweak this!
 
 			if (dist > 0f)
 			{
