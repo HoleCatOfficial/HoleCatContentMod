@@ -3602,6 +3602,11 @@ Items: {
 			"So the Calamity Team doesn't like infinite flight? This. Means. War."
 			'''
 	}
+
+	Siege: {
+		DisplayName: Siege
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
@@ -3914,6 +3919,7 @@ Projectiles: {
 	Tungsten_Broadsword.DisplayName: Tungsten_ Broadsword
 	CursedFlameWallVertical.DisplayName: Cursed Flame Wall Vertical
 	CursedFlameWallHorizontal.DisplayName: Cursed Flame Wall Horizontal
+	CursedFlameWall.DisplayName: Cursed Flame Wall
 	CursedFlameNapalm.DisplayName: Cursed Flame Napalm
 	CursedNodeCrystal.DisplayName: Cursed Crystal
 	Tooth.DisplayName: Tooth
@@ -4067,6 +4073,9 @@ Projectiles: {
 	GargantuaExplosion.DisplayName: Gargantua Explosion
 	HekateBurr.DisplayName: Hekate Burr
 	DesertSpiritDart.DisplayName: Desert Spirit Dart
+	CursedFlameVortex.DisplayName: Cursed Flame Vortex
+	TenebrisRocketProjectile_NoTileDestroy.DisplayName: Tenebris Rocket Projectile_ No Tile Destroy
+	TenebrisRocketProjectile_TileDestroy.DisplayName: Tenebris Rocket Projectile_ Tile Destroy
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.

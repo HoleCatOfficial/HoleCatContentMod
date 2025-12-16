@@ -96,49 +96,7 @@ namespace DestroyerTest.Content.Entities
         {
             return false;
         }
-
-        public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-        {
-            Texture2D pixel = TextureAssets.MagicPixel.Value;
-
-            if (CurrentAttack == AttackState.FlameGrid && FlameGridWarnTimer > 0)
-            {
-                int rows = 10;
-                int cols = 12;
-                float spacing = 200f;
-
-                // Pulse alpha for a "warning" effect
-                float pulse = (float)Math.Sin(Main.GlobalTimeWrappedHourly * 6f) * 0.5f + 0.5f;
-                float alpha = MathHelper.Clamp((float)FlameGridWarnTimer / 60f, 0f, 1f); // fades out as timer runs
-                Color warnColor = ColorLib.CursedFlames * (0.5f + 0.5f * pulse) * alpha;
-
-                // Horizontal lines
-                for (int y = 0; y < rows; y++)
-                {
-                    float lineY = screenCenter.Y + (y - rows / 2) * spacing;
-                    Rectangle lineRect = new Rectangle(
-                        (int)(screenCenter.X - (cols / 2f) * spacing - screenPos.X),
-                        (int)(lineY - screenPos.Y),
-                        (int)(cols * spacing),
-                        2 // thickness
-                    );
-                    spriteBatch.Draw(pixel, lineRect, warnColor);
-                }
-
-                // Vertical lines
-                for (int x = 0; x < cols; x++)
-                {
-                    float lineX = screenCenter.X + (x - cols / 2) * spacing;
-                    Rectangle lineRect = new Rectangle(
-                        (int)(lineX - screenPos.X),
-                        (int)(screenCenter.Y - (rows / 2f) * spacing - screenPos.Y),
-                        2, // thickness
-                        (int)(rows * spacing)
-                    );
-                    spriteBatch.Draw(pixel, lineRect, warnColor);
-                }
-            }
-        }
+            
 
         public override bool? CanBeHitByItem(Player player, Item item)
         {
@@ -161,7 +119,7 @@ namespace DestroyerTest.Content.Entities
             Dormant,
             Idle,
             Stars,
-            FlameGrid,
+            FlameSwarm,
             Mines,
             Napalm
         }
@@ -174,15 +132,11 @@ namespace DestroyerTest.Content.Entities
         public int IdleTimer = 60;
         public float RotSpeed;
         public int StarShootID = ModContent.ProjectileType<TenebrisStarHostile>();
-        public int StarShootInterval = 0;
+        public int FlameSwarmTimer = 0;
         public int StarShootCount = 0;
         public int MineInterval = 0;
         public int MineCount = 0;
         public int MineCooldown = 240;
-        public int FlameGridWarnTimer = 120;
-        public bool ShotGrid = false;
-        public int FlameGridCooldownTimer = 240;
-        public bool WarnSound1 = false;
         public int NapalmRainTimer = 800;
         public int NapalmRainInterval = 0;
         public bool RecordCenterFlag1 = false;
@@ -307,17 +261,18 @@ namespace DestroyerTest.Content.Entities
                     }
                 case AttackState.Stars:
                     {
-                        RandTele(player);
+                        float XOffMin = -350;
+                        float XOffMax = 350;
+                        float XOff = Opus.Sine(XOffMin, XOffMax, 0.05f);
+                        KeepToPlayer(player.Center + new Vector2(XOff, -200));
+
+                        if (Main.GameUpdateCount % 90 == 0)
+                        {
+                            Stars();
+                        }
 
                         if (StarShootCount >= 6)
                         {
-                            // Reset teleport flags so the next Stars cycle can teleport again
-                            HasDisposablePos = false;
-                            HasTeled = false;
-                            AlphaOut = false;
-                            AlphaIn = false;
-                            MoveTime = 120;
-
                             CurrentAttack = AttackState.Mines;
                             StarShootCount = 0;
                         }
@@ -352,91 +307,29 @@ namespace DestroyerTest.Content.Entities
 
                         if (MineCount >= 3 && MineCooldown <= 0)
                         {
-                            CurrentAttack = AttackState.FlameGrid;
+                            CurrentAttack = AttackState.FlameSwarm;
                             MineCount = 0;
                             MineCooldown = 240;
                         }
                         break;
                     }
-                case AttackState.FlameGrid:
+                case AttackState.FlameSwarm:
+                {
+                    KeepToPlayer(player.Center + new Vector2(0, -200));
+                    
+                    FlameSwarmTimer++;
+                    if (FlameSwarmTimer % 60 == 0) // Spawn every 60 ticks (1 second)
                     {
-                        KeepToPlayer(player.Center + new Vector2(0, -200));
-
-                        if (!RecordCenterFlag1)
-                        {
-                            screenCenter = Main.screenPosition + new Vector2(Main.screenWidth / 2, Main.screenHeight / 2);
-                            RecordCenterFlag1 = true;
-                        }
-
-                        int rows = 10;
-                        int cols = 12;
-                        float spacing = 200f; // distance between lines
-
-
-                        if (FlameGridWarnTimer > 0)
-                        {
-                            if (WarnSound1 == false)
-                            {
-                                SoundEngine.PlaySound(Wallwarn);
-                                WarnSound1 = true;
-                            }
-                            FlameGridWarnTimer--;
-                        }
-                        if (!ShotGrid && FlameGridWarnTimer <= 0)
-                        {
-                            SoundEngine.PlaySound(WallShoot1);
-                            player.GetModPlayer<ScreenshakePlayer>().screenshakeTimer = 10;
-                            player.GetModPlayer<ScreenshakePlayer>().screenshakeMagnitude = 2;
-                            Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), NPC.Center, Vector2.Zero, ColorLib.CursedFlames, 0.01f, 1f);
-
-                            // Horizontal walls (one per row)
-                            for (int y = 0; y < rows; y++)
-                            {
-                                float lineY = screenCenter.Y + (y - rows / 2) * spacing;
-                                Projectile.NewProjectile(
-                                    Entity.GetSource_FromThis(),
-                                    new Vector2(screenCenter.X, lineY),
-                                    Vector2.Zero,
-                                    ModContent.ProjectileType<CursedFlameWallHorizontal>(),
-                                    60,
-                                    2
-                                );
-                            }
-
-                            // Vertical walls (one per column)
-                            for (int x = 0; x < cols; x++)
-                            {
-                                float lineX = screenCenter.X + (x - cols / 2) * spacing;
-                                Projectile.NewProjectile(
-                                    Entity.GetSource_FromThis(),
-                                    new Vector2(lineX, screenCenter.Y),
-                                    Vector2.Zero,
-                                    ModContent.ProjectileType<CursedFlameWallVertical>(),
-                                    60,
-                                    2
-                                );
-                            }
-
-                            ShotGrid = true;
-                        }
-
-                        if (ShotGrid)
-                        {
-                            FlameGridCooldownTimer--;
-                            if (FlameGridCooldownTimer <= 0)
-                            {
-                                CurrentAttack = AttackState.Napalm;
-                                screenCenter = Vector2.Zero;
-                                RecordCenterFlag1 = false;
-                                FlameGridWarnTimer = 120;
-                                FlameGridCooldownTimer = 240;
-                                ShotGrid = false;
-                            }
-                        }
-
-                        break;
+                        FlameSwarm();
                     }
-
+                    
+                    if (FlameSwarmTimer > 300) // After 5 seconds, switch to Napalm
+                    {
+                        CurrentAttack = AttackState.Napalm;
+                        FlameSwarmTimer = 0;
+                    }
+                    break;
+                }
                 case AttackState.Napalm:
                     {
                         KeepToPlayer(player.Center + new Vector2(0, -200));
@@ -526,115 +419,31 @@ namespace DestroyerTest.Content.Entities
             }
         }
 
-        public bool HasDisposablePos;
-        public Vector2 DisposableTelePos;
-        public bool HasTeled = false;
-        public bool AlphaOut;
-        public bool AlphaIn;
-        public int MoveTime = 120;
-        public void RandTele(Player player)
-        {
-            // Fade out
-            if (!AlphaOut)
-            {
-                NPC.alpha += 5;
-                if (NPC.alpha >= 255)
-                {
-                    NPC.alpha = 255;
-                    AlphaOut = true;
-                }
-                return; // stop here until fully faded out
-            }
-
-            if (!HasDisposablePos)
-            {
-                DisposableTelePos = player.Center;
-                HasDisposablePos = true;
-            }
-
-            // Teleport ONCE
-            if (!HasTeled)
-            {
-                NPC.Center = DisposableTelePos + Main.rand.NextVector2Circular(600, 600);
-                HasTeled = true;
-            }
-
-            // Movement
-            if (MoveTime > 0)
-            {
-                MoveTime--;
-                Vector2 dir = DisposableTelePos - NPC.Center;
-                dir.Normalize();
-                NPC.velocity = dir * 10f;
-
-                if (MoveTime == 60)
-                {
-                    Stars();
-                }
-            }
-
-            // Fade in
-            if (HasTeled && !AlphaIn)
-            {
-                NPC.alpha -= 5;
-                if (NPC.alpha <= 0)
-                {
-                    NPC.alpha = 0;
-                    AlphaIn = true;
-                }
-            }
-
-            if (AlphaIn && MoveTime <= 0)
-            {
-                HasTeled = false;
-                HasDisposablePos = false;
-                AlphaOut = false;
-                AlphaIn = false;
-                MoveTime = 120;
-            }
-        }
-
         public void Stars()
         {
-            int numVectors = Main.rand.Next(8, 23);
-            float angleStep = MathHelper.TwoPi / numVectors;
-            float baseAngle = 0f;
-            int StartRad = 22;
+            SoundEngine.PlaySound(StarShoot, NPC.Center);
+            Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), NPC.Center, Vector2.Zero, ColorLib.CursedFlames, 0.01f, 1f);
+            Opus.RadialSpreadProjectile(ModContent.ProjectileType<NightmareRoseCursedCrystal>(), 9, NPC.Center, 16, 4, 10, AI1: 1, RandomOffset: true);
+            Opus.RadialSpreadProjectile(ModContent.ProjectileType<NightmareRoseCursedCrystal>(), 9, NPC.Center, 16, 4, 10, AI1: -1, RandomOffset: true);
+            StarShootCount += 1;
+        }
 
-
-            // Decide randomly if it's negative or positive
-            if (Main.rand.NextBool()) // 50/50 chance
+        public void FlameSwarm(Player player)
+        {
+            SoundEngine.PlaySound(Wallwarn, NPC.Center);
+            Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), NPC.Center, Vector2.Zero, ColorLib.CursedFlames, 0.01f, 1f);
+            
+            for (int i = 0; i < 2; i++)
             {
-                // Negative range: -24 to -12
-                RotSpeed = Main.rand.NextFloat(-16f, -8f);
-            }
-            else
-            {
-                // Positive range: 12 to 24
-                RotSpeed = Main.rand.NextFloat(8f, 16f);
-            }
-
-            if (StarShootInterval > 0)
-            {
-                StarShootInterval--;
-            }
-
-            if (StarShootInterval <= 0)
-            {
-                SoundEngine.PlaySound(StarShoot, NPC.Center);
-                Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), NPC.Center, Vector2.Zero, ColorLib.CursedFlames, 0.01f, 1f);
-                Opus.RadialSpreadProjectile(ModContent.ProjectileType<NightmareRoseCursedCrystal>(), 9, NPC.Center, 16, 4, 10, AI1: 1, RandomOffset: true);
-                Opus.RadialSpreadProjectile(ModContent.ProjectileType<NightmareRoseCursedCrystal>(), 9, NPC.Center, 16, 4, 10, AI1: -1, RandomOffset: true);
-                StarShootInterval = 60;
-                StarShootCount += 1;
+                Vector2 spawnPos = new Vector2(player.Center.X + Main.rand.Next(-200, 201), player.Center.Y + 1000);
+                Vector2 velocity = (player.Center - spawnPos).SafeNormalize(Vector2.Zero) * 10f; // Adjust speed as needed
+                Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), spawnPos, velocity, ProjectileID.CursedFlameHostile, 20, 2);
             }
         }
 
-
-        public void TelegraphFlames()
+        public void FlameSwarm()
         {
-
-
+            
         }
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)

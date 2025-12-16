@@ -17,6 +17,7 @@ using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
 using GlowmaskHelper.Content;
 using DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame;
+using OpusLib;
 
 namespace DestroyerTest.Content.Entities
 {
@@ -128,8 +129,8 @@ namespace DestroyerTest.Content.Entities
                     NPC.velocity = Vector2.Zero;
 
                     SoundEngine.PlaySound(WallShoot, NPC.Center);
-                    Projectile.NewProjectile(Entity.GetSource_FromThis(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<CursedFlameWallVertical>(), 25, 4);
-                    Projectile.NewProjectile(Entity.GetSource_FromThis(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<CursedFlameWallHorizontal>(), 25, 4);
+                    
+                    Opus.RadialSpreadProjectile(ModContent.ProjectileType<CursedFlameVortex>(), 4, NPC.Center, 20, 5, 10, RandomOffset: true);
                     
                     AttackCharge = 0;
                 }

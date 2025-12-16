@@ -466,6 +466,9 @@ namespace DestroyerTest.Content.Entities
         public bool RecordedVolume = false;
         public bool SetVolume = false;
         public bool Flag2 = false;
+
+        public bool FireLR = false; //True = Right, False = Left
+        public bool DartsLR = false; //True = Right, False = Left
         public override void AI()
         {
             NPC.TargetClosest();
@@ -629,24 +632,6 @@ namespace DestroyerTest.Content.Entities
                 OnKill();
             }
 
-            if (Divided)
-            {
-                stateWeights[AttackState.WallDarts] = 0.00f;
-                stateWeights[AttackState.CursedFlames] = 0.00f;
-                if (CooldownAccountedForWallLifetime <= 0)
-                {
-                    CooldownAccountedForWallLifetime = DivisionCooldown + 1200;
-                }
-
-                CooldownAccountedForWallLifetime--;
-
-                if (CooldownAccountedForWallLifetime <= DivisionCooldown)
-                {
-                    Divided = false;
-                }
-
-            }
-
             Rotation--;
 
             PlayerCenter = player.Center;
@@ -787,11 +772,7 @@ namespace DestroyerTest.Content.Entities
                     break;
                 case AttackState.CursedFlames:
                     {
-                        if (Divided)
-                        {
-                            ResetState();
-                        }
-                        if (!EternityIsActive() && !Divided)
+                        if (!EternityIsActive())
                         {
                             if (FlameStartTimer >= 60)
                             {
@@ -820,7 +801,7 @@ namespace DestroyerTest.Content.Entities
                                 ResetState();
                             }
                         }
-                        if (EternityIsActive() && !Divided)
+                        if (EternityIsActive())
                         {
                             if (FlameTimer < 240)
                             {
@@ -1046,16 +1027,14 @@ namespace DestroyerTest.Content.Entities
                     {
                         if (EternityIsActive())
                         {
-                            if (!Divided && CooldownAccountedForWallLifetime <= 0)
+                            if (Main.GameUpdateCount % 60 == 0)
                             {
-                                if (Main.rand.NextBool(3))
-                                {
-                                    ArenaDivision();
-                                }
-                                else
-                                {
-                                    currentState = AttackState.Idle;
-                                }
+                                VortexFire(player);
+                            }
+                            
+                            if (VortexFireCount >= 10)
+                            {
+                                ResetState();
                             }
                         }
                         else
@@ -1307,6 +1286,8 @@ namespace DestroyerTest.Content.Entities
                 HasBoosted = false;
                 HasSpawnedSigil = false;
                 HasSpawnedMines = false;
+                SetDir1 = false;
+                SetDir2 = false;
             }
         }
 
@@ -1345,19 +1326,6 @@ namespace DestroyerTest.Content.Entities
 
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-        }
-
-        public bool Flag3 = false;
-        public void ArenaDivision()
-        {
-            if (!Flag3)
-            {
-                SoundEngine.PlaySound(ArenaDivide);
-                Projectile Divider1 = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), NPCHead, Vector2.Zero, ModContent.ProjectileType<CursedFlameWallVertical>(), 30, 3);
-
-                Divider1.timeLeft = 1200;
-                Flag3 = true;
-            }
         }
 
         public void GatherParticle()
@@ -1477,13 +1445,24 @@ namespace DestroyerTest.Content.Entities
                 );
             }
         }
-
+        
+        public float ContemptAttackRotationOffset = 0f;
+        public bool SetDir1 = false;
         public void ContemptAttack()
         {
+            if (!SetDir1)
+            {
+                FireLR = Main.rand.NextBool(2);
+                SetDir1 = true;
+            }
             float radius = BorderRad;
             int projectileCount = 6;
-            float rotationOffset = (float)(Main.GameUpdateCount % 360) * MathHelper.ToRadians(0.5f);
+            
             Projectile flame = null;
+
+            ContemptAttackRotationOffset += FireLR ? 0.01f : -0.01f;
+
+            float rotationOffset = ContemptAttackRotationOffset;
 
             if (Main.GameUpdateCount % 10 == 0)
             {
@@ -1522,12 +1501,19 @@ namespace DestroyerTest.Content.Entities
         }
 
         private float dartRotation;
+        public bool SetDir2 = false;
         public void DartAttack()
         {
+            if (!SetDir2)
+            {
+                DartsLR = Main.rand.NextBool(2);
+                SetDir2 = true;
+            }
             float radius = BorderRad;
             int projectileCount = 4;
-            //float rotationOffset = (float)(Main.GameUpdateCount % 360) * MathHelper.ToRadians(0.5f);
-            dartRotation += 0.01f; // <-- rotation speed (radians per tick)
+
+            dartRotation += DartsLR ? 0.01f : -0.01f;
+
             float rotationOffset = dartRotation;
 
 
@@ -1580,6 +1566,24 @@ namespace DestroyerTest.Content.Entities
                     );
                 }
             }
+        }
+
+        public bool VortexFireUD = false; //True = Up, False = Down
+        public bool SetDir3 = false;
+        public int VortexFireCount = 0;
+        public void VortexFire(Player player)
+        {
+            if (!SetDir3)
+            {
+                VortexFireUD = Main.rand.NextBool(2);
+                SetDir3 = false;
+            }
+            Vector2 spawn = VortexFireUD ? player.Center + new Vector2(0, -400) : player.Center + new Vector2(0, 400);
+            
+            float dirY = spawn.Y - player.Center.Y;
+
+            Projectile.NewProjectile(NPC.GetSource_FromAI(), spawn, new Vector2(0, dirY), ModContent.ProjectileType<CursedFlameVortex>(), 20, 5);
+            VortexFireCount++;
         }
 
 
