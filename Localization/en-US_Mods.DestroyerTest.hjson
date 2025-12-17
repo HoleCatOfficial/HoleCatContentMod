@@ -41,8 +41,6 @@ Items: {
 			'''
 			Just one of many fates for the Heaven-Descendant blade.
 			It pulses with the essence of Terraria.
-			Just one of many fates for the Heaven-Descendant blade.
-			It pulses with the essence of Terraria.
 			'''
 	}
 
@@ -3605,7 +3603,11 @@ Items: {
 
 	Siege: {
 		DisplayName: Siege
-		Tooltip: ""
+		Tooltip:
+			'''
+			Converts regular rockets to Tenebrous Rockets.
+			Takes 4 seconds to reload.
+			'''
 	}
 }
 
@@ -4076,6 +4078,7 @@ Projectiles: {
 	CursedFlameVortex.DisplayName: Cursed Flame Vortex
 	TenebrisRocketProjectile_NoTileDestroy.DisplayName: Tenebris Rocket Projectile_ No Tile Destroy
 	TenebrisRocketProjectile_TileDestroy.DisplayName: Tenebris Rocket Projectile_ Tile Destroy
+	SiegeHoldout.DisplayName: Siege Holdout
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.
@@ -4347,7 +4350,7 @@ Buffs: {
 	}
 
 	TenebrisCrystalMinionBuff: {
-		Description: It hums with faint energy...
+		Description: It hums with energy...
 		DisplayName: Tenebris Elemental
 	}
 
@@ -4948,16 +4951,20 @@ BookText: {
 			'''
 		Page3:
 			'''
-			I did find though, that by stimulating these blobs with an
-			electrical current within a certain range of voltage, the
-			energy will separate from the dark congealment.
-			By placing this circuit inside separated chambers, I was
-			able to place living shadows inside one after another,
-			completing the circuit and then breaking it as to charge
-			batteries with the energy, and fill canisters with the
-			congealment.
+			Looking at it on an elemental level, the substance is not
+			comparable to any naturally occurring element to my knowledge.
+			Its goopy, saplike consistency prompted me to place it in water.
+			Inside water, as I suspected, it dissolves quickly, turning the
+			water black and inundating it with its energy, most of which
+			seemed to have risen up to the surface of the water.
 			'''
-		Page4: ""
+		Page4:
+			'''
+			Its applications are broad, from the looks of it. When encased in
+			iron, so-called "Riftplate" is created. A heavy, black metal with immense
+			stored energy. More research can be done on Riftplate in the future,
+			but that warrants a book of its own.
+			'''
 	}
 
 	BloodGoddessLoreBook: {
@@ -5107,7 +5114,7 @@ Music: {
 
 	EvilBoss: {
 		Default: Tribulation (New Mix)
-		Eternity: Tribulation (New Mix)
+		Eternity: Two Celestial Bodies of Descruction (Placeholder)
 		SecretSeed: Indestructible Dih
 	}
 

@@ -143,6 +143,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.VampireBoss
 			float targetAngle = Projectile.AngleTo(HomingTarget.Center);
 			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
 			Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(4)).ToRotationVector2() * length;
+			float.Clamp(length, 0, 16);
 		}
 
 

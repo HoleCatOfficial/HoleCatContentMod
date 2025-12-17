@@ -6,59 +6,56 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
+using DestroyerTest.Content.Projectiles.Weapon.Ranged;
 
 namespace DestroyerTest.Content.RangedItems
 {
 	public class Siege : ModItem
 	{
-		public override void SetStaticDefaults() {
-			AmmoID.Sets.SpecificLauncherAmmoProjectileFallback[Type] = ItemID.RocketLauncher;
-			AmmoID.Sets.SpecificLauncherAmmoProjectileMatches.Add(Type, new Dictionary<int, int> {
-				{ ItemID.RocketI, ModContent.ProjectileType<TenebrisRocketProjectile_NoTileDestroy>()},
-                { ItemID.RocketIII, ModContent.ProjectileType<TenebrisRocketProjectile_NoTileDestroy>()},
-                { ItemID.RocketII, ModContent.ProjectileType<TenebrisRocketProjectile_TileDestroy>()},
-                { ItemID.RocketIV, ModContent.ProjectileType<TenebrisRocketProjectile_TileDestroy>()},
-			});
+		public override void SetStaticDefaults() 
+        {
+			ItemID.Sets.IsRangedSpecialistWeapon[Type] = true;
 		}
 
-		public override void SetDefaults() {
-			Item.DefaultToRangedWeapon(ProjectileID.RocketI, AmmoID.Rocket, singleShotTime: 120, shotVelocity: 10f, hasAutoReuse: true);
-			Item.width = 132;
-			Item.height = 50;
-			Item.damage = 4000;
-			Item.knockBack = 4f;
-			Item.UseSound = new SoundStyle("DestroyerTest/Assets/Audio/SiegeShoot") { MaxInstances = 0, PitchVariance = 0.2f };
-			Item.value = Item.buyPrice(gold: 40);
-			Item.rare = ItemRarityID.Yellow;
-		}
-        
-        int Cooldown = 0;
-        public override void UpdateInventory(Player player)
+		public override void SetDefaults()
         {
-            if (Cooldown > 0)
-            {
-                Cooldown--;
-                if (Cooldown == 60)
-                {
-                    SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/SiegeReload"), player.Center);
-                }
-            }
-        }
+            // Common Properties
+            Item.width = 34;
+            Item.height = 42;
+            Item.value = Item.sellPrice(gold: 35, silver: 72, copper: 6);
+            Item.rare = ItemRarityID.Red;
 
-        public override bool? UseItem(Player player)
-        {
-            Cooldown = 240;
-            return true;
+            // Use Properties
+            // Note that useTime and useAnimation for this item don't actually affect the behavior because the held projectile handles that. 
+            // Each attack takes a different amount of time to execute
+            // Conforming to the item useTime and useAnimation makes it much harder to design
+            // It does, however, affect the item tooltip, so don't leave it out.
+            Item.useTime = 80;
+            Item.useAnimation = 80;
+            Item.useStyle = ItemUseStyleID.Shoot;
+
+            // Weapon Properties
+            Item.knockBack = 10;  // The knockback of your sword, this is dynamically adjusted in the projectile code.
+            Item.autoReuse = true; // This determines whether the weapon has autoswing
+            Item.damage = 4000; // The damage of your sword, this is dynamically adjusted in the projectile code.
+            Item.DamageType = DamageClass.Ranged; // Deals melee damage\
+            Item.channel = true;
+            Item.crit = 16; // The critical strike chance the weapon has. The player, by default, has a 4% critical strike chance.
+            Item.noMelee = true;  // This makes sure the item does not deal damage from the swinging animation
+            Item.noUseGraphic = true; // This makes sure the item does not get shown when the player swings his hand
+            Item.useTurn = true;
+            
+
+            // Projectile Properties
+            Item.shoot = ModContent.ProjectileType<SiegeHoldout>(); // The sword as a projectile
         }
 
         public override bool CanUseItem(Player player)
         {
-            return Cooldown <= 0;
+            bool Rocket = player.HasItemInAnyInventory(ItemID.RocketI) || player.HasItemInAnyInventory(ItemID.RocketII) || player.HasItemInAnyInventory(ItemID.RocketIII) || player.HasItemInAnyInventory(ItemID.RocketIV);
+            return player.ownedProjectileCounts[Item.shoot] < 1 && Rocket;
         }
-
-		public override Vector2? HoldoutOffset() {
-			return new Vector2(5f, -25f);
-		}
+        
 
         public override void AddRecipes() {
             CreateRecipe()

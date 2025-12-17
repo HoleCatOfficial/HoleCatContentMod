@@ -14,6 +14,7 @@ using Microsoft.Xna.Framework.Graphics;
 using DestroyerTest.Content.Projectiles;
 using InnoVault.PRT;
 using DestroyerTest.Content.Particles;
+using OpusLib;
 
 namespace DestroyerTest.Content.Equips
 {
@@ -194,9 +195,12 @@ namespace DestroyerTest.Content.Equips
 		{
 			if (player.TryGetModPlayer<TenebrousDemon>(out TenebrousDemon Demon) && item.DamageType == DamageClass.Ranged)
 			{
-				if (Demon.Charge3)
+				if (Demon.Active)
 				{
-					Projectile.NewProjectile(source, position, velocity.RotatedByRandom(1f), ModContent.ProjectileType<TenebrisStarFriendly>(), damage / 2, knockback, player.whoAmI, ai2: 1);
+					if (Demon.Charge3)
+					{
+						Projectile.NewProjectile(source, position, velocity.RotatedByRandom(1f), ModContent.ProjectileType<TenebrisStarFriendly>(), damage / 2, knockback, player.whoAmI, ai2: 1);
+					}
 				}
 			}
 			return base.Shoot(item, player, source, position, velocity, type, damage, knockback);

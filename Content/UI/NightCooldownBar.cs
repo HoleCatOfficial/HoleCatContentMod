@@ -7,8 +7,6 @@ using DestroyerTest.Common;
 using System.Collections.Generic;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
-using Terraria.ModLoader;
-using Terraria.UI;
 using DestroyerTest.Content.Equips.NightSet;
 
 namespace DestroyerTest.Content.UI

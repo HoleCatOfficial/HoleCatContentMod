@@ -110,8 +110,8 @@ namespace DestroyerTest.Content.Entities
             NPC.height = 274;
             NPC.aiStyle = -1;
             NPC.damage = 0;
-            NPC.defense = 45;
-            NPC.lifeMax = 368000;
+            NPC.defense = 35;
+            NPC.lifeMax = 364000;
             NPC.HitSound = SoundID.DD2_MonkStaffGroundImpact;
             NPC.noGravity = false;
             NPC.lavaImmune = true;
@@ -618,13 +618,10 @@ namespace DestroyerTest.Content.Entities
             }
 
 
-            if (NPC.life >= NPC.lifeMax * 0.24f && NPC.life <= NPC.lifeMax * 0.25f)
+            if (NPC.life <= NPC.lifeMax * 0.25f && !HasTriggeredNodes)
             {
-                if (HasTriggeredNodes == false)
-                {
-                    currentState = AttackState.Nodes;
-                    HasTriggeredNodes = true;
-                }
+                currentState = AttackState.Nodes;
+                HasTriggeredNodes = true;
             }
 
             if (player.active == false || player.dead == true)

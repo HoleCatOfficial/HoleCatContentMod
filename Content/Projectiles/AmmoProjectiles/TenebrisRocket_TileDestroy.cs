@@ -3,6 +3,7 @@ using DestroyerTest.Content.Particles;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Utilities;
 using System;
 using Terraria;
 using Terraria.Audio;
@@ -77,6 +78,7 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
         }
 
 		public Color colorofLight = Color.White;
+		public SlotId LoopSlot;
 		public override void AI() {
 
 			if (Projectile.frame == 1)
@@ -90,6 +92,18 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
             if (Projectile.frame == 3)
             {
                 colorofLight = ColorLib.TenebrisBeige;
+            }
+
+			if (!SoundEngine.TryGetActiveSound(LoopSlot, out var activeSound)) {
+                var tracker = new ProjectileAudioTracker(Projectile);
+                LoopSlot = SoundEngine.PlaySound(SoundID.DD2_KoboldIgniteLoop, Projectile.Center, soundInstance => {
+                    soundInstance.Position = Projectile.Center;
+                    return tracker.IsActiveAndInGame();
+                });
+            }
+            else
+            {
+                activeSound.Position = Projectile.Center;
             }
 			
 			// If timeLeft is <= 3, then explode the rocket.
