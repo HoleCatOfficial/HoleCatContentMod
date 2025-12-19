@@ -14,6 +14,7 @@ using DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 {
+    [AutoloadGlowmask]
     public class GalantineKnifeThrown : ModProjectile
     {
         public override void SetDefaults()
@@ -53,7 +54,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
                 // Run once when the projectile first sticks
                 if (!Flag1)
                 {
-                    Projectile.timeLeft = 120; // Stays stuck for ~2 seconds
+                    Projectile.timeLeft = 240; // Stays stuck for ~2 seconds
                     Projectile.velocity = Vector2.Zero; // Stop movement
                     Projectile.tileCollide = false; // Don’t unstick from walls
                     Flag1 = true;
@@ -118,12 +119,6 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             }
         }
 
-        public override void PostDraw(Color lightColor)
-        {
-            Asset<Texture2D> glowmask = ModContent.Request<Texture2D>(Texture + "_Glow");
-            Main.EntitySpriteDraw(glowmask.Value, Projectile.Center - Main.screenPosition, null, ColorLib.StellarColor, Projectile.rotation, glowmask.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
-        }
-
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             // Only stick if it’s early in its flight (so it doesn't embed after bouncing)
@@ -153,7 +148,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 
             if (!Stick)
             {
-                Opus.RadialSpreadProjectile(ModContent.ProjectileType<ConstitutionStar>(), 3, Projectile.Center, 8, 4, 8, AI2: 1, RandomOffset: true);
+                Opus.RadialSpreadProjectile(ModContent.ProjectileType<ConstitutionStarFriendly>(), 3, Projectile.Center, 8, 4, 8, AI2: 1, RandomOffset: true);
             }
         }
     }

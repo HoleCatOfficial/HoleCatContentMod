@@ -296,7 +296,7 @@ namespace DestroyerTest
 
             public override void OnEnterWorld()
             {
-                Main.NewText("IMPORTANT INFO: The Wyvern Corpse Bossfight has been optimized the most it possibly could. It is unfortunately just a laggy boss.", Color.OrangeRed);
+                //Main.NewText("IMPORTANT INFO: The Wyvern Corpse Bossfight has been optimized the most it possibly could. It is unfortunately just a laggy boss.", Color.OrangeRed);
                 firstJoin = true;
             }
 

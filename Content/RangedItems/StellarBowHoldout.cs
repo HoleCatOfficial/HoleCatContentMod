@@ -91,7 +91,7 @@ namespace DestroyerTest.Content.RangedItems
                         Vector2 LaunchRand = Launch.RotatedByRandom(1.35);
                         for (int r = 0; r < Main.rand.Next(3, 6); r++)
                         {
-                            Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, LaunchRand, ModContent.ProjectileType<ConstitutionStar>(), Projectile.damage / 10, Projectile.knockBack, player.whoAmI, ai2: 1);
+                            Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, LaunchRand, ModContent.ProjectileType<ConstitutionStarFriendly>(), Projectile.damage / 10, Projectile.knockBack, player.whoAmI, ai2: 1);
                         }
                     }
                     ShotCount++;

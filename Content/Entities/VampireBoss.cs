@@ -21,7 +21,6 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
 using System.Collections.Generic;
-using static DestroyerTest.Content.Entities.ConstitutionClone;
 using System.Linq;
 using ReLogic.Content;
 using DestroyerTest.Content.Projectiles.Boss.VampireBoss;

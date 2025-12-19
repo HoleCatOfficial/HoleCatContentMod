@@ -149,6 +149,22 @@ namespace DestroyerTest.Common
             return (worldStart, worldEnd);
         }
 
+        //From Cal Entropy. Too good not to have due to its usefulness.
+        // Note: Change the bar texture paths.
+        public static void DrawChargeBar(float barScale, Vector2 position, float progress, Color color)
+        {
+            var barBG = DTAssetLib.Barback.Value;
+            var barFG = DTAssetLib.Barfront.Value;
+
+            Vector2 barOrigin = barBG.Size() * 0.5f;
+            Vector2 drawPos = position;
+            Rectangle frameCrop = new Rectangle(0, 0, (int)(progress * barFG.Width), barFG.Height);
+
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            spriteBatch.Draw(barBG, drawPos, null, color, 0f, barOrigin, barScale, 0f, 0f);
+            spriteBatch.Draw(barFG, drawPos, frameCrop, color * 0.8f, 0f, barOrigin, barScale, 0f, 0f);
+        }
+
         public static void AddStrips(List<ColoredVertex> List, List<Vector2> Vex, int Index, Vector2 off1, Vector2 off2, float Fade, Color CLR, float stripMotion = 0f)
         {
             List.Add(new ColoredVertex(Vex[Index] - Main.screenPosition + off1, new Vector3(Fade - stripMotion, 1, 1), CLR));
@@ -607,6 +623,8 @@ namespace DestroyerTest.Common
         public static Asset<Texture2D> Slash144 = ModContent.Request<Texture2D>($"{ExtrasPath}/144Slash", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> ZapTrail = ModContent.Request<Texture2D>($"{ExtrasPath}/ZapTrail", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> SoulStreak = ModContent.Request<Texture2D>($"{ExtrasPath}/SoulStreak", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> Barback = ModContent.Request<Texture2D>($"{ExtrasPath}/GenericBarBack", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> Barfront = ModContent.Request<Texture2D>($"{ExtrasPath}/GenericBarFront", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> Sparkle(int Variant)
         {
             if (Variant <= 0)
