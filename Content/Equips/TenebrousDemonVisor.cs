@@ -66,6 +66,8 @@ namespace DestroyerTest.Content.Equips
 		public const int ComboExpire = 180;
 		public int ComboExpireTimer = 0;
 		public int ComboCounter = 0;
+		float AdvTierPitch = 0f;
+		public SoundStyle AdvTier = new SoundStyle("DestroyerTest/Assets/Audio/Charge/Anvil") with { MaxInstances = 0 };
 
 		public override void ResetEffects()
 		{
@@ -81,6 +83,7 @@ namespace DestroyerTest.Content.Equips
 				{
 					SoundEngine.PlaySound(SoundID.DD2_WitherBeastHurt, Player.Center);
 					ComboCounter = 0;
+					AdvTierPitch = 0f;
 					Charge1 = Charge2 = Charge3 = false;
 					SoundFlag1 = SoundFlag2 = SoundFlag3 = false;
 				}
@@ -107,6 +110,7 @@ namespace DestroyerTest.Content.Equips
 				else
 				{
 					Charge1 = Charge2 = Charge3 = false;
+					AdvTierPitch = 0f;
 				}
 			}
 		}
@@ -121,7 +125,8 @@ namespace DestroyerTest.Content.Equips
 			{
 				if (!SoundFlag1)
 				{
-					SoundEngine.PlaySound(SoundID.DD2_EtherianPortalDryadTouch with { Pitch = 0 }, Player.Center);
+					SoundEngine.PlaySound(AdvTier with { Pitch = AdvTierPitch }, Player.Center);
+					AdvTierPitch += 0.2f;
 					SoundFlag1 = true;
 				}
 				Player.GetDamage(DamageClass.Ranged) *= 1.1f;
@@ -136,7 +141,8 @@ namespace DestroyerTest.Content.Equips
 			{
 				if (!SoundFlag2)
 				{
-					SoundEngine.PlaySound(SoundID.DD2_EtherianPortalDryadTouch with { Pitch = 1 }, Player.Center);
+					SoundEngine.PlaySound(AdvTier with { Pitch = AdvTierPitch }, Player.Center);
+					AdvTierPitch += 0.2f;
 					SoundFlag2 = true;
 				}
 				Player.GetDamage(DamageClass.Ranged) *= 1.1f;
@@ -151,7 +157,7 @@ namespace DestroyerTest.Content.Equips
 			{
 				if (!SoundFlag3)
 				{
-					SoundEngine.PlaySound(SoundID.DD2_EtherianPortalDryadTouch with { Pitch = 2 }, Player.Center);
+					SoundEngine.PlaySound(AdvTier with { Pitch = AdvTierPitch }, Player.Center);
 					SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/Destitute") with { PitchVariance = 0.2f }, Player.Center);
 					SoundFlag3 = true;
 				}
@@ -168,6 +174,7 @@ namespace DestroyerTest.Content.Equips
 					Charge1 = Charge2 = Charge3 = false;
 					SoundFlag1 = SoundFlag2 = SoundFlag3 = false;
 					ComboCounter = 0;
+					AdvTierPitch = 0f;
 				}
 			}
 		}
@@ -208,8 +215,18 @@ namespace DestroyerTest.Content.Equips
 
 	}
 
+
 	public class TenebrousDemonHitTracker : GlobalProjectile
 	{
+		public override bool InstancePerEntity => true;
+		public float CPitch = 0f;
+		public SoundStyle C = new SoundStyle("DestroyerTest/Assets/Audio/Charge/WoodyTick3") with { MaxInstances = 0 };
+		public void ChargeSounds1()
+		{
+			SoundEngine.PlaySound(C with { Pitch = CPitch });
+			CPitch += (1f / 300f);			
+		}
+
 		public override void OnHitNPC(Projectile projectile, NPC target, NPC.HitInfo hit, int damageDone)
 		{
 			Player player = Main.player[projectile.owner];
@@ -218,6 +235,7 @@ namespace DestroyerTest.Content.Equips
 				if (Demon.Active)
 				{
 					Demon.ComboExpireTimer = 0;
+					ChargeSounds1();
 					if (Demon.ComboCounter < TenebrousDemon.ComboTierThreshold && !Demon.Charge3)
 					{
 						Demon.ComboCounter++;
@@ -225,6 +243,11 @@ namespace DestroyerTest.Content.Equips
 					if (Demon.ComboCounter <= 120 && Demon.Charge3)
 					{
 						Demon.ComboCounter++;
+					}
+
+					if (Demon.ComboCounter > 119 && Demon.Charge3)
+					{
+						CPitch = 0f;
 					}
 
 					if (Demon.Charge3)
