@@ -26,13 +26,13 @@ namespace DestroyerTest.Content.Tiles.RoseGarden
 		{
 			get
 			{
-                return MusicLoader.GetMusicSlot(Mod, "Assets/Music/Placeholder6");
+                return MusicLoader.GetMusicSlot(Mod, "Assets/Music/HekateGarden");
 			}
 		}
 
         public override void OnEnter(Player player)
         {
-			Main.NewText("IMPORTANT: The Song Used here is a placeholder. 'I, Am the First Flower' from Desolo Zantas's 'Omniphobia'. I claim no ownership of this track. It will be replaced in due time.");
+			//Main.NewText("IMPORTANT: The Song Used here is a placeholder. 'I, Am the First Flower' from Desolo Zantas's 'Omniphobia'. I claim no ownership of this track. It will be replaced in due time.");
 			SoundStyle Entry = new SoundStyle("DestroyerTest/Assets/Audio/EnterRoseGarden") with { PitchVariance = 0.5f, MaxInstances = 0 };
             SoundEngine.PlaySound(Entry);
         }

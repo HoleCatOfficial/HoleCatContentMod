@@ -1,7 +1,8 @@
-displayName = [c/ff9900:HoleCat's Content Mod (Private Beta)]
+displayName = [c/ff9900:Talid Mod (Private Beta)]
 author = HoleCat
-version = 2.1.711
+version = 2.1.7125
 modReferences = InnoVault, OpusLib, GlowmaskHelper
 dependencies = InnoVault, OpusLib, GlowmaskHelper
+weakReferences = FargowiltasSouls
 playableOnPreview = false
 homepage = https://linktr.ee/HoleCat

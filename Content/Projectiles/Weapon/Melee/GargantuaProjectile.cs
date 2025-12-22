@@ -17,6 +17,8 @@ using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
+using DestroyerTest.Common;
+using OpusLib;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 {
@@ -89,8 +91,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
 		public override void SetDefaults()
 		{
-			Projectile.width = 102; // Hitbox width of projectile
-			Projectile.height = 102; // Hitbox height of projectile
+			Projectile.width = 122; // Hitbox width of projectile
+			Projectile.height = 122; // Hitbox height of projectile
 			Projectile.friendly = true; // Projectile hits enemies
 			Projectile.timeLeft = 10000; // Time it takes for projectile to expire
 			Projectile.penetrate = -1; // Projectile pierces infinitely
@@ -123,8 +125,15 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 			Projectile.spriteDirection = reader.ReadSByte();
 		}
 
+		public List<Vector2> TrailPositions = new();
+		public List<float> TrailRotations = new();
+		private const int TrailLength = 40;
+		public Vector2 swordTip;
+		public Vector2 ToTip;
 		public override void AI()
 		{
+			swordTip = Projectile.Center + Projectile.rotation.ToRotationVector2() * (Projectile.Size.Length() * Projectile.scale);
+			ToTip = swordTip - Projectile.Center;
 
 
 			// Extend use animation until projectile is killed
@@ -155,11 +164,47 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 			}
 
 			SetSwordPosition();
+
+			Vector2 lastPos = TrailPositions.Count > 0 ? TrailPositions[0] : swordTip;
+			Vector2 newPos  = swordTip;
+
+			Vector2 TR_Dir = newPos - lastPos;
+			float TR_Rot = TR_Dir.ToRotation();
+
+			
+
+			float dist = Vector2.Distance(lastPos, newPos);
+			float step = 8f;
+
+			if (dist > 0f)
+			{
+				int segments = (int)(dist / step);
+
+				for (int i = 1; i <= segments; i++)
+				{
+					Vector2 pos = Vector2.Lerp(lastPos, newPos, i / (float)segments);
+
+					TrailPositions.Insert(0, pos);
+					TrailRotations.Insert(0, TR_Rot);
+				}
+			}
+			else
+			{
+				TrailPositions.Insert(0, newPos);
+				TrailRotations.Insert(0, TR_Rot);
+			}
+
+			while (TrailPositions.Count > TrailLength)
+				TrailPositions.RemoveAt(TrailPositions.Count - 1);
+			while (TrailRotations.Count > TrailLength)
+				TrailRotations.RemoveAt(TrailRotations.Count - 1);
+
 			Timer++;
 		}
 
 		public override bool PreDraw(ref Color lightColor)
 		{
+			Trail();
 			// Draw the sword sprite itself
 			Vector2 origin;
 			float rotationOffset;
@@ -183,6 +228,47 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 			Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null, lightColor * Projectile.Opacity, Projectile.rotation + rotationOffset, origin, Projectile.scale, effects, 0);
 
 			return false;  // prevent default drawing
+		}
+
+		public void Trail()
+		{
+			Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.NonPremultiplied, SpriteSortMode.Immediate);
+			if (TrailPositions.Count > 1)
+			{
+				List<ColoredVertex> ve = new List<ColoredVertex>();
+				float a = 0;
+
+				for (int i = TrailPositions.Count - 1; i > 0; i--)
+				{
+					float t = 1f - (i / (float)TrailPositions.Count); // fade toward tail
+					Color b = Color.Red * t;
+
+					//Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
+					float rot = TrailRotations[i];
+					Vector2 dir = rot.ToRotationVector2();
+					Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * 150;
+                    Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * 150;
+
+					ve.Add(new ColoredVertex(
+						TrailPositions[i] - Main.screenPosition + offset,
+						new Vector3(t, 1, 1),
+						b));
+
+					ve.Add(new ColoredVertex(
+						TrailPositions[i] - Main.screenPosition + offset2,
+						new Vector3(t, 0, 1),
+						b));
+				}
+
+
+				GraphicsDevice gd = Main.graphics.GraphicsDevice;
+				if (ve.Count >= 3)
+				{
+					gd.Textures[0] = DTAssetLib.Streak(6).Value;
+					gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2);
+				}
+			}
+			Opus.ReturnToDefaultDrawing(Main.spriteBatch);
 		}
 
 		public override void PostDraw(Color lightColor)
@@ -297,27 +383,21 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 				Sound = true;
             }
 
+			
 			Vector2 swordTip = Projectile.Center + Projectile.rotation.ToRotationVector2() * (Projectile.Size.Length() * Projectile.scale);
 			Vector2 sword1 = Projectile.Center + Projectile.rotation.ToRotationVector2() * ((Projectile.Size.Length() * Projectile.scale) - 8);
 			Vector2 sword2 = Projectile.Center + Projectile.rotation.ToRotationVector2() * ((Projectile.Size.Length() * Projectile.scale) - 32);
 			Vector2 sword3 = Projectile.Center + Projectile.rotation.ToRotationVector2() * ((Projectile.Size.Length() * Projectile.scale) - 64);
 			Vector2 sword4 = Projectile.Center + Projectile.rotation.ToRotationVector2() * ((Projectile.Size.Length() * Projectile.scale) - 84);
-			int[] types = new int[]
-			{
-				PRTLoader.GetParticleID<BlackFire1>(),
-				PRTLoader.GetParticleID<BlackFire2>(),
-				PRTLoader.GetParticleID<BlackFire3>(),
-				PRTLoader.GetParticleID<BlackFire4>(),
-				PRTLoader.GetParticleID<BlackFire5>(),
-				PRTLoader.GetParticleID<BlackFire6>(),
-				PRTLoader.GetParticleID<BlackFire7>()
-			};
 
-			PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], swordTip, Vector2.Zero, new Color(255, 0, 0, 255), 2.0f);
-			PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], sword1, Vector2.Zero, new Color(255, 0, 0, 204), 1.8f);
-			PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], sword2, Vector2.Zero, new Color(255, 0, 0, 153), 1.6f);
-			PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], sword3, Vector2.Zero, new Color(255, 0, 0, 102), 1.4f);
-			PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], sword4, Vector2.Zero, new Color(255, 0, 0, 51), 1.2f);
+			PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], swordTip, Vector2.Zero, new Color(255, 0, 0), 3.0f, 40, ai2: 1);
+			PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], sword1, Vector2.Zero, new Color(255, 0, 0) * 0.8f, 2.5f, 40, ai2: 1);
+			PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], sword2, Vector2.Zero, new Color(255, 0, 0) * 0.6f, 2f, 40, ai2: 1);
+			PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], sword3, Vector2.Zero, new Color(255, 0, 0) * 0.4f, 1.5f, 40, ai2: 1);
+			PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], sword4, Vector2.Zero, new Color(255, 0, 0) * 0.2f, 1f, 40, ai2: 1);
+			
+
+			//PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center, ToTip * 0.05f, Color.Red, 3.0f, 40, ai2: 1);
 
 			int rad = (int)(Projectile.Size.Length() * Projectile.scale);
 
@@ -338,8 +418,6 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
 				if (SpinCount >= 5)
 				{
-
-
 					//SoundEngine.PlaySound(SoundID.Item67, player.Center);
 					for (int i = 0; i < 4; i++)
 					{
@@ -361,7 +439,6 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
 				if (SpinCount >= 15)
 				{
-					Swing.Pitch += 0.05f;
 					for (int i = 0; i < 4; i++)
 					{
 						Vector2 Direction = Main.rand.NextVector2CircularEdge(1f, 1f); // Random unit vector on circle edge
@@ -417,11 +494,6 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 			}
 		}
 
-
-
-
-
-		// Function facilitating the latter half of the swing where the sword disappears
 		private void UnwindStrike()
 		{
 			if (CurrentAttack == AttackType.Spin)
@@ -439,6 +511,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
 			SoundEngine.PlaySound(Hit, target.Center);
+			for (int i = 0; i < 10; i++)
+			{
+				Vector2 ToTarget = Projectile.Center - target.Center;
+				Vector2 Dir = ToTarget.ToRotation().ToRotationVector2() * -16;
+				PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), target.Center, Dir.RotatedByRandom(1), Color.Red, 1f);
+			}
 		}
 	}
 }

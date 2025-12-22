@@ -400,7 +400,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
                                 Player.GetSource_ItemUse(item),
                                 Player.Center,
                                 velocity.RotatedByRandom(0.5f),
-                                ModContent.ProjectileType<ConstitutionStar>(),
+                                ModContent.ProjectileType<ConstitutionStarFriendly>(),
                                 damage,
                                 knockback,
                                 Player.whoAmI,

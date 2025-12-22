@@ -15,6 +15,7 @@ namespace DestroyerTest.Content.Particles
             PRTDrawMode = PRTDrawModeEnum.AdditiveBlend;
             Lifetime = 9999;
             Scale = 0.01f;
+            ShouldKillWhenOffScreen = false;
         }
 
         public override void AI()

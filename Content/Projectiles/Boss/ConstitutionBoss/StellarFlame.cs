@@ -37,18 +37,9 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
 
 		public override void AI()
 		{
-			int[] types = new int[]
-			{
-				PRTLoader.GetParticleID<ColoredFire1>(),
-				PRTLoader.GetParticleID<ColoredFire2>(),
-				PRTLoader.GetParticleID<ColoredFire3>(),
-				PRTLoader.GetParticleID<ColoredFire4>(),
-				PRTLoader.GetParticleID<ColoredFire5>(),
-				PRTLoader.GetParticleID<ColoredFire6>(),
-				PRTLoader.GetParticleID<ColoredFire7>()
-			};
+			
 
-			PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], Projectile.Center, Vector2.Zero, ColorLib.StellarColor, 2.5f);
+			PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center, Vector2.Zero, ColorLib.StellarColor, 2.5f, 60, 2);
 		}
 
 		public override void OnHitPlayer(Player target, Player.HurtInfo info)

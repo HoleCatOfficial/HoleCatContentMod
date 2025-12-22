@@ -41,18 +41,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 Projectile.velocity.Y = 16f;
             }
 
-            int[] types = new int[]
-            {
-                PRTLoader.GetParticleID<ColoredFire1>(),
-                PRTLoader.GetParticleID<ColoredFire2>(),
-                PRTLoader.GetParticleID<ColoredFire3>(),
-                PRTLoader.GetParticleID<ColoredFire4>(),
-                PRTLoader.GetParticleID<ColoredFire5>(),
-                PRTLoader.GetParticleID<ColoredFire6>(),
-                PRTLoader.GetParticleID<ColoredFire7>()
-            };
-
-            PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], Projectile.Center, Vector2.Zero, new Color(199, 66, 199), 0.75f);
+            PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center, Vector2.Zero, new Color(199, 66, 199) * 0.35f, 1.0f, 40, 2);
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)

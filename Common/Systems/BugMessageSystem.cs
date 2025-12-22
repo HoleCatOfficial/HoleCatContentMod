@@ -13,6 +13,7 @@ using Terraria.UI;
 
 namespace DestroyerTest.Common.Systems
 {
+    /*
     public class BugMessageSystem : ModSystem
     {
         public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
@@ -46,4 +47,5 @@ namespace DestroyerTest.Common.Systems
             spriteBatch.Draw(Advert, new Vector2((Main.screenWidth / 2) - Advert.Width / 2, (Main.screenHeight / 2) - Advert.Height / 2), Color.White);
         }
     }
+    */
 }

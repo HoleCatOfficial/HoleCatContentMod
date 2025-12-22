@@ -24,9 +24,10 @@ Placeholder Text
 - **Haepien, the Nature Sprite:** Upcoming Content. Stay tuned...
 
 ![Header.](/Content/Extras/MinibossSubHeader.png "Header")
-- Cursed Flame and Ichor Nodes: Barely sentient creatures borne of your world evil. Their sole purpose is to strengthen entities around them and protect their biome from intruders like you.
+- **Cursed Flame and Ichor Nodes:** Barely sentient creatures borne of your world evil. Their sole purpose is to strengthen entities around them and protect their biome from intruders like you.
 - **Blessed Node:** Upcoming Content. Stay tuned...
 - **Tenebrous Construct:** An inanimate construct of darkmatter originating from the Shade World. (See the dedicated section for more.) It's purpose is unknown.
 - **Tenebrous Slinger:** A reanimation of a long-lost bow, rumored to have shot the stars into the sky. It now loyally serves the needs of whomever calls upon it from the shade world.
+
 
 

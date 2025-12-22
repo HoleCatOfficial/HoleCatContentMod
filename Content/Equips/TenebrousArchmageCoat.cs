@@ -25,7 +25,6 @@ namespace DestroyerTest.Content.Equips
 		}
 
         public override void UpdateEquip(Player player) {
-            player.moveSpeed *= 0.40f;
 
 		}
 

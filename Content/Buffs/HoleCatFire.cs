@@ -59,18 +59,8 @@ namespace DestroyerTest.Content.Buffs
         }
         public override void UpdateLifeRegen(NPC npc, ref int damage) {
             if (lifeRegenDebuff) {
-            int[] types = new int[]
-			{
-				PRTLoader.GetParticleID<ColoredFire1>(),
-				PRTLoader.GetParticleID<ColoredFire2>(),
-				PRTLoader.GetParticleID<ColoredFire3>(),
-				PRTLoader.GetParticleID<ColoredFire4>(),
-				PRTLoader.GetParticleID<ColoredFire5>(),
-				PRTLoader.GetParticleID<ColoredFire6>(),
-				PRTLoader.GetParticleID<ColoredFire7>()
-			};
 
-				PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], Main.rand.NextVector2FromRectangle(npc.Hitbox), new Vector2(0f, -0.1f), ColorLib.HoleCatFireGradient * 0.35f, 1.0f);
+				PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Main.rand.NextVector2FromRectangle(npc.Hitbox), new Vector2(0f, -0.1f), ColorLib.HoleCatFireGradient * 0.35f, 1.0f, 40, ai2: 2);
 
                 if (npc.lifeRegen > 0)
 					npc.lifeRegen = 0;
@@ -97,18 +87,9 @@ namespace DestroyerTest.Content.Buffs
 			Player player = Main.LocalPlayer;
 			if (lifeRegenDebuff)
 			{
-				int[] types = new int[]
-				{
-					PRTLoader.GetParticleID<ColoredFire1>(),
-					PRTLoader.GetParticleID<ColoredFire2>(),
-					PRTLoader.GetParticleID<ColoredFire3>(),
-					PRTLoader.GetParticleID<ColoredFire4>(),
-					PRTLoader.GetParticleID<ColoredFire5>(),
-					PRTLoader.GetParticleID<ColoredFire6>(),
-					PRTLoader.GetParticleID<ColoredFire7>()
-				};
+				
 
-				PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], Main.rand.NextVector2FromRectangle(player.Hitbox), new Vector2(0f, -0.1f), ColorLib.HoleCatFireGradient * 0.35f, 1f);
+				PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Main.rand.NextVector2FromRectangle(player.Hitbox), new Vector2(0f, -0.1f), ColorLib.HoleCatFireGradient * 0.35f, 1f, 40, ai2: 2);
 				// These lines zero out any positive lifeRegen. This is expected for all bad life regeneration effects
 				if (Player.lifeRegen > 0)
 					Player.lifeRegen = 0;

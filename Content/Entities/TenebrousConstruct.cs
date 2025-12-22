@@ -221,7 +221,7 @@ namespace DestroyerTest.Content.Entities
 
 
 
-            if (Main.GameUpdateCount % 120 == 0)
+            if (Main.GameUpdateCount % 120 == 0 && !RoseAlive)
             {
                 for (int a = 0; a < 5; a++)
                 {
@@ -279,7 +279,7 @@ namespace DestroyerTest.Content.Entities
                             }
                             if (MinimumIdle <= 0)
                             {
-                                if (Main.rand.NextBool(600))
+                                if (Main.rand.NextBool(600) && !RoseAlive)
                                 {
                                     CurrentState = State.DartCross;
                                     MinimumIdle = 600;

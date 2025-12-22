@@ -232,9 +232,9 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
 
                     player.Hurt(new Player.HurtInfo
                     {
-                        Damage = 50,
+                        Damage = Projectile.damage,
                         DamageSource = PlayerDeathReason.ByCustomReason(NetworkText.FromLiteral($"{player.name} got caught up in unholy wires.")),
-                        Knockback = player.noKnockback ? 0f : 5f,
+                        Knockback = player.noKnockback ? 0f : Projectile.knockBack,
                         HitDirection = 1
                     });
                     player.AddBuff(ModContent.BuffType<BloodHex>(), 360);

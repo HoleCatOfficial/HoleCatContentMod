@@ -33,17 +33,7 @@ namespace DestroyerTest.Content.Projectiles.EntitiesProjectiles
 		public override void AI() {
 			Projectile.rotation += 0.4f * Projectile.direction;
 
-			int[] types = new int[]
-			{
-				PRTLoader.GetParticleID<ColoredFire1>(),
-				PRTLoader.GetParticleID<ColoredFire2>(),
-				PRTLoader.GetParticleID<ColoredFire3>(),
-				PRTLoader.GetParticleID<ColoredFire4>(),
-				PRTLoader.GetParticleID<ColoredFire5>(),
-				PRTLoader.GetParticleID<ColoredFire6>(),
-				PRTLoader.GetParticleID<ColoredFire7>()
-			};
-			PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], Projectile.Center, new Vector2(0f, -0.1f), ColorLib.TenebrisGradient, 1.0f);
+			PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center, Vector2.Zero, ColorLib.TenebrisGradient * 0.35f, 1.0f, 40, 2);
 			if (TileCollideCount <= 0)
 			{
 				Projectile.Kill();

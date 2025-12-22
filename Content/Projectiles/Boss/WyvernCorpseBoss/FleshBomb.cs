@@ -47,19 +47,14 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
             Vector2 ToPlayer = Projectile.Center - Main.LocalPlayer.Center;
             Projectile.velocity *= 0.999f;
             Projectile.rotation += Main.rand.NextFloat(-1f, 1.1f) * 0.1f;
-            Dust.NewDust(Projectile.Center, Projectile.width, Projectile.height, DustID.Blood, 0, 0, 70, default, 1.0f);
-        }
-
-        public override void OnHitPlayer(Player target, Player.HurtInfo info)
-        {
-            target.moveSpeed *= 0.6f;
+            Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Blood, 0, 0, 0, default, 1.0f);
         }
 
         public override void OnKill(int timeLeft)
         {
             Vector2 ToPlayer = Projectile.Center - Main.LocalPlayer.Center;
             SoundEngine.PlaySound(BombBlow, Projectile.Center);
-            var launchVelocity = new Vector2(-8, 0); // Create a velocity moving the left.
+            var launchVelocity = new Vector2(-16, 0); // Create a velocity moving the left.
                 
             for (int i = 0; i < 8; i++)
             {

@@ -131,19 +131,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             // Always spinning
             Projectile.rotation += 0.6f * Projectile.direction;
 
-            
-            int[] types = new int[]
-			{
-				PRTLoader.GetParticleID<ColoredFire1>(),
-				PRTLoader.GetParticleID<ColoredFire2>(),
-				PRTLoader.GetParticleID<ColoredFire3>(),
-				PRTLoader.GetParticleID<ColoredFire4>(),
-				PRTLoader.GetParticleID<ColoredFire5>(),
-				PRTLoader.GetParticleID<ColoredFire6>(),
-				PRTLoader.GetParticleID<ColoredFire7>()
-			};
 
-            PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], Projectile.Center + new Vector2(82, -82).RotatedBy(Projectile.rotation), Vector2.Zero, ColorLib.CursedFlames, 0.4f);
+            PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center + new Vector2(82, -82).RotatedBy(Projectile.rotation), Vector2.Zero, ColorLib.CursedFlames, 2f, 60, 2);
             
 
             ArmCatchAnimate(player);

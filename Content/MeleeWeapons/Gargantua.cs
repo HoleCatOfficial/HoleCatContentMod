@@ -58,42 +58,72 @@ namespace DestroyerTest.Content.MeleeWeapons
 
     public class Gargantua : ModItem
 	{
-        public override string Texture => "DestroyerTest/Content/MeleeWeapons/Gargantua";
         public override void SetStaticDefaults()
         {
-            ItemID.Sets.AnimatesAsSoul[Type] = true;
-            Main.RegisterItemAnimation(Type, new DrawAnimationVertical(2, 5)); 
+            ItemID.Sets.ItemsThatAllowRepeatedRightClick[Type] = true;
         }
         public override void SetDefaults()
         {
-            Item.CloneDefaults(ItemID.TerraBlade);
             Item.UseSound = SoundID.Item101;
-            Item.width = 114; // The item texture's width.
-            Item.height = 114; // The item texture's height.
+            Item.width = 122;
+            Item.height = 122;
 
-            Item.useStyle = ItemUseStyleID.Swing; // The useStyle of the Item.
-            Item.useTime = 20; // The time span of using the weapon. Remember in terraria, 60 frames is a second.
-            Item.useAnimation = 20; // The time span of the using animation of the weapon, suggest setting it the same as useTime.
-            Item.autoReuse = true; // Whether the weapon can be used more than once automatically by holding the use button.
+            Item.useStyle = ItemUseStyleID.Shoot;
+            Item.useTime = 20;
+            Item.useAnimation = 20;
+            Item.autoReuse = true;
+            Item.useTurn = true;
 
-            Item.DamageType = DamageClass.Melee; // Whether your item is part of the melee class.
-            Item.damage = 90; // The damage your item deals.
-            Item.knockBack = 6; // The force of knockback of the weapon. Maximum is 20
-            Item.crit = 6; // The critical strike chance the weapon has. The player, by default, has a 4% critical strike chance.
+            Item.DamageType = DamageClass.Melee;
+            Item.damage = 87;
+            Item.knockBack = 6;
+            Item.crit = 10;
 
-            Item.value = Item.buyPrice(gold: 1); // The value of the weapon in copper coins.
-            Item.rare = ModContent.RarityType<VesperRarity>(); // Give this item our custom rarity.
-            Item.channel = true;
+            Item.value = Item.buyPrice(gold: 1);
+            Item.rare = ModContent.RarityType<VesperRarity>();
             Item.shoot = ModContent.ProjectileType<GargantuaProjectile>();
             Item.noUseGraphic = true;
+            Item.channel = true;
 		}
 
-		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
+        public override bool AltFunctionUse(Player player)
+        {
+            return true;
+        }
+
+        public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
+        {
+            if (player.altFunctionUse == 2)
+            {
+                type = ModContent.ProjectileType<GargantuaProjectile2>();
+                damage = 380;
+            }
+            if (player.altFunctionUse == 1)
+            {
+                type = ModContent.ProjectileType<GargantuaProjectile>();
+            }
+        }
+
+        public override bool CanUseItem(Player player)
+        {
+            if (player.altFunctionUse == 2)
+            {
+                Item.channel = true;
+            }
+            if (player.altFunctionUse == 1)
+            {
+                Item.channel = true;
+            }
+            return player.ownedProjectileCounts[ModContent.ProjectileType<GargantuaProjectile>()] < 1 && player.ownedProjectileCounts[ModContent.ProjectileType<GargantuaProjectile2>()] < 1;
+        }
+
+
+
 		public override void AddRecipes() {
 			CreateRecipe()
                 .AddIngredient<Goliath>(1)
-                .AddIngredient<LivingDiamond>(1)
-                .AddIngredient<Item_TemperedObsidian>(10)
+                .AddIngredient<LivingDiamond>(14)
+                .AddIngredient(ItemID.SpectreBar, 10)
 				.AddTile(TileID.Anvils)
 				.Register();
 		}

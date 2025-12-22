@@ -625,7 +625,7 @@ namespace DestroyerTest.Content.Entities
                         int interval = 10;
                         if (EternityIsActive())
                         {
-                            interval = 8;
+                            interval = 12;
                         }
                         if (!EternityIsActive())
                         {
@@ -728,7 +728,7 @@ namespace DestroyerTest.Content.Entities
                                         spawnPos,
                                         velocity,
                                         ModContent.ProjectileType<TenebrisLance>(),
-                                        30,
+                                        18,
                                         0f
                                     );
                                     Lance.timeLeft = 80;
@@ -737,22 +737,7 @@ namespace DestroyerTest.Content.Entities
                             }
                             if (Main.GameUpdateCount % 60 == 0)
                             {
-                                Opus.RadialProjectileRandomDir(ModContent.ProjectileType<TenebrisStarHostile>(), 3, NPC.Center, 20, 5, 2);
-                            }
-                        }
-                        if (CircleLanceCount == 5 && NPC.life <= NPC.lifeMax * 0.8f)
-                        {
-                            if (!HeartMatrixGetPositions)
-                            {
-                                SoundEngine.PlaySound(Teeth);
-                                for (int f = 0; f < 15; f++)
-                                {
-                                    Vector2 HeartPosoffset = Main.rand.NextVector2Circular(1200f, 1200f);
-                                    HeartPos = player.Center + HeartPosoffset;
-                                    PRTLoader.NewParticle(PRTLoader.GetParticleID<CrimsonBloodRuneParticle>(), HeartPos, Vector2.Zero, Color.White, 3);
-                                    Projectile.NewProjectile(NPC.GetSource_FromAI(), HeartPos, Vector2.Zero, ModContent.ProjectileType<HeartNode>(), 20, 3);
-                                }
-                                HeartMatrixGetPositions = true;
+                                Opus.RadialProjectileRandomDir(ModContent.ProjectileType<TenebrisStarHostile>(), 3, NPC.Center, 8, 5, 2);
                             }
                         }
                         if (CircleLanceCount >= 6 && NPC.life < NPC.lifeMax * 0.4f)
@@ -771,12 +756,15 @@ namespace DestroyerTest.Content.Entities
                     break;
                 case attackType.HeartMatrix:
                     {
+                        CurrentAttack = attackType.Circle;
+                        ResetStats();
+                        /*
                         if (EternityIsActive())
                         {
                             if (!HeartMatrixGetPositions)
                             {
                                 SoundEngine.PlaySound(Teeth);
-                                for (int f = 0; f < 15; f++)
+                                for (int f = 0; f < 6; f++)
                                 {
                                     Vector2 HeartPosoffset = Main.rand.NextVector2Circular(1200f, 1200f);
                                     HeartPos = player.Center + HeartPosoffset;
@@ -801,6 +789,7 @@ namespace DestroyerTest.Content.Entities
                             CurrentAttack = attackType.Circle;
                             ResetStats();
                         }
+                        */
                         break;
                     }
                 case attackType.OrganBurst:
@@ -1009,7 +998,7 @@ namespace DestroyerTest.Content.Entities
                                             NPC.GetSource_FromAI(),
                                             origin,
                                             velocity,
-                                            ModContent.ProjectileType<TenebrisFlames>(),
+                                            ModContent.ProjectileType<TenebrisFlamesHostile>(),
                                             40,
                                             1,
                                             ai2: 2
@@ -1108,8 +1097,10 @@ namespace DestroyerTest.Content.Entities
                         NPC.aiStyle = -1;
                         NPC.rotation = NPC.velocity.ToRotation();
                         circlerotspeed = 0.15f;
-                        NPC.velocity += DesperationOrbitCenter + offsetDes - new Vector2(NPC.width / 2, NPC.height / 2);
                         DesperationOrbitCenter = Vector2.Lerp(DesperationOrbitCenter, player.Center, 0.01f);
+                        Vector2 targetPos = DesperationOrbitCenter + offset;
+                        Vector2 toTarget = targetPos - NPC.Center;
+                        NPC.velocity = Vector2.Lerp(NPC.velocity, toTarget * 0.1f, 0.6f);
                         if (SoundFlag1 == false)
                         {
                             Main.NewText("The Wyvern is channeling its soul energy!", ColorLib.Soul);

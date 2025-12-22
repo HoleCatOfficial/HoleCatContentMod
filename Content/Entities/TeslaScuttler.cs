@@ -39,7 +39,6 @@ namespace DestroyerTest.Content.Entities
             NPC.defense = 60;
             NPC.lifeMax = 400;
             NPC.knockBackResist = 0.5f;
-            NPC.noGravity = false;
             NPC.GravityIgnoresSpace = true;
             NPC.HitSound = SoundID.DD2_LightningBugHurt;
             NPC.DeathSound = SoundID.NPCDeath36;
@@ -70,11 +69,28 @@ namespace DestroyerTest.Content.Entities
         {
             NPC.TargetClosest();
 
-            NPC.velocity.Y += 0.6f; // Increase as needed
-            if (NPC.velocity.Y > 10f)
-                NPC.velocity.Y = 10f; // Terminal velocity clamp
+            NPC.spriteDirection = NPC.velocity.X > 0 ? 1 : -1;
+
+            NPC.velocity.Y += 1f; // Increase as needed
+            if (NPC.velocity.Y > 100f)
+                NPC.velocity.Y = 100f; // Terminal velocity clamp
 
             NPC.GravityMultiplier *= 4;
+
+            float stepSpeed = 0.6f;
+            float gfxOffY = 0f;
+
+            if (NPC.collideX && NPC.velocity.Y == 0f) {
+                Collision.StepUp(
+                    ref NPC.position,
+                    ref NPC.velocity,
+                    NPC.width,
+                    NPC.height,
+                    ref stepSpeed,
+                    ref gfxOffY
+                );
+                NPC.gfxOffY = gfxOffY;
+            }
             
 
             switch (currentState)
@@ -109,7 +125,6 @@ namespace DestroyerTest.Content.Entities
             }
             if (stateTimer == 0)
             {
-                // Only use X direction — ignore Y entirely
                 float dir = Math.Sign(player.Center.X - NPC.Center.X);
                 chargeDirection = new Vector2(dir, 0f);
             }

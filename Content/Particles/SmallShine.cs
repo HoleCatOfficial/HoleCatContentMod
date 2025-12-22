@@ -32,6 +32,7 @@ namespace DestroyerTest.Content.Particles
             float randomAbs = Main.rand.NextFloat(min, max);
             _targetRotation = Main.rand.NextBool() ? randomAbs : -randomAbs;
             _startRotation = Rotation;
+            ShouldKillWhenOffScreen = false;
         }
 
         public override void AI()

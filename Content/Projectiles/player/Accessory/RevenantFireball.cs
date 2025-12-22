@@ -53,19 +53,6 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
             // Handle animation
             AnimateProjectile();
 
-            int[] types = new int[]
-			{
-				PRTLoader.GetParticleID<ColoredFire1>(),
-				PRTLoader.GetParticleID<ColoredFire2>(),
-				PRTLoader.GetParticleID<ColoredFire3>(),
-				PRTLoader.GetParticleID<ColoredFire4>(),
-				PRTLoader.GetParticleID<ColoredFire5>(),
-				PRTLoader.GetParticleID<ColoredFire6>(),
-				PRTLoader.GetParticleID<ColoredFire7>()
-			};
-
-            PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], Projectile.Center, Vector2.Zero, new Color(10, 0, 114), 0.5f);
-
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
             float maxDetectRadius = 400f; // The maximum radius at which a projectile can detect a target
 

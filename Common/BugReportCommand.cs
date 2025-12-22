@@ -8,6 +8,7 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Common
 {
+    /*
     public class BugReportCommand : ModCommand
     {
         private static readonly HttpClient httpClient = new HttpClient();
@@ -62,4 +63,5 @@ namespace DestroyerTest.Common
             }
         }
     }
+    */
 }

@@ -41,8 +41,6 @@ Items: {
 			'''
 			Just one of many fates for the Heaven-Descendant blade.
 			It pulses with the essence of Terraria.
-			Just one of many fates for the Heaven-Descendant blade.
-			It pulses with the essence of Terraria.
 			'''
 	}
 
@@ -3540,6 +3538,77 @@ Items: {
 		DisplayName: Shades Revenge
 		Tooltip: ""
 	}
+
+	DarkVesselSkull: {
+		DisplayName: Dark Vessel Skull
+		Tooltip: ""
+	}
+
+	ShadePaladinBodyArmor: {
+		DisplayName: Shade Paladin Body Armor
+		Tooltip: ""
+	}
+
+	ShadePaladinHelm: {
+		DisplayName: Shade Paladin Helm
+		Tooltip: ""
+	}
+
+	ShadePaladinLegArmor: {
+		DisplayName: Shade Paladin Leg Armor
+		Tooltip: ""
+	}
+
+	ParticleTester: {
+		DisplayName: Particle Tester
+		Tooltip: ""
+	}
+
+	HekateBurrPotion: {
+		DisplayName: Hekate's Thorns Potion
+		Tooltip:
+			'''
+			Creates a ring of Burrs around the player.
+			The Burrs lodge into enemies and inflict the Poison Debuff (Venom in Hardmode).
+			When a burr gets lodged, it will be 10 seconds until a replacement spawns for it.
+			Only one replacement can spawn at a time.
+			'''
+	}
+
+	Dyrn: {
+		DisplayName: Dyrn
+		Tooltip: If you listen closely, you can hear faint screams inside.
+	}
+
+	IdriPotion: {
+		DisplayName: Idri's Concoction
+		Tooltip:
+			'''
+			Grants 1 of 3 buffs, cycled by right clicking with the item or right clicking it in the inventory.
+			Black Guard: Increased defense and damage reduction.
+			Bravado: Increased armor penetration and damage.
+			Lightfooted: Increased jump height, acceleration, and run speed.
+			The potion cannot be consumed again while its buffs are active.
+			'''
+	}
+
+	LunarInsignia: {
+		DisplayName: Lunar Insignia
+		Tooltip:
+			'''
+			Grants infinite flight.
+			"So the Calamity Team doesn't like infinite flight? This. Means. War."
+			'''
+	}
+
+	Siege: {
+		DisplayName: Siege
+		Tooltip:
+			'''
+			Converts regular rockets to Tenebrous Rockets.
+			Takes 4 seconds to reload.
+			'''
+	}
 }
 
 Projectiles: {
@@ -3852,6 +3921,7 @@ Projectiles: {
 	Tungsten_Broadsword.DisplayName: Tungsten_ Broadsword
 	CursedFlameWallVertical.DisplayName: Cursed Flame Wall Vertical
 	CursedFlameWallHorizontal.DisplayName: Cursed Flame Wall Horizontal
+	CursedFlameWall.DisplayName: Cursed Flame Wall
 	CursedFlameNapalm.DisplayName: Cursed Flame Napalm
 	CursedNodeCrystal.DisplayName: Cursed Crystal
 	Tooth.DisplayName: Tooth
@@ -3877,7 +3947,10 @@ Projectiles: {
 	GreatFlayerDash.DisplayName: Great Flayer Dash
 	SoulCrystalBomb.DisplayName: Soul Crystal Bomb
 	SoulExplosion.DisplayName: Soul Explosion
-	TenebrisFlames.DisplayName: Tenebris Flames
+	TenebrisFlamesFriendly.DisplayName: Tenebris Flames
+	TenebrisFlamesFriendly_NoHoming.DisplayName: Tenebris Flames
+	TenebrisFlamesHostile.DisplayName: Tenebris Flames
+	TenebrisFlamesHostile_NoHoming.DisplayName: Tenebris Flames
 	AuraThiefFireball.DisplayName: Aura Thief Fireball
 	TreasonScrollBomb.DisplayName: Treason Scroll Bomb
 	FakeAncientLight.DisplayName: Fake Ancient Light
@@ -3997,6 +4070,19 @@ Projectiles: {
 	TenebrisStarHostile_NoHoming.DisplayName: Tenebris Star Hostile_ No Homing
 	TenebrisStarFriendly_NoHoming.DisplayName: Tenebris Star Friendly_ No Homing
 	TeslaScuttlerScaredExplosion.DisplayName: Tesla Scuttler Scared Explosion
+	TenebrousLightDart.DisplayName: Tenebrous Light Dart
+	GargantuaProjectile2.DisplayName: Gargantua Projectile2
+	GargantuaExplosion.DisplayName: Gargantua Explosion
+	HekateBurr.DisplayName: Hekate Burr
+	DesertSpiritDart.DisplayName: Desert Spirit Dart
+	CursedFlameVortex.DisplayName: Cursed Flame Vortex
+	TenebrisRocketProjectile_NoTileDestroy.DisplayName: Tenebris Rocket Projectile_ No Tile Destroy
+	TenebrisRocketProjectile_TileDestroy.DisplayName: Tenebris Rocket Projectile_ Tile Destroy
+	SiegeHoldout.DisplayName: Siege Holdout
+	ConstitutionStarFriendly_NoHoming.DisplayName: Constitution Star Friendly_ No Homing
+	ConstitutionStarFriendly.DisplayName: Constitution Star Friendly
+	ConstitutionStarHostile_NoHoming.DisplayName: Constitution Star Hostile_ No Homing
+	ConstitutionStarHostile.DisplayName: Constitution Star Hostile
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.
@@ -4013,13 +4099,13 @@ Buffs: {
 	}
 
 	NihilistBuff: {
-		DisplayName: Nihilist Buff
+		DisplayName: Nihilist
 		Description: Download Calamity Entropy for the epic version!
 	}
 
 	RiftBallBuff: {
-		DisplayName: Rift Ball Buff
-		Description: An itsy bitsy black hole! And its all yours!
+		DisplayName: Riften Ball
+		Description: It's very warm.
 	}
 
 	StoneLungs: {
@@ -4268,7 +4354,7 @@ Buffs: {
 	}
 
 	TenebrisCrystalMinionBuff: {
-		Description: It hums with faint energy...
+		Description: It hums with energy...
 		DisplayName: Tenebris Elemental
 	}
 
@@ -4324,7 +4410,32 @@ Buffs: {
 
 	Spored: {
 		DisplayName: Spored
-		Description: Mods.DestroyerTest.Buffs.Spored.Description
+		Description: Spores are eroding you!
+	}
+
+	HekateBurrBuff: {
+		DisplayName: Hekate's Thorns
+		Description: You are protected by poisonous bramble!
+	}
+
+	BlackGuard: {
+		DisplayName: Black Guard
+		Description: 15% increased defense and 7% increased damage reduction
+	}
+
+	Bravado: {
+		DisplayName: Bravado
+		Description: 15% increased armor penetration for all classes and 10% increased damage for all classes
+	}
+
+	Lightfooted: {
+		DisplayName: Lightfooted
+		Description: 4% increased jump speed, 40% increased acceleration, and 10% increased speed.
+	}
+
+	TaintedBrew: {
+		DisplayName: Tainted Brew
+		Description: Cannot Consume Idri's Concoction again.
 	}
 }
 
@@ -4844,16 +4955,20 @@ BookText: {
 			'''
 		Page3:
 			'''
-			I did find though, that by stimulating these blobs with an
-			electrical current within a certain range of voltage, the
-			energy will separate from the dark congealment.
-			By placing this circuit inside separated chambers, I was
-			able to place living shadows inside one after another,
-			completing the circuit and then breaking it as to charge
-			batteries with the energy, and fill canisters with the
-			congealment.
+			Looking at it on an elemental level, the substance is not
+			comparable to any naturally occurring element to my knowledge.
+			Its goopy, saplike consistency prompted me to place it in water.
+			Inside water, as I suspected, it dissolves quickly, turning the
+			water black and inundating it with its energy, most of which
+			seemed to have risen up to the surface of the water.
 			'''
-		Page4: ""
+		Page4:
+			'''
+			Its applications are broad, from the looks of it. When encased in
+			iron, so-called "Riftplate" is created. A heavy, black metal with immense
+			stored energy. More research can be done on Riftplate in the future,
+			but that warrants a book of its own.
+			'''
 	}
 
 	BloodGoddessLoreBook: {
@@ -5003,7 +5118,7 @@ Music: {
 
 	EvilBoss: {
 		Default: Tribulation (New Mix)
-		Eternity: Tribulation (New Mix)
+		Eternity: Two Celestial Bodies of Descruction (Placeholder)
 		SecretSeed: Indestructible Dih
 	}
 
@@ -5021,7 +5136,8 @@ Music: {
 	TenebrousConstruct: Darkness Encroaching
 	RoseSoulAmbience: Rest easy, my beloved
 	WyvernSoulAmbience: Unending fervor of the unending azure
-	HekateGarden: I, Am the First Flower
+	HekateGardenOld: I, Am the First Flower
+	HekateGarden: Drown My Sorrows In Flora!
 
 	Rift: {
 		Surface: Deoxygenation

@@ -42,21 +42,12 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
 
             // Create a dust perimeter (circle) around the projectile
             int dustAmount = 6;
-            int[] types = new int[]
-                    {
-                        PRTLoader.GetParticleID<ColoredFire1>(),
-                        PRTLoader.GetParticleID<ColoredFire2>(),
-                        PRTLoader.GetParticleID<ColoredFire3>(),
-                        PRTLoader.GetParticleID<ColoredFire4>(),
-                        PRTLoader.GetParticleID<ColoredFire5>(),
-                        PRTLoader.GetParticleID<ColoredFire6>(),
-                        PRTLoader.GetParticleID<ColoredFire7>()
-                    };
+            
 
             for (int i = 0; i < dustAmount; i++)
             {
                 Vector2 dustPos = Projectile.Center + Main.rand.NextVector2CircularEdge(Radius, Radius);
-                PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], dustPos, Vector2.Zero, ColorLib.CursedFlames, 1.0f);
+                PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], dustPos, Vector2.Zero, ColorLib.CursedFlames, 1.0f, 60, 2);
             }
 
             float radiusSq = Radius * Radius;
@@ -70,7 +61,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
             }
 
             // Gravity
-            if (Projectile.velocity.Y < 10f)
+            if (Projectile.velocity.Y < 20f)
                 Projectile.velocity.Y += 0.4f;
 
             // Stay on ground if colliding with tiles below

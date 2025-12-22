@@ -64,105 +64,93 @@ namespace DestroyerTest.Content.Projectiles.player.ArmorSet
 			Projectile.tileCollide = true;
 		}
 
-        private Asset<Texture2D> ProjTex => ModContent.Request<Texture2D>(Texture);
+        public float trailOffset = 0f;
 		public override bool PreDraw(ref Color lightColor)
-        {
-            lightColor = Color.Wheat;
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            DTUtils Utility = new DTUtils();
-
-            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-
-            /*
-            for (int i = 0; i < TrailPositions.Count - 1; i++)
-            {
-                Vector2 start = TrailPositions[i] - Main.screenPosition;
-                Vector2 end = TrailPositions[i + 1] - Main.screenPosition;
-                Vector2 diff = end - start;
-
-                float length = diff.Length();
-                if (length < 0.5f)
-                    continue;
-
-                float rotation = diff.ToRotation();
-                float width = MathHelper.Lerp(0.01f, 0.0007f, i / (float)TrailLength);
-                float alpha = MathHelper.Lerp(1f, 0f, i / (float)TrailLength);
-
-                Main.spriteBatch.Draw(
-                    DTAssetLib.Square.Value,
-                    start,
-                    null,
-                    lightColor,
-                    rotation,
-                    new Vector2(DTAssetLib.Square.Value.Width / 2, DTAssetLib.Square.Value.Height / 2),
-                    new Vector2(length, width),
-                    SpriteEffects.None,
-                    0f
-                );
-            }
-            */
-
-            for (int k = TrailPositions.Count - 1; k > 0; k--)
-            {
-                Vector2 drawPos = TrailPositions[k] - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY);
-                Color color = Projectile.GetAlpha(lightColor) * ((TrailPositions.Count - k) / (float)TrailPositions.Count);
-                Main.EntitySpriteDraw(
-                    ProjTex.Value,
-                    drawPos,
-                    null,
-                    color,
-                    Projectile.rotation,
-                    ProjTex.Size() / 2f,  // proper origin
-                    Projectile.scale,
-                    SpriteEffects.None,
-                    0
-                );
-            }
+		{
+			lightColor = Color.Wheat;
+			trailOffset += 0.04f;
 
 
-            //Opus.DrawGlowOnProj(Projectile, lightColor, true);
+			SpriteBatch spriteBatch = Main.spriteBatch;
+			DTUtils Utility = new DTUtils();
 
-            Opus.ReturnToDefaultDrawing(spriteBatch);
+			Opus.StartSpriteBatchForTrails(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+			
+			if (TrailPositions.Count > 1)
+			{
+				List<ColoredVertex> ve = new List<ColoredVertex>();
+				float a = 0;
 
-            Opus.DrawTextureOnProj(ProjTex, Projectile, Color.Wheat, true, Projectile.rotation, 1f, 1f);
+				for (int i = TrailPositions.Count - 1; i > 0; i--)
+				{
+					float t = 1f - (i / (float)TrailPositions.Count); // fade toward tail
+					Color b = lightColor * t;
 
-            return false;
-        }
+					Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
+					Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * 10;
+                    Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * 10;
+
+					DTUtils.AddStrips(ve, TrailPositions, i, offset, offset2, t, b, trailOffset);
+				}
 
 
-		/// <summary>
-		/// Controls whether the Projectile is Hostile or Friendly.
-		/// <para/> 1 = Friendly, 2 = Hostile
-		/// <para/> Attempting to return an invalid value will kill the projectile.
-		/// </summary>
-		public int Mode;
+				GraphicsDevice gd = Main.graphics.GraphicsDevice;
+				if (ve.Count >= 3)
+				{
+					gd.Textures[0] = DTAssetLib.Streak(6).Value;
+					gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2);
+				}
+			}
+
+			Opus.DrawGlowOnProj(Projectile, lightColor, true);
+
+			Opus.ReturnToDefaultDrawing(spriteBatch);
+
+			return true;
+		}
+
 
 		public List<Vector2> TrailPositions = new();
 		public List<float> TrailRotations = new();
-		private const int TrailLength = 40;
-        public int HomingTime = 60;
+		private const int TrailLength = 400;
+        private int HomingTime = 60;
 		public override void AI()
-        {
-            TrailPositions.Insert(0, Projectile.Center);
-            TrailRotations.Insert(0, Projectile.rotation);
+		{
 
-            // Cap trail
-            while (TrailPositions.Count > TrailLength)
-                TrailPositions.RemoveAt(TrailPositions.Count - 1);
-            while (TrailRotations.Count > TrailLength)
-                TrailRotations.RemoveAt(TrailRotations.Count - 1);
+
+			Vector2 lastPos = TrailPositions.Count > 0 ? TrailPositions[0] : Projectile.Center;
+			Vector2 newPos  = Projectile.Center;
+
+			float dist = Vector2.Distance(lastPos, newPos);
+			float step = 1f; // how closely to sample. tweak this!
+
+			if (dist > 0f)
+			{
+				int segments = (int)(dist / step);
+
+				for (int i = 1; i <= segments; i++)
+				{
+					Vector2 pos = Vector2.Lerp(lastPos, newPos, i / (float)segments);
+					TrailPositions.Insert(0, pos);
+					TrailRotations.Insert(0, Projectile.rotation);
+				}
+			}
+			else
+			{
+				TrailPositions.Insert(0, newPos);
+				TrailRotations.Insert(0, Projectile.rotation);
+			}
+
+
+			// Cap trail
+			while (TrailPositions.Count > TrailLength)
+				TrailPositions.RemoveAt(TrailPositions.Count - 1);
+			while (TrailRotations.Count > TrailLength)
+				TrailRotations.RemoveAt(TrailRotations.Count - 1);
 
             DelayTimer++;
-            Mode = (int)Projectile.ai[2];
 
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
-
-            if (Mode > 4 || Mode <= 0)
-            {
-                Projectile.Kill();
-                //throw new Exception("Non-Fatal Error in Oil Projectile Targeting. Value must be 1 or 2.");
-                Mod.Logger.Warn("OilProjectile: Invalid Mode in ai[2]. Expected 1 or 2.");
-            }
 
             Lighting.AddLight(Projectile.Center, Color.Wheat.ToVector3() * 0.2f);
 
@@ -178,10 +166,6 @@ namespace DestroyerTest.Content.Projectiles.player.ArmorSet
             }
             float maxDetectRadius = 2800f;
 
-            if (Mode == 1)
-            {
-                Projectile.friendly = true;
-                Projectile.hostile = false;
 
                 if (NPCTarget == null)
                 {
@@ -214,54 +198,6 @@ namespace DestroyerTest.Content.Projectiles.player.ArmorSet
                         speed += acceleration;
                     Projectile.velocity = Projectile.velocity.SafeNormalize(Vector2.Zero) * speed;
                 }
-            }
-            if (Mode == 2)
-            {
-                Projectile.friendly = false;
-                Projectile.hostile = true;
-
-                if (PLRTarget == null)
-                {
-                    PLRTarget = FindClosestPlayer(maxDetectRadius);
-                }
-
-
-                if (PLRTarget != null && !IsValidPlayer(PLRTarget))
-                {
-                    PLRTarget = null;
-                }
-
-                if (PLRTarget == null)
-                    return;
-
-                float targetAngle = Projectile.AngleTo(PLRTarget.Center);
-                if (HomingTime > 0)
-                {
-                    Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(5)).ToRotationVector2() * Projectile.velocity.Length();
-                }
-
-                // Acceleration
-                float speed = Projectile.velocity.Length();
-                float desiredSpeed = 18f;
-                float acceleration = 0.25f;
-                if (HomingTime > 0)
-                {
-                    if (speed < desiredSpeed)
-                        speed += acceleration;
-                    Projectile.velocity = Projectile.velocity.SafeNormalize(Vector2.Zero) * speed;
-                }
-
-            }
-            if (Mode == 3)
-            {
-                Projectile.friendly = true;
-                Projectile.hostile = false;
-            }
-            if (Mode == 4)
-            {
-                Projectile.friendly = false;
-                Projectile.hostile = true;
-            }
         }
 		public NPC FindClosestNPC(float maxDetectDistance)
 		{
@@ -290,50 +226,6 @@ namespace DestroyerTest.Content.Projectiles.player.ArmorSet
 		public bool IsValidNPC(NPC target)
 		{
 			return target.CanBeChasedBy();
-		}
-
-		public Player FindClosestPlayer(float maxDetectDistance)
-		{
-			Player closestPlayer = null;
-
-			float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
-
-			foreach (var target in Main.player)
-			{
-				if (IsValidPlayer(target))
-				{
-					float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, Projectile.Center);
-
-					if (sqrDistanceToTarget < sqrMaxDetectDistance)
-					{
-						sqrMaxDetectDistance = sqrDistanceToTarget;
-						closestPlayer = target;
-					}
-				}
-			}
-
-			return closestPlayer;
-		}
-
-		public bool IsValidPlayer(Player target)
-		{
-			return target.active == true && target.statLife > 1;
-		}
-
-		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
-		{
-			if (Mode == 1 || Mode == 3)
-			{
-				
-			}
-		}
-
-		public override void OnHitPlayer(Player target, Player.HurtInfo info)
-		{
-			if (Mode == 2 || Mode == 4)
-			{
-				
-			}
 		}
 
         public override void OnKill(int timeLeft)

@@ -1,3 +1,4 @@
+using DestroyerTest.Common;
 using DestroyerTest.Content.Particles;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
@@ -53,20 +54,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             // Handle animation
             AnimateProjectile();
 
-            int[] types = new int[]
-			{
-				PRTLoader.GetParticleID<ColoredFire1>(),
-				PRTLoader.GetParticleID<ColoredFire2>(),
-				PRTLoader.GetParticleID<ColoredFire3>(),
-				PRTLoader.GetParticleID<ColoredFire4>(),
-				PRTLoader.GetParticleID<ColoredFire5>(),
-				PRTLoader.GetParticleID<ColoredFire6>(),
-				PRTLoader.GetParticleID<ColoredFire7>()
-			};
+            
 
             Color baseColor = new Color(Main.DiscoR / 2, (byte)(Main.DiscoG / 1.25f), (byte)(Main.DiscoB / 1.5f));
             pastelColor = Color.Lerp(baseColor, Color.White, 0.5f);
-            PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], Projectile.Center, Vector2.Zero, pastelColor * 0.3f, 0.5f);
+            PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center, Vector2.Zero, pastelColor * 0.3f, 0.5f, 60, 2);
 
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
             float maxDetectRadius = 400f; // The maximum radius at which a projectile can detect a target

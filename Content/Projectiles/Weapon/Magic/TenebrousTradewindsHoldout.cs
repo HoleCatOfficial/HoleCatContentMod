@@ -24,12 +24,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             Projectile.tileCollide = false;
             Projectile.ignoreWater = true;
             Projectile.timeLeft = 2000; // persistent
-            Projectile.netImportant = true;
-			Projectile.netUpdate = true;
         }
 
         private void AnimateProjectile() {
-            // Loop through the frames, assuming each frame lasts 5 ticks
             if (++Projectile.frameCounter >= 1) {
                 Projectile.frameCounter = 0;
                 if (++Projectile.frame >= Main.projFrames[Projectile.type]) {
@@ -44,21 +41,15 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
         {
             SoundStyle Shoot = new SoundStyle($"DestroyerTest/Assets/Audio/TTUse") with
             {
-                //Volume = 0.5f,
                 PitchVariance = 1.0f,
+                MaxInstances = 0
             };
             Player player = Main.player[Projectile.owner];
 
-            // Check if the player is holding the item and channeled
             if (player.HeldItem.type == ModContent.ItemType<TenebrousTradewinds>() && player.channel == true)
             {
-                ShootTimer++;
-
-                
-
                 AnimateProjectile();
 
-                // Lock the projectile's position relative to the player
                 float holdDistance = 15f;
                 Vector2 mountedCenter = player.MountedCenter;
                 Vector2 toCursor = Main.MouseWorld - mountedCenter;
@@ -79,20 +70,17 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
                     Projectile.spriteDirection = 1;
                 }
 
-                // Constantly face the direction it's pointing
                 Projectile.direction = toCursor.X > 0 ? 1 : -1;
 
 
-                if (ShootTimer >= 30) // Adjust the value to control the shooting rate
+                if (Main.GameUpdateCount % 10 == 0)
                 {
-                    ShootTimer = 0;
                     SoundEngine.PlaySound(Shoot);
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, toCursor *= 80.0f, ModContent.ProjectileType<TenebrousTradewindsWind>(), 280, 6f, player.whoAmI);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, new Vector2(0, -10).RotatedByRandom(1f), ModContent.ProjectileType<TenebrousLightDart>(), 280, 6f, Projectile.owner);
                 }
             }
             else
             {
-                // Kill the projectile if the item is not being held
                 Projectile.Kill();
             }
         }

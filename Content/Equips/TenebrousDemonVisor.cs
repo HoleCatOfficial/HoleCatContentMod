@@ -14,11 +14,10 @@ using Microsoft.Xna.Framework.Graphics;
 using DestroyerTest.Content.Projectiles;
 using InnoVault.PRT;
 using DestroyerTest.Content.Particles;
+using OpusLib;
 
 namespace DestroyerTest.Content.Equips
 {
-	// The AutoloadEquip attribute automatically attaches an equip texture to this item.
-	// Providing the EquipType.Head value here will result in TML expecting a X_Head.png file to be placed next to the item's main texture.
 	[AutoloadEquip(EquipType.Head)]
 	public class TenebrousDemonVisor : ModItem
 	{
@@ -26,26 +25,20 @@ namespace DestroyerTest.Content.Equips
 
 		public override void SetStaticDefaults()
 		{
-			// If your head equipment should draw hair while drawn, use one of the following:
-
 		}
 
 		public override void SetDefaults()
 		{
-			Item.width = 26; // Width of the item
-			Item.height = 20; // Height of the item
-			Item.value = Item.sellPrice(gold: 1); // How many coins the item is worth
-			Item.rare = ModContent.RarityType<ShimmeringRarity>(); // The rarity of the item
-			Item.defense = 10; // The amount of defense the item will give when equipped
+			Item.width = 26;
+			Item.height = 20;
+			Item.value = Item.sellPrice(gold: 1);
+			Item.rare = ModContent.RarityType<ShimmeringRarity>();
+			Item.defense = 10;
 		}
-
-		// IsArmorSet determines what armor pieces are needed for the setbonus to take effect
 		public override bool IsArmorSet(Item head, Item body, Item legs)
 		{
 			return body.type == ModContent.ItemType<TenebrousDemonChestplate>() && legs.type == ModContent.ItemType<TenebrousDemonChausses>();
 		}
-
-		// UpdateArmorSet allows you to give set bonuses to the armor.
 		public override void UpdateArmorSet(Player player)
 		{
 			if (player.TryGetModPlayer<TenebrousDemon>(out TenebrousDemon Demon))
@@ -53,14 +46,12 @@ namespace DestroyerTest.Content.Equips
 				Demon.Active = true;
 			}
 		}
-
-		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes()
 		{
 			CreateRecipe()
 				.AddIngredient<RiftGuardVisor>(1)
 				.AddIngredient<Tenebris>(6)
-				.AddTile(TileID.MythrilAnvil)
+				.AddTile(TileID.LunarCraftingStation)
 				.Register();
 		}
 	}
@@ -75,6 +66,8 @@ namespace DestroyerTest.Content.Equips
 		public const int ComboExpire = 180;
 		public int ComboExpireTimer = 0;
 		public int ComboCounter = 0;
+		float AdvTierPitch = 0f;
+		public SoundStyle AdvTier = new SoundStyle("DestroyerTest/Assets/Audio/Charge/Anvil") with { MaxInstances = 0 };
 
 		public override void ResetEffects()
 		{
@@ -90,6 +83,7 @@ namespace DestroyerTest.Content.Equips
 				{
 					SoundEngine.PlaySound(SoundID.DD2_WitherBeastHurt, Player.Center);
 					ComboCounter = 0;
+					AdvTierPitch = 0f;
 					Charge1 = Charge2 = Charge3 = false;
 					SoundFlag1 = SoundFlag2 = SoundFlag3 = false;
 				}
@@ -116,6 +110,7 @@ namespace DestroyerTest.Content.Equips
 				else
 				{
 					Charge1 = Charge2 = Charge3 = false;
+					AdvTierPitch = 0f;
 				}
 			}
 		}
@@ -130,7 +125,8 @@ namespace DestroyerTest.Content.Equips
 			{
 				if (!SoundFlag1)
 				{
-					SoundEngine.PlaySound(SoundID.DD2_EtherianPortalDryadTouch with { Pitch = 0 }, Player.Center);
+					SoundEngine.PlaySound(AdvTier with { Pitch = AdvTierPitch }, Player.Center);
+					AdvTierPitch += 0.2f;
 					SoundFlag1 = true;
 				}
 				Player.GetDamage(DamageClass.Ranged) *= 1.1f;
@@ -145,7 +141,8 @@ namespace DestroyerTest.Content.Equips
 			{
 				if (!SoundFlag2)
 				{
-					SoundEngine.PlaySound(SoundID.DD2_EtherianPortalDryadTouch with { Pitch = 1 }, Player.Center);
+					SoundEngine.PlaySound(AdvTier with { Pitch = AdvTierPitch }, Player.Center);
+					AdvTierPitch += 0.2f;
 					SoundFlag2 = true;
 				}
 				Player.GetDamage(DamageClass.Ranged) *= 1.1f;
@@ -160,7 +157,7 @@ namespace DestroyerTest.Content.Equips
 			{
 				if (!SoundFlag3)
 				{
-					SoundEngine.PlaySound(SoundID.DD2_EtherianPortalDryadTouch with { Pitch = 2 }, Player.Center);
+					SoundEngine.PlaySound(AdvTier with { Pitch = AdvTierPitch }, Player.Center);
 					SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/Destitute") with { PitchVariance = 0.2f }, Player.Center);
 					SoundFlag3 = true;
 				}
@@ -177,6 +174,7 @@ namespace DestroyerTest.Content.Equips
 					Charge1 = Charge2 = Charge3 = false;
 					SoundFlag1 = SoundFlag2 = SoundFlag3 = false;
 					ComboCounter = 0;
+					AdvTierPitch = 0f;
 				}
 			}
 		}
@@ -204,9 +202,12 @@ namespace DestroyerTest.Content.Equips
 		{
 			if (player.TryGetModPlayer<TenebrousDemon>(out TenebrousDemon Demon) && item.DamageType == DamageClass.Ranged)
 			{
-				if (Demon.Charge3)
+				if (Demon.Active)
 				{
-					Projectile.NewProjectile(source, position, velocity.RotatedByRandom(1f), ModContent.ProjectileType<TenebrisStarFriendly>(), damage / 2, knockback, player.whoAmI, ai2: 1);
+					if (Demon.Charge3)
+					{
+						Projectile.NewProjectile(source, position, velocity.RotatedByRandom(1f), ModContent.ProjectileType<TenebrisStarFriendly>(), damage / 2, knockback, player.whoAmI, ai2: 1);
+					}
 				}
 			}
 			return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
@@ -214,8 +215,18 @@ namespace DestroyerTest.Content.Equips
 
 	}
 
+
 	public class TenebrousDemonHitTracker : GlobalProjectile
 	{
+		public override bool InstancePerEntity => true;
+		public float CPitch = 0f;
+		public SoundStyle C = new SoundStyle("DestroyerTest/Assets/Audio/Charge/WoodyTick3") with { MaxInstances = 0 };
+		public void ChargeSounds1()
+		{
+			SoundEngine.PlaySound(C with { Pitch = CPitch });
+			CPitch += (1f / 300f);			
+		}
+
 		public override void OnHitNPC(Projectile projectile, NPC target, NPC.HitInfo hit, int damageDone)
 		{
 			Player player = Main.player[projectile.owner];
@@ -224,6 +235,7 @@ namespace DestroyerTest.Content.Equips
 				if (Demon.Active)
 				{
 					Demon.ComboExpireTimer = 0;
+					ChargeSounds1();
 					if (Demon.ComboCounter < TenebrousDemon.ComboTierThreshold && !Demon.Charge3)
 					{
 						Demon.ComboCounter++;
@@ -231,6 +243,11 @@ namespace DestroyerTest.Content.Equips
 					if (Demon.ComboCounter <= 120 && Demon.Charge3)
 					{
 						Demon.ComboCounter++;
+					}
+
+					if (Demon.ComboCounter > 119 && Demon.Charge3)
+					{
+						CPitch = 0f;
 					}
 
 					if (Demon.Charge3)

@@ -11,11 +11,14 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Reference Include="FargowiltasSouls">
+	    <HintPath>..\ModAssemblies\FargowiltasSouls_v1.7.3.5.dll</HintPath>
+	  </Reference>
 	  <Reference Include="GlowmaskHelper">
 	    <HintPath>..\ModAssemblies\GlowmaskHelper_v1.0.0.dll</HintPath>
 	  </Reference>
 	  <Reference Include="InnoVault">
-	    <HintPath>..\ModAssemblies\InnoVault_v1.9.73.dll</HintPath>
+	    <HintPath>..\ModAssemblies\InnoVault_v1.9.78.dll</HintPath>
 	  </Reference>
 	  <Reference Include="OpusLib">
 	    <HintPath>..\ModAssemblies\OpusLib_v1.4.dll</HintPath>

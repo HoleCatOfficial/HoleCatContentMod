@@ -44,6 +44,7 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
         {
             Projectile.frame = Main.rand.Next(1, 4);
         }
+        
         public List<Vector2> TrailPositions = new();
         public List<float> TrailRotations = new();
         public Color colorofLight = Color.White;

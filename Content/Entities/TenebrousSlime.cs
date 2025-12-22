@@ -52,6 +52,8 @@ namespace DestroyerTest.Content.Entities
 			};
 
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
+			NPCID.Sets.ShimmerTransformToNPC[Type] = -1;
+
 		}
 		
 		public void immunities()

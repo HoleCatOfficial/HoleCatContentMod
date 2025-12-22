@@ -243,6 +243,8 @@ namespace DestroyerTest
 			fractalProfiles.Add(ModContent.ItemType<Conclusion>(), new FinalFractalProfile(140f, ColorLib.StellarColor));
 
             AddChestLoot();
+
+			DTCrossMod.LoadMods();
         }
 
 
@@ -264,6 +266,8 @@ namespace DestroyerTest
             var fractalProfiles = (Dictionary<int, FinalFractalProfile>)typeof(Terraria.Graphics.FinalFractalHelper).GetField("_fractalProfiles", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
 			fractalProfiles.Remove(ModContent.ItemType<GargantuaZenith>());
 			fractalProfiles.Remove(ModContent.ItemType<Conclusion>());
+
+			DTCrossMod.UnloadMods();
         }
 
         public static bool EternityIsActive()
@@ -292,7 +296,7 @@ namespace DestroyerTest
 
             public override void OnEnterWorld()
             {
-                Main.NewText("IMPORTANT INFO: The Wyvern Corpse Bossfight has been optimized the most it possibly could. It is unfortunately just a laggy boss.", Color.OrangeRed);
+                //Main.NewText("IMPORTANT INFO: The Wyvern Corpse Bossfight has been optimized the most it possibly could. It is unfortunately just a laggy boss.", Color.OrangeRed);
                 firstJoin = true;
             }
 
