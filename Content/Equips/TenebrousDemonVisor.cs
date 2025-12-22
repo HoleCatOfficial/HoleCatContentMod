@@ -68,6 +68,7 @@ namespace DestroyerTest.Content.Equips
 		public int ComboCounter = 0;
 		float AdvTierPitch = 0f;
 		public SoundStyle AdvTier = new SoundStyle("DestroyerTest/Assets/Audio/Charge/Anvil") with { MaxInstances = 0 };
+		public float ColorLerpProgress = 0f;
 
 		public override void ResetEffects()
 		{
@@ -127,6 +128,11 @@ namespace DestroyerTest.Content.Equips
 				{
 					SoundEngine.PlaySound(AdvTier with { Pitch = AdvTierPitch }, Player.Center);
 					AdvTierPitch += 0.2f;
+
+					TextScale = 1.25f;
+					TextColor = Color.White;
+					ColorLerpProgress = 0f;
+
 					SoundFlag1 = true;
 				}
 				Player.GetDamage(DamageClass.Ranged) *= 1.1f;
@@ -143,6 +149,11 @@ namespace DestroyerTest.Content.Equips
 				{
 					SoundEngine.PlaySound(AdvTier with { Pitch = AdvTierPitch }, Player.Center);
 					AdvTierPitch += 0.2f;
+
+					TextScale = 1.25f;
+					TextColor = Color.White;
+					ColorLerpProgress = 0f;
+
 					SoundFlag2 = true;
 				}
 				Player.GetDamage(DamageClass.Ranged) *= 1.1f;
@@ -159,6 +170,11 @@ namespace DestroyerTest.Content.Equips
 				{
 					SoundEngine.PlaySound(AdvTier with { Pitch = AdvTierPitch }, Player.Center);
 					SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/Destitute") with { PitchVariance = 0.2f }, Player.Center);
+
+					TextScale = 1.25f;
+					TextColor = Color.White;
+					ColorLerpProgress = 0f;
+
 					SoundFlag3 = true;
 				}
 				Player.GetDamage(DamageClass.Ranged) *= 1.2f;
@@ -179,7 +195,9 @@ namespace DestroyerTest.Content.Equips
 			}
 		}
 		
-		public override void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
+		public float TextScale = 1f;
+		public Color TextColor = ColorLib.TenebrisGradient;
+		public void Text()
 		{
 			Vector2 drawPos = Player.Center - Main.screenPosition;
 			SpriteBatch spriteBatch = Main.spriteBatch;
@@ -189,8 +207,27 @@ namespace DestroyerTest.Content.Equips
 
 			if (Active)
 			{
-				Utils.DrawBorderString(spriteBatch, text, drawPos, ColorLib.TenebrisGradient, 1f, 0.5f, 0.5f);
+				if (TextScale > 1f)
+				{
+					TextScale -= 0.005f;
+					if (TextScale < 1f) 
+					{
+						TextScale = 1f;
+					}
+				}
+				if (TextColor != ColorLib.TenebrisGradient)
+				{
+					ColorLerpProgress += 0.005f;
+					if (ColorLerpProgress > 1f) ColorLerpProgress = 1f;
+					float t = 1f - (1f - ColorLerpProgress) * (1f - ColorLerpProgress);
+					TextColor = Color.Lerp(TextColor, ColorLib.TenebrisGradient, t);
+				}
+				Utils.DrawBorderString(spriteBatch, text, drawPos, TextColor, TextScale, 0.5f, 0.5f);
 			}
+		}
+		public override void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
+		{
+			Text();	
 		}
 
 	}
@@ -236,6 +273,7 @@ namespace DestroyerTest.Content.Equips
 				{
 					Demon.ComboExpireTimer = 0;
 					ChargeSounds1();
+					Demon.TextScale = 1.05f;
 					if (Demon.ComboCounter < TenebrousDemon.ComboTierThreshold && !Demon.Charge3)
 					{
 						Demon.ComboCounter++;

@@ -9,6 +9,7 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
 using Terraria.Utilities;
+using DestroyerTest.Common;
 
 namespace DestroyerTest.Content.Tiles
 {
@@ -68,7 +69,7 @@ namespace DestroyerTest.Content.Tiles
 			}
 
 			Gore.NewGore(new EntitySource_TileUpdate(i, j), SpawnPosition, NoteMovement, MusicNote, 0.8f);
-            Dust.NewDust(new Vector2(i * 16, j * 16), 32, 32, DustID.FireworksRGB, Main.rand.NextFloat(-1.5f, 1.5f), -Main.rand.NextFloat(3f, 6f), 0, new Color(231, 50, 0), 0.75f)
+            Dust.NewDust(new Vector2(i * 16, j * 16), 32, 32, DustID.FireworksRGB, Main.rand.NextFloat(-1.5f, 1.5f), -Main.rand.NextFloat(3f, 6f), 0, new Color(231, 50, 0), 0.75f);
 		}
 	}
 }

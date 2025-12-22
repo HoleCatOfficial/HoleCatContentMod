@@ -3609,6 +3609,11 @@ Items: {
 			Takes 4 seconds to reload.
 			'''
 	}
+
+	Item_ShadeBossMusicBox: {
+		Tooltip: ""
+		DisplayName: Item_ Shade Boss Music Box
+	}
 }
 
 Projectiles: {
