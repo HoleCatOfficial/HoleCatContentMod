@@ -38,10 +38,9 @@ namespace DestroyerTest
         public static ModKeybind StarBlastKeybind { get; private set; }
         public static ModKeybind HeroHelmetKeybind { get; private set; }
         public static ModKeybind RiftTeleportKeybind { get; private set; }
-
+		public static ModKeybind ArmorSetBonusHotKey { get; private set; }
         public static ModKeybind ManaBurstKeybind { get; private set; }
         public static ModKeybind TenebrisTeleportKeybind { get; private set; }
-
         public static ModKeybind DeadlyBlossomKeybind { get; private set; }
         public static ModKeybind OilTentacleKeybind { get; private set; }
 
@@ -227,6 +226,7 @@ namespace DestroyerTest
             // Divider.
             RiftTeleportKeybind = KeybindLoader.RegisterKeybind(this, "Shadow Tome Teleport", "T");
             // Divider.
+			ArmorSetBonusHotKey = KeybindLoader.RegisterKeybind(this, "ArmorSetBonus", "Y");
             // Divider.
             ManaBurstKeybind = KeybindLoader.RegisterKeybind(this, "Mana Burst", "C");
             // Divider.
@@ -258,6 +258,7 @@ namespace DestroyerTest
             StarBlastKeybind = null;
             HeroHelmetKeybind = null;
             RiftTeleportKeybind = null;
+			ArmorSetBonusHotKey = null;
             ManaBurstKeybind = null;
             TenebrisTeleportKeybind = null;
             DeadlyBlossomKeybind = null;

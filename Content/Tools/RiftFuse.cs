@@ -117,7 +117,6 @@ namespace DestroyerTest.Content.Tools
                 DTAchievement.LivingShadowEmpower = true;
             }
             SoundEngine.PlaySound(zapSound, player.position);
-            ScreenFlashSystem.FlashIntensity = 0.9f;
 
             var modPlayer = player.GetModPlayer<LivingShadowPlayer>();
             modPlayer.LivingShadowCurrent = modPlayer.LivingShadowMax2;

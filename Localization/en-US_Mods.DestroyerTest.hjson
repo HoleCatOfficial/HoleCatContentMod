@@ -3412,22 +3412,22 @@ Items: {
 
 	MalakhimChaplet: {
 		DisplayName: Mal'akhim Chaplet
-		Tooltip: ""
+		Tooltip: Modeled after ancient, holy olive branches, and imbued with hope.
 		SetBonus:
 			'''
-			Scepter Class projectiles have a chance to spawn homing vesper darts as they travel.
-			Getting hit grants a little over 1 seconds of immunity.
+			Press Down to shoot out solid vesper spikes in all directions that penetrate infinitely and inflict bleeding.
+			You get more immunity time when damaged.
 			'''
 	}
 
 	MalakhimPlates: {
 		DisplayName: Mal'akhim Plates
-		Tooltip: ""
+		Tooltip: You are barely kept warm in these.
 	}
 
 	MalakhimWings: {
 		DisplayName: Mal'akhim Wings
-		Tooltip: ""
+		Tooltip: With the power of all creatures dreams, may you soar into the heavens.
 	}
 
 	ShieldMarkSmall: {
@@ -4088,6 +4088,9 @@ Projectiles: {
 	ConstitutionStarFriendly.DisplayName: Constitution Star Friendly
 	ConstitutionStarHostile_NoHoming.DisplayName: Constitution Star Hostile_ No Homing
 	ConstitutionStarHostile.DisplayName: Constitution Star Hostile
+	VesperThornTip.DisplayName: Vesper Thorn Tip
+	VesperThorn.DisplayName: Vesper Thorn
+	MageClone.DisplayName: Mage Clone
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.
@@ -4648,6 +4651,7 @@ Keybinds: {
 	"Tenebrous Clone Teleort.DisplayName": Tenebrous Clone Teleort
 	"Deadly Blossom Spawn.DisplayName": Deadly  Blossom  Spawn
 	"HoleCat Oil Tentacle.DisplayName": Hole Cat  Oil  Tentacle
+	ArmorSetBonus.DisplayName: Armor Set Bonus
 }
 
 Tiles: {

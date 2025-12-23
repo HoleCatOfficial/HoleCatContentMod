@@ -10,6 +10,8 @@ using DestroyerTest.Content.Projectiles;
 using OpusLib;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.Projectiles.player.ArmorSet;
+using InnoVault;
+using Terraria.Audio;
 
 namespace DestroyerTest.Content.Equips.MalakhimSet
 {
@@ -63,6 +65,7 @@ namespace DestroyerTest.Content.Equips.MalakhimSet
     public class MalakhimPlayer : ModPlayer
     {
         public bool Active = false;
+        public int ThornCooldown = 0;
         public override void ResetEffects()
         {
             Active = false;
@@ -75,12 +78,29 @@ namespace DestroyerTest.Content.Equips.MalakhimSet
                 float Alpha = 0.2f + 0.2f * (float)System.Math.Sin(Main.GlobalTimeWrappedHourly * 2f);
                 Color clr = Color.Wheat * Alpha;
                 Lighting.AddLight(Player.Center, clr.ToVector3());
+
+                if (ThornCooldown > 0)
+                {
+                    ThornCooldown--;
+                }
+
+                if (ThornCooldown == 1)
+                {
+                    SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/Corpse/TeleportSetPosition") with { PitchVariance = 0.5f }, Player.Center);
+                }
+
+                if (DestroyerTestMod.ArmorSetBonusHotKey.JustPressed && ThornCooldown <= 0)
+                {
+                    SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/NodeAttackTS") with { PitchVariance = 0.5f }, Player.Center);
+                    Opus.RadialProjectileRandomDir(ModContent.ProjectileType<VesperThorn>(), 10, Player.Center, 15, 1, 0.00001f);
+                    ThornCooldown = 600;
+                }
             }
         }
 
         public override void OnHurt(Player.HurtInfo info)
         {
-            Player.immuneTime = 100;
+            Player.AddImmuneTime(ImmunityCooldownID.General, 100);
         }
     }
     
@@ -88,6 +108,7 @@ namespace DestroyerTest.Content.Equips.MalakhimSet
     {
         public override bool InstancePerEntity => true;
 
+        /*
         public override void AI(Projectile projectile)
         {
             if (projectile.owner < 0 || projectile.owner >= Main.maxPlayers)
@@ -115,5 +136,6 @@ namespace DestroyerTest.Content.Equips.MalakhimSet
             }
             base.AI(projectile);
         }
+        */
     }
 }

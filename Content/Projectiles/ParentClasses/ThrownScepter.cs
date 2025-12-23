@@ -196,6 +196,26 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         public override void AI()
         {
             DefaultBehaviour();
+            EnchantmentVisuals();
+        }
+
+        public virtual Rectangle EnchantmentVisuals(int Width = 16, int Height = 16)
+        {
+            Rectangle hitbox = Projectile.Hitbox;
+            Vector2 localOffset = new Vector2(
+                hitbox.Width / 2f - Width / 2f,
+                -hitbox.Height / 2f + Height / 2f
+            );
+            Vector2 rotatedOffset = localOffset.RotatedBy(Projectile.rotation);
+
+            Vector2 rectCenter = Projectile.Center + rotatedOffset;
+
+            return new Rectangle(
+                (int)(rectCenter.X - Width / 2f),
+                (int)(rectCenter.Y - Height / 2f),
+                Width,
+                Height
+            );
         }
 
         public virtual void DefaultBehaviour()
