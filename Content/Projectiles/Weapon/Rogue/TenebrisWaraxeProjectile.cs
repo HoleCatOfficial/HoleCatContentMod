@@ -159,7 +159,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             for (int i = 0; i < 10; i++)
             {
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.FireworksRGB, 0, 0, 150, clr, 5f);
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticle>(), Projectile.Center, new Vector2(Main.rand.NextFloat(-8, 8), Main.rand.NextFloat(-15, -10)), clr, 2);
+                PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticle>(), Projectile.Center, new Vector2(Main.rand.NextFloat(-8, 8), Main.rand.NextFloat(-15, -10)), clr, 2, 2);
 
             }
             Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), Projectile.Center, Vector2.Zero, Color.White, 0.01f, ai0: 0.8f);
@@ -180,7 +180,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             for (int i = 0; i < 10; i++)
             {
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.FireworksRGB, 0, 0, 150, clr, 5f);
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticle>(), Projectile.Center, new Vector2(Main.rand.NextFloat(-8, 8), Main.rand.NextFloat(-15, -10)), clr, 2);
+                PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticle>(), Projectile.Center, new Vector2(Main.rand.NextFloat(-8, 8), Main.rand.NextFloat(-15, -10)), clr, 2,2);
 
             }
             Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), Projectile.Center, Vector2.Zero, Color.White, 0.01f, ai0: 0.8f);

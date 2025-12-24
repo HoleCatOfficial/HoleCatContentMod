@@ -41,7 +41,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 		public override void AI()
 		{
 			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
-			PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center, Vector2.Zero, ColorLib.CursedFlames, 2.5f, 60, 2);
+			PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center, Vector2.Zero, ColorLib.CursedFlames, 2.5f, 60, ai2: 2);
 		}
 
 		

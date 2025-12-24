@@ -38,6 +38,8 @@ namespace DestroyerTest.Content.Scepter
             KB = 2;
             AdditiveValue = Item.sellPrice(silver: 80);
             Rarity = ModContent.RarityType<PearlRarity>();
+            
+            
 
             // Assign projectile types
             ShootID = ModContent.ProjectileType<ObsidianShard>();
@@ -50,6 +52,13 @@ namespace DestroyerTest.Content.Scepter
             // Refresh defaults after overriding values
             base.SetDefaults();
         }
+
+        public override void ShootDefaults()
+        {
+            base.ShootDefaults();
+            Item.shootSpeed = 60;
+        }
+
 
 		public override void AddRecipes() {
 			CreateRecipe()

@@ -174,7 +174,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             if (TileDeath)
             {
                 Projectile.scale *= 0.99f;
-                Projectile.velocity = Vector2.Zero;
+                Projectile.velocity *= 0.001f;
             }
 
             Rectangle tileHitbox = TileCollideHitbox();

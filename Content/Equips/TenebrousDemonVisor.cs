@@ -292,7 +292,7 @@ namespace DestroyerTest.Content.Equips
 					{
 						for (int t = 0; t < 7; t++)
 						{
-							PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), target.Center, (projectile.velocity.RotatedByRandom(0.2f) * 2), ColorLib.TenebrisGradient, 0.5f);
+							PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), target.Center, (projectile.velocity.RotatedByRandom(0.2f) * 2), ColorLib.TenebrisGradient, 0.5f, 2);
 						}
 					}
 				}
@@ -303,7 +303,7 @@ namespace DestroyerTest.Content.Equips
 					{
 						for (int t = 0; t < 7; t++)
 						{
-							PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), target.Center, (projectile.velocity.RotatedByRandom(0.2f) * 2), ColorLib.TenebrisGradient, 0.5f);
+							PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), target.Center, (projectile.velocity.RotatedByRandom(0.2f) * 2), ColorLib.TenebrisGradient, 0.5f, 2);
 						}
 					}
             }

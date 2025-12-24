@@ -479,8 +479,8 @@ namespace DestroyerTest.Content.Entities
                 NPC.immortal = true;
             }
 
-            Main.eclipseLight = 1;
-            Main.ColorOfTheSkies = Color.Black;
+            //Main.eclipseLight = 1;
+            //Main.ColorOfTheSkies = Color.Black;
 
             if (Main.netMode != NetmodeID.MultiplayerClient && SpawnFlag == false)
             {
@@ -1501,8 +1501,8 @@ namespace DestroyerTest.Content.Entities
 
         public void DashParticle()
         {
-            PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticle>(), NPC.Center + new Vector2(NPC.width / 2, (NPC.height / 2) - NPC.height / 2).RotatedBy(NPC.rotation), new Vector2(10, 80).RotatedBy(NPC.rotation), ColorLib.Ichor, 1f);
-            PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticle>(), NPC.Center + new Vector2(NPC.width / 2, (NPC.height / 2) - NPC.height / 2).RotatedBy(NPC.rotation), new Vector2(-10, 80).RotatedBy(NPC.rotation), ColorLib.Ichor, 1f);
+            PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticle>(), NPC.Center + new Vector2(NPC.width / 2, (NPC.height / 2) - NPC.height / 2).RotatedBy(NPC.rotation), new Vector2(10, 80).RotatedBy(NPC.rotation), ColorLib.Ichor, 1f, 2);
+            PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticle>(), NPC.Center + new Vector2(NPC.width / 2, (NPC.height / 2) - NPC.height / 2).RotatedBy(NPC.rotation), new Vector2(-10, 80).RotatedBy(NPC.rotation), ColorLib.Ichor, 1f, 2);
         }
 
         public void NodeSpawn()

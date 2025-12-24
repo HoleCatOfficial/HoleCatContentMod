@@ -58,6 +58,11 @@ namespace DestroyerTest.Common
         /// A multiplicative modifer that affects how fast thrown scepters travel.
         /// </summary>
         public static float ThrowSpeedModifier { get; set; } = 1f;
+
+        /// <summary>
+        /// An additive modifier that increases or decreases the amount of times a shot will bounce, if it is set to bounce.
+        /// </summary>
+        public static int ShotBounceModifier { get; set; } = 0;
     }
 
     public class ScepterClassStatResetPlayer : ModPlayer

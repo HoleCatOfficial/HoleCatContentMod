@@ -14,6 +14,7 @@ using DestroyerTest.Rarity.Scepter;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -84,21 +85,64 @@ namespace DestroyerTest.Content.Equips.PetrifiedSet
 	public class PetrifiedScepterPlayer : ModPlayer
     {
 		public bool Active = false;
+		public int Cooldown = 0;
 		public override void ResetEffects()
 		{
 			Active = false;
 		}
 
+        public override void PostUpdateEquips()
+        {
+            if (Active)
+			{
+				if (Cooldown > 0)
+                {
+                    Cooldown--;
+                }
+
+                if (Cooldown == 1)
+                {
+                    SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/Corpse/TeleportSetPosition") with { PitchVariance = 0.5f }, Player.Center);
+                }
+
+                if (DestroyerTestMod.ArmorSetBonusHotKey.JustPressed && Cooldown <= 0 && !Player.mount.Active)
+                {
+					SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/ManaBurst") with { PitchVariance = 0.5f }, Player.Center);
+					Vector2 toMouse = Main.MouseWorld - Player.Center;
+					Player.velocity = toMouse.ToRotation().ToRotationVector2() * 30;
+
+					Opus.RadialSpreadProjectile(ModContent.ProjectileType<FlameBurst>(), 3, Player.Center, 30, 4, 8, RandomOffset: true);
+					Opus.RadialSpreadProjectile(ModContent.ProjectileType<FrostBurst>(), 3, Player.Center, 30, 4, 8, RandomOffset: true);
+					Cooldown = 60 * 30;
+				}
+			}
+        }
+
+
+		/*
         public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
 		{
 			if (Active && Player.altFunctionUse != 2 && (Player.HeldItem.DamageType == ModContent.GetInstance<ScepterClass>() || Main.projectile[Player.heldProj].DamageType == ModContent.GetInstance<ScepterClass>()))
 			{
-				Projectile.NewProjectile(source, position, velocity.RotatedBy(-0.5), ModContent.ProjectileType<FlameBurst>(), damage / 3, 4, Player.whoAmI);
-				Projectile.NewProjectile(source, position, velocity.RotatedBy(0.5), ModContent.ProjectileType<FrostBurst>(), damage / 3, 4, Player.whoAmI);
+				
+				float maxSpeed = 10f;
+
+				Vector2 Dir1 = velocity.RotatedBy(-0.5f);
+				Vector2 Dir2 = velocity.RotatedBy(0.5f);
+
+				float speed1 = Math.Min(Dir1.Length(), maxSpeed);
+				float speed2 = Math.Min(Dir2.Length(), maxSpeed);
+
+				Dir1 = Dir1.SafeNormalize(Vector2.Zero) * speed1;
+				Dir2 = Dir2.SafeNormalize(Vector2.Zero) * speed2;
+
+				Projectile.NewProjectile(source, position, Dir1, ModContent.ProjectileType<FlameBurst>(), damage / 3, 4, Player.whoAmI);
+				Projectile.NewProjectile(source, position, Dir2, ModContent.ProjectileType<FrostBurst>(), damage / 3, 4, Player.whoAmI);
 				return true;
             }
             return true;
         }
+		*/
     }
 	
 	public class PetrifiedShieldPlayer : ShieldPlayer

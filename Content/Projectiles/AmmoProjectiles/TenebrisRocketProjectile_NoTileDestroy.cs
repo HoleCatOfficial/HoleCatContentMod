@@ -122,7 +122,7 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
 						}
 
 						// Spawn fire dusts at the back of the rocket.
-						PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), Projectile.Center, (-Projectile.velocity * 0.5f).RotatedByRandom(0.5f), colorofLight, 0.5f);
+						PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), Projectile.Center, (-Projectile.velocity * 0.5f).RotatedByRandom(0.5f), colorofLight, 0.5f, 2);
 
 						// Used by the liquid rockets which leave trails of their liquid instead of fire.
 						// if (fireDust.type == Dust.dustWater()) {

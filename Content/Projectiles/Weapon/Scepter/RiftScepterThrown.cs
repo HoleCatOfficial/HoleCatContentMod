@@ -32,20 +32,15 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            target.AddBuff(ModContent.BuffType<DaylightOverload>(), 120);
-
+            target.AddBuff(ModContent.BuffType<HeliouricShock>(), 600);
             base.OnHitNPC(target, hit, damageDone);
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity) {
-            Player player = Main.LocalPlayer;
            
-
-            Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, new Vector2(0, 1.0f), ModContent.ProjectileType<Shadow>(), 30, 0, player.whoAmI);
-
             base.OnTileCollide(oldVelocity);
 
-            return false; // Prevents the projectile from being destroyed on collision
+            return false;
         }
 
     }

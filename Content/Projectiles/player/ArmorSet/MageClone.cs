@@ -57,17 +57,17 @@ namespace DestroyerTest.Content.Projectiles.player.ArmorSet
         public override void AI()
         {
             Player player = Main.player[Projectile.owner];
-            if (Variant == 1)
+            if (Variant == 0)
             {
                 ColorAffectedFX(ColorLib.TenebrisMagenta);
+            }
+            if (Variant == 1)
+            {
+                ColorAffectedFX(ColorLib.TenebrisBlue);
             }
             if (Variant == 2)
             {
                 ColorAffectedFX(ColorLib.TenebrisBeige);
-            }
-            if (Variant == 3)
-            {
-                ColorAffectedFX(ColorLib.TenebrisBlue);
             }
 
             Vector2 directionToMouse = Main.MouseWorld - Projectile.Center;

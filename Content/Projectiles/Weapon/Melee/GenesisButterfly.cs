@@ -58,7 +58,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
             Color baseColor = new Color(Main.DiscoR / 2, (byte)(Main.DiscoG / 1.25f), (byte)(Main.DiscoB / 1.5f));
             pastelColor = Color.Lerp(baseColor, Color.White, 0.5f);
-            PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center, Vector2.Zero, pastelColor * 0.3f, 0.5f, 60, 2);
+            PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center, Vector2.Zero, pastelColor * 0.3f, 0.5f, 60, ai2: 2);
 
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
             float maxDetectRadius = 400f; // The maximum radius at which a projectile can detect a target

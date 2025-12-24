@@ -120,7 +120,7 @@ namespace DestroyerTest.Content.Scepter
             }
         }
 
-        public void ShootDefaults()
+        public virtual void ShootDefaults()
         {
             Item.shoot = ShootID;
             Item.channel = ChannelingDuringShoot;
@@ -129,11 +129,11 @@ namespace DestroyerTest.Content.Scepter
             Item.useTime = 40;
             Item.useAnimation = 40;
             Item.UseSound = ShootSound;
-            Item.shootSpeed = 10f;
+            Item.shootSpeed = 20f;
             Item.noUseGraphic = false;
         }
 
-        public void ThrowDefaults()
+        public virtual void ThrowDefaults()
         {
             Item.shoot = ThrowID;
             Item.channel = ChannelingDuringThrow;

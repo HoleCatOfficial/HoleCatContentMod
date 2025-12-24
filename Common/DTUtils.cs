@@ -625,6 +625,7 @@ namespace DestroyerTest.Common
         public static Asset<Texture2D> SoulStreak = ModContent.Request<Texture2D>($"{ExtrasPath}/SoulStreak", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> Barback = ModContent.Request<Texture2D>($"{ExtrasPath}/GenericBarBack", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> Barfront = ModContent.Request<Texture2D>($"{ExtrasPath}/GenericBarFront", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> WyvernCorpseSky = ModContent.Request<Texture2D>($"{ExtrasPath}/WyvernCorpseSky", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> Sparkle(int Variant)
         {
             if (Variant <= 0)

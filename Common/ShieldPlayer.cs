@@ -161,7 +161,8 @@ namespace DestroyerTest.Common
                             p.Center,
                             new Vector2(Main.rand.NextFloat(-2f, 2.1f), Main.rand.NextFloat(-4f, -6.1f)),
                             themeColor,
-                            0.4f
+                            0.4f,
+                            2
                         );
                     }
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
@@ -15,11 +16,10 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 {
-	// This Example show how to implement simple homing projectile
-	// Can be tested with ExampleCustomAmmoGun
 	public class FlameBurst : ModProjectile
 	{
-		// Store the target NPC using Projectile.ai[0]
+        public override string Texture => DTUtils.NoTexture;
+
 		private NPC HomingTarget {
 			get => Projectile.ai[0] == 0 ? null : Main.npc[(int)Projectile.ai[0] - 1];
 			set {
@@ -30,7 +30,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 		public ref float DelayTimer => ref Projectile.ai[1];
 
 		public override void SetStaticDefaults() {
-			ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true; // Make the cultist resistant to this projectile, as it's resistant to all homing projectiles.
+			ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true;
 		}
 
 		public override void SetDefaults()
@@ -38,56 +38,53 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 			Projectile.width = 10;
 			Projectile.height = 10; 
 
-			Projectile.DamageType = DamageClass.Melee;
+			Projectile.DamageType = DamageClass.Generic;
 			Projectile.friendly = true;
 			Projectile.hostile = false;
 			Projectile.ignoreWater = true;
-			Projectile.light = 1f;
 			Projectile.timeLeft = 600;
 			Projectile.tileCollide = false;
 		}
 
+		public float trailOffset = 0f;
 		public override bool PreDraw(ref Color lightColor)
 		{
 			lightColor = Color.Orange;
+			trailOffset -= 0.04f;
+
 
 			SpriteBatch spriteBatch = Main.spriteBatch;
-			Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
+			DTUtils Utility = new DTUtils();
 
-			Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-
-			Opus.DrawGlowOnProj(Projectile, Color.Orange, false, 0);
-
-			for (int i = 0; i < TrailPositions.Count; i++)
+			Opus.StartSpriteBatchForTrails(spriteBatch, BlendState.NonPremultiplied, SpriteSortMode.Immediate);
+			
+			if (TrailPositions.Count > 1)
 			{
-				float progress = i / (float)TrailLength;
-				float scale = MathHelper.Lerp(0.15f, 0.0005f, progress);
-				Color color = Color.Orange;
+				List<ColoredVertex> ve = new List<ColoredVertex>();
+				float a = 0;
 
-				Main.EntitySpriteDraw(
-					DTAssetLib.FeatheredCircle.Value,
-					TrailPositions[i] - Main.screenPosition,
-					null,
-					color,
-					Projectile.rotation,
-					DTAssetLib.FeatheredCircle.Value.Size() / 2,
-					scale,
-					SpriteEffects.None,
-					0
-				);
+				for (int i = TrailPositions.Count - 1; i > 0; i--)
+				{
+					float u = i / (float)(TrailPositions.Count - 1);
+					float widthFactor = (float)Math.Sin(u * MathHelper.Pi);
+
+					float width = 32f * widthFactor;
+
+					Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
+					Vector2 perp = dir.RotatedBy(MathHelper.PiOver2);
+					Vector2 offset  = perp * width;
+					Vector2 offset2 = -perp * width;
+
+					DTUtils.AddStrips(ve, TrailPositions, i, offset, offset2, u, lightColor, trailOffset);
+				}
+
+				GraphicsDevice gd = Main.graphics.GraphicsDevice;
+				if (ve.Count >= 3)
+				{
+					gd.Textures[0] = DTAssetLib.Streak(9).Value;
+					gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2);
+				}
 			}
-
-			Main.EntitySpriteDraw(
-				DTAssetLib.FeatheredCircle.Value,
-				Projectile.Center - Main.screenPosition,
-				null,
-				lightColor,
-				Projectile.rotation,
-				DTAssetLib.FeatheredCircle.Value.Size() / 2,
-				0.15f,
-				SpriteEffects.None,
-				0
-			);
 
 			Opus.ReturnToDefaultDrawing(spriteBatch);
 
@@ -96,25 +93,48 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
         public override bool? CanHitNPC(NPC target)
         {
-            return DelayTimer >= 15;
+            return DelayTimer >= 10;
         }
 
 
 		public List<Vector2> TrailPositions = new();
 		public List<float> TrailRotations = new();
-		private const int TrailLength = 40;
-		
+		private const int TrailLength = 200;
 		public override void AI()
 		{
-			TrailPositions.Insert(0, Projectile.Center);
-			TrailRotations.Insert(0, Projectile.rotation);
+			Vector2 lastPos = TrailPositions.Count > 0 ? TrailPositions[0] : Projectile.Center;
+			Vector2 newPos  = Projectile.Center;
 
+			float dist = Vector2.Distance(lastPos, newPos);
+			float step = 8f; // how closely to sample. tweak this!
+
+			if (dist > 0f)
+			{
+				int segments = (int)(dist / step);
+
+				for (int i = 1; i <= segments; i++)
+				{
+					Vector2 pos = Vector2.Lerp(lastPos, newPos, i / (float)segments);
+					TrailPositions.Insert(0, pos);
+					TrailRotations.Insert(0, Projectile.rotation);
+				}
+			}
+			else
+			{
+				TrailPositions.Insert(0, newPos);
+				TrailRotations.Insert(0, Projectile.rotation);
+			}
+
+
+			// Cap trail
 			while (TrailPositions.Count > TrailLength)
 				TrailPositions.RemoveAt(TrailPositions.Count - 1);
 			while (TrailRotations.Count > TrailLength)
 				TrailRotations.RemoveAt(TrailRotations.Count - 1);
 
-			Lighting.AddLight(Projectile.Center, Color.Orange.ToVector3() * 1.0f);
+			Lighting.AddLight(Projectile.Center, Color.Orange.ToVector3() * 0.5f);
+
+			PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center, Vector2.Zero, Color.Orange * 0.75f, 1.5f, 80, ai2: 2);
 
 			if (DelayTimer < 15)
 			{
@@ -122,7 +142,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 				return;
 			}
 		
-			float maxDetectRadius = 400f;
+			float maxDetectRadius = 1200f;
 			if (HomingTarget == null) {
 				HomingTarget = FindClosestNPC(maxDetectRadius);
 			}
@@ -163,9 +183,25 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 		{
 			return target.CanBeChasedBy();
 		}
+
+		public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
+        {
+            foreach (var trail in new[] { TrailPositions})
+            {
+                for (int i = 1; i < trail.Count; i++)
+                {
+                    Vector2 point1 = trail[i - 1];
+                    Vector2 point2 = trail[i];
+                    if (Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), point1, point2))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
 		
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
-			Player player = Main.player[Main.myPlayer];  // Accessing the current player
 			target.AddBuff(ModContent.BuffType<HaepiensInferno>(), 600);
 			SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/FlameImpact1"));
 			PRTLoader.NewParticle(PRTLoader.GetParticleID<Boom1>(), target.Center, Vector2.Zero, Color.Orange, 1);

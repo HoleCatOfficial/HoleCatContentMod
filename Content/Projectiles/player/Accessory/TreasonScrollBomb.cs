@@ -26,7 +26,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
             Projectile.friendly = true; // Can the projectile deal damage to enemies?
             Projectile.hostile = false; // Can the projectile deal damage to the player?
             Projectile.ignoreWater = true; // Does the projectile's speed be influenced by water?
-            Projectile.light = 1f; // How much light emit around the projectile
+            Projectile.light = 0.1f; // How much light emit around the projectile
             Projectile.timeLeft = 180; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
             Projectile.netImportant = true;
             Projectile.netUpdate = true;
@@ -82,7 +82,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
         public override void AI()
         {
             Player player = Main.player[Projectile.owner];
-            Lighting.AddLight(Projectile.Center, 0.4f, 0.4f, 0.4f);
+            //Lighting.AddLight(Projectile.Center, 0.4f, 0.4f, 0.4f);
             for (int i = 0; i < DustAmount; i++)
             {
                 Vector2 dustPos = Projectile.Center + Main.rand.NextVector2CircularEdge(Radius, Radius);

@@ -36,8 +36,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 		public override void AI()
 		{
 			PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Vector2.Zero, ColorLib.StellarColor * 0.75f, 1.5f);
-			PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center, Vector2.Zero, ColorLib.StellarColor * 0.5f, 2.5f);
-			PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center, Vector2.Zero, ColorLib.StellarColor * 0.1f, 1f);
+			PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center, Vector2.Zero, ColorLib.StellarColor * 0.5f, 2.5f, 40, ai2: 2);
+			PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center, Vector2.Zero, ColorLib.StellarColor * 0.1f, 1f, 40, ai2: 2);
 		}
 
 		public override void OnHitPlayer(Player target, Player.HurtInfo info)

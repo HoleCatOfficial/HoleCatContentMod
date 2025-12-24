@@ -465,7 +465,7 @@ namespace DestroyerTest.Content.RiftArsenal
 			{
 				float offset = Main.rand.NextFloat(0.5f, -0.5f);
 				Vector2 velocity = (Projectile.velocity * 0.5f).RotatedBy(offset);
-				PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticle>(), target.Center, velocity, ColorLib.Rift, 1f);
+				PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticle>(), target.Center, velocity, ColorLib.Rift, 1f, 2);
 			}
         }
 

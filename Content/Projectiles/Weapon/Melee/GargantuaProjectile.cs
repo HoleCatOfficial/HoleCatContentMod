@@ -515,7 +515,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 			{
 				Vector2 ToTarget = Projectile.Center - target.Center;
 				Vector2 Dir = ToTarget.ToRotation().ToRotationVector2() * -16;
-				PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), target.Center, Dir.RotatedByRandom(1), Color.Red, 1f);
+				PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), target.Center, Dir.RotatedByRandom(1), Color.Red, 1f, 1);
 			}
 		}
 	}
