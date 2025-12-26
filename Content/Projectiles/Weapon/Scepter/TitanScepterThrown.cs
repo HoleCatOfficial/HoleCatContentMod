@@ -51,7 +51,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
     }
     public class AreaParticle : ModProjectile
         {
-            public override string Texture => "DestroyerTest/Content/Particles/ParticleDrawEntity";
+            public override string Texture => DTUtils.NoTexture;
 
             private int auraTimer = 600;
           

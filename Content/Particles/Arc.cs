@@ -8,7 +8,7 @@ namespace DestroyerTest.Content.Particles
 {
     // Our first PRT particle, pretty cool right? It is generated in VaultSword, 
     // so grab the sword and check out the effect.
-    internal class BaseArc : BasePRT
+    public class BaseArc : BasePRT
     {
 
         // The Texture property doesn't need to be overridden, as BasePRT has an automatic loading mechanism.

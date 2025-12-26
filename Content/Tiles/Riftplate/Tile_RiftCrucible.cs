@@ -53,7 +53,7 @@ namespace DestroyerTest.Content.Tiles.Riftplate
 
 		public void ElectrifierUIAura(Player player)
 		{
-			Projectile.NewProjectileDirect(player.GetSource_FromThis(), new Vector2(80 / 2, 64 / 2), new Vector2(0, 0), ModContent.ProjectileType<ZoneRingDrawEntity>(), 0, 0);
+			
 		}
 
         public override void PostDraw(int i, int j, SpriteBatch spriteBatch)

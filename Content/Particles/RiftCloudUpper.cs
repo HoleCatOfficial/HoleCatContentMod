@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Particles
 {
-    internal class RiftCloudUpper : BasePRT
+    public class RiftCloudUpper : BasePRT
     {
 
         public int MaxLifetime => 120;

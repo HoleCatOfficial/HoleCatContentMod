@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Particles
 {
-    internal class SimpleParticle : BasePRT
+    public class SimpleParticle : BasePRT
     {
         public int MaxLifetime => 40;
         public override void SetProperty()

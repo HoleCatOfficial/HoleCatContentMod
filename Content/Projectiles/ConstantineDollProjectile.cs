@@ -17,7 +17,7 @@ namespace DestroyerTest.Content.Projectiles
 	public class ConstantineDollProjectile : ModProjectile
 	{
 
-        public override string Texture => "DestroyerTest/Content/Particles/ParticleDrawEntity";
+        public override string Texture => DTUtils.NoTexture;
 
         private Player HomingTarget {
 				get => Projectile.ai[0] == 0 ? null : Main.player[(int)Projectile.ai[0] - 1];
@@ -50,18 +50,9 @@ namespace DestroyerTest.Content.Projectiles
 		{
             Player player = Main.LocalPlayer;
 			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
-			int[] types = new int[]
-                {
-                PRTLoader.GetParticleID<BlackFire1>(),
-                PRTLoader.GetParticleID<BlackFire2>(),
-                PRTLoader.GetParticleID<BlackFire3>(),
-                PRTLoader.GetParticleID<BlackFire4>(),
-                PRTLoader.GetParticleID<BlackFire5>(),
-                PRTLoader.GetParticleID<BlackFire6>(),
-                PRTLoader.GetParticleID<BlackFire7>()
-                };
+			
 
-			PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], Projectile.Center, Vector2.Zero, default, 1);
+			PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center, Vector2.Zero, Color.Black, 1f, 60, ai2: 1);
 
             float maxDetectRadius = 4000f; // The maximum radius at which a projectile can detect a target
 

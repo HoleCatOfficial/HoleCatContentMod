@@ -244,6 +244,24 @@ namespace DestroyerTest.Common
         {
             return new Color(color.R, color.G, color.B, alpha);
         }
+
+        /// <summary>
+        /// Returns the input color that is tinted <i>percentage</i>% white, with 1 being fully white.
+        /// </summary>
+        /// <param name="inputColor"></param>
+        /// <param name="percentage"></param>
+        /// <returns></returns>
+        public static Color Pastel(Color inputColor, float percentage)
+        {
+            percentage = MathHelper.Clamp(percentage, 0f, 1f);
+
+            return new Color(
+                (byte)MathHelper.Lerp(inputColor.R, 255, percentage),
+                (byte)MathHelper.Lerp(inputColor.G, 255, percentage),
+                (byte)MathHelper.Lerp(inputColor.B, 255, percentage),
+                inputColor.A
+            );
+        }
     }
 
     public class DTUtilLoading : ModSystem

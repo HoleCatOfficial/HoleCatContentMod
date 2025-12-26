@@ -14,7 +14,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame
 {
 	public class CursedFlameNapalm : ModProjectile
 	{
-		public override string Texture => "DestroyerTest/Content/Particles/ParticleDrawEntity";
+		public override string Texture => DTUtils.NoTexture;
 
 		private List<Vector2> trailPositions = new List<Vector2>();
 		private const int TrailCacheLength = 40;

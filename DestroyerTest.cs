@@ -297,7 +297,7 @@ namespace DestroyerTest
 
             public override void OnEnterWorld()
             {
-                //Main.NewText("IMPORTANT INFO: The Wyvern Corpse Bossfight has been optimized the most it possibly could. It is unfortunately just a laggy boss.", Color.OrangeRed);
+				Main.NewText($"You are running Talid v{Mod.Version.ToString()}", ColorLib.Rift);
                 firstJoin = true;
             }
 

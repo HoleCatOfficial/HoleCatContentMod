@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Particles
 {
-    internal class SparkParticle : BasePRT
+    public class SparkParticle : BasePRT
     {
         public int MaxLifetime => 1200;
         public int DrawMode => (int)ai[1];
@@ -52,7 +52,7 @@ namespace DestroyerTest.Content.Particles
         }
     }
 
-    internal class SparkParticleNoGravity : BasePRT
+    public class SparkParticleNoGravity : BasePRT
     {
         public int MaxLifetime => 1200;
         public int DrawMode => (int)ai[1];

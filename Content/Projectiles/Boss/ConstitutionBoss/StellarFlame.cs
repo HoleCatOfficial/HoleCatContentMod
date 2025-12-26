@@ -16,7 +16,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
 {
 	public class StellarFlameHostile : ModProjectile
 	{
-		public override string Texture => "DestroyerTest/Content/Particles/ParticleDrawEntity";
+		public override string Texture => DTUtils.NoTexture;
 
 		public override void SetDefaults()
 		{

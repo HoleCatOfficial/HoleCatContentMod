@@ -10,9 +10,9 @@ using DestroyerTest.Common;
 
 namespace DestroyerTest.Content.Particles
 {
-public class TenebrousBurstProjectile : ModProjectile
+    public class TenebrousBurstProjectile : ModProjectile
     {
-        public override string Texture => "DestroyerTest/Content/Particles/ParticleDrawEntity"; // Path to the texture for the projectile
+        public override string Texture => DTUtils.NoTexture; // Path to the texture for the projectile
         private const float MaxSizeMultiplier = 3.5f; // Maximum scale increase
         private const int FadeOutStartTime = 10; // Time left when fading starts
         private const int MaxLifetime = 30; // Total lifetime of the ring effect

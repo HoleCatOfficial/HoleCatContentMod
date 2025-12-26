@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 namespace DestroyerTest.Content.Particles
 {
 
-    internal class DartTeleLine : BasePRT
+    public class DartTeleLine : BasePRT
     {
         public int MaxLifetime => 120;
         public override void SetProperty()

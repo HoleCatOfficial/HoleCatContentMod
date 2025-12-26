@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using DestroyerTest.Common;
 using DestroyerTest.Content.Dusts;
 using Microsoft.Xna.Framework;
 using Terraria;
@@ -13,7 +14,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter.DiscordScepter
     public class NebulaFlameSpawner : ModProjectile
     {
 
-        public override string Texture => "DestroyerTest/Content/Particles/ParticleDrawEntity";
+        public override string Texture => DTUtils.NoTexture;
         public override void SetStaticDefaults()
         {
         }

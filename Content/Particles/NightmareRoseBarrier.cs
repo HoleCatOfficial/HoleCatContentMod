@@ -6,7 +6,7 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Particles
 {
-    internal class NightmareRoseBarrier : BasePRT
+    public class NightmareRoseBarrier : BasePRT
     {
 
         // The Texture property doesn't need to be overridden, as BasePRT has an automatic loading mechanism.

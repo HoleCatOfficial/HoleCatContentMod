@@ -46,26 +46,7 @@ namespace DestroyerTest.Content.Equips.SaviorSet
 
 		// UpdateArmorSet allows you to give set bonuses to the armor.
 		public override void UpdateArmorSet(Player player) {
-			ParticleSpawnTimer++; // Increment the timer each frame, used to control projectile spawn timing
-			player.addDPS(35); // Increase dealt damage for all weapon classes by 25%
-			player.moveSpeed *= 1.25f;
-
-			bool isHoldingGoliath = player.HeldItem.type == ModContent.ItemType<Goliath>();
-			bool isHoldingGargantua = player.HeldItem.type == ModContent.ItemType<Gargantua>();
-
-			if ((isHoldingGoliath || isHoldingGargantua) && ParticleSpawnTimer > 60) {
-				PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRing>(), player.Center, Vector2.Zero, Color.SkyBlue, 1);
-				ParticleSpawnTimer = 0; // Reset the timer after spawning the projectile
-			}
-
-			// Kill the projectile if neither Goliath nor Gargantua is held
-			if (!isHoldingGoliath && !isHoldingGargantua) {
-				foreach (Projectile proj in Main.projectile) {
-					if (proj.active && proj.owner == player.whoAmI && proj.type == ModContent.ProjectileType<SaviorEmpowermentDrawEntity>()) {
-						proj.Kill();
-					}
-				}
-			}
+			
 		}
 
         public override void ArmorSetShadows(Player player)

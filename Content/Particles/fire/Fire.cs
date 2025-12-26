@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Particles.fire
 {
-    internal class Fire : BasePRT
+    public class Fire : BasePRT
     {
         public int MaxLifetime => (int)ai[0];
         public int DrawMode => (int)ai[2];
@@ -109,32 +109,32 @@ namespace DestroyerTest.Content.Particles.fire
         }
     }
 
-    internal class Fire1 : Fire
+    public class Fire1 : Fire
     {
 
     }
 
-    internal class Fire2 : Fire
+    public class Fire2 : Fire
     {
 
     }
-    internal class Fire3 : Fire
+    public class Fire3 : Fire
     {
 
     }
-    internal class Fire4 : Fire
+    public class Fire4 : Fire
     {
 
     }
-    internal class Fire5 : Fire
+    public class Fire5 : Fire
     {
 
     }
-    internal class Fire6 : Fire
+    public class Fire6 : Fire
     {
 
     }
-    internal class Fire7 : Fire
+    public class Fire7 : Fire
     {
 
     }

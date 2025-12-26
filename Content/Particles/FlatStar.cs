@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Particles
 {
-    internal class FlatStar : BasePRT
+    public class FlatStar : BasePRT
     {
         public int MaxLifetime => 20;
 

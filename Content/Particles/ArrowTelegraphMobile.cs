@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 namespace DestroyerTest.Content.Particles
 {
 
-    internal class ArrowTelegraphMobile : BasePRT
+    public class ArrowTelegraphMobile : BasePRT
     {
         public int MaxLifetime => 120;
         public override void SetProperty()
