@@ -741,12 +741,17 @@ namespace DestroyerTest.Common
         public static SoundStyle ChargeBreak = new SoundStyle($"{AudioPath}/ChargeBreak");
         public static SoundStyle CrystalBreak = new SoundStyle($"{AudioPath}/CrystalBreak");
         public static SoundStyle ConstitutionStarKill = new SoundStyle($"{AudioPath}/ConstitutionBoss/ConstitutionStar/Kill", 14) { PitchVariance = 0.2f, Volume = 0.85f, MaxInstances = 0 };
-    
-        //
-        // Effects
-        //
-
-        public static Asset<Effect> TrailScroller = ModContent.Request<Effect>($"{EffectPath}/TrailScroll", AssetRequestMode.AsyncLoad);
+        public struct Impacts
+        {
+            public static SoundStyle BrightBell = new SoundStyle($"{AudioPath}/Impacts/BrightBell");
+            public static SoundStyle DarkMagicImpact = new SoundStyle($"{AudioPath}/Impacts/DarkMagicImpact", 3);
+            public static SoundStyle ExplosiveImpactSmall = new SoundStyle($"{AudioPath}/Impacts/ExplosiveImpactSmall", 3);
+            public static SoundStyle FlameImpact = new SoundStyle($"{AudioPath}/Impacts/FlameImpact", 4);
+            public static SoundStyle HellWeaponImpact = new SoundStyle($"{AudioPath}/Impacts/HellWeaponImpact");
+            public static SoundStyle IceImpact = new SoundStyle($"{AudioPath}/Impacts/IceImpact", 3);
+            public static SoundStyle IceMagicImpact = new SoundStyle($"{AudioPath}/Impacts/IceMagicImpact", 3);
+            public static SoundStyle MetalImpact = new SoundStyle($"{AudioPath}/Impacts/MetalImpact", 3);
+        }
     }
 
     public class AssetVerifierSystem : ModSystem

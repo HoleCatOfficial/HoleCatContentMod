@@ -19,6 +19,18 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         public int WidthDim { get; set; }
         public int HeightDim { get; set; }
         public int DustType { get; set; }
+        private Color _dustColor;
+        public bool DustUsesColorOnDraw;
+        public Color DustColor
+        {
+            get => _dustColor;
+            set
+            {
+                if (DustUsesColorOnDraw)
+                    _dustColor = value;
+            }
+        }
+
         public bool returning = false;
         public int flightTime = 0;
         public int HitCount = 0;
@@ -28,8 +40,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
         public override void SetStaticDefaults()
         {
-            ProjectileID.Sets.TrailingMode[Type] = 2;
-            ProjectileID.Sets.TrailCacheLength[Type] = 12;
+
         }
 
         public override void SetDefaults()
@@ -244,24 +255,13 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
                 Projectile.tileCollide = true;
             }
             
-            
-
-            
-            
-
-            // Access the player’s modded class
-            ScepterAchievementPlayer modPlayer = player.GetModPlayer<ScepterAchievementPlayer>();
-
-            // Trigger the achievement check (you could also add a check for if it hasn't been unlocked already)
-            modPlayer.ScepterAchievementGet();
-
             // Always spinning
             Projectile.rotation += 0.4f * Projectile.direction;
 
               // Generate flying dust effect
             if (Main.rand.NextBool(3)) // 33% chance per tick
             {
-                Dust dust = Dust.NewDustPerfect(Projectile.Center, DustType, Projectile.velocity * 0.2f, 100, default, 1.2f);
+                Dust dust = Dust.NewDustPerfect(Projectile.Center, DustType, Projectile.velocity * 0.2f, 100, DustColor, 1.2f);
                 dust.noGravity = true;
                 dust.fadeIn = 1.5f;
             }
@@ -318,7 +318,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             {
                 for (int u = 0; u < 6; u++)
                 {
-                    Dust.NewDustPerfect(Projectile.Center, DustType, Main.rand.NextVector2CircularEdge(60, 60), 0, default, 1.35f);
+                    Dust.NewDustPerfect(Projectile.Center, DustType, Main.rand.NextVector2CircularEdge(60, 60), 0, DustColor, 1.35f);
                 }
             }
             returning = false;
@@ -385,7 +385,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
             for (int i = 0; i < 10; i++)
             {
-                Dust dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustType, oldVelocity.X * 0.5f, oldVelocity.Y * 0.5f, 0, default, 1.5f);
+                Dust dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustType, oldVelocity.X * 0.5f, oldVelocity.Y * 0.5f, 0, DustColor, 1.5f);
                 dust.noGravity = true;
                 dust.fadeIn = 1.5f;
             }
@@ -396,39 +396,6 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             return false; // Prevents the projectile from being destroyed on collision
         }
 
-    }
-
-    public class ScepterAchievementPlayer : ModPlayer
-    {
-        SoundStyle Success = new SoundStyle("DestroyerTest/Assets/Audio/Achievement_Get");
-        public void ScepterAchievementGet()
-        {
-            // Find the projectile (assuming only 1 projectile exists)
-            foreach (Projectile proj in Main.projectile)
-            {
-                if (proj.active && proj.owner == Player.whoAmI && (proj.type == ModContent.ProjectileType<ThrownScepter>()))
-                {
-                    ThrownScepter scepterProjectile = proj.ModProjectile as ThrownScepter;
-                    
-
-                    if ((scepterProjectile != null && scepterProjectile.HitCount >= 3
-                    ) && !AchievementManager.achievements["WhackAMoleMaster"].IsUnlocked)
-                    {
-                        SoundEngine.PlaySound(Success, Player.position);
-                        AchievementManager.UnlockAchievement("WhackAMoleMaster");
-
-                        Main.NewText("Achievement Unlocked: Whack-A-Mole Master!", 255, 215, 0);
-
-                        // Drop an item reward
-                        int rewardItemID = ModContent.ItemType<ScepterAchievementBag>();
-                        Item.NewItem(Player.GetSource_FromThis(), Player.position + new Vector2(0, -500), rewardItemID);
-
-                        // Show UI pop-up
-                        AchievementUI.ShowAchievement(true);
-                    }
-                }
-            }
-        }
     }
 }
 
