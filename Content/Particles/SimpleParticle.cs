@@ -14,7 +14,6 @@ namespace DestroyerTest.Content.Particles
         {
             PRTDrawMode = PRTDrawModeEnum.AdditiveBlend;
             Lifetime = MaxLifetime;
-            Scale += Main.rand.NextFloat(0.15f, 0.5f);
             ShouldKillWhenOffScreen = false;
         }
 
