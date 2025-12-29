@@ -74,13 +74,6 @@ namespace DestroyerTest.Content.Equips
 		}
 
 		public float Rot = 0;
-		public override void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
-		{
-			if (Active)
-			{
-				Main.EntitySpriteDraw(DTAssetLib.RuneCircle.Value, Player.Center - Main.screenPosition, null, Color.White, Rot, DTAssetLib.RuneCircle.Value.Size() / 2, 0.25f, SpriteEffects.None, 0);
-			}
-		}
 
 		public int Cooldown = 0;
 		public override void PostUpdateEquips()

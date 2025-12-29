@@ -27,6 +27,11 @@ namespace DestroyerTest.Content.Projectiles.ShadeThrasherFriendly
             }
         }
         private bool spawned;
+        public override void SetStaticDefaults()
+        {
+            Main.projFrames[Type] = 2;
+        }
+
 
         public override void SetDefaults()
         {
@@ -36,7 +41,7 @@ namespace DestroyerTest.Content.Projectiles.ShadeThrasherFriendly
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;
             Projectile.penetrate = -1;
-            Projectile.netImportant = true;
+            Projectile.frame = 0;
         }
 
         public override void SendExtraAI(BinaryWriter writer)
@@ -87,6 +92,7 @@ namespace DestroyerTest.Content.Projectiles.ShadeThrasherFriendly
 
             if (HomingTarget == null)
             {
+                Projectile.frame = 0;
                 // Movement logic toward player
                 Vector2 toPlayer = player.Center - Projectile.Center;
                 float speed = 0.2f;
@@ -135,9 +141,11 @@ namespace DestroyerTest.Content.Projectiles.ShadeThrasherFriendly
             if (HomingTarget == null)
                 return;
 
+            Projectile.frame = 1;
+
             float length = Projectile.velocity.Length();
             float targetAngle = Projectile.AngleTo(HomingTarget.Center);
-            Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(15)).ToRotationVector2() * length;
+            Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(15)).ToRotationVector2() * 40f;
             Projectile.rotation = Projectile.velocity.ToRotation();
         }
 

@@ -17,6 +17,7 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using OpusLib;
 using DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss;
+using Terraria.GameContent;
 
 namespace DestroyerTest.Content.Equips
 {
@@ -85,6 +86,7 @@ namespace DestroyerTest.Content.Equips
             }
         }
 
+        /*
         public override void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
         {
             if (Active)
@@ -104,5 +106,68 @@ namespace DestroyerTest.Content.Equips
                 }
             }
         }
+        */
+    }
+
+    public class GalantineIncenseDrawLayer : PlayerDrawLayer
+    {
+
+        public override bool GetDefaultVisibility(PlayerDrawSet drawInfo) {
+            Player player = drawInfo.drawPlayer;
+            if (player.TryGetModPlayer<GalantineIncensePlayer>(out var Incense))
+            {
+                if (Incense.Active)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+			    return false;
+            }
+		}
+        public override Position GetDefaultPosition() => new BeforeParent(PlayerDrawLayers.FrozenOrWebbedDebuff);
+
+        protected override void Draw(ref PlayerDrawSet drawInfo) 
+        {
+            Player player = drawInfo.drawPlayer;
+			if (player.TryGetModPlayer<GalantineIncensePlayer>(out var Incense))
+            {
+                if (Incense.Active)
+                {
+                    DrawRingOfFire(ref drawInfo, 0.5f, 0.095f, -Incense.TexRot);
+                    DrawRingOfFire(ref drawInfo, 0.25f, 0.085f, -Incense.TexRot * 2);
+                    DrawRingOfFire(ref drawInfo, 0.25f, 0.0805f, Incense.TexRot * 1.5f);
+                    DrawRingOfFire(ref drawInfo, 0.7f, 0.08f, -Incense.TexRot * 0.5f);
+                    DrawRingOfFire(ref drawInfo, 0.7f, 0.08f, Incense.TexRot);
+                }
+            }
+			
+		}
+
+        private void DrawRingOfFire(ref PlayerDrawSet drawInfo, float Opacity = 1f, float Scale = 1f, float Rotation = 0f)
+        {
+            var Tex = DTAssetLib.FireRing.Value;
+
+			var position = drawInfo.Center - Main.screenPosition;
+			position = new Vector2((int)position.X, (int)position.Y);
+
+            drawInfo.DrawDataCache.Add(new DrawData(
+				Tex,
+				position,
+				null,
+				ColorLib.StellarColor with {A = 0} * Opacity,
+				Rotation,
+				Tex.Size() * 0.5f,
+				Scale,
+				SpriteEffects.None,
+				0
+			));
+        }
+
     }
 }

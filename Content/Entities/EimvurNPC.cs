@@ -23,6 +23,10 @@ using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Projectiles.EntitiesProjectiles;
+using DestroyerTest.Content.Consumables;
+using DestroyerTest.Content.Resources;
+using log4net.Appender;
 
 namespace DestroyerTest.Content.Entities
 {
@@ -30,7 +34,7 @@ namespace DestroyerTest.Content.Entities
 	[AutoloadHead]
 	public class EimvurNPC : ModNPC
 	{
-		
+		public const string ShopName = "Shop";
 		public int NumberOfTimesTalkedTo = 0;
 
 		private static int ShimmerHeadIndex;
@@ -134,12 +138,8 @@ namespace DestroyerTest.Content.Entities
 				// If Example Person has spawned in this world before, we don't require the user satisfying the ExampleItem/ExampleBlock inventory conditions for a respawn.
 				return true;
 			}
-
-			foreach (var player in Main.ActivePlayers) {
-				// Player has to have either an ExampleItem or an ExampleBlock in order for the NPC to spawn
-				if (Main.bloodMoon && player.HasBuff<OminousPrescence>()) {
-					return true;
-				}
+			if (BloodGoddessSpawnSystem.CanSpawn) {
+				return true;
 			}
 
 			return false;
@@ -176,11 +176,11 @@ namespace DestroyerTest.Content.Entities
 				chat.Add(Language.GetTextValue("Test for party girl?", Main.npc[partyGirl].GivenName));
 			}
 			// These are things that the NPC has a chance of telling you when you talk to it.
-			chat.Add(Language.GetTextValue("What do you want? You smell."));
+			chat.Add(Language.GetTextValue("What do you want?"));
 			chat.Add(Language.GetTextValue("You ever lament things outside your control? I don't."));
 			chat.Add(Language.GetTextValue("You mortals have a strange fascination with flowers."));
 			chat.Add(Language.GetTextValue("You would've loved to see my son as a little child."));
-            chat.Add(Language.GetTextValue("Gövic... I don't know where I am... or if I'll see you again..... Gah! Why must you sneak up on me like that!?"), 5.0);
+            chat.Add(Language.GetTextValue("Gövic... I don't if I'll see you again..... Gah! Why must you sneak up on me like that!?"), 0.5f);
 			chat.Add(Language.GetTextValue("No, I will not let you call me 'Mommy'."), 0.1);
 
 			NumberOfTimesTalkedTo++;
@@ -209,17 +209,36 @@ namespace DestroyerTest.Content.Entities
 			return chosenChat;
 		}
 
-		
+		public override void SetChatButtons(ref string button, ref string button2) 
+		{ 
+			button = Language.GetTextValue("LegacyInterface.28");
+		}
+
+		public override void OnChatButtonClicked(bool button1, ref string shop) 
+		{
+            Player player = Main.LocalPlayer;
+            if (button1)
+            {
+                shop = ShopName;
+            }
+            
+		}
+
+		public override void AddShops() {
+            var npcShop = new NPCShop(Type, ShopName)
+				.Add(new Item(ModContent.ItemType<Dyrn>()) { shopCustomPrice = Item.buyPrice(silver: 2, copper: 20) })
+                .Add(new Item(ModContent.ItemType<OminousToken>()) { shopCustomPrice = Item.buyPrice(silver: 50) });
+			npcShop.Register();
+		}
 
 		public override void ModifyNPCLoot(NPCLoot npcLoot) {
 			npcLoot.Add(ItemDropRule.Common(ItemID.VampireKnives, 1, 10, 26));
 		}
 
-		// Make this Town NPC teleport to the King and/or Queen statue when triggered. Return toKingStatue for only King Statues. Return !toKingStatue for only Queen Statues. Return true for both.
 		public override bool CanGoToStatue(bool toKingStatue) => false;
 
 		public override void TownNPCAttackStrength(ref int damage, ref float knockback) {
-			damage = 140;
+			damage = 40;
 			knockback = 4f;
 		}
 
@@ -229,12 +248,12 @@ namespace DestroyerTest.Content.Entities
 		}
 
 		public override void TownNPCAttackProj(ref int projType, ref int attackDelay) {
-			projType = ProjectileID.InsanityShadowFriendly;
+			projType = ModContent.ProjectileType<EimvurBloodProjectile>();
 			attackDelay = 1;
 		}
 
 		public override void TownNPCAttackProjSpeed(ref float multiplier, ref float gravityCorrection, ref float randomOffset) {
-			multiplier = 23f;
+			multiplier = 17f;
 			randomOffset = 2f;
 			// SparklingBall is not affected by gravity, so gravityCorrection is left alone.
 		}
@@ -248,4 +267,33 @@ namespace DestroyerTest.Content.Entities
 		}
 
 	}
+
+	public class BloodGoddessSpawnSystem : ModSystem
+	{
+		public static bool CanSpawn;
+
+		private static bool bloodMoonThisNight;
+
+		public override void PostUpdateTime()
+		{
+			// While night is happening, record if THIS night is a blood moon
+			if (!Main.dayTime && Main.bloodMoon)
+				bloodMoonThisNight = true;
+
+			// At dawn: decide whether we can spawn today
+			if (Main.dayTime && Main.time == 0)
+			{
+				CanSpawn = bloodMoonThisNight;
+				bloodMoonThisNight = false;
+			}
+
+			// At dusk: shut it off unless tonight becomes a blood moon
+			if (!Main.dayTime && Main.time == 0)
+			{
+				CanSpawn = false;
+			}
+		}
+	}
+
+
 }

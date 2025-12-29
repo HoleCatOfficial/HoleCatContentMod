@@ -30,15 +30,6 @@ namespace DestroyerTest.Content.Projectiles
 			}
 		}
 
-		private Player PLRTarget
-		{
-			get => Projectile.ai[1] == 0 ? null : Main.player[(int)Projectile.ai[1] - 1];
-			set
-			{
-				Projectile.ai[1] = value == null ? 0 : value.whoAmI + 1;
-			}
-		}
-
 		public float DelayTimer;
 
 		public override void SetStaticDefaults()
@@ -227,34 +218,6 @@ namespace DestroyerTest.Content.Projectiles
 		public bool IsValidNPC(NPC target)
 		{
 			return target.CanBeChasedBy();
-		}
-
-		public Player FindClosestPlayer(float maxDetectDistance)
-		{
-			Player closestPlayer = null;
-
-			float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
-
-			foreach (var target in Main.player)
-			{
-				if (IsValidPlayer(target))
-				{
-					float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, Projectile.Center);
-
-					if (sqrDistanceToTarget < sqrMaxDetectDistance)
-					{
-						sqrMaxDetectDistance = sqrDistanceToTarget;
-						closestPlayer = target;
-					}
-				}
-			}
-
-			return closestPlayer;
-		}
-
-		public bool IsValidPlayer(Player target)
-		{
-			return target.active == true && target.statLife > 1;
 		}
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{

@@ -3625,6 +3625,16 @@ Items: {
 			'rather gouge my heart out with a blighted maw than have to live with the baggage of a decision that was never mine to make.'"
 			'''
 	}
+
+	OminousToken: {
+		DisplayName: Ominous Token
+		Tooltip: Can give chest loot from the ominous garden.
+	}
+
+	FailedPotion: {
+		DisplayName: Failed Potion
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
@@ -4105,6 +4115,10 @@ Projectiles: {
 	GodGougerMiniPink.DisplayName: God Gouger Mini Pink
 	GodGougerMiniTeal.DisplayName: God Gouger Mini Teal
 	GodGougerThrown.DisplayName: God Gouger Thrown
+	EimvurBloodProjectile.DisplayName: Eimvur Blood Projectile
+	FailedPotionGreenSmoke.DisplayName: Failed Potion Green Smoke
+	FailedPotionPurpleSmoke.DisplayName: Failed Potion Purple Smoke
+	FailedPotionThrown.DisplayName: Failed Potion Thrown
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.

@@ -272,7 +272,7 @@ namespace DestroyerTest.Content.Entities
 					}
                 }
             }
-			}
+		}
 
 		// Not completely finished, but below is what the NPC will sell
 		public override void AddShops() {
