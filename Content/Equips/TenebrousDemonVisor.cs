@@ -267,6 +267,7 @@ namespace DestroyerTest.Content.Equips
 		public override void OnHitNPC(Projectile projectile, NPC target, NPC.HitInfo hit, int damageDone)
 		{
 			Player player = Main.player[projectile.owner];
+			DTOptimizationsConfig OptCfg = ModContent.GetInstance<DTOptimizationsConfig>();
 			if (player.TryGetModPlayer<TenebrousDemon>(out TenebrousDemon Demon) && projectile.DamageType == DamageClass.Ranged)
 			{
 				if (Demon.Active)
@@ -288,7 +289,7 @@ namespace DestroyerTest.Content.Equips
 						CPitch = 0f;
 					}
 
-					if (Demon.Charge3)
+					if (Demon.Charge3 && OptCfg.DisableExcessParticles)
 					{
 						for (int t = 0; t < 7; t++)
 						{
@@ -299,7 +300,7 @@ namespace DestroyerTest.Content.Equips
             }
 			if (Demon.Active)
             {
-                if (Demon.Charge3 && (projectile.type == ModContent.ProjectileType<TenebrisStarFriendly>() || projectile.type == ModContent.ProjectileType<TenebrisStarFriendly_NoHoming>()))
+                if (Demon.Charge3 && (projectile.type == ModContent.ProjectileType<TenebrisStarFriendly>() || projectile.type == ModContent.ProjectileType<TenebrisStarFriendly_NoHoming>()) && OptCfg.DisableExcessParticles)
 					{
 						for (int t = 0; t < 7; t++)
 						{

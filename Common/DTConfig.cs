@@ -35,6 +35,8 @@ namespace DestroyerTest.Common
         public bool DisableExcessDusts { get; set; }
         [DefaultValue(false)]
         public bool DisableExcessParticles { get; set; }
+        [DefaultValue(false)]
+        public bool DisableExcessTrails { get; set; }
     }
 
     public class DTMusicConfig : ModConfig

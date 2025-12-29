@@ -870,4 +870,21 @@ namespace DestroyerTest.Common
             return false;
         }
     }
+
+    public class CraftingModification : ModSystem
+    {
+        //Calamity Recipe Code
+        public override void AddRecipes()
+        {
+            static Func<Recipe, bool> Vanilla(int itemID) => r => r.Mod is null && r.HasResult(itemID);
+            static Action<Recipe> AddIngredient(int itemID, int stack = 1) => r => r.AddIngredient(itemID, stack);
+            var edits = new Dictionary<Func<Recipe, bool>, Action<Recipe>>(128)
+            {
+                { Vanilla(ItemID.VortexHelmet), AddIngredient(ItemID.LunarOre, 6) },
+                { Vanilla(ItemID.SolarFlareHelmet), AddIngredient(ItemID.LunarOre, 6) },
+                { Vanilla(ItemID.StardustHelmet), AddIngredient(ItemID.LunarOre, 6) },
+            };
+        }
+
+    }
 }

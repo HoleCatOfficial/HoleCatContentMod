@@ -67,7 +67,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             Projectile.velocity *= 0.99f;
             Projectile.rotation += 0.03f * Projectile.velocity.X;
 
-            Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.TintableDust, 0, 0, 200, new Color(32, 11, 40), 1.5f);
+            Dust idle = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.TintableDust, 0, 0, 200, new Color(32, 11, 40), 1.5f);
+            idle.noGravity = true;
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)

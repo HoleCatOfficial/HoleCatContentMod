@@ -4823,6 +4823,11 @@ Configs: {
 			Label: Disable Excess Particles
 			Tooltip: ""
 		}
+
+		DisableExcessTrails: {
+			Tooltip: ""
+			Label: Disable Excess Trails
+		}
 	}
 
 	DTMusicConfig: {

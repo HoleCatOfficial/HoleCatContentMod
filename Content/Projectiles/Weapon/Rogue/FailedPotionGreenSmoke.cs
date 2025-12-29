@@ -31,7 +31,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             Projectile.DamageType = DamageClass.Generic;
             Projectile.tileCollide = false;
             Projectile.frame = Main.rand.Next(3);
-            Projectile.alpha = 160;
+            Projectile.alpha = 200;
         }
 
         public override bool PreDraw(ref Color lightColor)
@@ -67,7 +67,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             Projectile.velocity *= 0.99f;
             Projectile.rotation += 0.03f * Projectile.velocity.X;
 
-            Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.TintableDust, 0, 0, 200, new Color(0, 32, 19), 1.5f);
+            Projectile.alpha = 200;
+            
+            Dust idle = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.TintableDust, 0, 0, 200, new Color(0, 32, 19), 1.5f);
+            idle.noGravity = true;
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
