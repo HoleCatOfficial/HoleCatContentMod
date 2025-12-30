@@ -132,7 +132,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             Projectile.rotation += 0.6f * Projectile.direction;
 
 
-            PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center + new Vector2(82, -82).RotatedBy(Projectile.rotation), Vector2.Zero, ColorLib.CursedFlames, 2f, 60, 2);
+            PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center + new Vector2(Projectile.width / 2, -(Projectile.width / 2)).RotatedBy(Projectile.rotation), Vector2.Zero, ColorLib.CursedFlames, 2f, 60, ai2: 2);
             
 
             ArmCatchAnimate(player);

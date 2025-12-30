@@ -230,12 +230,14 @@ namespace DestroyerTest.Common.NPC_Folder
 
             if (shop.NpcType == NPCID.Merchant)
             {
+                shop.Add<OilFlask>();
+                shop.Add<BrineFlask>();
                 shop.Add<CursedStar>(Condition.DownedSkeletron); // Or wherever your item is
             }
 
             if (shop.NpcType == NPCID.TravellingMerchant)
             {
-                shop.Add<FoxScepter>(Condition.DownedKingSlime); // Or wherever your item is
+                shop.Add<FoxScepter>(Condition.DownedKingSlime);
             }
 
             if (shop.NpcType == ModContent.NPCType<Scholar>())
@@ -247,7 +249,7 @@ namespace DestroyerTest.Common.NPC_Folder
             {
                 shop.Add<EndlessTenebrisBullets>(Condition.DownedCultist);
                 shop.Add<EndlessHeliciteRounds>(Condition.DownedGolem);
-                shop.Add<EndlessTenebrisBullets>(Condition.DownedMechBossAll);
+                shop.Add<EndlessRiftRounds>(Condition.DownedMechBossAll);
             }
         }
 	}

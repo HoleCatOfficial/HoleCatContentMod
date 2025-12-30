@@ -16,7 +16,7 @@ using DestroyerTest.Content.Projectiles.Weapon.Magic;
 
 namespace DestroyerTest.Content.RangedItems
 {
-	// Token: 0x0200023E RID: 574
+	/*
 	public class RiftRailgun : ModItem
 	{
         SoundStyle ChargeUp = new SoundStyle("DestroyerTest/Assets/Audio/RailGunCharge");
@@ -62,4 +62,5 @@ namespace DestroyerTest.Content.RangedItems
 				.Register();
 		}
 	}
+	*/
 }

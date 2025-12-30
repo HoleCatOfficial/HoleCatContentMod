@@ -22,7 +22,7 @@ namespace DestroyerTest.Content.Equips
 			// Fly time: 180 ticks = 3 seconds
 			// Fly speed: 9
 			// Acceleration multiplier: 2.5
-			ArmorIDs.Wing.Sets.Stats[Item.wingSlot] = new WingStats(180, 9f, 2.75f, true);
+			ArmorIDs.Wing.Sets.Stats[Item.wingSlot] = new WingStats(600, 9.7f, 2.75f, true);
             
 		}
 
@@ -30,7 +30,7 @@ namespace DestroyerTest.Content.Equips
 			Item.width = 80;
 			Item.height = 56;
 			Item.value = 10000;
-			Item.rare = ItemRarityID.Green;
+			Item.rare = ModContent.RarityType<ShimmeringRarity>();
 			Item.accessory = true;
 		}
 
@@ -42,11 +42,11 @@ namespace DestroyerTest.Content.Equips
 
 		public override void VerticalWingSpeeds(Player player, ref float ascentWhenFalling, ref float ascentWhenRising,
 			ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend) {
-			ascentWhenFalling = 0.25f;
-			ascentWhenRising = 0.15f;
-			maxCanAscendMultiplier = 1f;
-			maxAscentMultiplier = 1f;
-			constantAscend = 0.105f;
+			ascentWhenFalling = 1f;
+			ascentWhenRising = 0.7f;
+			maxCanAscendMultiplier = 5f;
+			maxAscentMultiplier = 5f;
+			constantAscend = 0.16f;
 		}
 
 		public override void AddRecipes() {

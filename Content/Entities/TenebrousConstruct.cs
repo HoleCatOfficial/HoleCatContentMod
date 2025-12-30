@@ -238,7 +238,7 @@ namespace DestroyerTest.Content.Entities
                 case State.IdleChase:
                     {
                         {
-                            NPC.velocity = Vector2.Lerp(NPC.velocity, direction * 4f, 0.05f);
+                            NPC.velocity = Vector2.Lerp(NPC.velocity, direction * 4f, 0.025f);
                             WingXScale = 0.5f + 0.3f * (float)Math.Sin(Main.GameUpdateCount * 0.05f);
 
                             Vector2 Suck = NPC.Center - player.Center;
@@ -290,7 +290,7 @@ namespace DestroyerTest.Content.Entities
                     }
                 case State.DartCross:
                     {
-                        NPC.velocity = Vector2.Lerp(NPC.velocity, direction * 3f, 0.05f);
+                        NPC.velocity = Vector2.Lerp(NPC.velocity, direction * 4f, 0.025f);
                         WingXScale = 0.5f + 0.3f * (float)Math.Sin(Main.GameUpdateCount * 0.05f);
                         if (player.HeldItem.type == ModContent.ItemType<ShiningObelisk>() && player.itemAnimation == player.itemAnimationMax - 10)
                         {

@@ -1093,7 +1093,7 @@ namespace DestroyerTest.Content.Entities
                 case attackType.Desperation:
                     {
                         DesperationTimer++;
-                        PitchVal += 0.0005f;
+                        PitchVal += 0.00025f;
                         //DesperationVingetteScale--;
                         DesperationVingetteAlpha = (byte)MathHelper.Clamp(
                             255f * (DesperationTimer / 1200f),

@@ -28,7 +28,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
             Projectile.hostile = true; // Can the projectile deal damage to the player?
             Projectile.ignoreWater = true; // Does the projectile's speed be influenced by water?
             Projectile.light = 0.4f; // How much light emit around the projectile
-            Projectile.timeLeft = 600; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
+            Projectile.timeLeft = 180; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
             Projectile.tileCollide = false;
         }
 
@@ -42,11 +42,13 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
 			SpriteBatch spriteBatch = Main.spriteBatch;
 			DTUtils Utility = new DTUtils();
 
-			Opus.StartSpriteBatchForTrails(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+			
 			
             DTOptimizationsConfig OptCfg = ModContent.GetInstance<DTOptimizationsConfig>();
             if (!OptCfg.DisableExcessTrails)
             {
+                Opus.StartSpriteBatchForTrails(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+
                 if (TrailPositions.Count > 1)
                 {
                     List<ColoredVertex> ve = new List<ColoredVertex>();
@@ -73,6 +75,8 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
                     }
                 }
             }
+
+            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
 			Opus.DrawGlowOnProj(Projectile, lightColor * GlowMult, true);
 

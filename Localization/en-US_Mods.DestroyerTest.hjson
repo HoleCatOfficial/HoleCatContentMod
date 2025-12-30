@@ -3635,6 +3635,56 @@ Items: {
 		DisplayName: Failed Potion
 		Tooltip: ""
 	}
+
+	Dread: {
+		DisplayName: Dread
+		Tooltip: Shoots Shimmering Flames.
+	}
+
+	FireStorm: {
+		Tooltip: ""
+		DisplayName: Fire Storm
+	}
+
+	CursedFireVial: {
+		DisplayName: Vial of Cursed Flames
+		Tooltip: Imbues your scepter with Cursed Flames.
+	}
+
+	FrostFireFlask: {
+		DisplayName: Flask of Frostburn
+		Tooltip: Imbues your weapons with Frostburn.
+	}
+
+	IchorVial: {
+		DisplayName: Vial of Ichor
+		Tooltip: Imbues your scepter with Ichor.
+	}
+
+	MudFlask: {
+		DisplayName: Flask of Mud
+		Tooltip: Covers your weapons in mud.
+	}
+
+	MudVial: {
+		DisplayName: Vial of Mud
+		Tooltip: Covers your scepter in mud.
+	}
+
+	OilFlask: {
+		DisplayName: Flask of Oil
+		Tooltip: Sets your weapons ablaze.
+	}
+
+	OilVial: {
+		DisplayName: Vial of Oil
+		Tooltip: Sets your scepters ablaze.
+	}
+
+	BrineFlask: {
+		DisplayName: Brine Flask
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
@@ -4119,6 +4169,8 @@ Projectiles: {
 	FailedPotionGreenSmoke.DisplayName: Failed Potion Green Smoke
 	FailedPotionPurpleSmoke.DisplayName: Failed Potion Purple Smoke
 	FailedPotionThrown.DisplayName: Failed Potion Thrown
+	CursedNodeCrystal2.DisplayName: Cursed Node Crystal2
+	BigRiftExplosion.DisplayName: Big Rift Explosion
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.
@@ -4472,6 +4524,41 @@ Buffs: {
 	TaintedBrew: {
 		DisplayName: Tainted Brew
 		Description: Cannot Consume Idri's Concoction again.
+	}
+
+	ScepterImbueCF: {
+		DisplayName: Scepter Imbue (Cursed Flames)
+		Description: Your scepter has been imbued with Cursed Flames!
+	}
+
+	ScepterImbueFire: {
+		DisplayName: Scepter Imbue Fire
+		Description: Your scepter is on Fire!!
+	}
+
+	ScepterImbueIchor: {
+		DisplayName: Scepter Imbue (Ichor)
+		Description: Your scepter has been imbued with Ichor!
+	}
+
+	WeaponImbueBrine: {
+		DisplayName: Weapon Imbue (Brine)
+		Description: Your weapons are soaking in salty water!
+	}
+
+	WeaponImbueFF: {
+		DisplayName: Weapon Imbue (Frostburn)
+		Description: Your weapons have been imbued with Frozen Flames!
+	}
+
+	WeaponImbueFire: {
+		DisplayName: Weapon Imbue (Fire)
+		Description: Your weapons are on Fire!!
+	}
+
+	WeaponImbueMud: {
+		DisplayName: Weapon Imbue (Mud)
+		Description: Your weapons have thick mud all over them!
 	}
 }
 

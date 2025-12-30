@@ -76,6 +76,8 @@ namespace DestroyerTest.Content.Projectiles.Boss
                 }
             }
 
+            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+
 			Opus.DrawGlowOnProj(Projectile, lightColor * GlowMult, true);
 
 			Opus.ReturnToDefaultDrawing(spriteBatch);

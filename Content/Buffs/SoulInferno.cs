@@ -57,7 +57,7 @@ namespace DestroyerTest.Content.Buffs
 				if (npc.lifeRegen > 0)
 					npc.lifeRegen = 0;
 
-				npc.lifeRegen -= 90;
+				npc.lifeRegen -= 75;
 			}
 		}
     }
@@ -86,7 +86,7 @@ namespace DestroyerTest.Content.Buffs
 				if (Player.lifeRegen > 0)
 					Player.lifeRegen = 0;
 				Player.lifeRegenTime = 0;
-				Player.lifeRegen -= 70;
+				Player.lifeRegen -= 55;
 			}
 		}
 	}

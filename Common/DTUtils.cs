@@ -212,6 +212,41 @@ namespace DestroyerTest.Common
                     return -1;
             }
         }
+
+        
+    }
+
+    public static class DTStaticUtils
+    {
+        public static void DefaultToFlask(this Item item, int BuffType, int Rarity, int Value)
+		{
+			item.UseSound = SoundID.Item3;
+			item.useStyle = ItemUseStyleID.DrinkLiquid;
+			item.useTurn = true;
+			item.useAnimation = 17;
+			item.useTime = 17;
+			item.maxStack = Item.CommonMaxStack;
+			item.consumable = true;
+			item.buffType = BuffType;
+			item.buffTime = Item.flaskTime;
+			item.value = Value;
+			item.rare = Rarity;
+		}
+
+        public static void DefaultToVial(this Item item, int BuffType, int Rarity, int Value)
+		{
+			item.UseSound = SoundID.Item3;
+			item.useStyle = ItemUseStyleID.DrinkLiquid;
+			item.useTurn = true;
+			item.useAnimation = 17;
+			item.useTime = 17;
+			item.maxStack = Item.CommonMaxStack;
+			item.consumable = true;
+			item.buffType = BuffType;
+			item.buffTime = Item.flaskTime;
+			item.value = Value;
+			item.rare = Rarity;
+		}
     }
 
     public class DTPlayerUtil : ModPlayer
@@ -644,6 +679,7 @@ namespace DestroyerTest.Common
         public static Asset<Texture2D> Barback = ModContent.Request<Texture2D>($"{ExtrasPath}/GenericBarBack", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> Barfront = ModContent.Request<Texture2D>($"{ExtrasPath}/GenericBarFront", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> WyvernCorpseSky = ModContent.Request<Texture2D>($"{ExtrasPath}/WyvernCorpseSky", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> GlowCone = ModContent.Request<Texture2D>($"{ExtrasPath}/GlowCone", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> Sparkle(int Variant)
         {
             if (Variant <= 0)

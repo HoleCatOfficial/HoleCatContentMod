@@ -214,8 +214,8 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         {
             Rectangle hitbox = Projectile.Hitbox;
             Vector2 localOffset = new Vector2(
-                hitbox.Width / 2f - Width / 2f,
-                -hitbox.Height / 2f + Height / 2f
+                (hitbox.Width / 2f) - (Width / 2f),
+                -(hitbox.Height / 2f) + (Height / 2f)
             );
             Vector2 rotatedOffset = localOffset.RotatedBy(Projectile.rotation);
 

@@ -14,7 +14,8 @@ namespace DestroyerTest.Content.Consumables
 {
 	public class ComaceraticFlask : ModItem
 	{
-		public override void SetStaticDefaults() {
+		public override void SetStaticDefaults() 
+		{
 			ItemID.Sets.ShimmerTransformToItem[ModContent.ItemType<ComaceraticVial>()] = Type;
 			Item.ResearchUnlockCount = 20;
 
@@ -25,20 +26,11 @@ namespace DestroyerTest.Content.Consumables
 			];
 		}
 
-		public override void SetDefaults() {
-			Item.UseSound = SoundID.Item3;
-			Item.useStyle = ItemUseStyleID.DrinkLiquid;
-			Item.useTurn = true;
-			Item.useAnimation = 17;
-			Item.useTime = 17;
-			Item.maxStack = Item.CommonMaxStack;
-			Item.consumable = true;
+		public override void SetDefaults() 
+		{
 			Item.width = 22;
 			Item.height = 32;
-			Item.buffType = ModContent.BuffType<WeaponImbueCB>();
-			Item.buffTime = Item.flaskTime;
-			Item.value = Item.sellPrice(0, 0, 5);
-			Item.rare = ModContent.RarityType<RiftRarity1>();
+			Item.DefaultToFlask(ModContent.BuffType<WeaponImbueCB>(), ModContent.RarityType<RiftRarity1>(), Item.sellPrice(0, 0, 5));
 		}
 
         public override void AddRecipes()

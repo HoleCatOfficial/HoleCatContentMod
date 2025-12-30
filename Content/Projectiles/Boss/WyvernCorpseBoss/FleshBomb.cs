@@ -37,6 +37,11 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
 			Projectile.netUpdate = true;
         }
 
+        public override bool CanHitPlayer(Player target)
+        {
+            return false;
+        }
+
         public override void OnSpawn(IEntitySource source)
         {
             SoundEngine.PlaySound(BombPlant, Projectile.Center);

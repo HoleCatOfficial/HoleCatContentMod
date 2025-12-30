@@ -229,7 +229,7 @@ namespace DestroyerTest.Content.Entities
         public int IdleTimer;
         public int FlameTimer = 0;
         public int FlameInterval = 0;
-        public int FlameStartTimer = 60;
+        public int FlameStartTimer = 120;
         public int VileThornCooldown = 0;
         public int VileThornCount = 0;
         public int MinionSpawnTimer = 0;
@@ -267,6 +267,7 @@ namespace DestroyerTest.Content.Entities
         public int SpawnIdleRoarFlag = 60 * 8;
         public byte SpawnDarknessAlpha = 0;
         public int SpawnCount = 0;
+        public int NapalmDelay = 120;
 
         public override void SendExtraAI(BinaryWriter writer)
         {
@@ -770,15 +771,15 @@ namespace DestroyerTest.Content.Entities
                     {
                         if (!EternityIsActive())
                         {
-                            if (FlameStartTimer >= 60)
+                            if (FlameStartTimer >= 120)
                             {
-                                SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/CursedFlamesWarn") with { Volume = 1.5f });
+                                SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/CursedFlamesWarn2") with { Volume = 0.75f, PitchVariance = 0.4f });
+                                PRTLoader.NewParticle(PRTLoader.GetParticleID<SmallShine>(), NPCHead, Vector2.Zero, Color.White, 2f);
                             }
                             FlameStartTimer--;
-                            if (HasBoosted == false)
+                            if (FlameStartTimer > 0)
                             {
-                                player.velocity += new Vector2(0, -15);
-                                HasBoosted = true;
+                                
                             }
                             if (FlameTimer < 240 && FlameStartTimer <= 0)
                             {
@@ -902,7 +903,17 @@ namespace DestroyerTest.Content.Entities
                     {
                         player.wingTime = 0;
                         VileThornCooldown++;
-                        if (Main.GameUpdateCount % 30 == 0)
+                        if (NapalmDelay >= 120)
+                        {
+                            SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/NapalmWarn") with { Volume = 0.75f, PitchVariance = 0.4f });
+                            PRTLoader.NewParticle(PRTLoader.GetParticleID<SmallShine>(), NPCHead, Vector2.Zero, Color.White, 2f);
+                        }
+                        NapalmDelay--;
+                        if (NapalmDelay > 0)
+                        {
+                        
+                        }
+                        if (Main.GameUpdateCount % 30 == 0 && NapalmDelay <= 0)
                         {
                             VileThornCount += 1;
 
@@ -1063,7 +1074,7 @@ namespace DestroyerTest.Content.Entities
                         {
 
                             DesperationTimer++;
-                            if (Main.GameUpdateCount % 80 == 0 && DesperationTimer < 900)
+                            if (Main.GameUpdateCount % 110 == 0 && DesperationTimer < 900)
                             {
                                 SoundEngine.PlaySound(DespShootMine);
                                 SoulBombSpawn();
@@ -1139,6 +1150,36 @@ namespace DestroyerTest.Content.Entities
             if (FlameTimer < 240 && FlameTimer >= 0 && currentState == AttackState.CursedFlames && !EternityIsActive())
             {
                 DrawTelegraph(NPCHead, PlayerCenter, DTAssetLib.FlameTelegraph.Value);
+            }
+
+            if (FlameStartTimer < 120 && FlameStartTimer >= 0 && currentState == AttackState.CursedFlames && !EternityIsActive())
+            {
+                Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+                GlowConeWarning_CursedFlames();
+                Opus.ReturnToDefaultDrawing(spriteBatch);
+                if (FlameStartTimer > 60)
+                {
+                    GlowConeScaling += 0.05f;
+                }
+                if (FlameStartTimer < 60)
+                {
+                    GlowConeScaling -= 0.05f;
+                }
+            }
+
+            if (NapalmDelay < 120 && NapalmDelay >= 0 && currentState == AttackState.Napalm)
+            {
+                Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+                GlowConeWarning_Napalm();
+                Opus.ReturnToDefaultDrawing(spriteBatch);
+                if (NapalmDelay > 60)
+                {
+                    GlowConeScaling += 0.05f;
+                }
+                if (NapalmDelay < 60)
+                {
+                    GlowConeScaling -= 0.05f;
+                }
             }
 
 
@@ -1252,7 +1293,7 @@ namespace DestroyerTest.Content.Entities
 
                 FlameTimer = 0;
                 FlameInterval = 0;
-                FlameStartTimer = 60;
+                FlameStartTimer = 120;
                 VileThornCooldown = 0;
                 VileThornCount = 0;
                 MinionSpawnTimer = 0;
@@ -1278,6 +1319,8 @@ namespace DestroyerTest.Content.Entities
                 SpawnIdleRoarFlag = 60 * 8;
                 SpawnDarknessAlpha = 0;
                 SpawnCount = 0;
+                NapalmDelay = 120;
+                GlowConeScaling = 0.01f;
 
                 HasBoosted = false;
                 HasSpawnedSigil = false;
@@ -1324,6 +1367,19 @@ namespace DestroyerTest.Content.Entities
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
         }
 
+        public float GlowConeScaling = 0.01f;
+        public void GlowConeWarning_CursedFlames()
+        {
+            Vector2 dir = DirectionToPlayerCenter;
+
+            Main.EntitySpriteDraw(DTAssetLib.GlowCone.Value, NPCHead - Main.screenPosition, null, ColorLib.CursedFlames, dir.ToRotation(), DTAssetLib.GlowCone.Value.Size() / 2, GlowConeScaling, SpriteEffects.None, 0);
+        }
+
+        public void GlowConeWarning_Napalm()
+        {
+            Main.EntitySpriteDraw(DTAssetLib.GlowCone.Value, NPCHead - Main.screenPosition, null, ColorLib.CursedFlames, -MathHelper.PiOver2, DTAssetLib.GlowCone.Value.Size() / 2, new Vector2(GlowConeScaling * 2, GlowConeScaling), SpriteEffects.None, 0);
+        }
+
         public void GatherParticle()
         {
             for (int y = 0; y < 2; y++)
@@ -1336,13 +1392,13 @@ namespace DestroyerTest.Content.Entities
 
         public void SoulBombSpawn()
         {
-            for (int j = 0; j < 3; j++)
+            for (int j = 0; j < 2; j++)
             {
                 Vector2 spawnPos = NPCHead;
                 Vector2 targetPos = NPCHead + Main.rand.NextVector2CircularEdge(BorderRad, BorderRad);
                 Vector2 direction = (targetPos - spawnPos).SafeNormalize(Vector2.Zero); // SafeNormalize prevents division by zero
 
-                Projectile SB = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), spawnPos, direction * 6, ModContent.ProjectileType<SoulCrystalBomb>(), 20, 1);
+                Projectile SB = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), spawnPos, direction * 6, ModContent.ProjectileType<SoulCrystalBomb>(), 0, 1);
                 SB.timeLeft = 60;
             }
         }
@@ -1574,11 +1630,11 @@ namespace DestroyerTest.Content.Entities
                 VortexFireUD = Main.rand.NextBool(2);
                 SetDir3 = false;
             }
-            Vector2 spawn = VortexFireUD ? player.Center + new Vector2(0, -400) : player.Center + new Vector2(0, 400);
+            Vector2 spawn = VortexFireUD ? NPCHead + new Vector2(0, -400) : NPCHead + new Vector2(0, 400);
             
             float dirY = spawn.Y - player.Center.Y;
 
-            Projectile.NewProjectile(NPC.GetSource_FromAI(), spawn, new Vector2(0, dirY), ModContent.ProjectileType<CursedFlameVortex>(), 20, 5);
+            Projectile.NewProjectile(NPC.GetSource_FromAI(), spawn, dirY.ToRotationVector2() * 10, ModContent.ProjectileType<CursedFlameVortex>(), 20, 5);
             VortexFireCount++;
         }
 

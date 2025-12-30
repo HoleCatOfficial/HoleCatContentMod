@@ -4,6 +4,7 @@ using DestroyerTest.Content.Consumables;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.Tiles;
 using DestroyerTest.Rarity;
+using DestroyerTest.Rarity.Scepter;
 using Microsoft.Xna.Framework;
 using Newtonsoft.Json.Linq;
 using Terraria;
@@ -15,6 +16,7 @@ namespace DestroyerTest.Content.Consumables
 	public class FrostFireVial : ModItem
 	{
 		public override void SetStaticDefaults() {
+			ItemID.Sets.ShimmerTransformToItem[ModContent.ItemType<FrostFireFlask>()] = Type;
 			Item.ResearchUnlockCount = 20;
 
 			ItemID.Sets.DrinkParticleColors[Type] = [
@@ -22,20 +24,20 @@ namespace DestroyerTest.Content.Consumables
 			];
 		}
 
-		public override void SetDefaults() {
-			Item.UseSound = SoundID.Item3;
-			Item.useStyle = ItemUseStyleID.DrinkLiquid;
-			Item.useTurn = true;
-			Item.useAnimation = 17;
-			Item.useTime = 17;
-			Item.maxStack = Item.CommonMaxStack;
-			Item.consumable = true;
-			Item.width = 22;
+		public override void SetDefaults() 
+		{
+			Item.width = 18;
 			Item.height = 32;
-			Item.buffType = ModContent.BuffType<ScepterImbueFF>();
-			Item.buffTime = Item.flaskTime;
-			Item.value = Item.sellPrice(0, 2, 5);
-            Item.rare = ItemRarityID.Blue;
+			Item.DefaultToVial(ModContent.BuffType<ScepterImbueFF>(), ModContent.RarityType<PaleFuchsiaRarity>(), Item.sellPrice(0, 0, 5));
+		}
+
+		public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient(ItemID.BottledWater)
+                .AddIngredient(ItemID.Shiverthorn, 4)
+                .AddTile(TileID.ImbuingStation)
+                .Register();
 		}
 	}
 }
