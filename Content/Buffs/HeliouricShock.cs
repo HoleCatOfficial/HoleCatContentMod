@@ -78,19 +78,13 @@ namespace DestroyerTest.Content.Buffs
         }
         public override void UpdateLifeRegen(NPC npc, ref int damage)
 		{
-			if (lifeRegenDebuff && Main.dayTime)
+			if (lifeRegenDebuff)
 			{
-				//Dust.NewDust(npc.position, npc.width, npc.height, DustID.Lava, 0.0f, 0.5f, 0, default, 1);
 				if (npc.lifeRegen > 0)
-					npc.lifeRegen = 0;
+				{
+                    npc.lifeRegen = 0;
+				}
 				npc.lifeRegen -= 20;
-			}
-			if (lifeRegenDebuff && !Main.dayTime)
-			{
-				if (npc.lifeRegen > 0)
-					npc.lifeRegen = 0;
-
-				npc.lifeRegen -= 18;
 			}
 		}
     }

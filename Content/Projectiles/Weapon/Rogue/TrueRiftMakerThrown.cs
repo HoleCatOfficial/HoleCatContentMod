@@ -1,4 +1,4 @@
-﻿using DestroyerTest.Common;
+using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -13,7 +13,7 @@ using DestroyerTest.Content.Particles;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 {
-    public class RiftMaker_Thrown : ModProjectile
+    public class TrueRiftMakerThrown : ModProjectile
     {
         public override void SetStaticDefaults()
         {
@@ -34,7 +34,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 
         public override void AI()
         {
-            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
+            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
 
             if (Main.rand.NextBool(3))
             {
@@ -44,9 +44,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
         }
         public override bool PreDraw(ref Color lightColor)
         {
-            Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-            Opus.DrawProjectileShadowsRotating(Projectile, 3, ColorLib.Rift);
-            Opus.ReturnToDefaultDrawing(Main.spriteBatch);
+            Opus.DrawProjectileShadowsRotating(Projectile, 3, Color.Black);
 
             Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, TextureAssets.Projectile[Projectile.type].Value.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
             return false;
@@ -54,14 +52,22 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            target.AddBuff(ModContent.BuffType<HeliouricShock>(), 600);
+            target.AddBuff(ModContent.BuffType<ComaceraticBurn>(), 600);
         }
 
         public override void OnKill(int timeLeft)
         {
 			SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/RiftMaker_Boom") with { MaxInstances = 0, PitchVariance = 0.2f }, Projectile.Center);
 			PRTLoader.NewParticle(PRTLoader.GetParticleID<SmallShine>(), Projectile.Center, Vector2.Zero, ColorLib.Rift, 1);
-            Opus.RadialDustRandomDir(DustID.FireworksRGB, 13, Projectile.Center, 0, ColorLib.Rift, 1f, 2.4f);
+            Opus.RadialDustRandomDir(DustID.FireworksRGB, 24, Projectile.Center, 0, ColorLib.Rift, 2f, 3f);
+            Projectile.NewProjectile(Projectile.GetSource_Death(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<BigRiftExplosion>(), Projectile.damage / 2, 10f, Projectile.owner);
+        }
+
+        public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
+        {
+            Vector2 bottomLeft = new Vector2(projHitbox.X, projHitbox.Y + projHitbox.Height);
+            Vector2 topRight = new Vector2(projHitbox.X + projHitbox.Width, projHitbox.Y);
+            return targetHitbox.Intersects(new Rectangle((int)bottomLeft.X, (int)bottomLeft.Y, (int)(topRight.X - bottomLeft.X), (int)(bottomLeft.Y - topRight.Y)));
         }
 
     }

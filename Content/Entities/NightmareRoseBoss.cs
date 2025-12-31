@@ -81,7 +81,6 @@ namespace DestroyerTest.Content.Entities
         {
             NPCID.Sets.CanHitPastShimmer[Type] = true;
             NPCID.Sets.DontDoHardmodeScaling[Type] = true;
-            NPCID.Sets.ImmuneToRegularBuffs[Type] = true;
             immunities();
             NPCID.Sets.TrailCacheLength[Type] = 20;
             NPCID.Sets.TrailingMode[Type] = 3;
@@ -621,7 +620,7 @@ namespace DestroyerTest.Content.Entities
             if (NPC.life <= NPC.lifeMax * 0.25f && !HasTriggeredNodes)
             {
                 currentState = AttackState.Nodes;
-                HasTriggeredNodes = true;
+                
             }
 
             if (player.active == false || player.dead == true)
@@ -686,7 +685,10 @@ namespace DestroyerTest.Content.Entities
                 });
 
 
-
+            if (NodesAreIn)
+            {
+                NodeRadius = Opus.Sine(600f, 660f);
+            }
 
 
             Mod.Logger.Info($"Current State: {currentState}");
@@ -762,9 +764,11 @@ namespace DestroyerTest.Content.Entities
                     if (NPC.type == ModContent.NPCType<NightmareRoseBoss>())
                     {
                         NPC.aiStyle = -1;
-                        SoundEngine.PlaySound(NodeSpawnSound);
                         NodeSpawn();
-                        currentState = GetRandomState();
+                        if (NodesAreIn)
+                        {
+                            currentState = GetRandomState();
+                        }
                     }
                     break;
                 case AttackState.CursedFlames:
@@ -800,7 +804,25 @@ namespace DestroyerTest.Content.Entities
                         }
                         if (EternityIsActive())
                         {
-                            if (FlameTimer < 240)
+
+                            if (FlameStartTimer >= 120)
+                            {
+                                SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/CursedFlamesWarn2") with { Volume = 0.75f, PitchVariance = 0.4f });
+                                PRTLoader.NewParticle(PRTLoader.GetParticleID<SmallShine>(), NPCHead, Vector2.Zero, Color.White, 2f);
+                                if (!SetDir1)
+                                {
+                                    FireLR = Main.rand.NextBool(2);
+                                    SetDir1 = true;
+                                }
+                            }
+                            FlameStartTimer--;
+                            ContemptAttackRotationOffset += FireLR ? 0.01f : -0.01f;
+                            ContemptAttackWarningOffset += FireLR ? 0.005f : -0.005f;
+                            if (FlameStartTimer > 0)
+                            {
+                                
+                            }
+                            if (FlameTimer < 240 && FlameStartTimer <= 0)
                             {
                                 FlameTimer++;
                                 ContemptAttack();
@@ -844,7 +866,7 @@ namespace DestroyerTest.Content.Entities
                             {
                                 SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/ChargeBreak") with { PitchVariance = 1f });
 
-                                Opus.RingProjectileOutwardRandomDir(ModContent.ProjectileType<TenebrisFlamesHostile>(), 7, player.Center, 300, 25, 1, 8);
+                                Opus.RingProjectileOutwardRandomDir(ModContent.ProjectileType<TenebrisFlamesHostile>(), 7, player.Center, 300, 10, 1, 8);
                                 FlameRingCount++;
                             }
                             if (FlameRingCount >= 9)
@@ -1147,15 +1169,18 @@ namespace DestroyerTest.Content.Entities
         public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             base.PostDraw(spriteBatch, screenPos, drawColor);
-            if (FlameTimer < 240 && FlameTimer >= 0 && currentState == AttackState.CursedFlames && !EternityIsActive())
-            {
-                DrawTelegraph(NPCHead, PlayerCenter, DTAssetLib.FlameTelegraph.Value);
-            }
 
-            if (FlameStartTimer < 120 && FlameStartTimer >= 0 && currentState == AttackState.CursedFlames && !EternityIsActive())
+            if (FlameStartTimer < 120 && FlameStartTimer >= 0 && currentState == AttackState.CursedFlames)
             {
                 Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-                GlowConeWarning_CursedFlames();
+                if (!EternityIsActive())
+                {
+                    GlowConeWarning_CursedFlames();
+                }
+                if (EternityIsActive())
+                {
+                    GlowConeWarning_CursedFlamesEternity();
+                }
                 Opus.ReturnToDefaultDrawing(spriteBatch);
                 if (FlameStartTimer > 60)
                 {
@@ -1321,6 +1346,7 @@ namespace DestroyerTest.Content.Entities
                 SpawnCount = 0;
                 NapalmDelay = 120;
                 GlowConeScaling = 0.01f;
+                VortexFireCount = 0;
 
                 HasBoosted = false;
                 HasSpawnedSigil = false;
@@ -1330,49 +1356,23 @@ namespace DestroyerTest.Content.Entities
             }
         }
 
-
-        public void DrawTelegraph(Vector2 start, Vector2 end, Texture2D texture)
-        {
-            Vector2 direction = end - start;
-            float length = direction.Length();
-            direction.Normalize();
-            texture ??= ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/CursedFlamesTelegraph").Value;
-            SpriteBatch spriteBatch = Main.spriteBatch;
-
-            float rotation = direction.ToRotation();
-
-            // Assuming your texture is a chain segment, like 16px long
-            float segmentLength = texture.Height * 0.75f; // or Width, depending on the texture orientation
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-
-            for (float i = 0; i < length; i += segmentLength)
-            {
-                Vector2 position = start + direction * i;
-
-                Main.spriteBatch.Draw(
-                    texture,
-                    position - Main.screenPosition,
-                    null,
-                    new Color(179, 252, 0) * 0.2f,
-                    rotation + MathHelper.PiOver2, // Adjust if your texture points upward
-                    new Vector2(texture.Width / 2f, texture.Height / 2f), // Origin at center
-                    1f, // Scale
-                    SpriteEffects.None,
-                    0f
-                );
-            }
-
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-        }
-
         public float GlowConeScaling = 0.01f;
         public void GlowConeWarning_CursedFlames()
         {
             Vector2 dir = DirectionToPlayerCenter;
 
             Main.EntitySpriteDraw(DTAssetLib.GlowCone.Value, NPCHead - Main.screenPosition, null, ColorLib.CursedFlames, dir.ToRotation(), DTAssetLib.GlowCone.Value.Size() / 2, GlowConeScaling, SpriteEffects.None, 0);
+        }
+
+
+        public void GlowConeWarning_CursedFlamesEternity()
+        {
+            var i = Opus.GetEquidistantOrbitVectorsAndRots(6, NPCHead, ContemptAttackWarningOffset, 40);
+            
+            foreach(var p in i)
+            {
+                Main.EntitySpriteDraw(DTAssetLib.GlowCone.Value, NPCHead - Main.screenPosition, null, ColorLib.CursedFlames, p.Rotation, DTAssetLib.GlowCone.Value.Size() / 2, GlowConeScaling, SpriteEffects.None, 0);
+            }
         }
 
         public void GlowConeWarning_Napalm()
@@ -1403,27 +1403,42 @@ namespace DestroyerTest.Content.Entities
             }
         }
 
+        public float NodeRadius = 2400;
+        public bool NodesAreIn = false;
         public void NodeSpawn()
         {
-            float radius = 200;
             int projectileCount = 6;
 
-
-            SoundEngine.PlaySound(SoundID.Item20);
-
-            for (int i = 0; i < projectileCount; i++)
+            if (!HasTriggeredNodes)
             {
-                // Get evenly spaced angle with rotation offset
-                float angle = MathHelper.TwoPi * i / projectileCount;
-                Vector2 spawnOffset = radius * angle.ToRotationVector2(); // position on the circle
-                Vector2 spawnPosition = NPC.Center + spawnOffset;
+                PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp>(), NPCHead, Vector2.Zero, ColorLib.CursedFlames, 0.001f, 1);
+                PRTLoader.NewParticle(PRTLoader.GetParticleID<SmallShine>(), NPCHead, Vector2.Zero, Color.White, 2f);
+                SoundEngine.PlaySound(NodeSpawnSound);
+                for (int i = 0; i < projectileCount; i++)
+                {
+                    // Get evenly spaced angle with rotation offset
+                    float angle = MathHelper.TwoPi * i / projectileCount;
+                    Vector2 spawnOffset = NodeRadius * angle.ToRotationVector2(); // position on the circle
+                    Vector2 spawnPosition = NPC.Center + spawnOffset;
 
-                NPC.NewNPC(Entity.GetSource_FromThis(), (int)spawnPosition.X, (int)spawnPosition.Y, ModContent.NPCType<CursedFlameNode>());
-
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp>(), NPC.Center, Vector2.Zero, ColorLib.CursedFlames, 0.001f, 1);
-
+                    NPC.NewNPC(Entity.GetSource_FromThis(), (int)spawnPosition.X, (int)spawnPosition.Y, ModContent.NPCType<CursedFlameNode>());
+                    Main.NewText("The Nightmare Rose calls upon the Corruption for Help!", ColorLib.CursedFlames);
+                }
+                HasTriggeredNodes = true;
             }
-            Main.NewText("The Nightmare Rose calls upon the Corruption for Help!", ColorLib.CursedFlames);
+
+            if (HasTriggeredNodes)
+            {
+                if (NodeRadius > 600 && !NodesAreIn)
+                {
+                    NodeRadius -= 4;
+                }
+
+                if (NodeRadius <= 600 && !NodesAreIn)
+                {
+                    NodesAreIn = true;
+                }
+            }
         }
 
         public void ManageSigil(Vector2 SpawnPos)
@@ -1499,6 +1514,7 @@ namespace DestroyerTest.Content.Entities
         }
         
         public float ContemptAttackRotationOffset = 0f;
+        public float ContemptAttackWarningOffset = 0f;
         public bool SetDir1 = false;
         public void ContemptAttack()
         {
@@ -1512,7 +1528,7 @@ namespace DestroyerTest.Content.Entities
             
             Projectile flame = null;
 
-            ContemptAttackRotationOffset += FireLR ? 0.01f : -0.01f;
+            
 
             float rotationOffset = ContemptAttackRotationOffset;
 
@@ -1630,11 +1646,14 @@ namespace DestroyerTest.Content.Entities
                 VortexFireUD = Main.rand.NextBool(2);
                 SetDir3 = false;
             }
-            Vector2 spawn = VortexFireUD ? NPCHead + new Vector2(0, -400) : NPCHead + new Vector2(0, 400);
-            
-            float dirY = spawn.Y - player.Center.Y;
+            for (int r = 0; r < 3; r++)
+            {
+                Vector2 spawn = VortexFireUD ? NPCHead + new Vector2(Main.rand.NextFloat(-800f, 800f), -800) : NPCHead + new Vector2(Main.rand.NextFloat(-800f, 800f), 800);
+                
+                float dirY = VortexFireUD ? 20 : -20;
 
-            Projectile.NewProjectile(NPC.GetSource_FromAI(), spawn, dirY.ToRotationVector2() * 10, ModContent.ProjectileType<CursedFlameVortex>(), 20, 5);
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), spawn, new Vector2(0, dirY), ModContent.ProjectileType<CursedFlameVortex>(), 20, 5);
+            }
             VortexFireCount++;
         }
 
@@ -1897,8 +1916,80 @@ namespace DestroyerTest.Content.Entities
             return false;
         }
 
+        public float trailOffset = 0f;
+        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            trailOffset += 0.04f;
+            DTOptimizationsConfig OptCfg = ModContent.GetInstance<DTOptimizationsConfig>();
+            if (!OptCfg.DisableExcessTrails)
+            {
+                Opus.StartSpriteBatchForTrails(spriteBatch, BlendState.NonPremultiplied, SpriteSortMode.Immediate);
+
+                if (TrailPositions.Count > 1)
+                {
+                    List<ColoredVertex> ve = new List<ColoredVertex>();
+                    float a = 0;
+
+                    for (int i = TrailPositions.Count - 1; i > 0; i--)
+                    {
+                        float t = 1f - (i / (float)TrailPositions.Count);
+                        Color b = ColorLib.CursedFlames * t;
+
+                        Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
+                        Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * 60;
+                        Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * 60;
+
+                        DTUtils.AddStrips(ve, TrailPositions, i, offset, offset2, t, b, trailOffset);
+                    }
+
+                    GraphicsDevice gd = Main.graphics.GraphicsDevice;
+                    if (ve.Count >= 3)
+                    {
+                        gd.Textures[0] = DTAssetLib.Streak(7).Value;
+                        gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2);
+                    }
+                }
+            }
+            return true;
+        }
 
 
+
+        public List<Vector2> TrailPositions = new();
+        public List<float> TrailRotations = new();
+        private const int TrailLength = 400;
+
+        public void CacheTrail()
+        {
+            Vector2 lastPos = TrailPositions.Count > 0 ? TrailPositions[0] : NPC.Center;
+			Vector2 newPos  = NPC.Center;
+
+			float dist = Vector2.Distance(lastPos, newPos);
+			float step = 0.75f; // how closely to sample. tweak this!
+
+			if (dist > 0f)
+			{
+				int segments = (int)(dist / step);
+
+				for (int i = 1; i <= segments; i++)
+				{
+					Vector2 pos = Vector2.Lerp(lastPos, newPos, i / (float)segments);
+					TrailPositions.Insert(0, pos);
+					TrailRotations.Insert(0, NPC.velocity.ToRotation());
+				}
+			}
+			else
+			{
+				TrailPositions.Insert(0, newPos);
+				TrailRotations.Insert(0, NPC.velocity.ToRotation());
+			}
+
+			// Cap trail
+			while (TrailPositions.Count > TrailLength)
+				TrailPositions.RemoveAt(TrailPositions.Count - 1);
+			while (TrailRotations.Count > TrailLength)
+				TrailRotations.RemoveAt(TrailRotations.Count - 1);
+        }
         public override void AI()
         {
             NPC bossNPC = null;
@@ -1963,7 +2054,7 @@ namespace DestroyerTest.Content.Entities
             }
 
             // Orbit settings
-            float radius = 600f;
+            float radius = modBoss.NodeRadius;
             float speed = 0.05f;
             float angle = Main.GameUpdateCount * speed;
 
@@ -1992,7 +2083,7 @@ namespace DestroyerTest.Content.Entities
             // Final orbit
             Vector2 offset = new Vector2(MathF.Cos(myAngle), MathF.Sin(myAngle)) * radius;
             NPC.Center = OrbitCenter + offset - new Vector2(NPC.width / 2, NPC.height / 2);
-
+            CacheTrail();
         }
     }
 

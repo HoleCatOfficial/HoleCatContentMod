@@ -9,12 +9,9 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Equips.ScepterAccessories
 {
-	// The AutoloadEquip attribute automatically attaches an equip texture to this item.
-	// Providing the EquipType.Body value here will result in TML expecting a X_Body.png file to be placed next to the item's main texture.
 	[AutoloadEquip(EquipType.HandsOn)]
 	public class RosyGlove : ModItem
 	{
-
 		public override void SetDefaults() {
 			Item.width = 22; // Width of the item
 			Item.height = 28; // Height of the item
@@ -23,9 +20,9 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
             Item.vanity = false;
             Item.accessory = true;
 		}
-
 		public override void UpdateEquip(Player player) {
-            player.GetDamage<ScepterClass>() *= 1.03f;
+            player.GetDamage<ScepterClass>() *= 1.07f;
+			ScepterClassStats.ThrowSpeedModifier = 1.75f;
 		}
 	}
 }

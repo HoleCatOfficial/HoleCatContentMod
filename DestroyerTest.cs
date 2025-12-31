@@ -82,7 +82,7 @@ namespace DestroyerTest
 				ChestID.ShadowLocked,
 				ModContent.ItemType<ShadowScepter>(),
 				stack: 1,
-				rarity: 0.80f
+				rarity: 0.70f
 			);
             ChestLootSystem.RegisterChestLoot(
 				ChestID.Water,
@@ -94,61 +94,55 @@ namespace DestroyerTest
 				ChestID.Gold,
 				ModContent.ItemType<InsurgentCirclet>(),
 				stack: 1,
-				rarity: 0.15f
+				rarity: 0.05f
 			);
             ChestLootSystem.RegisterChestLoot(
 				ChestID.Gold,
 				ModContent.ItemType<InsurgentBodyArmor>(),
 				stack: 1,
-				rarity: 0.15f
+				rarity: 0.05f
 			);
             ChestLootSystem.RegisterChestLoot(
 				ChestID.Gold,
 				ModContent.ItemType<InsurgentFaulds>(),
 				stack: 1,
-				rarity: 0.15f
+				rarity: 0.05f
 			);
             ChestLootSystem.RegisterChestLoot(
 				ChestID.Gold,
 				ModContent.ItemType<RevenantMask>(),
 				stack: 1,
-				rarity: 0.15f
+				rarity: 0.03f
 			);
             ChestLootSystem.RegisterChestLoot(
 				ChestID.Gold,
 				ModContent.ItemType<ForgottenPendant>(),
 				stack: 1,
-				rarity: 0.5f
+				rarity: 0.03f
 			);
             ChestLootSystem.RegisterChestLoot(
 				ChestID.Frozen,
 				ModContent.ItemType<FrigidScroll>(),
 				stack: 1,
-				rarity: 0.25f
+				rarity: 0.10f
 			);
             ChestLootSystem.RegisterChestLoot(
 				ChestID.Wooden,
 				ModContent.ItemType<MageGlove>(),
 				stack: 1,
-				rarity: 0.35f
+				rarity: 0.10f
 			);
             ChestLootSystem.RegisterChestLoot(
 				ChestID.Wooden,
 				ModContent.ItemType<RosyGlove>(),
 				stack: 1,
-				rarity: 0.35f
-			);
-            ChestLootSystem.RegisterChestLoot(
-				ChestID.Wooden,
-				ModContent.ItemType<MageGlove>(),
-				stack: 1,
-				rarity: 0.35f
+				rarity: 0.15f
 			);
             ChestLootSystem.RegisterChestLoot(
 				ChestID.Gold,
 				ModContent.ItemType<ScepterPolish>(),
 				stack: 1,
-				rarity: 0.35f
+				rarity: 0.15f
 			);
             ChestLootSystem.RegisterChestLoot(
 				ChestID.Sandstone,

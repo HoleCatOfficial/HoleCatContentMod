@@ -9,6 +9,8 @@ using DestroyerTest.Content.Consumables;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using System;
+using InnoVault.PRT;
+using DestroyerTest.Content.Particles;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 {
@@ -66,9 +68,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
         {
             Projectile.velocity *= 0.99f;
             Projectile.rotation += 0.03f * Projectile.velocity.X;
+            Projectile.alpha = 200;
 
-            Dust idle = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.TintableDust, 0, 0, 200, new Color(32, 11, 40), 1.5f);
-            idle.noGravity = true;
+            PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Vector2.Zero, new Color(32, 11, 40) * 0.6f, Main.rand.NextFloat(0.5f, 1f));
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)

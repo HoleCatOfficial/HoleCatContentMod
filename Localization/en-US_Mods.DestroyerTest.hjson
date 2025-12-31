@@ -3685,6 +3685,16 @@ Items: {
 		DisplayName: Brine Flask
 		Tooltip: ""
 	}
+
+	LivingPendant: {
+		DisplayName: Living Pendant
+		Tooltip: Scepter Shots heal for 5% of their damage on-hit.
+	}
+
+	TrueRiftMaker: {
+		Tooltip: ""
+		DisplayName: True Riftmaker
+	}
 }
 
 Projectiles: {
@@ -4171,6 +4181,7 @@ Projectiles: {
 	FailedPotionThrown.DisplayName: Failed Potion Thrown
 	CursedNodeCrystal2.DisplayName: Cursed Node Crystal2
 	BigRiftExplosion.DisplayName: Big Rift Explosion
+	TrueRiftMakerThrown.DisplayName: True Rift Maker Thrown
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.

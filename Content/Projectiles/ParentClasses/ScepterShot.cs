@@ -11,6 +11,7 @@ using Terraria.Audio;
 using OpusLib;
 using System.Collections.Generic;
 using ReLogic.Content;
+using DestroyerTest.Content.Equips.ScepterAccessories;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 {
@@ -310,9 +311,30 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
             return false;
         }
 
+        public void AccessoryHandler_ChlorophyteLifesteal(ref int damageDone)
+        {
+            Player player = Main.player[Projectile.owner];
+            if (!player.TryGetModPlayer<LivingPendantPlayer>(out var Pendant))
+            {
+                return;
+            }
+            else
+            {
+                if (!Pendant.Active)
+                {
+                    return;
+                }
+                else
+                {
+                    player.Heal((int)(damageDone * 0.05f));
+                }
+            }
+        }
+
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.AddBuff(Debuff, DebuffTime);
+            AccessoryHandler_ChlorophyteLifesteal(ref damageDone);
         }
 
         public override void OnHitPlayer(Player target, Player.HurtInfo info)

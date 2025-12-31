@@ -27,6 +27,7 @@ namespace DestroyerTest.Content.Projectiles
             Projectile.tileCollide = false;
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = -1;
+            Projectile.rotation = Main.rand.NextFloat(MathHelper.TwoPi);
         }
 
         public override bool PreDraw(ref Color lightColor)

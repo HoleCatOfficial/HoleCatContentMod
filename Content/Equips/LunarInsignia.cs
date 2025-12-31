@@ -43,10 +43,10 @@ namespace DestroyerTest.Content.Equips
 		public override void VerticalWingSpeeds(Player player, ref float ascentWhenFalling, ref float ascentWhenRising,
 			ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend) {
 			ascentWhenFalling = 1f;
-			ascentWhenRising = 0.7f;
-			maxCanAscendMultiplier = 5f;
-			maxAscentMultiplier = 5f;
-			constantAscend = 0.16f;
+			ascentWhenRising = 1f;
+			maxCanAscendMultiplier = 2.5f;
+			maxAscentMultiplier = 2.5f;
+			constantAscend = 0.10f;
 		}
 
 		public override void AddRecipes() {

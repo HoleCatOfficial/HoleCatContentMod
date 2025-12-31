@@ -170,7 +170,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
                     Projectile.Center,
                     velocity,
                     ModContent.ProjectileType<TormentedSoul2>(),
-                    Projectile.damage,
+                    Projectile.damage / 2,
                     Projectile.knockBack
                 );
             }

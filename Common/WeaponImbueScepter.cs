@@ -35,7 +35,6 @@ namespace DestroyerTest.Common
         {
             Dust dust = Dust.NewDustDirect(t.EnchantmentVisuals().TopLeft(), t.EnchantmentVisuals().Width, t.EnchantmentVisuals().Height, ID, 0, 0, alpha, color, scale);
             dust.noGravity = noGravity;
-            dust.fadeIn = 10;
         }
 
         public override void AI(Projectile projectile)

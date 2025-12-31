@@ -92,6 +92,11 @@ namespace DestroyerTest.Content.Projectiles.Boss
         
 			Opus.DrawGlowOnProj(Projectile, lightColor, true);
 
+			if (WaitTimer < 20)
+			{
+				Opus.DrawTextureOnProj(DTAssetLib.FadeLine, Projectile, DTColorUtils.Pastel(ColorLib.TenebrisGradient, 50), false, Projectile.rotation + MathHelper.PiOver2, 4f, 1f);
+			}
+
             Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, Projectile.Center - Main.screenPosition, null, lightColor, Projectile.rotation, TextureAssets.Projectile[Projectile.type].Value.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
 
 			Opus.ReturnToDefaultDrawing(spriteBatch);
