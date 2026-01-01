@@ -1468,12 +1468,18 @@ Items: {
 	}
 
 	OrichalcumVisage: {
-		Tooltip: Increases Mana Burst power by 2
+		Tooltip: Increases Scepter Class Range by {0}.
+		SetBonus: When firing from a scepter, you have a chance to shoot a ring of petals at the enemy.
 		DisplayName: Orichalcum Visage
 	}
 
 	MythrilVisage: {
-		Tooltip: Increases Mana Burst power by 2
+		Tooltip: Increases Scepter Class Range by {0}.
+		SetBonus:
+			'''
+			Increases Scepter Class Range by {0}.
+			Increases Scepter throwing speed by {1}%.
+			'''
 		DisplayName: Mythril Visage
 	}
 
@@ -3695,6 +3701,31 @@ Items: {
 		Tooltip: ""
 		DisplayName: True Riftmaker
 	}
+
+	MineralOil: {
+		DisplayName: Mineral Oil
+		Tooltip: ""
+	}
+
+	Soot: {
+		DisplayName: Soot
+		Tooltip: ""
+	}
+
+	AetherianHood: {
+		DisplayName: Aetherian Hood
+		Tooltip:
+			'''
+			Increases Scepter Class damage by {0}%.
+			Increases Scepter Armor Penetration by {1}.
+			'''
+		SetBonus: Your scepters all shimmer! They can't collide with tiles at all!
+	}
+
+	AetherianRegalia: {
+		DisplayName: Aetherian Regalia
+		Tooltip: Increases Scepter throw speed by {0}%.
+	}
 }
 
 Projectiles: {
@@ -4901,6 +4932,11 @@ Configs: {
 		DragCamera: {
 			Tooltip: If enabled, the camera will lag behind the player a bit when they move. This can mess with things drawn directly to the screen that expect the player to be at the center.
 			Label: Use reworked camera
+		}
+
+		ScepterTileCollsionsCooldown: {
+			Label: Scepter Tile Collsions Cooldown
+			Tooltip: ""
 		}
 	}
 

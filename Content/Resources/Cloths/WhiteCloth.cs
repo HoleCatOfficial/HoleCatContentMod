@@ -28,12 +28,10 @@ namespace DestroyerTest.Content.Resources.Cloths
 			CreateRecipe()
 				.AddIngredient(ItemID.TatteredCloth, 2)
                 .AddIngredient<EchoFluid>(1)
-				.AddTile(TileID.DyeVat)
 				.Register();
             CreateRecipe()
 				.AddIngredient(ItemID.Silk, 2)
                 .AddIngredient<EchoFluid>(1)
-				.AddTile(TileID.DyeVat)
 				.Register();
 			foreach (int itemType in ContentSamples.ItemsByType.Keys)
         {

@@ -12,6 +12,7 @@ using DestroyerTest.Content.MeleeWeapons;
 using DestroyerTest.Content.Ammunitions;
 using DestroyerTest.Content.Scepter;
 using DestroyerTest.Content.Tools;
+using DestroyerTest.Content.Resources;
 
 namespace DestroyerTest.Common.NPC_Folder
 {
@@ -232,6 +233,7 @@ namespace DestroyerTest.Common.NPC_Folder
             {
                 shop.Add<OilFlask>();
                 shop.Add<BrineFlask>();
+                shop.Add<MineralOil>();
                 shop.Add<CursedStar>(Condition.DownedSkeletron); // Or wherever your item is
             }
 

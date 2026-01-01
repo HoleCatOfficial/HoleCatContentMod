@@ -10,6 +10,7 @@ using DestroyerTest.Common;
 using System.IO;
 using OpusLib;
 using Terraria.Graphics.Shaders;
+using Humanizer;
 
 namespace DestroyerTest.Content.Projectiles.ParentClasses
 {
@@ -34,9 +35,12 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         public bool returning = false;
         public int flightTime = 0;
         public int HitCount = 0;
-        public int soundCooldown = 0; // Initialize a cooldown timer
+        public int soundCooldown = 0;
         public int existenceTimer = 0;
         public int TileCollisions = 0;
+        public float TileCollideFXTimer = 0f;
+
+        public bool ArmorSetHelper_AetherianShimmerEffects = false;
 
         public override void SetStaticDefaults()
         {
@@ -48,10 +52,10 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             Projectile.width = WidthDim + ScepterClassStats.SizeModifier;
             Projectile.height = HeightDim + ScepterClassStats.SizeModifier;
             Projectile.friendly = true;
-            Projectile.penetrate = -1; // Infinite pierce
+            Projectile.penetrate = -1;
             Projectile.light = 0.5f;
             Projectile.ignoreWater = true;
-            Projectile.timeLeft = 9000; // 10 seconds max lifespan
+            Projectile.timeLeft = 9000;
             Projectile.DamageType = ModContent.GetInstance<ScepterClass>();
             Projectile.netImportant = true;
             Projectile.netUpdate = true;
@@ -78,130 +82,57 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             TileCollisions = reader.ReadInt32();
         }
 
-        int trailLength = 10; // Adjust for desired effect
 		public override bool PreDraw(ref Color lightColor)
 			{
-				// Set lightColor to a reddish hue and adjust its transparency based on the projectile's time left
 				lightColor = ThemeColor;
 				if (Projectile.timeLeft < 30)
 				{
-					lightColor *= ((float)Projectile.timeLeft / 30f); // Fade out glow as projectile nears expiration
+					lightColor *= ((float)Projectile.timeLeft / 30f); 
 				}
 
-				// Prepare for sprite drawing
 				SpriteBatch spriteBatch = Main.spriteBatch;
 				Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
 				DTUtils Utility = new DTUtils();
 
-
-                Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-
-                if (returning)
+                if (!ArmorSetHelper_AetherianShimmerEffects)
                 {
-                    Main.EntitySpriteDraw(DTAssetLib.Cyclone(1).Value, Projectile.Center - Main.screenPosition, null, lightColor * 0.4f, Projectile.rotation, DTAssetLib.Cyclone(1).Value.Size() / 2, 0.1f * Projectile.scale, SpriteEffects.None, 0);
+                    Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+
+                    if (returning)
+                    {
+                        Main.EntitySpriteDraw(DTAssetLib.Cyclone(1).Value, Projectile.Center - Main.screenPosition, null, lightColor * 0.4f, Projectile.rotation, DTAssetLib.Cyclone(1).Value.Size() / 2, 0.1f * Projectile.scale, SpriteEffects.None, 0);
+                    }
+                    else
+                    {
+                        Main.EntitySpriteDraw(DTAssetLib.Cyclone(1).Value, Projectile.Center - Main.screenPosition, null, lightColor * 0.4f, Projectile.rotation, DTAssetLib.Cyclone(1).Value.Size() / 2, 0.1f * Projectile.scale, SpriteEffects.FlipHorizontally, 0);
+                    }
+                        
+                    Main.EntitySpriteDraw(DTAssetLib.BloomRing.Value, Projectile.Center - Main.screenPosition, null, lightColor * 0.4f, Projectile.rotation, DTAssetLib.BloomRing.Value.Size() / 2, 0.4f * Projectile.scale, SpriteEffects.None, 0);
+                    
+                    Opus.ReturnToDefaultDrawing(spriteBatch);
+
+                    Main.EntitySpriteDraw(projectileTexture, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, projectileTexture.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
                 }
                 else
                 {
-                    Main.EntitySpriteDraw(DTAssetLib.Cyclone(1).Value, Projectile.Center - Main.screenPosition, null, lightColor * 0.4f, Projectile.rotation, DTAssetLib.Cyclone(1).Value.Size() / 2, 0.1f * Projectile.scale, SpriteEffects.FlipHorizontally, 0);
-                }
+                    Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+
+                    if (returning)
+                    {
+                        Main.EntitySpriteDraw(DTAssetLib.Cyclone(1).Value, Projectile.Center - Main.screenPosition, null, DTColorUtils.Pastel(Main.DiscoColor, 0.4f) * 0.4f, Projectile.rotation, DTAssetLib.Cyclone(1).Value.Size() / 2, 0.1f * Projectile.scale, SpriteEffects.None, 0);
+                    }
+                    else
+                    {
+                        Main.EntitySpriteDraw(DTAssetLib.Cyclone(1).Value, Projectile.Center - Main.screenPosition, null, DTColorUtils.Pastel(Main.DiscoColor, 0.4f) * 0.4f, Projectile.rotation, DTAssetLib.Cyclone(1).Value.Size() / 2, 0.1f * Projectile.scale, SpriteEffects.FlipHorizontally, 0);
+                    }
+                        
+                    Main.EntitySpriteDraw(DTAssetLib.BloomRing.Value, Projectile.Center - Main.screenPosition, null, DTColorUtils.Pastel(Main.DiscoColor, 0.4f) * 0.4f, Projectile.rotation, DTAssetLib.BloomRing.Value.Size() / 2, 0.4f * Projectile.scale, SpriteEffects.None, 0);
+
+                    Main.EntitySpriteDraw(projectileTexture, Projectile.Center - Main.screenPosition, null, DTColorUtils.Pastel(Main.DiscoColor, 0.4f) * 0.6f, Projectile.rotation, projectileTexture.Size() / 2, Projectile.scale, SpriteEffects.None, 0);     
                     
-                Main.EntitySpriteDraw(DTAssetLib.BloomRing.Value, Projectile.Center - Main.screenPosition, null, lightColor * 0.4f, Projectile.rotation, DTAssetLib.BloomRing.Value.Size() / 2, 0.4f * Projectile.scale, SpriteEffects.None, 0);
-                /*
-                var Trail = DTAssetLib.Trail(2).Value;
-				Vector2 trailOrigin = new Vector2(Trail.Width / 2, Trail.Height / 2);
-
-				for (int i = 0; i < trailLength && i < Projectile.oldPos.Length; i++)
-					{
-						float fade = (float)(trailLength - i) / trailLength;
-
-						// Make sure transparency blending is correct
-						Color trailColor = lightColor * fade * 0.3f;
-						trailColor.A = (byte)(fade * 100); // Instead of setting it to 0
-
-						Vector2 drawPosition = Projectile.oldPos[i] + (Projectile.Size / 2) - Main.screenPosition;
-						float scaleFactor = 0.3f; // Adjust the factor to make it smaller
-						Main.EntitySpriteDraw(Trail, drawPosition, null, trailColor, Projectile.velocity.ToRotation() + MathHelper.PiOver2, trailOrigin, (Projectile.scale * fade) * scaleFactor, SpriteEffects.None, 0);
-					}
-
-                Opus.ReturnToDefaultDrawing(spriteBatch);
-                */
-
-                // Build a vertex triangle-strip ribbon for a smooth Zenith-like trail, and feed the shader
-                // Start an immediate-mode batch for shader parameter setting (required by many shaders)
-                Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-
-                // Attempt to get the vanilla Zenith/trail shader. Replace this key with the runtime-discovered key if needed.
-                string shaderKey = "ZenithTrailKey"; // <-- replace this with the key you find at runtime
-                if (GameShaders.Misc.TryGetValue(shaderKey, out var shaderData))
-                {
-                    shaderData.UseColor(ThemeColor.ToVector3());
-                    // Bind a trail texture to the graphics device if the shader samples a texture
-                    Texture2D trailTexture = DTAssetLib.Trail(2).Value;
-                    Main.graphics.GraphicsDevice.Textures[0] = trailTexture;
-
-                    // Apply shader so it affects subsequent primitive draws
-                    shaderData.Apply(null);
-
-                    // Collect non-zero old positions into a list (closest first)
-                    var points = new System.Collections.Generic.List<Vector2>();
-                    for (int i = 0; i < Projectile.oldPos.Length; i++)
-                    {
-                        if (Projectile.oldPos[i] != Vector2.Zero)
-                            points.Add(Projectile.oldPos[i] + Projectile.Size / 2f);
-                    }
-
-                    if (points.Count >= 2)
-                    {
-                        GraphicsDevice gd = Main.graphics.GraphicsDevice;
-                        // Ensure the shader's texture is bound to slot 0 for the primitive draw
-                        gd.Textures[0] = DTAssetLib.Trail(2).Value;
-
-                        int count = points.Count;
-                        // Two vertices per point (left and right edge), ordered for TriangleStrip
-                        var verts = new VertexPositionColorTexture[count * 2];
-
-                        float maxWidth = 18f * Projectile.scale; // width at the base of the trail
-                        float minWidth = 2f * Projectile.scale;  // width at the tail
-
-                        for (int i = 0; i < count; i++)
-                        {
-                            float t = i / (float)(count - 1);
-                            // Interpolate width so ribbon tapers
-                            float width = MathHelper.Lerp(maxWidth, minWidth, t);
-
-                            Vector2 dir;
-                            if (i < count - 1)
-                                dir = points[i + 1] - points[i];
-                            else
-                                dir = points[i] - points[i - 1];
-
-                            if (dir == Vector2.Zero)
-                                dir = new Vector2(0, -1);
-
-                            Vector2 normal = Vector2.Normalize(new Vector2(-dir.Y, dir.X));
-                            Vector2 left = points[i] + normal * width;
-                            Vector2 right = points[i] - normal * width;
-
-                            Color col = ThemeColor * (1f - t) * 1.0f;
-                            col.A = (byte)(255 * (1f - t));
-
-                            verts[i * 2] = new VertexPositionColorTexture(new Vector3(left, 0f), col, new Vector2(t, 0f));
-                            verts[i * 2 + 1] = new VertexPositionColorTexture(new Vector3(right, 0f), col, new Vector2(t, 1f));
-                        }
-
-                        // Draw the triangle strip (primitiveCount = verts.Length - 2)
-                        gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, verts, 0, verts.Length - 2);
-                    }
+                    Opus.ReturnToDefaultDrawing(spriteBatch);
                 }
-
-                // Return to default batch / blending
-                Opus.ReturnToDefaultDrawing(spriteBatch);
-
-
-                // Zenith trail
-
-                Main.EntitySpriteDraw(projectileTexture, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, projectileTexture.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
-				return false;
+                return false;
 			}
 
         public override void AI()
@@ -229,6 +160,12 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             );
         }
 
+        public virtual void OnReturn()
+        {
+            
+        }
+
+        public bool OnReturnFlag = false;
         public virtual void DefaultBehaviour()
         {
             // Decrease the cooldown timer on each tick
@@ -237,16 +174,20 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
                 soundCooldown--;
             }
 
-            // Play the sound every 30 ticks
             if (soundCooldown <= 0)
             {
                 SoundEngine.PlaySound(SoundID.Item169);
-                soundCooldown = 30; // Reset the cooldown to 30 ticks
+                soundCooldown = 30;
+            }
+
+            if (TileCollideFXTimer > 0)
+            {
+                TileCollideFXTimer -= 1f;
             }
 
             Player player = Main.player[Projectile.owner];
 
-            if (Projectile.Distance(player.Center) < 25) // 8 pixels radius
+            if (Projectile.Distance(player.Center) < 25 || ArmorSetHelper_AetherianShimmerEffects)
             {
                 Projectile.tileCollide = false;
             }
@@ -255,24 +196,17 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
                 Projectile.tileCollide = true;
             }
             
-            // Always spinning
-            Projectile.rotation += 0.4f * Projectile.direction;
+            Projectile.rotation += (Projectile.velocity.Length() * 0.03f) * Projectile.direction;
 
-              // Generate flying dust effect
-            if (Main.rand.NextBool(3)) // 33% chance per tick
+            if (Main.rand.NextBool(3) && !ArmorSetHelper_AetherianShimmerEffects)
             {
                 Dust dust = Dust.NewDustPerfect(Projectile.Center, DustType, Projectile.velocity * 0.2f, 100, DustColor, 1.2f);
                 dust.noGravity = true;
-                dust.fadeIn = 1.5f;
             }
-
-            if (Projectile.Distance(player.Center) < 4) // 8 pixels radius
+            else if (Main.rand.NextBool(3) && ArmorSetHelper_AetherianShimmerEffects)
             {
-                Projectile.tileCollide = false;
-            }
-            else
-            {
-                Projectile.tileCollide = true;
+                Dust dust = Dust.NewDustPerfect(Projectile.Center, DustID.TintableDustLighted, Projectile.velocity * 0.2f, 100, DTColorUtils.Pastel(Main.DiscoColor, 0.4f), 1.2f);
+                dust.noGravity = true;
             }
 
             DTConfig config = ModContent.GetInstance<DTConfig>();
@@ -280,7 +214,11 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
             if (!returning)
             {
-                
+                if (!OnReturnFlag)
+                {
+                    OnReturn();
+                    OnReturnFlag = true;
+                }
                 flightTime++;
                 float returnDelayMultiplier = 1f + (ScepterClassStats.Range * 0.01f);
                 int baseFlightTime = 60;
@@ -348,11 +286,6 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             }
         }
 
-
-
-
-
-
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.AddBuff(BuffID.Confused, 120);
@@ -361,15 +294,25 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             returning = true; // Immediately start returning when hitting something
         }
 
+        /// <summary>
+        /// Use this for any tile collision effects. Always return base at the end so that the timer works right.
+        /// </summary>
+        public void TileCollideEffects()
+        {
+            if (TileCollideFXTimer <= 0f)
+            {
+                //Blah Blah run here.
+                TileCollideFXTimer = ModContent.GetInstance<DTConfig>().ScepterTileCollsionsCooldown;
+            }
+        }
 
-
-        public override bool OnTileCollide(Vector2 oldVelocity)
+        private void CommonTileCollideEffects(ref Vector2 oldVelocity)
         {
             SoundStyle Break = new SoundStyle("DestroyerTest/Assets/Audio/TO_Break") with
             {
                 PitchVariance = 0.5f
             };
-            // Play impact sound and spawn tile hit effects
+
             Collision.HitTiles(Projectile.position, Projectile.velocity, Projectile.width, Projectile.height);
             SoundEngine.PlaySound(SoundID.Tink, Projectile.position);
             TileCollisions += 1;
@@ -392,6 +335,16 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
             // Activate return phase
             returning = true;
+        }
+
+        public override bool OnTileCollide(Vector2 oldVelocity)
+        {
+            if (!ArmorSetHelper_AetherianShimmerEffects)
+            {
+                CommonTileCollideEffects(ref oldVelocity);
+                
+                TileCollideEffects();
+            }
 
             return false; // Prevents the projectile from being destroyed on collision
         }

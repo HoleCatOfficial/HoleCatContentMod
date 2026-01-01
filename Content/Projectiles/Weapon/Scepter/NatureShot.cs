@@ -32,7 +32,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 			BounceDust = KillDust;
 			KillDust = DustID.FireworksRGB;
 			TileBounce = false;
-			TileKill = false;
+			TileKill = true;
 			Homing = true;
 			MaxTileHitCount = 4;
 			Projectile.Resize(16, 16);

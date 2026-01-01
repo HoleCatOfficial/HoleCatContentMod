@@ -333,7 +333,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            target.AddBuff(Debuff, DebuffTime);
+            if (Debuff != -1)
+            {
+                target.AddBuff(Debuff, DebuffTime);
+            }
             AccessoryHandler_ChlorophyteLifesteal(ref damageDone);
         }
 

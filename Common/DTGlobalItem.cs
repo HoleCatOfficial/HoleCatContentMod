@@ -19,6 +19,7 @@ using System.Linq;
 using DestroyerTest.Content.Consumables;
 using DestroyerTest.Content.Scepter;
 using DestroyerTest.Content.Equips.ScepterAccessories;
+using Terraria.DataStructures;
 
 namespace DestroyerTest.Common
 {
@@ -34,6 +35,34 @@ namespace DestroyerTest.Common
             }
         }
     }
+
+    public class SootFromFurnace : GlobalItem
+    {
+        public override void OnCreated(Item item, ItemCreationContext context)
+        {
+            
+            RecipeItemCreationContext c = context as RecipeItemCreationContext;
+            if (c == null)
+            {
+                return;
+            }
+            
+            if (c.Recipe.HasTile(TileID.Furnaces))
+            {
+                c.Recipe.AddOnCraftCallback(SootFurnaceRecipeCallback.GetSoot);
+            }
+        }
+    }
+
+    public static class SootFurnaceRecipeCallback
+	{
+		public static void GetSoot(Recipe recipe, Item item, List<Item> consumedItems, Item destinationStack) {
+			if (Main.rand.NextBool(4)) {
+				
+				Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_FromThis(), ModContent.ItemType<Soot>(), Main.rand.Next(1, 5));
+			}
+		}
+	}
 
 
     public class TooltipColors : GlobalItem

@@ -35,10 +35,18 @@ namespace DestroyerTest.Content.Equips.MalakhimSet
 		{
 			ascentWhenFalling = 3.0f; // Falling glide speed
 			ascentWhenRising = 3.0f; // Rising speed
-			maxCanAscendMultiplier = 1f;
-			maxAscentMultiplier = 3f;
+			maxCanAscendMultiplier = 1.45f;
+			maxAscentMultiplier = 1.45f;
 			constantAscend = 0.135f;
 		}
+
+		public override void AddRecipes()
+        {
+			CreateRecipe()
+				.AddIngredient<Vesper>(25)
+				.AddTile(TileID.Anvils)
+				.Register();
+        }
 
 	}
 }

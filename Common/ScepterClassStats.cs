@@ -65,6 +65,28 @@ namespace DestroyerTest.Common
         public static int ShotBounceModifier { get; set; } = 0;
     }
 
+    public static class ScepterRegistry
+    {
+        /// <summary>
+        /// Some Thrown Scepters do not inherit from ThrownScepter. For effects on thrown scepters, we can add projectiles to the list to extend the effects to them as well.
+        /// <br/> Compiled during loading.
+        /// </summary>
+        public static Projectile[] AllThrownScepters = new Projectile[]
+        {
+            
+        };
+
+        /// <summary>
+        /// This is for effects that exclusively apply to the ThrownScepter class and its children.
+        /// <br/> Scepters that do not inherit will not be affected.
+        /// <br/> Compiled during loading.
+        /// </summary>
+        public static Projectile[] DirectInheritanceThrownScepters = new Projectile[]
+        {
+
+        };
+    }
+
     public class ScepterClassStatResetPlayer : ModPlayer
     {
         public override void ResetEffects()

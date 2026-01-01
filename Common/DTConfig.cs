@@ -23,6 +23,14 @@ namespace DestroyerTest.Common
 
         [DefaultValue(true)]
         public bool DragCamera { get; set; }
+
+        /// <summary>
+        /// The cooldown timer for triggering effects for Thrown Scepter tile collisions.
+        /// <br/> Has a minimum of half a second and a maximum of 20 seconds.
+        /// </summary>
+        [Range(30f, 1200f)]
+        [DefaultValue(0f)]
+        public float ScepterTileCollsionsCooldown { get; set; }
         
     }
 

@@ -48,8 +48,7 @@ namespace DestroyerTest.Content.Equips.MalakhimSet
 
         public override void UpdateEquip(Player player)
         {
-            float DamageBonus = 0.15f * player.statLife;
-            player.GetDamage(ModContent.GetInstance<ScepterClass>()) += DamageBonus;
+            player.GetDamage(ModContent.GetInstance<ScepterClass>()) *= 1.12f;
             player.statLifeMax2 += 40;
         }
 

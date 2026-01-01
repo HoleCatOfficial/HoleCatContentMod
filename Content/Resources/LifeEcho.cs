@@ -16,7 +16,7 @@ namespace DestroyerTest.Content.Resources
 			Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(5, 4));
 			ItemID.Sets.AnimatesAsSoul[Item.type] = true;
 			ItemID.Sets.ItemNoGravity[Item.type] = true;
-			Item.ResearchUnlockCount = 25;
+			Item.ResearchUnlockCount = 100;
 		}
 
 		public override void SetDefaults() {
@@ -35,10 +35,10 @@ namespace DestroyerTest.Content.Resources
 
 	public class LE_DROP_NPC : GlobalNPC
 	{
+		public override bool InstancePerEntity => true;
 		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
         {
-
-			if (OpusNPCDropHelper.Zombies.Contains(npc.type))
+			if (OpusNPCDropHelper.Zombies.Contains(npc.type) || OpusNPCDropHelper.Skeletons.Contains(npc.type))
             {
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<LifeEcho>(), 1, 1, 5));
             }
