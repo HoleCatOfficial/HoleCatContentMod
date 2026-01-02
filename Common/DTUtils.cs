@@ -150,7 +150,6 @@ namespace DestroyerTest.Common
         }
 
         //From Cal Entropy. Too good not to have due to its usefulness.
-        // Note: Change the bar texture paths.
         public static void DrawChargeBar(float barScale, Vector2 position, float progress, Color color)
         {
             var barBG = DTAssetLib.Barback.Value;

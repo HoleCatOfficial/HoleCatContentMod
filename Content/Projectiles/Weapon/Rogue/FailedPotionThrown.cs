@@ -15,7 +15,6 @@ using System.Collections.Generic;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 {
-    [AutoloadGlowmask]
     public class FailedPotionThrown : ModProjectile
     {
         public override void SetDefaults()

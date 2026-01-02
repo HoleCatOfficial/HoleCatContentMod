@@ -26,13 +26,5 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
             player.GetArmorPenetration(ModContent.GetInstance<ScepterClass>()) += 8;
             ScepterClassStats.Range += 5;
         }
-
-        public override void AddRecipes()
-        {
-            CreateRecipe()
-                .AddIngredient(ItemID.OrichalcumBar, 9)
-                .AddTile(TileID.MythrilAnvil)
-                .Register();
-        }
     }
 }

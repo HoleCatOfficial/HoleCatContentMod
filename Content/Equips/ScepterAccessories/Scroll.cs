@@ -15,6 +15,7 @@ using OpusLib;
 using DestroyerTest.Rarity.Scepter;
 using DestroyerTest.Content.Projectiles.player.Accessory;
 using DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss;
+using DestroyerTest.Content.Projectiles.Weapon.Scepter;
 
 namespace DestroyerTest.Content.Equips.ScepterAccessories
 {
@@ -177,6 +178,8 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
         public bool TempestScroll = false;
         public bool SpookyScroll2 = false;
         public bool SpookyScroll3 = false;
+        
+        public int UseEffectCooldown = 0;
         public override void ResetEffects()
         {
             CurseScroll = false;
@@ -196,178 +199,53 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
             SpookyScroll2 = false;
             SpookyScroll3 = false;
         }
+
+        public override void PostUpdateEquips()
+        {
+            var config = ModContent.GetInstance<DTConfig>();
+            UseEffectCooldown = config.ScrollEffectsCooldown;
+
+            if (UseEffectCooldown < config.ScrollEffectsCooldown)
+            {
+                UseEffectCooldown++;
+            }
+        }
+
+
         public override void ModifyShootStats(Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
-            if (CurseScroll)
+            var config = ModContent.GetInstance<DTConfig>();
+            if (UseEffectCooldown < config.ScrollEffectsCooldown)
             {
-                if (item.DamageType == ModContent.GetInstance<ScepterClass>() && Player.altFunctionUse == 2)
-                {
-                    if (Main.rand.NextBool(3))
-                    {
-                        for (int t = 0; t < 3; t++)
-                        {
-                            Vector2 outer = Player.Center + Main.rand.NextVector2CircularEdge(10, 10);
-                            Vector2 motion = outer - position;
-
-                            Projectile.NewProjectile(
-                                Player.GetSource_ItemUse(item),
-                                Player.Center,
-                                motion,
-                                ModContent.ProjectileType<CurseProjectile>(),
-                                damage / 2,
-                                knockback,
-                                Player.whoAmI
-                            );
-                        }
-                    }
-                }
+                return;
             }
-            if (EtherScroll)
+            if (UseEffectCooldown >= config.ScrollEffectsCooldown)
             {
-                if (item.DamageType == ModContent.GetInstance<ScepterClass>() && Player.altFunctionUse == 2)
+                if (CurseScroll)
                 {
-                    if (Main.rand.NextBool(3))
+                    if (item.DamageType == ModContent.GetInstance<ScepterClass>() && Player.altFunctionUse == 2)
                     {
-                        for (int t = 0; t < 5; t++)
+                        if (Main.rand.NextBool(3))
                         {
-                            Projectile.NewProjectile(
-                                Player.GetSource_ItemUse(item),
-                                Player.Center,
-                                velocity.RotatedByRandom(4),
-                                ProjectileID.DD2PhoenixBowShot,
-                                damage,
-                                knockback,
-                                Player.whoAmI
-                            );
-                        }
-                    }
-                }
-            }
-            if (FrigidScroll1)
-            {
-                if (item.DamageType == ModContent.GetInstance<ScepterClass>() && Player.altFunctionUse == 2)
-                {
-                    if (Main.rand.NextBool(3))
-                    {
-                        for (int t = 0; t < 4; t++)
-                        {
-                            Projectile.NewProjectile(
-                                Player.GetSource_ItemUse(item),
-                                Player.Center,
-                                velocity.RotatedByRandom(4),
-                                ProjectileID.NorthPoleSpear,
-                                (int)(damage * 0.75f),
-                                knockback,
-                                Player.whoAmI
-                            );
-                        }
-                    }
-                }
-            }
-            if (FrigidScroll2)
-            {
-                if (item.DamageType == ModContent.GetInstance<ScepterClass>() && Player.altFunctionUse == 2)
-                {
-                    if (Main.rand.NextBool(3))
-                    {
-                        for (int t = 0; t < 3; t++)
-                        {
-                            Projectile.NewProjectile(
-                                Player.GetSource_ItemUse(item),
-                                Player.Center,
-                                velocity.RotatedByRandom(0.5f),
-                                ModContent.ProjectileType<SnowStormProjectile>(),
-                                damage,
-                                knockback,
-                                Player.whoAmI
-                            );
-                        }
-                    }
-                }
-            }
-            if (SandScroll)
-            {
-                if (item.DamageType == ModContent.GetInstance<ScepterClass>() && Player.altFunctionUse == 2)
-                {
-                    if (Main.rand.NextBool(3))
-                    {
-                        for (int t = 0; t < 3; t++)
-                        {
-                            Projectile.NewProjectile(
-                                Player.GetSource_ItemUse(item),
-                                Player.Center,
-                                velocity.RotatedByRandom(0.5f),
-                                ModContent.ProjectileType<SandStormProjectile>(),
-                                damage,
-                                knockback,
-                                Player.whoAmI
-                            );
-                        }
-                    }
-                }
-            }
-            if (StarScroll)
-            {
-                if (item.DamageType == ModContent.GetInstance<ScepterClass>() && Player.altFunctionUse == 2)
-                {
-                    if (Main.rand.NextBool(3))
-                    {
-                        Vector2 target = Main.screenPosition + new Vector2(Main.mouseX, Main.mouseY);
-                        float ceilingLimit = target.Y;
-                        if (ceilingLimit > Player.Center.Y - 200f)
-                        {
-                            ceilingLimit = Player.Center.Y - 200f;
-                        }
-                        for (int i = 0; i < 5; i++)
-                        {
-                            Vector2 position2 = Player.Center - new Vector2(Main.rand.NextFloat(401) * Player.direction, 600f);
-                            position2.Y -= 100 * i;
-                            Vector2 heading = target - position2;
-
-                            if (heading.Y < 0f)
+                            for (int t = 0; t < 3; t++)
                             {
-                                heading.Y *= -1f;
-                            }
+                                Vector2 outer = Player.Center + Main.rand.NextVector2CircularEdge(10, 10);
+                                Vector2 motion = outer - position;
 
-                            if (heading.Y < 40f)
-                            {
-                                heading.Y = 40f;
+                                Projectile.NewProjectile(
+                                    Player.GetSource_ItemUse(item),
+                                    Player.Center,
+                                    motion,
+                                    ModContent.ProjectileType<CurseProjectile>(),
+                                    damage / 2,
+                                    knockback,
+                                    Player.whoAmI
+                                );
                             }
-
-                            heading.Normalize();
-                            heading *= velocity.Length();
-                            heading.Y += Main.rand.Next(-40, 41) * 0.02f;
-                            Projectile Star = Projectile.NewProjectileDirect(Player.GetSource_ItemUse(item), position2, heading, ProjectileID.StarWrath, damage / 8, knockback, Player.whoAmI, 0f, ceilingLimit);
-                            Star.timeLeft = 600;
                         }
                     }
                 }
-            }
-            if (TreasonScroll)
-            {
-                if (item.DamageType == ModContent.GetInstance<ScepterClass>() && Player.altFunctionUse == 2)
-                {
-                    if (Main.rand.NextBool(3))
-                    {
-                        for (int t = 0; t < 5; t++)
-                        {
-                            Vector2 outer = Player.Center + Main.rand.NextVector2CircularEdge(5, 5);
-                            Vector2 motion = outer - position;
-
-                            Projectile.NewProjectile(
-                                Player.GetSource_ItemUse(item),
-                                Player.Center,
-                                motion,
-                                ModContent.ProjectileType<TreasonScrollBomb>(),
-                                damage,
-                                knockback,
-                                Player.whoAmI
-                            );
-                        }
-                    }
-                }
-            }
-            if (TurbulenceScroll)
+                if (EtherScroll)
                 {
                     if (item.DamageType == ModContent.GetInstance<ScepterClass>() && Player.altFunctionUse == 2)
                     {
@@ -378,9 +256,9 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
                                 Projectile.NewProjectile(
                                     Player.GetSource_ItemUse(item),
                                     Player.Center,
-                                    velocity,
-                                    ProjectileID.WeatherPainShot,
-                                    damage / 4,
+                                    velocity.RotatedByRandom(4),
+                                    ProjectileID.DD2PhoenixBowShot,
+                                    damage,
                                     knockback,
                                     Player.whoAmI
                                 );
@@ -388,105 +266,230 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
                         }
                     }
                 }
-            if (GalantineScroll)
-            {
-                if (item.DamageType == ModContent.GetInstance<ScepterClass>() && Player.altFunctionUse == 2)
+                if (FrigidScroll1)
                 {
-                    if (Main.rand.NextBool(3))
+                    if (item.DamageType == ModContent.GetInstance<ScepterClass>() && Player.altFunctionUse == 2)
                     {
-                        for (int t = 0; t < 5; t++)
+                        if (Main.rand.NextBool(3))
                         {
-                            Projectile.NewProjectile(
-                                Player.GetSource_ItemUse(item),
-                                Player.Center,
-                                velocity.RotatedByRandom(0.5f),
-                                ModContent.ProjectileType<ConstitutionStarFriendly>(),
-                                damage,
-                                knockback,
-                                Player.whoAmI,
-                                ai2: 1
-                            );
-                        }
-                    }
-                }
-            }
-            if (IncendiaryScroll)
-            {
-                if (item.DamageType == ModContent.GetInstance<ScepterClass>() && Player.altFunctionUse == 2)
-                {
-                    if (Main.rand.NextBool(2))
-                    {
-                        Vector2 target = Main.screenPosition + new Vector2(Main.mouseX, Main.mouseY);
-                        float screenBottom = Main.screenPosition.Y + Main.screenHeight - 32f;
-                        SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/SwordSounds/HellSword", 3));
-                        for (int i = 0; i < 5; i++)
-                        {
-                            float spread = MathHelper.Lerp(0f, Main.screenWidth, i / 4f);
-                            Vector2 position2 = new Vector2(Main.screenPosition.X + spread, screenBottom);
-
-                            Vector2 heading = target - position2;
-                            if (heading.Length() < 80f)
-                                heading = heading.SafeNormalize(Vector2.UnitY) * 80f;
-                            else
-                                heading = heading.SafeNormalize(Vector2.UnitY) * velocity.Length();
-
-                            int[] types = new int[]
+                            for (int t = 0; t < 4; t++)
                             {
-                                ModContent.ProjectileType<HellHalberd>(),
-                                ModContent.ProjectileType<HellScimitar>(),
-                                ModContent.ProjectileType<HellSickle>(),
-                                ModContent.ProjectileType<HellTrident>()
-                            };
-
-                            Projectile.NewProjectileDirect(Player.GetSource_ItemUse(item), position2, heading, types[Main.rand.Next(types.Length)], damage / 2, knockback, Player.whoAmI);
+                                Projectile.NewProjectile(
+                                    Player.GetSource_ItemUse(item),
+                                    Player.Center,
+                                    velocity.RotatedByRandom(4),
+                                    ProjectileID.NorthPoleSpear,
+                                    (int)(damage * 0.75f),
+                                    knockback,
+                                    Player.whoAmI
+                                );
+                            }
                         }
                     }
                 }
-            }
-            if (SharkronPendant)
-            {
-                if (item.DamageType == ModContent.GetInstance<ScepterClass>() && Player.altFunctionUse == 2)
+                if (FrigidScroll2)
                 {
-                    if (Main.rand.NextBool(3))
+                    if (item.DamageType == ModContent.GetInstance<ScepterClass>() && Player.altFunctionUse == 2)
                     {
-                        Opus.RadialSpreadProjectile(ModContent.ProjectileType<SharkronNecklaceMinion>(), 8, position, damage / 2, 3, 4);
-                    }
-                }
-            }
-            if (TempestScroll)
-            {
-                if (item.DamageType == ModContent.GetInstance<ScepterClass>() && Player.altFunctionUse == 2)
-                {
-                    if (Main.rand.NextBool(3))
-                    {
-                        Vector2 outer = Player.Center + Main.rand.NextVector2CircularEdge(5, 5);
-                        Vector2 motion = outer - position;
-
-                        Projectile.NewProjectile(
-                            Player.GetSource_ItemUse(item),
-                            Player.Center,
-                            motion,
-                            ModContent.ProjectileType<TempestProj>(),
-                            damage,
-                            knockback,
-                            Player.whoAmI
-                        );
-                    }
-                }
-            }
-            if (SpookyScroll2)
-            {
-                if (item.DamageType == ModContent.GetInstance<ScepterClass>() && Player.altFunctionUse == 2)
-                {
-                    if (Main.rand.NextBool(2))
-                    {
-                        for (int t = 0; t < 6; t++)
+                        if (Main.rand.NextBool(3))
                         {
+                            for (int t = 0; t < 3; t++)
+                            {
+                                Projectile.NewProjectile(
+                                    Player.GetSource_ItemUse(item),
+                                    Player.Center,
+                                    velocity.RotatedByRandom(0.5f),
+                                    ModContent.ProjectileType<SnowStormProjectile>(),
+                                    damage,
+                                    knockback,
+                                    Player.whoAmI
+                                );
+                            }
+                        }
+                    }
+                }
+                if (SandScroll)
+                {
+                    if (item.DamageType == ModContent.GetInstance<ScepterClass>() && Player.altFunctionUse == 2)
+                    {
+                        if (Main.rand.NextBool(3))
+                        {
+                            for (int t = 0; t < 3; t++)
+                            {
+                                Projectile.NewProjectile(
+                                    Player.GetSource_ItemUse(item),
+                                    Player.Center,
+                                    velocity.RotatedByRandom(0.5f),
+                                    ModContent.ProjectileType<SandStormProjectile>(),
+                                    damage,
+                                    knockback,
+                                    Player.whoAmI
+                                );
+                            }
+                        }
+                    }
+                }
+                if (StarScroll)
+                {
+                    if (item.DamageType == ModContent.GetInstance<ScepterClass>() && Player.altFunctionUse == 2)
+                    {
+                        if (Main.rand.NextBool(3))
+                        {
+                            Vector2 target = Main.screenPosition + new Vector2(Main.mouseX, Main.mouseY);
+                            float ceilingLimit = target.Y;
+                            if (ceilingLimit > Player.Center.Y - 200f)
+                            {
+                                ceilingLimit = Player.Center.Y - 200f;
+                            }
+                            for (int i = 0; i < 5; i++)
+                            {
+                                Vector2 position2 = Player.Center - new Vector2(Main.rand.NextFloat(401) * Player.direction, 600f);
+                                position2.Y -= 100 * i;
+                                Vector2 heading = target - position2;
+
+                                if (heading.Y < 0f)
+                                {
+                                    heading.Y *= -1f;
+                                }
+
+                                if (heading.Y < 40f)
+                                {
+                                    heading.Y = 40f;
+                                }
+
+                                heading.Normalize();
+                                heading *= velocity.Length();
+                                heading.Y += Main.rand.Next(-40, 41) * 0.02f;
+                                Projectile Star = Projectile.NewProjectileDirect(Player.GetSource_ItemUse(item), position2, heading, ProjectileID.StarWrath, damage / 8, knockback, Player.whoAmI, 0f, ceilingLimit);
+                                Star.timeLeft = 600;
+                            }
+                        }
+                    }
+                }
+                if (TreasonScroll)
+                {
+                    if (item.DamageType == ModContent.GetInstance<ScepterClass>() && Player.altFunctionUse == 2)
+                    {
+                        if (Main.rand.NextBool(3))
+                        {
+                            for (int t = 0; t < 5; t++)
+                            {
+                                Vector2 outer = Player.Center + Main.rand.NextVector2CircularEdge(5, 5);
+                                Vector2 motion = outer - position;
+
+                                Projectile.NewProjectile(
+                                    Player.GetSource_ItemUse(item),
+                                    Player.Center,
+                                    motion,
+                                    ModContent.ProjectileType<TreasonScrollBomb>(),
+                                    damage,
+                                    knockback,
+                                    Player.whoAmI
+                                );
+                            }
+                        }
+                    }
+                }
+                if (TurbulenceScroll)
+                    {
+                        if (item.DamageType == ModContent.GetInstance<ScepterClass>() && Player.altFunctionUse == 2)
+                        {
+                            if (Main.rand.NextBool(3))
+                            {
+                                for (int t = 0; t < 5; t++)
+                                {
+                                    Projectile.NewProjectile(
+                                        Player.GetSource_ItemUse(item),
+                                        Player.Center,
+                                        velocity,
+                                        ProjectileID.WeatherPainShot,
+                                        damage / 4,
+                                        knockback,
+                                        Player.whoAmI
+                                    );
+                                }
+                            }
+                        }
+                    }
+                if (GalantineScroll)
+                {
+                    if (item.DamageType == ModContent.GetInstance<ScepterClass>() && Player.altFunctionUse == 2)
+                    {
+                        if (Main.rand.NextBool(3))
+                        {
+                            for (int t = 0; t < 5; t++)
+                            {
+                                Projectile.NewProjectile(
+                                    Player.GetSource_ItemUse(item),
+                                    Player.Center,
+                                    velocity.RotatedByRandom(0.5f),
+                                    ModContent.ProjectileType<ConstitutionStarFriendly>(),
+                                    damage,
+                                    knockback,
+                                    Player.whoAmI,
+                                    ai2: 1
+                                );
+                            }
+                        }
+                    }
+                }
+                if (IncendiaryScroll)
+                {
+                    if (item.DamageType == ModContent.GetInstance<ScepterClass>() && Player.altFunctionUse == 2)
+                    {
+                        if (Main.rand.NextBool(2))
+                        {
+                            Vector2 target = Main.screenPosition + new Vector2(Main.mouseX, Main.mouseY);
+                            float screenBottom = Main.screenPosition.Y + Main.screenHeight - 32f;
+                            SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/SwordSounds/HellSword", 3));
+                            for (int i = 0; i < 5; i++)
+                            {
+                                float spread = MathHelper.Lerp(0f, Main.screenWidth, i / 4f);
+                                Vector2 position2 = new Vector2(Main.screenPosition.X + spread, screenBottom);
+
+                                Vector2 heading = target - position2;
+                                if (heading.Length() < 80f)
+                                    heading = heading.SafeNormalize(Vector2.UnitY) * 80f;
+                                else
+                                    heading = heading.SafeNormalize(Vector2.UnitY) * velocity.Length();
+
+                                int[] types = new int[]
+                                {
+                                    ModContent.ProjectileType<HellHalberd>(),
+                                    ModContent.ProjectileType<HellScimitar>(),
+                                    ModContent.ProjectileType<HellSickle>(),
+                                    ModContent.ProjectileType<HellTrident>()
+                                };
+
+                                Projectile.NewProjectileDirect(Player.GetSource_ItemUse(item), position2, heading, types[Main.rand.Next(types.Length)], damage / 2, knockback, Player.whoAmI);
+                            }
+                        }
+                    }
+                }
+                if (SharkronPendant)
+                {
+                    if (item.DamageType == ModContent.GetInstance<ScepterClass>() && Player.altFunctionUse == 2)
+                    {
+                        if (Main.rand.NextBool(3))
+                        {
+                            Opus.RadialSpreadProjectile(ModContent.ProjectileType<SharkronNecklaceMinion>(), 8, position, damage / 2, 3, 4);
+                        }
+                    }
+                }
+                if (TempestScroll)
+                {
+                    if (item.DamageType == ModContent.GetInstance<ScepterClass>() && Player.altFunctionUse == 2)
+                    {
+                        if (Main.rand.NextBool(3))
+                        {
+                            Vector2 outer = Player.Center + Main.rand.NextVector2CircularEdge(5, 5);
+                            Vector2 motion = outer - position;
+
                             Projectile.NewProjectile(
                                 Player.GetSource_ItemUse(item),
                                 Player.Center,
-                                velocity.RotatedByRandom(0.75),
-                                ProjectileID.FlamingJack,
+                                motion,
+                                ModContent.ProjectileType<TempestProj>(),
                                 damage,
                                 knockback,
                                 Player.whoAmI
@@ -494,29 +497,51 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
                         }
                     }
                 }
-            }
-            if (SpookyScroll3)
-            {
-                if (item.DamageType == ModContent.GetInstance<ScepterClass>() && Player.altFunctionUse != 2)
+                if (SpookyScroll2)
                 {
-                    if (Main.rand.NextBool(2))
+                    if (item.DamageType == ModContent.GetInstance<ScepterClass>() && Player.altFunctionUse == 2)
                     {
-                        for (int t = 0; t < 6; t++)
+                        if (Main.rand.NextBool(2))
                         {
-                            Projectile HotWood = Projectile.NewProjectileDirect(
-                                Player.GetSource_ItemUse(item),
-                                Player.Center,
-                                velocity,
-                                ProjectileID.FlamingWood,
-                                damage,
-                                knockback,
-                                Player.whoAmI
-                            );
-                            HotWood.friendly = true;
-                            HotWood.hostile = false;
+                            for (int t = 0; t < 6; t++)
+                            {
+                                Projectile.NewProjectile(
+                                    Player.GetSource_ItemUse(item),
+                                    Player.Center,
+                                    velocity.RotatedByRandom(0.75),
+                                    ProjectileID.FlamingJack,
+                                    damage,
+                                    knockback,
+                                    Player.whoAmI
+                                );
+                            }
                         }
                     }
                 }
+                if (SpookyScroll3)
+                {
+                    if (item.DamageType == ModContent.GetInstance<ScepterClass>() && Player.altFunctionUse != 2)
+                    {
+                        if (Main.rand.NextBool(2))
+                        {
+                            for (int t = 0; t < 6; t++)
+                            {
+                                Projectile HotWood = Projectile.NewProjectileDirect(
+                                    Player.GetSource_ItemUse(item),
+                                    Player.Center,
+                                    velocity,
+                                    ProjectileID.FlamingWood,
+                                    damage,
+                                    knockback,
+                                    Player.whoAmI
+                                );
+                                HotWood.friendly = true;
+                                HotWood.hostile = false;
+                            }
+                        }
+                    }
+                }
+                UseEffectCooldown = 0;
             }
         }
     }
@@ -535,6 +560,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
         public bool DiabolicScroll = false;
         public bool SpookyScroll1 = false;
         public bool SpookyScroll4 = false;
+        public bool SporeScroll = false;
         public override void SetDefaults(Projectile entity)
         {
             if (entity.DamageType == ModContent.GetInstance<ScepterClass>() && entity.Name.Contains("Thrown"))
@@ -694,6 +720,13 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
 
                 }
             }
+            if (SporeScroll && IsAThrownScepter)
+            {
+                if (Main.rand.NextBool(4))
+                {
+                    Projectile.NewProjectile(projectile.GetSource_FromAI(), projectile.Center, projectile.velocity * 0.1f, ModContent.ProjectileType<FungalScepterMushroom>(), projectile.damage / 10, 4, projectile.owner);
+                }
+            }
                
         }
 
@@ -708,16 +741,6 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
             if (IsScepterClassButNotThrown && DiabolicScroll)
             {
                 Projectile.NewProjectile(projectile.GetSource_OnHit(target), projectile.Center, Vector2.Zero, ProjectileID.InfernoFriendlyBlast, (int)(projectile.damage * 0.75f), 2, projectile.owner);
-            }
-            if (SpookyScroll4 && IsAThrownScepter)
-            {
-                Opus.RingProjectileInwardRandomDir(ProjectileID.FlamingScythe, 7, target.Center, 300, projectile.damage / 3, 3, 6);
-                for (int i = 0; i < 7; i++)
-                {
-                    Vector2 vector = target.Center + Main.rand.NextVector2CircularEdge(800, 800);
-                    Vector2 velocity = (target.Center - vector) * 1;
-                    Projectile.NewProjectile(Entity.GetSource_None(), vector, velocity, ModContent.ProjectileType<SpookySickle>(), projectile.damage / 3, 3);
-                }
             }
         }
 

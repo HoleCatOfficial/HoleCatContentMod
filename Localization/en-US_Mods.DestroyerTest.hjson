@@ -3726,6 +3726,23 @@ Items: {
 		DisplayName: Aetherian Regalia
 		Tooltip: Increases Scepter throw speed by {0}%.
 	}
+
+	Sets.CannotBeUsedByClentaminator: Cannot be used by the Clentaminator and its upgrades.
+
+	TanninSolution: {
+		Tooltip: ""
+		DisplayName: Tannin Solution
+	}
+
+	ChlorophyllSolution: {
+		Tooltip: ""
+		DisplayName: Chlorophyll Solution
+	}
+
+	SporeScroll1: {
+		DisplayName: Spore Scroll1
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
@@ -4213,6 +4230,7 @@ Projectiles: {
 	CursedNodeCrystal2.DisplayName: Cursed Node Crystal2
 	BigRiftExplosion.DisplayName: Big Rift Explosion
 	TrueRiftMakerThrown.DisplayName: True Rift Maker Thrown
+	AncientRock.DisplayName: Ancient Rock
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.
@@ -4936,6 +4954,11 @@ Configs: {
 
 		ScepterTileCollsionsCooldown: {
 			Label: Scepter Tile Collsions Cooldown
+			Tooltip: ""
+		}
+
+		ScrollEffectsCooldown: {
+			Label: Scroll Effects Cooldown
 			Tooltip: ""
 		}
 	}

@@ -28,9 +28,17 @@ namespace DestroyerTest.Common
         /// The cooldown timer for triggering effects for Thrown Scepter tile collisions.
         /// <br/> Has a minimum of half a second and a maximum of 20 seconds.
         /// </summary>
-        [Range(30f, 1200f)]
-        [DefaultValue(0f)]
-        public float ScepterTileCollsionsCooldown { get; set; }
+        [Range(30, 1200)]
+        [DefaultValue(30f)]
+        public int ScepterTileCollsionsCooldown { get; set; }
+
+        /// <summary>
+        /// The cooldown timer for triggering effects for Thrown Scepter tile collisions.
+        /// <br/> Has a minimum of half a second and a maximum of 20 seconds.
+        /// </summary>
+        [Range(120, 1200)]
+        [DefaultValue(120f)]
+        public int ScrollEffectsCooldown { get; set; }
         
     }
 

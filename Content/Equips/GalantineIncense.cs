@@ -139,11 +139,11 @@ namespace DestroyerTest.Content.Equips
             {
                 if (Incense.Active)
                 {
-                    DrawRingOfFire(ref drawInfo, 0.5f, 0.095f, -Incense.TexRot);
-                    DrawRingOfFire(ref drawInfo, 0.25f, 0.085f, -Incense.TexRot * 2);
-                    DrawRingOfFire(ref drawInfo, 0.25f, 0.0805f, Incense.TexRot * 1.5f);
-                    DrawRingOfFire(ref drawInfo, 0.7f, 0.08f, -Incense.TexRot * 0.5f);
-                    DrawRingOfFire(ref drawInfo, 0.7f, 0.08f, Incense.TexRot);
+                    DrawRingOfFire(ref drawInfo, 0.25f, 0.095f, -Incense.TexRot);
+                    DrawRingOfFire(ref drawInfo, 0.125f, 0.085f, -Incense.TexRot * 2);
+                    DrawRingOfFire(ref drawInfo, 0.125f, 0.0805f, Incense.TexRot * 1.5f);
+                    DrawRingOfFire(ref drawInfo, 0.35f, 0.08f, -Incense.TexRot * 0.5f);
+                    DrawRingOfFire(ref drawInfo, 0.35f, 0.08f, Incense.TexRot);
                 }
             }
 			
