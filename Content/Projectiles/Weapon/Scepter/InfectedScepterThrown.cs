@@ -14,6 +14,7 @@ using System.IO;
 using InnoVault.PRT;
 using DestroyerTest.Content.Projectiles.ParentClasses;
 using OpusLib;
+using DestroyerTest.Content.Projectiles.Weapon.Magic;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 {
@@ -21,7 +22,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
     {
         public override void SetDefaults()
         {
-            ThemeColor = DTUtils.InfectedGradient;
+            ThemeColor = ColorLib.InfectedGradient;
             WidthDim = 34;
             HeightDim = 34;
             DustType = DustID.FireworksRGB;
@@ -43,7 +44,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
             base.AI();
             if (Main.GameUpdateCount % 3 == 0)
             {
-                Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Vector2.Center, ModContent.ProjectileType<CursedFlamesFriendly>(), Projectile.damage / 3, 0, Projectile.owner);
+                Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<CursedFlamesFriendly>(), Projectile.damage / 3, 0, Projectile.owner);
             }
         }
     
