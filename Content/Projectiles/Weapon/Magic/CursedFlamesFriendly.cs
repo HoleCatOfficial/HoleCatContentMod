@@ -30,10 +30,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 			Projectile.hostile = false; // Can the projectile deal damage to the player?
 			Projectile.ignoreWater = true; // Does the projectile's speed be influenced by water?
 			Projectile.light = 1f; // How much light emit around the projectile
-			Projectile.timeLeft = 600; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
+			Projectile.timeLeft = 300; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
 			Projectile.tileCollide = false;
 			Projectile.alpha = 255;
-			Projectile.penetrate = 2;
+			Projectile.penetrate = -1;
 		}
 
 
@@ -41,7 +41,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 		public override void AI()
 		{
 			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
-			PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center, Vector2.Zero, ColorLib.CursedFlames, 2.5f, 60, ai2: 2);
+			PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center, Vector2.Zero, ColorLib.CursedFlames * 0.5f, 1.5f, 60, ai2: 2);
 		}
 
 		

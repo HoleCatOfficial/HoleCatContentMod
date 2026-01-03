@@ -3743,6 +3743,11 @@ Items: {
 		DisplayName: Spore Scroll1
 		Tooltip: ""
 	}
+
+	InfectedScepter: {
+		DisplayName: Infected Scepter
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
@@ -4231,10 +4236,9 @@ Projectiles: {
 	BigRiftExplosion.DisplayName: Big Rift Explosion
 	TrueRiftMakerThrown.DisplayName: True Rift Maker Thrown
 	AncientRock.DisplayName: Ancient Rock
-<<<<<<< HEAD
 	InfectedScepterThrown.DisplayName: Infected Scepter Thrown
-=======
->>>>>>> 0131bd50b0ca23ab74cf76dfbd31fbea8d42524e
+	InfectedCrystalCF.DisplayName: Infected Crystal C F
+	InfectedCrystalIchor.DisplayName: Infected Crystal Ichor
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.
