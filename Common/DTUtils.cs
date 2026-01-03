@@ -14,7 +14,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Mono.Cecil.Cil;
-using rail;
 using ReLogic.Content;
 using Terraria;
 using Terraria.Audio;
@@ -22,6 +21,7 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
+using OpusLib;
 
 namespace DestroyerTest.Common
 {
@@ -644,7 +644,8 @@ namespace DestroyerTest.Common
             else
                 return Color.Lerp(SpiritFire4, SpiritFire5, t - 3f);
         }
-        
+
+        public static Color InfectedGradient = Opus.Sine(ColorLib.CursedFlames, ColorLib.Ichor);
     }
 
     /// <summary>
