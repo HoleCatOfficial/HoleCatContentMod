@@ -269,17 +269,13 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
              // Use a sine wave to smoothly transition between the two colors
             float lerpAmount = (float)(0.5 * (1 + Math.Sin(Main.GlobalTimeWrappedHourly * 2f * Math.PI)));
             Color entityhitcolor = Color.Lerp(IceColor, FireColor, lerpAmount);
-			Player player = Main.LocalPlayer;
-			player.GetModPlayer<ScreenshakePlayer>().screenshakeMagnitude = 8;
-			player.GetModPlayer<ScreenshakePlayer>().screenshakeTimer = 24;
 			Lighting.AddLight(target.Center, entityhitcolor.ToVector3() * 0.8f);
-            SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/FlameImpact1"));
-            SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/IceImpact1"));
-            Vector2 Flamedirection = new Vector2((float)Math.Cos(MathHelper.ToRadians(90)), (float)Math.Sin(MathHelper.ToRadians(90)));
-            Vector2 Frostdirection = new Vector2((float)Math.Cos(MathHelper.ToRadians(270)), (float)Math.Sin(MathHelper.ToRadians(270)));
-            Projectile.NewProjectile(Entity.GetSource_OnHit(target), Projectile.Center, Flamedirection, ModContent.ProjectileType<FlameBurst>(), 100, 8, Main.myPlayer);
-            Projectile.NewProjectile(Entity.GetSource_OnHit(target), Projectile.Center, Frostdirection, ModContent.ProjectileType<FrostBurst>(), 100, 8, Main.myPlayer);
-			PRTLoader.NewParticle(PRTLoader.GetParticleID<Boom1>(), target.Center, Vector2.Zero, entityhitcolor, 1);
-        }
+            Projectile.NewProjectile(Entity.GetSource_OnHit(target), target.Center, Main.rand.NextVector2Circular(30, 30), ModContent.ProjectileType<FlameBurst>(), 100, 8, Projectile.owner);
+            Projectile.NewProjectile(Entity.GetSource_OnHit(target), target.Center, Main.rand.NextVector2Circular(30, 30), ModContent.ProjectileType<FrostBurst>(), 100, 8, Projectile.owner);
+			for(int i = 0; i < 6; i++)
+			{
+				PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticle>(), target.Center, new Vector2(Main.rand.NextFloat(-2, 2), -Main.rand.NextFloat(10, 15)), entityhitcolor, 1, 2);
+			}
+		}
 	}
 }

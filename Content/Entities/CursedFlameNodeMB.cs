@@ -423,8 +423,8 @@ namespace DestroyerTest.Content.Entities
         {
             SoundEngine.PlaySound(StarShoot, NPC.Center);
             Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), NPC.Center, Vector2.Zero, ColorLib.CursedFlames, 0.01f, 1f);
-            Opus.RadialSpreadProjectile(ModContent.ProjectileType<NightmareRoseCursedCrystal>(), 9, NPC.Center, 16, 4, 10, AI1: 1, RandomOffset: true);
-            Opus.RadialSpreadProjectile(ModContent.ProjectileType<NightmareRoseCursedCrystal>(), 9, NPC.Center, 16, 4, 10, AI1: -1, RandomOffset: true);
+            Opus.RadialSpreadProjectile(ModContent.ProjectileType<CursedNodeCrystal2>(), 9, NPC.Center, 16, 4, 10, AI1: 1, RandomOffset: true);
+            Opus.RadialSpreadProjectile(ModContent.ProjectileType<CursedNodeCrystal2>(), 9, NPC.Center, 16, 4, 10, AI1: -1, RandomOffset: true);
             StarShootCount += 1;
         }
 

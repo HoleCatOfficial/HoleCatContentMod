@@ -38,6 +38,8 @@ using GlowmaskHelper.Content;
 using OpusLib;
 using DestroyerTest.Content.Projectiles.Boss;
 using DestroyerTest.Content.Projectiles.Boss.NodeBoss.Ichor;
+using ReLogic.Utilities;
+using OpusLib.Content.Helpers;
 
 namespace DestroyerTest.Content.Entities
 {
@@ -246,6 +248,17 @@ namespace DestroyerTest.Content.Entities
 
         public bool SoundFlag1 = false;
         public bool HasShotTeeth = false;
+
+        SlotId DesperationLoopSlot;
+        public SoundStyle Loop = new SoundStyle("DestroyerTest/Assets/Audio/AuraLoop/LaserLoop1") 
+        { 
+            MaxInstances = 0,
+            IsLooped = true,
+            PauseBehavior = PauseBehavior.PauseWithGame
+        };
+        public float PitchVal = -2;
+
+        
 
         // Write extra AI fields for multiplayer sync
         public override void SendExtraAI(BinaryWriter writer)
@@ -479,8 +492,8 @@ namespace DestroyerTest.Content.Entities
                 NPC.immortal = true;
             }
 
-            Main.eclipseLight = 1;
-            Main.ColorOfTheSkies = Color.Black;
+            //Main.eclipseLight = 1;
+            //Main.ColorOfTheSkies = Color.Black;
 
             if (Main.netMode != NetmodeID.MultiplayerClient && SpawnFlag == false)
             {
@@ -1080,6 +1093,7 @@ namespace DestroyerTest.Content.Entities
                 case attackType.Desperation:
                     {
                         DesperationTimer++;
+                        PitchVal += 0.00025f;
                         //DesperationVingetteScale--;
                         DesperationVingetteAlpha = (byte)MathHelper.Clamp(
                             255f * (DesperationTimer / 1200f),
@@ -1091,6 +1105,8 @@ namespace DestroyerTest.Content.Entities
                         {
                             Mod.Logger.Debug($"{DesperationTimer}");
                         }
+
+
                         int shake = 8;
                         NPC.dontTakeDamage = true;
                         NPC.immortal = true;
@@ -1105,9 +1121,23 @@ namespace DestroyerTest.Content.Entities
                         {
                             Main.NewText("The Wyvern is channeling its soul energy!", ColorLib.Soul);
                             SoundEngine.PlaySound(Kill2);
-                            SoundEngine.PlaySound(Desperation);
                             SoundFlag1 = true;
                         }
+
+                        if (!SoundEngine.TryGetActiveSound(DesperationLoopSlot, out var activeSound)) {
+                            var tracker = new NPCAudioTracker(NPC);
+                            DesperationLoopSlot = SoundEngine.PlaySound(Loop, DesperationOrbitCenter, soundInstance => {
+                                soundInstance.Position = DesperationOrbitCenter;
+                                soundInstance.Pitch = PitchVal;
+                                return tracker.IsActiveAndInGame();
+                            });
+                        }
+                        else
+                        {
+                            activeSound.Position = DesperationOrbitCenter;
+                            activeSound.Pitch = PitchVal;
+                        }
+
                         player.GetModPlayer<ScreenshakePlayer>().screenshakeTimer = 40;
                         player.GetModPlayer<ScreenshakePlayer>().screenshakeMagnitude = shake;
                         if (player.Distance(DesperationOrbitCenter) > 800 || player.Distance(DesperationOrbitCenter) < 100)
@@ -1501,8 +1531,8 @@ namespace DestroyerTest.Content.Entities
 
         public void DashParticle()
         {
-            PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticle>(), NPC.Center + new Vector2(NPC.width / 2, (NPC.height / 2) - NPC.height / 2).RotatedBy(NPC.rotation), new Vector2(10, 80).RotatedBy(NPC.rotation), ColorLib.Ichor, 1f);
-            PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticle>(), NPC.Center + new Vector2(NPC.width / 2, (NPC.height / 2) - NPC.height / 2).RotatedBy(NPC.rotation), new Vector2(-10, 80).RotatedBy(NPC.rotation), ColorLib.Ichor, 1f);
+            PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticle>(), NPC.Center + new Vector2(NPC.width / 2, (NPC.height / 2) - NPC.height / 2).RotatedBy(NPC.rotation), new Vector2(10, 80).RotatedBy(NPC.rotation), ColorLib.Ichor, 1f, 2);
+            PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticle>(), NPC.Center + new Vector2(NPC.width / 2, (NPC.height / 2) - NPC.height / 2).RotatedBy(NPC.rotation), new Vector2(-10, 80).RotatedBy(NPC.rotation), ColorLib.Ichor, 1f, 2);
         }
 
         public void NodeSpawn()

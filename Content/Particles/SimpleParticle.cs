@@ -7,14 +7,13 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Particles
 {
-    internal class SimpleParticle : BasePRT
+    public class SimpleParticle : BasePRT
     {
         public int MaxLifetime => 40;
         public override void SetProperty()
         {
             PRTDrawMode = PRTDrawModeEnum.AdditiveBlend;
             Lifetime = MaxLifetime;
-            Scale += Main.rand.NextFloat(0.15f, 0.5f);
             ShouldKillWhenOffScreen = false;
         }
 

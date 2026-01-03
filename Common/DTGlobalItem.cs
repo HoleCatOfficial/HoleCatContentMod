@@ -19,6 +19,7 @@ using System.Linq;
 using DestroyerTest.Content.Consumables;
 using DestroyerTest.Content.Scepter;
 using DestroyerTest.Content.Equips.ScepterAccessories;
+using Terraria.DataStructures;
 
 namespace DestroyerTest.Common
 {
@@ -31,6 +32,54 @@ namespace DestroyerTest.Common
             if (player.HeldItem.type == ModContent.ItemType<Tenebris>() || player.HeldItem.type == ModContent.ItemType<ShimmeringSludge>())
             {
                 player.AddBuff(ModContent.BuffType<ShimmeringFlames>(), 120); // Applies Poisoned for at least 2 ticks (keeps refreshing)
+            }
+        }
+    }
+
+    public class SootFromFurnace : GlobalItem
+    {
+        public override void OnCreated(Item item, ItemCreationContext context)
+        {
+            
+            RecipeItemCreationContext c = context as RecipeItemCreationContext;
+            if (c == null)
+            {
+                return;
+            }
+            
+            if (c.Recipe.HasTile(TileID.Furnaces))
+            {
+                c.Recipe.AddOnCraftCallback(SootFurnaceRecipeCallback.GetSoot);
+            }
+        }
+    }
+
+    public static class SootFurnaceRecipeCallback
+	{
+		public static void GetSoot(Recipe recipe, Item item, List<Item> consumedItems, Item destinationStack) {
+			if (Main.rand.NextBool(4)) {
+				
+				Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_FromThis(), ModContent.ItemType<Soot>(), Main.rand.Next(1, 5));
+			}
+		}
+	}
+
+    public class SpecifySolutions : GlobalItem
+    {
+        public static int[] SpecifysThatItCannotBeUsedByClentaminator = new int[]
+        {
+            ModContent.ItemType<TanninSolution>()
+        };
+
+        public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
+        {
+            if (SpecifysThatItCannotBeUsedByClentaminator.Contains(item.type))
+            {
+                TooltipLine line = new TooltipLine(Mod, "NoClentaminatorUse", "DestroyerTest.Items.Sets.CannotBeUsedByClentaminator")
+                {
+                    OverrideColor = Color.GreenYellow
+                };
+                tooltips.Add(line);
             }
         }
     }
@@ -744,6 +793,8 @@ namespace DestroyerTest.Common
         }
         public bool isInspiro = false;
     }
+
+
     public class NonWhiteCloth : GlobalItem
     {
         public override bool InstancePerEntity => true;
@@ -791,6 +842,8 @@ namespace DestroyerTest.Common
     public class AllCloth : GlobalItem
     {
         public override bool InstancePerEntity => true;
+
+
         public override bool AppliesToEntity(Item entity, bool lateInstantiation)
         {
             // Apply this GlobalItem to specific items based on criteria
@@ -810,9 +863,58 @@ namespace DestroyerTest.Common
             entity.type == ModContent.ItemType<BrownCloth>() ||
             entity.type == ModContent.ItemType<WhiteCloth>();
         }
+    }
 
-        public override void SetDefaults(Item item)
+    public static class StaticCloths
+    {
+        public static void StaticDefaultToCloth(this Item item)
         {
+            item.ResearchUnlockCount = 25;
+			ItemID.Sets.SortingPriorityMaterials[item.type] = 22;
+        }
+
+        public static void DefaultToCloth(this Item item)
+        {
+            item.width = 26;
+			item.height = 28;
+			item.value = 20;
+			item.maxStack = 9999;
+            item.rare = ItemRarityID.White;
+        }
+
+        public static void DefaultRecipe(this Item item, int DyeItemID1, int DyeItemID2 = -1)
+        {
+            Recipe recipeTatteredCloth = Recipe.Create(item.type, 1);
+            Recipe recipeSilk = Recipe.Create(item.type, 1);
+            Recipe recipeWhiteCloth = Recipe.Create(item.type, 1);
+
+            recipeTatteredCloth.AddIngredient(ItemID.TatteredCloth, 1);
+            recipeTatteredCloth.AddIngredient(DyeItemID1, 1);
+            if (DyeItemID2 != -1)
+            {
+                recipeTatteredCloth.AddIngredient(DyeItemID2, 1);
+            }
+            recipeTatteredCloth.AddCondition(Condition.NearWater);
+
+            recipeSilk.AddIngredient(ItemID.Silk, 1);
+            recipeSilk.AddIngredient(DyeItemID1, 1);
+            if (DyeItemID2 != -1)
+            {
+                recipeSilk.AddIngredient(DyeItemID2, 1);
+            }
+            recipeSilk.AddCondition(Condition.NearWater);
+
+            recipeWhiteCloth.AddIngredient<WhiteCloth>(1);
+            recipeWhiteCloth.AddIngredient(DyeItemID1, 1);
+            if (DyeItemID2 != -1)
+            {
+                recipeWhiteCloth.AddIngredient(DyeItemID2, 1);
+            }
+            recipeWhiteCloth.AddCondition(Condition.NearWater);
+
+            recipeTatteredCloth.Register();
+            recipeSilk.Register();
+            recipeWhiteCloth.Register();
         }
     }
 
@@ -869,5 +971,22 @@ namespace DestroyerTest.Common
             }
             return false;
         }
+    }
+
+    public class CraftingModification : ModSystem
+    {
+        //Calamity Recipe Code
+        public override void AddRecipes()
+        {
+            static Func<Recipe, bool> Vanilla(int itemID) => r => r.Mod is null && r.HasResult(itemID);
+            static Action<Recipe> AddIngredient(int itemID, int stack = 1) => r => r.AddIngredient(itemID, stack);
+            var edits = new Dictionary<Func<Recipe, bool>, Action<Recipe>>(128)
+            {
+                { Vanilla(ItemID.VortexHelmet), AddIngredient(ItemID.LunarOre, 6) },
+                { Vanilla(ItemID.SolarFlareHelmet), AddIngredient(ItemID.LunarOre, 6) },
+                { Vanilla(ItemID.StardustHelmet), AddIngredient(ItemID.LunarOre, 6) },
+            };
+        }
+
     }
 }

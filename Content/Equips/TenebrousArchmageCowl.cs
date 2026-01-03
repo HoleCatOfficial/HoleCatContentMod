@@ -13,6 +13,9 @@ using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Buffs;
 using Terraria.DataStructures;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
+using DestroyerTest.Content.Projectiles.player.ArmorSet;
+using Terraria.Audio;
 
 namespace DestroyerTest.Content.Equips
 {
@@ -51,7 +54,6 @@ namespace DestroyerTest.Content.Equips
             {
                 Magic.Active = true;
             }
-            player.AddBuff(ModContent.BuffType<ShimmeringEmpowerment>(), 1200);
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
@@ -72,20 +74,34 @@ namespace DestroyerTest.Content.Equips
 		}
 
 		public float Rot = 0;
-		public override void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
-		{
-			if (Active)
-			{
-				Main.EntitySpriteDraw(DTAssetLib.RuneCircle.Value, Player.Center - Main.screenPosition, null, Color.White, Rot, DTAssetLib.RuneCircle.Value.Size() / 2, 0.25f, SpriteEffects.None, 0);
-			}
-		}
 
-		public override void UpdateEquips()
+		public int Cooldown = 0;
+		public override void PostUpdateEquips()
 		{
 			Rot += 0.05f * Player.direction;
 			if (Active)
 			{
-				
+				Player.statManaMax2 += 100;
+
+				if (Cooldown > 0)
+				{
+					Cooldown--;
+				}
+
+				if (Cooldown == 1)
+				{
+					SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/Corpse/TeleportSetPosition") with { PitchVariance = 0.5f }, Player.Center);
+				}
+
+				if (DestroyerTestMod.ArmorSetBonusHotKey.JustPressed)
+				{
+					if (Cooldown <= 0)
+					{
+						SoundEngine.PlaySound(DTAssetLib.ChargeBreak, Player.Center);
+						Opus.RingProjectileOutward(ModContent.ProjectileType<MageClone>(), 3, Player.Center, 200, 10, 0, 0);
+						Cooldown = 1000;
+					}
+				}
 			}
 		}
     }

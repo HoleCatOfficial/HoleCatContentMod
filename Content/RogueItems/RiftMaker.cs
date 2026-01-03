@@ -12,8 +12,6 @@ namespace DestroyerTest.Content.RogueItems
 	public class RiftMaker : ModItem
 	{
 		public override void SetStaticDefaults() {
-			ItemID.Sets.ItemsThatCountAsBombsForDemolitionistToSpawn[Type] = true;
-			Item.ResearchUnlockCount = 99;
 		}
 
 		public override void SetDefaults() {
@@ -22,8 +20,7 @@ namespace DestroyerTest.Content.RogueItems
 			Item.shoot = ModContent.ProjectileType<RiftMaker_Thrown>();
 			Item.width = 14;
 			Item.height = 56;
-			Item.maxStack = Item.CommonMaxStack;
-			Item.consumable = true;
+			Item.maxStack = 1;
 			Item.UseSound = SoundID.Item71;
 			Item.useAnimation = 15;
 			Item.useTime = 15;
@@ -31,7 +28,7 @@ namespace DestroyerTest.Content.RogueItems
 			Item.noMelee = true;
 			Item.value = Item.buyPrice(0, 0, 20, 0);
 			Item.rare = ModContent.RarityType<RiftRarity1>();
-			Item.damage = 160;
+			Item.damage = 80;
 			Item.autoReuse = true;
 		}
 

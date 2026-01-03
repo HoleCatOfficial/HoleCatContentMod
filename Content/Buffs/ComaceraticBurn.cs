@@ -35,7 +35,8 @@ namespace DestroyerTest.Content.Buffs
 
         public bool lifeRegenDebuff;
 
-        public override void ResetEffects(NPC npc) {
+        public override void ResetEffects(NPC npc) 
+		{
             lifeRegenDebuff = false;
         }
 
@@ -53,20 +54,14 @@ namespace DestroyerTest.Content.Buffs
         }
 
 
-        public void UpdateLifeRegen(NPC npc, Player player, ref int damage)
+        public override void UpdateLifeRegen(NPC npc, ref int damage)
 		{
-			if (lifeRegenDebuff && Main.dayTime)
-			{
-				Dust.NewDust(npc.position, npc.width, npc.height, ModContent.DustType<RiftDust>(), 0.0f, 0.5f, 0, default, 1);
-				if (npc.lifeRegen > 0)
-					npc.lifeRegen = 0;
-				npc.lifeRegen -= 36;
-			}
-			if (lifeRegenDebuff && !Main.dayTime)
+			if (lifeRegenDebuff)
 			{
 				if (npc.lifeRegen > 0)
-					npc.lifeRegen = 0;
-
+				{
+                    npc.lifeRegen = 0;
+				}
 				npc.lifeRegen -= 40;
 			}
 		}
@@ -87,16 +82,13 @@ namespace DestroyerTest.Content.Buffs
 			{
 				Player.moveSpeed *= 0.85f;
 			}
-            base.PostUpdateBuffs();
         }
 		public override void UpdateBadLifeRegen()
 		{
 			if (lifeRegenDebuff)
 			{
-				if (Player.lifeRegen > 0)
-					Player.lifeRegen = 0;
 				Player.lifeRegenTime = 0;
-				Player.lifeRegen -= 32;
+				Player.lifeRegen -= 28;
 			}
 		}
 	}

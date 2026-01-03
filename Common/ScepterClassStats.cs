@@ -58,6 +58,33 @@ namespace DestroyerTest.Common
         /// A multiplicative modifer that affects how fast thrown scepters travel.
         /// </summary>
         public static float ThrowSpeedModifier { get; set; } = 1f;
+
+        /// <summary>
+        /// An additive modifier that increases or decreases the amount of times a shot will bounce, if it is set to bounce.
+        /// </summary>
+        public static int ShotBounceModifier { get; set; } = 0;
+    }
+
+    public static class ScepterRegistry
+    {
+        /// <summary>
+        /// Some Thrown Scepters do not inherit from ThrownScepter. For effects on thrown scepters, we can add projectiles to the list to extend the effects to them as well.
+        /// <br/> Compiled during loading.
+        /// </summary>
+        public static Projectile[] AllThrownScepters = new Projectile[]
+        {
+            
+        };
+
+        /// <summary>
+        /// This is for effects that exclusively apply to the ThrownScepter class and its children.
+        /// <br/> Scepters that do not inherit will not be affected.
+        /// <br/> Compiled during loading.
+        /// </summary>
+        public static Projectile[] DirectInheritanceThrownScepters = new Projectile[]
+        {
+
+        };
     }
 
     public class ScepterClassStatResetPlayer : ModPlayer

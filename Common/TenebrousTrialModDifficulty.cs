@@ -278,18 +278,6 @@ namespace DestroyerTest.Common
                 }
                 while (Vector2.DistanceSquared(Randpos, player.Center) <= radiusSq && attempts < 100);
 
-
-                int[] types = new int[]
-                {
-                PRTLoader.GetParticleID<BlackFire1>(),
-                PRTLoader.GetParticleID<BlackFire2>(),
-                PRTLoader.GetParticleID<BlackFire3>(),
-                PRTLoader.GetParticleID<BlackFire4>(),
-                PRTLoader.GetParticleID<BlackFire5>(),
-                PRTLoader.GetParticleID<BlackFire6>(),
-                PRTLoader.GetParticleID<BlackFire7>()
-                };
-
                 Color[] ColorType = new Color[]
                 {
                     new Color(0, 0, 0),
@@ -305,7 +293,7 @@ namespace DestroyerTest.Common
                     new Color(21, 23, 39),
                 };
 
-                PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], Randpos, Vector2.Zero, ColorType[Main.rand.Next(ColorType.Length)], 1);
+                //PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], Randpos, Vector2.Zero, ColorType[Main.rand.Next(ColorType.Length)], 1);
             }
 
         }

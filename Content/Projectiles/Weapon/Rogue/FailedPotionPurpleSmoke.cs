@@ -1,0 +1,83 @@
+using Terraria;
+using Terraria.ID;
+using Terraria.ModLoader;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Terraria.GameContent;
+using Terraria.Audio;
+using DestroyerTest.Content.Consumables;
+using DestroyerTest.Common;
+using DestroyerTest.Content.Buffs;
+using System;
+using InnoVault.PRT;
+using DestroyerTest.Content.Particles;
+
+namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
+{
+    public class FailedPotionPurpleSmoke : ModProjectile
+    {
+        public override void SetStaticDefaults()
+        {
+            Main.projFrames[Type] = 3;
+        }
+
+        public override void SetDefaults()
+        {
+            Projectile.width = 32;
+            Projectile.height = 32;
+            Projectile.friendly = true;
+            Projectile.penetrate = -1;
+            Projectile.light = 0.5f;
+            Projectile.ignoreWater = true;
+            Projectile.timeLeft = 300;
+            Projectile.DamageType = DamageClass.Generic;
+            Projectile.tileCollide = false;
+            Projectile.frame = Main.rand.Next(3);
+            Projectile.alpha = 160;
+        }
+
+        public override bool PreDraw(ref Color lightColor)
+        {
+            Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
+
+            int frameHeight = projectileTexture.Height / Main.projFrames[Projectile.type];
+            Rectangle frame = new Rectangle(
+                0,
+                frameHeight * Projectile.frame,
+                projectileTexture.Width,
+                frameHeight
+            );
+
+            Vector2 origin = new Vector2(projectileTexture.Width / 2f, frameHeight / 2f);
+
+            Main.EntitySpriteDraw(
+                    projectileTexture,
+                    Projectile.Center - Main.screenPosition,
+                    frame,
+                    lightColor,
+                    Projectile.rotation,
+                    origin,
+                    Projectile.scale,
+                    SpriteEffects.None,
+                    0
+                );
+            return false;
+        }
+
+        public override void AI()
+        {
+            Projectile.velocity *= 0.99f;
+            Projectile.rotation += 0.03f * Projectile.velocity.X;
+            Projectile.alpha = 200;
+
+            PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Vector2.Zero, new Color(32, 11, 40) * 0.6f, Main.rand.NextFloat(0.5f, 1f));
+        }
+
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            target.AddBuff(BuffID.Poisoned, 600);
+        }
+    }
+
+}
+

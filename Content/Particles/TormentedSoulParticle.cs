@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 namespace DestroyerTest.Content.Particles
 {
 
-    internal class TormentedSoulParticle : BasePRT
+    public class TormentedSoulParticle : BasePRT
     {
 
         public int MaxLifetime => 120;
@@ -45,7 +45,7 @@ namespace DestroyerTest.Content.Particles
         }
     }
     
-    internal class TormentedSoulParticle2 : BasePRT
+    public class TormentedSoulParticle2 : BasePRT
     {
       
         public int MaxLifetime => 120;

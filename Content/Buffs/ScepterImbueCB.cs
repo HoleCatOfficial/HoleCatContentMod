@@ -9,7 +9,7 @@ namespace DestroyerTest.Content.Buffs
 	public class ScepterImbueCB : ModBuff
 	{
 		public override void SetStaticDefaults() {
-			//Main.persistentBuff[Type] = true;
+			Main.persistentBuff[Type] = true;
 		}
 
 		public override void Update(Player player, ref int buffIndex) {
@@ -17,7 +17,7 @@ namespace DestroyerTest.Content.Buffs
             {
                 if (projectile.TryGetGlobalProjectile<WeaponImbueScepter>(out var scepter))
                 {
-                    scepter.HeliouricShock = true;
+                    scepter.ComaceraticBurn = true;
                 }
             }
 		}

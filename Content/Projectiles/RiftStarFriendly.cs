@@ -30,15 +30,6 @@ namespace DestroyerTest.Content.Projectiles
 			}
 		}
 
-		private Player PLRTarget
-		{
-			get => Projectile.ai[1] == 0 ? null : Main.player[(int)Projectile.ai[1] - 1];
-			set
-			{
-				Projectile.ai[1] = value == null ? 0 : value.whoAmI + 1;
-			}
-		}
-
 		public float DelayTimer;
 
 		public override void SetStaticDefaults()
@@ -69,45 +60,51 @@ namespace DestroyerTest.Content.Projectiles
 			SpriteBatch spriteBatch = Main.spriteBatch;
 			DTUtils Utility = new DTUtils();
 
-            Opus.StartSpriteBatchForTrails(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+			DTOptimizationsConfig OptCfg = ModContent.GetInstance<DTOptimizationsConfig>();
+            if (!OptCfg.DisableExcessTrails)
+            {
+				Opus.StartSpriteBatchForTrails(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
-			if (TrailPositions.Count > 1)
-			{
-				List<ColoredVertex> ve = new List<ColoredVertex>();
-				float a = 0;
-
-				for (int i = TrailPositions.Count - 1; i > 0; i--)
+				if (TrailPositions.Count > 1)
 				{
-					float t = 1f - (i / (float)TrailPositions.Count); // fade toward tail
-					Color b = lightColor * t;
+					List<ColoredVertex> ve = new List<ColoredVertex>();
+					float a = 0;
 
-					Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
-					Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * 32;
-                    Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * 32;
+					for (int i = TrailPositions.Count - 1; i > 0; i--)
+					{
+						float t = 1f - (i / (float)TrailPositions.Count); // fade toward tail
+						Color b = lightColor * t;
 
-					/*
-					ve.Add(new ColoredVertex(
-						TrailPositions[i] - Main.screenPosition + offset,
-						new Vector3(t, 1, 1),
-						b));
+						Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
+						Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * 32;
+						Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * 32;
 
-					ve.Add(new ColoredVertex(
-						TrailPositions[i] - Main.screenPosition + offset2,
-						new Vector3(t, 0, 1),
-						b));
-						*/
-						
-					DTUtils.AddStrips(ve, TrailPositions, i, offset, offset2, t, b, trailOffset);
-				}
+						/*
+						ve.Add(new ColoredVertex(
+							TrailPositions[i] - Main.screenPosition + offset,
+							new Vector3(t, 1, 1),
+							b));
+
+						ve.Add(new ColoredVertex(
+							TrailPositions[i] - Main.screenPosition + offset2,
+							new Vector3(t, 0, 1),
+							b));
+							*/
+							
+						DTUtils.AddStrips(ve, TrailPositions, i, offset, offset2, t, b, trailOffset);
+					}
 
 
-				GraphicsDevice gd = Main.graphics.GraphicsDevice;
-				if (ve.Count >= 3)
-				{
-					gd.Textures[0] = DTAssetLib.Streak(5).Value;
-					gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2);
+					GraphicsDevice gd = Main.graphics.GraphicsDevice;
+					if (ve.Count >= 3)
+					{
+						gd.Textures[0] = DTAssetLib.Streak(5).Value;
+						gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2);
+					}
 				}
 			}
+
+			Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
 			Opus.DrawGlowOnProj(Projectile, lightColor, true);
 
@@ -227,34 +224,6 @@ namespace DestroyerTest.Content.Projectiles
 		public bool IsValidNPC(NPC target)
 		{
 			return target.CanBeChasedBy();
-		}
-
-		public Player FindClosestPlayer(float maxDetectDistance)
-		{
-			Player closestPlayer = null;
-
-			float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
-
-			foreach (var target in Main.player)
-			{
-				if (IsValidPlayer(target))
-				{
-					float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, Projectile.Center);
-
-					if (sqrDistanceToTarget < sqrMaxDetectDistance)
-					{
-						sqrMaxDetectDistance = sqrDistanceToTarget;
-						closestPlayer = target;
-					}
-				}
-			}
-
-			return closestPlayer;
-		}
-
-		public bool IsValidPlayer(Player target)
-		{
-			return target.active == true && target.statLife > 1;
 		}
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{

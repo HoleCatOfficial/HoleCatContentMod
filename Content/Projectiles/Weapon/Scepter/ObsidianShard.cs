@@ -1,42 +1,58 @@
 using DestroyerTest.Common;
+using DestroyerTest.Content.Particles;
+using InnoVault.PRT;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 {
-	// This example is similar to the Wooden Arrow projectile
 	public class ObsidianShard : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
-			// If this arrow would have strong effects (like Holy Arrow pierce), we can make it fire fewer projectiles from Daedalus Stormbow for game balance considerations like this:
-			//ProjectileID.Sets.FiresFewerFromDaedalusStormbow[Type] = true;
 		}
 
 		public override void SetDefaults()
 		{
-			Projectile.width = 14; // The width of projectile hitbox
-			Projectile.height = 42; // The height of projectile hitbox
+			Projectile.width = 16; // The width of projectile hitbox
+			Projectile.height = 16; // The height of projectile hitbox
 			Projectile.friendly = true;
 			Projectile.DamageType = ModContent.GetInstance<ScepterClass>();
 			Projectile.timeLeft = 600;
+			Projectile.penetrate = -1;
+			Projectile.tileCollide = true;
 		}
+
+        public override bool PreDraw(ref Color lightColor)
+        {
+			Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, TextureAssets.Projectile[Projectile.type].Value.Size() / 2, 1f, SpriteEffects.None, 0);
+            return false;
+        }
+
 
 		public override void AI() {
-			// The code below was adapted from the ProjAIStyleID.Arrow behavior. Rather than copy an existing aiStyle using Projectile.aiStyle and AIType,
-			// like some examples do, this example has custom AI code that is better suited for modifying directly.
-			// See https://github.com/tModLoader/tModLoader/wiki/Basic-Projectile#what-is-ai for more information on custom projectile AI.
-
-            // The projectile is rotated to face the direction of travel
 			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
-
 		}
 
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        {
+			SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/TenebrousKatana/GoreSlice", 2) with { PitchVariance = 0.5f });
+			for(int i = 0; i < 5; i++)
+			{
+				Dust.NewDustPerfect(target.Center, DustID.Blood, Projectile.velocity.RotatedByRandom(0.5f) * 0.5f, 0, default, 2f);
+				PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticle>(), target.Center, Projectile.velocity.RotatedByRandom(0.5f), Color.Red, 1f, 1);
+			}
+            target.AddBuff(BuffID.Bleeding, 600);
+        }
+
+
 		public override void OnKill(int timeLeft) {
-			for (int i = 0; i < 5; i++) // Creates a splash of dust around the position the projectile dies.
+			for (int i = 0; i < 5; i++)
 			{
 				Dust dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.Obsidian);
 				dust.noGravity = true;

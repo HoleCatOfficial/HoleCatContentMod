@@ -8,7 +8,7 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Particles
 {
-    internal class BloomRingSharp : BasePRT
+    public class BloomRingSharp : BasePRT
     {
         public override void SetProperty()
         {
@@ -43,7 +43,7 @@ namespace DestroyerTest.Content.Particles
     }
 
 
-    internal class BloomRingZap : BasePRT
+    public class BloomRingZap : BasePRT
     {
 
         public int MaxLifetime => 120;
@@ -89,7 +89,7 @@ namespace DestroyerTest.Content.Particles
         public override bool PreDraw(SpriteBatch spriteBatch) => true;
     }
     
-    internal class BloomRing : BasePRT
+    public class BloomRing : BasePRT
     {
 
         // The Texture property doesn't need to be overridden, as BasePRT has an automatic loading mechanism.
@@ -127,7 +127,7 @@ namespace DestroyerTest.Content.Particles
 
 
             //// Relative position change
-            Position += Main.LocalPlayer.velocity;
+            //Position += Main.LocalPlayer.velocity;
 
 
             // Apply a fading effect near the end of its life.

@@ -74,8 +74,7 @@ namespace DestroyerTest.Content.RiftBiome
 
 		public void SetBiomeProperties(Player player)
         {
-			player.ZoneSnow = true;
-
+			player.ZoneSnow = false;
 			player.ZoneDesert = false;
 			player.ZonePurity = false;
 			player.ZoneCorrupt = false;

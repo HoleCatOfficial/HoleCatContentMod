@@ -50,41 +50,52 @@ namespace DestroyerTest.Content.Projectiles.Boss
 			SpriteBatch spriteBatch = Main.spriteBatch;
 			DTUtils Utility = new DTUtils();
 
-            Opus.StartSpriteBatchForTrails(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-			if (TrailPositions.Count > 1)
-			{
-				List<ColoredVertex> ve = new List<ColoredVertex>();
-				float a = 0;
-
-				for (int i = TrailPositions.Count - 1; i > 0; i--)
+			DTOptimizationsConfig OptCfg = ModContent.GetInstance<DTOptimizationsConfig>();
+            if (!OptCfg.DisableExcessTrails)
+            {
+				Opus.StartSpriteBatchForTrails(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+				if (TrailPositions.Count > 1)
 				{
-					float t = 1f - (i / (float)TrailPositions.Count); // fade toward tail
-					Color b = lightColor * t;
+					List<ColoredVertex> ve = new List<ColoredVertex>();
+					float a = 0;
 
-					Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
-					Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * 40;
-                    Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * 40;
+					for (int i = TrailPositions.Count - 1; i > 0; i--)
+					{
+						float t = 1f - (i / (float)TrailPositions.Count); // fade toward tail
+						Color b = lightColor * t;
 
-					ve.Add(new ColoredVertex(
-						TrailPositions[i] - Main.screenPosition + offset,
-						new Vector3(t - trailOffset, 1, 1),
-						b));
+						Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
+						Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * 40;
+						Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * 40;
 
-					ve.Add(new ColoredVertex(
-						TrailPositions[i] - Main.screenPosition + offset2,
-						new Vector3(t - trailOffset, 0, 1),
-						b));
-				}
+						ve.Add(new ColoredVertex(
+							TrailPositions[i] - Main.screenPosition + offset,
+							new Vector3(t - trailOffset, 1, 1),
+							b));
 
-				GraphicsDevice gd = Main.graphics.GraphicsDevice;
-				if (ve.Count >= 3)
-				{
-                    gd.Textures[0] = DTAssetLib.Streak(3).Value;
-					gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2);
+						ve.Add(new ColoredVertex(
+							TrailPositions[i] - Main.screenPosition + offset2,
+							new Vector3(t - trailOffset, 0, 1),
+							b));
+					}
+
+					GraphicsDevice gd = Main.graphics.GraphicsDevice;
+					if (ve.Count >= 3)
+					{
+						gd.Textures[0] = DTAssetLib.Streak(3).Value;
+						gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2);
+					}
 				}
 			}
+
+			Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
         
 			Opus.DrawGlowOnProj(Projectile, lightColor, true);
+
+			if (WaitTimer < 20)
+			{
+				Opus.DrawTextureOnProj(DTAssetLib.FadeLine, Projectile, DTColorUtils.Pastel(ColorLib.TenebrisGradient, 50), false, Projectile.rotation + MathHelper.PiOver2, 4f, 1f);
+			}
 
             Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, Projectile.Center - Main.screenPosition, null, lightColor, Projectile.rotation, TextureAssets.Projectile[Projectile.type].Value.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
 

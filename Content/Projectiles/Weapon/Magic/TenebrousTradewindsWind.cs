@@ -14,7 +14,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 {
     public class TenebrousTradewindsWind : ModProjectile
     {
-        public override string Texture => "DestroyerTest/Content/Particles/ParticleDrawEntity"; // Path to the texture for the projectile
+        public override string Texture => DTUtils.NoTexture; // Path to the texture for the projectile
 
 
         public override void SetStaticDefaults()

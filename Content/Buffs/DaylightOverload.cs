@@ -1,3 +1,4 @@
+using DestroyerTest.Common;
 using DestroyerTest.Content.Dusts;
 using Terraria;
 using Terraria.DataStructures;
@@ -43,7 +44,7 @@ namespace DestroyerTest.Content.Buffs
         {
 			if (lifeRegenDebuff)
 			{
-				Dust.NewDust(npc.position, npc.width, npc.height, DustID.Lava, 0.0f, 0.5f, 0, default, 1);
+				Dust.NewDust(npc.position, npc.width, npc.height, DustID.TintableDustLighted, 0.0f, 0.5f, 0, ColorLib.Rift, 1);
 				if (npc.boss == false)
                 {
                     npc.velocity *= 0.65f;
@@ -53,21 +54,15 @@ namespace DestroyerTest.Content.Buffs
         }
 
 
-        public void UpdateLifeRegen(NPC npc, Player player, ref int damage)
+        public override void UpdateLifeRegen(NPC npc, ref int damage)
 		{
-			if (lifeRegenDebuff && Main.dayTime)
+			if (lifeRegenDebuff)
 			{
-				Dust.NewDust(npc.position, npc.width, npc.height, DustID.Lava, 0.0f, 0.5f, 0, default, 1);
 				if (npc.lifeRegen > 0)
-					npc.lifeRegen = 0;
+				{
+                    npc.lifeRegen = 0;
+				}
 				npc.lifeRegen -= 36;
-			}
-			if (lifeRegenDebuff && !Main.dayTime)
-			{
-				if (npc.lifeRegen > 0)
-					npc.lifeRegen = 0;
-
-				npc.lifeRegen -= 24;
 			}
 		}
     }
@@ -85,6 +80,7 @@ namespace DestroyerTest.Content.Buffs
         {
 			if (lifeRegenDebuff)
 			{
+				Dust.NewDust(Player.position, Player.width, Player.height, DustID.TintableDustLighted, 0.0f, 0.5f, 0, ColorLib.Rift, 1);
 				Player.moveSpeed *= 0.85f;
 			}
             base.PostUpdateBuffs();
@@ -93,8 +89,6 @@ namespace DestroyerTest.Content.Buffs
 		{
 			if (lifeRegenDebuff)
 			{
-				if (Player.lifeRegen > 0)
-					Player.lifeRegen = 0;
 				Player.lifeRegenTime = 0;
 				Player.lifeRegen -= 16;
 			}

@@ -12,25 +12,36 @@ namespace DestroyerTest.Common
 {
 	public class WeaponImbuePlayer : ModPlayer
     {
-        public bool GalantineBurn = false;
 		public bool HeliouricShock = false;
         public bool DaylightOverload = false;
         public bool ComaceraticBurn = false;
+        public bool GalantineBurn = false;
+        public bool Honey = false;
+        public bool Mud = false;
+        public bool GalantineHoney = false;
+        public bool Brine = false;
+        public bool FrostBurn = false;
+        public bool Fire = false;
+        public bool Ichor = false;
+        public bool CursedFlame = false;
 
         public override void ResetEffects()
         {
-            GalantineBurn = false;
             HeliouricShock = false;
             DaylightOverload = false;
             ComaceraticBurn = false;
+            GalantineBurn = false;
+            Honey = false;
+            Mud = false;
+            GalantineHoney = false;
+            FrostBurn = false;
+            Fire = false;
+            Ichor = false;
+            CursedFlame = false;
         }
 
         public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)
-        {
-            if (GalantineBurn && item.DamageType.CountsAsClass<MeleeDamageClass>())
-            {
-                target.AddBuff(ModContent.BuffType<GalantineBurn>(), 60 * Main.rand.Next(10, 17));
-            }
+        {  
             if (HeliouricShock && item.DamageType.CountsAsClass<MeleeDamageClass>())
             {
                 target.AddBuff(ModContent.BuffType<HeliouricShock>(), 60 * Main.rand.Next(10, 17));
@@ -39,9 +50,43 @@ namespace DestroyerTest.Common
             {
                 target.AddBuff(ModContent.BuffType<DaylightOverload>(), 60 * Main.rand.Next(10, 17));
             }
-            if (ComaceraticBurn && item.DamageType.CountsAsClass<MeleeDamageClass>()) {
+            if (ComaceraticBurn && item.DamageType.CountsAsClass<MeleeDamageClass>()) 
+            {
 				target.AddBuff(ModContent.BuffType<ComaceraticBurn>(), 60 * Main.rand.Next(10, 17));
 			}
+            if (GalantineBurn && item.DamageType.CountsAsClass<MeleeDamageClass>())
+            {
+                target.AddBuff(ModContent.BuffType<GalantineBurn>(), 60 * Main.rand.Next(10, 17));
+            }
+            if (Honey && item.DamageType.CountsAsClass<MeleeDamageClass>())
+            {
+                target.AddBuff(BuffID.Slow, 60 * Main.rand.Next(10, 17));
+            }
+            if (Mud && item.DamageType.CountsAsClass<MeleeDamageClass>())
+            {
+                target.AddBuff(ModContent.BuffType<Muddy>(), 60 * Main.rand.Next(10, 17));
+            }
+            if (GalantineHoney && item.DamageType.CountsAsClass<MeleeDamageClass>())
+            {
+                target.AddBuff(ModContent.BuffType<GalantineBurn>(), 60 * Main.rand.Next(10, 17));
+                target.AddBuff(BuffID.Slow, 60 * Main.rand.Next(10, 17));
+            }
+            if (FrostBurn && item.DamageType.CountsAsClass<MeleeDamageClass>())
+            {
+                target.AddBuff(BuffID.Frostburn, 60 * Main.rand.Next(10, 17));
+            }
+            if (Fire && item.DamageType.CountsAsClass<MeleeDamageClass>())
+            {
+                target.AddBuff(BuffID.OnFire, 60 * Main.rand.Next(10, 17));
+            }
+            if (Ichor && item.DamageType.CountsAsClass<MeleeDamageClass>())
+            {
+                target.AddBuff(BuffID.Ichor, 60 * Main.rand.Next(10, 17));
+            }
+            if (CursedFlame && item.DamageType.CountsAsClass<MeleeDamageClass>())
+            {
+                target.AddBuff(BuffID.CursedInferno, 60 * Main.rand.Next(10, 17));
+            }
 		}
 
         public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)

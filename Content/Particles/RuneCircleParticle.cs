@@ -14,7 +14,7 @@ namespace DestroyerTest.Content.Particles
 {
     // Our first PRT particle, pretty cool right? It is generated in VaultSword, 
     // so grab the sword and check out the effect.
-    internal class RuneCircle2 : BasePRT
+    public class RuneCircle2 : BasePRT
     {
 
         // The Texture property doesn't need to be overridden, as BasePRT has an automatic loading mechanism.
@@ -72,7 +72,7 @@ namespace DestroyerTest.Content.Particles
         public override bool PreDraw(SpriteBatch spriteBatch) => true;
     }
     
-    internal class RuneCircle1 : BasePRT
+    public class RuneCircle1 : BasePRT
     {
 
         // The Texture property doesn't need to be overridden, as BasePRT has an automatic loading mechanism.

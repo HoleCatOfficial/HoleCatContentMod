@@ -72,32 +72,36 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
 
             Opus.DrawGlowOnProj(Projectile, lightColor, false, 0);
 
-            Opus.StartSpriteBatchForTrails(sb, BlendState.NonPremultiplied, SpriteSortMode.Immediate);
+            DTOptimizationsConfig OptCfg = ModContent.GetInstance<DTOptimizationsConfig>();
+            if (!OptCfg.DisableExcessTrails)
+            {
+                Opus.StartSpriteBatchForTrails(sb, BlendState.NonPremultiplied, SpriteSortMode.Immediate);
 
-            if (TrailPositions.Count > 1)
-			{
-				List<ColoredVertex> ve = new List<ColoredVertex>();
-				float a = 0;
+                if (TrailPositions.Count > 1)
+                {
+                    List<ColoredVertex> ve = new List<ColoredVertex>();
+                    float a = 0;
 
-				for (int i = TrailPositions.Count - 1; i > 0; i--)
-				{
-					float t = 1f - (i / (float)TrailPositions.Count);
-					Color b = lightColor * t;
+                    for (int i = TrailPositions.Count - 1; i > 0; i--)
+                    {
+                        float t = 1f - (i / (float)TrailPositions.Count);
+                        Color b = lightColor * t;
 
-					Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
-					Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * 40;
-                    Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * 40;
+                        Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
+                        Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * 40;
+                        Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * 40;
 
-					DTUtils.AddStrips(ve, TrailPositions, i, offset, offset2, t, b, trailOffset);
-				}
+                        DTUtils.AddStrips(ve, TrailPositions, i, offset, offset2, t, b, trailOffset);
+                    }
 
-				GraphicsDevice gd = Main.graphics.GraphicsDevice;
-				if (ve.Count >= 3)
-				{
-					gd.Textures[0] = DTAssetLib.SoulStreak.Value;
-					gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2);
-				}
-			}
+                    GraphicsDevice gd = Main.graphics.GraphicsDevice;
+                    if (ve.Count >= 3)
+                    {
+                        gd.Textures[0] = DTAssetLib.SoulStreak.Value;
+                        gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2);
+                    }
+                }
+            }
 
             Opus.ReturnToDefaultDrawing(sb);
 

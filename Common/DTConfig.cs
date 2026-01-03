@@ -23,6 +23,22 @@ namespace DestroyerTest.Common
 
         [DefaultValue(true)]
         public bool DragCamera { get; set; }
+
+        /// <summary>
+        /// The cooldown timer for triggering effects for Thrown Scepter tile collisions.
+        /// <br/> Has a minimum of half a second and a maximum of 20 seconds.
+        /// </summary>
+        [Range(30, 1200)]
+        [DefaultValue(30f)]
+        public int ScepterTileCollsionsCooldown { get; set; }
+
+        /// <summary>
+        /// The cooldown timer for triggering effects for Thrown Scepter tile collisions.
+        /// <br/> Has a minimum of half a second and a maximum of 20 seconds.
+        /// </summary>
+        [Range(120, 1200)]
+        [DefaultValue(120f)]
+        public int ScrollEffectsCooldown { get; set; }
         
     }
 
@@ -35,6 +51,8 @@ namespace DestroyerTest.Common
         public bool DisableExcessDusts { get; set; }
         [DefaultValue(false)]
         public bool DisableExcessParticles { get; set; }
+        [DefaultValue(false)]
+        public bool DisableExcessTrails { get; set; }
     }
 
     public class DTMusicConfig : ModConfig

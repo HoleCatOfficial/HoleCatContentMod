@@ -57,6 +57,12 @@ namespace DestroyerTest.Content.Scepter
             base.SetDefaults();
         }
 
+        public override void ShootDefaults()
+        {
+            base.ShootDefaults();
+            Item.shootSpeed = 120;
+        }
+
         public bool Energized = false;
 
         public override void UpdateInventory(Player player)

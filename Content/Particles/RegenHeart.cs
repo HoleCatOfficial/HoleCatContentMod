@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Particles
 {
-    internal class RegenHeart : BasePRT
+    public class RegenHeart : BasePRT
     {
         public int MaxLifetime => 60;
         public override void SetProperty()

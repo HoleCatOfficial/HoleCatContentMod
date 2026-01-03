@@ -28,7 +28,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
             Projectile.hostile = true; // Can the projectile deal damage to the player?
             Projectile.ignoreWater = true; // Does the projectile's speed be influenced by water?
             Projectile.light = 0.4f; // How much light emit around the projectile
-            Projectile.timeLeft = 600; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
+            Projectile.timeLeft = 180; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
             Projectile.tileCollide = false;
         }
 
@@ -42,33 +42,41 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
 			SpriteBatch spriteBatch = Main.spriteBatch;
 			DTUtils Utility = new DTUtils();
 
-			Opus.StartSpriteBatchForTrails(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 			
-			if (TrailPositions.Count > 1)
-			{
-				List<ColoredVertex> ve = new List<ColoredVertex>();
-				float a = 0;
+			
+            DTOptimizationsConfig OptCfg = ModContent.GetInstance<DTOptimizationsConfig>();
+            if (!OptCfg.DisableExcessTrails)
+            {
+                Opus.StartSpriteBatchForTrails(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
-				for (int i = TrailPositions.Count - 1; i > 0; i--)
-				{
-					float t = 1f - (i / (float)TrailPositions.Count); // fade toward tail
-					Color b = lightColor * t;
+                if (TrailPositions.Count > 1)
+                {
+                    List<ColoredVertex> ve = new List<ColoredVertex>();
+                    float a = 0;
 
-					Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
-					Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * 22;
-                    Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * 22;
+                    for (int i = TrailPositions.Count - 1; i > 0; i--)
+                    {
+                        float t = 1f - (i / (float)TrailPositions.Count); // fade toward tail
+                        Color b = lightColor * t;
 
-					DTUtils.AddStrips(ve, TrailPositions, i, offset, offset2, t, b, trailOffset);
-				}
+                        Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
+                        Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * 22;
+                        Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * 22;
+
+                        DTUtils.AddStrips(ve, TrailPositions, i, offset, offset2, t, b, trailOffset);
+                    }
 
 
-				GraphicsDevice gd = Main.graphics.GraphicsDevice;
-				if (ve.Count >= 3)
-				{
-					gd.Textures[0] = DTAssetLib.Streak(2).Value;
-					gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2);
-				}
-			}
+                    GraphicsDevice gd = Main.graphics.GraphicsDevice;
+                    if (ve.Count >= 3)
+                    {
+                        gd.Textures[0] = DTAssetLib.Streak(2).Value;
+                        gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2);
+                    }
+                }
+            }
+
+            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
 			Opus.DrawGlowOnProj(Projectile, lightColor * GlowMult, true);
 

@@ -38,10 +38,9 @@ namespace DestroyerTest
         public static ModKeybind StarBlastKeybind { get; private set; }
         public static ModKeybind HeroHelmetKeybind { get; private set; }
         public static ModKeybind RiftTeleportKeybind { get; private set; }
-
+		public static ModKeybind ArmorSetBonusHotKey { get; private set; }
         public static ModKeybind ManaBurstKeybind { get; private set; }
         public static ModKeybind TenebrisTeleportKeybind { get; private set; }
-
         public static ModKeybind DeadlyBlossomKeybind { get; private set; }
         public static ModKeybind OilTentacleKeybind { get; private set; }
 
@@ -83,7 +82,7 @@ namespace DestroyerTest
 				ChestID.ShadowLocked,
 				ModContent.ItemType<ShadowScepter>(),
 				stack: 1,
-				rarity: 0.80f
+				rarity: 0.70f
 			);
             ChestLootSystem.RegisterChestLoot(
 				ChestID.Water,
@@ -95,61 +94,55 @@ namespace DestroyerTest
 				ChestID.Gold,
 				ModContent.ItemType<InsurgentCirclet>(),
 				stack: 1,
-				rarity: 0.15f
+				rarity: 0.05f
 			);
             ChestLootSystem.RegisterChestLoot(
 				ChestID.Gold,
 				ModContent.ItemType<InsurgentBodyArmor>(),
 				stack: 1,
-				rarity: 0.15f
+				rarity: 0.05f
 			);
             ChestLootSystem.RegisterChestLoot(
 				ChestID.Gold,
 				ModContent.ItemType<InsurgentFaulds>(),
 				stack: 1,
-				rarity: 0.15f
+				rarity: 0.05f
 			);
             ChestLootSystem.RegisterChestLoot(
 				ChestID.Gold,
 				ModContent.ItemType<RevenantMask>(),
 				stack: 1,
-				rarity: 0.15f
+				rarity: 0.03f
 			);
             ChestLootSystem.RegisterChestLoot(
 				ChestID.Gold,
 				ModContent.ItemType<ForgottenPendant>(),
 				stack: 1,
-				rarity: 0.5f
+				rarity: 0.03f
 			);
             ChestLootSystem.RegisterChestLoot(
 				ChestID.Frozen,
 				ModContent.ItemType<FrigidScroll>(),
 				stack: 1,
-				rarity: 0.25f
+				rarity: 0.10f
 			);
             ChestLootSystem.RegisterChestLoot(
 				ChestID.Wooden,
 				ModContent.ItemType<MageGlove>(),
 				stack: 1,
-				rarity: 0.35f
+				rarity: 0.10f
 			);
             ChestLootSystem.RegisterChestLoot(
 				ChestID.Wooden,
 				ModContent.ItemType<RosyGlove>(),
 				stack: 1,
-				rarity: 0.35f
-			);
-            ChestLootSystem.RegisterChestLoot(
-				ChestID.Wooden,
-				ModContent.ItemType<MageGlove>(),
-				stack: 1,
-				rarity: 0.35f
+				rarity: 0.15f
 			);
             ChestLootSystem.RegisterChestLoot(
 				ChestID.Gold,
 				ModContent.ItemType<ScepterPolish>(),
 				stack: 1,
-				rarity: 0.35f
+				rarity: 0.15f
 			);
             ChestLootSystem.RegisterChestLoot(
 				ChestID.Sandstone,
@@ -227,6 +220,7 @@ namespace DestroyerTest
             // Divider.
             RiftTeleportKeybind = KeybindLoader.RegisterKeybind(this, "Shadow Tome Teleport", "T");
             // Divider.
+			ArmorSetBonusHotKey = KeybindLoader.RegisterKeybind(this, "ArmorSetBonus", "Y");
             // Divider.
             ManaBurstKeybind = KeybindLoader.RegisterKeybind(this, "Mana Burst", "C");
             // Divider.
@@ -258,6 +252,7 @@ namespace DestroyerTest
             StarBlastKeybind = null;
             HeroHelmetKeybind = null;
             RiftTeleportKeybind = null;
+			ArmorSetBonusHotKey = null;
             ManaBurstKeybind = null;
             TenebrisTeleportKeybind = null;
             DeadlyBlossomKeybind = null;
@@ -296,7 +291,7 @@ namespace DestroyerTest
 
             public override void OnEnterWorld()
             {
-                //Main.NewText("IMPORTANT INFO: The Wyvern Corpse Bossfight has been optimized the most it possibly could. It is unfortunately just a laggy boss.", Color.OrangeRed);
+				Main.NewText($"You are running Talid v{Mod.Version.ToString()}", ColorLib.Rift);
                 firstJoin = true;
             }
 

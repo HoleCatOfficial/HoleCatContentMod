@@ -3,40 +3,46 @@
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using DestroyerTest.Rarity;
+using DestroyerTest.Rarity.Scepter;
 using DestroyerTest.Common;
 
 namespace DestroyerTest.Content.Equips
 {
-	// The AutoloadEquip attribute automatically attaches an equip texture to this item.
-	// Providing the EquipType.Head value here will result in TML expecting a X_Head.png file to be placed next to the item's main texture.
 	[AutoloadEquip(EquipType.Head)]
 	public class MythrilVisage : ModItem
 	{
-
 		public override void SetDefaults() {
-			Item.width = 24; // Width of the item
-			Item.height = 22; // Height of the item
-			Item.value = Item.sellPrice(gold: 70); // How many coins the item is worth
-			Item.rare = ItemRarityID.Blue; // The rarity of the item
-			Item.defense = 10; // The amount of defense the item will give when equipped
+			Item.width = 24;
+			Item.height = 22;
+			Item.value = Item.sellPrice(gold: 70);
+			Item.rare = ModContent.RarityType<WineRarity>();
+			Item.defense = 10;
             Item.vanity = true;
 		}
-
-		// IsArmorSet determines what armor pieces are needed for the setbonus to take effect
 		public override bool IsArmorSet(Item head, Item body, Item legs) {
 			return body.type == ItemID.MythrilChainmail && legs.type == ItemID.MythrilGreaves;
 		}
 
-		// UpdateArmorSet allows you to give set bonuses to the armor.
+		public static readonly int SoloRangeBonus = 10;
+		public static readonly int SetRangeBonus = 18;
+        public static readonly float ThrowSpeedBonus = 1.12f;
+        public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(SoloRangeBonus);
+		public LocalizedText setBonus => base.Tooltip.WithFormatArgs(SetRangeBonus, (ThrowSpeedBonus - 1f).ToString("P1"));
 		public override void UpdateArmorSet(Player player) {
-			ScepterClassStats.Range += 8;
+			ScepterClassStats.Range += SetRangeBonus;
+			ScepterClassStats.ThrowSpeedModifier *= ThrowSpeedBonus;
+			player.setBonus = Language.GetTextValue("Mods.DestroyerTest.Items.MythrilVisage.SetBonus", setBonus);
 		}
 
-		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
+        public override void UpdateEquip(Player player)
+        {
+            ScepterClassStats.Range += SoloRangeBonus;
+        }
+
+
 		public override void AddRecipes() {
 			CreateRecipe()
-                .AddIngredient(ItemID.MythrilBar, 10) // Add an ingredient to the recipe
+                .AddIngredient(ItemID.MythrilBar, 10)
                 .AddTile(TileID.MythrilAnvil)
 				.Register();
 		}

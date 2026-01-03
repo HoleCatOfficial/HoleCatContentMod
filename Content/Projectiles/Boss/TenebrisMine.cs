@@ -75,6 +75,11 @@ namespace DestroyerTest.Content.Projectiles.Boss
             Opus.ReturnToDefaultDrawing(spriteBatch);
         }
 
+        public override bool CanHitPlayer(Player target)
+        {
+            return false;
+        }
+
         public float TextureRotationOffset = 0f;
         public override void AI()
         {

@@ -65,6 +65,11 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
             }
         }
 
+        public override bool CanHitPlayer(Player target)
+        {
+            return false;
+        }
+
         public override void AI()
         {
             Vector2 ToPlayer = Projectile.Center - Main.LocalPlayer.Center;

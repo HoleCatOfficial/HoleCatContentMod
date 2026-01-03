@@ -49,6 +49,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon
             Projectile.extraUpdates = 3;
         }
 
+        public override bool? CanHitNPC(NPC target)
+        {
+            return DelayTimer > 10;
+        }
+
+
         private List<Vector2> trailPoints = new List<Vector2>();
         private Vector2 lastTickPosition;
         private const int MaxTrailCount = 60;

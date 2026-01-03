@@ -60,7 +60,7 @@ namespace DestroyerTest.Content.Projectiles.player.ArmorSet
 			Projectile.hostile = false;
 			Projectile.ignoreWater = true;
 			Projectile.light = 1f;
-			Projectile.timeLeft = 300;
+			Projectile.timeLeft = 600;
 			Projectile.tileCollide = true;
 		}
 
@@ -230,8 +230,8 @@ namespace DestroyerTest.Content.Projectiles.player.ArmorSet
 
         public override void OnKill(int timeLeft)
         {
-            SoundEngine.PlaySound(SoundID.Item60);
-			Dust.NewDust(Projectile.position, Projectile.Hitbox.Width, Projectile.Hitbox.Height, DustID.WhiteTorch, Main.rand.NextFloat(-1, 1.1f), Main.rand.NextFloat(-1, 1.1f), 0, Color.Wheat, 2f);
+            SoundEngine.PlaySound(SoundID.Item60, Projectile.Center);
+			Opus.RadialSpreadDust(DustID.WhiteTorch, 9, Projectile.Center, 0, Color.Wheat, 0.75f, 6, true);
         }
 
     }

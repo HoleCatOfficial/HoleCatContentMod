@@ -10,6 +10,7 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using OpusLib;
+using System;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 {
@@ -32,50 +33,58 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             Projectile.penetrate = 4;
         }
 
-        public override bool PreDraw(ref Color lightColor)
-        {
-            lightColor = ColorLib.Ichor;
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            DTUtils Utility = new DTUtils();
+        public float trailOffset = 0f;
+		public override bool PreDraw(ref Color lightColor)
+		{
+			lightColor = ColorLib.IchorCrystalGradient;
+			trailOffset += 0.04f;
 
-            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-            for (int i = 0; i < TrailPositions.Count - 1; i++)
+
+			SpriteBatch spriteBatch = Main.spriteBatch;
+			DTUtils Utility = new DTUtils();
+
+            DTOptimizationsConfig OptCfg = ModContent.GetInstance<DTOptimizationsConfig>();
+            if (!OptCfg.DisableExcessTrails)
             {
-                Vector2 start = TrailPositions[i] - Main.screenPosition;
-                Vector2 end = TrailPositions[i + 1] - Main.screenPosition;
-                Vector2 diff = end - start;
+                Opus.StartSpriteBatchForTrails(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+                
+                if (TrailPositions.Count > 1)
+                {
+                    List<ColoredVertex> ve = new List<ColoredVertex>();
+                    float a = 0;
 
-                float length = diff.Length();
-                if (length < 0.5f)
-                    continue;
+                    for (int i = TrailPositions.Count - 1; i > 0; i--)
+                    {
+                        float t = 1f - (i / (float)TrailPositions.Count); // fade toward tail
+                        Color b = lightColor * t;
 
-                float rotation = diff.ToRotation();
+                        Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
+                        Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * 22;
+                        Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * 22;
 
-                float width = MathHelper.Lerp(0.01f, 0.0007f, i / (float)TrailLength);
-                float alpha = MathHelper.Lerp(1f, 0f, i / (float)TrailLength);
-                Color color = lightColor * alpha;
+                        DTUtils.AddStrips(ve, TrailPositions, i, offset, offset2, t, b, trailOffset);
+                    }
 
-                Main.spriteBatch.Draw(
-                    DTAssetLib.Square.Value,
-                    start,
-                    null,
-                    color,
-                    rotation,
-                    new Vector2(DTAssetLib.Square.Value.Width / 2, DTAssetLib.Square.Value.Height / 2),
-                    new Vector2(length, width),
-                    SpriteEffects.None,
-                    0f
-                );
+
+                    GraphicsDevice gd = Main.graphics.GraphicsDevice;
+                    if (ve.Count >= 3)
+                    {
+                        gd.Textures[0] = DTAssetLib.Streak(2).Value;
+                        gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2);
+                    }
+                }
             }
 
-            Opus.DrawGlowOnProj(Projectile, lightColor, false, 0);
+            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
+			Opus.DrawGlowOnProj(Projectile, lightColor * GlowMult, true);
 
-            Opus.ReturnToDefaultDrawing(spriteBatch);
-            
-            Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, TextureAssets.Projectile[Projectile.type].Value.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
-            return false;
-        }
+			Opus.ReturnToDefaultDrawing(spriteBatch);
+
+			Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, TextureAssets.Projectile[Projectile.type].Value.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
+
+			return false;
+		}
 
         public override void OnSpawn(IEntitySource source)
         {
@@ -108,19 +117,43 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 
         public List<Vector2> TrailPositions = new();
         public List<float> TrailRotations = new();
-        private const int TrailLength = 40;
+        private const int TrailLength = 300;
+        public float GlowMult = 1f;
         public override void AI()
         {
-            TrailPositions.Insert(0, Projectile.Center);
-            TrailRotations.Insert(0, Projectile.rotation);
+            Vector2 lastPos = TrailPositions.Count > 0 ? TrailPositions[0] : Projectile.Center;
+			Vector2 newPos  = Projectile.Center;
 
-            // Cap trail
-            while (TrailPositions.Count > TrailLength)
-                TrailPositions.RemoveAt(TrailPositions.Count - 1);
-            while (TrailRotations.Count > TrailLength)
-                TrailRotations.RemoveAt(TrailRotations.Count - 1);
+			float dist = Vector2.Distance(lastPos, newPos);
+			float step = 1f; // how closely to sample. tweak this!
+
+			if (dist > 0f)
+			{
+				int segments = (int)(dist / step);
+
+				for (int i = 1; i <= segments; i++)
+				{
+					Vector2 pos = Vector2.Lerp(lastPos, newPos, i / (float)segments);
+					TrailPositions.Insert(0, pos);
+					TrailRotations.Insert(0, Projectile.rotation);
+				}
+			}
+			else
+			{
+				TrailPositions.Insert(0, newPos);
+				TrailRotations.Insert(0, Projectile.rotation);
+			}
+
+
+			// Cap trail
+			while (TrailPositions.Count > TrailLength)
+				TrailPositions.RemoveAt(TrailPositions.Count - 1);
+			while (TrailRotations.Count > TrailLength)
+				TrailRotations.RemoveAt(TrailRotations.Count - 1);
             
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
+
+            GlowMult = MathHelper.Lerp(0.25f, 1f, (float)Math.Sin(Main.GameUpdateCount * 0.05f) * 0.5f + 0.5f);
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)

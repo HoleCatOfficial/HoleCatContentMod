@@ -1468,12 +1468,18 @@ Items: {
 	}
 
 	OrichalcumVisage: {
-		Tooltip: Increases Mana Burst power by 2
+		Tooltip: Increases Scepter Class Range by {0}.
+		SetBonus: When firing from a scepter, you have a chance to shoot a ring of petals at the enemy.
 		DisplayName: Orichalcum Visage
 	}
 
 	MythrilVisage: {
-		Tooltip: Increases Mana Burst power by 2
+		Tooltip: Increases Scepter Class Range by {0}.
+		SetBonus:
+			'''
+			Increases Scepter Class Range by {0}.
+			Increases Scepter throwing speed by {1}%.
+			'''
 		DisplayName: Mythril Visage
 	}
 
@@ -3412,22 +3418,22 @@ Items: {
 
 	MalakhimChaplet: {
 		DisplayName: Mal'akhim Chaplet
-		Tooltip: ""
+		Tooltip: Modeled after ancient, holy olive branches, and imbued with hope.
 		SetBonus:
 			'''
-			Scepter Class projectiles have a chance to spawn homing vesper darts as they travel.
-			Getting hit grants a little over 1 seconds of immunity.
+			Press Down to shoot out solid vesper spikes in all directions that penetrate infinitely and inflict bleeding.
+			You get more immunity time when damaged.
 			'''
 	}
 
 	MalakhimPlates: {
 		DisplayName: Mal'akhim Plates
-		Tooltip: ""
+		Tooltip: You are barely kept warm in these.
 	}
 
 	MalakhimWings: {
 		DisplayName: Mal'akhim Wings
-		Tooltip: ""
+		Tooltip: With the power of all creatures dreams, may you soar into the heavens.
 	}
 
 	ShieldMarkSmall: {
@@ -3509,7 +3515,7 @@ Items: {
 			Releasing the mouse button kills all owned embers and the owned ball.
 
 			Hekate's personal weapon for dealing with small scale threats.
-			Though, after she fled consequence, it has been left unused for decades.
+			Though, after they fled consequence, it has been left unused for decades.
 			'''
 	}
 
@@ -3608,6 +3614,134 @@ Items: {
 			Converts regular rockets to Tenebrous Rockets.
 			Takes 4 seconds to reload.
 			'''
+	}
+
+	Item_ShadeBossMusicBox: {
+		Tooltip: ""
+		DisplayName: Shade Boss Music Box
+	}
+
+	GodGouger: {
+		DisplayName: God Gouger
+		Tooltip:
+			'''
+			A javelin in the image of a gaping, toothy maw, empowered by a god's emotional torment and regret, that splits into two smaller javelins that both home in on enemies.
+			Inflicts Soul Erosion on enemies, lowering their attack stat.
+			"The Devastation said to have struck Hekate after their loss was so deep and grave that in some notes left in their garden work area, they had written that they would:
+			'rather gouge my heart out with a blighted maw than have to live with the baggage of a decision that was never mine to make.'"
+			'''
+	}
+
+	OminousToken: {
+		DisplayName: Ominous Token
+		Tooltip: Can give chest loot from the ominous garden.
+	}
+
+	FailedPotion: {
+		DisplayName: Failed Potion
+		Tooltip: ""
+	}
+
+	Dread: {
+		DisplayName: Dread
+		Tooltip: Shoots Shimmering Flames.
+	}
+
+	FireStorm: {
+		Tooltip: ""
+		DisplayName: Fire Storm
+	}
+
+	CursedFireVial: {
+		DisplayName: Vial of Cursed Flames
+		Tooltip: Imbues your scepter with Cursed Flames.
+	}
+
+	FrostFireFlask: {
+		DisplayName: Flask of Frostburn
+		Tooltip: Imbues your weapons with Frostburn.
+	}
+
+	IchorVial: {
+		DisplayName: Vial of Ichor
+		Tooltip: Imbues your scepter with Ichor.
+	}
+
+	MudFlask: {
+		DisplayName: Flask of Mud
+		Tooltip: Covers your weapons in mud.
+	}
+
+	MudVial: {
+		DisplayName: Vial of Mud
+		Tooltip: Covers your scepter in mud.
+	}
+
+	OilFlask: {
+		DisplayName: Flask of Oil
+		Tooltip: Sets your weapons ablaze.
+	}
+
+	OilVial: {
+		DisplayName: Vial of Oil
+		Tooltip: Sets your scepters ablaze.
+	}
+
+	BrineFlask: {
+		DisplayName: Brine Flask
+		Tooltip: ""
+	}
+
+	LivingPendant: {
+		DisplayName: Living Pendant
+		Tooltip: Scepter Shots heal for 5% of their damage on-hit.
+	}
+
+	TrueRiftMaker: {
+		Tooltip: ""
+		DisplayName: True Riftmaker
+	}
+
+	MineralOil: {
+		DisplayName: Mineral Oil
+		Tooltip: ""
+	}
+
+	Soot: {
+		DisplayName: Soot
+		Tooltip: ""
+	}
+
+	AetherianHood: {
+		DisplayName: Aetherian Hood
+		Tooltip:
+			'''
+			Increases Scepter Class damage by {0}%.
+			Increases Scepter Armor Penetration by {1}.
+			'''
+		SetBonus: Your scepters all shimmer! They can't collide with tiles at all!
+	}
+
+	AetherianRegalia: {
+		DisplayName: Aetherian Regalia
+		Tooltip: Increases Scepter throw speed by {0}%.
+	}
+
+	Sets.CannotBeUsedByClentaminator: Cannot be used by the Clentaminator and its upgrades.
+
+	TanninSolution: {
+		Tooltip: ""
+		DisplayName: Tannin Solution
+	}
+
+	ChlorophyllSolution: {
+		Tooltip: ""
+		DisplayName: Chlorophyll Solution
+	}
+
+	SporeScroll1: {
+		DisplayName: Spore Scroll1
+		Tooltip: ""
 	}
 }
 
@@ -4083,6 +4217,21 @@ Projectiles: {
 	ConstitutionStarFriendly.DisplayName: Constitution Star Friendly
 	ConstitutionStarHostile_NoHoming.DisplayName: Constitution Star Hostile_ No Homing
 	ConstitutionStarHostile.DisplayName: Constitution Star Hostile
+	VesperThornTip.DisplayName: Vesper Thorn Tip
+	VesperThorn.DisplayName: Vesper Thorn
+	MageClone.DisplayName: Mage Clone
+	GodGougerMiniPink.DisplayName: God Gouger Mini Pink
+	GodGougerMiniTeal.DisplayName: God Gouger Mini Teal
+	GodGougerThrown.DisplayName: God Gouger Thrown
+	EimvurBloodProjectile.DisplayName: Eimvur Blood Projectile
+	FailedPotionGreenSmoke.DisplayName: Failed Potion Green Smoke
+	FailedPotionPurpleSmoke.DisplayName: Failed Potion Purple Smoke
+	FailedPotionThrown.DisplayName: Failed Potion Thrown
+	CursedNodeCrystal2.DisplayName: Cursed Node Crystal2
+	BigRiftExplosion.DisplayName: Big Rift Explosion
+	TrueRiftMakerThrown.DisplayName: True Rift Maker Thrown
+	AncientRock.DisplayName: Ancient Rock
+	InfectedScepterThrown.DisplayName: Infected Scepter Thrown
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.
@@ -4437,6 +4586,41 @@ Buffs: {
 		DisplayName: Tainted Brew
 		Description: Cannot Consume Idri's Concoction again.
 	}
+
+	ScepterImbueCF: {
+		DisplayName: Scepter Imbue (Cursed Flames)
+		Description: Your scepter has been imbued with Cursed Flames!
+	}
+
+	ScepterImbueFire: {
+		DisplayName: Scepter Imbue Fire
+		Description: Your scepter is on Fire!!
+	}
+
+	ScepterImbueIchor: {
+		DisplayName: Scepter Imbue (Ichor)
+		Description: Your scepter has been imbued with Ichor!
+	}
+
+	WeaponImbueBrine: {
+		DisplayName: Weapon Imbue (Brine)
+		Description: Your weapons are soaking in salty water!
+	}
+
+	WeaponImbueFF: {
+		DisplayName: Weapon Imbue (Frostburn)
+		Description: Your weapons have been imbued with Frozen Flames!
+	}
+
+	WeaponImbueFire: {
+		DisplayName: Weapon Imbue (Fire)
+		Description: Your weapons are on Fire!!
+	}
+
+	WeaponImbueMud: {
+		DisplayName: Weapon Imbue (Mud)
+		Description: Your weapons have thick mud all over them!
+	}
 }
 
 NPCs: {
@@ -4643,6 +4827,7 @@ Keybinds: {
 	"Tenebrous Clone Teleort.DisplayName": Tenebrous Clone Teleort
 	"Deadly Blossom Spawn.DisplayName": Deadly  Blossom  Spawn
 	"HoleCat Oil Tentacle.DisplayName": Hole Cat  Oil  Tentacle
+	ArmorSetBonus.DisplayName: Armor Set Bonus
 }
 
 Tiles: {
@@ -4767,6 +4952,16 @@ Configs: {
 			Tooltip: If enabled, the camera will lag behind the player a bit when they move. This can mess with things drawn directly to the screen that expect the player to be at the center.
 			Label: Use reworked camera
 		}
+
+		ScepterTileCollsionsCooldown: {
+			Label: Scepter Tile Collsions Cooldown
+			Tooltip: ""
+		}
+
+		ScrollEffectsCooldown: {
+			Label: Scroll Effects Cooldown
+			Tooltip: ""
+		}
 	}
 
 	DTOptimizationsConfig: {
@@ -4785,6 +4980,11 @@ Configs: {
 		DisableExcessParticles: {
 			Label: Disable Excess Particles
 			Tooltip: ""
+		}
+
+		DisableExcessTrails: {
+			Tooltip: ""
+			Label: Disable Excess Trails
 		}
 	}
 

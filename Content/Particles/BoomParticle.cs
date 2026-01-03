@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Particles
 {
-    internal class Boom : BasePRT
+    public class Boom : BasePRT
     {
 
         public override void SetProperty()
@@ -42,7 +42,7 @@ namespace DestroyerTest.Content.Particles
         public override bool PreDraw(SpriteBatch spriteBatch) => true;
     }
 
-    internal class Boom1 : Boom
+    public class Boom1 : Boom
     {
         public override void SetProperty()
         {
@@ -52,7 +52,7 @@ namespace DestroyerTest.Content.Particles
         }
     }
 
-    internal class Boom2 : Boom
+    public class Boom2 : Boom
     {
         public override void SetProperty()
         {
@@ -62,7 +62,7 @@ namespace DestroyerTest.Content.Particles
         }
     }
 
-    internal class Boom3 : Boom
+    public class Boom3 : Boom
     {
         public override void SetProperty()
         {
@@ -72,7 +72,7 @@ namespace DestroyerTest.Content.Particles
         }
     }
 
-    internal class Boom4 : Boom
+    public class Boom4 : Boom
     {
         public override void SetProperty()
         {
@@ -81,7 +81,7 @@ namespace DestroyerTest.Content.Particles
             Scale = 0.01f;
         }
     }
-    internal class Boom5 : Boom
+    public class Boom5 : Boom
     {
         public override void SetProperty()
         {

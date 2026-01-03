@@ -51,7 +51,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             // Handle animation
             AnimateProjectile();
 
-            PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center, Vector2.Zero, ColorLib.StellarColor * 0.3f, 0.5f, 60, 2);
+            PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center, Vector2.Zero, ColorLib.StellarColor * 0.3f, 0.5f, 60, ai2: 2);
 
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
             float maxDetectRadius = 400f; // The maximum radius at which a projectile can detect a target

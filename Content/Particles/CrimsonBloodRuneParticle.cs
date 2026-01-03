@@ -8,7 +8,7 @@ using System;
 
 namespace DestroyerTest.Content.Particles
 {
-    internal class CrimsonBloodRuneParticle : BasePRT
+    public class CrimsonBloodRuneParticle : BasePRT
     {
 
         public int MaxLifetime => 120;

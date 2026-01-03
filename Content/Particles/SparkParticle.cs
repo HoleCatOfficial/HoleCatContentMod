@@ -7,12 +7,24 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Particles
 {
-    internal class SparkParticle : BasePRT
+    public class SparkParticle : BasePRT
     {
         public int MaxLifetime => 1200;
+        public int DrawMode => (int)ai[1];
         public override void SetProperty()
         {
-            PRTDrawMode = PRTDrawModeEnum.AdditiveBlend;
+            if (DrawMode == 0)
+            {
+                PRTDrawMode = PRTDrawModeEnum.AlphaBlend;
+            }
+            if (DrawMode == 1)
+            {
+                PRTDrawMode = PRTDrawModeEnum.NonPremultiplied;
+            }
+            if (DrawMode == 2)
+            {
+                PRTDrawMode = PRTDrawModeEnum.AdditiveBlend;
+            }
             Lifetime = MaxLifetime;
             LengthScale = 1 + 0.1f * Velocity.Length();
         }
@@ -40,12 +52,24 @@ namespace DestroyerTest.Content.Particles
         }
     }
 
-    internal class SparkParticleNoGravity : BasePRT
+    public class SparkParticleNoGravity : BasePRT
     {
         public int MaxLifetime => 1200;
+        public int DrawMode => (int)ai[1];
         public override void SetProperty()
         {
-            PRTDrawMode = PRTDrawModeEnum.AdditiveBlend;
+            if (DrawMode == 0)
+            {
+                PRTDrawMode = PRTDrawModeEnum.AlphaBlend;
+            }
+            if (DrawMode == 1)
+            {
+                PRTDrawMode = PRTDrawModeEnum.NonPremultiplied;
+            }
+            if (DrawMode == 2)
+            {
+                PRTDrawMode = PRTDrawModeEnum.AdditiveBlend;
+            }
             Lifetime = MaxLifetime;
             LengthScale = 1 + 0.1f * Velocity.Length();
         }

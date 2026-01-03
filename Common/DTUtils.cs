@@ -14,7 +14,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Mono.Cecil.Cil;
-using rail;
 using ReLogic.Content;
 using Terraria;
 using Terraria.Audio;
@@ -22,6 +21,7 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
+using OpusLib;
 
 namespace DestroyerTest.Common
 {
@@ -150,7 +150,6 @@ namespace DestroyerTest.Common
         }
 
         //From Cal Entropy. Too good not to have due to its usefulness.
-        // Note: Change the bar texture paths.
         public static void DrawChargeBar(float barScale, Vector2 position, float progress, Color color)
         {
             var barBG = DTAssetLib.Barback.Value;
@@ -212,6 +211,41 @@ namespace DestroyerTest.Common
                     return -1;
             }
         }
+
+        
+    }
+
+    public static class DTStaticUtils
+    {
+        public static void DefaultToFlask(this Item item, int BuffType, int Rarity, int Value)
+		{
+			item.UseSound = SoundID.Item3;
+			item.useStyle = ItemUseStyleID.DrinkLiquid;
+			item.useTurn = true;
+			item.useAnimation = 17;
+			item.useTime = 17;
+			item.maxStack = Item.CommonMaxStack;
+			item.consumable = true;
+			item.buffType = BuffType;
+			item.buffTime = Item.flaskTime;
+			item.value = Value;
+			item.rare = Rarity;
+		}
+
+        public static void DefaultToVial(this Item item, int BuffType, int Rarity, int Value)
+		{
+			item.UseSound = SoundID.Item3;
+			item.useStyle = ItemUseStyleID.DrinkLiquid;
+			item.useTurn = true;
+			item.useAnimation = 17;
+			item.useTime = 17;
+			item.maxStack = Item.CommonMaxStack;
+			item.consumable = true;
+			item.buffType = BuffType;
+			item.buffTime = Item.flaskTime;
+			item.value = Value;
+			item.rare = Rarity;
+		}
     }
 
     public class DTPlayerUtil : ModPlayer
@@ -243,6 +277,24 @@ namespace DestroyerTest.Common
         public static Color WithAlpha(this Color color, byte alpha)
         {
             return new Color(color.R, color.G, color.B, alpha);
+        }
+
+        /// <summary>
+        /// Returns the input color that is tinted <i>percentage</i>% white, with 1 being fully white.
+        /// </summary>
+        /// <param name="inputColor"></param>
+        /// <param name="percentage"></param>
+        /// <returns></returns>
+        public static Color Pastel(Color inputColor, float percentage)
+        {
+            percentage = MathHelper.Clamp(percentage, 0f, 1f);
+
+            return new Color(
+                (byte)MathHelper.Lerp(inputColor.R, 255, percentage),
+                (byte)MathHelper.Lerp(inputColor.G, 255, percentage),
+                (byte)MathHelper.Lerp(inputColor.B, 255, percentage),
+                inputColor.A
+            );
         }
     }
 
@@ -592,7 +644,8 @@ namespace DestroyerTest.Common
             else
                 return Color.Lerp(SpiritFire4, SpiritFire5, t - 3f);
         }
-        
+
+        public static Color InfectedGradient = Opus.Sine(ColorLib.CursedFlames, ColorLib.Ichor);
     }
 
     /// <summary>
@@ -625,6 +678,8 @@ namespace DestroyerTest.Common
         public static Asset<Texture2D> SoulStreak = ModContent.Request<Texture2D>($"{ExtrasPath}/SoulStreak", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> Barback = ModContent.Request<Texture2D>($"{ExtrasPath}/GenericBarBack", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> Barfront = ModContent.Request<Texture2D>($"{ExtrasPath}/GenericBarFront", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> WyvernCorpseSky = ModContent.Request<Texture2D>($"{ExtrasPath}/WyvernCorpseSky", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> GlowCone = ModContent.Request<Texture2D>($"{ExtrasPath}/GlowCone", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> Sparkle(int Variant)
         {
             if (Variant <= 0)
@@ -722,12 +777,17 @@ namespace DestroyerTest.Common
         public static SoundStyle ChargeBreak = new SoundStyle($"{AudioPath}/ChargeBreak");
         public static SoundStyle CrystalBreak = new SoundStyle($"{AudioPath}/CrystalBreak");
         public static SoundStyle ConstitutionStarKill = new SoundStyle($"{AudioPath}/ConstitutionBoss/ConstitutionStar/Kill", 14) { PitchVariance = 0.2f, Volume = 0.85f, MaxInstances = 0 };
-    
-        //
-        // Effects
-        //
-
-        public static Asset<Effect> TrailScroller = ModContent.Request<Effect>($"{EffectPath}/TrailScroll", AssetRequestMode.AsyncLoad);
+        public struct Impacts
+        {
+            public static SoundStyle BrightBell = new SoundStyle($"{AudioPath}/Impacts/BrightBell");
+            public static SoundStyle DarkMagicImpact = new SoundStyle($"{AudioPath}/Impacts/DarkMagicImpact", 3);
+            public static SoundStyle ExplosiveImpactSmall = new SoundStyle($"{AudioPath}/Impacts/ExplosiveImpactSmall", 3);
+            public static SoundStyle FlameImpact = new SoundStyle($"{AudioPath}/Impacts/FlameImpact", 4);
+            public static SoundStyle HellWeaponImpact = new SoundStyle($"{AudioPath}/Impacts/HellWeaponImpact");
+            public static SoundStyle IceImpact = new SoundStyle($"{AudioPath}/Impacts/IceImpact", 3);
+            public static SoundStyle IceMagicImpact = new SoundStyle($"{AudioPath}/Impacts/IceMagicImpact", 3);
+            public static SoundStyle MetalImpact = new SoundStyle($"{AudioPath}/Impacts/MetalImpact", 3);
+        }
     }
 
     public class AssetVerifierSystem : ModSystem

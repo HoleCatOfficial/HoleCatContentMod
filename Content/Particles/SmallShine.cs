@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Particles
 {
-    internal class SmallShine : BasePRT
+    public class SmallShine : BasePRT
     {
         public int MaxLifetime => 20;
 

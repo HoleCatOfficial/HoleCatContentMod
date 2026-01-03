@@ -9,7 +9,7 @@ namespace DestroyerTest.Content.Buffs
 	public class ScepterImbueFF : ModBuff
 	{
 		public override void SetStaticDefaults() {
-			//Main.persistentBuff[Type] = true;
+			Main.persistentBuff[Type] = true;
 		}
 
 		public override void Update(Player player, ref int buffIndex) {

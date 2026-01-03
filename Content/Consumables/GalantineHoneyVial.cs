@@ -18,24 +18,24 @@ namespace DestroyerTest.Content.Consumables
 			Item.ResearchUnlockCount = 20;
 
             ItemID.Sets.DrinkParticleColors[Type] = [
-                default,
+                Color.Gold,
                 ColorLib.StellarColor
 			];
 		}
-		public override void SetDefaults() {
-			Item.UseSound = SoundID.Item3;
-			Item.useStyle = ItemUseStyleID.DrinkLiquid;
-			Item.useTurn = true;
-			Item.useAnimation = 17;
-			Item.useTime = 17;
-			Item.maxStack = Item.CommonMaxStack;
-			Item.consumable = true;
-			Item.width = 22;
+		public override void SetDefaults() 
+		{
+			Item.width = 18;
 			Item.height = 32;
-			Item.buffType = ModContent.BuffType<ScepterImbueGH>();
-			Item.buffTime = Item.flaskTime;
-			Item.value = Item.sellPrice(0, 2, 5);
-            Item.rare = ItemRarityID.Blue;
+			Item.DefaultToVial(ModContent.BuffType<ScepterImbueGH>(), ModContent.RarityType<StellarRarity>(), Item.sellPrice(0, 0, 5));
+		}
+
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient<HoneyVial>()
+                .AddIngredient<StellarMatter>(4)
+                .AddTile(TileID.ImbuingStation)
+                .Register();
 		}
 	}
 }

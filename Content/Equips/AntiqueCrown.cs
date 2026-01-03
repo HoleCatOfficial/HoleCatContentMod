@@ -6,53 +6,129 @@ using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using DestroyerTest.Rarity;
+using DestroyerTest.Rarity.Scepter;
 using DestroyerTest.Content.Tiles.Riftplate;
 using DestroyerTest.Common;
+using Terraria.DataStructures;
+using Microsoft.Xna.Framework;
+using DestroyerTest.Content.Projectiles.player.ArmorSet;
+using Terraria.Audio;
 
 namespace DestroyerTest.Content.Equips
 {
-	// The AutoloadEquip attribute automatically attaches an equip texture to this item.
-	// Providing the EquipType.Head value here will result in TML expecting a X_Head.png file to be placed next to the item's main texture.
 	[AutoloadEquip(EquipType.Head)]
 	public class AntiqueCrown : ModItem
 	{
-
-
 		public override void SetStaticDefaults()
 		{
-			// If your head equipment should draw hair while drawn, use one of the following:
-			//ArmorIDs.Head.Sets.DrawHead[Item.headSlot] = false; // Don't draw the head at all. Used by Space Creature Mask
-			ArmorIDs.Head.Sets.DrawHatHair[Item.headSlot] = true; // Draw hair as if a hat was covering the top. Used by Wizards Hat
-																  //ArmorIDs.Head.Sets.DrawFullHair[Item.headSlot] = true; // Draw all hair as normal. Used by Mime Mask, Sunglasses
-																  // ArmorIDs.Head.Sets.DrawsBackHairWithoutHeadgear[Item.headSlot] = true;
+			ArmorIDs.Head.Sets.DrawHatHair[Item.headSlot] = true;
 		}
-
 		public override void SetDefaults()
 		{
-			Item.width = 22; // Width of the item
-			Item.height = 12; // Height of the item
-			Item.value = Item.sellPrice(gold: 8); // How many coins the item is worth
-			Item.rare = ModContent.RarityType<ScepterArmorPHMRarity>(); // The rarity of the item
-			Item.defense = 3; // The amount of defense the item will give when equipped
+			Item.width = 22;
+			Item.height = 12;
+			Item.value = Item.sellPrice(gold: 8); 
+			Item.rare = ModContent.RarityType<PearlRarity>();
+			Item.defense = 2;
 		}
-
-		// IsArmorSet determines what armor pieces are needed for the setbonus to take effect
 		public override bool IsArmorSet(Item head, Item body, Item legs)
 		{
 			return body.type == ModContent.ItemType<FleeceRobe>();
 		}
-
-
-
-		// UpdateArmorSet allows you to give set bonuses to the armor.
 		public override void UpdateArmorSet(Player player)
 		{
-			player.setBonus = "4% Increased Scepter Damage and an Additional 20 copper on enemy kills.";
-			player.GetDamage(ModContent.GetInstance<ScepterClass>()) *= 1.04f;
-			player.AddCoinLuck(player.Center, 20);
+			if (player.TryGetModPlayer<AntiqueSetPlayer>(out AntiqueSetPlayer Scptr))
+			{
+				Scptr.Active = true;
+			}
+			player.setBonus = Language.GetTextValue("Mods.DestroyerTest.Items.AntiqueCrown.SetBonus");
 		}
 
-		//Maybe I'll put this in a chest. I dunno.
+		public int RangeBonus = 10;
+		public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(RangeBonus);
+        public override void UpdateEquip(Player player)
+        {
+            ScepterClassStats.Range += RangeBonus;
+        }
+	}
+
+	public class AntiqueSetPlayer : ModPlayer
+	{
+		public bool Active;
+		public int Timer1 = 0;
+		public bool CanTriggerSpecialFX = false;
+		public bool Flag1 = false;
+		public float Opacity = 0f;
+		public float Timer1As0to1;
+		public override void ResetEffects()
+		{
+			Active = false;
+		}
+
+        public override void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
+        {
+            DTUtils.DrawChargeBar(1.25f, (Player.Center + new Vector2(0, -40)) - Main.screenPosition, Timer1As0to1, Color.Brown * Opacity);
+        }
+
+        public override void PostUpdateEquips()
+        {
+			Timer1As0to1 = MathHelper.Clamp(Timer1 / 300f, 0f, 1f);
+            if (Active)
+			{
+				Timer1++;
+				if (Timer1 >= 300)
+				{
+					CanTriggerSpecialFX = true;
+					if (!Flag1)
+					{
+						SoundEngine.PlaySound(SoundID.MaxMana, Player.position);
+						Flag1 = true;
+					}
+				}
+
+				if (Timer1 <= 0)
+				{
+					if (Opacity > 0f)
+					{
+						Opacity -= 0.02f;
+					}
+					CanTriggerSpecialFX = false;
+				}
+
+				if (Timer1 > 0 && Opacity < 1f)
+				{
+					Opacity += 0.02f;
+				}
+			}
+			if (!Active)
+			{
+				Timer1 = 0;
+				CanTriggerSpecialFX = false;
+				Flag1 = false;
+			}
+        }
+
+        public override bool CanUseItem(Item item)
+        {
+			if (Active && !CanTriggerSpecialFX && Player.altFunctionUse == 2)
+			{
+				Timer1 = 0;
+			}
+            return true;
+        }
+
+        public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
+			if (Active && CanTriggerSpecialFX && Player.altFunctionUse == 2)
+			{
+				for(int t = 0; t < 4; t++)
+				{
+					Projectile.NewProjectile(source, position, velocity.RotatedByRandom(0.5f), ModContent.ProjectileType<AncientRock>(), damage / 3, knockback * 2, Player.whoAmI);
+				}
+				Flag1 = false;
+				Timer1 = 0;
+			}
+            return true;
+        }
 	}
 }

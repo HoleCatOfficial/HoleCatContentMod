@@ -31,82 +31,93 @@ namespace DestroyerTest.Common
         public bool ComaceraticBurn = false;
         public bool Scepter = false;
 
+        private void DustInEnchantVisuals(ThrownScepter t, int ID, int alpha, Color color, float scale, bool noGravity = true)
+        {
+            Dust dust = Dust.NewDustDirect(t.EnchantmentVisuals().TopLeft(), t.EnchantmentVisuals().Width, t.EnchantmentVisuals().Height, ID, 0, 0, alpha, color, scale);
+            dust.noGravity = noGravity;
+        }
+
         public override void AI(Projectile projectile)
         {
-            Scepter = projectile.DamageType == ModContent.GetInstance<ScepterClass>();
-            int[] types = new int[]
-                {
-                    PRTLoader.GetParticleID<Arc1>(),
-                    PRTLoader.GetParticleID<Arc2>(),
-                    PRTLoader.GetParticleID<Arc3>()
-                };
-
-            if (Scepter)
+            if (projectile.ModProjectile is ThrownScepter thrown)
             {
-                if (HeliouricShock)
+                Scepter = true;
+                
+
+                if (Scepter)
                 {
-                    if (Main.rand.NextBool(5))
+                    if (HeliouricShock)
                     {
-                        PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], Main.rand.NextVector2FromRectangle(projectile.Hitbox), Vector2.Zero, ColorLib.Rift, 0.05f);
+                        DustInEnchantVisuals(thrown, DustID.FireworksRGB, 40, ColorLib.Rift, 0.5f, false);
+                        PRTLoader.NewParticle(DTUtils.ElectricArcs[Main.rand.Next(DTUtils.ElectricArcs.Length)], Main.rand.NextVector2FromRectangle(thrown.EnchantmentVisuals()), Vector2.Zero, ColorLib.Rift, 0.05f);
                     }
-                }
-                if (DaylightOverload)
-                {
-                    if (Main.rand.NextBool(5))
+                    if (DaylightOverload)
                     {
-                        Dust.NewDust(projectile.Center, projectile.Hitbox.Width, projectile.Hitbox.Height, ModContent.DustType<RiftDust>(), 0, 0, 40, ColorLib.Rift, 1.0f);
+                        DustInEnchantVisuals(thrown, ModContent.DustType<RiftDust>(), 40, Color.White, 1f);
+                        //Dust.NewDust(thrown.EnchantmentVisuals().TopLeft(), thrown.EnchantmentVisuals().Width, thrown.EnchantmentVisuals().Height, ModContent.DustType<RiftDust>(), 0, 0, 40, ColorLib.Rift, 1.0f);
                     }
-                }
-                if (ComaceraticBurn)
-                {
-                    if (Main.rand.NextBool(5))
+                    if (ComaceraticBurn)
                     {
-                        Dust.NewDust(projectile.Center, projectile.Hitbox.Width, projectile.Hitbox.Height, ModContent.DustType<RiftDust>(), 0, 0, 40, ColorLib.Rift, 1.0f);
+                        DustInEnchantVisuals(thrown, ModContent.DustType<RiftDust>(), 40, Color.White, 1f);
+                        //Dust.NewDust(thrown.EnchantmentVisuals().TopLeft(), thrown.EnchantmentVisuals().Width, thrown.EnchantmentVisuals().Height, ModContent.DustType<RiftDust>(), 0, 0, 40, ColorLib.Rift, 1.0f);
                     }
-                }
-                if (GalantineBurn)
-                {
-                    if (Main.rand.NextBool(5))
+                    if (GalantineBurn)
                     {
-                        Dust.NewDust(projectile.Center, projectile.Hitbox.Width, projectile.Hitbox.Height, DustID.TintableDustLighted, 0, 0, 40, ColorLib.StellarColor, 1.0f);
+                        DustInEnchantVisuals(thrown, DustID.FireworksRGB, 40, ColorLib.StellarColor, 0.7f, false);
+                        //Dust.NewDust(thrown.EnchantmentVisuals().TopLeft(), thrown.EnchantmentVisuals().Width, thrown.EnchantmentVisuals().Height, DustID.TintableDustLighted, 0, 0, 40, ColorLib.StellarColor, 1.0f);
                     }
-                }
-                if (Brine)
-                {
-                    if (Main.rand.NextBool(5))
+                    if (Brine)
                     {
-                        Dust.NewDust(projectile.Center, projectile.Hitbox.Width, projectile.Hitbox.Height, DustID.Water_Snow, 0, 0, 40, default, 1.0f);
+                        DustInEnchantVisuals(thrown, DustID.Water_Snow, 40, default, 1f);
+                        //Dust.NewDust(thrown.EnchantmentVisuals().TopLeft(), thrown.EnchantmentVisuals().Width, thrown.EnchantmentVisuals().Height, DustID.Water_Snow, 0, 0, 40, default, 1.0f);  
                     }
-                }
-                if (Mud)
-                {
-                    if (Main.rand.NextBool(5))
+                    if (Mud)
                     {
-                        Dust.NewDust(projectile.Center, projectile.Hitbox.Width, projectile.Hitbox.Height, DustID.Mud, 0, 0, 40, default, 1.0f);
+                        DustInEnchantVisuals(thrown, DustID.Mud, 40, default, 1f);
+                        //Dust.NewDust(thrown.EnchantmentVisuals().TopLeft(), thrown.EnchantmentVisuals().Width, thrown.EnchantmentVisuals().Height, DustID.Mud, 0, 0, 40, default, 1.0f);
                     }
-                }
-                if (Honey)
-                {
-                    if (Main.rand.NextBool(5))
+                    if (FrostBurn)
                     {
-                        Dust.NewDust(projectile.Center, projectile.Hitbox.Width, projectile.Hitbox.Height, DustID.Honey, 0, 0, 40, default, 1.0f);
+                        DustInEnchantVisuals(thrown, DustID.IceTorch, 40, default, 1f);
+                        //Dust.NewDust(thrown.EnchantmentVisuals().TopLeft(), thrown.EnchantmentVisuals().Width, thrown.EnchantmentVisuals().Height, DustID.IceTorch, 0, 0, 40, default, 1.0f);
                     }
-                    if (Main.rand.NextBool(10))
+                    if (Fire)
                     {
-                        Projectile.NewProjectile(projectile.GetSource_FromThis(), projectile.Center, Vector2.Zero, ProjectileID.Bee, projectile.damage / 3, 4, projectile.owner);
+                        DustInEnchantVisuals(thrown, DustID.Torch, 40, default, 1f);
+                        //Dust.NewDust(thrown.EnchantmentVisuals().TopLeft(), thrown.EnchantmentVisuals().Width, thrown.EnchantmentVisuals().Height, DustID.Torch, 0, 0, 40, default, 1.0f);
                     }
-                }
-                if (GalantineHoney)
-                {
-                    if (Main.rand.NextBool(5))
+                    if (Ichor)
                     {
-                        Dust.NewDust(projectile.Center, projectile.Hitbox.Width, projectile.Hitbox.Height, DustID.Honey, 0, 0, 40, default, 1.0f);
-                        Dust.NewDust(projectile.Center, projectile.Hitbox.Width, projectile.Hitbox.Height, DustID.TintableDustLighted, 0, 0, 40, ColorLib.StellarColor, 1.0f);
+                        DustInEnchantVisuals(thrown, DustID.Ichor, 40, default, 1f);
+                        //Dust.NewDust(thrown.EnchantmentVisuals().TopLeft(), thrown.EnchantmentVisuals().Width, thrown.EnchantmentVisuals().Height, DustID.Ichor, 0, 0, 40, default, 1.0f);
                     }
-                    if (Main.rand.NextBool(10))
+                    if (CursedFlame)
                     {
-                        Projectile.NewProjectile(projectile.GetSource_FromThis(), projectile.Center, projectile.velocity.RotatedByRandom(MathHelper.TwoPi), ModContent.ProjectileType<GalantineBee>(), projectile.damage / 3, 4, projectile.owner);
-                    }   
+                        DustInEnchantVisuals(thrown, DustID.CursedTorch, 40, default, 1f);
+                    }
+                    
+
+                    if (Honey)
+                    {
+                        DustInEnchantVisuals(thrown, DustID.Honey, 40, default, 1f);
+                        //Dust.NewDust(thrown.EnchantmentVisuals().TopLeft(), thrown.EnchantmentVisuals().Width, thrown.EnchantmentVisuals().Height, DustID.Honey, 0, 0, 40, default, 1.0f);
+                        if (Main.rand.NextBool(10))
+                        {
+                            Projectile.NewProjectile(projectile.GetSource_FromThis(), projectile.Center, Vector2.Zero, ProjectileID.Bee, projectile.damage / 3, 4, projectile.owner);
+                        }
+                    }
+                    if (GalantineHoney)
+                    {
+                        DustInEnchantVisuals(thrown, DustID.Honey, 40, default, 1f);
+                        DustInEnchantVisuals(thrown, DustID.FireworksRGB, 40, ColorLib.StellarColor, 0.7f, false);
+
+                        //Dust.NewDust(thrown.EnchantmentVisuals().TopLeft(), thrown.EnchantmentVisuals().Width, thrown.EnchantmentVisuals().Height, DustID.Honey, 0, 0, 40, default, 1.0f);
+                        //Dust.NewDust(thrown.EnchantmentVisuals().TopLeft(), thrown.EnchantmentVisuals().Width, thrown.EnchantmentVisuals().Height, DustID.TintableDustLighted, 0, 0, 40, ColorLib.StellarColor, 1.0f);
+                        if (Main.rand.NextBool(10))
+                        {
+                            Projectile.NewProjectile(projectile.GetSource_FromThis(), projectile.Center, projectile.velocity.RotatedByRandom(MathHelper.TwoPi), ModContent.ProjectileType<GalantineBee>(), projectile.damage / 3, 4, projectile.owner);
+                        }   
+                    }
                 }
             }
         }
@@ -139,6 +150,26 @@ namespace DestroyerTest.Common
                 {
                     target.AddBuff(ModContent.BuffType<Muddy>(), 60 * Main.rand.Next(10, 17));
                 }
+                if (FrostBurn)
+                {
+                    target.AddBuff(BuffID.Frostburn, 60 * Main.rand.Next(10, 17));
+                }
+                if (Fire)
+                {
+                    target.AddBuff(BuffID.OnFire, 60 * Main.rand.Next(10, 17));
+                }
+                if (Ichor)
+                {
+                    target.AddBuff(BuffID.Ichor, 60 * Main.rand.Next(10, 17));
+                }
+                if (CursedFlame)
+                {
+                    target.AddBuff(BuffID.CursedInferno, 60 * Main.rand.Next(10, 17));
+                }
+                if (Honey || GalantineHoney)
+                {
+                    target.AddBuff(BuffID.Slow, 60 * Main.rand.Next(10, 17));
+                }
             }
         }
 
@@ -169,6 +200,26 @@ namespace DestroyerTest.Common
                 if (Mud)
                 {
                     target.AddBuff(ModContent.BuffType<Muddy>(), 60 * Main.rand.Next(10, 17));
+                }
+                if (FrostBurn)
+                {
+                    target.AddBuff(BuffID.Frostburn, 60 * Main.rand.Next(10, 17));
+                }
+                if (Fire)
+                {
+                    target.AddBuff(BuffID.OnFire, 60 * Main.rand.Next(10, 17));
+                }
+                if (Ichor)
+                {
+                    target.AddBuff(BuffID.Ichor, 60 * Main.rand.Next(10, 17));
+                }
+                if (CursedFlame)
+                {
+                    target.AddBuff(BuffID.CursedInferno, 60 * Main.rand.Next(10, 17));
+                }
+                if (Honey || GalantineHoney)
+                {
+                    target.AddBuff(BuffID.Slow, 60 * Main.rand.Next(10, 17));
                 }
             }
         }

@@ -33,7 +33,7 @@ namespace DestroyerTest.Content.Projectiles.EntitiesProjectiles
 		public override void AI() {
 			Projectile.rotation += 0.4f * Projectile.direction;
 
-			PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center, Vector2.Zero, ColorLib.TenebrisGradient * 0.35f, 1.0f, 40, 2);
+			PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center, Vector2.Zero, ColorLib.TenebrisGradient * 0.35f, 1.0f, 40, ai2: 2);
 			if (TileCollideCount <= 0)
 			{
 				Projectile.Kill();

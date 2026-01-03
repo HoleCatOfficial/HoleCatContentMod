@@ -1046,7 +1046,7 @@ namespace DestroyerTest.Content.Entities
     {
 
 
-        public override string Texture => "DestroyerTest/Content/Particles/ParticleDrawEntity";
+        public override string Texture => DTUtils.NoTexture;
         public override void SetDefaults()
         {
             Projectile.width = 2;
@@ -1135,7 +1135,7 @@ namespace DestroyerTest.Content.Entities
 
     public class CloneCollisionBoom : ModProjectile
     {
-        public override string Texture => "DestroyerTest/Content/Particles/ParticleDrawEntity"; // Path to the texture for the projectile
+        public override string Texture => DTUtils.NoTexture; // Path to the texture for the projectile
         private const float MaxSizeMultiplier = 2.5f; // Maximum scale increase
         private const int FadeOutStartTime = 10; // Time left when fading starts
         private const int MaxLifetime = 30; // Total lifetime of the ring effect

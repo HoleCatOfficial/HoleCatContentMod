@@ -66,7 +66,7 @@ namespace DestroyerTest.Content.Consumables
 
                 int type = ModContent.NPCType<WyvernCorpseHead>();
 
-                if (Main.netMode != NetmodeID.MultiplayerClient)
+                if (Main.netMode != NetmodeID.MultiplayerClient && player.ZoneCrimson)
                 {
                     // If the player is not in multiplayer, spawn directly
                     NPC.SpawnOnPlayer(player.whoAmI, type);

@@ -129,7 +129,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
                 for (int y = 0; y < 9; y++)
                 {
                     Vector2 Pos = Projectile.Center + Main.rand.NextVector2CircularEdge(80, 100);
-                    PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticle>(), Pos, (Projectile.Center - Pos) * 0.06f, new Color(253, 62, 3), 0.2f);
+                    PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticle>(), Pos, (Projectile.Center - Pos) * 0.06f, new Color(253, 62, 3), 0.2f, 2);
                 }
             }
         }
@@ -189,7 +189,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
                 {
                     for (int y = 0; y < 9; y++)
                     {
-                        PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticle>(), proj.Center, new Vector2(Main.rand.NextFloat(-2f, 2.1f), Main.rand.NextFloat(-4f, -6.1f)), Color.Red, 0.4f);
+                        PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticle>(), proj.Center, new Vector2(Main.rand.NextFloat(-2f, 2.1f), Main.rand.NextFloat(-4f, -6.1f)), Color.Red, 0.4f, 2);
                     }
                     proj.Kill();
                     SoundEngine.PlaySound(DurabilityDown, proj.Center);
@@ -227,7 +227,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
                 {
                     for (int y = 0; y < 9; y++)
                     {
-                        PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticle>(), player.Center, new Vector2(Main.rand.NextFloat(-2f, 2.1f), Main.rand.NextFloat(-4f, -6.1f)), new Color(253, 62, 3), 0.4f);
+                        PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticle>(), player.Center, new Vector2(Main.rand.NextFloat(-2f, 2.1f), Main.rand.NextFloat(-4f, -6.1f)), new Color(253, 62, 3), 0.4f, 2);
                     }
 
                     player.Hurt(new Player.HurtInfo
@@ -269,7 +269,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
             for (int i = 0; i < 8; i++)
             {
                 Vector2 pos = Projectile.Center + Main.rand.NextVector2CircularEdge(40, 80);
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticle>(), pos, (Projectile.Center - pos) * 0.04f, Color.Red, 0.8f);
+                PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticle>(), pos, (Projectile.Center - pos) * 0.04f, Color.Red, 0.8f, 2);
             }
         }
 

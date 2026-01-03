@@ -36,22 +36,7 @@ namespace DestroyerTest.Content.Projectiles
 
         public override void AI()
         {
-
-            int[] types = new int[]
-                {
-                PRTLoader.GetParticleID<BlackFire1>(),
-                PRTLoader.GetParticleID<BlackFire2>(),
-                PRTLoader.GetParticleID<BlackFire3>(),
-                PRTLoader.GetParticleID<BlackFire4>(),
-                PRTLoader.GetParticleID<BlackFire5>(),
-                PRTLoader.GetParticleID<BlackFire6>(),
-                PRTLoader.GetParticleID<BlackFire7>()
-                };
-
-            PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], Projectile.Center, Vector2.Zero, default, 0.3f);
-
-
-
+            PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center, Vector2.Zero, Color.Black, 1f, 60, ai2: 1);
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)
