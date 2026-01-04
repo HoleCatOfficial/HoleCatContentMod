@@ -1,27 +1,28 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
-using Terraria.Graphics;
 using Terraria.ID;
 using Terraria.ModLoader;
 using OpusLib;
+using DestroyerTest.Content.Equips;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 {
-	// This Example show how to implement simple homing projectile
-	// Can be tested with ExampleCustomAmmoGun
 	public class ContinuumStar : ModProjectile
 	{
-		// Store the target NPC using Projectile.ai[0]
-		private NPC HomingTarget
+		public override string Texture => DTUtils.NoTexture;
+		private NPC NPCTarget
 		{
 			get => Projectile.ai[0] == 0 ? null : Main.npc[(int)Projectile.ai[0] - 1];
 			set
@@ -30,146 +31,166 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 			}
 		}
 
-		public ref float DelayTimer => ref Projectile.ai[1];
-
+		public float DelayTimer;
 		public override void SetStaticDefaults()
 		{
-			ProjectileID.Sets.TrailingMode[Projectile.type] = 2;
-    		ProjectileID.Sets.TrailCacheLength[Projectile.type] = 30;
-			ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true; // Make the cultist resistant to this projectile, as it's resistant to all homing projectiles.
+			ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true;
 		}
 
 		public override void SetDefaults()
 		{
-			Projectile.width = 33; // The width of projectile hitbox
-			Projectile.height = 33; // The height of projectile hitbox
-
-			Projectile.DamageType = DamageClass.Generic; // What type of damage does this projectile affect?
-			Projectile.friendly = true; // Can the projectile deal damage to enemies?
-			Projectile.hostile = false; // Can the projectile deal damage to the player?
-			Projectile.ignoreWater = true; // Does the projectile's speed be influenced by water?
-			Projectile.light = 0.4f; // How much light emit around the projectile
-			Projectile.timeLeft = 240; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
+			Projectile.width = 50;
+			Projectile.height = 50;
+			Projectile.DamageType = DamageClass.Melee;
+			Projectile.friendly = true;
+			Projectile.hostile = false;
+			Projectile.ignoreWater = true;
+			Projectile.light = 1f;
+			Projectile.timeLeft = 600;
 			Projectile.tileCollide = false;
 		}
 
+		public float trailOffset = 0f;
 		public override bool PreDraw(ref Color lightColor)
 		{
-			lightColor = ColorLib.StellarColor;
+			lightColor = Main.DiscoColor;
+			trailOffset += 0.04f;
+
+
 			SpriteBatch spriteBatch = Main.spriteBatch;
-			DTUtils Utility = new DTUtils();
+			DTUtils Utility = new DTUtils();	
 
-            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-            for (int i = 0; i < TrailPositions.Count - 1; i++)
-			{
-				Vector2 start = TrailPositions[i] - Main.screenPosition;
-				Vector2 end = TrailPositions[i + 1] - Main.screenPosition;
-				Vector2 diff = end - start;
+			DTOptimizationsConfig OptCfg = ModContent.GetInstance<DTOptimizationsConfig>();
+            if (!OptCfg.DisableExcessTrails)
+            {
+				Opus.StartSpriteBatchForTrails(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+				
+				if (TrailPositions.Count > 1)
+				{
+					List<ColoredVertex> ve = new List<ColoredVertex>();
+					float a = 0;
 
-				float length = diff.Length();
-				if (length < 0.5f)
-					continue;
+					for (int i = TrailPositions.Count - 1; i > 0; i--)
+					{
+						float t = 1f - (i / (float)TrailPositions.Count); // fade toward tail
+						Color b = lightColor * t;
 
-				float rotation = diff.ToRotation();
-				float width = MathHelper.Lerp(0.01f, 0.0007f, i / (float)TrailLength);
-				float alpha = MathHelper.Lerp(1f, 0f, i / (float)TrailLength);
+						Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
+						Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * 20;
+						Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * 20;
 
-				// Offset disco values by i + time, so it looks like bands traveling
-				float shift = (Main.GlobalTimeWrappedHourly * 60f + i * 10f) % 255f;
+						DTUtils.AddStrips(ve, TrailPositions, i, offset, offset2, t, b, trailOffset);
+					}
 
-				byte r = (byte)((Math.Sin((shift + 0) * 0.0245f) * 127 + 128) / 2);     // similar to Main.DiscoR /2
-				byte g = (byte)((Math.Sin((shift + 85) * 0.0245f) * 127 + 128) / 1.25); // offset phase
-				byte b = (byte)((Math.Sin((shift + 170) * 0.0245f) * 127 + 128) / 1.5); // offset phase
 
-				Color rainbowColor = new Color(r, g, b) * alpha;
-
-				Main.spriteBatch.Draw(
-					DTAssetLib.Square.Value,
-					start,
-					null,
-					rainbowColor,
-					rotation,
-					new Vector2(DTAssetLib.Square.Value.Width / 2, DTAssetLib.Square.Value.Height / 2),
-					new Vector2(length, width),
-					SpriteEffects.None,
-					0f
-				);
+					GraphicsDevice gd = Main.graphics.GraphicsDevice;
+					if (ve.Count >= 3)
+					{
+						gd.Textures[0] = DTAssetLib.Streak(1).Value;
+						gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2);
+					}
+				}
 			}
+
+			Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
 			Opus.DrawGlowOnProj(Projectile, lightColor, true);
 
 			Opus.ReturnToDefaultDrawing(spriteBatch);
 
-			Opus.DrawTextureOnProj(DTAssetLib.Star(1), Projectile, Color.White, true, 0f, 0.35f, 0.35f);
+			Opus.DrawTextureOnProj(DTAssetLib.Star(3), Projectile, Color.White, true, 0f, 0.9f, 0.9f);
+
 			return false;
 		}
 
+        public override bool? CanHitNPC(NPC target)
+        {
+            return DelayTimer >= 10;
+        }
+
 		public List<Vector2> TrailPositions = new();
-        public List<float> TrailRotations = new();
-        private const int TrailLength = 40;
+		public List<float> TrailRotations = new();
+		private const int TrailLength = 400;
+
 		public override void AI()
 		{
-			TrailPositions.Insert(0, Projectile.Center);
-            TrailRotations.Insert(0, Projectile.rotation);
+			Vector2 lastPos = TrailPositions.Count > 0 ? TrailPositions[0] : Projectile.Center;
+			Vector2 newPos  = Projectile.Center;
 
-            // Cap trail
-            while (TrailPositions.Count > TrailLength)
-                TrailPositions.RemoveAt(TrailPositions.Count - 1);
-            while (TrailRotations.Count > TrailLength)
-                TrailRotations.RemoveAt(TrailRotations.Count - 1);
+			float dist = Vector2.Distance(lastPos, newPos);
+			float step = 1f; // how closely to sample. tweak this!
 
-			Lighting.AddLight(Projectile.Center, ColorLib.StellarColor.ToVector3() * 1.0f);
-
-			if (DelayTimer < 10)
+			if (dist > 0f)
 			{
-				DelayTimer += 1;
+				int segments = (int)(dist / step);
+
+				for (int i = 1; i <= segments; i++)
+				{
+					Vector2 pos = Vector2.Lerp(lastPos, newPos, i / (float)segments);
+					TrailPositions.Insert(0, pos);
+					TrailRotations.Insert(0, Projectile.rotation);
+				}
+			}
+			else
+			{
+				TrailPositions.Insert(0, newPos);
+				TrailRotations.Insert(0, Projectile.rotation);
+			}
+
+
+			// Cap trail
+			while (TrailPositions.Count > TrailLength)
+				TrailPositions.RemoveAt(TrailPositions.Count - 1);
+			while (TrailRotations.Count > TrailLength)
+				TrailRotations.RemoveAt(TrailRotations.Count - 1);
+
+			DelayTimer++;
+			
+			Projectile.rotation += Projectile.direction * 0.07f;
+
+			Lighting.AddLight(Projectile.Center, Main.DiscoColor.ToVector3() * 0.4f);
+
+			if (DelayTimer < 20 || DelayTimer > 180)
+			{
 				return;
 			}
 
-			float maxDetectRadius = 1400f; // The maximum radius at which a projectile can detect a target
+			float maxDetectRadius = 2800f;
 
-			// First, we find a homing target if we don't have one
-			if (HomingTarget == null)
+
+			if (NPCTarget == null)
 			{
-				HomingTarget = FindClosestNPC(maxDetectRadius);
+				NPCTarget = FindClosestNPC(maxDetectRadius);
 			}
 
-			// If we have a homing target, make sure it is still valid. If the NPC dies or moves away, we'll want to find a new target
-			if (HomingTarget != null && !IsValidTarget(HomingTarget))
+
+			if (NPCTarget != null && !IsValidNPC(NPCTarget))
 			{
-				HomingTarget = null;
+				NPCTarget = null;
 			}
 
-			// If we don't have a target, don't adjust trajectory
-			if (HomingTarget == null)
+
+			if (NPCTarget == null)
 				return;
 
-			// If found, we rotate the projectile velocity in the direction of the target.
-			// We only rotate by 3 degrees an update to give it a smooth trajectory. Increase the rotation speed here to make tighter turns
 			float length = Projectile.velocity.Length();
-			float targetAngle = Projectile.AngleTo(HomingTarget.Center);
-			Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(18)).ToRotationVector2() * length;
+			float targetAngle = Projectile.AngleTo(NPCTarget.Center);
+			Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(15)).ToRotationVector2() * length;
+		
 		}
-
-		// Finding the closest NPC to attack within maxDetectDistance range
-		// If not found then returns null
 		public NPC FindClosestNPC(float maxDetectDistance)
 		{
 			NPC closestNPC = null;
 
-			// Using squared values in distance checks will let us skip square root calculations, drastically improving this method's speed.
 			float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
 
-			// Loop through all NPCs
 			foreach (var target in Main.ActiveNPCs)
 			{
-				// Check if NPC able to be targeted. 
-				if (IsValidTarget(target))
+				if (IsValidNPC(target))
 				{
-					// The DistanceSquared function returns a squared distance between 2 points, skipping relatively expensive square root calculations
+
 					float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, Projectile.Center);
 
-					// Check if it is within the radius
 					if (sqrDistanceToTarget < sqrMaxDetectDistance)
 					{
 						sqrMaxDetectDistance = sqrDistanceToTarget;
@@ -181,41 +202,20 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 			return closestNPC;
 		}
 
-		public bool IsValidTarget(NPC target)
+		public bool IsValidNPC(NPC target)
 		{
-			// This method checks that the NPC is:
-			// 1. active (alive)
-			// 2. chaseable (e.g. not a cultist archer)
-			// 3. max life bigger than 5 (e.g. not a critter)
-			// 4. can take damage (e.g. moonlord core after all it's parts are downed)
-			// 5. hostile (!friendly)
-			// 6. not immortal (e.g. not a target dummy)
-			// 7. doesn't have solid tiles blocking a line of sight between the projectile and NPC
 			return target.CanBeChasedBy();
 		}
+
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
-			target.AddBuff(ModContent.BuffType<GalantineBurn>(), 120);
-
+			Dust.NewDust(Projectile.position, Projectile.Hitbox.Width, Projectile.Hitbox.Height, DustID.FireworksRGB, Main.rand.NextFloat(-1, 1.1f), Main.rand.NextFloat(-1, 1.1f), 0, Main.DiscoColor, 2f);
 		}
 
         public override void OnKill(int timeLeft)
         {
-			SoundEngine.PlaySound(SoundID.Item28, Projectile.Center);
-			Dust.NewDust(
-				Projectile.Center,
-				Projectile.width,
-				Projectile.height,
-				DustID.TintableDustLighted,
-				Projectile.velocity.X * 0.4f,
-				Projectile.velocity.Y * 0.4f,
-				0,
-				ColorLib.RainbowGradient,
-				1f
-			);
-
+			Dust.NewDust(Projectile.position, Projectile.Hitbox.Width, Projectile.Hitbox.Height, DustID.TintableDustLighted, Main.rand.NextFloat(-1, 1.1f), Main.rand.NextFloat(-1, 1.1f), 0, Main.DiscoColor, 2f);
         }
-		
 
-	}
+    }
 }

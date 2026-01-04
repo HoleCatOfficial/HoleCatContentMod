@@ -270,6 +270,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 SoundEngine.PlaySound(Swing, player.Center);
 
                 Vector2 Velocity = Main.MouseWorld - Projectile.Center;
+                Velocity = Velocity.ToRotation().ToRotationVector2() * 8;
 
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), swordTip, Velocity * Main.rand.NextFloat(0.01f, 0.5f), ModContent.ProjectileType<ContinuumStar>(), Projectile.damage / 2, 2, Main.player[Projectile.owner].whoAmI);
 
@@ -295,6 +296,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 SoundEngine.PlaySound(Swing, player.Center);
 
                 Vector2 Velocity = Main.MouseWorld - Projectile.Center;
+                Velocity = Velocity.ToRotation().ToRotationVector2() * 8;
 
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), swordTip, Velocity * Main.rand.NextFloat(0.01f, 0.5f), ModContent.ProjectileType<ContinuumStar>(), Projectile.damage / 2, 2, Main.player[Projectile.owner].whoAmI);
 
