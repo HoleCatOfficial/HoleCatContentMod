@@ -212,7 +212,10 @@ namespace DestroyerTest.Common
             }
         }
 
-        
+        public static int[] NPCDownTally = new int[]
+        {
+            
+        };
     }
 
     public static class DTStaticUtils

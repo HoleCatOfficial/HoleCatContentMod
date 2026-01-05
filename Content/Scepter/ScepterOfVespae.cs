@@ -17,8 +17,8 @@ namespace DestroyerTest.Content.Scepter
 {
 	public class ScepterOfVespae : ScepterItem
 	{
-		public override int Width => 56;
-        public override int Height => 52;
+		public override int Width => 50;
+        public override int Height => 50;
 
         public override void SetStaticDefaults()
         {
@@ -31,7 +31,7 @@ namespace DestroyerTest.Content.Scepter
             base.SetDefaults();
 
             // Override stats unique to this scepter
-            ShootDMG = 27;
+            ShootDMG = 34;
             ShootCrit = 4;
             ThrowCrit = 14;
             KB = 2;
@@ -66,14 +66,4 @@ namespace DestroyerTest.Content.Scepter
 
 
     }
-
-	public class SoV_DROP_NPC : GlobalNPC
-	{
-		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot) 
-        {
-			if (npc.type == NPCID.QueenBee) {
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ScepterOfVespae>(), 5, 1, 1));
-			}
-		}
-	}
 } 

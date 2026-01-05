@@ -17,9 +17,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
     {
         public override void SetDefaults()
         {
-            ThemeColor = Color.LightGoldenrodYellow;
-            WidthDim = 34;
-            HeightDim = 34;
+            ThemeColor = Color.Gold;
+            WidthDim = 50;
+            HeightDim = 50;
             DustType = DustID.Honey;
             base.SetDefaults();
         }
@@ -33,8 +33,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
             {
 
                 // Create AmbientSpore projectile at the same position but with zero velocity
-                Projectile newProjectile = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(),
-                Projectile.Center, Vector2.Zero, ProjectileID.Bee, 4, 2, player.whoAmI);
+                Projectile newProjectile = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Main.rand.NextVector2FromRectangle(EnchantmentVisuals()), Vector2.Zero, ProjectileID.Bee, 4, 2, player.whoAmI);
                 newProjectile.friendly = true; // If it shouldn't harm the player, for example
             }
             base.AI();

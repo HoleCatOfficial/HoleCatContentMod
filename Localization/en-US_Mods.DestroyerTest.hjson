@@ -3748,6 +3748,16 @@ Items: {
 		DisplayName: Infected Scepter
 		Tooltip: ""
 	}
+
+	ShadowMonarchHeadgear: {
+		Tooltip: ""
+		DisplayName: Shadow Monarch Headgear
+	}
+
+	CrimsonHeadgear: {
+		Tooltip: ""
+		DisplayName: Crimson Headgear
+	}
 }
 
 Projectiles: {

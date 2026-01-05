@@ -989,4 +989,16 @@ namespace DestroyerTest.Common
         }
 
     }
+
+    public class BossBagLoot : GlobalItem
+    {
+        public override void ModifyItemLoot(Item item, ItemLoot itemLoot)
+        {
+            if (item.type == ItemID.QueenBeeBossBag)
+            {
+                itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<ScepterOfVespae>(), 3, 1, 1));
+            }
+        }
+
+    }
 }
