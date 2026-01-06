@@ -9,7 +9,6 @@ namespace DestroyerTest.Content.Particles
 {
     public class Boom : BasePRT
     {
-
         public override void SetProperty()
         {
             PRTDrawMode = PRTDrawModeEnum.AdditiveBlend;
@@ -69,6 +68,7 @@ namespace DestroyerTest.Content.Particles
             PRTDrawMode = PRTDrawModeEnum.AdditiveBlend;
             Lifetime = 9999;
             Scale = 0.01f;
+            Rotation = Main.rand.NextFloat(MathHelper.TwoPi);
         }
     }
 

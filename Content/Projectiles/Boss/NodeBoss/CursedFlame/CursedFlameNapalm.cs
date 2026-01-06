@@ -15,7 +15,6 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame
 	public class CursedFlameNapalm : ModProjectile
 	{
 		public override string Texture => DTUtils.NoTexture;
-
 		private List<Vector2> trailPositions = new List<Vector2>();
 		private const int TrailCacheLength = 40;
 
@@ -85,11 +84,10 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame
 			DTUtils Utility = new DTUtils();
 
 			Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-			// draw trail first
 			for (int i = 0; i < trailPositions.Count; i++)
 			{
 				float progress = i / (float)TrailCacheLength;
-				float scale = MathHelper.Lerp(0.35f, 0.1f, progress);
+				float scale = MathHelper.Lerp(0.6f, 0.1f, progress);
 				Color color = ColorLib.CursedFlames;
 
 				Main.EntitySpriteDraw(
@@ -113,7 +111,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame
 				ColorLib.CursedFlames,
 				Projectile.velocity.ToRotation(),
 				glowTex.Size() / 2f,
-				0.35f,
+				0.6f,
 				SpriteEffects.None,
 				0
 			);

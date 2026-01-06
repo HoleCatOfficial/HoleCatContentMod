@@ -66,7 +66,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
             for (int i = 0; i < TrailPositions.Count; i++)
 			{
 				float progress = i / (float)TrailLength;
-				float scale = MathHelper.Lerp(0.2f, 0.001f, progress);
+				float scale = MathHelper.Lerp(0.3f, 0.001f, progress);
 				Color color = Color.White;
 
 				Main.EntitySpriteDraw(
@@ -101,7 +101,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
                 Color.White,
                 0f,
                 new Vector2(DTAssetLib.FeatheredCircle.Value.Width / 2f, DTAssetLib.FeatheredCircle.Value.Height / 2f),
-                0.2f,
+                0.3f,
                 SpriteEffects.None,
                 1f
             );

@@ -20,6 +20,7 @@ using DestroyerTest.Content.Projectiles;
 using System.Security.Authentication.ExtendedProtection;
 using Mono.CompilerServices.SymbolWriter;
 using OpusLib;
+using Terraria.ModLoader.UI;
 
 namespace DestroyerTest.Content.Equips.NightSet
 {
@@ -177,7 +178,7 @@ namespace DestroyerTest.Content.Equips.NightSet
                             Dust.NewDustPerfect(RingPos, DustID.DemonTorch, projectile.velocity, 100, default, 2f);
                         }
                         
-                        if (player.controlDown)
+                        if (DestroyerTestMod.ArmorSetBonusHotKey.JustPressed)
                         {
                             player.Center = projectile.Center;
                             SoundEngine.PlaySound(Tele, player.Center);

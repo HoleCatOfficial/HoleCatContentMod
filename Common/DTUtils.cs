@@ -216,6 +216,33 @@ namespace DestroyerTest.Common
         {
             
         };
+
+        public static void InfectedScepter_RingProjectileOutwardAlternating(int ID1, int ID2, int Amount, Vector2 CTR, float Radius, int Dmg = 0, int KB = 0, float Speed = 2, float AI0 = 0, float AI1 = 0, float AI2 = 0, bool RandomOffset = false)
+		{
+			float rotationStep = MathHelper.TwoPi / Amount;
+			float baseRotation = RandomOffset ? Main.rand.NextFloat(MathHelper.TwoPi) : 0f;
+
+			for (int i = 0; i < Amount; i++)
+            {
+                float angle = rotationStep * i + baseRotation;
+                Vector2 position = CTR + new Vector2(Radius, 0f).RotatedBy(angle);
+                Vector2 velocity = new Vector2(Speed, 0f).RotatedBy(angle);
+
+                int projType = ((i & 1) == 0) ? ID1 : ID2;
+
+                Projectile.NewProjectile(
+                    Projectile.GetSource_None(),
+                    position,
+                    velocity,
+                    projType,
+                    Dmg,
+                    KB,
+                    ai0: AI0,
+                    ai1: AI1,
+                    ai2: AI2
+                );
+            }
+		}
     }
 
     public static class DTStaticUtils
@@ -669,7 +696,7 @@ namespace DestroyerTest.Common
         public static Asset<Texture2D> AreaGlow = ModContent.Request<Texture2D>($"{ParticlePath}/Glow", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> BloomRing = ModContent.Request<Texture2D>($"{ParticlePath}/BloomRing", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> BloomRingSharp = ModContent.Request<Texture2D>($"{ParticlePath}/BloomRingSharp_FullScale", AssetRequestMode.AsyncLoad);
-        public static Asset<Texture2D> FeatheredCircle = ModContent.Request<Texture2D>($"{ParticlePath}/GlowCircle", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> FeatheredCircle = ModContent.Request<Texture2D>($"{ExtrasPath}/FeatheredCircle", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> Vingette = ModContent.Request<Texture2D>($"{ExtrasPath}/BigVingette", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> FadeLine = ModContent.Request<Texture2D>($"{ExtrasPath}/FadeLine", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> StarAura = ModContent.Request<Texture2D>($"{ExtrasPath}/StarWrathAura", AssetRequestMode.AsyncLoad);

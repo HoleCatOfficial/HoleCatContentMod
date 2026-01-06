@@ -5,7 +5,6 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
-using static Terraria.ModLoader.ModContent;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Resources;
@@ -13,7 +12,9 @@ using System.IO.Pipelines;
 using DestroyerTest.Rarity;
 using DestroyerTest.Rarity.Scepter;
 using DestroyerTest.Content.Projectiles.Weapon.Scepter;
-using OpusLib; // Add this line if CT3_Swing is in the Projectiles namespace
+using OpusLib;
+using InnoVault.PRT;
+using DestroyerTest.Content.Particles;
 
 namespace DestroyerTest.Content.Scepter
 {
@@ -63,8 +64,14 @@ namespace DestroyerTest.Content.Scepter
         {
             if(player.altFunctionUse != 2)
             {
-                Opus.RingProjectileOutward(ModContent.ProjectileType<InfectedCrystalCF>(), 6, Main.MouseWorld, 20, Item.damage / 2, 10, 4, RandomOffset: true);
-                Opus.RingProjectileOutward(ModContent.ProjectileType<InfectedCrystalIchor>(), 6, Main.MouseWorld, 20, Item.damage / 2, 10, 4, RandomOffset: true);
+                Opus.NewParticleFloatAI(PRTLoader.GetParticleID<Boom3>(), Main.MouseWorld, Vector2.Zero, ColorLib.Ichor, 0.001f, 0.1f);
+                Opus.NewParticleFloatAI(PRTLoader.GetParticleID<Boom3>(), Main.MouseWorld, Vector2.Zero, ColorLib.CursedFlames, 0.001f, 0.25f);
+                Opus.NewParticleFloatAI(PRTLoader.GetParticleID<Boom3>(), Main.MouseWorld, Vector2.Zero, ColorLib.Ichor, 0.001f, 0.4f);
+                Opus.NewParticleFloatAI(PRTLoader.GetParticleID<Boom3>(), Main.MouseWorld, Vector2.Zero, ColorLib.CursedFlames, 0.001f, 0.55f);
+                Opus.RadialParticleRandomDir(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], 16, Main.MouseWorld, 0, ColorLib.InfectedGradient, 0.75f, 2, 30, ai2: 2);
+
+                DTUtils.InfectedScepter_RingProjectileOutwardAlternating(ModContent.ProjectileType<InfectedCrystalCF>(), ModContent.ProjectileType<InfectedCrystalIchor>(), 6, Main.MouseWorld, 20, Item.damage / 2, 10, 6, RandomOffset: true);
+                //Opus.RingProjectileOutward(ModContent.ProjectileType<InfectedCrystalIchor>(), 6, Main.MouseWorld, 20, Item.damage / 2, 10, 4, RandomOffset: true);
             }
             return true;
         }

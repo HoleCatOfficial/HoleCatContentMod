@@ -124,7 +124,7 @@ namespace DestroyerTest.Content.Entities
 
             NPC.aiStyle = NPCAIStyleID.Worm;
 
-            NPC.damage = 100;
+            NPC.damage = 0;
             NPC.defense = 65;
             NPC.lifeMax = 420000;
 
@@ -492,8 +492,8 @@ namespace DestroyerTest.Content.Entities
                 NPC.immortal = true;
             }
 
-            //Main.eclipseLight = 1;
-            //Main.ColorOfTheSkies = Color.Black;
+            Main.eclipseLight = 1;
+            Main.ColorOfTheSkies = Color.Black;
 
             if (Main.netMode != NetmodeID.MultiplayerClient && SpawnFlag == false)
             {
@@ -503,16 +503,16 @@ namespace DestroyerTest.Content.Entities
                     NPC.realLife = NPC.whoAmI;
 
                     int num96 = NPC.whoAmI;
-                    for (int num97 = 0; num97 < 20; num97++)
+                    for (int num97 = 0; num97 < 60; num97++)
                     {
                         int WyvBodyInt = ModContent.NPCType<WyvernCorpseBody1>();
-                        if (num97 == 4 || num97 == 16)
+                        if (num97 == 4 || num97 == 16 || num97 == 32 || num97 == 48)
                             WyvBodyInt = ModContent.NPCType<WyvernCorpseLegs>();
-                        else if (num97 == 17)
+                        else if (num97 == 57)
                             WyvBodyInt = ModContent.NPCType<WyvernCorpseBody2>();
-                        else if (num97 == 18)
+                        else if (num97 == 58)
                             WyvBodyInt = ModContent.NPCType<WyvernCorpseBody3>();
-                        else if (num97 == 19)
+                        else if (num97 == 59)
                             WyvBodyInt = ModContent.NPCType<WyvernCorpseTail>();
 
                         int num99 = NPC.NewNPC(NPC.GetSource_FromAI(),

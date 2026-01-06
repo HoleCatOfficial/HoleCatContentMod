@@ -27,6 +27,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
             Projectile.netImportant = true;
             Projectile.netUpdate = true;
             Projectile.tileCollide = false;
+            Projectile.penetrate = -1;
         }
 
         public override void AI()

@@ -9,6 +9,7 @@ using Terraria.ModLoader;
 using DestroyerTest.Rarity;
 using DestroyerTest.Content.Tiles.Riftplate;
 using DestroyerTest.Common;
+using DestroyerTest.Content.Projectiles.player.ArmorSet;
 
 
 namespace DestroyerTest.Content.Equips
@@ -49,6 +50,53 @@ namespace DestroyerTest.Content.Equips
             player.setBonus = "10% Increased Scepter Damage and Range increased by 2";
             player.GetDamage(ModContent.GetInstance<ScepterClass>()) *= 1.10f;
             ScepterClassStats.Range += 2;
+			if (player.TryGetModPlayer<InsurgentPlayer>(out var t))
+			{
+				t.Active = true;
+			}
         }
+	}
+
+	public class InsurgentPlayer : ModPlayer
+	{
+		public bool Active = false;
+		public int WispCount = 0;
+		public int WispCounter = 0;
+
+        public override void ResetEffects()
+        {
+            Active = false;
+        }
+
+        public override void PostUpdateEquips()
+        {
+            if (Active)
+			{
+				if (Player.velocity.Length() > 5)
+				{
+					WispCounter++;
+
+					if (WispCounter % 240 == 0 && WispCount < 3)
+					{
+						Projectile.NewProjectile(Player.GetSource_Misc("InsurgentSoulSpawn"), Player.Center + Main.rand.NextVector2Circular(300, 300), Main.rand.NextVector2Circular(3, 3), ModContent.ProjectileType<InsurgentSpirit>(), 0, 0, Player.whoAmI);
+						WispCount++;
+					}
+				}
+
+				if (DestroyerTestMod.ArmorSetBonusHotKey.JustPressed)
+					{
+						foreach (Projectile proj in Main.projectile)
+						{
+							if (proj.active && proj.owner == Player.whoAmI && proj.type == ModContent.ProjectileType<InsurgentSpirit>())
+							{
+								proj.ai[0] = 1;
+								WispCount = 0;
+							}
+						}
+					}
+			}
+        }
+
+
 	}
 }

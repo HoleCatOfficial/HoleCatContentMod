@@ -3758,6 +3758,11 @@ Items: {
 		Tooltip: ""
 		DisplayName: Crimson Headgear
 	}
+
+	TrueBloodScepter: {
+		DisplayName: True Blood Scepter
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
@@ -4249,6 +4254,7 @@ Projectiles: {
 	InfectedScepterThrown.DisplayName: Infected Scepter Thrown
 	InfectedCrystalCF.DisplayName: Infected Crystal C F
 	InfectedCrystalIchor.DisplayName: Infected Crystal Ichor
+	InsurgentSpirit.DisplayName: Insurgent Spirit
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.
@@ -4637,6 +4643,11 @@ Buffs: {
 	WeaponImbueMud: {
 		DisplayName: Weapon Imbue (Mud)
 		Description: Your weapons have thick mud all over them!
+	}
+
+	InsurgentBoost: {
+		DisplayName: Insurgent Boost
+		Description: Mods.DestroyerTest.Buffs.InsurgentBoost.Description
 	}
 }
 

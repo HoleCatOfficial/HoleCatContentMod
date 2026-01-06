@@ -21,7 +21,7 @@
 	    <HintPath>..\ModAssemblies\InnoVault_v1.9.78.dll</HintPath>
 	  </Reference>
 	  <Reference Include="OpusLib">
-	    <HintPath>..\ModAssemblies\OpusLib_v1.416.dll</HintPath>
+	    <HintPath>..\ModAssemblies\OpusLib_v1.417.dll</HintPath>
 	  </Reference>
 	</ItemGroup>
 	

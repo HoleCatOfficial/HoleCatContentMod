@@ -96,7 +96,7 @@ namespace DestroyerTest.Content.Projectiles.Boss
                 Color.White,
                 0f,
                 new Vector2(DTAssetLib.FeatheredCircle.Value.Width / 2f, DTAssetLib.FeatheredCircle.Value.Height / 2f),
-                0.4f,
+                0.6f,
                 SpriteEffects.None,
                 1f
             );
@@ -117,11 +117,6 @@ namespace DestroyerTest.Content.Projectiles.Boss
             TextureRotationOffset -= 0.5f;
             Projectile.velocity *= 0.999f;
             Projectile.rotation += Main.rand.NextFloat(-1f, 1.1f) * 0.1f;
-        }
-
-        public override void OnHitPlayer(Player target, Player.HurtInfo info)
-        {
-            target.AddBuff(ModContent.BuffType<SoulInferno>(), 600);
         }
         
         public override bool OnTileCollide(Vector2 oldVelocity)
