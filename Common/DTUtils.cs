@@ -816,6 +816,7 @@ namespace DestroyerTest.Common
             public static SoundStyle HellWeaponImpact = new SoundStyle($"{AudioPath}/Impacts/HellWeaponImpact");
             public static SoundStyle IceImpact = new SoundStyle($"{AudioPath}/Impacts/IceImpact", 3);
             public static SoundStyle IceMagicImpact = new SoundStyle($"{AudioPath}/Impacts/IceMagicImpact", 3);
+            public static SoundStyle MagicBeep = new SoundStyle($"{AudioPath}/Impacts/MagicBeep", 3);
             public static SoundStyle MetalImpact = new SoundStyle($"{AudioPath}/Impacts/MetalImpact", 3);
         }
     }

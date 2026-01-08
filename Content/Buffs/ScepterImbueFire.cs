@@ -17,7 +17,10 @@ namespace DestroyerTest.Content.Buffs
             {
                 if (projectile.TryGetGlobalProjectile<WeaponImbueScepter>(out var scepter))
                 {
-                    scepter.Fire = true;
+					if(!scepter.HasImbue)
+					{
+                    	scepter.Fire = true;
+					}
                 }
             }
 		}

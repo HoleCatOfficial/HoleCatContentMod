@@ -35,6 +35,28 @@ namespace DestroyerTest.Content.Consumables
             Item.noUseGraphic = true;
             Item.maxStack = 1;
         }
+
+        public override bool ConsumeItem(Player player)
+        {
+            if (player.TryGetModPlayer<MechanicalEnhancementsPlayer>(out var Enchancement))
+            {
+                Enchancement.EnhancedJorkingMethods = true;
+            }
+            return true;
+        }
+
+
+        public override bool CanUseItem(Player player)
+        {
+            if (player.TryGetModPlayer<MechanicalEnhancementsPlayer>(out var Enchancement))
+            {
+                return !Enchancement.EnhancedJorkingMethods;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 
     public class MechanicalEnhancementsPlayer : ModPlayer
@@ -55,7 +77,7 @@ namespace DestroyerTest.Content.Consumables
 
             if (Effects)
             {
-                ScepterClassStats.Range += 8;
+                ScepterClassStats.ThrowSpeedModifier += 1.4f;
             }
         }
     }

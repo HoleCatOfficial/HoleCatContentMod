@@ -21,6 +21,12 @@ namespace DestroyerTest.Common.NPC_Folder
 		public override bool InstancePerEntity => true;
         private bool KilledSpaz = false;
         private bool KilledRet = false;
+        public static bool HasKilledAMechBoss = false;
+
+        public override void PostAI(NPC npc)
+        {
+            HasKilledAMechBoss = (DownedBossSystem.downedDestroyerBoss || DownedBossSystem.downedSkeletronPrimeBoss || DownedBossSystem.downedTwinsBoss);
+        }
         public override void OnKill(NPC npc)
         {
             if (npc.type == NPCID.KingSlime && !DownedBossSystem.downedKingSlimeBoss)
@@ -166,6 +172,24 @@ namespace DestroyerTest.Common.NPC_Folder
                     NetMessage.SendData(MessageID.WorldData);
                 }
             }
+            if (npc.type == ModContent.NPCType<IchorNodeMB>() && !DownedBossSystem.downedNodeMiniBoss)
+            {
+                DTUtils.NPCDownTally[ModContent.NPCType<IchorNodeMB>()]++;
+                DownedBossSystem.downedNodeMiniBoss = true;
+                if (Main.netMode == NetmodeID.Server)
+                {
+                    NetMessage.SendData(MessageID.WorldData);
+                }
+            }
+            if (npc.type == ModContent.NPCType<CursedFlameNodeMB>() && !DownedBossSystem.downedNodeMiniBoss)
+            {
+                DTUtils.NPCDownTally[ModContent.NPCType<CursedFlameNodeMB>()]++;
+                DownedBossSystem.downedNodeMiniBoss = true;
+                if (Main.netMode == NetmodeID.Server)
+                {
+                    NetMessage.SendData(MessageID.WorldData);
+                }
+            }
             if (npc.type == NPCID.Golem && !DownedBossSystem.downedGolemBoss)
             {
                 DTUtils.NPCDownTally[NPCID.Golem]++;
@@ -274,6 +298,11 @@ namespace DestroyerTest.Common.NPC_Folder
                 shop.Add<EndlessTenebrisBullets>(Condition.DownedCultist);
                 shop.Add<EndlessHeliciteRounds>(Condition.DownedGolem);
                 shop.Add<EndlessRiftRounds>(Condition.DownedMechBossAll);
+            }
+
+            if (shop.NpcType == NPCID.Mechanic)
+            {
+                shop.Add<MechanicalEnhancements>(Condition.DownedMechBossAny);
             }
         }
 	}

@@ -22,7 +22,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
             Item.accessory = true;
         }
 
-        public static readonly float DMGBonus = 1.016f;
+        public static readonly float DMGBonus = 1.16f;
         public static readonly float CritBonus = 1.26f;
         public static readonly int RangeBonus = 30;
         public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs((DMGBonus - 1f).ToString("P1"), CritBonus.ToString("F1") + "%", RangeBonus);

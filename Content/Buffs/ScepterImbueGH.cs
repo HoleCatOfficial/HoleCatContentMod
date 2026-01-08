@@ -17,7 +17,10 @@ namespace DestroyerTest.Content.Buffs
             {
                 if (projectile.TryGetGlobalProjectile<WeaponImbueScepter>(out var scepter))
                 {
-                    scepter.GalantineHoney = true;
+					if(!scepter.HasImbue)
+					{
+                    	scepter.GalantineHoney = true;
+					}
                 }
             }
 		}

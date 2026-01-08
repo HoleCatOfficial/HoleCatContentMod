@@ -17,6 +17,8 @@ namespace DestroyerTest.Common
     public class WeaponImbueScepter : GlobalProjectile
     {
         public override bool InstancePerEntity => true;
+        public bool HasImbue = false;
+
         public bool GalantineBurn = false;
         public bool Honey;
         public bool Mud;
@@ -48,57 +50,101 @@ namespace DestroyerTest.Common
                 {
                     if (HeliouricShock)
                     {
+                        if (!Main.masterMode)
+                        {
+                            HasImbue = true;
+                        }
                         DustInEnchantVisuals(thrown, DustID.FireworksRGB, 40, ColorLib.Rift, 0.5f, false);
                         PRTLoader.NewParticle(DTUtils.ElectricArcs[Main.rand.Next(DTUtils.ElectricArcs.Length)], Main.rand.NextVector2FromRectangle(thrown.EnchantmentVisuals()), Vector2.Zero, ColorLib.Rift, 0.05f);
                     }
                     if (DaylightOverload)
                     {
+                        if (!Main.masterMode)
+                        {
+                            HasImbue = true;
+                        }
                         DustInEnchantVisuals(thrown, ModContent.DustType<RiftDust>(), 40, Color.White, 1f);
                         //Dust.NewDust(thrown.EnchantmentVisuals().TopLeft(), thrown.EnchantmentVisuals().Width, thrown.EnchantmentVisuals().Height, ModContent.DustType<RiftDust>(), 0, 0, 40, ColorLib.Rift, 1.0f);
                     }
                     if (ComaceraticBurn)
                     {
+                        if (!Main.masterMode)
+                        {
+                            HasImbue = true;
+                        }
                         DustInEnchantVisuals(thrown, ModContent.DustType<RiftDust>(), 40, Color.White, 1f);
                         //Dust.NewDust(thrown.EnchantmentVisuals().TopLeft(), thrown.EnchantmentVisuals().Width, thrown.EnchantmentVisuals().Height, ModContent.DustType<RiftDust>(), 0, 0, 40, ColorLib.Rift, 1.0f);
                     }
                     if (GalantineBurn)
                     {
+                        if (!Main.masterMode)
+                        {
+                            HasImbue = true;
+                        }
                         DustInEnchantVisuals(thrown, DustID.FireworksRGB, 40, ColorLib.StellarColor, 0.7f, false);
                         //Dust.NewDust(thrown.EnchantmentVisuals().TopLeft(), thrown.EnchantmentVisuals().Width, thrown.EnchantmentVisuals().Height, DustID.TintableDustLighted, 0, 0, 40, ColorLib.StellarColor, 1.0f);
                     }
                     if (Brine)
                     {
+                        if (!Main.masterMode)
+                        {
+                            HasImbue = true;
+                        }
                         DustInEnchantVisuals(thrown, DustID.Water_Snow, 40, default, 1f);
                         //Dust.NewDust(thrown.EnchantmentVisuals().TopLeft(), thrown.EnchantmentVisuals().Width, thrown.EnchantmentVisuals().Height, DustID.Water_Snow, 0, 0, 40, default, 1.0f);  
                     }
                     if (Mud)
                     {
+                        if (!Main.masterMode)
+                        {
+                            HasImbue = true;
+                        }
                         DustInEnchantVisuals(thrown, DustID.Mud, 40, default, 1f);
                         //Dust.NewDust(thrown.EnchantmentVisuals().TopLeft(), thrown.EnchantmentVisuals().Width, thrown.EnchantmentVisuals().Height, DustID.Mud, 0, 0, 40, default, 1.0f);
                     }
                     if (FrostBurn)
                     {
+                        if (!Main.masterMode)
+                        {
+                            HasImbue = true;
+                        }
                         DustInEnchantVisuals(thrown, DustID.IceTorch, 40, default, 1f);
                         //Dust.NewDust(thrown.EnchantmentVisuals().TopLeft(), thrown.EnchantmentVisuals().Width, thrown.EnchantmentVisuals().Height, DustID.IceTorch, 0, 0, 40, default, 1.0f);
                     }
                     if (Fire)
                     {
+                        if (!Main.masterMode)
+                        {
+                            HasImbue = true;
+                        }
                         DustInEnchantVisuals(thrown, DustID.Torch, 40, default, 1f);
                         //Dust.NewDust(thrown.EnchantmentVisuals().TopLeft(), thrown.EnchantmentVisuals().Width, thrown.EnchantmentVisuals().Height, DustID.Torch, 0, 0, 40, default, 1.0f);
                     }
                     if (Ichor)
                     {
+                        if (!Main.masterMode)
+                        {
+                            HasImbue = true;
+                        }
                         DustInEnchantVisuals(thrown, DustID.Ichor, 40, default, 1f);
                         //Dust.NewDust(thrown.EnchantmentVisuals().TopLeft(), thrown.EnchantmentVisuals().Width, thrown.EnchantmentVisuals().Height, DustID.Ichor, 0, 0, 40, default, 1.0f);
                     }
                     if (CursedFlame)
                     {
+                        if (!Main.masterMode)
+                        {
+                            HasImbue = true;
+                        }
                         DustInEnchantVisuals(thrown, DustID.CursedTorch, 40, default, 1f);
                     }
                     
 
                     if (Honey)
                     {
+                        if (!Main.masterMode)
+                        {
+                            HasImbue = true;
+                        }
                         DustInEnchantVisuals(thrown, DustID.Honey, 40, default, 1f);
                         //Dust.NewDust(thrown.EnchantmentVisuals().TopLeft(), thrown.EnchantmentVisuals().Width, thrown.EnchantmentVisuals().Height, DustID.Honey, 0, 0, 40, default, 1.0f);
                         if (Main.rand.NextBool(10))
@@ -108,6 +154,10 @@ namespace DestroyerTest.Common
                     }
                     if (GalantineHoney)
                     {
+                        if (!Main.masterMode)
+                        {
+                            HasImbue = true;
+                        }
                         DustInEnchantVisuals(thrown, DustID.Honey, 40, default, 1f);
                         DustInEnchantVisuals(thrown, DustID.FireworksRGB, 40, ColorLib.StellarColor, 0.7f, false);
 

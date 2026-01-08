@@ -2926,8 +2926,8 @@ Items: {
 		DisplayName: Adamant Pendant
 		Tooltip:
 			'''
-			Increases Scepter Class damage by {0}%.
-			Increases Scepter Class Crit Chance by {1}%.
+			Increases Scepter Class damage by {0}.
+			Increases Scepter Class Crit Chance by {1}.
 			Increases Scepter Throw Range by {2}.
 			'''
 	}
@@ -2936,8 +2936,8 @@ Items: {
 		DisplayName: Azure Pendant
 		Tooltip:
 			'''
-			Increases Scepter Class damage by {0}%.
-			Increases Scepter Class Crit Chance by {1}%.
+			Increases Scepter Class damage by {0}.
+			Increases Scepter Class Crit Chance by {1}.
 			Increases Scepter Throw Range by {2}.
 			'''
 	}
@@ -2946,8 +2946,8 @@ Items: {
 		DisplayName: Mythic Pendant
 		Tooltip:
 			'''
-			Increases Scepter Class damage by {0}%.
-			Increases Scepter Class Crit Chance by {1}%.
+			Increases Scepter Class damage by {0}.
+			Increases Scepter Class Crit Chance by {1}.
 			Increases Scepter Throw Range by {2}.
 			'''
 	}
@@ -2956,8 +2956,8 @@ Items: {
 		DisplayName: Orchid Pendant
 		Tooltip:
 			'''
-			Increases Scepter Class damage by {0}%.
-			Increases Scepter Class Crit Chance by {1}%.
+			Increases Scepter Class damage by {0}.
+			Increases Scepter Class Crit Chance by {1}.
 			Increases Scepter Throw Range by {2}.
 			'''
 	}
@@ -2966,8 +2966,8 @@ Items: {
 		DisplayName: Radiant Pendant
 		Tooltip:
 			'''
-			Increases Scepter Class damage by {0}%.
-			Increases Scepter Class Crit Chance by {1}%.
+			Increases Scepter Class damage by {0}.
+			Increases Scepter Class Crit Chance by {1}.
 			Increases Scepter Throw Range by {2}.
 			'''
 	}
@@ -2976,15 +2976,15 @@ Items: {
 		DisplayName: Titan Pendant
 		Tooltip:
 			'''
-			Increases Scepter Class damage by {0}%.
-			Increases Scepter Class Crit Chance by {1}%.
+			Increases Scepter Class damage by {0}.
+			Increases Scepter Class Crit Chance by {1}.
 			Increases Scepter Throw Range by {2}.
 			'''
 	}
 
 	MechanicalEnhancements: {
 		DisplayName: Mechanical Enhancements
-		Tooltip: ""
+		Tooltip: Permanently increases Scepter Class throw speed by 65%.
 	}
 
 	SandSurgeScroll: {
@@ -3763,6 +3763,11 @@ Items: {
 		DisplayName: True Blood Scepter
 		Tooltip: ""
 	}
+
+	GelCane: {
+		Tooltip: ""
+		DisplayName: Gel Cane
+	}
 }
 
 Projectiles: {
@@ -4255,6 +4260,10 @@ Projectiles: {
 	InfectedCrystalCF.DisplayName: Infected Crystal C F
 	InfectedCrystalIchor.DisplayName: Infected Crystal Ichor
 	InsurgentSpirit.DisplayName: Insurgent Spirit
+	BouncySlimeBallMini.DisplayName: Bouncy Slime Ball Mini
+	MiniBouncySlime.DisplayName: Mini Bouncy Slime
+	MiniCrystalSlime.DisplayName: Mini Crystal Slime
+	MiniHeavenlySlime.DisplayName: Mini Heavenly Slime
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.
@@ -4648,6 +4657,11 @@ Buffs: {
 	InsurgentBoost: {
 		DisplayName: Insurgent Boost
 		Description: Mods.DestroyerTest.Buffs.InsurgentBoost.Description
+	}
+
+	HallowedSlimesBuff: {
+		DisplayName: Hallowed Slimes Buff
+		Description: Mods.DestroyerTest.Buffs.HallowedSlimesBuff.Description
 	}
 }
 
@@ -5394,4 +5408,11 @@ Extras: {
 	ShadeWorldCommonBestiary: In addition to freeing the moon lord from imprisonment, breaking the seal also tore open holes across space, allowing enemies from the shade world to enter yours.
 	ShadeWorldRareBestiary: All creatures of shade share some level of similarity to the creatures of your own world, as the shade world retains many such similarities. It is not known why mother darkness has created the shade world in this image.
 	ShadeWorldEpicBestiary: Mother darkness is the giver of Dark Life. Though ever since she lost her beloved son, no amount of biodiversity and unique specimens has brought her enough joy to put a smile on her face.
+}
+
+Conditions: {
+	NightmareRoseBossDowned: Mods.DestroyerTest.Conditions.NightmareRoseBossDowned
+	WyvernCorpseBossDowned: Mods.DestroyerTest.Conditions.WyvernCorpseBossDowned
+	NodeBossDowned: Mods.DestroyerTest.Conditions.NodeBossDowned
+	ConstitutionBossDowned: Mods.DestroyerTest.Conditions.ConstitutionBossDowned
 }

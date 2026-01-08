@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.IO;
 using Terraria;
 using Terraria.ModLoader;
@@ -28,6 +29,7 @@ namespace DestroyerTest.Common.Systems
 		public static bool downedSkeletronPrimeBoss = false;
 		public static bool downedNautilusMiniBoss = false;
 		public static bool downedPlanteraBoss = false;
+		public static bool downedNodeMiniBoss = false;
 		public static bool downedGolemBoss = false;
 		public static bool downedFishronBoss = false;
 		public static bool downedEmpressBoss = false;
@@ -35,6 +37,18 @@ namespace DestroyerTest.Common.Systems
 		public static bool downedLunarBoss = false;
 		public static bool downedWyvernCorpseBoss = false;
 		public static bool downedNightmareRoseBoss = false;
+
+		public static Func<bool> downedConstitutionConditionbool = () => downedConstitutionBoss;
+		public static Condition downedConstitutionCondition = new Condition("Mods.DestroyerTest.Conditions.ConstitutionBossDowned", downedConstitutionConditionbool);
+
+		public static Func<bool> downedNodeConditionbool = () => downedNodeMiniBoss;
+		public static Condition downedNodeCondition = new Condition("Mods.DestroyerTest.Conditions.NodeBossDowned", downedNodeConditionbool);
+
+		public static Func<bool> downedWyvernCorpseBossConditionbool = () => downedWyvernCorpseBoss;
+		public static Condition downedWyvernCorpseBossCondition = new Condition("Mods.DestroyerTest.Conditions.WyvernCorpseBossDowned", downedWyvernCorpseBossConditionbool);
+		
+		public static Func<bool> downedNightmareRoseBossConditionbool = () => downedNightmareRoseBoss;
+		public static Condition downedNightmareRoseBossCondition = new Condition("Mods.DestroyerTest.Conditions.NightmareRoseBossDowned", downedNightmareRoseBossConditionbool);
 
 		public override void ClearWorld()
 		{
@@ -53,6 +67,7 @@ namespace DestroyerTest.Common.Systems
 			downedSkeletronPrimeBoss = false;
 			downedNautilusMiniBoss = false;
 			downedPlanteraBoss = false;
+			downedNodeMiniBoss = false;
 			downedFishronBoss = false;
 			downedEmpressBoss = false;
 			downedGolemBoss = false;
@@ -122,6 +137,10 @@ namespace DestroyerTest.Common.Systems
 			{
 				tag["downedPlanteraBoss"] = true;
 			}
+			if (downedNodeMiniBoss)
+			{
+				tag["downedNodeMiniBoss"] = true;
+			}
 			if (downedGolemBoss)
 			{
 				tag["downedGolemBoss"] = true;
@@ -167,6 +186,7 @@ namespace DestroyerTest.Common.Systems
 			downedSkeletronPrimeBoss = tag.ContainsKey("downedPrimeBoss");
 			downedNautilusMiniBoss = tag.ContainsKey("downedNautilusMiniBoss");
 			downedPlanteraBoss = tag.ContainsKey("downedPlanteraBoss");
+			downedNodeMiniBoss = tag.ContainsKey("downedNodeMiniBoss");
 			downedGolemBoss = tag.ContainsKey("downedGolemBoss");
 			downedFishronBoss = tag.ContainsKey("downedFishronBoss");
 			downedEmpressBoss = tag.ContainsKey("downedEmpressBoss");
@@ -197,9 +217,10 @@ namespace DestroyerTest.Common.Systems
 				downedSkeletronPrimeBoss, 
 				downedNautilusMiniBoss, 
 				downedPlanteraBoss, 
-				downedGolemBoss
+				downedNodeMiniBoss
 			);
 			writer.WriteFlags(
+				downedGolemBoss,
 				downedFishronBoss,
 				downedEmpressBoss, 
 				downedCultistBoss, 
@@ -232,9 +253,10 @@ namespace DestroyerTest.Common.Systems
 				out downedSkeletronPrimeBoss, 
 				out downedNautilusMiniBoss, 
 				out downedPlanteraBoss, 
-				out downedGolemBoss
+				out downedNodeMiniBoss
 			);
 			reader.ReadFlags(
+				out downedGolemBoss,
 				out downedFishronBoss,
 				out downedEmpressBoss, 
 				out downedCultistBoss, 

@@ -42,7 +42,7 @@ namespace DestroyerTest.Content.Scepter
             ThrowID = ModContent.ProjectileType<OnyxScepterThrown>();
 
             // Optional: change sounds
-            ShootSound = SoundID.Item25;
+            ShootSound = DTAssetLib.Impacts.MagicBeep with { MaxInstances = 0, PitchVariance = 0.4f };
             ThrowSound = SoundID.Item169;
 
             // Refresh defaults after overriding values
