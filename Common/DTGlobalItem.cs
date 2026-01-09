@@ -20,6 +20,7 @@ using DestroyerTest.Content.Consumables;
 using DestroyerTest.Content.Scepter;
 using DestroyerTest.Content.Equips.ScepterAccessories;
 using Terraria.DataStructures;
+using DestroyerTest.Content.SummonItems;
 
 namespace DestroyerTest.Common
 {
@@ -997,6 +998,10 @@ namespace DestroyerTest.Common
             if (item.type == ItemID.QueenBeeBossBag)
             {
                 itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<ScepterOfVespae>(), 3, 1, 1));
+            }
+            if (item.type == ItemID.QueenSlimeBossBag)
+            {
+                itemLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<GelCane>()));
             }
         }
 

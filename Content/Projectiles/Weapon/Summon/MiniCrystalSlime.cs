@@ -41,6 +41,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
             Projectile.timeLeft = 2;
             Projectile.minion = true;
             Projectile.minionSlots = 0.3f;
+            Projectile.usesLocalNPCImmunity = true;
+            Projectile.localNPCHitCooldown = 10;
+
         }
 
         public override void AI()
@@ -54,6 +57,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
             if (player.HasBuff(ModContent.BuffType<HallowedSlimesBuff>()))
             {
                 Projectile.timeLeft = 2;
+            }
+
+            if (Projectile.localAI[1] > 0)
+            {
+                Projectile.localAI[1]--;
             }
 
             CrystalSlimeState CrystalSlimeState = (CrystalSlimeState)(int)Projectile.ai[0];
@@ -130,7 +138,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
                     return;
                 }
 
-                DoAttackMovement(target, player);
+                if (Main.rand.NextBool(3) && Projectile.localAI[1] <= 0)
+                {
+                    DoAttackMovement(target, player);
+                }
             }
         }
 
@@ -176,12 +187,18 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
                     (player.Center - Projectile.Center) * 0.05f,
                     0.1f
                 );
+                Projectile.tileCollide = false;
 
+            }
+            else if (player.Distance(Projectile.Center) > 700)
+            {
+                Projectile.Center = player.Center;
             }
             else
             {
                 Projectile.frame = 0;
                 Projectile.velocity.Y += 0.6f;
+                Projectile.tileCollide = true;
             }
 
             if (Projectile.Bottom.Y < player.Bottom.Y - 10)
@@ -192,9 +209,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
             {
                 IgnorePlatform = false;
             }
-            
+
+            Projectile.rotation = 0;
         }
-        private const int RamCooldownTime = 180;
+        private const int RamCooldownTime = 80;
         private const float RamSpeed = 20f;
         public bool B1 = false;
 
@@ -216,11 +234,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
                 Projectile.velocity = Vector2.Lerp(Projectile.velocity, desiredVelocity, 0.2f);
             }
 
-            Projectile.rotation = (Projectile.velocity.ToRotation() - MathHelper.PiOver2) * 0.1f;
+            Projectile.rotation = Projectile.velocity.ToRotation() - MathHelper.PiOver2;
 
             if (Main.GameUpdateCount % 30 == 0)
             {
-                Opus.RadialSpreadProjectile(ProjectileID.CrystalStorm, 4, Projectile.Center, Projectile.damage / 4, 4, 2);
+                Opus.RadialSpreadProjectile(ProjectileID.CrystalStorm, 4, Projectile.Center, Projectile.damage / 4, 4, 3, RandomOffset: true);
             }
 
             if (distance < 4f)
@@ -235,6 +253,16 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
 
                 // Enter cooldown
                 Projectile.localAI[1] = RamCooldownTime;
+
+                NPC.HitInfo hit = new NPC.HitInfo()
+                {
+                    Damage = Projectile.damage,
+                    Knockback = 9,
+                    DamageType = DamageClass.Summon,
+                    HitDirection = Projectile.direction
+                };
+
+                target.StrikeNPC(hit, false, false);
 
                 Projectile.ai[0] = (float)CrystalSlimeState.Idle;
                 Projectile.ai[1] = -1;

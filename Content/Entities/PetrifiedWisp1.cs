@@ -67,8 +67,8 @@ namespace DestroyerTest.Content.Entities
                     TrailPositions[i] - Main.screenPosition,
                     null,
                     color,
-                    TextureRotationOffset,
-                    DTAssetLib.Cyclone(2).Value.Size() / 2f,
+                    0f,
+                    DTAssetLib.FeatheredCircle.Value.Size() / 2f,
                     scale,
                     SpriteEffects.None,
                     0
@@ -76,11 +76,11 @@ namespace DestroyerTest.Content.Entities
             }
 
             Main.spriteBatch.Draw(
-                DTAssetLib.Cyclone(2).Value,
+                DTAssetLib.FeatheredCircle.Value,
                 Center - Main.screenPosition,
                 null,
                 ColorLib.Rift,
-                TextureRotationOffset,
+                0f,
                 new Vector2(DTAssetLib.Cyclone(2).Value.Width / 2f, DTAssetLib.Cyclone(2).Value.Height / 2f),
                 0.25f,
                 SpriteEffects.None,
@@ -115,7 +115,7 @@ namespace DestroyerTest.Content.Entities
                 Color.Black,
                 NPC.rotation,
                 new Vector2(DTAssetLib.FeatheredCircle.Value.Width / 2f, DTAssetLib.FeatheredCircle.Value.Height / 2f),
-                0.5f,
+                1.7f,
                 SpriteEffects.None,
                 1f
             );
@@ -125,7 +125,6 @@ namespace DestroyerTest.Content.Entities
 		public List<float> TrailRotations = new();
         private const int TrailLength = 40;
 
-        public float TextureRotationOffset = 0f;
 
         public override void AI()
         {
@@ -142,8 +141,6 @@ namespace DestroyerTest.Content.Entities
             Vector2 look = player.Center - NPC.Center;
             NPC.rotation = look.ToRotation();
             //NPC.spriteDirection = look.X > 0 ? 1 : -1;
-
-            TextureRotationOffset -= 0.2f;
         }
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)

@@ -41,6 +41,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
             Projectile.timeLeft = 2;
             Projectile.minion = true;
             Projectile.minionSlots = 0.3f;
+            Projectile.usesLocalNPCImmunity = true;
+            Projectile.localNPCHitCooldown = 10;
         }
 
         public void AnimateProjectile()
@@ -156,7 +158,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
                     return;
                 }
 
-                if (Main.rand.NextBool(3))
+                if (Main.rand.NextBool(3) && Projectile.localAI[1] <= 0)
                 {
                     DoAttackMovement(target, player);
                 }
@@ -196,6 +198,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
             Projectile.velocity = (Projectile.velocity * (inertia - 1f) + diff) / inertia;
 
             Projectile.rotation = Projectile.velocity.ToRotation() * 0.1f;
+
+            if (player.Distance(Projectile.Center) > 700)
+            {
+                Projectile.Center = player.Center;
+            }
         }
 
         public bool B1 = false;
@@ -227,6 +234,16 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
 
                 // Enter cooldown
                 Projectile.localAI[1] = RamCooldownTime;
+
+                NPC.HitInfo hit = new NPC.HitInfo()
+                {
+                    Damage = Projectile.damage,
+                    Knockback = 9,
+                    DamageType = DamageClass.Summon,
+                    HitDirection = Projectile.direction
+                };
+
+                target.StrikeNPC(hit, false, false);
 
                 Projectile.ai[0] = (float)HeavenlySlimeState.Idle;
                 Projectile.ai[1] = -1;
