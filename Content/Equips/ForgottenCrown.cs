@@ -25,14 +25,15 @@ namespace DestroyerTest.Content.Equips
 			Item.rare = ModContent.RarityType<PearlRarity>();
 			Item.defense = 3;
 		}
-		public override bool IsArmorSet(Item head, Item body, Item legs) {
+		public override bool IsArmorSet(Item head, Item body, Item legs) 
+        {
 			return body.type == ModContent.ItemType<ForgottenPlatemail>() && legs.type == ModContent.ItemType<ForgottenGreaves>();
 		}
 
 		public static readonly int SoloRangeBonus = 10;
-		
         public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(SoloRangeBonus);
-		public override void UpdateArmorSet(Player player) {
+		public override void UpdateArmorSet(Player player) 
+        {
 			if (player.TryGetModPlayer<ForgottenCrownPlayer>(out var Crown))
             {
                 Crown.Active = true;

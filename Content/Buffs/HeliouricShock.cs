@@ -109,10 +109,10 @@ namespace DestroyerTest.Content.Buffs
                     PRTLoader.GetParticleID<Arc3>()
                 };
 
-				Vector2 pos = Player.Center + Main.rand.NextVector2Circular(Player.width * 0.5f, Player.height * 0.5f);
+				Vector2 pos = Main.rand.NextVector2Circular(Player.width * 0.5f, Player.height * 0.5f);
 				if (Main.rand.NextBool(3))
 				{
-					PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], Main.rand.NextVector2FromRectangle(Player.getRect()), pos, ColorLib.Rift, 0.3f);
+					PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], Main.rand.NextVector2FromRectangle(Player.Hitbox), pos, ColorLib.Rift, 0.25f);
 				}
 				Player.moveSpeed *= 0.85f;
 			}

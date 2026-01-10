@@ -6,6 +6,7 @@ using Terraria.ModLoader;
 using InnoVault.PRT;
 using DestroyerTest.Content.Particles;
 using System;
+using DestroyerTest.Content.Buffs;
 
 namespace DestroyerTest.Content.Projectiles
 {
@@ -155,6 +156,12 @@ namespace DestroyerTest.Content.Projectiles
         {
             return target.CanBeChasedBy();
         }
+
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            target.AddBuff(ModContent.BuffType<LightInferno>(), 300);
+        }
+
 
         public override void OnKill(int timeLeft)
         {

@@ -4721,6 +4721,16 @@ Buffs: {
 		DisplayName: Hallowed Slimes Buff
 		Description: Mods.DestroyerTest.Buffs.HallowedSlimesBuff.Description
 	}
+
+	NightInferno: {
+		Description: Mods.DestroyerTest.Buffs.NightInferno.Description
+		DisplayName: Night Inferno
+	}
+
+	LightInferno: {
+		Description: Mods.DestroyerTest.Buffs.LightInferno.Description
+		DisplayName: Light Inferno
+	}
 }
 
 NPCs: {
