@@ -212,10 +212,7 @@ namespace DestroyerTest.Common
             }
         }
 
-        public static int[] NPCDownTally = new int[]
-        {
-            
-        };
+        public static int[] NPCDownTally = new int[99999];
 
         public static void InfectedScepter_RingProjectileOutwardAlternating(int ID1, int ID2, int Amount, Vector2 CTR, float Radius, int Dmg = 0, int KB = 0, float Speed = 2, float AI0 = 0, float AI1 = 0, float AI2 = 0, bool RandomOffset = false)
 		{

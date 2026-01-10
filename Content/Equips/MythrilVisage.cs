@@ -17,14 +17,14 @@ namespace DestroyerTest.Content.Equips
 			Item.value = Item.sellPrice(gold: 70);
 			Item.rare = ModContent.RarityType<WineRarity>();
 			Item.defense = 10;
-            Item.vanity = true;
+
 		}
 		public override bool IsArmorSet(Item head, Item body, Item legs) {
 			return body.type == ItemID.MythrilChainmail && legs.type == ItemID.MythrilGreaves;
 		}
 
-		public static readonly int SoloRangeBonus = 10;
-		public static readonly int SetRangeBonus = 18;
+		public static readonly int SoloRangeBonus = 30;
+		public static readonly int SetRangeBonus = 60;
         public static readonly float ThrowSpeedBonus = 1.12f;
         public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(SoloRangeBonus);
 		public LocalizedText setBonus => base.Tooltip.WithFormatArgs(SetRangeBonus, (ThrowSpeedBonus - 1f).ToString("P1"));

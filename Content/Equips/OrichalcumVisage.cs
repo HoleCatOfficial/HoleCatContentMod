@@ -23,7 +23,6 @@ namespace DestroyerTest.Content.Equips
 			Item.value = Item.sellPrice(gold: 70); // How many coins the item is worth
 			Item.rare = ModContent.RarityType<WineRarity>();
 			Item.defense = 10; // The amount of defense the item will give when equipped
-            Item.vanity = true;
 		}
 
 		// IsArmorSet determines what armor pieces are needed for the setbonus to take effect
@@ -41,7 +40,7 @@ namespace DestroyerTest.Content.Equips
 			player.setBonus = Language.GetTextValue("Mods.DestroyerTest.Items.MythrilVisage.SetBonus");
 		}
 
-		public static readonly int SoloRangeBonus = 10;
+		public static readonly int SoloRangeBonus = 30;
 		public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(SoloRangeBonus);
 		public override void UpdateEquip(Player player)
         {

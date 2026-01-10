@@ -27,7 +27,7 @@ namespace DestroyerTest.Content.Ammunitions
 			Item.knockBack = 2f;
 			Item.value = Item.sellPrice(copper: 16);
 			Item.shoot = ModContent.ProjectileType<TenebrisArrowProjectile>(); // The projectile that weapons fire when using this item as ammunition.
-			Item.shootSpeed = 10f;
+			Item.shootSpeed = 40f;
 			Item.ammo = AmmoID.Arrow;
 		}
 

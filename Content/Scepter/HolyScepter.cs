@@ -50,5 +50,12 @@ namespace DestroyerTest.Content.Scepter
             // Refresh defaults after overriding values
             base.SetDefaults();
         }
+
+        public override void AddRecipes() {
+            CreateRecipe()
+                .AddIngredient(ItemID.HallowedBar, 15)
+				.AddTile(TileID.MythrilAnvil)
+				.Register();
+		}
     }
 } 

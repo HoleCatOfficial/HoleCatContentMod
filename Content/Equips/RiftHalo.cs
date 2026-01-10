@@ -18,6 +18,7 @@ using InnoVault.PRT;
 using DestroyerTest.Content.Equips.AuraThiefSet;
 using DestroyerTest.Content.RiftBiome.RiftSurfaceResources;
 using DestroyerTest.Common;
+using OpusLib;
 
 namespace DestroyerTest.Content.Equips
 {
@@ -51,10 +52,23 @@ namespace DestroyerTest.Content.Equips
 		}
 
 		public override void UpdateArmorSet(Player player) {
+			player.AddBuff(ModContent.BuffType<RiftBallBuff>(), 3600);
 			player.GetDamage(ModContent.GetInstance<ScepterClass>()) *= 1.12f;
-			ScepterClassStats.Range += 4;
-			player.buffImmune[ModContent.BuffType<HeliouricShock>()] = true;
+			ScepterClassStats.Range += 100;
+			ScepterClassStats.ThrowSpeedModifier *= 1.45f; 
+			if (player.TryGetModPlayer<RiftHaloPlayer>(out var Halo))
+			{
+				Halo.Active = true;
+			}
+			player.setBonus = Language.GetTextValue("Mods.DestroyerTest.Items.RiftHalo.SetBonus");
 		}
+
+        public override void UpdateEquip(Player player)
+        {
+			player.GetCritChance(ModContent.GetInstance<ScepterClass>()) += 22;
+			player.GetDamage(ModContent.GetInstance<ScepterClass>()) *= 1.05f;
+        }
+
 
         public override void ArmorSetShadows(Player player)
         {
@@ -64,9 +78,29 @@ namespace DestroyerTest.Content.Equips
 		public override void AddRecipes() {
             CreateRecipe()
                 .AddIngredient<Item_RiftStone>(16)
-                .AddIngredient<Living_Shadow>(6)
+                .AddIngredient<Living_Shadow>(20)
 				.AddTile(TileID.MythrilAnvil)
 				.Register();
         }
+	}
+
+	public class RiftHaloPlayer : ModPlayer
+	{
+		public bool Active = false;
+
+        public override void ResetEffects()
+        {
+            Active = false;
+        }
+
+        public override void PostUpdateEquips()
+        {
+            if (Active)
+			{
+				Lighting.AddLight(Player.Center, ColorLib.Rift.ToVector3() * Opus.Sine(0.2f, 0.6f));
+				Player.buffImmune[ModContent.BuffType<HeliouricShock>()] = true;
+			}
+        }
+
 	}
 }

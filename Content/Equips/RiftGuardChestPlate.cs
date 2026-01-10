@@ -6,13 +6,14 @@ using Terraria.ModLoader;
 using DestroyerTest.Content.Tiles;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Rarity;
+using DestroyerTest.Content.Tiles.Riftplate;
+using DestroyerTest.Content.Tiles.RiftConfigurator;
+using DestroyerTest.Content.RiftArsenal;
 
 namespace DestroyerTest.Content.Equips
 {
-	// The AutoloadEquip attribute automatically attaches an equip texture to this item.
-	// Providing the EquipType.Body value here will result in TML expecting a X_Body.png file to be placed next to the item's main texture.
 	[AutoloadEquip(EquipType.Body)]
-	public class RiftGuardChestPlate : ModItem
+	public class RiftGuardChestPlate : RechargeItem
 	{
 
 		public override void SetDefaults() {
@@ -21,16 +22,39 @@ namespace DestroyerTest.Content.Equips
 			Item.value = Item.sellPrice(gold: 1); // How many coins the item is worth
 			Item.rare = ModContent.RarityType<RiftRarity1>(); // The rarity of the item
 			Item.defense = 35; // The amount of defense the item will give when equipped
-			Lighting.AddLight(Item.Center, 255f, 155f, 0.0f);
+		}
+
+		public override void UpdateEquip(Player player)
+		{
+			bool Set = player.armor[0].type == ModContent.ItemType<RiftGuardVisor>() && player.armor[2].type == ModContent.ItemType<RiftGuardChausses>();
+			if (!Set)
+			{
+				player.GetCritChance(DamageClass.Ranged) += 40;
+			}
+			else
+			{
+				player.GetCritChance(DamageClass.Ranged) += 25;
+			}
+
+			if (Energized)
+			{
+				player.GetArmorPenetration(DamageClass.Ranged) += 6;
+			}
 		}
 
 
-		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
 			CreateRecipe()
-                .AddIngredient<Living_Shadow>(8)
-                .AddIngredient(ItemID.TitaniumBar, 8)
-				.AddTile(TileID.MythrilAnvil)
+				.AddIngredient<Item_Riftplate>(24)
+				.AddIngredient<ShadowCircuitry>(6)
+                .AddIngredient(ItemID.PalladiumBar, 14)
+				.AddTile<Tile_RiftConfiguratorArmory>()
+				.Register();
+			CreateRecipe()
+				.AddIngredient<Item_Riftplate>(24)
+				.AddIngredient<ShadowCircuitry>(6)
+                .AddIngredient(ItemID.CobaltBar, 14)
+				.AddTile<Tile_RiftConfiguratorArmory>()
 				.Register();
 		}
 	}

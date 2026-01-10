@@ -14,7 +14,7 @@ namespace DestroyerTest.Content.RiftBiome.RiftSurfaceResources
 		}
 
 		public override void SetDefaults() {
-			Item.DefaultToPlaceableTile(ModContent.TileType<Tile_RiftDirt>());
+			Item.DefaultToPlaceableTile(ModContent.TileType<Tile_RiftStone>());
 			Item.width = 12;
 			Item.height = 12;
 		}

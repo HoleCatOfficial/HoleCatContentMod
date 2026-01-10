@@ -54,16 +54,16 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             for (int i = 0; i < TrailPositions.Count; i++)
             {
                 float progress = i / (float)TrailLength;
-                float scale = MathHelper.Lerp(0.1f, 0.0005f, progress);
+                float scale = MathHelper.Lerp(1.5f, 0.0005f, progress);
                 Color color = ColorLib.TenebrisGradient;
 
                 Main.EntitySpriteDraw(
-                    DTAssetLib.Cyclone(2).Value,
+                    DTAssetLib.FeatheredCircle.Value,
                     TrailPositions[i] - Main.screenPosition,
                     null,
                     color,
                     TextureRotationOffset,
-                    DTAssetLib.Cyclone(2).Value.Size() / 2f,
+                    DTAssetLib.FeatheredCircle.Value.Size() / 2f,
                     scale * TextureScale,
                     SpriteEffects.None,
                     0
@@ -71,13 +71,13 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             }
 
             Main.spriteBatch.Draw(
-                DTAssetLib.Cyclone(2).Value,
+                DTAssetLib.FeatheredCircle.Value,
                 Center - Main.screenPosition,
                 null,
                 ColorLib.TenebrisGradient,
                 TextureRotationOffset,
-                new Vector2(DTAssetLib.Cyclone(2).Value.Width / 2f, DTAssetLib.Cyclone(2).Value.Height / 2f),
-                0.1f * TextureScale,
+                DTAssetLib.FeatheredCircle.Value.Size() / 2f,
+                1.5f * TextureScale,
                 SpriteEffects.None,
                 1f
             );
@@ -87,7 +87,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             for (int i = 0; i < TrailPositions.Count; i++)
 			{
 				float progress = i / (float)TrailLength;
-				float scale = MathHelper.Lerp(0.2f, 0.001f, progress);
+				float scale = MathHelper.Lerp(1f, 0.001f, progress);
 				Color color = Color.Black;
 
 				Main.EntitySpriteDraw(
@@ -109,8 +109,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
                 null,
                 Color.Black,
                 0f,
-                new Vector2(DTAssetLib.FeatheredCircle.Value.Width / 2f, DTAssetLib.FeatheredCircle.Value.Height / 2f),
-                0.2f * TextureScale,
+                DTAssetLib.FeatheredCircle.Value.Size() / 2f,
+                1f * TextureScale,
                 SpriteEffects.None,
                 1f
             );

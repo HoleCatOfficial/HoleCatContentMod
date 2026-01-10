@@ -31,8 +31,8 @@ namespace DestroyerTest.Content.Entities
         }
         public override void SetDefaults()
         {
-            NPC.width = 30;
-            NPC.height = 30;
+            NPC.width = 50;
+            NPC.height = 50;
             NPC.damage = 20;
             NPC.defense = 15;
             NPC.lifeMax = 800;
@@ -63,16 +63,16 @@ namespace DestroyerTest.Content.Entities
             for (int i = 0; i < TrailPositions.Count; i++)
             {
                 float progress = i / (float)TrailLength;
-                float scale = MathHelper.Lerp(0.08f, 0.0005f, progress);
+                float scale = MathHelper.Lerp(1.4f, 0.0005f, progress);
                 Color color = ColorLib.Rift;
 
                 Main.EntitySpriteDraw(
-                    DTAssetLib.Cyclone(2).Value,
+                    DTAssetLib.FeatheredCircle.Value,
                     TrailPositions[i] - Main.screenPosition,
                     null,
                     color,
                     TextureRotationOffset,
-                    DTAssetLib.Cyclone(2).Value.Size() / 2f,
+                    DTAssetLib.FeatheredCircle.Value.Size() / 2f,
                     scale,
                     SpriteEffects.None,
                     0
@@ -80,13 +80,13 @@ namespace DestroyerTest.Content.Entities
             }
 
             Main.spriteBatch.Draw(
-                DTAssetLib.Cyclone(2).Value,
+                DTAssetLib.FeatheredCircle.Value,
                 Center - Main.screenPosition,
                 null,
                 ColorLib.Rift,
                 TextureRotationOffset,
-                new Vector2(DTAssetLib.Cyclone(2).Value.Width / 2f, DTAssetLib.Cyclone(2).Value.Height / 2f),
-                0.08f,
+                DTAssetLib.FeatheredCircle.Value.Size() / 2f,
+                1.4f,
                 SpriteEffects.None,
                 1f
             );
@@ -96,7 +96,7 @@ namespace DestroyerTest.Content.Entities
             for (int i = 0; i < TrailPositions.Count; i++)
 			{
 				float progress = i / (float)TrailLength;
-				float scale = MathHelper.Lerp(0.1f, 0.001f, progress);
+				float scale = MathHelper.Lerp(1f, 0.001f, progress);
 				Color color = Color.Black;
 
 				Main.EntitySpriteDraw(
@@ -119,7 +119,7 @@ namespace DestroyerTest.Content.Entities
                 Color.Black,
                 NPC.rotation,
                 new Vector2(DTAssetLib.FeatheredCircle.Value.Width / 2f, DTAssetLib.FeatheredCircle.Value.Height / 2f),
-                0.1f,
+                1f,
                 SpriteEffects.None,
                 1f
             );

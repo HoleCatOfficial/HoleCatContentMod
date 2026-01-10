@@ -484,17 +484,40 @@ Items: {
 	
 	RiftGuardChausses: {
 		DisplayName: Rift Guard Chausses
-		Tooltip: A simple armor set meant to be worn around the edges of Rifted areas, as Oxygen can leak out of it fairly easily.
+		Tooltip:
+			'''
+			Increases run speed by 22%.
+			If charged, increases acceleration by 20%.
+			"Oxygen can leak out of it fairly easily."
+			'''
 	}
 
 	RiftGuardChestPlate: {
-		DisplayName: Rift Guard Chest Plate
-		Tooltip: A simple armor set meant to be worn around the edges of Rifted areas, as Oxygen can leak out of it fairly easily.
+		DisplayName: Rift Guard Chestplate
+		Tooltip:
+			'''
+			Increases Ranger critical strike change by 40%.
+			This bonus is reduced to 25% if the set bonus is active.
+			If charged, you get 6 Ranged armor penetration.
+			"Oxygen can leak out of it fairly easily."
+			'''
 	}
 
 	RiftGuardVisor: {
 		DisplayName: Rift Guard Visor
-		Tooltip: A simple armor set meant to be worn around the edges of Rifted areas, as Oxygen can leak out of it fairly easily.
+		Tooltip:
+			'''
+			Increases Ranger damage by 10%; 20% if charged.
+			"Oxygen can leak out of it fairly easily."
+			'''
+		SetBonus:
+			'''
+			Shooting enemies builds charge up to three tiers.
+			Tier 1 increases Ranged Damage by 10% and Ranged Crit chance by 6%.
+			Tier 2 increases Ranged Damage by 20% and Ranged Crit chance by 12%.
+			Tier 3 increases Ranged Damage by 40% and Ranged Crit chance by 18%, and your weapon will fire clouds of Heliouric Electricity.
+			Not using your weapon, or charging to 120 charge on Tier 3 will reset charge.
+			'''
 	}
 
 	RiftPropulsion: {
@@ -2841,12 +2864,25 @@ Items: {
 
 	RiftHalo: {
 		DisplayName: Rift Halo
-		Tooltip: ""
+		Tooltip:
+			'''
+			Does not inherit bonuses from being charged.
+			22% increased crit chance.
+			5% increased Scepter Damage.
+			'''
+		SetBonus:
+			'''
+			You are immune to Heliouric Shock.
+			12% increased Scepter Class Damage.
+			Scepter Range increased by 100.
+			45% increased Scepter Throw Speed.
+			You emit light.
+			'''
 	}
 
 	RiftVeil: {
 		DisplayName: Rift Veil
-		Tooltip: ""
+		Tooltip: 10% increased scepter crit chance
 	}
 
 	RadiantRose: {
@@ -3765,8 +3801,28 @@ Items: {
 	}
 
 	GelCane: {
-		Tooltip: ""
+		Tooltip:
+			'''
+			Summons a Baby Crystal Slime, Bouncy Slime, and Heavenly Slime.
+			Each uses 1/3 of a minion slot, and deal 1/3 of the weapon's damage.
+			The slimes will ram into targets, with the Crystal Slime releasing a barrage of lingering crystal shots and the Bouncy Slime shooting bouncing gel balls at the target as it travels.
+			'''
 		DisplayName: Gel Cane
+	}
+
+	ForgottenPlatemail: {
+		Tooltip: ""
+		DisplayName: Forgotten Platemail
+	}
+
+	ForgottenGreaves: {
+		Tooltip: ""
+		DisplayName: Forgotten Greaves
+	}
+
+	ForgottenCrown: {
+		Tooltip: ""
+		DisplayName: Forgotten Crown
 	}
 }
 
@@ -4264,6 +4320,8 @@ Projectiles: {
 	MiniBouncySlime.DisplayName: Mini Bouncy Slime
 	MiniCrystalSlime.DisplayName: Mini Crystal Slime
 	MiniHeavenlySlime.DisplayName: Mini Heavenly Slime
+	HeliouricSpreadProjectile.DisplayName: Heliouric Spread Projectile
+	ExplodingIcicle.DisplayName: Exploding Icicle
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.

@@ -24,12 +24,12 @@ namespace DestroyerTest.Content.Tiles.Riftplate
 			CreateRecipe(20)
 				.AddIngredient<Living_Shadow>(5)
                 .AddIngredient(ItemID.IronBar, 2)
-				.AddTile(TileID.AdamantiteForge)
+				.AddTile(TileID.Hellforge)
 				.Register();
             CreateRecipe(20)
 				.AddIngredient<Living_Shadow>(5)
                 .AddIngredient(ItemID.LeadBar, 2)
-				.AddTile(TileID.AdamantiteForge)
+				.AddTile(TileID.Hellforge)
 				.Register();
 		}
 

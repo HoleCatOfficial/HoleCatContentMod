@@ -23,7 +23,7 @@ namespace DestroyerTest.Content.Resources.Blueprints
 		public override void SetDefaults() {
 			Item.width = 32;
 			Item.height = 32;
-			Item.maxStack = 5;
+			Item.maxStack = Item.CommonMaxStack;
 			Item.value = 1000;
             Item.useTime = 60;
             Item.useAnimation = 60;
@@ -44,7 +44,7 @@ namespace DestroyerTest.Content.Resources.Blueprints
 			CreateRecipe(1)
                 .AddIngredient<RiftData>(1)
                 .AddIngredient<Living_Shadow>(5)
-                .AddIngredient(ItemID.VolcanoLarge, 1)
+                .AddIngredient(ItemID.FieryGreatsword, 1)
                 .AddIngredient(ItemID.BladeofGrass, 1)
                 .AddTile<Tile_RiftConfiguratorCore>()
             .Register();

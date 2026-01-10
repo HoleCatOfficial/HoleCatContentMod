@@ -24,7 +24,7 @@ namespace DestroyerTest.Content.Resources.Blueprints
 		public override void SetDefaults() {
 			Item.width = 32;
 			Item.height = 32;
-			Item.maxStack = 5;
+			Item.maxStack = Item.CommonMaxStack;
 			Item.value = 1000;
             Item.useTime = 60;
             Item.useAnimation = 60;

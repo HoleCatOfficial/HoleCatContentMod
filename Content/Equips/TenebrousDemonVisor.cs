@@ -186,7 +186,7 @@ namespace DestroyerTest.Content.Equips
                 }
 				if (ComboCounter >= 120)
 				{
-					SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/NodeSpawn") with { PitchVariance = 0.2f }, Player.Center);
+					SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/HoleCatHookFreeze") with { PitchVariance = 0.2f }, Player.Center);
 					Charge1 = Charge2 = Charge3 = false;
 					SoundFlag1 = SoundFlag2 = SoundFlag3 = false;
 					ComboCounter = 0;

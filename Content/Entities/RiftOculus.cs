@@ -80,7 +80,7 @@ namespace DestroyerTest.Content.Entities
             for (int i = 0; i < TrailPositions.Count; i++)
 			{
 				float progress = i / (float)TrailLength;
-				float scale = MathHelper.Lerp(0.1f, 0.0001f, progress);
+				float scale = MathHelper.Lerp(0.2f, 0.0001f, progress);
 				Color color = Color.Black;
 
 				Main.EntitySpriteDraw(
@@ -103,7 +103,7 @@ namespace DestroyerTest.Content.Entities
                 Color.Black,
                 0f,
                 new Vector2(DTAssetLib.FeatheredCircle.Value.Width / 2f, DTAssetLib.FeatheredCircle.Value.Height / 2f),
-                0.1f,
+                0.2f,
                 SpriteEffects.None,
                 1f
             );
