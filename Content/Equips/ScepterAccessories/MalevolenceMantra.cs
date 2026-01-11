@@ -26,5 +26,13 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
 				Scptr.HellfireScroll1 = true;
 			}
         }
+
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient(ItemID.HellstoneBar, 9)
+                .AddTile(TileID.Anvils)
+                .Register();
+        }
     }
 }

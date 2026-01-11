@@ -37,36 +37,48 @@ namespace DestroyerTest.Content.Equips
 			if (player.TryGetModPlayer<ForgottenCrownPlayer>(out var Crown))
             {
                 Crown.Active = true;
+                Crown.JumpBoost = true;
             }
 			player.setBonus = Language.GetTextValue("Mods.DestroyerTest.Items.ForgottenCrown.SetBonus");
 		}
 
         public override void UpdateEquip(Player player)
         {
-            ScepterClassStats.Range += SoloRangeBonus;
+            if (player.TryGetModPlayer<ForgottenCrownPlayer>(out var Crown))
+            {
+                Crown.Active = true;
+                Crown.Imbue = true;
+            }
         }
 	}
 
     public class ForgottenCrownPlayer : ModPlayer
     {
         public bool Active = false;
+        public bool JumpBoost = false;
+        public bool Imbue = false;
+        public int cooldown = 0;
 
         public override void ResetEffects()
         {
             Active = false;
+            JumpBoost = false;
+            Imbue = false;
+
+            if (cooldown > 0)
+            {
+                cooldown--;
+            }
         }
 
         public override void PostUpdateEquips()
         {
-            if (Active)
-            {
-                
-            }
+            
         }
 
         public override void OnExtraJumpStarted(ExtraJump jump, ref bool playSound)
         {
-            if (Active)
+            if (Active && JumpBoost)
             {
                 playSound = true;
                 jump.ShowVisuals(Player);
@@ -75,21 +87,18 @@ namespace DestroyerTest.Content.Equips
 
         public override bool CanStartExtraJump(ExtraJump jump)
         {
-            return Active;
+            return Active && JumpBoost;
         }
     }
 
     public class ForgottenCrownOwnedProjectile : GlobalProjectile
     {
         public override bool InstancePerEntity => true;
-        public int cooldown = 120;
+        
 
         public override void PostAI(Projectile projectile)
         {
-            if (cooldown > 0)
-            {
-                cooldown--;
-            }
+            
         }
         public override void OnHitNPC(Projectile projectile, NPC target, NPC.HitInfo hit, int damageDone)
         {
@@ -97,7 +106,7 @@ namespace DestroyerTest.Content.Equips
             DTConfig cfg = ModContent.GetInstance<DTConfig>();
             if (player.TryGetModPlayer<ForgottenCrownPlayer>(out var Crown) && projectile.owner == player.whoAmI && projectile.DamageType == ModContent.GetInstance<ScepterClass>() && projectile.type != ModContent.ProjectileType<ExplodingIcicle>())
             {
-                if (Crown.Active && cooldown <= 0)
+                if (Crown.Active && Crown.cooldown <= 0)
                 {
                     Opus.RadialSpreadDust(DustID.Ice, 10, target.Center, 0, Color.White, 1f, 2, true);
                     Vector2 speed = new Vector2(0, -3.5f).RotatedByRandom(1f);
@@ -105,9 +114,14 @@ namespace DestroyerTest.Content.Equips
                     {
                         Projectile.NewProjectile(player.GetSource_Misc("Crown Icicles"), target.Center, speed, ModContent.ProjectileType<ExplodingIcicle>(), projectile.damage / 2, 4, projectile.owner);
                     }
-                    cooldown = 120;
+                    Crown.cooldown = 120;
+                }
+                if (Crown.Active && Crown.Imbue)
+                {
+                    target.AddBuff(BuffID.Frostburn, 300);
                 }
             }
+            
         }
     }
 }

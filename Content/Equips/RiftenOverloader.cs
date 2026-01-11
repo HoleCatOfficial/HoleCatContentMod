@@ -4,6 +4,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
+using Terraria.GameContent.ItemDropRules;
 
 namespace DestroyerTest.Content.Equips
 {
@@ -18,11 +19,23 @@ namespace DestroyerTest.Content.Equips
 			Item.accessory = true;
 		}
 
-		
-
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
             player.buffImmune[ModContent.BuffType<HeliouricShock>()] = true;
 		}
+	}
+
+	public class RODropNPC : GlobalNPC
+	{
+        public override bool InstancePerEntity => true;
+
+        public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
+        {
+            if (DTUtils.RiftEnemies.Contains(npc.type))
+			{
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<RiftenOverloader>(), 10, 1, 1));
+			}
+        }
+
 	}
 }

@@ -16,7 +16,7 @@ using DestroyerTest.Content.Resources;
 
 namespace DestroyerTest.Common.NPC_Folder
 {
-	internal class DTGlobal : GlobalNPC
+	public class DTGlobal : GlobalNPC
 	{
 		public override bool InstancePerEntity => true;
         private bool KilledSpaz = false;

@@ -34,7 +34,7 @@ namespace DestroyerTest.Content.Scepter
             base.SetDefaults();
 
             // Override stats unique to this scepter
-            ShootDMG = 60;
+            ShootDMG = 130;
             ShootCrit = 4;
             ThrowCrit = 14;
             KB = 2;
@@ -87,6 +87,15 @@ namespace DestroyerTest.Content.Scepter
             }
         }
 
-    
+        public override void AddRecipes() {
+			CreateRecipe()
+                .AddIngredient(ItemID.GoldBar, 4)
+                .AddIngredient(ItemID.DemoniteBar, 2)
+                .AddIngredient(ItemID.CrimtaneBar, 2)
+                .AddIngredient<PrimalShards>(10)
+                .AddIngredient<WretchedShards>(10)
+                .AddTile(TileID.MythrilAnvil)
+				.Register();
+		}
     }
 } 

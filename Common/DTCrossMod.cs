@@ -24,20 +24,28 @@ namespace DestroyerTest.Common
 {
     public static class DTCrossMod
     {
-        public static string FargosSoulsName = "FargowiltasSouls";
-        public static bool FargosIsLoaded;
-        public static Mod FargosMod;
+        public const string FargosSoulsName = "FargowiltasSouls";
+        public static bool FargosSoulsIsLoaded;
+        public static Mod FargosSoulsMod;
+
+        public const string FargosMutantName = "Fargowiltas";
+        public static bool FargosMutantIsLoaded;
+        public static Mod FargosMutantMod;
 
         public static void LoadMods()
         {
-            FargosIsLoaded = ModLoader.TryGetMod(FargosSoulsName, out Mod frgo);
-            FargosMod = frgo;
+            FargosSoulsIsLoaded = ModLoader.TryGetMod(FargosSoulsName, out Mod frgoS);
+            FargosSoulsMod = frgoS;
+            FargosMutantIsLoaded = ModLoader.TryGetMod(FargosMutantName, out Mod frgoM);
+            FargosMutantMod = frgoM;
         }
 
         public static void UnloadMods()
         {
-            FargosIsLoaded = false;
-            FargosMod = null;
+            FargosSoulsIsLoaded = false;
+            FargosSoulsMod = null;
+            FargosMutantIsLoaded = false;
+            FargosMutantMod = null;
         }
     }
 }

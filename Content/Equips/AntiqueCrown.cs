@@ -67,8 +67,11 @@ namespace DestroyerTest.Content.Equips
 
         public override void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
         {
-            DTUtils.DrawChargeBar(1.25f, (Player.Center + new Vector2(0, -40)) - Main.screenPosition, Timer1As0to1, Color.Brown * Opacity);
-        }
+			if (Active)
+			{
+            	DTUtils.DrawChargeBar(1.25f, (Player.Center + new Vector2(0, -40)) - Main.screenPosition, Timer1As0to1, Color.Brown * Opacity);
+        	}
+		}
 
         public override void PostUpdateEquips()
         {

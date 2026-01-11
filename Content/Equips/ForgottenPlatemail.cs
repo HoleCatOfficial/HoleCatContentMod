@@ -44,5 +44,10 @@ namespace DestroyerTest.Content.Equips
 			Item.rare = ModContent.RarityType<PearlRarity>();
 			Item.defense = 7;
 		}
+
+        public override void UpdateEquip(Player player)
+        {
+            player.endurance += 0.12f;
+        }
 	}
 }

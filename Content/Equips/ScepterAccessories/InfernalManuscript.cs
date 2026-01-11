@@ -21,6 +21,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
+            player.GetDamage(ModContent.GetInstance<ScepterClass>()) *= 1.1f;
             foreach (Projectile proj in Main.projectile)
             {
                 if (player.TryGetModPlayer<ScrollScepterUsePlayer>(out ScrollScepterUsePlayer Scptr))

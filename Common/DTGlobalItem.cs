@@ -1006,4 +1006,20 @@ namespace DestroyerTest.Common
         }
 
     }
+
+    public class ModifyVanillaItems : GlobalItem
+    {
+        public override void UpdateEquip(Item item, Player player)
+        {
+            if (item.type == ItemID.CobaltShield || item.type == ItemID.ObsidianShield)
+            {
+                player.noKnockback = false;
+                if (player.TryGetModPlayer<BroochKnockbackPlayer>(out var knockbackPlayer))
+                {
+                    knockbackPlayer.Active = true;
+                    knockbackPlayer.CobaltShieldKnockback = true;
+                }
+            }
+        }
+    }
 }

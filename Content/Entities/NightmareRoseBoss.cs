@@ -196,6 +196,18 @@ namespace DestroyerTest.Content.Entities
             return false;
         }
 
+        public static bool SecretSeed()
+        {
+            if(Main.zenithWorld || Main.getGoodWorld || Main.notTheBeesWorld)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public enum AttackState
         {
             SpawnIdle,
@@ -315,6 +327,23 @@ namespace DestroyerTest.Content.Entities
             NPCHead = NPC.Center + new Vector2(0, -79);
             Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Bottom, Vector2.Zero, ModContent.ProjectileType<SpawnSoul>(), 0, 0);
         }
+
+        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            Rectangle sourceRect = new Rectangle(
+                0,
+                frameIndex * NPC.height,
+                NPC.width,
+                NPC.height
+            );
+
+            if (SecretSeed())
+            {
+                Main.EntitySpriteDraw(TextureAssets.Npc[NPC.type].Value, NPC.Center - Main.screenPosition, sourceRect, Main.DiscoColor, 180, sourceRect.Size() / 2, 1f, SpriteEffects.None, 0);
+            }
+            return !SecretSeed();
+        }
+
 
 
         public override bool? CanBeHitByProjectile(Projectile projectile)
@@ -673,6 +702,16 @@ namespace DestroyerTest.Content.Entities
                 }
                 Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Placeholder4");
             }
+            if (!Main.dedServ && SecretSeed() && currentState != AttackState.SpawnIdle)
+            {
+                if (!SetVolume)
+                {
+                    Main.musicFade[Music] = 1;
+                    Main.musicVolume = VolumeOnSpawn;
+                    SetVolume = true;
+                }
+                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/EvilBossSecretSeed");
+            }
 
             NPC.velocity = Vector2.Zero;
 
@@ -745,6 +784,10 @@ namespace DestroyerTest.Content.Entities
                         if (Main.masterMode || EternityIsActive())
                         {
                             IdleMax = 60;
+                        }
+                        if (SecretSeed())
+                        {
+                            IdleMax = 15;
                         }
 
                         if (IdleTimer < IdleMax)

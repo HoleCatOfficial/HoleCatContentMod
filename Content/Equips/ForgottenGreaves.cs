@@ -23,7 +23,9 @@ namespace DestroyerTest.Content.Equips
 			Item.defense = 4; // The amount of defense the item will give when equipped
 		}
 
-		public override void UpdateEquip(Player player) {
+		public override void UpdateEquip(Player player)
+		{
+			player.jumpSpeedBoost += 6f;
 		}
 	}
 }

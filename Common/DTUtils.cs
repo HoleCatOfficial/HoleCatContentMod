@@ -22,6 +22,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using OpusLib;
+using DestroyerTest.Content.Entities;
 
 namespace DestroyerTest.Common
 {
@@ -240,6 +241,13 @@ namespace DestroyerTest.Common
                 );
             }
 		}
+
+        public static List<int> RiftEnemies = new List<int>
+        {
+            ModContent.NPCType<PetrifiedWisp3>(),
+            ModContent.NPCType<PetrifiedHead>(),  
+            ModContent.NPCType<RiftDiggerHead>(),  
+        };
     }
 
     public static class DTStaticUtils

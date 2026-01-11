@@ -3213,6 +3213,7 @@ Items: {
 		DisplayName: Infected Manuscript
 		Tooltip:
 			'''
+			10% increased Scepter Damage.
 			Combines the effects of the Ichor Scroll and Cursed Flame Scroll.
 			Englufs your scepter in an aura. All enemies inside the aura are afflicted with both Cursed Inferno and Ichor.
 			'''
@@ -3246,6 +3247,7 @@ Items: {
 	InfernalManuscript: {
 		Tooltip:
 			'''
+			10% increased Scepter Damage.
 			Combines the effects of the Malevolence Mantra, Diabolic Scroll, and Incendiary Scroll.
 			Throwing a scepter has a hance to release a burst of hellfire.
 			Primary shots from scepters (LMB attacks) spawn a fiery blast on collision with an enemy.
@@ -3811,18 +3813,48 @@ Items: {
 	}
 
 	ForgottenPlatemail: {
-		Tooltip: ""
+		Tooltip: Increases Damage Reduction by 12%
 		DisplayName: Forgotten Platemail
 	}
 
 	ForgottenGreaves: {
-		Tooltip: ""
+		Tooltip: Slightly Improved Jump height.
 		DisplayName: Forgotten Greaves
 	}
 
 	ForgottenCrown: {
-		Tooltip: ""
+		Tooltip: Scepter Shots inflict Frostburn
+		SetBonus:
+			'''
+			You can double jump.
+			Scepter class projectiles create exploding icicles on hit.
+			'''
 		DisplayName: Forgotten Crown
+	}
+
+	CorruptionCaller: {
+		DisplayName: Corruption Caller
+		Tooltip: Spawns a Cursed Flame Node
+	}
+
+	CrimsonCaller: {
+		DisplayName: Crimson Caller
+		Tooltip: Spawns an Ichor Node
+	}
+
+	BroochOfBalance: {
+		DisplayName: Brooch Of Balance
+		Tooltip: ""
+	}
+
+	BroochOfLight: {
+		DisplayName: Brooch Of Light
+		Tooltip: ""
+	}
+
+	BroochOfNight: {
+		DisplayName: Brooch Of Night
+		Tooltip: ""
 	}
 }
 

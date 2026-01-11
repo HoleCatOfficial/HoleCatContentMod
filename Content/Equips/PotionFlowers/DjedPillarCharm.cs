@@ -36,12 +36,13 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
         {
             CreateRecipe()
                 .AddIngredient(ItemID.AnkhCharm, 1)
+                .AddIngredient<BroochOfBalance>(1)
                 .AddIngredient<RiftenOverloader>(1)
                 .AddIngredient(ItemID.SpiritFlame, 1)
                 .AddIngredient(ItemID.OmegaBanner, 1)
                 .AddIngredient(ItemID.AnkhBanner, 1)
                 .AddIngredient(ItemID.SnakeBanner, 1)
-                .AddTile(TileID.LihzahrdAltar)
+                .AddTile(TileID.TinkerersWorkbench)
                 .Register();
         }
     }
@@ -78,10 +79,14 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
                 Player.buffImmune[BuffID.Electrified] = true;
                 Player.buffImmune[BuffID.Rabies] = true;
                 Player.buffImmune[BuffID.ShadowFlame] = true;
+                Player.buffImmune[BuffID.WindPushed] = true;
                 Player.buffImmune[ModContent.BuffType<Brine>()] = true;
                 Player.buffImmune[ModContent.BuffType<GalantineBurn>()] = true;
                 Player.buffImmune[ModContent.BuffType<HeliouricShock>()] = true;
                 Player.buffImmune[ModContent.BuffType<Muddy>()] = true;
+                Player.buffImmune[ModContent.BuffType<NightInferno>()] = true;
+                Player.buffImmune[ModContent.BuffType<LightInferno>()] = true;
+                Player.noKnockback = true;
             }
         }
     }
@@ -117,6 +122,10 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
         public int DashDelay = 0; // frames remaining till we can dash again
         public int DashTimer = 6; // frames remaining in the dash
 
+        public int EntryWindow = 600;
+
+        
+
         public override void ResetEffects()
         {
             // Reset our equipped flag. If the accessory is equipped somewhere, ExampleShield.UpdateAccessory will be called and set the flag before PreUpdateMovement
@@ -138,6 +147,16 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
             {
                 DashDir = -1;
             }
+
+            if (EntryWindow > 0)
+            {
+                EntryWindow--;
+            }
+        }
+
+        public override void OnEnterWorld()
+        {
+            EntryWindow = 600;
         }
 
         // This is the perfect place to apply dash movement, it's after the vanilla movement code, and before the player's position is modified based on velocity.
@@ -200,9 +219,9 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
         private bool CanUseDash()
         {
             return DashAccessoryEquipped
-                && Player.dashType == DashID.None // player doesn't have Tabi or EoCShield equipped (give priority to those dashes)
                 && HasDjedPillarEquipped()
-                && !Player.mount.Active; // player isn't mounted, since dashes on a mount look weird
+                && !Player.mount.Active
+                && EntryWindow <= 0;
         }
 
         private Asset<Texture2D> Djed => ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/DjedDash");

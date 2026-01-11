@@ -461,11 +461,15 @@ namespace DestroyerTest.Content.RiftArsenal
 			base.OnHitNPC(target, hit, damageDone);
 			target.AddBuff(ModContent.BuffType<HeliouricShock>(), 600);
 			SoundEngine.PlaySound(SoundID.NPCHit43, target.Center);
-			for (int c = 0; c < 15; c++)
+			DTOptimizationsConfig optcfg = ModContent.GetInstance<DTOptimizationsConfig>();
+			if (optcfg.DisableExcessParticles)
 			{
-				float offset = Main.rand.NextFloat(0.5f, -0.5f);
-				Vector2 velocity = (Projectile.velocity * 0.5f).RotatedBy(offset);
-				PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticle>(), target.Center, velocity, ColorLib.Rift, 1f, 2);
+				for (int c = 0; c < 15; c++)
+				{
+					float offset = Main.rand.NextFloat(0.5f, -0.5f);
+					Vector2 velocity = (Projectile.velocity * 0.5f).RotatedBy(offset);
+					PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticle>(), target.Center, velocity, ColorLib.Rift, 1f, 2, 2);
+				}
 			}
         }
 
