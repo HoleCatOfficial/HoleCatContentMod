@@ -8,6 +8,7 @@ using DestroyerTest.Content.Particles.CurseRunes;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -58,11 +59,32 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
             return DelayTimer >= 10;
         }
 
+        public void DustSpawn1()
+        {
+            Vector2 Pos1 = Projectile.Center + new Vector2(0, -8).RotatedBy(Projectile.rotation);
+            Vector2 Pos2 = Projectile.Center + new Vector2(0, 8).RotatedBy(Projectile.rotation);
+
+            Vector2 DustPos = Opus.Sine(Pos1, Pos2, 0.5f);
+
+            Dust.NewDustPerfect(DustPos, DustID.IchorTorch, Vector2.Zero, 0, default, 0.75f);
+        }
+
+        public void DustSpawn2()
+        {
+            Vector2 Pos1 = Projectile.Center + new Vector2(0, 8).RotatedBy(Projectile.rotation);
+            Vector2 Pos2 = Projectile.Center + new Vector2(0, -8).RotatedBy(Projectile.rotation);
+
+            Vector2 DustPos = Opus.Sine(Pos1, Pos2, 0.5f);
+
+            Dust.NewDustPerfect(DustPos, DustID.IchorTorch, Vector2.Zero, 0, default, 0.75f);
+        }
+
         public override void AI()
         {
             Projectile.rotation = Projectile.velocity.ToRotation();
-            Lighting.AddLight(Projectile.Center, ColorLib.CursedFlames.ToVector3() * 0.5f);
-
+            Lighting.AddLight(Projectile.Center, ColorLib.Ichor.ToVector3() * 0.5f);
+            DustSpawn1();
+            DustSpawn2();
             if (DelayTimer < 10)
             {
                 DelayTimer += 1;

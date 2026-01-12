@@ -108,7 +108,7 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
         public const int DashRight = 2;
         public const int DashLeft = 3;
 
-        public const int DashCooldown = 50; // Time (frames) between starting dashes. If this is shorter than DashDuration you can start a new dash before an old one has finished
+        public const int DashCooldown = 120; // Time (frames) between starting dashes. If this is shorter than DashDuration you can start a new dash before an old one has finished
         public const int DashDuration = 35; // Duration of the dash afterimage effect in frames
 
         // The initial velocity.  10 velocity is about 37.5 tiles/second or 50 mph
@@ -201,10 +201,12 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
 
 
             if (DashTimer > 0)
-            { // dash is active
+            { 
+                // dash is active
               // This is where we set the afterimage effect.  You can replace these two lines with whatever you want to happen during the dash
               // Some examples include:  spawning dust where the player is, adding buffs, making the player immune, etc.
               // Here we take advantage of "player.eocDash" and "player.armorEffectDrawShadowEOCShield" to get the Shield of Cthulhu's afterimage effect
+                Player.immune = true;
                 Player.eocDash = DashTimer;
                 Player.armorEffectDrawShadowEOCShield = true;
                 if (Main.GameUpdateCount % 5 == 0)

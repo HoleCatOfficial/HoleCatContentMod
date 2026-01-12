@@ -34,7 +34,7 @@ namespace DestroyerTest.Content.Scepter
             base.SetDefaults();
 
             // Override stats unique to this scepter
-            ShootDMG = 130;
+            ShootDMG = 80;
             ShootCrit = 4;
             ThrowCrit = 14;
             KB = 2;
@@ -56,8 +56,8 @@ namespace DestroyerTest.Content.Scepter
         public override void ShootDefaults()
         {
             base.ShootDefaults();
-            Item.useTime = 180;
-            Item.useAnimation = 180;
+            Item.useTime = 40;
+            Item.useAnimation = 40;
         }
 
         public override bool? UseItem(Player player)

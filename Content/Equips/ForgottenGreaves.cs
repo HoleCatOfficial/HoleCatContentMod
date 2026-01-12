@@ -25,7 +25,7 @@ namespace DestroyerTest.Content.Equips
 
 		public override void UpdateEquip(Player player)
 		{
-			player.jumpSpeedBoost += 6f;
+			player.jumpSpeedBoost += 3f;
 		}
 	}
 }

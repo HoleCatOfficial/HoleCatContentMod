@@ -8,6 +8,7 @@ using DestroyerTest.Common;
 using Microsoft.Xna.Framework;
 using DestroyerTest.Content.Projectiles.player.ArmorSet;
 using OpusLib;
+using System.Collections.Generic;
 
 namespace DestroyerTest.Content.Equips
 {
@@ -56,6 +57,8 @@ namespace DestroyerTest.Content.Equips
     {
         public bool Active = false;
         public bool JumpBoost = false;
+
+        //Ignore these two. Theyre unrelated to the jump boost.
         public bool Imbue = false;
         public int cooldown = 0;
 
@@ -73,23 +76,94 @@ namespace DestroyerTest.Content.Equips
 
         public override void PostUpdateEquips()
         {
-            
-        }
-
-        public override void OnExtraJumpStarted(ExtraJump jump, ref bool playSound)
-        {
-            if (Active && JumpBoost)
+            if (Active)
             {
-                playSound = true;
-                jump.ShowVisuals(Player);
+                Player.GetJumpState<ForgottenSetExtraJump>().Enable();
             }
         }
-
-        public override bool CanStartExtraJump(ExtraJump jump)
-        {
-            return Active && JumpBoost;
-        }
     }
+
+
+    public class ForgottenSetExtraJump : ExtraJump
+	{
+		public override Position GetDefaultPosition() => new After(BlizzardInABottle);
+
+		public override IEnumerable<Position> GetModdedConstraints() {
+			// By default, modded extra jumps set to be between two vanilla extra jumps (via After and Before) are ordered in load order.
+			// This hook allows you to organize where this extra jump is located relative to other modded extra jumps that are also
+			// placed between the same two vanilla extra jumps.
+			yield return new Before(ExtraJump.GoatMount);
+		}
+
+		public override float GetDurationMultiplier(Player player) {
+			// Use this hook to set the duration of the extra jump
+			// The XML summary for this hook mentions the values used by the vanilla extra jumps
+			return 1.65f;
+		}
+
+		public override void UpdateHorizontalSpeeds(Player player) {
+			// Use this hook to modify "player.runAcceleration" and "player.maxRunSpeed"
+			// The XML summary for this hook mentions the values used by the vanilla extra jumps
+			player.runAcceleration *= 3.18f;
+			player.maxRunSpeed *= 1.9f;
+		}
+
+		public override void OnStarted(Player player, ref bool playSound) {
+			// Use this hook to trigger effects that should appear at the start of the extra jump
+			// This example mimics the logic for spawning the puff of smoke from the Cloud in a Bottle
+			int offsetY = player.height;
+			if (player.gravDir == -1f)
+				offsetY = 0;
+
+			offsetY -= 16;
+
+			for (int i = 0; i < 10; i++) {
+				Dust dust = Dust.NewDustDirect(player.position + new Vector2(-34f, offsetY), 102, 32, DustID.Cloud, -player.velocity.X * 0.5f, player.velocity.Y * 0.5f, 100, Color.Gray, 1.5f);
+				dust.velocity = dust.velocity * 0.5f - player.velocity * new Vector2(0.1f, 0.3f);
+			}
+
+			SpawnCloudPoof(player, player.Top + new Vector2(-16f, offsetY));
+			SpawnCloudPoof(player, player.position + new Vector2(-36f, offsetY));
+			SpawnCloudPoof(player, player.TopRight + new Vector2(4f, offsetY));
+		}
+
+		private static void SpawnCloudPoof(Player player, Vector2 position) {
+			Gore gore = Gore.NewGoreDirect(player.GetSource_FromThis(), position, -player.velocity, Main.rand.Next(11, 14));
+			gore.velocity.X = gore.velocity.X * 0.1f - player.velocity.X * 0.1f;
+			gore.velocity.Y = gore.velocity.Y * 0.1f - player.velocity.Y * 0.05f;
+		}
+
+		public override void ShowVisuals(Player player) {
+			// Use this hook to trigger effects that should appear throughout the duration of the extra jump
+			// This example mimics the logic for spawning the dust from the Blizzard in a Bottle
+			int offsetY = player.height - 6;
+			if (player.gravDir == -1f)
+				offsetY = 6;
+
+			Vector2 spawnPos = new Vector2(player.position.X, player.position.Y + offsetY);
+
+			for (int i = 0; i < 2; i++) {
+				SpawnBlizzardDust(player, spawnPos, 0.1f, i == 0 ? -0.07f : -0.13f);
+			}
+
+			for (int i = 0; i < 3; i++) {
+				SpawnBlizzardDust(player, spawnPos, 0.6f, 0.8f);
+			}
+
+			for (int i = 0; i < 3; i++) {
+				SpawnBlizzardDust(player, spawnPos, 0.6f, -0.8f);
+			}
+		}
+
+		private static void SpawnBlizzardDust(Player player, Vector2 spawnPos, float dustVelocityMultiplier, float playerVelocityMultiplier) {
+			Dust dust = Dust.NewDustDirect(spawnPos, player.width, 12, DustID.Snow, player.velocity.X * 0.3f, player.velocity.Y * 0.3f, newColor: Color.Gray);
+			dust.fadeIn = 1.5f;
+			dust.velocity *= dustVelocityMultiplier;
+			dust.velocity += player.velocity * playerVelocityMultiplier;
+			dust.noGravity = true;
+			dust.noLight = true;
+		}
+	}
 
     public class ForgottenCrownOwnedProjectile : GlobalProjectile
     {
