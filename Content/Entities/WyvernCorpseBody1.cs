@@ -10,11 +10,13 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using GlowmaskHelper.Content;
+using OpusLib;
 
 
 /// <summary>
-    /// This is the code from Consolaria's Arch Wyvern. I do not own any of this except for the textures I paint over it. This code will be replaced in the future, when I am capable of modding something so advanced. (Trust me. I tried many times with the example worm. It did not go well.)
-    /// </summary>
+/// This is the code from Consolaria's Arch Wyvern. I do not own any of this except for the textures I paint over it. This code will be replaced in the future, when I am capable of modding something so advanced. (Trust me. I tried many times with the example worm. It did not go well.)
+/// </summary>
+
 
 namespace DestroyerTest.Content.Entities
 {
@@ -24,7 +26,6 @@ namespace DestroyerTest.Content.Entities
 
         public void immunities()
         {
-            NPCID.Sets.SpecificDebuffImmunity[Type][ModContent.BuffType<ShimmeringFlames>()] = true;
             NPCID.Sets.SpecificDebuffImmunity[Type][ModContent.BuffType<HaepiensBlizzard>()] = true;
             NPCID.Sets.SpecificDebuffImmunity[Type][ModContent.BuffType<HaepiensInferno>()] = true;
             NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.OnFire] = true;
@@ -124,6 +125,11 @@ namespace DestroyerTest.Content.Entities
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
+            if (anyNodesAlive)
+            {
+                Opus.DrawNPCShadowsRotating(NPC, 6, ColorLib.Ichor);
+            }
+
             Texture2D texture = (Texture2D)ModContent.Request<Texture2D>(Texture);
             Vector2 origin = new Vector2(texture.Width / 2, texture.Height / 2);
             SpriteEffects effects = SpriteEffects.None;

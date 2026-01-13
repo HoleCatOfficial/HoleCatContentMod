@@ -5450,7 +5450,7 @@ ShieldPlayer.ShieldLine:
 	[i:DestroyerTest/ShieldMarkBig] Shields do not regenerate until they break, and pull from your health to regenerate.
 	[i:DestroyerTest/ShieldMarkBig] Shields have priorities, and will be overridden by ones with higher priorities.
 	'''
-ModName: "[c/ff9900:HoleCat's Content Mod (Private Beta)]"
+ModName: HoleCat's Content Mod (Private Beta)
 
 Music: {
 	Author1: FRANCIUMKILLA
@@ -5476,8 +5476,8 @@ Music: {
 	}
 
 	TenebrousConstruct: Darkness Encroaching
-	RoseSoulAmbience: Rest easy, my beloved
-	WyvernSoulAmbience: Unending fervor of the unending azure
+	RoseSoulAmbience: Sun For Two Worlds -Idri Prime Days-
+	WyvernSoulAmbience: Finest Fruit of the Firmament -The Great Wyvern Prime Days-
 	HekateGardenOld: I, Am the First Flower
 	HekateGarden: Drown My Sorrows In Flora!
 
@@ -5511,8 +5511,8 @@ Extras: {
 }
 
 Conditions: {
-	NightmareRoseBossDowned: Mods.DestroyerTest.Conditions.NightmareRoseBossDowned
-	WyvernCorpseBossDowned: Mods.DestroyerTest.Conditions.WyvernCorpseBossDowned
-	NodeBossDowned: Mods.DestroyerTest.Conditions.NodeBossDowned
-	ConstitutionBossDowned: Mods.DestroyerTest.Conditions.ConstitutionBossDowned
+	NightmareRoseBossDowned: Defeated Nightmare Rose
+	WyvernCorpseBossDowned: Defeated the Wyvern Corpse
+	NodeBossDowned: Defeated a Node
+	ConstitutionBossDowned: Defeated Constitution
 }

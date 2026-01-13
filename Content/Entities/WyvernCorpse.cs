@@ -83,7 +83,6 @@ namespace DestroyerTest.Content.Entities
 
         public void immunities()
         {
-            NPCID.Sets.SpecificDebuffImmunity[Type][ModContent.BuffType<ShimmeringFlames>()] = true;
             NPCID.Sets.SpecificDebuffImmunity[Type][ModContent.BuffType<HaepiensBlizzard>()] = true;
             NPCID.Sets.SpecificDebuffImmunity[Type][ModContent.BuffType<HaepiensInferno>()] = true;
             NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.OnFire] = true;
@@ -1431,6 +1430,10 @@ namespace DestroyerTest.Content.Entities
             {
                 DrawDashTelegraph(TelePos, Outer, DTAssetLib.ArrowTelegraphCont.Value);
                 DrawTelePoint(spriteBatch, TelePos);
+            }
+            if (anyNodesAlive)
+            {
+                Opus.DrawNPCShadowsRotating(NPC, 6, ColorLib.Ichor);
             }
 
             Texture2D texture = (Texture2D)ModContent.Request<Texture2D>(Texture);

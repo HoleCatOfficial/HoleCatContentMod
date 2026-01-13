@@ -337,6 +337,11 @@ namespace DestroyerTest.Content.Entities
                 NPC.height
             );
 
+            if (anyNodesAlive)
+            {
+                Opus.DrawNPCShadowsRotating(NPC, 6, ColorLib.CursedFlames);
+            }
+
             if (SecretSeed())
             {
                 Main.EntitySpriteDraw(TextureAssets.Npc[NPC.type].Value, NPC.Center - Main.screenPosition, sourceRect, Main.DiscoColor, 180, sourceRect.Size() / 2, 1f, SpriteEffects.None, 0);

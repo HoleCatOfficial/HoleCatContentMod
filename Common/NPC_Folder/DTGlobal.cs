@@ -13,6 +13,7 @@ using DestroyerTest.Content.Ammunitions;
 using DestroyerTest.Content.Scepter;
 using DestroyerTest.Content.Tools;
 using DestroyerTest.Content.Resources;
+using DestroyerTest.Assets.Menu.V5;
 
 namespace DestroyerTest.Common.NPC_Folder
 {
