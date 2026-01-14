@@ -48,7 +48,9 @@ namespace DestroyerTest.Content.Projectiles.player.ArmorSet
             Projectile.ai[0] += 1f;
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
 
-            Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Ice, 0f, 0f, 0, Color.White, 1f);
+            Dust trail = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.Ice, 0f, 0f, 0, Color.White, 1f);
+            trail.noGravity = true;
+            
             if (LifeTime < 15)
             {
                 

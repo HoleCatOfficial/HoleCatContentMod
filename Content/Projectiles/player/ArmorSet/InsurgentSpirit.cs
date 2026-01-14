@@ -43,6 +43,7 @@ namespace DestroyerTest.Content.Projectiles.player.ArmorSet
             SpriteBatch spriteBatch = Main.spriteBatch;
             DrawCrystalCore(spriteBatch, Projectile.Center);
         }
+        
         public void DrawCrystalCore(SpriteBatch spriteBatch, Vector2 Center)
         {
             DTUtils Utility = new DTUtils();

@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework;
 using DestroyerTest.Common;
 using System;
 using OpusLib;
+using DestroyerTest.Content.Projectiles.ParentClasses;
 
 namespace DestroyerTest.Content.MeleeWeapons
 {
@@ -27,10 +28,10 @@ namespace DestroyerTest.Content.MeleeWeapons
 			Item.useAnimation = 80;
 			Item.useStyle = ItemUseStyleID.Shoot;
 
-			Item.shoot = ModContent.ProjectileType<RGBSlash>();
+			Item.shoot = ModContent.ProjectileType<UpDownSwingProjectile>();
 			Item.damage = 20;
-			Item.shootSpeed = 20;
 			Item.channel = true;
+			Item.autoReuse = true;
 			Item.noUseGraphic = true;
 		}
 	}

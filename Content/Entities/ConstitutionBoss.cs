@@ -109,6 +109,20 @@ namespace DestroyerTest.Content.Entities
             
         }
 
+        public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            SimpleLine topSide = new SimpleLine(ArenaRect.TopLeft(), ArenaRect.TopRight());
+            SimpleLine bottomSide = new SimpleLine(ArenaRect.BottomLeft(), ArenaRect.BottomRight());
+            SimpleLine leftSide = new SimpleLine(ArenaRect.TopLeft(), ArenaRect.BottomLeft());
+            SimpleLine rightSide = new SimpleLine(ArenaRect.TopRight(), ArenaRect.BottomRight());
+
+            DTUtils.ScrollingTextureSpine(topSide, DTAssetLib.Streak(1), ColorLib.StellarColor, spriteBatch, BlendState.Additive);
+            DTUtils.ScrollingTextureSpine(bottomSide, DTAssetLib.Streak(1), ColorLib.StellarColor, spriteBatch, BlendState.Additive);
+            DTUtils.ScrollingTextureSpine(leftSide, DTAssetLib.Streak(1), ColorLib.StellarColor, spriteBatch, BlendState.Additive);
+            DTUtils.ScrollingTextureSpine(rightSide, DTAssetLib.Streak(1), ColorLib.StellarColor, spriteBatch, BlendState.Additive);
+        }
+
+
 
         public override void AI()
         {
@@ -184,7 +198,10 @@ namespace DestroyerTest.Content.Entities
             }
 
 
-            Opus.RectDustRandom(DustID.TintableDustLighted, ArenaRect, ColorLib.StellarColor, 1f, 20);
+            //Opus.RectDustRandom(DustID.TintableDustLighted, ArenaRect, ColorLib.StellarColor, 1f, 20);
+            
+
+            
         }
 
         public void IdleAI()
