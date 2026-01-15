@@ -73,7 +73,7 @@ namespace DestroyerTest.Content.Equips.NightSet
                 }
                 if (Main.rand.NextBool(60))
                 {
-                    Opus.RadialSpreadProjectile(ModContent.ProjectileType<SoulOfNight_Projectile>(), Main.rand.Next(1, 4), player.Center, 20, 3, 3);
+                    Opus.RadialSpreadProjectile(ModContent.ProjectileType<SoulOfNight_Projectile>(), Main.rand.Next(1, 4), player.Center, 20, 3, 3, offset: 0);
                 }
             }
         }
@@ -182,7 +182,7 @@ namespace DestroyerTest.Content.Equips.NightSet
                         {
                             player.Center = projectile.Center;
                             SoundEngine.PlaySound(Tele, player.Center);
-                            Opus.RadialSpreadProjectile(ModContent.ProjectileType<SoulOfNight_Projectile>(), 8, player.Center, 35, 3, 6);
+                            Opus.RadialSpreadProjectile(ModContent.ProjectileType<SoulOfNight_Projectile>(), 8, player.Center, 35, 3, 6, offset: 0f);
                             pl.Cooldown = true;
                             CanTele = false;
                         }   

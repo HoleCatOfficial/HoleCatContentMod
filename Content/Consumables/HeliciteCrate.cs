@@ -81,8 +81,8 @@ namespace DestroyerTest.Content.Consumables
 				ItemDropRule.Common(ItemID.GravitationPotion, 1, 2, 5),
 				ItemDropRule.Common(ItemID.MiningPotion, 1, 2, 5),
 				ItemDropRule.Common(ItemID.HeartreachPotion, 1, 2, 5),
-				ItemDropRule.Common(ModContent.ItemType<HeliouricVial>(), 1, 2, 5),
-				ItemDropRule.Common(ModContent.ItemType<RiftVial>(), 1, 2, 5)
+				ItemDropRule.Common(ModContent.ItemType<HeliouricFlask>(), 1, 2, 5),
+				ItemDropRule.Common(ModContent.ItemType<RiftFlask>(), 1, 2, 5)
 			];
 
 			// Pass the array to OneFromRulesRule

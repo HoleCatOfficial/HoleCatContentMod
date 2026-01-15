@@ -55,7 +55,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
         {
             if (existenceTimer > 100)
             {
-                Opus.RingProjectileOutward(ModContent.ProjectileType<FungalScepterMushroom>(), 9, Projectile.Center, 200, Projectile.damage / 4, 4, 7);
+                Opus.RingProjectileOutward(ModContent.ProjectileType<FungalScepterMushroom>(), 9, Projectile.Center, 200, Projectile.damage / 4, 4, 7, offset: Projectile.rotation);
             }
             return base.OnTileCollide(oldVelocity);
         }

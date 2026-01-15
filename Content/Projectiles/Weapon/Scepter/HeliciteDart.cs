@@ -8,7 +8,6 @@ using DestroyerTest.Content.Particles.CurseRunes;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -17,8 +16,9 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 {
-    public class InfectedCrystalCF : ModProjectile
+    public class HeliciteDart : ModProjectile
     {
+        public override string Texture => DTUtils.NoTexture;
         private NPC HomingTarget
         {
             get => Projectile.ai[0] == 0 ? null : Main.npc[(int)Projectile.ai[0] - 1];
@@ -46,12 +46,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
             Projectile.timeLeft = 360; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
             Projectile.tileCollide = false;
             Projectile.penetrate = 1;
-        }
-
-        public override bool PreDraw(ref Color lightColor)
-        {
-            Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, TextureAssets.Projectile[Projectile.type].Value.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
-            return false;
+            Projectile.hide = true;
+            Projectile.extraUpdates = 2;
         }
 
         public override bool? CanHitNPC(NPC target)
@@ -59,39 +55,53 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
             return DelayTimer >= 10;
         }
 
-        public void DustSpawn1()
-        {
-            Vector2 Pos1 = Projectile.Center + new Vector2(0, -8).RotatedBy(Projectile.rotation);
-            Vector2 Pos2 = Projectile.Center + new Vector2(0, 8).RotatedBy(Projectile.rotation);
-
-            Vector2 DustPos = Opus.Sine(Pos1, Pos2, 0.5f);
-
-            Dust.NewDustPerfect(DustPos, DustID.CursedTorch, Vector2.Zero, 0, default, 0.75f);
-        }
-
-        public void DustSpawn2()
-        {
-            Vector2 Pos1 = Projectile.Center + new Vector2(0, 8).RotatedBy(Projectile.rotation);
-            Vector2 Pos2 = Projectile.Center + new Vector2(0, -8).RotatedBy(Projectile.rotation);
-
-            Vector2 DustPos = Opus.Sine(Pos1, Pos2, 0.5f);
-
-            Dust.NewDustPerfect(DustPos, DustID.CursedTorch, Vector2.Zero, 0, default, 0.75f);
-        }
+        private List<Vector2> trailPoints = new List<Vector2>();
+        private Vector2 lastTickPosition;
+        private const int MaxTrailCount = 60;
+        private const int DustSpawnStep = 3; 
 
         public override void AI()
         {
-            Projectile.rotation = Projectile.velocity.ToRotation();
-            Lighting.AddLight(Projectile.Center, ColorLib.CursedFlames.ToVector3() * 0.5f);
-            DustSpawn1();
-            DustSpawn2();
+            int subdivisions = Projectile.extraUpdates + 1;
+            Vector2 start = lastTickPosition;
+            Vector2 end = Projectile.Center;
+
+            if (start == Vector2.Zero) // safety for first frame
+                start = end;
+
+            // Insert interpolated points between last tick and this tick.
+            // We append newest at the end, and trim the oldest at index 0 when full.
+            for (int s = 1; s <= subdivisions; s++)
+            {
+                float t = s / (float)subdivisions;
+                Vector2 pos = Vector2.Lerp(start, end, t);
+                trailPoints.Add(pos);
+                if (trailPoints.Count > MaxTrailCount)
+                    trailPoints.RemoveAt(0); // drop oldest
+            }
+
+            lastTickPosition = end;
+
+            for (int i = 0; i < trailPoints.Count; i += DustSpawnStep)
+            {
+                Vector2 p = trailPoints[i];
+                var d = Dust.NewDustPerfect(p, DustID.TintableDustLighted, Vector2.Zero, 50, ColorLib.Rift, 1f);
+                d.noGravity = true;
+
+                var d2 = Dust.NewDustPerfect(p, DustID.FireworksRGB, Vector2.Zero, 50, ColorLib.Rift, 1f);
+                d2.noGravity = true;
+            }
+
+            Lighting.AddLight(Projectile.Center, ColorLib.Rift.ToVector3() * 0.6f);
+            PRTLoader.NewParticle(Projectile.Center, new Vector2((Projectile.velocity.X / 2) + Main.rand.NextFloat(-1, 1), (Projectile.velocity.Y / 2) + Main.rand.NextFloat(-1, 1)), PRTLoader.GetParticleID<SimpleParticle>(), ColorLib.Rift, 0.25f);
+
             if (DelayTimer < 10)
             {
                 DelayTimer += 1;
                 return;
             }
 
-            float maxDetectRadius = 1200f;
+            float maxDetectRadius = 4000f;
 
             if (HomingTarget == null)
             {
@@ -111,8 +121,6 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
             int turnspeed = 5;
             turnspeed += 10;
             Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(turnspeed)).ToRotationVector2() * length;
-            Projectile.rotation = Projectile.velocity.ToRotation();
-            Projectile.velocity *= 1.02f;
         }
 
 
@@ -146,7 +154,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            target.AddBuff(BuffID.CursedInferno, 600);
+            target.AddBuff(ModContent.BuffType<DaylightOverload>(), 300);
         }
 	}
 }

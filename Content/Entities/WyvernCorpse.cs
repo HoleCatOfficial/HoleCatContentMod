@@ -933,7 +933,7 @@ namespace DestroyerTest.Content.Entities
                                     NPC.velocity = DashDir.ToRotationVector2() * 25;
                                 }
                                 DashParticle();
-                                Opus.RadialSpreadProjectile(ModContent.ProjectileType<OrganProjectile>(), Main.rand.Next(4, 14), TelePos, 5, 4, Main.rand.Next(4, 13));
+                                Opus.RadialSpreadProjectile(ModContent.ProjectileType<OrganProjectile>(), Main.rand.Next(4, 14), TelePos, 5, 4, Main.rand.Next(4, 13), RandomOffset: true);
                                 TeleDashWaitTime = 100;
                                 TeleDashGetTelePosition = false;
                             }
@@ -1839,7 +1839,7 @@ namespace DestroyerTest.Content.Entities
             {
                 Opus.RadialSpreadProjectile(
                     ModContent.ProjectileType<IchorNodeCrystal2>(),
-                    4, NPC.Center, 20, 4, 8);
+                    4, NPC.Center, 20, 4, 8, offset: 0f);
                 CrossCount++;
             }
 
@@ -1900,7 +1900,7 @@ namespace DestroyerTest.Content.Entities
                 {
                     Opus.RadialSpreadProjectile(
                         ProjectileID.GoldenShowerHostile, 5,
-                        NPC.Bottom, 15, 3, 10);
+                        NPC.Bottom, 15, 3, 10, RandomOffset: false);
 
                     SoundEngine.PlaySound(
                         new SoundStyle("DestroyerTest/Assets/Audio/StarHammerThrow"),

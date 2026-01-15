@@ -247,7 +247,7 @@ namespace DestroyerTest.Content.Equips
         {
             if (Active)
             {
-                Opus.RadialSpreadProjectile(ModContent.ProjectileType<TenebrisStarFriendly>(), 6, Player.Center, (int)Player.GetDamage(DamageClass.Summon).Flat, 2, 8);
+                Opus.RadialSpreadProjectile(ModContent.ProjectileType<TenebrisStarFriendly>(), 6, Player.Center, (int)Player.GetDamage(DamageClass.Summon).Flat, 2, 8, RandomOffset: true);
             }
         }
     }

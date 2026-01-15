@@ -134,7 +134,8 @@ namespace DestroyerTest.Content.Scepter
         }
 
         public virtual void ThrowDefaults()
-        {
+        {   
+            ThrowVelocity = 15f * ScepterClassStats.ThrowSpeedModifier;
             Item.shoot = ThrowID;
             Item.channel = ChannelingDuringThrow;
             Item.damage = ThrowDMG;

@@ -68,7 +68,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(Fire, Projectile.Center);
-            Opus.RadialSpreadProjectile(ModContent.ProjectileType<HoleCatFireSmall>(), 8, Projectile.Center, Projectile.damage / 3, 3, 10);
+            Opus.RadialSpreadProjectile(ModContent.ProjectileType<HoleCatFireSmall>(), 8, Projectile.Center, Projectile.damage / 3, 3, 10, offset: 0f);
             for (int u = 0; u < 20; u++)
             {
                 int speed = 10;

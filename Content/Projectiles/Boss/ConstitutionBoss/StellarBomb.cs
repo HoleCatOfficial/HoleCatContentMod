@@ -92,7 +92,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
             SoundEngine.PlaySound(SoundID.Item14, Projectile.Center);
             DTUtils Utility = new DTUtils();
 
-            Opus.RadialSpreadProjectile(ModContent.ProjectileType<HollowStar>(), 5, Projectile.Center, Projectile.damage, (int)Projectile.knockBack, 20);
+            Opus.RadialSpreadProjectile(ModContent.ProjectileType<HollowStar>(), 5, Projectile.Center, Projectile.damage, (int)Projectile.knockBack, 20, offset: 0);
 
             Vector2 Outward = new Vector2(0, -1).RotatedByRandom(MathHelper.TwoPi) * Main.rand.NextFloat(3, 6);
             for (int i = 0; i < 10; i++)

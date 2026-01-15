@@ -168,7 +168,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             {
                 returning = true;
             }
-            Opus.RadialSpreadProjectile(ModContent.ProjectileType<TenebrisStarFriendly>(), 9, Projectile.Center, Projectile.damage / 3, 4, 15, AI2: 1);
+            Opus.RadialSpreadProjectile(ModContent.ProjectileType<TenebrisStarFriendly>(), 9, Projectile.Center, Projectile.damage / 3, 4, 15, AI2: 1, offset: Projectile.rotation);
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)

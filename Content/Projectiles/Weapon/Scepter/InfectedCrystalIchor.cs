@@ -112,6 +112,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
             turnspeed += 10;
             Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(turnspeed)).ToRotationVector2() * length;
             Projectile.rotation = Projectile.velocity.ToRotation();
+            Projectile.velocity *= 1.02f;
         }
 
 

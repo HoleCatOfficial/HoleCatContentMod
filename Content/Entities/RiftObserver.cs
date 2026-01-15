@@ -149,7 +149,7 @@ namespace DestroyerTest.Content.Entities
             if (Main.rand.NextBool(200) && NPC.life < NPC.lifeMax / 2)
             {
                 SoundEngine.PlaySound(SoundID.ForceRoarPitched with { PitchVariance = 0.5f } , NPC.Center);
-                Opus.RingDustOutward(ModContent.DustType<RiftDust>(), 30, NPC.Center, 10, 0, default, 1.2f, 3f);
+                Opus.RingDustOutward(ModContent.DustType<RiftDust>(), 30, NPC.Center, 10, 0, default, 1.2f, 3f, offset: NPC.rotation);
                 NPC.velocity += look.ToRotation().ToRotationVector2() * 3f;
                 Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, look.ToRotation().ToRotationVector2() * 2f, ModContent.ProjectileType<RiftStarHostile>(), 14, 5f);
             }

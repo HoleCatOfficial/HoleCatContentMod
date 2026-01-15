@@ -3856,6 +3856,15 @@ Items: {
 		DisplayName: Brooch Of Night
 		Tooltip: ""
 	}
+
+	HeliciteScepter: {
+		DisplayName: Helicite Scepter
+		Tooltip:
+			'''
+			Shots slow to a halt and explode into four homing solar darts that inflict Daylight Overload.
+			Right click to throw.
+			'''
+	}
 }
 
 Projectiles: {
@@ -4355,6 +4364,9 @@ Projectiles: {
 	HeliouricSpreadProjectile.DisplayName: Heliouric Spread Projectile
 	ExplodingIcicle.DisplayName: Exploding Icicle
 	TestSwing.DisplayName: Test Swing
+	HeliciteDart.DisplayName: Helicite Dart
+	HeliciteScepterThrown.DisplayName: Helicite Scepter Thrown
+	SquareCrystal.DisplayName: Square Crystal
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.

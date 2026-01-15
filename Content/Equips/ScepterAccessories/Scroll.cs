@@ -472,7 +472,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
                     {
                         if (Main.rand.NextBool(3))
                         {
-                            Opus.RadialSpreadProjectile(ModContent.ProjectileType<SharkronNecklaceMinion>(), 8, position, damage / 2, 3, 4);
+                            Opus.RadialSpreadProjectile(ModContent.ProjectileType<SharkronNecklaceMinion>(), 8, position, damage / 2, 3, 4, RandomOffset: true);
                         }
                     }
                 }
@@ -635,7 +635,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
             {
                 if (Main.rand.NextBool(13))
                 {
-                    Opus.RadialSpreadProjectile(ProjectileID.Blizzard, 4, projectile.Center, (int)(projectile.damage * 1.75f), (int)projectile.knockBack, 12);
+                    Opus.RadialSpreadProjectile(ProjectileID.Blizzard, 4, projectile.Center, (int)(projectile.damage * 1.75f), (int)projectile.knockBack, 12, RandomOffset: true);
                 }
             }
             if (IchorScroll && IsAThrownScepter)
