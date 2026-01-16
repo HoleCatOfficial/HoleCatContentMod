@@ -1,4 +1,6 @@
+using System.Collections.ObjectModel;
 using DestroyerTest.Common;
+using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Weapon.Magic;
 using InnoVault.PRT;
@@ -29,7 +31,7 @@ namespace DestroyerTest.Content.CheatItems
 
         public override bool? UseItem(Player player)
         {
-            PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], player.Center, (Main.MouseWorld - player.Center).ToRotation().ToRotationVector2() * 16, Color.Red, 4f, 60, ai2: 2);
+            PRTLoader.NewParticle(PRTLoader.GetParticleID<HeliciteShineParticle>(), Main.MouseWorld, Main.rand.NextVector2Circular(1, 1), default, 1f);
             return true;
         }
 	}

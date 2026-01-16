@@ -384,6 +384,11 @@ namespace DestroyerTest.Common
 			item.value = Value;
 			item.rare = Rarity;
 		}
+
+        public static float Inverse(this float Input)
+        {
+            return 1f - Input;
+        }
     }
 
     public class DTPlayerUtil : ModPlayer
@@ -818,6 +823,7 @@ namespace DestroyerTest.Common
         public static Asset<Texture2D> Barfront = ModContent.Request<Texture2D>($"{ExtrasPath}/GenericBarFront", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> WyvernCorpseSky = ModContent.Request<Texture2D>($"{ExtrasPath}/WyvernCorpseSky", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> GlowCone = ModContent.Request<Texture2D>($"{ExtrasPath}/GlowCone", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> MiscSparkle144 = ModContent.Request<Texture2D>($"{ExtrasPath}/144MiscSparkle", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> Sparkle(int Variant)
         {
             if (Variant <= 0)

@@ -35,6 +35,32 @@ namespace DestroyerTest.Common
             recipe.AddIngredient<MineralOil>(1);
 			recipe.AddTile(TileID.WorkBenches);
 			recipe.Register();
+
+            static Func<Recipe, bool> Vanilla(int itemID) => r => r.Mod is null && r.HasResult(itemID);
+            static Action<Recipe> AddIngredient(int itemID, int stack = 1) => r => r.AddIngredient(itemID, stack);
+            static Action<Recipe> RemoveIngredient(int itemID) => r => r.RemoveIngredient(itemID);
+            var edits = new Dictionary<Func<Recipe, bool>, Action<Recipe>>(9999)
+            {
+                { Vanilla(ItemID.SolarFlareHelmet), RemoveIngredient(ItemID.LunarBar) },
+                { Vanilla(ItemID.SolarFlareBreastplate), RemoveIngredient(ItemID.LunarBar) },
+                { Vanilla(ItemID.SolarFlareLeggings), RemoveIngredient(ItemID.LunarBar) },
+
+                { Vanilla(ItemID.VortexHelmet), RemoveIngredient(ItemID.LunarBar) },
+                { Vanilla(ItemID.VortexBreastplate), RemoveIngredient(ItemID.LunarBar) },
+                { Vanilla(ItemID.VortexLeggings), RemoveIngredient(ItemID.LunarBar) },
+
+                { Vanilla(ItemID.StardustHelmet), RemoveIngredient(ItemID.LunarBar) },
+                { Vanilla(ItemID.StardustBreastplate), RemoveIngredient(ItemID.LunarBar) },
+                { Vanilla(ItemID.StardustLeggings), RemoveIngredient(ItemID.LunarBar) },
+            
+                { Vanilla(ItemID.NebulaHelmet), RemoveIngredient(ItemID.LunarBar) },
+                { Vanilla(ItemID.NebulaBreastplate), RemoveIngredient(ItemID.LunarBar) },
+                { Vanilla(ItemID.NebulaLeggings), RemoveIngredient(ItemID.LunarBar) },
+
+
+                { Vanilla(ItemID.Zenith), AddIngredient(ModContent.ItemType<Gargantua>()) },
+                { Vanilla(ItemID.Zenith), AddIngredient(ModContent.ItemType<Conclusion>()) }
+            };
 		}
 
     }

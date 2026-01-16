@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.player.Accessory;
 using Terraria;
@@ -71,7 +72,16 @@ namespace DestroyerTest.Common
         /// Some Thrown Scepters do not inherit from ThrownScepter. For effects on thrown scepters, we can add projectiles to the list to extend the effects to them as well.
         /// <br/> Compiled during loading.
         /// </summary>
-        public static Projectile[] AllThrownScepters = new Projectile[]
+        public static List<Projectile> AllThrownScepters = new List<Projectile>
+        {
+            
+        };
+
+        /// <summary>
+        /// Some Thrown Scepters do not inherit from ThrownScepter. For effects on thrown scepters, we can add projectiles to the list to extend the effects to them as well.
+        /// <br/> Compiled during loading.
+        /// </summary>
+        public static List<Projectile> AllScepterShots = new List<Projectile>
         {
             
         };
@@ -81,7 +91,17 @@ namespace DestroyerTest.Common
         /// <br/> Scepters that do not inherit will not be affected.
         /// <br/> Compiled during loading.
         /// </summary>
-        public static Projectile[] DirectInheritanceThrownScepters = new Projectile[]
+        public static List<Projectile> DirectInheritanceThrownScepters = new List<Projectile>
+        {
+
+        };
+
+        /// <summary>
+        /// This is for effects that exclusively apply to the ThrownScepter class and its children.
+        /// <br/> Scepters that do not inherit will not be affected.
+        /// <br/> Compiled during loading.
+        /// </summary>
+        public static List<Projectile> DirectInheritanceScepterShots = new List<Projectile>
         {
 
         };

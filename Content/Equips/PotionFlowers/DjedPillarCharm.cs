@@ -30,6 +30,10 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
             {
                 modPlayer.Active = true;
             }
+            if(player.TryGetModPlayer<SpiritFlameDash>(out SpiritFlameDash Dash))
+            {
+                Dash.Active = true;
+            }
         }
 
         public override void AddRecipes()
@@ -93,17 +97,9 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
 
     public class SpiritFlameDash : ModPlayer
     {
-        bool HasDjedPillarEquipped()
-        {
-            for (int i = 3; i < Player.armor.Length; i++)
-            {
-                if (Player.armor[i].type == ModContent.ItemType<DjedPillarCharm>() || Player.armor[i].type == ModContent.ItemType<LilliesOfImmortality>())
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
+        
+        public bool Active = false;
+
         // These indicate what direction is what in the timer arrays used
         public const int DashRight = 2;
         public const int DashLeft = 3;
@@ -117,8 +113,6 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
         // The direction the player has double tapped.  Defaults to -1 for no dash double tap
         public int DashDir = -1;
 
-        // The fields related to the dash accessory
-        public bool DashAccessoryEquipped;
         public int DashDelay = 0; // frames remaining till we can dash again
         public int DashTimer = 6; // frames remaining in the dash
 
@@ -128,18 +122,17 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
 
         public override void ResetEffects()
         {
-            // Reset our equipped flag. If the accessory is equipped somewhere, ExampleShield.UpdateAccessory will be called and set the flag before PreUpdateMovement
-            DashAccessoryEquipped = true;
+            Active = false;
 
             // ResetEffects is called not long after player.doubleTapCardinalTimer's values have been set
             // When a directional key is pressed and released, vanilla starts a 15 tick (1/4 second) timer during which a second press activates a dash
             // If the timers are set to 15, then this is the first press just processed by the vanilla logic.  Otherwise, it's a double-tap
-            if (Player.controlRight && Player.releaseRight && Player.doubleTapCardinalTimer[DashRight] < 15 && HasDjedPillarEquipped())
+            if (Player.controlRight && Player.releaseRight && Player.doubleTapCardinalTimer[DashRight] < 15 && Active)
             {
                 DashDir = DashRight;
             }
 
-            else if (Player.controlLeft && Player.releaseLeft && Player.doubleTapCardinalTimer[DashLeft] < 15 && HasDjedPillarEquipped())
+            else if (Player.controlLeft && Player.releaseLeft && Player.doubleTapCardinalTimer[DashLeft] < 15 && Active)
             {
                 DashDir = DashLeft;
             }
@@ -220,8 +213,7 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
 
         private bool CanUseDash()
         {
-            return DashAccessoryEquipped
-                && HasDjedPillarEquipped()
+            return Active
                 && !Player.mount.Active
                 && EntryWindow <= 0;
         }

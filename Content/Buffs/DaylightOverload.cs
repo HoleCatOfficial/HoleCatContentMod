@@ -44,7 +44,7 @@ namespace DestroyerTest.Content.Buffs
         {
 			if (lifeRegenDebuff)
 			{
-				Dust.NewDust(npc.position, npc.width, npc.height, DustID.TintableDustLighted, 0.0f, 0.5f, 0, ColorLib.Rift, 1);
+				Dust.NewDust(npc.position, npc.width, npc.height, DustID.FireworksRGB, 0.0f, 0.5f, 0, ColorLib.Rift, 1);
 				if (npc.boss == false)
                 {
                     npc.velocity *= 0.65f;
@@ -80,7 +80,7 @@ namespace DestroyerTest.Content.Buffs
         {
 			if (lifeRegenDebuff)
 			{
-				Dust.NewDust(Player.position, Player.width, Player.height, DustID.TintableDustLighted, 0.0f, 0.5f, 0, ColorLib.Rift, 1);
+				Dust.NewDust(Player.position, Player.width, Player.height, DustID.FireworksRGB, 0.0f, 0.5f, 0, ColorLib.Rift, 1);
 				Player.moveSpeed *= 0.85f;
 			}
             base.PostUpdateBuffs();

@@ -41,6 +41,10 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
             {
                 modPlayer.Active = true;
             }
+            if(player.TryGetModPlayer<SpiritFlameDash>(out SpiritFlameDash Dash))
+            {
+                Dash.Active = true;
+            }
         }
         
         public override void AddRecipes()

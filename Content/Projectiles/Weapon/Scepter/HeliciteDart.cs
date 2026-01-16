@@ -88,8 +88,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
                 var d = Dust.NewDustPerfect(p, DustID.TintableDustLighted, Vector2.Zero, 50, ColorLib.Rift, 1f);
                 d.noGravity = true;
 
-                var d2 = Dust.NewDustPerfect(p, DustID.FireworksRGB, Vector2.Zero, 50, ColorLib.Rift, 1f);
-                d2.noGravity = true;
+                //var d2 = Dust.NewDustPerfect(p, DustID.FireworksRGB, Vector2.Zero, 50, ColorLib.Rift, 1f);
+                //d2.noGravity = true;
             }
 
             Lighting.AddLight(Projectile.Center, ColorLib.Rift.ToVector3() * 0.6f);

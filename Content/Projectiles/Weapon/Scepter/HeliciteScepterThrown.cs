@@ -23,6 +23,15 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
             DustType = ModContent.DustType<RiftDust>();
             base.SetDefaults();
         }
+
+        public override void AI()
+        {
+            base.AI();
+            if (Main.rand.NextBool())
+            {
+                Projectile.NewProjectile(Projectile.InheritSource(Projectile), Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Main.rand.NextVector2Circular(0.5f, 0.5f), ModContent.ProjectileType<SolarTrail>(), (int)(Projectile.damage / 5), 0f, Projectile.owner);
+            }
+        }
     }
 }
 

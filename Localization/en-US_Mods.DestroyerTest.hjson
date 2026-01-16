@@ -3865,6 +3865,11 @@ Items: {
 			Right click to throw.
 			'''
 	}
+
+	HeliciteHeadpiece: {
+		Tooltip: ""
+		DisplayName: Helicite Headpiece
+	}
 }
 
 Projectiles: {
@@ -4367,6 +4372,7 @@ Projectiles: {
 	HeliciteDart.DisplayName: Helicite Dart
 	HeliciteScepterThrown.DisplayName: Helicite Scepter Thrown
 	SquareCrystal.DisplayName: Square Crystal
+	SolarTrail.DisplayName: Solar Trail
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.

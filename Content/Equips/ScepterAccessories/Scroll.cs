@@ -194,6 +194,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
             TreasonScroll = false;
             TurbulenceScroll = false;
             GalantineScroll = false;
+            IncendiaryScroll = false;
             SharkronPendant = false;
             TempestScroll = false;
             SpookyScroll2 = false;
@@ -561,6 +562,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
         public bool SpookyScroll1 = false;
         public bool SpookyScroll4 = false;
         public bool SporeScroll = false;
+        public bool HeliciteScroll = false;
         public override void SetDefaults(Projectile entity)
         {
             if (entity.DamageType == ModContent.GetInstance<ScepterClass>() && entity.Name.Contains("Thrown"))
@@ -725,6 +727,13 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
                 if (Main.rand.NextBool(4))
                 {
                     Projectile.NewProjectile(projectile.GetSource_FromAI(), projectile.Center, projectile.velocity * 0.1f, ModContent.ProjectileType<FungalScepterMushroom>(), projectile.damage / 10, 4, projectile.owner);
+                }
+            }
+            if (SporeScroll && IsAThrownScepter && projectile.type != ModContent.ProjectileType<HeliciteScepterThrown>())
+            {
+                if (Main.rand.NextBool())
+                {
+                    Projectile.NewProjectile(Projectile.InheritSource(projectile), Main.rand.NextVector2FromRectangle(projectile.Hitbox), Main.rand.NextVector2Circular(0.5f, 0.5f), ModContent.ProjectileType<SolarTrail>(), (int)(projectile.damage / 5), 0f, projectile.owner);
                 }
             }
                
