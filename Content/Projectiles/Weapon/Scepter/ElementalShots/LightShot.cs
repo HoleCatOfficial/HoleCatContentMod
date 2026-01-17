@@ -8,6 +8,7 @@ using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
 using OpusLib;
+using DestroyerTest.Content.Dusts;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Scepter.ElementalShots
 {
@@ -27,12 +28,20 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter.ElementalShots
 
 			TrailColor = Main.DiscoColor;
 			DustColor = Color.White;
-			TravelDust = DustID.RainbowRod;
-			KillDust = DustID.RainbowRod;
+			TravelDust = DustID.FireworksRGB;
+			KillDust = DustID.FireworksRGB;
 			Projectile.Resize(16, 16);
 			TrailAmplitude = 10f;
 
             DetectionRad = 1200;
+        }
+
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            base.OnHitNPC(target, hit, damageDone);
+
+            ParticleOrchestrator.RequestParticleSpawn(true, ParticleOrchestraType.ShimmerArrow, new ParticleOrchestraSettings { IndexOfPlayerWhoInvokedThis = (byte)Projectile.owner, PositionInWorld = target.Center});
+            ParticleOrchestrator.RequestParticleSpawn(true, ParticleOrchestraType.RainbowRodHit, new ParticleOrchestraSettings { IndexOfPlayerWhoInvokedThis = (byte)Projectile.owner, PositionInWorld = target.Center});
         }
     }
 }

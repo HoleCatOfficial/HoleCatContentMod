@@ -24,34 +24,54 @@ namespace DestroyerTest.Common
 
         public List<PotionProfile> Potions = new List<PotionProfile>
         {
-            new PotionProfile("LesserHealing", ItemID.SuperHealingPotion, 200),
-            new PotionProfile("Healing", ItemID.SuperHealingPotion, 100),
-            new PotionProfile("GreaterHealing", ItemID.SuperHealingPotion, 150),
+            new PotionProfile("LesserHealing", ItemID.LesserHealingPotion, 50),
+            new PotionProfile("Healing", ItemID.HealingPotion, 100),
+            new PotionProfile("GreaterHealing", ItemID.GreaterHealingPotion, 150),
             new PotionProfile("SuperHealing", ItemID.SuperHealingPotion, 200),
         };
 
         private bool TryConsumeBestHealingPotion(Player player)
         {
-            foreach (PotionProfile potion in Potions)
-            {
-                for (int i = 0; i < player.inventory.Length; i++) // Main inventory
-                {
-                    Item item = player.inventory[i];
-                    if (item.type == potion.ItemID && item.stack > 0)
-                    {
-                        item.stack--;
-                        if (item.stack <= 0)
-                            item.TurnToAir();
+            PotionProfile bestPotion = null;
+            int bestSlot = -1;
 
-                        player.statLife = Math.Min(player.statLife + potion.HealAmount, player.statLifeMax2);
-                        player.HealEffect(potion.HealAmount);
-                        player.AddBuff(BuffID.PotionSickness, 30 * 60);
-                        return true;
-                    }
+            for (int i = 0; i < player.inventory.Length; i++)
+            {
+                Item item = player.inventory[i];
+                if (item.stack <= 0)
+                    continue;
+
+                PotionProfile profile = Potions.Find(p => p.ItemID == item.type);
+                if (profile == null)
+                    continue;
+
+                if (bestPotion == null || profile.HealAmount > bestPotion.HealAmount)
+                {
+                    bestPotion = profile;
+                    bestSlot = i;
                 }
             }
-            return false;
+
+            if (bestPotion == null)
+                return false;
+
+            Item bestItem = player.inventory[bestSlot];
+
+            bestItem.stack--;
+            if (bestItem.stack <= 0)
+                bestItem.TurnToAir();
+
+            player.statLife = Math.Min(
+                player.statLife + bestPotion.HealAmount,
+                player.statLifeMax2
+            );
+
+            player.HealEffect(bestPotion.HealAmount);
+            player.AddBuff(BuffID.PotionSickness, 30 * 60);
+
+            return true;
         }
+
 
 
         public bool RadiantRose = false;
@@ -66,7 +86,7 @@ namespace DestroyerTest.Common
             Item.lifeGrabRange = 0;
             Lillies = false;
         }
-        public int UseCooldown = 120;
+        public int UseCooldown = 0;
         public override void PostUpdateMiscEffects()
         {
             if (Lillies)

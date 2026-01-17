@@ -33,7 +33,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter.ElementalShots
 			Projectile.Resize(16, 16);
 			TrailAmplitude = 10f;
 
-            Debuff = ModContent.BuffType<DaylightOverload>();
+            Debuff = ModContent.BuffType<HeliouricShock>();
             DebuffTime = 300;
             DetectionRad = 1200;
         }

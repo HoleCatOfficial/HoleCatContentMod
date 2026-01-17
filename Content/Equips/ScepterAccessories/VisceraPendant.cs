@@ -66,7 +66,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
                                 Player.Center,
                                 motion,
                                 ModContent.ProjectileType<EnchantedBlood>(),
-                                damage / 2,
+                                2,
                                 knockback,
                                 Player.whoAmI
                             );

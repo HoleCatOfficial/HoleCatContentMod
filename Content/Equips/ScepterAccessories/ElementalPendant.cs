@@ -1,0 +1,62 @@
+
+using DestroyerTest.Common;
+using DestroyerTest.Content.Resources;
+using DestroyerTest.Content.Tiles;
+using DestroyerTest.Content.Tiles.RiftConfigurator;
+using DestroyerTest.Rarity.Scepter;
+using Microsoft.Xna.Framework;
+using Steamworks;
+using Terraria;
+using Terraria.ID;
+using Terraria.Localization;
+using Terraria.ModLoader;
+
+namespace DestroyerTest.Content.Equips.ScepterAccessories
+{
+    public class ElementalPendant : ModItem
+    {
+        public override void SetDefaults()
+        {
+            Item.width = 24;
+            Item.height = 34;
+            Item.value = Item.buyPrice(gold: 2);
+            Item.rare = ModContent.RarityType<CerisePinkRarity>();
+            Item.accessory = true;
+        }
+
+        public float DMGBonus = 1.3f;
+        public static readonly float CritBonus = 1.2f;
+        public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs((DMGBonus - 1f).ToString("P1"), CritBonus.ToString("F1") + "%");
+
+        public void ActivatePlayer(Player player)
+        {
+            if (player.TryGetModPlayer<CrimsonPendantScepterUsePlayer>(out CrimsonPendantScepterUsePlayer Crim))
+			{
+				Crim.Active = true;
+			}
+            if (player.TryGetModPlayer<CorruptPendantScepterUsePlayer>(out CorruptPendantScepterUsePlayer Ebon))
+			{
+				Ebon.Active = true;
+			}
+            if (player.TryGetModPlayer<InfectedPendantScepterUsePlayer>(out InfectedPendantScepterUsePlayer Infected))
+			{
+				Infected.Active = true;
+			}
+        }
+        public override void UpdateAccessory(Player player, bool hideVisual)
+        {
+            ActivatePlayer(player);
+            player.GetDamage(ModContent.GetInstance<ScepterClass>()) *= DMGBonus;
+            player.GetCritChance(ModContent.GetInstance<ScepterClass>()) += CritBonus;
+        }
+
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient<InfectedPendant>()
+                .AddIngredient<PendantofUnity>()
+                .AddTile(TileID.MythrilAnvil)
+                .Register();
+        }
+    }
+}

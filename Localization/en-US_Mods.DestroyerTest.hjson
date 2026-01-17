@@ -3870,6 +3870,31 @@ Items: {
 		Tooltip: ""
 		DisplayName: Helicite Headpiece
 	}
+
+	ElementalScepter: {
+		DisplayName: Elemental Scepter
+		Tooltip: ""
+	}
+
+	PendantofUnity: {
+		Tooltip: ""
+		DisplayName: Pendantof Unity
+	}
+
+	InfectedPendant: {
+		Tooltip: ""
+		DisplayName: Infected Pendant
+	}
+
+	HelicitePendant: {
+		Tooltip: ""
+		DisplayName: Helicite Pendant
+	}
+
+	ElementalPendant: {
+		Tooltip: ""
+		DisplayName: Elemental Pendant
+	}
 }
 
 Projectiles: {
@@ -4373,6 +4398,16 @@ Projectiles: {
 	HeliciteScepterThrown.DisplayName: Helicite Scepter Thrown
 	SquareCrystal.DisplayName: Square Crystal
 	SolarTrail.DisplayName: Solar Trail
+	CursedShot.DisplayName: Cursed Shot
+	FireShot.DisplayName: Fire Shot
+	GalantineShot.DisplayName: Galantine Shot
+	IceShot.DisplayName: Ice Shot
+	LightShot.DisplayName: Light Shot
+	RiftShot.DisplayName: Rift Shot
+	ShadowFireShot.DisplayName: Shadow Fire Shot
+	VenomShot.DisplayName: Venom Shot
+	ElementalScepterThrown.DisplayName: Elemental Scepter Thrown
+	ElementalTrail.DisplayName: Elemental Trail
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.

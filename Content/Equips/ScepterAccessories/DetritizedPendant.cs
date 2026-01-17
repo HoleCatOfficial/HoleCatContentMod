@@ -65,7 +65,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
                                 Player.Center,
                                 motion,
                                 ProjectileID.TinyEater,
-                                damage / 2,
+                                2,
                                 knockback,
                                 Player.whoAmI
                             );

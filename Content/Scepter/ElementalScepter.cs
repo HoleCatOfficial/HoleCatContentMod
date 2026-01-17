@@ -40,11 +40,11 @@ namespace DestroyerTest.Content.Scepter
             Rarity = ModContent.RarityType<CerisePinkRarity>();
 
             // Assign projectile types
-            ShootID = ModContent.ProjectileType<ShadowShot>();
-            ThrowID = ModContent.ProjectileType<ShadowScepterThrown>();
+            ShootID = ModContent.ProjectileType<LightShot>();
+            ThrowID = ModContent.ProjectileType<ElementalScepterThrown>();
 
             // Optional: change sounds
-            ShootSound = new SoundStyle("DestroyerTest/Assets/Audio/HopeScabbardTele") { PitchVariance = 0.2f, MaxInstances = 0 };
+            ShootSound = SoundID.Item60;
             ThrowSound = SoundID.Item169;
 
             // Refresh defaults after overriding values
@@ -54,9 +54,9 @@ namespace DestroyerTest.Content.Scepter
         public override void ShootDefaults()
         {
             base.ShootDefaults();
-            Item.shootSpeed = 1.5f;
-            Item.useTime = 60;
-            Item.useAnimation = 180;
+            Item.shootSpeed = 2f;
+            Item.useTime = 20;
+            Item.useAnimation = 60;
         }
 
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
@@ -73,7 +73,12 @@ namespace DestroyerTest.Content.Scepter
                 ModContent.ProjectileType<VenomShot>()
             };
 
-            type = Options[Main.rand.Next(Options.Count)];
+            if (player.altFunctionUse != 2)
+            {
+
+                type = Options[Main.rand.Next(Options.Count)];
+                SoundEngine.PlaySound(Item.UseSound, position);
+            }
         }
 
         public override void AddRecipes()
@@ -84,11 +89,10 @@ namespace DestroyerTest.Content.Scepter
                 .AddIngredient<EmberCane>()
                 .AddIngredient<StellarFoxScepter>()
                 .AddIngredient<InfectedScepter>()
-                .AddIngredient<PrismaticScepter>()
-                .AddIngredient<HeliciteScepter>()
                 .AddIngredient<Vesper>(16)
                 .AddIngredient(ItemID.GoldBar, 18)
                 .AddIngredient<LifeEcho>(100)
+                .AddTile(TileID.MythrilAnvil)
             .Register();
         }
     }

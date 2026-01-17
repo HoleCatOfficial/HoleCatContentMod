@@ -133,6 +133,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 
 			Opus.ReturnToDefaultDrawing(spriteBatch);
 
+            Main.EntitySpriteDraw(DTAssetLib.MiscSparkle144.Value, Projectile.Center - Main.screenPosition, null, TrailColor * 0.5f, Projectile.rotation, DTAssetLib.MiscSparkle144.Value.Size() / 2, new Vector2(1f, 1.5F + (0.1f * Projectile.velocity.Length())), SpriteEffects.None, 0);
+
 			Main.EntitySpriteDraw(DTAssetLib.MiscSparkle144.Value, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, DTAssetLib.MiscSparkle144.Value.Size() / 2, new Vector2(0.5f, 1 + (0.1f * Projectile.velocity.Length())), SpriteEffects.None, 0);
 
 			return false;
@@ -176,37 +178,41 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 
         public void DustSpawn1()
         {
-            Vector2 Pos1 = Projectile.Center + new Vector2(0, -8).RotatedBy(Projectile.rotation);
-            Vector2 Pos2 = Projectile.Center + new Vector2(0, 8).RotatedBy(Projectile.rotation);
+            Vector2 Pos1 = Projectile.Center + new Vector2(0, -8).RotatedBy(Projectile.rotation + MathHelper.PiOver2);
+            Vector2 Pos2 = Projectile.Center + new Vector2(0, 8).RotatedBy(Projectile.rotation + MathHelper.PiOver2);
 
             Vector2 DustPos = Opus.Sine(Pos1, Pos2, 0.5f);
 
-            Dust.NewDustPerfect(DustPos, TravelDust, Vector2.Zero, 0, default, 0.75f);
+            Dust trail1 = Dust.NewDustPerfect(DustPos, TravelDust, Vector2.Zero, 0, default, 0.75f);
+            trail1.noGravity = true;
         }
 
         public void DustSpawn2()
         {
-            Vector2 Pos1 = Projectile.Center + new Vector2(0, 8).RotatedBy(Projectile.rotation);
-            Vector2 Pos2 = Projectile.Center + new Vector2(0, -8).RotatedBy(Projectile.rotation);
+            Vector2 Pos1 = Projectile.Center + new Vector2(0, 8).RotatedBy(Projectile.rotation + MathHelper.PiOver2);
+            Vector2 Pos2 = Projectile.Center + new Vector2(0, -8).RotatedBy(Projectile.rotation + MathHelper.PiOver2);
 
             Vector2 DustPos = Opus.Sine(Pos1, Pos2, 0.5f);
 
-            Dust.NewDustPerfect(DustPos, TravelDust, Vector2.Zero, 0, default, 0.75f);
+            Dust trail2 = Dust.NewDustPerfect(DustPos, TravelDust, Vector2.Zero, 0, default, 0.75f);
+            trail2.noGravity = true;
         }
 
-        public override void AI() {
+        public override bool? CanHitNPC(NPC target)
+        {
+            return DelayTimer >= 20;
+        }
+
+        public override void AI() 
+        {
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
-            CacheTrail();
-            DustSpawn1();
-            DustSpawn2();
-            if (!Main.dedServ)
-            {
-                if (Main.rand.NextBool(8))
-                {
-                    Dust.NewDust(Projectile.position, Projectile.Hitbox.Width, Projectile.Hitbox.Height, TravelDust, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f, 0, DustColor, 1f);
-                }
-            }
             
+            if(DelayTimer < 20)
+            {
+                DelayTimer++;
+                return;
+            }
+
             if (HomingTarget == null) {
                 HomingTarget = FindClosestNPC(DetectionRad);
             }
@@ -222,7 +228,15 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
             float targetAngle = Projectile.AngleTo(HomingTarget.Center);
             Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(30)).ToRotationVector2() * length;
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
-            Projectile.velocity *= 1.01f;
+            Projectile.velocity *= 1.1f;
+        }
+
+
+        public override void PostAI()
+        {
+            CacheTrail();
+            DustSpawn1();
+            DustSpawn2();
         }
 
         public NPC FindClosestNPC(float maxDetectDistance) {
@@ -243,7 +257,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
             return closestNPC;
         }
 
-        public bool IsValidTarget(NPC target) {
+        public bool IsValidTarget(NPC target) 
+        {
             if (Projectile.tileCollide == true)
             {
                 return target.CanBeChasedBy() && Collision.CanHit(Projectile.Center, 1, 1, target.position, target.width, target.height);
