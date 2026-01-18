@@ -1,4 +1,5 @@
 
+using System.Collections.Generic;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Rarity.Scepter;
@@ -19,6 +20,23 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
             Item.value = Item.buyPrice(5000);
             Item.rare = ModContent.RarityType<WineRarity>();
             Item.accessory = true;
+        }
+
+        public static List<int> ItemsThatPendantofUnityCannotPairWith = new List<int>
+        {
+            ModContent.ItemType<InfectedPendant>(),
+            ModContent.ItemType<ElementalPendant>(),
+            ModContent.ItemType<AzurePendant>(),
+            ModContent.ItemType<RadiantPendant>(),
+            ModContent.ItemType<MythicPendant>(),
+            ModContent.ItemType<OrchidPendant>(),
+            ModContent.ItemType<AdamantPendant>(),
+            ModContent.ItemType<TitanPendant>()
+        };
+
+        public override bool CanAccessoryBeEquippedWith(Item equippedItem, Item incomingItem, Player player)
+        {
+            return !ItemsThatPendantofUnityCannotPairWith.Contains(incomingItem.type);
         }
 
         public override void UpdateAccessory(Player player, bool hideVisual)

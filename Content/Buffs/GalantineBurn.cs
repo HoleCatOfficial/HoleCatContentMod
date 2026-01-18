@@ -123,7 +123,7 @@ namespace DestroyerTest.Content.Buffs
 				{
 					amount = 36;
 				}
-				Dust.NewDust(Player.position, Player.width, Player.height, DustID.TintableDustLighted, 0.0f, 0.5f, 0, ColorLib.StellarColor, 1);
+				Dust.NewDust(Player.position, Player.width, Player.height, DustID.TintableDustLighted, 0.0f, 0.5f, 0, ColorLib.StellarFireGradientLooping(), 1);
 				// These lines zero out any positive lifeRegen. This is expected for all bad life regeneration effects
 				if (Player.lifeRegen > 0)
 					Player.lifeRegen = 0;
@@ -145,6 +145,14 @@ namespace DestroyerTest.Content.Buffs
         public override void ResetEffects(NPC npc) {
             lifeRegenDebuff = false;
         }
+
+        public override void AI(NPC npc)
+        {
+			if (lifeRegenDebuff)
+			{
+           		Dust.NewDust(npc.position, npc.width, npc.height, DustID.TintableDustLighted, 0.0f, 0.5f, 0, ColorLib.StellarFireGradientLooping(), 1);
+        	}
+		}
 
         public override void UpdateLifeRegen(NPC npc, ref int damage) {
 			int amount = 24;

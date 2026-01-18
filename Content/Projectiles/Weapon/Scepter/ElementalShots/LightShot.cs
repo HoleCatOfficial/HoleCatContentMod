@@ -36,6 +36,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter.ElementalShots
             DetectionRad = 1200;
         }
 
+        public override bool PreAI()
+        {
+            TrailColor = Main.DiscoColor;
+            return true;
+        }
+
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPC(target, hit, damageDone);

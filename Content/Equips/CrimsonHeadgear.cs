@@ -48,7 +48,7 @@ namespace DestroyerTest.Content.Equips
 
         public override void UpdateArmorSet(Player player)
         {
-            player.setBonus = Language.GetTextValue("Mods.DestroyerTest.Items.CrimsonHeadgear.SetBonus");
+            player.DefaultSetBonusText(player.armor[0]);
             player.GetDamage(ModContent.GetInstance<ScepterClass>()) *= 1.09f;
             player.lifeRegen += 10;
             ScepterClassStats.ThrowSpeedModifier *= 1.30f;

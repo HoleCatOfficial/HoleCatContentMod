@@ -33,20 +33,15 @@ namespace DestroyerTest.Content.Equips
 			Item.defense = 20; // The amount of defense the item will give when equipped
 		}
 
-		// IsArmorSet determines what armor pieces are needed for the setbonus to take effect
-		public override bool IsArmorSet(Item head, Item body, Item legs) {
+		public override bool IsArmorSet(Item head, Item body, Item legs) 
+		{
 			return body.type == ModContent.ItemType<HeliciteRobe>() && legs.type == ModContent.ItemType<HeliciteChausses>();
 		}
 
-		
-
-		// UpdateArmorSet allows you to give set bonuses to the armor.
 		public override void UpdateArmorSet(Player player) {
-			if (IsArmorSet(player.armor[0], player.armor[1], player.armor[2])) {
 			player.GetDamage<RangedDamageClass>() *= 3.0f;
-			player.AddBuff(ModContent.BuffType<RiftBallBuff>(), 3600); // Adds the RiftBallBuff for 60 seconds (3600 ticks)
-			player.AddBuff(ModContent.BuffType<AirSeal>(), 3600); // Adds the RiftBallBuff for 60 seconds (3600 ticks)
-			}
+			player.AddBuff(ModContent.BuffType<RiftBallBuff>(), 6);
+			player.AddBuff(ModContent.BuffType<AirSeal>(), 6);
 		}
 
 		public override void AddRecipes() {

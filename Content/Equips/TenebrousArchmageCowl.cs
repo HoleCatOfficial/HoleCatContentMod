@@ -49,7 +49,9 @@ namespace DestroyerTest.Content.Equips
 		}
 
 		// UpdateArmorSet allows you to give set bonuses to the armor.
-		public override void UpdateArmorSet(Player player) {
+		public override void UpdateArmorSet(Player player) 
+		{
+			player.DefaultSetBonusText(player.armor[0]);
 			if (player.TryGetModPlayer<TenebrisMagicPlayer>(out var Magic))
             {
                 Magic.Active = true;

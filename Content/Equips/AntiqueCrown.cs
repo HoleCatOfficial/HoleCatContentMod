@@ -41,7 +41,7 @@ namespace DestroyerTest.Content.Equips
 			{
 				Scptr.Active = true;
 			}
-			player.setBonus = Language.GetTextValue("Mods.DestroyerTest.Items.AntiqueCrown.SetBonus");
+			player.DefaultSetBonusText(player.armor[0]);
 		}
 
 		public int RangeBonus = 10;

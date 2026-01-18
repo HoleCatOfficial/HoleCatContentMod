@@ -22,7 +22,10 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
             Item.accessory = true;
         }
 
-        
+        public override bool CanAccessoryBeEquippedWith(Item equippedItem, Item incomingItem, Player player)
+        {
+            return (incomingItem.type != ModContent.ItemType<PendantofUnity>() || incomingItem.type != ModContent.ItemType<ElementalPendant>());
+        }
 
         public static readonly float DMGBonus = 1.16f;
         public static readonly float CritBonus = 1.26f;

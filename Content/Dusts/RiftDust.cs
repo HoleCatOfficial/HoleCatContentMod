@@ -21,19 +21,19 @@ namespace DestroyerTest.Content.Dusts
 		{
 			dust.position += dust.velocity;
 			dust.velocity *= 0.995f;
-			dust.rotation += dust.velocity.X * 0.15f;
+			dust.rotation += dust.velocity.X * 0.5f;
 			dust.scale *= 0.99f;
 
 			float light = 0.001f * dust.scale;
 
 			Lighting.AddLight(dust.position, ColorLib.Rift.R * light, ColorLib.Rift.G * light, ColorLib.Rift.B * light);
 
-			if (dust.scale < 0.1f)
+			if (dust.scale < 0.4f)
 			{
 				dust.active = false;
 			}
 
-			return false; // Return false to prevent vanilla behavior.
+			return false; 
 		}
 
 	}

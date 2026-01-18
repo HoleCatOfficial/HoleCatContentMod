@@ -313,7 +313,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
             return false;
         }
 
-        public void AccessoryHandler_ChlorophyteLifesteal(ref int damageDone)
+        public void AccessoryHandler_ChlorophyteLifesteal(ref int damageDone, NPC target)
         {
             Player player = Main.player[Projectile.owner];
             if (!player.TryGetModPlayer<LivingPendantPlayer>(out var Pendant))
@@ -328,6 +328,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
                 }
                 else
                 {
+                    for (int i = 0; i < 4; i++)
+                    {
+                        Dust.NewDustPerfect(target.Center, DustID.ChlorophyteWeapon, Main.rand.NextVector2Circular(10, 10), 0, default, 1.4f);
+                    }
                     player.Heal((int)(damageDone * 0.05f));
                 }
             }
@@ -339,7 +343,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
             {
                 target.AddBuff(Debuff, DebuffTime);
             }
-            AccessoryHandler_ChlorophyteLifesteal(ref damageDone);
+            AccessoryHandler_ChlorophyteLifesteal(ref damageDone, target);
         }
 
         public override void OnHitPlayer(Player target, Player.HurtInfo info)

@@ -20,19 +20,25 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter.ElementalShots
             TrailType = 10;
         }
 
+        public int inittime;
         public override void SetDefaults()
         {
 			Projectile.DamageType = ModContent.GetInstance<ScepterClass>();
             Projectile.friendly = true;
             Projectile.hostile = false;
 
-            float T = Projectile.timeLeft / 600;
+            /*
+            float T = (inittime - Projectile.timeLeft) / (float)inittime * 4f;
 			TrailColor = ColorLib.StellarFireGradient(T);
 			DustColor = ColorLib.StellarFireGradient(T);
+            */
+            TrailColor = ColorLib.StellarFireGradientLooping();
+            DustColor = ColorLib.StellarFireGradientLooping();
 			TravelDust = DustID.TintableDustLighted;
 			KillDust = DustID.TintableDustLighted;
 			Projectile.Resize(16, 16);
 			TrailAmplitude = 10f;
+            inittime = Projectile.timeLeft;
 
             Debuff = ModContent.BuffType<GalantineBurn>();
             DebuffTime = 300;
@@ -41,9 +47,14 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter.ElementalShots
 
         public override void PostAI()
         {
-            float T = Projectile.timeLeft / 600;
+            /*
+            float T = (inittime - Projectile.timeLeft) / (float)inittime * 4f;
             TrailColor = ColorLib.StellarFireGradient(T);
             DustColor = ColorLib.StellarFireGradient(T);
+            */
+
+            TrailColor = ColorLib.StellarFireGradientLooping();
+            DustColor = ColorLib.StellarFireGradientLooping();
         }
     }
 }

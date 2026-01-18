@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using ReLogic.Content;
 using DestroyerTest.Content.Equips.ScepterAccessories;
 using System.Linq;
+using Terraria.Graphics.Shaders;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 {
@@ -80,8 +81,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
         public override void SetDefaults()
         {
             ScepterRegistry.AllScepterShots.Add(Projectile);
-            Projectile.width = 16;
-            Projectile.height = 16;
+            Projectile.width = 24;
+            Projectile.height = 24;
 
             Projectile.DamageType = ModContent.GetInstance<ScepterClass>();
             Projectile.friendly = true;
@@ -95,7 +96,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
         public float trailOffset = 0f;
 		public override bool PreDraw(ref Color lightColor)
 		{
-			lightColor = Projectile.GetAlpha(TrailColor);
+			lightColor = TrailColor;
 			trailOffset += TrailScroll;
 
 			SpriteBatch spriteBatch = Main.spriteBatch;
@@ -183,7 +184,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 
             Vector2 DustPos = Opus.Sine(Pos1, Pos2, 0.5f);
 
-            Dust trail1 = Dust.NewDustPerfect(DustPos, TravelDust, Vector2.Zero, 0, default, 0.75f);
+            Dust trail1 = Dust.NewDustPerfect(DustPos, TravelDust, Projectile.velocity * 0.05f, 0, default, 0.75f);
             trail1.noGravity = true;
         }
 
@@ -194,7 +195,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 
             Vector2 DustPos = Opus.Sine(Pos1, Pos2, 0.5f);
 
-            Dust trail2 = Dust.NewDustPerfect(DustPos, TravelDust, Vector2.Zero, 0, default, 0.75f);
+            Dust trail2 = Dust.NewDustPerfect(DustPos, TravelDust, Projectile.velocity * 0.05f, 0, default, 0.75f);
             trail2.noGravity = true;
         }
 
@@ -226,9 +227,16 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 
             float length = Projectile.velocity.Length();
             float targetAngle = Projectile.AngleTo(HomingTarget.Center);
-            Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(30)).ToRotationVector2() * length;
+            int turn = 20;
+            Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(turn)).ToRotationVector2() * length;
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
-            Projectile.velocity *= 1.1f;
+            Projectile.velocity *= 1.08f;
+            if (Main.GameUpdateCount % 3 == 0)
+            {
+                turn++;
+            }
+
+            Projectile.velocity.Clamp(30);
         }
 
 
@@ -269,7 +277,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
             }
         }
 
-        public void AccessoryHandler_ChlorophyteLifesteal(ref int damageDone)
+        public void AccessoryHandler_ChlorophyteLifesteal(ref int damageDone, NPC target)
         {
             Player player = Main.player[Projectile.owner];
             if (!player.TryGetModPlayer<LivingPendantPlayer>(out var Pendant))
@@ -284,6 +292,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
                 }
                 else
                 {
+                    for (int i = 0; i < 4; i++)
+                    {
+                        Dust.NewDustPerfect(target.Center, DustID.ChlorophyteWeapon, Main.rand.NextVector2Circular(10, 10), 0, default, 1.4f);
+                    }
                     player.Heal((int)(damageDone * 0.05f));
                 }
             }
@@ -295,12 +307,25 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
             {
                 target.AddBuff(Debuff, DebuffTime);
             }
-            AccessoryHandler_ChlorophyteLifesteal(ref damageDone);
+            AccessoryHandler_ChlorophyteLifesteal(ref damageDone, target);
         }
 
         public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
             target.AddBuff(Debuff, DebuffTime);
+        }
+
+        public override void OnKill(int timeLeft)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                Dust.NewDustPerfect(Projectile.Center, KillDust, Main.rand.NextVector2Circular(10, 10), 0, DustColor, 1.4f);
+            }
+        }
+
+        public override void ModifyDamageHitbox(ref Rectangle hitbox)
+        {
+            hitbox.Inflate(10, 10);
         }
     }
 }

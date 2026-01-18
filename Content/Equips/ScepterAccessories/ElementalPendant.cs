@@ -1,4 +1,5 @@
 
+using System.Collections.Generic;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.Tiles;
@@ -15,6 +16,12 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
 {
     public class ElementalPendant : ModItem
     {
+        public override void SetStaticDefaults()
+        {
+            ItemsThatElementalPendantCannotPairWith.AddRange(InfectedPendant.ItemsThatInfectedPendantCannotPairWith);
+            ItemsThatElementalPendantCannotPairWith.AddRange(PendantofUnity.ItemsThatPendantofUnityCannotPairWith);
+
+        }
         public override void SetDefaults()
         {
             Item.width = 24;
@@ -22,6 +29,22 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
             Item.value = Item.buyPrice(gold: 2);
             Item.rare = ModContent.RarityType<CerisePinkRarity>();
             Item.accessory = true;
+        }
+
+        public static List<int> ItemsThatElementalPendantCannotPairWith = new List<int>
+        {
+            ModContent.ItemType<InfectedPendant>(),
+            ModContent.ItemType<AzurePendant>(),
+            ModContent.ItemType<RadiantPendant>(),
+            ModContent.ItemType<MythicPendant>(),
+            ModContent.ItemType<OrchidPendant>(),
+            ModContent.ItemType<AdamantPendant>(),
+            ModContent.ItemType<TitanPendant>()
+        };
+
+        public override bool CanAccessoryBeEquippedWith(Item equippedItem, Item incomingItem, Player player)
+        {
+            return !ItemsThatElementalPendantCannotPairWith.Contains(incomingItem.type);
         }
 
         public float DMGBonus = 1.3f;

@@ -60,7 +60,7 @@ namespace DestroyerTest.Content.Equips
 			{
 				Halo.Active = true;
 			}
-			player.setBonus = Language.GetTextValue("Mods.DestroyerTest.Items.RiftHalo.SetBonus");
+			player.DefaultSetBonusText(player.armor[0]);
 		}
 
         public override void UpdateEquip(Player player)

@@ -51,31 +51,15 @@ namespace DestroyerTest.Content.Equips
                 Summoner = true;
                 return true;
             }
-            if (DemonSet)
+            if (PaladinSet)
             {
                 Sentry = true;
                 return true;
             }
-            if (PaladinSet)
-            {
-                Scepter = true;
-                return true;
-            }
 			return false;
 		}
-		public override void UpdateArmorSet(Player player) {
-			if (Scepter)
-            {
-                PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], player.headPosition, new Vector2(0, -5), ColorLib.TenebrisGradient, 0.75f);
-                if (player.TryGetModPlayer<DarkVesselScepter>(out var scepter))
-                {
-                    scepter.Active = true;
-                }
-                if (player.TryGetModPlayer<ShadePaladinHurtSounds>(out ShadePaladinHurtSounds HurtSounds))
-                {
-                    HurtSounds.Active = true;
-                }
-            }
+		public override void UpdateArmorSet(Player player) 
+        {
             if (Summoner)
             {
                 if (player.TryGetModPlayer<DarkVesselSummoner>(out var summoner))
@@ -100,49 +84,6 @@ namespace DestroyerTest.Content.Equips
 		}
 	}
 
-    public class DarkVesselScepter : ModPlayer
-    {
-        public bool Active = false;
-        public override void ResetEffects()
-        {
-            Active = false;
-        }
-
-        public override void PostUpdateEquips()
-        {
-            if (Active)
-            {
-                Player.moveSpeed *= 0.5f;
-                Player.endurance += 0.2f;
-                Player.GetArmorPenetration<ScepterClass>() += 15;
-                Player.GetDamage<ScepterClass>() *= 1.15f;
-
-                if (Player.statLife < Player.statLifeMax / 2)
-                {
-                    float RadiusSpeedModifier = 0.4f; //Typical sine speed. Goes back and forth in about 2 seconds.
-                    float Radius = 150f + 50f * (float)Math.Sin(Player.miscCounter * RadiusSpeedModifier * 0.1f); //Sines between 100 and 200 back and forth. Very, very slowly. Perhaps using a float to control speed of sine.
-                    int dustType = DustID.FireworksRGB;
-
-                    if (Player.miscCounter % 60 == 0)
-                    {
-                        SoundEngine.PlaySound(SoundID.DD2_EtherianPortalSpawnEnemy);
-                        NPC.HitInfo strike = new NPC.HitInfo { Crit = false, Damage = 16, DamageType = null, HideCombatText = false, HitDirection = 0, InstantKill = false, Knockback = 0};
-                        Opus.RingDustOutward(dustType, 30, Player.Center, Radius, 0, ColorLib.TenebrisGradient, 2f, 8, true);
-
-                        foreach (NPC enemy in Main.npc)
-                        {
-                            if (!enemy.friendly && enemy.Center.Distance(Player.Center) < Radius)
-                            {
-                                enemy.StrikeNPC(strike, false, true);    
-                                enemy.AddBuff(ModContent.BuffType<ShimmeringFlames>(), 600);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     public class DarkVesselSummoner : ModPlayer
     {
         public bool Active = false;
@@ -151,56 +92,21 @@ namespace DestroyerTest.Content.Equips
             Active = false;
         }
 
+        public bool Flag1;
         public override void PostUpdateEquips()
         {
             if (Active)
             {
                 Player.maxMinions += 2;
-                foreach (Projectile proj in Main.projectile)
-                {
-                    if (proj.TryGetGlobalProjectile<DarkVesselSummoner_Projectile>(out var Summon))
-                    {
-                        Summon.Active = true;
-                    }
-                }
+                
+                Player.AddBuff(ModContent.BuffType<ShadeThrasherBuff>(), 10);
+
+                if (!Flag1)
+				{
+					//Projectile.NewProjectile(Player.GetSource_None(), Player.Center, Vector2.One, ModContent.ProjectileType<ShadeThrasherFriendlyHead>(), 120, 7);
+					Flag1 = true;
+				}
             }   
-        }
-    }
-
-    public class DarkVesselSummoner_Projectile : GlobalProjectile
-    {
-        public bool Active = false;
-        public override bool InstancePerEntity => true;
-        public override bool AppliesToEntity(Projectile entity, bool lateInstantiation)
-        {
-            return entity.DamageType == DamageClass.Summon || entity.DamageType == DamageClass.Generic;
-        }
-
-        public float Length = 10f;
-        public override void PostAI(Projectile projectile)
-        {
-            Player player = Main.player[projectile.owner];
-            if (Active)
-            {
-                if (player.HasMinionAttackTargetNPC)
-                {
-                    NPC targ = Main.npc[player.MinionAttackTargetNPC];
-                    if (projectile.Center.Distance(targ.Center) > 100)
-                    {
-                        if (Main.GameUpdateCount % 60 == 0)
-                        {
-                            projectile.velocity += Vector2.Lerp(projectile.Center, targ.Center, 0.01f);
-                        }
-                    }
-                    else
-                    {
-                        if (projectile.velocity.Length() > Length)
-                        {
-                            projectile.velocity *= 0.99f;
-                        }
-                    }
-                }
-            }
         }
     }
 

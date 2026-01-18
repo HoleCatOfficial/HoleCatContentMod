@@ -76,7 +76,7 @@ namespace DestroyerTest.Content.Equips
             }
             ScepterClassStats.Range += 2;
             player.lavaImmune = true;
-            player.setBonus = Language.GetText("Mods.DestroyerTest.Items.InfernalTiara.SetBonus").Value;
+            player.DefaultSetBonusText(player.armor[0]);
         }
 
         public override void ModifyTooltips(List<TooltipLine> tooltips)

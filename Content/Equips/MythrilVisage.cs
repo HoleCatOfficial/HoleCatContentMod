@@ -31,7 +31,7 @@ namespace DestroyerTest.Content.Equips
 		public override void UpdateArmorSet(Player player) {
 			ScepterClassStats.Range += SetRangeBonus;
 			ScepterClassStats.ThrowSpeedModifier *= ThrowSpeedBonus;
-			player.setBonus = Language.GetTextValue("Mods.DestroyerTest.Items.MythrilVisage.SetBonus", setBonus);
+			player.DefaultSetBonusText(player.armor[0]);
 		}
 
         public override void UpdateEquip(Player player)

@@ -13,6 +13,7 @@ using DestroyerTest.Content.Tiles.RiftConfigurator;
 using Terraria.DataStructures;
 using Terraria.Audio;
 using DestroyerTest.Content.Projectiles.Weapon.Scepter;
+using DestroyerTest.Common;
 
 namespace DestroyerTest.Content.Equips
 {
@@ -37,6 +38,7 @@ namespace DestroyerTest.Content.Equips
 
 		public override void UpdateArmorSet(Player player) 
 		{
+            player.DefaultSetBonusText(player.armor[0]);
             if (player.TryGetModPlayer<HeliciteScepterPlayer>(out var Scepter))
             {
                 Scepter.Active = true;

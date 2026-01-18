@@ -25,6 +25,7 @@ using OpusLib;
 using DestroyerTest.Content.Entities;
 using OpusLib.Content.Helpers;
 using System.Linq;
+using Terraria.UI.Chat;
 
 namespace DestroyerTest.Common
 {
@@ -351,6 +352,42 @@ namespace DestroyerTest.Common
                 }
             }
         }
+
+        public static void SweepColorOverString(string input, Color[] colors, Vector2 textPos, float speed = 6f)
+        {
+            if (string.IsNullOrEmpty(input) || colors == null || colors.Length == 0)
+                return;
+
+            float time = Main.GlobalTimeWrappedHourly * 6f; // speed control
+            int offset = (int)time;
+
+            TextSnippet[] snippets = new TextSnippet[input.Length];
+
+            for (int i = 0; i < input.Length; i++)
+            {
+                int colorIndex = (i + offset) % colors.Length;
+
+                snippets[i] = new TextSnippet(
+                    input[i].ToString(),
+                    colors[colorIndex]
+                );
+            }
+
+            ChatManager.DrawColorCodedString(
+                Main.spriteBatch,
+                FontAssets.MouseText.Value,
+                snippets,
+                textPos,
+                Color.White,
+                0f,
+                Vector2.Zero,
+                Vector2.One,
+                out _,
+                float.MaxValue
+            );
+
+        }
+
     }
 
     public static class DTStaticUtils
@@ -388,6 +425,62 @@ namespace DestroyerTest.Common
         public static float Inverse(this float Input)
         {
             return 1f - Input;
+        }
+
+        public static bool ArmorSetBonusKey(this Player player)
+        {
+            return DestroyerTestMod.ArmorSetBonusHotKey.JustPressed;
+        }
+
+        public static Vector2 Clamp(this Vector2 v, float maxLength)
+        {
+            float lenSq = v.LengthSquared();
+            if (lenSq > maxLength * maxLength)
+                return v * (maxLength / MathF.Sqrt(lenSq));
+
+            return v;
+        }
+
+        public static Vector2 Clamp(this Vector2 v, float minLength, float maxLength)
+        {
+            float len = v.Length();
+            if (len == 0f)
+                return v;
+
+            if (len < minLength)
+                return v * (minLength / len);
+
+            if (len > maxLength)
+                return v * (maxLength / len);
+
+            return v;
+        }
+
+        /// <summary>
+        /// Automatically finds the set bonus localization for the given item.
+        /// <br/> If none exists, the entry will be created.
+        /// <br/> Should only be called in UpdateArmorSet.
+        /// <br/> A little tip: player.armor[0] is the easiest thing to pass in the item parameter, since for UpdateArmorSet to run, the item has to be in your head slot anyway.
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="item"></param>
+        public static void DefaultSetBonusText(this Player player, Item item)
+        {
+            /*
+            string itemInternal = item.Name;
+            string Key = $"Mods.DestroyerTest.Items.{itemInternal}.SetBonus";
+            
+            player.setBonus = Language.GetTextValue(Key);
+            */
+
+            if (item.ModItem == null)
+            {
+                return;
+            }
+
+            var modItem = item.ModItem;
+            string key = $"Mods.{modItem.Mod.Name}.Items.{modItem.Name}.SetBonus";
+            player.setBonus = Language.GetTextValue(key);
         }
     }
 
@@ -755,7 +848,7 @@ namespace DestroyerTest.Common
         public static Color StellarFireGradient(float t)
         {
             
-            t = MathHelper.Clamp(t, 0f, 3f);
+            t = MathHelper.Clamp(t, 0f, 4f);
 
             if (t < 1f)
                 return Color.Lerp(StellarFire1, StellarFire2, t);
@@ -766,6 +859,47 @@ namespace DestroyerTest.Common
             else
                 return Color.Lerp(StellarFire7, StellarFire8, t - 3f);
         }
+
+        public static Color StellarFireGradientLooping()
+        {
+            float time = Main.GlobalTimeWrappedHourly % 16f;
+
+            if (time < 1f)
+                return Color.Lerp(StellarFire1, StellarFire2, time);
+            else if (time < 2f)
+                return Color.Lerp(StellarFire2, StellarFire3, time - 1f);
+            else if (time < 3f)
+                return Color.Lerp(StellarFire3, StellarFire4, time - 2f);
+            else if (time < 4f)
+                return Color.Lerp(StellarFire4, StellarFire5, time - 3f);
+            else if (time < 5f)
+                return Color.Lerp(StellarFire5, StellarFire6, time - 4f);
+            else if (time < 6f)
+                return Color.Lerp(StellarFire6, StellarFire7, time - 5f);
+            else if (time < 7f)
+                return Color.Lerp(StellarFire7, StellarFire8, time - 6f);
+            else if (time < 8f)
+                return Color.Lerp(StellarFire8, StellarFire1, time - 7f); // wrap to start
+
+            // Now the reverse direction
+            else if (time < 9f)
+                return Color.Lerp(StellarFire8, StellarFire7, time - 8f);
+            else if (time < 10f)
+                return Color.Lerp(StellarFire7, StellarFire6, time - 9f);
+            else if (time < 11f)
+                return Color.Lerp(StellarFire6, StellarFire5, time - 10f);
+            else if (time < 12f)
+                return Color.Lerp(StellarFire5, StellarFire4, time - 11f);
+            else if (time < 13f)
+                return Color.Lerp(StellarFire4, StellarFire3, time - 12f);
+            else if (time < 14f)
+                return Color.Lerp(StellarFire3, StellarFire2, time - 13f);
+            else if (time < 15f)
+                return Color.Lerp(StellarFire2, StellarFire1, time - 14f);
+            else // time < 16f
+                return Color.Lerp(StellarFire1, StellarFire2, time - 15f); // start loop over
+        }
+
 
         private static Color SpiritFire1 = new Color(255, 245, 198);
         private static Color SpiritFire2 = new Color(244, 173, 255);

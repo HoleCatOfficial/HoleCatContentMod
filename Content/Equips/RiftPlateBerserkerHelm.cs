@@ -8,6 +8,7 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using DestroyerTest.Rarity;
 using DestroyerTest.Content.Buffs;
+using DestroyerTest.Common;
 
 namespace DestroyerTest.Content.Equips
 {
@@ -58,6 +59,7 @@ namespace DestroyerTest.Content.Equips
 
 		public override void UpdateArmorSet(Player player)
 		{
+			player.DefaultSetBonusText(player.armor[0]);
 			if (player.body == ModContent.ItemType<RiftplateTitanBody>() &&
 				player.legs == ModContent.ItemType<RiftplateTitanGreaves>())
 			{

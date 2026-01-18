@@ -8,6 +8,7 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using DestroyerTest.Rarity;
 using DestroyerTest.Content.Buffs;
+using DestroyerTest.Common;
 
 namespace DestroyerTest.Content.Equips
 {
@@ -54,7 +55,9 @@ namespace DestroyerTest.Content.Equips
 		}
 
 		// UpdateArmorSet allows you to give set bonuses to the armor.
-		public override void UpdateArmorSet(Player player) {
+		public override void UpdateArmorSet(Player player) 
+		{
+			player.DefaultSetBonusText(player.armor[0]);
 			player.maxMinions += 3;
 			if (player.body == ModContent.ItemType<RiftplateTitanBody>() &&
 				player.legs == ModContent.ItemType<RiftplateTitanGreaves>())

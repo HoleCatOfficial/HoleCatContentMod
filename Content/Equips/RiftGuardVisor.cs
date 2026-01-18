@@ -47,7 +47,7 @@ namespace DestroyerTest.Content.Equips
 			{
 				guard.Active = true;
 			}
-			player.setBonus = Language.GetTextValue("Mods.DestroyerTest.Items.RiftGuardVisor.SetBonus");
+			player.DefaultSetBonusText(player.armor[0]);
 		}
 
         public override void UpdateEquip(Player player)

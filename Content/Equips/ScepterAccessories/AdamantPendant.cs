@@ -21,7 +21,12 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
             Item.rare = ModContent.RarityType<WineRarity>();
             Item.accessory = true;
         }
-
+        
+        public override bool CanAccessoryBeEquippedWith(Item equippedItem, Item incomingItem, Player player)
+        {
+            return (incomingItem.type != ModContent.ItemType<PendantofUnity>() || incomingItem.type != ModContent.ItemType<ElementalPendant>());
+        }
+        
         public static readonly float DMGBonus = 1.20f;
         public static readonly float CritBonus = 2.2f;
         public static readonly int RangeBonus = 35;

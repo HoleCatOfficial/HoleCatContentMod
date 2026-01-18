@@ -9,6 +9,7 @@ using Terraria.ModLoader;
 using DestroyerTest.Rarity;
 using DestroyerTest.Content.Buffs;
 using Terraria.Audio;
+using DestroyerTest.Common;
 
 namespace DestroyerTest.Content.Equips
 {
@@ -32,7 +33,9 @@ namespace DestroyerTest.Content.Equips
 			return body.type == ModContent.ItemType<ShadePaladinBodyArmor>() && legs.type == ModContent.ItemType<ShadePaladinLegArmor>();
 		}
 
-		public override void UpdateArmorSet(Player player) {
+		public override void UpdateArmorSet(Player player) 
+        {
+            player.DefaultSetBonusText(player.armor[0]);
 			if (player.TryGetModPlayer<ShadePaladinHurtSounds>(out ShadePaladinHurtSounds HurtSounds))
             {
                 HurtSounds.Active = true;

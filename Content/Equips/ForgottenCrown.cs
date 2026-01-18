@@ -40,7 +40,7 @@ namespace DestroyerTest.Content.Equips
                 Crown.Active = true;
                 Crown.JumpBoost = true;
             }
-			player.setBonus = Language.GetTextValue("Mods.DestroyerTest.Items.ForgottenCrown.SetBonus");
+			player.DefaultSetBonusText(player.armor[0]);
 		}
 
         public override void UpdateEquip(Player player)

@@ -1,4 +1,5 @@
 
+using System.Collections.Generic;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Projectiles.Weapon.Magic;
 using DestroyerTest.Content.Resources;
@@ -23,6 +24,19 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
             Item.value = Item.buyPrice(gold: 2);
             Item.rare = ModContent.RarityType<CerisePinkRarity>();
             Item.accessory = true;
+        }
+
+        public static List<int> ItemsThatInfectedPendantCannotPairWith = new List<int>
+        {
+            ModContent.ItemType<DetritizedPendant>(),
+            ModContent.ItemType<VisceraPendant>(),
+            ModContent.ItemType<PendantofUnity>(),
+            ModContent.ItemType<ElementalPendant>()
+        };
+
+        public override bool CanAccessoryBeEquippedWith(Item equippedItem, Item incomingItem, Player player)
+        {
+            return !ItemsThatInfectedPendantCannotPairWith.Contains(incomingItem.type);
         }
 
         public static readonly float CritBonus = 1.2f;

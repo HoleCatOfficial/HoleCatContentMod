@@ -1404,6 +1404,18 @@ Items: {
 
 	TenebrousArchmageHat: {
 		Tooltip: ""
+		SetBonus:
+			'''
+			30% increased Movement Speed.
+			8% increased Damage Reduction.
+			15 increased Scepter Armor Penetration.
+			15% increased Scepter Class Damage.
+
+			When below half health, you gain a defensive aura that damages enemies and inflicts them with Shimmering Flames.
+
+			Pressing the Armor Set Bonus key will spawn three shimmering shard clusters in random locations near you.
+			Being within their area of effect will boost damage by 20%.
+			'''
 		DisplayName: Tenebrous Archmage Hat
 	}
 
@@ -1924,6 +1936,12 @@ Items: {
 
 	TenebrousArchmageCowl: {
 		DisplayName: Tenebrous Archmage Cowl
+		SetBonus:
+			'''
+			When pressing the armor set bonus key, three mage clones will spawn around you.
+			They do not move, and will charge for three seconds before firing homing shimmering flames at enemies.
+			This has a 10 second cooldown.
+			'''
 		Tooltip: ""
 	}
 
@@ -3868,17 +3886,37 @@ Items: {
 
 	HeliciteHeadpiece: {
 		Tooltip: ""
+		SetBonus:
+			'''
+			You get a period of three seconds of immunity.
+			You can trigger this with the armor set bonus key, but, it will trigger on its own if you get hit by an NPC (hostile projectiles do not trigger the effect).
+			The "dodge" has a cooldown of 10 seconds.
+			'''
 		DisplayName: Helicite Headpiece
 	}
 
 	ElementalScepter: {
 		DisplayName: Elemental Scepter
-		Tooltip: ""
+		Tooltip:
+			'''
+			Shoots three shots at a time.
+			They can vary from the following types:
+			[i:DestroyerTest/EmberCane] A hellfire shot,
+			[i:DestroyerTest/FrostScepter] A frostburn shot,
+			[i:DestroyerTest/NatureScepter] A venom shot,
+			[i:DestroyerTest/ShadowScepter] A shadowflame shot,
+			[i:DestroyerTest/StellarFoxScepter] A galantine burn shot,
+			[i:DestroyerTest/RiftScepter] A Heliouric Shot,
+			[i:DestroyerTest/PrismaticScepter] A pure light shot.
+
+			All shots except for the light shot will inflict their respective debuff.
+			The thrown scepter has a larger, sweeping hitbox that doesnt affect tile collision.
+			'''
 	}
 
 	PendantofUnity: {
 		Tooltip: ""
-		DisplayName: Pendantof Unity
+		DisplayName: Pendant of Unity
 	}
 
 	InfectedPendant: {
@@ -4408,6 +4446,7 @@ Projectiles: {
 	VenomShot.DisplayName: Venom Shot
 	ElementalScepterThrown.DisplayName: Elemental Scepter Thrown
 	ElementalTrail.DisplayName: Elemental Trail
+	ShimmeringShardCluster.DisplayName: Shimmering Shard Cluster
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.

@@ -41,6 +41,7 @@ namespace DestroyerTest.Content.Equips
 		}
 		public override void UpdateArmorSet(Player player)
 		{
+			player.DefaultSetBonusText(player.armor[0]);
 			if (player.TryGetModPlayer<TenebrousDemon>(out TenebrousDemon Demon))
 			{
 				Demon.Active = true;

@@ -149,20 +149,12 @@ namespace DestroyerTest.Content.Projectiles.ShadeThrasherFriendly
             Projectile.rotation = Projectile.velocity.ToRotation();
         }
 
-        private bool ArmorSet(Player player)
-        {
-            if (player.TryGetModPlayer<TenebrisScepterPlayer>(out TenebrisScepterPlayer Scepter))
-            {
-                return Scepter.Active;
-            }
-            return false;
-        }
         private void CheckActive(Player player)
         {
-            if (!player.dead)
+            if (!player.dead && player.HasBuff<ShadeThrasherBuff>())
+            {
                 Projectile.timeLeft = 2;
-            else
-                Projectile.active = false;
+            }
         }
 
         public NPC FindClosestNPC(float maxDetectDistance)

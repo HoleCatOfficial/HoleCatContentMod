@@ -10,6 +10,7 @@ using Terraria.ModLoader;
 using DestroyerTest.Rarity;
 using DestroyerTest.Content.RiftBiome.RiftSurfaceResources;
 using DestroyerTest.Content.Tiles.RiftConfigurator;
+using DestroyerTest.Common;
 
 namespace DestroyerTest.Content.Equips
 {
@@ -34,6 +35,7 @@ namespace DestroyerTest.Content.Equips
 
 		public override void UpdateArmorSet(Player player) 
 		{
+			player.DefaultSetBonusText(player.armor[0]);
             player.manaRegen += 40;
 		}
 		public override void AddRecipes() {

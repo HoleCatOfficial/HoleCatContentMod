@@ -15,6 +15,7 @@ using Terraria.DataStructures;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using DestroyerTest.Content.Projectiles;
+using DestroyerTest.Content.Projectiles.player.ArmorSet;
 using DestroyerTest.Content.Projectiles.ShadeThrasherFriendly;
 using System;
 using Terraria.Audio;
@@ -56,6 +57,7 @@ namespace DestroyerTest.Content.Equips
 		// UpdateArmorSet allows you to give set bonuses to the armor.
 		public override void UpdateArmorSet(Player player)
 		{
+			player.DefaultSetBonusText(player.armor[0]);
 			if (player.TryGetModPlayer<TenebrisScepterPlayer>(out TenebrisScepterPlayer scptr))
 			{
 				scptr.Active = true;
@@ -83,23 +85,41 @@ namespace DestroyerTest.Content.Equips
 
 		public float Rot = 0;
 		public bool Flag1 = false;
+		public int Cooldown = 0;
 		public override void PostUpdateEquips()
 		{
 			Rot += 0.05f * Player.direction;
 			if (Active)
 			{
 				Player.GetDamage(ModContent.GetInstance<ScepterClass>()) *= 1.15f;
-				Player.moveSpeed += 0.4f;
-				if (!Flag1)
-				{
-					Projectile.NewProjectile(Player.GetSource_None(), Player.Center, Vector2.One, ModContent.ProjectileType<ShadeThrasherFriendlyHead>(), 120, 7);
-					Flag1 = true;
-				}
-
-				Player.moveSpeed *= 0.5f;
-                Player.endurance += 0.02f;
+				
+				Player.moveSpeed *= 1.3f;
+                Player.endurance += 0.08f;
                 Player.GetArmorPenetration<ScepterClass>() += 15;
                 Player.GetDamage<ScepterClass>() *= 1.15f;
+
+				if (Player.ArmorSetBonusKey() && Cooldown <= 0)
+				{
+					SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/TenebrisImpact") with { PitchVariance = 0.5f }, Player.Center);
+					for(int t = 0; t < 3; t++)
+					{
+						Vector2 Pos = Player.Center + Main.rand.NextVector2Circular(1200, 1200);
+
+						Projectile.NewProjectile(Player.GetSource_Misc("TenebrisScepterBonus"), Pos, Vector2.Zero, ModContent.ProjectileType<ShimmeringShardCluster>(), 0, 0, Player.whoAmI);
+					}
+
+					Opus.RingDustOutward(DustID.TintableDustLighted, 16, Player.Center, 10, 0, ColorLib.TenebrisGradient, 1, 2, false);
+					Cooldown = 1800;
+				}
+
+				if (Cooldown > 0)
+				{
+					Cooldown--;
+				}
+				if (Cooldown == 1)
+				{
+					SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/Corpse/TeleportSetPosition") with { PitchVariance = 0.5f }, Player.Center);
+				}
 
                 if (Player.statLife < Player.statLifeMax / 2)
                 {

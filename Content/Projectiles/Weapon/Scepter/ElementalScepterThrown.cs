@@ -31,7 +31,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 
             if (Main.rand.NextBool(3))
             {
-                Projectile.NewProjectile(Projectile.InheritSource(Projectile), Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Main.rand.NextVector2Circular(0.5f, 0.5f), ModContent.ProjectileType<ElementalTrail>(), (int)(Projectile.damage / 5), 0f, Projectile.owner);
+                float RotOffset = Projectile.rotation - MathHelper.PiOver4;
+                Projectile.NewProjectile(Projectile.InheritSource(Projectile), Projectile.Center + new Vector2(10, 0).RotatedBy(RotOffset), new Vector2(3, 0).RotatedBy(RotOffset), ModContent.ProjectileType<ElementalTrail>(), (int)(Projectile.damage / 5), 0f, Projectile.owner);
+                Projectile.NewProjectile(Projectile.InheritSource(Projectile), Projectile.Center + new Vector2(10, 0).RotatedBy(RotOffset), new Vector2(-3, 0).RotatedBy(RotOffset), ModContent.ProjectileType<ElementalTrail>(), (int)(Projectile.damage / 5), 0f, Projectile.owner);
             }
         }
 

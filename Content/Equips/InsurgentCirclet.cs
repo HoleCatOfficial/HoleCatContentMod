@@ -48,7 +48,7 @@ namespace DestroyerTest.Content.Equips
         // UpdateArmorSet allows you to give set bonuses to the armor.
         public override void UpdateArmorSet(Player player)
         {
-            player.setBonus = "10% Increased Scepter Damage and Range increased by 2";
+            player.DefaultSetBonusText(player.armor[0]);
             player.GetDamage(ModContent.GetInstance<ScepterClass>()) *= 1.10f;
             ScepterClassStats.Range += 2;
 			if (player.TryGetModPlayer<InsurgentPlayer>(out var t))
