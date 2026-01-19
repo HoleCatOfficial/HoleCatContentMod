@@ -8,6 +8,7 @@ using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
 using OpusLib;
+using DestroyerTest.Content.Projectiles.ParentClasses;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Scepter.ElementalShots
 {
@@ -26,8 +27,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter.ElementalShots
             Projectile.hostile = false;
 			TrailColor = Color.Purple;
 			DustColor = Color.White;
-			TravelDust = DustID.Venom;
-			KillDust = DustID.Venom;
+			TravelDust = DustID.PurpleTorch;
+			KillDust = DustID.PurpleTorch;
 			Projectile.Resize(16, 16);
 			TrailAmplitude = 10f;
 

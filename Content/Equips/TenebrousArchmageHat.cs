@@ -82,6 +82,24 @@ namespace DestroyerTest.Content.Equips
 			Active = false;
 		}
 
+		const float MinDist = 900f;
+		const float MinDistSq = MinDist * MinDist;
+
+		public static bool IsValidClusterPos(Vector2 pos)
+		{
+			int type = ModContent.ProjectileType<ShimmeringShardCluster>();
+
+			foreach (Projectile p in Main.projectile)
+			{
+				if (!p.active || p.type != type)
+					continue;
+
+				if (Vector2.DistanceSquared(p.Center, pos) < 900f * 900f)
+					return false;
+			}
+
+			return true;
+		}
 
 		public float Rot = 0;
 		public bool Flag1 = false;
@@ -101,11 +119,35 @@ namespace DestroyerTest.Content.Equips
 				if (Player.ArmorSetBonusKey() && Cooldown <= 0)
 				{
 					SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/TenebrisImpact") with { PitchVariance = 0.5f }, Player.Center);
-					for(int t = 0; t < 3; t++)
+					for (int t = 0; t < 3; t++)
 					{
-						Vector2 Pos = Player.Center + Main.rand.NextVector2Circular(1200, 1200);
+						const int MaxAttempts = 20;
+						Vector2 pos = Vector2.Zero;
+						bool found = false;
 
-						Projectile.NewProjectile(Player.GetSource_Misc("TenebrisScepterBonus"), Pos, Vector2.Zero, ModContent.ProjectileType<ShimmeringShardCluster>(), 0, 0, Player.whoAmI);
+						for (int i = 0; i < MaxAttempts; i++)
+						{
+							pos = Player.Center + Main.rand.NextVector2Circular(1200f, 1200f);
+
+							if (IsValidClusterPos(pos))
+							{
+								found = true;
+								break;
+							}
+						}
+
+						if (found)
+						{
+							Projectile.NewProjectile(
+								Player.GetSource_Misc("TenebrisScepterBonus"),
+								pos,
+								Vector2.Zero,
+								ModContent.ProjectileType<ShimmeringShardCluster>(),
+								0,
+								0,
+								Player.whoAmI
+							);
+						}
 					}
 
 					Opus.RingDustOutward(DustID.TintableDustLighted, 16, Player.Center, 10, 0, ColorLib.TenebrisGradient, 1, 2, false);

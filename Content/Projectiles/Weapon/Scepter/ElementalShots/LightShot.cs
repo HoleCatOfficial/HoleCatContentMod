@@ -9,6 +9,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using OpusLib;
 using DestroyerTest.Content.Dusts;
+using DestroyerTest.Content.Projectiles.ParentClasses;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Scepter.ElementalShots
 {
@@ -27,7 +28,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter.ElementalShots
             Projectile.hostile = false;
 
 			TrailColor = Main.DiscoColor;
-			DustColor = Color.White;
+			DustColor = Main.DiscoColor;
 			TravelDust = DustID.FireworksRGB;
 			KillDust = DustID.FireworksRGB;
 			Projectile.Resize(16, 16);
@@ -39,6 +40,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter.ElementalShots
         public override bool PreAI()
         {
             TrailColor = Main.DiscoColor;
+            DustColor = Main.DiscoColor;
             return true;
         }
 

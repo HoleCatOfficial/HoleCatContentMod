@@ -91,4 +91,14 @@ namespace DestroyerTest.Content.Particles
         }
     }
 
+    public class BoomCloud : Boom
+    {
+        public override void SetProperty()
+        {
+            PRTDrawMode = PRTDrawModeEnum.AdditiveBlend;
+            Lifetime = 9999;
+            Scale = 0.01f;
+        }
+    }
+
 }

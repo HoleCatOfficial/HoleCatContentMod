@@ -836,14 +836,14 @@ namespace DestroyerTest.Common
             }
         }
 
-        private static Color StellarFire1 = new Color(247, 233, 141);
-        private static Color StellarFire2 = new Color(207, 120, 90);
-        private static Color StellarFire3 = new Color(183, 61, 114);
-        private static Color StellarFire4 = new Color(143, 39, 120);
-        private static Color StellarFire5 = new Color(80, 38, 91);
-        private static Color StellarFire6 = new Color(33, 36, 37);
-        private static Color StellarFire7 = new Color(25, 33, 38);
-        private static Color StellarFire8 = new Color(18, 23, 24);
+        public static Color StellarFire1 = new Color(247, 233, 141);
+        public static Color StellarFire2 = new Color(207, 120, 90);
+        public static Color StellarFire3 = new Color(183, 61, 114);
+        public static Color StellarFire4 = new Color(143, 39, 120);
+        public static Color StellarFire5 = new Color(80, 38, 91);
+        public static Color StellarFire6 = new Color(33, 36, 37);
+        public static Color StellarFire7 = new Color(25, 33, 38);
+        public static Color StellarFire8 = new Color(18, 23, 24);
 
         public static Color StellarFireGradient(float t)
         {
@@ -862,7 +862,7 @@ namespace DestroyerTest.Common
 
         public static Color StellarFireGradientLooping()
         {
-            float time = Main.GlobalTimeWrappedHourly % 16f;
+            float time = Main.GlobalTimeWrappedHourly % 14f;
 
             if (time < 1f)
                 return Color.Lerp(StellarFire1, StellarFire2, time);
@@ -879,25 +879,19 @@ namespace DestroyerTest.Common
             else if (time < 7f)
                 return Color.Lerp(StellarFire7, StellarFire8, time - 6f);
             else if (time < 8f)
-                return Color.Lerp(StellarFire8, StellarFire1, time - 7f); // wrap to start
-
-            // Now the reverse direction
-            else if (time < 9f)
                 return Color.Lerp(StellarFire8, StellarFire7, time - 8f);
-            else if (time < 10f)
+            else if (time < 9f)
                 return Color.Lerp(StellarFire7, StellarFire6, time - 9f);
-            else if (time < 11f)
+            else if (time < 10f)
                 return Color.Lerp(StellarFire6, StellarFire5, time - 10f);
-            else if (time < 12f)
+            else if (time < 11f)
                 return Color.Lerp(StellarFire5, StellarFire4, time - 11f);
-            else if (time < 13f)
+            else if (time < 12f)
                 return Color.Lerp(StellarFire4, StellarFire3, time - 12f);
-            else if (time < 14f)
+            else if (time < 13f)
                 return Color.Lerp(StellarFire3, StellarFire2, time - 13f);
-            else if (time < 15f)
+            else
                 return Color.Lerp(StellarFire2, StellarFire1, time - 14f);
-            else // time < 16f
-                return Color.Lerp(StellarFire1, StellarFire2, time - 15f); // start loop over
         }
 
 
@@ -1049,6 +1043,8 @@ namespace DestroyerTest.Common
         public static Asset<Texture2D> StarFuryOutline = ModContent.Request<Texture2D>($"{ExtrasPath}/StarfuryCloneOutline", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> NodeBossPikeOutline = ModContent.Request<Texture2D>($"{ExtrasPath}/NodeBossDistendedPikeOutline", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> PossessedToothOutline = ModContent.Request<Texture2D>($"{ExtrasPath}/PossessedToothOutline", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> HaepienCircleBottom = ModContent.Request<Texture2D>($"{ExtrasPath}/HaepienSigilBottom", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> HaepienCircleTop = ModContent.Request<Texture2D>($"{ExtrasPath}/HaepienSigilTop", AssetRequestMode.AsyncLoad);
         //
         // Sounds
         //
@@ -1067,6 +1063,7 @@ namespace DestroyerTest.Common
             public static SoundStyle IceMagicImpact = new SoundStyle($"{AudioPath}/Impacts/IceMagicImpact", 3);
             public static SoundStyle MagicBeep = new SoundStyle($"{AudioPath}/Impacts/MagicBeep", 3);
             public static SoundStyle MetalImpact = new SoundStyle($"{AudioPath}/Impacts/MetalImpact", 3);
+            public static SoundStyle StellarFox = new SoundStyle($"{AudioPath}/Impacts/StellarFoxImpact", 5);
         }
     }
 

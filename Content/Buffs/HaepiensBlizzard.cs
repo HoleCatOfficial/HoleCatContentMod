@@ -1,5 +1,8 @@
+using DestroyerTest.Common;
 using DestroyerTest.Content.Dusts;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using Terraria;
 using Terraria.GameContent.Bestiary;
 using Terraria.ID;
@@ -37,26 +40,49 @@ namespace DestroyerTest.Content.Buffs
         public override bool InstancePerEntity => true;
         public bool lifeRegenDebuff;
 
-        public override void ResetEffects(NPC npc) {
+        public override void ResetEffects(NPC npc) 
+        {
             lifeRegenDebuff = false;
         }
 
-        public override void UpdateLifeRegen(NPC npc, ref int damage) {
-            if (lifeRegenDebuff) {
-                // Spawn dust around NPC and make it gravitate toward the center
-                for (int i = 0; i < 5; i++)
-                {
-                    Vector2 spawnPosition = npc.Center + Main.rand.NextVector2Circular(30f, 30f);
-                    Vector2 velocity = Vector2.Normalize(npc.Center - spawnPosition) * 2f; // Moves toward center
-                    int dustIndex = Dust.NewDust(spawnPosition, 0, 0, DustID.Frost, velocity.X, velocity.Y, 0, default, 1.5f);
-                    Main.dust[dustIndex].noGravity = true;
-                }
+        public override void PostDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            if(lifeRegenDebuff)
+            {
+                Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+                spriteBatch.Draw(DTAssetLib.HaepienCircleBottom.Value, npc.Center - Main.screenPosition, null, Color.Aquamarine, Rot, DTAssetLib.HaepienCircleBottom.Value.Size() / 2, 0.5f, SpriteEffects.None, 0);
+                Opus.ReturnToDefaultDrawing(spriteBatch);
+                spriteBatch.Draw(DTAssetLib.HaepienCircleTop.Value, npc.Center - Main.screenPosition, null, Color.White, Rot, DTAssetLib.HaepienCircleTop.Value.Size() / 2, 0.5f, SpriteEffects.None, 0);
+            }
+        }
 
+        public float Rot = 0f;
+        public float RotSpeed = 0.04f;
+        public override void AI(NPC npc)
+        {
+            if (lifeRegenDebuff)
+            {
+                Rot += RotSpeed;
                 if (!npc.boss)
                 {
-                    npc.velocity = new Vector2(0, 0);
+                    npc.velocity.X = 0;
+                    npc.velocity.Y = 10;
                 }
 
+
+                Vector2[] pt = Opus.GetEquidistantOrbitVectors(6, npc.Center, RotSpeed, 25);
+
+                foreach(Vector2 p in pt)
+                {
+                    Dust.NewDustPerfect(p, ModContent.DustType<ColorableNeonDust>(), Vector2.Zero, 0, Color.Aquamarine, 1f);
+                }
+                //Dust.NewDustDirect(npc.position, npc.width, npc.height, ModContent.DustType<ColorableNeonDust>(), (Main.rand.NextFloat(-0.2f, 0.2f) + npc.velocity.X), (Main.rand.NextFloat(-0.2f, 0.2f) + npc.velocity.Y), 0, Color.Aquamarine, 1f);
+            }
+        }
+
+        public override void UpdateLifeRegen(NPC npc, ref int damage) {
+            if (lifeRegenDebuff) 
+            {
                 if (npc.lifeRegen > 0)
                     npc.lifeRegen = 0;
 

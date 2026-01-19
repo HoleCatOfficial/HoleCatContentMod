@@ -67,6 +67,7 @@ namespace DestroyerTest.Content.Scepter
             List<int> Options = new List<int>
             {
                 ModContent.ProjectileType<CursedShot>(),
+                ModContent.ProjectileType<IchorShot>(),
                 ModContent.ProjectileType<FireShot>(),
                 ModContent.ProjectileType<GalantineShot>(),
                 ModContent.ProjectileType<IceShot>(),
@@ -86,7 +87,7 @@ namespace DestroyerTest.Content.Scepter
 
         public override bool PreDrawTooltip(ReadOnlyCollection<TooltipLine> lines, ref int x, ref int y)
         {
-            lines.Append(new TooltipLine(Mod, "ElementalScepterSpecialText", " "));
+            lines.Append(new TooltipLine(Mod, "ElementalScepterSpecialText", "."));
 
 
             // Compute total height vanilla will consume

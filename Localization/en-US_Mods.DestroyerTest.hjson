@@ -1275,7 +1275,7 @@ Items: {
 		Tooltip:
 			'''
 			An elegant scepter, fit for a prince or princess.
-			Left click to shoot homing magic darts, Right click to throw the scepter.
+			Left click to shoot magic darts that bounce off of tiles, Right click to throw the scepter.
 			'''
 	}
 
@@ -1367,7 +1367,8 @@ Items: {
 		Tooltip:
 			'''
 			A blessed scepter, with a lustrous red gemstone atop, fit for a high officiant.
-			Left click to shoot homing power orbs, Right click to throw the scepter; which puts enemies into a power trade.
+			Left click to shoot condemnation orbs, which explode into fragments and chase the target relentlessly.
+
 			'''
 		DisplayName: Holy Scepter
 	}
@@ -2082,7 +2083,12 @@ Items: {
 
 	StellarFoxScepter: {
 		DisplayName: Stellar Fox Scepter
-		Tooltip: Dedicated to: TopFox6 the PipeBomb Fox, for being a part of what motivates me to follow through with this mod by making me want to impress him.
+		Tooltip:
+			'''
+			Shoots homing stellar fox apparitions that explode on collision and inflict galantine burn.
+			Throws have no native special effect.
+			Dedicated to: TopFox6 the PipeBomb Fox, for being a part of what motivates me to follow through with this mod by making me want to impress him.
+			'''
 	}
 
 	StellarBow: {
@@ -3907,10 +3913,12 @@ Items: {
 			[i:DestroyerTest/ShadowScepter] A shadowflame shot,
 			[i:DestroyerTest/StellarFoxScepter] A galantine burn shot,
 			[i:DestroyerTest/RiftScepter] A Heliouric Shot,
+			[i:DestroyerTest/InfectedScepter] A Cursed Flame shot and Ichor Shot,
 			[i:DestroyerTest/PrismaticScepter] A pure light shot.
 
 			All shots except for the light shot will inflict their respective debuff.
 			The thrown scepter has a larger, sweeping hitbox that doesnt affect tile collision.
+			The thrown scepter also releases shimmering sparks that home in on enemies after a brief pause.
 			'''
 	}
 
@@ -3932,6 +3940,11 @@ Items: {
 	ElementalPendant: {
 		Tooltip: ""
 		DisplayName: Elemental Pendant
+	}
+
+	FrigidPendant: {
+		DisplayName: Frigid Pendant
+		Tooltip: ""
 	}
 }
 
@@ -4133,6 +4146,7 @@ Projectiles: {
 	FoxScepterThrown.DisplayName: Fox Scepter Thrown
 	GalantineLanceFriendly.DisplayName: Galantine Lance Friendly
 	StellarFoxScepterThrown.DisplayName: Stellar Fox Scepter Thrown
+	StellarFox.DisplayName: Stellar Fox
 	StellarPipeBomb.DisplayName: Stellar Pipe Bomb
 	StellarBowHoldout.DisplayName: Stellar Bow Holdout
 	ConstitutionT2CrimtaneSwing.DisplayName: Constitution T2 Crimtane Swing
@@ -4447,6 +4461,7 @@ Projectiles: {
 	ElementalScepterThrown.DisplayName: Elemental Scepter Thrown
 	ElementalTrail.DisplayName: Elemental Trail
 	ShimmeringShardCluster.DisplayName: Shimmering Shard Cluster
+	IchorShot.DisplayName: Ichor Shot
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.

@@ -150,7 +150,7 @@ namespace DestroyerTest.Content.Entities
             }
             NPC.rotation = NPC.velocity.ToRotation() + MathHelper.PiOver4;
 
-            Music = MusicLoader.GetMusicSlot("DestroyerTest/Assets/Music/Placeholder7");
+            Music = MusicLoader.GetMusicSlot("DestroyerTest/Assets/Music/ConstitutionBoss");
             
         }
 
@@ -207,7 +207,8 @@ namespace DestroyerTest.Content.Entities
         public void IdleAI()
         {
             Player player = Main.player[NPC.target];
-            Utils.MoveTowards(NPC.Center, player.Center, 0.3f);
+           //Utils.MoveTowards(NPC.Center, player.Center, 0.3f);
+           NPC.aiStyle = NPCAIStyleID.CursedSkull;
         }
 
         public int DashAITimer = 0;

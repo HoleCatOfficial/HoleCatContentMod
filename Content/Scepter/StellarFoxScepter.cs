@@ -32,7 +32,7 @@ namespace DestroyerTest.Content.Scepter
             base.SetDefaults();
 
             // Override stats unique to this scepter
-            ShootDMG = 20;
+            ShootDMG = 45;
             ShootCrit = 4;
             ThrowCrit = 14;
             KB = 2;
@@ -40,17 +40,22 @@ namespace DestroyerTest.Content.Scepter
             Rarity = ModContent.RarityType<PaleFuchsiaRarity>();
 
             // Assign projectile types
-            ShootID = ModContent.ProjectileType<StellarPipeBomb>();
+            ShootID = ModContent.ProjectileType<StellarFox>();
             ThrowID = ModContent.ProjectileType<StellarFoxScepterThrown>();
 
             // Optional: change sounds
-            ShootSound = SoundID.Item25;
+            ShootSound = new SoundStyle("DestroyerTest/Assets/Audio/SwordSounds/SwiftSwing1") { MaxInstances = 0, PitchVariance = 0.4f };
             ThrowSound = SoundID.Item169;
 
             // Refresh defaults after overriding values
             base.SetDefaults();
         }
 
+        public override void ShootDefaults()
+        {
+            base.ShootDefaults();
+            Item.shootSpeed = 2f;
+        }
     
     }
 } 

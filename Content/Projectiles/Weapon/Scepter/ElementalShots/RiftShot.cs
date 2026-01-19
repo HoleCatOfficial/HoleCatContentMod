@@ -10,6 +10,7 @@ using Terraria.ModLoader;
 using OpusLib;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
+using DestroyerTest.Content.Projectiles.ParentClasses;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Scepter.ElementalShots
 {

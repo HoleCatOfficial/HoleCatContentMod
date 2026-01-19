@@ -12,7 +12,7 @@ using DestroyerTest.Content.Projectiles.ParentClasses;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Scepter.ElementalShots
 {
-	public class FireShot : ElementalScepterShot
+	public class IchorShot : ElementalScepterShot
 	{
         public override string Texture => DTUtils.NoTexture;
         public override void SetStaticDefaults()
@@ -25,15 +25,14 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter.ElementalShots
 			Projectile.DamageType = ModContent.GetInstance<ScepterClass>();
             Projectile.friendly = true;
             Projectile.hostile = false;
-
-			TrailColor = Color.Orange;
+			TrailColor = ColorLib.Ichor;
 			DustColor = Color.White;
-			TravelDust = DustID.Torch;
-			KillDust = DustID.Torch;
+			TravelDust = DustID.IchorTorch;
+			KillDust = DustID.IchorTorch;
 			Projectile.Resize(16, 16);
 			TrailAmplitude = 10f;
 
-            Debuff = BuffID.OnFire3;
+            Debuff = BuffID.Ichor;
             DebuffTime = 300;
             DetectionRad = 1200;
         }

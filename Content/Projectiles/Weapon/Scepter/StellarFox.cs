@@ -14,10 +14,16 @@ using ReLogic.Content;
 using DestroyerTest.Content.Equips.ScepterAccessories;
 using System.Linq;
 using Terraria.Graphics.Shaders;
+using DestroyerTest.Content.Dusts;
+using DestroyerTest.Content.Projectiles.player.Accessory;
+using DestroyerTest.Content.Buffs;
+using System;
+using InnoVault.PRT;
+using DestroyerTest.Content.Particles;
 
-namespace DestroyerTest.Content.Projectiles.ParentClasses
+namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 {
-    public abstract class ElementalScepterShot : ModProjectile
+    public class StellarFox : ModProjectile
     {
         private NPC HomingTarget {
             get => Projectile.ai[0] == 0 ? null : Main.npc[(int)Projectile.ai[0] - 1];
@@ -112,7 +118,8 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 				for (int i = TrailPositions.Count - 1; i > 0; i--)
 				{
 					float t = 1f - (i / (float)TrailPositions.Count); // fade toward tail
-					Color b = lightColor * t;
+					Color b = GetTrailColor(i);
+                    b *= t;
 
 					Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
 					Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * TrailAmplitude;
@@ -125,21 +132,51 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 				GraphicsDevice gd = Main.graphics.GraphicsDevice;
 				if (ve.Count >= 3)
 				{
-                    gd.Textures[0] = DTAssetLib.Streak(TrailType).Value;
+                    gd.Textures[0] = DTAssetLib.Streak(2).Value;
                     gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2); 
 				}
 			}
 
 			Opus.DrawGlowOnProj(Projectile, lightColor, true);
 
+            Opus.DrawProjectileShadowsRotating(Projectile, 6, lightColor, 0.3f);
+
 			Opus.ReturnToDefaultDrawing(spriteBatch);
 
-            Main.EntitySpriteDraw(DTAssetLib.MiscSparkle144.Value, Projectile.Center - Main.screenPosition, null, TrailColor * 0.5f, Projectile.rotation, DTAssetLib.MiscSparkle144.Value.Size() / 2, new Vector2(1f, 1.5F + (0.1f * Projectile.velocity.Length())), SpriteEffects.None, 0);
-
-			Main.EntitySpriteDraw(DTAssetLib.MiscSparkle144.Value, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, DTAssetLib.MiscSparkle144.Value.Size() / 2, new Vector2(0.5f, 1 + (0.1f * Projectile.velocity.Length())), SpriteEffects.None, 0);
+            Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, TextureAssets.Projectile[Projectile.type].Value.Size() / 2, 1f, SpriteEffects.None, 0);
 
 			return false;
 		}
+
+        public List<Color> StellarFireColormap = new List<Color>
+        {
+            Color.White,
+            ColorLib.StellarFire1,
+            ColorLib.StellarFire2,
+            ColorLib.StellarFire3,
+            ColorLib.StellarFire4,
+            ColorLib.StellarFire5,
+            ColorLib.StellarFire6,
+            ColorLib.StellarFire7,
+            ColorLib.StellarFire8
+        };
+
+        private Color GetTrailColor(int index)
+        {
+            if (TrailPositions.Count <= 1)
+                return StellarFireColormap[0];
+
+            float t = index / (float)(TrailPositions.Count - 1);
+            t = MathHelper.Clamp(t, 0f, 1f);
+
+            float scaled = t * (StellarFireColormap.Count - 1);
+            int low = (int)scaled;
+            int high = Math.Min(low + 1, StellarFireColormap.Count - 1);
+
+            float lerp = scaled - low;
+            return Color.Lerp(StellarFireColormap[low], StellarFireColormap[high], lerp);
+        }
+
 
         public List<Vector2> TrailPositions = new();
         public List<float> TrailRotations = new();
@@ -169,8 +206,6 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 				TrailRotations.Insert(0, Projectile.rotation);
 			}
 
-
-			// Cap trail
 			while (TrailPositions.Count > TrailLength)
 				TrailPositions.RemoveAt(TrailPositions.Count - 1);
 			while (TrailRotations.Count > TrailLength)
@@ -179,23 +214,23 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
         public void DustSpawn1()
         {
-            Vector2 Pos1 = Projectile.Center + new Vector2(0, -8).RotatedBy(Projectile.rotation + MathHelper.PiOver2);
-            Vector2 Pos2 = Projectile.Center + new Vector2(0, 8).RotatedBy(Projectile.rotation + MathHelper.PiOver2);
+            Vector2 Pos1 = Projectile.Center + new Vector2(0, -8).RotatedBy(Projectile.rotation);
+            Vector2 Pos2 = Projectile.Center + new Vector2(0, 8).RotatedBy(Projectile.rotation);
 
             Vector2 DustPos = Opus.Sine(Pos1, Pos2, 0.5f);
 
-            Dust trail1 = Dust.NewDustPerfect(DustPos, TravelDust, Projectile.velocity * 0.05f, 0, DustColor, 0.75f);
+            Dust trail1 = Dust.NewDustPerfect(DustPos, ModContent.DustType<ColorableNeonDust>(), Projectile.velocity * 0.05f, 0, ColorLib.StellarFireGradientLooping(), 0.75f);
             trail1.noGravity = true;
         }
 
         public void DustSpawn2()
         {
-            Vector2 Pos1 = Projectile.Center + new Vector2(0, 8).RotatedBy(Projectile.rotation + MathHelper.PiOver2);
-            Vector2 Pos2 = Projectile.Center + new Vector2(0, -8).RotatedBy(Projectile.rotation + MathHelper.PiOver2);
+            Vector2 Pos1 = Projectile.Center + new Vector2(0, 8).RotatedBy(Projectile.rotation);
+            Vector2 Pos2 = Projectile.Center + new Vector2(0, -8).RotatedBy(Projectile.rotation);
 
             Vector2 DustPos = Opus.Sine(Pos1, Pos2, 0.5f);
 
-            Dust trail2 = Dust.NewDustPerfect(DustPos, TravelDust, Projectile.velocity * 0.05f, 0, DustColor, 0.75f);
+            Dust trail2 = Dust.NewDustPerfect(DustPos, ModContent.DustType<ColorableNeonDust>(), Projectile.velocity * 0.05f, 0, ColorLib.StellarFireGradientLooping(), 0.75f);
             trail2.noGravity = true;
         }
 
@@ -206,7 +241,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
         public override void AI() 
         {
-            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
+            Projectile.rotation = Projectile.velocity.ToRotation();
             
             if(DelayTimer < 20)
             {
@@ -229,7 +264,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             float targetAngle = Projectile.AngleTo(HomingTarget.Center);
             int turn = 20;
             Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(turn)).ToRotationVector2() * length;
-            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
+            Projectile.rotation = Projectile.velocity.ToRotation();
             Projectile.velocity *= 1.08f;
             if (Main.GameUpdateCount % 3 == 0)
             {
@@ -277,49 +312,27 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             }
         }
 
-        public void AccessoryHandler_ChlorophyteLifesteal(ref int damageDone, NPC target)
+        public void Explosion()
         {
-            Player player = Main.player[Projectile.owner];
-            if (!player.TryGetModPlayer<LivingPendantPlayer>(out var Pendant))
-            {
-                return;
-            }
-            else
-            {
-                if (!Pendant.Active)
-                {
-                    return;
-                }
-                else
-                {
-                    for (int i = 0; i < 4; i++)
-                    {
-                        Dust.NewDustPerfect(target.Center, DustID.ChlorophyteWeapon, Main.rand.NextVector2Circular(10, 10), 0, default, 1.4f);
-                    }
-                    player.Heal((int)(damageDone * 0.05f));
-                }
-            }
-        }
+            Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BoomCloud>(), Projectile.Center, Vector2.Zero, ColorLib.StellarFire5, 0.01f, 1.5f);
+            Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BoomCloud>(), Projectile.Center, Vector2.Zero, ColorLib.StellarFire3, 0.01f, 1.0f);
+            Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BoomCloud>(), Projectile.Center, Vector2.Zero, ColorLib.StellarFire1, 0.01f, 0.7f);
 
+            Opus.RadialParticleRandomDir(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], 15, Projectile.Center, 1, Main.rand.NextFromCollection(StellarFireColormap), 1.3f, 2, 60, ai2: 2);
+            DTUtils.ConstitutionStarExplosionEffects(Projectile);
+        }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if (Debuff != -1)
-            {
-                target.AddBuff(Debuff, DebuffTime);
-            }
-            AccessoryHandler_ChlorophyteLifesteal(ref damageDone, target);
-        }
-
-        public override void OnHitPlayer(Player target, Player.HurtInfo info)
-        {
-            target.AddBuff(Debuff, DebuffTime);
+            Explosion();
+            SoundEngine.PlaySound(DTAssetLib.Impacts.StellarFox with { PitchVariance = 0.3f, MaxInstances = 0, Volume = 0.5f }, Projectile.Center);
+            target.AddBuff(ModContent.BuffType<GalantineBurn>(), 300);
         }
 
         public override void OnKill(int timeLeft)
         {
             for (int i = 0; i < 4; i++)
             {
-                Dust.NewDustPerfect(Projectile.Center, KillDust, Main.rand.NextVector2Circular(10, 10), 0, DustColor, 1.4f);
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<ColorableNeonDust>(), Main.rand.NextVector2Circular(10, 10), 0, ColorLib.StellarFireGradientLooping(), 1.4f);
             }
         }
 

@@ -34,12 +34,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
         public static List<int> ItemsThatElementalPendantCannotPairWith = new List<int>
         {
             ModContent.ItemType<InfectedPendant>(),
-            ModContent.ItemType<AzurePendant>(),
-            ModContent.ItemType<RadiantPendant>(),
-            ModContent.ItemType<MythicPendant>(),
-            ModContent.ItemType<OrchidPendant>(),
-            ModContent.ItemType<AdamantPendant>(),
-            ModContent.ItemType<TitanPendant>()
+            ModContent.ItemType<PendantofUnity>(),
         };
 
         public override bool CanAccessoryBeEquippedWith(Item equippedItem, Item incomingItem, Player player)

@@ -8,6 +8,7 @@ using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
 using OpusLib;
+using DestroyerTest.Content.Projectiles.ParentClasses;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Scepter.ElementalShots
 {

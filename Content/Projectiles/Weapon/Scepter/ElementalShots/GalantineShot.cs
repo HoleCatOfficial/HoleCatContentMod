@@ -9,6 +9,8 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using OpusLib;
 using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Dusts;
+using DestroyerTest.Content.Projectiles.ParentClasses;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Scepter.ElementalShots
 {
@@ -34,8 +36,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter.ElementalShots
             */
             TrailColor = ColorLib.StellarFireGradientLooping();
             DustColor = ColorLib.StellarFireGradientLooping();
-			TravelDust = DustID.TintableDustLighted;
-			KillDust = DustID.TintableDustLighted;
+			TravelDust = ModContent.DustType<ColorableNeonDust>();
+			KillDust = ModContent.DustType<ColorableNeonDust>();
 			Projectile.Resize(16, 16);
 			TrailAmplitude = 10f;
             inittime = Projectile.timeLeft;

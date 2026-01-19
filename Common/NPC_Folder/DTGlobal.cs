@@ -284,11 +284,6 @@ namespace DestroyerTest.Common.NPC_Folder
                 shop.Add<CursedStar>(Condition.DownedSkeletron);
             }
 
-            if (shop.NpcType == NPCID.TravellingMerchant)
-            {
-                shop.Add<FoxScepter>(Condition.DownedKingSlime);
-            }
-
             if (shop.NpcType == ModContent.NPCType<Scholar>())
             {
                 shop.Add<ShiningObelisk>(Condition.DownedCultist);
