@@ -310,7 +310,7 @@ namespace DestroyerTest.Common
         /// <param name="line"></param>
         /// <param name="texture"></param>
         /// <param name="scrollspeed"></param>
-        public static void ScrollingTextureSpine(SimpleLine line, Asset<Texture2D> texture, Color drawColor, SpriteBatch spriteBatch,  BlendState blendState, float scrollspeed = 0.01f)
+        public static void ScrollingTextureSpine(SimpleLine line, Asset<Texture2D> texture, Color drawColor, SpriteBatch spriteBatch,  BlendState blendState, float Width = 16f, float scrollspeed = 0.01f)
         {
             Vector2[] pt = line.GetPointsAlongLine(10);
             float texOffset = 0f;
@@ -333,14 +333,17 @@ namespace DestroyerTest.Common
 
                 for (int i = pt.Length - 1; i > 0; i--)
                 {
-                    float t = 1f - (i / (float)pt.Length); // fade toward tail
-                    Color b = drawColor * t;
+                    float u = i / (float)(ptList.Count - 1);
+					float widthFactor = (float)Math.Sin(u * MathHelper.Pi);
 
-                    Vector2 dir = (pt[i] - pt[i - 1]).ToRotation().ToRotationVector2();
-                    Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * 22;
-                    Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * 22;
+					float width = Width * widthFactor;
 
-                    DTUtils.AddStrips(ve, ptList, i, offset, offset2, t, b, texOffset);
+					Vector2 dir = (pt[i] - pt[i - 1]).ToRotation().ToRotationVector2();
+					Vector2 perp = dir.RotatedBy(MathHelper.PiOver2);
+					Vector2 offset  = perp * width;
+					Vector2 offset2 = -perp * width;
+
+                    DTUtils.AddStrips(ve, ptList, i, offset, offset2, 0, drawColor, texOffset);
                 }
 
 
@@ -601,6 +604,11 @@ namespace DestroyerTest.Common
     /// </summary>
     public static class ColorLib
     {
+        /// <summary>
+        /// The deepest color used in Living Shadows and other sprites using glow from Living Shadows.
+        /// <para/> ColorLib colors are numbered from darkest to lightest in a series.
+        /// </summary>
+        public static Color Electric = new Color(113, 251, 255);
         /// <summary>
         /// The deepest color used in Living Shadows and other sprites using glow from Living Shadows.
         /// <para/> ColorLib colors are numbered from darkest to lightest in a series.

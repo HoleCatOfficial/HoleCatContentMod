@@ -5,7 +5,7 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
-using static Terraria.ModLoader.ModContent;
+ 
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Common;
   

@@ -2535,7 +2535,7 @@ Items: {
 
 	PrismaticScepter: {
 		DisplayName: Prismatic Scepter
-		Tooltip: ""
+		Tooltip: Shoots out homing sparks of iridescent light. Right click to throw.
 	}
 
 	OnyxScepter: {
@@ -3808,7 +3808,11 @@ Items: {
 
 	InfectedScepter: {
 		DisplayName: Infected Scepter
-		Tooltip: ""
+		Tooltip:
+			'''
+			Summons a ring of onyx crystals that home in on enemies.
+			When thrown, it leaves a trail of cursed fire and creates sprays of ichor when hitting an enemy.
+			'''
 	}
 
 	ShadowMonarchHeadgear: {
@@ -3868,17 +3872,17 @@ Items: {
 
 	BroochOfBalance: {
 		DisplayName: Brooch Of Balance
-		Tooltip: ""
+		Tooltip: Makes you immune to Light Inferno, Night Inferno, and Knockback.
 	}
 
 	BroochOfLight: {
 		DisplayName: Brooch Of Light
-		Tooltip: ""
+		Tooltip: Grants immunity to Light Inferno and reduces knockback by 50%
 	}
 
 	BroochOfNight: {
 		DisplayName: Brooch Of Night
-		Tooltip: ""
+		Tooltip: Grants immunity to Night Inferno and reduces knockback by 50%
 	}
 
 	HeliciteScepter: {
@@ -3886,7 +3890,7 @@ Items: {
 		Tooltip:
 			'''
 			Shots slow to a halt and explode into four homing solar darts that inflict Daylight Overload.
-			Right click to throw.
+			Right click to throw, leaving behind a stationary trail of solar sparkles.
 			'''
 	}
 
@@ -3909,14 +3913,15 @@ Items: {
 			They can vary from the following types:
 			[i:DestroyerTest/EmberCane] A hellfire shot,
 			[i:DestroyerTest/FrostScepter] A frostburn shot,
+			[i:DestroyerTest/ThunderScepter] An Electric shot.
 			[i:DestroyerTest/NatureScepter] A venom shot,
 			[i:DestroyerTest/ShadowScepter] A shadowflame shot,
 			[i:DestroyerTest/StellarFoxScepter] A galantine burn shot,
 			[i:DestroyerTest/RiftScepter] A Heliouric Shot,
-			[i:DestroyerTest/InfectedScepter] A Cursed Flame shot and Ichor Shot,
-			[i:DestroyerTest/PrismaticScepter] A pure light shot.
+			[i:DestroyerTest/InfectedScepter] A Cursed Flame shot,
+			[i:DestroyerTest/InfectedScepter] An Ichor shot
 
-			All shots except for the light shot will inflict their respective debuff.
+			All shots will inflict their respective debuff.
 			The thrown scepter has a larger, sweeping hitbox that doesnt affect tile collision.
 			The thrown scepter also releases shimmering sparks that home in on enemies after a brief pause.
 			'''
@@ -3945,6 +3950,16 @@ Items: {
 	FrigidPendant: {
 		DisplayName: Frigid Pendant
 		Tooltip: ""
+	}
+
+	DarkUnity: {
+		Tooltip:
+				'''
+				Unlike the regal harmony of the Elemental Scepter, this scepter controls the the souls of those who fall under its influence."
+				Shoots Shimmering Mushrooms that slow down and explode into damaging spore clouds that inflict Shimmering Flames.
+				The Thrown Scepter doesnt behave as normal, instead also slowing down and exploding into homing Tenebris Stars.
+				'''
+		DisplayName: الوحدة المظلمة
 	}
 }
 
@@ -4462,6 +4477,12 @@ Projectiles: {
 	ElementalTrail.DisplayName: Elemental Trail
 	ShimmeringShardCluster.DisplayName: Shimmering Shard Cluster
 	IchorShot.DisplayName: Ichor Shot
+	ElectricShot.DisplayName: Electric Shot
+	ShimmeringMushroomMagentaSmoke.DisplayName: Shimmering Mushroom Magenta Smoke
+	ShimmeringMushroomBlueSmoke.DisplayName: Shimmering Mushroom Blue Smoke
+	ShimmeringMushroomBeigeSmoke.DisplayName: Shimmering Mushroom Beige Smoke
+	ShimmeringMushroom.DisplayName: Shimmering Mushroom
+	DarkUnityThrown.DisplayName: Dark Unity Thrown
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.

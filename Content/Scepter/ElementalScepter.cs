@@ -35,7 +35,7 @@ namespace DestroyerTest.Content.Scepter
             base.SetDefaults();
 
             // Override stats unique to this scepter
-            ShootDMG = 145;
+            ShootDMG = 90;
             ShootCrit = 30;
             ThrowCrit = 14;
             KB = 4;
@@ -71,7 +71,7 @@ namespace DestroyerTest.Content.Scepter
                 ModContent.ProjectileType<FireShot>(),
                 ModContent.ProjectileType<GalantineShot>(),
                 ModContent.ProjectileType<IceShot>(),
-                ModContent.ProjectileType<LightShot>(),
+                ModContent.ProjectileType<ElectricShot>(),
                 ModContent.ProjectileType<RiftShot>(),
                 ModContent.ProjectileType<ShadowFireShot>(),
                 ModContent.ProjectileType<VenomShot>()
@@ -87,7 +87,7 @@ namespace DestroyerTest.Content.Scepter
 
         public override bool PreDrawTooltip(ReadOnlyCollection<TooltipLine> lines, ref int x, ref int y)
         {
-            lines.Append(new TooltipLine(Mod, "ElementalScepterSpecialText", "."));
+            lines.Append(new TooltipLine(Mod, "ElementalScepterSpecialText", " "));
 
 
             // Compute total height vanilla will consume
@@ -132,9 +132,11 @@ namespace DestroyerTest.Content.Scepter
         public override void AddRecipes()
         {
             CreateRecipe()
-                .AddIngredient<FrostScepter>()
-                .AddIngredient<ShadowScepter>()
                 .AddIngredient<EmberCane>()
+                .AddIngredient<FrostScepter>()
+                .AddIngredient<NatureScepter>()
+                .AddIngredient<ThunderScepter>()
+                .AddIngredient<ShadowScepter>()
                 .AddIngredient<StellarFoxScepter>()
                 .AddIngredient<InfectedScepter>()
                 .AddIngredient<Vesper>(16)

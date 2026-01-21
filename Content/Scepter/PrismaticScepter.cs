@@ -5,13 +5,15 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
-using static Terraria.ModLoader.ModContent;
+ 
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Common;
 using Terraria.GameContent.ItemDropRules;
 using DestroyerTest.Rarity;
 using DestroyerTest.Rarity.Scepter;
-using DestroyerTest.Content.Projectiles.Weapon.Scepter; // Add this line if CT3_Swing is in the Projectiles namespace
+using DestroyerTest.Content.Projectiles.Weapon.Scepter;
+using DestroyerTest.Content.Projectiles.Weapon.Scepter.ElementalShots;
+
 
 namespace DestroyerTest.Content.Scepter
 {
@@ -31,7 +33,7 @@ namespace DestroyerTest.Content.Scepter
             base.SetDefaults();
 
             // Override stats unique to this scepter
-            ShootDMG = 40;
+            ShootDMG = 36;
             ShootCrit = 4;
             ThrowCrit = 14;
             KB = 2;
@@ -39,25 +41,23 @@ namespace DestroyerTest.Content.Scepter
             Rarity = ModContent.RarityType<CerisePinkRarity>();
 
             // Assign projectile types
-            ShootID = ProjectileID.FairyQueenMagicItemShot;
+            ShootID = ModContent.ProjectileType<LightShot>();
             ThrowID = ModContent.ProjectileType<PrismaticScepterThrown>();
 
             // Optional: change sounds
-            ShootSound = SoundID.Item25;
+            ShootSound = SoundID.DD2_EtherianPortalSpawnEnemy;
             ThrowSound = SoundID.Item169;
 
             // Refresh defaults after overriding values
             base.SetDefaults();
         }
-    }
-    
-    public class PS_DROP_NPC : GlobalNPC
-	{
-		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot) {
 
-			if (npc.type == NPCID.HallowBoss) {
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<PrismaticScepter>(), 5, 1, 1));
-			}
-		}
-	}
+        public override void ShootDefaults()
+        {
+            base.ShootDefaults();
+            Item.useTime = 20;
+            Item.useAnimation = 20;
+            Item.shootSpeed = 2;
+        }
+    }
 } 

@@ -33,7 +33,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             Projectile.DamageType = DamageClass.Generic;
             Projectile.tileCollide = false;
             Projectile.frame = Main.rand.Next(3);
-            Projectile.alpha = 200;
+            Projectile.Opacity = 0.5f;
         }
 
         public override bool PreDraw(ref Color lightColor)
@@ -54,7 +54,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
                     projectileTexture,
                     Projectile.Center - Main.screenPosition,
                     frame,
-                    lightColor,
+                    lightColor * Projectile.Opacity,
                     Projectile.rotation,
                     origin,
                     Projectile.scale,

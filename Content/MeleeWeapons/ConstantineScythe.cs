@@ -4,7 +4,7 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
-using DestroyerTest.Content.Projectiles; // Add this line if CT3_Swing is in the Projectiles namespace
+using DestroyerTest.Content.Projectiles;  
 using DestroyerTest.Rarity;
 using DestroyerTest.Common;
 using System;

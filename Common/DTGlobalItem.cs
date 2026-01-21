@@ -1003,6 +1003,14 @@ namespace DestroyerTest.Common
             {
                 itemLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<GelCane>()));
             }
+            if (item.type == ItemID.FairyQueenBossBag)
+            {
+                itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<PrismaticScepter>(), 5, 1, 1));
+            }
+            if (item.type == ItemID.MoonLordBossBag)
+            {
+                itemLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<ElementalAlkahest>()));
+            }
         }
 
     }

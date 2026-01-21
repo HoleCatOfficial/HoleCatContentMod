@@ -12,9 +12,9 @@ using System;
 using InnoVault.PRT;
 using DestroyerTest.Content.Particles;
 
-namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
+namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 {
-    public class FailedPotionPurpleSmoke : ModProjectile
+    public class ShimmeringMushroomBeigeSmoke : ModProjectile
     {
         public override void SetStaticDefaults()
         {
@@ -68,14 +68,19 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
         {
             Projectile.velocity *= 0.99f;
             Projectile.rotation += 0.03f * Projectile.velocity.X;
-            Projectile.alpha = 200;
+            
+            if (Projectile.timeLeft < 60)
+            {
+                Projectile.scale += 0.01f;
+                Projectile.Opacity -= 0.05f;
+            }
 
-            PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Vector2.Zero, new Color(32, 11, 40) * 0.6f, Main.rand.NextFloat(0.5f, 1f));
+            PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Vector2.Zero, ColorLib.TenebrisBeige * 0.6f, Main.rand.NextFloat(0.5f, 1f));
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            target.AddBuff(BuffID.Poisoned, 600);
+            target.AddBuff(ModContent.BuffType<ShimmeringFlames>(), 600);
         }
     }
 

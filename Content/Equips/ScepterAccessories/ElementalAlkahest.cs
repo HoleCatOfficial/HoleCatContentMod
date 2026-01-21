@@ -27,20 +27,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
 		public override void UpdateEquip(Player player) {
 			player.GetAttackSpeed<ScepterClass>() += 0.05f;
             player.GetDamage<ScepterClass>() += 0.10f;
-            ScepterClassStats.Range += 50;
-            int[] buffs = new int[]
-			{
-				BuffID.WeaponImbueCursedFlames,
-				BuffID.WeaponImbueFire,
-				BuffID.WeaponImbueGold,
-				BuffID.WeaponImbueIchor,
-				BuffID.WeaponImbueNanites,
-				BuffID.WeaponImbuePoison,
-				BuffID.WeaponImbueVenom
-			};
-
-			player.AddBuff(buffs[Main.rand.Next(buffs.Length)], 2);
-
+            ScepterClassStats.Range += 300;
 		}
 
        public class EA_DROP_NPC : GlobalNPC
@@ -48,7 +35,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
 			public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot) {
 
 				if (npc.type == NPCID.MoonLordCore) {
-					npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<ElementalAlkahest>()));
+					
 				}
 			}
 		}

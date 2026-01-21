@@ -10,14 +10,15 @@ using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Common;
 using DestroyerTest.Rarity;
 using DestroyerTest.Rarity.Scepter;
-using DestroyerTest.Content.Projectiles.Weapon.Scepter;  
+using DestroyerTest.Content.Projectiles.Weapon.Scepter;
+using DestroyerTest.Content.Resources;
 
 namespace DestroyerTest.Content.Scepter
 {
-	public class ChlorophyteScepter : ScepterItem
+	public class DarkUnity : ScepterItem
 	{
-		public override int Width => 54;
-        public override int Height => 54;
+		public override int Width => 110;
+        public override int Height => 110;
 
         public override void SetStaticDefaults()
         {
@@ -38,8 +39,8 @@ namespace DestroyerTest.Content.Scepter
 			Rarity = ModContent.RarityType<CerisePinkRarity>();
 
 			// Assign projectile types
-			ShootID = ProjectileID.BladeOfGrass;
-			ThrowID = ModContent.ProjectileType<ChlorophyteScepterThrown>();
+			ShootID = ModContent.ProjectileType<ShimmeringMushroom>();
+			ThrowID = ModContent.ProjectileType<DarkUnityThrown>();
 
 			// Optional: change sounds
 			ShootSound = SoundID.Item25;
@@ -48,21 +49,13 @@ namespace DestroyerTest.Content.Scepter
 			// Refresh defaults after overriding values
 			base.SetDefaults();
 		}
-		
-		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
-		{
-            if (player.altFunctionUse != 2)
-            {
-                Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<NatureShot>(), 60, 3.2f, player.whoAmI);
-            }
-			return true; 
-		}
+	
 
         public override void AddRecipes() {
 			CreateRecipe()
-				.AddIngredient(ItemID.ChlorophyteBar, 22)
-				.AddIngredient(ItemID.SporeSac)
-				.AddIngredient<NatureScepter>(1)
+				.AddIngredient<FungalScepter>(1)
+                .AddIngredient<HolyScepter>(1)
+                .AddIngredient<Tenebris>(16)
 				.AddTile(TileID.MythrilAnvil)
 				.Register();
 		}

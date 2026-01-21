@@ -5,14 +5,14 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
-using static Terraria.ModLoader.ModContent;
+ 
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Resources;
 using System.IO.Pipelines;
 using DestroyerTest.Rarity;
 using DestroyerTest.Rarity.Scepter;
-using DestroyerTest.Content.Projectiles.Weapon.Scepter; // Add this line if CT3_Swing is in the Projectiles namespace
+using DestroyerTest.Content.Projectiles.Weapon.Scepter;  
 
 namespace DestroyerTest.Content.Scepter
 {

@@ -52,6 +52,7 @@ namespace DestroyerTest.Content.Equips
 		public override void AddRecipes() {
 			CreateRecipe()
 				.AddIngredient(ItemID.EmpressFlightBooster)
+				.AddIngredient(ItemID.LunarBar, 6)
 				.AddIngredient<Tenebris>(8)
 				.AddTile(TileID.LunarCraftingStation)
 				.SortBefore(Main.recipe.First(recipe => recipe.createItem.wingSlot != -1))

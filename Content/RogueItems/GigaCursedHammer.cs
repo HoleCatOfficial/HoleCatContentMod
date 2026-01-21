@@ -5,11 +5,11 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
-using static Terraria.ModLoader.ModContent;
+ 
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Common;
 using DestroyerTest.Rarity;
-using DestroyerTest.Content.Projectiles.Weapon.Rogue; // Add this line if CT3_Swing is in the Projectiles namespace
+using DestroyerTest.Content.Projectiles.Weapon.Rogue;  
 
 namespace DestroyerTest.Content.RogueItems
 {
