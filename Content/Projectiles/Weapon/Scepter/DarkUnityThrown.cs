@@ -46,9 +46,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 			Projectile.hostile = false;
 			Projectile.ignoreWater = true;
 			Projectile.light = 1f;
-			Projectile.timeLeft = 180;
+			Projectile.timeLeft = 120;
 			Projectile.tileCollide = false;
-            Projectile.penetrate = -1;
+            Projectile.penetrate = 1;
 		}
 		public int trailLength = 10;
 		public override bool PreDraw(ref Color lightColor)
@@ -79,11 +79,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 
 			Projectile.rotation += (Projectile.velocity.Length() * 0.5f) * Projectile.direction;
 
-			Projectile.velocity *= 0.96f;
+			Projectile.velocity *= 0.98f;
 
             Projectile.ai[1]++;
 
-			if (Projectile.ai[1] > 200)
+			if (Projectile.ai[1] > 60)
 			{
 				Projectile.Center += Main.rand.NextVector2Circular(3, 3);
 			}

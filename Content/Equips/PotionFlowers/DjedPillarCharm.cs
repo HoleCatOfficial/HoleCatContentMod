@@ -122,8 +122,6 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
 
         public override void ResetEffects()
         {
-            Active = false;
-
             // ResetEffects is called not long after player.doubleTapCardinalTimer's values have been set
             // When a directional key is pressed and released, vanilla starts a 15 tick (1/4 second) timer during which a second press activates a dash
             // If the timers are set to 15, then this is the first press just processed by the vanilla logic.  Otherwise, it's a double-tap
@@ -145,6 +143,8 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
             {
                 EntryWindow--;
             }
+
+            Active = false;
         }
 
         public override void OnEnterWorld()
@@ -190,7 +190,9 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
             }
 
             if (DashDelay > 0)
+            {
                 DashDelay--;
+            }
 
 
             if (DashTimer > 0)

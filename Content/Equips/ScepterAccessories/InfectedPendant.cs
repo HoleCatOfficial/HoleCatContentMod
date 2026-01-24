@@ -39,7 +39,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
             return !ItemsThatInfectedPendantCannotPairWith.Contains(incomingItem.type);
         }
 
-        public static readonly float CritBonus = 1.2f;
+        public static readonly int CritBonus = 13;
         public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(CritBonus.ToString("F1") + "%");
 
         public override void UpdateAccessory(Player player, bool hideVisual)

@@ -1064,7 +1064,7 @@ namespace DestroyerTest.Common
             public static SoundStyle BrightBell = new SoundStyle($"{AudioPath}/Impacts/BrightBell");
             public static SoundStyle DarkMagicImpact = new SoundStyle($"{AudioPath}/Impacts/DarkMagicImpact", 3);
             public static SoundStyle EnergyBounce = new SoundStyle($"{AudioPath}/Impacts/EnergyBounce", 3);
-            public static SoundStyle ExplosiveImpactSmall = new SoundStyle($"{AudioPath}/Impacts/ExplosiveImpactSmall", 3);
+            public static SoundStyle ExplosiveImpactSmall = new SoundStyle($"{AudioPath}/Impacts/ExplosiveImpactSmall");
             public static SoundStyle FlameImpact = new SoundStyle($"{AudioPath}/Impacts/FlameImpact", 4);
             public static SoundStyle HellWeaponImpact = new SoundStyle($"{AudioPath}/Impacts/HellWeaponImpact");
             public static SoundStyle IceImpact = new SoundStyle($"{AudioPath}/Impacts/IceImpact", 3);

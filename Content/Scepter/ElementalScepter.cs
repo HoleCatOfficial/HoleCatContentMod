@@ -16,6 +16,7 @@ using DestroyerTest.Content.Resources;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Terraria.GameContent;
+using Terraria.UI.Chat;
 
 namespace DestroyerTest.Content.Scepter
 {
@@ -35,7 +36,7 @@ namespace DestroyerTest.Content.Scepter
             base.SetDefaults();
 
             // Override stats unique to this scepter
-            ShootDMG = 90;
+            ShootDMG = 67;
             ShootCrit = 30;
             ThrowCrit = 14;
             KB = 4;
@@ -62,72 +63,111 @@ namespace DestroyerTest.Content.Scepter
             Item.useAnimation = 60;
         }
 
+        public static List<int> ElementalScepterOptions = new List<int>
+        {
+            ModContent.ProjectileType<CursedShot>(),
+            ModContent.ProjectileType<IchorShot>(),
+            ModContent.ProjectileType<FireShot>(),
+            ModContent.ProjectileType<GalantineShot>(),
+            ModContent.ProjectileType<IceShot>(),
+            ModContent.ProjectileType<ElectricShot>(),
+            ModContent.ProjectileType<RiftShot>(),
+            ModContent.ProjectileType<ShadowFireShot>(),
+            ModContent.ProjectileType<VenomShot>()
+        };
+        
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
-            List<int> Options = new List<int>
-            {
-                ModContent.ProjectileType<CursedShot>(),
-                ModContent.ProjectileType<IchorShot>(),
-                ModContent.ProjectileType<FireShot>(),
-                ModContent.ProjectileType<GalantineShot>(),
-                ModContent.ProjectileType<IceShot>(),
-                ModContent.ProjectileType<ElectricShot>(),
-                ModContent.ProjectileType<RiftShot>(),
-                ModContent.ProjectileType<ShadowFireShot>(),
-                ModContent.ProjectileType<VenomShot>()
-            };
-
             if (player.altFunctionUse != 2)
             {
-
-                type = Options[Main.rand.Next(Options.Count)];
+                type = ElementalScepterOptions[Main.rand.Next(ElementalScepterOptions.Count)];
                 SoundEngine.PlaySound(Item.UseSound, position);
             }
         }
 
-        public override bool PreDrawTooltip(ReadOnlyCollection<TooltipLine> lines, ref int x, ref int y)
+        public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
-            lines.Append(new TooltipLine(Mod, "ElementalScepterSpecialText", " "));
+            tooltips.Add(new TooltipLine(Mod, "ElementalScepterSpecialText", "MASTER OF THE ELEMENTS"));
+        }
 
-
-            // Compute total height vanilla will consume
-            float height = 0f;
+        public override bool PreDrawTooltip(
+        ReadOnlyCollection<TooltipLine> lines,
+        ref int x,
+        ref int y)
+        {
+            float drawY = y;
 
             for (int i = 0; i < lines.Count; i++)
             {
                 TooltipLine line = lines[i];
-
                 Vector2 size = FontAssets.MouseText.Value.MeasureString(line.Text);
-                height += size.Y;
+
+                if (line.Mod == Mod.Name && line.Name == "ElementalScepterSpecialText")
+                {
+                    Color[] cl = new Color[]
+                    {
+                        new Color(5, 62, 80),
+                        new Color(24, 67, 97),
+                        new Color(26, 73, 107),
+                        new Color(15, 84, 125),
+                        new Color(25, 102, 148),
+                        new Color(28, 138, 204),
+                        new Color(0, 162, 232),
+                        new Color(0, 168, 218),
+                        new Color(0, 190, 164),
+                        new Color(34, 177, 76),
+                        new Color(22, 158, 69),
+                        new Color(24, 153, 135),
+                        new Color(20, 120, 118),
+                        new Color(14, 93, 82),
+                        new Color(12, 83, 67),
+                        new Color(6, 79, 57),
+                        new Color(6, 79, 76),
+                        new Color(6, 69, 79)
+                    };
+
+                    Vector2 pos = new Vector2(x, drawY);
+                    DTUtils.SweepColorOverString(line.Text, cl, pos, 16f);
+                }
+                else
+                {
+                    // Let vanilla draw everything else
+                    ChatManager.DrawColorCodedStringWithShadow(
+                        Main.spriteBatch,
+                        FontAssets.MouseText.Value,
+                        line.Text,
+                        new Vector2(x, drawY),
+                        line.OverrideColor ?? Color.White,
+                        0f,
+                        Vector2.Zero,
+                        Vector2.One);
+                }
+
+                drawY += size.Y;
             }
 
-            Vector2 drawPos = new Vector2(x, y + height);
-
-            Color[] cl = new Color[18]
-            {
-                new Color(5, 62, 80),
-                new Color(24, 67, 97),
-                new Color(26, 73, 107),
-                new Color(15, 84, 125),
-                new Color(25, 102, 148),
-                new Color(28, 138, 204),
-                new Color(0, 162, 232),
-                new Color(0, 168, 218),
-                new Color(0, 190, 164),
-                new Color(34, 177, 76),
-                new Color(22, 158, 69),
-                new Color(24, 153, 135),
-                new Color(20, 120, 118),
-                new Color(14, 93, 82),
-                new Color(12, 83, 67),
-                new Color(6, 79, 57),
-                new Color(6, 79, 76),
-                new Color(6, 69, 79)
-            };
-            DTUtils.SweepColorOverString("MASTER OF THE ELEMENTS", cl, drawPos, 2f);
-
-            return true; // vanilla still draws everything
+            return false; // we handled ALL drawing
         }
+
+        
+
+        public static void RegisterScepterLine(Mod mod, string text, List<TooltipLine> tooltips)
+        {
+            // Find insertion point: just before the summary line
+            int insertIndex = tooltips.FindIndex(t =>
+                t.Mod != "Terraria" &&
+                t.Text.Contains("All shots will inflict their respective debuff.")
+            );
+
+            if (insertIndex == -1)
+                insertIndex = tooltips.Count;
+
+            tooltips.Insert(insertIndex,
+                new TooltipLine(mod, "ElementalScepterRegisteredText", text)
+            );
+        }
+
+
 
         public override void AddRecipes()
         {

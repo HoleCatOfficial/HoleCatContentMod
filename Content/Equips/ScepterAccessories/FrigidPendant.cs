@@ -31,7 +31,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
         public override void AddRecipes()
         {
             CreateRecipe()
-                .AddIngredient(ItemID.CobaltBar, 12)
+                .AddIngredient(ItemID.FrostCore, 14)
                 .AddTile(TileID.MythrilAnvil)
                 .Register();
         }

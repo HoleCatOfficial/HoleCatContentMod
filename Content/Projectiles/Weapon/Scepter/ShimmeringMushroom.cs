@@ -105,16 +105,76 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
                 EffectColor = ColorLib.TenebrisBlue;
                 projType = ModContent.ProjectileType<ShimmeringMushroomBlueSmoke>();
             }
-			Projectile.rotation += (Projectile.velocity.Length() * 0.5f) * Projectile.direction;
-			Projectile.velocity *= 0.96f;
+			Projectile.rotation += (Projectile.velocity.Length() * 0.05f) * Projectile.direction;
+            Homing();
 		}
+
+        public void Homing()
+		{
+			if(DelayTimer < 20)
+            {
+                DelayTimer++;
+                return;
+            }
+
+            if (HomingTarget == null) {
+                HomingTarget = FindClosestNPC(1200);
+            }
+
+            if (HomingTarget != null && !IsValidTarget(HomingTarget)) {
+                HomingTarget = null;
+            }
+
+            if (HomingTarget == null)
+			{
+				Projectile.velocity *= 0.94f;
+                return;
+			}
+
+            float length = Projectile.velocity.Length();
+            float targetAngle = Projectile.AngleTo(HomingTarget.Center);
+            Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(30)).ToRotationVector2() * length;
+			if (length < 10)
+			{
+				Projectile.velocity *= 1.1f;
+			}
+			Projectile.penetrate = 1;
+		}
+
+		public NPC FindClosestNPC(float maxDetectDistance) {
+            NPC closestNPC = null;
+
+            float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
+
+            foreach (var target in Main.ActiveNPCs) {
+                if (IsValidTarget(target)) {
+                    float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, Projectile.Center);
+                    if (sqrDistanceToTarget < sqrMaxDetectDistance) {
+                        sqrMaxDetectDistance = sqrDistanceToTarget;
+                        closestNPC = target;
+                    }
+                }
+            }
+
+            return closestNPC;
+        }
+
+        public bool IsValidTarget(NPC target) 
+        {
+            if (Projectile.tileCollide == true)
+            {
+                return target.CanBeChasedBy() && Collision.CanHit(Projectile.Center, 1, 1, target.position, target.width, target.height);
+            }
+            else
+            {
+                return target.CanBeChasedBy();
+            }
+        }
 
         public void Explosion()
         {
             Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BoomCloud>(), Projectile.Center, Vector2.Zero, EffectColor, 0.01f, 1.5f);
-
             Opus.RadialParticleRandomDir(PRTLoader.GetParticleID<SimpleParticle>(), 15, Projectile.Center, 1, EffectColor, 1.3f, 2);
-            DTUtils.ConstitutionStarExplosionEffects(Projectile);
         }
 
         public override void OnKill(int timeLeft)
@@ -122,7 +182,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 			Explosion();
 			SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/Thud1") with { PitchVariance = 0.4f, MaxInstances = 0 }, Projectile.Center);
             SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/ConstitutionBoss/ConstitutionBossJab") with { PitchVariance = 0.4f, MaxInstances = 0 }, Projectile.Center);
-			Opus.RadialSpreadProjectile(projType, 8, Projectile.Center, Projectile.damage / 4, 0, 2, offset: Projectile.rotation);
+			Opus.RadialSpreadProjectile(projType, 10, Projectile.Center, Projectile.damage / 4, 0, 2, offset: Projectile.rotation);
         }
     }
 }

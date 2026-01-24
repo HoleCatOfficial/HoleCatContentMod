@@ -31,7 +31,7 @@ namespace DestroyerTest.Content.Resources
             Item.value = 1;
             Item.rare = ItemRarityID.Master;
             Item.consumable = true;
-            Item.UseSound = new SoundStyle("DestroyerTest/Assets/Audio/Corpse/CorpseRoar2") with { PitchVariance = 1.0f, Volume = 4 };
+            Item.UseSound = new SoundStyle("DestroyerTest/Assets/Audio/Corpse/Enrage") with { PitchVariance = 1.0f, Volume = 4 };
             Item.useStyle = ItemUseStyleID.EatFood;
             Item.useTime = 120;
             Item.useAnimation = 120;

@@ -3920,7 +3920,6 @@ Items: {
 			[i:DestroyerTest/RiftScepter] A Heliouric Shot,
 			[i:DestroyerTest/InfectedScepter] A Cursed Flame shot,
 			[i:DestroyerTest/InfectedScepter] An Ichor shot
-
 			All shots will inflict their respective debuff.
 			The thrown scepter has a larger, sweeping hitbox that doesnt affect tile collision.
 			The thrown scepter also releases shimmering sparks that home in on enemies after a brief pause.
@@ -3943,7 +3942,11 @@ Items: {
 	}
 
 	ElementalPendant: {
-		Tooltip: ""
+		Tooltip:
+			'''
+			Increases Scepter Class Damage by {0}.
+			Increases Scepter Class crit chance by {1}.
+			'''
 		DisplayName: Elemental Pendant
 	}
 
@@ -3954,11 +3957,11 @@ Items: {
 
 	DarkUnity: {
 		Tooltip:
-				'''
-				Unlike the regal harmony of the Elemental Scepter, this scepter controls the the souls of those who fall under its influence."
-				Shoots Shimmering Mushrooms that slow down and explode into damaging spore clouds that inflict Shimmering Flames.
-				The Thrown Scepter doesnt behave as normal, instead also slowing down and exploding into homing Tenebris Stars.
-				'''
+			'''
+			Unlike the regal harmony of the Elemental Scepter, this scepter controls the the souls of those who fall under its influence."
+			Shoots Shimmering Mushrooms that slow down and explode into damaging spore clouds that inflict Shimmering Flames.
+			The Thrown Scepter doesnt behave as normal, instead also slowing down and exploding into homing Tenebris Stars.
+			'''
 		DisplayName: الوحدة المظلمة
 	}
 }

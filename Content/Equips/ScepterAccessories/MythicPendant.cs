@@ -27,14 +27,14 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
             return (incomingItem.type != ModContent.ItemType<PendantofUnity>() || incomingItem.type != ModContent.ItemType<ElementalPendant>());
         }
 
-        public static readonly float DMGBonus = 1.16f;
-        public static readonly float CritBonus = 1.26f;
+        public static readonly int DMGBonus = 30;
+        public static readonly int CritBonus = 12;
         public static readonly int RangeBonus = 30;
-        public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs((DMGBonus - 1f).ToString("P1"), CritBonus.ToString("F1") + "%", RangeBonus);
+        public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(DMGBonus, CritBonus.ToString("F1") + "%", RangeBonus);
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.GetDamage(ModContent.GetInstance<ScepterClass>()) *= DMGBonus;
+            player.GetDamage(ModContent.GetInstance<ScepterClass>()) += DMGBonus;
             player.GetCritChance(ModContent.GetInstance<ScepterClass>()) += CritBonus;
             ScepterClassStats.Range += RangeBonus;
         }

@@ -42,7 +42,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
             return !ItemsThatElementalPendantCannotPairWith.Contains(incomingItem.type);
         }
 
-        public float DMGBonus = 1.15f;
+        public float DMGBonus = 1.12f;
         public static readonly float CritBonus = 1.2f;
         public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs((DMGBonus - 1f).ToString("P1"), CritBonus.ToString("F1") + "%");
 
@@ -61,6 +61,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
 				Infected.Active = true;
 			}
         }
+        
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             ActivatePlayer(player);
