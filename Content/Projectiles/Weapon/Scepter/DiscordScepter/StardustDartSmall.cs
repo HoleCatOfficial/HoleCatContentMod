@@ -1,7 +1,9 @@
+using System.Collections.Generic;
 using System.IO;
 using DestroyerTest.Common;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using Terraria;
 using Terraria.Enums;
 using Terraria.GameContent;
@@ -27,143 +29,151 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter.DiscordScepter
 
 		public override void SetStaticDefaults()
 		{
-			ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true; // Make the cultist resistant to this projectile, as it's resistant to all homing projectiles.
+			ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true;
 			ProjectileID.Sets.TrailingMode[Type] = 2;
 			ProjectileID.Sets.TrailCacheLength[Type] = 20;
 		}
 
 		public override void SetDefaults()
 		{
-			Projectile.width = 8; // The width of projectile hitbox
-			Projectile.height = 20; // The height of projectile hitbox
+			Projectile.width = 16;
+			Projectile.height = 16;
 
 			Projectile.DamageType = ModContent.GetInstance<ScepterClass>();
-			Projectile.friendly = true; // Can the projectile deal damage to enemies?
-			Projectile.hostile = false; // Can the projectile deal damage to the player?
-			Projectile.ignoreWater = true; // Does the projectile's speed be influenced by water?
-			Projectile.light = 1f; // How much light emit around the projectile
-			Projectile.timeLeft = 600; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
+			Projectile.friendly = true;
+			Projectile.hostile = false;
+			Projectile.ignoreWater = true;
+			Projectile.timeLeft = 600;
 			Projectile.tileCollide = false;
-			Projectile.damage += 15;
-			Projectile.netImportant = true;
-			Projectile.netUpdate = true;
 		}
 
-		public int trailLength = 20;
+		public float trailOffset = 0f;
 		public override bool PreDraw(ref Color lightColor)
 		{
 			lightColor = new Color(0, 174, 238);
-
 			SpriteBatch spriteBatch = Main.spriteBatch;
 			Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
 
-			// --- Draw the main projectile ---
-			spriteBatch.End();
-			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-
-			Main.EntitySpriteDraw(
-				projectileTexture,
-				Projectile.Center - Main.screenPosition,
-				null,
-				lightColor,
-				Projectile.rotation,
-				projectileTexture.Size() / 2,
-				Projectile.scale,
-				SpriteEffects.None,
-				0
-			);
-
-			// --- Draw glow + trail ---
-			spriteBatch.End();
-			spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-
-			Texture2D glowTexture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/SimpleParticle").Value;
-			Main.EntitySpriteDraw(
-				glowTexture,
-				Projectile.Center - Main.screenPosition,
-				null,
-				lightColor,
-				Projectile.rotation,
-				glowTexture.Size() / 2,
-				Projectile.scale,
-				SpriteEffects.None,
-				0
-			);
-
-			spriteBatch.End();
-			spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-
-
-			Texture2D longtrailTexture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/Trail2").Value;
-			Vector2 trailOrigin = new(longtrailTexture.Width / 2f, longtrailTexture.Height / 2f);
-
-			for (int i = 0; i < trailLength && i < Projectile.oldPos.Length; i++)
+			trailOffset += 0.01f;
+            Opus.StartSpriteBatchForTrails(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+			
+			if (TrailPositions.Count > 1)
 			{
-				float fade = (float)(trailLength - i) / trailLength;
-				Color trailColor = lightColor * fade * 0.3f;
-				trailColor.A = (byte)(fade * 100);
+				List<ColoredVertex> ve = new List<ColoredVertex>();
+				float a = 0;
 
-				Vector2 drawPosition = Projectile.oldPos[i] + (Projectile.Size / 2f) - Main.screenPosition;
-				float scaleFactor = 0.1f;
-				Main.EntitySpriteDraw(longtrailTexture, drawPosition, null, trailColor, Projectile.rotation, trailOrigin, (Projectile.scale * fade) * scaleFactor, SpriteEffects.None, 0);
+				for (int i = TrailPositions.Count - 1; i > 0; i--)
+				{
+					float t = 1f - (i / (float)TrailPositions.Count); // fade toward tail
+					Color b = lightColor * t;
+
+					Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
+					Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * 20;
+                    Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * 20;
+
+					DTUtils.AddStrips(ve, TrailPositions, i, offset, offset2, t, b, trailOffset);
+				}
+
+
+				GraphicsDevice gd = Main.graphics.GraphicsDevice;
+				if (ve.Count >= 3)
+				{
+                    gd.Textures[0] = DTAssetLib.Streak(2).Value;
+                    gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2); 
+				}
 			}
 
-			// Restore normal batch
-			spriteBatch.End();
-			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+			Opus.ReturnToDefaultDrawing(spriteBatch);
 
+			Main.EntitySpriteDraw(DTUtils.CenteredDraw(Projectile, Color.White));
 			return false;
 		}
 
-		// Custom AI
+		public List<Vector2> TrailPositions = new();
+        public List<float> TrailRotations = new();
+        private const int TrailLength = 150;
+        private void CacheTrail()
+        {
+            Vector2 lastPos = TrailPositions.Count > 0 ? TrailPositions[0] : Projectile.Center;
+			Vector2 newPos  = Projectile.Center;
+
+			float dist = Vector2.Distance(lastPos, newPos);
+			float step = 1f; // how closely to sample. tweak this!
+
+			if (dist > 0f)
+			{
+				int segments = (int)(dist / step);
+
+				for (int i = 1; i <= segments; i++)
+				{
+					Vector2 pos = Vector2.Lerp(lastPos, newPos, i / (float)segments);
+					TrailPositions.Insert(0, pos);
+					TrailRotations.Insert(0, Projectile.rotation);
+				}
+			}
+			else
+			{
+				TrailPositions.Insert(0, newPos);
+				TrailRotations.Insert(0, Projectile.rotation);
+			}
+
+
+			// Cap trail
+			while (TrailPositions.Count > TrailLength)
+				TrailPositions.RemoveAt(TrailPositions.Count - 1);
+			while (TrailRotations.Count > TrailLength)
+				TrailRotations.RemoveAt(TrailRotations.Count - 1);
+        }
+
+		public override bool? CanHitNPC(NPC target)
+        {
+            return DelayTimer >= 35;
+        }
+
 		public override void AI()
 		{
+			CacheTrail();
 			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
-			float maxDetectRadius = 400f; // The maximum radius at which a projectile can detect a target
+			float maxDetectRadius = 800f;
 
-			// First, we find a homing target if we don't have one
+			if (DelayTimer < 35)
+			{
+				DelayTimer++;
+				return;
+			}
+
 			if (HomingTarget == null)
 			{
 				HomingTarget = FindClosestNPC(maxDetectRadius);
 			}
 
-			// If we have a homing target, make sure it is still valid. If the NPC dies or moves away, we'll want to find a new target
 			if (HomingTarget != null && !IsValidTarget(HomingTarget))
 			{
 				HomingTarget = null;
 			}
 
-			// If we don't have a target, don't adjust trajectory
 			if (HomingTarget == null)
 				return;
 
-			// If found, we rotate the projectile velocity in the direction of the target.
-			// We only rotate by 3 degrees an update to give it a smooth trajectory. Increase the rotation speed here to make tighter turns
 			float length = Projectile.velocity.Length();
 			float targetAngle = Projectile.AngleTo(HomingTarget.Center);
 			Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(30)).ToRotationVector2() * length;
 			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
+			Projectile.velocity *= 1.05f;
 		}
 
-		// Finding the closest NPC to attack within maxDetectDistance range
-		// If not found then returns null
 		public NPC FindClosestNPC(float maxDetectDistance)
 		{
 			NPC closestNPC = null;
 
-			// Using squared values in distance checks will let us skip square root calculations, drastically improving this method's speed.
 			float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
 
-			// Loop through all NPCs
 			foreach (var target in Main.ActiveNPCs)
 			{
-				// Check if NPC able to be targeted. 
 				if (IsValidTarget(target))
 				{
-					// The DistanceSquared function returns a squared distance between 2 points, skipping relatively expensive square root calculations
 					float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, Projectile.Center);
 
-					// Check if it is within the radius
 					if (sqrDistanceToTarget < sqrMaxDetectDistance)
 					{
 						sqrMaxDetectDistance = sqrDistanceToTarget;
@@ -177,32 +187,14 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter.DiscordScepter
 
 		public bool IsValidTarget(NPC target)
 		{
-			// This method checks that the NPC is:
-			// 1. active (alive)
-			// 2. chaseable (e.g. not a cultist archer)
-			// 3. max life bigger than 5 (e.g. not a critter)
-			// 4. can take damage (e.g. moonlord core after all it's parts are downed)
-			// 5. hostile (!friendly)
-			// 6. not immortal (e.g. not a target dummy)
-			// 7. doesn't have solid tiles blocking a line of sight between the projectile and NPC
-			return target.CanBeChasedBy() && Collision.CanHit(Projectile.Center, 1, 1, target.position, target.width, target.height);
+
+			return target.CanBeChasedBy();
 		}
 
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
 			target.AddBuff(BuffID.StardustMinionBleed, 300);
 		}
-		
-		public override void SendExtraAI(BinaryWriter writer)
-		{
-			writer.WriteVector2(HomingTarget?.Center ?? Vector2.Zero);
-			writer.Write(DelayTimer);
-		}
-		public override void ReceiveExtraAI(BinaryReader reader)
-		{
-			Vector2 targetPos = reader.ReadVector2().ToWorldCoordinates();
-			HomingTarget = FindClosestNPC(32f); // Use a small radius to find the NPC at the given position
-			DelayTimer = reader.ReadSingle();
-		}
+	
     }
 }

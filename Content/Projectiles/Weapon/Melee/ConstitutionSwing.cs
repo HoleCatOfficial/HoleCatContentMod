@@ -255,12 +255,14 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
 		private bool Sound1 = false;
         private bool Sound2 = false;
+		private bool spawnedSlash;
 		public Vector2 swordTip;
         private void ExecuteStrike() {
 			swordTip = Projectile.Center + Projectile.rotation.ToRotationVector2() * (Projectile.Size.Length() * Projectile.scale);
             Player player = Main.player[Projectile.owner];
 
-            if (CurrentAttack == AttackType.SwingDown) {
+            if (CurrentAttack == AttackType.SwingDown) 
+			{
 				
                 Progress = MathHelper.SmoothStep(0, SWINGRANGE, (1f - UNWIND) * Timer / execTime);
 				if (!Sound1)
@@ -271,9 +273,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
 				Vector2 Velocity = (Main.MouseWorld - Projectile.Center).ToRotation().ToRotationVector2() * 8f;
 
-                if (Timer == execTime / 2)
+                if (!spawnedSlash && Timer >= execTime * 0.5f)
 				{
                 	Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Velocity, ModContent.ProjectileType<StellarFireSlash>(), Projectile.damage / 3, 2, Main.player[Projectile.owner].whoAmI, ai0: 0);
+					spawnedSlash = true;
 				}
 
 
@@ -283,7 +286,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                     CurrentStage = AttackStage.Unwind;
                 }
             }
-            else if (CurrentAttack == AttackType.SwingUp) {
+            else if (CurrentAttack == AttackType.SwingUp) 
+			{
 				if (player.direction == 1)
 				{
 					Progress = MathHelper.SmoothStep(SWINGRANGE, 0, (1f - UNWIND) * Timer / execTime);
@@ -301,9 +305,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
 				Vector2 Velocity = (Main.MouseWorld - Projectile.Center).ToRotation().ToRotationVector2() * 8f;
 
-				if (Timer == execTime / 2)
+				if (!spawnedSlash && Timer >= execTime * 0.5f)
 				{
                 	Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Velocity, ModContent.ProjectileType<StellarFireSlash>(), Projectile.damage / 3, 2, Main.player[Projectile.owner].whoAmI, ai0: 1);
+					spawnedSlash = true;
 				}
 
                
@@ -326,6 +331,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 {
 					Sound1 = false;
 					Sound2 = false;
+					spawnedSlash = false;
                     Projectile.Kill();
                 }
             }

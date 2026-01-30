@@ -40,6 +40,7 @@ using DestroyerTest.Content.Projectiles.Boss;
 using DestroyerTest.Content.Projectiles.Boss.NodeBoss.Ichor;
 using ReLogic.Utilities;
 using OpusLib.Content.Helpers;
+using Terraria.GameContent;
 
 namespace DestroyerTest.Content.Entities
 {
@@ -47,7 +48,6 @@ namespace DestroyerTest.Content.Entities
     /// This is the code from Consolaria's Arch Wyvern. I do not own any of this except for the textures I paint over it. This code will be replaced in the future, when I am capable of modding something so advanced. (Trust me. I tried many times with the example worm. It did not go well.)
     /// </summary>
     [AutoloadBossHead]
-    [AutoloadGlowmask]
     public class WyvernCorpseHead : ModNPC
     {
         public enum attackType
@@ -1424,8 +1424,25 @@ namespace DestroyerTest.Content.Entities
             }
         }
 
+        public static void DrawHealingShadow(NPC npc, Vector2 Center, Vector2 offset, Color color, float rotationOffset = 0f)
+        {
+            Texture2D value = TextureAssets.Npc[npc.type].Value;
+            Vector2 origin = value.Size() / 2f;
+            SpriteEffects effects = SpriteEffects.None;
+            if (npc.spriteDirection == 1) 
+            {
+                effects = SpriteEffects.FlipHorizontally;
+            }
+            Main.EntitySpriteDraw(value, Center + offset.RotatedBy(rotationOffset) - Main.screenPosition, new Rectangle?(npc.frame), color * 0.5f, npc.rotation, value.Size() / 2f, npc.scale, effects);
+        }
+
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
+            Texture2D texture = (Texture2D)ModContent.Request<Texture2D>(Texture);
+            Texture2D Glowtexture = (Texture2D)ModContent.Request<Texture2D>($"{Texture}_Glow");
+            Vector2 origin = texture.Size() / 2f;
+            Vector2 drawPos = new Vector2(NPC.position.X - Main.screenPosition.X + (NPC.width / 2) - texture.Width * NPC.scale / 2f + origin.X * NPC.scale, NPC.position.Y - Main.screenPosition.Y + NPC.height - texture.Height * NPC.scale + 4f + origin.Y * NPC.scale + 56f);
+
             if (CurrentAttack == attackType.TeleDash)
             {
                 DrawDashTelegraph(TelePos, Outer, DTAssetLib.ArrowTelegraphCont.Value);
@@ -1433,14 +1450,20 @@ namespace DestroyerTest.Content.Entities
             }
             if (anyNodesAlive)
             {
-                Opus.DrawNPCShadowsRotating(NPC, 6, ColorLib.Ichor);
+                //Opus.DrawNPCShadowsRotating(NPC, 6, ColorLib.Ichor);
+
+                float rotationOffset = 0.3f * (float)NPC.direction;
+                DrawHealingShadow(NPC, new Vector2(0f, 6), drawPos, ColorLib.Ichor, rotationOffset);
+                DrawHealingShadow(NPC, new Vector2(0f, 0f - 6), drawPos, ColorLib.Ichor, rotationOffset);
+                DrawHealingShadow(NPC, new Vector2(6, 0f), drawPos, ColorLib.Ichor, rotationOffset);
+                DrawHealingShadow(NPC, new Vector2(0f - 6, 0f), drawPos, ColorLib.Ichor, rotationOffset);
             }
 
-            Texture2D texture = (Texture2D)ModContent.Request<Texture2D>(Texture);
-            Vector2 origin = new Vector2(texture.Width / 2, texture.Height / 2);
+            
             SpriteEffects effects = SpriteEffects.None;
             if (NPC.spriteDirection == 1) effects = SpriteEffects.FlipHorizontally;
-            spriteBatch.Draw(texture, new Vector2(NPC.position.X - Main.screenPosition.X + (NPC.width / 2) - texture.Width * NPC.scale / 2f + origin.X * NPC.scale, NPC.position.Y - Main.screenPosition.Y + NPC.height - texture.Height * NPC.scale + 4f + origin.Y * NPC.scale + 56f), new Rectangle?(NPC.frame), drawColor, NPC.rotation, origin, NPC.scale, effects, 0f);
+            spriteBatch.Draw(texture, drawPos, new Rectangle?(NPC.frame), drawColor, NPC.rotation, origin, NPC.scale, effects, 0f);
+            spriteBatch.Draw(Glowtexture, drawPos, new Rectangle?(NPC.frame), Color.White, NPC.rotation, origin, NPC.scale, effects, 0f);
             return false;
         }
 

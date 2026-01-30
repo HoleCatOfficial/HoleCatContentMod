@@ -63,15 +63,13 @@ public class NebulaFlame : ModProjectile
 			// Custom AI
 			public override void AI() {
                 killtimer--;
+				AnimateProjectile();
                 Projectile.rotation = (Projectile.velocity.ToRotation() + MathHelper.PiOver2) * 0.1f;
 				float maxDetectRadius = 400f; // The maximum radius at which a projectile can detect a target
-
-				// First, we find a homing target if we don't have one
 				if (HomingTarget == null) {
 					HomingTarget = FindClosestNPC(maxDetectRadius);
 				}
 
-				// If we have a homing target, make sure it is still valid. If the NPC dies or moves away, we'll want to find a new target
 				if (HomingTarget != null && !IsValidTarget(HomingTarget)) {
 					HomingTarget = null;
 				}
@@ -80,7 +78,6 @@ public class NebulaFlame : ModProjectile
                     killtimer = 120;
                 }
 
-				// If we don't have a target, don't adjust trajectory
 				if (HomingTarget == null)
 					return;
 
@@ -88,33 +85,23 @@ public class NebulaFlame : ModProjectile
                     Projectile.Kill();
                 }
 
-            
-
-				// If found, we rotate the projectile velocity in the direction of the target.
-				// We only rotate by 3 degrees an update to give it a smooth trajectory. Increase the rotation speed here to make tighter turns
 				float length = Projectile.velocity.Length();
 				float targetAngle = Projectile.AngleTo(HomingTarget.Center);
 				Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(30)).ToRotationVector2() * length;
                 Projectile.rotation = (Projectile.velocity.ToRotation() + MathHelper.PiOver2) * 0.2f;
+				Projectile.velocity *= 1.05f;
                 AnimateProjectile();
 			}
 
-			// Finding the closest NPC to attack within maxDetectDistance range
-			// If not found then returns null
 			public NPC FindClosestNPC(float maxDetectDistance) {
 				NPC closestNPC = null;
 
-				// Using squared values in distance checks will let us skip square root calculations, drastically improving this method's speed.
 				float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
 
-				// Loop through all NPCs
 				foreach (var target in Main.ActiveNPCs) {
-					// Check if NPC able to be targeted. 
 					if (IsValidTarget(target)) {
-						// The DistanceSquared function returns a squared distance between 2 points, skipping relatively expensive square root calculations
 						float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, Projectile.Center);
 
-						// Check if it is within the radius
 						if (sqrDistanceToTarget < sqrMaxDetectDistance) {
 							sqrMaxDetectDistance = sqrDistanceToTarget;
 							closestNPC = target;
@@ -126,36 +113,14 @@ public class NebulaFlame : ModProjectile
 			}
 
 			public bool IsValidTarget(NPC target) {
-				// This method checks that the NPC is:
-				// 1. active (alive)
-				// 2. chaseable (e.g. not a cultist archer)
-				// 3. max life bigger than 5 (e.g. not a critter)
-				// 4. can take damage (e.g. moonlord core after all it's parts are downed)
-				// 5. hostile (!friendly)
-				// 6. not immortal (e.g. not a target dummy)
-				// 7. doesn't have solid tiles blocking a line of sight between the projectile and NPC
-				return target.CanBeChasedBy() && Collision.CanHit(Projectile.Center, 1, 1, target.position, target.width, target.height);
+				return target.CanBeChasedBy();
 			}
 
-		public override void SendExtraAI(BinaryWriter writer)
-		{
-			writer.WriteVector2(HomingTarget?.Center ?? Vector2.Zero);
-			writer.Write(DelayTimer);
-			writer.Write(Projectile.frame);
-			writer.Write(killtimer);
-		}
-		public override void ReceiveExtraAI(BinaryReader reader)
-		{
-			Vector2 targetPos = reader.ReadVector2().ToWorldCoordinates();
-			HomingTarget = FindClosestNPC(32f); // Use a small radius to find the NPC at the given position
-			DelayTimer = reader.ReadSingle();
-			Projectile.frame = reader.ReadInt32();
-			killtimer = reader.ReadInt32();
-		}
+		
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
-			Player player = Main.LocalPlayer;
+			Player player = Main.player[Projectile.owner];
 			player.AddBuff(BuffID.NebulaUpLife1, 300);
 		}
     }

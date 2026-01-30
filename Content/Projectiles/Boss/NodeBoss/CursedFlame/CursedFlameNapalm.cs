@@ -87,7 +87,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame
 			for (int i = 0; i < trailPositions.Count; i++)
 			{
 				float progress = i / (float)TrailCacheLength;
-				float scale = MathHelper.Lerp(0.6f, 0.1f, progress);
+				float scale = MathHelper.Lerp(2f, 0.0005f, progress);
 				Color color = ColorLib.CursedFlames;
 
 				Main.EntitySpriteDraw(
@@ -111,7 +111,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame
 				ColorLib.CursedFlames,
 				Projectile.velocity.ToRotation(),
 				glowTex.Size() / 2f,
-				0.6f,
+				2f,
 				SpriteEffects.None,
 				0
 			);

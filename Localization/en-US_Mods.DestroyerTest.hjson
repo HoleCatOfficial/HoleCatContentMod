@@ -3964,6 +3964,84 @@ Items: {
 			'''
 		DisplayName: الوحدة المظلمة
 	}
+
+	Ambition: {
+		Tooltip:
+			'''
+			A flail empowered by worldly aspirations.
+			At full extension, three gravity-affected sparks will be released, each dealing the same damage as the flail itself.
+			Spinning the flail for 2 seconds will charge it, dealing 75% more damage on the next immediate hit.
+			'''
+		DisplayName: Ambition
+	}
+
+	LeeFractal: {
+		Tooltip: ""
+		DisplayName: Lee's Fractal
+	}
+
+	Dreampoon: {
+		DisplayName: Dreampoon
+		Tooltip: ""
+	}
+
+	SpearOfAspiration: {
+		Tooltip: ""
+		DisplayName: Spear Of Aspiration
+	}
+
+	Hollow: {
+		DisplayName: Hollow
+		Tooltip:
+			'''
+			Generates a 90-point shield around the player.
+			+10 Defense.
+			'''
+	}
+
+	Scourge: {
+		DisplayName: Scourge
+		Tooltip:
+			'''
+			5% increased ranged damage.
+			8% increased whip range.
+			+1 minion slot.
+			5% decreased ranged use speed.
+			All classes will ignore 6 points of enemy defense.
+
+			On the back of the card is a faint enscription that wasnt there when you created it:
+			'The best things come in fives!'
+			'''
+	}
+
+	Vortex: {
+		DisplayName: Vortex
+		Tooltip: Increased Item Pickup Range.
+	}
+
+	ShineShadeDeck: {
+		DisplayName: Shine-Shade Deck
+		Tooltip:
+			'''
+			Inherits all the effects of the cards used to make it:
+
+			5% increased ranged damage.
+			8% increased whip range.
+			+1 minion slot.
+			5% decreased ranged use speed.
+			All classes will ignore 6 points of enemy defense.
+
+			Generates a 90-point shield around the player.
+			+10 Defense.
+
+			Increased Item Pickup Range.
+			'''
+	}
+
+	ToxicCanister: {
+		Tooltip: Summons a ring of toxic sludge balls that explode on contact with enemies.
+		DisplayName: Toxic Canister
+	}
 }
 
 Projectiles: {
@@ -4181,6 +4259,7 @@ Projectiles: {
 	AngelWave.DisplayName: Angel Wave
 	EnergyWave.DisplayName: Energy Wave
 	AetherAngelSwing.DisplayName: Aether Angel Swing
+	AetherAngel.DisplayName: Aether Angel
 	AbyssWave.DisplayName: Abyss Wave
 	CarnageWave.DisplayName: Carnage Wave
 	DawnWave.DisplayName: Dawn Wave
@@ -4189,13 +4268,19 @@ Projectiles: {
 	StarWave.DisplayName: Star Wave
 	SunsetWave.DisplayName: Sunset Wave
 	BrilliantStarSwing.DisplayName: Brilliant Star Swing
+	BrilliantStar.DisplayName: Brilliant Star
 	CarnageSwing.DisplayName: Carnage Swing
+	Carnage.DisplayName: Carnage
 	EndlessAbyssSwing.DisplayName: Endless Abyss Swing
 	OmegasEdgeSwing.DisplayName: Omegas Edge Swing
+	OmegasEdge.DisplayName: Omegas Edge
 	SunsetSaviorSwing.DisplayName: Sunset Savior Swing
+	SunsetSavior.DisplayName: Sunset Savior
 	ValiantDawnSwing.DisplayName: Valiant Dawn Swing
+	ValiantDawn.DisplayName: Valiant Dawn
 	WyvernsDestructionSwing.DisplayName: Wyverns Destruction Swing
 	EternalAbyssSwing.DisplayName: Eternal Abyss Swing
+	EternalAbyss.DisplayName: Eternal Abyss
 	OrganProjectile_Variant1.DisplayName: Organ Projectile
 	OrganProjectile_Variant2.DisplayName: Organ Projectile
 	OrganProjectile_Variant3.DisplayName: Organ Projectile
@@ -4486,6 +4571,12 @@ Projectiles: {
 	ShimmeringMushroomBeigeSmoke.DisplayName: Shimmering Mushroom Beige Smoke
 	ShimmeringMushroom.DisplayName: Shimmering Mushroom
 	DarkUnityThrown.DisplayName: Dark Unity Thrown
+	AmbitionSpark.DisplayName: Ambition Spark
+	AmbitionProjectile.DisplayName: Ambition Projectile
+	DreampoonHoldout.DisplayName: Dreampoon Holdout
+	DreampoonProjectile.DisplayName: Dreampoon Projectile
+	SpearOfAspirationThrown.DisplayName: Spear Of Aspiration Thrown
+	ToxicOrb.DisplayName: Toxic Orb
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.
@@ -4882,18 +4973,23 @@ Buffs: {
 	}
 
 	HallowedSlimesBuff: {
-		DisplayName: Hallowed Slimes Buff
-		Description: Mods.DestroyerTest.Buffs.HallowedSlimesBuff.Description
+		DisplayName: Hallowed Slimes
+		Description: Hallowed Slimes will defend you!
 	}
 
 	NightInferno: {
-		Description: Mods.DestroyerTest.Buffs.NightInferno.Description
+		Description: You're burning from the inside out!
 		DisplayName: Night Inferno
 	}
 
 	LightInferno: {
-		Description: Mods.DestroyerTest.Buffs.LightInferno.Description
+		Description: You're burning from the inside out!
 		DisplayName: Light Inferno
+	}
+
+	LeeFractalBuff: {
+		Description: His favourites
+		DisplayName: Lee's Fractal
 	}
 }
 
@@ -4988,7 +5084,7 @@ NPCs: {
 			in order to find like-minded co-conspirators for their many stunts. On one particular visit to the shade world, Hekate was disguised as a miserly, elderly churl.
 			They said to the boy 'You are not loved here. You are merely a tool for her satisfaction. You know this, do you not?' It was on that day that Mother Darkness would no
 			longer locate her son in the shade world, as he had left to become an apprentice of Hekate, under the guise of seizing his true potential..."
-			- Excerpt from 'Folk Tales of Terraria: Volume 73', by Uriel XXV.
+			- Excerpt from 'Folk Tales of Pherasia: Volume LXXIII', by Uriel XXV.
 			'''
 	}
 
@@ -5177,6 +5273,38 @@ WorldGen: {
 	BlessedWithHeliciteMessage: Radiant Fragments of solar energy embed themselves in the rocks near to hell!
 	VesperOrePassMessage: Burying Fragments of Exotic properties...
 	BlessedWithVesperOreMessage: Mods.DestroyerTest.WorldGen.BlessedWithVesperOreMessage
+}
+
+Reforges: {
+	Resolute: +16% Scepter Class Damage.
+	Tainted:
+		'''
+		-15% Scepter Class Damage.
+		+25% Scepter Class Use Time.
+		'''
+	Gilded:
+		'''
+		+10% Scepter Class Damage.
+		-20% Scepter Class Knockback.
+		-20% Scepter Class Shoot Speed.
+		-50% Scepter Class Critical Strike Chance.
+		'''
+	Pure:
+		'''
+		-10% Scepter Class Use Time.
+		+10% Scepter Class Critical Strike Chance.
+		'''
+	Lowly:
+		'''
+		+50% Scepter Class Use Time.
+		+75% Scepter Class Knockback.
+		'''
+	Grand:
+		'''
+		+10% Scepter Class Damage.
+		+15% Scepter Class Critical Strike Chance.
+		+5% Scepter Class Shoot Speed.
+		'''
 }
 
 Emotes: {
@@ -5580,7 +5708,6 @@ ShieldPlayer.ShieldLine:
 	[i:DestroyerTest/ShieldMarkBig] This item implements a special shield.
 	[i:DestroyerTest/ShieldMarkBig] These Shields kill harmful projectiles inside their radius and do not protect from NPC contact damage.
 	[i:DestroyerTest/ShieldMarkBig] Shields do not regenerate until they break, and pull from your health to regenerate.
-	[i:DestroyerTest/ShieldMarkBig] Shields have priorities, and will be overridden by ones with higher priorities.
 	'''
 ModName: HoleCat's Content Mod (Private Beta)
 
@@ -5647,4 +5774,13 @@ Conditions: {
 	WyvernCorpseBossDowned: Defeated the Wyvern Corpse
 	NodeBossDowned: Defeated a Node
 	ConstitutionBossDowned: Defeated Constitution
+}
+
+Prefixes: {
+	Resolute.DisplayName: Resolute
+	Gilded.DisplayName: Gilded
+	Grand.DisplayName: Grand
+	Lowly.DisplayName: Lowly
+	Pure.DisplayName: Pure
+	Tainted.DisplayName: Tainted
 }

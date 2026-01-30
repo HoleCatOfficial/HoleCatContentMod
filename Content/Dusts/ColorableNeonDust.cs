@@ -29,7 +29,7 @@ namespace DestroyerTest.Content.Dusts
         {
 			dust.position += dust.velocity;
 			dust.rotation += dust.velocity.X * 0.15f;
-			dust.scale *= 0.85f;
+			dust.scale *= 0.9f;
 
 			float light = 0.05f * dust.scale;
 

@@ -24,7 +24,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter.DiscordScepter
             Projectile.width = 2; // The width of projectile hitbox
             Projectile.height = 2; // The height of projectile hitbox
             Projectile.friendly = true;
-            Projectile.DamageType = DamageClass.Ranged;
+            Projectile.DamageType = DamageClass.Generic;
             Projectile.timeLeft = 120;
             Projectile.netImportant = true;
             Projectile.netUpdate = true;
@@ -55,21 +55,5 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter.DiscordScepter
                 );
             }
         }
-
-        public override void SendExtraAI(BinaryWriter writer)
-        {
-            writer.Write(radius);
-            writer.WriteVector2(SpawnPosition);
-            writer.WriteVector2(directionToCenter);
-        }
-
-        public override void ReceiveExtraAI(BinaryReader reader)
-        {
-            radius = reader.ReadSingle();
-            SpawnPosition = reader.ReadVector2();
-            directionToCenter = reader.ReadVector2();
-        }
-
-
 	}
 }

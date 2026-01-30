@@ -18,6 +18,8 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using OpusLib;
+using System.Linq;
+using DestroyerTest.Content.Dusts;
 
 namespace DestroyerTest.Common
 {
@@ -26,7 +28,7 @@ namespace DestroyerTest.Common
         /// <summary>
         /// The maximum durability of the shield.
         /// </summary>
-        public virtual int MaxDurability { get; set; } = 125;
+        public virtual int MaxDurability { get; set; }= 125;
         /// <summary>
         /// The current durability of the shield.
         /// <para/> Cannot exceed MaxDurability and if it reaches 0, the shield breaks and needs to recharge.
@@ -74,9 +76,12 @@ namespace DestroyerTest.Common
         /// </summary>
         public virtual int RechargeHealthTax { get; set; } = 5;
 
+        public virtual int Priority {get; set;} = 0;
+
 
         public override void ResetEffects()
         {
+            MathHelper.Clamp(Priority, 0, 10);
             Active = false;
         }
 
@@ -120,13 +125,9 @@ namespace DestroyerTest.Common
             if (shieldManager == null)
                 return;
 
-            if (shieldManager.ActiveShieldID != -1 && !shieldManager.IsOwner(Player))
-                return;
-
-
             if (Active)
             {
-                if (Durability == MaxDurability && !Recharge)
+                if (Durability >= MaxDurability && !Recharge)
                 {
                     Absorb = true;
                 }
@@ -182,22 +183,14 @@ namespace DestroyerTest.Common
                     SoundEngine.PlaySound(SoundID.Pixie with { Pitch = -2 }, Player.Center);
                 }
 
-                for (int r = 0; r < 3; r++)
+                var WallDustPositions = Opus.GetEquidistantOrbitVectors(5, Player.Center, (0.05f * Player.direction) + ((0.001f * Player.velocity.Length()) * Player.direction), Radius);
+                foreach(Vector2 p in WallDustPositions)
                 {
-                    BasePRT WallPRT = PRTLoader.NewParticle(
-                        PRTLoader.GetParticleID<SimpleParticle>(),
-                        Player.Center + Main.rand.NextVector2CircularEdge(Radius, Radius),
-                        Vector2.Zero, themeColor, 0.4f
-                    );
-                    WallPRT.Velocity += Player.velocity;
-                }
-                for (int ds = 0; ds < 6; ds++)
-                {
-                    Dust WallDust = Dust.NewDustPerfect(
-                        Player.Center + Main.rand.NextVector2CircularEdge(Radius, Radius),
-                        DustID.TintableDustLighted, Vector2.Zero, 0, themeColor, 1.35f
-                    );
-                    WallDust.velocity += Player.velocity;
+                    Dust WallDust = Dust.NewDustPerfect(p, ModContent.DustType<ColorableNeonDust>(), Vector2.Zero, 0, themeColor, 1.35f);
+                    //WallDust.velocity = Player.velocity;
+
+                    BasePRT WallPRT = PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), p, Vector2.Zero, themeColor * 0.75f, 0.3f);
+                    //WallPRT.Velocity = Player.velocity;
                 }
 
                 if (Durability <= 0)
@@ -246,9 +239,9 @@ namespace DestroyerTest.Common
             if (shieldManager == null)
                 return;
 
-            if (Active && Absorb && !shieldManager.IsOwner(Player))
+            if (Active && Absorb)
             {
-                shieldManager.TryActivateShield(Player, ShieldIDs.Infernal);
+                
             }
         }
 
@@ -271,28 +264,27 @@ namespace DestroyerTest.Common
             return false;
         }
 
-        public override Position GetDefaultPosition() => new AfterParent(PlayerDrawLayers.LastVanillaLayer);
+        public override Position GetDefaultPosition() => new AfterParent(PlayerDrawLayers.CaptureTheGem);
 
         protected override void Draw(ref PlayerDrawSet drawInfo)
         {
-            if (drawInfo.drawPlayer.TryGetModPlayer<ShieldPlayer>(out ShieldPlayer Shield))
-            {
-                Color color = Shield.themeColor;
-                var position = drawInfo.Center - Main.screenPosition;
-                position = new Vector2((int)position.X, (int)position.Y);
+            var Shield = ModContent.GetInstance<ShieldPlayer>();
+            
+            Color color = Shield.themeColor;
+            var position = drawInfo.Center - Main.screenPosition;
+			position = new Vector2((int)position.X, (int)position.Y);
 
-                drawInfo.DrawDataCache.Add(new DrawData(
-                    DTAssetLib.BloomRingSharp.Value,
-                    position,
-                    null,
-                    Color.White,
-                    0f,
-                    DTAssetLib.BloomRingSharp.Size() * 0.5f, // Origin. Uses the texture's center.
-                    Shield.Radius / (DTAssetLib.BloomRingSharp.Value.Width / 2f),
-                    SpriteEffects.None,
-                    0
-                ));
-            }
+            drawInfo.DrawDataCache.Add(new DrawData(
+                DTAssetLib.BloomRingSharp.Value,
+                position,
+                null,
+                color with {A = 0},
+                0f,
+                DTAssetLib.BloomRingSharp.Size() / 2, // Origin. Uses the texture's center.
+                1f /*Placeholder*/,
+                SpriteEffects.None,
+                0
+            ));
         }
     }
 

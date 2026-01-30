@@ -108,8 +108,8 @@ namespace DestroyerTest.Content.Entities
             NPC.height = 274;
             NPC.aiStyle = -1;
             NPC.damage = 0;
-            NPC.defense = 35;
-            NPC.lifeMax = 364000;
+            NPC.defense = 30;
+            NPC.lifeMax = 384000;
             NPC.HitSound = SoundID.DD2_MonkStaffGroundImpact;
             NPC.noGravity = false;
             NPC.lavaImmune = true;

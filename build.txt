@@ -1,6 +1,6 @@
 displayName = [c/ff9900:Talid Mod (Private Beta)]
 author = HoleCat
-version = 2.1.7243
+version = 2.1.7245
 modReferences = InnoVault, OpusLib, GlowmaskHelper
 dependencies = InnoVault, OpusLib, GlowmaskHelper
 weakReferences = FargowiltasSouls, Fargowiltas

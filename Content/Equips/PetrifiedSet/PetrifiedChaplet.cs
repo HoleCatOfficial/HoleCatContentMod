@@ -48,7 +48,7 @@ namespace DestroyerTest.Content.Equips.PetrifiedSet
 		{
 			if (player.TryGetModPlayer<PetrifiedShieldPlayer>(out PetrifiedShieldPlayer Shield))
 			{
-				Shield.Active = true;
+                Shield.Active = true;
 			}
 			if (player.TryGetModPlayer<PetrifiedScepterPlayer>(out PetrifiedScepterPlayer Scepter))
 			{
@@ -76,6 +76,7 @@ namespace DestroyerTest.Content.Equips.PetrifiedSet
 			legs.SetDefaults(ModContent.ItemType<PetrifiedGreaves>());
 			if (IsArmorSet(Item, body, legs))
 			{
+				//TODO: rename this
 				var pityText = Language.GetText("Mods.DestroyerTest.ShieldPlayer.ShieldLine");
 				tooltips.Add(new TooltipLine(Mod, "ShieldInfo", pityText.Value));
 			}
@@ -164,5 +165,7 @@ namespace DestroyerTest.Content.Equips.PetrifiedSet
             NetworkText.FromLiteral($"{Player.name} didnt have it in them to sustain their shield.")
         };
         public override int RechargeHealthTax => 25;
+
+		public override int Priority => 8;
     }
 }

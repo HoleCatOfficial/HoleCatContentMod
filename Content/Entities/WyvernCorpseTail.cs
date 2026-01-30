@@ -21,7 +21,6 @@ using OpusLib;
 
 namespace DestroyerTest.Content.Entities
 {
-    [AutoloadGlowmask]
     public class WyvernCorpseTail : ModNPC
     {
         public void immunities()
@@ -124,17 +123,25 @@ namespace DestroyerTest.Content.Entities
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
+            Texture2D texture = (Texture2D)ModContent.Request<Texture2D>(Texture);
+            Texture2D Glowtexture = (Texture2D)ModContent.Request<Texture2D>($"{Texture}_Glow");
+            Vector2 origin = new Vector2(texture.Width / 2, texture.Height / 2);
+            Vector2 drawPos = new Vector2(NPC.position.X - Main.screenPosition.X + (NPC.width / 2) - texture.Width * NPC.scale / 2f + origin.X * NPC.scale, NPC.position.Y - Main.screenPosition.Y + NPC.height - texture.Height * NPC.scale + 4f + origin.Y * NPC.scale + 56f);
+
             if (anyNodesAlive)
             {
-                Opus.DrawNPCShadowsRotating(NPC, 6, ColorLib.Ichor);
+                //Opus.DrawNPCShadowsRotating(NPC, 6, ColorLib.Ichor);
+                float rotationOffset = 0.3f * (float)NPC.direction;
+                WyvernCorpseHead.DrawHealingShadow(NPC, new Vector2(0f, 6), drawPos, ColorLib.Ichor, rotationOffset);
+                WyvernCorpseHead.DrawHealingShadow(NPC, new Vector2(0f, 0f - 6), drawPos, ColorLib.Ichor, rotationOffset);
+                WyvernCorpseHead.DrawHealingShadow(NPC, new Vector2(6, 0f), drawPos, ColorLib.Ichor, rotationOffset);
+                WyvernCorpseHead.DrawHealingShadow(NPC, new Vector2(0f - 6, 0f), drawPos, ColorLib.Ichor, rotationOffset);
             }
-
-
-            Texture2D texture = (Texture2D)ModContent.Request<Texture2D>(Texture);
-            Vector2 origin = new Vector2(texture.Width / 2, texture.Height / 2);
+            
             SpriteEffects effects = SpriteEffects.None;
             if (NPC.spriteDirection == 1) effects = SpriteEffects.FlipHorizontally;
             spriteBatch.Draw(texture, new Vector2(NPC.position.X - Main.screenPosition.X + (NPC.width / 2) - texture.Width * NPC.scale / 2f + origin.X * NPC.scale, NPC.position.Y - Main.screenPosition.Y + NPC.height - texture.Height * NPC.scale + 4f + origin.Y * NPC.scale + 56f), new Rectangle?(NPC.frame), drawColor, NPC.rotation, origin, NPC.scale, effects, 0f);
+            spriteBatch.Draw(Glowtexture, new Vector2(NPC.position.X - Main.screenPosition.X + (NPC.width / 2) - texture.Width * NPC.scale / 2f + origin.X * NPC.scale, NPC.position.Y - Main.screenPosition.Y + NPC.height - texture.Height * NPC.scale + 4f + origin.Y * NPC.scale + 56f), new Rectangle?(NPC.frame), Color.White, NPC.rotation, origin, NPC.scale, effects, 0f);
             return false;
         }
 

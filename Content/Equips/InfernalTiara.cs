@@ -123,5 +123,6 @@ namespace DestroyerTest.Content.Equips
             NetworkText.FromLiteral($"{Player.name} didnt have it in them to sustain their shield.")
         };
         public override int RechargeHealthTax => 2;
+        public override int Priority => 3;
     }
 }

@@ -1,0 +1,32 @@
+using DestroyerTest.Common;
+using InnoVault.PRT;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Terraria;
+using Terraria.ModLoader;
+using System;
+
+namespace DestroyerTest.Content.Particles
+{
+    public class ImpactCracks : BasePRT
+    {
+        public int MaxLifetime => 30;
+        public override void SetProperty()
+        {
+            PRTDrawMode = PRTDrawModeEnum.AdditiveBlend;
+            Lifetime = MaxLifetime;
+        }
+
+        public override void AI()
+        {
+
+            Velocity *= 0;
+            if (LifetimeCompletion > 0.5f)
+            {
+                Color *= 0.9f;
+            }
+        }
+
+        public override bool PreDraw(SpriteBatch spriteBatch) => true;
+    }
+}

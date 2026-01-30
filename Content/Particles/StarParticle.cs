@@ -20,7 +20,7 @@ namespace DestroyerTest.Content.Particles
 
         public override void AI()
         {
-            Scale *= 0.995f;
+            Scale *= 0.99f;
             Velocity *= 0.999f;
             if (LifetimeCompletion > 0.5f)
             {
