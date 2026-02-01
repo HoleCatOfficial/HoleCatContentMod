@@ -38,7 +38,7 @@ public class WorldFlags : ModSystem
                         ModContent.NPCType<Scholar>());
                     Main.npc[npcIndex].homeTileX = (int)player.Center.X / 16;
                     Main.npc[npcIndex].homeTileY = (int)player.Center.Y / 16;
-                    Main.NewText("Someone has appeared near spawn...");
+                    Main.NewText("Someone has arrived from the sea...");
                     WorldFlags.ScholarSpawned = true;
 
                     if (Main.netMode == NetmodeID.Server)

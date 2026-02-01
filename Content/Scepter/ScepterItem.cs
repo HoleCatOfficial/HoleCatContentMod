@@ -7,9 +7,6 @@ using Terraria.ModLoader;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Projectiles.Weapon.Scepter;
-using Terraria.Utilities;
-using System.Collections.Generic;
-using DestroyerTest.Content.Reforges;
 
 namespace DestroyerTest.Content.Scepter
 {
@@ -52,9 +49,7 @@ namespace DestroyerTest.Content.Scepter
             Item.height = Height;
             Item.value = Item.sellPrice(gold: 1) + AdditiveValue;
             Item.rare = Rarity;
-            Item.useTime = 40;
-            Item.useAnimation = 40;
-            
+
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.autoReuse = true;
             Item.DamageType = ModContent.GetInstance<ScepterClass>();
@@ -68,53 +63,70 @@ namespace DestroyerTest.Content.Scepter
             return true;
         }
 
-        public override void ModifyWeaponCrit(Player player, ref float crit)
-        {
-            Defaults_Crit(player);
-        }
-
-        public override void ModifyWeaponDamage(Player player, ref StatModifier damage)
-        {
-            Defaults_Damage(player);
-        }
-
-        public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
-        {
-            Defaults_ShootStats(player, ref type);
-        }
-
-
-        
-        public override float UseTimeMultiplier(Player player)
+        public override void UseStyle(Player player, Rectangle heldItemFrame)
         {
             if (player.altFunctionUse == 2)
             {
-                return 2.5f;
+                Item.staff[Type] = false;
+                ThrowDefaults();
             }
             else
             {
-                return 1f;
+                Item.staff[Type] = true;
+                ShootDefaults();
             }
-            
+        }
+
+        public override void HoldItem(Player player)
+        {
+            if (player.altFunctionUse == 2)
+            {
+                Item.staff[Type] = false;
+                ThrowDefaults();
+            }
+            else
+            {
+                Item.staff[Type] = true;
+                ShootDefaults();
+            }
         }
 
         public override bool CanUseItem(Player player)
         {
             if (player.altFunctionUse == 2)
             {
+                Item.staff[Type] = false;
                 ThrowDefaults();
             }
             else
             {
+                Item.staff[Type] = true;
                 ShootDefaults();
             }
             return player.ownedProjectileCounts[ThrowID] < 1;
+        }
+
+        public override void UpdateInventory(Player player)
+        {
+            if (player.altFunctionUse == 2)
+            {
+                Item.staff[Type] = false;
+                ThrowDefaults();
+            }
+            else
+            {
+                Item.staff[Type] = true;
+                ShootDefaults();
+            }
         }
 
         public virtual void ShootDefaults()
         {
             Item.shoot = ShootID;
             Item.channel = ChannelingDuringShoot;
+            Item.damage = ShootDMG;
+            Item.crit = ShootCrit;
+            Item.useTime = 40;
             Item.useAnimation = 40;
             Item.UseSound = ShootSound;
             Item.shootSpeed = 20f;
@@ -124,48 +136,16 @@ namespace DestroyerTest.Content.Scepter
         public virtual void ThrowDefaults()
         {   
             ThrowVelocity = 15f * ScepterClassStats.ThrowSpeedModifier;
+            Item.shoot = ThrowID;
             Item.channel = ChannelingDuringThrow;
+            Item.damage = ThrowDMG;
+            Item.crit = ThrowCrit;
+            Item.useTime = 100;
             Item.useAnimation = 40;
             Item.UseSound = ThrowSound;
             Item.shootSpeed = ThrowVelocity;
             Item.noUseGraphic = true;
         }
-
-        public virtual void Defaults_ShootStats(Player player, ref int type)
-        {
-            if (player.altFunctionUse == 2)
-            {
-                type = ThrowID;
-            }
-            else
-            {
-                type = ShootID;
-            }
-        }
-        public virtual void Defaults_Damage(Player player)
-        {
-            if (player.altFunctionUse == 2)
-            {
-                Item.damage = ThrowDMG;
-            }
-            else
-            {
-                Item.damage = ShootDMG;
-            }
-        }
-
-        public virtual void Defaults_Crit(Player player)
-        {
-            if (player.altFunctionUse == 2)
-            {
-                Item.crit = ThrowCrit;
-            }
-            else
-            {
-                Item.crit = ShootCrit;
-            }
-        }
-
         public override void UseItemFrame(Player player)
         {
             if (player.altFunctionUse == 2)
@@ -200,30 +180,5 @@ namespace DestroyerTest.Content.Scepter
                 player.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, armRotation);
             }
         }
-
-        public override bool CanReforge()
-        {
-            return true;
-        }
-
-        public List<int> ScepterPrefixes = new List<int>
-        {
-            ModContent.PrefixType<Resolute>(),
-            ModContent.PrefixType<Tainted>(),
-            ModContent.PrefixType<Gilded>(),
-            ModContent.PrefixType<Pure>(),
-            ModContent.PrefixType<Lowly>(),
-            ModContent.PrefixType<Grand>(),
-        };
-
-        public override int ChoosePrefix(UnifiedRandom rand)
-        {
-            return ScepterPrefixes[rand.Next(ScepterPrefixes.Count)];
-        }
-
-        public override bool WeaponPrefix()
-        {
-            return true;
-        }
     }
-} 
+}

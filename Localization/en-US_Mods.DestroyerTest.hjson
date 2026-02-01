@@ -4042,6 +4042,11 @@ Items: {
 		Tooltip: Summons a ring of toxic sludge balls that explode on contact with enemies.
 		DisplayName: Toxic Canister
 	}
+
+	ContainedRiftBiome: {
+		Tooltip: ""
+		DisplayName: Contained Rift Biome
+	}
 }
 
 Projectiles: {
@@ -4577,6 +4582,7 @@ Projectiles: {
 	DreampoonProjectile.DisplayName: Dreampoon Projectile
 	SpearOfAspirationThrown.DisplayName: Spear Of Aspiration Thrown
 	ToxicOrb.DisplayName: Toxic Orb
+	ContainedRiftBiomeProjectile.DisplayName: Contained Rift Biome Projectile
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.
@@ -5272,6 +5278,7 @@ WorldGen: {
 	HelicitePassMessage: Putting the sky deep underground...
 	BlessedWithHeliciteMessage: Radiant Fragments of solar energy embed themselves in the rocks near to hell!
 	VesperOrePassMessage: Burying Fragments of Exotic properties...
+	BeachGrassPass: Beach Grasses
 	BlessedWithVesperOreMessage: Mods.DestroyerTest.WorldGen.BlessedWithVesperOreMessage
 }
 

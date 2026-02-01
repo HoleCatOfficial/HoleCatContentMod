@@ -1,6 +1,7 @@
 using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
+using DestroyerTest.Content.Projectiles;
 using DetroyerTest.Content.RiftBiome;
 using Microsoft.Xna.Framework;
 using System;
@@ -129,7 +130,10 @@ namespace DestroyerTest.Content.RiftBiome
 			// Finally, we will limit the height at which this biome can be active to above ground (ie sky and surface). Most (if not all) surface biomes will use this condition.
 			bool b3 = player.ZoneSkyHeight || player.ZoneOverworldHeight;
 
-			return b1 && b3;
+			var ContainedBiome = ModContent.GetInstance<ContainedRiftBiomeProjectile>();
+			bool b4 = ContainedBiome.InRange;
+
+			return (b1 && b3) || (b3 && b4);
 		}
 
 		// Declare biome priority. The default is BiomeLow so this is only necessary if it needs a higher priority.
