@@ -46,7 +46,6 @@ namespace DestroyerTest.Content.Projectiles
 			Projectile.friendly = true;
 			Projectile.hostile = false;
 			Projectile.ignoreWater = true;
-			Projectile.light = 0.15f;
 			Projectile.timeLeft = 600;
 			Projectile.tileCollide = false;
 			Projectile.penetrate = 1;
@@ -162,7 +161,7 @@ namespace DestroyerTest.Content.Projectiles
                 PRTLoader.NewParticle(DTUtils.ElectricArcs[Main.rand.Next(DTUtils.ElectricArcs.Length)], Projectile.Center + Main.rand.NextVector2Circular(10, 10), Vector2.Zero, ColorLib.Rift, 0.1f);
             }
 
-			Lighting.AddLight(Projectile.Center, ColorLib.TenebrisGradient.ToVector3() * 0.2f);
+			Lighting.AddLight(Projectile.Center, ColorLib.Rift.ToVector3() * 0.2f);
 
 			if (DelayTimer < 20 || DelayTimer > 180)
 			{

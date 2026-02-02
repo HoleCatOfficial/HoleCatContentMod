@@ -4583,6 +4583,7 @@ Projectiles: {
 	SpearOfAspirationThrown.DisplayName: Spear Of Aspiration Thrown
 	ToxicOrb.DisplayName: Toxic Orb
 	ContainedRiftBiomeProjectile.DisplayName: Contained Rift Biome Projectile
+	SunscorchedDjinnStar.DisplayName: Sunscorched Djinn Star
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.
@@ -5191,6 +5192,8 @@ NPCs: {
 	PetrifiedWisp2.DisplayName: Petrified Wisp
 	PetrifiedWisp3.DisplayName: Petrified Wisp
 	TeslaScuttler.DisplayName: Tesla Scuttler
+	BlackTwister.DisplayName: Black Twister
+	SunscorchedDjinn.DisplayName: Sunscorched Djinn
 }
 
 Keybinds: {

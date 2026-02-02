@@ -14,6 +14,7 @@ namespace DestroyerTest.Content.RiftBiome.RiftDesertResources
 			TileID.Sets.BlockMergesWithMergeAllBlock[Type] = true;
 			Main.tileMergeDirt[Type] = true;
 			Main.tileBlockLight[Type] = true;
+			Main.tileBlendAll[Type] = true;
 
 			DustType = DustID.Wraith;
 

@@ -16,9 +16,9 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using OpusLib;
 
-namespace DestroyerTest.Content.Projectiles
+namespace DestroyerTest.Content.Projectiles.EntitiesProjectiles
 {
-	public class RiftStarHostile : ModProjectile
+	public class SunscorchedDjinnStar : ModProjectile
 	{
         public override string Texture => DTUtils.NoTexture;
 
@@ -35,7 +35,7 @@ namespace DestroyerTest.Content.Projectiles
 
 		public override void SetStaticDefaults()
 		{
-			ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true;
+
 		}
 
 		public override void SetDefaults()
@@ -155,7 +155,10 @@ namespace DestroyerTest.Content.Projectiles
 			while (TrailRotations.Count > TrailLength)
 				TrailRotations.RemoveAt(TrailRotations.Count - 1);
 
-			DelayTimer++;
+            if (Projectile.ai[1] > 0)
+            {
+			    DelayTimer++;
+            }
 			Projectile.rotation += Projectile.direction * Main.rand.NextFloat(0.01f, 0.07f);
 
             if (Main.rand.NextBool(12))
@@ -188,13 +191,7 @@ namespace DestroyerTest.Content.Projectiles
 
             float targetAngle = Projectile.AngleTo(PLRTarget.Center);
             Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(5)).ToRotationVector2() * Projectile.velocity.Length();
-
-			float speed = Projectile.velocity.Length();
-			float desiredSpeed = 35f;
-			float acceleration = 0.3f;
-			if (speed < desiredSpeed)
-				speed += acceleration;
-			Projectile.velocity = Projectile.velocity.SafeNormalize(Vector2.Zero) * speed;
+			Projectile.velocity *= 1.2f;
 		}
 
 		public Player FindClosestPlayer(float maxDetectDistance)

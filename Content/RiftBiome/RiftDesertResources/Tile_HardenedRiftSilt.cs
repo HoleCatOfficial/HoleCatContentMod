@@ -12,6 +12,7 @@ namespace DestroyerTest.Content.RiftBiome.RiftDesertResources
 			Main.tileSolid[Type] = true;
 			TileID.Sets.ChecksForMerge[Type] = true;
 			TileID.Sets.BlockMergesWithMergeAllBlock[Type] = true;
+			Main.tileBlendAll[Type] = true;
 			Main.tileMergeDirt[Type] = true;
 			Main.tileBlockLight[Type] = true;
 

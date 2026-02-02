@@ -1124,6 +1124,14 @@ namespace DestroyerTest.Common
                 return new SoundStyle($"{SwordSounds.Path}/TenebrisSwing", 3);
             }
         } 
+
+        public struct Djinn
+        {
+            public static string Path = $"{AudioPath}/Djinn";
+            public static SoundStyle Laugh = new SoundStyle($"{Path}Laugh");
+            public static SoundStyle Hit = new SoundStyle($"{Path}Hit");
+            public static SoundStyle Kill = new SoundStyle($"{Path}Kill");
+        }
     }
 
     public class AssetVerifierSystem : ModSystem

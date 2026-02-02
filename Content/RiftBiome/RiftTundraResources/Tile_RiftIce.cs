@@ -14,8 +14,7 @@ namespace DestroyerTest.Content.RiftBiome.RiftTundraResources
 			Main.tileSolid[Type] = true;
 			TileID.Sets.ChecksForMerge[Type] = true;
 			TileID.Sets.BlockMergesWithMergeAllBlock[Type] = true;
-			Main.tileMerge[ModContent.TileType<Tile_RiftStone>()][Type] = true;
-			Main.tileMerge[ModContent.TileType<Tile_RiftSilt>()][Type] = true;
+			Main.tileBlendAll[Type] = true;
 			
 			Main.tileBlockLight[Type] = true;
 
