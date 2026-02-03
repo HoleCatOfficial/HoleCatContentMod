@@ -191,7 +191,7 @@ namespace DestroyerTest.Content.Projectiles.EntitiesProjectiles
 
             float targetAngle = Projectile.AngleTo(PLRTarget.Center);
             Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(5)).ToRotationVector2() * Projectile.velocity.Length();
-			Projectile.velocity *= 1.2f;
+			Projectile.velocity *= 1.08f;
 		}
 
 		public Player FindClosestPlayer(float maxDetectDistance)

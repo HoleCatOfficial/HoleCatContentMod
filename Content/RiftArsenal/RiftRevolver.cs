@@ -42,7 +42,7 @@ namespace DestroyerTest.Content.RiftArsenal
 
 			// The sound that this item plays when used.
 			Item.UseSound = new SoundStyle($"DestroyerTest/Assets/Audio/OB_Shot") {
-				Volume = 0.9f,
+				Volume = 0.6f,
 				PitchVariance = 0.2f,
 				MaxInstances = 3,
 			};

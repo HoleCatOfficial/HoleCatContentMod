@@ -166,7 +166,6 @@ namespace DestroyerTest.Content.Entities
                 {
                     s.ai[1] = 1f;
                     s.velocity += new Vector2(0, 0.01f);
-                    OwnedStars.Remove(s);
                 }
             }
 
