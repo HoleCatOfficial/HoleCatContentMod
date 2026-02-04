@@ -168,4 +168,39 @@ namespace DestroyerTest.Content.Equips.PetrifiedSet
 
 		public override int Priority => 8;
     }
+
+	public class PetrifiedShieldDrawLayer : PlayerDrawLayer
+    {
+        public override bool GetDefaultVisibility(PlayerDrawSet drawInfo)
+        {
+            if (drawInfo.drawPlayer.TryGetModPlayer<PetrifiedShieldPlayer>(out PetrifiedShieldPlayer Shield))
+            {
+                return Shield.Active && Shield.Absorb;
+            }
+            return false;
+        }
+
+        public override Position GetDefaultPosition() => new AfterParent(PlayerDrawLayers.CaptureTheGem);
+
+        protected override void Draw(ref PlayerDrawSet drawInfo)
+        {
+            var Shield = ModContent.GetInstance<PetrifiedShieldPlayer>();
+            
+            Color color = Shield.themeColor;
+            var position = drawInfo.Center - Main.screenPosition;
+			position = new Vector2((int)position.X, (int)position.Y);
+
+            drawInfo.DrawDataCache.Add(new DrawData(
+                DTAssetLib.ShieldRing.Value,
+                position,
+                null,
+                color with {A = 0},
+                0f,
+                DTAssetLib.ShieldRing.Size() / 2,
+                Shield.Radius / (DTAssetLib.ShieldRing.Value.Width / 2f),
+                SpriteEffects.None,
+                0
+            ));
+        }
+    }
 }

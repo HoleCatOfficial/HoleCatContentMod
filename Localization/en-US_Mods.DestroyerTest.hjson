@@ -4047,6 +4047,11 @@ Items: {
 		Tooltip: ""
 		DisplayName: Contained Rift Biome
 	}
+
+	Item_RiftStoneTorch: {
+		DisplayName: Item_ Rift Stone Torch
+		Tooltip: ""
+	}
 }
 
 Projectiles: {

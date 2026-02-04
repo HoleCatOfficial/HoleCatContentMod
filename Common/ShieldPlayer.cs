@@ -258,40 +258,7 @@ namespace DestroyerTest.Common
 
     }
     
-    public class ShieldDrawLayer : PlayerDrawLayer
-    {
-        public override bool GetDefaultVisibility(PlayerDrawSet drawInfo)
-        {
-            if (drawInfo.drawPlayer.TryGetModPlayer<ShieldPlayer>(out ShieldPlayer Shield))
-            {
-                return Shield.Active && Shield.Absorb;
-            }
-            return false;
-        }
-
-        public override Position GetDefaultPosition() => new AfterParent(PlayerDrawLayers.CaptureTheGem);
-
-        protected override void Draw(ref PlayerDrawSet drawInfo)
-        {
-            var Shield = ModContent.GetInstance<ShieldPlayer>();
-            
-            Color color = Shield.themeColor;
-            var position = drawInfo.Center - Main.screenPosition;
-			position = new Vector2((int)position.X, (int)position.Y);
-
-            drawInfo.DrawDataCache.Add(new DrawData(
-                DTAssetLib.BloomRingSharp.Value,
-                position,
-                null,
-                color with {A = 0},
-                0f,
-                DTAssetLib.BloomRingSharp.Size() / 2, // Origin. Uses the texture's center.
-                1f /*Placeholder*/,
-                SpriteEffects.None,
-                0
-            ));
-        }
-    }
+    
 
     public class ShieldGlobal : GlobalProjectile
     {

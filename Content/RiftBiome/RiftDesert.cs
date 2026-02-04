@@ -82,7 +82,7 @@ namespace DestroyerTest.Content.RiftBiome
 			ModifyMusic(Music, Priority);
 			if (!player.HasBuff<StoneLungs>() && !player.HasBuff<AirSeal>())
 			{
-				player.AddBuff(BuffID.Suffocation, 360); // Apply the suffocation buff if all conditions are met
+				player.AddBuff(BuffID.Suffocation, 360);
 			}
 			Rectangle ScreenRect = new Rectangle((int)Main.screenPosition.X, (int)Main.screenPosition.Y, Main.screenWidth, Main.screenHeight);
 			if (!Main.dedServ)
@@ -97,6 +97,8 @@ namespace DestroyerTest.Content.RiftBiome
 			if (Sandstorm.Happening)
 			{
 				SandStormFX(ScreenRect, 30, Main.rand.NextFloat(-1.5f, -3));
+				Main.eclipseLight = 1f;
+				player.AddBuff(BuffID.Obstructed, 60);
 				if (Main.rand.NextBool(100))
 				{
 					player.AddBuff(ModContent.BuffType<HeliouricShock>(), 600);

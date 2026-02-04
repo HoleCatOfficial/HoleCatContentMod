@@ -125,4 +125,39 @@ namespace DestroyerTest.Content.Equips
         public override int RechargeHealthTax => 2;
         public override int Priority => 3;
     }
+
+    public class InfernalShieldDrawLayer : PlayerDrawLayer
+    {
+        public override bool GetDefaultVisibility(PlayerDrawSet drawInfo)
+        {
+            if (drawInfo.drawPlayer.TryGetModPlayer<InfernalShieldPlayer>(out InfernalShieldPlayer Shield))
+            {
+                return Shield.Active && Shield.Absorb;
+            }
+            return false;
+        }
+
+        public override Position GetDefaultPosition() => new AfterParent(PlayerDrawLayers.CaptureTheGem);
+
+        protected override void Draw(ref PlayerDrawSet drawInfo)
+        {
+            var Shield = ModContent.GetInstance<InfernalShieldPlayer>();
+            
+            Color color = Shield.themeColor;
+            var position = drawInfo.Center - Main.screenPosition;
+			position = new Vector2((int)position.X, (int)position.Y);
+
+            drawInfo.DrawDataCache.Add(new DrawData(
+                DTAssetLib.ShieldRing.Value,
+                position,
+                null,
+                color with {A = 0},
+                0f,
+                DTAssetLib.ShieldRing.Size() / 2,
+                Shield.Radius / (DTAssetLib.ShieldRing.Value.Width / 2f),
+                SpriteEffects.None,
+                0
+            ));
+        }
+    }
 }

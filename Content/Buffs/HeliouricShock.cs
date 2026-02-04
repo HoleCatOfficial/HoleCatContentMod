@@ -112,7 +112,7 @@ namespace DestroyerTest.Content.Buffs
 				Vector2 pos = Main.rand.NextVector2Circular(Player.width * 0.5f, Player.height * 0.5f);
 				if (Main.rand.NextBool(3))
 				{
-					PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], Main.rand.NextVector2FromRectangle(Player.Hitbox), pos, ColorLib.Rift, 0.25f);
+					PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], pos, Vector2.Zero, ColorLib.Rift, 0.25f);
 				}
 				Player.moveSpeed *= 0.85f;
 			}

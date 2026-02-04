@@ -1068,6 +1068,8 @@ namespace DestroyerTest.Common
         public static Asset<Texture2D> PossessedToothOutline = ModContent.Request<Texture2D>($"{ExtrasPath}/PossessedToothOutline", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> HaepienCircleBottom = ModContent.Request<Texture2D>($"{ExtrasPath}/HaepienSigilBottom", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> HaepienCircleTop = ModContent.Request<Texture2D>($"{ExtrasPath}/HaepienSigilTop", AssetRequestMode.AsyncLoad);
+        
+        public static Asset<Texture2D> ShieldRing = ModContent.Request<Texture2D>($"{ParticlePath}/ShieldRing", AssetRequestMode.AsyncLoad);
         //
         // Sounds
         //
@@ -1080,7 +1082,7 @@ namespace DestroyerTest.Common
         public struct ScholarShieldSounds
         {
             public static string Path = $"{AudioPath}/Scholar";
-            public static SoundStyle Hit = new SoundStyle($"{Path}/Scholar/ShieldHit", 3);
+            public static SoundStyle Hit = new SoundStyle($"{Path}/ShieldHit", 3);
             public static SoundStyle Activate = new SoundStyle($"{Path}/ShieldActivate", 3);
             public static SoundStyle Break = new SoundStyle($"{Path}/ShieldBreak");
         }
