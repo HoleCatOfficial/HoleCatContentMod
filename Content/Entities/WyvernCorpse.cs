@@ -604,16 +604,16 @@ namespace DestroyerTest.Content.Entities
                                 if (Main.GameUpdateCount % 5 == 0 && NPC.velocity.Length() > 2)
                                 {
                                     SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/HopeScabbardTele") with { MaxInstances = 0, PitchVariance = 0.3f, Volume = 0.15f }, NPC.Center);
-                                    Projectile.NewProjectile(Entity.GetSource_FromAI(), NPC.Center, FlankLeft * 0.02f, ModContent.ProjectileType<TenebrisDart>(), 15, 3);
-                                    Projectile.NewProjectile(Entity.GetSource_FromAI(), NPC.Center, FlankRight * 0.02f, ModContent.ProjectileType<TenebrisDart>(), 15, 3);
+                                    Projectile.NewProjectile(Entity.GetSource_FromAI(), NPC.Center, FlankLeft * 0.02f, ModContent.ProjectileType<LightDart>(), 15, 3);
+                                    Projectile.NewProjectile(Entity.GetSource_FromAI(), NPC.Center, FlankRight * 0.02f, ModContent.ProjectileType<LightDart>(), 15, 3);
                                 }
 
                                 if (DashTime <= 0)
                                 {
                                     NPC.velocity /= 5;
                                     DashTime = 80;
-                                    Projectile.NewProjectile(Entity.GetSource_FromAI(), NPC.Center, FlankLeft * 0.5f, ModContent.ProjectileType<TenebrisLance>(), 15, 3);
-                                    Projectile.NewProjectile(Entity.GetSource_FromAI(), NPC.Center, FlankRight * 0.5f, ModContent.ProjectileType<TenebrisLance>(), 15, 3);
+                                    Projectile.NewProjectile(Entity.GetSource_FromAI(), NPC.Center, FlankLeft * 0.5f, ModContent.ProjectileType<LightLance>(), 15, 3);
+                                    Projectile.NewProjectile(Entity.GetSource_FromAI(), NPC.Center, FlankRight * 0.5f, ModContent.ProjectileType<LightLance>(), 15, 3);
                                     IsDashing = false;
                                 }
                             }
@@ -739,7 +739,7 @@ namespace DestroyerTest.Content.Entities
                                         NPC.GetSource_FromAI(),
                                         spawnPos,
                                         velocity,
-                                        ModContent.ProjectileType<TenebrisLance>(),
+                                        ModContent.ProjectileType<LightLance>(),
                                         18,
                                         0f
                                     );
@@ -768,7 +768,21 @@ namespace DestroyerTest.Content.Entities
                     break;
                 case attackType.HeartMatrix:
                     {
-                        CurrentAttack = attackType.Circle;
+                        if (EternityIsActive())
+                        {
+                            if (NPC.life > NPC.lifeMax * 0.4f)
+                            {
+                                CurrentAttack = attackType.IchorRam;
+                            }
+                            if (NPC.life <= NPC.lifeMax * 0.4f)
+                            {
+                                CurrentAttack = attackType.SummonAxes;
+                            }
+                        }
+                        else
+                        {
+                            CurrentAttack = attackType.Circle;
+                        }
                         ResetStats();
                         /*
                         if (EternityIsActive())

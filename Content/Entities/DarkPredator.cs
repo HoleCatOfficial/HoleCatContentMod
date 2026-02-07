@@ -132,13 +132,17 @@ namespace DestroyerTest.Content.Entities
             worm.Acceleration = 0.045f;
         }
 
-        public int AttackTimer = 0;
-        public bool DashFlag = false;
-        public bool DashFlag2 = false;
-        public int DashTimer = 20;
+        Vector2 chargeDirection;
+        bool charging = false;
+        int chargeWindup = 30;
+        int chargeDuration = 60;
+        float chargeSpeed = 14f;
+        float turnRate = 0.02f; // low = overshoot
+
         public bool MistakeFixed = false;
         public override void AI()
         {
+            NPC.TargetClosest();
             if (MistakeFixed == false)
             {
                 NPC.lifeMax = 1600;
@@ -146,8 +150,6 @@ namespace DestroyerTest.Content.Entities
                 NPC.defense = 80;
                 MistakeFixed = true;
             }
-
-            Player player = Main.player[NPC.target];
 
             Color[] Colors = new Color[]
             {
@@ -158,55 +160,71 @@ namespace DestroyerTest.Content.Entities
 
             if (Main.rand.NextBool(40))
             {
-                Dust.NewDust(NPC.Center, 50, 50, DustID.TintableDustLighted, NPC.velocity.X * 0.4f, NPC.velocity.Y * 0.4f, 100, Colors[Main.rand.Next(Colors.Length)], Main.rand.NextFloat(0.01f, 1.0f));
+                Dust.NewDust(NPC.Center, 50, 50, DustID.FireworksRGB, NPC.velocity.X * 0.4f, NPC.velocity.Y * 0.4f, 100, Colors[Main.rand.Next(Colors.Length)], Main.rand.NextFloat(0.01f, 1.0f));
             }
 
-            float length = NPC.velocity.Length();
-            float targetAngle = NPC.AngleTo(player.Center);
-            NPC.velocity = NPC.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(5)).ToRotationVector2() * length;
-            if (NPC.Distance(player.Center) < 400)
+           Player player = Main.player[NPC.target];
+
+            // --- TURNING OUTSIDE OF CHARGES ---
+            if (!charging)
             {
-                if (DashFlag == false)
+                float desiredAngle = NPC.AngleTo(player.Center);
+                float currentAngle = NPC.velocity.ToRotation();
+
+                // soft turning toward the player
+                float newAngle = currentAngle.AngleTowards(desiredAngle, MathHelper.ToRadians(4));
+                NPC.velocity = newAngle.ToRotationVector2() * NPC.velocity.Length();
+            }
+
+            // --- CHARGE TRIGGER ---
+            if (!charging && NPC.Distance(player.Center) < 400f)
+            {
+                chargeDirection = Vector2.Normalize(player.Center - NPC.Center);
+                charging = true;
+                chargeWindup = 10;    // short delay before burst
+                SoundEngine.PlaySound(Roar, NPC.Center);
+            }
+
+            // --- WINDUP ---
+            if (charging && chargeWindup > 0)
+            {
+                chargeWindup--;
+                if (chargeWindup == 0)
                 {
-                    SoundEngine.PlaySound(Roar, NPC.Center);
-                    NPC.velocity *= 2;
-                    DashFlag = true;
+                    // commit to a direction
+                    NPC.velocity = chargeDirection * chargeSpeed;
                 }
             }
-            if (DashTimer > 0 && DashFlag == true)
+
+            // --- ACTIVE CHARGE ---
+            if (charging && chargeWindup == 0)
             {
-                DashTimer--;
-            }
-            if (DashTimer <= 0)
-            {
-                DashFlag = false;
-                if (DashFlag2 == false)
+                chargeDuration--;
+
+                // VERY slight steering, but not enough to prevent overshoot
+                float desiredAngle = chargeDirection.ToRotation();
+                float newAngle = NPC.velocity.ToRotation().AngleTowards(desiredAngle, turnRate);
+                NPC.velocity = newAngle.ToRotationVector2() * chargeSpeed;
+
+                if (Main.GameUpdateCount % 10 == 0)
                 {
-                    NPC.velocity /= 2;
-                    DashFlag2 = true;
-                }
-                DashTimer = 20;
-            }
-
-
-            if (AttackTimer <= 0)
-            {
-                if (Main.netMode != NetmodeID.MultiplayerClient)
-                {
-                    Vector2 Shootvel = new Vector2(-8, 0); // Create a velocity moving the left.
-
-                    for (int i = 0; i < 5; i++)
+                    SoundEngine.PlaySound(SoundID.Item20, NPC.Center);
+                    for (int t = 0;  t < 3; t++)
                     {
-                        Shootvel = Shootvel.RotatedBy(MathHelper.PiOver4);
-                        Projectile.NewProjectile(Entity.GetSource_FromThis(), NPC.Center, Shootvel, ModContent.ProjectileType<TenebrisStarHostile>(), 15, 1, ai1: player.whoAmI, ai2: 4);
+                        Projectile Fire = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, NPC.velocity.RotatedByRandom(0.4f), ModContent.ProjectileType<TenebrisStarHostile_NoHoming>(), 20, 0f);
+                        Fire.scale = 0.65f;
+                        Fire.timeLeft = 60;
                     }
                 }
-                AttackTimer = 120;
+
+                if (chargeDuration <= 0)
+                {
+                    charging = false;
+                    chargeDuration = 35;
+                    NPC.velocity *= 0.4f; // slow down after missing
+                }
             }
-            if (AttackTimer > 0)
-            {
-                AttackTimer--;
-            }
+
 
         }
 

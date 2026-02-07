@@ -37,76 +37,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
         public override void PostDraw(Color lightColor)
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
-            DrawCrystalCore(spriteBatch, Projectile.Center);
-        }
-        public void DrawCrystalCore(SpriteBatch spriteBatch, Vector2 Center)
-        {
-            DTUtils Utility = new DTUtils();
-            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-
-            for (int i = 0; i < TrailPositions.Count; i++)
-            {
-                float progress = i / (float)TrailLength;
-                float scale = MathHelper.Lerp(0.1f, 0.0005f, progress);
-                Color color = Color.Red;
-
-                Main.EntitySpriteDraw(
-                    DTAssetLib.Cyclone(2).Value,
-                    TrailPositions[i] - Main.screenPosition,
-                    null,
-                    color,
-                    TextureRotationOffset,
-                    DTAssetLib.Cyclone(2).Value.Size() / 2f,
-                    scale,
-                    SpriteEffects.None,
-                    0
-                );
-            }
-            
-            for (int i = 0; i < TrailPositions.Count; i++)
-			{
-				float progress = i / (float)TrailLength;
-				float scale = MathHelper.Lerp(0.3f, 0.001f, progress);
-				Color color = Color.White;
-
-				Main.EntitySpriteDraw(
-					DTAssetLib.FeatheredCircle.Value,
-					TrailPositions[i] - Main.screenPosition,
-					null,
-					color,
-					Projectile.rotation,
-					DTAssetLib.FeatheredCircle.Value.Size() / 2f,
-					scale,
-					SpriteEffects.None,
-					0
-				);
-			}
-
-            Main.spriteBatch.Draw(
-                DTAssetLib.Cyclone(2).Value,
-                Center - Main.screenPosition,
-                null,
-                Color.Red,
-                TextureRotationOffset,
-                new Vector2(DTAssetLib.Cyclone(2).Value.Width / 2f, DTAssetLib.Cyclone(2).Value.Height / 2f),
-                0.1f,
-                SpriteEffects.None,
-                1f
-            );
-
-            Main.spriteBatch.Draw(
-                DTAssetLib.FeatheredCircle.Value,
-                Center - Main.screenPosition,
-                null,
-                Color.White,
-                0f,
-                new Vector2(DTAssetLib.FeatheredCircle.Value.Width / 2f, DTAssetLib.FeatheredCircle.Value.Height / 2f),
-                0.3f,
-                SpriteEffects.None,
-                1f
-            );
-
-            Opus.ReturnToDefaultDrawing(spriteBatch);
+            DTUtils.DrawCrystalCore(spriteBatch, Projectile.Center, Color.White, Color.Red, TrailPositions, TextureRotationOffset, Projectile, TrailLength, 0.8f);
         }
         
         public List<Vector2> TrailPositions = new();

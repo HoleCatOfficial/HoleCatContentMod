@@ -9,6 +9,7 @@ using DestroyerTest.Common;
 using System;
 using OpusLib;
 using DestroyerTest.Content.Projectiles.ParentClasses;
+using DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss;
 
 namespace DestroyerTest.Content.MeleeWeapons
 {
@@ -28,11 +29,12 @@ namespace DestroyerTest.Content.MeleeWeapons
 			Item.useAnimation = 80;
 			Item.useStyle = ItemUseStyleID.Shoot;
 
-			Item.shoot = ModContent.ProjectileType<UpDownSwingProjectile>();
-			Item.damage = 20;
+			Item.shoot = ModContent.ProjectileType<PrimalIchor>();
+			Item.damage = 40;
 			Item.channel = true;
 			Item.autoReuse = true;
 			Item.noUseGraphic = true;
+			Item.shootSpeed = 12f;
 		}
 	}
 }

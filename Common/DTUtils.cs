@@ -406,6 +406,171 @@ namespace DestroyerTest.Common
             Texture2D texture = TextureAssets.Projectile[projectile.type].Value;
             return new DrawData(texture, projectile.Center - Main.screenPosition, null, color, projectile.rotation, texture.Size() / 2, projectile.scale, SpriteEffects.None, 0f);
         }
+
+        /// <summary>
+        /// A scale of 1 is equal to the size of the smallest variant of Petrified Wisp.
+        /// The outer ring will always be 20% larger than the inner black circle.
+        /// </summary>
+        /// <param name="Center"></param>
+        /// <param name="Speed"></param>
+        /// <param name="spriteBatch"></param>
+        /// <param name="blendState"></param>
+        /// <param name="Scale"></param>
+        public static void DrawRiftBall(Vector2 Center, float Speed, SpriteBatch spriteBatch, BlendState blendState, List<Vector2> tail, float Scale = 1f)
+        {
+            if (tail == null || tail.Count < 2)
+            {
+                Main.NewText("DrawRiftBall: Tail is null or too short. Aborted draw.", Color.Red);
+                return;
+            }
+
+
+            Texture2D Ball = DTAssetLib.FeatheredCircle.Value;
+            float Rot = 0f;
+            Rot += 0.08f;
+            float bottomscale = Scale * 1.2f;
+
+            Opus.StartSpriteBatchWithBlending(spriteBatch, blendState, SpriteSortMode.Immediate);
+
+            for (int i = 0; i < tail.Count; i++)
+            {
+                float progress = i / (float)(tail.Count - 1);
+                float scale = MathHelper.Lerp(bottomscale, 0.0005f, progress);
+                Color color = ColorLib.Rift;
+
+                Main.EntitySpriteDraw(
+                    DTAssetLib.FeatheredCircle.Value,
+                    tail[i] - Main.screenPosition,
+                    null,
+                    color,
+                    Rot,
+                    Ball.Size() / 2f,
+                    scale,
+                    SpriteEffects.None,
+                    0
+                );
+            }
+
+            spriteBatch.Draw(Ball, Center - Main.screenPosition, null, ColorLib.Rift, Rot, Ball.Size() / 2, bottomscale, SpriteEffects.None, 1f);
+            
+            Opus.ReturnToDefaultDrawing(spriteBatch);
+
+            for (int i = 0; i < tail.Count; i++)
+			{
+				float progress = i / (float)(tail.Count - 1);
+				float scale = MathHelper.Lerp(Scale, 0.0001f, progress);
+				Color color = Color.Black;
+
+				Main.EntitySpriteDraw(
+					DTAssetLib.FeatheredCircle.Value,
+					tail[i] - Main.screenPosition,
+					null,
+					color,
+					Rot,
+					Ball.Size() / 2f,
+					scale,
+					SpriteEffects.None,
+					0
+				);
+			}
+
+            spriteBatch.Draw(Ball, Center - Main.screenPosition, null, Color.Black, Rot, Ball.Size() / 2, Scale, SpriteEffects.None, 0f);
+
+            
+        }
+
+        /// <summary>
+        /// Draws a ball with a trail composed of an upper layer and a lower layer.
+        /// Unlike the rift ball, the scaling of this is a lot more fine tuned due to the differences in the sizes of the textures that compose it.
+        /// </summary>
+        /// <param name="spriteBatch"></param>
+        /// <param name="Center"></param>
+        /// <param name="colorIN"></param>
+        /// <param name="colorOUT"></param>
+        /// <param name="TrailPositions"></param>
+        /// <param name="TextureRotationOffset"></param>
+        /// <param name="Projectile"></param>
+        /// <param name="TrailLength"></param>
+        public static void DrawCrystalCore(SpriteBatch spriteBatch, Vector2 Center, Color colorIN, Color colorOUT, List<Vector2> TrailPositions, float TextureRotationOffset, Projectile Projectile, int TrailLength, float Scale = 1f)
+        {
+            DTUtils Utility = new DTUtils();
+            float OuterScale = Scale * 0.1425f;
+            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+
+            for (int i = 0; i < TrailPositions.Count; i++)
+            {
+                float progress = i / (float)TrailLength;
+                float scale = MathHelper.Lerp(OuterScale, 0.0005f, progress);
+                Color color = colorOUT;
+
+                Main.EntitySpriteDraw(
+                    DTAssetLib.Cyclone(2).Value,
+                    TrailPositions[i] - Main.screenPosition,
+                    null,
+                    color,
+                    TextureRotationOffset,
+                    DTAssetLib.Cyclone(2).Value.Size() / 2f,
+                    scale,
+                    SpriteEffects.None,
+                    0
+                );
+            }
+            
+            for (int i = 0; i < TrailPositions.Count; i++)
+			{
+				float progress = i / (float)TrailLength;
+				float scale = MathHelper.Lerp(Scale, 0.001f, progress);
+				Color color = colorIN;
+
+				Main.EntitySpriteDraw(
+					DTAssetLib.FeatheredCircle.Value,
+					TrailPositions[i] - Main.screenPosition,
+					null,
+					color,
+					Projectile.rotation,
+					DTAssetLib.FeatheredCircle.Value.Size() / 2f,
+					scale,
+					SpriteEffects.None,
+					0
+				);
+			}
+
+            Main.spriteBatch.Draw(
+                DTAssetLib.Cyclone(2).Value,
+                Center - Main.screenPosition,
+                null,
+                colorOUT,
+                TextureRotationOffset,
+                new Vector2(DTAssetLib.Cyclone(2).Value.Width / 2f, DTAssetLib.Cyclone(2).Value.Height / 2f),
+                OuterScale,
+                SpriteEffects.None,
+                1f
+            );
+
+            Main.spriteBatch.Draw(
+                DTAssetLib.FeatheredCircle.Value,
+                Center - Main.screenPosition,
+                null,
+                colorIN,
+                0f,
+                new Vector2(DTAssetLib.FeatheredCircle.Value.Width / 2f, DTAssetLib.FeatheredCircle.Value.Height / 2f),
+                Scale,
+                SpriteEffects.None,
+                1f
+            );
+
+            Opus.ReturnToDefaultDrawing(spriteBatch);
+        }
+
+        public static List<int> RiftSurfaceEnemies = new List<int>
+        {
+            ModContent.NPCType<PetrifiedWisp1>(),
+            ModContent.NPCType<RiftDiggerHead>(),
+            ModContent.NPCType<RiftSlime>(),
+            ModContent.NPCType<PetrifiedLurker>(),
+            ModContent.NPCType<RiftOculus>(),
+            ModContent.NPCType<RiftObserver>(),
+        };
     }
 
     public static class DTStaticUtils
@@ -1079,6 +1244,7 @@ namespace DestroyerTest.Common
         public static SoundStyle FlailThrow = new SoundStyle($"{AudioPath}/FlailThrow");
         public static SoundStyle ConstitutionStarKill = new SoundStyle($"{AudioPath}/ConstitutionBoss/ConstitutionStar/Kill", 14) { PitchVariance = 0.2f, Volume = 0.85f, MaxInstances = 0 };
         
+        public static SoundStyle RiftExplosion = new SoundStyle($"{AudioPath}/RiftMaker_Boom");
         public struct ScholarShieldSounds
         {
             public static string Path = $"{AudioPath}/Scholar";

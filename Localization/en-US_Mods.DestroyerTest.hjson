@@ -4052,6 +4052,16 @@ Items: {
 		DisplayName: Item_ Rift Stone Torch
 		Tooltip: ""
 	}
+
+	RiftCanister: {
+		Tooltip: ""
+		DisplayName: Rift Canister
+	}
+
+	Item_ShadeParticleBlock: {
+		DisplayName: Item_ Shade Particle Block
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
@@ -4589,6 +4599,9 @@ Projectiles: {
 	ToxicOrb.DisplayName: Toxic Orb
 	ContainedRiftBiomeProjectile.DisplayName: Contained Rift Biome Projectile
 	SunscorchedDjinnStar.DisplayName: Sunscorched Djinn Star
+	RiftOrb.DisplayName: Rift Orb
+	LightDart.DisplayName: Light Dart
+	LightLance.DisplayName: Light Lance
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.
