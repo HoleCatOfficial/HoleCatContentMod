@@ -4062,6 +4062,16 @@ Items: {
 		DisplayName: Item_ Shade Particle Block
 		Tooltip: ""
 	}
+
+	CoronaBreaker: {
+		Tooltip: ""
+		DisplayName: Corona Breaker
+	}
+
+	TwistedScepter: {
+		Tooltip: ""
+		DisplayName: Twisted Scepter
+	}
 }
 
 Projectiles: {
@@ -4602,6 +4612,8 @@ Projectiles: {
 	RiftOrb.DisplayName: Rift Orb
 	LightDart.DisplayName: Light Dart
 	LightLance.DisplayName: Light Lance
+	CoronaBreakerProjectile.DisplayName: Corona Breaker Projectile
+	TwistedScepterThrown.DisplayName: Twisted Scepter Thrown
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.

@@ -94,6 +94,8 @@ namespace DestroyerTest.Content.Entities
             Main.npcFrameCount[NPC.type] = 12;
         }
 
+        public SoundStyle SpawnIdle = new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/RoseSpawnIdle") with { MaxInstances = 0 };
+        public SoundStyle SpawnRoar = new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/RoseSpawnRoar") with { MaxInstances = 0 };
         public SoundStyle Kill = new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/NightmareRoseKill") with { Volume = 2, MaxInstances = 0 };
         public SoundStyle Fire = new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/CursedFlameShoot") with { Volume = 2, PitchVariance = 1f, MaxInstances = 0 };
         public SoundStyle ArenaDivide = new SoundStyle("DestroyerTest/Assets/Audio/Impacts/HellWeaponImpact") with { Volume = 2, PitchVariance = 1f, MaxInstances = 0 };
@@ -101,7 +103,8 @@ namespace DestroyerTest.Content.Entities
         public SoundStyle NodeSpawnSound = new SoundStyle("DestroyerTest/Infernum/Assets/Audio/NightmareRoseIntroFinish") with { PitchVariance = 1f, MaxInstances = 0 };
         public SoundStyle Napalm = new SoundStyle("DestroyerTest/Assets/Audio/NodeAttackNapalm") with { PitchVariance = 1f, MaxInstances = 0 };
         public SoundStyle Desperation = new SoundStyle("DestroyerTest/Assets/Audio/RoseDesperation") with { MaxInstances = 0 };
-
+        
+         public SoundStyle WingDisable = new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/WingDisable") with { MaxInstances = 0 };
         public override void SetDefaults()
         {
             NPC.width = 144;
@@ -747,7 +750,7 @@ namespace DestroyerTest.Content.Entities
                         player.moveSpeed *= 0;
                         if (SpawnCount <= 0)
                         {
-                            SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/RoseSpawnIdle"));
+                            SoundEngine.PlaySound(SpawnIdle, NPCHead);
                         }
                         SpawnCount++;
                         if (SpawnCount < SpawnIdleRoarFlag)
@@ -756,6 +759,7 @@ namespace DestroyerTest.Content.Entities
                         }
                         if (SpawnCount >= SpawnIdleRoarFlag)
                         {
+                            SoundEngine.PlaySound(SpawnRoar, NPCHead);
                             SpawnDarknessAlpha = 0;
                             if (EternityIsActive())
                             {
@@ -914,7 +918,7 @@ namespace DestroyerTest.Content.Entities
                             {
                                 SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/ChargeBreak") with { PitchVariance = 1f });
 
-                                Opus.RingProjectileOutwardRandomDir(ModContent.ProjectileType<TenebrisFlamesHostile>(), 7, player.Center, 300, 10, 1, 8);
+                                Opus.RingProjectileOutward(ModContent.ProjectileType<TenebrisFlamesHostile>(), 6, player.Center, 300, 10, 1, 8, RandomOffset: true);
                                 FlameRingCount++;
                             }
                             if (FlameRingCount >= 9)
@@ -976,7 +980,10 @@ namespace DestroyerTest.Content.Entities
                         if (NapalmDelay >= 120)
                         {
                             SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/NapalmWarn") with { Volume = 0.75f, PitchVariance = 0.4f });
+                            SoundEngine.PlaySound(WingDisable);
                             PRTLoader.NewParticle(PRTLoader.GetParticleID<SmallShine>(), NPCHead, Vector2.Zero, Color.White, 2f);
+                            PRTLoader.NewParticle(PRTLoader.GetParticleID<WingDisableParticle>(), player.Center, Vector2.Zero, Color.White, 3f);
+                            player.velocity.Y += 100;
                         }
                         NapalmDelay--;
                         if (NapalmDelay > 0)

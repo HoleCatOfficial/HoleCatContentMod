@@ -1300,6 +1300,25 @@ namespace DestroyerTest.Common
             public static SoundStyle Hit = new SoundStyle($"{Path}Hit");
             public static SoundStyle Kill = new SoundStyle($"{Path}Kill");
         }
+
+        public struct Charge
+        {
+            public static string Path = $"{AudioPath}/Charge";
+            public static SoundStyle RiftFlailTick = new SoundStyle($"{Path}/RiftFlailTick");
+            public static SoundStyle RiftFlailBurst = new SoundStyle($"{Path}/RiftFlailBurst");
+            public static SoundStyle Anvil = new SoundStyle($"{Path}/Anvil");
+            public static SoundStyle FlatTick = new SoundStyle($"{Path}/FlatTick");
+            public static SoundStyle MetalTinkLight = new SoundStyle($"{Path}/MetalTinkLight", 3);
+            public static SoundStyle WoodyTick = new SoundStyle($"{Path}/WoodyTick", 6);
+        }
+
+        public struct StellarBow
+        {
+            public static string Path = $"{AudioPath}/StellarBow";
+            public static SoundStyle ArrowImpact = new SoundStyle($"{Path}/StellarBowArrowImpact", 4);
+            public static SoundStyle Shoot = new SoundStyle($"{Path}/StellarBowShoot", 3);
+            public static SoundStyle EmpoweredShoot = new SoundStyle($"{Path}/StellarBowEmpoweredShoot", 3);
+        }
     }
 
     public class AssetVerifierSystem : ModSystem
