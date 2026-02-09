@@ -331,7 +331,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 player.GetModPlayer<ScreenshakePlayer>().screenshakeTimer = 10;
                 player.GetModPlayer<ScreenshakePlayer>().screenshakeMagnitude = 1;
               
-				Lighting.AddLight(player.Center, ColorLib.StellarColor.ToVector3());
+				Lighting.AddLight(player.Center,  ColorLib.StellarFireGradientLooping(3f).ToVector3());
 
 				
 
@@ -355,7 +355,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 player.GetModPlayer<ScreenshakePlayer>().screenshakeTimer = 10;
                 player.GetModPlayer<ScreenshakePlayer>().screenshakeMagnitude = 1;
               
-				Lighting.AddLight(player.Center, ColorLib.StellarColor.ToVector3());
+				Lighting.AddLight(player.Center,  ColorLib.StellarFireGradientLooping(3f).ToVector3());
 				
 				
 

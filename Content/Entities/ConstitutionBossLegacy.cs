@@ -132,7 +132,7 @@ namespace DestroyerTest.Content.Entities
                         outlineRotation += MathHelper.Pi + MathHelper.ToRadians(180);
                         effects = SpriteEffects.FlipHorizontally;
                     }
-                    Main.EntitySpriteDraw(WhiteOutline, NPC.Center, null, ColorLib.StellarColor, outlineRotation, new Vector2(NPC.width / 2, NPC.height / 2), NPC.scale * 1.2f, effects, 0);
+                    Main.EntitySpriteDraw(WhiteOutline, NPC.Center, null,  ColorLib.StellarFireGradientLooping(3f), outlineRotation, new Vector2(NPC.width / 2, NPC.height / 2), NPC.scale * 1.2f, effects, 0);
                 }
                 spriteBatch.End();
                 spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
@@ -148,7 +148,7 @@ namespace DestroyerTest.Content.Entities
                         effects = SpriteEffects.FlipHorizontally;
                     }
 
-                    Main.EntitySpriteDraw(WhiteOutline, drawPos, null, NPC.GetAlpha(ColorLib.StellarColor) * ((NPC.oldPos.Length - k) / (float)NPC.oldPos.Length), outlineRotation, new Vector2(NPC.width / 2, NPC.height / 2), NPC.scale * 1.2f, effects, 0);
+                    Main.EntitySpriteDraw(WhiteOutline, drawPos, null, NPC.GetAlpha( ColorLib.StellarFireGradientLooping(3f)) * ((NPC.oldPos.Length - k) / (float)NPC.oldPos.Length), outlineRotation, new Vector2(NPC.width / 2, NPC.height / 2), NPC.scale * 1.2f, effects, 0);
                 }
                 spriteBatch.End();
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
@@ -869,11 +869,11 @@ namespace DestroyerTest.Content.Entities
             if (EternityIsActive())
             {
                 Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-                Main.EntitySpriteDraw(DTAssetLib.FireRing.Value, NPC.Center - Main.screenPosition, null, ColorLib.StellarColor * 0.5f, -TexRot, DTAssetLib.FireRing.Value.Size() / 2, 0.095f, SpriteEffects.None, 0);
-                Main.EntitySpriteDraw(DTAssetLib.FireRing.Value, NPC.Center - Main.screenPosition, null, ColorLib.StellarColor * 0.25f, -TexRot * 2, DTAssetLib.FireRing.Value.Size() / 2, 0.085f, SpriteEffects.None, 0);
-                Main.EntitySpriteDraw(DTAssetLib.FireRing.Value, NPC.Center - Main.screenPosition, null, ColorLib.StellarColor * 0.25f, TexRot * 1.5f, DTAssetLib.FireRing.Value.Size() / 2, 0.0805f, SpriteEffects.None, 0);
-                Main.EntitySpriteDraw(DTAssetLib.FireRing.Value, NPC.Center - Main.screenPosition, null, ColorLib.StellarColor * 0.7f, -TexRot * 0.5f, DTAssetLib.FireRing.Value.Size() / 2, 0.08f, SpriteEffects.None, 0);
-                Main.EntitySpriteDraw(DTAssetLib.FireRing.Value, NPC.Center - Main.screenPosition, null, ColorLib.StellarColor * 0.7f, TexRot, DTAssetLib.FireRing.Value.Size() / 2, 0.08f, SpriteEffects.None, 0);
+                Main.EntitySpriteDraw(DTAssetLib.FireRing.Value, NPC.Center - Main.screenPosition, null,  ColorLib.StellarFireGradientLooping(3f) * 0.5f, -TexRot, DTAssetLib.FireRing.Value.Size() / 2, 0.095f, SpriteEffects.None, 0);
+                Main.EntitySpriteDraw(DTAssetLib.FireRing.Value, NPC.Center - Main.screenPosition, null,  ColorLib.StellarFireGradientLooping(3f) * 0.25f, -TexRot * 2, DTAssetLib.FireRing.Value.Size() / 2, 0.085f, SpriteEffects.None, 0);
+                Main.EntitySpriteDraw(DTAssetLib.FireRing.Value, NPC.Center - Main.screenPosition, null,  ColorLib.StellarFireGradientLooping(3f) * 0.25f, TexRot * 1.5f, DTAssetLib.FireRing.Value.Size() / 2, 0.0805f, SpriteEffects.None, 0);
+                Main.EntitySpriteDraw(DTAssetLib.FireRing.Value, NPC.Center - Main.screenPosition, null,  ColorLib.StellarFireGradientLooping(3f) * 0.7f, -TexRot * 0.5f, DTAssetLib.FireRing.Value.Size() / 2, 0.08f, SpriteEffects.None, 0);
+                Main.EntitySpriteDraw(DTAssetLib.FireRing.Value, NPC.Center - Main.screenPosition, null,  ColorLib.StellarFireGradientLooping(3f) * 0.7f, TexRot, DTAssetLib.FireRing.Value.Size() / 2, 0.08f, SpriteEffects.None, 0);
                 Opus.ReturnToDefaultDrawing(Main.spriteBatch);
             }
         }
@@ -896,7 +896,7 @@ namespace DestroyerTest.Content.Entities
         public override void HitEffect(NPC.HitInfo hit)
         {
             Player plr = Main.player[NPC.target];
-            PRTLoader.NewParticle(PRTLoader.GetParticleID<FlatStar>(), Main.rand.NextVector2FromRectangle(NPC.Hitbox), Vector2.Zero, ColorLib.StellarColor, 0.15f);
+            PRTLoader.NewParticle(PRTLoader.GetParticleID<FlatStar>(), Main.rand.NextVector2FromRectangle(NPC.Hitbox), Vector2.Zero,  ColorLib.StellarFireGradientLooping(3f), 0.15f);
             IEntitySource src = NPC.GetSource_OnHurt(plr);
             for (int u = 0; u < 4; u++)
             {
@@ -1080,7 +1080,7 @@ namespace DestroyerTest.Content.Entities
         public override bool PreDraw(ref Color lightColor)
         {
             // Set base color and adjust transparency based on time left
-            lightColor = ColorLib.StellarColor;
+            lightColor =  ColorLib.StellarFireGradientLooping(3f);
 
             // Prepare for sprite drawing
             SpriteBatch spriteBatch = Main.spriteBatch;
@@ -1187,7 +1187,7 @@ namespace DestroyerTest.Content.Entities
         public override bool PreDraw(ref Color lightColor)
         {
 
-            lightColor = ColorLib.StellarColor;
+            lightColor =  ColorLib.StellarFireGradientLooping(3f);
 
 
             if (Projectile.timeLeft < FadeOutStartTime)

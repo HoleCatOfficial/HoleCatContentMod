@@ -62,7 +62,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
         private Asset<Texture2D> ProjTex => ModContent.Request<Texture2D>(Texture);
 		public override bool PreDraw(ref Color lightColor)
         {
-            lightColor = ColorLib.StellarColor;
+            lightColor =  ColorLib.StellarFireGradientLooping(3f);
             SpriteBatch spriteBatch = Main.spriteBatch;
             DTUtils Utility = new DTUtils();
 
@@ -143,7 +143,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
 
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
 
-            Lighting.AddLight(Projectile.Center, ColorLib.StellarColor.ToVector3() * 0.2f);
+            Lighting.AddLight(Projectile.Center,  ColorLib.StellarFireGradientLooping(3f).ToVector3() * 0.2f);
 
             Projectile.velocity.Y += 0.05f;
         }
@@ -158,7 +158,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
         public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(SoundID.Item10);
-			Opus.RadialDustRandomDir(DustID.FireworksRGB, 12, Projectile.Center, 0, ColorLib.StellarColor, 1f, 3);
+			Opus.RadialDustRandomDir(DustID.FireworksRGB, 12, Projectile.Center, 0,  ColorLib.StellarFireGradientLooping(3f), 1f, 3);
         }
 
     }

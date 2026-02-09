@@ -11,6 +11,9 @@ using ReLogic.Content;
 using Terraria.Audio;
 using OpusLib;
 using DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss;
+using DestroyerTest.Content.Dusts;
+using DestroyerTest.Content.Particles.Stellar;
+using InnoVault.PRT;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 {
@@ -100,12 +103,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
                 }
             }
 
-            // Cosmetic dust
             if (Main.rand.NextBool(3))
             {
-                Dust dust = Dust.NewDustPerfect(Projectile.Center, DustID.TintableDustLighted, Projectile.velocity * 0.2f, 100, ColorLib.StellarColor, 1.2f);
-                dust.noGravity = true;
-                dust.fadeIn = 1.5f;
+                PRTLoader.NewParticle(StellarParticleIndex.ConstitutionParticle, Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Projectile.velocity * 0.15f, default, 0.5f);
             }
         }
 
@@ -137,12 +137,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
                 MaxInstances = 0
             }, Projectile.Center);
 
-            for (int i = 0; i < 10; i++)
-            {
-                Dust dust = Dust.NewDustPerfect(Projectile.Center, DustID.TintableDustLighted, Main.rand.NextVector2Circular(3, 3), 100, ColorLib.StellarColor, 1.5f);
-                dust.noGravity = true;
-                dust.fadeIn = 1.5f;
-            }
+            Opus.RadialSpreadParticle(StellarParticleIndex.ConstitutionParticle, 12, Projectile.Center, 1f, default, 1f, 2f, RandomOffset: true);
 
             DTUtils.ConstitutionStarExplosionEffects(Projectile);
 

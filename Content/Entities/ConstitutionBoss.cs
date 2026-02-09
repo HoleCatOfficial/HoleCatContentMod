@@ -40,9 +40,34 @@ using System.Data;
 using DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss;
 using OpusLib.Content.Helpers;
 using System.ComponentModel;
+using Terraria.Social.Base;
 
 namespace DestroyerTest.Content.Entities
 {
+    public class ConstitutionDamageValues
+    {
+        public static int BeamDamage()
+        {
+            if (DTUtils.ClassicMode())
+            {
+                return 12;
+            }
+            if (Main.expertMode && !Main.masterMode)
+            {
+                return 16;
+            }
+            if (Main.masterMode)
+            {
+                return 20;
+            }
+            return 12;
+        }
+    }
+
+    public class ConstitutionSounds
+    {
+        public static SoundStyle Shoot1 = new SoundStyle("DestroyerTest/Assets/Audio/ConstitutionBoss/ConstitutionBossShootStars3");
+    }
 
     [AutoloadBossHead]
     public class ConstitutionBoss : ModNPC
@@ -69,8 +94,8 @@ namespace DestroyerTest.Content.Entities
 
         public override void SetDefaults()
         {
-            NPC.width = 70;
-            NPC.height = 64;
+            NPC.width = 52;
+            NPC.height = 50;
             NPC.aiStyle = -1;
             NPC.damage = 24;
             NPC.defense = 24;
@@ -116,14 +141,13 @@ namespace DestroyerTest.Content.Entities
             SimpleLine leftSide = new SimpleLine(ArenaRect.TopLeft(), ArenaRect.BottomLeft());
             SimpleLine rightSide = new SimpleLine(ArenaRect.TopRight(), ArenaRect.BottomRight());
 
-            DTUtils.ScrollingTextureSpine(topSide, DTAssetLib.Streak(1), ColorLib.StellarColor, spriteBatch, BlendState.Additive);
-            DTUtils.ScrollingTextureSpine(bottomSide, DTAssetLib.Streak(1), ColorLib.StellarColor, spriteBatch, BlendState.Additive);
-            DTUtils.ScrollingTextureSpine(leftSide, DTAssetLib.Streak(1), ColorLib.StellarColor, spriteBatch, BlendState.Additive);
-            DTUtils.ScrollingTextureSpine(rightSide, DTAssetLib.Streak(1), ColorLib.StellarColor, spriteBatch, BlendState.Additive);
+            DTUtils.ScrollingTextureSpine(topSide, DTAssetLib.Streak(1),  ColorLib.StellarFireGradientLooping(3f), spriteBatch, BlendState.Additive);
+            DTUtils.ScrollingTextureSpine(bottomSide, DTAssetLib.Streak(1),  ColorLib.StellarFireGradientLooping(3f), spriteBatch, BlendState.Additive);
+            DTUtils.ScrollingTextureSpine(leftSide, DTAssetLib.Streak(1),  ColorLib.StellarFireGradientLooping(3f), spriteBatch, BlendState.Additive);
+            DTUtils.ScrollingTextureSpine(rightSide, DTAssetLib.Streak(1),  ColorLib.StellarFireGradientLooping(3f), spriteBatch, BlendState.Additive);
+            Utils.DrawBorderString(spriteBatch, AITimer.ToString(), (NPC.Center - new Vector2(0, 40)) - Main.screenPosition, Color.Red, 1f);
         }
-
-
-
+        public int AITimer = 0;
         public override void AI()
         {
             NPC.TargetClosest();
@@ -138,20 +162,27 @@ namespace DestroyerTest.Content.Entities
             }
             Arena();
 
-            NPC.ai[0]++;
+            AITimer++;
 
-            if (NPC.ai[0] < 600 && NPC.ai[0] > 0)
+            if (AITimer < 600 && AITimer >= 0)
             {
                 IdleAI();
             }
-            if (NPC.ai[0] < 3200 && NPC.ai[0] > 600)
+            if (AITimer < 1200 && AITimer >= 600)
             {
-                DashAI();
+                if (AITimer %  120 == 0)
+                {
+                    BeamBoomAI();
+                }
             }
+            if (AITimer >= 3200)
+            {
+                AITimer = 0;
+            }
+
             NPC.rotation = NPC.velocity.ToRotation() + MathHelper.PiOver4;
 
             Music = MusicLoader.GetMusicSlot("DestroyerTest/Assets/Music/ConstitutionBoss");
-            
         }
 
         public  Rectangle ArenaRect;
@@ -198,7 +229,7 @@ namespace DestroyerTest.Content.Entities
             }
 
 
-            //Opus.RectDustRandom(DustID.TintableDustLighted, ArenaRect, ColorLib.StellarColor, 1f, 20);
+            //Opus.RectDustRandom(DustID.TintableDustLighted, ArenaRect,  ColorLib.StellarFireGradientLooping(3f), 1f, 20);
             
 
             
@@ -207,26 +238,29 @@ namespace DestroyerTest.Content.Entities
         public void IdleAI()
         {
             Player player = Main.player[NPC.target];
-           //Utils.MoveTowards(NPC.Center, player.Center, 0.3f);
-           NPC.aiStyle = NPCAIStyleID.CursedSkull;
+            NPC.aiStyle = NPCAIStyleID.CursedSkull;
         }
 
-        public int DashAITimer = 0;
-        public void DashAI()
+        public int BeamBoomCount(bool Double, bool Half)
         {
-            Player player = Main.player[NPC.target];
-            DashAITimer++;
-            if (DashAITimer % 240 == 0)
+            if (Half)
             {
-                NPC.velocity *= 3;
+                return 3;
+            }
+            if (Double)
+            {
+                return 12;
             }
             else
             {
-                if (NPC.velocity.Length() < 20)
-                {
-                    NPC.velocity *= 0.6f;
-                }
+                return 6;
             }
         }
+        public void BeamBoomAI()
+        {
+            SoundEngine.PlaySound(ConstitutionSounds.Shoot1 with { PitchVariance = 0.4f }, NPC.Center);
+            Opus.RadialSpreadProjectile(ModContent.ProjectileType<ConstitutionBeam>(), BeamBoomCount(Main.masterMode, DTUtils.ClassicMode()), NPC.Center, ConstitutionDamageValues.BeamDamage(), 10, 8, RandomOffset: true);
+        }
+
     }
 }

@@ -20,6 +20,7 @@ using DestroyerTest.Content.Buffs;
 using System;
 using InnoVault.PRT;
 using DestroyerTest.Content.Particles;
+using DestroyerTest.Content.Particles.Stellar;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 {
@@ -143,7 +144,18 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 
 			Opus.ReturnToDefaultDrawing(spriteBatch);
 
-            Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, TextureAssets.Projectile[Projectile.type].Value.Size() / 2, 1f, SpriteEffects.None, 0);
+            SpriteEffects effects = SpriteEffects.None;
+
+            if (Projectile.direction == -1)
+            {
+                effects = SpriteEffects.FlipVertically;
+            }
+            else
+            {
+                effects = SpriteEffects.None;
+            }
+
+            Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, TextureAssets.Projectile[Projectile.type].Value.Size() / 2, 1f, effects, 0);
 
 			return false;
 		}
@@ -219,8 +231,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 
             Vector2 DustPos = Opus.Sine(Pos1, Pos2, 0.5f);
 
-            Dust trail1 = Dust.NewDustPerfect(DustPos, ModContent.DustType<ColorableNeonDust>(), Projectile.velocity * 0.05f, 0, ColorLib.StellarFireGradientLooping(), 0.75f);
-            trail1.noGravity = true;
+            PRTLoader.NewParticle(StellarParticleIndex.ConstitutionParticle, DustPos, Projectile.velocity * 0.05f, default, 0.75f);
         }
 
         public void DustSpawn2()
@@ -230,8 +241,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 
             Vector2 DustPos = Opus.Sine(Pos1, Pos2, 0.5f);
 
-            Dust trail2 = Dust.NewDustPerfect(DustPos, ModContent.DustType<ColorableNeonDust>(), Projectile.velocity * 0.05f, 0, ColorLib.StellarFireGradientLooping(), 0.75f);
-            trail2.noGravity = true;
+            
+            PRTLoader.NewParticle(StellarParticleIndex.ConstitutionParticle, DustPos, Projectile.velocity * 0.05f, default, 0.75f);
         }
 
         public override bool? CanHitNPC(NPC target)
@@ -242,6 +253,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
         public override void AI() 
         {
             Projectile.rotation = Projectile.velocity.ToRotation();
+
+            CacheTrail();
+            DustSpawn1();
+            DustSpawn2();
             
             if(DelayTimer < 20)
             {
@@ -272,14 +287,6 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
             }
 
             Projectile.velocity.Clamp(30);
-        }
-
-
-        public override void PostAI()
-        {
-            CacheTrail();
-            DustSpawn1();
-            DustSpawn2();
         }
 
         public NPC FindClosestNPC(float maxDetectDistance) {
@@ -318,7 +325,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
             Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BoomCloud>(), Projectile.Center, Vector2.Zero, ColorLib.StellarFire3, 0.01f, 1.0f);
             Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BoomCloud>(), Projectile.Center, Vector2.Zero, ColorLib.StellarFire1, 0.01f, 0.7f);
 
-            Opus.RadialParticleRandomDir(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], 15, Projectile.Center, 1, Main.rand.NextFromCollection(StellarFireColormap), 1.3f, 2, 60, ai2: 2);
+            Opus.RadialParticleRandomDir(StellarParticleIndex.StellarFire[Main.rand.Next(StellarParticleIndex.StellarFire.Count)], 15, Projectile.Center, 1, default, 1.3f, 2, 60, ai2: 2);
             DTUtils.ConstitutionStarExplosionEffects(Projectile);
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
@@ -330,10 +337,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 
         public override void OnKill(int timeLeft)
         {
-            for (int i = 0; i < 4; i++)
-            {
-                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<ColorableNeonDust>(), Main.rand.NextVector2Circular(10, 10), 0, ColorLib.StellarFireGradientLooping(), 1.4f);
-            }
+            Opus.RadialSpreadParticle(StellarParticleIndex.ConstitutionParticle, 12, Projectile.Center, 1f, default, 1f, 2f, RandomOffset: true);
         }
 
         public override void ModifyDamageHitbox(ref Rectangle hitbox)

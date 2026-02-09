@@ -59,7 +59,7 @@ public class TrailBlazer : ModProjectile
 			public override bool PreDraw(ref Color lightColor)
 			{
                 
-				lightColor = ColorLib.StellarColor;
+				lightColor =  ColorLib.StellarFireGradientLooping(3f);
 
 				SpriteBatch spriteBatch = Main.spriteBatch;
 				Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;

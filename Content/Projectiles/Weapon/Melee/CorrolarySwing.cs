@@ -277,7 +277,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 //Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Velocity * Main.rand.NextFloat(0.1f, 1.0f), ModContent.ProjectileType<CorrolaryProj2>(), Projectile.damage / 2, 2, Main.player[Projectile.owner].whoAmI);
 
 
-                Lighting.AddLight(player.Center, ColorLib.StellarColor.ToVector3());
+                Lighting.AddLight(player.Center,  ColorLib.StellarFireGradientLooping(3f).ToVector3());
 
                 if (Timer >= execTime)
                 {
@@ -303,7 +303,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 //Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Velocity * Main.rand.NextFloat(0.1f, 1.0f), ModContent.ProjectileType<CorrolaryProj2>(), Projectile.damage / 2, 2, Main.player[Projectile.owner].whoAmI);
 
 
-                Lighting.AddLight(player.Center, ColorLib.StellarColor.ToVector3());
+                Lighting.AddLight(player.Center,  ColorLib.StellarFireGradientLooping(3f).ToVector3());
 
                 if (Timer >= execTime)
                 {

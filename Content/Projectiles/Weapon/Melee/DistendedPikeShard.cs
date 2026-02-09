@@ -125,7 +125,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
             for (int i = 0; i < 10; i++)
             {
-                Dust dust = Dust.NewDustPerfect(Projectile.Center, DustID.TintableDustLighted, Main.rand.NextVector2Circular(3, 3), 100, ColorLib.StellarColor, 1.5f);
+                Dust dust = Dust.NewDustPerfect(Projectile.Center, DustID.TintableDustLighted, Main.rand.NextVector2Circular(3, 3), 100,  ColorLib.StellarFireGradientLooping(3f), 1.5f);
                 dust.noGravity = true;
                 dust.fadeIn = 1.5f;
             }

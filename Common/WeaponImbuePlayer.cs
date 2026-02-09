@@ -126,7 +126,7 @@ namespace DestroyerTest.Common
             {
                 if (Main.rand.NextBool(5))
                 {
-                    Dust dust = Dust.NewDustDirect(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, DustID.TintableDustLighted, 0, 0, 100, ColorLib.StellarColor, 1.85f);
+                    Dust dust = Dust.NewDustDirect(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, DustID.TintableDustLighted, 0, 0, 100,  ColorLib.StellarFireGradientLooping(3f), 1.85f);
                     dust.velocity *= 0.5f;
                 }
             }

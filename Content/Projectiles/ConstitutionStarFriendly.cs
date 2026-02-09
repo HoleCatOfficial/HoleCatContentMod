@@ -15,6 +15,7 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using OpusLib;
+using DestroyerTest.Content.Particles.Stellar;
 
 namespace DestroyerTest.Content.Projectiles
 {
@@ -47,18 +48,17 @@ namespace DestroyerTest.Content.Projectiles
 			Projectile.hostile = false;
 			Projectile.ignoreWater = true;
 			Projectile.light = 0.5f;
-			Projectile.timeLeft = 600;
+			Projectile.timeLeft = 420;
 			Projectile.tileCollide = false;
 		}
 
         private Asset<Texture2D> ProjTex => ModContent.Request<Texture2D>(Texture);
         public float trailOffset = 0;
+		public Color MainColor = Color.White;
 		public override bool PreDraw(ref Color lightColor)
         {
-            lightColor = ColorLib.StellarColor;
             trailOffset += 0.04f;
             SpriteBatch spriteBatch = Main.spriteBatch;
-            DTUtils Utility = new DTUtils();
 
             Opus.StartSpriteBatchForTrails(spriteBatch, BlendState.NonPremultiplied, SpriteSortMode.Immediate);
 			if (TrailPositions.Count > 1)
@@ -68,22 +68,14 @@ namespace DestroyerTest.Content.Projectiles
 
 				for (int i = TrailPositions.Count - 1; i > 0; i--)
 				{
-					float t = 1f - (i / (float)TrailPositions.Count); // fade toward tail
-					Color b = lightColor * t;
+					float t = 1f - (i / (float)TrailPositions.Count);
+					Color b = (MainColor * t) * Projectile.Opacity;
 
 					Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
 					Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * 20;
                     Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * 20;
 
-					ve.Add(new ColoredVertex(
-						TrailPositions[i] - Main.screenPosition + offset,
-						new Vector3(t - trailOffset, 1, 1),
-						b));
-
-					ve.Add(new ColoredVertex(
-						TrailPositions[i] - Main.screenPosition + offset2,
-						new Vector3(t - trailOffset, 0, 1),
-						b));
+					DTUtils.AddStrips(ve, TrailPositions, i, offset, offset2, t, b, trailOffset);
 				}
 
 				GraphicsDevice gd = Main.graphics.GraphicsDevice;
@@ -94,13 +86,11 @@ namespace DestroyerTest.Content.Projectiles
 				}
 			}
 
-            Opus.DrawGlowOnProj(Projectile, lightColor, true);
+			Opus.DrawTextureOnProj(DTAssetLib.StarAura, Projectile, MainColor * Projectile.Opacity, false, Projectile.velocity.ToRotation(), Projectile.scale, Projectile.scale);
 
             Opus.ReturnToDefaultDrawing(spriteBatch);
 
-            Opus.DrawTextureOnProj(DTAssetLib.StarAura, Projectile, lightColor, false, Projectile.velocity.ToRotation(), 1f, 1f);
-
-            Opus.DrawTextureOnProj(ProjTex, Projectile, Color.White, true, Projectile.rotation, 1f, 1f);
+            Opus.DrawTextureOnProj(DTAssetLib.ColorlessStar, Projectile, Color.White * Projectile.Opacity, true, Projectile.rotation, Projectile.scale, Projectile.scale);
 
             return false;
         }
@@ -112,6 +102,32 @@ namespace DestroyerTest.Content.Projectiles
 
         public bool Flag1 = false;
         public int HomingTime = 60;
+
+		public int Lifetime = 300;
+		public int Time = 0;
+
+		public bool StartKill = false;
+		public void UpdateLerpTime()
+		{
+			Time++;
+
+			if (Time > Lifetime)
+			{
+				StartKill = true;
+			}
+		}
+		public float LifetimeCompletion
+		{
+			get
+			{
+				if (Lifetime <= 0)
+				{
+					return 0f;
+				}
+
+				return (float)Time / (float)Lifetime;
+			}
+		}
 		public override void AI()
         {
             Vector2 lastPos = TrailPositions.Count > 0 ? TrailPositions[0] : Projectile.Center;
@@ -144,63 +160,83 @@ namespace DestroyerTest.Content.Projectiles
 			while (TrailRotations.Count > TrailLength)
 				TrailRotations.RemoveAt(TrailRotations.Count - 1);
 
+			UpdateLerpTime();
+			MainColor = ColorLib.StellarFireGradient(LifetimeCompletion * 4f);
+
             DelayTimer++;
 
             Projectile.rotation += Projectile.direction * 0.1f;
 
-            Lighting.AddLight(Projectile.Center, ColorLib.StellarColor.ToVector3() * 0.2f);
+            Lighting.AddLight(Projectile.Center, MainColor.ToVector3() * 0.2f);
 
-            if (DelayTimer < 20)
-            {
-                DelayTimer += 1;
-                return;
-            }
+			
 
-            if (HomingTime > 0 && DelayTimer >= 20)
-            {
-                HomingTime--;
-            }
-            float maxDetectRadius = 2800f;
+			if (!StartKill)
+			{
+				if (Main.rand.NextBool(3))
+				{
+					PRTLoader.NewParticle(StellarParticleIndex.ConstitutionParticle, Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Projectile.velocity * 0.15f, default, 0.5f);
+				}	
 
-           
+				if (DelayTimer < 20)
+				{
+					DelayTimer += 1;
+					return;
+				}
 
-            if (NPCTarget == null)
-            {
-                NPCTarget = FindClosestNPC(maxDetectRadius);
-            }
+				if (HomingTime > 0 && DelayTimer >= 20)
+				{
+					HomingTime--;
+				}
+				float maxDetectRadius = 2800f;
+
+			
+
+				if (NPCTarget == null)
+				{
+					NPCTarget = FindClosestNPC(maxDetectRadius);
+				}
 
 
-            if (NPCTarget != null && !IsValidNPC(NPCTarget))
-            {
-                NPCTarget = null;
-            }
+				if (NPCTarget != null && !IsValidNPC(NPCTarget))
+				{
+					NPCTarget = null;
+				}
 
 
-            if (NPCTarget == null)
-                return;
+				if (NPCTarget == null)
+					return;
 
-            float targetAngle = Projectile.AngleTo(NPCTarget.Center);
-            if (HomingTime > 0)
-            {
-                Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(15)).ToRotationVector2() * Projectile.velocity.Length();
-            }
+				float targetAngle = Projectile.AngleTo(NPCTarget.Center);
+				if (HomingTime > 0)
+				{
+					Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(15)).ToRotationVector2() * Projectile.velocity.Length();
+				}
 
-            if (!Flag1)
-                {
-                    SoundEngine.PlaySound(SoundID.AbigailUpgrade, Projectile.Center);
-                    Flag1 = true;
-                }
+				if (!Flag1)
+					{
+						SoundEngine.PlaySound(SoundID.AbigailUpgrade, Projectile.Center);
+						Flag1 = true;
+					}
 
-            // Acceleration
-            float speed = Projectile.velocity.Length();
-            float desiredSpeed = 20f; // your top speed
-            float acceleration = 0.3f; // how quickly it ramps up
-            if (HomingTime > 0)
-            {
-                if (speed < desiredSpeed)
-                    speed += acceleration;
-                Projectile.velocity = Projectile.velocity.SafeNormalize(Vector2.Zero) * speed;
-            }
+				// Acceleration
+				float speed = Projectile.velocity.Length();
+				float desiredSpeed = 20f; // your top speed
+				float acceleration = 0.3f; // how quickly it ramps up
+				if (HomingTime > 0)
+				{
+					if (speed < desiredSpeed)
+						speed += acceleration;
+					Projectile.velocity = Projectile.velocity.SafeNormalize(Vector2.Zero) * speed;
+				}
+			}
+
+			if (StartKill)
+			{
+				Projectile.velocity *= 0.97f;
+				Projectile.scale *= 0.97f;
+				Projectile.Opacity -= 0.01f;
+			}
         }
 		public NPC FindClosestNPC(float maxDetectDistance)
 		{
@@ -231,6 +267,12 @@ namespace DestroyerTest.Content.Projectiles
 			return target.CanBeChasedBy();
 		}
 
+        public override bool? CanHitNPC(NPC target)
+        {
+            return !StartKill && DelayTimer >= 20;
+        }
+
+
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
 			target.AddBuff(ModContent.BuffType<GalantineBurn>(), 600);
@@ -238,10 +280,17 @@ namespace DestroyerTest.Content.Projectiles
 
         public override void OnKill(int timeLeft)
         {
-            SoundEngine.PlaySound(DTAssetLib.ConstitutionStarKill, Projectile.Center);
-            PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp>(), Projectile.Center, Vector2.Zero, ColorLib.StellarColor, 0.005f);
-            Dust.NewDust(Projectile.position, Projectile.Hitbox.Width, Projectile.Hitbox.Height, DustID.TintableDustLighted, Main.rand.NextFloat(-1, 1.1f), Main.rand.NextFloat(-1, 1.1f), 0, ColorLib.StellarColor, 2f);
-            DTUtils.ConstitutionStarExplosionEffects(Projectile);
+			if (!StartKill)
+			{
+				SoundEngine.PlaySound(DTAssetLib.ConstitutionStarKill, Projectile.Center);
+				Opus.NewParticleFloatAI(StellarParticleIndex.BloomRingSharp, Projectile.Center, Vector2.Zero, ColorLib.StellarFireGradientLooping(3f), 0.005f, 0.2f);
+				DTUtils.ConstitutionStarExplosionEffects(Projectile);
+			}
+			else
+			{
+				SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/StarShot") { MaxInstances = 0, PitchVariance = 0.2f }, Projectile.Center);
+				Opus.RadialSpreadParticle(StellarParticleIndex.ConstitutionParticle, 5, Projectile.Center, 1f, default, 1f, 2f, offset: Projectile.rotation);
+			}
         }
 
     }
@@ -265,18 +314,17 @@ namespace DestroyerTest.Content.Projectiles
 			Projectile.hostile = false;
 			Projectile.ignoreWater = true;
 			Projectile.light = 0.5f;
-			Projectile.timeLeft = 600;
+			Projectile.timeLeft = 420;
 			Projectile.tileCollide = false;
 		}
 
         private Asset<Texture2D> ProjTex => ModContent.Request<Texture2D>(Texture);
         public float trailOffset = 0;
+		public Color MainColor = Color.White;
 		public override bool PreDraw(ref Color lightColor)
         {
-            lightColor = ColorLib.StellarColor;
             trailOffset += 0.04f;
             SpriteBatch spriteBatch = Main.spriteBatch;
-            DTUtils Utility = new DTUtils();
 
             Opus.StartSpriteBatchForTrails(spriteBatch, BlendState.NonPremultiplied, SpriteSortMode.Immediate);
 			if (TrailPositions.Count > 1)
@@ -286,22 +334,14 @@ namespace DestroyerTest.Content.Projectiles
 
 				for (int i = TrailPositions.Count - 1; i > 0; i--)
 				{
-					float t = 1f - (i / (float)TrailPositions.Count); // fade toward tail
-					Color b = lightColor * t;
+					float t = 1f - (i / (float)TrailPositions.Count);
+					Color b = (MainColor * t) * Projectile.Opacity;
 
 					Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
 					Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * 20;
                     Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * 20;
 
-					ve.Add(new ColoredVertex(
-						TrailPositions[i] - Main.screenPosition + offset,
-						new Vector3(t - trailOffset, 1, 1),
-						b));
-
-					ve.Add(new ColoredVertex(
-						TrailPositions[i] - Main.screenPosition + offset2,
-						new Vector3(t - trailOffset, 0, 1),
-						b));
+					DTUtils.AddStrips(ve, TrailPositions, i, offset, offset2, t, b, trailOffset);
 				}
 
 				GraphicsDevice gd = Main.graphics.GraphicsDevice;
@@ -312,13 +352,11 @@ namespace DestroyerTest.Content.Projectiles
 				}
 			}
 
-            Opus.DrawGlowOnProj(Projectile, lightColor, true);
+			Opus.DrawTextureOnProj(DTAssetLib.StarAura, Projectile, MainColor * Projectile.Opacity, false, Projectile.velocity.ToRotation(), Projectile.scale, Projectile.scale);
 
             Opus.ReturnToDefaultDrawing(spriteBatch);
 
-            Opus.DrawTextureOnProj(DTAssetLib.StarAura, Projectile, lightColor, false, Projectile.velocity.ToRotation(), 1f, 1f);
-
-            Opus.DrawTextureOnProj(ProjTex, Projectile, Color.White, true, Projectile.rotation, 1f, 1f);
+            Opus.DrawTextureOnProj(DTAssetLib.ColorlessStar, Projectile, Color.White * Projectile.Opacity, true, Projectile.rotation, Projectile.scale, Projectile.scale);
 
             return false;
         }
@@ -328,6 +366,31 @@ namespace DestroyerTest.Content.Projectiles
 		private const int TrailLength = 400;
         public SoundStyle Chase = new SoundStyle($"DestroyerTest/Assets/Audio/ConstitutionBoss/ConstitutionStar/Chase") { PitchVariance = 1f, MaxInstances = 0 };
 
+		public int Lifetime = 300;
+		public int Time = 0;
+
+		public bool StartKill = false;
+		public void UpdateLerpTime()
+		{
+			Time++;
+
+			if (Time > Lifetime)
+			{
+				StartKill = true;
+			}
+		}
+		public float LifetimeCompletion
+		{
+			get
+			{
+				if (Lifetime <= 0)
+				{
+					return 0f;
+				}
+
+				return (float)Time / (float)Lifetime;
+			}
+		}
        
 		public override void AI()
         {
@@ -365,8 +428,25 @@ namespace DestroyerTest.Content.Projectiles
 
             Projectile.rotation += Projectile.direction * 0.1f;
 
-            Lighting.AddLight(Projectile.Center, ColorLib.StellarColor.ToVector3() * 0.2f);
+			UpdateLerpTime();
+			MainColor = ColorLib.StellarFireGradient(LifetimeCompletion * 4f);
 
+            Lighting.AddLight(Projectile.Center,  MainColor.ToVector3() * 0.2f);
+			
+			if (!StartKill)
+			{
+				if (Main.rand.NextBool(3))
+				{
+					PRTLoader.NewParticle(StellarParticleIndex.ConstitutionParticle, Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Projectile.velocity * 0.15f, default, 0.5f);
+				}
+			}
+
+			if (StartKill)
+			{
+				Projectile.velocity *= 0.97f;
+				Projectile.scale *= 0.97f;
+				Projectile.Opacity -= 0.01f;
+			}
         }
 		
 
@@ -377,11 +457,18 @@ namespace DestroyerTest.Content.Projectiles
 
         public override void OnKill(int timeLeft)
         {
-            SoundEngine.PlaySound(DTAssetLib.ConstitutionStarKill, Projectile.Center);
-            PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp>(), Projectile.Center, Vector2.Zero, ColorLib.StellarColor, 0.005f);
-            Dust.NewDust(Projectile.position, Projectile.Hitbox.Width, Projectile.Hitbox.Height, DustID.TintableDustLighted, Main.rand.NextFloat(-1, 1.1f), Main.rand.NextFloat(-1, 1.1f), 0, ColorLib.StellarColor, 2f);
-            DTUtils.ConstitutionStarExplosionEffects(Projectile);
+			if (!StartKill)
+			{
+				SoundEngine.PlaySound(DTAssetLib.ConstitutionStarKill, Projectile.Center);
+				PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp>(), Projectile.Center, Vector2.Zero,  ColorLib.StellarFireGradientLooping(3f), 0.005f);
+				Dust.NewDust(Projectile.position, Projectile.Hitbox.Width, Projectile.Hitbox.Height, DustID.TintableDustLighted, Main.rand.NextFloat(-1, 1.1f), Main.rand.NextFloat(-1, 1.1f), 0,  ColorLib.StellarFireGradientLooping(3f), 2f);
+				DTUtils.ConstitutionStarExplosionEffects(Projectile);
+			}
+			else
+			{
+				SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/StarShot") { MaxInstances = 0, PitchVariance = 0.2f }, Projectile.Center);
+				Opus.RadialSpreadParticle(StellarParticleIndex.ConstitutionParticle, 5, Projectile.Center, 1f, default, 1f, 2f, offset: Projectile.rotation);
+			}
         }
-
     }
 }

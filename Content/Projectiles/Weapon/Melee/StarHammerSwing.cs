@@ -300,7 +300,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
 
 
-                Lighting.AddLight(player.Center, ColorLib.StellarColor.ToVector3());
+                Lighting.AddLight(player.Center,  ColorLib.StellarFireGradientLooping(3f).ToVector3());
 
                 if (Timer >= execTime)
                 {
@@ -325,7 +325,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 }
 
 
-                Lighting.AddLight(player.Center, ColorLib.StellarColor.ToVector3());
+                Lighting.AddLight(player.Center,  ColorLib.StellarFireGradientLooping(3f).ToVector3());
 
                 if (Timer >= execTime)
                 {
@@ -362,7 +362,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                     Projectile.NewProjectile(Entity.GetSource_FromThis(), player.Center, (Main.MouseWorld - player.Center) * 0.65f, ModContent.ProjectileType<StarHammerThrown>(), 20, 6, player.whoAmI);
                     HasThrown = true;
                 }
-                Lighting.AddLight(player.Center, ColorLib.StellarColor.ToVector3());
+                Lighting.AddLight(player.Center,  ColorLib.StellarFireGradientLooping(3f).ToVector3());
                 if (HasThrown == true)
                 {
                     CurrentStage = AttackStage.Unwind;

@@ -168,7 +168,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
 		public override bool PreDraw(ref Color lightColor)
         {
-            lightColor = ColorLib.StellarColor;
+            lightColor =  ColorLib.StellarFireGradientLooping(3f);
            
             Player player = Main.LocalPlayer;
             Vector2 origin;
@@ -198,7 +198,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
            
 
             
-            Main.EntitySpriteDraw(Trailtexture, Projectile.Center - Main.screenPosition, default, ColorLib.StellarColor * Projectile.Opacity, Projectile.rotation + rotationOffset, origin, Projectile.scale, effects, 0);
+            Main.EntitySpriteDraw(Trailtexture, Projectile.Center - Main.screenPosition, default,  ColorLib.StellarFireGradientLooping(3f) * Projectile.Opacity, Projectile.rotation + rotationOffset, origin, Projectile.scale, effects, 0);
             Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, default, Color.White * Projectile.Opacity, Projectile.rotation + rotationOffset, origin, Projectile.scale, effects, 0);
             
              Spritebatch.End();
@@ -320,7 +320,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
               
               
-				Lighting.AddLight(player.Center, ColorLib.StellarColor.ToVector3());
+				Lighting.AddLight(player.Center,  ColorLib.StellarFireGradientLooping(3f).ToVector3());
 
                 if (Timer >= execTime) {
                     CurrentStage = AttackStage.Unwind;
@@ -339,7 +339,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 SoundEngine.PlaySound(Swing, player.Center);
 
                
-                Lighting.AddLight(player.Center, ColorLib.StellarColor.ToVector3());
+                Lighting.AddLight(player.Center,  ColorLib.StellarFireGradientLooping(3f).ToVector3());
 
                 if (Timer >= execTime) {
                     CurrentStage = AttackStage.Unwind;

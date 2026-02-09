@@ -26,8 +26,8 @@ namespace DestroyerTest.Content.RangedItems
         }
         public override void SetDefaults()
         {
-            Projectile.width = 22;
-            Projectile.height = 56;
+            Projectile.width = 28;
+            Projectile.height = 72;
             Projectile.friendly = true;
             Projectile.penetrate = -1;
             Projectile.tileCollide = false;
@@ -67,7 +67,7 @@ namespace DestroyerTest.Content.RangedItems
         {
             Player player = Main.player[Projectile.owner];
 
-            if (player.HeldItem.type == ModContent.ItemType<StellarBow>() && player.channel)
+            if (player.HeldItem.type == ModContent.ItemType<StellarBow>() && player.controlUseItem)
             {
                 Projectile.timeLeft = 2;
                 // Lock projectile to player/cursor

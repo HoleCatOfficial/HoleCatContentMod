@@ -11,6 +11,7 @@ using ReLogic.Content;
 
 using Terraria.Audio;
 using OpusLib;
+using DestroyerTest.Content.Dusts;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Summon
 {
@@ -54,7 +55,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
         
             if (Main.rand.NextBool(3))
             {
-                Dust dust = Dust.NewDustPerfect(Projectile.Center, DustID.TintableDustLighted, Projectile.velocity * 0.2f, 100, ColorLib.StellarColor, 1.2f);
+                Dust dust = Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<ConstitutionDust1>(), Projectile.velocity * 0.2f, 100,  ColorLib.StellarFireGradientLooping(3f), 1.2f);
                 dust.noGravity = true;
                 dust.fadeIn = 1.5f;
             }
@@ -69,12 +70,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
                 MaxInstances = 0
             }, Projectile.Center);
 
-            for (int i = 0; i < 10; i++)
-            {
-                Dust dust = Dust.NewDustPerfect(Projectile.Center, DustID.TintableDustLighted, Main.rand.NextVector2Circular(3, 3), 100, ColorLib.StellarColor, 1.5f);
-                dust.noGravity = true;
-                dust.fadeIn = 1.5f;
-            }
+            Opus.RadialDustRandomDir(ModContent.DustType<ConstitutionDust1>(), 15, Projectile.Center, 0,  ColorLib.StellarFireGradientLooping(3f), 1f, 3);
 
             DTUtils.ConstitutionStarExplosionEffects(Projectile);
 

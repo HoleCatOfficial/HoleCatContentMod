@@ -15,8 +15,8 @@ namespace DestroyerTest.Content.RangedItems
 		//Weapon Properties
 		public override void SetDefaults() {
 			// Common Properties
-			Item.width = 22;
-			Item.height = 56;
+			Item.width = 28;
+			Item.height = 72;
 			Item.value = Item.sellPrice(gold: 25, silver: 70);
 			Item.rare = ModContent.RarityType<StellarRarity>();
 
@@ -45,6 +45,12 @@ namespace DestroyerTest.Content.RangedItems
 			// Projectile Properties
 			Item.shoot = ModContent.ProjectileType<StellarBowHoldout>(); // The sword as a projectile
 		}
+
+        public override bool CanUseItem(Player player)
+        {
+            return player.ownedProjectileCounts[Item.shoot] < 1;
+        }
+
 		
 
     }

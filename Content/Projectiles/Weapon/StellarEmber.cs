@@ -85,12 +85,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon
             for (int i = 0; i < trailPoints.Count; i += DustSpawnStep)
             {
                 Vector2 p = trailPoints[i];
-                var d = Dust.NewDustPerfect(p, DustID.TintableDustLighted, Vector2.Zero, 50, ColorLib.StellarColor, 1f);
+                var d = Dust.NewDustPerfect(p, DustID.TintableDustLighted, Vector2.Zero, 50,  ColorLib.StellarFireGradientLooping(3f), 1f);
                 d.noGravity = true;
             }
 
-            Lighting.AddLight(Projectile.Center, ColorLib.StellarColor.ToVector3() * 0.6f);
-            PRTLoader.NewParticle(Projectile.Center, new Vector2((Projectile.velocity.X / 2) + Main.rand.NextFloat(-1, 1), (Projectile.velocity.Y / 2) + Main.rand.NextFloat(-1, 1)), PRTLoader.GetParticleID<SimpleParticle>(), ColorLib.StellarColor, 0.25f);
+            Lighting.AddLight(Projectile.Center,  ColorLib.StellarFireGradientLooping(3f).ToVector3() * 0.6f);
+            PRTLoader.NewParticle(Projectile.Center, new Vector2((Projectile.velocity.X / 2) + Main.rand.NextFloat(-1, 1), (Projectile.velocity.Y / 2) + Main.rand.NextFloat(-1, 1)), PRTLoader.GetParticleID<SimpleParticle>(),  ColorLib.StellarFireGradientLooping(3f), 0.25f);
 
             if (DelayTimer < 10)
             {

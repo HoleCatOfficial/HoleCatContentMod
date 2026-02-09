@@ -1,5 +1,8 @@
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Dusts;
+using DestroyerTest.Content.Particles.Stellar;
+using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
@@ -36,16 +39,16 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Ranged
         public override void AI()
         {
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
+            
             if (Main.rand.NextBool(3))
             {
-                Dust dust = Dust.NewDustPerfect(Projectile.Center, DustID.TintableDustLighted, Projectile.velocity * 0.2f, 100, ColorLib.StellarColor, 1.2f);
-                dust.noGravity = true;
-                dust.fadeIn = 1.5f;
+                PRTLoader.NewParticle(StellarParticleIndex.ConstitutionParticle, Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Projectile.velocity * 0.15f, default, 0.5f);
             }
+			
         }
         public override bool PreDraw(ref Color lightColor)
         {
-            Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, Projectile.Center - Main.screenPosition, null, ColorLib.StellarColor, Projectile.rotation, new Vector2(Projectile.width / 2, Projectile.height / 2), Projectile.scale, SpriteEffects.None, 0);
+            Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, Projectile.Center - Main.screenPosition, null,  ColorLib.StellarFireGradientLooping(3f), Projectile.rotation, new Vector2(Projectile.width / 2, Projectile.height / 2), Projectile.scale, SpriteEffects.None, 0);
             return false;
         }
 

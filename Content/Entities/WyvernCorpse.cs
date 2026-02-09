@@ -547,14 +547,6 @@ namespace DestroyerTest.Content.Entities
                 Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Placeholder4");
             }
 
-            int[] MinionSpawnType = new int[]
-                {
-                    ModContent.NPCType<ShadeThrower>(),
-                    ModContent.NPCType<TenebrousSlime>(),
-                    ModContent.NPCType<DarkArchmage>(),
-                    ModContent.NPCType<DarkPredatorHead>(),
-                };
-
             ImportantMathematics();
 
             switch (CurrentAttack)

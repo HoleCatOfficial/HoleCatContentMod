@@ -28,6 +28,8 @@ using System.Linq;
 using Terraria.UI.Chat;
 using Terraria.DataStructures;
 using DestroyerTest.Content.Magic;
+using DestroyerTest.Content.Dusts;
+using DestroyerTest.Content.Particles.Stellar;
 
 namespace DestroyerTest.Common
 {
@@ -49,8 +51,8 @@ namespace DestroyerTest.Common
         public static readonly ColorPalette HoleCatColors = new("HoleCatColors", new Color(105, 161, 182), new Color(220, 200, 200), new Color(192, 67, 67), new Color(203, 179, 73), new Color(255, 255, 255));
 
         public int[] TenebrisBuffImmunities;
-        public bool TenebrisCanSpawnInWorldEvilBiome = DownedBossSystem.downedCultistBoss;
-        public bool TenebrisCanSpawnInShimmerBiome = DownedBossSystem.downedCultistBoss;
+        public bool TenebrisCanSpawnInWorldEvilBiome = (DownedBossSystem.downedCultistBoss && !WorldGen.crimson);
+        public bool TenebrisCanSpawnInShimmerBiome = (DownedBossSystem.downedCultistBoss && !WorldGen.crimson);
 
         public static string GetModNPCLocalizationEntry(ModNPC npc, int variant = 1)
         {
@@ -80,12 +82,10 @@ namespace DestroyerTest.Common
                 Vector2 spawnPos = projectile.Center + direction * radius;
                 Vector2 velocity = direction * 3f;
 
-                Dust dust = Dust.NewDustPerfect(spawnPos, DustID.TintableDustLighted, velocity, 0, ColorLib.StellarColor, 2f);
-                Dust dust1 = Dust.NewDustPerfect(spawnPos, DustID.TintableDustLighted, Vector2.Zero, 0, ColorLib.StellarColor, 2f);
-                dust.noGravity = true;
-                dust1.noGravity = true;
+                PRTLoader.NewParticle(StellarParticleIndex.ConstitutionParticle, spawnPos, velocity, default, 1f);
+                PRTLoader.NewParticle(StellarParticleIndex.ConstitutionParticle, spawnPos, Vector2.Zero, default, 1f);
             }
-            PRTLoader.NewParticle(PRTLoader.GetParticleID<FlatStar>(), projectile.Center, Vector2.Zero, ColorLib.StellarColor, 0.15f);
+            PRTLoader.NewParticle(StellarParticleIndex.FlatStar, projectile.Center, Vector2.Zero,  ColorLib.StellarFireGradientLooping(3f), 0.15f);
         }
 
         /// <summary>
@@ -571,6 +571,18 @@ namespace DestroyerTest.Common
             ModContent.NPCType<RiftOculus>(),
             ModContent.NPCType<RiftObserver>(),
         };
+
+        public static bool ClassicMode()
+        {
+            if (Main.expertMode || Main.masterMode)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
     }
 
     public static class DTStaticUtils
@@ -665,6 +677,8 @@ namespace DestroyerTest.Common
             string key = $"Mods.{modItem.Mod.Name}.Items.{modItem.Name}.SetBonus";
             player.setBonus = Language.GetTextValue(key);
         }
+
+        
     }
 
     public class DTPlayerUtil : ModPlayer
@@ -1048,9 +1062,9 @@ namespace DestroyerTest.Common
                 return Color.Lerp(StellarFire7, StellarFire8, t - 3f);
         }
 
-        public static Color StellarFireGradientLooping()
+        public static Color StellarFireGradientLooping(float speed = 1f)
         {
-            float time = Main.GlobalTimeWrappedHourly % 14f;
+            float time = (Main.GlobalTimeWrappedHourly * speed) % 14f;
 
             if (time < 1f)
                 return Color.Lerp(StellarFire1, StellarFire2, time);
@@ -1129,6 +1143,7 @@ namespace DestroyerTest.Common
         public static Asset<Texture2D> Vingette = ModContent.Request<Texture2D>($"{ExtrasPath}/BigVingette", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> FadeLine = ModContent.Request<Texture2D>($"{ExtrasPath}/FadeLine", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> StarAura = ModContent.Request<Texture2D>($"{ExtrasPath}/StarWrathAura", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> ColorlessStar = ModContent.Request<Texture2D>($"{ExtrasPath}/ColorlessStar", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> Swirl = ModContent.Request<Texture2D>($"{ParticlePath}/Swirl", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> FireRing = ModContent.Request<Texture2D>($"{ParticlePath}/Boom2", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> SwingFX = ModContent.Request<Texture2D>($"{ExtrasPath}/CircularSlash", AssetRequestMode.AsyncLoad);

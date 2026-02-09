@@ -494,6 +494,7 @@ namespace DestroyerTest.Content.Entities
             }
         }
 
+        public int RoarWaveTimer = 0;
         public int HealAmount = 0;
         public int DeathInterval = 10;
         public int BorderDustType;
@@ -759,6 +760,11 @@ namespace DestroyerTest.Content.Entities
                         }
                         if (SpawnCount >= SpawnIdleRoarFlag)
                         {
+                            ScreenshakePlayer screenshake = ModContent.GetInstance<ScreenshakePlayer>();
+                            screenshake.screenshakeMagnitude = 8;
+                            screenshake.screenshakeTimer = 180;
+                            RoarWaveTimer = 180;
+
                             SoundEngine.PlaySound(SpawnRoar, NPCHead);
                             SpawnDarknessAlpha = 0;
                             if (EternityIsActive())
@@ -768,12 +774,22 @@ namespace DestroyerTest.Content.Entities
                             currentState = AttackState.Idle;
                             NPC.dontTakeDamage = false;
                             SpawnCount = 0;
+                            
+
                         }
                         break;
                     }
                 case AttackState.Idle:
                     if (NPC.type == ModContent.NPCType<NightmareRoseBoss>())
                     {
+                        if (RoarWaveTimer > 0)
+                        {
+                            RoarWaveTimer--;
+                            if (RoarWaveTimer % 20 == 0)
+                            {
+                                Opus.NewParticleFloatAI(PRTLoader.GetParticleID<SoundwaveParticle>(), NPCHead, Vector2.Zero, Color.White, 0.001f, 3f);
+                            }
+                        }
                         NPC.aiStyle = -1;
                         ShouldCenterCameraOnNPC = false;
                         if (VingetteScale < 10)

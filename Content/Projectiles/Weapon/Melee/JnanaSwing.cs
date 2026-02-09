@@ -292,7 +292,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 				
 				
 
-                Lighting.AddLight(player.Center, ColorLib.StellarColor.ToVector3());
+                Lighting.AddLight(player.Center,  ColorLib.StellarFireGradientLooping(3f).ToVector3());
 
                 if (Timer >= execTime)
                 {
@@ -318,7 +318,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), swordTip, Velocity * Main.rand.NextFloat(0.01f, 0.5f), ModContent.ProjectileType<ContinuumStar>(), Projectile.damage / 2, 2, Main.player[Projectile.owner].whoAmI);
 				
 
-				Lighting.AddLight(player.Center, ColorLib.StellarColor.ToVector3());
+				Lighting.AddLight(player.Center,  ColorLib.StellarFireGradientLooping(3f).ToVector3());
 
                 if (Timer >= execTime)
                 {
@@ -336,7 +336,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                     SoundEngine.PlaySound(Swing, player.Center); // Play sword sound again
                     Projectile.ResetLocalNPCHitImmunity(); // Reset the local npc hit immunity for second half of spin
                     float angleIncrement = MathHelper.TwoPi / ProjectileAmount;
-					PRTLoader.NewParticle(PRTLoader.GetParticleID<Boom2>(), swordTip, Vector2.Zero, ColorLib.StellarColor, 1);
+					PRTLoader.NewParticle(PRTLoader.GetParticleID<Boom2>(), swordTip, Vector2.Zero,  ColorLib.StellarFireGradientLooping(3f), 1);
 					for (int i = 0; i < ProjectileAmount; i++)
 					{
 						Vector2 velocity = new Vector2(8, 0).RotatedBy(angleIncrement * i);

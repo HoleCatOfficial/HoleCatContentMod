@@ -9,6 +9,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria.Localization;
 using Terraria.DataStructures;
 using DestroyerTest.Common;
+using DestroyerTest.Content.Dusts;
+using InnoVault.PRT;
+using DestroyerTest.Content.Particles.Stellar;
 
 namespace DestroyerTest.Content.Buffs
 {
@@ -123,7 +126,8 @@ namespace DestroyerTest.Content.Buffs
 				{
 					amount = 36;
 				}
-				Dust.NewDust(Player.position, Player.width, Player.height, DustID.TintableDustLighted, 0.0f, 0.5f, 0, ColorLib.StellarFireGradientLooping(), 1);
+				Rectangle Window = new Rectangle((int)Player.BottomLeft.X, (int)Player.BottomLeft.Y, Player.width, 3);
+				PRTLoader.NewParticle(StellarParticleIndex.GalantineBurnParticle, Main.rand.NextVector2FromRectangle(Window), new Vector2(Main.rand.NextFloat(-0.2f, 0.2f), -2.3f), default, 1f);
 				// These lines zero out any positive lifeRegen. This is expected for all bad life regeneration effects
 				if (Player.lifeRegen > 0)
 					Player.lifeRegen = 0;
@@ -150,7 +154,8 @@ namespace DestroyerTest.Content.Buffs
         {
 			if (lifeRegenDebuff)
 			{
-           		Dust.NewDust(npc.position, npc.width, npc.height, DustID.TintableDustLighted, 0.0f, 0.5f, 0, ColorLib.StellarFireGradientLooping(), 1);
+				Rectangle Window = new Rectangle((int)npc.BottomLeft.X, (int)npc.BottomLeft.Y, npc.width, 3);
+				PRTLoader.NewParticle(StellarParticleIndex.GalantineBurnParticle, Main.rand.NextVector2FromRectangle(Window), new Vector2(Main.rand.NextFloat(-0.2f, 0.2f), -2.3f), default, 1f);
         	}
 		}
 

@@ -102,7 +102,7 @@ namespace DestroyerTest.Content.Entities
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
             DTUtils Utility = new DTUtils();
-            if (spawnInfo.Player.ZoneCrimson && (spawnInfo.Player.ZoneDirtLayerHeight || spawnInfo.Player.ZoneRockLayerHeight) == true && Utility.TenebrisCanSpawnInWorldEvilBiome == true)
+            if (spawnInfo.Player.ZoneCorrupt && (spawnInfo.Player.ZoneDirtLayerHeight || spawnInfo.Player.ZoneRockLayerHeight) == true && Utility.TenebrisCanSpawnInWorldEvilBiome == true)
             {
                 return 0.1f;
             }
@@ -142,13 +142,6 @@ namespace DestroyerTest.Content.Entities
                 SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/ChargeBreak") with { PitchVariance = 1f, Volume = 3f });
                 Projectile.NewProjectile(Entity.GetSource_FromAI(), NPC.Center, (player.Center - NPC.Center).RotatedByRandom(1) * 0.005f, ModContent.ProjectileType<TenebrisStarHostile>(), 26, 8, ai2: 4);
             }
-        }
-
-
-
-        public override void OnHitPlayer(Player target, Player.HurtInfo hurtInfo)
-        {
-            target.AddBuff(ModContent.BuffType<ShimmeringFlames>(), 120, true, false);
         }
         
         public override void ModifyNPCLoot(NPCLoot npcLoot)

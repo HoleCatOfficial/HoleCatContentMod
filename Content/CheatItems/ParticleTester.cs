@@ -1,6 +1,7 @@
 using System.Collections.ObjectModel;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Particles;
+using DestroyerTest.Content.Particles.Stellar;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Weapon.Magic;
 using InnoVault.PRT;
@@ -31,7 +32,7 @@ namespace DestroyerTest.Content.CheatItems
 
         public override bool? UseItem(Player player)
         {
-            PRTLoader.NewParticle(PRTLoader.GetParticleID<HeliciteShineParticle>(), Main.MouseWorld, Main.rand.NextVector2Circular(1, 1), default, 1f);
+            PRTLoader.NewParticle(PRTLoader.GetParticleID<ConstitutionParticle>(), Main.MouseWorld, Main.rand.NextVector2Circular(1, 1), default, 1f);
             return true;
         }
 	}

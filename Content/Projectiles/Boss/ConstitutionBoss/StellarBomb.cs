@@ -50,7 +50,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
                 DTAssetLib.Cyclone(2).Value,
                 Center - Main.screenPosition,
                 null,
-                ColorLib.StellarColor,
+                 ColorLib.StellarFireGradientLooping(3f),
                 TextureRotationOffset,
                 new Vector2(DTAssetLib.Cyclone(2).Value.Width / 2f, DTAssetLib.Cyclone(2).Value.Height / 2f),
                 0.2f,
@@ -97,7 +97,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
             Vector2 Outward = new Vector2(0, -1).RotatedByRandom(MathHelper.TwoPi) * Main.rand.NextFloat(3, 6);
             for (int i = 0; i < 10; i++)
             {
-                Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.TintableDustLighted, Outward.X, Outward.Y, 100, ColorLib.StellarColor, 1.5f).noGravity = true;
+                Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.TintableDustLighted, Outward.X, Outward.Y, 100,  ColorLib.StellarFireGradientLooping(3f), 1.5f).noGravity = true;
             }
 
             DTUtils.ConstitutionStarExplosionEffects(Projectile);

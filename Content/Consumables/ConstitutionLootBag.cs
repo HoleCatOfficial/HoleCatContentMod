@@ -51,7 +51,7 @@ namespace DestroyerTest.Content.Consumables
                     Item.position.Y - Main.screenPosition.Y + Item.height - texture.Height * 0.5f + 2f
                 ),
                 new Rectangle(0, 0, texture.Width, texture.Height),
-                ColorLib.StellarColor,
+                 ColorLib.StellarFireGradientLooping(3f),
                 rotation,
                 texture.Size() * 0.5f,
                 scale,

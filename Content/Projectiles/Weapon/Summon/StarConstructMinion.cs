@@ -48,9 +48,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
         public override bool PreDraw(ref Color lightColor)
         {
             Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-            Opus.DrawGlowOnProj(Projectile, ColorLib.StellarColor, false);
+            Opus.DrawGlowOnProj(Projectile,  ColorLib.StellarFireGradientLooping(3f), false);
             Opus.ReturnToDefaultDrawing(Main.spriteBatch);
-            Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, Projectile.Center - Main.screenPosition, null, ColorLib.StellarColor, Projectile.rotation, TextureAssets.Projectile[Projectile.type].Value.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
+            Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, Projectile.Center - Main.screenPosition, null,  ColorLib.StellarFireGradientLooping(3f), Projectile.rotation, TextureAssets.Projectile[Projectile.type].Value.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
             return false;
         }
 
@@ -230,7 +230,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
                     SoundEngine.PlaySound(SoundID.Item125 with { MaxInstances = 0 }, Projectile.Center);
                     Vector2 shootVel = Vector2.Normalize(target.Center - Projectile.Center) * 10f;
                     // spawn a small summon projectile (use Stardust cell-like projectile as an example)
-                    int projType = ModContent.ProjectileType<MiniComet>(); // replace or create custom projectile type as desired
+                    int projType = ModContent.ProjectileType<MiniCometFriendly>(); // replace or create custom projectile type as desired
                     int newProj = Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, shootVel, projType, Projectile.damage, 0f, Projectile.owner, ai2: 1);
                     Main.projectile[newProj].DamageType = DamageClass.Summon;
                 }

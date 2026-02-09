@@ -18,21 +18,8 @@ using OpusLib;
 
 namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
 {
-	/// <summary>
-	/// Multipurpose Projectile.
-	/// <para/> Projectile ai slots 0 and 1 should not be set to anything when spawning, as they store NPC and Player values respectively.
-	/// <para/> Projectile ai slot 2 controls whether the projectile is friendly or harmful.
-	/// </summary>
-	public class MiniComet : ModProjectile
+	public class MiniCometHostile : ModProjectile
 	{
-		private NPC NPCTarget
-		{
-			get => Projectile.ai[0] == 0 ? null : Main.npc[(int)Projectile.ai[0] - 1];
-			set
-			{
-				Projectile.ai[0] = value == null ? 0 : value.whoAmI + 1;
-			}
-		}
 
 		private Player PLRTarget
 		{
@@ -47,7 +34,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
 
 		public override void SetStaticDefaults()
 		{
-			ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true;
+			
 		}
 
 		public override void SetDefaults()
@@ -67,7 +54,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
         private Asset<Texture2D> ProjTex => ModContent.Request<Texture2D>(Texture);
 		public override bool PreDraw(ref Color lightColor)
         {
-            lightColor = ColorLib.StellarColor;
+            lightColor =  ColorLib.StellarFireGradientLooping(3f);
             SpriteBatch spriteBatch = Main.spriteBatch;
             DTUtils Utility = new DTUtils();
 
@@ -164,7 +151,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
                 Mod.Logger.Warn("OilProjectile: Invalid Mode in ai[2]. Expected 1 or 2.");
             }
 
-            Lighting.AddLight(Projectile.Center, ColorLib.StellarColor.ToVector3() * 0.2f);
+            Lighting.AddLight(Projectile.Center,  ColorLib.StellarFireGradientLooping(3f).ToVector3() * 0.2f);
 
             if (DelayTimer < 20)
             {
@@ -178,119 +165,43 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
             }
             float maxDetectRadius = 2800f;
 
-            if (Mode == 1)
+            
+            Projectile.friendly = false;
+            Projectile.hostile = true;
+
+            if (PLRTarget == null)
             {
-                Projectile.friendly = true;
-                Projectile.hostile = false;
-
-                if (NPCTarget == null)
-                {
-                    NPCTarget = FindClosestNPC(maxDetectRadius);
-                }
-
-
-                if (NPCTarget != null && !IsValidNPC(NPCTarget))
-                {
-                    NPCTarget = null;
-                }
-
-
-                if (NPCTarget == null)
-                    return;
-
-                float targetAngle = Projectile.AngleTo(NPCTarget.Center);
-                if (HomingTime > 0)
-                {
-                    Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(15)).ToRotationVector2() * Projectile.velocity.Length();
-                }
-
-                // Acceleration
-                float speed = Projectile.velocity.Length();
-                float desiredSpeed = 20f; // your top speed
-                float acceleration = 0.3f; // how quickly it ramps up
-                if (HomingTime > 0)
-                {
-                    if (speed < desiredSpeed)
-                        speed += acceleration;
-                    Projectile.velocity = Projectile.velocity.SafeNormalize(Vector2.Zero) * speed;
-                }
+                PLRTarget = FindClosestPlayer(maxDetectRadius);
             }
-            if (Mode == 2)
+
+
+            if (PLRTarget != null && !IsValidPlayer(PLRTarget))
             {
-                Projectile.friendly = false;
-                Projectile.hostile = true;
-
-                if (PLRTarget == null)
-                {
-                    PLRTarget = FindClosestPlayer(maxDetectRadius);
-                }
-
-
-                if (PLRTarget != null && !IsValidPlayer(PLRTarget))
-                {
-                    PLRTarget = null;
-                }
-
-                if (PLRTarget == null)
-                    return;
-
-                float targetAngle = Projectile.AngleTo(PLRTarget.Center);
-                if (HomingTime > 0)
-                {
-                    Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(5)).ToRotationVector2() * Projectile.velocity.Length();
-                }
-
-                // Acceleration
-                float speed = Projectile.velocity.Length();
-                float desiredSpeed = 18f;
-                float acceleration = 0.25f;
-                if (HomingTime > 0)
-                {
-                    if (speed < desiredSpeed)
-                        speed += acceleration;
-                    Projectile.velocity = Projectile.velocity.SafeNormalize(Vector2.Zero) * speed;
-                }
-
+                PLRTarget = null;
             }
-            if (Mode == 3)
+
+            if (PLRTarget == null)
+                return;
+
+            float targetAngle = Projectile.AngleTo(PLRTarget.Center);
+            if (HomingTime > 0)
             {
-                Projectile.friendly = true;
-                Projectile.hostile = false;
+                Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(5)).ToRotationVector2() * Projectile.velocity.Length();
             }
-            if (Mode == 4)
+
+            // Acceleration
+            float speed = Projectile.velocity.Length();
+            float desiredSpeed = 18f;
+            float acceleration = 0.25f;
+            if (HomingTime > 0)
             {
-                Projectile.friendly = false;
-                Projectile.hostile = true;
+                if (speed < desiredSpeed)
+                    speed += acceleration;
+                Projectile.velocity = Projectile.velocity.SafeNormalize(Vector2.Zero) * speed;
             }
+
+            
         }
-		public NPC FindClosestNPC(float maxDetectDistance)
-		{
-			NPC closestNPC = null;
-
-			float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
-
-			foreach (var target in Main.ActiveNPCs)
-			{
-				if (IsValidNPC(target))
-				{
-
-					float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, Projectile.Center);
-
-					if (sqrDistanceToTarget < sqrMaxDetectDistance)
-					{
-						sqrMaxDetectDistance = sqrDistanceToTarget;
-						closestNPC = target;
-					}
-				}
-			}
-
-			return closestNPC;
-		}
-
-		public bool IsValidNPC(NPC target)
-		{
-			return target.CanBeChasedBy();
-		}
 
 		public Player FindClosestPlayer(float maxDetectDistance)
 		{
@@ -320,14 +231,6 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
 			return target.active == true && target.statLife > 1;
 		}
 
-		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
-		{
-			if (Mode == 1 || Mode == 3)
-			{
-				target.AddBuff(ModContent.BuffType<GalantineBurn>(), 300);
-			}
-		}
-
 		public override void OnHitPlayer(Player target, Player.HurtInfo info)
 		{
 			if (Mode == 2 || Mode == 4)
@@ -339,7 +242,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
         public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(SoundID.Item10);
-			Dust.NewDust(Projectile.position, Projectile.Hitbox.Width, Projectile.Hitbox.Height, DustID.WhiteTorch, Main.rand.NextFloat(-1, 1.1f), Main.rand.NextFloat(-1, 1.1f), 0, ColorLib.StellarColor, 2f);
+			Dust.NewDust(Projectile.position, Projectile.Hitbox.Width, Projectile.Hitbox.Height, ModContent.DustType<ConstitutionDust1>(), Main.rand.NextFloat(-1, 1.1f), Main.rand.NextFloat(-1, 1.1f), 0,  ColorLib.StellarFireGradientLooping(3f), 2f);
         }
 
     }

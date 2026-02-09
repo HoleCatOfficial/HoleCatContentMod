@@ -37,7 +37,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
 
             if (Main.rand.NextBool(12))
             {
-                Dust dust = Dust.NewDustPerfect(Projectile.Center, DustID.TintableDustLighted, Projectile.velocity * 0.2f, 100, ColorLib.StellarColor, 1.2f);
+                Dust dust = Dust.NewDustPerfect(Projectile.Center, DustID.TintableDustLighted, Projectile.velocity * 0.2f, 100,  ColorLib.StellarFireGradientLooping(3f), 1.2f);
                 dust.noGravity = true;
                 dust.fadeIn = 1.5f;
             }
@@ -45,7 +45,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
         public override bool PreDraw(ref Color lightColor)
         {
 
-            Color BeamColor = ColorLib.StellarColor;
+            Color BeamColor =  ColorLib.StellarFireGradientLooping(3f);
             lightColor = BeamColor;
             SpriteBatch SB = Main.spriteBatch;
             Vector2 drawOrigin = new Vector2(TextureAssets.Projectile[Projectile.type].Value.Width * 0.5f, Projectile.height * 0.5f);

@@ -63,7 +63,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
 
             if (Main.rand.NextBool(5))
             {
-                Dust.NewDust(Projectile.position, Projectile.width + 2, Projectile.height + 2, DustID.TintableDustLighted, Projectile.velocity.X * 0.2f, Projectile.velocity.Y * 0.2f, 150, ColorLib.StellarColor, 0.7f);
+                Dust.NewDust(Projectile.position, Projectile.width + 2, Projectile.height + 2, DustID.TintableDustLighted, Projectile.velocity.X * 0.2f, Projectile.velocity.Y * 0.2f, 150,  ColorLib.StellarFireGradientLooping(3f), 0.7f);
             }
             
             if (DelayTimer < 10)

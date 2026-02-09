@@ -119,7 +119,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
         }
         public override bool PreDraw(ref Color lightColor)
         {
-            Main.EntitySpriteDraw(DTAssetLib.StarFuryOutline.Value, Projectile.Center - Main.screenPosition, null, ColorLib.StellarColor, Projectile.rotation, new Vector2((Projectile.width + 4) / 2, (Projectile.height + 4) / 2), Projectile.scale, SpriteEffects.None, 0);
+            Main.EntitySpriteDraw(DTAssetLib.StarFuryOutline.Value, Projectile.Center - Main.screenPosition, null,  ColorLib.StellarFireGradientLooping(3f), Projectile.rotation, new Vector2((Projectile.width + 4) / 2, (Projectile.height + 4) / 2), Projectile.scale, SpriteEffects.None, 0);
             Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(Projectile.width / 2, Projectile.height / 2), Projectile.scale, SpriteEffects.None, 0);
             return false;
         }

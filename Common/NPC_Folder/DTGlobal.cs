@@ -224,7 +224,7 @@ namespace DestroyerTest.Common.NPC_Folder
             if (npc.type == NPCID.CultistBoss && !DownedBossSystem.downedCultistBoss)
             {
                 DTUtils.NPCDownTally[NPCID.CultistBoss]++;
-                if (!DownedBossSystem.downedCultistBoss)
+                if (!DownedBossSystem.downedCultistBoss && !WorldGen.crimson)
                 {
                     SoundStyle TenebrisSpawn = new SoundStyle("DestroyerTest/Assets/Audio/TenebrisSpawn");
                     if (Main.dedServ == false)

@@ -156,7 +156,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
 
         public void DisplayWarningTex()
         {
-            Color Drawcolor = ColorLib.StellarColor * (1f - FadeIn / (float)FadeInTimer);
+            Color Drawcolor =  ColorLib.StellarFireGradientLooping(3f) * (1f - FadeIn / (float)FadeInTimer);
             Vector2 Scale = new Vector2(0.05f, ScaleByVelocity);
 
             Main.EntitySpriteDraw(DTAssetLib.Trail(3).Value, Projectile.Center - Main.screenPosition, null, Drawcolor, Projectile.rotation - MathHelper.PiOver2, DTAssetLib.Trail(3).Value.Size() / 2, Scale, SpriteEffects.None, 0);
@@ -164,7 +164,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
 
         public override bool PreDraw(ref Color lightColor)
         {
-            Color BeamColor = ColorLib.StellarColor;
+            Color BeamColor =  ColorLib.StellarFireGradientLooping(3f);
             lightColor = BeamColor;
             SpriteBatch SB = Main.spriteBatch;
 
