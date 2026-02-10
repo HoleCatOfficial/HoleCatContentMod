@@ -16,6 +16,7 @@ namespace DestroyerTest.Content.Particles.Stellar
             PRTDrawMode = PRTDrawModeEnum.AdditiveBlend;
             Lifetime = MaxLifetime;
             InitializeCaches(10);
+            ShouldKillWhenOffScreen = false;
         }
 
         public override void AI()

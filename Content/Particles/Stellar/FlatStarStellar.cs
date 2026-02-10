@@ -21,6 +21,7 @@ namespace DestroyerTest.Content.Particles.Stellar
         {
             PRTDrawMode = PRTDrawModeEnum.AdditiveBlend;
             Lifetime = MaxLifetime;
+            ShouldKillWhenOffScreen = false;
 
             // don’t override Scale if the spawner set it.
             // just record it so our curve is relative.

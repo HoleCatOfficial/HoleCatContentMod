@@ -358,6 +358,109 @@ namespace DestroyerTest.Common
             }
         }
 
+        /// <summary>
+        /// Creates a scrolling texture, similar to a trail, but confined to two points.
+        /// <br/> Must be called in a draw-related override.
+        /// </summary>
+        /// <param name="line"></param>
+        /// <param name="texture"></param>
+        /// <param name="scrollspeed"></param>
+        public static void ScrollingTextureSpine(Line line, Asset<Texture2D> texture, SpriteBatch spriteBatch,  BlendState blendState, float scrollspeed = 0.01f)
+        {
+            Vector2[] pt = line.GetPointsAlongLine(10);
+            float texOffset = 0f;
+
+            if (texture == null)
+            {
+                Main.NewText("ScrollingTextureSpine: Texture is null. Aborted draw.", Color.Red);
+                return;
+            }
+
+            texOffset += scrollspeed;
+
+            Opus.StartSpriteBatchForTrails(spriteBatch, blendState, SpriteSortMode.Immediate);
+
+            if (pt.Length > 1)
+            {
+                List<ColoredVertex> ve = new List<ColoredVertex>();
+                List<Vector2> ptList = pt.ToList();
+                float a = 0;
+
+                for (int i = pt.Length - 1; i > 0; i--)
+                {
+                    float t = 1f - (i / (float)pt.Length); // fade toward tail
+                    Color b = Color.White * t;
+
+                    Vector2 dir = (pt[i] - pt[i - 1]).ToRotation().ToRotationVector2();
+                    Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * 22;
+                    Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * 22;
+
+                    DTUtils.AddStrips(ve, ptList, i, offset, offset2, t, b, texOffset);
+                }
+
+
+                GraphicsDevice gd = Main.graphics.GraphicsDevice;
+                if (ve.Count >= 3)
+                {
+                    gd.Textures[0] = texture.Value;
+                    gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Creates a scrolling texture, similar to a trail, but confined to two points.
+        /// <br/> Must be called in a draw-related override.
+        /// </summary>
+        /// <param name="line"></param>
+        /// <param name="texture"></param>
+        /// <param name="scrollspeed"></param>
+        public static void ScrollingTextureSpine(Line line, Asset<Texture2D> texture, Color drawColor, SpriteBatch spriteBatch,  BlendState blendState, float Width = 16f, float scrollspeed = 0.01f)
+        {
+            Vector2[] pt = line.GetPointsAlongLine(10);
+            float texOffset = 0f;
+
+            if (texture == null)
+            {
+                Main.NewText("ScrollingTextureSpine: Texture is null. Aborted draw.", Color.Red);
+                return;
+            }
+
+            texOffset += scrollspeed;
+
+            Opus.StartSpriteBatchForTrails(spriteBatch, blendState, SpriteSortMode.Immediate);
+
+            if (pt.Length > 1)
+            {
+                List<ColoredVertex> ve = new List<ColoredVertex>();
+                List<Vector2> ptList = pt.ToList();
+                float a = 0;
+
+                for (int i = pt.Length - 1; i > 0; i--)
+                {
+                    float u = i / (float)(ptList.Count - 1);
+					float widthFactor = (float)Math.Sin(u * MathHelper.Pi);
+
+					float width = Width * widthFactor;
+
+					Vector2 dir = (pt[i] - pt[i - 1]).ToRotation().ToRotationVector2();
+					Vector2 perp = dir.RotatedBy(MathHelper.PiOver2);
+					Vector2 offset  = perp * width;
+					Vector2 offset2 = -perp * width;
+
+                    DTUtils.AddStrips(ve, ptList, i, offset, offset2, 0, drawColor, texOffset);
+                }
+
+
+                GraphicsDevice gd = Main.graphics.GraphicsDevice;
+                if (ve.Count >= 3)
+                {
+                    gd.Textures[0] = texture.Value;
+                    gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2);
+                }
+            }
+        }
+
         public static void SweepColorOverString(string input, Color[] colors, Vector2 textPos, float speed = 6f)
         {
             if (string.IsNullOrEmpty(input) || colors == null || colors.Length == 0)

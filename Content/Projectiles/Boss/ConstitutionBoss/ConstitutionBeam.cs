@@ -21,12 +21,12 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
             Projectile.hostile = true;
             Projectile.DamageType = DamageClass.Generic;
             Projectile.penetrate = -1;
-            Projectile.timeLeft = 420;
+            Projectile.timeLeft = 360;
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;
         }
 
-        public int Lifetime = 420;
+        public int Lifetime = 300;
 		public int Time = 0;
 
 		public bool StartKill = false;
@@ -54,25 +54,34 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
         public override void AI()
         {
             UpdateLerpTime();
-            if (Main.rand.NextBool(4))
+            if (Main.rand.NextBool(4) && !StartKill)
             {
                 PRTLoader.NewParticle(StellarParticleIndex.ConstitutionParticle, Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Projectile.velocity * 0.15f, default, 0.5f);
             }	
 
-            Projectile.velocity = Projectile.velocity.RotatedBy(0.05f);
+            if (!StartKill)
+            {
+                Projectile.velocity = Projectile.velocity.RotatedBy(0.05f);
+            }
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
+
+            if (StartKill)
+            {
+                Projectile.velocity *= 0.99f;
+                Projectile.Opacity -= 0.05f;
+            }
         }
         public override bool PreDraw(ref Color lightColor)
         {
 
             Color BeamColor = ColorLib.StellarFireGradient(LifetimeCompletion * 4);
-            lightColor = BeamColor;
+            lightColor = BeamColor * Projectile.Opacity;
             SpriteBatch SB = Main.spriteBatch;
 
             Opus.StartSpriteBatchWithBlending(SB, BlendState.Additive, SpriteSortMode.Immediate);
-            Main.EntitySpriteDraw(DTAssetLib.ConstitutionBeamGlow.Value, Projectile.Center, null, BeamColor * 0.7f, Projectile.rotation, new Vector2(Projectile.width / 2, Projectile.height / 2), Projectile.scale * 0.5f, SpriteEffects.None, 0);
+            Main.EntitySpriteDraw(DTAssetLib.ConstitutionBeamGlow.Value, Projectile.Center, null, lightColor * 0.8f, Projectile.rotation, new Vector2(Projectile.width / 2, Projectile.height / 2), Projectile.scale * 0.5f, SpriteEffects.None, 0);
             Opus.ReturnToDefaultDrawing(SB);
-            Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, Projectile.Center - Main.screenPosition, null, BeamColor, Projectile.rotation, new Vector2(Projectile.width / 2, Projectile.height / 2), Projectile.scale, SpriteEffects.None, 0);
+            Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, Projectile.Center - Main.screenPosition, null, lightColor, Projectile.rotation, new Vector2(Projectile.width / 2, Projectile.height / 2), Projectile.scale, SpriteEffects.None, 0);
             return false;
         }
     }

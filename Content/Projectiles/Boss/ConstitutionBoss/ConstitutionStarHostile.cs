@@ -226,6 +226,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
 					Projectile.velocity = Projectile.velocity.SafeNormalize(Vector2.Zero) * speed;
 				}
 			}
+
 			if (StartKill)
 			{
 				Projectile.velocity *= 0.97f;
@@ -303,7 +304,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
 			Projectile.hostile = true;
 			Projectile.ignoreWater = true;
 			Projectile.light = 1f;
-			Projectile.timeLeft = 300;
+			Projectile.timeLeft = 420;
 			Projectile.tileCollide = false;
 		}
 
@@ -427,6 +428,13 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
 				{
 					PRTLoader.NewParticle(StellarParticleIndex.ConstitutionParticle, Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Projectile.velocity * 0.15f, default, 0.5f);
 				}
+			}
+
+			if (StartKill)
+			{
+				Projectile.velocity *= 0.97f;
+				Projectile.scale *= 0.97f;
+				Projectile.Opacity -= 0.01f;
 			}
         }
 
