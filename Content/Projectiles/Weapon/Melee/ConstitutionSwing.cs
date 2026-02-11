@@ -280,7 +280,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 				}
 
 
-				Lighting.AddLight(player.Center,  ColorLib.StellarFireGradientLooping(3f).ToVector3());
+				Lighting.AddLight(player.Center,  ColorLib.StellarFireGradientLooping().ToVector3());
 
                 if (Timer >= execTime) {
                     CurrentStage = AttackStage.Unwind;
@@ -312,7 +312,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 				}
 
                
-                Lighting.AddLight(player.Center,  ColorLib.StellarFireGradientLooping(3f).ToVector3());
+                Lighting.AddLight(player.Center,  ColorLib.StellarFireGradientLooping().ToVector3());
 
                 if (Timer >= execTime) {
                     CurrentStage = AttackStage.Unwind;

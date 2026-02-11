@@ -34,7 +34,7 @@ namespace DestroyerTest.Content.Dusts
             dust.scale *= 0.98f;
             dust.rotation += 0.1f * dust.velocity.X;
 
-            Lighting.AddLight(dust.position,  ColorLib.StellarFireGradientLooping(3f).ToVector3() * dust.scale);
+            Lighting.AddLight(dust.position,  ColorLib.StellarFireGradientLooping().ToVector3() * dust.scale);
             return false;
         }
 

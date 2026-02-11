@@ -81,8 +81,8 @@ namespace DestroyerTest.Common
                         {
                             HasImbue = true;
                         }
-                        DustInEnchantVisuals(thrown, DustID.FireworksRGB, 40,  ColorLib.StellarFireGradientLooping(3f), 0.7f, false);
-                        //Dust.NewDust(thrown.EnchantmentVisuals().TopLeft(), thrown.EnchantmentVisuals().Width, thrown.EnchantmentVisuals().Height, DustID.TintableDustLighted, 0, 0, 40,  ColorLib.StellarFireGradientLooping(3f), 1.0f);
+                        DustInEnchantVisuals(thrown, DustID.FireworksRGB, 40,  ColorLib.StellarFireGradientLooping(), 0.7f, false);
+                        //Dust.NewDust(thrown.EnchantmentVisuals().TopLeft(), thrown.EnchantmentVisuals().Width, thrown.EnchantmentVisuals().Height, DustID.TintableDustLighted, 0, 0, 40,  ColorLib.StellarFireGradientLooping(), 1.0f);
                     }
                     if (Brine)
                     {
@@ -159,10 +159,10 @@ namespace DestroyerTest.Common
                             HasImbue = true;
                         }
                         DustInEnchantVisuals(thrown, DustID.Honey, 40, default, 1f);
-                        DustInEnchantVisuals(thrown, DustID.FireworksRGB, 40,  ColorLib.StellarFireGradientLooping(3f), 0.7f, false);
+                        DustInEnchantVisuals(thrown, DustID.FireworksRGB, 40,  ColorLib.StellarFireGradientLooping(), 0.7f, false);
 
                         //Dust.NewDust(thrown.EnchantmentVisuals().TopLeft(), thrown.EnchantmentVisuals().Width, thrown.EnchantmentVisuals().Height, DustID.Honey, 0, 0, 40, default, 1.0f);
-                        //Dust.NewDust(thrown.EnchantmentVisuals().TopLeft(), thrown.EnchantmentVisuals().Width, thrown.EnchantmentVisuals().Height, DustID.TintableDustLighted, 0, 0, 40,  ColorLib.StellarFireGradientLooping(3f), 1.0f);
+                        //Dust.NewDust(thrown.EnchantmentVisuals().TopLeft(), thrown.EnchantmentVisuals().Width, thrown.EnchantmentVisuals().Height, DustID.TintableDustLighted, 0, 0, 40,  ColorLib.StellarFireGradientLooping(), 1.0f);
                         if (Main.rand.NextBool(10))
                         {
                             Projectile.NewProjectile(projectile.GetSource_FromThis(), projectile.Center, projectile.velocity.RotatedByRandom(MathHelper.TwoPi), ModContent.ProjectileType<GalantineBee>(), projectile.damage / 3, 4, projectile.owner);

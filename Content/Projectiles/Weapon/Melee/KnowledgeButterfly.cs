@@ -51,7 +51,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             // Handle animation
             AnimateProjectile();
 
-            PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center, Vector2.Zero,  ColorLib.StellarFireGradientLooping(3f) * 0.3f, 0.5f, 60, ai2: 2);
+            PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center, Vector2.Zero,  ColorLib.StellarFireGradientLooping() * 0.3f, 0.5f, 60, ai2: 2);
 
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
             float maxDetectRadius = 400f; // The maximum radius at which a projectile can detect a target
@@ -146,12 +146,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.AddBuff(BuffID.OnFire, 300);
-            PRTLoader.NewParticle(PRTLoader.GetParticleID<Boom2>(), Projectile.Center, Vector2.Zero,  ColorLib.StellarFireGradientLooping(3f), 0.4f);
+            PRTLoader.NewParticle(PRTLoader.GetParticleID<Boom2>(), Projectile.Center, Vector2.Zero,  ColorLib.StellarFireGradientLooping(), 0.4f);
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
-            PRTLoader.NewParticle(PRTLoader.GetParticleID<Boom2>(), Projectile.Center, Vector2.Zero,  ColorLib.StellarFireGradientLooping(3f), 0.4f);
+            PRTLoader.NewParticle(PRTLoader.GetParticleID<Boom2>(), Projectile.Center, Vector2.Zero,  ColorLib.StellarFireGradientLooping(), 0.4f);
             return true;
         }
     }

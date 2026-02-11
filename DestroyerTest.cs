@@ -234,7 +234,7 @@ namespace DestroyerTest
            
             var fractalProfiles = (Dictionary<int, FinalFractalProfile>)typeof(Terraria.Graphics.FinalFractalHelper).GetField("_fractalProfiles", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
 			fractalProfiles.Add(ModContent.ItemType<GargantuaZenith>(), new FinalFractalProfile(140f, new Color(255, 0, 0)));
-			fractalProfiles.Add(ModContent.ItemType<Conclusion>(), new FinalFractalProfile(140f,  ColorLib.StellarFireGradientLooping(3f)));
+			fractalProfiles.Add(ModContent.ItemType<Conclusion>(), new FinalFractalProfile(140f,  ColorLib.StellarFireGradientLooping()));
 
             AddChestLoot();
 

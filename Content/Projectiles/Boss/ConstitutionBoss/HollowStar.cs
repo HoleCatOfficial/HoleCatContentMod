@@ -31,22 +31,54 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
             Projectile.tileCollide = false;
         }
 
+        public int Lifetime = 120;
+		public int Time = 0;
+
+        public Color MainColor = Color.White;
+
+		public bool StartKill = false;
+		public void UpdateLerpTime()
+		{
+			Time++;
+
+			if (Time > Lifetime)
+			{
+				StartKill = true;
+			}
+		}
+		public float LifetimeCompletion
+		{
+			get
+			{
+				if (Lifetime <= 0)
+				{
+					return 0f;
+				}
+
+				return (float)Time / (float)Lifetime;
+			}
+		}
+
         public override void AI()
         {
+            UpdateLerpTime();
+			MainColor = ColorLib.StellarFireGradient(LifetimeCompletion * 8f);
             Projectile.rotation += Projectile.direction * 0.3f;
 
             if (Main.rand.NextBool(12))
             {
-                Dust dust = Dust.NewDustPerfect(Projectile.Center, DustID.TintableDustLighted, Projectile.velocity * 0.2f, 100,  ColorLib.StellarFireGradientLooping(3f), 1.2f);
+                Dust dust = Dust.NewDustPerfect(Projectile.Center, DustID.TintableDustLighted, Projectile.velocity * 0.2f, 100,  ColorLib.StellarFireGradientLooping(), 1.2f);
                 dust.noGravity = true;
                 dust.fadeIn = 1.5f;
             }
         }
+
+
         public override bool PreDraw(ref Color lightColor)
         {
 
-            Color BeamColor =  ColorLib.StellarFireGradientLooping(3f);
-            lightColor = BeamColor;
+            Color BeamColor =  MainColor;
+            lightColor = BeamColor * Projectile.Opacity;
             SpriteBatch SB = Main.spriteBatch;
             Vector2 drawOrigin = new Vector2(TextureAssets.Projectile[Projectile.type].Value.Width * 0.5f, Projectile.height * 0.5f);
             DTUtils Utility = new DTUtils();

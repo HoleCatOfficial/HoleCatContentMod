@@ -20,7 +20,7 @@ namespace DestroyerTest.Content.Particles.Stellar
 
         public override void AI()
         {
-            Color = ColorLib.StellarFireGradient(LifetimeCompletion * 4f);
+            Color = ColorLib.StellarFireGradient(LifetimeCompletion * 8f);
             float endScale = ai[0]; // allow dynamic sizing
             float growSpeed = 0.02f; // how fast it grows each tick
 
@@ -55,7 +55,7 @@ namespace DestroyerTest.Content.Particles.Stellar
 
         public override void AI()
         {
-            Color = ColorLib.StellarFireGradient(LifetimeCompletion * 4f);
+            Color = ColorLib.StellarFireGradient(LifetimeCompletion * 8f);
             float endScale = ai[0]; // allow dynamic sizing
             float growSpeed = 0.02f; // how fast it grows each tick
 

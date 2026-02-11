@@ -36,7 +36,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 
             if (Main.rand.NextBool(3))
             {
-                Dust dust = Dust.NewDustPerfect(Projectile.Center, DustID.TintableDustLighted, Projectile.velocity * 0.2f, 100,  ColorLib.StellarFireGradientLooping(3f), 1.2f);
+                Dust dust = Dust.NewDustPerfect(Projectile.Center, DustID.TintableDustLighted, Projectile.velocity * 0.2f, 100,  ColorLib.StellarFireGradientLooping(), 1.2f);
                 dust.noGravity = true;
                 dust.fadeIn = 1.5f;
             }

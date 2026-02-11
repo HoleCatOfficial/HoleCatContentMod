@@ -42,7 +42,7 @@ namespace DestroyerTest.Content.Particles.Stellar
         public int CurrentFrame = 0;
         public void Anim()
         {
-            Color = ColorLib.StellarFireGradient(LifetimeCompletion * 4f);
+            Color = ColorLib.StellarFireGradient(LifetimeCompletion * 8f);
             ai[1]++;
             if (LR)
             {

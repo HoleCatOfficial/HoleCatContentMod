@@ -145,16 +145,16 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 			SoundEngine.PlaySound(BurstSound, Projectile.position);
 			// Smoke Dust spawn
 			for (int i = 0; i < 50; i++) {
-				Dust dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.Smoke, 0f, 0f, 100,  ColorLib.StellarFireGradientLooping(3f), 2f);
+				Dust dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.Smoke, 0f, 0f, 100,  ColorLib.StellarFireGradientLooping(), 2f);
 				dust.velocity *= 1.4f;
 			}
 
 			// Fire Dust spawn
 			for (int i = 0; i < 80; i++) {
-				Dust dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.Torch, 0f, 0f, 100,  ColorLib.StellarFireGradientLooping(3f), 3f);
+				Dust dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.Torch, 0f, 0f, 100,  ColorLib.StellarFireGradientLooping(), 3f);
 				dust.noGravity = true;
 				dust.velocity *= 5f;
-				dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.Torch, 0f, 0f, 100,  ColorLib.StellarFireGradientLooping(3f), 2f);
+				dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.Torch, 0f, 0f, 100,  ColorLib.StellarFireGradientLooping(), 2f);
 				dust.velocity *= 3f;
 			}
 

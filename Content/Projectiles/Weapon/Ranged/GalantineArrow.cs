@@ -48,7 +48,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Ranged
         }
         public override bool PreDraw(ref Color lightColor)
         {
-            Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, Projectile.Center - Main.screenPosition, null,  ColorLib.StellarFireGradientLooping(3f), Projectile.rotation, new Vector2(Projectile.width / 2, Projectile.height / 2), Projectile.scale, SpriteEffects.None, 0);
+            Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, Projectile.Center - Main.screenPosition, null,  ColorLib.StellarFireGradientLooping(), Projectile.rotation, new Vector2(Projectile.width / 2, Projectile.height / 2), Projectile.scale, SpriteEffects.None, 0);
             return false;
         }
 

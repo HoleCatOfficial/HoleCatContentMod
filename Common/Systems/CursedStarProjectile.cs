@@ -56,7 +56,7 @@ namespace DestroyerTest.Common.Systems
 
             if (Main.rand.NextBool(3))
             {
-                Dust dust = Dust.NewDustPerfect(Projectile.Center, DustID.TintableDustLighted, Projectile.velocity * 0.2f, 100,  ColorLib.StellarFireGradientLooping(3f), 1.2f);
+                Dust dust = Dust.NewDustPerfect(Projectile.Center, DustID.TintableDustLighted, Projectile.velocity * 0.2f, 100,  ColorLib.StellarFireGradientLooping(), 1.2f);
                 dust.noGravity = true;
                 dust.fadeIn = 1.5f;
             }
@@ -64,7 +64,7 @@ namespace DestroyerTest.Common.Systems
 
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
-            Main.NewText("A suspicious star has invaded from the heavens...",  ColorLib.StellarFireGradientLooping(3f));
+            Main.NewText("A suspicious star has invaded from the heavens...",  ColorLib.StellarFireGradientLooping());
             Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), new Vector2(Projectile.Center.X, Projectile.Center.Y - 2000), new Vector2(0, -1), ProjectileID.DD2ExplosiveTrapT3Explosion, 18, 5);
             Item.NewItem(Entity.GetSource_FromThis(), Projectile.getRect(), ModContent.ItemType<CursedStar>(), 1, true, 0);
             return true;
@@ -73,7 +73,7 @@ namespace DestroyerTest.Common.Systems
         {
 
 
-            lightColor =  ColorLib.StellarFireGradientLooping(3f);
+            lightColor =  ColorLib.StellarFireGradientLooping();
             SpriteBatch SB = Main.spriteBatch;
             Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
             Texture2D ItemTexture = TextureAssets.Item[75].Value;

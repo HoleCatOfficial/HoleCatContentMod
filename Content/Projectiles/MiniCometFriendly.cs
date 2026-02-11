@@ -53,7 +53,7 @@ namespace DestroyerTest.Content.Projectiles
         private Asset<Texture2D> ProjTex => ModContent.Request<Texture2D>(Texture);
 		public override bool PreDraw(ref Color lightColor)
         {
-            lightColor = ColorLib.StellarFireGradientLooping(3f);
+            lightColor = ColorLib.StellarFireGradientLooping();
             SpriteBatch spriteBatch = Main.spriteBatch;
             DTUtils Utility = new DTUtils();
 
@@ -105,7 +105,7 @@ namespace DestroyerTest.Content.Projectiles
 
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
 
-            Lighting.AddLight(Projectile.Center,  ColorLib.StellarFireGradientLooping(3f).ToVector3() * 0.2f);
+            Lighting.AddLight(Projectile.Center,  ColorLib.StellarFireGradientLooping().ToVector3() * 0.2f);
 
             if (DelayTimer < 20)
             {
@@ -192,7 +192,7 @@ namespace DestroyerTest.Content.Projectiles
         public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(SoundID.Item10);
-			Dust.NewDust(Projectile.position, Projectile.Hitbox.Width, Projectile.Hitbox.Height, ModContent.DustType<ConstitutionDust1>(), Main.rand.NextFloat(-1, 1.1f), Main.rand.NextFloat(-1, 1.1f), 0,  ColorLib.StellarFireGradientLooping(3f), 2f);
+			Dust.NewDust(Projectile.position, Projectile.Hitbox.Width, Projectile.Hitbox.Height, ModContent.DustType<ConstitutionDust1>(), Main.rand.NextFloat(-1, 1.1f), Main.rand.NextFloat(-1, 1.1f), 0,  ColorLib.StellarFireGradientLooping(), 2f);
         }
 
     }

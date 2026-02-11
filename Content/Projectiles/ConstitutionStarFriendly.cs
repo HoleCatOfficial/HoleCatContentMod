@@ -161,7 +161,7 @@ namespace DestroyerTest.Content.Projectiles
 				TrailRotations.RemoveAt(TrailRotations.Count - 1);
 
 			UpdateLerpTime();
-			MainColor = ColorLib.StellarFireGradient(LifetimeCompletion * 4f);
+			MainColor = ColorLib.StellarFireGradient(LifetimeCompletion * 8f);
 
             DelayTimer++;
 
@@ -283,7 +283,7 @@ namespace DestroyerTest.Content.Projectiles
 			if (!StartKill)
 			{
 				SoundEngine.PlaySound(DTAssetLib.ConstitutionStarKill, Projectile.Center);
-				Opus.NewParticleFloatAI(StellarParticleIndex.BloomRingSharp, Projectile.Center, Vector2.Zero, ColorLib.StellarFireGradientLooping(3f), 0.005f, 0.2f);
+				Opus.NewParticleFloatAI(StellarParticleIndex.BloomRingSharp, Projectile.Center, Vector2.Zero, ColorLib.StellarFireGradientLooping(), 0.005f, 0.2f);
 				DTUtils.ConstitutionStarExplosionEffects(Projectile);
 			}
 			else
@@ -429,7 +429,7 @@ namespace DestroyerTest.Content.Projectiles
             Projectile.rotation += Projectile.direction * 0.1f;
 
 			UpdateLerpTime();
-			MainColor = ColorLib.StellarFireGradient(LifetimeCompletion * 4f);
+			MainColor = ColorLib.StellarFireGradient(LifetimeCompletion * 8f);
 
             Lighting.AddLight(Projectile.Center,  MainColor.ToVector3() * 0.2f);
 			
@@ -460,8 +460,8 @@ namespace DestroyerTest.Content.Projectiles
 			if (!StartKill)
 			{
 				SoundEngine.PlaySound(DTAssetLib.ConstitutionStarKill, Projectile.Center);
-				PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp>(), Projectile.Center, Vector2.Zero,  ColorLib.StellarFireGradientLooping(3f), 0.005f);
-				Dust.NewDust(Projectile.position, Projectile.Hitbox.Width, Projectile.Hitbox.Height, DustID.TintableDustLighted, Main.rand.NextFloat(-1, 1.1f), Main.rand.NextFloat(-1, 1.1f), 0,  ColorLib.StellarFireGradientLooping(3f), 2f);
+				PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp>(), Projectile.Center, Vector2.Zero,  ColorLib.StellarFireGradientLooping(), 0.005f);
+				Dust.NewDust(Projectile.position, Projectile.Hitbox.Width, Projectile.Hitbox.Height, DustID.TintableDustLighted, Main.rand.NextFloat(-1, 1.1f), Main.rand.NextFloat(-1, 1.1f), 0,  ColorLib.StellarFireGradientLooping(), 2f);
 				DTUtils.ConstitutionStarExplosionEffects(Projectile);
 			}
 			else

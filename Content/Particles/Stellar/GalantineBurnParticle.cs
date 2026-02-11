@@ -25,7 +25,7 @@ namespace DestroyerTest.Content.Particles.Stellar
             Scale *= 0.993f;
             Rotation += 0.1f * Velocity.X;
 
-            Color = ColorLib.StellarFireGradient(LifetimeCompletion * 4f);
+            Color = ColorLib.StellarFireGradient(LifetimeCompletion * 8f);
 
             Lighting.AddLight(Position, Color.ToVector3() * Scale);
 

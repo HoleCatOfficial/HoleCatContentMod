@@ -84,7 +84,7 @@ namespace DestroyerTest.Content.Particles
 
         public override void AI()
         {
-            Color = ColorLib.StellarFireGradient(LifetimeCompletion * 4f);
+            Color = ColorLib.StellarFireGradient(LifetimeCompletion * 8f);
             float t = LifetimeCompletion;
 
             // rotate from start to target

@@ -55,47 +55,19 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
 			Projectile.hostile = false;
 			Projectile.ignoreWater = true;
 			Projectile.light = 1f;
-			Projectile.timeLeft = 300;
+			Projectile.timeLeft = 600;
 			Projectile.tileCollide = false;
 		}
 
+        public Color MainColor = Color.White;
         private Asset<Texture2D> ProjTex => ModContent.Request<Texture2D>(Texture);
 		public override bool PreDraw(ref Color lightColor)
         {
-            lightColor =  ColorLib.StellarFireGradientLooping(3f);
+            lightColor =  MainColor;
             SpriteBatch spriteBatch = Main.spriteBatch;
             DTUtils Utility = new DTUtils();
 
             Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-
-            /*
-            for (int i = 0; i < TrailPositions.Count - 1; i++)
-            {
-                Vector2 start = TrailPositions[i] - Main.screenPosition;
-                Vector2 end = TrailPositions[i + 1] - Main.screenPosition;
-                Vector2 diff = end - start;
-
-                float length = diff.Length();
-                if (length < 0.5f)
-                    continue;
-
-                float rotation = diff.ToRotation();
-                float width = MathHelper.Lerp(0.01f, 0.0007f, i / (float)TrailLength);
-                float alpha = MathHelper.Lerp(1f, 0f, i / (float)TrailLength);
-
-                Main.spriteBatch.Draw(
-                    DTAssetLib.Square.Value,
-                    start,
-                    null,
-                    lightColor,
-                    rotation,
-                    new Vector2(DTAssetLib.Square.Value.Width / 2, DTAssetLib.Square.Value.Height / 2),
-                    new Vector2(length, width),
-                    SpriteEffects.None,
-                    0f
-                );
-            }
-            */
 
             for (int k = TrailPositions.Count - 1; k > 0; k--)
             {
@@ -114,9 +86,6 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
                 );
             }
 
-
-            //Opus.DrawGlowOnProj(Projectile, lightColor, true);
-
             Opus.ReturnToDefaultDrawing(spriteBatch);
 
             Opus.DrawTextureOnProj(ProjTex, Projectile, Color.White, true, Projectile.rotation, 1f, 1f);
@@ -128,6 +97,32 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
 		public List<Vector2> TrailPositions = new();
 		public List<float> TrailRotations = new();
 		private const int TrailLength = 40;
+
+        public int Lifetime = 580;
+		public int Time = 0;
+
+		public bool StartKill = false;
+		public void UpdateLerpTime()
+		{
+			Time++;
+
+			if (Time > Lifetime)
+			{
+				StartKill = true;
+			}
+		}
+		public float LifetimeCompletion
+		{
+			get
+			{
+				if (Lifetime <= 0)
+				{
+					return 0f;
+				}
+
+				return (float)Time / (float)Lifetime;
+			}
+		}
 		public override void AI()
         {
             TrailPositions.Insert(0, Projectile.Center);
@@ -139,13 +134,15 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
             while (TrailRotations.Count > TrailLength)
                 TrailRotations.RemoveAt(TrailRotations.Count - 1);
 
-            DelayTimer++;
+
+            UpdateLerpTime();
+			MainColor = ColorLib.StellarFireGradient(LifetimeCompletion * 8f);
 
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
 
-            Lighting.AddLight(Projectile.Center,  ColorLib.StellarFireGradientLooping(3f).ToVector3() * 0.2f);
+            Lighting.AddLight(Projectile.Center,  MainColor.ToVector3() * 0.2f);
 
-            Projectile.velocity.Y += 0.05f;
+            Projectile.velocity.Y += 0.1f;
         }
 
 		public override void OnHitPlayer(Player target, Player.HurtInfo info)
@@ -158,7 +155,6 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
         public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(SoundID.Item10);
-			Opus.RadialDustRandomDir(DustID.FireworksRGB, 12, Projectile.Center, 0,  ColorLib.StellarFireGradientLooping(3f), 1f, 3);
         }
 
     }

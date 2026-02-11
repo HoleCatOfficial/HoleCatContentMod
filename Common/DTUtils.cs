@@ -85,7 +85,7 @@ namespace DestroyerTest.Common
                 PRTLoader.NewParticle(StellarParticleIndex.ConstitutionParticle, spawnPos, velocity, default, 1f);
                 PRTLoader.NewParticle(StellarParticleIndex.ConstitutionParticle, spawnPos, Vector2.Zero, default, 1f);
             }
-            PRTLoader.NewParticle(StellarParticleIndex.FlatStar, projectile.Center, Vector2.Zero,  ColorLib.StellarFireGradientLooping(3f), 0.15f);
+            PRTLoader.NewParticle(StellarParticleIndex.FlatStar, projectile.Center, Vector2.Zero,  ColorLib.StellarFireGradientLooping(), 0.15f);
         }
 
         /// <summary>
@@ -176,6 +176,27 @@ namespace DestroyerTest.Common
             List.Add(new ColoredVertex(Vex[Index] - Main.screenPosition + off2, new Vector3(Fade - stripMotion, 0, 1), CLR));
         }
 
+        public static void AddStrips_ArenaWalls(
+            List<ColoredVertex> list,
+            List<Vector2> vex,
+            int index,
+            Vector2 off1,
+            Vector2 off2,
+            float u,
+            Color clr)
+        {
+            list.Add(new ColoredVertex(
+                vex[index] - Main.screenPosition + off1,
+                new Vector3(u, 0, 1),
+                clr));
+
+            list.Add(new ColoredVertex(
+                vex[index] - Main.screenPosition + off2,
+                new Vector3(u, 1, 1),
+                clr));
+        }
+
+
         public static int[] ElectricArcs = new int[]
         {
             PRTLoader.GetParticleID<Arc1>(),
@@ -262,9 +283,9 @@ namespace DestroyerTest.Common
         /// <param name="line"></param>
         /// <param name="texture"></param>
         /// <param name="scrollspeed"></param>
-        public static void ScrollingTextureSpine(SimpleLine line, Asset<Texture2D> texture, SpriteBatch spriteBatch,  BlendState blendState, float scrollspeed = 0.01f)
+        public static void ScrollingTextureSpine(SimpleLine line, Asset<Texture2D> texture, SpriteBatch spriteBatch,  BlendState blendState, float Width = 16f, float scrollspeed = 0.01f)
         {
-            Vector2[] pt = line.GetPointsAlongLine(10);
+            Vector2[] pt = line.GetPointsAlongLine(100);
             float texOffset = 0f;
 
             if (texture == null)
@@ -274,6 +295,15 @@ namespace DestroyerTest.Common
             }
 
             texOffset += scrollspeed;
+
+            float totalLength = 0f;
+            float[] distances = new float[pt.Length];
+
+            for (int i = 1; i < pt.Length; i++)
+            {
+                totalLength += Vector2.Distance(pt[i - 1], pt[i]);
+                distances[i] = totalLength;
+            }
 
             Opus.StartSpriteBatchForTrails(spriteBatch, blendState, SpriteSortMode.Immediate);
 
@@ -285,14 +315,22 @@ namespace DestroyerTest.Common
 
                 for (int i = pt.Length - 1; i > 0; i--)
                 {
-                    float t = 1f - (i / (float)pt.Length); // fade toward tail
-                    Color b = Color.White * t;
+                    Vector2 dir = (pt[i] - pt[i - 1]).SafeNormalize(Vector2.UnitX);
 
-                    Vector2 dir = (pt[i] - pt[i - 1]).ToRotation().ToRotationVector2();
-                    Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * 22;
-                    Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * 22;
+                    Vector2 offset = dir.RotatedBy(MathHelper.PiOver2) * Width;
+                    Vector2 offset2 = -offset;
 
-                    DTUtils.AddStrips(ve, ptList, i, offset, offset2, t, b, texOffset);
+                    float u = (distances[i] / texture.Value.Width) + texOffset;
+
+                    DTUtils.AddStrips_ArenaWalls(
+                        ve,
+                        ptList,
+                        i,
+                        offset,
+                        offset2,
+                        u,
+                        Color.White
+                    );
                 }
 
 
@@ -314,13 +352,22 @@ namespace DestroyerTest.Common
         /// <param name="scrollspeed"></param>
         public static void ScrollingTextureSpine(SimpleLine line, Asset<Texture2D> texture, Color drawColor, SpriteBatch spriteBatch,  BlendState blendState, float Width = 16f, float scrollspeed = 0.01f)
         {
-            Vector2[] pt = line.GetPointsAlongLine(10);
+            Vector2[] pt = line.GetPointsAlongLine(100);
             float texOffset = 0f;
 
             if (texture == null)
             {
                 Main.NewText("ScrollingTextureSpine: Texture is null. Aborted draw.", Color.Red);
                 return;
+            }
+
+            float totalLength = 0f;
+            float[] distances = new float[pt.Length];
+
+            for (int i = 1; i < pt.Length; i++)
+            {
+                totalLength += Vector2.Distance(pt[i - 1], pt[i]);
+                distances[i] = totalLength;
             }
 
             texOffset += scrollspeed;
@@ -335,17 +382,22 @@ namespace DestroyerTest.Common
 
                 for (int i = pt.Length - 1; i > 0; i--)
                 {
-                    float u = i / (float)(ptList.Count - 1);
-					float widthFactor = (float)Math.Sin(u * MathHelper.Pi);
+                    Vector2 dir = (pt[i] - pt[i - 1]).SafeNormalize(Vector2.UnitX);
 
-					float width = Width * widthFactor;
+                    Vector2 offset = dir.RotatedBy(MathHelper.PiOver2) * Width;
+                    Vector2 offset2 = -offset;
 
-					Vector2 dir = (pt[i] - pt[i - 1]).ToRotation().ToRotationVector2();
-					Vector2 perp = dir.RotatedBy(MathHelper.PiOver2);
-					Vector2 offset  = perp * width;
-					Vector2 offset2 = -perp * width;
+                    float u = (distances[i] / texture.Value.Width) + texOffset;
 
-                    DTUtils.AddStrips(ve, ptList, i, offset, offset2, 0, drawColor, texOffset);
+                    DTUtils.AddStrips_ArenaWalls(
+                        ve,
+                        ptList,
+                        i,
+                        offset,
+                        offset2,
+                        u,
+                        drawColor
+                    );
                 }
 
 
@@ -358,6 +410,72 @@ namespace DestroyerTest.Common
             }
         }
 
+        public static void ScrollingTextureSpine(
+            SimpleLine line,
+            Asset<Texture2D> texture,
+            Color color,
+            SpriteBatch spriteBatch,
+            BlendState blendState,
+            float scrollSpeed = 0.5f,
+            float width = 22f,
+            int divisions = 32)
+        {
+            if (texture == null)
+                return;
+
+            Vector2[] points = line.GetPointsAlongLine(divisions);
+            if (points == null || points.Length < 2)
+                return;
+
+            // Time-based scrolling so it actually moves
+            float scroll = Main.GlobalTimeWrappedHourly * scrollSpeed;
+
+            Opus.StartSpriteBatchForTrails(spriteBatch, blendState, SpriteSortMode.Immediate);
+
+            List<ColoredVertex> verts = new();
+
+            float totalLength = line.GetLineLength;
+            float accumulatedLength = 0f;
+
+            for (int i = 1; i < points.Length; i++)
+            {
+                Vector2 prev = points[i - 1];
+                Vector2 curr = points[i];
+
+                Vector2 dir = curr - prev;
+                float segmentLength = dir.Length();
+                if (segmentLength <= 0f)
+                    continue;
+
+                dir.Normalize();
+                Vector2 normal = dir;
+
+                accumulatedLength += segmentLength;
+
+                // UVs scroll along the line
+                float u = (accumulatedLength / texture.Value.Width) + scroll;
+
+                Vector2 left = curr + normal * width;
+                Vector2 right = curr - normal * width;
+
+                verts.Add(new ColoredVertex(left - Main.screenPosition, color, new Vector2(u, 0f)));
+                verts.Add(new ColoredVertex(right - Main.screenPosition, color, new Vector2(u, 1f)));
+            }
+
+            if (verts.Count >= 3)
+            {
+                GraphicsDevice gd = Main.graphics.GraphicsDevice;
+                gd.Textures[0] = texture.Value;
+                gd.DrawUserPrimitives(
+                    PrimitiveType.TriangleStrip,
+                    verts.ToArray(),
+                    0,
+                    verts.Count - 2
+                );
+            }
+        }
+
+
         /// <summary>
         /// Creates a scrolling texture, similar to a trail, but confined to two points.
         /// <br/> Must be called in a draw-related override.
@@ -367,7 +485,7 @@ namespace DestroyerTest.Common
         /// <param name="scrollspeed"></param>
         public static void ScrollingTextureSpine(Line line, Asset<Texture2D> texture, SpriteBatch spriteBatch,  BlendState blendState, float scrollspeed = 0.01f)
         {
-            Vector2[] pt = line.GetPointsAlongLine(10);
+            Vector2[] pt = line.GetPointsAlongLine(100);
             float texOffset = 0f;
 
             if (texture == null)
@@ -580,6 +698,51 @@ namespace DestroyerTest.Common
             spriteBatch.Draw(Ball, Center - Main.screenPosition, null, Color.Black, Rot, Ball.Size() / 2, Scale, SpriteEffects.None, 0f);
 
             
+        }
+
+        /// <summary>
+        /// Draws a ball with a trail composed of an upper layer and a lower layer.
+        /// Unlike the rift ball, the scaling of this is a lot more fine tuned due to the differences in the sizes of the textures that compose it.
+        /// </summary>
+        /// <param name="spriteBatch"></param>
+        /// <param name="Center"></param>
+        /// <param name="colorIN"></param>
+        /// <param name="colorOUT"></param>
+        /// <param name="TrailPositions"></param>
+        /// <param name="TextureRotationOffset"></param>
+        /// <param name="Projectile"></param>
+        /// <param name="TrailLength"></param>
+        public static void DrawCrystalCore(SpriteBatch spriteBatch, Vector2 Center, Color colorIN, Color colorOUT, float TextureRotationOffset, float Scale = 1f)
+        {
+            DTUtils Utility = new DTUtils();
+            float OuterScale = Scale * 0.1425f;
+            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+
+            Main.spriteBatch.Draw(
+                DTAssetLib.Cyclone(2).Value,
+                Center - Main.screenPosition,
+                null,
+                colorOUT,
+                TextureRotationOffset,
+                new Vector2(DTAssetLib.Cyclone(2).Value.Width / 2f, DTAssetLib.Cyclone(2).Value.Height / 2f),
+                OuterScale,
+                SpriteEffects.None,
+                1f
+            );
+
+            Main.spriteBatch.Draw(
+                DTAssetLib.FeatheredCircle.Value,
+                Center - Main.screenPosition,
+                null,
+                colorIN,
+                0f,
+                new Vector2(DTAssetLib.FeatheredCircle.Value.Width / 2f, DTAssetLib.FeatheredCircle.Value.Height / 2f),
+                Scale,
+                SpriteEffects.None,
+                1f
+            );
+
+            Opus.ReturnToDefaultDrawing(spriteBatch);
         }
 
         /// <summary>
@@ -1153,21 +1316,27 @@ namespace DestroyerTest.Common
         public static Color StellarFireGradient(float t)
         {
             
-            t = MathHelper.Clamp(t, 0f, 4f);
+            t = MathHelper.Clamp(t, 0f, 8f);
 
             if (t < 1f)
                 return Color.Lerp(StellarFire1, StellarFire2, t);
             else if (t < 2f)
-                return Color.Lerp(StellarFire3, StellarFire4, t - 1f);
+                return Color.Lerp(StellarFire2, StellarFire3, t - 1f);
             else if (t < 3f)
-                return Color.Lerp(StellarFire5, StellarFire6, t - 2f);
+                return Color.Lerp(StellarFire3, StellarFire4, t - 2f);
+            else if (t < 4f)
+                return Color.Lerp(StellarFire4, StellarFire5, t - 3f);
+            else if (t < 5f)
+                return Color.Lerp(StellarFire5, StellarFire6, t - 4f);
+            else if (t < 6f)
+                return Color.Lerp(StellarFire6, StellarFire7, t - 5f);
             else
-                return Color.Lerp(StellarFire7, StellarFire8, t - 3f);
+                return Color.Lerp(StellarFire7, StellarFire8, t - 6f);
         }
 
-        public static Color StellarFireGradientLooping(float speed = 1f)
+        public static Color StellarFireGradientLooping()
         {
-            float time = (Main.GlobalTimeWrappedHourly * speed) % 14f;
+            float time = (Main.GlobalTimeWrappedHourly % 14f);
 
             if (time < 1f)
                 return Color.Lerp(StellarFire1, StellarFire2, time);
@@ -1351,7 +1520,7 @@ namespace DestroyerTest.Common
         public static Asset<Texture2D> PossessedToothOutline = ModContent.Request<Texture2D>($"{ExtrasPath}/PossessedToothOutline", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> HaepienCircleBottom = ModContent.Request<Texture2D>($"{ExtrasPath}/HaepienSigilBottom", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> HaepienCircleTop = ModContent.Request<Texture2D>($"{ExtrasPath}/HaepienSigilTop", AssetRequestMode.AsyncLoad);
-        
+        public static Asset<Texture2D> FlatStar = ModContent.Request<Texture2D>($"{ParticlePath}/FlatStar", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> ShieldRing = ModContent.Request<Texture2D>($"{ParticlePath}/ShieldRing", AssetRequestMode.AsyncLoad);
         //
         // Sounds

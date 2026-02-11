@@ -36,49 +36,59 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
             Projectile.alpha = 0;
         }
 
+        public Color MainColor = Color.White;
         public override void PostDraw(Color lightColor)
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
-            DrawCrystalCore(spriteBatch, Projectile.Center);
-        }
-        public void DrawCrystalCore(SpriteBatch spriteBatch, Vector2 Center)
-        {
-            DTUtils Utility = new DTUtils();
             Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-
-            Main.spriteBatch.Draw(
-                DTAssetLib.Cyclone(2).Value,
-                Center - Main.screenPosition,
-                null,
-                 ColorLib.StellarFireGradientLooping(3f),
-                TextureRotationOffset,
-                new Vector2(DTAssetLib.Cyclone(2).Value.Width / 2f, DTAssetLib.Cyclone(2).Value.Height / 2f),
-                0.2f,
-                SpriteEffects.None,
-                1f
-            );
-
-            Main.spriteBatch.Draw(
-                DTAssetLib.FeatheredCircle.Value,
-                Center - Main.screenPosition,
-                null,
-                Color.White,
-                0f,
-                new Vector2(DTAssetLib.FeatheredCircle.Value.Width / 2f, DTAssetLib.FeatheredCircle.Value.Height / 2f),
-                0.4f,
-                SpriteEffects.None,
-                1f
-            );
-
+            Main.EntitySpriteDraw(DTAssetLib.FlatStar.Value, Projectile.Center - Main.screenPosition, null, ColorLib.StellarFireGradientLooping(), 0f, DTAssetLib.FlatStar.Value.Size() / 2, WarnScale, SpriteEffects.None, 0f);
             Opus.ReturnToDefaultDrawing(spriteBatch);
+            DTUtils.DrawCrystalCore(spriteBatch, Projectile.Center, MainColor, Color.White, TextureRotationOffset, 1f);
         }
 
         public float TextureRotationOffset = 0f;
+
+        public int Lifetime = 120;
+		public int Time = 0;
+
+		public bool StartKill = false;
+		public void UpdateLerpTime()
+		{
+			Time++;
+
+			if (Time > Lifetime)
+			{
+				StartKill = true;
+			}
+		}
+		public float LifetimeCompletion
+		{
+			get
+			{
+				if (Lifetime <= 0)
+				{
+					return 0f;
+				}
+
+				return (float)Time / (float)Lifetime;
+			}
+		}
+
+        float WarnScale = 0f;
+
         public override void AI()
         {
+            UpdateLerpTime();
+			MainColor = ColorLib.StellarFireGradient(LifetimeCompletion * 8f);
+
             Vector2 ToPlayer = Projectile.Center - Main.LocalPlayer.Center;
             TextureRotationOffset -= 0.5f;
             Projectile.velocity *= 0.999f;
+
+            if (StartKill)
+            {
+                WarnScale += 0.1f;
+            }
         }
 
         public override void OnHitPlayer(Player target, Player.HurtInfo info)
@@ -97,7 +107,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
             Vector2 Outward = new Vector2(0, -1).RotatedByRandom(MathHelper.TwoPi) * Main.rand.NextFloat(3, 6);
             for (int i = 0; i < 10; i++)
             {
-                Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.TintableDustLighted, Outward.X, Outward.Y, 100,  ColorLib.StellarFireGradientLooping(3f), 1.5f).noGravity = true;
+                Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.TintableDustLighted, Outward.X, Outward.Y, 100,  ColorLib.StellarFireGradientLooping(), 1.5f).noGravity = true;
             }
 
             DTUtils.ConstitutionStarExplosionEffects(Projectile);

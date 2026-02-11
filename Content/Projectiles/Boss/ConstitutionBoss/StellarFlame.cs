@@ -39,7 +39,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
 		{
 			
 
-			PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center, Vector2.Zero,  ColorLib.StellarFireGradientLooping(3f), 2.5f, 60, 2);
+			PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center, Vector2.Zero,  ColorLib.StellarFireGradientLooping(), 2.5f, 60, 2);
 		}
 
 		public override void OnHitPlayer(Player target, Player.HurtInfo info)

@@ -12,7 +12,7 @@ namespace DestroyerTest.Rarity
 {
 	public class StellarRarity : ModRarity
     {
-        public override Color RarityColor =>  ColorLib.StellarFireGradientLooping(3f);
+        public override Color RarityColor =>  ColorLib.StellarFireGradientLooping();
 
         public override int GetPrefixedRarity(int offset, float valueMult)
         {

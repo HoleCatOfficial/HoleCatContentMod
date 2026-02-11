@@ -19,7 +19,7 @@ namespace DestroyerTest.Content.Consumables
 			Item.ResearchUnlockCount = 20;
 
 			ItemID.Sets.DrinkParticleColors[Type] = [
-				 ColorLib.StellarFireGradientLooping(3f)
+				 ColorLib.StellarFireGradientLooping()
 			];
 		}
 

@@ -19,7 +19,7 @@ namespace DestroyerTest.Content.Consumables
 
             ItemID.Sets.DrinkParticleColors[Type] = [
                 Color.Gold,
-                 ColorLib.StellarFireGradientLooping(3f)
+                 ColorLib.StellarFireGradientLooping()
 			];
 		}
 		public override void SetDefaults() 

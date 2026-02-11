@@ -97,11 +97,29 @@ namespace DestroyerTest.Content.Entities
             }
             return 10;
         }
+
+        public static int StellarVolleyDamage()
+        {
+            if (DTUtils.ClassicMode())
+            {
+                return 10;
+            }
+            if (Main.expertMode && !Main.masterMode)
+            {
+                return 16;
+            }
+            if (Main.masterMode)
+            {
+                return 8;
+            }
+            return 16;
+        }
     }
 
     public class ConstitutionSounds
     {
         public static SoundStyle Shoot1 = new SoundStyle("DestroyerTest/Assets/Audio/ConstitutionBoss/ConstitutionBossShootStars3");
+        public static SoundStyle StellarVolley = new SoundStyle("DestroyerTest/Assets/Audio/ConstitutionBoss/StellarVolley");
         public static SoundStyle WallWarn = new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/CursedFlamesWarn");
         public static SoundStyle Teleport = new SoundStyle("DestroyerTest/Assets/Audio/Constitution/ConSwing", 6);
         public static SoundStyle Dash = DTAssetLib.SwordSounds.MagicSwing;
@@ -173,18 +191,16 @@ namespace DestroyerTest.Content.Entities
             
         }
 
-        public Line topSide = new Line(ArenaRect.TopLeft(), ArenaRect.TopRight());
-        public Line bottomSide = new Line(ArenaRect.BottomLeft(), ArenaRect.BottomRight());
-        public Line leftSide = new Line(ArenaRect.TopLeft(), ArenaRect.BottomLeft());
-        public Line rightSide = new Line(ArenaRect.TopRight(), ArenaRect.BottomRight());
+        public SimpleLine topSide = new SimpleLine(ArenaRect.TopLeft(), ArenaRect.TopRight());
+        public SimpleLine bottomSide = new SimpleLine(ArenaRect.BottomLeft(), ArenaRect.BottomRight());
+        public SimpleLine leftSide = new SimpleLine(ArenaRect.TopLeft(), ArenaRect.BottomLeft());
+        public SimpleLine rightSide = new SimpleLine(ArenaRect.TopRight(), ArenaRect.BottomRight());
         public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            
-
-            DTUtils.ScrollingTextureSpine(topSide, DTAssetLib.Streak(1),  ColorLib.StellarFireGradientLooping(3f), spriteBatch, BlendState.Additive);
-            DTUtils.ScrollingTextureSpine(bottomSide, DTAssetLib.Streak(1),  ColorLib.StellarFireGradientLooping(3f), spriteBatch, BlendState.Additive);
-            DTUtils.ScrollingTextureSpine(leftSide, DTAssetLib.Streak(1),  ColorLib.StellarFireGradientLooping(3f), spriteBatch, BlendState.Additive);
-            DTUtils.ScrollingTextureSpine(rightSide, DTAssetLib.Streak(1),  ColorLib.StellarFireGradientLooping(3f), spriteBatch, BlendState.Additive);
+            DTUtils.ScrollingTextureSpine(topSide, DTAssetLib.Streak(1),  ColorLib.StellarFireGradientLooping(), spriteBatch, BlendState.Additive, scrollspeed: 0.1f);
+            DTUtils.ScrollingTextureSpine(bottomSide, DTAssetLib.Streak(1),  ColorLib.StellarFireGradientLooping(), spriteBatch, BlendState.Additive, scrollspeed: 0.1f);
+            DTUtils.ScrollingTextureSpine(leftSide, DTAssetLib.Streak(1),  ColorLib.StellarFireGradientLooping(), spriteBatch, BlendState.Additive, scrollspeed: 0.1f);
+            DTUtils.ScrollingTextureSpine(rightSide, DTAssetLib.Streak(1),  ColorLib.StellarFireGradientLooping(), spriteBatch, BlendState.Additive, scrollspeed: 0.1f);
             Utils.DrawBorderString(spriteBatch, AITimer.ToString(), (NPC.Center - new Vector2(0, 40)) - Main.screenPosition, Color.Red, 1f);
         }
         public int AITimer = 0;
@@ -214,6 +230,8 @@ namespace DestroyerTest.Content.Entities
 
             if (AITimer < 300 && AITimer >= 0)
             {
+                Side = Main.rand.NextBool() ? 1 : -1;
+                VolleyTele = false;
                 IdleAI();
             }
             if (AITimer < 1200 && AITimer >= 300)
@@ -229,10 +247,19 @@ namespace DestroyerTest.Content.Entities
             }
             if (AITimer < 3200 && AITimer >= 1740)
             {
-                WallShootCount = 0;
                 DashAI();
             }
-            if (AITimer > 3500)
+            if (AITimer > 3500 && AITimer >= 3200)
+            {
+                IdleAI();
+                WallShootCount = 0;
+                DashCount = 0;
+            }
+            if (AITimer > 4200 && AITimer >= 3500)
+            {
+                VolleyAI();
+            }
+            if (AITimer >= 4800)
             {
                 AITimer = 0;
             }
@@ -245,6 +272,7 @@ namespace DestroyerTest.Content.Entities
         
 
         public static Rectangle ArenaRect;
+        public List<Projectile>Corners = new List<Projectile>();
         public void Arena()
         {
             Player player = Main.player[NPC.target];
@@ -287,12 +315,28 @@ namespace DestroyerTest.Content.Entities
                     player.velocity.Y = 0;
             }
 
-            topSide    = new Line(ArenaRect.TopLeft(), ArenaRect.TopRight());
-            bottomSide = new Line(ArenaRect.BottomLeft(), ArenaRect.BottomRight());
-            leftSide   = new Line(ArenaRect.TopLeft(), ArenaRect.BottomLeft());
-            rightSide  = new Line(ArenaRect.TopRight(), ArenaRect.BottomRight());
+            topSide    = new SimpleLine(ArenaRect.TopLeft(), ArenaRect.TopRight());
+            bottomSide = new SimpleLine(ArenaRect.BottomLeft(), ArenaRect.BottomRight());
+            leftSide   = new SimpleLine(ArenaRect.TopLeft(), ArenaRect.BottomLeft());
+            rightSide  = new SimpleLine(ArenaRect.TopRight(), ArenaRect.BottomRight());
 
-            //Opus.RectDustRandom(DustID.TintableDustLighted, ArenaRect,  ColorLib.StellarFireGradientLooping(3f), 1f, 20);
+            
+            int cornerID = ModContent.ProjectileType<ConstitutionArenaCorner>();
+
+            if (Corners.Count < 4)
+            {
+                Projectile corner = Projectile.NewProjectileDirect(NPC.GetSource_Misc("CornerSpawn"), NPC.Center, Vector2.Zero, cornerID, 0, 0);
+                Corners.Add(corner);
+            }
+            else
+            {
+                Corners[0].Center = ArenaRect.TopLeft();
+                Corners[1].Center = ArenaRect.TopRight();
+                Corners[2].Center = ArenaRect.BottomLeft();
+                Corners[3].Center = ArenaRect.BottomRight();
+            }
+
+            //Opus.RectDustRandom(DustID.TintableDustLighted, ArenaRect,  ColorLib.StellarFireGradientLooping(), 1f, 20);
             
             if (Main.rand.NextBool(3))
             {
@@ -311,7 +355,7 @@ namespace DestroyerTest.Content.Entities
                 ArenaRect.Height--;
             }
 
-            NPC.Opacity -= 0.1f;
+            NPC.Opacity -= 0.01f;
 
             if (NPC.Opacity == 0.1f)
             {
@@ -333,7 +377,7 @@ namespace DestroyerTest.Content.Entities
                     PRTLoader.NewParticle(StellarParticleIndex.ConstitutionParticle, spawnPos, velocity, default, 1f);
                     PRTLoader.NewParticle(StellarParticleIndex.ConstitutionParticle, spawnPos, Vector2.Zero, default, 1f);
                 }
-                PRTLoader.NewParticle(StellarParticleIndex.FlatStar, NPC.Center, Vector2.Zero,  ColorLib.StellarFireGradientLooping(3f), 0.15f);
+                PRTLoader.NewParticle(StellarParticleIndex.FlatStar, NPC.Center, Vector2.Zero,  ColorLib.StellarFireGradientLooping(), 0.15f);
             }
             if (NPC.Opacity <= 0)
             {
@@ -341,6 +385,29 @@ namespace DestroyerTest.Content.Entities
             }
 
 
+        }
+
+        public  void TeleportFX()
+        {
+            SoundEngine.PlaySound(ConstitutionSounds.Teleport, NPC.Center);
+            int points = 10; // 5 outer + 5 inner
+            float outerRadius = 16f;
+            float innerRadius = outerRadius * 0.4f;
+            float rotationOffset = NPC.rotation;
+
+            for (int i = 0; i < points; i++)
+            {
+                float angle = MathHelper.TwoPi * i / points + rotationOffset;
+                float radius = (i % 2 == 0) ? outerRadius : innerRadius;
+
+                Vector2 direction = new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
+                Vector2 spawnPos = NPC.Center + direction * radius;
+                Vector2 velocity = direction * 3f;
+
+                PRTLoader.NewParticle(StellarParticleIndex.ConstitutionParticle, spawnPos, velocity, default, 1f);
+                PRTLoader.NewParticle(StellarParticleIndex.ConstitutionParticle, spawnPos, Vector2.Zero, default, 1f);
+            }
+            PRTLoader.NewParticle(StellarParticleIndex.FlatStar, NPC.Center, Vector2.Zero,  ColorLib.StellarFireGradientLooping(), 0.15f);
         }
 
         public void IdleAI()
@@ -374,21 +441,22 @@ namespace DestroyerTest.Content.Entities
         {
             if (Half)
             {
-                return 8;
+                return 7;
             }
             if (Double)
             {
-                return 16;
+                return 14;
             }
             else
             {
-                return 12;
+                return 10;
             }
         }
 
         public int WallShootCount = 0;
         public void WallShootAI()
         {
+            Player player = Main.player[NPC.target];
             Vector2[] tops = topSide.GetPointsAlongLine(WallShotCount(Main.masterMode, DTUtils.ClassicMode()));
             Vector2[] rights = rightSide.GetPointsAlongLine(WallShotCount(Main.masterMode, DTUtils.ClassicMode()));
             Vector2[] bottoms = bottomSide.GetPointsAlongLine(WallShotCount(Main.masterMode, DTUtils.ClassicMode()));
@@ -398,25 +466,7 @@ namespace DestroyerTest.Content.Entities
             NPC.Center = ArenaCTR;
             if (WallShootCount == 0)
             {
-                SoundEngine.PlaySound(ConstitutionSounds.Teleport, NPC.Center);
-                int points = 10; // 5 outer + 5 inner
-                float outerRadius = 16f;
-                float innerRadius = outerRadius * 0.4f;
-                float rotationOffset = NPC.rotation;
-
-                for (int i = 0; i < points; i++)
-                {
-                    float angle = MathHelper.TwoPi * i / points + rotationOffset;
-                    float radius = (i % 2 == 0) ? outerRadius : innerRadius;
-
-                    Vector2 direction = new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
-                    Vector2 spawnPos = NPC.Center + direction * radius;
-                    Vector2 velocity = direction * 3f;
-
-                    PRTLoader.NewParticle(StellarParticleIndex.ConstitutionParticle, spawnPos, velocity, default, 1f);
-                    PRTLoader.NewParticle(StellarParticleIndex.ConstitutionParticle, spawnPos, Vector2.Zero, default, 1f);
-                }
-                PRTLoader.NewParticle(StellarParticleIndex.FlatStar, NPC.Center, Vector2.Zero,  ColorLib.StellarFireGradientLooping(3f), 0.15f);
+                TeleportFX();
             }
             WallShootCount++;
 
@@ -431,6 +481,12 @@ namespace DestroyerTest.Content.Entities
                     {
                         PRTLoader.NewParticle(StellarParticleIndex.ConstitutionParticle, shotpos, new Vector2(0, 40), default, 1.6f);
                     }
+                }
+                if (Main.expertMode)
+                {
+                    Vector2 v = player.Center - NPC.Center;
+                    v.Normalize();
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, v * 4, ModContent.ProjectileType<StellarBomb>(), 100, 0);
                 }
             }
             if (WallShootCount == 120)
@@ -454,6 +510,12 @@ namespace DestroyerTest.Content.Entities
                         PRTLoader.NewParticle(StellarParticleIndex.ConstitutionParticle, shotpos, new Vector2(-40, 0), default, 1.6f);
                     }
                 }
+                if (Main.expertMode)
+                {
+                    Vector2 v = player.Center - NPC.Center;
+                    v.Normalize();
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, v * 4, ModContent.ProjectileType<StellarBomb>(), 100, 0);
+                }
             }
             if (WallShootCount == 240)
             {
@@ -476,6 +538,12 @@ namespace DestroyerTest.Content.Entities
                         PRTLoader.NewParticle(StellarParticleIndex.ConstitutionParticle, shotpos, new Vector2(0, -40), default, 1.6f);
                     }
                 }
+                if (Main.expertMode)
+                {
+                    Vector2 v = player.Center - NPC.Center;
+                    v.Normalize();
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, v * 4, ModContent.ProjectileType<StellarBomb>(), 100, 0);
+                }
             }
             if (WallShootCount == 360)
             {
@@ -497,6 +565,12 @@ namespace DestroyerTest.Content.Entities
                     {
                         PRTLoader.NewParticle(StellarParticleIndex.ConstitutionParticle, shotpos, new Vector2(40, 0), default, 1.6f);
                     }
+                }
+                if (Main.expertMode)
+                {
+                    Vector2 v = player.Center - NPC.Center;
+                    v.Normalize();
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, v * 4, ModContent.ProjectileType<StellarBomb>(), 100, 0);
                 }
             }
             if (WallShootCount == 480)
@@ -530,8 +604,10 @@ namespace DestroyerTest.Content.Entities
 
             if (DashCount >= 5)
             {
-                AITimer = 0;
-                DashCount = 0;
+                charging = false;
+                NPC.velocity = Vector2.Zero;
+                NPC.aiStyle = NPCAIStyleID.CursedSkull;
+                AITimer = 3200;
                 return;
             }
 
@@ -597,6 +673,59 @@ namespace DestroyerTest.Content.Entities
                     NPC.velocity *= 0.4f;
                 }
             }            
+        }
+
+        public bool VolleyTele = false;
+        public int Side = Main.rand.NextBool() ? 1 : -1;
+        public void VolleyAI()
+        {
+            NPC.aiStyle = -1;
+
+            Vector2 ArenaLeft = new Vector2(ArenaCTR.X + (ArenaRect.Width / 2), ArenaCTR.Y);
+            Vector2 ArenaRight = new Vector2(ArenaCTR.X - (ArenaRect.Width / 2), ArenaCTR.Y);
+            Vector2 Position = ArenaRight;
+
+            if (Side == -1)
+            {
+                Position = ArenaRight;
+            }
+            if (Side == 1)
+            {
+                Position = ArenaLeft;
+            }
+
+            if (NPC.Center != Position && !VolleyTele)
+            {
+                NPC.Center = Position;
+                NPC.velocity = Vector2.Zero;
+                TeleportFX();
+                VolleyTele = true;
+            }
+
+            if (VolleyTele)
+            {
+                if (AITimer % 120 == 0)
+                {
+                    SoundEngine.PlaySound(ConstitutionSounds.StellarVolley, NPC.Center);
+                    if (Side == 1)
+                    {
+                        for (int u = 0; u < 10; u++)
+                        {
+                            Vector2 vel = new Vector2(Main.rand.NextFloat(-6, -0.25f), -15);
+                            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, vel, ModContent.ProjectileType<StellarVolley>(), ConstitutionDamageValues.StellarVolleyDamage(), 8);
+                        }
+                    }
+                    if (Side == -1)
+                    {
+                        for (int u = 0; u < 10; u++)
+                        {
+                            Vector2 vel = new Vector2(Main.rand.NextFloat(0.25f, 6), -15);
+                            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, vel, ModContent.ProjectileType<StellarVolley>(), ConstitutionDamageValues.StellarVolleyDamage(), 8);
+                        }
+                    }
+                }
+            }
+
         }
     }
 
