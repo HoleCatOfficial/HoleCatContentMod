@@ -85,7 +85,8 @@ namespace DestroyerTest.Content.RiftBiome
 				player.AddBuff(BuffID.Suffocation, 360);
 			}
 			Rectangle ScreenRect = new Rectangle((int)Main.screenPosition.X, (int)Main.screenPosition.Y, Main.screenWidth, Main.screenHeight);
-			if (!Main.dedServ)
+			DTOptimizationsConfig optcfg = ModContent.GetInstance<DTOptimizationsConfig>();
+			if (!Main.dedServ && !optcfg.DisableExcessDusts)
 			{
 				for (int t = 0; t < 5; t++)
 				{

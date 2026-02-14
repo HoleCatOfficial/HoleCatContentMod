@@ -28,7 +28,7 @@ namespace DestroyerTest.Content.Projectiles.Fargos
             Projectile.penetrate = -1;
             Projectile.light = 0.5f;
             Projectile.ignoreWater = true;
-            Projectile.timeLeft = 9000;
+            Projectile.timeLeft = 60 * 32;
             Projectile.DamageType = ModContent.GetInstance<ScepterClass>();
             Projectile.netImportant = true;
             Projectile.netUpdate = true;
@@ -40,7 +40,7 @@ namespace DestroyerTest.Content.Projectiles.Fargos
             SpriteBatch spriteBatch = Main.spriteBatch;
 			Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
 
-            Main.EntitySpriteDraw(projectileTexture, Projectile.Center, null, Color.White, Projectile.rotation, projectileTexture.Size() / 2, Projectile.scale, SpriteEffects.None, 0f);
+            Main.EntitySpriteDraw(projectileTexture, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, projectileTexture.Size() / 2, Projectile.scale, SpriteEffects.None, 0f);
             return false;
         }
 
@@ -67,18 +67,23 @@ namespace DestroyerTest.Content.Projectiles.Fargos
 
             for (int i = 0; i < Positions.Length; i++)
             {
-                Dust.NewDustPerfect(Positions[i], DustID.AncientLight, Vector2.Zero, 0, default, 1f);
-                Dust.NewDustPerfect(Positions[i], DustID.AncientLight, Vector2.Zero, 0, (Color)default * 0.25f, 2f);
+                Dust.NewDustPerfect(Positions[i], ModContent.DustType<ColorableNeonDust>(), Vector2.Zero, 0, Main.DiscoColor, 1f);
+                Dust.NewDustPerfect(Positions[i], ModContent.DustType<ColorableNeonDust>(), Vector2.Zero, 0, Main.DiscoColor * 0.25f, 2f);
             }
 
-            if (AITimer > 180)
+            if (AITimer < 120)
             {
-                Projectile.velocity *= 0.99f;
+                Projectile.timeLeft = 60 * 32;
+            }
+            if (AITimer >= 120)
+            {
+                Projectile.velocity *= 0.91f;
                 Projectile.rotation += 0.01f * Projectile.direction;
 
                 if (AITimer % 20 == 0)
                 {
-                    Opus.RadialProjectileRandomDir(ModContent.ProjectileType<ContinuumStar>(), 1, Projectile.Center, 100, 20, 10, friendly: true);
+                    SoundEngine.PlaySound(DTAssetLib.SwordSounds.SwiftSwing, Projectile.Center);
+                    Opus.RadialProjectileRandomDir(ModContent.ProjectileType<GaiaOrb>(), 1, Projectile.Center, 100, 20, 10, friendly: true);
                 }
             }
             EnchantmentVisuals();
@@ -116,8 +121,10 @@ namespace DestroyerTest.Content.Projectiles.Fargos
                     t = true;
                 }
             }
-            return base.IsSceneEffectActive(player);
-        } 
+            return t;
+        }
+
+        public override SceneEffectPriority Priority => SceneEffectPriority.BiomeHigh;
         public override int Music => MusicLoader.GetMusicSlot("DestroyerTest/Assets/Music/GaiaAmbience");
     }
 }

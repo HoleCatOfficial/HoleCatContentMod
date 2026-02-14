@@ -1,3 +1,4 @@
+using DestroyerTest.Common;
 using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
@@ -49,7 +50,9 @@ namespace DestroyerTest.Content.RiftBiome
 			}
 			
 			SetBiomeProperties(player);
-			if (!Main.dedServ)
+			Rectangle ScreenRect = new Rectangle((int)Main.screenPosition.X, (int)Main.screenPosition.Y, Main.screenWidth, Main.screenHeight);
+			DTOptimizationsConfig optcfg = ModContent.GetInstance<DTOptimizationsConfig>();
+			if (!Main.dedServ && !optcfg.DisableExcessDusts)
 			{
 				for (int t = 0; t < 5; t++)
 				{

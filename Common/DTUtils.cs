@@ -1522,6 +1522,7 @@ namespace DestroyerTest.Common
         public static Asset<Texture2D> HaepienCircleTop = ModContent.Request<Texture2D>($"{ExtrasPath}/HaepienSigilTop", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> FlatStar = ModContent.Request<Texture2D>($"{ParticlePath}/FlatStar", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> ShieldRing = ModContent.Request<Texture2D>($"{ParticlePath}/ShieldRing", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> QuixotismPowerAura = ModContent.Request<Texture2D>($"{ExtrasPath}/QuixotismPowerAura", AssetRequestMode.AsyncLoad);
         //
         // Sounds
         //
@@ -1564,8 +1565,10 @@ namespace DestroyerTest.Common
             public static SoundStyle HellSword = new SoundStyle($"{Path}/HellSword", 3);
             public static SoundStyle MagicSwing = new SoundStyle($"{Path}/MagicSwing", 3);
             public static SoundStyle QuickSwing = new SoundStyle($"{Path}/QuickSwing", 4);
-            public static SoundStyle SwiftSwing = new SoundStyle($"{Path}/SwiftSwing", 1);
+            public static SoundStyle SwiftSwing = new SoundStyle($"{Path}/SwiftSwing1");
+            public static SoundStyle Slam = new SoundStyle($"{Path}/Slam", 2);
             public static SoundStyle TenebrisSwing = new SoundStyle($"{Path}/TenebrisSwing", 4);
+            public static SoundStyle StandardSwing = new SoundStyle($"{Path}/StandardSwing");
         }
 
         public static SoundStyle IdriGreatswordSlice(bool Gore)
@@ -1597,6 +1600,8 @@ namespace DestroyerTest.Common
             public static SoundStyle FlatTick = new SoundStyle($"{Path}/FlatTick");
             public static SoundStyle MetalTinkLight = new SoundStyle($"{Path}/MetalTinkLight", 3);
             public static SoundStyle WoodyTick = new SoundStyle($"{Path}/WoodyTick", 6);
+
+            public static SoundStyle Quixotism = new SoundStyle($"{Path}/QuixotismCharge");
         }
 
         public struct StellarBow

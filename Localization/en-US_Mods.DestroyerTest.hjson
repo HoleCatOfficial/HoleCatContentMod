@@ -4082,6 +4082,25 @@ Items: {
 			'''
 		DisplayName: Esoteric Delivery Box
 	}
+
+	GaiaScepter: {
+		Tooltip:
+			'''
+			Capable of inflicting most debuffs.
+			Throwing the scepter creates an otherworldly aura, and shoots homing balls of light in all directions.
+
+			'''
+		DisplayName: Gaia Scepter
+	}
+
+	Quixotism: {
+		Tooltip:
+			'''
+			After 8 consecutive hits, the blade gains a damaging aura, inflicting guaranteed extra damage for the next two hits.
+			'I have a right to believe.'
+			'''
+		DisplayName: Quixotism
+	}
 }
 
 Projectiles: {
@@ -4628,6 +4647,13 @@ Projectiles: {
 	MiniCometFriendly.DisplayName: Mini Comet Friendly
 	StellarFireSlashHostile.DisplayName: Stellar Fire Slash Hostile
 	ConstitutionArenaCorner.DisplayName: Constitution Arena Corner
+	GaiaScepterThrown.DisplayName: Gaia Scepter Thrown
+	GaiaOrb.DisplayName: Gaia Orb
+	TenebrisShot.DisplayName: Tenebris Shot
+	RiftShot2.DisplayName: Rift Shot2
+	NightShot.DisplayName: Night Shot
+	LightShot2.DisplayName: Light Shot2
+	QuixotismSwing.DisplayName: Quixotism Swing
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.

@@ -34,8 +34,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter.ElementalShots
 			TrailColor = ColorLib.StellarFireGradient(T);
 			DustColor = ColorLib.StellarFireGradient(T);
             */
-            TrailColor = ColorLib.StellarFireGradientLooping();
-            DustColor = ColorLib.StellarFireGradientLooping();
+            TrailColor = MainColor;
+            DustColor = MainColor;
 			TravelDust = ModContent.DustType<ColorableNeonDust>();
 			KillDust = ModContent.DustType<ColorableNeonDust>();
 			Projectile.Resize(16, 16);
@@ -47,16 +47,42 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter.ElementalShots
             DetectionRad = 1200;
         }
 
+        public int Lifetime = 120;
+		public int Time = 0;
+
+        public Color MainColor = Color.White;
+
+		public bool StartKill = false;
+		public void UpdateLerpTime()
+		{
+			Time++;
+
+			if (Time > Lifetime)
+			{
+				StartKill = true;
+			}
+		}
+		public float LifetimeCompletion
+		{
+			get
+			{
+				if (Lifetime <= 0)
+				{
+					return 0f;
+				}
+
+				return (float)Time / (float)Lifetime;
+			}
+		}
+
+
         public override void PostAI()
         {
-            /*
-            float T = (inittime - Projectile.timeLeft) / (float)inittime * 4f;
-            TrailColor = ColorLib.StellarFireGradient(T);
-            DustColor = ColorLib.StellarFireGradient(T);
-            */
+            UpdateLerpTime();
+			MainColor = ColorLib.StellarFireGradient(LifetimeCompletion * 8f);
 
-            TrailColor = ColorLib.StellarFireGradientLooping();
-            DustColor = ColorLib.StellarFireGradientLooping();
+            TrailColor = MainColor;
+            DustColor = MainColor;
         }
     }
 }

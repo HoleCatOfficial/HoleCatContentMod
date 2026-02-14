@@ -13,6 +13,7 @@ using Terraria.ModLoader;
 using Terraria.DataStructures;
 using System.Collections.Generic;
 using DestroyerTest.Content.Projectiles;
+using DestroyerTest.Common;
 
 namespace DestroyerTest.Content.RiftBiome
 {
@@ -74,7 +75,9 @@ namespace DestroyerTest.Content.RiftBiome
 			}
 
 			SetBiomeProperties(player);
-			if (!Main.dedServ)
+			Rectangle ScreenRect = new Rectangle((int)Main.screenPosition.X, (int)Main.screenPosition.Y, Main.screenWidth, Main.screenHeight);
+			DTOptimizationsConfig optcfg = ModContent.GetInstance<DTOptimizationsConfig>();
+			if (!Main.dedServ && !optcfg.DisableExcessDusts)
 			{
 				for (int t = 0; t < 5; t++)
 				{
