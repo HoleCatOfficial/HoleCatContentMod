@@ -35,7 +35,6 @@ namespace DestroyerTest.Content.Equips
             {
                 Blossom.Active = true;
             }
-            
         }
 
 
@@ -44,21 +43,32 @@ namespace DestroyerTest.Content.Equips
     public class DBPlayer : ModPlayer
     {
         public bool Active = false;
+        public int Cooldown = 0;
         public override void ResetEffects()
         {
             Active = false;
         }
 
+        public override void PostUpdateMiscEffects()
+        {
+            if (Cooldown > 0)
+            {
+                Cooldown--;
+            }
+            if (Cooldown == 1)
+            {
+                SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/Corpse/TeleportSetPosition") with { PitchVariance = 0.5f }, Player.Center);
+            }
+        }
+
         public override void ProcessTriggers(TriggersSet triggersSet)
 		{
-			foreach (Projectile projectile in Main.projectile)
-			{
-				if (DestroyerTestMod.DeadlyBlossomKeybind.JustPressed && Player.ownedProjectileCounts[ModContent.ProjectileType<MiniRose>()] < 1 && Active)
-				{
-					SoundEngine.PlaySound(SoundID.Item79, Player.Center);
-					Projectile.NewProjectile(Entity.GetSource_Accessory(Player.armor.FirstOrDefault(item => item.type == ModContent.ItemType<DeadlyBlossom>())), Player.Center, Vector2.Zero, ModContent.ProjectileType<MiniRose>(), 0, 0, Main.LocalPlayer.whoAmI);	
-				}
-			}
+            if (DestroyerTestMod.DeadlyBlossomKeybind.JustPressed && Player.ownedProjectileCounts[ModContent.ProjectileType<MiniRose>()] < 1 && Active && Cooldown <= 0)
+            {
+                SoundEngine.PlaySound(SoundID.Item79, Player.Center);
+                Projectile.NewProjectile(Player.GetSource_Accessory(Player.armor.FirstOrDefault(item => item.type == ModContent.ItemType<DeadlyBlossom>())), Player.Center, Vector2.Zero, ModContent.ProjectileType<MiniRose>(), 0, 0, Player.whoAmI);	
+                Cooldown = 1800;
+            }
 		}
     }
 }

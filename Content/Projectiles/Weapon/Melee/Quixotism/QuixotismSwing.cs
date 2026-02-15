@@ -25,11 +25,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee.Quixotism
 
 	public class QuixotismSwing : ModProjectile
 	{
-        public SoundStyle Swing = new SoundStyle("DestroyerTest/Assets/Audio/Constitution/ConSwing", 6);
         private const float SWINGRANGE = 1.67f * (float)Math.PI; 
 		private const float FIRSTHALFSWING = 0.4f;
 		private const float WINDUP = 0.0000001f;
-		private const float UNWIND = 0.7f;
+		private const float UNWIND = 0.4f;
 
         private enum AttackType
         {
@@ -171,25 +170,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee.Quixotism
 		public override bool PreDraw(ref Color lightColor) 
         {
             Player player = Main.player[Projectile.owner];
-			// Calculate origin of sword (hilt) based on orientation and offset sword rotation (as sword is angled in its sprite)
+			
 			Vector2 origin;
 			float rotationOffset;
 			SpriteEffects effects;
-
-            /*
-			if (Projectile.spriteDirection > 0) {
-				origin = new Vector2(0, Projectile.height);
-				rotationOffset = MathHelper.ToRadians(45f);
-				effects = SpriteEffects.None;
-			}
-			else {
-				origin = new Vector2(Projectile.width, Projectile.height);
-				rotationOffset = MathHelper.ToRadians(135f);
-				effects = SpriteEffects.FlipHorizontally;
-			}
-            */
-
-            
 
 			Texture2D texture = TextureAssets.Projectile[Type].Value;
             Texture2D powertexture = DTAssetLib.QuixotismPowerAura.Value;
@@ -227,7 +211,6 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee.Quixotism
                 }
 
                 Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-                //Main.EntitySpriteDraw(powertexture, powerDrawPos - Main.screenPosition, null, lightColor * Projectile.Opacity, Projectile.rotation + rotationOffset, origin, Projectile.scale, effects, 0);
                 Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, null, (new Color(255, 219, 6) * Q.PowerOpacity) * Projectile.Opacity, Projectile.rotation + rotationOffset, origin, Projectile.scale * 1.5f, effects, 0);
                 Opus.ReturnToDefaultDrawing(Main.spriteBatch);
                 
@@ -386,14 +369,6 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee.Quixotism
             {
 
                 Progress = MathHelper.SmoothStep(0, SWINGRANGE, (1f - UNWIND) * Timer / execTime);
-                /*
-                if (!Sound1)
-                {
-                    SoundEngine.PlaySound(SoundID.Item71, player.Center);
-                    Sound1 = true;
-                }
-                */
-
                
 				Vector2 Velocity = Main.MouseWorld - Projectile.Center;
 
@@ -412,14 +387,6 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee.Quixotism
                 {
                     Progress = MathHelper.SmoothStep(SWINGRANGE, 2.0f, (1f - UNWIND) * Timer / execTime);
                 }
-
-                /*
-                if (!Sound2)
-                {
-                    SoundEngine.PlaySound(SoundID.Item71, player.Center);
-                    Sound2 = true;
-                }
-                */
 
                 if (Timer >= execTime)
                 {

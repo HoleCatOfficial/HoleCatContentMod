@@ -10,7 +10,7 @@ namespace DestroyerTest.Content.Particles
 {
     public class StarParticle : BasePRT
     {
-        public int MaxLifetime => 60;
+        public int MaxLifetime => 100;
         public override void SetProperty()
         {
             

@@ -4101,6 +4101,11 @@ Items: {
 			'''
 		DisplayName: Quixotism
 	}
+
+	HypnicJerk: {
+		DisplayName: Hypnic Jerk
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
@@ -4654,6 +4659,8 @@ Projectiles: {
 	NightShot.DisplayName: Night Shot
 	LightShot2.DisplayName: Light Shot2
 	QuixotismSwing.DisplayName: Quixotism Swing
+	HypnicJerkExplosion.DisplayName: Hypnic Jerk Explosion
+	HypnicJerkThrown.DisplayName: Hypnic Jerk Thrown
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.
@@ -5067,6 +5074,11 @@ Buffs: {
 	LeeFractalBuff: {
 		Description: His favourites
 		DisplayName: Lee's Fractal
+	}
+
+	MiniRoseBoost: {
+		DisplayName: Mini Rose Boost
+		Description: Mods.DestroyerTest.Buffs.MiniRoseBoost.Description
 	}
 }
 

@@ -7,6 +7,10 @@ using InnoVault.PRT;
 using DestroyerTest.Content.Particles.TitaniumShard;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Common;
+using OpusLib;
+using ReLogic.Utilities;
+using Terraria.Audio;
+using DestroyerTest.Content.Buffs;
 
 namespace DestroyerTest.Content.Projectiles.player.Accessory
 {
@@ -23,31 +27,52 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
             Projectile.tileCollide = true;
             Projectile.ignoreWater = false;
             Projectile.friendly = true;
-            Projectile.timeLeft = 600;
-            Radius = 120;
+            Projectile.timeLeft = 1200;
+            MaxRadius = 250;
             if (Main.expertMode)
             {
-                Radius = 180;
+                MaxRadius = 300;
             }
             if (Main.masterMode)
             {
-                Radius = 240;
+                MaxRadius = 350;
             }
         }
 
-        public int Radius;
+        public int MaxRadius;
+        public float Radius = 0f;
+
+        public SlotId LoopSlot;
+        public SoundStyle Loop = new SoundStyle("DestroyerTest/Assets/Audio/AuraLoop/SpiritAura", 4) 
+        { 
+            MaxInstances = 0,
+            IsLooped = true,
+            PauseBehavior = PauseBehavior.PauseWithGame
+        };
+
+        public float PitchVal = -0.7f;
 
         public override void AI()
         {
-
-            // Create a dust perimeter (circle) around the projectile
             int dustAmount = 6;
-            
 
-            for (int i = 0; i < dustAmount; i++)
+            if (PitchVal < 0)
             {
-                Vector2 dustPos = Projectile.Center + Main.rand.NextVector2CircularEdge(Radius, Radius);
-                PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], dustPos, Vector2.Zero, ColorLib.CursedFlames, 1.0f, 60, 2);
+                PitchVal += 0.01f;
+            }
+
+            if (Radius < MaxRadius)
+            {
+                Radius += 0.5f;
+            }
+            
+            Vector2[] p = Opus.GetEquidistantOrbitVectors(dustAmount, Projectile.Center, 0.6f, Radius);
+
+            foreach(Vector2 dustPos in p)
+            {
+                PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), dustPos, Vector2.Zero, ColorLib.Soul3 * 0.85f, 2.0f, 75, ai2: 2);
+                PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], dustPos, Vector2.Zero, ColorLib.Soul2 * 0.85f, 1.0f, 75, ai2: 2);
+                PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], dustPos, Vector2.Zero, ColorLib.Soul, 0.75f, 60, ai2: 2);
             }
 
             float radiusSq = Radius * Radius;
@@ -55,59 +80,25 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
             {
                 if (player.active && !player.dead && Vector2.DistanceSquared(player.Center, Projectile.Center) <= radiusSq)
                 {
-                    MiniRoseLifeRegenPlayer modPlayer = player.GetModPlayer<MiniRoseLifeRegenPlayer>();
-                    modPlayer.Active = true;
+                    player.AddBuff(ModContent.BuffType<MiniRoseBoost>(), 60);
                 }
             }
 
-            // Gravity
-            if (Projectile.velocity.Y < 20f)
-                Projectile.velocity.Y += 0.4f;
+            Projectile.Center += new Vector2(0, Opus.Sine(-1f, 1f, 0.01f));
 
-            // Stay on ground if colliding with tiles below
-            if (Projectile.velocity.Y > 0f)
-            {
-                int tileX = (int)((Projectile.position.X + Projectile.width / 2) / 16f);
-                int tileY = (int)((Projectile.position.Y + Projectile.height) / 16f);
-
-                Tile tile = Main.tile[tileX, tileY];
-                if (tile != null && tile.HasTile)
-                {
-                    bool isSolid = WorldGen.SolidTile(tile);
-                    bool isPlatform = TileID.Sets.Platforms[tile.TileType] && !tile.IsHalfBlock && tile.Slope == 0;
-
-                    if (isSolid || isPlatform)
-                    {
-                        Projectile.velocity.Y = 0f;
-                        Projectile.position.Y = tileY * 16 - Projectile.height;
-                    }
-                }
+            if (!SoundEngine.TryGetActiveSound(LoopSlot, out var activeSound)) {
+                var tracker = new ProjectileAudioTracker(Projectile);
+                LoopSlot = SoundEngine.PlaySound(Loop, Projectile.Center, soundInstance => {
+                    soundInstance.Position = Projectile.Center;
+                    soundInstance.Pitch = PitchVal;
+                    return tracker.IsActiveAndInGame();
+                });
             }
-
-        }
-
-        public override bool OnTileCollide(Vector2 oldVelocity)
-        {
-            // Stop vertical movement on ground
-            if (oldVelocity.Y > 0f)
+            else
             {
-                Projectile.velocity.Y = 0f;
-            }
-            return false;
-        }
-    }
-
-    public class MiniRoseLifeRegenPlayer : ModPlayer
-    {
-        public bool Active = false;
-        public override void UpdateLifeRegen()
-        {
-            if (Active == true)
-            {
-                Player.lifeRegen += 20;
-                Player.manaRegen += 20;
+                activeSound.Position = Projectile.Center;
+                activeSound.Pitch = PitchVal;
             }
         }
-
     }
 }

@@ -17,6 +17,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 {
 	public class HekateStaffExplosion : ModProjectile
 	{
+        public override string Texture => DTUtils.NoTexture;
+
         public override void SetDefaults()
         {
             Projectile.width = 100;
