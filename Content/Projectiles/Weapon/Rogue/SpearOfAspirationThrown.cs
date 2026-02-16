@@ -39,9 +39,15 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 
             if (Main.rand.NextBool(3))
             {
+                /*
                 Dust dust = Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<ColorableNeonDust>(), Projectile.velocity * 0.2f, 100, Color.White, 1.2f);
                 dust.noGravity = true;
+                */
+
+                PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticle>(), Projectile.Center, Projectile.velocity * 0.5f, Color.White, 1f);
             }
+
+
         }
         public override bool PreDraw(ref Color lightColor)
         {
@@ -61,7 +67,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
         public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(SoundID.Item14, Projectile.Center);
+            DTUtils.GenericSparkleEffect(Projectile.Center);
         }
-
     }
 }

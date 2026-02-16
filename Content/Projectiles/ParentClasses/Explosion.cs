@@ -3,6 +3,9 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.Audio;
+using DestroyerTest.Content.Particles;
+using InnoVault.PRT;
+using OpusLib;
 
 namespace DestroyerTest.Content.Projectiles.ParentClasses
 {
@@ -46,14 +49,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         /// <returns> Whether or not the internal counter is less than or equal to <paramref name="Interval"/>. </returns>
         public virtual bool PreExplode()
         {
-            if (IntervalCounter < Interval)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return IntervalCounter >= Interval;
         }
 
         /// <summary>
@@ -63,10 +59,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         /// </summary>
         public virtual void OnExplode()
         {
-            if (!PreExplode())
-            {
-                return;
-            }
+
         }
 
         /// <summary>
@@ -75,10 +68,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         /// </summary>
         public virtual void PostExplosion()
         {
-            if (!PreExplode())
-            {
-                return;
-            }
+        
         }
 
         #endregion
@@ -103,6 +93,9 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
                 IntervalCounter++;
             }
 
+            if (!PreExplode())
+            return;
+
             if (IntervalCounter >= Interval)
             {
                 if (HasExploded == false)
@@ -119,20 +112,16 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             }
         }
 
-        private NPC.HitInfo DamageStats()
+        private NPC.HitInfo DamageStats(NPC npc)
         {
-            Vector2 dist = Vector2.Zero;
-            foreach (NPC npc in Main.npc)
-            {
-                dist = Projectile.Center - npc.Center;
-            }
+            int dir = npc.Center.X > Projectile.Center.X ? 1 : -1;
             return new NPC.HitInfo
             {
                 SourceDamage = Projectile.damage,
                 DamageType = Projectile.DamageType,
                 Knockback = Projectile.knockBack,
                 Crit = false,
-                HitDirection = dist.X > Projectile.Center.X ? 1 : -1,
+                HitDirection = dir
             };
         }
         private void DealDamage()
@@ -142,8 +131,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
                 float Range = AreaOfEffect * AreaOfEffect;
                 if (Projectile.Center.DistanceSQ(npc.Center) < Range)
                 {
-                    npc.StrikeNPC(DamageStats(), false, false);
-                    NetMessage.SendStrikeNPC(npc, DamageStats(), -1);
+                    npc.StrikeNPC(DamageStats(npc), false, false);
                 }
             }
         }

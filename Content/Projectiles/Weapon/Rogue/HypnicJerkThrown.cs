@@ -30,8 +30,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 		public override void SetDefaults() 
         {
 			// While the sprite is actually bigger than 15x15, we use 15x15 since it lets the projectile clip into tiles as it bounces. It looks better.
-			Projectile.width = DefaultWidthHeight;
-			Projectile.height = DefaultWidthHeight;
+			Projectile.width = 32;
+			Projectile.height = 32;
 			Projectile.friendly = true;
 			Projectile.penetrate = -1;
 
@@ -39,6 +39,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 			Projectile.timeLeft = 300;
 
 		}
+
+        public override bool PreDraw(ref Color lightColor)
+        {
+            Main.EntitySpriteDraw(DTUtils.CenteredDraw(Projectile, Color.White));
+            return false;
+        }
 
 		public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) 
         {
@@ -52,10 +58,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 
 		public override bool OnTileCollide(Vector2 oldVelocity) 
         {
+            
 			// This code makes the projectile very bouncy.
 			if (Projectile.velocity.X != oldVelocity.X && Math.Abs(oldVelocity.X) > 1f) 
             {
-                Opus.RadialDustRandomDir(ModContent.DustType<ColorableNeonDust>(), 6, Projectile.Center, 1, Color.White, 1f, 2.7f);
 				Projectile.velocity.X = oldVelocity.X * -0.4f;
 			}
 			if (Projectile.velocity.Y != oldVelocity.Y && Math.Abs(oldVelocity.Y) > 1f) 
@@ -93,12 +99,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 			Projectile.rotation += Projectile.velocity.X * 0.1f;
 		}
 
-		public override void PrepareBombToBlow() {
+		public override void PrepareBombToBlow() 
+        {
 			Projectile.tileCollide = false; // This is important or the explosion will be in the wrong place if the bomb explodes on slopes.
 			Projectile.alpha = 255; // Set to transparent. This projectile technically lives as transparent for about 3 frames
-
-			// Change the hitbox size, centered about the original projectile center. This makes the projectile damage enemies during the explosion.
-			Projectile.Resize(ExplosionWidthHeight, ExplosionWidthHeight);
 
 			Projectile.damage = 250; // Bomb: 100, Dynamite: 250
 			Projectile.knockBack = 10f; // Bomb: 8f, Dynamite: 10f
@@ -112,14 +116,13 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 
     public class HypnicJerkExplosion : Explosion
     {
-
         public override string Texture => DTUtils.NoTexture;
         public override float AreaOfEffect => 120;
-        public override SoundStyle Sound => DTAssetLib.Impacts.ExplosiveImpactSmall;
+
         public override void OnExplode()
         {
-            Opus.RingParticleOutward(PRTLoader.GetParticleID<StarParticle>(), 16, Projectile.Center, 22, 0f, Color.White, 0.75f, 3f, offset: Projectile.rotation);
-
+            Opus.RingParticleOutward(PRTLoader.GetParticleID<StarParticle>(), 16, Projectile.Center, 22, 0f, Color.White, 1.75f, 3f, offset: Projectile.rotation);
+            Opus.RingParticleOutward(PRTLoader.GetParticleID<SimpleParticle>(), 16, Projectile.Center, 22, 0f, Color.White, 1f, 1.5f, offset: Projectile.rotation);
         }
     }
 }
