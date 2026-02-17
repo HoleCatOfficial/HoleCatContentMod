@@ -6,6 +6,7 @@ using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Particles.CurseRunes;
 using InnoVault.PRT;
+using InnoVault.Trails;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -48,73 +49,47 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
             Projectile.tileCollide = false;
             Projectile.penetrate = 1;
             Projectile.hide = true;
-            Projectile.extraUpdates = 3;
+            Projectile.extraUpdates = 100;
         }
 
         public void ColorAffectedFX(Color color)
         {
             Lighting.AddLight(Projectile.Center, color.ToVector3() * 0.6f);
-            PRTLoader.NewParticle(Projectile.Center, new Vector2((Projectile.velocity.X / 2) + Main.rand.NextFloat(-1, 1), (Projectile.velocity.Y / 2) + Main.rand.NextFloat(-1, 1)), PRTLoader.GetParticleID<SimpleParticle>(), color, 0.25f);
+            PRTLoader.NewParticle(Projectile.Center, new Vector2((Projectile.velocity.X / 2) + Main.rand.NextFloat(-1, 1), (Projectile.velocity.Y / 2) + Main.rand.NextFloat(-1, 1)), PRTLoader.GetParticleID<SimpleParticle>(), color, 0.45f);
             if (Main.rand.NextBool(5))
             {
-                PRTLoader.NewParticle(Projectile.Center, new Vector2((Projectile.velocity.X / 2) + Main.rand.NextFloat(-0.5f, 0.5f), (Projectile.velocity.Y / 2) + Main.rand.NextFloat(-0.5f, 0.5f)), PRTLoader.GetParticleID<StarParticle>(), Color.White, 0.25f);
+                PRTLoader.NewParticle(Projectile.Center, new Vector2((Projectile.velocity.X / 2) + Main.rand.NextFloat(-0.5f, 0.5f), (Projectile.velocity.Y / 2) + Main.rand.NextFloat(-0.5f, 0.5f)), PRTLoader.GetParticleID<StarParticle>(), Color.White, 0.5f);
             }
         }
 
         private List<Vector2> trailPoints = new List<Vector2>();
-        private Vector2 lastTickPosition;
-        private const int MaxTrailCount = 60;
-        private const int DustSpawnStep = 3; 
-
         public override void AI()
         {
-            if (Variant == 1)
+            if (Variant == 0)
             {
                 ColorAffectedFX(ColorLib.TenebrisBlue);
             }
-            if (Variant == 2)
+            if (Variant == 1)
             {
                 ColorAffectedFX(ColorLib.TenebrisMagenta);
             }
-            if (Variant == 3)
+            if (Variant == 2)
             {
                 ColorAffectedFX(ColorLib.TenebrisBeige);
             }
 
-            int subdivisions = Projectile.extraUpdates + 1;
-            Vector2 start = lastTickPosition;
-            Vector2 end = Projectile.Center;
-
-            if (start == Vector2.Zero) // safety for first frame
-                start = end;
-
-            // Insert interpolated points between last tick and this tick.
-            // We append newest at the end, and trim the oldest at index 0 when full.
-            for (int s = 1; s <= subdivisions; s++)
-            {
-                float t = s / (float)subdivisions;
-                Vector2 pos = Vector2.Lerp(start, end, t);
-                trailPoints.Add(pos);
-                if (trailPoints.Count > MaxTrailCount)
-                    trailPoints.RemoveAt(0); // drop oldest
-            }
-
-            lastTickPosition = end;
-
             // Spawn dust along the trail (tweak DustSpawnStep for performance)
             Color color = Variant switch
             {
-                1 => ColorLib.TenebrisBlue,
-                2 => ColorLib.TenebrisMagenta,
+                0 => ColorLib.TenebrisBlue,
+                1 => ColorLib.TenebrisMagenta,
                 _ => ColorLib.TenebrisBeige
             };
 
-            for (int i = 0; i < trailPoints.Count; i += DustSpawnStep)
-            {
-                Vector2 p = trailPoints[i];
-                var d = Dust.NewDustPerfect(p, DustID.TintableDustLighted, Vector2.Zero, 50, color, 1f);
-                d.noGravity = true;
-            }
+            
+            var d = Dust.NewDustPerfect(Projectile.Center, DustID.TintableDustLighted, Vector2.Zero, 0, color, 1f);
+            d.noGravity = true;
+            
 
             if (DelayTimer < 10)
             {
@@ -178,7 +153,7 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
             if (hit.Crit)
             {
                 SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/HopeScabbardTele") with { PitchVariance = 0.2f, Volume = 0.15f });
-                target.AddBuff(ModContent.BuffType<ShimmeringFlames>(), 20 * 60);
+                ShimmeringFlames.ShimmerBurn(target);
             }
         }
 

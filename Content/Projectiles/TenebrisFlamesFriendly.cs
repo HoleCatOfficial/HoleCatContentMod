@@ -136,7 +136,7 @@ namespace DestroyerTest.Content.Projectiles
 		
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
-			target.AddBuff(ModContent.BuffType<ShimmeringFlames>(), 300);
+			ShimmeringFlames.ShimmerBurn(target);
 		}
 
         public override void OnKill(int timeLeft)
@@ -188,7 +188,7 @@ namespace DestroyerTest.Content.Projectiles
 		
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
-			target.AddBuff(ModContent.BuffType<ShimmeringFlames>(), 300);
+			ShimmeringFlames.ShimmerBurn(target);
 		}
 
         public override void OnKill(int timeLeft)

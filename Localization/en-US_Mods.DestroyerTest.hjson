@@ -2250,7 +2250,13 @@ Items: {
 
 	DeadlyBlossom: {
 		DisplayName: Deadly Blossom
-		Tooltip: Allows you to spawn a small rose blossom at your position. Staying within a vicinity of the blossom will enhance life and mana regen greatly.
+		Tooltip:'''
+				Allows you to spawn a small rose blossom at your position. Staying within a vicinity of the blossom will increase Defense and Damage Reduction.
+
+				'A small remnant of the rose. Without the power of Idri's soul to sustain its massive body, it has withered and crumbled away.
+				It's dry, putrid form is kept from truly spoiling by cursed flames that continue to burn through it.
+				The end result of any case in which the corruption is separated from its host.'
+				'''
 	}
 
 	GigaCursedHammerWeapon: {

@@ -206,7 +206,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             SoundEngine.PlaySound(SoundID.DD2_WyvernDiveDown);
-            target.AddBuff(ModContent.BuffType<ShimmeringFlames>(), 480);
+            ShimmeringFlames.ShimmerBurn(target);
         }
 	}
 }

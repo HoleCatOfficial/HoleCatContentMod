@@ -1523,6 +1523,11 @@ namespace DestroyerTest.Common
         public static Asset<Texture2D> FlatStar = ModContent.Request<Texture2D>($"{ParticlePath}/FlatStar", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> ShieldRing = ModContent.Request<Texture2D>($"{ParticlePath}/ShieldRing", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> QuixotismPowerAura = ModContent.Request<Texture2D>($"{ExtrasPath}/QuixotismPowerAura", AssetRequestMode.AsyncLoad);
+
+        public static Asset<Texture2D> MiniRoseFragment(int Variant)
+        {
+            return ModContent.Request<Texture2D>($"{ExtrasPath}/MiniRoseFragment{Variant}", AssetRequestMode.AsyncLoad);
+        }
         //
         // Sounds
         //

@@ -222,7 +222,7 @@ namespace DestroyerTest.Content.Projectiles
 			}
 
 			Dust.NewDust(Projectile.position, Projectile.Hitbox.Width, Projectile.Hitbox.Height, DustID.FireworksRGB, Main.rand.NextFloat(-1, 1.1f), Main.rand.NextFloat(-1, 1.1f), 0, ColorLib.TenebrisGradient, 2f);
-			target.AddBuff(ModContent.BuffType<ShimmeringFlames>(), 30 * 60);
+			ShimmeringFlames.ShimmerBurn(target);
 			if (player.TryGetModPlayer<TenebrisMagicPlayer>(out var magicPlayer))
 			{
 				if (magicPlayer.Active)
@@ -377,7 +377,7 @@ namespace DestroyerTest.Content.Projectiles
 			}
 
 			Dust.NewDust(Projectile.position, Projectile.Hitbox.Width, Projectile.Hitbox.Height, DustID.FireworksRGB, Main.rand.NextFloat(-1, 1.1f), Main.rand.NextFloat(-1, 1.1f), 0, ColorLib.TenebrisGradient, 2f);
-			target.AddBuff(ModContent.BuffType<ShimmeringFlames>(), 30 * 60);
+			ShimmeringFlames.ShimmerBurn(target);
 			if (player.TryGetModPlayer<TenebrisMagicPlayer>(out var magicPlayer))
 			{
 				if (magicPlayer.Active)

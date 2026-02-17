@@ -43,7 +43,7 @@ namespace DestroyerTest.Content.Buffs
             {
                 if (Main.rand.NextBool())
                 {
-                    BasePRT Effect = PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Main.rand.NextVector2FromRectangle(Player.Hitbox), Vector2.Zero, ColorLib.Soul, 1f);
+                    BasePRT Effect = PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Main.rand.NextVector2FromRectangle(Player.Hitbox), Vector2.Zero, ColorLib.CursedFlames, 1f);
                 }
                 Player.endurance += 0.06f;
                 Player.statDefense += 10;

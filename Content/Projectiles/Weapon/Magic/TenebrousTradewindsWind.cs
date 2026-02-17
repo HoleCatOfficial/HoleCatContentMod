@@ -137,10 +137,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
-            {
-                SoundEngine.PlaySound(SoundID.Drown, Projectile.position); 
-                target.AddBuff(ModContent.BuffType<ShimmeringFlames>(), 120);
-            }
+		{
+			SoundEngine.PlaySound(SoundID.Drown, Projectile.position); 
+			ShimmeringFlames.ShimmerBurn(target);
+		}
     }
 
 }
