@@ -56,6 +56,24 @@ namespace DestroyerTest.Content.Entities
             });
         }
 
+        public override bool? CanBeHitByItem(Player player, Item item)
+        {
+            return false;
+        }
+
+        public override bool CanBeHitByNPC(NPC attacker)
+        {
+            return false;
+        }
+
+        public override bool? CanBeHitByProjectile(Projectile projectile)
+        {
+            return false;
+        }
+
+
+
+
         public int AttackCharge = 0;
         public int FlameShootTimer = 240;
         public bool Stunned = false;
@@ -83,57 +101,28 @@ namespace DestroyerTest.Content.Entities
                 AttackCharge = 0;
             }
 
-            if (!Stunned)
+            AttackCharge++;
+            if (Main.GameUpdateCount % 20 == 0)
             {
-                AttackCharge++;
-                if (Main.GameUpdateCount % 20 == 0)
+                for (int a = 0; a < 3; a++)
                 {
-                    for (int a = 0; a < 3; a++)
-                    {
-                        Vector2 Edge = Main.rand.NextVector2CircularEdge(600, 600);
-                        Vector2 Inward = NPC.Center - Edge;
-                        Inward.Normalize();
-                        PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Edge, Inward  * 0.01f, ColorLib.CursedFlames, 4.0f);
-                    }
+                    Vector2 Edge = Main.rand.NextVector2CircularEdge(600, 600);
+                    Vector2 Inward = NPC.Center - Edge;
+                    Inward.Normalize();
+                    PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Edge, Inward  * 0.01f, ColorLib.CursedFlames, 4.0f);
                 }
             }
-            
 
-            if (NPC.justHit && AttackCharge > 20 && !Stunned)
-            {
-                AttackCharge -= 20;
-            }
-
-            if (NPC.justHit && AttackCharge > 150 && !Stunned)
-            {
-                SoundEngine.PlaySound(ChargeBreak, NPC.Center);
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<Boom1>(), NPC.Center, Vector2.Zero, ColorLib.CursedFlames, 3.0f);
-                CombatText.NewText(NPC.getRect(), ColorLib.CursedFlames, "Charge Broken!", true, false);
-                AttackCharge = 0;
-                Stunned = true;
-            }
-
-            if (Stunned)
+            if (AttackCharge >= 300)
             {
                 NPC.velocity = Vector2.Zero;
-                StunTimer--;
-                if (StunTimer <= 0)
-                {
-                    Stunned = false;
-                    StunTimer = 120;
-                }
+
+                SoundEngine.PlaySound(WallShoot, NPC.Center);
+                
+                Opus.RadialSpreadProjectile(ModContent.ProjectileType<CursedFlameVortex>(), 4, NPC.Center, 20, 5, 10, RandomOffset: true);
+                
+                AttackCharge = 0;
             }
-
-            if (AttackCharge >= 300 && !Stunned)
-                {
-                    NPC.velocity = Vector2.Zero;
-
-                    SoundEngine.PlaySound(WallShoot, NPC.Center);
-                    
-                    Opus.RadialSpreadProjectile(ModContent.ProjectileType<CursedFlameVortex>(), 4, NPC.Center, 20, 5, 10, RandomOffset: true);
-                    
-                    AttackCharge = 0;
-                }
         }
 
         public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
@@ -156,7 +145,5 @@ namespace DestroyerTest.Content.Entities
                 target.AddBuff(BuffID.Cursed, 600);
             }
         }
-
-        
     }
 }

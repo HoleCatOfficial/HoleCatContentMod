@@ -164,13 +164,11 @@ namespace DestroyerTest.Content.Equips
                     FleshBombTimer++;
                     if (FleshBombTimer == 5)
                     {
-                        Item skull = Player.armor.FirstOrDefault(item => item.type == ModContent.ItemType<WyvernSkull>());
+                        Item skull = Player.armor.FirstOrDefault(item => item.type == ModContent.ItemType<WyvernSkull>() || item.type == ModContent.ItemType<WyvernSkullRose>());
+                        
                         if (skull != null)
                         {
-                            Projectile.NewProjectile(
-                                Player.GetSource_Accessory(skull),
-                                Player.oldPosition, Vector2.Zero,
-                                ModContent.ProjectileType<FleshBombFriendly>(), 46, 1, Main.LocalPlayer.whoAmI);
+                            Projectile.NewProjectile(Player.GetSource_Accessory(skull), Player.oldPosition, Vector2.Zero, ModContent.ProjectileType<FleshBombFriendly>(), 46, 1, Main.LocalPlayer.whoAmI);
                         }
 
                         FleshBombTimer = 0;
@@ -185,9 +183,7 @@ namespace DestroyerTest.Content.Equips
             private bool CanUseDash()
             {
                 return DashAccessoryEquipped
-                    && Player.dashType == DashID.None // player doesn't have Tabi or EoCShield equipped (give priority to those dashes)
                     && HasWyvernSkullEquipped()
-                    && !Player.setSolar // player isn't wearing solar armor
                     && !Player.mount.Active; // player isn't mounted, since dashes on a mount look weird
             }
             

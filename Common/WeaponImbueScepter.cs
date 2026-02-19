@@ -1,5 +1,6 @@
 
 using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles;
@@ -11,6 +12,7 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+
 
 namespace DestroyerTest.Common
 {
@@ -25,12 +27,15 @@ namespace DestroyerTest.Common
         public bool GalantineHoney = false;
         public bool Brine = false;
         public bool FrostBurn = false;
+        public bool FrostBite = false;
         public bool Fire = false;
+        public bool HellFire = false;
         public bool Ichor = false;
         public bool CursedFlame = false;
         public bool HeliouricShock = false;
         public bool DaylightOverload = false;
         public bool ComaceraticBurn = false;
+        public bool shimmeringFlames = false;
         public bool Scepter = false;
 
         private void DustInEnchantVisuals(ThrownScepter t, int ID, int alpha, Color color, float scale, bool noGravity = true)
@@ -45,7 +50,6 @@ namespace DestroyerTest.Common
             {
                 Scepter = true;
                 
-
                 if (Scepter)
                 {
                     if (HeliouricShock)
@@ -111,6 +115,22 @@ namespace DestroyerTest.Common
                         DustInEnchantVisuals(thrown, DustID.IceTorch, 40, default, 1f);
                         //Dust.NewDust(thrown.EnchantmentVisuals().TopLeft(), thrown.EnchantmentVisuals().Width, thrown.EnchantmentVisuals().Height, DustID.IceTorch, 0, 0, 40, default, 1.0f);
                     }
+                    if (FrostBite)
+                    {
+                        if (!Main.masterMode)
+                        {
+                            HasImbue = true;
+                        }
+                        DustInEnchantVisuals(thrown, DustID.IceTorch, 40, default, 1f);
+                    }
+                    if (shimmeringFlames)
+                    {
+                        if (!Main.masterMode)
+                        {
+                            HasImbue = true;
+                        }
+                        DustInEnchantVisuals(thrown, DustID.TintableDustLighted, 0, ColorLib.TenebrisGradient, 1f);
+                    }
                     if (Fire)
                     {
                         if (!Main.masterMode)
@@ -118,6 +138,15 @@ namespace DestroyerTest.Common
                             HasImbue = true;
                         }
                         DustInEnchantVisuals(thrown, DustID.Torch, 40, default, 1f);
+                        //Dust.NewDust(thrown.EnchantmentVisuals().TopLeft(), thrown.EnchantmentVisuals().Width, thrown.EnchantmentVisuals().Height, DustID.Torch, 0, 0, 40, default, 1.0f);
+                    }
+                    if (HellFire)
+                    {
+                        if (!Main.masterMode)
+                        {
+                            HasImbue = true;
+                        }
+                        DustInEnchantVisuals(thrown, DustID.Lava, 40, default, 1f);
                         //Dust.NewDust(thrown.EnchantmentVisuals().TopLeft(), thrown.EnchantmentVisuals().Width, thrown.EnchantmentVisuals().Height, DustID.Torch, 0, 0, 40, default, 1.0f);
                     }
                     if (Ichor)
@@ -204,9 +233,17 @@ namespace DestroyerTest.Common
                 {
                     target.AddBuff(BuffID.Frostburn, 60 * Main.rand.Next(10, 17));
                 }
+                if (FrostBite)
+                {
+                    target.AddBuff(BuffID.Frostburn2, 60 * Main.rand.Next(10, 17));
+                }
                 if (Fire)
                 {
                     target.AddBuff(BuffID.OnFire, 60 * Main.rand.Next(10, 17));
+                }
+                if (HellFire)
+                {
+                    target.AddBuff(BuffID.OnFire3, 60 * Main.rand.Next(10, 17));
                 }
                 if (Ichor)
                 {
@@ -215,6 +252,10 @@ namespace DestroyerTest.Common
                 if (CursedFlame)
                 {
                     target.AddBuff(BuffID.CursedInferno, 60 * Main.rand.Next(10, 17));
+                }
+                if (shimmeringFlames)
+                {
+                    ShimmeringFlames.ShimmerBurn(target);
                 }
                 if (Honey || GalantineHoney)
                 {

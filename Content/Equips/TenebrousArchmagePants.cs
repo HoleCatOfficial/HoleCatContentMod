@@ -22,7 +22,7 @@ namespace DestroyerTest.Content.Equips
 		}
 
 		public override void UpdateEquip(Player player) {
-			player.GetCritChance(DamageClass.Magic) *= 1.05f;
+			player.GetCritChance(DamageClass.Magic) += 5f;
 		}
 		public override void AddRecipes() {
 			CreateRecipe()

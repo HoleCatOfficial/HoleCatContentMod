@@ -66,7 +66,7 @@ namespace DestroyerTest.Content.Equips
             if (DestroyerTestMod.DeadlyBlossomKeybind.JustPressed && Player.ownedProjectileCounts[ModContent.ProjectileType<MiniRose>()] < 1 && Active && Cooldown <= 0)
             {
                 SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/MiniRoseSummon") with { PitchVariance = 0.5f }, Player.Center);
-                Projectile.NewProjectile(Player.GetSource_Accessory(Player.armor.FirstOrDefault(item => item.type == ModContent.ItemType<DeadlyBlossom>())), Player.Center, Vector2.Zero, ModContent.ProjectileType<MiniRose>(), 0, 0, Player.whoAmI);	
+                Projectile.NewProjectile(Player.GetSource_Accessory(Player.armor.FirstOrDefault(item => item.type == ModContent.ItemType<DeadlyBlossom>() || item.type == ModContent.ItemType<WyvernSkullRose>())), Player.Center, Vector2.Zero, ModContent.ProjectileType<MiniRose>(), 0, 0, Player.whoAmI);	
                 Cooldown = 1800;
             }
 		}

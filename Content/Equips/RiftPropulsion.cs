@@ -10,6 +10,8 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using DestroyerTest.Rarity;
+using DestroyerTest.Content.Dusts;
+using DestroyerTest.Common;
 
 namespace DestroyerTest.Content.Equips
 {
@@ -135,7 +137,7 @@ namespace DestroyerTest.Content.Equips
 				
 				// Here you'd be able to set an effect that happens when the dash first activates
 				// Some examples include:  the larger smoke effect from the Master Ninja Gear and Tabi
-				Dust.NewDust(newVelocity, 15, 15, DustID.Lava, 6f, 0f, 0, Color.Orange, 10f);
+				Dust.NewDust(newVelocity, 15, 15, ModContent.DustType<ColorableNeonDust>(), 6f, 0f, 0, ColorLib.Rift, 10f);
                 SoundEngine.PlaySound(new SoundStyle($"DestroyerTest/Assets/Audio/RiftDash"));
 
 			}

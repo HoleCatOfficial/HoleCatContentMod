@@ -2250,13 +2250,14 @@ Items: {
 
 	DeadlyBlossom: {
 		DisplayName: Deadly Blossom
-		Tooltip:'''
-				Allows you to spawn a small rose blossom at your position. Staying within a vicinity of the blossom will increase Defense and Damage Reduction.
+		Tooltip:
+			'''
+			Allows you to spawn a small rose blossom at your position. Staying within a vicinity of the blossom will increase Defense and Damage Reduction.
 
-				'A small remnant of the rose. Without the power of Idri's soul to sustain its massive body, it has withered and crumbled away.
-				It's dry, putrid form is kept from truly spoiling by cursed flames that continue to burn through it.
-				The end result of any case in which the corruption is separated from its host.'
-				'''
+			'A small remnant of the rose. Without the power of Idri's soul to sustain its massive body, it has withered and crumbled away.
+			It's dry, putrid form is kept from truly spoiling by cursed flames that continue to burn through it.
+			The end result of any case in which the corruption is separated from its host.'
+			'''
 	}
 
 	GigaCursedHammerWeapon: {
@@ -4112,6 +4113,40 @@ Items: {
 		DisplayName: Hypnic Jerk
 		Tooltip: ""
 	}
+
+	Luna: {
+		DisplayName: Luna
+		Tooltip: ""
+	}
+
+	Deteriorate: {
+		DisplayName: Deteriorate
+		Tooltip: ""
+	}
+
+	Fallen: {
+		DisplayName: Fallen
+		Tooltip: Melee Scale increased by 22.5%.
+	}
+
+	ShadeInfernoPendant: {
+		DisplayName: Shade Inferno Pendant
+		Tooltip:
+			'''
+			Increases Scepter Class damage by 5.5%.
+			Thrown Scepters inflict Shimmering Flames.
+			'''
+	}
+
+	SmolderingPendant: {
+		DisplayName: Smoldering Pendant
+		Tooltip: ""
+	}
+
+	TenebrousScroll: {
+		DisplayName: Tenebrous Scroll
+		Tooltip: Scepters have a chance to shoot 3 additional tenebris darts.
+	}
 }
 
 Projectiles: {
@@ -4667,6 +4702,7 @@ Projectiles: {
 	QuixotismSwing.DisplayName: Quixotism Swing
 	HypnicJerkExplosion.DisplayName: Hypnic Jerk Explosion
 	HypnicJerkThrown.DisplayName: Hypnic Jerk Thrown
+	SmallTenebrisDart.DisplayName: Small Tenebris Dart
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.
@@ -5085,6 +5121,21 @@ Buffs: {
 	MiniRoseBoost: {
 		DisplayName: Mini Rose Boost
 		Description: Mods.DestroyerTest.Buffs.MiniRoseBoost.Description
+	}
+
+	ScepterImbueFB: {
+		DisplayName: Scepter Imbue F B
+		Description: Mods.DestroyerTest.Buffs.ScepterImbueFB.Description
+	}
+
+	ScepterImbueHF: {
+		DisplayName: Scepter Imbue H F
+		Description: Mods.DestroyerTest.Buffs.ScepterImbueHF.Description
+	}
+
+	ScepterImbueSF: {
+		DisplayName: Scepter Imbue S F
+		Description: Mods.DestroyerTest.Buffs.ScepterImbueSF.Description
 	}
 }
 

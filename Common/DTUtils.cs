@@ -1427,6 +1427,7 @@ namespace DestroyerTest.Common
         public static Asset<Texture2D> WyvernCorpseSky = ModContent.Request<Texture2D>($"{ExtrasPath}/WyvernCorpseSky", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> GlowCone = ModContent.Request<Texture2D>($"{ExtrasPath}/GlowCone", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> MiscSparkle144 = ModContent.Request<Texture2D>($"{ExtrasPath}/144MiscSparkle", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> SwordSlash = ModContent.Request<Texture2D>($"{ExtrasPath}/SwordTrail2", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> Sparkle(int Variant)
         {
             if (Variant <= 0)
@@ -1677,4 +1678,98 @@ namespace DestroyerTest.Common
             _ = DTAssetLib.TilableNoise(1).Value;
         }
     }
+
+
+    public static class Polar
+    {
+        public static Vector2[] GenerateStar(int pointCount, int step, float radius, Vector2 center)
+        {
+            if (pointCount < 3)
+                throw new ArgumentException("pointCount must be >= 3");
+
+            if (step <= 0 || step >= pointCount)
+                throw new ArgumentException("step must be between 1 and pointCount - 1");
+
+            Vector2[] basePoints = new Vector2[pointCount];
+
+            // Precompute the circle points
+            for (int i = 0; i < pointCount; i++)
+            {
+                float angle = MathF.Tau * i / pointCount; // Tau = 2π
+                basePoints[i] = center + new Vector2(
+                    MathF.Cos(angle),
+                    MathF.Sin(angle)
+                ) * radius;
+            }
+
+            List<Vector2> starPath = new List<Vector2>();
+            bool[] visited = new bool[pointCount];
+
+            int current = 0;
+
+            while (!visited[current])
+            {
+                visited[current] = true;
+                starPath.Add(basePoints[current]);
+                current = (current + step) % pointCount;
+            }
+
+            return starPath.ToArray();
+        }
+
+        public static List<Vector2> GenerateCurvedStar(int pointCount, int step, float radius, Vector2 center, int samplesPerEdge = 20, float inwardPull = 0.35f)
+        {
+            if (pointCount < 3)
+                throw new ArgumentException("pointCount must be >= 3");
+
+            if (step <= 0 || step >= pointCount)
+                throw new ArgumentException("step must be between 1 and pointCount - 1");
+
+            // Precompute angles
+            float[] angles = new float[pointCount];
+            for (int i = 0; i < pointCount; i++)
+                angles[i] = MathF.Tau * i / pointCount;
+
+            List<Vector2> points = new List<Vector2>();
+            bool[] visited = new bool[pointCount];
+
+            int current = 0;
+
+            while (!visited[current])
+            {
+                visited[current] = true;
+
+                int next = (current + step) % pointCount;
+
+                float a0 = angles[current];
+                float a1 = angles[next];
+
+                // Ensure shortest angular direction
+                float delta = MathHelper.WrapAngle(a1 - a0);
+
+                for (int i = 0; i <= samplesPerEdge; i++)
+                {
+                    float t = i / (float)samplesPerEdge;
+
+                    // Ease so max pull is at midpoint
+                    float bow = MathF.Sin(t * MathF.PI);
+
+                    float angle = a0 + delta * t;
+                    float r = radius * (1f - inwardPull * bow);
+
+                    Vector2 pos = center + new Vector2(
+                        MathF.Cos(angle),
+                        MathF.Sin(angle)
+                    ) * r;
+
+                    points.Add(pos);
+                }
+
+                current = next;
+            }
+
+            return points;
+        }
+    }
+
 }

@@ -178,6 +178,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
         public bool TempestScroll = false;
         public bool SpookyScroll2 = false;
         public bool SpookyScroll3 = false;
+        public bool TenebrousScroll = false;
         
         public int UseEffectCooldown = 0;
         public override void ResetEffects()
@@ -199,6 +200,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
             TempestScroll = false;
             SpookyScroll2 = false;
             SpookyScroll3 = false;
+            TenebrousScroll = false;
         }
 
         public override void PostUpdateEquips()
@@ -538,6 +540,27 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
                                 );
                                 HotWood.friendly = true;
                                 HotWood.hostile = false;
+                            }
+                        }
+                    }
+                }
+                if (TenebrousScroll)
+                {
+                    if (item.DamageType == ModContent.GetInstance<ScepterClass>() && Player.altFunctionUse != 2)
+                    {
+                        if (Main.rand.NextBool(4))
+                        {
+                            for (int t = 0; t < 3; t++)
+                            {
+                                Projectile.NewProjectile(
+                                    Player.GetSource_ItemUse(item),
+                                    Player.Center,
+                                    velocity.RotatedByRandom(0.75),
+                                    ModContent.ProjectileType<SmallTenebrisDart>(),
+                                    damage / 4,
+                                    knockback,
+                                    Player.whoAmI
+                                );
                             }
                         }
                     }
