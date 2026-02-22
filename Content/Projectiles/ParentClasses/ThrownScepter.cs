@@ -214,11 +214,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
             if (!returning)
             {
-                if (!OnReturnFlag)
-                {
-                    OnReturn();
-                    OnReturnFlag = true;
-                }
+                
                 flightTime++;
                 float returnDelayMultiplier = 1f + (ScepterClassStats.Range * 0.01f);
                 int baseFlightTime = 60;
@@ -234,6 +230,11 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
             if (returning)
             {
+                if (!OnReturnFlag)
+                {
+                    OnReturn();
+                    OnReturnFlag = true;
+                }
                 ArmCatchAnimate(player);
                 // InPhase: Smooth return using Lerp
                 Vector2 returnDirection = player.Center - Projectile.Center;

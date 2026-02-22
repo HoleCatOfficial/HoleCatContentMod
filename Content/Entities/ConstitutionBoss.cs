@@ -85,17 +85,17 @@ namespace DestroyerTest.Content.Entities
         {
             if (DTUtils.ClassicMode())
             {
-                return 20;
+                return 12;
             }
             if (Main.expertMode && !Main.masterMode)
             {
-                return 25;
+                return 18;
             }
             if (Main.masterMode)
             {
-                return 30;
+                return 22;
             }
-            return 10;
+            return 12;
         }
 
         public static int StellarVolleyDamage()
@@ -201,7 +201,11 @@ namespace DestroyerTest.Content.Entities
             DTUtils.ScrollingTextureSpine(bottomSide, DTAssetLib.Streak(1),  ColorLib.StellarFireGradientLooping(), spriteBatch, BlendState.Additive, scrollspeed: 0.1f);
             DTUtils.ScrollingTextureSpine(leftSide, DTAssetLib.Streak(1),  ColorLib.StellarFireGradientLooping(), spriteBatch, BlendState.Additive, scrollspeed: 0.1f);
             DTUtils.ScrollingTextureSpine(rightSide, DTAssetLib.Streak(1),  ColorLib.StellarFireGradientLooping(), spriteBatch, BlendState.Additive, scrollspeed: 0.1f);
-            Utils.DrawBorderString(spriteBatch, AITimer.ToString(), (NPC.Center - new Vector2(0, 40)) - Main.screenPosition, Color.Red, 1f);
+            DTConfig cfg = ModContent.GetInstance<DTConfig>();
+            if (cfg.EnableDebugMessages)
+            {
+                Utils.DrawBorderString(spriteBatch, AITimer.ToString(), (NPC.Center - new Vector2(0, 40)) - Main.screenPosition, Color.Red, 1f);
+            }
         }
         public int AITimer = 0;
         public override void AI()
@@ -486,7 +490,7 @@ namespace DestroyerTest.Content.Entities
                 {
                     Vector2 v = player.Center - NPC.Center;
                     v.Normalize();
-                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, v * 4, ModContent.ProjectileType<StellarBomb>(), 100, 0);
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, v * 4, ModContent.ProjectileType<StellarBomb>(), 35, 0);
                 }
             }
             if (WallShootCount == 120)
@@ -514,7 +518,7 @@ namespace DestroyerTest.Content.Entities
                 {
                     Vector2 v = player.Center - NPC.Center;
                     v.Normalize();
-                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, v * 4, ModContent.ProjectileType<StellarBomb>(), 100, 0);
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, v * 4, ModContent.ProjectileType<StellarBomb>(), 35, 0);
                 }
             }
             if (WallShootCount == 240)
@@ -542,7 +546,7 @@ namespace DestroyerTest.Content.Entities
                 {
                     Vector2 v = player.Center - NPC.Center;
                     v.Normalize();
-                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, v * 4, ModContent.ProjectileType<StellarBomb>(), 100, 0);
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, v * 4, ModContent.ProjectileType<StellarBomb>(), 35, 0);
                 }
             }
             if (WallShootCount == 360)
@@ -570,7 +574,7 @@ namespace DestroyerTest.Content.Entities
                 {
                     Vector2 v = player.Center - NPC.Center;
                     v.Normalize();
-                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, v * 4, ModContent.ProjectileType<StellarBomb>(), 100, 0);
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, v * 4, ModContent.ProjectileType<StellarBomb>(), 35, 0);
                 }
             }
             if (WallShootCount == 480)

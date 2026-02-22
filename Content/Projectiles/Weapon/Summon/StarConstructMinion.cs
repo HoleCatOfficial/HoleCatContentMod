@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Projectiles.AmmoProjectiles;
@@ -82,44 +83,67 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
 
             if (state == StarState.Idle || state == StarState.LockOn)
             {
-                int closest = -1;
-                float closestDist = 2000f * 2000f;
-                for (int i = 0; i < Main.maxNPCs; i++)
+                int chosen = -1;
+
+                // #1 — Player whip target
+                if (player.MinionAttackTargetNPC >= 0 &&
+                    player.MinionAttackTargetNPC < Main.maxNPCs)
                 {
-                    NPC npc = Main.npc[i];
-                    if (npc.CanBeChasedBy())
+                    NPC whipTarget = Main.npc[player.MinionAttackTargetNPC];
+                    if (whipTarget.CanBeChasedBy())
                     {
-                        float dist = Vector2.DistanceSquared(npc.Center, Projectile.Center);
-                        if (dist < closestDist)
+                        chosen = player.MinionAttackTargetNPC;
+                    }
+                }
+
+                // #2 — Bosses (if no whip target)
+                if (chosen == -1)
+                {
+                    float bossDist = float.MaxValue;
+
+                    for (int i = 0; i < Main.maxNPCs; i++)
+                    {
+                        NPC npc = Main.npc[i];
+                        if (npc.CanBeChasedBy() && npc.boss)
                         {
-                            closestDist = dist;
-                            closest = i;
+                            float dist = Vector2.DistanceSquared(npc.Center, player.Center);
+                            if (dist < bossDist)
+                            {
+                                bossDist = dist;
+                                chosen = i;
+                            }
                         }
                     }
                 }
 
-                // If the player has explicitly set a minion attack target, prefer it
-                if (globalTarget != -1 && globalTarget != closest)
+                // #3 — Closest to player
+                if (chosen == -1)
                 {
-                    // ensure the global target is actually valid before forcing it
-                    if (globalTarget >= 0 && globalTarget < Main.maxNPCs && Main.npc[globalTarget].CanBeChasedBy())
+                    float closestDist = float.MaxValue;
+
+                    for (int i = 0; i < Main.maxNPCs; i++)
                     {
-                        closest = globalTarget;
+                        NPC npc = Main.npc[i];
+                        if (npc.CanBeChasedBy())
+                        {
+                            float dist = Vector2.DistanceSquared(npc.Center, player.Center);
+                            if (dist < closestDist)
+                            {
+                                closestDist = dist;
+                                chosen = i;
+                            }
+                        }
                     }
                 }
 
-                if (closest != -1)
+                if (chosen != -1)
                 {
-                    Projectile.ai[1] = closest;
-                    // ensure the player's MinionAttackTargetNPC reflects our chosen target
-                    player.MinionAttackTargetNPC = closest;
+                    Projectile.ai[1] = chosen;
                     Projectile.ai[0] = (float)StarState.Attack;
-                    state = StarState.Attack;
-                    Projectile.netUpdate = true; // sync state change
+                    Projectile.netUpdate = true;
                 }
                 else
                 {
-                    // Remain Idle: swarm formation above player
                     DoIdleMovement(player);
                 }
             }
@@ -161,36 +185,29 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
 
         private void DoIdleMovement(Player player)
         {
-            // swarm: compute index among same-owner same-type projectiles to space around the player
-            int index = 0;
-            int total = 0;
-            for (int i = 0; i < Main.maxProjectiles; i++)
+            if (!player.TryGetModPlayer<StarConstructPlayer>(out var P))
             {
-                Projectile p = Main.projectile[i];
-                if (p.active && p.owner == Projectile.owner && p.type == Projectile.type)
-                {
-                    if (i < Projectile.whoAmI) index++;
-                    total++;
-                }
+                return;
             }
-            float spacingAngle = MathHelper.TwoPi / Math.Max(1, total);
-            float angle = spacingAngle * index + (float)(Main.time / 60.0); // slow shared rotation
 
-            Vector2 idleOffset = new Vector2(0, -60f); // base offset above player
-            float radius = 40f + Math.Min(60f, total * 6f);
-            Vector2 swirl = new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle)) * radius;
+            int rank = P.index.IndexOf(Projectile.whoAmI);
+            Vector2 targetPos = P.idlePositions[rank];
 
-            Vector2 targetPos = player.Center + idleOffset + swirl;
-
-            // smooth approach
             float inertia = 14f;
             float speed = 12f;
             Vector2 diff = targetPos - Projectile.Center;
             if (diff.Length() > speed)
+            {
                 diff = Vector2.Normalize(diff) * speed;
+            }
             Projectile.velocity = (Projectile.velocity * (inertia - 1f) + diff) / inertia;
 
             Projectile.rotation = Projectile.velocity.ToRotation() * 0.1f;
+
+            if (Projectile.DistanceSQ(targetPos) > (1200 * 1200))
+            {
+                Projectile.Center = targetPos;
+            }
         }
 
         private void DoAttackMovement(NPC target, Player player)
@@ -243,5 +260,35 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
                 Projectile.ai[1] = -1;
             }
         }
+    }
+
+    public class StarConstructPlayer : ModPlayer
+    {
+        public Vector2[] idlePositions;
+        public List<int> index = new();
+
+        public override void PostUpdateMiscEffects()
+        {
+            index.Clear();
+
+            for (int i = 0; i < Main.maxProjectiles; i++)
+            {
+                Projectile p = Main.projectile[i];
+                if (p.active && p.owner == Player.whoAmI && p.type == ModContent.ProjectileType<StarConstructMinion>())
+                {
+                    index.Add(i);
+                }
+            }
+
+            int total = index.Count;
+
+            idlePositions = Opus.GetEquidistantOrbitVectors(
+                total,
+                Player.Center + new Vector2(0, -60f),
+                1f,
+                Opus.Sine(40f, 70f)
+            );
+        }
+
     }
 }

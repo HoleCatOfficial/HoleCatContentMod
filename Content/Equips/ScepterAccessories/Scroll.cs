@@ -752,7 +752,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
                     Projectile.NewProjectile(projectile.GetSource_FromAI(), projectile.Center, projectile.velocity * 0.1f, ModContent.ProjectileType<FungalScepterMushroom>(), projectile.damage / 10, 4, projectile.owner);
                 }
             }
-            if (SporeScroll && IsAThrownScepter && projectile.type != ModContent.ProjectileType<HeliciteScepterThrown>())
+            if (HeliciteScroll && IsAThrownScepter && projectile.type != ModContent.ProjectileType<HeliciteScepterThrown>())
             {
                 if (Main.rand.NextBool())
                 {

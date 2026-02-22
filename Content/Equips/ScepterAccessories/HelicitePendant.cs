@@ -24,11 +24,11 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
             Item.accessory = true;
         }
 
-        public static readonly float DMGBonus = 1.04f;
+        public static readonly float DMGBonus = 0.04f;
         public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs((DMGBonus - 1f).ToString("P1"));
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.GetDamage(ModContent.GetInstance<ScepterClass>()) *= DMGBonus;
+            player.GetDamage(ModContent.GetInstance<ScepterClass>()) += DMGBonus;
         }
 
         public override void AddRecipes()

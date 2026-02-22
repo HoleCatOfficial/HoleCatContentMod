@@ -19,9 +19,12 @@ using Terraria.GameContent;
 using System.Collections.ObjectModel;
 using DestroyerTest.Content.Projectiles.Weapon.Scepter.ElementalShots;
 using DestroyerTest.Content.Entities;
+using FargowiltasSouls.Content.Items.Materials;
+using FargowiltasSouls.Content.Items.Armor;
 
 namespace DestroyerTest.Content.Fargos.Scepter
 {
+    [ExtendsFromMod(DTCrossMod.FargosSoulsName)]
     [JITWhenModsEnabled(DTCrossMod.FargosSoulsName)]
 	public class GaiaScepter: ScepterItem
 	{
@@ -35,26 +38,21 @@ namespace DestroyerTest.Content.Fargos.Scepter
 
 		public override void SetDefaults()
 		{
-			// First let the base class handle core setup
 			base.SetDefaults();
 
-			// Override stats unique to this scepter
-			ShootDMG = 29;
+			ShootDMG = 72;
 			ShootCrit = 2;
-			ThrowCrit = 8;
+			ThrowCrit = 40;
 			KB = 8;
 			AdditiveValue = Item.sellPrice(silver: 80);
 			Rarity = ModContent.RarityType<IncarnadineRarity>();
 
-			// Assign projectile types
 			ShootID = ProjectileID.BladeOfGrass;
 			ThrowID = ModContent.ProjectileType<GaiaScepterThrown>();
 
-			// Optional: change sounds
 			ShootSound = ConstitutionSounds.StellarVolley;
 			ThrowSound = SoundID.Item169;
 
-			// Refresh defaults after overriding values
 			base.SetDefaults();
 		}
 
@@ -182,7 +180,6 @@ namespace DestroyerTest.Content.Fargos.Scepter
                 }
                 else
                 {
-                    // Let vanilla draw everything else
                     ChatManager.DrawColorCodedStringWithShadow(
                         Main.spriteBatch,
                         FontAssets.MouseText.Value,
@@ -197,7 +194,16 @@ namespace DestroyerTest.Content.Fargos.Scepter
                 drawY += size.Y;
             }
 
-            return false; // we handled ALL drawing
+            return false;
         }
+
+        public override void AddRecipes() {
+			CreateRecipe()
+                .AddIngredient<ElementalScepter>()
+				.AddIngredient<DeviatingEnergy>(50)
+                .AddIngredient<GaiaHelmet>()
+				.AddTile(TileID.LunarCraftingStation)
+				.Register();
+		}
     }
 } 

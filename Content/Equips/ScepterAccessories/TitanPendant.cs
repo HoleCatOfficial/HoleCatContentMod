@@ -27,7 +27,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
             return (incomingItem.type != ModContent.ItemType<PendantofUnity>() || incomingItem.type != ModContent.ItemType<ElementalPendant>());
         }
 
-        public static readonly int DMGBonus = 40;
+        public static readonly float DMGBonus = 0.15f;
         public static readonly int CritBonus = 14;
         public static readonly int RangeBonus = 35;
         public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(DMGBonus, CritBonus.ToString("F1") + "%", RangeBonus);

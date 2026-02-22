@@ -23,21 +23,9 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.GetDamage(ModContent.GetInstance<ScepterClass>()) *= 1.1f;
+            player.GetDamage(ModContent.GetInstance<ScepterClass>()) += 0.1f;
         }
 
 
-    }
-
-    public class SE_DROP_NPC : GlobalNPC
-    {
-        public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
-        {
-            if (npc.type == NPCID.WallofFlesh)
-            {
-                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ScepterEmblem>(), 5, 1, 1));
-            }
-
-        }
     }
 }

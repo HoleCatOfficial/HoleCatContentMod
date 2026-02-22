@@ -298,7 +298,7 @@ namespace DestroyerTest.Common.NPC_Folder
 
             if (shop.NpcType == NPCID.Mechanic)
             {
-                shop.Add<MechanicalEnhancements>(Condition.DownedMechBossAny);
+                shop.Add<MechanicalEnhancements>();
             }
         }
 	}

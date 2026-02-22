@@ -44,7 +44,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
 
 			Projectile.DamageType = DamageClass.Generic;
 			Projectile.friendly = false;
-			Projectile.hostile = false;
+			Projectile.hostile = true;
 			Projectile.ignoreWater = true;
 			Projectile.light = 1f;
 			Projectile.timeLeft = 300;

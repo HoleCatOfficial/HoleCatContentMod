@@ -68,24 +68,13 @@ namespace DestroyerTest.Common
         /// <param name="projectile"></param>
         public static void ConstitutionStarExplosionEffects(Projectile projectile)
         {
-            int points = 10; // 5 outer + 5 inner
-            float outerRadius = 16f;
-            float innerRadius = outerRadius * 0.4f;
-            float rotationOffset = projectile.rotation; // could also add MathHelper.PiOver2 if the sprite is rotated visually
-
-            for (int i = 0; i < points; i++)
+            List<Vector2> Star2 = Polar.GenerateCurvedStar(5, 4, 10, projectile.Center, inwardPull: 0.5f, randomOffset: true);
+            foreach (Vector2 p2 in Star2)
             {
-                float angle = MathHelper.TwoPi * i / points + rotationOffset;
-                float radius = (i % 2 == 0) ? outerRadius : innerRadius;
-
-                Vector2 direction = new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
-                Vector2 spawnPos = projectile.Center + direction * radius;
-                Vector2 velocity = direction * 3f;
-
-                PRTLoader.NewParticle(StellarParticleIndex.ConstitutionParticle, spawnPos, velocity, default, 1f);
-                PRTLoader.NewParticle(StellarParticleIndex.ConstitutionParticle, spawnPos, Vector2.Zero, default, 1f);
+                Vector2 Vel = p2 - projectile.Center;
+                PRTLoader.NewParticle(StellarParticleIndex.ConstitutionParticle, projectile.Center, Vel, (Color)default, 1f);
             }
-            PRTLoader.NewParticle(StellarParticleIndex.FlatStar, projectile.Center, Vector2.Zero,  ColorLib.StellarFireGradientLooping(), 0.15f);
+            PRTLoader.NewParticle(StellarParticleIndex.FlatStar, projectile.Center, Vector2.Zero, (Color)default, 0.15f);
         }
 
         /// <summary>
@@ -1717,18 +1706,25 @@ namespace DestroyerTest.Common
             return starPath.ToArray();
         }
 
-        public static List<Vector2> GenerateCurvedStar(int pointCount, int step, float radius, Vector2 center, int samplesPerEdge = 20, float inwardPull = 0.35f)
+        public static List<Vector2> GenerateCurvedStar(int pointCount, int step, float radius, Vector2 center, int samplesPerEdge = 20, float inwardPull = 0.35f, bool randomOffset = false)
         {
             if (pointCount < 3)
+            {
                 throw new ArgumentException("pointCount must be >= 3");
+            }
 
             if (step <= 0 || step >= pointCount)
+            {
                 throw new ArgumentException("step must be between 1 and pointCount - 1");
+            }
 
-            // Precompute angles
             float[] angles = new float[pointCount];
+            float globalOffset = randomOffset ? Main.rand.NextFloat(MathHelper.TwoPi) : 0f;
+
             for (int i = 0; i < pointCount; i++)
-                angles[i] = MathF.Tau * i / pointCount;
+            {
+                angles[i] = MathF.Tau * i / pointCount + globalOffset;
+            }
 
             List<Vector2> points = new List<Vector2>();
             bool[] visited = new bool[pointCount];
@@ -1744,14 +1740,12 @@ namespace DestroyerTest.Common
                 float a0 = angles[current];
                 float a1 = angles[next];
 
-                // Ensure shortest angular direction
                 float delta = MathHelper.WrapAngle(a1 - a0);
 
                 for (int i = 0; i <= samplesPerEdge; i++)
                 {
                     float t = i / (float)samplesPerEdge;
 
-                    // Ease so max pull is at midpoint
                     float bow = MathF.Sin(t * MathF.PI);
 
                     float angle = a0 + delta * t;
@@ -1764,7 +1758,63 @@ namespace DestroyerTest.Common
 
                     points.Add(pos);
                 }
+                current = next;
+            }
 
+            return points;
+        }
+
+        public static List<Vector2> GenerateCurvedStar(int pointCount, int step, float radius, Vector2 center, int samplesPerEdge = 20, float inwardPull = 0.35f, float offset = 0)
+        {
+            if (pointCount < 3)
+            {
+                throw new ArgumentException("pointCount must be >= 3");
+            }
+
+            if (step <= 0 || step >= pointCount)
+            {
+                throw new ArgumentException("step must be between 1 and pointCount - 1");
+            }
+
+            float[] angles = new float[pointCount];
+
+            for (int i = 0; i < pointCount; i++)
+            {
+                angles[i] = MathF.Tau * i / pointCount + offset;
+            }
+
+            List<Vector2> points = new List<Vector2>();
+            bool[] visited = new bool[pointCount];
+
+            int current = 0;
+
+            while (!visited[current])
+            {
+                visited[current] = true;
+
+                int next = (current + step) % pointCount;
+
+                float a0 = angles[current];
+                float a1 = angles[next];
+
+                float delta = MathHelper.WrapAngle(a1 - a0);
+                
+                for (int i = 0; i <= samplesPerEdge; i++)
+                {
+                    float t = i / (float)samplesPerEdge;
+
+                    float bow = MathF.Sin(t * MathF.PI);
+
+                    float angle = a0 + delta * t;
+                    float r = radius * (1f - inwardPull * bow);
+
+                    Vector2 pos = center + new Vector2(
+                        MathF.Cos(angle),
+                        MathF.Sin(angle)
+                    ) * r;
+
+                    points.Add(pos);
+                }
                 current = next;
             }
 

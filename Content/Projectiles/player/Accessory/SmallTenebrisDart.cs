@@ -205,7 +205,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
             SoundEngine.PlaySound(SoundID.DD2_KoboldExplosion, Projectile.Center);
             if (Variant == 0)
             {
-                List<Vector2> Star1 = Polar.GenerateCurvedStar(4, 3, 10, Projectile.Center);
+                List<Vector2> Star1 = Polar.GenerateCurvedStar(4, 3, 10, Projectile.Center, randomOffset: true);
                 foreach (Vector2 p1 in Star1)
                 {
                     Vector2 Vel = p1 - Projectile.Center;
@@ -214,7 +214,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
             }
             if (Variant == 1)
             {
-                List<Vector2> Star2 = Polar.GenerateCurvedStar(5, 4, 10, Projectile.Center);
+                List<Vector2> Star2 = Polar.GenerateCurvedStar(5, 4, 10, Projectile.Center, randomOffset: true);
                 foreach (Vector2 p2 in Star2)
                 {
                     Vector2 Vel = p2 - Projectile.Center;
@@ -223,7 +223,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
             }
             if (Variant == 2)
             {
-                List<Vector2> Star3 = Polar.GenerateCurvedStar(6, 5, 10, Projectile.Center);
+                List<Vector2> Star3 = Polar.GenerateCurvedStar(6, 5, 10, Projectile.Center, randomOffset: true);
                 foreach (Vector2 p3 in Star3)
                 {
                     Vector2 Vel = p3 - Projectile.Center;

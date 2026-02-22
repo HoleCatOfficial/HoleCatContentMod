@@ -24,7 +24,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
 		}
 
 		public override void UpdateEquip(Player player) {
-            player.GetDamage<ScepterClass>() *= 1.03f;
+            player.GetDamage<ScepterClass>() += 0.03f;
             foreach (Projectile proj in Main.projectile)
             {
                 if (proj.TryGetGlobalProjectile<ScrollScepterProj>(out ScrollScepterProj Scptr))

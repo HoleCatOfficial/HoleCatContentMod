@@ -17,6 +17,8 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using System.Collections.Generic;
 using Terraria.Localization;
+using DestroyerTest.Content.Equips.ScepterAccessories;
+using DestroyerTest.Content.Resources;
 
 namespace DestroyerTest.Content.Consumables
 {
@@ -70,7 +72,9 @@ namespace DestroyerTest.Content.Consumables
             // We have to replicate the expert drops from MinionBossBody here
 
             itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<Constitution>(), 1, 1, 1));
+            itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<StellarMatter>(), 1, 10, 20));
             itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<StellarTintedGoggles>(), 4, 1, 1));
+            itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<GalantineScroll>(), 6, 1, 1));
             itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<StellarBow>(), 2, 1, 1));
             itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<StellarFlames>(), 3, 1, 1));
             itemLoot.Add(new PityChanceDropRule(Type, ModContent.ItemType<GalantineKnife>(), 0.02f, 0.05f)); // +1% chance per fail

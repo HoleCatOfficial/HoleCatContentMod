@@ -17,7 +17,7 @@ namespace DestroyerTest.Content.RogueItems
         public override void SetStaticDefaults()
         {
             ItemID.Sets.ItemsThatCountAsBombsForDemolitionistToSpawn[Type] = true;
-            Item.ResearchUnlockCount = 99;
+            Item.ResearchUnlockCount = 1;
         }
 
         public override void SetDefaults()

@@ -1011,6 +1011,11 @@ namespace DestroyerTest.Common
             {
                 itemLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<ElementalAlkahest>()));
             }
+
+            if (item.type == ItemID.WallOfFleshBossBag)
+            {
+                itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<ScepterEmblem>(), 5, 1, 1));
+            }
         }
 
     }

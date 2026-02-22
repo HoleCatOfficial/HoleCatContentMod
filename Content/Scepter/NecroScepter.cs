@@ -31,7 +31,7 @@ namespace DestroyerTest.Content.Scepter
             base.SetDefaults();
 
             // Override stats unique to this scepter
-            ShootDMG = 26;
+            ShootDMG = 32;
             ShootCrit = 4;
             ThrowCrit = 14;
             KB = 2;

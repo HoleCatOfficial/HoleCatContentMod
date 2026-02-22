@@ -42,7 +42,7 @@ namespace DestroyerTest.Content.Projectiles
 			Projectile.height = 72;
 
 			Projectile.DamageType = DamageClass.Generic;
-			Projectile.friendly = false;
+			Projectile.friendly = true;
 			Projectile.hostile = false;
 			Projectile.ignoreWater = true;
 			Projectile.light = 1f;

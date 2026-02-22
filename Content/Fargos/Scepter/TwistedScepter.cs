@@ -15,6 +15,7 @@ using FargowiltasSouls.Content.Items.Weapons.Challengers;
 
 namespace DestroyerTest.Content.Fargos.Scepter
 {
+	[ExtendsFromMod(DTCrossMod.FargosSoulsName)]
     [JITWhenModsEnabled(DTCrossMod.FargosSoulsName)]
 	public class TwistedScepter : ScepterItem
 	{

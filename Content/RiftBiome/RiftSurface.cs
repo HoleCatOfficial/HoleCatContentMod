@@ -188,7 +188,7 @@ namespace DestroyerTest.Content.RiftBiome
 		// public override int BiomeCampfireItemType => ModContent.ItemType<ExampleCampfire>();
 
 		// Populate the Bestiary Filter
-		public override string BestiaryIcon => base.BestiaryIcon;
+		public override string BestiaryIcon => "DestroyerTest/Assets/Textures/RiftIcon";
 		public override string BackgroundPath => base.BackgroundPath;
 		public override Color? BackgroundColor => base.BackgroundColor;
 		public override string MapBackground => BackgroundPath; // Re-uses Bestiary Background for Map Background
@@ -204,10 +204,7 @@ namespace DestroyerTest.Content.RiftBiome
 			// Finally, we will limit the height at which this biome can be active to above ground (ie sky and surface). Most (if not all) surface biomes will use this condition.
 			bool b3 = player.ZoneSkyHeight || player.ZoneOverworldHeight;
 
-			var ContainedBiome = ModContent.GetInstance<ContainedRiftBiomeProjectile>();
-			bool b4 = ContainedBiome.InRange;
-
-			return (b1 && b3) || (b3 && b4);
+			return b1 && b3;
 		}
 
 		// Declare biome priority. The default is BiomeLow so this is only necessary if it needs a higher priority.
