@@ -1164,6 +1164,9 @@ namespace DestroyerTest.Common
         /// </summary>
         public static Color HellFire = new Color(254, 121, 2);
 
+        public static Color SoulOfLightColor = new Color(220, 29, 183);
+        public static Color SoulOfNightColor = new Color(123, 29, 120);
+
         /// <summary>
         /// The color used for drawing the aura and hit effects of the Metallurgy System Javelins.
         /// </summary>
@@ -1513,6 +1516,7 @@ namespace DestroyerTest.Common
         public static Asset<Texture2D> FlatStar = ModContent.Request<Texture2D>($"{ParticlePath}/FlatStar", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> ShieldRing = ModContent.Request<Texture2D>($"{ParticlePath}/ShieldRing", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> QuixotismPowerAura = ModContent.Request<Texture2D>($"{ExtrasPath}/QuixotismPowerAura", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> CursorLanternTexture = ModContent.Request<Texture2D>($"{ExtrasPath}/CursorLantern", AssetRequestMode.AsyncLoad);
 
         public static Asset<Texture2D> MiniRoseFragment(int Variant)
         {

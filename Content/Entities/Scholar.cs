@@ -209,12 +209,11 @@ namespace DestroyerTest.Content.Entities
 			chat.Add(Language.GetTextValue("Have I been taking notes? Goodness, as if I'd ever be able to get through all the wierd stuff on your island!"));
 			chat.Add(Language.GetTextValue("Everyone thinks I'm a trans woman. Can a guy not have long hair? Then again, I'm not opposed to people seeing a feminine side of me."));
 			chat.Add(Language.GetTextValue("Yknow, its wierd how this island is both modern and medieval."));
-			chat.Add(Language.GetTextValue("Goddamn I need his cock... OH! Hey! What do you need?"));
+			chat.Add(Language.GetTextValue("I miss his smell... OH! Hey! What do you need?"));
 
 			NumberOfTimesTalkedTo++;
 			if (NumberOfTimesTalkedTo >= 10)
 			{
-				//This counter is linked to a single instance of the NPC, so if ExamplePerson is killed, the counter will reset.
 				chat.Add(Language.GetTextValue("If you're flirting, you are supremely bad at it."));
 				chat.Add(Language.GetTextValue("Is there something you're trying to tell me?"));
 				chat.Add(Language.GetTextValue("Can I help you?."));
@@ -228,17 +227,10 @@ namespace DestroyerTest.Content.Entities
 			if (ShieldIsActive)
             {
 				chat.Add(Language.GetTextValue("Pretty neat, eh? I dabbled in magic during my youth, and I guess it comes in handy in the face of danger!"));
-				chat.Add(Language.GetTextValue("This is taking a lot of magic out of me, but the last thing I want is anyone else getting hurt!"));
-				chat.Add(Language.GetTextValue("Goddamn I need his cock... OH! Hey! What do you need?"));
+				chat.Add(Language.GetTextValue("This is taking a lot of magic out of me, but the last thing I want is anyone else getting hurt!"));;
             }
 
-			string chosenChat = chat; // chat is implicitly cast to a string. This is where the random choice is made.
-
-			// Here is some additional logic based on the chosen chat line. In this case, we want to display an item in the corner for StandardDialogue4.
-			//if (chosenChat == Language.GetTextValue("Agh, it seems the fabric on Bobby's handle has faded. Would it be any trouble to fetch a new roll of red satin to refit it?")) {
-				// Main.npcChatCornerItem shows a single item in the corner, like the Angler Quest chat.
-				//Main.npcChatCornerItem = ModContent.ItemType<RedCloth>();
-			//}
+			string chosenChat = chat;
 
 			return chosenChat;
 		}

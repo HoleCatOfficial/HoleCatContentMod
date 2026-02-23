@@ -4147,6 +4147,34 @@ Items: {
 		DisplayName: Tenebrous Scroll
 		Tooltip: Scepters have a chance to shoot 3 additional tenebris darts.
 	}
+
+	BalanceScepter: {
+		Tooltip:
+			'''
+			Shoots a balance bolt that inflicts both Night and Light Inferno.
+			Throws spew Night and Light fireballs in all directions that pierce / bounce twice.
+			'''
+		DisplayName: Balance Scepter
+	}
+
+	CursorLantern: {
+		DisplayName: Cursor Lantern
+		Tooltip:
+			'''
+			Hangs a lantern from your cursor that provides light.
+			Works from vanity slots.
+			'''
+	}
+
+	HallowedPall: {
+		Tooltip: +25 Range
+		SetBonus:
+			'''
+			12% increased Scepter Class damage.
+			Hold the Down key to fall faster.
+			'''
+		DisplayName: Hallowed Pall
+	}
 }
 
 Projectiles: {
@@ -4703,6 +4731,10 @@ Projectiles: {
 	HypnicJerkExplosion.DisplayName: Hypnic Jerk Explosion
 	HypnicJerkThrown.DisplayName: Hypnic Jerk Thrown
 	SmallTenebrisDart.DisplayName: Small Tenebris Dart
+	BalanceScepterThrown.DisplayName: Balance Scepter Thrown
+	LightFireball.DisplayName: Light Fireball
+	NightFireball.DisplayName: Night Fireball
+	BalanceBolt.DisplayName: Balance Bolt
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.

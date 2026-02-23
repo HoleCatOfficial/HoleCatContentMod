@@ -1,3 +1,4 @@
+using DestroyerTest.Common;
 using DestroyerTest.Content.RiftBiome;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -9,7 +10,7 @@ using Terraria.ObjectData;
 
 namespace DestroyerTest.Content.RiftBiome.RiftSurfaceResources
 {
-	public class Tile_RiftStone : ModTile
+	public class Tile_RiftStoneLighted : ModTile
 	{
 		public override void SetStaticDefaults() {
 			Main.tileSolid[Type] = true;
@@ -17,14 +18,22 @@ namespace DestroyerTest.Content.RiftBiome.RiftSurfaceResources
 			TileID.Sets.BlockMergesWithMergeAllBlock[Type] = true;
 			Main.tileBlockLight[Type] = true;
 			Main.tileBlendAll[Type] = true;
+            Main.tileLighted[Type] = true;
 
 			DustType = DustID.Wraith;
 
 			TileObjectData.addTile(Type);
 
-			AddMapEntry(new Color(0, 0, 0));
+			AddMapEntry(ColorLib.Rift);
 			
 		}
+
+        public override void ModifyLight(int i, int j, ref float r, ref float g, ref float b)
+        {
+            r = ColorLib.DarkRift2.R;
+            g = ColorLib.DarkRift2.G;
+            b = ColorLib.DarkRift2.B;
+        }
 
 		public override void NumDust(int i, int j, bool fail, ref int num) 
 		{
@@ -40,7 +49,7 @@ namespace DestroyerTest.Content.RiftBiome.RiftSurfaceResources
         {
             if (Main.rand.NextBool(24))
 			{
-				WorldGen.PlaceTile(i, j, ModContent.TileType<Tile_RiftStoneLighted>(), true, true);
+				WorldGen.PlaceTile(i, j, ModContent.TileType<Tile_RiftStone>(), true, true);
 			}
         }
 	}

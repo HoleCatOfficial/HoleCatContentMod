@@ -205,11 +205,11 @@ namespace DestroyerTest.Content.Equips
             Player player = drawInfo.drawPlayer;
 			bool scepterActive = player.TryGetModPlayer<TenebrisScepterPlayer>(out var Scepter) && Scepter.Active;
 			bool magicActive = player.TryGetModPlayer<TenebrisMagicPlayer>(out var Magic) && Magic.Active;
-			if (scepterActive)
+			if (scepterActive && drawInfo.shadow == 0)
             {
                 DrawRuneRing(ref drawInfo, 1f, 0.25f, Scepter.Rot);
             }
-			if (magicActive)
+			if (magicActive && drawInfo.shadow == 0)
             {
                 DrawRuneRing(ref drawInfo, 1f, 0.25f, Magic.Rot);
             }

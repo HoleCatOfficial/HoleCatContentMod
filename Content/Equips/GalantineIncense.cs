@@ -137,7 +137,7 @@ namespace DestroyerTest.Content.Equips
             Player player = drawInfo.drawPlayer;
 			if (player.TryGetModPlayer<GalantineIncensePlayer>(out var Incense))
             {
-                if (Incense.Active)
+                if (Incense.Active && drawInfo.shadow == 0)
                 {
                     DrawRingOfFire(ref drawInfo, 0.25f, 0.095f, -Incense.TexRot);
                     DrawRingOfFire(ref drawInfo, 0.125f, 0.085f, -Incense.TexRot * 2);

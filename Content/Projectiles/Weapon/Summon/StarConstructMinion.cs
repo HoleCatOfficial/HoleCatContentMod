@@ -185,28 +185,36 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
 
         private void DoIdleMovement(Player player)
         {
-            if (!player.TryGetModPlayer<StarConstructPlayer>(out var P))
+            if (player.TryGetModPlayer<StarConstructPlayer>(out var P))
             {
-                return;
-            }
+                if (P.idlePositions == null || P.idlePositions.Length == 0)
+                {
+                    Projectile.velocity *= 0.9f;
+                    return;
+                }
 
-            int rank = P.index.IndexOf(Projectile.whoAmI);
-            Vector2 targetPos = P.idlePositions[rank];
+                Vector2 targetPos = P.idlePositions[Main.rand.Next(P.idlePositions.Length)];
 
-            float inertia = 14f;
-            float speed = 12f;
-            Vector2 diff = targetPos - Projectile.Center;
-            if (diff.Length() > speed)
-            {
-                diff = Vector2.Normalize(diff) * speed;
-            }
-            Projectile.velocity = (Projectile.velocity * (inertia - 1f) + diff) / inertia;
+                if (Main.GameUpdateCount % 30 == 0)
+                {
+                    targetPos = P.idlePositions[Main.rand.Next(P.idlePositions.Length)];
+                }
 
-            Projectile.rotation = Projectile.velocity.ToRotation() * 0.1f;
+                float inertia = 14f;
+                float speed = 12f;
+                Vector2 diff = targetPos - Projectile.Center;
+                if (diff.Length() > speed)
+                {
+                    diff = Vector2.Normalize(diff) * speed;
+                }
+                Projectile.velocity = (Projectile.velocity * (inertia - 1f) + diff) / inertia;
 
-            if (Projectile.DistanceSQ(targetPos) > (1200 * 1200))
-            {
-                Projectile.Center = targetPos;
+                Projectile.rotation = Projectile.velocity.ToRotation() * 0.1f;
+
+                if (Projectile.DistanceSQ(targetPos) > (1200 * 1200))
+                {
+                    Projectile.Center = targetPos;
+                }
             }
         }
 

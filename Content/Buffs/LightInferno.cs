@@ -37,12 +37,14 @@ namespace DestroyerTest.Content.Buffs
 
 	public class LITarget : GlobalNPC
     {
-        public override bool InstancePerEntity => true; // Ensures each NPC has its own instance
+        public override bool InstancePerEntity => true;
 
         public bool lifeRegenDebuff;
 
-        public override void ResetEffects(NPC npc) {
-            lifeRegenDebuff = false;
+        public override void ResetEffects(NPC npc) 
+		{
+            
+			lifeRegenDebuff = false;
         }
 
         public override void AI(NPC npc)
@@ -50,9 +52,19 @@ namespace DestroyerTest.Content.Buffs
             base.AI(npc);
             if (lifeRegenDebuff)
             {
-                npc.velocity *= 1.15f;
+                npc.velocity *= 1.2f;
             }
         }
+
+        public override void PostAI(NPC npc)
+        {
+            if (lifeRegenDebuff)
+            {
+                npc.velocity *= 0.8f;
+            }
+        }
+
+
 
         public override void UpdateLifeRegen(NPC npc, ref int damage) 
         {
@@ -64,7 +76,7 @@ namespace DestroyerTest.Content.Buffs
 				PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Main.rand.NextVector2FromRectangle(npc.Hitbox), new Vector2(0f, -0.1f), SoulOfLightColor * 0.35f, 1.0f, 40, ai2: 2);
 				if (Main.rand.NextBool(6))
 				{
-					PRTLoader.NewParticle(PRTLoader.GetParticleID<StarParticle>(), Main.rand.NextVector2FromRectangle(npc.Hitbox), Vector2.Zero, DTColorUtils.Pastel(SoulOfLightColor, 75f), 0.25f);
+					PRTLoader.NewParticle(PRTLoader.GetParticleID<StarParticle>(), Main.rand.NextVector2FromRectangle(npc.Hitbox), Vector2.Zero, DTColorUtils.Pastel(SoulOfLightColor, 75f), 1f);
 				}
 
                 if (npc.lifeRegen > 0)
@@ -100,7 +112,7 @@ namespace DestroyerTest.Content.Buffs
 				PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Main.rand.NextVector2FromRectangle(player.Hitbox), new Vector2(0f, -0.1f),  SoulOfLightColor * 0.35f, 1f, 40, ai2: 2);
 				if (Main.rand.NextBool(6))
 				{
-					PRTLoader.NewParticle(PRTLoader.GetParticleID<StarParticle>(), Main.rand.NextVector2FromRectangle(player.Hitbox), Vector2.Zero, DTColorUtils.Pastel(SoulOfLightColor, 75f), 0.5f);
+					PRTLoader.NewParticle(PRTLoader.GetParticleID<StarParticle>(), Main.rand.NextVector2FromRectangle(player.Hitbox), Vector2.Zero, DTColorUtils.Pastel(SoulOfLightColor, 75f), 1f);
 				} 
 				if (Player.lifeRegen > 0)
 					Player.lifeRegen = 0;

@@ -14,7 +14,6 @@ namespace DestroyerTest.Common.Systems
 
         public override void TileCountsAvailable(ReadOnlySpan<int> tileCounts) {
             RiftSurfaceBlockCount =
-                tileCounts[ModContent.WallType<Wall_RiftWall>()] +
                 tileCounts[ModContent.TileType<Tile_RiftDirt>()] +
                 tileCounts[ModContent.TileType<Tile_RiftStone>()];
         }
@@ -28,7 +27,6 @@ namespace DestroyerTest.Common.Systems
         {
             RiftDesertBlockCount =
                 tileCounts[ModContent.TileType<Tile_RiftSiltStone>()] +
-                tileCounts[ModContent.WallType<Wall_RiftSiltStoneWall>()] +
                 tileCounts[ModContent.TileType<Tile_HardenedRiftSilt>()] +
                 tileCounts[ModContent.TileType<Tile_RiftSilt>()];
         }
