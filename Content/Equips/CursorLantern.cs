@@ -91,7 +91,7 @@ namespace DestroyerTest.Content.Equips
                 Vector2 mouseDelta = Main.MouseWorld - prevMouseWorld;
                 prevMouseWorld = Main.MouseWorld;
 
-                float targetRotation = MathHelper.Clamp(mouseDelta.X * 0.5f, -4f, 4f);
+                float targetRotation = MathHelper.Clamp(mouseDelta.X * 0.5f, -2f, 2f);
                 swayRotation = MathHelper.Lerp(swayRotation, targetRotation, 0.1f);
 
                 if (drawInfo.shadow == 0)

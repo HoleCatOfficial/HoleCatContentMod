@@ -40,7 +40,7 @@ namespace DestroyerTest.Content.SummonItems
             Item.value = Item.buyPrice(0, 0, 20, 0);
             Item.rare = ModContent.RarityType<StellarRarity>();
             Item.DamageType = DamageClass.Summon;
-            Item.damage = 16;
+            Item.damage = 22;
             Item.autoReuse = true;
             Item.buffTime = 120;
             Item.buffType = ModContent.BuffType<StarConstructMinionBuff>();

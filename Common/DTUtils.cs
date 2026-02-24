@@ -159,6 +159,22 @@ namespace DestroyerTest.Common
             spriteBatch.Draw(barFG, drawPos, frameCrop, color * 0.8f, 0f, barOrigin, barScale, 0f, 0f);
         }
 
+        public static void DrawHallowChargeBar(float barScale, Vector2 position, float progress, float Opacity)
+        {
+            var barBG = DTAssetLib.HallowedBar.Back.Value;
+            var barFG = DTAssetLib.HallowedBar.Front.Value;
+            var barFrame = DTAssetLib.HallowedBar.Frame.Value;
+
+            Vector2 barOrigin = barBG.Size() * 0.5f;
+            Vector2 drawPos = position;
+            Rectangle frameCrop = new Rectangle(0, 0, (int)(progress * barFG.Width), barFG.Height);
+
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            spriteBatch.Draw(barBG, drawPos, null, Color.White * Opacity, 0f, barOrigin, barScale, 0f, 0f);
+            spriteBatch.Draw(barFG, drawPos, frameCrop, Color.White * Opacity, 0f, barOrigin, barScale, 0f, 0f);
+            spriteBatch.Draw(barFrame, drawPos, null, Color.White * Opacity, 0f, barOrigin, barScale, 0f, 0f);
+        }
+
         public static void AddStrips(List<ColoredVertex> List, List<Vector2> Vex, int Index, Vector2 off1, Vector2 off2, float Fade, Color CLR, float stripMotion = 0f)
         {
             List.Add(new ColoredVertex(Vex[Index] - Main.screenPosition + off1, new Vector3(Fade - stripMotion, 1, 1), CLR));
@@ -1167,6 +1183,8 @@ namespace DestroyerTest.Common
         public static Color SoulOfLightColor = new Color(220, 29, 183);
         public static Color SoulOfNightColor = new Color(123, 29, 120);
 
+        public static Color PossessedScepterColor = new Color(60, 121, 164);
+
         /// <summary>
         /// The color used for drawing the aura and hit effects of the Metallurgy System Javelins.
         /// </summary>
@@ -1518,6 +1536,12 @@ namespace DestroyerTest.Common
         public static Asset<Texture2D> QuixotismPowerAura = ModContent.Request<Texture2D>($"{ExtrasPath}/QuixotismPowerAura", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> CursorLanternTexture = ModContent.Request<Texture2D>($"{ExtrasPath}/CursorLantern", AssetRequestMode.AsyncLoad);
 
+        public struct HallowedBar
+        {
+            public static Asset<Texture2D> Back = ModContent.Request<Texture2D>($"{ExtrasPath}/HallowedBarBack", AssetRequestMode.AsyncLoad);
+            public static Asset<Texture2D> Front = ModContent.Request<Texture2D>($"{ExtrasPath}/HallowedBarFront", AssetRequestMode.AsyncLoad);
+            public static Asset<Texture2D> Frame = ModContent.Request<Texture2D>($"{ExtrasPath}/HallowedBarFrame", AssetRequestMode.AsyncLoad);
+        }
         public static Asset<Texture2D> MiniRoseFragment(int Variant)
         {
             return ModContent.Request<Texture2D>($"{ExtrasPath}/MiniRoseFragment{Variant}", AssetRequestMode.AsyncLoad);

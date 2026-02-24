@@ -44,7 +44,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
         }
         public override bool PreDraw(ref Color lightColor)
         {
-            Opus.DrawProjectileShadowsRotating(Projectile, 3, Color.Black);
+            Opus.DrawProjectileShadowsRotating(Projectile, 3, Color.Black, 0.2f);
 
             Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, TextureAssets.Projectile[Projectile.type].Value.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
             return false;

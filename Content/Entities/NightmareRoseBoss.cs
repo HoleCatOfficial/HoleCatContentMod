@@ -342,7 +342,9 @@ namespace DestroyerTest.Content.Entities
 
             if (anyNodesAlive)
             {
-                Opus.DrawNPCShadowsRotating(NPC, 6, ColorLib.CursedFlames);
+                Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+                Opus.DrawNPCShadowsRotating(NPC, NPC.frame, 6, ColorLib.CursedFlames, 0.2f);
+                Opus.ReturnToDefaultDrawing(spriteBatch);
             }
 
             if (SecretSeed())

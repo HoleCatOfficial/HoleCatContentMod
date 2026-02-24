@@ -29,9 +29,13 @@ namespace DestroyerTest.Content.Equips
             }
 		}
 
-        public override bool CanAccessoryBeEquippedWith(Item equippedItem, Item incomingItem, Player player)
+
+		public override void AddRecipes()
         {
-            return incomingItem.type != ModContent.ItemType<BroochOfNight>() && incomingItem.type != ModContent.ItemType<BroochOfBalance>();
+            CreateRecipe()
+                .AddIngredient(ItemID.SoulofLight, 20)
+                .AddIngredient(ItemID.Ectoplasm, 10)
+            .Register();
         }
     }
 }

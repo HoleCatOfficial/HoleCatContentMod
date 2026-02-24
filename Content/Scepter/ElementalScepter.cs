@@ -36,7 +36,7 @@ namespace DestroyerTest.Content.Scepter
             base.SetDefaults();
 
             // Override stats unique to this scepter
-            ShootDMG = 67;
+            ShootDMG = 70;
             ShootCrit = 30;
             ThrowCrit = 14;
             KB = 4;
@@ -72,7 +72,10 @@ namespace DestroyerTest.Content.Scepter
             ModContent.ProjectileType<IceShot>(),
             ModContent.ProjectileType<ElectricShot>(),
             ModContent.ProjectileType<RiftShot>(),
+            ModContent.ProjectileType<RiftShot2>(),
             ModContent.ProjectileType<ShadowFireShot>(),
+            ModContent.ProjectileType<NightShot>(),
+            ModContent.ProjectileType<LightShot2>(),
             ModContent.ProjectileType<VenomShot>()
         };
         
@@ -178,10 +181,17 @@ namespace DestroyerTest.Content.Scepter
                 .AddIngredient<ThunderScepter>()
                 .AddIngredient<ShadowScepter>()
                 .AddIngredient<StellarFoxScepter>()
+                .AddIngredient<BalanceScepter>()
                 .AddIngredient<InfectedScepter>()
+                .AddIngredient<HeliciteScepter>()
                 .AddIngredient<Vesper>(16)
                 .AddIngredient(ItemID.GoldBar, 18)
                 .AddIngredient<LifeEcho>(100)
+                .AddIngredient(ItemID.SoulofFright, 12)
+                .AddIngredient(ItemID.SoulofSight, 12)
+                .AddIngredient(ItemID.SoulofMight, 12)
+                .AddIngredient(ItemID.SoulofLight, 12)
+                .AddIngredient(ItemID.SoulofNight, 12)
                 .AddTile(TileID.MythrilAnvil)
             .Register();
         }

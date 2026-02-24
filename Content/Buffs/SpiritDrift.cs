@@ -19,7 +19,14 @@ namespace DestroyerTest.Content.Buffs
             BuffID.Sets.LongerExpertDebuff[Type] = true; // If this buff is a debuff, setting this to true will make this buff last twice as long on players in expert mode
         }
 
-        // Allows you to make this buff give certain effects to the given player
+        public override void Update(Player player, ref int buffIndex)
+        {
+            if (player.TryGetModPlayer<SDPlayer>(out var Drift))
+            {
+                Drift.Levitation = true;
+            }
+        }
+
         public override void Update(NPC target, ref int buffIndex)
         {
             if (target.TryGetGlobalNPC<SDTarget>(out var modNPC))
@@ -61,4 +68,33 @@ namespace DestroyerTest.Content.Buffs
             }
         }
     }
+
+    public class SDPlayer : ModPlayer
+	{
+		public bool Levitation;
+
+		public override void ResetEffects()
+		{
+			Levitation = false;
+		}
+
+        public override void PostUpdateBuffs()
+        {
+            if (Levitation)
+			{
+                Player.velocity.Y = -4f;
+                Player.velocity.X *= 0.35f;
+			}
+        }
+		public override void UpdateBadLifeRegen()
+		{
+			if (Levitation)
+			{
+				if (Player.lifeRegen > 0)
+					Player.lifeRegen = 0;
+				Player.lifeRegenTime = 0;
+				Player.lifeRegen -= 6;
+			}
+		}
+	}
 }

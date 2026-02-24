@@ -1,6 +1,7 @@
 
 using System.Collections.Generic;
 using DestroyerTest.Common;
+using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.Tiles;
 using DestroyerTest.Content.Tiles.RiftConfigurator;
@@ -20,7 +21,6 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
         {
             ItemsThatElementalPendantCannotPairWith.AddRange(InfectedPendant.ItemsThatInfectedPendantCannotPairWith);
             ItemsThatElementalPendantCannotPairWith.AddRange(PendantofUnity.ItemsThatPendantofUnityCannotPairWith);
-
         }
         public override void SetDefaults()
         {
@@ -37,12 +37,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
             ModContent.ItemType<PendantofUnity>(),
         };
 
-        public override bool CanAccessoryBeEquippedWith(Item equippedItem, Item incomingItem, Player player)
-        {
-            return !ItemsThatElementalPendantCannotPairWith.Contains(incomingItem.type);
-        }
-
-        public float DMGBonus = 1.12f;
+        public float DMGBonus = 0.375f;
         public static readonly float CritBonus = 1.2f;
         public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs((DMGBonus - 1f).ToString("P1"), CritBonus.ToString("F1") + "%");
 
@@ -65,8 +60,17 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             ActivatePlayer(player);
-            player.GetDamage(ModContent.GetInstance<ScepterClass>()) *= DMGBonus;
+            player.GetDamage(ModContent.GetInstance<ScepterClass>()) += DMGBonus;
             player.GetCritChance(ModContent.GetInstance<ScepterClass>()) += CritBonus;
+
+            player.GetArmorPenetration<ScepterClass>() += 5f;
+            if (Main.expertMode)
+            {
+                player.AddBuff(ModContent.BuffType<ScepterImbueFB>(), 60);
+                player.AddBuff(ModContent.BuffType<ScepterImbueHF>(), 60);
+                player.AddBuff(ModContent.BuffType<ScepterImbueCF>(), 60);
+                player.AddBuff(ModContent.BuffType<ScepterImbueIchor>(), 60);
+            }
         }
 
         public override void AddRecipes()
@@ -74,6 +78,9 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
             CreateRecipe()
                 .AddIngredient<InfectedPendant>()
                 .AddIngredient<PendantofUnity>()
+                .AddIngredient<FrigidPendant>()
+                .AddIngredient<SmolderingPendant>()
+                .AddIngredient<HelicitePendant>()
                 .AddTile(TileID.MythrilAnvil)
                 .Register();
         }

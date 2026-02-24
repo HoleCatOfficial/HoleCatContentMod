@@ -3953,6 +3953,12 @@ Items: {
 			'''
 			Increases Scepter Class Damage by {0}.
 			Increases Scepter Class crit chance by {1}.
+			Increases Scepter Class armor penetration by 5.
+			You get the following imbues in Expert Mode:
+			[i:DestroyerTest/InfectedPendant] Cursed Flames,
+			[i:DestroyerTest/InfectedPendant] Ichor,
+			[i:DestroyerTest/FrigidPendant] Frostbite,
+			[i:DestroyerTest/SmolderingPendant] Hellfire
 			'''
 		DisplayName: Elemental Pendant
 	}
@@ -4174,6 +4180,11 @@ Items: {
 			Hold the Down key to fall faster.
 			'''
 		DisplayName: Hallowed Pall
+	}
+
+	HeliciteScroll: {
+		DisplayName: Helicite Scroll
+		Tooltip: ""
 	}
 }
 
@@ -4735,6 +4746,7 @@ Projectiles: {
 	LightFireball.DisplayName: Light Fireball
 	NightFireball.DisplayName: Night Fireball
 	BalanceBolt.DisplayName: Balance Bolt
+	PosessedScepterSoulShot.DisplayName: Posessed Scepter Soul Shot
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.

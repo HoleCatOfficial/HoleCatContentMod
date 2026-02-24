@@ -1,6 +1,7 @@
 
 using System.Collections.Generic;
 using DestroyerTest.Common;
+using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Projectiles.Weapon.Magic;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.Tiles;
@@ -34,10 +35,6 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
             ModContent.ItemType<ElementalPendant>()
         };
 
-        public override bool CanAccessoryBeEquippedWith(Item equippedItem, Item incomingItem, Player player)
-        {
-            return !ItemsThatInfectedPendantCannotPairWith.Contains(incomingItem.type);
-        }
 
         public static readonly int CritBonus = 13;
         public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(CritBonus.ToString("F1") + "%");
@@ -58,6 +55,8 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
 			}
 
             player.GetCritChance(ModContent.GetInstance<ScepterClass>()) += CritBonus;
+            player.AddBuff(ModContent.BuffType<ScepterImbueCF>(), 60);
+            player.AddBuff(ModContent.BuffType<ScepterImbueIchor>(), 60);
         }
 
         public override void AddRecipes()

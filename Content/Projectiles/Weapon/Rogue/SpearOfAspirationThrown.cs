@@ -52,7 +52,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
         public override bool PreDraw(ref Color lightColor)
         {
             Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-            Opus.DrawProjectileShadowsRotating(Projectile, 8, Color.White);
+            Opus.DrawProjectileShadowsRotating(Projectile, 8, Color.White, 0.2f);
             Opus.ReturnToDefaultDrawing(Main.spriteBatch);
 
             Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, TextureAssets.Projectile[Projectile.type].Value.Size() / 2, Projectile.scale, SpriteEffects.None, 0);

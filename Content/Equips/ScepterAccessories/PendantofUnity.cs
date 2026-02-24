@@ -34,14 +34,10 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
             ModContent.ItemType<TitanPendant>()
         };
 
-        public override bool CanAccessoryBeEquippedWith(Item equippedItem, Item incomingItem, Player player)
-        {
-            return !ItemsThatPendantofUnityCannotPairWith.Contains(incomingItem.type);
-        }
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.GetDamage(ModContent.GetInstance<ScepterClass>()) += 0.3f;
+            player.GetDamage(ModContent.GetInstance<ScepterClass>()) += 0.2f;
             player.GetArmorPenetration(ModContent.GetInstance<ScepterClass>()) += 10;
             ScepterClassStats.Range += 120;
         }

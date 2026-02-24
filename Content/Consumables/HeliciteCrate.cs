@@ -9,6 +9,7 @@ using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
+using DestroyerTest.Content.Equips.ScepterAccessories;
 
 namespace DestroyerTest.Content.Consumables
 {
@@ -103,7 +104,8 @@ namespace DestroyerTest.Content.Consumables
 			itemLoot.Add(new OneFromRulesRule(2, highendBait));
 
 			IItemDropRule[] MiscLoot = [
-				ItemDropRule.Common(ModContent.ItemType<HeliciteShank>(), 9, 1, 1)
+				ItemDropRule.Common(ModContent.ItemType<HeliciteShank>(), 9, 1, 1),
+				ItemDropRule.Common(ModContent.ItemType<HeliciteScroll>(), 4, 1, 1)
 			];
 			itemLoot.Add(new OneFromRulesRule(2, MiscLoot));
 		}

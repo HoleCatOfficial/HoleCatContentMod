@@ -42,10 +42,6 @@ namespace DestroyerTest.Content.Equips
             ItemID.AnkhShield,
         };
 
-        public override bool CanAccessoryBeEquippedWith(Item equippedItem, Item incomingItem, Player player)
-        {
-            return incomingItem.type != ModContent.ItemType<BroochOfNight>() && incomingItem.type != ModContent.ItemType<BroochOfLight>() && !Shields.Contains(incomingItem.type);
-        }
 
         public override void AddRecipes()
         {

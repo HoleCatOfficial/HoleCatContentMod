@@ -9,7 +9,6 @@ using OpusLib;
 using System;
 using Terraria.DataStructures;
 using Terraria.Audio;
-using OpusLib;
 
 namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
 {
