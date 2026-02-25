@@ -646,7 +646,7 @@ namespace DestroyerTest.Common
         {
             if (tail == null || tail.Count < 2)
             {
-                Main.NewText("DrawRiftBall: Tail is null or too short. Aborted draw.", Color.Red);
+                //Main.NewText("DrawRiftBall: Tail is null or too short. Aborted draw.", Color.Red);
                 return;
             }
 

@@ -70,7 +70,7 @@ namespace DestroyerTest.Content.Scepter
                 Opus.NewParticleFloatAI(PRTLoader.GetParticleID<Boom3>(), Main.MouseWorld, Vector2.Zero, ColorLib.CursedFlames, 0.001f, 0.2f);
                 Opus.RadialParticleRandomDir(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], 16, Main.MouseWorld, 1, ColorLib.InfectedGradient, 0.75f, 2, 30, ai2: 2);
 
-                DTUtils.InfectedScepter_RingProjectileOutwardAlternating(ModContent.ProjectileType<InfectedCrystalCF>(), ModContent.ProjectileType<InfectedCrystalIchor>(), 6, Main.MouseWorld, 20, Item.damage / 2, 10, 6, RandomOffset: true);
+                DTUtils.InfectedScepter_RingProjectileOutwardAlternating(ModContent.ProjectileType<InfectedCrystalCF>(), ModContent.ProjectileType<InfectedCrystalIchor>(), 6, Main.MouseWorld, 20, (int)(Item.damage * 0.75f), 10, 6, RandomOffset: true);
                 //Opus.RingProjectileOutward(ModContent.ProjectileType<InfectedCrystalIchor>(), 6, Main.MouseWorld, 20, Item.damage / 2, 10, 4, RandomOffset: true);
             }
             return true;

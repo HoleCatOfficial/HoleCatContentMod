@@ -20,8 +20,6 @@ namespace DestroyerTest.Content.RiftBiome.RiftSurfaceResources
 
 			DustType = DustID.Wraith;
 
-			TileObjectData.addTile(Type);
-
 			AddMapEntry(new Color(0, 0, 0));
 			
 		}
@@ -35,13 +33,5 @@ namespace DestroyerTest.Content.RiftBiome.RiftSurfaceResources
 		{
 			style = ModContent.GetInstance<RiftWaterfallStyle>().Slot;
 		}
-
-        public override void RandomUpdate(int i, int j)
-        {
-            if (Main.rand.NextBool(24))
-			{
-				WorldGen.PlaceTile(i, j, ModContent.TileType<Tile_RiftStoneLighted>(), true, true);
-			}
-        }
 	}
 }

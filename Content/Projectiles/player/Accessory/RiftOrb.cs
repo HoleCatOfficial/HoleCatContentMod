@@ -90,10 +90,28 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
             Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, ModContent.DustType<ColorableNeonDust>(), 0f, 0f, 0, ColorLib.Rift, 1.2f);
         }
 
+        private ModItem RE = null;
         private bool Validate(Player owner)
         {
+            if (ModLoader.HasMod("FranciumMultiCrossMod"))
+            {
+                if (ModLoader.TryGetMod("FranciumMultiCrossMod", out var Enchantments))
+                {
+                    if (Enchantments.TryFind<ModItem>("RiftEnchantment", out var RiftEnchant))
+                    {
+                        RE = RiftEnchant;
+                    }
+                }
+            }
             foreach(Item i in owner.armor)
             {
+                if (RE != null)
+                {
+                    if (i.type == RE.Type)
+                    {
+                        return true;
+                    }
+                }
                 if (i.type == ModContent.ItemType<RiftCanister>())
                 {
                     return true;

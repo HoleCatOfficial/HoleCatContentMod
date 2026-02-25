@@ -14,8 +14,7 @@ namespace DestroyerTest.Content.RiftArsenal
 	public class RiftSpine : RechargeItem
 	{
 		public override void SetStaticDefaults() {
-			ItemID.Sets.ItemsThatCountAsBombsForDemolitionistToSpawn[Type] = true;
-			Item.ResearchUnlockCount = 99;
+
 		}
 
 		public override void SetDefaults() {
@@ -39,7 +38,7 @@ namespace DestroyerTest.Content.RiftArsenal
 
 		public override void AddRecipes() {
 			CreateRecipe()
-				.AddIngredient<RiftMaker>(2)
+				.AddIngredient<RiftMaker>()
                 .AddIngredient<Item_HeliciteCrystal>(15)
 				.AddTile<Tile_RiftConfiguratorWeaponry>()
 				.Register();

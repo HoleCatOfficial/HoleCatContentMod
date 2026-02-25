@@ -72,7 +72,7 @@ namespace DestroyerTest.Content.Entities
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
 			Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-			Opus.DrawNPCShadowsRotating(NPC, NPC.frame, 1f, ColorLib.PossessedScepterColor, 0.2f);
+			Opus.DrawNPCShadowsRotating(NPC, NPC.frame, 2f, ColorLib.PossessedScepterColor, 0.2f);
 			Opus.ReturnToDefaultDrawing(spriteBatch);
             return true;
         }

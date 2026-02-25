@@ -3902,11 +3902,12 @@ Items: {
 	}
 
 	HeliciteHeadpiece: {
-		Tooltip: ""
+		Tooltip: 8% increased scepter class damage.
 		SetBonus:
 			'''
 			You get a period of three seconds of immunity.
 			You can trigger this with the armor set bonus key, but, it will trigger on its own if you get hit by an NPC (hostile projectiles do not trigger the effect).
+			When triggered, you release a burst of homing sparks.
 			The "dodge" has a cooldown of 10 seconds.
 			'''
 		DisplayName: Helicite Headpiece
@@ -4185,6 +4186,11 @@ Items: {
 	HeliciteScroll: {
 		DisplayName: Helicite Scroll
 		Tooltip: ""
+	}
+
+	SpiritBauble: {
+		Tooltip: Grants immunity to Spirit Drift.
+		DisplayName: Spirit Bauble
 	}
 }
 
@@ -5195,11 +5201,15 @@ NPCs: {
 	RiftDiggerTail.DisplayName: Rift Digger Tail
 	RiftDiggerHead.DisplayName: Rift Digger Head
 	RiftDiggerBody.DisplayName: Rift Digger Body
-	PossessedScepter.DisplayName: Possessed Scepter
 	VampireBoss.DisplayName: Vampire Boss
 	WyvernCorpseBody1.DisplayName: Wyvern Corpse
 	WyvernCorpseBody2.DisplayName: Wyvern Corpse
 	WyvernCorpseBody3.DisplayName: Wyvern Corpse
+
+	PossessedScepter: {
+		DisplayName: Possessed Scepter
+		BestiaryEntry1: A scepter once belonging to an ancient leader. The once brilliant gem atop it has now become filled with spirits.
+	}
 
 	ConstitutionBoss: {
 		DisplayName: Constitution
@@ -5290,8 +5300,8 @@ NPCs: {
 
 	Scholar: {
 		DisplayName: Scholar
-		BestiaryEntry1: ""
-		BestiaryEntry2: ""
+		BestiaryEntry1: A traveler from a faraway land. They washed up on the shores of your island with only their bag full of notebooks and stationary.
+		BestiaryEntry2: They seek to learn all about this island and its inhabitants, and is happy to recieve your help in that goal.
 
 		TownNPCMood: {
 			Content: I feel comforable here.
@@ -5326,12 +5336,12 @@ NPCs: {
 
 	CursedFlameNodeMB: {
 		DisplayName: Cursed Flame Node
-		BestiaryEntry1: ""
+		BestiaryEntry1: A defense mechanism created by the corruption in response to its waning ability to spread after the felling of plantera. It stays idle, empowering enemies nearby to allow them to better defend the hive from invaders. If attacked, it will snap into action to join in defending the hive.
 	}
 
 	IchorNodeMB: {
 		DisplayName: Ichor Node
-		BestiaryEntry1: ""
+		BestiaryEntry1: A defense mechanism created by the crimson in response to its waning ability to spread after the felling of plantera. It stays idle, empowering enemies nearby to allow them to better defend the hive from invaders. If attacked, it will snap into action to join in defending the hive.
 	}
 
 	ShadeThrower: {
@@ -5341,7 +5351,7 @@ NPCs: {
 
 	TenebrisElemental: {
 		DisplayName: Tenebris Elemental
-		BestiaryEntry1: ""
+		BestiaryEntry1: Being almost entirely composed of shimmering fire, they are unstable, aggressive, and rather unintelligent.
 	}
 
 	DarkArchmage: {

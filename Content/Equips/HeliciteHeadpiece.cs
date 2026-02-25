@@ -36,9 +36,15 @@ namespace DestroyerTest.Content.Equips
 			return body.type == ModContent.ItemType<HeliciteRobe>() && legs.type == ModContent.ItemType<HeliciteChausses>();
 		}
 
+        public override void UpdateEquip(Player player)
+        {
+            player.GetDamage<ScepterClass>() += 0.08f;
+        }
+
 		public override void UpdateArmorSet(Player player) 
 		{
             player.DefaultSetBonusText(player.armor[0]);
+            
             if (player.TryGetModPlayer<HeliciteScepterPlayer>(out var Scepter))
             {
                 Scepter.Active = true;

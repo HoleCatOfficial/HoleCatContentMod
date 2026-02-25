@@ -42,6 +42,7 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
                 .AddIngredient(ItemID.AnkhCharm, 1)
                 .AddIngredient<BroochOfBalance>(1)
                 .AddIngredient<RiftenOverloader>(1)
+                .AddIngredient<SpiritBauble>(1)
                 .AddIngredient(ItemID.SpiritFlame, 1)
                 .AddIngredient(ItemID.OmegaBanner, 1)
                 .AddIngredient(ItemID.AnkhBanner, 1)
@@ -90,6 +91,7 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
                 Player.buffImmune[ModContent.BuffType<Muddy>()] = true;
                 Player.buffImmune[ModContent.BuffType<NightInferno>()] = true;
                 Player.buffImmune[ModContent.BuffType<LightInferno>()] = true;
+                Player.buffImmune[ModContent.BuffType<SpiritDrift>()] = true;
                 Player.noKnockback = true;
             }
         }
@@ -204,7 +206,7 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
                 Player.immune = true;
                 Player.eocDash = DashTimer;
                 Player.armorEffectDrawShadowEOCShield = true;
-                if (Main.GameUpdateCount % 5 == 0)
+                if (Player.miscCounter % 5 == 0)
                 {
                     Projectile.NewProjectile(Player.GetSource_Misc("DjedPillar"), Main.rand.NextVector2FromRectangle(Player.Hitbox), (Player.velocity * 0.5f).RotatedByRandom(1), ModContent.ProjectileType<DesertSpiritDart>(), 25, 8, Player.whoAmI);
                     SoundEngine.PlaySound(SoundID.DD2_BetsyWindAttack, Player.position);
@@ -223,31 +225,34 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
         private Asset<Texture2D> Djed => ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/DjedDash");
         public override void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
         {
-            if (Player.direction == 1 && DashTimer > 0)
+            if (drawInfo.shadow == 0)
             {
-                Main.EntitySpriteDraw(
-                    Djed.Value,
-                    Player.Center - Main.screenPosition + new Vector2(12, Player.gfxOffY),
-                    null,
-                    new Color(255, 255, 255) * ((float)DashTimer / DashDuration),
-                    Player.bodyRotation,
-                    Djed.Value.Size() / 2f,
-                    1f,
-                    SpriteEffects.None,
-                    0);
-            }
-            if (Player.direction == -1 && DashTimer > 0)
-            {
-                Main.EntitySpriteDraw(
-                    Djed.Value,
-                    Player.Center - Main.screenPosition + new Vector2(-12, Player.gfxOffY),
-                    null,
-                    new Color(255, 255, 255) * ((float)DashTimer / DashDuration),
-                    Player.bodyRotation,
-                    Djed.Value.Size() / 2f,
-                    1f,
-                    SpriteEffects.FlipHorizontally,
-                    0);
+                if (Player.direction == 1 && DashTimer > 0)
+                {
+                    Main.EntitySpriteDraw(
+                        Djed.Value,
+                        Player.Center - Main.screenPosition + new Vector2(12, Player.gfxOffY),
+                        null,
+                        new Color(255, 255, 255) * ((float)DashTimer / DashDuration),
+                        Player.bodyRotation,
+                        Djed.Value.Size() / 2f,
+                        1f,
+                        SpriteEffects.None,
+                        0);
+                }
+                if (Player.direction == -1 && DashTimer > 0)
+                {
+                    Main.EntitySpriteDraw(
+                        Djed.Value,
+                        Player.Center - Main.screenPosition + new Vector2(-12, Player.gfxOffY),
+                        null,
+                        new Color(255, 255, 255) * ((float)DashTimer / DashDuration),
+                        Player.bodyRotation,
+                        Djed.Value.Size() / 2f,
+                        1f,
+                        SpriteEffects.FlipHorizontally,
+                        0);
+                }
             }
         }
     }
