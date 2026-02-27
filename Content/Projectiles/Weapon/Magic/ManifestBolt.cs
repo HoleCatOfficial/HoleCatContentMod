@@ -3,10 +3,10 @@ using System.Formats.Tar;
 using System.Runtime.CompilerServices;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Particles.CurseRunes;
 using InnoVault.PRT;
-using InnoVault.Trails;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -15,10 +15,11 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
+namespace DestroyerTest.Content.Projectiles.Weapon
 {
-    public class TenebrisBulletProjectile : ModProjectile
+    public class ManifestBolt : ModProjectile
     {
+        public override string Texture => DTUtils.NoTexture;
         private NPC HomingTarget
         {
             get => Projectile.ai[0] == 0 ? null : Main.npc[(int)Projectile.ai[0] - 1];
@@ -27,8 +28,6 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
                 Projectile.ai[0] = value == null ? 0 : value.whoAmI + 1;
             }
         }
-
-        public int Variant = Main.rand.Next(1, 4);
 
         public ref float DelayTimer => ref Projectile.ai[1];
 
@@ -39,9 +38,9 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
 
         public override void SetDefaults()
         {
-            Projectile.width = 36; // The width of projectile hitbox
-            Projectile.height = 36; // The height of projectile hitbox
-            Projectile.DamageType = DamageClass.Ranged; // What type of damage does this projectile affect?
+            Projectile.width = 16; // The width of projectile hitbox
+            Projectile.height = 16; // The height of projectile hitbox
+            Projectile.DamageType = DamageClass.Magic; // What type of damage does this projectile affect?
             Projectile.friendly = true; // Can the projectile deal damage to enemies?
             Projectile.hostile = false; // Can the projectile deal damage to the player?
             Projectile.ignoreWater = true; // Does the projectile's speed be influenced by water?
@@ -49,46 +48,22 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
             Projectile.tileCollide = false;
             Projectile.penetrate = 1;
             Projectile.hide = true;
-            Projectile.extraUpdates = 160;
+            Projectile.extraUpdates = 200;
         }
 
-        public void ColorAffectedFX(Color color)
+        public override bool? CanHitNPC(NPC target)
         {
-            Lighting.AddLight(Projectile.Center, color.ToVector3() * 0.6f);
-            PRTLoader.NewParticle(Projectile.Center, new Vector2((Projectile.velocity.X / 2) + Main.rand.NextFloat(-1, 1), (Projectile.velocity.Y / 2) + Main.rand.NextFloat(-1, 1)), PRTLoader.GetParticleID<SimpleParticle>(), color, 0.45f);
-            if (Main.rand.NextBool(5))
-            {
-                PRTLoader.NewParticle(Projectile.Center, new Vector2((Projectile.velocity.X / 2) + Main.rand.NextFloat(-0.5f, 0.5f), (Projectile.velocity.Y / 2) + Main.rand.NextFloat(-0.5f, 0.5f)), PRTLoader.GetParticleID<StarParticle>(), Color.White, 0.5f);
-            }
+            return DelayTimer >= 10;
         }
 
         public override void AI()
         {
-            if (Variant == 0)
-            {
-                ColorAffectedFX(ColorLib.TenebrisBlue);
-            }
-            if (Variant == 1)
-            {
-                ColorAffectedFX(ColorLib.TenebrisMagenta);
-            }
-            if (Variant == 2)
-            {
-                ColorAffectedFX(ColorLib.TenebrisBeige);
-            }
-
-            // Spawn dust along the trail (tweak DustSpawnStep for performance)
-            Color color = Variant switch
-            {
-                0 => ColorLib.TenebrisBlue,
-                1 => ColorLib.TenebrisMagenta,
-                _ => ColorLib.TenebrisBeige
-            };
-
-            
-            var d = Dust.NewDustPerfect(Projectile.Center, DustID.TintableDustLighted, Vector2.Zero, 0, color, 1f);
+            var d = Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<ColorableNeonDust>(), Vector2.Zero, 50,  Color.White, 0.5f);
             d.noGravity = true;
             
+
+            Lighting.AddLight(Projectile.Center,  Color.White.ToVector3() * 0.6f);
+            PRTLoader.NewParticle(Projectile.Center, Vector2.Zero, PRTLoader.GetParticleID<SimpleParticle>(),  Color.White * 0.1f, 0.25f);
 
             if (DelayTimer < 10)
             {
@@ -96,7 +71,7 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
                 return;
             }
 
-            float maxDetectRadius = 400f;
+            float maxDetectRadius = 200f;
 
             if (HomingTarget == null)
             {
@@ -145,20 +120,6 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
         public bool IsValidTarget(NPC target)
         {
             return target.CanBeChasedBy();
-        }
-
-        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
-        {
-            if (hit.Crit)
-            {
-                SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/HopeScabbardTele") with { PitchVariance = 0.2f, Volume = 0.15f });
-                ShimmeringFlames.ShimmerBurn(target);
-            }
-        }
-
-        public override void OnKill(int timeLeft)
-        {
-            PRTLoader.NewParticle(PRTLoader.GetParticleID<SmallShine>(), Projectile.Center, Vector2.Zero, Color.White, 0.5f);
         }
 	}
 }

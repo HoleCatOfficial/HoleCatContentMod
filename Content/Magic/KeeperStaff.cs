@@ -35,7 +35,7 @@ namespace DestroyerTest.Content.Magic
             Item.crit = 16;
             Item.noMelee = false;
             Item.noUseGraphic = false;
-            Item.UseSound = new SoundStyle("DestroyerTest/Assets/Audio/Corpse/CorpseRoar2") with { PitchVariance = 1.0f, Volume = 4 };
+            Item.UseSound = new SoundStyle("DestroyerTest/Assets/Audio/Corpse/Enrage") with { PitchVariance = 1.0f, Volume = 4 };
 
             Item.shoot = ModContent.ProjectileType<KeeperSoulProj>();
         }

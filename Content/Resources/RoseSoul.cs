@@ -20,7 +20,6 @@ namespace DestroyerTest.Content.Resources
             Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(5, 8));
             ItemID.Sets.AnimatesAsSoul[Item.type] = true;
             ItemID.Sets.ItemNoGravity[Item.type] = true;
-            Item.ResearchUnlockCount = 1;
         }
 
         public override void SetDefaults()
@@ -36,6 +35,12 @@ namespace DestroyerTest.Content.Resources
             Item.useTime = 120;
             Item.useAnimation = 120;
         }
+
+        public override bool CanResearch()
+        {
+            return false;
+        }
+
 
         public override bool CanUseItem(Player player)
         {

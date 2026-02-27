@@ -1535,6 +1535,7 @@ namespace DestroyerTest.Common
         public static Asset<Texture2D> ShieldRing = ModContent.Request<Texture2D>($"{ParticlePath}/ShieldRing", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> QuixotismPowerAura = ModContent.Request<Texture2D>($"{ExtrasPath}/QuixotismPowerAura", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> CursorLanternTexture = ModContent.Request<Texture2D>($"{ExtrasPath}/CursorLantern", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> ManifestStar = ModContent.Request<Texture2D>($"{ExtrasPath}/ManifestHoldoutStar", AssetRequestMode.AsyncLoad);
 
         public struct HallowedBar
         {

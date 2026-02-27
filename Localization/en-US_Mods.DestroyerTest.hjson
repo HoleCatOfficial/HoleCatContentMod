@@ -4192,6 +4192,11 @@ Items: {
 		Tooltip: Grants immunity to Spirit Drift.
 		DisplayName: Spirit Bauble
 	}
+
+	Manifest: {
+		DisplayName: Manifest
+		Tooltip: ""
+	}
 }
 
 Projectiles: {
@@ -4753,6 +4758,8 @@ Projectiles: {
 	NightFireball.DisplayName: Night Fireball
 	BalanceBolt.DisplayName: Balance Bolt
 	PosessedScepterSoulShot.DisplayName: Posessed Scepter Soul Shot
+	ManifestHoldout.DisplayName: Manifest Holdout
+	ManifestBolt.DisplayName: Manifest Bolt
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.

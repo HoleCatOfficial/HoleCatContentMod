@@ -550,19 +550,6 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
                     {
                         if (Main.rand.NextBool(4))
                         {
-                            for (int t = 0; t < 3; t++)
-                            {
-                                Projectile.NewProjectile(
-                                    Player.GetSource_ItemUse(item),
-                                    Player.Center,
-                                    velocity.RotatedByRandom(0.75),
-                                    ModContent.ProjectileType<SmallTenebrisDart>(),
-                                    damage / 4,
-                                    knockback,
-                                    Player.whoAmI
-                                );
-                            }
-
                             Vector2 target = Main.screenPosition + new Vector2(Main.mouseX, Main.mouseY);
                             float ceilingLimit = target.Y;
                             if (ceilingLimit > Player.Center.Y - 200f)

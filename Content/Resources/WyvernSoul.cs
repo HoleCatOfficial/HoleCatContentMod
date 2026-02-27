@@ -37,6 +37,11 @@ namespace DestroyerTest.Content.Resources
             Item.useAnimation = 120;
         }
 
+        public override bool CanResearch()
+        {
+            return false;
+        }
+
         public override bool CanUseItem(Player player)
         {
             var soulplayer = player.GetModPlayer<SoulEffectPlayer>();
