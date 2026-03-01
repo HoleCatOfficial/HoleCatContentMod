@@ -27,5 +27,12 @@ namespace DestroyerTest.Content.Equips
 		{
 			player.jumpSpeedBoost += 3f;
 		}
+
+		public override void AddRecipes()
+        {
+            CreateRecipe()
+            .AddIngredient(ItemID.PlatinumBar, 10)
+            .Register();
+        }
 	}
 }

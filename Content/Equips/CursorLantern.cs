@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using DestroyerTest.Common;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -63,11 +64,14 @@ namespace DestroyerTest.Content.Equips
             {
                 CurrentFrame = 0;
             }
-            if (Active && Player.unlockedBiomeTorches)
+            if (Active/* && Player.unlockedBiomeTorches*/)
             {
                 Vector2 LightPosition = Main.MouseWorld + new Vector2(0, 6);
-
-                Lighting.AddLight(LightPosition, TorchID.Torch); //Placeholder value.
+                Tile t = Framing.GetTileSafely(LightPosition);
+                if (!Main.tileSolid[t.TileType] || !t.HasTile) // <--- How do I index this when Tile.type is deprecated?
+                {
+                    Lighting.AddLight(LightPosition, TorchID.Torch); //Placeholder value.
+                }
             }
         }
 
@@ -99,6 +103,14 @@ namespace DestroyerTest.Content.Equips
                     Main.EntitySpriteDraw(val, Main.MouseWorld - Main.screenPosition, frame, Color.White, swayRotation, origin, 1f, SpriteEffects.None, 0f);
                 }
             }
+        }
+    }
+
+    public class CursorLanternSpawnPlayer : ModPlayer
+    {
+        public override void ModifyStartingInventory(IReadOnlyDictionary<string, List<Item>> itemsByMod, bool mediumCoreDeath)
+        {
+            itemsByMod["DestroyerTest"].Add(ModContent.GetInstance<CursorLantern>().Item);
         }
     }
 }

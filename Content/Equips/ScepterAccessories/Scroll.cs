@@ -16,6 +16,7 @@ using DestroyerTest.Rarity.Scepter;
 using DestroyerTest.Content.Projectiles.player.Accessory;
 using DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss;
 using DestroyerTest.Content.Projectiles.Weapon.Scepter;
+using DestroyerTest.Content.Projectiles.ParentClasses;
 
 namespace DestroyerTest.Content.Equips.ScepterAccessories
 {
@@ -179,6 +180,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
         public bool SpookyScroll2 = false;
         public bool SpookyScroll3 = false;
         public bool TenebrousScroll = false;
+
         
         public int UseEffectCooldown = 0;
         public override void ResetEffects()
@@ -589,6 +591,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
                         }
                     }
                 }
+                
                 UseEffectCooldown = 0;
             }
         }
@@ -610,6 +613,8 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
         public bool SpookyScroll4 = false;
         public bool SporeScroll = false;
         public bool HeliciteScroll = false;
+        public bool FrozenFireScroll = false;
+        public bool PoisonScroll1 = false;
         public override void SetDefaults(Projectile entity)
         {
             if (entity.DamageType == ModContent.GetInstance<ScepterClass>() && entity.Name.Contains("Thrown"))
@@ -783,9 +788,39 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
                     Projectile.NewProjectile(Projectile.InheritSource(projectile), Main.rand.NextVector2FromRectangle(projectile.Hitbox), Main.rand.NextVector2Circular(0.5f, 0.5f), ModContent.ProjectileType<SolarTrail>(), (int)(projectile.damage / 5), 0f, projectile.owner);
                 }
             }
-               
+            if (FrozenFireScroll && IsAThrownScepter)
+            {
+                if (Main.GameUpdateCount % 15 == 0)
+                {
+                    Opus.RingProjectileOutward(ModContent.ProjectileType<FrozenFire>(), 4, projectile.Center, 20, projectile.damage / 4, 0, 3f, offset: projectile.rotation);
+                }
+            }
+            
+            if (projectile.ModProjectile is ThrownScepter scepter)
+            {
+                AttachTo(scepter);
+            }
         }
-
+        
+        public void AttachTo(ThrownScepter scepter)
+        {
+            scepter.OnReturnHook += ThrownScepterOnReturn;
+        }
+        
+        public static SoundStyle PoisonScrollSound = new SoundStyle("DestroyerTest/Assets/Audio/PoisonVerseBurst") { PitchVariance = 0.3f, MaxInstances = 0 };
+        public void ThrownScepterOnReturn(ThrownScepter scepter)
+        {
+            Projectile projectile = scepter.Projectile;
+            if (!scepter.OnReturnFlag)
+            {
+                if (PoisonScroll1)
+                {
+                    SoundEngine.PlaySound(PoisonScrollSound, projectile.Center);
+                    Opus.RadialSpreadProjectile(ProjectileID.SporeCloud, 9, projectile.Center, projectile.damage, 3, 2, offset: projectile.rotation);
+                    Opus.RadialSpreadProjectile(ProjectileID.SporeCloud, 12, projectile.Center, projectile.damage / 2, 3, 3, offset: projectile.rotation);
+                }
+            }
+        }
         public override void OnSpawn(Projectile projectile, IEntitySource source)
         {
             
@@ -837,6 +872,14 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
             if (npc.type == NPCID.ZombieEskimo)
             {
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<FrigidScroll>(), 5, 1, 1));
+            }
+            if (npc.type == NPCID.IceBat)
+            {
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<FrozenFireScroll>(), 10, 1, 1));
+            }
+            if (npc.type == NPCID.JungleBat)
+            {
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<PoisonVerse>(), 10, 1, 1));
             }
             if (npc.type == NPCID.Plantera)
             {

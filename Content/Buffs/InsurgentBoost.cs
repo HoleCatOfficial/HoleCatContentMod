@@ -39,12 +39,13 @@ namespace DestroyerTest.Content.Buffs
 
         public override void PostUpdateRunSpeeds()
         {
+            var w = Player.GetModPlayer<InsurgentPlayer>();
             if (Active)
             {
                 Player.runAcceleration *= 1.4f;
                 Player.maxRunSpeed *= 1.1f;
 
-                Player.GetDamage(ModContent.GetInstance<ScepterClass>()) *= 1 + (0.1f + Player.ownedProjectileCounts[ModContent.ProjectileType<InsurgentSpirit>()]);
+                Player.GetDamage(ModContent.GetInstance<ScepterClass>()) += 0.05f + (0.1f * w.DamageBooster);
             }
         }
     }

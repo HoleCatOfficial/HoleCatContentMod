@@ -10,6 +10,7 @@ using DestroyerTest.Content.Tiles.Riftplate;
 using DestroyerTest.Content.Tiles.RiftConfigurator;
 using DestroyerTest.Content.RiftBiome.RiftSurfaceResources;
 using DestroyerTest.Rarity.Scepter;
+using DestroyerTest.Content.Resources.Cloths;
 
 namespace DestroyerTest.Content.Equips
 {
@@ -48,6 +49,14 @@ namespace DestroyerTest.Content.Equips
         public override void UpdateEquip(Player player)
         {
             player.endurance += 0.12f;
+        }
+
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+            .AddIngredient(ItemID.PlatinumBar, 10)
+            .AddIngredient<BlueCloth>(6)
+            .Register();
         }
 	}
 }

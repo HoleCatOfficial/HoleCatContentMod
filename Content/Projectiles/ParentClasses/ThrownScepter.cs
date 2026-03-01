@@ -11,6 +11,7 @@ using System.IO;
 using OpusLib;
 using Terraria.Graphics.Shaders;
 using Humanizer;
+using System;
 
 namespace DestroyerTest.Content.Projectiles.ParentClasses
 {
@@ -160,9 +161,10 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             );
         }
 
+        public event Action<ThrownScepter> OnReturnHook;
         public virtual void OnReturn()
         {
-            
+            OnReturnHook?.Invoke(this);
         }
 
         public bool OnReturnFlag = false;

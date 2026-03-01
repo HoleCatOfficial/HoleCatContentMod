@@ -2183,6 +2183,12 @@ Items: {
 	InsurgentCirclet: {
 		DisplayName: Insurgent Circlet
 		Tooltip: ""
+		SetBonus:
+			'''
+			Wrathful spirits will coalesce near you, fuelled by your will. The number of spirits is capped at 10.
+			Pressing the armor set bonus key will consume all spirits and grant the insurgent boost.
+			Insurgent Boost increases acceleration by 40%, Max Run Speed by 10%, and Scepter Class Damage by 10% of the number of wisps you had accrued.
+			'''
 	}
 
 	InsurgentBodyArmor: {
@@ -4195,7 +4201,17 @@ Items: {
 
 	Manifest: {
 		DisplayName: Manifest
-		Tooltip: ""
+		Tooltip: Shoots bolts of light rapidly.
+	}
+
+	FrozenFireScroll: {
+		DisplayName: Frozen Fire Scroll
+		Tooltip: Thrown scepters release a spiral of frost fire as they travel.
+	}
+
+	PoisonVerse: {
+		DisplayName: Poison Verse
+		Tooltip: Thrown scepters create a burst of poisonous clouds upon returning.
 	}
 }
 
@@ -4637,6 +4653,7 @@ Projectiles: {
 	ShadeThrasherFriendlyBody2.DisplayName: Shade Thrasher Friendly Body2
 	ShadeThrasherFriendlyBody1.DisplayName: Shade Thrasher Friendly Body1
 	FrozenFireball.DisplayName: Frozen Fireball
+	FrozenFire.DisplayName: Frozen Fire
 	FungusSporeExplosion.DisplayName: Fungus Spore Explosion
 	VesperDart.DisplayName: Vesper Dart
 	DistendedPikeProjectile.DisplayName: Distended Pike Projectile

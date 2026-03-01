@@ -51,6 +51,13 @@ namespace DestroyerTest.Content.Equips
                 Crown.Imbue = true;
             }
         }
+
+		public override void AddRecipes()
+        {
+            CreateRecipe()
+            .AddIngredient(ItemID.PlatinumBar, 4)
+            .Register();
+        }
 	}
 
     public class ForgottenCrownPlayer : ModPlayer

@@ -1,4 +1,4 @@
-displayName = [c/ff9900:Talid Mod (Private Beta)]
+displayName = [c/bfbef1:Talid Mod (Private Beta)]
 author = HoleCat
 version = 2.1.7250
 modReferences = InnoVault, OpusLib, GlowmaskHelper
