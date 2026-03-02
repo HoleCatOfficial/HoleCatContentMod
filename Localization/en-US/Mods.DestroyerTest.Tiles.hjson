@@ -1,0 +1,23 @@
+Tile_RiftConfiguratorArmory.MapEntry: Rift Configurator Armory
+Tile_RiftConfiguratorCore.MapEntry: Rift Configurator Core
+Tile_RiftConfiguratorWeaponry.MapEntry: Rift Configurator Weaponry
+Tile_RiftConfiguratorTools.MapEntry: Rift Configurator Tools
+Tile_RiftConfiguratorFurniture.MapEntry: Rift Configurator Furniture
+Tile_HeliciteCrystal.MapEntry: Helicite Crystal
+
+Tile_RiftCache: {
+    MapEntry1: Rift Cache
+    MapEntry0: Rift Cace
+}
+
+Tile_VesperOre.MapEntry: Vesper Ore
+Tile_RiftenCrate.MapEntry: Riften Crate
+Tile_HeliciteCrate.MapEntry: Helicite Crate
+Tile_RiftPylon.MapEntry: Rift Pylon
+Tile_RootedDirt.MapEntry: Rooted Dirt
+
+Tile_NightmareChest: {
+    Locked: Locked Nightmare Chest
+    MapEntry1: Nightmare Chest
+    MapEntry0: Nightmare Chest
+}

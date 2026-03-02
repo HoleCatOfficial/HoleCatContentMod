@@ -3,6 +3,7 @@ using DestroyerTest.Content.Tiles;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ID;
+using Terraria.Localization;
 
 namespace DestroyerTest.Common.Blessings
 {
@@ -18,7 +19,7 @@ namespace DestroyerTest.Common.Blessings
         public override void PostUpdateMiscEffects()
         {
             DTBlessings B = ModContent.GetInstance<DTBlessings>();
-            if (!IsAPrayerActive())
+            if (!IsABlessingActive())
             {
                 return;
             }
@@ -29,17 +30,17 @@ namespace DestroyerTest.Common.Blessings
         public override void NaturalLifeRegen(ref float regen)
         {
             DTBlessings B = ModContent.GetInstance<DTBlessings>();
-            if (!IsAPrayerActive())
+            if (!IsABlessingActive())
             {
                 return;
             }
-            if (CurrentBlessing == B.RadiantHeart)
+            if (CurrentBlessing == DTBlessings.RadiantHeart)
             {
                 regen *= 1.4f;
             }
         }
 
-        public bool IsAPrayerActive()
+        public bool IsABlessingActive()
         {
             if (CurrentBlessing == null)
             {
@@ -54,7 +55,8 @@ namespace DestroyerTest.Common.Blessings
 
     public class DTBlessings
     {
-        public Blessing RadiantHeart = new Blessing(PrayerID.Regen, HerbID.Daybloom, ItemID.LifeCrystal);
+        public static string CommonBM_Key = "Mods.DestroyerTest.Blessings";
+        public static Blessing RadiantHeart = new Blessing(PrayerID.Regen, HerbID.Daybloom, ItemID.LifeCrystal, Language.GetText($"{CommonBM_Key}.RadiantHeart.Message"));
     }
 
     public class Blessing
@@ -62,11 +64,20 @@ namespace DestroyerTest.Common.Blessings
         public int ItemType = 0;
         public int PrayerType = PrayerID.None;
         public int HerbType = HerbID.None;
+        public string BlessingMessage = "";
         public Blessing(int prayerType, int herbType, int itemType)
         {
             PrayerType = prayerType;
             HerbType = herbType;
             ItemType = itemType;
+        }
+
+        public Blessing(int prayerType, int herbType, int itemType, LocalizedText blessingMessage)
+        {
+            PrayerType = prayerType;
+            HerbType = herbType;
+            ItemType = itemType;
+            BlessingMessage = blessingMessage.Value;
         }
     }
 }

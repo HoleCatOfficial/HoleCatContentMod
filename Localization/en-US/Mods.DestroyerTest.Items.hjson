@@ -1,0 +1,4104 @@
+
+Constitution: {
+    Tooltip: A blade descending from the heavens. Without its Galantine coating, it is incapable of complex attacks.
+    DisplayName: Constitution
+}
+
+ConstitutionT2_Demonite: {
+    DisplayName: Committment
+    Tooltip: Swings rain small meteors, which set enemies ablaze.
+}
+
+ConstitutionT2_Crimtane: {
+    DisplayName: Committment
+    Tooltip: Swings rain small meteors, which set enemies ablaze.
+}
+
+ConstitutionT3: {
+    DisplayName: Continuum
+    Tooltip: Crafted in the night with the Essence of raw strength, this blade posesses enough power in it's swing to throw you forward.
+}
+
+Conclusion: {
+    UsesDashResource: Mods.DestroyerTest.Items.Conclusion.UsesDashResource
+    DisplayName: Conclusion
+    Tooltip:
+        '''
+        Just one of many fates for the Heaven-Descendant blade.
+        It pulses with the essence of Terraria.
+        '''
+}
+
+Memoriam: {
+    DisplayName: Memoriam
+    Tooltip: Not all can be rended, and not all evils are surmountable. Keep this as a reminder of mindfulness in trying times.
+}
+
+SpiritOfJustice: {
+    DisplayName: Spirit Of Justice
+    Tooltip: Rend all that is unholy, and mend the errors of this world. Your mission is surely holy, and all blood is shed in good faith.
+}
+
+FrigidHalberd: {
+    DisplayName: Frigid Halberd
+    Tooltip:
+        '''
+        Left Click to perform a long range Jab Blitz, Right Click to flail your Halberd Around and ignite enemies in Frozen Flames.
+        "No more Mr Ice Guy!"
+        '''
+}
+
+GlacialJabber: {
+    DisplayName: Glacial Jabber
+    Tooltip:
+        '''
+        A stronger version of your original Halberd, with a much more potent Jab.
+        "How Ice of you to show this old thing some love again!"
+        '''
+}
+
+WinterWonderland: {
+    Tooltip:
+        '''
+        With a festive twist from Saint Nich himself, this Halberd is now flailed with a lively mistletoe rope, inflicting frostburn and shooting petals of holly at your foes!
+        "When the bells ring, everyone's gonna be out Cold."
+        '''
+    DisplayName: Winter Wonderland
+}
+
+Chroma: {
+    DisplayName: Chroma
+    Tooltip: Light shimmers along the edges of the crystals...
+}
+
+P_Noctis: {
+    DisplayName: Passer Noctis
+    Tooltip:
+        '''
+        Just holding this instills dread in the deepest nooks of your soul.
+        You will ciritcal hit 100% of the time, but hits will slow you down and prevent you from regenerating life.
+        '''
+}
+
+Skyshredder: {
+    DisplayName: Quattra Skyshredder
+    Tooltip: Rains down Hallowed Darts to rip your enemies to peices.
+}
+
+NihilistStaff: {
+    Tooltip: Get Cruiser'd
+    DisplayName: Nihilist Staff
+}
+
+Hope_Scabbard: {
+    DisplayName: Hope Scabbard
+    Tooltip: A combined effort of the blades that accompanied you on your road to the wall...
+}
+
+NihilistsEnslavement: {
+    DisplayName: Nihilists Enslavement
+    Tooltip:
+        '''
+        To indulge in nothingness is to revel in your own ignorance. 
+        Supposedly a much happier life than the horrors of being a good person. 
+        Dedicated to a talented mod team.
+        '''
+}
+
+OverloadedBlaster: {
+    DisplayName: Overloaded Blaster
+    Tooltip: An unstable weapon with no forseeable purpose beyond the reckless slaughter of life.
+}
+
+PrecisionArrow: {
+    DisplayName: Precision Arrow
+    Tooltip:
+        '''
+        Manufactured with accuracy in mind, these arrows use a sturdy adamantite frame with a razor sharp edge.
+        They slice through enemy flesh so easily that it doesn't even knock them backwards.
+        '''
+}
+
+TacticalArrow: {
+    DisplayName: Tactical Arrow
+    Tooltip:
+        '''
+        Manufactured with Speed in mind, these arrows shoot faster than the simple Precision Arrows.
+        These arrows electify struck enemies for a short period.
+        '''
+}
+
+Hi_TechArrow: {
+    DisplayName: Hi-Tech Arrow
+    Tooltip:
+        '''
+        Manufactured with Adaptibility in Mind, these arrows make use of the mysterious tracking properties of the Martians' Conduit plating.
+        Seemingly Tesla Turrets can aim with no circuitry, and rely on the conduit plating for that job.
+        '''
+}
+
+BlackCloth: {
+    DisplayName: Black Cloth
+    Tooltip: A beautiful satin, colored pitch like the night sky.
+}
+
+BlueCloth: {
+    DisplayName: Blue Cloth
+    Tooltip: A beautiful satin, colored blue like the ocean's epanse.
+}
+
+BrownCloth: {
+    DisplayName: Brown Cloth
+    Tooltip: A beautiful satin, colored brown like the rough earth below.
+}
+
+CyanCloth: {
+    DisplayName: Cyan Cloth
+    Tooltip: A beautiful satin, colored a radiant blue-green like the horizon.
+}
+
+GreenCloth: {
+    DisplayName: Green Cloth
+    Tooltip: A beautiful satin, colored green like the verdant grasses.
+}
+
+LimeCloth: {
+    DisplayName: Lime Cloth
+    Tooltip: A beautiful satin, colored lime like cursed flames.
+}
+
+OrangeCloth: {
+    DisplayName: Orange Cloth
+    Tooltip: A beautiful satin, colored orange like... well, an Orange.
+}
+
+PurpleCloth: {
+    DisplayName: Purple Cloth
+    Tooltip: A beautiful satin, colored purple like night terrors.
+}
+
+PinkCloth: {
+    DisplayName: Pink Cloth
+    Tooltip: A beautiful satin, colored pink like rosy cheeks.
+}
+
+RedCloth: {
+    DisplayName: Red Cloth
+    Tooltip: A beautiful satin, colored rich like blood.
+}
+
+SkyBlueCloth: {
+    DisplayName: Sky Blue Cloth
+    Tooltip: A beautiful satin, colored blue like harpy feathers.
+}
+
+TealCloth: {
+    DisplayName: Teal Cloth
+    Tooltip: A beautiful satin, colored green-blue like rust.
+}
+
+VioletCloth: {
+    DisplayName: Violet Cloth
+    Tooltip: A beautiful satin, colored a deep purple like an sapphire inside stone.
+}
+
+WhiteCloth: {
+    DisplayName: White Cloth
+    Tooltip: A beautiful satin, colored pure like your heart.
+}
+
+YellowCloth: {
+    DisplayName: Yellow Cloth
+    Tooltip: A beautiful satin, colored a brilliant yellow like the summer sun.
+}
+
+TeslaScrap: {
+    DisplayName: Tesla Scrap
+    Tooltip: Electrified Fragments of Conduit Plating extracted from Tesla Turrets.
+}
+
+TeaserCompendium: {
+    DisplayName: Teaser Compendium
+    Tooltip:
+        '''
+        Current Teaser: A bloodthirsty Baron has been lurking in the night...
+        Rift Update Teaser: The Shadows of the dark sun grow ever restless. _They thirst for oxygen..._
+        '''
+}
+
+EchoFluid: {
+    DisplayName: Echo Fluid
+    Tooltip: Kills 99.9% if bacteria! Also clears colors on cloths.
+}
+
+LifeEcho: {
+    DisplayName: Life Echo
+    Tooltip: The energy of simple creatures.
+}
+
+Living_Shadow: {
+    DisplayName: Living Shadow
+    Tooltip: A blob of condensed shadows with a ring of concentrated light around it. It gives life to the horrors drummed up in the shadows of an Eclipse.
+}
+
+Riftplate_Item: {
+    DisplayName: Riftplate
+    Tooltip:
+        '''
+        You have somehow encased the raw essence of The Sun's Shadow inside an iron casing.
+        Stimulating this with an electrical current will awaken the essence, but, be warned, once turned on, it cannot be turned off without being mined.
+        '''
+}
+
+Helicite_Crystal_Item: {
+    DisplayName: Helicite Crystal
+    Tooltip: The death of the Sun God has sent fragments of the Sun deep into your world. It is hot to the touch.
+}
+
+Rift_Katana: {
+    DisplayName: Rift Katana
+    Tooltip: Swings in a large range in front of you.
+}
+
+RiftMaker: {
+    DisplayName: Riftmaker
+    Tooltip: A small javelin that explodes after a short time.
+}
+
+RiftWretcher: {
+    DisplayName: Rift Wretcher
+    Tooltip: A specialized flamethrower made to handle Riften Energy.
+}
+
+RiftShiv: {
+    Tooltip: Was the spiral really necessary?
+    DisplayName: Rift Shiv
+}
+
+RiftWhipT1: {
+    Tooltip: Feel the burn!
+    DisplayName: Solar Scorpion
+}
+
+RiftWhipT2: {
+    DisplayName: Solar Scorpion
+    Tooltip: Feel the Burn again!
+}
+
+RiftBroadsword: {
+    DisplayName: Rift Broadsword
+    Tooltip: A durable broadsword made from Riftplate and living shadows. In terms of weaponry, it's standard faire.
+}
+
+RiftGreatsword: {
+    Tooltip: A heavy-hitting Blade made from Riftplate and Living Shadows. It takes more strength to continually carry this than to wield it.
+    DisplayName: Rift Greatsword
+}
+
+RiftClaymore: {
+    DisplayName: Rift Claymore
+    Tooltip: A heavy blade with great range. Very easily cleaves your enemies in half!
+}
+
+Riftpane_Item: {
+    DisplayName: Riftpane
+    Tooltip:
+        '''
+        You have also somehow infused glass with the essence of The Sun's Shadow. 
+        Unfortunately, because it is so strong, it cannot shatter, and panes will come off whole if broken off, so be careful not to get crushed!
+        '''
+}
+
+RiftplateWall_Item: {
+    DisplayName: Riftplate Wall
+    Tooltip: You must love to sweat if youre making a room out of Riftplate
+}
+
+RiftpaneWall_Item: {
+    DisplayName: Riftpane Wall
+    Tooltip: You must love to sweat if youre making a room out of Riftplate
+}
+
+DangerousRiftWall_Item: {
+    DisplayName: Dangerous Rift Wall
+    Tooltip: Creatures will spawn if these are present.
+}
+
+RiftSilt_Item: {
+    DisplayName: Rift Silt
+    Tooltip: This sand is scalding! Perfect for Turkish coffee!
+}
+
+RiftWall_Item: {
+    DisplayName: Rift Wall
+    Tooltip: Dark. So Dark.
+}
+
+RiftChair_Item: {
+    DisplayName: Rift Chair
+    Tooltip: Despite burning with solar essence, it's only balmy and not scalding.
+}
+
+RiftTable_Item: {
+    Tooltip: Itll keep your food warm!
+    DisplayName: Rift Table
+}
+
+RiftCrucible_Item: {
+    DisplayName: Rift Crucible
+    Tooltip: A powerful forge capable of infusing Living Shadows into even more things.
+}
+
+# Note: PasswordDecoder is MultiCategory. Placed in here for now because it is tied to the Rift Cache
+PasswordDecoder: {
+    DisplayName: Password Decoder
+    Tooltip: A device used for opening password-protected Rift Caches. Simply plug it in and it will brute force passwords until it succeeds.
+}
+
+RiftCache_Item: {
+    DisplayName: Rift Cache
+    Tooltip: A storage unit that is notorious for having only a basic security system. Simply brute-forcing passwords is enough to get inside it.
+}
+
+RiftSolution: {
+    DisplayName: Rift Solution
+    Tooltip: Spreads the Rift Biome.
+    RiftWarning:
+        '''
+        WARNING:
+        RIFT DIRT CANNOT GROW GRASS OR TREES, SO WHEN YOU CONVERT IT BACK, THE GRASS MUST REGROW AND TREES MUST BE REPLANTED.
+        THE RIFT IMPLEMENTS A SUFFOCATION MECHANIC. THIS CAN ONLY BE AVOIDED WITH CERTAIN EQUIPS, OR, USING A LUNG SHOT.
+        THE JUNGLE AND HELL ARE IMMUNE TO RIFEN CONVERSION.
+        '''
+}
+
+RiftBookcase: {
+    DisplayName: Rift Catalogue
+    Tooltip: A digital compendium that could fit a thousand novels in plaintext.
+}
+
+RiftplatePlatform: {
+    DisplayName: Riftplate Platform
+    Tooltip: ""
+}
+
+RiftGuardChausses: {
+    DisplayName: Rift Guard Chausses
+    Tooltip:
+        '''
+        Increases run speed by 22%.
+        If charged, increases acceleration by 20%.
+        "Oxygen can leak out of it fairly easily."
+        '''
+}
+
+RiftGuardChestPlate: {
+    DisplayName: Rift Guard Chestplate
+    Tooltip:
+        '''
+        Increases Ranger critical strike change by 40%.
+        This bonus is reduced to 25% if the set bonus is active.
+        If charged, you get 6 Ranged armor penetration.
+        "Oxygen can leak out of it fairly easily."
+        '''
+}
+
+RiftGuardVisor: {
+    DisplayName: Rift Guard Visor
+    Tooltip:
+        '''
+        Increases Ranger damage by 10%; 20% if charged.
+        "Oxygen can leak out of it fairly easily."
+        '''
+    SetBonus:
+        '''
+        Shooting enemies builds charge up to three tiers.
+        Tier 1 increases Ranged Damage by 10% and Ranged Crit chance by 6%.
+        Tier 2 increases Ranged Damage by 20% and Ranged Crit chance by 12%.
+        Tier 3 increases Ranged Damage by 40% and Ranged Crit chance by 18%, and your weapon will fire clouds of Heliouric Electricity.
+        Not using your weapon, or charging to 120 charge on Tier 3 will reset charge.
+        '''
+}
+
+RiftPropulsion: {
+    DisplayName: Rift Propulsion
+    Tooltip: A device inspired by an alien technology.
+}
+
+HeliciteChausses: {
+    DisplayName: Helicite Chausses
+    Tooltip:
+        '''
+        Despite being made of Cloth, these do not leak any oxygen, and will protect you from suffocation in The Rift.
+        The infusion of Helicite into the cloth allows for this to happen. Quite an anomaly, those crystals are...
+        '''
+}
+
+HeliciteCowl: {
+    DisplayName: Helicite Cowl
+    Tooltip:
+        '''
+        Despite being made of Cloth, this does not leak any oxygen, and will protect you from suffocation in The Rift.
+        The infusion of Helicite into the cloth allows for this to happen. Quite an anomaly, those crystals are...
+        Ranged Damage is increased when wearing this!
+        '''
+}
+
+HeliciteRobe: {
+    DisplayName: Helicite Robe
+    Tooltip:
+        '''
+        Despite being made of Cloth, this does not leak any oxygen, and will protect you from suffocation in The Rift.
+        The infusion of Helicite into the cloth allows for this to happen. Quite an anomaly, those crystals are...
+        '''
+}
+
+HeliciteHeadgear: {
+    DisplayName: Helicite Headgear
+    Tooltip:
+        '''
+        Unfortunately for you, just having helicite crystals next to your head does not prevent suffocation in The Rift.
+        Try using a Lung Shot.
+        '''
+}
+
+RiftplateTitanBody: {
+    Tooltip: A much heavier set of Riftplate Armor, meant for deeper expiditions into The Rift.
+    DisplayName: Riftplate Titan Body Armor
+}
+
+RiftplateTitanGreaves: {
+    Tooltip: A much heavier set of Riftplate Armor, meant for deeper expiditions into The Rift.
+    DisplayName: Riftplate Titan Greaves
+}
+
+RiftPlateBerserkerHelm: {
+    Tooltip:
+        '''
+        A much heavier set of Riftplate Armor, meant for deeper expiditions into The Rift.
+        Wearing this increases Melee Damage, but reduces Movement speed.
+        '''
+    DisplayName: Rift Plate Berserker Helm
+}
+
+RiftPlateHoodedJaw: {
+    SetBonus: RHJ_SB
+    DisplayName: Rift Plate Hooded Jaw
+    Tooltip:
+        '''
+        A much heavier set of Riftplate Armor, meant for deeper expiditions into The Rift.
+        Wearing this increases your number of minions.
+        '''
+}
+
+RiftplateAgilityArmor: {
+    DisplayName: Riftplate Agility Armor
+    Tooltip:
+        '''
+        A light set of armor. It carries the protection from Suffocation afforded by Helicite Crystals.
+        This armor exchanges defense for speed, allowing you to evade attacks easier.
+        '''
+}
+
+RiftplateAgilityLeggings: {
+    DisplayName: Riftplate Agility Leggings
+    Tooltip:
+        '''
+        A light set of armor. It carries the protection from Suffocation afforded by Helicite Crystals.
+        This armor exchanges defense for speed, allowing you to evade attacks easier.
+        '''
+}
+
+CalamityEntropyAdvert: {
+    DisplayName: Calamity Entropy Advert
+    Tooltip:
+        '''
+        Download Calamity Entropy Today!
+        Calamity Entropy is an Addon for the Calamity Mod that adds multiple new bosses, weapons (With copyright infringements!), pets, and more!
+        Listen to Music Tracks made for the mod here: https://www.youtube.com/@FRANCIUM-KILLA
+        Multiple Items in this mod were inspired by Calamity Entropy! Including:
+        - The Riftmaker
+        - The Nihilist Staff and Nihilist's Enslavement
+        '''
+}
+
+CraftingCompendium: {
+    DisplayName: Crafting Compendium
+    Tooltip:
+        '''
+        ∞ A Collection of Hints to help you craft the Various weapons found in the mod!                 
+        ∞ Do note, this list is never complete, as more features will continue to be added.             
+        ∞ Constitution: Extract basic ores from the ground, and assemble them at an Anvil.              
+        ∞ Committment: Acquire the wretched essence of your world's darkest crevices,                   
+        ∞ and collect the spoils of a cosmic Intrusion. Use them to bolster your Composure.             
+        ∞ Continuum: Shatter the Spine of the mechanical Cuthulu to gain the essence of raw strength,   
+        ∞ and return to the mines to extract a more durable ore. Use them to reinfoce your Resolve.     
+        ∞ Corrolary: Raid an isolated society and dethrone their deity. Fuze their heavy bricks to      
+        ∞ your blade and revel in the bloodshed.                                                        
+        ∞ Conclusion: Beat back the lunar visitors, and proclaim the world as your own. Return to your  
+        ∞ workshop one final time, and release your now prepared sword from its Lihzhardian sheath.     
+        ∞ Combine it with the ingots of lunar steel, the tears from the heavens above, and the          
+        ∞ conglomerated souls of the Dungeon's unfortunate residents.                                   
+        '''
+}
+
+HistoryTextbook: {
+    DisplayName: History Textbook
+    Tooltip:
+        '''
+        ∞ Mod History:                                                                                  
+        ∞ V:1.0 - Added the Constitution Lineage, Dev Set, Two Rift Weapons, and various other weapons  
+        ∞ that toyed around with the Example Mod code.                                                  
+
+        '''
+}
+
+GargoyleTrepidation: {
+    DisplayName: (WIP) Gargoyle Trepidation
+    Tooltip: Place this statue to know true fear.
+}
+
+ConstantineMask: {
+    DisplayName: Constantine Mask
+    Tooltip: Great for Impersonating Suicidal Devs!
+}
+
+CoatStantine: {
+    DisplayName: CoatStantine
+    Tooltip: Great for Impersonating Suicidal Devs!
+}
+
+ConstanJeans: {
+    DisplayName: ConstanJeans
+    Tooltip: Great for Impersonating Suicidal Devs!
+}
+
+Connie_Doll: {
+    DisplayName: Connie Doll
+    Tooltip:
+        '''
+        There's a tag on the hip seam.
+        "WARNING: Keep away from Shimmer. Especially if you only have one life..."
+        Sounds like a solid indicator to throw it into the shimmer.
+        '''
+}
+
+ConstantineTail: {
+    DisplayName: Constantine Tail
+    Tooltip: Great for Impersonating Suicidal Devs!
+}
+
+Goliath: {
+    DisplayName: Goliath
+    Tooltip:
+        '''
+        Thanks to the usage of obsidian in the blade, it is very, very sharp. 
+        It rests in your hand in an eerily familar way.
+        ~~~~~~~~~~~~~~~~~~
+        Shoots small energy blades that linger in the air for a moment before darting at a target.
+        '''
+}
+
+ConstantineScythe: {
+    DisplayName: HoleCat's Scythe
+    Tooltip:
+        '''
+        Are we not all looking for our own reflections?
+        .
+        Great for going the extra mile in impersonating Suicidal Devs!
+        '''
+}
+
+Memoriam_Placed: {
+    DisplayName: (DEBUG)MemoriamPlaced
+    Tooltip: ""
+}
+
+LungShot: {
+    DisplayName: Lung Shot
+    Tooltip: Turns your Lungs to stone, making you immune to suffocaton in the Rift.
+}
+
+HeroBreastplate: {
+    DisplayName: Hero Breastplate
+    Tooltip: A clunky breastplate befitting of a lazy emperor under siege.
+}
+
+HeroGreaves: {
+    DisplayName: Hero Greaves
+    Tooltip: Uncomfortable, heavy leggings, which are definitely not assuaged by the lack of padding in the metal shoes.
+}
+
+HeroHelmet: {
+    DisplayName: Hero Helmet
+    Tooltip:
+        '''
+        Heavy, but breatheable, that is, of course if you keep the visor up.
+        Press J to bring down your Visor, increasing defense by 4.
+        '''
+}
+
+HeroWings: {
+    DisplayName: Hero Wings
+    Tooltip: A defender of their people must also be able to come to their aide promptly!
+}
+
+GoliathHilt: {
+    DisplayName: Cunife Hilt
+    Tooltip:
+        '''
+        Remarkably Large, but is comfortable to hold, with a plush satin grip. Must be for a big and heavy sword.
+        Seems to be part of a greater whole...
+        '''
+}
+
+GoliathBlade: {
+    DisplayName: Hulking Obsidian Blade
+    Tooltip:
+        '''
+        An obsidian blade, sharper than expected.
+        Seems to be part of a greater whole...
+        '''
+}
+
+Bobby: {
+    DisplayName: Bobby
+    Tooltip: You shouldn't have this...
+}
+
+Fire: {
+    DisplayName: Fire
+    Tooltip: ""
+}
+
+ColdSnapSteel: {
+    DisplayName: Coldsnap Steel
+    Tooltip:
+        '''
+        Part of the Metallurgy System.
+        The bar is ice cold no matter what you do to it, making it causally harder to forge with.
+        '''
+}
+
+Steel: {
+    DisplayName: Steel
+    Tooltip:
+        '''
+        Part of the Metallurgy System.
+        A common, sturdy alloy of abundant materials. Good for a wide variety of applications!
+        '''
+}
+
+ReinforcedCompoundBow: {
+    DisplayName: Reinforced Compound Bow
+    Tooltip:
+        '''
+        Part of the Metallurgy System.
+        A simple compound bow.
+        '''
+}
+
+IOU: {
+    DisplayName: I O U
+    Tooltip: Hello! This content has not been added yet! Stay tuned, as it will arrive soon!
+}
+
+SoulEdge: {
+    DisplayName: Soul Edge
+    Tooltip: A dried-out, cold sword. Listening closely to the nooks of the wood makes you the audience of the wails of lost souls.
+}
+
+BiCape: {
+    DisplayName: Bi Cape
+    Tooltip:
+        '''
+        Celebrate your identity with a cool cape!
+        You want other ones? Uhh idk download TPrideMod or somethin cuz ts was a pain to sprite manually.
+        '''
+}
+
+PartySword: {
+    DisplayName: Party Sword
+    Tooltip: ""
+}
+
+Laevateinn: {
+    DisplayName: Lævateinn
+    Tooltip: A light, aerodynamic blade used by the trickster themself, Loki.
+}
+
+TrueLaevateinn: {
+    DisplayName: True Lævateinn
+    Tooltip: Empowered with Coldsnap Steel, this blade can rend even mighty foes in a pinch.
+}
+
+Gargantua: {
+    DisplayName: Gargantua
+    Tooltip:
+        '''
+        Despite having the same hilt as its inferior forme, it feels completely alien to you.
+        Perhaps it is the fact that it is ignited in a scarlet inferno, perhaps it is the increased size, perhaps it is indicative of some change within.
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        Swinging 5 times summons homing stars, 15 times spawns groups of Goliath Phantoms that shoot towards enemies after a short delay.
+        Swinging 30 times will empower Gargantua, but beware, if you change items while the boost is active, you will be inflicted with severe damage.
+        Goliath Phantoms will not search forever, and if no target is found in 6 seconds, they will turn around and shoot into you.
+        '''
+}
+
+Horizon: {
+    Tooltip: Ignore this item. I use it to test projectiles.
+    DisplayName: Horizon
+}
+
+TrueSoulEdge: {
+    DisplayName: True Soul Edge
+    Tooltip: Shoots a phantom that slows down before stabbing into an enemy at high speed.
+}
+
+Extruder: {
+    DisplayName: Extruder
+    Tooltip: A machine comprised of two wheels. Used to... well, extrude things!
+}
+
+UnholySteel: {
+    DisplayName: Unholy Steel
+    Tooltip: Steel infused with the essence of corruption.
+}
+
+CursedScabbard: {
+    DisplayName: Cursed Scabbard
+    Tooltip: ""
+}
+
+LivingDiamond: {
+    DisplayName: Living Diamond
+    Tooltip: A colorful gemstone that never seems to settle on one luminance for too long.
+}
+
+TemperedObsidian: {
+    DisplayName: Tempered Obsidian
+    Tooltip: Obsidian that has been heated and cooled near the brink of breakage, and then melted again to cool back into this stable form.
+}
+
+SteelClaymore: {
+    Tooltip: A simple claymore.
+    DisplayName: Steel Claymore
+}
+
+LimusPetItem: {
+    DisplayName: Slimy Hoodie
+    Tooltip:
+        '''
+        Conains 8% pure mercury!
+        Pet version of Limus the Slime.
+        '''
+}
+
+Icemourne: {
+    DisplayName: Icemourne
+    Tooltip:
+        '''
+        When Re-Logic don't got the balls to add it, you gotta do it yourself.
+        Sprite is Property of Re-Logic.
+        '''
+}
+
+Tenebris: {
+    DisplayName: Tenebris
+    Tooltip:
+        '''
+        A heavy, pitch black ingot with flickering stars swimming inside and arcs of Shade Energy roaring along its sharp edges.
+        '''
+}
+
+ShimmeringSludge: {
+    DisplayName: Shimmering Sludge
+    Tooltip: Sticky, Dark, and makes your hand tingle.
+}
+
+RouletteTokenItem: {
+    Tooltip: ""
+    DisplayName: Roulette Token Item
+}
+
+CombatRoulette: {
+    Tooltip: Modulos your Base DMG by the amount of Roulette Tokens you have. Consumes one roulette token upon use.
+    DisplayName: Combat Roulette
+}
+
+Shadowflame: {
+    Tooltip: It crackles and flickers with a sickening Lavender color.
+    DisplayName: Shadowflame
+}
+
+DemigodHood: {
+    Tooltip:
+        '''
+        Walk as a God amongst men. You sort-of are.
+        Reacts to the presense of a certain blade...
+        '''
+    DisplayName: Demigod Hood
+}
+
+DemigodChestPlate: {
+    Tooltip:
+        '''
+        Walk as a God amongst men. You sort-of are.
+        Reacts to the presense of a certain blade...
+        '''
+    DisplayName: Demigod Chest Plate
+}
+
+DemigodBoots: {
+    Tooltip:
+        '''
+        Walk as a God amongst men. You sort-of are.
+        Reacts to the presense of a certain blade...
+        '''
+    DisplayName: Demigod Boots
+}
+
+DemigodWings: {
+    Tooltip: Soar as a god amongst men.
+    DisplayName: Demigod Wings
+}
+
+Tenebrous_Katana: {
+    DisplayName: Tenebrous Katana
+    Tooltip: Instead of warm, electrified metal, the plates are so incredibly cold that your hands prickle and freeze if you hold it for too long.
+}
+
+HeliciteGreatbow: {
+    Tooltip:
+        '''
+        This item is slated for a rework soon.
+        '''
+    DisplayName: Helicite Greatbow
+}
+
+SaplingItem: {
+    DisplayName: Sapling Item
+    Tooltip: ""
+}
+
+ContenderBodyArmor: {
+    DisplayName: Contender Body Armor
+    Tooltip:
+        '''
+        Standard Issue. Calibrated as the ultimate armor to slaughter even the toughest illusions of mind and matter. 
+        The hinderences of weaker armor cannot interfere with the games.
+        '''
+}
+
+ContenderGreaves: {
+    DisplayName: Contender Greaves
+    Tooltip:
+        '''
+        Standard Issue. Calibrated as the ultimate armor to slaughter even the toughest illusions of mind and matter. 
+        The hinderences of weaker armor cannot interfere with the games.
+        '''
+}
+
+Fracture: {
+    Tooltip: ""
+    DisplayName: Fracture
+}
+
+BarrierLatticeItem: {
+    Tooltip: ""
+    DisplayName: Barrier Lattice Item
+}
+
+BarrierLatticeItemL: {
+    DisplayName: Barrier Lattice Item L
+    Tooltip: ""
+}
+
+BarrierLatticeItemR: {
+    DisplayName: Barrier Lattice Item R
+    Tooltip: ""
+}
+
+DamascusRipper: {
+    DisplayName: Damascus Ripper
+    Tooltip: Absolutely Banger.
+}
+
+TemperedSteel: {
+    Tooltip: ""
+    DisplayName: Tempered Steel
+}
+
+TemperedCunife: {
+    Tooltip: ""
+    DisplayName: Tempered Cunife
+}
+
+TemperedBerylliumCopper: {
+    Tooltip: ""
+    DisplayName: Tempered Beryllium Copper
+}
+
+DamascusSteel: {
+    Tooltip: ""
+    DisplayName: Damascus Steel
+}
+
+ExoticAlloy: {
+    Tooltip: ""
+    DisplayName: Exotic Alloy
+}
+
+SteelPickaxe: {
+    Tooltip: ""
+    DisplayName: Steel Pickaxe
+}
+
+PhosphorBronzePickaxe: {
+    Tooltip: ""
+    DisplayName: Phosphor Bronze Pickaxe
+}
+
+NavalBrassPickaxe: {
+    Tooltip: ""
+    DisplayName: Naval Brass Pickaxe
+}
+
+CuproNickelPickaxe: {
+    Tooltip: ""
+    DisplayName: Cupro Nickel Pickaxe
+}
+
+SteelHammer: {
+    Tooltip: ""
+    DisplayName: Steel Hammer
+}
+
+PhosphorBronzeHammer: {
+    Tooltip: ""
+    DisplayName: Phosphor Bronze Hammer
+}
+
+NavalBrassHammer: {
+    Tooltip: ""
+    DisplayName: Naval Brass Hammer
+}
+
+CuproNickelHammer: {
+    Tooltip: ""
+    DisplayName: Cupro Nickel Hammer
+}
+
+SteelCleaver: {
+    Tooltip: ""
+    DisplayName: Steel Cleaver
+}
+
+RiftTome2: {
+    DisplayName: Shadow
+    Tooltip: Causes an orb of living shadows to coalesce and orbit around your cusror.
+}
+
+RiftTome: {
+    DisplayName: Rift Dart
+    Tooltip: Summons a barrage of Rift Darts to rain down from the sky.
+}
+
+RiftScabbard: {
+    DisplayName: Rift Scabbard
+    Tooltip: Summons a riften broadsword overloaded with the energies of the rift. It is almost sentient.
+}
+
+NightbringerDuo: {
+    Tooltip: Face the Fury of Dusk and Dawn!
+    DisplayName: Nightbringer Duo
+}
+
+DisabilityDraught: {
+    DisplayName: Disability Draught
+    Tooltip: ""
+}
+
+SpecialTownMusicBoxNight: {
+    Tooltip: ""
+    DisplayName: Special Town Music Box Night
+}
+
+SpecialTownMusicBoxDay: {
+    Tooltip: ""
+    DisplayName: Special Town Music Box Day
+}
+
+GildedCross: {
+    DisplayName: Gilded Cross
+    Tooltip: ""
+}
+
+DefloweredFaith: {
+    DisplayName: Deflowered Faith
+    Tooltip: Holding this makes you feel as though something is fundamentally wrong with you.
+}
+
+ScarletDragon: {
+    DisplayName: Scarlet Dragon
+    Tooltip: ""
+}
+
+WretchedSteel: {
+    DisplayName: Wretched Steel
+    Tooltip: ""
+}
+
+IchorDisruptor: {
+    DisplayName: Ichor Disruptor
+    Tooltip: ""
+}
+
+RiftThrowingKnife: {
+    Tooltip: ""
+    DisplayName: Rift Throwing Knife
+}
+
+RiftTeardrop: {
+    Tooltip: ""
+    DisplayName: Rift Teardrop
+}
+
+RiftSpine: {
+    Tooltip: ""
+    DisplayName: Rift Spine
+}
+
+ArmoryDrive: {
+    DisplayName: Armory Drive
+    Tooltip: ""
+}
+
+FurnitureDrive: {
+    DisplayName: Furniture Drive
+    Tooltip: ""
+}
+
+RiftConfigurator: {
+    DisplayName: Rift Configurator
+    Tooltip: ""
+}
+
+ToolDrive: {
+    DisplayName: Tool Drive
+    Tooltip: ""
+}
+
+WeaponryDrive: {
+    DisplayName: Weaponry Drive
+    Tooltip: ""
+}
+
+RiftYoyoT3: {
+    Tooltip: Has a random chance each tick to fire Rift darts at your enemy
+    DisplayName: Rift Assassin's Trusted Friend
+}
+
+RiftYoyoT2: {
+    Tooltip: ""
+    DisplayName: Rift Reaper MK.II
+}
+
+RiftYoyoT1: {
+    Tooltip: ""
+    DisplayName: Rift Reaper
+}
+
+RiftLamp: {
+    DisplayName: Rift Lamp
+    Tooltip: ""
+}
+
+RiftWallMonitor: {
+    Tooltip: ""
+    DisplayName: Rift Wall Monitor
+}
+
+HeliciteBrick: {
+    DisplayName: Helicite Brick
+    Tooltip: ""
+}
+
+RiftSurfaceMusicBox: {
+    Tooltip: ""
+    DisplayName: Rift Surface Music Box
+}
+
+RiftSandstormMusicBox: {
+    Tooltip: ""
+    DisplayName: Rift Sandstorm Music Box
+}
+
+RiftDesertMusicBox: {
+    Tooltip: ""
+    DisplayName: Rift Desert Music Box
+}
+
+UpDownSwingSwordItem: {
+    Tooltip: ""
+    DisplayName: Up Down Swing Sword Item
+}
+
+BewitchingScepter: {
+    Tooltip: For when you want to use an ensemble, but dont want to go through the hassle of increasing your minion slots with accessories. Increments minion slots by one each use.
+    DisplayName: (CHEAT ITEM) Bewitching Scepter
+}
+
+Lasergun: {
+    DisplayName: Lasergun
+    Tooltip: ""
+}
+
+RiftRailgun: {
+    Tooltip: Charges up and fires a deadly stream of solar energy
+    DisplayName: Rift Railgun
+}
+
+EnchantedScepter: {
+    DisplayName: Enchanted Scepter
+    Tooltip:
+        '''
+        An elegant scepter, fit for a prince or princess.
+        Left click to shoot magic darts that bounce off of tiles, Right click to throw the scepter.
+        '''
+}
+
+WhackAMole_Master_Painting: {
+    Tooltip: A commemorative painting. Artist unknown.
+    DisplayName: Whack-a-mole Master!
+}
+
+MageGlove: {
+    Tooltip:
+        '''
+        A rugged, reliable glove.
+        Increases Scepter Class attack speed by 5%.
+        Increases Scepter Class Damage by 10%
+        '''
+    DisplayName: Mage Glove
+}
+
+ScepterAchievementBag: {
+    Tooltip: ""
+    DisplayName: Reward Bag (Whack-a-Mole Master!)
+}
+
+AchievementBook: {
+    Tooltip: ""
+    DisplayName: Achievement Book
+}
+
+AchievementUndoer: {
+    Tooltip: Flags all achievements as false, allowing you to reclaim them in the same world.
+    DisplayName: (DEBUG) Achievement Undoer
+}
+
+ShadowScepter: {
+    Tooltip:
+        '''
+        A dreadful scepter, wielded by unruly mages.
+        Left click to shoot homing shadowflame darts, Right click to throw the scepter.
+        '''
+    DisplayName: Shadow Scepter
+}
+
+NatureScepter: {
+    DisplayName: Nature Scepter
+    Tooltip:
+        '''
+        A wild scepter with all the lustre of a verdant emerald, and all the potency of the Jungle.
+        Left click to shoot homing dendro darts, Right click to throw the scepter, which will release spores in its path.
+        '''
+}
+
+NecroScepter: {
+    DisplayName: Necro Scepter
+    Tooltip:
+        '''
+        A rudimentary, ugly construct, the amalgamation of scavenged remains.
+        Left click to shoot homing posessed bones, Right click to throw the scepter, which will lock enemies in a bony prison for a short time on hit.
+        '''
+}
+
+ObsidianOculus: {
+    DisplayName: Obsidian Oculus
+    Tooltip:
+        '''
+        A watchful scepter, emanating unease.
+        Left click to shoot shards of obsidian; sharp as a razor, Right click to throw the scepter.
+        '''
+}
+
+ScepterOfVespae: {
+    DisplayName: Scepter Of Vespae
+    Tooltip:
+        '''
+        A potent scepter, with all the confidence of the jungle's matriarch.
+        Left click to shoot stingers and bees, Right click to throw the scepter, which releases bees as it travels.
+        '''
+}
+
+WondersWill: {
+    Tooltip:
+        '''
+        A dual scepter, two that work in tandem and cannot be separated.
+        Left click to shoot homing magic darts, Right click to throw the scepters in opposite directions.
+        '''
+    DisplayName: Wonders Will
+}
+
+HolyScepter: {
+    Tooltip:
+        '''
+        A blessed scepter, with a lustrous red gemstone atop, fit for a high officiant.
+        Left click to shoot condemnation orbs, which explode into fragments and chase the target relentlessly.
+
+        '''
+    DisplayName: Holy Scepter
+}
+
+RiftArmChair_Item: {
+    DisplayName: Rift Arm Chair
+    Tooltip: ""
+}
+
+RiftDoor: {
+    DisplayName: Rift Door
+    Tooltip: ""
+}
+
+ParticleSpawnWand: {
+    DisplayName: Particle Spawn Wand
+    Tooltip: ""
+}
+
+GoldPearl: {
+    DisplayName: Gold Pearl
+    Tooltip: It gleams in a way that never fails to spark wonder in your soul...
+}
+
+RiftChakram: {
+    DisplayName: Rift Chakram
+    Tooltip: ""
+}
+
+RiftRevolver: {
+    Tooltip: ""
+    DisplayName: Rift Revolver
+}
+
+TenebrousArchmageHat: {
+    Tooltip: ""
+    SetBonus:
+        '''
+        30% increased Movement Speed.
+        8% increased Damage Reduction.
+        15 increased Scepter Armor Penetration.
+        15% increased Scepter Class Damage.
+
+        When below half health, you gain a defensive aura that damages enemies and inflicts them with Shimmering Flames.
+
+        Pressing the Armor Set Bonus key will spawn three shimmering shard clusters in random locations near you.
+        Being within their area of effect will boost damage by 20%.
+        '''
+    DisplayName: Tenebrous Archmage Hat
+}
+
+TenebrousArchmagePants: {
+    DisplayName: Tenebrous Archmage Pants
+    Tooltip: ""
+}
+
+TenebrousArchmageVest: {
+    DisplayName: Tenebrous Archmage Vest
+    Tooltip: ""
+}
+
+ManaCore: {
+    DisplayName: Mana Core
+    Tooltip: A fortefied Mana Star that grants the ability to do a Mana Burst, which consumes all mana and multiplies your mana by the scepter's Damage.
+}
+
+RiftScythe: {
+    DisplayName: Rift Scythe
+    Tooltip: ""
+}
+
+RiftStaff: {
+    DisplayName: Rift Staff
+    Tooltip: ""
+}
+
+RiftPhasesaber: {
+    Tooltip: ""
+    DisplayName: Rift Phasesaber
+}
+
+RiftZapinator: {
+    Tooltip: ""
+    DisplayName: Rift Zapinator
+}
+
+ContenderSword: {
+    Tooltip:
+        '''
+        Standard Issue. Calibrated as an ultimate sword to slaughter even the toughest illusions of mind and matter. 
+        The hinderences of weaker swords cannot interfere with the games.
+        '''
+    DisplayName: Contender Sword
+}
+
+RiftConfiguratorCore: {
+    DisplayName: Rift Configurator Core
+    Tooltip:
+        '''
+        The main component of the Rift Configurator. Drives can be inserted inside to unlock different recipes.
+        Only three drives can be inserted at a time.
+        Used for specific Crafting.
+        '''
+}
+
+RosyGlove: {
+    Tooltip:
+        '''
+        Elegant, Sleek, and Velvet. Ironic of a choice for bloody combat, but even royals let loose now and then.
+        Increases Scepter Class Damage by 3%
+        '''
+    DisplayName: Rosy Glove
+}
+
+CoralScepter: {
+    Tooltip:
+        '''
+        A seaborne Scepter with a comforting blue aura.
+        Left Click to shoot water darts that make enemies soggy on hit. Right click to throw the scepter.
+        '''
+    DisplayName: Coral Scepter
+}
+
+ChlorophyteGlove: {
+    Tooltip:
+        '''
+        Vibrant, Sharp, and pulsing with the vigor of triumphance.
+        Increases Scepter Class Speed by 5%
+        Increases Scepter Class Damage by 10%
+        Increases Scepter Throw Range by 16
+        '''
+    DisplayName: Chlorophyte Glove
+}
+
+OrichalcumVisage: {
+    Tooltip: Increases Scepter Class Range by {0}.
+    SetBonus: When firing from a scepter, you have a chance to shoot a ring of petals at the enemy.
+    DisplayName: Orichalcum Visage
+}
+
+MythrilVisage: {
+    Tooltip: Increases Scepter Class Range by {0}.
+    SetBonus:
+        '''
+        Increases Scepter Class Range by {0}.
+        Increases Scepter throwing speed by {1}%.
+        '''
+    DisplayName: Mythril Visage
+}
+
+LivingWoodCrown: {
+    Tooltip: ""
+    DisplayName: Living Wood Crown
+}
+
+ElementalAlkahest: {
+    Tooltip: ""
+    DisplayName: Elemental Alkahest
+}
+
+NephilimWings: {
+    Tooltip: Soar like a god amongst men.
+    DisplayName: Nephilim Wings
+}
+
+NephilimHood: {
+    Tooltip:
+        '''
+        You walk amongst men as if you are a god, though you merely pretend.
+        Reacts to the presence of a certain blade...
+        '''
+    DisplayName: Nephilim Hood
+}
+
+NephilimChestPlate: {
+    Tooltip:
+        '''
+        You walk amongst men as if you are a god, though you merely pretend.
+        Reacts to the presence of a certain blade...
+        '''
+    DisplayName: Nephilim Chest Plate
+}
+
+NephilimBoots: {
+    Tooltip:
+        '''
+        You walk amongst men as if you are a god, though you merely pretend.
+        Reacts to the presence of a certain blade...
+        '''
+    DisplayName: Nephilim Boots
+}
+
+SaviorWings: {
+    Tooltip: Great for launching ambushes on your foes...
+    DisplayName: Savior Wings
+}
+
+SaviorPlatemail: {
+    Tooltip:
+        '''
+        All eyes are on you. You are no longer the lazy emperor, but the brutal conquistador.
+        Reacts to the presence of a certain blade...
+        '''
+    DisplayName: Savior Platemail
+}
+
+SaviorHelmet: {
+    Tooltip:
+        '''
+        All eyes are on you. You are no longer the lazy emperor, but the brutal conquistador.
+        Reacts to the presence of a certain blade...
+        '''
+    DisplayName: Savior Helmet
+}
+
+SaviorGreaves: {
+    Tooltip:
+        '''
+        All eyes are on you. You are no longer the lazy emperor, but the brutal conquistador.
+        Reacts to the presence of a certain blade...
+        '''
+    DisplayName: Savior Greaves
+}
+
+RiftData: {
+    DisplayName: Rift Data Card
+    Tooltip: A small card with special data burned onto it. It is necessary to direct Riften Energy along wire paths.
+}
+
+ShadowCircuitry: {
+    DisplayName: Shadow Circuitry
+    Tooltip: A glass wafer with channels carved into it. Inlaid in those channels are Riftplate Wires, which conduct living shadows through a circuit.
+}
+
+Motherboard: {
+    DisplayName: Motherboard
+    Tooltip: A glass wafer with copper wire inlaid in it. This is far to intricate for you to even understand how to craft.
+}
+
+RiftplateWire: {
+    DisplayName: Riftplate Wire
+    Tooltip: Riftplate that has been stretched out into a high-tension wire. Stimulating this may create interesting results.
+}
+
+TenebrousArchmageCoat: {
+    Tooltip: ""
+    DisplayName: Tenebrous Archmage Coat
+}
+
+TenebrousTanDye: {
+    Tooltip: ""
+    DisplayName: Tenebrous Tan Dye
+}
+
+TenebrousMagentaDye: {
+    Tooltip: ""
+    DisplayName: Tenebrous Magenta Dye
+}
+
+TenebrousBlueDye: {
+    Tooltip: ""
+    DisplayName: Tenebrous Blue Dye
+}
+
+ScepterPolish: {
+    Tooltip: ""
+    DisplayName: Scepter Polish
+}
+
+BloodVial: {
+    Tooltip: ""
+    DisplayName: Blood Vial
+}
+
+VileCyst: {
+    DisplayName: Vile Cyst
+    Tooltip: ""
+}
+
+Item_RiftConfiguratorCore: {
+    DisplayName: Rift Configurator Core
+    Tooltip:
+        '''
+        A specialized Crafting Unit for Living Shadows. It works a little differently from the Rift Crucible.
+        It uses advanced Circuitry to pull information from data cards and uses that data to direct Living Shadows at certain frequencies into Riftplate to create activatable items.
+        To unlock the recipes for certain item groups, you need the corresponding drive to be inserted, which is done by holding the drive in your hand and right clicking this item in the inventory.
+        Right click a second time to remove the drive.
+        Only one drive can be inserted at a time.
+        CURRENT DRIVE: NONE
+        '''
+}
+
+Item_RiftConfiguratorArmory: {
+    DisplayName: Rift Configurator Armory
+    Tooltip:
+        '''
+        A specialized Crafting Unit for Living Shadows. It works a little differently from the Rift Crucible.
+        It uses advanced Circuitry to pull information from data cards and uses that data to direct Living Shadows at certain frequencies into Riftplate to create activatable items.
+        To unlock the recipes for certain item groups, you need the corresponding drive to be inserted, which is done by holding the drive in your hand and right clicking this item in the inventory.
+        Right click a second time to remove the drive.
+        Only one drive can be inserted at a time.
+        CURRENT DRIVE: ARMORY
+        '''
+}
+
+Item_RiftConfiguratorWeaponry: {
+    DisplayName: Rift Configurator Weaponry
+    Tooltip:
+        '''
+        A specialized Crafting Unit for Living Shadows. It works a little differently from the Rift Crucible.
+        It uses advanced Circuitry to pull information from data cards and uses that data to direct Living Shadows at certain frequencies into Riftplate to create activatable items.
+        To unlock the recipes for certain item groups, you need the corresponding drive to be inserted, which is done by holding the drive in your hand and right clicking this item in the inventory.
+        Right click a second time to remove the drive.
+        Only one drive can be inserted at a time.
+        CURRENT DRIVE: WEAPONRY
+        '''
+}
+
+Item_RiftConfiguratorTools: {
+    DisplayName: Rift Configurator Tools
+    Tooltip:
+        '''
+        A specialized Crafting Unit for Living Shadows. It works a little differently from the Rift Crucible.
+        It uses advanced Circuitry to pull information from data cards and uses that data to direct Living Shadows at certain frequencies into Riftplate to create activatable items.
+        To unlock the recipes for certain item groups, you need the corresponding drive to be inserted, which is done by holding the drive in your hand and right clicking this item in the inventory.
+        Right click a second time to remove the drive.
+        Only one drive can be inserted at a time.
+        CURRENT DRIVE: TOOLS
+        '''
+}
+
+Item_RiftConfiguratorFurniture: {
+    DisplayName: Rift Configurator Furniture
+    Tooltip:
+        '''
+        A specialized Crafting Unit for Living Shadows. It works a little differently from the Rift Crucible.
+        It uses advanced Circuitry to pull information from data cards and uses that data to direct Living Shadows at certain frequencies into Riftplate to create activatable items.
+        To unlock the recipes for certain item groups, you need the corresponding drive to be inserted, which is done by holding the drive in your hand and right clicking this item in the inventory.
+        Right click a second time to remove the drive.
+        Only one drive can be inserted at a time.
+        CURRENT DRIVE: FURNITURE
+        '''
+}
+
+Item_RiftLamp: {
+    Tooltip: ""
+    DisplayName: Rift Lamp
+}
+
+Item_RiftDoor: {
+    Tooltip: ""
+    DisplayName: Rift Door
+}
+
+Item_RiftCrucible: {
+    Tooltip: ""
+    DisplayName: Rift Crucible
+}
+
+Item_RiftChair: {
+    Tooltip: ""
+    DisplayName: Rift Chair
+}
+
+Item_RiftCache: {
+    Tooltip: ""
+    DisplayName: Rift Cache
+}
+
+Item_RiftBookcase: {
+    Tooltip: ""
+    DisplayName: Rift Bookcase
+}
+
+Item_RiftArmChair: {
+    Tooltip: ""
+    DisplayName: Rift Arm Chair
+}
+
+Item_TemperedObsidian: {
+    Tooltip: ""
+    DisplayName: Tempered Obsidian
+}
+
+Item_SpecialTownMusicBoxNight: {
+    Tooltip: ""
+    DisplayName: Special Town Music Box Night
+}
+
+Item_SpecialTownMusicBoxDay: {
+    Tooltip: ""
+    DisplayName: Special Town Music Box Day
+}
+
+Item_HeliciteCrystal: {
+    Tooltip: ""
+    DisplayName: Helicite Crystal
+}
+
+Item_HeliciteBrick: {
+    Tooltip: ""
+    DisplayName: Helicite Brick
+}
+
+Item_GargoyleTrepidation: {
+    Tooltip: ""
+    DisplayName: Gargoyle Trepidation
+}
+
+Item_RiftWall: {
+    Tooltip: ""
+    DisplayName: Rift Wall
+}
+
+Item_RiftSurfaceMusicBox: {
+    Tooltip: ""
+    DisplayName: Rift Surface Music Box
+}
+
+Item_DangerousRiftWall: {
+    Tooltip: ""
+    DisplayName: Dangerous Rift Wall
+}
+
+Item_RiftSilt: {
+    Tooltip: ""
+    DisplayName: Rift Silt
+}
+
+Item_RiftSandstormMusicBox: {
+    Tooltip: ""
+    DisplayName: Rift Sandstorm Music Box
+}
+
+Item_RiftDesertMusicBox: {
+    Tooltip: ""
+    DisplayName: Rift Desert Music Box
+}
+
+Item_Riftpane: {
+    DisplayName: Riftpane
+    Tooltip: ""
+}
+
+Item_RiftpaneWall: {
+    DisplayName: Riftpane Wall
+    Tooltip: ""
+}
+
+Item_Riftplate: {
+    DisplayName: Riftplate
+    Tooltip: ""
+}
+
+Item_RiftplatePlatform: {
+    DisplayName: Riftplate Platform
+    Tooltip: ""
+}
+
+Item_RiftplateWall: {
+    DisplayName: Riftplate Wall
+    Tooltip: ""
+}
+
+Item_RiftTable: {
+    DisplayName: Rift Table
+    Tooltip: ""
+}
+
+Item_RiftWallMonitor: {
+    DisplayName: Rift Wall Monitor
+    Tooltip: ""
+}
+
+RiftBattery: {
+    DisplayName: Rift Battery
+    Tooltip: A small canister of living shadows with a special port at the end for another device to plug in to.
+}
+
+RiftElectrifier: {
+    DisplayName: Rift Electrifier
+    Tooltip:
+        '''
+        A wired apparatus designed to transfer the solar energy in living shadows into a Rift Fuse as an electrical current, empowering Riften Items.
+        Requires Rift Batteries or a close enough proximity to a Rift Crucible to obtain the solar energy.
+        '''
+}
+
+HeliciteShank: {
+    Tooltip: A small, crystalline blade imbued with the Ancient Sun's essence.
+    DisplayName: Helicite Shank
+}
+
+AuraThiefBreastplate: {
+    DisplayName: Aura Thief Breastplate
+    Tooltip: A plate of thievery and dishonor. As pale as your eyes.
+}
+
+AuraThiefCuisses: {
+    DisplayName: Aura Thief Cuisses
+    Tooltip: Cuisses of thievery and dishonor. As pale as your eyes.
+}
+
+AuraThiefHeadgear: {
+    DisplayName: Aura Thief Headgear
+    Tooltip: Headgear of thievery and dishonor. As pale as your eyes.
+}
+
+PosessedPickaxe: {
+    Tooltip:
+        '''
+        A pickaxe belonging to an unfortunte miner, their body is likely stuck in some small crevice or split up by ravenous worms. 
+        One thing is for sure though. They are out for vengance against an old friend...
+        This minion will not actively chase your foes, but will light caves for you.
+        Perhaps if you can quell this unfortunte soul's grudge, they may offer you some extra help...
+        Maybe...
+        '''
+    DisplayName: Posessed Pickaxe
+}
+
+SparkFrostCleaver: {
+    Tooltip:
+        '''
+        A gargantuan cleaver of fire and ice energies.
+        This creation is not entiely worldly, though... The Spark-Frost Cleaver is a construct of the Haepien, an elemental sprite with special powers gifted to them by the heavens.
+        Swings travel in complete circles, and will automatically swing twice if held down.
+        Hitting an enemy creates an explosion and releases a flare of Flame and a flare of Frost that home in on enemies.
+        The flare of Flame inflicts Haepien's Inferno, an enhanced version of the "On Fire!" debuff.
+        Enemies caught within a certain range of ignited enemies will have the flames jump to them as well. 
+        The flare of Frost inflicts Haepien's Blizzard, an enhanced version of the "Frostburn" debuff.
+        Enemies afflicted with Haepien's Blizzard will be unable to move, fly, or fall.
+        '''
+    DisplayName: Spark Frost Cleaver
+}
+
+WrittenPromise: {
+    DisplayName: Written Promise
+    Tooltip:
+        '''
+        A handwritten note from the Prospector, addressed to a friend named "Elliott".
+
+        Hey Elliott...
+        So I know its been some time since we last met, and I bet that hasn't been very enjoyable time for you, all things considered...
+        Listen, I want to explain a few thi-
+        -ecause I was so cau-
+        -orry for ev-
+
+        The rest of the note is waterlogged from sitting in his pocket for so long, but the thought is there.
+        '''
+}
+
+AuraClaws: {
+    DisplayName: Aura Claws
+    Tooltip: The stolen dreams of the dead reap from you that which you pride yourself upon...
+}
+
+EvermoltenSteel: {
+    Tooltip: Steel that is soft as dough. Imbued with fire energy.
+    DisplayName: Evermolten Steel
+}
+
+CuproNickelJavelin: {
+    Tooltip: ""
+    DisplayName: Cupro Nickel Javelin
+}
+
+TenebrousArchmageCowl: {
+    DisplayName: Tenebrous Archmage Cowl
+    SetBonus:
+        '''
+        When pressing the armor set bonus key, three mage clones will spawn around you.
+        They do not move, and will charge for three seconds before firing homing shimmering flames at enemies.
+        This has a 10 second cooldown.
+        '''
+    Tooltip: ""
+}
+
+TenebrousTradewinds: {
+    DisplayName: Tenebrous Tradewinds
+    Tooltip: ""
+}
+
+PhosphorBronzeJavelin: {
+    DisplayName: Phosphor Bronze Javelin
+    Tooltip: ""
+}
+
+SteelJavelin: {
+    Tooltip: ""
+    DisplayName: Steel Javelin
+}
+
+CunifeJavelin: {
+    Tooltip: ""
+    DisplayName: Cunife Javelin
+}
+
+LivingWoodCane: {
+    DisplayName: Living Wood Cane
+    Tooltip: ""
+}
+
+TitanScepter: {
+    DisplayName: Titan Scepter
+    Tooltip: ""
+}
+
+ChlorophyteScepter: {
+    DisplayName: Chlorophyte Scepter
+    Tooltip: ""
+}
+
+GhoulishScepter: {
+    Tooltip: ""
+    DisplayName: Ghoulish Scepter
+}
+
+RiftScepter: {
+    Tooltip: ""
+    DisplayName: Rift Scepter
+}
+
+Husk_RiftScepter: {
+    Tooltip: ""
+    DisplayName: Husk_ Rift Scepter
+}
+
+BroadswordData: {
+    DisplayName: Broadsword Data
+    Tooltip: ""
+}
+
+ClaymoreData: {
+    DisplayName: Claymore Data
+    Tooltip: ""
+}
+
+GreatSwordData: {
+    DisplayName: Great Sword Data
+    Tooltip: ""
+}
+
+MiscData: {
+    DisplayName: Misc Data
+    Tooltip: ""
+}
+
+RevolverData: {
+    DisplayName: Revolver Data
+    Tooltip: ""
+}
+
+ScepterData: {
+    DisplayName: Scepter Data
+    Tooltip: ""
+}
+
+StaffData: {
+    DisplayName: Staff Data
+    Tooltip: ""
+}
+
+YoyoData: {
+    DisplayName: Yoyo Data
+    Tooltip: ""
+}
+
+ZapinatorData: {
+    DisplayName: Zapinator Data
+    Tooltip: ""
+}
+
+CelestialDiscord: {
+    DisplayName: Celestial Discord
+    Tooltip: ""
+}
+
+ShimmeringBossResetter: {
+    DisplayName: Shimmering Boss Resetter
+    Tooltip: ""
+}
+
+Item_ConstitutionMusicBox: {
+    DisplayName: Constitution Music Box
+    Tooltip: ""
+}
+
+StellarTintedGoggles: {
+    Tooltip: ""
+    DisplayName: Stellar Tinted Goggles
+}
+
+ConstitutionLootBag: {
+    Tooltip: ""
+    DisplayName: Treasure Bag (Constitution)
+}
+
+CursedStar: {
+    DisplayName: Cursed Star
+    Tooltip: ""
+}
+
+DebugStar: {
+    DisplayName: Debug Star
+    Tooltip: ""
+}
+
+FoxScepter: {
+    DisplayName: Fox Scepter
+    Tooltip: Dedicated to: TopFox6 the PipeBomb Fox, for being a part of what motivates me to follow through with this mod by making me want to impress him.
+}
+
+StellarFoxScepter: {
+    DisplayName: Stellar Fox Scepter
+    Tooltip:
+        '''
+        Shoots homing stellar fox apparitions that explode on collision and inflict galantine burn.
+        Throws have no native special effect.
+        Dedicated to: TopFox6 the PipeBomb Fox, for being a part of what motivates me to follow through with this mod by making me want to impress him.
+        '''
+}
+
+StellarBow: {
+    Tooltip:
+        '''
+        Converts regular arrows into Stellar Arrows.
+        After firing 10 arrows, the bow becomes empowered, and will fire Galantine Lances and Stars.
+        "Unlike the blade, the bow has retained some stellar energy..." 
+        '''
+    DisplayName: Stellar Bow
+}
+
+StellarFlames: {
+    DisplayName: Stellar Flames
+    Tooltip: ROMANTICIZE PAIN AND YOU WILL FIND YOURSELF CONSUMED.
+}
+
+Endemy2Weapon: {
+    Tooltip:
+        '''
+        A behemoth by many metrics. Supposedly capable of rending planets in a single swing, but it seems like it doesn't want to do that when it's you who wields it.
+        [This weapon design is an Intellectual Property of Desolo Zantas. It is used with their consent on the condition that explicit credit is given to them.]
+        '''
+    DisplayName: Second Endemy's Wrath
+}
+
+Item_ConstitutionRelic: {
+    DisplayName: Constitution Relic
+    Tooltip: ""
+}
+
+Item_ConstitutionTrophy: {
+    DisplayName: Constitution Trophy
+    Tooltip: ""
+}
+
+AetherAngel: {
+    DisplayName: Aether Angel
+    Tooltip: ""
+}
+
+BrilliantStar: {
+    DisplayName: Brilliant Star
+    Tooltip: ""
+}
+
+Carnage: {
+    DisplayName: Carnage
+    Tooltip: ""
+}
+
+EternalAbyss: {
+    DisplayName: Eternal Abyss
+    Tooltip: ""
+}
+
+OmegasEdge: {
+    DisplayName: Omegas Edge
+    Tooltip: ""
+}
+
+SunsetSavior: {
+    DisplayName: Sunset Savior
+    Tooltip: ""
+}
+
+ValiantDawn: {
+    DisplayName: Valiant Dawn
+    Tooltip: ""
+}
+
+WyvernsDestruction: {
+    DisplayName: Wyverns Destruction
+    Tooltip: Original Weapon is from Ultraconyx
+}
+
+RibChainsaw: {
+    Tooltip: Rip and tear through your foes using.... the flesh of another foe.
+    DisplayName: Rib Chainsaw
+}
+
+AntiqueCrown: {
+    DisplayName: Antique Crown
+    Tooltip: A wrought, heavy crown.
+}
+
+FleeceRobe: {
+    DisplayName: Fleece Robe
+    Tooltip: Quite Scratchy
+}
+
+InsurgentCirclet: {
+    DisplayName: Insurgent Circlet
+    Tooltip: ""
+    SetBonus:
+        '''
+        Wrathful spirits will coalesce near you, fuelled by your will. The number of spirits is capped at 10.
+        Pressing the armor set bonus key will consume all spirits and grant the insurgent boost.
+        Insurgent Boost increases acceleration by 40%, Max Run Speed by 10%, and Scepter Class Damage by 10% of the number of wisps you had accrued.
+        '''
+}
+
+InsurgentBodyArmor: {
+    Tooltip: ""
+    DisplayName: Insurgent Body Armor
+}
+
+InsurgentFaulds: {
+    DisplayName: Insurgent Faulds
+    Tooltip: ""
+}
+
+GoodOmen: {
+    DisplayName: Good Omen
+    Tooltip: ""
+}
+
+CorruptPetalGun: {
+    DisplayName: Corrupt Petal Gun
+    Tooltip:
+        '''
+        Shoots out Corrupted Flower petals that have a chance to home in on an enemy.
+        Uses vines as ammunition.
+        '''
+}
+
+TinyHammer: {
+    DisplayName: Tiny Hammer
+    Tooltip: ""
+}
+
+Contempt: {
+    Tooltip: Creates a corrupt Sigil at the cursor position. Cursed flames will fly towards the Sigil from all around.
+    DisplayName: Contempt
+}
+
+WyvernTail: {
+    DisplayName: Wyvern Tail
+    Tooltip: Hitting an enemy will heal you a random amount on random chance. Ichor will rain from the sky onto the enemy.
+}
+
+NightmareRoseLootBag: {
+    DisplayName: Treasure Bag (Nightmare Rose)
+    Tooltip: ""
+}
+
+WyvernCorpseLootBag: {
+    DisplayName: Treasure Bag (Wyvern Corpse)
+    Tooltip: ""
+}
+
+GreatFlayer: {
+    DisplayName: Great Flayer
+    Tooltip:
+        '''
+        Every third Swing is a spin, shooting teeth in all directions.
+        Right click to perform a short dash.
+        '''
+}
+
+WyvernSkull: {
+    Tooltip: Allows you to dash and create a trail of Flesh Bombs that quickly explode into ichor, lowering your enemies' defense.
+    DisplayName: Wyvern Skull
+}
+
+DeadlyBlossom: {
+    DisplayName: Deadly Blossom
+    Tooltip:
+        '''
+        Allows you to spawn a small rose blossom at your position. Staying within a vicinity of the blossom will increase Defense and Damage Reduction.
+
+        'A small remnant of the rose. Without the power of Idri's soul to sustain its massive body, it has withered and crumbled away.
+        It's dry, putrid form is kept from truly spoiling by cursed flames that continue to burn through it.
+        The end result of any case in which the corruption is separated from its host.'
+        '''
+}
+
+GigaCursedHammerWeapon: {
+    Tooltip: ""
+    DisplayName: Giga Cursed Hammer
+}
+
+EuthanizedViciousBunny: {
+    DisplayName: Euthanized Vicious Bunny
+    Tooltip: You are a horrible person.
+}
+
+Item_WyvernCorpseTrophy: {
+    Tooltip: ""
+    DisplayName: Wyvern Corpse Trophy
+}
+
+Item_WyvernCorpseRelic: {
+    Tooltip: ""
+    DisplayName: Wyvern Corpse Relic
+}
+
+Item_NightmareRoseTrophy: {
+    Tooltip: ""
+    DisplayName: Nightmare Rose Trophy
+}
+
+Item_NightmareRoseRelic: {
+    Tooltip: ""
+    DisplayName: Nightmare Rose Relic
+}
+
+NightmarePowder: {
+    Tooltip: ""
+    DisplayName: Nightmare Powder
+}
+
+PossessedDartRifleItem: {
+    DisplayName: Possessed Dart Rifle
+    Tooltip:
+        '''
+        Summons a Possessed Dart Rifle that orbits you and shoots cursed darts at your foes.
+        Uses 3 Minion Slots
+        '''
+}
+
+WitheredBouqet: {
+    DisplayName: Withered Bouqet
+    Tooltip: ""
+}
+
+TenebrousDemonChausses: {
+    DisplayName: Tenebrous Demon Chausses
+    Tooltip: ""
+}
+
+TenebrousDemonChestplate: {
+    DisplayName: Tenebrous Demon Chestplate
+    Tooltip: ""
+}
+
+TenebrousDemonVisor: {
+    DisplayName: Tenebrous Demon Visor
+    Tooltip: ""
+    SetBonus:
+        '''
+        Shooting enemies builds charge up to three tiers.
+        Tier 1 increases Ranged Damage by 10% and Ranged Crit chance by 6%.
+        Tier 2 increases Ranged Damage by 20% and Ranged Crit chance by 12%.
+        Tier 3 increases Ranged Damage by 40% and Ranged Crit chance by 18%, and your weapon will fire a barrage of homing Tenerbis Stars.
+        Not using your weapon, or charging to 120 charge on Tier 3 will reset charge.
+        '''
+}
+
+TenebrousChakram: {
+    DisplayName: Tenebrous Chakram
+    Tooltip: Summons homing stars as it travels.
+}
+
+TheBotanistsCurse: {
+    DisplayName: The Botanists Curse
+    Tooltip:
+        '''
+        A collection of horrible, gorey stories about various Botanists and Farmers supposedly afflicted by "The Botanists Curse"
+        Summons the Nightmare Rose
+        NOTE: The rose will spawn with the bottom center on the cursor, and will fall to any solid tile below.
+        '''
+}
+
+Corrolary: {
+    Tooltip: ""
+    DisplayName: Corrolary
+}
+
+Continuum: {
+    DisplayName: Continuum
+    Tooltip: ""
+}
+
+ButterflyofProvidence: {
+    DisplayName: Butterfly of Providence
+    Tooltip: ""
+}
+
+GenesisButterfly: {
+    Tooltip: ""
+    DisplayName: Genesis Butterfly
+}
+
+GalantineLance: {
+    DisplayName: Galantine Lance
+    Tooltip: ""
+}
+
+TemporalLance: {
+    DisplayName: Temporal Lance
+    Tooltip: ""
+}
+
+BookUIOpener: {
+    DisplayName: Book U I Opener
+    Tooltip: Debug Item
+}
+
+BloodGoddessLoreBook: {
+    DisplayName: Blood Goddess Lore Book
+    Tooltip: Debug Item
+}
+
+NightmareRoseArenaBook: {
+    DisplayName: Nightmare Rose Arena
+    Tooltip: Instructions on the setup of a premade arena for the nightmare rose.
+}
+
+LivingShadowLoreBook: {
+    DisplayName: Living Shadows
+    Tooltip: ""
+}
+
+ScholarAutobiography: {
+    DisplayName: Autobiography I
+    Tooltip: ""
+}
+
+Jnana: {
+    Tooltip: ""
+    DisplayName: Jnana
+}
+
+ShadeSeedBook: {
+    Tooltip: ""
+    DisplayName: Shade Seed Book
+}
+
+StarHammer: {
+    DisplayName: Star Hammer
+    Tooltip: ""
+}
+
+HoleCatTail: {
+    Tooltip:
+        '''
+        Are we not all still looking for our own reflection?
+        .
+        Great for Impersonating Devs!
+        '''
+    DisplayName: HoleCat's Tail
+}
+
+HoleCatSkirt: {
+    Tooltip:
+        '''
+        Are we not all still looking for our own reflection?
+        .
+        Great for Impersonating Devs!
+        '''
+    DisplayName: HoleCat's Skirt
+}
+
+HoleCatShawl: {
+    Tooltip:
+        '''
+        Are we not all still looking for our own reflection?
+        .
+        Great for Impersonating Devs!
+        '''
+    DisplayName: HoleCat's Shawl
+}
+
+HoleCatHood: {
+    Tooltip:
+        '''
+        Are we not all still looking for our own reflection?
+        .
+        Great for Impersonating Devs!
+        '''
+    DisplayName: HoleCat's Hood
+    SetBonus:
+        '''
+        25% Increased Damage across all classes.
+        5% Increased Use Speed.
+        10% Increased Knockback.
+        '''
+}
+
+WyvernSkullRose: {
+    Tooltip: ""
+    DisplayName: Wyvern Skull Rose
+}
+
+Vesper: {
+    DisplayName: Vesper
+    Tooltip: The ingot radiates substantial magical potential...
+}
+
+VesperOre: {
+    DisplayName: Vesper Ore
+    Tooltip: Fragments of the dreams of creatures and people of Terraria.
+}
+
+RevenantMask: {
+    DisplayName: Revenant Mask
+    Tooltip:
+        '''
+        Imbued with divine remains...
+        Increases Scepter Size by 45%.
+        Hitting an enemy with a scepter class projectile will have a 1/3 chance summon wrathful fireballs from the player that home in on enemies and explode on death.
+        '''
+}
+
+NobleBulwarkGold: {
+    DisplayName: Noble Bulwark
+    Tooltip:
+        '''
+        Increases Scepter Class damage by 8%.
+        Increases thrown scepter range by 8.
+        '''
+}
+
+NobleBulwarkPlatinum: {
+    DisplayName: Noble Bulwark
+    Tooltip:
+        '''
+        Increases Scepter Class damage by 8%.
+        Increases thrown scepter range by 8.
+        '''
+}
+
+ExampleScepterItem: {
+    DisplayName: Example Scepter Item
+    Tooltip: You arent supposed to have this you nosy little shit
+}
+
+MoltenScepter: {
+    Tooltip:
+        '''
+        Left Click to place two nodes.
+        A beam will appear between them that can absorb 10 enemy projectiles before breaking.
+        The beam can also hit an enemy 5 times before breaking.
+        Right click to throw the scepter, spewing molten lava every witch way.
+        '''
+    DisplayName: Molten Scepter
+}
+
+FrostScepter: {
+    DisplayName: Frost Scepter
+    Tooltip:
+        '''
+        Shoots Frost Fireballs
+        Thrown Scepters Spew Ice bolts as they travel.
+        '''
+}
+
+FungalScepter: {
+    DisplayName: Fungal Scepter
+    Tooltip:
+        '''
+        Shoots homing mushrooms.
+        Throws and Tile Collisions spawn rings of the homing mushrooms that will converge at the mouse position if no target is provided.
+        '''
+}
+
+PrismaticScepter: {
+    DisplayName: Prismatic Scepter
+    Tooltip: Shoots out homing sparks of iridescent light. Right click to throw.
+}
+
+OnyxScepter: {
+    Tooltip: ""
+    DisplayName: Onyx Scepter
+}
+
+HaepienNodeCharm: {
+    DisplayName: Haepien's Charm
+    Tooltip:
+        '''
+        A long lost treasure of the nature sprite Haepien...
+        Makes Nodes in the evil biomes impossible to harm or enrage.
+        If you are in proximity to a node, you will benefit from its empowering properties.
+        '''
+}
+
+CursedNodeLootBag: {
+    Tooltip: ""
+    DisplayName: Treasure Bag (Cursed Flame Node)
+}
+
+InfectedGrimoire: {
+    Tooltip: Shoots out two infected crystals that bounce off of tiles. One inflicts Ichor, the other, Cursed Flames.
+    DisplayName: Infected Grimoire
+}
+
+Item_EvilBossMusicBox: {
+    DisplayName: Music Box (Nightmare Rose / Wyvern Corpse)
+    Tooltip: Plays Track: 'Tribulation' by HoleCat
+}
+
+Item_NodeBossMusicBox: {
+    DisplayName: Music Box (Ichor / Cursed Flame Node)
+    Tooltip: Plays Track: 'Elemental Influence' by HoleCat
+}
+
+Item_NodeIdleMusicBox: {
+    DisplayName: Music Box (Dormant Node)
+    Tooltip: Plays Track: 'Elemental Presence' by HoleCat
+}
+
+ComaceraticFlask: {
+    DisplayName: Comaceratic Flask
+    Tooltip: Imbues your weapons with Comaceratic Burn.
+}
+
+HeliouricFlask: {
+    DisplayName: Heliouric Flask
+    Tooltip: Imbues your weapons with Comaceratic Burn.
+}
+
+RiftenCrate: {
+    DisplayName: Riften Crate
+    Tooltip: ""
+}
+
+RiftFlask: {
+    DisplayName: Rift Flask
+    Tooltip: Imbues your weapons with Comaceratic Burn.
+}
+
+ComaceraticVial: {
+    DisplayName: Comaceratic Vial
+    Tooltip: Imbues your scepters with Comaceratic Burn. This effect is exclusive to scepters.
+}
+
+HeliouricVial: {
+    DisplayName: Heliouric Vial
+    Tooltip: Imbues your scepters with Heliouric Shock. This effect is exclusive to scepters.
+}
+
+RiftVial: {
+    DisplayName: Rift Vial
+    Tooltip: Imbues your scepters with Daylight Overload. This effect is exclusive to scepters.
+}
+
+InfernalTiara: {
+    Tooltip: "'Bathe in regal hellfire'"
+    SetBonus:
+        '''
+        You are immune to lava.
+        A 75 point shield will generate around you, blocking incoming harmful projectiles. 
+        Once the shield breaks, it will begin pulling from your health to regenerate.
+        '''
+    DisplayName: Infernal Tiara
+}
+
+InfernalDress: {
+    Tooltip: "'Bathe in regal hellfire'"
+    DisplayName: Infernal Dress
+}
+
+KeeperStaff: {
+    DisplayName: Keeper of the Great Wyvern's Soul
+    Tooltip:
+        '''
+        Calls upon the Soul of the Great Wyvern to assist in battle.
+        The wyvern will spin around a ball of energy, firing soul crystals in all directions for 20 seconds.
+        There can only be one in the entire world at any given moment.
+        Eternity
+        '''
+}
+
+ShadeBow: {
+    Tooltip: ""
+    DisplayName: Shade Bow
+}
+
+BeeHeadress: {
+    SetBonus:
+        '''
+        You release friendly bees when hit.
+        Scepters create bees on attacks, both shooting and throwing.
+        '''
+    Tooltip: ""
+    DisplayName: Bee Headress
+}
+
+RoseSoul: {
+    DisplayName: Soul of the Conglomerated Child of Mother Darkness
+    Tooltip:
+        '''
+        Increases max health to 240 when consumed.
+        You can only get one per world, and it can only be consumed once.
+        "The shade world weeps."
+        '''
+}
+
+WyvernSoul: {
+    Tooltip:
+        '''
+        Increases max health to 360 when consumed.
+        You can only get one per world, and it can only be consumed once.
+        "Unforseeable."
+        '''
+    DisplayName: Soul of the Great Wyvern
+}
+
+ForgottenPendant: {
+    Tooltip:
+        '''
+        Increases Scepter Class damage by 4%.
+        Increases armor penetration for all classes by 1.
+        'The garnet inside it is faded and covered in hundreds of scrapes...'
+        '''
+    DisplayName: Forgotten Pendant
+}
+
+DetritizedPendant: {
+    Tooltip:
+        '''
+        Increases Scepter Class damage by 4%.
+        Increases armor penetration for all classes by 1.
+        Throwing a scepter has a chance to release a burst of 5 tiny eaters.
+        'It reeks of ammonia...'
+        '''
+    DisplayName: Detritized Pendant
+}
+
+AuraThiefHeadress: {
+    Tooltip: ""
+    DisplayName: Aura Thief Headress
+}
+
+VisceraPendant: {
+    DisplayName: Viscera Pendant
+    Tooltip:
+        '''
+        Increases Scepter Class damage by 4%.
+        Increases armor penetration for all classes by 1.
+        Throwing a scepter has a chance to release a burst of Enchanted Blood.
+        'It smells like coins...'
+        '''
+}
+
+TreasonScroll: {
+    Tooltip:
+        '''
+        Throwing a scepter has a chance to release multiple shadowflame mines.
+        These mines can deal damage to both players and enemies when they explode.
+        '''
+    DisplayName: Eunuch Advisor's Treasonous Scroll
+}
+
+FadedHood: {
+    DisplayName: Faded Hood
+    Tooltip: ""
+}
+
+FadedRobes: {
+    DisplayName: Faded Robes
+    Tooltip: ""
+}
+
+ScepterEmblem: {
+    DisplayName: Scepter Emblem
+    Tooltip: ""
+}
+
+FrigidScroll: {
+    DisplayName: Frigid Scroll
+    Tooltip: Thrown Scepters have a chance to release ice tridents.
+}
+
+HandScroll: {
+    DisplayName: Grasping Scroll
+    Tooltip: Thrown Scepters have a chance to release shadow hands.
+}
+
+PurityScroll: {
+    DisplayName: Purity Scroll
+    Tooltip: Thrown Scepters have a chance to release terra beams and purify nearby tiles.
+}
+
+StarScroll: {
+    DisplayName: Star Scroll
+    Tooltip: Thrown Scepters have a chance to summon stars down onto the cursor.
+}
+
+TurbulenceScroll: {
+    DisplayName: Turbulence Scroll
+    Tooltip: Thrown Scepters have a chance to release a windy vortex.
+}
+
+CurseScroll: {
+    Tooltip: Thrown Scepters have a chance to release curses onto enemies.
+    DisplayName: Curse Scroll
+}
+
+StellarMatter: {
+    Tooltip: The source of Constitution's sentience. Without this, it is just a sword.
+    DisplayName: Stellar Matter
+}
+
+GalantineVial: {
+    Tooltip: Imbues your scepters with Galantine Burn. This effect is exclusive to scepters.
+    DisplayName: Galantine Vial
+}
+
+BrineVial: {
+    DisplayName: Brine Vial
+    Tooltip: Imbues your scepters with Brine. This effect is exclusive to scepters.
+}
+
+FrostFireVial: {
+    DisplayName: Frost Fire Vial
+    Tooltip: Imbues your scepters with Frostburn. This effect is exclusive to scepters.
+}
+
+GalantineHoneyVial: {
+    Tooltip: Covers your scepter in enchanted honey, which spawns enchanted bees as it travels. This effect is exclusive to scepters.
+    DisplayName: Galantine Honey Vial
+}
+
+HoneyVial: {
+    DisplayName: Honey Vial
+    Tooltip: Covers your scepter in honey, which spawns bees as it travels. This effect is exclusive to scepters.
+}
+
+Item_HardenedRiftSilt: {
+    DisplayName: Hardened Rift Silt
+    Tooltip: ""
+}
+
+Item_HardenedRiftSiltWall: {
+    DisplayName: Hardened Rift Silt Wall
+    Tooltip: ""
+}
+
+Item_RiftCactus: {
+    DisplayName: Rift Cactus
+    Tooltip: ""
+}
+
+Item_RiftSiltStone: {
+    DisplayName: Rift Silt Stone
+    Tooltip: ""
+}
+
+Item_RiftDirt: {
+    DisplayName: Rift Dirt
+    Tooltip: ""
+}
+
+Item_RiftStone: {
+    DisplayName: Rift Stone
+    Tooltip: ""
+}
+
+Item_RiftClay: {
+    Tooltip: ""
+    DisplayName: Rift Clay
+}
+
+DarkFireSword: {
+    DisplayName: Dark Fire Sword
+    Tooltip: ""
+}
+
+TwilightInferno: {
+    DisplayName: Twilight Inferno
+    Tooltip: ""
+}
+
+EmberCane: {
+    Tooltip: ""
+    DisplayName: Ember Cane
+}
+
+ThunderScepter: {
+    DisplayName: Thunder Scepter
+    Tooltip: ""
+}
+
+DistendedBodyArmor: {
+    DisplayName: Distended Body Armor
+    Tooltip: ""
+}
+
+DistendedCuisses: {
+    DisplayName: Distended Cuisses
+    Tooltip: ""
+}
+
+DistendedHeadgear: {
+    DisplayName: Distended Headgear
+    Tooltip: ""
+    SetBonus: ""
+}
+
+MalevolenceMantra: {
+    DisplayName: Malevolence Mantra
+    Tooltip: Throwing a scepter has a hance to release a burst of hellfire.
+}
+
+ShiningObelisk: {
+    DisplayName: Obelisk of Stolen Light
+    Tooltip: A massive pillar with a basin of plasma at the top. Holding this to the air can dispel certain powerful enemies for a short time.
+}
+
+WoodBracelet: {
+    Tooltip:
+        '''
+        Increases Scepter Class Damage by 2%.
+        Increases Scepter Class Crit Chance by 4%.
+        '''
+    DisplayName: Wood Bracelet
+}
+
+RiftHalo: {
+    DisplayName: Rift Halo
+    Tooltip:
+        '''
+        Does not inherit bonuses from being charged.
+        22% increased crit chance.
+        5% increased Scepter Damage.
+        '''
+    SetBonus:
+        '''
+        You are immune to Heliouric Shock.
+        12% increased Scepter Class Damage.
+        Scepter Range increased by 100.
+        45% increased Scepter Throw Speed.
+        You emit light.
+        '''
+}
+
+RiftVeil: {
+    DisplayName: Rift Veil
+    Tooltip: 10% increased scepter crit chance
+}
+
+RadiantRose: {
+    Tooltip:
+        '''
+        You will consume a Healing Potion every 10 seconds when below 50% health.
+        Your highest rank healing potions will be used first.
+        Potions used automatically will inflict Potion Sickness for 30 seconds instead of a minute.
+        If you have potion sickness, your damage will be decreased by 30% and your defense by 25% until potion sickness is lifted.
+        When drinking a healing potion manually, the duration of potion sickness to be applied will be reduced by 10%.
+        Passive life regen is increased.
+        '''
+    DisplayName: Radiant Rose
+}
+
+LifeTalisman: {
+    Tooltip: Increases pickup range for hearts.
+    DisplayName: Life Talisman
+}
+
+EphemeralSolvent: {
+    DisplayName: Ephemeral Solvent
+    Tooltip:
+        '''
+        You will consume a Healing Potion every 10 seconds when below 50% health.
+        Your highest rank healing potions will be used first.
+        Potions used automatically will inflict Potion Sickness for 30 seconds instead of a minute.
+        If you have potion sickness, your damage will be decreased by 30% and your defense by 25% until potion sickness is lifted.
+        When drinking a healing potion manually, the duration of potion sickness to be applied will be reduced by 10%.
+        Passive life regen and heart pickup range are massively increased.
+        '''
+}
+
+TenebrousSniperRifle: {
+    DisplayName: Tenebrous Sniper Rifle
+    Tooltip: Because a certain someone likes High Velocity bullets over homing bullets.
+}
+
+LilliesOfImmortality: {
+    DisplayName: Lillies Of Immortality
+    Tooltip:
+        '''
+        You will consume a Healing Potion every 10 seconds when below 50% health.
+        Your highest rank healing potions will be used first.
+        You are immune to potions sickness.
+        When drinking a healing potion manually, the duration of potion sickness to be applied will be reduced by 10%.
+        Passive life regen and heart pickup range are massively increased.
+        '''
+}
+
+Scroll: {
+    DisplayName: Scroll
+    Tooltip: ""
+}
+
+ChristmasCarol1: {
+    DisplayName: Christmas Carol
+    Tooltip: Thrown Scepters have a chance to release tens of pine needles outward as they travel.
+}
+
+ChristmasCarol2: {
+    DisplayName: Christmas Carol
+    Tooltip: Thrown Scepters have a chance to release multiple ornaments outward as they travel that explode after a moment.
+}
+
+ChristmasCarol3: {
+    DisplayName: Christmas Carol
+    Tooltip: Thrown Scepters have a chance to release tens of snowflakes outward as they travel.
+}
+
+EtherScroll: {
+    DisplayName: Ether Scroll
+    Tooltip: Throwing a scepter has a chance to release fiery birds.
+}
+
+AdamantPendant: {
+    DisplayName: Adamant Pendant
+    Tooltip:
+        '''
+        Increases Scepter Class damage by {0}.
+        Increases Scepter Class Crit Chance by {1}.
+        Increases Scepter Throw Range by {2}.
+        '''
+}
+
+AzurePendant: {
+    DisplayName: Azure Pendant
+    Tooltip:
+        '''
+        Increases Scepter Class damage by {0}.
+        Increases Scepter Class Crit Chance by {1}.
+        Increases Scepter Throw Range by {2}.
+        '''
+}
+
+MythicPendant: {
+    DisplayName: Mythic Pendant
+    Tooltip:
+        '''
+        Increases Scepter Class damage by {0}.
+        Increases Scepter Class Crit Chance by {1}.
+        Increases Scepter Throw Range by {2}.
+        '''
+}
+
+OrchidPendant: {
+    DisplayName: Orchid Pendant
+    Tooltip:
+        '''
+        Increases Scepter Class damage by {0}.
+        Increases Scepter Class Crit Chance by {1}.
+        Increases Scepter Throw Range by {2}.
+        '''
+}
+
+RadiantPendant: {
+    DisplayName: Radiant Pendant
+    Tooltip:
+        '''
+        Increases Scepter Class damage by {0}.
+        Increases Scepter Class Crit Chance by {1}.
+        Increases Scepter Throw Range by {2}.
+        '''
+}
+
+TitanPendant: {
+    DisplayName: Titan Pendant
+    Tooltip:
+        '''
+        Increases Scepter Class damage by {0}.
+        Increases Scepter Class Crit Chance by {1}.
+        Increases Scepter Throw Range by {2}.
+        '''
+}
+
+MechanicalEnhancements: {
+    DisplayName: Mechanical Enhancements
+    Tooltip: Permanently increases Scepter Class throw speed by 65%.
+}
+
+SandSurgeScroll: {
+    DisplayName: Sand Surge Scroll
+    Tooltip: ""
+}
+
+SnowSurgeScroll: {
+    DisplayName: Snow Surge Scroll
+    Tooltip: ""
+}
+
+TenebrisBullet: {
+    DisplayName: Tenebris Bullet
+    Tooltip: Homes in on enemies with increasing accuracy over time. Has a chance to inflict Shimmering Flames on hit.
+}
+
+ShadeParticle: {
+    DisplayName: Shade Particle
+    Tooltip: A condensed, gritty particle. It smells like asphalt and osmanthus.
+}
+
+ShimmeringShards: {
+    DisplayName: Shimmering Shards
+    Tooltip: Powerful shards from the Shade World, containing a small amount of energy in each one. Combined, these can accomplish immense things.
+}
+
+RiftFuse: {
+    Tooltip: An apparatus for empowering Rift Items. Weapons inflict Heliouric Shock when empowered, armor gains increased bonuses, and tools get higher mining power.
+    DisplayName: Rift Fuse
+}
+
+RechargeItem: {
+    Tooltip: You shouldn't have this.
+    DisplayName: Recharge Item
+}
+
+DjedPillarCharm: {
+    Tooltip:
+        '''
+        You are immune to most debuffs.
+        Double tapping in the left or right direction allows you to dash, leaving behind a trail of spirit flames that home in on enemies.
+        '''
+    DisplayName: Djed Pillar Charm
+}
+
+EndlessHeliciteRounds: {
+    DisplayName: Endless Helicite Rounds
+    Tooltip: ""
+}
+
+EndlessRiftRounds: {
+    DisplayName: Endless Rift Rounds
+    Tooltip: ""
+}
+
+EndlessTenebrisBullets: {
+    DisplayName: Endless Tenebris Bullets
+    Tooltip: ""
+}
+
+HeliciteRound: {
+    DisplayName: Helicite Round
+    Tooltip: ""
+}
+
+RiftRound: {
+    DisplayName: Rift Round
+    Tooltip: ""
+}
+
+HeliciteCrate: {
+    DisplayName: Helicite Crate
+    Tooltip: ""
+}
+
+IchorNodeLootBag: {
+    DisplayName: Ichor Node Loot Bag
+    Tooltip: ""
+}
+
+HeliciteStaff: {
+    DisplayName: Helicite Staff
+    Tooltip: ""
+}
+
+PrimalShards: {
+    DisplayName: Primal Shards
+    Tooltip: ""
+}
+
+WretchedShards: {
+    DisplayName: Wretched Shards
+    Tooltip: ""
+}
+
+SynergyWrap: {
+    Tooltip:
+        '''
+        A signature dish of Joan's Home Country, now with favors developed beyond anyones imagination.
+        Permanently increases move speed by 20%.
+        Permanently increases melee speed by 12%.
+        '''
+    DisplayName: Synergy Wrap
+}
+
+Dalmon: {
+    Tooltip:
+        '''
+        A signature dish of Joan's Home Country.
+        Increases move speed by 10%.
+        Increases melee speed by 8%.
+        4 minute duration.
+        '''
+    DisplayName: Dalmon
+}
+
+Borvis: {
+    Tooltip: ""
+    DisplayName: Borvis
+}
+
+PetrifiedChaplet: {
+    DisplayName: Petrified Chaplet
+    Tooltip: Wooden armor that has become solid and dense from the constant interplay of flame and frost.
+    SetBonus:
+        '''
+        You are surrounded by a 400 point shield.
+        Shooting Scepters shoots fire and frost blasts as well, which inflict Haepien's Inferno and Blizzard respectively.
+        '''
+}
+
+PetrifiedChestplate: {
+    DisplayName: Petrified Chestplate
+    Tooltip: Wooden armor that has become solid and dense from the constant interplay of flame and frost.
+}
+
+PetrifiedGreaves: {
+    DisplayName: Petrified Greaves
+    Tooltip: Wooden armor that has become solid and dense from the constant interplay of flame and frost.
+}
+
+Item_RiftIce: {
+    DisplayName: Rift Ice
+    Tooltip: ""
+}
+
+Item_RiftSnow: {
+    DisplayName: Rift Snow
+    Tooltip: ""
+}
+
+TenebrousArrow: {
+    Tooltip: Hits spawn Phantom Arrows in an X formation.
+    DisplayName: Tenebrous Arrow
+}
+
+SpectralThiefBreastplate: {
+    DisplayName: Spectral Thief Breastplate
+    Tooltip: ""
+}
+
+SpectralThiefCuisses: {
+    DisplayName: Spectral Thief Cuisses
+    Tooltip: ""
+}
+
+SpectralThiefHeadgear: {
+    DisplayName: Spectral Thief Headgear
+    Tooltip: ""
+    SetBonus:
+        '''
+        Thrown scepters spawn clones that home in on enemies.
+        Scepter Class and Melee Class Damage increased by 18%.
+        If the moon lord is defeated, that number rises to 30%.
+        '''
+}
+
+CursedFlameScroll: {
+    DisplayName: Cursed Flame Scroll
+    Tooltip: Englufs your scepter in an aura. All enemies inside the aura are afflicted with Cursed Inferno.
+}
+
+IchorScroll: {
+    DisplayName: Ichor Scroll
+    Tooltip: Englufs your scepter in an aura. All enemies inside the aura are afflicted with Ichor.
+}
+
+InfectedManuscript: {
+    DisplayName: Infected Manuscript
+    Tooltip:
+        '''
+        10% increased Scepter Damage.
+        Combines the effects of the Ichor Scroll and Cursed Flame Scroll.
+        Englufs your scepter in an aura. All enemies inside the aura are afflicted with both Cursed Inferno and Ichor.
+        '''
+}
+
+StellarManuscript: {
+    Tooltip:
+        '''
+        Combines the effects of the Star Scroll and Galantine Scroll
+        Throwing a scepter has a chance to summon a burst of Galantine Stars, inflicting Galantine Burn.
+        Throwing a scepter has a chance to rain down stars from the sky.
+        '''
+    DisplayName: Stellar Manuscript
+}
+
+GalantineScroll: {
+    Tooltip: Throwing a scepter has a chance to summon a burst of Galantine Stars, inflicting Galantine Burn.
+    DisplayName: Galantine Scroll
+}
+
+TemporalGlove: {
+    DisplayName: Temporal Glove
+    Tooltip: Engulfs your scepter in an aura. All enemies inside the aura are slowed to a stop the longer they remain inside.
+}
+
+DiabolicScroll: {
+    DisplayName: Diabolic Scroll
+    Tooltip: Primary shots from scepters (LMB attacks) spawn a fiery blast on collision with an enemy.
+}
+
+InfernalManuscript: {
+    Tooltip:
+        '''
+        10% increased Scepter Damage.
+        Combines the effects of the Malevolence Mantra, Diabolic Scroll, and Incendiary Scroll.
+        Throwing a scepter has a hance to release a burst of hellfire.
+        Primary shots from scepters (LMB attacks) spawn a fiery blast on collision with an enemy.
+        Throwing a scepter has a chance to summon weapons from hell that converge on enemies, inflicting Hellfire.
+        '''
+    DisplayName: Blighted Vows
+}
+
+IncendiaryScroll: {
+    Tooltip: Throwing a scepter has a chance to summon weapons from hell that converge on enemies, inflicting Hellfire.
+    DisplayName: Incendiary Scroll
+}
+
+RustyPendant: {
+    DisplayName: Rusty Pendant
+    Tooltip: ""
+}
+
+ShadeArmada: {
+    Tooltip:
+        '''
+        Summons a Tenebris Elemental to fight for you.
+        Each minion consumes 1 slot.
+        Minions will not auto-target, and the item must be right clicked or a whip used.
+        '''
+    DisplayName: Shade Armada
+}
+
+RiftenOverloader: {
+    DisplayName: Riften Overloader
+    Tooltip: Grants immunity to Heliouric Shock.
+}
+
+Item_RiftPylon: {
+    DisplayName: Rift Pylon
+    Tooltip: ""
+}
+
+SharkronPendant: {
+    DisplayName: Sharkron Pendant
+    Tooltip: ""
+}
+
+HoleCatHook: {
+    Tooltip: The one and only hook of the elusive cat...
+    DisplayName: Temaud
+}
+
+TempestScroll: {
+    DisplayName: Tempest Scroll
+    Tooltip: ""
+}
+
+HexBook: {
+    Tooltip: ""
+    DisplayName: Hex Book
+}
+
+ScholarShirt: {
+    DisplayName: Scholar Shirt
+    Tooltip: ""
+}
+
+NightBodyArmor: {
+    DisplayName: Night Body Armor
+    Tooltip: Imbued with the darkness of your world's evil...
+}
+
+NightHood: {
+    DisplayName: Night Hood
+    Tooltip:
+        '''
+        Thrown scepters within a certain range to the player can be teleported to by pressing the down key.
+        Upon teleporting, you recieve a second of immunity and release a homing burst of souls of night.
+        Teleportation has a 6 second cooldown, as displayed by the cooldown bar.
+
+        If moving fast enough horizontally, you will spawn homing souls of night as you travel.
+
+        "Imbued with the darkness of your world's evil..."
+        '''
+}
+
+NightLegArmor: {
+    DisplayName: Night Leg Armor
+    Tooltip: Imbued with the darkness of your world's evil...
+}
+
+SpookyScroll1: {
+    DisplayName: Spooky Scroll1
+    Tooltip: ""
+}
+
+TenebrisWaraxe: {
+    Tooltip: Throws a returning War Axe that pierces 4 times and spawns a burst of Tenebris Stars on hit.
+    DisplayName: Tenebris Waraxe
+}
+
+GalantineKnife: {
+    DisplayName: Galantine Knife
+    Tooltip:
+        '''
+        Throws a Stellar Knife that falls to the ground after a second.
+        Tile collisions explode into homing Galantine Stars.
+        Hitting an NPC will lodge the blade in them for 2 seconds of continuous damage and inflicting Galantine Burn.
+        '''
+}
+
+GalantineIncense: {
+    Tooltip:
+        '''
+        Being hit by a NPC or Projectile will create  a small burst of homing stars.
+        Melee weapons are imbued with Galantine Burn.
+        You are immune to Galantine Burn.
+        '''
+    DisplayName: Galantine Incense
+}
+
+StellarFlamesFlask: {
+    DisplayName: Flask of Stellar Flames
+    Tooltip: Imbues your weapons with Galantine Burn.
+}
+
+PityMarkBig: {
+    DisplayName: Pity Mark Big
+    Tooltip: ""
+}
+
+PityMarkSmall: {
+    DisplayName: Pity Mark Small
+    Tooltip: ""
+}
+
+StarConstruct: {
+    DisplayName: Star Construct
+    Tooltip: Throws an inactive Star Husk, which turns into a Star Construct. Each construct takes half a minion slot.
+}
+
+EarlyHardmodeScroll: {
+    DisplayName: Early Hardmode Scroll
+    Tooltip: ""
+}
+
+LateHardmodeScroll: {
+    DisplayName: Late Hardmode Scroll
+    Tooltip: ""
+}
+
+PostMoonlordScroll: {
+    DisplayName: Post Moonlord Scroll
+    Tooltip: ""
+}
+
+PreBossScroll: {
+    DisplayName: Pre Boss Scroll
+    Tooltip: ""
+}
+
+PreHardmodeScroll: {
+    DisplayName: Pre Hardmode Scroll
+    Tooltip: ""
+}
+
+SpookyScroll2: {
+    DisplayName: Spooky Scroll2
+    Tooltip: ""
+}
+
+SpookyScroll3: {
+    DisplayName: Spooky Scroll3
+    Tooltip: ""
+}
+
+SpookyScroll4: {
+    DisplayName: Spooky Scroll4
+    Tooltip: ""
+}
+
+StarBadge: {
+    Tooltip: Summons a tiny Stellar Stabber to follow you around.
+    DisplayName: Star Badge
+}
+
+AmalgamatedFragments: {
+    DisplayName: Amalgamated Fragments
+    Tooltip: Summons two Mini Nodes to orbit you.
+}
+
+DivineVessel: {
+    Tooltip:
+        '''
+        Summons a tiny, gilded wyvern.
+        A shimmering fragment of the Great Wyvern's Will, gifted in return for setting them free.
+        '''
+    DisplayName: Divine Vessel
+}
+
+MiniConstruct: {
+    DisplayName: Mini Construct
+    Tooltip: Summons a mini construct to fly around you.
+}
+
+ShimmeringCable: {
+    Tooltip: Summons a miniature Tenebrous Slinger to follow you around.
+    DisplayName: Shimmering Cable
+}
+
+MalakhimChaplet: {
+    DisplayName: Mal'akhim Chaplet
+    Tooltip: Modeled after ancient, holy olive branches, and imbued with hope.
+    SetBonus:
+        '''
+        Press Down to shoot out solid vesper spikes in all directions that penetrate infinitely and inflict bleeding.
+        You get more immunity time when damaged.
+        '''
+}
+
+MalakhimPlates: {
+    DisplayName: Mal'akhim Plates
+    Tooltip: You are barely kept warm in these.
+}
+
+MalakhimWings: {
+    DisplayName: Mal'akhim Wings
+    Tooltip: With the power of all creatures dreams, may you soar into the heavens.
+}
+
+ShieldMarkSmall: {
+    Tooltip: ""
+    DisplayName: Shield Mark Small
+}
+
+ShieldMarkBig: {
+    Tooltip: ""
+    DisplayName: Shield Mark Big
+}
+
+GargantuaZenith: {
+    DisplayName: Gargantua Zenith
+    Tooltip: ""
+}
+
+Item_CursedFlameNodeRelic: {
+    DisplayName: Cursed Flame Node Relic
+    Tooltip: ""
+}
+
+Item_IchorNodeRelic: {
+    DisplayName: Ichor Node Relic
+    Tooltip: ""
+}
+
+DistendedPike: {
+    DisplayName: Distended Pike
+    Tooltip: ""
+}
+
+Item_RootedDirtWall: {
+    Tooltip: ""
+    DisplayName: Rooted Dirt Wall
+}
+
+Item_RootedDirt: {
+    Tooltip: ""
+    DisplayName: Rooted Dirt
+}
+
+Item_RiftSiltStoneWall: {
+    Tooltip: ""
+    DisplayName: Rift Siltstone Wall
+}
+
+Item_NightmareChest: {
+    Tooltip: ""
+    DisplayName: Nightmare Chest
+}
+
+TwistedFaith: {
+    DisplayName: Twisted Faith
+    Tooltip:
+        '''
+        Creates a large, sweeping slash that flies out towards the mouse.
+        Slashes inflict Soul Erosion, which lowers enemy damage.
+        "A weapon I forged from the roses that Mother Darkness sent for her son alongside a scroll begging him to return.
+        I didn't have the heart to tell her what had become of him."
+        '''
+}
+
+MalachiteKnives: {
+    DisplayName: Malachite Knives
+    Tooltip:
+        '''
+        Throws a volley of tiny Defiled Knives. 
+        Knives inflict Soul Erosion, which lowers enemy damage.
+        '''
+}
+
+HekatesMystique: {
+    DisplayName: Hekate's Mystique
+    Tooltip:
+        '''
+        Casts a controllable ball of light.
+        The ball creates small embers around it that don't move and inflict Soul Erosion, which lowers enemy damage.
+        Releasing the mouse button kills all owned embers and the owned ball.
+
+        Hekate's personal weapon for dealing with small scale threats.
+        Though, after they fled consequence, it has been left unused for decades.
+        '''
+}
+
+HekateBook1: {
+    DisplayName: Hekate Book1
+    Tooltip: ""
+}
+
+HekateBook2: {
+    DisplayName: Hekate Book2
+    Tooltip: ""
+}
+
+MajesticStorm: {
+    DisplayName: Majestic Storm
+    Tooltip:
+        '''
+        Casts a controllable electromagnetic ball.
+        The ball creates magnet speheres around it that don't move and shoot electric bolts at nearby enemies, self-destructing after firing thrice.
+        If 40 or more Magnet Spheres belonging to you are active in the world at a time, no new magnet spheres will be created until the channeling is broken.
+        Releasing the mouse button destroys all owned magnet spheres and the owned ball.
+        '''
+}
+
+ShadesRevenge: {
+    DisplayName: Shades Revenge
+    Tooltip: ""
+}
+
+DarkVesselSkull: {
+    DisplayName: Dark Vessel Skull
+    Tooltip: ""
+}
+
+ShadePaladinBodyArmor: {
+    DisplayName: Shade Paladin Body Armor
+    Tooltip: ""
+}
+
+ShadePaladinHelm: {
+    DisplayName: Shade Paladin Helm
+    Tooltip: ""
+}
+
+ShadePaladinLegArmor: {
+    DisplayName: Shade Paladin Leg Armor
+    Tooltip: ""
+}
+
+ParticleTester: {
+    DisplayName: Particle Tester
+    Tooltip: ""
+}
+
+HekateBurrPotion: {
+    DisplayName: Hekate's Thorns Potion
+    Tooltip:
+        '''
+        Creates a ring of Burrs around the player.
+        The Burrs lodge into enemies and inflict the Poison Debuff (Venom in Hardmode).
+        When a burr gets lodged, it will be 10 seconds until a replacement spawns for it.
+        Only one replacement can spawn at a time.
+        '''
+}
+
+Dyrn: {
+    DisplayName: Dyrn
+    Tooltip: If you listen closely, you can hear faint screams inside.
+}
+
+IdriPotion: {
+    DisplayName: Idri's Concoction
+    Tooltip:
+        '''
+        Grants 1 of 3 buffs, cycled by right clicking with the item or right clicking it in the inventory.
+        Black Guard: Increased defense and damage reduction.
+        Bravado: Increased armor penetration and damage.
+        Lightfooted: Increased jump height, acceleration, and run speed.
+        The potion cannot be consumed again while its buffs are active.
+        '''
+}
+
+LunarInsignia: {
+    DisplayName: Lunar Insignia
+    Tooltip:
+        '''
+        Grants infinite flight.
+        "So the Calamity Team doesn't like infinite flight? This. Means. War."
+        '''
+}
+
+Siege: {
+    DisplayName: Siege
+    Tooltip:
+        '''
+        Converts regular rockets to Tenebrous Rockets.
+        Takes 4 seconds to reload.
+        '''
+}
+
+Item_ShadeBossMusicBox: {
+    Tooltip: ""
+    DisplayName: Shade Boss Music Box
+}
+
+GodGouger: {
+    DisplayName: God Gouger
+    Tooltip:
+        '''
+        A javelin in the image of a gaping, toothy maw, empowered by a god's emotional torment and regret, that splits into two smaller javelins that both home in on enemies.
+        Inflicts Soul Erosion on enemies, lowering their attack stat.
+        "The Devastation said to have struck Hekate after their loss was so deep and grave that in some notes left in their garden work area, they had written that they would:
+        'rather gouge my heart out with a blighted maw than have to live with the baggage of a decision that was never mine to make.'"
+        '''
+}
+
+OminousToken: {
+    DisplayName: Ominous Token
+    Tooltip: Can give chest loot from the ominous garden.
+}
+
+FailedPotion: {
+    DisplayName: Failed Potion
+    Tooltip: ""
+}
+
+Dread: {
+    DisplayName: Dread
+    Tooltip: Shoots Shimmering Flames.
+}
+
+FireStorm: {
+    Tooltip: ""
+    DisplayName: Fire Storm
+}
+
+CursedFireVial: {
+    DisplayName: Vial of Cursed Flames
+    Tooltip: Imbues your scepter with Cursed Flames.
+}
+
+FrostFireFlask: {
+    DisplayName: Flask of Frostburn
+    Tooltip: Imbues your weapons with Frostburn.
+}
+
+IchorVial: {
+    DisplayName: Vial of Ichor
+    Tooltip: Imbues your scepter with Ichor.
+}
+
+MudFlask: {
+    DisplayName: Flask of Mud
+    Tooltip: Covers your weapons in mud.
+}
+
+MudVial: {
+    DisplayName: Vial of Mud
+    Tooltip: Covers your scepter in mud.
+}
+
+OilFlask: {
+    DisplayName: Flask of Oil
+    Tooltip: Sets your weapons ablaze.
+}
+
+OilVial: {
+    DisplayName: Vial of Oil
+    Tooltip: Sets your scepters ablaze.
+}
+
+BrineFlask: {
+    DisplayName: Brine Flask
+    Tooltip: ""
+}
+
+LivingPendant: {
+    DisplayName: Living Pendant
+    Tooltip: Scepter Shots heal for 5% of their damage on-hit.
+}
+
+TrueRiftMaker: {
+    Tooltip: ""
+    DisplayName: True Riftmaker
+}
+
+MineralOil: {
+    DisplayName: Mineral Oil
+    Tooltip: ""
+}
+
+Soot: {
+    DisplayName: Soot
+    Tooltip: ""
+}
+
+AetherianHood: {
+    DisplayName: Aetherian Hood
+    Tooltip:
+        '''
+        Increases Scepter Class damage by {0}%.
+        Increases Scepter Armor Penetration by {1}.
+        '''
+    SetBonus: Your scepters all shimmer! They can't collide with tiles at all!
+}
+
+AetherianRegalia: {
+    DisplayName: Aetherian Regalia
+    Tooltip: Increases Scepter throw speed by {0}%.
+}
+
+Sets.CannotBeUsedByClentaminator: Cannot be used by the Clentaminator and its upgrades.
+
+TanninSolution: {
+    Tooltip: ""
+    DisplayName: Tannin Solution
+}
+
+ChlorophyllSolution: {
+    Tooltip: ""
+    DisplayName: Chlorophyll Solution
+}
+
+SporeScroll1: {
+    DisplayName: Spore Scroll1
+    Tooltip: ""
+}
+
+InfectedScepter: {
+    DisplayName: Infected Scepter
+    Tooltip:
+        '''
+        Summons a ring of onyx crystals that home in on enemies.
+        When thrown, it leaves a trail of cursed fire and creates sprays of ichor when hitting an enemy.
+        '''
+}
+
+ShadowMonarchHeadgear: {
+    Tooltip: ""
+    DisplayName: Shadow Monarch Headgear
+}
+
+CrimsonHeadgear: {
+    Tooltip: ""
+    DisplayName: Crimson Headgear
+}
+
+TrueBloodScepter: {
+    DisplayName: True Blood Scepter
+    Tooltip: ""
+}
+
+GelCane: {
+    Tooltip:
+        '''
+        Summons a Baby Crystal Slime, Bouncy Slime, and Heavenly Slime.
+        Each uses 1/3 of a minion slot, and deal 1/3 of the weapon's damage.
+        The slimes will ram into targets, with the Crystal Slime releasing a barrage of lingering crystal shots and the Bouncy Slime shooting bouncing gel balls at the target as it travels.
+        '''
+    DisplayName: Gel Cane
+}
+
+ForgottenPlatemail: {
+    Tooltip: Increases Damage Reduction by 12%
+    DisplayName: Forgotten Platemail
+}
+
+ForgottenGreaves: {
+    Tooltip: Slightly Improved Jump height that scales with current health.
+    DisplayName: Forgotten Greaves
+}
+
+ForgottenCrown: {
+    Tooltip: Scepter Shots inflict Frostburn
+    SetBonus:
+        '''
+        You can double jump.
+        Scepter class projectiles create exploding icicles on hit.
+        '''
+    DisplayName: Forgotten Crown
+}
+
+CorruptionCaller: {
+    DisplayName: Corruption Caller
+    Tooltip: Spawns a Cursed Flame Node
+}
+
+CrimsonCaller: {
+    DisplayName: Crimson Caller
+    Tooltip: Spawns an Ichor Node
+}
+
+BroochOfBalance: {
+    DisplayName: Brooch Of Balance
+    Tooltip: Makes you immune to Light Inferno, Night Inferno, and Knockback.
+}
+
+BroochOfLight: {
+    DisplayName: Brooch Of Light
+    Tooltip: Grants immunity to Light Inferno and reduces knockback by 50%
+}
+
+BroochOfNight: {
+    DisplayName: Brooch Of Night
+    Tooltip: Grants immunity to Night Inferno and reduces knockback by 50%
+}
+
+HeliciteScepter: {
+    DisplayName: Helicite Scepter
+    Tooltip:
+        '''
+        Shots slow to a halt and explode into four homing solar darts that inflict Daylight Overload.
+        Right click to throw, leaving behind a stationary trail of solar sparkles.
+        '''
+}
+
+HeliciteHeadpiece: {
+    Tooltip: 8% increased scepter class damage.
+    SetBonus:
+        '''
+        You get a period of three seconds of immunity.
+        You can trigger this with the armor set bonus key, but, it will trigger on its own if you get hit by an NPC (hostile projectiles do not trigger the effect).
+        When triggered, you release a burst of homing sparks.
+        The "dodge" has a cooldown of 10 seconds.
+        '''
+    DisplayName: Helicite Headpiece
+}
+
+ElementalScepter: {
+    DisplayName: Elemental Scepter
+    Tooltip:
+        '''
+        Shoots three shots at a time.
+        They can vary from the following types:
+        [i:DestroyerTest/EmberCane] A hellfire shot,
+        [i:DestroyerTest/FrostScepter] A frostburn shot,
+        [i:DestroyerTest/ThunderScepter] An Electric shot.
+        [i:DestroyerTest/NatureScepter] A venom shot,
+        [i:DestroyerTest/ShadowScepter] A shadowflame shot,
+        [i:DestroyerTest/StellarFoxScepter] A galantine burn shot,
+        [i:DestroyerTest/RiftScepter] A Heliouric Shot,
+        [i:DestroyerTest/InfectedScepter] A Cursed Flame shot,
+        [i:DestroyerTest/InfectedScepter] An Ichor shot
+        All shots will inflict their respective debuff.
+        The thrown scepter has a larger, sweeping hitbox that doesnt affect tile collision.
+        The thrown scepter also releases shimmering sparks that home in on enemies after a brief pause.
+        '''
+}
+
+PendantofUnity: {
+    Tooltip: ""
+    DisplayName: Pendant of Unity
+}
+
+InfectedPendant: {
+    Tooltip: ""
+    DisplayName: Infected Pendant
+}
+
+HelicitePendant: {
+    Tooltip: ""
+    DisplayName: Helicite Pendant
+}
+
+ElementalPendant: {
+    Tooltip:
+        '''
+        Increases Scepter Class Damage by {0}.
+        Increases Scepter Class crit chance by {1}.
+        Increases Scepter Class armor penetration by 5.
+        You get the following imbues in Expert Mode:
+        [i:DestroyerTest/InfectedPendant] Cursed Flames,
+        [i:DestroyerTest/InfectedPendant] Ichor,
+        [i:DestroyerTest/FrigidPendant] Frostbite,
+        [i:DestroyerTest/SmolderingPendant] Hellfire
+        '''
+    DisplayName: Elemental Pendant
+}
+
+FrigidPendant: {
+    DisplayName: Frigid Pendant
+    Tooltip: ""
+}
+
+DarkUnity: {
+    Tooltip:
+        '''
+        Unlike the regal harmony of the Elemental Scepter, this scepter controls the the souls of those who fall under its influence."
+        Shoots Shimmering Mushrooms that slow down and explode into damaging spore clouds that inflict Shimmering Flames.
+        The Thrown Scepter doesnt behave as normal, instead also slowing down and exploding into homing Tenebris Stars.
+        '''
+    DisplayName: الوحدة المظلمة
+}
+
+Ambition: {
+    Tooltip:
+        '''
+        A flail empowered by worldly aspirations.
+        At full extension, three gravity-affected sparks will be released, each dealing the same damage as the flail itself.
+        Spinning the flail for 2 seconds will charge it, dealing 75% more damage on the next immediate hit.
+        '''
+    DisplayName: Ambition
+}
+
+LeeFractal: {
+    Tooltip: ""
+    DisplayName: Lee's Fractal
+}
+
+Dreampoon: {
+    DisplayName: Dreampoon
+    Tooltip: ""
+}
+
+SpearOfAspiration: {
+    Tooltip: ""
+    DisplayName: Spear Of Aspiration
+}
+
+Hollow: {
+    DisplayName: Hollow
+    Tooltip:
+        '''
+        Generates a 90-point shield around the player.
+        +10 Defense.
+        '''
+}
+
+Scourge: {
+    DisplayName: Scourge
+    Tooltip:
+        '''
+        5% increased ranged damage.
+        8% increased whip range.
+        +1 minion slot.
+        5% decreased ranged use speed.
+        All classes will ignore 6 points of enemy defense.
+
+        On the back of the card is a faint enscription that wasnt there when you created it:
+        'The best things come in fives!'
+        '''
+}
+
+Vortex: {
+    DisplayName: Vortex
+    Tooltip: Increased Item Pickup Range.
+}
+
+ShineShadeDeck: {
+    DisplayName: Shine-Shade Deck
+    Tooltip:
+        '''
+        Inherits all the effects of the cards used to make it:
+
+        5% increased ranged damage.
+        8% increased whip range.
+        +1 minion slot.
+        5% decreased ranged use speed.
+        All classes will ignore 6 points of enemy defense.
+
+        Generates a 90-point shield around the player.
+        +10 Defense.
+
+        Increased Item Pickup Range.
+        '''
+}
+
+ToxicCanister: {
+    Tooltip: Summons a ring of toxic sludge balls that explode on contact with enemies.
+    DisplayName: Toxic Canister
+}
+
+ContainedRiftBiome: {
+    Tooltip: ""
+    DisplayName: Contained Rift Biome
+}
+
+Item_RiftStoneTorch: {
+    DisplayName: Item_ Rift Stone Torch
+    Tooltip: ""
+}
+
+RiftCanister: {
+    Tooltip: ""
+    DisplayName: Rift Canister
+}
+
+Item_ShadeParticleBlock: {
+    DisplayName: Item_ Shade Particle Block
+    Tooltip: ""
+}
+
+CoronaBreaker: {
+    Tooltip: ""
+    DisplayName: Corona Breaker
+}
+
+TwistedScepter: {
+    Tooltip: ""
+    DisplayName: Twisted Scepter
+}
+
+TenebrisDeliveryBox: {
+    Tooltip:
+        '''
+        It's very heavy, and postmarked to an unknown address.
+        Attatched is a note:
+        'No, I will not make a crimson alternative.'
+        '''
+    DisplayName: Esoteric Delivery Box
+}
+
+GaiaScepter: {
+    Tooltip:
+        '''
+        Capable of inflicting most debuffs.
+        Throwing the scepter creates an otherworldly aura, and shoots homing balls of light in all directions.
+
+        '''
+    DisplayName: Gaia Scepter
+}
+
+Quixotism: {
+    Tooltip:
+        '''
+        After 8 consecutive hits, the blade gains a damaging aura, inflicting guaranteed extra damage for the next two hits.
+        'I have a right to believe.'
+        '''
+    DisplayName: Quixotism
+}
+
+HypnicJerk: {
+    DisplayName: Hypnic Jerk
+    Tooltip: ""
+}
+
+Luna: {
+    DisplayName: Luna
+    Tooltip: ""
+}
+
+Deteriorate: {
+    DisplayName: Deteriorate
+    Tooltip: ""
+}
+
+Fallen: {
+    DisplayName: Fallen
+    Tooltip: Melee Scale increased by 22.5%.
+}
+
+ShadeInfernoPendant: {
+    DisplayName: Shade Inferno Pendant
+    Tooltip:
+        '''
+        Increases Scepter Class damage by 5.5%.
+        Thrown Scepters inflict Shimmering Flames.
+        '''
+}
+
+SmolderingPendant: {
+    DisplayName: Smoldering Pendant
+    Tooltip: ""
+}
+
+TenebrousScroll: {
+    DisplayName: Tenebrous Scroll
+    Tooltip: Scepters have a chance to shoot 3 additional tenebris darts.
+}
+
+BalanceScepter: {
+    Tooltip:
+        '''
+        Shoots a balance bolt that inflicts both Night and Light Inferno.
+        Throws spew Night and Light fireballs in all directions that pierce / bounce twice.
+        '''
+    DisplayName: Balance Scepter
+}
+
+CursorLantern: {
+    DisplayName: Cursor Lantern
+    Tooltip:
+        '''
+        Hangs a lantern from your cursor that provides light.
+        Works from vanity slots.
+        '''
+}
+
+HallowedPall: {
+    Tooltip: +25 Range
+    SetBonus:
+        '''
+        12% increased Scepter Class damage.
+        Hold the Down key to fall faster.
+        '''
+    DisplayName: Hallowed Pall
+}
+
+HeliciteScroll: {
+    DisplayName: Helicite Scroll
+    Tooltip: ""
+}
+
+SpiritBauble: {
+    Tooltip: Grants immunity to Spirit Drift.
+    DisplayName: Spirit Bauble
+}
+
+Manifest: {
+    DisplayName: Manifest
+    Tooltip: Shoots bolts of light rapidly.
+}
+
+FrozenFireScroll: {
+    DisplayName: Frozen Fire Scroll
+    Tooltip: Thrown scepters release a spiral of frost fire as they travel.
+}
+
+PoisonVerse: {
+    DisplayName: Poison Verse
+    Tooltip: Thrown scepters create a burst of poisonous clouds upon returning.
+}

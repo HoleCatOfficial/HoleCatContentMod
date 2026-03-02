@@ -1,0 +1,100 @@
+DTConfig: {
+    MinionExtrasToggle: {
+        Tooltip: If disabled, annoying minion behaviors will cease.
+        Label: Lose your Sanity a little more by the day
+    }
+
+    DisplayName: Miscellaneous Configs
+
+    UnnerfTenebrousKatana: {
+        Label: Unnerf Tenebrous Katana
+        Tooltip: The Tenebrous Katana used to be far more powerful, but it was rolled back to match it's pre-moonlord place in progression. Checking this off will restore it to its original damage statistic; no strings attatched.
+    }
+
+    EnableDebugMessages: {
+        Label: Enable Debug Messages
+        Tooltip: Turning this on will display inside information. Mostly used for testing, but can also help in bug reports.
+    }
+
+    ShowBugCommandMessage: {
+        Tooltip: Shows a massive advertisement for the new /bug command for bug reporting.
+        Label: Show Bug Command Message
+    }
+
+    DragCamera: {
+        Tooltip: If enabled, the camera will lag behind the player a bit when they move. This can mess with things drawn directly to the screen that expect the player to be at the center.
+        Label: Use reworked camera
+    }
+
+    ScepterTileCollsionsCooldown: {
+        Label: Scepter Tile Collsions Cooldown
+        Tooltip: ""
+    }
+
+    ScrollEffectsCooldown: {
+        Label: Scroll Effects Cooldown
+        Tooltip: ""
+    }
+}
+
+DTOptimizationsConfig: {
+    OptimizeGame: {
+        Label: General Optimizations
+        Tooltip: Disables the drawing of unncessary textures and effects.
+    }
+
+    DisplayName: Optimizations Config
+
+    DisableExcessDusts: {
+        Label: Disable Excess Dusts
+        Tooltip: ""
+    }
+
+    DisableExcessParticles: {
+        Label: Disable Excess Particles
+        Tooltip: ""
+    }
+
+    DisableExcessTrails: {
+        Tooltip: ""
+        Label: Disable Excess Trails
+    }
+}
+
+DTMusicConfig: {
+    NodeIdleMusic: {
+        Tooltip: If true, when a node spawns, it will play music even when not attacking. The idle music is different from the battle music, but if they spawn too often for you liking, the ambience will get annoying.
+        Label: Nodes will play Music when Dormant
+    }
+
+    EternityMusic: {
+        Label: Mod bosses have Eternity Mode music
+        Tooltip: Separate Eternity Exclusive music tracks will play for all three of the mod's Bosses (Not all tracks may be finished on release.)
+    }
+
+    DisplayName: Music Config
+}
+
+DTUIConfig: {
+    RiftBarXPos: {
+        Label: Living Shadow Bar: X Offset
+        Tooltip: The offset-positive for the right, negative for the left-that the bar will use for its draw position.
+    }
+
+    RiftBarYPos: {
+        Label: Living Shadow Bar: Y Offset
+        Tooltip: The offset-positive for down, negative for up-that the bar will use for its draw position.
+    }
+
+    DisplayName: UI Config
+
+    NightBarXPos: {
+        Label: Night Bar X Pos
+        Tooltip: ""
+    }
+
+    NightBarYPos: {
+        Label: Night Bar Y Pos
+        Tooltip: ""
+    }
+}

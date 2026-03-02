@@ -1,0 +1,15 @@
+ScepterClass: {
+    DisplayName: Scepter Damage
+    Summary:'''
+            All Scepters have two functions.
+            The primary fire is typically a projectile sourced from the centerpiece topping one end of the scepter.
+            The secondary fire throws the scepter itself at an enemy. Which is guaranteed to deal at least 50% more knockback than the primary fire.
+            
+            The two functions are expanded on by usage of the following:
+            - Scrolls: Add on to existing attacks, typically by firing extra projectiles.
+            - Gloves: Almost exclusively related to throw speed and range.
+            - Pendants: Used mostly for stat modification, but can offer imbues.
+            - Bulwarks: Only one exists, and the full functonality is not implemented.
+            - Vials: Flasks are shimmerable into Vials. Vials only affect thrown scepters.
+            '''
+}

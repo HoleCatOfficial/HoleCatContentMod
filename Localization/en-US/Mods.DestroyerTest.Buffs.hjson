@@ -1,0 +1,429 @@
+HopeEnsemble_Buff: {
+    DisplayName: Hope Ensemble
+    Description: You Could probably chop a thousand vegetables an hour at the soup kitchen.
+}
+
+DaylightOverload: {
+    DisplayName: Daylight Overload
+    Description: All you know right now is pain.
+}
+
+NihilistBuff: {
+    DisplayName: Nihilist
+    Description: Download Calamity Entropy for the epic version!
+}
+
+RiftBallBuff: {
+    DisplayName: Riften Ball
+    Description: It's very warm.
+}
+
+StoneLungs: {
+    DisplayName: Stone Lungs
+    Description:
+        '''
+        Your Lungs have been turned to stone!
+        You cannot regenerate Life.
+        You are immune to suffocation in The Rift.
+        '''
+}
+
+AirSeal: {
+    Description: The air inside your clothes cannot escape
+    DisplayName: Air Seal
+}
+
+EyeSword_Buff: {
+    Description: It seems to enjoy the nighttime better.
+    DisplayName: Eye Sword
+}
+
+LimusBuff: {
+    DisplayName: Limus
+    Description: Contains 8% pure mercury!
+}
+
+VanxarkBuff: {
+    DisplayName: Vanxark
+    Description: An unknown entity from an unknown time. It seems to take a liking to you though.
+}
+
+ShimmeringFlames: {
+    DisplayName: Shimmering Flames
+    Description: Your flesh is being mauled by a torrent of energy!
+}
+
+FriendlyShimmeringFlames: {
+    DisplayName: Friendly Shimmering Flames
+    Description: Your flesh is being mauled by a torrent of energy!
+}
+
+RiftSwordBuff: {
+    Description: You'd be very popular in a cyberpunk soup kitchen!
+    DisplayName: Rift Sword Buff
+}
+
+NightbringerDuoBuff: {
+    Description: Mods.DestroyerTest.Buffs.NightbringerDuoBuff.Description
+    DisplayName: Nightbringer Duo Buff
+}
+
+DaylightOverloadFriendly: {
+    Description: All you know right now is pain...
+    DisplayName: Daylight Overload Friendly
+}
+
+PowerTrade: {
+    DisplayName: Power Trade
+    Description: In exchange for a favorable afterlife, your enemy lowers their guard!
+}
+
+ShimmeringEmpowerment: {
+    DisplayName: Shimmering Empowerment
+    Description: ""
+}
+
+ManaBurst: {
+    Description: Your scepter has become very powerful!
+    DisplayName: Mana Burst
+}
+
+HateWither: {
+    Description: The raw hatred you hold within is potent enough to rot your target from the inside out.
+    DisplayName: Hate Wither
+}
+
+HateShock: {
+    Description: The raw hatred you hold within is potent enough to cripple your enemy.
+    DisplayName: Hate Shock
+}
+
+PosessedPickaxeBuff: {
+    Description: They seem perpetually restless...
+    DisplayName: Posessed Pickaxe Buff
+}
+
+HaepiensInferno: {
+    Description: You are going to have a very hard time putting this one out...
+    DisplayName: Haepiens Inferno
+}
+
+HaepiensBlizzard: {
+    Description: It's gonna be a looooooooong night for you...
+    DisplayName: Haepiens Blizzard
+}
+
+SpiritDrift: {
+    DisplayName: Spirit Drift
+    Description: Mods.DestroyerTest.Buffs.SpiritDrift.Description
+}
+
+GalantineBurn: {
+    DisplayName: Galantine Burn
+    Description: The wrath of the stars has come upon you!
+}
+
+OminousPrescence: {
+    DisplayName: Ominous Prescence
+    Description: Someone special is watching you...
+}
+
+HammerBuff: {
+    DisplayName: Hammer Buff
+    Description: Mods.DestroyerTest.Buffs.HammerBuff.Description
+}
+
+DartRifleMinionBuff: {
+    DisplayName: Dart Rifle Minion Buff
+    Description: A cursed dart rifle is defending you!
+}
+
+MagicFatigue: {
+    DisplayName: Magic Fatigue
+    Description: You are unable to access your magic inside!
+}
+
+GargantuaBoost: {
+    Description: The Living Diamond empowers Gargantua!
+    DisplayName: Gargantua Boost
+}
+
+HeliouricShock: {
+    DisplayName: Heliouric Shock
+    Description: Riften Energy courses through your nerves!
+}
+
+NodePower: {
+    Description: You benefit from a nearby node!
+    DisplayName: Node Power
+}
+
+ComaceraticBurn: {
+    Description: You are being eradicated by the energy of a hundred suns!
+    DisplayName: Comaceratic Burn
+}
+
+ScepterImbueCB: {
+    DisplayName: Scepter Imbue (Comaceratic Burn)
+    Description: Your scepters have been imbued with Comaceratic Burn!
+}
+
+ScepterImbueDO: {
+    DisplayName: Scepter Imbue (Daylight Overload)
+    Description: Your scepters have been imbued with Daylight Overload!
+}
+
+ScepterImbueHSk: {
+    DisplayName: Scepter Imbue (Heliouric Shock)
+    Description: Your scepters have been imbued with Heliouric Shock!
+}
+
+WeaponImbueCB: {
+    DisplayName: Weapon Imbue (Comaceratic Burn)
+    Description: Your Weapons have been imbued with Comaceratic Burn!
+}
+
+WeaponImbueDO: {
+    DisplayName: Weapon Imbue (Daylight Overload)
+    Description: Your Weapons have been imbued with Daylight Overload!
+}
+
+WeaponImbueHSk: {
+    DisplayName: Weapon Imbue (Heliouric Shock)
+    Description: Your Weapons have been imbued with Heliouric Shock!
+}
+
+SoulInferno: {
+    Description: You no longer feel any sense of self.
+    DisplayName: Soul Inferno
+}
+
+WyvernSoulPetBuff: {
+    DisplayName: Wyvern Soul Pet
+    Description: He is eternally grateful
+}
+
+ArenaEffects: {
+    Description: The Boss is creating an effect in its vicinity!
+    DisplayName: Arena Effects
+}
+
+SoulErosion: {
+    Description: You feel weak inside...
+    DisplayName: Soul Erosion
+}
+
+ScepterImbueGB: {
+    Description: Your scepter has been imbued with Galantine Burn!
+    DisplayName: Scepter Imbue (Galantine Burn)
+}
+
+Brine: {
+    DisplayName: Brine
+    Description: Salty water irritates your skin!
+}
+
+ScepterImbueBrine: {
+    DisplayName: Scepter Imbue (Brine)
+    Description: Your scepter has been imbued with salty water!
+}
+
+ScepterImbueFF: {
+    DisplayName: Scepter Imbue (Frostburn)
+    Description: Your scepter has been imbued with Frozen Flames!
+}
+
+ScepterImbueHoney: {
+    Description: Your scepter has honey all over it!
+    DisplayName: Scepter Imbue (Honey)
+}
+
+ScepterImbueGH: {
+    Description: Your scepter has enchanted honey all over it!
+    DisplayName: Scepter Imbue (Galantine Honey)
+}
+
+Muddy: {
+    Description: You are bogged down by thick mud!
+    DisplayName: Muddy
+}
+
+ScepterImbueMud: {
+    DisplayName: Scepter Imbue (Mud)
+    Description: Your scepter has thick mud all over it!
+}
+
+Vigor: {
+    Description: Move speed and Melee Attack speed increased!
+    DisplayName: Vigor
+}
+
+BloodHex: {
+    DisplayName: Blood Hex
+    Description: You cannot regenerate life!
+}
+
+TenebrisCrystalMinionBuff: {
+    Description: It hums with energy...
+    DisplayName: Tenebris Elemental
+}
+
+HoleCatFire: {
+    Description: Attempting to put it out only makes it worse...
+    DisplayName: Otherworldly Inferno
+}
+
+MobilityHex: {
+    Description: Your body has been hexxed, stopping you from moving!
+    DisplayName: Mobility Hex
+}
+
+WeaponImbueGB: {
+    DisplayName: Weapon Imbue (Galantine Burn)
+    Description: Your Weapons have been imbued with Galantine Burn!
+}
+
+StarConstructMinionBuff: {
+    DisplayName: Star Construct
+    Description: The Star Construct will protect you!
+}
+
+ConstitutionPetBuff: {
+    DisplayName: Stellar Stabber
+    Description: It yearns for the stars...
+}
+
+RosePetBuff: {
+    DisplayName: Itty-bitty Rose
+    Description: It twitches insidiously...
+}
+
+NodesPetBuff: {
+    DisplayName: Mini Nodes
+    Description: Far too weak to boost your power meaningfully, but hey, two-for-one deal!
+}
+
+TenebrousConstructPetBuff: {
+    DisplayName: Mini Construct
+    Description: The silence is unnerving...
+}
+
+TenebrousSlingerPetBuff: {
+    Description: Unfortunately, this measley little bow won't help you fight.
+    DisplayName: Tenebrous Slinger
+}
+
+ShadeThrasherBuff: {
+    Description: Mods.DestroyerTest.Buffs.ShadeThrasherBuff.Description
+    DisplayName: Shade Thrasher Buff
+}
+
+Spored: {
+    DisplayName: Spored
+    Description: Spores are eroding you!
+}
+
+HekateBurrBuff: {
+    DisplayName: Hekate's Thorns
+    Description: You are protected by poisonous bramble!
+}
+
+BlackGuard: {
+    DisplayName: Black Guard
+    Description: 15% increased defense and 7% increased damage reduction
+}
+
+Bravado: {
+    DisplayName: Bravado
+    Description: 15% increased armor penetration for all classes and 10% increased damage for all classes
+}
+
+Lightfooted: {
+    DisplayName: Lightfooted
+    Description: 4% increased jump speed, 40% increased acceleration, and 10% increased speed.
+}
+
+TaintedBrew: {
+    DisplayName: Tainted Brew
+    Description: Cannot Consume Idri's Concoction again.
+}
+
+ScepterImbueCF: {
+    DisplayName: Scepter Imbue (Cursed Flames)
+    Description: Your scepter has been imbued with Cursed Flames!
+}
+
+ScepterImbueFire: {
+    DisplayName: Scepter Imbue Fire
+    Description: Your scepter is on Fire!!
+}
+
+ScepterImbueIchor: {
+    DisplayName: Scepter Imbue (Ichor)
+    Description: Your scepter has been imbued with Ichor!
+}
+
+WeaponImbueBrine: {
+    DisplayName: Weapon Imbue (Brine)
+    Description: Your weapons are soaking in salty water!
+}
+
+WeaponImbueFF: {
+    DisplayName: Weapon Imbue (Frostburn)
+    Description: Your weapons have been imbued with Frozen Flames!
+}
+
+WeaponImbueFire: {
+    DisplayName: Weapon Imbue (Fire)
+    Description: Your weapons are on Fire!!
+}
+
+WeaponImbueMud: {
+    DisplayName: Weapon Imbue (Mud)
+    Description: Your weapons have thick mud all over them!
+}
+
+InsurgentBoost: {
+    DisplayName: Insurgent Boost
+    Description: Mods.DestroyerTest.Buffs.InsurgentBoost.Description
+}
+
+HallowedSlimesBuff: {
+    DisplayName: Hallowed Slimes
+    Description: Hallowed Slimes will defend you!
+}
+
+NightInferno: {
+    Description: You're burning from the inside out!
+    DisplayName: Night Inferno
+}
+
+LightInferno: {
+    Description: You're burning from the inside out!
+    DisplayName: Light Inferno
+}
+
+LeeFractalBuff: {
+    Description: His favourites
+    DisplayName: Lee's Fractal
+}
+
+MiniRoseBoost: {
+    DisplayName: Mini Rose Boost
+    Description: Mods.DestroyerTest.Buffs.MiniRoseBoost.Description
+}
+
+ScepterImbueFB: {
+    DisplayName: Scepter Imbue F B
+    Description: Mods.DestroyerTest.Buffs.ScepterImbueFB.Description
+}
+
+ScepterImbueHF: {
+    DisplayName: Scepter Imbue H F
+    Description: Mods.DestroyerTest.Buffs.ScepterImbueHF.Description
+}
+
+ScepterImbueSF: {
+    DisplayName: Scepter Imbue S F
+    Description: Mods.DestroyerTest.Buffs.ScepterImbueSF.Description
+}
