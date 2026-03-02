@@ -190,9 +190,9 @@ namespace DestroyerTest.Content.Equips
                 if (Crown.Active && Crown.cooldown <= 0)
                 {
                     Opus.RadialSpreadDust(DustID.Ice, 10, target.Center, 0, Color.White, 1f, 2, true);
-                    Vector2 speed = new Vector2(0, -3.5f).RotatedByRandom(1f);
                     for(int o = 0; o < Main.rand.Next(3, 6); o++)
                     {
+						Vector2 speed = new Vector2(0, -3.5f).RotatedByRandom(1f);
                         Projectile.NewProjectile(player.GetSource_Misc("Crown Icicles"), target.Center, speed, ModContent.ProjectileType<ExplodingIcicle>(), projectile.damage / 2, 4, projectile.owner);
                     }
                     Crown.cooldown = 120;

@@ -816,8 +816,8 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
                 if (PoisonScroll1)
                 {
                     SoundEngine.PlaySound(PoisonScrollSound, projectile.Center);
-                    Opus.RadialSpreadProjectile(ProjectileID.SporeCloud, 9, projectile.Center, projectile.damage, 3, 2, offset: projectile.rotation);
-                    Opus.RadialSpreadProjectile(ProjectileID.SporeCloud, 12, projectile.Center, projectile.damage / 2, 3, 3, offset: projectile.rotation);
+                    Opus.RadialSpreadProjectile(ModContent.ProjectileType<PoisonCloud>(), 9, projectile.Center, projectile.damage, 3, 2, offset: projectile.rotation);
+                    Opus.RadialSpreadProjectile(ModContent.ProjectileType<PoisonCloud>(), 12, projectile.Center, projectile.damage / 2, 3, 3, offset: projectile.rotation);
                 }
             }
         }

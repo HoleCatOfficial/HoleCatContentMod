@@ -4777,6 +4777,8 @@ Projectiles: {
 	PosessedScepterSoulShot.DisplayName: Posessed Scepter Soul Shot
 	ManifestHoldout.DisplayName: Manifest Holdout
 	ManifestBolt.DisplayName: Manifest Bolt
+	PoisonSpray.DisplayName: Poison Spray
+	PoisonCloud.DisplayName: Poison Cloud
 }
 
 ItemSetBonus.HoleCatHood.SetBonus: Increases damage by {0.P0 - 100}%, attack speed by {1:P0 - 100}%, and knockback by {2:P0 - 100}%.
