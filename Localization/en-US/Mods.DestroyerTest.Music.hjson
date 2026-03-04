@@ -1,0 +1,49 @@
+Author1: FRANCIUMKILLA
+Author2: Desolo Zantas
+Author3: Xi
+Author4: RD Shrissy
+
+EvilBoss: {
+	Default: Tribulation (New Mix)
+	Eternity: Two Celestial Bodies of Descruction (Placeholder)
+	SecretSeed: Indestructible Dih
+}
+
+ConstitutionBoss: {
+	Default: Duel Against the Sacred Blade
+	Desperate: The Sacred Blade's Desperate Spasm
+	Eternity: Freedom Dive
+}
+
+NodeBoss: {
+	Fight: Elemental Influence
+	Idle: Elemental Presence
+}
+
+TenebrousConstruct: Darkness Encroaching
+RoseSoulAmbience: Sun For Two Worlds -Idri Prime Days-
+WyvernSoulAmbience: Finest Fruit of the Firmament -The Great Wyvern Prime Days-
+HekateGardenOld: I, Am the First Flower
+HekateGarden: Drown My Sorrows In Flora!
+
+Rift: {
+	Surface: Deoxygenation
+	Underground: Trepidation
+	Caverns: Disquietude
+
+	Desert: {
+		Surface: Blistering Silt
+		Underground: Sweltering Trap
+		Sandstorm: Scalding Squall
+	}
+
+	Event: Synthetic Sporadia
+
+	Ice: {
+		Surface: Amid the Sun-streaked Wastes
+		Underground: Beneath the shadow-slicked ice
+	}
+
+	Rain: Prevailing Tempest
+	Thunder: Wrathful Tempest
+}

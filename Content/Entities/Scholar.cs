@@ -270,9 +270,7 @@ namespace DestroyerTest.Content.Entities
 		// Not completely finished, but below is what the NPC will sell
 		public override void AddShops() {
             var npcShop = new NPCShop(Type, ShopName)
-				.Add(new Item(ModContent.ItemType<Dalmon>()) { shopCustomPrice = Item.buyPrice(silver: 1, copper: 60) })
-                .Add(new Item(ModContent.ItemType<NightmareRoseArenaBook>()) { shopCustomPrice = Item.buyPrice(silver: 46) })
-				.Add(new Item(ModContent.ItemType<ShadeSeedBook>()) { shopCustomPrice = Item.buyPrice(gold: 3, silver: 59) });
+				.Add(new Item(ModContent.ItemType<Dalmon>()) { shopCustomPrice = Item.buyPrice(silver: 1, copper: 60) });
 			npcShop.Register(); // Name of this shop tab
 		}
 

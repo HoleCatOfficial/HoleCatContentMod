@@ -1,0 +1,241 @@
+using DestroyerTest.Common;
+using DestroyerTest.Common.Blessings;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using System;
+using System.Collections.Generic;
+using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent.UI.Elements;
+using Terraria.ID;
+using Terraria.Localization;
+using Terraria.ModLoader;
+using Terraria.UI;
+
+namespace DestroyerTest.Content.UI
+{
+    public class PrayerUI : UIState
+    {
+
+        private UIPanel panel;
+        private UIText herbSlotLabel;
+        private UIText offeringSlotLabel;
+        private UIText blessButtonText;
+        private UIText Header;
+        private UIImageButton blessButton;
+        private UIItemSlot HerbSlot;
+        private UIItemSlot OfferingSlot;
+        public static bool Visible = false;
+        private bool dragging = false;
+        private Vector2 offset;
+        public Terraria.Item[] HerbItem;
+        public Terraria.Item[] OfferingItem;
+
+        public override void OnInitialize()
+        {
+            if (Main.dedServ)
+                return;
+
+            panel = new UIPanel();
+            panel.HAlign = 0.5f;
+            panel.VAlign = 0.5f;
+            panel.Top.Set(-150f, 0f);
+            panel.Width.Set(200f, 0f);
+            panel.Height.Set(200f, 0f);
+            panel.BackgroundColor = new Color(20, 20, 40, 200);
+
+            panel.OnLeftMouseDown += StartDrag;
+            panel.OnLeftMouseUp += EndDrag;
+            Append(panel);
+
+            Header = new UIText("Make an offer", 0.85f, false);
+            Header.HAlign = 0.5f;
+            Header.VAlign = 0.1f;
+            Header.TextColor = ColorLib.Soul;
+            panel.Append(Header);
+
+            //Offer Slot
+
+            offeringSlotLabel = new UIText("Offering", 0.75f, false);
+            offeringSlotLabel.HAlign = 0.5f;
+            offeringSlotLabel.VAlign = 0.35f;
+            offeringSlotLabel.TextColor = Color.White;
+            panel.Append(offeringSlotLabel);
+
+            OfferingItem = new Terraria.Item[1];
+            OfferingItem[0] = new Item();
+            OfferingItem[0].TurnToAir();
+            OfferingSlot = new UIItemSlot(OfferingItem, 0, 0);
+            OfferingSlot.Width.Set(24, 0);
+            OfferingSlot.Height.Set(24, 0);
+            OfferingSlot.HAlign = 0.5f;
+            OfferingSlot.VAlign = 0.5f;
+
+            panel.Append(OfferingSlot);
+
+            //Herb slot
+
+            herbSlotLabel = new UIText("Herb", 0.75f, false);
+            herbSlotLabel.HAlign = 0.8f;
+            herbSlotLabel.VAlign = 0.35f;
+            herbSlotLabel.TextColor = Color.White;
+            panel.Append(herbSlotLabel);
+
+            HerbItem = new Terraria.Item[1];
+            HerbItem[0] = new Item();
+            HerbItem[0].TurnToAir();
+            HerbSlot = new UIItemSlot(HerbItem, 0, 0);
+            HerbSlot.Width.Set(24, 0);
+            HerbSlot.Height.Set(24, 0);
+            HerbSlot.HAlign = 0.8f;
+            HerbSlot.VAlign = 0.5f;
+            
+            panel.Append(HerbSlot);
+
+            //Button
+
+            blessButton = new UIImageButton(ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/BlessingButton"));
+            blessButton.Width.Set(76, 0);
+            blessButton.Height.Set(28, 0);
+            blessButton.HAlign = 0.5f;
+            blessButton.VAlign = 0.85f;
+            blessButton.OnLeftClick += CheckOffer;
+            panel.Append(blessButton);
+
+            blessButtonText = new UIText("Offer", 0.75f, false);
+            blessButtonText.HAlign = 0.5f;
+            blessButtonText.VAlign = 0.85f;
+            blessButtonText.TextColor = Color.White;
+            panel.Append(blessButtonText);
+        }
+
+        public override void OnActivate()
+        {
+            
+        }
+
+        public List<int> ValidHerbTypes = new List<int>
+        {
+            ItemID.Daybloom,
+            ItemID.Moonglow,
+            ItemID.Blinkroot,
+            ItemID.Deathweed,
+            ItemID.Waterleaf,
+            ItemID.Fireblossom,
+            ItemID.Shiverthorn  
+        };
+
+        public SoundStyle Accept = new SoundStyle("DestroyerTest/Assets/Audio/Blessing/AcceptedBlessing");
+        public SoundStyle Reject = new SoundStyle("DestroyerTest/Assets/Audio/Blessing/RejectedBlessing");
+        public int Cooldown = 0;
+
+        public const int CheckTimer = 60;
+        public int C = 0;
+
+        public void CheckOffer(UIMouseEvent evt, UIElement listeningElement)
+        {
+            if (Main.LocalPlayer.TryGetModPlayer<PrayerPlayer>(out var P))
+            {
+
+                if (!HerbItem[0].active || !OfferingItem[0].active)
+                {
+                    return;
+                }
+                if (!ValidHerbTypes.Contains(HerbItem[0].type))
+                {
+                    return;
+                }
+
+                if (Cooldown == 1)
+                {
+                    SoundEngine.PlaySound(SoundID.Item25);
+                }
+
+                if (Cooldown <= 0)
+                {
+                    if (HerbItem[0].type == DTBlessings.RadiantHeart.HerbType && OfferingItem[0].type == DTBlessings.RadiantHeart.ItemType)
+                    {
+                        if (C <= 0)
+                        {
+                            HerbItem[0].TurnToAir();
+                            OfferingItem[0].TurnToAir();
+                            P.ApplyBlessing(DTBlessings.RadiantHeart);
+
+                            SoundEngine.PlaySound(Accept);
+                            Cooldown = 600;
+                        }
+                    }
+                    else
+                    {
+                        if (HerbItem[0].type != ItemID.None)
+                        {
+                            Main.LocalPlayer.QuickSpawnItem(Player.GetSource_None(), HerbItem[0]);
+                            HerbItem[0].TurnToAir();
+                        }
+                        if (OfferingItem[0].type != ItemID.None)
+                        {
+                            Main.LocalPlayer.QuickSpawnItem(Player.GetSource_None(), OfferingItem[0]);
+                            OfferingItem[0].TurnToAir();
+                        }
+                        SoundEngine.PlaySound(Reject);
+                        Cooldown = 600;
+                    }
+                }
+            }
+        }
+
+        private void StartDrag(UIMouseEvent evt, UIElement listeningElement)
+        {
+            dragging = true;
+            offset = new Vector2(evt.MousePosition.X - panel.Left.Pixels, evt.MousePosition.Y - panel.Top.Pixels);
+        }
+
+        private void EndDrag(UIMouseEvent evt, UIElement listeningElement)
+        {
+            dragging = false;
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            
+            if (Visible)
+            {   
+                if (Cooldown > 0)
+                {
+                    Cooldown--;
+                }
+
+                if (IsMouseHovering)
+                {
+                    Main.isMouseLeftConsumedByUI = true;
+                    Main.LocalPlayer.mouseInterface = true;
+                }
+
+                if (dragging)
+                {
+                    Vector2 mouse = new Vector2(Main.mouseX, Main.mouseY);
+                    panel.Left.Set(mouse.X - offset.X, 0f);
+                    panel.Top.Set(mouse.Y - offset.Y, 0f);
+                    panel.Recalculate();
+                }
+
+                base.Update(gameTime);
+            }
+        }
+
+        public void close()
+        {
+            if (HerbItem[0].type != ItemID.None)
+            {
+                Main.LocalPlayer.QuickSpawnItem(Player.GetSource_None(), HerbItem[0]);
+                HerbItem[0].TurnToAir();
+            }
+            if (OfferingItem[0].type != ItemID.None)
+            {
+                Main.LocalPlayer.QuickSpawnItem(Player.GetSource_None(), OfferingItem[0]);
+                OfferingItem[0].TurnToAir();
+            }
+        }
+    }
+}

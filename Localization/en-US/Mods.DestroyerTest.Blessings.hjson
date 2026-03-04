@@ -1,4 +1,5 @@
-RadiantHeart: { 
-    Name: Radiant Heart
-    Message: "Your heart sings with hope. Take life in stride, young one."
+RadiantHeart: {
+	Name: Radiant Heart
+	Message: Your heart sings with hope. Take life in stride, young one.
+	Bonus: 40% increased life regen.
 }

@@ -1,0 +1,24 @@
+ConstitutionDefeat: {
+	FriendlyName: All that for a drop of blood...
+	Description: Defeat Constitution, the Heaven Descendant Blade.
+}
+
+NightmareRoseDefeat: {
+	FriendlyName: Weed Whacker
+	Description: Free the Conglomerate Child of Mother Darkness.
+}
+
+WyvernCorpseDefeat: {
+	FriendlyName: Morticide
+	Description: Return the Great Wyvern to their place among the clouds.
+}
+
+RiftEmpower: {
+	Description: Charge a riften weapon using a Rift Electrifier and unlock its full potential.
+	FriendlyName: Topped Off
+}
+
+LivingShadowObtain: {
+	Description: Obtain a Living Shadow, the source of nightmares come to life, in the umbra of an eclipse...
+	FriendlyName: (Day)Night Life
+}

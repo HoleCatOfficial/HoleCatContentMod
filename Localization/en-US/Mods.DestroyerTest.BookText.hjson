@@ -1,0 +1,182 @@
+ShadeSeedBook: {
+	Page1:
+		'''
+		SHADE UNDER THE TREES
+		Author Unknown
+		(This book contains multiple possible World Names for the Tenebrous Trial)
+		'''
+	Page2:
+		'''
+		Do not search for the Shade Under the Trees, as my own
+		inquest turned up naught but a cloud of complete darkness.
+		It was akin to something I'd describe seeing during a
+		Witching Hour. You would imagine as someone with skin
+		problems, I'd be happy to have another Respite From Sun,
+		but this was to a degree not forseen.
+		'''
+}
+
+ScholarAutobiography: {
+	Page1:
+		'''
+		AUTOBIAGRAPHY : Volume I
+		By Joan Curen
+		'''
+	Page2:
+		'''
+		My life began on a riverside farm on the mainland of Musevuria.
+		I learned to read quite early on, but the skill was largely
+		unacknowledged by my family. All they were concerned with 
+		was my usefulness taking care of the livestock. As such,
+		I did a lot of work on that farm. When there wasnt much to do
+		on the farm, I would visit the neighbor, as the neighbor had
+		many books to read. 
+		'''
+	Page3:
+		'''
+		When I became a young man, I left the farm to pursue more
+		knowledge. That led me to a school in Ebüchmoon, a northern
+		territory of Museveria. I had to work some odd jobs, do a
+		few favors, multiple of which were regrettable, but necessary evils. My efforts did
+		pay off in the end, as I was allowed to study at that
+		school and prepare for a career in scholarly exploration.
+		'''
+	Page4:
+		'''
+		To begin my career, I decided to leave the mainland and
+		explore somewhere only travelling merchants spoke of. 
+		An island thousands of helans away called "Terraria".
+		I was not able to take very many books with me, as they
+		would weigh on the boat too much. Out of those few books,
+		I could only take so many written ones, as the purpose
+		of the exploration was to fill books, not read them.
+		'''
+}
+
+LivingShadowLoreBook: {
+	Page1:
+		'''
+		LIVING SHADOWS: A MATERIAL ANALYSIS
+		By: Joan Curen
+		'''
+	Page2:
+		'''
+		Living Shadows are a material found inside the bodies of
+		the various creatures that come out of hiding in a solar eclipse.
+		The dark mass that composes most of it is very cold and sticky,
+		having a consistency similar to tree sap.
+		While the orange outer energy is quite the oppsite, burning
+		my hands and damaging equipment on several occasions.
+		'''
+	Page3:
+		'''
+		Looking at it on an elemental level, the substance is not
+		comparable to any naturally occurring element to my knowledge.
+		Its goopy, saplike consistency prompted me to place it in water.
+		Inside water, as I suspected, it dissolves quickly, turning the
+		water black and inundating it with its energy, most of which
+		seemed to have risen up to the surface of the water.
+		'''
+	Page4:
+		'''
+		Its applications are broad, from the looks of it. When encased in
+		iron, so-called "Riftplate" is created. A heavy, black metal with immense
+		stored energy. More research can be done on Riftplate in the future,
+		but that warrants a book of its own.
+		'''
+}
+
+BloodGoddessLoreBook: {
+	Page1:
+		'''
+		This is placeholder text. This is placeholder text. This is placeholder text. This is placeholder text. This is placeholder text.
+
+		This is newline placeholder text.
+		'''
+	Page2:
+		'''
+		This is also placeholder text. This is also placeholder text. This is also placeholder text. This is also placeholder text. This is also placeholder text.
+
+		This is newline placeholder text.
+		'''
+	Page3:
+		'''
+		You guessed it, placeholder text. You guessed it, placeholder text. You guessed it, placeholder text. You guessed it, placeholder text. You guessed it, placeholder text.
+
+		You guessed it, Newline placeholder text.
+		'''
+	Page4:
+		'''
+		You guessed it, placeholder text. You guessed it, placeholder text. You guessed it, placeholder text. You guessed it, placeholder text. You guessed it, placeholder text.
+
+		You guessed it, Newline placeholder text.
+		'''
+}
+
+HekateBook1: {
+	Page1:
+		'''
+		Idri's been concerning me as of late. I've had to treat hives
+		on his skin day-in and day-out. He hasnt been able to meet with
+		the group for weeks, citing a newfound lethargy, and it's been
+		detrimental to the planning some of our more ambitious plans,
+		since he tended to be our voice of reason.
+		'''
+	Page2:
+		'''
+		I write this as I lay beside him in bed. He's fallen asleep, but
+		the restless shuddering of his torso tells me he isn't sleeping easy.
+		I've gotten him soups from all varieties of market, but nothing cures
+		his mysterious aliment, and no text could ever categorize diseases
+		affecting demideities.
+		'''
+	Page3:
+		'''
+		I may consult mother darkness on the matter, but I'm hesitant. 
+		Justifiedly so. She would be furious if she knew it had been me
+		that had taken her son from her, and I get the feeling her
+		mercy to old friends only extends so far. Goodness, I don't
+		know how many other options I have.
+		'''
+}
+
+HekateBook2: {
+	Page1:
+		'''
+		Idri's aliment seems to have become a particular issue. He's left his
+		quarters less frequently, and his hives have spread to his arms.
+		He has begun to refuse my help in treating the hives, but has not
+		said why. Unfortunately, I must do what I can to help him, and have had
+		to restrain him on multiple occasions to apply the ointment.
+		'''
+	Page2: ""
+	Page3: ""
+}
+
+HekateBook3: {
+	Page1:
+		'''
+		I wept for the first time in centuries this morning. And not the
+		usual sob or choke-up. I had gotten a new understaning of mortality
+		as I lay against the wall, wailing a discordant chime and clenching
+		my eyes shut. It was as if I didnt want to face the reality that
+		already had turned to face me.
+		'''
+	Page2:
+		'''
+		As I had predicted, yet so foolishly ignored, Idri's breathing has
+		become more strained, and his gangrene has worsened depsite my
+		regenerative talismans. Foolish of me. Demigod or not, I should have
+		stayed by his side all through that night instead of leaving him
+		in this cold, lonely room.
+		'''
+	Page3:
+		'''
+		I haven't felt things so rawly in so long a time. It perplexes me
+		as much as it moves me. Deities are beyond emotion; that's a commonly
+		known fact. So how is it that I grieve? How is it that I weep so loud
+		and so long that my chest throbs sorely and my eyes are burned by
+		my caustic fluids? Perhaps we need to rethink our defintions of
+		Deitism.
+		'''
+}

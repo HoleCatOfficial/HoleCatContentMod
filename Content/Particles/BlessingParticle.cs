@@ -1,13 +1,15 @@
-using DestroyerTest.Common;
-using InnoVault.PRT;
-using Microsoft.Xna.Framework;
+﻿using InnoVault.PRT;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Terraria;
-using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Particles
 {
-    public class SoundwaveParticle : BasePRT
+    public class BlessingParticle : BasePRT
     {
         public override void SetProperty()
         {
@@ -19,8 +21,8 @@ namespace DestroyerTest.Content.Particles
 
         public override void AI()
         {
-            float endScale = ai[0];
-            float growSpeed = 0.12f;
+            float endScale = ai[0]; // allow dynamic sizing
+            float growSpeed = 0.04f; // how fast it grows each tick
 
             if (Scale < endScale)
             {
@@ -33,6 +35,7 @@ namespace DestroyerTest.Content.Particles
                 Color *= 0.9f;
             }
 
+            // Kill once scale is basically done growing
             if (Scale >= endScale)
                 Kill();
         }

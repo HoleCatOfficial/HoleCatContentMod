@@ -1,39 +1,39 @@
 RiftSurface: {
-    DisplayName: The Rift (Surface)
-    TownNPCDialogueName: The Rift
+	DisplayName: The Rift (Surface)
+	TownNPCDialogueName: The Rift
 }
 
 RiftDesert: {
-    DisplayName: Rift Desert
-    TownNPCDialogueName: the Rift Desert
+	DisplayName: Rift Desert
+	TownNPCDialogueName: the Rift Desert
 }
 
 ShadeWorldBestiary: {
-    TownNPCDialogueName: the Shade World Bestiary
-    DisplayName: Shade World Bestiary
+	TownNPCDialogueName: the Shade World Bestiary
+	DisplayName: Shade World Bestiary
 }
 
 RiftBestiary: {
-    TownNPCDialogueName: the Rift Bestiary
-    DisplayName: Rift Bestiary
+	TownNPCDialogueName: the Rift Bestiary
+	DisplayName: Rift Bestiary
 }
 
 RiftTundra: {
-    DisplayName: Rift Tundra
-    TownNPCDialogueName: a riften tundra
+	DisplayName: Rift Tundra
+	TownNPCDialogueName: a riften tundra
 }
 
 RiftUnderground: {
-    DisplayName: Rift Underground
-    TownNPCDialogueName: Underground, in the Rift
+	DisplayName: Rift Underground
+	TownNPCDialogueName: Underground, in the Rift
 }
 
 RiftDesertUnderground: {
-    DisplayName: Rift Desert Underground
-    TownNPCDialogueName: Underground, in a Riften Desert
+	DisplayName: Rift Desert Underground
+	TownNPCDialogueName: Underground, in a Riften Desert
 }
 
 RoseGardenUnderground: {
-    DisplayName: Hekate's Garden
-    TownNPCDialogueName: The Evil Garden
+	DisplayName: Hekate's Garden
+	TownNPCDialogueName: The Evil Garden
 }

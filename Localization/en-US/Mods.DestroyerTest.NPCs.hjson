@@ -15,126 +15,126 @@ WyvernCorpseBody2.DisplayName: Wyvern Corpse
 WyvernCorpseBody3.DisplayName: Wyvern Corpse
 
 PossessedScepter: {
-    DisplayName: Possessed Scepter
-    BestiaryEntry1: A scepter once belonging to an ancient leader. The once brilliant gem atop it has now become filled with spirits.
+	DisplayName: Possessed Scepter
+	BestiaryEntry1: A scepter once belonging to an ancient leader. The once brilliant gem atop it has now become filled with spirits.
 }
 
 ConstitutionBoss: {
-    DisplayName: Constitution
-    DespawnMessage: "{0} returns to the sky, deeming you unworthy..."
+	DisplayName: Constitution
+	DespawnMessage: "{0} returns to the sky, deeming you unworthy..."
 }
 
 WyvernCorpseHead: {
-    DisplayName: Wyvern Corpse
-    DespawnMessage: The Wyvern escapes to look for more food...
-    Bestiary: Mods.DestroyerTest.NPCs.WyvernCorpseHead.Bestiary
+	DisplayName: Wyvern Corpse
+	DespawnMessage: The Wyvern escapes to look for more food...
+	Bestiary: Mods.DestroyerTest.NPCs.WyvernCorpseHead.Bestiary
 }
 
 WyvernCorpseLegs.DisplayName: Wyvern Corpse
 WyvernCorpseTail.DisplayName: Wyvern Corpse
 
 NightmareRose: {
-    DisplayName: Nightmare Rose
-    DespawnMessage: The amalgamation disbands...
-    ExitBarrierDeath: "{0} attempted to flee."
-    EternityBarrierDeath: "{0} was eradicated."
+	DisplayName: Nightmare Rose
+	DespawnMessage: The amalgamation disbands...
+	ExitBarrierDeath: "{0} attempted to flee."
+	EternityBarrierDeath: "{0} was eradicated."
 }
 
 EimvurNPC: {
-    DisplayName: Blood Goddess
+	DisplayName: Blood Goddess
 
-    TownNPCMood: {
-        Content: I could be worse.
-        NoHome: I'd be okay with a nomadic lifestyle if this human body wasnt so sensitive...
-        FarFromHome: It seems I'm a long way from home.
-        LoveSpace: It is Comfortably Spacious here.
-        DislikeCrowded: Walking as a goddess amongst men I would think I'd be treated a little more highly than this compaction.
-        HateCrowded: This is deplorable. I ought to kill you at this point.
-        LoveBiome: "{BiomeName} Makes me quite happy. Its the closest I can get to a bloody world."
-        LikeBiome: "{BiomeName}. Not much to say here."
-        DislikeBiome: I'd rather be elsewhere...
-        HateBiome: My goodness, {BiomeName}, eugh. Get me out of here right now.
-        LoveNPC: I love {NPCName}.
-        LikeNPC: I like {NPCName}.
-        DislikeNPC: I dislike {NPCName}.
-        HateNPC: I hate {NPCName}.
-        LikeNPC_Princess: I like {NPCName}. Pink cutie. Heh...
-        Princess_LovesNPC: I feel enamored by {NPCName} and her divine prescence. Though, I fear she may want me around more often than I would be comfortable with...
-    }
+	TownNPCMood: {
+		Content: I could be worse.
+		NoHome: I'd be okay with a nomadic lifestyle if this human body wasnt so sensitive...
+		FarFromHome: It seems I'm a long way from home.
+		LoveSpace: It is Comfortably Spacious here.
+		DislikeCrowded: Walking as a goddess amongst men I would think I'd be treated a little more highly than this compaction.
+		HateCrowded: This is deplorable. I ought to kill you at this point.
+		LoveBiome: "{BiomeName} Makes me quite happy. Its the closest I can get to a bloody world."
+		LikeBiome: "{BiomeName}. Not much to say here."
+		DislikeBiome: I'd rather be elsewhere...
+		HateBiome: My goodness, {BiomeName}, eugh. Get me out of here right now.
+		LoveNPC: I love {NPCName}.
+		LikeNPC: I like {NPCName}.
+		DislikeNPC: I dislike {NPCName}.
+		HateNPC: I hate {NPCName}.
+		LikeNPC_Princess: I like {NPCName}. Pink cutie. Heh...
+		Princess_LovesNPC: I feel enamored by {NPCName} and her divine prescence. Though, I fear she may want me around more often than I would be comfortable with...
+	}
 }
 
 GigaCursedHammer: {
-    DisplayName: Giga Cursed Hammer
-    BestiaryEntry1: ""
+	DisplayName: Giga Cursed Hammer
+	BestiaryEntry1: ""
 }
 
 TheGreatFlayer: {
-    DisplayName: The Great Flayer
-    BestiaryEntry1: ""
+	DisplayName: The Great Flayer
+	BestiaryEntry1: ""
 }
 
 NightmareRoseBoss: {
-    DisplayName: Nightmare Rose
-    BestiaryEntry1:
-        '''
-        "Mother Darkness is never too cut-and-dry, and that extends to her motivations and actions.
-        Many, many years ago, Mother Darkness took a son under her wing. Nobody knew how old, nobody knew his name.
-        To both himself and observers, his destiny was forever postponed, year after year. He had nothing waiting for him in some distant future,
-        as all mother darkness needed from him was his warm, bubbly personality to brighten her days and when it served her interests.
-        Since word rarely ever escapes the shade world, nobody knew how, when, or even if, certain things developed.
-        One thing is known, though. Hekate, the Deity of Witchcraft and Mischief, saw more potential in the boy than his mother did."
-        - Transcripts of the late Terníf the Holy.
-        '''
-    BestiaryEntry2:
-        '''
-        "The boy had a humanity to him when he wasnt living the sweet life around his mother. He enjoyed observing bugs, designing jewelery, and drawing silt mandalas.
-        This, Hekate took the greatest note of during their brief visits to the shade world. This boy had an appreciation for the fleeting, something Hekate often sought out
-        in order to find like-minded co-conspirators for their many stunts. On one particular visit to the shade world, Hekate was disguised as a miserly, elderly churl.
-        They said to the boy 'You are not loved here. You are merely a tool for her satisfaction. You know this, do you not?' It was on that day that Mother Darkness would no
-        longer locate her son in the shade world, as he had left to become an apprentice of Hekate, under the guise of seizing his true potential..."
-        - Excerpt from 'Folk Tales of Pherasia: Volume LXXIII', by Uriel XXV.
-        '''
+	DisplayName: Nightmare Rose
+	BestiaryEntry1:
+		'''
+		"Mother Darkness is never too cut-and-dry, and that extends to her motivations and actions.
+		Many, many years ago, Mother Darkness took a son under her wing. Nobody knew how old, nobody knew his name.
+		To both himself and observers, his destiny was forever postponed, year after year. He had nothing waiting for him in some distant future,
+		as all mother darkness needed from him was his warm, bubbly personality to brighten her days and when it served her interests.
+		Since word rarely ever escapes the shade world, nobody knew how, when, or even if, certain things developed.
+		One thing is known, though. Hekate, the Deity of Witchcraft and Mischief, saw more potential in the boy than his mother did."
+		- Transcripts of the late Terníf the Holy.
+		'''
+	BestiaryEntry2:
+		'''
+		"The boy had a humanity to him when he wasnt living the sweet life around his mother. He enjoyed observing bugs, designing jewelery, and drawing silt mandalas.
+		This, Hekate took the greatest note of during their brief visits to the shade world. This boy had an appreciation for the fleeting, something Hekate often sought out
+		in order to find like-minded co-conspirators for their many stunts. On one particular visit to the shade world, Hekate was disguised as a miserly, elderly churl.
+		They said to the boy 'You are not loved here. You are merely a tool for her satisfaction. You know this, do you not?' It was on that day that Mother Darkness would no
+		longer locate her son in the shade world, as he had left to become an apprentice of Hekate, under the guise of seizing his true potential..."
+		- Excerpt from 'Folk Tales of Pherasia: Volume LXXIII', by Uriel XXV.
+		'''
 }
 
 CursedFlameNode: {
-    DisplayName: Cursed Flame Node
-    BestiaryEntry1: ""
+	DisplayName: Cursed Flame Node
+	BestiaryEntry1: ""
 }
 
 IchorNode: {
-    DisplayName: Ichor Node
-    BestiaryEntry1: ""
+	DisplayName: Ichor Node
+	BestiaryEntry1: ""
 }
 
 Scholar: {
-    DisplayName: Scholar
-    BestiaryEntry1: A traveler from a faraway land. They washed up on the shores of your island with only their bag full of notebooks and stationary.
-    BestiaryEntry2: They seek to learn all about this island and its inhabitants, and is happy to recieve your help in that goal.
+	DisplayName: Scholar
+	BestiaryEntry1: A traveler from a faraway land. They washed up on the shores of your island with only their bag full of notebooks and stationary.
+	BestiaryEntry2: They seek to learn all about this island and its inhabitants, and is happy to recieve your help in that goal.
 
-    TownNPCMood: {
-        Content: I feel comforable here.
-        NoHome: I need somewhere to unpack my stuff.
-        FarFromHome: I am far from my books. My research cannot continue.
-        LoveSpace: So much space to do my work, I like it.
-        DislikeCrowded: It's a little too crowded for me.
-        HateCrowded: It's very crowded. Please move me.
-        LoveBiome: I love {BiomeName}.
-        LikeBiome: I like {BiomeName}.
-        DislikeBiome: I dislike {BiomeName}.
-        LoveNPC: I love {NPCName}.
-        LikeNPC: I like {NPCName}.
-        DislikeNPC: I dislike {NPCName}.
-        HateNPC: I hate {NPCName}.
-        LikeNPC_Princess: I like {NPCName}.
-        Princess_LovesNPC: I like {NPCName}.
-    }
+	TownNPCMood: {
+		Content: I feel comforable here.
+		NoHome: I need somewhere to unpack my stuff.
+		FarFromHome: I am far from my books. My research cannot continue.
+		LoveSpace: So much space to do my work, I like it.
+		DislikeCrowded: It's a little too crowded for me.
+		HateCrowded: It's very crowded. Please move me.
+		LoveBiome: I love {BiomeName}.
+		LikeBiome: I like {BiomeName}.
+		DislikeBiome: I dislike {BiomeName}.
+		LoveNPC: I love {NPCName}.
+		LikeNPC: I like {NPCName}.
+		DislikeNPC: I dislike {NPCName}.
+		HateNPC: I hate {NPCName}.
+		LikeNPC_Princess: I like {NPCName}.
+		Princess_LovesNPC: I like {NPCName}.
+	}
 }
 
 DarkPredatorTail.DisplayName: Dark Predator Tail
 
 DarkPredatorHead: {
-    DisplayName: Dark Predator Head
-    BestiaryEntry1: ""
+	DisplayName: Dark Predator Head
+	BestiaryEntry1: ""
 }
 
 DarkPredatorBody.DisplayName: Dark Predator Body
@@ -143,40 +143,40 @@ DarkGluttonHead.DisplayName: Dark Glutton Head
 DarkGluttonTail.DisplayName: Dark Glutton Tail
 
 CursedFlameNodeMB: {
-    DisplayName: Cursed Flame Node
-    BestiaryEntry1: A defense mechanism created by the corruption in response to its waning ability to spread after the felling of plantera. It stays idle, empowering enemies nearby to allow them to better defend the hive from invaders. If attacked, it will snap into action to join in defending the hive.
+	DisplayName: Cursed Flame Node
+	BestiaryEntry1: A defense mechanism created by the corruption in response to its waning ability to spread after the felling of plantera. It stays idle, empowering enemies nearby to allow them to better defend the hive from invaders. If attacked, it will snap into action to join in defending the hive.
 }
 
 IchorNodeMB: {
-    DisplayName: Ichor Node
-    BestiaryEntry1: A defense mechanism created by the crimson in response to its waning ability to spread after the felling of plantera. It stays idle, empowering enemies nearby to allow them to better defend the hive from invaders. If attacked, it will snap into action to join in defending the hive.
+	DisplayName: Ichor Node
+	BestiaryEntry1: A defense mechanism created by the crimson in response to its waning ability to spread after the felling of plantera. It stays idle, empowering enemies nearby to allow them to better defend the hive from invaders. If attacked, it will snap into action to join in defending the hive.
 }
 
 ShadeThrower: {
-    DisplayName: Shade Thrower
-    BestiaryEntry1: ""
+	DisplayName: Shade Thrower
+	BestiaryEntry1: ""
 }
 
 TenebrisElemental: {
-    DisplayName: Tenebris Elemental
-    BestiaryEntry1: Being almost entirely composed of shimmering fire, they are unstable, aggressive, and rather unintelligent.
+	DisplayName: Tenebris Elemental
+	BestiaryEntry1: Being almost entirely composed of shimmering fire, they are unstable, aggressive, and rather unintelligent.
 }
 
 DarkArchmage: {
-    DisplayName: Dark Archmage
-    BestiaryEntry1: Originating from the Shade World, they are one of the few sentient beings with a will. They are frightened and disoriented by how bright it is here, and lash out at the slightest disturbance.
+	DisplayName: Dark Archmage
+	BestiaryEntry1: Originating from the Shade World, they are one of the few sentient beings with a will. They are frightened and disoriented by how bright it is here, and lash out at the slightest disturbance.
 }
 
 TenebrousConstruct: {
-    DisplayName: Tenebrous Construct
-    BestiaryEntry1: ""
+	DisplayName: Tenebrous Construct
+	BestiaryEntry1: ""
 }
 
 CorruptSigil.DisplayName: Corrupt Sigil
 
 TenebrousSlinger: {
-    DisplayName: Tenebrous Slinger
-    BestiaryEntry1: ""
+	DisplayName: Tenebrous Slinger
+	BestiaryEntry1: ""
 }
 
 RiftSlime.DisplayName: Rift Slime
@@ -186,8 +186,8 @@ RiftOculus.DisplayName: Rift Oculus
 RiftObserver.DisplayName: Rift Observer
 
 PetrifiedWisp1: {
-    DisplayName: Petrified Wisp
-    BestiaryEntry1: Every now and then, Living Shadows can escape from wherever theyve been trapped inside, and coalesce into new life.
+	DisplayName: Petrified Wisp
+	BestiaryEntry1: Every now and then, Living Shadows can escape from wherever theyve been trapped inside, and coalesce into new life.
 }
 
 PetrifiedWisp2.DisplayName: Petrified Wisp
