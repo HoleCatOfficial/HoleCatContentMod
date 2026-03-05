@@ -24,6 +24,7 @@ namespace DestroyerTest.Content.UI
         private UIText blessButtonText;
         private UIText Header;
         private UIImageButton blessButton;
+        private UIImageButton CloseButton;
         private UIItemSlot HerbSlot;
         private UIItemSlot OfferingSlot;
         public static bool Visible = false;
@@ -108,6 +109,16 @@ namespace DestroyerTest.Content.UI
             blessButtonText.VAlign = 0.85f;
             blessButtonText.TextColor = Color.White;
             panel.Append(blessButtonText);
+
+            //Close functionality
+
+            CloseButton = new UIImageButton(ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/CloseButton"));
+            CloseButton.Width.Set(24f, 0f);
+            CloseButton.Height.Set(24f, 0f);
+            CloseButton.HAlign = 0.05f;
+            CloseButton.VAlign = 0.05f;
+            CloseButton.OnLeftClick += close;
+            panel.Append(CloseButton);
         }
 
         public override void OnActivate()
@@ -130,9 +141,6 @@ namespace DestroyerTest.Content.UI
         public SoundStyle Reject = new SoundStyle("DestroyerTest/Assets/Audio/Blessing/RejectedBlessing");
         public int Cooldown = 0;
 
-        public const int CheckTimer = 60;
-        public int C = 0;
-
         public void CheckOffer(UIMouseEvent evt, UIElement listeningElement)
         {
             if (Main.LocalPlayer.TryGetModPlayer<PrayerPlayer>(out var P))
@@ -147,20 +155,51 @@ namespace DestroyerTest.Content.UI
                     return;
                 }
 
-                if (Cooldown == 1)
-                {
-                    SoundEngine.PlaySound(SoundID.Item25);
-                }
-
                 if (Cooldown <= 0)
                 {
-                    if (HerbItem[0].type == DTBlessings.RadiantHeart.HerbType && OfferingItem[0].type == DTBlessings.RadiantHeart.ItemType)
+                    if (SlotsHaveBlessingItems(DTBlessings.RadiantHeart))
                     {
-                        if (C <= 0)
+                        if (Cooldown <= 0)
                         {
                             HerbItem[0].TurnToAir();
                             OfferingItem[0].TurnToAir();
                             P.ApplyBlessing(DTBlessings.RadiantHeart);
+
+                            SoundEngine.PlaySound(Accept);
+                            Cooldown = 600;
+                        }
+                    }
+                    else if (SlotsHaveBlessingItems(DTBlessings.OozingAffection))
+                    {
+                        if (Cooldown <= 0)
+                        {
+                            HerbItem[0].TurnToAir();
+                            OfferingItem[0].TurnToAir();
+                            P.ApplyBlessing(DTBlessings.OozingAffection);
+
+                            SoundEngine.PlaySound(Accept);
+                            Cooldown = 600;
+                        }
+                    }
+                    else if (SlotsHaveBlessingItems(DTBlessings.Persistence))
+                    {
+                        if (Cooldown <= 0)
+                        {
+                            HerbItem[0].TurnToAir();
+                            OfferingItem[0].TurnToAir();
+                            P.ApplyBlessing(DTBlessings.Persistence);
+
+                            SoundEngine.PlaySound(Accept);
+                            Cooldown = 600;
+                        }
+                    }
+                    else if (SlotsHaveBlessingItems(DTBlessings.Enchanted))
+                    {
+                        if (Cooldown <= 0)
+                        {
+                            HerbItem[0].TurnToAir();
+                            OfferingItem[0].TurnToAir();
+                            P.ApplyBlessing(DTBlessings.Enchanted);
 
                             SoundEngine.PlaySound(Accept);
                             Cooldown = 600;
@@ -185,6 +224,11 @@ namespace DestroyerTest.Content.UI
             }
         }
 
+        private bool SlotsHaveBlessingItems(Blessing blessing)
+        {
+            return HerbItem[0].type == blessing.HerbType && OfferingItem[0].type == blessing.ItemType;
+        }
+
         private void StartDrag(UIMouseEvent evt, UIElement listeningElement)
         {
             dragging = true;
@@ -205,11 +249,20 @@ namespace DestroyerTest.Content.UI
                 {
                     Cooldown--;
                 }
+                if (Cooldown == 1)
+                {
+                    SoundEngine.PlaySound(SoundID.Item25);
+                }
 
                 if (IsMouseHovering)
                 {
                     Main.isMouseLeftConsumedByUI = true;
                     Main.LocalPlayer.mouseInterface = true;
+                }
+                else
+                {
+                    Main.isMouseLeftConsumedByUI = false;
+                    Main.LocalPlayer.mouseInterface = false;
                 }
 
                 if (dragging)
@@ -224,7 +277,7 @@ namespace DestroyerTest.Content.UI
             }
         }
 
-        public void close()
+        public void close(UIMouseEvent evt, UIElement listeningElement)
         {
             if (HerbItem[0].type != ItemID.None)
             {
@@ -236,6 +289,7 @@ namespace DestroyerTest.Content.UI
                 Main.LocalPlayer.QuickSpawnItem(Player.GetSource_None(), OfferingItem[0]);
                 OfferingItem[0].TurnToAir();
             }
+            Visible = false;
         }
     }
 }

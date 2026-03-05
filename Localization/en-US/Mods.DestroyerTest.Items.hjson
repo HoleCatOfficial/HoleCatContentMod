@@ -3951,7 +3951,7 @@ ContainedRiftBiome: {
 }
 
 Item_RiftStoneTorch: {
-	DisplayName: Item_ Rift Stone Torch
+	DisplayName: Rift Stone Torch
 	Tooltip: ""
 }
 
@@ -3961,7 +3961,7 @@ RiftCanister: {
 }
 
 Item_ShadeParticleBlock: {
-	DisplayName: Item_ Shade Particle Block
+	DisplayName: Shade Particle Block
 	Tooltip: ""
 }
 
@@ -4066,14 +4066,14 @@ HallowedPall: {
 	SetBonus:
 		'''
 		12% increased Scepter Class damage.
-		Hold the Down key to fall faster.
+		You will survive a hit that would have killed you and be revived to half health.
 		'''
 	DisplayName: Hallowed Pall
 }
 
 HeliciteScroll: {
 	DisplayName: Helicite Scroll
-	Tooltip: ""
+	Tooltip: Thrown scepters leave a trail of solar sparks.
 }
 
 SpiritBauble: {
@@ -4098,5 +4098,10 @@ PoisonVerse: {
 
 PrayerUIOpener: {
 	Tooltip: ""
-	DisplayName: Prayer U I Opener
+	DisplayName: Prayer UI Opener
+}
+
+Item_BlessingAltar: {
+	Tooltip: ""
+	DisplayName: Blessing Altar
 }

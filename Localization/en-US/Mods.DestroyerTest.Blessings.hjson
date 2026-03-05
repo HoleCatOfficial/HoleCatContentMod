@@ -1,5 +1,21 @@
+OfferingItemTooltip: This item can be offered at the blessing altar.
+HerbTooltip: This herb can be used as a modifier at the blessing altar.
+RejectedMessage: The Great Wyvern rejects your offering.
+
 RadiantHeart: {
 	Name: Radiant Heart
 	Message: Your heart sings with hope. Take life in stride, young one.
-	Bonus: 40% increased life regen.
+	Bonus: 40% increased natural life regen.
+}
+
+OozingAffection: {
+	Name: Oozing Affection
+	Message: Live la dolce vita, young one.
+	Bonus: 50% increased natural life regen when moving slowly.
+}
+
+Persistence: {
+	Name: Persistence
+	Message: Speed is your desire, I see. May Terraria's winds be in your favor, young one.
+	Bonus: 15% increased move speed. 20% increased natural life regen and defense reduced by 10 when running fast enough.
 }

@@ -31,6 +31,7 @@ public class PrayerUISystem : ModSystem
         if (!Main.dedServ)
         {
             pInterface?.SetState(pUI);
+            PrayerUI.Visible = true;
         }
     }
 
@@ -39,6 +40,7 @@ public class PrayerUISystem : ModSystem
         if (!Main.dedServ)
         {
             pInterface?.SetState(null);
+            PrayerUI.Visible = false;
         }
     }
     public override void UpdateUI(GameTime gameTime)
