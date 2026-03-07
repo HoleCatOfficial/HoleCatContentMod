@@ -21,7 +21,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 {
 	public class GoliathPhantom : ModProjectile
 	{
-		public SoundStyle Hit = new SoundStyle("DestroyerTest/Assets/Audio/TenebrisSlinger/TenebrisSlingerArrowImpact", 4) with { PitchVariance = 1.0f };
+		public SoundStyle Hit = new SoundStyle("DestroyerTest/Assets/Audio/Impacts/ShortShine", 3) with { PitchVariance = 1.0f, MaxInstances = 0 };
 		
 		private NPC HomingTarget
 		{
