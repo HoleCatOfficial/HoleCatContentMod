@@ -113,6 +113,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 			return false;
 		}
 
+        public override bool? CanHitNPC(NPC target)
+        {
+			return DelayTimer >= 20;
+        }
+
 
 		public List<Vector2> TrailPositions = new();
 		public List<float> TrailRotations = new();
@@ -164,7 +169,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 			Projectile.rotation += Projectile.direction * Main.rand.NextFloat(0.01f, 0.07f);
 			Lighting.AddLight(Projectile.Center, Color.Red.ToVector3() * 0.2f);
 
-			if (DelayTimer < 20 || DelayTimer > 180)
+			if (DelayTimer < 20)
 			{
 				return;
 			}

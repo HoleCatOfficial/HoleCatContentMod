@@ -1,15 +1,7 @@
 
 ![Header.](/Content/Extras/AboutHeader.png "Header")
 
-# HOLECAT'S CONTENT MOD
-
-HoleCat's Content Mod is the temporary name of the Content Mod Owned by HoleCat.
-
-#### Pending Names:
-    (See "Names" Section for Details)
-    - Joan's Travels 
-    - Dawn of the Darkest Day
-    - Alterworld
+# TALID MOD
 
 ![Header.](/Content/Extras/ContentHeader.png "Header")
 Placeholder Text

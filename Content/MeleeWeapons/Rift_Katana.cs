@@ -40,11 +40,6 @@ namespace DestroyerTest.Content.MeleeWeapons
 			Item.knockBack = 0;
 			Item.value = 10000;
 			Item.rare = ModContent.RarityType<RiftRarity1>();
-			Item.UseSound = new SoundStyle($"DestroyerTest/Assets/Audio/TenebrousKatana/Slice", 3) with {
-					Volume = 1.0f, 
-					Pitch = 0.0f, 
-					PitchVariance = 0.5f, 
-				}; 
 			Item.autoReuse = true;
 			Item.shoot = ModContent.ProjectileType<Rift_Katana_Projectile>();
 			Item.shootSpeed = 5f;

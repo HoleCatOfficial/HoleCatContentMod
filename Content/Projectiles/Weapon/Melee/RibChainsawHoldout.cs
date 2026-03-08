@@ -21,26 +21,26 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         
         public override void SetStaticDefaults()
         {
-            Main.projFrames[Type] = 2; // This projectile has 4 frames.
+            Main.projFrames[Type] = 2;
         }
         public override void SetDefaults()
         {
-            Projectile.width = 118;
-            Projectile.height = 42;
+            Projectile.width = 60;
+            Projectile.height = 60;
             Projectile.friendly = true;
             Projectile.penetrate = -1;
             Projectile.tileCollide = false;
             Projectile.ignoreWater = true;
-            Projectile.timeLeft = 40; // persistent
+            Projectile.timeLeft = 40;
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = -1;
             Projectile.netImportant = true;
-			Projectile.netUpdate = true;
 
+            DrawOffsetX = 25;
+            DrawOriginOffsetY = -2;
         }
 
         private void AnimateProjectile() {
-            // Loop through the frames, assuming each frame lasts 5 ticks
             if (++Projectile.frameCounter >= 4) {
                 Projectile.frameCounter = 0;
                 if (++Projectile.frame >= Main.projFrames[Projectile.type]) {
@@ -55,8 +55,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         {
             Player player = Main.player[Projectile.owner];
 
-            // Check if the player is holding the item and channeled
-            if (player.HeldItem.type == ModContent.ItemType<RibChainsaw>() && player.itemTime > 0)
+            if (player.HeldItem.type == ModContent.ItemType<RibChainsaw>() && player.controlUseItem)
             {
 
                 SoundInterval--;
@@ -68,38 +67,18 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
                 AnimateProjectile();
 
-                // Lock the projectile's position relative to the player
-                float holdDistance = 50f;
-                Vector2 mountedCenter = player.MountedCenter;
-                Vector2 toCursor = Main.MouseWorld - mountedCenter;
-                toCursor.Normalize();
-                Vector2 desiredPos = mountedCenter + toCursor * holdDistance;
+                Vector2 playerCenter = player.RotatedRelativePoint(player.MountedCenter);
 
-                Projectile.Center = desiredPos;
-                // Add a vibrating effect by jittering the position slightly
-                Vector2 vibration = new Vector2(Main.rand.NextFloat(-2f, 2f), Main.rand.NextFloat(-2f, 2f));
-                Projectile.position += vibration;
-
-
-                // Rotate to face the cursor
-                Projectile.rotation = toCursor.ToRotation();
-
-                
-
-                // Constantly face the direction it's pointing
-                Projectile.direction = toCursor.X > 0 ? 1 : -1;
-
-                // Shoot dust particles in a line from the tip
-                Vector2 dustDirection = toCursor;
-                Vector2 dustSpawn = Projectile.Center + dustDirection * Projectile.width * 0.5f;
-
-                Vector2 randomSpawn = Projectile.position + new Vector2(Main.rand.NextFloat(Projectile.width), Main.rand.NextFloat(Projectile.height));
-                if (Main.rand.NextBool(3)) // Randomly spawn dust every 3 frames
-                {
-                    Dust.NewDustDirect(randomSpawn, 0, 0, DustID.Blood, dustDirection.X * 4f, dustDirection.Y * 4f, 100, default, 1.2f);
-                }
-
-
+                Projectile.direction = Projectile.velocity.X < 0 ? -1 : 1;
+                Projectile.spriteDirection = Projectile.direction;
+                player.ChangeDir(Projectile.direction);
+                player.heldProj = Projectile.whoAmI;
+                player.SetDummyItemTime(2);
+                Projectile.Center = playerCenter;
+                float rotationOffset = Projectile.spriteDirection == -1 ? MathHelper.Pi : 0;
+                Projectile.rotation = Projectile.velocity.ToRotation() + rotationOffset;
+                player.itemRotation = (Projectile.velocity * Projectile.direction).ToRotation();
+                Projectile.timeLeft = 2;
             }
             else
             {

@@ -4105,3 +4105,13 @@ Item_BlessingAltar: {
 	Tooltip: ""
 	DisplayName: Blessing Altar
 }
+
+BlackDiamond: {
+	DisplayName: Black Diamond
+	Tooltip: ""
+}
+
+RiftHypersabre: {
+	Tooltip: ""
+	DisplayName: Rift Hypersabre
+}

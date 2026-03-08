@@ -30,6 +30,7 @@ using Terraria.DataStructures;
 using DestroyerTest.Content.Magic;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles.Stellar;
+using Steamworks;
 
 namespace DestroyerTest.Common
 {
@@ -1555,7 +1556,7 @@ namespace DestroyerTest.Common
         public static SoundStyle FlailSpin = new SoundStyle($"{AudioPath}/FlailSpin");
         public static SoundStyle FlailThrow = new SoundStyle($"{AudioPath}/FlailThrow");
         public static SoundStyle ConstitutionStarKill = new SoundStyle($"{AudioPath}/ConstitutionBoss/ConstitutionStar/Kill", 14) { PitchVariance = 0.2f, Volume = 0.85f, MaxInstances = 0 };
-        
+        public static SoundStyle EnergyWoosh = new SoundStyle($"{AudioPath}/EnergyWoosh", 3);
         public static SoundStyle RiftExplosion = new SoundStyle($"{AudioPath}/RiftMaker_Boom");
         public struct ScholarShieldSounds
         {
@@ -1570,28 +1571,37 @@ namespace DestroyerTest.Common
             public static SoundStyle AmbitionChargeBurst = new SoundStyle($"{Path}/AmbitionChargeBurst", 5);
             public static SoundStyle BrightBell = new SoundStyle($"{Path}/BrightBell");
             public static SoundStyle DarkMagicImpact = new SoundStyle($"{Path}/DarkMagicImpact", 3);
+            public static SoundStyle DarkShot = new SoundStyle($"{Path}/DarkShot", 3);
+            public static SoundStyle DreamHit = new SoundStyle($"{Path}/DreamHit", 4);
             public static SoundStyle EnergyBounce = new SoundStyle($"{Path}/EnergyBounce", 3);
             public static SoundStyle ExplosiveImpactSmall = new SoundStyle($"{Path}/ExplosiveImpactSmall");
             public static SoundStyle FlameImpact = new SoundStyle($"{Path}/FlameImpact", 4);
+            public static SoundStyle FleshHit = new SoundStyle($"{Path}/FleshHit", 5);
             public static SoundStyle HellWeaponImpact = new SoundStyle($"{Path}/HellWeaponImpact");
             public static SoundStyle IceImpact = new SoundStyle($"{Path}/IceImpact", 3);
             public static SoundStyle IceMagicImpact = new SoundStyle($"{Path}/IceMagicImpact", 3);
             public static SoundStyle MagicBeep = new SoundStyle($"{Path}/MagicBeep", 3);
             public static SoundStyle MetalImpact = new SoundStyle($"{Path}/MetalImpact", 3);
+            public static SoundStyle ShortShine = new SoundStyle($"{Path}/ShortShine", 3);
             public static SoundStyle StellarFox = new SoundStyle($"{Path}/StellarFoxImpact", 5);
+            public static SoundStyle Void = new SoundStyle($"{Path}/VoidImpact", 3);
+            
         }
 
         public struct SwordSounds
         {
             public static string Path = $"{AudioPath}/SwordSounds";
             public static SoundStyle ColdSword = new SoundStyle($"{Path}/ColdSword", 3);
+            public static SoundStyle EvilSwing = new SoundStyle($"{Path}/EvilSwing", 3);
             public static SoundStyle HeavySwing = new SoundStyle($"{Path}/HeavySwing", 3);
             public static SoundStyle HellSword = new SoundStyle($"{Path}/HellSword", 3);
             public static SoundStyle MagicSwing = new SoundStyle($"{Path}/MagicSwing", 3);
+            public static SoundStyle MediumSwing = new SoundStyle($"{Path}/MediumSwing", 3);
+            public static SoundStyle MediumHeavySwing = new SoundStyle($"{Path}/MediumHeavySwing", 3);
             public static SoundStyle QuickSwing = new SoundStyle($"{Path}/QuickSwing", 4);
             public static SoundStyle SwiftSwing = new SoundStyle($"{Path}/SwiftSwing1");
             public static SoundStyle Slam = new SoundStyle($"{Path}/Slam", 2);
-            public static SoundStyle TenebrisSwing = new SoundStyle($"{Path}/TenebrisSwing", 4);
+            public static SoundStyle TenebrisSwing = new SoundStyle($"{Path}/TenebrisSwing", 3);
             public static SoundStyle StandardSwing = new SoundStyle($"{Path}/StandardSwing");
         }
 

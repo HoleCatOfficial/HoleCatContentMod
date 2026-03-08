@@ -4,6 +4,7 @@ using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.MeleeWeapons;
 using DestroyerTest.Content.Particles;
+using DestroyerTest.Content.Particles.Orchestrated;
 using InnoVault;
 using InnoVault.PRT;
 using log4net.Appender;
@@ -675,8 +676,20 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             int splatterdir = target.position.X > Owner.MountedCenter.X ? 1 : -1;
             for (int i = 0; i < 7; i++)
             {
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticle>(), target.Center, new Vector2(Main.rand.NextFloat(2f, 6f) * splatterdir, 0).RotatedByRandom(0.1f), Color.Red * Main.rand.NextFloat(0.5f, 1f), 1f);
+                PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), target.Center, new Vector2(Main.rand.NextFloat(2f, 6f) * splatterdir, 0).RotatedByRandom(0.1f), Color.Red * Main.rand.NextFloat(0.01f, 0.3f), 1f);
             }
+
+            PRTLoader.NewParticle(PRTLoader.GetParticleID<GargantuaParticle>(), target.Center, Vector2.Zero, (Color)default, 1f);
+			Opus.RadialSpreadParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], 10, target.Center, 0.4f, Color.Red, 2f, 3, RandomOffset: true);
+            Opus.RadialProjectileRandomDir(ModContent.ProjectileType<GargantuaStar>(), 2, target.Center, (int)(Projectile.damage * 0.2f), (int)(Projectile.knockBack * 0.5f), 14f, friendly: true);
+
+			if (hit.Crit)
+			{
+				for (int t = 0; t < 2; t++)
+				{
+					Projectile.NewProjectile(Projectile.GetSource_OnHit(target), target.Center, new Vector2(20f * splatterdir, 0).RotatedByRandom(0.1f), ModContent.ProjectileType<GoliathPhantom>(), (int)(Projectile.damage * 0.2f), 4, Projectile.owner);
+				}
+			}
         }
 
         public void SetSwordPosition()
@@ -782,7 +795,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
                 if (FullRevolutions > 5 && STimer % 40 == 0 && SPINSPEED >= 0.36f)
                 {
-					Opus.RadialProjectileRandomDir(ModContent.ProjectileType<GargantuaStar>(), 4, Projectile.Center, (int)(Projectile.damage * 0.5f), (int)(Projectile.knockBack * 0.5f), 24f, friendly: true);
+					;
                 }
                 if (FullRevolutions > 15 && STimer % 40 == 0 && SPINSPEED >= 0.36f)
                 {
