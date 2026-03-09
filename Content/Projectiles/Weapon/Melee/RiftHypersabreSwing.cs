@@ -1,17 +1,19 @@
-﻿using Terraria;
-using Terraria.ModLoader;
-using Terraria.ID;
-using Terraria.Audio;
-using Microsoft.Xna.Framework;
-using DestroyerTest.Common;
-using DestroyerTest.Content.MeleeWeapons;
-using Microsoft.Xna.Framework.Graphics;
-using DestroyerTest.Content.Particles;
+﻿using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.MeleeWeapons;
+using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.RiftArsenal;
 using GlowmaskHelper.Content;
-using Terraria.GameContent;
+using InnoVault.PRT;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
+using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 {
@@ -33,7 +35,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Projectile.ignoreWater = true;
             Projectile.timeLeft = 40;
             Projectile.usesLocalNPCImmunity = true;
-            Projectile.localNPCHitCooldown = 15;
+            Projectile.localNPCHitCooldown = 10;
             Projectile.netImportant = true;
             Projectile.hide = true;
         }
@@ -60,9 +62,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             return false;
         }
 
+        int F = 6;
         private void AnimateProjectile()
         {
-            if (++Projectile.frameCounter >= 4)
+            if (++Projectile.frameCounter >= F)
             {
                 Projectile.frameCounter = 0;
                 if (++Projectile.frame >= Main.projFrames[Projectile.type])
@@ -75,6 +78,44 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
         {
             overPlayers.Add(index);
+        }
+
+        List<int> AttackFramesFront = new List<int>
+        {
+            1,
+            2,
+            3,
+            8,
+            9,
+            10
+        };
+        List<int> AttackFramesBack = new List<int>
+        {
+            6,
+            7
+        };
+
+        private bool IsOnAttackFrame(NPC target)
+        {
+            Player player = Main.player[Projectile.owner];
+
+            int playerDir = player.direction;
+            int targetDir = Math.Sign(target.Center.X - player.Center.X);
+
+            bool facingTarget = playerDir == targetDir;
+
+            if (facingTarget && AttackFramesFront.Contains(Projectile.frame))
+                return true;
+
+            if (!facingTarget && AttackFramesBack.Contains(Projectile.frame))
+                return true;
+
+            return false;
+        }
+
+        public override bool? CanHitNPC(NPC target)
+        {
+            return IsOnAttackFrame(target);
         }
 
         private SoundStyle Slash = new SoundStyle("DestroyerTest/Assets/Audio/Rift_Katana_Slash") { PitchVariance = 0.2f };
@@ -112,6 +153,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 
                 */
                 FX = toCursor.X > 0 ? SpriteEffects.None : SpriteEffects.FlipVertically;
+
+                if (Projectile.ai[0]++ % 60 == 0 && F > 2)
+                {
+                    F--;
+                }
                 
 
                 /*
@@ -132,9 +178,34 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             }
         }
 
+
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
+            Player player = Main.player[Projectile.owner];
+            var ScreenShake = player.GetModPlayer<ScreenshakePlayer>();
+            ScreenShake.screenshakeMagnitude = 4;
+            ScreenShake.screenshakeTimer = 10;
+
             SoundEngine.PlaySound(DTAssetLib.Impacts.FleshHit with { MaxInstances = 0 }, Projectile.position);
+            List<Color> RiftLightColors = new List<Color>
+            {
+                ColorLib.Rift,
+                ColorLib.LightRift1,
+                ColorLib.LightRift2,
+                ColorLib.LightRift3,
+                ColorLib.LightRift4,
+                Color.White
+            };
+
+            int splatterdir = target.position.X > player.MountedCenter.X ? 1 : -1;
+            for (int i = 0; i < 7; i++)
+            {
+                Color choice = RiftLightColors[Main.rand.Next(RiftLightColors.Count)];
+                PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), target.Center, new Vector2(Main.rand.NextFloat(2f, 6f) * splatterdir, 0).RotatedByRandom(0.2f), choice * Main.rand.NextFloat(0.5f, 0.8f), 1f);
+            }
+
+            
+                
         }
 
     }

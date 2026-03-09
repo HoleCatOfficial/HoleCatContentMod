@@ -4115,3 +4115,8 @@ RiftHypersabre: {
 	Tooltip: ""
 	DisplayName: Rift Hypersabre
 }
+
+Colossus: {
+	DisplayName: Colossus
+	Tooltip: ""
+}

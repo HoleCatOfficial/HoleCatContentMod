@@ -1,4 +1,4 @@
-using DestroyerTest.Common;
+﻿using DestroyerTest.Common;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles.Boss.NodeBoss.Ichor;
 using InnoVault.PRT;
@@ -20,8 +20,8 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 {
-	public class GoliathPhantom : ModProjectile
-	{
+    public class GargantuaPhantom : ModProjectile
+    {
         private enum AIState
         {
             Slowing,
@@ -36,12 +36,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
         private ref float Timer => ref Projectile.ai[1];
 
-        public SoundStyle Hit = new SoundStyle("DestroyerTest/Assets/Audio/Impacts/ShortShine", 3) with { PitchVariance = 1.0f, MaxInstances = 0 };
+        public SoundStyle Hit = DTAssetLib.Impacts.Void with { Volume = 0.6f };
 
         public override void SetDefaults()
         {
-            Projectile.width = 78;
-            Projectile.height = 78;
+            Projectile.width = 122;
+            Projectile.height = 122;
             Projectile.friendly = true;
             Projectile.hostile = false;
             Projectile.tileCollide = false;
@@ -51,10 +51,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
         public override bool PreDraw(ref Color lightColor)
         {
-			Opus.DrawProjectileShadowsRotating(Projectile, 4, Color.Red, Opacity: 0.35f);
-			var T = TextureAssets.Projectile[Projectile.type].Value;
+            Opus.DrawProjectileShadowsRotating(Projectile, 4, ColorLib.TenebrisMagenta, Opacity: 0.35f);
+            var T = TextureAssets.Projectile[Projectile.type].Value;
 
-			Main.EntitySpriteDraw(T, Projectile.Center, null, Color.Red, Projectile.rotation, T.Size() / 2, Projectile.scale, SpriteEffects.None, 0f);
+            Main.EntitySpriteDraw(T, Projectile.Center, null, ColorLib.TenebrisMagenta, Projectile.rotation, T.Size() / 2, Projectile.scale, SpriteEffects.None, 0f);
             return false;
         }
 
@@ -103,11 +103,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 return;
             }
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
-			PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), Projectile.Center, Projectile.velocity * 0.15f, Color.Red, 1f);
+            PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), Projectile.Center, Projectile.velocity * 0.15f, ColorLib.TenebrisMagenta, 1f);
 
             if (Timer == 1f) // first tick of dashing phase
             {
-                SoundEngine.PlaySound(DTAssetLib.SwordSounds.SwiftSwing with { PitchVariance = 0.4f });
+                
                 Vector2 direction = (target.Center - Projectile.Center).SafeNormalize(Vector2.Zero);
                 Projectile.velocity = direction * 50f;
                 Projectile.netUpdate = true;

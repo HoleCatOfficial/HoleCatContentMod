@@ -101,8 +101,13 @@ namespace DestroyerTest.Content.Projectiles
 
 			return false;
 		}
+        public override bool? CanHitNPC(NPC target)
+        {
+            return DelayTimer >= 10;
+        }
 
-		public List<Vector2> TrailPositions = new();
+
+        public List<Vector2> TrailPositions = new();
 		public List<float> TrailRotations = new();
 		private const int TrailLength = 400;
 

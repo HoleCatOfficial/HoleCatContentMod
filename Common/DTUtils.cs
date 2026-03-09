@@ -1591,6 +1591,7 @@ namespace DestroyerTest.Common
         public struct SwordSounds
         {
             public static string Path = $"{AudioPath}/SwordSounds";
+            public static SoundStyle BigBasicSwing = new SoundStyle($"{Path}/BigBasicSwing", 3);
             public static SoundStyle ColdSword = new SoundStyle($"{Path}/ColdSword", 3);
             public static SoundStyle EvilSwing = new SoundStyle($"{Path}/EvilSwing", 3);
             public static SoundStyle HeavySwing = new SoundStyle($"{Path}/HeavySwing", 3);

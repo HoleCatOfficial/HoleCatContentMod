@@ -673,6 +673,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             SoundEngine.PlaySound(Hit);
+            Player player = Main.player[Projectile.owner];
+            var ScreenShake = player.GetModPlayer<ScreenshakePlayer>();
+           
             int splatterdir = target.position.X > Owner.MountedCenter.X ? 1 : -1;
             for (int i = 0; i < 7; i++)
             {
@@ -685,7 +688,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
 			if (hit.Crit)
 			{
-				for (int t = 0; t < 2; t++)
+                ScreenShake.screenshakeMagnitude = 4;
+                ScreenShake.screenshakeTimer = 20;
+                for (int t = 0; t < 2; t++)
 				{
 					Projectile.NewProjectile(Projectile.GetSource_OnHit(target), target.Center, new Vector2(20f * splatterdir, 0).RotatedByRandom(0.1f), ModContent.ProjectileType<GoliathPhantom>(), (int)(Projectile.damage * 0.2f), 4, Projectile.owner);
 				}

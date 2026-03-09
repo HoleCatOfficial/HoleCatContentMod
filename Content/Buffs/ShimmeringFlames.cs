@@ -88,7 +88,7 @@ namespace DestroyerTest.Content.Buffs
 				Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive,SpriteSortMode.Immediate);
 				DynamicSpriteFont spriteFont = FontAssets.MouseText.Value;
 				Vector2 Size = spriteFont.MeasureString(Stack.ToString());
-				Utils.DrawBorderString(spriteBatch, Stack.ToString(), (npc.Bottom + new Vector2(0, 5)) - Main.screenPosition, ColorLib.TenebrisGradient, 1f, 0.5f, 0.5f);
+				Utils.DrawBorderString(spriteBatch, Stack.ToString(), (npc.Bottom + new Vector2(0, 20)) - Main.screenPosition, ColorLib.TenebrisGradient, 1f, 0.5f, 0.5f);
 				Opus.ReturnToDefaultDrawing(spriteBatch);
 			}
 		}
