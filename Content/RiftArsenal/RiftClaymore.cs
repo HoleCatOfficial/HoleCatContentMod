@@ -24,8 +24,8 @@ namespace DestroyerTest.Content.RiftArsenal
 {
 	public class RiftClaymore : RechargeItem
 	{
-		public override void SetDefaults() {
-			// Common Properties
+		public override void SetDefaults() 
+		{
 			Item.width = 46;
 			Item.height = 48;
 			Item.value = Item.sellPrice(gold: 2, silver: 50);
@@ -36,16 +36,15 @@ namespace DestroyerTest.Content.RiftArsenal
 			Item.useStyle = ItemUseStyleID.Shoot;
 			Item.UseSound = new SoundStyle("DestroyerTest/Assets/Audio/ManaBurst") with { PitchVariance = 0.2f };
 
-			// Weapon Properties
-			Item.knockBack = 7;  // The knockback of your sword, this is dynamically adjusted in the projectile code.
-			Item.autoReuse = true; // This determines whether the weapon has autoswing
-			Item.damage = 88; // The damage of your sword, this is dynamically adjusted in the projectile code.
-			Item.DamageType = DamageClass.Melee; // Deals melee damage
-			Item.noMelee = true;  // This makes sure the item does not deal damage from the swinging animation
-			Item.noUseGraphic = true; // This makes sure the item does not get shown when the player swings his hand
+			Item.knockBack = 7;
+			Item.autoReuse = true;
+			Item.damage = 88;
+			Item.DamageType = DamageClass.Melee;
+			Item.noMelee = true;
+			Item.noUseGraphic = true;
+			Item.channel = true;
 
-			// Projectile Properties
-			Item.shoot = ModContent.ProjectileType<RiftClaymoreSlash>(); // The sword as a projectile
+			Item.shoot = ModContent.ProjectileType<RiftClaymoreSlash>();
 		}
 
         public override bool CanUseItem(Player player)
@@ -56,26 +55,8 @@ namespace DestroyerTest.Content.RiftArsenal
 
 		public override bool MeleePrefix()
 		{
-			return true; // return true to allow weapon to have melee prefixes (e.g. Legendary)
+			return true;
 		}
-
-        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
-		{
-			if (Energized)
-			{
-				type = ModContent.ProjectileType<RiftClaymoreSlashEnergized>();
-			}
-			else
-			{
-				type = ModContent.ProjectileType<RiftClaymoreSlash>();
-			}
-
-			Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI);
-			return false; // return false so vanilla doesn't also spawn the default projectile
-		}
-
-
-
 
 		public override void AddRecipes()
 		{

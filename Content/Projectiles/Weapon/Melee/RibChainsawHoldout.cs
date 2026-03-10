@@ -1,13 +1,15 @@
-using Terraria;
-using Terraria.ModLoader;
-using Terraria.ID;
-using Terraria.Audio;
-using Microsoft.Xna.Framework;
 using DestroyerTest.Common;
-using DestroyerTest.Content.MeleeWeapons;
-using Microsoft.Xna.Framework.Graphics;
-using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.MeleeWeapons;
+using DestroyerTest.Content.Particles;
+using InnoVault.PRT;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 {
@@ -25,19 +27,19 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         }
         public override void SetDefaults()
         {
-            Projectile.width = 60;
-            Projectile.height = 60;
+            Projectile.width = 110;
+            Projectile.height = 110;
             Projectile.friendly = true;
             Projectile.penetrate = -1;
             Projectile.tileCollide = false;
             Projectile.ignoreWater = true;
             Projectile.timeLeft = 40;
+            /*
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = -1;
+            */
             Projectile.netImportant = true;
-
-            DrawOffsetX = 25;
-            DrawOriginOffsetY = -2;
+            Projectile.hide = true;
         }
 
         private void AnimateProjectile() {
@@ -51,47 +53,85 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         
         public int SoundInterval = 20;
 
+
+        public override bool PreDraw(ref Color lightColor)
+        {
+            Texture2D T = TextureAssets.Projectile[Type].Value;
+            int frameHeight = T.Height / Main.projFrames[Projectile.type];
+            Rectangle frame = new Rectangle(
+                0,
+                frameHeight * Projectile.frame,
+                T.Width,
+                frameHeight
+            );
+
+            Vector2 origin = new Vector2(T.Width / 2f, frameHeight / 2f);
+            
+            Main.EntitySpriteDraw(T, Projectile.Center - Main.screenPosition, frame, Projectile.GetAlpha(lightColor), Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0f);
+            return false;
+        }
+
         public override void AI()
         {
             Player player = Main.player[Projectile.owner];
 
-            if (player.HeldItem.type == ModContent.ItemType<RibChainsaw>() && player.controlUseItem)
+            SoundInterval--;
+            if (SoundInterval <= 0)
             {
+                SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/Chainsaw"), Projectile.Center);
+                SoundInterval = 20;
+            }
 
-                SoundInterval--;
-                if (SoundInterval <= 0)
+            AnimateProjectile();
+
+            Vector2 playerCenter = player.RotatedRelativePoint(player.MountedCenter);
+
+
+            if (player.channel && !player.noItems && !player.CCed)
+            {
+                float holdoutDistance = RibChainsaw.HoldoutDistance * Projectile.scale;
+                Vector2 holdoutOffset = holdoutDistance * Vector2.Normalize(Main.MouseWorld - playerCenter);
+                if (holdoutOffset.X != Projectile.velocity.X || holdoutOffset.Y != Projectile.velocity.Y)
                 {
-                    SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/Chainsaw"), Projectile.Center);
-                    SoundInterval = 20;
+                    Projectile.netUpdate = true;
                 }
 
-                AnimateProjectile();
-
-                Vector2 playerCenter = player.RotatedRelativePoint(player.MountedCenter);
-
-                Projectile.direction = Projectile.velocity.X < 0 ? -1 : 1;
-                Projectile.spriteDirection = Projectile.direction;
-                player.ChangeDir(Projectile.direction);
-                player.heldProj = Projectile.whoAmI;
-                player.SetDummyItemTime(2);
-                Projectile.Center = playerCenter;
-                float rotationOffset = Projectile.spriteDirection == -1 ? MathHelper.Pi : 0;
-                Projectile.rotation = Projectile.velocity.ToRotation() + rotationOffset;
-                player.itemRotation = (Projectile.velocity * Projectile.direction).ToRotation();
-                Projectile.timeLeft = 2;
+                // Set the projectile velocity, which is actually the holdout offset for held projectiles.
+                Projectile.velocity = holdoutOffset;
             }
             else
             {
-                // Kill the projectile if the item is not being held
                 Projectile.Kill();
             }
+
+
+            Projectile.direction = Projectile.velocity.X < 0 ? -1 : 1;
+            Projectile.spriteDirection = Projectile.direction;
+            player.ChangeDir(Projectile.direction);
+            player.heldProj = Projectile.whoAmI;
+            player.SetDummyItemTime(2);
+            Projectile.Center = playerCenter;
+            float rotationOffset = Projectile.spriteDirection == -1 ? MathHelper.Pi : 0;
+            Projectile.rotation = Projectile.velocity.ToRotation() + rotationOffset;
+            player.itemRotation = (Projectile.velocity * Projectile.direction).ToRotation();
+            Projectile.timeLeft = 2;
         }
 
 		
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
-            target.AddBuff(BuffID.Bleeding, 120);
-		}
+            Player player = Main.player[Projectile.owner];
+            var ScreenShake = player.GetModPlayer<ScreenshakePlayer>();
+            ScreenShake.screenshakeMagnitude = 4;
+            ScreenShake.screenshakeTimer = 10;
+
+            SoundEngine.PlaySound(DTAssetLib.Impacts.ShortShine with { MaxInstances = 0 }, Projectile.position);
+            int splatterdir = target.position.X > player.MountedCenter.X ? 1 : -1;
+            for (int i = 0; i < 7; i++)
+            {
+                PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), target.Center, new Vector2(Main.rand.NextFloat(2f, 6f) * splatterdir, 0).RotatedByRandom(0.2f), ColorLib.Ichor * Main.rand.NextFloat(0.5f, 0.8f), 1f);
+            }
+        }
 
     }
 }

@@ -19,8 +19,8 @@ namespace DestroyerTest.Content.MeleeWeapons
 
 	public class RibChainsaw : ModItem
 	{
-
-		public override void SetDefaults() {
+        public const int HoldoutDistance = 45;
+        public override void SetDefaults() {
 			// Common Properties
 			Item.width = 118;
 			Item.height = 42;
@@ -55,6 +55,17 @@ namespace DestroyerTest.Content.MeleeWeapons
 			return true; // return true to allow weapon to have melee prefixes (e.g. Legendary)
 		}
 
-		
-	}
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
+            // Since this item will attempt to shoot an ammo item, we need to set it back to the actual held projectile here.
+            type = ModContent.ProjectileType<RibChainsawHoldout>();
+
+            // The velocity value provided is not correct, so we need to calculate a new velocity since velocity for held projectiles is actually the holdout offset.
+            velocity = Vector2.Normalize(velocity) * HoldoutDistance;
+
+            Projectile.NewProjectile(source, position, velocity, type, damage, knockback, Main.myPlayer);
+            return false;
+        }
+
+    }
 }

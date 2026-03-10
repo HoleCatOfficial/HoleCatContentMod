@@ -1,6 +1,4 @@
 
-using System;
-using System.Collections.Generic;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
@@ -10,6 +8,9 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using ReLogic.Graphics;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -27,17 +28,33 @@ namespace DestroyerTest.Content.Buffs
 			Main.pvpBuff[Type] = true;
 			Main.buffNoSave[Type] = true;
 			BuffID.Sets.LongerExpertDebuff[Type] = true;
+			BuffID.Sets.CanBeRemovedByNetMessage[Type] = true;
 		}
 		public override void Update(Player player, ref int buffIndex)
 		{
 			player.GetModPlayer<SFPlayer>().lifeRegenDebuff = true;
 		}
-		
+
+		public int CheckTimer = 20;
 		public override void Update(NPC target, ref int buffIndex)
 		{
 			if (target.TryGetGlobalNPC<SFTarget>(out var modNPC))
 			{
 				modNPC.lifeRegenDebuff = true;
+
+				if (modNPC.Stack <= 0)
+				{
+					if (CheckTimer <= 0)
+					{
+                        modNPC.lifeRegenDebuff = false;
+                        //target.DelBuff(buffIndex);
+					}
+					else
+					{
+                        
+                        CheckTimer--;
+					}
+                }
 			}
 		}
 
@@ -114,10 +131,6 @@ namespace DestroyerTest.Content.Buffs
 			if (Stack > 0)
 			{
 				lifeRegenDebuff = true;
-			}
-			if (Stack <= 0)
-			{
-				lifeRegenDebuff = false;
 			}
         }
 

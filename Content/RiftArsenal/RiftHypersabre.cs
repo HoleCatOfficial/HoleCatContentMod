@@ -49,6 +49,13 @@ namespace DestroyerTest.Content.RiftArsenal
             Item.noUseGraphic = true;
         }
 
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
+            Projectile p = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, player.whoAmI);
+            p.scale = 1f + player.GetAdjustedItemScale(Item);
+            return false;
+        }
+
         public override bool CanUseItem(Player player)
         {
             return player.ownedProjectileCounts[Item.shoot] < 1;

@@ -26,8 +26,8 @@ namespace DestroyerTest.Content.RiftArsenal
 			Item.height = 28; // The height of the item's hitbox.
 
 			Item.useStyle = ItemUseStyleID.Shoot; // The way the item is used (e.g. swinging, throwing, etc.)
-			Item.useTime = -1; // All vanilla yoyos have a useTime of 25.
-			Item.useAnimation = -1; // All vanilla yoyos have a useAnimation of 25.
+			Item.useTime = 25; // All vanilla yoyos have a useTime of 25.
+			Item.useAnimation = 25; // All vanilla yoyos have a useAnimation of 25.
 			Item.noMelee = true; // This makes it so the item doesn't do damage to enemies (the projectile does that).
 			Item.noUseGraphic = true; // Makes the item invisible while using it (the projectile is the visible part).
 			Item.UseSound = SoundID.Item1; // The sound that will play when the item is used.

@@ -1,8 +1,10 @@
 ﻿using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Entities;
 using DestroyerTest.Content.MeleeWeapons;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.RiftArsenal;
+using Fargowiltas.Items.Summons.SwarmSummons.Energizers;
 using GlowmaskHelper.Content;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
@@ -11,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -26,6 +29,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         }
         public override void SetDefaults()
         {
+            Player player = Main.player[Projectile.owner];
             Projectile.width = 324;
             Projectile.height = 168;
             Projectile.friendly = true;
@@ -38,6 +42,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Projectile.localNPCHitCooldown = 10;
             Projectile.netImportant = true;
             Projectile.hide = true;
+            if (player.HeldItem != null && player.HeldItem.type == ModContent.ItemType<RiftHypersabre>())
+            {
+                Projectile.scale = 1f + player.GetAdjustedItemScale(player.HeldItem);
+            }
         }
 
         private SpriteEffects FX = SpriteEffects.None;
@@ -118,6 +126,18 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             return IsOnAttackFrame(target);
         }
 
+        public override void ModifyDamageHitbox(ref Rectangle hitbox)
+        {
+            if (hitbox.Width != Projectile.width)
+            {
+                hitbox.Width = (int)(Projectile.width);
+            }
+            if (hitbox.Height != Projectile.height)
+            {
+                hitbox.Height = (int)(Projectile.height);
+            }
+        }
+
         private SoundStyle Slash = new SoundStyle("DestroyerTest/Assets/Audio/Rift_Katana_Slash") { PitchVariance = 0.2f };
         public override void AI()
         {
@@ -140,6 +160,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 Projectile.Center = mountedCenter;
 
                 Projectile.rotation = toCursor.ToRotation();
+                
 
                 /*
                 if (player.direction == -1)
@@ -204,8 +225,21 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), target.Center, new Vector2(Main.rand.NextFloat(2f, 6f) * splatterdir, 0).RotatedByRandom(0.2f), choice * Main.rand.NextFloat(0.5f, 0.8f), 1f);
             }
 
-            
-                
+            Vector2 d = player.Center - target.Center;
+            d.Normalize();
+            Vector2 d2 = new Vector2(d.X * 0.3f, d.Y);
+            if (player.Center.Y <=  target.Center.Y && Math.Abs((player.Center.X - target.Center.X)) <= 50)
+            {
+                player.velocity += d2 * 12;
+            }
+
+            var modPlayer = player.GetModPlayer<LivingShadowPlayer>();
+            if (modPlayer.LivingShadowCurrent > 0)
+            {
+                hit.SourceDamage = (int)(hit.SourceDamage * 1.5f);
+                target.AddBuff(ModContent.BuffType<HeliouricShock>(), 240);
+            }
+
         }
 
     }
