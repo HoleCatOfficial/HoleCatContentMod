@@ -139,6 +139,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
             if (player.HeldItem.type == ModContent.ItemType<RiftClaymore>() && player.controlUseItem)
             {
+                player.ChangeDir(Projectile.direction);
+                player.SetDummyItemTime(2);
 
                 AnimateProjectile();
 

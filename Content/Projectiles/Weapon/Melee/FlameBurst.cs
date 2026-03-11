@@ -93,7 +93,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
         public override bool? CanHitNPC(NPC target)
         {
-            return DelayTimer >= 10;
+            return DelayTimer >= 20;
         }
 
 
@@ -106,7 +106,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 			Vector2 newPos  = Projectile.Center;
 
 			float dist = Vector2.Distance(lastPos, newPos);
-			float step = 8f; // how closely to sample. tweak this!
+			float step = 2f; // how closely to sample. tweak this!
 
 			if (dist > 0f)
 			{
@@ -136,7 +136,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
 			PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center, Vector2.Zero, Color.Orange * 0.75f, 1.5f, 80, ai2: 2);
 
-			if (DelayTimer < 15)
+			if (DelayTimer < 20)
 			{
 				DelayTimer += 1;
 				return;
@@ -156,7 +156,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
 			float length = Projectile.velocity.Length();
 			float targetAngle = Projectile.AngleTo(HomingTarget.Center);
-			Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(10)).ToRotationVector2() * length;
+			Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(3)).ToRotationVector2() * length;
 			Projectile.rotation = Projectile.velocity.ToRotation();
 		}
 
@@ -184,6 +184,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 			return target.CanBeChasedBy();
 		}
 
+		/*
 		public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
             foreach (var trail in new[] { TrailPositions})
@@ -200,6 +201,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             }
             return false;
         }
+		*/
 		
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 			target.AddBuff(ModContent.BuffType<HaepiensInferno>(), 600);

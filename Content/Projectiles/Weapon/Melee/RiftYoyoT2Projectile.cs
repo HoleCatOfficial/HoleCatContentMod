@@ -1,4 +1,9 @@
 
+using DestroyerTest.Common;
+using DestroyerTest.Content.Particles;
+using InnoVault.PRT;
+using Microsoft.Xna.Framework;
+using OpusLib;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -12,11 +17,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
 			// YoyosLifeTimeMultiplier is how long in seconds the yoyo will stay out before automatically returning to the player. 
 			// Vanilla values range from 3f (Wood) to 16f (Chik), and defaults to -1f. Leaving as -1 will make the time infinite.
-			ProjectileID.Sets.YoyosLifeTimeMultiplier[Projectile.type] = 3.5f;
+			ProjectileID.Sets.YoyosLifeTimeMultiplier[Projectile.type] = 32f;
 
 			// YoyosMaximumRange is the maximum distance the yoyo sleep away from the player. 
 			// Vanilla values range from 130f (Wood) to 400f (Terrarian), and defaults to 200f.
-			ProjectileID.Sets.YoyosMaximumRange[Projectile.type] = 300f;
+			ProjectileID.Sets.YoyosMaximumRange[Projectile.type] = 350f;
 
 			// YoyosTopSpeed is top speed of the yoyo Projectile.
 			// Vanilla values range from 9f (Wood) to 17.5f (Terrarian), and defaults to 10f.
@@ -35,7 +40,6 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 			Projectile.penetrate = -1; // All vanilla yoyos have infinite penetration. The number of enemies the yoyo can hit before being pulled back in is based on YoyosLifeTimeMultiplier.
 									   // Projectile.scale = 1f; // The scale of the projectile. Most yoyos are 1f, but a few are larger. The Kraken is the largest at 1.2f
 			Projectile.netImportant = true;
-			Projectile.netUpdate = true;
 		}
 
 		// notes for aiStyle 99: 
@@ -46,10 +50,20 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 		// ai[0] being negative makes the yoyo move back towards the player
 		// Any AI method can be used for dust, spawning projectiles, etc specific to your yoyo.
 
-		public override void PostAI() {
-			if (Main.rand.NextBool(5)) {
-				Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Lava); // Makes the projectile emit dust.
+		public int AITimer = 0;
+		public override void PostAI() 
+		{
+            if (Main.rand.NextBool(5))
+            {
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.FireworksRGB, newColor: ColorLib.Rift);
+            }
+
+			AITimer++;
+			if (AITimer % 180 == 0)
+			{
+                Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRing>(), Projectile.Center, Vector2.Zero, ColorLib.Rift, 0.01f, 0.5f);
+                Opus.RadialProjectileRandomDir(ModContent.ProjectileType<RiftStarFriendly>(), 0, Projectile.Center, Projectile.damage / 3, 0, 5);
 			}
-		}
+        }
 	}
 }

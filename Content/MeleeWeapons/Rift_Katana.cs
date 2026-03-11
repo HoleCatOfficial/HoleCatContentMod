@@ -45,18 +45,5 @@ namespace DestroyerTest.Content.MeleeWeapons
 			Item.shootSpeed = 5f;
             Item.noUseGraphic = true; // This makes sure the item does not get shown when the player swings his hand
 		}
-
-		
-
-        public override void AddRecipes() {
-			CreateRecipe()
-				.AddIngredient<Item_Riftplate>(10)
-				.AddIngredient<BroadswordData>(1)
-				.AddIngredient<ShadowCircuitry>(3)
-				.AddIngredient(ItemID.Katana, 1)
-				.AddTile<Tile_RiftConfiguratorWeaponry>()
-				.Register();
-		}
-
 	}
 }

@@ -855,8 +855,29 @@ namespace DestroyerTest.Common
                 return true;
             }
         }
+
+        
     }
 
+    public class SunlightModification : ModSystem
+    {
+        public static float _SunColorBrightness = 0f;
+
+        public static void Sunlight(float SunColorBrightness)
+        {
+            _SunColorBrightness = SunColorBrightness;
+        }
+
+        public static void Reset()
+        {
+            _SunColorBrightness = 0f;
+        }
+        public override void ModifySunLightColor(ref Color tileColor, ref Color backgroundColor)
+        {
+            tileColor = tileColor.Darken(_SunColorBrightness);
+            backgroundColor = backgroundColor.Darken(_SunColorBrightness);
+        }
+    }
     public static class DTStaticUtils
     {
         public static void DefaultToFlask(this Item item, int BuffType, int Rarity, int Value)
@@ -990,7 +1011,7 @@ namespace DestroyerTest.Common
         /// <param name="inputColor"></param>
         /// <param name="percentage"></param>
         /// <returns></returns>
-        public static Color Pastel(Color inputColor, float percentage)
+        public static Color Pastel(this Color inputColor, float percentage)
         {
             percentage = MathHelper.Clamp(percentage, 0f, 1f);
 
@@ -998,6 +1019,24 @@ namespace DestroyerTest.Common
                 (byte)MathHelper.Lerp(inputColor.R, 255, percentage),
                 (byte)MathHelper.Lerp(inputColor.G, 255, percentage),
                 (byte)MathHelper.Lerp(inputColor.B, 255, percentage),
+                inputColor.A
+            );
+        }
+
+        /// <summary>
+        /// Returns the input color that is tinted <i>percentage</i>% black, with 1 being fully black.
+        /// </summary>
+        /// <param name="inputColor"></param>
+        /// <param name="percentage"></param>
+        /// <returns></returns>
+        public static Color Darken(this Color inputColor, float percentage)
+        {
+            percentage = MathHelper.Clamp(percentage, 0f, 1f);
+
+            return new Color(
+                (byte)MathHelper.Lerp(inputColor.R, 0, percentage),
+                (byte)MathHelper.Lerp(inputColor.G, 0, percentage),
+                (byte)MathHelper.Lerp(inputColor.B, 0, percentage),
                 inputColor.A
             );
         }

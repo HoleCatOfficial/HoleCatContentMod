@@ -1775,13 +1775,14 @@ SparkFrostCleaver: {
 	Tooltip:
 		'''
 		A gargantuan cleaver of fire and ice energies.
+		Swings up and down.
+		True melee hits create a stationary after-slash. This slash has a small hitbox, but deals 200% damage.
+		Critical hits create a frost and a flame burst that home in on enemies.
+		When dealing critical hits, you have a 20% chance of dealing a Supercrit, creating the two bursts as well as 7 after-slashes on top of eachother.
+
+		Frost bursts inflict Haepien's Blizzard, while Flame bursts, Haepien's Inferno.
+
 		This creation is not entiely worldly, though... The Spark-Frost Cleaver is a construct of the Haepien, an elemental sprite with special powers gifted to them by the heavens.
-		Swings travel in complete circles, and will automatically swing twice if held down.
-		Hitting an enemy creates an explosion and releases a flare of Flame and a flare of Frost that home in on enemies.
-		The flare of Flame inflicts Haepien's Inferno, an enhanced version of the "On Fire!" debuff.
-		Enemies caught within a certain range of ignited enemies will have the flames jump to them as well. 
-		The flare of Frost inflicts Haepien's Blizzard, an enhanced version of the "Frostburn" debuff.
-		Enemies afflicted with Haepien's Blizzard will be unable to move, fly, or fall.
 		'''
 	DisplayName: Spark Frost Cleaver
 }
@@ -4112,11 +4113,21 @@ BlackDiamond: {
 }
 
 RiftHypersabre: {
-	Tooltip: ""
+	Tooltip:
+		'''
+		Can hit behind and in front of you.
+		Hitting from above bounces you in the air.
+		Cannot recieve melee speed bonuses.
+		'''
 	DisplayName: Rift Hypersabre
 }
 
 Colossus: {
 	DisplayName: Colossus
-	Tooltip: ""
+	Tooltip:
+		'''
+		Swings in a slow circle around you.
+		True melee hits spawn two stars that home in on enemies.
+		Critical hits spawn Gargantua Phantoms that jab into enemies.
+		'''
 }

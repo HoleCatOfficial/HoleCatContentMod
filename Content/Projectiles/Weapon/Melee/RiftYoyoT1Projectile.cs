@@ -12,7 +12,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
 			// YoyosLifeTimeMultiplier is how long in seconds the yoyo will stay out before automatically returning to the player. 
 			// Vanilla values range from 3f (Wood) to 16f (Chik), and defaults to -1f. Leaving as -1 will make the time infinite.
-			ProjectileID.Sets.YoyosLifeTimeMultiplier[Projectile.type] = 3.5f;
+			ProjectileID.Sets.YoyosLifeTimeMultiplier[Projectile.type] = 16f;
 
 			// YoyosMaximumRange is the maximum distance the yoyo sleep away from the player. 
 			// Vanilla values range from 130f (Wood) to 400f (Terrarian), and defaults to 200f.

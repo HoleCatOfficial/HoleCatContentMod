@@ -1,8 +1,12 @@
 
 using DestroyerTest.Common;
+using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles;
+using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
+using ReLogic.Utilities;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
@@ -22,7 +26,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
 			// YoyosMaximumRange is the maximum distance the yoyo sleep away from the player. 
 			// Vanilla values range from 130f (Wood) to 400f (Terrarian), and defaults to 200f.
-			ProjectileID.Sets.YoyosMaximumRange[Projectile.type] = 550f;
+			ProjectileID.Sets.YoyosMaximumRange[Projectile.type] = 400f;
 
 			// YoyosTopSpeed is top speed of the yoyo Projectile.
 			// Vanilla values range from 9f (Wood) to 17.5f (Terrarian), and defaults to 10f.
@@ -98,31 +102,80 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             }
         }
 
-
-        public override void AI()
-        {
-            CacheTrail();
-
-            if (Projectile.ai[0]++ % 60 == 0 && AuraScale < 1f)
-            {
-                AuraScale += 0.1f;
-            }
-        }
-
+        int ScaleTimer = 0;
         public override void ModifyDamageHitbox(ref Rectangle hitbox)
         {
-            if (Projectile.ai[0] % 60 == 0 && AuraScale < 1f)
+            if (ScaleTimer % 60 == 0 && AuraScale < 1f)
             {
-                hitbox.Inflate(4, 4);
+                hitbox.Inflate(20, 20);
             }
         }
 
+        SlotId LoopSlot;
+        public SoundStyle Loop = new SoundStyle("DestroyerTest/Assets/Audio/AuraLoop/ElectricLoop1")
+        {
+            MaxInstances = 0,
+            IsLooped = true,
+            PauseBehavior = PauseBehavior.PauseWithGame
+        };
+
+        public float SoundVolume = 0.0f;
+        public float BrightnessMod = 1f;
         public override void PostAI() 
 		{
-			if (Main.rand.NextBool(5)) 
+            base.PostAI();
+            ScaleTimer++;
+            CacheTrail();
+
+            if (!SoundEngine.TryGetActiveSound(LoopSlot, out var activeSound))
+            {
+                var tracker = new ProjectileAudioTracker(Projectile);
+                LoopSlot = SoundEngine.PlaySound(Loop, Projectile.Center, soundInstance => {
+                    soundInstance.Position = Projectile.Center;
+                    return tracker.IsActiveAndInGame();
+                });
+            }
+            else
+            {
+                activeSound.Volume = SoundVolume;
+                activeSound.Position = Projectile.Center;
+            }
+
+            if (ScaleTimer % 60 == 0 && AuraScale < 1f)
+            {
+                AuraScale += 0.1f;
+                SoundVolume += 0.1f;
+            }
+            if (AuraScale >= 1f)
+            {
+                if (BrightnessMod < 1f)
+                {
+                    BrightnessMod += 0.005f;
+                }
+                SunlightModification.Sunlight(BrightnessMod);
+            }
+            
+            if (Main.rand.NextBool(5)) 
 			{
 				Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.FireworksRGB, newColor: ColorLib.Rift);
 			}
 		}
+
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            if (AuraScale >= 1f)
+            {
+                hit.SourceDamage = (int)(hit.SourceDamage * 1.15f);
+                Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRing>(), Projectile.Center, Vector2.Zero, ColorLib.Rift, 0.01f, 0.5f);
+                Opus.RadialSpreadProjectile(ModContent.ProjectileType<RiftStarFriendly>(), 3, Projectile.Center, Projectile.damage / 3, 0, 5, offset: Projectile.rotation);
+            }
+        }
+
+        public override void OnKill(int timeLeft)
+        {
+            SunlightModification.Reset();
+            SoundEngine.PlaySound(SoundID.DD2_WitherBeastDeath, Projectile.Center);
+            Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRing>(), Projectile.Center, Vector2.Zero, ColorLib.Rift, 0.01f, 1.8f);
+        }
 	}
 }

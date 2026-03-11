@@ -32,7 +32,7 @@ namespace DestroyerTest.Content.RiftArsenal
 
         public override void SetDefaults()
         {
-            Item.damage = 60;
+            Item.damage = 83;
             Item.DamageType = DamageClass.MeleeNoSpeed;
             Item.width = 112;
             Item.height = 116;
@@ -52,7 +52,7 @@ namespace DestroyerTest.Content.RiftArsenal
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             Projectile p = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, player.whoAmI);
-            p.scale = 1f + player.GetAdjustedItemScale(Item);
+            //p.scale = player.GetAdjustedItemScale(Item);
             return false;
         }
 

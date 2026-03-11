@@ -29,11 +29,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         }
         public override void SetDefaults()
         {
-            Player player = Main.player[Projectile.owner];
             Projectile.width = 324;
-            Projectile.height = 168;
+            Projectile.height = 324;
             Projectile.friendly = true;
-            Projectile.DamageType = DamageClass.Melee;
+            Projectile.DamageType = DamageClass.MeleeNoSpeed;
             Projectile.penetrate = -1;
             Projectile.tileCollide = false;
             Projectile.ignoreWater = true;
@@ -42,10 +41,6 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Projectile.localNPCHitCooldown = 10;
             Projectile.netImportant = true;
             Projectile.hide = true;
-            if (player.HeldItem != null && player.HeldItem.type == ModContent.ItemType<RiftHypersabre>())
-            {
-                Projectile.scale = 1f + player.GetAdjustedItemScale(player.HeldItem);
-            }
         }
 
         private SpriteEffects FX = SpriteEffects.None;
@@ -126,18 +121,6 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             return IsOnAttackFrame(target);
         }
 
-        public override void ModifyDamageHitbox(ref Rectangle hitbox)
-        {
-            if (hitbox.Width != Projectile.width)
-            {
-                hitbox.Width = (int)(Projectile.width);
-            }
-            if (hitbox.Height != Projectile.height)
-            {
-                hitbox.Height = (int)(Projectile.height);
-            }
-        }
-
         private SoundStyle Slash = new SoundStyle("DestroyerTest/Assets/Audio/Rift_Katana_Slash") { PitchVariance = 0.2f };
         public override void AI()
         {
@@ -145,12 +128,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
             if (player.HeldItem.type == ModContent.ItemType<RiftHypersabre>() && player.controlUseItem)
             {
+                player.SetDummyItemTime(2);
                 AnimateProjectile();
 
                 if (Projectile.frame == 0 || Projectile.frame == 5)
                 {
                     SoundEngine.PlaySound(Slash, Projectile.Center);
-                    //SoundEngine.PlaySound(SoundID.Item132, Projectile.Center);
                 }
 
                 Vector2 mountedCenter = player.MountedCenter;
@@ -161,34 +144,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
                 Projectile.rotation = toCursor.ToRotation();
                 
-
-                /*
-                if (player.direction == -1)
-                {
-                    Projectile.spriteDirection = -1;
-                }
-                else
-                {
-                    Projectile.spriteDirection = 1;
-                }
-                
-                */
                 FX = toCursor.X > 0 ? SpriteEffects.None : SpriteEffects.FlipVertically;
 
                 if (Projectile.ai[0]++ % 60 == 0 && F > 2)
                 {
                     F--;
                 }
-                
-
-                /*
-                Vector2 dustDirection = toCursor;
-                Vector2 dustSpawn = Projectile.Center + dustDirection * Projectile.width * 0.5f;
-
-                Vector2 randomSpawn = Projectile.position + new Vector2(Main.rand.NextFloat(Projectile.width), Main.rand.NextFloat(Projectile.height));
-                int dustIndex = Dust.NewDust(randomSpawn, 0, 0, DustID.FireworksRGB, dustDirection.X * 4f, dustDirection.Y * 4f, 100, ColorLib.Rift, 1.2f);
-                Main.dust[dustIndex].noGravity = true;
-                */
 
                 Projectile.timeLeft = 10;
 
@@ -207,7 +168,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             ScreenShake.screenshakeMagnitude = 4;
             ScreenShake.screenshakeTimer = 10;
 
-            SoundEngine.PlaySound(DTAssetLib.Impacts.FleshHit with { MaxInstances = 0 }, Projectile.position);
+            SoundEngine.PlaySound(DTAssetLib.Impacts.FleshHit with { MaxInstances = 0 }, target.Center);
             List<Color> RiftLightColors = new List<Color>
             {
                 ColorLib.Rift,
@@ -230,7 +191,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Vector2 d2 = new Vector2(d.X * 0.3f, d.Y);
             if (player.Center.Y <=  target.Center.Y && Math.Abs((player.Center.X - target.Center.X)) <= 50)
             {
-                player.velocity += d2 * 12;
+                player.velocity += d2 * 8;
             }
 
             var modPlayer = player.GetModPlayer<LivingShadowPlayer>();
