@@ -22,8 +22,16 @@ using DestroyerTest.Content.Projectiles.Weapon.Melee;
 
 namespace DestroyerTest.Content.RiftArsenal
 {
-	public class RiftClaymore : RechargeItem
+	public class RiftClaymore : ModItem, IRechargeFunctionality
 	{
+        public bool Energized
+        {
+            get
+            {
+                return Main.LocalPlayer.GetModPlayer<Recharge>().Energized;
+            }
+        }
+        
 		public override void SetDefaults() 
 		{
 			Item.width = 46;

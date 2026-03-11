@@ -23,7 +23,7 @@ using DestroyerTest.Content.Projectiles.Weapon.Melee;
 
 namespace DestroyerTest.Content.RiftArsenal
 {
-    public class RiftPhasesaber : RechargeItem
+    public class RiftPhasesaber : ModItem
     {
         private bool isThrowingMode = false; // Tracks the current mode
 
@@ -122,39 +122,11 @@ namespace DestroyerTest.Content.RiftArsenal
                 Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, ModContent.DustType<Dusts.RiftDust>());
             }
 
-            if (Energized)
-            {
-                int[] types = new int[]
-                {
-                    PRTLoader.GetParticleID<Arc1>(),
-                    PRTLoader.GetParticleID<Arc2>(),
-                    PRTLoader.GetParticleID<Arc3>()
-                };
-
-				if (Main.rand.NextBool(3))
-				{
-					PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], Main.rand.NextVector2FromRectangle(hitbox), Vector2.Zero, ColorLib.Rift, 0.3f);
-				}
-            }
+            
 		}
 
-        public override void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone)
-        {
-            if (Energized)
-            {
-                target.AddBuff(ModContent.BuffType<HeliouricShock>(), 300);
-            }
-        }
+     
 
-        public override void AddRecipes()
-        {
-            CreateRecipe()
-                .AddIngredient<BroadswordData>()
-                .AddIngredient<ShadowCircuitry>(12)
-                .AddIngredient<Item_Riftplate>(7)
-                .AddIngredient<Living_Shadow>(7)
-                .AddTile<Tile_RiftConfiguratorWeaponry>()
-			.Register();
-        }
+       
     }
 }

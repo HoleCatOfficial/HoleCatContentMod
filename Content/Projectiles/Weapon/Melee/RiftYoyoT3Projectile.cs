@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using ReLogic.Utilities;
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
@@ -48,8 +49,13 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 		}
 
         float AuraScale = 0.3f;
+        float DebuffScale = 0.3f;
         public override bool PreDraw(ref Color lightColor)
         {
+            if (AuraScale > 1f)
+            {
+                Main.EntitySpriteDraw(DTAssetLib.FeatheredCircle.Value, Projectile.Center - Main.screenPosition, null, Color.Black * 0.65f, Projectile.rotation, DTAssetLib.FeatheredCircle.Value.Size() / 2, DebuffScale, SpriteEffects.None);
+            }
 			DTUtils.DrawRiftBall(Projectile.Center, 0.2f, Main.spriteBatch, blendState: BlendState.Additive, TrailPositions, AuraScale);
 
             return true;
@@ -112,15 +118,21 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         }
 
         SlotId LoopSlot;
-        public SoundStyle Loop = new SoundStyle("DestroyerTest/Assets/Audio/AuraLoop/ElectricLoop1")
+        public SoundStyle Loop = new SoundStyle("DestroyerTest/Assets/Audio/AuraLoop/RiftYoyoT3Loop")
         {
             MaxInstances = 0,
             IsLooped = true,
-            PauseBehavior = PauseBehavior.PauseWithGame
+            PauseBehavior = PauseBehavior.PauseWithGame,
+            Pitch = -1f
         };
 
         public float SoundVolume = 0.0f;
         public float BrightnessMod = 1f;
+        public float DebuffDist()
+        {
+            float val = ((DTAssetLib.FeatheredCircle.Value.Width * DebuffScale) / 2) - 0.1f;
+            return val * val;
+        }
         public override void PostAI() 
 		{
             base.PostAI();
@@ -148,26 +160,61 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             }
             if (AuraScale >= 1f)
             {
-                if (BrightnessMod < 1f)
+                if (DebuffScale < 4.5f)
                 {
-                    BrightnessMod += 0.005f;
+                    DebuffScale += 0.05f;
                 }
-                SunlightModification.Sunlight(BrightnessMod);
+            }
+
+            foreach(NPC npc in Main.npc)
+            {
+                if (npc.active && npc.DistanceSQ(Projectile.Center) < DebuffDist())
+                {
+                    npc.AddBuff(BuffID.Slow, 180);
+                }
             }
             
             if (Main.rand.NextBool(5)) 
 			{
 				Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.FireworksRGB, newColor: ColorLib.Rift);
-			}
+
+                if(AuraScale >= 1f)
+                {
+                    for(int i = 0; i < 3; i++)
+                    {
+                        Vector2 pos = Projectile.Center + Main.rand.NextVector2Circular((float)Math.Sqrt(DebuffDist()), (float)Math.Sqrt(DebuffDist()));
+                        Vector2 d = Projectile.Center - pos;
+                        d.Normalize();
+                        Dust a = Dust.NewDustPerfect(pos, DustID.Wraith, d * 4, 50, default, 2f);
+                        a.noGravity = true;
+                    }
+                }
+            }
 		}
+
+        public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
+        {
+            foreach (var trail in new[] { TrailPositions })
+            {
+                for (int i = 1; i < trail.Count; i++)
+                {
+                    Vector2 point1 = trail[i - 1];
+                    Vector2 point2 = trail[i];
+                    if (Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), point1, point2))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             if (AuraScale >= 1f)
             {
                 hit.SourceDamage = (int)(hit.SourceDamage * 1.15f);
-                Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRing>(), Projectile.Center, Vector2.Zero, ColorLib.Rift, 0.01f, 0.5f);
-                Opus.RadialSpreadProjectile(ModContent.ProjectileType<RiftStarFriendly>(), 3, Projectile.Center, Projectile.damage / 3, 0, 5, offset: Projectile.rotation);
+                Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRing>(), target.Center, Vector2.Zero, ColorLib.Rift, 0.01f, 0.5f);
             }
         }
 
