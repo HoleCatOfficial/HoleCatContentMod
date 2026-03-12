@@ -24,10 +24,17 @@ namespace DestroyerTest.Content.RiftArsenal
 {
 	// ExampleCustomSwingSword is an example of a sword with a custom swing using a held projectile
 	// This is great if you want to make melee weapons with complex swing behavior
-	public class RiftScythe : RechargeItem
-	{
+	public class RiftScythe : ModItem, IRechargeFunctionality
+    {
+        public bool Energized
+        {
+            get
+            {
+                return Main.LocalPlayer.GetModPlayer<Recharge>().Energized;
+            }
+        }
 
-		public override void SetDefaults() {
+        public override void SetDefaults() {
 			// Common Properties
 			Item.width = 46;
 			Item.height = 48;

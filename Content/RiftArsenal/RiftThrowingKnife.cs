@@ -20,8 +20,16 @@ using DestroyerTest.Content.Projectiles.Weapon.Melee;
 
 namespace DestroyerTest.Content.RiftArsenal
 {
-	public class RiftThrowingKnife : RechargeItem
-	{
+	public class RiftThrowingKnife : ModItem, IRechargeFunctionality
+    {
+        public bool Energized
+        {
+            get
+            {
+                return Main.LocalPlayer.GetModPlayer<Recharge>().Energized;
+            }
+        }
+        
 		public override void SetStaticDefaults() {
 			Item.ResearchUnlockCount = 99;
 		}

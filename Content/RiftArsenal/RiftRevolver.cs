@@ -23,9 +23,17 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.RiftArsenal
 {
-	public class RiftRevolver : RechargeItem
-	{
-		public override void SetDefaults() {
+	public class RiftRevolver : ModItem, IRechargeFunctionality
+    {
+        public bool Energized
+        {
+            get
+            {
+                return Main.LocalPlayer.GetModPlayer<Recharge>().Energized;
+            }
+        }
+
+        public override void SetDefaults() {
 			// Modders can use Item.DefaultToRangedWeapon to quickly set many common properties, such as: useTime, useAnimation, useStyle, autoReuse, DamageType, shoot, shootSpeed, useAmmo, and noMelee. These are all shown individually here for teaching purposes.
 
 			// Common Properties

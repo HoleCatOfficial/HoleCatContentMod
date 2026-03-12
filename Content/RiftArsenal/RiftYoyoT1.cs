@@ -10,9 +10,16 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.RiftArsenal
 {
-	public class RiftYoyoT1 : RechargeItem
-	{
-		public override void SetStaticDefaults() {
+	public class RiftYoyoT1 : ModItem, IRechargeFunctionality
+    {
+        public bool Energized
+        {
+            get
+            {
+                return Main.LocalPlayer.GetModPlayer<Recharge>().Energized;
+            }
+        }
+        public override void SetStaticDefaults() {
 			// These are all related to gamepad controls and don't seem to affect anything else
 			ItemID.Sets.Yoyo[Item.type] = true; // Used to increase the gamepad range when using Strings.
 			ItemID.Sets.GamepadExtraRange[Item.type] = 15; // Increases the gamepad range. Some vanilla values: 4 (Wood), 10 (Valor), 13 (Yelets), 18 (The Eye of Cthulhu), 21 (Terrarian).

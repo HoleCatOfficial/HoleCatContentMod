@@ -22,11 +22,18 @@ using DestroyerTest.Content.Tiles.RiftConfigurator;
 namespace DestroyerTest.Content.Equips
 {
 	[AutoloadEquip(EquipType.Head)]
-	public class RiftGuardVisor : RechargeItem
-	{
+	public class RiftGuardVisor : ModItem, IRechargeFunctionality
+    {
+        public bool Energized
+        {
+            get
+            {
+                return Main.LocalPlayer.GetModPlayer<Recharge>().Energized;
+            }
+        }
 
 
-		public override void SetStaticDefaults() {
+        public override void SetStaticDefaults() {
 		}
 
 		public override void SetDefaults() {

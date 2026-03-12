@@ -4131,3 +4131,8 @@ Colossus: {
 		Critical hits spawn Gargantua Phantoms that jab into enemies.
 		'''
 }
+
+RiftRipper: {
+	DisplayName: Rift Ripper
+	Tooltip: ""
+}

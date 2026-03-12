@@ -99,7 +99,8 @@ namespace DestroyerTest.Content.RiftArsenal
             return base.UseItem(player);
         }
 
-        public override void UseItemFrame(Player player) {
+        public override void UseItemFrame(Player player) 
+        {
             if (isThrowingMode) {
                 float animationSpeed = 8.0f;
                 float progress = ((player.itemAnimationMax - player.itemAnimation) / (float)player.itemAnimationMax);
@@ -124,9 +125,5 @@ namespace DestroyerTest.Content.RiftArsenal
 
             
 		}
-
-     
-
-       
     }
 }

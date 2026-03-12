@@ -20,8 +20,16 @@ using DestroyerTest.Content.Projectiles.Weapon.Magic;
 
 namespace DestroyerTest.Content.RiftArsenal
 {
-    public class RiftTome : RechargeItem
-	{
+    public class RiftTome : ModItem, IRechargeFunctionality
+    {
+        public bool Energized
+        {
+            get
+            {
+                return Main.LocalPlayer.GetModPlayer<Recharge>().Energized;
+            }
+        }
+
         public override void SetStaticDefaults()
         { 
         }

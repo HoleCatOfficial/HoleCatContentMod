@@ -732,7 +732,6 @@ namespace DestroyerTest.Common
             return entity.type == ModContent.ItemType<RiftBroadsword>() ||
             entity.type == ModContent.ItemType<RiftChakram>() ||
             entity.type == ModContent.ItemType<RiftClaymore>() ||
-            entity.type == ModContent.ItemType<RiftGreatsword>() ||
             entity.type == ModContent.ItemType<RiftPhasesaber>() ||
             entity.type == ModContent.ItemType<RiftRevolver>() ||
             entity.type == ModContent.ItemType<RiftScabbard>() ||
@@ -747,7 +746,6 @@ namespace DestroyerTest.Common
             if (item.type == ModContent.ItemType<RiftBroadsword>() ||
             item.type == ModContent.ItemType<RiftChakram>() ||
             item.type == ModContent.ItemType<RiftClaymore>() ||
-            item.type == ModContent.ItemType<RiftGreatsword>() ||
             item.type == ModContent.ItemType<RiftPhasesaber>() ||
             item.type == ModContent.ItemType<RiftRevolver>() ||
             item.type == ModContent.ItemType<RiftScabbard>() ||

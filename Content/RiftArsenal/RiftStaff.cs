@@ -24,8 +24,16 @@ namespace DestroyerTest.Content.RiftArsenal
 	// ExampleStaff is a typical staff. Staffs and other shooting weapons are very similar, this example serves mainly to show what makes staffs unique from other items.
 	// Staff sprites, by convention, are angled to point up and to the right. "Item.staff[Type] = true;" is essential for correctly drawing staffs.
 	// Staffs use mana and shoot a specific projectile instead of using ammo. Item.DefaultToStaff takes care of that.
-	public class RiftStaff : RechargeItem
-	{
+	public class RiftStaff : ModItem, IRechargeFunctionality
+    {
+        public bool Energized
+        {
+            get
+            {
+                return Main.LocalPlayer.GetModPlayer<Recharge>().Energized;
+            }
+        }
+
         public override string Texture => "DestroyerTest/Content/RiftArsenal/RiftStaff";
 		public override void SetStaticDefaults()
 		{

@@ -13,10 +13,17 @@ using DestroyerTest.Content.RiftArsenal;
 namespace DestroyerTest.Content.Equips
 {
 	[AutoloadEquip(EquipType.Body)]
-	public class RiftGuardChestPlate : RechargeItem
-	{
+	public class RiftGuardChestPlate : ModItem, IRechargeFunctionality
+    {
+        public bool Energized
+        {
+            get
+            {
+                return Main.LocalPlayer.GetModPlayer<Recharge>().Energized;
+            }
+        }
 
-		public override void SetDefaults() {
+        public override void SetDefaults() {
 			Item.width = 18; // Width of the item
 			Item.height = 18; // Height of the item
 			Item.value = Item.sellPrice(gold: 1); // How many coins the item is worth

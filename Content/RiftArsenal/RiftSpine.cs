@@ -11,8 +11,16 @@ using DestroyerTest.Content.Projectiles.Weapon.Rogue;
 
 namespace DestroyerTest.Content.RiftArsenal
 {
-	public class RiftSpine : RechargeItem
-	{
+	public class RiftSpine : ModItem, IRechargeFunctionality
+    {
+        public bool Energized
+        {
+            get
+            {
+                return Main.LocalPlayer.GetModPlayer<Recharge>().Energized;
+            }
+        }
+        
 		public override void SetStaticDefaults() {
 
 		}

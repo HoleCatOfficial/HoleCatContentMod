@@ -62,6 +62,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
             Main.EntitySpriteDraw(t, Projectile.Center - Main.screenPosition, frame, Projectile.GetAlpha(lightColor), Projectile.rotation, origin, Projectile.scale, FX, 0f);
             Main.EntitySpriteDraw(G, Projectile.Center - Main.screenPosition, frame, Color.White, Projectile.rotation, origin, Projectile.scale, FX, 0f);
+
+            //Utils.DrawRect(Main.spriteBatch, AdjustedHitbox, ColorLib.Rift);
             return false;
         }
 
@@ -158,6 +160,16 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             {
                 Projectile.Kill();
             }
+        }
+
+        public Rectangle AdjustedHitbox;
+        public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
+        {
+            int AdjustedX = (int)Projectile.position.X;
+            int AdjustedY = (int)Projectile.position.Y;
+            //AdjustedHitbox = new Rectangle(AdjustedX, AdjustedY, (int)(Projectile.width * Projectile.scale), (int)(Projectile.height * Projectile.scale));
+            AdjustedHitbox = Utils.CenteredRectangle(Projectile.Center, new Vector2(Projectile.width * Projectile.scale, Projectile.height * Projectile.scale));
+            return targetHitbox.Intersects(AdjustedHitbox);
         }
 
 
