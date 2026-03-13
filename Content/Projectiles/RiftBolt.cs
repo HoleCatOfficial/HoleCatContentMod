@@ -29,7 +29,8 @@ namespace DestroyerTest.Content.Projectiles
 			Projectile.DamageType = DamageClass.Generic;
 			Projectile.timeLeft = 1200;
 			Projectile.tileCollide = true;
-			Projectile.penetrate = -1;
+			Projectile.penetrate = 3;
+			Projectile.extraUpdates = 6;
 		}
 
 		public float trailOffset = 0f;
@@ -176,7 +177,7 @@ namespace DestroyerTest.Content.Projectiles
 
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
-			SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/MagnetOrbBreak") with { PitchVariance = 0.5f, MaxInstances = 0 });
+			SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/MagnetOrbBreak") with { PitchVariance = 0.5f, MaxInstances = 0 }, Projectile.Center);
 			for (int i = 0; i < 5; i++)
 			{
 				Dust dust = Dust.NewDustPerfect(Projectile.Center, DustID.FireworksRGB, Main.rand.NextVector2Circular(120, 120));

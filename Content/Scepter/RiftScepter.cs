@@ -21,9 +21,16 @@ using DestroyerTest.Content.Projectiles.Weapon.Scepter;
 
 namespace DestroyerTest.Content.Scepter
 {
-	public class RiftScepter : ScepterItem
-	{
-		public override int Width => 56;
+	public class RiftScepter : ScepterItem, IRechargeFunctionality
+    {
+        public bool Energized
+        {
+            get
+            {
+                return Main.LocalPlayer.GetModPlayer<Recharge>().Energized;
+            }
+        }
+        public override int Width => 56;
         public override int Height => 56;
 
         public override void SetStaticDefaults()
@@ -46,7 +53,7 @@ namespace DestroyerTest.Content.Scepter
             Item.shootSpeed = 20f;
 
             // Assign projectile types
-            ShootID = ModContent.ProjectileType<RiftBolt>();
+            ShootID = ModContent.ProjectileType<RiftScepterSun>();
             ThrowID = ModContent.ProjectileType<RiftScepterThrown>();
 
             // Optional: change sounds
@@ -60,34 +67,14 @@ namespace DestroyerTest.Content.Scepter
         public override void ShootDefaults()
         {
             base.ShootDefaults();
-            Item.shootSpeed = 120;
+            Item.shootSpeed = 2f;
         }
 
-        public bool Energized = false;
-
-        public override void UpdateInventory(Player player)
+        public override bool CanUseItem(Player player)
         {
-            var modPlayer = player.GetModPlayer<LivingShadowPlayer>();
-            if (modPlayer.LivingShadowCurrent > 0)
-            {
-                Energized = true;
-            }
-            if (modPlayer.LivingShadowCurrent <= 0)
-            {
-                Energized = false;
-            }
+            return player.ownedProjectileCounts[Item.shoot] < 1;
         }
-
-        public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
-        {
-            base.ModifyShootStats(player, ref position, ref velocity, ref type, ref damage, ref knockback);
-            if (Energized && player.altFunctionUse != 2)
-            {
-                type = ModContent.ProjectileType<RiftStarFriendly>();
-            }
-        }
-
-		public override void AddRecipes()
+        public override void AddRecipes()
 		{
 			CreateRecipe()
 				.AddIngredient<ScepterData>()

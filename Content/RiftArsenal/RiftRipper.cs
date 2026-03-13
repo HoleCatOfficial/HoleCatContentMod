@@ -82,7 +82,7 @@ namespace DestroyerTest.Content.RiftArsenal
                 SoundEngine.PlaySound(new SoundStyle($"DestroyerTest/Assets/Audio/RiftRipperBoom") { Volume = 0.6f, PitchVariance = 0.2f, MaxInstances = 3 }, position);
                 for (int i = 0; i < 4; i++)
                 {
-                    Projectile.NewProjectile(source, position, velocity.RotatedByRandom(0.1f), ModContent.ProjectileType<RiftStarFriendly>(), damage / 4, knockback, player.whoAmI);
+                    Projectile.NewProjectile(source, position, (velocity * 0.25f).RotatedByRandom(0.1f), ModContent.ProjectileType<RiftBolt>(), damage / 4, knockback, player.whoAmI);
                 }
             }
             else
