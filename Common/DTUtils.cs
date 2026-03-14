@@ -1623,6 +1623,7 @@ namespace DestroyerTest.Common
             public static SoundStyle MetalImpact = new SoundStyle($"{Path}/MetalImpact", 3);
             public static SoundStyle ShortShine = new SoundStyle($"{Path}/ShortShine", 3);
             public static SoundStyle StellarFox = new SoundStyle($"{Path}/StellarFoxImpact", 5);
+            public static SoundStyle SpiritOfJusticeParry = new SoundStyle($"{Path}/SpiritOfJusticeParry");
             public static SoundStyle Void = new SoundStyle($"{Path}/VoidImpact", 3);
             
         }
@@ -1643,6 +1644,7 @@ namespace DestroyerTest.Common
             public static SoundStyle Slam = new SoundStyle($"{Path}/Slam", 2);
             public static SoundStyle TenebrisSwing = new SoundStyle($"{Path}/TenebrisSwing", 3);
             public static SoundStyle StandardSwing = new SoundStyle($"{Path}/StandardSwing");
+            public static SoundStyle SpiritOfJusticeSwing = new SoundStyle($"{Path}/SpiritOfJusticeSwing");
         }
 
         public static SoundStyle IdriGreatswordSlice(bool Gore)

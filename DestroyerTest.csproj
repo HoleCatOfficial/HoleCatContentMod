@@ -6,9 +6,15 @@
 
 	<!-- General -->
 	<PropertyGroup>
-		<IgnoreBuildErrors>true</IgnoreBuildErrors>
-		<ContinueOnError>true</ContinueOnError>
+
 	</PropertyGroup>
+	
+	<ItemGroup>
+	  <PackageReference Include="Krafs.Publicizer" Version="2.3.0">
+	    <PrivateAssets>all</PrivateAssets>
+	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	  </PackageReference>
+	</ItemGroup>
 
 	<ItemGroup>
 	  <Reference Include="FargowiltasSouls">
@@ -27,6 +33,8 @@
 	    <HintPath>..\ModAssemblies\OpusLib_v1.424.dll</HintPath>
 	  </Reference>
 	</ItemGroup>
+	
+	
 	
 
 	<!-- References -->

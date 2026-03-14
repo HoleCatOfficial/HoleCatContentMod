@@ -1,61 +1,89 @@
-
-using Terraria;
-using Terraria.ID;
-using Terraria.Audio;
-using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
+using Terraria;
+using Terraria.Audio;
+using Terraria.DataStructures;
+using Terraria.ID;
+using Terraria.Localization;
+using Terraria.ModLoader;
 using DestroyerTest.Content.Projectiles;
+
+using DestroyerTest.Content.Resources;
+using DestroyerTest.Content.Tiles;
+using DestroyerTest.Content.Magic;
+using DestroyerTest.Content.Projectiles.Weapon.Melee.Quixotism;
 using DestroyerTest.Rarity;
+using DestroyerTest.Content.Projectiles.Weapon.Melee;
+using GlowmaskHelper.Content;
 
 namespace DestroyerTest.Content.MeleeWeapons
 {
-    /// <summary>
-    /// This weapon and its corresponding projectile showcase the CloneDefaults() method, which allows for cloning of other items.
-    /// For this example, we shall copy the Meowmere and its projectiles with the CloneDefaults() method, while also changing them slightly.
-    /// For a more detailed description of each item field used here, check out <see cref="ExampleSword" />.
-    /// </summary>
+    [AutoloadGlowmask]
     public class SpiritOfJustice : ModItem
     {
-        public override void SetDefaults() {
-            // This method right here is the backbone of what we're doing here; by using this method, we copy all of
-            // the meowmere's SetDefault stats (such as Item.melee and Item.shoot) on to our item, so we don't have to
-            // go into the source and copy the stats ourselves. It saves a lot of time and looks much cleaner; if you're
-            // going to copy the stats of an item, use CloneDefaults().
+        public int attackType = 0;
+        public bool CanParry = true;
+        public int ParryCooldown = 0;
+        public const int MaxParryCooldown = 300;
 
-            Item.CloneDefaults(ItemID.Meowmere);
 
-            // After CloneDefaults has been called, we can now modify the stats to our wishes, or keep them as they are.
-            // For the sake of example, let's swap the vanilla Meowmere projectile shot from our item for our own projectile by changing Item.shoot:
+        public override void SetDefaults()
+        {
+            Item.width = 92;
+            Item.height = 92;
 
-            Item.shoot = ModContent.ProjectileType<SoulOfLight_Projectile>(); // Remember that we must use ProjectileType<>() since it is a modded projectile!
-            // Check out ExampleCloneProjectile to see how this projectile is different from the Vanilla Meowmere projectile.
+            Item.useStyle = ItemUseStyleID.Shoot;
+            Item.useTime = 60;
+            Item.useAnimation = 60;
+            Item.autoReuse = true;
 
-            // While we're at it, let's make our weapon's stats a bit stronger than the Meowmere, which can be done
-            // by using math on each given stat.
+            Item.DamageType = DamageClass.Melee;
+            Item.damage = 50;
+            Item.knockBack = 8f;
+            Item.crit = 26;
 
-            Item.damage = 70; // Makes this weapon's damage half the Meowmere's damage.
-            Item.shootSpeed = 10f; // Makes this weapon's projectiles shoot 25% faster than the Meowmere's projectiles.
-            Item.useAnimation = 20; // The time span of the using animation of the weapon, suggest setting it the same as useTime.
-            Item.useTime = 20;
-            Item.rare = ModContent.RarityType<HallowedSpecialRarity>();
-            Item.UseSound = new SoundStyle($"DestroyerTest/Assets/Audio/SOJ-M_Slash") with {
-				Volume = 1.0f, 
-    			Pitch = 0.0f, 
-    			PitchVariance = 1.0f, 
-			}; // The sound when the weapon is being used.
+            Item.value = Item.buyPrice(gold: 16);
+            Item.rare = ModContent.RarityType<VesperRarity>();
+            Item.noUseGraphic = true;
+            Item.noMelee = true;
+            Item.shoot = ModContent.ProjectileType<SpiritOfJusticeSwing>();
         }
 
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
+            Projectile.NewProjectile(source, position, velocity, type, damage, knockback, Main.myPlayer, attackType);
+            attackType = (attackType + 1) % 2;
+            return false;
+        }
 
-        // Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
-        public override void AddRecipes() {
+        public override void UpdateInventory(Player player)
+        {
+            if (ParryCooldown > 0)
+            {
+                CanParry = false;
+                ParryCooldown--;
+                
+                if (ParryCooldown == 1)
+                {
+                    SoundEngine.PlaySound(SoundID.NPCDeath7);
+                }
+            }
+            else
+            {
+                CanParry = true;
+            }
+        }
+        public override bool MeleePrefix()
+        {
+            return true;
+        }
+
+        public override void AddRecipes()
+        {
             CreateRecipe()
-                .AddIngredient(ItemID.Katana, 1)
-                .AddIngredient(ItemID.HallowedBar, 15)
-                .AddIngredient(ItemID.SoulofLight, 20)
-                .AddIngredient(ItemID.HolyWater, 4)
-                .AddCondition(Condition.Hardmode)
-                .AddTile(TileID.MythrilAnvil)
-                .Register();
+            .AddIngredient(ItemID.HallowedBar, 16)
+            .AddIngredient<Vesper>(16)
+            .AddTile(TileID.Anvils)
+            .Register();
         }
     }
 }

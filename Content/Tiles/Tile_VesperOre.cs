@@ -127,7 +127,7 @@ namespace DestroyerTest.Content.Tiles
 		public VesperPass(string name, float loadWeight) : base(name, loadWeight) {
 		}
 
-		protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration) {
+        protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration) {
 			// progress.Message is the message shown to the user while the following code is running.
 			// Try to make your message clear. You can be a little bit clever, but make sure it is descriptive enough for troubleshooting purposes.
 			progress.Message = VesperSystem.VesperOrePassMessage.Value;

@@ -67,8 +67,8 @@ namespace DestroyerTest.Content.UI
 			base.Draw(spriteBatch);
 		}
 
-		// Here we draw our UI
-		protected override void DrawSelf(SpriteBatch spriteBatch) {
+        // Here we draw our UI
+        protected override void DrawSelf(SpriteBatch spriteBatch) {
 			base.DrawSelf(spriteBatch);
 
 			var modPlayer = Main.LocalPlayer.GetModPlayer<LivingShadowPlayer>();
