@@ -25,7 +25,7 @@ using Terraria.ModLoader;
 namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 {
 
-    public class SpiritOfJusticeSwing : ModProjectile
+    public class MemoriamSwing : ModProjectile
     {
         private const float SWINGRANGE = 1.67f * (float)Math.PI;
         private const float FIRSTHALFSWING = 0.4f;
@@ -115,7 +115,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                     }
                     targetAngle = MathHelper.Clamp(targetAngle, (float)Math.PI * 4 / 3, (float)Math.PI * 5 / 3);
                 }
-                InitialAngle = targetAngle + FIRSTHALFSWING * SWINGRANGE * Projectile.spriteDirection; // Inverse: add instead of subtract
+                InitialAngle = targetAngle + FIRSTHALFSWING * SWINGRANGE * Projectile.spriteDirection;
             }
             else
             {
@@ -134,7 +134,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                     targetAngle = MathHelper.Clamp(targetAngle, (float)Math.PI * 5 / 6, (float)Math.PI * 4 / 3);
                 }
 
-                InitialAngle = targetAngle - FIRSTHALFSWING * SWINGRANGE * Projectile.spriteDirection; // Otherwise, we calculate the angle
+                InitialAngle = targetAngle - FIRSTHALFSWING * SWINGRANGE * Projectile.spriteDirection;
             }
         }
 
@@ -154,7 +154,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Owner.itemAnimation = 2;
             Owner.itemTime = 2;
 
-            if (Owner.HeldItem.ModItem is SpiritOfJustice Justice)
+            if (Owner.HeldItem.ModItem is Memoriam Mem)
             {
 
                 foreach (Projectile proj in Main.projectile)
@@ -168,13 +168,16 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
                         if (Collision.CheckAABBvLineCollision(H.TopLeft(), H.Size(), start, end, 15f * Projectile.scale, ref collisionPoint))
                         {
-                            if (Justice.CanParry)
+                            if (Mem.CanParry)
                             {
                                 Parry(proj.Center);
-                                Justice.ParryCooldown = SpiritOfJustice.MaxParryCooldown;
+                                Mem.ParryCooldown = Memoriam.MaxParryCooldown;
 
                                 proj.velocity = -proj.velocity;
                                 proj.friendly = true;
+
+                                //Added after the initial demo video
+                                Projectile.NewProjectile(Projectile.GetSource_Misc("MemoriamParry"), proj.position, proj.velocity.RotatedByRandom(0.2f), ModContent.ProjectileType<SoulOfLight_Projectile>(), Projectile.damage / 2, 7, Owner.whoAmI);
                             }
                         }
                     }
@@ -207,7 +210,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
         }
 
-        
+
 
         public void Parry(Vector2 Position)
         {
@@ -323,7 +326,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
             if (Timer >= prepTime)
             {
-                SoundEngine.PlaySound(DTAssetLib.SwordSounds.SpiritOfJusticeSwing with { MaxInstances = 0, PitchVariance = 0.4f });
+                SoundEngine.PlaySound(DTAssetLib.SwordSounds.MemoriamSwing with { MaxInstances = 0, PitchVariance = 0.4f });
                 CurrentStage = AttackStage.Execute;
             }
         }
@@ -334,7 +337,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         {
             swordTip = Projectile.Center + Projectile.rotation.ToRotationVector2() * (Projectile.Size.Length() * Projectile.scale);
             SwordLine = new Line(Owner.Center, swordTip);
-            
+
 
             Player player = Main.player[Projectile.owner];
 

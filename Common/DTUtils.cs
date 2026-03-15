@@ -971,7 +971,37 @@ namespace DestroyerTest.Common
             player.setBonus = Language.GetTextValue(key);
         }
 
-        
+        // Helper Method from Fargo's Souls. Added to DTUtils for Blossom Beater's functionality, so that Fargo's is not needed for its ammo override to be disabled.
+        public static Item FindAmmoDT(this Player player, int ammoID)
+        {
+            Item result = new Item();
+            bool flag = false;
+            if (ammoID == AmmoID.None)
+            {
+                return result;
+            }
+
+            for (int i = 54; i < 58; i++)
+            {
+                if (player.inventory[i].ammo == ammoID && player.inventory[i].stack > 0)
+                {
+                    return player.inventory[i];
+                }
+            }
+
+            if (!flag)
+            {
+                for (int j = 0; j < 54; j++)
+                {
+                    if (player.inventory[j].ammo == ammoID && player.inventory[j].stack > 0)
+                    {
+                        return player.inventory[j];
+                    }
+                }
+            }
+
+            return result;
+        }
     }
 
     public class DTPlayerUtil : ModPlayer
@@ -1639,6 +1669,7 @@ namespace DestroyerTest.Common
             public static SoundStyle MagicSwing = new SoundStyle($"{Path}/MagicSwing", 3);
             public static SoundStyle MediumSwing = new SoundStyle($"{Path}/MediumSwing", 3);
             public static SoundStyle MediumHeavySwing = new SoundStyle($"{Path}/MediumHeavySwing", 3);
+            public static SoundStyle MemoriamSwing = new SoundStyle($"{Path}/MemoriamSwing");
             public static SoundStyle QuickSwing = new SoundStyle($"{Path}/QuickSwing", 4);
             public static SoundStyle SwiftSwing = new SoundStyle($"{Path}/SwiftSwing1");
             public static SoundStyle Slam = new SoundStyle($"{Path}/Slam", 2);

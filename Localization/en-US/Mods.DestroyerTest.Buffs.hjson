@@ -410,25 +410,30 @@ LeeFractalBuff: {
 
 MiniRoseBoost: {
 	DisplayName: Mini Rose Boost
-	Description: Mods.DestroyerTest.Buffs.MiniRoseBoost.Description
+	Description: Increased damage reduction and defense.
 }
 
 ScepterImbueFB: {
-	DisplayName: Scepter Imbue F B
-	Description: Mods.DestroyerTest.Buffs.ScepterImbueFB.Description
+	DisplayName: Scepter Imbue (Frostbite)
+	Description: Your weapons have been imbued with even more potent Frozen Flames!
 }
 
 ScepterImbueHF: {
-	DisplayName: Scepter Imbue H F
-	Description: Mods.DestroyerTest.Buffs.ScepterImbueHF.Description
+	DisplayName: Scepter Imbue (Hellfire)
+	Description: Your weapons have been imbued with Hellfire!
 }
 
 ScepterImbueSF: {
-	DisplayName: Scepter Imbue S F
-	Description: Mods.DestroyerTest.Buffs.ScepterImbueSF.Description
+	DisplayName: Scepter Imbue (Shimmering Flames)
+	Description: Your weapons have been imbued with Shimmering Flames!
 }
 
 BlessingBuff: {
 	Description: ""
 	DisplayName: Blessed
+}
+
+BlossomBeaterBuff: {
+	DisplayName: Blossom Beater
+	Description: A fiesty little thing...
 }

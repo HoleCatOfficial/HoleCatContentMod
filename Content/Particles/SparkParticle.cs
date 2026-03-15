@@ -34,8 +34,8 @@ namespace DestroyerTest.Content.Particles
         {
             Rotation = Velocity.ToRotation() + MathHelper.PiOver2;
             Velocity.Y += 0.3f;
-            WidthScale *= 0.94f;
-            LengthScale *= 0.99f;
+            WidthScale *= 0.9f;
+            LengthScale *= 0.95f;
             
             if (WidthScale <= 0.0001f)
             {
@@ -78,8 +78,8 @@ namespace DestroyerTest.Content.Particles
         public override void AI()
         {
             Rotation = Velocity.ToRotation() + MathHelper.PiOver2;
-            WidthScale *= 0.94f;
-            LengthScale *= 0.99f;
+            WidthScale *= 0.90f;
+            LengthScale *= 0.95f;
             
             if (WidthScale <= 0.0001f)
             {

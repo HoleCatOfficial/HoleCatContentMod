@@ -26,6 +26,14 @@ DTConfig: {
 		Label: Use reworked camera
 	}
 
+	MinionAmmoReplace: {
+		Tooltip:'''
+				If enabled, minions that consume ammo will convert ammo to their own type. 
+				If disabled, the ammo type will be used instead.
+				'''
+		Label: Minions that consume ammo will replace ammo.
+	}
+
 	ScepterTileCollsionsCooldown: {
 		Label: Scepter Tile Collsions Cooldown
 		Tooltip: ""
@@ -173,6 +181,11 @@ DTUIConfig: {
 			Tooltip: {
 				$parentVal: ""
 			}
+		}
+
+		MinionAmmoReplace: {
+			Label: Minion Ammo Replace
+			Tooltip: ""
 		}
 	}
 

@@ -4136,3 +4136,14 @@ RiftRipper: {
 	DisplayName: Rift Ripper
 	Tooltip: ""
 }
+
+BlossomBeater: {
+	DisplayName: Blossom Beater
+	Tooltip:
+		'''
+		Summons an overgrown gun that floats near you and fires at enemies.
+		Each shot consumes one bullet, and converts bullets into cursed flame bullets (this effect can be toggled in configs).
+		They will not attack if the Blossom Beater is not in your inventory, or if you are out of bullets.
+		Each summon takes two minion slots.
+		'''
+}
