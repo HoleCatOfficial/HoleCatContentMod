@@ -30,32 +30,30 @@ namespace DestroyerTest.Content.SummonItems
     {
         public override void SetStaticDefaults()
         {
-            ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true; // This lets the player target anywhere on the whole screen while using a controller
+            ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true;
             ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
 
-            ItemID.Sets.StaffMinionSlotsRequired[Type] = 1f; // The default value is 1, but other values are supported. See the docs for more guidance. 
+            ItemID.Sets.StaffMinionSlotsRequired[Type] = 1f;
         }
 
         public override void SetDefaults()
         {
-            Item.damage = 220;
+            Item.damage = 230;
             Item.knockBack = 9f;
-            Item.mana = 30; // mana cost
+            Item.mana = 30;
             Item.width = 58;
             Item.height = 34;
             Item.useTime = 60;
             Item.useAnimation = 60;
             Item.useStyle = ItemUseStyleID.HoldUp;
             Item.value = 18000;
-            Item.rare = ItemRarityID.Green;
+            Item.rare = ModContent.RarityType<CorruptionSpecialRarity>();
             Item.UseSound = SoundID.Item44;
 
-            // These below are needed for a minion weapon
-            Item.noMelee = true; // this item doesn't do any melee damage
-            Item.DamageType = DamageClass.Summon; // Makes the damage register as summon. If your item does not have any damage type, it becomes true damage (which means that damage scalars will not affect it). Be sure to have a damage type
+            Item.noMelee = true;
+            Item.DamageType = DamageClass.Summon;
             Item.buffType = ModContent.BuffType<BlossomBeaterBuff>();
-            // No buffTime because otherwise the item tooltip would say something like "1 minute duration"
-            Item.shoot = ModContent.ProjectileType<BlossomBeaterMinion>(); // This item creates the minion projectile
+            Item.shoot = ModContent.ProjectileType<BlossomBeaterMinion>();
 
             
         }

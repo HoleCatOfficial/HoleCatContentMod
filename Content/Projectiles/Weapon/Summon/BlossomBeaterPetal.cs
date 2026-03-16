@@ -1,4 +1,4 @@
-using DestroyerTest.Content.Dusts;
+﻿using DestroyerTest.Content.Dusts;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -8,20 +8,22 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
+namespace DestroyerTest.Content.Projectiles.Weapon.Summon
 {
-    public class CorruptPetal : ModProjectile
+    public class BlossomBeaterPetal : ModProjectile
     {
-        private NPC HomingTarget {
+        private NPC HomingTarget
+        {
             get => Projectile.ai[0] == 0 ? null : Main.npc[(int)Projectile.ai[0] - 1];
-            set {
+            set
+            {
                 Projectile.ai[0] = value == null ? 0 : value.whoAmI + 1;
             }
         }
 
         public ref float DelayTimer => ref Projectile.ai[1];
 
-        public override void SetStaticDefaults() 
+        public override void SetStaticDefaults()
         {
             Main.projFrames[Projectile.type] = 4;
         }
@@ -30,11 +32,12 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
         {
             Projectile.width = 32;
             Projectile.height = 32;
-            Projectile.friendly = false;
-            Projectile.hostile = true;
+            Projectile.friendly = true;
+            Projectile.hostile = false;
             Projectile.ignoreWater = false;
             Projectile.timeLeft = 120;
             Projectile.frame = 0;
+            Projectile.ArmorPenetration = 12;
         }
 
         public override bool PreDraw(ref Color lightColor)
@@ -105,7 +108,9 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
                 float targetAngle = Projectile.AngleTo(HomingTarget.Center);
                 Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(3)).ToRotationVector2() * length;
                 Projectile.rotation = Projectile.velocity.ToRotation();
-            }  
+            }
+            
+
         }
 
         public override void OnKill(int timeLeft)
@@ -119,7 +124,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
 
         private void AnimateProjectile()
         {
-           
+
             if (++Projectile.frameCounter >= 5)
             {
                 Projectile.frameCounter = 0;
@@ -130,16 +135,19 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
             }
         }
 
-        public NPC FindClosestNPC(float maxDetectDistance) 
+        public NPC FindClosestNPC(float maxDetectDistance)
         {
             NPC closestNPC = null;
 
             float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
 
-            foreach (var target in Main.ActiveNPCs) {
-                if (IsValidTarget(target)) {
+            foreach (var target in Main.ActiveNPCs)
+            {
+                if (IsValidTarget(target))
+                {
                     float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, Projectile.Center);
-                    if (sqrDistanceToTarget < sqrMaxDetectDistance) {
+                    if (sqrDistanceToTarget < sqrMaxDetectDistance)
+                    {
                         sqrMaxDetectDistance = sqrDistanceToTarget;
                         closestNPC = target;
                     }
@@ -149,7 +157,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
             return closestNPC;
         }
 
-        public bool IsValidTarget(NPC target) 
+        public bool IsValidTarget(NPC target)
         {
             return target.CanBeChasedBy();
         }

@@ -27,10 +27,11 @@ DTConfig: {
 	}
 
 	MinionAmmoReplace: {
-		Tooltip:'''
-				If enabled, minions that consume ammo will convert ammo to their own type. 
-				If disabled, the ammo type will be used instead.
-				'''
+		Tooltip:
+			'''
+			If enabled, minions that consume ammo will convert ammo to their own type. 
+			If disabled, the ammo type will be used instead.
+			'''
 		Label: Minions that consume ammo will replace ammo.
 	}
 
@@ -184,8 +185,13 @@ DTUIConfig: {
 		}
 
 		MinionAmmoReplace: {
-			Label: Minion Ammo Replace
-			Tooltip: ""
+			Label: {
+				$parentVal: Minion Ammo Replace
+			}
+
+			Tooltip: {
+				$parentVal: ""
+			}
 		}
 	}
 

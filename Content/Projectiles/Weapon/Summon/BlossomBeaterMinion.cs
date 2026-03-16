@@ -1,6 +1,7 @@
 ﻿using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Particles;
+using DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss;
 using DestroyerTest.Content.SummonItems;
 using FargowiltasSouls;
 using InnoVault.PRT;
@@ -215,7 +216,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
                         dir.Normalize();
                         Vector2 Vel = dir * 8;
 
-                        if (Projectile.ai[1] % 120 == 0)
+                        if (Projectile.ai[1] % 85 == 0)
                         {
                             SoundEngine.PlaySound(SoundID.Item36, Projectile.Center);
                             for (int i = 0; i < 4; i++)
@@ -223,7 +224,14 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
                                 PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), Muzzle, Vel.RotatedByRandom(0.1f), ColorLib.CursedFlames, 0.25f);
                             }
                             Projectile.velocity += dir * -4f;
-                            Projectile.NewProjectile(Source, Muzzle, Vel, projToShoot, damage, knockBack, player.whoAmI);
+                            Projectile bullet = Projectile.NewProjectileDirect(Source, Muzzle, Vel, projToShoot, damage, knockBack, player.whoAmI);
+                            bullet.ArmorPenetration = 8;
+
+                            if (Main.rand.NextBool(3))
+                            {
+                                SoundEngine.PlaySound(DTAssetLib.Impacts.ExplosiveImpactSmall with { MaxInstances = 4, PitchVariance = 0.2f });
+                                Projectile petal = Projectile.NewProjectileDirect(Source, Muzzle, Vel * 3f, ModContent.ProjectileType<BlossomBeaterPetal>(), (int)(damage * 2.5f), knockBack, player.whoAmI);
+                            }
                         }
                     }
                 }
