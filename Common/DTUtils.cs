@@ -31,6 +31,7 @@ using DestroyerTest.Content.Magic;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles.Stellar;
 using Steamworks;
+using Terraria.Modules;
 
 namespace DestroyerTest.Common
 {
@@ -1002,6 +1003,28 @@ namespace DestroyerTest.Common
 
             return result;
         }
+
+        public static void CycleLine(this Line line, Color color, float scroll = 0f, int PointCount = 2, int DustType = DustID.Torch)
+        {
+            Vector2[] basePoints = line.GetPointsAlongLine(PointCount);
+            int len = basePoints.Length;
+
+            scroll += 0.05f;
+
+            int baseIndex = (int)scroll % len;
+            float t = scroll % 1f;
+
+            for (int i = 0; i < len; i++)
+            {
+                int a = (baseIndex + i) % len;
+                int b = (a + 1) % len;
+
+                Vector2 pos = Vector2.Lerp(basePoints[a], basePoints[b], t);
+
+                Dust T = Dust.NewDustPerfect(pos, DustType, Vector2.Zero, 0, color, 0.8f);
+                T.noGravity = true;
+            }
+        }
     }
 
     public class DTPlayerUtil : ModPlayer
@@ -1508,6 +1531,7 @@ namespace DestroyerTest.Common
         public static Asset<Texture2D> GlowCone = ModContent.Request<Texture2D>($"{ExtrasPath}/GlowCone", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> MiscSparkle144 = ModContent.Request<Texture2D>($"{ExtrasPath}/144MiscSparkle", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> SwordSlash = ModContent.Request<Texture2D>($"{ExtrasPath}/SwordTrail2", AssetRequestMode.AsyncLoad);
+
         public static Asset<Texture2D> Sparkle(int Variant)
         {
             if (Variant <= 0)
@@ -1606,6 +1630,7 @@ namespace DestroyerTest.Common
         public static Asset<Texture2D> QuixotismPowerAura = ModContent.Request<Texture2D>($"{ExtrasPath}/QuixotismPowerAura", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> CursorLanternTexture = ModContent.Request<Texture2D>($"{ExtrasPath}/CursorLantern", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> ManifestStar = ModContent.Request<Texture2D>($"{ExtrasPath}/ManifestHoldoutStar", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> BlossomBeaterRope = ModContent.Request<Texture2D>($"{ExtrasPath}/BlossomBeaterRope", AssetRequestMode.AsyncLoad);
 
         public struct HallowedBar
         {

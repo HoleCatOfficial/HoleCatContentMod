@@ -29,13 +29,13 @@ namespace DestroyerTest.Content.Equips
 			ArmorIDs.Head.Sets.DrawHead[Item.headSlot] = false; 
 		}
 
-		public override void SetDefaults() {
+		public override void SetDefaults() 
+        {
 			Item.width = 28;
 			Item.height = 22;
 			Item.value = Item.sellPrice(gold: 70);
 			Item.rare = ModContent.RarityType<ShimmeringRarity>();
 			Item.defense = 13;
-            Item.vanity = true;
 		}
 
         public bool Scepter = false;

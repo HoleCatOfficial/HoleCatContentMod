@@ -1,4 +1,5 @@
-﻿using DestroyerTest.Common;
+﻿using BreadLibrary.Core.Verlet;
+using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss;
@@ -19,9 +20,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static FargowiltasSouls.FargoSoulsSets;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Summon
 {
@@ -34,8 +37,16 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
             ProjectileID.Sets.MinionTargettingFeature[Type] = true;
         }
 
+        public Line ToPlayer;
+        public Line ToMouse;
+
+
+        public Line ToPlayerInit;
+
+
         public override void SetDefaults()
         {
+
             Projectile.width = 50;
             Projectile.height = 50;
             Projectile.friendly = true;
@@ -48,8 +59,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
             Projectile.minionSlots = 2f;
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = 10;
+
+
+          
         }
 
+        public float ScaleY;
         public override bool PreDraw(ref Color lightColor)
         {
             Texture2D PT = TextureAssets.Projectile[Type].Value;
@@ -66,11 +81,81 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
                 FX = SpriteEffects.None;
             }
 
+            RenderRope(Main.screenPosition, Projectile.GetAlpha(lightColor));
+
             Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
             Opus.DrawProjectileShadowsRotating(Projectile, Opus.Sine(2f, 5.3f), ColorLib.CursedFlames, 0.06f);
             Opus.ReturnToDefaultDrawing(Main.spriteBatch);
-            Main.EntitySpriteDraw(PT, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, PT.Size() / 2, Projectile.scale, FX);
+            Main.EntitySpriteDraw(PT, Projectile.Center - Main.screenPosition, null, Projectile.GetAlpha(lightColor), Projectile.rotation, PT.Size() / 2, Projectile.scale, FX);
             return false;
+        }
+
+        private void RenderRope(Vector2 screenPos, Color drawColor)
+        {
+
+            var tex = DTAssetLib.BlossomBeaterRope.Value;
+
+
+            int segmentCount = Vine.Positions.Length;
+            for (var i = 0; i < segmentCount - 1; i++)
+            {
+
+                var start = Vine.Positions[i];
+                var end = Vine.Positions[i + 1];
+
+                Vector2 VinePos = (start + end) / 2;
+                var DrawPos = VinePos - screenPos;
+
+                var style = 0;
+
+                
+
+                if (i == Vine.Positions.Length - 3)
+                {
+                    style = 0;
+                }
+
+                if (i > Vine.Positions.Length - 3)
+                {
+                    style = 1;
+                }
+
+                var frame = tex.Frame(1, 1, style);
+
+                var rotation = start.AngleTo(end);
+
+
+                var t = 0f;
+
+                if (segmentCount > 1)
+                {
+                    t = i / (float)(segmentCount - 1); // 0 at base, 1 at tip
+                }
+   
+
+                // Vertical stretch based on actual distance to next segment and texture height
+                var segmentDistance = start.Distance(end);
+                var lengthFactor = 1f;
+                float denom = Math.Max(1, frame.Height - 5);
+                lengthFactor = segmentDistance / denom * 1.2f;
+
+                // Combine into final stretch vector and apply a small global multiplier for visual tuning
+                var stretch = new Vector2(1f, lengthFactor) * 1.2f;
+                var Origin = frame.Size() * 0.5f;
+
+                if (i % 2 == 0)
+                {
+                    continue;
+                }
+
+                if (i == segmentCount - 2)
+                {
+                    stretch = Vector2.One;
+                    Origin = new Vector2(frame.Width / 2, 2);
+                }
+                Main.EntitySpriteDraw(tex, DrawPos, frame, drawColor, rotation, Origin, stretch, 0);
+            }
+
         }
 
         public int IdealDistancefromPlayerMin = 140;
@@ -91,18 +176,49 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
         }
         public Condition CurrentCondition;
 
-        public Line ToPlayer;
-        public Line ToMouse;
-        public override void AI()
+        private VerletChain Vine;
+
+        public override void OnSpawn(IEntitySource source)
         {
             Player player = Main.player[Projectile.owner];
             ToPlayer = new Line(Projectile.Center, player.Center);
+
+            if (Vine == null)
+            {
+                Vine = new VerletChain(18, 6, Projectile.Center);
+
+                Vector2[] pt = ToPlayer.GetPointsAlongLine(18);
+
+                for (int k = 0; k < pt.Length - 1; k++)
+                {
+                    Vine.Positions[k] = pt[k];
+                }
+            }
+        }
+
+        
+        
+
+        public override void AI()
+        {
+
+            Player player = Main.player[Projectile.owner];
+            ToPlayer = new Line(Projectile.Center, player.Center);
             ToMouse = new Line(Projectile.Center, Main.MouseWorld);
+
+
+            if (Vine != null)
+            {
+                Vine.Positions[^1] = player.Center;
+                Vine.Simulate(Vector2.Zero, Projectile.Center, 1.5f, 1f);
+            }
+           
+            
             Projectile.ai[1]++;
 
-            CycleLine(ToPlayer);
+            //CycleLine(ToPlayer);
 
-            Vector2 Muzzle = Projectile.Center + (new Vector2(Projectile.width / 2, 10).RotatedBy(Projectile.rotation));
+            Vector2 Muzzle = Projectile.Center + (new Vector2(Projectile.width / 2, -4).RotatedBy(Projectile.rotation));
 
             if (!CheckActive(player))
             {
@@ -159,10 +275,17 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
                 case Condition.SweetSpot:
                     {
                         Projectile.velocity *= 0.995f;
-                        if (Main.GameUpdateCount % 120 == 0)
+                        Vector2 RandP = player.Center + new Vector2(IdealDistanceFromPlayerExact, 0);
+                        if (Main.GameUpdateCount % 240 == 0)
                         {
-                            Projectile.velocity += Main.rand.NextVector2Circular(5, 5);
+                            RandP = RandP.RotatedByRandom(MathHelper.TwoPi);
                         }
+
+                        Vector2 D = RandP - Projectile.Center;
+                        D.Normalize();
+                        Projectile.velocity += D;
+
+
                         break;
                     }
                 case Condition.TooCloseToPlayer:
@@ -227,7 +350,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
                             Projectile bullet = Projectile.NewProjectileDirect(Source, Muzzle, Vel, projToShoot, damage, knockBack, player.whoAmI);
                             bullet.ArmorPenetration = 8;
 
-                            if (Main.rand.NextBool(3))
+                            if (Main.rand.NextBool(5))
                             {
                                 SoundEngine.PlaySound(DTAssetLib.Impacts.ExplosiveImpactSmall with { MaxInstances = 4, PitchVariance = 0.2f });
                                 Projectile petal = Projectile.NewProjectileDirect(Source, Muzzle, Vel * 3f, ModContent.ProjectileType<BlossomBeaterPetal>(), (int)(damage * 2.5f), knockBack, player.whoAmI);
@@ -401,6 +524,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
                 Projectile.timeLeft = 2;
             }
 
+            return true;
+        }
+
+        public override bool TileCollideStyle(ref int width, ref int height, ref bool fallThrough, ref Vector2 hitboxCenterFrac)
+        {
+            fallThrough = true;
             return true;
         }
 

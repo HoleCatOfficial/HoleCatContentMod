@@ -437,3 +437,8 @@ BlossomBeaterBuff: {
 	DisplayName: Blossom Beater
 	Description: A fiesty little thing...
 }
+
+StardustSummonBoost: {
+	DisplayName: Stardust Summon Boost
+	Description: Mods.DestroyerTest.Buffs.StardustSummonBoost.Description
+}

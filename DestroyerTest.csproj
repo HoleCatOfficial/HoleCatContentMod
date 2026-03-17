@@ -32,6 +32,9 @@
 	  <Reference Include="OpusLib">
 	    <HintPath>..\ModAssemblies\OpusLib_v1.424.dll</HintPath>
 	  </Reference>
+		<Reference Include="BreadLibrary">
+			<HintPath>..\ModAssemblies\BreadLibrary_v0.1.dll</HintPath>
+		</Reference>
 	</ItemGroup>
 	
 	

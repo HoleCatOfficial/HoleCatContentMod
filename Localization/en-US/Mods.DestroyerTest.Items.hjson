@@ -4147,3 +4147,18 @@ BlossomBeater: {
 		Each summon takes two minion slots.
 		'''
 }
+
+SoulBoundWhip: {
+	DisplayName: Soul Bound Whip
+	Tooltip: ""
+}
+
+StardustTincture: {
+	DisplayName: Stardust Tincture
+	Tooltip: ""
+}
+
+SunSaber: {
+	DisplayName: Sun Saber
+	Tooltip: "You, Great Sun Sabre. You will hail in the new era of custom swings."
+}

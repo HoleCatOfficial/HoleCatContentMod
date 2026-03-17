@@ -58,6 +58,7 @@ namespace DestroyerTest.Content.Projectiles.ShadeThrasherFriendly
             Projectile.Center = reader.ReadVector2();
         }
 
+        public int NoTargetTimer = 0;
         public override void AI()
         {
             Player player = Main.player[Projectile.owner];
@@ -90,7 +91,7 @@ namespace DestroyerTest.Content.Projectiles.ShadeThrasherFriendly
                 spawned = true;
             }
 
-            if (HomingTarget == null)
+            if (HomingTarget == null || NoTargetTimer > 0)
             {
                 Projectile.frame = 0;
                 // Movement logic toward player
@@ -126,27 +127,36 @@ namespace DestroyerTest.Content.Projectiles.ShadeThrasherFriendly
                 }
             }
 
+            Projectile.rotation = Projectile.velocity.ToRotation();
+
             float maxDetectRadius = 4000f;
 
-            if (HomingTarget == null)
+            if (NoTargetTimer > 0)
             {
-                HomingTarget = FindClosestNPC(maxDetectRadius);
+                NoTargetTimer--;
             }
-
-            if (HomingTarget != null && !IsValidTarget(HomingTarget))
+            if (NoTargetTimer <= 0)
             {
-                HomingTarget = null;
+                if (HomingTarget == null)
+                {
+                    HomingTarget = FindClosestNPC(maxDetectRadius);
+                }
+
+                if (HomingTarget != null && !IsValidTarget(HomingTarget))
+                {
+                    HomingTarget = null;
+                }
+
+                if (HomingTarget == null)
+                    return;
+
+                Projectile.frame = 1;
+
+                float length = Projectile.velocity.Length();
+                float targetAngle = Projectile.AngleTo(HomingTarget.Center);
+                Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(15)).ToRotationVector2() * 40f;
+                Projectile.rotation = Projectile.velocity.ToRotation();
             }
-
-            if (HomingTarget == null)
-                return;
-
-            Projectile.frame = 1;
-
-            float length = Projectile.velocity.Length();
-            float targetAngle = Projectile.AngleTo(HomingTarget.Center);
-            Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(15)).ToRotationVector2() * 40f;
-            Projectile.rotation = Projectile.velocity.ToRotation();
         }
 
         private void CheckActive(Player player)
@@ -187,7 +197,8 @@ namespace DestroyerTest.Content.Projectiles.ShadeThrasherFriendly
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            target.AddBuff(ModContent.BuffType<ShimmeringFlames>(), 600);
+            ShimmeringFlames.ShimmerBurn(target);
+            NoTargetTimer = 120;
         }
     }
 
