@@ -2768,6 +2768,11 @@ MalevolenceMantra: {
 	Tooltip: Throwing a scepter has a hance to release a burst of hellfire.
 }
 
+Malevolence: {
+	DisplayName: Malevolence
+	Tooltip: ""
+}
+
 ShiningObelisk: {
 	DisplayName: Obelisk of Stolen Light
 	Tooltip: A massive pillar with a basin of plasma at the top. Holding this to the air can dispel certain powerful enemies for a short time.
@@ -4160,5 +4165,5 @@ StardustTincture: {
 
 SunSaber: {
 	DisplayName: Sun Saber
-	Tooltip: "You, Great Sun Sabre. You will hail in the new era of custom swings."
+	Tooltip: You, Great Sun Sabre. You will hail in the new era of custom swings.
 }

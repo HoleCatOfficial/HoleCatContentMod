@@ -21,6 +21,7 @@ using DestroyerTest.Content.Scepter;
 using DestroyerTest.Content.Equips.ScepterAccessories;
 using Terraria.DataStructures;
 using DestroyerTest.Content.SummonItems;
+using OpusLib;
 
 namespace DestroyerTest.Common
 {
@@ -90,7 +91,14 @@ namespace DestroyerTest.Common
     {
         public override bool PreDrawTooltipLine(Item item, DrawableTooltipLine line, ref int yOffset)
         {
-            if (item.rare == ModContent.RarityType<MetallurgyRarity>() && line.Name == "ItemName")
+            if (item.rare == ModContent.RarityType<WretchedRarity>() && line.Name == "ItemName")
+            {
+                Color In = Opus.Sine(ColorLib.Wretched6, ColorLib.Wretched7, 0.01f);
+                line.SpecialColorInnerOuter(ColorLib.WretchedGradient(), In);
+            }
+
+
+                if (item.rare == ModContent.RarityType<MetallurgyRarity>() && line.Name == "ItemName")
             {
                 // Define two colors to cycle between for the stroke
                 Color strokeColor1 = new Color(193, 89, 0);

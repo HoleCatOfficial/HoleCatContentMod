@@ -45,7 +45,10 @@ namespace DestroyerTest.Content.MeleeWeapons
             Item.channel = true;
         }
 
-
+        public override bool CanUseItem(Player player)
+        {
+            return player.ownedProjectileCounts[Item.shoot] < 1;
+        }
         public override void AddRecipes()
         {
             CreateRecipe()

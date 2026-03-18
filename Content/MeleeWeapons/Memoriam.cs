@@ -20,7 +20,6 @@ namespace DestroyerTest.Content.MeleeWeapons
     [AutoloadGlowmask]
     public class Memoriam : ModItem
     {
-        public int attackType = 0;
         public bool CanParry = true;
         public int ParryCooldown = 0;
         public const int MaxParryCooldown = 300;
@@ -46,14 +45,13 @@ namespace DestroyerTest.Content.MeleeWeapons
             Item.noUseGraphic = true;
             Item.noMelee = true;
             Item.shoot = ModContent.ProjectileType<MemoriamSwing>();
+            Item.channel = true;
+        }
+        public override bool CanUseItem(Player player)
+        {
+            return player.ownedProjectileCounts[Item.shoot] < 1;
         }
 
-        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
-        {
-            Projectile.NewProjectile(source, position, velocity, type, damage, knockback, Main.myPlayer, attackType);
-            attackType = (attackType + 1) % 2;
-            return false;
-        }
 
         public override void UpdateInventory(Player player)
         {

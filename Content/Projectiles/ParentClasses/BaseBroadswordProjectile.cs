@@ -3,7 +3,6 @@ using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Particles.Orchestrated;
-using DestroyerTest.Content.Projectiles.ParentClasses;
 using DestroyerTest.Content.Projectiles.Weapon.Rogue;
 using InnoVault.PRT;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -21,37 +20,33 @@ using Terraria.GameContent;
 using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.Utilities.Terraria.Utilities;
+using XPT.Core.Audio.MP3Sharp.Decoding.Decoders.LayerIII;
 
-namespace DestroyerTest.Content.Projectiles.Weapon.Melee
+namespace DestroyerTest.Content.Projectiles.ParentClasses
 {
 
-    public class SunSaberSwing : BaseBroadswordProjectile
+    public abstract class BaseBroadswordProjectile : ModProjectile
     {
-
-        public override void SetDefaults()
-        {
-            base.SetDefaults();
-            Projectile.width = 46;
-            Projectile.height = 46;
-            SweepColor = Color.Orange;
-        }
-
-        public override SoundStyle Swing => DTAssetLib.SwordSounds.SpiritOfJusticeSwing;
-
-
-        /*
         private Player Owner => Main.player[Projectile.owner];
+        public virtual SoundStyle Swing { get; set; } = DTAssetLib.SwordSounds.Woosh;
 
+        /// <summary>
+        /// Use this in place of SetStaticDefaults.
+        /// </summary>
+        public virtual void SetStaticDefaultsExtra()
+        {
+
+        }
         public override void SetStaticDefaults()
         {
             ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY[Type] = true;
             ProjectileID.Sets.AllowsContactDamageFromJellyfish[Type] = true;
+            SetStaticDefaultsExtra();
         }
 
         public override void SetDefaults()
         {
-            Projectile.width = 46;
-            Projectile.height = 46;
             Projectile.friendly = true;
             Projectile.timeLeft = 10000;
             Projectile.penetrate = -1;
@@ -59,11 +54,15 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Projectile.DamageType = DamageClass.Melee;
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = 15;
-            
         }
 
+        public virtual void OnSpawnExtras()
+        {
+
+        }
         public override void OnSpawn(IEntitySource source)
         {
+            OnSpawnExtras();
             Projectile.spriteDirection = Main.MouseWorld.X > Owner.MountedCenter.X ? 1 : -1;
         }
 
@@ -84,18 +83,26 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Wait
         }
 
+        public virtual void ExtraEffects()
+        {
+
+        }
+
         public State CurrentState;
         public Vector2 targetAngle = Vector2.Zero;
         public int AITimer = 0;
         public float UpPoint = 0f;
         public float DownPoint = 0f;
+        public virtual float ScaleMult { get; set; } = 0f;
+        public float AdjustedScale = 0f;
 
         public override void AI()
         {
             AITimer++;
             if (Owner.controlUseItem)
             {
-                Projectile.scale = Owner.GetAdjustedItemScale(Owner.HeldItem);
+                AdjustedScale = Owner.GetAdjustedItemScale(Owner.HeldItem) + ScaleMult;
+                Projectile.scale = AdjustedScale;
                 if (CurrentState == State.Wait)
                 {
                     targetAngle = (Main.MouseWorld - Owner.MountedCenter);
@@ -111,8 +118,24 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 return;
             }
 
+            ExtraEffects();
             SetSwordPosition();
             ControlRotation();
+        }
+
+
+        public virtual void OnStartSwing()
+        {
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="LastSwing"> -1 if the last swing was an upward swing, 1 if it was a downward swing </param> 
+        public virtual void BetweenSwing(ref int LastSwing)
+        {
+
         }
 
         bool SetPos = false;
@@ -127,79 +150,110 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             switch (CurrentState)
             {
                 case State.SwingUp:
-                {
-                    if (!SetPos)
                     {
-                        Projectile.rotation = DownPoint;
-                        WaitTimer = (int)(10 * Owner.GetAttackSpeed(DamageClass.Melee));
-                        SetPos = true;
-                    }
-                    else
-                    {
-                        if (!f1)
+                        if (!SetPos)
                         {
-                            SoundEngine.PlaySound(SoundID.Item71, Projectile.Center);
-                            f1 = true;
+                            Projectile.rotation = DownPoint;
+                            WaitTimer = (int)(10 * Owner.GetAttackSpeed(DamageClass.Melee));
+                            SetPos = true;
+                        }
+                        else
+                        {
+                            if (!f1)
+                            {
+                                OnStartSwing();
+                                SoundEngine.PlaySound(Swing, Projectile.Center);
+                                SweepOpacity = 0.7f;
+                                f1 = true;
+                            }
+
+                            SweepOpacity = MathHelper.Lerp(SweepOpacity, 0f, t);
+                            Projectile.rotation = MathHelper.Lerp(Projectile.rotation, UpPoint, t);
+                            if (Math.Abs(Projectile.rotation - UpPoint) < 0.07)
+                            {
+                                LastSwing = -1;
+                                CurrentState = State.Wait;
+                            }
                         }
 
-                        
-                        Projectile.rotation = MathHelper.Lerp(Projectile.rotation, UpPoint, t);
-                        if (Math.Abs(Projectile.rotation - UpPoint) < 0.07)
-                        {
-                            LastSwing = -1;
-                            CurrentState = State.Wait;
-                        }
+                        break;
                     }
-
-                    break;
-                }
                 case State.SwingDown:
-                {
-                    if (!SetPos)
                     {
-                        Projectile.rotation = UpPoint;
-                        WaitTimer = (int)(10 * Owner.GetAttackSpeed(DamageClass.Melee));
-                        SetPos = true;
-                    }
-                    else
-                    {
-                        if (!f1)
+                        if (!SetPos)
                         {
-                            SoundEngine.PlaySound(SoundID.Item71, Projectile.Center);
-                            f1 = true;
+                            Projectile.rotation = UpPoint;
+                            WaitTimer = (int)(10 * Owner.GetAttackSpeed(DamageClass.Melee));
+                            SetPos = true;
                         }
-                        Projectile.rotation = MathHelper.Lerp(Projectile.rotation, DownPoint, t);
-                        if (Math.Abs(Projectile.rotation - DownPoint) < 0.07)
+                        else
                         {
-                            LastSwing = 1;
-                            CurrentState = State.Wait;
+                            if (!f1)
+                            {
+                                OnStartSwing();
+                                SoundEngine.PlaySound(Swing, Projectile.Center);
+                                SweepOpacity = 0.7f;
+                                f1 = true;
+                            }
+                            SweepOpacity = MathHelper.Lerp(SweepOpacity, 0f, t);
+                            Projectile.rotation = MathHelper.Lerp(Projectile.rotation, DownPoint, t);
+                            if (Math.Abs(Projectile.rotation - DownPoint) < 0.07)
+                            {
+                                LastSwing = 1;
+                                CurrentState = State.Wait;
+                            }
                         }
+                        break;
                     }
-                    break;
-                }
                 case State.Wait:
-                {
-                    if (WaitTimer > 0)
                     {
-                        SetPos = false;
-                        f1 = false;
-                        WaitTimer--;
-                    }
-                    else
-                    {
-                        if (LastSwing == -1)
+                        BetweenSwing(ref LastSwing);
+                        if (WaitTimer > 0)
                         {
-                            CurrentState = State.SwingDown;
+                            SetPos = false;
+                            f1 = false;
+                            WaitTimer--;
                         }
-                        if (LastSwing == 1)
+                        else
                         {
-                            CurrentState = State.SwingUp;
+                            if (LastSwing == -1)
+                            {
+                                CurrentState = State.SwingDown;
+                            }
+                            if (LastSwing == 1)
+                            {
+                                CurrentState = State.SwingUp;
+                            }
                         }
+                        break;
                     }
-                    break;
-                }
             }
         }
+
+        /// <summary>
+        /// If you wanna draw stuff, do it here.
+        /// </summary>
+        public virtual void DrawOverBlade()
+        {
+
+        }
+
+        public virtual void DrawUnderBlade()
+        {
+
+        }
+
+        private float SweepOpacity = 0f;
+        public virtual Color SweepColor { get; set; } = Color.White;
+        private void DrawSweepFX()
+        {
+            var Tex = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/CircularSlash2").Value;
+            float TexBasedMod = (Projectile.Size.Length() * 0.015f);
+            Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+            Main.EntitySpriteDraw(Tex, Owner.MountedCenter - Main.screenPosition, null, SweepColor * SweepOpacity, (Projectile.rotation + MathHelper.PiOver4), Tex.Size() / 2, (AdjustedScale * TexBasedMod), SpriteEffects.None);
+            Opus.ReturnToDefaultDrawing(Main.spriteBatch);
+        }
+
 
         public override bool PreDraw(ref Color lightColor)
         {
@@ -210,7 +264,6 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             SpriteEffects effects;
 
             Texture2D texture = TextureAssets.Projectile[Type].Value;
-            Texture2D powertexture = DTAssetLib.QuixotismPowerAura.Value;
 
             if (Projectile.spriteDirection > 0)
             {
@@ -225,8 +278,13 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 rotationOffset = MathHelper.ToRadians(135f);
             }
 
-            Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, null, lightColor * Projectile.Opacity, Projectile.rotation + rotationOffset, origin, Projectile.scale, effects, 0);
+            DrawSweepFX();
 
+            DrawUnderBlade();
+
+            Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, null, lightColor * Projectile.Opacity, Projectile.rotation + rotationOffset, origin, AdjustedScale, effects, 0);
+
+            DrawOverBlade();
             return false;
         }
 
@@ -234,7 +292,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
             Vector2 start = Owner.MountedCenter;
-            Vector2 end = start + Projectile.rotation.ToRotationVector2() * ((Projectile.Size.Length()) * Projectile.scale);
+            Vector2 end = start + Projectile.rotation.ToRotationVector2() * ((Projectile.Size.Length()) * AdjustedScale);
             float collisionPoint = 0f;
             return Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), start, end, 15f * Projectile.scale, ref collisionPoint);
         }
@@ -242,8 +300,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         public override void CutTiles()
         {
             Vector2 start = Owner.MountedCenter;
-            Vector2 end = start + Projectile.rotation.ToRotationVector2() * (Projectile.Size.Length() * Projectile.scale);
-            Utils.PlotTileLine(start, end, 15 * Projectile.scale, DelegateMethods.CutTiles);
+            Vector2 end = start + Projectile.rotation.ToRotationVector2() * (Projectile.Size.Length() * AdjustedScale);
+            Utils.PlotTileLine(start, end, 15 * AdjustedScale, DelegateMethods.CutTiles);
         }
 
 
@@ -252,9 +310,13 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             return true;
         }
 
+        public virtual void HitNPCEffects(NPC npc, NPC.HitInfo hit)
+        {
+
+        }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            Player player = Main.player[Projectile.owner];
+            HitNPCEffects(target, hit);
         }
 
 
@@ -283,6 +345,5 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
             Owner.heldProj = Projectile.whoAmI;
         }
-        */
     }
 }

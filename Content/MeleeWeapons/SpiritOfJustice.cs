@@ -20,7 +20,6 @@ namespace DestroyerTest.Content.MeleeWeapons
     [AutoloadGlowmask]
     public class SpiritOfJustice : ModItem
     {
-        public int attackType = 0;
         public bool CanParry = true;
         public int ParryCooldown = 0;
         public const int MaxParryCooldown = 300;
@@ -46,13 +45,12 @@ namespace DestroyerTest.Content.MeleeWeapons
             Item.noUseGraphic = true;
             Item.noMelee = true;
             Item.shoot = ModContent.ProjectileType<SpiritOfJusticeSwing>();
+            Item.channel = true;
         }
 
-        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        public override bool CanUseItem(Player player)
         {
-            Projectile.NewProjectile(source, position, velocity, type, damage, knockback, Main.myPlayer, attackType);
-            attackType = (attackType + 1) % 2;
-            return false;
+            return player.ownedProjectileCounts[Item.shoot] < 1;
         }
 
         public override void UpdateInventory(Player player)

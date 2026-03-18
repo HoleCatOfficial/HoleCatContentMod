@@ -43,25 +43,16 @@ namespace DestroyerTest.Content.MeleeWeapons
 			Item.noUseGraphic = true;
 			Item.noMelee = true;
 			Item.shoot = ModContent.ProjectileType<QuixotismSwing>();
+			Item.channel = true;
 		}
-
-		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        public override bool CanUseItem(Player player)
         {
-			Projectile.NewProjectile(source, position, velocity, type, damage, knockback, Main.myPlayer, attackType);
-			attackType = (attackType + 1) % 2;
-			comboExpireTimer = 0;
-			return false;
-		}
+            return player.ownedProjectileCounts[Item.shoot] < 1;
+        }
 
 		public override void UpdateInventory(Player player)
 		{
-			if (comboExpireTimer++ >= 120)
-            {
-				attackType = 0;
-                hitCount[0] = 0;
-                hitCount[1] = 0;
-                PowerOpacity = 0f;
-            }
+
 		}
 
 		public override bool MeleePrefix() 

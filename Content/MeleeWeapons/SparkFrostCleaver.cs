@@ -14,8 +14,6 @@ namespace DestroyerTest.Content.MeleeWeapons
 {
 	public class SparkFrostCleaver : ModItem
 	{
-        public int attackType = 0;
-        public int comboExpireTimer = 0;
 
         public override void SetDefaults() {
 			Item.width = 162;
@@ -32,22 +30,12 @@ namespace DestroyerTest.Content.MeleeWeapons
 			Item.noMelee = true; 
 			Item.noUseGraphic = true;
 			Item.shoot = ModContent.ProjectileType<SparkFrostCleaverSwing>();
-		}
-
-        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
-        {
-            Projectile.NewProjectile(source, position, velocity, type, damage, knockback, Main.myPlayer, attackType);
-            attackType = (attackType + 1) % 2;
-            comboExpireTimer = 0;
-            return false;
+            Item.channel = true;
         }
 
-        public override void UpdateInventory(Player player)
+        public override bool CanUseItem(Player player)
         {
-            if (comboExpireTimer++ >= 120)
-            {
-                attackType = 0;
-            }
+            return player.ownedProjectileCounts[Item.shoot] < 1;
         }
 
         public override bool MeleePrefix() 

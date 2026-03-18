@@ -1,6 +1,7 @@
 using DestroyerTest.Common;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
+using DestroyerTest.Content.Projectiles.ParentClasses;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -16,7 +17,97 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 {
-    public class SparkFrostCleaverSwing : ModProjectile
+    public class SparkFrostCleaverSwing : BaseBroadswordProjectile
+    {
+
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Projectile.width = 162;
+            Projectile.height = 162;
+            SweepColor = ColorLib.JavelinEnergy;
+        }
+
+        public override SoundStyle Swing => DTAssetLib.SwordSounds.SpiritOfJusticeSwing with { MaxInstances = 0, Pitch = -0.4f, PitchVariance = 0.3f };
+
+        public override void DrawOverBlade()
+        {
+            Player player = Main.player[Projectile.owner];
+
+            Vector2 origin;
+            float rotationOffset;
+            SpriteEffects effects;
+
+            Texture2D texture = ModContent.Request<Texture2D>($"{Texture}_Highlight").Value;
+
+            if (Projectile.spriteDirection > 0)
+            {
+                origin = new Vector2(0, texture.Height);
+                rotationOffset = MathHelper.ToRadians(45f);
+                effects = SpriteEffects.None;
+            }
+            else
+            {
+                origin = new Vector2(texture.Width, texture.Height);
+                rotationOffset = MathHelper.ToRadians(135f);
+                effects = SpriteEffects.FlipHorizontally;
+            }
+
+            Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, null, Color.White * Projectile.Opacity, Projectile.rotation + rotationOffset, origin, Projectile.scale, effects, 0);
+        }
+
+        public Vector2 swordTip;
+        public Line SwordLine;
+        public override void ExtraEffects()
+        {
+            swordTip = Projectile.Center + Projectile.rotation.ToRotationVector2() * (Projectile.Size.Length() * Projectile.scale);
+
+            Player player = Main.player[Projectile.owner];
+
+            SwordLine = new Line(player.Center, swordTip);
+            Vector2[] pt = SwordLine.GetPointsAlongLine(30);
+
+            for (int i = 0; i < 3; i++)
+            {
+                Dust.NewDustPerfect(pt[Main.rand.Next(30)], ModContent.DustType<ColorableNeonDust>(), SwordLine.GetLineRotation.ToRotationVector2() * 2, 0, Color.Orange, 2f);
+                Dust.NewDustPerfect(pt[Main.rand.Next(30)], ModContent.DustType<ColorableNeonDust>(), SwordLine.GetLineRotation.ToRotationVector2() * 2, 0, Color.SkyBlue, 2f);
+            }
+        }
+
+        public override void HitNPCEffects(NPC npc, NPC.HitInfo hit)
+        {
+            Player player = Main.player[Projectile.owner];
+
+            Lighting.AddLight(npc.Center, ColorLib.JavelinEnergy.ToVector3() * 0.8f);
+
+
+            SoundEngine.PlaySound(DTAssetLib.Impacts.FleshHit with { MaxInstances = 0 }, npc.Center);
+            if (hit.Crit)
+            {
+                SoundEngine.PlaySound(DTAssetLib.Impacts.DarkMagicImpact, npc.Center);
+                DTUtils.InfectedScepter_RingProjectileOutwardAlternating(ModContent.ProjectileType<FlameBurst>(), ModContent.ProjectileType<FrostBurst>(), 2, npc.Center, 10, Projectile.damage / 4, 3, 8, RandomOffset: true);
+            }
+
+
+            Projectile.NewProjectile(Entity.GetSource_OnHit(npc), npc.Center, Vector2.Zero, ModContent.ProjectileType<SparkFrostSlash>(), Projectile.damage * 2, 8, Projectile.owner);
+
+            if (hit.Crit && Main.rand.NextBool(10))
+            {
+                for (int i = 0; i < 6; i++)
+                {
+                    Projectile.NewProjectile(Entity.GetSource_OnHit(npc), npc.Center, Vector2.Zero, ModContent.ProjectileType<SparkFrostSlash>(), Projectile.damage * 2, 8, Projectile.owner);
+                }
+            }
+
+            for (int i = 0; i < 6; i++)
+            {
+                PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticle>(), npc.Center, new Vector2(Main.rand.NextFloat(-2, 2), -Main.rand.NextFloat(10, 15)), ColorLib.JavelinEnergy, 1, 2);
+            }
+        }
+    }
+
+    /*
+        public class SparkFrostCleaverSwing1 : ModProjectile
     {
         private const float SWINGRANGE = 1.67f * (float)Math.PI;
         private const float FIRSTHALFSWING = 0.4f;
@@ -381,4 +472,5 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             }
         }
     }
+    */
 }

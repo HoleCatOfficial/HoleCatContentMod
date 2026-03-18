@@ -53,5 +53,20 @@ namespace DestroyerTest.Rarity
             return Type; // No lower tier, so return itself
         }
     }
-	
+
+    public class WretchedRarity : ModRarity
+    {
+        public override Color RarityColor => new Color(3, 89, 96); // Change color as needed
+
+        public override int GetPrefixedRarity(int offset, float valueMult)
+        {
+            if (offset > 0)
+            {
+                return ModContent.RarityType<CorruptionSpecialRarity>();
+            }
+
+            return Type;
+        }
+    }
+
 }

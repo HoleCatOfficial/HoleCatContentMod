@@ -1,37 +1,38 @@
 
-using System;
-using System.Collections.Generic;
-using System.Media;
-using System.Reflection;
-using System.Runtime.CompilerServices;
 using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Dusts;
+using DestroyerTest.Content.Entities;
+using DestroyerTest.Content.Magic;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Particles.fire;
+using DestroyerTest.Content.Particles.Stellar;
 using DestroyerTest.Rarity.Scepter;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Mono.Cecil.Cil;
+using OpusLib;
+using OpusLib.Content.Helpers;
 using ReLogic.Content;
+using ReLogic.Graphics;
+using Steamworks;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Media;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using OpusLib;
-using DestroyerTest.Content.Entities;
-using OpusLib.Content.Helpers;
-using System.Linq;
-using Terraria.UI.Chat;
-using Terraria.DataStructures;
-using DestroyerTest.Content.Magic;
-using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.Particles.Stellar;
-using Steamworks;
 using Terraria.Modules;
+using Terraria.UI.Chat;
 
 namespace DestroyerTest.Common
 {
@@ -1025,6 +1026,22 @@ namespace DestroyerTest.Common
                 T.noGravity = true;
             }
         }
+
+        public static void SpecialColorInnerOuter(this DrawableTooltipLine line, Color strokeColor, Color textColor)
+        { 
+            DynamicSpriteFont font = FontAssets.MouseText.Value;
+            Vector2 position = new Vector2(line.X, line.Y);
+            for (int i = -1; i <= 1; i++)
+            {
+                for (int j = -1; j <= 1; j++)
+                {
+                    if (i == 0 && j == 0) continue;
+                    ChatManager.DrawColorCodedString(Main.spriteBatch, font, line.Text, position + new Vector2(i, j), strokeColor, 0f, Vector2.Zero, Vector2.One);
+                }
+            }
+
+            ChatManager.DrawColorCodedString(Main.spriteBatch, font, line.Text, position, textColor, 0f, Vector2.Zero, Vector2.One);
+        }
     }
 
     public class DTPlayerUtil : ModPlayer
@@ -1455,20 +1472,21 @@ namespace DestroyerTest.Common
                 return Color.Lerp(StellarFire6, StellarFire7, time - 5f);
             else if (time < 7f)
                 return Color.Lerp(StellarFire7, StellarFire8, time - 6f);
+
             else if (time < 8f)
-                return Color.Lerp(StellarFire8, StellarFire7, time - 8f);
+                return Color.Lerp(StellarFire8, StellarFire7, time - 7f);
             else if (time < 9f)
-                return Color.Lerp(StellarFire7, StellarFire6, time - 9f);
+                return Color.Lerp(StellarFire7, StellarFire6, time - 8f);
             else if (time < 10f)
-                return Color.Lerp(StellarFire6, StellarFire5, time - 10f);
+                return Color.Lerp(StellarFire6, StellarFire5, time - 9f);
             else if (time < 11f)
-                return Color.Lerp(StellarFire5, StellarFire4, time - 11f);
+                return Color.Lerp(StellarFire5, StellarFire4, time - 10f);
             else if (time < 12f)
-                return Color.Lerp(StellarFire4, StellarFire3, time - 12f);
+                return Color.Lerp(StellarFire4, StellarFire3, time - 11f);
             else if (time < 13f)
-                return Color.Lerp(StellarFire3, StellarFire2, time - 13f);
+                return Color.Lerp(StellarFire3, StellarFire2, time - 12f);
             else
-                return Color.Lerp(StellarFire2, StellarFire1, time - 14f);
+                return Color.Lerp(StellarFire2, StellarFire1, time - 13f);
         }
 
 
@@ -1491,6 +1509,46 @@ namespace DestroyerTest.Common
                 return Color.Lerp(SpiritFire3, SpiritFire4, t - 2f);
             else
                 return Color.Lerp(SpiritFire4, SpiritFire5, t - 3f);
+        }
+
+        public static Color Wretched1 = new Color(218, 253, 9);
+        public static Color Wretched2 = new Color(179, 252, 0);
+        public static Color Wretched3 = new Color(95, 248, 2);
+        public static Color Wretched4 = new Color(55, 200, 26);
+        public static Color Wretched5 = new Color(8, 129, 81);
+        public static Color Wretched6 = new Color(3, 89, 96);
+        public static Color Wretched7 = new Color(0, 0, 0);
+
+        public static Color WretchedGradient()
+        {
+            float time = (Main.GlobalTimeWrappedHourly % 12f);
+
+            if (time < 1f)
+                return Color.Lerp(Wretched1, Wretched2, time);
+            else if (time < 2f)
+                return Color.Lerp(Wretched2, Wretched3, time - 1f);
+            else if (time < 3f)
+                return Color.Lerp(Wretched3, Wretched4, time - 2f);
+            else if (time < 4f)
+                return Color.Lerp(Wretched4, Wretched5, time - 3f);
+            else if (time < 5f)
+                return Color.Lerp(Wretched5, Wretched6, time - 4f);
+            else if (time < 6f)
+                return Color.Lerp(Wretched6, Wretched7, time - 5f);
+
+            // turning point (no skip now)
+            else if (time < 7f)
+                return Color.Lerp(Wretched7, Wretched6, time - 6f);
+            else if (time < 8f)
+                return Color.Lerp(Wretched6, Wretched5, time - 7f);
+            else if (time < 9f)
+                return Color.Lerp(Wretched5, Wretched4, time - 8f);
+            else if (time < 10f)
+                return Color.Lerp(Wretched4, Wretched3, time - 9f);
+            else if (time < 11f)
+                return Color.Lerp(Wretched3, Wretched2, time - 10f);
+            else
+                return Color.Lerp(Wretched2, Wretched1, time - 11f);
         }
 
         public static Color InfectedGradient = Opus.Sine(ColorLib.CursedFlames, ColorLib.Ichor);
@@ -1674,6 +1732,7 @@ namespace DestroyerTest.Common
             public static SoundStyle HellWeaponImpact = new SoundStyle($"{Path}/HellWeaponImpact");
             public static SoundStyle IceImpact = new SoundStyle($"{Path}/IceImpact", 3);
             public static SoundStyle IceMagicImpact = new SoundStyle($"{Path}/IceMagicImpact", 3);
+            public static SoundStyle Malevolence = new SoundStyle($"{Path}/MalevolenceHit");
             public static SoundStyle MagicBeep = new SoundStyle($"{Path}/MagicBeep", 3);
             public static SoundStyle MetalImpact = new SoundStyle($"{Path}/MetalImpact", 3);
             public static SoundStyle ShortShine = new SoundStyle($"{Path}/ShortShine", 3);
@@ -1688,6 +1747,7 @@ namespace DestroyerTest.Common
             public static string Path = $"{AudioPath}/SwordSounds";
             public static SoundStyle BigBasicSwing = new SoundStyle($"{Path}/BigBasicSwing", 3);
             public static SoundStyle ColdSword = new SoundStyle($"{Path}/ColdSword", 3);
+            public static SoundStyle Woosh = new SoundStyle($"{Path}/DefaultWoosh");
             public static SoundStyle EvilSwing = new SoundStyle($"{Path}/EvilSwing", 3);
             public static SoundStyle HeavySwing = new SoundStyle($"{Path}/HeavySwing", 3);
             public static SoundStyle HellSword = new SoundStyle($"{Path}/HellSword", 3);
@@ -1749,6 +1809,8 @@ namespace DestroyerTest.Common
     {
         public override void OnModLoad()
         {
+
+
             var fields = typeof(DTAssetLib).GetFields(
                 BindingFlags.Public | BindingFlags.Static
             );
@@ -1791,6 +1853,11 @@ namespace DestroyerTest.Common
             }
 
             TestMethodAssets();
+        }
+
+        private void TestSoundAssets()
+        {
+
         }
 
         private void TestMethodAssets()
