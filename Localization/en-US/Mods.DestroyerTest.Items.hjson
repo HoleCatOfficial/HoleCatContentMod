@@ -4167,3 +4167,8 @@ SunSaber: {
 	DisplayName: Sun Saber
 	Tooltip: You, Great Sun Sabre. You will hail in the new era of custom swings.
 }
+
+Scorn: {
+	DisplayName: Scorn
+	Tooltip: ""
+}

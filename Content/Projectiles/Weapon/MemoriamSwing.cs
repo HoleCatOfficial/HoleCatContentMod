@@ -111,20 +111,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 }
             }
 
-            if (CurrentState == State.SwingDown)
-            {
-                if (SwordLine != null)
-                {
-                    PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), swordTip, new Vector2(1, 0).RotatedBy(SwordLine.GetLineRotation + MathHelper.PiOver2), Color.GhostWhite, 1f, ai1: 2);
-                }
-            }
-            if (CurrentState == State.SwingUp)
-            {
-                if (SwordLine != null)
-                {
-                    PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), swordTip, new Vector2(1, 0).RotatedBy(SwordLine.GetLineRotation - MathHelper.PiOver2), Color.GhostWhite, 1f, ai1: 2);
-                }
-            }
+            SparkEdge(Main.player[Projectile.owner], 1f, Color.NavajoWhite);
         }
 
         public void Parry(Vector2 Position)

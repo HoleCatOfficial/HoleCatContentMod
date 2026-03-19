@@ -94,11 +94,23 @@ namespace DestroyerTest.Common
             if (item.rare == ModContent.RarityType<WretchedRarity>() && line.Name == "ItemName")
             {
                 Color In = Opus.Sine(ColorLib.Wretched6, ColorLib.Wretched7, 0.01f);
-                line.SpecialColorInnerOuter(ColorLib.WretchedGradient(), In);
+                //line.SpecialColorInnerOuter(ColorLib.WretchedGradient(), In);
+
+                Utils.DrawBorderStringFourWay(Main.spriteBatch, FontAssets.MouseText.Value, line.Text, line.X, line.Y, In, ColorLib.WretchedGradient(), new Vector2(0.5f, 0.5f));
+                return false;
+            }
+
+            if (item.rare == ModContent.RarityType<PrimalRarity>() && line.Name == "ItemName")
+            {
+                Color In = Opus.Sine(Color.DarkRed, Color.MediumVioletRed, 0.01f);
+                //line.SpecialColorInnerOuter(ColorLib.WretchedGradient(), In);
+
+                Utils.DrawBorderStringFourWay(Main.spriteBatch, FontAssets.MouseText.Value, line.Text, line.X, line.Y, In, ColorLib.IchorCrystalGradient, new Vector2(0.5f, 0.5f));
+                return false;
             }
 
 
-                if (item.rare == ModContent.RarityType<MetallurgyRarity>() && line.Name == "ItemName")
+            if (item.rare == ModContent.RarityType<MetallurgyRarity>() && line.Name == "ItemName")
             {
                 // Define two colors to cycle between for the stroke
                 Color strokeColor1 = new Color(193, 89, 0);

@@ -13,14 +13,14 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.MeleeWeapons
 {
-    public class Malevolence : ModItem
+    public class Scorn : ModItem
     {
         public override void SetDefaults()
         {
             Item.width = 60;
             Item.height = 60;
             Item.value = Item.sellPrice(gold: 2, silver: 50);
-            Item.rare = ModContent.RarityType<WretchedRarity>();
+            Item.rare = ModContent.RarityType<PrimalRarity>();
             Item.useTime = 30;
             Item.useAnimation = 30;
             Item.useStyle = ItemUseStyleID.Shoot;
@@ -30,7 +30,7 @@ namespace DestroyerTest.Content.MeleeWeapons
             Item.DamageType = DamageClass.Melee;
             Item.noMelee = true;
             Item.noUseGraphic = true;
-            Item.shoot = ModContent.ProjectileType<MalevolenceSwing>();
+            Item.shoot = ModContent.ProjectileType<ScornSwing>();
             Item.channel = true;
         }
 

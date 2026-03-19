@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Diagnostics.Contracts;
 using System.Runtime.InteropServices;
 using System.Security.Policy;
 using DestroyerTest.Common;
@@ -23,6 +24,7 @@ using rail;
 using ReLogic.Content;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
@@ -40,7 +42,6 @@ namespace DestroyerTest.Content.Entities
         {
             NPCID.Sets.CanHitPastShimmer[Type] = true;
             NPCID.Sets.DontDoHardmodeScaling[Type] = true;
-            NPCID.Sets.ImmuneToRegularBuffs[Type] = true;
             NPCID.Sets.TrailCacheLength[Type] = 20;
             NPCID.Sets.TrailingMode[Type] = 3;
             NPCID.Sets.MPAllowedEnemies[Type] = true;
@@ -99,21 +100,28 @@ namespace DestroyerTest.Content.Entities
             return false;
         }
 
+        public float ShieldOpacity = 0f;
+        public float ShieldScale = 1f;
         public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             Texture2D pixel = TextureAssets.MagicPixel.Value;
+            var v = DTAssetLib.BloomRingSharp.Value;
 
+            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+            Main.EntitySpriteDraw(v, NPC.Center - Main.screenPosition, null, ColorLib.IchorCrystalGradient * ShieldOpacity, 0f, v.Size() / 2, ShieldScale, SpriteEffects.None);
+            Utils.DrawBorderString(spriteBatch, $"{DormantNPCKillTally} / {DormantNPCKillRequirement}", (NPC.Center + new Vector2(0, -90) - Main.screenPosition), ColorLib.IchorCrystalGradient * ShieldOpacity, 3f, 0.5f, 0.5f);
+            Opus.ReturnToDefaultDrawing(spriteBatch);
         }
 
         public override bool? CanBeHitByItem(Player player, Item item)
         {
-            return !DTUtils.NodeCharmEquipped;
+            return !DTUtils.NodeCharmEquipped && !(DormantNPCKillTally < DormantNPCKillRequirement);
         }
 
         public override bool? CanBeHitByProjectile(Projectile projectile)
         {
             if (projectile.friendly)
-                return !DTUtils.NodeCharmEquipped; // prevent friendly damage when charm is equipped
+                return !DTUtils.NodeCharmEquipped && !(DormantNPCKillTally < DormantNPCKillRequirement); ; // prevent friendly damage when charm is equipped
 
             // hostile projectiles behave normally
             return null;
@@ -133,6 +141,10 @@ namespace DestroyerTest.Content.Entities
         public AttackState CurrentAttack;
 
         public int DormantPulseTimer = 60;
+        public static int DormantNPCKillTally = 0;
+        public const int DormantNPCKillRequirement = 50;
+
+
         public int IdleTimer = 60;
         public int BloodRainSpawnTimer = 180;
         public int BloodRainWaitTimer = 240;
@@ -149,9 +161,12 @@ namespace DestroyerTest.Content.Entities
         public int WaveTimer = 0;
         public int WaveIndex = 0;
         public bool SoundFlag1 = false;
+
+        public bool Flag2 = false;
         public SoundStyle SlamWarn = new SoundStyle("DestroyerTest/Assets/Audio/ChimeIn") with { MaxInstances = 0, PitchVariance = 1 };
         public SoundStyle Spiralwarn = new SoundStyle("DestroyerTest/Assets/Audio/RailGunCharge") with { MaxInstances = 0 };
         public SoundStyle GroundImpact = new SoundStyle("DestroyerTest/Assets/Audio/TenebrisTesticleKill") with { MaxInstances = 0, PitchVariance = 0.5f };
+
         public override void AI()
         {
             NPC.TargetClosest();
@@ -195,44 +210,38 @@ namespace DestroyerTest.Content.Entities
             Vector2 PRTPos;
             PRTPos = NPC.Center;
 
+            if ((DormantNPCKillTally < DormantNPCKillRequirement))
+            {
+                ManageShieldIn();
+            }
+
+            if (!(DormantNPCKillTally < DormantNPCKillRequirement))
+            {
+                if (!Flag2)
+                {
+                    SoundEngine.PlaySound(DTAssetLib.ScholarShieldSounds.Activate, NPC.Center);
+                    Flag2 = true;
+                }
+                ManageShieldOut();
+            }
+
             switch (CurrentAttack)
             {
                 case AttackState.Dormant:
                     {
-                        DormantPulseTimer--;
-                        if (DormantPulseTimer <= 0)
+                        DormantAI();
+                        if ((DormantNPCKillTally < DormantNPCKillRequirement))
                         {
-                            SoundEngine.PlaySound(SoundID.DD2_WitherBeastAuraPulse, NPC.Center);
-                            Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), NPC.Center, Vector2.Zero, ColorLib.Ichor, 0.025f, 1.0f);
-                            DormantPulseTimer = 120;
+                            NPC.immortal = true;
+                            NPC.dontTakeDamage = true;
                         }
-
-                        float bobSpeed = 0.03f;
-                        float bobHeight = 16f;
-                        NPC.velocity.Y = (float)Math.Sin(Main.GameUpdateCount * bobSpeed) * 0.5f;
-                        NPC.position.Y += (float)Math.Sin(Main.GameUpdateCount * bobSpeed) * (bobHeight / 100f);
-
-                        foreach (NPC npc in Main.npc)
+                        else
                         {
-                            if (npc.Center.Distance(NPC.Center) < 1000
-                            && npc.type != ModContent.NPCType<IchorNodeMB>()
-                            && npc.type != ModContent.NPCType<CursedFlameNodeMB>()
-                            && npc.type != ModContent.NPCType<IchorNode>()
-                            && npc.type != ModContent.NPCType<CursedFlameNode>())
-                            {
-                                npc.AddBuff(ModContent.BuffType<NodePower>(), 60);
-                            }
-                        }
-
-                        foreach (Player p in Main.player)
-                        {
-                            if (p.Center.Distance(NPC.Center) < 1000 && DTUtils.NodeCharmEquipped)
-                            {
-                                p.AddBuff(ModContent.BuffType<NodePower>(), 60);
-                            }
+                            NPC.immortal = false;
+                            NPC.dontTakeDamage = false;
                         }
                         
-                        if (NPC.justHit && !DTUtils.NodeCharmEquipped)
+                        if (NPC.justHit && !DTUtils.NodeCharmEquipped && !(DormantNPCKillTally < DormantNPCKillRequirement))
                         {
                             CurrentAttack = AttackState.Idle;
                         }
@@ -240,6 +249,7 @@ namespace DestroyerTest.Content.Entities
                     }
                 case AttackState.Idle:
                     {
+                        
                         KeepToPlayer(player.Center + new Vector2(0, -200));
                         if (IdleTimer > 0)
                         {
@@ -256,29 +266,7 @@ namespace DestroyerTest.Content.Entities
                 case AttackState.BloodRain:
                     {
                         KeepToPlayer(player.Center + new Vector2(0, -200));
-                        if (BloodRainSpawnTimer > 0)
-                        {
-                            if (BloodRainSpawnTimer % 8 == 0)
-                            {
-                                SoundEngine.PlaySound(SoundID.Item66, NPC.Center);
-                                Vector2 Position = new Vector2(
-                                    player.Center.X + Main.rand.Next(-200, 200),
-                                    player.Center.Y - 400f // blanket above
-                                );
-                                Projectile.NewProjectile(Entity.GetSource_FromThis(), Position, Vector2.Zero, ModContent.ProjectileType<BloodCloud>(), 16, 8);
-                            }
-                            BloodRainSpawnTimer--;
-                        }
-                        if (BloodRainSpawnTimer <= 0 && BloodRainWaitTimer > 0)
-                        {
-                            BloodRainWaitTimer--;
-                        }
-                        if (BloodRainSpawnTimer <= 0 && BloodRainWaitTimer <= 0)
-                        {
-                            CurrentAttack = AttackState.IchorSpiral;
-                            BloodRainSpawnTimer = 180;
-                            BloodRainWaitTimer = 240;
-                        }
+                        BloodRainAI(player);
                         break;
                     }
                 case AttackState.IchorSpiral:
@@ -339,90 +327,229 @@ namespace DestroyerTest.Content.Entities
                 case AttackState.ToothBombs:
                     {
                         KeepToPlayer(player.Center + new Vector2(0, -200));
-
-                        if (MineInterval > 0)
-                        {
-                            MineInterval--;
-                        }
-
-                        if (MineInterval <= 0)
-                        {
-                            for (int q = 0; q < 6; q++)
-                            {
-                                Vector2 Position = NPC.Center + new Vector2(Main.rand.Next(-400, 400), Main.rand.Next(-400, 400));
-                                Vector2 Velocity = Position - NPC.Center;
-                                Projectile Mine = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), NPC.Center, Velocity * 0.03f, ModContent.ProjectileType<CrystalBomb>(), 30, 5);
-                                Mine.timeLeft = 120;
-                            }
-                            MineInterval = 120;
-                            MineCount += 1;
-                        }
-
-                        if (MineCount >= 3)
-                        {
-                            MineCooldown--;
-                        }
-
-                        if (MineCount >= 3 && MineCooldown <= 0)
-                        {
-                            CurrentAttack = AttackState.GroundSlam;
-                            MineCount = 0;
-                            MineCooldown = 240;
-                        }
+                        MineAI();
                         break;
                     }
                 case AttackState.GroundSlam:
                     {
-                        if (SlamCharge > 0)
-                        {
-                            NPC.noTileCollide = true;
-                            Vector2 toTarget = new Vector2(player.Center.X, player.Center.Y - 300f) - NPC.Center;
-                            float speed = 10f;
-                            NPC.velocity = toTarget.SafeNormalize(Vector2.Zero) * speed;
-                            SlamCharge--;
-                            if (SlamCharge == 20)
-                            {
-                                SoundEngine.PlaySound(SlamWarn, NPC.Center);
-                                PRTLoader.NewParticle(PRTLoader.GetParticleID<ArrowTelegraphMobile>(), NPC.Center, new Vector2(0, 15), ColorLib.Ichor, 3);
-                            }
-                        }
-                        if (SlamCharge <= 0)
-                        {
-                            if (SoundFlag1 == false)
-                            {
-                                SoundEngine.PlaySound(SoundID.Item63, NPC.Center);
-                                SoundFlag1 = true;
-                            }
-                            Dust.NewDust(new Vector2(NPC.Center.X, NPC.Center.Y + NPC.height / 2), 2, 2, DustID.Ichor, 2f, -1.5f, 0, ColorLib.Ichor, 2f);
-                            Dust.NewDust(new Vector2(NPC.Center.X, NPC.Center.Y + NPC.height / 2), 2, 2, DustID.Ichor, -2f, -1.5f, 0, ColorLib.Ichor, 2f);
-                            PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), new Vector2(NPC.Center.X, NPC.Center.Y + NPC.height / 2), new Vector2(2, 1.5f), ColorLib.Ichor, 1.0f);
-                            PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), new Vector2(NPC.Center.X, NPC.Center.Y + NPC.height / 2), new Vector2(-2, 1.5f), ColorLib.Ichor, 1.0f);
-                            NPC.noTileCollide = false;
-                            NPC.velocity.Y = 0f;
-                            NPC.velocity.Y = 24f;
-                            NPC.velocity.X = 0f;
-                        }
-                        if (NPC.collideY && NPC.velocity.Y >= 0f)
-                        {
-                            NPC.velocity = Vector2.Zero;
-                            SoundEngine.PlaySound(GroundImpact, NPC.Center);
-                            player.GetModPlayer<ScreenshakePlayer>().screenshakeTimer = 10;
-                            player.GetModPlayer<ScreenshakePlayer>().screenshakeMagnitude = 2;
-                            SlamWave();
-                            SlamSpray();
-                            SlamCharge = 120;
-                            SlamCount += 1;
-                        }
-                        if (SlamCount > 5)
-                        {
-                            CurrentAttack = AttackState.Idle;
-                            SlamCharge = 120;
-                            SlamCount = 0;
-                        }
+                        SlamAI(player);
                         break;
                     }
 
                 
+            }
+        }
+
+        public void ManageShieldIn()
+        {
+            if (ShieldScale > 0.1f)
+            {
+                ShieldScale -= 0.05f;
+            }
+            if (ShieldOpacity < 1)
+            {
+                ShieldOpacity += 0.1f;
+            }
+        }
+
+        public void ManageShieldOut()
+        {
+            if (ShieldScale < 1f)
+            {
+                ShieldScale += 0.05f;
+            }
+            if (ShieldOpacity > 0)
+            {
+                ShieldOpacity -= 0.1f;
+            }
+        }
+        public void DormantAI()
+        {
+            
+
+            DormantPulseTimer--;
+            if (DormantPulseTimer <= 0)
+            {
+                SoundEngine.PlaySound(SoundID.DD2_WitherBeastAuraPulse, NPC.Center);
+                Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), NPC.Center, Vector2.Zero, ColorLib.Ichor, 0.025f, 1.0f);
+                DormantPulseTimer = 120;
+            }
+
+            NPC.velocity.Y = Opus.Sine(1f, -1f, 0.01f);
+
+            foreach (NPC npc in Main.npc)
+            {
+                if (npc.Center.Distance(NPC.Center) < 1000
+                && npc.type != ModContent.NPCType<IchorNodeMB>()
+                && npc.type != ModContent.NPCType<CursedFlameNodeMB>()
+                && npc.type != ModContent.NPCType<IchorNode>()
+                && npc.type != ModContent.NPCType<CursedFlameNode>() && !npc.boss)
+                {
+                    npc.AddBuff(ModContent.BuffType<NodePower>(), 60);
+                }
+            }
+
+            Vector2[] P = Opus.GetEquidistantOrbitVectors(16, NPC.Center, 0.1f, 1200);
+
+            for (int i = 0; i < P.Length; i++)
+            {
+                PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), P[i], Vector2.Zero, ColorLib.IchorCrystalGradient, 1f);
+            }
+
+            foreach (Player p in Main.player)
+            {
+                if (p.Center.Distance(NPC.Center) < 1200)
+                {
+                    if (DTUtils.NodeCharmEquipped)
+                    {
+                        p.AddBuff(ModContent.BuffType<NodePower>(), 60);
+                    }
+
+                    if (DormantNPCKillTally < DormantNPCKillRequirement)
+                    {
+                        SpawnNPCWave();
+                    }
+                }
+            }
+        }
+
+        public int SpawnNPCTimer = 0;
+        public static string NPCIdentifierContext = "IchorNodeWaveEnemy";
+
+        public static List<int> IchorNodeWaveEnemies = new List<int>
+        {
+            NPCID.Crimera,
+            NPCID.CrimsonAxe,
+            NPCID.Crimslime,
+            NPCID.BloodCrawler,
+            NPCID.FaceMonster
+        };
+
+        public void SpawnNPCWave()
+        {
+            SpawnNPCTimer++;
+            Vector2[] SpawnPositions = Opus.GetEquidistantVectors(5, NPC.Center, 250);
+
+            if (SpawnNPCTimer % 300 == 0 && INGlobal.WaveNPCCount == 0)
+            {
+                SoundEngine.PlaySound(DTAssetLib.Impacts.DarkMagicImpact);
+                for (int i = 0; i < SpawnPositions.Length; i++)
+                {
+                    Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), SpawnPositions[i], Vector2.Zero, ColorLib.Ichor, 0.01f, 0.4f);
+                    NPC wavenpc = NPC.NewNPCDirect(NPC.GetSource_FromAI(NPCIdentifierContext), SpawnPositions[i], IchorNodeWaveEnemies[Main.rand.Next(IchorNodeWaveEnemies.Count)]);
+                    wavenpc.scale = 1.5f;
+                    wavenpc.knockBackResist = 0f;
+                }
+            }
+        }
+
+        public void BloodRainAI(Player player)
+        {
+            if (BloodRainSpawnTimer > 0)
+            {
+                if (BloodRainSpawnTimer % 8 == 0)
+                {
+                    SoundEngine.PlaySound(SoundID.Item66, NPC.Center);
+                    Vector2 Position = new Vector2(
+                        player.Center.X + Main.rand.Next(-200, 200),
+                        player.Center.Y - 400f // blanket above
+                    );
+                    Projectile.NewProjectile(Entity.GetSource_FromThis(), Position, Vector2.Zero, ModContent.ProjectileType<BloodCloud>(), 16, 8);
+                }
+                BloodRainSpawnTimer--;
+            }
+            if (BloodRainSpawnTimer <= 0 && BloodRainWaitTimer > 0)
+            {
+                BloodRainWaitTimer--;
+            }
+            if (BloodRainSpawnTimer <= 0 && BloodRainWaitTimer <= 0)
+            {
+                CurrentAttack = AttackState.IchorSpiral;
+                BloodRainSpawnTimer = 180;
+                BloodRainWaitTimer = 240;
+            }
+        }
+
+        public void MineAI()
+        {
+            if (MineInterval > 0)
+            {
+                MineInterval--;
+            }
+
+            if (MineInterval <= 0)
+            {
+                for (int q = 0; q < 6; q++)
+                {
+                    Vector2 Position = NPC.Center + new Vector2(Main.rand.Next(-400, 400), Main.rand.Next(-400, 400));
+                    Vector2 Velocity = Position - NPC.Center;
+                    Projectile Mine = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), NPC.Center, Velocity * 0.03f, ModContent.ProjectileType<CrystalBomb>(), 30, 5);
+                    Mine.timeLeft = 120;
+                }
+                MineInterval = 120;
+                MineCount += 1;
+            }
+
+            if (MineCount >= 3)
+            {
+                MineCooldown--;
+            }
+
+            if (MineCount >= 3 && MineCooldown <= 0)
+            {
+                CurrentAttack = AttackState.GroundSlam;
+                MineCount = 0;
+                MineCooldown = 240;
+            }
+        }
+
+        public void SlamAI(Player player)
+        {
+            if (SlamCharge > 0)
+            {
+                NPC.noTileCollide = true;
+                Vector2 toTarget = new Vector2(player.Center.X, player.Center.Y - 300f) - NPC.Center;
+                float speed = 10f;
+                NPC.velocity = toTarget.SafeNormalize(Vector2.Zero) * speed;
+                SlamCharge--;
+                if (SlamCharge == 20)
+                {
+                    SoundEngine.PlaySound(SlamWarn, NPC.Center);
+                    PRTLoader.NewParticle(PRTLoader.GetParticleID<ArrowTelegraphMobile>(), NPC.Center, new Vector2(0, 15), ColorLib.Ichor, 3);
+                }
+            }
+            if (SlamCharge <= 0)
+            {
+                if (SoundFlag1 == false)
+                {
+                    SoundEngine.PlaySound(SoundID.Item63, NPC.Center);
+                    SoundFlag1 = true;
+                }
+                Dust.NewDust(new Vector2(NPC.Center.X, NPC.Center.Y + NPC.height / 2), 2, 2, DustID.Ichor, 2f, -1.5f, 0, ColorLib.Ichor, 2f);
+                Dust.NewDust(new Vector2(NPC.Center.X, NPC.Center.Y + NPC.height / 2), 2, 2, DustID.Ichor, -2f, -1.5f, 0, ColorLib.Ichor, 2f);
+                PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), new Vector2(NPC.Center.X, NPC.Center.Y + NPC.height / 2), new Vector2(2, 1.5f), ColorLib.Ichor, 1.0f);
+                PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), new Vector2(NPC.Center.X, NPC.Center.Y + NPC.height / 2), new Vector2(-2, 1.5f), ColorLib.Ichor, 1.0f);
+                NPC.noTileCollide = false;
+                NPC.velocity.Y = 0f;
+                NPC.velocity.Y = 24f;
+                NPC.velocity.X = 0f;
+            }
+            if (NPC.collideY && NPC.velocity.Y >= 0f)
+            {
+                NPC.velocity = Vector2.Zero;
+                SoundEngine.PlaySound(GroundImpact, NPC.Center);
+                player.GetModPlayer<ScreenshakePlayer>().screenshakeTimer = 10;
+                player.GetModPlayer<ScreenshakePlayer>().screenshakeMagnitude = 2;
+                SlamWave();
+                SlamSpray();
+                SlamCharge = 120;
+                SlamCount += 1;
+            }
+            if (SlamCount > 5)
+            {
+                CurrentAttack = AttackState.Idle;
+                SlamCharge = 120;
+                SlamCount = 0;
             }
         }
 
@@ -567,6 +694,45 @@ namespace DestroyerTest.Content.Entities
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
             npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<IchorNodeLootBag>()));
+        }
+    }
+
+    public class INGlobal : GlobalNPC
+    {
+        public override bool InstancePerEntity => true;
+
+        public static int WaveNPCCount = 0;
+
+        public bool IsNodeSpawned = false;
+
+        public override void Unload()
+        {
+            WaveNPCCount = 0;
+            IsNodeSpawned = false;
+        }
+
+        public override void OnSpawn(NPC npc, IEntitySource source)
+        {
+            if (source is EntitySource_Parent parent && parent.Context == IchorNodeMB.NPCIdentifierContext)
+            {
+                WaveNPCCount += 1;
+                IsNodeSpawned = true;
+            }
+        }
+
+        public override void OnKill(NPC npc)
+        {
+            if (IsNodeSpawned)
+            {
+                IchorNodeMB.DormantNPCKillTally += 1;
+                WaveNPCCount--;
+            }
+
+            if (npc.type == ModContent.NPCType<IchorNodeMB>())
+            {
+                IchorNodeMB.DormantNPCKillTally = 0;
+                WaveNPCCount = 0;
+            }
         }
     }
 }

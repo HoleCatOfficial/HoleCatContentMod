@@ -6,6 +6,7 @@ using Terraria.UI.Chat;
 using ReLogic.Graphics;
 using Terraria.GameContent;
 using Terraria.ID;
+using DestroyerTest.Common;
 
 namespace DestroyerTest.Rarity
 {
@@ -63,6 +64,21 @@ namespace DestroyerTest.Rarity
             if (offset > 0)
             {
                 return ModContent.RarityType<CorruptionSpecialRarity>();
+            }
+
+            return Type;
+        }
+    }
+
+    public class PrimalRarity : ModRarity
+    {
+        public override Color RarityColor => ColorLib.IchorCrystal4; // Change color as needed
+
+        public override int GetPrefixedRarity(int offset, float valueMult)
+        {
+            if (offset > 0)
+            {
+                return ModContent.RarityType<CrimsonSpecialRarity>();
             }
 
             return Type;

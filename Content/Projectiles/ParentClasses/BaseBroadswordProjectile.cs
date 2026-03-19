@@ -88,6 +88,28 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
         }
 
+        private Vector2 sT;
+        public Line SL;
+        public virtual void SparkEdge(Player owner, float Scale, Color color, int BlendMode = 2)
+        {
+            sT = Projectile.Center + Projectile.rotation.ToRotationVector2() * (Projectile.Size.Length() * Projectile.scale);
+            SL = new Line(Owner.MountedCenter, sT);
+            if (CurrentState == State.SwingDown)
+            {
+                if (SL != null)
+                {
+                    PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticlePlayerLock>(), sT, new Vector2(1, 0).RotatedBy(SL.GetLineRotation + MathHelper.PiOver2), color, Scale, ai1: BlendMode, ai2: owner.whoAmI);
+                }
+            }
+            if (CurrentState == State.SwingUp)
+            {
+                if (SL != null)
+                {
+                    PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticlePlayerLock>(), sT, new Vector2(1, 0).RotatedBy(SL.GetLineRotation - MathHelper.PiOver2), color, Scale, ai1: BlendMode, ai2: owner.whoAmI);
+                }
+            }
+        }
+
         public State CurrentState;
         public Vector2 targetAngle = Vector2.Zero;
         public int AITimer = 0;

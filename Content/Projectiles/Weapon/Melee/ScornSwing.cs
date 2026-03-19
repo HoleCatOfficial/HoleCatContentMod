@@ -26,24 +26,24 @@ using Terraria.ModLoader;
 namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 {
 
-    public class MalevolenceSwing : BaseBroadswordProjectile
+    public class ScornSwing : BaseBroadswordProjectile
     {
 
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Projectile.width = 60;
-            Projectile.height = 60;
-            SweepColor = ColorLib.Wretched4;
+            Projectile.width = 68;
+            Projectile.height = 68;
+            SweepColor = ColorLib.IchorCrystal2;
         }
 
         public override SoundStyle Swing => DTAssetLib.SwordSounds.MediumHeavySwing;
 
         public override void HitNPCEffects(NPC npc, NPC.HitInfo hit)
         {
-            npc.AddBuff(BuffID.CursedInferno, 300);
+            npc.AddBuff(BuffID.Ichor, 300);
             SoundEngine.PlaySound(DTAssetLib.Impacts.Malevolence with { MaxInstances = 0, PitchVariance = 0.4f }, npc.Center);
-            ParticleOrchestrator.RequestParticleSpawn(false, ParticleOrchestraType.TrueNightsEdge, new ParticleOrchestraSettings() { IndexOfPlayerWhoInvokedThis = (byte)Projectile.owner, PositionInWorld = npc.Center });
+            ParticleOrchestrator.RequestParticleSpawn(false, ParticleOrchestraType.Excalibur, new ParticleOrchestraSettings() { IndexOfPlayerWhoInvokedThis = (byte)Projectile.owner, PositionInWorld = npc.Center });
         }
 
         public override void DrawOverBlade()
@@ -86,13 +86,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
             for (int i = 0; i < 2; i++)
             {
-                Dust.NewDustPerfect(ppt[Main.rand.Next(15)], ModContent.DustType<ColorableNeonDust>(), SwordLine.GetLineRotation.ToRotationVector2() * 2, 0, ColorLib.CursedFlames * 0.5f, 3f);
+                Dust.NewDustPerfect(ppt[Main.rand.Next(15)], ModContent.DustType<ColorableNeonDust>(), SwordLine.GetLineRotation.ToRotationVector2() * 2, 0, ColorLib.Ichor * 0.5f, 3f);
                 //PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], pt[Main.rand.Next(30)], SwordLine.GetLineRotation.ToRotationVector2() * 2, ColorLib.Wretched3, 0.5f, 20, ai2: 2);
             }
 
             ScaleMult = 1.25f;
-
-            SparkEdge(Main.player[Projectile.owner], 1f, ColorLib.Wretched3);
+            SparkEdge(Main.player[Projectile.owner], 1f, ColorLib.IchorCrystal3);
         }
     }
 }

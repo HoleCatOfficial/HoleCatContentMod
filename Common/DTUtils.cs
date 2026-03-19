@@ -1031,14 +1031,16 @@ namespace DestroyerTest.Common
         { 
             DynamicSpriteFont font = FontAssets.MouseText.Value;
             Vector2 position = new Vector2(line.X, line.Y);
-            for (int i = -1; i <= 1; i++)
-            {
-                for (int j = -1; j <= 1; j++)
-                {
-                    if (i == 0 && j == 0) continue;
-                    ChatManager.DrawColorCodedString(Main.spriteBatch, font, line.Text, position + new Vector2(i, j), strokeColor, 0f, Vector2.Zero, Vector2.One);
-                }
-            }
+
+            ChatManager.DrawColorCodedString(Main.spriteBatch, font, line.Text, position + new Vector2(0, 1.5f), strokeColor, 0f, Vector2.Zero, Vector2.One);
+            ChatManager.DrawColorCodedString(Main.spriteBatch, font, line.Text, position + new Vector2(1.5f, 1.5f), strokeColor, 0f, Vector2.Zero, Vector2.One);
+            ChatManager.DrawColorCodedString(Main.spriteBatch, font, line.Text, position + new Vector2(1.5f, 0), strokeColor, 0f, Vector2.Zero, Vector2.One);
+            ChatManager.DrawColorCodedString(Main.spriteBatch, font, line.Text, position + new Vector2(1.5f, -1.5f), strokeColor, 0f, Vector2.Zero, Vector2.One);
+            ChatManager.DrawColorCodedString(Main.spriteBatch, font, line.Text, position + new Vector2(0, -1.5f), strokeColor, 0f, Vector2.Zero, Vector2.One);
+            ChatManager.DrawColorCodedString(Main.spriteBatch, font, line.Text, position + new Vector2(-1.5f, -1.5f), strokeColor, 0f, Vector2.Zero, Vector2.One);
+            ChatManager.DrawColorCodedString(Main.spriteBatch, font, line.Text, position + new Vector2(0, -1.5f), strokeColor, 0f, Vector2.Zero, Vector2.One);
+            ChatManager.DrawColorCodedString(Main.spriteBatch, font, line.Text, position + new Vector2(1.5f, -1.5f), strokeColor, 0f, Vector2.Zero, Vector2.One);
+
 
             ChatManager.DrawColorCodedString(Main.spriteBatch, font, line.Text, position, textColor, 0f, Vector2.Zero, Vector2.One);
         }

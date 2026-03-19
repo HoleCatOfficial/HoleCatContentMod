@@ -33,12 +33,21 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             base.SetDefaults();
             Projectile.width = 46;
             Projectile.height = 46;
-            SweepColor = Color.Orange;
+            SweepColor = Color.DarkOrange;
         }
 
         public override SoundStyle Swing => DTAssetLib.SwordSounds.SpiritOfJusticeSwing;
 
+        public override void ExtraEffects()
+        {
+            SparkEdge(Main.player[Projectile.owner], 1f, Color.PaleGoldenrod);
+        }
 
+        public override void HitNPCEffects(NPC npc, NPC.HitInfo hit)
+        {
+            SoundEngine.PlaySound(SoundID.DD2_SkyDragonsFuryShot);
+            npc.AddBuff(ModContent.BuffType<ComaceraticBurn>(), 600);
+        }
         /*
         private Player Owner => Main.player[Projectile.owner];
 
