@@ -442,3 +442,8 @@ StardustSummonBoost: {
 	DisplayName: Stardust Summon Boost
 	Description: Mods.DestroyerTest.Buffs.StardustSummonBoost.Description
 }
+
+DescendantInferno: {
+	DisplayName: Descendant Inferno
+	Description: Mods.DestroyerTest.Buffs.DescendantInferno.Description
+}

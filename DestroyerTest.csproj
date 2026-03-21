@@ -17,21 +17,30 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Reference Include="FargowiltasSouls">
-	    <HintPath>..\ModAssemblies\FargowiltasSouls_v1.7.3.5.dll</HintPath>
-	  </Reference>
-	  <Reference Include="Fargowiltas">
-	    <HintPath>..\ModAssemblies\Fargowiltas_v3.3.6.5.dll</HintPath>
-	  </Reference>
-	  <Reference Include="GlowmaskHelper">
-	    <HintPath>..\ModAssemblies\GlowmaskHelper_v1.0.0.dll</HintPath>
-	  </Reference>
-	  <Reference Include="InnoVault">
-	    <HintPath>..\ModAssemblies\InnoVault_v1.9.78.dll</HintPath>
-	  </Reference>
-	  <Reference Include="OpusLib">
-	    <HintPath>..\ModAssemblies\OpusLib_v1.424.dll</HintPath>
-	  </Reference>
+		<Reference Include="FargowiltasSouls">
+		<HintPath>..\ModAssemblies\FargowiltasSouls_v1.7.3.5.dll</HintPath>
+		</Reference>
+		
+		<Reference Include="Fargowiltas">
+		<HintPath>..\ModAssemblies\Fargowiltas_v3.3.6.5.dll</HintPath>
+		</Reference>
+		
+		<Reference Include="GlowmaskHelper">
+		<HintPath>..\ModAssemblies\GlowmaskHelper_v1.0.0.dll</HintPath>
+		</Reference>
+		
+		<Reference Include="InnoVault">
+		<HintPath>..\ModAssemblies\InnoVault_v1.9.78.dll</HintPath>
+		</Reference>
+		
+		<Reference Include="OpusLib">
+		<HintPath>..\ModAssemblies\OpusLib_v1.424.dll</HintPath>
+		</Reference>
+		
+		<Reference Include="ConstellationsOfOrion">
+			<HintPath>..\ModAssemblies\ConstellationsOfOrion_v1.2.5.dll</HintPath>
+		</Reference>
+		
 		<Reference Include="BreadLibrary">
 			<HintPath>..\ModAssemblies\BreadLibrary_v0.1.dll</HintPath>
 		</Reference>

@@ -1,4 +1,6 @@
-﻿using DestroyerTest.Common;
+﻿using BreadLibrary.Core.Graphics;
+using BreadLibrary.Core.Graphics.PixelationShit;
+using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
@@ -10,6 +12,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using OpusLib.Content.Helpers;
+using ReLogic.Content;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -28,8 +31,9 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
     public abstract class BaseBroadswordProjectile : ModProjectile
     {
-        private Player Owner => Main.player[Projectile.owner];
+        public Player Owner => Main.player[Projectile.owner];
         public virtual SoundStyle Swing { get; set; } = DTAssetLib.SwordSounds.Woosh;
+        public Asset<Texture2D> Glowmask = null;
 
         /// <summary>
         /// Use this in place of SetStaticDefaults.
@@ -48,6 +52,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         public override void SetDefaults()
         {
             Projectile.friendly = true;
+            Projectile.hostile = false;
             Projectile.timeLeft = 10000;
             Projectile.penetrate = -1;
             Projectile.tileCollide = false;
@@ -63,7 +68,18 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         public override void OnSpawn(IEntitySource source)
         {
             OnSpawnExtras();
+            //Projectile.spriteDirection = Main.MouseWorld.X > Owner.MountedCenter.X ? 1 : -1;
+
             Projectile.spriteDirection = Main.MouseWorld.X > Owner.MountedCenter.X ? 1 : -1;
+
+            // THIS is the missing piece
+            targetAngle = (Main.MouseWorld - Owner.MountedCenter);
+
+            // Optional but smart: normalize it
+            if (targetAngle == Vector2.Zero)
+                targetAngle = Vector2.UnitX * Projectile.spriteDirection;
+
+            LastSwing = Owner.direction == 1 ? 1 : -1;
         }
 
         public override void SendExtraAI(BinaryWriter writer)
@@ -88,7 +104,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
         }
 
-        private Vector2 sT;
+        public Vector2 sT;
         public Line SL;
         public virtual void SparkEdge(Player owner, float Scale, Color color, int BlendMode = 2)
         {
@@ -162,8 +178,15 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
         bool SetPos = false;
         bool f1 = false;
+        /// <summary>
+        /// -1 = Up, 1 = Down
+        /// <br/> If -1, the current swing will be down.
+        /// </summary>
         public int LastSwing = -1;
         public int WaitTimer = 10;
+
+        public float SlashStartRotation = 0f;
+        public float SlashProgress = 0f;
         public void ControlRotation()
         {
             float speedFactor = Owner.GetAttackSpeed(DamageClass.Melee);
@@ -177,6 +200,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
                         {
                             Projectile.rotation = DownPoint;
                             WaitTimer = (int)(10 * Owner.GetAttackSpeed(DamageClass.Melee));
+                            SlashStartRotation = DownPoint;
                             SetPos = true;
                         }
                         else
@@ -188,6 +212,8 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
                                 SweepOpacity = 0.7f;
                                 f1 = true;
                             }
+
+                            SlashProgress = Math.Abs(Projectile.rotation - UpPoint) / Math.Abs(SlashStartRotation - UpPoint);
 
                             SweepOpacity = MathHelper.Lerp(SweepOpacity, 0f, t);
                             Projectile.rotation = MathHelper.Lerp(Projectile.rotation, UpPoint, t);
@@ -206,6 +232,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
                         {
                             Projectile.rotation = UpPoint;
                             WaitTimer = (int)(10 * Owner.GetAttackSpeed(DamageClass.Melee));
+                            SlashStartRotation = UpPoint;
                             SetPos = true;
                         }
                         else
@@ -217,6 +244,9 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
                                 SweepOpacity = 0.7f;
                                 f1 = true;
                             }
+
+                            SlashProgress = Math.Abs(Projectile.rotation - UpPoint) / Math.Abs(SlashStartRotation - DownPoint);
+
                             SweepOpacity = MathHelper.Lerp(SweepOpacity, 0f, t);
                             Projectile.rotation = MathHelper.Lerp(Projectile.rotation, DownPoint, t);
                             if (Math.Abs(Projectile.rotation - DownPoint) < 0.07)
@@ -234,6 +264,8 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
                         {
                             SetPos = false;
                             f1 = false;
+                            SlashStartRotation = 0f;
+                            SlashProgress = 0f;
                             WaitTimer--;
                         }
                         else
@@ -265,8 +297,9 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
         }
 
-        private float SweepOpacity = 0f;
+        public float SweepOpacity = 0f;
         public virtual Color SweepColor { get; set; } = Color.White;
+        
         private void DrawSweepFX()
         {
             var Tex = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/CircularSlash2").Value;
@@ -276,7 +309,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             Opus.ReturnToDefaultDrawing(Main.spriteBatch);
         }
 
-
+        public float RotationManualOffset = 0f;
         public override bool PreDraw(ref Color lightColor)
         {
             Player player = Main.player[Projectile.owner];
@@ -287,24 +320,46 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
             Texture2D texture = TextureAssets.Projectile[Type].Value;
 
-            if (Projectile.spriteDirection > 0)
+            if (LastSwing == -1)
             {
-                origin = new Vector2(0, texture.Height);
-                effects = SpriteEffects.None;
-                rotationOffset = MathHelper.ToRadians(45f);
+                if (Projectile.spriteDirection > 0)
+                {
+                    origin = new Vector2(0, texture.Height);
+                    effects = SpriteEffects.None;
+                    rotationOffset = MathHelper.ToRadians(45f);
+                }
+                else
+                {
+                    origin = new Vector2(texture.Width, texture.Height);
+                    effects = SpriteEffects.FlipHorizontally;
+                    rotationOffset = MathHelper.ToRadians(135f);
+                }
             }
             else
             {
-                origin = new Vector2(texture.Width, texture.Height);
-                effects = SpriteEffects.FlipHorizontally;
-                rotationOffset = MathHelper.ToRadians(135f);
+                if (Projectile.spriteDirection > 0)
+                {
+                    origin = new Vector2(texture.Width, texture.Height);
+                    effects = SpriteEffects.FlipHorizontally;
+                    rotationOffset = MathHelper.ToRadians(135);
+                }
+                else
+                {
+                    origin = new Vector2(0, texture.Height);
+                    effects = SpriteEffects.None;
+                    rotationOffset = MathHelper.ToRadians(43f);
+                }
             }
 
             DrawSweepFX();
 
             DrawUnderBlade();
 
-            Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, null, lightColor * Projectile.Opacity, Projectile.rotation + rotationOffset, origin, AdjustedScale, effects, 0);
+            Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, null, lightColor * Projectile.Opacity, (Projectile.rotation + rotationOffset) + RotationManualOffset, origin, AdjustedScale, effects, 0);
+            if (Glowmask != null)
+            {
+                Main.EntitySpriteDraw(Glowmask.Value, Projectile.Center - Main.screenPosition, null, Color.White * Projectile.Opacity, (Projectile.rotation + rotationOffset) + RotationManualOffset, origin, AdjustedScale, effects, 0);
+            }
 
             DrawOverBlade();
             return false;
@@ -329,7 +384,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
         public override bool? CanHitNPC(NPC target)
         {
-            return true;
+            return null;
         }
 
         public virtual void HitNPCEffects(NPC npc, NPC.HitInfo hit)

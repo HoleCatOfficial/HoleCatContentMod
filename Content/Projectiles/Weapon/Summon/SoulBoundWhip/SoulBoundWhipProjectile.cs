@@ -36,7 +36,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon.SoulBoundWhip
             Projectile.aiStyle = -1;
         }
 
-        public override SoundStyle? WhipCrack_SFX => SoundID.AbigailAttack;
+        public override SoundStyle? WhipCrack_SFX => DTAssetLib.Impacts.DreamHit;
         public override void Prepare()
         {
             AddHitEffects(ModContent.BuffType<SoulInferno>(), 600);
@@ -55,10 +55,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon.SoulBoundWhip
         #region Drawing
         public override float GetWhipWidth(float baseWidth, float t)
         {
-            _HeadOffset = new Vector2(0, -_HeadRectangle.Height / 2f);
+            //_HeadOffset = new Vector2(0, -_HeadRectangle.Height / 2f);
             _DebugMode = false;
-            _ShouldDrawNormal = false;
-            _Head_VerticalFrames = 5;
+            _ShouldDrawNormal = true;
+            _Head_VerticalFrames = 1;
             baseWidth += 1;
             return baseWidth + Math.Clamp(MathF.Sin(t * 10f) * 10f * MathF.Tan(t * 14f + Main.GlobalTimeWrappedHourly * 20f + Main.rand.NextFloat(4038f)) * MathHelper.SmoothStep(0, 1f, t), 1, 4);
         }
@@ -67,7 +67,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon.SoulBoundWhip
         public override Color GetWhipColor(float t, float w)
         {
             Projectile.alpha = 0;
-            return ColorLib.Soul;
+            return ColorLib.Soul3 * 0.5f;
             //return Color.Lerp(Color.White, Color.Blue, MathF.Sin(Main.GlobalTimeWrappedHourly) * MathF.Cos(t * 10f));
         }
 
@@ -116,7 +116,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon.SoulBoundWhip
             }
         }
         public override bool _PrimitiveIsScrollingTexture => true;
-        protected override Texture2D PrimitiveTex => DTAssetLib.Streak(7).Value;
+        protected override Texture2D PrimitiveTex => DTAssetLib.Streak(10).Value;
 
         protected override Texture2D WhipHandle => ModContent.Request<Texture2D>($"{Path}/SoulBoundWhipHilt").Value;
         protected override Texture2D WhipHead => ModContent.Request<Texture2D>($"{Path}/SoulBoundWhipHead").Value;

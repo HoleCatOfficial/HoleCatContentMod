@@ -1712,6 +1712,7 @@ namespace DestroyerTest.Common
         public static SoundStyle ConstitutionStarKill = new SoundStyle($"{AudioPath}/ConstitutionBoss/ConstitutionStar/Kill", 14) { PitchVariance = 0.2f, Volume = 0.85f, MaxInstances = 0 };
         public static SoundStyle EnergyWoosh = new SoundStyle($"{AudioPath}/EnergyWoosh", 3);
         public static SoundStyle RiftExplosion = new SoundStyle($"{AudioPath}/RiftMaker_Boom");
+        public static SoundStyle Zap = new SoundStyle($"{AudioPath}/Zap", 3);
         public struct ScholarShieldSounds
         {
             public static string Path = $"{AudioPath}/Scholar";
@@ -1729,6 +1730,7 @@ namespace DestroyerTest.Common
             public static SoundStyle DreamHit = new SoundStyle($"{Path}/DreamHit", 4);
             public static SoundStyle EnergyBounce = new SoundStyle($"{Path}/EnergyBounce", 3);
             public static SoundStyle ExplosiveImpactSmall = new SoundStyle($"{Path}/ExplosiveImpactSmall");
+            public static SoundStyle ExplosiveImpactBig = new SoundStyle($"{Path}/ExplosiveImpactBig");
             public static SoundStyle FlameImpact = new SoundStyle($"{Path}/FlameImpact", 4);
             public static SoundStyle FleshHit = new SoundStyle($"{Path}/FleshHit", 5);
             public static SoundStyle HellWeaponImpact = new SoundStyle($"{Path}/HellWeaponImpact");

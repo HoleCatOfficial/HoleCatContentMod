@@ -78,7 +78,7 @@ namespace DestroyerTest.Content.Equips.AuraThiefSet
 
 		// UpdateArmorSet allows you to give set bonuses to the armor.
 		public override void UpdateArmorSet(Player player) {
-			player.GetDamage(DamageClass.Melee) *= 0.08f;
+			player.GetDamage(DamageClass.Melee) += 0.11f;
 			player.buffImmune[BuffID.Frostburn] = true;
 			player.buffImmune[BuffID.Frostburn2] = true;
 			player.buffImmune[BuffID.Frozen] = true;

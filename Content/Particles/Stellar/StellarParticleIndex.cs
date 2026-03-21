@@ -22,5 +22,6 @@ namespace DestroyerTest.Content.Particles.Stellar
 
         public static int BloomRing = PRTLoader.GetParticleID<BloomRingStellar>();
         public static int BloomRingSharp = PRTLoader.GetParticleID<BloomRingSharpStellar>();
+        public static int PointGlow = PRTLoader.GetParticleID<StellarPointGlow>();
     }
 }

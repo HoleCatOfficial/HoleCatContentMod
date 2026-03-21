@@ -28,40 +28,22 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
     public class MemoriamSwing : BaseBroadswordProjectile
     {
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+           
+        }
         public override void SetDefaults()
         {
             base.SetDefaults();
             Projectile.width = 112;
             Projectile.height = 112;
+            Glowmask = ModContent.Request<Texture2D>($"{Texture}_Glow");
         }
 
         public override SoundStyle Swing => DTAssetLib.SwordSounds.MemoriamSwing with { MaxInstances = 0, PitchVariance = 0.3f };
 
-        public override void DrawOverBlade()
-        {
-            Player player = Main.player[Projectile.owner];
-
-            Vector2 origin;
-            float rotationOffset;
-            SpriteEffects effects;
-
-            Texture2D texture = ModContent.Request<Texture2D>($"{Texture}_Glow").Value;
-
-            if (Projectile.spriteDirection > 0)
-            {
-                origin = new Vector2(0, texture.Height);
-                rotationOffset = MathHelper.ToRadians(45f);
-                effects = SpriteEffects.None;
-            }
-            else
-            {
-                origin = new Vector2(texture.Width, texture.Height);
-                rotationOffset = MathHelper.ToRadians(135f);
-                effects = SpriteEffects.FlipHorizontally;
-            }
-
-            Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, null, Color.White * Projectile.Opacity, Projectile.rotation + rotationOffset, origin, Projectile.scale, effects, 0);
-        }
+        
 
         public Vector2 swordTip;
         public Line SwordLine;

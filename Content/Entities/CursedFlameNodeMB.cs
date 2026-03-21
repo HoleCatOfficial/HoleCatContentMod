@@ -17,6 +17,7 @@ using OpusLib;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Policy;
 using Terraria;
@@ -85,16 +86,24 @@ namespace DestroyerTest.Content.Entities
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
-            if (spawnInfo.Player.ZoneCorrupt == true && spawnInfo.Player.ZoneOverworldHeight == true && DownedBossSystem.downedPlanteraBoss == true)
+            bool NodeAlive = false;
+            foreach (NPC npc in Main.npc)
             {
-                return 0.01f;
+                if (NPC.active && NPC.type == Type)
+                {
+                    NodeAlive = true;
+                }
+            }
+            if (spawnInfo.Player.ZoneCorrupt == true && spawnInfo.Player.ZoneOverworldHeight == true && DownedBossSystem.downedPlanteraBoss == true && !NodeAlive)
+            {
+                return 0.1f;
             }
             return 0f;
         }
 
         public override bool CheckActive()
         {
-            return false;
+            return true;
         }
 
         public float ShieldOpacity = 0f;
@@ -142,7 +151,7 @@ namespace DestroyerTest.Content.Entities
         public bool HasBuffed = false;
         public bool HasDebuffed = false;
         public int IdleTimer = 60;
-        public static int DormantNPCKillTally = 0;
+        public int DormantNPCKillTally = 0;
         public const int DormantNPCKillRequirement = 50;
 
         public float RotSpeed;
@@ -234,6 +243,7 @@ namespace DestroyerTest.Content.Entities
             {
                 case AttackState.Dormant:
                     {
+                        
                         DormantAI();
                         if ((DormantNPCKillTally < DormantNPCKillRequirement))
                         {
@@ -254,6 +264,7 @@ namespace DestroyerTest.Content.Entities
                     }
                 case AttackState.Idle:
                     {
+                        NPC.npcSlots = 10f;
                         KeepToPlayer(player.Center + new Vector2(0, -200));
                         if (IdleTimer > 0)
                         {
@@ -374,11 +385,11 @@ namespace DestroyerTest.Content.Entities
         {
             if (ShieldScale > 0.1f)
             {
-                ShieldScale -= 0.05f;
+                ShieldScale -= 0.01f;
             }
             if (ShieldOpacity < 1)
             {
-                ShieldOpacity += 0.1f;
+                ShieldOpacity += 0.05f;
             }
         }
 
@@ -469,6 +480,8 @@ namespace DestroyerTest.Content.Entities
                     NPC wavenpc = NPC.NewNPCDirect(NPC.GetSource_FromAI(NPCIdentifierContext), SpawnPositions[i], CursedFlameNodeWaveEnemies[Main.rand.Next(CursedFlameNodeWaveEnemies.Count)]);
                     wavenpc.scale = 1.5f;
                     wavenpc.knockBackResist = 0f;
+                    var g = wavenpc.GetGlobalNPC<CFNGlobal>();
+                    g.Node = this;
                 }
             }
         }
@@ -571,10 +584,13 @@ namespace DestroyerTest.Content.Entities
 
         public bool IsNodeSpawned = false;
 
+        public CursedFlameNodeMB Node = null;
+
         public override void Unload()
         {
             WaveNPCCount = 0;
             IsNodeSpawned = false;
+            Node = null;
         }
 
         public override void OnSpawn(NPC npc, IEntitySource source)
@@ -584,19 +600,41 @@ namespace DestroyerTest.Content.Entities
                 WaveNPCCount += 1;
                 IsNodeSpawned = true;
             }
+
+        }
+
+        public override void AI(NPC npc)
+        {
+
+            
+        }
+
+        public override bool CheckActive(NPC npc)
+        {
+            if (IsNodeSpawned)
+            {
+                return false;
+            }
+            return true;
         }
 
         public override void OnKill(NPC npc)
         {
             if (IsNodeSpawned)
             {
-                CursedFlameNodeMB.DormantNPCKillTally += 1;
+                if (Node != null)
+                {
+                    Node.DormantNPCKillTally += 1;
+                }
                 WaveNPCCount--;
             }
 
             if (npc.type == ModContent.NPCType<CursedFlameNodeMB>())
             {
-                CursedFlameNodeMB.DormantNPCKillTally = 0;
+                if (Node != null)
+                {
+                    Node.DormantNPCKillTally = 0;
+                }
                 WaveNPCCount = 0;
             }
         }

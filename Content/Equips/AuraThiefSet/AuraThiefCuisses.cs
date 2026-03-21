@@ -7,7 +7,10 @@ using DestroyerTest.Rarity;
 using System.Numerics;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Resources.Cloths;
-using System.Drawing;
+using InnoVault.PRT;
+using DestroyerTest.Content.Particles;
+using Microsoft.Xna.Framework;
+using System;
 
 namespace DestroyerTest.Content.Equips.AuraThiefSet
 {
@@ -24,11 +27,17 @@ namespace DestroyerTest.Content.Equips.AuraThiefSet
 			Item.defense = 4; // The amount of defense the item will give when equipped
 		}
 
-		public override void UpdateEquip(Player player) {
-		if (player.velocity.Length() > 0)
-        {
-            Dust.NewDustDirect(player.Bottom, 2, 1, ModContent.DustType<SoulDust>(), 0, 0.02f, 100, new Microsoft.Xna.Framework.Color(184, 228, 242), 1);
-        }
+		public override void UpdateEquip(Player player) 
+		{
+            float h = player.height - 2;
+            Rectangle below = new Rectangle((int)player.position.X, (int)(player.position.Y + h), player.width, 2);
+            if (Math.Abs(player.velocity.X) > 3.75f)
+			{
+				//Dust.NewDustDirect(player.Bottom, 2, 1, ModContent.DustType<SoulDust>(), 0, 0.02f, 100, new Microsoft.Xna.Framework.Color(184, 228, 242), 1);
+				
+				
+				PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Main.rand.NextVector2FromRectangle(below), Main.rand.NextVector2Circular(3, 3), new Color(184, 228, 242), 0.5f);
+			}
         }
 
 

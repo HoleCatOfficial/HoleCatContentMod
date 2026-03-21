@@ -35,6 +35,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Projectile.width = 68;
             Projectile.height = 68;
             SweepColor = ColorLib.IchorCrystal2;
+
+            Glowmask = ModContent.Request<Texture2D>($"{Texture}_Glow");
         }
 
         public override SoundStyle Swing => DTAssetLib.SwordSounds.MediumHeavySwing;
@@ -48,28 +50,6 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
         public override void DrawOverBlade()
         {
-            Player player = Main.player[Projectile.owner];
-
-            Vector2 origin;
-            float rotationOffset;
-            SpriteEffects effects;
-
-            Texture2D texture = ModContent.Request<Texture2D>($"{Texture}_Glow").Value;
-
-            if (Projectile.spriteDirection > 0)
-            {
-                origin = new Vector2(0, texture.Height);
-                rotationOffset = MathHelper.ToRadians(45f);
-                effects = SpriteEffects.None;
-            }
-            else
-            {
-                origin = new Vector2(texture.Width, texture.Height);
-                rotationOffset = MathHelper.ToRadians(135f);
-                effects = SpriteEffects.FlipHorizontally;
-            }
-
-            Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, null, Color.White * Projectile.Opacity, Projectile.rotation + rotationOffset, origin, AdjustedScale, effects, 0);
         }
 
         public Vector2 swordTip;

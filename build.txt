@@ -3,6 +3,6 @@ author = HoleCat
 version = 2.1.7253
 modReferences = InnoVault, OpusLib, GlowmaskHelper, BreadLibrary
 dependencies = InnoVault, OpusLib, GlowmaskHelper, BreadLibrary
-weakReferences = FargowiltasSouls, Fargowiltas
+weakReferences = FargowiltasSouls, Fargowiltas, ConstellationsOfOrion
 playableOnPreview = false
 homepage = https://linktr.ee/HoleCat

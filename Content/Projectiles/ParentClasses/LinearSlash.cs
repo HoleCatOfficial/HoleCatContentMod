@@ -41,6 +41,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         public bool DustUsesColor = true;
         public float DustScale = 0.5f;
         public bool Blending = true;
+        public int LifeTime = 240;
 
 
 		public override bool PreDraw(ref Color lightColor)
@@ -59,7 +60,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             );
 
             Vector2 origin = new Vector2(projectileTexture.Width / 2f, frameHeight / 2f);
-            SpriteEffects fx = Projectile.direction == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
+            SpriteEffects fx = Projectile.rotation < 180f ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
 
             if (Blending)
             {
@@ -121,8 +122,9 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             return false;
         }
 
-        private void AnimateProjectile() {
-            if (++Projectile.frameCounter >= 60) {
+        private void AnimateProjectile() 
+        {
+            if (++Projectile.frameCounter >= LifeTime / 4) {
                 Projectile.frameCounter = 0;
                 if (++Projectile.frame >= Main.projFrames[Projectile.type]) {
                     Projectile.frame = 0;
@@ -139,6 +141,10 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         public override void AI()
         {
             AnimateProjectile();
+            if (Projectile.velocity.Length() > 0)
+            {
+                Projectile.rotation = Projectile.velocity.ToRotation();
+            }
             if (Projectile.timeLeft > 80)
             {
                 Projectile.alpha -= (int)(255f / 40f);
@@ -192,7 +198,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         public bool TileDeath = false;
         public void TileDeathProtocol()
         {
-            Projectile.timeLeft = 40;
+
             TileDeath = true;
         }
     }

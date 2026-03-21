@@ -1,4 +1,5 @@
-﻿using DestroyerTest.Content.Consumables;
+﻿using DestroyerTest.Content.BossSummons;
+using DestroyerTest.Content.Consumables;
 using DestroyerTest.Content.Entities;
 using DestroyerTest.Content.Equips;
 using DestroyerTest.Content.Equips.ScepterAccessories;
@@ -37,32 +38,32 @@ namespace DestroyerTest.Common.Systems
 
         public BossChecklistEntry(LocalizedText bossName, LocalizedText hint, int internalID, float weight, Condition downCondition, Action<SpriteBatch, Rectangle, Color> portrait)
         {
-            BossName = BossName;
+            BossName = bossName;
             Hint = hint;
             InternalID = internalID;
             Weight = weight;
-            DownCondition = DownCondition;
+            DownCondition = downCondition;
             Portrait = portrait;
         }
 
         public BossChecklistEntry(LocalizedText bossName, LocalizedText hint, int internalID, float weight, Condition downCondition, Action<SpriteBatch, Rectangle, Color> portrait, int spawnItem)
         {
-            BossName = BossName;
+            BossName = bossName;
             Hint = hint;
             InternalID = internalID;
             Weight = weight;
-            DownCondition = DownCondition;
+            DownCondition = downCondition;
             Portrait = portrait;
             SpawnItem = spawnItem;
         }
 
         public BossChecklistEntry(LocalizedText bossName, LocalizedText hint, int internalID, float weight, Condition downCondition, Action<SpriteBatch, Rectangle, Color> portrait, int spawnItem, List<int> lootTable)
         {
-            BossName = BossName;
+            BossName = bossName;
             Hint = hint;
             InternalID = internalID;
             Weight = weight;
-            DownCondition = DownCondition;
+            DownCondition = downCondition;
             Portrait = portrait;
             SpawnItem = spawnItem;
             LootTable = lootTable;
@@ -75,8 +76,8 @@ namespace DestroyerTest.Common.Systems
         {
             // https://forums.terraria.org/index.php?threads/.50668/
             DoBossChecklistIntegration(DTBossEntries.Constitution);
-            DoBossChecklistIntegration(DTBossEntries.IchorNode);
-            DoBossChecklistIntegration(DTBossEntries.CursedFlameNode);
+            DoBossChecklistIntegration_NoSpawnItem(DTBossEntries.IchorNode);
+            DoBossChecklistIntegration_NoSpawnItem(DTBossEntries.CursedFlameNode);
             DoBossChecklistIntegration(DTBossEntries.WyvernCorpse);
             DoBossChecklistIntegration(DTBossEntries.NightmareRose);
         }
@@ -165,7 +166,7 @@ namespace DestroyerTest.Common.Systems
                 sb.Draw(texture, centered, color);
             };
             public static BossChecklistEntry Constitution = new BossChecklistEntry(
-                Language.GetText("Mods.DestroyerTest.NPCs.ConstitutionBoss.DisplayName"), 
+                Language.GetText("Mods.DestroyerTest.NPCs.ConstitutionBoss.InternalName"), 
                 Language.GetText("Mods.DestroyerTest.NPCs.ConstitutionBoss.Hint"), 
                 ModContent.NPCType<ConstitutionBoss>(), 
                 6.9999999f, 
@@ -183,7 +184,7 @@ namespace DestroyerTest.Common.Systems
                 sb.Draw(texture, centered, color);
             };
             public static BossChecklistEntry IchorNode = new BossChecklistEntry(
-                Language.GetText("Mods.DestroyerTest.NPCs.IchorNodeMB.DisplayName"), 
+                Language.GetText("Mods.DestroyerTest.NPCs.IchorNodeMB.InternalName"), 
                 Language.GetText("Mods.DestroyerTest.NPCs.IchorNodeMB.Hint"), 
                 ModContent.NPCType<IchorNodeMB>(), 12.7f, 
                 DownedBossSystem.downedNodeCondition, 
@@ -198,7 +199,7 @@ namespace DestroyerTest.Common.Systems
                 sb.Draw(texture, centered, color);
             };
             public static BossChecklistEntry CursedFlameNode = new BossChecklistEntry(
-                Language.GetText("Mods.DestroyerTest.NPCs.CursedFlameNodeMB.DisplayName"), 
+                Language.GetText("Mods.DestroyerTest.NPCs.CursedFlameNodeMB.InternalName"), 
                 Language.GetText("Mods.DestroyerTest.NPCs.CursedFlameNodeMB.Hint"), 
                 ModContent.NPCType<CursedFlameNodeMB>(), 
                 12.7f, 
@@ -215,23 +216,23 @@ namespace DestroyerTest.Common.Systems
                 sb.Draw(texture, centered, color);
             };
             public static BossChecklistEntry WyvernCorpse = new BossChecklistEntry(
-                Language.GetText("Mods.DestroyerTest.NPCs.WyvernCorpseHead.DisplayName"),
+                Language.GetText("Mods.DestroyerTest.NPCs.WyvernCorpseHead.InternalName"),
                 Language.GetText("Mods.DestroyerTest.NPCs.WyvernCorpseHead.Hint"),
                 ModContent.NPCType<WyvernCorpseHead>(),
                 18.0001f,
                 DownedBossSystem.downedWyvernCorpseBossCondition,
                 WyvernCorpsePortrait,
-                ModContent.ItemType<EuthanizedViciousBunny>(),
+                ModContent.ItemType<DivineWell>(),
                 DTLootTables.WyvernCorpseLootTable);
 
             public static Action<SpriteBatch, Rectangle, Color> NightmareRosePortrait = (SpriteBatch sb, Rectangle rect, Color color) =>
             {
-                Texture2D texture = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/NightmareRoseBossChecklist").Value;
+                Texture2D texture = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/NightmareRoseBossBossChecklist").Value;
                 Vector2 centered = new Vector2(rect.X + (rect.Width / 2) - (texture.Width / 2), rect.Y + (rect.Height / 2) - (texture.Height / 2));
                 sb.Draw(texture, centered, color);
             };
             public static BossChecklistEntry NightmareRose = new BossChecklistEntry(
-                Language.GetText("Mods.DestroyerTest.NPCs.NightmareRoseBoss.DisplayName"),
+                Language.GetText("Mods.DestroyerTest.NPCs.NightmareRoseBoss.InternalName"),
                 Language.GetText("Mods.DestroyerTest.NPCs.NightmareRoseBoss.Hint"),
                 ModContent.NPCType<NightmareRoseBoss>(),
                 18.0001f,
@@ -262,16 +263,58 @@ namespace DestroyerTest.Common.Systems
                 return;
             }
 
+
+            Entry.DownCondition.Deconstruct(out LocalizedText description, out Func<bool> predicate);
+
             bossChecklistMod.Call(
                 "LogBoss",
                 Mod,
-                Entry.BossName,
+                Entry.BossName.Value,
                 Entry.Weight,
-                Entry.DownCondition,
+                predicate,
                 Entry.InternalID,
                 new Dictionary<string, object>()
                 {
                     ["spawnItems"] = Entry.SpawnItem,
+                    ["collectibles"] = Entry.LootTable,
+                    ["customPortrait"] = Entry.Portrait,
+                    ["spawnInfo"] = Entry.Hint,
+                }
+            );
+        }
+ 
+
+        private void DoBossChecklistIntegration_NoSpawnItem(BossChecklistEntry Entry)
+        {
+
+            // The mods homepage links to its own wiki where the calls are explained: https://github.com/JavidPack/BossChecklist/wiki/%5B1.4.4%5D-Boss-Log-Entry-Mod-Call
+            // If we navigate the wiki, we can find the "LogBoss" method, which we want in this case
+            // A feature of the call is that it will create an entry in the localization file of the specified NPC type for its spawn info, so make sure to visit the localization file after your mod runs once to edit it
+
+            if (!ModLoader.TryGetMod("BossChecklist", out Mod bossChecklistMod))
+            {
+                return;
+            }
+
+            // For some messages, mods might not have them at release, so we need to verify when the last iteration of the method variation was first added to the mod, in this case 1.6
+            // Usually mods either provide that information themselves in some way, or it's found on the GitHub through commit history/blame
+            if (bossChecklistMod.Version < new Version(1, 6))
+            {
+                return;
+            }
+
+
+            Entry.DownCondition.Deconstruct(out LocalizedText description, out Func<bool> predicate);
+
+            bossChecklistMod.Call(
+                "LogBoss",
+                Mod,
+                Entry.BossName.Value,
+                Entry.Weight,
+                predicate,
+                Entry.InternalID,
+                new Dictionary<string, object>()
+                {
                     ["collectibles"] = Entry.LootTable,
                     ["customPortrait"] = Entry.Portrait,
                     ["spawnInfo"] = Entry.Hint,

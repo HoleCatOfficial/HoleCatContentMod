@@ -2770,7 +2770,7 @@ MalevolenceMantra: {
 
 Malevolence: {
 	DisplayName: Malevolence
-	Tooltip: ""
+	Tooltip: Hits inflict cursed inferno.
 }
 
 ShiningObelisk: {
@@ -4170,5 +4170,56 @@ SunSaber: {
 
 Scorn: {
 	DisplayName: Scorn
+	Tooltip: Hits inflict ichor.
+}
+
+MalignantBodyArmor: {
+	DisplayName: Malignant Body Armor
+	Tooltip: 10% ammo reservation.
+}
+
+MalignantHelm: {
+	DisplayName: Malignant Helm
 	Tooltip: ""
+	SetBonus:
+		'''
+		Increases class Damage accordingly:
+		Melee: 8%
+		Magic: 12%
+		Ranged: 10%
+		Summon: 16%
+		Scepter: 14%
+		Rogue / Thrower: 10%
+
+		Increases Melee weapon scale by 85%.
+		Decreases Mana cost by 30%.
+
+		Increases the speed of classes accordingly:
+		Melee: 35%
+		Ranged: 20%
+		Magic: 30%
+
+		Firing a mage weapon has a chance to release a homing crystal dealing 50% of the shot's damage.
+		Firing a ranged weapon also has a chance to release a crystal, but it does not home in.
+		'''
+}
+
+MalignantLegPlates: {
+	DisplayName: Malignant Leg Plates
+	Tooltip: Increases Max Minions by 2.
+}
+
+DivineWell: {
+	DisplayName: Divine Well
+	Tooltip: "A basin containing concentrated fragments of the Great Wyvern's Soul."
+}
+
+Sabhati: {
+	DisplayName: Sabhati
+	Tooltip:'''
+			True melee hits summon stellar meteors that explode on impact with enemies.
+			The blade and the metors both inflict Descendant Inferno.
+			
+			"The parasitic union of two far-flung corners of the cosmos." 
+			''' 
 }

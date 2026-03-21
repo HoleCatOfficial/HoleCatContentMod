@@ -5,6 +5,7 @@ using DestroyerTest.Content.Projectiles.ParentClasses;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using OpusLib.Content.Helpers;
 using System;
 using System.IO;
@@ -19,41 +20,51 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 {
     public class SparkFrostCleaverSwing : BaseBroadswordProjectile
     {
-
+        public override void SetStaticDefaults()
+        {
+            
+        }
         public override void SetDefaults()
         {
             base.SetDefaults();
             Projectile.width = 162;
             Projectile.height = 162;
-            SweepColor = ColorLib.JavelinEnergy;
+
+            SweepColor = Color.SkyBlue;
+
+            Glowmask = ModContent.Request<Texture2D>($"{Texture}_Highlight");
         }
 
         public override SoundStyle Swing => DTAssetLib.SwordSounds.SpiritOfJusticeSwing with { MaxInstances = 0, Pitch = -0.4f, PitchVariance = 0.3f };
 
-        public override void DrawOverBlade()
+        private void DrawSweepFX2()
         {
             Player player = Main.player[Projectile.owner];
+            var Tex = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/CircularSlash3").Value;
+            float TexBasedMod = (Projectile.Size.Length() * 0.015f);
+            float rOffset = 0f;
 
-            Vector2 origin;
-            float rotationOffset;
-            SpriteEffects effects;
+            SpriteEffects FX = SpriteEffects.None;
 
-            Texture2D texture = ModContent.Request<Texture2D>($"{Texture}_Highlight").Value;
-
-            if (Projectile.spriteDirection > 0)
+            if (LastSwing == 1)
             {
-                origin = new Vector2(0, texture.Height);
-                rotationOffset = MathHelper.ToRadians(45f);
-                effects = SpriteEffects.None;
+                FX = SpriteEffects.FlipHorizontally;
+                rOffset = MathHelper.PiOver2;
             }
             else
             {
-                origin = new Vector2(texture.Width, texture.Height);
-                rotationOffset = MathHelper.ToRadians(135f);
-                effects = SpriteEffects.FlipHorizontally;
+                FX = SpriteEffects.None;
+                rOffset = 0f;
             }
 
-            Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, null, Color.White * Projectile.Opacity, Projectile.rotation + rotationOffset, origin, Projectile.scale, effects, 0);
+            Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+            Main.EntitySpriteDraw(Tex, player.MountedCenter - Main.screenPosition, null, Color.Orange * SweepOpacity, (Projectile.rotation + MathHelper.PiOver4) + rOffset, Tex.Size() / 2, (AdjustedScale * TexBasedMod), FX);
+            Opus.ReturnToDefaultDrawing(Main.spriteBatch);
+        }
+
+        public override void DrawUnderBlade()
+        {
+            DrawSweepFX2();
         }
 
         public Vector2 swordTip;
