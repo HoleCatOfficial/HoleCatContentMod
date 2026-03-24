@@ -264,7 +264,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
             if (CanContinueSwing(Owner))
             {
-                if (SPINSPEED < 0.12f)
+                if (SPINSPEED < 0.36f)
                 {
                     SPINSPEED += 0.008f;
                 }

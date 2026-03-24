@@ -2075,6 +2075,7 @@ namespace DestroyerTest.Content.Entities
             Projectile.ignoreWater = true;
             Projectile.hide = true;
             WindTex = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/EvilBossWind", AssetRequestMode.AsyncLoad);
+            Projectile.scale = 4;
         }
 
         public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
@@ -2115,32 +2116,32 @@ namespace DestroyerTest.Content.Entities
                 float scrollSpeedX1 = 600f;
                 float scrollSpeedY1 = 30f;
 
-                float scrollOffsetX1 = (time * scrollSpeedX1) % WindTex.Value.Width;
-                float scrollOffsetY1 = (time * scrollSpeedY1) % WindTex.Value.Height;
+                float scrollOffsetX1 = (time * scrollSpeedX1) % WindTex.Value.Width * Projectile.scale;
+                float scrollOffsetY1 = (time * scrollSpeedY1) % WindTex.Value.Height * Projectile.scale;
 
                 int screenW = Main.screenWidth;
                 int screenH = Main.screenHeight;
 
                 // --- draw one tile beyond each edge ---
-                float startX = -WindTex.Value.Width;
-                float startY = -WindTex.Value.Height;
-                float endX = screenW + WindTex.Value.Width;
-                float endY = screenH + WindTex.Value.Height;
+                float startX = -WindTex.Value.Width * Projectile.scale;
+                float startY = -WindTex.Value.Height * Projectile.scale;
+                float endX = screenW + WindTex.Value.Width * Projectile.scale;
+                float endY = screenH + WindTex.Value.Height * Projectile.scale;
 
                 // --- Draw first layer ---
                 for (float x = -scrollOffsetX1 + startX; x < endX; x += WindTex.Value.Width)
                 {
                     for (float y = -scrollOffsetY1 + startY; y < endY; y += WindTex.Value.Height)
                     {
-                        spriteBatch.Draw(WindTex.Value, new Vector2(x, y), null, drawColor, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+                        spriteBatch.Draw(WindTex.Value, new Vector2(x, y), null, drawColor, 0f, Vector2.Zero, 1f * Projectile.scale, SpriteEffects.None, 0f);
                     }
                 }
 
                 float scrollSpeedX2 = 250f;
                 float scrollSpeedY2 = -60f; // opposite direction for contrast
 
-                float scrollOffsetX2 = (time * scrollSpeedX2) % WindTex.Value.Width;
-                float scrollOffsetY2 = (time * scrollSpeedY2) % WindTex.Value.Height;
+                float scrollOffsetX2 = (time * scrollSpeedX2) % WindTex.Value.Width * Projectile.scale;
+                float scrollOffsetY2 = (time * scrollSpeedY2) % WindTex.Value.Height * Projectile.scale;
 
                 Color drawColor2 = drawColor * 0.8f; // slightly dimmer to layer properly
 
@@ -2149,7 +2150,7 @@ namespace DestroyerTest.Content.Entities
                 {
                     for (float y = -scrollOffsetY2 + startY; y < endY; y += WindTex.Value.Height)
                     {
-                        spriteBatch.Draw(WindTex.Value, new Vector2(x, y), null, drawColor2, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
+                        spriteBatch.Draw(WindTex.Value, new Vector2(x, y), null, drawColor2, 0f, Vector2.Zero, 1f * Projectile.scale, SpriteEffects.None, 0f);
                     }
                 }
 

@@ -53,9 +53,8 @@ namespace DestroyerTest.Content.Consumables
 
             itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<Contempt>(), 2, 1, 1));
             itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<GigaCursedHammerWeapon>(), 2, 1, 1));
-            itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<CorruptPetalGun>(), 2, 1, 1));
             itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<DeadlyBlossom>(), 2, 1, 1));
-            itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<PossessedDartRifleItem>(), 2, 1, 1));
+            itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<BlossomBeater>(), 2, 1, 1));
             itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<HaepienNodeCharm>(), 6, 1, 1));
             itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<Item_NightmareRoseTrophy>(), 3, 1, 1));
             itemLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<NightmarePowder>()));

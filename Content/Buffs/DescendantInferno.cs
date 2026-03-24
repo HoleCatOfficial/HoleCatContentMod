@@ -49,7 +49,10 @@ namespace DestroyerTest.Content.Buffs
         {
             if (lifeRegenDebuff)
             {
-                PRTLoader.NewParticle(StellarParticleIndex.PointGlow, Main.rand.NextVector2FromRectangle(Utils.CenteredRectangle(npc.Center, npc.Size)), Main.rand.NextVector2Circular(3, 3), default, 1f);
+                Vector2 p1 = Main.rand.NextVector2FromRectangle(Utils.CenteredRectangle(npc.Center, npc.Size));
+                Vector2 d = npc.Center - p1;
+                d.Normalize();
+                PRTLoader.NewParticle(StellarParticleIndex.PointGlow, p1, d, default, 1f);
 
                 if (Main.rand.NextBool(10))
                 {
@@ -68,7 +71,7 @@ namespace DestroyerTest.Content.Buffs
                 {
                     npc.lifeRegen = 0;
                 }
-                npc.lifeRegen -= 80;
+                npc.lifeRegen -= 35;
             }
         }
     }
@@ -86,7 +89,10 @@ namespace DestroyerTest.Content.Buffs
         {
             if (lifeRegenDebuff)
             {
-                PRTLoader.NewParticle(StellarParticleIndex.PointGlow, Main.rand.NextVector2FromRectangle(Utils.CenteredRectangle(Player.Center, Player.Size)), Main.rand.NextVector2Circular(3, 3), default, 1f);
+                Vector2 p1 = Main.rand.NextVector2FromRectangle(Utils.CenteredRectangle(Player.Center, Player.Size));
+                Vector2 d = Player.Center - p1;
+                d.Normalize();
+                PRTLoader.NewParticle(StellarParticleIndex.PointGlow, p1, d, default, 1f);
 
                 if (Main.rand.NextBool(10))
                 {
@@ -99,7 +105,7 @@ namespace DestroyerTest.Content.Buffs
             if (lifeRegenDebuff)
             {
                 Player.lifeRegenTime = 0;
-                Player.lifeRegen -= 50;
+                Player.lifeRegen -= 35;
             }
         }
     }

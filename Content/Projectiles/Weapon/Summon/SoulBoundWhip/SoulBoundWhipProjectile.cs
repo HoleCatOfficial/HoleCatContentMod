@@ -1,6 +1,8 @@
 ﻿using BreadLibrary.Common.Whip;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Particles;
+using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -22,7 +24,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon.SoulBoundWhip
         #region IwhipMOtion
         protected override IWhipMotion CreateMotion()
         {
-            return new WhipMotions.VanillaWhipMotion();
+            return new WhipMotions.FancyWhipMotion();
         }
 
         protected override void SetupModifiers(ModularWhipController controller)
@@ -36,7 +38,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon.SoulBoundWhip
             Projectile.aiStyle = -1;
         }
 
-        public override SoundStyle? WhipCrack_SFX => DTAssetLib.Impacts.DreamHit;
+        public override SoundStyle? WhipCrack_SFX => new SoundStyle("DestroyerTest/Assets/Audio/SoulWhipCrack") { MaxInstances = 0, PitchVariance = 0.2f };
         public override void Prepare()
         {
             AddHitEffects(ModContent.BuffType<SoulInferno>(), 600);
@@ -45,31 +47,33 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon.SoulBoundWhip
 
             SetupModifiers(WhipController);
 
+            Projectile.WhipSettings.Segments = 48;
         }
         public override void AI2()
         {
-
+            
         }
 
 
         #region Drawing
         public override float GetWhipWidth(float baseWidth, float t)
         {
-            //_HeadOffset = new Vector2(0, -_HeadRectangle.Height / 2f);
+            _HeadOffset = new Vector2(0, -_HeadRectangle.Height / 2f);
             _DebugMode = false;
             _ShouldDrawNormal = true;
             _Head_VerticalFrames = 1;
-            baseWidth += 1;
-            return baseWidth + Math.Clamp(MathF.Sin(t * 10f) * 10f * MathF.Tan(t * 14f + Main.GlobalTimeWrappedHourly * 20f + Main.rand.NextFloat(4038f)) * MathHelper.SmoothStep(0, 1f, t), 1, 4);
+            baseWidth = 2;
+            return baseWidth;
         }
         protected override float RenderSpacing => 10f;
         public override float _PrimitiveScrollRate() => -1f;
         public override Color GetWhipColor(float t, float w)
         {
             Projectile.alpha = 0;
-            return ColorLib.Soul3 * 0.5f;
+            return Color.White;
             //return Color.Lerp(Color.White, Color.Blue, MathF.Sin(Main.GlobalTimeWrappedHourly) * MathF.Cos(t * 10f));
         }
+
 
         public float Saturate(float x)
         {
@@ -86,7 +90,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon.SoulBoundWhip
             _Head_y = (int)(5 * Math.Abs(MathF.Sin(Main.GlobalTimeWrappedHourly)));
             Texture2D tex = ModContent.Request<Texture2D>($"{Path}/SoulBoundWhip_MidChain").Value;
 
-
+            
 
 
             float whipLength = Projectile.WhipSettings.Segments;
@@ -94,6 +98,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon.SoulBoundWhip
             float spacingPixels = tex.Width;
 
             int count = Math.Max(1, (int)(whipLength / spacingPixels));
+
+            Vector2 End = GetPointAlongWhip(points, whipLength);
+
+            PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), End, Vector2.Zero, ColorLib.Soul3, 1f);
 
             // shared sliding parameter
             float slide = (MathF.Sin(Main.GlobalTimeWrappedHourly * 1f)) % 1f;
@@ -116,7 +124,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon.SoulBoundWhip
             }
         }
         public override bool _PrimitiveIsScrollingTexture => true;
-        protected override Texture2D PrimitiveTex => DTAssetLib.Streak(10).Value;
+        protected override Texture2D PrimitiveTex => DTAssetLib.Square.Value;
 
         protected override Texture2D WhipHandle => ModContent.Request<Texture2D>($"{Path}/SoulBoundWhipHilt").Value;
         protected override Texture2D WhipHead => ModContent.Request<Texture2D>($"{Path}/SoulBoundWhipHead").Value;

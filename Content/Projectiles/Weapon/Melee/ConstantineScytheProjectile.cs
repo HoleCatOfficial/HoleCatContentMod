@@ -1,3 +1,4 @@
+using BreadLibrary.Core.Graphics.PixelationShit;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
@@ -72,6 +73,13 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             }
         }
 
+        public override void OnStartSwing()
+        {
+            Vector2 dir = Main.MouseWorld - Projectile.Center;
+            dir.Normalize();
+
+            Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, dir * 24, ModContent.ProjectileType<ConstantineScytheClone>(), (int)(Projectile.damage *  0.75f), 3, Owner.whoAmI);
+        }
         public override void DrawOverBlade()
         {
         }

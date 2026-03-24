@@ -1,4 +1,5 @@
-﻿using DestroyerTest.Common;
+﻿using BreadLibrary.Core.Graphics.PixelationShit;
+using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.MeleeWeapons;
@@ -37,12 +38,11 @@ namespace DestroyerTest.Content.Projectiles.OrionCrossover
             Projectile.height = 120;
             SweepColor = Color.Black;
             Projectile.usesIDStaticNPCImmunity = true;
-            Projectile.idStaticNPCHitCooldown = 100;
+            Projectile.idStaticNPCHitCooldown = 30;
             Glowmask = ModContent.Request<Texture2D>($"{Texture}");
         }
 
         public override SoundStyle Swing => DTAssetLib.SwordSounds.MediumSwing with { MaxInstances = 0, PitchVariance = 0.6f };
-
         public override void HitNPCEffects(NPC npc, NPC.HitInfo hit)
         {
             npc.AddBuff(ModContent.BuffType<DescendantInferno>(), 600);
@@ -52,7 +52,7 @@ namespace DestroyerTest.Content.Projectiles.OrionCrossover
             Vector2 d = Main.MouseWorld - Sky;
             d.Normalize();
 
-            Projectile.NewProjectile(Projectile.GetSource_OnHit(npc), Sky, d * 7, ModContent.ProjectileType<SabhatiMeteor>(), (int)(Projectile.damage / 4), 10, Owner.whoAmI);
+            Projectile.NewProjectile(Projectile.GetSource_OnHit(npc), Sky, d * 7, ModContent.ProjectileType<SabhatiMeteor>(), (int)(Projectile.damage / 16), 3, Owner.whoAmI);
         }
 
         public override void OnStartSwing()

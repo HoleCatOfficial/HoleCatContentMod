@@ -1624,7 +1624,7 @@ namespace DestroyerTest.Content.Entities
         {
             if (EternityIsActive())
             {
-                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<NightmareeRoseBackgroundProj>(), 0, 0f);
+                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<WyvernCorpseBackgroundProj>(), 0, 0f);
             }
         }
 
@@ -1880,5 +1880,109 @@ namespace DestroyerTest.Content.Entities
         }
 
          
+    }
+
+    public class WyvernCorpseBackgroundProj : ModProjectile
+    {
+        public override string Texture => "DestroyerTest/Content/Extras/FadeLine";
+        private Asset<Texture2D> WindTex;
+        public override void SetDefaults()
+        {
+            Projectile.width = 10;
+            Projectile.height = 10;
+            Projectile.aiStyle = 0;
+            Projectile.friendly = false;
+            Projectile.hostile = false;
+            Projectile.penetrate = -1;
+            Projectile.timeLeft = 248000;
+            Projectile.tileCollide = false;
+            Projectile.ignoreWater = true;
+            Projectile.hide = true;
+            WindTex = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/EvilBossWind", AssetRequestMode.AsyncLoad);
+            Projectile.scale = 4;
+        }
+
+        public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
+        {
+            behindNPCsAndTiles.Add(index);
+        }
+
+        public override void AI()
+        {
+            bool ParentAlive = Main.npc.Any(n => n.active && (n.type == ModContent.NPCType<NightmareRoseBoss>() || n.type == ModContent.NPCType<WyvernCorpseHead>()));
+            if (ParentAlive)
+            {
+                Projectile.active = true;
+            }
+            else
+            {
+                Projectile.active = false;
+            }
+            Projectile.Center = Main.LocalPlayer.Center;
+        }
+
+        public override bool PreDraw(ref Color lightColor)
+        {
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            DTUtils Utility = new DTUtils();
+            DTOptimizationsConfig optcfg = ModContent.GetInstance<DTOptimizationsConfig>();
+
+            Color drawColor = Opus.Sine(Color.Black, ColorLib.Soul3);
+
+            if (!optcfg.OptimizeGame)
+            {
+                Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+
+                float time = (float)Main.GameUpdateCount / 60f;
+
+                // --- Layer 1 scroll parameters ---
+                float scrollSpeedX1 = 600f;
+                float scrollSpeedY1 = 30f;
+
+                float scrollOffsetX1 = (time * scrollSpeedX1) % WindTex.Value.Width * Projectile.scale;
+                float scrollOffsetY1 = (time * scrollSpeedY1) % WindTex.Value.Height * Projectile.scale;
+
+                int screenW = Main.screenWidth;
+                int screenH = Main.screenHeight;
+
+                // --- draw one tile beyond each edge ---
+                float startX = -WindTex.Value.Width * Projectile.scale;
+                float startY = -WindTex.Value.Height * Projectile.scale;
+                float endX = screenW + WindTex.Value.Width * Projectile.scale;
+                float endY = screenH + WindTex.Value.Height * Projectile.scale;
+
+                // --- Draw first layer ---
+                for (float x = -scrollOffsetX1 + startX; x < endX; x += WindTex.Value.Width)
+                {
+                    for (float y = -scrollOffsetY1 + startY; y < endY; y += WindTex.Value.Height)
+                    {
+                        spriteBatch.Draw(WindTex.Value, new Vector2(x, y), null, drawColor, 0f, Vector2.Zero, 1f * Projectile.scale, SpriteEffects.None, 0f);
+                    }
+                }
+
+                float scrollSpeedX2 = 250f;
+                float scrollSpeedY2 = -60f; // opposite direction for contrast
+
+                float scrollOffsetX2 = (time * scrollSpeedX2) % WindTex.Value.Width * Projectile.scale;
+                float scrollOffsetY2 = (time * scrollSpeedY2) % WindTex.Value.Height * Projectile.scale;
+
+                Color drawColor2 = drawColor * 0.8f; // slightly dimmer to layer properly
+
+                // --- Draw second layer ---
+                for (float x = -scrollOffsetX2 + startX; x < endX; x += WindTex.Value.Width)
+                {
+                    for (float y = -scrollOffsetY2 + startY; y < endY; y += WindTex.Value.Height)
+                    {
+                        spriteBatch.Draw(WindTex.Value, new Vector2(x, y), null, drawColor2, 0f, Vector2.Zero, 1f * Projectile.scale, SpriteEffects.None, 0f);
+                    }
+                }
+
+                Opus.ReturnToDefaultDrawing(spriteBatch);
+            }
+            return false;
+        }
+
+
+
     }
 }

@@ -68,14 +68,10 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         public override void OnSpawn(IEntitySource source)
         {
             OnSpawnExtras();
-            //Projectile.spriteDirection = Main.MouseWorld.X > Owner.MountedCenter.X ? 1 : -1;
 
             Projectile.spriteDirection = Main.MouseWorld.X > Owner.MountedCenter.X ? 1 : -1;
 
-            // THIS is the missing piece
             targetAngle = (Main.MouseWorld - Owner.MountedCenter);
-
-            // Optional but smart: normalize it
             if (targetAngle == Vector2.Zero)
                 targetAngle = Vector2.UnitX * Projectile.spriteDirection;
 
@@ -299,7 +295,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
         public float SweepOpacity = 0f;
         public virtual Color SweepColor { get; set; } = Color.White;
-        
+
         private void DrawSweepFX()
         {
             var Tex = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/CircularSlash2").Value;
@@ -310,15 +306,19 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         }
 
         public float RotationManualOffset = 0f;
+
         public override bool PreDraw(ref Color lightColor)
         {
-            Player player = Main.player[Projectile.owner];
 
             Vector2 origin;
             float rotationOffset;
             SpriteEffects effects;
 
             Texture2D texture = TextureAssets.Projectile[Type].Value;
+
+            //i swear to FUCKING GOD.
+            //dont touch this shit.
+            //FUCK ROTATIONS DUDE.
 
             if (LastSwing == -1)
             {
@@ -330,9 +330,9 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
                 }
                 else
                 {
-                    origin = new Vector2(texture.Width, texture.Height);
-                    effects = SpriteEffects.FlipHorizontally;
-                    rotationOffset = MathHelper.ToRadians(135f);
+                    origin = new Vector2(0, texture.Height);
+                    effects = SpriteEffects.None;
+                    rotationOffset = MathHelper.ToRadians(50f);
                 }
             }
             else
@@ -345,17 +345,18 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
                 }
                 else
                 {
-                    origin = new Vector2(0, texture.Height);
-                    effects = SpriteEffects.None;
-                    rotationOffset = MathHelper.ToRadians(43f);
+                    origin = new Vector2(texture.Width, texture.Height);
+                    effects = SpriteEffects.FlipHorizontally;
+                    rotationOffset = MathHelper.ToRadians(135f);
                 }
             }
+
 
             DrawSweepFX();
 
             DrawUnderBlade();
 
-            Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, null, lightColor * Projectile.Opacity, (Projectile.rotation + rotationOffset) + RotationManualOffset, origin, AdjustedScale, effects, 0);
+            Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, null, Projectile.GetAlpha(lightColor) * Projectile.Opacity, (Projectile.rotation + rotationOffset) + RotationManualOffset, origin, AdjustedScale, effects, 0);
             if (Glowmask != null)
             {
                 Main.EntitySpriteDraw(Glowmask.Value, Projectile.Center - Main.screenPosition, null, Color.White * Projectile.Opacity, (Projectile.rotation + rotationOffset) + RotationManualOffset, origin, AdjustedScale, effects, 0);
@@ -400,8 +401,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
         public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
         {
-
-            modifiers.HitDirectionOverride = (int?)(target.position.Y + 15);
+            modifiers.HitDirectionOverride = (target.Center.X - Owner.Center.X) > 0 ? 1 : -1;
         }
 
 
@@ -422,5 +422,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
             Owner.heldProj = Projectile.whoAmI;
         }
+
+        
     }
 }

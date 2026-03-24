@@ -9,10 +9,12 @@ using DestroyerTest.Content.Resources;
 using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
 using System;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.OrionCrossover
@@ -28,14 +30,33 @@ namespace DestroyerTest.Content.OrionCrossover
             Item.useTime = 30;
             Item.useAnimation = 30;
             Item.useStyle = ItemUseStyleID.Shoot;
-            Item.knockBack = 70;
+            Item.knockBack = 16;
             Item.autoReuse = false;
-            Item.damage = 200;
+            Item.damage = 14;
             Item.DamageType = DamageClass.Melee;
             Item.noMelee = true;
             Item.noUseGraphic = true;
             Item.shoot = ModContent.ProjectileType<SabhatiSwing>();
             Item.channel = true;
+        }
+        public override void ModifyWeaponDamage(Player player, ref StatModifier damage)
+        {
+            if (DestroyerTestMod.EternityIsActive())
+            {
+                damage += 1.15f;
+            }
+        }
+
+        public override void ModifyTooltips(List<TooltipLine> tooltips)
+        {
+            string v = Language.GetTextValue("Mods.DestroyerTest.Items.Sabhati.EternityTooltip");
+            TooltipLine L = new TooltipLine(Mod, "EternityDamageMod", v);
+            L.OverrideColor = ColorLib.StellarFireGradientLooping();
+
+            if (DestroyerTestMod.EternityIsActive())
+            {
+                tooltips.Add(L);
+            }
         }
 
         public override bool CanUseItem(Player player)

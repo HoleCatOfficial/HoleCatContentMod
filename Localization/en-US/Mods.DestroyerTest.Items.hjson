@@ -599,12 +599,11 @@ Goliath: {
 }
 
 ConstantineScythe: {
-	DisplayName: HoleCat's Scythe
+	DisplayName: Constantine's Scythe
 	Tooltip:
 		'''
-		Are we not all looking for our own reflections?
-		.
-		Great for going the extra mile in impersonating Suicidal Devs!
+		Swings back and forth in a large sweep.
+		Each swing creates a homing Scythe Clone.
 		'''
 }
 
@@ -2461,17 +2460,17 @@ InfectedGrimoire: {
 
 Item_EvilBossMusicBox: {
 	DisplayName: Music Box (Nightmare Rose / Wyvern Corpse)
-	Tooltip: Plays Track: 'Tribulation' by HoleCat
+	Tooltip: Plays Track: 'Tribulation' by FRANCIUMKILLA
 }
 
 Item_NodeBossMusicBox: {
 	DisplayName: Music Box (Ichor / Cursed Flame Node)
-	Tooltip: Plays Track: 'Elemental Influence' by HoleCat
+	Tooltip: Plays Track: 'Elemental Influence' by FRANCIUMKILLA
 }
 
 Item_NodeIdleMusicBox: {
 	DisplayName: Music Box (Dormant Node)
-	Tooltip: Plays Track: 'Elemental Presence' by HoleCat
+	Tooltip: Plays Track: 'Elemental Presence' by FRANCIUMKILLA
 }
 
 ComaceraticFlask: {
@@ -4211,15 +4210,17 @@ MalignantLegPlates: {
 
 DivineWell: {
 	DisplayName: Divine Well
-	Tooltip: "A basin containing concentrated fragments of the Great Wyvern's Soul."
+	Tooltip: A basin containing concentrated fragments of the Great Wyvern's Soul.
 }
 
 Sabhati: {
 	DisplayName: Sabhati
-	Tooltip:'''
-			True melee hits summon stellar meteors that explode on impact with enemies.
-			The blade and the metors both inflict Descendant Inferno.
-			
-			"The parasitic union of two far-flung corners of the cosmos." 
-			''' 
+	Tooltip:
+		'''
+		True melee hits summon stellar meteors that explode on impact with enemies.
+		The blade and the metors both inflict Descendant Inferno.
+
+		"The parasitic union of two far-flung corners of the cosmos." 
+		'''
+	EternityTooltip: Eternity Mode: Damage Increased.
 }

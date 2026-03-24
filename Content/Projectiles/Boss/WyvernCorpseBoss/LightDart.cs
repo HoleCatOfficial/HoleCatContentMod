@@ -17,6 +17,7 @@ using Terraria.ModLoader;
 using OpusLib;
 using System.Collections.Generic;
 using DestroyerTest.Content.Dusts;
+using DestroyerTest.Common.Primitives;
 
 namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
 {
@@ -58,6 +59,8 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
 				if (TrailPositions.Count > 1)
 				{
 					List<ColoredVertex> ve = new List<ColoredVertex>();
+
+					List<TriangleShape> te = new List<TriangleShape>();
 					float a = 0;
 
 					for (int i = TrailPositions.Count - 1; i > 0; i--)
@@ -68,7 +71,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
 						Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
 						Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * 40;
 						Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * 40;
-
+						
 						ve.Add(new ColoredVertex(
 							TrailPositions[i] - Main.screenPosition + offset,
 							new Vector3(t - trailOffset, 1, 1),
@@ -85,6 +88,8 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
 					{
 						gd.Textures[0] = DTAssetLib.Streak(7).Value;
 						gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2);
+
+						
 					}
 				}
 			}

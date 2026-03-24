@@ -18,7 +18,7 @@ namespace DestroyerTest.Content.SummonItems
             Item.DefaultToWhip(ModContent.ProjectileType<SoulBoundWhipProjectile>(), 76, 5, 5);
             Item.useAnimation = 34;
             Item.useTime = 34;
-            Item.shootSpeed = 5.6f;
+            Item.shootSpeed = 16f;
             Item.useStyle = ItemUseStyleID.Thrust;
             Item.rare = ItemRarityID.Blue;
             Item.channel = true;
