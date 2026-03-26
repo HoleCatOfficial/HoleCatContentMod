@@ -22,11 +22,5 @@ namespace DestroyerTest.Content.Achievement
 			Item.rare = ItemRarityID.Orange;
 			Item.value = Item.buyPrice(gold: 1);
 		}
-
-        public override bool? UseItem(Player player)
-        {
-            AchievementManager.achievements["WhackAMoleMaster"].IsUnlocked = false;
-            return true; // Indicate that the item was used successfully
-        }
     }
 }

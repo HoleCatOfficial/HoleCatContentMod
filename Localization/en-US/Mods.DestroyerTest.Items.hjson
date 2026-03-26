@@ -1,25 +1,13 @@
 Constitution: {
-	Tooltip: A blade descending from the heavens. Without its Galantine coating, it is incapable of complex attacks.
+	Tooltip:
+		'''
+		From the furthest corners of the universe into the palm of your hand, the blade continues to radiate heat.
+		Swings create spinning slashes that inflict Galantine Burn.
+		'''
 	DisplayName: Constitution
 }
 
-ConstitutionT2_Demonite: {
-	DisplayName: Committment
-	Tooltip: Swings rain small meteors, which set enemies ablaze.
-}
-
-ConstitutionT2_Crimtane: {
-	DisplayName: Committment
-	Tooltip: Swings rain small meteors, which set enemies ablaze.
-}
-
-ConstitutionT3: {
-	DisplayName: Continuum
-	Tooltip: Crafted in the night with the Essence of raw strength, this blade posesses enough power in it's swing to throw you forward.
-}
-
 Conclusion: {
-	UsesDashResource: Mods.DestroyerTest.Items.Conclusion.UsesDashResource
 	DisplayName: Conclusion
 	Tooltip:
 		'''
@@ -30,19 +18,24 @@ Conclusion: {
 
 Memoriam: {
 	DisplayName: Memoriam
-	Tooltip: Not all can be rended, and not all evils are surmountable. Keep this as a reminder of mindfulness in trying times.
+	Tooltip:
+		'''
+		The will of the unfortunate compels your hand.
+
+		Swings can parry hostile projectiles on a 5-second cooldown.
+		'''
 }
 
 SpiritOfJustice: {
 	DisplayName: Spirit Of Justice
-	Tooltip: Rend all that is unholy, and mend the errors of this world. Your mission is surely holy, and all blood is shed in good faith.
+	Tooltip: In the name of securing the best life for all, this blade possesses the ability to parry hostile projectiles if the blade makes contact.
 }
 
 FrigidHalberd: {
 	DisplayName: Frigid Halberd
 	Tooltip:
 		'''
-		Left Click to perform a long range Jab Blitz, Right Click to flail your Halberd Around and ignite enemies in Frozen Flames.
+		Left Click to perform a long range Jab, Right Click to flail your Halberd Around and ignite enemies in Frozen Flames.
 		"No more Mr Ice Guy!"
 		'''
 }
@@ -227,7 +220,7 @@ TeaserCompendium: {
 
 EchoFluid: {
 	DisplayName: Echo Fluid
-	Tooltip: Kills 99.9% if bacteria! Also clears colors on cloths.
+	Tooltip: Kills 99.9% of bacteria! Also clears colors on cloths.
 }
 
 LifeEcho: {
@@ -249,9 +242,9 @@ Riftplate_Item: {
 		'''
 }
 
-Helicite_Crystal_Item: {
+Item_HeliciteCrystal: {
+	Tooltip: ""
 	DisplayName: Helicite Crystal
-	Tooltip: The death of the Sun God has sent fragments of the Sun deep into your world. It is hot to the touch.
 }
 
 Rift_Katana: {
@@ -266,7 +259,11 @@ RiftMaker: {
 
 RiftWretcher: {
 	DisplayName: Rift Wretcher
-	Tooltip: A specialized flamethrower made to handle Riften Energy.
+	Tooltip:
+		'''
+		A specialized flamethrower made to handle Riften Energy.
+		Converts gel into a wave of tangible electric arcs, inflicting Heliouric Shock.
+		'''
 }
 
 RiftShiv: {
@@ -275,13 +272,21 @@ RiftShiv: {
 }
 
 RiftWhipT1: {
-	Tooltip: Feel the burn!
+	Tooltip:
+		'''
+		Can be charged up by holding down.
+		When fully charged, hits inflict Heliouric Shock.
+		'''
 	DisplayName: Solar Scorpion
 }
 
 RiftWhipT2: {
-	DisplayName: Solar Scorpion
-	Tooltip: Feel the Burn again!
+	DisplayName: Solar Scorpion Mk.II
+	Tooltip:
+		'''
+		Can be charged up by holding down.
+		When fully charged, hits inflict Heliouric Shock.
+		'''
 }
 
 RiftBroadsword: {
@@ -348,7 +353,6 @@ RiftCrucible_Item: {
 	Tooltip: A powerful forge capable of infusing Living Shadows into even more things.
 }
 
-# Note: PasswordDecoder is MultiCategory. Placed in here for now because it is tied to the Rift Cache
 PasswordDecoder: {
 	DisplayName: Password Decoder
 	Tooltip: A device used for opening password-protected Rift Caches. Simply plug it in and it will brute force passwords until it succeeds.
@@ -421,7 +425,7 @@ RiftGuardVisor: {
 
 RiftPropulsion: {
 	DisplayName: Rift Propulsion
-	Tooltip: A device inspired by an alien technology.
+	Tooltip: Allows you to dash in all 4 directions on a 3-second cooldown.
 }
 
 HeliciteChausses: {
@@ -462,50 +466,73 @@ HeliciteHeadgear: {
 }
 
 RiftplateTitanBody: {
-	Tooltip: A much heavier set of Riftplate Armor, meant for deeper expiditions into The Rift.
-	DisplayName: Riftplate Titan Body Armor
+	Tooltip:
+		'''
+		Increases damage reduction by 5%.
+		If energized, damage reduction is increased to 7%.
+		"Just walking in this is tedious."
+		'''
+	DisplayName: Riften Titan Body Armor
 }
 
 RiftplateTitanGreaves: {
-	Tooltip: A much heavier set of Riftplate Armor, meant for deeper expiditions into The Rift.
-	DisplayName: Riftplate Titan Greaves
+	Tooltip:
+		'''
+		Increases armor penetration by 2.
+		If energized, all class damage is icreased by 10%.
+		"Despite your best efforts to stay dry, your sweat pools in your boots frequently when you wear these."
+		'''
+	DisplayName: Riften Titan Greaves
 }
 
 RiftPlateBerserkerHelm: {
 	Tooltip:
 		'''
-		A much heavier set of Riftplate Armor, meant for deeper expiditions into The Rift.
-		Wearing this increases Melee Damage, but reduces Movement speed.
+		Its eyes blaze bright with solar energy.
+		4% increased melee critical strike chance.
 		'''
-	DisplayName: Rift Plate Berserker Helm
+	DisplayName: Riften Berserker Helm
+	SetBonusItian:
+		'''
+		15% increased Melee damage.
+		Movement speed reduced by 15%
+		You get a light pet to accompany you.
+		'''
+	SetBonusAgility:
+		'''
+		8% increased melee damage.
+		12% increased melee and 10% increased whip attack speed.
+		20% increased movement speed.
+		You get a light pet to accompany you.
+		'''
 }
 
 RiftPlateHoodedJaw: {
-	SetBonus: RHJ_SB
-	DisplayName: Rift Plate Hooded Jaw
-	Tooltip:
+	DisplayName: Riften Hooded Jaw
+	Tooltip: A much heavier set of Riftplate Armor, meant for deeper expiditions into The Rift.
+	SetBonusItian:
 		'''
-		A much heavier set of Riftplate Armor, meant for deeper expiditions into The Rift.
-		Wearing this increases your number of minions.
+		15% increased Melee damage.
+		Movement speed reduced by 15%
+		You get a light pet to accompany you.
+		'''
+	SetBonusAgility:
+		'''
+		8% increased melee damage.
+		12% increased melee and 10% increased whip attack speed.
+		20% increased movement speed.
+		You get a light pet to accompany you.
 		'''
 }
 
 RiftplateAgilityArmor: {
 	DisplayName: Riftplate Agility Armor
-	Tooltip:
-		'''
-		A light set of armor. It carries the protection from Suffocation afforded by Helicite Crystals.
-		This armor exchanges defense for speed, allowing you to evade attacks easier.
-		'''
+	Tooltip: Increased run acceleration.
 }
 
 RiftplateAgilityLeggings: {
 	DisplayName: Riftplate Agility Leggings
-	Tooltip:
-		'''
-		A light set of armor. It carries the protection from Suffocation afforded by Helicite Crystals.
-		This armor exchanges defense for speed, allowing you to evade attacks easier.
-		'''
+	Tooltip: Increased max run speed.
 }
 
 CalamityEntropyAdvert: {
@@ -591,10 +618,10 @@ Goliath: {
 	DisplayName: Goliath
 	Tooltip:
 		'''
+		Shoots small energy blades that linger in the air for a moment before darting at a target.
+
 		Thanks to the usage of obsidian in the blade, it is very, very sharp. 
 		It rests in your hand in an eerily familar way.
-		~~~~~~~~~~~~~~~~~~
-		Shoots small energy blades that linger in the air for a moment before darting at a target.
 		'''
 }
 
@@ -642,7 +669,7 @@ HeroWings: {
 }
 
 GoliathHilt: {
-	DisplayName: Cunife Hilt
+	DisplayName: Ornate Hilt
 	Tooltip:
 		'''
 		Remarkably Large, but is comfortable to hold, with a plush satin grip. Must be for a big and heavy sword.
@@ -813,7 +840,7 @@ ShimmeringSludge: {
 
 RouletteTokenItem: {
 	Tooltip: ""
-	DisplayName: Roulette Token Item
+	DisplayName: Roulette Token
 }
 
 CombatRoulette: {
@@ -860,7 +887,11 @@ DemigodWings: {
 
 Tenebrous_Katana: {
 	DisplayName: Tenebrous Katana
-	Tooltip: Instead of warm, electrified metal, the plates are so incredibly cold that your hands prickle and freeze if you hold it for too long.
+	Tooltip:
+		'''
+		Swings in front of the player.
+		"Please, HoleCat, resprite my swing......."
+		'''
 }
 
 HeliciteGreatbow: {
@@ -1013,12 +1044,12 @@ DisabilityDraught: {
 
 SpecialTownMusicBoxNight: {
 	Tooltip: ""
-	DisplayName: Special Town Music Box Night
+	DisplayName: Special Town Music Box (Night)
 }
 
 SpecialTownMusicBoxDay: {
 	Tooltip: ""
-	DisplayName: Special Town Music Box Day
+	DisplayName: Special Town Music Box (Day)
 }
 
 GildedCross: {
@@ -1087,8 +1118,8 @@ WeaponryDrive: {
 }
 
 RiftYoyoT3: {
-	Tooltip: Has a random chance each tick to fire Rift darts at your enemy
-	DisplayName: Rift Assassin's Trusted Friend
+	Tooltip: Leaves behind a damaging trail of living shadow.
+	DisplayName: Mini-Corona
 }
 
 RiftYoyoT2: {
@@ -1186,7 +1217,7 @@ AchievementBook: {
 }
 
 AchievementUndoer: {
-	Tooltip: Flags all achievements as false, allowing you to reclaim them in the same world.
+	Tooltip: Deprecated.
 	DisplayName: (DEBUG) Achievement Undoer
 }
 
@@ -1644,11 +1675,6 @@ Item_SpecialTownMusicBoxDay: {
 	DisplayName: Special Town Music Box Day
 }
 
-Item_HeliciteCrystal: {
-	Tooltip: ""
-	DisplayName: Helicite Crystal
-}
-
 Item_HeliciteBrick: {
 	Tooltip: ""
 	DisplayName: Helicite Brick
@@ -1925,7 +1951,11 @@ ZapinatorData: {
 
 CelestialDiscord: {
 	DisplayName: Celestial Discord
-	Tooltip: ""
+	Tooltip:
+		'''
+		Primary fire selects between 4 celestial dart types.
+		Thrown scepters create an aura of empowerment when hitting an npc or tile.
+		'''
 }
 
 ShimmeringBossResetter: {
@@ -4223,4 +4253,24 @@ Sabhati: {
 		"The parasitic union of two far-flung corners of the cosmos." 
 		'''
 	EternityTooltip: Eternity Mode: Damage Increased.
+}
+
+ManaWand: {
+	DisplayName: Mana Wand
+	Tooltip: ""
+}
+
+StarFangNecklace: {
+	DisplayName: Star Fang Necklace
+	Tooltip: ""
+}
+
+ConstitutionT2_Crimtane: {
+	DisplayName: Constitution T2_ Crimtane
+	Tooltip: ""
+}
+
+ConstitutionT2_Demonite: {
+	DisplayName: Constitution T2_ Demonite
+	Tooltip: ""
 }

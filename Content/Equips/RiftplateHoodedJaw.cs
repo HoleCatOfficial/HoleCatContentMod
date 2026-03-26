@@ -9,6 +9,7 @@ using Terraria.ModLoader;
 using DestroyerTest.Rarity;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Common;
+using DestroyerTest.Content.Tiles.RiftConfigurator;
 
 namespace DestroyerTest.Content.Equips
 {
@@ -54,11 +55,9 @@ namespace DestroyerTest.Content.Equips
 			return false;
 		}
 
-		// UpdateArmorSet allows you to give set bonuses to the armor.
 		public override void UpdateArmorSet(Player player) 
 		{
-			player.DefaultSetBonusText(player.armor[0]);
-			player.maxMinions += 3;
+			player.maxMinions += 4;
 			if (player.body == ModContent.ItemType<RiftplateTitanBody>() &&
 				player.legs == ModContent.ItemType<RiftplateTitanGreaves>())
 			{
@@ -73,25 +72,25 @@ namespace DestroyerTest.Content.Equips
 
 		private void TitanBonus(Player player)
 		{
-			player.GetDamage(DamageClass.Summon) *= 1.25f;
+			player.GetDamage(DamageClass.Summon) += 0.25f;
 			player.statLifeMax2 += 15;
-			player.AddBuff(ModContent.BuffType<RiftBallBuff>(), 3600);
+            player.GetModPlayer<RiftBerserkerRunSpeeds>().Slow = true;
+            player.AddBuff(ModContent.BuffType<RiftBallBuff>(), 3600);
 		}
 
 		private void AgilityBonus(Player player)
 		{
-			player.GetAttackSpeed(DamageClass.SummonMeleeSpeed) *= 1.4f;
-			player.moveSpeed *= 1.35f;
-			player.AddBuff(ModContent.BuffType<RiftBallBuff>(), 3600);
+			player.GetAttackSpeed(DamageClass.SummonMeleeSpeed) += 0.16f;
+            player.GetModPlayer<RiftBerserkerRunSpeeds>().Fast = true;
+            player.AddBuff(ModContent.BuffType<RiftBallBuff>(), 3600);
 		}
 
-		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes()
 		{
 			CreateRecipe()
 				.AddIngredient<Living_Shadow>(20)
 				.AddIngredient<Item_Riftplate>(20)
-				.AddTile(TileID.MythrilAnvil)
+				.AddTile<Tile_RiftConfiguratorArmory>()
 				.Register();
 		}
 	}

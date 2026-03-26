@@ -1591,6 +1591,8 @@ namespace DestroyerTest.Common
         public static Asset<Texture2D> GlowCone = ModContent.Request<Texture2D>($"{ExtrasPath}/GlowCone", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> MiscSparkle144 = ModContent.Request<Texture2D>($"{ExtrasPath}/144MiscSparkle", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> SwordSlash = ModContent.Request<Texture2D>($"{ExtrasPath}/SwordTrail2", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> FireSwing = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/CircularSlash3", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> FireSwingHighlight = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/CircularSlash3Highlight", AssetRequestMode.AsyncLoad);
 
         public static Asset<Texture2D> Sparkle(int Variant)
         {
@@ -2027,6 +2029,28 @@ namespace DestroyerTest.Common
             }
 
             return points;
+        }
+    }
+
+    public class DTTrail : ModSystem
+    {
+        public void BuildTrailStrip(List<Vector2> Positions, List<float> Rotations, float Amplitude)
+        {
+            if (Positions.Count < 2)
+            {
+                throw new Exception("At least two positions are required to build a trail strip.");
+            }
+            for(int i = 0; i < Positions.Count; i++)
+            {
+                Vector2 L = Positions[i] + new Vector2(0, Amplitude).RotatedBy(Rotations[i]);
+                Vector2 R = Positions[i] + new Vector2(0, -Amplitude).RotatedBy(Rotations[i]);
+
+                Vector2 LastL = Positions[i - 1] + new Vector2(0, Amplitude).RotatedBy(Rotations[i - 1]);
+                Vector2 LastR = Positions[i - 1] + new Vector2(0, -Amplitude).RotatedBy(Rotations[i - 1]);
+                
+                Vector2[] Triangle1 = new Vector2[3] { LastL, L, R };
+                Vector2[] Triangle2 = new Vector2[3] { LastL, LastR, R };
+            }
         }
     }
 

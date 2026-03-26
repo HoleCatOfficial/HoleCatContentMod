@@ -22,6 +22,7 @@ using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static FargowiltasSouls.Content.Projectiles.EffectVisual;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 {
@@ -133,6 +134,27 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Timer++;
         }
 
+        public float Scl = 3f;
+        public float SlOpacity = 0f;
+
+        public void DrawSlashFX()
+        {
+            SpriteEffects effects;
+
+            if (Projectile.spriteDirection > 0)
+            {
+                effects = SpriteEffects.None;
+            }
+            else
+            {
+                effects = SpriteEffects.FlipHorizontally;
+            }
+
+            Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.NonPremultiplied, SpriteSortMode.Immediate);
+            Main.spriteBatch.Draw(DTAssetLib.FireSwing.Value, Projectile.Center - Main.screenPosition, null, (Color.DarkRed * Projectile.Opacity) * SlOpacity, Projectile.rotation - 0.2f, DTAssetLib.FireSwing.Value.Size() / 2, Scl * Projectile.scale, effects, 0);
+            //Main.spriteBatch.Draw(DTAssetLib.FireSwingHighlight.Value, Projectile.Center - Main.screenPosition, null, ((Color.Red * 0.5f) * Projectile.Opacity) * SlOpacity, Projectile.rotation - 0.2f, DTAssetLib.FireSwingHighlight.Value.Size() / 2, Scl * Projectile.scale, effects, 0);
+            Opus.ReturnToDefaultDrawing(Main.spriteBatch);
+        }
         public override bool PreDraw(ref Color lightColor)
         {
             Vector2 origin;
@@ -153,6 +175,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             }
 
             Texture2D texture = TextureAssets.Projectile[Type].Value;
+
+            DrawSlashFX();
 
             Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, default, lightColor * Projectile.Opacity, Projectile.rotation + rotationOffset, origin, Projectile.scale, effects, 0);
 
@@ -258,12 +282,16 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
             if (CanContinueSwing(Owner))
             {
-                if (SPINSPEED < 0.36f)
+                if (SPINSPEED < 0.36f * Owner.GetTotalAttackSpeed(Projectile.DamageType))
                 {
                     SPINSPEED += 0.008f;
                 }
+                else
+                {
+                    SlOpacity += 0.05f;
+                }
 
-                float speed = SPINSPEED * Owner.GetTotalAttackSpeed(Projectile.DamageType);
+                float speed = SPINSPEED;
                 Progress += speed * Projectile.spriteDirection;
 
 				// Compute the rotation the sword will have this tick (matches SetSwordPosition logic)
@@ -329,6 +357,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Progress += speed * Projectile.spriteDirection;
             Size = 1f - MathHelper.SmoothStep(0, 1, Timer / hideTime);
             Projectile.Opacity = 1f - MathHelper.SmoothStep(0, 1, Timer / hideTime);
+            SlOpacity = 1f - MathHelper.SmoothStep(0, 1, Timer / hideTime);
 
             if (Timer >= hideTime)
             {

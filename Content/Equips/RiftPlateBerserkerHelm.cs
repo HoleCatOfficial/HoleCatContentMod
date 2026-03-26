@@ -1,14 +1,15 @@
+using DestroyerTest.Common;
+using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.SummonItems;
 using DestroyerTest.Content.Tiles;
+using DestroyerTest.Content.Tiles.RiftConfigurator;
 using DestroyerTest.Content.Tiles.Riftplate;
+using DestroyerTest.Rarity;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using DestroyerTest.Rarity;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Common;
 
 namespace DestroyerTest.Content.Equips
 {
@@ -33,7 +34,7 @@ namespace DestroyerTest.Content.Equips
 		}
 
         public override void UpdateEquip(Player player) {
-            player.GetDamage(DamageClass.Melee) += 0.12f; // 12% more melee damage
+			player.GetCritChance(DamageClass.Melee) += 4;
 
 		}
 
@@ -57,9 +58,9 @@ namespace DestroyerTest.Content.Equips
 			return false;
 		}
 
+		public static string Key = "Mods.DestroyerTest.Items.RiftPlateBerserkerHelm";
 		public override void UpdateArmorSet(Player player)
 		{
-			player.DefaultSetBonusText(player.armor[0]);
 			if (player.body == ModContent.ItemType<RiftplateTitanBody>() &&
 				player.legs == ModContent.ItemType<RiftplateTitanGreaves>())
 			{
@@ -74,29 +75,52 @@ namespace DestroyerTest.Content.Equips
 
 		private void TitanBonus(Player player)
 		{
-			player.GetDamage(DamageClass.Melee) *= 1.35f;
-            player.moveSpeed *= 0.85f;
-			player.AddBuff(ModContent.BuffType<RiftBallBuff>(), 3600);
+			player.GetDamage(DamageClass.Melee) += 0.15f;
+            player.GetModPlayer<RiftBerserkerRunSpeeds>().Slow = true;
+            player.AddBuff(ModContent.BuffType<RiftBallBuff>(), 3600);
+			player.setBonus = Language.GetTextValue($"{Key}.SetBonusTitan");
 		}
 
 		private void AgilityBonus(Player player)
 		{
-			player.GetDamage(DamageClass.Melee) *= 1.15f;
-			player.GetAttackSpeed(DamageClass.Melee) *= 1.2f;
-			player.GetAttackSpeed(DamageClass.SummonMeleeSpeed) *= 1.2f;
-			player.moveSpeed *= 1.15f;
+			player.GetDamage(DamageClass.Melee) += 0.08f;
+			player.GetAttackSpeed(DamageClass.Melee) += 0.12f;
+			player.GetAttackSpeed(DamageClass.SummonMeleeSpeed) += 0.10f;
+			player.GetModPlayer<RiftBerserkerRunSpeeds>().Fast = true;
 			player.AddBuff(ModContent.BuffType<RiftBallBuff>(), 3600);
-		}
+            player.setBonus = Language.GetTextValue($"{Key}.SetBonusAgility");
+        }
 
-		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes()
 		{
 			CreateRecipe()
-				.AddIngredient(ItemID.VikingHelmet)
 				.AddIngredient<Living_Shadow>(20)
 				.AddIngredient<Item_Riftplate>(20)
-				.AddTile(TileID.MythrilAnvil)
-				.Register();
+                .AddTile<Tile_RiftConfiguratorArmory>()
+                .Register();
 		}
+	}
+
+	public class RiftBerserkerRunSpeeds : ModPlayer
+	{
+		public bool Slow = false;
+        public bool Fast = false;
+        public override void ResetEffects()
+        {
+			Slow = false;
+			Fast = false;
+        }
+
+        public override void PostUpdateRunSpeeds()
+        {
+            if (Fast)
+			{
+                Player.moveSpeed += 0.2f;
+            }
+            if (Slow)
+            {
+                Player.moveSpeed -= 0.15f;
+            }
+        }
 	}
 }

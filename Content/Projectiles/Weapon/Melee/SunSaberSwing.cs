@@ -38,6 +38,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Projectile.height = 46;
             SweepColor = Color.DarkOrange;
             Glowmask = ModContent.Request<Texture2D>($"{Texture}_Glow");
+
+            SwingSpeed = 0.3f;
         }
 
         public override SoundStyle Swing => DTAssetLib.SwordSounds.SpiritOfJusticeSwing;

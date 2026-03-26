@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using ReLogic.Content;
 using DestroyerTest.Content.Equips.ScepterAccessories;
 using System.Linq;
+using DestroyerTest.Common.Primitives;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 {
@@ -142,14 +143,13 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 
 				for (int i = TrailPositions.Count - 1; i > 0; i--)
 				{
-					float t = 1f - (i / (float)TrailPositions.Count); // fade toward tail
-					Color b = lightColor * t;
-
-					Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
-					Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * TrailAmplitude;
+                    float t = 1f - (i / (float)TrailPositions.Count); // fade toward tail
+                    Color b = TrailColor * t;
+                    Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
+                    Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * TrailAmplitude;
                     Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * TrailAmplitude;
-
-					DTUtils.AddStrips(ve, TrailPositions, i, offset, offset2, t, b, trailOffset);
+                    
+                    DTUtils.AddStrips(ve, TrailPositions, i, offset, offset2, t, b, trailOffset);
 				}
 
 
@@ -172,14 +172,18 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 
         public List<Vector2> TrailPositions = new();
         public List<float> TrailRotations = new();
-        private const int TrailLength = 200;
+
+        public VertexPositionColorTexture Trail = new();
+
+        private const int TrailLength = 300;
         private void CacheTrail()
         {
+            float TrailAmplitude = 40f;
             Vector2 lastPos = TrailPositions.Count > 0 ? TrailPositions[0] : Projectile.Center;
 			Vector2 newPos  = Projectile.Center;
 
 			float dist = Vector2.Distance(lastPos, newPos);
-			float step = 1f; // how closely to sample. tweak this!
+			float step = 0.5f; // how closely to sample. tweak this!
 
 			if (dist > 0f)
 			{
@@ -204,6 +208,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 				TrailPositions.RemoveAt(TrailPositions.Count - 1);
 			while (TrailRotations.Count > TrailLength)
 				TrailRotations.RemoveAt(TrailRotations.Count - 1);
+
+           
+            
         }
 
         public void ExtraBehaviour()

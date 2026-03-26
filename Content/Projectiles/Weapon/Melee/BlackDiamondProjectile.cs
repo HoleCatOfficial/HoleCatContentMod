@@ -37,6 +37,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Player player = Main.player[Projectile.owner]; // Since we access the owner player instance so much, it's useful to create a helper local variable for this
             int duration = player.itemAnimationMax; // Define the duration the projectile will exist in frames
 
+            Vector2 d = Main.MouseWorld - player.MountedCenter;
+            player.SetCompositeArmFront(Projectile.active, Player.CompositeArmStretchAmount.ThreeQuarters, d.ToRotation() - MathHelper.PiOver2);
+
+            
+
             player.heldProj = Projectile.whoAmI; // Update the player's held projectile id
 
             // Reset projectile time left if necessary
@@ -91,6 +96,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 Dust T = Dust.NewDustPerfect(Projectile.Center, DustID.FireworksRGB, Projectile.velocity * 0.5f, 0, DTColorUtils.Pastel(ColorLib.TenebrisBlue, 0.5f) * ShineOpacity, 1f);
                 T.noGravity = true;
             }
+            Projectile.rotation = d.ToRotation();
+
             return false; // Don't execute vanilla AI.
         }
 

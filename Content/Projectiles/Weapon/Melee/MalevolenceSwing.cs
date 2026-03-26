@@ -37,6 +37,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Projectile.width = 60;
             Projectile.height = 60;
             SweepColor = ColorLib.Wretched4;
+            SwingSpeed = 0.17f;
 
             Glowmask = ModContent.Request<Texture2D>($"{Texture}_Glow");
         }
@@ -54,6 +55,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         {
             Player player = Main.player[Projectile.owner];
             var Tex = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/CircularSlash3").Value;
+            var TexH = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/CircularSlash3Highlight").Value;
             float TexBasedMod = (Projectile.Size.Length() * 0.015f);
             float rOffset = 0f;
 
@@ -72,6 +74,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
             Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
             Main.EntitySpriteDraw(Tex, player.MountedCenter - Main.screenPosition, null, ColorLib.Wretched1 * SweepOpacity, (Projectile.rotation + MathHelper.PiOver4) + rOffset, Tex.Size() / 2, (AdjustedScale * TexBasedMod), FX);
+            Main.EntitySpriteDraw(TexH, player.MountedCenter - Main.screenPosition, null, Color.White * SweepOpacity, (Projectile.rotation + MathHelper.PiOver4) + rOffset, Tex.Size() / 2, (AdjustedScale * TexBasedMod), FX);
             Opus.ReturnToDefaultDrawing(Main.spriteBatch);
         }
         public override void DrawUnderBlade()

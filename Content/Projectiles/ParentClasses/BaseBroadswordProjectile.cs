@@ -183,10 +183,12 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
         public float SlashStartRotation = 0f;
         public float SlashProgress = 0f;
+
+        public virtual float SwingSpeed { get; set; } = 0.15f;
         public void ControlRotation()
         {
-            float speedFactor = Owner.GetAttackSpeed(DamageClass.Melee);
-            float t = 0.15f * speedFactor;
+            float speedFactor = Owner.GetTotalAttackSpeed(DamageClass.Melee);
+            float t = SwingSpeed * speedFactor;
 
             switch (CurrentState)
             {

@@ -1,21 +1,29 @@
 using DestroyerTest.Content.Resources;
+using DestroyerTest.Content.RiftArsenal;
 using DestroyerTest.Content.Tiles;
+using DestroyerTest.Content.Tiles.RiftConfigurator;
 using DestroyerTest.Content.Tiles.Riftplate;
+using DestroyerTest.Rarity;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using DestroyerTest.Rarity;
 
 namespace DestroyerTest.Content.Equips
 {
-// This item is meant to mirror the effects of the Hallowed Plate Mail, which equips a Cape without needing a separate cape Item. 
 
-	[AutoloadEquip(EquipType.Body)] // As usual, we must tell the game what part of the body the item will be equipped on.
-    	public class RiftplateTitanBody : ModItem
+	[AutoloadEquip(EquipType.Body)]
+    	public class RiftplateTitanBody : ModItem, IRechargeFunctionality
 		{
-        public int equipBack = -1; // It would be best not to tamper with this.
+            public bool Energized
+            {
+                get
+                {
+                    return Main.LocalPlayer.GetModPlayer<Recharge>().Energized;
+                }
+            }
+        public int equipBack = -1;
         
-        public override void Load() // This fetches the texture we need
+        public override void Load()
 
         { 
             if (Main.netMode != NetmodeID.Server) {
@@ -23,30 +31,37 @@ namespace DestroyerTest.Content.Equips
             }
         }
 
-        public override void SetStaticDefaults() // These will display the texture we fetched, and are specifically for this purpose.
+        public override void SetStaticDefaults()
         {
             ArmorIDs.Body.Sets.IncludedCapeBack[Item.bodySlot] = equipBack;
             ArmorIDs.Body.Sets.IncludedCapeBackFemale[Item.bodySlot] = equipBack;
         }
-		public override void SetDefaults() // Simple item properties. Nothing new here.
+		public override void SetDefaults()
 		{
 			Item.width = 18;
 			Item.height = 18; 
 			Item.value = Item.sellPrice(gold: 1);
-			Item.rare = ModContent.RarityType<RiftRarity2>(); // The rarity of the item
+			Item.rare = ModContent.RarityType<RiftRarity2>();
 			Item.defense = 22;
-			// Now, in case you might be asking "Why use that special default when you can just copy what the original Hallowed Plate Mail does?"
-			// Unfortunately for you, while cloning the defaults does load a cape on the back, it loads the Hallowed Armor cape, and replaces your body armor textures with the Hallowed Plate Mail Textures.
-			//Item.CloneDefaults(ItemID.HallowedPlateMail);
 		}
 
-		public override void AddRecipes() //Added to make the item obtainable without needing cheat mods, since many swear by never using cheats, ever.
+        public override void UpdateEquip(Player player)
+        {
+            player.endurance += 0.05f;
+
+            if (Energized)
+            {
+                player.endurance += 0.02f;
+            }
+        }
+
+		public override void AddRecipes()
 		{
 			CreateRecipe()
                 .AddIngredient<Living_Shadow>(20)
                 .AddIngredient<Item_Riftplate>(20)
-				.AddTile(TileID.MythrilAnvil)
-				.Register();
+                .AddTile<Tile_RiftConfiguratorArmory>()
+                .Register();
 		}
 	}
 }

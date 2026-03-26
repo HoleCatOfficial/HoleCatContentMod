@@ -1,18 +1,18 @@
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.Tiles;
+using DestroyerTest.Content.Tiles.RiftConfigurator;
 using DestroyerTest.Content.Tiles.Riftplate;
+using DestroyerTest.Rarity;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using DestroyerTest.Rarity;
 
 namespace DestroyerTest.Content.Equips
 {
-// This item is meant to mirror the effects of the Hallowed Plate Mail, which equips a Cape without needing a separate cape Item. 
 
-	[AutoloadEquip(EquipType.Body)] // As usual, we must tell the game what part of the body the item will be equipped on.
-    	public class RiftplateAgilityArmor : ModItem
-		{
+	[AutoloadEquip(EquipType.Body)]
+    public class RiftplateAgilityArmor : ModItem
+	{
 		public override void SetDefaults() // Simple item properties. Nothing new here.
 		{
 			Item.width = 18;
@@ -20,12 +20,11 @@ namespace DestroyerTest.Content.Equips
 			Item.value = Item.sellPrice(gold: 1);
 			Item.rare = ModContent.RarityType<RiftRarity2>(); // The rarity of the item
 			Item.defense = 43;
-			// Now, in case you might be asking "Why use that special default when you can just copy what the original Hallowed Plate Mail does?"
-			// Unfortunately for you, while cloning the defaults does load a cape on the back, it loads the Hallowed Armor cape, and replaces your body armor textures with the Hallowed Plate Mail Textures.
-			//Item.CloneDefaults(ItemID.HallowedPlateMail);
 		}
 
-        public override void UpdateEquip(Player player) {
+        public override void UpdateEquip(Player player) 
+		{
+            player.GetModPlayer<RiftAgilityRunSpeeds>().Body = true;
 		}
 
 		public override void AddRecipes() //Added to make the item obtainable without needing cheat mods, since many swear by never using cheats, ever.
@@ -34,8 +33,31 @@ namespace DestroyerTest.Content.Equips
                 .AddIngredient<Living_Shadow>(20)
                 .AddIngredient<Item_Riftplate>(20)
 				.AddIngredient(ItemID.AnkletoftheWind)
-				.AddTile(TileID.MythrilAnvil)
-				.Register();
+                .AddTile<Tile_RiftConfiguratorArmory>()
+                .Register();
 		}
 	}
+
+    public class RiftAgilityRunSpeeds : ModPlayer
+    {
+        public bool Body = false;
+        public bool Legs = false;
+        public override void ResetEffects()
+        {
+            Body = false;
+            Legs = false;
+        }
+
+        public override void PostUpdateRunSpeeds()
+        {
+            if (Legs)
+            {
+                Player.maxRunSpeed *= 1.8f;
+            }
+            if (Body)
+            {
+                Player.runAcceleration *= 1.75f;
+            }
+        }
+    }
 }

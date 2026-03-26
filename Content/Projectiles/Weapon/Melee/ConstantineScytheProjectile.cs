@@ -30,6 +30,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             SweepColor = Color.Magenta;
 
             Glowmask = ModContent.Request<Texture2D>($"{Texture}_Glow");
+            SwingSpeed = 0.23f;
         }
 
         public override SoundStyle Swing => new SoundStyle("DestroyerTest/Assets/Audio/ConstitutionT3Slash") with { MaxInstances = 0, PitchVariance = 0.6f };
