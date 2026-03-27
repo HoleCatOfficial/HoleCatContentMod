@@ -117,7 +117,7 @@ namespace DestroyerTest.Content.UI
         }
 
 		private bool IsHoldingMelee() {
-            return Main.LocalPlayer.HeldItem.type == ModContent.ItemType<ConstantineScythe>();
+			return false;
 		}
 	}
 

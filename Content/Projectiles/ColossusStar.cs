@@ -59,62 +59,8 @@ namespace DestroyerTest.Content.Projectiles
             SpriteBatch spriteBatch = Main.spriteBatch;
             DTUtils Utility = new DTUtils();
 
-            DTOptimizationsConfig OptCfg = ModContent.GetInstance<DTOptimizationsConfig>();
-            if (!OptCfg.DisableExcessTrails)
-            {
-                Opus.StartSpriteBatchForTrails(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-
-                if (TrailPositions.Count > 1)
-                {
-                    List<ColoredVertex> ve = new List<ColoredVertex>();
-                    List<ColoredVertex> ve2 = new List<ColoredVertex>();
-                    float a = 0;
-
-                    for (int i = TrailPositions.Count - 1; i > 0; i--)
-                    {
-                        float t = 1f - (i / (float)TrailPositions.Count); // fade toward tail
-                        Color b = lightColor * t;
-                        Color b2 = DTColorUtils.Pastel(lightColor, 0.75f) * t;
-
-                        Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
-                        Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * 32;
-                        Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * 32;
-                        
-                        Vector2 offset3 = dir.RotatedBy(MathHelper.ToRadians(90)) * 24;
-                        Vector2 offset4 = dir.RotatedBy(MathHelper.ToRadians(-90)) * 24;
-
-
-                        /*
-						ve.Add(new ColoredVertex(
-							TrailPositions[i] - Main.screenPosition + offset,
-							new Vector3(t, 1, 1),
-							b));
-
-						ve.Add(new ColoredVertex(
-							TrailPositions[i] - Main.screenPosition + offset2,
-							new Vector3(t, 0, 1),
-							b));
-							*/
-
-                        DTUtils.AddStrips(ve, TrailPositions, i, offset, offset2, t, b, trailOffset);
-                        DTUtils.AddStrips(ve2, TrailPositions, i, offset3, offset4, t, b2, trailOffset);
-                    }
-
-
-                    GraphicsDevice gd = Main.graphics.GraphicsDevice;
-                    if (ve.Count >= 3)
-                    {
-                        gd.Textures[0] = DTAssetLib.Streak(9).Value;
-                        gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2);
-                    }
-                    if (ve2.Count >= 3)
-                    {
-                        gd.Textures[0] = DTAssetLib.Streak(4).Value;
-                        gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve2.ToArray(), 0, ve2.Count - 2);
-                    }
-                }
-            }
-
+            DTTrail.DrawTrail(spriteBatch, DTAssetLib.Streak(9).Value, TrailPositions, TrailRotations, 24f, ColorLib.TenebrisMagenta, trailOffset);
+            
             Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
             Opus.DrawGlowOnProj(Projectile, lightColor, true);

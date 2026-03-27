@@ -191,21 +191,43 @@ namespace DestroyerTest.Content.Entities
             
         }
 
-        public SimpleLine topSide = new SimpleLine(ArenaRect.TopLeft(), ArenaRect.TopRight());
-        public SimpleLine bottomSide = new SimpleLine(ArenaRect.BottomLeft(), ArenaRect.BottomRight());
-        public SimpleLine leftSide = new SimpleLine(ArenaRect.TopLeft(), ArenaRect.BottomLeft());
-        public SimpleLine rightSide = new SimpleLine(ArenaRect.TopRight(), ArenaRect.BottomRight());
+        public Line topSide = new Line(ArenaRect.TopRight(), ArenaRect.TopLeft());
+        public Line bottomSide = new Line(ArenaRect.BottomLeft(), ArenaRect.BottomRight());
+        public Line leftSide = new Line(ArenaRect.TopLeft(), ArenaRect.BottomLeft());
+        public Line rightSide = new Line(ArenaRect.BottomRight(), ArenaRect.TopRight());
         public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            DTUtils.ScrollingTextureSpine(topSide, DTAssetLib.Streak(1),  ColorLib.StellarFireGradientLooping(), spriteBatch, BlendState.Additive, scrollspeed: 0.1f);
-            DTUtils.ScrollingTextureSpine(bottomSide, DTAssetLib.Streak(1),  ColorLib.StellarFireGradientLooping(), spriteBatch, BlendState.Additive, scrollspeed: 0.1f);
-            DTUtils.ScrollingTextureSpine(leftSide, DTAssetLib.Streak(1),  ColorLib.StellarFireGradientLooping(), spriteBatch, BlendState.Additive, scrollspeed: 0.1f);
-            DTUtils.ScrollingTextureSpine(rightSide, DTAssetLib.Streak(1),  ColorLib.StellarFireGradientLooping(), spriteBatch, BlendState.Additive, scrollspeed: 0.1f);
+            
+        }
+
+        public int WO1 = 0;
+        public int WO2 = 0;
+        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            WO1 += 16;
+            WO2 += 6;
+
+            float OuterWidth = Opus.Sine(1f, 0.6f);
+            DTUtils.instance.ScrollingTextureSpine(topSide, DTAssetLib.Streak(2), ColorLib.StellarFireGradientLooping() * 0.75f, spriteBatch, BlendState.Additive, WO1, OuterWidth);
+            DTUtils.instance.ScrollingTextureSpine(bottomSide, DTAssetLib.Streak(2), ColorLib.StellarFireGradientLooping() * 0.75f, spriteBatch, BlendState.Additive, WO1, OuterWidth);
+            DTUtils.instance.ScrollingTextureSpine(leftSide, DTAssetLib.Streak(2), ColorLib.StellarFireGradientLooping() * 0.75f, spriteBatch, BlendState.Additive, WO1, OuterWidth);
+            DTUtils.instance.ScrollingTextureSpine(rightSide, DTAssetLib.Streak(2), ColorLib.StellarFireGradientLooping() * 0.75f, spriteBatch, BlendState.Additive, WO1, OuterWidth);
+
+            DTUtils.instance.ScrollingTextureSpine(topSide, DTAssetLib.Streak(1), DTColorUtils.Pastel(ColorLib.StellarFireGradientLooping(), 0.9f), spriteBatch, BlendState.Additive, WO2, 0.2f);
+            DTUtils.instance.ScrollingTextureSpine(bottomSide, DTAssetLib.Streak(1), DTColorUtils.Pastel(ColorLib.StellarFireGradientLooping(), 0.9f), spriteBatch, BlendState.Additive, WO2, 0.2f);
+            DTUtils.instance.ScrollingTextureSpine(leftSide, DTAssetLib.Streak(1), DTColorUtils.Pastel(ColorLib.StellarFireGradientLooping(), 0.9f), spriteBatch, BlendState.Additive, WO2, 0.2f);
+            DTUtils.instance.ScrollingTextureSpine(rightSide, DTAssetLib.Streak(1), DTColorUtils.Pastel(ColorLib.StellarFireGradientLooping(), 0.9f), spriteBatch, BlendState.Additive, WO2, 0.2f);
+
+            
+
             DTConfig cfg = ModContent.GetInstance<DTConfig>();
             if (cfg.EnableDebugMessages)
             {
                 Utils.DrawBorderString(spriteBatch, AITimer.ToString(), (NPC.Center - new Vector2(0, 40)) - Main.screenPosition, Color.Red, 1f);
             }
+
+
+            return true;
         }
         public int AITimer = 0;
         public override void AI()
@@ -319,10 +341,10 @@ namespace DestroyerTest.Content.Entities
                     player.velocity.Y = 0;
             }
 
-            topSide    = new SimpleLine(ArenaRect.TopLeft(), ArenaRect.TopRight());
-            bottomSide = new SimpleLine(ArenaRect.BottomLeft(), ArenaRect.BottomRight());
-            leftSide   = new SimpleLine(ArenaRect.TopLeft(), ArenaRect.BottomLeft());
-            rightSide  = new SimpleLine(ArenaRect.TopRight(), ArenaRect.BottomRight());
+            topSide    = new Line(ArenaRect.TopRight(), ArenaRect.TopLeft());
+            bottomSide = new Line(ArenaRect.BottomLeft(), ArenaRect.BottomRight());
+            leftSide   = new Line(ArenaRect.TopLeft(), ArenaRect.BottomLeft());
+            rightSide  = new Line(ArenaRect.BottomRight(), ArenaRect.TopRight());
 
             
             int cornerID = ModContent.ProjectileType<ConstitutionArenaCorner>();

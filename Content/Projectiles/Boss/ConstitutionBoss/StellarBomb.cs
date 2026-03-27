@@ -41,7 +41,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
             Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-            Main.EntitySpriteDraw(DTAssetLib.FlatStar.Value, Projectile.Center - Main.screenPosition, null, ColorLib.StellarFireGradientLooping(), 0f, DTAssetLib.FlatStar.Value.Size() / 2, WarnScale, SpriteEffects.None, 0f);
+            Main.EntitySpriteDraw(DTAssetLib.FlatStar.Value, Projectile.Center - Main.screenPosition, null, ColorLib.StellarFireGradientLooping(), Projectile.rotation + 4.1f, DTAssetLib.FlatStar.Value.Size() / 2, WarnScale, SpriteEffects.None, 0f);
             Opus.ReturnToDefaultDrawing(spriteBatch);
             DTUtils.DrawCrystalCore(spriteBatch, Projectile.Center, MainColor, Color.White, TextureRotationOffset, 1f);
         }

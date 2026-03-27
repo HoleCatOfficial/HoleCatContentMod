@@ -9,6 +9,7 @@ using DestroyerTest.Content.Particles.fire;
 using DestroyerTest.Content.Particles.Stellar;
 using DestroyerTest.Rarity.Scepter;
 using InnoVault.PRT;
+using InnoVault.TileProcessors;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
@@ -20,6 +21,7 @@ using ReLogic.Graphics;
 using Steamworks;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Media;
 using System.Reflection;
@@ -28,6 +30,8 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
+using Terraria.GameContent.ItemDropRules;
+using Terraria.Graphics;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -283,7 +287,7 @@ namespace DestroyerTest.Common
             ModContent.NPCType<RiftDiggerHead>(),  
         };
 
-
+        private int ScrollingTextureTexOffset = 0;
         /// <summary>
         /// Creates a scrolling texture, similar to a trail, but confined to two points.
         /// <br/> Must be called in a draw-related override.
@@ -291,10 +295,8 @@ namespace DestroyerTest.Common
         /// <param name="line"></param>
         /// <param name="texture"></param>
         /// <param name="scrollspeed"></param>
-        public static void ScrollingTextureSpine(SimpleLine line, Asset<Texture2D> texture, SpriteBatch spriteBatch,  BlendState blendState, float Width = 16f, float scrollspeed = 0.01f)
+        public void ScrollingTextureSpine(Line line, Asset<Texture2D> texture, Color drawColor, SpriteBatch spriteBatch,  BlendState blendState, int TexOffset, float Width = 1f)
         {
-            Vector2[] pt = line.GetPointsAlongLine(100);
-            float texOffset = 0f;
 
             if (texture == null)
             {
@@ -302,289 +304,12 @@ namespace DestroyerTest.Common
                 return;
             }
 
-            texOffset += scrollspeed;
-
-            float totalLength = 0f;
-            float[] distances = new float[pt.Length];
-
-            for (int i = 1; i < pt.Length; i++)
-            {
-                totalLength += Vector2.Distance(pt[i - 1], pt[i]);
-                distances[i] = totalLength;
-            }
 
             Opus.StartSpriteBatchForTrails(spriteBatch, blendState, SpriteSortMode.Immediate);
 
-            if (pt.Length > 1)
-            {
-                List<ColoredVertex> ve = new List<ColoredVertex>();
-                List<Vector2> ptList = pt.ToList();
-                float a = 0;
+            spriteBatch.Draw(texture.Value, line.Start - Main.screenPosition, new Rectangle(TexOffset, 0, (int)line.GetLineLength, texture.Value.Height), drawColor, line.GetLineRotation, new Vector2(0, texture.Value.Height) / 2, new Vector2(1, Width), SpriteEffects.None, 0);
 
-                for (int i = pt.Length - 1; i > 0; i--)
-                {
-                    Vector2 dir = (pt[i] - pt[i - 1]).SafeNormalize(Vector2.UnitX);
-
-                    Vector2 offset = dir.RotatedBy(MathHelper.PiOver2) * Width;
-                    Vector2 offset2 = -offset;
-
-                    float u = (distances[i] / texture.Value.Width) + texOffset;
-
-                    DTUtils.AddStrips_ArenaWalls(
-                        ve,
-                        ptList,
-                        i,
-                        offset,
-                        offset2,
-                        u,
-                        Color.White
-                    );
-                }
-
-
-                GraphicsDevice gd = Main.graphics.GraphicsDevice;
-                if (ve.Count >= 3)
-                {
-                    gd.Textures[0] = texture.Value;
-                    gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Creates a scrolling texture, similar to a trail, but confined to two points.
-        /// <br/> Must be called in a draw-related override.
-        /// </summary>
-        /// <param name="line"></param>
-        /// <param name="texture"></param>
-        /// <param name="scrollspeed"></param>
-        public static void ScrollingTextureSpine(SimpleLine line, Asset<Texture2D> texture, Color drawColor, SpriteBatch spriteBatch,  BlendState blendState, float Width = 16f, float scrollspeed = 0.01f)
-        {
-            Vector2[] pt = line.GetPointsAlongLine(100);
-            float texOffset = 0f;
-
-            if (texture == null)
-            {
-                Main.NewText("ScrollingTextureSpine: Texture is null. Aborted draw.", Color.Red);
-                return;
-            }
-
-            float totalLength = 0f;
-            float[] distances = new float[pt.Length];
-
-            for (int i = 1; i < pt.Length; i++)
-            {
-                totalLength += Vector2.Distance(pt[i - 1], pt[i]);
-                distances[i] = totalLength;
-            }
-
-            texOffset += scrollspeed;
-
-            Opus.StartSpriteBatchForTrails(spriteBatch, blendState, SpriteSortMode.Immediate);
-
-            if (pt.Length > 1)
-            {
-                List<ColoredVertex> ve = new List<ColoredVertex>();
-                List<Vector2> ptList = pt.ToList();
-                float a = 0;
-
-                for (int i = pt.Length - 1; i > 0; i--)
-                {
-                    Vector2 dir = (pt[i] - pt[i - 1]).SafeNormalize(Vector2.UnitX);
-
-                    Vector2 offset = dir.RotatedBy(MathHelper.PiOver2) * Width;
-                    Vector2 offset2 = -offset;
-
-                    float u = (distances[i] / texture.Value.Width) + texOffset;
-
-                    DTUtils.AddStrips_ArenaWalls(
-                        ve,
-                        ptList,
-                        i,
-                        offset,
-                        offset2,
-                        u,
-                        drawColor
-                    );
-                }
-
-
-                GraphicsDevice gd = Main.graphics.GraphicsDevice;
-                if (ve.Count >= 3)
-                {
-                    gd.Textures[0] = texture.Value;
-                    gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2);
-                }
-            }
-        }
-
-        public static void ScrollingTextureSpine(
-            SimpleLine line,
-            Asset<Texture2D> texture,
-            Color color,
-            SpriteBatch spriteBatch,
-            BlendState blendState,
-            float scrollSpeed = 0.5f,
-            float width = 22f,
-            int divisions = 32)
-        {
-            if (texture == null)
-                return;
-
-            Vector2[] points = line.GetPointsAlongLine(divisions);
-            if (points == null || points.Length < 2)
-                return;
-
-            // Time-based scrolling so it actually moves
-            float scroll = Main.GlobalTimeWrappedHourly * scrollSpeed;
-
-            Opus.StartSpriteBatchForTrails(spriteBatch, blendState, SpriteSortMode.Immediate);
-
-            List<ColoredVertex> verts = new();
-
-            float totalLength = line.GetLineLength;
-            float accumulatedLength = 0f;
-
-            for (int i = 1; i < points.Length; i++)
-            {
-                Vector2 prev = points[i - 1];
-                Vector2 curr = points[i];
-
-                Vector2 dir = curr - prev;
-                float segmentLength = dir.Length();
-                if (segmentLength <= 0f)
-                    continue;
-
-                dir.Normalize();
-                Vector2 normal = dir;
-
-                accumulatedLength += segmentLength;
-
-                // UVs scroll along the line
-                float u = (accumulatedLength / texture.Value.Width) + scroll;
-
-                Vector2 left = curr + normal * width;
-                Vector2 right = curr - normal * width;
-
-                verts.Add(new ColoredVertex(left - Main.screenPosition, color, new Vector2(u, 0f)));
-                verts.Add(new ColoredVertex(right - Main.screenPosition, color, new Vector2(u, 1f)));
-            }
-
-            if (verts.Count >= 3)
-            {
-                GraphicsDevice gd = Main.graphics.GraphicsDevice;
-                gd.Textures[0] = texture.Value;
-                gd.DrawUserPrimitives(
-                    PrimitiveType.TriangleStrip,
-                    verts.ToArray(),
-                    0,
-                    verts.Count - 2
-                );
-            }
-        }
-
-
-        /// <summary>
-        /// Creates a scrolling texture, similar to a trail, but confined to two points.
-        /// <br/> Must be called in a draw-related override.
-        /// </summary>
-        /// <param name="line"></param>
-        /// <param name="texture"></param>
-        /// <param name="scrollspeed"></param>
-        public static void ScrollingTextureSpine(Line line, Asset<Texture2D> texture, SpriteBatch spriteBatch,  BlendState blendState, float scrollspeed = 0.01f)
-        {
-            Vector2[] pt = line.GetPointsAlongLine(100);
-            float texOffset = 0f;
-
-            if (texture == null)
-            {
-                Main.NewText("ScrollingTextureSpine: Texture is null. Aborted draw.", Color.Red);
-                return;
-            }
-
-            texOffset += scrollspeed;
-
-            Opus.StartSpriteBatchForTrails(spriteBatch, blendState, SpriteSortMode.Immediate);
-
-            if (pt.Length > 1)
-            {
-                List<ColoredVertex> ve = new List<ColoredVertex>();
-                List<Vector2> ptList = pt.ToList();
-                float a = 0;
-
-                for (int i = pt.Length - 1; i > 0; i--)
-                {
-                    float t = 1f - (i / (float)pt.Length); // fade toward tail
-                    Color b = Color.White * t;
-
-                    Vector2 dir = (pt[i] - pt[i - 1]).ToRotation().ToRotationVector2();
-                    Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * 22;
-                    Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * 22;
-
-                    DTUtils.AddStrips(ve, ptList, i, offset, offset2, t, b, texOffset);
-                }
-
-
-                GraphicsDevice gd = Main.graphics.GraphicsDevice;
-                if (ve.Count >= 3)
-                {
-                    gd.Textures[0] = texture.Value;
-                    gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Creates a scrolling texture, similar to a trail, but confined to two points.
-        /// <br/> Must be called in a draw-related override.
-        /// </summary>
-        /// <param name="line"></param>
-        /// <param name="texture"></param>
-        /// <param name="scrollspeed"></param>
-        public static void ScrollingTextureSpine(Line line, Asset<Texture2D> texture, Color drawColor, SpriteBatch spriteBatch,  BlendState blendState, float Width = 16f, float scrollspeed = 0.01f)
-        {
-            Vector2[] pt = line.GetPointsAlongLine(10);
-            float texOffset = 0f;
-
-            if (texture == null)
-            {
-                Main.NewText("ScrollingTextureSpine: Texture is null. Aborted draw.", Color.Red);
-                return;
-            }
-
-            texOffset += scrollspeed;
-
-            Opus.StartSpriteBatchForTrails(spriteBatch, blendState, SpriteSortMode.Immediate);
-
-            if (pt.Length > 1)
-            {
-                List<ColoredVertex> ve = new List<ColoredVertex>();
-                List<Vector2> ptList = pt.ToList();
-                float a = 0;
-
-                for (int i = pt.Length - 1; i > 0; i--)
-                {
-                    float u = i / (float)(ptList.Count - 1);
-					float widthFactor = (float)Math.Sin(u * MathHelper.Pi);
-
-					float width = Width * widthFactor;
-
-					Vector2 dir = (pt[i] - pt[i - 1]).ToRotation().ToRotationVector2();
-					Vector2 perp = dir.RotatedBy(MathHelper.PiOver2);
-					Vector2 offset  = perp * width;
-					Vector2 offset2 = -perp * width;
-
-                    DTUtils.AddStrips(ve, ptList, i, offset, offset2, 0, drawColor, texOffset);
-                }
-
-
-                GraphicsDevice gd = Main.graphics.GraphicsDevice;
-                if (ve.Count >= 3)
-                {
-                    gd.Textures[0] = texture.Value;
-                    gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2);
-                }
-            }
+            Opus.ReturnToDefaultDrawing(spriteBatch);
         }
 
         public static void SweepColorOverString(string input, Color[] colors, Vector2 textPos, float speed = 6f)
@@ -857,6 +582,7 @@ namespace DestroyerTest.Common
                 return true;
             }
         }
+
 
         
     }
@@ -2034,23 +1760,68 @@ namespace DestroyerTest.Common
 
     public class DTTrail : ModSystem
     {
-        public void BuildTrailStrip(List<Vector2> Positions, List<float> Rotations, float Amplitude)
+        public static void DrawTrail(SpriteBatch spriteBatch, Texture2D TrailTex, List<Vector2> Positions, List<float> Rotations, float Amplitude, Color color, float ScrollSpeed = 0.1f)
         {
-            if (Positions.Count < 2)
+            DTOptimizationsConfig OptCfg = ModContent.GetInstance<DTOptimizationsConfig>();
+            if (!OptCfg.DisableExcessTrails)
             {
-                throw new Exception("At least two positions are required to build a trail strip.");
-            }
-            for(int i = 0; i < Positions.Count; i++)
-            {
-                Vector2 L = Positions[i] + new Vector2(0, Amplitude).RotatedBy(Rotations[i]);
-                Vector2 R = Positions[i] + new Vector2(0, -Amplitude).RotatedBy(Rotations[i]);
+                Opus.StartSpriteBatchForTrails(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
-                Vector2 LastL = Positions[i - 1] + new Vector2(0, Amplitude).RotatedBy(Rotations[i - 1]);
-                Vector2 LastR = Positions[i - 1] + new Vector2(0, -Amplitude).RotatedBy(Rotations[i - 1]);
-                
-                Vector2[] Triangle1 = new Vector2[3] { LastL, L, R };
-                Vector2[] Triangle2 = new Vector2[3] { LastL, LastR, R };
+                if (Positions.Count > 1)
+                {
+                    List<ColoredVertex> ve = new List<ColoredVertex>();
+                    float a = 0;
+
+                    for (int i = Positions.Count - 1; i > 0; i--)
+                    {
+                        float taperRange = 20f; // how many segments to taper over
+                        float taper = MathHelper.Clamp(i / taperRange, 0f, 1f);
+
+                        // optional smoothing (feels nicer than linear)
+                        taper = taper * taper; // quadratic ease-in
+
+                        float AdjAmplitude = Amplitude * taper;
+                        float t = 1f - (i / (float)Positions.Count); // fade toward tail
+                        Color b = color * t;
+             
+
+                        //Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
+                        Vector2 curr = Positions[i];
+                        Vector2 prev = Positions[i - 1];
+                        Vector2 next = i < Positions.Count - 1 ? Positions[i + 1] : curr;
+
+                        Vector2 dirPrev = curr - prev;
+                        Vector2 dirNext = next - curr;
+
+                        if (dirPrev != Vector2.Zero) dirPrev.Normalize();
+                        if (dirNext != Vector2.Zero) dirNext.Normalize();
+
+                        if (dirPrev == Vector2.Zero) dirPrev = dirNext;
+                        if (dirNext == Vector2.Zero) dirNext = dirPrev;
+
+                        Vector2 dir = dirPrev + dirNext;
+                        if (dir != Vector2.Zero)
+                            dir.Normalize();
+                        else
+                            dir = dirPrev;
+
+                        Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * AdjAmplitude;
+                        Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * AdjAmplitude;
+
+                        DTUtils.AddStrips(ve, Positions, i, offset, offset2, t, b, ScrollSpeed);
+                       
+                    }
+
+
+                    GraphicsDevice gd = Main.graphics.GraphicsDevice;
+                    if (ve.Count >= 3)
+                    {
+                        gd.Textures[0] = TrailTex;
+                        gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2);
+                    }
+                }
             }
+
         }
     }
 

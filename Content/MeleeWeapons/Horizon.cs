@@ -29,7 +29,7 @@ namespace DestroyerTest.Content.MeleeWeapons
 			Item.useAnimation = 80;
 			Item.useStyle = ItemUseStyleID.Shoot;
 
-			Item.shoot = ModContent.ProjectileType<PrimalIchor>();
+			Item.shoot = ModContent.ProjectileType<PrimitiveTest>();
 			Item.damage = 40;
 			Item.channel = true;
 			Item.autoReuse = true;

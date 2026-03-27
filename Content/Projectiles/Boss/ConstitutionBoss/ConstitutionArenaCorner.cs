@@ -33,8 +33,9 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
 
             Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
             spriteBatch.Draw(DTAssetLib.Sparkle(5).Value, Projectile.Center - Main.screenPosition, null, Color.White, RotOffset1, DTAssetLib.Sparkle(5).Value.Size() / 2, Scale1, SpriteEffects.None, 0f);
-            spriteBatch.Draw(DTAssetLib.FeatheredCircle.Value, Projectile.Center - Main.screenPosition, null, ColorLib.StellarFireGradientLooping() * 0.5f, 0f, DTAssetLib.FeatheredCircle.Value.Size() / 2, Scale2, SpriteEffects.None, 0f);
-            spriteBatch.Draw(DTAssetLib.FeatheredCircle.Value, Projectile.Center - Main.screenPosition, null, Color.White, 0f, DTAssetLib.FeatheredCircle.Value.Size() / 2, 0.5f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(DTAssetLib.PointGlow.Value, Projectile.Center - Main.screenPosition, null, Color.White, 0f, DTAssetLib.PointGlow.Value.Size() / 2, 3f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(DTAssetLib.FeatheredCircle.Value, Projectile.Center - Main.screenPosition, null, ColorLib.StellarFireGradientLooping() * 0.75f, 0f, DTAssetLib.FeatheredCircle.Value.Size() / 2, Scale2, SpriteEffects.None, 0f);
+            spriteBatch.Draw(DTAssetLib.FeatheredCircle.Value, Projectile.Center - Main.screenPosition, null, Color.White, 0f, DTAssetLib.FeatheredCircle.Value.Size() / 2, 1f, SpriteEffects.None, 0f);
             Opus.ReturnToDefaultDrawing(spriteBatch);
             return true;
         }
@@ -72,7 +73,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
 
             RotOffset1 += 0.03f;
             Scale1 = Opus.Sine(1f, 0.75f);
-            Scale2 = Opus.Sine(0.9f, 0.8f);
+            Scale2 = Opus.Sine(1.3f, 1.2f);
         }
     }
 }
