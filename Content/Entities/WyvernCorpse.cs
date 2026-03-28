@@ -65,7 +65,8 @@ namespace DestroyerTest.Content.Entities
             TeleDash,
             HeartMatrix,
             Nodes,
-            Desperation
+            Desperation,
+            Enraged
         }
 
         public SoundStyle Roar = new SoundStyle("DestroyerTest/Assets/Audio/Corpse/CorpseRoar1") with { PitchVariance = 1.0f, MaxInstances = 0  };
@@ -546,6 +547,10 @@ namespace DestroyerTest.Content.Entities
             {
                 Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Placeholder4");
             }
+            if (!Main.dedServ && EternityIsActive() && Main.masterMode && muscfg.EternityMusic)
+            {
+                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/MasoEvils");
+            }
 
             ImportantMathematics();
 
@@ -665,11 +670,6 @@ namespace DestroyerTest.Content.Entities
                         Vector2 toTarget = targetPos - NPC.Center;
                         NPC.velocity = Vector2.Lerp(NPC.velocity, toTarget * 0.1f, 0.6f);
 
-                        if (circleradius > 400)
-                        {
-                            circleradius--;
-                        }
-
                         if (!EternityIsActive())
                         {
                             if (Main.GameUpdateCount % 20 == 0)
@@ -741,7 +741,7 @@ namespace DestroyerTest.Content.Entities
                             }
                             if (Main.GameUpdateCount % 60 == 0)
                             {
-                                Opus.RadialProjectileRandomDir(ModContent.ProjectileType<TenebrisStarHostile>(), 3, NPC.Center, 8, 5, 2);
+                                //Opus.RadialProjectileRandomDir(ModContent.ProjectileType<TenebrisStarHostile>(), 3, NPC.Center, 8, 5, 2);
                             }
                         }
                         if (CircleLanceCount >= 6 && NPC.life < NPC.lifeMax * 0.4f)
@@ -853,7 +853,7 @@ namespace DestroyerTest.Content.Entities
                                 for (int i = 0; i < numberProjectiles; i++)
                                 {
                                     Vector2 perturbedSpeed = NPC.velocity.RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1)));
-                                    Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), position, perturbedSpeed, ModContent.ProjectileType<TenebrisMine>(), 44, 2);
+                                    Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), position, perturbedSpeed, ModContent.ProjectileType<SoulCrystalBomb>(), 44, 2);
                                 }
                                 OrganBurstCount++;
                             }
@@ -968,10 +968,7 @@ namespace DestroyerTest.Content.Entities
                             {
                                 NPC.NewNPC(Entity.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<TheGreatFlayer>());
                             }
-                            if (EternityIsActive())
-                            {
-                                NPC.NewNPC(Entity.GetSource_FromThis(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<TenebrousSlinger>());
-                            }
+       
 
                             HasSummoned40PercentMinions = true;
                         }
@@ -1179,6 +1176,12 @@ namespace DestroyerTest.Content.Entities
                         }
                     }
                     break;
+                case attackType.Enraged:
+                    {
+                        NPC.dontTakeDamage = true;
+                        NPC.damage = 300;
+                        break;
+                    }
             }
 
 
@@ -1285,37 +1288,15 @@ namespace DestroyerTest.Content.Entities
 
             Opus.ReturnToDefaultDrawing(spriteBatch);
         }
-        
-        
+
+        int TGscroll = 0;
 
         public void DrawTelegraph(Vector2 start, Vector2 end, Texture2D texture)
         {
+            TGscroll--;
             Vector2 direction = end - start;
-            float length = direction.Length();
-            direction.Normalize();
-            texture ??= ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/LaserGlow").Value;
 
-            float rotation = direction.ToRotation();
-
-            // Assuming your texture is a chain segment, like 16px long
-            float segmentLength = texture.Height; // or Width, depending on the texture orientation
-
-            for (float i = 0; i < length; i += segmentLength)
-            {
-                Vector2 position = start + direction * i;
-
-                Main.spriteBatch.Draw(
-                    texture,
-                    position - Main.screenPosition,
-                    null,
-                    Color.White,
-                    rotation + MathHelper.PiOver2, // Adjust if your texture points upward
-                    new Vector2(texture.Width / 2f, texture.Height / 2f), // Origin at center
-                    1f, // Scale
-                    SpriteEffects.None,
-                    0f
-                );
-            }
+            DTUtils.instance.ScrollingTextureSpine(new Line(start, end), DTAssetLib.Streak(13), ColorLib.IchorCrystalGradient, Main.spriteBatch, BlendState.Additive, TGscroll, 1f);
         }
 
 
@@ -1442,12 +1423,33 @@ namespace DestroyerTest.Content.Entities
             Main.EntitySpriteDraw(value, Center + offset.RotatedBy(rotationOffset) - Main.screenPosition, new Rectangle?(npc.frame), color * 0.5f, npc.rotation, value.Size() / 2f, npc.scale, effects);
         }
 
+        public bool flag = false;
+
+        public Asset<Texture2D> texture;
+        public Asset<Texture2D> Glowtexture;
+        public void SetTex()
+        {
+            if (!flag)
+            {
+                if (DestroyerTestMod.EternityIsActive() && Main.masterMode)
+                {
+                    texture = NPC.GetMasoTexture("DestroyerTest/Content/Entities/MasoMode", "WyvernCorpseHead");
+                    Glowtexture = NPC.GetMasoTexture("DestroyerTest/Content/Entities/MasoMode", "WyvernCorpseHead");
+                }
+                else
+                {
+                    texture = TextureAssets.Npc[Type];
+                    Glowtexture = ModContent.Request<Texture2D>($"{Texture}_Glow");
+                }
+                flag = true;
+            }
+        }
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            Texture2D texture = (Texture2D)ModContent.Request<Texture2D>(Texture);
-            Texture2D Glowtexture = (Texture2D)ModContent.Request<Texture2D>($"{Texture}_Glow");
+            SetTex();
+
             Vector2 origin = texture.Size() / 2f;
-            Vector2 drawPos = new Vector2(NPC.position.X - Main.screenPosition.X + (NPC.width / 2) - texture.Width * NPC.scale / 2f + origin.X * NPC.scale, NPC.position.Y - Main.screenPosition.Y + NPC.height - texture.Height * NPC.scale + 4f + origin.Y * NPC.scale + 56f);
+            Vector2 drawPos = new Vector2(NPC.position.X - Main.screenPosition.X + (NPC.width / 2) - texture.Value.Width * NPC.scale / 2f + origin.X * NPC.scale, NPC.position.Y - Main.screenPosition.Y + NPC.height - texture.Value.Height * NPC.scale + 4f + origin.Y * NPC.scale + 56f);
 
             if (CurrentAttack == attackType.TeleDash)
             {
@@ -1468,93 +1470,29 @@ namespace DestroyerTest.Content.Entities
             
             SpriteEffects effects = SpriteEffects.None;
             if (NPC.spriteDirection == 1) effects = SpriteEffects.FlipHorizontally;
-            spriteBatch.Draw(texture, drawPos, new Rectangle?(NPC.frame), drawColor, NPC.rotation, origin, NPC.scale, effects, 0f);
-            spriteBatch.Draw(Glowtexture, drawPos, new Rectangle?(NPC.frame), Color.White, NPC.rotation, origin, NPC.scale, effects, 0f);
+            spriteBatch.Draw(texture.Value, drawPos, new Rectangle?(NPC.frame), drawColor, NPC.rotation, origin, NPC.scale, effects, 0f);
+            spriteBatch.Draw(Glowtexture.Value, drawPos, new Rectangle?(NPC.frame), Color.White, NPC.rotation, origin, NPC.scale, effects, 0f);
             return false;
         }
 
+        int DashTGscroll = 0;
         public void DrawDashTelegraph(Vector2 start, Vector2 end, Texture2D texture)
         {
+            DashTGscroll -= 10;
             // Compute direction and total length
             Vector2 direction = end - start;
-            float totalLength = direction.Length();
-            direction.Normalize();
-
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            DTUtils Utility = new DTUtils();
-
-            float rotation = direction.ToRotation();
-            float segmentLength = texture.Height * 0.75f; // adjust if your texture is oriented differently
-
-            // Begin additive blending (glowy telegraph)
-            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-
-            for (float distance = 0f; distance < totalLength; distance += segmentLength)
-            {
-                // Calculate normalized fade progress (0 at start, 1 at end)
-                float fadeProgress = distance / totalLength;
-
-                // Interpolate opacity: starts visible, fades out near end
-                float opacity = MathHelper.Lerp(1f, 0f, fadeProgress); // tweak start opacity as needed
-
-                Vector2 position = start + direction * distance;
-
-                spriteBatch.Draw(
-                    texture,
-                    position - Main.screenPosition,
-                    null,
-                    ColorLib.IchorCrystalGradient * opacity,
-                    rotation + MathHelper.PiOver2,
-                    new Vector2(texture.Width / 2f, texture.Height / 2f),
-                    new Vector2(0.5f, 1f),
-                    SpriteEffects.None,
-                    0f
-                );
-            }
-
-            Opus.ReturnToDefaultDrawing(spriteBatch);
+   
+            DTUtils.instance.ScrollingTextureSpine(new Line(start, end), DTAssetLib.ArrowTelegraphCont, ColorLib.IchorCrystalGradient, Main.spriteBatch, BlendState.Additive, DashTGscroll, 1f);
         }
 
+        float tOffset = 0f;
         public void DrawTelePoint(SpriteBatch spriteBatch, Vector2 Center)
         {
+            tOffset += 0.1f;
             DTUtils Utility = new DTUtils();
             Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
-            Main.spriteBatch.Draw(
-                DTAssetLib.Cyclone(2).Value,
-                Center - Main.screenPosition,
-                null,
-                ColorLib.Soul,
-                TextureRotationOffset,
-                new Vector2(DTAssetLib.Cyclone(2).Value.Width / 2f, DTAssetLib.Cyclone(2).Value.Height / 2f),
-                0.5f,
-                SpriteEffects.None,
-                1f
-            );
-
-            Main.spriteBatch.Draw(
-                DTAssetLib.CrimsonSigil.Value,
-                Center - Main.screenPosition,
-                null,
-                ColorLib.IchorCrystalGradient,
-                0f,
-                new Vector2(DTAssetLib.CrimsonSigil.Value.Width / 2f, DTAssetLib.CrimsonSigil.Value.Height / 2f),
-                2f,
-                SpriteEffects.None,
-                1f
-            );
-
-            Main.spriteBatch.Draw(
-                DTAssetLib.FeatheredCircle.Value,
-                Center - Main.screenPosition,
-                null,
-                Color.White,
-                0f,
-                new Vector2(DTAssetLib.FeatheredCircle.Value.Width / 2f, DTAssetLib.FeatheredCircle.Value.Height / 2f),
-                1f,
-                SpriteEffects.None,
-                1f
-            );
+            DTUtils.DrawCrystalCore(spriteBatch, Center, Color.White, ColorLib.Ichor, tOffset, 2f);
 
             Opus.ReturnToDefaultDrawing(spriteBatch);
         }
@@ -1563,8 +1501,8 @@ namespace DestroyerTest.Content.Entities
 
         public void DashParticle()
         {
-            PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticle>(), NPC.Center + new Vector2(NPC.width / 2, (NPC.height / 2) - NPC.height / 2).RotatedBy(NPC.rotation), new Vector2(10, 80).RotatedBy(NPC.rotation), ColorLib.Ichor, 1f, 2);
-            PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticle>(), NPC.Center + new Vector2(NPC.width / 2, (NPC.height / 2) - NPC.height / 2).RotatedBy(NPC.rotation), new Vector2(-10, 80).RotatedBy(NPC.rotation), ColorLib.Ichor, 1f, 2);
+            PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), NPC.Center + new Vector2(NPC.width / 2, (NPC.height / 2) - NPC.height / 2).RotatedBy(NPC.rotation), new Vector2(10, 80).RotatedBy(NPC.rotation), ColorLib.Ichor, 1f, ai1: 2);
+            PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), NPC.Center + new Vector2(NPC.width / 2, (NPC.height / 2) - NPC.height / 2).RotatedBy(NPC.rotation), new Vector2(-10, 80).RotatedBy(NPC.rotation), ColorLib.Ichor, 1f, ai1: 2);
         }
 
         public void NodeSpawn()
@@ -1622,7 +1560,8 @@ namespace DestroyerTest.Content.Entities
 
         public override void OnSpawn(IEntitySource source)
         {
-            if (EternityIsActive())
+            DTOptimizationsConfig optcfg = ModContent.GetInstance<DTOptimizationsConfig>();
+            if (EternityIsActive() && !optcfg.OptimizeGame)
             {
                 Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<WyvernCorpseBackgroundProj>(), 0, 0f);
             }
@@ -1936,7 +1875,7 @@ namespace DestroyerTest.Content.Entities
                 float time = (float)Main.GameUpdateCount / 60f;
 
                 // --- Layer 1 scroll parameters ---
-                float scrollSpeedX1 = 600f;
+                float scrollSpeedX1 = 200f;
                 float scrollSpeedY1 = 30f;
 
                 float scrollOffsetX1 = (time * scrollSpeedX1) % WindTex.Value.Width * Projectile.scale;
@@ -1956,11 +1895,11 @@ namespace DestroyerTest.Content.Entities
                 {
                     for (float y = -scrollOffsetY1 + startY; y < endY; y += WindTex.Value.Height)
                     {
-                        spriteBatch.Draw(WindTex.Value, new Vector2(x, y), null, drawColor, 0f, Vector2.Zero, 1f * Projectile.scale, SpriteEffects.None, 0f);
+                        spriteBatch.Draw(WindTex.Value, new Vector2(x, y), null, drawColor * 0.5f, 0f, Vector2.Zero, 1f * Projectile.scale, SpriteEffects.None, 0f);
                     }
                 }
 
-                float scrollSpeedX2 = 250f;
+                float scrollSpeedX2 = 150f;
                 float scrollSpeedY2 = -60f; // opposite direction for contrast
 
                 float scrollOffsetX2 = (time * scrollSpeedX2) % WindTex.Value.Width * Projectile.scale;
@@ -1973,7 +1912,7 @@ namespace DestroyerTest.Content.Entities
                 {
                     for (float y = -scrollOffsetY2 + startY; y < endY; y += WindTex.Value.Height)
                     {
-                        spriteBatch.Draw(WindTex.Value, new Vector2(x, y), null, drawColor2, 0f, Vector2.Zero, 1f * Projectile.scale, SpriteEffects.None, 0f);
+                        spriteBatch.Draw(WindTex.Value, new Vector2(x, y), null, drawColor2 * 0.5f, 0f, Vector2.Zero, 1f * Projectile.scale, SpriteEffects.None, 0f);
                     }
                 }
 

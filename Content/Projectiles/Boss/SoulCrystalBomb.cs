@@ -59,10 +59,9 @@ namespace DestroyerTest.Content.Projectiles.Boss
                     Vector2 direction = new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
 
                     Vector2 drawPos = start - Main.screenPosition;
-                    float length = 3600f;
-                    Vector2 scale = new Vector2(1f, length / DTAssetLib.Line(1).Value.Height);
+                    Vector2 scale = new Vector2(3600, 1f);
 
-                    SB.Draw(DTAssetLib.Line(1).Value, drawPos, null, ColorLib.Ichor, angle + MathHelper.PiOver2, new Vector2(DTAssetLib.Line(1).Value.Width / 2f, 0), scale, SpriteEffects.None, 0f);
+                    SB.Draw(DTAssetLib.Line(1).Value, drawPos, null, ColorLib.Soul, angle, new Vector2(0, DTAssetLib.Line(1).Value.Height / 2f), scale, SpriteEffects.None, 0f);
                 }
             }
         }
@@ -70,39 +69,9 @@ namespace DestroyerTest.Content.Projectiles.Boss
         public override void PostDraw(Color lightColor)
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
-            DrawCrystalCore(spriteBatch, Projectile.Center);
+            DTUtils.DrawCrystalCore(spriteBatch, Projectile.Center, Color.White, ColorLib.Soul, TextureRotationOffset, 2f);
         }
-        public void DrawCrystalCore(SpriteBatch spriteBatch, Vector2 Center)
-        {
-            DTUtils Utility = new DTUtils();
-            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-
-            Main.spriteBatch.Draw(
-                DTAssetLib.Cyclone(2).Value,
-                Center - Main.screenPosition,
-                null,
-                ColorLib.Soul,
-                TextureRotationOffset,
-                new Vector2(DTAssetLib.Cyclone(2).Value.Width / 2f, DTAssetLib.Cyclone(2).Value.Height / 2f),
-                0.2f,
-                SpriteEffects.None,
-                1f
-            );
-
-            Main.spriteBatch.Draw(
-                DTAssetLib.FeatheredCircle.Value,
-                Center - Main.screenPosition,
-                null,
-                Color.White,
-                0f,
-                new Vector2(DTAssetLib.FeatheredCircle.Value.Width / 2f, DTAssetLib.FeatheredCircle.Value.Height / 2f),
-                0.6f,
-                SpriteEffects.None,
-                1f
-            );
-
-            Opus.ReturnToDefaultDrawing(spriteBatch);
-        }
+        
 
         public override bool CanHitPlayer(Player target)
         {
@@ -115,7 +84,7 @@ namespace DestroyerTest.Content.Projectiles.Boss
         {
             Vector2 ToPlayer = Projectile.Center - Main.LocalPlayer.Center;
             TextureRotationOffset -= 0.5f;
-            Projectile.velocity *= 0.999f;
+            Projectile.velocity *= 0.99f;                       
             Projectile.rotation += Main.rand.NextFloat(-1f, 1.1f) * 0.1f;
         }
         

@@ -448,7 +448,7 @@ namespace DestroyerTest.Common
         public static void DrawCrystalCore(SpriteBatch spriteBatch, Vector2 Center, Color colorIN, Color colorOUT, float TextureRotationOffset, float Scale = 1f)
         {
             DTUtils Utility = new DTUtils();
-            float OuterScale = Scale * 0.1425f;
+            float OuterScale = Scale * 0.12f;
             Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
             Main.spriteBatch.Draw(
@@ -837,6 +837,16 @@ namespace DestroyerTest.Common
                 (byte)MathHelper.Lerp(inputColor.B, 0, percentage),
                 inputColor.A
             );
+        }
+
+        public static Asset<Texture2D> GetMasoTexture(this NPC npc, string Directory, string Name)
+        {
+            return ModContent.Request<Texture2D>($"{Directory}/Maso_{Name}");
+        }
+
+        public static Asset<Texture2D> GetMasoGlowTexture(this NPC npc, string Directory, string Name                                                  )
+        {
+            return ModContent.Request<Texture2D>($"{Directory}/Maso_{Name}_Glow");
         }
     }
 
@@ -1487,6 +1497,7 @@ namespace DestroyerTest.Common
             public static SoundStyle MediumSwing = new SoundStyle($"{Path}/MediumSwing", 3);
             public static SoundStyle MediumHeavySwing = new SoundStyle($"{Path}/MediumHeavySwing", 3);
             public static SoundStyle MemoriamSwing = new SoundStyle($"{Path}/MemoriamSwing");
+            public static SoundStyle MetalSwing = new SoundStyle($"{Path}/MetalSwing", 4);
             public static SoundStyle QuickSwing = new SoundStyle($"{Path}/QuickSwing", 4);
             public static SoundStyle SwiftSwing = new SoundStyle($"{Path}/SwiftSwing1");
             public static SoundStyle Slam = new SoundStyle($"{Path}/Slam", 2);
@@ -1760,7 +1771,7 @@ namespace DestroyerTest.Common
 
     public class DTTrail : ModSystem
     {
-        public static void DrawTrail(SpriteBatch spriteBatch, Texture2D TrailTex, List<Vector2> Positions, List<float> Rotations, float Amplitude, Color color, float ScrollSpeed = 0.1f)
+        public static void DrawTrail(SpriteBatch spriteBatch, Texture2D TrailTex, List<Vector2> Positions, List<float> Rotations, float Amplitude, Color color, float Scroll, float TaperRange = 20f)
         {
             DTOptimizationsConfig OptCfg = ModContent.GetInstance<DTOptimizationsConfig>();
             if (!OptCfg.DisableExcessTrails)
@@ -1774,8 +1785,7 @@ namespace DestroyerTest.Common
 
                     for (int i = Positions.Count - 1; i > 0; i--)
                     {
-                        float taperRange = 20f; // how many segments to taper over
-                        float taper = MathHelper.Clamp(i / taperRange, 0f, 1f);
+                        float taper = MathHelper.Clamp(i / TaperRange, 0f, 1f);
 
                         // optional smoothing (feels nicer than linear)
                         taper = taper * taper; // quadratic ease-in
@@ -1808,7 +1818,7 @@ namespace DestroyerTest.Common
                         Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * AdjAmplitude;
                         Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * AdjAmplitude;
 
-                        DTUtils.AddStrips(ve, Positions, i, offset, offset2, t, b, ScrollSpeed);
+                        DTUtils.AddStrips(ve, Positions, i, offset, offset2, t, b, Scroll);
                        
                     }
 

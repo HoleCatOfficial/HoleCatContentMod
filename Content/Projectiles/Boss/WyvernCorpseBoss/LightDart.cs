@@ -52,49 +52,9 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
 			SpriteBatch spriteBatch = Main.spriteBatch;
 			DTUtils Utility = new DTUtils();
 
-			DTOptimizationsConfig OptCfg = ModContent.GetInstance<DTOptimizationsConfig>();
-            if (!OptCfg.DisableExcessTrails)
-            {
-				Opus.StartSpriteBatchForTrails(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-				if (TrailPositions.Count > 1)
-				{
-					List<ColoredVertex> ve = new List<ColoredVertex>();
+            DTTrail.DrawTrail(spriteBatch, DTAssetLib.Streak(7).Value, TrailPositions, TrailRotations, 35, ColorLib.Soul, trailOffset, 1);
 
-					List<TriangleShape> te = new List<TriangleShape>();
-					float a = 0;
-
-					for (int i = TrailPositions.Count - 1; i > 0; i--)
-					{
-						float t = 1f - (i / (float)TrailPositions.Count); // fade toward tail
-						Color b = lightColor * t;
-
-						Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
-						Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * 40;
-						Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * 40;
-						
-						ve.Add(new ColoredVertex(
-							TrailPositions[i] - Main.screenPosition + offset,
-							new Vector3(t - trailOffset, 1, 1),
-							b));
-
-						ve.Add(new ColoredVertex(
-							TrailPositions[i] - Main.screenPosition + offset2,
-							new Vector3(t - trailOffset, 0, 1),
-							b));
-					}
-
-					GraphicsDevice gd = Main.graphics.GraphicsDevice;
-					if (ve.Count >= 3)
-					{
-						gd.Textures[0] = DTAssetLib.Streak(7).Value;
-						gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2);
-
-						
-					}
-				}
-			}
-
-			Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
         
 			Opus.DrawGlowOnProj(Projectile, lightColor, true);
 

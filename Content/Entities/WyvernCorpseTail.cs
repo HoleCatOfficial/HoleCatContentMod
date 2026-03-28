@@ -1,18 +1,18 @@
 
 
-using System.Linq;
 using DestroyerTest.Common;
 using DestroyerTest.Content.BossBar;
 using DestroyerTest.Content.Buffs;
+using GlowmaskHelper.Content;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using ReLogic.Content;
-
+using System.Linq;
 using Terraria;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using GlowmaskHelper.Content;
-using OpusLib;
 
 /// <summary>
 /// This is the code from Consolaria's Arch Wyvern. I do not own any of this except for the textures I paint over it. This code will be replaced in the future, when I am capable of modding something so advanced. (Trust me. I tried many times with the example worm. It did not go well.)
@@ -121,12 +121,34 @@ namespace DestroyerTest.Content.Entities
             if (NPC.position.X < Main.npc[(int)NPC.ai[1]].position.X) NPC.spriteDirection = -1;
         }
 
+        public bool flag = false;
+
+        public Asset<Texture2D> texture;
+        public Asset<Texture2D> Glowtexture;
+        public void SetTex()
+        {
+            if (!flag)
+            {
+                if (DestroyerTestMod.EternityIsActive() && Main.masterMode)
+                {
+                    texture = NPC.GetMasoTexture("DestroyerTest/Content/Entities/MasoMode", "WyvernCorpseTail");
+                    Glowtexture = NPC.GetMasoTexture("DestroyerTest/Content/Entities/MasoMode", "WyvernCorpseTail");
+                }
+                else
+                {
+                    texture = TextureAssets.Npc[Type];
+                    Glowtexture = ModContent.Request<Texture2D>($"{Texture}_Glow");
+                }
+                flag = true;
+            }
+        }
+
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            Texture2D texture = (Texture2D)ModContent.Request<Texture2D>(Texture);
-            Texture2D Glowtexture = (Texture2D)ModContent.Request<Texture2D>($"{Texture}_Glow");
-            Vector2 origin = new Vector2(texture.Width / 2, texture.Height / 2);
-            Vector2 drawPos = new Vector2(NPC.position.X - Main.screenPosition.X + (NPC.width / 2) - texture.Width * NPC.scale / 2f + origin.X * NPC.scale, NPC.position.Y - Main.screenPosition.Y + NPC.height - texture.Height * NPC.scale + 4f + origin.Y * NPC.scale + 56f);
+            SetTex();
+
+            Vector2 origin = new Vector2(texture.Value.Width / 2, texture.Value.Height / 2);
+            Vector2 drawPos = new Vector2(NPC.position.X - Main.screenPosition.X + (NPC.width / 2) - texture.Value.Width * NPC.scale / 2f + origin.X * NPC.scale, NPC.position.Y - Main.screenPosition.Y + NPC.height - texture.Value.Height * NPC.scale + 4f + origin.Y * NPC.scale + 56f);
 
             if (anyNodesAlive)
             {
@@ -140,8 +162,8 @@ namespace DestroyerTest.Content.Entities
             
             SpriteEffects effects = SpriteEffects.None;
             if (NPC.spriteDirection == 1) effects = SpriteEffects.FlipHorizontally;
-            spriteBatch.Draw(texture, new Vector2(NPC.position.X - Main.screenPosition.X + (NPC.width / 2) - texture.Width * NPC.scale / 2f + origin.X * NPC.scale, NPC.position.Y - Main.screenPosition.Y + NPC.height - texture.Height * NPC.scale + 4f + origin.Y * NPC.scale + 56f), new Rectangle?(NPC.frame), drawColor, NPC.rotation, origin, NPC.scale, effects, 0f);
-            spriteBatch.Draw(Glowtexture, new Vector2(NPC.position.X - Main.screenPosition.X + (NPC.width / 2) - texture.Width * NPC.scale / 2f + origin.X * NPC.scale, NPC.position.Y - Main.screenPosition.Y + NPC.height - texture.Height * NPC.scale + 4f + origin.Y * NPC.scale + 56f), new Rectangle?(NPC.frame), Color.White, NPC.rotation, origin, NPC.scale, effects, 0f);
+            spriteBatch.Draw(texture.Value, new Vector2(NPC.position.X - Main.screenPosition.X + (NPC.width / 2) - texture.Value.Width * NPC.scale / 2f + origin.X * NPC.scale, NPC.position.Y - Main.screenPosition.Y + NPC.height - texture.Value.Height * NPC.scale + 4f + origin.Y * NPC.scale + 56f), new Rectangle?(NPC.frame), drawColor, NPC.rotation, origin, NPC.scale, effects, 0f);
+            spriteBatch.Draw(Glowtexture.Value, new Vector2(NPC.position.X - Main.screenPosition.X + (NPC.width / 2) - texture.Value.Width * NPC.scale / 2f + origin.X * NPC.scale, NPC.position.Y - Main.screenPosition.Y + NPC.height - texture.Value.Height * NPC.scale + 4f + origin.Y * NPC.scale + 56f), new Rectangle?(NPC.frame), Color.White, NPC.rotation, origin, NPC.scale, effects, 0f);
             return false;
         }
 

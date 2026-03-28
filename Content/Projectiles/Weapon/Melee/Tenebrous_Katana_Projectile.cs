@@ -1,13 +1,19 @@
-using Terraria;
-using Terraria.ModLoader;
-using Terraria.ID;
-using Terraria.Audio;
-using Microsoft.Xna.Framework;
 using DestroyerTest.Common;
-using DestroyerTest.Content.MeleeWeapons;
-using Microsoft.Xna.Framework.Graphics;
-using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.MeleeWeapons;
+using DestroyerTest.Content.Particles;
+using DestroyerTest.Content.RiftArsenal;
+using InnoVault.PRT;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 {
@@ -17,101 +23,216 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 					Volume = 1.0f, 
 					Pitch = 0.0f, 
 					PitchVariance = 0.5f, 
-				}; 
-        public static int Swing_HitCount { get; set;} = 0;
+				};
         public override void SetStaticDefaults()
         {
-            Main.projFrames[Type] = 10; // This projectile has 4 frames.
+            Main.projFrames[Type] = 17;
+            ProjectileID.Sets.DontAttachHideToAlpha[Type] = true;
         }
         public override void SetDefaults()
         {
-            Projectile.width = 282;
-            Projectile.height = 270;
+            Projectile.width = 400;
+            Projectile.height = 400;
             Projectile.friendly = true;
+            Projectile.DamageType = DamageClass.MeleeNoSpeed;
             Projectile.penetrate = -1;
             Projectile.tileCollide = false;
             Projectile.ignoreWater = true;
-            Projectile.timeLeft = 40; // persistent
+            Projectile.timeLeft = 40;
             Projectile.usesLocalNPCImmunity = true;
-            Projectile.localNPCHitCooldown = -1;
+            Projectile.localNPCHitCooldown = 10;
             Projectile.netImportant = true;
-			Projectile.netUpdate = true;
-
+            Projectile.hide = true;
         }
 
-        private void AnimateProjectile() {
-            // Loop through the frames, assuming each frame lasts 5 ticks
-            if (++Projectile.frameCounter >= 4) {
+        private SpriteEffects FX = SpriteEffects.None;
+        public override bool PreDraw(ref Color lightColor)
+        {
+            Texture2D t = TextureAssets.Projectile[Projectile.type].Value;
+            Texture2D G = ModContent.Request<Texture2D>($"{Texture}_Glow").Value;
+
+            int frameHeight = t.Height / Main.projFrames[Projectile.type];
+            Rectangle frame = new Rectangle(
+                0,
+                frameHeight * Projectile.frame,
+                t.Width,
+                frameHeight
+            );
+
+            Vector2 origin = new Vector2(t.Width / 2f, frameHeight / 2f);
+
+
+            Main.EntitySpriteDraw(t, Projectile.Center - Main.screenPosition, frame, Projectile.GetAlpha(lightColor), Projectile.rotation, origin, Projectile.scale, FX, 0f);
+            Main.EntitySpriteDraw(G, Projectile.Center - Main.screenPosition, frame, Color.White, Projectile.rotation, origin, Projectile.scale, FX, 0f);
+
+            Utils.DrawRect(Main.spriteBatch, AdjustedHitbox, ColorLib.Rift);
+            return false;
+        }
+
+        int F = 8;
+        private void AnimateProjectile()
+        {
+            if (++Projectile.frameCounter >= 7)
+            {
                 Projectile.frameCounter = 0;
-                if (++Projectile.frame >= Main.projFrames[Projectile.type]) {
+                if (++Projectile.frame >= Main.projFrames[Projectile.type])
+                {
                     Projectile.frame = 0;
                 }
             }
         }
 
+        public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
+        {
+            overPlayers.Add(index);
+        }
+
+        List<int> AttackFramesFront = new List<int>
+        {
+            //Swing 1
+            1,
+            2,
+            3,
+            4,
+
+            //Swing 2
+            8,
+            9,
+            10,
+            11,
+
+            //Swing 3
+            13,
+            14,
+            15,
+        };
+        List<int> AttackFramesBack = new List<int>
+        {
+            0,
+            5,
+            7
+        };
+
+        private bool IsOnAttackFrame(NPC target)
+        {
+            Player player = Main.player[Projectile.owner];
+
+            int playerDir = player.direction;
+            int targetDir = Math.Sign(target.Center.X - player.Center.X);
+
+            bool facingTarget = playerDir == targetDir;
+
+            if (facingTarget && AttackFramesFront.Contains(Projectile.frame))
+                return true;
+
+            if (!facingTarget && AttackFramesBack.Contains(Projectile.frame))
+                return true;
+
+            return false;
+        }
+
+        public override bool? CanHitNPC(NPC target)
+        {
+            return IsOnAttackFrame(target);
+        }
+
+        private SoundStyle Slash = DTAssetLib.SwordSounds.MetalSwing with { PitchVariance = 0.2f };
         public override void AI()
         {
             Player player = Main.player[Projectile.owner];
 
-            // Check if the player is holding the item and channeled
-            if (player.HeldItem.type == ModContent.ItemType<Tenebrous_Katana>() && player.itemTime > 0)
+            if (player.HeldItem.type == ModContent.ItemType<Tenebrous_Katana>() && player.controlUseItem)
             {
-
+                player.SetDummyItemTime(2);
                 AnimateProjectile();
 
-                // Lock the projectile's position relative to the player
-                float holdDistance = 150f;
+                if (Projectile.frame == 0 || Projectile.frame == 6 || Projectile.frame == 12)
+                {
+                    SoundEngine.PlaySound(Slash, Projectile.Center);
+                }
+
                 Vector2 mountedCenter = player.MountedCenter;
                 Vector2 toCursor = Main.MouseWorld - mountedCenter;
                 toCursor.Normalize();
-                Vector2 desiredPos = mountedCenter + toCursor * holdDistance;
 
-                Projectile.Center = desiredPos;
+                Projectile.Center = mountedCenter;
 
-                // Rotate to face the cursor
-                Projectile.rotation = toCursor.ToRotation() + MathHelper.PiOver2;
+                Projectile.rotation = toCursor.ToRotation();
 
-                if (player.direction == -1)
-                {
-                    Projectile.spriteDirection = -1;
-                }
-                else
-                {
-                    Projectile.spriteDirection = 1;
-                }
+                FX = toCursor.X > 0 ? SpriteEffects.None : SpriteEffects.FlipVertically;
 
-                // Constantly face the direction it's pointing
-                Projectile.direction = toCursor.X > 0 ? 1 : -1;
-
-                // Shoot dust particles in a line from the tip
-                Vector2 dustDirection = toCursor;
-                Vector2 dustSpawn = Projectile.Center + dustDirection * Projectile.width * 0.5f;
-
-                Vector2 randomSpawn = Projectile.position + new Vector2(Main.rand.NextFloat(Projectile.width), Main.rand.NextFloat(Projectile.height));
-                int dustIndex = Dust.NewDust(randomSpawn, 0, 0, DustID.TintableDustLighted, dustDirection.X * 4f, dustDirection.Y * 4f, 100, Color.Magenta, 1.2f);
-                Main.dust[dustIndex].noGravity = true;
+                Projectile.timeLeft = 10;
 
             }
             else
             {
-                // Kill the projectile if the item is not being held
                 Projectile.Kill();
             }
         }
 
-		
-		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
-		{
-            Player player = Main.LocalPlayer;
-            if (damageDone > 1200)
+        public Rectangle AdjustedHitbox;
+        int Width = 0;
+        public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
+        {
+            int AdjustedX = (int)Projectile.position.X;
+            int AdjustedY = (int)Projectile.position.Y;
+            if (Projectile.frame == 14)
             {
-                player.AddBuff(ModContent.BuffType<ShimmeringFlames>(), 600);
+                Width = 600;
             }
-            Swing_HitCount += 1;
-			Projectile.NewProjectile(Projectile.GetSource_OnHit(target), target.Center, Vector2.Zero, ModContent.ProjectileType<HitAnimParticle_TK>(), 0, 0, Projectile.owner);
-            SoundEngine.PlaySound(EnemySlice, Projectile.position);
-            CombatText.NewText(player.getRect(), ColorLib.TenebrisGradient, $"Combo: {Swing_HitCount}", true, false);
-		}
+            else if (Projectile.frame == 9)
+            {
+                Width = 500;
+            }
+            else
+            {
+                Width = Projectile.width;
+            }
+
+            //AdjustedHitbox = new Rectangle(AdjustedX, AdjustedY, (int)(Projectile.width * Projectile.scale), (int)(Projectile.height * Projectile.scale));
+            AdjustedHitbox = Utils.CenteredRectangle(Projectile.Center, new Vector2(Width * Projectile.scale, Projectile.height * Projectile.scale));
+            return targetHitbox.Intersects(AdjustedHitbox);
+        }
+
+
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            Player player = Main.player[Projectile.owner];
+            var ScreenShake = player.GetModPlayer<ScreenshakePlayer>();
+            ScreenShake.screenshakeMagnitude = 4;
+            ScreenShake.screenshakeTimer = 10;
+
+            SoundEngine.PlaySound(EnemySlice with { MaxInstances = 0 }, target.Center);
+
+            List<Color> RiftLightColors = new List<Color>
+            {
+                ColorLib.TenebrisBeige,
+                ColorLib.TenebrisBlue,
+                ColorLib.TenebrisMagenta,
+                Color.White
+            };
+
+            int splatterdir = target.position.X > player.MountedCenter.X ? 1 : -1;
+            for (int i = 0; i < 7; i++)
+            {
+                Color choice = RiftLightColors[Main.rand.Next(RiftLightColors.Count)];
+                PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), target.Center, new Vector2(Main.rand.NextFloat(2f, 6f) * splatterdir, 0).RotatedByRandom(0.2f), choice * Main.rand.NextFloat(0.5f, 0.8f), 1f, ai1: 2);
+            }
+
+            Vector2 d = player.Center - target.Center;
+            d.Normalize();
+            Vector2 d2 = new Vector2(d.X * 0.3f, d.Y);
+            if (player.Center.Y <= target.Center.Y && Math.Abs((player.Center.X - target.Center.X)) <= 50)
+            {
+                player.velocity += d2 * 8;
+            }
+
+
+            ShimmeringFlames.ShimmerBurn(target);
+            
+
+        }
+
 
     }
 }

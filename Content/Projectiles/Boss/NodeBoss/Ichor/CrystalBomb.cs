@@ -59,10 +59,9 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.Ichor
                     Vector2 direction = new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
 
                     Vector2 drawPos = start - Main.screenPosition;
-                    float length = 3600f;
-                    Vector2 scale = new Vector2(1f, length / LineTex.Height);
+                    Vector2 scale = new Vector2(3600, 1f);
 
-                    SB.Draw(LineTex, drawPos, null, ColorLib.Ichor, angle + MathHelper.PiOver2, new Vector2(LineTex.Width / 2f, 0), scale, SpriteEffects.None, 0f);
+                    SB.Draw(DTAssetLib.Line(1).Value, drawPos, null, ColorLib.Ichor, angle, new Vector2(0, DTAssetLib.Line(1).Value.Height / 2f), scale, SpriteEffects.None, 0f);
                 }
             }
         }
