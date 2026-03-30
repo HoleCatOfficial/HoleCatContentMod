@@ -21,7 +21,7 @@ namespace DestroyerTest.Content.RiftBiome.RiftSurfaceResources
 			DustType = DustID.Wraith;
 
 			AddMapEntry(new Color(0, 0, 0));
-			
+			HitSound = SoundID.Tink;
 		}
 
 		public override void NumDust(int i, int j, bool fail, ref int num) 

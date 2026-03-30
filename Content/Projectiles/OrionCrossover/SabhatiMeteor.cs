@@ -86,7 +86,7 @@ namespace DestroyerTest.Content.Projectiles.OrionCrossover
 
         public override bool? CanHitNPC(NPC target)
         {
-            return DelayTimer >= 15;
+            return DelayTimer >= 10;
         }
 
         private void AnimateProjectile()

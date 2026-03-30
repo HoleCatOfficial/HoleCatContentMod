@@ -24,7 +24,7 @@ namespace DestroyerTest.Content.Resources.Blueprints
 			Item.width = 32;
 			Item.height = 32;
 			Item.maxStack = Item.CommonMaxStack;
-			Item.value = 1000;
+			Item.value = 1010;
             Item.useTime = 60;
             Item.useAnimation = 60;
             Item.useStyle = ItemUseStyleID.HoldUp;
@@ -44,7 +44,7 @@ namespace DestroyerTest.Content.Resources.Blueprints
 			CreateRecipe(1)
                 .AddIngredient<RiftData>(1)
                 .AddIngredient<Living_Shadow>(5)
-                .AddIngredient(ItemID.Excalibur, 1)
+                .AddIngredient(ItemID.NightsEdge, 1)
                 .AddIngredient(ItemID.BreakerBlade, 1)
                 .AddTile<Tile_RiftConfiguratorCore>()
             .Register();
@@ -52,7 +52,7 @@ namespace DestroyerTest.Content.Resources.Blueprints
 			CreateRecipe(1)
 				.AddIngredient<RiftData>(1)
 				.AddIngredient<Living_Shadow>(5)
-				.AddIngredient(ItemID.Excalibur, 1)
+				.AddIngredient(ItemID.NightsEdge, 1)
 				.AddIngredient(ItemID.BreakerBlade, 1)
 				.AddTile<Tile_RiftConfiguratorArmory>()
 			.Register();
@@ -60,7 +60,7 @@ namespace DestroyerTest.Content.Resources.Blueprints
             CreateRecipe(1)
 				.AddIngredient<RiftData>(1)
 				.AddIngredient<Living_Shadow>(5)
-				.AddIngredient(ItemID.Excalibur, 1)
+				.AddIngredient(ItemID.NightsEdge, 1)
 				.AddIngredient(ItemID.BreakerBlade, 1)
 				.AddTile<Tile_RiftConfiguratorTools>()
 			.Register();
@@ -68,7 +68,7 @@ namespace DestroyerTest.Content.Resources.Blueprints
             CreateRecipe(1)
 				.AddIngredient<RiftData>(1)
 				.AddIngredient<Living_Shadow>(5)
-				.AddIngredient(ItemID.Excalibur, 1)
+				.AddIngredient(ItemID.NightsEdge, 1)
 				.AddIngredient(ItemID.BreakerBlade, 1)
 				.AddTile<Tile_RiftConfiguratorFurniture>()
 			.Register();
@@ -76,7 +76,7 @@ namespace DestroyerTest.Content.Resources.Blueprints
             CreateRecipe(1)
 				.AddIngredient<RiftData>(1)
 				.AddIngredient<Living_Shadow>(5)
-				.AddIngredient(ItemID.Excalibur, 1)
+				.AddIngredient(ItemID.NightsEdge, 1)
 				.AddIngredient(ItemID.BreakerBlade, 1)
 				.AddTile<Tile_RiftConfiguratorWeaponry>()
 			.Register();

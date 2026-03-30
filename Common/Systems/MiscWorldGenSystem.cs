@@ -108,7 +108,7 @@ namespace DestroyerTest.Common.Systems
         {
             progress.Message = MiscWorldGenSystem.BeachGrassPassMessage.Value;
 
-            if (!WorldGen.crimson)
+            if (!WorldGen.crimson && !WorldGen.drunkWorldGen)
             {
                 return;
             }

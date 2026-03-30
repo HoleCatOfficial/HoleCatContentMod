@@ -52,7 +52,10 @@ namespace DestroyerTest.Content.Projectiles.OrionCrossover
             Vector2 d = Main.MouseWorld - Sky;
             d.Normalize();
 
-            Projectile.NewProjectile(Projectile.GetSource_OnHit(npc), Sky, d * 7, ModContent.ProjectileType<SabhatiMeteor>(), (int)(Projectile.damage / 16), 3, Owner.whoAmI);
+            int Damage = (int)(Projectile.damage / 16);
+            Damage = (int)MathHelper.Clamp(Damage, 20, 600);
+
+            Projectile.NewProjectile(Projectile.GetSource_OnHit(npc), Sky, d * 7, ModContent.ProjectileType<SabhatiMeteor>(), Damage, 3, Owner.whoAmI);
         }
 
         public override void OnStartSwing()

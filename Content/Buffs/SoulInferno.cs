@@ -49,7 +49,7 @@ namespace DestroyerTest.Content.Buffs
         }
 
 
-        public void UpdateLifeRegen(NPC npc, Player player, ref int damage)
+        public void UpdateBadLifeRegen(NPC npc, Player player, ref int damage)
 		{
 			if (lifeRegenDebuff)
 			{

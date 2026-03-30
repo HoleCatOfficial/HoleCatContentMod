@@ -34,7 +34,7 @@ namespace DestroyerTest.Content.MeleeWeapons
 			Item.autoReuse = true;
 
 			Item.DamageType = DamageClass.Melee;
-			Item.damage = 50;
+			Item.damage = 30;
 			Item.knockBack = 8f;
 			Item.crit = 26;
 

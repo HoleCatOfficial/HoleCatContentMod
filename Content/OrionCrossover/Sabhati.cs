@@ -32,7 +32,7 @@ namespace DestroyerTest.Content.OrionCrossover
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.knockBack = 16;
             Item.autoReuse = false;
-            Item.damage = 14;
+            Item.damage = 28;
             Item.DamageType = DamageClass.Melee;
             Item.noMelee = true;
             Item.noUseGraphic = true;
