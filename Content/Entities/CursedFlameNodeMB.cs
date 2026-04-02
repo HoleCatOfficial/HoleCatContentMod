@@ -110,13 +110,19 @@ namespace DestroyerTest.Content.Entities
         public float ShieldScale = 1f;
         public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
+            
+        }
+
+        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
             Texture2D pixel = TextureAssets.MagicPixel.Value;
             var v = DTAssetLib.BloomRingSharp.Value;
 
             Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-            Main.EntitySpriteDraw(v, NPC.Center - Main.screenPosition, null, ColorLib.WretchedGradient() * ShieldOpacity, 0f, v.Size() / 2, ShieldScale, SpriteEffects.None);
-            Utils.DrawBorderString(spriteBatch, $"{DormantNPCKillTally} / {DormantNPCKillRequirement}", (NPC.Center + new Vector2(0, -90) - Main.screenPosition), ColorLib.WretchedGradient() * ShieldOpacity, 3f, 0.5f, 0.5f);
+            Main.EntitySpriteDraw(v, NPC.Center - screenPos, null, ColorLib.WretchedGradient() * ShieldOpacity, 0f, v.Size() / 2, ShieldScale, SpriteEffects.None);
+            Utils.DrawBorderString(spriteBatch, $"{DormantNPCKillTally} / {DormantNPCKillRequirement}", (NPC.Center + new Vector2(0, -90)) - screenPos, ColorLib.WretchedGradient() * ShieldOpacity, 3f, 0.5f, 0.5f);
             Opus.ReturnToDefaultDrawing(spriteBatch);
+            return true;
         }
         public override bool? CanBeHitByItem(Player player, Item item)
         {
@@ -229,7 +235,7 @@ namespace DestroyerTest.Content.Entities
                 ManageShieldIn();
             }
 
-            if (!(DormantNPCKillTally < DormantNPCKillRequirement))
+            if (DormantNPCKillTally >= DormantNPCKillRequirement)
             {
                 if (!Flag2)
                 {
@@ -337,9 +343,9 @@ namespace DestroyerTest.Content.Entities
                     KeepToPlayer(player.Center + new Vector2(0, -200));
                     
                     FlameSwarmTimer++;
-                    if (FlameSwarmTimer % 60 == 0) // Spawn every 60 ticks (1 second)
+                    if (FlameSwarmTimer % 20 == 0) // Spawn every 60 ticks (1 second)
                     {
-                        FlameSwarm();
+                        FlameSwarm(player);
                     }
                     
                     if (FlameSwarmTimer > 300) // After 5 seconds, switch to Napalm
@@ -561,13 +567,13 @@ namespace DestroyerTest.Content.Entities
             {
                 Vector2 spawnPos = new Vector2(player.Center.X + Main.rand.Next(-200, 201), player.Center.Y + 1000);
                 Vector2 velocity = (player.Center - spawnPos).SafeNormalize(Vector2.Zero) * 10f; // Adjust speed as needed
-                Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), spawnPos, velocity, ProjectileID.CursedFlameHostile, 20, 2);
+                Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), spawnPos, velocity, ModContent.ProjectileType<CursedFlameVortex>(), 20, 2);
             }
         }
 
-        public void FlameSwarm()
+        public override void OnKill()
         {
-            
+            CFNGlobal.WaveNPCCount = 0;
         }
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)

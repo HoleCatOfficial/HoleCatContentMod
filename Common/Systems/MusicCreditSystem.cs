@@ -36,12 +36,12 @@ public class MusicCreditSystem : ModSystem
     {
         string text = CreditText;
         var font = FontAssets.DeathText.Value;
-        float scale = 0.5f; // Adjust this to your liking (0.5 is nice and subtle)
+        float scale = 0.5f;
 
         Vector2 size = font.MeasureString(text) * scale;
-        Vector2 position = new Vector2((Main.screenWidth - size.X) / 2f, 20f); // Centered horizontally, 20px from top
+        Vector2 position = new Vector2((Main.screenWidth - size.X) / 2f, 20f);
 
-        Utils.DrawBorderString(spriteBatch, text, position, Color.LightBlue, scale);
+        Utils.DrawBorderString(spriteBatch, text, position, Color.LightBlue, scale, 0.5f, 0.5f);
     }
 
 }

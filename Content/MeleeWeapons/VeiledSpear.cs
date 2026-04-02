@@ -7,10 +7,12 @@ using DestroyerTest.Rarity;
 using DestroyerTest.Content.Projectiles.Weapon.Melee;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Resources;
+using GlowmaskHelper.Content;
 
 namespace DestroyerTest.Content.MeleeWeapons
 {
-    public class BlackDiamond : ModItem
+    [AutoloadGlowmask]
+    public class VeiledSpear : ModItem
     {
 
         public override void SetStaticDefaults()
@@ -21,41 +23,32 @@ namespace DestroyerTest.Content.MeleeWeapons
 
         public override void SetDefaults()
         {
-            Item.width = 160;
-            Item.height = 160;
+            Item.width = 108;
+            Item.height = 108;
 
-            Item.rare = ItemRarityID.Pink;
+            Item.rare = ModContent.RarityType<RiftRarity1>();
             Item.value = Item.sellPrice(silver: 10);
 
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.useAnimation = 25;
             Item.useTime = 25;
-            Item.UseSound = DTAssetLib.SwordSounds.EvilSwing;
+            Item.UseSound = DTAssetLib.SwordSounds.Woosh;
             Item.autoReuse = true;
 
-            Item.damage = 300;
+            Item.damage = 240;
             Item.knockBack = 6.5f;
             Item.noUseGraphic = true;
             Item.DamageType = DamageClass.Melee;
             Item.noMelee = true;
 
             Item.shootSpeed = 3.7f;
-            Item.shoot = ModContent.ProjectileType<BlackDiamondProjectile>();
+            Item.shoot = ModContent.ProjectileType<VeiledSpearProjectile>();
         }
 
         public override bool? UseItem(Player player)
         {
             SoundEngine.PlaySound(Item.UseSound, player.Center);
             return base.UseItem(player);
-        }
-
-        public override void AddRecipes()
-        {
-            CreateRecipe()
-                .AddIngredient(ItemID.Gungnir, 1)
-                .AddIngredient<Tenebris>(12)
-                .AddTile(TileID.LunarCraftingStation)
-                .Register();
         }
     }
 

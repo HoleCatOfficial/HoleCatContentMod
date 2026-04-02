@@ -492,8 +492,16 @@ namespace DestroyerTest.Content.Entities
                 NPC.immortal = true;
             }
 
-            Main.eclipseLight = 1;
-            Main.ColorOfTheSkies = Color.Black;
+            if (EternityIsActive())
+            {
+                SunlightModification._SunColorBrightness = 1f;
+                //Main.eclipseLight = 1;
+                //Main.ColorOfTheSkies = Color.Black;
+            }
+            else
+            {
+                SunlightModification.Reset();
+            }
 
             if (Main.netMode != NetmodeID.MultiplayerClient && SpawnFlag == false)
             {
@@ -533,7 +541,11 @@ namespace DestroyerTest.Content.Entities
                 }
             }
 
-            Mod.Logger.Info($"Current State: {CurrentAttack}");
+            if (ModContent.GetInstance<DTConfig>().EnableDebugMessages && Main.GameUpdateCount % 120 == 0)
+            {
+                Mod.Logger.Info($"Current State: {CurrentAttack}");
+            }
+            
 
             if (!Main.dedServ && !EternityIsActive())
             {
@@ -634,11 +646,11 @@ namespace DestroyerTest.Content.Entities
                         int interval = 10;
                         if (EternityIsActive())
                         {
-                            interval = 12;
+                            interval = 20;
                         }
                         if (!EternityIsActive())
                         {
-                            interval = 20;
+                            interval = 30;
                         }
                         if (!EternityIsActive())
                         {
@@ -850,7 +862,7 @@ namespace DestroyerTest.Content.Entities
                             if (Main.GameUpdateCount % 20 == 0)
                             {
                                 SoundEngine.PlaySound(Attack, NPC.Center);
-                                for (int i = 0; i < numberProjectiles; i++)
+                                for (int i = 0; i < 2; i++)
                                 {
                                     Vector2 perturbedSpeed = NPC.velocity.RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (numberProjectiles - 1)));
                                     Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), position, perturbedSpeed, ModContent.ProjectileType<SoulCrystalBomb>(), 44, 2);
@@ -1439,7 +1451,7 @@ namespace DestroyerTest.Content.Entities
                 else
                 {
                     texture = TextureAssets.Npc[Type];
-                    Glowtexture = ModContent.Request<Texture2D>($"{Texture}_Glow");
+                    Glowtexture = ModContent.Request<Texture2D>($"{Texture}_Glow", AssetRequestMode.AsyncLoad);
                 }
                 flag = true;
             }
@@ -1555,6 +1567,7 @@ namespace DestroyerTest.Content.Entities
 
         public override void OnKill()
         {
+            SunlightModification.Reset();
             //SoundEngine.StopTrackedSounds();
         }
 

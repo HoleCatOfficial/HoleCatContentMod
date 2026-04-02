@@ -2,6 +2,7 @@
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
+using DestroyerTest.Content.Particles.Comaceratic;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Terraria;
@@ -140,8 +141,16 @@ namespace DestroyerTest.Common
             }
             if (ComaceraticBurn && item.DamageType.CountsAsClass<MeleeDamageClass>() && !item.noMelee && !item.noUseGraphic) {
                 if (Main.rand.NextBool(5)) {
-                    Dust dust = Dust.NewDustDirect(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, ModContent.DustType<RiftDust>());
-					dust.velocity *= 0.5f;
+                    //Dust dust = Dust.NewDustDirect(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, ModContent.DustType<RiftDust>());
+                    //dust.velocity *= 0.5f;
+
+                    Dust.NewDust(hitbox.TopLeft(), hitbox.Width, hitbox.Height, ModContent.DustType<ColorableNeonDust>(), 0.0f, 0.5f, 0, ColorLib.Rift, 1);
+                    PRTLoader.NewParticle(PRTLoader.GetParticleID<StarParticle>(), Main.rand.NextVector2FromRectangle(hitbox), Main.rand.NextVector2Circular(1f, 1f), ColorLib.LightRift1, Main.rand.NextFloat(0.1f, 0.6f));
+
+                    if (Main.rand.NextBool(8))
+                    {
+                        PRTLoader.NewParticle(PRTLoader.GetParticleID<ComaceraticParticle>(), Main.rand.NextVector2FromRectangle(hitbox), Main.rand.NextVector2Circular(2f, 2f), ColorLib.LightRift2, Main.rand.NextFloat(0.05f, 0.1f));
+                    }
                 }
 			}
 		}
@@ -171,9 +180,14 @@ namespace DestroyerTest.Common
             }
             if (ComaceraticBurn && (projectile.DamageType.CountsAsClass<MeleeDamageClass>() || ProjectileID.Sets.IsAWhip[projectile.type]) && !projectile.noEnchantments) {
 				if (Main.rand.NextBool(5)) {
-					Dust dust = Dust.NewDustDirect(boxPosition, boxWidth, boxHeight, ModContent.DustType<RiftDust>());
-					dust.velocity *= 0.5f;
-				}
+                    Dust.NewDust(projectile.position, projectile.width, projectile.height, ModContent.DustType<ColorableNeonDust>(), 0.0f, 0.5f, 0, ColorLib.Rift, 1);
+                    PRTLoader.NewParticle(PRTLoader.GetParticleID<StarParticle>(), Main.rand.NextVector2FromRectangle(projectile.Hitbox), Main.rand.NextVector2Circular(1f, 1f), ColorLib.LightRift1, Main.rand.NextFloat(0.1f, 0.6f));
+
+                    if (Main.rand.NextBool(8))
+                    {
+                        PRTLoader.NewParticle(PRTLoader.GetParticleID<ComaceraticParticle>(), Main.rand.NextVector2FromRectangle(projectile.Hitbox), Main.rand.NextVector2Circular(2f, 2f), ColorLib.LightRift2, Main.rand.NextFloat(0.05f, 0.1f));
+                    }
+                }
 			}
 		}
 	}

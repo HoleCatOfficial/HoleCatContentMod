@@ -40,7 +40,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Projectile.ignoreWater = true;
             Projectile.timeLeft = 40;
             Projectile.usesLocalNPCImmunity = true;
-            Projectile.localNPCHitCooldown = 10;
+            Projectile.localNPCHitCooldown = 40;
             Projectile.netImportant = true;
             Projectile.hide = true;
         }
@@ -65,7 +65,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Main.EntitySpriteDraw(t, Projectile.Center - Main.screenPosition, frame, Projectile.GetAlpha(lightColor), Projectile.rotation, origin, Projectile.scale, FX, 0f);
             Main.EntitySpriteDraw(G, Projectile.Center - Main.screenPosition, frame, Color.White, Projectile.rotation, origin, Projectile.scale, FX, 0f);
 
-            Utils.DrawRect(Main.spriteBatch, AdjustedHitbox, ColorLib.Rift);
+            //Utils.DrawRect(Main.spriteBatch, AdjustedHitbox, ColorLib.Rift);
             return false;
         }
 
@@ -224,7 +224,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Vector2 d2 = new Vector2(d.X * 0.3f, d.Y);
             if (player.Center.Y <= target.Center.Y && Math.Abs((player.Center.X - target.Center.X)) <= 50)
             {
-                player.velocity += d2 * 8;
+                player.velocity += d2 * 3;
             }
 
 

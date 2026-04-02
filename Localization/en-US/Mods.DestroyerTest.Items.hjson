@@ -4274,3 +4274,8 @@ ConstitutionT2_Demonite: {
 	DisplayName: Constitution T2_ Demonite
 	Tooltip: ""
 }
+
+VeiledSpear: {
+	DisplayName: Veiled Spear
+	Tooltip: ""
+}

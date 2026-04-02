@@ -841,12 +841,17 @@ namespace DestroyerTest.Common
 
         public static Asset<Texture2D> GetMasoTexture(this NPC npc, string Directory, string Name)
         {
-            return ModContent.Request<Texture2D>($"{Directory}/Maso_{Name}");
+            return ModContent.Request<Texture2D>($"{Directory}/Maso_{Name}", AssetRequestMode.AsyncLoad);
         }
 
         public static Asset<Texture2D> GetMasoGlowTexture(this NPC npc, string Directory, string Name                                                  )
         {
-            return ModContent.Request<Texture2D>($"{Directory}/Maso_{Name}_Glow");
+            return ModContent.Request<Texture2D>($"{Directory}/Maso_{Name}_Glow", AssetRequestMode.AsyncLoad);
+        }
+
+        public static Asset<Texture2D> GetGlowTexture(this Entity entity, string Directory, string Name)
+        {
+            return ModContent.Request<Texture2D>($"{Directory}/{Name}_Glow", AssetRequestMode.AsyncLoad);
         }
     }
 

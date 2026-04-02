@@ -65,7 +65,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
 
         public List<Vector2> TrailPositions = new();
 		public List<float> TrailRotations = new();
-		private const int TrailLength = 400;
+		private const int TrailLength = 200;
 
 		public override void AI()
 		{

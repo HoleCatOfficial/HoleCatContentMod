@@ -97,7 +97,7 @@ namespace DestroyerTest.Common.Systems
             );
             SB.End();
             SB.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-            Main.EntitySpriteDraw(ItemTexture, Projectile.Center - Main.screenPosition, null, Color.Black, ItemTexRot, new Vector2(Projectile.width / 2, Projectile.height / 2), Projectile.scale, SpriteEffects.None, 0);
+            Main.EntitySpriteDraw(ItemTexture, Projectile.Center - Main.screenPosition, null, Color.Black, ItemTexRot, ItemTexture.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
             return false;
         }
     }

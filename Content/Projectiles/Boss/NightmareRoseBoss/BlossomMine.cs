@@ -64,10 +64,9 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
                     Vector2 direction = new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
 
                     Vector2 drawPos = start - Main.screenPosition;
-                    float length = 3600f;
-                    Vector2 scale = new Vector2(1f, length / LineTex.Height);
+                    Vector2 scale = new Vector2(3600, 1f);
 
-                    SB.Draw(LineTex, drawPos, null, new Color(43, 37, 154), angle + MathHelper.PiOver2, new Vector2(LineTex.Width / 2f, 0), scale, SpriteEffects.None, 0f);
+                    SB.Draw(DTAssetLib.Line(1).Value, drawPos, null, new Color(43, 37, 154), angle, new Vector2(0, DTAssetLib.Line(1).Value.Height / 2f), scale, SpriteEffects.None, 0f);
                 }
             }
         }

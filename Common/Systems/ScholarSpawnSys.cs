@@ -25,7 +25,7 @@ public class WorldFlags : ModSystem
     
     public override void PostUpdateWorld()
     {
-        if (!WorldFlags.ScholarSpawned && Main.dayTime && Main.time > Main.rand.Next(3200, 4800)) // 10 seconds into day
+        if (!WorldFlags.ScholarSpawned && Main.dayTime && Main.time > Main.rand.Next(3200, 7900))
         {
             for (int i = 0; i < Main.maxPlayers; i++)
             {

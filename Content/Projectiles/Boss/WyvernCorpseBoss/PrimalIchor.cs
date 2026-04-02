@@ -76,7 +76,10 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
             TextureRotationOffset -= 0.5f;
             Lighting.AddLight(Projectile.Center, Color.Red.ToVector3());
 
-            Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Ichor, 0f, 0f, 0, default, 2f);
+            if (Main.rand.NextBool(4) && !ModContent.GetInstance<DTOptimizationsConfig>().DisableExcessDusts)
+            {
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.IchorTorch, 0f, 0f, 0, default, 2f);
+            }
         }
 
 
@@ -89,12 +92,6 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
         public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(SoundID.Item60, Projectile.Center);
-            Vector2 Outer = Projectile.Center + Main.rand.NextVector2CircularEdge(200, 200);
-            Vector2 Dir = Outer - Projectile.Center;
-            for (int u = 0; u < 15; u++)
-            {
-                Dust.NewDustPerfect(Projectile.Center, DustID.Ichor, Dir, 0, default, 2);
-            }
         }
     }
 }

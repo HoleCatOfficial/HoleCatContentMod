@@ -1,4 +1,8 @@
+using DestroyerTest.Common;
 using DestroyerTest.Content.Dusts;
+using DestroyerTest.Content.Particles;
+using DestroyerTest.Content.Particles.Comaceratic;
+using InnoVault.PRT;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -44,8 +48,16 @@ namespace DestroyerTest.Content.Buffs
         {
 			if (lifeRegenDebuff)
 			{
-				Dust.NewDust(npc.position, npc.width, npc.height, ModContent.DustType<RiftDust>(), 0.0f, 0.5f, 0, default, 1);
-                if (npc.boss == false)
+				Dust.NewDust(npc.position, npc.width, npc.height, ModContent.DustType<ColorableNeonDust>(), 0.0f, 0.5f, 0, ColorLib.Rift, 1);
+                PRTLoader.NewParticle(PRTLoader.GetParticleID<StarParticle>(), Main.rand.NextVector2FromRectangle(npc.Hitbox), Main.rand.NextVector2Circular(1f, 1f), ColorLib.LightRift1, Main.rand.NextFloat(0.1f, 0.6f));
+
+                if (Main.rand.NextBool(8))
+				{
+					PRTLoader.NewParticle(PRTLoader.GetParticleID<ComaceraticParticle>(), Main.rand.NextVector2FromRectangle(npc.Hitbox), Main.rand.NextVector2Circular(2f, 2f), ColorLib.LightRift2, Main.rand.NextFloat(0.05f, 0.1f));
+				}
+				
+				
+				if (npc.boss == false)
                 {
                     npc.velocity *= 0.65f;
                 }
@@ -62,7 +74,7 @@ namespace DestroyerTest.Content.Buffs
 				{
                     npc.lifeRegen = 0;
 				}
-				npc.lifeRegen -= 40;
+				npc.lifeRegen -= 70;
 			}
 		}
     }
@@ -81,14 +93,23 @@ namespace DestroyerTest.Content.Buffs
 			if (lifeRegenDebuff)
 			{
 				Player.moveSpeed *= 0.85f;
-			}
+
+
+                Dust.NewDust(Player.position, Player.width, Player.height, ModContent.DustType<ColorableNeonDust>(), 0.0f, 0.5f, 0, ColorLib.Rift, 1);
+                PRTLoader.NewParticle(PRTLoader.GetParticleID<StarParticle>(), Main.rand.NextVector2FromRectangle(Player.Hitbox), Main.rand.NextVector2Circular(1f, 1f), ColorLib.LightRift1, Main.rand.NextFloat(0.1f, 0.6f));
+
+                if (Main.rand.NextBool(8))
+                {
+                    PRTLoader.NewParticle(PRTLoader.GetParticleID<ComaceraticParticle>(), Main.rand.NextVector2FromRectangle(Player.Hitbox), Main.rand.NextVector2Circular(2f, 2f), ColorLib.LightRift2, Main.rand.NextFloat(0.05f, 0.1f));
+                }
+            }
         }
 		public override void UpdateBadLifeRegen()
 		{
 			if (lifeRegenDebuff)
 			{
 				Player.lifeRegenTime = 0;
-				Player.lifeRegen -= 28;
+				Player.lifeRegen -= 50;
 			}
 		}
 	}

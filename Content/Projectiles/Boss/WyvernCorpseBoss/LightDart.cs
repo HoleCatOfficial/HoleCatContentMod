@@ -18,6 +18,7 @@ using OpusLib;
 using System.Collections.Generic;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Common.Primitives;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
 {
@@ -44,26 +45,23 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
         }
 
         public float trailOffset = 0;
+
+        public float YScale = 0.2f;
         public override bool PreDraw(ref Color lightColor)
 		{
 			lightColor = ColorLib.Soul;
             trailOffset += 0.04f;
 			
 			SpriteBatch spriteBatch = Main.spriteBatch;
-			DTUtils Utility = new DTUtils();
-
-            DTTrail.DrawTrail(spriteBatch, DTAssetLib.Streak(7).Value, TrailPositions, TrailRotations, 35, ColorLib.Soul, trailOffset, 1);
 
             Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-        
-			Opus.DrawGlowOnProj(Projectile, lightColor, true);
 
 			if (WaitTimer < 20)
 			{
 				Opus.DrawTextureOnProj(DTAssetLib.FadeLine, Projectile, DTColorUtils.Pastel(ColorLib.Soul2, 50), false, Projectile.rotation + MathHelper.PiOver2, 4f, 1f);
 			}
 
-            Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, TextureAssets.Projectile[Projectile.type].Value.Size() / 2, Projectile.scale * 0.5f, SpriteEffects.None, 0);
+            Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, TextureAssets.Projectile[Projectile.type].Value.Size() / 2, new Vector2(Projectile.scale * 0.5f, (Projectile.scale * 0.5f) * YScale), SpriteEffects.None, 0);
 
 			Opus.ReturnToDefaultDrawing(spriteBatch);
 
@@ -72,47 +70,14 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
 
         public int WaitTimer = 0;
         public bool SoundFlag = false;
-        public List<Vector2> TrailPositions = new();
-		public List<float> TrailRotations = new();
-		private const int TrailLength = 400;
 
 		public override void AI()
 		{
 
-
-			Vector2 lastPos = TrailPositions.Count > 0 ? TrailPositions[0] : Projectile.Center;
-			Vector2 newPos  = Projectile.Center;
-
-			float dist = Vector2.Distance(lastPos, newPos);
-			float step = 1f; // how closely to sample. tweak this!
-
-			if (dist > 0f)
-			{
-				int segments = (int)(dist / step);
-
-				for (int i = 1; i <= segments; i++)
-				{
-					Vector2 pos = Vector2.Lerp(lastPos, newPos, i / (float)segments);
-					TrailPositions.Insert(0, pos);
-					TrailRotations.Insert(0, Projectile.rotation);
-				}
-			}
-			else
-			{
-				TrailPositions.Insert(0, newPos);
-				TrailRotations.Insert(0, Projectile.rotation);
-			}
-
-
-			// Cap trail
-			while (TrailPositions.Count > TrailLength)
-				TrailPositions.RemoveAt(TrailPositions.Count - 1);
-			while (TrailRotations.Count > TrailLength)
-				TrailRotations.RemoveAt(TrailRotations.Count - 1);
-
             if (Main.rand.NextBool(3))
             {
-                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<ColorableNeonDust>(), newColor: ColorLib.Soul, Scale: 1.8f, Velocity: Vector2.Zero);
+                PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), Main.rand.NextVector2FromRectangle(Projectile.Hitbox), -(Projectile.velocity * 0.1f), DTColorUtils.Pastel(ColorLib.Soul, 0.8f), 1f, ai1: 2);
+                
             }
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
 
@@ -123,6 +88,10 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
 
             if (WaitTimer >= 20)
             {
+                if (YScale < 1.4f)
+                {
+                    YScale += 0.05f;
+                }
                 if (Projectile.velocity.Length() < 16)
                 {
                     if (!SoundFlag)
@@ -139,6 +108,13 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
 
         public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
+        }
+
+        public override void OnKill(int timeLeft)
+        {
+            Opus.RadialDustRandomDir(DustID.FireworksRGB, 4, Projectile.Center, 0, Color.White, 2f, 3f);
+            Opus.RadialDustRandomDir(DustID.FireworksRGB, 7, Projectile.Center, 0, Color.White, 0.6f, 0.5f);
+            Opus.RadialDustRandomDir(DustID.FireworksRGB, 4, Projectile.Center, 70, ColorLib.Soul, 1f, 2f);
         }
     }
 }
