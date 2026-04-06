@@ -35,12 +35,23 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Ranged
 
 		public override void AI()
 		{
-            for (int i = 0; i < 2; i++)
-            {
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.FireworksRGB, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f, 0, ColorLib.Rift, 1f);
+			for (int i = 0; i < 2; i++)
+			{
+				Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.FireworksRGB, Projectile.velocity.X * 0.5f, Projectile.velocity.Y * 0.5f, 0, ColorLib.Rift, 1f);
+			}
+			if (!DTOptimizationsConfig.instance.DisableExcessParticles)
+			{
+                PRTLoader.NewParticle(DTUtils.ElectricArcs[Main.rand.Next(DTUtils.ElectricArcs.Length)], Projectile.Center, Vector2.Zero, ColorLib.Rift * 0.25f, 0.5f);
+                PRTLoader.NewParticle(DTUtils.ElectricArcs[Main.rand.Next(DTUtils.ElectricArcs.Length)], Projectile.Center, Vector2.Zero, ColorLib.Rift * 0.75f, 0.35f);
             }
-			PRTLoader.NewParticle(DTUtils.ElectricArcs[Main.rand.Next(DTUtils.ElectricArcs.Length)], Projectile.Center, Vector2.Zero, ColorLib.Rift * 0.25f, 0.5f);
-            PRTLoader.NewParticle(DTUtils.ElectricArcs[Main.rand.Next(DTUtils.ElectricArcs.Length)], Projectile.Center, Vector2.Zero, ColorLib.Rift * 0.75f, 0.35f);
+			else
+			{
+				if (Main.rand.NextBool(20))
+				{
+                    PRTLoader.NewParticle(DTUtils.ElectricArcs[Main.rand.Next(DTUtils.ElectricArcs.Length)], Projectile.Center, Vector2.Zero, ColorLib.Rift * 0.25f, 0.5f);
+                    PRTLoader.NewParticle(DTUtils.ElectricArcs[Main.rand.Next(DTUtils.ElectricArcs.Length)], Projectile.Center, Vector2.Zero, ColorLib.Rift * 0.75f, 0.35f);
+                }
+			}
 		}
 
 		

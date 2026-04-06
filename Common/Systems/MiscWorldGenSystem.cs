@@ -141,12 +141,12 @@ namespace DestroyerTest.Common.Systems
             }
 
             //Pass 1
-            Layer(-3, -8, 8, TileID.StoneSlab);
-            Layer(-4, -7, 10, TileID.StoneSlab);
-            Layer(-5, -6, 12, TileID.StoneSlab);
-            Layer(-6, -5, 14, TileID.StoneSlab);
-            Layer(-7, -4, 16, TileID.StoneSlab);
-            Layer(-8, -3, 18, TileID.StoneSlab);
+            Layer(-3, -8, 8, ModContent.TileType<Tile_AltarBrick>());
+            Layer(-4, -7, 10, ModContent.TileType<Tile_AltarBrick>());
+            Layer(-5, -6, 12, ModContent.TileType<Tile_AltarBrick>());
+            Layer(-6, -5, 14, ModContent.TileType<Tile_AltarBrick>());
+            Layer(-7, -4, 16, ModContent.TileType<Tile_AltarBrick>());
+            Layer(-8, -3, 18, ModContent.TileType<Tile_AltarBrick>());
 
 
             //Remember to do this last, since it needs tiles to stand on.

@@ -99,15 +99,15 @@ namespace DestroyerTest.Content.Equips.MalignantSet
             {
                 if (item.DamageType == DamageClass.Melee)
                 {
-                    return 1.35f;
+                    return 1.1f;
                 }
                 if (item.DamageType == DamageClass.Ranged)
                 {
-                    return 1.2f;
+                    return 1.05f;
                 }
                 if (item.DamageType == DamageClass.Magic)
                 {
-                    return 1.3f;
+                    return 1.2f;
                 }
             }
             return 1f;
@@ -119,14 +119,14 @@ namespace DestroyerTest.Content.Equips.MalignantSet
             {
                 if (item.DamageType == DamageClass.Magic)
                 {
-                    if (Main.rand.NextBool(3))
+                    if (Main.rand.NextBool(5))
                     {
                         Projectile.NewProjectile(source, position, velocity.RotatedByRandom(0.1f), ModContent.ProjectileType<InfectedCrystalCF>(), damage / 2, 8, Player.whoAmI);
                     }
                 }
                 if (item.DamageType == DamageClass.Ranged)
                 {
-                    if (Main.rand.NextBool(3))
+                    if (Main.rand.NextBool(5))
                     {
                         Projectile.NewProjectile(source, position, velocity.RotatedByRandom(0.05f), ModContent.ProjectileType<CursedNodeCrystalFriendly>(), damage / 2, 8, Player.whoAmI);
                     }
@@ -139,7 +139,7 @@ namespace DestroyerTest.Content.Equips.MalignantSet
         {
             if (Active)
             {
-                mult = 0.7f;
+                mult = 0.85f;
             }
         }
         public override void ModifyItemScale(Item item, ref float scale)

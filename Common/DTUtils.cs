@@ -22,6 +22,7 @@ using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Metrics;
+using System.IO;
 using System.Linq;
 using System.Media;
 using System.Reflection;
@@ -770,6 +771,14 @@ namespace DestroyerTest.Common
 
             ChatManager.DrawColorCodedString(Main.spriteBatch, font, line.Text, position, textColor, 0f, Vector2.Zero, Vector2.One);
         }
+
+        public static string NoSpace(this string input)
+        {
+            if (string.IsNullOrEmpty(input))
+                return input;
+
+            return input.Replace(" ", "");
+        }
     }
 
     public class DTPlayerUtil : ModPlayer
@@ -1332,6 +1341,8 @@ namespace DestroyerTest.Common
         public static Asset<Texture2D> GlowCone = ModContent.Request<Texture2D>($"{ExtrasPath}/GlowCone", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> MiscSparkle144 = ModContent.Request<Texture2D>($"{ExtrasPath}/144MiscSparkle", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> SwordSlash = ModContent.Request<Texture2D>($"{ExtrasPath}/SwordTrail2", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> CircularSwing = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/CircularSlash", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> CircularSwingThin = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/CircularSlash2", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> FireSwing = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/CircularSlash3", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> FireSwingHighlight = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/CircularSlash3Highlight", AssetRequestMode.AsyncLoad);
 
@@ -1434,6 +1445,8 @@ namespace DestroyerTest.Common
         public static Asset<Texture2D> CursorLanternTexture = ModContent.Request<Texture2D>($"{ExtrasPath}/CursorLantern", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> ManifestStar = ModContent.Request<Texture2D>($"{ExtrasPath}/ManifestHoldoutStar", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> BlossomBeaterRope = ModContent.Request<Texture2D>($"{ExtrasPath}/BlossomBeaterRope", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> ConstitutionLanceWarning = ModContent.Request<Texture2D>($"{ExtrasPath}/ConstitutionEternityLanceWarning", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> DreamDiscHighlight = ModContent.Request<Texture2D>($"{ExtrasPath}/DreamDiscMainBlades", AssetRequestMode.AsyncLoad);
 
         public struct HallowedBar
         {
@@ -1507,6 +1520,7 @@ namespace DestroyerTest.Common
             public static SoundStyle SwiftSwing = new SoundStyle($"{Path}/SwiftSwing1");
             public static SoundStyle Slam = new SoundStyle($"{Path}/Slam", 2);
             public static SoundStyle TenebrisSwing = new SoundStyle($"{Path}/TenebrisSwing", 3);
+            public static SoundStyle ThinSlice = new SoundStyle($"{Path}/ThinSlice", 5);
             public static SoundStyle StandardSwing = new SoundStyle($"{Path}/StandardSwing");
             public static SoundStyle SpiritOfJusticeSwing = new SoundStyle($"{Path}/SpiritOfJusticeSwing");
         }
@@ -1550,6 +1564,12 @@ namespace DestroyerTest.Common
             public static SoundStyle ArrowImpact = new SoundStyle($"{Path}/StellarBowArrowImpact", 4);
             public static SoundStyle Shoot = new SoundStyle($"{Path}/StellarBowShoot", 3);
             public static SoundStyle EmpoweredShoot = new SoundStyle($"{Path}/StellarBowEmpoweredShoot", 3);
+        }
+
+        public struct TileMine
+        {
+            public static SoundStyle Altar = new SoundStyle($"{AudioPath}/AltarMine", 3);
+            public static SoundStyle AltarBrick = new SoundStyle($"{AudioPath}/AltarStoneMine", 3);
         }
     }
 

@@ -100,6 +100,15 @@ namespace DestroyerTest.Common
                 return false;
             }
 
+            if (item.rare == ModContent.RarityType<SoulRarity>() && line.Name == "ItemName")
+            {
+                Color In = Opus.Sine(ColorLib.Soul, ColorLib.Soul3, 0.01f);
+
+
+                Utils.DrawBorderStringFourWay(Main.spriteBatch, FontAssets.MouseText.Value, line.Text, line.X, line.Y, In, Color.White, new Vector2(0.5f, 0.5f));
+                return false;
+            }
+
             if (item.rare == ModContent.RarityType<PrimalRarity>() && line.Name == "ItemName")
             {
                 Color In = Opus.Sine(Color.DarkRed, Color.MediumVioletRed, 0.01f);

@@ -10,6 +10,7 @@ using System;
 using OpusLib;
 using DestroyerTest.Content.Projectiles.ParentClasses;
 using DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss;
+using DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss;
 
 namespace DestroyerTest.Content.MeleeWeapons
 {
@@ -29,7 +30,7 @@ namespace DestroyerTest.Content.MeleeWeapons
 			Item.useAnimation = 2;
 			Item.useStyle = ItemUseStyleID.Shoot;
 
-			Item.shoot = ModContent.ProjectileType<LightDart>();
+			Item.shoot = ModContent.ProjectileType<TrackingFireSlash>();
 			Item.damage = 4;
 			Item.channel = true;
 			Item.autoReuse = true;

@@ -79,12 +79,5 @@ namespace DestroyerTest.Content.MeleeWeapons
             return player.ownedProjectileCounts[ModContent.ProjectileType<StarHammerThrown>()] < 1;
         }
 
-        public override void AddRecipes() {
-            CreateRecipe()
-            .AddIngredient(ItemID.FallenStar, 3)
-            .AddIngredient(ItemID.SunplateBlock, 12)
-        	.AddTile(TileID.Anvils) // Use the correct TileID name if 16 is Anvils
-        	.Register();
-		}	
 	}
 }

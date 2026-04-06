@@ -21,6 +21,7 @@ using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
+using OpusLib.Content.Helpers;
 using rail;
 using ReLogic.Content;
 using Terraria;
@@ -435,13 +436,36 @@ namespace DestroyerTest.Content.Entities
             NPCID.FaceMonster
         };
 
+        public int WaveTimeout = 0;
         public void SpawnNPCWave()
         {
             SpawnNPCTimer++;
+            WaveTimeout++;
             Vector2[] SpawnPositions = Opus.GetEquidistantVectors(5, NPC.Center, 250);
 
-            if (SpawnNPCTimer % 300 == 0 && INGlobal.WaveNPCCount == 0)
+            if ((SpawnNPCTimer % 300 == 0 && INGlobal.WaveNPCCount == 0) || WaveTimeout > 1800)
             {
+                if (WaveTimeout > 1800)
+                {
+                    CombatText.NewText(NPC.Hitbox, Color.Red, "30 Seconds have passed. Wave failsafe intiated.");
+                    Main.NewText("TALID: 30 Seconds have passed. Wave failsafe intiated.", Color.Red);
+
+                    foreach (NPC child in Main.npc)
+                    {
+                        if (!child.active) continue;
+
+                        var g = child.GetGlobalNPC<INGlobal>();
+
+                        if (g.IsNodeSpawned && g.Node == this)
+                        {
+                            child.StrikeInstantKill();
+                        }
+                    }
+
+                    DormantNPCKillTally = ((DormantNPCKillTally + 9) / 10) * 10;
+                }
+                WaveTimeout = 0;
+
                 SoundEngine.PlaySound(DTAssetLib.Impacts.DarkMagicImpact);
                 for (int i = 0; i < SpawnPositions.Length; i++)
                 {
@@ -731,6 +755,24 @@ namespace DestroyerTest.Content.Entities
             {
                 WaveNPCCount += 1;
                 IsNodeSpawned = true;
+            }
+        }
+
+        public int TexOffset = 0;
+        public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            Line L = new Line(npc.Center, Node.NPC.Center);
+            TexOffset += 2;
+            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(10), ColorLib.IchorCrystalGradient, spriteBatch, BlendState.Additive, TexOffset, 0.5f);
+            return base.PreDraw(npc, spriteBatch, screenPos, drawColor);
+        }
+        public override void PostDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            if (IsNodeSpawned)
+            {
+                Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+                Main.EntitySpriteDraw(DTAssetLib.CrimsonSigil.Value, npc.Center - screenPos, null, ColorLib.Ichor * 0.5f, 0f, DTAssetLib.CrimsonSigil.Value.Size() / 2, 0.15f, SpriteEffects.None, 0f);
+                Opus.ReturnToDefaultDrawing(spriteBatch);
             }
         }
 

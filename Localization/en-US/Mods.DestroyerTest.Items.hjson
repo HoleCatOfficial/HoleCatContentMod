@@ -60,7 +60,8 @@ WinterWonderland: {
 
 Chroma: {
 	DisplayName: Chroma
-	Tooltip: Light shimmers along the edges of the crystals...
+	Tooltip: Throws a Vortexian-Stardust javelin
+	StealthStrike: Stealth Strikes summon two clones that converge ahead of you.
 }
 
 P_Noctis: {
@@ -70,6 +71,7 @@ P_Noctis: {
 		Just holding this instills dread in the deepest nooks of your soul.
 		You will ciritcal hit 100% of the time, but hits will slow you down and prevent you from regenerating life.
 		'''
+	StealthStrike: Stealth Strikes create a dark phantom that sweeps through the air.
 }
 
 Skyshredder: {
@@ -243,7 +245,7 @@ Riftplate_Item: {
 }
 
 Item_HeliciteCrystal: {
-	Tooltip: ""
+	Tooltip: The heat of an ancient star radiates from it...
 	DisplayName: Helicite Crystal
 }
 
@@ -255,6 +257,7 @@ Rift_Katana: {
 RiftMaker: {
 	DisplayName: Riftmaker
 	Tooltip: A small javelin that explodes after a short time.
+	StealthStrike: Stealth Strikes spawn 5 rift stars that home in on enemies.
 }
 
 RiftWretcher: {
@@ -631,6 +634,8 @@ ConstantineScythe: {
 		'''
 		Swings back and forth in a large sweep.
 		Each swing creates a homing Scythe Clone.
+
+		"Despite what the glassy magenta eye cover will have you believe, this scythe is alive!"
 		'''
 }
 
@@ -672,7 +677,7 @@ GoliathHilt: {
 	DisplayName: Ornate Hilt
 	Tooltip:
 		'''
-		Remarkably Large, but is comfortable to hold, with a plush satin grip. Must be for a big and heavy sword.
+		Remarkably Large, but is comfortable to hold, with a plush satin grip.
 		Seems to be part of a greater whole...
 		'''
 }
@@ -889,8 +894,8 @@ Tenebrous_Katana: {
 	DisplayName: Tenebrous Katana
 	Tooltip:
 		'''
-		Swings in front of the player.
-		"Please, HoleCat, resprite my swing......."
+		Swings once upwards, and twice downwards, with each swing being larger than the last.
+		Inflicts Shimmering Flames.
 		'''
 }
 
@@ -1307,7 +1312,8 @@ GoldPearl: {
 
 RiftChakram: {
 	DisplayName: Rift Chakram
-	Tooltip: ""
+	Tooltip: Throws a basic chakram that makes an obnoxious noise if it returns to you without hitting anything first.
+	StealthStrike: Stealth Strikes spawn a razor-sharp riften saw that chases enemies and penetrates 6 times.
 }
 
 RiftRevolver: {
@@ -1517,7 +1523,7 @@ ShadowCircuitry: {
 
 Motherboard: {
 	DisplayName: Motherboard
-	Tooltip: A glass wafer with copper wire inlaid in it. This is far to intricate for you to even understand how to craft.
+	Tooltip: A glass wafer with copper wire inlaid in it. This is far too intricate for you to even understand how to craft.
 }
 
 RiftplateWire: {
@@ -1771,17 +1777,32 @@ HeliciteShank: {
 
 AuraThiefBreastplate: {
 	DisplayName: Aura Thief Breastplate
-	Tooltip: A plate of thievery and dishonor. As pale as your eyes.
+	Tooltip:
+		'''
+		7% increased Melee speed.
+		You leave a trail of dissapating life echoes as you run.
+		The whispers of the unfortunate surround you...
+		'''
 }
 
 AuraThiefCuisses: {
 	DisplayName: Aura Thief Cuisses
-	Tooltip: Cuisses of thievery and dishonor. As pale as your eyes.
+	Tooltip:
+		'''
+		35% increased Run Speed.
+		You leave a trail of dissapating life echoes as you run.
+		Cries... Cries all around...
+		'''
 }
 
 AuraThiefHeadgear: {
 	DisplayName: Aura Thief Headgear
 	Tooltip: Headgear of thievery and dishonor. As pale as your eyes.
+	SetBonus:
+		'''
+		11% increased Melee damage.
+		You are immune to Frostburn, FrostBite, Frozen, and Chilled.
+		'''
 }
 
 PosessedPickaxe: {
@@ -4278,4 +4299,35 @@ ConstitutionT2_Demonite: {
 VeiledSpear: {
 	DisplayName: Veiled Spear
 	Tooltip: ""
+}
+
+DreamDisc: {
+	DisplayName: Dream Disc
+	Tooltip: Throws a sharp disc that travels straight out before tracking the cursor and then returning to the player. Slows down when striking an NPC and inflicts Bleeding.
+	StealthStrike: Stealth Strikes spawn crosses of mini-dream-discs that home in strongly on enemies.
+}
+
+Item_AltarBrick: {
+	DisplayName: Altar Brick
+	Tooltip: Eerily smooth brick used for ritual sites.
+}
+
+DivineServantRobes: {
+	DisplayName: Divine Servant Robes
+	Tooltip: ""
+}
+
+DivineServantHood: {
+	DisplayName: Divine Servant Hood
+	Tooltip: ""
+}
+
+DivineServantLevelReset: {
+	DisplayName: Divine Servant Level Reset
+	Tooltip: If you are playing as a Divine Servant, this item will reset your level to 0.
+}
+
+Undowner: {
+	DisplayName: Undowner
+	Tooltip: Resets all of Talid's boss defeat flags to false.
 }

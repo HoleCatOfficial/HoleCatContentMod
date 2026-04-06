@@ -1,9 +1,14 @@
 
+using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Resources;
+using DestroyerTest.Rarity;
+using InnoVault.PRT;
+using Microsoft.Xna.Framework;
+using System;
+using System.Reflection.Metadata;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using DestroyerTest.Rarity;
 
 namespace DestroyerTest.Content.Equips.AuraThiefSet
 {
@@ -38,6 +43,20 @@ namespace DestroyerTest.Content.Equips.AuraThiefSet
 			// Unfortunately for you, while cloning the defaults does load a cape on the back, it loads the Hallowed Armor cape, and replaces your body armor textures with the Hallowed Plate Mail Textures.
 			//Item.CloneDefaults(ItemID.HallowedPlateMail);
 		}
+
+        public override void UpdateEquip(Player player)
+        {
+            player.GetAttackSpeed(DamageClass.Melee) += 0.07f;
+
+            Rectangle P = Utils.CenteredRectangle(player.Center, new Vector2(32, 48));
+            if (Math.Abs(player.velocity.X) > 3.75f)
+            {
+                //Dust.NewDustDirect(player.Bottom, 2, 1, ModContent.DustType<SoulDust>(), 0, 0.02f, 100, new Microsoft.Xna.Framework.Color(184, 228, 242), 1);
+
+
+                PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Main.rand.NextVector2FromRectangle(P), Main.rand.NextVector2Circular(3, 3), new Color(184, 228, 242), 0.5f);
+            }
+        }
 
 		public override void AddRecipes() //Added to make the item obtainable without needing cheat mods, since many swear by never using cheats, ever.
 		{

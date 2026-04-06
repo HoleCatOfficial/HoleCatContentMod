@@ -193,6 +193,16 @@ DTUIConfig: {
 				$parentVal: ""
 			}
 		}
+
+		WeaponKickback: {
+			Label: {
+				$parentVal: Weapon Kickback
+			}
+
+			Tooltip: {
+				$parentVal: ""
+			}
+		}
 	}
 
 	DTMusicConfig: {

@@ -1,4 +1,5 @@
-﻿using DestroyerTest.Content.UI;
+﻿using DestroyerTest.Common;
+using DestroyerTest.Content.UI;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -6,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.Enums;
 using Terraria.Localization;
@@ -33,9 +35,10 @@ namespace DestroyerTest.Content.Tiles.Altar
             TileObjectData.addTile(Type);
 
             MinPick = 225;
+            MineResist = 2f;
+            HitSound = DTAssetLib.TileMine.AltarBrick;
 
-
-            AddMapEntry(new Color(100, 100, 100), Language.GetText("Altar"));
+            AddMapEntry(new Color(47, 57, 81), Language.GetText("Altar"));
         }
 
         public override bool RightClick(int i, int j)
@@ -47,6 +50,19 @@ namespace DestroyerTest.Content.Tiles.Altar
                 UIsys.Open();
             }
             return true;
+        }
+
+        public override bool KillSound(int i, int j, bool fail)
+        {
+            if (!fail)
+            {
+                SoundEngine.PlaySound(DTAssetLib.TileMine.Altar, new Vector2(i * 16, j * 16));
+            }
+            else
+            {
+                SoundEngine.PlaySound(DTAssetLib.TileMine.AltarBrick, new Vector2(i * 16, j * 16));
+            }
+            return false;
         }
     }
 }

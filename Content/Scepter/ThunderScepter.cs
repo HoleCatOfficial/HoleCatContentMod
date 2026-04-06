@@ -9,7 +9,8 @@ using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Rarity.Scepter;
-using DestroyerTest.Content.Projectiles.Weapon.Scepter;  
+using DestroyerTest.Content.Projectiles.Weapon.Scepter;
+using OpusLib;
 
 namespace DestroyerTest.Content.Scepter
 {
@@ -21,6 +22,7 @@ namespace DestroyerTest.Content.Scepter
         public override void SetStaticDefaults()
         {
             ItemID.Sets.ItemsThatAllowRepeatedRightClick[Type] = true;
+            Opus.ItemChannel_RightChannel_LeftNot.Add(Type);
             base.SetStaticDefaults();
         }
 

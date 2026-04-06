@@ -1,16 +1,19 @@
+using DestroyerTest.Content.Dusts;
+using DestroyerTest.Content.Particles;
+using DestroyerTest.Content.Projectiles.player.ArmorSet;
+using DestroyerTest.Content.Resources;
+using DestroyerTest.Content.Resources.Cloths;
+using DestroyerTest.Rarity;
+using InnoVault.PRT;
+using Microsoft.Xna.Framework;
+using OpusLib;
+using System;
+using System.Numerics;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Rarity;
-using System.Numerics;
-using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.Resources.Cloths;
-using InnoVault.PRT;
-using DestroyerTest.Content.Particles;
-using Microsoft.Xna.Framework;
-using System;
 
 namespace DestroyerTest.Content.Equips.AuraThiefSet
 {
@@ -51,4 +54,30 @@ namespace DestroyerTest.Content.Equips.AuraThiefSet
 				.Register();
 		}
 	}
+
+    public class AuraThiefCuissPlayer : ModPlayer
+    {
+        public bool Active = false;
+
+        public override void ResetEffects()
+        {
+            Active = false;
+        }
+
+        public override void PostUpdateEquips()
+        {
+            if (Active)
+            {
+               
+            }
+        }
+
+        public override void PostUpdateRunSpeeds()
+        {
+			if (Active)
+			{
+				Player.maxRunSpeed *= 1.35f;
+			}
+        }
+    }
 }

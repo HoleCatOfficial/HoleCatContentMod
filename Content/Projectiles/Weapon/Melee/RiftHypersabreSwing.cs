@@ -201,9 +201,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Vector2 d = player.Center - target.Center;
             d.Normalize();
             Vector2 d2 = new Vector2(d.X * 0.3f, d.Y);
-            if (player.Center.Y <=  target.Center.Y && Math.Abs((player.Center.X - target.Center.X)) <= 50)
+            if (player.Center.Y <=  target.Center.Y && Math.Abs((player.Center.X - target.Center.X)) <= 50 && !DTConfig.instance.WeaponKickback)
             {
-                player.velocity += d2 * 8;
+                player.velocity += d2 * 3;
             }
 
             var modPlayer = player.GetModPlayer<LivingShadowPlayer>();

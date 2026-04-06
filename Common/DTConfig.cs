@@ -7,6 +7,7 @@ namespace DestroyerTest.Common
 {
     public class DTConfig : ModConfig
     {
+        public static DTConfig instance = ModContent.GetInstance<DTConfig>();
         public override ConfigScope Mode => ConfigScope.ClientSide;
 
         [DefaultValue(true)]
@@ -26,6 +27,9 @@ namespace DestroyerTest.Common
 
         [DefaultValue(true)]
         public bool MinionAmmoReplace { get; set; }
+
+        [DefaultValue(true)]
+        public bool WeaponKickback { get; set; }
 
         /// <summary>
         /// The cooldown timer for triggering effects for Thrown Scepter tile collisions.
@@ -47,6 +51,7 @@ namespace DestroyerTest.Common
 
     public class DTOptimizationsConfig : ModConfig
     {
+        public static DTOptimizationsConfig instance = ModContent.GetInstance<DTOptimizationsConfig>();
         public override ConfigScope Mode => ConfigScope.ClientSide;
         [DefaultValue(false)]
         public bool OptimizeGame { get; set; }
@@ -60,6 +65,7 @@ namespace DestroyerTest.Common
 
     public class DTMusicConfig : ModConfig
     {
+        public static DTMusicConfig instance = ModContent.GetInstance<DTMusicConfig>();
         public override ConfigScope Mode => ConfigScope.ClientSide;
 
         [DefaultValue(true)]
@@ -71,6 +77,7 @@ namespace DestroyerTest.Common
 
     public class DTUIConfig : ModConfig
     {
+        public static DTUIConfig instance = ModContent.GetInstance<DTUIConfig>();
         public override ConfigScope Mode => ConfigScope.ClientSide;
         /// <summary>
         /// An additive value to the default position. Is not absolute, so setting this to a negative will move it to the left.

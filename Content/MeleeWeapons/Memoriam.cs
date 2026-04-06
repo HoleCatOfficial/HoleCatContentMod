@@ -79,7 +79,9 @@ namespace DestroyerTest.Content.MeleeWeapons
         {
             CreateRecipe()
             .AddIngredient(ItemID.RichGravestone2)
-            .AddIngredient<SpiritOfJustice>(16)
+            .AddIngredient(ItemID.SoulofLight, 24)
+            .AddIngredient(ItemID.SoulofNight, 24)
+            .AddIngredient<SpiritOfJustice>()
             .AddTile(TileID.Anvils)
             .Register();
         }

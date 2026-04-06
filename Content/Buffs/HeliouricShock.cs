@@ -55,7 +55,7 @@ namespace DestroyerTest.Content.Buffs
                 };
 
 				Vector2 pos = npc.Center + Main.rand.NextVector2Circular(npc.width * 0.5f, npc.height * 0.5f);
-				if (Main.rand.NextBool(3))
+				if (Main.rand.NextBool(20) && !DTOptimizationsConfig.instance.DisableExcessParticles)
 				{
 					PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], pos, Vector2.Zero, ColorLib.Rift, 0.3f);
 				}
@@ -110,7 +110,8 @@ namespace DestroyerTest.Content.Buffs
                 };
 
 				Vector2 pos = Main.rand.NextVector2Circular(Player.width * 0.5f, Player.height * 0.5f);
-				if (Main.rand.NextBool(3))
+
+				if (Main.rand.NextBool(20) && !DTOptimizationsConfig.instance.DisableExcessParticles)
 				{
 					PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], pos, Vector2.Zero, ColorLib.Rift, 0.25f);
 				}

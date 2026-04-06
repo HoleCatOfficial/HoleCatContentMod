@@ -39,7 +39,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, shootdir * 0.2f, ProjectileID.ThunderStaffShot, (int)(Projectile.damage * 0.15), 0, Projectile.owner);
                 }
             }
-            if (player.channel && player.HeldItem.type == ModContent.ItemType<ThunderScepter>())
+            if (player.controlUseTile && player.HeldItem.type == ModContent.ItemType<ThunderScepter>())
             {
                 returning = false;
                 Projectile.Center = Main.MouseWorld;

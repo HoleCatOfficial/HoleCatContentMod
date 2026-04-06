@@ -15,27 +15,49 @@ namespace DestroyerTest.Common.Systems
 	public class DownedBossSystem : ModSystem
 	{	
 		public static bool downedEoCBoss = false;
+
 		public static bool downedKingSlimeBoss = false;
+
 		public static bool downedBoCBoss = false;
+
 		public static bool downedEoWBoss = false;
+
 		public static bool downedQueenBeeBoss = false;
+
 		public static bool downedDeerclopsMiniBoss = false;
+
 		public static bool downedSkeletronBoss = false;
+
 		public static bool downedConstitutionBoss = false;
+
 		public static bool downedWallBoss = false;
+
 		public static bool downedQueenSlimeBoss = false;
+
 		public static bool downedDestroyerBoss = false;
+
 		public static bool downedTwinsBoss = false;
+
 		public static bool downedSkeletronPrimeBoss = false;
+
 		public static bool downedNautilusMiniBoss = false;
+
 		public static bool downedPlanteraBoss = false;
+
 		public static bool downedNodeMiniBoss = false;
+
 		public static bool downedGolemBoss = false;
+
 		public static bool downedFishronBoss = false;
+
 		public static bool downedEmpressBoss = false;
+
 		public static bool downedCultistBoss = false;
+
 		public static bool downedLunarBoss = false;
+
 		public static bool downedWyvernCorpseBoss = false;
+
 		public static bool downedNightmareRoseBoss = false;
 
 		public static Func<bool> downedConstitutionConditionbool = () => downedConstitutionBoss;

@@ -25,7 +25,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
             Projectile.hostile = true;
             Projectile.DamageType = DamageClass.Generic;
             Projectile.penetrate = 3;
-            Projectile.timeLeft = 600;
+            Projectile.timeLeft = 180;
             Projectile.light = 0.5f;
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;

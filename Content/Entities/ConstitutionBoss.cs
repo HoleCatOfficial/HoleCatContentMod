@@ -114,6 +114,33 @@ namespace DestroyerTest.Content.Entities
             }
             return 16;
         }
+
+        public static int EternityStellarBombDamage()
+        {
+            if (Main.masterMode)
+            {
+                return 40;
+            }
+            return 20;
+        }
+
+        public static int EternityStarfuryCloneDamage()
+        {
+            if (Main.masterMode)
+            {
+                return 30;
+            }
+            return 15;
+        }
+
+        public static int EternityLanceDamage()
+        {
+            if (Main.masterMode)
+            {
+                return 16;
+            }
+            return 8;
+        }
     }
 
     public class ConstitutionSounds
@@ -220,6 +247,10 @@ namespace DestroyerTest.Content.Entities
 
             
 
+            if (LancesEternity)
+            {
+                spriteBatch.Draw(DTAssetLib.ConstitutionLanceWarning.Value, ArenaCTR - Main.screenPosition, null, ColorLib.StellarFireGradientLooping() * LanceWarningOpacity, 0f, DTAssetLib.ConstitutionLanceWarning.Value.Size() / 2, 1f, SpriteEffects.None, 0f);
+            }
             DTConfig cfg = ModContent.GetInstance<DTConfig>();
             if (cfg.EnableDebugMessages)
             {
@@ -230,10 +261,11 @@ namespace DestroyerTest.Content.Entities
             return true;
         }
         public int AITimer = 0;
+
+        public Player player => Main.player[NPC.target];
         public override void AI()
         {
-            NPC.TargetClosest();
-            Player player = Main.player[NPC.target];
+           
             if (NPC.HasValidTarget)
             {
                 if (!Flag1)
@@ -241,6 +273,10 @@ namespace DestroyerTest.Content.Entities
                     ArenaCTR = player.Center;
                     Flag1 = true;
                 }
+            }
+            else
+            {
+                NPC.TargetClosest();
             }
             if (!player.dead )
             {
@@ -254,6 +290,24 @@ namespace DestroyerTest.Content.Entities
 
             AITimer++;
 
+            if (!DestroyerTestMod.EternityIsActive())
+            {
+                NormalAI();
+                Music = MusicLoader.GetMusicSlot("DestroyerTest/Assets/Music/ConstitutionBoss");
+            }
+            else
+            {
+                EternityAI();
+                Music = MusicLoader.GetMusicSlot("DestroyerTest/Assets/Music/Placeholder7");
+            }
+
+            NPC.rotation = NPC.velocity.ToRotation() + MathHelper.PiOver4;
+
+            
+        }
+
+        public void NormalAI()
+        {
             if (AITimer < 300 && AITimer >= 0)
             {
                 Side = Main.rand.NextBool() ? 1 : -1;
@@ -262,7 +316,7 @@ namespace DestroyerTest.Content.Entities
             }
             if (AITimer < 1200 && AITimer >= 300)
             {
-                if (AITimer %  80 == 0)
+                if (AITimer % 80 == 0)
                 {
                     BeamBoomAI();
                 }
@@ -289,22 +343,125 @@ namespace DestroyerTest.Content.Entities
             {
                 AITimer = 0;
             }
-
-            NPC.rotation = NPC.velocity.ToRotation() + MathHelper.PiOver4;
-
-            Music = MusicLoader.GetMusicSlot("DestroyerTest/Assets/Music/ConstitutionBoss");
         }
 
-        
+        public float LanceWarningOpacity = 0f;
+        public bool SpawnedHomingSlash = false;
+        public void EternityAI()
+        {
+            if (AITimer < 300 && AITimer >= 0)
+            {
+                Side = Main.rand.NextBool() ? 1 : -1;
+                VolleyTele = false;
+                IdleAI();
+            }
+            if (AITimer < 1200 && AITimer >= 300)
+            {
+                if (AITimer % 120 == 0)
+                {
+                    SoundEngine.PlaySound(ConstitutionSounds.Shoot1);
+                    if (Main.masterMode)
+                    {
+                        EternityMineAI(16);
+                    }
+                    else
+                    {
+                        EternityMineAI(10);
+                    }
+                }
+            }
+            if (AITimer < 1300 && AITimer >= 1200)
+            {
+                IdleAI();
+            }
+            if (AITimer < 2400 && AITimer >= 1300)
+            {
+                EternArenaMod = true;
+                //if (AITimer == 1300) { Main.NewText("HIT 1300"); }
+                if (ArenaRect.Width > 140)
+                {
+                    int Width = (int)MathHelper.Lerp(ArenaRect.Width, 140, 0.1f);
+                    if (Math.Abs(Width - 140) < 1)
+                    {
+                        Width = 140;
+                    }
+                    EternArenaWidth = Width;
+                    ArenaRect = Utils.CenteredRectangle(ArenaCTR, new Vector2(Width, 1500));
+                }
+                else
+                {
+                    if (NPC.HasValidTarget)
+                    {
+                        NPC.Center = new Vector2(ArenaCTR.X + 560, player.Center.Y);
+                    }
+                    if (AITimer % 60 == 0)
+                    {
+                        SoundEngine.PlaySound(DTAssetLib.ScholarShieldSounds.Activate);
+                        Opus.RadialSpreadProjectile(ModContent.ProjectileType<StarfuryClone>(), 8, NPC.Center, ConstitutionDamageValues.EternityStarfuryCloneDamage(), 3, 6, offset: NPC.rotation);
+                    }
+                }
+            }
+            if (AITimer < 3600 && AITimer >= 2400)
+            {
+                if (ArenaRect.Width < 1500)
+                {
+                    int Width = (int)MathHelper.Lerp(ArenaRect.Width, 1500, 0.1f);
+                    if (Math.Abs(Width - 1500) < 1)
+                    {
+                        Width = 1500;
+                    }
+                    EternArenaWidth = Width;
+                    ArenaRect = Utils.CenteredRectangle(ArenaCTR, new Vector2(Width, 1500));
+                }
+                else
+                {
+                    EternArenaMod = false;
+
+                    
+                }
+
+                if (!SpawnedHomingSlash)
+                {
+                    Vector2 v = player.Center - NPC.Center;
+                    v.Normalize();
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, v * 7, ModContent.ProjectileType<TrackingFireSlash>(), 70, 10);
+                    SpawnedHomingSlash = true;
+                }
+                EternityLanceAI();
+
+                if (ShotLance)
+                {
+                    if (AITimer % 120 == 0)
+                    {
+                        ShotLance = false;
+                    }
+                }
+            }
+            if (AITimer < 4800 && AITimer >= 3600)
+            {
+                SpawnedHomingSlash = false;
+                AITimer = 0;
+            }
+        }
+
+        public bool EternArenaMod = false;
+        public int EternArenaWidth = 0;
 
         public static Rectangle ArenaRect;
         public List<Projectile>Corners = new List<Projectile>();
         public void Arena()
         {
             Player player = Main.player[NPC.target];
-            ArenaRect = Utils.CenteredRectangle(ArenaCTR, new Vector2(1500, 1500));
+            if (!EternArenaMod)
+            {
+                ArenaRect = Utils.CenteredRectangle(ArenaCTR, new Vector2(1500, 1500));
+            }
             float HalfWidth = 750f;
             float HalfHeight = 750f;
+            if (EternArenaMod)
+            {
+                HalfWidth = EternArenaWidth / 2;
+            }
 
             Vector2 arenaCenter = ArenaCTR;
 
@@ -753,6 +910,74 @@ namespace DestroyerTest.Content.Entities
             }
 
         }
+
+        #region Eternity
+
+        public void EternityMineAI(int Iterations)
+        {
+            for (int k = 0; k < Iterations; k++)
+            {
+                Vector2 Pos = Main.rand.NextVector2FromRectangle(ArenaRect);
+
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), Pos, Vector2.Zero, ModContent.ProjectileType<StellarBomb>(), ConstitutionDamageValues.EternityStellarBombDamage(), 5);
+            }
+        }
+
+        public bool Flag2 = false;
+        public bool ShotLance = false;
+        public bool LancesEternity = false;
+        public int u = 0;
+        public void EternityLanceAI()
+        {
+            if (ShotLance)
+            {
+                LancesEternity = false;
+                return;
+            }
+
+            LancesEternity = true;
+            if (!Flag2)
+            {
+                if (LanceWarningOpacity < 1f)
+                {
+                    LanceWarningOpacity += 0.08f;
+                }
+                else
+                {
+                    Flag2 = true;
+                }
+            }
+            else
+            {
+                if (LanceWarningOpacity > 0)
+                {
+                    LanceWarningOpacity -= 0.08f;
+                }
+                else
+                {
+                    Vector2[] Ps = bottomSide.GetPointsAlongLine(12);
+                    if (u % 2 == 0)
+                    {
+                        Ps = topSide.GetPointsAlongLine(12);
+                    }
+
+                    SoundEngine.PlaySound(DTAssetLib.Impacts.MagicBeep);
+                    for (int i = 0; i < Ps.Length; i++)
+                    {
+                        Vector2 Pos = Ps[i];
+
+                        Vector2 Dir = ArenaCTR - Pos;
+                        Dir.Normalize();
+
+                        Projectile.NewProjectile(NPC.GetSource_FromAI(), Pos, Dir * 16, ModContent.ProjectileType<ConstitutionStarHostile_NoHoming>(), ConstitutionDamageValues.EternityLanceDamage(), 10);
+                    }
+                    u++;
+                    ShotLance = true;
+                }
+            }
+        }
+
+        #endregion
     }
 
     public class ConstitutionFightScene : ModSceneEffect

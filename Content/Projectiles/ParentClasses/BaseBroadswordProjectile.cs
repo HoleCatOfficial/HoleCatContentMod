@@ -59,6 +59,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             Projectile.DamageType = DamageClass.Melee;
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = 15;
+            Projectile.ownerHitCheck = true;
         }
 
         public virtual void OnSpawnExtras()
@@ -127,7 +128,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         public int AITimer = 0;
         public float UpPoint = 0f;
         public float DownPoint = 0f;
-        public virtual float ScaleMult { get; set; } = 0f;
+        public virtual float ScaleMult { get; set; } = 1f;
         public float AdjustedScale = 0f;
 
         public override void AI()
@@ -135,7 +136,8 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             AITimer++;
             if (Owner.controlUseItem)
             {
-                AdjustedScale = Owner.GetAdjustedItemScale(Owner.HeldItem) + ScaleMult;
+                Owner.SetDummyItemTime(2);
+                AdjustedScale = Owner.GetAdjustedItemScale(Owner.HeldItem) * ScaleMult;
                 Projectile.scale = AdjustedScale;
                 if (CurrentState == State.Wait)
                 {
