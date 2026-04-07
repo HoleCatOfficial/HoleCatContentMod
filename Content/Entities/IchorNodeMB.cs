@@ -761,9 +761,12 @@ namespace DestroyerTest.Content.Entities
         public int TexOffset = 0;
         public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            Line L = new Line(npc.Center, Node.NPC.Center);
-            TexOffset += 2;
-            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(10), ColorLib.IchorCrystalGradient, spriteBatch, BlendState.Additive, TexOffset, 0.5f);
+            if (IsNodeSpawned)
+            {
+                Line L = new Line(npc.Center, Node.NPC.Center);
+                TexOffset += 10;
+                DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(10), ColorLib.IchorCrystalGradient, spriteBatch, BlendState.Additive, TexOffset, 0.5f);
+            }
             return base.PreDraw(npc, spriteBatch, screenPos, drawColor);
         }
         public override void PostDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)

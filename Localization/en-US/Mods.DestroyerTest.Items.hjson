@@ -3533,13 +3533,13 @@ HekatesMystique: {
 }
 
 HekateBook1: {
-	DisplayName: Hekate Book1
-	Tooltip: ""
+	DisplayName: Hekate's Notebook #2
+	Tooltip: Dated to about 6 years ago.
 }
 
 HekateBook2: {
-	DisplayName: Hekate Book2
-	Tooltip: ""
+	DisplayName: Hekate's Notebook #3
+	Tooltip: Dated to about 6 years ago.
 }
 
 MajesticStorm: {
@@ -4330,4 +4330,36 @@ DivineServantLevelReset: {
 Undowner: {
 	DisplayName: Undowner
 	Tooltip: Resets all of Talid's boss defeat flags to false.
+}
+
+HekateBook3: {
+	DisplayName: Hekate's Notebook #4
+	Tooltip:
+		'''
+		The last page is dated to about 6 years ago.
+		It's relatively new, seemingly having been left untouched ever since it was written.
+		'''
+}
+
+HekateBook4: {
+	DisplayName: Hekate's Notebook #5
+	Tooltip:
+		'''
+		The last page is dated to about 6 years ago.
+		It's relatively new, seemingly having been left untouched ever since it was written.
+		'''
+}
+
+HekateBookPrologue: {
+	DisplayName: Hekate's Notebook #1
+	Tooltip:
+		'''
+		The last page is dated to about 10 years ago.
+		It's grimy, dusty, and clearly has been forgotten where it lay.
+		'''
+}
+
+Item_HekateTalisman: {
+	DisplayName: Item_ Hekate Talisman
+	Tooltip: ""
 }

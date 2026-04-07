@@ -636,9 +636,12 @@ namespace DestroyerTest.Content.Entities
         public int TexOffset = 0;
         public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            Line L = new Line(npc.Center, Node.NPC.Center);
-            TexOffset += 2;
-            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(10), ColorLib.WretchedGradient(), spriteBatch, BlendState.Additive, TexOffset, 0.5f);
+            if (IsNodeSpawned)
+            {
+                Line L = new Line(npc.Center, Node.NPC.Center);
+                TexOffset += 10;
+                DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(10), ColorLib.WretchedGradient(), spriteBatch, BlendState.Additive, TexOffset, 0.5f);
+            }
             return base.PreDraw(npc, spriteBatch, screenPos, drawColor);
         }
         public override void PostDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
@@ -646,7 +649,7 @@ namespace DestroyerTest.Content.Entities
             if (IsNodeSpawned)
             {
                 Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-                Main.EntitySpriteDraw(DTAssetLib.CorruptSigil.Value, npc.Center - screenPos, null, ColorLib.CursedFlames * 0.5f, 0f, DTAssetLib.CorruptSigil.Value.Size() / 2, 0.15f, SpriteEffects.None, 0f);
+                Main.EntitySpriteDraw(DTAssetLib.CorruptSigil.Value, npc.Center - screenPos, null, ColorLib.CursedFlames * 0.5f, 0f, DTAssetLib.CorruptSigil.Value.Size() / 2, 0.5f, SpriteEffects.None, 0f);
                 Opus.ReturnToDefaultDrawing(spriteBatch);
             }
         }

@@ -21,3 +21,7 @@ Tile_NightmareChest: {
 	MapEntry1: Nightmare Chest
 	MapEntry0: Nightmare Chest
 }
+
+Tile_HekateTalisman1.MapEntry: Mods.DestroyerTest.Tiles.Tile_HekateTalisman1.MapEntry
+Tile_HekateTalisman2.MapEntry: Mods.DestroyerTest.Tiles.Tile_HekateTalisman2.MapEntry
+Tile_HekateTalisman3.MapEntry: Mods.DestroyerTest.Tiles.Tile_HekateTalisman3.MapEntry

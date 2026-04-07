@@ -109,7 +109,10 @@ namespace DestroyerTest.Content.Equips
             }   
             else
             {
-                Player.DelBuff(ModContent.BuffType<ShadeThrasherBuff>());
+                if (Player.HasBuff<ShadeThrasherBuff>())
+                {
+                    Player.DelBuff(ModContent.BuffType<ShadeThrasherBuff>());
+                }
             }    
         }
     }

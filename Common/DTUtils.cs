@@ -38,6 +38,7 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.Modules;
 using Terraria.UI.Chat;
+using Terraria.WorldBuilding;
 
 namespace DestroyerTest.Common
 {
@@ -1857,6 +1858,241 @@ namespace DestroyerTest.Common
                 }
             }
 
+        }
+    }
+
+    public class DTGenUtils
+    {
+        public static void GenRoom(int i, int j, int Width, int Height, int WallWidth, int CeilingWidth, bool Wall, ushort TileType, ushort WallType)
+        {
+            //Tile Frames
+            WorldUtils.Gen(new Point(i, j), new GenShapeActionPair(new Shapes.Rectangle(Width, Height), new Actions.SetTile(TileType, false, true)));
+            WorldUtils.Gen(new Point(i + WallWidth, j + CeilingWidth), new GenShapeActionPair(new Shapes.Rectangle(Width - WallWidth * 2, Height - CeilingWidth * 2), new Actions.ClearTile(true)));
+
+            if (Wall)
+            {
+                //Walls
+                WorldUtils.Gen(new Point(i, j), new GenShapeActionPair(new Shapes.Rectangle(Width, Height), new Actions.PlaceWall(WallType)));
+            }
+        }
+
+        public static void GenRoomWithDoors(int i, int j, int Width, int Height, int WallWidth, int CeilingWidth, bool Wall, ushort TileType, ushort WallType)
+        {
+            //To preface all this, you shoud know that i and j are the tile coordinates of the top left tile.
+            //this is the case with points and vectors in terraria, but in case you didnt know.
+
+
+            //Tile Frames
+            
+            //This Generates the base of the room. A block of tiles.
+            WorldUtils.Gen(new Point(i, j), new GenShapeActionPair(new Shapes.Rectangle(Width, Height), new Actions.SetTile(TileType, false, true)));
+
+            //This hollows out the tiles, leaving walls that are equal in thickness on all sides.
+            WorldUtils.Gen(new Point(i + WallWidth, j + CeilingWidth), new GenShapeActionPair(new Shapes.Rectangle(Width - WallWidth * 2, Height - CeilingWidth * 2), new Actions.ClearTile(true)));
+
+            //Clear Spots for doors
+
+            //i with no offset is the furthest possible left it can get, so that works as the X for the first door.
+            //But for the second door, the furthest we can go is the width - 1, since i + the full width is 1 tile to the right of the right edge of the structure.
+
+            //as for j, adding the height puts us 1 block below the bottom side of the rectangle, out of bounds.
+            //so, the offset we need to get the door anchorage is as follows
+            //the ceiling width (it applies to the floor too), which puts us at the floor level of the room
+            //and the three-tile height of the door we want to place.
+            WorldUtils.Gen(new Point(i, (j + Height) - (3 + CeilingWidth)), new GenShapeActionPair(new Shapes.Rectangle(WallWidth, 3), new Actions.ClearTile(true)));
+            WorldUtils.Gen(new Point(i + Width - WallWidth, (j + Height) - (3 + CeilingWidth)), new GenShapeActionPair(new Shapes.Rectangle(WallWidth, 3), new Actions.ClearTile(true)));
+
+            //Place doors
+
+            //once again, i with no offset is good for our first door x, and just like earlier, we want to use width - 1 to keep the left point in bounds.
+            //and for j, its a little different. While we had to do a 3 tile offset to get the space for the door starting from the top left, the origin for a door tile is the bottom left.
+            //as such, we only need to offset the floor level by 1 to put our door on top of the floor and slot it into place with the three tile height.
+
+            //We also guard against breaking existing doors if the room generates twice.
+            if (!Framing.GetTileSafely(i, (j + Height) - (CeilingWidth + 1)).HasTile)
+            {
+                WorldGen.PlaceObject(i, (j + Height) - (CeilingWidth + 1), TileID.ClosedDoor, true, 1);
+            }
+
+            if (!Framing.GetTileSafely(i + (Width - 1), (j + Height) - (CeilingWidth + 1)).HasTile)
+            {
+                WorldGen.PlaceObject(i + (Width - 1), (j + Height) - (CeilingWidth + 1), TileID.ClosedDoor, true, 1);
+            }
+
+            if (Wall)
+            {
+                //Walls
+                WorldUtils.Gen(new Point(i, j), new GenShapeActionPair(new Shapes.Rectangle(Width, Height), new Actions.PlaceWall(WallType)));
+            }
+        }
+
+        public static void GenLitRoomWithDoors(int i, int j, int Width, int Height, int WallWidth, int CeilingWidth, bool Wall, ushort TileType, ushort WallType)
+        {
+            //To get more in-depth explanations for the door setup, see GenRoomWithDoors
+
+            //Tile Frames
+
+            //This Generates the base of the room. A block of tiles.
+            WorldUtils.Gen(new Point(i, j), new GenShapeActionPair(new Shapes.Rectangle(Width, Height), new Actions.SetTile(TileType, false, true)));
+
+            //This hollows out the tiles, leaving walls that are equal in thickness on all sides.
+            WorldUtils.Gen(new Point(i + WallWidth, j + CeilingWidth), new GenShapeActionPair(new Shapes.Rectangle(Width - WallWidth * 2, Height - CeilingWidth * 2), new Actions.ClearTile(true)));
+
+            //Clear Spots for doors
+            WorldUtils.Gen(new Point(i, (j + Height) - (3 + CeilingWidth)), new GenShapeActionPair(new Shapes.Rectangle(WallWidth, 3), new Actions.ClearTile(true)));
+            WorldUtils.Gen(new Point(i + Width - WallWidth, (j + Height) - (3 + CeilingWidth)), new GenShapeActionPair(new Shapes.Rectangle(WallWidth, 3), new Actions.ClearTile(true)));
+
+            //Place doors
+            if (!Framing.GetTileSafely(i, (j + Height) - (CeilingWidth + 1)).HasTile)
+            {
+                WorldGen.PlaceObject(i, (j + Height) - (CeilingWidth + 1), TileID.ClosedDoor, true, 1);
+            }
+
+            if (!Framing.GetTileSafely(i + (Width - 1), (j + Height) - (CeilingWidth + 1)).HasTile)
+            {
+                WorldGen.PlaceObject(i + (Width - 1), (j + Height) - (CeilingWidth + 1), TileID.ClosedDoor, true, 1);
+            }
+
+            
+
+            //Place torches
+            //For a typical room we want to have the torches just above the doors.
+            //Thus, we offset j by 4 and the Ceiling Widthh. 1 to get it in bounds, CeilingWidth to get it in the room, and 3 to get over the three-tile door.
+
+            //This vector code here and dust box are for testing the torch position.
+
+            //Vector2 AdjOrig = new Vector2(i * 16, j * 16); //Scale up to world coords
+            //Vector2 TestPos = AdjOrig + new Vector2((WallWidth) * 16, (CeilingWidth + 2) * 16);
+            //Dust.QuickBox(TestPos, new Vector2(TestPos.X + 16, TestPos.Y + 16), 3, Color.Red, null);
+
+            WorldGen.PlaceObject(i + WallWidth, (j + Height) - (CeilingWidth + 4), TileID.Torches, true, 0);
+            WorldGen.PlaceObject(i + Width - (WallWidth + 1), (j + Height) - (CeilingWidth + 4), TileID.Torches, true, 0);
+
+            if (Wall)
+            {
+                //Walls
+                WorldUtils.Gen(new Point(i, j), new GenShapeActionPair(new Shapes.Rectangle(Width, Height), new Actions.PlaceWall(WallType)));
+            }
+        }
+
+        public static void GenLitRoomWithDoors(int i, int j, int Width, int Height, int WallWidth, int CeilingWidth, bool Wall, ushort TileType, ushort WallType, int TorchType = 0)
+        {
+            //To get more in-depth explanations for the door setup, see GenRoomWithDoors
+
+            //Tile Frames
+
+            //This Generates the base of the room. A block of tiles.
+            WorldUtils.Gen(new Point(i, j), new GenShapeActionPair(new Shapes.Rectangle(Width, Height), new Actions.SetTile(TileType, false, true)));
+
+            //This hollows out the tiles, leaving walls that are equal in thickness on all sides.
+            WorldUtils.Gen(new Point(i + WallWidth, j + CeilingWidth), new GenShapeActionPair(new Shapes.Rectangle(Width - WallWidth * 2, Height - CeilingWidth * 2), new Actions.ClearTile(true)));
+
+            //Clear Spots for doors
+            WorldUtils.Gen(new Point(i, (j + Height) - (3 + CeilingWidth)), new GenShapeActionPair(new Shapes.Rectangle(WallWidth, 3), new Actions.ClearTile(true)));
+            WorldUtils.Gen(new Point(i + Width - WallWidth, (j + Height) - (3 + CeilingWidth)), new GenShapeActionPair(new Shapes.Rectangle(WallWidth, 3), new Actions.ClearTile(true)));
+
+            //Place doors
+            if (!Framing.GetTileSafely(i, (j + Height) - (CeilingWidth + 1)).HasTile)
+            {
+                WorldGen.PlaceObject(i, (j + Height) - (CeilingWidth + 1), TileID.ClosedDoor, true, 1);
+            }
+
+            if (!Framing.GetTileSafely(i + (Width - 1), (j + Height) - (CeilingWidth + 1)).HasTile)
+            {
+                WorldGen.PlaceObject(i + (Width - 1), (j + Height) - (CeilingWidth + 1), TileID.ClosedDoor, true, 1);
+            }
+
+
+
+            //Place torches
+            //For a typical room we want to have the torches just above the doors.
+            //Thus, we offset j by 4 and the Ceiling Widthh. 1 to get it in bounds, CeilingWidth to get it in the room, and 3 to get over the three-tile door.
+
+            //This vector code here and dust box are for testing the torch position.
+
+            //Vector2 AdjOrig = new Vector2(i * 16, j * 16); //Scale up to world coords
+            //Vector2 TestPos = AdjOrig + new Vector2((WallWidth) * 16, (CeilingWidth + 2) * 16);
+            //Dust.QuickBox(TestPos, new Vector2(TestPos.X + 16, TestPos.Y + 16), 3, Color.Red, null);
+
+            WorldGen.PlaceObject(i + WallWidth, (j + Height) - (CeilingWidth + 4), TileID.Torches, true, TorchType);
+            WorldGen.PlaceObject(i + Width - (WallWidth + 1), (j + Height) - (CeilingWidth + 4), TileID.Torches, true, TorchType);
+
+            if (Wall)
+            {
+                //Walls
+                WorldUtils.Gen(new Point(i, j), new GenShapeActionPair(new Shapes.Rectangle(Width, Height), new Actions.PlaceWall(WallType)));
+            }
+        }
+
+        public static void GenHallway(int i, int j, int Width, int Height, int CeilingWidth, bool Wall, ushort TileType, ushort WallType)
+        {
+            //There are some things to note about this method.
+            //For one, you will notice that there is no wall width options. This is intentional, as the hallway should be spanned between two generated rooms.
+
+
+            //This Generates the base of the room. A block of tiles.
+            WorldUtils.Gen(new Point(i, j), new GenShapeActionPair(new Shapes.Rectangle(Width, Height), new Actions.SetTile(TileType, false, true)));
+
+            //This hollows out the tiles, leaving walls that are equal in thickness on all sides.
+            WorldUtils.Gen(new Point(i, j + CeilingWidth), new GenShapeActionPair(new Shapes.Rectangle(Width, Height - (CeilingWidth * 2)), new Actions.ClearTile(true)));
+
+            WorldGen.PlaceObject(i, (j + Height) - (CeilingWidth + 4), TileID.Torches, true, 0);
+            WorldGen.PlaceObject(i + Width - 1, (j + Height) - (CeilingWidth + 4), TileID.Torches, true, 0);
+
+            if (Wall)
+            {
+                //Walls
+                WorldUtils.Gen(new Point(i, j), new GenShapeActionPair(new Shapes.Rectangle(Width, Height), new Actions.PlaceWall(WallType)));
+            }
+
+        }
+
+        public static void GenHallway(int i, int j, int Width, int Height, int CeilingWidth, bool Wall, ushort TileType, ushort WallType, int TorchType = 0)
+        {
+            //There are some things to note about this method.
+            //For one, you will notice that there is no wall width options. This is intentional, as the hallway should be spanned between two generated rooms.
+
+
+            //This Generates the base of the room. A block of tiles.
+            WorldUtils.Gen(new Point(i, j), new GenShapeActionPair(new Shapes.Rectangle(Width, Height), new Actions.SetTile(TileType, false, true)));
+
+            //This hollows out the tiles, leaving walls that are equal in thickness on all sides.
+            WorldUtils.Gen(new Point(i, j + CeilingWidth), new GenShapeActionPair(new Shapes.Rectangle(Width, Height - (CeilingWidth * 2)), new Actions.ClearTile(true)));
+
+            WorldGen.PlaceObject(i, (j + Height) - (CeilingWidth + 4), TileID.Torches, true, TorchType);
+            WorldGen.PlaceObject(i + Width - 1, (j + Height) - (CeilingWidth + 4), TileID.Torches, true, TorchType);
+
+            if (Wall)
+            {
+                //Walls
+                WorldUtils.Gen(new Point(i, j), new GenShapeActionPair(new Shapes.Rectangle(Width, Height), new Actions.PlaceWall(WallType)));
+            }
+
+        }
+
+        public static void GenChute(int i, int j, int Width, int Height, int WallWidth, bool Wall, bool Rope, ushort TileType, ushort WallType)
+        {
+            if (Width < 2 || Height < 2) return;
+            if (Width % 2 == 0 && Rope)
+            {
+                throw new InvalidOperationException("Ropes cannot be generated if the width is an even number, since it can't be centered.");
+            }
+            //This Generates the base of the room. A block of tiles.
+            WorldUtils.Gen(new Point(i, j), new GenShapeActionPair(new Shapes.Rectangle(Width, Height), new Actions.SetTile(TileType, false, true)));
+
+            //This hollows out the tiles, leaving walls that are equal in thickness on all sides.
+            WorldUtils.Gen(new Point(i + WallWidth, j), new GenShapeActionPair(new Shapes.Rectangle(Width - (WallWidth * 2), Height), new Actions.ClearTile(true)));
+
+            if (Wall)
+            {
+                //Walls
+                WorldUtils.Gen(new Point(i, j), new GenShapeActionPair(new Shapes.Rectangle(Width, Height), new Actions.PlaceWall(WallType)));
+            }
+
+            if (Rope)
+            {
+                WorldUtils.Gen(new Point(i + Width / 2, j), new GenShapeActionPair(new Shapes.Rectangle(1, Height), new Actions.PlaceTile(TileID.Rope)));
+            }
         }
     }
 

@@ -56,7 +56,7 @@ namespace DestroyerTest.Common.Systems
             }
 
             SpriteBatch spriteBatch = Main.spriteBatch;
-            if (DTConfig.instance.EnableDebugMessages)
+            if (DTConfig.instance.EnableDebugMessages && Active)
             {
                 Utils.DrawBorderString(spriteBatch, $"Potion sickness time Multiplier: {PotionDelayReduction}", (drawInfo.drawPlayer.Center + new Vector2(0, 30)) - Main.screenPosition, Color.Green, 0.5f, 0.5f, 0.5f);
                 Utils.DrawBorderString(spriteBatch, $"Current Level: {DivineServantSystem.Level[Player.whoAmI]}", (drawInfo.drawPlayer.Center + new Vector2(0, 40)) - Main.screenPosition, Color.Green, 0.5f, 0.5f, 0.5f);

@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using DestroyerTest.Content.UI;
 using Terraria;
 using Terraria.ID;
@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Lorebooks
 {
-    public class HekateBook2 : BaseLoreBook
+    public class HekateBook3 : BaseLoreBook
     {
 
         public override void SetDefaults()
@@ -22,11 +22,12 @@ namespace DestroyerTest.Content.Lorebooks
 
             var pages = new List<string>()
             {
-                Language.GetText("Mods.DestroyerTest.BookText.HekateBook2.Page1").Value,
-                Language.GetText("Mods.DestroyerTest.BookText.HekateBook2.Page2").Value
+                Language.GetText("Mods.DestroyerTest.BookText.HekateBook3.Page1").Value,
+                Language.GetText("Mods.DestroyerTest.BookText.HekateBook3.Page2").Value,
+                Language.GetText("Mods.DestroyerTest.BookText.HekateBook3.Page3").Value
             };
 
-            ModContent.GetInstance<TextReaderSystem>().OpenLocalizedBook("HekateBook2", 2000, pages.Count);
+            ModContent.GetInstance<TextReaderSystem>().OpenLocalizedBook("HekateBook3", 2000, pages.Count);
             return true;
         }
     }

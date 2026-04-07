@@ -123,7 +123,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             return IsOnAttackFrame(target);
         }
 
-        private SoundStyle Slash = new SoundStyle("DestroyerTest/Assets/Audio/Rift_Katana_Slash") { PitchVariance = 0.2f };
+        private SoundStyle Slash = new SoundStyle("DestroyerTest/Assets/Audio/Rift_Katana_Slash") { PitchVariance = 0.2f, Volume = 0.7f };
         public override void AI()
         {
             Player player = Main.player[Projectile.owner];

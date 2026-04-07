@@ -113,6 +113,35 @@ BloodGoddessLoreBook: {
 		'''
 }
 
+HekateBookPrologue: {
+	Page1:
+		'''
+		Idri has proven to have quite some potential.
+		He is a fierce fighter, and has cleared every dungeon I've
+		sent him to. And you'd think, for someone having been raised
+		as a court jester for Mother Darkness of all people, that he'd
+		be jaded and scornful of the world (I've met many such people).
+		'''
+	Page2:
+		'''
+		But no, Idri has a young, optimistic outlook on the future.
+		He desires to right the world's wrongs as best he can, and he
+		is dedicated to uprooting tyranny wherever it rises. Where
+		I'd call any other young man with that outlook naïve,
+		I call Idri the future of freedom and peace.
+		'''
+	Page3:
+		'''
+		Shopping List:
+		- Salves
+		- A stack of blessed paper <- GET THE GOOD KIND
+		- Bread
+		- Parsnips
+		- Leeks
+		- Goat Milk
+		'''
+}
+
 HekateBook1: {
 	Page1:
 		'''
@@ -125,10 +154,10 @@ HekateBook1: {
 	Page2:
 		'''
 		I write this as I lay beside him in bed. He's fallen asleep, but
-		the restless shuddering of his torso tells me he isn't sleeping easy.
-		I've gotten him soups from all varieties of market, but nothing cures
-		his mysterious aliment, and no text could ever categorize diseases
-		affecting demideities.
+		the restless shuddering of his torso tells me he isn't sleeping
+		easy. I've gotten him soups from all varieties of market, but
+		nothing cures his mysterious aliment, and no text could ever 
+		know of diseases affecting demideities.
 		'''
 	Page3:
 		'''
@@ -143,40 +172,67 @@ HekateBook1: {
 HekateBook2: {
 	Page1:
 		'''
-		Idri's aliment seems to have become a particular issue. He's left his
-		quarters less frequently, and his hives have spread to his arms.
-		He has begun to refuse my help in treating the hives, but has not
-		said why. Unfortunately, I must do what I can to help him, and have had
-		to restrain him on multiple occasions to apply the ointment.
+		Idri's aliment seems to have become a particular issue.
+		He's left his quarters less frequently, and his hives have
+		spread to his arms. He has begun to refuse my help in treating
+		the hives, but has not said why. Unfortunately, I must do
+		what I can to help him, and have had to restrain him on multiple
+		occasions to apply the ointment.
 		'''
-	Page2: ""
-	Page3: ""
+	Page2: His condition scares me. It really does. I fear losing him.
 }
 
 HekateBook3: {
 	Page1:
 		'''
-		I wept for the first time in centuries this morning. And not the
-		usual sob or choke-up. I had gotten a new understaning of mortality
-		as I lay against the wall, wailing a discordant chime and clenching
-		my eyes shut. It was as if I didnt want to face the reality that
-		already had turned to face me.
+		I wept for the first time in centuries this morning. And not
+		the usual sob or choke-up. I had gotten a new understaning of
+		mortality as I slump against the wall, wailing a discordant
+		chime and clenching my eyes shut. It was as if I didnt want
+		to turn to face the reality that already had turned to face me.
 		'''
 	Page2:
 		'''
-		As I had predicted, yet so foolishly ignored, Idri's breathing has
-		become more strained, and his gangrene has worsened depsite my
-		regenerative talismans. Foolish of me. Demigod or not, I should have
-		stayed by his side all through that night instead of leaving him
-		in this cold, lonely room.
+		As I had predicted, yet so foolishly ignored, Idri's breathing
+		has become more strained, and his illness has worsened depsite
+		my regenerative talismans. Foolish of me. Demigod or not, I
+		should have stayed by his side all through that night instead
+		of leaving him in his cold, lonely room.
 		'''
 	Page3:
 		'''
-		I haven't felt things so rawly in so long a time. It perplexes me
-		as much as it moves me. Deities are beyond emotion; that's a commonly
-		known fact. So how is it that I grieve? How is it that I weep so loud
-		and so long that my chest throbs sorely and my eyes are burned by
-		my caustic fluids? Perhaps we need to rethink our defintions of
-		Deitism.
+		I haven't felt things so rawly in so long a time. It perplexes
+		me as much as it moves me. Deities are beyond emotion; that's
+		a commonly known fact. So how is it that I grieve? How is it
+		that I weep so loud and so long that my chest throbs sorely and
+		my eyes are burned by my caustic fluids? Perhaps we need to
+		rethink our defintions of Deitism.
+		'''
+}
+
+HekateBook4: {
+	Page1:
+		'''
+		HE'S GONE.
+		THE ROSE I STORED IDRI'S SOUL IN. IT'S GONE.
+		GONE GONE GONE GONE GONE.
+		I DON'T KNOW WHO STOLE IT OR WHEN, BUT I CAN'T FIND IT.
+		IM SUCH A HORRIBLE, ROTTEN GOD.
+		SMITE ME. SMITE ME, NOW, GREAT STARS OF THE SKY.
+		'''
+	Page2:
+		'''
+		After taking a moment to collect myself after my emotional
+		scribbling on  the last page, I know what I will do now.
+
+		I will set off to find Idri's Rose. 
+		Even if it takes me millenia, I will find it, and I will
+		enjoy the sunset with Idri again.
+		'''
+	Page3:
+		'''
+		I will leave my garden as it remains now.
+		The talismans I have applied should work to keep the
+		place safe from any encroaching forces like the corruption.
 		'''
 }
