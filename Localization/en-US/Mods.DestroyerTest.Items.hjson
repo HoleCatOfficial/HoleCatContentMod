@@ -4363,3 +4363,23 @@ Item_HekateTalisman: {
 	DisplayName: Item_ Hekate Talisman
 	Tooltip: ""
 }
+
+Item_RiftDesertUndergroundMusicBox: {
+	DisplayName: Item_ Rift Desert Underground Music Box
+	Tooltip: ""
+}
+
+Item_RiftCavernMusicBox: {
+	DisplayName: Item_ Rift Cavern Music Box
+	Tooltip: ""
+}
+
+Item_RiftUndergroundMusicBox: {
+	DisplayName: Item_ Rift Underground Music Box
+	Tooltip: ""
+}
+
+Item_RiftTundraMusicBox: {
+	DisplayName: Item_ Rift Tundra Music Box
+	Tooltip: ""
+}

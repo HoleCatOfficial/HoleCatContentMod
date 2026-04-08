@@ -1346,6 +1346,7 @@ namespace DestroyerTest.Common
         public static Asset<Texture2D> CircularSwingThin = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/CircularSlash2", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> FireSwing = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/CircularSlash3", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> FireSwingHighlight = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/CircularSlash3Highlight", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> CutSwing = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/CircularSlashCut", AssetRequestMode.AsyncLoad);
 
         public static Asset<Texture2D> Sparkle(int Variant)
         {

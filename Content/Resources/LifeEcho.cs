@@ -1,12 +1,14 @@
-﻿using System;
+﻿using DestroyerTest.Content.Particles;
+using InnoVault.PRT;
 using Microsoft.Xna.Framework;
+using OpusLib.Content.Helpers;
+using System;
+using System.Linq;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using OpusLib.Content.Helpers;
-using System.Linq;
 
 namespace DestroyerTest.Content.Resources
 {
@@ -28,9 +30,11 @@ namespace DestroyerTest.Content.Resources
 			Item.rare = ItemRarityID.White;
 		}
 
-		public override void PostUpdate() {
+		public override void PostUpdate() 
+		{
 			Lighting.AddLight(Item.Center, Color.WhiteSmoke.ToVector3() * 0.55f * Main.essScale);
-		}
+            PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Main.rand.NextVector2FromRectangle(Item.Hitbox), Main.rand.NextVector2Circular(1f, 1f), new Color(184, 228, 242), 0.5f);
+        }
 	}
 
 	public class LE_DROP_NPC : GlobalNPC

@@ -94,8 +94,6 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             a = Main.MouseWorld - Projectile.Center;
             a.Normalize();
             Projectile.velocity = a * (20 + speedfactor);
-
-            
         }
 
         public int timer = 0;

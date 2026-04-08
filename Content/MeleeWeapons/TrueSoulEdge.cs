@@ -14,6 +14,7 @@ using DestroyerTest.Rarity;
 using InnoVault.PRT;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.MeleeWeapons;
+using DestroyerTest.Content.Projectiles.Weapon.Melee;
 
 namespace DestroyerTest.Content.MeleeWeapons
 {
@@ -63,15 +64,8 @@ namespace DestroyerTest.Content.MeleeWeapons
                 if (!Projectile.active || Projectile.timeLeft <= 0)
                     return false;
                 // Draws an afterimage trail. See https://github.com/tModLoader/tModLoader/wiki/Basic-Projectile#afterimage-trail for more information.
-
-                //var effect = distortion;
                 Texture2D texture = TextureAssets.Projectile[Type].Value;
                 SpriteBatch spriteBatch = Main.spriteBatch;
-
-                //effect.Parameters["time"].SetValue((float)Main.GlobalTimeWrappedHourly);
-                //effect.Parameters["intensity"].SetValue(0.03f);
-                //effect.Parameters["noiseTexture"].SetValue(ModContent.Request<Texture2D>("DestroyerTest/Effects/turbulentnoise").Value);
-                //effect.CurrentTechnique.Passes[0].Apply();
 
                 if (Projectile.active == true)
                 {
@@ -89,7 +83,6 @@ namespace DestroyerTest.Content.MeleeWeapons
 
             public int SearchTimer = 360;
 
-            // Custom AI
             public override void AI()
             {
                 Player player = Main.player[Projectile.owner];
@@ -225,14 +218,15 @@ namespace DestroyerTest.Content.MeleeWeapons
             Item.crit = 20; // The critical strike chance the weapon has. The player, by default, has a 4% critical strike chance.
 
             Item.value = Item.buyPrice(gold: 1); // The value of the weapon in copper coins.
-            Item.rare = ModContent.RarityType<VesperRarity>(); // Give this item our custom rarity.
-            Item.shoot = ModContent.ProjectileType<TrueSoulEdgeProjection>();
-            Item.shootSpeed = 3f;
+            Item.rare = ModContent.RarityType<LifeEchoRarity>(); // Give this item our custom rarity.
+            Item.shoot = ModContent.ProjectileType<TrueSoulEdgeCursorProjectile>();
+            Item.shootSpeed = 1f;
+            Item.channel = true;
         }
 
         public override void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone)
         {
-            target.AddBuff(BuffID.BrokenArmor, 120);
+
         }
 
         // Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.

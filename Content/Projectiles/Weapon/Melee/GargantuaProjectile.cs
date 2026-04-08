@@ -37,6 +37,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Unwind
         }
 
+        public static int HitCooldownGlobal = 10;
+        private int HitCooldown = 0;
+
         private AttackStage CurrentStage
         {
             get => (AttackStage)Projectile.localAI[0];
@@ -108,6 +111,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
         public override void AI()
         {
+            if (HitCooldown > 0)
+            {
+                HitCooldown--;
+            }
             Owner.itemAnimation = 2;
             Owner.itemTime = 2;
 
@@ -198,6 +205,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Utils.PlotTileLine(start, end, 15 * Projectile.scale, DelegateMethods.CutTiles);
         }
 
+        public override bool? CanHitNPC(NPC target)
+        {
+            return HitCooldown <= 0 && !target.friendly;
+        }
+
         public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
         {
             modifiers.HitDirectionOverride = target.position.X > Owner.MountedCenter.X ? 1 : -1;
@@ -205,6 +217,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
+            HitCooldown = HitCooldownGlobal;
             SoundEngine.PlaySound(Hit);
             Player player = Main.player[Projectile.owner];
             var ScreenShake = player.GetModPlayer<ScreenshakePlayer>();

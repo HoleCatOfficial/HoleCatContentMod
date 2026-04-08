@@ -36,6 +36,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Unwind
         }
 
+        public static int HitCooldownGlobal = 10;
+        private int HitCooldown = 0;
+
+
         private AttackStage CurrentStage
         {
             get => (AttackStage)Projectile.localAI[0];
@@ -107,6 +111,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
         public override void AI()
         {
+            if (HitCooldown > 0)
+            {
+                HitCooldown--;
+            }
             Owner.itemAnimation = 2;
             Owner.itemTime = 2;
 
@@ -133,6 +141,28 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Timer++;
         }
 
+        public float Scl = 3f;
+        public float SlOpacity = 0f;
+
+        public void DrawSlashFX()
+        {
+            SpriteEffects effects;
+
+            if (Projectile.spriteDirection > 0)
+            {
+                effects = SpriteEffects.None;
+            }
+            else
+            {
+                effects = SpriteEffects.FlipHorizontally;
+            }
+
+            Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+            Main.spriteBatch.Draw(DTAssetLib.FireSwing.Value, Projectile.Center - Main.screenPosition, null, (DTColorUtils.Darken(ColorLib.TenebrisMagenta, 0.75f) * Projectile.Opacity) * SlOpacity, Projectile.rotation - 0.2f, DTAssetLib.FireSwing.Value.Size() / 2, Scl * Projectile.scale, effects, 0);
+            //Main.spriteBatch.Draw(DTAssetLib.FireSwingHighlight.Value, Projectile.Center - Main.screenPosition, null, ((Color.Red * 0.5f) * Projectile.Opacity) * SlOpacity, Projectile.rotation - 0.2f, DTAssetLib.FireSwingHighlight.Value.Size() / 2, Scl * Projectile.scale, effects, 0);
+            Opus.ReturnToDefaultDrawing(Main.spriteBatch);
+        }
+
         public override bool PreDraw(ref Color lightColor)
         {
             Vector2 origin;
@@ -154,6 +184,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
             Texture2D texture = TextureAssets.Projectile[Type].Value;
 
+            DrawSlashFX();
             Main.spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, default, lightColor * Projectile.Opacity, Projectile.rotation + rotationOffset, origin, Projectile.scale, effects, 0);
 
             return false;
@@ -174,6 +205,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Utils.PlotTileLine(start, end, 15 * Projectile.scale, DelegateMethods.CutTiles);
         }
 
+        public override bool? CanHitNPC(NPC target)
+        {
+            return HitCooldown <= 0 && !target.friendly;
+        }
+
         public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
         {
             modifiers.HitDirectionOverride = target.position.X > Owner.MountedCenter.X ? 1 : -1;
@@ -181,6 +217,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
+            HitCooldown = HitCooldownGlobal;
             SoundEngine.PlaySound(Hit);
             Player player = Main.player[Projectile.owner];
             var ScreenShake = player.GetModPlayer<ScreenshakePlayer>();
@@ -268,6 +305,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 {
                     SPINSPEED += 0.008f;
                 }
+                else
+                {
+                    SlOpacity += 0.05f;
+                }
 
                 float speed = SPINSPEED * Owner.GetTotalAttackSpeed(Projectile.DamageType);
                 Progress += speed * Projectile.spriteDirection;
@@ -335,6 +376,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Progress += speed * Projectile.spriteDirection;
             Size = 1f - MathHelper.SmoothStep(0, 1, Timer / hideTime);
             Projectile.Opacity = 1f - MathHelper.SmoothStep(0, 1, Timer / hideTime);
+            SlOpacity = 1f - MathHelper.SmoothStep(0, 1, Timer / hideTime);
 
             if (Timer >= hideTime)
             {

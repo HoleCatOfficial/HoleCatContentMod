@@ -587,3 +587,5 @@ PrimitiveTest.DisplayName: Primitive Test
 VeiledSpearProjectile.DisplayName: Veiled Spear Projectile
 TrackingFireSlash.DisplayName: Tracking Fire Slash
 DreamDiscThrown.DisplayName: Dream Disc Thrown
+SoulEdgeProjectile.DisplayName: Soul Edge Projectile
+TrueSoulEdgeCursorProjectile.DisplayName: True Soul Edge Cursor Projectile

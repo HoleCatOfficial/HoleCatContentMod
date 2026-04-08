@@ -12,7 +12,6 @@ using Terraria.Utilities;
 
 namespace DestroyerTest.Content.RiftBiome.RiftSurfaceResources
 {
-	// See ExampleMod/Common/Systems/MusicLoadingSystem for an explanation on music.
 	public class Tile_RiftSurfaceMusicBox: ModTile
 	{
 		public override void SetStaticDefaults() {
@@ -43,7 +42,6 @@ namespace DestroyerTest.Content.RiftBiome.RiftSurfaceResources
 		}
 
 		public override void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref TileDrawInfo drawData) {
-			// This code spawns the music notes when the music box is open.
 			if (Lighting.UpdateEveryFrame && new FastRandom(Main.TileFrameSeed).WithModifier(i, j).Next(4) != 0) {
 				return;
 			}

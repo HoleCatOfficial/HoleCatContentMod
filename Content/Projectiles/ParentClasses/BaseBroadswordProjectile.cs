@@ -35,6 +35,9 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         public virtual SoundStyle Swing { get; set; } = DTAssetLib.SwordSounds.Woosh;
         public Asset<Texture2D> Glowmask = null;
 
+        public static int HitCooldownGlobal = 10;
+        private int HitCooldown = 0;
+
         /// <summary>
         /// Use this in place of SetStaticDefaults.
         /// </summary>
@@ -134,6 +137,10 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         public override void AI()
         {
             AITimer++;
+            if (HitCooldown > 0)
+            {
+                HitCooldown--;
+            }
             if (Owner.controlUseItem)
             {
                 Owner.SetDummyItemTime(2);
@@ -389,7 +396,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
         public override bool? CanHitNPC(NPC target)
         {
-            return null;
+            return HitCooldown <= 0;
         }
 
         public virtual void HitNPCEffects(NPC npc, NPC.HitInfo hit)
@@ -398,6 +405,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
+            HitCooldown = HitCooldownGlobal;
             HitNPCEffects(target, hit);
         }
 

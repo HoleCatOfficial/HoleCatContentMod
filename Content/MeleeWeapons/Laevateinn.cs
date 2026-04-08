@@ -41,14 +41,5 @@ namespace DestroyerTest.Content.MeleeWeapons
 
 			return base.Shoot(player, source, position, velocity, type, damage, knockback);
 		}
-
-		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
-		public override void AddRecipes() {
-			CreateRecipe()
-                .AddIngredient<WhiteCloth>(4)
-                .AddIngredient(ItemID.Cobweb, 2)
-				.AddTile(TileID.Anvils)
-				.Register();
-		}
 	}
 }

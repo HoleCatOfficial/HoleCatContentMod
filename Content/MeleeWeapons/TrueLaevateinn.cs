@@ -47,14 +47,5 @@ namespace DestroyerTest.Content.MeleeWeapons
 
 			return false; // Prevent vanilla behavior from shooting an additional projectile
 		}
-
-		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
-		public override void AddRecipes() {
-			CreateRecipe()
-				.AddIngredient<Laevateinn>(1)
-                .AddIngredient(ItemID.BrokenHeroSword, 1)
-				.AddTile(TileID.Anvils)
-				.Register();
-		}
 	}
 }
