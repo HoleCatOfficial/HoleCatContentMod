@@ -468,9 +468,7 @@ namespace DestroyerTest.Content.Entities
         {
             NPCID.EaterofSouls,
             NPCID.Corruptor,
-            NPCID.Slimer,
-            NPCID.DevourerHead,
-            NPCID.SeekerHead
+            NPCID.Slimer
         };
 
         public int WaveTimeout = 0;

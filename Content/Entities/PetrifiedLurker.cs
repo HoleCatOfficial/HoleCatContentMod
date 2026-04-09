@@ -1,13 +1,15 @@
+using DestroyerTest.Common;
+using DestroyerTest.Content.Resources;
+using DestroyerTest.Content.RiftBiome;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.GameContent;
+using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.GameContent.Bestiary;
 using Terraria.ModLoader.Utilities;
-using DestroyerTest.Content.RiftBiome;
-using DestroyerTest.Common;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
-using Terraria.GameContent;
 
 namespace DestroyerTest.Content.Entities
 {
@@ -124,6 +126,11 @@ namespace DestroyerTest.Content.Entities
                     Gore.NewGore(NPC.GetSource_Death(), NPC.position, Main.rand.NextVector2Circular(6, 6), 99);
                 }
             }
+        }
+
+        public override void ModifyNPCLoot(NPCLoot npcLoot)
+        {
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CarbonizedFlesh>(), 6, 1, 3));
         }
     }
 }

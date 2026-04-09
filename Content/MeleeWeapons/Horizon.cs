@@ -26,16 +26,16 @@ namespace DestroyerTest.Content.MeleeWeapons
 		{
 			Item.height = 39;
 			Item.width = 39;
-			Item.useTime = 2;
-			Item.useAnimation = 2;
+			Item.useTime = 10;
+			Item.useAnimation = 10;
 			Item.useStyle = ItemUseStyleID.Shoot;
 
-			Item.shoot = ModContent.ProjectileType<TrackingFireSlash>();
+			Item.shoot = ModContent.ProjectileType<RiftSpark>();
 			Item.damage = 4;
 			Item.channel = true;
 			Item.autoReuse = true;
 			Item.noUseGraphic = true;
-			Item.shootSpeed = 1f;
+			Item.shootSpeed = 4f;
 		}
 	}
 }

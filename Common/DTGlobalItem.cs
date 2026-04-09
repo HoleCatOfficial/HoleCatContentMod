@@ -751,44 +751,6 @@ namespace DestroyerTest.Common
         public bool isScepter = false;
     }
 
-
-    public class RiftArsenalGlobal : GlobalItem
-    {
-        public override bool InstancePerEntity => true;
-        public override bool AppliesToEntity(Item entity, bool lateInstantiation)
-        {
-            // Apply this GlobalItem to specific items based on criteria
-            return entity.type == ModContent.ItemType<RiftBroadsword>() ||
-            entity.type == ModContent.ItemType<RiftChakram>() ||
-            entity.type == ModContent.ItemType<RiftClaymore>() ||
-            entity.type == ModContent.ItemType<RiftPhasesaber>() ||
-            entity.type == ModContent.ItemType<RiftRevolver>() ||
-            entity.type == ModContent.ItemType<RiftScabbard>() ||
-            entity.type == ModContent.ItemType<RiftScythe>() ||
-            entity.type == ModContent.ItemType<RiftStaff>() ||
-            entity.type == ModContent.ItemType<RiftThrowingKnife>() ||
-            entity.type == ModContent.ItemType<RiftZapinator>();
-        }
-
-        public override void SetDefaults(Item item)
-        {
-            if (item.type == ModContent.ItemType<RiftBroadsword>() ||
-            item.type == ModContent.ItemType<RiftChakram>() ||
-            item.type == ModContent.ItemType<RiftClaymore>() ||
-            item.type == ModContent.ItemType<RiftPhasesaber>() ||
-            item.type == ModContent.ItemType<RiftRevolver>() ||
-            item.type == ModContent.ItemType<RiftScabbard>() ||
-            item.type == ModContent.ItemType<RiftScythe>() ||
-            item.type == ModContent.ItemType<RiftStaff>() ||
-            item.type == ModContent.ItemType<RiftThrowingKnife>() ||
-            item.type == ModContent.ItemType<RiftZapinator>())
-            {
-                //item.GetGlobalItem<RiftArsenalGlobal>().isRiftArsenal = true;
-                this.isRiftArsenal = true; // Use 'this' to refer to the current instance
-            }
-        }
-        public bool isRiftArsenal = false;
-    }
     public class InspiroItemList : GlobalItem
     {
         public override bool InstancePerEntity => true;

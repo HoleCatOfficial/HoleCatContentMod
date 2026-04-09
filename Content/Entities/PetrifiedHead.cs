@@ -5,6 +5,7 @@ using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss;
 using DestroyerTest.Content.Projectiles.EntitiesProjectiles;
+using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.RiftBiome;
 using DestroyerTest.Content.Tools;
 using Microsoft.Xna.Framework;
@@ -20,6 +21,7 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
@@ -147,6 +149,11 @@ namespace DestroyerTest.Content.Entities
                     Dust.NewDustPerfect(NPC.Center, ModContent.DustType<RiftDust>(), new Vector2(Main.rand.NextFloat(-4, 4), Main.rand.NextFloat(-8, -12)), 0, default, 1.5f);
                 }
             }
+        }
+
+        public override void ModifyNPCLoot(NPCLoot npcLoot)
+        {
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CarbonizedFlesh>(), 3, 2, 9));
         }
     }
 }

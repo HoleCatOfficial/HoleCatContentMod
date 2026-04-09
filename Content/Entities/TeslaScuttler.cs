@@ -228,6 +228,7 @@ namespace DestroyerTest.Content.Entities
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Item_RiftClay>(), 1, 1, 5));
 
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<RiftenOverloader>(), 10, 1, 1));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<SunscorchedCinder>(), 2, 2, 10));
         }
     }
 }

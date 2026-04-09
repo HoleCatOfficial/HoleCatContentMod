@@ -42,3 +42,106 @@ Conditions: {
 	NodeBossDowned: Defeated a Node
 	ConstitutionBossDowned: Defeated Constitution
 }
+
+Configs: {
+	DTConfig: {
+		DisplayName: Main Config
+
+		MinionExtrasToggle: {
+			Label: Minions Have Extra Effects
+			Tooltip: Some minions have extra effects. This disables them.
+		}
+
+		EnableDebugMessages: {
+			Label: Enable Debug Messages
+			Tooltip: Across the mod, there is a variety of debug text used during testing. All of it can be made visible if this is enabled.
+		}
+
+		DragCamera: {
+			Label: Use Reworked Camera
+			Tooltip: Unlocks the camera from the player, making it follow using interpolation. This will interfere with screenshake effects. Enable this to have the intended experience with Talid.
+		}
+
+		MinionAmmoReplace: {
+			Label: Minions can convert ammunition
+			Tooltip: If enabled, Minions like the Blossom Beater will be able to convert bullets into their own bullets. If disabled, the projectile of the bullet will be fired instead.
+		}
+
+		WeaponKickback: {
+			Label: Weapon Kickback
+			Tooltip: Some weapons have kickback effects. Disable this if those interfere with your experience.
+		}
+
+		ScepterTileCollsionsCooldown: {
+			Label: Scepter Tile Collsion Effects Cooldown
+			Tooltip: The minimum amount of time that must pass before a scepter's tile collision effect can activate again.
+		}
+
+		ScrollEffectsCooldown: {
+			Label: Scroll Effects Cooldown
+			Tooltip: The minimum amount of time that must pass before a scroll's effect can activate again.
+		}
+	}
+
+	DTMusicConfig: {
+		DisplayName: Music Config
+
+		NodeIdleMusic: {
+			Label: Nodes have Idle Music
+			Tooltip: If enabled, the Node Bosses will play their own music track when dormant and during their waves.
+		}
+
+		EternityMusic: {
+			Label: Eternity Music
+			Tooltip: Talid's bosses use separate tracks for Eternity and Masochist Mode. Enable this to hear them.
+		}
+	}
+
+	DTOptimizationsConfig: {
+		DisplayName: Optimizations Config
+
+		OptimizeGame: {
+			Label: General Optimizations
+			Tooltip: Expensive draw calls, gore spawns, and effects will be disabled if this is enabled.
+		}
+
+		DisableExcessDusts: {
+			Label: Disable Excess Dusts
+			Tooltip: Dusts that exist solely for visuals will not be created.
+		}
+
+		DisableExcessParticles: {
+			Label: Disable Excess Particles
+			Tooltip: Particles that exist solely for visuals will not be created.
+		}
+
+		DisableExcessTrails: {
+			Label: Disable Excess Trails
+			Tooltip: Primitive trails will not draw unless they are required to see something.
+		}
+	}
+
+	DTUIConfig: {
+		DisplayName: UI Config
+
+		RiftBarXPos: {
+			Label: Rift Charge Bar X Offset
+			Tooltip: ""
+		}
+
+		RiftBarYPos: {
+			Label: Rift Charge Bar Y Offset
+			Tooltip: ""
+		}
+
+		NightBarXPos: {
+			Label: Night Armor Teleport Cooldown Bar X Offset
+			Tooltip: ""
+		}
+
+		NightBarYPos: {
+			Label: Night Armor Teleport Cooldown Bar Y Offset
+			Tooltip: ""
+		}
+	}
+}

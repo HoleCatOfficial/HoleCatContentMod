@@ -4360,26 +4360,46 @@ HekateBookPrologue: {
 }
 
 Item_HekateTalisman: {
-	DisplayName: Item_ Hekate Talisman
+	DisplayName: Warding Talisman
 	Tooltip: ""
 }
 
 Item_RiftDesertUndergroundMusicBox: {
-	DisplayName: Item_ Rift Desert Underground Music Box
+	DisplayName: Music Box (Rift Desert Underground)
 	Tooltip: ""
 }
 
 Item_RiftCavernMusicBox: {
-	DisplayName: Item_ Rift Cavern Music Box
+	DisplayName: Music Box (Rift Cavern)
 	Tooltip: ""
 }
 
 Item_RiftUndergroundMusicBox: {
-	DisplayName: Item_ Rift Underground Music Box
+	DisplayName: Music Box (Rift Underground)
 	Tooltip: ""
 }
 
 Item_RiftTundraMusicBox: {
-	DisplayName: Item_ Rift Tundra Music Box
+	DisplayName: Music Box (Rift Tundra)
 	Tooltip: ""
+}
+
+PopRock: {
+	DisplayName: Pop Rock
+	Tooltip: Throws a gravity affected boulder that explodes into shrapnel and riften sparks on enemy hits.
+}
+
+WhisperingTome: {
+	DisplayName: Whispering Tome
+	Tooltip: Fires a rapid stream of riften sparks.
+}
+
+CarbonizedFlesh: {
+	DisplayName: Carbonized Flesh
+	Tooltip: Flesh that has sat so long under the intense riften energy that it has charred completely without burning.
+}
+
+SunscorchedCinder: {
+	DisplayName: Sunscorched Cinder
+	Tooltip: Ash from recently charred organic matter that has been electrified by riften critters.
 }

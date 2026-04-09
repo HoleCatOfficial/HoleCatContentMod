@@ -51,7 +51,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             SoundEngine.PlaySound(DTAssetLib.ChargeBreak, Projectile.Center);
             Vector2 d = Main.MouseWorld - player.MountedCenter;
             d.Normalize();
-            Projectile.NewProjectile(Projectile.GetSource_Misc("SpearFullExtension"), Projectile.Center, d * 12, ModContent.ProjectileType<RiftStarFriendly>(), (int)(Projectile.damage * 0.25f), 16, Projectile.owner);
+            Projectile.NewProjectile(Projectile.GetSource_Misc("SpearFullExtension"), Projectile.Center, d * 12, ModContent.ProjectileType<RiftSpark>(), (int)(Projectile.damage * 0.25f), 16, Projectile.owner);
             flag1 = true;
         }
 

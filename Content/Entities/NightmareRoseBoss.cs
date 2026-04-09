@@ -1182,7 +1182,7 @@ namespace DestroyerTest.Content.Entities
                             NPC.netUpdate = true;
                             currentState = AttackState.KillIdle;
                             BorderActive = false;
-                            Main.NewText("Get away from the Rose!!", ColorLib.Soul);
+                            //Main.NewText("Get away from the Rose!!", ColorLib.Soul);
                             PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp>(), NPC.Center, Vector2.Zero, Color.White, 0.001f, 1);
                         }
                     }
@@ -1214,7 +1214,7 @@ namespace DestroyerTest.Content.Entities
                         }
                         if (DeathIdleTimer <= 0)
                         {
-                            Projectile.NewProjectile(Entity.GetSource_FromThis(), NPCHead, Vector2.Zero, ModContent.ProjectileType<SoulExplosion>(), 200, 18);
+                            //Projectile.NewProjectile(Entity.GetSource_FromThis(), NPCHead, Vector2.Zero, ModContent.ProjectileType<SoulExplosion>(), 200, 18);
                             if (cfg.EnableDebugMessages)
                             {
                                 Mod.Logger.Info($"Attempted Kill. Death Timer: {DeathIdleTimer}");

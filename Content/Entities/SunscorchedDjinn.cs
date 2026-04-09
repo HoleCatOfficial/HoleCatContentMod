@@ -221,5 +221,10 @@ namespace DestroyerTest.Content.Entities
                 }
             }
         }
+
+        public override void ModifyNPCLoot(NPCLoot npcLoot)
+        {
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<SunscorchedCinder>(), 2, 2, 10));
+        }
     }
 }

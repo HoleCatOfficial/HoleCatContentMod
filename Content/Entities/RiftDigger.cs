@@ -1,15 +1,17 @@
+using DestroyerTest.Common;
 using DestroyerTest.Content.Entities;
+using DestroyerTest.Content.Resources;
+using DestroyerTest.Content.RiftBiome;
 using Microsoft.Xna.Framework;
+using System;
 using System.IO;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.Audio;
-using System;
-using DestroyerTest.Content.RiftBiome;
 using Terraria.ModLoader.Utilities;
-using DestroyerTest.Common;
 
 namespace DestroyerTest.Content.Entities
 {
@@ -112,7 +114,12 @@ namespace DestroyerTest.Content.Entities
 				// Additional AI logic for movement or other behaviors can go here
 			}
 		}
-	}
+
+        public override void ModifyNPCLoot(NPCLoot npcLoot)
+        {
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CarbonizedFlesh>(), 3, 6, 8));
+        }
+    }
 
 	internal class RiftDiggerBody : WormBody
 	{

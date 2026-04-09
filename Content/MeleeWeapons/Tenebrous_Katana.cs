@@ -52,13 +52,7 @@ namespace DestroyerTest.Content.MeleeWeapons
 
         public override void UpdateInventory(Player player)
         {
-			var Config = ModContent.GetInstance<DTConfig>();
-			if (Config.UnnerfTenebrousKatana == true) {
-				Item.damage = 3680;
-			} 
-			if (Config.UnnerfTenebrousKatana == false) {
-				Item.damage = 200;
-			}
+
         }
 
         public override void AddRecipes() {
