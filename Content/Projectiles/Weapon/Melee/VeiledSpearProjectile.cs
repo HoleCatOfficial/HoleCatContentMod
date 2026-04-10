@@ -122,6 +122,13 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             return false; // Don't execute vanilla AI.
         }
 
+        public override void AI()
+        {
+            Vector2 d = Main.MouseWorld - player.MountedCenter;
+            Projectile.rotation = d.ToRotation() - MathHelper.PiOver4;
+        }
+        
+
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             SoundEngine.PlaySound(DTAssetLib.Impacts.FleshHit with { PitchVariance = 0.2f });

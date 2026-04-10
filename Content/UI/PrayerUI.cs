@@ -181,18 +181,6 @@ namespace DestroyerTest.Content.UI
                             Cooldown = 600;
                         }
                     }
-                    else if (SlotsHaveBlessingItems(DTBlessings.Persistence))
-                    {
-                        if (Cooldown <= 0)
-                        {
-                            HerbItem[0].TurnToAir();
-                            OfferingItem[0].TurnToAir();
-                            P.ApplyBlessing(DTBlessings.Persistence);
-
-                            SoundEngine.PlaySound(Accept);
-                            Cooldown = 600;
-                        }
-                    }
                     else if (SlotsHaveBlessingItems(DTBlessings.Enchanted))
                     {
                         if (Cooldown <= 0)

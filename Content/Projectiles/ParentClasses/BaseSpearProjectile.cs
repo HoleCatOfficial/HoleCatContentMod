@@ -1,4 +1,6 @@
-﻿using DestroyerTest.Common;
+﻿using BreadLibrary.Core.Utilities;
+using DestroyerTest.Common;
+using FargowiltasSouls.Common.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -23,6 +25,9 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         public virtual SoundStyle Woosh { get; set; } = DTAssetLib.SwordSounds.Woosh;
 
         public Asset<Texture2D> Glowmask = null;
+
+        public virtual float MaxExtension => 110f;
+        public virtual float MinExtension => 1f;
 
         /// <summary>
         /// Use this in place of SetStaticDefaults.
@@ -87,8 +92,6 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         public Vector2 targetAngle = Vector2.Zero;
         public int AITimer = 0;
 
-        public float MinDistance = 10f;
-        public float MaxDistance = 110f;
 
         public override void AI()
         {
@@ -99,6 +102,8 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
                 targetAngle = (Main.MouseWorld - Owner.MountedCenter);
 
                 Projectile.rotation = targetAngle.ToRotation() + MathHelper.PiOver4;
+
+                
             }
 
             if (!Owner.active || Owner.dead || Owner.noItems || Owner.CCed || !Owner.controlUseItem)
@@ -141,21 +146,21 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
             if (Projectile.spriteDirection > 0)
             {
-                Draworigin = new Vector2(0, texture.Height);
+                //Draworigin = new Vector2(0, texture.Height);
                 effects = SpriteEffects.None;
             }
             else
             {
-                Draworigin = new Vector2(0, texture.Height);
+                //Draworigin = new Vector2(0, texture.Height);
                 effects = SpriteEffects.None;
             }
 
             DrawUnder();
 
-            Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, null, Projectile.GetAlpha(lightColor) * Projectile.Opacity, (Projectile.rotation) + RotationManualOffset, Draworigin, Projectile.scale, effects, 0);
+            Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, null, Projectile.GetAlpha(lightColor) * Projectile.Opacity, (Projectile.rotation) + RotationManualOffset, texture.Size() / 2, Projectile.scale, effects, 0);
             if (Glowmask != null)
             {
-                Main.EntitySpriteDraw(Glowmask.Value, Projectile.Center - Main.screenPosition, null, Color.White * Projectile.Opacity, (Projectile.rotation) + RotationManualOffset, Draworigin, Projectile.scale, effects, 0);
+                Main.EntitySpriteDraw(Glowmask.Value, Projectile.Center - Main.screenPosition, null, Color.White * Projectile.Opacity, (Projectile.rotation) + RotationManualOffset, texture.Size() / 2, Projectile.scale, effects, 0);
             }
 
             DrawOver();
@@ -165,7 +170,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
-            Vector2 start = Owner.MountedCenter;
+            Vector2 start = Projectile.Center - (Projectile.Size / 2).RotatedBy(Projectile.rotation);
             Vector2 end = start + Projectile.rotation.ToRotationVector2() * ((Projectile.Size.Length()) * Projectile.scale);
             float collisionPoint = 0f;
             return Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), start, end, 15f * Projectile.scale, ref collisionPoint);
@@ -180,16 +185,11 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         public void SetPosition()
         {
             Owner.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, Projectile.rotation - MathHelper.ToRadians(90f));
-            Vector2 armPosition = Owner.GetFrontHandPosition(Player.CompositeArmStretchAmount.Full, Projectile.rotation - (float)Math.PI / 2);
 
-            if (Owner.gravDir == -1f)
-            {
-                Projectile.rotation = 0f - Projectile.rotation;
-                armPosition.Y = Owner.Bottom.Y + (Owner.position.Y - armPosition.Y);
-            }
-
-            armPosition.Y += Owner.gfxOffY;
-            Projectile.Center = armPosition;
+            float DistTraveled = MaxExtension - MinExtension;
+            float CurrentExtension = MathHelper.Lerp(MinExtension, MaxExtension, Utilities.Convert01To010(DistTraveled / MaxExtension));
+            Projectile.Center = Owner.MountedCenter + Owner.RotatedRelativePoint(new Vector2(CurrentExtension, 0f).RotatedBy(targetAngle.ToRotation()), false, true);
+            
             Projectile.scale = 1.2f * Owner.GetAdjustedItemScale(Owner.HeldItem);
 
             Owner.heldProj = Projectile.whoAmI;
