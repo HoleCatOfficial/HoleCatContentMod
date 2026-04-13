@@ -53,6 +53,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 		public float trailOffset = 0f;
 		public override bool PreDraw(ref Color lightColor)
 		{
+			BuildRainbow();
 			lightColor = Main.DiscoColor;
 			trailOffset += 0.04f;
 
@@ -72,8 +73,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
 					for (int i = TrailPositions.Count - 1; i > 0; i--)
 					{
-						float t = 1f - (i / (float)TrailPositions.Count); // fade toward tail
-						Color b = lightColor * t;
+						float t = 1f - (i / (float)TrailPositions.Count);
+						Color b = GetTrailColor(t) * t;
 
 						Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
 						Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * 20;
@@ -96,16 +97,51 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
 			Opus.DrawGlowOnProj(Projectile, lightColor, true);
 
-			Opus.ReturnToDefaultDrawing(spriteBatch);
+            Opus.DrawTextureOnProj(DTAssetLib.Star(3), Projectile, Main.DiscoColor, true, 0f, 0.9f, 0.9f);
 
-			Opus.DrawTextureOnProj(DTAssetLib.Star(3), Projectile, Color.White, true, 0f, 0.9f, 0.9f);
+            Opus.DrawTextureOnProj(DTAssetLib.Star(3), Projectile, Color.White, true, 0f, 0.4f, 0.4f);
+
+            Opus.ReturnToDefaultDrawing(spriteBatch);
+
+			
 
 			return false;
 		}
 
+        public List<Color> RainbowColormap = new List<Color>();
+
+		private bool b1 = false;
+        public void BuildRainbow()
+        {
+			RainbowColormap.Clear();
+
+            Vector3 C = Main.rgbToHsl(Main.DiscoColor);
+
+            for (int i = 0; i < 20; i++)
+            {
+                float shiftedHue = (C.X + i * 0.05f) % 1f; //X = H
+                RainbowColormap.Add(Main.hslToRgb(shiftedHue, C.Y, C.Z)); //C.Y = S, and C.Z = L
+            }
+        }
+
+        private Color GetTrailColor(float t)
+        {
+            if (RainbowColormap.Count == 0)
+                return Color.White;
+
+            t = MathHelper.Clamp(t, 0f, 1f);
+
+            float scaled = t * (RainbowColormap.Count - 1);
+            int low = (int)scaled;
+            int high = Math.Min(low + 1, RainbowColormap.Count - 1);
+
+            float lerp = scaled - low;
+            return Color.Lerp(RainbowColormap[low], RainbowColormap[high], lerp);
+        }
+
         public override bool? CanHitNPC(NPC target)
         {
-            return DelayTimer >= 10;
+            return DelayTimer >= 20;
         }
 
 		public List<Vector2> TrailPositions = new();
@@ -212,10 +248,13 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 			Dust.NewDust(Projectile.position, Projectile.Hitbox.Width, Projectile.Hitbox.Height, DustID.FireworksRGB, Main.rand.NextFloat(-1, 1.1f), Main.rand.NextFloat(-1, 1.1f), 0, Main.DiscoColor, 2f);
 		}
 
-        public override void OnKill(int timeLeft)
-        {
-			Dust.NewDust(Projectile.position, Projectile.Hitbox.Width, Projectile.Hitbox.Height, DustID.TintableDustLighted, Main.rand.NextFloat(-1, 1.1f), Main.rand.NextFloat(-1, 1.1f), 0, Main.DiscoColor, 2f);
-        }
+		public override void OnKill(int timeLeft)
+		{
+			for (int i = 0; i < 6; i++)
+			{
+				Dust.NewDust(Projectile.position, Projectile.Hitbox.Width, Projectile.Hitbox.Height, DustID.TintableDustLighted, Main.rand.NextFloat(-1, 1.1f), Main.rand.NextFloat(-1, 1.1f), 0, Main.DiscoColor, 2f);
+			}
+		}
 
     }
 }

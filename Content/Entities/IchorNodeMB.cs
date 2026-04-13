@@ -16,6 +16,7 @@ using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss;
 using DestroyerTest.Content.Projectiles.Boss.NodeBoss.Ichor;
+using GlowmaskHelper.Content;
 using InnoVault;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
@@ -37,6 +38,7 @@ namespace DestroyerTest.Content.Entities
 {
 
     [AutoloadBossHead]
+    [AutoloadGlowmask]
     public class IchorNodeMB : ModNPC
     {
         public override string BossHeadTexture => "DestroyerTest/Content/Entities/IchorNode_Head_Boss";
@@ -125,13 +127,13 @@ namespace DestroyerTest.Content.Entities
 
         public override bool? CanBeHitByItem(Player player, Item item)
         {
-            return !DTUtils.NodeCharmEquipped && !(DormantNPCKillTally < DormantNPCKillRequirement);
+            return !DTFlags.NodeCharmEquipped && !(DormantNPCKillTally < DormantNPCKillRequirement);
         }
 
         public override bool? CanBeHitByProjectile(Projectile projectile)
         {
             if (projectile.friendly)
-                return !DTUtils.NodeCharmEquipped && !(DormantNPCKillTally < DormantNPCKillRequirement); ; // prevent friendly damage when charm is equipped
+                return !DTFlags.NodeCharmEquipped && !(DormantNPCKillTally < DormantNPCKillRequirement); ; // prevent friendly damage when charm is equipped
 
             // hostile projectiles behave normally
             return null;
@@ -252,7 +254,7 @@ namespace DestroyerTest.Content.Entities
                             NPC.dontTakeDamage = false;
                         }
                         
-                        if (NPC.justHit && !DTUtils.NodeCharmEquipped && !(DormantNPCKillTally < DormantNPCKillRequirement))
+                        if (NPC.justHit && !DTFlags.NodeCharmEquipped && !(DormantNPCKillTally < DormantNPCKillRequirement))
                         {
                             CurrentAttack = AttackState.Idle;
                         }
@@ -411,7 +413,7 @@ namespace DestroyerTest.Content.Entities
             {
                 if (p.Center.Distance(NPC.Center) < 1200)
                 {
-                    if (DTUtils.NodeCharmEquipped)
+                    if (DTFlags.NodeCharmEquipped)
                     {
                         p.AddBuff(ModContent.BuffType<NodePower>(), 60);
                     }

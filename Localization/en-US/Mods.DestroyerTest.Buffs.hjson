@@ -447,3 +447,8 @@ DescendantInferno: {
 	DisplayName: Descendant Inferno
 	Description: Mods.DestroyerTest.Buffs.DescendantInferno.Description
 }
+
+WyvernTailTagBuff: {
+	DisplayName: Wyvern Tail Tag Buff
+	Description: Mods.DestroyerTest.Buffs.WyvernTailTagBuff.Description
+}

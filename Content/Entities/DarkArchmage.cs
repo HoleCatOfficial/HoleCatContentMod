@@ -64,7 +64,7 @@ namespace DestroyerTest.Content.Entities
 
             bestiaryEntry.Info.AddRange([
 				// Sets the spawning conditions of this NPC that is listed in the bestiary.
-				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.TheCrimson
+				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.TheCorruption
             ]);
         }
 
@@ -101,10 +101,9 @@ namespace DestroyerTest.Content.Entities
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
-            DTUtils Utility = new DTUtils();
-            if (spawnInfo.Player.ZoneCorrupt && (spawnInfo.Player.ZoneDirtLayerHeight || spawnInfo.Player.ZoneRockLayerHeight) == true && Utility.TenebrisCanSpawnInWorldEvilBiome == true)
+            if (spawnInfo.Player.ZoneCorrupt && (spawnInfo.Player.ZoneDirtLayerHeight || spawnInfo.Player.ZoneRockLayerHeight) == true && DTFlags.instance.TenebrisCanSpawnInWorldEvilBiome == true)
             {
-                return 0.1f;
+                return 0.8f;
             }
             return 0f;
         }

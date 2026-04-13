@@ -102,7 +102,7 @@ namespace DestroyerTest.Content.Buffs
         public override void PostUpdateBuffs()
         {
             
-            if (Empower && DTUtils.NodeCharmEquipped)
+            if (Empower && DTFlags.NodeCharmEquipped)
             {
                 Player.GetDamage(DamageClass.Generic) *= 1.50f;
             }
@@ -111,7 +111,7 @@ namespace DestroyerTest.Content.Buffs
         public override void UpdateLifeRegen()
         {
             
-            if (Empower && DTUtils.NodeCharmEquipped)
+            if (Empower && DTFlags.NodeCharmEquipped)
             {
                 Player.lifeRegen += 15;
             }
@@ -119,7 +119,7 @@ namespace DestroyerTest.Content.Buffs
         
         public override void ModifyWeaponCrit(Item item, ref float crit)
         {
-            if (Empower && DTUtils.NodeCharmEquipped)
+            if (Empower && DTFlags.NodeCharmEquipped)
             {
                 if (item == Player.HeldItem)
                 {

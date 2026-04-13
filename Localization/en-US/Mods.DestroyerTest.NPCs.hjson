@@ -29,8 +29,21 @@ WyvernCorpseHead: {
 	DisplayName: The Great Wyvern's Corpse
 	InternalName: WyvernCorpse
 	DespawnMessage: The Wyvern escapes to look for more food...
-	BestiaryEntry1: To Be Written.
+	BestiaryEntry1:
+		'''
+		A once magnificent wonder of the open skies. It was the paragon of truth, innocence, and sanity up until the moment it fell from the sky.
+		The Great Wyvern had amassed a devout following among many societies, as its generosity and wisdom were near unmatched.
+		And so, to dare harm, let alone slay, such a divine figure is unforgivable. A crime without equal and beyond compare, even to genocide.
+		Despite that, someone actually took it upon themselves to shoot The Great Wyvern as it flew over, sending it careening into the Crimson.
+		'''
 	Hint: Not much remains of the Great Wyvern, but if you can repurpose the small amounts of its soul inside the [i:DestroyerTest/Item_BlessingAltar] Blessing Altar, you may be able to draw it to you.
+	BestiaryEntry2:
+		'''
+		The crimson hivemind, whos members were too feeble-minded to understand divinity, wasted no time gorging on the Wyvern's Bountiful feathers and fur.
+		The flesh though, they could not eat. Sinking their teeth and mandibles into it would take the same amount of effort as trying to compress a star into the size of a grain of salt.
+		So now, only the flesh and bones remain, only consumable by the Crimson itself, and anyone of divine stature themselves.
+		The meat has hardened into crimstone, and the bones have dried and hardened stronger than lizard bricks.
+		'''
 	Bestiary: Mods.DestroyerTest.NPCs.WyvernCorpseHead.Bestiary
 }
 

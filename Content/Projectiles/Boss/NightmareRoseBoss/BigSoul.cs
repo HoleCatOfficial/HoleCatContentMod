@@ -71,36 +71,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
 
             Opus.DrawGlowOnProj(Projectile, lightColor, false, 0);
 
-            DTOptimizationsConfig OptCfg = ModContent.GetInstance<DTOptimizationsConfig>();
-            if (!OptCfg.DisableExcessTrails)
-            {
-                Opus.StartSpriteBatchForTrails(sb, BlendState.NonPremultiplied, SpriteSortMode.Immediate);
-
-                if (TrailPositions.Count > 1)
-                {
-                    List<ColoredVertex> ve = new List<ColoredVertex>();
-                    float a = 0;
-
-                    for (int i = TrailPositions.Count - 1; i > 0; i--)
-                    {
-                        float t = 1f - (i / (float)TrailPositions.Count);
-                        Color b = lightColor * t;
-
-                        Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
-                        Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * 60;
-                        Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * 60;
-
-                        DTUtils.AddStrips(ve, TrailPositions, i, offset, offset2, t, b, trailOffset);
-                    }
-
-                    GraphicsDevice gd = Main.graphics.GraphicsDevice;
-                    if (ve.Count >= 3)
-                    {
-                        gd.Textures[0] = DTAssetLib.SoulStreak.Value;
-                        gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2);
-                    }
-                }
-            }
+            DTTrail.DrawTrail(sb, DTAssetLib.SoulStreak.Value, TrailPositions, TrailRotations, 22, Color.Lavender, trailOffset, 5);
 
             Opus.ReturnToDefaultDrawing(sb);
 
@@ -157,7 +128,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
 
         public override void OnKill(int timeLeft)
         {
-            int numProjectiles = 20;
+            int numProjectiles = 14;
             float rotationStep = MathHelper.TwoPi / numProjectiles;
 
             SoundEngine.PlaySound(SoundID.Item14, Projectile.Center);

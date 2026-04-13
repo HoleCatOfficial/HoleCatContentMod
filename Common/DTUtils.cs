@@ -42,34 +42,33 @@ using Terraria.WorldBuilding;
 
 namespace DestroyerTest.Common
 {
-    public class DTUtils
+    public class DTFlags : ModSystem
     {
-        public static DTUtils instance = new DTUtils();
+        public static DTFlags instance = ModContent.GetInstance<DTFlags>();
+
         public static bool PromiseEquipped = false;
         public static bool StellarGogglesEquipped = false;
         public static bool NodeCharmEquipped = false;
         public static bool ConsumeWyvernSoul = false;
         public static bool ConsumeRoseSoul = false;
-        /// <summary>
-        /// An example of a Color Palette. It has a name and the required 5 colors.
-        /// <para/> The first color is the blue on the tip of the hood,
-        /// <para/> the second color is the shaded portion of the hood fabric,
-        /// <para/> the third color is the ruby color,
-        /// <para/> the fourth color is the gold color.
-        /// </summary>
-        public static readonly ColorPalette HoleCatColors = new("HoleCatColors", new Color(105, 161, 182), new Color(220, 200, 200), new Color(192, 67, 67), new Color(203, 179, 73), new Color(255, 255, 255));
+        public bool TenebrisCanSpawnInWorldEvilBiome = /*(DownedBossSystem.downedCultistBoss && !WorldGen.crimson)*/ false;
+        public bool TenebrisCanSpawnInShimmerBiome = /*(DownedBossSystem.downedCultistBoss && !WorldGen.crimson)*/ false;
+    }
+    public class DTUtils
+    {
+        //public static DTUtils instance = ModContent.GetInstance<DTUtils>();
 
-        public int[] TenebrisBuffImmunities;
-        public bool TenebrisCanSpawnInWorldEvilBiome = (DownedBossSystem.downedCultistBoss && !WorldGen.crimson);
-        public bool TenebrisCanSpawnInShimmerBiome = (DownedBossSystem.downedCultistBoss && !WorldGen.crimson);
+        private static DTUtils _instance;
 
+        public static DTUtils instance => _instance ??= new DTUtils();
+        
         public static string GetModNPCLocalizationEntry(ModNPC npc, int variant = 1)
         {
             return Language.GetTextValue($"Mods.DestroyerTest.NPCs.{npc.Name}.BestiaryEntry{variant}");
         }
 
         public static string NoTexture = "DestroyerTest/Content/Extras/NoTexture";
-        
+        public static int[] TenebrisBuffImmunities;
 
         /// <summary>
         /// Contrary to what the name suggests, this code was first used in the Hollow Star code, and the name comes from this effect only being used for projectiles used by Constitution.
@@ -585,7 +584,9 @@ namespace DestroyerTest.Common
             }
         }
 
+        public static float[] TooltipScaleMult = new float[9999];
 
+        public static bool[] isSpecialSwingSword = new bool[9999];
         
     }
 
@@ -786,7 +787,7 @@ namespace DestroyerTest.Common
     {
         public override void ResetEffects()
         {
-            DTUtils.NodeCharmEquipped = false;
+            DTFlags.NodeCharmEquipped = false;
         }
 
     }
@@ -867,10 +868,9 @@ namespace DestroyerTest.Common
 
     public class DTUtilLoading : ModSystem
     {
-        DTUtils Utility = new DTUtils();
         public override void Load()
         {
-            Utility.TenebrisBuffImmunities = new int[]
+            DTUtils.TenebrisBuffImmunities = new int[]
             {
                 ModContent.BuffType<ShimmeringFlames>(),
                 ModContent.BuffType<HaepiensInferno>(),
@@ -895,7 +895,7 @@ namespace DestroyerTest.Common
     {
         public override void PostUpdatePlayers()
         {
-            DTUtils.StellarGogglesEquipped = false;
+            DTFlags.StellarGogglesEquipped = false;
         }
     }
 

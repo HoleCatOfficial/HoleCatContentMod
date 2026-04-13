@@ -23,7 +23,7 @@ namespace DestroyerTest.Content.Equips
 
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
-			DTUtils.StellarGogglesEquipped = true;
+			DTFlags.StellarGogglesEquipped = true;
 		}
 	}
 }

@@ -11,6 +11,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using OpusLib;
 using System.Collections.Generic;
+using OpusLib.Content.Helpers;
 
 namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
 {
@@ -63,7 +64,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
             Projectile.hostile = true; // Can the projectile deal damage to the player?
             Projectile.ignoreWater = true; // Does the projectile's speed be influenced by water?
             Projectile.light = 1f; // How much light emit around the projectile
-            Projectile.timeLeft = 300; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
+            Projectile.timeLeft = 600; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
             Projectile.tileCollide = false;
             Projectile.penetrate = 1;
         }
@@ -84,6 +85,9 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
         Vector2 SoulCenter;
 
         public float trailOffset = 0f;
+        public int WOffset = 0;
+
+        public float WarnOpacity = 0f;
         public override bool PreDraw(ref Color lightColor)
         {
             SpriteBatch sb = Main.spriteBatch;
@@ -91,6 +95,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
             DTUtils Utility = new DTUtils();
             lightColor = Color.Lavender;
             trailOffset += 0.04f;
+            WOffset += 3;
 
             // Calculate source rectangle for current frame
             int frameHeight = texture.Value.Height / Main.projFrames[Projectile.type];
@@ -104,40 +109,21 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
             {
                 SoulCenter = Projectile.Center;
             }
-            TelegraphLine(sb, SoulCenter);
 
-            DTOptimizationsConfig OptCfg = ModContent.GetInstance<DTOptimizationsConfig>();
-            if (!OptCfg.DisableExcessTrails)
+            Vector2 ScrCTR = Main.screenPosition + new Vector2(Main.screenWidth / 2, Main.screenHeight / 2);
+            Line l = new Line(new Vector2(InitialPos.X, InitialPos.Y - 4000), new Vector2(InitialPos.X, InitialPos.Y));
+            if (Projectile.ai[2] == 1)
             {
-                Opus.StartSpriteBatchForTrails(sb, BlendState.NonPremultiplied, SpriteSortMode.Immediate);
-
-                if (TrailPositions.Count > 1)
-                {
-                    List<ColoredVertex> ve = new List<ColoredVertex>();
-                    float a = 0;
-
-                    for (int i = TrailPositions.Count - 1; i > 0; i--)
-                    {
-                        float t = 1f - (i / (float)TrailPositions.Count);
-                        Color b = lightColor * t;
-
-                        Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
-                        Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * 40;
-                        Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * 40;
-
-                        DTUtils.AddStrips(ve, TrailPositions, i, offset, offset2, t, b, trailOffset);
-                    }
-
-                    GraphicsDevice gd = Main.graphics.GraphicsDevice;
-                    if (ve.Count >= 3)
-                    {
-                        gd.Textures[0] = DTAssetLib.SoulStreak.Value;
-                        gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2);
-                    }
-                }
+                l = new Line(new Vector2(InitialPos.X - 4000, InitialPos.Y), new Vector2(InitialPos.X, InitialPos.Y));
             }
+            if (Projectile.ai[2] == 2)
+            {
+                l = new Line(new Vector2(InitialPos.X + 4000, InitialPos.Y), new Vector2(InitialPos.X, InitialPos.Y));
+            }
+            DTUtils.instance.ScrollingTextureSpine(l, DTAssetLib.SoulStreak, Color.MediumPurple * WarnOpacity, Main.spriteBatch, BlendState.Additive, WOffset, 1f);
 
-            Opus.DrawGlowOnProj(Projectile, lightColor, false, 0);
+
+            DTTrail.DrawTrail(sb, DTAssetLib.SoulStreak.Value, TrailPositions, TrailRotations, 16, Color.Lavender, trailOffset, 5);
             
             Opus.ReturnToDefaultDrawing(sb);
 
@@ -146,71 +132,17 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
             return false;
         }
 
-        public void TelegraphLine(SpriteBatch SB, Vector2 soulPos)
-        {
-            float totalLength = 3600f;
-            Vector2 start = IntialPos;
-
-
-            float opacity = 0f;
-            if (Projectile.timeLeft > 210)
-            {
-                // fade in
-                float fadeProgress = (270f - Projectile.timeLeft) / 30f;
-                opacity = MathHelper.Lerp(0f, 1f, fadeProgress);
-            }
-            else if (Projectile.timeLeft < 30)
-            {
-                float fadeProgress = (30f - Projectile.timeLeft) / 30f; // goes 0 → 1 between 30 and 0
-                opacity = MathHelper.Lerp(1f, 0f, fadeProgress);
-            }
-            else
-            {
-                // fully visible in between
-                opacity = 1f;
-            }
-
-
-            if (Projectile.active)
-                {
-                    // Direction from start to soul
-                    Vector2 dir = soulPos - start;
-                    if (dir != Vector2.Zero)
-                        dir.Normalize();
-
-                    float segmentLength = DTAssetLib.Line(4).Value.Height; // reuse asset’s height as step
-                    int numSegments = (int)(totalLength / segmentLength);
-
-                    float rotation = dir.ToRotation() - MathHelper.PiOver2;
-                    // Pi/2 offset because your texture seems "upward" by default
-
-                    for (int i = 0; i < numSegments; i++)
-                    {
-                        Vector2 segmentPos = start + dir * (i * segmentLength);
-                        Vector2 drawPos = segmentPos - Main.screenPosition;
-
-                        SB.Draw(
-                            DTAssetLib.Line(4).Value,
-                            drawPos,
-                            null,
-                            Color.MediumPurple * opacity,
-                            rotation,
-                            new Vector2(DTAssetLib.Line(4).Value.Width / 2f, 0f), // middle-bottom origin
-                            1f,
-                            SpriteEffects.None,
-                            0f
-                        );
-                    }
-                }
-        }
-
-
-
-        public Vector2 IntialPos;
+        public Vector2 InitialPos;
 
         public override void OnSpawn(IEntitySource source)
         {
-            IntialPos = Projectile.Center;
+            InitialPos = Projectile.Center;
+            WarnOpacity = 1f;
+        }
+
+        public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
+        {
+            behindNPCsAndTiles.Add(index);
         }
 
         public List<Vector2> TrailPositions = new();
@@ -254,6 +186,11 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
             float maxDetectRadius = 120f; // The maximum radius at which a projectile can detect a target
 
             Projectile.rotation = Projectile.velocity.ToRotation() - MathHelper.PiOver2;
+
+            if (WarnOpacity > 0)
+            {
+                WarnOpacity -= 0.02f;
+            }
 
             // First, we find a homing target if we don't have one
             if (HomingTarget == null)
@@ -328,5 +265,25 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
             Dust.NewDust(Projectile.Center, Projectile.width, Projectile.height, DustID.DemonTorch, Projectile.velocity.X * 0.7f, Projectile.velocity.Y * 0.7f, 0, default, 1);
         }
 
+    }
+
+    public class TormentedSoulWarnLine : ModSystem
+    {
+        public override void PostDrawTiles()
+        {
+            /*
+            foreach (Projectile soul in Main.projectile)
+            {
+                if (soul.active && soul.ModProjectile is TormentedSoul Soul)
+                {
+                    //Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+                    //Main.spriteBatch.End();
+            
+                    Line l = new Line(new Vector2(Soul.InitialPos.X, Soul.InitialPos.Y - 4000), new Vector2(Soul.InitialPos.X, Soul.InitialPos.Y));
+                    DTUtils.instance.ScrollingTextureSpine(l, DTAssetLib.SoulStreak, Color.MediumPurple * Soul.WarnOpacity, Main.spriteBatch, BlendState.Additive, Soul.WOffset, 1f);
+                }
+            }
+            */
+        }
     }
 }

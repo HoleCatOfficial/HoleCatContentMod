@@ -9,6 +9,7 @@ using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss;
 using DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame;
+using GlowmaskHelper.Content;
 using InnoVault;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
@@ -34,6 +35,7 @@ namespace DestroyerTest.Content.Entities
 {
 
     [AutoloadBossHead]
+    [AutoloadGlowmask]
     public class CursedFlameNodeMB : ModNPC
     {
         public override string BossHeadTexture => "DestroyerTest/Content/Entities/CursedFlameNode_Head_Boss";
@@ -67,7 +69,7 @@ namespace DestroyerTest.Content.Entities
             NPC.noTileCollide = true;
             NPC.knockBackResist = 0f;
             NPC.timeLeft = 150000;
-            NPC.boss = true;
+            NPC.boss = false;
             NPC.npcSlots = 1f;
             NPC.netUpdate = true;
             NPC.netID = ModContent.NPCType<CursedFlameNodeMB>();
@@ -127,13 +129,13 @@ namespace DestroyerTest.Content.Entities
         }
         public override bool? CanBeHitByItem(Player player, Item item)
         {
-            return !DTUtils.NodeCharmEquipped && !(DormantNPCKillTally < DormantNPCKillRequirement);
+            return !DTFlags.NodeCharmEquipped && !(DormantNPCKillTally < DormantNPCKillRequirement);
         }
 
         public override bool? CanBeHitByProjectile(Projectile projectile)
         {
             if (projectile.friendly)
-                return !DTUtils.NodeCharmEquipped && !(DormantNPCKillTally < DormantNPCKillRequirement); ; // prevent friendly damage when charm is equipped
+                return !DTFlags.NodeCharmEquipped && !(DormantNPCKillTally < DormantNPCKillRequirement); ; // prevent friendly damage when charm is equipped
 
             // hostile projectiles behave normally
             return null;
@@ -202,19 +204,22 @@ namespace DestroyerTest.Content.Entities
 
             TryFindTileBelow();
 
-            if (!Main.dedServ)
+            if (player.Distance(NPC.Center) < 1200)
             {
-                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/NodeBoss");
+                if (!Main.dedServ)
+                {
+                    Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/NodeBoss");
+                }
+                if (!Main.dedServ && CurrentAttack == AttackState.Dormant && muscfg.NodeIdleMusic == true)
+                {
+                    Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/NodeIdle");
+                }
+                if (!Main.dedServ && CurrentAttack == AttackState.Dormant && muscfg.NodeIdleMusic == false)
+                {
+                    Music = MusicID.Corruption;
+                }
             }
-            if (!Main.dedServ && CurrentAttack == AttackState.Dormant && muscfg.NodeIdleMusic == true)
-            {
-                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/NodeIdle");
-            }
-            if (!Main.dedServ && CurrentAttack == AttackState.Dormant && muscfg.NodeIdleMusic == false)
-            {
-                Music = MusicID.Corruption;
-            }
-
+     
             if (Main.expertMode && !Main.masterMode)
             {
                 StarShootID = ModContent.ProjectileType<CursedNodeCrystal>();
@@ -263,7 +268,7 @@ namespace DestroyerTest.Content.Entities
                             NPC.dontTakeDamage = false;
                         }
 
-                        if (NPC.justHit && !DTUtils.NodeCharmEquipped && !(DormantNPCKillTally < DormantNPCKillRequirement))
+                        if (NPC.justHit && !DTFlags.NodeCharmEquipped && !(DormantNPCKillTally < DormantNPCKillRequirement))
                         {
                             CurrentAttack = AttackState.Idle;
                         }
@@ -271,6 +276,7 @@ namespace DestroyerTest.Content.Entities
                     }
                 case AttackState.Idle:
                     {
+                        NPC.boss = true;
                         NPC.npcSlots = 10f;
                         KeepToPlayer(player.Center + new Vector2(0, -200));
                         if (IdleTimer > 0)
@@ -448,7 +454,7 @@ namespace DestroyerTest.Content.Entities
             {
                 if (p.Center.Distance(NPC.Center) < 1200)
                 {
-                    if (DTUtils.NodeCharmEquipped)
+                    if (DTFlags.NodeCharmEquipped)
                     {
                         p.AddBuff(ModContent.BuffType<NodePower>(), 60);
                     }

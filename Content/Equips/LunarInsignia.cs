@@ -44,9 +44,9 @@ namespace DestroyerTest.Content.Equips
 			ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend) {
 			ascentWhenFalling = 1f;
 			ascentWhenRising = 1f;
-			maxCanAscendMultiplier = 2.5f;
-			maxAscentMultiplier = 2.5f;
-			constantAscend = 0.10f;
+			maxCanAscendMultiplier = 1.5f;
+			maxAscentMultiplier = 1.5f;
+			constantAscend = 0.08f;
 		}
 
 		public override void AddRecipes() {

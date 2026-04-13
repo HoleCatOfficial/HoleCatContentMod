@@ -343,7 +343,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
                 {
                     origin = new Vector2(0, texture.Height);
                     effects = SpriteEffects.None;
-                    rotationOffset = MathHelper.ToRadians(50f);
+                    rotationOffset = MathHelper.ToRadians(45f);
                 }
             }
             else
@@ -352,7 +352,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
                 {
                     origin = new Vector2(texture.Width, texture.Height);
                     effects = SpriteEffects.FlipHorizontally;
-                    rotationOffset = MathHelper.ToRadians(135);
+                    rotationOffset = MathHelper.ToRadians(135f);
                 }
                 else
                 {
@@ -430,7 +430,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
             armPosition.Y += Owner.gfxOffY;
             Projectile.Center = armPosition;
-            Projectile.scale = 1.2f * Owner.GetAdjustedItemScale(Owner.HeldItem);
+            Projectile.scale = 1f * Owner.GetAdjustedItemScale(Owner.HeldItem) * ScaleMult;
 
             Owner.heldProj = Projectile.whoAmI;
         }

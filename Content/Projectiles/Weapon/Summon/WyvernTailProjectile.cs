@@ -1,4 +1,5 @@
 
+using DestroyerTest.Content.Buffs.Whip;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
@@ -38,14 +39,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             Player me = Main.player[Projectile.owner];
-            target.AddBuff(BuffID.Ichor, 240);
+            target.AddBuff(ModContent.BuffType<WyvernTailTagBuff>(), 300);
             Main.player[Projectile.owner].MinionAttackTargetNPC = target.whoAmI;
-            Projectile.damage = (int)(Projectile.damage * 0.85f); // Multihit penalty. Decrease the damage the more enemies the whip hits.
-			if (Main.rand.NextBool(40))
-			{
-				me.Heal(10);
-			}
-            
 		}
 
 		// This method draws a line between all points of the whip, in case there's empty space between the sprites.

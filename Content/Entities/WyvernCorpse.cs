@@ -152,7 +152,8 @@ namespace DestroyerTest.Content.Entities
         {
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
                 BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.TheCrimson,
-                new FlavorTextBestiaryInfoElement("A great wyvern fell from the sky, and landed in the crimson. First away went its fur, then its cartillage, and finally, most of its fats. Now, all that remains is its rotten flesh, haning off the bones loosely with Ichor boils everywhere.")
+                new FlavorTextBestiaryInfoElement(DTUtils.GetModNPCLocalizationEntry(this, 1)),
+                new FlavorTextBestiaryInfoElement(DTUtils.GetModNPCLocalizationEntry(this, 2)),
             });
         }
         public override bool CheckActive()
@@ -1583,6 +1584,7 @@ namespace DestroyerTest.Content.Entities
 
     }
 
+    [AutoloadGlowmask]
     public class IchorNode : ModNPC
     {
         public override void SetStaticDefaults()

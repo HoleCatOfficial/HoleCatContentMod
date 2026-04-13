@@ -267,10 +267,19 @@ namespace DestroyerTest.Common.NPC_Folder
                     }
                 }
                 DownedBossSystem.downedCultistBoss = true;
+                if (!DTFlags.instance.TenebrisCanSpawnInWorldEvilBiome)
+                {
+                    DTFlags.instance.TenebrisCanSpawnInWorldEvilBiome = true;
+                }
+                if (!DTFlags.instance.TenebrisCanSpawnInShimmerBiome)
+                {
+                    DTFlags.instance.TenebrisCanSpawnInShimmerBiome = true;
+                }
                 if (Main.netMode == NetmodeID.Server)
                 {
                     NetMessage.SendData(MessageID.WorldData);
                 }
+                
             }
             if (npc.type == NPCID.MoonLordCore && !DownedBossSystem.downedLunarBoss)
             {

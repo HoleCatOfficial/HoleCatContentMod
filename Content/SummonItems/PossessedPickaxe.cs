@@ -318,7 +318,7 @@ namespace DestroyerTest.Content.SummonItems
 				PlayedSound = false;
 			}
 
-			if (DTUtils.PromiseEquipped == true)
+			if (DTFlags.PromiseEquipped == true)
 			{
 				
 				PromiseTimer++;

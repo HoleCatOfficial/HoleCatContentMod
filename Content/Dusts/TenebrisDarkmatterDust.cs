@@ -19,7 +19,7 @@ namespace DestroyerTest.Content.Dusts
 
 			float light = 0.35f * dust.scale;
 
-			Lighting.AddLight(dust.position, light, light, light);
+			//Lighting.AddLight(dust.position, light, light, light);
 
 			if (dust.scale < 0.5f) {
 				dust.active = false;

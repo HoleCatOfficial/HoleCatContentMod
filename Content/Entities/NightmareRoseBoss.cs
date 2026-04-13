@@ -49,6 +49,8 @@ using GlowmaskHelper.Content;
 using OpusLib;
 using DestroyerTest.Content.Projectiles.Boss;
 using DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame;
+using Terraria.GameContent.ItemDropRules;
+using Terraria.UI;
 
 namespace DestroyerTest.Content.Entities
 {
@@ -329,6 +331,8 @@ namespace DestroyerTest.Content.Entities
             currentState = AttackState.SpawnIdle;
             NPCHead = NPC.Center + new Vector2(0, -79);
             Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Bottom, Vector2.Zero, ModContent.ProjectileType<SpawnSoul>(), 0, 0);
+
+            
         }
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
@@ -521,8 +525,16 @@ namespace DestroyerTest.Content.Entities
 
             if (currentState != AttackState.Desperation && currentState != AttackState.KillIdle)
             {
-                BorderCol = ColorLib.CursedFlames;
-                BorderDustType = DustID.CursedTorch;
+                if (!EternityIsActive() && Main.masterMode)
+                {
+                    BorderCol = ColorLib.CursedFlames;
+                    BorderDustType = DustID.CursedTorch;
+                }
+                else
+                {
+                    BorderCol = ColorLib.TenebrisGradient;
+                    BorderDustType = ModContent.DustType<ColorableNeonDust>();
+                }
             }
             else
             {
@@ -561,7 +573,8 @@ namespace DestroyerTest.Content.Entities
 
                 if (Main.masterMode && currentState != AttackState.SpawnIdle)
                 {
-                    ModifyWeather();
+                    //ModifyWeather();
+                    Main.cloudAlpha = 0.6f;
                 }
             }
 
@@ -569,14 +582,7 @@ namespace DestroyerTest.Content.Entities
 
             if (player.Distance(NPC.Center) >= BorderRad && BorderActive && BorderRad > 150)
             {
-                if (!EternityIsActive())
-                {
-                    player.Hurt(new PlayerDeathReason() { CustomReason = NetworkText.FromKey("Mods.DestroyerTest.NPCs.NightmareRose.ExitBarrierDeath", player.name) }, 90, 0, false, true, -1, false, 9, 9, 0);
-                }
-                else
-                {
-                    player.KillMe(new PlayerDeathReason() { CustomReason = NetworkText.FromKey("Mods.DestroyerTest.NPCs.NightmareRose.EternityBarrierDeath", player.name) }, 28000, 0, false);
-                }
+                player.Hurt(new PlayerDeathReason() { CustomReason = NetworkText.FromKey("Mods.DestroyerTest.NPCs.NightmareRose.ExitBarrierDeath", player.name) }, 90, 0, false, true, -1, false, 9, 9, 0);
             }
             if (player.Distance(NPC.Center) < BorderRad && BorderActive)
             {
@@ -584,12 +590,12 @@ namespace DestroyerTest.Content.Entities
                 player.wingTime = player.wingTimeMax;
 
                 // Reduce wing speed to half
-                player.moveSpeed *= 0.5f; // baseWingSpeed should be stored somewhere
-                player.GetModPlayer<ApplyArenaEffectsPlayer>().CurrentArenaBoss = ModContent.NPCType<NightmareRoseBoss>();
-                if (Main.masterMode)
-                {
-                    player.AddBuff(ModContent.BuffType<ArenaEffects>(), 20);
-                }
+                //player.moveSpeed *= 0.5f; // baseWingSpeed should be stored somewhere
+                //player.GetModPlayer<ApplyArenaEffectsPlayer>().CurrentArenaBoss = ModContent.NPCType<NightmareRoseBoss>();
+                //if (Main.masterMode)
+                //{
+                    //player.AddBuff(ModContent.BuffType<ArenaEffects>(), 20);
+                //}
             }
 
             if (HitCount > 0)
@@ -672,6 +678,7 @@ namespace DestroyerTest.Content.Entities
 
             PlayerCenter = player.Center;
 
+            IdleFX();
 
             if (!Main.dedServ && currentState == AttackState.SpawnIdle)
             {
@@ -713,6 +720,16 @@ namespace DestroyerTest.Content.Entities
                 }
                 Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Placeholder4");
             }
+            if (!Main.dedServ && EternityIsActive() && Main.masterMode && muscfg.EternityMusic && currentState != AttackState.SpawnIdle)
+            {
+                if (!SetVolume)
+                {
+                    Main.musicFade[Music] = 1;
+                    Main.musicVolume = VolumeOnSpawn;
+                    SetVolume = true;
+                }
+                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/MasoEvils");
+            }
             if (!Main.dedServ && SecretSeed() && currentState != AttackState.SpawnIdle)
             {
                 if (!SetVolume)
@@ -740,8 +757,11 @@ namespace DestroyerTest.Content.Entities
                 NodeRadius = Opus.Sine(600f, 660f);
             }
 
-
-            Mod.Logger.Info($"Current State: {currentState}");
+            if (DTConfig.instance.EnableDebugMessages && Main.GameUpdateCount % 60 == 0)
+            {
+                Mod.Logger.Info($"Current State: {currentState}");
+            }
+            
 
             switch (currentState)
             {
@@ -769,10 +789,11 @@ namespace DestroyerTest.Content.Entities
 
                             SoundEngine.PlaySound(SpawnRoar, NPCHead);
                             SpawnDarknessAlpha = 0;
-                            if (EternityIsActive())
+                            if (Main.masterMode)
                             {
-                                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<NightmareeRoseBackgroundProj>(), 0, 0f);
+                                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<NightmareeRoseBackgroundProj>(), 0, 0, ai0: 0);
                             }
+                            Main.NewText("A torrent befalls the corruption...", ColorLib.CursedFlames);
                             currentState = AttackState.Idle;
                             NPC.dontTakeDamage = false;
                             SpawnCount = 0;
@@ -791,6 +812,10 @@ namespace DestroyerTest.Content.Entities
                             {
                                 Opus.NewParticleFloatAI(PRTLoader.GetParticleID<SoundwaveParticle>(), NPCHead, Vector2.Zero, Color.White, 0.001f, 3f);
                             }
+                        }
+                        else
+                        {
+                            ShouldCenterCameraOnNPC = false;
                         }
                         NPC.aiStyle = -1;
                         ShouldCenterCameraOnNPC = false;
@@ -835,9 +860,11 @@ namespace DestroyerTest.Content.Entities
                     {
                         NPC.aiStyle = -1;
                         NodeSpawn();
+                        ShouldCenterCameraOnNPC = true;
                         if (NodesAreIn)
                         {
                             currentState = GetRandomState();
+                            ShouldCenterCameraOnNPC = false;
                         }
                     }
                     break;
@@ -1234,6 +1261,62 @@ namespace DestroyerTest.Content.Entities
             }
         }
 
+        public void IdleFX()
+        {
+            if (currentState == AttackState.SpawnIdle)
+            {
+                return;
+            }
+
+            if (currentState == AttackState.Desperation)
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    Dust spark = Dust.NewDustDirect(NPC.position, NPC.width, NPC.height, ModContent.DustType<SoulDust>(), Main.rand.NextFloat(-0.02f, 0.02f), Main.rand.NextFloat(-3.5f, -2.5f), 40, default, 0.75f);
+                    spark.noGravity = true;
+                }
+                PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), Main.rand.NextVector2FromRectangle(NPC.Hitbox), new Vector2(Main.rand.NextFloat(-0.2f, 0.2f), Main.rand.NextFloat(-10.5f, -2.5f)), ColorLib.Soul, 0.5f, ai1: 2);
+
+                Lighting.AddLight(NPC.Center, ColorLib.Soul.ToVector3() * 0.5f);
+            }
+            else if (currentState == AttackState.KillIdle)
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    Dust spark = Dust.NewDustDirect(NPC.position, NPC.width, NPC.height, ModContent.DustType<SoulDust>(), Main.rand.NextFloat(-0.02f, 0.02f), Main.rand.NextFloat(-3.5f, -2.5f), 40, default, 0.75f);
+                    spark.noGravity = true;
+                }
+                PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), Main.rand.NextVector2FromRectangle(NPC.Hitbox), new Vector2(Main.rand.NextFloat(-0.2f, 0.2f), Main.rand.NextFloat(-10.5f, -2.5f)), ColorLib.Soul, 0.5f, ai1: 2);
+
+                Lighting.AddLight(NPC.Center, ColorLib.Soul.ToVector3() * 0.5f);
+            }
+            else
+            {
+                if (!EternityIsActive() && Main.masterMode)
+                {
+                    if (Main.rand.NextBool())
+                    {
+                        Dust fire = Dust.NewDustDirect(NPC.position, NPC.width, NPC.height, DustID.FireworksRGB, Main.rand.NextFloat(-0.2f, 0.2f), Main.rand.NextFloat(-13.5f, -2.5f), 40, ColorLib.CursedFlames, 2.5f);
+                        fire.noGravity = true;
+
+                        PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), Main.rand.NextVector2FromRectangle(NPC.Hitbox), new Vector2(Main.rand.NextFloat(-0.2f, 0.2f), Main.rand.NextFloat(-10.5f, -2.5f)), ColorLib.CursedFlames, 0.5f, ai1: 2);
+                    }
+                    Lighting.AddLight(NPC.Center, ColorLib.CursedFlames.ToVector3() * 0.5f);
+                }
+                else
+                {
+                    if (Main.rand.NextBool())
+                    {
+                        Dust fire = Dust.NewDustDirect(NPC.position, NPC.width, NPC.height, DustID.FireworksRGB, Main.rand.NextFloat(-0.2f, 0.2f), Main.rand.NextFloat(-13.5f, -2.5f), 40, ColorLib.TenebrisGradient, 2.5f);
+                        fire.noGravity = true;
+
+                        PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), Main.rand.NextVector2FromRectangle(NPC.Hitbox), new Vector2(Main.rand.NextFloat(-0.2f, 0.2f), Main.rand.NextFloat(-10.5f, -2.5f)), ColorLib.TenebrisGradient, 0.5f, ai1: 2);
+                    }
+                    Lighting.AddLight(NPC.Center, ColorLib.TenebrisGradient.ToVector3() * 0.5f);
+                }
+            }
+        }
+
         float RingScale = 6.2f;
         float Rotation = 0f;
         byte OverlayAlpha = 0;
@@ -1521,42 +1604,49 @@ namespace DestroyerTest.Content.Entities
 
         public void SummonSouls()
         {
-            Player player = Main.LocalPlayer;
-            SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/SoulSummon"));
-            player.GetModPlayer<ScreenshakePlayer>().screenshakeTimer = 10;
-            player.GetModPlayer<ScreenshakePlayer>().screenshakeMagnitude = 8;
-            if (!EternityIsActive())
+            if (NPC.HasValidTarget)
             {
-                for (int a = 0; a < 10; a++)
+                Player player = Main.player[NPC.target];
+                SoundEngine.PlaySound(DTAssetLib.Impacts.Void with { MaxInstances = 0, PitchVariance = 0.5f, Volume = 0.6f });
+                SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/SoulSummon") with { MaxInstances = 0, PitchVariance = 0.2f });
+                player.GetModPlayer<ScreenshakePlayer>().screenshakeTimer = 10;
+                player.GetModPlayer<ScreenshakePlayer>().screenshakeMagnitude = 8;
+                if (!EternityIsActive())
                 {
-                    Vector2 SpawnPoint = new Vector2(NPC.Center.X + Main.rand.Next(-BorderRad, BorderRad), NPC.Center.Y + 1800);
-                    Projectile.NewProjectile(Entity.GetSource_FromThis(), SpawnPoint, new Vector2(0, -8), ModContent.ProjectileType<TormentedSoul>(), 10, 2);
-                }
-            }
-            if (EternityIsActive())
-            {
-                for (int a = 0; a < 5; a++)
-                {
-                    Vector2 SpawnPoint = new Vector2(NPC.Center.X + Main.rand.Next(-BorderRad, BorderRad), NPC.Center.Y + 1800);
-                    Projectile.NewProjectile(Entity.GetSource_FromThis(), SpawnPoint, new Vector2(0, -16), ModContent.ProjectileType<TormentedSoul>(), 10, 2);
-                }
-                for (int a = 0; a < 5; a++)
-                {
-                    bool Side = Main.rand.NextBool(2);
-                    Vector2 SpawnPoint;
-                    Vector2 MoveDir;
-                    if (Side)
+                    for (int a = 0; a < 10; a++)
                     {
-                        MoveDir = new Vector2(-16, 0);
-                        SpawnPoint = new Vector2(NPC.Center.X + 1800, NPC.Center.Y + Main.rand.Next(-BorderRad, BorderRad));
+                        Vector2 SpawnPoint = new Vector2(NPC.Center.X + Main.rand.Next(-BorderRad, BorderRad), NPC.Center.Y + 800);
+                        Projectile.NewProjectile(Entity.GetSource_FromThis(), SpawnPoint, new Vector2(0, -8), ModContent.ProjectileType<TormentedSoul>(), 10, 2);
                     }
-                    else
+                }
+                if (EternityIsActive())
+                {
+                    for (int a = 0; a < 5; a++)
                     {
-                        MoveDir = new Vector2(16, 0);
-                        SpawnPoint = new Vector2(NPC.Center.X - 1800, NPC.Center.Y + Main.rand.Next(-BorderRad, BorderRad));
+                        Vector2 SpawnPoint = new Vector2(NPC.Center.X + Main.rand.Next(-BorderRad, BorderRad), NPC.Center.Y + 800);
+                        Projectile.NewProjectile(Entity.GetSource_FromThis(), SpawnPoint, new Vector2(0, -16), ModContent.ProjectileType<TormentedSoul>(), 10, 2);
                     }
+                    for (int a = 0; a < 5; a++)
+                    {
+                        bool Side = Main.rand.NextBool(2);
+                        int S = 0;
+                        Vector2 SpawnPoint;
+                        Vector2 MoveDir;
+                        if (Side)
+                        {
+                            MoveDir = new Vector2(-16, 0);
+                            SpawnPoint = new Vector2(NPC.Center.X + 1000, NPC.Center.Y + Main.rand.Next(-BorderRad, BorderRad));
+                            S = 1;
+                        }
+                        else
+                        {
+                            MoveDir = new Vector2(16, 0);
+                            SpawnPoint = new Vector2(NPC.Center.X - 1000, NPC.Center.Y + Main.rand.Next(-BorderRad, BorderRad));
+                            S = 2;
+                        }
 
-                    Projectile.NewProjectile(Entity.GetSource_FromThis(), SpawnPoint, MoveDir, ModContent.ProjectileType<TormentedSoul>(), 10, 2);
+                        Projectile.NewProjectile(Entity.GetSource_FromThis(), SpawnPoint, MoveDir, ModContent.ProjectileType<TormentedSoul>(), 10, 2, ai2: S);
+                    }
                 }
             }
         }
@@ -1619,11 +1709,13 @@ namespace DestroyerTest.Content.Entities
                     Vector2 toOrigin = NPCHead - spawnPosition;
                     toOrigin = toOrigin.SafeNormalize(Vector2.UnitY);
 
+                    bool Maso = EternityIsActive() && Main.masterMode;
+                    int flametype = Maso ? ModContent.ProjectileType<TenebrisFlamesHostile_NoHoming>() : ModContent.ProjectileType<CursedFlameProj>();
                     flame = Projectile.NewProjectileDirect(
                         Entity.GetSource_FromThis(),
                         spawnPosition,
                         toOrigin * 20f,
-                        ModContent.ProjectileType<CursedFlameProj>(),
+                        flametype,
                         15,
                         2,
                         Main.LocalPlayer.whoAmI
@@ -1730,7 +1822,21 @@ namespace DestroyerTest.Content.Entities
             VortexFireCount++;
         }
 
+        public override void ModifyNPCLoot(NPCLoot npcLoot)
+        {
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Item_NightmareRoseTrophy>(), 10));
+            LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
 
+            npcLoot.Add(notExpertRule);
+
+            npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<NightmareRoseLootBag>()));
+
+            npcLoot.Add(ItemDropRule.MasterModeDropOnAllPlayers(ModContent.ItemType<NightmarePowder>()));
+            npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Item_NightmareRoseRelic>()));
+
+
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<HaepienNodeCharm>(), 20, 1, 1));
+        }
         public override void OnKill()
         {
             int Gore1 = Mod.Find<ModGore>("NightmareRoseGore1").Type;
@@ -1834,6 +1940,7 @@ namespace DestroyerTest.Content.Entities
         }
     }
 
+    [AutoloadGlowmask]
     public class CursedFlameNode : ModNPC
     {
         public override void SetStaticDefaults()
@@ -1891,36 +1998,8 @@ namespace DestroyerTest.Content.Entities
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             trailOffset += 0.04f;
-            DTOptimizationsConfig OptCfg = ModContent.GetInstance<DTOptimizationsConfig>();
-            if (!OptCfg.DisableExcessTrails)
-            {
-                Opus.StartSpriteBatchForTrails(spriteBatch, BlendState.NonPremultiplied, SpriteSortMode.Immediate);
 
-                if (TrailPositions.Count > 1)
-                {
-                    List<ColoredVertex> ve = new List<ColoredVertex>();
-                    float a = 0;
-
-                    for (int i = TrailPositions.Count - 1; i > 0; i--)
-                    {
-                        float t = 1f - (i / (float)TrailPositions.Count);
-                        Color b = ColorLib.CursedFlames * t;
-
-                        Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
-                        Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * 60;
-                        Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * 60;
-
-                        DTUtils.AddStrips(ve, TrailPositions, i, offset, offset2, t, b, trailOffset);
-                    }
-
-                    GraphicsDevice gd = Main.graphics.GraphicsDevice;
-                    if (ve.Count >= 3)
-                    {
-                        gd.Textures[0] = DTAssetLib.Streak(7).Value;
-                        gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2);
-                    }
-                }
-            }
+            DTTrail.DrawTrail(spriteBatch, DTAssetLib.Streak(7).Value, TrailPositions, TrailRotations, 24f, ColorLib.WretchedGradient(), trailOffset, 10);
             return true;
         }
 
@@ -2062,6 +2141,7 @@ namespace DestroyerTest.Content.Entities
     {
         public override string Texture => "DestroyerTest/Content/Extras/FadeLine";
         private Asset<Texture2D> WindTex;
+        private Asset<Texture2D> RainTex;
         public override void SetDefaults()
         {
             Projectile.width = 10;
@@ -2075,7 +2155,7 @@ namespace DestroyerTest.Content.Entities
             Projectile.ignoreWater = true;
             Projectile.hide = true;
             WindTex = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/EvilBossWind", AssetRequestMode.AsyncLoad);
-            Projectile.scale = 4;
+            RainTex = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/RainOverlay", AssetRequestMode.AsyncLoad);
         }
 
         public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
@@ -2103,58 +2183,135 @@ namespace DestroyerTest.Content.Entities
             DTUtils Utility = new DTUtils();
             DTOptimizationsConfig optcfg = ModContent.GetInstance<DTOptimizationsConfig>();
 
-            float t = (float)Math.Sin(Main.GameUpdateCount / 60f) * 0.5f + 0.5f;
-            Color drawColor = Color.Lerp(Color.Black, ColorLib.TenebrisGradient * 0.5f, t);
-
-            if (!optcfg.OptimizeGame)
+            if (Projectile.ai[0] == 0)
             {
-                Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-
-                float time = (float)Main.GameUpdateCount / 60f;
-
-                // --- Layer 1 scroll parameters ---
-                float scrollSpeedX1 = 600f;
-                float scrollSpeedY1 = 30f;
-
-                float scrollOffsetX1 = (time * scrollSpeedX1) % WindTex.Value.Width * Projectile.scale;
-                float scrollOffsetY1 = (time * scrollSpeedY1) % WindTex.Value.Height * Projectile.scale;
-
-                int screenW = Main.screenWidth;
-                int screenH = Main.screenHeight;
-
-                // --- draw one tile beyond each edge ---
-                float startX = -WindTex.Value.Width * Projectile.scale;
-                float startY = -WindTex.Value.Height * Projectile.scale;
-                float endX = screenW + WindTex.Value.Width * Projectile.scale;
-                float endY = screenH + WindTex.Value.Height * Projectile.scale;
-
-                // --- Draw first layer ---
-                for (float x = -scrollOffsetX1 + startX; x < endX; x += WindTex.Value.Width)
+                if (!optcfg.OptimizeGame)
                 {
-                    for (float y = -scrollOffsetY1 + startY; y < endY; y += WindTex.Value.Height)
+                    if (!optcfg.OptimizeGame)
                     {
-                        spriteBatch.Draw(WindTex.Value, new Vector2(x, y), null, drawColor, 0f, Vector2.Zero, 1f * Projectile.scale, SpriteEffects.None, 0f);
+                        //Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+                        spriteBatch.End();
+                        spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.LinearWrap, DepthStencilState.None, RasterizerState.CullNone);
+                        
+                        float time = (float)Main.GameUpdateCount / 60f;
+
+                        int screenW = Main.screenWidth;
+                        int screenH = Main.screenHeight;
+
+                        // --- Layer 1 ---
+                        float scrollSpeedX1 = 10f;
+                        float scrollSpeedY1 = 70f;
+
+                        int texW = RainTex.Value.Width;
+                        int texH = RainTex.Value.Height;
+
+                        int offsetX1 = (int)(time * scrollSpeedX1) % texW;
+                        int offsetY1 = (int)(time * scrollSpeedY1) % texH;
+
+                        Rectangle source1 = new Rectangle(
+                            offsetX1,
+                            offsetY1,
+                            Math.Min(screenW, texW - offsetX1),
+                            Math.Min(screenH, texH - offsetY1)
+                        );
+
+                        spriteBatch.Draw(
+                            RainTex.Value,
+                            Main.screenPosition,
+                            source1,
+                            Color.White * 0.7f,
+                            0f,
+                            Vector2.Zero,
+                            Projectile.scale,
+                            SpriteEffects.None,
+                            0f
+                        );
+
+                        // --- Layer 2 ---
+                        float scrollSpeedX2 = 20f;
+                        float scrollSpeedY2 = 140f;
+
+                        int offsetX2 = (int)(time * scrollSpeedX2) % texW;
+                        int offsetY2 = (int)(time * scrollSpeedY2) % texH;
+
+                        Rectangle source2 = new Rectangle(
+                            offsetX2,
+                            offsetY2,
+                            Math.Min(screenW, texW - offsetX2),
+                            Math.Min(screenH, texH - offsetY2)
+                        );
+
+                        spriteBatch.Draw(
+                            WindTex.Value,
+                            Main.screenPosition,
+                            source2,
+                            Color.White * 0.3f,
+                            0f,
+                            Vector2.Zero,
+                            Projectile.scale,
+                            SpriteEffects.None,
+                            0f
+                        );
+
+                        Opus.ReturnToDefaultDrawing(spriteBatch);
                     }
                 }
+            }
+            if (Projectile.ai[0] == 1)
+            {
+                float t = (float)Math.Sin(Main.GameUpdateCount / 60f) * 0.5f + 0.5f;
+                Color drawColor = Color.Lerp(Color.Black, ColorLib.TenebrisGradient * 0.5f, t);
 
-                float scrollSpeedX2 = 250f;
-                float scrollSpeedY2 = -60f; // opposite direction for contrast
-
-                float scrollOffsetX2 = (time * scrollSpeedX2) % WindTex.Value.Width * Projectile.scale;
-                float scrollOffsetY2 = (time * scrollSpeedY2) % WindTex.Value.Height * Projectile.scale;
-
-                Color drawColor2 = drawColor * 0.8f; // slightly dimmer to layer properly
-
-                // --- Draw second layer ---
-                for (float x = -scrollOffsetX2 + startX; x < endX; x += WindTex.Value.Width)
+                if (!optcfg.OptimizeGame)
                 {
-                    for (float y = -scrollOffsetY2 + startY; y < endY; y += WindTex.Value.Height)
-                    {
-                        spriteBatch.Draw(WindTex.Value, new Vector2(x, y), null, drawColor2, 0f, Vector2.Zero, 1f * Projectile.scale, SpriteEffects.None, 0f);
-                    }
-                }
+                    Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
-                Opus.ReturnToDefaultDrawing(spriteBatch);
+                    float time = (float)Main.GameUpdateCount / 60f;
+
+                    // --- Layer 1 scroll parameters ---
+                    float scrollSpeedX1 = 600f;
+                    float scrollSpeedY1 = 30f;
+
+                    float scrollOffsetX1 = (time * scrollSpeedX1) % WindTex.Value.Width * Projectile.scale;
+                    float scrollOffsetY1 = (time * scrollSpeedY1) % WindTex.Value.Height * Projectile.scale;
+
+                    int screenW = Main.screenWidth;
+                    int screenH = Main.screenHeight;
+
+                    // --- draw one tile beyond each edge ---
+                    float startX = -WindTex.Value.Width * Projectile.scale;
+                    float startY = -WindTex.Value.Height * Projectile.scale;
+                    float endX = screenW + WindTex.Value.Width * Projectile.scale;
+                    float endY = screenH + WindTex.Value.Height * Projectile.scale;
+
+                    // --- Draw first layer ---
+                    for (float x = -scrollOffsetX1 + startX; x < endX; x += WindTex.Value.Width)
+                    {
+                        for (float y = -scrollOffsetY1 + startY; y < endY; y += WindTex.Value.Height)
+                        {
+                            spriteBatch.Draw(WindTex.Value, new Vector2(x, y), null, drawColor, 0f, Vector2.Zero, 1f * Projectile.scale, SpriteEffects.None, 0f);
+                        }
+                    }
+
+                    float scrollSpeedX2 = 250f;
+                    float scrollSpeedY2 = -60f; // opposite direction for contrast
+
+                    float scrollOffsetX2 = (time * scrollSpeedX2) % WindTex.Value.Width * Projectile.scale;
+                    float scrollOffsetY2 = (time * scrollSpeedY2) % WindTex.Value.Height * Projectile.scale;
+
+                    Color drawColor2 = drawColor * 0.8f; // slightly dimmer to layer properly
+
+                    // --- Draw second layer ---
+                    for (float x = -scrollOffsetX2 + startX; x < endX; x += WindTex.Value.Width)
+                    {
+                        for (float y = -scrollOffsetY2 + startY; y < endY; y += WindTex.Value.Height)
+                        {
+                            spriteBatch.Draw(WindTex.Value, new Vector2(x, y), null, drawColor2, 0f, Vector2.Zero, 1f * Projectile.scale, SpriteEffects.None, 0f);
+                        }
+                    }
+
+                    Opus.ReturnToDefaultDrawing(spriteBatch);
+                }
             }
             return false;
         }

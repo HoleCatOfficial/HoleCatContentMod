@@ -37,20 +37,57 @@ namespace DestroyerTest.Content.MeleeWeapons.SwordLineage
 			Item.noMelee = true;
 			Item.shoot = ModContent.ProjectileType<ConstitutionSwing>();
 			Item.channel = true;
+
+
 		}
+
+        public override void ModifyWeaponDamage(Player player, ref StatModifier damage)
+        {
+            if (player.altFunctionUse == 2)
+			{
+                damage += 100;
+            }
+			
+        }
+        public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
+        {
+            if (player.altFunctionUse == 2)
+			{
+				Vector2 T = Main.MouseWorld - player.Center;
+				T.Normalize();
+				velocity = T * (20 + player.GetTotalAttackSpeed(DamageClass.Melee));
+				type = ModContent.ProjectileType<ConstitutionThrow>();
+				
+			}
+			else
+			{
+				velocity = default;
+				type = Item.shoot;
+				damage = 80;
+			}
+        }
+
+		
+        public override bool AltFunctionUse(Player player)
+        {
+			return true;
+        }
 
         public override bool CanUseItem(Player player)
         {
-            return player.ownedProjectileCounts[Item.shoot] < 1;
+			if (player.altFunctionUse == 2)
+			{
+				Item.UseSound = SoundID.Item82;
+			}
+			else
+			{
+				Item.UseSound = null;
+			}
+            return player.ownedProjectileCounts[Item.shoot] < 1 && player.ownedProjectileCounts[ModContent.ProjectileType<ConstitutionThrow>()] < 1;
         }
 
         public override bool MeleePrefix() {
-			return true; // return true to allow weapon to have melee prefixes (e.g. Legendary)
+			return true;
 		}
-
-
-		
-
-		
 	}
 }

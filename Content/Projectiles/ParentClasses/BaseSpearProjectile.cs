@@ -1,4 +1,4 @@
-﻿using BreadLibrary.Core.Utilities;
+﻿using BreadLibrary.Core;
 using DestroyerTest.Common;
 using FargowiltasSouls.Common.Utilities;
 using Microsoft.Xna.Framework;
@@ -22,12 +22,12 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
     public abstract class BaseSpearProjectile : ModProjectile
     {
         public Player Owner => Main.player[Projectile.owner];
-        public virtual SoundStyle Woosh { get; set; } = DTAssetLib.SwordSounds.Woosh;
+        public virtual SoundStyle JabSound { get; set; } = DTAssetLib.SwordSounds.Woosh;
 
         public Asset<Texture2D> Glowmask = null;
 
-        public virtual float MaxExtension => 110f;
-        public virtual float MinExtension => 1f;
+        public virtual float MaxExtension { get; set; } = 110f;
+        public virtual float MinExtension { get; set; } = 1f;
 
         /// <summary>
         /// Use this in place of SetStaticDefaults.
@@ -97,6 +97,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         {
             //Dust.NewDustPerfect(ShotPos(), DustID.Torch);
             AITimer++;
+            Owner.SetDummyItemTime(2);
             if (Owner.controlUseItem)
             {
                 targetAngle = (Main.MouseWorld - Owner.MountedCenter);
@@ -184,15 +185,57 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
         public void SetPosition()
         {
-            Owner.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, Projectile.rotation - MathHelper.ToRadians(90f));
-
-            float DistTraveled = MaxExtension - MinExtension;
-            float CurrentExtension = MathHelper.Lerp(MinExtension, MaxExtension, Utilities.Convert01To010(DistTraveled / MaxExtension));
-            Projectile.Center = Owner.MountedCenter + Owner.RotatedRelativePoint(new Vector2(CurrentExtension, 0f).RotatedBy(targetAngle.ToRotation()), false, true);
+            Projectile.ai[0]++;
+            Owner.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, Projectile.rotation + MathHelper.Pi + MathHelper.PiOver4);
             
-            Projectile.scale = 1.2f * Owner.GetAdjustedItemScale(Owner.HeldItem);
+
+            float progress = Projectile.ai[0] / (30f / (Owner.GetTotalAttackSpeed(DamageClass.Melee))); // 20 = duration of thrust
+            progress = Saturate(progress);
+
+            if (progress == 0.9f)
+            {
+                SoundEngine.PlaySound(JabSound, Projectile.Center);
+            }
+            /*
+            if (progress == 1.00f)
+            {
+                Projectile.Kill();
+            }
+            */
+
+            float bump = Convert01To010(progress);
+
+            float CurrentExtension = MathHelper.Lerp(MinExtension, MaxExtension, bump);
+
+            if (CurrentExtension == MinExtension)
+            {
+                SoundEngine.PlaySound(JabSound, Projectile.Center);
+            }
+            //Projectile.Center = Owner.MountedCenter + new Vector2(CurrentExtension, 0f).RotatedBy(targetAngle.ToRotation());
+            Projectile.Center = Owner.GetFrontHandPosition(Player.CompositeArmStretchAmount.None, targetAngle.ToRotation()) + new Vector2(CurrentExtension, 0f).RotatedBy(targetAngle.ToRotation());
+
+            Projectile.scale = 1f * Owner.GetAdjustedItemScale(Owner.HeldItem);
 
             Owner.heldProj = Projectile.whoAmI;
         }
+
+        /// <summary>
+        ///     Clamps a given number between 0 and 1.
+        /// </summary>
+        /// <param name="x">The number to clamp.</param>
+        public static float Saturate(float x)
+        {
+            if (x > 1f)
+                return 1f;
+            if (x < 0f)
+                return 0f;
+            return x;
+        }
+
+        /// <summary>
+        ///     Commonly known as a sine bump. Converts 0 to 1 values to a 0 to 1 to 0 again bump.
+        /// </summary>
+        /// <param name="x">The input number.</param>
+        public static float Convert01To010(float x) => MathF.Sin(float.Pi * Saturate(x));
     }
 }

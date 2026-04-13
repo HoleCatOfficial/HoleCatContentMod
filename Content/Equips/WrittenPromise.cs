@@ -21,7 +21,7 @@ namespace DestroyerTest.Content.Equips
 		}
 
 		public override void UpdateEquip(Player player) {
-			DTUtils.PromiseEquipped = true;
+			DTFlags.PromiseEquipped = true;
 		}
 
 

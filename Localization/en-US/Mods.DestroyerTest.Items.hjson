@@ -4403,3 +4403,21 @@ SunscorchedCinder: {
 	DisplayName: Sunscorched Cinder
 	Tooltip: Ash from recently charred organic matter that has been electrified by riften critters.
 }
+
+TestSpear: {
+	DisplayName: Test Spear
+	Tooltip: ""
+}
+
+Committment: {
+	DisplayName: Committment
+	Tooltip:
+		'''
+		True Melee increase the size and speed of the sword.
+		Size and Speed decay every swing when not hitting an enemy.
+		True Melee hits spawn a homing rainbow star.
+		Critical hits inflict Light Inferno.
+
+		"Holy Smokes!"
+		'''
+}

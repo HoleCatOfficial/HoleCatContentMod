@@ -36,7 +36,7 @@ namespace DestroyerTest.Content.Entities
             NPC.height = 164;
             NPC.aiStyle = 23;
             NPC.damage = 100;
-            NPC.defense = 9;
+            NPC.defense = 999;
             NPC.lifeMax = 160;
             NPC.HitSound = SoundID.NPCHit4;
             NPC.DeathSound = SoundID.NPCDeath39;
@@ -44,7 +44,7 @@ namespace DestroyerTest.Content.Entities
             NPC.lavaImmune = true;
             NPC.noTileCollide = true;
             NPC.knockBackResist = 0f;
-            NPC.immortal = true;
+            NPC.dontTakeDamage = true;
         }
 
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)

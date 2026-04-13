@@ -95,7 +95,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
             {
                 Opus.RadialSpreadDust(DustID.ShadowbeamStaff, 18, Projectile.Center, DustAlpha, default, 2.3f, 7, true);
                 DustAlpha -= 255 / 30;
-                Projectile.scale *= 1.005f;
+                Projectile.scale *= 1.01f;
                 SoundPitch += 1f / 30f;
                 SoundEngine.PlaySound(SoundID.Item42 with {Volume = 0.5f, Pitch = SoundPitch, MaxInstances = 0});
                 if (Projectile.timeLeft <= 20)
@@ -111,6 +111,11 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
             }
         }
 
+        public override bool CanHitPlayer(Player target)
+        {
+            return false;
+        }
+
         public override void OnKill(int timeLeft)
         {
             Vector2 ToPlayer = Projectile.Center - Main.LocalPlayer.Center;
@@ -119,15 +124,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
             {
                 Gore.NewGore(Projectile.GetSource_Death(), Projectile.Center, new Vector2(Main.rand.NextFloat(-6, 6), Main.rand.NextFloat(-6, 6)), ModContent.GoreType<RosePetalGore1>(), 2f);
             }
-
-            var launchVelocity = new Vector2(-12, 0);
-                
-            for (int i = 0; i < 8; i++)
-            {
-                launchVelocity = launchVelocity.RotatedBy(MathHelper.PiOver4);
-                //Projectile.NewProjectile(Entity.GetSource_FromThis(), Projectile.Center, launchVelocity, ProjectileID.CursedFlameHostile, 15, 1);
-                Projectile.NewProjectile(Entity.GetSource_FromThis(), Projectile.Center, launchVelocity, ModContent.ProjectileType<CorruptPetalHostile>(), 35, 1);
-            }
+            Opus.RadialSpreadProjectile(ModContent.ProjectileType<CorruptPetalHostile>(), 8, Projectile.Center, Projectile.damage, 8, 22, offset: 0);
         }
     }
 }

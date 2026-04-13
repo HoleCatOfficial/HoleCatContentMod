@@ -1,4 +1,5 @@
 ﻿
+using DestroyerTest.Common;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Weapon.Melee;
 using DestroyerTest.Content.Resources;
@@ -15,6 +16,11 @@ namespace DestroyerTest.Content.MeleeWeapons
 {
     public class Malevolence : ModItem
     {
+        public override void SetStaticDefaults()
+        {
+            DTUtils.isSpecialSwingSword[Type] = true;
+            DTUtils.TooltipScaleMult[Type] = 1.25f;
+        }
         public override void SetDefaults()
         {
             Item.width = 60;
@@ -32,6 +38,7 @@ namespace DestroyerTest.Content.MeleeWeapons
             Item.noUseGraphic = true;
             Item.shoot = ModContent.ProjectileType<MalevolenceSwing>();
             Item.channel = true;
+            Item.useTurn = true;
         }
 
         public override bool CanUseItem(Player player)

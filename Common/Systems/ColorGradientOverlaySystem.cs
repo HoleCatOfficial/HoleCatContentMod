@@ -86,11 +86,11 @@ public class ColorGradientOverlaySystem : ModSystem
 
     public void ManageStellarGoggleEquips()
     {
-        if (DTUtils.StellarGogglesEquipped == true && ColorVisibility < 0.7f)
+        if (DTFlags.StellarGogglesEquipped == true && ColorVisibility < 0.7f)
         {
             FadeInHaze(0.7f);
         }
-        if (DTUtils.StellarGogglesEquipped == false && ColorVisibility > 0.0f)
+        if (DTFlags.StellarGogglesEquipped == false && ColorVisibility > 0.0f)
         {
            FadeOutHaze(0.0f);
         }
