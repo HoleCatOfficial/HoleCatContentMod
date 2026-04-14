@@ -366,7 +366,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         {
         }
     */
-        public override string Texture => "DestroyerTest/Content/MeleeWeapons/SwordLineage/Constitution";
+        public override string Texture => "DestroyerTest/Content/MeleeWeapons/Constitution";
 	    public override void SetDefaults()
         {
             base.SetDefaults();

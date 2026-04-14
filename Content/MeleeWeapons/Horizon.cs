@@ -11,6 +11,7 @@ using OpusLib;
 using DestroyerTest.Content.Projectiles.ParentClasses;
 using DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss;
 using DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss;
+using DestroyerTest.Content.Projectiles.Boss.NodeBoss.Blessed;
 
 namespace DestroyerTest.Content.MeleeWeapons
 {
@@ -30,12 +31,12 @@ namespace DestroyerTest.Content.MeleeWeapons
 			Item.useAnimation = 10;
 			Item.useStyle = ItemUseStyleID.Shoot;
 
-			Item.shoot = ModContent.ProjectileType<RiftSpark>();
+			Item.shoot = ModContent.ProjectileType<BlessedLaser>();
 			Item.damage = 4;
 			Item.channel = true;
 			Item.autoReuse = true;
 			Item.noUseGraphic = true;
-			Item.shootSpeed = 4f;
+			Item.shootSpeed = 0.004f;
 		}
 	}
 }

@@ -159,13 +159,21 @@ DarkGluttonTail.DisplayName: Dark Glutton Tail
 CursedFlameNodeMB: {
 	DisplayName: Cursed Flame Node
 	InternalName: CursedFlameNode
-	BestiaryEntry1: A defense mechanism created by the corruption in response to its waning ability to spread after the felling of plantera. It stays idle, empowering enemies nearby to allow them to better defend the hive from invaders. If attacked, it will snap into action to join in defending the hive.
+	BestiaryEntry1:
+		'''
+		In response to its waning ability to spread, the Corruption, much like its holy counterpart, has taken to defending what land it already has claimed.
+		Despite the ferocity with which it attacks, it is an inanimate construct puppeteered by the invisible forces of The Corruption.
+		'''
 }
 
 IchorNodeMB: {
 	DisplayName: Ichor Node
 	InternalName: IchorNode
-	BestiaryEntry1: A defense mechanism created by the crimson in response to its waning ability to spread after the felling of plantera. It stays idle, empowering enemies nearby to allow them to better defend the hive from invaders. If attacked, it will snap into action to join in defending the hive.
+	BestiaryEntry1:
+		'''
+		In response to its waning ability to spread, the Crimson, much like its holy counterpart, has taken to defending what land it already has claimed.
+		Despite the ferocity with which it attacks, it is an inanimate construct puppeteered by the invisible forces of The Crimson.
+		'''
 }
 
 ShadeThrower: {
@@ -212,3 +220,14 @@ TeslaScuttler.DisplayName: Tesla Scuttler
 BlackTwister.DisplayName: Black Twister
 SunscorchedDjinn.DisplayName: Sunscorched Djinn
 ProjectileShootingDummy.DisplayName: Projectile Shooting Dummy
+BlessedNodeFlyingKnife.DisplayName: Flying Knife
+
+BlessedNodeMB: {
+	DisplayName: Blessed Node
+	InternalName: BlessedNode
+	BestiaryEntry1:
+		'''
+		In response to its waning ability to spread, the Hallow, much like its evil counterpart, has taken to defending what land it already has claimed.
+		Despite the ferocity with which it attacks, it is an inanimate construct puppeteered by the invisible forces of The Hallow.
+		'''
+}

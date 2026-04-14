@@ -584,10 +584,10 @@ namespace DestroyerTest.Common
             }
         }
 
-        public static float[] TooltipScaleMult = new float[9999];
+        public static Dictionary<int, float> TooltipScaleMult = new();
 
-        public static bool[] isSpecialSwingSword = new bool[9999];
-        
+        public static HashSet<int> isSpecialSwingSword = new();
+
     }
 
     public class SunlightModification : ModSystem
@@ -781,6 +781,21 @@ namespace DestroyerTest.Common
 
             return input.Replace(" ", "");
         }
+
+        public static Dust QuickDust(this Player player, int Type, Vector2 velocity, int alpha = 0)
+        {
+            return Dust.NewDustDirect(player.position, player.width, player.height, Type, velocity.X, velocity.Y, alpha, default, 1f);
+        }
+
+        public static Dust QuickDust(this Player player, int Type, Vector2 velocity, Color color, int alpha = 0)
+        {
+            return Dust.NewDustDirect(player.position, player.width, player.height, Type, velocity.X, velocity.Y, alpha, color, 1f);
+        }
+
+        public static Dust QuickDust(this Player player, int Type, Vector2 velocity, Color color, float Scale = 1f, int alpha = 0)
+        {
+            return Dust.NewDustDirect(player.position, player.width, player.height, Type, velocity.X, velocity.Y, alpha, color, Scale);
+        }
     }
 
     public class DTPlayerUtil : ModPlayer
@@ -888,6 +903,8 @@ namespace DestroyerTest.Common
                 BuffID.Slimed,
                 BuffID.SoulDrain
             };
+
+
         }
     }
 
@@ -1342,11 +1359,12 @@ namespace DestroyerTest.Common
         public static Asset<Texture2D> GlowCone = ModContent.Request<Texture2D>($"{ExtrasPath}/GlowCone", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> MiscSparkle144 = ModContent.Request<Texture2D>($"{ExtrasPath}/144MiscSparkle", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> SwordSlash = ModContent.Request<Texture2D>($"{ExtrasPath}/SwordTrail2", AssetRequestMode.AsyncLoad);
-        public static Asset<Texture2D> CircularSwing = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/CircularSlash", AssetRequestMode.AsyncLoad);
-        public static Asset<Texture2D> CircularSwingThin = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/CircularSlash2", AssetRequestMode.AsyncLoad);
-        public static Asset<Texture2D> FireSwing = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/CircularSlash3", AssetRequestMode.AsyncLoad);
-        public static Asset<Texture2D> FireSwingHighlight = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/CircularSlash3Highlight", AssetRequestMode.AsyncLoad);
-        public static Asset<Texture2D> CutSwing = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/CircularSlashCut", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> CircularSwing = ModContent.Request<Texture2D>($"{ExtrasPath}/CircularSlash", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> CircularSwingThin = ModContent.Request<Texture2D>($"{ExtrasPath}/CircularSlash2", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> FireSwing = ModContent.Request<Texture2D>($"{ExtrasPath}/CircularSlash3", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> FireSwingHighlight = ModContent.Request<Texture2D>($"{ExtrasPath}/CircularSlash3Highlight", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> CutSwing = ModContent.Request<Texture2D>($"{ExtrasPath}/CircularSlashCut", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> Laser = ModContent.Request<Texture2D>($"{ExtrasPath}/LongLaser", AssetRequestMode.AsyncLoad);
 
         public static Asset<Texture2D> Sparkle(int Variant)
         {
@@ -1433,6 +1451,7 @@ namespace DestroyerTest.Common
         public static Asset<Texture2D> RuneCircle = ModContent.Request<Texture2D>($"{ParticlePath}/RuneCircle1", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> CorruptSigil = ModContent.Request<Texture2D>($"{ExtrasPath}/CorruptSigil", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> CrimsonSigil = ModContent.Request<Texture2D>($"{ExtrasPath}/CrimsonSigil", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> HallowedSigil = ModContent.Request<Texture2D>($"{ExtrasPath}/HallowedSigil", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> CrimsonBloodRune = ModContent.Request<Texture2D>($"{ExtrasPath}/CrimsonSigil", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> BloodHexHeart = ModContent.Request<Texture2D>($"{ExtrasPath}/BloodHexHeart", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> MobilityHexDoll = ModContent.Request<Texture2D>($"{ExtrasPath}/MobilityHexDoll", AssetRequestMode.AsyncLoad);
@@ -1449,6 +1468,7 @@ namespace DestroyerTest.Common
         public static Asset<Texture2D> BlossomBeaterRope = ModContent.Request<Texture2D>($"{ExtrasPath}/BlossomBeaterRope", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> ConstitutionLanceWarning = ModContent.Request<Texture2D>($"{ExtrasPath}/ConstitutionEternityLanceWarning", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> DreamDiscHighlight = ModContent.Request<Texture2D>($"{ExtrasPath}/DreamDiscMainBlades", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> BlessedNodeLaserTelegraph = ModContent.Request<Texture2D>($"{ExtrasPath}/BlessedNodeLaserTelegraph", AssetRequestMode.AsyncLoad);
 
         public struct HallowedBar
         {
@@ -1513,6 +1533,7 @@ namespace DestroyerTest.Common
             public static SoundStyle EvilSwing = new SoundStyle($"{Path}/EvilSwing", 3);
             public static SoundStyle HeavySwing = new SoundStyle($"{Path}/HeavySwing", 3);
             public static SoundStyle HellSword = new SoundStyle($"{Path}/HellSword", 3);
+            public static SoundStyle LightGoreCut = new SoundStyle($"{Path}/LightGoreCut", 4);
             public static SoundStyle MagicSwing = new SoundStyle($"{Path}/MagicSwing", 3);
             public static SoundStyle MediumSwing = new SoundStyle($"{Path}/MediumSwing", 3);
             public static SoundStyle MediumHeavySwing = new SoundStyle($"{Path}/MediumHeavySwing", 3);

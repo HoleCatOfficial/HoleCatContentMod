@@ -82,12 +82,16 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
         }
 
-
-        public virtual Vector2 ShotPos()
+        public virtual void OnStart()
         {
-            Vector2 orig = Projectile.Center + new Vector2(-(Projectile.width / 2), Projectile.height / 2);
-            return orig + new Vector2(20, 20).RotatedBy(Projectile.rotation - MathHelper.PiOver2);
+
         }
+        
+        public virtual void AtFullExtension()
+        {
+
+        }
+
 
         public Vector2 targetAngle = Vector2.Zero;
         public int AITimer = 0;
@@ -195,6 +199,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             if (progress == 0.9f)
             {
                 SoundEngine.PlaySound(JabSound, Projectile.Center);
+                OnStart();
             }
             /*
             if (progress == 1.00f)
@@ -207,9 +212,9 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
             float CurrentExtension = MathHelper.Lerp(MinExtension, MaxExtension, bump);
 
-            if (CurrentExtension == MinExtension)
+            if (CurrentExtension == MaxExtension)
             {
-                SoundEngine.PlaySound(JabSound, Projectile.Center);
+                AtFullExtension();
             }
             //Projectile.Center = Owner.MountedCenter + new Vector2(CurrentExtension, 0f).RotatedBy(targetAngle.ToRotation());
             Projectile.Center = Owner.GetFrontHandPosition(Player.CompositeArmStretchAmount.None, targetAngle.ToRotation()) + new Vector2(CurrentExtension, 0f).RotatedBy(targetAngle.ToRotation());

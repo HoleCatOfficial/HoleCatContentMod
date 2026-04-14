@@ -20,6 +20,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 
@@ -122,6 +123,13 @@ namespace DestroyerTest.Common.Systems
                 ModContent.ItemType<CursedFlameScroll>(),
                 //TODO: Add Node Trophies.
                 ModContent.ItemType<Item_CursedFlameNodeRelic>(),
+            };
+
+            public static List<int> BlessedNodeLootTable = new List<int>
+            {
+                ItemID.PixieDust,
+                //TODO: Add Node Trophies.
+
             };
 
             public static List<int> WyvernCorpseLootTable = new List<int>

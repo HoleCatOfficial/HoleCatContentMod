@@ -64,7 +64,7 @@ namespace DestroyerTest.Content.Entities
             NPC.aiStyle = -1;
             NPC.damage = 25;
             NPC.defense = 24;
-            NPC.lifeMax = 22000;
+            NPC.lifeMax = 60000;
             NPC.HitSound = new SoundStyle("DestroyerTest/Assets/Audio/NodeHit");
             NPC.DeathSound = new SoundStyle("DestroyerTest/Assets/Audio/NodeExplode");
             NPC.noGravity = true;
@@ -72,7 +72,7 @@ namespace DestroyerTest.Content.Entities
             NPC.noTileCollide = true;
             NPC.knockBackResist = 0f;
             NPC.timeLeft = 150000;
-            NPC.boss = true;
+            NPC.boss = false;
             NPC.npcSlots = 1f;
             NPC.netUpdate = true;
             NPC.netID = ModContent.NPCType<IchorNodeMB>();
@@ -84,8 +84,7 @@ namespace DestroyerTest.Content.Entities
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
-                new FlavorTextBestiaryInfoElement("Elemental Constructs that strengthen the potency of Cursed Flames and Ichor."),
-                new FlavorTextBestiaryInfoElement("They are often times found idly floating above the ground. Though the nodes will become retaliatory if provoked."),
+                new FlavorTextBestiaryInfoElement(DTUtils.GetModNPCLocalizationEntry(this, 1)),
                 BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.TheCrimson
             });
         }
@@ -95,7 +94,7 @@ namespace DestroyerTest.Content.Entities
             bool NodeAlive = false;
             foreach (NPC npc in Main.npc)
             {
-                if (NPC.active && NPC.type == Type)
+                if (npc.active && npc.type == Type)
                 {
                     NodeAlive = true;
                 }
@@ -106,6 +105,17 @@ namespace DestroyerTest.Content.Entities
             }
             return 0f;
         }
+        public override void OnSpawn(IEntitySource source)
+        {
+            ResetData();
+        }
+
+        public void ResetData()
+        {
+            DormantNPCKillTally = 0;
+            INGlobal.WaveNPCCount = 0;
+        }
+
 
         public override bool CheckActive()
         {
@@ -123,6 +133,11 @@ namespace DestroyerTest.Content.Entities
             Main.EntitySpriteDraw(v, NPC.Center - Main.screenPosition, null, ColorLib.IchorCrystalGradient * ShieldOpacity, 0f, v.Size() / 2, ShieldScale, SpriteEffects.None);
             Utils.DrawBorderString(spriteBatch, $"{DormantNPCKillTally} / {DormantNPCKillRequirement}", (NPC.Center + new Vector2(0, -90) - Main.screenPosition), ColorLib.IchorCrystalGradient * ShieldOpacity, 3f, 0.5f, 0.5f);
             Opus.ReturnToDefaultDrawing(spriteBatch);
+
+            if (CurrentAttack == AttackState.Dormant)
+            {
+                DTUtils.DrawChargeBar(2f, (NPC.Center + new Vector2(0, 100)) - Main.screenPosition, (float)DormantNPCKillTally / (float)DormantNPCKillRequirement, ColorLib.IchorCrystalGradient);
+            }
         }
 
         public override bool? CanBeHitByItem(Player player, Item item)
@@ -147,7 +162,8 @@ namespace DestroyerTest.Content.Entities
             BloodRain,
             IchorSpiral,
             ToothBombs,
-            GroundSlam
+            GroundSlam,
+            None
         }
 
         public AttackState CurrentAttack;
@@ -206,17 +222,9 @@ namespace DestroyerTest.Content.Entities
                 TryFindTileBelow();
             }
 
-            if (!Main.dedServ)
+            if (!Main.dedServ && CurrentAttack != AttackState.Dormant)
             {
                 Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/NodeBoss");
-            }
-            if (!Main.dedServ && CurrentAttack == AttackState.Dormant && muscfg.NodeIdleMusic == true)
-            {
-                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/NodeIdle");
-            }
-            if (!Main.dedServ && CurrentAttack == AttackState.Dormant && muscfg.NodeIdleMusic == false)
-            {
-                Music = MusicID.Crimson;
             }
 
             Vector2 PRTPos;
@@ -262,7 +270,8 @@ namespace DestroyerTest.Content.Entities
                     }
                 case AttackState.Idle:
                     {
-                        NPC.npcSlots = 10;
+                        NPC.boss = true;
+                        NPC.npcSlots = 10f;
                         KeepToPlayer(player.Center + new Vector2(0, -200));
                         if (IdleTimer > 0)
                         {
@@ -348,8 +357,19 @@ namespace DestroyerTest.Content.Entities
                         SlamAI(player);
                         break;
                     }
+                case AttackState.None:
+                    {
+                        NPC.velocity *= 0.8f;
 
-                
+                        if (NPC.alpha < 255)
+                        {
+                            NPC.immortal = true;
+                            NPC.alpha++;
+                        }
+                        break;
+                    }
+
+
             }
         }
 

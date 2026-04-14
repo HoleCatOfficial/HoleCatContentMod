@@ -61,7 +61,7 @@ namespace DestroyerTest.Content.Entities
             NPC.aiStyle = -1;
             NPC.damage = 25;
             NPC.defense = 24;
-            NPC.lifeMax = 22000;
+            NPC.lifeMax = 60000;
             NPC.HitSound = new SoundStyle("DestroyerTest/Assets/Audio/NodeHit");
             NPC.DeathSound = new SoundStyle("DestroyerTest/Assets/Audio/NodeExplode");
             NPC.noGravity = true;
@@ -81,8 +81,7 @@ namespace DestroyerTest.Content.Entities
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
-                new FlavorTextBestiaryInfoElement("Elemental Constructs that strengthen the potency of Cursed Flames and Ichor."),
-                new FlavorTextBestiaryInfoElement("They are often times found idly floating above the ground. Though the nodes will become retaliatory if provoked."),
+                new FlavorTextBestiaryInfoElement(DTUtils.GetModNPCLocalizationEntry(this, 1)),
                 BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.TheCorruption
             });
         }
@@ -92,7 +91,7 @@ namespace DestroyerTest.Content.Entities
             bool NodeAlive = false;
             foreach (NPC npc in Main.npc)
             {
-                if (NPC.active && npc.type == Type)
+                if (npc.active && npc.type == Type)
                 {
                     NodeAlive = true;
                 }
@@ -104,6 +103,17 @@ namespace DestroyerTest.Content.Entities
             return 0f;
         }
 
+        public override void OnSpawn(IEntitySource source)
+        {
+            ResetData();
+        }
+
+        public void ResetData()
+        {
+            DormantNPCKillTally = 0;
+            CFNGlobal.WaveNPCCount = 0;
+        }
+
         public override bool CheckActive()
         {
             return true;
@@ -113,7 +123,10 @@ namespace DestroyerTest.Content.Entities
         public float ShieldScale = 1f;
         public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            
+            if (CurrentAttack == AttackState.Dormant)
+            {
+                DTUtils.DrawChargeBar(2f, (NPC.Center + new Vector2(0, 100)) - Main.screenPosition, (float)DormantNPCKillTally / (float)DormantNPCKillRequirement, ColorLib.WretchedGradient());
+            }
         }
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
@@ -151,7 +164,8 @@ namespace DestroyerTest.Content.Entities
             Stars,
             FlameSwarm,
             Mines,
-            Napalm
+            Napalm,
+            None
         }
 
         public AttackState CurrentAttack;
@@ -204,22 +218,11 @@ namespace DestroyerTest.Content.Entities
 
             TryFindTileBelow();
 
-            if (player.Distance(NPC.Center) < 1200)
+            if (!Main.dedServ && CurrentAttack != AttackState.Dormant)
             {
-                if (!Main.dedServ)
-                {
-                    Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/NodeBoss");
-                }
-                if (!Main.dedServ && CurrentAttack == AttackState.Dormant && muscfg.NodeIdleMusic == true)
-                {
-                    Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/NodeIdle");
-                }
-                if (!Main.dedServ && CurrentAttack == AttackState.Dormant && muscfg.NodeIdleMusic == false)
-                {
-                    Music = MusicID.Corruption;
-                }
+                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/NodeBoss");
             }
-     
+
             if (Main.expertMode && !Main.masterMode)
             {
                 StarShootID = ModContent.ProjectileType<CursedNodeCrystal>();
@@ -388,6 +391,17 @@ namespace DestroyerTest.Content.Entities
                         {
                             CurrentAttack = AttackState.Idle;
                             NapalmRainTimer = 800;
+                        }
+                        break;
+                    }
+                case AttackState.None:
+                    {
+                        NPC.velocity *= 0.8f;
+
+                        if (NPC.alpha < 255)
+                        {
+                            NPC.immortal = true;
+                            NPC.alpha++;
                         }
                         break;
                     }

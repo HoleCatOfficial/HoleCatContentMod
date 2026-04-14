@@ -25,7 +25,7 @@ namespace DestroyerTest.Content.Ammunitions
 			Item.knockBack = 0f;
 			Item.value = Item.sellPrice(platinum: 9);
 			Item.shoot = ModContent.ProjectileType<HeliciteRoundProjectile>(); // The projectile that weapons fire when using this item as ammunition.
-			Item.shootSpeed = 35f;
+			Item.shootSpeed = 42f;
 			Item.ammo = AmmoID.Bullet;
 		}
 	}

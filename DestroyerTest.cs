@@ -230,11 +230,11 @@ namespace DestroyerTest
             // Divider.
             OilTentacleKeybind = KeybindLoader.RegisterKeybind(this, "HoleCat Oil Tentacle", "OemTab");
             // Divider.
-            RouletteTokenCurrencyId = CustomCurrencyManager.RegisterCurrency(new Content.Magic.RouletteToken(ModContent.ItemType<Content.Magic.RouletteTokenItem>(), 99L, "Mods.DestroyerTest.Content.Magic.RouletteToken"));
+            
            
             var fractalProfiles = (Dictionary<int, FinalFractalProfile>)typeof(Terraria.Graphics.FinalFractalHelper).GetField("_fractalProfiles", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
 			fractalProfiles.Add(ModContent.ItemType<GargantuaZenith>(), new FinalFractalProfile(140f, new Color(255, 0, 0)));
-			fractalProfiles.Add(ModContent.ItemType<Conclusion>(), new FinalFractalProfile(140f,  ColorLib.StellarFireGradientLooping()));
+			fractalProfiles.Add(ModContent.ItemType<Committment>(), new FinalFractalProfile(140f,  ColorLib.StellarFireGradientLooping()));
 
             AddChestLoot();
 
@@ -260,7 +260,7 @@ namespace DestroyerTest
 
             var fractalProfiles = (Dictionary<int, FinalFractalProfile>)typeof(Terraria.Graphics.FinalFractalHelper).GetField("_fractalProfiles", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
 			fractalProfiles.Remove(ModContent.ItemType<GargantuaZenith>());
-			fractalProfiles.Remove(ModContent.ItemType<Conclusion>());
+			fractalProfiles.Remove(ModContent.ItemType<Committment>());
 
 			DTCrossMod.UnloadMods();
         }

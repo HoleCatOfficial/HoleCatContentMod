@@ -8,14 +8,32 @@ RadiantHeart: {
 	Bonus: 40% increased natural life regen.
 }
 
-OozingAffection: {
-	Name: Oozing Affection
-	Message: Live la dolce vita, young one.
-	Bonus: 50% increased natural life regen when moving slowly.
+Enchanted: {
+	Name: Enchanted
+	Message: May wonder run through thine fingers.
+	Bonus: +6 Mana Regen
 }
 
-Persistence: {
-	Name: Persistence
-	Message: Speed is your desire, I see. May Terraria's winds be in your favor, young one.
-	Bonus: 15% increased move speed. 20% increased natural life regen and defense reduced by 10 when running fast enough.
+Attuned: {
+	Name: Attuned
+	Message: In peace, you will find the strength to recover, young one.
+	Bonus: Up to +25 Mana Regen and 50% life regen depending on how slow you're moving.
+}
+
+OozingAffection: {
+	Name: Oozing Affection
+	Message: May the gooey sweetness of honey nurse your wounds, young one.
+	Bonus: You have a chance to release bees when hurt and you get the honey buff when under 25% health.
+}
+
+Overgrown: {
+	Name: Overgrown
+	Message: Life shall teem around you, young one!
+	Bonus: You make flowers on grass and get improved life and mana regen when in the Forest or the Jungle.
+}
+
+Serenity: {
+	Name: Serenity
+	Message: Carry with you the calmness of the vast ocean and the meager puddle.
+	Bonus: Increased Life and Mana regen when wind is low and it is not raining.
 }

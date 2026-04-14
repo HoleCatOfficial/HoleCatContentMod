@@ -1,7 +1,10 @@
 using DestroyerTest.Common;
 using DestroyerTest.Common.Blessings;
+using DestroyerTest.Content.Particles;
+using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using ReLogic.Content;
 using System;
 using System.Collections.Generic;
@@ -106,7 +109,7 @@ namespace DestroyerTest.Content.UI
 
             blessButtonText = new UIText("Offer", 0.75f, false);
             blessButtonText.HAlign = 0.5f;
-            blessButtonText.VAlign = 0.85f;
+            blessButtonText.VAlign = 0.8f;
             blessButtonText.TextColor = Color.White;
             panel.Append(blessButtonText);
 
@@ -169,6 +172,30 @@ namespace DestroyerTest.Content.UI
                             Cooldown = 600;
                         }
                     }
+                    else if (SlotsHaveBlessingItems(DTBlessings.Enchanted))
+                    {
+                        if (Cooldown <= 0)
+                        {
+                            HerbItem[0].TurnToAir();
+                            OfferingItem[0].TurnToAir();
+                            P.ApplyBlessing(DTBlessings.Enchanted);
+
+                            SoundEngine.PlaySound(Accept);
+                            Cooldown = 600;
+                        }
+                    }
+                    else if (SlotsHaveBlessingItems(DTBlessings.Attuned))
+                    {
+                        if (Cooldown <= 0)
+                        {
+                            HerbItem[0].TurnToAir();
+                            OfferingItem[0].TurnToAir();
+                            P.ApplyBlessing(DTBlessings.Attuned);
+
+                            SoundEngine.PlaySound(Accept);
+                            Cooldown = 600;
+                        }
+                    }
                     else if (SlotsHaveBlessingItems(DTBlessings.OozingAffection))
                     {
                         if (Cooldown <= 0)
@@ -181,13 +208,85 @@ namespace DestroyerTest.Content.UI
                             Cooldown = 600;
                         }
                     }
-                    else if (SlotsHaveBlessingItems(DTBlessings.Enchanted))
+                    else if (SlotsHaveBlessingItems(DTBlessings.Serenity))
                     {
                         if (Cooldown <= 0)
                         {
                             HerbItem[0].TurnToAir();
                             OfferingItem[0].TurnToAir();
-                            P.ApplyBlessing(DTBlessings.Enchanted);
+                            P.ApplyBlessing(DTBlessings.Serenity);
+
+                            SoundEngine.PlaySound(Accept);
+                            Cooldown = 600;
+                        }
+                    }
+                    else if (SlotsHaveBlessingItems(DTBlessings.ThrivingDarknessCorr))
+                    {
+                        if (Cooldown <= 0)
+                        {
+                            HerbItem[0].TurnToAir();
+                            OfferingItem[0].TurnToAir();
+                            P.ApplyBlessing(DTBlessings.ThrivingDarknessCorr);
+
+                            SoundEngine.PlaySound(Accept);
+                            Cooldown = 600;
+                        }
+                    }
+                    else if (SlotsHaveBlessingItems(DTBlessings.ThrivingDarknessCrim))
+                    {
+                        if (Cooldown <= 0)
+                        {
+                            HerbItem[0].TurnToAir();
+                            OfferingItem[0].TurnToAir();
+                            P.ApplyBlessing(DTBlessings.ThrivingDarknessCrim);
+
+                            SoundEngine.PlaySound(Accept);
+                            Cooldown = 600;
+                        }
+                    }
+                    else if (SlotsHaveBlessingItems(DTBlessings.Decadence))
+                    {
+                        if (Cooldown <= 0)
+                        {
+                            HerbItem[0].TurnToAir();
+                            OfferingItem[0].TurnToAir();
+                            P.ApplyBlessing(DTBlessings.Decadence);
+
+                            SoundEngine.PlaySound(Accept);
+                            Cooldown = 600;
+                        }
+                    }
+                    else if (SlotsHaveBlessingItems(DTBlessings.Overgrown))
+                    {
+                        if (Cooldown <= 0)
+                        {
+                            HerbItem[0].TurnToAir();
+                            OfferingItem[0].TurnToAir();
+                            P.ApplyBlessing(DTBlessings.Overgrown);
+
+                            SoundEngine.PlaySound(Accept);
+                            Cooldown = 600;
+                        }
+                    }
+                    else if (SlotsHaveBlessingItems(DTBlessings.RejuvenatingWarmth))
+                    {
+                        if (Cooldown <= 0)
+                        {
+                            HerbItem[0].TurnToAir();
+                            OfferingItem[0].TurnToAir();
+                            P.ApplyBlessing(DTBlessings.RejuvenatingWarmth);
+
+                            SoundEngine.PlaySound(Accept);
+                            Cooldown = 600;
+                        }
+                    }
+                    else if (SlotsHaveBlessingItems(DTBlessings.MilkywayStride))
+                    {
+                        if (Cooldown <= 0)
+                        {
+                            HerbItem[0].TurnToAir();
+                            OfferingItem[0].TurnToAir();
+                            P.ApplyBlessing(DTBlessings.MilkywayStride);
 
                             SoundEngine.PlaySound(Accept);
                             Cooldown = 600;
@@ -206,6 +305,8 @@ namespace DestroyerTest.Content.UI
                             OfferingItem[0].TurnToAir();
                         }
                         SoundEngine.PlaySound(Reject);
+                        Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BlessingParticle>(), Main.LocalPlayer.Center, Vector2.Zero, Color.Violet, 0.01f, 2f);
+                        CombatText.NewText(Main.LocalPlayer.Hitbox, Color.Violet, Language.GetTextValue("Mods.DestroyerTest.Blessings.RejectedMessage"), true, false);
                         Cooldown = 600;
                     }
                 }

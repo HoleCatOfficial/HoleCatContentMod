@@ -1,4 +1,5 @@
-  
+
+using DestroyerTest.Common;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Weapon.Melee;
 using DestroyerTest.Content.Resources;
@@ -14,6 +15,12 @@ namespace DestroyerTest.Content.MeleeWeapons
 {
 	public class SparkFrostCleaver : ModItem
 	{
+
+        public override void SetStaticDefaults()
+        {
+            DTUtils.isSpecialSwingSword.Add(Type);
+            DTUtils.TooltipScaleMult[Type] = 1.17f;
+        }
 
         public override void SetDefaults() {
 			Item.width = 162;

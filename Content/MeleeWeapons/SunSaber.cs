@@ -1,7 +1,11 @@
 ﻿using DestroyerTest;
+using DestroyerTest.Common;
 using DestroyerTest.Content.MeleeWeapons;
+using DestroyerTest.Content.Projectiles;
+using DestroyerTest.Content.Projectiles.Weapon.Melee;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.Tiles;
+using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -10,9 +14,6 @@ using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using DestroyerTest.Rarity;
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Content.Projectiles.Weapon.Melee;
 
 namespace DestroyerTest.Content.MeleeWeapons
 {
@@ -20,7 +21,8 @@ namespace DestroyerTest.Content.MeleeWeapons
     {
         public override void SetStaticDefaults()
         {
-
+            DTUtils.isSpecialSwingSword.Add(Type);
+            DTUtils.TooltipScaleMult[Type] = 1f;
         }
         public override void SetDefaults()
         {

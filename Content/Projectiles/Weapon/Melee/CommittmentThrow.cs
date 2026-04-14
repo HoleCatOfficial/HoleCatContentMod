@@ -21,7 +21,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Projectile.width = 22;
             Projectile.height = 22;
             Projectile.friendly = true;
-            Projectile.timeLeft = 10000;
+            Projectile.timeLeft = 300;
             Projectile.penetrate = -1;
             Projectile.tileCollide = false;
             Projectile.ownerHitCheck = true;
@@ -53,7 +53,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
                 //PRTLoader.NewParticle(StellarParticleIndex.ConstitutionParticle, Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Vector2.Zero, default, 1f);
 
-                if (Projectile.velocity.Length() <= 0.4f)
+                if (Projectile.velocity.Length() <= 0.8f)
                 {
                     returning = true;
                 }
@@ -66,11 +66,17 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 //Projectile.velocity = Vector2.Lerp(Projectile.velocity, toOwner * 64, 0.1f);
                 //Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4 + MathHelper.Pi;
 
-                Owner.velocity = Vector2.Lerp(Owner.velocity, toOwner * -64, 0.1f);
+                Owner.velocity = Vector2.Lerp(Owner.velocity, toOwner * -32, 0.1f);
 
-                if (Projectile.Center.Distance(Owner.Center) < 10)
+                if (Projectile.Center.Distance(Owner.Center) < 30)
                 {
                     Projectile.Kill();
+                    Owner.gravity = 1f;
+                    Owner.velocity *= 0.25f;
+                }
+                else
+                {
+                    Owner.gravity = 0f;
                 }
             }
         }

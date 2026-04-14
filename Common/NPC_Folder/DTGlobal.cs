@@ -195,6 +195,7 @@ namespace DestroyerTest.Common.NPC_Folder
                 DTUtils.NPCDownTally[NPCID.Plantera]++;
                 UpdateDivinePlayers();
                 DownedBossSystem.downedPlanteraBoss = true;
+                Main.NewText("The Evil and Hallow have begun a counteroffensive!");
                 if (Main.netMode == NetmodeID.Server)
                 {
                     NetMessage.SendData(MessageID.WorldData);
@@ -312,6 +313,8 @@ namespace DestroyerTest.Common.NPC_Folder
                     }
             }
         }
+
+        
 
 
         public override void ModifyShop(NPCShop shop)

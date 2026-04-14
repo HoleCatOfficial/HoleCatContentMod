@@ -1,3 +1,4 @@
+using DestroyerTest.Common;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Weapon.Melee;
 using DestroyerTest.Rarity;
@@ -16,18 +17,25 @@ namespace DestroyerTest.Content.MeleeWeapons
 {
 	public class Endemy2Weapon : ModItem
 	{
-		public override void PostDrawInInventory(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
+		public override void PostDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
 		{
 			Texture2D glowTexture = ModContent.Request<Texture2D>("DestroyerTest/Content/MeleeWeapons/Endemy2Weapon_Highlight").Value;
 			spriteBatch.Draw(glowTexture, position, frame, Color.White, 0f, origin, scale, SpriteEffects.None, 0f);
 		}
 		
-		public override void PostDrawInWorld(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
+		public override void PostDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
 		{
 			Texture2D glowTexture = ModContent.Request<Texture2D>("DestroyerTest/Content/MeleeWeapons/Endemy2Weapon_Highlight").Value;
 			spriteBatch.Draw(glowTexture, Item.position - Main.screenPosition, null, Color.White, rotation, Vector2.Zero, scale, SpriteEffects.None, 0f);
 		}
-		public override void SetDefaults()
+
+        public override void SetStaticDefaults()
+        {
+            DTUtils.isSpecialSwingSword.Add(Type);
+            DTUtils.TooltipScaleMult[Type] = 1f;
+        }
+
+        public override void SetDefaults()
         {
             Item.width = 140;
             Item.height = 142;

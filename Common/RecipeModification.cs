@@ -27,7 +27,6 @@ namespace DestroyerTest.Common
             clonedRecipe.AddIngredient(ItemID.EnchantedSword);
             clonedRecipe.AddIngredient(ItemID.CopperBroadsword);
             clonedRecipe.AddIngredient<Gargantua>();
-            clonedRecipe.AddIngredient<Conclusion>();
 			clonedRecipe.Register();
 
             Recipe recipe = Recipe.Create(ItemID.BlackInk);
@@ -59,7 +58,6 @@ namespace DestroyerTest.Common
 
 
                 { Vanilla(ItemID.Zenith), AddIngredient(ModContent.ItemType<Gargantua>()) },
-                { Vanilla(ItemID.Zenith), AddIngredient(ModContent.ItemType<Conclusion>()) }
             };
 		}
 

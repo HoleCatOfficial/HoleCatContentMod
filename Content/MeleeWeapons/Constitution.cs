@@ -11,7 +11,7 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
 
-namespace DestroyerTest.Content.MeleeWeapons.SwordLineage
+namespace DestroyerTest.Content.MeleeWeapons
 {
 	public class Constitution : ModItem
 	{

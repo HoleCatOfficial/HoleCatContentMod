@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using Terraria.Localization;
 using DestroyerTest.Content.Equips.ScepterAccessories;
 using DestroyerTest.Content.Resources;
+using DestroyerTest.Content.MeleeWeapons;
 
 namespace DestroyerTest.Content.Consumables
 {

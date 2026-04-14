@@ -81,6 +81,11 @@ Configs: {
 			Label: Scroll Effects Cooldown
 			Tooltip: The minimum amount of time that must pass before a scroll's effect can activate again.
 		}
+
+		BlessingVFX: {
+			Label: Blessing V F X
+			Tooltip: ""
+		}
 	}
 
 	DTMusicConfig: {

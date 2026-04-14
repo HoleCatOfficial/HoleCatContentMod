@@ -1,3 +1,11 @@
+using DestroyerTest.Common;
+using DestroyerTest.Content.Magic;
+using DestroyerTest.Content.Projectiles;
+using DestroyerTest.Content.Projectiles.Weapon.Melee.Quixotism;
+  
+using DestroyerTest.Content.Resources;
+using DestroyerTest.Content.Tiles;
+using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
@@ -5,13 +13,6 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using DestroyerTest.Content.Projectiles;
-  
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.Tiles;
-using DestroyerTest.Content.Magic;
-using DestroyerTest.Content.Projectiles.Weapon.Melee.Quixotism;
-using DestroyerTest.Rarity;
 
 namespace DestroyerTest.Content.MeleeWeapons
 {
@@ -23,7 +24,13 @@ namespace DestroyerTest.Content.MeleeWeapons
         public bool Powered = false;
         public float PowerOpacity = 0f;
 
-		public override void SetDefaults()
+        public override void SetStaticDefaults()
+        {
+            DTUtils.isSpecialSwingSword.Add(Type);
+            DTUtils.TooltipScaleMult[Type] = 1f;
+        }
+
+        public override void SetDefaults()
 		{
 			Item.width = 72;
 			Item.height = 72;

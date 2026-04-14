@@ -275,7 +275,7 @@ namespace DestroyerTest.Content.Equips
 				{
 					if (Guard.Charge3)
 					{
-						Projectile.NewProjectile(source, position, velocity.RotatedByRandom(0.1f), ModContent.ProjectileType<HeliouricSpreadProjectile>(), damage / 2, knockback, player.whoAmI, ai2: 1);
+						Projectile.NewProjectile(source, position, velocity.RotatedByRandom(0.1f), ModContent.ProjectileType<RiftSpark>(), damage / 2, knockback, player.whoAmI, ai2: 1);
 					}
 				}
 			}

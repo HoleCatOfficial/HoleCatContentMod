@@ -83,6 +83,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 Dust.NewDustPerfect(pt[Main.rand.Next(30)], ModContent.DustType<ColorableNeonDust>(), SwordLine.GetLineRotation.ToRotationVector2() * 2, 0, Color.Orange, 2f);
                 Dust.NewDustPerfect(pt[Main.rand.Next(30)], ModContent.DustType<ColorableNeonDust>(), SwordLine.GetLineRotation.ToRotationVector2() * 2, 0, Color.SkyBlue, 2f);
             }
+
+            ScaleMult = 1.17f;
         }
 
         public override void HitNPCEffects(NPC npc, NPC.HitInfo hit)
