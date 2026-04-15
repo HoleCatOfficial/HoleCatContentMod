@@ -4426,3 +4426,23 @@ Committment: {
 		"Holy Smokes!"
 		'''
 }
+
+HolyIdol: {
+	DisplayName: Holy Idol
+	Tooltip: Instantly clears a wave of the Blessed Node's enemies. Consumes 1 per use.
+}
+
+PrimalIdol: {
+	DisplayName: Primal Idol
+	Tooltip: Instantly clears a wave of the Ichor Node's enemies. Consumes 1 per use.
+}
+
+WretchedIdol: {
+	DisplayName: Wretched Idol
+	Tooltip: Instantly clears a wave of the Cursed Flame Node's enemies. Consumes 1 per use.
+}
+
+GloryOrb: {
+	DisplayName: Glory Orb
+	Tooltip: ""
+}

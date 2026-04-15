@@ -180,6 +180,7 @@ namespace DestroyerTest.Content.Entities
             CrystalCross,
             SummonKnives,
             Lasers,
+            HallowBolts,
             None
         }
 
@@ -198,9 +199,12 @@ namespace DestroyerTest.Content.Entities
         public float LaserRotOffset = 0;
         public int LaserWarnTimer = 120;
         public int LaserCount = 0;
+        public int BoltCount = 0;
+        public int DespawnTimer = 60;
         
         public override void AI()
         {
+
             NPC.TargetClosest();
             Player player = Main.player[NPC.target];
             DTUtils Utility = new DTUtils();
@@ -216,9 +220,16 @@ namespace DestroyerTest.Content.Entities
                 NPC.immortal = false;
             }
 
-            if (player.active == false || player.dead == true)
+            if (player.active == false || player.dead == true || !NPC.HasValidTarget)
             {
-                CurrentAttack = AttackState.None;
+                if (DespawnTimer > 0)
+                {
+                    DespawnTimer--;
+                }
+                else
+                {
+                    CurrentAttack = AttackState.None;
+                }
             }
 
 
@@ -352,6 +363,10 @@ namespace DestroyerTest.Content.Entities
 
                         if (LaserCount < 3)
                         {
+                            if (LaserWarnTimer == 119)
+                            {
+                                SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/BlessedNodeLasersCharge"), NPC.Center);
+                            }
                             if (LaserWarnTimer > 0)
                             {
                                 float t = Utilities.Convert01To010((LaserWarnTimer / 120f));
@@ -369,9 +384,34 @@ namespace DestroyerTest.Content.Entities
                         }
                         else
                         {
-                            CurrentAttack = AttackState.Idle;
+                            CurrentAttack = AttackState.HallowBolts;
                             LaserCount = 0;
                             LaserWarnTimer = 120;
+                        }
+                        break;
+                    }
+                case AttackState.HallowBolts:
+                    {
+                        KeepToPlayer(player.Center + new Vector2(0, -300));
+
+                        Vector2 toPlayer = player.Center - NPC.Center;
+                        toPlayer.Normalize();
+                        if (BoltCount < 4)
+                        {
+                            if (Main.GameUpdateCount % 240 == 0)
+                            {
+                                SoundEngine.PlaySound(DTAssetLib.Impacts.AmbitionChargeBurst with { PitchRange = (-0.4f, -0.1f), MaxInstances = 0 }, NPC.Center);
+                                for (int o = 0; o < 3; o++)
+                                {
+                                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, toPlayer.RotatedByRandom(0.5f) * 10, ModContent.ProjectileType<HallowBolt>(), 30, 15);
+                                }
+                                BoltCount++;
+                            }
+                        }
+                        else
+                        {
+                            CurrentAttack = AttackState.Idle;
+                            BoltCount = 0;
                         }
                         break;
                     }
@@ -383,6 +423,10 @@ namespace DestroyerTest.Content.Entities
                         {
                             NPC.immortal = true;
                             NPC.alpha++;
+                        }
+                        else
+                        {
+                            NPC.active = false;
                         }
                         break;
                     }
@@ -613,14 +657,24 @@ namespace DestroyerTest.Content.Entities
         Projectile[] LaserBurstCol;
         public void LaserBurst()
         {
-            SoundEngine.PlaySound(SoundID.Item68, NPC.Center);
+            SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/BlessedNodeLasers"), NPC.Center);
             LaserBurstCol = Opus.RadialSpreadProjectile(ModContent.ProjectileType<BlessedLaser>(), 6, NPC.Center, 80, 1, 0.005f, offset: LaserRotOffset);
+
+            if (Main.expertMode && !Main.masterMode)
+            {
+                Opus.RingProjectileOutward(ModContent.ProjectileType<BlessedNodeCrystal2>(), 16, NPC.Center, 10, 20, 4, 1, RandomOffset: true);
+            }
+            if (Main.masterMode)
+            {
+                Opus.RingProjectileOutward(ModContent.ProjectileType<BlessedNodeCrystal2>(), 24, NPC.Center, 10, 20, 4, 1, RandomOffset: true);
+            }
         }
         
 
         public override void OnKill()
         {
             BNGlobal.WaveNPCCount = 0;
+            Projectile.NewProjectile(NPC.GetSource_Death(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<BlessedNodeDeathProjectile>(), 100, 0);
         }
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)

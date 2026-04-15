@@ -194,6 +194,7 @@ namespace DestroyerTest.Content.Entities
         public SoundStyle SlamWarn = new SoundStyle("DestroyerTest/Assets/Audio/ChimeIn") with { MaxInstances = 0, PitchVariance = 1 };
         public SoundStyle Spiralwarn = new SoundStyle("DestroyerTest/Assets/Audio/RailGunCharge") with { MaxInstances = 0 };
         public SoundStyle GroundImpact = new SoundStyle("DestroyerTest/Assets/Audio/TenebrisTesticleKill") with { MaxInstances = 0, PitchVariance = 0.5f };
+        public int DespawnTimer = 60;
 
         public override void AI()
         {
@@ -212,9 +213,16 @@ namespace DestroyerTest.Content.Entities
                 NPC.immortal = false;
             }
 
-            if (player.active == false || player.dead == true)
+            if (player.active == false || player.dead == true || !NPC.HasValidTarget)
             {
-                CurrentAttack = AttackState.Dormant;
+                if (DespawnTimer > 0)
+                {
+                    DespawnTimer--;
+                }
+                else
+                {
+                    CurrentAttack = AttackState.None;
+                }
             }
 
             if (CurrentAttack != AttackState.GroundSlam)
@@ -365,6 +373,10 @@ namespace DestroyerTest.Content.Entities
                         {
                             NPC.immortal = true;
                             NPC.alpha++;
+                        }
+                        else
+                        {
+                            NPC.active = false;
                         }
                         break;
                     }

@@ -2,14 +2,19 @@
 using DestroyerTest.Common;
 using DestroyerTest.Content.Entities;
 using DestroyerTest.Content.Equips;
+using DestroyerTest.Content.Equips.ScepterAccessories;
 using DestroyerTest.Content.Magic;
-using DestroyerTest.Content.Scepter;
+using DestroyerTest.Content.MeleeWeapons;
 using DestroyerTest.Content.MeleeWeapons.SwordLineage;
 using DestroyerTest.Content.RangedItems;
+using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.RogueItems;
+using DestroyerTest.Content.Scepter;
 using DestroyerTest.Content.SummonItems;
-using DestroyerTest.Rarity;
+using DestroyerTest.Content.Tiles;
 using DestroyerTest.Content.Tiles.AchievementPaintingTiles;
+using DestroyerTest.Content.Tools;
+using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -17,10 +22,6 @@ using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.Equips.ScepterAccessories;
-using DestroyerTest.Content.Tiles;
-using DestroyerTest.Content.MeleeWeapons;
 
 namespace DestroyerTest.Content.Consumables
 {
@@ -31,7 +32,7 @@ namespace DestroyerTest.Content.Consumables
         {
             
             ItemID.Sets.BossBag[Type] = true;
-            Item.ResearchUnlockCount = 5;
+            Item.ResearchUnlockCount = 2;
         }
 
         public override void SetDefaults()
@@ -53,6 +54,7 @@ namespace DestroyerTest.Content.Consumables
         {
             itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<HaepienNodeCharm>(), 24, 1, 1));
             itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<PrimalShards>(), 1, 4, 16));
+            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<PrimalIdol>(), 1, 1, 3));
             itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<IchorScroll>(), 1, 1, 1));
             itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<Scorn>(), 2, 1, 1));
             itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<DistendedPike>(), 2, 1, 1));

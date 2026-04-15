@@ -5,6 +5,7 @@ using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.MeleeWeapons;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Particles.Orchestrated;
+using DestroyerTest.Content.Projectiles.Boss.NodeBoss.Blessed;
 using InnoVault;
 using InnoVault.PRT;
 using log4net.Appender;
@@ -27,7 +28,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 {
     public class PuritySwing : ModProjectile
     {
-        public SoundStyle Swing = DTAssetLib.SwordSounds.SwiftSwing with { Volume = 1.0f, PitchVariance = 0.2f, MaxInstances = 0 };
+        public SoundStyle Swing = SoundID.Item71;
         public SoundStyle Hit = DTAssetLib.SwordSounds.LightGoreCut with { PitchVariance = 0.4f, MaxInstances = 0 };
         public Color MainColor = new Color(16, 149, 162);
         private enum AttackStage
@@ -142,8 +143,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Timer++;
         }
 
-        public float Scl = 2f;
+        public float Scl = 1.75f;
         public float SlOpacity = 0f;
+        public float offset = 0f;
 
         public void DrawSlashFX()
         {
@@ -152,14 +154,16 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             if (Projectile.spriteDirection > 0)
             {
                 effects = SpriteEffects.None;
+                offset = 0;
             }
             else
             {
                 effects = SpriteEffects.FlipHorizontally;
+                offset = MathHelper.ToRadians(135f);
             }
 
             Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-            Main.EntitySpriteDraw(DTAssetLib.CircularSwingThin.Value, Projectile.Center - Main.screenPosition, null, (MainColor * Projectile.Opacity) * SlOpacity, Projectile.rotation - 0.2f, DTAssetLib.CircularSwingThin.Value.Size() / 2, Scl * Projectile.scale, effects, 0);
+            Main.EntitySpriteDraw(DTAssetLib.CutSwing.Value, Projectile.Center - Main.screenPosition, null, (MainColor * Projectile.Opacity) * SlOpacity, Projectile.rotation + offset, DTAssetLib.CutSwing.Value.Size() / 2, Scl * Projectile.scale, effects, 0);
             //Main.spriteBatch.Draw(DTAssetLib.FireSwingHighlight.Value, Projectile.Center - Main.screenPosition, null, ((Color.Red * 0.5f) * Projectile.Opacity) * SlOpacity, Projectile.rotation - 0.2f, DTAssetLib.FireSwingHighlight.Value.Size() / 2, Scl * Projectile.scale, effects, 0);
             Opus.ReturnToDefaultDrawing(Main.spriteBatch);
         }
@@ -248,7 +252,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
             armPosition.Y += Owner.gfxOffY;
             Projectile.Center = armPosition; // Set projectile to arm position
-            Projectile.scale = Size * 1.2f * Owner.GetAdjustedItemScale(Owner.HeldItem); // Slightly scale up the projectile and also take into account melee size modifiers
+            Projectile.scale = Size * Owner.GetAdjustedItemScale(Owner.HeldItem); // Slightly scale up the projectile and also take into account melee size modifiers
 
             Owner.heldProj = Projectile.whoAmI; // set held projectile to this projectile
         }
@@ -289,7 +293,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 }
                 else
                 {
-                    SlOpacity += 0.05f;
+                    if (SlOpacity < 1f)
+                    {
+                        SlOpacity += 0.05f;
+                    }
                 }
 
                 float speed = SPINSPEED * Owner.GetTotalAttackSpeed(Projectile.DamageType);
@@ -324,11 +331,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 Size = 1f;
 
                 float speedRatio = Math.Min(1f, SPINSPEED / 0.12f);
-                int soundInterval = (int)MathHelper.Lerp(200, 20, speedRatio);
+                int soundInterval = (int)MathHelper.Lerp(200, 18.5f, speedRatio);
 
                 STimer++;
                 if (STimer % soundInterval == 0)
                 {
+                    Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Projectile.rotation.ToRotationVector2().RotatedByRandom(MathHelper.TwoPi) * 24, ModContent.ProjectileType<BlessedNodeCrystalFriendly>(), Projectile.damage / 2, 4, Projectile.owner);
                     SoundEngine.PlaySound(Swing with { PitchVariance = 1f });
                 }
             }

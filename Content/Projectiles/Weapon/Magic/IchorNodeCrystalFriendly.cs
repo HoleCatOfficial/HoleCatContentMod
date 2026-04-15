@@ -43,37 +43,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 			SpriteBatch spriteBatch = Main.spriteBatch;
 			DTUtils Utility = new DTUtils();
 
-            DTOptimizationsConfig OptCfg = ModContent.GetInstance<DTOptimizationsConfig>();
-            if (!OptCfg.DisableExcessTrails)
-            {
-                Opus.StartSpriteBatchForTrails(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-                
-                if (TrailPositions.Count > 1)
-                {
-                    List<ColoredVertex> ve = new List<ColoredVertex>();
-                    float a = 0;
-
-                    for (int i = TrailPositions.Count - 1; i > 0; i--)
-                    {
-                        float t = 1f - (i / (float)TrailPositions.Count); // fade toward tail
-                        Color b = lightColor * t;
-
-                        Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
-                        Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * 22;
-                        Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * 22;
-
-                        DTUtils.AddStrips(ve, TrailPositions, i, offset, offset2, t, b, trailOffset);
-                    }
-
-
-                    GraphicsDevice gd = Main.graphics.GraphicsDevice;
-                    if (ve.Count >= 3)
-                    {
-                        gd.Textures[0] = DTAssetLib.Streak(2).Value;
-                        gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2);
-                    }
-                }
-            }
+            DTTrail.DrawTrail(spriteBatch, DTAssetLib.Streak(1).Value, TrailPositions, TrailRotations, 10f, lightColor, trailOffset, 10);
 
             Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
@@ -91,28 +61,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 
         }
 
-        public bool CanReflect = true;
-        int Collisions = 0;
-        public override bool OnTileCollide(Vector2 oldVelocity)
-        {
-            if (Projectile.velocity.X != oldVelocity.X) {
-				Projectile.velocity.X = -oldVelocity.X;
-				}
-			if (Projectile.velocity.Y != oldVelocity.Y) {
-				Projectile.velocity.Y = -oldVelocity.Y;
-			}
-			Projectile.velocity *= 0.75f;
-            Collisions++;
-            if (Collisions > 3)
-            {
-                return true;
-            }
-            if (CanReflect == false)
-            {
-                return true;
-            }
-            return false;
-        }
+    
 
 
         public List<Vector2> TrailPositions = new();

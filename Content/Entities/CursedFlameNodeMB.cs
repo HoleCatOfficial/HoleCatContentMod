@@ -193,6 +193,7 @@ namespace DestroyerTest.Content.Entities
         public SoundStyle Wallwarn = new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/CursedFlamesWarn") with { MaxInstances = 0, PitchVariance = 1 };
         public SoundStyle WallShoot1 = new SoundStyle("DestroyerTest/Assets/Audio/FlameWall") with { MaxInstances = 0, PitchVariance = 1, Volume = 2 };
         public SoundStyle NapalmShoot = new SoundStyle("DestroyerTest/Assets/Audio/NodeAttackNapalm") with { MaxInstances = 0, PitchVariance = 1 };
+        public int DespawnTimer = 60;
         public override void AI()
         {
             NPC.TargetClosest();
@@ -210,9 +211,16 @@ namespace DestroyerTest.Content.Entities
                 NPC.immortal = false;
             }
 
-            if (player.active == false || player.dead == true)
+            if (player.active == false || player.dead == true || !NPC.HasValidTarget)
             {
-                CurrentAttack = AttackState.Dormant;
+                if (DespawnTimer > 0)
+                {
+                    DespawnTimer--;
+                }
+                else
+                {
+                    CurrentAttack = AttackState.None;
+                }
             }
 
 
@@ -402,6 +410,10 @@ namespace DestroyerTest.Content.Entities
                         {
                             NPC.immortal = true;
                             NPC.alpha++;
+                        }
+                        else
+                        {
+                            NPC.active = false;
                         }
                         break;
                     }
