@@ -37,3 +37,9 @@ Serenity: {
 	Message: Carry with you the calmness of the vast ocean and the meager puddle.
 	Bonus: Increased Life and Mana regen when wind is low and it is not raining.
 }
+
+ThrivingDarkness: {
+	Name: Thriving Darkness
+	Message: Lurking just out of my reach. Stay safe in the dark, young one.
+	Bonus: Increased Life regen in low-light conditions.
+}

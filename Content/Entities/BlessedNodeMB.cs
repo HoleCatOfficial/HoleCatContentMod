@@ -75,7 +75,7 @@ namespace DestroyerTest.Content.Entities
             NPC.boss = false;
             NPC.npcSlots = 1f;
             NPC.netUpdate = true;
-            NPC.netID = ModContent.NPCType<CursedFlameNodeMB>();
+            NPC.netID = ModContent.NPCType<BlessedNodeMB>();
             NPC.alpha = 255;
             NPC.friendly = false;
         }
@@ -212,12 +212,12 @@ namespace DestroyerTest.Content.Entities
 
             if (NPC.alpha > 0)
             {
-                NPC.immortal = true;
+                NPC.dontTakeDamage = true;
                 NPC.alpha--;
             }
             else
             {
-                NPC.immortal = false;
+                NPC.dontTakeDamage = false;
             }
 
             if (player.active == false || player.dead == true || !NPC.HasValidTarget)
@@ -282,12 +282,10 @@ namespace DestroyerTest.Content.Entities
                         DormantAI();
                         if ((DormantNPCKillTally < DormantNPCKillRequirement))
                         {
-                            NPC.immortal = true;
                             NPC.dontTakeDamage = true;
                         }
                         else
                         {
-                            NPC.immortal = false;
                             NPC.dontTakeDamage = false;
                         }
 
@@ -401,7 +399,16 @@ namespace DestroyerTest.Content.Entities
                             if (Main.GameUpdateCount % 240 == 0)
                             {
                                 SoundEngine.PlaySound(DTAssetLib.Impacts.AmbitionChargeBurst with { PitchRange = (-0.4f, -0.1f), MaxInstances = 0 }, NPC.Center);
-                                for (int o = 0; o < 3; o++)
+                                int amt = 3;
+                                if (Main.expertMode && !Main.masterMode)
+                                {
+                                    amt = 5;
+                                }
+                                if (Main.masterMode)
+                                {
+                                    amt = 7;
+                                }
+                                for (int o = 0; o < amt; o++)
                                 {
                                     Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, toPlayer.RotatedByRandom(0.5f) * 10, ModContent.ProjectileType<HallowBolt>(), 30, 15);
                                 }
@@ -421,7 +428,7 @@ namespace DestroyerTest.Content.Entities
 
                         if (NPC.alpha < 255)
                         {
-                            NPC.immortal = true;
+                            NPC.dontTakeDamage = true;
                             NPC.alpha++;
                         }
                         else
@@ -679,7 +686,7 @@ namespace DestroyerTest.Content.Entities
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-            npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<CursedNodeLootBag>()));
+            npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<BlessedNodeLootBag>()));
         }
     }
 

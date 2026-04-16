@@ -6,3 +6,6 @@ NightmareRose.Hint:
 	Please Note: The boss will spawn with its Bottom Center on top of the cursor, and will fall to a solid tile below.
 	Keep that in mind when spawning.
 	'''
+CursedFlameNodeMB.Hint: Spawns naturally in the corruption after Plantera is defeated.
+IchorNodeMB.Hint: Spawns naturally in the crimson after Plantera is defeated.
+BlessedNodeMB.Hint: Spawns naturally in the hallow after Plantera is defeated.

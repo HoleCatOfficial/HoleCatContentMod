@@ -40,7 +40,8 @@ namespace DestroyerTest.Common.Blessings
             Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BlessingParticle>(), Player.Center, Vector2.Zero, ColorLib.Soul, 0.01f, 2f);
             Opus.RadialParticleRandomDir(PRTLoader.GetParticleID<HallowedPallStar>(), 10, Player.Center, 1, ColorLib.Soul, 1f, 2.75f);
 
-            CombatText.NewText(Player.Hitbox, ColorLib.Soul, IncomingBlessing.BlessingMessage, true, false);
+
+            PopupText.NewText(new AdvancedPopupRequest() { Text = IncomingBlessing.BlessingMessage, Color = ColorLib.Soul, DurationInFrames = 300, Velocity = new Vector2(0, -20) }, Player.Center);
         }
 
         public void RejectOffer()
@@ -127,6 +128,24 @@ namespace DestroyerTest.Common.Blessings
                                 D.noGravity = true;
                             }
                             Player.flowerBoots = true;
+                            break;
+                        }
+                    case BlessingID.ThrivingDarknessCorr:
+                        {
+                            if (Lighting.Brightness((int)Player.Center.X, (int)Player.Center.Y) < 0.5f)
+                            {
+                                Dust D = Player.QuickDust(DustID.Corruption, Main.rand.NextVector2Circular(1f, 1f), 205);
+                                D.noGravity = true;
+                            }
+                            break;
+                        }
+                    case BlessingID.ThrivingDarknessCrim:
+                        {
+                            if (Lighting.Brightness((int)Player.Center.X, (int)Player.Center.Y) < 0.5f)
+                            {
+                                Dust D = Player.QuickDust(DustID.Crimson, Main.rand.NextVector2Circular(1f, 1f), 205);
+                                D.noGravity = true;
+                            }
                             break;
                         }
                     case (BlessingID.MilkywayStride):
@@ -315,8 +334,8 @@ namespace DestroyerTest.Common.Blessings
         public static Blessing Attuned = new Blessing(PrayerID.Regen, ItemID.Daybloom, ItemID.NaturesGift, BlessingID.Attuned, Language.GetText($"{CommonBM_Key}.Attuned.Message"), Language.GetText($"{CommonBM_Key}.Attuned.Bonus"), Language.GetText($"{CommonBM_Key}.Attuned.Name"));
         public static Blessing OozingAffection = new Blessing(PrayerID.Regen, ItemID.Daybloom, ItemID.BottledHoney, BlessingID.OozingAffection, Language.GetText($"{CommonBM_Key}.OozingAffection.Message"), Language.GetText($"{CommonBM_Key}.OozingAffection.Bonus"), Language.GetText($"{CommonBM_Key}.OozingAffection.Name"));
         public static Blessing Serenity = new Blessing(PrayerID.Regen, ItemID.Daybloom, ItemID.Starfish, BlessingID.Serenity, Language.GetText($"{CommonBM_Key}.Serenity.Message"), Language.GetText($"{CommonBM_Key}.Serenity.Bonus"), Language.GetText($"{CommonBM_Key}.Serenity.Name"));
-        public static Blessing ThrivingDarknessCorr = new Blessing(PrayerID.Regen, ItemID.Daybloom, ItemID.ShadowScale, BlessingID.ThrivingDarknessCorr, Language.GetText($"{CommonBM_Key}.EvilVitality.Message"), Language.GetText($"{CommonBM_Key}.EvilVitality.Bonus"), Language.GetText($"{CommonBM_Key}.EvilVitality.Name"));
-        public static Blessing ThrivingDarknessCrim = new Blessing(PrayerID.Regen, ItemID.Daybloom, ItemID.TissueSample, BlessingID.ThrivingDarknessCrim, Language.GetText($"{CommonBM_Key}.EvilVitality.Message"), Language.GetText($"{CommonBM_Key}.EvilVitality.Bonus"), Language.GetText($"{CommonBM_Key}.EvilVitality.Name"));
+        public static Blessing ThrivingDarknessCorr = new Blessing(PrayerID.Regen, ItemID.Daybloom, ItemID.ShadowScale, BlessingID.ThrivingDarknessCorr, Language.GetText($"{CommonBM_Key}.ThrivingDarkness.Message"), Language.GetText($"{CommonBM_Key}.ThrivingDarkness.Bonus"), Language.GetText($"{CommonBM_Key}.ThrivingDarkness.Name"));
+        public static Blessing ThrivingDarknessCrim = new Blessing(PrayerID.Regen, ItemID.Daybloom, ItemID.TissueSample, BlessingID.ThrivingDarknessCrim, Language.GetText($"{CommonBM_Key}.ThrivingDarkness.Message"), Language.GetText($"{CommonBM_Key}.ThrivingDarkness.Bonus"), Language.GetText($"{CommonBM_Key}.ThrivingDarkness.Name"));
         public static Blessing Decadence = new Blessing(PrayerID.Regen, ItemID.Daybloom, ItemID.Ambrosia, BlessingID.Decadence, Language.GetText($"{CommonBM_Key}.Decadence.Message"), Language.GetText($"{CommonBM_Key}.Decadence.Bonus"), Language.GetText($"{CommonBM_Key}.Decadence.Name"));
         public static Blessing Overgrown = new Blessing(PrayerID.Regen, ItemID.Daybloom, ItemID.JungleSpores, BlessingID.Overgrown, Language.GetText($"{CommonBM_Key}.Overgrown.Message"), Language.GetText($"{CommonBM_Key}.Overgrown.Bonus"), Language.GetText($"{CommonBM_Key}.Overgrown.Name"));
         public static Blessing MilkywayStride = new Blessing(PrayerID.Regen, ItemID.Daybloom, ModContent.ItemType<StellarMatter>(), BlessingID.MilkywayStride, Language.GetText($"{CommonBM_Key}.MilkywayStride.Message"), Language.GetText($"{CommonBM_Key}.MilkywayStride.Bonus"), Language.GetText($"{CommonBM_Key}.MilkywayStride.Name"));

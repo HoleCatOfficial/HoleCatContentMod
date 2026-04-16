@@ -79,6 +79,7 @@ namespace DestroyerTest.Common.Systems
             DoBossChecklistIntegration(DTBossEntries.Constitution);
             DoBossChecklistIntegration_NoSpawnItem(DTBossEntries.IchorNode);
             DoBossChecklistIntegration_NoSpawnItem(DTBossEntries.CursedFlameNode);
+            DoBossChecklistIntegration_NoSpawnItem(DTBossEntries.BlessedNode);
             DoBossChecklistIntegration(DTBossEntries.WyvernCorpse);
             DoBossChecklistIntegration(DTBossEntries.NightmareRose);
         }
@@ -112,7 +113,7 @@ namespace DestroyerTest.Common.Systems
                 ModContent.ItemType<Scorn>(),
                 ModContent.ItemType<IchorScroll>(),
                 ModContent.ItemType<HaepienNodeCharm>(),
-                //TODO: Add Node Trophies.
+                ModContent.ItemType<Item_IchorNodeTrophy>(),
                 ModContent.ItemType<Item_IchorNodeRelic>(),
             };
 
@@ -121,15 +122,16 @@ namespace DestroyerTest.Common.Systems
                 ModContent.ItemType<WretchedShards>(),
                 ModContent.ItemType<Malevolence>(),
                 ModContent.ItemType<CursedFlameScroll>(),
-                //TODO: Add Node Trophies.
+                ModContent.ItemType<Item_CursedFlameNodeTrophy>(),
                 ModContent.ItemType<Item_CursedFlameNodeRelic>(),
             };
 
             public static List<int> BlessedNodeLootTable = new List<int>
             {
-                ItemID.PixieDust,
-                //TODO: Add Node Trophies.
-
+                ModContent.ItemType<Purity>(),
+                ModContent.ItemType<GloryOrb>(),
+                ModContent.ItemType<Item_BlessedNodeTrophy>(),
+                ModContent.ItemType<Item_BlessedNodeRelic>(),
             };
 
             public static List<int> WyvernCorpseLootTable = new List<int>
@@ -175,7 +177,7 @@ namespace DestroyerTest.Common.Systems
             };
             public static BossChecklistEntry Constitution = new BossChecklistEntry(
                 Language.GetText("Mods.DestroyerTest.NPCs.ConstitutionBoss.InternalName"), 
-                Language.GetText("Mods.DestroyerTest.NPCs.ConstitutionBoss.Hint"), 
+                Language.GetText("Mods.DestroyerTest.BossChecklist.ConstitutionBoss.Hint"), 
                 ModContent.NPCType<ConstitutionBoss>(), 
                 6.9999999f, 
                 DownedBossSystem.downedConstitutionCondition,
@@ -183,6 +185,22 @@ namespace DestroyerTest.Common.Systems
                 ModContent.ItemType<CursedStar>(), 
                 DTLootTables.ConstitutionLootTable);
 
+
+            public static Action<SpriteBatch, Rectangle, Color> BlessedNodePortrait = (SpriteBatch sb, Rectangle rect, Color color) =>
+            {
+                Texture2D texture = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/BlessedNodeBCL").Value;
+                Vector2 centered = new Vector2(rect.X + (rect.Width / 2) - (texture.Width / 2), rect.Y + (rect.Height / 2) - (texture.Height / 2));
+                sb.Draw(texture, centered, color);
+            };
+            public static BossChecklistEntry BlessedNode = new BossChecklistEntry(
+                Language.GetText("Mods.DestroyerTest.NPCs.BlessedNodeMB.InternalName"),
+                Language.GetText("Mods.DestroyerTest.BossChecklist.BlessedNodeMB.Hint"),
+                ModContent.NPCType<BlessedNodeMB>(), 
+                12.8f,
+                DownedBossSystem.downedNodeCondition,
+                BlessedNodePortrait,
+                -1,
+                DTLootTables.BlessedNodeLootTable);
 
 
             public static Action<SpriteBatch, Rectangle, Color> IchorNodePortrait = (SpriteBatch sb, Rectangle rect, Color color) =>
@@ -193,8 +211,9 @@ namespace DestroyerTest.Common.Systems
             };
             public static BossChecklistEntry IchorNode = new BossChecklistEntry(
                 Language.GetText("Mods.DestroyerTest.NPCs.IchorNodeMB.InternalName"), 
-                Language.GetText("Mods.DestroyerTest.NPCs.IchorNodeMB.Hint"), 
-                ModContent.NPCType<IchorNodeMB>(), 12.7f, 
+                Language.GetText("Mods.DestroyerTest.BossChecklist.IchorNodeMB.Hint"), 
+                ModContent.NPCType<IchorNodeMB>(), 
+                12.7f, 
                 DownedBossSystem.downedNodeCondition, 
                 IchorNodePortrait, 
                 -1, 
@@ -208,7 +227,7 @@ namespace DestroyerTest.Common.Systems
             };
             public static BossChecklistEntry CursedFlameNode = new BossChecklistEntry(
                 Language.GetText("Mods.DestroyerTest.NPCs.CursedFlameNodeMB.InternalName"), 
-                Language.GetText("Mods.DestroyerTest.NPCs.CursedFlameNodeMB.Hint"), 
+                Language.GetText("Mods.DestroyerTest.BossChecklist.CursedFlameNodeMB.Hint"), 
                 ModContent.NPCType<CursedFlameNodeMB>(), 
                 12.7f, 
                 DownedBossSystem.downedNodeCondition, 
@@ -225,7 +244,7 @@ namespace DestroyerTest.Common.Systems
             };
             public static BossChecklistEntry WyvernCorpse = new BossChecklistEntry(
                 Language.GetText("Mods.DestroyerTest.NPCs.WyvernCorpseHead.InternalName"),
-                Language.GetText("Mods.DestroyerTest.NPCs.WyvernCorpseHead.Hint"),
+                Language.GetText("Mods.DestroyerTest.BossChecklist.WyvernCorpseHead.Hint"),
                 ModContent.NPCType<WyvernCorpseHead>(),
                 18.0001f,
                 DownedBossSystem.downedWyvernCorpseBossCondition,
@@ -241,7 +260,7 @@ namespace DestroyerTest.Common.Systems
             };
             public static BossChecklistEntry NightmareRose = new BossChecklistEntry(
                 Language.GetText("Mods.DestroyerTest.NPCs.NightmareRoseBoss.InternalName"),
-                Language.GetText("Mods.DestroyerTest.NPCs.NightmareRoseBoss.Hint"),
+                Language.GetText("Mods.DestroyerTest.BossChecklist.NightmareRoseBoss.Hint"),
                 ModContent.NPCType<NightmareRoseBoss>(),
                 18.0001f,
                 DownedBossSystem.downedNightmareRoseBossCondition,

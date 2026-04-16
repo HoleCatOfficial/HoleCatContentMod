@@ -1,4 +1,4 @@
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
@@ -12,33 +12,35 @@ using Terraria.ObjectData;
 
 namespace DestroyerTest.Content.Tiles
 {
-	public class Tile_CursedFlameNodeRelic : ModTile
-	{
-		public const int FrameWidth = 18 * 2;
-		public const int FrameHeight = 18 * 4;
-		public const int HorizontalFrames = 1;
-		public const int VerticalFrames = 1;
+    public class Tile_BlessedNodeRelic : ModTile
+    {
+        public const int FrameWidth = 18 * 2;
+        public const int FrameHeight = 18 * 4;
+        public const int HorizontalFrames = 1;
+        public const int VerticalFrames = 1;
 
-		public Asset<Texture2D> RelicTexture;
+        public Asset<Texture2D> RelicTexture;
 
-		// Every relic has its own extra floating part, should be 50x50. Optional: Expand this sheet if you want to add more, stacked vertically
-		// If you do not use the Item.placeStyle approach, and you extend from this class, you can override this to point to a different texture
-		public virtual string RelicTextureName => "DestroyerTest/Content/Tiles/Tile_CursedFlameNodeRelic";
+        // Every relic has its own extra floating part, should be 50x50. Optional: Expand this sheet if you want to add more, stacked vertically
+        // If you do not use the Item.placeStyle approach, and you extend from this class, you can override this to point to a different texture
+        public virtual string RelicTextureName => "DestroyerTest/Content/Tiles/Tile_BlessedNodeRelic";
 
-		// All relics use the same pedestal texture, this one is copied from vanilla
-		public override string Texture => "DestroyerTest/Content/Tiles/CursedFlameNodeRelicPedestal";
+        // All relics use the same pedestal texture, this one is copied from vanilla
+        public override string Texture => "DestroyerTest/Content/Tiles/BlessedNodeRelicPedestal";
 
-		public override void Load() {
-			// Cache the extra texture displayed on the pedestal
-			RelicTexture = ModContent.Request<Texture2D>(RelicTextureName);
-		}
+        public override void Load()
+        {
+            // Cache the extra texture displayed on the pedestal
+            RelicTexture = ModContent.Request<Texture2D>(RelicTextureName);
+        }
 
-		public override void SetStaticDefaults() {
-			Main.tileShine[Type] = 400; // Responsible for golden particles
-			Main.tileFrameImportant[Type] = true; // Any multitile requires this
-			TileID.Sets.InteractibleByNPCs[Type] = true; // Town NPCs will palm their hand at this tile
+        public override void SetStaticDefaults()
+        {
+            Main.tileShine[Type] = 400; // Responsible for golden particles
+            Main.tileFrameImportant[Type] = true; // Any multitile requires this
+            TileID.Sets.InteractibleByNPCs[Type] = true; // Town NPCs will palm their hand at this tile
 
-			TileObjectData.newTile = new TileObjectData(copyFrom:TileObjectData.Style1x1); // Create a new instance
+            TileObjectData.newTile = new TileObjectData(copyFrom: TileObjectData.Style1x1); // Create a new instance
             TileObjectData.newTile.UsesCustomCanPlace = true;
             TileObjectData.newTile.StyleHorizontal = true;
             TileObjectData.newTile.Width = 2;
@@ -47,35 +49,35 @@ namespace DestroyerTest.Content.Tiles
             TileObjectData.newTile.CoordinateHeights = [16, 16, 16, 16];
             TileObjectData.newTile.CoordinatePadding = 2;
             TileObjectData.newTile.AnchorBottom = new AnchorData(AnchorType.SolidTile | AnchorType.SolidWithTop | AnchorType.Table | AnchorType.SolidSide, TileObjectData.newTile.Width, TileObjectData.newTile.Height);
-			TileObjectData.newTile.LavaDeath = false; // Does not break when lava touches it
-			TileObjectData.newTile.DrawYOffset = 2; // So the tile sinks into the ground
-			TileObjectData.newTile.Direction = TileObjectDirection.PlaceLeft; // Player faces to the left
-			TileObjectData.newTile.StyleHorizontal = false; // Based on how the alternate sprites are positioned on the sprite (by default, true)
+            TileObjectData.newTile.LavaDeath = false; // Does not break when lava touches it
+            TileObjectData.newTile.DrawYOffset = 2; // So the tile sinks into the ground
+            TileObjectData.newTile.Direction = TileObjectDirection.PlaceLeft; // Player faces to the left
+            TileObjectData.newTile.StyleHorizontal = false; // Based on how the alternate sprites are positioned on the sprite (by default, true)
 
-			// This controls how styles are laid out in the texture file. This tile is special in that all styles will use the same texture section to draw the pedestal.
-			TileObjectData.newTile.StyleWrapLimitVisualOverride = 2;
-			TileObjectData.newTile.StyleMultiplier = 2;
-			TileObjectData.newTile.StyleWrapLimit = 2;
-			TileObjectData.newTile.styleLineSkipVisualOverride = 0; // This forces the tile preview to draw as if drawing the 1st style.
+            // This controls how styles are laid out in the texture file. This tile is special in that all styles will use the same texture section to draw the pedestal.
+            TileObjectData.newTile.StyleWrapLimitVisualOverride = 2;
+            TileObjectData.newTile.StyleMultiplier = 2;
+            TileObjectData.newTile.StyleWrapLimit = 2;
+            TileObjectData.newTile.styleLineSkipVisualOverride = 0; // This forces the tile preview to draw as if drawing the 1st style.
 
-			// Register an alternate tile data with flipped direction
-			TileObjectData.newAlternate.CopyFrom(TileObjectData.newTile); // Copy everything from above, saves us some code
-			TileObjectData.newAlternate.Direction = TileObjectDirection.PlaceRight; // Player faces to the right
-			TileObjectData.addAlternate(1);
+            // Register an alternate tile data with flipped direction
+            TileObjectData.newAlternate.CopyFrom(TileObjectData.newTile); // Copy everything from above, saves us some code
+            TileObjectData.newAlternate.Direction = TileObjectDirection.PlaceRight; // Player faces to the right
+            TileObjectData.addAlternate(1);
 
-			// Register the tile data itself
-			TileObjectData.addTile(Type);
-            
+            // Register the tile data itself
+            TileObjectData.addTile(Type);
+
             DustType = DustID.Silver;
 
-			// Register map name and color
-			// "MapObject.Relic" refers to the translation key for the vanilla "Relic" text
-			AddMapEntry(new Color(209, 216, 217), Language.GetText("MapObject.Relic"));
-		}
+            // Register map name and color
+            // "MapObject.Relic" refers to the translation key for the vanilla "Relic" text
+            AddMapEntry(new Color(209, 216, 217), Language.GetText("MapObject.Relic"));
+        }
 
-		 public override void SetDrawPositions(
-            int i, int j, ref int width, ref int offsetY, ref int height,
-            ref short tileFrameX, ref short tileFrameY)
+        public override void SetDrawPositions(
+           int i, int j, ref int width, ref int offsetY, ref int height,
+           ref short tileFrameX, ref short tileFrameY)
         {
             tileFrameX %= FrameWidth;
             tileFrameY %= FrameHeight * 2; // 2 directions
@@ -93,7 +95,8 @@ namespace DestroyerTest.Content.Tiles
             }
         }
 
-        public override void SpecialDraw(int i, int j, SpriteBatch spriteBatch) {
+        public override void SpecialDraw(int i, int j, SpriteBatch spriteBatch)
+        {
             Point p = new(i, j);
             Tile tile = Main.tile[p.X, p.Y];
             if (!tile.HasTile)
@@ -130,7 +133,8 @@ namespace DestroyerTest.Content.Tiles
             Color effectColor = color * 0.1f * scale;
             effectColor.A = 0;
 
-            for (float k = 0f; k < 1f; k += 355f / (678f * (float)Math.PI)) {
+            for (float k = 0f; k < 1f; k += 355f / (678f * (float)Math.PI))
+            {
                 spriteBatch.Draw(
                     texture,
                     drawPos + (TwoPi * k).ToRotationVector2() * (6f + offset * 2f),
@@ -178,5 +182,5 @@ namespace DestroyerTest.Content.Tiles
             );
         }
 
-	}
+    }
 }

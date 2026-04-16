@@ -31,7 +31,7 @@ namespace DestroyerTest.Content.Magic
 
             Item.knockBack = 10;
             Item.autoReuse = true;
-            Item.damage = 550;
+            Item.damage = 700;
             Item.DamageType = DamageClass.Magic;
             Item.channel = true;
             Item.mana = 0;
@@ -63,17 +63,6 @@ namespace DestroyerTest.Content.Magic
         public override bool CanUseItem(Player player)
         {
             return player.ownedProjectileCounts[Item.shoot] < 1;
-        }
-
-        public override void AddRecipes()
-        {
-            CreateRecipe()
-                .AddIngredient<HekatesMystique>()
-                .AddIngredient(ItemID.MagnetSphere)
-                .AddIngredient(ItemID.Ectoplasm, 6)
-                .AddIngredient(ItemID.PixieDust, 6)
-                .AddTile(TileID.MythrilAnvil)
-            .Register();
         }
     }
 }

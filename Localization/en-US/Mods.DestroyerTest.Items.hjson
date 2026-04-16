@@ -4446,3 +4446,33 @@ GloryOrb: {
 	DisplayName: Glory Orb
 	Tooltip: ""
 }
+
+HallowCaller: {
+	DisplayName: Hallow Caller
+	Tooltip: ""
+}
+
+BlessedNodeLootBag: {
+	DisplayName: Blessed Node Loot Bag
+	Tooltip: ""
+}
+
+Item_BlessedNodeTrophy: {
+	DisplayName: Item_ Blessed Node Trophy
+	Tooltip: ""
+}
+
+Item_CursedFlameNodeTrophy: {
+	DisplayName: Item_ Cursed Flame Node Trophy
+	Tooltip: ""
+}
+
+Item_IchorNodeTrophy: {
+	DisplayName: Item_ Ichor Node Trophy
+	Tooltip: ""
+}
+
+Item_BlessedNodeRelic: {
+	DisplayName: Item_ Blessed Node Relic
+	Tooltip: ""
+}

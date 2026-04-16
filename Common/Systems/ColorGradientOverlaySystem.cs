@@ -11,7 +11,7 @@ using ReLogic.Content;
 
 public class ColorGradientOverlaySystem : ModSystem
 {
-    public static float ColorVisibility = 0f; // Controls how bright the flash is
+    public static float ColorVisibility = 0f;
 
     public override void ModifyTransformMatrix(ref SpriteViewMatrix transform)
     {
@@ -34,23 +34,15 @@ public class ColorGradientOverlaySystem : ModSystem
     {
         if (ColorVisibility > 0f)
         {
-            Color colorTop = new Color(143, 39, 120) * ColorVisibility;
-            Color colorBottom = new Color(247, 233, 141) * ColorVisibility;
 
-            Texture2D pixel = TextureAssets.MagicPixel.Value;
-            int screenWidth = Main.screenWidth;
-            int screenHeight = Main.screenHeight;
-            //Effect shader = ModContent.Request<Effect>("DestroyerTest/Assets/HSHLShaders/SlashTrans", AssetRequestMode.ImmediateLoad).Value;
+            Texture2D pixel = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/StellarScreenEffect").Value;
 
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.UIScaleMatrix);
 
-            for (int y = 0; y < screenHeight; y++)
-            {
-                float t = (float)y / (screenHeight - 1);
-                Color lerpedColor = Color.Lerp(colorBottom, colorTop, t);
-                spriteBatch.Draw(pixel, new Rectangle(0, y, screenWidth, 1), lerpedColor);
-            }
+
+            spriteBatch.Draw(pixel, Main.screenPosition, Color.White * ColorVisibility);
+            
 
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.UIScaleMatrix);
@@ -62,7 +54,7 @@ public class ColorGradientOverlaySystem : ModSystem
     {
         if (ColorVisibility < MaxAmount)
         {
-            ColorVisibility += 0.02f; // Adjust this value for speed
+            ColorVisibility += 0.02f;
             if (ColorVisibility > MaxAmount)
                 ColorVisibility = MaxAmount;
         }
