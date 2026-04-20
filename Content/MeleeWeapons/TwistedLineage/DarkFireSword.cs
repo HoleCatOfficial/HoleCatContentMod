@@ -14,30 +14,37 @@ namespace DestroyerTest.Content.MeleeWeapons.TwistedLineage
 {
 	public class DarkFireSword : ModItem
 	{
+        public override void SetStaticDefaults()
+        {
+            DTUtils.isSpecialSwingSword.Add(Type);
+            DTUtils.TooltipScaleMult[Type] = 1.15f;
+        }
 
-		//Weapon Properties
-		public override void SetDefaults()
+        public override void SetDefaults()
 		{
-			// Common Properties
 			Item.width = 96;
 			Item.height = 96;
 			Item.value = Item.sellPrice(gold: 2, silver: 50);
-			Item.rare = ModContent.RarityType<TestRarity>();
-			Item.useTime = 100;
-			Item.useAnimation = 100;
+			Item.rare = ItemRarityID.White;
+			Item.useTime = 20;
+			Item.useAnimation = 20;
 			Item.useStyle = ItemUseStyleID.Shoot;
 			
-			// Weapon Properties
-			Item.knockBack = 30;  // The knockback of your sword, this is dynamically adjusted in the projectile code.
-			Item.autoReuse = true; // This determines whether the weapon has autoswing
-			Item.damage = 28; // The damage of your sword, this is dynamically adjusted in the projectile code.
-			Item.DamageType = DamageClass.Melee; // Deals melee damage
-			Item.crit = 16; // The critical strike chance the weapon has. The player, by default, has a 4% critical strike chance.
-			Item.noMelee = true;  // This makes sure the item does not deal damage from the swinging animation
-			Item.noUseGraphic = true; // This makes sure the item does not get shown when the player swings his hand
-
-			// Projectile Properties
-			Item.shoot = ModContent.ProjectileType<DarkFireSwordProjectile>(); // The sword as a projectile
+			Item.knockBack = 5;
+			Item.autoReuse = true;
+			Item.damage = 50;
+			Item.DamageType = DamageClass.Melee;
+			Item.crit = 16;
+			Item.noMelee = true;
+			Item.noUseGraphic = true;
+			Item.shoot = ModContent.ProjectileType<DarkFireSwordSwing>();
+			Item.channel = true;
 		}
+
+        public override bool CanUseItem(Player player)
+        {
+            return player.ownedProjectileCounts[Item.shoot] < 1;
+        }
+
     }
 } 

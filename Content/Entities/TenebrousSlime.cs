@@ -103,7 +103,7 @@ namespace DestroyerTest.Content.Entities
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
             DTUtils Utility = new DTUtils();
-            if (spawnInfo.Player.ZoneShimmer == true && DTFlags.instance.TenebrisCanSpawnInWorldEvilBiome == true)
+            if (spawnInfo.Player.ZoneShimmer == true && DTFlags.TenebrisCanSpawnInWorldEvilBiome == true)
             {
                 return 0.1f;
             }

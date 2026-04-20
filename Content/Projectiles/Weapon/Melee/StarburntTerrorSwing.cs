@@ -68,7 +68,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             }
 
             Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-            Main.EntitySpriteDraw(Tex, player.MountedCenter - Main.screenPosition, null, ColorLib.StellarFireGradient(SlashProgress) * SweepOpacity, (Projectile.rotation + MathHelper.PiOver4) + rOffset, Tex.Size() / 2, (AdjustedScale * TexBasedMod), FX);
+            Main.EntitySpriteDraw(Tex, player.MountedCenter - Main.screenPosition, null, Color.Lerp(Color.Orange, Color.OrangeRed, SlashProgress) * SweepOpacity, (Projectile.rotation + MathHelper.PiOver4) + rOffset, Tex.Size() / 2, (AdjustedScale * TexBasedMod), FX);
             Main.EntitySpriteDraw(TexH, player.MountedCenter - Main.screenPosition, null, Color.White * SweepOpacity, (Projectile.rotation + MathHelper.PiOver4) + rOffset, Tex.Size() / 2, (AdjustedScale * TexBasedMod), FX);
             Opus.ReturnToDefaultDrawing(Main.spriteBatch);
         }
@@ -88,7 +88,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Vector2 toMouse = Main.MouseWorld - Projectile.Center;
             toMouse.Normalize();
 
-            Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, (toMouse * (7 * Owner.GetTotalAttackSpeed(DamageClass.Melee))), ModContent.ProjectileType<StellarFireSlash>(), Projectile.damage, 5, Projectile.owner);
+            
+            Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, (toMouse * (7 * Owner.GetTotalAttackSpeed(DamageClass.Melee))), ModContent.ProjectileType<HotHeadPumpkin>(), Projectile.damage, 5, Projectile.owner);
         }
 
         public Vector2 swordTip;
@@ -106,7 +107,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             for (int i = 0; i < 2; i++)
             {
                 //Dust.NewDustPerfect(ppt[Main.rand.Next(15)], ModContent.DustType<ColorableNeonDust>(), SwordLine.GetLineRotation.ToRotationVector2() * 2, 0, ColorLib.CursedFlames * 0.5f, 3f);
-                PRTLoader.NewParticle(StellarParticleIndex.ConstitutionParticle, ppt[Main.rand.Next(15)], SwordLine.GetLineRotation.ToRotationVector2() * 2, default, 0.5f);
+                //PRTLoader.NewParticle(StellarParticleIndex.ConstitutionParticle, ppt[Main.rand.Next(15)], SwordLine.GetLineRotation.ToRotationVector2() * 2, default, 0.5f);
             }
 
             ScaleMult = 1.25f;

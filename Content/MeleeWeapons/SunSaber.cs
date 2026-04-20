@@ -26,8 +26,8 @@ namespace DestroyerTest.Content.MeleeWeapons
         }
         public override void SetDefaults()
         {
-            Item.width = 46;
-            Item.height = 46;
+            Item.width = 118;
+            Item.height = 118;
 
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.useTime = 20;
@@ -36,7 +36,7 @@ namespace DestroyerTest.Content.MeleeWeapons
             Item.useTurn = true;
 
             Item.DamageType = DamageClass.Melee;
-            Item.damage = 180;
+            Item.damage = 200;
             Item.knockBack = 6;
             Item.crit = 4;
 

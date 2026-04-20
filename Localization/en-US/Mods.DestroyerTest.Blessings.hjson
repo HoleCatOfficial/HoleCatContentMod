@@ -26,12 +26,6 @@ OozingAffection: {
 	Bonus: You have a chance to release bees when hurt and you get the honey buff when under 25% health.
 }
 
-Overgrown: {
-	Name: Overgrown
-	Message: Life shall teem around you, young one!
-	Bonus: You make flowers on grass and get improved life and mana regen when in the Forest or the Jungle.
-}
-
 Serenity: {
 	Name: Serenity
 	Message: Carry with you the calmness of the vast ocean and the meager puddle.
@@ -42,4 +36,88 @@ ThrivingDarkness: {
 	Name: Thriving Darkness
 	Message: Lurking just out of my reach. Stay safe in the dark, young one.
 	Bonus: Increased Life regen in low-light conditions.
+}
+
+Decademce: {
+	Name: Decademce
+	Message: Gorge freely, for I can't stop you.
+	Bonus: Food buffs are more affective.
+}
+
+Overgrown: {
+	Name: Overgrown
+	Message: Life shall teem around you, young one!
+	Bonus: You make flowers on grass and get improved life and mana regen when in the Forest or the Jungle.
+}
+
+RejuvenatingWarmth: {
+	Name: Rejuvenating Warmth
+	Message: May heat's opression turn to embrace around you.
+	Bonus: You make flowers on grass and get improved life and mana regen when in the Forest or the Jungle.
+}
+
+MilkyWayStride: {
+	Name: Milky-Way Stride
+	Message: The twinkling of the stars fuels your regeneration.
+	Bonus: Holding Constitution or its upgrades boosts Life and Mana regen massively.
+}
+
+ScarletSurge: {
+	Name: Scarlet Surge
+	Message: Sanguine, both your blood and your bullets shall be.
+	Bonus: +8% Ranged Damage
+}
+
+Clarity: {
+	Name: Clarity
+	Message: Your third eye is unblinded. Let its vision guide you.
+	Bonus: +10% Magic Damage
+}
+
+Tempered: {
+	Name: Tempered
+	Message: Your past experiences will inform your future ones.
+	Bonus: +12% All-class Damage
+}
+
+Alliegance: {
+	Name: Alliegance
+	Message: Your servants shall fall in line eagerly.
+	Bonus: +10% Summon Damage
+}
+
+Waywashed: {
+	Name: Waywashed
+	Message: You will lose your way, but will have no trouble making a new way.
+	Bonus: +14% Scepter Damage
+}
+
+Seething: {
+	Name: Seething
+	Message: Hate will clog your veins like tar, yet proves a powerful motivator.
+	Bonus: +14% Scepter Damage
+}
+
+Bulk: {
+	Name: Bulk
+	Message: All that food you eat will serve your strength well.
+	Bonus: +15% Melee Damage
+}
+
+LifeStricken: {
+	Name: Life Stricken
+	Message: The power of the jungle shall course through you!
+	Bonus: +20% Magic Damage
+}
+
+FieryPassion: {
+	Name: Fiery Passion
+	Message: Let your rage burn, young one!!
+	Bonus: +20% Throwing Damage
+}
+
+StarScorn: {
+	Name: StarScorn
+	Message: May the stars envigorate you, young one!!
+	Bonus: +20% Sceper Damage
 }

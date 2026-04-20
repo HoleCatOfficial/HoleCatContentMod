@@ -131,7 +131,7 @@ namespace DestroyerTest.Content.Entities
             NPC.noGravity = true;
             NPC.noTileCollide = true;
 
-            NPC.HitSound = SoundID.NPCHit13;
+            NPC.HitSound = SoundID.Tink with { Pitch = -0.6f, PitchVariance = 0.4f };
             NPC.DeathSound = Kill;
             NPC.boss = true;
 
@@ -662,18 +662,28 @@ namespace DestroyerTest.Content.Entities
                         }
                         if (EternityIsActive())
                         {
-                            float Sine = (float)Math.Sin(SpitTime * 0.1f) * 0.01f;
-                            if (SpitTime % interval == 0)
+                            if (!Main.masterMode)
                             {
-                                Projectile.NewProjectile(Entity.GetSource_FromThis(), NPC.Center, NPC.velocity * 1.5f, ModContent.ProjectileType<PrimalIchor>(), 40, 2, ai0: 1, ai1: Sine);
-                                Projectile.NewProjectile(Entity.GetSource_FromThis(), NPC.Center, NPC.velocity * 1.5f, ModContent.ProjectileType<PrimalIchor>(), 40, 2, ai0: 0, ai1: Sine);
+                                float Sine = (float)Math.Sin(SpitTime * 0.1f) * 0.01f;
+                                if (SpitTime % interval == 0)
+                                {
+                                    Projectile.NewProjectile(Entity.GetSource_FromThis(), NPC.Center, NPC.velocity * 1.5f, ModContent.ProjectileType<PrimalIchor>(), 40, 2, ai0: 1, ai1: Sine);
+                                    Projectile.NewProjectile(Entity.GetSource_FromThis(), NPC.Center, NPC.velocity * 1.5f, ModContent.ProjectileType<PrimalIchor>(), 40, 2, ai0: 0, ai1: Sine);
+                                }
+                            }
+                            else
+                            {
+                                if (SpitTime % interval == 0)
+                                {
+                                    Projectile.NewProjectile(Entity.GetSource_FromThis(), NPC.Center, NPC.velocity * 1.5f, ModContent.ProjectileType<SoulSpark_NoHoming>(), 40, 2);
+                                }
                             }
                         }
                         if (SpitTime >= 480)
-                            {
-                                CurrentAttack = attackType.OrganBurst;
-                                ResetStats();
-                            }
+                        {
+                            CurrentAttack = attackType.OrganBurst;
+                            ResetStats();
+                        }
                     }
                     break;
                 case attackType.Circle:
@@ -766,6 +776,7 @@ namespace DestroyerTest.Content.Entities
                         if (CircleLanceCount >= 6 && NPC.life > NPC.lifeMax * 0.4f)
                         {
                             circleradius = 880f;
+                            NPC.velocity *= 0.3f;
                             CurrentAttack = attackType.IchorRam;
                             ResetStats();
                         }
@@ -1026,7 +1037,7 @@ namespace DestroyerTest.Content.Entities
                                             NPC.GetSource_FromAI(),
                                             origin,
                                             velocity,
-                                            ModContent.ProjectileType<TenebrisFlamesHostile>(),
+                                            ModContent.ProjectileType<SoulSpark>(),
                                             40,
                                             1,
                                             ai2: 2
@@ -1108,7 +1119,7 @@ namespace DestroyerTest.Content.Entities
                 case attackType.Desperation:
                     {
                         DesperationTimer++;
-                        PitchVal += 0.00025f;
+                        PitchVal += 0.0025f;
                         //DesperationVingetteScale--;
                         DesperationVingetteAlpha = (byte)MathHelper.Clamp(
                             255f * (DesperationTimer / 1200f),

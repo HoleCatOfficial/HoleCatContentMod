@@ -36,6 +36,7 @@ using Terraria.Graphics;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 using Terraria.Modules;
 using Terraria.UI.Chat;
 using Terraria.WorldBuilding;
@@ -51,8 +52,37 @@ namespace DestroyerTest.Common
         public static bool NodeCharmEquipped = false;
         public static bool ConsumeWyvernSoul = false;
         public static bool ConsumeRoseSoul = false;
-        public bool TenebrisCanSpawnInWorldEvilBiome = /*(DownedBossSystem.downedCultistBoss && !WorldGen.crimson)*/ false;
-        public bool TenebrisCanSpawnInShimmerBiome = /*(DownedBossSystem.downedCultistBoss && !WorldGen.crimson)*/ false;
+        public static bool TenebrisCanSpawnInWorldEvilBiome = /*(DownedBossSystem.downedCultistBoss && !WorldGen.crimson)*/ false;
+        public static bool TenebrisCanSpawnInShimmerBiome = /*(DownedBossSystem.downedCultistBoss && !WorldGen.crimson)*/ false;
+
+        public override void ClearWorld()
+        {
+            PromiseEquipped = false;
+            StellarGogglesEquipped = false;
+            NodeCharmEquipped = false;
+            ConsumeWyvernSoul = false;
+            ConsumeRoseSoul = false;
+            TenebrisCanSpawnInWorldEvilBiome = false;
+            TenebrisCanSpawnInShimmerBiome = false;
+        }
+        public override void SaveWorldData(TagCompound tag)
+        {
+            tag["TenebrisCanSpawnInWorldEvilBiome"] = (DownedBossSystem.downedCultistBoss && !WorldGen.crimson);
+            tag["TenebrisCanSpawnInShimmerBiome"] = (DownedBossSystem.downedCultistBoss && !WorldGen.crimson);
+        }
+
+        public override void LoadWorldData(TagCompound tag)
+        {
+            if (tag.ContainsKey("TenebrisCanSpawnInWorldEvilBiome"))
+            {
+                TenebrisCanSpawnInWorldEvilBiome = tag.GetBool("TenebrisCanSpawnInWorldEvilBiome");
+            }
+
+            if (tag.ContainsKey("TenebrisCanSpawnInShimmerBiome"))
+            {
+                TenebrisCanSpawnInShimmerBiome = tag.GetBool("TenebrisCanSpawnInShimmerBiome");
+            }
+        }
     }
     public class DTUtils
     {
@@ -1365,6 +1395,8 @@ namespace DestroyerTest.Common
         public static Asset<Texture2D> FireSwingHighlight = ModContent.Request<Texture2D>($"{ExtrasPath}/CircularSlash3Highlight", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> CutSwing = ModContent.Request<Texture2D>($"{ExtrasPath}/CircularSlashCut", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> Laser = ModContent.Request<Texture2D>($"{ExtrasPath}/LongLaser", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> AuraRing = ModContent.Request<Texture2D>($"{ParticlePath}/AuraRing", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> FaintGlow = ModContent.Request<Texture2D>($"{ExtrasPath}/FaintGlow", AssetRequestMode.AsyncLoad);
 
         public static Asset<Texture2D> Sparkle(int Variant)
         {
@@ -1514,6 +1546,7 @@ namespace DestroyerTest.Common
             public static SoundStyle HellWeaponImpact = new SoundStyle($"{Path}/HellWeaponImpact");
             public static SoundStyle IceImpact = new SoundStyle($"{Path}/IceImpact", 3);
             public static SoundStyle IceMagicImpact = new SoundStyle($"{Path}/IceMagicImpact", 3);
+            public static SoundStyle LightMetalHit = new SoundStyle($"{Path}/LightMetalHit", 4);
             public static SoundStyle Malevolence = new SoundStyle($"{Path}/MalevolenceHit");
             public static SoundStyle MagicBeep = new SoundStyle($"{Path}/MagicBeep", 3);
             public static SoundStyle MetalImpact = new SoundStyle($"{Path}/MetalImpact", 3);

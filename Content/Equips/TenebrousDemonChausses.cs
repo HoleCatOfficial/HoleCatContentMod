@@ -18,7 +18,7 @@ namespace DestroyerTest.Content.Equips
 			Item.height = 18; // Height of the item
 			Item.value = Item.sellPrice(gold: 8); // How many coins the item is worth
 			Item.rare = ModContent.RarityType<ShimmeringRarity>(); // The rarity of the item
-			Item.defense = 12; // The amount of defense the item will give when equipped
+			Item.defense = 18; // The amount of defense the item will give when equipped
 		}
 
 		public override void UpdateEquip(Player player) {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DestroyerTest.Content.Resources;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,6 +8,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 
 namespace DestroyerTest.Common.Blessings
 {
@@ -17,8 +19,16 @@ namespace DestroyerTest.Common.Blessings
         public static List<int> OfferingItems = new List<int>()
         {
             ItemID.LifeCrystal,
+            ItemID.ManaCrystal,
+            ItemID.NaturesGift,
             ItemID.BottledHoney,
-            ItemID.HermesBoots
+            ItemID.Starfish,
+            ItemID.ShadowScale,
+            ItemID.TissueSample,
+            ItemID.Ambrosia,
+            ItemID.JungleSpores,
+            ItemID.HellstoneBar,
+            ModContent.ItemType<StellarMatter>()
         };
 
         public static List<int> ModifierHerbs = new List<int>

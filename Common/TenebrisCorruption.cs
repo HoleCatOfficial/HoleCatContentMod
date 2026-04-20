@@ -16,7 +16,7 @@ namespace DestroyerTest.Common
     {
         public override bool IsSceneEffectActive(Player player)
         {
-            return DTFlags.instance.TenebrisCanSpawnInWorldEvilBiome && player.ZoneCorrupt;
+            return DTFlags.TenebrisCanSpawnInWorldEvilBiome && player.ZoneCorrupt;
         }
 
         public override int Music => MusicLoader.GetMusicSlot("DestroyerTest/Assets/Music/TenebrisCorruption");

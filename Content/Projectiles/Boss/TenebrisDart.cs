@@ -35,7 +35,7 @@ namespace DestroyerTest.Content.Projectiles.Boss
             Projectile.friendly = false; // Can the projectile deal damage to enemies?
             Projectile.hostile = true; // Can the projectile deal damage to the player?
             Projectile.ignoreWater = true; // Does the projectile's speed be influenced by water?
-            Projectile.light = 1f; // How much light emit around the projectile
+      
             Projectile.timeLeft = 180; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
             Projectile.tileCollide = false;
             Projectile.penetrate = 1;
@@ -53,13 +53,18 @@ namespace DestroyerTest.Content.Projectiles.Boss
             DTTrail.DrawTrail(spriteBatch, DTAssetLib.Streak(3).Value, TrailPositions, TrailRotations, 40, ColorLib.TenebrisGradient, trailOffset);
 
             Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-        
-			Opus.DrawGlowOnProj(Projectile, lightColor, true);
 
+            if (!DTOptimizationsConfig.instance.OptimizeGame)
+            {
+                Opus.DrawGlowOnProj(Projectile, lightColor, true);
+            }
+
+            
 			if (WaitTimer < 20)
 			{
 				Opus.DrawTextureOnProj(DTAssetLib.FadeLine, Projectile, DTColorUtils.Pastel(ColorLib.TenebrisGradient, 50), false, Projectile.rotation + MathHelper.PiOver2, 4f, 1f);
 			}
+            
 
             Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, Projectile.Center - Main.screenPosition, null, lightColor, Projectile.rotation, TextureAssets.Projectile[Projectile.type].Value.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
 
@@ -77,38 +82,40 @@ namespace DestroyerTest.Content.Projectiles.Boss
 		public override void AI()
 		{
 
+            if (!DTOptimizationsConfig.instance.DisableExcessTrails)
+            {
+                Vector2 lastPos = TrailPositions.Count > 0 ? TrailPositions[0] : Projectile.Center;
+                Vector2 newPos = Projectile.Center;
 
-			Vector2 lastPos = TrailPositions.Count > 0 ? TrailPositions[0] : Projectile.Center;
-			Vector2 newPos  = Projectile.Center;
+                float dist = Vector2.Distance(lastPos, newPos);
+                float step = 0.5f; // how closely to sample. tweak this!
 
-			float dist = Vector2.Distance(lastPos, newPos);
-			float step = 1f; // how closely to sample. tweak this!
+                if (dist > 0f)
+                {
+                    int segments = (int)(dist / step);
 
-			if (dist > 0f)
-			{
-				int segments = (int)(dist / step);
-
-				for (int i = 1; i <= segments; i++)
-				{
-					Vector2 pos = Vector2.Lerp(lastPos, newPos, i / (float)segments);
-					TrailPositions.Insert(0, pos);
-					TrailRotations.Insert(0, Projectile.rotation);
-				}
-			}
-			else
-			{
-				TrailPositions.Insert(0, newPos);
-				TrailRotations.Insert(0, Projectile.rotation);
-			}
+                    for (int i = 1; i <= segments; i++)
+                    {
+                        Vector2 pos = Vector2.Lerp(lastPos, newPos, i / (float)segments);
+                        TrailPositions.Insert(0, pos);
+                        TrailRotations.Insert(0, Projectile.rotation);
+                    }
+                }
+                else
+                {
+                    TrailPositions.Insert(0, newPos);
+                    TrailRotations.Insert(0, Projectile.rotation);
+                }
 
 
-			// Cap trail
-			while (TrailPositions.Count > TrailLength)
-				TrailPositions.RemoveAt(TrailPositions.Count - 1);
-			while (TrailRotations.Count > TrailLength)
-				TrailRotations.RemoveAt(TrailRotations.Count - 1);
+                // Cap trail
+                while (TrailPositions.Count > TrailLength)
+                    TrailPositions.RemoveAt(TrailPositions.Count - 1);
+                while (TrailRotations.Count > TrailLength)
+                    TrailRotations.RemoveAt(TrailRotations.Count - 1);
+            }
 
-            if (Main.rand.NextBool(3))
+            if (Main.rand.NextBool(3) && !DTOptimizationsConfig.instance.DisableExcessDusts)
             {
                 Dust.NewDustPerfect(Projectile.Center, DustID.TintableDustLighted, newColor: ColorLib.TenebrisGradient, Scale: 1.8f, Velocity: Vector2.Zero);
             }
@@ -130,7 +137,6 @@ namespace DestroyerTest.Content.Projectiles.Boss
                     }
                     Projectile.velocity *= 1.2f;
                 }
-                Projectile.netUpdate = true;
             }
 
         }
@@ -138,6 +144,12 @@ namespace DestroyerTest.Content.Projectiles.Boss
         public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
             target.AddBuff(ModContent.BuffType<ShimmeringFlames>(), 240);
+        }
+
+        public override void OnKill(int timeLeft)
+        {
+            TrailPositions.Clear();
+            TrailRotations.Clear();
         }
     }
 }

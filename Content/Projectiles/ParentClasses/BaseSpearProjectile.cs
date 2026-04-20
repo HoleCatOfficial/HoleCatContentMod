@@ -186,7 +186,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             return true;
         }
 
-
+        public bool FirstHalf = true;
         public void SetPosition()
         {
             Projectile.ai[0]++;
@@ -196,11 +196,6 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             float progress = Projectile.ai[0] / (30f / (Owner.GetTotalAttackSpeed(DamageClass.Melee))); // 20 = duration of thrust
             progress = Saturate(progress);
 
-            if (progress == 0.9f)
-            {
-                SoundEngine.PlaySound(JabSound, Projectile.Center);
-                OnStart();
-            }
             /*
             if (progress == 1.00f)
             {
@@ -212,9 +207,21 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
             float CurrentExtension = MathHelper.Lerp(MinExtension, MaxExtension, bump);
 
+            if (CurrentExtension == MinExtension && FirstHalf)
+            {
+                SoundEngine.PlaySound(JabSound, Projectile.Center);
+                OnStart();
+            }
             if (CurrentExtension == MaxExtension)
             {
+                SoundEngine.PlaySound(JabSound, Projectile.Center);
                 AtFullExtension();
+                FirstHalf = false;
+            }
+
+            if (CurrentExtension == MinExtension && !FirstHalf)
+            {
+                FirstHalf = true;
             }
             //Projectile.Center = Owner.MountedCenter + new Vector2(CurrentExtension, 0f).RotatedBy(targetAngle.ToRotation());
             Projectile.Center = Owner.GetFrontHandPosition(Player.CompositeArmStretchAmount.None, targetAngle.ToRotation()) + new Vector2(CurrentExtension, 0f).RotatedBy(targetAngle.ToRotation());

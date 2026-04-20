@@ -50,7 +50,8 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
         {
             for (int c = 0; c < 4; c++)
             {
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<Boom3>(), Projectile.Center, Vector2.Zero, ColorLib.Soul, 0.01f, 1);
+                BasePRT J = Opus.NewParticleFloatAI(PRTLoader.GetParticleID<Boom3>(), Projectile.Center, Vector2.Zero, ColorLib.Soul, 0.01f, 1, 0.1f, 0.01f);
+                J.Rotation = Main.rand.NextFloat(MathHelper.TwoPi);
             }
         }
 

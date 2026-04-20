@@ -170,34 +170,37 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.Blessed
             AnimateProjectile();
             Dust.NewDustPerfect(Projectile.Center, DustID.AncientLight, Scale: 0.6f);
 
-            Vector2 lastPos = TrailPositions.Count > 0 ? TrailPositions[0] : Projectile.Center;
-            Vector2 newPos = Projectile.Center;
-
-            float dist = Vector2.Distance(lastPos, newPos);
-            float step = 0.3f;
-
-            if (dist > 0f)
+            if (!DTOptimizationsConfig.instance.DisableExcessTrails)
             {
-                int segments = (int)(dist / step);
+                Vector2 lastPos = TrailPositions.Count > 0 ? TrailPositions[0] : Projectile.Center;
+                Vector2 newPos = Projectile.Center;
 
-                for (int i = 1; i <= segments; i++)
+                float dist = Vector2.Distance(lastPos, newPos);
+                float step = 0.3f;
+
+                if (dist > 0f)
                 {
-                    Vector2 pos = Vector2.Lerp(lastPos, newPos, i / (float)segments);
-                    TrailPositions.Insert(0, pos);
+                    int segments = (int)(dist / step);
+
+                    for (int i = 1; i <= segments; i++)
+                    {
+                        Vector2 pos = Vector2.Lerp(lastPos, newPos, i / (float)segments);
+                        TrailPositions.Insert(0, pos);
+                        TrailRotations.Insert(0, Projectile.rotation);
+                    }
+                }
+                else
+                {
+                    TrailPositions.Insert(0, newPos);
                     TrailRotations.Insert(0, Projectile.rotation);
                 }
-            }
-            else
-            {
-                TrailPositions.Insert(0, newPos);
-                TrailRotations.Insert(0, Projectile.rotation);
-            }
 
 
-            while (TrailPositions.Count > TrailLength)
-                TrailPositions.RemoveAt(TrailPositions.Count - 1);
-            while (TrailRotations.Count > TrailLength)
-                TrailRotations.RemoveAt(TrailRotations.Count - 1);
+                while (TrailPositions.Count > TrailLength)
+                    TrailPositions.RemoveAt(TrailPositions.Count - 1);
+                while (TrailRotations.Count > TrailLength)
+                    TrailRotations.RemoveAt(TrailRotations.Count - 1);
+            }
 
             float maxDetectRadius = 1600f;
 

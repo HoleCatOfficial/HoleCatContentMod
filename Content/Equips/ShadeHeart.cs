@@ -1,0 +1,200 @@
+﻿
+using DestroyerTest.Common;
+using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Equips.ScepterAccessories;
+using DestroyerTest.Content.Particles;
+using DestroyerTest.Content.Projectiles;
+using DestroyerTest.Content.Resources;
+using InnoVault.PRT;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
+using System.Collections.Generic;
+using Terraria;
+using Terraria.DataStructures;
+using Terraria.GameContent.ItemDropRules;
+using Terraria.ID;
+using Terraria.ModLoader;
+
+namespace DestroyerTest.Content.Equips
+{
+    public class ShadeHeart : ModItem
+    {
+        public override void SetDefaults()
+        {
+            Item.width = 34;
+            Item.height = 42;
+            Item.maxStack = 1;
+            Item.value = 1000;
+            Item.accessory = true;
+        }
+
+        public override void UpdateAccessory(Player player, bool hideVisual)
+        {
+            player.buffImmune[ModContent.BuffType<ShimmeringFlames>()] = true;
+            player.GetDamage(DamageClass.Generic) += 0.22f;
+
+            Lighting.AddLight(player.Center, ColorLib.TenebrisGradient.ToVector3());
+
+            if (player.TryGetModPlayer<ShadeHeartPlayer>(out var Heart))
+            {
+                Heart.Active = true;
+            }
+        }
+
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient(ItemID.ShadowOrb)
+                .AddIngredient<Tenebris>(12)
+                .AddIngredient<GalantineIncense>()
+                .AddIngredient(ItemID.SoulofMight, 8)
+                .AddIngredient(ItemID.SoulofFright, 8)
+                .AddIngredient(ItemID.SoulofSight, 8)
+            .Register();
+        }
+    }
+
+    public class ShadeHeartPlayer : ModPlayer
+    {
+        public bool Active = false;
+        public float TexRot = 0f;
+        public override void ResetEffects()
+        {
+            Active = false;
+        }
+
+        public override void PostUpdateEquips()
+        {
+            if (Active)
+            {
+                TexRot += 0.05f * Player.direction;
+
+                PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), Main.rand.NextVector2FromRectangle(Player.Hitbox), new Vector2(0, -5f), ColorLib.TenebrisGradient * 0.5f, 0.06f, ai1: 2);
+            }
+        }
+
+        public override void ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers)
+        {
+            if (Active)
+            {
+                BasePRT P1 = Opus.NewParticleFloatAI(PRTLoader.GetParticleID<SimpleExplosionParticle>(), Player.Center, Vector2.Zero, ColorLib.TenebrisGradient, 0.01f, 6f, 0.3f, 0.01f);
+                P1.Rotation = Main.rand.NextFloat(MathHelper.TwoPi);
+                BasePRT P2 = Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), Player.Center, Vector2.Zero, DTColorUtils.Pastel(ColorLib.TenebrisGradient, 0.5f), 0.01f, 1f, 0.1f, 0.02f);
+                P2.Rotation = Main.rand.NextFloat(MathHelper.TwoPi);
+
+                Opus.RadialSpreadProjectile(ModContent.ProjectileType<TenebrisStarFriendly>(), 5, Player.Center, 14, 4, 6, RandomOffset: true);
+            }
+        }
+
+        public override void ModifyHitByProjectile(Projectile proj, ref Player.HurtModifiers modifiers)
+        {
+            if (Active)
+            {
+                BasePRT P1 = Opus.NewParticleFloatAI(PRTLoader.GetParticleID<SimpleExplosionParticle>(), Player.Center, Vector2.Zero, ColorLib.TenebrisGradient, 0.01f, 6f, 0.3f, 0.01f);
+                P1.Rotation = Main.rand.NextFloat(MathHelper.TwoPi);
+                BasePRT P2 = Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), Player.Center, Vector2.Zero, DTColorUtils.Pastel(ColorLib.TenebrisGradient, 0.5f), 0.01f, 1f, 0.1f, 0.02f);
+                P2.Rotation = Main.rand.NextFloat(MathHelper.TwoPi);
+
+                Opus.RadialSpreadProjectile(ModContent.ProjectileType<TenebrisStarFriendly>(), 3, Player.Center, 10, 4, 6, RandomOffset: true);
+            }
+        }
+
+        public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            if (target.friendly)
+            {
+                return;
+            }
+
+            if (item.DamageType == DamageClass.Summon && Main.rand.NextBool(10) && Active)
+            {
+                ShimmeringFlames.ShimmerBurn(target);
+            }
+        }
+
+        public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            if (target.friendly)
+            {
+                return;
+            }
+
+            if (proj.DamageType == DamageClass.Summon && Main.rand.NextBool(10) && Active)
+            {
+                ShimmeringFlames.ShimmerBurn(target);
+            }
+        }
+
+        public override void NaturalLifeRegen(ref float regen)
+        {
+            if (Active)
+            {
+                regen *= 1.8f;
+            }
+        }
+    }
+
+    public class ShadeHeartDrawLayer : PlayerDrawLayer
+    {
+
+        public override bool GetDefaultVisibility(PlayerDrawSet drawInfo)
+        {
+            Player player = drawInfo.drawPlayer;
+            if (player.TryGetModPlayer<ShadeHeartPlayer>(out var Heart))
+            {
+                if (Heart.Active)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public override Position GetDefaultPosition() => new BeforeParent(PlayerDrawLayers.FrozenOrWebbedDebuff);
+
+        protected override void Draw(ref PlayerDrawSet drawInfo)
+        {
+            Player player = drawInfo.drawPlayer;
+            if (player.TryGetModPlayer<ShadeHeartPlayer>(out var Heart))
+            {
+                if (Heart.Active && drawInfo.shadow == 0)
+                {
+                    DrawRingOfFire(ref drawInfo, 0.25f, 1f, -Heart.TexRot);
+                    DrawRingOfFire(ref drawInfo, 0.125f, 1f, -Heart.TexRot * 2);
+                    DrawRingOfFire(ref drawInfo, 0.125f, 1.5f, Heart.TexRot * 1.5f);
+                    DrawRingOfFire(ref drawInfo, 0.35f, 1.28f, -Heart.TexRot * 0.5f);
+                    DrawRingOfFire(ref drawInfo, 0.35f, 1.08f, Heart.TexRot);
+                }
+            }
+
+        }
+
+        private void DrawRingOfFire(ref PlayerDrawSet drawInfo, float Opacity = 1f, float Scale = 1f, float Rotation = 0f)
+        {
+            var Tex = DTAssetLib.AuraRing.Value;
+
+            var position = drawInfo.Center - Main.screenPosition;
+            position = new Vector2((int)position.X, (int)position.Y);
+
+            drawInfo.DrawDataCache.Add(new DrawData(
+                Tex,
+                position,
+                null,
+                ColorLib.TenebrisGradient with { A = 0 } * Opacity,
+                Rotation,
+                Tex.Size() * 0.5f,
+                Scale,
+                SpriteEffects.None,
+                0
+            ));
+        }
+
+    }
+}

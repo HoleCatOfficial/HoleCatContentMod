@@ -33,7 +33,7 @@ namespace DestroyerTest.Content.Equips
 			Item.height = 20;
 			Item.value = Item.sellPrice(gold: 1);
 			Item.rare = ModContent.RarityType<ShimmeringRarity>();
-			Item.defense = 10;
+			Item.defense = 17;
 		}
 		public override bool IsArmorSet(Item head, Item body, Item legs)
 		{

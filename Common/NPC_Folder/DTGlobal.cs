@@ -14,6 +14,7 @@ using DestroyerTest.Content.Scepter;
 using DestroyerTest.Content.Tools;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Assets.Menu.V5;
+using Terraria.DataStructures;
 
 namespace DestroyerTest.Common.NPC_Folder
 {
@@ -24,9 +25,25 @@ namespace DestroyerTest.Common.NPC_Folder
         private bool KilledRet = false;
         public static bool HasKilledAMechBoss = false;
 
+        bool flag1 = false;
+        public override void OnSpawn(NPC npc, IEntitySource source)
+        {
+            if (npc.type == ModContent.NPCType<WyvernCorpseHead>())
+            {
+                flag1 = false;
+            }
+        }
+
         public override void PostAI(NPC npc)
         {
             HasKilledAMechBoss = (DownedBossSystem.downedDestroyerBoss || DownedBossSystem.downedSkeletronPrimeBoss || DownedBossSystem.downedTwinsBoss);
+
+            if (npc.type == ModContent.NPCType<WyvernCorpseHead>() && !npc.active && !flag1)
+            {
+                ScreenFlashSystem.FlashIntensity = 1f;
+                SunlightModification.Reset();
+                flag1 = true;
+            }
         }
 
         public void UpdateDivinePlayers()
@@ -268,13 +285,13 @@ namespace DestroyerTest.Common.NPC_Folder
                     }
                 }
                 DownedBossSystem.downedCultistBoss = true;
-                if (!DTFlags.instance.TenebrisCanSpawnInWorldEvilBiome)
+                if (!DTFlags.TenebrisCanSpawnInWorldEvilBiome)
                 {
-                    DTFlags.instance.TenebrisCanSpawnInWorldEvilBiome = true;
+                    DTFlags.TenebrisCanSpawnInWorldEvilBiome = true;
                 }
-                if (!DTFlags.instance.TenebrisCanSpawnInShimmerBiome)
+                if (!DTFlags.TenebrisCanSpawnInShimmerBiome)
                 {
-                    DTFlags.instance.TenebrisCanSpawnInShimmerBiome = true;
+                    DTFlags.TenebrisCanSpawnInShimmerBiome = true;
                 }
                 if (Main.netMode == NetmodeID.Server)
                 {

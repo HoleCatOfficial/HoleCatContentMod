@@ -24,6 +24,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
 			// use these to change from the vanilla defaults
 			Projectile.WhipSettings.Segments = 26;
 			Projectile.WhipSettings.RangeMultiplier = 3f;
+
+
 		}
 
 		private float Timer {
@@ -40,6 +42,23 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
         {
             Player me = Main.player[Projectile.owner];
             target.AddBuff(ModContent.BuffType<WyvernTailTagBuff>(), 300);
+
+			Vector2 AboveTarget = target.Center + new Vector2(Main.rand.NextFloat(-300, 300), -500);
+			Vector2 ToTarget = target.Center - AboveTarget;
+			ToTarget.Normalize();
+
+			for (int i = 0; i < Main.rand.Next(2, 7); i++)
+			{
+				if (!DestroyerTestMod.EternityIsActive())
+				{
+					Projectile.NewProjectile(Projectile.GetSource_OnHit(target), AboveTarget, ToTarget * 18, ProjectileID.GoldenShowerFriendly, Projectile.damage / 3, 3, Projectile.owner);
+				}
+				else
+				{
+                    Projectile.NewProjectile(Projectile.GetSource_OnHit(target), AboveTarget, ToTarget * 18, ModContent.ProjectileType<SoulCrystalFriendly>(), Projectile.damage / 3, 3, Projectile.owner);
+                }
+			}
+
             Main.player[Projectile.owner].MinionAttackTargetNPC = target.whoAmI;
 		}
 

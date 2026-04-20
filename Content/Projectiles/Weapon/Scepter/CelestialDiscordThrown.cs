@@ -40,13 +40,13 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
         {
             
             target.AddBuff(BuffID.Confused, 120);
-            Projectile.NewProjectile(Projectile.GetSource_OnHit(null), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<CDAreaParticle>(), 0, 0, Projectile.owner);
+            //Projectile.NewProjectile(Projectile.GetSource_OnHit(null), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<CDAreaParticle>(), 0, 0, Projectile.owner);
             base.OnHitNPC(target, hit, damageDone);
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity) {
             
-            Projectile.NewProjectile(Projectile.GetSource_OnHit(null), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<CDAreaParticle>(), 0, 0, Projectile.owner);
+            //Projectile.NewProjectile(Projectile.GetSource_OnHit(null), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<CDAreaParticle>(), 0, 0, Projectile.owner);
 
             base.OnTileCollide(oldVelocity);
             return false; // Prevents the projectile from being destroyed on collision

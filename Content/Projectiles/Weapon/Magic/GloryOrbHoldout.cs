@@ -1,15 +1,16 @@
-﻿using Terraria;
-using Terraria.ModLoader;
-using Terraria.ID;
-using Microsoft.Xna.Framework;
-using DestroyerTest.Common;
-using DestroyerTest.Content.MeleeWeapons;
-using Terraria.Audio;
+﻿using DestroyerTest.Common;
 using DestroyerTest.Content.Magic;
-using Terraria.GameContent;
-using Microsoft.Xna.Framework.Graphics;
+using DestroyerTest.Content.MeleeWeapons;
 using DestroyerTest.Content.Projectiles.Boss.NodeBoss.Blessed;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
+using System.Collections.Generic;
+using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 {
@@ -42,6 +43,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             return false;
         }
 
+        public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
+        {
+            overPlayers.Add(index);
+        }
         public override bool? CanHitNPC(NPC target)
         {
             return false;

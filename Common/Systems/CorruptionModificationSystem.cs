@@ -13,6 +13,7 @@ using Terraria.Chat;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 using Terraria.WorldBuilding;
 
 namespace DestroyerTest.Common.Systems
@@ -32,11 +33,11 @@ namespace DestroyerTest.Common.Systems
             return Main.keyState.IsKeyDown(key) && !Main.oldKeyState.IsKeyDown(key);
         }
 
-        public bool Gen = false;
+        public static bool Gen = false;
         public override void PostUpdateWorld()
         {
             
-            if (!Gen && DTFlags.instance.TenebrisCanSpawnInWorldEvilBiome)
+            if (!Gen && DTFlags.TenebrisCanSpawnInWorldEvilBiome)
             {
                 Generation();
                 Gen = true;
@@ -66,6 +67,23 @@ namespace DestroyerTest.Common.Systems
                 {
                     WorldGen.OreRunner(P.X, P.Y, 32, 12, (ushort)ModContent.TileType<Tile_ShadeParticleBlock>());
                 }
+            }
+        }
+
+        public override void ClearWorld()
+        {
+            Gen = false;
+        }
+        public override void SaveWorldData(TagCompound tag)
+        {
+            tag.Add("Gen", Gen);
+        }
+
+        public override void LoadWorldData(TagCompound tag)
+        {
+            if (tag.ContainsKey("Gen"));
+            {
+                Gen = tag.GetBool("Gen");
             }
         }
     }

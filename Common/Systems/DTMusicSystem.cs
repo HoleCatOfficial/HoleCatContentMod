@@ -84,6 +84,7 @@ internal class MusicDisplayCalls : ModSystem
         AddMusic("Assets/Music/RoseSoulAmbience", "RoseSoulAmbience", "Author1", FranciumColors);
         AddMusic("Assets/Music/WyvernSoulAmbience", "WyvernSoulAmbience", "Author1", FranciumColors);
         AddMusic("Assets/Music/HekateGarden", "HekateGarden", "Author1", FranciumColors);
+        AddMusic("Assets/Music/TenebrisCorruption", "TenebrisCorruption", "Author1", FranciumColors);
 
         //Rift Biome
         AddMusic_Rift("Assets/Music/RiftV2", "Rift.Surface", "Author1");

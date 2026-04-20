@@ -101,9 +101,9 @@ namespace DestroyerTest.Content.Entities
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
-            if ((spawnInfo.Player.ZoneCorrupt == true || spawnInfo.Player.ZoneShimmer == true) && DTFlags.instance.TenebrisCanSpawnInWorldEvilBiome == true)
+            if ((spawnInfo.Player.ZoneCorrupt == true || spawnInfo.Player.ZoneShimmer == true) && DTFlags.TenebrisCanSpawnInWorldEvilBiome == true)
             {
-                return 0.8f;
+                return 0.4f;
             }
             return 0f;
         }
@@ -135,7 +135,7 @@ namespace DestroyerTest.Content.Entities
 
             NPC.rotation = 0.05f * NPC.velocity.Length();
 
-            if (Main.GameUpdateCount % 180 == 0)
+            if (Main.GameUpdateCount % 240 == 0)
             {
                 SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/ChargeBreak") with { PitchVariance = 1f, Volume = 3f });
                 Opus.RingProjectileOutward(ModContent.ProjectileType<TenebrisFlamesHostile>(), 12, NPC.Center, 120, 20, 5, 8, RandomOffset: true);

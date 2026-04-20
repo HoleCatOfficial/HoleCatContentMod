@@ -110,6 +110,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
                 SoulCenter = Projectile.Center;
             }
 
+
             Vector2 ScrCTR = Main.screenPosition + new Vector2(Main.screenWidth / 2, Main.screenHeight / 2);
             Line l = new Line(new Vector2(InitialPos.X, InitialPos.Y - 4000), new Vector2(InitialPos.X, InitialPos.Y));
             if (Projectile.ai[2] == 1)
@@ -121,7 +122,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
                 l = new Line(new Vector2(InitialPos.X + 4000, InitialPos.Y), new Vector2(InitialPos.X, InitialPos.Y));
             }
             DTUtils.instance.ScrollingTextureSpine(l, DTAssetLib.SoulStreak, Color.MediumPurple * WarnOpacity, Main.spriteBatch, BlendState.Additive, WOffset, 1f);
-
+            
 
             DTTrail.DrawTrail(sb, DTAssetLib.SoulStreak.Value, TrailPositions, TrailRotations, 16, Color.Lavender, trailOffset, 5);
             
@@ -153,35 +154,38 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
             AnimateProjectile();
             Dust.NewDustPerfect(Projectile.Center, DustID.DemonTorch, Scale: 1.8f);
 
-            Vector2 lastPos = TrailPositions.Count > 0 ? TrailPositions[0] : Projectile.Center;
-			Vector2 newPos  = Projectile.Center;
+            if (!DTOptimizationsConfig.instance.DisableExcessTrails)
+            {
+                Vector2 lastPos = TrailPositions.Count > 0 ? TrailPositions[0] : Projectile.Center;
+                Vector2 newPos = Projectile.Center;
 
-			float dist = Vector2.Distance(lastPos, newPos);
-			float step = 1f; // how closely to sample. tweak this!
+                float dist = Vector2.Distance(lastPos, newPos);
+                float step = 1f; // how closely to sample. tweak this!
 
-			if (dist > 0f)
-			{
-				int segments = (int)(dist / step);
+                if (dist > 0f)
+                {
+                    int segments = (int)(dist / step);
 
-				for (int i = 1; i <= segments; i++)
-				{
-					Vector2 pos = Vector2.Lerp(lastPos, newPos, i / (float)segments);
-					TrailPositions.Insert(0, pos);
-					TrailRotations.Insert(0, Projectile.rotation);
-				}
-			}
-			else
-			{
-				TrailPositions.Insert(0, newPos);
-				TrailRotations.Insert(0, Projectile.rotation);
-			}
+                    for (int i = 1; i <= segments; i++)
+                    {
+                        Vector2 pos = Vector2.Lerp(lastPos, newPos, i / (float)segments);
+                        TrailPositions.Insert(0, pos);
+                        TrailRotations.Insert(0, Projectile.rotation);
+                    }
+                }
+                else
+                {
+                    TrailPositions.Insert(0, newPos);
+                    TrailRotations.Insert(0, Projectile.rotation);
+                }
 
 
-			// Cap trail
-			while (TrailPositions.Count > TrailLength)
-				TrailPositions.RemoveAt(TrailPositions.Count - 1);
-			while (TrailRotations.Count > TrailLength)
-				TrailRotations.RemoveAt(TrailRotations.Count - 1);
+                // Cap trail
+                while (TrailPositions.Count > TrailLength)
+                    TrailPositions.RemoveAt(TrailPositions.Count - 1);
+                while (TrailRotations.Count > TrailLength)
+                    TrailRotations.RemoveAt(TrailRotations.Count - 1);
+            }
 
             float maxDetectRadius = 120f; // The maximum radius at which a projectile can detect a target
 
@@ -267,23 +271,14 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
 
     }
 
-    public class TormentedSoulWarnLine : ModSystem
+    public class TormentedSoulWarnLine : ModPlayer
     {
-        public override void PostDrawTiles()
+
+        public override void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
         {
-            /*
-            foreach (Projectile soul in Main.projectile)
-            {
-                if (soul.active && soul.ModProjectile is TormentedSoul Soul)
-                {
-                    //Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-                    //Main.spriteBatch.End();
+
             
-                    Line l = new Line(new Vector2(Soul.InitialPos.X, Soul.InitialPos.Y - 4000), new Vector2(Soul.InitialPos.X, Soul.InitialPos.Y));
-                    DTUtils.instance.ScrollingTextureSpine(l, DTAssetLib.SoulStreak, Color.MediumPurple * Soul.WarnOpacity, Main.spriteBatch, BlendState.Additive, Soul.WOffset, 1f);
-                }
-            }
-            */
         }
+        
     }
 }

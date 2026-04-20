@@ -445,10 +445,20 @@ StardustSummonBoost: {
 
 DescendantInferno: {
 	DisplayName: Descendant Inferno
-	Description: Mods.DestroyerTest.Buffs.DescendantInferno.Description
+	Description: The wrath of the stars is upon you!
 }
 
 WyvernTailTagBuff: {
 	DisplayName: Wyvern Tail Tag Buff
 	Description: Mods.DestroyerTest.Buffs.WyvernTailTagBuff.Description
+}
+
+Withering: {
+	DisplayName: Withering
+	Description: Mods.DestroyerTest.Buffs.Withering.Description
+}
+
+Enfeebled: {
+	DisplayName: Enfeebled
+	Description: Melee and Whip size halved!
 }

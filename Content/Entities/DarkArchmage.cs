@@ -101,7 +101,7 @@ namespace DestroyerTest.Content.Entities
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
-            if (spawnInfo.Player.ZoneCorrupt && (spawnInfo.Player.ZoneDirtLayerHeight || spawnInfo.Player.ZoneRockLayerHeight) == true && DTFlags.instance.TenebrisCanSpawnInWorldEvilBiome == true)
+            if (spawnInfo.Player.ZoneCorrupt && (spawnInfo.Player.ZoneDirtLayerHeight || spawnInfo.Player.ZoneRockLayerHeight) == true && DTFlags.TenebrisCanSpawnInWorldEvilBiome == true)
             {
                 return 0.8f;
             }

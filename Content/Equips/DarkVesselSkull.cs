@@ -35,7 +35,7 @@ namespace DestroyerTest.Content.Equips
 			Item.height = 22;
 			Item.value = Item.sellPrice(gold: 70);
 			Item.rare = ModContent.RarityType<ShimmeringRarity>();
-			Item.defense = 13;
+			Item.defense = 24;
 		}
 
         public bool Scepter = false;
@@ -65,6 +65,7 @@ namespace DestroyerTest.Content.Equips
                 if (player.TryGetModPlayer<DarkVesselSummoner>(out var summoner))
                 {
                     summoner.Active = true;
+                    player.setBonus = Language.GetTextValue("Mods.DestroyerTest.Items.DarkVesselSkull.SummonerBonus");
                 }
             }
             if (Sentry)
@@ -72,6 +73,7 @@ namespace DestroyerTest.Content.Equips
                 if (player.TryGetModPlayer<DarkVesselSentry>(out var sentry))
                 {
                     sentry.Active = true;
+                    player.setBonus = Language.GetTextValue("Mods.DestroyerTest.Items.DarkVesselSkull.SentryBonus");
                 }
             }
 		}
@@ -97,8 +99,31 @@ namespace DestroyerTest.Content.Equips
         {
             if (Active)
             {
-                Player.maxMinions += 2;
-                
+                Player.maxMinions += 3;
+
+                if (Player.statLife < Player.statLifeMax / 2)
+                {
+                    float RadiusSpeedModifier = 0.4f; //Typical sine speed. Goes back and forth in about 2 seconds.
+                    float Radius = 150f + 50f * (float)Math.Sin(Player.miscCounter * RadiusSpeedModifier * 0.1f); //Sines between 100 and 200 back and forth. Very, very slowly. Perhaps using a float to control speed of sine.
+                    int dustType = DustID.FireworksRGB;
+
+                    if (Player.miscCounter % 60 == 0)
+                    {
+                        SoundEngine.PlaySound(SoundID.DD2_EtherianPortalSpawnEnemy);
+                        NPC.HitInfo strike = new NPC.HitInfo { Crit = false, Damage = 30, DamageType = null, HideCombatText = false, HitDirection = 0, InstantKill = false, Knockback = 0 };
+                        Opus.RingDustOutward(dustType, 30, Player.Center, Radius, 0, ColorLib.TenebrisGradient, 2f, 8, true);
+
+                        foreach (NPC enemy in Main.npc)
+                        {
+                            if (!enemy.friendly && enemy.Center.Distance(Player.Center) < Radius)
+                            {
+                                enemy.StrikeNPC(strike, false, true);
+                                enemy.AddBuff(ModContent.BuffType<ShimmeringFlames>(), 600);
+                            }
+                        }
+                    }
+                }
+
                 Player.AddBuff(ModContent.BuffType<ShadeThrasherBuff>(), 10);
 
                 if (!Flag1)
@@ -111,7 +136,7 @@ namespace DestroyerTest.Content.Equips
             {
                 if (Player.HasBuff<ShadeThrasherBuff>())
                 {
-                    Player.DelBuff(ModContent.BuffType<ShadeThrasherBuff>());
+                    Player.ClearBuff(ModContent.BuffType<ShadeThrasherBuff>());
                 }
             }    
         }
@@ -158,10 +183,7 @@ namespace DestroyerTest.Content.Equips
 
         public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo)
         {
-            if (Active)
-            {
-                Opus.RadialSpreadProjectile(ModContent.ProjectileType<TenebrisStarFriendly>(), 6, Player.Center, (int)Player.GetDamage(DamageClass.Summon).Flat, 2, 8, RandomOffset: true);
-            }
+
         }
     }
 }

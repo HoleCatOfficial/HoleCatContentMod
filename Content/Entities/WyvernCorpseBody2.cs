@@ -80,7 +80,7 @@ namespace DestroyerTest.Content.Entities
             NPC.noGravity = true;
             NPC.noTileCollide = true;
 
-            NPC.HitSound = SoundID.NPCHit13;
+            NPC.HitSound = SoundID.Tink with { Pitch = -0.6f, PitchVariance = 0.4f };
 
             NPC.knockBackResist = 0.0f;
 

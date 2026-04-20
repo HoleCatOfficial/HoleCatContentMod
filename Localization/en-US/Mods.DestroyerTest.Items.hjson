@@ -2784,12 +2784,16 @@ Item_RiftClay: {
 
 DarkFireSword: {
 	DisplayName: Dark Fire Sword
-	Tooltip: ""
+	Tooltip: True Melee Hits inflict shadowflame.
 }
 
 TwilightInferno: {
 	DisplayName: Twilight Inferno
-	Tooltip: ""
+	Tooltip:
+		'''
+		Shoots a dark fire spirit that leaves a trail of homing shadowflames that explode after 4 seconds.
+		True Melee critical strikes create an explosion and 8 homing shadowflames.
+		'''
 }
 
 EmberCane: {
@@ -3565,7 +3569,14 @@ ShadesRevenge: {
 
 DarkVesselSkull: {
 	DisplayName: Dark Vessel Skull
-	Tooltip: ""
+	Tooltip: A grim, onyx skull with immense power.
+	SummonerBonus:
+		'''
+		+3 Max Minions
+		You have a friendly shade thrasher at your service to defend you that consumes no minion slots.
+		When below half health, you release a weakly-damaging wave every second.
+
+		'''
 }
 
 ShadePaladinBodyArmor: {
@@ -3940,7 +3951,7 @@ Ambition: {
 
 LeeFractal: {
 	Tooltip: ""
-	DisplayName: Lee's Fractal
+	DisplayName: Gaia's Fractal
 }
 
 Dreampoon: {
@@ -4219,8 +4230,12 @@ StardustTincture: {
 }
 
 SunSaber: {
-	DisplayName: Sun Saber
-	Tooltip: You, Great Sun Sabre. You will hail in the new era of custom swings.
+	DisplayName: Greatsword of Helios
+	Tooltip:
+		'''
+		Creates spinning solar slashes.
+		True melee hits create massive explosions.
+		'''
 }
 
 Scorn: {
@@ -4444,12 +4459,12 @@ WretchedIdol: {
 
 GloryOrb: {
 	DisplayName: Glory Orb
-	Tooltip: ""
+	Tooltip: Charges up to fire a hallowed beam that pierces infinitely.
 }
 
 HallowCaller: {
 	DisplayName: Hallow Caller
-	Tooltip: ""
+	Tooltip: Summons a blessed node.
 }
 
 BlessedNodeLootBag: {
@@ -4458,21 +4473,78 @@ BlessedNodeLootBag: {
 }
 
 Item_BlessedNodeTrophy: {
-	DisplayName: Item_ Blessed Node Trophy
+	DisplayName: Blessed Node Trophy
 	Tooltip: ""
 }
 
 Item_CursedFlameNodeTrophy: {
-	DisplayName: Item_ Cursed Flame Node Trophy
+	DisplayName: Cursed Flame Node Trophy
 	Tooltip: ""
 }
 
 Item_IchorNodeTrophy: {
-	DisplayName: Item_ Ichor Node Trophy
+	DisplayName: Ichor Node Trophy
 	Tooltip: ""
 }
 
 Item_BlessedNodeRelic: {
-	DisplayName: Item_ Blessed Node Relic
+	DisplayName: Blessed Node Relic
 	Tooltip: ""
+}
+
+Exasperation: {
+	DisplayName: Exasperation
+	Tooltip:
+		'''
+		Shoots Zig-Zagging darts that explode into homing Shadowflames.
+		True Melee hits create a secondary explosion that inflicts Withering.
+		'''
+}
+
+PureBow: {
+	DisplayName: Pure Bow
+	Tooltip:
+		'''
+		Charges up when held for more than 1 second.
+
+		First tier fires just your arrow.
+		Second tier fires your arrow and two crystals, both at higher speed, that both pierce 8 times.
+		Third tier fires two arrows, two crystals, and two homing rainbow stars. The arrows and crystals pierce infinitely.
+		'''
+}
+
+StarburntTerror: {
+	DisplayName: Starburnt Terror
+	Tooltip: ""
+}
+
+ShimmeringGauntlet: {
+	DisplayName: Shimmering Gauntlet
+	Tooltip:
+		'''
+		Melee hits inflict Shimmering Flames.
+		19% increased melee scale.
+		22% increased melee damage.
+		'''
+}
+
+ShimmeringAuraStaff: {
+	DisplayName: Shimmering Aura Staff
+	Tooltip:
+		'''
+		Summons a Sentry.
+		Enemies within range are inflicted with Shimmering Flames.
+		'''
+}
+
+ShadeHeart: {
+	DisplayName: Shade Heart
+	Tooltip:
+		'''
+		22% increased all-class damage.
+		10% chance for minions to inflict Shimmering Flames on Hit.
+		Grants immunity to shimmering flames.
+		Getting hit will release a burst of homing Tenebris Stars.
+		You emit light.
+		'''
 }

@@ -233,6 +233,12 @@ namespace DestroyerTest.Common.Systems
 
             PlaceAndFillChests(x, y);
 
+            Vector2 OrigVec = origin.ToWorldCoordinates();
+            Rectangle Rect = new Rectangle((int)OrigVec.X, (int)OrigVec.Y, 60, 43);
+            if (DTCrossMod.FargosMutantIsLoaded)
+            {
+                DTCrossMod.FargosMutantMod.Call("AddIndestructibleRectangle", Rect);
+            }
 
 
         }
@@ -416,6 +422,7 @@ namespace DestroyerTest.Common.Systems
             ConnectingChute(x + 41, y + 12);
 
             PlaceAndFillChests(x, y);
+            
         }
 
         public List<int> InvalidGenTiles = new List<int>
@@ -447,6 +454,7 @@ namespace DestroyerTest.Common.Systems
 
                 Rectangle Checkframe = new Rectangle(x, y, 60, 70);
 
+
                 bool valid()
                 {
                     if (Checkframe.Contains(sample))
@@ -466,6 +474,10 @@ namespace DestroyerTest.Common.Systems
                     {
                         MainGen(x, y);
                         structurePlaced = true;
+                    }
+                    if (DTCrossMod.FargosMutantIsLoaded)
+                    {
+                        DTCrossMod.FargosMutantMod.Call("AddIndestructibleRectangle", Checkframe);
                     }
                 }
 

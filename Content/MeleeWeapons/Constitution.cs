@@ -18,20 +18,20 @@ namespace DestroyerTest.Content.MeleeWeapons
 
 		public override void SetDefaults()
 		{
-			Item.width = 52; // The item texture's width.
-			Item.height = 50; // The item texture's height.
+			Item.width = 52;
+			Item.height = 50;
 
-			Item.useStyle = ItemUseStyleID.Shoot; // The useStyle of the Item.
-			Item.useTime = 30; // The time span of using the weapon. Remember in terraria, 60 frames is a second.
-			Item.useAnimation = 30; // The time span of the using animation of the weapon, suggest setting it the same as useTime.
-			Item.autoReuse = true; // Whether the weapon can be used more than once automatically by holding the use button.
+			Item.useStyle = ItemUseStyleID.Shoot;
+			Item.useTime = 30;
+			Item.useAnimation = 30;
+			Item.autoReuse = true;
 
-			Item.DamageType = DamageClass.Melee; // Whether your item is part of the melee class.
-			Item.damage = 80; // The damage your item deals.
-			Item.knockBack = 4f; // The force of knockback of the weapon. Maximum is 20
-			Item.crit = 6; // The critical strike chance the weapon has. The player, by default, has a 4% critical strike chance.
+			Item.DamageType = DamageClass.Melee;
+			Item.damage = 80;
+			Item.knockBack = 4f;
+			Item.crit = 6;
 
-			Item.value = Item.buyPrice(gold: 16); // The value of the weapon in copper coins.
+			Item.value = Item.buyPrice(gold: 16);
 			Item.rare = ModContent.RarityType<StellarRarity>();
 			Item.noUseGraphic = true;
 			Item.noMelee = true;

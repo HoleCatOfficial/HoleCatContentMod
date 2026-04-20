@@ -214,15 +214,13 @@ namespace DestroyerTest.Content.SummonItems.FractalSummon
             NPC npc = Main.npc[npcIndex];
             Projectile.ai[0]--;
 
-            if (Projectile.ai[0] >= phaseStart)
+            if (Projectile.ai[0] == phaseStart)
             {
                 Projectile.direction = Projectile.Center.X < npc.Center.X ? 1 : -1;
 
-                if (Projectile.ai[0] == phaseStart)
-                {
-                    Projectile.localAI[0] = Projectile.Center.X;
-                    Projectile.localAI[1] = Projectile.Center.Y;
-                }
+                Projectile.localAI[0] = Projectile.Center.X;
+                Projectile.localAI[1] = Projectile.Center.Y;
+
             }
 
             float lerp = Utils.GetLerpValue(phaseStart, phaseEnd, Projectile.ai[0], true);

@@ -27,6 +27,8 @@ using OpusLib.Content.Helpers;
 using DestroyerTest.Content.Equips.ScepterAccessories;
 using DestroyerTest.Content.Tiles.RoseGarden;
 using OpusLib;
+using DestroyerTest.Content.RiftArsenal;
+using DestroyerTest.Content.MeleeWeapons.TwistedLineage;
 
 namespace DestroyerTest
 {
@@ -233,8 +235,19 @@ namespace DestroyerTest
             
            
             var fractalProfiles = (Dictionary<int, FinalFractalProfile>)typeof(Terraria.Graphics.FinalFractalHelper).GetField("_fractalProfiles", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
-			fractalProfiles.Add(ModContent.ItemType<GargantuaZenith>(), new FinalFractalProfile(140f, new Color(255, 0, 0)));
-			fractalProfiles.Add(ModContent.ItemType<Committment>(), new FinalFractalProfile(140f,  ColorLib.StellarFireGradientLooping()));
+
+            fractalProfiles.Add(ModContent.ItemType<Goliath>(), new FinalFractalProfile(110.30866f, Main.DiscoColor));
+            fractalProfiles.Add(ModContent.ItemType<Gargantua>(), new FinalFractalProfile(172.53405f, Color.Red));
+
+            fractalProfiles.Add(ModContent.ItemType<Constitution>(), new FinalFractalProfile(72.13876f, ColorLib.StellarFireGradientLooping()));
+            fractalProfiles.Add(ModContent.ItemType<Committment>(), new FinalFractalProfile(157.13688f, Main.DiscoColor));
+
+            fractalProfiles.Add(ModContent.ItemType<RiftHypersabre>(), new FinalFractalProfile(161.24515f, ColorLib.Rift));
+            fractalProfiles.Add(ModContent.ItemType<SoulEdge>(), new FinalFractalProfile(67.88225f, Color.SkyBlue));
+
+            fractalProfiles.Add(ModContent.ItemType<DarkFireSword>(), new FinalFractalProfile(135.7645f, Color.DarkMagenta));
+            fractalProfiles.Add(ModContent.ItemType<TwilightInferno>(), new FinalFractalProfile(169.70563f, Color.DarkMagenta));
+            fractalProfiles.Add(ModContent.ItemType<Exasperation>(), new FinalFractalProfile(164.04877f, Color.DarkMagenta));
 
             AddChestLoot();
 
@@ -259,10 +272,21 @@ namespace DestroyerTest
             OilTentacleKeybind = null;
 
             var fractalProfiles = (Dictionary<int, FinalFractalProfile>)typeof(Terraria.Graphics.FinalFractalHelper).GetField("_fractalProfiles", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
-			fractalProfiles.Remove(ModContent.ItemType<GargantuaZenith>());
-			fractalProfiles.Remove(ModContent.ItemType<Committment>());
 
-			DTCrossMod.UnloadMods();
+            fractalProfiles.Remove(ModContent.ItemType<Goliath>());
+            fractalProfiles.Remove(ModContent.ItemType<Gargantua>());
+
+            fractalProfiles.Remove(ModContent.ItemType<Constitution>());
+            fractalProfiles.Remove(ModContent.ItemType<Committment>());
+
+            fractalProfiles.Remove(ModContent.ItemType<RiftHypersabre>());
+            fractalProfiles.Remove(ModContent.ItemType<SoulEdge>());
+			
+            fractalProfiles.Remove(ModContent.ItemType<DarkFireSword>());
+            fractalProfiles.Remove(ModContent.ItemType<TwilightInferno>());
+            fractalProfiles.Remove(ModContent.ItemType<Exasperation>());
+
+            DTCrossMod.UnloadMods();
         }
 
         public static bool EternityIsActive()

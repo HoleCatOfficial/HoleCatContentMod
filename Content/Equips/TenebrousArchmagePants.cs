@@ -18,7 +18,7 @@ namespace DestroyerTest.Content.Equips
 			Item.height = 18;
 			Item.value = Item.sellPrice(gold: 1);
 			Item.rare = ModContent.RarityType<ShimmeringRarity>();
-			Item.defense = 15;
+			Item.defense = 18;
 		}
 
 		public override void UpdateEquip(Player player) {

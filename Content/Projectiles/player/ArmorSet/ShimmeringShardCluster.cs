@@ -49,7 +49,7 @@ namespace DestroyerTest.Content.Projectiles.player.ArmorSet
             {
                 if(player.active && player.Center.Distance(Projectile.Center) < rad && player.whoAmI == Projectile.owner)
                 {
-                    player.GetDamage<ScepterClass>() *= 1.2f;
+                    player.GetDamage<ScepterClass>() *= 1.4f;
 
                 }
             }
@@ -68,14 +68,14 @@ namespace DestroyerTest.Content.Projectiles.player.ArmorSet
             {
                 Radius++;
             }
-            if (Radius >= 400 && !Flag1)
+            if (Radius >= 800 && !Flag1)
             {
                 Flag1 = true;
             }
 
             if (Flag1 == true & Projectile.ai[0] < 1200)
             {
-                Radius = Opus.Sine(400f, 450f);
+                Radius = Opus.Sine(800f, 850f);
             }
 
             if(Projectile.ai[0] >= 1200 && Radius > 0)

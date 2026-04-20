@@ -1,4 +1,5 @@
 using System;
+using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
@@ -21,14 +22,14 @@ namespace DestroyerTest.Content.Particles
         public override void AI()
         {
             float endScale = ai[0]; // allow dynamic sizing
-            float growSpeed = 0.02f; // how fast it grows each tick
+            float growSpeed = MathHelper.Lerp(0.08f, 0.01f, Scale / endScale); // how fast it grows each tick
 
             if (Scale < endScale)
             {
                 Scale += growSpeed;
             }
 
-            float fadeStart = endScale * 0.8f;
+            float fadeStart = endScale * 0.5f;
             if (Scale >= fadeStart)
             {
                 Color *= 0.9f;

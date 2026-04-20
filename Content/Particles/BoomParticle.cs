@@ -1,3 +1,4 @@
+using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
@@ -20,7 +21,9 @@ namespace DestroyerTest.Content.Particles
         public override void AI()
         {
             float endScale = ai[0]; // allow dynamic sizing
-            float growSpeed = 0.02f; // how fast it grows each tick
+            float InitialGrowSpeed = ai[1];
+            float FinalGrowSPeed = ai[2];
+            float growSpeed = MathHelper.Lerp(InitialGrowSpeed, FinalGrowSPeed, Scale / endScale); ; // how fast it grows each tick
 
             if (Scale < endScale)
             {
@@ -92,6 +95,16 @@ namespace DestroyerTest.Content.Particles
     }
 
     public class BoomCloud : Boom
+    {
+        public override void SetProperty()
+        {
+            PRTDrawMode = PRTDrawModeEnum.AdditiveBlend;
+            Lifetime = 9999;
+            Scale = 0.01f;
+        }
+    }
+
+    public class SimpleExplosionParticle : Boom
     {
         public override void SetProperty()
         {

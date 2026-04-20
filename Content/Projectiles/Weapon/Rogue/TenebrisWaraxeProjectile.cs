@@ -183,8 +183,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
                 PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticle>(), Projectile.Center, new Vector2(Main.rand.NextFloat(-8, 8), Main.rand.NextFloat(-15, -10)), clr, 2,2);
 
             }
-            Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), Projectile.Center, Vector2.Zero, Color.White, 0.01f, ai0: 0.8f);
-            Opus.NewParticleFloatAI(PRTLoader.GetParticleID<Boom5>(), Projectile.Center, Vector2.Zero, clr, 0.01f, ai0: 1.5f);
+
+            BasePRT P1 = Opus.NewParticleFloatAI(PRTLoader.GetParticleID<SimpleExplosionParticle>(), Projectile.Center, Vector2.Zero, clr, 0.01f, 6f, 0.3f, 0.01f);
+            P1.Rotation = Main.rand.NextFloat(MathHelper.TwoPi);
+            BasePRT P2 = Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), Projectile.Center, Vector2.Zero, DTColorUtils.Pastel(clr, 0.5f), 0.01f, 1f, 0.1f, 0.02f);
+            P2.Rotation = Main.rand.NextFloat(MathHelper.TwoPi);
+
             returning = true;
 
             return false;

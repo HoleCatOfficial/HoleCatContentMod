@@ -39,7 +39,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame
 			Projectile.hostile = true;
 			Projectile.ignoreWater = true;
 			Projectile.light = 0.1f;
-			Projectile.timeLeft = 600;
+			Projectile.timeLeft = 240;
 			Projectile.tileCollide = false;
 			Projectile.penetrate = 1;
 		}

@@ -16,6 +16,7 @@ using ReLogic.Content;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -396,7 +397,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
         public override bool? CanHitNPC(NPC target)
         {
-            return HitCooldown <= 0;
+            return HitCooldown <= 0 && !target.friendly && !OpusNPCDropHelper.IgnoreEnemies.Contains(target.type);
         }
 
         public virtual void HitNPCEffects(NPC npc, NPC.HitInfo hit)

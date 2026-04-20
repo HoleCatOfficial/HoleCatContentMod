@@ -27,21 +27,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
         public override void AI()
         {
-            Projectile.ai[0] += 1f;
-            if (Projectile.ai[0] >= 5f)
-            {
-                Projectile.ai[0] = 5f;
-                Projectile.velocity.Y += 0.1f;
-            }
+            Projectile.rotation += 0.2f * Projectile.direction;
 
-            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
-
-            if (Projectile.velocity.Y > 16f)
-            {
-                Projectile.velocity.Y = 16f;
-            }
-
-            PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center, Vector2.Zero, new Color(199, 66, 199) * 0.35f, 1.0f, 40, 2);
+            PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center, Vector2.Zero, new Color(199, 66, 199) * 0.35f, 1.0f, 40, ai2: 2);
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)
