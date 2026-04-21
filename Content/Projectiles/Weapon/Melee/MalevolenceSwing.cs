@@ -24,6 +24,7 @@ using Terraria.GameContent;
 using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static tModPorter.ProgressUpdate;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 {
@@ -73,7 +74,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             }
 
             Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-            Main.EntitySpriteDraw(Tex, player.MountedCenter - Main.screenPosition, null, ColorLib.Wretched1 * SweepOpacity, (Projectile.rotation + MathHelper.PiOver4) + rOffset, Tex.Size() / 2, (AdjustedScale * TexBasedMod), FX);
+            Main.EntitySpriteDraw(Tex, player.MountedCenter - Main.screenPosition, null, DTColorUtils.MultiLerp(SlashProgress, ColorLib.WretchedColorMap) * SweepOpacity, (Projectile.rotation + MathHelper.PiOver4) + rOffset, Tex.Size() / 2, (AdjustedScale * TexBasedMod), FX);
             Main.EntitySpriteDraw(TexH, player.MountedCenter - Main.screenPosition, null, Color.White * SweepOpacity, (Projectile.rotation + MathHelper.PiOver4) + rOffset, Tex.Size() / 2, (AdjustedScale * TexBasedMod), FX);
             Opus.ReturnToDefaultDrawing(Main.spriteBatch);
         }
@@ -84,7 +85,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         public override void DrawOverBlade()
         {
             Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-            Main.EntitySpriteDraw(DTAssetLib.MiscSparkle144.Value, swordTip, null, ColorLib.Wretched2, 0f, DTAssetLib.MiscSparkle144.Value.Size() / 2, 2f, SpriteEffects.None);
+            Main.EntitySpriteDraw(DTAssetLib.MiscSparkle144.Value, swordTip - Main.screenPosition, null, DTColorUtils.MultiLerp(SlashProgress, ColorLib.WretchedColorMap), 0f, DTAssetLib.MiscSparkle144.Value.Size() / 2, 1f, SpriteEffects.None);
             Opus.ReturnToDefaultDrawing(Main.spriteBatch);
         }
 
@@ -102,13 +103,13 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
             for (int i = 0; i < 2; i++)
             {
-                Dust.NewDustPerfect(ppt[Main.rand.Next(15)], ModContent.DustType<ColorableNeonDust>(), SwordLine.GetLineRotation.ToRotationVector2() * 2, 0, ColorLib.CursedFlames * 0.5f, 3f);
+                Dust.NewDustPerfect(ppt[Main.rand.Next(15)], ModContent.DustType<ColorableNeonDust>(), SwordLine.GetLineRotation.ToRotationVector2() * 2, 0, DTColorUtils.MultiLerp(SlashProgress, ColorLib.WretchedColorMap) * 0.5f, 3f);
                 //PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], pt[Main.rand.Next(30)], SwordLine.GetLineRotation.ToRotationVector2() * 2, ColorLib.Wretched3, 0.5f, 20, ai2: 2);
             }
 
             ScaleMult = 1.25f;
 
-            SparkEdge(Main.player[Projectile.owner], 1f, ColorLib.Wretched3);
+            SparkEdge(Main.player[Projectile.owner], 1f, DTColorUtils.MultiLerp(SlashProgress, ColorLib.WretchedColorMap));
         }
     }
 }

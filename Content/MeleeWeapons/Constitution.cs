@@ -1,3 +1,4 @@
+using DestroyerTest.Common;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Weapon.Melee;
 using DestroyerTest.Rarity;
@@ -22,9 +23,8 @@ namespace DestroyerTest.Content.MeleeWeapons
 			Item.height = 50;
 
 			Item.useStyle = ItemUseStyleID.Shoot;
-			Item.useTime = 30;
-			Item.useAnimation = 30;
-			Item.autoReuse = true;
+            Item.SetSpecialMeleeStats();
+            Item.autoReuse = true;
 
 			Item.DamageType = DamageClass.Melee;
 			Item.damage = 80;

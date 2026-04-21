@@ -144,7 +144,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             }
             if (Owner.controlUseItem)
             {
-                Owner.SetDummyItemTime(2);
+                Owner.SetDummyItemTime(60);
                 AdjustedScale = Owner.GetAdjustedItemScale(Owner.HeldItem) * ScaleMult;
                 Projectile.scale = AdjustedScale;
                 if (CurrentState == State.Wait)
@@ -253,7 +253,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
                                 f1 = true;
                             }
 
-                            SlashProgress = Math.Abs(Projectile.rotation - UpPoint) / Math.Abs(SlashStartRotation - DownPoint);
+                            SlashProgress = Math.Abs(Projectile.rotation - DownPoint) / Math.Abs(SlashStartRotation - DownPoint);
 
                             SweepOpacity = MathHelper.Lerp(SweepOpacity, 0f, t);
                             Projectile.rotation = MathHelper.Lerp(Projectile.rotation, DownPoint, t);

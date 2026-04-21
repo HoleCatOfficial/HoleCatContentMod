@@ -28,7 +28,7 @@ ShieldPlayer.ShieldLine:
 	[i:DestroyerTest/ShieldMarkBig] These Shields kill harmful projectiles inside their radius and do not protect from NPC contact damage.
 	[i:DestroyerTest/ShieldMarkBig] Shields do not regenerate until they break, and pull from your health to regenerate.
 	'''
-ModName: HoleCat's Content Mod (Private Beta)
+ModName: Talid Mod (Private Beta)
 
 Extras: {
 	ShadeWorldCommonBestiary: In addition to freeing the moon lord from imprisonment, breaking the seal also tore open holes across space, allowing enemies from the shade world to enter yours.

@@ -2531,7 +2531,7 @@ ComaceraticFlask: {
 
 HeliouricFlask: {
 	DisplayName: Heliouric Flask
-	Tooltip: Imbues your weapons with Comaceratic Burn.
+	Tooltip: Imbues your weapons with Heliouric Shock
 }
 
 RiftenCrate: {
@@ -2541,7 +2541,7 @@ RiftenCrate: {
 
 RiftFlask: {
 	DisplayName: Rift Flask
-	Tooltip: Imbues your weapons with Comaceratic Burn.
+	Tooltip: Imbues your weapons with Daylight Overload.
 }
 
 ComaceraticVial: {

@@ -30,8 +30,7 @@ namespace DestroyerTest.Content.MeleeWeapons
             Item.height = 118;
 
             Item.useStyle = ItemUseStyleID.Shoot;
-            Item.useTime = 20;
-            Item.useAnimation = 20;
+            Item.SetSpecialMeleeStats();
             Item.autoReuse = true;
             Item.useTurn = true;
 

@@ -27,9 +27,8 @@ namespace DestroyerTest.Content.MeleeWeapons
 			Item.height = 162;
 			Item.value = Item.sellPrice(gold: 2, silver: 50);
 			Item.rare = ItemRarityID.Green;
-			Item.useTime = 120;
-			Item.useAnimation = 120;
-			Item.useStyle = ItemUseStyleID.Shoot;
+            Item.SetSpecialMeleeStats();
+            Item.useStyle = ItemUseStyleID.Shoot;
 			Item.knockBack = 70;
 			Item.autoReuse = false;
 			Item.damage = 110;

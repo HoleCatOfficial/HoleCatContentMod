@@ -123,9 +123,11 @@ namespace DestroyerTest.Content.Entities
         public float ShieldScale = 1f;
         public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
+            float progress = (float)DormantNPCKillTally / (float)DormantNPCKillRequirement;
             if (CurrentAttack == AttackState.Dormant)
             {
-                DTUtils.DrawChargeBar(2f, (NPC.Center + new Vector2(0, 100)) - Main.screenPosition, (float)DormantNPCKillTally / (float)DormantNPCKillRequirement, ColorLib.WretchedGradient());
+
+                DTUtils.DrawChargeBar(2f, (NPC.Center + new Vector2(0, 100)) - Main.screenPosition, progress, DTColorUtils.MultiLerp(progress, ColorLib.WretchedColorMap));
             }
         }
 
@@ -133,6 +135,7 @@ namespace DestroyerTest.Content.Entities
         {
             Texture2D pixel = TextureAssets.MagicPixel.Value;
             var v = DTAssetLib.BloomRingSharp.Value;
+
 
             Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
             Main.EntitySpriteDraw(v, NPC.Center - screenPos, null, ColorLib.WretchedGradient() * ShieldOpacity, 0f, v.Size() / 2, ShieldScale, SpriteEffects.None);
@@ -188,6 +191,7 @@ namespace DestroyerTest.Content.Entities
         public int NapalmRainInterval = 0;
         public bool RecordCenterFlag1 = false;
         public bool Flag2 = false;
+        public bool Flag3 = false;
         public Vector2 screenCenter;
         public SoundStyle StarShoot = new SoundStyle("DestroyerTest/Assets/Audio/NodeAttackTS") with { MaxInstances = 0, PitchVariance = 1, Volume = 2 };
         public SoundStyle Wallwarn = new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/CursedFlamesWarn") with { MaxInstances = 0, PitchVariance = 1 };
@@ -201,7 +205,7 @@ namespace DestroyerTest.Content.Entities
             DTUtils Utility = new DTUtils();
             DTMusicConfig muscfg = ModContent.GetInstance<DTMusicConfig>();
 
-            if (NPC.alpha > 0)
+            if (NPC.alpha > 0 && CurrentAttack != AttackState.None)
             {
                 NPC.immortal = true;
                 NPC.alpha--;
@@ -307,10 +311,20 @@ namespace DestroyerTest.Content.Entities
                         float XOffMin = -350;
                         float XOffMax = 350;
                         float XOff = Opus.Sine(XOffMin, XOffMax, 0.05f);
+
                         KeepToPlayer(player.Center + new Vector2(XOff, -200));
 
-                        if (Main.GameUpdateCount % 90 == 0)
+                        bool Min = Math.Abs(XOffMin - XOff) < 40;
+                        bool Max = Math.Abs(XOffMax - XOff) < 40;
+
+                        if (Math.Abs(XOff) < 3f)
                         {
+                            Flag3 = false;
+                        }
+
+                        if ((Min || Max) && !Flag3)
+                        {
+                            Flag3 = true;
                             Stars();
                         }
 
@@ -333,11 +347,11 @@ namespace DestroyerTest.Content.Entities
 
                         if (MineInterval <= 0)
                         {
-                            for (int q = 0; q < 12; q++)
+                            for (int q = 0; q < 9; q++)
                             {
                                 Vector2 Position = new Vector2(player.Center.X + Main.rand.Next(-1000, 1000), player.Center.Y + Main.rand.Next(-1000, 1000));
-                                Projectile Mine = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), Position, Vector2.Zero, ModContent.ProjectileType<BlossomMine>(), 30, 5);
-                                Mine.timeLeft = 60;
+                                Projectile Mine = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), Position, Vector2.Zero, ModContent.ProjectileType<BlossomMine>(), 25, 5);
+                                Mine.timeLeft = 100;
                             }
                             MineInterval = 120;
                             MineCount += 1;
@@ -469,11 +483,15 @@ namespace DestroyerTest.Content.Entities
                 }
             }
 
-            Vector2[] P = Opus.GetEquidistantOrbitVectors(16, NPC.Center, 0.1f, 1200);
+            int MaxRad = 1200;
+            int currad = Opus.Sine(1200, 1000, 0.06f);
+            float progress = (float)currad / (float)MaxRad;
+
+            Vector2[] P = Opus.GetEquidistantOrbitVectors(16, NPC.Center, 0.1f, currad);
 
             for (int i = 0; i < P.Length; i++)
             {
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), P[i], Vector2.Zero, ColorLib.WretchedGradient(), 1f);
+                PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), P[i], Vector2.Zero, DTColorUtils.MultiLerp(progress, ColorLib.WretchedColorMap), 1f);
             }
 
             foreach (Player p in Main.player)
@@ -607,8 +625,8 @@ namespace DestroyerTest.Content.Entities
         {
             SoundEngine.PlaySound(StarShoot, NPC.Center);
             Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), NPC.Center, Vector2.Zero, ColorLib.CursedFlames, 0.01f, 1f);
-            Opus.RadialSpreadProjectile(ModContent.ProjectileType<CursedNodeCrystal2>(), 9, NPC.Center, 16, 4, 10, AI1: 1, RandomOffset: true);
-            Opus.RadialSpreadProjectile(ModContent.ProjectileType<CursedNodeCrystal2>(), 9, NPC.Center, 16, 4, 10, AI1: -1, RandomOffset: true);
+            Opus.RadialSpreadProjectile(ModContent.ProjectileType<CursedNodeCrystal2>(), 7, NPC.Center, 16, 4, 10, AI1: 1, offset: NPC.rotation);
+            Opus.RadialSpreadProjectile(ModContent.ProjectileType<CursedNodeCrystal2>(), 7, NPC.Center, 16, 4, 10, AI1: -1, offset: NPC.rotation);
             StarShootCount += 1;
         }
 
@@ -668,18 +686,31 @@ namespace DestroyerTest.Content.Entities
         {
             if (IsNodeSpawned)
             {
+                int MaxRad = 1200;
+                float CurDist = npc.Center.Distance(Node.NPC.Center);
+
+                float Modifier = CurDist / (float)MaxRad;
+
+
                 Line L = new Line(npc.Center, Node.NPC.Center);
                 TexOffset += 10;
-                DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(10), ColorLib.WretchedGradient(), spriteBatch, BlendState.Additive, TexOffset, 0.5f);
+                DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(10), DTColorUtils.MultiLerp(Modifier, ColorLib.WretchedColorMap), spriteBatch, BlendState.Additive, TexOffset, 0.5f);
             }
             return base.PreDraw(npc, spriteBatch, screenPos, drawColor);
         }
         public override void PostDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
+
             if (IsNodeSpawned)
             {
+                int MaxRad = 1200;
+                float CurDist = npc.Center.Distance(Node.NPC.Center);
+
+                float Modifier = CurDist / (float)MaxRad;
+
+
                 Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-                Main.EntitySpriteDraw(DTAssetLib.CorruptSigil.Value, npc.Center - screenPos, null, ColorLib.CursedFlames * 0.5f, 0f, DTAssetLib.CorruptSigil.Value.Size() / 2, 0.5f, SpriteEffects.None, 0f);
+                Main.EntitySpriteDraw(DTAssetLib.CorruptSigil.Value, npc.Center - screenPos, null, DTColorUtils.MultiLerp(Modifier, ColorLib.WretchedColorMap) * 0.5f, 0f, DTAssetLib.CorruptSigil.Value.Size() / 2, 0.5f, SpriteEffects.None, 0f);
                 Opus.ReturnToDefaultDrawing(spriteBatch);
             }
         }

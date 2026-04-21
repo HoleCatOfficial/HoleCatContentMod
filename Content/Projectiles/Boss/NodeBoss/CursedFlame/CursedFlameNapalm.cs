@@ -88,7 +88,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame
 			{
 				float progress = i / (float)TrailCacheLength;
 				float scale = MathHelper.Lerp(2f, 0.0005f, progress);
-				Color color = ColorLib.CursedFlames;
+				Color color = DTColorUtils.MultiLerp(progress, ColorLib.WretchedColorMap);
 
 				Main.EntitySpriteDraw(
 					glowTex,
@@ -101,14 +101,26 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame
 					SpriteEffects.None,
 					0
 				);
-			}
+
+                Main.EntitySpriteDraw(
+                    glowTex,
+                    trailPositions[i] - Main.screenPosition,
+                    null,
+                    DTColorUtils.Pastel(color, 0.8f),
+                    Projectile.rotation,
+                    glowTex.Size() / 2f,
+                    scale * 0.4f,
+                    SpriteEffects.None,
+                    0
+                );
+            }
 
 			// draw main projectile glow
 			Main.EntitySpriteDraw(
 				glowTex,
 				Projectile.Center - Main.screenPosition,
 				null,
-				ColorLib.CursedFlames,
+				ColorLib.Wretched1,
 				Projectile.velocity.ToRotation(),
 				glowTex.Size() / 2f,
 				2f,
@@ -116,7 +128,19 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame
 				0
 			);
 
-			Opus.ReturnToDefaultDrawing(spriteBatch);
+            Main.EntitySpriteDraw(
+                glowTex,
+                Projectile.Center - Main.screenPosition,
+                null,
+                DTColorUtils.Pastel(ColorLib.Wretched1, 0.8f),
+                Projectile.velocity.ToRotation(),
+                glowTex.Size() / 2f,
+                1.25f,
+                SpriteEffects.None,
+                0
+            );
+
+            Opus.ReturnToDefaultDrawing(spriteBatch);
 
 			return false; // we handled drawing ourselves
 		}

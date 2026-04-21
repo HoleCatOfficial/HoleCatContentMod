@@ -203,7 +203,7 @@ namespace DestroyerTest.Content.Entities
             DTUtils Utility = new DTUtils();
             DTMusicConfig muscfg = ModContent.GetInstance<DTMusicConfig>();
 
-            if (NPC.alpha > 0)
+            if (NPC.alpha > 0 && CurrentAttack != AttackState.None)
             {
                 NPC.immortal = true;
                 NPC.alpha--;

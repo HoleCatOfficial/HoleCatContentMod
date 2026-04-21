@@ -1,4 +1,5 @@
-﻿using DestroyerTest.Content.Projectiles;
+﻿using DestroyerTest.Common;
+using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Weapon.Melee;
 using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
@@ -22,8 +23,7 @@ namespace DestroyerTest.Content.MeleeWeapons
             Item.height = 106; // The item texture's height.
 
             Item.useStyle = ItemUseStyleID.Shoot; // The useStyle of the Item.
-            Item.useTime = 30; // The time span of using the weapon. Remember in terraria, 60 frames is a second.
-            Item.useAnimation = 30; // The time span of the using animation of the weapon, suggest setting it the same as useTime.
+            Item.SetSpecialMeleeStats();
             Item.autoReuse = true; // Whether the weapon can be used more than once automatically by holding the use button.
 
             Item.DamageType = DamageClass.Melee; // Whether your item is part of the melee class.

@@ -28,8 +28,7 @@ namespace DestroyerTest.Content.MeleeWeapons
             Item.height = 60;
             Item.value = Item.sellPrice(gold: 2, silver: 50);
             Item.rare = ModContent.RarityType<PrimalRarity>();
-            Item.useTime = 30;
-            Item.useAnimation = 30;
+            Item.SetSpecialMeleeStats();
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.knockBack = 70;
             Item.autoReuse = false;

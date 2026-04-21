@@ -826,6 +826,28 @@ namespace DestroyerTest.Common
         {
             return Dust.NewDustDirect(player.position, player.width, player.height, Type, velocity.X, velocity.Y, alpha, color, Scale);
         }
+
+        public static Asset<Texture2D> GetMasoTexture(this NPC npc, string Directory, string Name)
+        {
+            return ModContent.Request<Texture2D>($"{Directory}/Maso_{Name}", AssetRequestMode.AsyncLoad);
+        }
+
+        public static Asset<Texture2D> GetMasoGlowTexture(this NPC npc, string Directory, string Name)
+        {
+            return ModContent.Request<Texture2D>($"{Directory}/Maso_{Name}_Glow", AssetRequestMode.AsyncLoad);
+        }
+
+        public static Asset<Texture2D> GetGlowTexture(this Entity entity, string Directory, string Name)
+        {
+            return ModContent.Request<Texture2D>($"{Directory}/{Name}_Glow", AssetRequestMode.AsyncLoad);
+        }
+
+        public static void SetSpecialMeleeStats(this Item item)
+        {
+            item.useTime = 60;
+            item.useAnimation = 60;
+            item.useTurn = true;
+        }
     }
 
     public class DTPlayerUtil : ModPlayer
@@ -895,20 +917,34 @@ namespace DestroyerTest.Common
             );
         }
 
-        public static Asset<Texture2D> GetMasoTexture(this NPC npc, string Directory, string Name)
+        public static Color MultiLerp(float progress, params Color[] colors)
         {
-            return ModContent.Request<Texture2D>($"{Directory}/Maso_{Name}", AssetRequestMode.AsyncLoad);
+            if (colors == null || colors.Length == 0)
+                return Color.White;
+
+            if (colors.Length == 1)
+                return colors[0];
+
+            progress = MathHelper.Clamp(progress, 0f, 1f);
+
+            int segmentCount = colors.Length - 1;
+            float scaled = progress * segmentCount;
+
+            int index = (int)scaled;
+
+            if (index >= segmentCount)
+                return colors[^1];
+
+            float localProgress = scaled - index;
+
+            return Color.Lerp(
+                colors[index],
+                colors[index + 1],
+                localProgress
+            );
         }
 
-        public static Asset<Texture2D> GetMasoGlowTexture(this NPC npc, string Directory, string Name                                                  )
-        {
-            return ModContent.Request<Texture2D>($"{Directory}/Maso_{Name}_Glow", AssetRequestMode.AsyncLoad);
-        }
-
-        public static Asset<Texture2D> GetGlowTexture(this Entity entity, string Directory, string Name)
-        {
-            return ModContent.Request<Texture2D>($"{Directory}/{Name}_Glow", AssetRequestMode.AsyncLoad);
-        }
+        
     }
 
     public class DTUtilLoading : ModSystem
@@ -1318,6 +1354,17 @@ namespace DestroyerTest.Common
         public static Color Wretched5 = new Color(8, 129, 81);
         public static Color Wretched6 = new Color(3, 89, 96);
         public static Color Wretched7 = new Color(0, 0, 0);
+
+        public static Color[] WretchedColorMap = new Color[7]
+        {
+            Wretched1,
+            Wretched2,
+            Wretched3,
+            Wretched4,
+            Wretched5,
+            Wretched6,
+            Wretched7
+        };
 
         public static Color WretchedGradient()
         {
