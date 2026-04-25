@@ -1,8 +1,10 @@
-using System;
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Particles;
+using DestroyerTest.Content.Particles.fire;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
+using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -33,8 +35,11 @@ namespace DestroyerTest.Content.Projectiles.EntitiesProjectiles
 		public override void AI() {
 			Projectile.rotation += 0.4f * Projectile.direction;
 
-			PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center, Vector2.Zero, ColorLib.TenebrisGradient * 0.35f, 1.0f, 40, ai2: 2);
-			if (TileCollideCount <= 0)
+            Fire fire = new Fire();
+            fire.PrepareFire(Projectile.Center, Vector2.Zero, Main.rand.Next(1, 3), 0.1f, ColorLib.TenebrisGradient, 1f, 100, FireDrawMode.Additive);
+            ParticleEngine.BehindProjectiles.Add(fire);
+
+            if (TileCollideCount <= 0)
 			{
 				Projectile.Kill();
 			}

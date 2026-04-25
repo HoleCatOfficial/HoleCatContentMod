@@ -1,106 +1,46 @@
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Content.Projectiles.Weapon.Melee;
-using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.GameContent.Drawing;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Config;
+using Terraria.DataStructures;
+using DestroyerTest.Content.Projectiles;
+using DestroyerTest.Rarity;
+using DestroyerTest.Common;
+using System;
+using DestroyerTest.Content.Projectiles.Weapon.Melee;
 
 namespace DestroyerTest.Content.MeleeWeapons
 {
-	public class HoleCatHook : ModItem
-	{
-		public int attackType = 0; // keeps track of which attack it is
-		public int comboExpireTimer = 0; // we want the attack pattern to reset if the weapon is not used for certain period of time
-		public int jabHitCount = 0;
-
-
-        public override void SetStaticDefaults()
+    public class HoleCatHook : ModItem
+    {
+        public override void SetDefaults()
         {
-			ItemID.Sets.ItemsThatAllowRepeatedRightClick[Type] = true;
-        }
-
-		public override void SetDefaults()
-        {
-            Item.width = 200; // The item texture's width.
-            Item.height = 174; // The item texture's height.
-
-            Item.useStyle = ItemUseStyleID.Shoot; // The useStyle of the Item.
-            Item.useTime = 20; // The time span of using the weapon. Remember in terraria, 60 frames is a second.
-            Item.useAnimation = 20; // The time span of the using animation of the weapon, suggest setting it the same as useTime.
-            Item.autoReuse = true; // Whether the weapon can be used more than once automatically by holding the use button.
-
-            Item.DamageType = DamageClass.Melee; // Whether your item is part of the melee class.
-            Item.damage = 170; // The damage your item deals.
-            Item.knockBack = 9f; // The force of knockback of the weapon. Maximum is 20
-            Item.crit = 66; // The critical strike chance the weapon has. The player, by default, has a 4% critical strike chance.
-
-            Item.value = Item.buyPrice(gold: 16); // The value of the weapon in copper coins.
-            Item.rare = ModContent.RarityType<TestRarity>(); 
-            Item.noUseGraphic = true;
+            Item.width = 94;
+            Item.height = 102;
+            Item.value = Item.sellPrice(gold: 2, silver: 50);
+            Item.rare = ModContent.RarityType<TestRarity>();
+            Item.SetSpecialMeleeStats();
+            Item.useStyle = ItemUseStyleID.Shoot;
+            Item.knockBack = 70;
+            Item.autoReuse = false;
+            Item.damage = 550;
+            Item.DamageType = DamageClass.Melee;
             Item.noMelee = true;
+            Item.noUseGraphic = true;
             Item.shoot = ModContent.ProjectileType<HoleCatHookSwing>();
+            Item.channel = true;
         }
 
-        public override bool AltFunctionUse(Player player)
+        public override bool CanUseItem(Player player)
+        {
+            return player.ownedProjectileCounts[Item.shoot] < 1;
+        }
+
+        public override bool MeleePrefix()
         {
             return true;
         }
 
-        public override bool CanUseItem(Player player) {
-			// Ensures no more than one spear can be thrown out, use this when using autoReuse
-			return player.ownedProjectileCounts[Item.shoot] < 1;
-		}
-
-		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
-		{
-			if (player.altFunctionUse != 2)
-			{
-				// Using the shoot function, we override the swing projectile to set ai[0] (which attack it is)
-				Projectile.NewProjectile(source, position, velocity, type, damage, knockback, Main.myPlayer, attackType);
-				attackType = (attackType + 1) % 3; // Increment attackType to cycle through three attack types
-				comboExpireTimer = 0; // Every time the weapon is used, we reset this so the combo does not expire
-				return false;
-			}
-
-			if (player.altFunctionUse == 2)
-			{
-				Item.shootSpeed = 3.3f;
-				Projectile jab = Projectile.NewProjectileDirect(
-					player.GetSource_ItemUse(Item),
-					player.Center,
-					velocity,
-					ModContent.ProjectileType<HoleCatHookJab>(),
-					damage,
-					knockback,
-					player.whoAmI
-				);
-
-				jab.ai[1] = player.selectedItem; // store which slot created it
-				return false;
-			}
-
-			return false; // return false to prevent original projectile from being shot
-		}
-
-		public override void UpdateInventory(Player player) {
-			if (comboExpireTimer++ >= 120) // after 120 ticks (== 2 seconds) in inventory, reset the attack pattern
-				attackType = 0;
-		}
-
-		public override bool MeleePrefix() {
-			return true; // return true to allow weapon to have melee prefixes (e.g. Legendary)
-		}
-
-
-		
-
-		
-	}
+    }
 }

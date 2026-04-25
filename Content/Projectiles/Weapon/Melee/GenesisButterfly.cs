@@ -1,5 +1,7 @@
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Particles;
+using DestroyerTest.Content.Particles.fire;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Terraria;
@@ -58,7 +60,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
             Color baseColor = new Color(Main.DiscoR / 2, (byte)(Main.DiscoG / 1.25f), (byte)(Main.DiscoB / 1.5f));
             pastelColor = Color.Lerp(baseColor, Color.White, 0.5f);
-            PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center, Vector2.Zero, pastelColor * 0.3f, 0.5f, 60, ai2: 2);
+
+            Fire fire = new Fire();
+            fire.PrepareFire(Projectile.Center, Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.3f, 0.3f), pastelColor, 1f, 100, FireDrawMode.Additive);
+            ParticleEngine.BehindProjectiles.Add(fire);
+            
 
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
             float maxDetectRadius = 400f; // The maximum radius at which a projectile can detect a target

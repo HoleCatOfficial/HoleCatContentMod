@@ -1,12 +1,14 @@
+using BreadLibrary.Core.Graphics.Particles;
+using DestroyerTest.Common;
+using DestroyerTest.Content.Particles;
+using DestroyerTest.Content.Particles.fire;
+using InnoVault.PRT;
+using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.Audio;
-using Microsoft.Xna.Framework;
-using InnoVault.PRT;
-using DestroyerTest.Common;
-using Terraria.DataStructures;
-using DestroyerTest.Content.Particles;
 
 namespace DestroyerTest.Content.Projectiles.player.Accessory
 {
@@ -45,8 +47,14 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
 
 			Lighting.AddLight(Projectile.Center, Ice.ToVector3() * 0.2f);
 
-			PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center, Vector2.Zero, Ice, 0.5f, 40, ai2: 2);
-			PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center, Vector2.Zero, Ice * 0.3f, 1.25f, 40, ai2: 2);
+            Fire fire = new Fire();
+            fire.PrepareFire(Projectile.Center, Vector2.Zero, Main.rand.Next(1, 3), 0.1f, Ice, 1f, 100, FireDrawMode.Additive);
+            Fire fire2 = new Fire();
+            fire2.PrepareFire(Projectile.Center, Vector2.Zero, Main.rand.Next(1, 3), 0.1f, Ice * 0.5f, 1.5f, 100, FireDrawMode.Additive);
+
+            ParticleEngine.BehindProjectiles.Add(fire);
+            ParticleEngine.BehindProjectiles.Add(fire2);
+
 			PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Projectile.Center, Vector2.Zero, Ice * 0.25f, 1.25f);
 		}
 		

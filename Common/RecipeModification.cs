@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.RiftArsenal;
 using DestroyerTest.Content.MeleeWeapons.TwistedLineage;
+using DestroyerTest.Content.OrionCrossover;
 
 namespace DestroyerTest.Common
 {
@@ -75,6 +76,17 @@ namespace DestroyerTest.Common
                     if (recipe.HasResult(A) && recipe.HasIngredient(ItemID.LunarBar))
                     {
                         recipe.RemoveIngredient(ItemID.LunarBar);
+                    }
+                }
+
+                if (recipe.HasResult<Sabhati>())
+                {
+                    if (DTCrossMod.OrionIsLoaded)
+                    {
+                        if (DTCrossMod.OrionMod.TryFind<ModItem>("HeliosSword", out var S))
+                        {
+                            recipe.AddIngredient(S.Type, 1);
+                        }
                     }
                 }
             }

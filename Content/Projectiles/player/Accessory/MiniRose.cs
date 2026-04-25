@@ -1,19 +1,21 @@
-using Terraria;
-using Terraria.ModLoader;
-using Terraria.ID;
-using Microsoft.Xna.Framework;
-using System;
-using InnoVault.PRT;
-using DestroyerTest.Content.Particles.TitaniumShard;
-using DestroyerTest.Content.Particles;
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
+using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Particles;
+using DestroyerTest.Content.Particles.fire;
+using DestroyerTest.Content.Particles.TitaniumShard;
+using InnoVault.PRT;
+using Microsoft.Build.Evaluation;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using ReLogic.Utilities;
-using Terraria.Audio;
-using DestroyerTest.Content.Buffs;
-using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
-using Microsoft.Build.Evaluation;
+using Terraria;
+using Terraria.Audio;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.player.Accessory
 {
@@ -99,8 +101,14 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
             foreach(Vector2 dustPos in p)
             {
                 PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), dustPos, Vector2.Zero, ColorLib.CursedFlames * 0.5f, 2.0f);
-                PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], dustPos, Vector2.Zero, ColorLib.CursedFlames * 0.75f, 1.0f, 75, ai2: 2);
-                PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], dustPos, Vector2.Zero, ColorLib.CursedFlames, 0.75f, 60, ai2: 2);
+
+                Fire fire = new Fire();
+                fire.PrepareFire(dustPos, Vector2.Zero, Main.rand.Next(1, 3), 0.1f, ColorLib.CursedFlames * 0.75f, 1f, 100, FireDrawMode.Additive);
+                ParticleEngine.BehindProjectiles.Add(fire);
+
+                Fire fire2 = new Fire();
+                fire2.PrepareFire(dustPos, Vector2.Zero, Main.rand.Next(1, 3), 0.1f, ColorLib.CursedFlames, 1f, 100, FireDrawMode.Additive);
+                ParticleEngine.BehindProjectiles.Add(fire2);
             }
 
             Dust d = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.CursedTorch, 0f, 0f, 0, default, 1f);

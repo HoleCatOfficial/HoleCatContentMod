@@ -1,7 +1,9 @@
 
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
+using DestroyerTest.Content.Particles.fire;
 using Humanizer;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
@@ -59,9 +61,11 @@ namespace DestroyerTest.Content.Buffs
             Color SoulOfNightColor = new Color(123, 29, 120);
             if (lifeRegenDebuff) 
             {
-            
 
-				PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Main.rand.NextVector2FromRectangle(npc.Hitbox), new Vector2(0f, -0.1f), SoulOfNightColor * 0.35f, 1.0f, 40, ai2: 2);
+                Fire fire = new Fire();
+                fire.PrepareFire(Main.rand.NextVector2FromRectangle(npc.Hitbox), new Vector2(0f, -0.1f), DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.3f, 0.3f), SoulOfNightColor * 0.8f, 0.5f, 40, FireDrawMode.Additive);
+                ParticleEngine.ShaderParticles.Add(fire);
+
 				if (Main.rand.NextBool(6))
 				{
 					PRTLoader.NewParticle(PRTLoader.GetParticleID<StarParticle>(), Main.rand.NextVector2FromRectangle(npc.Hitbox), Vector2.Zero, DTColorUtils.Pastel(SoulOfNightColor, 75f), 0.25f);
@@ -97,8 +101,11 @@ namespace DestroyerTest.Content.Buffs
             Color SoulOfNightColor = new Color(123, 29, 120);
 			if (lifeRegenDebuff)
 			{
-				PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Main.rand.NextVector2FromRectangle(player.Hitbox), new Vector2(0f, -0.1f),  SoulOfNightColor * 0.35f, 1f, 40, ai2: 2);
-				if (Main.rand.NextBool(6))
+                Fire fire = new Fire();
+                fire.PrepareFire(Main.rand.NextVector2FromRectangle(Player.Hitbox), new Vector2(0f, -0.1f), Main.rand.Next(1, 3), 0.08f, SoulOfNightColor * 0.8f, 0.5f, 40, FireDrawMode.Additive);
+                ParticleEngine.ShaderParticles.Add(fire);
+
+                if (Main.rand.NextBool(6))
 				{
 					PRTLoader.NewParticle(PRTLoader.GetParticleID<StarParticle>(), Main.rand.NextVector2FromRectangle(player.Hitbox), Vector2.Zero, DTColorUtils.Pastel(SoulOfNightColor, 75f), 0.5f);
 				} 

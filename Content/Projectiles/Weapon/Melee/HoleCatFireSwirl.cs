@@ -1,16 +1,18 @@
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
-using Terraria.Audio;
-using DestroyerTest.Content.Consumables;
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
-using InnoVault.PRT;
+using DestroyerTest.Content.Consumables;
 using DestroyerTest.Content.Particles;
+using DestroyerTest.Content.Particles.fire;
+using InnoVault.PRT;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
+using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 {
@@ -75,7 +77,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 Vector2 Outer = new Vector2(speed, 0);
                 Vector2 Dir = Outer.RotatedByRandom(MathHelper.TwoPi);
                 Dust.NewDustPerfect(Projectile.Center, DustID.TintableDustLighted, Dir, 100, ColorLib.HoleCatFireGradient, 5);
-                PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center, Dir, ColorLib.HoleCatFireDeepRed, 5f);
+
+                LerpingFire fire = new LerpingFire();
+                fire.PrepareFire(Projectile.Center, Dir, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.3f, 0.3f), ColorLib.HoleCatFireColormap, 4f, 100, FireDrawMode.Additive);
+                ParticleEngine.BehindProjectiles.Add(fire);
+                
             }
         }
 

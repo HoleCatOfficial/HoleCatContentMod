@@ -1,8 +1,10 @@
-using System;
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Particles;
+using DestroyerTest.Content.Particles.fire;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
+using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -48,8 +50,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
             Projectile.velocity = Vector2.Zero;
             Projectile.rotation -= 0.3f;
 
-
-            PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center, new Vector2(0, -1f), new Color(253, 62, 3) * 0.9f, 0.4f, 60, ai2: 2);
+            Fire fire = new Fire();
+            fire.PrepareFire(Projectile.Center, new Vector2(0, -1f), Projectile.direction, 0.14f, new Color(253, 62, 3), 1f, 100, FireDrawMode.Additive);
+            ParticleEngine.BehindProjectiles.Add(fire);
 
             foreach (Projectile node in Main.projectile)
             {

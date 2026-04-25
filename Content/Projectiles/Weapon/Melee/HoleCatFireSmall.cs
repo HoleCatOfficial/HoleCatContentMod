@@ -39,16 +39,23 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Projectile.friendly = true;
             Projectile.hostile = false;
             Projectile.ignoreWater = true;
-            Projectile.timeLeft = 600;
+            Projectile.timeLeft = 300;
             Projectile.tileCollide = false;
             Projectile.alpha = 255;
             Projectile.penetrate = 1;
         }
 
+        public override bool? CanHitNPC(NPC target)
+        {
+            return Projectile.ManualCanHitFriendly(target) && Projectile.HomingTimerCheck(10, (int)DelayTimer);
+        }
+
         public override void PostDraw(Color lightColor)
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
-            DTUtils.DrawCrystalCore(spriteBatch, Projectile.Center, Color.White, ColorLib.HoleCatFireGradient, TrailPositions, TextureRotationOffset, Projectile, TrailLength, 0.8f);
+            float progress = (float)(Projectile.timeLeft / 300);
+            Color C = DTColorUtils.MultiLerp(progress.Inverse(), ColorLib.HoleCatFireColormap);
+            DTUtils.DrawCrystalCore(spriteBatch, Projectile.Center, Color.White, C, TrailPositions, TextureRotationOffset, Projectile, TrailLength, 0.8f);
         }
         
         public List<Vector2> TrailPositions = new();
@@ -97,7 +104,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             // We only rotate by 3 degrees an update to give it a smooth trajectory. Increase the rotation speed here to make tighter turns
             float length = Projectile.velocity.Length();
             float targetAngle = Projectile.AngleTo(HomingTarget.Center);
-            Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(30)).ToRotationVector2() * length;
+            Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(7)).ToRotationVector2() * length;
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
         }
 
@@ -127,15 +134,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
         public bool IsValidTarget(NPC target)
         {
-            // This method checks that the NPC is:
-            // 1. active (alive)
-            // 2. chaseable (e.g. not a cultist archer)
-            // 3. max life bigger than 5 (e.g. not a critter)
-            // 4. can take damage (e.g. moonlord core after all it's parts are downed)
-            // 5. hostile (!friendly)
-            // 6. not immortal (e.g. not a target dummy)
-            // 7. doesn't have solid tiles blocking a line of sight between the projectile and NPC
-            return target.CanBeChasedBy() && Collision.CanHit(Projectile.Center, 1, 1, target.position, target.width, target.height);
+            return target.CanBeChasedBy();
         }
 
         public override void ModifyDamageHitbox(ref Rectangle hitbox)
@@ -143,10 +142,13 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             hitbox.Inflate(20, 20);
         }
 
-
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            target.AddBuff(ModContent.BuffType<HoleCatFire>(), 300);
+        }
         public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
-            target.AddBuff(ModContent.BuffType<HoleCatFire>(), 180);
+            target.AddBuff(ModContent.BuffType<HoleCatFire>(), 300);
         }
         
 

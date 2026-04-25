@@ -657,7 +657,7 @@ namespace DestroyerTest.Content.Entities
             }
             else
             {
-                Opus.RingProjectileInward(ModContent.ProjectileType<BlessedNodeCrystal2>(), 8, target.Center, 200, 30, 5, 1, RandomOffset: true);
+                Opus.RingProjectileInward(ModContent.ProjectileType<BlessedNodeCrystal2>(), 8, target.Center, 360, 30, 5, 1, RandomOffset: true);
             }
         }
 

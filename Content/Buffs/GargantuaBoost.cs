@@ -1,11 +1,15 @@
 
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.MeleeWeapons;
 using DestroyerTest.Content.Particles;
+using DestroyerTest.Content.Particles.fire;
 using Humanizer;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
+using System.Collections.Generic;
+using System.Linq;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -80,9 +84,11 @@ namespace DestroyerTest.Content.Buffs
             Player player = Main.LocalPlayer;
             if (lifeRegenDebuff)
             {
-                
 
-                PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Main.rand.NextVector2FromRectangle(player.getRect()), new Vector2(0, -1.5f), Color.Red, 1f, 60, ai2: 1);
+                Fire fire = new Fire();
+                fire.PrepareFire(Main.rand.NextVector2FromRectangle(player.Hitbox), Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.3f, 0.3f), Color.Red * 0.8f, 0.5f, 40, FireDrawMode.NonPremultiplied);
+                ParticleEngine.ShaderParticles.Add(fire);
+
                 // These lines zero out any positive lifeRegen. This is expected for all bad life regeneration effects
                 if (Player.lifeRegen > 0)
                     Player.lifeRegen = 0;

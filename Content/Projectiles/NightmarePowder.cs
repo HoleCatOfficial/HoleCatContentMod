@@ -36,7 +36,7 @@ namespace DestroyerTest.Content.Projectiles
 
         public override void AI()
         {
-            PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center, Vector2.Zero, Color.Black, 1f, 60, ai2: 1);
+           
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)

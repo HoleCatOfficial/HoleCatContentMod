@@ -18,27 +18,33 @@
 
 	<ItemGroup>
 		<Reference Include="FargowiltasSouls">
-		<HintPath>lib\FargowiltasSouls.dll</HintPath>
+			<ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+			<HintPath>lib\FargowiltasSouls.dll</HintPath>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Reference>
 		
 		<Reference Include="Fargowiltas">
-		<HintPath>lib\Fargowiltas.dll</HintPath>
+			<ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+			<HintPath>lib\Fargowiltas.dll</HintPath>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Reference>
 		
 		<Reference Include="GlowmaskHelper">
-		<HintPath>lib\GlowmaskHelper.dll</HintPath>
+			<HintPath>lib\GlowmaskHelper.dll</HintPath>
 		</Reference>
 		
 		<Reference Include="InnoVault">
-		<HintPath>lib\InnoVault.dll</HintPath>
+			<HintPath>lib\InnoVault.dll</HintPath>
 		</Reference>
 		
 		<Reference Include="OpusLib">
-		<HintPath>lib\OpusLib.dll</HintPath>
+			<HintPath>lib\OpusLib.dll</HintPath>
 		</Reference>
 		
 		<Reference Include="ConstellationsOfOrion">
+			<ReferenceOutputAssembly>false</ReferenceOutputAssembly>
 			<HintPath>lib\ConstellationsOfOrion.dll</HintPath>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Reference>
 		
 		<Reference Include="BreadLibrary">

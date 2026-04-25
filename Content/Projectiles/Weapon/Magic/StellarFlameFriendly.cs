@@ -1,6 +1,8 @@
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Particles;
+using DestroyerTest.Content.Particles.fire;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -36,9 +38,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 		public override void AI()
 		{
 			PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Vector2.Zero,  ColorLib.StellarFireGradientLooping() * 0.75f, 1.5f);
-			PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center, Vector2.Zero,  ColorLib.StellarFireGradientLooping() * 0.5f, 2.5f, 40, ai2: 2);
-			PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center, Vector2.Zero,  ColorLib.StellarFireGradientLooping() * 0.1f, 1f, 40, ai2: 2);
-		}
+            LerpingFire fire = new LerpingFire();
+            fire.PrepareFire(Projectile.Center, Vector2.Zero, Main.rand.Next(1, 3), 0.1f, ColorLib.StellarFireColormap, 3f, 100, FireDrawMode.Additive);
+            ParticleEngine.BehindProjectiles.Add(fire);
+        }
 
 		public override void OnHitPlayer(Player target, Player.HurtInfo info)
 		{

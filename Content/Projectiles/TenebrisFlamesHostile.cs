@@ -1,12 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Particles;
+using DestroyerTest.Content.Particles.fire;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -57,8 +59,14 @@ namespace DestroyerTest.Content.Projectiles
 
 			Lighting.AddLight(Projectile.Center, ColorLib.TenebrisGradient.ToVector3() * 0.2f);
 
-			PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center, Vector2.Zero, ColorLib.TenebrisGradient, 0.75f, 40, ai2: 2);
-			PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center, Vector2.Zero, ColorLib.TenebrisGradient * 0.45f, 1.25f, 40, ai2: 2);
+            Fire fire = new Fire();
+            fire.PrepareFire(Projectile.Center, Vector2.Zero, Main.rand.Next(1, 3), 0.1f, ColorLib.TenebrisGradient * 0.75f, 1.8f, 100, FireDrawMode.Additive);
+            ParticleEngine.BehindProjectiles.Add(fire);
+
+            Fire fire2 = new Fire();
+            fire2.PrepareFire(Projectile.Center, Vector2.Zero, Main.rand.Next(1, 3), 0.1f, ColorLib.TenebrisGradient, 1f, 100, FireDrawMode.Additive);
+            ParticleEngine.BehindProjectiles.Add(fire2);
+            
 			PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Projectile.Center, Vector2.Zero, ColorLib.TenebrisGradient * 0.5f, 1.25f);
 
 			float maxDetectRadius = 1400f;
@@ -155,8 +163,14 @@ namespace DestroyerTest.Content.Projectiles
 		{
 			Lighting.AddLight(Projectile.Center, ColorLib.TenebrisGradient.ToVector3() * 0.2f);
 
-			PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center, Vector2.Zero, ColorLib.TenebrisGradient, 0.75f, 40, ai2: 2);
-			PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center, Vector2.Zero, ColorLib.TenebrisGradient * 0.45f, 1.25f, 40, ai2: 2);
+            Fire fire = new Fire();
+            fire.PrepareFire(Projectile.Center, Vector2.Zero, Main.rand.Next(1, 3), 0.1f, ColorLib.TenebrisGradient * 0.75f, 1.8f, 100, FireDrawMode.Additive);
+            ParticleEngine.BehindProjectiles.Add(fire);
+
+            Fire fire2 = new Fire();
+            fire2.PrepareFire(Projectile.Center, Vector2.Zero, Main.rand.Next(1, 3), 0.1f, ColorLib.TenebrisGradient, 1f, 100, FireDrawMode.Additive);
+            ParticleEngine.BehindProjectiles.Add(fire2);
+            
 			PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Projectile.Center, Vector2.Zero, ColorLib.TenebrisGradient * 0.5f, 1.25f);
 		}
 

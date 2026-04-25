@@ -1,7 +1,9 @@
 
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
+using DestroyerTest.Content.Particles.fire;
 using Humanizer;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
@@ -65,7 +67,7 @@ namespace DestroyerTest.Content.Buffs
 				if (npc.TryGetGlobalNPC<SFTarget>(out var shimmer))
 				{
 					SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/ShimmeringFlamesTierRaise") { Pitch = 1f - (shimmer.Stack / shimmer.MaxStack), MaxInstances = 0}, npc.Center);
-					Opus.RadialParticleRandomDir(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], 20, npc.Center, 0.75f, ColorLib.TenebrisGradient, 1f, 3f, 40, ai2: 2);
+					Opus.RadialDustRandomDir(DustID.TintableDustLighted, 20, npc.Center, 75, ColorLib.TenebrisGradient, 1f, 3f);
 					if (shimmer.Stack < shimmer.MaxStack)
 					{
 						shimmer.Stack += 1;
@@ -139,7 +141,9 @@ namespace DestroyerTest.Content.Buffs
 		{
             if (lifeRegenDebuff) 
 			{
-				PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Main.rand.NextVector2FromRectangle(npc.Hitbox), new Vector2(0f, -0.1f), ColorLib.TenebrisGradient * 0.35f, 1.0f, 40, ai2: 2);
+                Fire fire = new Fire();
+                fire.PrepareFire(Main.rand.NextVector2FromRectangle(npc.Hitbox), new Vector2(0f, -0.1f), Main.rand.Next(1, 3), 0.08f, ColorLib.TenebrisGradient * 0.8f, 0.5f, 40, FireDrawMode.Additive);
+                ParticleEngine.ShaderParticles.Add(fire);
 
 				if (Stack > 8)
 				{
@@ -182,9 +186,11 @@ namespace DestroyerTest.Content.Buffs
 		public override void UpdateBadLifeRegen() {
 			if (lifeRegenDebuff)
 			{
-				
 
-				PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Main.rand.NextVector2FromRectangle(Player.Hitbox), new Vector2(0f, -0.1f), ColorLib.TenebrisGradient * 0.35f, 1f, 40, ai2: 2);
+                Fire fire = new Fire();
+                fire.PrepareFire(Main.rand.NextVector2FromRectangle(Player.Hitbox), new Vector2(0f, -0.1f), Main.rand.Next(1, 3), 0.08f, ColorLib.TenebrisGradient * 0.8f, 0.5f, 40, FireDrawMode.Additive);
+				ParticleEngine.ShaderParticles.Add(fire);
+
 				if (Main.rand.NextBool(6))
 				{
 					PRTLoader.NewParticle(PRTLoader.GetParticleID<SmallShine>(), Main.rand.NextVector2FromRectangle(Player.Hitbox), Vector2.Zero, Color.White, 0.5f);

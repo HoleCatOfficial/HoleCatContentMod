@@ -118,11 +118,6 @@ namespace DestroyerTest.Content.Projectiles
             DelayTimer++;
             Projectile.rotation += Projectile.direction * Main.rand.NextFloat(0.01f, 0.07f);
 
-            if (Main.rand.NextBool(12))
-            {
-                PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center + Main.rand.NextVector2Circular(10, 10), Vector2.Zero, ColorLib.TenebrisMagenta * 0.5f, 0.1f);
-            }
-
             Lighting.AddLight(Projectile.Center, ColorLib.TenebrisMagenta.ToVector3() * 0.2f);
 
             if (DelayTimer < 20 || DelayTimer > 180)

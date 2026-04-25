@@ -1,16 +1,18 @@
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Particles;
+using DestroyerTest.Content.Particles.fire;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using Terraria;
 using Terraria.Enums;
 using Terraria.GameContent;
 using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
-using OpusLib;
 
 namespace DestroyerTest.Content.Projectiles.player.ArmorSet
 {
@@ -37,8 +39,10 @@ namespace DestroyerTest.Content.Projectiles.player.ArmorSet
 
             foreach(Vector2 Pos in Positions)
             {
-                PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Pos, Vector2.Zero, ColorLib.TenebrisGradient, 0.75f, 30, ai2: 2);
-                PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Pos, Vector2.Zero, ColorLib.TenebrisGradient * 0.4f, 1.25f, 30, ai2: 2);
+                Fire fire = new Fire();
+                fire.PrepareFire(Pos, Vector2.Zero, Main.rand.Next(1, 3), 0.1f, ColorLib.TenebrisGradient * 0.9f, 1f, 100, FireDrawMode.Additive);
+                ParticleEngine.BehindProjectiles.Add(fire);
+
                 PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Pos, Vector2.Zero, ColorLib.TenebrisGradient * 0.5f, 1.25f);
             }
         }

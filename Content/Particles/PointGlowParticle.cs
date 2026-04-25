@@ -12,7 +12,8 @@ using Terraria.Graphics.Renderers;
 
 namespace DestroyerTest.Content.Particles
 {
-    public class PointGlowParticle : BaseParticle
+    /*
+    public class PointGlowParticle : DTBaseParticle
     {
         public Vector2 Position;
         public int TimeLeft;
@@ -38,4 +39,5 @@ namespace DestroyerTest.Content.Particles
         
         
     }
+    */
 }

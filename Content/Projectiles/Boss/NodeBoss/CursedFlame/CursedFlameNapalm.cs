@@ -1,14 +1,16 @@
-using System;
-using System.Collections.Generic;
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Particles;
+using DestroyerTest.Content.Particles.fire;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
+using System;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using OpusLib;
 
 namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame
 {
@@ -73,8 +75,10 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame
 
 			if (Main.rand.NextBool(3))
 			{
-				PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center, new Vector2(0, -0.1f), ColorLib.CursedFlames, 2.5f, 60, ai2: 2);
-			}
+                LerpingFire fire = new LerpingFire();
+                fire.PrepareFire(Projectile.Center, Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.3f, 0.3f), ColorLib.WretchedColorMap, 3f, 100, FireDrawMode.Additive);
+                ParticleEngine.BehindProjectiles.Add(fire);
+            }
 		}
 
 		public override bool PreDraw(ref Color lightColor)

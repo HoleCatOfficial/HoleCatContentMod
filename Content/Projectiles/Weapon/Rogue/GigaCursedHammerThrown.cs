@@ -1,17 +1,19 @@
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
+using BreadLibrary.Core.Graphics.Particles;
+using DestroyerTest.Common;
+using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Consumables;
+using DestroyerTest.Content.Particles;
+using DestroyerTest.Content.Particles.fire;
+using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
-using Terraria.Audio;
-using DestroyerTest.Content.Consumables;
-using DestroyerTest.Common;
-using Terraria.DataStructures;
-using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Buffs;
 using System.IO;
-using InnoVault.PRT;
+using Terraria;
+using Terraria.Audio;
+using Terraria.DataStructures;
+using Terraria.GameContent;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 {
@@ -132,7 +134,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             Projectile.rotation += 0.6f * Projectile.direction;
 
 
-            PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center + new Vector2(Projectile.width / 2, -(Projectile.width / 2)).RotatedBy(Projectile.rotation), Vector2.Zero, ColorLib.CursedFlames, 2f, 60, ai2: 2);
+            LerpingFire fire = new LerpingFire();
+            fire.PrepareFire(Projectile.Center + new Vector2(Projectile.width / 2, -(Projectile.width / 2)).RotatedBy(Projectile.rotation), Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.3f, 0.3f), ColorLib.WretchedColorMap, 1f, 100, FireDrawMode.Additive);
+            ParticleEngine.BehindProjectiles.Add(fire);
             
 
             ArmCatchAnimate(player);

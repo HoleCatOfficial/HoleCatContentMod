@@ -1,6 +1,8 @@
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
+using DestroyerTest.Content.Particles.fire;
 using DestroyerTest.Content.Particles.Stellar;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
@@ -50,8 +52,13 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
         {
             AnimateProjectile();
             Projectile.rotation = Projectile.velocity.ToRotation();
-			PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Vector2.Zero, ColorLib.SoulOfNightColor * 0.75f, 0.3f, 40, ai2: 2);
-            PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Vector2.Zero, ColorLib.SoulOfLightColor * 0.75f, 0.3f, 40, ai2: 2);
+
+            Fire fire = new Fire();
+            fire.PrepareFire(Projectile.Center, Vector2.Zero, Projectile.direction, 0.14f, ColorLib.SoulOfLightColor, 1f, 100, FireDrawMode.Additive);
+            ParticleEngine.BehindProjectiles.Add(fire);
+            Fire fire2 = new Fire();
+            fire2.PrepareFire(Projectile.Center, Vector2.Zero, Projectile.direction, 0.14f, ColorLib.SoulOfNightColor, 1f, 100, FireDrawMode.Additive);
+            ParticleEngine.BehindProjectiles.Add(fire2);
         }
         public override bool PreDraw(ref Color lightColor)
         {

@@ -1,9 +1,11 @@
 ﻿
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.MeleeWeapons;
 using DestroyerTest.Content.Particles;
+using DestroyerTest.Content.Particles.fire;
 using DestroyerTest.Content.Particles.Orchestrated;
 using InnoVault;
 using InnoVault.PRT;
@@ -229,7 +231,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             }
 
             PRTLoader.NewParticle(PRTLoader.GetParticleID<ColossusParticle>(), target.Center, Vector2.Zero, (Color)default, 1f);
-            Opus.RadialSpreadParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], 10, target.Center, 0.4f, ColorLib.TenebrisMagenta, 2f, 3, RandomOffset: true);
+            
+
+            //Opus.RadialSpreadParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], 10, target.Center, 0.4f, ColorLib.TenebrisMagenta, 2f, 3, RandomOffset: true);
             Opus.RadialProjectileRandomDir(ModContent.ProjectileType<ColossusStar>(), 2, target.Center, (int)(Projectile.damage * 0.2f), (int)(Projectile.knockBack * 0.5f), 14f, friendly: true);
 
             if (hit.Crit)
@@ -344,7 +348,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 float speedRatio = Math.Min(1f, SPINSPEED / 0.12f);
                 int soundInterval = (int)MathHelper.Lerp(200, 40, speedRatio);
 
-                PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], swordTip, Vector2.Zero, ColorLib.TenebrisMagenta with { A = 175 }, 4f, 40, ai2: 2);
+                Fire fire = new Fire();
+                fire.PrepareFire(swordTip, Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.3f, 0.3f), ColorLib.TenebrisMagenta * 0.8f, 0.5f, 40, FireDrawMode.NonPremultiplied);
+                ParticleEngine.BehindProjectiles.Add(fire);
 
                 STimer++;
                 if (STimer % soundInterval == 0)

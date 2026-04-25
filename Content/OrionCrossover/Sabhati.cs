@@ -72,7 +72,7 @@ namespace DestroyerTest.Content.OrionCrossover
         public override void AddRecipes()
         {
             CreateRecipe()
-                .AddIngredient<HeliosSword>(1)
+                
                 .AddIngredient<Constitution>(1)
                 .AddIngredient(ItemID.Starfury, 1)
                 .AddTile(TileID.Anvils)

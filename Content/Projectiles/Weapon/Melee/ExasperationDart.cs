@@ -1,20 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
+﻿using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
+using DestroyerTest.Content.Particles.fire;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using ReLogic.Content;
+using System;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using OpusLib;
+using Terraria.Utilities;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 {
@@ -79,9 +82,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Projectile.velocity = Projectile.velocity.RotatedBy(Opus.Sine(-0.2f, 0.2f, 0.5f));
             Projectile.rotation = (Projectile.velocity.ToRotation() ) + MathHelper.PiOver4;
 
-            if (Main.rand.NextBool(12))
+            if (Main.rand.NextBool(4))
             {
-                PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center + Main.rand.NextVector2Circular(10, 10), Vector2.Zero, Color.Indigo * 0.5f, 0.1f, 40, ai2: 2);
+                Fire fire = new Fire();
+                fire.PrepareFire(Projectile.Center, Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.3f, 0.3f), Color.DarkMagenta, 1f, 100, FireDrawMode.Additive);
+                ParticleEngine.BehindProjectiles.Add(fire);
             }
 
             Lighting.AddLight(Projectile.Center, Color.Indigo.ToVector3() * 0.2f);

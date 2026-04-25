@@ -1,5 +1,7 @@
-﻿using DestroyerTest.Common;
+﻿using BreadLibrary.Core.Graphics.Particles;
+using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Particles.fire;
 using InnoVault.GameSystem;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
@@ -176,7 +178,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon.Sentry
                     return Color.White;
                 }
 
-                PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Pos, D * 1.25f, color(), 0.5f, 40, ai2: 2);
+                Fire fire = new Fire();
+                fire.PrepareFire(Pos, D * 1.25f, Projectile.direction, 0.14f, color(), 1f, 100, FireDrawMode.Additive);
+                ParticleEngine.BehindProjectiles.Add(fire);
             }
         }
     }

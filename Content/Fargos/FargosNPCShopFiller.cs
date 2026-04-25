@@ -1,7 +1,6 @@
 using Terraria;
 using Terraria.ModLoader;
 using DestroyerTest.Content.MeleeWeapons;
-using Fargowiltas.NPCs;
 using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.Fargos.ReusableSummons;
 using DestroyerTest.Common;
@@ -14,10 +13,14 @@ namespace DestroyerTest.Content.Fargos
 		public override bool InstancePerEntity => true;
         public override void ModifyShop(NPCShop shop)
         {
-            if (shop.NpcType == ModContent.NPCType<Mutant>())
+            if (ModLoader.TryGetMod(DTCrossMod.FargosMutantName, out Mod fargos))
             {
-                shop.Add<CrimsonCaller>(DownedBossSystem.downedNodeCondition);
-                shop.Add<CorruptionCaller>(DownedBossSystem.downedNodeCondition);
+                var Mutant = fargos.TryFind<ModNPC>("Mutant", out ModNPC mutant);
+                if (shop.NpcType == mutant.Type && Mutant)
+                {
+                    shop.Add<CrimsonCaller>(DownedBossSystem.downedNodeCondition);
+                    shop.Add<CorruptionCaller>(DownedBossSystem.downedNodeCondition);
+                }
             }
         }
 	}

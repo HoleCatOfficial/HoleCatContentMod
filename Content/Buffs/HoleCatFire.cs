@@ -1,7 +1,9 @@
 
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
+using DestroyerTest.Content.Particles.fire;
 using Humanizer;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
@@ -60,7 +62,9 @@ namespace DestroyerTest.Content.Buffs
         public override void UpdateLifeRegen(NPC npc, ref int damage) {
             if (lifeRegenDebuff) {
 
-				PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Main.rand.NextVector2FromRectangle(npc.Hitbox), new Vector2(0f, -0.1f), ColorLib.HoleCatFireGradient * 0.35f, 1.0f, 40, ai2: 2);
+                LerpingFire fire = new LerpingFire();
+                fire.PrepareFire(Main.rand.NextVector2FromRectangle(npc.Hitbox), new Vector2(0f, -1.6f), 0f, ColorLib.HoleCatFireColormap, 1f, 40, FireDrawMode.Additive);
+                ParticleEngine.ShaderParticles.Add(fire);
 
                 if (npc.lifeRegen > 0)
 					npc.lifeRegen = 0;
@@ -87,11 +91,14 @@ namespace DestroyerTest.Content.Buffs
 			Player player = Main.LocalPlayer;
 			if (lifeRegenDebuff)
 			{
-				
 
-				PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Main.rand.NextVector2FromRectangle(player.Hitbox), new Vector2(0f, -0.1f), ColorLib.HoleCatFireGradient * 0.35f, 1f, 40, ai2: 2);
-				// These lines zero out any positive lifeRegen. This is expected for all bad life regeneration effects
-				if (Player.lifeRegen > 0)
+
+                LerpingFire fire = new LerpingFire();
+                fire.PrepareFire(Main.rand.NextVector2FromRectangle(player.Hitbox), new Vector2(0f, -1.6f), 0f, ColorLib.HoleCatFireColormap, 1f, 40, FireDrawMode.Additive);
+				ParticleEngine.ShaderParticles.Add(fire);
+
+                // These lines zero out any positive lifeRegen. This is expected for all bad life regeneration effects
+                if (Player.lifeRegen > 0)
 					Player.lifeRegen = 0;
 				// Player.lifeRegenTime used to increase the speed at which the player reaches its maximum natural life regeneration
 				// So we set it to 0, and while this debuff is active, it never reaches it

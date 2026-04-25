@@ -1,10 +1,12 @@
-﻿using DestroyerTest.Rarity;
+﻿using DestroyerTest.Content.Resources;
+using DestroyerTest.Rarity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Equips
@@ -24,6 +26,14 @@ namespace DestroyerTest.Content.Equips
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             player.GetArmorPenetration(DamageClass.Melee) += 13;
+        }
+
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient(ItemID.SharkToothNecklace)
+                .AddIngredient<StellarMatter>(10)
+                .Register();
         }
     }
 }

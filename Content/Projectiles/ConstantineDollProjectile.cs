@@ -1,6 +1,8 @@
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Particles;
+using DestroyerTest.Content.Particles.fire;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -50,9 +52,11 @@ namespace DestroyerTest.Content.Projectiles
 		{
             Player player = Main.LocalPlayer;
 			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
-			
 
-			PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center, Vector2.Zero, Color.Black, 1f, 60, ai2: 1);
+
+            Fire fire = new Fire();
+            fire.PrepareFire(Projectile.Center, Vector2.Zero, Main.rand.Next(1, 3), 0.1f, Color.Black, 3f, 100, FireDrawMode.NonPremultiplied);
+            ParticleEngine.ShaderParticles.Add(fire);
 
             float maxDetectRadius = 4000f; // The maximum radius at which a projectile can detect a target
 

@@ -134,7 +134,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
 			Lighting.AddLight(Projectile.Center, Color.Orange.ToVector3() * 0.5f);
 
-			PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center, Vector2.Zero, Color.Orange * 0.75f, 1.5f, 80, ai2: 2);
+			//PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], Projectile.Center, Vector2.Zero, Color.Orange * 0.75f, 1.5f, 80, ai2: 2);
 
 			if (DelayTimer < 20)
 			{

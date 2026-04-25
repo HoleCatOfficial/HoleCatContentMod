@@ -111,6 +111,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             Player player = Main.player[Projectile.owner];
+            /*
             int slot = (int)Projectile.ai[1]; // retrieve which slot created it
             if (slot < 0 || slot >= player.inventory.Length)
                 return; // safety check
@@ -124,6 +125,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                     target.AddBuff(ModContent.BuffType<MobilityHex>(), 120);
                 }
             }
+            */
         }
 
 	}

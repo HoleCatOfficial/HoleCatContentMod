@@ -39,6 +39,7 @@ using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.Modules;
 using Terraria.UI.Chat;
+using Terraria.Utilities;
 using Terraria.WorldBuilding;
 
 namespace DestroyerTest.Common
@@ -246,17 +247,7 @@ namespace DestroyerTest.Common
             PRTLoader.GetParticleID<Arc2>(),
             PRTLoader.GetParticleID<Arc3>()
         };
-
-        public static int[] Fire =
-        {
-            PRTLoader.GetParticleID<Fire1>(),
-            PRTLoader.GetParticleID<Fire2>(),
-            PRTLoader.GetParticleID<Fire3>(),
-            PRTLoader.GetParticleID<Fire4>(),
-            PRTLoader.GetParticleID<Fire5>(),
-            PRTLoader.GetParticleID<Fire6>(),
-            PRTLoader.GetParticleID<Fire7>()
-        };
+        
 
         public static int GetScepterArmorSellPricePerRarity(int rarity)
         {
@@ -618,6 +609,11 @@ namespace DestroyerTest.Common
 
         public static HashSet<int> isSpecialSwingSword = new();
 
+        public static int RandomDirection(int Chance)
+        {
+            return Main.rand.NextBool(Chance) ? 1 : -1;
+        }
+
     }
 
     public class SunlightModification : ModSystem
@@ -848,6 +844,29 @@ namespace DestroyerTest.Common
             item.useAnimation = 60;
             item.useTurn = true;
         }
+
+        /// <summary>
+        /// Returns true if the timer controlling this projectile's homing is greater than or equal to the saftey window in which it cannot home in.
+        /// </summary>
+        /// <param name="ImmunityTime"></param>
+        /// <param name="ImmunityTimer"></param>
+        /// <returns></returns>
+        public static bool HomingTimerCheck(this Projectile proj, int ImmunityTime, int ImmunityTimer)
+        {
+            return ImmunityTimer >= ImmunityTime;
+        }
+
+        public static bool ManualCanHitFriendly(this Projectile proj, NPC npc)
+        {
+            return !OpusNPCDropHelper.IgnoreEnemies.Contains(npc.type) && !npc.friendly && !npc.dontTakeDamage;
+        }
+
+        public static Vector2 ShoulderPosition(this Player player)
+        {
+            return player.MountedCenter + new Vector2(-8f * player.direction, 4f);
+        }
+
+        
     }
 
     public class DTPlayerUtil : ModPlayer
@@ -1208,6 +1227,14 @@ namespace DestroyerTest.Common
         public static Color IchorCrystal3 = new Color(197, 165, 13);
         public static Color IchorCrystal4 = new Color(255, 205, 90);
 
+        public static Color[] IchorCrystalColorMap = new Color[4]
+        {
+            IchorCrystal1,
+            IchorCrystal2,
+            IchorCrystal3,
+            IchorCrystal4
+        };
+
         public static Color IchorCrystalGradient
         {
             get
@@ -1234,6 +1261,15 @@ namespace DestroyerTest.Common
         public static Color HoleCatFireRed = new Color(197, 9, 26);
         public static Color HoleCatFireMaroon = new Color(164, 0, 59);
         public static Color HoleCatFireDeepRed = new Color(106, 0, 0);
+
+        public static Color[] HoleCatFireColormap = new Color[5]
+        {
+            HoleCatFireBeige,
+            HoleCatFireOrange,
+            HoleCatFireRed,
+            HoleCatFireMaroon,
+            HoleCatFireDeepRed
+        };
 
         public static Color HoleCatFireGradient
         {
@@ -1269,25 +1305,21 @@ namespace DestroyerTest.Common
         public static Color StellarFire7 = new Color(25, 33, 38);
         public static Color StellarFire8 = new Color(18, 23, 24);
 
+        public static Color[] StellarFireColormap = new Color[8]
+        {
+            StellarFire1,
+            StellarFire2,
+            StellarFire3,
+            StellarFire4,
+            StellarFire5,
+            StellarFire6,
+            StellarFire7,
+            StellarFire8
+        };
+
         public static Color StellarFireGradient(float t)
         {
-            
-            t = MathHelper.Clamp(t, 0f, 8f);
-
-            if (t < 1f)
-                return Color.Lerp(StellarFire1, StellarFire2, t);
-            else if (t < 2f)
-                return Color.Lerp(StellarFire2, StellarFire3, t - 1f);
-            else if (t < 3f)
-                return Color.Lerp(StellarFire3, StellarFire4, t - 2f);
-            else if (t < 4f)
-                return Color.Lerp(StellarFire4, StellarFire5, t - 3f);
-            else if (t < 5f)
-                return Color.Lerp(StellarFire5, StellarFire6, t - 4f);
-            else if (t < 6f)
-                return Color.Lerp(StellarFire6, StellarFire7, t - 5f);
-            else
-                return Color.Lerp(StellarFire7, StellarFire8, t - 6f);
+            return DTColorUtils.MultiLerp(t, StellarFireColormap);
         }
 
         public static Color StellarFireGradientLooping()
