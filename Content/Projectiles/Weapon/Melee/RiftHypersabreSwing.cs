@@ -4,7 +4,6 @@ using DestroyerTest.Content.Entities;
 using DestroyerTest.Content.MeleeWeapons;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.RiftArsenal;
-using Fargowiltas.Items.Summons.SwarmSummons.Energizers;
 using GlowmaskHelper.Content;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;

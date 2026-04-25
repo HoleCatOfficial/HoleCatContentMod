@@ -11,7 +11,6 @@ using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss;
 using DestroyerTest.Content.Projectiles.Boss.NodeBoss.Blessed;
 using DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame;
-using FargowiltasSouls.Content.NPCs.EternityModeNPCs.VanillaEnemies.Hallow;
 using GlowmaskHelper.Content;
 using InnoVault;
 using InnoVault.PRT;

@@ -4,7 +4,6 @@ using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss;
 using DestroyerTest.Content.SummonItems;
-using FargowiltasSouls;
 using InnoVault.PRT;
 using Microsoft.CodeAnalysis;
 using Microsoft.Xna.Framework;
@@ -24,7 +23,6 @@ using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static FargowiltasSouls.FargoSoulsSets;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Summon
 {

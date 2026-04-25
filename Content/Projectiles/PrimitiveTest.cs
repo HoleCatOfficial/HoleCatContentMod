@@ -1,5 +1,4 @@
 ﻿using DestroyerTest.Common;
-using FargowiltasSouls;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;

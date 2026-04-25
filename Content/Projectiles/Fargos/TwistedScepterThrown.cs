@@ -10,7 +10,6 @@ using DestroyerTest.Common;
 using DestroyerTest.Content.Dusts;
 using System.IO;
 using DestroyerTest.Content.Projectiles.ParentClasses;
-using FargowiltasSouls.Content.Projectiles.ChallengerItems;
 
 namespace DestroyerTest.Content.Projectiles.Fargos
 {
@@ -29,11 +28,17 @@ namespace DestroyerTest.Content.Projectiles.Fargos
         public override void AI()
         {
             base.AI();
+
+            if (!DTCrossMod.FargosSoulsIsLoaded || !DTCrossMod.FargosSoulsMod.TryFind<ModProjectile>("GildedSceptreProj", out var SC))
+            {
+                return;
+            }
+
             if (returning)
             {
                 if (Main.GameUpdateCount % 15 == 0)
                 {
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<GildedSceptreProj>(), Projectile.damage / 2, 3f, Projectile.owner);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, SC.Type, Projectile.damage / 2, 3f, Projectile.owner);
                 }
             }
         }

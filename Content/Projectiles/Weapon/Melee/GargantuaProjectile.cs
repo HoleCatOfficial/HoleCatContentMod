@@ -24,7 +24,6 @@ using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static FargowiltasSouls.Content.Projectiles.EffectVisual;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 {

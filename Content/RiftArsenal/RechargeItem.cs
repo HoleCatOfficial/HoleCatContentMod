@@ -4,7 +4,7 @@ using DestroyerTest.Content.Tiles;
 using DestroyerTest.Content.Tiles.Riftplate;
 using DestroyerTest.Content.Tools;
 using DestroyerTest.Rarity;
-using Fargowiltas.Items.Summons.SwarmSummons.Energizers;
+
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria;

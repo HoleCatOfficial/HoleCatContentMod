@@ -1,15 +1,16 @@
+using DestroyerTest.Content.Fargos.Scepter;
+using DestroyerTest.Content.MeleeWeapons;
+using DestroyerTest.Content.MeleeWeapons.SwordLineage;
+using DestroyerTest.Content.MeleeWeapons.TwistedLineage;
+using DestroyerTest.Content.OrionCrossover;
+using DestroyerTest.Content.Resources;
+using DestroyerTest.Content.RiftArsenal;
+using System;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using DestroyerTest.Content.MeleeWeapons;
-using DestroyerTest.Content.MeleeWeapons.SwordLineage;
-using System;
-using System.Collections.Generic;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.RiftArsenal;
-using DestroyerTest.Content.MeleeWeapons.TwistedLineage;
-using DestroyerTest.Content.OrionCrossover;
 
 namespace DestroyerTest.Common
 {
@@ -87,6 +88,28 @@ namespace DestroyerTest.Common
                         {
                             recipe.AddIngredient(S.Type, 1);
                         }
+                    }
+                    else
+                    {
+                        recipe.DisableRecipe();
+                    }
+                }
+
+                if (recipe.HasResult<GaiaScepter>())
+                {
+                    if (DTCrossMod.FargosSoulsIsLoaded)
+                    {
+                        bool B1 = DTCrossMod.FargosSoulsMod.TryFind<ModItem>("GaiaHelmet", out var gaiaH);
+                        bool B2 = DTCrossMod.FargosSoulsMod.TryFind<ModItem>("DeviatingEnergy", out var DE);
+                        if (B1 && B2)
+                        {
+                            recipe.AddIngredient(DE.Type, 50);
+                            recipe.AddIngredient(gaiaH.Type);
+                        }
+                    }
+                    else
+                    {
+                        recipe.DisableRecipe();
                     }
                 }
             }

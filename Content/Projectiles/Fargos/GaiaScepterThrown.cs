@@ -10,7 +10,6 @@ using DestroyerTest.Common;
 using DestroyerTest.Content.Dusts;
 using System.IO;
 using DestroyerTest.Content.Projectiles.ParentClasses;
-using FargowiltasSouls.Content.Projectiles.ChallengerItems;
 using OpusLib;
 using DestroyerTest.Content.Projectiles.Weapon.Melee;
 

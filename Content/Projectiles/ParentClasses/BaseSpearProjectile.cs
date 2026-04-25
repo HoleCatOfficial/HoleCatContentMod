@@ -1,6 +1,5 @@
 ﻿using BreadLibrary.Core;
 using DestroyerTest.Common;
-using FargowiltasSouls.Common.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;

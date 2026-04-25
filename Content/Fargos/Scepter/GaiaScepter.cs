@@ -11,16 +11,13 @@ using DestroyerTest.Rarity;
 using DestroyerTest.Rarity.Scepter;
 using DestroyerTest.Content.Projectiles.Weapon.Scepter;
 using DestroyerTest.Content.Scepter;
-using FargowiltasSouls.Content.Items.Weapons.Challengers;
 using DestroyerTest.Content.Projectiles.Fargos;
 using System.Collections.Generic;
 using Terraria.UI.Chat;
 using Terraria.GameContent;
-using System.Collections.ObjectModel;
 using DestroyerTest.Content.Projectiles.Weapon.Scepter.ElementalShots;
 using DestroyerTest.Content.Entities;
-using FargowiltasSouls.Content.Items.Materials;
-using FargowiltasSouls.Content.Items.Armor;
+using System.Collections.ObjectModel;
 
 namespace DestroyerTest.Content.Fargos.Scepter
 {
@@ -200,8 +197,7 @@ namespace DestroyerTest.Content.Fargos.Scepter
         public override void AddRecipes() {
 			CreateRecipe()
                 .AddIngredient<ElementalScepter>()
-				.AddIngredient<DeviatingEnergy>(50)
-                .AddIngredient<GaiaHelmet>()
+				
 				.AddTile(TileID.LunarCraftingStation)
 				.Register();
 		}
