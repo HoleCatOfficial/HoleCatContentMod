@@ -1,6 +1,19 @@
 
+using BreadLibrary.Core.Graphics.Particles;
+using DestroyerTest.Common;
+using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Dusts;
+using DestroyerTest.Content.MeleeWeapons;
+using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Resources;
+using DestroyerTest.Content.RiftBiome;
+using DestroyerTest.Content.SummonItems;
 using DestroyerTest.Content.Tiles;
+using DestroyerTest.Content.Tiles.RiftConfigurator;
+using DestroyerTest.Content.Tiles.Riftplate;
+using DestroyerTest.Content.Tools;
+using DestroyerTest.Rarity;
+using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -11,21 +24,8 @@ using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.Drawing;
 using Terraria.ID;
-using Terraria.ModLoader;
-using DestroyerTest.Rarity;
-using DestroyerTest.Common;
-using DestroyerTest.Content.SummonItems;
-using DestroyerTest.Content.MeleeWeapons;
-using DestroyerTest.Content.RiftBiome;
-using DestroyerTest.Content.Tiles.Riftplate;
-using DestroyerTest.Content.Tools;
-
 using Terraria.Localization;
-using InnoVault.PRT;
-using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.Tiles.RiftConfigurator;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.RiftArsenal
 {
@@ -468,7 +468,10 @@ namespace DestroyerTest.Content.RiftArsenal
 				{
 					float offset = Main.rand.NextFloat(0.5f, -0.5f);
 					Vector2 velocity = (Projectile.velocity * 0.5f).RotatedBy(offset);
-					PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticle>(), target.Center, velocity, ColorLib.Rift, 1f, 2, 2);
+
+                    Spark Spark = new Spark();
+                    Spark.PrepareSpark(target.Center, velocity, 0f, ColorLib.Rift, 1f, false, 30, SparkDrawMode.Additive);
+                    ParticleEngine.BehindProjectiles.Add(Spark); 
 				}
 			}
         }

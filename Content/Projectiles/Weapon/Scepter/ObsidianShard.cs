@@ -1,3 +1,4 @@
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Particles;
 using InnoVault.PRT;
@@ -45,7 +46,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 			for(int i = 0; i < 5; i++)
 			{
 				Dust.NewDustPerfect(target.Center, DustID.Blood, Projectile.velocity.RotatedByRandom(0.5f) * 0.5f, 0, default, 2f);
-				PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticle>(), target.Center, Projectile.velocity.RotatedByRandom(0.5f), Color.Red, 1f, 1);
+
+                Spark Spark = new Spark();
+                Spark.PrepareSpark(target.Center, Projectile.velocity.RotatedByRandom(0.5f), 0f, Color.Red, 1f, true, 30, SparkDrawMode.Additive);
+                ParticleEngine.BehindProjectiles.Add(Spark);
+               
 			}
             target.AddBuff(BuffID.Bleeding, 600);
         }

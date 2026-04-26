@@ -1,4 +1,5 @@
 ﻿
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Equips.ScepterAccessories;
@@ -70,7 +71,10 @@ namespace DestroyerTest.Content.Equips
             {
                 TexRot += 0.05f * Player.direction;
 
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), Main.rand.NextVector2FromRectangle(Player.Hitbox), new Vector2(0, -5f), ColorLib.TenebrisGradient * 0.5f, 0.06f, ai1: 2);
+                Spark Spark = new Spark();
+
+                Spark.PrepareSpark(Main.rand.NextVector2FromRectangle(Player.Hitbox), new Vector2(0f, -5f).RotatedByRandom(0.05f), 0f, ColorLib.TenebrisGradient, 0.06f, false, 40, SparkDrawMode.Additive);
+                ParticleEngine.ShaderParticles.Add(Spark);
             }
         }
 

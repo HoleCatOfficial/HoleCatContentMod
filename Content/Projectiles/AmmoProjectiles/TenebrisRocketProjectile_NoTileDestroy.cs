@@ -1,3 +1,4 @@
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Particles;
 using InnoVault.PRT;
@@ -121,8 +122,13 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
 							posOffsetY = Projectile.velocity.Y * 0.5f;
 						}
 
-						// Spawn fire dusts at the back of the rocket.
-						PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), Projectile.Center, (-Projectile.velocity * 0.5f).RotatedByRandom(0.5f), colorofLight, 0.5f, 2);
+                        // Spawn fire dusts at the back of the rocket.
+
+                        Spark Spark = new Spark();
+
+                        Spark.PrepareSpark(Projectile.Center, (-Projectile.velocity * 0.5f).RotatedByRandom(0.5f), 0f, colorofLight, 0.5f, false, 40, SparkDrawMode.Additive);
+                        ParticleEngine.ShaderParticles.Add(Spark);
+     
 
 						// Used by the liquid rockets which leave trails of their liquid instead of fire.
 						// if (fireDust.type == Dust.dustWater()) {

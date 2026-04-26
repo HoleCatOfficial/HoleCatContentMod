@@ -48,7 +48,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             BasePRT P4 = Opus.NewParticleFloatAI(PRTLoader.GetParticleID<Boom3>(), Projectile.Center, Vector2.Zero, Color.DarkOrange, 0.01f, 0.25f, 0.03f, 0.005f);
             P4.Rotation = Main.rand.NextFloat(MathHelper.TwoPi);
 
-            Opus.RadialParticleRandomDir(PRTLoader.GetParticleID<SparkParticleNoGravity>(), 9, Projectile.Center, 1f, Color.White, 1f, 9, ai1: 2);
+            //Opus.RadialParticleRandomDir(PRTLoader.GetParticleID<SparkParticleNoGravity>(), 9, Projectile.Center, 1f, Color.White, 1f, 9, ai1: 2);
 
             //Opus.RingProjectileOutward(ModContent.ProjectileType<HomingShadowflame>(), 8, Projectile.Center, 40, Projectile.damage / 4, 7, 9, RandomOffset: true);
         }

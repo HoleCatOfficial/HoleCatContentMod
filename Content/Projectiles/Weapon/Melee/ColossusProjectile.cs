@@ -227,10 +227,14 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             int splatterdir = target.position.X > Owner.MountedCenter.X ? 1 : -1;
             for (int i = 0; i < 7; i++)
             {
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), target.Center, new Vector2(Main.rand.NextFloat(2f, 6f) * splatterdir, 0).RotatedByRandom(0.1f), ColorLib.TenebrisMagenta * Main.rand.NextFloat(0.01f, 0.3f), 1f);
+                Spark Spark = new Spark();
+                Spark.PrepareSpark(target.Center, new Vector2(Main.rand.NextFloat(2f, 6f) * splatterdir, 0).RotatedByRandom(0.1f), 0f, ColorLib.TenebrisMagenta, 1f, false, 30, SparkDrawMode.Additive);
+                ParticleEngine.BehindProjectiles.Add(Spark);
             }
 
-            PRTLoader.NewParticle(PRTLoader.GetParticleID<ColossusParticle>(), target.Center, Vector2.Zero, (Color)default, 1f);
+            ColossusParticle FX = new ColossusParticle();
+            FX.Initiate(target.Center);
+            ParticleEngine.ShaderParticles.Add(FX);
             
 
             //Opus.RadialSpreadParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], 10, target.Center, 0.4f, ColorLib.TenebrisMagenta, 2f, 3, RandomOffset: true);

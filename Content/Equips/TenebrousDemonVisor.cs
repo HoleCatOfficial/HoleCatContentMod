@@ -1,20 +1,21 @@
+using BreadLibrary.Core.Graphics.Particles;
+using DestroyerTest.Common;
+using DestroyerTest.Content.Dusts;
+using DestroyerTest.Content.Particles;
+using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.SummonItems;
+using DestroyerTest.Rarity;
+using InnoVault.PRT;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using Terraria;
+using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using DestroyerTest.Rarity;
-using DestroyerTest.Content.Dusts;
-using DestroyerTest.Common;
-using Terraria.Audio;
-using Terraria.DataStructures;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using DestroyerTest.Content.Projectiles;
-using InnoVault.PRT;
-using DestroyerTest.Content.Particles;
-using OpusLib;
 
 namespace DestroyerTest.Content.Equips
 {
@@ -294,8 +295,11 @@ namespace DestroyerTest.Content.Equips
 					{
 						for (int t = 0; t < 7; t++)
 						{
-							PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), target.Center, (projectile.velocity.RotatedByRandom(0.2f) * 2), ColorLib.TenebrisGradient, 0.5f, 2);
-						}
+                            Spark Spark = new Spark();
+
+                            Spark.PrepareSpark(target.Center, (projectile.velocity.RotatedByRandom(0.2f) * 2), 0f, ColorLib.TenebrisGradient, 0.5f, false, 40, SparkDrawMode.Additive);
+                            ParticleEngine.ShaderParticles.Add(Spark);
+                        }
 					}
 				}
             }
@@ -305,9 +309,12 @@ namespace DestroyerTest.Content.Equips
 					{
 						for (int t = 0; t < 7; t++)
 						{
-							PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), target.Center, (projectile.velocity.RotatedByRandom(0.2f) * 2), ColorLib.TenebrisGradient, 0.5f, 2);
-						}
-					}
+                        Spark Spark = new Spark();
+
+                        Spark.PrepareSpark(target.Center, (projectile.velocity.RotatedByRandom(0.2f) * 2), 0f, ColorLib.TenebrisGradient, 0.5f, false, 40, SparkDrawMode.Additive);
+                        ParticleEngine.ShaderParticles.Add(Spark);
+                    }
+				}
             }
 		}
 

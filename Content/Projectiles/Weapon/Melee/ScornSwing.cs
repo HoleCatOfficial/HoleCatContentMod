@@ -60,6 +60,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
             Player player = Main.player[Projectile.owner];
 
+            player.heldProj = Type;
+
             SwordLine = new Line(player.Center, swordTip);
             Vector2[] pt = SwordLine.GetPointsAlongLine(30);
             Vector2[] ppt = pt[15..30];

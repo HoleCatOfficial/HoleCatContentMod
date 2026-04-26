@@ -1,3 +1,4 @@
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.MeleeWeapons;
@@ -216,7 +217,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             for (int i = 0; i < 7; i++)
             {
                 Color choice = RiftLightColors[Main.rand.Next(RiftLightColors.Count)];
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), target.Center, new Vector2(Main.rand.NextFloat(2f, 6f) * splatterdir, 0).RotatedByRandom(0.2f), choice * Main.rand.NextFloat(0.5f, 0.8f), 1f, ai1: 2);
+                Spark Spark = new Spark();
+                Spark.PrepareSpark(target.Center, new Vector2(Main.rand.NextFloat(2f, 6f) * splatterdir, 0).RotatedByRandom(0.1f), 0f, choice, 0.75f, false, 30, SparkDrawMode.NonPremultiplied);
+                ParticleEngine.BehindProjectiles.Add(Spark);
             }
 
             Vector2 d = player.Center - target.Center;

@@ -1,4 +1,5 @@
-﻿using DestroyerTest.Common;
+﻿using BreadLibrary.Core.Graphics.Particles;
+using DestroyerTest.Common;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles.Boss.NodeBoss.Ichor;
 using InnoVault.PRT;
@@ -103,8 +104,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 return;
             }
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
-            PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), Projectile.Center, Projectile.velocity * 0.15f, ColorLib.TenebrisMagenta, 1f);
 
+ 
+            Spark Spark = new Spark();
+            Spark.PrepareSpark(Projectile.Center, Projectile.velocity * 0.1f, 0f, ColorLib.TenebrisMagenta, 0.5f, false, 30, SparkDrawMode.Additive);
+            ParticleEngine.BehindProjectiles.Add(Spark);
+            
             if (Timer == 1f) // first tick of dashing phase
             {
                 

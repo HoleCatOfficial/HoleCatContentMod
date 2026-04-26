@@ -1,3 +1,4 @@
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Particles;
@@ -75,7 +76,11 @@ namespace DestroyerTest.Content.Projectiles.Boss
 
             if (Main.rand.NextBool(3))
             {
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), Main.rand.NextVector2FromRectangle(Projectile.Hitbox), -(Projectile.velocity * 0.1f), DTColorUtils.Pastel(ColorLib.Soul, 0.2f), 1f, ai1: 2);
+
+                Spark Spark = new Spark();
+
+                Spark.PrepareSpark(Main.rand.NextVector2FromRectangle(Projectile.Hitbox), (-Projectile.velocity * 0.5f).RotatedByRandom(0.5f), 0f, DTColorUtils.Pastel(ColorLib.Soul, 0.2f), 1f, false, 40, SparkDrawMode.Additive);
+                ParticleEngine.ShaderParticles.Add(Spark);
             }
 
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;

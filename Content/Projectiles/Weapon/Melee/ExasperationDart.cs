@@ -82,14 +82,26 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Projectile.velocity = Projectile.velocity.RotatedBy(Opus.Sine(-0.2f, 0.2f, 0.5f));
             Projectile.rotation = (Projectile.velocity.ToRotation() ) + MathHelper.PiOver4;
 
+            Fire fire = new Fire();
+            fire.PrepareFire(Projectile.Center, Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.3f, 0.3f), Color.Indigo, 1f, 100, FireDrawMode.Additive);
+            ParticleEngine.BehindProjectiles.Add(fire);
+
+            Fire fireX = new Fire();
+            fireX.PrepareFire(Projectile.Center, Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.3f, 0.3f), DTColorUtils.Pastel(Color.Purple, 0.4f), 0.6f, 100, FireDrawMode.Additive);
+            ParticleEngine.BehindProjectiles.Add(fireX);
+
             if (Main.rand.NextBool(4))
             {
-                Fire fire = new Fire();
-                fire.PrepareFire(Projectile.Center, Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.3f, 0.3f), Color.DarkMagenta, 1f, 100, FireDrawMode.Additive);
-                ParticleEngine.BehindProjectiles.Add(fire);
+                Fire fire2 = new Fire();
+                fire2.PrepareFire(Projectile.Center, Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.3f, 0.3f), Color.DarkMagenta, 1f, 100, FireDrawMode.Additive);
+                ParticleEngine.BehindProjectiles.Add(fire2);
+
+                Fire fire3 = new Fire();
+                fire3.PrepareFire(Projectile.Center, Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.3f, 0.3f), DTColorUtils.Pastel(Color.HotPink, 0.5f), 0.5f, 100, FireDrawMode.Additive);
+                ParticleEngine.BehindProjectiles.Add(fire3);
             }
 
-            Lighting.AddLight(Projectile.Center, Color.Indigo.ToVector3() * 0.2f);
+            Lighting.AddLight(Projectile.Center, Color.DarkMagenta.ToVector3() * 0.2f);
 
         }
 

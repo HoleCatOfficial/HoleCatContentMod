@@ -1,4 +1,5 @@
 ﻿using BreadLibrary.Core;
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
@@ -159,7 +160,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             Vector2 li = target.Center - Projectile.Center;
             Rectangle Spawn = Utils.CenteredRectangle(target.Center + (li / 2), new Vector2(10, 28));
 
-            PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), Main.rand.NextVector2FromRectangle(Spawn), new Vector2(Main.rand.NextFloat(-0.03f, 0.03f), Main.rand.NextFloat(-4f, 4f)), Main.DiscoColor, 0.5f, ai1: 2);
+
+            Spark Spark = new Spark();
+            Spark.PrepareSpark(Main.rand.NextVector2FromRectangle(Spawn), new Vector2(Main.rand.NextFloat(-0.03f, 0.03f), Main.rand.NextFloat(-4f, 4f)), 0f, Main.DiscoColor, 0.5f, false, 30, SparkDrawMode.Additive);
+            ParticleEngine.BehindProjectiles.Add(Spark);
         }
 
         public override void OnKill(int timeLeft)

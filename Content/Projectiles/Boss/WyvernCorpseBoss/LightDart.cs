@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Common.Primitives;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using BreadLibrary.Core.Graphics.Particles;
 
 namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
 {
@@ -76,7 +77,10 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
 
             if (Main.rand.NextBool(3))
             {
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), Main.rand.NextVector2FromRectangle(Projectile.Hitbox), -(Projectile.velocity * 0.1f), DTColorUtils.Pastel(ColorLib.Soul, 0.8f), 1f, ai1: 2);
+                Spark Spark = new Spark();
+
+                Spark.PrepareSpark(Main.rand.NextVector2FromRectangle(Projectile.Hitbox), -(Projectile.velocity * 0.1f), 0f, DTColorUtils.Pastel(ColorLib.Soul, 0.8f), 1f, true, 40, SparkDrawMode.Additive);
+                ParticleEngine.BehindProjectiles.Add(Spark);
                 
             }
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;

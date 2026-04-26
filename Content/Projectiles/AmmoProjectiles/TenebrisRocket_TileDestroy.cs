@@ -1,3 +1,4 @@
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Particles;
 using InnoVault.PRT;
@@ -121,17 +122,20 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
 							posOffsetY = Projectile.velocity.Y * 0.5f;
 						}
 
-						// Spawn fire dusts at the back of the rocket.
-						PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), Projectile.Center, (-Projectile.velocity * 0.5f).RotatedByRandom(0.5f), colorofLight, 0.5f, 2);
+                        // Spawn fire dusts at the back of the rocket.
+                        Spark Spark = new Spark();
 
-						// Used by the liquid rockets which leave trails of their liquid instead of fire.
-						// if (fireDust.type == Dust.dustWater()) {
-						//	fireDust.scale *= 0.65f;
-						//	fireDust.velocity += Projectile.velocity * 0.1f;
-						// }
+                        Spark.PrepareSpark(Projectile.Center, (-Projectile.velocity * 0.5f).RotatedByRandom(0.5f), 0f, colorofLight, 0.5f, false, 40, SparkDrawMode.Additive);
+                        ParticleEngine.ShaderParticles.Add(Spark);
 
-						// Spawn smoke dusts at the back of the rocket.
-						Dust smokeDust = Dust.NewDustDirect(new Vector2(Projectile.position.X + 3f + posOffsetX, Projectile.position.Y + 3f + posOffsetY) - Projectile.velocity * 0.5f, Projectile.width - 8, Projectile.height - 8, DustID.Smoke, 0f, 0f, 100, default, 0.5f);
+                        // Used by the liquid rockets which leave trails of their liquid instead of fire.
+                        // if (fireDust.type == Dust.dustWater()) {
+                        //	fireDust.scale *= 0.65f;
+                        //	fireDust.velocity += Projectile.velocity * 0.1f;
+                        // }
+
+                        // Spawn smoke dusts at the back of the rocket.
+                        Dust smokeDust = Dust.NewDustDirect(new Vector2(Projectile.position.X + 3f + posOffsetX, Projectile.position.Y + 3f + posOffsetY) - Projectile.velocity * 0.5f, Projectile.width - 8, Projectile.height - 8, DustID.Smoke, 0f, 0f, 100, default, 0.5f);
 						smokeDust.fadeIn = 1f + Main.rand.Next(5) * 0.1f;
 						smokeDust.velocity *= 0.05f;
 					}

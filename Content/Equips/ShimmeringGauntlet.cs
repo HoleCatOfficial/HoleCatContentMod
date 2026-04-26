@@ -76,7 +76,7 @@ namespace DestroyerTest.Content.Equips
                     if (Main.rand.NextBool(5))
                     {
                         Fire fire = new Fire();
-                        fire.PrepareFire(Handpos, Vector2.Zero, Main.rand.Next(1, 3), 0.08f, ColorLib.TenebrisGradient * 0.8f, 0.5f, 40, FireDrawMode.Additive);
+                        fire.PrepareFire(Handpos, Vector2.Zero, Main.rand.Next(1, 3), 0.08f, ColorLib.TenebrisGradient * 0.8f, 0.3f, 40, FireDrawMode.Additive);
                         ParticleEngine.ShaderParticles.Add(fire);
                     }
                 }

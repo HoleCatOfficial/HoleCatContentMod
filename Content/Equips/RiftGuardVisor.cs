@@ -18,6 +18,7 @@ using DestroyerTest.Content.Projectiles.Weapon.Ranged;
 using OpusLib;
 using DestroyerTest.Content.Tiles.Riftplate;
 using DestroyerTest.Content.Tiles.RiftConfigurator;
+using BreadLibrary.Core.Graphics.Particles;
 
 namespace DestroyerTest.Content.Equips
 {
@@ -324,22 +325,15 @@ namespace DestroyerTest.Content.Equips
 					{
 						for (int t = 0; t < 7; t++)
 						{
-							PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), target.Center, (projectile.velocity.RotatedByRandom(0.2f) * 2), ColorLib.Rift, 0.5f, 2);
+                            Spark Spark = new Spark();
+
+                            Spark.PrepareSpark(target.Center, (projectile.velocity.RotatedByRandom(0.2f) * 2), 0f, ColorLib.Rift, 0.5f, false, 40, SparkDrawMode.Additive);
+                            ParticleEngine.ShaderParticles.Add(Spark);
+
 						}
 					}
 				}
             }
-			if (Guard.Active)
-            {
-                if (Guard.Charge3 && (projectile.type == ModContent.ProjectileType<TenebrisStarFriendly>() || projectile.type == ModContent.ProjectileType<TenebrisStarFriendly_NoHoming>()) && OptCfg.DisableExcessParticles)
-					{
-						for (int t = 0; t < 7; t++)
-						{
-							PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), target.Center, (projectile.velocity.RotatedByRandom(0.2f) * 2), ColorLib.Rift, 0.5f, 2);
-						}
-					}
-            }
 		}
-
 	}
 }

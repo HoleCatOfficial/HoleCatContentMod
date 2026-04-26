@@ -1,3 +1,4 @@
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
@@ -114,7 +115,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
             for (int i = 0; i < 6; i++)
             {
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticle>(), npc.Center, new Vector2(Main.rand.NextFloat(-2, 2), -Main.rand.NextFloat(10, 15)), ColorLib.JavelinEnergy, 1, 2);
+                Spark Spark = new Spark();
+                Spark.PrepareSpark(npc.Center, new Vector2(Main.rand.NextFloat(-2, 2), -Main.rand.NextFloat(10, 15)), 0f, ColorLib.JavelinEnergy, 1f, true, 30, SparkDrawMode.Additive);
+                ParticleEngine.BehindProjectiles.Add(Spark);
             }
         }
     }

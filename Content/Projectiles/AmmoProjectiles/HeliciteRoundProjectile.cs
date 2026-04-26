@@ -1,3 +1,4 @@
+using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
 using Microsoft.Xna.Framework;
@@ -8,26 +9,27 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
 {
-	// This example is similar to the Wooden Arrow projectile
 	public class HeliciteRoundProjectile : ModProjectile
 	{
 		public override void SetStaticDefaults()
 		{
-			// If this arrow would have strong effects (like Holy Arrow pierce), we can make it fire fewer projectiles from Daedalus Stormbow for game balance considerations like this:
-			//ProjectileID.Sets.FiresFewerFromDaedalusStormbow[Type] = true;
 		}
 
 		public override void SetDefaults()
 		{
-			Projectile.width = 68; // The width of projectile hitbox
-			Projectile.height = 2; // The height of projectile hitbox
+			Projectile.width = 40;
+			Projectile.height = 40;
 			Projectile.friendly = true;
 			Projectile.DamageType = DamageClass.Ranged;
 			Projectile.timeLeft = 240;
-			Projectile.netImportant = true;
-			Projectile.netUpdate = true;
 		}
 
+        public override bool PreDraw(ref Color lightColor)
+        {
+            Main.EntitySpriteDraw(DTUtils.CenteredDraw(Projectile, Color.White));
+            return false;
+        }
+        
 		public override void AI() {
 			Projectile.rotation = Projectile.velocity.ToRotation();
 		}
@@ -39,7 +41,7 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
 
 		public override void OnKill(int timeLeft)
         {
-            for (int i = 0; i < 5; i++) // Creates a splash of dust around the position the projectile dies.
+            for (int i = 0; i < 5; i++)
             {
                 Dust dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, ModContent.DustType<RiftDust>());
                 dust.noGravity = true;

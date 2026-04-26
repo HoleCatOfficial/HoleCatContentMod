@@ -107,10 +107,6 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Ranged
 
         public void ShotFX(Vector2 CTR)
         {
-            for (int u = 0; u < 6; u++)
-            {
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), CTR, new Vector2(16, 0).RotatedByRandom(MathHelper.Pi), Color.White, 1f, 2);
-            }
             for (int k = 0; k < 2; k++) {
 				float speedMulti = 0.4f;
 				if (k == 1) {

@@ -1,195 +1,462 @@
+using BreadLibrary.Core.Graphics.Particles;
+using BreadLibrary.Core.Graphics.Pixelation;
 using DestroyerTest.Common;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
+using System;
 using Terraria;
+using Terraria.Graphics.Renderers;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Particles
 {
-    public class SparkParticle : BasePRT
+    public enum SparkDrawMode
     {
-        public int MaxLifetime => 1200;
-        public int DrawMode => (int)ai[1];
-        public override void SetProperty()
+        AlphaBlend = 0,
+        NonPremultiplied = 1,
+        Opaque = 2,
+        Additive = 3
+    }
+
+    public class Spark : BaseParticle<Spark>
+    {
+        public int maxLifetime = 120;
+        public int Lifetime = 0;
+        public Vector2 position;
+        public Vector2 velocity;
+        public float rotation;
+        public  Color col;
+        public float scale;
+        public float Opacity;
+        public bool gravity;
+
+        public float Width = 1f;
+
+        public int internalCounter = 0;
+
+        public SparkDrawMode sparkDrawMode = SparkDrawMode.AlphaBlend;
+
+        public void PrepareSpark(Vector2 Position, Vector2 Velocity, float Rotation, Color color, float Scale, bool Gravity, int MaxLifetime, SparkDrawMode drawMode)
         {
-            if (DrawMode == 0)
-            {
-                PRTDrawMode = PRTDrawModeEnum.AlphaBlend;
-            }
-            if (DrawMode == 1)
-            {
-                PRTDrawMode = PRTDrawModeEnum.NonPremultiplied;
-            }
-            if (DrawMode == 2)
-            {
-                PRTDrawMode = PRTDrawModeEnum.AdditiveBlend;
-            }
-            Lifetime = MaxLifetime;
-            LengthScale = 1 + 0.1f * Velocity.Length();
+            this.position = Position;
+            this.velocity = Velocity;
+            this.rotation = Rotation;
+            this.scale = Scale;
+            this.maxLifetime = MaxLifetime;
+            this.Lifetime = MaxLifetime;
+            this.col = color;
+            this.Opacity = 1f;
+            this.gravity = Gravity;
+
+            sparkDrawMode = drawMode;
         }
-        float LengthScale = 1;
-        float WidthScale = 1;
-        public override void AI()
+
+        public override void Update(ref ParticleRendererSettings settings)
         {
-            Rotation = Velocity.ToRotation() + MathHelper.PiOver2;
-            Velocity.Y += 0.3f;
-            WidthScale *= 0.9f;
-            LengthScale *= 0.95f;
-            
-            if (WidthScale <= 0.0001f)
+            internalCounter++;
+            Lifetime--;
+
+            position += velocity;
+
+            rotation = velocity.ToRotation() + MathHelper.PiOver2;
+
+            if (gravity)
             {
-                Kill();
+                velocity.Y += 0.1f;
+            }
+
+            if (Lifetime < (maxLifetime / 2))
+            {
+                Width = MathHelper.Lerp(Width, 0f, (float)(Lifetime / (maxLifetime / 2)));
+            }
+
+            if (Lifetime <= 0)
+            {
+                ShouldBeRemovedFromRenderer = true;
             }
         }
 
-        // Override this drawing function. If you want to customize the drawing, return false here,
-        // and the default drawing will not be applied.
-        public override bool PreDraw(SpriteBatch spriteBatch)
+        public Tuple<Texture2D, Rectangle, Vector2> GetTextureProperties()
         {
-            Main.EntitySpriteDraw(TexValue, Position - Main.screenPosition, null, Color, Rotation, TexValue.Size() / 2, new Vector2(WidthScale, LengthScale), SpriteEffects.None, 0);
-            return false;
+            Texture2D TexValue = ModContent.Request<Texture2D>($"DestroyerTest/Content/Particles/SparkParticle").Value;
+            Rectangle frameRect = new Rectangle(0, 0, TexValue.Width, TexValue.Height);
+
+            Vector2 origin = new Vector2(TexValue.Width / 2f, TexValue.Height / 2f);
+
+            return new Tuple<Texture2D, Rectangle, Vector2>(TexValue, frameRect, origin);
+        }
+
+        public BlendState GetBlendState(SparkDrawMode drawMode)
+        {
+            switch (drawMode)
+            {
+                case SparkDrawMode.AlphaBlend:
+                    {
+                        return BlendState.AlphaBlend;
+                    }
+                case SparkDrawMode.NonPremultiplied:
+                    {
+                        return BlendState.NonPremultiplied;
+                    }
+                case SparkDrawMode.Opaque:
+                    {
+                        return BlendState.Opaque;
+                    }
+                case SparkDrawMode.Additive:
+                    {
+                        return BlendState.Additive;
+                    }
+            }
+
+            return BlendState.AlphaBlend;
+        }
+
+        public override void Draw(ref ParticleRendererSettings settings, SpriteBatch spritebatch)
+        {
+            Opus.StartSpriteBatchWithBlending(spritebatch, GetBlendState(sparkDrawMode), SpriteSortMode.Deferred);
+            spritebatch.Draw(GetTextureProperties().Item1, position - Main.screenPosition, GetTextureProperties().Item2, col * Opacity, rotation, GetTextureProperties().Item3, new Vector2(scale * Width, scale * 1.75f), SpriteEffects.None, 0f);
+            Opus.ReturnToDefaultDrawing(spritebatch);
         }
     }
 
-    public class SparkParticleNoGravity : BasePRT
+    public class LerpingSpark : BaseParticle<LerpingSpark>
     {
-        public int MaxLifetime => 1200;
-        public int DrawMode => (int)ai[1];
-        public override void SetProperty()
+        public int maxLifetime = 120;
+        public int Lifetime = 0;
+        public Vector2 position;
+        public Vector2 velocity;
+        public float rotation;
+        public float Opacity;
+        public Color startcol;
+        public Color endcol;
+
+        public Color[] ColorMap;
+        public bool usesColorMap;
+
+        public Color col;
+        public float scale;
+        public bool gravity;
+
+        public float Width = 1f;
+
+        public int internalCounter = 0;
+
+        public SparkDrawMode sparkDrawMode = SparkDrawMode.AlphaBlend;
+
+        public void PrepareSpark(Vector2 Position, Vector2 Velocity, float Rotation, Color startColor, Color endColor, float Scale, bool Gravity, int MaxLifetime, SparkDrawMode drawMode)
         {
-            if (DrawMode == 0)
-            {
-                PRTDrawMode = PRTDrawModeEnum.AlphaBlend;
-            }
-            if (DrawMode == 1)
-            {
-                PRTDrawMode = PRTDrawModeEnum.NonPremultiplied;
-            }
-            if (DrawMode == 2)
-            {
-                PRTDrawMode = PRTDrawModeEnum.AdditiveBlend;
-            }
-            Lifetime = MaxLifetime;
-            LengthScale = 1 + 0.1f * Velocity.Length();
+            this.position = Position;
+            this.velocity = Velocity;
+            this.rotation = Rotation;
+            this.scale = Scale;
+            this.maxLifetime = MaxLifetime;
+            this.Lifetime = MaxLifetime;
+            this.startcol = startColor;
+            this.endcol = endColor;
+            this.usesColorMap = false;
+            this.Opacity = 1f;
+            this.gravity = Gravity;
+
+            sparkDrawMode = drawMode;
         }
-        float LengthScale = 1;
-        float WidthScale = 1;
-        public override void AI()
+
+        public void PrepareSpark(Vector2 Position, Vector2 Velocity, int SpinDirection, float SpinSpeed, Color startColor, Color endColor, float Scale, bool Gravity, int MaxLifetime, SparkDrawMode drawMode)
         {
-            Rotation = Velocity.ToRotation() + MathHelper.PiOver2;
-            WidthScale *= 0.90f;
-            LengthScale *= 0.95f;
-            
-            if (WidthScale <= 0.0001f)
+            this.position = Position;
+            this.velocity = Velocity;
+            this.scale = Scale;
+            this.maxLifetime = MaxLifetime;
+            this.Lifetime = MaxLifetime;
+            this.startcol = startColor;
+            this.endcol = endColor;
+            this.usesColorMap = false;
+            this.Opacity = 1f;
+            this.gravity = Gravity;
+
+            sparkDrawMode = drawMode;
+        }
+
+
+        public override void Update(ref ParticleRendererSettings settings)
+        {
+            internalCounter++;
+            Lifetime--;
+
+            if (usesColorMap)
             {
-                Kill();
+                col = DTColorUtils.MultiLerp((float)(Lifetime / maxLifetime), ColorMap);
+            }
+            else
+            {
+                col = Color.Lerp(startcol, endcol, (float)(Lifetime / maxLifetime));
+            }
+
+            position += velocity;
+
+            rotation = velocity.ToRotation() + MathHelper.PiOver2;
+
+            if (gravity)
+            {
+                velocity.Y += 0.1f;
+            }
+
+            if (Lifetime < (maxLifetime / 2))
+            {
+                Width = MathHelper.Lerp(Width, 0f, (float)(Lifetime / (maxLifetime / 2)));
+            }
+
+            if (Lifetime <= 0)
+            {
+                ShouldBeRemovedFromRenderer = true;
             }
         }
 
-        // Override this drawing function. If you want to customize the drawing, return false here,
-        // and the default drawing will not be applied.
-        public override bool PreDraw(SpriteBatch spriteBatch)
+        public Tuple<Texture2D, Rectangle, Vector2> GetTextureProperties()
         {
-            Main.EntitySpriteDraw(TexValue, Position - Main.screenPosition, null, Color, Rotation, TexValue.Size() / 2, new Vector2(WidthScale, LengthScale), SpriteEffects.None, 0);
-            return false;
+            Texture2D TexValue = ModContent.Request<Texture2D>($"DestroyerTest/Content/Particles/SparkParticle").Value;
+            Rectangle frameRect = new Rectangle(0, 0, TexValue.Width, TexValue.Height);
+
+            Vector2 origin = new Vector2(TexValue.Width / 2f, TexValue.Height / 2f);
+
+            return new Tuple<Texture2D, Rectangle, Vector2>(TexValue, frameRect, origin);
+        }
+
+        public BlendState GetBlendState(SparkDrawMode drawMode)
+        {
+            switch (drawMode)
+            {
+                case SparkDrawMode.AlphaBlend:
+                    {
+                        return BlendState.AlphaBlend;
+                    }
+                case SparkDrawMode.NonPremultiplied:
+                    {
+                        return BlendState.NonPremultiplied;
+                    }
+                case SparkDrawMode.Opaque:
+                    {
+                        return BlendState.Opaque;
+                    }
+                case SparkDrawMode.Additive:
+                    {
+                        return BlendState.Additive;
+                    }
+            }
+
+            return BlendState.AlphaBlend;
+        }
+
+        public override void Draw(ref ParticleRendererSettings settings, SpriteBatch spritebatch)
+        {
+
+            Opus.StartSpriteBatchWithBlending(spritebatch, GetBlendState(sparkDrawMode), SpriteSortMode.Deferred);
+            spritebatch.Draw(GetTextureProperties().Item1, position - Main.screenPosition, GetTextureProperties().Item2, col * Opacity, rotation, GetTextureProperties().Item3,  new Vector2(scale * Width, scale * 1.75f), SpriteEffects.None, 0f);
+            Opus.ReturnToDefaultDrawing(spritebatch);
+        }
+
+        public override PixelLayer PixelLayer => PixelLayer.AboveTiles;
+    }
+
+    public class WitheringSpark : Spark
+    {
+        public override void Draw(ref ParticleRendererSettings settings, SpriteBatch spritebatch)
+        {
+            Opus.StartSpriteBatchWithBlending(spritebatch, GetBlendState(sparkDrawMode), SpriteSortMode.Deferred);
+            spritebatch.Draw(GetTextureProperties().Item1, position - Main.screenPosition, GetTextureProperties().Item2, col * Opacity, rotation, GetTextureProperties().Item3, new Vector2(scale * Width, scale), SpriteEffects.None, 0f);
+            spritebatch.Draw(GetTextureProperties().Item1, position - Main.screenPosition, GetTextureProperties().Item2, Color.Black * Opacity, rotation, GetTextureProperties().Item3, new Vector2(scale * 0.7f * Width, scale * 0.7f), SpriteEffects.None, 0f);
+            Opus.ReturnToDefaultDrawing(spritebatch);
         }
     }
 
 
-    public class SparkParticlePlayerLock : BasePRT
-    {
-        public int MaxLifetime => 1200;
-        public int DrawMode => (int)ai[1];
-        public int Owner => (int)ai[2];
-        public override void SetProperty()
+    /*
+        public class SparkParticle : BasePRT
         {
-            if (DrawMode == 0)
+            public int MaxLifetime => 1200;
+            public int DrawMode => (int)ai[1];
+            public override void SetProperty()
             {
-                PRTDrawMode = PRTDrawModeEnum.AlphaBlend;
+                if (DrawMode == 0)
+                {
+                    PRTDrawMode = PRTDrawModeEnum.AlphaBlend;
+                }
+                if (DrawMode == 1)
+                {
+                    PRTDrawMode = PRTDrawModeEnum.NonPremultiplied;
+                }
+                if (DrawMode == 2)
+                {
+                    PRTDrawMode = PRTDrawModeEnum.AdditiveBlend;
+                }
+                Lifetime = MaxLifetime;
+                LengthScale = 1 + 0.1f * Velocity.Length();
             }
-            if (DrawMode == 1)
+            float LengthScale = 1;
+            float WidthScale = 1;
+            public override void AI()
             {
-                PRTDrawMode = PRTDrawModeEnum.NonPremultiplied;
-            }
-            if (DrawMode == 2)
-            {
-                PRTDrawMode = PRTDrawModeEnum.AdditiveBlend;
-            }
-            Lifetime = MaxLifetime;
-            LengthScale = 1 + 0.1f * Velocity.Length();
-        }
-        float LengthScale = 1;
-        float WidthScale = 1;
-        public override void AI()
-        {
-            Rotation = Velocity.ToRotation() + MathHelper.PiOver2;
-            WidthScale *= 0.90f;
-            LengthScale *= 0.95f;
+                Rotation = Velocity.ToRotation() + MathHelper.PiOver2;
+                Velocity.Y += 0.3f;
+                WidthScale *= 0.9f;
+                LengthScale *= 0.95f;
 
-            Player o = Main.player[Owner];
-
-            Position += o.velocity;
-
-            if (WidthScale <= 0.0001f)
-            {
-                Kill();
+                if (WidthScale <= 0.0001f)
+                {
+                    Kill();
+                }
             }
-        }
 
-        // Override this drawing function. If you want to customize the drawing, return false here,
-        // and the default drawing will not be applied.
-        public override bool PreDraw(SpriteBatch spriteBatch)
-        {
-            Main.EntitySpriteDraw(TexValue, Position - Main.screenPosition, null, Color, Rotation, TexValue.Size() / 2, new Vector2(WidthScale, LengthScale), SpriteEffects.None, 0);
-            return false;
-        }
-    }
-
-    public class WitheringSpark : BasePRT
-    {
-        public int MaxLifetime => 1200;
-        public int DrawMode => (int)ai[1];
-        public override void SetProperty()
-        {
-            if (DrawMode == 0)
+            // Override this drawing function. If you want to customize the drawing, return false here,
+            // and the default drawing will not be applied.
+            public override bool PreDraw(SpriteBatch spriteBatch)
             {
-                PRTDrawMode = PRTDrawModeEnum.AlphaBlend;
-            }
-            if (DrawMode == 1)
-            {
-                PRTDrawMode = PRTDrawModeEnum.NonPremultiplied;
-            }
-            if (DrawMode == 2)
-            {
-                PRTDrawMode = PRTDrawModeEnum.AdditiveBlend;
-            }
-            Lifetime = MaxLifetime;
-            LengthScale = 1 + 0.1f * Velocity.Length();
-        }
-        float LengthScale = 1;
-        float WidthScale = 1;
-        public override void AI()
-        {
-            Rotation = Velocity.ToRotation() + MathHelper.PiOver2;
-            WidthScale *= 0.90f;
-            LengthScale *= 0.95f;
-
-            if (WidthScale <= 0.0001f)
-            {
-                Kill();
+                Main.EntitySpriteDraw(TexValue, Position - Main.screenPosition, null, Color, Rotation, TexValue.Size() / 2, new Vector2(WidthScale, LengthScale), SpriteEffects.None, 0);
+                return false;
             }
         }
 
-        // Override this drawing function. If you want to customize the drawing, return false here,
-        // and the default drawing will not be applied.
-        public override bool PreDraw(SpriteBatch spriteBatch)
+        public class SparkParticleNoGravity : BasePRT
         {
-            Main.EntitySpriteDraw(TexValue, Position - Main.screenPosition, null, Color, Rotation, TexValue.Size() / 2, new Vector2(WidthScale, LengthScale), SpriteEffects.None, 0);
-            Main.EntitySpriteDraw(TexValue, Position - Main.screenPosition, null, Color.Black, Rotation, TexValue.Size() / 2, new Vector2(WidthScale * 0.4f, LengthScale * 0.4f), SpriteEffects.None, 0);
-            return false;
+            public int MaxLifetime => 1200;
+            public int DrawMode => (int)ai[1];
+            public override void SetProperty()
+            {
+                if (DrawMode == 0)
+                {
+                    PRTDrawMode = PRTDrawModeEnum.AlphaBlend;
+                }
+                if (DrawMode == 1)
+                {
+                    PRTDrawMode = PRTDrawModeEnum.NonPremultiplied;
+                }
+                if (DrawMode == 2)
+                {
+                    PRTDrawMode = PRTDrawModeEnum.AdditiveBlend;
+                }
+                Lifetime = MaxLifetime;
+                LengthScale = 1 + 0.1f * Velocity.Length();
+            }
+            float LengthScale = 1;
+            float WidthScale = 1;
+            public override void AI()
+            {
+                Rotation = Velocity.ToRotation() + MathHelper.PiOver2;
+                WidthScale *= 0.90f;
+                LengthScale *= 0.95f;
+
+                if (WidthScale <= 0.0001f)
+                {
+                    Kill();
+                }
+            }
+
+            // Override this drawing function. If you want to customize the drawing, return false here,
+            // and the default drawing will not be applied.
+            public override bool PreDraw(SpriteBatch spriteBatch)
+            {
+                Main.EntitySpriteDraw(TexValue, Position - Main.screenPosition, null, Color, Rotation, TexValue.Size() / 2, new Vector2(WidthScale, LengthScale), SpriteEffects.None, 0);
+                return false;
+            }
         }
-    }
+
+
+        public class SparkParticlePlayerLock : BasePRT
+        {
+            public int MaxLifetime => 1200;
+            public int DrawMode => (int)ai[1];
+            public int Owner => (int)ai[2];
+            public override void SetProperty()
+            {
+                if (DrawMode == 0)
+                {
+                    PRTDrawMode = PRTDrawModeEnum.AlphaBlend;
+                }
+                if (DrawMode == 1)
+                {
+                    PRTDrawMode = PRTDrawModeEnum.NonPremultiplied;
+                }
+                if (DrawMode == 2)
+                {
+                    PRTDrawMode = PRTDrawModeEnum.AdditiveBlend;
+                }
+                Lifetime = MaxLifetime;
+                LengthScale = 1 + 0.1f * Velocity.Length();
+            }
+            float LengthScale = 1;
+            float WidthScale = 1;
+            public override void AI()
+            {
+                Rotation = Velocity.ToRotation() + MathHelper.PiOver2;
+                WidthScale *= 0.90f;
+                LengthScale *= 0.95f;
+
+                Player o = Main.player[Owner];
+
+                Position += o.velocity;
+
+                if (WidthScale <= 0.0001f)
+                {
+                    Kill();
+                }
+            }
+
+            // Override this drawing function. If you want to customize the drawing, return false here,
+            // and the default drawing will not be applied.
+            public override bool PreDraw(SpriteBatch spriteBatch)
+            {
+                Main.EntitySpriteDraw(TexValue, Position - Main.screenPosition, null, Color, Rotation, TexValue.Size() / 2, new Vector2(WidthScale, LengthScale), SpriteEffects.None, 0);
+                return false;
+            }
+        }
+
+        public class WitheringSpark : BasePRT
+        {
+            public int MaxLifetime => 1200;
+            public int DrawMode => (int)ai[1];
+            public override void SetProperty()
+            {
+                if (DrawMode == 0)
+                {
+                    PRTDrawMode = PRTDrawModeEnum.AlphaBlend;
+                }
+                if (DrawMode == 1)
+                {
+                    PRTDrawMode = PRTDrawModeEnum.NonPremultiplied;
+                }
+                if (DrawMode == 2)
+                {
+                    PRTDrawMode = PRTDrawModeEnum.AdditiveBlend;
+                }
+                Lifetime = MaxLifetime;
+                LengthScale = 1 + 0.1f * Velocity.Length();
+            }
+            float LengthScale = 1;
+            float WidthScale = 1;
+            public override void AI()
+            {
+                Rotation = Velocity.ToRotation() + MathHelper.PiOver2;
+                WidthScale *= 0.90f;
+                LengthScale *= 0.95f;
+
+                if (WidthScale <= 0.0001f)
+                {
+                    Kill();
+                }
+            }
+
+            // Override this drawing function. If you want to customize the drawing, return false here,
+            // and the default drawing will not be applied.
+            public override bool PreDraw(SpriteBatch spriteBatch)
+            {
+                Main.EntitySpriteDraw(TexValue, Position - Main.screenPosition, null, Color, Rotation, TexValue.Size() / 2, new Vector2(WidthScale, LengthScale), SpriteEffects.None, 0);
+                Main.EntitySpriteDraw(TexValue, Position - Main.screenPosition, null, Color.Black, Rotation, TexValue.Size() / 2, new Vector2(WidthScale * 0.4f, LengthScale * 0.4f), SpriteEffects.None, 0);
+                return false;
+            }
+        }
+
+        */
 
 
 }

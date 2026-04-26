@@ -44,7 +44,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
                 dust.noGravity = true;
                 */
 
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticle>(), Projectile.Center, Projectile.velocity * 0.5f, Color.White, 1f);
+                //PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticle>(), Projectile.Center, Projectile.velocity * 0.5f, Color.White, 1f);
             }
 
 

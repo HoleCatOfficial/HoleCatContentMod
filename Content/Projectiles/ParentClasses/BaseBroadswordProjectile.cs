@@ -1,10 +1,12 @@
 ﻿using BreadLibrary.Core.Graphics;
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Particles.Orchestrated;
 using DestroyerTest.Content.Projectiles.Weapon.Rogue;
+using FargowiltasSouls.Content.UI;
 using InnoVault.PRT;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Xna.Framework;
@@ -16,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -114,14 +117,22 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             {
                 if (SL != null)
                 {
-                    PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticlePlayerLock>(), sT, new Vector2(1, 0).RotatedBy(SL.GetLineRotation + MathHelper.PiOver2), color, Scale, ai1: BlendMode, ai2: owner.whoAmI);
+                    Spark Spark = new Spark();
+
+                    Spark.PrepareSpark(sT, new Vector2(1, 0).RotatedBy(SL.GetLineRotation + MathHelper.PiOver2), 0f, color, Scale, false, 30, SparkDrawMode.Additive);
+                    Spark.position += Owner.velocity;
+                    ParticleEngine.BehindProjectiles.Add(Spark);
                 }
             }
             if (CurrentState == State.SwingUp)
             {
                 if (SL != null)
                 {
-                    PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticlePlayerLock>(), sT, new Vector2(1, 0).RotatedBy(SL.GetLineRotation - MathHelper.PiOver2), color, Scale, ai1: BlendMode, ai2: owner.whoAmI);
+                    Spark Spark = new Spark();
+
+                    Spark.PrepareSpark(sT, new Vector2(1, 0).RotatedBy(SL.GetLineRotation + MathHelper.PiOver2), 0f, color, Scale, false, 30, SparkDrawMode.Additive);
+                    Spark.position += Owner.velocity;
+                    ParticleEngine.BehindProjectiles.Add(Spark);
                 }
             }
         }
@@ -145,6 +156,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             {
                 Owner.SetDummyItemTime(60);
                 AdjustedScale = Owner.GetAdjustedItemScale(Owner.HeldItem) * ScaleMult;
+                FactorFargosScaling();
                 Projectile.scale = AdjustedScale;
                 if (CurrentState == State.Wait)
                 {
@@ -164,6 +176,28 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             ExtraEffects();
             SetSwordPosition();
             ControlRotation();
+        }
+
+        private void FactorFargosScaling()
+        {
+            if (DTCrossMod.FargosSoulsIsLoaded)
+            {
+                GlobalProjectile gp =
+                Projectile.GetGlobalProjectile(
+                    DTCrossMod.FargosSoulsMod.Find<GlobalProjectile>("FargoSoulsGlobalProjectile")
+                );
+
+                var field = gp.GetType().GetField(
+                    "TungstenScale",
+                    BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance
+                );
+
+                if (field != null)
+                {
+                    float tungstenScale = (float)field.GetValue(gp);
+                    AdjustedScale = Owner.GetAdjustedItemScale(Owner.HeldItem) * ScaleMult * tungstenScale;
+                }
+            }
         }
 
 
@@ -367,10 +401,10 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
             DrawUnderBlade();
 
-            Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, null, Projectile.GetAlpha(lightColor) * Projectile.Opacity, (Projectile.rotation + rotationOffset) + RotationManualOffset, origin, AdjustedScale, effects, 0);
+            Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, null, Projectile.GetAlpha(lightColor) * Projectile.Opacity, (Projectile.rotation + rotationOffset) + RotationManualOffset, origin, Projectile.scale * AdjustedScale, effects, 0);
             if (Glowmask != null)
             {
-                Main.EntitySpriteDraw(Glowmask.Value, Projectile.Center - Main.screenPosition, null, Color.White * Projectile.Opacity, (Projectile.rotation + rotationOffset) + RotationManualOffset, origin, AdjustedScale, effects, 0);
+                Main.EntitySpriteDraw(Glowmask.Value, Projectile.Center - Main.screenPosition, null, Color.White * Projectile.Opacity, (Projectile.rotation + rotationOffset) + RotationManualOffset, origin, Projectile.scale * AdjustedScale, effects, 0);
             }
 
             DrawOverBlade();

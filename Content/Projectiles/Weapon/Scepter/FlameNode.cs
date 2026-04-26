@@ -95,7 +95,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
                                 {
                                     for (int y = 0; y < 9; y++)
                                     {
-                                        PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticle>(), hostile.Center, new Vector2(Main.rand.NextFloat(-2f, 2.1f), Main.rand.NextFloat(-4f, -6.1f)), new Color(253, 62, 3), 0.4f, 2);
+                                        Spark Spark = new Spark();
+                                        Spark.PrepareSpark(hostile.Center, new Vector2(Main.rand.NextFloat(-2f, 2.1f), Main.rand.NextFloat(-4f, -6.1f)), 0f, new Color(253, 62, 3), 0.4f, false, 30, SparkDrawMode.Additive);
+                                        ParticleEngine.BehindProjectiles.Add(Spark);
                                     }
                                     hostile.Kill();
 
@@ -124,7 +126,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
                                     {
                                         for (int y = 0; y < 9; y++)
                                         {
-                                            PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticle>(), enemy.Center, new Vector2(Main.rand.NextFloat(-2f, 2.1f), Main.rand.NextFloat(-4f, -6.1f)), new Color(253, 62, 3), 0.4f, 2);
+                                            Spark Spark = new Spark();
+                                            Spark.PrepareSpark(enemy.Center, new Vector2(Main.rand.NextFloat(-2f, 2.1f), Main.rand.NextFloat(-4f, -6.1f)), 0f, new Color(253, 62, 3), 0.4f, false, 30, SparkDrawMode.Additive);
+                                            ParticleEngine.BehindProjectiles.Add(Spark);
                                         }
                                         var Strike = new NPC.HitInfo() with { DamageType = ModContent.GetInstance<ScepterClass>(), Crit = Main.rand.NextBool(3), Damage = Projectile.damage, InstantKill = false, HideCombatText = false, HitDirection = 0, Knockback = 0, SourceDamage = Projectile.damage };
                                         enemy.StrikeNPC(Strike, false, false);
@@ -172,11 +176,6 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 
             if (Projectile.timeLeft == 10)
             {
-                for (int y = 0; y < 9; y++)
-                {
-                    Vector2 Pos = Projectile.Center + Main.rand.NextVector2CircularEdge(80, 100);
-                    PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticle>(), Pos, (Projectile.Center - Pos) * 0.06f, new Color(253, 62, 3), 0.2f, 2);
-                }
             }
 
         }

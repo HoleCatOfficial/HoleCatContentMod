@@ -1,37 +1,54 @@
+using BreadLibrary.Core.Graphics.Particles;
+using DestroyerTest.Common;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.Graphics.Renderers;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Particles.Orchestrated
 {
-    public class GargantuaParticle : BasePRT
+    public class GargantuaParticle : BaseParticle<GargantuaParticle>
     {
-        public override void SetProperty()
-        {
-            Lifetime = 60; 
-            ShouldKillWhenOffScreen = false;
-        }
-        
+
+        public Vector2 position;
+
         public bool Spawned = false;
-        public override void AI()
+
+        public void Initiate(Vector2 Position)
+        {
+            this.position = Position;
+        }
+
+        public override void Update(ref ParticleRendererSettings settings)
         {
             if (!Spawned)
             {
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<StarParticle>(), Position, Vector2.Zero, Color.White, 1f);
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), Position, new Vector2(0, -1), Color.Red, 1f);
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), Position, new Vector2(0, 1), Color.Red, 1f);
+                PRTLoader.NewParticle(PRTLoader.GetParticleID<StarParticle>(), position, Vector2.Zero, Color.White, 1f);
 
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), Position, new Vector2(0.5f, 0), Color.Red, 0.5f);
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), Position, new Vector2(-0.5f, 0), Color.Red, 0.5f);
-                Spawned = true;
-            }            
-        }
 
-        public override bool PreDraw(SpriteBatch spriteBatch)
-        {
-            return false;
+
+                Spark Up = new Spark();
+                Spark Down = new Spark();
+                Spark Left = new Spark();
+                Spark Right = new Spark();
+
+                Up.PrepareSpark(position, new Vector2(0, -1), 0f, Color.Red, 1f, false, 40, SparkDrawMode.Additive);
+                Down.PrepareSpark(position, new Vector2(0, 1), 0f, Color.Red, 1f, false, 40, SparkDrawMode.Additive);
+
+                Left.PrepareSpark(position, new Vector2(-0.5f, 0), 0f, Color.Red, 0.75f, false, 40, SparkDrawMode.Additive);
+                Right.PrepareSpark(position, new Vector2(0.5f, 0), 0f, Color.Red, 0.75f, false, 40, SparkDrawMode.Additive);
+
+                ParticleEngine.BehindProjectiles.Add(Up);
+                ParticleEngine.BehindProjectiles.Add(Down);
+                ParticleEngine.BehindProjectiles.Add(Left);
+                ParticleEngine.BehindProjectiles.Add(Right);
+            }
+            else
+            {
+                ShouldBeRemovedFromRenderer = true;
+            }
         }
     }
 }

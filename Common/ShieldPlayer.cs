@@ -20,6 +20,8 @@ using System.Collections.Generic;
 using OpusLib;
 using System.Linq;
 using DestroyerTest.Content.Dusts;
+using FargowiltasSouls.Common.Graphics.Particles;
+using BreadLibrary.Core.Graphics.Particles;
 
 namespace DestroyerTest.Common
 {
@@ -157,14 +159,10 @@ namespace DestroyerTest.Common
 
                     for (int y = 0; y < 9; y++)
                     {
-                        PRTLoader.NewParticle(
-                            PRTLoader.GetParticleID<SparkParticle>(),
-                            p.Center,
-                            new Vector2(Main.rand.NextFloat(-2f, 2.1f), Main.rand.NextFloat(-4f, -6.1f)),
-                            themeColor,
-                            0.4f,
-                            2
-                        );
+                        Spark Spark = new Spark();
+
+                        Spark.PrepareSpark(p.Center, new Vector2(Main.rand.NextFloat(-2f, 2.1f), Main.rand.NextFloat(-4f, -6.1f)), 0f, themeColor, 0.4f, true, 90, SparkDrawMode.Additive);
+                        ParticleEngine.BehindProjectiles.Add(Spark);
                     }
 
                     p.Kill();

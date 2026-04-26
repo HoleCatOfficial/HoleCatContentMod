@@ -18,6 +18,7 @@ using OpusLib.Content.Helpers;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq.Expressions;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -222,15 +223,19 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             SoundEngine.PlaySound(Hit);
             Player player = Main.player[Projectile.owner];
             var ScreenShake = player.GetModPlayer<ScreenshakePlayer>();
-           
+
             int splatterdir = target.position.X > Owner.MountedCenter.X ? 1 : -1;
             for (int i = 0; i < 7; i++)
             {
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), target.Center, new Vector2(Main.rand.NextFloat(2f, 6f) * splatterdir, 0).RotatedByRandom(0.1f), Color.Red * Main.rand.NextFloat(0.01f, 0.3f), 1f);
+                Spark Spark = new Spark();
+                Spark.PrepareSpark(target.Center, new Vector2(Main.rand.NextFloat(2f, 6f) * splatterdir, 0).RotatedByRandom(0.1f), 0f, Color.Red, 1f, false, 30, SparkDrawMode.Additive);
+                ParticleEngine.BehindProjectiles.Add(Spark);
             }
 
-            PRTLoader.NewParticle(PRTLoader.GetParticleID<GargantuaParticle>(), target.Center, Vector2.Zero, (Color)default, 1f);
-			
+            GargantuaParticle FX = new GargantuaParticle();
+            FX.Initiate(target.Center);
+            ParticleEngine.ShaderParticles.Add(FX);
+
             Opus.RadialProjectileRandomDir(ModContent.ProjectileType<GargantuaStar>(), 2, target.Center, (int)(Projectile.damage * 0.2f), (int)(Projectile.knockBack * 0.5f), 14f, friendly: true);
 
 			if (hit.Crit)
@@ -339,10 +344,38 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 float speedRatio = Math.Min(1f, SPINSPEED / 0.36f);
                 int soundInterval = (int)MathHelper.Lerp(200, 20, speedRatio);
 
-                Fire fire = new Fire();
-                int Dir = Main.rand.NextBool() ? 1 : -1;
-                fire.PrepareFire(swordTip, Vector2.Zero, Dir, Main.rand.NextFloat(-0.12f, 0.12f), Color.Red, 2f, 60, FireDrawMode.NonPremultiplied);
-                ParticleEngine.BehindProjectiles.Add(fire);
+                Vector2[] Pos = new Vector2[4]
+                {
+                    Projectile.Center + Projectile.rotation.ToRotationVector2() * (Projectile.Size.Length() * (Projectile.scale * 0.80f)),
+                    Projectile.Center + Projectile.rotation.ToRotationVector2() * (Projectile.Size.Length() * (Projectile.scale * 0.60f)),
+                    Projectile.Center + Projectile.rotation.ToRotationVector2() * (Projectile.Size.Length() * (Projectile.scale * 0.40f)),
+                    Projectile.Center + Projectile.rotation.ToRotationVector2() * (Projectile.Size.Length() * (Projectile.scale * 0.20f)),
+                };
+
+                Fire[] fire = new Fire[5]
+                {
+                    new Fire(),
+                    new Fire(),
+                    new Fire(),
+                    new Fire(),
+                    new Fire()
+                };
+
+                fire[0].PrepareFire(swordTip, Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.12f, 0.12f), Color.Red, 2f, 40, FireDrawMode.NonPremultiplied);
+                ParticleEngine.BehindProjectiles.Add(fire[0]);
+
+                fire[1].PrepareFire(Pos[0], Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.12f, 0.12f), Color.Red * 0.8f, 2f, 35, FireDrawMode.NonPremultiplied);
+                ParticleEngine.BehindProjectiles.Add(fire[1]);
+
+                fire[2].PrepareFire(Pos[1], Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.12f, 0.12f), Color.Red * 0.6f, 2f, 30, FireDrawMode.NonPremultiplied);
+                ParticleEngine.BehindProjectiles.Add(fire[2]);
+
+                fire[3].PrepareFire(Pos[2], Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.12f, 0.12f), Color.Red * 0.4f, 2f, 25, FireDrawMode.NonPremultiplied);
+                ParticleEngine.BehindProjectiles.Add(fire[3]);
+
+                fire[4].PrepareFire(Pos[3], Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.12f, 0.12f), Color.Red * 0.2f, 2f, 10, FireDrawMode.NonPremultiplied);
+                ParticleEngine.BehindProjectiles.Add(fire[4]);
+
 
                 STimer++;
                 if (STimer % soundInterval == 0)

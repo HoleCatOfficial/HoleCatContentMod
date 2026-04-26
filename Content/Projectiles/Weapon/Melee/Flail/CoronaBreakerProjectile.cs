@@ -125,7 +125,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee.Flail
             float Speed = 0.04f + Modifier;
 
             Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<ColorableNeonDust>(), Vector2.Zero, 0, ColorLib.Rift, 1f);
-            PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), Projectile.Center, Projectile.velocity * 0.05f, ColorLib.Rift, 0.5f, ai1: 2);
+            //PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), Projectile.Center, Projectile.velocity * 0.05f, ColorLib.Rift, 0.5f, ai1: 2);
 
         
             foreach(Vector2 p in BodyPoints)

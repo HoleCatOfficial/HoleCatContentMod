@@ -1,3 +1,4 @@
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.MeleeWeapons;
@@ -129,7 +130,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             int splatterdir = target.position.X > player.MountedCenter.X ? 1 : -1;
             for (int i = 0; i < 7; i++)
             {
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), target.Center, new Vector2(Main.rand.NextFloat(2f, 6f) * splatterdir, 0).RotatedByRandom(0.2f), ColorLib.Ichor * Main.rand.NextFloat(0.5f, 0.8f), 1f);
+                Spark Spark = new Spark();
+                Spark.PrepareSpark(target.Center, new Vector2(Main.rand.NextFloat(2f, 6f) * splatterdir, 0).RotatedByRandom(0.1f), 0f, ColorLib.Ichor, 1f, false, 30, SparkDrawMode.Additive);
+                ParticleEngine.BehindProjectiles.Add(Spark);
             }
         }
 

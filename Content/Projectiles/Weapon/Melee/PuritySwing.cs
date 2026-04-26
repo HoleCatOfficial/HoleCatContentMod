@@ -1,4 +1,5 @@
 ﻿
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
@@ -230,8 +231,13 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             int splatterdir = target.position.X > Owner.MountedCenter.X ? 1 : -1;
             for (int i = 0; i < 7; i++)
             {
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), target.Center, new Vector2(Main.rand.NextFloat(2f, 6f) * splatterdir, 0).RotatedByRandom(0.1f), Color.Red * Main.rand.NextFloat(0.01f, 0.3f), 1f);
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), target.Center, new Vector2(Main.rand.NextFloat(2f, 6f) * splatterdir, 0).RotatedByRandom(0.1f), MainColor * Main.rand.NextFloat(0.01f, 0.3f), 0.75f);
+                Spark Spark1 = new Spark();
+                Spark1.PrepareSpark(target.Center, new Vector2(Main.rand.NextFloat(2f, 6f) * splatterdir, 0).RotatedByRandom(0.1f), 0f, Color.SkyBlue * Main.rand.NextFloat(0.1f, 0.8f), 1f, false, 30, SparkDrawMode.Additive);
+                ParticleEngine.BehindProjectiles.Add(Spark1);
+
+                Spark Spark2 = new Spark();
+                Spark2.PrepareSpark(target.Center, new Vector2(Main.rand.NextFloat(2f, 6f) * splatterdir, 0).RotatedByRandom(0.1f), 0f, Color.Red * Main.rand.NextFloat(0.1f, 0.8f), 1f, false, 30, SparkDrawMode.Additive);
+                ParticleEngine.BehindProjectiles.Add(Spark2);
             }
         }
 

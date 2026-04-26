@@ -1,4 +1,5 @@
 
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
@@ -38,39 +39,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         public override void HitNPCEffects(NPC npc, NPC.HitInfo hit)
         {
             SoundEngine.PlaySound(DTAssetLib.Impacts.ShortShine with { MaxInstances = 0, PitchVariance = 0.4f }, npc.Center);
-            if (Owner.direction > 0)
+            int splatterdir = npc.position.X > Owner.MountedCenter.X ? 1 : -1;
+            for (int i = 0; i < 7; i++)
             {
-                if (LastSwing == -1)
-                {
-                    for (int i = 0; i < 7; i++)
-                    {
-                        PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), npc.Center, new Vector2(0, Main.rand.NextFloat(2f, 6f)).RotatedByRandom(0.1f), Color.Red * Main.rand.NextFloat(0.01f, 0.3f), 1f);
-                    }
-                }
-                else
-                {
-                    for (int i = 0; i < 7; i++)
-                    {
-                        PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), npc.Center, new Vector2(0, Main.rand.NextFloat(-6f, -2f)).RotatedByRandom(0.1f), Color.Red * Main.rand.NextFloat(0.01f, 0.3f), 1f);
-                    }
-                }
-            }
-            else
-            {
-                if (LastSwing == -1)
-                {
-                    for (int i = 0; i < 7; i++)
-                    {
-                        PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), npc.Center, new Vector2(0, Main.rand.NextFloat(-6f, -2f)).RotatedByRandom(0.1f), Color.Red * Main.rand.NextFloat(0.01f, 0.3f), 1f);
-                    }
-                }
-                else
-                {
-                    for (int i = 0; i < 7; i++)
-                    {
-                        PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), npc.Center, new Vector2(0, Main.rand.NextFloat(2f, 6f)).RotatedByRandom(0.1f), Color.Red * Main.rand.NextFloat(0.01f, 0.3f), 1f);
-                    }
-                }
+                Spark Spark = new Spark();
+                Spark.PrepareSpark(npc.Center, new Vector2(Main.rand.NextFloat(2f, 6f) * splatterdir, 0).RotatedByRandom(0.1f), 0f, Color.Red * Main.rand.NextFloat(0.1f, 1f), 1f, false, 30, SparkDrawMode.Additive);
+                ParticleEngine.BehindProjectiles.Add(Spark);
             }
         }
 
@@ -97,18 +71,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
             ScaleMult = 1f;
 
-            if (CurrentState == State.SwingDown)
-            {
-                
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticlePlayerLock>(), swordTip, new Vector2(1, 0).RotatedBy(SwordLine.GetLineRotation + MathHelper.PiOver2), Color.NavajoWhite, 1f, ai1: 2, ai2: Owner.whoAmI);
-                
-            }
-            if (CurrentState == State.SwingUp)
-            {
-                
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticlePlayerLock>(), swordTip, new Vector2(1, 0).RotatedBy(SwordLine.GetLineRotation - MathHelper.PiOver2), Color.NavajoWhite, 1f, ai1: 2, ai2: Owner.whoAmI);
-                
-            }
+            SparkEdge(Owner, 0.75f, Color.Magenta, 2);
         }
     }
 }

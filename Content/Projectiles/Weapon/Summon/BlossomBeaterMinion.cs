@@ -1,4 +1,5 @@
-﻿using BreadLibrary.Core.Verlet;
+﻿using BreadLibrary.Core.Graphics.Particles;
+using BreadLibrary.Core.Verlet;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Particles;
@@ -66,6 +67,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
         public override bool PreDraw(ref Color lightColor)
         {
             Texture2D PT = TextureAssets.Projectile[Type].Value;
+            var GT = Projectile.GetGlowTexture("DestroyerTest/Content/Projectiles/Weapon/Summon", "BlossomBeaterMinion");
             SpriteEffects FX = SpriteEffects.None;
 
             float rot = Projectile.rotation;
@@ -84,7 +86,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
             Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
             Opus.DrawProjectileShadowsRotating(Projectile, Opus.Sine(2f, 5.3f), ColorLib.CursedFlames, 0.06f);
             Opus.ReturnToDefaultDrawing(Main.spriteBatch);
+
             Main.EntitySpriteDraw(PT, Projectile.Center - Main.screenPosition, null, Projectile.GetAlpha(lightColor), Projectile.rotation, PT.Size() / 2, Projectile.scale, FX);
+            Main.EntitySpriteDraw(GT.Value, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, GT.Value.Size() / 2, Projectile.scale, FX);
             return false;
         }
 
@@ -138,7 +142,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
                 lengthFactor = segmentDistance / denom * 1.2f;
 
                 // Combine into final stretch vector and apply a small global multiplier for visual tuning
-                var stretch = new Vector2(1f, lengthFactor) * 1.2f;
+                var stretch = new Vector2(lengthFactor, 1f) * 1.2f;
                 var Origin = frame.Size() * 0.5f;
 
                 if (i % 2 == 0)
@@ -151,7 +155,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
                     stretch = Vector2.One;
                     Origin = new Vector2(frame.Width / 2, 2);
                 }
-                Main.EntitySpriteDraw(tex, DrawPos, frame, drawColor, rotation, Origin, stretch, 0);
+
+                Vector2 V = Vine.Positions[i];
+                Point O = new Point((int)(V.X), (int)(V.Y));
+                Vector3 C = Lighting.GetSubLight(V);
+
+                Main.EntitySpriteDraw(tex, DrawPos, frame, new Color(C), rotation, Origin, stretch, 0);
             }
 
         }
@@ -179,11 +188,16 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
         public override void OnSpawn(IEntitySource source)
         {
             Player player = Main.player[Projectile.owner];
+
+            RandP = player.Center + new Vector2(IdealDistanceFromPlayerExact, 0);
+
             ToPlayer = new Line(Projectile.Center, player.Center);
+
+            Vector2 Handle = Projectile.Center + new Vector2(-8f, -1f).RotatedBy(Projectile.rotation);
 
             if (Vine == null)
             {
-                Vine = new VerletChain(18, 6, Projectile.Center);
+                Vine = new VerletChain(18, 6, Handle);
 
                 Vector2[] pt = ToPlayer.GetPointsAlongLine(18);
 
@@ -196,7 +210,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
 
         
         
+        public Vector2 RandP;
 
+        float glowAMT = 1f;
         public override void AI()
         {
 
@@ -204,19 +220,27 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
             ToPlayer = new Line(Projectile.Center, player.Center);
             ToMouse = new Line(Projectile.Center, Main.MouseWorld);
 
+            Vector2 Muzzle = Projectile.Center + (new Vector2(Projectile.width / 2, -4).RotatedBy(Projectile.rotation));
+            Vector2 Handle = Projectile.Center + new Vector2(-14f, -1f).RotatedBy(Projectile.rotation);
+
 
             if (Vine != null)
             {
                 Vine.Positions[^1] = player.Center;
-                Vine.Simulate(Vector2.Zero, Projectile.Center, 1.5f, 1f);
+                Vine.Simulate(Vector2.Zero, Handle, 1.5f, 1f);
             }
            
             
             Projectile.ai[1]++;
 
+            if (glowAMT > 0f)
+            {
+                glowAMT -= 0.07f;
+            }
+
             //CycleLine(ToPlayer);
 
-            Vector2 Muzzle = Projectile.Center + (new Vector2(Projectile.width / 2, -4).RotatedBy(Projectile.rotation));
+            
 
             if (!CheckActive(player))
             {
@@ -272,16 +296,30 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
                     }
                 case Condition.SweetSpot:
                     {
-                        Projectile.velocity *= 0.995f;
-                        Vector2 RandP = player.Center + new Vector2(IdealDistanceFromPlayerExact, 0);
-                        if (Main.GameUpdateCount % 240 == 0)
+                        
+                        
+                        if (/*Main.GameUpdateCount % 600 == 0*/ Main.rand.NextBool(120))
                         {
-                            RandP = RandP.RotatedByRandom(MathHelper.TwoPi);
+                            RandP = player.Center + new Vector2(IdealDistanceFromPlayerExact, 0).RotatedByRandom(MathHelper.TwoPi);
+                            float Rot = (player.Center - RandP).ToRotation() - ToPlayer.GetLineRotation;
+                            Vector2 IdealPos = player.Center + new Vector2(IdealDistanceFromPlayerExact, 0).RotatedBy(Rot);
+                            Vector2 toIdeal = IdealPos - Projectile.Center;
+                            toIdeal.Normalize();
+
+                            Projectile.velocity += toIdeal * 10f;
                         }
 
-                        Vector2 D = RandP - Projectile.Center;
-                        D.Normalize();
-                        Projectile.velocity += D;
+                        
+
+
+                        
+
+                        
+
+                        Projectile.velocity *= 0.995f;
+
+
+
 
 
                         break;
@@ -340,9 +378,14 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
                         if (Projectile.ai[1] % 85 == 0)
                         {
                             SoundEngine.PlaySound(SoundID.Item36, Projectile.Center);
+                            glowAMT = 1f;
+                            Lighting.AddLight(Muzzle, ColorLib.CursedFlames.ToVector3() * glowAMT);
                             for (int i = 0; i < 4; i++)
                             {
-                                PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), Muzzle, Vel.RotatedByRandom(0.1f), ColorLib.CursedFlames, 0.25f);
+
+                                Spark Spark = new Spark();
+                                Spark.PrepareSpark(Muzzle, Vel.RotatedByRandom(0.1f), 0f, ColorLib.CursedFlames, 0.25f, false, 30, SparkDrawMode.Additive);
+                                ParticleEngine.BehindProjectiles.Add(Spark);
                             }
                             Projectile.velocity += dir * -4f;
                             Projectile bullet = Projectile.NewProjectileDirect(Source, Muzzle, Vel, projToShoot, damage, knockBack, player.whoAmI);

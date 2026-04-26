@@ -1,4 +1,5 @@
-﻿using DestroyerTest.Common;
+﻿using BreadLibrary.Core.Graphics.Particles;
+using DestroyerTest.Common;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Particles.Comaceratic;
@@ -55,7 +56,10 @@ namespace DestroyerTest.Content.Buffs
 
                 if (Main.rand.NextBool(8))
                 {
-                    PRTLoader.NewParticle(PRTLoader.GetParticleID<WitheringSpark>(), Main.rand.NextVector2FromRectangle(npc.Hitbox), Main.rand.NextVector2Circular(2f, 2f), Color.DarkMagenta, Main.rand.NextFloat(0.05f, 0.1f));
+                    WitheringSpark Spark = new WitheringSpark();
+
+                    Spark.PrepareSpark(Main.rand.NextVector2FromRectangle(npc.Hitbox), Main.rand.NextVector2Circular(2f, 2f), 0f, Color.DarkMagenta, Main.rand.NextFloat(0.05f, 0.1f), false, 40, SparkDrawMode.Additive);
+                    ParticleEngine.ShaderParticles.Add(Spark);
                 }
 
 
@@ -101,7 +105,10 @@ namespace DestroyerTest.Content.Buffs
 
                 if (Main.rand.NextBool(8))
                 {
-                    PRTLoader.NewParticle(PRTLoader.GetParticleID<WitheringSpark>(), Main.rand.NextVector2FromRectangle(Player.Hitbox), Main.rand.NextVector2Circular(2f, 2f), Color.DarkMagenta, Main.rand.NextFloat(0.05f, 0.1f));
+                    WitheringSpark Spark = new WitheringSpark();
+
+                    Spark.PrepareSpark(Main.rand.NextVector2FromRectangle(Player.Hitbox), Main.rand.NextVector2Circular(2f, 2f), 0f, Color.DarkMagenta, Main.rand.NextFloat(0.05f, 0.1f), false, 40, SparkDrawMode.Additive);
+                    ParticleEngine.ShaderParticles.Add(Spark);
                 }
             }
         }

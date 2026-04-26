@@ -54,6 +54,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee.Quixotism
                         PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), pt[Main.rand.Next(30)], SwordLine.GetLineRotation.ToRotationVector2() * 2, new Color(255, 219, 6), 1.5f);
                         Dust.NewDustPerfect(pt[Main.rand.Next(30)], ModContent.DustType<ColorableNeonDust>(), SwordLine.GetLineRotation.ToRotationVector2() * 2, 0, new Color(255, 219, 6), 2f);
                     }
+                    SweepColor = ColorLib.Soul2;
                 }
                 else
                 {
@@ -61,6 +62,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee.Quixotism
                     {
                         Dust.NewDustPerfect(pt[Main.rand.Next(30)], ModContent.DustType<ColorableNeonDust>(), SwordLine.GetLineRotation.ToRotationVector2() * 2, 0, Color.White, 2f);
                     }
+                    SweepColor = Color.White;
                 }
             }
         }
@@ -151,7 +153,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee.Quixotism
                 }
 
                 Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-                Main.EntitySpriteDraw(powertexture, Projectile.Center - Main.screenPosition, null, (Color.White * Q.PowerOpacity) * Projectile.Opacity, Projectile.rotation + rotationOffset, origin, Projectile.scale, effects, 0);
+                Main.EntitySpriteDraw(powertexture, Projectile.Center - Main.screenPosition, null, (Color.White * Q.PowerOpacity) * Projectile.Opacity, Projectile.rotation + rotationOffset, origin, AdjustedScale, effects, 0);
                 Opus.ReturnToDefaultDrawing(Main.spriteBatch);
 
             }

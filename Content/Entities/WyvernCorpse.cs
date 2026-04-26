@@ -41,6 +41,7 @@ using DestroyerTest.Content.Projectiles.Boss.NodeBoss.Ichor;
 using ReLogic.Utilities;
 using OpusLib.Content.Helpers;
 using Terraria.GameContent;
+using BreadLibrary.Core.Graphics.Particles;
 
 namespace DestroyerTest.Content.Entities
 {
@@ -1525,8 +1526,16 @@ namespace DestroyerTest.Content.Entities
 
         public void DashParticle()
         {
-            PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), NPC.Center + new Vector2(NPC.width / 2, (NPC.height / 2) - NPC.height / 2).RotatedBy(NPC.rotation), new Vector2(10, 80).RotatedBy(NPC.rotation), ColorLib.Ichor, 1f, ai1: 2);
-            PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), NPC.Center + new Vector2(NPC.width / 2, (NPC.height / 2) - NPC.height / 2).RotatedBy(NPC.rotation), new Vector2(-10, 80).RotatedBy(NPC.rotation), ColorLib.Ichor, 1f, ai1: 2);
+            Spark Spark1 = new Spark();
+
+            Spark1.PrepareSpark(NPC.Center + new Vector2(NPC.width / 2, (NPC.height / 2) - NPC.height / 2).RotatedBy(NPC.rotation), new Vector2(10, 80).RotatedBy(NPC.rotation), 0f, ColorLib.Ichor, 1f, false, 40, SparkDrawMode.Additive);
+            ParticleEngine.ShaderParticles.Add(Spark1);
+
+            Spark Spark2 = new Spark();
+
+            Spark2.PrepareSpark(NPC.Center + new Vector2(NPC.width / 2, (NPC.height / 2) - NPC.height / 2).RotatedBy(NPC.rotation), new Vector2(10, -80).RotatedBy(NPC.rotation), 0f, ColorLib.Ichor, 1f, false, 40, SparkDrawMode.Additive);
+            ParticleEngine.ShaderParticles.Add(Spark2);
+
         }
 
         public void NodeSpawn()

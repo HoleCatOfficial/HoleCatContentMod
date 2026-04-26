@@ -151,7 +151,10 @@ namespace DestroyerTest.Content.Buffs
 					Chance = (int)MathHelper.Clamp(Chance, 1, MaxStack);
 					if (Main.rand.NextBool(Chance))
 					{
-						PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), Main.rand.NextVector2FromRectangle(npc.Hitbox), new Vector2(0f, -1f).RotatedByRandom(0.05f), ColorLib.TenebrisGradient, 1.0f, ai1: 2);
+                        Spark Spark = new Spark();
+
+                        Spark.PrepareSpark(Main.rand.NextVector2FromRectangle(npc.Hitbox), new Vector2(0f, -1f).RotatedByRandom(0.05f), 0f, ColorLib.TenebrisGradient, 1f, false, 40, SparkDrawMode.Additive);
+                        ParticleEngine.ShaderParticles.Add(Spark);
 					}
 				}
 				if (Main.rand.NextBool(6))

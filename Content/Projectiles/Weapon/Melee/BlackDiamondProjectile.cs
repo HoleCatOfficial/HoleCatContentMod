@@ -105,8 +105,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         {
             SoundEngine.PlaySound(DTAssetLib.Impacts.FleshHit with { PitchVariance = 0.2f });
             SoundEngine.PlaySound(DTAssetLib.Impacts.ShortShine with { PitchVariance = 0.2f });
-            Opus.RadialSpreadParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), 4, Projectile.Center, 1f, DTColorUtils.Pastel(ColorLib.TenebrisBlue, 0.5f), 0.5f, 1.5f, offset: Projectile.velocity.ToRotation());
-            Opus.RadialSpreadParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), 4, Projectile.Center, 1f, DTColorUtils.Pastel(ColorLib.TenebrisBlue, 0.95f), 0.1f, 0.75f, offset: Projectile.velocity.ToRotation() + MathHelper.PiOver4);
+            //Opus.RadialSpreadParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), 4, Projectile.Center, 1f, DTColorUtils.Pastel(ColorLib.TenebrisBlue, 0.5f), 0.5f, 1.5f, offset: Projectile.velocity.ToRotation());
+            //Opus.RadialSpreadParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), 4, Projectile.Center, 1f, DTColorUtils.Pastel(ColorLib.TenebrisBlue, 0.95f), 0.1f, 0.75f, offset: Projectile.velocity.ToRotation() + MathHelper.PiOver4);
             
         }
     }

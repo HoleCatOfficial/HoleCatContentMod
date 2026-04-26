@@ -1,3 +1,4 @@
+using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
 using DestroyerTest.Common.Systems;
@@ -1317,7 +1318,11 @@ namespace DestroyerTest.Content.Entities
                     Dust spark = Dust.NewDustDirect(NPC.position, NPC.width, NPC.height, ModContent.DustType<SoulDust>(), Main.rand.NextFloat(-0.02f, 0.02f), Main.rand.NextFloat(-3.5f, -2.5f), 40, default, 0.75f);
                     spark.noGravity = true;
                 }
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), Main.rand.NextVector2FromRectangle(NPC.Hitbox), new Vector2(Main.rand.NextFloat(-0.2f, 0.2f), Main.rand.NextFloat(-10.5f, -2.5f)), ColorLib.Soul, 0.5f, ai1: 2);
+
+                Spark Spark = new Spark();
+
+                Spark.PrepareSpark(Main.rand.NextVector2FromRectangle(NPC.Hitbox), new Vector2(Main.rand.NextFloat(-0.2f, 0.2f), Main.rand.NextFloat(-10.5f, -2.5f)), 0f, ColorLib.Soul, 0.5f, false, 40, SparkDrawMode.Additive);
+                ParticleEngine.ShaderParticles.Add(Spark);
 
                 Lighting.AddLight(NPC.Center, ColorLib.Soul.ToVector3() * 0.5f);
             }
@@ -1328,7 +1333,11 @@ namespace DestroyerTest.Content.Entities
                     Dust spark = Dust.NewDustDirect(NPC.position, NPC.width, NPC.height, ModContent.DustType<SoulDust>(), Main.rand.NextFloat(-0.02f, 0.02f), Main.rand.NextFloat(-3.5f, -2.5f), 40, default, 0.75f);
                     spark.noGravity = true;
                 }
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), Main.rand.NextVector2FromRectangle(NPC.Hitbox), new Vector2(Main.rand.NextFloat(-0.2f, 0.2f), Main.rand.NextFloat(-10.5f, -2.5f)), ColorLib.Soul, 0.5f, ai1: 2);
+
+                Spark Spark = new Spark();
+
+                Spark.PrepareSpark(Main.rand.NextVector2FromRectangle(NPC.Hitbox), new Vector2(Main.rand.NextFloat(-0.2f, 0.2f), Main.rand.NextFloat(-10.5f, -2.5f)), 0f, ColorLib.Soul, 0.5f, false, 40, SparkDrawMode.Additive);
+                ParticleEngine.ShaderParticles.Add(Spark);
 
                 Lighting.AddLight(NPC.Center, ColorLib.Soul.ToVector3() * 0.5f);
             }
@@ -1341,7 +1350,10 @@ namespace DestroyerTest.Content.Entities
                         Dust fire = Dust.NewDustDirect(NPC.position, NPC.width, NPC.height, DustID.FireworksRGB, Main.rand.NextFloat(-0.2f, 0.2f), Main.rand.NextFloat(-13.5f, -2.5f), 40, ColorLib.CursedFlames, 2.5f);
                         fire.noGravity = true;
 
-                        PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), Main.rand.NextVector2FromRectangle(NPC.Hitbox), new Vector2(Main.rand.NextFloat(-0.2f, 0.2f), Main.rand.NextFloat(-10.5f, -2.5f)), ColorLib.CursedFlames, 0.5f, ai1: 2);
+                        Spark Spark = new Spark();
+
+                        Spark.PrepareSpark(Main.rand.NextVector2FromRectangle(NPC.Hitbox), new Vector2(Main.rand.NextFloat(-0.2f, 0.2f), Main.rand.NextFloat(-10.5f, -2.5f)), 0f, ColorLib.CursedFlames, 0.5f, false, 40, SparkDrawMode.Additive);
+                        ParticleEngine.ShaderParticles.Add(Spark);
                     }
                     Lighting.AddLight(NPC.Center, ColorLib.CursedFlames.ToVector3() * 0.5f);
                 }
@@ -1352,7 +1364,10 @@ namespace DestroyerTest.Content.Entities
                         Dust fire = Dust.NewDustDirect(NPC.position, NPC.width, NPC.height, DustID.FireworksRGB, Main.rand.NextFloat(-0.2f, 0.2f), Main.rand.NextFloat(-13.5f, -2.5f), 40, ColorLib.CursedFlames, 2.5f);
                         fire.noGravity = true;
 
-                        PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), Main.rand.NextVector2FromRectangle(NPC.Hitbox), new Vector2(Main.rand.NextFloat(-0.2f, 0.2f), Main.rand.NextFloat(-10.5f, -2.5f)), ColorLib.CursedFlames, 0.5f, ai1: 2);
+                        Spark Spark = new Spark();
+
+                        Spark.PrepareSpark(Main.rand.NextVector2FromRectangle(NPC.Hitbox), new Vector2(Main.rand.NextFloat(-0.2f, 0.2f), Main.rand.NextFloat(-10.5f, -2.5f)), 0f, ColorLib.CursedFlames, 0.5f, false, 40, SparkDrawMode.Additive);
+                        ParticleEngine.ShaderParticles.Add(Spark);
                     }
                     Lighting.AddLight(NPC.Center, ColorLib.CursedFlames.ToVector3() * 0.5f);
                 }
@@ -1363,7 +1378,10 @@ namespace DestroyerTest.Content.Entities
                         Dust fire = Dust.NewDustDirect(NPC.position, NPC.width, NPC.height, DustID.FireworksRGB, Main.rand.NextFloat(-0.2f, 0.2f), Main.rand.NextFloat(-13.5f, -2.5f), 40, ColorLib.TenebrisGradient, 2.5f);
                         fire.noGravity = true;
 
-                        PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), Main.rand.NextVector2FromRectangle(NPC.Hitbox), new Vector2(Main.rand.NextFloat(-0.2f, 0.2f), Main.rand.NextFloat(-10.5f, -2.5f)), ColorLib.TenebrisGradient, 0.5f, ai1: 2);
+                        Spark Spark = new Spark();
+
+                        Spark.PrepareSpark(Main.rand.NextVector2FromRectangle(NPC.Hitbox), new Vector2(Main.rand.NextFloat(-0.2f, 0.2f), Main.rand.NextFloat(-10.5f, -2.5f)), 0f, ColorLib.TenebrisGradient, 0.5f, false, 40, SparkDrawMode.Additive);
+                        ParticleEngine.ShaderParticles.Add(Spark);
                     }
                     Lighting.AddLight(NPC.Center, ColorLib.TenebrisGradient.ToVector3() * 0.5f);
                 }
