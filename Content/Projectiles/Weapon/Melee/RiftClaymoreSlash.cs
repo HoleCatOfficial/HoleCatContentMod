@@ -35,6 +35,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = 10;
             Projectile.hide = true;
+            Projectile.DamageType = ModContent.GetInstance<DTTrueMeleeClass>();
         }
 
         int F = 6;

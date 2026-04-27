@@ -50,8 +50,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 			Projectile.aiStyle = 0; // The ai style of the projectile (0 means custom AI). For more please reference the source code of Terraria
 			Projectile.friendly = true; // Can the projectile deal damage to enemies?
 			Projectile.hostile = false; // Can the projectile deal damage to the player?
-			Projectile.DamageType = DamageClass.Ranged; // Makes the projectile deal ranged damage. You can set in to DamageClass.Throwing, but that is not used by any vanilla items
-			Projectile.penetrate = 8; // How many monsters the projectile can penetrate.
+			Projectile.DamageType = ModContent.GetInstance<DTRogueClass>(); // Makes the projectile deal ranged damage. You can set in to DamageClass.Throwing, but that is not used by any vanilla items
+            Projectile.penetrate = 8; // How many monsters the projectile can penetrate.
 			Projectile.timeLeft = 600; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
 			Projectile.alpha = 255; // The transparency of the projectile, 255 for completely transparent. Our custom AI below fades our projectile in. Make sure to delete this if you aren't using an aiStyle that fades in.
 			Projectile.light = 0.5f; // How much light emit around the projectile

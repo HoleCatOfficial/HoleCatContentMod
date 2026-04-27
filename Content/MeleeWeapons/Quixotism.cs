@@ -39,8 +39,8 @@ namespace DestroyerTest.Content.MeleeWeapons
             Item.SetSpecialMeleeStats();
             Item.autoReuse = true;
 
-			Item.DamageType = DamageClass.Melee;
-			Item.damage = 30;
+            Item.DamageType = ModContent.GetInstance<DTTrueMeleeClass>();
+            Item.damage = 30;
 			Item.knockBack = 8f;
 			Item.crit = 26;
 

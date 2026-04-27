@@ -33,7 +33,7 @@ namespace DestroyerTest.Content.OrionCrossover
             Item.knockBack = 16;
             Item.autoReuse = false;
             Item.damage = 28;
-            Item.DamageType = DamageClass.Melee;
+            Item.DamageType = ModContent.GetInstance<DTTrueMeleeClass>();
             Item.noMelee = true;
             Item.noUseGraphic = true;
             Item.shoot = ModContent.ProjectileType<SabhatiSwing>();

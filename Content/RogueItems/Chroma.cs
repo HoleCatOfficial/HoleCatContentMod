@@ -1,4 +1,5 @@
-﻿using DestroyerTest.Content.Projectiles.Weapon.Rogue;
+﻿using DestroyerTest.Common;
+using DestroyerTest.Content.Projectiles.Weapon.Rogue;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -33,10 +34,10 @@ namespace DestroyerTest.Content.RogueItems
 			Item.knockBack = 15f;
 			Item.noUseGraphic = true; // The item should not be visible when used
 			Item.noMelee = true; // The projectile will do the damage and not the item
-			Item.DamageType = DamageClass.Ranged;
+			Item.DamageType = ModContent.GetInstance<DTRogueClass>();
 
-			// Projectile Properties
-			Item.shootSpeed = 25f;
+            // Projectile Properties
+            Item.shootSpeed = 25f;
 			Item.shoot = ModContent.ProjectileType<Chroma_Projectile>(); // The projectile that will be thrown
 		}
 

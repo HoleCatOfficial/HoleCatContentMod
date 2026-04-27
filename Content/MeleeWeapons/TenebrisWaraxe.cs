@@ -1,21 +1,22 @@
-using System;
+using DestroyerTest.Common;
 using DestroyerTest.Content.Dusts;
+using DestroyerTest.Content.MeleeWeapons;
+using DestroyerTest.Content.Particles;
+using DestroyerTest.Content.Projectiles;
+using DestroyerTest.Content.Projectiles.Weapon.Rogue;
   
 using DestroyerTest.Content.Resources;
+using DestroyerTest.Rarity;
+using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using DestroyerTest.Rarity;
-using InnoVault.PRT;
-using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.MeleeWeapons;
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Content.Projectiles.Weapon.Rogue;
 
 namespace DestroyerTest.Content.MeleeWeapons
 {
@@ -37,7 +38,7 @@ namespace DestroyerTest.Content.MeleeWeapons
             Item.noMelee = true;
             Item.noUseGraphic = true;
 
-            Item.DamageType = DamageClass.Melee; // Whether your item is part of the melee class.
+            Item.DamageType = ModContent.GetInstance<DTRogueClass>(); // Whether your item is part of the melee class.
             Item.damage = 300; // The damage your item deals.
             Item.knockBack = 17; // The force of knockback of the weapon. Maximum is 20
             Item.crit = 4; // The critical strike chance the weapon has. The player, by default, has a 4% critical strike chance.

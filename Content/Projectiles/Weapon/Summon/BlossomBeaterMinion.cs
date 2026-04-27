@@ -213,6 +213,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
         public Vector2 RandP;
 
         float glowAMT = 1f;
+        public bool CanFire = false;
         public override void AI()
         {
 
@@ -354,6 +355,17 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
             Rotation(foundTarget, targetCenter);
             Spread();
 
+            var FX = new BlossomBeaterFire();
+
+            if (CanFire)
+            {
+                FX.Initiate(Muzzle, Projectile.rotation + MathHelper.PiOver2, DTColorUtils.Pastel(ColorLib.CursedFlames, 0.3f), 0.15f, 10);
+                CanFire = false;
+            }
+            
+            FX.position = Muzzle;
+            ParticleEngine.BehindProjectiles.Add(FX);
+
             if (foundTarget)
             {
 
@@ -375,11 +387,17 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
                         dir.Normalize();
                         Vector2 Vel = dir * 8;
 
+                       
+
                         if (Projectile.ai[1] % 85 == 0)
                         {
                             SoundEngine.PlaySound(SoundID.Item36, Projectile.Center);
                             glowAMT = 1f;
                             Lighting.AddLight(Muzzle, ColorLib.CursedFlames.ToVector3() * glowAMT);
+
+                            CanFire = true;
+                            
+
                             for (int i = 0; i < 4; i++)
                             {
 

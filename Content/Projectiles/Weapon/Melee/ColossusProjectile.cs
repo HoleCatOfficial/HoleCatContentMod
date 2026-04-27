@@ -92,7 +92,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Projectile.penetrate = -1; // Projectile pierces infinitely
             Projectile.tileCollide = false; // Projectile does not collide with tiles
             Projectile.ownerHitCheck = true; // Make sure the owner of the projectile has line of sight to the target (aka can't hit things through tile).
-            Projectile.DamageType = DamageClass.Melee; // Projectile is a melee projectile
+            Projectile.DamageType = ModContent.GetInstance<DTTrueMeleeClass>(); // Projectile is a melee projectile
         }
 
         public override void OnSpawn(IEntitySource source)

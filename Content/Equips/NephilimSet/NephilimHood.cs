@@ -46,17 +46,7 @@ namespace DestroyerTest.Content.Equips.NephilimSet
 
 		// UpdateArmorSet allows you to give set bonuses to the armor.
 		public override void UpdateArmorSet(Player player) {
-			ParticleSpawnTimer++; // Increment the timer each frame, used to control projectile spawn timing
-			player.meleeEnchant = 4;
-			player.armorEffectDrawShadowLokis = true;
-			bool isHoldingLaevateinn = player.HeldItem.type == ModContent.ItemType<Laevateinn>();
-			bool isHoldingTrueLaevateinn = player.HeldItem.type == ModContent.ItemType<TrueLaevateinn>();
 
-			if ((isHoldingLaevateinn || isHoldingTrueLaevateinn) && ParticleSpawnTimer > 60) {
-				PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRing>(), player.Center, Vector2.Zero, Color.SkyBlue, 1);
-				ParticleSpawnTimer = 0; // Reset the timer after spawning the projectile
-			}
-			
 		}
 
          public override void ArmorSetShadows(Player player)

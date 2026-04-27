@@ -62,7 +62,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             Projectile.timeLeft = 10000;
             Projectile.penetrate = -1;
             Projectile.tileCollide = false;
-            Projectile.DamageType = DamageClass.Melee;
+            Projectile.DamageType = ModContent.GetInstance<DTTrueMeleeClass>();
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = 15;
             Projectile.ownerHitCheck = true;
@@ -192,10 +192,17 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
                     BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance
                 );
 
-                if (field != null)
+                if (DTCrossMod.FargosSoulsMod.TryFind<ModItem>("TungstenEnchantment", out var Tungst))
                 {
-                    float tungstenScale = (float)field.GetValue(gp);
-                    AdjustedScale = Owner.GetAdjustedItemScale(Owner.HeldItem) * ScaleMult * tungstenScale;
+                    if (Owner.miscEquips.Contains(Tungst.Item))
+                    {
+
+                        if (field != null)
+                        {
+                            float tungstenScale = (float)field.GetValue(gp);
+                            AdjustedScale = Owner.GetAdjustedItemScale(Owner.HeldItem) * ScaleMult * tungstenScale;
+                        }
+                    }
                 }
             }
         }

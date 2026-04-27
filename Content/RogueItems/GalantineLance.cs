@@ -1,14 +1,15 @@
+using DestroyerTest.Common;
+using DestroyerTest.Content.Projectiles;
+using DestroyerTest.Content.Projectiles.Weapon.Rogue;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.Tiles;
+using DestroyerTest.Content.Tiles.Riftplate;
+using DestroyerTest.Rarity;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using DestroyerTest.Rarity;
-using DestroyerTest.Content.Tiles.Riftplate;
-using DestroyerTest.Content.Projectiles;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using DestroyerTest.Content.Projectiles.Weapon.Rogue;
 
 namespace DestroyerTest.Content.RogueItems
 {
@@ -36,6 +37,7 @@ namespace DestroyerTest.Content.RogueItems
             Item.rare = ModContent.RarityType<StellarRarity>();
             Item.damage = 30;
             Item.autoReuse = false; // Prevents animation overlap
+            Item.DamageType = ModContent.GetInstance<DTRogueClass>();
         }
 
 		public override void AddRecipes()

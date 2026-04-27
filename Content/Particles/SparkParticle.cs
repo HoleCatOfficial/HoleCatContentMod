@@ -67,9 +67,12 @@ namespace DestroyerTest.Content.Particles
                 velocity.Y += 0.1f;
             }
 
-            if (Lifetime < (maxLifetime / 2))
+            if (Lifetime < maxLifetime / 2)
             {
-                Width = MathHelper.Lerp(Width, 0f, (float)(Lifetime / (maxLifetime / 2)));
+                float progress = 1f - (float)Lifetime / (maxLifetime / 2f);
+                Width = MathHelper.Lerp(1f, 0f, progress);
+
+      
             }
 
             if (Lifetime <= 0)
@@ -162,18 +165,20 @@ namespace DestroyerTest.Content.Particles
             sparkDrawMode = drawMode;
         }
 
-        public void PrepareSpark(Vector2 Position, Vector2 Velocity, int SpinDirection, float SpinSpeed, Color startColor, Color endColor, float Scale, bool Gravity, int MaxLifetime, SparkDrawMode drawMode)
+        public void PrepareSpark(Vector2 Position, Vector2 Velocity, float Rotation, Color[] Colormap, float Scale, bool Gravity, int MaxLifetime, SparkDrawMode drawMode)
         {
             this.position = Position;
             this.velocity = Velocity;
+            this.rotation = Rotation;
             this.scale = Scale;
             this.maxLifetime = MaxLifetime;
             this.Lifetime = MaxLifetime;
-            this.startcol = startColor;
-            this.endcol = endColor;
+            this.ColorMap = Colormap;
+            this.usesColorMap = true;
             this.usesColorMap = false;
             this.Opacity = 1f;
             this.gravity = Gravity;
+
 
             sparkDrawMode = drawMode;
         }
@@ -202,9 +207,10 @@ namespace DestroyerTest.Content.Particles
                 velocity.Y += 0.1f;
             }
 
-            if (Lifetime < (maxLifetime / 2))
+            if (Lifetime < maxLifetime / 2)
             {
-                Width = MathHelper.Lerp(Width, 0f, (float)(Lifetime / (maxLifetime / 2)));
+                float progress = 1f - (float)Lifetime / (maxLifetime / 2f);
+                Width = MathHelper.Lerp(1f, 0f, progress);
             }
 
             if (Lifetime <= 0)

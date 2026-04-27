@@ -14,3 +14,6 @@ ScepterClass: {
 		- Vials: Flasks are shimmerable into Vials. Vials only affect thrown scepters.
 		'''
 }
+
+DTRogueClass.DisplayName: Rogue Damage
+DTTrueMeleeClass.DisplayName: True Melee Damage

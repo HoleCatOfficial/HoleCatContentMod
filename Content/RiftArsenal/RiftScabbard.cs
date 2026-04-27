@@ -371,20 +371,6 @@ namespace DestroyerTest.Content.RiftArsenal
 				CommentaryTimer = 0;
 			}
 
-			if (player.HeldItem.type == ModContent.ItemType<Laevateinn>() && CommentaryTimer >= 360) 
-			{
-				CombatText.NewText(Projectile.Hitbox, ColorLib.Rift, "I can tell already you're a michevous type...", true);
-				PlayRadioINSound();
-				CommentaryTimer = 0;
-			}
-
-			if (player.HeldItem.type == ModContent.ItemType<TrueLaevateinn>() && CommentaryTimer >= 360) 
-			{
-				CombatText.NewText(Projectile.Hitbox, ColorLib.Rift, "I can tell already you're a michevous type...", true);
-				PlayRadioINSound();
-				CommentaryTimer = 0;
-			}
-
 			if (player.HeldItem.type == ModContent.ItemType<SoulEdge>() && CommentaryTimer >= 360) 
 			{
 				CombatText.NewText(Projectile.Hitbox, ColorLib.Rift, "Spooky! I like your style!", true);

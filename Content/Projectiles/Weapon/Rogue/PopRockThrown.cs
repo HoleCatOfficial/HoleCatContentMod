@@ -25,7 +25,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             Projectile.height = 32;
             Projectile.friendly = true;
             Projectile.hostile = false;
-            Projectile.DamageType = DamageClass.Throwing;
+            Projectile.DamageType = ModContent.GetInstance<DTRogueClass>();
             Projectile.penetrate = 1;
             Projectile.timeLeft = 300;
             Projectile.ignoreWater = true;

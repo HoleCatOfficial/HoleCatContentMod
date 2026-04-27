@@ -1,4 +1,5 @@
 
+using DestroyerTest.Common;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -31,8 +32,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 			Projectile.aiStyle = ProjAIStyleID.Yoyo; // The projectile's ai style. Yoyos use aiStyle 99 (ProjAIStyleID.Yoyo). A lot of yoyo code checks for this aiStyle to work properly.
 
 			Projectile.friendly = true; // Player shot projectile. Does damage to enemies but not to friendly Town NPCs.
-			Projectile.DamageType = DamageClass.MeleeNoSpeed; // Benefits from melee bonuses. MeleeNoSpeed means the item will not scale with attack speed.
-			Projectile.penetrate = -1; // All vanilla yoyos have infinite penetration. The number of enemies the yoyo can hit before being pulled back in is based on YoyosLifeTimeMultiplier.
+			Projectile.DamageType = ModContent.GetInstance<DTTrueMeleeClass>(); // Benefits from melee bonuses. MeleeNoSpeed means the item will not scale with attack speed.
+            Projectile.penetrate = -1; // All vanilla yoyos have infinite penetration. The number of enemies the yoyo can hit before being pulled back in is based on YoyosLifeTimeMultiplier.
 									   // Projectile.scale = 1f; // The scale of the projectile. Most yoyos are 1f, but a few are larger. The Kraken is the largest at 1.2f
 			Projectile.netImportant = true;
 			Projectile.netUpdate = true;

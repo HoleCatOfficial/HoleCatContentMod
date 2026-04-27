@@ -1,3 +1,4 @@
+using DestroyerTest.Common;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -28,8 +29,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 			Projectile.width = 16;
 			Projectile.height = 16;
 			Projectile.friendly = true;
-			Projectile.DamageType = DamageClass.Melee;
-			Projectile.penetrate = 3; // The projectile can hit 3 enemies.
+			Projectile.DamageType = ModContent.GetInstance<DTTrueMeleeClass>();
+            Projectile.penetrate = 3; // The projectile can hit 3 enemies.
 			Projectile.usesLocalNPCImmunity = true;
 			Projectile.localNPCHitCooldown = -1;
 			Projectile.tileCollide = false;

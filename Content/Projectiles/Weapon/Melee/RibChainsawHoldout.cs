@@ -41,6 +41,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             */
             Projectile.netImportant = true;
             Projectile.hide = true;
+            Projectile.DamageType = ModContent.GetInstance<DTTrueMeleeClass>();
         }
 
         private void AnimateProjectile() {

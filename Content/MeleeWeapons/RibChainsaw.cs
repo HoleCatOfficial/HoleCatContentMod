@@ -1,4 +1,5 @@
 
+using DestroyerTest.Common;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Weapon.Melee;
 using DestroyerTest.Content.Resources;
@@ -43,8 +44,8 @@ namespace DestroyerTest.Content.MeleeWeapons
 			Item.reuseDelay = 10;
 			Item.knockBack = 7;  // The knockback of your sword, this is dynamically adjusted in the projectile code.
 			Item.damage = 120; // The damage of your sword, this is dynamically adjusted in the projectile code.
-			Item.DamageType = DamageClass.Melee; // Deals melee damage
-			Item.noMelee = true;  // This makes sure the item does not deal damage from the swinging animation
+            Item.DamageType = ModContent.GetInstance<DTTrueMeleeClass>(); // Deals melee damage
+            Item.noMelee = true;  // This makes sure the item does not deal damage from the swinging animation
 			Item.noUseGraphic = true; // This makes sure the item does not get shown when the player swings his hand
 
 			// Projectile Properties

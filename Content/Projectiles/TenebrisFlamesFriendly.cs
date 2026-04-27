@@ -73,11 +73,11 @@ namespace DestroyerTest.Content.Projectiles
 			Lighting.AddLight(Projectile.Center, ColorLib.TenebrisGradient.ToVector3() * 0.2f);
 
             Fire fire = new Fire();
-            fire.PrepareFire(Projectile.Center, Vector2.Zero, Main.rand.Next(1, 3), 0.1f, ColorLib.TenebrisGradient * 0.75f, 1.8f, 100, FireDrawMode.Additive);
+            fire.PrepareFire(Projectile.Center, Vector2.Zero, DTUtils.RandomDirection(2), 0.2f, ColorLib.TenebrisGradient * 0.5f, 0.8f, 100, FireDrawMode.Additive);
             ParticleEngine.BehindProjectiles.Add(fire);
 
             Fire fire2 = new Fire();
-            fire2.PrepareFire(Projectile.Center, Vector2.Zero, Main.rand.Next(1, 3), 0.1f, ColorLib.TenebrisGradient, 1f, 100, FireDrawMode.Additive);
+            fire2.PrepareFire(Projectile.Center, Vector2.Zero, DTUtils.RandomDirection(2), 0.2f, ColorLib.TenebrisGradient, 0.5f, 100, FireDrawMode.Additive);
             ParticleEngine.BehindProjectiles.Add(fire2);
 
 			PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Projectile.Center, Vector2.Zero, ColorLib.TenebrisGradient * 0.5f, 1.25f);
@@ -190,12 +190,13 @@ namespace DestroyerTest.Content.Projectiles
 			Lighting.AddLight(Projectile.Center, ColorLib.TenebrisGradient.ToVector3() * 0.2f);
 
             Fire fire = new Fire();
-            fire.PrepareFire(Projectile.Center, Vector2.Zero, Main.rand.Next(1, 3), 0.1f, ColorLib.TenebrisGradient * 0.75f, 1.8f, 100, FireDrawMode.Additive);
+            fire.PrepareFire(Projectile.Center, Vector2.Zero, DTUtils.RandomDirection(2), 0.2f, ColorLib.TenebrisGradient * 0.5f, 0.8f, 100, FireDrawMode.Additive);
             ParticleEngine.BehindProjectiles.Add(fire);
 
             Fire fire2 = new Fire();
-            fire2.PrepareFire(Projectile.Center, Vector2.Zero, Main.rand.Next(1, 3), 0.1f, ColorLib.TenebrisGradient, 1f, 100, FireDrawMode.Additive);
+            fire2.PrepareFire(Projectile.Center, Vector2.Zero, DTUtils.RandomDirection(2), 0.2f, ColorLib.TenebrisGradient, 0.5f, 100, FireDrawMode.Additive);
             ParticleEngine.BehindProjectiles.Add(fire2);
+
 
             PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Projectile.Center, Vector2.Zero, ColorLib.TenebrisGradient * 0.5f, 1.25f);
 		}

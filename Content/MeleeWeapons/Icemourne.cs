@@ -1,13 +1,14 @@
-using System;
-using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.Audio;
-using Terraria.ID;
-using Terraria.ModLoader;
-using Terraria.DataStructures;
+using DestroyerTest.Common;
  
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Weapon.Melee;
+using Microsoft.Xna.Framework;
+using System;
+using Terraria;
+using Terraria.Audio;
+using Terraria.DataStructures;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.MeleeWeapons
 {
@@ -36,7 +37,7 @@ namespace DestroyerTest.Content.MeleeWeapons
 			Item.knockBack = 30;  // The knockback of your sword, this is dynamically adjusted in the projectile code.
 			Item.autoReuse = true; // This determines whether the weapon has autoswing
 			Item.damage = 25; // The damage of your sword, this is dynamically adjusted in the projectile code.
-			Item.DamageType = DamageClass.Melee; // Deals melee damage
+            Item.DamageType = ModContent.GetInstance<DTTrueMeleeClass>(); // Deals melee damage
             Item.crit = 16; // The critical strike chance the weapon has. The player, by default, has a 4% critical strike chance.
 
 			// Projectile Properties

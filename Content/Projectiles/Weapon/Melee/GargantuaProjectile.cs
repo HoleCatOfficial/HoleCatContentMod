@@ -92,7 +92,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Projectile.penetrate = -1;
             Projectile.tileCollide = false;
             Projectile.ownerHitCheck = true;
-            Projectile.DamageType = DamageClass.MeleeNoSpeed;
+            Projectile.DamageType = ModContent.GetInstance<DTTrueMeleeClass>();
         }
 
         public override void OnSpawn(IEntitySource source)

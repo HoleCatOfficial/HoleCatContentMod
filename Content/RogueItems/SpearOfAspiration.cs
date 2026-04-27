@@ -1,12 +1,13 @@
+using DestroyerTest.Common;
+using DestroyerTest.Content.Projectiles.Weapon.Rogue;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.Tiles;
+using DestroyerTest.Content.Tiles.Riftplate;
+using DestroyerTest.Rarity;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using DestroyerTest.Rarity;
-using DestroyerTest.Content.Tiles.Riftplate;
-using DestroyerTest.Content.Projectiles.Weapon.Rogue;
-using Terraria.Audio;
 
 namespace DestroyerTest.Content.RogueItems
 {
@@ -32,7 +33,8 @@ namespace DestroyerTest.Content.RogueItems
 			Item.rare = ModContent.RarityType<VesperRarity>();
 			Item.damage = 10;
 			Item.autoReuse = true;
-		}
+			Item.DamageType = ModContent.GetInstance<DTRogueClass>();
+        }
 
 		public override void AddRecipes() {
 			CreateRecipe()

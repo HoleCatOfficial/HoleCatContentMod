@@ -36,7 +36,7 @@ namespace DestroyerTest.Content.MeleeWeapons
             Item.damage = 300;
             Item.knockBack = 6.5f;
             Item.noUseGraphic = true;
-            Item.DamageType = DamageClass.Melee;
+            Item.DamageType = ModContent.GetInstance<DTTrueMeleeClass>();
             Item.noMelee = true;
 
             Item.shootSpeed = 3.7f;

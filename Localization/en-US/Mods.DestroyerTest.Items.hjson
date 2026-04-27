@@ -4548,3 +4548,13 @@ ShadeHeart: {
 		You emit light.
 		'''
 }
+
+SoulSlug: {
+	DisplayName: Soul Slug
+	Tooltip: ""
+}
+
+CursedHammer: {
+	DisplayName: Cursed Hammer
+	Tooltip: ""
+}

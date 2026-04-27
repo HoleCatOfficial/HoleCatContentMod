@@ -1,15 +1,16 @@
+using DestroyerTest.Common;
+using DestroyerTest.Content.Projectiles;
+using DestroyerTest.Content.Projectiles.Weapon.Rogue;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.Tiles;
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
-using DestroyerTest.Rarity;
 using DestroyerTest.Content.Tiles.Riftplate;
-using DestroyerTest.Content.Projectiles;
+using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using DestroyerTest.Content.Projectiles.Weapon.Rogue;
+using Terraria;
 using Terraria.Audio;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.RogueItems
 {
@@ -36,6 +37,7 @@ namespace DestroyerTest.Content.RogueItems
             Item.damage = 16;
             Item.knockBack = 5;
             Item.autoReuse = false;
+            Item.DamageType = ModContent.GetInstance<DTRogueClass>();
         }
 	}
 }

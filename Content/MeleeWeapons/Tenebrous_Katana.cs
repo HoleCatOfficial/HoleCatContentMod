@@ -28,8 +28,8 @@ namespace DestroyerTest.Content.MeleeWeapons
 
         public override void SetDefaults() {
 			Item.damage = 200;
-			Item.DamageType = DamageClass.MeleeNoSpeed; // Deals melee damage
-			Item.width = 88;
+            Item.DamageType = ModContent.GetInstance<DTTrueMeleeClass>(); // Deals melee damage
+            Item.width = 88;
 			Item.height = 196;
 			Item.useTime = 40;
 			Item.useAnimation = 40;

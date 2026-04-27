@@ -26,7 +26,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             Projectile.height = 34;
             Projectile.friendly = true;
             Projectile.hostile = false;
-            Projectile.DamageType = DamageClass.Melee;
+            Projectile.DamageType = ModContent.GetInstance<DTRogueClass>();
             Projectile.penetrate = 2;
             Projectile.timeLeft = 600;
             Projectile.light = 0.5f;

@@ -157,7 +157,7 @@ namespace DestroyerTest.Common.Systems
 
                 ModContent.ItemType<Contempt>(),
                 ModContent.ItemType<BlossomBeater>(),
-                ModContent.ItemType<GigaCursedHammerWeapon>(),
+                ModContent.ItemType<CursedHammer>(),
 
                 ModContent.ItemType<DeadlyBlossom>(),
                 ModContent.ItemType<HaepienNodeCharm>(),

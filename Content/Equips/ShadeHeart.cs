@@ -73,7 +73,7 @@ namespace DestroyerTest.Content.Equips
 
                 Spark Spark = new Spark();
 
-                Spark.PrepareSpark(Main.rand.NextVector2FromRectangle(Player.Hitbox), new Vector2(0f, -5f).RotatedByRandom(0.05f), 0f, ColorLib.TenebrisGradient, 0.06f, false, 40, SparkDrawMode.Additive);
+                Spark.PrepareSpark(Main.rand.NextVector2FromRectangle(Player.Hitbox), new Vector2(0f, -5f).RotatedByRandom(0.05f), 0f, ColorLib.TenebrisGradient * 0.25f, 0.6f, false, 30, SparkDrawMode.Additive);
                 ParticleEngine.ShaderParticles.Add(Spark);
             }
         }

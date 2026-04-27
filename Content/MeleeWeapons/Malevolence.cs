@@ -32,7 +32,7 @@ namespace DestroyerTest.Content.MeleeWeapons
             Item.knockBack = 70;
             Item.autoReuse = false;
             Item.damage = 350;
-            Item.DamageType = DamageClass.Melee;
+            Item.DamageType = ModContent.GetInstance<DTTrueMeleeClass>();
             Item.noMelee = true;
             Item.noUseGraphic = true;
             Item.shoot = ModContent.ProjectileType<MalevolenceSwing>();

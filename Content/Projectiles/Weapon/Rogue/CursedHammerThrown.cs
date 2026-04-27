@@ -1,8 +1,9 @@
-using BreadLibrary.Core.Graphics.Particles;
+﻿using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Consumables;
 using DestroyerTest.Content.Particles;
+using DestroyerTest.Content.Particles.fire;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -18,41 +19,36 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 {
-    public class TenebrisWaraxeProjectile : ModProjectile
+    public class CursedHammerThrown : ModProjectile
     {
         public int Variant = Main.rand.Next(0, 3);
         private bool returning = false;
         private int flightTime = 0;
         private int soundCooldown = 0; // Initialize a cooldown timer
-        private SoundStyle Woosh = new SoundStyle("DestroyerTest/Assets/Audio/SwordSounds/HeavySwing", 3) with { PitchVariance = 0.4f, MaxInstances = 0 };
+        private SoundStyle Woosh = DTAssetLib.SwordSounds.MemoriamSwing with { Pitch = 0.7f, PitchVariance = 0.4f, MaxInstances = 0 };
         private SoundStyle TileHit = new SoundStyle("DestroyerTest/Assets/Audio/TenebrousConstruct/Hit", 5) with { PitchVariance = 0.4f, MaxInstances = 0 };
-        public Color clr = Color.White;
 
         public override void SetStaticDefaults()
         {
-            Main.projFrames[Type] = 3;
+
         }
 
         public override void SetDefaults()
         {
-            Projectile.width = 96;
-            Projectile.height = 96;
+            Projectile.width = 62;
+            Projectile.height = 62;
             Projectile.friendly = true;
             Projectile.penetrate = 4;
             Projectile.light = 0.5f;
             Projectile.ignoreWater = true;
-            Projectile.timeLeft = 600; // 10 seconds max lifespan
+            Projectile.timeLeft = 300;
             Projectile.DamageType = ModContent.GetInstance<DTRogueClass>();
-            Projectile.netImportant = true;
-            Projectile.netUpdate = true;
             Projectile.tileCollide = true;
-            Projectile.ArmorPenetration = 10;
+            Projectile.ArmorPenetration = 22;
         }
-        
+
         public override void OnSpawn(IEntitySource source)
         {
-            Projectile.frame = Variant;
-            
         }
 
         public override void SendExtraAI(BinaryWriter writer)
@@ -74,7 +70,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
         {
 
             Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-            Main.EntitySpriteDraw(DTAssetLib.SwingFX.Value, Projectile.Center - Main.screenPosition, null, clr, Projectile.rotation, DTAssetLib.SwingFX.Value.Size() / 2, 0.65f, SpriteEffects.None, 0);
+            Main.EntitySpriteDraw(DTAssetLib.FireSwing.Value, Projectile.Center - Main.screenPosition, null, ColorLib.CursedFlames, Projectile.rotation, DTAssetLib.FireSwing.Value.Size() / 2, 0.65f, SpriteEffects.None, 0);
             Opus.ReturnToDefaultDrawing(Main.spriteBatch);
             return true;
         }
@@ -83,18 +79,6 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 
         public override void AI()
         {
-            if (Variant == 0)
-            {
-                clr = ColorLib.TenebrisMagenta;
-            }
-            if (Variant == 1)
-            {
-                clr = ColorLib.TenebrisBlue;
-            }
-            if (Variant == 2)
-            {
-                clr = ColorLib.TenebrisBeige;
-            }
             // Decrease the cooldown timer on each tick
             if (soundCooldown > 0)
             {
@@ -109,15 +93,16 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             }
 
 
-
-
-
             Player player = Main.player[Projectile.owner];
 
             RangeOfPlayer = Projectile.Center.Distance(player.Center) < 20;
 
             // Always spinning
-            Projectile.rotation += 0.4f * Projectile.direction;
+            Projectile.rotation += 0.7f * Projectile.direction;
+
+            LerpingFire fire = new LerpingFire();
+            fire.PrepareFire(Projectile.Center + new Vector2(Projectile.width / 2, -(Projectile.width / 2)).RotatedBy(Projectile.rotation), Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.3f, 0.3f), ColorLib.WretchedColorMap, 1f, 100, FireDrawMode.Additive);
+            ParticleEngine.BehindProjectiles.Add(fire);
 
             if (!returning)
             {
@@ -136,7 +121,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
                 float speed = MathHelper.Lerp(Projectile.velocity.Length(), 25f, 0.08f); // Smooth acceleration
                 Projectile.velocity = returnDirection.SafeNormalize(Vector2.Zero) * speed;
 
-                
+
 
                 // If close enough, remove the projectile
                 if (returnDirection.LengthSquared() < 45f || RangeOfPlayer) // 4 pixels radius
@@ -148,9 +133,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            SoundStyle Hit = new SoundStyle("DestroyerTest/Assets/Audio/Scholar/ShieldHit", 3) with
+            SoundStyle Hit = DTAssetLib.Impacts.BrightBell with
             {
-            PitchVariance = 0.5f
+                PitchVariance = 0.5f
             };
 
             Player player = Main.player[Main.myPlayer];  // Accessing the current player
@@ -159,20 +144,23 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             SoundEngine.PlaySound(Hit, Projectile.position);
             for (int i = 0; i < 10; i++)
             {
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.FireworksRGB, 0, 0, 150, clr, 5f);
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.FireworksRGB, 0, 0, 150, ColorLib.CursedFlames, 1f);
 
-                Spark Spark = new Spark();
-                Spark.PrepareSpark(Projectile.Center, new Vector2(Main.rand.NextFloat(-8, 8), Main.rand.NextFloat(-15, -10)), 0f, clr, 1f, true, 30, SparkDrawMode.Additive);
+                LerpingSpark Spark = new LerpingSpark();
+                Spark.PrepareSpark(Projectile.Center, new Vector2(Main.rand.NextFloat(-8, 8), Main.rand.NextFloat(-15, -10)), 0f, ColorLib.WretchedColorMap, 0.5f, true, 15, SparkDrawMode.Additive);
                 ParticleEngine.BehindProjectiles.Add(Spark);
 
             }
-            Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), Projectile.Center, Vector2.Zero, Color.White, 0.01f, ai0: 0.8f);
-            Opus.NewParticleFloatAI(PRTLoader.GetParticleID<Boom5>(), Projectile.Center, Vector2.Zero, clr, 0.01f, ai0: 1.5f);
+
+            BasePRT P1 = Opus.NewParticleFloatAI(PRTLoader.GetParticleID<SimpleExplosionParticle>(), Projectile.Center, Vector2.Zero, ColorLib.CursedFlames, 0.01f, 2f, 0.3f, 0.01f);
+            P1.Rotation = Main.rand.NextFloat(MathHelper.TwoPi);
+            BasePRT P2 = Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), Projectile.Center, Vector2.Zero, DTColorUtils.Pastel(ColorLib.CursedFlames, 0.5f), 0.01f, 0.5f, 0.1f, 0.02f);
+            P2.Rotation = Main.rand.NextFloat(MathHelper.TwoPi);
+
             if (Projectile.penetrate == 1)
             {
                 returning = true;
             }
-            Opus.RadialSpreadProjectile(ModContent.ProjectileType<TenebrisStarFriendly>(), 9, Projectile.Center, Projectile.damage / 3, 4, 15, AI2: 1, offset: Projectile.rotation);
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)
@@ -183,16 +171,17 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 
             for (int i = 0; i < 10; i++)
             {
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.FireworksRGB, 0, 0, 150, clr, 5f);
-                Spark Spark = new Spark();
-                Spark.PrepareSpark(Projectile.Center, new Vector2(Main.rand.NextFloat(-8, 8), Main.rand.NextFloat(-15, -10)), 0f, clr, 1f, true, 30, SparkDrawMode.Additive);
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.FireworksRGB, 0, 0, 150, ColorLib.CursedFlames, 1f);
+
+                LerpingSpark Spark = new LerpingSpark();
+                Spark.PrepareSpark(Projectile.Center, new Vector2(Main.rand.NextFloat(-8, 8), Main.rand.NextFloat(-15, -10)), 0f, ColorLib.WretchedColorMap, 0.5f, true, 15, SparkDrawMode.Additive);
                 ParticleEngine.BehindProjectiles.Add(Spark);
 
             }
 
-            BasePRT P1 = Opus.NewParticleFloatAI(PRTLoader.GetParticleID<SimpleExplosionParticle>(), Projectile.Center, Vector2.Zero, clr, 0.01f, 6f, 0.3f, 0.01f);
+            BasePRT P1 = Opus.NewParticleFloatAI(PRTLoader.GetParticleID<SimpleExplosionParticle>(), Projectile.Center, Vector2.Zero, ColorLib.CursedFlames, 0.01f, 2f, 0.3f, 0.01f);
             P1.Rotation = Main.rand.NextFloat(MathHelper.TwoPi);
-            BasePRT P2 = Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), Projectile.Center, Vector2.Zero, DTColorUtils.Pastel(clr, 0.5f), 0.01f, 1f, 0.1f, 0.02f);
+            BasePRT P2 = Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), Projectile.Center, Vector2.Zero, DTColorUtils.Pastel(ColorLib.CursedFlames, 0.5f), 0.01f, 0.5f, 0.1f, 0.02f);
             P2.Rotation = Main.rand.NextFloat(MathHelper.TwoPi);
 
             returning = true;
@@ -208,10 +197,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 
                 for (int i = 0; i < 10; i++)
                 {
-                    Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.TintableDustLighted, 0, 0, 150, clr, 5f);
+                    Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.TintableDustLighted, 0, 0, 150, ColorLib.CursedFlames, 5f);
                 }
             }
-            
+
         }
 
     }

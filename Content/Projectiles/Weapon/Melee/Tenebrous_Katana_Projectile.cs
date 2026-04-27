@@ -35,7 +35,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Projectile.width = 400;
             Projectile.height = 400;
             Projectile.friendly = true;
-            Projectile.DamageType = DamageClass.MeleeNoSpeed;
+            Projectile.DamageType = ModContent.GetInstance<DTTrueMeleeClass>();
             Projectile.penetrate = -1;
             Projectile.tileCollide = false;
             Projectile.ignoreWater = true;
