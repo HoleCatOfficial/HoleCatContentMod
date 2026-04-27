@@ -6,6 +6,7 @@ using DestroyerTest.Content.Equips.ScepterAccessories;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Resources;
+using DestroyerTest.Rarity;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -28,6 +29,7 @@ namespace DestroyerTest.Content.Equips
             Item.maxStack = 1;
             Item.value = 1000;
             Item.accessory = true;
+            Item.rare = ModContent.RarityType<ShimmeringRarity>();
         }
 
         public override void UpdateAccessory(Player player, bool hideVisual)

@@ -41,7 +41,7 @@ namespace DestroyerTest.Content.Particles
             Lifetime--;
 
 
-            float progress = 1f - (float)Lifetime / (maxLifetime / 2f);
+            float progress = (float)Lifetime / (maxLifetime / 2f);
             Opacity = MathHelper.Lerp(1f, 0f, progress);
             //scale = MathHelper.Lerp(InitScale, InitScale * 0.5f, progress);
             

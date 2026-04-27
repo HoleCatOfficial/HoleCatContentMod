@@ -64,7 +64,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
                 foreach (Projectile proj in Main.projectile)
                 {
-                    if ((proj.hostile || !proj.friendly) && proj.active)
+                    if ((proj.hostile) && proj.active)
                     {
                         Vector2 start = player.MountedCenter;
                         Vector2 end = start + Projectile.rotation.ToRotationVector2() * ((Projectile.Size.Length()) * Projectile.scale);

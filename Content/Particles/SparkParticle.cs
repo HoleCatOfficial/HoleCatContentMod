@@ -119,7 +119,7 @@ namespace DestroyerTest.Content.Particles
         public override void Draw(ref ParticleRendererSettings settings, SpriteBatch spritebatch)
         {
             Opus.StartSpriteBatchWithBlending(spritebatch, GetBlendState(sparkDrawMode), SpriteSortMode.Deferred);
-            spritebatch.Draw(GetTextureProperties().Item1, position - Main.screenPosition, GetTextureProperties().Item2, col * Opacity, rotation, GetTextureProperties().Item3, new Vector2(scale * Width, scale * 1.75f), SpriteEffects.None, 0f);
+            spritebatch.Draw(GetTextureProperties().Item1, position - Main.screenPosition, GetTextureProperties().Item2, col * Opacity, rotation, GetTextureProperties().Item3, new Vector2(scale * Width, scale), SpriteEffects.None, 0f);
             Opus.ReturnToDefaultDrawing(spritebatch);
         }
     }
@@ -258,7 +258,7 @@ namespace DestroyerTest.Content.Particles
         {
 
             Opus.StartSpriteBatchWithBlending(spritebatch, GetBlendState(sparkDrawMode), SpriteSortMode.Deferred);
-            spritebatch.Draw(GetTextureProperties().Item1, position - Main.screenPosition, GetTextureProperties().Item2, col * Opacity, rotation, GetTextureProperties().Item3,  new Vector2(scale * Width, scale * 1.75f), SpriteEffects.None, 0f);
+            spritebatch.Draw(GetTextureProperties().Item1, position - Main.screenPosition, GetTextureProperties().Item2, col * Opacity, rotation, GetTextureProperties().Item3,  new Vector2(scale * Width, scale), SpriteEffects.None, 0f);
             Opus.ReturnToDefaultDrawing(spritebatch);
         }
 

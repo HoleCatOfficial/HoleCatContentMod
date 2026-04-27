@@ -2229,7 +2229,7 @@ namespace DestroyerTest.Content.Entities
 
             // Orbit settings
             float radius = modBoss.NodeRadius;
-            float speed = 0.05f;
+            float speed = 0.01f;
             float angle = Main.GameUpdateCount * speed;
 
             // Get a list of all active CursedFlameNode NPCs
