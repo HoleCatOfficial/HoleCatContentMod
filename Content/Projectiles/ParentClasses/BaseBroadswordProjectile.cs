@@ -82,7 +82,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             if (targetAngle == Vector2.Zero)
                 targetAngle = Vector2.UnitX * Projectile.spriteDirection;
 
-            LastSwing = Owner.direction == 1 ? 1 : -1;
+            LastSwing = Owner.direction == 1 ? -1 : 1;
         }
 
         public override void SendExtraAI(BinaryWriter writer)
@@ -237,7 +237,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         public virtual float SwingSpeed { get; set; } = 0.15f;
         public void ControlRotation()
         {
-            float speedFactor = Owner.GetTotalAttackSpeed(DamageClass.Melee);
+            float speedFactor = Owner.GetTotalAttackSpeed<DTTrueMeleeClass>();
             float t = SwingSpeed * speedFactor;
 
             switch (CurrentState)
@@ -247,7 +247,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
                         if (!SetPos)
                         {
                             Projectile.rotation = DownPoint;
-                            WaitTimer = (int)(10 * Owner.GetAttackSpeed(DamageClass.Melee));
+                            WaitTimer = (int)(10 * Owner.GetTotalAttackSpeed<DTTrueMeleeClass>());
                             SlashStartRotation = DownPoint;
                             SetPos = true;
                         }
@@ -279,7 +279,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
                         if (!SetPos)
                         {
                             Projectile.rotation = UpPoint;
-                            WaitTimer = (int)(10 * Owner.GetAttackSpeed(DamageClass.Melee));
+                            WaitTimer = (int)(10 * Owner.GetTotalAttackSpeed<DTTrueMeleeClass>());
                             SlashStartRotation = UpPoint;
                             SetPos = true;
                         }

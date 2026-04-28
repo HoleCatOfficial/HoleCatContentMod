@@ -76,14 +76,14 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
                 // Negative luck reduces value based on difficulty
                 if (Main.expertMode) MultiplyAmounts(ref copper, ref silver, ref gold, ref platinum, ExpertPenaltyModifier);
                 else if (Main.masterMode) MultiplyAmounts(ref copper, ref silver, ref gold, ref platinum, MasterPenaltyModifier);
-                else if (DestroyerTestMod.EternityIsActive()) MultiplyAmounts(ref copper, ref silver, ref gold, ref platinum, EternityPenaltyModifier);
+                else if (DestroyerTestMod.EternityIsActive) MultiplyAmounts(ref copper, ref silver, ref gold, ref platinum, EternityPenaltyModifier);
                 // Classic Mode with negative luck does nothing
             }
 
             // --- Difficulty modifiers (stacked on top of luck) ---
             if (Main.expertMode) MultiplyAmounts(ref copper, ref silver, ref gold, ref platinum, ExpertValueModifier);
             if (Main.masterMode) MultiplyAmounts(ref copper, ref silver, ref gold, ref platinum, MasterValueModifier);
-            if (DestroyerTestMod.EternityIsActive()) MultiplyAmounts(ref copper, ref silver, ref gold, ref platinum, EternityValueModifier);
+            if (DestroyerTestMod.EternityIsActive) MultiplyAmounts(ref copper, ref silver, ref gold, ref platinum, EternityValueModifier);
 
             // Apply final value
             Item.value = Item.buyPrice(platinum, gold, silver, copper);

@@ -50,7 +50,7 @@ namespace DestroyerTest.Content.Magic
 
         public override bool CanUseItem(Player player)
         {
-            if (!DestroyerTestMod.EternityIsActive())
+            if (!DestroyerTestMod.EternityIsActive)
             {
                 return false;
             }

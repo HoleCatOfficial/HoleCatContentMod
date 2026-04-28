@@ -290,7 +290,7 @@ namespace DestroyerTest.Content.Entities
 
             AITimer++;
 
-            if (!DestroyerTestMod.EternityIsActive())
+            if (!DestroyerTestMod.EternityIsActive)
             {
                 NormalAI();
                 Music = MusicLoader.GetMusicSlot("DestroyerTest/Assets/Music/ConstitutionBoss");

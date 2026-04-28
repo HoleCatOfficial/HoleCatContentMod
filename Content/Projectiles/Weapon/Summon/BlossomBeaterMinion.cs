@@ -189,9 +189,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
         {
             Player player = Main.player[Projectile.owner];
 
-            RandP = player.Center + new Vector2(IdealDistanceFromPlayerExact, 0);
+            RandP = player.MountedCenter + new Vector2(IdealDistanceFromPlayerExact, 0);
 
-            ToPlayer = new Line(Projectile.Center, player.Center);
+            ToPlayer = new Line(Projectile.Center, player.MountedCenter);
 
             Vector2 Handle = Projectile.Center + new Vector2(-8f, -1f).RotatedBy(Projectile.rotation);
 
@@ -218,7 +218,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
         {
 
             Player player = Main.player[Projectile.owner];
-            ToPlayer = new Line(Projectile.Center, player.Center);
+            ToPlayer = new Line(Projectile.Center, player.MountedCenter);
             ToMouse = new Line(Projectile.Center, Main.MouseWorld);
 
             Vector2 Muzzle = Projectile.Center + (new Vector2(Projectile.width / 2, -4).RotatedBy(Projectile.rotation));
@@ -227,7 +227,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
 
             if (Vine != null)
             {
-                Vine.Positions[^1] = player.Center;
+                Vine.Positions[^1] = player.MountedCenter;
                 Vine.Simulate(Vector2.Zero, Handle, 1.5f, 1f);
             }
            
@@ -248,7 +248,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
                 return;
             }
 
-            CurrentDistance = Projectile.Center.Distance(player.Center);
+            CurrentDistance = Projectile.Center.Distance(player.MountedCenter);
 
             if (CurrentDistance > DistancefromPlayerToTeleport)
             {
@@ -275,12 +275,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
             {
                 case Condition.TeleportToPlayer:
                     {
-                        Projectile.Center = player.Center;
+                        Projectile.Center = player.MountedCenter;
                         break;
                     }
                 case Condition.TooFarFromPlayer:
                     {
-                        Vector2 targ1 = player.Center + new Vector2(IdealDistanceFromPlayerExact, 0).RotatedBy(ToPlayer.GetLineRotation + MathHelper.Pi);
+                        Vector2 targ1 = player.MountedCenter + new Vector2(IdealDistanceFromPlayerExact, 0).RotatedBy(ToPlayer.GetLineRotation + MathHelper.Pi);
                         Vector2 toTarget = targ1 - Projectile.Center;
                         float dist = toTarget.Length();
 
@@ -301,9 +301,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
                         
                         if (/*Main.GameUpdateCount % 600 == 0*/ Main.rand.NextBool(120))
                         {
-                            RandP = player.Center + new Vector2(IdealDistanceFromPlayerExact, 0).RotatedByRandom(MathHelper.TwoPi);
-                            float Rot = (player.Center - RandP).ToRotation() - ToPlayer.GetLineRotation;
-                            Vector2 IdealPos = player.Center + new Vector2(IdealDistanceFromPlayerExact, 0).RotatedBy(Rot);
+                            RandP = player.MountedCenter + new Vector2(IdealDistanceFromPlayerExact, 0).RotatedByRandom(MathHelper.TwoPi);
+                            float Rot = (player.MountedCenter - RandP).ToRotation() - ToPlayer.GetLineRotation;
+                            Vector2 IdealPos = player.MountedCenter + new Vector2(IdealDistanceFromPlayerExact, 0).RotatedBy(Rot);
                             Vector2 toIdeal = IdealPos - Projectile.Center;
                             toIdeal.Normalize();
 
@@ -327,7 +327,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
                     }
                 case Condition.TooCloseToPlayer:
                     {
-                        Vector2 targ1 = player.Center + new Vector2(IdealDistanceFromPlayerExact, 0).RotatedBy(ToPlayer.GetLineRotation + MathHelper.Pi);
+                        Vector2 targ1 = player.MountedCenter + new Vector2(IdealDistanceFromPlayerExact, 0).RotatedBy(ToPlayer.GetLineRotation + MathHelper.Pi);
                         Vector2 toTarget = targ1 - Projectile.Center;
                         float dist = toTarget.Length();
 

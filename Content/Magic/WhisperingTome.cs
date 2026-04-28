@@ -1,6 +1,7 @@
 ﻿using DestroyerTest.Content.Projectiles.Weapon.Magic;
 using DestroyerTest.Content.Projectiles.Weapon.Magic.StarWand;
 using DestroyerTest.Content.Projectiles.Weapon.Melee;
+using DestroyerTest.Content.Resources;
 using DestroyerTest.Rarity;
 using System;
 using System.Collections.Generic;
@@ -38,6 +39,15 @@ namespace DestroyerTest.Content.Magic
         public override bool CanUseItem(Player player)
         {
             return player.ownedProjectileCounts[Item.shoot] < 1;
+        }
+
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient(ItemID.SpellTome)
+                .AddIngredient<SunscorchedCinder>(4)
+                .AddIngredient<Living_Shadow>(22)
+                .Register();
         }
     }
 }

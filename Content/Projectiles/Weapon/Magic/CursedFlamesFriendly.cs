@@ -44,7 +44,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 		{
 			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
             LerpingFire fire = new LerpingFire();
-            fire.PrepareFire(Projectile.Center, Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.3f, 0.3f), ColorLib.WretchedColorMap, 3f, 100, FireDrawMode.Additive);
+            fire.PrepareFire(Projectile.Center, Vector2.Zero, DTUtils.RandomDirection(2), 0.2f, ColorLib.WretchedColorMap, 1f, 100, FireDrawMode.Additive);
             ParticleEngine.BehindProjectiles.Add(fire);
         }
 

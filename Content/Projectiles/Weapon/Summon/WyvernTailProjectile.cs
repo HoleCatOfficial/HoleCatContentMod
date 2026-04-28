@@ -49,7 +49,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
 
 			for (int i = 0; i < Main.rand.Next(2, 7); i++)
 			{
-				if (!DestroyerTestMod.EternityIsActive())
+				if (!DestroyerTestMod.EternityIsActive)
 				{
 					Projectile.NewProjectile(Projectile.GetSource_OnHit(target), AboveTarget, ToTarget * 18, ProjectileID.GoldenShowerFriendly, Projectile.damage / 3, 3, Projectile.owner);
 				}

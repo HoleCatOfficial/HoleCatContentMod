@@ -129,7 +129,7 @@ namespace DestroyerTest.Content.Entities
             NPC.npcSlots = 90f;
             NPC.netID = ModContent.NPCType<NightmareRoseBoss>();
             NPC.BossBar = ModContent.GetInstance<CorruptBossBar>();
-            GeneralEternityChanges(EternityIsActive());
+            GeneralEternityChanges(DestroyerTestMod.EternityIsActive);
         }
 
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
@@ -181,28 +181,6 @@ namespace DestroyerTest.Content.Entities
             }
 
             NPC.frame.Y = frameIndex * frameHeight;
-        }
-
-
-
-        public static bool EternityIsActive()
-        {
-            if (ModLoader.TryGetMod("FargowiltasSouls", out Mod frgo))
-            {
-                object result = frgo.Call("EternityMode");
-                if (result is bool enabled)
-                {
-                    if (enabled)
-                        return true;
-                    else
-                        return false;
-                }
-            }
-            else
-            {
-
-            }
-            return false;
         }
 
         public static bool SecretSeed()
@@ -532,7 +510,7 @@ namespace DestroyerTest.Content.Entities
 
             if (currentState != AttackState.Desperation && currentState != AttackState.KillIdle)
             {
-                if (!EternityIsActive() && (Main.masterMode || Main.expertMode))
+                if (!DestroyerTestMod.MasochistIsActive)
                 {
                     BorderCol = ColorLib.CursedFlames;
                     BorderDustType = DustID.CursedTorch;
@@ -573,7 +551,7 @@ namespace DestroyerTest.Content.Entities
                     Border.scale = Main.rand.NextFloat(0.2f, 4.0f);
                 }
 
-                if (!Main.masterMode && (Main.expertMode || EternityIsActive()) && currentState != AttackState.SpawnIdle)
+                if (!Main.masterMode && (Main.expertMode || DestroyerTestMod.EternityIsActive) && currentState != AttackState.SpawnIdle)
                 {
                     ModifyClouds();
                 }
@@ -704,7 +682,7 @@ namespace DestroyerTest.Content.Entities
                 Main.musicVolume -= 0.1f;
                 Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/RoseIdle");
             }
-            if (!Main.dedServ && !EternityIsActive() && currentState != AttackState.SpawnIdle)
+            if (!Main.dedServ && !DestroyerTestMod.EternityIsActive && currentState != AttackState.SpawnIdle)
             {
                 if (!SetVolume)
                 {
@@ -714,7 +692,7 @@ namespace DestroyerTest.Content.Entities
                 }
                 Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Tribulation");
             }
-            if (!Main.dedServ && EternityIsActive() && !muscfg.EternityMusic && currentState != AttackState.SpawnIdle)
+            if (!Main.dedServ && DestroyerTestMod.EternityIsActive && !muscfg.EternityMusic && currentState != AttackState.SpawnIdle)
             {
                 if (!SetVolume)
                 {
@@ -724,7 +702,7 @@ namespace DestroyerTest.Content.Entities
                 }
                 Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Tribulation");
             }
-            if (!Main.dedServ && EternityIsActive() && muscfg.EternityMusic && currentState != AttackState.SpawnIdle)
+            if (!Main.dedServ && DestroyerTestMod.EternityIsActive && muscfg.EternityMusic && currentState != AttackState.SpawnIdle)
             {
                 if (!SetVolume)
                 {
@@ -734,7 +712,7 @@ namespace DestroyerTest.Content.Entities
                 }
                 Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Placeholder4");
             }
-            if (!Main.dedServ && EternityIsActive() && Main.masterMode && muscfg.EternityMusic && currentState != AttackState.SpawnIdle)
+            if (!Main.dedServ && DestroyerTestMod.MasochistIsActive && muscfg.EternityMusic && currentState != AttackState.SpawnIdle)
             {
                 if (!SetVolume)
                 {
@@ -845,15 +823,15 @@ namespace DestroyerTest.Content.Entities
                         }
 
                         int IdleMax = -1;
-                        if (!Main.expertMode && !Main.masterMode && !EternityIsActive())
+                        if (!Main.expertMode && !Main.masterMode && !DestroyerTestMod.EternityIsActive)
                         {
                             IdleMax = 80;
                         }
-                        if (Main.expertMode && !Main.masterMode && !EternityIsActive())
+                        if (Main.expertMode && !Main.masterMode && !DestroyerTestMod.EternityIsActive)
                         {
                             IdleMax = 70;
                         }
-                        if (Main.masterMode || EternityIsActive())
+                        if (Main.masterMode || DestroyerTestMod.EternityIsActive)
                         {
                             IdleMax = 60;
                         }
@@ -890,7 +868,7 @@ namespace DestroyerTest.Content.Entities
                     break;
                 case AttackState.CursedFlames:
                     {
-                        if (!EternityIsActive())
+                        if (!DestroyerTestMod.EternityIsActive)
                         {
                             if (FlameStartTimer >= 120)
                             {
@@ -919,7 +897,7 @@ namespace DestroyerTest.Content.Entities
                                 ResetState();
                             }
                         }
-                        if (EternityIsActive())
+                        if (DestroyerTestMod.EternityIsActive)
                         {
 
                             if (FlameStartTimer >= 120)
@@ -957,7 +935,7 @@ namespace DestroyerTest.Content.Entities
                         {
                             ResetState();
                         }
-                        if (EternityIsActive() && !Divided)
+                        if (DestroyerTestMod.EternityIsActive && !Divided)
                         {
                             if (DartTimer < 800)
                             {
@@ -977,7 +955,7 @@ namespace DestroyerTest.Content.Entities
                     }
                 case AttackState.FlameRing:
                     {
-                        if (EternityIsActive())
+                        if (DestroyerTestMod.EternityIsActive)
                         {
                             if (FlameRingCount < 9 && Main.GameUpdateCount % 60 == 0)
                             {
@@ -1011,7 +989,7 @@ namespace DestroyerTest.Content.Entities
                     }
                 case AttackState.Lances:
                     {
-                        if (EternityIsActive())
+                        if (DestroyerTestMod.EternityIsActive)
                         {
                             int numProjectiles = 7;
                             float rotationStep = MathHelper.TwoPi / numProjectiles;
@@ -1041,7 +1019,7 @@ namespace DestroyerTest.Content.Entities
                 case AttackState.Napalm:
                     {
                         VileThornCooldown++;
-                        if ((!EternityIsActive() && !Main.masterMode) || (EternityIsActive() && !Main.masterMode))
+                        if (!DestroyerTestMod.MasochistIsActive)
                         {
                             player.wingTime = 0;
                             if (NapalmDelay >= 120)
@@ -1084,7 +1062,7 @@ namespace DestroyerTest.Content.Entities
                                 }
                             }
                         }
-                        if (EternityIsActive() && Main.masterMode)
+                        if (DestroyerTestMod.MasochistIsActive)
                         {
                             if (Main.GameUpdateCount % 120 == 0)
                             {
@@ -1145,7 +1123,7 @@ namespace DestroyerTest.Content.Entities
                         NPC Minion;
                         if (NPC.life < NPC.lifeMax * 0.4f && !HammerActive)
                         {
-                            bool eternity = EternityIsActive();
+                            bool eternity = DestroyerTestMod.EternityIsActive;
                             //Main.NewText("EternityIsActive returned: " + eternity);
 
                             if (!eternity)
@@ -1171,7 +1149,7 @@ namespace DestroyerTest.Content.Entities
                         {
                             SummonSouls();
                             SoulSpawnCount++;
-                            if (EternityIsActive())
+                            if (DestroyerTestMod.EternityIsActive)
                             {
                                 float angle = Main.rand.NextFloat(MathHelper.TwoPi);
                                 for (int f = 0; f < 2; f++)
@@ -1191,7 +1169,7 @@ namespace DestroyerTest.Content.Entities
                     break;
                 case AttackState.ArenaDivide:
                     {
-                        if (EternityIsActive())
+                        if (DestroyerTestMod.EternityIsActive)
                         {
                             if (Main.GameUpdateCount % 60 == 0)
                             {
@@ -1343,7 +1321,7 @@ namespace DestroyerTest.Content.Entities
             }
             else
             {
-                if (!EternityIsActive() && !Main.masterMode)
+                if (!DestroyerTestMod.EternityIsActive)
                 {
                     if (Main.rand.NextBool())
                     {
@@ -1357,7 +1335,7 @@ namespace DestroyerTest.Content.Entities
                     }
                     Lighting.AddLight(NPC.Center, ColorLib.CursedFlames.ToVector3() * 0.5f);
                 }
-                if (!EternityIsActive() && Main.masterMode)
+                if (DestroyerTestMod.EternityIsActive)
                 {
                     if (Main.rand.NextBool())
                     {
@@ -1371,7 +1349,7 @@ namespace DestroyerTest.Content.Entities
                     }
                     Lighting.AddLight(NPC.Center, ColorLib.CursedFlames.ToVector3() * 0.5f);
                 }
-                if (EternityIsActive() && Main.masterMode)
+                if (DestroyerTestMod.MasochistIsActive)
                 {
                     if (Main.rand.NextBool())
                     {
@@ -1408,11 +1386,11 @@ namespace DestroyerTest.Content.Entities
             if (FlameStartTimer < 120 && FlameStartTimer >= 0 && currentState == AttackState.CursedFlames)
             {
                 Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-                if (!EternityIsActive())
+                if (!DestroyerTestMod.EternityIsActive)
                 {
                     GlowConeWarning_CursedFlames();
                 }
-                if (EternityIsActive() && !Main.masterMode)
+                if (DestroyerTestMod.EternityIsActive && !DestroyerTestMod.MasochistIsActive)
                 {
                     GlowConeWarning_CursedFlamesEternity();
                 }
@@ -1691,7 +1669,7 @@ namespace DestroyerTest.Content.Entities
                 SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/SoulSummon") with { MaxInstances = 0, PitchVariance = 0.2f });
                 player.GetModPlayer<ScreenshakePlayer>().screenshakeTimer = 10;
                 player.GetModPlayer<ScreenshakePlayer>().screenshakeMagnitude = 8;
-                if (!EternityIsActive())
+                if (!DestroyerTestMod.EternityIsActive)
                 {
                     for (int a = 0; a < 10; a++)
                     {
@@ -1699,7 +1677,7 @@ namespace DestroyerTest.Content.Entities
                         Projectile.NewProjectile(Entity.GetSource_FromThis(), SpawnPoint, new Vector2(0, -8), ModContent.ProjectileType<TormentedSoul>(), 10, 2);
                     }
                 }
-                if (EternityIsActive())
+                if (DestroyerTestMod.EternityIsActive)
                 {
                     for (int a = 0; a < 5; a++)
                     {
@@ -1780,7 +1758,7 @@ namespace DestroyerTest.Content.Entities
 
             float rotationOffset = ContemptAttackRotationOffset;
 
-            if (!EternityIsActive())
+            if (!DestroyerTestMod.EternityIsActive)
             {
 
                 if (Main.GameUpdateCount % 10 == 0)
@@ -1797,7 +1775,7 @@ namespace DestroyerTest.Content.Entities
                         Vector2 toOrigin = NPCHead - spawnPosition;
                         toOrigin = toOrigin.SafeNormalize(Vector2.UnitY);
 
-                        bool Maso = EternityIsActive() && Main.masterMode;
+                        bool Maso = DestroyerTestMod.MasochistIsActive;
                         int flametype = Maso ? ModContent.ProjectileType<TenebrisFlamesHostile_NoHoming>() : ModContent.ProjectileType<CursedFlameProj>();
                         flame = Projectile.NewProjectileDirect(
                             Entity.GetSource_FromThis(),
@@ -1820,7 +1798,7 @@ namespace DestroyerTest.Content.Entities
                     flame.Kill();
                 }
             }
-            if (EternityIsActive() && Main.masterMode)
+            if (DestroyerTestMod.MasochistIsActive)
             {
                 if (LaserWarnTimer == 119)
                 {
@@ -1921,7 +1899,7 @@ namespace DestroyerTest.Content.Entities
                 VortexFireUD = Main.rand.NextBool(2);
                 SetDir3 = false;
             }
-            if (EternityIsActive() && !Main.masterMode)
+            if (DestroyerTestMod.EternityIsActive && !Main.masterMode)
             {
                 for (int r = 0; r < 3; r++)
                 {
@@ -1932,7 +1910,7 @@ namespace DestroyerTest.Content.Entities
                     Projectile.NewProjectile(NPC.GetSource_FromAI(), spawn, new Vector2(0, dirY), ModContent.ProjectileType<CursedFlameVortex>(), 20, 5);
                 }
             }
-            if (EternityIsActive() && Main.masterMode)
+            if (DestroyerTestMod.MasochistIsActive)
             {
                 for (int r = 0; r < 3; r++)
                 {
@@ -2254,9 +2232,21 @@ namespace DestroyerTest.Content.Entities
             float spacing = MathHelper.TwoPi / (total == 0 ? 1 : total);
             float myAngle = angle + index * spacing;
 
-            // Final orbit
-            Vector2 offset = new Vector2(MathF.Cos(myAngle), MathF.Sin(myAngle)) * radius;
-            NPC.Center = OrbitCenter + offset - new Vector2(NPC.width / 2, NPC.height / 2);
+            // Final orbit target
+            Vector2 targetOffset = new Vector2(MathF.Cos(myAngle), MathF.Sin(myAngle)) * radius;
+            Vector2 targetCenter = OrbitCenter + targetOffset;
+
+            // Smooth movement instead of instant snapping
+            float lerpSpeed = 0.08f; // lower = slower, higher = snappier
+
+            NPC.Center = Vector2.Lerp(
+                NPC.Center,
+                targetCenter,
+                lerpSpeed
+            );
+
+
+
             CacheTrail();
         }
     }

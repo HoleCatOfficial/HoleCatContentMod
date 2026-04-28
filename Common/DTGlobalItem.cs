@@ -22,24 +22,14 @@ using DestroyerTest.Content.Equips.ScepterAccessories;
 using Terraria.DataStructures;
 using DestroyerTest.Content.SummonItems;
 using OpusLib;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace DestroyerTest.Common
 {
-    public class HeldItemEffects : GlobalItem
-    {
-        public void ShimmeringItems()
-        {
-            Player player = Main.LocalPlayer; // Gets the client-side player
-            Item heldItem = player.HeldItem;
-            if (player.HeldItem.type == ModContent.ItemType<Tenebris>() || player.HeldItem.type == ModContent.ItemType<ShimmeringSludge>())
-            {
-                player.AddBuff(ModContent.BuffType<ShimmeringFlames>(), 120); // Applies Poisoned for at least 2 ticks (keeps refreshing)
-            }
-        }
-    }
 
     public class SootFromFurnace : GlobalItem
     {
+        public override bool InstancePerEntity => true;
         public override void OnCreated(Item item, ItemCreationContext context)
         {
             
@@ -68,6 +58,8 @@ namespace DestroyerTest.Common
 
     public class SpecifySolutions : GlobalItem
     {
+        public override bool InstancePerEntity => true;
+
         public static int[] SpecifysThatItCannotBeUsedByClentaminator = new int[]
         {
             ModContent.ItemType<TanninSolution>()
@@ -86,9 +78,25 @@ namespace DestroyerTest.Common
         }
     }
 
-
+    
     public class TooltipColors : GlobalItem
     {
+        public override bool InstancePerEntity => true;
+
+        float DevFlashOpacity = 0f;
+
+        public override void UpdateInventory(Item item, Player player)
+        {
+            if (Main.rand.NextBool(100))
+            {
+                DevFlashOpacity = 1f;
+            }
+
+            if (DevFlashOpacity > 0f)
+            {
+                DevFlashOpacity -= 0.01f;
+            }
+        }
         public override bool PreDrawTooltipLine(Item item, DrawableTooltipLine line, ref int yOffset)
         {
             if (item.rare == ModContent.RarityType<WretchedRarity>() && line.Name == "ItemName")
@@ -111,7 +119,7 @@ namespace DestroyerTest.Common
 
             if (item.rare == ModContent.RarityType<PrimalRarity>() && line.Name == "ItemName")
             {
-                Color In = Opus.Sine(Color.DarkRed, Color.MediumVioletRed, 0.01f);
+                Color In = Opus.Sine(Color.DarkRed, Color.MediumVioletRed, 0.1f);
                 //line.SpecialColorInnerOuter(ColorLib.WretchedGradient(), In);
 
                 Utils.DrawBorderStringFourWay(Main.spriteBatch, FontAssets.MouseText.Value, line.Text, line.X, line.Y, In, ColorLib.IchorCrystalGradient, new Vector2(0.5f, 0.5f));
@@ -126,77 +134,44 @@ namespace DestroyerTest.Common
                 return false;
             }
 
+            if (item.rare == ModContent.RarityType<DevRarity>() && line.Name == "ItemName" || line.Name == "DevTooltip")
+            {
+                Color C1 = Opus.Sine(Color.Red, Color.OrangeRed, 0.01f);
+                Color C2 = Opus.Sine(Color.Gold, Color.MediumOrchid, 0.01f);
+                Color CA = Opus.Sine(C1, C2, 0.1f);
+                Color Out = Opus.Sine(Color.Black, CA, 0.2f);
+                Color In = Opus.Sine(Color.Black, Color.DarkRed, 0.4f);
+
+                
+
+                float scale = 1.25f;
+
+                Vector2 textSize = FontAssets.MouseText.Value.MeasureString(line.Text);
+                float xOffset = textSize.X * (scale - 1f) * 0.5f;
+
+                float RandOff = Main.rand.NextFloat(-3f, 3f);
+
+                Utils.DrawBorderStringFourWay(Main.spriteBatch, FontAssets.MouseText.Value, line.Text, (line.X + RandOff) - xOffset, line.Y + RandOff, Color.Black * DevFlashOpacity, Color.GhostWhite * DevFlashOpacity, new Vector2(0.5f, 0f), scale);
+
+                Utils.DrawBorderStringFourWay(Main.spriteBatch, FontAssets.MouseText.Value, line.Text, line.X, line.Y, In, Out, new Vector2(0.5f, 0.5f));
+
+                return false;
+            }
+
             if (item.rare == ModContent.RarityType<RiftRarity1>() && line.Name == "ItemName")
             {
-                // Define two colors to cycle between for the stroke
-                Color strokeColor1 = new Color(0, 0, 0);
-                Color strokeColor2 = new Color(255, 155, 0);
-
-                Color textColor1 = new Color(255, 155, 0);
-                Color textColor2 = new Color(0, 0, 0);
-
-                // Use a sine wave to smoothly transition between the two colors
-                float lerpAmount = (float)(0.5 * (1 + Math.Sin(Main.GlobalTimeWrappedHourly * 2f * Math.PI)));
-                Color strokeColor = Color.Lerp(strokeColor1, strokeColor2, lerpAmount);
-
-                // Use a sine wave to smoothly transition between the two colors
-                float lerpAmount2 = (float)(0.5 * (1 + Math.Sin(Main.GlobalTimeWrappedHourly * 2f * Math.PI)));
-                Color textColor = Color.Lerp(textColor1, textColor2, lerpAmount2);
-
-                // Extract the correct font reference
-                DynamicSpriteFont font = FontAssets.MouseText.Value;
-
-                // Draw the outline first by offsetting in all directions
-                Vector2 position = new Vector2(line.X, line.Y);
-                for (int i = -1; i <= 1; i++)
-                {
-                    for (int j = -1; j <= 1; j++)
-                    {
-                        if (i == 0 && j == 0) continue; // Skip center (main text)
-                        ChatManager.DrawColorCodedString(Main.spriteBatch, font, line.Text, position + new Vector2(i, j), strokeColor, 0f, Vector2.Zero, Vector2.One);
-                    }
-                }
-
-                // Draw the actual text on top
-                ChatManager.DrawColorCodedString(Main.spriteBatch, font, line.Text, position, textColor, 0f, Vector2.Zero, Vector2.One);
-
-                return false; // Prevents Terraria from drawing the default text
+                Color In = Opus.Sine(Color.Black, ColorLib.Rift, 0.1f);
+                Color Out = Opus.Sine(ColorLib.Rift, Color.Black, 0.1f);
+                Utils.DrawBorderStringFourWay(Main.spriteBatch, FontAssets.MouseText.Value, line.Text, line.X, line.Y, In, Out, new Vector2(0.5f, 0.5f));
+                return false; 
             }
             if (item.rare == ModContent.RarityType<RiftRarity2>() && line.Name == "ItemName")
             {
-                // Define two colors to cycle between for the stroke
-                Color strokeColor1 = new Color(255, 155, 0);
-                Color strokeColor2 = new Color(48, 29, 0);
+                Color In = Opus.Sine(ColorLib.DarkRift2, ColorLib.LightRift3, 0.1f);
+                Color Out = Opus.Sine(ColorLib.Rift, Color.White, 0.1f);
+                Utils.DrawBorderStringFourWay(Main.spriteBatch, FontAssets.MouseText.Value, line.Text, line.X, line.Y, In, Out, new Vector2(0.5f, 0.5f));
 
-                Color textColor1 = new Color(48, 29, 0);
-                Color textColor2 = new Color(255, 155, 0);
-
-                // Use a sine wave to smoothly transition between the two colors
-                float lerpAmount = (float)(0.5 * (1 + Math.Sin(Main.GlobalTimeWrappedHourly * 2f * Math.PI)));
-                Color strokeColor = Color.Lerp(strokeColor1, strokeColor2, lerpAmount);
-
-                // Use a sine wave to smoothly transition between the two colors
-                float lerpAmount2 = (float)(0.5 * (1 + Math.Sin(Main.GlobalTimeWrappedHourly * 2f * Math.PI)));
-                Color textColor = Color.Lerp(textColor1, textColor2, lerpAmount2);
-
-                // Extract the correct font reference
-                DynamicSpriteFont font = FontAssets.MouseText.Value;
-
-                // Draw the outline first by offsetting in all directions
-                Vector2 position = new Vector2(line.X, line.Y);
-                for (int i = -1; i <= 1; i++)
-                {
-                    for (int j = -1; j <= 1; j++)
-                    {
-                        if (i == 0 && j == 0) continue; // Skip center (main text)
-                        ChatManager.DrawColorCodedString(Main.spriteBatch, font, line.Text, position + new Vector2(i, j), strokeColor, 0f, Vector2.Zero, Vector2.One);
-                    }
-                }
-
-                // Draw the actual text on top
-                ChatManager.DrawColorCodedString(Main.spriteBatch, font, line.Text, position, textColor, 0f, Vector2.Zero, Vector2.One);
-
-                return false; // Prevents Terraria from drawing the default text
+                return false;
             }
             if (item.rare == ModContent.RarityType<ContenderRarity>() && line.Name == "ItemName")
             {
@@ -252,32 +227,11 @@ namespace DestroyerTest.Common
                 Color textColor1 = new Color(40, 0, 0);
                 Color textColor2 = new Color(80, 0, 0);
 
-                // Use a sine wave to smoothly transition between the two colors
-                float lerpAmount = (float)(0.5 * (1 + Math.Sin(Main.GlobalTimeWrappedHourly * 2f * Math.PI)));
-                Color strokeColor = Color.Lerp(strokeColor1, strokeColor2, lerpAmount);
+                Color In = Opus.Sine(textColor1, textColor2, 0.1f);
+                Color Out = Opus.Sine(strokeColor1, strokeColor2, 0.1f);
+                Utils.DrawBorderStringFourWay(Main.spriteBatch, FontAssets.MouseText.Value, line.Text, line.X, line.Y, In, Out, new Vector2(0.5f, 0.5f));
 
-                // Use a sine wave to smoothly transition between the two colors
-                float lerpAmount2 = (float)(0.5 * (1 + Math.Sin(Main.GlobalTimeWrappedHourly * 2f * Math.PI)));
-                Color textColor = Color.Lerp(textColor1, textColor2, lerpAmount2);
-
-                // Extract the correct font reference
-                DynamicSpriteFont font = FontAssets.MouseText.Value;
-
-                // Draw the outline first by offsetting in all directions
-                Vector2 position = new Vector2(line.X, line.Y);
-                for (int i = -1; i <= 1; i++)
-                {
-                    for (int j = -1; j <= 1; j++)
-                    {
-                        if (i == 0 && j == 0) continue; // Skip center (main text)
-                        ChatManager.DrawColorCodedString(Main.spriteBatch, font, line.Text, position + new Vector2(i, j), strokeColor, 0f, Vector2.Zero, Vector2.One);
-                    }
-                }
-
-                // Draw the actual text on top
-                ChatManager.DrawColorCodedString(Main.spriteBatch, font, line.Text, position, textColor, 0f, Vector2.Zero, Vector2.One);
-
-                return false; // Prevents Terraria from drawing the default text
+                return false;
             }
             if (item.rare == ModContent.RarityType<CorruptionSpecialRarity>() && line.Name == "ItemName")
             {
@@ -352,45 +306,6 @@ namespace DestroyerTest.Common
                 return false; // Prevents Terraria from drawing the default text
             }
 
-            if (item.rare == ModContent.RarityType<TestRarity>() && line.Name == "ItemName")
-            {
-                // Define two colors to cycle between for the stroke
-                Color strokeColor1 = new Color(150, 150, 150);
-                Color strokeColor2 = new Color(255, 255, 255);
-
-                Color textColor1 = new Color(80, 0, 0);
-                Color textColor2 = new Color(0, 80, 80);
-
-                // Use a sine wave to smoothly transition between the two colors
-                float lerpAmount = (float)(0.5 * (1 + Math.Sin(Main.GlobalTimeWrappedHourly * 2f * Math.PI)));
-                Color strokeColor = Color.Lerp(strokeColor1, strokeColor2, lerpAmount);
-
-                // Use a sine wave to smoothly transition between the two colors
-                float lerpAmount2 = (float)(0.5 * (1 + Math.Sin(Main.GlobalTimeWrappedHourly * 2f * Math.PI)));
-                Color textColor = Color.Lerp(textColor1, textColor2, lerpAmount2);
-
-                Vector2 YOffset = new Vector2(0, Main.rand.NextBool(10) ? Main.rand.Next(3, 6) : 0);
-                Vector2 XOffset = new Vector2(Main.rand.NextBool(10) ? Main.rand.Next(3, 6) : 0, 0);
-
-                // Extract the correct font reference
-                DynamicSpriteFont font = FontAssets.MouseText.Value;
-
-                // Draw the outline first by offsetting in all directions
-                Vector2 position = new Vector2(line.X, line.Y);
-                for (int i = -1; i <= 1; i++)
-                {
-                    for (int j = -1; j <= 1; j++)
-                    {
-                        if (i == 0 && j == 0) continue; // Skip center (main text)
-                        ChatManager.DrawColorCodedString(Main.spriteBatch, font, line.Text, position + new Vector2(i, j) + YOffset + XOffset, strokeColor, 0f, Vector2.Zero, Vector2.One);
-                    }
-                }
-
-                // Draw the actual text on top
-                ChatManager.DrawColorCodedString(Main.spriteBatch, font, line.Text, position, textColor, 0f, Vector2.Zero, Vector2.One);
-
-                return false; // Prevents Terraria from drawing the default text
-            }
 
             if (item.DamageType == ModContent.GetInstance<ScepterClass>() && line.Name == "Damage")
             {
@@ -528,75 +443,24 @@ namespace DestroyerTest.Common
         }
     }
 
-    public class DevTooltip : GlobalItem
+    public class DevGlobal : GlobalItem
     {
-        // Define stroke and text colors
-        static Color strokeColor1 = new Color(255, 255, 255); // White
-        static Color strokeColor2 = new Color(255, 0, 0);     // Red
-
-        static Color textColor1 = new Color(1, 240, 176);     // Light teal
-        static Color textColor2 = new Color(0, 0, 0);         // Black
-
-        // Set global behavior to affect all items
+        public override bool InstancePerEntity => true;
         public override bool AppliesToEntity(Item entity, bool lateInstantiation)
         {
-            return true; // Applies to all items
+            return DTUtils.isDevItem.Contains(entity.type);
         }
 
-        // Modify tooltips to add the custom developer line
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
-            // Define the custom tooltip text
-            string customText = "\nᛞ Developer Item ᛞ";
+            string customText = "Developer Item";
 
-            // Create a new TooltipLine with a custom color
-            TooltipLine line = new TooltipLine(Mod, "CustomTooltip", customText)
+            TooltipLine line = new TooltipLine(Mod, "DevTooltip", customText)
             {
-                OverrideColor = Color.Purple // Optional: Base color
+                OverrideColor = Color.Black
             };
 
-            // Add the custom tooltip to the end of the list
-            if (CustomItemSets.DevItem[item.type])
-            {
-                tooltips.Add(line);
-            }
-        }
-
-        // PreDrawTooltipLine - Draw the text and stroke manually
-        public override bool PreDrawTooltipLine(Item item, DrawableTooltipLine line, ref int yOffset)
-        {
-            // Check if it's our custom tooltip
-            if (line.Name == "CustomTooltip" && line.Mod == Mod.Name && CustomItemSets.DevItem[item.type])
-            {
-                // Smoothly interpolate between stroke and text colors using sine wave
-                float lerpAmount = (float)(0.5 * (1 + Math.Sin(Main.GlobalTimeWrappedHourly * 2f * Math.PI)));
-                Color strokeColor = Color.Lerp(strokeColor1, strokeColor2, lerpAmount);
-                Color textColor = Color.Lerp(textColor1, textColor2, lerpAmount);
-
-                // Define the font and position
-                DynamicSpriteFont font = FontAssets.MouseText.Value;
-                Vector2 position = new Vector2(line.X, line.Y);
-
-                // Draw the stroke by offsetting text in all directions
-                for (int i = -1; i <= 1; i++)
-                {
-                    for (int j = -1; j <= 1; j++)
-                    {
-                        if (i == 0 && j == 0) continue; // Skip center (main text)
-                        Vector2 offsetPosition = position + new Vector2(i, j);
-                        ChatManager.DrawColorCodedStringWithShadow(Main.spriteBatch, font, line.Text, offsetPosition, strokeColor, 0f, Vector2.Zero, Vector2.One);
-                    }
-                }
-
-                // Draw the actual text on top with the smooth color transition
-                ChatManager.DrawColorCodedString(Main.spriteBatch, font, line.Text, position, textColor, 0f, Vector2.Zero, Vector2.One);
-
-                // Return false to prevent default drawing since we manually drew it
-                return false;
-            }
-
-            // Allow other tooltips to draw normally
-            return true;
+            tooltips.Add(line);
         }
     }
 

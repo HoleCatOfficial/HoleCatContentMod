@@ -32,6 +32,7 @@ namespace DestroyerTest.Content.Equips
         {
             player.autoReuseAllWeapons = true;
             player.GetDamage(DamageClass.Melee) += 0.22f;
+            player.GetDamage<DTTrueMeleeClass>() += 0.9f;
             if (player.TryGetModPlayer<ShimmeringGauntletPlayer>(out var G))
             {
                 G.Active = true;

@@ -14,12 +14,16 @@ namespace DestroyerTest.Content.MeleeWeapons
 {
 	public class ConstantineScythe : ModItem
 	{
+        public override void SetStaticDefaults()
+        {
+            DTUtils.isDevItem.Add(Type);
+        }
         public override void SetDefaults()
         {
             Item.width = 94;
             Item.height = 102;
             Item.value = Item.sellPrice(gold: 2, silver: 50);
-            Item.rare = ModContent.RarityType<TestRarity>();
+            Item.rare = ModContent.RarityType<DevRarity>();
             Item.SetSpecialMeleeStats();
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.knockBack = 70;

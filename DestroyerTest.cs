@@ -289,7 +289,7 @@ namespace DestroyerTest
             DTCrossMod.UnloadMods();
         }
 
-        public static bool EternityIsActive()
+        private static bool Eternity()
         {
             if (ModLoader.TryGetMod("FargowiltasSouls", out Mod frgo))
             {
@@ -308,6 +308,10 @@ namespace DestroyerTest
             }
             return false;
         }
+
+		public static bool EternityIsActive => Eternity();
+
+		public static bool MasochistIsActive => EternityIsActive && Main.masterMode;
 
         public class WorldEnterPlayer : ModPlayer
         {

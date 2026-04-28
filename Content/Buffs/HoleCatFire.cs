@@ -63,7 +63,7 @@ namespace DestroyerTest.Content.Buffs
             if (lifeRegenDebuff) {
 
                 LerpingFire fire = new LerpingFire();
-                fire.PrepareFire(Main.rand.NextVector2FromRectangle(npc.Hitbox), new Vector2(0f, -1.6f), 0f, ColorLib.HoleCatFireColormap, 1f, 40, FireDrawMode.Additive);
+                fire.PrepareFire(Main.rand.NextVector2FromRectangle(npc.Hitbox), new Vector2(0f, -1.6f), 0f, ColorLib.HoleCatFireColormap, 0.75f, 120, FireDrawMode.Additive);
                 ParticleEngine.ShaderParticles.Add(fire);
 
                 if (npc.lifeRegen > 0)
@@ -94,7 +94,7 @@ namespace DestroyerTest.Content.Buffs
 
 
                 LerpingFire fire = new LerpingFire();
-                fire.PrepareFire(Main.rand.NextVector2FromRectangle(player.Hitbox), new Vector2(0f, -1.6f), 0f, ColorLib.HoleCatFireColormap, 1f, 40, FireDrawMode.Additive);
+                fire.PrepareFire(Main.rand.NextVector2FromRectangle(player.Hitbox), new Vector2(0f, -1.6f), 0f, ColorLib.HoleCatFireColormap, 0.75f, 120, FireDrawMode.Additive);
 				ParticleEngine.ShaderParticles.Add(fire);
 
                 // These lines zero out any positive lifeRegen. This is expected for all bad life regeneration effects

@@ -1456,7 +1456,7 @@ namespace DestroyerTest.Content.Entities
         {
             if (!flag)
             {
-                if (DestroyerTestMod.EternityIsActive() && Main.masterMode)
+                if (DestroyerTestMod.MasochistIsActive)
                 {
                     texture = NPC.GetMasoTexture("DestroyerTest/Content/Entities/MasoMode", "WyvernCorpseHead");
                     Glowtexture = NPC.GetMasoTexture("DestroyerTest/Content/Entities/MasoMode", "WyvernCorpseHead");
@@ -1696,7 +1696,7 @@ namespace DestroyerTest.Content.Entities
                 case AIState.Idle:
                     OrbitCenter = bossNPC.Center;
                     Orbit(300f, 0.05f, OrbitCenter);
-                    if (DestroyerTestMod.EternityIsActive())
+                    if (DestroyerTestMod.EternityIsActive)
                     {
                         if (--AwakenTimer <= 0)
                         {

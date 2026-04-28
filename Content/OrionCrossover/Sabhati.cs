@@ -41,7 +41,7 @@ namespace DestroyerTest.Content.OrionCrossover
         }
         public override void ModifyWeaponDamage(Player player, ref StatModifier damage)
         {
-            if (DestroyerTestMod.EternityIsActive())
+            if (DestroyerTestMod.EternityIsActive)
             {
                 damage += 1.15f;
             }
@@ -53,7 +53,7 @@ namespace DestroyerTest.Content.OrionCrossover
             TooltipLine L = new TooltipLine(Mod, "EternityDamageMod", v);
             L.OverrideColor = ColorLib.StellarFireGradientLooping();
 
-            if (DestroyerTestMod.EternityIsActive())
+            if (DestroyerTestMod.EternityIsActive)
             {
                 tooltips.Add(L);
             }

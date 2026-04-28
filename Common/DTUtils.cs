@@ -609,6 +609,9 @@ namespace DestroyerTest.Common
 
         public static HashSet<int> isSpecialSwingSword = new();
 
+
+        public static HashSet<int> isDevItem = new();
+
         public static int RandomDirection(int Chance)
         {
             return Main.rand.NextBool(Chance) ? 1 : -1;
@@ -866,6 +869,17 @@ namespace DestroyerTest.Common
             return player.MountedCenter + new Vector2(-8f * player.direction, 4f);
         }
 
+        public static Vector2[] OldCenter(this Projectile projectile)
+        {
+            Vector2[] Positions = new Vector2[ProjectileID.Sets.TrailCacheLength[projectile.type]];
+
+            for (int i = 0; i < projectile.oldPos.Length; i++)
+            {
+                Positions[i] = projectile.oldPos[i] + new Vector2(projectile.width * 0.5f, projectile.height * 0.5f)/*.RotatedBy(projectile.oldRot[i])*/;
+            }
+
+            return Positions;
+        }
         
     }
 
@@ -962,6 +976,8 @@ namespace DestroyerTest.Common
                 localProgress
             );
         }
+
+
 
         
     }
@@ -1990,6 +2006,8 @@ namespace DestroyerTest.Common
                         gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2);
                     }
                 }
+
+                Opus.ReturnToDefaultDrawing(Main.spriteBatch);
             }
 
         }

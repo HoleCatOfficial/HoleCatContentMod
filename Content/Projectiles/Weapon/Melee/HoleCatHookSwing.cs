@@ -32,19 +32,34 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Projectile.width = 200;
             Projectile.height = 174;
             SweepColor = ColorLib.HoleCatFireBeige;
-            SwingSpeed = 0.16f;
+            SwingSpeed = 0.1f;
 
             Glowmask = ModContent.Request<Texture2D>($"{Texture}");
         }
 
-        public override SoundStyle Swing => DTAssetLib.SwordSounds.TenebrisSwing with { PitchVariance = 0.5f };
+        public override SoundStyle Swing => /*DTAssetLib.SwordSounds.TenebrisSwing*/ new SoundStyle("DestroyerTest/Assets/Audio/LCSlash") with { PitchVariance = 0.5f };
 
         public override void HitNPCEffects(NPC npc, NPC.HitInfo hit)
         {
             Vector2 toTarg = npc.Center - Owner.Center;
             toTarg.Normalize();
 
-            Projectile.NewProjectile(Projectile.GetSource_FromAI(), npc.Center, (toTarg * (7 * Owner.GetTotalAttackSpeed(DamageClass.Melee))), ModContent.ProjectileType<HoleCatFireSmall>(), Projectile.damage / 2, 5, Projectile.owner);
+            Projectile.NewProjectile(Projectile.GetSource_FromAI(), npc.Center, (toTarg * (12 * Owner.GetTotalAttackSpeed<DTTrueMeleeClass>())), ModContent.ProjectileType<HoleCatFireSmall>(), Projectile.damage / 2, 5, Projectile.owner);
+
+            if (hit.Crit)
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    Vector2 Dir = LastSwing == 1 ? new Vector2(0, -1f) : new Vector2(0, 1f);
+
+                    if (Owner.direction == -1)
+                    {
+                        Dir = LastSwing == 1 ? new Vector2(0, 1f) : new Vector2(0, -1f);
+                    }
+
+                    Projectile.NewProjectile(Projectile.GetSource_FromAI(), npc.Center, (Dir * (12 * Owner.GetTotalAttackSpeed<DTTrueMeleeClass>())).RotatedByRandom(0.5f), ModContent.ProjectileType<HoleCatFireSmall>(), Projectile.damage / 2, 5, Projectile.owner);
+                }
+            }
         }
 
         private void DrawSweepFX2()
@@ -77,6 +92,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         public override void DrawUnderBlade()
         {
             DrawSweepFX2();
+
+
         }
         public override void DrawOverBlade()
         {
@@ -91,6 +108,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
            
         }
 
+
+
         public Vector2 swordTip;
         public Line SwordLine;
         public override void ExtraEffects()
@@ -100,6 +119,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Player player = Main.player[Projectile.owner];
 
             SwordLine = new Line(player.Center, swordTip);
+
+            UpPoint = targetAngle.ToRotation() - MathHelper.ToRadians(135f + 360f);
+            DownPoint = targetAngle.ToRotation() + MathHelper.ToRadians(135f - 360f);
 
             /*
             Vector2[] pt = SwordLine.GetPointsAlongLine(30);

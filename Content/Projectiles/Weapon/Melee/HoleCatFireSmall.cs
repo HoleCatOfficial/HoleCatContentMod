@@ -47,7 +47,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
         public override bool? CanHitNPC(NPC target)
         {
-            return Projectile.ManualCanHitFriendly(target) && Projectile.HomingTimerCheck(10, (int)DelayTimer);
+            return Projectile.ManualCanHitFriendly(target) && Projectile.HomingTimerCheck(40, (int)DelayTimer);
         }
 
         public override void PostDraw(Color lightColor)
@@ -78,10 +78,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
             Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.TintableDustLighted, 0f, 0f, 0, ColorLib.HoleCatFireGradient, 2f);
 
-            float maxDetectRadius = 400f; // The maximum radius at which a projectile can detect a target
+            float maxDetectRadius = 1400f; // The maximum radius at which a projectile can detect a target
 
-            if (DelayTimer < 10)
+            if (DelayTimer < 40)
             {
+                Projectile.velocity *= 0.95f;
                 DelayTimer += 1;
                 return;
             }
@@ -104,8 +105,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             // We only rotate by 3 degrees an update to give it a smooth trajectory. Increase the rotation speed here to make tighter turns
             float length = Projectile.velocity.Length();
             float targetAngle = Projectile.AngleTo(HomingTarget.Center);
-            Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(7)).ToRotationVector2() * length;
+            Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(20)).ToRotationVector2() * length;
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
+            Projectile.velocity *= 1.06f;
         }
 
         public NPC FindClosestNPC(float maxDetectDistance) {

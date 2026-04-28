@@ -217,6 +217,7 @@ namespace DestroyerTest.Content.Particles.fire
             this.usesColorMap = false;
             this.Opacity = 1f;
 
+
             this.isSpinningFire = false;
             fireDrawMode = drawMode;
         }
@@ -234,6 +235,8 @@ namespace DestroyerTest.Content.Particles.fire
             this.usesColorMap = false;
             this.Opacity = 1f;
 
+            this.spindirection = SpinDirection;
+            this.spinspeed = SpinSpeed;
             this.isSpinningFire = true;
             fireDrawMode = drawMode;
         }
@@ -267,6 +270,8 @@ namespace DestroyerTest.Content.Particles.fire
             this.usesColorMap = true;
             this.Opacity = 1f;
 
+            this.spindirection = SpinDirection;
+            this.spinspeed = SpinSpeed;
             this.isSpinningFire = true;
             fireDrawMode = drawMode;
         }
@@ -279,7 +284,8 @@ namespace DestroyerTest.Content.Particles.fire
 
             if (usesColorMap)
             {
-                col = DTColorUtils.MultiLerp((float)(Lifetime / maxLifetime), ColorMap);
+                float Progress = (float)Lifetime / (float)maxLifetime;
+                col = DTColorUtils.MultiLerp(Progress.Inverse(), ColorMap);
             }
             else
             {

@@ -1,6 +1,8 @@
 ﻿using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
+using DestroyerTest.Content.Particles;
+using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
@@ -22,8 +24,8 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
 
         public override void SetDefaults()
         {
-            Projectile.width = 1;
-            Projectile.height = 1;
+            Projectile.width = 16;
+            Projectile.height = 16;
             Projectile.friendly = true;
             Projectile.DamageType = DamageClass.Ranged;
             Projectile.timeLeft = 240;
@@ -37,7 +39,7 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
             SpriteBatch spriteBatch = Main.spriteBatch;
             if (Projectile.oldPos.Length > 2)
             {
-                DTTrail.DrawTrail(spriteBatch, DTAssetLib.Streak(3).Value, Projectile.oldPos.ToList(), Projectile.oldRot.ToList(), 20, ColorLib.Soul, SC, 10);
+                DTTrail.DrawTrail(spriteBatch, DTAssetLib.Streak(3).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 10, ColorLib.Soul, SC, 5);
             }
             Main.EntitySpriteDraw(DTUtils.CenteredDraw(Projectile, Color.White));
             return false;
@@ -57,6 +59,11 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
             Dust.NewDustPerfect(Projectile.Center, DustID.FireworksRGB, Projectile.velocity * 0.5f, 0, ColorLib.Soul3, 0.5f);
         }
 
+        public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
+        {
+            return null;
+        }
+
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.AddBuff(ModContent.BuffType<SoulInferno>(), 300);
@@ -65,6 +72,13 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
         public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(DTAssetLib.Impacts.IceImpact with { Pitch = 0.7f, PitchVariance = 0.2f, Volume = 0.5f }, Projectile.Center);
+
+            BasePRT P1 = Opus.NewParticleFloatAI(PRTLoader.GetParticleID<SimpleExplosionParticle>(), Projectile.Center, Vector2.Zero, ColorLib.Soul2, 0.01f, 1f, 0.3f, 0.001f);
+            P1.Rotation = Main.rand.NextFloat(MathHelper.TwoPi);
+            BasePRT P2 = Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), Projectile.Center, Vector2.Zero, Color.White, 0.01f, 0.2f, 0.05f, 0.001f);
+            P2.Rotation = Main.rand.NextFloat(MathHelper.TwoPi);
+
+
             Opus.RadialDustRandomDir(DustID.FireworksRGB, 2, Projectile.Center, 0, Color.White, 2f, 3f);
             Opus.RadialDustRandomDir(DustID.FireworksRGB, 3, Projectile.Center, 0, Color.White, 0.6f, 0.5f);
             Opus.RadialDustRandomDir(DustID.FireworksRGB, 5, Projectile.Center, 70, ColorLib.Soul, 1f, 0.7f);

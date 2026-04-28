@@ -126,7 +126,7 @@ namespace DestroyerTest.Content.Entities
         {
             if (!flag)
             {
-                if (DestroyerTestMod.EternityIsActive() && Main.masterMode)
+                if (DestroyerTestMod.MasochistIsActive)
                 {
                     texture = NPC.GetMasoTexture("DestroyerTest/Content/Entities/MasoMode", "WyvernCorpseBody2");
                     Glowtexture = NPC.GetMasoTexture("DestroyerTest/Content/Entities/MasoMode", "WyvernCorpseBody2");
