@@ -34,16 +34,17 @@ namespace DestroyerTest.Content.Particles.Orchestrated
                 Spark Left = new Spark();
                 Spark Right = new Spark();
 
-                Up.PrepareSpark(position, new Vector2(0, -1), 0f, Color.Red, 1f, false, 40, SparkDrawMode.Additive);
-                Down.PrepareSpark(position, new Vector2(0, 1), 0f, Color.Red, 1f, false, 40, SparkDrawMode.Additive);
+                Up.PrepareSpark(position, new Vector2(0, -8), 0f, Color.Red, 1f, false, 40, SparkDrawMode.Additive);
+                Down.PrepareSpark(position, new Vector2(0, 8), 0f, Color.Red, 1f, false, 40, SparkDrawMode.Additive);
 
-                Left.PrepareSpark(position, new Vector2(-0.5f, 0), 0f, Color.Red, 0.75f, false, 40, SparkDrawMode.Additive);
-                Right.PrepareSpark(position, new Vector2(0.5f, 0), 0f, Color.Red, 0.75f, false, 40, SparkDrawMode.Additive);
+                Left.PrepareSpark(position, new Vector2(-4f, 0), 0f, Color.Red, 0.75f, false, 40, SparkDrawMode.Additive);
+                Right.PrepareSpark(position, new Vector2(4f, 0), 0f, Color.Red, 0.75f, false, 40, SparkDrawMode.Additive);
 
                 ParticleEngine.BehindProjectiles.Add(Up);
                 ParticleEngine.BehindProjectiles.Add(Down);
                 ParticleEngine.BehindProjectiles.Add(Left);
                 ParticleEngine.BehindProjectiles.Add(Right);
+                Spawned = true;
             }
             else
             {

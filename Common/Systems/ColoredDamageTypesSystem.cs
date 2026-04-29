@@ -17,7 +17,7 @@ namespace DestroyerTest.Common.Systems
                 //Color version
                 coloreddamagetypes.Call("AddDamageType", ModContent.GetInstance<ScepterClass>(), new Color(255, 255, 255), new Color(141, 242, 222), new Color(20, 200, 222));
 
-                coloreddamagetypes.Call("AddDamageType", ModContent.GetInstance<DTTrueMeleeClass>(), new Color(255, 255, 255), new Color(200, 90, 0), new Color(255, 130, 0));
+                coloreddamagetypes.Call("AddDamageType", ModContent.GetInstance<DTTrueMeleeClass>(), new Color(255, 255, 255), new Color(200, 190, 0), new Color(200, 255, 0));
                 coloreddamagetypes.Call("AddDamageType", ModContent.GetInstance<DTRogueClass>(), new Color(255, 255, 255), new Color(40, 80, 100), new Color(255, 255, 255));
             }
         }

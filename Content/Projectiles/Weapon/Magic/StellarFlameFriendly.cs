@@ -39,7 +39,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 		{
 			PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Vector2.Zero,  ColorLib.StellarFireGradientLooping() * 0.75f, 1.5f);
             LerpingFire fire = new LerpingFire();
-            fire.PrepareFire(Projectile.Center, Vector2.Zero, Main.rand.Next(1, 3), 0.1f, ColorLib.StellarFireColormap, 3f, 100, FireDrawMode.Additive);
+            fire.PrepareFire(Projectile.Center, Vector2.Zero, Projectile.direction, 0.1f, ColorLib.StellarFireColormap, 1f, 100, FireDrawMode.Additive);
             ParticleEngine.BehindProjectiles.Add(fire);
         }
 

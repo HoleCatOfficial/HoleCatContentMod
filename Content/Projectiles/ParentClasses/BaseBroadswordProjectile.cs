@@ -111,7 +111,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         public Line SL;
         public virtual void SparkEdge(Player owner, float Scale, Color color, int BlendMode = 2)
         {
-            sT = Projectile.Center + Projectile.rotation.ToRotationVector2() * (Projectile.Size.Length() * Projectile.scale);
+            sT = Projectile.Center + Projectile.rotation.ToRotationVector2() * ((Projectile.Size.Length() * Projectile.scale) * ScaleMult);
             SL = new Line(Owner.MountedCenter, sT);
             if (CurrentState == State.SwingDown)
             {
@@ -156,7 +156,6 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             {
                 Owner.SetDummyItemTime(60);
                 AdjustedScale = Owner.GetAdjustedItemScale(Owner.HeldItem) * ScaleMult;
-                FactorFargosScaling();
                 Projectile.scale = AdjustedScale;
                 if (CurrentState == State.Wait)
                 {
@@ -176,35 +175,6 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             ExtraEffects();
             SetSwordPosition();
             ControlRotation();
-        }
-
-        private void FactorFargosScaling()
-        {
-            if (DTCrossMod.FargosSoulsIsLoaded)
-            {
-                GlobalProjectile gp =
-                Projectile.GetGlobalProjectile(
-                    DTCrossMod.FargosSoulsMod.Find<GlobalProjectile>("FargoSoulsGlobalProjectile")
-                );
-
-                var field = gp.GetType().GetField(
-                    "TungstenScale",
-                    BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance
-                );
-
-                if (DTCrossMod.FargosSoulsMod.TryFind<ModItem>("TungstenEnchantment", out var Tungst))
-                {
-                    if (Owner.miscEquips.Contains(Tungst.Item))
-                    {
-
-                        if (field != null)
-                        {
-                            float tungstenScale = (float)field.GetValue(gp);
-                            AdjustedScale = Owner.GetAdjustedItemScale(Owner.HeldItem) * ScaleMult * tungstenScale;
-                        }
-                    }
-                }
-            }
         }
 
 
@@ -353,7 +323,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             var Tex = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/CircularSlash2").Value;
             float TexBasedMod = (Projectile.Size.Length() * 0.015f);
             Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-            Main.EntitySpriteDraw(Tex, Owner.MountedCenter - Main.screenPosition, null, SweepColor * SweepOpacity, (Projectile.rotation + MathHelper.PiOver4), Tex.Size() / 2, (AdjustedScale * TexBasedMod), SpriteEffects.None);
+            Main.EntitySpriteDraw(Tex, Owner.MountedCenter - Main.screenPosition, null, SweepColor * SweepOpacity, (Projectile.rotation + MathHelper.PiOver4), Tex.Size() / 2, (AdjustedScale * TexBasedMod) * ScaleMult, SpriteEffects.None);
             Opus.ReturnToDefaultDrawing(Main.spriteBatch);
         }
 
@@ -447,7 +417,11 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             HitCooldown = HitCooldownGlobal;
-            HitNPCEffects(target, hit);
+
+            if (CurrentState != State.Wait)
+            {
+                HitNPCEffects(target, hit);
+            }
         }
 
 

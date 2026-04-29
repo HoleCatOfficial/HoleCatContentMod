@@ -25,8 +25,8 @@ namespace DestroyerTest.Content.Ammunitions
 			Item.knockBack = 0f;
 			Item.value = Item.sellPrice(copper: 16);
 			Item.shoot = ModContent.ProjectileType<TenebrisBulletProjectile>(); // The projectile that weapons fire when using this item as ammunition.
-			Item.shootSpeed = 2f;
-			Item.ammo = AmmoID.Bullet;
+            Item.shootSpeed = 0.00000005f * 0.01f;
+            Item.ammo = AmmoID.Bullet;
 		}
 
 		public override void AddRecipes() {

@@ -58,8 +58,10 @@ namespace DestroyerTest.Content.Projectiles
             SpriteBatch spriteBatch = Main.spriteBatch;
             DTUtils Utility = new DTUtils();
 
-            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+            
             DTTrail.DrawTrail(spriteBatch, DTAssetLib.Streak(10).Value, TrailPositions, TrailRotations, 16, lightColor, trailOffset, 0.01f);
+
+            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
             Opus.DrawGlowOnProj(Projectile, lightColor, true);
             Opus.DrawTextureOnProj(DTAssetLib.Star(3), Projectile, lightColor * 0.75f, false, trailOffset, 0.2f, 0.6f);
             Opus.DrawTextureOnProj(DTAssetLib.Star(3), Projectile, lightColor, false, 0f, 0.2f, 0.6f);

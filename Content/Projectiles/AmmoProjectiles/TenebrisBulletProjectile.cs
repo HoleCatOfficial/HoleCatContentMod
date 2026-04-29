@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using System.Formats.Tar;
 using System.Runtime.CompilerServices;
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Particles.CurseRunes;
 using InnoVault.PRT;
@@ -49,17 +51,28 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
             Projectile.tileCollide = false;
             Projectile.penetrate = 1;
             Projectile.hide = true;
-            Projectile.extraUpdates = 160;
+            Projectile.extraUpdates = 20;
         }
 
         public void ColorAffectedFX(Color color)
         {
             Lighting.AddLight(Projectile.Center, color.ToVector3() * 0.6f);
             PRTLoader.NewParticle(Projectile.Center, new Vector2((Projectile.velocity.X / 2) + Main.rand.NextFloat(-1, 1), (Projectile.velocity.Y / 2) + Main.rand.NextFloat(-1, 1)), PRTLoader.GetParticleID<SimpleParticle>(), color, 0.45f);
+
+            var d = Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<ColorableNeonDust>(), Vector2.Zero, 0, color, 1f);
+            d.noGravity = true;
+
+            Spark S = new Spark();
+
+            S.PrepareSpark(Projectile.Center, Projectile.velocity * 0.1f, Projectile.velocity.ToRotation(), color * 0.5f, 0.4f, false, 20, SparkDrawMode.Additive);
+            ParticleEngine.BehindProjectiles.Add(S);
+
+            /*
             if (Main.rand.NextBool(5))
             {
                 PRTLoader.NewParticle(Projectile.Center, new Vector2((Projectile.velocity.X / 2) + Main.rand.NextFloat(-0.5f, 0.5f), (Projectile.velocity.Y / 2) + Main.rand.NextFloat(-0.5f, 0.5f)), PRTLoader.GetParticleID<StarParticle>(), Color.White, 0.5f);
             }
+            */
         }
 
         public override void AI()
@@ -86,9 +99,7 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
             };
 
             
-            var d = Dust.NewDustPerfect(Projectile.Center, DustID.TintableDustLighted, Vector2.Zero, 0, color, 1f);
-            d.noGravity = true;
-            
+           
 
             if (DelayTimer < 10)
             {
@@ -151,14 +162,15 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
         {
             if (hit.Crit)
             {
-                SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/HopeScabbardTele") with { PitchVariance = 0.2f, Volume = 0.15f });
+                SoundEngine.PlaySound(DTAssetLib.Impacts.DarkShot with { PitchVariance = 0.2f });
                 ShimmeringFlames.ShimmerBurn(target);
+                PRTLoader.NewParticle(PRTLoader.GetParticleID<SmallShine>(), Projectile.Center, Vector2.Zero, Color.White, 0.5f);
             }
         }
 
         public override void OnKill(int timeLeft)
         {
-            PRTLoader.NewParticle(PRTLoader.GetParticleID<SmallShine>(), Projectile.Center, Vector2.Zero, Color.White, 0.5f);
+            
         }
 	}
 }

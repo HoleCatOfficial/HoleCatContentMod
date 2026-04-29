@@ -40,7 +40,7 @@ namespace DestroyerTest.Common
             item.useAnimation = 60;
             item.autoReuse = true;
 
-            item.DamageType = DamageClass.Melee;
+            item.DamageType = ModContent.GetInstance<DTTrueMeleeClass>();
             item.damage = 28;
             item.knockBack = 6.5f;
             item.crit = 4;

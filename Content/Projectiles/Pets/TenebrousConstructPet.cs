@@ -12,6 +12,7 @@ using Terraria.ModLoader;
 using GlowmaskHelper.Content;
 using ReLogic.Content;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 
 
 namespace DestroyerTest.Content.Projectiles.Pets
@@ -19,6 +20,11 @@ namespace DestroyerTest.Content.Projectiles.Pets
     [AutoloadGlowmask]
     public class TenebrousConstructPet : ModProjectile
     {
+        public Effect RedShader;
+        public override void Load()
+        {
+            RedShader = ModContent.Request<Effect>("DestroyerTest/Assets/Effects/ColorShitRed").Value;
+        }
         public override void SetStaticDefaults()
         {
             Main.projPet[Type] = true;
@@ -44,8 +50,12 @@ namespace DestroyerTest.Content.Projectiles.Pets
         public float WingXScale = 1f;
         public override bool PreDraw(ref Color lightColor)
         {
+            SpriteBatch spriteBatch = Main.spriteBatch;
             Asset<Texture2D> WingLeft = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/TenebrousConstructPetWingLeft");
             Asset<Texture2D> WingRight = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/TenebrousConstructPetWingRight");
+
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.Default, RasterizerState.CullNone, RedShader, Main.GameViewMatrix.TransformationMatrix);
 
             // Left wing: origin at RIGHT edge, middle vertically
             Vector2 originLeft = new Vector2(WingLeft.Width(), WingLeft.Height() / 2);
@@ -74,6 +84,8 @@ namespace DestroyerTest.Content.Projectiles.Pets
                 SpriteEffects.None,
                 0
             );
+
+            Opus.ReturnToDefaultDrawing(spriteBatch);
             return true;
         }
 

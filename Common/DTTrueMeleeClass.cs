@@ -32,7 +32,6 @@ namespace DestroyerTest.Common
         public override void SetDefaultStats(Player player)
         {
             player.GetCritChance<DTTrueMeleeClass>() += 4;
-            player.GetAttackSpeed<DTTrueMeleeClass>() += 01f;
             player.GetArmorPenetration<DTTrueMeleeClass>() += 2;
         }
         public override bool UseStandardCritCalcs => true;
