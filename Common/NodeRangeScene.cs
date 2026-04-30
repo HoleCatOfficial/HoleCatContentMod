@@ -29,5 +29,9 @@ namespace DestroyerTest.Common
         public override int Music => DTMusicConfig.instance.NodeIdleMusic ? MusicLoader.GetMusicSlot("DestroyerTest/Assets/Music/NodeIdle") : -1;
 
         public override SceneEffectPriority Priority => SceneEffectPriority.Environment;
+        public override float GetWeight(Player player)
+        {
+            return 1f;
+        }
     }
 }

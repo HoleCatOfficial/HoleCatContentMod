@@ -1,17 +1,18 @@
-using System;
+using DestroyerTest.Common;
 using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.ModLoader;
-using Terraria.UI.Chat;
 using ReLogic.Graphics;
+using System;
+using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
+using Terraria.ModLoader;
+using Terraria.UI.Chat;
 
 namespace DestroyerTest.Rarity
 {
 	public class ShimmeringRarity : ModRarity
     {
-        public override Color RarityColor => new Color(0, 0, 0); // Change color as needed
+        public override Color RarityColor => ColorLib.TenebrisGradient; // Change color as needed
 
         public override int GetPrefixedRarity(int offset, float valueMult)
         {

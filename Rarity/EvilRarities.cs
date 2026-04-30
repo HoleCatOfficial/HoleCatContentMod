@@ -1,12 +1,13 @@
-using System;
+using DestroyerTest.Common;
 using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.ModLoader;
-using Terraria.UI.Chat;
+using OpusLib;
 using ReLogic.Graphics;
+using System;
+using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
-using DestroyerTest.Common;
+using Terraria.ModLoader;
+using Terraria.UI.Chat;
 
 namespace DestroyerTest.Rarity
 {
@@ -57,7 +58,7 @@ namespace DestroyerTest.Rarity
 
     public class WretchedRarity : ModRarity
     {
-        public override Color RarityColor => new Color(3, 89, 96); // Change color as needed
+        public override Color RarityColor => Opus.Sine(ColorLib.Wretched6, ColorLib.Wretched7, 0.01f); // Change color as needed
 
         public override int GetPrefixedRarity(int offset, float valueMult)
         {
@@ -72,7 +73,7 @@ namespace DestroyerTest.Rarity
 
     public class PrimalRarity : ModRarity
     {
-        public override Color RarityColor => ColorLib.IchorCrystal4; // Change color as needed
+        public override Color RarityColor => Opus.Sine(Color.DarkRed, Color.MediumVioletRed, 0.1f); // Change color as needed
 
         public override int GetPrefixedRarity(int offset, float valueMult)
         {

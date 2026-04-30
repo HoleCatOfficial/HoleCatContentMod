@@ -1,17 +1,19 @@
-using System;
+using DestroyerTest.Common;
 using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.ModLoader;
-using Terraria.UI.Chat;
+using OpusLib;
 using ReLogic.Graphics;
+using System;
+using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
+using Terraria.ModLoader;
+using Terraria.UI.Chat;
 
 namespace DestroyerTest.Rarity
 {
 	public class RiftRarity1 : ModRarity
     {
-        public override Color RarityColor => new Color(255, 155, 0); // Change color as needed
+        public override Color RarityColor => Opus.Sine(Color.Black, ColorLib.Rift, 0.1f); // Change color as needed
 
         public override int GetPrefixedRarity(int offset, float valueMult)
         {

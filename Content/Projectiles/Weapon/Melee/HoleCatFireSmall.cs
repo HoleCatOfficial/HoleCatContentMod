@@ -54,7 +54,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
             float progress = (float)(Projectile.timeLeft / 300);
-            Color C = DTColorUtils.MultiLerp(progress.Inverse(), ColorLib.HoleCatFireColormap);
+            Color C = DTColorUtils.MultiLerp(progress, ColorLib.HoleCatFireColormap);
             DTUtils.DrawCrystalCore(spriteBatch, Projectile.Center, Color.White, C, TrailPositions, TextureRotationOffset, Projectile, TrailLength, 0.8f);
         }
         
