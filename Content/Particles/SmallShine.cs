@@ -38,6 +38,11 @@ namespace DestroyerTest.Content.Particles
             rotation += 0.1f;
             position += velocity;
             Lifetime++;
+
+            if (Lifetime > MaxLifetime)
+            {
+                ShouldBeRemovedFromRenderer = true;
+            }
         }
 
         public override PixelLayer PixelLayer => PixelLayer.AboveProjectiles;

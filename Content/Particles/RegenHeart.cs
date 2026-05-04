@@ -44,6 +44,10 @@ namespace DestroyerTest.Content.Particles
                 scale *= 0.95f;
             }
 
+            if (Lifetime > MaxLifetime)
+            {
+                ShouldBeRemovedFromRenderer = true;
+            }
         }
 
         public override PixelLayer PixelLayer => PixelLayer.AboveNPCs;

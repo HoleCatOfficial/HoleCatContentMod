@@ -27,8 +27,9 @@ namespace DestroyerTest.Content.Particles.Orchestrated
         {
             if (!Spawned)
             {
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<StarParticle>(), position, Vector2.Zero, Color.White, 1f);
-
+                StarParticle Star = new StarParticle();
+                Star.Initialize(position, Vector2.Zero, Color.White, 1.5f);
+                ParticleEngine.ShaderParticles.Add(Star);
 
 
                 Spark Up = new Spark();

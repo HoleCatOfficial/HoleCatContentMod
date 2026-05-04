@@ -1,121 +1,146 @@
+using BreadLibrary.Core.Graphics.Particles;
+using BreadLibrary.Core.Graphics.Pixelation;
+using BreadLibrary.Core.Utilities;
+using DestroyerTest.Common;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using Terraria;
+using Terraria.Graphics.Renderers;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Particles.Orchestrated
 {
-    public class QuixoticParticle : BasePRT
+    public class  QuixoticParticle : BaseParticle<QuixoticParticle>
     {
-        public override void SetProperty()
-        {
-            Lifetime = 60; 
-            ShouldKillWhenOffScreen = false;
-        }
-        
+        public Vector2 position;
         public Color color = new Color(255, 219, 6);
+
         public bool Spawned = false;
-        public override void AI()
+
+        public void Initiate(Vector2 Position)
+        {
+            this.position = Position;
+        }
+
+        public override void Update(ref ParticleRendererSettings settings)
         {
             if (!Spawned)
             {
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<QuixoticSpark>(), Position, Vector2.Zero, color, 0.85f);
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<QuixoticSpark2>(), Position, Vector2.Zero, color, 1f);
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<QuixoticSpark2>(), Position, Vector2.Zero, Color.White, 0.6f);
+                QuixoticSpark FX1 = new QuixoticSpark();
+                FX1.Prepare(position, Vector2.Zero, color, 1f);
+                ParticleEngine.BehindProjectiles.Add(FX1);
+
+                QuixoticSpark2 FX2 = new QuixoticSpark2();
+                FX2.Prepare(position, Vector2.Zero, color, 2f);
+                ParticleEngine.BehindProjectiles.Add(FX2);
+
                 Spawned = true;
-            }            
-        }
-        public override bool PreDraw(SpriteBatch spriteBatch)
-        {
-
-            return false;
+            }
+            else
+            {
+                ShouldBeRemovedFromRenderer = true;
+            }
         }
     }
 
-    public class QuixoticSpark : BasePRT
+    public class QuixoticSpark : BaseParticle<QuixoticSpark>
     {
-        public int MaxLifetime => 20;
+        int Lifetime = 0;
+        int MaxLifetime = 20;
+        Vector2 position;
+        Vector2 velocity;
+        Color color;
+        float _scale = 0f;
+        float scale;
+        float rotation;
 
-        private float _targetRotation;
-        private float _startRotation;
-        
-
-        // remember the user-supplied starting scale
-        private float _baseScale;
-
-        public override void SetProperty()
+        public void Prepare(Vector2 Position, Vector2 Velocity, Color Color, float Scale)
         {
-            PRTDrawMode = PRTDrawModeEnum.AdditiveBlend;
-            Lifetime = MaxLifetime;
-
-            // don’t override Scale if the spawner set it.
-            // just record it so our curve is relative.
-            _baseScale = Scale;
-
-            // random spin ±90°–180°
-            float min = MathHelper.ToRadians(90f);
-            float max = MathHelper.ToRadians(180f);
-            float randomAbs = Main.rand.NextFloat(min, max);
-            _targetRotation = Main.rand.NextBool() ? randomAbs : -randomAbs;
-            _startRotation = Rotation;
+            this.position = Position;
+            this.velocity = Velocity;
+            this.color = Color;
+            this.scale = Scale;
         }
 
-        public override void AI()
+        float LifetimeCompletion => (float)Lifetime / MaxLifetime;
+        public override void Update(ref ParticleRendererSettings settings)
         {
-            float t = LifetimeCompletion;
+            _scale = MathHelper.Lerp(_scale, scale, Utilities.Convert01To010(LifetimeCompletion));
+            rotation += 0.1f;
+            position += velocity;
+            Lifetime++;
 
-            // rotate from start to target
-            Rotation = MathHelper.Lerp(_startRotation, _targetRotation, t);
-
-            // pulse up to double the starting scale, then back
-            if (t < 0.5f)
-                Scale = MathHelper.Lerp(_baseScale, _baseScale * 2f, t * 2f);
-            else
-                Scale = MathHelper.Lerp(_baseScale * 2f, _baseScale, (t - 0.5f) * 2f);
-
-            // fade near the end
-            if (t > 0.8f)
-                Color *= 0.9f;
+            if (Lifetime > MaxLifetime)
+            {
+                ShouldBeRemovedFromRenderer = true;
+            }
         }
 
-        public override bool PreDraw(SpriteBatch spriteBatch) => true;
+        public override PixelLayer PixelLayer => PixelLayer.AboveProjectiles;
+
+        public override bool DrawsPixelated => true;
+
+        public override void Draw(ref ParticleRendererSettings settings, SpriteBatch spriteBatch)
+        {
+            Texture2D texture = DTAssetLib.MiscSparkle144.Value;
+            Vector2 origin = texture.Size() / 2f;
+
+            Opus.StartSpriteBatchPixelated(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
+
+            spriteBatch.Draw(texture, position - Main.screenPosition, null, color with { A = 0 }, rotation, origin, scale, SpriteEffects.None, 0f);
+
+            Opus.ReturnToDefaultDrawing(spriteBatch);
+        }
     }
 
-    public class QuixoticSpark2 : BasePRT
+    public class QuixoticSpark2 : BaseParticle<QuixoticSpark2>
     {
-        public int MaxLifetime => 20;
+        int Lifetime = 0;
+        int MaxLifetime = 20;
+        Vector2 position;
+        Vector2 velocity;
+        Color color;
+        float _scale = 0f;
+        float scale;
+        float rotation;
 
-        public Color color = new Color(255, 219, 6);
-
-        // remember the user-supplied starting scale
-        private float _baseScale;
-
-        public override void SetProperty()
+        public void Prepare(Vector2 Position, Vector2 Velocity, Color Color, float Scale)
         {
-            PRTDrawMode = PRTDrawModeEnum.AdditiveBlend;
-            Lifetime = MaxLifetime;
-
-            // don’t override Scale if the spawner set it.
-            // just record it so our curve is relative.
-            _baseScale = Scale;
+            this.position = Position;
+            this.velocity = Velocity;
+            this.color = Color;
+            this.scale = Scale;
         }
 
-        public override void AI()
+        float LifetimeCompletion => (float)Lifetime / MaxLifetime;
+        public override void Update(ref ParticleRendererSettings settings)
         {
-            float t = LifetimeCompletion;
+            _scale = MathHelper.Lerp(_scale, scale, Utilities.Convert01To010(LifetimeCompletion));
+            position += velocity;
+            Lifetime++;
 
-            // pulse up to double the starting scale, then back
-            if (t < 0.5f)
-                Scale = MathHelper.Lerp(_baseScale, _baseScale * 2f, t * 2f);
-            else
-                Scale = MathHelper.Lerp(_baseScale, _baseScale, (t - 0.5f) * 2f);
-
-            // fade near the end
-            if (t > 0.8f)
-                Color *= 0.9f;
+            if (Lifetime > MaxLifetime)
+            {
+                ShouldBeRemovedFromRenderer = true;
+            }
         }
 
-        public override bool PreDraw(SpriteBatch spriteBatch) => true;
+        public override PixelLayer PixelLayer => PixelLayer.AboveProjectiles;
+
+        public override bool DrawsPixelated => true;
+
+        public override void Draw(ref ParticleRendererSettings settings, SpriteBatch spriteBatch)
+        {
+            Texture2D texture = DTAssetLib.MiscSparkle144.Value;
+            Vector2 origin = texture.Size() / 2f;
+
+            Opus.StartSpriteBatchPixelated(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
+
+            spriteBatch.Draw(texture, position - Main.screenPosition, null, color with { A = 0 }, rotation, origin, scale, SpriteEffects.None, 0f);
+
+            Opus.ReturnToDefaultDrawing(spriteBatch);
+        }
     }
 }
