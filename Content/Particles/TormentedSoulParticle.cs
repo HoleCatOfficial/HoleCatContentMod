@@ -1,84 +1,91 @@
+using BreadLibrary.Core.Graphics.Particles;
+using BreadLibrary.Core.Graphics.Pixelation;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using Terraria;
 using Terraria.GameContent;
+using Terraria.Graphics.Renderers;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Particles
 {
-
-    public class TormentedSoulParticle : BasePRT
+    public class TormentedSoulParticle : BaseParticle<TormentedSoulParticle>
     {
+        public int Lifetime = 0;
+        public int MaxLifetime = 80;
+        public Vector2 position;
+        public Vector2 velocity;
+        public Color color;
+        public float scale;
+        float rotation;
 
-        public int MaxLifetime => 120;
-        public override void SetProperty()
+        public void Initialize(Vector2 Position, Vector2 Velocity, Color Color, float Scale)
         {
-            PRTDrawMode = PRTDrawModeEnum.AlphaBlend;
-            Lifetime = MaxLifetime;
-            InitializePositionCache(10);
-            Color = Color.White;
-            ShouldKillWhenOffScreen = false;
+            this.position = Position;
+            this.velocity = Velocity;
+            this.color = Color;
+            this.scale = Scale;
         }
 
-        public override void AI()
-        {
-            Rotation = Velocity.ToRotation() - MathHelper.PiOver2;
-            UpdatePositionCache(oldPositions.Length);
+        //Since all of the particles deriving from this class use the same spritesheet format, the frame height and frame count are the same for all of them. 80x80 frame dimensions, 6 frames.
+        public static int FrameHeight = 44;
+        public static int FrameCount = 3;
 
-            if (LifetimeCompletion > 0.5f)
+        //Except for the frame tracker, used for iterating through the animation, though it isnt entirely useful, since the projectile just dies when the last frame is complete.
+        public int CurrentFrame = 0;
+        public void Anim()
+        {
+            if (Lifetime % 10 == 0)
             {
-                Color *= 0.9f;
+                CurrentFrame++;
+                if (CurrentFrame > FrameCount)
+                {
+                    CurrentFrame = 0;
+                }
             }
         }
 
-        public override bool PreDraw(SpriteBatch spriteBatch)
+        float Progress => (float)Lifetime / MaxLifetime;
+        public override void Update(ref ParticleRendererSettings settings)
         {
-            Vector2 drawOrigin = new Vector2(TexValue.Width * 0.5f, TexValue.Height * 0.5f);
-            for (int k = oldPositions.Length - 1; k > 0; k--)
+            Lifetime++;
+            position += velocity;
+            rotation = velocity.ToRotation();
+
+            if (Progress > 0.5f)
             {
-                Vector2 drawPos = (oldPositions[k] - Main.screenPosition) + drawOrigin + new Vector2(0f, Position.Y);
-                Color color = Color.Purple * ((oldPositions.Length - k) / (float)oldPositions.Length);
-                Main.EntitySpriteDraw(TexValue, drawPos, null, color, Rotation, drawOrigin, Scale, SpriteEffects.None, 0);
+                color *= 0.95f;
+                scale *= 0.95f;
             }
-            return true;
-        }
-    }
-    
-    public class TormentedSoulParticle2 : BasePRT
-    {
-      
-        public int MaxLifetime => 120;
-        public override void SetProperty()
-        {
-            PRTDrawMode = PRTDrawModeEnum.AlphaBlend;
-            Lifetime = MaxLifetime;
-            InitializePositionCache(10);
-            Color = Color.White;
-        }
 
-        public override void AI()
-        {
-            Rotation = Velocity.ToRotation() - MathHelper.PiOver2;
-            Velocity.Y -= 0.5f;
-            UpdatePositionCache(oldPositions.Length);
-
-            if (LifetimeCompletion > 0.5f)
+            if (Lifetime > MaxLifetime)
             {
-                Color *= 0.9f;
+                ShouldBeRemovedFromRenderer = true;
             }
         }
 
-        public override bool PreDraw(SpriteBatch spriteBatch)
+        public override PixelLayer PixelLayer => PixelLayer.AboveNPCs;
+
+        public override bool DrawsPixelated => true;
+
+        public override void Draw(ref ParticleRendererSettings settings, SpriteBatch spriteBatch)
         {
-            Vector2 drawOrigin = new Vector2(TexValue.Width * 0.5f, TexValue.Height * 0.5f);
-            for (int k = oldPositions.Length - 1; k > 0; k--)
-            {
-                Vector2 drawPos = (oldPositions[k] - Main.screenPosition) + drawOrigin + new Vector2(0f, Position.Y);
-                Color color = Color.Purple * ((oldPositions.Length - k) / (float)oldPositions.Length);
-                Main.EntitySpriteDraw(TexValue, drawPos, null, color, Rotation, drawOrigin, Scale, SpriteEffects.None, 0);
-            }
-            return true;
+
+
+            Texture2D texture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/TormentedSoulParticle").Value;
+
+            int frameHeight = FrameHeight;
+            Rectangle frame = new Rectangle(0, CurrentFrame * frameHeight, texture.Width, frameHeight);
+
+            Vector2 origin = new Vector2(texture.Width / 2f, frameHeight / 2f);
+
+            Opus.StartSpriteBatchPixelated(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
+
+            spriteBatch.Draw(texture, position - Main.screenPosition, frame, color, 0f, origin, scale, SpriteEffects.None, 0f);
+
+            Opus.ReturnToDefaultDrawing(spriteBatch);
         }
     }
 }

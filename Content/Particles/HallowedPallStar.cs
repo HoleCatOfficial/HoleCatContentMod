@@ -1,41 +1,77 @@
+using BreadLibrary.Core.Graphics.Particles;
+using BreadLibrary.Core.Graphics.Pixelation;
 using DestroyerTest.Common;
 using InnoVault.PRT;
+using Microsoft.CodeAnalysis;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria;
-using Terraria.ModLoader;
+using OpusLib;
 using System;
+using Terraria;
+using Terraria.Graphics.Renderers;
+using Terraria.ModLoader;
+using static Terraria.GameContent.Animations.IL_Actions.Sprites;
 
 namespace DestroyerTest.Content.Particles
 {
-    public class HallowedPallStar : BasePRT
+    public class HallowedPallStar : BaseParticle<HallowedPallStar>
     {
-        public int MaxLifetime => 120;
-        public override void SetProperty()
+        int Lifetime = 0;
+        int MaxLifetime = 120;
+        Vector2 position;
+        Vector2 velocity;
+        Color color;
+        float scale;
+        float rotation;
+
+        public void Initialize(Vector2 Position, Vector2 Velocity, Color Color, float Scale)
         {
-            
-            PRTDrawMode = PRTDrawModeEnum.AdditiveBlend;
-            Lifetime = MaxLifetime;
+            this.position = Position;
+            this.velocity = Velocity;
+            this.color = Color;
+            this.scale = Scale;
         }
 
-        public override void AI()
+        float LifetimeCompletion => (float)Lifetime / MaxLifetime;
+        public override void Update(ref ParticleRendererSettings settings)
         {
-            Velocity *= 0.99f;
-            if (Velocity.X > 0)
+            Lifetime++;
+            position += velocity;
+            velocity *= 0.99f;
+            if (velocity.X > 0)
             {
-                Rotation += 0.1f;
+                rotation += 0.1f;
             }
-            if (Velocity.X < 0)
+            if (velocity.X < 0)
             {
-                Rotation -= 0.1f;
+                rotation -= 0.1f;
             }
             if (LifetimeCompletion > 0.6f)
             {
-                Color *= 0.9f;
-                Scale *= 0.9f;
+                color *= 0.85f;
+                scale *= 0.85f;
+            }
+
+            if (Lifetime > MaxLifetime)
+            {
+                ShouldBeRemovedFromRenderer = true;
             }
         }
 
-        public override bool PreDraw(SpriteBatch spriteBatch) => true;
+        public override PixelLayer PixelLayer => PixelLayer.AboveProjectiles;
+
+        public override bool DrawsPixelated => true;
+
+        public override void Draw(ref ParticleRendererSettings settings, SpriteBatch spriteBatch)
+        {
+            Texture2D texture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/HallowedPallStar").Value;
+            Vector2 origin = texture.Size() / 2f;
+
+            Opus.StartSpriteBatchPixelated(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
+
+            spriteBatch.Draw(texture, position - Main.screenPosition, null, color, rotation, origin, scale, SpriteEffects.None, 0f);
+
+            Opus.ReturnToDefaultDrawing(spriteBatch);
+        }
     }
 }

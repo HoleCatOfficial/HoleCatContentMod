@@ -6,6 +6,7 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Policy;
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.BossBar;
@@ -119,6 +120,32 @@ namespace DestroyerTest.Content.Entities
 
         public override bool CheckActive()
         {
+            return true;
+        }
+
+        int Roff = 0;
+        float Opa = 0f;
+        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            Roff += 20;
+
+            Line R = new Line(NPC.Center, new Vector2(NPC.Center.X, NPC.Center.Y + 2200f));
+            DTUtils.instance.ScrollingTextureSpine(R, DTAssetLib.ArrowTelegraphCont, ColorLib.Ichor * Opa, spriteBatch, BlendState.Additive, Roff, 2f, 1f);
+
+            if (DrawSlamTelegraph)
+            {
+                if (Opa < 1f)
+                {
+                    Opa += 0.05f;
+                }
+            }
+            else
+            {
+                if (Opa > 0f)
+                {
+                    Opa -= 0.05f;
+                }
+            }
             return true;
         }
 
@@ -315,7 +342,7 @@ namespace DestroyerTest.Content.Entities
                         if (IchorSpiralWarnTimer <= 0)
                         {
                             Spiral_BindPlayer(player, 500);
-                            Opus.RingDustOutward(DustID.TintableDustLighted, 30, NPC.Center, 500f, 0, ColorLib.IchorCrystalGradient, 1.5f, 3, true);
+                            Opus.RingDustOutward(DustID.TintableDustLighted, 30, NPC.Center, 500f, 0, ColorLib.IchorCrystalGradient, 1.5f, 3, Main.rand.NextFloat(MathHelper.TwoPi));
                             if (IchorSpiralTimer > 0)
                             {
                                 IchorSpiralRotationOffset += 1f;
@@ -438,7 +465,9 @@ namespace DestroyerTest.Content.Entities
 
             for (int i = 0; i < P.Length; i++)
             {
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), P[i], Vector2.Zero, ColorLib.IchorCrystalGradient, 1f);
+                PointGlowPreMultiplied Glow = new PointGlowPreMultiplied();
+                Glow.Initialize(P[i], Vector2.Zero, ColorLib.IchorCrystalGradient, 1f);
+                ParticleEngine.BehindProjectiles.Add(Glow);
             }
 
             foreach (Player p in Main.player)
@@ -573,6 +602,7 @@ namespace DestroyerTest.Content.Entities
             }
         }
 
+        bool DrawSlamTelegraph = false;
         public void SlamAI(Player player)
         {
             if (SlamCharge > 0)
@@ -585,8 +615,8 @@ namespace DestroyerTest.Content.Entities
                 if (SlamCharge == 20)
                 {
                     SoundEngine.PlaySound(SlamWarn, NPC.Center);
-                    PRTLoader.NewParticle(PRTLoader.GetParticleID<ArrowTelegraphMobile>(), NPC.Center, new Vector2(0, 15), ColorLib.Ichor, 3);
                 }
+                DrawSlamTelegraph = true;
             }
             if (SlamCharge <= 0)
             {
@@ -597,8 +627,15 @@ namespace DestroyerTest.Content.Entities
                 }
                 Dust.NewDust(new Vector2(NPC.Center.X, NPC.Center.Y + NPC.height / 2), 2, 2, DustID.Ichor, 2f, -1.5f, 0, ColorLib.Ichor, 2f);
                 Dust.NewDust(new Vector2(NPC.Center.X, NPC.Center.Y + NPC.height / 2), 2, 2, DustID.Ichor, -2f, -1.5f, 0, ColorLib.Ichor, 2f);
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), new Vector2(NPC.Center.X, NPC.Center.Y + NPC.height / 2), new Vector2(2, 1.5f), ColorLib.Ichor, 1.0f);
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), new Vector2(NPC.Center.X, NPC.Center.Y + NPC.height / 2), new Vector2(-2, 1.5f), ColorLib.Ichor, 1.0f);
+
+                PointGlowPreMultiplied Glow1 = new PointGlowPreMultiplied();
+                Glow1.Initialize(NPC.Bottom, new Vector2(3f, 0f), ColorLib.Ichor, 1f);
+                ParticleEngine.BehindProjectiles.Add(Glow1);
+
+                PointGlowPreMultiplied Glow2 = new PointGlowPreMultiplied();
+                Glow2.Initialize(NPC.Bottom, new Vector2(-3f, 0f), ColorLib.Ichor, 1f);
+                ParticleEngine.BehindProjectiles.Add(Glow2);
+
                 NPC.noTileCollide = false;
                 NPC.velocity.Y = 0f;
                 NPC.velocity.Y = 24f;

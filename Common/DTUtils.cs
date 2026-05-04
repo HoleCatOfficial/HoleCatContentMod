@@ -1,4 +1,5 @@
 
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
@@ -334,6 +335,30 @@ namespace DestroyerTest.Common
             Opus.ReturnToDefaultDrawing(spriteBatch);
         }
 
+        /// <summary>
+        /// Creates a scrolling texture, similar to a trail, but confined to two points.
+        /// <br/> Must be called in a draw-related override.
+        /// </summary>
+        /// <param name="line"></param>
+        /// <param name="texture"></param>
+        /// <param name="scrollspeed"></param>
+        public void ScrollingTextureSpine(Line line, Asset<Texture2D> texture, Color drawColor, SpriteBatch spriteBatch, BlendState blendState, int TexOffset, float Width = 1f, float Stretch = 1f)
+        {
+
+            if (texture == null)
+            {
+                Main.NewText("ScrollingTextureSpine: Texture is null. Aborted draw.", Color.Red);
+                return;
+            }
+
+
+            Opus.StartSpriteBatchForTrails(spriteBatch, blendState, SpriteSortMode.Immediate);
+
+            spriteBatch.Draw(texture.Value, line.Start - Main.screenPosition, new Rectangle(TexOffset, 0, (int)line.GetLineLength, texture.Value.Height), drawColor, line.GetLineRotation, new Vector2(0, texture.Value.Height) / 2, new Vector2(Stretch, Width), SpriteEffects.None, 0);
+
+            Opus.ReturnToDefaultDrawing(spriteBatch);
+        }
+
         public static void SweepColorOverString(string input, Color[] colors, Vector2 textPos, float speed = 6f)
         {
             if (string.IsNullOrEmpty(input) || colors == null || colors.Length == 0)
@@ -371,10 +396,18 @@ namespace DestroyerTest.Common
 
         public static void GenericSparkleEffect(Vector2 Center)
         {
-            int Shine = PRTLoader.GetParticleID<SmallShine>();
-            int Shimmer = PRTLoader.GetParticleID<SimpleParticle>();
-            PRTLoader.NewParticle(Shine, Center, Vector2.Zero, Color.White, 1f);
-            Opus.RadialParticleRandomDir(Shimmer, 6, Center, 1f, Color.White, 0.5f, 1.5f);
+            SmallShine shine = new SmallShine();
+            shine.Prepare(Center, Vector2.Zero, Color.White, 1f);
+            ParticleEngine.BehindProjectiles.Add(shine);
+
+            Vector2[] dir = Opus.RadialVectorOutwardRandom(6, Center, 1.5f);
+
+            for (int i = 0; i < 6; i++)
+            {
+                PointGlowPreMultiplied Glow = new PointGlowPreMultiplied();
+                Glow.Initialize(Center, dir[i], Color.White, 1f);
+                ParticleEngine.BehindProjectiles.Add(Glow);
+            }
         }
 
         public static DrawData CenteredDraw(Projectile projectile, Color color)
@@ -977,7 +1010,11 @@ namespace DestroyerTest.Common
             );
         }
 
-
+        public static Color FromHex(string hex)
+        {
+            System.Drawing.Color color = System.Drawing.ColorTranslator.FromHtml(hex);
+            return new Color(color.R, color.G, color.B, color.A);
+        }
 
         
     }
@@ -1492,6 +1529,7 @@ namespace DestroyerTest.Common
         public static Asset<Texture2D> Laser = ModContent.Request<Texture2D>($"{ExtrasPath}/LongLaser", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> AuraRing = ModContent.Request<Texture2D>($"{ParticlePath}/AuraRing", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> FaintGlow = ModContent.Request<Texture2D>($"{ExtrasPath}/FaintGlow", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> CurseSigilRing = ModContent.Request<Texture2D>($"{ExtrasPath}/CurseSigilRing", AssetRequestMode.AsyncLoad);
 
         public static Asset<Texture2D> Sparkle(int Variant)
         {
@@ -1996,6 +2034,71 @@ namespace DestroyerTest.Common
 
                         DTUtils.AddStrips(ve, Positions, i, offset, offset2, t, b, Scroll);
                        
+                    }
+
+
+                    GraphicsDevice gd = Main.graphics.GraphicsDevice;
+                    if (ve.Count >= 3)
+                    {
+                        gd.Textures[0] = TrailTex;
+                        gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2);
+                    }
+                }
+
+                Opus.ReturnToDefaultDrawing(Main.spriteBatch);
+            }
+
+        }
+
+        public static void DrawTrail(SpriteBatch spriteBatch, BlendState blendState, Texture2D TrailTex, List<Vector2> Positions, List<float> Rotations, float Amplitude, Color color, float Scroll, float TaperRange = 20f)
+        {
+            DTOptimizationsConfig OptCfg = ModContent.GetInstance<DTOptimizationsConfig>();
+            if (!OptCfg.DisableExcessTrails)
+            {
+                Opus.StartSpriteBatchForTrails(spriteBatch, blendState, SpriteSortMode.Immediate);
+
+                if (Positions.Count > 1)
+                {
+                    List<ColoredVertex> ve = new List<ColoredVertex>();
+                    float a = 0;
+
+                    for (int i = Positions.Count - 1; i > 0; i--)
+                    {
+                        float taper = MathHelper.Clamp(i / TaperRange, 0f, 1f);
+
+                        // optional smoothing (feels nicer than linear)
+                        taper = taper * taper; // quadratic ease-in
+
+                        float AdjAmplitude = Amplitude * taper;
+                        float t = 1f - (i / (float)Positions.Count); // fade toward tail
+                        Color b = color * t;
+
+
+                        //Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
+                        Vector2 curr = Positions[i];
+                        Vector2 prev = Positions[i - 1];
+                        Vector2 next = i < Positions.Count - 1 ? Positions[i + 1] : curr;
+
+                        Vector2 dirPrev = curr - prev;
+                        Vector2 dirNext = next - curr;
+
+                        if (dirPrev != Vector2.Zero) dirPrev.Normalize();
+                        if (dirNext != Vector2.Zero) dirNext.Normalize();
+
+                        if (dirPrev == Vector2.Zero) dirPrev = dirNext;
+                        if (dirNext == Vector2.Zero) dirNext = dirPrev;
+
+                        Vector2 dir = dirPrev + dirNext;
+                        if (dir != Vector2.Zero)
+                            dir.Normalize();
+                        else
+                            dir = dirPrev;
+
+                        Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * AdjAmplitude;
+                        Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * AdjAmplitude;
+
+                        DTUtils.AddStrips(ve, Positions, i, offset, offset2, t, b, Scroll);
+
                     }
 
 

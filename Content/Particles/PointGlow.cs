@@ -1,6 +1,5 @@
 ﻿using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
-using InnoVault.PRT;
 using Microsoft.CodeAnalysis;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -16,10 +15,10 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Particles
 {
-    public class DungeonSpiritParticle : BaseParticle<DungeonSpiritParticle>
+    public class PointGlow : BaseParticle<PointGlow>
     {
         public int Lifetime = 0;
-        public int MaxLifetime = 80;
+        public int MaxLifetime = 120;
         public Vector2 position;
         public Vector2 velocity;
         public Color color;
@@ -31,24 +30,6 @@ namespace DestroyerTest.Content.Particles
             this.velocity = Velocity;
             this.color = Color;
             this.scale = Scale;
-        }
-
-        //Since all of the particles deriving from this class use the same spritesheet format, the frame height and frame count are the same for all of them. 80x80 frame dimensions, 6 frames.
-        public static int FrameHeight = 44;
-        public static int FrameCount = 3;
-
-        //Except for the frame tracker, used for iterating through the animation, though it isnt entirely useful, since the projectile just dies when the last frame is complete.
-        public int CurrentFrame = 0;
-        public void Anim()
-        {
-            if (Lifetime % 10 == 0)
-            {
-                CurrentFrame++;
-                if (CurrentFrame > FrameCount)
-                {
-                    CurrentFrame = 0;
-                }
-            }
         }
 
         float Progress => (float)Lifetime / MaxLifetime;
@@ -63,10 +44,6 @@ namespace DestroyerTest.Content.Particles
                 scale *= 0.95f;
             }
 
-            if (Lifetime > MaxLifetime)
-            {
-                ShouldBeRemovedFromRenderer = true;
-            }
         }
 
         public override PixelLayer PixelLayer => PixelLayer.AboveProjectiles;
@@ -75,18 +52,28 @@ namespace DestroyerTest.Content.Particles
 
         public override void Draw(ref ParticleRendererSettings settings, SpriteBatch spriteBatch)
         {
-            
-
-            Texture2D texture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/DungeonSpiritParticle").Value;
-
-            int frameHeight = FrameHeight;
-            Rectangle frame = new Rectangle(0, CurrentFrame * frameHeight, texture.Width, frameHeight);
-
-            Vector2 origin = new Vector2(texture.Width / 2f, frameHeight / 2f);
+            Texture2D texture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/PointGlow").Value;
+            Vector2 origin = texture.Size() / 2f;
 
             Opus.StartSpriteBatchPixelated(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
 
-            spriteBatch.Draw(texture, position - Main.screenPosition, frame, color, 0f, origin, scale, SpriteEffects.None, 0f);
+            spriteBatch.Draw(texture, position - Main.screenPosition, null, color, 0f, origin, scale, SpriteEffects.None, 0f);
+
+            Opus.ReturnToDefaultDrawing(spriteBatch);
+        }
+    }
+
+    public class PointGlowPreMultiplied : PointGlow
+    {
+
+        public override void Draw(ref ParticleRendererSettings settings, SpriteBatch spriteBatch)
+        {
+            Texture2D texture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/PointGlowPreMultiplied").Value;
+            Vector2 origin = texture.Size() / 2f;
+
+            Opus.StartSpriteBatchPixelated(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
+
+            spriteBatch.Draw(texture, position - Main.screenPosition, null, color with { A = 0 }, 0f, origin, scale, SpriteEffects.None, 0f);
 
             Opus.ReturnToDefaultDrawing(spriteBatch);
         }

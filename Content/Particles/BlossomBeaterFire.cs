@@ -1,4 +1,5 @@
 ﻿using BreadLibrary.Core.Graphics.Particles;
+using BreadLibrary.Core.Graphics.Pixelation;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
@@ -62,10 +63,14 @@ namespace DestroyerTest.Content.Particles
             return new Tuple<Texture2D, Rectangle, Vector2>(TexValue, frameRect, origin);
         }
 
+        public override PixelLayer PixelLayer => PixelLayer.AbovePlayer;
+
+        public override bool DrawsPixelated => true;
+
         public override void Draw(ref ParticleRendererSettings settings, SpriteBatch spritebatch)
         {
-            Opus.StartSpriteBatchWithBlending(spritebatch, BlendState.Additive, SpriteSortMode.Deferred);
-            spritebatch.Draw(GetTextureProperties().Item1, position - Main.screenPosition, GetTextureProperties().Item2, col * Opacity, rotation, GetTextureProperties().Item3, new Vector2(scale, scale), SpriteEffects.None, 0f);
+            Opus.StartSpriteBatchPixelated(spritebatch, BlendState.AlphaBlend, SpriteSortMode.Deferred);
+            spritebatch.Draw(GetTextureProperties().Item1, position - Main.screenPosition, GetTextureProperties().Item2, col with { A = 0 } * Opacity, rotation, GetTextureProperties().Item3, new Vector2(scale, scale), SpriteEffects.None, 0f);
             Opus.ReturnToDefaultDrawing(spritebatch);
         }
     }

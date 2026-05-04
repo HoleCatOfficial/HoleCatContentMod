@@ -25,8 +25,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
         private bool returning = false;
         private int flightTime = 0;
         private int soundCooldown = 0; // Initialize a cooldown timer
-        private SoundStyle Woosh = DTAssetLib.SwordSounds.MemoriamSwing with { Pitch = 0.7f, PitchVariance = 0.4f, MaxInstances = 0 };
-        private SoundStyle TileHit = new SoundStyle("DestroyerTest/Assets/Audio/TenebrousConstruct/Hit", 5) with { PitchVariance = 0.4f, MaxInstances = 0 };
+        private SoundStyle Woosh = DTAssetLib.SwordSounds.StandardSwing with { Pitch = -0.7f, PitchVariance = 0.7f, MaxInstances = 0 };
+        private SoundStyle TileHit = DTAssetLib.Charge.MetalTinkLight;
 
         public override void SetStaticDefaults()
         {
@@ -133,7 +133,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            SoundStyle Hit = DTAssetLib.Impacts.BrightBell with
+            SoundStyle Hit = DTAssetLib.Impacts.FleshHit with
             {
                 PitchVariance = 0.5f
             };

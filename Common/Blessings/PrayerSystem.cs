@@ -17,6 +17,8 @@ using Terraria.Audio;
 using DestroyerTest.Content.MeleeWeapons.SwordLineage;
 using DestroyerTest.Content.MeleeWeapons;
 using System.Collections.Generic;
+using Terraria.Graphics.Renderers;
+using BreadLibrary.Core.Graphics.Particles;
 
 namespace DestroyerTest.Common.Blessings
 {
@@ -39,7 +41,15 @@ namespace DestroyerTest.Common.Blessings
             CurrentBlessing = IncomingBlessing;
 
             Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BlessingParticle>(), Player.Center, Vector2.Zero, ColorLib.Soul, 0.01f, 2f);
-            Opus.RadialParticleRandomDir(PRTLoader.GetParticleID<HallowedPallStar>(), 10, Player.Center, 1, ColorLib.Soul, 1f, 2.75f);
+
+            Vector2[] Vels = Opus.RadialVectorOutwardRandom(10, Player.Center, 1f);
+
+            for (int i = 0; i < 10; i++)
+            {
+                HallowedPallStar Star = new();
+                Star.Initialize(Player.Center, Vels[i], ColorLib.Soul, 1f);
+                ParticleEngine.ShaderParticles.Add(Star);
+            }
 
 
             PopupText.NewText(new AdvancedPopupRequest() { Text = IncomingBlessing.BlessingMessage, Color = ColorLib.Soul, DurationInFrames = 300, Velocity = new Vector2(0, -20) }, Player.Center);

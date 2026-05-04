@@ -1,42 +1,65 @@
+using BreadLibrary.Core.Graphics.Particles;
+using BreadLibrary.Core.Graphics.Pixelation;
 using DestroyerTest.Common;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using Terraria;
+using Terraria.Graphics.Renderers;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Particles
 {
-    public class SoundwaveParticle : BasePRT
+    public class SoundwaveParticle : BaseParticle<SoundwaveParticle>
     {
-        public override void SetProperty()
+        public int Lifetime = 0;
+        public int MaxLifetime = 20;
+        public Vector2 position;
+        public Vector2 velocity;
+        public Color color;
+        public float scale;
+        float rotation;
+        public void Initialize(Vector2 Position, Vector2 Velocity, Color Color, float Scale)
         {
-            PRTDrawMode = PRTDrawModeEnum.AdditiveBlend;
-            Lifetime = 9999;
-            Scale = 0.01f;
-            ShouldKillWhenOffScreen = false;
+            this.position = Position;
+            this.velocity = Velocity;
+            this.color = Color;
+            this.scale = Scale;
+
+            rotation = Main.rand.NextFloat(MathHelper.TwoPi);
         }
 
-        public override void AI()
+        float Progress => (float)Lifetime / MaxLifetime;
+        public override void Update(ref ParticleRendererSettings settings)
         {
-            float endScale = ai[0];
-            float growSpeed = 0.12f;
+            Lifetime++;
+            position += velocity;
 
-            if (Scale < endScale)
+            float scaleRate = MathHelper.Lerp(0.1f, 0.02f, Progress);
+            scale += scaleRate;
+
+            if (Progress > 0.5f)
             {
-                Scale += growSpeed;
+                color *= 0.95f;
             }
 
-            float fadeStart = endScale * 0.8f;
-            if (Scale >= fadeStart)
-            {
-                Color *= 0.9f;
-            }
-
-            if (Scale >= endScale)
-                Kill();
         }
 
-        public override bool PreDraw(SpriteBatch spriteBatch) => true;
+        public override PixelLayer PixelLayer => PixelLayer.AboveNPCs;
+
+        public override bool DrawsPixelated => true;
+
+        public override void Draw(ref ParticleRendererSettings settings, SpriteBatch spriteBatch)
+        {
+            Texture2D texture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/SoundwaveParticle").Value;
+            Vector2 origin = texture.Size() / 2f;
+
+            Opus.StartSpriteBatchPixelated(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
+
+            spriteBatch.Draw(texture, position - Main.screenPosition, null, color with { A = 0 }, 0f, origin, scale, SpriteEffects.None, 0f);
+
+            Opus.ReturnToDefaultDrawing(spriteBatch);
+        }
     }
 }

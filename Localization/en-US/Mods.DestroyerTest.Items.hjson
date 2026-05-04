@@ -4083,12 +4083,17 @@ HypnicJerk: {
 
 Luna: {
 	DisplayName: Luna
-	Tooltip: ""
+	Tooltip:
+		'''
+		Summons a miniature moon that orbits you and deals a flat 20 classless damage on hit.
+		Hits inflict broken armor for 5 seconds.
+		15% increased Magic damage.
+		'''
 }
 
 Deteriorate: {
 	DisplayName: Deteriorate
-	Tooltip: ""
+	Tooltip: Rogue hits have a 50% chance to create a classless explosion that deals 50% of the weapon's damage.
 }
 
 Fallen: {
@@ -4551,10 +4556,40 @@ ShadeHeart: {
 
 SoulSlug: {
 	DisplayName: Soul Slug
-	Tooltip: ""
+	Tooltip: Explodes on collision and inflicts soul inferno.
 }
 
 CursedHammer: {
 	DisplayName: Cursed Hammer
+	Tooltip: Throws returning hammers that inflict cursed inferno.
+}
+
+Sola: {
+	DisplayName: Sola
+	Tooltip:
+		'''
+		Summons a miniature sun that orbits you and ignites enemies ablaze, dealing a flat 20 classless damage on hit.
+		Run speed and acceleration are greatly increased.
+		'''
+}
+
+Bipolar: {
+	DisplayName: Bipolar
+	Tooltip:
+		'''
+		Summons a miniature moon and miniature sun that orbit you and deal a flat 20 classless damage on hit.
+		The moon inflicts broken armor for 5 seconds, the sun, fire for five seconds.
+		15% increased Magic damage;
+		Run speed and acceleration are greatly increased.
+		'''
+}
+
+Instinct: {
+	DisplayName: Instinct
+	Tooltip: You get a dodge with a 20 second cooldown.
+}
+
+Expedition: {
+	DisplayName: Expedition
 	Tooltip: ""
 }

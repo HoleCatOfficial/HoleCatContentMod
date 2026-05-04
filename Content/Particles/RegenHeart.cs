@@ -1,3 +1,5 @@
+using BreadLibrary.Core.Graphics.Particles;
+using BreadLibrary.Core.Graphics.Pixelation;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Magic;
@@ -6,30 +8,58 @@ using DestroyerTest.Content.Projectiles;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using Terraria;
+using Terraria.Graphics.Renderers;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Particles
 {
-    public class RegenHeart : BasePRT
+    public class RegenHeart : BaseParticle<RegenHeart>
     {
-        public int MaxLifetime => 60;
-        public override void SetProperty()
+        public int Lifetime = 0;
+        public int MaxLifetime = 120;
+        public Vector2 position;
+        public Vector2 velocity;
+        public Color color;
+        public float scale;
+
+        public void Initialize(Vector2 Position, Vector2 Velocity, Color Color, float Scale)
         {
-            PRTDrawMode = PRTDrawModeEnum.NonPremultiplied;
-            Lifetime = MaxLifetime;
+            this.position = Position;
+            this.velocity = Velocity;
+            this.color = Color;
+            this.scale = Scale;
         }
 
-        public override void AI()
+        float Progress => (float)Lifetime / MaxLifetime;
+        public override void Update(ref ParticleRendererSettings settings)
         {
-            Rotation += 0.005f * Velocity.X;
+            Lifetime++;
+            position += velocity;
 
-            if (LifetimeCompletion > 0.3f)
+            if (Progress > 0.5f)
             {
-                Color *= 0.9f;
+                color *= 0.95f;
+                scale *= 0.95f;
             }
+
         }
 
-        public override bool PreDraw(SpriteBatch spriteBatch) => true;
+        public override PixelLayer PixelLayer => PixelLayer.AboveNPCs;
+
+        public override bool DrawsPixelated => true;
+
+        public override void Draw(ref ParticleRendererSettings settings, SpriteBatch spriteBatch)
+        {
+            Texture2D texture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/RegenHeart").Value;
+            Vector2 origin = texture.Size() / 2f;
+
+            Opus.StartSpriteBatchPixelated(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
+
+            spriteBatch.Draw(texture, position - Main.screenPosition, null, color, 0f, origin, scale, SpriteEffects.None, 0f);
+
+            Opus.ReturnToDefaultDrawing(spriteBatch);
+        }
     } 
 }

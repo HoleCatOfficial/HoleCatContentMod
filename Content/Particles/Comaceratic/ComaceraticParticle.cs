@@ -1,4 +1,6 @@
-﻿using InnoVault.PRT;
+﻿using BreadLibrary.Core.Graphics.Particles;
+using BreadLibrary.Core.Graphics.Pixelation;
+using InnoVault.PRT;
 using Microsoft.CodeAnalysis;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -8,59 +10,70 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.Graphics.Renderers;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Particles.Comaceratic
 {
-    public class ComaceraticParticle : BasePRT
+    public class ComaceraticParticle : BaseParticle<ComaceraticParticle>
     {
-        public int MaxLifetime => 75;
-      
-        public static int FrameHeight = 700;
-        public static int FrameCount = 3;
+        int Lifetime = 0;
+        int MaxLifetime = 75;
+        Vector2 position;
+        Vector2 velocity;
+        Color color;
+        float scale;
+        float rotation;
 
-        public int CurrentFrame = 0;
-
-        public override void SetProperty()
+        int variant => Main.rand.Next(3);
+        public void Initialize(Vector2 Position, Vector2 Velocity, Color Color, float Scale)
         {
-
-            PRTDrawMode = PRTDrawModeEnum.AdditiveBlend;
-            Lifetime = MaxLifetime;
-            CurrentFrame = Main.rand.Next(3);
-            
+            this.position = Position;
+            this.velocity = Velocity;
+            this.color = Color;
+            this.scale = Scale;
         }
-
-        public override void AI()
+        float LifetimeCompletion => (float)Lifetime / MaxLifetime;
+        public override void Update(ref ParticleRendererSettings settings)
         {
-
-            Velocity *= 0.96f;
-            Rotation += 0.06f * (Velocity.X > 0 ? 1 : -1);
-
+            Lifetime++;
+            velocity *= 0.96f;
+            if (velocity.X > 0)
+            {
+                rotation += 0.06f;
+            }
+            if (velocity.X < 0)
+            {
+                rotation -= 0.06f;
+            }
             if (LifetimeCompletion > 0.6f)
             {
-                Color *= 0.9f;
-                Scale *= 0.9f;
+                color *= 0.9f;
+                scale *= 0.9f;
+            }
+
+            if (Lifetime > MaxLifetime)
+            {
+                ShouldBeRemovedFromRenderer = true;
             }
         }
-
-        public override bool PreDraw(SpriteBatch spriteBatch)
+        public override PixelLayer PixelLayer => PixelLayer.AboveProjectiles;
+        public override bool DrawsPixelated => true;
+        public override void Draw(ref ParticleRendererSettings settings, SpriteBatch spriteBatch)
         {
-            int frameHeight = FrameHeight;
-            Rectangle frame = new Rectangle(0, CurrentFrame * frameHeight, TexValue.Width, frameHeight);
-
-            Vector2 origin = new Vector2(TexValue.Width / 2f, frameHeight / 2f);
-
+            Texture2D texture = ModContent.Request<Texture2D>($"DestroyerTest/Content/Particles/Comaceratic/ComaceraticParticle{variant}").Value;
+            Vector2 origin = texture.Size() / 2f;
             spriteBatch.Draw(
-                TexValue,
-                Position - Main.screenPosition,
-                frame,
-                Color,
-                Rotation,
+                texture,
+                position - Main.screenPosition,
+                null,
+                color,
+                rotation,
                 origin,
-                Scale,
+                scale,
                 SpriteEffects.None,
                 0f
             );
-            return false;
         }
     }
 }

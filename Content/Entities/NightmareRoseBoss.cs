@@ -55,6 +55,7 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
 using Terraria.UI;
+using static tModPorter.ProgressUpdate;
 
 namespace DestroyerTest.Content.Entities
 {
@@ -222,7 +223,7 @@ namespace DestroyerTest.Content.Entities
         public Vector2 PlayerCenter = Vector2.Zero;
         public Vector2 DirectionToPlayerCenter = Vector2.Zero;
         public Vector2 NPCHead;
-        public int BorderRad = 1200;
+        public float BorderRad = 1200f;
         public bool BorderActive = false;
         public int IdleTimer;
         public int FlameTimer = 0;
@@ -316,6 +317,7 @@ namespace DestroyerTest.Content.Entities
 
             
         }
+
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
@@ -1195,7 +1197,7 @@ namespace DestroyerTest.Content.Entities
                     break;
                 case AttackState.BlossomMine:
                     {
-                        BlossomMines(Main.rand.NextVector2FromRectangle(new Rectangle(0, 0, BorderRad, BorderRad)));
+                        BlossomMines(Main.rand.NextVector2FromRectangle(new Rectangle(0, 0, (int)BorderRad, (int)BorderRad)));
                         ResetState();
                     }
                     break;
@@ -1222,8 +1224,11 @@ namespace DestroyerTest.Content.Entities
                                 SoundEngine.PlaySound(DespShootMine);
                                 SoulBombSpawn();
                             }
-                            BorderRad = (int)MathHelper.SmoothStep(BorderRad, 0, 0.001f);
-                            RingScale = MathHelper.SmoothStep(RingScale, 0, 0.00165f);
+
+                            float progress = (float)DesperationTimer / 1200f;
+                            BorderRad = MathHelper.Lerp(1200f, 0f, progress);
+                            RingScale = MathHelper.Lerp(6.2f, 0, progress);
+                            
                         }
                         if (DesperationTimer >= 1200)
                         {
@@ -1245,20 +1250,16 @@ namespace DestroyerTest.Content.Entities
 
                         if (DeathIdleTimer > 0)
                         {
-                            OverlayAlpha = (byte)MathHelper.Clamp(
-                                255f * (1f - (DeathIdleTimer / 120f)),
-                                0f,
-                                255f
-                            );
                             if (!DeathSoundFlag)
                             {
                                 SoundEngine.PlaySound(Kill);
                                 DeathSoundFlag = true;
                             }
                             GatherParticle();
-                            BorderRad = (int)MathHelper.SmoothStep(BorderRad, 0, 0.001f);
-                            RingScale = MathHelper.SmoothStep(RingScale, 0, 0.0016f);
                             DeathIdleTimer--;
+
+                            float progress = (float)DeathIdleTimer / 120f;
+                            OverlayAlpha = MathHelper.Lerp(0f, 1f, progress.Inverse());
                         }
                         if (DeathIdleTimer <= 0)
                         {
@@ -1321,7 +1322,7 @@ namespace DestroyerTest.Content.Entities
             }
             else
             {
-                if (!DestroyerTestMod.EternityIsActive)
+                if (!DestroyerTestMod.EternityIsActive && !DestroyerTestMod.MasochistIsActive)
                 {
                     if (Main.rand.NextBool())
                     {
@@ -1335,7 +1336,7 @@ namespace DestroyerTest.Content.Entities
                     }
                     Lighting.AddLight(NPC.Center, ColorLib.CursedFlames.ToVector3() * 0.5f);
                 }
-                if (DestroyerTestMod.EternityIsActive)
+                if (DestroyerTestMod.EternityIsActive && !DestroyerTestMod.MasochistIsActive)
                 {
                     if (Main.rand.NextBool())
                     {
@@ -1368,7 +1369,7 @@ namespace DestroyerTest.Content.Entities
 
         float RingScale = 6.2f;
         float Rotation = 0f;
-        byte OverlayAlpha = 0;
+        float OverlayAlpha = 0f;
         public Color BorderCol;
         public float VingetteScale = 2f;
         public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
@@ -1425,14 +1426,16 @@ namespace DestroyerTest.Content.Entities
             Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
             if (BorderActive)
             {
-                Main.EntitySpriteDraw(DTAssetLib.NightmareRoseArenaBorder.Value, NPCHead - Main.screenPosition, null, BorderCol, Rotation, new Vector2(DTAssetLib.NightmareRoseArenaBorder.Value.Width / 2, DTAssetLib.NightmareRoseArenaBorder.Value.Height / 2), RingScale, SpriteEffects.None, 0);
+                Main.EntitySpriteDraw(DTAssetLib.NightmareRoseArenaBorder.Value, NPCHead - Main.screenPosition, null, BorderCol, Rotation, DTAssetLib.NightmareRoseArenaBorder.Value.Size() / 2, RingScale, SpriteEffects.None, 0);
+
+                Main.EntitySpriteDraw(DTAssetLib.Vingette.Value, NPCHead - Main.screenPosition, null, BorderCol, Rotation, DTAssetLib.Vingette.Value.Size() /2, RingScale, SpriteEffects.None, 0);
             }
             Opus.ReturnToDefaultDrawing(spriteBatch);
 
             Asset<Texture2D> White = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/NightmareRoseDeathFade");
             if (currentState == AttackState.KillIdle)
             {
-                Main.EntitySpriteDraw(White.Value, NPC.Center - Main.screenPosition, null, DTColorUtils.WithAlpha(Color.White, OverlayAlpha), 0f, new Vector2(White.Value.Width / 2, White.Value.Height / 2), 1f, SpriteEffects.None, 0);
+                Main.EntitySpriteDraw(White.Value, NPC.Center - Main.screenPosition, null, Color.White * OverlayAlpha, 0f, new Vector2(White.Value.Width / 2, White.Value.Height / 2), 1f, SpriteEffects.None, 0);
             }
 
         }
@@ -1627,6 +1630,8 @@ namespace DestroyerTest.Content.Entities
             {
                 PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp>(), NPCHead, Vector2.Zero, ColorLib.CursedFlames, 0.001f, 1);
                 PRTLoader.NewParticle(PRTLoader.GetParticleID<SmallShine>(), NPCHead, Vector2.Zero, Color.White, 2f);
+                Main.NewText("The Nightmare Rose calls upon the Corruption for Help!", ColorLib.CursedFlames);
+
                 SoundEngine.PlaySound(NodeSpawnSound);
                 for (int i = 0; i < projectileCount; i++)
                 {
@@ -1636,7 +1641,7 @@ namespace DestroyerTest.Content.Entities
                     Vector2 spawnPosition = NPC.Center + spawnOffset;
 
                     NPC.NewNPC(Entity.GetSource_FromThis(), (int)spawnPosition.X, (int)spawnPosition.Y, ModContent.NPCType<CursedFlameNode>());
-                    Main.NewText("The Nightmare Rose calls upon the Corruption for Help!", ColorLib.CursedFlames);
+                    
                 }
                 HasTriggeredNodes = true;
             }
@@ -1673,7 +1678,7 @@ namespace DestroyerTest.Content.Entities
                 {
                     for (int a = 0; a < 10; a++)
                     {
-                        Vector2 SpawnPoint = new Vector2(NPC.Center.X + Main.rand.Next(-BorderRad, BorderRad), NPC.Center.Y + 800);
+                        Vector2 SpawnPoint = new Vector2(NPC.Center.X + Main.rand.NextFloat(-BorderRad, BorderRad), NPC.Center.Y + 800);
                         Projectile.NewProjectile(Entity.GetSource_FromThis(), SpawnPoint, new Vector2(0, -8), ModContent.ProjectileType<TormentedSoul>(), 10, 2);
                     }
                 }
@@ -1681,7 +1686,7 @@ namespace DestroyerTest.Content.Entities
                 {
                     for (int a = 0; a < 5; a++)
                     {
-                        Vector2 SpawnPoint = new Vector2(NPC.Center.X + Main.rand.Next(-BorderRad, BorderRad), NPC.Center.Y + 800);
+                        Vector2 SpawnPoint = new Vector2(NPC.Center.X + Main.rand.NextFloat(-BorderRad, BorderRad), NPC.Center.Y + 800);
                         Projectile.NewProjectile(Entity.GetSource_FromThis(), SpawnPoint, new Vector2(0, -16), ModContent.ProjectileType<TormentedSoul>(), 10, 2);
                     }
                     for (int a = 0; a < 5; a++)
@@ -1693,13 +1698,13 @@ namespace DestroyerTest.Content.Entities
                         if (Side)
                         {
                             MoveDir = new Vector2(-16, 0);
-                            SpawnPoint = new Vector2(NPC.Center.X + 1000, NPC.Center.Y + Main.rand.Next(-BorderRad, BorderRad));
+                            SpawnPoint = new Vector2(NPC.Center.X + 1000, NPC.Center.Y + Main.rand.NextFloat(-BorderRad, BorderRad));
                             S = 1;
                         }
                         else
                         {
                             MoveDir = new Vector2(16, 0);
-                            SpawnPoint = new Vector2(NPC.Center.X - 1000, NPC.Center.Y + Main.rand.Next(-BorderRad, BorderRad));
+                            SpawnPoint = new Vector2(NPC.Center.X - 1000, NPC.Center.Y + Main.rand.NextFloat(-BorderRad, BorderRad));
                             S = 2;
                         }
 
@@ -2042,6 +2047,7 @@ namespace DestroyerTest.Content.Entities
         }
     }
 
+    [AutoloadHead]
     [AutoloadGlowmask]
     public class CursedFlameNode : ModNPC
     {
@@ -2053,9 +2059,10 @@ namespace DestroyerTest.Content.Entities
             NPCID.Sets.TrailCacheLength[Type] = 20;
             NPCID.Sets.TrailingMode[Type] = 3;
             NPCID.Sets.MPAllowedEnemies[Type] = true;
+
             var drawModifier = new NPCID.Sets.NPCBestiaryDrawModifiers()
-            { // Influences how the NPC looks in the Bestiary
-                CustomTexturePath = "DestroyerTest/Content/Entities/NodesBestiary", // If the NPC is multiple parts like a worm, a custom texture for the Bestiary is encouraged.
+            {
+                CustomTexturePath = "DestroyerTest/Content/Entities/NodesBestiary",
                 Position = Vector2.Zero,
             };
             NPCID.Sets.NPCBestiaryDrawOffset.Add(NPC.type, drawModifier);
@@ -2076,7 +2083,6 @@ namespace DestroyerTest.Content.Entities
             NPC.noTileCollide = true;
             NPC.knockBackResist = 0f;
             NPC.timeLeft = 150000;
-            //NPC.boss = true;
             NPC.npcSlots = 12f;
             NPC.netID = ModContent.NPCType<CursedFlameNode>();
         }

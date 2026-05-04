@@ -1604,6 +1604,7 @@ namespace DestroyerTest.Content.Entities
 
     }
 
+    [AutoloadHead]
     [AutoloadGlowmask]
     public class IchorNode : ModNPC
     {

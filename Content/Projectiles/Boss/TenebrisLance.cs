@@ -16,6 +16,7 @@ using InnoVault.PRT;
 using DestroyerTest.Content.Particles;
 using System.Collections.Generic;
 using OpusLib;
+using System.Linq;
 
 namespace DestroyerTest.Content.Projectiles.Boss
 {
@@ -24,6 +25,8 @@ namespace DestroyerTest.Content.Projectiles.Boss
 
         public override void SetStaticDefaults()
         {
+            ProjectileID.Sets.TrailCacheLength[Type] = 30;
+            ProjectileID.Sets.TrailingMode[Type] = 3;
         }
 
         public override void SetDefaults()
@@ -49,7 +52,7 @@ namespace DestroyerTest.Content.Projectiles.Boss
 			SpriteBatch spriteBatch = Main.spriteBatch;
 			DTUtils Utility = new DTUtils();
 
-            DTTrail.DrawTrail(spriteBatch, DTAssetLib.Streak(3).Value, TrailPositions, TrailRotations, 40, ColorLib.TenebrisGradient, trailOffset);
+            DTTrail.DrawTrail(spriteBatch, DTAssetLib.Streak(3).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 40, ColorLib.TenebrisGradient, trailOffset, 0);
 
             Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
         
@@ -62,45 +65,9 @@ namespace DestroyerTest.Content.Projectiles.Boss
 			return false;
 		}
 
-        public List<Vector2> TrailPositions = new();
-		public List<float> TrailRotations = new();
-		private const int TrailLength = 400;
 
 		public override void AI()
 		{
-
-            if (!DTOptimizationsConfig.instance.DisableExcessTrails)
-            {
-                Vector2 lastPos = TrailPositions.Count > 0 ? TrailPositions[0] : Projectile.Center;
-                Vector2 newPos = Projectile.Center;
-
-                float dist = Vector2.Distance(lastPos, newPos);
-                float step = 1f; // how closely to sample. tweak this!
-
-                if (dist > 0f)
-                {
-                    int segments = (int)(dist / step);
-
-                    for (int i = 1; i <= segments; i++)
-                    {
-                        Vector2 pos = Vector2.Lerp(lastPos, newPos, i / (float)segments);
-                        TrailPositions.Insert(0, pos);
-                        TrailRotations.Insert(0, Projectile.rotation);
-                    }
-                }
-                else
-                {
-                    TrailPositions.Insert(0, newPos);
-                    TrailRotations.Insert(0, Projectile.rotation);
-                }
-
-
-                // Cap trail
-                while (TrailPositions.Count > TrailLength)
-                    TrailPositions.RemoveAt(TrailPositions.Count - 1);
-                while (TrailRotations.Count > TrailLength)
-                    TrailRotations.RemoveAt(TrailRotations.Count - 1);
-            }
 
             if (Main.rand.NextBool(3))
             {
@@ -116,6 +83,14 @@ namespace DestroyerTest.Content.Projectiles.Boss
                 SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/TenebrisBlock") with { MaxInstances = 0, PitchVariance = 0.3f, Volume = 0.15f }, Projectile.Center);
                 Projectile.NewProjectile(Entity.GetSource_FromAI(), Projectile.Center, FlankLeft * 0.02f, ModContent.ProjectileType<TenebrisDart>(), Projectile.damage / 2, 3);
                 Projectile.NewProjectile(Entity.GetSource_FromAI(), Projectile.Center, FlankRight * 0.02f, ModContent.ProjectileType<TenebrisDart>(), Projectile.damage / 2, 3);
+            }
+
+            for (int i = 0; i < ProjectileID.Sets.TrailCacheLength[Type]; i++)
+            {
+                if (Projectile.oldPos[i] == Vector2.Zero)
+                {
+                    Projectile.oldPos[i] = Projectile.Center;
+                }
             }
         }
 

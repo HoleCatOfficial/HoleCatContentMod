@@ -73,7 +73,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         int F = 8;
         private void AnimateProjectile()
         {
-            if (++Projectile.frameCounter >= 7)
+            if (++Projectile.frameCounter >= 5)
             {
                 Projectile.frameCounter = 0;
                 if (++Projectile.frame >= Main.projFrames[Projectile.type])
@@ -134,7 +134,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
         public override bool? CanHitNPC(NPC target)
         {
-            return IsOnAttackFrame(target);
+            return IsOnAttackFrame(target) && Projectile.ManualCanHitFriendly(target); 
         }
 
         private SoundStyle Slash = DTAssetLib.SwordSounds.MetalSwing with { PitchVariance = 0.2f };

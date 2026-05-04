@@ -1,58 +1,59 @@
+using BreadLibrary.Core.Graphics.Particles;
+using BreadLibrary.Core.Graphics.Pixelation;
+using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using Terraria;
+using Terraria.Graphics.Renderers;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Particles
 {
-    public class SmallShine : BasePRT
+    public class SmallShine : BaseParticle<SmallShine>
     {
-        public int MaxLifetime => 20;
+        int Lifetime = 0;
+        int MaxLifetime = 120;
+        Vector2 position;
+        Vector2 velocity;
+        Color color;
+        float _scale = 0f;
+        float scale;
+        float rotation;
 
-        private float _targetRotation;
-        private float _startRotation;
-
-        // remember the user-supplied starting scale
-        private float _baseScale;
-
-        public override void SetProperty()
+        public void Prepare(Vector2 Position, Vector2 Velocity, Color Color, float Scale)
         {
-            PRTDrawMode = PRTDrawModeEnum.AdditiveBlend;
-            Lifetime = MaxLifetime;
-
-            // don’t override Scale if the spawner set it.
-            // just record it so our curve is relative.
-            _baseScale = Scale;
-
-            // random spin ±90°–180°
-            float min = MathHelper.ToRadians(90f);
-            float max = MathHelper.ToRadians(180f);
-            float randomAbs = Main.rand.NextFloat(min, max);
-            _targetRotation = Main.rand.NextBool() ? randomAbs : -randomAbs;
-            _startRotation = Rotation;
-            ShouldKillWhenOffScreen = false;
+            this.position = Position;
+            this.velocity = Velocity;
+            this.color = Color;
+            this.scale = Scale;
         }
 
-        public override void AI()
+        float LifetimeCompletion => (float)Lifetime / MaxLifetime;
+        public override void Update(ref ParticleRendererSettings settings)
         {
-            float t = LifetimeCompletion;
-
-            // rotate from start to target
-            Rotation = MathHelper.Lerp(_startRotation, _targetRotation, t);
-
-            // pulse up to double the starting scale, then back
-            if (t < 0.5f)
-                Scale = MathHelper.Lerp(_baseScale, _baseScale * 2f, t * 2f);
-            else
-                Scale = MathHelper.Lerp(_baseScale * 2f, _baseScale, (t - 0.5f) * 2f);
-
-            // fade near the end
-            if (t > 0.8f)
-                Color *= 0.9f;
+            _scale = MathHelper.Lerp(_scale, scale, Utilities.Convert01To010(LifetimeCompletion));
+            rotation += 0.1f;
+            position += velocity;
+            Lifetime++;
         }
 
-        public override bool PreDraw(SpriteBatch spriteBatch) => true;
+        public override PixelLayer PixelLayer => PixelLayer.AboveProjectiles;
+
+        public override bool DrawsPixelated => true;
+
+        public override void Draw(ref ParticleRendererSettings settings, SpriteBatch spriteBatch)
+        {
+            Texture2D texture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/FlatStar").Value;
+            Vector2 origin = texture.Size() / 2f;
+
+            Opus.StartSpriteBatchPixelated(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
+
+            spriteBatch.Draw(texture, position - Main.screenPosition, null, color with { A = 0 }, rotation, origin, scale, SpriteEffects.None, 0f);
+
+            Opus.ReturnToDefaultDrawing(spriteBatch);
+        }
     }
 }

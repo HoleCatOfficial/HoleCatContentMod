@@ -1,32 +1,65 @@
+using BreadLibrary.Core.Graphics.Particles;
+using BreadLibrary.Core.Graphics.Pixelation;
 using DestroyerTest.Common;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria;
-using Terraria.ModLoader;
+using OpusLib;
 using System;
+using Terraria;
+using Terraria.Graphics.Renderers;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Particles
 {
-    public class ImpactCracks : BasePRT
+    public class ImpactCracks : BaseParticle<ImpactCracks>
     {
-        public int MaxLifetime => 30;
-        public override void SetProperty()
+        int Lifetime = 0;
+        int MaxLifetime = 30;
+        Vector2 position;
+        Color color;
+        float scale;
+        float rotation;
+
+        public void Prepare(Vector2 Position, Color Color, float Scale)
         {
-            PRTDrawMode = PRTDrawModeEnum.AdditiveBlend;
-            Lifetime = MaxLifetime;
+            this.position = Position;
+            this.color = Color;
+            this.scale = Scale;
+
+            rotation = Main.rand.NextFloat(MathHelper.TwoPi);
         }
 
-        public override void AI()
+        float LifetimeCompletion => (float)Lifetime / MaxLifetime;
+        public override void Update(ref ParticleRendererSettings settings)
         {
-
-            Velocity *= 0;
-            if (LifetimeCompletion > 0.5f)
+            Lifetime++;
+     
+            if (LifetimeCompletion > 0.3f)
             {
-                Color *= 0.9f;
+                color *= 0.85f;
+            }
+
+            if (Lifetime > MaxLifetime)
+            {
+                ShouldBeRemovedFromRenderer = true;
             }
         }
 
-        public override bool PreDraw(SpriteBatch spriteBatch) => true;
+        public override PixelLayer PixelLayer => PixelLayer.AboveProjectiles;
+
+        public override bool DrawsPixelated => true;
+
+        public override void Draw(ref ParticleRendererSettings settings, SpriteBatch spriteBatch)
+        {
+            Texture2D texture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/ImpactCracks").Value;
+            Vector2 origin = texture.Size() / 2f;
+
+            Opus.StartSpriteBatchPixelated(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
+
+            spriteBatch.Draw(texture, position - Main.screenPosition, null, color, rotation, origin, scale, SpriteEffects.None, 0f);
+
+            Opus.ReturnToDefaultDrawing(spriteBatch);
+        }
     }
 }

@@ -1,36 +1,65 @@
+using BreadLibrary.Core.Graphics.Particles;
+using BreadLibrary.Core.Graphics.Pixelation;
 using DestroyerTest.Common;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using Terraria;
+using Terraria.Graphics.Renderers;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Particles
 {
-    public class WingDisableParticle : BasePRT
+    public class WingDisableParticle : BaseParticle<WingDisableParticle>
     {
-        public int MaxLifetime => 180;
-        public override void SetProperty()
+        public int Lifetime = 0;
+        public int MaxLifetime = 100;
+        public Vector2 position;
+        public Vector2 velocity;
+        public Color color;
+        public float scale;
+        float rotation;
+        public void Initialize(Vector2 Position, Vector2 Velocity, Color Color, float Scale)
         {
-            PRTDrawMode = PRTDrawModeEnum.AlphaBlend;
-            Lifetime = MaxLifetime;
-            ShouldKillWhenOffScreen = false;
+            this.position = Position;
+            this.velocity = Velocity;
+            this.color = Color;
+            this.scale = Scale;
+
+            rotation = Main.rand.NextFloat(MathHelper.TwoPi);
         }
 
-        public override void AI()
+        float Progress => (float)Lifetime / MaxLifetime;
+        public override void Update(ref ParticleRendererSettings settings)
         {
-            Scale += 0.25f;
-            Vector2 ScreenCenter = Main.screenPosition + new Vector2(Main.screenWidth / 2, Main.screenHeight / 2);
-            Position = ScreenCenter;
-            if (LifetimeCompletion > 0.7f)
+            Lifetime++;
+            position += velocity;
+
+            float scaleRate = MathHelper.Lerp(0.05f, 0.01f, Progress);
+            scale += scaleRate;
+
+            if (Progress > 0.5f)
             {
-                Color *= 0.9f;
+                color *= 0.95f;
             }
+
         }
 
-        public override bool PreDraw(SpriteBatch spriteBatch)
+        public override PixelLayer PixelLayer => PixelLayer.AboveNPCs;
+
+        public override bool DrawsPixelated => true;
+
+        public override void Draw(ref ParticleRendererSettings settings, SpriteBatch spriteBatch)
         {
-            return true;
+            Texture2D texture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/WingDisableParticle").Value;
+            Vector2 origin = texture.Size() / 2f;
+
+            Opus.StartSpriteBatchPixelated(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
+
+            spriteBatch.Draw(texture, position - Main.screenPosition, null, color with { A = 0 }, 0f, origin, scale, SpriteEffects.None, 0f);
+
+            Opus.ReturnToDefaultDrawing(spriteBatch);
         }
     }
 }
