@@ -1,6 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
@@ -8,13 +6,17 @@ using DestroyerTest.Content.Particles;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
+using OpusLib.Content.Particles;
 using ReLogic.Content;
+using System;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using OpusLib;
 
 namespace DestroyerTest.Content.Projectiles.EntitiesProjectiles
 {
@@ -227,10 +229,16 @@ namespace DestroyerTest.Content.Projectiles.EntitiesProjectiles
             SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/RiftCharge") with { MaxInstances = 0, PitchVariance = 0.3f, Volume = 0.25f }, target.Center);
 			target.AddBuff(ModContent.BuffType<HeliouricShock>(), 300);
         }
-        public override void OnKill(int timeLeft)
-        {
-            Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), Projectile.Center, Vector2.Zero, ColorLib.Rift, 0.001f, 1f);
-			Dust.NewDust(Projectile.position, Projectile.Hitbox.Width, Projectile.Hitbox.Height, ModContent.DustType<RiftDust>(), Main.rand.NextFloat(-1, 1.1f), Main.rand.NextFloat(-1, 1.1f), 0, default, 2f);
-        }
+		public override void OnKill(int timeLeft)
+		{
+			BloomRingSharp Ring = new BloomRingSharp();
+			Ring.Prepare(Projectile.Center, Vector2.Zero, ColorLib.Rift, 0.2f, 0.01f, 1f, BlendState.Additive);
+			ParticleEngine.ShaderParticles.Add(Ring);
+
+			for (int t = 0; t < 6; t++)
+			{
+				Dust.NewDust(Projectile.position, Projectile.Hitbox.Width, Projectile.Hitbox.Height, ModContent.DustType<RiftDust>(), Main.rand.NextFloat(-1, 1.1f), Main.rand.NextFloat(-1, 1.1f), 0, default, 2f);
+			}
+		}
     }
 }

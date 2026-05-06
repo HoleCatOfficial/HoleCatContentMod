@@ -121,8 +121,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 
         public override void OnExplode()
         {
-            Opus.RingParticleOutward(PRTLoader.GetParticleID<StarParticle>(), 16, Projectile.Center, 22, 0f, Color.White, 1.75f, 3f, offset: Projectile.rotation);
-            Opus.RingParticleOutward(PRTLoader.GetParticleID<SimpleParticle>(), 16, Projectile.Center, 22, 0f, Color.White, 1f, 1.5f, offset: Projectile.rotation);
+           
         }
     }
 }

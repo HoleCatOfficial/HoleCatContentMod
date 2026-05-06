@@ -1,11 +1,12 @@
 ﻿using BreadLibrary.Core.Graphics.Particles;
+using BreadLibrary.Core.Graphics.Pixelation;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Particles.fire;
 using InnoVault.GameSystem;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib.Content.Particles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -179,11 +180,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon.Sentry
                 }
 
                 Fire fire1 = new Fire();
-                fire1.PrepareFire(Pos, D * 1.25f, Projectile.direction, 0.14f, color() * 0.4f, 0.75f, 120, FireDrawMode.Additive);
+                fire1.PrepareFire(Pos, D * 1.25f, Projectile.direction, 0.14f, color() * 0.4f, 0.75f, 120, FireDrawMode.Additive, PixelLayer.AboveProjectiles);
                 ParticleEngine.BehindProjectiles.Add(fire1);
 
                 Fire fire2 = new Fire();
-                fire2.PrepareFire(Pos, D * 1.25f, Projectile.direction, 0.14f, color(), 0.25f, 120, FireDrawMode.Additive);
+                fire2.PrepareFire(Pos, D * 1.25f, Projectile.direction, 0.14f, color(), 0.25f, 120, FireDrawMode.Additive, PixelLayer.AboveProjectiles);
                 ParticleEngine.BehindProjectiles.Add(fire2);
             }
         }

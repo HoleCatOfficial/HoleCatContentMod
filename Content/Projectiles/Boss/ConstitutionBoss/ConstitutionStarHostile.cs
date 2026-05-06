@@ -16,6 +16,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using OpusLib;
 using DestroyerTest.Content.Particles.Stellar;
+using BreadLibrary.Core.Graphics.Particles;
 
 namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
 {
@@ -170,12 +171,15 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
 
             Lighting.AddLight(Projectile.Center,  MainColor.ToVector3() * 0.2f);
 
-			if (!StartKill)
-			{
-				if (Main.rand.NextBool(3))
-				{
-					PRTLoader.NewParticle(StellarParticleIndex.ConstitutionParticle, Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Projectile.velocity * 0.15f, default, 0.5f);
-				}	
+            if (!StartKill)
+            {
+                if (Main.rand.NextBool(3))
+                {
+                    ConstitutionParticle Particle = new();
+                    Particle.Initialize(Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Projectile.velocity * 0.15f, 0.6f, 60);
+                    ParticleEngine.BehindProjectiles.Add(Particle);
+                }
+            
 
 				if (DelayTimer < 20)
 				{
@@ -273,14 +277,14 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
 			if (!StartKill)
 			{
 				SoundEngine.PlaySound(DTAssetLib.ConstitutionStarKill, Projectile.Center);
-				PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp>(), Projectile.Center, Vector2.Zero,  ColorLib.StellarFireGradientLooping(), 0.005f);
+				StellarParticleUtils.BloomRing(Projectile.Center, 0.5f, ParticleEngine.BehindProjectiles);
 				Dust.NewDust(Projectile.position, Projectile.Hitbox.Width, Projectile.Hitbox.Height, DustID.TintableDustLighted, Main.rand.NextFloat(-1, 1.1f), Main.rand.NextFloat(-1, 1.1f), 0,  ColorLib.StellarFireGradientLooping(), 2f);
 				DTUtils.ConstitutionStarExplosionEffects(Projectile);
 			}
 			else
 			{
 				SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/StarShot") { MaxInstances = 0, PitchVariance = 0.2f }, Projectile.Center);
-				Opus.RadialSpreadParticle(StellarParticleIndex.ConstitutionParticle, 5, Projectile.Center, 1f, default, 1f, 2f, offset: Projectile.rotation);
+				
 			}
         }
 
@@ -426,7 +430,9 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
 			{
 				if (Main.rand.NextBool(3))
 				{
-					PRTLoader.NewParticle(StellarParticleIndex.ConstitutionParticle, Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Projectile.velocity * 0.15f, default, 0.5f);
+					ConstitutionParticle Particle = new();
+					Particle.Initialize(Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Projectile.velocity * 0.15f, 0.6f, 60);
+					ParticleEngine.BehindProjectiles.Add(Particle);
 				}
 			}
 
@@ -445,18 +451,18 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
 
         public override void OnKill(int timeLeft)
         {
-			if (!StartKill)
-			{
-				SoundEngine.PlaySound(DTAssetLib.ConstitutionStarKill, Projectile.Center);
-				PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp>(), Projectile.Center, Vector2.Zero,  ColorLib.StellarFireGradientLooping(), 0.005f);
-				Dust.NewDust(Projectile.position, Projectile.Hitbox.Width, Projectile.Hitbox.Height, DustID.TintableDustLighted, Main.rand.NextFloat(-1, 1.1f), Main.rand.NextFloat(-1, 1.1f), 0,  ColorLib.StellarFireGradientLooping(), 2f);
-				DTUtils.ConstitutionStarExplosionEffects(Projectile);
-			}
-			else
-			{
-				SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/StarShot") { MaxInstances = 0, PitchVariance = 0.2f }, Projectile.Center);
-				Opus.RadialSpreadParticle(StellarParticleIndex.ConstitutionParticle, 5, Projectile.Center, 1f, default, 1f, 2f, offset: Projectile.rotation);
-			}
+            if (!StartKill)
+            {
+                SoundEngine.PlaySound(DTAssetLib.ConstitutionStarKill, Projectile.Center);
+                StellarParticleUtils.BloomRing(Projectile.Center, 0.5f, ParticleEngine.BehindProjectiles);
+                Dust.NewDust(Projectile.position, Projectile.Hitbox.Width, Projectile.Hitbox.Height, DustID.TintableDustLighted, Main.rand.NextFloat(-1, 1.1f), Main.rand.NextFloat(-1, 1.1f), 0, ColorLib.StellarFireGradientLooping(), 2f);
+                DTUtils.ConstitutionStarExplosionEffects(Projectile);
+            }
+            else
+            {
+                SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/StarShot") { MaxInstances = 0, PitchVariance = 0.2f }, Projectile.Center);
+
+            }
         }
 
     }

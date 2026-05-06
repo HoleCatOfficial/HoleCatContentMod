@@ -11,6 +11,7 @@ using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
+using OpusLib.Content.Particles;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
@@ -84,12 +85,15 @@ namespace DestroyerTest.Content.Equips
         {
             if (Active)
             {
-                BasePRT P1 = Opus.NewParticleFloatAI(PRTLoader.GetParticleID<SimpleExplosionParticle>(), Player.Center, Vector2.Zero, ColorLib.TenebrisGradient, 0.01f, 6f, 0.3f, 0.01f);
-                P1.Rotation = Main.rand.NextFloat(MathHelper.TwoPi);
-                BasePRT P2 = Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), Player.Center, Vector2.Zero, DTColorUtils.Pastel(ColorLib.TenebrisGradient, 0.5f), 0.01f, 1f, 0.1f, 0.02f);
-                P2.Rotation = Main.rand.NextFloat(MathHelper.TwoPi);
+                SimpleExplosionParticle ExplosionFX = new SimpleExplosionParticle();
+                ExplosionFX.Prepare(Player.Center, Vector2.Zero, ColorLib.TenebrisGradient, 0.1f, 0.02f, 2f, BlendState.Additive);
+                ParticleEngine.ShaderParticles.Add(ExplosionFX);
 
-                Opus.RadialSpreadProjectile(ModContent.ProjectileType<TenebrisStarFriendly>(), 5, Player.Center, 14, 4, 6, RandomOffset: true);
+                BloomRingSharp Ring = new BloomRingSharp();
+                Ring.Prepare(Player.Center, Vector2.Zero, ColorLib.TenebrisGradient, 0.1f, 0.02f, 2f, BlendState.Additive);
+                ParticleEngine.ShaderParticles.Add(Ring);
+
+                Opus.RadialSpreadProjectile(ModContent.ProjectileType<TenebrisStarFriendly>(), 5, Player.Center, 14, 4, 6, offset: Main.rand.NextFloat(MathHelper.TwoPi));
             }
         }
 
@@ -97,12 +101,15 @@ namespace DestroyerTest.Content.Equips
         {
             if (Active)
             {
-                BasePRT P1 = Opus.NewParticleFloatAI(PRTLoader.GetParticleID<SimpleExplosionParticle>(), Player.Center, Vector2.Zero, ColorLib.TenebrisGradient, 0.01f, 6f, 0.3f, 0.01f);
-                P1.Rotation = Main.rand.NextFloat(MathHelper.TwoPi);
-                BasePRT P2 = Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), Player.Center, Vector2.Zero, DTColorUtils.Pastel(ColorLib.TenebrisGradient, 0.5f), 0.01f, 1f, 0.1f, 0.02f);
-                P2.Rotation = Main.rand.NextFloat(MathHelper.TwoPi);
+                SimpleExplosionParticle ExplosionFX = new SimpleExplosionParticle();
+                ExplosionFX.Prepare(Player.Center, Vector2.Zero, ColorLib.TenebrisGradient, 0.1f, 0.02f, 2f, BlendState.Additive);
+                ParticleEngine.ShaderParticles.Add(ExplosionFX);
 
-                Opus.RadialSpreadProjectile(ModContent.ProjectileType<TenebrisStarFriendly>(), 3, Player.Center, 10, 4, 6, RandomOffset: true);
+                BloomRingSharp Ring = new BloomRingSharp();
+                Ring.Prepare(Player.Center, Vector2.Zero, ColorLib.TenebrisGradient, 0.1f, 0.02f, 2f, BlendState.Additive);
+                ParticleEngine.ShaderParticles.Add(Ring);
+
+                Opus.RadialSpreadProjectile(ModContent.ProjectileType<TenebrisStarFriendly>(), 3, Player.Center, 10, 4, 6, offset: Main.rand.NextFloat(MathHelper.TwoPi));
             }
         }
 

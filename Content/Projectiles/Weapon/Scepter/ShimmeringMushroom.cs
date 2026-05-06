@@ -173,8 +173,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 
         public void Explosion()
         {
-            Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BoomCloud>(), Projectile.Center, Vector2.Zero, EffectColor, 0.01f, 1.5f);
-            Opus.RadialParticleRandomDir(PRTLoader.GetParticleID<SimpleParticle>(), 15, Projectile.Center, 1, EffectColor, 1.3f, 2);
+            //Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BoomCloud>(), Projectile.Center, Vector2.Zero, EffectColor, 0.01f, 1.5f);
+            
         }
 
         public override void OnKill(int timeLeft)

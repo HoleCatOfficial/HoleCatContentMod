@@ -168,7 +168,14 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 
         public override void OnKill(int timeLeft)
         {
-            Opus.RadialParticleRandomDir(PRTLoader.GetParticleID<HallowedPallStar>(), 10, Projectile.Center, 1f, Color.White, 1f, 3f);
+            Vector2[] Vels = Opus.RadialVectorOutwardRandom(10, Projectile.Center, 3f);
+
+            for (int i = 0; i < 10; i++)
+            {
+                HallowedPallStar Star = new();
+                Star.Initialize(Projectile.Center, Vels[i], Color.White, 1f);
+                ParticleEngine.ShaderParticles.Add(Star);
+            }
         }
     }
 }

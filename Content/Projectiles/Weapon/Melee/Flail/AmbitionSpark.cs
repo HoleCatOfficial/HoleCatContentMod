@@ -120,6 +120,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee.Flail
 
             if(Main.rand.NextBool(3))
             {
+
+
                 PRTLoader.NewParticle(PRTLoader.GetParticleID<StarParticle>(), Projectile.Center, Vector2.Zero, Color.White, 0.5f);
             }
 

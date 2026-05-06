@@ -135,46 +135,15 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/TenebrisSlinger/TenebrisSlingerArrowImpact", 4) with { PitchVariance = 0.4f });
-            PRTLoader.NewParticle(PRTLoader.GetParticleID<SmallShine>(), Projectile.Center, Vector2.Zero, ColorLib.TenebrisGradient, 1);
-            if (Mode == 1)
-            {
-                target.AddBuff(ModContent.BuffType<ShimmeringFlames>(), 240);
-                for (int i = 0; i < 4; i++)
-                {
-                    float angle = MathHelper.PiOver4 + i * MathHelper.PiOver2;
-                    Vector2 spawnOffset = new Vector2(80, 0).RotatedBy(angle);
-                    Vector2 spawnPos = target.Center + spawnOffset;
-                    Vector2 velocity = (target.Center - spawnPos).SafeNormalize(Vector2.UnitY) * 8f;
-
-                    Projectile.NewProjectile(
-                        Projectile.GetSource_FromThis(),
-                        spawnPos,
-                        velocity,
-                        ModContent.ProjectileType<TenebrisArrowPhantomProjectile>(),
-                        Projectile.damage / 2,
-                        Projectile.knockBack * 0.5f,
-                        Projectile.owner,
-                        ai0: Mode
-                    );
-                }
-            }
+          
         }
 
-        public override void OnHitPlayer(Player target, Player.HurtInfo info)
-        {
-            SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/TenebrisSlinger/TenebrisSlingerArrowImpact", 4) with { PitchVariance = 0.4f });
-            PRTLoader.NewParticle(PRTLoader.GetParticleID<SmallShine>(), Projectile.Center, Vector2.Zero, ColorLib.TenebrisGradient, 1);
-            if (Mode == 2)
-            {
-                target.AddBuff(ModContent.BuffType<ShimmeringFlames>(), 240);
-                
-            }
-        }
+
 
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
             SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/TenebrisSlinger/TenebrisSlingerArrowImpact", 4) with { PitchVariance = 0.4f });
-            PRTLoader.NewParticle(PRTLoader.GetParticleID<SmallShine>(), Projectile.Center, Vector2.Zero, Color.White, 1);
+          
             for (int i = 0; i < 5; i++)
             {
                 Dust dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, ModContent.DustType<TenebrisDarkmatterDust>());

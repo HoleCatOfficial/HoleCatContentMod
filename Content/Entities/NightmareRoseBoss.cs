@@ -30,6 +30,7 @@ using Microsoft.Xna.Framework.Graphics;
 using MonoMod.Cil;
 using OpusLib;
 using OpusLib.Content.Helpers;
+using OpusLib.Content.Particles;
 using rail;
 using ReLogic.Content;
 using ReLogic.Localization.IME;
@@ -65,6 +66,7 @@ namespace DestroyerTest.Content.Entities
     {
         public override string BossHeadTexture => "DestroyerTest/Content/Entities/NightmareRoseBoss_Head_Boss";
 
+        
         public void immunities()
         {
             NPCID.Sets.SpecificDebuffImmunity[Type][ModContent.BuffType<ShimmeringFlames>()] = true;
@@ -318,6 +320,12 @@ namespace DestroyerTest.Content.Entities
             
         }
 
+        void ShineHead()
+        {
+            SmallShine shine = new SmallShine();
+            shine.Prepare(NPCHead, Vector2.Zero, Color.White, 1f);
+            ParticleEngine.ShaderParticles.Add(shine);
+        }
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
@@ -634,13 +642,10 @@ namespace DestroyerTest.Content.Entities
                 NPC.life += HealAmount;
                 if (Main.rand.NextBool(26))
                 {
-                    PRTLoader.NewParticle(
-                        PRTLoader.GetParticleID<RegenHeart>(),
-                        Main.rand.NextVector2FromRectangle(NPC.Hitbox),
-                        new Vector2(Main.rand.NextFloat(-2, 2), -5),
-                        ColorLib.CursedFlames,
-                        1.5f
-                    );
+                    RegenHeart Heart = new RegenHeart();
+                    Heart.Initialize(Main.rand.NextVector2FromRectangle(NPC.Hitbox), new Vector2(Main.rand.NextFloat(-2, 2), -5), ColorLib.CursedFlames, 1.5f);
+                    ParticleEngine.BehindProjectiles.Add(Heart);
+
                 }
             }
             else
@@ -810,7 +815,9 @@ namespace DestroyerTest.Content.Entities
                             RoarWaveTimer--;
                             if (RoarWaveTimer % 20 == 0)
                             {
-                                Opus.NewParticleFloatAI(PRTLoader.GetParticleID<SoundwaveParticle>(), NPCHead, Vector2.Zero, Color.White, 0.001f, 3f);
+                                SoundwaveParticle soundwave = new();
+                                soundwave.Initialize(NPCHead, Vector2.Zero, Color.White, 2f);
+                                ParticleEngine.ShaderParticles.Add(soundwave);
                             }
                         }
                         else
@@ -875,7 +882,7 @@ namespace DestroyerTest.Content.Entities
                             if (FlameStartTimer >= 120)
                             {
                                 SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/CursedFlamesWarn2") with { Volume = 0.75f, PitchVariance = 0.4f });
-                                PRTLoader.NewParticle(PRTLoader.GetParticleID<SmallShine>(), NPCHead, Vector2.Zero, Color.White, 2f);
+                                ShineHead();
                             }
                             FlameStartTimer--;
                             if (FlameStartTimer > 0)
@@ -905,7 +912,7 @@ namespace DestroyerTest.Content.Entities
                             if (FlameStartTimer >= 120)
                             {
                                 SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/CursedFlamesWarn2") with { Volume = 0.75f, PitchVariance = 0.4f });
-                                PRTLoader.NewParticle(PRTLoader.GetParticleID<SmallShine>(), NPCHead, Vector2.Zero, Color.White, 2f);
+                                ShineHead();
                                 if (!SetDir1)
                                 {
                                     FireLR = Main.rand.NextBool(2);
@@ -963,7 +970,7 @@ namespace DestroyerTest.Content.Entities
                             {
                                 SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/ChargeBreak") with { PitchVariance = 1f });
 
-                                Opus.RingProjectileOutward(ModContent.ProjectileType<TenebrisFlamesHostile>(), 6, player.Center, 300, 10, 1, 8, RandomOffset: true);
+                                Opus.RingSpreadProjectile(ModContent.ProjectileType<TenebrisFlamesHostile>(), 6, player.Center, 300, 10, 2, 8);
                                 FlameRingCount++;
                             }
                             if (FlameRingCount >= 9)
@@ -978,8 +985,9 @@ namespace DestroyerTest.Content.Entities
                             if (FlameRingCount < 9 && Main.GameUpdateCount % 60 == 0)
                             {
                                 SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/NodeAttackTS") with { PitchVariance = 1f, Volume = 3f });
-                                Opus.RadialSpreadProjectile(ModContent.ProjectileType<NightmareRoseCursedCrystal>(), 9, NPC.Center, 16, 4, 12, AI1: 1, RandomOffset: true);
-                                Opus.RadialSpreadProjectile(ModContent.ProjectileType<NightmareRoseCursedCrystal>(), 9, NPC.Center, 16, 4, 12, AI1: -1, RandomOffset: true);
+                                float off = Main.rand.NextFloat(MathHelper.TwoPi);
+                                Opus.RadialSpreadProjectile(ModContent.ProjectileType<NightmareRoseCursedCrystal>(), 9, NPC.Center, 16, 4, 12, offset: off);
+                                Opus.RadialSpreadProjectile(ModContent.ProjectileType<NightmareRoseCursedCrystal>(), 9, NPC.Center, 16, 4, 12, offset: off);
                                 FlameRingCount++;
                             }
                             if (FlameRingCount >= 9)
@@ -1013,7 +1021,9 @@ namespace DestroyerTest.Content.Entities
                         }
                         else
                         {
-                            Opus.RingProjectileOutwardRandomDir(ModContent.ProjectileType<TormentedSoul2>(), 7, NPCHead, 30, 20, 1, 12);
+                            Opus.RingSpreadProjectile(ModContent.ProjectileType<TormentedSoul2>(), 12, NPCHead, 30, 20, 1, 12);
+                            Opus.RingSpreadProjectile(ModContent.ProjectileType<TormentedSoul2>(), 8, NPCHead, 15, 20, 1, 9);
+
                             ResetState();
                         }
                         break;
@@ -1028,8 +1038,15 @@ namespace DestroyerTest.Content.Entities
                             {
                                 SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/NapalmWarn") with { Volume = 0.75f, PitchVariance = 0.4f });
                                 SoundEngine.PlaySound(WingDisable);
-                                PRTLoader.NewParticle(PRTLoader.GetParticleID<SmallShine>(), NPCHead, Vector2.Zero, Color.White, 2f);
-                                PRTLoader.NewParticle(PRTLoader.GetParticleID<WingDisableParticle>(), player.Center, Vector2.Zero, Color.White, 3f);
+
+
+                                ShineHead();
+
+                                WingDisableParticle particle = new WingDisableParticle();
+                                particle.Initialize(player.Center, Vector2.Zero, Color.White, 3f);
+                                ParticleEngine.ShaderParticles.Add(particle);
+
+
                                 player.velocity.Y += 100;
                             }
                             NapalmDelay--;
@@ -1068,7 +1085,7 @@ namespace DestroyerTest.Content.Entities
                         {
                             if (Main.GameUpdateCount % 120 == 0)
                             {
-                                Opus.RadialProjectileRandomDir(ModContent.ProjectileType<DarkOrb>(), 3, NPCHead, 10, 3, 8, hostile: true);
+                                Opus.RadialSpreadProjectileRandom(ModContent.ProjectileType<DarkOrb>(), 3, NPCHead, 10, 3, 8);
                                 VileThornCount += 1;
                                 //Main.NewText(VileThornCount.ToString(), Color.Blue);
                             }
@@ -1236,7 +1253,10 @@ namespace DestroyerTest.Content.Entities
                             currentState = AttackState.KillIdle;
                             BorderActive = false;
                             //Main.NewText("Get away from the Rose!!", ColorLib.Soul);
-                            PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp>(), NPC.Center, Vector2.Zero, Color.White, 0.001f, 1);
+                            LerpingBloomRingSharp Ring = new();
+                            Color[] P = new Color[4] { Color.White, ColorLib.Soul, ColorLib.Soul2, ColorLib.Soul3 };
+                            Ring.Prepare(NPCHead, Vector2.Zero, P, 0.2f, 0.03f, 2f);
+                            ParticleEngine.ShaderParticles.Add(Ring);
                         }
                     }
                     break;
@@ -1603,7 +1623,7 @@ namespace DestroyerTest.Content.Entities
             {
                 Vector2 Spawn = NPCHead + Main.rand.NextVector2CircularEdge(400, 400);
                 Vector2 Inward = NPCHead - Spawn;
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Spawn, Inward * 0.025f, ColorLib.Soul, 5f);
+
             }
         }
 
@@ -1628,8 +1648,12 @@ namespace DestroyerTest.Content.Entities
 
             if (!HasTriggeredNodes)
             {
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp>(), NPCHead, Vector2.Zero, ColorLib.CursedFlames, 0.001f, 1);
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<SmallShine>(), NPCHead, Vector2.Zero, Color.White, 2f);
+                LerpingBloomRingSharp Ring = new();
+                Ring.Prepare(NPCHead, Vector2.Zero, ColorLib.WretchedColorMap, 0.2f, 0.03f, 2f);
+                ParticleEngine.ShaderParticles.Add(Ring);
+
+                
+
                 Main.NewText("The Nightmare Rose calls upon the Corruption for Help!", ColorLib.CursedFlames);
 
                 SoundEngine.PlaySound(NodeSpawnSound);
@@ -1796,7 +1820,10 @@ namespace DestroyerTest.Content.Entities
 
                     }
 
-                    PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp>(), NPCHead, Vector2.Zero, ColorLib.CursedFlames, 0.001f, 1);
+                    LerpingBloomRingSharp Ring = new();
+                    Ring.Prepare(NPCHead, Vector2.Zero, ColorLib.WretchedColorMap, 0.2f, 0.03f, 2f);
+                    ParticleEngine.ShaderParticles.Add(Ring);
+
                 }
                 if (flame != null && flame.Center == NPCHead)
                 {

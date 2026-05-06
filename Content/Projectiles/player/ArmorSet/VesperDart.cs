@@ -231,7 +231,7 @@ namespace DestroyerTest.Content.Projectiles.player.ArmorSet
         public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(SoundID.Item60, Projectile.Center);
-			Opus.RadialSpreadDust(DustID.WhiteTorch, 9, Projectile.Center, 0, Color.Wheat, 0.75f, 6, true);
+			Opus.RadialSpreadDust(DustID.WhiteTorch, 9, Projectile.Center, 0, Color.Wheat, 0.75f, 6, offset: Main.rand.NextFloat(MathHelper.TwoPi));
         }
 
     }

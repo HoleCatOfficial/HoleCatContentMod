@@ -3,11 +3,11 @@ using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Consumables;
 using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Particles.fire;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
+using OpusLib.Content.Particles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -53,7 +53,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 int RadInner = 180;
                 Vector2 Outer = Projectile.Center + Main.rand.NextVector2CircularEdge(Main.rand.NextFloat(RadInner, RadOuter), Main.rand.NextFloat(RadInner, RadOuter));
                 Dust.NewDustPerfect(Outer, DustID.TintableDustLighted, Projectile.velocity, 100, ColorLib.HoleCatFireGradient, 3);
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Outer, Projectile.velocity, ColorLib.HoleCatFireDeepRed * 0.5f, 0.4f);
+                
             }
         }
 

@@ -1,11 +1,11 @@
 ﻿
 using BreadLibrary.Core.Graphics.Particles;
+using BreadLibrary.Core.Graphics.Pixelation;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.MeleeWeapons;
 using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Particles.fire;
 using DestroyerTest.Content.Particles.Orchestrated;
 using InnoVault;
 using InnoVault.PRT;
@@ -15,6 +15,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using OpusLib.Content.Helpers;
+using OpusLib.Content.Particles;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -235,11 +236,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             ColossusParticle FX = new ColossusParticle();
             FX.Initiate(target.Center);
             ParticleEngine.ShaderParticles.Add(FX);
-            
 
-            //Opus.RadialSpreadParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], 10, target.Center, 0.4f, ColorLib.TenebrisMagenta, 2f, 3, RandomOffset: true);
-            Opus.RadialProjectileRandomDir(ModContent.ProjectileType<ColossusStar>(), 2, target.Center, (int)(Projectile.damage * 0.2f), (int)(Projectile.knockBack * 0.5f), 14f, friendly: true);
-
+            Opus.RadialSpreadProjectileRandom(ModContent.ProjectileType<ColossusStar>(), 2, target.Center, (int)(Projectile.damage * 0.2f), (int)(Projectile.knockBack * 0.5f), 14f);
             if (hit.Crit)
             {
                 ScreenShake.screenshakeMagnitude = 8;
@@ -353,7 +351,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 int soundInterval = (int)MathHelper.Lerp(200, 40, speedRatio);
 
                 Fire fire = new Fire();
-                fire.PrepareFire(swordTip, Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.3f, 0.3f), ColorLib.TenebrisMagenta * 0.8f, 0.5f, 40, FireDrawMode.NonPremultiplied);
+                fire.PrepareFire(swordTip, Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.3f, 0.3f), ColorLib.TenebrisMagenta * 0.8f, 0.5f, 40, FireDrawMode.NonPremultiplied, PixelLayer.AboveProjectiles);
                 ParticleEngine.BehindProjectiles.Add(fire);
 
                 STimer++;

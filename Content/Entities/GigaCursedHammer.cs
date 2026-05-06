@@ -18,6 +18,7 @@ using Terraria.ModLoader.Utilities;
 using GlowmaskHelper.Content;
 using DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame;
 using OpusLib;
+using OpusLib.Content.Particles;
 
 namespace DestroyerTest.Content.Entities
 {
@@ -104,12 +105,11 @@ namespace DestroyerTest.Content.Entities
             AttackCharge++;
             if (Main.GameUpdateCount % 20 == 0)
             {
-                for (int a = 0; a < 3; a++)
+                var Ring = Opus.RingRadialVectorRandom(8, NPC.Center, 200, 0.1f);
+                for (int a = 0; a < 8; a++)
                 {
-                    Vector2 Edge = Main.rand.NextVector2CircularEdge(600, 600);
-                    Vector2 Inward = NPC.Center - Edge;
-                    Inward.Normalize();
-                    PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Edge, Inward  * 0.01f, ColorLib.CursedFlames, 4.0f);
+                    Fire F = new Fire();
+                    F.PrepareFire(Ring.Item1[a], Ring.Item2[a], DTUtils.RandomDirection(2), ColorLib.CursedFlames, 0.7f, 20, FireDrawMode.Additive, BreadLibrary.Core.Graphics.Pixelation.PixelLayer.AboveNPCs);
                 }
             }
 
@@ -119,7 +119,7 @@ namespace DestroyerTest.Content.Entities
 
                 SoundEngine.PlaySound(WallShoot, NPC.Center);
                 
-                Opus.RadialSpreadProjectile(ModContent.ProjectileType<CursedFlameVortex>(), 4, NPC.Center, 20, 5, 10, RandomOffset: true);
+                Opus.RadialSpreadProjectile(ModContent.ProjectileType<CursedFlameVortex>(), 4, NPC.Center, 20, 5, 10, offset: Main.rand.NextFloat(MathHelper.TwoPi));
                 
                 AttackCharge = 0;
             }

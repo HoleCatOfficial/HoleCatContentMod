@@ -182,18 +182,16 @@ namespace DestroyerTest.Common
                 }
 
                 List<Dust> WallDusts = new List<Dust>();
-                List<BasePRT> WallPRTs = new List<BasePRT>();
 
                 var WallDustPositions = Opus.GetEquidistantOrbitVectors(5, Player.Center, (0.05f * Player.direction) + ((0.0005f * Player.velocity.Length()) * Player.direction), Radius);
                 foreach(Vector2 p in WallDustPositions)
                 {
                     Dust WallDust = Dust.NewDustPerfect(p, ModContent.DustType<ColorableNeonDust>(), Vector2.Zero, 0, themeColor, 1.35f);
                     WallDusts.Add(WallDust);
-                    //WallDust.velocity = Player.velocity;
 
-                    BasePRT WallPRT = PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), p, Vector2.Zero, themeColor * 0.75f, 0.3f);
-                    WallPRTs.Add(WallPRT);
-                    //WallPRT.Velocity = Player.velocity;
+                    PointGlowPreMultiplied Glow = new PointGlowPreMultiplied();
+                    Glow.Initialize(p, Vector2.Zero, themeColor * 0.75f, 0.3f);
+                    ParticleEngine.Particles.Add(Glow);
                 }
 
                 if (Durability <= 0)

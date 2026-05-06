@@ -1,25 +1,28 @@
+using BreadLibrary.Core.Graphics.Particles;
+using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Resources;
+using DestroyerTest.Content.RiftBiome.RiftSurfaceResources;
 using DestroyerTest.Content.SummonItems;
 using DestroyerTest.Content.Tiles;
+using DestroyerTest.Content.Tiles.RiftConfigurator;
+using DestroyerTest.Content.Tiles.Riftplate;
+using DestroyerTest.Rarity;
+using DestroyerTest.Rarity.Scepter;
+using InnoVault.PRT;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Mono.CompilerServices.SymbolWriter;
+using OpusLib;
+using OpusLib.Content.Particles;
 using Terraria;
+using Terraria.Audio;
+using Terraria.DataStructures;
+using Terraria.Graphics;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using DestroyerTest.Rarity;
-using DestroyerTest.Content.Tiles.Riftplate;
-using DestroyerTest.Content.Tiles.RiftConfigurator;
-using DestroyerTest.Content.RiftBiome.RiftSurfaceResources;
-using DestroyerTest.Rarity.Scepter;
-using DestroyerTest.Common;
-using Terraria.DataStructures;
-using Terraria.Graphics;
-using OpusLib;
-using Microsoft.Xna.Framework;
-using Terraria.Audio;
-using InnoVault.PRT;
-using DestroyerTest.Content.Particles;
-using Mono.CompilerServices.SymbolWriter;
 
 namespace DestroyerTest.Content.Equips
 {
@@ -131,8 +134,8 @@ namespace DestroyerTest.Content.Equips
 				if (currentCooldown == 1)
 				{
 					SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/Charge/QuixotismCharge"), Player.position);
-					Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), Player.Center, Vector2.Zero, Main.DiscoColor, 1f, 0.01f);
 					
+
 				}
 
 				if (currentCooldown <= 0)
@@ -163,9 +166,19 @@ namespace DestroyerTest.Content.Equips
             {
                 Player.GetModPlayer<ScreenshakePlayer>().screenshakeTimer = 5;
                 Player.GetModPlayer<ScreenshakePlayer>().screenshakeMagnitude = 16;
-                Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), Player.Center, Vector2.Zero, Main.DiscoColor, 0.01f, 1f);
-                Opus.RadialSpreadParticle(PRTLoader.GetParticleID<HallowedPallStar>(), 12, Player.Center, 1, Color.White, 1f, 3f, offset: 0);
-				SoundEngine.PlaySound(DTAssetLib.Impacts.BrightBell with { Volume = 1.50f }, Player.position);
+                BloomRingSharp ring = new();
+				ring.Prepare(Player.MountedCenter, Vector2.Zero, Main.DiscoColor, 0.1f, 0.05f, BlendState.Additive);
+
+                Vector2[] Vels = Opus.RadialVectorOutwardRandom(10, Player.MountedCenter, 3f);
+
+                for (int i = 0; i < 10; i++)
+                {
+                    HallowedPallStar Star = new();
+                    Star.Initialize(Player.MountedCenter, Vels[i], Color.White, 1f);
+                    ParticleEngine.ShaderParticles.Add(Star);
+                }
+
+                SoundEngine.PlaySound(DTAssetLib.Impacts.BrightBell with { Volume = 1.50f }, Player.position);
                 Player.statLife = Player.statLifeMax2 / 2;
                 CombatText.NewText(Player.getRect(), Main.DiscoColor, "Death Evaded!", true);
                 currentCooldown = Cooldown;

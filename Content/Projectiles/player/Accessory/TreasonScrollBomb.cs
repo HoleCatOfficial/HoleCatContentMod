@@ -47,7 +47,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
             Player player = Main.player[Projectile.owner];
             int damage = player.GetWeaponDamage(player.HeldItem);
             SoundEngine.PlaySound(SoundID.Item14, Projectile.Center);
-            PRTLoader.NewParticle(PRTLoader.GetParticleID<Boom1>(), Projectile.Center, Vector2.Zero, Color.LavenderBlush, 1f);
+        
 
             for (int i = 0; i < Main.npc.Length; i++)
             {

@@ -6,7 +6,6 @@ using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Particles.CurseRunes;
 using InnoVault.PRT;
 using InnoVault.Trails;
 using Microsoft.Xna.Framework;
@@ -57,7 +56,10 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
         public void ColorAffectedFX(Color color)
         {
             Lighting.AddLight(Projectile.Center, color.ToVector3() * 0.6f);
-            PRTLoader.NewParticle(Projectile.Center, new Vector2((Projectile.velocity.X / 2) + Main.rand.NextFloat(-1, 1), (Projectile.velocity.Y / 2) + Main.rand.NextFloat(-1, 1)), PRTLoader.GetParticleID<SimpleParticle>(), color, 0.45f);
+
+            PointGlowPreMultiplied Glow = new PointGlowPreMultiplied();
+            Glow.Initialize(Projectile.Center, Projectile.velocity * 0.3f, color, 0.5f);
+            ParticleEngine.BehindProjectiles.Add(Glow);
 
             var d = Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<ColorableNeonDust>(), Vector2.Zero, 0, color, 1f);
             d.noGravity = true;
@@ -164,7 +166,10 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
             {
                 SoundEngine.PlaySound(DTAssetLib.Impacts.DarkShot with { PitchVariance = 0.2f });
                 ShimmeringFlames.ShimmerBurn(target);
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<SmallShine>(), Projectile.Center, Vector2.Zero, Color.White, 0.5f);
+
+                SmallShine shine = new SmallShine();
+                shine.Prepare(target.Center, Vector2.Zero, Color.White, 0.5f);
+                ParticleEngine.ShaderParticles.Add(shine);
             }
         }
 

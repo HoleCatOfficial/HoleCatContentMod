@@ -1,13 +1,14 @@
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
+using DestroyerTest.Content.Particles.Stellar;
+using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using OpusLib;
-using InnoVault.PRT;
-using DestroyerTest.Content.Particles.Stellar;
 
 namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
 {
@@ -56,7 +57,9 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
             UpdateLerpTime();
             if (Main.rand.NextBool(4) && !StartKill)
             {
-                PRTLoader.NewParticle(StellarParticleIndex.ConstitutionParticle, Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Projectile.velocity * 0.15f, default, 0.5f);
+                ConstitutionParticle Particle = new();
+                Particle.Initialize(Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Projectile.velocity * 0.15f, 0.6f, 60);
+                ParticleEngine.BehindProjectiles.Add(Particle);
             }	
 
             if (!StartKill)

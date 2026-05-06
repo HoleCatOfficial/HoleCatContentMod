@@ -1,9 +1,10 @@
 using BreadLibrary.Core.Graphics.Particles;
+using BreadLibrary.Core.Graphics.Pixelation;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Particles.fire;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
+using OpusLib.Content.Particles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -48,14 +49,16 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
 			Lighting.AddLight(Projectile.Center, Ice.ToVector3() * 0.2f);
 
             Fire fire = new Fire();
-            fire.PrepareFire(Projectile.Center, Vector2.Zero, Main.rand.Next(1, 3), 0.1f, Ice, 1f, 100, FireDrawMode.Additive);
+            fire.PrepareFire(Projectile.Center, Vector2.Zero, Main.rand.Next(1, 3), 0.1f, Ice, 1f, 100, FireDrawMode.Additive, PixelLayer.AboveProjectiles);
             Fire fire2 = new Fire();
-            fire2.PrepareFire(Projectile.Center, Vector2.Zero, Main.rand.Next(1, 3), 0.1f, Ice * 0.5f, 1.5f, 100, FireDrawMode.Additive);
+            fire2.PrepareFire(Projectile.Center, Vector2.Zero, Main.rand.Next(1, 3), 0.1f, Ice * 0.5f, 1.5f, 100, FireDrawMode.Additive, PixelLayer.AboveProjectiles);
 
             ParticleEngine.BehindProjectiles.Add(fire);
             ParticleEngine.BehindProjectiles.Add(fire2);
 
-			PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Projectile.Center, Vector2.Zero, Ice * 0.25f, 1.25f);
+			PointGlowPreMultiplied FX = new();
+            FX.Initialize(Projectile.Center, Vector2.Zero, Ice * 0.25f, 1.5f);
+			ParticleEngine.BehindProjectiles.Add(FX);
 		}
 		
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)

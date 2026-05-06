@@ -10,6 +10,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using GlowmaskHelper.Content;
+using OpusLib;
 
 
 namespace DestroyerTest.Content.Projectiles.Pets
@@ -42,12 +43,12 @@ namespace DestroyerTest.Content.Projectiles.Pets
         public override void OnSpawn(IEntitySource source)
         {
             SoundEngine.PlaySound(TP, Projectile.Center);
-            for(int f = 0; f < 8; f++)
+            var Dirs = Opus.RadialVectorOutwardRandom(7, Projectile.Center, 6f);
+
+            for (int i = 0; i < Dirs.Length; i++)
             {
-                Vector2 Outer = Projectile.Center + Main.rand.NextVector2CircularEdge(3, 3);
-                Vector2 Dir = Projectile.Center - Outer;
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<TormentedSoulParticle>(), Projectile.Center, Dir, default, Main.rand.NextFloat(0.15f, 2.5f));
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<TormentedSoulParticle2>(), Projectile.Center, Dir, default, Main.rand.NextFloat(0.15f, 2.5f));
+                TormentedSoulParticle tormentedSoul = new TormentedSoulParticle();
+                tormentedSoul.Initialize(Projectile.Center, Dirs[i], Color.White, 1f);
             }
         }
 
@@ -146,14 +147,14 @@ namespace DestroyerTest.Content.Projectiles.Pets
 
             if (dist > distTeleport)
             {
-                for(int f = 0; f < 8; f++)
+                var Dirs = Opus.RadialVectorOutwardRandom(7, Projectile.Center, 6f);
+
+                for (int i = 0; i < Dirs.Length; i++)
                 {
-                    Vector2 Outer = Projectile.Center + Main.rand.NextVector2CircularEdge(3, 3);
-                    Vector2 Dir = Projectile.Center - Outer;
-                    PRTLoader.NewParticle(PRTLoader.GetParticleID<TormentedSoulParticle>(), Projectile.Center, Dir, default, Main.rand.NextFloat(0.15f, 2.5f));
-                    PRTLoader.NewParticle(PRTLoader.GetParticleID<TormentedSoulParticle2>(), Projectile.Center, Dir, default, Main.rand.NextFloat(0.15f, 2.5f));
+                    TormentedSoulParticle tormentedSoul = new TormentedSoulParticle();
+                    tormentedSoul.Initialize(Projectile.Center, Dirs[i], Color.White, 1f);
                 }
-                SoundEngine.PlaySound(TP, Projectile.Center);
+                SoundEngine.PlaySound(TP);
                 Projectile.Center = master.Center;
                 Projectile.velocity *= 0.1f;
             }

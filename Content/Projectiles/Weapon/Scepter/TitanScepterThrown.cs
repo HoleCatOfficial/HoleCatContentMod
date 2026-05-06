@@ -12,7 +12,6 @@ using System;
 using Terraria.DataStructures;
 using System.IO;
 using InnoVault.PRT;
-using DestroyerTest.Content.Particles.TitaniumShard;
 using DestroyerTest.Content.Projectiles.ParentClasses;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
@@ -73,34 +72,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
             {
                 auraTimer--;
 
-                // Create the dust ring
-                int dustAmount = 4;
-                
-                    int[] types = new int[]
-                    {
-                        PRTLoader.GetParticleID<TitaniumShard1>(),
-                        PRTLoader.GetParticleID<TitaniumShard2>(),
-                        PRTLoader.GetParticleID<TitaniumShard3>(),
-                        PRTLoader.GetParticleID<TitaniumShard4>(),
-                        PRTLoader.GetParticleID<TitaniumShard5>(),
-                        PRTLoader.GetParticleID<TitaniumShard6>(),
-                        PRTLoader.GetParticleID<TitaniumShard7>(),
-                        PRTLoader.GetParticleID<TitaniumShard8>(),
-                        PRTLoader.GetParticleID<TitaniumShard9>(),
-                        PRTLoader.GetParticleID<TitaniumShard10>(),
-                        PRTLoader.GetParticleID<TitaniumShard11>()
-                    };
-
-                    for (int i = 0; i < dustAmount; i++)
-                    {
-                        float angle = MathHelper.TwoPi * i / dustAmount;
-                        // Offset the angle each tick so the dust rotates around the circle over time
-                        float timeOffset = Main.GameUpdateCount * 0.1f; // Adjust speed as needed
-                        float dynamicAngle = angle + timeOffset;
-                        Vector2 dustPos = Projectile.Center + radius * new Vector2((float)Math.Cos(dynamicAngle), (float)Math.Sin(dynamicAngle));
-                        PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], dustPos, Vector2.Zero, default, 0.5f);
-                    }
-                
+             
 
                 // Apply buffs to players inside the radius
                 foreach (Player player in Main.player)

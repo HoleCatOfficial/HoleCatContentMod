@@ -1,12 +1,13 @@
 using BreadLibrary.Core.Graphics.Particles;
+using BreadLibrary.Core.Graphics.Pixelation;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Particles.fire;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
+using OpusLib.Content.Particles;
 using Terraria;
 using Terraria.Enums;
 using Terraria.GameContent;
@@ -40,10 +41,9 @@ namespace DestroyerTest.Content.Projectiles.player.ArmorSet
             foreach(Vector2 Pos in Positions)
             {
                 Fire fire = new Fire();
-                fire.PrepareFire(Pos, Vector2.Zero, Main.rand.Next(1, 3), 0.1f, ColorLib.TenebrisGradient * 0.9f, 1f, 100, FireDrawMode.Additive);
+                fire.PrepareFire(Pos, Vector2.Zero, Main.rand.Next(1, 3), 0.1f, ColorLib.TenebrisGradient * 0.9f, 1f, 100, FireDrawMode.Additive, PixelLayer.AboveTiles);
                 ParticleEngine.BehindProjectiles.Add(fire);
 
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Pos, Vector2.Zero, ColorLib.TenebrisGradient * 0.5f, 1.25f);
             }
         }
 

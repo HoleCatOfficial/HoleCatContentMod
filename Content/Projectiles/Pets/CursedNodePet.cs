@@ -45,12 +45,6 @@ namespace DestroyerTest.Content.Projectiles.Pets
         public override void OnSpawn(IEntitySource source)
         {
             SoundEngine.PlaySound(TP, Projectile.Center);
-            for (int f = 0; f < 8; f++)
-            {
-                Vector2 Outer = Projectile.Center + Main.rand.NextVector2CircularEdge(3, 3);
-                Vector2 Dir = Projectile.Center - Outer;
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Projectile.Center, Dir, ColorLib.CursedFlames, Main.rand.NextFloat(0.15f, 1f));
-            }
         }
         
         public override bool PreDraw(ref Color lightColor)
@@ -187,13 +181,7 @@ namespace DestroyerTest.Content.Projectiles.Pets
 
             if (dist > distTeleport)
             {
-                for(int f = 0; f < 8; f++)
-                {
-                    Vector2 Outer = Projectile.Center + Main.rand.NextVector2CircularEdge(3, 3);
-                    Vector2 Dir = Projectile.Center - Outer;
-                    PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Projectile.Center, Dir, ColorLib.CursedFlames, Main.rand.NextFloat(0.15f, 1f));
-                }
-                SoundEngine.PlaySound(TP, Projectile.Center);
+                SoundEngine.PlaySound(TP);
                 Projectile.Center = master.Center;
                 Projectile.velocity *= 0.1f;
             }

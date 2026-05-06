@@ -14,7 +14,6 @@ using System.Collections.Generic;
 using System.IO;
 using InnoVault.PRT;
 using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Particles.DamageBonusParticles;
 using DestroyerTest.Content.Projectiles.ParentClasses;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
@@ -96,7 +95,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
                 float timeOffset = Main.GameUpdateCount * 0.03f; // Adjust speed as needed
                 float dynamicAngle = angle + timeOffset;
                 Vector2 dustPos = Projectile.Center + radius * new Vector2((float)Math.Cos(dynamicAngle), (float)Math.Sin(dynamicAngle));
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<StarParticle>(), dustPos, Vector2.Zero, ColorLib.CelestialGradient, 1);
+           
             }
                     if (auraTimer <= 30)
                 {
@@ -104,22 +103,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
                     radius = MathHelper.SmoothStep(0f, 300f, t); // Smoothly shrink from 300 to 0
                 }
                 
-                int[] types = new int[]
-                {
-                    PRTLoader.GetParticleID<MagicDamageBonus1>(),
-                    PRTLoader.GetParticleID<MagicDamageBonus2>(),
-                    PRTLoader.GetParticleID<MeleeDamageBonus>(),
-                    PRTLoader.GetParticleID<RangerDamageBonus1>(),
-                    PRTLoader.GetParticleID<RangerDamageBonus2>(),
-                    PRTLoader.GetParticleID<ScepterDamageBonus>(),
-                    PRTLoader.GetParticleID<SummonerDamageBonus>()
-                };
+               
 
                 Vector2 damagebonusspawnpoint = Main.rand.NextVector2Circular(radius, radius) + Projectile.Center;
-            if (Main.rand.NextBool(3))
-            {
-                PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], damagebonusspawnpoint, new Vector2(0, 0.001f), ColorLib.CelestialGradient, 1);
-            }
+          
 
                 // Apply buffs to players inside the radius
                 foreach (Player player in Main.player)

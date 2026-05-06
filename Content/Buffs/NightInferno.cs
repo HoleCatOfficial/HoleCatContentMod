@@ -1,12 +1,13 @@
 
 using BreadLibrary.Core.Graphics.Particles;
+using BreadLibrary.Core.Graphics.Pixelation;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Particles.fire;
 using Humanizer;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
+using OpusLib.Content.Particles;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -63,12 +64,14 @@ namespace DestroyerTest.Content.Buffs
             {
 
                 Fire fire = new Fire();
-                fire.PrepareFire(Main.rand.NextVector2FromRectangle(npc.Hitbox), new Vector2(0f, -0.1f), DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.3f, 0.3f), SoulOfNightColor * 0.8f, 0.5f, 40, FireDrawMode.Additive);
+                fire.PrepareFire(Main.rand.NextVector2FromRectangle(npc.Hitbox), new Vector2(0f, -0.1f), DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.3f, 0.3f), SoulOfNightColor * 0.8f, 0.5f, 40, FireDrawMode.Additive, PixelLayer.AbovePlayer);
                 ParticleEngine.ShaderParticles.Add(fire);
 
 				if (Main.rand.NextBool(6))
 				{
-					PRTLoader.NewParticle(PRTLoader.GetParticleID<StarParticle>(), Main.rand.NextVector2FromRectangle(npc.Hitbox), Vector2.Zero, DTColorUtils.Pastel(SoulOfNightColor, 75f), 0.25f);
+					StarParticle Star = new();
+					Star.Initialize(Main.rand.NextVector2FromRectangle(npc.Hitbox), Vector2.Zero, DTColorUtils.Pastel(SoulOfNightColor, 75f), 0.25f);
+                    ParticleEngine.ShaderParticles.Add(Star);
 				}
 
                 if (npc.lifeRegen > 0)
@@ -102,12 +105,14 @@ namespace DestroyerTest.Content.Buffs
 			if (lifeRegenDebuff)
 			{
                 Fire fire = new Fire();
-                fire.PrepareFire(Main.rand.NextVector2FromRectangle(Player.Hitbox), new Vector2(0f, -0.1f), Main.rand.Next(1, 3), 0.08f, SoulOfNightColor * 0.8f, 0.5f, 40, FireDrawMode.Additive);
+                fire.PrepareFire(Main.rand.NextVector2FromRectangle(Player.Hitbox), new Vector2(0f, -0.1f), Main.rand.Next(1, 3), 0.08f, SoulOfNightColor * 0.8f, 0.5f, 40, FireDrawMode.Additive, PixelLayer.AbovePlayer);
                 ParticleEngine.ShaderParticles.Add(fire);
 
                 if (Main.rand.NextBool(6))
 				{
-					PRTLoader.NewParticle(PRTLoader.GetParticleID<StarParticle>(), Main.rand.NextVector2FromRectangle(player.Hitbox), Vector2.Zero, DTColorUtils.Pastel(SoulOfNightColor, 75f), 0.5f);
+					StarParticle Star = new();
+					Star.Initialize(Main.rand.NextVector2FromRectangle(player.Hitbox), Vector2.Zero, DTColorUtils.Pastel(SoulOfNightColor, 75f), 0.5f);
+                    ParticleEngine.ShaderParticles.Add(Star);
 				} 
 				if (Player.lifeRegen > 0)
 					Player.lifeRegen = 0;

@@ -16,6 +16,7 @@ using Terraria.Audio;
 using Terraria.Localization;
 using System;
 using Microsoft.Xna.Framework.Graphics;
+using BreadLibrary.Core.Graphics.Pixelation;
 
 namespace DestroyerTest.Content.Equips.Cards.RiftenDeck
 {
@@ -88,7 +89,7 @@ namespace DestroyerTest.Content.Equips.Cards.RiftenDeck
         public override int Priority => 2;
     }
 
-    public class HollowShieldDrawLayer : PlayerDrawLayer
+    public class HollowShieldDrawLayer : PlayerDrawLayer, IDrawPixelated
     {
         public override bool GetDefaultVisibility(PlayerDrawSet drawInfo)
         {
@@ -99,7 +100,12 @@ namespace DestroyerTest.Content.Equips.Cards.RiftenDeck
             return false;
         }
 
+        PixelLayer IDrawPixelated.PixelLayer => PixelLayer.AbovePlayer;
+
         public override Position GetDefaultPosition() => new AfterParent(PlayerDrawLayers.CaptureTheGem);
+
+        private Vector2 cachedCenter;
+        private bool hasCachedData;
 
         protected override void Draw(ref PlayerDrawSet drawInfo)
         {
@@ -109,6 +115,8 @@ namespace DestroyerTest.Content.Equips.Cards.RiftenDeck
             var position = drawInfo.Center - Main.screenPosition;
 			position = new Vector2((int)position.X, (int)position.Y);
 
+            cachedCenter = drawInfo.Center;
+            /*
             drawInfo.DrawDataCache.Add(new DrawData(
                 DTAssetLib.ShieldRing.Value,
                 position,
@@ -120,6 +128,33 @@ namespace DestroyerTest.Content.Equips.Cards.RiftenDeck
                 SpriteEffects.None,
                 0
             ));
+            */
+        }
+
+        void IDrawPixelated.DrawPixelated(SpriteBatch spriteBatch)
+        {
+            if (!hasCachedData)
+                return;
+
+            var Shield = ModContent.GetInstance<HollowShield>();
+            Color color = Shield.themeColor;
+
+            var position = cachedCenter - Main.screenPosition;
+            position = new Vector2((int)position.X, (int)position.Y);
+
+            spriteBatch.Draw(
+                DTAssetLib.ShieldRing.Value,
+                position,
+                null,
+                color with { A = 0 },
+                0f,
+                DTAssetLib.ShieldRing.Size() / 2,
+                Shield.Radius / (DTAssetLib.ShieldRing.Value.Width / 2f),
+                SpriteEffects.None,
+                0f
+            );
+
+            hasCachedData = false; // optional: avoids stale draws
         }
     }
 }

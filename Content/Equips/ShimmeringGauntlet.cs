@@ -1,10 +1,10 @@
 ﻿using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Particles.fire;
 using DestroyerTest.Content.Resources;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
+using OpusLib.Content.Particles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -77,7 +77,7 @@ namespace DestroyerTest.Content.Equips
                     if (Main.rand.NextBool(5))
                     {
                         Fire fire = new Fire();
-                        fire.PrepareFire(Handpos, Vector2.Zero, Main.rand.Next(1, 3), 0.08f, ColorLib.TenebrisGradient * 0.8f, 0.3f, 40, FireDrawMode.Additive);
+                        fire.PrepareFire(Handpos, Vector2.Zero, Main.rand.Next(1, 3), 0.08f, ColorLib.TenebrisGradient * 0.8f, 0.3f, 40, FireDrawMode.Additive, BreadLibrary.Core.Graphics.Pixelation.PixelLayer.AbovePlayer);
                         ParticleEngine.ShaderParticles.Add(fire);
                     }
                 }

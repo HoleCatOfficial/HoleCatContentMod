@@ -1,13 +1,14 @@
 using BreadLibrary.Core.Graphics.Particles;
+using BreadLibrary.Core.Graphics.Pixelation;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.Particles.fire;
 using DestroyerTest.Content.Particles.Stellar;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib.Content.Particles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -54,10 +55,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
             Projectile.rotation = Projectile.velocity.ToRotation();
 
             Fire fire = new Fire();
-            fire.PrepareFire(Projectile.Center, Vector2.Zero, Projectile.direction, 0.14f, ColorLib.SoulOfLightColor, 1f, 100, FireDrawMode.Additive);
+            fire.PrepareFire(Projectile.Center, Vector2.Zero, Projectile.direction, 0.14f, ColorLib.SoulOfLightColor, 1f, 100, FireDrawMode.Additive, PixelLayer.AboveProjectiles);
             ParticleEngine.BehindProjectiles.Add(fire);
             Fire fire2 = new Fire();
-            fire2.PrepareFire(Projectile.Center, Vector2.Zero, Projectile.direction, 0.14f, ColorLib.SoulOfNightColor, 1f, 100, FireDrawMode.Additive);
+            fire2.PrepareFire(Projectile.Center, Vector2.Zero, Projectile.direction, 0.14f, ColorLib.SoulOfNightColor, 1f, 100, FireDrawMode.Additive, PixelLayer.AboveProjectiles);
             ParticleEngine.BehindProjectiles.Add(fire2);
         }
         public override bool PreDraw(ref Color lightColor)

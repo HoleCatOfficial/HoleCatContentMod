@@ -116,9 +116,9 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
 
         public override void OnKill(int timeLeft)
         {
-            Opus.RadialDustRandomDir(DustID.FireworksRGB, 4, Projectile.Center, 0, Color.White, 2f, 3f);
-            Opus.RadialDustRandomDir(DustID.FireworksRGB, 7, Projectile.Center, 0, Color.White, 0.6f, 0.5f);
-            Opus.RadialDustRandomDir(DustID.FireworksRGB, 4, Projectile.Center, 70, ColorLib.Soul, 1f, 2f);
+            Opus.RadialSpreadDustRandom(DustID.FireworksRGB, 4, Projectile.Center, 0, Color.White, 2f, 3f);
+            Opus.RadialSpreadDustRandom(DustID.FireworksRGB, 7, Projectile.Center, 0, Color.White, 0.6f, 0.5f);
+            Opus.RadialSpreadDustRandom(DustID.FireworksRGB, 4, Projectile.Center, 70, ColorLib.Soul, 1f, 2f);
         }
     }
 }

@@ -16,14 +16,12 @@ namespace DestroyerTest.Content.Particles
         public int Lifetime = 0;
         public int MaxLifetime = 100;
         public Vector2 position;
-        public Vector2 velocity;
         public Color color;
         public float scale;
         float rotation;
         public void Initialize(Vector2 Position, Vector2 Velocity, Color Color, float Scale)
         {
             this.position = Position;
-            this.velocity = Velocity;
             this.color = Color;
             this.scale = Scale;
 
@@ -34,7 +32,7 @@ namespace DestroyerTest.Content.Particles
         public override void Update(ref ParticleRendererSettings settings)
         {
             Lifetime++;
-            position += velocity;
+            position = Main.screenPosition + new Vector2(Main.screenWidth / 2, Main.screenHeight / 2);
 
             float scaleRate = MathHelper.Lerp(0.05f, 0.01f, Progress);
             scale += scaleRate;

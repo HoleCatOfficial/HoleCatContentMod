@@ -1,14 +1,37 @@
+using BreadLibrary.Core.Graphics.Particles;
+using BreadLibrary.Core.Graphics.Pixelation;
 using DestroyerTest.Common;
-using DestroyerTest.Content.RiftBiome;
+using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Consumables;
+using DestroyerTest.Content.Equips;
+using DestroyerTest.Content.Magic;
+using DestroyerTest.Content.MeleeWeapons.SwordLineage;
+using DestroyerTest.Content.Particles;
+using DestroyerTest.Content.Particles.Stellar;
+using DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss;
+using DestroyerTest.Content.RangedItems;
+using DestroyerTest.Content.Resources;
+using DestroyerTest.Content.RiftBiome;
+using DestroyerTest.Content.Tiles;
+using Humanizer.Localisation.DateToOrdinalWords;
+using InnoVault.PRT;
 using log4net.Repository.Hierarchy;
 using Microsoft.Build.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoMod.Cil;
+using OpusLib;
+using OpusLib.Content.Helpers;
+using ReLogic.Content;
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
 using System.IO;
+using System.Linq;
+using System.Runtime.Intrinsics.X86;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -16,32 +39,12 @@ using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.Drawing;
 using Terraria.GameContent.Events;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
-using System.Collections.Generic;
-using System.Linq;
-using ReLogic.Content;
-using DestroyerTest.Common.Systems;
-using Terraria.Localization;
-using DestroyerTest.Content.Consumables;
-using DestroyerTest.Content.Equips;
-using DestroyerTest.Content.MeleeWeapons.SwordLineage;
-using DestroyerTest.Content.RangedItems;
-using DestroyerTest.Content.Magic;
-using DestroyerTest.Content.Tiles;
-using Terraria.GameContent.ItemDropRules;
-using DestroyerTest.Content.Resources;
-using Humanizer.Localisation.DateToOrdinalWords;
-using InnoVault.PRT;
-using DestroyerTest.Content.Particles;
-using OpusLib;
-using System.Data;
-using DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss;
-using OpusLib.Content.Helpers;
-using System.ComponentModel;
 using Terraria.Social.Base;
-using DestroyerTest.Content.Particles.Stellar;
 
 namespace DestroyerTest.Content.Entities
 {
@@ -154,7 +157,7 @@ namespace DestroyerTest.Content.Entities
     }
 
     [AutoloadBossHead]
-    public class ConstitutionBoss : ModNPC
+    public class ConstitutionBoss : ModNPC, IDrawPixelated
     {
         public override string BossHeadTexture => "DestroyerTest/Content/Entities/ConstitutionBoss_Head_Boss";
         public override void SetStaticDefaults()
@@ -231,20 +234,7 @@ namespace DestroyerTest.Content.Entities
         public int WO2 = 0;
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            WO1 += 16;
-            WO2 += 6;
-
-            float OuterWidth = Opus.Sine(1f, 0.6f);
-            DTUtils.instance.ScrollingTextureSpine(topSide, DTAssetLib.Streak(2), ColorLib.StellarFireGradientLooping() * 0.75f, spriteBatch, BlendState.Additive, WO1, OuterWidth);
-            DTUtils.instance.ScrollingTextureSpine(bottomSide, DTAssetLib.Streak(2), ColorLib.StellarFireGradientLooping() * 0.75f, spriteBatch, BlendState.Additive, WO1, OuterWidth);
-            DTUtils.instance.ScrollingTextureSpine(leftSide, DTAssetLib.Streak(2), ColorLib.StellarFireGradientLooping() * 0.75f, spriteBatch, BlendState.Additive, WO1, OuterWidth);
-            DTUtils.instance.ScrollingTextureSpine(rightSide, DTAssetLib.Streak(2), ColorLib.StellarFireGradientLooping() * 0.75f, spriteBatch, BlendState.Additive, WO1, OuterWidth);
-
-            DTUtils.instance.ScrollingTextureSpine(topSide, DTAssetLib.Streak(1), DTColorUtils.Pastel(ColorLib.StellarFireGradientLooping(), 0.9f), spriteBatch, BlendState.Additive, WO2, 0.2f);
-            DTUtils.instance.ScrollingTextureSpine(bottomSide, DTAssetLib.Streak(1), DTColorUtils.Pastel(ColorLib.StellarFireGradientLooping(), 0.9f), spriteBatch, BlendState.Additive, WO2, 0.2f);
-            DTUtils.instance.ScrollingTextureSpine(leftSide, DTAssetLib.Streak(1), DTColorUtils.Pastel(ColorLib.StellarFireGradientLooping(), 0.9f), spriteBatch, BlendState.Additive, WO2, 0.2f);
-            DTUtils.instance.ScrollingTextureSpine(rightSide, DTAssetLib.Streak(1), DTColorUtils.Pastel(ColorLib.StellarFireGradientLooping(), 0.9f), spriteBatch, BlendState.Additive, WO2, 0.2f);
-
+            
             
 
             if (LancesEternity)
@@ -260,9 +250,50 @@ namespace DestroyerTest.Content.Entities
 
             return true;
         }
+
+        public void ScrollingTextureSpine(Line line, Asset<Texture2D> texture, Color drawColor, SpriteBatch spriteBatch, int TexOffset, float Width = 1f)
+        {
+
+            if (texture == null)
+            {
+                Main.NewText("ScrollingTextureSpine: Texture is null. Aborted draw.", Color.Red);
+                return;
+            }
+
+
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.LinearWrap, DepthStencilState.None, RasterizerState.CullNone, null, PixelationSystem.PixelationMatrix);
+
+            spriteBatch.Draw(texture.Value, line.Start - Main.screenPosition, new Rectangle(TexOffset, 0, (int)line.GetLineLength, texture.Value.Height), drawColor with { A = 0 }, line.GetLineRotation, new Vector2(0, texture.Value.Height) / 2, new Vector2(1, Width), SpriteEffects.None, 0);
+
+            Opus.ReturnToDefaultDrawing(spriteBatch);
+        }
+
+        void IDrawPixelated.DrawPixelated(SpriteBatch spriteBatch)
+        {
+            WO1 += 16;
+            WO2 += 6;
+
+            float OuterWidth = Opus.Sine(1f, 0.6f);
+            ScrollingTextureSpine(topSide, DTAssetLib.Streak(2, true), ColorLib.StellarFireGradientLooping() * 0.75f, spriteBatch, WO1, OuterWidth);
+            ScrollingTextureSpine(bottomSide, DTAssetLib.Streak(2, true), ColorLib.StellarFireGradientLooping() * 0.75f, spriteBatch, WO1, OuterWidth);
+            ScrollingTextureSpine(leftSide, DTAssetLib.Streak(2, true), ColorLib.StellarFireGradientLooping() * 0.75f, spriteBatch, WO1, OuterWidth);
+            ScrollingTextureSpine(rightSide, DTAssetLib.Streak(2, true), ColorLib.StellarFireGradientLooping() * 0.75f, spriteBatch, WO1, OuterWidth);
+
+            ScrollingTextureSpine(topSide, DTAssetLib.Streak(1, true), DTColorUtils.Pastel(ColorLib.StellarFireGradientLooping(), 0.9f), spriteBatch, WO2, 0.2f);
+            ScrollingTextureSpine(bottomSide, DTAssetLib.Streak(1, true), DTColorUtils.Pastel(ColorLib.StellarFireGradientLooping(), 0.9f), spriteBatch, WO2, 0.2f);
+            ScrollingTextureSpine(leftSide, DTAssetLib.Streak(1, true), DTColorUtils.Pastel(ColorLib.StellarFireGradientLooping(), 0.9f), spriteBatch, WO2, 0.2f);
+            ScrollingTextureSpine(rightSide, DTAssetLib.Streak(1, true), DTColorUtils.Pastel(ColorLib.StellarFireGradientLooping(), 0.9f), spriteBatch, WO2, 0.2f);
+
+        }
+
+
         public int AITimer = 0;
 
         public Player player => Main.player[NPC.target];
+
+        PixelLayer IDrawPixelated.PixelLayer => PixelLayer.AboveTiles;
+
         public override void AI()
         {
            
@@ -523,7 +554,9 @@ namespace DestroyerTest.Content.Entities
             
             if (Main.rand.NextBool(3))
             {
-                PRTLoader.NewParticle(StellarParticleIndex.ConstitutionParticle, Main.rand.NextVector2FromRectangle(ArenaRect), new Vector2(0, Main.rand.NextFloat(-1.5f, -0.1f)), (Color)default * 0.75f, 2.5f);
+                ConstitutionParticle Ambience = new();
+                Ambience.Initialize(Main.rand.NextVector2FromRectangle(ArenaRect), new Vector2(0, Main.rand.NextFloat(-1.5f, -0.1f)), 2.5f, 100);
+                ParticleEngine.BehindProjectiles.Add(Ambience);
             }
         }
 
@@ -543,24 +576,17 @@ namespace DestroyerTest.Content.Entities
             if (NPC.Opacity == 0.1f)
             {
                 SoundEngine.PlaySound(DTAssetLib.Impacts.StellarFox, NPC.Center);
-                int points = 10; // 5 outer + 5 inner
-                float outerRadius = 16f;
-                float innerRadius = outerRadius * 0.4f;
-                float rotationOffset = NPC.rotation;
 
-                for (int i = 0; i < points; i++)
+                List<Vector2> Star2 = Polar.GenerateCurvedStar(5, 4, 90, NPC.Center, inwardPull: 0.5f, randomOffset: true);
+                foreach (Vector2 p2 in Star2)
                 {
-                    float angle = MathHelper.TwoPi * i / points + rotationOffset;
-                    float radius = (i % 2 == 0) ? outerRadius : innerRadius;
+                    Vector2 Vel = p2 - NPC.Center;
 
-                    Vector2 direction = new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
-                    Vector2 spawnPos = NPC.Center + direction * radius;
-                    Vector2 velocity = direction * 3f;
-
-                    PRTLoader.NewParticle(StellarParticleIndex.ConstitutionParticle, spawnPos, velocity, default, 1f);
-                    PRTLoader.NewParticle(StellarParticleIndex.ConstitutionParticle, spawnPos, Vector2.Zero, default, 1f);
+                    ConstitutionParticle Particle = new();
+                    Particle.Initialize(NPC.Center, Vel, 1f, 30);
+                    ParticleEngine.BehindProjectiles.Add(Particle);
                 }
-                PRTLoader.NewParticle(StellarParticleIndex.FlatStar, NPC.Center, Vector2.Zero,  ColorLib.StellarFireGradientLooping(), 0.15f);
+
             }
             if (NPC.Opacity <= 0)
             {
@@ -587,10 +613,18 @@ namespace DestroyerTest.Content.Entities
                 Vector2 spawnPos = NPC.Center + direction * radius;
                 Vector2 velocity = direction * 3f;
 
-                PRTLoader.NewParticle(StellarParticleIndex.ConstitutionParticle, spawnPos, velocity, default, 1f);
-                PRTLoader.NewParticle(StellarParticleIndex.ConstitutionParticle, spawnPos, Vector2.Zero, default, 1f);
+                List<Vector2> Star2 = Polar.GenerateCurvedStar(5, 4, 90, NPC.Center, inwardPull: 0.5f, randomOffset: true);
+                foreach (Vector2 p2 in Star2)
+                {
+                    Vector2 Vel = p2 - NPC.Center;
+
+                    ConstitutionParticle Particle = new();
+                    Particle.Initialize(NPC.Center, Vel, 1f, 30);
+                    ParticleEngine.BehindProjectiles.Add(Particle);
+                }
             }
-            PRTLoader.NewParticle(StellarParticleIndex.FlatStar, NPC.Center, Vector2.Zero,  ColorLib.StellarFireGradientLooping(), 0.15f);
+
+            StellarParticleUtils.FlatStar(NPC.Center, 1f, ParticleEngine.BehindProjectiles);
         }
 
         public void IdleAI()
@@ -617,7 +651,7 @@ namespace DestroyerTest.Content.Entities
         public void BeamBoomAI()
         {
             SoundEngine.PlaySound(ConstitutionSounds.Shoot1 with { PitchVariance = 0.4f }, NPC.Center);
-            Opus.RadialSpreadProjectile(ModContent.ProjectileType<ConstitutionBeam>(), BeamBoomCount(Main.masterMode, DTUtils.ClassicMode()), NPC.Center, ConstitutionDamageValues.BeamDamage(), 10, 8, RandomOffset: true);
+            Opus.RadialSpreadProjectile(ModContent.ProjectileType<ConstitutionBeam>(), BeamBoomCount(Main.masterMode, DTUtils.ClassicMode()), NPC.Center, ConstitutionDamageValues.BeamDamage(), 10, 8, offset: Main.rand.NextFloat(MathHelper.TwoPi));
         }
 
         public int WallShotCount(bool Double, bool Half)
@@ -662,7 +696,10 @@ namespace DestroyerTest.Content.Entities
                     Vector2 shotpos = tops[i];
                     for(int t = 0; t < 8; t++)
                     {
-                        PRTLoader.NewParticle(StellarParticleIndex.ConstitutionParticle, shotpos, new Vector2(0, 40), default, 1.6f);
+                        ConstitutionParticle particle = new();
+                        particle.Initialize(shotpos, new Vector2(0, 40), 1.6f, 60);
+                        ParticleEngine.BehindProjectiles.Add(particle);
+
                     }
                 }
                 if (Main.expertMode)
@@ -690,7 +727,9 @@ namespace DestroyerTest.Content.Entities
                     Vector2 shotpos = rights[i];
                     for(int t = 0; t < 8; t++)
                     {
-                        PRTLoader.NewParticle(StellarParticleIndex.ConstitutionParticle, shotpos, new Vector2(-40, 0), default, 1.6f);
+                        ConstitutionParticle particle = new();
+                        particle.Initialize(shotpos, new Vector2(-40, 0), 1.6f, 60);
+                        ParticleEngine.BehindProjectiles.Add(particle);
                     }
                 }
                 if (Main.expertMode)
@@ -718,7 +757,9 @@ namespace DestroyerTest.Content.Entities
                     Vector2 shotpos = bottoms[i];
                     for(int t = 0; t < 8; t++)
                     {
-                        PRTLoader.NewParticle(StellarParticleIndex.ConstitutionParticle, shotpos, new Vector2(0, -40), default, 1.6f);
+                        ConstitutionParticle particle = new();
+                        particle.Initialize(shotpos, new Vector2(0, -40), 1.6f, 60);
+                        ParticleEngine.BehindProjectiles.Add(particle);
                     }
                 }
                 if (Main.expertMode)
@@ -746,7 +787,9 @@ namespace DestroyerTest.Content.Entities
                     Vector2 shotpos = lefts[i];
                     for(int t = 0; t < 8; t++)
                     {
-                        PRTLoader.NewParticle(StellarParticleIndex.ConstitutionParticle, shotpos, new Vector2(40, 0), default, 1.6f);
+                        ConstitutionParticle particle = new();
+                        particle.Initialize(shotpos, new Vector2(40, 0), 1.6f, 60);
+                        ParticleEngine.BehindProjectiles.Add(particle);
                     }
                 }
                 if (Main.expertMode)

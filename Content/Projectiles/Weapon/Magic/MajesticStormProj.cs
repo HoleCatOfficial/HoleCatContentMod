@@ -184,8 +184,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 
             TextureRotationOffset -= 0.5f;
             Lighting.AddLight(Projectile.Center, new Color(29, 226, 186).ToVector3());
-            PRTLoader.NewParticle(Projectile.Center, Projectile.velocity * 0.5f, PRTLoader.GetParticleID<SimpleParticle>(), new Color(29, 226, 186) * 0.5f, 2f);
-            PRTLoader.NewParticle(Projectile.Center, Vector2.Zero, DTUtils.ElectricArcs[Main.rand.Next(DTUtils.ElectricArcs.Length)], new Color(29, 226, 186) * 0.75f, 0.5f);
+          
 
             for (int i = 0; i < 4; i++)
             {

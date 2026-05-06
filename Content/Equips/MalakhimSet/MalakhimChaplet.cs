@@ -91,7 +91,9 @@ namespace DestroyerTest.Content.Equips.MalakhimSet
                 if (DestroyerTestMod.ArmorSetBonusHotKey.JustPressed && ThornCooldown <= 0)
                 {
                     SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/NodeAttackTS") with { PitchVariance = 0.5f }, Player.Center);
-                    Opus.RadialProjectileRandomDir(ModContent.ProjectileType<VesperThorn>(), 10, Player.Center, 15, 1, 0.00001f);
+
+                    Opus.RadialSpreadProjectileRandom(ModContent.ProjectileType<VesperThorn>(), 10, Player.Center, 15, 1, 0.00001f);
+
                     ThornCooldown = 600;
                 }
             }

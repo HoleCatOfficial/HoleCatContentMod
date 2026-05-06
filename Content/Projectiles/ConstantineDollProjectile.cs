@@ -1,11 +1,12 @@
 using BreadLibrary.Core.Graphics.Particles;
+using BreadLibrary.Core.Graphics.Pixelation;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Particles.fire;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib.Content.Particles;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.Enums;
@@ -55,7 +56,7 @@ namespace DestroyerTest.Content.Projectiles
 
 
             Fire fire = new Fire();
-            fire.PrepareFire(Projectile.Center, Vector2.Zero, Main.rand.Next(1, 3), 0.1f, Color.Black, 3f, 100, FireDrawMode.NonPremultiplied);
+            fire.PrepareFire(Projectile.Center, Vector2.Zero, Main.rand.Next(1, 3), 0.1f, Color.Black, 3f, 100, FireDrawMode.NonPremultiplied, PixelLayer.AboveProjectiles);
             ParticleEngine.ShaderParticles.Add(fire);
 
             float maxDetectRadius = 4000f; // The maximum radius at which a projectile can detect a target

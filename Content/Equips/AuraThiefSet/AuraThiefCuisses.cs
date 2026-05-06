@@ -1,3 +1,4 @@
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles.player.ArmorSet;
@@ -37,9 +38,10 @@ namespace DestroyerTest.Content.Equips.AuraThiefSet
             if (Math.Abs(player.velocity.X) > 3.75f)
 			{
 				//Dust.NewDustDirect(player.Bottom, 2, 1, ModContent.DustType<SoulDust>(), 0, 0.02f, 100, new Microsoft.Xna.Framework.Color(184, 228, 242), 1);
-				
-				
-				PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Main.rand.NextVector2FromRectangle(below), Main.rand.NextVector2Circular(3, 3), new Color(184, 228, 242), 0.5f);
+
+				PointGlowPreMultiplied Glow = new PointGlowPreMultiplied();
+				Glow.Initialize(Main.rand.NextVector2FromRectangle(below), Main.rand.NextVector2Circular(3, 3), new Color(184, 228, 242), 0.5f);
+				ParticleEngine.ShaderParticles.Add(Glow);
 			}
         }
 

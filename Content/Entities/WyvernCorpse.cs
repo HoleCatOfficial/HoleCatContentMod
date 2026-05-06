@@ -927,7 +927,11 @@ namespace DestroyerTest.Content.Entities
                             {
                                 Vector2 Teleoffset = Main.rand.NextVector2Circular(1200f, 1200f);
                                 TelePos = player.Center + Teleoffset;
-                                PRTLoader.NewParticle(PRTLoader.GetParticleID<SmallShine>(), TelePos, Vector2.Zero, Color.White, 10);
+
+                                SmallShine shine = new SmallShine();
+                                shine.Prepare(TelePos, Vector2.Zero, Color.White, 10f);
+                                ParticleEngine.ShaderParticles.Add(shine);
+                                
                                 TeleDashGetTelePosition = true;
                             }
 
@@ -964,7 +968,7 @@ namespace DestroyerTest.Content.Entities
                                     NPC.velocity = DashDir.ToRotationVector2() * 25;
                                 }
                                 DashParticle();
-                                Opus.RadialSpreadProjectile(ModContent.ProjectileType<OrganProjectile>(), Main.rand.Next(4, 14), TelePos, 5, 4, Main.rand.Next(4, 13), RandomOffset: true);
+                                Opus.RadialSpreadProjectile(ModContent.ProjectileType<OrganProjectile>(), Main.rand.Next(4, 14), TelePos, 5, 4, Main.rand.Next(4, 13), offset: Main.rand.NextFloat(MathHelper.TwoPi));
                                 TeleDashWaitTime = 100;
                                 TeleDashGetTelePosition = false;
                             }
@@ -1555,8 +1559,6 @@ namespace DestroyerTest.Content.Entities
 
                 NPC.NewNPC(Entity.GetSource_FromThis(), (int)spawnPosition.X, (int)spawnPosition.Y, ModContent.NPCType<IchorNode>());
 
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp>(), NPC.Center, Vector2.Zero, ColorLib.Ichor, 0.001f, 1);
-
             }
         }
 
@@ -1807,7 +1809,7 @@ namespace DestroyerTest.Content.Entities
                 {
                     Opus.RadialSpreadProjectile(
                         ProjectileID.GoldenShowerHostile, 5,
-                        NPC.Bottom, 15, 3, 10, RandomOffset: false);
+                        NPC.Bottom, 15, 3, 10, offset: Main.rand.NextFloat(MathHelper.TwoPi));
 
                     SoundEngine.PlaySound(
                         new SoundStyle("DestroyerTest/Assets/Audio/StarHammerThrow"),
@@ -1822,8 +1824,15 @@ namespace DestroyerTest.Content.Entities
                 {
                     Dust.NewDust(new Vector2(NPC.Center.X, NPC.Center.Y + NPC.height / 2), 2, 2, DustID.Ichor, 2f, -1.5f, 0, ColorLib.Ichor, 2f);
                     Dust.NewDust(new Vector2(NPC.Center.X, NPC.Center.Y + NPC.height / 2), 2, 2, DustID.Ichor, -2f, -1.5f, 0, ColorLib.Ichor, 2f);
-                    PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), new Vector2(NPC.Center.X, NPC.Center.Y + NPC.height / 2), new Vector2(2, 1.5f), ColorLib.Ichor, 1.0f);
-                    PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), new Vector2(NPC.Center.X, NPC.Center.Y + NPC.height / 2), new Vector2(-2, 1.5f), ColorLib.Ichor, 1.0f);
+
+                    PointGlowPreMultiplied Glow1 = new PointGlowPreMultiplied();
+                    Glow1.Initialize(NPC.Bottom, new Vector2(3f, 0f), ColorLib.Ichor, 1f);
+                    ParticleEngine.BehindProjectiles.Add(Glow1);
+
+                    PointGlowPreMultiplied Glow2 = new PointGlowPreMultiplied();
+                    Glow2.Initialize(NPC.Bottom, new Vector2(-3f, 0f), ColorLib.Ichor, 1f);
+                    ParticleEngine.BehindProjectiles.Add(Glow2);
+
                     NPC.velocity += new Vector2(0f, 30f);
                 }
             }
@@ -1843,7 +1852,7 @@ namespace DestroyerTest.Content.Entities
             if (Main.GameUpdateCount % 180 == 0)
             {
                 SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/Scholar/ShieldActivate", 3) with { PitchVariance = 0.4f });
-                Opus.RadialProjectileRandomDir(ModContent.ProjectileType<NodeBossDistendedPike>(), Main.rand.Next(2, 5), NPC.Center, NPC.damage / 2, 7, 20);
+                Opus.RadialSpreadProjectileRandom(ModContent.ProjectileType<NodeBossDistendedPike>(), Main.rand.Next(2, 5), NPC.Center, NPC.damage / 2, 7, 20);
                 PikeCount++;
             }
 

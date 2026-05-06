@@ -12,7 +12,7 @@ namespace DestroyerTest.Content.Equips
 {
 
 	[AutoloadEquip(EquipType.Legs)]
-	public class HoleCatSkirt : ModItem
+	public class HoleCatLegs : ModItem
 	{
         public override void SetDefaults()
         {

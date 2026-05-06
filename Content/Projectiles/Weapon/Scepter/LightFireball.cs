@@ -1,10 +1,11 @@
 using BreadLibrary.Core.Graphics.Particles;
+using BreadLibrary.Core.Graphics.Pixelation;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.Particles.fire;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
+using OpusLib.Content.Particles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -50,7 +51,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
             }
 
             Fire fire = new Fire();
-            fire.PrepareFire(Projectile.Center, Vector2.Zero, Projectile.direction, 0.14f, ColorLib.SoulOfLightColor, 1f, 100, FireDrawMode.Additive);
+            fire.PrepareFire(Projectile.Center, Vector2.Zero, Projectile.direction, 0.14f, ColorLib.SoulOfLightColor, 1f, 100, FireDrawMode.Additive, PixelLayer.AboveProjectiles);
             ParticleEngine.BehindProjectiles.Add(fire);
         }
 

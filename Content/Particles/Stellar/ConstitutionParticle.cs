@@ -1,50 +1,68 @@
+using BreadLibrary.Core.Graphics.Particles;
+using BreadLibrary.Core.Graphics.Pixelation;
 using DestroyerTest.Common;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using Terraria;
 using Terraria.GameContent;
+using Terraria.Graphics.Renderers;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Particles.Stellar
 {
-    public class ConstitutionParticle : BasePRT
+    public class ConstitutionParticle : BaseParticle<ConstitutionParticle>
     {
-        public int MaxLifetime => 120;
-        public override void SetProperty()
+        public int lifetime = 0;
+        public int MaxLifetime = 120;
+        public Vector2 position;
+        public Vector2 velocity;
+        public Color color;
+        public float scale;
+
+        public void Initialize(Vector2 Position, Vector2 Velocity, float Scale, int Lifetime)
         {
-            PRTDrawMode = PRTDrawModeEnum.AdditiveBlend;
-            Lifetime = MaxLifetime;
-            InitializeCaches(10);
-            ShouldKillWhenOffScreen = false;
+            this.position = Position;
+            this.velocity = Velocity;
+            this.scale = Scale;
+            this.lifetime = Lifetime;
         }
 
-        public override void AI()
+        float Progress => (float)lifetime / MaxLifetime;
+        public override void Update(ref ParticleRendererSettings settings)
         {
-            Scale *= 0.993f;
-            Rotation += 0.1f * Velocity.X;
+            lifetime++;
+            position += velocity;
 
-            Color = ColorLib.StellarFireGradient(LifetimeCompletion * 8f);
+            color = DTColorUtils.MultiLerp(Progress, ColorLib.StellarFireColormap);
 
-            Lighting.AddLight(Position, Color.ToVector3() * Scale);
-
-            UpdatePositionCache(10);
-            UpdateRotationCache(10);
-
-        }
-
-        public override bool PreDraw(SpriteBatch spriteBatch)
-        {
-            Vector2 drawOrigin = new Vector2(TexValue.Width * 0.5f, TexValue.Height * 0.5f);
-            for (int k = oldPositions.Length - 1; k > 0; k--)
+            if (Progress > 0.5f)
             {
-                Vector2 drawPos = (oldPositions[k] - Main.screenPosition) + drawOrigin + new Vector2(0f, Position.Y);
-                Color color = Color * ((oldPositions.Length - k) / (float)oldPositions.Length);
-                Main.EntitySpriteDraw(TexValue, drawPos, null, color, oldRotations[k], drawOrigin, Scale, SpriteEffects.None, 0);
+                color *= 0.95f;
+                scale *= 0.95f;
             }
-            return true;
+
+            if (lifetime > MaxLifetime)
+            {
+                ShouldBeRemovedFromRenderer = true;
+            }
+        }
+
+        public override PixelLayer PixelLayer => PixelLayer.AboveProjectiles;
+
+        public override bool DrawsPixelated => true;
+
+        public override void Draw(ref ParticleRendererSettings settings, SpriteBatch spriteBatch)
+        {
+            Texture2D texture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/Stellar/ConstitutionParticle").Value;
+            Vector2 origin = texture.Size() / 2f;
+
+            Opus.StartSpriteBatchPixelated(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
+
+            spriteBatch.Draw(texture, position - Main.screenPosition, null, color with { A = 0 }, 0f, origin, scale, SpriteEffects.None, 0f);
+
+            Opus.ReturnToDefaultDrawing(spriteBatch);
         }
     }
-
-    
 }

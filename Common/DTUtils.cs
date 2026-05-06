@@ -6,7 +6,6 @@ using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Entities;
 using DestroyerTest.Content.Magic;
 using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Particles.fire;
 using DestroyerTest.Content.Particles.Stellar;
 using DestroyerTest.Rarity.Scepter;
 using InnoVault.PRT;
@@ -112,9 +111,13 @@ namespace DestroyerTest.Common
             foreach (Vector2 p2 in Star2)
             {
                 Vector2 Vel = p2 - projectile.Center;
-                PRTLoader.NewParticle(StellarParticleIndex.ConstitutionParticle, projectile.Center, Vel, (Color)default, 1f);
+
+                ConstitutionParticle Particle = new();
+                Particle.Initialize(projectile.Center, Vel, 1f, 30);
+                ParticleEngine.BehindProjectiles.Add(Particle);
             }
-            PRTLoader.NewParticle(StellarParticleIndex.FlatStar, projectile.Center, Vector2.Zero, (Color)default, 0.15f);
+
+            StellarParticleUtils.FlatStar(projectile.Center, 1f, ParticleEngine.BehindProjectiles);
         }
 
         /// <summary>
@@ -702,11 +705,6 @@ namespace DestroyerTest.Common
 			item.value = Value;
 			item.rare = Rarity;
 		}
-
-        public static float Inverse(this float Input)
-        {
-            return 1f - Input;
-        }
 
         public static bool ArmorSetBonusKey(this Player player)
         {
@@ -1540,13 +1538,20 @@ namespace DestroyerTest.Common
             return ModContent.Request<Texture2D>($"{ParticlePath}/Shine{Variant}", AssetRequestMode.AsyncLoad);
         }
 
-        public static Asset<Texture2D> Streak(int Variant)
+        public static Asset<Texture2D> Streak(int Variant, bool PreMultiplied = false)
         {
             if (Variant <= 0)
             {
                 Variant = 1;
             }
-            return ModContent.Request<Texture2D>($"{ExtrasPath}/Streak{Variant}", AssetRequestMode.AsyncLoad);
+            if (!PreMultiplied)
+            {
+                return ModContent.Request<Texture2D>($"{ExtrasPath}/Streak{Variant}", AssetRequestMode.AsyncLoad);
+            }
+            else
+            {
+                return ModContent.Request<Texture2D>($"{ExtrasPath}/PreMultiplied/Streak{Variant}", AssetRequestMode.AsyncLoad);
+            }
         }
 
         public static Asset<Texture2D> SwordTrail(int Variant)

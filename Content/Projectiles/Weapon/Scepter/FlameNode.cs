@@ -1,9 +1,10 @@
 using BreadLibrary.Core.Graphics.Particles;
+using BreadLibrary.Core.Graphics.Pixelation;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Particles.fire;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
+using OpusLib.Content.Particles;
 using System;
 using Terraria;
 using Terraria.Audio;
@@ -51,7 +52,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
             Projectile.rotation -= 0.3f;
 
             Fire fire = new Fire();
-            fire.PrepareFire(Projectile.Center, new Vector2(0, -1f), Projectile.direction, 0.14f, new Color(253, 62, 3), 1f, 100, FireDrawMode.Additive);
+            fire.PrepareFire(Projectile.Center, new Vector2(0, -1f), Projectile.direction, 0.14f, new Color(253, 62, 3), 1f, 100, FireDrawMode.Additive, PixelLayer.AboveProjectiles);
             ParticleEngine.BehindProjectiles.Add(fire);
 
             foreach (Projectile node in Main.projectile)
@@ -75,7 +76,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
                             connectionPoints[i] = point;
 
                             Dust.NewDustPerfect(point, DustID.TintableDustLighted, Vector2.Zero, 0, new Color(253, 62, 3), 1f);
-                            PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), point, Vector2.Zero, new Color(253, 62, 3) * 0.4f, 0.4f);
+                            //PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), point, Vector2.Zero, new Color(253, 62, 3) * 0.4f, 0.4f);
                         }
 
                         foreach (Projectile hostile in Main.projectile)

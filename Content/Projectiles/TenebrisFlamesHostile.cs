@@ -1,11 +1,12 @@
 using BreadLibrary.Core.Graphics.Particles;
+using BreadLibrary.Core.Graphics.Pixelation;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Particles.fire;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib.Content.Particles;
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -60,16 +61,18 @@ namespace DestroyerTest.Content.Projectiles
 			Lighting.AddLight(Projectile.Center, ColorLib.TenebrisGradient.ToVector3() * 0.2f);
 
             Fire fire = new Fire();
-            fire.PrepareFire(Projectile.Center, Vector2.Zero, DTUtils.RandomDirection(2), 0.2f, ColorLib.TenebrisGradient * 0.5f, 0.8f, 100, FireDrawMode.Additive);
+            fire.PrepareFire(Projectile.Center, Vector2.Zero, DTUtils.RandomDirection(2), 0.2f, ColorLib.TenebrisGradient * 0.5f, 0.8f, 100, FireDrawMode.Additive, PixelLayer.AboveProjectiles);
             ParticleEngine.BehindProjectiles.Add(fire);
 
             Fire fire2 = new Fire();
-            fire2.PrepareFire(Projectile.Center, Vector2.Zero, DTUtils.RandomDirection(2), 0.2f, ColorLib.TenebrisGradient, 0.5f, 100, FireDrawMode.Additive);
+            fire2.PrepareFire(Projectile.Center, Vector2.Zero, DTUtils.RandomDirection(2), 0.2f, ColorLib.TenebrisGradient, 0.5f, 100, FireDrawMode.Additive, PixelLayer.AboveProjectiles);
             ParticleEngine.BehindProjectiles.Add(fire2);
 
-            PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Projectile.Center, Vector2.Zero, ColorLib.TenebrisGradient * 0.5f, 1.25f);
+            PointGlowPreMultiplied Glow = new PointGlowPreMultiplied();
+            Glow.Initialize(Projectile.Center, Vector2.Zero, ColorLib.TenebrisGradient * 0.5f, 0.5f);
+            ParticleEngine.BehindProjectiles.Add(Glow);
 
-			float maxDetectRadius = 1400f;
+            float maxDetectRadius = 1400f;
 
 			HomeTimer++;
 			
@@ -164,15 +167,17 @@ namespace DestroyerTest.Content.Projectiles
 			Lighting.AddLight(Projectile.Center, ColorLib.TenebrisGradient.ToVector3() * 0.2f);
 
             Fire fire = new Fire();
-            fire.PrepareFire(Projectile.Center, Vector2.Zero, DTUtils.RandomDirection(2), 0.2f, ColorLib.TenebrisGradient * 0.5f, 0.8f, 100, FireDrawMode.Additive);
+            fire.PrepareFire(Projectile.Center, Vector2.Zero, DTUtils.RandomDirection(2), 0.2f, ColorLib.TenebrisGradient * 0.5f, 0.8f, 100, FireDrawMode.Additive, PixelLayer.AboveProjectiles);
             ParticleEngine.BehindProjectiles.Add(fire);
 
             Fire fire2 = new Fire();
-            fire2.PrepareFire(Projectile.Center, Vector2.Zero, DTUtils.RandomDirection(2), 0.2f, ColorLib.TenebrisGradient, 0.5f, 100, FireDrawMode.Additive);
+            fire2.PrepareFire(Projectile.Center, Vector2.Zero, DTUtils.RandomDirection(2), 0.2f, ColorLib.TenebrisGradient, 0.5f, 100, FireDrawMode.Additive, PixelLayer.AboveProjectiles);
             ParticleEngine.BehindProjectiles.Add(fire2);
 
-            PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Projectile.Center, Vector2.Zero, ColorLib.TenebrisGradient * 0.5f, 1.25f);
-		}
+            PointGlowPreMultiplied Glow = new PointGlowPreMultiplied();
+            Glow.Initialize(Projectile.Center, Vector2.Zero, ColorLib.TenebrisGradient * 0.5f, 0.5f);
+            ParticleEngine.BehindProjectiles.Add(Glow);
+        }
 
 		public override void OnHitPlayer(Player target, Player.HurtInfo info)
 		{

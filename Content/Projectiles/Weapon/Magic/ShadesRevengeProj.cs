@@ -1,25 +1,26 @@
-using System;
-using System.Collections.Generic;
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss;
+using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles.Boss.VampireBoss;
+using DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss;
 using DestroyerTest.Content.RiftArsenal;
+using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
+using ReLogic.Utilities;
+using System;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.Enums;
 using Terraria.GameContent;
 using Terraria.GameContent.Drawing;
+using Terraria.Graphics.CameraModifiers;
 using Terraria.ID;
 using Terraria.ModLoader;
-using OpusLib;
-using ReLogic.Utilities;
-using DestroyerTest.Content.Particles;
-using InnoVault.PRT;
-using Terraria.Graphics.CameraModifiers;
 
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Magic
@@ -185,10 +186,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 
             TextureRotationOffset -= 0.5f;
             Lighting.AddLight(Projectile.Center, ColorLib.TenebrisGradient.ToVector3());
-            if (Main.rand.NextBool(6))
-            {
-                PRTLoader.NewParticle(Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Vector2.Zero, PRTLoader.GetParticleID<SmallShine>(), Color.White, 0.75f);
-            }
+  
 
             for (int i = 0; i < 4; i++)
             {
@@ -285,7 +283,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
         {
             Player player = Main.player[Projectile.owner];
             SoundEngine.PlaySound(Killed, Projectile.Center);
-            PRTLoader.NewParticle(PRTLoader.GetParticleID<SmallShine>(), Projectile.Center, Vector2.Zero, Color.White, 2);
+
+
+            SmallShine Shine = new SmallShine();
+            Shine.Prepare(Projectile.Center, Vector2.Zero, ColorLib.TenebrisGradient, 2f);
+            ParticleEngine.BehindProjectiles.Add(Shine);
             for (int u = 0; u < 15; u++)
             {
                 Dust.NewDustPerfect(Projectile.Center, DustID.FireworksRGB, Main.rand.NextVector2CircularEdge(10, 10), 0, ColorLib.TenebrisGradient, 2);

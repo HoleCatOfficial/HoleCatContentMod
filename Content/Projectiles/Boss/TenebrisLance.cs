@@ -79,7 +79,7 @@ namespace DestroyerTest.Content.Projectiles.Boss
 
             if (Main.GameUpdateCount % 10 == 0 && Projectile.velocity.Length() > 2)
             {
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<SmallShine>(), Projectile.Center, Vector2.Zero, Color.White * 0.5f, 0.5f);
+                
                 SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/TenebrisBlock") with { MaxInstances = 0, PitchVariance = 0.3f, Volume = 0.15f }, Projectile.Center);
                 Projectile.NewProjectile(Entity.GetSource_FromAI(), Projectile.Center, FlankLeft * 0.02f, ModContent.ProjectileType<TenebrisDart>(), Projectile.damage / 2, 3);
                 Projectile.NewProjectile(Entity.GetSource_FromAI(), Projectile.Center, FlankRight * 0.02f, ModContent.ProjectileType<TenebrisDart>(), Projectile.damage / 2, 3);

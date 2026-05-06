@@ -122,7 +122,7 @@ namespace DestroyerTest.Content.Entities
             {
                 if (Main.rand.NextBool(200))
                 {
-                    Opus.RingDustOutward(ModContent.DustType<RiftDust>(), 30, NPC.Center, 10, 0, default, 1.2f, 3f, RandomOffset: true);
+                    Opus.RingSpreadDust(ModContent.DustType<RiftDust>(), 30, NPC.Center, 10, 0, default, 1.2f, 3f, offset: Main.rand.NextFloat(MathHelper.TwoPi));
                     NPC.velocity += direction.ToRotation().ToRotationVector2() * 5f;
                 }
             }

@@ -50,7 +50,6 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
 
 
-            //Opus.RadialParticleRandomDir(PRTLoader.GetParticleID<SparkParticleNoGravity>(), 9, Projectile.Center, 1f, Color.LavenderBlush, 1f, 9, ai1: 2);
 
             Opus.RingProjectileOutward(ModContent.ProjectileType<HomingShadowflame>(), 8, Projectile.Center, 40, Projectile.damage / 4, 7, 9, RandomOffset: true);
         }

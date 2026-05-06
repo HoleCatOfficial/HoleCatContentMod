@@ -1,3 +1,4 @@
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
@@ -229,7 +230,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee.Flail
                             {
                                 amt = 7;
                                 DTUtils.GenericSparkleEffect(Projectile.Center);
-                                Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), Projectile.Center, Vector2.Zero, Color.White * 0.5f, 0.01f, 0.1f);
+                                
                                 SoundEngine.PlaySound(DTAssetLib.Impacts.AmbitionChargeBurst, Projectile.Center);
                             }
                             
@@ -528,9 +529,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee.Flail
             if (Charge > 120)
             {
                 damageDone = (int)(damageDone * 1.75f);
-                Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), target.Center, Vector2.Zero, Color.White, 0.01f, 0.25f);
-                BasePRT crack = PRTLoader.NewParticle(PRTLoader.GetParticleID<ImpactCracks>(), target.Center, Vector2.Zero, Color.HotPink, 1f);
-                crack.Rotation = Main.rand.NextFloat(MathHelper.TwoPi);
+
+				ImpactCracks Cracks = new ImpactCracks();
+				Cracks.Prepare(target.Center, Color.HotPink, 1f);
+				ParticleEngine.BehindProjectiles.Add(Cracks);
+
                 Opus.RadialDustRandomDir(ModContent.DustType<ColorableNeonDust>(), 5, Projectile.Center, 0, Color.HotPink, 2f, 3f);
                 SoundEngine.PlaySound(DTAssetLib.ScholarShieldSounds.Hit, Projectile.Center);
             }

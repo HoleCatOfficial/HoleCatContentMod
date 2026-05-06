@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Formats.Tar;
 using System.Runtime.CompilerServices;
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Particles.CurseRunes;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -42,7 +42,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             Player player = Main.player[Projectile.owner];
             
             Lighting.AddLight(Projectile.Center, new Color(184, 45, 117).ToVector3() * 0.6f);
-            PRTLoader.NewParticle(Projectile.Center, new Vector2((Projectile.velocity.X / 2) + Main.rand.NextFloat(-1, 1), (Projectile.velocity.Y / 2) + Main.rand.NextFloat(-1, 1)), PRTLoader.GetParticleID<SimpleParticle>(), new Color(184, 45, 117), 0.25f);
+
+            PointGlowPreMultiplied Particle = new PointGlowPreMultiplied();
+
+            Particle.Initialize(Projectile.Center, new Vector2((Projectile.velocity.X / 2) + Main.rand.NextFloat(-1, 1), (Projectile.velocity.Y / 2) + Main.rand.NextFloat(-1, 1)), new Color(184, 45, 117), 0.25f);
+
+            ParticleEngine.Particles.Add(Particle);
 
             if (player.channel)
             {

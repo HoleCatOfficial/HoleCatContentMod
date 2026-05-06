@@ -112,8 +112,8 @@ namespace DestroyerTest.Content.Equips.PetrifiedSet
 					Vector2 toMouse = Main.MouseWorld - Player.Center;
 					Player.velocity = toMouse.ToRotation().ToRotationVector2() * 30;
 
-					Opus.RadialSpreadProjectile(ModContent.ProjectileType<FlameBurst>(), 3, Player.Center, 30, 4, 8, RandomOffset: true);
-					Opus.RadialSpreadProjectile(ModContent.ProjectileType<FrostBurst>(), 3, Player.Center, 30, 4, 8, RandomOffset: true);
+					Opus.RadialSpreadProjectile(ModContent.ProjectileType<FlameBurst>(), 3, Player.Center, 30, 4, 8, offset: Main.rand.NextFloat(MathHelper.TwoPi));
+					Opus.RadialSpreadProjectile(ModContent.ProjectileType<FrostBurst>(), 3, Player.Center, 30, 4, 8, offset: Main.rand.NextFloat(MathHelper.TwoPi));
 					Cooldown = 60 * 30;
 				}
 			}

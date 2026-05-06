@@ -5,7 +5,6 @@ using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Particles.CurseRunes;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -63,7 +62,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon
             
 
             Lighting.AddLight(Projectile.Center,  Color.White.ToVector3() * 0.6f);
-            PRTLoader.NewParticle(Projectile.Center, Vector2.Zero, PRTLoader.GetParticleID<SimpleParticle>(),  Color.White * 0.1f, 0.25f);
+            
 
             if (DelayTimer < 10)
             {

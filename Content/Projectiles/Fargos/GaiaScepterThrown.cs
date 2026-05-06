@@ -82,7 +82,7 @@ namespace DestroyerTest.Content.Projectiles.Fargos
                 if (AITimer % 20 == 0)
                 {
                     SoundEngine.PlaySound(DTAssetLib.SwordSounds.SwiftSwing, Projectile.Center);
-                    Opus.RadialProjectileRandomDir(ModContent.ProjectileType<GaiaOrb>(), 1, Projectile.Center, 100, 20, 10, friendly: true);
+                    Opus.RadialSpreadProjectileRandom(ModContent.ProjectileType<GaiaOrb>(), 1, Projectile.Center, 100, 20, 10);
                 }
             }
             EnchantmentVisuals();

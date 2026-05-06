@@ -1,4 +1,5 @@
-﻿using DestroyerTest.Common;
+﻿using BreadLibrary.Core.Graphics.Particles;
+using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
@@ -6,6 +7,7 @@ using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
+using OpusLib.Content.Particles;
 using System.Linq;
 using Terraria;
 using Terraria.Audio;
@@ -73,15 +75,18 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
         {
             SoundEngine.PlaySound(DTAssetLib.Impacts.IceImpact with { Pitch = 0.7f, PitchVariance = 0.2f, Volume = 0.5f }, Projectile.Center);
 
-            BasePRT P1 = Opus.NewParticleFloatAI(PRTLoader.GetParticleID<SimpleExplosionParticle>(), Projectile.Center, Vector2.Zero, ColorLib.Soul2, 0.01f, 1f, 0.3f, 0.001f);
-            P1.Rotation = Main.rand.NextFloat(MathHelper.TwoPi);
-            BasePRT P2 = Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), Projectile.Center, Vector2.Zero, Color.White, 0.01f, 0.2f, 0.05f, 0.001f);
-            P2.Rotation = Main.rand.NextFloat(MathHelper.TwoPi);
+            SimpleExplosionParticle Explosion = new SimpleExplosionParticle();
+            Explosion.Prepare(Projectile.Center, Vector2.Zero, ColorLib.Soul, 0.3f, 0.001f, 0.5f, BlendState.Additive);
+            ParticleEngine.Particles.Add(Explosion);
 
+            BloomRingSharp Ring = new BloomRingSharp();
+            Ring.Prepare(Projectile.Center, Vector2.Zero, Color.White, 0.1f, 0.001f, 0.6f, BlendState.Additive)
+            ParticleEngine.Particles.Add(Ring);
+           
 
-            Opus.RadialDustRandomDir(DustID.FireworksRGB, 2, Projectile.Center, 0, Color.White, 2f, 3f);
-            Opus.RadialDustRandomDir(DustID.FireworksRGB, 3, Projectile.Center, 0, Color.White, 0.6f, 0.5f);
-            Opus.RadialDustRandomDir(DustID.FireworksRGB, 5, Projectile.Center, 70, ColorLib.Soul, 1f, 0.7f);
+            Opus.RadialSpreadDustRandom(DustID.FireworksRGB, 2, Projectile.Center, 0, Color.White, 2f, 3f);
+            Opus.RadialSpreadDustRandom(DustID.FireworksRGB, 3, Projectile.Center, 0, Color.White, 0.6f, 0.5f);
+            Opus.RadialSpreadDustRandom(DustID.FireworksRGB, 5, Projectile.Center, 70, ColorLib.Soul, 1f, 0.7f);
         }
     }
 }

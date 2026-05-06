@@ -16,6 +16,7 @@ using DestroyerTest.Content.Buffs;
 using Microsoft.Build.Evaluation;
 using DestroyerTest.Content.Projectiles.ParentClasses;
 using DestroyerTest.Content.Particles.Stellar;
+using BreadLibrary.Core.Graphics.Particles;
 
 namespace DestroyerTest.Content.Projectiles.OrionCrossover
 {
@@ -39,7 +40,9 @@ namespace DestroyerTest.Content.Projectiles.OrionCrossover
             stellarFireTime += 0.025f;
             themeColor = ColorLib.StellarFireGradient(stellarFireTime);
 
-            PRTLoader.NewParticle(StellarParticleIndex.PointGlow, Main.rand.NextVector2FromRectangle(Utils.CenteredRectangle(Projectile.Center, new Vector2(Projectile.width * Projectile.scale, Projectile.height * Projectile.scale))), Projectile.velocity * 0.2f, default, 1f);
+            StellarPointGlow Glow = new StellarPointGlow();
+            Glow.Initialize(Main.rand.NextVector2FromRectangle(Utils.CenteredRectangle(Projectile.Center, new Vector2(Projectile.width * Projectile.scale, Projectile.height * Projectile.scale))), Projectile.velocity * 0.2f, default, 1f);
+            ParticleEngine.BehindProjectiles.Add(Glow);
             return true;
         }
 

@@ -1,14 +1,14 @@
 using BreadLibrary.Core.Graphics.Particles;
+using BreadLibrary.Core.Graphics.Pixelation;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Particles.fire;
-using DestroyerTest.Content.Particles.TitaniumShard;
 using InnoVault.PRT;
 using Microsoft.Build.Evaluation;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
+using OpusLib.Content.Particles;
 using ReLogic.Utilities;
 using System;
 using System.Collections.Generic;
@@ -100,14 +100,17 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
 
             foreach(Vector2 dustPos in p)
             {
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), dustPos, Vector2.Zero, ColorLib.CursedFlames * 0.5f, 2.0f);
+               
+                PointGlowPreMultiplied Glow = new PointGlowPreMultiplied();
+                Glow.Initialize(dustPos, Vector2.Zero, ColorLib.CursedFlames * 0.5f, 1f);
+                ParticleEngine.BehindProjectiles.Add(Glow);
 
                 Fire fire = new Fire();
-                fire.PrepareFire(dustPos, Vector2.Zero, Main.rand.Next(1, 3), 0.1f, ColorLib.CursedFlames * 0.75f, 1f, 100, FireDrawMode.Additive);
+                fire.PrepareFire(dustPos, Vector2.Zero, Main.rand.Next(1, 3), 0.1f, ColorLib.CursedFlames * 0.75f, 1f, 100, FireDrawMode.Additive, PixelLayer.AboveNPCs);
                 ParticleEngine.BehindProjectiles.Add(fire);
 
                 Fire fire2 = new Fire();
-                fire2.PrepareFire(dustPos, Vector2.Zero, Main.rand.Next(1, 3), 0.1f, ColorLib.CursedFlames, 1f, 100, FireDrawMode.Additive);
+                fire2.PrepareFire(dustPos, Vector2.Zero, Main.rand.Next(1, 3), 0.1f, ColorLib.CursedFlames, 1f, 100, FireDrawMode.Additive, PixelLayer.AboveNPCs);
                 ParticleEngine.BehindProjectiles.Add(fire2);
             }
 

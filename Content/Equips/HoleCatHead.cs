@@ -2,6 +2,7 @@
 
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.Resources.Cloths;
+using DestroyerTest.Rarity;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
@@ -11,7 +12,7 @@ namespace DestroyerTest.Content.Equips
 {
 
 	[AutoloadEquip(EquipType.Head)]
-	public class HoleCatHood : ModItem
+	public class HoleCatHead : ModItem
 	{
 		public static LocalizedText SetBonusText { get; private set; }
 		public override void SetStaticDefaults()
@@ -25,13 +26,13 @@ namespace DestroyerTest.Content.Equips
 			Item.width = 28;
 			Item.height = 36; 
 			Item.value = Item.sellPrice(gold: 70);
-			Item.rare = ItemRarityID.Expert;
-			Item.defense = 23;
+            Item.rare = ModContent.RarityType<DevRarity>();
+            Item.defense = 23;
 		}
 
 		
 		public override bool IsArmorSet(Item head, Item body, Item legs) {
-		return body.type == ModContent.ItemType<HoleCatShawl>() && legs.type == ModContent.ItemType<HoleCatSkirt>();
+		return body.type == ModContent.ItemType<HoleCatBody>() && legs.type == ModContent.ItemType<HoleCatLegs>();
 		}
 		
 		public float DamageBonus = 1.25f;
@@ -50,17 +51,6 @@ namespace DestroyerTest.Content.Equips
 				UseSpeedBonus - 1f,
 				KnockbackBonus - 1f
 			);
-		}
-
-		public override void AddRecipes() {
-			CreateRecipe()
-				.AddIngredient(ItemID.LunarBar, 15)
-				.AddIngredient(ItemID.GoldBar, 17)
-				.AddIngredient(ItemID.LargeRuby, 1)
-                .AddIngredient<WhiteCloth>(35)
-                .AddIngredient<Tenebris>(12)
-				.AddTile(TileID.LunarCraftingStation)
-				.Register();
 		}
 	}
 }

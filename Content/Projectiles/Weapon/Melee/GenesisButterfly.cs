@@ -1,9 +1,11 @@
 using BreadLibrary.Core.Graphics.Particles;
+using BreadLibrary.Core.Graphics.Pixelation;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Particles.fire;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using OpusLib.Content.Particles;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -62,7 +64,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             pastelColor = Color.Lerp(baseColor, Color.White, 0.5f);
 
             Fire fire = new Fire();
-            fire.PrepareFire(Projectile.Center, Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.3f, 0.3f), pastelColor, 1f, 100, FireDrawMode.Additive);
+            fire.PrepareFire(Projectile.Center, Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.3f, 0.3f), pastelColor, 1f, 100, FireDrawMode.Additive, PixelLayer.AboveProjectiles);
             ParticleEngine.BehindProjectiles.Add(fire);
             
 
@@ -159,12 +161,16 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.AddBuff(BuffID.OnFire, 300);
-            PRTLoader.NewParticle(PRTLoader.GetParticleID<Boom2>(), Projectile.Center, Vector2.Zero, pastelColor, 0.4f);
+            SimpleExplosionParticle ExplosionFX = new SimpleExplosionParticle();
+            ExplosionFX.Prepare(Projectile.Center, Vector2.Zero, pastelColor, 0.1f, 0.02f, 1f, BlendState.Additive);
+            ParticleEngine.ShaderParticles.Add(ExplosionFX);
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
-            PRTLoader.NewParticle(PRTLoader.GetParticleID<Boom2>(), Projectile.Center, Vector2.Zero, pastelColor, 0.4f);
+            SimpleExplosionParticle ExplosionFX = new SimpleExplosionParticle();
+            ExplosionFX.Prepare(Projectile.Center, Vector2.Zero, pastelColor, 0.1f, 0.02f, 1f, BlendState.Additive);
+            ParticleEngine.ShaderParticles.Add(ExplosionFX);
             return true;
         }
     }

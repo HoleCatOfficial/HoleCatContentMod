@@ -1,3 +1,4 @@
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
@@ -56,9 +57,15 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
             Projectile.rotation = Projectile.velocity.ToRotation();
         }
 
+        void shine()
+        {
+            SmallShine Shine = new SmallShine();
+            Shine.Prepare(Projectile.Center, Vector2.Zero, ColorLib.TenebrisGradient, 1f);
+            ParticleEngine.BehindProjectiles.Add(Shine);
+        }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            PRTLoader.NewParticle(PRTLoader.GetParticleID<SmallShine>(), Projectile.Center, Vector2.Zero, ColorLib.TenebrisGradient, 1);
+            shine();
             if (Mode == 1)
             {
                 target.AddBuff(ModContent.BuffType<ShimmeringFlames>(), 240);
@@ -67,7 +74,7 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
 
         public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
-            PRTLoader.NewParticle(PRTLoader.GetParticleID<SmallShine>(), Projectile.Center, Vector2.Zero, ColorLib.TenebrisGradient, 1);
+            shine();
             if (Mode == 2)
             {
                 target.AddBuff(ModContent.BuffType<ShimmeringFlames>(), 240);
@@ -77,7 +84,7 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
         public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(SoundID.Research, Projectile.Center);
-            PRTLoader.NewParticle(PRTLoader.GetParticleID<SmallShine>(), Projectile.Center, Vector2.Zero, Color.White, 1);
+            shine();
 
             for (int i = 0; i < 5; i++)
             {

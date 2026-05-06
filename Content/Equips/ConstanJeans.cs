@@ -12,9 +12,7 @@ namespace DestroyerTest.Content.Equips
 	[AutoloadEquip(EquipType.Legs)]
 	public class ConstanJeans : ModItem
 	{
-		public static readonly int MoveSpeedBonus = 5;
 
-		public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(MoveSpeedBonus);
 
 		public override void SetDefaults() {
 			Item.width = 18; // Width of the item
@@ -26,7 +24,7 @@ namespace DestroyerTest.Content.Equips
 		}
 
 		public override void UpdateEquip(Player player) {
-			player.moveSpeed += MoveSpeedBonus / 100f; // Increase the movement speed of the player
+
 			
 
 		}

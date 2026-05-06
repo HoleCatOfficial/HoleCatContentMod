@@ -1,7 +1,7 @@
-﻿using DestroyerTest.Common;
+﻿using BreadLibrary.Core.Graphics.Particles;
+using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Particles.CurseRunes;
 using DestroyerTest.Content.Particles.Stellar;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
@@ -108,7 +108,10 @@ namespace DestroyerTest.Content.Projectiles.OrionCrossover
             sRot += (0.1f + (0.05f * Projectile.velocity.Length()));
             Projectile.rotation = Projectile.velocity.ToRotation() - MathHelper.PiOver2;
             Lighting.AddLight(Projectile.Center, ColorLib.StellarFire3.ToVector3() * 0.6f);
-            PRTLoader.NewParticle(StellarParticleIndex.PointGlow, Main.rand.NextVector2FromRectangle(Utils.CenteredRectangle(Projectile.Center, new Vector2(Projectile.width * Projectile.scale, Projectile.height * Projectile.scale))), Projectile.velocity * 0.2f, default, 1f);
+
+            StellarPointGlow FX = new();
+            FX.Prepare(Main.rand.NextVector2FromRectangle(Utils.CenteredRectangle(Projectile.Center, new Vector2(Projectile.width * Projectile.scale, Projectile.height * Projectile.scale))), Projectile.velocity * 0.2f);
+            ParticleEngine.ShaderParticles.Add(FX);
 
             if (DelayTimer < 15)
             {
@@ -170,7 +173,17 @@ namespace DestroyerTest.Content.Projectiles.OrionCrossover
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             SoundEngine.PlaySound(DTAssetLib.Impacts.ExplosiveImpactBig, Projectile.Center);
-            Opus.RadialParticleRandomDir(StellarParticleIndex.PointGlow, 16, Projectile.Center, 1f, default, 1f, 2, 5f);
+
+            StellarParticleUtils.BloomRing(Projectile.Center, 1f, ParticleEngine.ShaderParticles);
+
+            Vector2[] Vel = Opus.RadialVectorOutwardRandom(16, Projectile.Center, 5f);
+
+            for (int i = 0; i < Vel.Length; i++)
+            {
+                StellarPointGlow FX = new();
+                FX.Prepare(Projectile.Center, Vel[i]);
+                ParticleEngine.ShaderParticles.Add(FX);
+            }
             target.AddBuff(ModContent.BuffType<DescendantInferno>(), 1200);
         }
     }

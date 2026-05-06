@@ -268,8 +268,8 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.Blessed
         public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(SoundID.Item14, Projectile.Center);
-            Opus.RadialDustRandomDir(DustID.AncientLight, 5, Projectile.Center, 50, Main.DiscoColor, 0.7f, 2f);
-            Opus.RadialDustRandomDir(DustID.AncientLight, 3, Projectile.Center, 50, Color.White, 1f, 3.5f);
+            Opus.RadialSpreadDustRandom(DustID.AncientLight, 5, Projectile.Center, 50, Main.DiscoColor, 0.7f, 2f);
+            Opus.RadialSpreadDustRandom(DustID.AncientLight, 3, Projectile.Center, 50, Color.White, 1f, 3.5f);
         }
 
     }

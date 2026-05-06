@@ -64,7 +64,7 @@ namespace DestroyerTest.Content.Projectiles.EntitiesProjectiles
                 if (proj.active && (!proj.friendly || proj.hostile) && proj.Distance(Projectile.Center) <= (ShieldTex.Value.Width * ShieldTexScale) / 2)
                 {
                     SoundEngine.PlaySound(Deflect, proj.Center);
-                    PRTLoader.NewParticle(PRTLoader.GetParticleID<SmallShine>(), proj.Center, Vector2.Zero, Color.White, 1f);
+                
                     proj.Kill();
                 }
             }

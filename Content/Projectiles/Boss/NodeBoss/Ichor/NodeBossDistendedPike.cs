@@ -113,7 +113,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.Ichor
         public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/Impacts/IceImpact", 3) with { PitchVariance = 0.4f });
-            Opus.RadialProjectileRandomDir(ModContent.ProjectileType<IchorNodeCrystal2>(), Main.rand.Next(2, 9), Projectile.Center, Projectile.damage / 2, 7, 20);
+            Opus.RadialSpreadProjectileRandom(ModContent.ProjectileType<IchorNodeCrystal2>(), Main.rand.Next(2, 9), Projectile.Center, Projectile.damage / 2, 7, 20);
         }
         public override bool PreDraw(ref Color lightColor)
         {

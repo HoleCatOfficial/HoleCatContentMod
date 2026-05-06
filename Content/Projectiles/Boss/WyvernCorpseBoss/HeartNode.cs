@@ -69,7 +69,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
 
         public override void OnSpawn(IEntitySource source)
         {
-            PRTLoader.NewParticle(PRTLoader.GetParticleID<CrimsonBloodRuneParticle>(), Projectile.Center, Vector2.Zero, Color.White, 2f);
+           
         }
 
         public override void AI()
@@ -164,7 +164,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
                 float t = randomTs[i];
                 Vector2 point = Vector2.Lerp(end, start, t);
                 Dust.NewDustPerfect(point, DustID.TintableDustLighted, Vector2.Zero, 0, Color.Red, 1f);
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), point, Vector2.Zero, Color.Red * 0.4f, 0.4f);
+                //PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), point, Vector2.Zero, Color.Red * 0.4f, 0.4f);
             }
         }
 
@@ -281,7 +281,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
             SoundEngine.PlaySound(kill, Projectile.Center);
             if (Projectile.timeLeft <= 1)
             {
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<SmallShine>(), Projectile.Center, Vector2.Zero, Color.Red, 1f);
+                //PRTLoader.NewParticle(PRTLoader.GetParticleID<SmallShine>(), Projectile.Center, Vector2.Zero, Color.Red, 1f);
                 Opus.RadialSpreadProjectile(ModContent.ProjectileType<PrimalBlood>(), Main.rand.Next(6, 9), Projectile.Center, Projectile.damage, 4, 7, AI0: 0, AI1: 0.03f, offset: 0f);
             }
         }

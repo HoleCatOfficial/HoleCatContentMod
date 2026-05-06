@@ -8,6 +8,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.Audio;
+using BreadLibrary.Core.Graphics.Particles;
 
 namespace DestroyerTest.Content.Projectiles.player.ArmorSet
 {
@@ -36,7 +37,10 @@ namespace DestroyerTest.Content.Projectiles.player.ArmorSet
         public override void OnSpawn(IEntitySource source)
         {
             Projectile.frame = Variant;
-            PRTLoader.NewParticle(Projectile.Center, Vector2.Zero, PRTLoader.GetParticleID<SmallShine>(), Color.White, 1f);
+
+            SmallShine shine = new SmallShine();
+            shine.Prepare(Projectile.Center, Vector2.Zero, Color.White, 1f);
+            ParticleEngine.ShaderParticles.Add(shine);
         }
 
         public void ColorAffectedFX(Color color)
@@ -44,12 +48,13 @@ namespace DestroyerTest.Content.Projectiles.player.ArmorSet
             Lighting.AddLight(Projectile.Center, color.ToVector3() * Opus.Sine(0.3f, 0f));
             if (Main.rand.NextBool(10))
             {
-                PRTLoader.NewParticle(Projectile.Center, new Vector2((Projectile.velocity.X / 2) + Main.rand.NextFloat(-0.5f, 0.5f), (Projectile.velocity.Y / 2) + Main.rand.NextFloat(-0.5f, 0.5f)), PRTLoader.GetParticleID<StarParticle>(), Color.White, 1f);
+                
             }
             //Dust.NewDust(Projectile.position, Projectile.Hitbox.Width, Projectile.Hitbox.Height, DustID.TintableDustLighted, 0, 0, 0, color, 1.5f);
             if (Projectile.ai[0] < 300)
             {
-                Opus.RingDustInwardRandomDir(DustID.TintableDustLighted, 3, ProjPos, 60, 0, color, 0.01f, 1f);
+                Opus.RingSpreadDustRandom(DustID.TintableDustLighted, 3, ProjPos, 60, 0, color, 0.01f, 1f);
+                
             }
         }
         
@@ -87,7 +92,6 @@ namespace DestroyerTest.Content.Projectiles.player.ArmorSet
                 if (Projectile.ai[0] % 20 == 0)
                 {
                     SoundEngine.PlaySound(SoundID.DD2_FlameburstTowerShot, ProjPos);
-                    Opus.RadialParticleRandomDir(PRTLoader.GetParticleID<StarParticle>(), 6, ProjPos, 1, Color.White, 1, 3);
                     Projectile.NewProjectile(Projectile.GetSource_FromAI(), ProjPos, ShotDir, ModContent.ProjectileType<TenebrisFlamesFriendly>(), (int)(2f * player.GetDamage(DamageClass.Magic).Additive), 4, Projectile.owner);
                 }
             }

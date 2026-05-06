@@ -1,13 +1,14 @@
 ﻿using BreadLibrary.Core.Graphics.Particles;
+using BreadLibrary.Core.Graphics.Pixelation;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Particles.fire;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
+using OpusLib.Content.Particles;
 using ReLogic.Content;
 using System;
 using System.Collections.Generic;
@@ -116,21 +117,21 @@ namespace DestroyerTest.Content.Projectiles
             Projectile.rotation = 0.03f * Projectile.velocity.X;
 
             Fire fire = new Fire();
-            fire.PrepareFire(Projectile.Center, Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.3f, 0.3f), Color.Indigo, 0.3f, 100, FireDrawMode.Additive);
+            fire.PrepareFire(Projectile.Center, Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.3f, 0.3f), Color.Indigo, 0.3f, 100, FireDrawMode.Additive, PixelLayer.AboveProjectiles);
             ParticleEngine.BehindProjectiles.Add(fire);
 
             Fire fireX = new Fire();
-            fireX.PrepareFire(Projectile.Center, Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.3f, 0.3f), DTColorUtils.Pastel(Color.Purple, 0.4f), 0.2f, 100, FireDrawMode.Additive);
+            fireX.PrepareFire(Projectile.Center, Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.3f, 0.3f), DTColorUtils.Pastel(Color.Purple, 0.4f), 0.2f, 100, FireDrawMode.Additive, PixelLayer.AboveProjectiles);
             ParticleEngine.BehindProjectiles.Add(fireX);
 
             if (Main.rand.NextBool(4))
             {
                 Fire fire2 = new Fire();
-                fire2.PrepareFire(Projectile.Center, Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.3f, 0.3f), Color.DarkMagenta, 0.3f, 100, FireDrawMode.Additive);
+                fire2.PrepareFire(Projectile.Center, Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.3f, 0.3f), Color.DarkMagenta, 0.3f, 100, FireDrawMode.Additive, PixelLayer.AboveProjectiles);
                 ParticleEngine.BehindProjectiles.Add(fire2);
 
                 Fire fire3 = new Fire();
-                fire3.PrepareFire(Projectile.Center, Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.3f, 0.3f), DTColorUtils.Pastel(Color.HotPink, 0.5f), 0.15f, 100, FireDrawMode.Additive);
+                fire3.PrepareFire(Projectile.Center, Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.3f, 0.3f), DTColorUtils.Pastel(Color.HotPink, 0.5f), 0.15f, 100, FireDrawMode.Additive, PixelLayer.AboveProjectiles);
                 ParticleEngine.BehindProjectiles.Add(fire3);
             }
 
@@ -203,7 +204,7 @@ namespace DestroyerTest.Content.Projectiles
         public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(SoundID.Item14, Projectile.Center);
-            Opus.RadialSpreadDust(DustID.FireworksRGB, 12, Projectile.Center, 0, Color.DarkMagenta, 1f, 1.5f, RandomOffset: true);
+            Opus.RadialSpreadDust(DustID.FireworksRGB, 12, Projectile.Center, 0, Color.DarkMagenta, 1f, 1.5f, offset: Main.rand.NextFloat(MathHelper.TwoPi));
         }
     }
 }

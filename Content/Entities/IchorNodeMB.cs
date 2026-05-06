@@ -24,6 +24,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using OpusLib.Content.Helpers;
+using OpusLib.Content.Particles;
 using rail;
 using ReLogic.Content;
 using Terraria;
@@ -335,7 +336,11 @@ namespace DestroyerTest.Content.Entities
                             if (!IchorSpiralWarnParticleFlag)
                             {
                                 SoundEngine.PlaySound(Spiralwarn);
-                                Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), NPC.Center, Vector2.Zero, Color.Red, 0.01f, ai0: 3.75f);
+
+                                BloomRingSharp Ring = new();
+                                Ring.Prepare(NPC.Center, Vector2.Zero, Color.Red, 0.2f, 0.05f, 3.75f, BlendState.Additive);
+                                ParticleEngine.BehindProjectiles.Add(Ring);
+
                                 IchorSpiralWarnParticleFlag = true;
                             }
                         }
@@ -443,8 +448,13 @@ namespace DestroyerTest.Content.Entities
             if (DormantPulseTimer <= 0)
             {
                 SoundEngine.PlaySound(SoundID.DD2_WitherBeastAuraPulse, NPC.Center);
-                Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), NPC.Center, Vector2.Zero, ColorLib.Ichor, 0.025f, 1.0f);
+
+                LerpingBloomRingSharp Ring = new();
+                Ring.Prepare(NPC.Center, Vector2.Zero, ColorLib.IchorCrystalColorMap, 0.2f, 2f, BlendState.Additive);
+                ParticleEngine.BehindProjectiles.Add(Ring);
+                
                 DormantPulseTimer = 120;
+
             }
 
             NPC.velocity.Y = Opus.Sine(1f, -1f, 0.01f);
@@ -532,7 +542,10 @@ namespace DestroyerTest.Content.Entities
                 SoundEngine.PlaySound(DTAssetLib.Impacts.DarkMagicImpact);
                 for (int i = 0; i < SpawnPositions.Length; i++)
                 {
-                    Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), SpawnPositions[i], Vector2.Zero, ColorLib.Ichor, 0.01f, 0.4f);
+                    LerpingBloomRingSharp Ring = new();
+                    Ring.Prepare(SpawnPositions[i], Vector2.Zero, ColorLib.IchorCrystalColorMap, 0.2f, 2f, BlendState.Additive);
+                    ParticleEngine.BehindProjectiles.Add(Ring);
+
                     NPC wavenpc = NPC.NewNPCDirect(NPC.GetSource_FromAI(NPCIdentifierContext), SpawnPositions[i], IchorNodeWaveEnemies[Main.rand.Next(IchorNodeWaveEnemies.Count)]);
                     wavenpc.scale = 1.5f;
                     wavenpc.knockBackResist = 0f;

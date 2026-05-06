@@ -65,7 +65,7 @@ namespace DestroyerTest.Content.Projectiles.player.ArmorSet
 
             TextureRotationOffset -= 0.5f;
             Lighting.AddLight(Projectile.Center, new Color(242, 209, 255).ToVector3() * 0.3f);
-            PRTLoader.NewParticle(Projectile.Center, Projectile.velocity * 0.5f, PRTLoader.GetParticleID<SimpleParticle>(), new Color(242, 209, 255) * 0.5f, 2f);
+            
 
             for (int i = 0; i < 4; i++)
             {

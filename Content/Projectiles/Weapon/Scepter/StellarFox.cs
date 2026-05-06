@@ -21,6 +21,9 @@ using System;
 using InnoVault.PRT;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Particles.Stellar;
+using OpusLib.Content.Particles;
+using Terraria.Graphics.Renderers;
+using BreadLibrary.Core.Graphics.Particles;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 {
@@ -231,7 +234,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 
             Vector2 DustPos = Opus.Sine(Pos1, Pos2, 0.5f);
 
-            PRTLoader.NewParticle(StellarParticleIndex.ConstitutionParticle, DustPos, Projectile.velocity * 0.05f, default, 0.75f);
+            ConstitutionParticle trail = new();
+            trail.Initialize(DustPos, Projectile.velocity * 0.05f, 0.75f, 30);
+            ParticleEngine.BehindProjectiles.Add(trail);
         }
 
         public void DustSpawn2()
@@ -241,8 +246,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 
             Vector2 DustPos = Opus.Sine(Pos1, Pos2, 0.5f);
 
-            
-            PRTLoader.NewParticle(StellarParticleIndex.ConstitutionParticle, DustPos, Projectile.velocity * 0.05f, default, 0.75f);
+            ConstitutionParticle trail = new();
+            trail.Initialize(DustPos, Projectile.velocity * 0.05f, 0.75f, 30);
+            ParticleEngine.BehindProjectiles.Add(trail);
         }
 
         public override bool? CanHitNPC(NPC target)
@@ -321,23 +327,30 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 
         public void Explosion()
         {
-            Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BoomCloud>(), Projectile.Center, Vector2.Zero, ColorLib.StellarFire5, 0.01f, 1.5f);
-            Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BoomCloud>(), Projectile.Center, Vector2.Zero, ColorLib.StellarFire3, 0.01f, 1.0f);
-            Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BoomCloud>(), Projectile.Center, Vector2.Zero, ColorLib.StellarFire1, 0.01f, 0.7f);
+            //Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BoomCloud>(), Projectile.Center, Vector2.Zero, ColorLib.StellarFire5, 0.01f, 1.5f);
+            //Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BoomCloud>(), Projectile.Center, Vector2.Zero, ColorLib.StellarFire3, 0.01f, 1.0f);
+            //Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BoomCloud>(), Projectile.Center, Vector2.Zero, ColorLib.StellarFire1, 0.01f, 0.7f);
 
-            Opus.RadialParticleRandomDir(StellarParticleIndex.StellarFire[Main.rand.Next(StellarParticleIndex.StellarFire.Count)], 15, Projectile.Center, 1, default, 1.3f, 2, 60, ai2: 2);
+            Vector2[] Dirs = Opus.RadialVectorOutwardRandom(20, Projectile.Center, Main.rand.NextFloat(2f, 5f));
+
+            for (int i = 0; i < Dirs.Length; i++)
+            {
+                LerpingFire fire = new ();
+                fire.PrepareFire(Projectile.Center, Dirs[i], 0f, ColorLib.StellarFireColormap, 1f, 50, FireDrawMode.Additive);
+
+            }
             DTUtils.ConstitutionStarExplosionEffects(Projectile);
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            Explosion();
+            
             SoundEngine.PlaySound(DTAssetLib.Impacts.StellarFox with { PitchVariance = 0.3f, MaxInstances = 0, Volume = 0.5f }, Projectile.Center);
             target.AddBuff(ModContent.BuffType<GalantineBurn>(), 300);
         }
 
         public override void OnKill(int timeLeft)
         {
-            Opus.RadialSpreadParticle(StellarParticleIndex.ConstitutionParticle, 12, Projectile.Center, 1f, default, 1f, 2f, RandomOffset: true);
+            Explosion();
         }
 
         public override void ModifyDamageHitbox(ref Rectangle hitbox)

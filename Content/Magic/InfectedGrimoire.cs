@@ -38,21 +38,6 @@ namespace DestroyerTest.Content.Magic
             Item.SetShopValues(ItemRarityColor.LightRed4, 02500);
         }
 
-        public override void UseItemFrame(Player player)
-        {
-            base.UseItemFrame(player);
-            Color PRTcolor;
-            if (Main.rand.NextBool(2))
-            {
-                PRTcolor = ColorLib.Ichor;
-            }
-            else
-            {
-                PRTcolor = ColorLib.CursedFlames;
-            }
-            PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp>(), Item.Center, Vector2.Zero, PRTcolor, 0.001f, 1);
-        }
-
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             float RotationOffset1 = Main.rand.NextFloat(-0.35f, 0.36f);

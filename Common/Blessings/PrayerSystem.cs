@@ -342,7 +342,8 @@ namespace DestroyerTest.Common.Blessings
                 if (Main.rand.NextBool(5))
                 {
                     SoundEngine.PlaySound(SoundID.Item97, Player.Center);
-                    Opus.RadialProjectileRandomDir(ProjectileID.Bee, 7, Player.Center, 10, 10, 5, friendly: true);
+
+                    Opus.RadialSpreadProjectileRandom(ProjectileID.Bee, 7, Player.Center, 10, 10, 5);
                 }
             }
         }
@@ -354,7 +355,7 @@ namespace DestroyerTest.Common.Blessings
                 if (Main.rand.NextBool(5))
                 {
                     SoundEngine.PlaySound(SoundID.Item97, Player.Center);
-                    Opus.RadialProjectileRandomDir(ProjectileID.Bee, 7, Player.Center, 10, 10, 5, friendly: true);
+                    Opus.RadialSpreadProjectileRandom(ProjectileID.Bee, 7, Player.Center, 10, 10, 5);
                 }
             }
         }
