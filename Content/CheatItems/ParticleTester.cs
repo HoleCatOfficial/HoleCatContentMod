@@ -32,7 +32,7 @@ namespace DestroyerTest.Content.CheatItems
 
         public override bool? UseItem(Player player)
         {
-            PRTLoader.NewParticle(PRTLoader.GetParticleID<ConstitutionParticle>(), Main.MouseWorld, Main.rand.NextVector2Circular(1, 1), default, 1f);
+           
             return true;
         }
 	}

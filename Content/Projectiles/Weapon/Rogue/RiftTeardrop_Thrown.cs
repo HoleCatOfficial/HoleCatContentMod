@@ -136,7 +136,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 
 		public override void OnKill(int timeLeft) {
 			SoundEngine.PlaySound(new SoundStyle($"DestroyerTest/Assets/Audio/RiftMaker_Boom"), Projectile.position); // Play a death sound
-			PRTLoader.NewParticle(PRTLoader.GetParticleID<SmallShine>(), Projectile.Center, Vector2.Zero, ColorLib.Rift, 8);
+			//PRTLoader.NewParticle(PRTLoader.GetParticleID<SmallShine>(), Projectile.Center, Vector2.Zero, ColorLib.Rift, 8);
 			Vector2 usePos = Projectile.position; // Position to use for dusts
 
 			// Offset the rotation by 90 degrees because the sprite is oriented vertically.

@@ -94,7 +94,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
                 }
                 else
                 {
-                    Opus.RingDustInwardRandomDir(DustID.AncientLight, 7, Projectile.Center + new Vector2(0, -20).RotatedBy(Projectile.rotation), 25, 50, Main.DiscoColor, 0.02f, 0.5f);
+                    Opus.RingSpreadDustRandom(DustID.AncientLight, 7, Projectile.Center + new Vector2(0, -20).RotatedBy(Projectile.rotation), 25, 50, Main.DiscoColor, -0.02f, 0.5f);
                 }
             }
             else

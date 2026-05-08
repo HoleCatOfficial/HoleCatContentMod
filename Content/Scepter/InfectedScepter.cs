@@ -64,14 +64,14 @@ namespace DestroyerTest.Content.Scepter
         {
             if(player.altFunctionUse != 2)
             {
-                Opus.NewParticleFloatAI(PRTLoader.GetParticleID<Boom3>(), Main.MouseWorld, Vector2.Zero, ColorLib.Ichor, 0.001f, 0.05f);
-                Opus.NewParticleFloatAI(PRTLoader.GetParticleID<Boom3>(), Main.MouseWorld, Vector2.Zero, ColorLib.CursedFlames, 0.001f, 0.1f);
-                Opus.NewParticleFloatAI(PRTLoader.GetParticleID<Boom3>(), Main.MouseWorld, Vector2.Zero, ColorLib.Ichor, 0.001f, 0.15f);
-                Opus.NewParticleFloatAI(PRTLoader.GetParticleID<Boom3>(), Main.MouseWorld, Vector2.Zero, ColorLib.CursedFlames, 0.001f, 0.2f);
+                //Opus.NewParticleFloatAI(PRTLoader.GetParticleID<Boom3>(), Main.MouseWorld, Vector2.Zero, ColorLib.Ichor, 0.001f, 0.05f);
+                //Opus.NewParticleFloatAI(PRTLoader.GetParticleID<Boom3>(), Main.MouseWorld, Vector2.Zero, ColorLib.CursedFlames, 0.001f, 0.1f);
+                //Opus.NewParticleFloatAI(PRTLoader.GetParticleID<Boom3>(), Main.MouseWorld, Vector2.Zero, ColorLib.Ichor, 0.001f, 0.15f);
+                //Opus.NewParticleFloatAI(PRTLoader.GetParticleID<Boom3>(), Main.MouseWorld, Vector2.Zero, ColorLib.CursedFlames, 0.001f, 0.2f);
                 //Opus.RadialParticleRandomDir(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], 16, Main.MouseWorld, 1, ColorLib.InfectedGradient, 0.75f, 2, 30, ai2: 2);
 
-                DTUtils.InfectedScepter_RingProjectileOutwardAlternating(ModContent.ProjectileType<InfectedCrystalCF>(), ModContent.ProjectileType<InfectedCrystalIchor>(), 6, Main.MouseWorld, 20, (int)(Item.damage * 0.75f), 10, 6, RandomOffset: true);
-                //Opus.RingProjectileOutward(ModContent.ProjectileType<InfectedCrystalIchor>(), 6, Main.MouseWorld, 20, Item.damage / 2, 10, 4, RandomOffset: true);
+                DTUtils.InfectedScepter_RingSpreadProjectileAlternating(ModContent.ProjectileType<InfectedCrystalCF>(), ModContent.ProjectileType<InfectedCrystalIchor>(), 6, Main.MouseWorld, 20, (int)(Item.damage * 0.75f), 10, 6, RandomOffset: true);
+                //Opus.RingSpreadProjectile#(ModContent.ProjectileType<InfectedCrystalIchor>(), 6, Main.MouseWorld, 20, Item.damage / 2, 10, 4, offset: Main.rand.NextFloat(MathHelper.TwoPi));
             }
             return true;
         }

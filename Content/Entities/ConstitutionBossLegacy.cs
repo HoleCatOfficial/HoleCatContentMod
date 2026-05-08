@@ -549,7 +549,7 @@ namespace DestroyerTest.Content.Entities
 
             if (AI_PieChartClassic_Timer <= 0)
             {
-                ShootLanceInward(ModContent.ProjectileType<GalantineLance>(), 3, AI_PieChartClassic_Center, 600, 15, 3, 0.05f, 3f, RandomOffset: true);
+                ShootLanceInward(ModContent.ProjectileType<GalantineLance>(), 3, AI_PieChartClassic_Center, 600, 15, 3, 0.05f, 3f, offset: Main.rand.NextFloat(MathHelper.TwoPi));
                 return true;
             }
             return false;
@@ -688,7 +688,7 @@ namespace DestroyerTest.Content.Entities
                 {
                     if (!PieChartClassicFlag)
                     {
-                        Opus.RingProjectileInward(ModContent.ProjectileType<GalantineLance>(), 3, ClassicCenter, 500, 25, 3, 0.01f, 4f, RandomOffset: true);
+                        Opus.RingSpreadProjectile#(ModContent.ProjectileType<GalantineLance>(), 3, ClassicCenter, 500, 25, 3, 0.01f, 4f, offset: Main.rand.NextFloat(MathHelper.TwoPi));
                         PieChartClassicFlag = true;
                     }
                     else

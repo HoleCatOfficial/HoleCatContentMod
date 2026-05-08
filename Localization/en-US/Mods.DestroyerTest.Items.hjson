@@ -4593,3 +4593,19 @@ Expedition: {
 	DisplayName: Expedition
 	Tooltip: ""
 }
+
+HoleCatHead: {
+	SetBonus: Mods.DestroyerTest.Items.HoleCatHead.SetBonus
+	DisplayName: Hole Cat Head
+	Tooltip: ""
+}
+
+HoleCatBody: {
+	DisplayName: Hole Cat Body
+	Tooltip: ""
+}
+
+HoleCatLegs: {
+	DisplayName: Hole Cat Legs
+	Tooltip: ""
+}

@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using InnoVault.PRT;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Dusts;
+using BreadLibrary.Core.Graphics.Particles;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Melee.Flail
 {
@@ -120,9 +121,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee.Flail
 
             if(Main.rand.NextBool(3))
             {
-
-
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<StarParticle>(), Projectile.Center, Vector2.Zero, Color.White, 0.5f);
+                StarParticle Star = new StarParticle();
+                Star.Initialize(Projectile.Center, Vector2.Zero, Color.White, 0.5f);
+                ParticleEngine.Particles.Add(Star);
             }
 
             if (LifeTime < 30)

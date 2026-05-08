@@ -261,8 +261,6 @@ namespace DestroyerTest.Content.RiftArsenal
 			DefaultDraw = true;
 			TickSpeed = 3;
 			UsesParticleOrchestratorOnTele = false;
-			TelePRTID = PRTLoader.GetParticleID<Boom1>();
-			UsesPRTOnTele = true;
 			TeleDist = 8000;
 			Range = 8000;
 			Style = IdleStyle.Chevron;

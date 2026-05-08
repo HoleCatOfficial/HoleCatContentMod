@@ -1,4 +1,5 @@
 
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
@@ -145,11 +146,16 @@ namespace DestroyerTest.Common
                     //dust.velocity *= 0.5f;
 
                     Dust.NewDust(hitbox.TopLeft(), hitbox.Width, hitbox.Height, ModContent.DustType<ColorableNeonDust>(), 0.0f, 0.5f, 0, ColorLib.Rift, 1);
-                    PRTLoader.NewParticle(PRTLoader.GetParticleID<StarParticle>(), Main.rand.NextVector2FromRectangle(hitbox), Main.rand.NextVector2Circular(1f, 1f), ColorLib.LightRift1, Main.rand.NextFloat(0.1f, 0.6f));
+                    StarParticle Star = new();
+                    Star.Initialize(Main.rand.NextVector2FromRectangle(hitbox), Main.rand.NextVector2Circular(1f, 1f), ColorLib.LightRift1, Main.rand.NextFloat(0.1f, 0.6f));
+                    ParticleEngine.ShaderParticles.Add(Star);
+           
 
                     if (Main.rand.NextBool(8))
                     {
-                        PRTLoader.NewParticle(PRTLoader.GetParticleID<ComaceraticParticle>(), Main.rand.NextVector2FromRectangle(hitbox), Main.rand.NextVector2Circular(2f, 2f), ColorLib.LightRift2, Main.rand.NextFloat(0.05f, 0.1f));
+                        ComaceraticParticle FX = new();
+                        FX.Initialize(Main.rand.NextVector2FromRectangle(hitbox), Main.rand.NextVector2Circular(2f, 2f), ColorLib.LightRift2, Main.rand.NextFloat(0.05f, 0.1f));
+                        ParticleEngine.ShaderParticles.Add(FX);
                     }
                 }
 			}
@@ -181,11 +187,16 @@ namespace DestroyerTest.Common
             if (ComaceraticBurn && (projectile.DamageType.CountsAsClass<MeleeDamageClass>() || ProjectileID.Sets.IsAWhip[projectile.type]) && !projectile.noEnchantments) {
 				if (Main.rand.NextBool(5)) {
                     Dust.NewDust(projectile.position, projectile.width, projectile.height, ModContent.DustType<ColorableNeonDust>(), 0.0f, 0.5f, 0, ColorLib.Rift, 1);
-                    PRTLoader.NewParticle(PRTLoader.GetParticleID<StarParticle>(), Main.rand.NextVector2FromRectangle(projectile.Hitbox), Main.rand.NextVector2Circular(1f, 1f), ColorLib.LightRift1, Main.rand.NextFloat(0.1f, 0.6f));
+
+                    StarParticle Star = new();
+                    Star.Initialize(Main.rand.NextVector2FromRectangle(projectile.Hitbox), Main.rand.NextVector2Circular(1f, 1f), ColorLib.LightRift1, Main.rand.NextFloat(0.1f, 0.6f));
+                    ParticleEngine.ShaderParticles.Add(Star);
 
                     if (Main.rand.NextBool(8))
                     {
-                        PRTLoader.NewParticle(PRTLoader.GetParticleID<ComaceraticParticle>(), Main.rand.NextVector2FromRectangle(projectile.Hitbox), Main.rand.NextVector2Circular(2f, 2f), ColorLib.LightRift2, Main.rand.NextFloat(0.05f, 0.1f));
+                        ComaceraticParticle FX = new();
+                        FX.Initialize(Main.rand.NextVector2FromRectangle(projectile.Hitbox), Main.rand.NextVector2Circular(2f, 2f), ColorLib.LightRift2, Main.rand.NextFloat(0.05f, 0.1f));
+                        ParticleEngine.ShaderParticles.Add(FX);
                     }
                 }
 			}

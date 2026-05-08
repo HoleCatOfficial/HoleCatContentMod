@@ -12,6 +12,7 @@ using Terraria.ModLoader;
 using Terraria.WorldBuilding;
 using InnoVault.PRT;
 using DestroyerTest.Content.Particles;
+using BreadLibrary.Core.Graphics.Particles;
 
 namespace DestroyerTest.Content.Tiles
 {
@@ -58,7 +59,10 @@ namespace DestroyerTest.Content.Tiles
 
         public override void KillTile(int i, int j, ref bool fail, ref bool effectOnly, ref bool noItem)
         {
-            PRTLoader.NewParticle(PRTLoader.GetParticleID<StarParticle>(), new Vector2(i * 16 + Main.rand.Next(1, 9), j * 16 + Main.rand.Next(1, 9)), Vector2.Zero, Color.White, 0.5f);
+			StarParticle Sparkle = new();
+			Sparkle.Initialize(new Vector2(i * 16 + Main.rand.Next(1, 9), j * 16 + Main.rand.Next(1, 9)), Vector2.Zero, Color.White, 0.5f);
+			ParticleEngine.BehindProjectiles.Add(Sparkle);
+            
         }
 
 	}

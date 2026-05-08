@@ -197,13 +197,13 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter.DiscordScepter
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
 			SoundEngine.PlaySound(DTAssetLib.Impacts.DarkMagicImpact, Projectile.Center);
-			Opus.RadialSpreadProjectile(ModContent.ProjectileType<StardustDartSmall>(), 8, Projectile.Center, Projectile.damage / 2, 0, 4, RandomOffset: true);
+			Opus.RadialSpreadProjectile(ModContent.ProjectileType<StardustDartSmall>(), 8, Projectile.Center, Projectile.damage / 2, 0, 4, offset: Main.rand.NextFloat(MathHelper.TwoPi));
 		}
 
 		public override bool OnTileCollide(Vector2 oldVelocity)
 		{
 			SoundEngine.PlaySound(DTAssetLib.Impacts.DarkMagicImpact, Projectile.Center);
-			Opus.RadialSpreadProjectile(ModContent.ProjectileType<StardustDartSmall>(), 8, Projectile.Center, Projectile.damage / 2, 0, 4, RandomOffset: true);
+			Opus.RadialSpreadProjectile(ModContent.ProjectileType<StardustDartSmall>(), 8, Projectile.Center, Projectile.damage / 2, 0, 4, offset: Main.rand.NextFloat(MathHelper.TwoPi));
 			return true;
 		}
 		

@@ -50,7 +50,8 @@ namespace DestroyerTest.Content.RiftArsenal
 			Item.value = Item.buyPrice(0, 0, 20, 0);
 			Item.rare = ModContent.RarityType<RiftRarity2>();
 			Item.damage = 60;
-			Item.autoReuse = true;
+            Item.DamageType = ModContent.GetInstance<DTRogueClass>();
+            Item.autoReuse = true;
 		}
 
 		public override void AddRecipes()

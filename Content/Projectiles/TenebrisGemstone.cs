@@ -47,7 +47,7 @@ namespace DestroyerTest.Content.Projectiles
             Lighting.AddLight(Projectile.Center, color.ToVector3() * 0.6f);
             if (Main.rand.NextBool(5))
             {
-                PRTLoader.NewParticle(Projectile.Center, new Vector2((Projectile.velocity.X / 2) + Main.rand.NextFloat(-0.5f, 0.5f), (Projectile.velocity.Y / 2) + Main.rand.NextFloat(-0.5f, 0.5f)), PRTLoader.GetParticleID<StarParticle>(), Color.White, 0.25f);
+              
             }
             Dust.NewDust(Projectile.position, Projectile.Hitbox.Width, Projectile.Hitbox.Height, DustID.TintableDustLighted, 0, 0, 0, color, 1.5f);
         }

@@ -1,13 +1,14 @@
+using DestroyerTest.Common;
+using DestroyerTest.Content.Projectiles.Weapon.Rogue;
 using DestroyerTest.Content.Resources;
+using DestroyerTest.Content.RogueItems;
 using DestroyerTest.Content.Tiles;
+using DestroyerTest.Content.Tiles.RiftConfigurator;
+using DestroyerTest.Content.Tiles.Riftplate;
+using DestroyerTest.Rarity;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using DestroyerTest.Rarity;
-using DestroyerTest.Content.RogueItems;
-using DestroyerTest.Content.Tiles.Riftplate;
-using DestroyerTest.Content.Tiles.RiftConfigurator;
-using DestroyerTest.Content.Projectiles.Weapon.Rogue;
 
 namespace DestroyerTest.Content.RiftArsenal
 {
@@ -41,7 +42,8 @@ namespace DestroyerTest.Content.RiftArsenal
 			Item.value = Item.buyPrice(0, 0, 20, 0);
 			Item.rare = ModContent.RarityType<RiftRarity2>();
 			Item.damage = 160;
-			Item.autoReuse = true;
+            Item.DamageType = ModContent.GetInstance<DTRogueClass>();
+            Item.autoReuse = true;
 		}
 
 		public override void AddRecipes() {

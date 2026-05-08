@@ -59,8 +59,10 @@ namespace DestroyerTest.Content.Buffs
             {
                 Dust.NewDust(npc.position, npc.Hitbox.Width, npc.Hitbox.Height, DustID.TintableDustLighted, 0f, 0f, 0, Color.Red, 1);
                 Dust.NewDust(npc.position, npc.Hitbox.Width, npc.Hitbox.Height, DustID.TintableDustLighted, 0f, 0f, 0, Color.DarkMagenta, 1);
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Main.rand.NextVector2FromRectangle(npc.Hitbox), Vector2.Zero, Color.Red, 1f);
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Main.rand.NextVector2FromRectangle(npc.Hitbox), Vector2.Zero, Color.DarkMagenta, 1f);
+                
+                
+                //PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Main.rand.NextVector2FromRectangle(npc.Hitbox), Vector2.Zero, Color.Red, 1f);
+                //PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Main.rand.NextVector2FromRectangle(npc.Hitbox), Vector2.Zero, Color.DarkMagenta, 1f);
             }
             base.AI(npc);
         }
@@ -109,8 +111,8 @@ namespace DestroyerTest.Content.Buffs
             {
                 Dust.NewDust(Player.position, Player.Hitbox.Width, Player.Hitbox.Height, DustID.TintableDustLighted, 0f, 0f, 0, Color.Red, 1);
                 Dust.NewDust(Player.position, Player.Hitbox.Width, Player.Hitbox.Height, DustID.TintableDustLighted, 0f, 0f, 0, Color.DarkMagenta, 1);
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Main.rand.NextVector2FromRectangle(Player.Hitbox), Vector2.Zero, Color.Red, 1f);
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Main.rand.NextVector2FromRectangle(Player.Hitbox), Vector2.Zero, Color.DarkMagenta, 1f);
+                //PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Main.rand.NextVector2FromRectangle(Player.Hitbox), Vector2.Zero, Color.Red, 1f);
+                //PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Main.rand.NextVector2FromRectangle(Player.Hitbox), Vector2.Zero, Color.DarkMagenta, 1f);
 			}
         }
 		public override void UpdateBadLifeRegen()

@@ -154,12 +154,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             }
 
             SimpleExplosionParticle ExplosionFX = new SimpleExplosionParticle();
-            ExplosionFX.Prepare(target.Center, Vector2.Zero, ColorLib.CursedFlames, 0.1f, 0.02f, 2f, BlendState.Additive);
-            ParticleEngine.ShaderParticles.Add(ExplosionFX);
+            ExplosionFX.Prepare(target.Center, Vector2.Zero, ColorLib.CursedFlames, 0.1f, 0.02f, 0.75f, BlendState.Additive);
+            ParticleEngine.BehindProjectiles.Add(ExplosionFX);
 
             BloomRingSharp Ring = new BloomRingSharp();
-            Ring.Prepare(target.Center, Vector2.Zero, DTColorUtils.Pastel(ColorLib.CursedFlames, 0.5f), 0.1f, 0.02f, 2f, BlendState.Additive);
-            ParticleEngine.ShaderParticles.Add(Ring);
+            Ring.Prepare(target.Center, Vector2.Zero, DTColorUtils.Pastel(ColorLib.CursedFlames, 0.5f), 0.1f, 0.02f, 0.75f, BlendState.Additive);
+            ParticleEngine.BehindProjectiles.Add(Ring);
 
             if (Projectile.penetrate == 1)
             {
@@ -184,11 +184,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             }
 
             SimpleExplosionParticle ExplosionFX = new SimpleExplosionParticle();
-            ExplosionFX.Prepare(Projectile.Center, Vector2.Zero, ColorLib.CursedFlames, 0.1f, 0.02f, 2f, BlendState.Additive);
+            ExplosionFX.Prepare(Projectile.Center, Vector2.Zero, ColorLib.CursedFlames, 0.1f, 0.02f, 0.75f, BlendState.Additive);
             ParticleEngine.ShaderParticles.Add(ExplosionFX);
 
             BloomRingSharp Ring = new BloomRingSharp();
-            Ring.Prepare(Projectile.Center, Vector2.Zero, DTColorUtils.Pastel(ColorLib.CursedFlames, 0.5f), 0.1f, 0.02f, 2f, BlendState.Additive);
+            Ring.Prepare(Projectile.Center, Vector2.Zero, DTColorUtils.Pastel(ColorLib.CursedFlames, 0.5f), 0.1f, 0.02f, 0.75f, BlendState.Additive);
             ParticleEngine.ShaderParticles.Add(Ring);
 
             returning = true;

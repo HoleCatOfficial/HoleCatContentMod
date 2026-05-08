@@ -1,5 +1,6 @@
 ﻿
 using BreadLibrary.Core;
+using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
 using DestroyerTest.Common.Systems;
@@ -19,6 +20,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using OpusLib.Content.Helpers;
+using OpusLib.Content.Particles;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -471,7 +473,11 @@ namespace DestroyerTest.Content.Entities
             if (DormantPulseTimer <= 0)
             {
                 SoundEngine.PlaySound(SoundID.DD2_WitherBeastAuraPulse, NPC.Center);
-                Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), NPC.Center, Vector2.Zero, Color.SkyBlue, 0.01f, 1f);
+
+                BloomRingSharp Ring = new();
+                Ring.Prepare(NPC.Center, Vector2.Zero, Color.SkyBlue, 0.03f, 0.01f, 2f, BlendState.Additive);
+                ParticleEngine.ShaderParticles.Add(Ring);
+
                 DormantPulseTimer = 120;
             }
 
@@ -495,7 +501,10 @@ namespace DestroyerTest.Content.Entities
 
             for (int i = 0; i < P.Length; i++)
             {
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), P[i], Vector2.Zero, Color.SkyBlue, 1f);
+                PointGlowPreMultiplied G = new();
+                G.Initialize(P[i], Vector2.Zero, Color.SkyBlue, 1f);
+                ParticleEngine.ShaderParticles.Add(G);
+
             }
 
             foreach (Player p in Main.player)
@@ -581,7 +590,10 @@ namespace DestroyerTest.Content.Entities
                 SoundEngine.PlaySound(DTAssetLib.Impacts.DarkMagicImpact);
                 for (int i = 0; i < SpawnPositions.Length; i++)
                 {
-                    Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), SpawnPositions[i], Vector2.Zero, Color.SkyBlue, 0.01f, 0.4f);
+                    BloomRingSharp Ring = new();
+                    Ring.Prepare(SpawnPositions[i], Vector2.Zero, Color.SkyBlue, 0.1f, 0.01f, 0.4f, BlendState.Additive);
+                    ParticleEngine.ShaderParticles.Add(Ring);
+
                     NPC wavenpc = NPC.NewNPCDirect(NPC.GetSource_FromAI(NPCIdentifierContext), SpawnPositions[i], BlessedNodeWaveEnemies[Main.rand.Next(BlessedNodeWaveEnemies.Count)]);
                     wavenpc.scale = 1.5f;
                     wavenpc.knockBackResist = 0f;
@@ -653,11 +665,11 @@ namespace DestroyerTest.Content.Entities
             SoundEngine.PlaySound(SoundID.Item9, target.Center);
             if (!Main.masterMode)
             {
-                Opus.RingProjectileInward(ModContent.ProjectileType<BlessedNodeCrystal2>(), 4, target.Center, 200, 30, 5, 1, RandomOffset: true);
+                Opus.RingSpreadProjectile(ModContent.ProjectileType<BlessedNodeCrystal2>(), 4, target.Center, 200, 30, 5, -1, offset: Main.rand.NextFloat(MathHelper.TwoPi));
             }
             else
             {
-                Opus.RingProjectileInward(ModContent.ProjectileType<BlessedNodeCrystal2>(), 8, target.Center, 360, 30, 5, 1, RandomOffset: true);
+                Opus.RingSpreadProjectile(ModContent.ProjectileType<BlessedNodeCrystal2>(), 8, target.Center, 360, 30, 5, -1, offset: Main.rand.NextFloat(MathHelper.TwoPi));
             }
         }
 
@@ -669,11 +681,11 @@ namespace DestroyerTest.Content.Entities
 
             if (Main.expertMode && !Main.masterMode)
             {
-                Opus.RingProjectileOutward(ModContent.ProjectileType<BlessedNodeCrystal2>(), 16, NPC.Center, 10, 20, 4, 1, RandomOffset: true);
+                Opus.RingSpreadProjectile(ModContent.ProjectileType<BlessedNodeCrystal2>(), 16, NPC.Center, 10, 20, 4, 1, offset: Main.rand.NextFloat(MathHelper.TwoPi));
             }
             if (Main.masterMode)
             {
-                Opus.RingProjectileOutward(ModContent.ProjectileType<BlessedNodeCrystal2>(), 24, NPC.Center, 10, 20, 4, 1, RandomOffset: true);
+                Opus.RingSpreadProjectile(ModContent.ProjectileType<BlessedNodeCrystal2>(), 24, NPC.Center, 10, 20, 4, 1, offset: Main.rand.NextFloat(MathHelper.TwoPi));
             }
         }
         

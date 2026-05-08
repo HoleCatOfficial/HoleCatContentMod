@@ -12,6 +12,7 @@ using DestroyerTest.Common;
 using DestroyerTest.Content.Dusts;
 using InnoVault.PRT;
 using DestroyerTest.Content.Particles.Stellar;
+using BreadLibrary.Core.Graphics.Particles;
 
 namespace DestroyerTest.Content.Buffs
 {
@@ -127,7 +128,11 @@ namespace DestroyerTest.Content.Buffs
 					amount = 36;
 				}
 				Rectangle Window = new Rectangle((int)Player.BottomLeft.X, (int)Player.BottomLeft.Y, Player.width, 3);
-				PRTLoader.NewParticle(StellarParticleIndex.GalantineBurnParticle, Main.rand.NextVector2FromRectangle(Window), new Vector2(Main.rand.NextFloat(-0.2f, 0.2f), -2.3f), default, 1f);
+
+				ConstitutionParticle FX = new();
+				FX.Initialize(Main.rand.NextVector2FromRectangle(Window), new Vector2(Main.rand.NextFloat(-0.2f, 0.2f), -2.3f), 1f, 40);
+				ParticleEngine.ShaderParticles.Add(FX);
+
 				// These lines zero out any positive lifeRegen. This is expected for all bad life regeneration effects
 				if (Player.lifeRegen > 0)
 					Player.lifeRegen = 0;
@@ -155,8 +160,10 @@ namespace DestroyerTest.Content.Buffs
 			if (lifeRegenDebuff)
 			{
 				Rectangle Window = new Rectangle((int)npc.BottomLeft.X, (int)npc.BottomLeft.Y, npc.width, 3);
-				PRTLoader.NewParticle(StellarParticleIndex.GalantineBurnParticle, Main.rand.NextVector2FromRectangle(Window), new Vector2(Main.rand.NextFloat(-0.2f, 0.2f), -2.3f), default, 1f);
-        	}
+                ConstitutionParticle FX = new();
+                FX.Initialize(Main.rand.NextVector2FromRectangle(Window), new Vector2(Main.rand.NextFloat(-0.2f, 0.2f), -2.3f), 1f, 40);
+                ParticleEngine.ShaderParticles.Add(FX);
+            }
 		}
 
         public override void UpdateLifeRegen(NPC npc, ref int damage) {

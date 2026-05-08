@@ -75,7 +75,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
                 Projectile.Opacity -= 0.05f;
             }
 
-            PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Vector2.Zero, ColorLib.TenebrisBeige * 0.6f, Main.rand.NextFloat(0.5f, 1f));
+            //PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Vector2.Zero, ColorLib.TenebrisBeige * 0.6f, Main.rand.NextFloat(0.5f, 1f));
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)

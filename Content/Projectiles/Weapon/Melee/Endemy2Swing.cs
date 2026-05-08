@@ -14,6 +14,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using OpusLib.Content.Helpers;
+using OpusLib.Content.Particles;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -48,8 +49,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         {
             npc.AddBuff(BuffID.BrokenArmor, 300);
             SoundEngine.PlaySound(DTAssetLib.Impacts.SpiritOfJusticeParry with { MaxInstances = 0, PitchVariance = 0.4f }, npc.Center);
-            Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), npc.Center, Vector2.Zero, Color.Goldenrod, 0.01f, 1f);
-            Opus.NewParticleFloatAI(PRTLoader.GetParticleID<StarParticle>(), npc.Center, Vector2.Zero, Color.White, 4f);
+            BloomRingSharp Ring = new();
+            Ring.Prepare(npc.Center, Vector2.Zero, Color.Goldenrod, 0.07f, 0.01f, 1f, BlendState.Additive);
         }
 
         private void DrawSweepFX2()

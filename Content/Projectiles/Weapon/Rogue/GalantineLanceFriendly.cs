@@ -1,15 +1,16 @@
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Dusts;
+using DestroyerTest.Content.Particles.Stellar;
+using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using OpusLib;
-using DestroyerTest.Content.Dusts;
-using InnoVault.PRT;
-using DestroyerTest.Content.Particles.Stellar;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 {
@@ -41,7 +42,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 
             if (Main.rand.NextBool(3))
             {
-                PRTLoader.NewParticle(StellarParticleIndex.ConstitutionParticle, Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Projectile.velocity * 0.15f, default, 0.5f);
+                ConstitutionParticle FX = new();
+                FX.Initialize(Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Vector2.Zero, 1f, 30);
+                ParticleEngine.BehindProjectiles.Add(FX);
+
             }
         }
         public override bool PreDraw(ref Color lightColor)

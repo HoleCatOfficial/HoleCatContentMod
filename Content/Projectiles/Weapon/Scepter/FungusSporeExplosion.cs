@@ -38,8 +38,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
             SoundEngine.PlaySound(SoundID.Item42);
             for (int g = 0; g < 8; g++)
             {
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Projectile.Center, Main.rand.NextVector2Circular(10, 10), new Color(63, 66, 207) * 0.5f, 1f);
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Projectile.Center, Main.rand.NextVector2Circular(10, 10), new Color(63, 66, 207), 0.5f);
+                //PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Projectile.Center, Main.rand.NextVector2Circular(10, 10), new Color(63, 66, 207) * 0.5f, 1f);
+                //PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Projectile.Center, Main.rand.NextVector2Circular(10, 10), new Color(63, 66, 207), 0.5f);
                 Gore.NewGorePerfect(source, Projectile.Center, Main.rand.NextVector2Circular(6, 6), puffball[Main.rand.Next(puffball.Length)]);
             }
         }

@@ -109,7 +109,6 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
 
             if (Main.GameUpdateCount % 10 == 0 && Projectile.velocity.Length() > 2)
             {
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<SmallShine>(), Projectile.Center, Vector2.Zero, Color.White * 0.5f, 0.5f);
                 SoundEngine.PlaySound(DTAssetLib.ConstitutionStarKill with { MaxInstances = 0, PitchVariance = 0.3f }, Projectile.Center);
                 Projectile.NewProjectile(Entity.GetSource_FromAI(), Projectile.Center, FlankLeft * 0.02f, ModContent.ProjectileType<LightDart>(), Projectile.damage / 2, 3);
                 Projectile.NewProjectile(Entity.GetSource_FromAI(), Projectile.Center, FlankRight * 0.02f, ModContent.ProjectileType<LightDart>(), Projectile.damage / 2, 3);

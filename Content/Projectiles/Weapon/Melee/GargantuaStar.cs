@@ -15,6 +15,7 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using OpusLib;
+using OpusLib.Content.Particles;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 {
@@ -260,7 +261,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 		}
         public override void OnKill(int timeLeft)
         {
-            Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), Projectile.Center, Vector2.Zero, Color.Red, 0.001f, 1f);
+			BloomRingSharp Ring = new();
+			Ring.Prepare(Projectile.Center, Vector2.Zero, Color.Red, 0.3f, 0.02f, 0.5f, BlendState.Additive);
 			Dust.NewDust(Projectile.position, Projectile.Hitbox.Width, Projectile.Hitbox.Height, DustID.FireworksRGB, Main.rand.NextFloat(-1, 1.1f), Main.rand.NextFloat(-1, 1.1f), 0, Color.Red, 2f);
         }
     }

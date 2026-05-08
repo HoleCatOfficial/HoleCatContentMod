@@ -111,7 +111,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
         public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/NodeExplode"), Projectile.Center);
-            Opus.RadialProjectileRandomDir(FireVariants[Main.rand.Next(FireVariants.Length)], Main.rand.Next(8, 13), Projectile.Center, Projectile.damage / 2, 5, 10, friendly: true);
+            Opus.RadialSpreadProjectileRandom(FireVariants[Main.rand.Next(FireVariants.Length)], Main.rand.Next(8, 13), Projectile.Center, Projectile.damage / 2, 5, 10);
         }
     }
 }

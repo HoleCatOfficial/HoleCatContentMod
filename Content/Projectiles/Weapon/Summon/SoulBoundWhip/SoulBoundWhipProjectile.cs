@@ -101,7 +101,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon.SoulBoundWhip
 
             Vector2 End = GetPointAlongWhip(points, whipLength);
 
-            PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), End, Vector2.Zero, ColorLib.Soul3, 1f);
+            //PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), End, Vector2.Zero, ColorLib.Soul3, 1f);
 
             // shared sliding parameter
             float slide = (MathF.Sin(Main.GlobalTimeWrappedHourly * 1f)) % 1f;

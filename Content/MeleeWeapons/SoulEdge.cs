@@ -54,7 +54,7 @@ namespace DestroyerTest.Content.MeleeWeapons
 		public override void MeleeEffects(Player player, Rectangle hitbox) {
 			if (Main.rand.NextBool(3)) 
 			{
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Main.rand.NextVector2FromRectangle(hitbox), Main.rand.NextVector2Circular(3, 3), new Color(184, 228, 242), 0.5f);
+                //PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Main.rand.NextVector2FromRectangle(hitbox), Main.rand.NextVector2Circular(3, 3), new Color(184, 228, 242), 0.5f);
             }
 		}
 

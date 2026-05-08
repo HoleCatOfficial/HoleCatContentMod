@@ -206,7 +206,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 			target.AddBuff(ModContent.BuffType<HaepiensInferno>(), 600);
 			SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/FlameImpact1"));
-			PRTLoader.NewParticle(PRTLoader.GetParticleID<Boom1>(), target.Center, Vector2.Zero, Color.Orange, 1);
+			
 		}
 	}
 }

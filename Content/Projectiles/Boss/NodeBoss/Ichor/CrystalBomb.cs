@@ -81,13 +81,13 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.Ichor
                 if (Projectile.timeLeft >= 60)
                 {
                     SoundEngine.PlaySound(SoundID.DD2_WitherBeastDeath, Projectile.Center);
-                    Opus.RadialSpreadDust(DustID.Ichor, 10, Projectile.Center, 0, default, 1, 8, true);
+                    Opus.RadialSpreadDust(DustID.Ichor, 10, Projectile.Center, 0, default, 1, 8, offset: Main.rand.NextFloat(MathHelper.TwoPi));
                 }
 
                 if (Projectile.timeLeft <= 60)
                 {
                     SoundEngine.PlaySound(SoundID.DD2_WitherBeastDeath, Projectile.Center);
-                    Opus.RadialSpreadDust(DustID.Ichor, 10, Projectile.Center, 0, default, 2, 10, true);
+                    Opus.RadialSpreadDust(DustID.Ichor, 10, Projectile.Center, 0, default, 2, 10, offset: Main.rand.NextFloat(MathHelper.TwoPi));
                 }
             }
         }

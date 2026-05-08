@@ -103,7 +103,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 
         public override void OnKill(int timeLeft)
         {
-			Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), Projectile.Center, Vector2.Zero, ColorLib.Rift, 0.05f, 2f);
+			//Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), Projectile.Center, Vector2.Zero, ColorLib.Rift, 0.05f, 2f);
 			SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/Impacts/IceMagicImpact", 3) with { PitchVariance = 0.4f, MaxInstances = 0 }, Projectile.Center);
 			Opus.RadialSpreadProjectile(ModContent.ProjectileType<HeliciteDart>(), 4, Projectile.Center, Projectile.damage, 4, 8, offset: Projectile.rotation);
         }

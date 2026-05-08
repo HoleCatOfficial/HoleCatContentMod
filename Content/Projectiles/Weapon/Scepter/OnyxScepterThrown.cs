@@ -60,7 +60,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
                 });
             }
 
-            //Opus.RingParticleOutward(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], 12, Projectile.Center, 20, 0.4f, new Color(179, 54, 201), 0.75f, 0.3f, 30, ai2: 2, RandomOffset: true);
+            //Opus.RingParticleOutward(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], 12, Projectile.Center, 20, 0.4f, new Color(179, 54, 201), 0.75f, 0.3f, 30, ai2: 2, offset: Main.rand.NextFloat(MathHelper.TwoPi));
             base.PostAI();
         }
 

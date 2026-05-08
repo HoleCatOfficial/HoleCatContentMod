@@ -1,3 +1,4 @@
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
@@ -42,9 +43,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Ranged
             
             if (Main.rand.NextBool(3))
             {
-                PRTLoader.NewParticle(StellarParticleIndex.ConstitutionParticle, Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Projectile.velocity * 0.15f, default, 0.5f);
+                ConstitutionParticle FX = new();
+                FX.Initialize(Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Vector2.Zero, 1f, 30);
+                ParticleEngine.BehindProjectiles.Add(FX);
+
             }
-			
+
         }
         public override bool PreDraw(ref Color lightColor)
         {

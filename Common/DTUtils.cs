@@ -1,5 +1,6 @@
 
 using BreadLibrary.Core.Graphics.Particles;
+using BreadLibrary.Core.Graphics.Pixelation;
 using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
@@ -27,6 +28,7 @@ using System.Linq;
 using System.Media;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Runtime.Intrinsics.X86;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -107,7 +109,7 @@ namespace DestroyerTest.Common
         /// <param name="projectile"></param>
         public static void ConstitutionStarExplosionEffects(Projectile projectile)
         {
-            List<Vector2> Star2 = Polar.GenerateCurvedStar(5, 4, 10, projectile.Center, inwardPull: 0.5f, randomOffset: true);
+            List<Vector2> Star2 = Polar.GenerateCurvedStar(5, 4, 10, projectile.Center, inwardPull: 0.5f, offset: Main.rand.NextFloat(MathHelper.TwoPi));
             foreach (Vector2 p2 in Star2)
             {
                 Vector2 Vel = p2 - projectile.Center;
@@ -279,7 +281,7 @@ namespace DestroyerTest.Common
 
         public static int[] NPCDownTally = new int[99999];
 
-        public static void InfectedScepter_RingProjectileOutwardAlternating(int ID1, int ID2, int Amount, Vector2 CTR, float Radius, int Dmg = 0, int KB = 0, float Speed = 2, float AI0 = 0, float AI1 = 0, float AI2 = 0, bool RandomOffset = false)
+        public static void InfectedScepter_RingSpreadProjectileAlternating(int ID1, int ID2, int Amount, Vector2 CTR, float Radius, int Dmg = 0, int KB = 0, float Speed = 2, float AI0 = 0, float AI1 = 0, float AI2 = 0, bool RandomOffset = false)
 		{
 			float rotationStep = MathHelper.TwoPi / Amount;
 			float baseRotation = RandomOffset ? Main.rand.NextFloat(MathHelper.TwoPi) : 0f;
@@ -2046,7 +2048,7 @@ namespace DestroyerTest.Common
                     if (ve.Count >= 3)
                     {
                         gd.Textures[0] = TrailTex;
-                        gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2);
+                        gd.DrawUserPrimitives(PrimitiveType.LineStrip, ve.ToArray(), 0, ve.Count - 2);
                     }
                 }
 
@@ -2111,7 +2113,75 @@ namespace DestroyerTest.Common
                     if (ve.Count >= 3)
                     {
                         gd.Textures[0] = TrailTex;
-                        gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2);
+                        gd.DrawUserPrimitives(PrimitiveType.LineStrip, ve.ToArray(), 0, ve.Count - 2);
+                    }
+                }
+
+                Opus.ReturnToDefaultDrawing(Main.spriteBatch);
+            }
+
+        }
+
+        public static void DrawTrailPixelated(SpriteBatch spriteBatch, BlendState blendState, Texture2D TrailTex, List<Vector2> Positions, List<float> Rotations, float Amplitude, Color color, float Scroll, float TaperRange = 20f)
+        {
+            DTOptimizationsConfig OptCfg = ModContent.GetInstance<DTOptimizationsConfig>();
+            if (!OptCfg.DisableExcessTrails)
+            {
+
+                spriteBatch.End();
+                spriteBatch.Begin(SpriteSortMode.Immediate, blendState, SamplerState.LinearWrap, DepthStencilState.None, RasterizerState.CullNone, null, PixelationSystem.PixelationMatrix);
+
+
+                if (Positions.Count > 1)
+                {
+                    List<ColoredVertex> ve = new List<ColoredVertex>();
+                    float a = 0;
+
+                    for (int i = Positions.Count - 1; i > 0; i--)
+                    {
+                        float taper = MathHelper.Clamp(i / TaperRange, 0f, 1f);
+
+                        // optional smoothing (feels nicer than linear)
+                        taper = taper * taper; // quadratic ease-in
+
+                        float AdjAmplitude = Amplitude * taper;
+                        float t = 1f - (i / (float)Positions.Count); // fade toward tail
+                        Color b = color * t;
+
+
+                        //Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
+                        Vector2 curr = Positions[i];
+                        Vector2 prev = Positions[i - 1];
+                        Vector2 next = i < Positions.Count - 1 ? Positions[i + 1] : curr;
+
+                        Vector2 dirPrev = curr - prev;
+                        Vector2 dirNext = next - curr;
+
+                        if (dirPrev != Vector2.Zero) dirPrev.Normalize();
+                        if (dirNext != Vector2.Zero) dirNext.Normalize();
+
+                        if (dirPrev == Vector2.Zero) dirPrev = dirNext;
+                        if (dirNext == Vector2.Zero) dirNext = dirPrev;
+
+                        Vector2 dir = dirPrev + dirNext;
+                        if (dir != Vector2.Zero)
+                            dir.Normalize();
+                        else
+                            dir = dirPrev;
+
+                        Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * AdjAmplitude;
+                        Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * AdjAmplitude;
+
+                        DTUtils.AddStrips(ve, Positions, i, offset, offset2, t, b, Scroll);
+
+                    }
+
+
+                    GraphicsDevice gd = Main.graphics.GraphicsDevice;
+                    if (ve.Count >= 3)
+                    {
+                        gd.Textures[0] = TrailTex;
+                        gd.DrawUserPrimitives(PrimitiveType.LineStrip, ve.ToArray(), 0, ve.Count - 2);
                     }
                 }
 

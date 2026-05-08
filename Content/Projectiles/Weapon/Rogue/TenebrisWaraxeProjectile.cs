@@ -7,6 +7,7 @@ using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
+using OpusLib.Content.Particles;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
@@ -166,13 +167,20 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
                 ParticleEngine.BehindProjectiles.Add(Spark);
 
             }
-            Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), Projectile.Center, Vector2.Zero, Color.White, 0.01f, ai0: 0.8f);
-            Opus.NewParticleFloatAI(PRTLoader.GetParticleID<Boom5>(), Projectile.Center, Vector2.Zero, clr, 0.01f, ai0: 1.5f);
+
+            SimpleExplosionParticle ExplosionFX = new SimpleExplosionParticle();
+            ExplosionFX.Prepare(target.Center, Vector2.Zero, clr, 0.1f, 0.02f, 2f, BlendState.Additive);
+            ParticleEngine.BehindProjectiles.Add(ExplosionFX);
+
+            BloomRingSharp Ring = new BloomRingSharp();
+            Ring.Prepare(target.Center, Vector2.Zero, DTColorUtils.Pastel(clr, 0.5f), 0.1f, 0.02f, 2f, BlendState.Additive);
+            ParticleEngine.BehindProjectiles.Add(Ring);
+
             if (Projectile.penetrate == 1)
             {
                 returning = true;
             }
-            Opus.RadialSpreadProjectile(ModContent.ProjectileType<TenebrisStarFriendly>(), 9, Projectile.Center, Projectile.damage / 3, 4, 15, AI2: 1, offset: Projectile.rotation);
+            Opus.RadialSpreadProjectile(ModContent.ProjectileType<TenebrisStarFriendly>(), 9, Projectile.Center, Projectile.damage / 3, 4, 15, ai2: 1, offset: Projectile.rotation);
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)
@@ -190,10 +198,13 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 
             }
 
-            BasePRT P1 = Opus.NewParticleFloatAI(PRTLoader.GetParticleID<SimpleExplosionParticle>(), Projectile.Center, Vector2.Zero, clr, 0.01f, 6f, 0.3f, 0.01f);
-            P1.Rotation = Main.rand.NextFloat(MathHelper.TwoPi);
-            BasePRT P2 = Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), Projectile.Center, Vector2.Zero, DTColorUtils.Pastel(clr, 0.5f), 0.01f, 1f, 0.1f, 0.02f);
-            P2.Rotation = Main.rand.NextFloat(MathHelper.TwoPi);
+            SimpleExplosionParticle ExplosionFX = new SimpleExplosionParticle();
+            ExplosionFX.Prepare(Projectile.Center, Vector2.Zero, clr, 0.1f, 0.02f, 2f, BlendState.Additive);
+            ParticleEngine.BehindProjectiles.Add(ExplosionFX);
+
+            BloomRingSharp Ring = new BloomRingSharp();
+            Ring.Prepare(Projectile.Center, Vector2.Zero, DTColorUtils.Pastel(clr, 0.5f), 0.1f, 0.02f, 2f, BlendState.Additive);
+            ParticleEngine.BehindProjectiles.Add(Ring);
 
             returning = true;
 

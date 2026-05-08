@@ -79,7 +79,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 			if (SpawnPRTCharge == true)
 			{
-				PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp>(), target.Center, Vector2.Zero, ColorLib.Rift, 0.025f);
+				
 				SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/HSZap") { PitchVariance = 1 }, Projectile.Center);
 			}
 			target.AddBuff(ModContent.BuffType<DaylightOverload>(), 240);

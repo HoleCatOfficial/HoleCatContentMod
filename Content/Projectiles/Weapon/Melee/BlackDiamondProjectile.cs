@@ -11,6 +11,8 @@ using Terraria.Audio;
 using OpusLib;
 using InnoVault.PRT;
 using DestroyerTest.Content.Particles;
+using DestroyerTest.Content.Particles.Orchestrated;
+using BreadLibrary.Core.Graphics.Particles;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 {
@@ -105,8 +107,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         {
             SoundEngine.PlaySound(DTAssetLib.Impacts.FleshHit with { PitchVariance = 0.2f });
             SoundEngine.PlaySound(DTAssetLib.Impacts.ShortShine with { PitchVariance = 0.2f });
-            //Opus.RadialSpreadParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), 4, Projectile.Center, 1f, DTColorUtils.Pastel(ColorLib.TenebrisBlue, 0.5f), 0.5f, 1.5f, offset: Projectile.velocity.ToRotation());
-            //Opus.RadialSpreadParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), 4, Projectile.Center, 1f, DTColorUtils.Pastel(ColorLib.TenebrisBlue, 0.95f), 0.1f, 0.75f, offset: Projectile.velocity.ToRotation() + MathHelper.PiOver4);
+
+            BlackDiamondParticle FX = new();
+            FX.Initiate(Projectile.Center, Projectile.velocity.ToRotation());
+            ParticleEngine.BehindProjectiles.Add(FX);
+
+      
             
         }
     }

@@ -78,14 +78,11 @@ namespace DestroyerTest.Common
         }
     }
 
-    
-    public class TooltipColors : GlobalItem
+    internal class DevTooltipFlashUpdater : ModSystem
     {
-        public override bool InstancePerEntity => true;
-
-        float DevFlashOpacity = 0f;
-
-        public override void UpdateInventory(Item item, Player player)
+        public static DevTooltipFlashUpdater Instance = ModContent.GetInstance<DevTooltipFlashUpdater>();
+        public float DevFlashOpacity = 0f;
+        public override void PreUpdateItems()
         {
             if (Main.rand.NextBool(100))
             {
@@ -97,8 +94,20 @@ namespace DestroyerTest.Common
                 DevFlashOpacity -= 0.01f;
             }
         }
+    }
+    public class TooltipColors : GlobalItem
+    {
+        public override bool InstancePerEntity => true;
+
+        
+
+        public override void UpdateInventory(Item item, Player player)
+        {
+            
+        }
         public override bool PreDrawTooltipLine(Item item, DrawableTooltipLine line, ref int yOffset)
         {
+
             if (item.rare == ModContent.RarityType<WretchedRarity>() && line.Name == "ItemName")
             {
                 Color In = Opus.Sine(ColorLib.Wretched6, ColorLib.Wretched7, 0.01f);
@@ -151,7 +160,7 @@ namespace DestroyerTest.Common
 
                 float RandOff = Main.rand.NextFloat(-3f, 3f);
 
-                Utils.DrawBorderStringFourWay(Main.spriteBatch, FontAssets.MouseText.Value, line.Text, (line.X + RandOff) - xOffset, line.Y + RandOff, Color.Black * DevFlashOpacity, Color.GhostWhite * DevFlashOpacity, new Vector2(0.5f, 0f), scale);
+                Utils.DrawBorderStringFourWay(Main.spriteBatch, FontAssets.MouseText.Value, line.Text, (line.X + RandOff) - xOffset, line.Y + RandOff, Color.Black * DevTooltipFlashUpdater.Instance.DevFlashOpacity, Color.NavajoWhite * DevTooltipFlashUpdater.Instance.DevFlashOpacity, new Vector2(0.5f, 0f), scale);
 
                 Utils.DrawBorderStringFourWay(Main.spriteBatch, FontAssets.MouseText.Value, line.Text, line.X, line.Y, In, Out, new Vector2(0.5f, 0.5f));
 

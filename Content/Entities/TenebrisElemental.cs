@@ -138,7 +138,7 @@ namespace DestroyerTest.Content.Entities
             if (Main.GameUpdateCount % 240 == 0)
             {
                 SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/ChargeBreak") with { PitchVariance = 1f, Volume = 3f });
-                Opus.RingProjectileOutward(ModContent.ProjectileType<TenebrisFlamesHostile>(), 12, NPC.Center, 120, 20, 5, 8, RandomOffset: true);
+                Opus.RingSpreadProjectile(ModContent.ProjectileType<TenebrisFlamesHostile>(), 12, NPC.Center, 120, 20, 5, 8, offset: Main.rand.NextFloat(MathHelper.TwoPi));
             }
         }
 

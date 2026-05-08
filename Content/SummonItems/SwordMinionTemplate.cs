@@ -116,7 +116,7 @@ namespace DestroyerTest.Content.SummonItems
         /// <summary>
         /// What particle ID to use when teleporting. Should be used in tandem with UsesPRTOnTele.
         /// </summary>
-        public int TelePRTID = PRTLoader.GetParticleID<Boom1>();
+        public int TelePRTID = -1;
 
         /// <summary>
         /// What ParticleOrchestrator type to use when teleporting. Should be used in tandem with UsesParticleOrchestratorOnTele.

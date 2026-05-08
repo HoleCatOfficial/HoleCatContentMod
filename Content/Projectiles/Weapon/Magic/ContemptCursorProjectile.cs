@@ -102,7 +102,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
                 Projectile.Center = Main.MouseWorld;
                 if (HasSpawned == false)
                 {
-                    PRTLoader.NewParticle(PRTLoader.GetParticleID<RuneCircle1>(), Projectile.Center, Projectile.velocity, ColorLib.CursedFlames, 0.4f);
+                    //PRTLoader.NewParticle(PRTLoader.GetParticleID<RuneCircle1>(), Projectile.Center, Projectile.velocity, ColorLib.CursedFlames, 0.4f);
                     HasSpawned = true;
                 }
 
@@ -130,7 +130,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
                             Flames.Kill();
                         }
                     }
-                    PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp>(), Projectile.Center, Projectile.velocity, ColorLib.CursedFlames, 0.025f);
+                    //PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp>(), Projectile.Center, Projectile.velocity, ColorLib.CursedFlames, 0.025f);
                     ProjSpawnTimer = 0;
                 }
 

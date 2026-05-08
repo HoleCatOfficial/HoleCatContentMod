@@ -238,7 +238,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
 
             if (Main.GameUpdateCount % 30 == 0)
             {
-                Opus.RadialSpreadProjectile(ProjectileID.CrystalStorm, 4, Projectile.Center, Projectile.damage / 4, 4, 3, RandomOffset: true);
+                Opus.RadialSpreadProjectile(ProjectileID.CrystalStorm, 4, Projectile.Center, Projectile.damage / 4, 4, 3, offset: Main.rand.NextFloat(MathHelper.TwoPi));
             }
 
             if (distance < 4f)

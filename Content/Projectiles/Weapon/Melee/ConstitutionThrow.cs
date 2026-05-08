@@ -1,4 +1,5 @@
-﻿using DestroyerTest.Common;
+﻿using BreadLibrary.Core.Graphics.Particles;
+using DestroyerTest.Common;
 using DestroyerTest.Content.Particles.Stellar;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
@@ -50,8 +51,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 Projectile.velocity *= 0.96f;
                 Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
 
-
-                PRTLoader.NewParticle(StellarParticleIndex.ConstitutionParticle, Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Vector2.Zero, default, 1f);
+                ConstitutionParticle FX = new();
+                FX.Initialize(Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Vector2.Zero, 1f, 30);
+                ParticleEngine.BehindProjectiles.Add(FX);
 
                 if (Projectile.velocity.Length() <= 0.4f)
                 {

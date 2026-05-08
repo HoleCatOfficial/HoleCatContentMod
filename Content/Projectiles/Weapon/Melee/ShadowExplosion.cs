@@ -1,8 +1,11 @@
-﻿using DestroyerTest.Common;
+﻿using BreadLibrary.Core.Graphics.Particles;
+using DestroyerTest.Common;
 using DestroyerTest.Content.Particles;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
+using OpusLib.Content.Particles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,22 +39,21 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         public override void OnSpawn(IEntitySource source)
         {
             SoundEngine.PlaySound(SoundID.DD2_KoboldExplosion, Projectile.Center);
-            BasePRT P1 = Opus.NewParticleFloatAI(PRTLoader.GetParticleID<SimpleExplosionParticle>(), Projectile.Center, Vector2.Zero, Color.DarkMagenta, 0.01f, 6f, 0.3f, 0.01f);
-            P1.Rotation = Main.rand.NextFloat(MathHelper.TwoPi);
-            BasePRT P2 = Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), Projectile.Center, Vector2.Zero, DTColorUtils.Pastel(Color.DarkMagenta, 0.5f), 0.01f, 1f, 0.1f, 0.02f);
-            P2.Rotation = Main.rand.NextFloat(MathHelper.TwoPi);
 
-            //Fires
-            BasePRT P3 = Opus.NewParticleFloatAI(PRTLoader.GetParticleID<Boom3>(), Projectile.Center, Vector2.Zero, Color.DarkMagenta, 0.01f, 0.2f, 0.1f, 0.01f);
-            P3.Rotation = Main.rand.NextFloat(MathHelper.TwoPi);
+            SimpleExplosionParticle Explosion = new();
+            Explosion.Prepare(Projectile.Center, Vector2.Zero, Color.DarkMagenta, 0.1f, 0.01f, 1f, BlendState.Additive);
+            ParticleEngine.BehindProjectiles.Add(Explosion);
 
-            BasePRT P4 = Opus.NewParticleFloatAI(PRTLoader.GetParticleID<Boom3>(), Projectile.Center, Vector2.Zero, Color.DarkMagenta, 0.01f, 0.15f, 0.1f, 0.01f);
-            P4.Rotation = Main.rand.NextFloat(MathHelper.TwoPi);
+            BloomRing Ring1 = new();
+            Ring1.Prepare(Projectile.Center, Vector2.Zero, Color.DarkMagenta * 0.5f, 0.1f, 0.01f, BlendState.Additive);
+            ParticleEngine.BehindProjectiles.Add(Ring1);
+
+            BloomRingSharp Ring2 = new();
+            Ring2.Prepare(Projectile.Center, Vector2.Zero, Color.Magenta, 0.1f, 0.01f, BlendState.Additive);
+            ParticleEngine.BehindProjectiles.Add(Ring1);
 
 
-
-
-            Opus.RingProjectileOutward(ModContent.ProjectileType<HomingShadowflame>(), 8, Projectile.Center, 40, Projectile.damage / 4, 7, 9, RandomOffset: true);
+            Opus.RingSpreadProjectile(ModContent.ProjectileType<HomingShadowflame>(), 8, Projectile.Center, 40, Projectile.damage / 4, 7, 9, offset: Main.rand.NextFloat(MathHelper.TwoPi));
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
@@ -80,17 +82,18 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         public override void OnSpawn(IEntitySource source)
         {
             SoundEngine.PlaySound(SoundID.DD2_KoboldExplosion, Projectile.Center);
-            BasePRT P1 = Opus.NewParticleFloatAI(PRTLoader.GetParticleID<SimpleExplosionParticle>(), Projectile.Center, Vector2.Zero, Color.DarkMagenta, 0.01f, 6f, 0.3f, 0.01f);
-            P1.Rotation = Main.rand.NextFloat(MathHelper.TwoPi);
-            BasePRT P2 = Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), Projectile.Center, Vector2.Zero, DTColorUtils.Pastel(Color.DarkMagenta, 0.5f), 0.01f, 1f, 0.1f, 0.02f);
-            P2.Rotation = Main.rand.NextFloat(MathHelper.TwoPi);
 
-            //Fires
-            BasePRT P3 = Opus.NewParticleFloatAI(PRTLoader.GetParticleID<Boom3>(), Projectile.Center, Vector2.Zero, Color.DarkMagenta, 0.01f, 0.2f, 0.1f, 0.01f);
-            P3.Rotation = Main.rand.NextFloat(MathHelper.TwoPi);
+            SimpleExplosionParticle Explosion = new();
+            Explosion.Prepare(Projectile.Center, Vector2.Zero, Color.DarkMagenta, 0.1f, 0.01f, 1f, BlendState.Additive);
+            ParticleEngine.BehindProjectiles.Add(Explosion);
 
-            BasePRT P4 = Opus.NewParticleFloatAI(PRTLoader.GetParticleID<Boom3>(), Projectile.Center, Vector2.Zero, Color.DarkMagenta, 0.01f, 0.15f, 0.1f, 0.01f);
-            P4.Rotation = Main.rand.NextFloat(MathHelper.TwoPi);
+            BloomRing Ring1 = new();
+            Ring1.Prepare(Projectile.Center, Vector2.Zero, Color.DarkMagenta * 0.5f, 0.1f, 0.01f, BlendState.Additive);
+            ParticleEngine.BehindProjectiles.Add(Ring1);
+
+            BloomRingSharp Ring2 = new();
+            Ring2.Prepare(Projectile.Center, Vector2.Zero, Color.Magenta, 0.1f, 0.01f, BlendState.Additive);
+            ParticleEngine.BehindProjectiles.Add(Ring1);
 
             //Opus.RadialParticleRandomDir(PRTLoader.GetParticleID<SparkParticleNoGravity>(), 9, Projectile.Center, 1f, Color.LavenderBlush, 1f, 9, ai1: 2);
         }

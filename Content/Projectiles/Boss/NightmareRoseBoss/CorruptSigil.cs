@@ -138,7 +138,9 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
                         Flames.Kill();
                     }
                 }
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp>(), Projectile.Center, Projectile.velocity, ColorLib.CursedFlames, 0.005f);
+
+
+              
                 ProjSpawnTimer = 0;
             }
         }

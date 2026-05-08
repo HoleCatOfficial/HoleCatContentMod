@@ -15,6 +15,8 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using OpusLib;
+using OpusLib.Content.Particles;
+using BreadLibrary.Core.Graphics.Particles;
 
 namespace DestroyerTest.Content.Projectiles
 {
@@ -184,8 +186,10 @@ namespace DestroyerTest.Content.Projectiles
 
         public override void OnKill(int timeLeft)
         {
-            Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), Projectile.Center, Vector2.Zero, ColorLib.TenebrisMagenta, 0.001f, 1f);
-            Opus.RadialSpreadDust(DustID.FireworksRGB, 12, Projectile.Center, 0, ColorLib.TenebrisMagenta, 1f, 1.5f, RandomOffset: true);
+            BloomRingSharp Ring = new();
+            Ring.Prepare(Projectile.Center, Vector2.Zero, ColorLib.TenebrisMagenta, 0.1f, 0.01f, 0.75f, BlendState.Additive);
+            ParticleEngine.BehindProjectiles.Add(Ring);
+            Opus.RadialSpreadDust(DustID.FireworksRGB, 12, Projectile.Center, 0, ColorLib.TenebrisMagenta, 1f, 1.5f, offset: Main.rand.NextFloat(MathHelper.TwoPi));
         }
     }
 }

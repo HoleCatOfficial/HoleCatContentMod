@@ -77,7 +77,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
                 new Color(0, 32, 19)
             };
 
-            Opus.RadialDustRandomDir(DustID.Glass, 7, Projectile.Center, 0, default, 2f, 2.5f);
+            Opus.RadialSpreadDustRandom(DustID.Glass, 7, Projectile.Center, 0, default, 2f, 2.5f);
 
             for (int i = 0; i < 10; i++)
             {
@@ -86,8 +86,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
                 dust.fadeIn = 1.5f;
             }
 
-            Opus.RadialProjectileRandomDir(ModContent.ProjectileType<FailedPotionGreenSmoke>(), 5, Projectile.Center, Projectile.damage, 0, Main.rand.NextFloat(0.03f, 1f), friendly: true);
-            Opus.RadialProjectileRandomDir(ModContent.ProjectileType<FailedPotionPurpleSmoke>(), 5, Projectile.Center, Projectile.damage, 0, Main.rand.NextFloat(0.03f, 1f), friendly: true);
+            Opus.RadialSpreadProjectileRandom(ModContent.ProjectileType<FailedPotionGreenSmoke>(), 5, Projectile.Center, Projectile.damage, 0, Main.rand.NextFloat(0.03f, 1f));
+            Opus.RadialSpreadProjectileRandom(ModContent.ProjectileType<FailedPotionPurpleSmoke>(), 5, Projectile.Center, Projectile.damage, 0, Main.rand.NextFloat(0.03f, 1f));
         }
     }
 }

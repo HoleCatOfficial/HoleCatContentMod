@@ -100,7 +100,7 @@ namespace DestroyerTest.Content.Equips
 					if (Cooldown <= 0)
 					{
 						SoundEngine.PlaySound(DTAssetLib.ChargeBreak, Player.Center);
-						Opus.RingProjectileOutward(ModContent.ProjectileType<MageClone>(), 3, Player.Center, 200, 10, 0, 0, offset: 0f);
+						Opus.RingSpreadProjectile(ModContent.ProjectileType<MageClone>(), 3, Player.Center, 200, 10, 0, 0, offset: 0f);
 						Cooldown = 1000;
 					}
 				}

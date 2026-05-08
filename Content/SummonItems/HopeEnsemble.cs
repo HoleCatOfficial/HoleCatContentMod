@@ -492,8 +492,6 @@ namespace DestroyerTest.Content.SummonItems
 			DefaultDraw = true;
 			TickSpeed = 3;
 			UsesParticleOrchestratorOnTele = false;
-			TelePRTID = PRTLoader.GetParticleID<Boom1>();
-			UsesPRTOnTele = true;
 			TeleDist = 2000;
 			Range = 2000;
 			Style = IdleStyle.Chevron;
@@ -529,8 +527,6 @@ namespace DestroyerTest.Content.SummonItems
 			DefaultDraw = true;
 			TickSpeed = 3;
 			UsesParticleOrchestratorOnTele = false;
-			TelePRTID = PRTLoader.GetParticleID<Boom1>();
-			UsesPRTOnTele = true;
 			TeleDist = 2000;
 			Range = 2000;
 			Style = IdleStyle.Chevron;
@@ -567,8 +563,6 @@ namespace DestroyerTest.Content.SummonItems
 			DefaultDraw = true;
 			TickSpeed = 3;
 			UsesParticleOrchestratorOnTele = false;
-			TelePRTID = PRTLoader.GetParticleID<Boom1>();
-			UsesPRTOnTele = true;
 			TeleDist = 2000;
 			Range = 2000;
 			Style = IdleStyle.Chevron;
@@ -604,8 +598,6 @@ namespace DestroyerTest.Content.SummonItems
 			DefaultDraw = true;
 			TickSpeed = 3;
 			UsesParticleOrchestratorOnTele = false;
-			TelePRTID = PRTLoader.GetParticleID<Boom1>();
-			UsesPRTOnTele = true;
 			TeleDist = 2000;
 			Range = 2000;
 			Style = IdleStyle.Chevron;
@@ -641,8 +633,6 @@ namespace DestroyerTest.Content.SummonItems
 			DefaultDraw = true;
 			TickSpeed = 3;
 			UsesParticleOrchestratorOnTele = false;
-			TelePRTID = PRTLoader.GetParticleID<Boom1>();
-			UsesPRTOnTele = true;
 			TeleDist = 2000;
 			Range = 2000;
 			Style = IdleStyle.Chevron;
@@ -679,8 +669,6 @@ namespace DestroyerTest.Content.SummonItems
 			DefaultDraw = true;
 			TickSpeed = 3;
 			UsesParticleOrchestratorOnTele = false;
-			TelePRTID = PRTLoader.GetParticleID<Boom1>();
-			UsesPRTOnTele = true;
 			TeleDist = 2000;
 			Range = 2000;
 			Style = IdleStyle.Chevron;
@@ -716,8 +704,6 @@ namespace DestroyerTest.Content.SummonItems
 			DefaultDraw = true;
 			TickSpeed = 3;
 			UsesParticleOrchestratorOnTele = false;
-			TelePRTID = PRTLoader.GetParticleID<Boom1>();
-			UsesPRTOnTele = true;
 			TeleDist = 2000;
 			Range = 2000;
 			Style = IdleStyle.Chevron;
@@ -753,8 +739,6 @@ namespace DestroyerTest.Content.SummonItems
 			DefaultDraw = true;
 			TickSpeed = 3;
 			UsesParticleOrchestratorOnTele = false;
-			TelePRTID = PRTLoader.GetParticleID<Boom1>();
-			UsesPRTOnTele = true;
 			TeleDist = 2000;
 			Range = 2000;
 			Style = IdleStyle.Chevron;
@@ -790,8 +774,6 @@ namespace DestroyerTest.Content.SummonItems
 			DefaultDraw = true;
 			TickSpeed = 3;
 			UsesParticleOrchestratorOnTele = false;
-			TelePRTID = PRTLoader.GetParticleID<Boom1>();
-			UsesPRTOnTele = true;
 			TeleDist = 2000;
 			Range = 2000;
 			Style = IdleStyle.Chevron;
@@ -924,8 +906,6 @@ namespace DestroyerTest.Content.SummonItems
 			DefaultDraw = true;
 			TickSpeed = 3;
 			UsesParticleOrchestratorOnTele = false;
-			TelePRTID = PRTLoader.GetParticleID<Boom1>();
-			UsesPRTOnTele = true;
 			TeleDist = 2000;
 			Range = 2000;
 			Style = IdleStyle.Chevron;

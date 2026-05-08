@@ -62,8 +62,6 @@ namespace DestroyerTest.Content.Resources
             Vector2 Inward = Item.Center - OuterOffset;
             Rectangle SpawnArea = Item.Hitbox;
             SpawnArea.Inflate(60, 60);
-            PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Main.rand.NextVector2FromRectangle(SpawnArea), Vector2.Zero, ColorLib.Soul2, 0.25f);
-            PRTLoader.NewParticle(PRTLoader.GetParticleID<StarParticle>(), OuterOffset, Inward * 0.1f, ColorLib.Soul3, 0.25f);
         }
     }
 

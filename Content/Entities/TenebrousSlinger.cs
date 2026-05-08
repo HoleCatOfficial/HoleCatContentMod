@@ -298,8 +298,6 @@ namespace DestroyerTest.Content.Entities
 
         public override void OnKill()
         {
-            PRTLoader.NewParticle<Boom5>(NPC.Center, Vector2.Zero, ColorLib.TenebrisGradient, 1f);
-            PRTLoader.NewParticle<BloomRing>(NPC.Center, Vector2.Zero, ColorLib.TenebrisGradient, 1f);
             int Gore1 = Mod.Find<ModGore>("TenebrousSlingerGore1").Type;
             int Gore2 = Mod.Find<ModGore>("TenebrousSlingerGore2").Type;
             int Gore3 = Mod.Find<ModGore>("TenebrousSlingerGore3").Type;

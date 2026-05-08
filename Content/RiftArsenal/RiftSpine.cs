@@ -8,6 +8,7 @@ using DestroyerTest.Content.RogueItems;
 using DestroyerTest.Content.Tiles.Riftplate;
 using DestroyerTest.Content.Tiles.RiftConfigurator;
 using DestroyerTest.Content.Projectiles.Weapon.Rogue;
+using DestroyerTest.Common;
 
 namespace DestroyerTest.Content.RiftArsenal
 {
@@ -41,6 +42,7 @@ namespace DestroyerTest.Content.RiftArsenal
 			Item.value = Item.buyPrice(0, 0, 20, 0);
 			Item.rare = ModContent.RarityType<RiftRarity2>();
 			Item.damage = 160;
+			Item.DamageType = ModContent.GetInstance<DTRogueClass>();
 			Item.autoReuse = true;
 		}
 

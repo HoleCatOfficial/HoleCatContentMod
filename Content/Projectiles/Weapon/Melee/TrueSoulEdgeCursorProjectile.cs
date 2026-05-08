@@ -123,11 +123,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 Projectile.scale += 0.01f;
                 if (Main.rand.NextBool(3))
                 {
-                    Opus.RingDustInwardRandomDir(DustID.DungeonSpirit, 10, Projectile.Center, 180, 20, default, 0.02f, 2f);
+                    Opus.RingSpreadDustRandom(DustID.DungeonSpirit, 10, Projectile.Center, 180, 20, default, -0.02f, 2f);
                 }
                 if (Main.rand.NextBool(4))
                 {
-                    PRTLoader.NewParticle(PRTLoader.GetParticleID<DungeonSpiritParticle>(), Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Main.rand.NextVector2Circular(3, 3), new Color(184, 228, 242), 1f);
+                    //PRTLoader.NewParticle(PRTLoader.GetParticleID<DungeonSpiritParticle>(), Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Main.rand.NextVector2Circular(3, 3), new Color(184, 228, 242), 1f);
                     //Opus.RingParticleInwardRandomDir(PRTLoader.GetParticleID<DungeonSpiritParticle>(), 5, Projectile.Center, 180, 0.8f, Color.White, 0.02f, 2f, ai2: 1);
                 }
             }

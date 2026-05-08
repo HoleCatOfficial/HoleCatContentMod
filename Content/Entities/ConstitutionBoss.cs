@@ -262,7 +262,7 @@ namespace DestroyerTest.Content.Entities
 
 
             spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.LinearWrap, DepthStencilState.None, RasterizerState.CullNone, null, PixelationSystem.PixelationMatrix);
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearWrap, DepthStencilState.None, RasterizerState.CullNone, null, PixelationSystem.PixelationMatrix);
 
             spriteBatch.Draw(texture.Value, line.Start - Main.screenPosition, new Rectangle(TexOffset, 0, (int)line.GetLineLength, texture.Value.Height), drawColor with { A = 0 }, line.GetLineRotation, new Vector2(0, texture.Value.Height) / 2, new Vector2(1, Width), SpriteEffects.None, 0);
 
@@ -577,7 +577,7 @@ namespace DestroyerTest.Content.Entities
             {
                 SoundEngine.PlaySound(DTAssetLib.Impacts.StellarFox, NPC.Center);
 
-                List<Vector2> Star2 = Polar.GenerateCurvedStar(5, 4, 90, NPC.Center, inwardPull: 0.5f, randomOffset: true);
+                List<Vector2> Star2 = Polar.GenerateCurvedStar(5, 4, 90, NPC.Center, inwardPull: 0.5f, offset: Main.rand.NextFloat(MathHelper.TwoPi));
                 foreach (Vector2 p2 in Star2)
                 {
                     Vector2 Vel = p2 - NPC.Center;
@@ -613,7 +613,7 @@ namespace DestroyerTest.Content.Entities
                 Vector2 spawnPos = NPC.Center + direction * radius;
                 Vector2 velocity = direction * 3f;
 
-                List<Vector2> Star2 = Polar.GenerateCurvedStar(5, 4, 90, NPC.Center, inwardPull: 0.5f, randomOffset: true);
+                List<Vector2> Star2 = Polar.GenerateCurvedStar(5, 4, 90, NPC.Center, inwardPull: 0.5f, offset: Main.rand.NextFloat(MathHelper.TwoPi));
                 foreach (Vector2 p2 in Star2)
                 {
                     Vector2 Vel = p2 - NPC.Center;

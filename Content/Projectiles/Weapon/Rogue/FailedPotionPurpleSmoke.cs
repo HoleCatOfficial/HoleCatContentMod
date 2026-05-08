@@ -70,7 +70,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             Projectile.rotation += 0.03f * Projectile.velocity.X;
             Projectile.alpha = 200;
 
-            PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Vector2.Zero, new Color(32, 11, 40) * 0.6f, Main.rand.NextFloat(0.5f, 1f));
+            //PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Vector2.Zero, new Color(32, 11, 40) * 0.6f, Main.rand.NextFloat(0.5f, 1f));
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)

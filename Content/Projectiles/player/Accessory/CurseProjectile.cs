@@ -1,3 +1,4 @@
+using System;
 using System.Formats.Tar;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -36,7 +37,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
 
         bool IHomingProjectile.TracksPlayers => false;
 
-        float IHomingProjectile.HomingTurnSpeed => 4f;
+        float IHomingProjectile.HomingTurnSpeed => 4.7f;
 
         bool IHomingProjectile.UsesHomingAcceleration => false;
 
@@ -68,11 +69,17 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
             Projectile.tileCollide = false;
             Projectile.penetrate = 1;
             Projectile.hide = true;
+
+            var ct = Enum.GetValues<curseType>();
+
+            CurseType = ct[Main.rand.Next(3)];
         }
 
-        public PixelLayer PixelLayer => PixelLayer.AboveProjectiles;
+        int scroll = 0;
+        public PixelLayer PixelLayer => PixelLayer.AbovePlayer;
         void IDrawPixelated.DrawPixelated(SpriteBatch spriteBatch)
         {
+            
             Texture2D texture = DTAssetLib.CurseSigilRing.Value;
             Texture2D SparkTex = DTAssetLib.MiscSparkle144.Value;
             Vector2 origin = texture.Size() / 2f;
@@ -80,9 +87,12 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
 
             Opus.StartSpriteBatchPixelated(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
 
-            DTTrail.DrawTrail(spriteBatch, BlendState.AlphaBlend, DTAssetLib.Streak(Trailtype()).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 16, Col() with { A = 0 }, 2f);
+            DTTrail.DrawTrailPixelated(spriteBatch, BlendState.AlphaBlend, DTAssetLib.Streak(Trailtype(), true).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 16, Col() with { A = 0 }, scroll, 1);
 
-            spriteBatch.Draw(SparkTex, Projectile.Center - Main.screenPosition, null, Col() with { A = 0 }, rot, SparkOrigin, Projectile.scale, SpriteEffects.None, 0f);
+            Opus.StartSpriteBatchPixelated(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
+
+            spriteBatch.Draw(SparkTex, Projectile.Center - Main.screenPosition, null, Color.White with { A = 0 }, MathHelper.PiOver2, SparkOrigin, Projectile.scale * 0.5f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(SparkTex, Projectile.Center - Main.screenPosition, null, Col() with { A = 0 }, MathHelper.PiOver2, SparkOrigin, Projectile.scale * 1.4f, SpriteEffects.None, 0f);
             spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null, Col() with { A = 0 }, rot, origin, 0.2f * Projectile.scale, SpriteEffects.None, 0f);
             
             Opus.ReturnToDefaultDrawing(spriteBatch);
@@ -121,10 +131,41 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
         float rot = 0f;
         public override void AI()
         {
+            scroll -= 20;
             Timer++;
 
             rot += 0.1f;
 
+            for (int i = 0; i < ProjectileID.Sets.TrailCacheLength[Type]; i++)
+            {
+                if (Projectile.oldPos[i] == Vector2.Zero)
+                {
+                    Projectile.oldPos[i] = Projectile.Center;
+                }
+            }
+        }
+
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            switch (CurseType)
+            {
+                case curseType.Hellfire:
+                    {
+                        target.AddBuff(BuffID.OnFire3, 300);
+                        break;
+                    }
+                case curseType.Shadowflame:
+                    {
+                        target.AddBuff(BuffID.ShadowFlame, 300);
+                        break;
+                    }
+                case curseType.SpiritDrift:
+                    {
+                        target.AddBuff(ModContent.BuffType<SpiritDrift>(), 300);
+                        break;
+                    }
+
+            }
         }
 	}
 }

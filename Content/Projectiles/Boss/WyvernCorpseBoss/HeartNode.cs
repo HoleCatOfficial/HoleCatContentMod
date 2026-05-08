@@ -282,7 +282,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
             if (Projectile.timeLeft <= 1)
             {
                 //PRTLoader.NewParticle(PRTLoader.GetParticleID<SmallShine>(), Projectile.Center, Vector2.Zero, Color.Red, 1f);
-                Opus.RadialSpreadProjectile(ModContent.ProjectileType<PrimalBlood>(), Main.rand.Next(6, 9), Projectile.Center, Projectile.damage, 4, 7, AI0: 0, AI1: 0.03f, offset: 0f);
+                Opus.RadialSpreadProjectile(ModContent.ProjectileType<PrimalBlood>(), Main.rand.Next(6, 9), Projectile.Center, Projectile.damage, 4, 7, ai0: 0, ai1: 0.03f, offset: 0f);
             }
         }
     }

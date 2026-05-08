@@ -51,8 +51,8 @@ namespace DestroyerTest.Content.Buffs
 				{
 					for (int g = 0; g < 8; g++)
 					{
-						PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), npc.Center, Main.rand.NextVector2Circular(3, 3), new Color(63, 66, 207) * 0.5f, 1f);
-						PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), npc.Center, Main.rand.NextVector2Circular(3, 3), new Color(63, 66, 207), 0.5f);
+						//PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), npc.Center, Main.rand.NextVector2Circular(3, 3), new Color(63, 66, 207) * 0.5f, 1f);
+						//PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), npc.Center, Main.rand.NextVector2Circular(3, 3), new Color(63, 66, 207), 0.5f);
 					}
 				}
 				if (!npc.boss)
@@ -95,8 +95,8 @@ namespace DestroyerTest.Content.Buffs
                 {
                     for (int g = 0; g < 8; g++)
                     {
-                        PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Player.Center, Main.rand.NextVector2Circular(3, 3), new Color(63, 66, 207) * 0.5f, 1f);
-                        PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Player.Center, Main.rand.NextVector2Circular(3, 3), new Color(63, 66, 207), 0.5f);
+                        //PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Player.Center, Main.rand.NextVector2Circular(3, 3), new Color(63, 66, 207) * 0.5f, 1f);
+                        //PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Player.Center, Main.rand.NextVector2Circular(3, 3), new Color(63, 66, 207), 0.5f);
                     }
                 }
                 Player.velocity.X *= 0.35f;

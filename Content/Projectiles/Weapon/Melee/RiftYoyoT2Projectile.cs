@@ -1,9 +1,12 @@
 
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Particles;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
+using OpusLib.Content.Particles;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -61,8 +64,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 			AITimer++;
 			if (AITimer % 180 == 0)
 			{
-                Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRing>(), Projectile.Center, Vector2.Zero, ColorLib.Rift, 0.01f, 0.5f);
-                Opus.RadialProjectileRandomDir(ModContent.ProjectileType<RiftStarFriendly>(), 0, Projectile.Center, Projectile.damage / 3, 0, 5);
+				BloomRing Ring = new BloomRing();
+				Ring.Prepare(Projectile.Center, Vector2.Zero, ColorLib.Rift, 0.1f, 0.01f, 1f, BlendState.Additive);
+				ParticleEngine.BehindProjectiles.Add(Ring);
+				
+				Opus.RadialSpreadProjectileRandom(ModContent.ProjectileType<RiftSpark>(), 0, Projectile.Center, Projectile.damage / 3, 0, 5);
 			}
         }
 	}

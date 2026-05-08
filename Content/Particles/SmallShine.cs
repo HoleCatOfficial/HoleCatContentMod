@@ -31,9 +31,9 @@ namespace DestroyerTest.Content.Particles
             this.scale = Scale;
         }
 
-        float LifetimeCompletion => (float)Lifetime / MaxLifetime;
         public override void Update(ref ParticleRendererSettings settings)
         {
+            float LifetimeCompletion = (float)Lifetime / MaxLifetime;
             _scale = MathHelper.Lerp(_scale, scale, Utilities.Convert01To010(LifetimeCompletion));
             rotation += 0.1f;
             position += velocity;
@@ -51,7 +51,7 @@ namespace DestroyerTest.Content.Particles
 
         public override void Draw(ref ParticleRendererSettings settings, SpriteBatch spriteBatch)
         {
-            Texture2D texture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/FlatStar").Value;
+            Texture2D texture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/SmallShine").Value;
             Vector2 origin = texture.Size() / 2f;
 
             Opus.StartSpriteBatchPixelated(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);

@@ -93,7 +93,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             // Generate flying dust effect
             if (Main.rand.NextBool(3)) // 33% chance per tick
             {
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Main.rand.NextVector2Circular(3, 3), new Color(184, 228, 242), 0.5f);
+                //PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Main.rand.NextVector2Circular(3, 3), new Color(184, 228, 242), 0.5f);
             }
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)

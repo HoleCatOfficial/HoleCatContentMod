@@ -53,8 +53,7 @@ namespace DestroyerTest.Common
 
 		public override void SetStaticDefaults() {
 			// We can further edit the ID sets here. These changes will still be consistent between all mods accessing this set since the array reference is shared.
-			CustomItemSets.DevItem[ModContent.ItemType<HoleCatHood>()] = true;
-			CustomItemSets.DevItem[ModContent.ItemType<HoleCatShawl>()] = true;
+
 		}
 	}
 }

@@ -219,7 +219,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee.Flail
 
                 if (c.hitcount >= 4)
                 {
-                    Opus.RadialSpreadProjectile(ModContent.ProjectileType<RiftStarFriendly>(), 3, Projectile.Center, Projectile.damage / 6, 2, 4, RandomOffset: true);
+                    Opus.RadialSpreadProjectile(ModContent.ProjectileType<RiftStarFriendly>(), 3, Projectile.Center, Projectile.damage / 6, 2, 4, offset: Main.rand.NextFloat(MathHelper.TwoPi));
                     SoundEngine.PlaySound(DTAssetLib.Charge.RiftFlailBurst with { MaxInstances = 0, PitchVariance = 0.4f }, Projectile.Center);
                     c.hitcount = 0;
                     c.p = 0f;

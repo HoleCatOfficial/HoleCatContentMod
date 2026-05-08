@@ -93,14 +93,14 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
 
             if (Projectile.timeLeft % 20 == 0)
             {
-                Opus.RadialSpreadDust(DustID.ShadowbeamStaff, 18, Projectile.Center, DustAlpha, default, 2.3f, 7, true);
+                Opus.RadialSpreadDust(DustID.ShadowbeamStaff, 18, Projectile.Center, DustAlpha, default, 2.3f, 7, offset: Main.rand.NextFloat(MathHelper.TwoPi));
                 DustAlpha -= 255 / 30;
                 Projectile.scale *= 1.01f;
                 SoundPitch += 1f / 30f;
                 SoundEngine.PlaySound(SoundID.Item42 with {Volume = 0.5f, Pitch = SoundPitch, MaxInstances = 0});
                 if (Projectile.timeLeft <= 20)
                 {
-                    Opus.RadialSpreadDust(DustID.ShadowbeamStaff, 18, Projectile.Center, DustAlpha, default, 5f, 10, true);
+                    Opus.RadialSpreadDust(DustID.ShadowbeamStaff, 18, Projectile.Center, DustAlpha, default, 5f, 10, offset: Main.rand.NextFloat(MathHelper.TwoPi));
                     SoundEngine.PlaySound(SoundID.Item167 with { MaxInstances = 0});
                 }
             }

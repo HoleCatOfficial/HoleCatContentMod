@@ -1,4 +1,5 @@
 
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles;
@@ -6,6 +7,7 @@ using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
+using OpusLib.Content.Particles;
 using ReLogic.Utilities;
 using System;
 using System.Collections.Generic;
@@ -214,7 +216,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             if (AuraScale >= 1f)
             {
                 hit.SourceDamage = (int)(hit.SourceDamage * 1.15f);
-                Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRing>(), target.Center, Vector2.Zero, ColorLib.Rift, 0.01f, 0.5f);
+                BloomRing Ring = new BloomRing();
+                Ring.Prepare(Projectile.Center, Vector2.Zero, ColorLib.Rift, 0.1f, 0.01f, 0.5f, BlendState.Additive);
+                ParticleEngine.BehindProjectiles.Add(Ring);
             }
         }
 
@@ -222,7 +226,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         {
             SunlightModification.Reset();
             SoundEngine.PlaySound(SoundID.DD2_WitherBeastDeath, Projectile.Center);
-            Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRing>(), Projectile.Center, Vector2.Zero, ColorLib.Rift, 0.01f, 1.8f);
+            BloomRing Ring = new BloomRing();
+            Ring.Prepare(Projectile.Center, Vector2.Zero, ColorLib.Rift, 0.1f, 0.01f, 1.8f, BlendState.Additive);
+            ParticleEngine.BehindProjectiles.Add(Ring);
         }
 	}
 }

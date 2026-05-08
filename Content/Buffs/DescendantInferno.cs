@@ -1,4 +1,6 @@
-﻿using DestroyerTest.Content.Dusts;
+﻿using BreadLibrary.Core.Graphics.Particles;
+using DestroyerTest.Content.Dusts;
+using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Particles.Stellar;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
@@ -52,11 +54,15 @@ namespace DestroyerTest.Content.Buffs
                 Vector2 p1 = Main.rand.NextVector2FromRectangle(Utils.CenteredRectangle(npc.Center, npc.Size));
                 Vector2 d = npc.Center - p1;
                 d.Normalize();
-                PRTLoader.NewParticle(StellarParticleIndex.PointGlow, p1, d, default, 1f);
+                StellarPointGlow G = new();
+                G.Prepare(p1, d);
+                ParticleEngine.ShaderParticles.Add(G);
 
                 if (Main.rand.NextBool(10))
                 {
-                    PRTLoader.NewParticle(StellarParticleIndex.FlatStar, Main.rand.NextVector2FromRectangle(Utils.CenteredRectangle(npc.Center, npc.Size)), Vector2.Zero, default, 0.15f);
+                    FlatStarStellar S = new FlatStarStellar();
+                    S.Prepare(Main.rand.NextVector2FromRectangle(Utils.CenteredRectangle(npc.Center, npc.Size)), Vector2.Zero, 0.15f);
+                    ParticleEngine.ShaderParticles.Add(S);
                 }
             }
             base.AI(npc);
@@ -92,11 +98,15 @@ namespace DestroyerTest.Content.Buffs
                 Vector2 p1 = Main.rand.NextVector2FromRectangle(Utils.CenteredRectangle(Player.Center, Player.Size));
                 Vector2 d = Player.Center - p1;
                 d.Normalize();
-                PRTLoader.NewParticle(StellarParticleIndex.PointGlow, p1, d, default, 1f);
+                StellarPointGlow G = new();
+                G.Prepare(p1, d);
+                ParticleEngine.ShaderParticles.Add(G);
 
                 if (Main.rand.NextBool(10))
                 {
-                    PRTLoader.NewParticle(StellarParticleIndex.FlatStar, Main.rand.NextVector2FromRectangle(Utils.CenteredRectangle(Player.Center, Player.Size)), Vector2.Zero, default, 0.15f);
+                    FlatStarStellar S = new FlatStarStellar();
+                    S.Prepare(Main.rand.NextVector2FromRectangle(Utils.CenteredRectangle(Player.Center, Player.Size)), Vector2.Zero, 0.15f);
+                    ParticleEngine.ShaderParticles.Add(S);
                 }
             }
         }

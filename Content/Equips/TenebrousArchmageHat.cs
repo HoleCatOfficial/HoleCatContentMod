@@ -150,7 +150,7 @@ namespace DestroyerTest.Content.Equips
 						}
 					}
 
-					Opus.RingDustOutward(DustID.TintableDustLighted, 16, Player.Center, 10, 0, ColorLib.TenebrisGradient, 1, 2, false);
+					Opus.RingSpreadDust(DustID.TintableDustLighted, 16, Player.Center, 10, 0, ColorLib.TenebrisGradient, 1, 2, offset: Main.rand.NextFloat(MathHelper.TwoPi));
 					Cooldown = 1800;
 				}
 
@@ -173,7 +173,7 @@ namespace DestroyerTest.Content.Equips
                     {
                         SoundEngine.PlaySound(SoundID.DD2_EtherianPortalSpawnEnemy);
                         NPC.HitInfo strike = new NPC.HitInfo { Crit = false, Damage = 16, DamageType = null, HideCombatText = false, HitDirection = 0, InstantKill = false, Knockback = 0};
-                        Opus.RingDustOutward(dustType, 30, Player.Center, Radius, 0, ColorLib.TenebrisGradient, 2f, 8, true);
+                        Opus.RingSpreadDust(dustType, 30, Player.Center, Radius, 0, ColorLib.TenebrisGradient, 2f, 8, offset: Main.rand.NextFloat(MathHelper.TwoPi));
 
                         foreach (NPC enemy in Main.npc)
                         {

@@ -91,7 +91,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 
         public override void OnKill(int timeLeft)
         {
-			Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), Projectile.Center, Vector2.Zero, ColorLib.TenebrisGradient, 0.05f, 2f);
+			//Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), Projectile.Center, Vector2.Zero, ColorLib.TenebrisGradient, 0.05f, 2f);
 			SoundEngine.PlaySound(DTAssetLib.Impacts.StellarFox with { PitchVariance = 0.4f, MaxInstances = 0 }, Projectile.Center);
 			Opus.RadialSpreadProjectile(ModContent.ProjectileType<TenebrisStarFriendly>(), 12, Projectile.Center, Projectile.damage / 8, 4, 8, offset: Projectile.rotation);
         }

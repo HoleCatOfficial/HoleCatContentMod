@@ -1,3 +1,4 @@
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
@@ -447,7 +448,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             for (int i = 0; i < 2; i++)
             {
                 //Dust.NewDustPerfect(ppt[Main.rand.Next(15)], ModContent.DustType<ColorableNeonDust>(), SwordLine.GetLineRotation.ToRotationVector2() * 2, 0, ColorLib.CursedFlames * 0.5f, 3f);
-                PRTLoader.NewParticle(StellarParticleIndex.ConstitutionParticle, ppt[Main.rand.Next(15)], SwordLine.GetLineRotation.ToRotationVector2() * 2, default, 0.5f);
+
+                ConstitutionParticle FX = new();
+                FX.Initialize(ppt[Main.rand.Next(15)], SwordLine.GetLineRotation.ToRotationVector2() * 2, 0.5f, 30);
+                ParticleEngine.BehindProjectiles.Add(FX);
+              
             }
 
             ScaleMult = 1.25f;

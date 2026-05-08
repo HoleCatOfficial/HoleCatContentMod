@@ -52,7 +52,7 @@ namespace DestroyerTest.Content.Particles
 
         public override void Draw(ref ParticleRendererSettings settings, SpriteBatch spriteBatch)
         {
-            Texture2D texture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/ImpactCracks").Value;
+            Texture2D texture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/PreMultiplied/StarParticle").Value;
             Vector2 origin = texture.Size() / 2f;
 
             Opus.StartSpriteBatchPixelated(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);

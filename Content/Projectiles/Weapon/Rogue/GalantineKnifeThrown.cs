@@ -1,19 +1,20 @@
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Dusts;
+using DestroyerTest.Content.Particles.Stellar;
+using DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss;
+using GlowmaskHelper.Content;
+using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
+using ReLogic.Content;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using GlowmaskHelper.Content;
-using ReLogic.Content;
-using Terraria.Audio;
-using OpusLib;
-using DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss;
-using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.Particles.Stellar;
-using InnoVault.PRT;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 {
@@ -105,7 +106,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 
             if (Main.rand.NextBool(3))
             {
-                PRTLoader.NewParticle(StellarParticleIndex.ConstitutionParticle, Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Projectile.velocity * 0.15f, default, 0.5f);
+                ConstitutionParticle FX = new();
+                FX.Initialize(Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Vector2.Zero, 1f, 30);
+                ParticleEngine.BehindProjectiles.Add(FX);
+
             }
         }
 
@@ -137,13 +141,13 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
                 MaxInstances = 0
             }, Projectile.Center);
 
-            Opus.RadialSpreadParticle(StellarParticleIndex.ConstitutionParticle, 12, Projectile.Center, 1f, default, 1f, 2f, RandomOffset: true);
+            
 
             DTUtils.ConstitutionStarExplosionEffects(Projectile);
 
             if (!Stick)
             {
-                Opus.RadialSpreadProjectile(ModContent.ProjectileType<ConstitutionStarFriendly>(), 3, Projectile.Center, 8, 4, 8, AI2: 1, RandomOffset: true);
+                Opus.RadialSpreadProjectile(ModContent.ProjectileType<ConstitutionStarFriendly>(), 3, Projectile.Center, 8, 4, 8, ai2: 1, offset: Main.rand.NextFloat(MathHelper.TwoPi));
             }
         }
     }

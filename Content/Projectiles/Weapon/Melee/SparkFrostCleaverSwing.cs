@@ -99,7 +99,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             if (hit.Crit)
             {
                 SoundEngine.PlaySound(DTAssetLib.Impacts.DarkMagicImpact, npc.Center);
-                DTUtils.InfectedScepter_RingProjectileOutwardAlternating(ModContent.ProjectileType<FlameBurst>(), ModContent.ProjectileType<FrostBurst>(), 2, npc.Center, 10, Projectile.damage / 4, 3, 8, RandomOffset: true);
+                DTUtils.InfectedScepter_RingSpreadProjectileAlternating(ModContent.ProjectileType<FlameBurst>(), ModContent.ProjectileType<FrostBurst>(), 2, npc.Center, 10, Projectile.damage / 4, 3, 8, RandomOffset: true);
             }
 
 
@@ -332,7 +332,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             if (hit.Crit)
             {
                 SoundEngine.PlaySound(DTAssetLib.Impacts.DarkMagicImpact, target.Center);
-                DTUtils.InfectedScepter_RingProjectileOutwardAlternating(ModContent.ProjectileType<FlameBurst>(), ModContent.ProjectileType<FrostBurst>(), 2, target.Center, 10, Projectile.damage / 4, 3, 8, RandomOffset: true);
+                DTUtils.InfectedScepter_RingSpreadProjectile#Alternating(ModContent.ProjectileType<FlameBurst>(), ModContent.ProjectileType<FrostBurst>(), 2, target.Center, 10, Projectile.damage / 4, 3, 8, offset: Main.rand.NextFloat(MathHelper.TwoPi));
             }
 
 

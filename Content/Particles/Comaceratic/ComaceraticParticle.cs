@@ -4,6 +4,7 @@ using InnoVault.PRT;
 using Microsoft.CodeAnalysis;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +26,7 @@ namespace DestroyerTest.Content.Particles.Comaceratic
         float scale;
         float rotation;
 
-        int variant => Main.rand.Next(3);
+        int variant => Main.rand.Next(1, 4);
         public void Initialize(Vector2 Position, Vector2 Velocity, Color Color, float Scale)
         {
             this.position = Position;
@@ -38,6 +39,7 @@ namespace DestroyerTest.Content.Particles.Comaceratic
         {
             Lifetime++;
             velocity *= 0.96f;
+            rotation += 0.1f * Math.Sign(velocity.X);
             if (velocity.X > 0)
             {
                 rotation += 0.06f;
@@ -61,13 +63,15 @@ namespace DestroyerTest.Content.Particles.Comaceratic
         public override bool DrawsPixelated => true;
         public override void Draw(ref ParticleRendererSettings settings, SpriteBatch spriteBatch)
         {
+            Opus.StartSpriteBatchPixelated(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
+
             Texture2D texture = ModContent.Request<Texture2D>($"DestroyerTest/Content/Particles/Comaceratic/ComaceraticParticle{variant}").Value;
             Vector2 origin = texture.Size() / 2f;
             spriteBatch.Draw(
                 texture,
                 position - Main.screenPosition,
                 null,
-                color,
+                color with { A = 0 },
                 rotation,
                 origin,
                 scale,

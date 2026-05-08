@@ -74,7 +74,7 @@ namespace DestroyerTest.Content.Equips
         {
             if (Active)
             {
-                Opus.RadialSpreadProjectile(ModContent.ProjectileType<ConstitutionStarFriendly>(), 5, Player.Center, 14, 4, 6, AI2: 1, RandomOffset: true);
+                Opus.RadialSpreadProjectile(ModContent.ProjectileType<ConstitutionStarFriendly>(), 5, Player.Center, 14, 4, 6, ai2: 1, offset: Main.rand.NextFloat(MathHelper.TwoPi));
             }
         }
 
@@ -82,7 +82,7 @@ namespace DestroyerTest.Content.Equips
         {
             if (Active)
             {
-                Opus.RadialSpreadProjectile(ModContent.ProjectileType<ConstitutionStarFriendly>(), 3, Player.Center, 10, 4, 6, AI2: 1, RandomOffset: true);
+                Opus.RadialSpreadProjectile(ModContent.ProjectileType<ConstitutionStarFriendly>(), 3, Player.Center, 10, 4, 6, ai2: 1, offset: Main.rand.NextFloat(MathHelper.TwoPi));
             }
         }
 

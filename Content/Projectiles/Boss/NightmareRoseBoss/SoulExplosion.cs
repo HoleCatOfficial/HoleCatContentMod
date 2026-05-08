@@ -35,7 +35,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
         {
             for (int c = 0; c < 4; c++)
             {
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<Boom3>(), Projectile.Center, Vector2.Zero, ColorLib.Soul, 16f);
+               
             }
         }
 

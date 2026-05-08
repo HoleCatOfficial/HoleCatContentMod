@@ -60,8 +60,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
         public override void OnKill(int timeLeft)
         {
 			SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/RiftMaker_Boom") with { MaxInstances = 0, PitchVariance = 0.2f }, Projectile.Center);
-			PRTLoader.NewParticle(PRTLoader.GetParticleID<SmallShine>(), Projectile.Center, Vector2.Zero, ColorLib.Rift, 1);
-            Opus.RadialDustRandomDir(DustID.FireworksRGB, 13, Projectile.Center, 0, ColorLib.Rift, 1f, 2.4f);
+			//PRTLoader.NewParticle(PRTLoader.GetParticleID<SmallShine>(), Projectile.Center, Vector2.Zero, ColorLib.Rift, 1);
+            Opus.RadialSpreadDustRandom(DustID.FireworksRGB, 13, Projectile.Center, 0, ColorLib.Rift, 1f, 2.4f);
         }
 
     }

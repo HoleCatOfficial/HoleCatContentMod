@@ -1,4 +1,5 @@
 using BreadLibrary.Core.Graphics;
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
@@ -11,6 +12,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using OpusLib.Content.Helpers;
+using OpusLib.Content.Particles;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -51,7 +53,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee.Quixotism
                 {
                     for (int i = 0; i < 3; i++)
                     {
-                        PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), pt[Main.rand.Next(30)], SwordLine.GetLineRotation.ToRotationVector2() * 2, new Color(255, 219, 6), 1.5f);
+                        PointGlowPreMultiplied FX = new();
+                        FX.Initialize(pt[Main.rand.Next(30)], SwordLine.GetLineRotation.ToRotationVector2() * 2, new Color(255, 219, 6), 1.5f);
+                        ParticleEngine.BehindProjectiles.Add(FX);
+
                         Dust.NewDustPerfect(pt[Main.rand.Next(30)], ModContent.DustType<ColorableNeonDust>(), SwordLine.GetLineRotation.ToRotationVector2() * 2, 0, new Color(255, 219, 6), 2f);
                     }
                     SweepColor = ColorLib.Soul2;
@@ -91,12 +96,18 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee.Quixotism
                     Q.comboExpireTimer = 120;
 
                     SoundEngine.PlaySound(DTAssetLib.SwordSounds.Slam, npc.Center);
-                    Opus.RadialDustRandomDir(ModContent.DustType<ColorableNeonDust>(), 7, npc.Center, 0, new Color(255, 219, 6), 1f, 3);
+                    Opus.RadialSpreadDustRandom(ModContent.DustType<ColorableNeonDust>(), 7, npc.Center, 0, new Color(255, 219, 6), 1f, 3);
                     npc.AddBuff(ModContent.BuffType<SoulInferno>(), 120);
 
-                    PRTLoader.NewParticle(PRTLoader.GetParticleID<QuixoticParticle>(), Main.rand.NextVector2FromRectangle(npc.Hitbox), Vector2.Zero, default, 1f);
+                  
 
-                    Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), npc.Center, Vector2.Zero, new Color(255, 219, 6) * 0.5f, 0.01f, 0.4f);
+                    QuixoticParticle FX = new();
+                    FX.Initiate(Main.rand.NextVector2FromRectangle(npc.Hitbox));
+                    ParticleEngine.BehindProjectiles.Add(FX);
+
+                    BloomRingSharp Ring = new();
+                    Ring.Prepare(npc.Center, Vector2.Zero, new Color(255, 219, 6) * 0.5f, 0.1f, 0.01f, 0.4f, BlendState.Additive);
+                    ParticleEngine.BehindProjectiles.Add(Ring);
 
                     if (Q.hitCount[1] >= 2)
                     {

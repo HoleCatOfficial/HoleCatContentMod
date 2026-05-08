@@ -107,7 +107,7 @@ namespace DestroyerTest.Content.Entities
                         Vector2 Edge = Main.rand.NextVector2CircularEdge(600, 600);
                         Vector2 Inward = NPC.Center - Edge;
                         Inward.Normalize();
-                        PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Edge, Inward  * 0.1f, ColorLib.Ichor, 1.0f);
+                        //PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Edge, Inward  * 0.1f, ColorLib.Ichor, 1.0f);
                     }
                 }
             }
@@ -121,7 +121,6 @@ namespace DestroyerTest.Content.Entities
             if (NPC.justHit && AttackCharge > 300 && !Stunned)
             {
                 SoundEngine.PlaySound(ChargeBreak, NPC.Center);
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<Boom1>(), NPC.Center, Vector2.Zero, ColorLib.Ichor, 3.0f);
                 CombatText.NewText(NPC.getRect(), ColorLib.Ichor, "Charge Broken!", true, false);
                 AttackCharge = 0;
                 Stunned = true;

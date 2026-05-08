@@ -30,8 +30,6 @@ namespace DestroyerTest.Content.SummonItems
             DefaultDraw = true;
             TickSpeed = 3;
             UsesParticleOrchestratorOnTele = false;
-            TelePRTID = PRTLoader.GetParticleID<Boom1>();
-            UsesPRTOnTele = true;
             TeleDist = 1500;
             Range = 1500;
             Style = IdleStyle.Defensive;

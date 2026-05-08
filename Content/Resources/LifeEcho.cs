@@ -1,4 +1,5 @@
-﻿using DestroyerTest.Content.Particles;
+﻿using BreadLibrary.Core.Graphics.Particles;
+using DestroyerTest.Content.Particles;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using OpusLib.Content.Helpers;
@@ -33,7 +34,11 @@ namespace DestroyerTest.Content.Resources
 		public override void PostUpdate() 
 		{
 			Lighting.AddLight(Item.Center, Color.WhiteSmoke.ToVector3() * 0.55f * Main.essScale);
-            PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Main.rand.NextVector2FromRectangle(Item.Hitbox), Main.rand.NextVector2Circular(1f, 1f), new Color(184, 228, 242), 0.5f);
+
+			PointGlowPreMultiplied FX = new();
+			FX.Initialize(Main.rand.NextVector2FromRectangle(Item.Hitbox), Main.rand.NextVector2Circular(1f, 1f), new Color(184, 228, 242), 0.5f);
+			ParticleEngine.ShaderParticles.Add(FX);
+            
         }
 	}
 

@@ -123,27 +123,5 @@ namespace DestroyerTest.Common
 
     }
 
-    public class ApplyAccessoryStats : ModSystem
-    {
-        public override void PostUpdateTime()
-        {
-            foreach (var projectile in Main.projectile)
-            {
-                if (projectile.active && projectile.DamageType == ModContent.GetInstance<ScepterClass>() && Main.rand.NextBool(16))
-                {
-                    if (ScepterClassStats.BloodVialItem)
-                    {
-                        ScepterClassStats.VileCystItem = false;
-                        Projectile.NewProjectile(projectile.GetSource_FromThis(), projectile.position, projectile.velocity / 4, ModContent.ProjectileType<BloodBlob>(), projectile.damage, 2f);
-                    }
-
-                    if (ScepterClassStats.VileCystItem)
-                    {
-                        ScepterClassStats.BloodVialItem = false;
-                        Projectile.NewProjectile(projectile.GetSource_FromThis(), projectile.position, projectile.velocity / 4, ModContent.ProjectileType<PusBlob>(), projectile.damage, 2f);
-                    }
-                }
-            }
-        }
-    }
+    
 }

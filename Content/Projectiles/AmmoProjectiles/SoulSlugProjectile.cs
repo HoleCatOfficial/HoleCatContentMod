@@ -80,7 +80,7 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
             ParticleEngine.Particles.Add(Explosion);
 
             BloomRingSharp Ring = new BloomRingSharp();
-            Ring.Prepare(Projectile.Center, Vector2.Zero, Color.White, 0.1f, 0.001f, 0.6f, BlendState.Additive)
+            Ring.Prepare(Projectile.Center, Vector2.Zero, Color.White, 0.1f, 0.001f, 0.6f, BlendState.Additive);
             ParticleEngine.Particles.Add(Ring);
            
 

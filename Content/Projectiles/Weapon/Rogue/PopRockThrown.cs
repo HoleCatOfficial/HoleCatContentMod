@@ -62,9 +62,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            Opus.RadialProjectileRandomDir(ModContent.ProjectileType<PopRockShrapnel>(), 3, Projectile.Center, Projectile.damage / 2, 0, Main.rand.NextFloat(0.1f, 3f), friendly: true);
+            Opus.RadialSpreadProjectileRandom(ModContent.ProjectileType<PopRockShrapnel>(), 3, Projectile.Center, Projectile.damage / 2, 0, Main.rand.NextFloat(0.1f, 3f));
 
-            Opus.RadialProjectileRandomDir(ModContent.ProjectileType<RiftSpark>(), 5, Projectile.Center, Projectile.damage / 6, 0, 2, friendly: true);
+            Opus.RadialSpreadProjectileRandom(ModContent.ProjectileType<RiftSpark>(), 5, Projectile.Center, Projectile.damage / 6, 0, 2);
         }
 
         public override void OnKill(int timeLeft)

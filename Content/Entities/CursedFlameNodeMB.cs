@@ -1,4 +1,5 @@
 
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.BossBar;
@@ -16,6 +17,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using OpusLib.Content.Helpers;
+using OpusLib.Content.Particles;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -464,7 +466,11 @@ namespace DestroyerTest.Content.Entities
             if (DormantPulseTimer <= 0)
             {
                 SoundEngine.PlaySound(SoundID.DD2_WitherBeastAuraPulse, NPC.Center);
-                Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), NPC.Center, Vector2.Zero, ColorLib.CursedFlames, 0.01f, 1f);
+
+                BloomRingSharp Ring = new();
+                Ring.Prepare(NPC.Center, Vector2.Zero, ColorLib.CursedFlames, 0.03f, 0.01f, 2f, BlendState.Additive);
+                ParticleEngine.ShaderParticles.Add(Ring);
+
                 DormantPulseTimer = 120;
             }
 
@@ -491,7 +497,9 @@ namespace DestroyerTest.Content.Entities
 
             for (int i = 0; i < P.Length; i++)
             {
-                PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), P[i], Vector2.Zero, DTColorUtils.MultiLerp(progress, ColorLib.WretchedColorMap), 1f);
+                PointGlowPreMultiplied G = new();
+                G.Initialize(P[i], Vector2.Zero, OpusColorUtils.MultiLerp(progress, ColorLib.WretchedColorMap), 1f);
+                ParticleEngine.ShaderParticles.Add(G);
             }
 
             foreach (Player p in Main.player)
@@ -554,7 +562,10 @@ namespace DestroyerTest.Content.Entities
                 SoundEngine.PlaySound(DTAssetLib.Impacts.DarkMagicImpact);
                 for (int i = 0; i < SpawnPositions.Length; i++)
                 {
-                    Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), SpawnPositions[i], Vector2.Zero, ColorLib.CursedFlames, 0.01f, 0.4f);
+                    BloomRingSharp Ring = new();
+                    Ring.Prepare(SpawnPositions[i], Vector2.Zero, ColorLib.CursedFlames, 0.1f, 0.01f, 0.4f, BlendState.Additive);
+                    ParticleEngine.ShaderParticles.Add(Ring);
+
                     NPC wavenpc = NPC.NewNPCDirect(NPC.GetSource_FromAI(NPCIdentifierContext), SpawnPositions[i], CursedFlameNodeWaveEnemies[Main.rand.Next(CursedFlameNodeWaveEnemies.Count)]);
                     wavenpc.scale = 1.5f;
                     wavenpc.knockBackResist = 0f;
@@ -624,16 +635,16 @@ namespace DestroyerTest.Content.Entities
         public void Stars()
         {
             SoundEngine.PlaySound(StarShoot, NPC.Center);
-            Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), NPC.Center, Vector2.Zero, ColorLib.CursedFlames, 0.01f, 1f);
-            Opus.RadialSpreadProjectile(ModContent.ProjectileType<CursedNodeCrystal2>(), 7, NPC.Center, 16, 4, 10, AI1: 1, offset: NPC.rotation);
-            Opus.RadialSpreadProjectile(ModContent.ProjectileType<CursedNodeCrystal2>(), 7, NPC.Center, 16, 4, 10, AI1: -1, offset: NPC.rotation);
+            //Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), NPC.Center, Vector2.Zero, ColorLib.CursedFlames, 0.01f, 1f);
+            Opus.RadialSpreadProjectile(ModContent.ProjectileType<CursedNodeCrystal2>(), 7, NPC.Center, 16, 4, 10, ai1: 1, offset: NPC.rotation);
+            Opus.RadialSpreadProjectile(ModContent.ProjectileType<CursedNodeCrystal2>(), 7, NPC.Center, 16, 4, 10, ai1: -1, offset: NPC.rotation);
             StarShootCount += 1;
         }
 
         public void FlameSwarm(Player player)
         {
             SoundEngine.PlaySound(Wallwarn, NPC.Center);
-            Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), NPC.Center, Vector2.Zero, ColorLib.CursedFlames, 0.01f, 1f);
+            //Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), NPC.Center, Vector2.Zero, ColorLib.CursedFlames, 0.01f, 1f);
             
             for (int i = 0; i < 2; i++)
             {

@@ -32,7 +32,6 @@ namespace DestroyerTest.Common
         public override void SetDefaultStats(Player player)
         {
             player.GetCritChance<DTRogueClass>() += 4;
-            player.GetAttackSpeed<DTRogueClass>() += 01f;
             player.GetArmorPenetration<DTRogueClass>() += 2;
         }
         public override bool UseStandardCritCalcs => true;

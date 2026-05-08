@@ -15,6 +15,8 @@ using DestroyerTest.Content.Buffs;
 using InnoVault.PRT;
 using DestroyerTest.Content.Particles;
 using Terraria.Audio;
+using OpusLib.Content.Particles;
+using BreadLibrary.Core.Graphics.Particles;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 {
@@ -125,10 +127,14 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 
         public override void OnKill(int timeLeft)
         {
-			Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), Projectile.Center, Vector2.Zero, Color.Red, 0.05f, 2f);
-			PRTLoader.NewParticle(PRTLoader.GetParticleID<SmallShine>(), Projectile.Center, Vector2.Zero, Color.White, 2);
+			BloomRingSharp Ring = new();
+			Ring.Prepare(Projectile.Center, Vector2.Zero, Color.Red, 0.08f, 0.01f, 1f, BlendState.Additive);
+			ParticleEngine.BehindProjectiles.Add(Ring);
+
+
+			
 			SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/Impacts/IceMagicImpact", 3) with { PitchVariance = 0.4f, MaxInstances = 0 }, Projectile.Center);
-			Opus.RadialSpreadProjectile(ModContent.ProjectileType<Condemnation>(), 4, Projectile.Center, Projectile.damage, 4, 8, RandomOffset: true);
+			Opus.RadialSpreadProjectile(ModContent.ProjectileType<Condemnation>(), 4, Projectile.Center, Projectile.damage, 4, 8, offset: Main.rand.NextFloat(MathHelper.TwoPi));
         }
 
 

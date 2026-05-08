@@ -1,5 +1,4 @@
-using System;
-using System.Collections.Generic;
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Particles;
@@ -9,6 +8,8 @@ using Microsoft.Build.ObjectModelRemoting;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
+using System;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -135,9 +136,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
 			Lighting.AddLight(Projectile.Center, Color.SkyBlue.ToVector3() * 0.5f);
 
-			PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Projectile.Center, Vector2.Zero, Color.SkyBlue * 0.75f, 2f, 60, ai2: 2);
+			PointGlowPreMultiplied Glow = new();
+			Glow.Initialize(Projectile.Center, Vector2.Zero, Color.SkyBlue * 0.75f, 2f);
+            ParticleEngine.BehindProjectiles.Add(Glow);
 
-			if (DelayTimer < 20)
+            if (DelayTimer < 20)
 			{
 				DelayTimer += 1;
 				return;
@@ -207,7 +210,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 			target.AddBuff(ModContent.BuffType<HaepiensBlizzard>(), 600);
 			SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/IceImpact1"));
-			PRTLoader.NewParticle(PRTLoader.GetParticleID<Boom1>(), target.Center, Vector2.Zero, Color.SkyBlue, 1);
+			
 		}
 	}
 }
