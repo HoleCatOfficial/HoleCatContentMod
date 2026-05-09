@@ -32,9 +32,10 @@ namespace DestroyerTest.Content.Particles
             this.scale = Scale;
         }
 
-        float LifetimeCompletion => (float)Lifetime / MaxLifetime;
         public override void Update(ref ParticleRendererSettings settings)
         {
+            float LifetimeCompletion = (float)Lifetime / MaxLifetime;
+
             _scale = MathHelper.Lerp(_scale, scale, Utilities.Convert01To010(LifetimeCompletion));
             rotation += 0.1f;
             position += velocity;
@@ -82,9 +83,10 @@ namespace DestroyerTest.Content.Particles
             this.scale = Scale;
         }
 
-        float LifetimeCompletion => (float)Lifetime / MaxLifetime;
         public override void Update(ref ParticleRendererSettings settings)
         {
+            float LifetimeCompletion = (float)Lifetime / MaxLifetime;
+
             color = OpusColorUtils.MultiLerp(LifetimeCompletion, ColorLib.StellarFireColormap);
             _scale = MathHelper.Lerp(_scale, scale, Utilities.Convert01To010(LifetimeCompletion));
             rotation += 0.1f;

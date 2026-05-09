@@ -34,9 +34,31 @@ namespace DestroyerTest.Content.Equips
             {
                 Dash.Active = true;
             }
+
+            if (player.TryGetModPlayer<HoleCatMoveSpeed>(out var Speed))
+            {
+                Speed.Active = true;
+            }
         }
     }
+    public class HoleCatMoveSpeed : ModPlayer
+    {
+        public bool Active = false;
 
+        public override void ResetEffects()
+        {
+            Active = false;
+        }
+
+        public override void PostUpdateRunSpeeds()
+        {
+            if (Active)
+            {
+                Player.wingTimeMax = (int)(Player.wingTimeMax * 1.15f);
+                Player.maxRunSpeed *= 1.06f;
+            }
+        }
+    }
     public class HoleCatDash : ModPlayer
     {
 

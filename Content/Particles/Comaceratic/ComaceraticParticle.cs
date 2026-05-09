@@ -34,10 +34,12 @@ namespace DestroyerTest.Content.Particles.Comaceratic
             this.color = Color;
             this.scale = Scale;
         }
-        float LifetimeCompletion => (float)Lifetime / MaxLifetime;
         public override void Update(ref ParticleRendererSettings settings)
         {
             Lifetime++;
+
+            float LifetimeCompletion = (float)Lifetime / MaxLifetime;
+
             velocity *= 0.96f;
             rotation += 0.1f * Math.Sign(velocity.X);
             if (velocity.X > 0)

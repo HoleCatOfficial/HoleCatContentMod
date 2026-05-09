@@ -32,9 +32,10 @@ namespace DestroyerTest.Content.Particles
             this.scale = Scale;
         }
 
-        float Progress => (float)Lifetime / MaxLifetime;
+        
         public override void Update(ref ParticleRendererSettings settings)
         {
+            float Progress = (float)Lifetime / MaxLifetime;
             Lifetime++;
             position += velocity;
 
@@ -58,6 +59,7 @@ namespace DestroyerTest.Content.Particles
         {
             Texture2D texture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/PointGlow").Value;
             Vector2 origin = texture.Size() / 2f;
+
 
             Opus.StartSpriteBatchPixelated(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
 

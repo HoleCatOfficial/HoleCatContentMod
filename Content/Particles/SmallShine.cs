@@ -15,7 +15,7 @@ namespace DestroyerTest.Content.Particles
     public class SmallShine : BaseParticle<SmallShine>
     {
         int Lifetime = 0;
-        int MaxLifetime = 120;
+        int MaxLifetime = 40;
         Vector2 position;
         Vector2 velocity;
         Color color;
@@ -34,7 +34,7 @@ namespace DestroyerTest.Content.Particles
         public override void Update(ref ParticleRendererSettings settings)
         {
             float LifetimeCompletion = (float)Lifetime / MaxLifetime;
-            _scale = MathHelper.Lerp(_scale, scale, Utilities.Convert01To010(LifetimeCompletion));
+            _scale = MathHelper.Lerp(0, scale, Utilities.Convert01To010(LifetimeCompletion));
             rotation += 0.1f;
             position += velocity;
             Lifetime++;
@@ -56,7 +56,7 @@ namespace DestroyerTest.Content.Particles
 
             Opus.StartSpriteBatchPixelated(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
 
-            spriteBatch.Draw(texture, position - Main.screenPosition, null, color with { A = 0 }, rotation, origin, scale, SpriteEffects.None, 0f);
+            spriteBatch.Draw(texture, position - Main.screenPosition, null, color with { A = 0 }, rotation, origin, _scale, SpriteEffects.None, 0f);
 
             Opus.ReturnToDefaultDrawing(spriteBatch);
         }

@@ -2048,7 +2048,7 @@ namespace DestroyerTest.Common
                     if (ve.Count >= 3)
                     {
                         gd.Textures[0] = TrailTex;
-                        gd.DrawUserPrimitives(PrimitiveType.LineStrip, ve.ToArray(), 0, ve.Count - 2);
+                        gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2);
                     }
                 }
 
@@ -2113,7 +2113,7 @@ namespace DestroyerTest.Common
                     if (ve.Count >= 3)
                     {
                         gd.Textures[0] = TrailTex;
-                        gd.DrawUserPrimitives(PrimitiveType.LineStrip, ve.ToArray(), 0, ve.Count - 2);
+                        gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2);
                     }
                 }
 
@@ -2181,7 +2181,7 @@ namespace DestroyerTest.Common
                     if (ve.Count >= 3)
                     {
                         gd.Textures[0] = TrailTex;
-                        gd.DrawUserPrimitives(PrimitiveType.LineStrip, ve.ToArray(), 0, ve.Count - 2);
+                        gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2);
                     }
                 }
 

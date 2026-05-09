@@ -76,11 +76,11 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
             SoundEngine.PlaySound(DTAssetLib.Impacts.IceImpact with { Pitch = 0.7f, PitchVariance = 0.2f, Volume = 0.5f }, Projectile.Center);
 
             SimpleExplosionParticle Explosion = new SimpleExplosionParticle();
-            Explosion.Prepare(Projectile.Center, Vector2.Zero, ColorLib.Soul, 0.3f, 0.001f, 0.5f, BlendState.Additive);
+            Explosion.Prepare(Projectile.Center, Vector2.Zero, ColorLib.Soul, 0.3f, 0.001f, 1f, BlendState.Additive);
             ParticleEngine.Particles.Add(Explosion);
 
             BloomRingSharp Ring = new BloomRingSharp();
-            Ring.Prepare(Projectile.Center, Vector2.Zero, Color.White, 0.1f, 0.001f, 0.6f, BlendState.Additive);
+            Ring.Prepare(Projectile.Center, Vector2.Zero, Color.White, 0.1f, 0.001f, 0.2f, BlendState.Additive);
             ParticleEngine.Particles.Add(Ring);
            
 

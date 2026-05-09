@@ -74,16 +74,12 @@ namespace DestroyerTest.Content.Projectiles
 			Lighting.AddLight(Projectile.Center, ColorLib.TenebrisGradient.ToVector3() * 0.2f);
 
             Fire fire = new Fire();
-            fire.PrepareFire(Projectile.Center, Vector2.Zero, DTUtils.RandomDirection(2), 0.2f, ColorLib.TenebrisGradient * 0.5f, 0.8f, 100, FireDrawMode.Additive, PixelLayer.AboveProjectiles);
+            fire.PrepareFire(Projectile.Center, Vector2.Zero, DTUtils.RandomDirection(2), 0.2f, ColorLib.TenebrisGradient * 0.5f, 0.8f, 40, FireDrawMode.Additive, PixelLayer.AboveProjectiles);
             ParticleEngine.BehindProjectiles.Add(fire);
 
             Fire fire2 = new Fire();
-            fire2.PrepareFire(Projectile.Center, Vector2.Zero, DTUtils.RandomDirection(2), 0.2f, ColorLib.TenebrisGradient, 0.5f, 100, FireDrawMode.Additive, PixelLayer.AboveProjectiles);
+            fire2.PrepareFire(Projectile.Center, Vector2.Zero, DTUtils.RandomDirection(2), 0.2f, ColorLib.TenebrisGradient, 0.5f, 40, FireDrawMode.Additive, PixelLayer.AboveProjectiles);
             ParticleEngine.BehindProjectiles.Add(fire2);
-
-			PointGlowPreMultiplied Glow = new PointGlowPreMultiplied();
-			Glow.Initialize(Projectile.Center, Vector2.Zero, ColorLib.TenebrisGradient * 0.5f, 0.5f);
-            ParticleEngine.BehindProjectiles.Add(Glow);
 
 			float maxDetectRadius = 1400f;
 
@@ -193,17 +189,12 @@ namespace DestroyerTest.Content.Projectiles
 			Lighting.AddLight(Projectile.Center, ColorLib.TenebrisGradient.ToVector3() * 0.2f);
 
             Fire fire = new Fire();
-            fire.PrepareFire(Projectile.Center, Vector2.Zero, DTUtils.RandomDirection(2), 0.2f, ColorLib.TenebrisGradient * 0.5f, 0.8f, 100, FireDrawMode.Additive, PixelLayer.AboveProjectiles);
+            fire.PrepareFire(Projectile.Center, Vector2.Zero, DTUtils.RandomDirection(2), 0.2f, ColorLib.TenebrisGradient * 0.5f, 0.8f, 40, FireDrawMode.Additive, PixelLayer.AboveProjectiles);
             ParticleEngine.BehindProjectiles.Add(fire);
 
             Fire fire2 = new Fire();
-            fire2.PrepareFire(Projectile.Center, Vector2.Zero, DTUtils.RandomDirection(2), 0.2f, ColorLib.TenebrisGradient, 0.5f, 100, FireDrawMode.Additive, PixelLayer.AboveProjectiles);
+            fire2.PrepareFire(Projectile.Center, Vector2.Zero, DTUtils.RandomDirection(2), 0.2f, ColorLib.TenebrisGradient, 0.5f, 40, FireDrawMode.Additive, PixelLayer.AboveProjectiles);
             ParticleEngine.BehindProjectiles.Add(fire2);
-
-
-            PointGlowPreMultiplied Glow = new PointGlowPreMultiplied();
-            Glow.Initialize(Projectile.Center, Vector2.Zero, ColorLib.TenebrisGradient * 0.5f, 0.5f);
-            ParticleEngine.BehindProjectiles.Add(Glow);
         }
 		
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)

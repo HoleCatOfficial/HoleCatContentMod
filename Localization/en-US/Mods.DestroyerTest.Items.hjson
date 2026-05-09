@@ -2359,9 +2359,11 @@ StarHammer: {
 HoleCatTail: {
 	Tooltip:
 		'''
-		Are we not all still looking for our own reflection?
-		.
-		Great for Impersonating Devs!
+		Grants a dash.
+		15% Increased Wing time.
+		6% Increased Max Run Speed.
+
+		"And yall thought this would be a vanity item forever."
 		'''
 	DisplayName: HoleCat's Tail
 }
@@ -4085,7 +4087,8 @@ Luna: {
 	DisplayName: Luna
 	Tooltip:
 		'''
-		Summons a miniature moon that orbits you and deals a flat 20 classless damage on hit.
+		Summons a miniature moon that orbits you, dealing classless damage on hit.
+		Damage starts at 20 and scales with all class damage bonuses.
 		Hits inflict broken armor for 5 seconds.
 		15% increased Magic damage.
 		'''
@@ -4568,7 +4571,8 @@ Sola: {
 	DisplayName: Sola
 	Tooltip:
 		'''
-		Summons a miniature sun that orbits you and ignites enemies ablaze, dealing a flat 20 classless damage on hit.
+		Summons a miniature sun that orbits you and ignites enemies ablaze, dealing classless damage on hit.
+		Damage starts at 20 and scales with all class damage bonuses.
 		Run speed and acceleration are greatly increased.
 		'''
 }
@@ -4577,7 +4581,8 @@ Bipolar: {
 	DisplayName: Bipolar
 	Tooltip:
 		'''
-		Summons a miniature moon and miniature sun that orbit you and deal a flat 20 classless damage on hit.
+		Summons a miniature moon and miniature sun that orbit you and deal classless damage on hit.
+		Damage starts at 20 and scales with all class damage bonuses.
 		The moon inflicts broken armor for 5 seconds, the sun, fire for five seconds.
 		15% increased Magic damage;
 		Run speed and acceleration are greatly increased.
@@ -4589,23 +4594,34 @@ Instinct: {
 	Tooltip: You get a dodge with a 20 second cooldown.
 }
 
-Expedition: {
-	DisplayName: Expedition
+Expidition: {
+	DisplayName: Expidition
 	Tooltip: ""
 }
 
 HoleCatHead: {
-	SetBonus: Mods.DestroyerTest.Items.HoleCatHead.SetBonus
+	SetBonus:
+		'''
+		25% increased all-class damage.
+		5% increased all-class use speed.
+		10% increased all-class knockback.
+		+3 Sentry Slots
+		'''
 	DisplayName: Hole Cat Head
-	Tooltip: ""
+	Tooltip: Despite just being a replica, some of the signature black sludge is inside.
 }
 
 HoleCatBody: {
 	DisplayName: Hole Cat Body
-	Tooltip: ""
+	Tooltip: Despite just being a replica, some of the signature black sludge is inside.
 }
 
 HoleCatLegs: {
 	DisplayName: Hole Cat Legs
+	Tooltip: Despite just being a replica, some of the signature black sludge is inside.
+}
+
+Expedition: {
+	DisplayName: Expedition
 	Tooltip: ""
 }

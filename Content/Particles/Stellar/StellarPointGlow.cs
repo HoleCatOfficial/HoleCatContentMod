@@ -3,29 +3,31 @@ using DestroyerTest.Common;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
+using OpusLib.Content.Helpers;
 using Terraria;
 using Terraria.Graphics.Renderers;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Particles.Stellar
 {
-    public class StellarPointGlow : PointGlow
+    public class StellarPointGlow : PointGlowPreMultiplied
     {
         public void Prepare(Vector2 Position, Vector2 Velocity)
         {
             position = Position;
             velocity = Velocity;
         }
-
-        float Progress => (float)Lifetime / MaxLifetime;
         public override void Update(ref ParticleRendererSettings settings)
         {
             Lifetime++;
 
-            color = DTColorUtils.MultiLerp(Progress, ColorLib.StellarFireColormap);
+            float LifetimeCompletion = (float)Lifetime / MaxLifetime;
+
+            color = DTColorUtils.MultiLerp(LifetimeCompletion, ColorLib.StellarFireColormap);
             position += velocity;
 
-            if (Progress > 0.5f)
+            if (LifetimeCompletion > 0.5f)
             {
                 color *= 0.95f;
                 scale *= 0.95f;
@@ -35,6 +37,20 @@ namespace DestroyerTest.Content.Particles.Stellar
             {
                 ShouldBeRemovedFromRenderer = true;
             }
+        }
+
+        public override void Draw(ref ParticleRendererSettings settings, SpriteBatch spriteBatch)
+        {
+            Texture2D texture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/PointGlowPreMultiplied").Value;
+            Vector2 origin = texture.Size() / 2f;
+
+            Opus.StartSpriteBatchPixelated(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
+
+            spriteBatch.Draw(texture, position - Main.screenPosition, null, color with { A = 0 }, 0f, origin, scale, SpriteEffects.None, 0f);
+            spriteBatch.Draw(texture, position - Main.screenPosition, null, OpusColorUtils.Pastel(color, 0.5f) with { A = 0 }, 0f, origin, scale * 0.6f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(texture, position - Main.screenPosition, null, OpusColorUtils.Pastel(color, 0.8f) with { A = 0 }, 0f, origin, scale * 0.3f, SpriteEffects.None, 0f);
+
+            Opus.ReturnToDefaultDrawing(spriteBatch);
         }
     }
  

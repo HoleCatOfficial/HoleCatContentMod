@@ -53,7 +53,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Vector2 dir = Main.MouseWorld - Projectile.Center;
             dir.Normalize();
 
-            Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, dir * 24, ModContent.ProjectileType<ConstantineScytheClone>(), (int)(Projectile.damage *  0.75f), 3, Owner.whoAmI);
+            Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, dir * 2, ModContent.ProjectileType<ConstantineScytheClone>(), (int)(Projectile.damage *  0.75f), 3, Owner.whoAmI);
         }
         public override void DrawOverBlade()
         {

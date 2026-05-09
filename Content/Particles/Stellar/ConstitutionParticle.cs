@@ -29,15 +29,18 @@ namespace DestroyerTest.Content.Particles.Stellar
             this.lifetime = Lifetime;
         }
 
-        float Progress => (float)lifetime / MaxLifetime;
         public override void Update(ref ParticleRendererSettings settings)
         {
+
             lifetime++;
+
+            float LifetimeCompletion = (float)lifetime / MaxLifetime;
+
             position += velocity;
 
-            color = DTColorUtils.MultiLerp(Progress, ColorLib.StellarFireColormap);
+            color = DTColorUtils.MultiLerp(LifetimeCompletion, ColorLib.StellarFireColormap);
 
-            if (Progress > 0.5f)
+            if (LifetimeCompletion > 0.5f)
             {
                 color *= 0.95f;
                 scale *= 0.95f;

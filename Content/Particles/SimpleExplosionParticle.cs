@@ -22,6 +22,7 @@ namespace DestroyerTest.Content.Particles
         public Vector2 velocity = Vector2.Zero;
         public Color color;
         BlendState blendState = BlendState.Additive;
+        public float Opacity = 1.0f;
 
         public float scale = 0f;
         public float endScale = 1f;
@@ -59,10 +60,13 @@ namespace DestroyerTest.Content.Particles
             rotation = Main.rand.NextFloat(MathHelper.TwoPi);
         }
 
-        float Progress => scale / endScale;
+       
         public override void Update(ref ParticleRendererSettings settings)
         {
+            float Progress = scale / endScale;
             position += velocity;
+
+            Opacity = 1f - MathHelper.Clamp((Progress - 0.5f) / 0.5f, 0f, 1f);
 
             if (GrowRateEnd == GrowRateStart)
             {
@@ -87,17 +91,17 @@ namespace DestroyerTest.Content.Particles
 
         public override void Draw(ref ParticleRendererSettings settings, SpriteBatch spritebatch)
         {
-            var Tex = ModContent.Request<Texture2D>("OpusLib/Content/Particles/BloomRingSharp").Value;
+            var Tex = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/SimpleExplosionParticle").Value;
 
             Color c()
             {
                 if (blendState == BlendState.Additive)
                 {
-                    return color with { A = 0 };
+                    return color with { A = 0 } * Opacity;
                 }
                 else
                 {
-                    return color;
+                    return color * Opacity;
                 }
             }
 
@@ -122,6 +126,7 @@ namespace DestroyerTest.Content.Particles
         public Vector2 velocity = Vector2.Zero;
         Color color;
         BlendState blendState = BlendState.Additive;
+        public float Opacity = 1.0f;
 
         public Color StartColor;
         public Color EndColor;
@@ -195,11 +200,12 @@ namespace DestroyerTest.Content.Particles
             this.GrowRateEnd = GrowSpeedEnd;
         }
 
-
-        float Progress => scale / endScale;
         public override void Update(ref ParticleRendererSettings settings)
         {
+            float Progress = scale / endScale;
             position += velocity;
+
+            Opacity = 1f - MathHelper.Clamp((Progress - 0.5f) / 0.5f, 0f, 1f);
 
             if (UsesColorMap)
             {
@@ -233,17 +239,17 @@ namespace DestroyerTest.Content.Particles
 
         public override void Draw(ref ParticleRendererSettings settings, SpriteBatch spritebatch)
         {
-            var Tex = ModContent.Request<Texture2D>("OpusLib/Content/Particles/BloomRingSharp").Value;
+            var Tex = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/SimpleExplosionParticle").Value;
 
             Color c()
             {
                 if (blendState == BlendState.Additive)
                 {
-                    return color with { A = 0 };
+                    return color with { A = 0 } * Opacity;
                 }
                 else
                 {
-                    return color;
+                    return color * Opacity;
                 }
             }
 

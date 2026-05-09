@@ -61,17 +61,14 @@ using static tModPorter.ProgressUpdate;
 namespace DestroyerTest.Content.Entities
 {
     [AutoloadBossHead]
-    [AutoloadGlowmask]
     public class NightmareRoseBoss : ModNPC
     {
         public override string BossHeadTexture => "DestroyerTest/Content/Entities/NightmareRoseBoss_Head_Boss";
 
-        
+
         public void immunities()
         {
             NPCID.Sets.SpecificDebuffImmunity[Type][ModContent.BuffType<ShimmeringFlames>()] = true;
-            NPCID.Sets.SpecificDebuffImmunity[Type][ModContent.BuffType<HaepiensBlizzard>()] = true;
-            NPCID.Sets.SpecificDebuffImmunity[Type][ModContent.BuffType<HaepiensInferno>()] = true;
             NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.OnFire] = true;
             NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.OnFire3] = true;
             NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.CursedInferno] = true;
@@ -79,7 +76,6 @@ namespace DestroyerTest.Content.Entities
             NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Frostburn2] = true;
             NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Bleeding] = true;
             NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Dazed] = true;
-            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Electrified] = true;
             NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Frozen] = true;
             NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Oiled] = true;
             NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.ShadowFlame] = true;
@@ -112,8 +108,8 @@ namespace DestroyerTest.Content.Entities
         public SoundStyle NodeSpawnSound = new SoundStyle("DestroyerTest/Infernum/Assets/Audio/NightmareRoseIntroFinish") with { PitchVariance = 1f, MaxInstances = 0 };
         public SoundStyle Napalm = new SoundStyle("DestroyerTest/Assets/Audio/NodeAttackNapalm") with { PitchVariance = 1f, MaxInstances = 0 };
         public SoundStyle Desperation = new SoundStyle("DestroyerTest/Assets/Audio/RoseDesperation") with { MaxInstances = 0 };
-        
-         public SoundStyle WingDisable = new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/WingDisable") with { MaxInstances = 0 };
+
+        public SoundStyle WingDisable = new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/WingDisable") with { MaxInstances = 0 };
         public override void SetDefaults()
         {
             NPC.width = 144;
@@ -133,6 +129,11 @@ namespace DestroyerTest.Content.Entities
             NPC.netID = ModContent.NPCType<NightmareRoseBoss>();
             NPC.BossBar = ModContent.GetInstance<CorruptBossBar>();
             GeneralEternityChanges(DestroyerTestMod.EternityIsActive);
+
+            if (DestroyerTestMod.MasochistIsActive)
+            {
+                SpawnRoar = new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/MasoSpawn") with { MaxInstances = 0 };
+            }
         }
 
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
@@ -188,7 +189,7 @@ namespace DestroyerTest.Content.Entities
 
         public static bool SecretSeed()
         {
-            if(Main.zenithWorld || Main.getGoodWorld || Main.notTheBeesWorld)
+            if (Main.zenithWorld || Main.getGoodWorld || Main.notTheBeesWorld)
             {
                 return true;
             }
@@ -317,7 +318,7 @@ namespace DestroyerTest.Content.Entities
             NPCHead = NPC.Center + new Vector2(0, -79);
             Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Bottom, Vector2.Zero, ModContent.ProjectileType<SpawnSoul>(), 0, 0);
 
-            
+
         }
 
         void ShineHead()
@@ -329,8 +330,30 @@ namespace DestroyerTest.Content.Entities
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-        
 
+            Texture2D Tex()
+            {
+                if (DestroyerTestMod.MasochistIsActive)
+                {
+                    return NPC.GetMasoTexture("DestroyerTest/Content/Entities/MasoMode", "NightmareRoseBoss").Value;
+                }
+                else
+                {
+                    return ModContent.Request<Texture2D>(Texture).Value;
+                }
+            }
+
+            Texture2D GlowTex()
+            {
+                if (DestroyerTestMod.MasochistIsActive)
+                {
+                    return NPC.GetMasoGlowTexture("DestroyerTest/Content/Entities/MasoMode", "NightmareRoseBoss").Value;
+                }
+                else
+                {
+                    return ModContent.Request<Texture2D>(Texture + "_Glow").Value;
+                }
+            }
 
 
             Rectangle sourceRect = new Rectangle(
@@ -351,7 +374,14 @@ namespace DestroyerTest.Content.Entities
             {
                 Main.EntitySpriteDraw(TextureAssets.Npc[NPC.type].Value, NPC.Center - Main.screenPosition, sourceRect, Main.DiscoColor, 180, sourceRect.Size() / 2, 1f, SpriteEffects.None, 0);
             }
-            return !SecretSeed();
+            else
+            {
+                Main.EntitySpriteDraw(Tex(), NPC.Center - Main.screenPosition, sourceRect, drawColor, 0, sourceRect.Size() / 2, 1f, SpriteEffects.None, 0);
+
+                Main.EntitySpriteDraw(GlowTex(), NPC.Center - Main.screenPosition, sourceRect, Color.White, 0, sourceRect.Size() / 2, 1f, SpriteEffects.None, 0);
+            }
+
+            return false;
         }
 
 
@@ -589,7 +619,7 @@ namespace DestroyerTest.Content.Entities
                 //player.GetModPlayer<ApplyArenaEffectsPlayer>().CurrentArenaBoss = ModContent.NPCType<NightmareRoseBoss>();
                 //if (Main.masterMode)
                 //{
-                    //player.AddBuff(ModContent.BuffType<ArenaEffects>(), 20);
+                //player.AddBuff(ModContent.BuffType<ArenaEffects>(), 20);
                 //}
             }
 
@@ -658,7 +688,7 @@ namespace DestroyerTest.Content.Entities
             if (NPC.life <= NPC.lifeMax * 0.25f && !HasTriggeredNodes)
             {
                 currentState = AttackState.Nodes;
-                
+
             }
 
             if (player.active == false || player.dead == true)
@@ -760,7 +790,11 @@ namespace DestroyerTest.Content.Entities
             {
                 Mod.Logger.Info($"Current State: {currentState}");
             }
-            
+
+            if (SunlightModification._SunColorBrightness > 0)
+            {
+                SunlightModification._SunColorBrightness -= 0.001f;
+            }
 
             switch (currentState)
             {
@@ -780,6 +814,14 @@ namespace DestroyerTest.Content.Entities
                         {
                             VingetteScale *= 0.99f;
                         }
+
+                        if (SpawnCount == (60 * 8) - 10)
+                        {
+                            if (DestroyerTestMod.MasochistIsActive)
+                            {
+                                SoundEngine.PlaySound(SpawnRoar, NPCHead);
+                            }
+                        }
                         if (SpawnCount >= SpawnIdleRoarFlag)
                         {
                             ScreenshakePlayer screenshake = ModContent.GetInstance<ScreenshakePlayer>();
@@ -787,17 +829,21 @@ namespace DestroyerTest.Content.Entities
                             screenshake.screenshakeTimer = 180;
                             RoarWaveTimer = 180;
 
-                            SoundEngine.PlaySound(SpawnRoar, NPCHead);
+                            if (!DestroyerTestMod.MasochistIsActive)
+                            {
+                                SoundEngine.PlaySound(SpawnRoar, NPCHead);
+                            }
                             SpawnDarknessAlpha = 0;
                             if (Main.masterMode)
                             {
-                                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<NightmareeRoseBackgroundProj>(), 0, 0, ai0: 0);
+                                Main.NewText("A torrent befalls the corruption...", ColorLib.CursedFlames);
+                                //Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<NightmareeRoseBackgroundProj>(), 0, 0, ai0: 0);
                             }
-                            Main.NewText("A torrent befalls the corruption...", ColorLib.CursedFlames);
+                            
                             currentState = AttackState.Idle;
                             NPC.dontTakeDamage = false;
                             SpawnCount = 0;
-                            
+
 
                         }
                         break;
@@ -887,7 +933,7 @@ namespace DestroyerTest.Content.Entities
                             FlameStartTimer--;
                             if (FlameStartTimer > 0)
                             {
-                                
+
                             }
                             if (FlameTimer < 240 && FlameStartTimer <= 0)
                             {
@@ -924,7 +970,7 @@ namespace DestroyerTest.Content.Entities
                             ContemptAttackWarningOffset += FireLR ? 0.005f : -0.005f;
                             if (FlameStartTimer > 0)
                             {
-                                
+
                             }
                             if (FlameTimer < 240 && FlameStartTimer <= 0)
                             {
@@ -980,7 +1026,7 @@ namespace DestroyerTest.Content.Entities
                         }
                         else
                         {
-                            
+
 
                             if (FlameRingCount < 9 && Main.GameUpdateCount % 60 == 0)
                             {
@@ -1194,7 +1240,7 @@ namespace DestroyerTest.Content.Entities
                             {
                                 VortexFire(player);
                             }
-                            
+
                             if (VortexFireCount >= 10)
                             {
                                 ResetState();
@@ -1245,7 +1291,7 @@ namespace DestroyerTest.Content.Entities
                             float progress = (float)DesperationTimer / 1200f;
                             BorderRad = MathHelper.Lerp(1200f, 0f, progress);
                             RingScale = MathHelper.Lerp(6.2f, 0, progress);
-                            
+
                         }
                         if (DesperationTimer >= 1200)
                         {
@@ -1305,7 +1351,7 @@ namespace DestroyerTest.Content.Entities
 
         public void IdleFX()
         {
-            if (currentState == AttackState.SpawnIdle)
+            if (currentState == AttackState.SpawnIdle || DTOptimizationsConfig.instance.OptimizeGame)
             {
                 return;
             }
@@ -1448,7 +1494,7 @@ namespace DestroyerTest.Content.Entities
             {
                 Main.EntitySpriteDraw(DTAssetLib.NightmareRoseArenaBorder.Value, NPCHead - Main.screenPosition, null, BorderCol, Rotation, DTAssetLib.NightmareRoseArenaBorder.Value.Size() / 2, RingScale, SpriteEffects.None, 0);
 
-                Main.EntitySpriteDraw(DTAssetLib.Vingette.Value, NPCHead - Main.screenPosition, null, BorderCol, Rotation, DTAssetLib.Vingette.Value.Size() /2, RingScale, SpriteEffects.None, 0);
+                Main.EntitySpriteDraw(DTAssetLib.Vingette.Value, NPCHead - Main.screenPosition, null, BorderCol, Rotation, DTAssetLib.Vingette.Value.Size() / 2, RingScale, SpriteEffects.None, 0);
             }
             Opus.ReturnToDefaultDrawing(spriteBatch);
 
@@ -1605,8 +1651,8 @@ namespace DestroyerTest.Content.Entities
         public void GlowConeWarning_CursedFlamesEternity()
         {
             var i = Opus.GetEquidistantOrbitVectorsAndRots(6, NPCHead, ContemptAttackWarningOffset, 40);
-            
-            foreach(var p in i)
+
+            foreach (var p in i)
             {
                 Main.EntitySpriteDraw(DTAssetLib.GlowCone.Value, NPCHead - Main.screenPosition, null, ColorLib.CursedFlames, p.Rotation, DTAssetLib.GlowCone.Value.Size() / 2, GlowConeScaling, SpriteEffects.None, 0);
             }
@@ -1652,7 +1698,7 @@ namespace DestroyerTest.Content.Entities
                 Ring.Prepare(NPCHead, Vector2.Zero, ColorLib.WretchedColorMap, 0.2f, 0.03f, 2f);
                 ParticleEngine.ShaderParticles.Add(Ring);
 
-                
+
 
                 Main.NewText("The Nightmare Rose calls upon the Corruption for Help!", ColorLib.CursedFlames);
 
@@ -1665,7 +1711,7 @@ namespace DestroyerTest.Content.Entities
                     Vector2 spawnPosition = NPC.Center + spawnOffset;
 
                     NPC.NewNPC(Entity.GetSource_FromThis(), (int)spawnPosition.X, (int)spawnPosition.Y, ModContent.NPCType<CursedFlameNode>());
-                    
+
                 }
                 HasTriggeredNodes = true;
             }
@@ -1762,7 +1808,7 @@ namespace DestroyerTest.Content.Entities
                 );
             }
         }
-        
+
         public float ContemptAttackRotationOffset = 0f;
         public float ContemptAttackWarningOffset = 0f;
         public bool SetDir1 = false;
@@ -1780,14 +1826,21 @@ namespace DestroyerTest.Content.Entities
             }
             float radius = BorderRad;
             int projectileCount = 6;
-            
+
             Projectile flame = null;
 
-            LaserRotOffset += 0.02f;
+            if (FireLR)
+            {
+                LaserRotOffset -= 0.02f;
+            }
+            else
+            {
+                LaserRotOffset += 0.02f;
+            }
 
             float rotationOffset = ContemptAttackRotationOffset;
 
-            if (!DestroyerTestMod.EternityIsActive)
+            if (DestroyerTestMod.EternityIsActive && !DestroyerTestMod.MasochistIsActive)
             {
 
                 if (Main.GameUpdateCount % 10 == 0)
@@ -1804,13 +1857,12 @@ namespace DestroyerTest.Content.Entities
                         Vector2 toOrigin = NPCHead - spawnPosition;
                         toOrigin = toOrigin.SafeNormalize(Vector2.UnitY);
 
-                        bool Maso = DestroyerTestMod.MasochistIsActive;
-                        int flametype = Maso ? ModContent.ProjectileType<TenebrisFlamesHostile_NoHoming>() : ModContent.ProjectileType<CursedFlameProj>();
+
                         flame = Projectile.NewProjectileDirect(
                             Entity.GetSource_FromThis(),
                             spawnPosition,
                             toOrigin * 20f,
-                            flametype,
+                            ModContent.ProjectileType<CursedFlameProj>(),
                             15,
                             2,
                             Main.LocalPlayer.whoAmI
@@ -1843,11 +1895,16 @@ namespace DestroyerTest.Content.Entities
 
                     //Opus.RadialSpreadDust(DustID.AncientLight, 6, NPC.Center, 0, Main.DiscoColor, 1f, 5f, offset: LaserRotOffset);
                     LaserWarnTimer--;
+
+                    
                 }
                 else
                 {
-                    SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/BlessedNodeLasers"), NPCHead);
-                    LaserCol = Opus.RadialSpreadProjectile(ModContent.ProjectileType<TenebrisLaser>(), 6, NPCHead, 60, 1, 0.005f, offset: LaserRotOffset);
+                    SunlightModification._SunColorBrightness = 1;
+                    SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/TenebrisLasers"), NPCHead);
+
+                    int Dir = FireLR ? -1 : 1;
+                    LaserCol = Opus.RadialSpreadProjectile(ModContent.ProjectileType<TenebrisLaser>(), 6, NPCHead, 60, 1, 0.005f, ai1: Dir, offset: LaserRotOffset);
                     LaserWarnTimer = 120;
                 }
             }
@@ -1926,6 +1983,7 @@ namespace DestroyerTest.Content.Entities
         public int VortexFireCount = 0;
         public void VortexFire(Player player)
         {
+            SoundEngine.PlaySound(SoundID.Item122);
             if (!SetDir3)
             {
                 VortexFireUD = Main.rand.NextBool(2);
@@ -2147,33 +2205,33 @@ namespace DestroyerTest.Content.Entities
         public void CacheTrail()
         {
             Vector2 lastPos = TrailPositions.Count > 0 ? TrailPositions[0] : NPC.Center;
-			Vector2 newPos  = NPC.Center;
+            Vector2 newPos = NPC.Center;
 
-			float dist = Vector2.Distance(lastPos, newPos);
-			float step = 0.75f; // how closely to sample. tweak this!
+            float dist = Vector2.Distance(lastPos, newPos);
+            float step = 0.75f; // how closely to sample. tweak this!
 
-			if (dist > 0f)
-			{
-				int segments = (int)(dist / step);
+            if (dist > 0f)
+            {
+                int segments = (int)(dist / step);
 
-				for (int i = 1; i <= segments; i++)
-				{
-					Vector2 pos = Vector2.Lerp(lastPos, newPos, i / (float)segments);
-					TrailPositions.Insert(0, pos);
-					TrailRotations.Insert(0, NPC.velocity.ToRotation());
-				}
-			}
-			else
-			{
-				TrailPositions.Insert(0, newPos);
-				TrailRotations.Insert(0, NPC.velocity.ToRotation());
-			}
+                for (int i = 1; i <= segments; i++)
+                {
+                    Vector2 pos = Vector2.Lerp(lastPos, newPos, i / (float)segments);
+                    TrailPositions.Insert(0, pos);
+                    TrailRotations.Insert(0, NPC.velocity.ToRotation());
+                }
+            }
+            else
+            {
+                TrailPositions.Insert(0, newPos);
+                TrailRotations.Insert(0, NPC.velocity.ToRotation());
+            }
 
-			// Cap trail
-			while (TrailPositions.Count > TrailLength)
-				TrailPositions.RemoveAt(TrailPositions.Count - 1);
-			while (TrailRotations.Count > TrailLength)
-				TrailRotations.RemoveAt(TrailRotations.Count - 1);
+            // Cap trail
+            while (TrailPositions.Count > TrailLength)
+                TrailPositions.RemoveAt(TrailPositions.Count - 1);
+            while (TrailRotations.Count > TrailLength)
+                TrailRotations.RemoveAt(TrailRotations.Count - 1);
         }
         public override void AI()
         {
@@ -2284,6 +2342,7 @@ namespace DestroyerTest.Content.Entities
         }
     }
 
+    /*
     public class NightmareeRoseBackgroundProj : ModProjectile
     {
         public override string Texture => "DestroyerTest/Content/Extras/FadeLine";
@@ -2463,8 +2522,10 @@ namespace DestroyerTest.Content.Entities
             return false;
         }
 
+        */
 
 
-    }
+
+    
 
 }

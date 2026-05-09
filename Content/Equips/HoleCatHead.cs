@@ -1,5 +1,6 @@
 
 
+using DestroyerTest.Common;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.Resources.Cloths;
 using DestroyerTest.Rarity;
@@ -14,11 +15,9 @@ namespace DestroyerTest.Content.Equips
 	[AutoloadEquip(EquipType.Head)]
 	public class HoleCatHead : ModItem
 	{
-		public static LocalizedText SetBonusText { get; private set; }
 		public override void SetStaticDefaults()
 		{
 			ArmorIDs.Head.Sets.DrawHead[Item.headSlot] = false;
-			SetBonusText = this.GetLocalization("SetBonus").WithFormatArgs(DamageBonus, UseSpeedBonus, KnockbackBonus);
 			
 		}
 		public override void SetDefaults()
@@ -31,26 +30,19 @@ namespace DestroyerTest.Content.Equips
 		}
 
 		
-		public override bool IsArmorSet(Item head, Item body, Item legs) {
+		public override bool IsArmorSet(Item head, Item body, Item legs) 
+		{
 		return body.type == ModContent.ItemType<HoleCatBody>() && legs.type == ModContent.ItemType<HoleCatLegs>();
 		}
-		
-		public float DamageBonus = 1.25f;
-        public float UseSpeedBonus =1.05f;
-        public float KnockbackBonus = 1.10f;
 
 
 		public override void UpdateArmorSet(Player player)
 		{
-			player.setBonus = SetBonusText.Value;
-			player.GetDamage(DamageClass.Generic) *= DamageBonus;
-			player.GetAttackSpeed(DamageClass.Generic) *= UseSpeedBonus;
-			player.GetKnockback(DamageClass.Generic) *= KnockbackBonus;
-			player.setBonus = SetBonusText.Format(
-				DamageBonus - 1f,
-				UseSpeedBonus - 1f,
-				KnockbackBonus - 1f
-			);
+			player.GetDamage(DamageClass.Generic) += 1.25f;
+			player.GetAttackSpeed(DamageClass.Generic) += 1.02f;
+			player.GetKnockback(DamageClass.Generic) += 1.1f;
+			player.maxTurrets += 3;
+			player.DefaultSetBonusText(Item);
 		}
 	}
 }

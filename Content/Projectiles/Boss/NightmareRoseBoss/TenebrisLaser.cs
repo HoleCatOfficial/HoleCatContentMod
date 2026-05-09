@@ -79,7 +79,14 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
                 WidthScl = MathHelper.Lerp(MaxScl, 0, t);
             }
 
-            Projectile.rotation += 0.02f;
+            if (Projectile.ai[1] == 1)
+            {
+                Projectile.rotation += 0.02f;
+            }
+            if (Projectile.ai[1] == -1)
+            {
+                Projectile.rotation -= 0.02f;
+            }
         }
 
         public override void OnHitPlayer(Player target, Player.HurtInfo info)

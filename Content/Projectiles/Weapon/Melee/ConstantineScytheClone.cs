@@ -1,16 +1,17 @@
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
+using DestroyerTest.Common;
+using DestroyerTest.Content.Consumables;
+using DestroyerTest.Content.Dusts;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
-using Terraria.Audio;
-using DestroyerTest.Content.Consumables;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Dusts;
-using System.IO;
-using System;
 using OpusLib;
+using OpusLib.Content.Helpers;
+using System;
+using System.IO;
+using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 {
@@ -42,11 +43,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Projectile.penetrate = 1; // Infinite pierce
             Projectile.light = 0.5f;
             Projectile.ignoreWater = true;
-            Projectile.timeLeft = 120; // 10 seconds max lifespan
+            Projectile.timeLeft = 600; // 10 seconds max lifespan
             Projectile.tileCollide = false;
             Projectile.DamageType = DamageClass.Melee;
             Projectile.Opacity = 0f;
         }
+
 
         public override void SendExtraAI(BinaryWriter writer)
         {
@@ -64,14 +66,26 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
 			Texture2D texture = TextureAssets.Projectile[Type].Value;
 
-			Vector2 drawOrigin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
+			Vector2 drawOrigin = new Vector2(texture.Width * 0.5f, texture.Height * 0.5f);
+
+            SpriteEffects Fx = SpriteEffects.None;
+
+            if (Projectile.direction < 0)
+            {
+                Fx = SpriteEffects.FlipHorizontally;
+            }
+            else
+            {
+                Fx = SpriteEffects.None;
+            }
 			for (int k = Projectile.oldPos.Length - 1; k > 0; k--) {
 				Vector2 drawPos = (Projectile.oldPos[k] - Main.screenPosition) + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
 				Color color = Projectile.GetAlpha(lightColor) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
-				Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
+				Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, Fx, 0);
 			}
 
-			return true;
+            Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, null, lightColor, Projectile.rotation, drawOrigin, Projectile.scale, Fx, 0);
+            return false;
 		}
 
         public override void AI()
@@ -94,22 +108,25 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 			Projectile.rotation += 0.2f * Projectile.direction;
 
             float maxDetectRadius = 700f;
-				if (HomingTarget == null) {
-					HomingTarget = FindClosestNPC(maxDetectRadius);
-				}
+			if (HomingTarget == null) {
+				HomingTarget = FindClosestNPC(maxDetectRadius);
+			}
 
 			
-				if (HomingTarget != null && !IsValidTarget(HomingTarget)) {
-					HomingTarget = null;
-				}
+			if (HomingTarget != null && !IsValidTarget(HomingTarget)) {
+				HomingTarget = null;
+			}
 
-				if (HomingTarget == null)
-					return;
+			if (HomingTarget == null)
+				return;
 
-				float length = Projectile.velocity.Length();
-				float targetAngle = Projectile.AngleTo(HomingTarget.Center);
-				Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(30)).ToRotationVector2() * length;
-        
+			float length = Projectile.velocity.Length();
+			float targetAngle = Projectile.AngleTo(HomingTarget.Center);
+			Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(30)).ToRotationVector2() * length;
+            if (length < 20)
+            {
+                Projectile.velocity *= 1.06f;
+            }
 
             
 
@@ -137,7 +154,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 			}
 
 			public bool IsValidTarget(NPC target) 
-        {
+            {
 			
 				return target.CanBeChasedBy();
 			}

@@ -1,12 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using BreadLibrary.Core.Graphics.Pixelation;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Particles;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
+using OpusLib.Content.Helpers;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.Enums;
 using Terraria.GameContent.Drawing;
 using Terraria.ID;
@@ -14,7 +18,7 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
 {
-    public class ShimmeringVortex : ModProjectile
+    public class ShimmeringVortex : ModProjectile, IDrawPixelated
     {
         public override string Texture => DTUtils.NoTexture;
         private Player HomingTarget
@@ -30,6 +34,8 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
 
         public override void SetStaticDefaults()
         {
+            ProjectileID.Sets.TrailCacheLength[Type] = 100;
+            ProjectileID.Sets.TrailingMode[Type] = 3;
 
         }
 
@@ -47,52 +53,79 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
             Projectile.penetrate = 1;
         }
 
+        Line Line;
+        public override void OnSpawn(IEntitySource source)
+        {
+            Line = new Line(Projectile.Center, Projectile.Center + (Projectile.velocity * 200));
+
+        }
+
         public float trailOffset = 0f;
+        public int warnoffset = 0;
+        public float WarnOpac = 1f;
         public override bool PreDraw(ref Color lightColor)
         {
             lightColor = ColorLib.TenebrisGradient;
             trailOffset += 0.04f;
 
+            warnoffset += 20;
+
 
             SpriteBatch spriteBatch = Main.spriteBatch;
             DTUtils Utility = new DTUtils();
 
-            Opus.StartSpriteBatchForTrails(spriteBatch, BlendState.NonPremultiplied, SpriteSortMode.Immediate);
+            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
-            if (TrailPositions.Count > 1)
+            DTUtils.instance.ScrollingTextureSpine(Line, DTAssetLib.Line(1), ColorLib.TenebrisGradient * 0.5f, spriteBatch, BlendState.Additive, warnoffset, 2f);
+
+            
+
+            return false;
+        }
+
+        PixelLayer IDrawPixelated.PixelLayer => PixelLayer.AboveProjectiles;
+
+        void IDrawPixelated.DrawPixelated(SpriteBatch spriteBatch)
+        {
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearWrap, DepthStencilState.None, RasterizerState.CullNone, null, PixelationSystem.PixelationMatrix);
+
+
+
+            if (Projectile.OldCenter().Length > 1)
             {
                 List<ColoredVertex> ve = new List<ColoredVertex>();
                 List<ColoredVertex> ve2 = new List<ColoredVertex>();
                 float a = 0;
 
-                for (int i = TrailPositions.Count - 1; i > 0; i--)
+                for (int i = Projectile.OldCenter().Length - 1; i > 0; i--)
                 {
-                    float u = i / (float)(TrailPositions.Count - 1);
+                    float u = i / (float)(Projectile.OldCenter().Length - 1);
                     float widthFactor = (float)Math.Sin(u * MathHelper.Pi);
 
                     float width = 32f * widthFactor;
 
-                    Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
+                    Vector2 dir = (Projectile.OldCenter()[i] - Projectile.OldCenter()[i - 1]).ToRotation().ToRotationVector2();
                     Vector2 perp = dir.RotatedBy(MathHelper.PiOver2);
                     Vector2 offset = perp * width;
                     Vector2 offset2 = -perp * width;
 
-                    DTUtils.AddStrips(ve, TrailPositions, i, offset, offset2, u, lightColor, trailOffset);
+                    DTUtils.AddStrips(ve, Projectile.OldCenter().ToList(), i, offset, offset2, u, ColorLib.TenebrisGradient with { A = 0 }, trailOffset);
                 }
 
-                for (int i = TrailPositions2.Count - 1; i > 0; i--)
+                for (int i = Projectile.OldCenter().Length - 1; i > 0; i--)
                 {
-                    float u = i / (float)(TrailPositions.Count - 1);
+                    float u = i / (float)(Projectile.OldCenter().Length - 1);
                     float widthFactor = (float)Math.Sin(u * MathHelper.Pi);
 
                     float width = 32f * widthFactor;
 
-                    Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
+                    Vector2 dir = (Projectile.OldCenter()[i] - Projectile.OldCenter()[i - 1]).ToRotation().ToRotationVector2();
                     Vector2 perp = dir.RotatedBy(MathHelper.PiOver2);
                     Vector2 offset = perp * width;
                     Vector2 offset2 = -perp * width;
 
-                    DTUtils.AddStrips(ve2, TrailPositions2, i, offset, offset2, u, lightColor, trailOffset);
+                    DTUtils.AddStrips(ve2, Projectile.OldCenter().ToList(), i, offset, offset2, u, Color.White with { A = 0 }, trailOffset);
                 }
 
                 GraphicsDevice gd = Main.graphics.GraphicsDevice;
@@ -100,67 +133,36 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
                 {
                     gd.Textures[0] = DTAssetLib.Streak(9).Value;
                     gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2);
-                    gd.Textures[0] = DTAssetLib.Streak(10).Value;
+                    gd.Textures[0] = DTAssetLib.Streak(4).Value;
                     gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2);
                 }
             }
 
             Opus.ReturnToDefaultDrawing(spriteBatch);
-
-            return false;
         }
 
-        public List<Vector2> TrailPositions = new();
-        public List<float> TrailRotations = new();
-
-        public List<Vector2> TrailPositions2 = new();
-        public List<float> TrailRotations2 = new();
-        private const int TrailLength = 40;
+    
         public override void AI()
         {
-            Vector2 lastPos = TrailPositions.Count > 0 ? TrailPositions[0] : Projectile.Center;
-            Vector2 newPos = Projectile.Center;
-
-            float dist = Vector2.Distance(lastPos, newPos);
-            float step = 8f; // how closely to sample. tweak this!
-
-            if (dist > 0f)
+            for (int i = 0; i < ProjectileID.Sets.TrailCacheLength[Type]; i++)
             {
-                int segments = (int)(dist / step);
-
-                for (int i = 1; i <= segments; i++)
+                if (Projectile.oldPos[i] == Vector2.Zero)
                 {
-                    Vector2 pos = Vector2.Lerp(lastPos, newPos, i / (float)segments);
-                    TrailPositions.Insert(0, pos);
-                    TrailRotations.Insert(0, Projectile.rotation);
-                    TrailPositions2.Insert(0, pos);
-                    TrailRotations2.Insert(0, Projectile.rotation);
+                    Projectile.oldPos[i] = Projectile.Center;
                 }
             }
-            else
+
+            if (WarnOpac > 0)
             {
-                TrailPositions.Insert(0, newPos);
-                TrailRotations.Insert(0, Projectile.rotation);
-                TrailPositions2.Insert(0, newPos);
-                TrailRotations2.Insert(0, Projectile.rotation);
+                WarnOpac -= 0.07f;
             }
-
-            while (TrailPositions.Count > TrailLength)
-                TrailPositions.RemoveAt(TrailPositions.Count - 1);
-            while (TrailRotations.Count > TrailLength)
-                TrailRotations.RemoveAt(TrailRotations.Count - 1);
-
-            while (TrailPositions2.Count > TrailLength)
-                TrailPositions2.RemoveAt(TrailPositions2.Count - 1);
-            while (TrailRotations2.Count > TrailLength)
-                TrailRotations2.RemoveAt(TrailRotations2.Count - 1);
         }
 
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
-            foreach (var trail in new[] { TrailPositions, TrailPositions2 })
+            foreach (var trail in new[] { Projectile.OldCenter(), Projectile.OldCenter() })
             {
-                for (int i = 1; i < trail.Count; i++)
+                for (int i = 1; i < trail.Length; i++)
                 {
                     Vector2 point1 = trail[i - 1];
                     Vector2 point2 = trail[i];

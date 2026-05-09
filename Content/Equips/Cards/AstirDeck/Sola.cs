@@ -42,7 +42,7 @@ namespace DestroyerTest.Content.Equips.Cards.AstirDeck
             int Tp = ModContent.ProjectileType<TinySun>();
             if (Player.ownedProjectileCounts[Tp] < 1 && Active)
             {
-                Projectile.NewProjectile(Player.GetSource_None(), Player.Center, Vector2.Zero, Tp, 20, 4, Player.whoAmI);
+                Projectile.NewProjectile(Player.GetSource_None(), Player.Center, Vector2.Zero, Tp, (int)Player.GetTotalDamage(DamageClass.Generic).ApplyTo(20), 4, Player.whoAmI);
             }
         }
 
