@@ -24,10 +24,6 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
             {
                 flower.EphemeralSolvent = true;
             }
-            if (Item.TryGetGlobalItem<ModifyPotionsItem>(out ModifyPotionsItem Potions))
-            {
-                Potions.EphemeralSolvent = true;
-            }
         }
         
         public override void AddRecipes()

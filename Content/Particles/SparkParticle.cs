@@ -64,7 +64,7 @@ namespace DestroyerTest.Content.Particles
 
             if (gravity)
             {
-                velocity.Y += 0.1f;
+                velocity.Y += 0.8f;
             }
 
             if (Lifetime < maxLifetime / 2)
@@ -204,7 +204,7 @@ namespace DestroyerTest.Content.Particles
 
             if (gravity)
             {
-                velocity.Y += 0.1f;
+                velocity.Y += 0.8f;
             }
 
             if (Lifetime < maxLifetime / 2)

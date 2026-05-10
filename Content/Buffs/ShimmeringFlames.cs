@@ -67,15 +67,15 @@ namespace DestroyerTest.Content.Buffs
 			{
 				if (npc.TryGetGlobalNPC<SFTarget>(out var shimmer))
 				{
-					SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/ShimmeringFlamesTierRaise") { Pitch = 1f - (shimmer.Stack / shimmer.MaxStack), MaxInstances = 0}, npc.Center);
-					Opus.RadialDustRandomDir(DustID.TintableDustLighted, 20, npc.Center, 75, ColorLib.TenebrisGradient, 1f, 3f);
+					SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/ShimmeringFlamesTierRaise") { Pitch = 1f - (shimmer.Stack / shimmer.MaxStack), MaxInstances = 1}, npc.Center);
+					Opus.RadialSpreadDustRandom(DustID.TintableDustLighted, 20, npc.Center, 75, ColorLib.TenebrisGradient, 1f, 3f);
 					if (shimmer.Stack < shimmer.MaxStack)
 					{
 						shimmer.Stack += 1;
 					}
 					if (shimmer.Stack >= shimmer.MaxStack)
 					{
-						SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/TenebrisImpact"), npc.Center);
+						SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/TenebrisImpact") { MaxInstances = 1 }, npc.Center);
 					}
 
 				}

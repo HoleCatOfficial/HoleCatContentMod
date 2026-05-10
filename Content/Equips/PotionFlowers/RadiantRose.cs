@@ -23,10 +23,6 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
             {
                 flower.RadiantRose = true;
             }
-            if (Item.TryGetGlobalItem<ModifyPotionsItem>(out ModifyPotionsItem Potions))
-            {
-                Potions.RadiantRose = true;
-            }
 
         }
         

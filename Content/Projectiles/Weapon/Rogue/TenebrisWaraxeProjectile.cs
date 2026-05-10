@@ -160,7 +160,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             SoundEngine.PlaySound(Hit, Projectile.position);
             for (int i = 0; i < 10; i++)
             {
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.FireworksRGB, 0, 0, 150, clr, 5f);
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.FireworksRGB, -Projectile.velocity.X, -Projectile.velocity.Y, 150, clr, 2f);
 
                 Spark Spark = new Spark();
                 Spark.PrepareSpark(Projectile.Center, new Vector2(Main.rand.NextFloat(-8, 8), Main.rand.NextFloat(-15, -10)), 0f, clr, 1f, true, 30, SparkDrawMode.Additive);
@@ -173,7 +173,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             ParticleEngine.BehindProjectiles.Add(ExplosionFX);
 
             BloomRingSharp Ring = new BloomRingSharp();
-            Ring.Prepare(target.Center, Vector2.Zero, DTColorUtils.Pastel(clr, 0.5f), 0.1f, 0.02f, 2f, BlendState.Additive);
+            Ring.Prepare(target.Center, Vector2.Zero, DTColorUtils.Pastel(clr, 0.5f), 0.02f, 0.01f, 0.3f, BlendState.Additive);
             ParticleEngine.BehindProjectiles.Add(Ring);
 
             if (Projectile.penetrate == 1)
@@ -191,7 +191,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 
             for (int i = 0; i < 10; i++)
             {
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.FireworksRGB, 0, 0, 150, clr, 5f);
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.FireworksRGB, -oldVelocity.X, -oldVelocity.Y, 150, clr, 2f);
                 Spark Spark = new Spark();
                 Spark.PrepareSpark(Projectile.Center, new Vector2(Main.rand.NextFloat(-8, 8), Main.rand.NextFloat(-15, -10)), 0f, clr, 1f, true, 30, SparkDrawMode.Additive);
                 ParticleEngine.BehindProjectiles.Add(Spark);
@@ -203,7 +203,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             ParticleEngine.BehindProjectiles.Add(ExplosionFX);
 
             BloomRingSharp Ring = new BloomRingSharp();
-            Ring.Prepare(Projectile.Center, Vector2.Zero, DTColorUtils.Pastel(clr, 0.5f), 0.1f, 0.02f, 2f, BlendState.Additive);
+            Ring.Prepare(Projectile.Center, Vector2.Zero, DTColorUtils.Pastel(clr, 0.5f), 0.02f, 0.01f, 0.3f, BlendState.Additive);
             ParticleEngine.BehindProjectiles.Add(Ring);
 
             returning = true;

@@ -1,138 +1,198 @@
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
+using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.RogueItems;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
+using OpusLib.Content.Helpers;
+using ReLogic.Content;
 using System.Collections.Generic;
+using System.Linq;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 {
-	// This projectile showcases advanced AI code. Of particular note is a showcase on how projectiles can stick to NPCs in a manner similar to the behavior of vanilla weapons such as Bone Javelin, Daybreak, Blood Butcherer, Stardust Cell Minion, and Tentacle Spike. This code is modeled closely after Bone Javelin.
 	public class Chroma_Projectile : ModProjectile
 	{
 		
-		public override void SetStaticDefaults() {
-			
+		public override void SetStaticDefaults() 
+		{
+			ProjectileID.Sets.TrailCacheLength[Type] = 100;
+			ProjectileID.Sets.TrailingMode[Type] = 3;
 		}
 
 		public override void SetDefaults()
 		{
-			Projectile.width = 140; // The width of projectile hitbox
-			Projectile.height = 140; // The height of projectile hitbox
-			Projectile.aiStyle = 0; // The ai style of the projectile (0 means custom AI). For more please reference the source code of Terraria
-			Projectile.friendly = true; // Can the projectile deal damage to enemies?
-			Projectile.hostile = false; // Can the projectile deal damage to the player?
-			Projectile.DamageType = ModContent.GetInstance<DTRogueClass>(); // Makes the projectile deal ranged damage. You can set in to DamageClass.Throwing, but that is not used by any vanilla items
-            Projectile.penetrate = 4; // How many monsters the projectile can penetrate.
-			Projectile.timeLeft = 600; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
-			Projectile.light = 0.5f; // How much light emit around the projectile
-			Projectile.ignoreWater = true; // Does the projectile's speed be influenced by water?
-			Projectile.tileCollide = true; // Can the projectile collide with tiles?
+			Projectile.width = 48;
+			Projectile.height = 48;
+			Projectile.friendly = true;
+			Projectile.hostile = false;
+			Projectile.DamageType = ModContent.GetInstance<DTRogueClass>(); 
+            Projectile.penetrate = 5;
+			Projectile.timeLeft = 600;
+			Projectile.light = 0.5f;
+			Projectile.ignoreWater = true;
+			Projectile.tileCollide = true;
 		}
 
-		private const int GravityDelay = 45;
+		float offset = 0f;
 
-		public override void AI() {
-			UpdateAlpha();
-			NormalAI();
-			
-		}
+		float ShakeMag = 0f;
+        public override bool PreDraw(ref Color lightColor)
+        {
+			offset += 0.02f;
+			DTTrail.DrawTrail(Main.spriteBatch, DTAssetLib.Streak(2).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 20, ColorLib.CelestialGradient, offset, 0);
 
-		private void NormalAI() {
-			// Offset the rotation by 90 degrees because the sprite is oriented vertically.
-			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.ToRadians(45f);
+			Asset<Texture2D> Tex = TextureAssets.Projectile[Type];
+            SpriteEffects FX = Projectile.direction < 0 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 
-			// Spawn some random dusts as the javelin travels
-			if (Main.rand.NextBool(3)) {
-				Dust dust = Dust.NewDustDirect(Projectile.position, Projectile.height, Projectile.width, DustID.PurpleMoss, Projectile.velocity.X * .2f, Projectile.velocity.Y * .2f, 400, Scale: 1.2f);
-				dust.velocity += Projectile.velocity * 0.3f;
-				dust.velocity *= 0.2f;
-			}
-			if (Main.rand.NextBool(4)) {
-				Dust dust = Dust.NewDustDirect(Projectile.position, Projectile.height, Projectile.width, DustID.PurpleMoss,
-					0, 0, 254, Scale: 0.3f);
-				dust.velocity += Projectile.velocity * 0.5f;
-				dust.velocity *= 0.5f;
-			}
-		}
+            float rotationoffset = Projectile.direction < 0 ? MathHelper.PiOver2 : 0f;
 
-		public override void OnKill(int timeLeft) {
-			Vector2 usePos = Projectile.position; // Position to use for dusts
-
-			// Offset the rotation by 90 degrees because the sprite is oriented vertically.
-			Vector2 rotationVector = (Projectile.rotation - MathHelper.ToRadians(90f)).ToRotationVector2(); // rotation vector to use for dust velocity
-			usePos += rotationVector * 16f;
-
-			// Spawn some dusts upon javelin death
-			for (int i = 0; i < 20; i++) {
-				// Create a new dust
-				Dust dust = Dust.NewDustDirect(usePos, Projectile.width, Projectile.height, DustID.PurpleMoss);
-				dust.position = (dust.position + Projectile.Center) / 2f;
-				dust.velocity += rotationVector * 2f;
-				dust.velocity *= 0.5f;
-				dust.noGravity = true;
-				usePos -= rotationVector * 0f;
+			if (Dying)
+			{
+				ShakeMag += 0.06f;
 			}
 
-			// Make sure to only spawn items if you are the projectile owner.
-			// This is an important check as Kill() is called on clients, and you only want the item to drop once
-		}
+			Vector2 Pos = Projectile.Center + Main.rand.NextVector2Circular(ShakeMag, ShakeMag);
 
-		private const int MaxStickingJavelin = 6; // This is the max amount of javelins able to be attached to a single NPC
-		private readonly Point[] stickingJavelins = new Point[MaxStickingJavelin]; // The point array holding for sticking javelins
+            Main.EntitySpriteDraw(Tex.Value, Pos - Main.screenPosition, null, Color.White, Projectile.rotation + rotationoffset, Tex.Value.Size() / 2, Projectile.scale, FX, 0f);
 
-		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
-			Projectile.velocity = (target.Center - Projectile.Center) *
-				0.75f; // Change velocity based on delta center of targets (difference between entity centers)
-			Projectile.netUpdate = true; // netUpdate this javelin
-			Projectile.damage = 0; // Makes sure the sticking javelins do not deal damage anymore
+            return false;
+        }
 
-			// ExampleJavelinBuff handles the damage over time (DoT)
-			target.AddBuff(BuffID.Chilled, 600);
+		public float GlowOpacity = 0f;
+        public override void PostDraw(Color lightColor)
+        {
+			Asset<Texture2D> Glow = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/ChromaFade");
 
-			// KillOldestJavelin will kill the oldest projectile stuck to the specified npc.
-			// It only works if ai[0] is 1 when sticking and ai[1] is the target npc index, which is what IsStickingToTarget and TargetWhoAmI correspond to.
-			Projectile.KillOldestJavelin(Projectile.whoAmI, Type, target.whoAmI, stickingJavelins);
-		}
+			SpriteEffects FX = Projectile.direction < 0 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
 
-		public override bool TileCollideStyle(ref int width, ref int height, ref bool fallThrough, ref Vector2 hitboxCenterFrac) {
-			// For going through platforms and such, javelins use a tad smaller size
-			width = height = 10; // notice we set the width to the height, the height to 10. so both are 10
-			return true;
-		}
+			float rotationoffset = Projectile.direction < 0 ? MathHelper.PiOver2 : 0f;
+            Vector2 Pos = Projectile.Center + Main.rand.NextVector2Circular(ShakeMag, ShakeMag);
 
-		public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox) {
-			// By shrinking target hitboxes by a small amount, this projectile only hits if it more directly hits the target.
-			// This helps the javelin stick in a visually appealing place within the target sprite.
-			if (targetHitbox.Width > 8 && targetHitbox.Height > 8) {
-				targetHitbox.Inflate(-targetHitbox.Width / 8, -targetHitbox.Height / 8);
-			}
-			// Return if the hitboxes intersects, which means the javelin collides or not
-			return projHitbox.Intersects(targetHitbox);
-		}
+            Main.EntitySpriteDraw(Glow.Value, Pos  - Main.screenPosition, null, Color.White * GlowOpacity, Projectile.rotation + rotationoffset, Glow.Value.Size() / 2, Projectile.scale, FX, 0f);
+        }
 
-		public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI) {
-			// If attached to an NPC, draw behind tiles (and the npc) if that NPC is behind tiles, otherwise just behind the NPC.
-			
-			// Since we aren't attached, add to this list
-			behindNPCsAndTiles.Add(index);
-		}
+		public bool Dying = false;
+		public override void AI() 
+		{
+            for (int i = 0; i < ProjectileID.Sets.TrailCacheLength[Type]; i++)
+            {
+                if (Projectile.oldPos[i] == Vector2.Zero)
+                {
+                    Projectile.oldPos[i] = Projectile.Center;
+                }
+            }
+            
+			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
+			Dust Trail = Dust.NewDustPerfect(Projectile.Center, DustID.AncientLight, Vector2.Zero, 0, Color.White, 1f);
+			Trail.noGravity = true;
 
-		// Change this number if you want to alter how the alpha changes
-		private const int AlphaFadeInSpeed = 25;
-
-		private void UpdateAlpha() {
-			// Slowly remove alpha as it is present
-			if (Projectile.alpha > 0) {
-				Projectile.alpha -= AlphaFadeInSpeed;
+			if (Dying)
+			{
+				Projectile.velocity *= 0.99f;
+				if (GlowOpacity < 1f)
+				{
+					
+					GlowOpacity += 0.01f;
+				}
+				else
+				{
+					Projectile.timeLeft = 1;
+				}
 			}
 
-			// If alpha gets lower than 0, set it to 0
-			if (Projectile.alpha < 0) {
-				Projectile.alpha = 0;
-			}
 		}
+
+        public override bool? CanHitNPC(NPC target)
+        {
+            if (Dying)
+			{
+				return false;
+			}
+			return null;
+        }
+
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        {
+			SoundEngine.PlaySound(DTAssetLib.Impacts.FleshHit with { PitchVariance = 0.7f}, Projectile.Center);
+
+			Rectangle DustR = Utils.CenteredRectangle(Projectile.Center, new Vector2(70, 70));
+
+			for (int t = 0; t < 5; t++)
+			{
+				Dust.NewDust(DustR.TopLeft(), DustR.Width, DustR.Height, DustID.FireworksRGB, -Projectile.velocity.X, -Projectile.velocity.Y, 0, Color.White, 2f);
+			}
+
+            var Dirs = Opus.RadialVectorOutwardRandom(2, Projectile.Center, Main.rand.NextFloat(2f, 5f));
+
+            for (int i = 0; i < 2; i++)
+            {
+                StarParticle Star = new();
+                Star.Initialize(Projectile.Center, Dirs[i], Color.White, 0.7f);
+                ParticleEngine.BehindProjectiles.Add(Star);
+            }
+
+            if (Projectile.penetrate > 2)
+			{
+				Projectile.velocity *= 0.75f;
+			}
+			else
+			{
+                Dying = true;
+            }
+        }
+
+        public override void OnKill(int timeLeft)
+        {
+            Vector2[] oldCenters = Projectile.OldCenter();
+            SoundEngine.PlaySound(DTAssetLib.Impacts.IceMagicImpact, Projectile.Center);
+
+            Dust[] D1 = Opus.RadialSpreadDustRandom(DustID.FireworksRGB, 3, Projectile.Center, 0, Color.White, 4, 2f);
+			foreach (Dust D in D1)
+			{
+				D.noGravity = true;
+			}
+
+            Opus.RingSpreadDustRandom(DustID.FireworksRGB, 5, Projectile.Center, 10, 0, Color.White, 4, 1f);
+
+            Opus.RingSpreadDustRandom(DustID.FireworksRGB, 9, Projectile.Center, 15, 0, Color.White, 3, 0.6f);
+
+			/*
+			for(int i = 0; i < oldCenters.Length; i++)
+			{
+				float Opac = MathHelper.Lerp(1f, 0f, i / (float)oldCenters.Length - 1);
+				float scl = MathHelper.Lerp(2f, 0f, i / (float)oldCenters.Length - 1);
+                Dust effect = Dust.NewDustPerfect(oldCenters[i], DustID.AncientLight, Vector2.Zero, 0, ColorLib.CelestialGradient * Opac, scl);
+				effect.noGravity = true;
+			}
+			*/
+
+            var Dirs = Opus.RadialVectorOutwardRandom(6, Projectile.Center, Main.rand.NextFloat(2f, 5f));
+
+            for (int i = 0; i < 6; i++)
+            {
+                StarParticle Star = new();
+                Star.Initialize(Projectile.Center, Dirs[i], Color.White, 0.7f);
+                ParticleEngine.BehindProjectiles.Add(Star);
+            }
+        }
+
+        public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
+        {
+			/*
+			Vector2 P1 = Projectile.Center + new Vector2(-Projectile.width / 2, Projectile.height / 2).RotatedBy(Projectile.rotation);
+            Vector2 P2 = Projectile.Center + new Vector2(Projectile.width / 2, -Projectile.height / 2).RotatedBy(Projectile.rotation);
+			Line L = new Line(P1, P2);
+			return L.Collision(8, 1);
+			*/
+
+			return null;
+        }
 	}
 }

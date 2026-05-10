@@ -18,7 +18,7 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame
 {
-	public class CursedFlameVortex : ModProjectile
+	public class CursedFlameVortex : ModProjectile, IDrawPixelated
 	{
         public override string Texture => DTUtils.NoTexture;
         private Player HomingTarget
@@ -77,6 +77,15 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame
 
             DTUtils.instance.ScrollingTextureSpine(Line, DTAssetLib.Line(1), ColorLib.CursedFlames * 0.5f, spriteBatch, BlendState.Additive, warnoffset, 2f);
 
+            
+
+            return false;
+        }
+
+        PixelLayer IDrawPixelated.PixelLayer => PixelLayer.AboveProjectiles;
+
+        void IDrawPixelated.DrawPixelated(SpriteBatch spriteBatch)
+        {
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearWrap, DepthStencilState.None, RasterizerState.CullNone, null, PixelationSystem.PixelationMatrix);
 
@@ -129,8 +138,6 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame
             }
 
             Opus.ReturnToDefaultDrawing(spriteBatch);
-
-            return false;
         }
 
 

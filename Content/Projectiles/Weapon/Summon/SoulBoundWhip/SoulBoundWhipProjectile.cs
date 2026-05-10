@@ -5,6 +5,7 @@ using DestroyerTest.Content.Particles;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -124,10 +125,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon.SoulBoundWhip
             }
         }
         public override bool _PrimitiveIsScrollingTexture => true;
-        protected override Texture2D PrimitiveTex => DTAssetLib.Square.Value;
+        protected override Asset<Texture2D> PrimitiveTex => DTAssetLib.Square;
 
-        protected override Texture2D WhipHandle => ModContent.Request<Texture2D>($"{Path}/SoulBoundWhipHilt").Value;
-        protected override Texture2D WhipHead => ModContent.Request<Texture2D>($"{Path}/SoulBoundWhipHead").Value;
+        protected override Asset<Texture2D> WhipHandle => ModContent.Request<Texture2D>($"{Path}/SoulBoundWhipHilt");
+        protected override Asset<Texture2D> WhipHead => ModContent.Request<Texture2D>($"{Path}/SoulBoundWhipHead");
 
         #endregion
     }

@@ -101,124 +101,147 @@ namespace DestroyerTest.Common.Systems
 
 		// We save our data sets using TagCompounds.
 		// NOTE: The tag instance provided here is always empty by default.
-		public override void SaveWorldData(TagCompound tag)
-		{
-			if (downedEoCBoss)
-			{
-				tag["downedEoCBoss"] = true;
-			}
-			if (downedBoCBoss)
-			{
-				tag["downedBoCBoss"] = true;
-			}
-			if (downedEoWBoss)
-			{
-				tag["downedEoWBoss"] = true;
-			}
-			if (downedDeerclopsMiniBoss)
-			{
-				tag["downedDeerclopsMiniBoss"] = true;
-			}
-			if (downedQueenBeeBoss)
-			{
-				tag["downedQueenBeeBoss"] = true;
-			}
-			if (downedSkeletronBoss)
-			{
-				tag["downedSkeletronBoss"] = true;
-			}
-			if (downedConstitutionBoss)
-			{
-				tag["downedConstitutionBoss"] = true;
-			}
-			if (downedWallBoss)
-			{
-				tag["downedWallBoss"] = true;
-			}
-			if (downedQueenSlimeBoss)
-			{
-				tag["downedQueenSlimeBoss"] = true;
-			}
-			if (downedDestroyerBoss)
-			{
-				tag["downedDestroyerBoss"] = true;
-			}
-			if (downedTwinsBoss)
-			{
-				tag["downedTwinsBoss"] = true;
-			}
-			if (downedSkeletronPrimeBoss)
-			{
-				tag["downedPrimeBoss"] = true;
-			}
-			if (downedNautilusMiniBoss)
-			{
-				tag["downedNautilusMiniBoss"] = true;
-			}
-			if (downedPlanteraBoss)
-			{
-				tag["downedPlanteraBoss"] = true;
-			}
-			if (downedNodeMiniBoss)
-			{
-				tag["downedNodeMiniBoss"] = true;
-			}
-			if (downedGolemBoss)
-			{
-				tag["downedGolemBoss"] = true;
-			}
-			if (downedFishronBoss)
-			{
-				tag["downedFishronBoss"] = true;
-			}
-			if (downedEmpressBoss)
-			{
-				tag["downedEmpressBoss"] = true;
-			}
-			if (downedCultistBoss)
-			{
-				tag["downedCultistBoss"] = true;
-			}
-			if (downedLunarBoss)
-			{
-				tag["downedLunarBoss"] = true;
-			}
-			if (downedWyvernCorpseBoss)
-			{
-				tag["downedWyvernCorpseBoss"] = true;
-			}
-			if (downedNightmareRoseBoss) {
-				tag["downedNightmareRoseBoss"] = true;
-			}
-		}
+        public override void SaveWorldData(TagCompound tag)
+        {
+            tag.Add("downedEoCBoss", downedEoCBoss);
+            tag.Add("downedBoCBoss", downedBoCBoss);
+            tag.Add("downedEoWBoss", downedEoWBoss);
+            tag.Add("downedDeerclopsMiniBoss", downedDeerclopsMiniBoss);
+            tag.Add("downedQueenBeeBoss", downedQueenBeeBoss);
+            tag.Add("downedSkeletronBoss", downedSkeletronBoss);
+            tag.Add("downedConstitutionBoss", downedConstitutionBoss);
+            tag.Add("downedWallBoss", downedWallBoss);
+            tag.Add("downedQueenSlimeBoss", downedQueenSlimeBoss);
+            tag.Add("downedDestroyerBoss", downedDestroyerBoss);
+            tag.Add("downedTwinsBoss", downedTwinsBoss);
+            tag.Add("downedPrimeBoss", downedSkeletronPrimeBoss);
+            tag.Add("downedNautilusMiniBoss", downedNautilusMiniBoss);
+            tag.Add("downedPlanteraBoss", downedPlanteraBoss);
+            tag.Add("downedNodeMiniBoss", downedNodeMiniBoss);
+            tag.Add("downedGolemBoss", downedGolemBoss);
+            tag.Add("downedFishronBoss", downedFishronBoss);
+            tag.Add("downedEmpressBoss", downedEmpressBoss);
+            tag.Add("downedCultistBoss", downedCultistBoss);
+            tag.Add("downedLunarBoss", downedLunarBoss);
+            tag.Add("downedWyvernCorpseBoss", downedWyvernCorpseBoss);
+            tag.Add("downedNightmareRoseBoss", downedNightmareRoseBoss);
+        }
 
-		public override void LoadWorldData(TagCompound tag)
-		{
-			downedEoCBoss = tag.ContainsKey("downedEoCBoss");
-			downedBoCBoss = tag.ContainsKey("downedBoCBoss");
-			downedEoWBoss = tag.ContainsKey("downedEoWBoss");
-			downedDeerclopsMiniBoss = tag.ContainsKey("downedDeerclopsMiniBoss");
-			downedQueenBeeBoss = tag.ContainsKey("downedQueenBeeBoss");
-			downedSkeletronBoss = tag.ContainsKey("downedSkeletronBoss");
-			downedConstitutionBoss = tag.ContainsKey("downedConstitutionBoss");
-			downedWallBoss = tag.ContainsKey("downedWallBoss");
-			downedQueenSlimeBoss = tag.ContainsKey("downedQueenSlimeBoss");
-			downedDestroyerBoss = tag.ContainsKey("downedDestroyerBoss");
-			downedTwinsBoss = tag.ContainsKey("downedTwinsBoss");
-			downedSkeletronPrimeBoss = tag.ContainsKey("downedPrimeBoss");
-			downedNautilusMiniBoss = tag.ContainsKey("downedNautilusMiniBoss");
-			downedPlanteraBoss = tag.ContainsKey("downedPlanteraBoss");
-			downedNodeMiniBoss = tag.ContainsKey("downedNodeMiniBoss");
-			downedGolemBoss = tag.ContainsKey("downedGolemBoss");
-			downedFishronBoss = tag.ContainsKey("downedFishronBoss");
-			downedEmpressBoss = tag.ContainsKey("downedEmpressBoss");
-			downedCultistBoss = tag.ContainsKey("downedCultistBoss");
-			downedLunarBoss = tag.ContainsKey("downedLunarBoss");
-			downedWyvernCorpseBoss = tag.ContainsKey("downedWyvernCorpseBoss");
-			downedNightmareRoseBoss = tag.ContainsKey("downedNightmareRoseBoss");
-		}
 
-		public override void NetSend(BinaryWriter writer) {
+        public override void LoadWorldData(TagCompound tag)
+        {
+            if (tag.ContainsKey("downedEoCBoss"))
+            {
+                downedEoCBoss = tag.GetBool("downedEoCBoss");
+            }
+
+            if (tag.ContainsKey("downedBoCBoss"))
+            {
+                downedBoCBoss = tag.GetBool("downedBoCBoss");
+            }
+
+            if (tag.ContainsKey("downedEoWBoss"))
+            {
+                downedEoWBoss = tag.GetBool("downedEoWBoss");
+            }
+
+            if (tag.ContainsKey("downedDeerclopsMiniBoss"))
+            {
+                downedDeerclopsMiniBoss = tag.GetBool("downedDeerclopsMiniBoss");
+            }
+
+            if (tag.ContainsKey("downedQueenBeeBoss"))
+            {
+                downedQueenBeeBoss = tag.GetBool("downedQueenBeeBoss");
+            }
+
+            if (tag.ContainsKey("downedSkeletronBoss"))
+            {
+                downedSkeletronBoss = tag.GetBool("downedSkeletronBoss");
+            }
+
+            if (tag.ContainsKey("downedConstitutionBoss"))
+            {
+                downedConstitutionBoss = tag.GetBool("downedConstitutionBoss");
+            }
+
+            if (tag.ContainsKey("downedWallBoss"))
+            {
+                downedWallBoss = tag.GetBool("downedWallBoss");
+            }
+
+            if (tag.ContainsKey("downedQueenSlimeBoss"))
+            {
+                downedQueenSlimeBoss = tag.GetBool("downedQueenSlimeBoss");
+            }
+
+            if (tag.ContainsKey("downedDestroyerBoss"))
+            {
+                downedDestroyerBoss = tag.GetBool("downedDestroyerBoss");
+            }
+
+            if (tag.ContainsKey("downedTwinsBoss"))
+            {
+                downedTwinsBoss = tag.GetBool("downedTwinsBoss");
+            }
+
+            if (tag.ContainsKey("downedPrimeBoss"))
+            {
+                downedSkeletronPrimeBoss = tag.GetBool("downedPrimeBoss");
+            }
+
+            if (tag.ContainsKey("downedNautilusMiniBoss"))
+            {
+                downedNautilusMiniBoss = tag.GetBool("downedNautilusMiniBoss");
+            }
+
+            if (tag.ContainsKey("downedPlanteraBoss"))
+            {
+                downedPlanteraBoss = tag.GetBool("downedPlanteraBoss");
+            }
+
+            if (tag.ContainsKey("downedNodeMiniBoss"))
+            {
+                downedNodeMiniBoss = tag.GetBool("downedNodeMiniBoss");
+            }
+
+            if (tag.ContainsKey("downedGolemBoss"))
+            {
+                downedGolemBoss = tag.GetBool("downedGolemBoss");
+            }
+
+            if (tag.ContainsKey("downedFishronBoss"))
+            {
+                downedFishronBoss = tag.GetBool("downedFishronBoss");
+            }
+
+            if (tag.ContainsKey("downedEmpressBoss"))
+            {
+                downedEmpressBoss = tag.GetBool("downedEmpressBoss");
+            }
+
+            if (tag.ContainsKey("downedCultistBoss"))
+            {
+                downedCultistBoss = tag.GetBool("downedCultistBoss");
+            }
+
+            if (tag.ContainsKey("downedLunarBoss"))
+            {
+                downedLunarBoss = tag.GetBool("downedLunarBoss");
+            }
+
+            if (tag.ContainsKey("downedWyvernCorpseBoss"))
+            {
+                downedWyvernCorpseBoss = tag.GetBool("downedWyvernCorpseBoss");
+            }
+
+            if (tag.ContainsKey("downedNightmareRoseBoss"))
+            {
+                downedNightmareRoseBoss = tag.GetBool("downedNightmareRoseBoss");
+            }
+        }
+
+        public override void NetSend(BinaryWriter writer) {
 			// Order of parameters is important and has to match that of NetReceive
 			writer.WriteFlags(
 				downedEoCBoss, 

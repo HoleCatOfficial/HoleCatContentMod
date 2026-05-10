@@ -1,6 +1,8 @@
 using System.Collections.ObjectModel;
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Particles;
+using DestroyerTest.Content.Particles.PotionFlowers;
 using DestroyerTest.Content.Particles.Stellar;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Weapon.Magic;
@@ -32,7 +34,9 @@ namespace DestroyerTest.Content.CheatItems
 
         public override bool? UseItem(Player player)
         {
-           
+			LilliesOfImmortalityParticle P = new();
+			P.Spawn(Main.MouseWorld);
+			ParticleEngine.BehindProjectiles.Add(P);
             return true;
         }
 	}

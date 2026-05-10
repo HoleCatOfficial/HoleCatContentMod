@@ -669,7 +669,10 @@ namespace DestroyerTest.Content.Entities
             {
                 NPC.dontTakeDamage = true;
                 NPC.immortal = true;
-                NPC.life += HealAmount;
+                if (NPC.life < (NPC.lifeMax * 0.75f))
+                {
+                    NPC.life += HealAmount;
+                }
                 if (Main.rand.NextBool(26))
                 {
                     RegenHeart Heart = new RegenHeart();
@@ -815,7 +818,7 @@ namespace DestroyerTest.Content.Entities
                             VingetteScale *= 0.99f;
                         }
 
-                        if (SpawnCount == (60 * 8) - 10)
+                        if (SpawnCount == (60 * 8) - 40)
                         {
                             if (DestroyerTestMod.MasochistIsActive)
                             {
@@ -1016,7 +1019,7 @@ namespace DestroyerTest.Content.Entities
                             {
                                 SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/ChargeBreak") with { PitchVariance = 1f });
 
-                                Opus.RingSpreadProjectile(ModContent.ProjectileType<TenebrisFlamesHostile>(), 6, player.Center, 300, 10, 2, 8);
+                                Opus.RingSpreadProjectile(ModContent.ProjectileType<TenebrisFlamesHostile>(), 6, player.Center, 300, 30, 2, 8);
                                 FlameRingCount++;
                             }
                             if (FlameRingCount >= 9)
@@ -1112,7 +1115,7 @@ namespace DestroyerTest.Content.Entities
                                             NPCHead,
                                             new Vector2(Main.rand.NextFloat(-5, 6), -15),
                                             ModContent.ProjectileType<CursedFlameNapalm>(),
-                                            18,
+                                            20,
                                             2
                                         );
                                     proj.tileCollide = true;
@@ -1131,7 +1134,7 @@ namespace DestroyerTest.Content.Entities
                         {
                             if (Main.GameUpdateCount % 120 == 0)
                             {
-                                Opus.RadialSpreadProjectileRandom(ModContent.ProjectileType<DarkOrb>(), 3, NPCHead, 10, 3, 8);
+                                Opus.RadialSpreadProjectileRandom(ModContent.ProjectileType<DarkOrb>(), 3, NPCHead, 30, 3, 8);
                                 VileThornCount += 1;
                                 //Main.NewText(VileThornCount.ToString(), Color.Blue);
                             }
@@ -1221,7 +1224,7 @@ namespace DestroyerTest.Content.Entities
                                 {
                                     float rot = angle + MathHelper.Pi * f;
                                     Vector2 dir = rot.ToRotationVector2();
-                                    Projectile.NewProjectile(Entity.GetSource_FromAI(), NPCHead, dir * 6f, ModContent.ProjectileType<BigSoul>(), 18, 7);
+                                    Projectile.NewProjectile(Entity.GetSource_FromAI(), NPCHead, dir * 6f, ModContent.ProjectileType<BigSoul>(), 30, 7);
                                 }
                             }
                         }
@@ -1749,7 +1752,7 @@ namespace DestroyerTest.Content.Entities
                     for (int a = 0; a < 10; a++)
                     {
                         Vector2 SpawnPoint = new Vector2(NPC.Center.X + Main.rand.NextFloat(-BorderRad, BorderRad), NPC.Center.Y + 800);
-                        Projectile.NewProjectile(Entity.GetSource_FromThis(), SpawnPoint, new Vector2(0, -8), ModContent.ProjectileType<TormentedSoul>(), 10, 2);
+                        Projectile.NewProjectile(Entity.GetSource_FromThis(), SpawnPoint, new Vector2(0, -8), ModContent.ProjectileType<TormentedSoul>(), 25, 2);
                     }
                 }
                 if (DestroyerTestMod.EternityIsActive)
@@ -1757,7 +1760,7 @@ namespace DestroyerTest.Content.Entities
                     for (int a = 0; a < 5; a++)
                     {
                         Vector2 SpawnPoint = new Vector2(NPC.Center.X + Main.rand.NextFloat(-BorderRad, BorderRad), NPC.Center.Y + 800);
-                        Projectile.NewProjectile(Entity.GetSource_FromThis(), SpawnPoint, new Vector2(0, -16), ModContent.ProjectileType<TormentedSoul>(), 10, 2);
+                        Projectile.NewProjectile(Entity.GetSource_FromThis(), SpawnPoint, new Vector2(0, -16), ModContent.ProjectileType<TormentedSoul>(), 25, 2);
                     }
                     for (int a = 0; a < 5; a++)
                     {
@@ -1778,7 +1781,7 @@ namespace DestroyerTest.Content.Entities
                             S = 2;
                         }
 
-                        Projectile.NewProjectile(Entity.GetSource_FromThis(), SpawnPoint, MoveDir, ModContent.ProjectileType<TormentedSoul>(), 10, 2, ai2: S);
+                        Projectile.NewProjectile(Entity.GetSource_FromThis(), SpawnPoint, MoveDir, ModContent.ProjectileType<TormentedSoul>(), 25, 2, ai2: S);
                     }
                 }
             }

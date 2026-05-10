@@ -1,40 +1,81 @@
+using DestroyerTest.Common;
+using DestroyerTest.Common.Systems;
+using DestroyerTest.Content.Dusts;
+using DestroyerTest.Content.Equips;
+using DestroyerTest.Content.Equips.ScepterAccessories;
+using DestroyerTest.Content.Magic;
+using DestroyerTest.Content.MeleeWeapons;
+using DestroyerTest.Content.MeleeWeapons.SwordLineage;
+using DestroyerTest.Content.MeleeWeapons.TwistedLineage;
+using DestroyerTest.Content.RiftArsenal;
+using DestroyerTest.Content.Scepter;
+using DestroyerTest.Content.Tiles.RoseGarden;
+using Hjson;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
+using OpusLib.Content.Helpers;
+using ReLogic.Content;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using System.Reflection;
-using Hjson;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Terraria;
-using Terraria.ModLoader;
-using DestroyerTest.Content.MeleeWeapons.SwordLineage;
-using DestroyerTest.Content.Dusts;
-using Terraria.ID;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent.UI;
-using DestroyerTest.Content.Magic;
-using DestroyerTest.Common;
-using ReLogic.Content;
-using DestroyerTest.Content.Equips;
 using Terraria.DataStructures;
-using DestroyerTest.Content.MeleeWeapons;
-using DestroyerTest.Content.Scepter;
+using Terraria.GameContent.UI;
+using Terraria.ID;
+using Terraria.ModLoader;
 using static Terraria.Graphics.FinalFractalHelper;
-using OpusLib.Content.Helpers;
-using DestroyerTest.Content.Equips.ScepterAccessories;
-using DestroyerTest.Content.Tiles.RoseGarden;
-using OpusLib;
-using DestroyerTest.Content.RiftArsenal;
-using DestroyerTest.Content.MeleeWeapons.TwistedLineage;
 
 namespace DestroyerTest
 {
 	// Please read https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Modding-Guide#mod-skeleton-contents for more information about the various files in a mod.
 	public class DestroyerTestMod : Mod
 	{
+        public override object Call(params object[] args)
+        {
+            if (args is null)
+            {
+                throw new ArgumentNullException(nameof(args));
+            }
+
+            if (args.Length == 0)
+            {
+                throw new ArgumentException("Arguments cannot be empty!");
+            }
+
+            if (args[0] is string content)
+            {
+                switch (content)
+                {
+                    case "RegisterPotion":
+                    case "RegisterPotionFlowerPotion":
+                    case "PotionFlowerPotion":
+                    case "RegisterPotionForPotionFlower":
+                        {
+                            if (args[1] is string Name && args[2] is int ID && args[3] is int HealAmount)
+                            {
+                                PotionProfile P = new(Name, ID, HealAmount);
+                                PotionFlowerPlayer.RegisterPotion(P);
+                            }
+                            break;
+                        }
+
+                    case "TenebrisEvilBiome":
+                    case "TenebrisInCorruption":
+                    case "TenebrisCorruption":
+                        {
+                            return DTFlags.TenebrisCanSpawnInWorldEvilBiome;
+                        }
+                 }
+            }
+
+            return false;
+        }
         
         public static DTConfig Config;
         public static ModKeybind StarBlastKeybind { get; private set; }

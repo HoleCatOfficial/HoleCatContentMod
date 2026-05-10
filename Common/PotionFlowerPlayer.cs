@@ -1,7 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using BreadLibrary.Core.Graphics.Particles;
+using DestroyerTest.Content.Particles.PotionFlowers;
 using ReLogic.Reflection;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -21,6 +25,12 @@ namespace DestroyerTest.Common
     }
     public class PotionFlowerPlayer : ModPlayer
     {
+        public static SoundStyle HealSound = new SoundStyle("DestroyerTest/Assets/Audio/PotionFlowerHeal") { MaxInstances = 3, PitchVariance = 0.7f };
+        public static void RegisterPotion(PotionProfile potion)
+        {
+            PotionFlowerPlayer player = ModContent.GetInstance<PotionFlowerPlayer>();
+            player.Potions.Add(potion);
+        }
 
         public List<PotionProfile> Potions = new List<PotionProfile>
         {
@@ -29,6 +39,19 @@ namespace DestroyerTest.Common
             new PotionProfile("GreaterHealing", ItemID.GreaterHealingPotion, 150),
             new PotionProfile("SuperHealing", ItemID.SuperHealingPotion, 200),
         };
+
+        bool IsRegisteredPotion(int itemType)
+        {
+            return Potions.Any(p => p.ItemID == itemType);
+        }
+
+        public override bool CanUseItem(Item item)
+        {
+            if (IsRegisteredPotion(item.type))
+                return false;
+
+            return base.CanUseItem(item);
+        }
 
         private bool TryConsumeBestHealingPotion(Player player)
         {
@@ -67,7 +90,6 @@ namespace DestroyerTest.Common
             );
 
             player.HealEffect(bestPotion.HealAmount);
-            player.AddBuff(BuffID.PotionSickness, 30 * 60);
 
             return true;
         }
@@ -78,6 +100,8 @@ namespace DestroyerTest.Common
         public bool EphemeralSolvent = false;
         public bool LifeTalisman = false;
         public bool Lillies = false;
+
+        public bool Active => RadiantRose || EphemeralSolvent || Lillies;
         public override void ResetEffects()
         {
             RadiantRose = false;
@@ -89,10 +113,6 @@ namespace DestroyerTest.Common
         public int UseCooldown = 0;
         public override void PostUpdateMiscEffects()
         {
-            if (Lillies)
-            {
-                Player.buffImmune[BuffID.PotionSickness] = true;
-            }
             if (RadiantRose || EphemeralSolvent || Lillies)
                 {
                     if (Player.statLife < Player.statLifeMax2 / 2)
@@ -109,24 +129,38 @@ namespace DestroyerTest.Common
                                 Dust.NewDust(Player.position, Player.Hitbox.Width, Player.Hitbox.Height, DustID.LastPrism, Player.velocity.X * 0.5f, Player.velocity.Y * 0.5f, 0, default, 2.25f);
                             }
                         }
-                        if (UseCooldown >= 600)
+                        if (UseCooldown >= (60 * 45))
                         {
                             if (TryConsumeBestHealingPotion(Player))
                             {
+                                SoundEngine.PlaySound(HealSound, Player.Center);
+                                if (RadiantRose)
+                                {
+                                    RadiantRoseParticle FX = new();
+                                    FX.Spawn(Player.Center, 1f);
+                                    ParticleEngine.BehindProjectiles.Add(FX);
+                                }
+                                if (EphemeralSolvent)
+                                {
+                                    EphemeralSolventParticle FX = new();
+                                    FX.Spawn(Player.Center, 1f);
+                                    ParticleEngine.BehindProjectiles.Add(FX);
+                                }
+                                if (Lillies)
+                                {
+                                    LilliesOfImmortalityParticle FX = new();
+                                    FX.Spawn(Player.Center, 1f);
+                                    ParticleEngine.BehindProjectiles.Add(FX);
+                                }
+
                                 UseCooldown = 0;
                             }
                         }
                     }
 
-                    if (UseCooldown < 600)
+                    if (UseCooldown < (60 * 45))
                     {
                         UseCooldown++;
-                    }
-
-                    if (Player.HasBuff(BuffID.PotionSickness))
-                    {
-                        Player.GetDamage(DamageClass.Generic) *= 0.85f;
-                        Player.statDefense *= 0.95f;
                     }
                 }
             if (LifeTalisman)
@@ -150,44 +184,15 @@ namespace DestroyerTest.Common
         {
             if (RadiantRose)
             {
-                Player.lifeRegen += 8;
+                Player.lifeRegen += 3;
             }
             if (EphemeralSolvent)
             {
-                Player.lifeRegen += 24;
+                Player.lifeRegen += 9;
             }
             if (Lillies)
             {
-                Player.lifeRegen += 36;
-            }
-        }
-    }
-
-    public class ModifyPotionsItem : GlobalItem
-    {
-        public override bool InstancePerEntity => true;
-        public bool RadiantRose = false;
-        public bool EphemeralSolvent = false;
-        public bool Lillies;
-
-        public override void UpdateInventory(Item item, Player player)
-        {
-            if (item.type == ItemID.LesserHealingPotion ||
-            item.type == ItemID.HealingPotion ||
-            item.type == ItemID.GreaterHealingPotion ||
-            item.type == ItemID.SuperHealingPotion)
-            {
-                if (!item.TryGetGlobalItem<ModifyPotionsItem>(out var g))
-                    return;
-
-                if (RadiantRose || EphemeralSolvent | Lillies)
-                {
-                    item.buffTime = 54 * 60;
-                }
-                else
-                {
-                    item.buffTime = 60 * 60;
-                }
+                Player.lifeRegen += 18;
             }
         }
     }

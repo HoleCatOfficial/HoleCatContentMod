@@ -123,11 +123,13 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
         {
             Projectile.timeLeft = 60;
 
+            Projectile.scale = 1f + Owner.GetAdjustedItemScale(Owner.HeldItem);
+
             float spd = Opus.Sine(0.02f, 0.09f, 0.01f);
             Rot += spd;
             Sc = Opus.Sine(0.2f, 0.8f, 0.01f);
 
-            Dis = Opus.Sine(80f, 140f, 0.01f);
+            Dis = Opus.Sine(80f, 140f, 0.01f) * Owner.GetTotalAttackSpeed(DamageClass.Generic);
 
             Lighting.AddLight(Projectile.Center, Color.Orange.ToVector3() * Sc);
 

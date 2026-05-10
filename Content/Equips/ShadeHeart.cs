@@ -81,7 +81,7 @@ namespace DestroyerTest.Content.Equips
             }
         }
 
-        public override void ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers)
+        public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo)
         {
             if (Active)
             {
@@ -90,14 +90,14 @@ namespace DestroyerTest.Content.Equips
                 ParticleEngine.ShaderParticles.Add(ExplosionFX);
 
                 BloomRingSharp Ring = new BloomRingSharp();
-                Ring.Prepare(Player.Center, Vector2.Zero, ColorLib.TenebrisGradient, 0.1f, 0.02f, 2f, BlendState.Additive);
+                Ring.Prepare(Player.Center, Vector2.Zero, ColorLib.TenebrisGradient, 0.03f, 0.007f, 0.6f, BlendState.Additive);
                 ParticleEngine.ShaderParticles.Add(Ring);
 
                 Opus.RadialSpreadProjectile(ModContent.ProjectileType<TenebrisStarFriendly>(), 5, Player.Center, 14, 4, 6, offset: Main.rand.NextFloat(MathHelper.TwoPi));
             }
         }
 
-        public override void ModifyHitByProjectile(Projectile proj, ref Player.HurtModifiers modifiers)
+        public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo)
         {
             if (Active)
             {
@@ -106,12 +106,13 @@ namespace DestroyerTest.Content.Equips
                 ParticleEngine.ShaderParticles.Add(ExplosionFX);
 
                 BloomRingSharp Ring = new BloomRingSharp();
-                Ring.Prepare(Player.Center, Vector2.Zero, ColorLib.TenebrisGradient, 0.1f, 0.02f, 2f, BlendState.Additive);
+                Ring.Prepare(Player.Center, Vector2.Zero, ColorLib.TenebrisGradient, 0.03f, 0.007f, 0.6f, BlendState.Additive);
                 ParticleEngine.ShaderParticles.Add(Ring);
 
                 Opus.RadialSpreadProjectile(ModContent.ProjectileType<TenebrisStarFriendly>(), 3, Player.Center, 10, 4, 6, offset: Main.rand.NextFloat(MathHelper.TwoPi));
             }
         }
+
 
         public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)
         {

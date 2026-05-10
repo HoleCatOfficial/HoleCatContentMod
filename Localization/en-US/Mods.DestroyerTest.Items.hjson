@@ -2874,11 +2874,9 @@ RiftVeil: {
 RadiantRose: {
 	Tooltip:
 		'''
-		You will consume a Healing Potion every 10 seconds when below 50% health.
+		You will auto-consume a Healing Potion every 45 seconds when below 50% health.
 		Your highest rank healing potions will be used first.
-		Potions used automatically will inflict Potion Sickness for 30 seconds instead of a minute.
-		If you have potion sickness, your damage will be decreased by 30% and your defense by 25% until potion sickness is lifted.
-		When drinking a healing potion manually, the duration of potion sickness to be applied will be reduced by 10%.
+		You cannot manually consume healing potions.
 		Passive life regen is increased.
 		'''
 	DisplayName: Radiant Rose
@@ -2893,11 +2891,9 @@ EphemeralSolvent: {
 	DisplayName: Ephemeral Solvent
 	Tooltip:
 		'''
-		You will consume a Healing Potion every 10 seconds when below 50% health.
+		You will consume a Healing Potion every 45 seconds when below 50% health.
 		Your highest rank healing potions will be used first.
-		Potions used automatically will inflict Potion Sickness for 30 seconds instead of a minute.
-		If you have potion sickness, your damage will be decreased by 30% and your defense by 25% until potion sickness is lifted.
-		When drinking a healing potion manually, the duration of potion sickness to be applied will be reduced by 10%.
+		You cannot manually consume healing potions.
 		Passive life regen and heart pickup range are massively increased.
 		'''
 }
@@ -2911,10 +2907,9 @@ LilliesOfImmortality: {
 	DisplayName: Lillies Of Immortality
 	Tooltip:
 		'''
-		You will consume a Healing Potion every 10 seconds when below 50% health.
+		You will consume a Healing Potion every 45 seconds when below 50% health.
 		Your highest rank healing potions will be used first.
-		You are immune to potions sickness.
-		When drinking a healing potion manually, the duration of potion sickness to be applied will be reduced by 10%.
+		You cannot manually consume healing potions.
 		Passive life regen and heart pickup range are massively increased.
 		'''
 }
@@ -4089,6 +4084,8 @@ Luna: {
 		'''
 		Summons a miniature moon that orbits you, dealing classless damage on hit.
 		Damage starts at 20 and scales with all class damage bonuses.
+		Distance of orbit is increased based on all class attack speed bonuses.
+		Size is increased based on all class size modifiers.
 		Hits inflict broken armor for 5 seconds.
 		15% increased Magic damage.
 		'''
@@ -4573,6 +4570,8 @@ Sola: {
 		'''
 		Summons a miniature sun that orbits you and ignites enemies ablaze, dealing classless damage on hit.
 		Damage starts at 20 and scales with all class damage bonuses.
+		Distance of orbit is increased based on all class attack speed bonuses.
+		Size is increased based on all class size modifiers.
 		Run speed and acceleration are greatly increased.
 		'''
 }
@@ -4583,6 +4582,8 @@ Bipolar: {
 		'''
 		Summons a miniature moon and miniature sun that orbit you and deal classless damage on hit.
 		Damage starts at 20 and scales with all class damage bonuses.
+		Distance of orbit is increased based on all class attack speed bonuses.
+		Size is increased based on all class size modifiers.
 		The moon inflicts broken armor for 5 seconds, the sun, fire for five seconds.
 		15% increased Magic damage;
 		Run speed and acceleration are greatly increased.

@@ -69,10 +69,12 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearWrap, DepthStencilState.None, RasterizerState.CullNone, null, PixelationSystem.PixelationMatrix);
 
-            DTTrail.DrawTrail(spriteBatch, DTAssetLib.Streak(4, true).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 20, FireColor, trailOffset, 1);
-
-            Opus.DrawGlowOnProj(Projectile, FireColor with { A = 0 }, true);
             Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, Projectile.Center - Main.screenPosition, null, FireColor with { A = 0 }, Projectile.rotation, TextureAssets.Projectile[Projectile.type].Value.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
+
+            DTTrail.DrawTrailPixelated(spriteBatch, BlendState.Additive, DTAssetLib.Streak(4, true).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 40, FireColor, trailOffset, 1);
+
+            
+            
 
             Opus.ReturnToDefaultDrawing(spriteBatch);
         }
@@ -95,6 +97,14 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
 
 		public override void AI()
 		{
+            for (int i = 0; i < ProjectileID.Sets.TrailCacheLength[Type]; i++)
+            {
+                if (Projectile.oldPos[i] == Vector2.Zero)
+                {
+                    Projectile.oldPos[i] = Projectile.Center;
+                }
+            }
+
             Lighting.AddLight(Projectile.Center, FireColor.ToVector3() * 0.6f);
 
             if (DelayTimer < 10)

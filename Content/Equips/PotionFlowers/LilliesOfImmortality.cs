@@ -33,10 +33,6 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
             {
                 flower.Lillies = true;
             }
-            if (Item.TryGetGlobalItem<ModifyPotionsItem>(out ModifyPotionsItem Potions))
-            {
-                Potions.Lillies = true;
-            }
             if(player.TryGetModPlayer<DjedPillarCharmPlayer>(out DjedPillarCharmPlayer modPlayer))
             {
                 modPlayer.Active = true;
