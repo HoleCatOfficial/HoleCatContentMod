@@ -110,6 +110,9 @@ namespace DestroyerTest.Common.Interfaces
         {
             if (projectile.ModProjectile is IHomingProjectile homing)
             {
+                if (!homing.CanHome)
+                    return;
+
                 if (homing.TracksNPCs)
                 {
                     if (TrackingNPC == null)

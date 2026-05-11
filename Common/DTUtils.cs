@@ -913,7 +913,175 @@ namespace DestroyerTest.Common
 
             return Positions;
         }
-        
+
+        /// <summary>
+        /// Draws a basic afterimage trail using oldPos.
+        /// Call inside PreDraw().
+        /// </summary>
+        public static void DrawAfterimages(this Projectile projectile, SpriteBatch spriteBatch, Texture2D texture, Color color, float scaleMultiplier = 1f, bool useProjectileRotation = true, bool fadeOpacity = true, bool shrink = false, SpriteEffects spriteEffects = SpriteEffects.None)
+        {
+            Vector2 origin = texture.Size() * 0.5f;
+
+            int cacheLength = projectile.oldPos.Length;
+
+            for (int i = 0; i < cacheLength; i++)
+            {
+                // 0 -> 1 progress through trail
+                float progress = i / (float)cacheLength;
+
+                // OldCenter extension assumed
+                Vector2 drawPos = projectile.OldCenter()[i] - Main.screenPosition;
+
+                // Fade out toward end of trail
+                float opacity = fadeOpacity
+                    ? (1f - progress)
+                    : 1f;
+
+                // Optional shrinking
+                float scale = projectile.scale * scaleMultiplier;
+
+                if (shrink)
+                    scale *= (1f - progress);
+
+                Color drawColor = color * opacity;
+
+                spriteBatch.Draw(
+                    texture,
+                    drawPos,
+                    null,
+                    drawColor,
+                    useProjectileRotation ? projectile.oldRot[i] : projectile.rotation,
+                    origin,
+                    scale,
+                    spriteEffects,
+                    0f
+                );
+            }
+        }
+
+        /// <summary>
+        /// Convenience overload using projectile texture automatically.
+        /// </summary>
+        public static void DrawAfterimages(this Projectile projectile, SpriteBatch spriteBatch, Color color, float scaleMultiplier = 1f, bool useProjectileRotation = true, bool fadeOpacity = true, bool shrink = false, SpriteEffects spriteEffects = SpriteEffects.None)
+        {
+            Texture2D texture = TextureAssets.Projectile[projectile.type].Value;
+
+            projectile.DrawAfterimages(
+                spriteBatch,
+                texture,
+                color,
+                scaleMultiplier,
+                useProjectileRotation,
+                fadeOpacity,
+                shrink,
+                spriteEffects
+            );
+        }
+
+        public static void DrawAfterimagesWithRotOffset(this Projectile projectile, SpriteBatch spriteBatch, Color color, float scaleMultiplier = 1f, bool useProjectileRotation = true, float RotOffset = 0f, bool fadeOpacity = true, bool shrink = false, SpriteEffects spriteEffects = SpriteEffects.None)
+        {
+            Texture2D texture = TextureAssets.Projectile[projectile.type].Value;
+
+            Vector2 origin = texture.Size() * 0.5f;
+
+            int cacheLength = projectile.oldPos.Length;
+
+            for (int i = 0; i < cacheLength; i++)
+            {
+                // 0 -> 1 progress through trail
+                float progress = i / (float)cacheLength;
+
+                // OldCenter extension assumed
+                Vector2 drawPos = projectile.OldCenter()[i] - Main.screenPosition;
+
+                // Fade out toward end of trail
+                float opacity = fadeOpacity
+                    ? (1f - progress)
+                    : 1f;
+
+                // Optional shrinking
+                float scale = projectile.scale * scaleMultiplier;
+
+                if (shrink)
+                    scale *= (1f - progress);
+
+                Color drawColor = color * opacity;
+
+                spriteBatch.Draw(
+                    texture,
+                    drawPos,
+                    null,
+                    drawColor,
+                    useProjectileRotation ? projectile.oldRot[i] + RotOffset : projectile.rotation + RotOffset,
+                    origin,
+                    scale,
+                    spriteEffects,
+                    0f
+                );
+            }
+        }
+
+        public static void DrawDirectionalAfterimages(this Projectile projectile, SpriteBatch spriteBatch, Texture2D texture, Color color, SpriteEffects[] oldSpriteEffects, float[] oldRotationOffsets, float scaleMultiplier = 1f, bool fadeOpacity = true, bool shrink = false)
+        {
+            Vector2 origin = texture.Size() * 0.5f;
+
+            int cacheLength = projectile.oldPos.Length;
+
+            for (int i = 0; i < cacheLength; i++)
+            {
+                if (i >= oldSpriteEffects.Length ||
+                    i >= oldRotationOffsets.Length)
+                {
+                    break;
+                }
+
+                float progress = i / (float)cacheLength;
+
+                Vector2 drawPos =
+                    projectile.OldCenter()[i] - Main.screenPosition;
+
+                float opacity = fadeOpacity
+                    ? (1f - progress)
+                    : 1f;
+
+                float scale = projectile.scale * scaleMultiplier;
+
+                if (shrink)
+                    scale *= (1f - progress);
+
+                Color drawColor = color * opacity;
+
+                spriteBatch.Draw(
+                    texture,
+                    drawPos,
+                    null,
+                    drawColor,
+
+                    // Stored historical rotation
+                    projectile.oldRot[i] + oldRotationOffsets[i],
+
+                    origin,
+                    scale,
+
+                    // Stored historical flip state
+                    oldSpriteEffects[i],
+
+                    0f
+                );
+            }
+        }
+
+        public static void ResetExcessTrailPoints(this Projectile projectile)
+        {
+            for (int i = 0; i < ProjectileID.Sets.TrailCacheLength[projectile.type]; i++)
+            {
+                if (projectile.oldPos[i] == Vector2.Zero)
+                {
+                    projectile.oldPos[i] = projectile.Center;
+                }
+            }
+        }
+
     }
 
     public class DTPlayerUtil : ModPlayer
@@ -1258,6 +1426,10 @@ namespace DestroyerTest.Common
             }
         }
 
+        public static Color Stardust = new Color(0, 174, 238);
+        public static Color Vortex = new Color(0, 242, 170);
+        public static Color Solar = new Color(254, 158, 35);
+        public static Color Nebula = new Color(190, 30, 209);
         public static Color CelestialGradient
         {
             get
@@ -1265,13 +1437,13 @@ namespace DestroyerTest.Common
                 float time = (Main.GlobalTimeWrappedHourly % 4f);
 
                 if (time < 1f)
-                    return Color.Lerp(new Color(0, 174, 238), new Color(0, 242, 170), time);
+                    return Color.Lerp(Stardust, Vortex, time);
                 else if (time < 2f)
-                    return Color.Lerp(new Color(0, 242, 170), new Color(254, 158, 35), time - 1f);
+                    return Color.Lerp(Vortex, Solar, time - 1f);
                 else if (time < 3f)
-                    return Color.Lerp(new Color(254, 158, 35), new Color(190, 30, 209), time - 2f);
+                    return Color.Lerp(Solar, Nebula, time - 2f);
                 else
-                    return Color.Lerp(new Color(190, 30, 209), new Color(0, 174, 238), time - 3f);
+                    return Color.Lerp(Nebula, Stardust, time - 3f);
             }
         }
 

@@ -1,6 +1,7 @@
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Particles;
+using DestroyerTest.Content.Projectiles.Weapon.Rogue.StealthStrike;
 using DestroyerTest.Content.RogueItems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -19,7 +20,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 {
 	public class Chroma_Projectile : ModProjectile
 	{
-		
+		public bool StealthStrike = false;
 		public override void SetStaticDefaults() 
 		{
 			ProjectileID.Sets.TrailCacheLength[Type] = 100;
@@ -38,6 +39,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 			Projectile.light = 0.5f;
 			Projectile.ignoreWater = true;
 			Projectile.tileCollide = true;
+			Projectile.ArmorPenetration = 10;
 		}
 
 		float offset = 0f;
@@ -46,7 +48,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
         public override bool PreDraw(ref Color lightColor)
         {
 			offset += 0.02f;
-			DTTrail.DrawTrail(Main.spriteBatch, DTAssetLib.Streak(2).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 20, ColorLib.CelestialGradient, offset, 0);
+			DTTrail.DrawTrail(Main.spriteBatch, DTAssetLib.Streak(2).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 16, ColorLib.CelestialGradient, offset, 0);
 
 			Asset<Texture2D> Tex = TextureAssets.Projectile[Type];
             SpriteEffects FX = Projectile.direction < 0 ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
@@ -81,6 +83,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 		public bool Dying = false;
 		public override void AI() 
 		{
+			//Just for Testing
+			StealthStrike = true;
+
             for (int i = 0; i < ProjectileID.Sets.TrailCacheLength[Type]; i++)
             {
                 if (Projectile.oldPos[i] == Vector2.Zero)
@@ -151,6 +156,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
         public override void OnKill(int timeLeft)
         {
             Vector2[] oldCenters = Projectile.OldCenter();
+
+            SoundEngine.PlaySound(DTAssetLib.Impacts.IceImpact, Projectile.Center);
             SoundEngine.PlaySound(DTAssetLib.Impacts.IceMagicImpact, Projectile.Center);
 
             Dust[] D1 = Opus.RadialSpreadDustRandom(DustID.FireworksRGB, 3, Projectile.Center, 0, Color.White, 4, 2f);
@@ -180,6 +187,17 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
                 StarParticle Star = new();
                 Star.Initialize(Projectile.Center, Dirs[i], Color.White, 0.7f);
                 ParticleEngine.BehindProjectiles.Add(Star);
+            }
+
+			if (Dying && StealthStrike)
+			{
+				Vector2 Vel = Projectile.oldVelocity;
+				Vel.Normalize();
+
+				Projectile.NewProjectile(Projectile.GetSource_Death(), Projectile.Center, Vel.RotatedBy(0.2f) * 18, ModContent.ProjectileType<ChromaSolar>(), Projectile.damage / 3, 6, Projectile.owner);
+                Projectile.NewProjectile(Projectile.GetSource_Death(), Projectile.Center, Vel.RotatedBy(0.05f) * 18, ModContent.ProjectileType<ChromaVortex>(), Projectile.damage / 3, 6, Projectile.owner);
+                Projectile.NewProjectile(Projectile.GetSource_Death(), Projectile.Center, Vel.RotatedBy(-0.05f) * 18, ModContent.ProjectileType<ChromaNebula>(), Projectile.damage / 3, 6, Projectile.owner);
+                Projectile.NewProjectile(Projectile.GetSource_Death(), Projectile.Center, Vel.RotatedBy(-0.2f) * 18, ModContent.ProjectileType<ChromaStardust>(), Projectile.damage / 3, 6, Projectile.owner);
             }
         }
 
