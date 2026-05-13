@@ -41,6 +41,8 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
 
         bool IHomingProjectile.UsesHomingAcceleration => false;
 
+        float IHomingProjectile.HomingAccelAmount => 1.01f;
+
         float IHomingProjectile.HomingMaxAccel => 0f;
 
         float IHomingProjectile.DetectRadius => 2000f;

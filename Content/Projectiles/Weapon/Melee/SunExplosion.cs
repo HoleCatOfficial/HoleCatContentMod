@@ -41,15 +41,15 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             SoundEngine.PlaySound(DTAssetLib.Impacts.ExplosiveImpactBig, Projectile.Center);
 
             SimpleExplosionParticle Explosion = new();
-            Explosion.Prepare(Projectile.Center, Vector2.Zero, Color.DarkOrange, 0.1f, 0.01f, 1f, BlendState.Additive);
+            Explosion.Prepare(Projectile.Center, Vector2.Zero, Color.DarkOrange, 0.1f, 0.01f, 2f, BlendState.Additive);
             ParticleEngine.BehindProjectiles.Add(Explosion);
 
             BloomRing Ring1 = new();
-            Ring1.Prepare(Projectile.Center, Vector2.Zero, Color.DarkOrange * 0.5f, 0.1f, 0.01f, BlendState.Additive);
+            Ring1.Prepare(Projectile.Center, Vector2.Zero, Color.DarkOrange * 0.5f, 0.02f, 0.005f, 0.4f, BlendState.Additive);
             ParticleEngine.BehindProjectiles.Add(Ring1);
 
             BloomRingSharp Ring2 = new();
-            Ring2.Prepare(Projectile.Center, Vector2.Zero, Color.Orange, 0.1f, 0.01f, BlendState.Additive);
+            Ring2.Prepare(Projectile.Center, Vector2.Zero, Color.Orange, 0.1f, 0.01f, 0.5f, BlendState.Additive);
             ParticleEngine.BehindProjectiles.Add(Ring1);
 
             //Opus.RadialParticleRandomDir(PRTLoader.GetParticleID<SparkParticleNoGravity>(), 9, Projectile.Center, 1f, Color.White, 1f, 9, ai1: 2);

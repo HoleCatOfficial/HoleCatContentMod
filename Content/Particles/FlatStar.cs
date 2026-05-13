@@ -16,7 +16,7 @@ namespace DestroyerTest.Content.Particles
     public class FlatStar : BaseParticle<FlatStar>
     {
         int Lifetime = 0;
-        int MaxLifetime = 120;
+        int MaxLifetime = 30;
         Vector2 position;
         Vector2 velocity;
         Color color;
@@ -36,7 +36,7 @@ namespace DestroyerTest.Content.Particles
         {
             float LifetimeCompletion = (float)Lifetime / MaxLifetime;
 
-            _scale = MathHelper.Lerp(_scale, scale, Utilities.Convert01To010(LifetimeCompletion));
+            _scale = MathHelper.Lerp(0f, scale, Utilities.Convert01To010(LifetimeCompletion));
             rotation += 0.1f;
             position += velocity;
             Lifetime++;
@@ -58,7 +58,7 @@ namespace DestroyerTest.Content.Particles
 
             Opus.StartSpriteBatchPixelated(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
 
-            spriteBatch.Draw(texture, position - Main.screenPosition, null, color with { A = 0 }, rotation, origin, scale, SpriteEffects.None, 0f);
+            spriteBatch.Draw(texture, position - Main.screenPosition, null, color with { A = 0 }, rotation, origin, _scale, SpriteEffects.None, 0f);
 
             Opus.ReturnToDefaultDrawing(spriteBatch);
         }
@@ -68,7 +68,7 @@ namespace DestroyerTest.Content.Particles
     public class FlatStarStellar : BaseParticle<FlatStarStellar>
     {
         int Lifetime = 0;
-        int MaxLifetime = 120;
+        int MaxLifetime = 30;
         Vector2 position;
         Vector2 velocity;
         Color color;
@@ -88,7 +88,7 @@ namespace DestroyerTest.Content.Particles
             float LifetimeCompletion = (float)Lifetime / MaxLifetime;
 
             color = OpusColorUtils.MultiLerp(LifetimeCompletion, ColorLib.StellarFireColormap);
-            _scale = MathHelper.Lerp(_scale, scale, Utilities.Convert01To010(LifetimeCompletion));
+            _scale = MathHelper.Lerp(0f, scale, Utilities.Convert01To010(LifetimeCompletion));
             rotation += 0.1f;
             position += velocity;
             Lifetime++;
@@ -110,7 +110,7 @@ namespace DestroyerTest.Content.Particles
 
             Opus.StartSpriteBatchPixelated(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
 
-            spriteBatch.Draw(texture, position - Main.screenPosition, null, color with { A = 0 }, rotation, origin, scale, SpriteEffects.None, 0f);
+            spriteBatch.Draw(texture, position - Main.screenPosition, null, color with { A = 0 }, rotation, origin, _scale, SpriteEffects.None, 0f);
 
             Opus.ReturnToDefaultDrawing(spriteBatch);
         }

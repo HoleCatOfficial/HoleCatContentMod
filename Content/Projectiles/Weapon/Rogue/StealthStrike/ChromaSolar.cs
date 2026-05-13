@@ -24,8 +24,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue.StealthStrike
         float IHomingProjectile.HomingTurnSpeed => 30;
 
         bool IHomingProjectile.UsesHomingAcceleration => true;
+        float IHomingProjectile.HomingAccelAmount => 1.12f;
 
-        float IHomingProjectile.HomingMaxAccel => 40f;
+        float IHomingProjectile.HomingMaxAccel => 30f;
 
         float IHomingProjectile.DetectRadius => 1400;
 
@@ -79,8 +80,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue.StealthStrike
         {
             WaitTimer++;
 
-            oldfx.Add(Projectile.direction < 0 ? SpriteEffects.FlipHorizontally : SpriteEffects.None);
-            oldoffset.Add(Projectile.direction < 0 ? MathHelper.PiOver4 + MathHelper.PiOver2 : MathHelper.PiOver4);
+            oldfx.Add(Math.Sign(Projectile.velocity.X) < 0 ? SpriteEffects.FlipHorizontally : SpriteEffects.None);
+            oldoffset.Add(Math.Sign(Projectile.velocity.X) < 0 ? MathHelper.PiOver4 + MathHelper.PiOver2 : MathHelper.PiOver4);
 
             if (oldfx.Count > 30)
             {

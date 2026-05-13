@@ -43,6 +43,7 @@ using Terraria.Modules;
 using Terraria.UI.Chat;
 using Terraria.Utilities;
 using Terraria.WorldBuilding;
+using static DestroyerTest.Common.Room;
 
 namespace DestroyerTest.Common
 {
@@ -109,14 +110,17 @@ namespace DestroyerTest.Common
         /// <param name="projectile"></param>
         public static void ConstitutionStarExplosionEffects(Projectile projectile)
         {
-            List<Vector2> Star2 = Polar.GenerateCurvedStar(5, 4, 10, projectile.Center, inwardPull: 0.5f, offset: Main.rand.NextFloat(MathHelper.TwoPi));
-            foreach (Vector2 p2 in Star2)
+            if (!DTOptimizationsConfig.instance.DisableExcessParticles)
             {
-                Vector2 Vel = p2 - projectile.Center;
+                List<Vector2> Star2 = Polar.GenerateCurvedStar(5, 4, 10, projectile.Center, inwardPull: 0.5f, offset: Main.rand.NextFloat(MathHelper.TwoPi));
+                foreach (Vector2 p2 in Star2)
+                {
+                    Vector2 Vel = p2 - projectile.Center;
 
-                ConstitutionParticle Particle = new();
-                Particle.Initialize(projectile.Center, Vel, 1f, 30);
-                ParticleEngine.BehindProjectiles.Add(Particle);
+                    ConstitutionParticle Particle = new();
+                    Particle.Initialize(projectile.Center, Vel, 1f, 30);
+                    ParticleEngine.BehindProjectiles.Add(Particle);
+                }
             }
 
             StellarParticleUtils.FlatStar(projectile.Center, 1f, ParticleEngine.BehindProjectiles);
@@ -1058,7 +1062,7 @@ namespace DestroyerTest.Common
                     drawColor,
 
                     // Stored historical rotation
-                    projectile.oldRot[i] + oldRotationOffsets[i],
+                    projectile.oldRot[i] + oldRotationOffsets[i] + (i == 0 ? -MathHelper.PiOver4 : 0f),
 
                     origin,
                     scale,
@@ -2595,6 +2599,75 @@ namespace DestroyerTest.Common
             {
                 WorldUtils.Gen(new Point(i + Width / 2, j), new GenShapeActionPair(new Shapes.Rectangle(1, Height), new Actions.PlaceTile(TileID.Rope)));
             }
+        }
+
+
+        //Doors
+
+        private static void CarveDoor(int x, int y)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                WorldGen.KillTile(x, y - i);
+            }
+
+            WorldGen.PlaceObject(x, y, TileID.ClosedDoor);
+        }
+
+        public static void MakeDoor(Room room, RoomSide side)
+        {
+            if (side == RoomSide.Left || side == RoomSide.Both)
+            {
+                int x = room.Bounds.Left + (room.LeftWall / 2);
+                int y = room.Interior.Bottom - 1;
+
+                CarveDoor(x, y);
+            }
+
+            if (side == RoomSide.Right || side == RoomSide.Both)
+            {
+                int x = room.Bounds.Right - 1 - (room.RightWall / 2);
+                int y = room.Interior.Bottom - 1;
+
+                CarveDoor(x, y);
+            }
+        }
+
+        public static void MakeHatch(Room room, HatchSide side, int Width)
+        {
+            int minX = room.Interior.Left;
+            int maxX = room.Interior.Right - 1;
+
+            int hatchWidth = Width;
+            hatchWidth = Math.Min(hatchWidth, maxX - minX + 1);
+
+            int startX = minX + (maxX - minX - hatchWidth) / 2;
+            int endX = startX + hatchWidth;
+
+            int yTop = room.Interior.Top;
+            int yBottom = room.Interior.Bottom - 1;
+
+            int y()
+            {
+                if (side == HatchSide.Top)
+                {
+                    return yTop;
+                }
+                if (side == HatchSide.Bottom)
+                {
+                    return yBottom;
+                }
+
+            }
+
+            for (int x = startX; x <= endX; x++)
+            {
+                for (int i = 0; i < room.Ceiling; i++)
+                {
+                    WorldGen.KillTile(x, y() - i);
+                }
+            }
+
         }
     }
 

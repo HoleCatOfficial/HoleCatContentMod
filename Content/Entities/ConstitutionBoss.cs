@@ -234,7 +234,7 @@ namespace DestroyerTest.Content.Entities
         public int WO2 = 0;
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            
+
             
 
             if (LancesEternity)
@@ -309,15 +309,17 @@ namespace DestroyerTest.Content.Entities
             {
                 NPC.TargetClosest();
             }
-            if (!player.dead )
+
+            if (player.statLife <= 0)
+            {
+                HandleDeath();
+            }
+            else
             {
                 Arena();
             }
 
-            if (player.dead )
-            {
-                HandleDeath();
-            }
+            
 
             AITimer++;
 
@@ -560,20 +562,59 @@ namespace DestroyerTest.Content.Entities
             }
         }
 
+        public int DeathTimer = 0;
+        int MaxDeathTimer = 120;
+
+        bool HasRecorded = false;
+
+        int RecordedWidth;
+        int RecordedHeight;
+
+        float arenaWidth;
+        float arenaHeight;
+
+        void RecordArenaDims(out int width, out int height)
+        {
+            if (!HasRecorded)
+            {
+                RecordedWidth = ArenaRect.Width;
+                RecordedHeight = ArenaRect.Height;
+                HasRecorded = true;
+            }
+
+            width = RecordedWidth;
+            height = RecordedHeight;
+        }
+
         public void HandleDeath()
         {
-            if (ArenaRect.Width > 1)
-            {
-                ArenaRect.Width--;
-            }
-            if (ArenaRect.Height > 1)
-            {
-                ArenaRect.Height--;
-            }
+            DeathTimer++;
+            RecordArenaDims(out int W, out int H);
 
-            NPC.Opacity -= 0.01f;
+            float Progress = (float)DeathTimer / (float)MaxDeathTimer;
+            Progress = MathHelper.Clamp(Progress, 0f, 1f);
 
-            if (NPC.Opacity == 0.1f)
+            arenaWidth = MathHelper.Lerp(W, 0f, Progress);
+            arenaHeight = MathHelper.Lerp(H, 0f, Progress);
+
+            ArenaRect = Utils.CenteredRectangle(
+                ArenaCTR,
+                new Vector2(arenaWidth, arenaHeight)
+            );
+
+            topSide = new Line(ArenaRect.TopRight(), ArenaRect.TopLeft());
+            bottomSide = new Line(ArenaRect.BottomLeft(), ArenaRect.BottomRight());
+            leftSide = new Line(ArenaRect.TopLeft(), ArenaRect.BottomLeft());
+            rightSide = new Line(ArenaRect.BottomRight(), ArenaRect.TopRight());
+            Corners[0].Center = ArenaRect.TopLeft();
+            Corners[1].Center = ArenaRect.TopRight();
+            Corners[2].Center = ArenaRect.BottomLeft();
+            Corners[3].Center = ArenaRect.BottomRight();
+
+
+            NPC.Opacity = MathHelper.Lerp(1f, 0f, Progress);
+
+            if (DeathTimer == MaxDeathTimer - 1)
             {
                 SoundEngine.PlaySound(DTAssetLib.Impacts.StellarFox, NPC.Center);
 
@@ -588,12 +629,10 @@ namespace DestroyerTest.Content.Entities
                 }
 
             }
-            if (NPC.Opacity <= 0)
+            if (DeathTimer == MaxDeathTimer)
             {
                 NPC.active = false;
             }
-
-
         }
 
         public  void TeleportFX()

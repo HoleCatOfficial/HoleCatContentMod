@@ -324,7 +324,7 @@ namespace DestroyerTest.Content.Entities
         void ShineHead()
         {
             SmallShine shine = new SmallShine();
-            shine.Prepare(NPCHead, Vector2.Zero, Color.White, 1f);
+            shine.Prepare(NPCHead, Vector2.Zero, Color.White, 2f);
             ParticleEngine.ShaderParticles.Add(shine);
         }
 
@@ -366,7 +366,16 @@ namespace DestroyerTest.Content.Entities
             if (anyNodesAlive)
             {
                 Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-                Opus.DrawNPCShadowsRotating(NPC, NPC.frame, 6, ColorLib.CursedFlames, 0.2f);
+
+                if (!DestroyerTestMod.MasochistIsActive)
+                {
+                    Main.EntitySpriteDraw(DTAssetLib.CorruptSigil.Value, NPC.Center - Main.screenPosition, null, ColorLib.CursedFlames, 0f, DTAssetLib.CorruptSigil.Value.Size() / 2, Opus.Sine(1.7f, 2f), SpriteEffects.None, 0f);
+                }
+                else
+                {
+                    Main.EntitySpriteDraw(DTAssetLib.CorruptSigil.Value, NPC.Center - Main.screenPosition, null, ColorLib.TenebrisGradient, 0f, DTAssetLib.CorruptSigil.Value.Size() / 2, Opus.Sine(1.7f, 2f), SpriteEffects.None, 0f);
+                }
+                //Opus.DrawNPCShadowsRotating(NPC, NPC.frame, 6, ColorLib.CursedFlames, 0.2f);
                 Opus.ReturnToDefaultDrawing(spriteBatch);
             }
 
@@ -989,6 +998,8 @@ namespace DestroyerTest.Content.Entities
                     break;
                 case AttackState.WallDarts:
                     {
+                        stateWeights[AttackState.DemoniteWhisper] = 0.1f;
+                        stateWeights[AttackState.Lances] = 0.5f;
                         if (Divided)
                         {
                             ResetState();
@@ -1013,13 +1024,16 @@ namespace DestroyerTest.Content.Entities
                     }
                 case AttackState.FlameRing:
                     {
+                        stateWeights[AttackState.DemoniteWhisper] = 0f;
+                        stateWeights[AttackState.CursedFlames] = 0.5f;
+
                         if (DestroyerTestMod.EternityIsActive)
                         {
                             if (FlameRingCount < 9 && Main.GameUpdateCount % 60 == 0)
                             {
                                 SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/ChargeBreak") with { PitchVariance = 1f });
 
-                                Opus.RingSpreadProjectile(ModContent.ProjectileType<TenebrisFlamesHostile>(), 6, player.Center, 300, 30, 2, 8);
+                                Opus.RingSpreadProjectile(ModContent.ProjectileType<TenebrisFlamesHostile>(), 5, player.Center, 300, 30, 2, 8);
                                 FlameRingCount++;
                             }
                             if (FlameRingCount >= 9)
@@ -1048,6 +1062,8 @@ namespace DestroyerTest.Content.Entities
                     }
                 case AttackState.Lances:
                     {
+                        stateWeights[AttackState.DemoniteWhisper] = 1f;
+                        stateWeights[AttackState.CursedFlames] = 1f;
                         if (DestroyerTestMod.EternityIsActive)
                         {
                             int numProjectiles = 7;
@@ -1079,6 +1095,9 @@ namespace DestroyerTest.Content.Entities
                     }
                 case AttackState.Napalm:
                     {
+                        stateWeights[AttackState.DemoniteWhisper] = 1f;
+                        stateWeights[AttackState.CursedFlames] = 1f;
+
                         VileThornCooldown++;
                         if (!DestroyerTestMod.MasochistIsActive)
                         {
@@ -1329,6 +1348,11 @@ namespace DestroyerTest.Content.Entities
 
                             float progress = (float)DeathIdleTimer / 120f;
                             OverlayAlpha = MathHelper.Lerp(0f, 1f, progress.Inverse());
+
+                            if (DeathIdleTimer % 20 == 0)
+                            {
+                                Opus.RingSpreadDustRandom(DustID.FireworksRGB, 20, NPCHead, Main.rand.NextFloat(30f, 400f), 0, Color.White, -4f, 1f);
+                            }
                         }
                         if (DeathIdleTimer <= 0)
                         {
@@ -1445,6 +1469,8 @@ namespace DestroyerTest.Content.Entities
         {
             base.PostDraw(spriteBatch, screenPos, drawColor);
 
+
+
             if (LaserWarnTimer > 0)
             {
                 Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
@@ -1501,7 +1527,8 @@ namespace DestroyerTest.Content.Entities
             }
             Opus.ReturnToDefaultDrawing(spriteBatch);
 
-            Asset<Texture2D> White = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/NightmareRoseDeathFade");
+            string Maso = DestroyerTestMod.MasochistIsActive ? "_Maso" : "";
+            Asset<Texture2D> White = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/NightmareRoseDeathFade" + Maso);
             if (currentState == AttackState.KillIdle)
             {
                 Main.EntitySpriteDraw(White.Value, NPC.Center - Main.screenPosition, null, Color.White * OverlayAlpha, 0f, new Vector2(White.Value.Width / 2, White.Value.Height / 2), 1f, SpriteEffects.None, 0);

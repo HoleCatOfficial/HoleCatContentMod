@@ -9,6 +9,7 @@ using DestroyerTest.Rarity;
 using DestroyerTest.Common;
 using System;
 using DestroyerTest.Content.Projectiles.Weapon.Melee;
+using DestroyerTest.Content.Resources;
 
 namespace DestroyerTest.Content.MeleeWeapons.TwistedLineage
 {
@@ -46,5 +47,13 @@ namespace DestroyerTest.Content.MeleeWeapons.TwistedLineage
             return player.ownedProjectileCounts[Item.shoot] < 1;
         }
 
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient<TwilightInferno>()
+                .AddIngredient<ShadeParticle>(4)
+                .AddTile(TileID.MythrilAnvil)
+                .Register();
+        }
     }
 }

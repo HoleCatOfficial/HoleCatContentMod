@@ -58,7 +58,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
             if (Main.rand.NextBool(4) && !StartKill)
             {
                 ConstitutionParticle Particle = new();
-                Particle.Initialize(Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Projectile.velocity * 0.15f, 0.6f, 60);
+                Particle.Initialize(Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Projectile.velocity * 0.15f, 1f, 120);
                 ParticleEngine.BehindProjectiles.Add(Particle);
             }	
 
@@ -70,6 +70,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
 
             if (StartKill)
             {
+                Projectile.damage = 0;
                 Projectile.velocity *= 0.99f;
                 Projectile.Opacity -= 0.05f;
             }
@@ -77,7 +78,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
         public override bool PreDraw(ref Color lightColor)
         {
 
-            Color BeamColor = ColorLib.StellarFireGradient(LifetimeCompletion * 4);
+            Color BeamColor = ColorLib.StellarFireGradient(LifetimeCompletion);
             lightColor = BeamColor * Projectile.Opacity;
             SpriteBatch SB = Main.spriteBatch;
 

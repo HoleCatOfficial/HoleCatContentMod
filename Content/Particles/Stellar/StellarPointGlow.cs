@@ -17,6 +17,7 @@ namespace DestroyerTest.Content.Particles.Stellar
         {
             position = Position;
             velocity = Velocity;
+            scale = 1f;
         }
         public override void Update(ref ParticleRendererSettings settings)
         {

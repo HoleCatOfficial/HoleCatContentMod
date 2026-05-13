@@ -25,7 +25,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue.StealthStrike
 
         bool IHomingProjectile.UsesHomingAcceleration => true;
 
-        float IHomingProjectile.HomingMaxAccel => 40f;
+        float IHomingProjectile.HomingAccelAmount => 1.12f;
+
+        float IHomingProjectile.HomingMaxAccel => 30f;
 
         float IHomingProjectile.DetectRadius => 1400;
 
@@ -81,8 +83,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue.StealthStrike
         {
             WaitTimer++;
 
-            oldfx.Add(Projectile.direction < 0 ? SpriteEffects.FlipHorizontally : SpriteEffects.None);
-            oldoffset.Add(Projectile.direction < 0 ? MathHelper.PiOver4 + MathHelper.PiOver2 : MathHelper.PiOver4);
+            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
+
+            oldfx.Add(Math.Sign(Projectile.velocity.X) < 0 ? SpriteEffects.FlipHorizontally : SpriteEffects.None);
+            oldoffset.Add(Math.Sign(Projectile.velocity.X) < 0 ? MathHelper.PiOver4 + MathHelper.PiOver2 : MathHelper.PiOver4);
 
             if (oldfx.Count > 30)
             {
@@ -101,7 +105,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue.StealthStrike
                 Projectile.velocity *= 0.95f;
             }
 
-            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
+            
             Dust Trail = Dust.NewDustPerfect(Projectile.Center, DustID.AncientLight, Vector2.Zero, 0, ColorLib.Nebula, 1f);
             Trail.noGravity = true;
 

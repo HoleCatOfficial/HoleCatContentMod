@@ -9,6 +9,7 @@ using DestroyerTest.Rarity;
 using DestroyerTest.Common;
 using System;
 using DestroyerTest.Content.Projectiles.Weapon.Melee;
+using Terraria.GameContent.ItemDropRules;
 
 namespace DestroyerTest.Content.MeleeWeapons.TwistedLineage
 {
@@ -47,4 +48,17 @@ namespace DestroyerTest.Content.MeleeWeapons.TwistedLineage
         }
 
     }
+
+	public class DFS_DropNPC : GlobalNPC
+	{
+        public override bool InstancePerEntity => true;
+
+        public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
+        {
+            if (npc.type == NPCID.GoblinWarrior)
+			{
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<DarkFireSword>(), 10, 1, 1));
+			}
+        }
+	}
 } 

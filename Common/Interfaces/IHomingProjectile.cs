@@ -32,6 +32,11 @@ namespace DestroyerTest.Common.Interfaces
         public bool UsesHomingAcceleration { get; }
 
         /// <summary>
+        /// The amount that the projectile velocity is multiplied by when accelerating.
+        /// </summary>
+        public float HomingAccelAmount { get; }
+
+        /// <summary>
         /// If the projectile accelerates while homing (see UsesHomingAcceleration), this is the maximum speed it can reach.
         /// </summary>
         public float HomingMaxAccel { get; }
@@ -40,6 +45,7 @@ namespace DestroyerTest.Common.Interfaces
         /// The radius within which the target will be tracked.
         /// </summary>
         public float DetectRadius { get; }
+
 
         public bool CanHome { get; }
 
@@ -154,7 +160,7 @@ namespace DestroyerTest.Common.Interfaces
             {
                 if (length < homing.HomingMaxAccel)
                 {
-                    projectile.velocity *= 1.04f;
+                    projectile.velocity *= homing.HomingAccelAmount;
                 }
             }
         }

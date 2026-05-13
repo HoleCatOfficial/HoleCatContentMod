@@ -196,7 +196,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             {
                 Color choice = RiftLightColors[Main.rand.Next(RiftLightColors.Count)];
                 Spark Spark = new Spark();
-                Spark.PrepareSpark(target.Center, new Vector2(Main.rand.NextFloat(2f, 6f) * splatterdir, 0).RotatedByRandom(0.1f), 0f, choice, 0.75f, false, 30, SparkDrawMode.NonPremultiplied);
+                Spark.PrepareSpark(target.Center, new Vector2(Main.rand.NextFloat(2f, 6f) * splatterdir, 0).RotatedByRandom(0.1f), 0f, choice, 0.75f, false, 30, SparkDrawMode.AlphaBlend);
                 ParticleEngine.BehindProjectiles.Add(Spark);
             }
 

@@ -167,7 +167,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
             Projectile.rotation += Projectile.direction * 0.1f;
 
 			UpdateLerpTime();
-			MainColor = ColorLib.StellarFireGradient(LifetimeCompletion * 8f);
+			MainColor = ColorLib.StellarFireGradient(LifetimeCompletion);
 
             Lighting.AddLight(Projectile.Center,  MainColor.ToVector3() * 0.2f);
 
@@ -176,7 +176,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
                 if (Main.rand.NextBool(3))
                 {
                     ConstitutionParticle Particle = new();
-                    Particle.Initialize(Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Projectile.velocity * 0.15f, 0.6f, 60);
+                    Particle.Initialize(Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Projectile.velocity * 0.15f, 1f, 60);
                     ParticleEngine.BehindProjectiles.Add(Particle);
                 }
             
@@ -422,7 +422,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
             Projectile.rotation += Projectile.direction * 0.1f;
 
 			UpdateLerpTime();
-			MainColor = ColorLib.StellarFireGradient(LifetimeCompletion * 8f);
+			MainColor = ColorLib.StellarFireGradient(LifetimeCompletion);
 
             Lighting.AddLight(Projectile.Center,  MainColor.ToVector3() * 0.2f);
 
@@ -431,7 +431,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
 				if (Main.rand.NextBool(3))
 				{
 					ConstitutionParticle Particle = new();
-					Particle.Initialize(Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Projectile.velocity * 0.15f, 0.6f, 60);
+					Particle.Initialize(Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Projectile.velocity * 0.15f, 1f, 60);
 					ParticleEngine.BehindProjectiles.Add(Particle);
 				}
 			}

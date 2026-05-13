@@ -123,7 +123,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 Projectile.scale += 0.01f;
                 if (Main.rand.NextBool(3))
                 {
-                    Opus.RingSpreadDustRandom(DustID.DungeonSpirit, 10, Projectile.Center, 180, 20, default, -0.02f, 2f);
+                    Opus.RingSpreadDustRandom(DustID.DungeonSpirit, 10, Projectile.Center, 180, 20, default, -0.000002f, 2f);
                 }
                 if (Main.rand.NextBool(4))
                 {

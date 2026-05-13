@@ -125,7 +125,7 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
                         // Spawn fire dusts at the back of the rocket.
                         Spark Spark = new Spark();
 
-                        Spark.PrepareSpark(Projectile.Center, (-Projectile.velocity * 0.5f).RotatedByRandom(0.5f), 0f, colorofLight, 0.5f, false, 40, SparkDrawMode.Additive);
+                        Spark.PrepareSpark(Projectile.Center, (-Projectile.velocity * 0.5f).RotatedByRandom(0.1f), Projectile.velocity.ToRotation(), colorofLight, 1f, false, 40, SparkDrawMode.Additive);
                         ParticleEngine.ShaderParticles.Add(Spark);
 
                         // Used by the liquid rockets which leave trails of their liquid instead of fire.

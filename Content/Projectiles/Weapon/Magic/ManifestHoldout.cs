@@ -32,10 +32,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
         {
             Player player = Main.player[Projectile.owner];
             SpriteEffects FX = SpriteEffects.None;
+            /*
             if ((Projectile.direction == -1 || Projectile.spriteDirection == -1) && player.direction == 1)
             {
                 FX = SpriteEffects.FlipVertically;
             }
+            */
             Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, TextureAssets.Projectile[Projectile.type].Value.Size() / 2, Projectile.scale, FX, 0);
             Main.EntitySpriteDraw(DTAssetLib.ManifestStar.Value, starPos - Main.screenPosition, null, Color.White, starRot, DTAssetLib.ManifestStar.Value.Size() / 2, starScale, SpriteEffects.None, 0f);
             return false;

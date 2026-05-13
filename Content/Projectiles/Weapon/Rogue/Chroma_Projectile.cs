@@ -123,9 +123,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 			return null;
         }
 
+		float pitch = -0.4f;
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-			SoundEngine.PlaySound(DTAssetLib.Impacts.FleshHit with { PitchVariance = 0.7f}, Projectile.Center);
+			SoundEngine.PlaySound(DTAssetLib.Impacts.FleshHit with { PitchVariance = 0.7f, Pitch = pitch }, Projectile.Center);
+
+			pitch += 0.1f;
 
 			Rectangle DustR = Utils.CenteredRectangle(Projectile.Center, new Vector2(70, 70));
 
@@ -158,7 +161,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             Vector2[] oldCenters = Projectile.OldCenter();
 
             SoundEngine.PlaySound(DTAssetLib.Impacts.IceImpact, Projectile.Center);
-            SoundEngine.PlaySound(DTAssetLib.Impacts.IceMagicImpact, Projectile.Center);
+            SoundEngine.PlaySound(DTAssetLib.Impacts.SpiritOfJusticeParry with { Pitch = 0.6f, PitchVariance = 0.3f }, Projectile.Center);
 
             Dust[] D1 = Opus.RadialSpreadDustRandom(DustID.FireworksRGB, 3, Projectile.Center, 0, Color.White, 4, 2f);
 			foreach (Dust D in D1)

@@ -14,7 +14,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using ReLogic.Content;
 using SteelSeries.GameSense;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -46,15 +48,17 @@ namespace DestroyerTest.Common.Systems
 
         public override void PostUpdateWorld()
         {
-            /*
+            
             if (JustPressed(Keys.F))
                 TestMethod((int)Main.MouseWorld.X / 16, (int)Main.MouseWorld.Y / 16);
-            */
+            
         }
 
         public void SetupPath(int x, int y)
         {
 
+
+            /*
             WorldGen.TileRunner(x, y, 20, 4, TileID.Ebonstone, true, overRide: true);
             WorldGen.TileRunner(x + 10, y, 20, 4, TileID.Ebonstone, true, overRide: true);
             WorldGen.TileRunner(x + 20, y, 20, 4, TileID.Ebonstone, true, overRide: true);
@@ -86,27 +90,63 @@ namespace DestroyerTest.Common.Systems
 
             WorldGen.TileRunner(x - 7, y - 6, 9, 12, TileID.Ebonstone, true, 1, -3, overRide: true);
             WorldGen.TileRunner(x + 53, y - 6, 9, 12, TileID.Ebonstone, true, -1, -3, overRide: true);
+            */
         }
 
+        public void TopGen(int x, int y)
+        {
+            WorldGen.PlaceTile(x, y, TileID.GoldBrick);
+        }
         public void ClearTopSpace(int x, int y)
         {
-            WorldUtils.Gen(new Point(x + 24, y - 5), new GenShapeActionPair(new Shapes.Mound(28, Main.rand.Next(24, 30)), new Actions.ClearTile()));
+            Point origin = new Point(x, y);
+            Point surfacePoint;
+            // Search up to 1000 tiles above for an area 50 tiles tall and 1 tile wide without a single solid tile. Basically find the surface.
+            bool flag = WorldUtils.Find(origin, Searches.Chain(new Searches.Up(1000), new Conditions.IsSolid().AreaOr(1, 50).Not()), out surfacePoint);
+            // Search from the orgin up to the surface and make sure no sand is between origin and surface
+            if (WorldUtils.Find(origin, Searches.Chain(new Searches.Up(origin.Y - surfacePoint.Y), new Conditions.IsTile(TileID.Sand)), out Point _))
+                return;
 
-            WorldUtils.Gen(new Point(x + 24, y - 3), new GenShapeActionPair(new Shapes.Slime(7, 4, (double)Main.rand.NextFloat(1.03f, 1.5f)), new Actions.PlaceTile((ushort)ModContent.TileType<Tile_RootedDirt>())));
+            if (!flag)
+                return;
+
+            // Remove tiles to create shaft to surface. Convert Sand tiles along shaft to hardened sand tiles.
+            ShapeData shaftShapeData = new ShapeData();
+            WorldUtils.Gen(new Point(origin.X, surfacePoint.Y + 10), new Shapes.Circle(1, origin.Y - surfacePoint.Y - 9), Actions.Chain(new Modifiers.Blotches(2, 0.2), new Actions.ClearTile().Output(shaftShapeData), new Modifiers.Expand(1), new Modifiers.OnlyTiles(TileID.Sand), new Actions.SetTile(TileID.HardenedSand).Output(shaftShapeData)));
+            WorldUtils.Gen(new Point(origin.X, surfacePoint.Y + 10), new ModShapes.All(shaftShapeData), new Actions.SetFrames(frameNeighbors: true));
+
+            //Leave these in
+
+            WorldUtils.Gen(new Point(x, y - 5), new GenShapeActionPair(new Shapes.Mound(28, Main.rand.Next(24, 30)), new Actions.ClearTile()));
+
+            WorldUtils.Gen(new Point(x, y - 3), new GenShapeActionPair(new Shapes.Slime(7, 4, (double)Main.rand.NextFloat(1.03f, 1.5f)), new Actions.PlaceTile((ushort)ModContent.TileType<Tile_RootedDirt>())));
 
             //WorldGen.TileRunner(x, y - 4, 6, 8, ModContent.TileType<Tile_RootedDirt>(), true, 2, 1, overRide: true);
-           
         }
-
         public void TopFloor(int x, int y)
         {
-            Point origin = new Point(x, y);
+            Point origin = new Point(x - 10, y - 7);
 
             //Setup Rooms
-            DTGenUtils.GenLitRoomWithDoors(origin.X, origin.Y, 20, 14, 2, 2, true, TileID.EbonstoneBrick, WallID.EbonstoneBrick, 18);
+            DTGenUtils.GenLitRoomWithDoors(origin.X, origin.Y, 21, 15, 2, 2, true, TileID.EbonstoneBrick, WallID.EbonstoneBrick, 18);
 
-            DTGenUtils.GenLitRoomWithDoors(origin.X + 35, origin.Y, 20, 14, 2, 2, true, TileID.EbonstoneBrick, WallID.EbonstoneBrick, 18);
+            //DTGenUtils.GenLitRoomWithDoors(origin.X + 35, origin.Y, 20, 14, 2, 2, true, TileID.EbonstoneBrick, WallID.EbonstoneBrick, 18);
 
+            WorldGen.PlaceObject(origin.X + 11, origin.Y + 7, ModContent.TileType<Tile_RoseGardenEffectSource>());
+
+            //Deco
+
+            int[] Variants = new int[3]
+            {
+                ModContent.TileType<Tile_HekateTalisman1>(),
+                ModContent.TileType<Tile_HekateTalisman2>(),
+                ModContent.TileType<Tile_HekateTalisman3>(),
+            };
+
+            WorldGen.PlaceObject(origin.X + 3, origin.Y + 2, Variants[Main.rand.Next(Variants.Length)]);
+            WorldGen.PlaceObject(origin.X + 17, origin.Y + 2, Variants[Main.rand.Next(Variants.Length)]);
+
+            //WorldGen.PlaceObject(origin.X + 8, origin.Y + 2, TileID.BrazierSuspended);
 
             //Setup Hallways
 
@@ -117,14 +157,14 @@ namespace DestroyerTest.Common.Systems
         {
             Point origin = new Point(x, y);
 
-            DTGenUtils.GenLitRoomWithDoors(origin.X, origin.Y + 4, 10, 10, 2, 2, true, TileID.EbonstoneBrick, WallID.EbonstoneBrick, 18);
+            DTGenUtils.GenLitRoomWithDoors(origin.X - 10, origin.Y - 6, 20, 12, 2, 2, true, TileID.EbonstoneBrick, WallID.EbonstoneBrick, 18);
 
-            DTGenUtils.GenLitRoomWithDoors(origin.X + 20, origin.Y, 25, 14, 2, 2, true, TileID.EbonstoneBrick, WallID.EbonstoneBrick, 18);
+            //DTGenUtils.GenLitRoomWithDoors(origin.X + 20, origin.Y, 25, 14, 2, 2, true, TileID.EbonstoneBrick, WallID.EbonstoneBrick, 18);
 
 
             //Setup Hallways
 
-            DTGenUtils.GenHallway(origin.X + 10, origin.Y + 6, 10, 8, 2, true, TileID.EbonstoneBrick, WallID.EbonstoneBrick, 18);
+            //DTGenUtils.GenHallway(origin.X + 10, origin.Y + 6, 10, 8, 2, true, TileID.EbonstoneBrick, WallID.EbonstoneBrick, 18);
         }
 
         public void ConnectingChute(int x, int y)
@@ -132,7 +172,7 @@ namespace DestroyerTest.Common.Systems
             Point origin = new Point(x, y);
 
 
-            DTGenUtils.GenChute(x, y, 9, 5, 2, true, true, TileID.EbonstoneBrick, WallID.EbonstoneBrick);
+            //DTGenUtils.GenChute(x, y, 9, 5, 2, true, true, TileID.EbonstoneBrick, WallID.EbonstoneBrick);
         }
 
         public void PlaceAndFillChests(int x, int y)
@@ -227,11 +267,12 @@ namespace DestroyerTest.Common.Systems
             ClearTopSpace(x, y);
 
             TopFloor(x, y);
-            BottomFloor(x + 5, y + 15);
 
-            ConnectingChute(x + 41, y + 12);
+            BottomFloor(x, y + 15);
 
-            PlaceAndFillChests(x, y);
+            //ConnectingChute(x + 41, y + 12);
+
+            //PlaceAndFillChests(x, y);
 
             Vector2 OrigVec = origin.ToWorldCoordinates();
             Rectangle Rect = new Rectangle((int)OrigVec.X, (int)OrigVec.Y, 60, 43);

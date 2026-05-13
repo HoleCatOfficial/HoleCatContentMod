@@ -46,7 +46,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 			DTUtils Utility = new DTUtils();
 			Asset<Texture2D> strip = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/GhoulStreak");
 
-			Opus.StartSpriteBatchForTrails(spriteBatch, BlendState.Opaque, SpriteSortMode.Immediate);
+			Opus.StartSpriteBatchForTrails(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
 			
 			if (TrailPositions.Count > 1)
 			{

@@ -179,9 +179,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon.Sentry
                     return Color.White;
                 }
 
-                Fire fire1 = new Fire();
-                fire1.PrepareFire(Pos, D * 1.25f, Projectile.direction, 0.14f, color() * 0.4f, 0.75f, 120, FireDrawMode.Additive, PixelLayer.AboveProjectiles);
-                ParticleEngine.BehindProjectiles.Add(fire1);
+                if (!DTOptimizationsConfig.instance.DisableExcessParticles)
+                {
+                    Fire fire1 = new Fire();
+                    fire1.PrepareFire(Pos, D * 1.25f, Projectile.direction, 0.14f, color() * 0.4f, 0.75f, 120, FireDrawMode.Additive, PixelLayer.AboveProjectiles);
+                    ParticleEngine.BehindProjectiles.Add(fire1);
+                }
 
                 Fire fire2 = new Fire();
                 fire2.PrepareFire(Pos, D * 1.25f, Projectile.direction, 0.14f, color(), 0.25f, 120, FireDrawMode.Additive, PixelLayer.AboveProjectiles);

@@ -41,15 +41,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             SoundEngine.PlaySound(SoundID.DD2_KoboldExplosion, Projectile.Center);
 
             SimpleExplosionParticle Explosion = new();
-            Explosion.Prepare(Projectile.Center, Vector2.Zero, Color.DarkMagenta, 0.1f, 0.01f, 1f, BlendState.Additive);
+            Explosion.Prepare(Projectile.Center, Vector2.Zero, Color.DarkMagenta, 0.3f, 0.01f, 4f, BlendState.Additive);
             ParticleEngine.BehindProjectiles.Add(Explosion);
 
-            BloomRing Ring1 = new();
-            Ring1.Prepare(Projectile.Center, Vector2.Zero, Color.DarkMagenta * 0.5f, 0.1f, 0.01f, BlendState.Additive);
-            ParticleEngine.BehindProjectiles.Add(Ring1);
-
-            BloomRingSharp Ring2 = new();
-            Ring2.Prepare(Projectile.Center, Vector2.Zero, Color.Magenta, 0.1f, 0.01f, BlendState.Additive);
+            BloomRingSharp Ring1 = new();
+            Ring1.Prepare(Projectile.Center, Vector2.Zero, Color.Magenta, 0.1f, 0.01f, 0.6f, BlendState.Additive);
             ParticleEngine.BehindProjectiles.Add(Ring1);
 
 

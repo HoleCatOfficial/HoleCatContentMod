@@ -13,6 +13,8 @@ using Terraria.WorldBuilding;
 using Terraria.Audio;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Buffs;
+using Terraria.DataStructures;
+using OpusLib;
 
 namespace DestroyerTest.Content.Tiles.RoseGarden
 {
@@ -25,6 +27,16 @@ namespace DestroyerTest.Content.Tiles.RoseGarden
 			MineResist = 16000f;
 			MinPick = 255;
 		}
+
+        public override void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref TileDrawInfo drawData)
+        {
+            Vector2[] Points = Opus.GetEquidistantOrbitVectors(36, new Vector2(i * 16, j * 16), 0.01f, 1200f);
+
+            for (int ind = 0; ind < Points.Length; ind++)
+            {
+                Dust.NewDustPerfect(Points[ind], DustID.TintableDustLighted, Vector2.Zero, 0, Color.White, 3f);
+            }
+        }
 
 		public override void NearbyEffects(int i, int j, bool closer)
 		{
@@ -66,6 +78,8 @@ namespace DestroyerTest.Content.Tiles.RoseGarden
                 RemoveBuffs(Player);
                 Player.AddBuff(BuffID.NoBuilding, 4);
                 Player.AddBuff(BuffID.Blackout, 4);
+
+                Player.noBuilding = true;
             }
         }
         

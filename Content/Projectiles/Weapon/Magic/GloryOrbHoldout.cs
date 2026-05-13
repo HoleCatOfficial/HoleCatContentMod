@@ -87,6 +87,15 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
                 {
                     if (player.CheckMana(200, true))
                     {
+                        Rectangle R = Utils.CenteredRectangle(Projectile.Center, new Vector2(100, 100));
+                        Vector2 SP = Main.rand.NextVector2FromRectangle(R);
+
+                        for (int i = 0; i < 12; i++)
+                        {
+                            Dust Fire = Dust.NewDustPerfect(SP, DustID.AncientLight, toCursor * Main.rand.NextFloat(2f, 32f), 0, Main.DiscoColor, Main.rand.NextFloat(1f, 4f));
+                            Fire.noGravity = true;
+                        }
+
                         SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/BlessedNodeLasers") with { PitchVariance = 0.5f }, Projectile.Center);
                         Projectile.ai[0] = 0;
                         Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, toCursor * 0.1f, ModContent.ProjectileType<BlessedLaserFriendly>(), Projectile.damage, 10, player.whoAmI, 0f, 0f);
@@ -94,7 +103,15 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
                 }
                 else
                 {
-                    Opus.RingSpreadDustRandom(DustID.AncientLight, 7, Projectile.Center + new Vector2(0, -20).RotatedBy(Projectile.rotation), 25, 50, Main.DiscoColor, -0.02f, 0.5f);
+                    Rectangle R = Utils.CenteredRectangle(Projectile.Center, new Vector2(100, 100));
+                    Vector2 SP = Main.rand.NextVector2FromRectangle(R);
+                    Vector2 Dir = Projectile.Center - SP;
+                    Dir.Normalize();
+
+
+                    Dust Charge = Dust.NewDustPerfect(SP, DustID.AncientLight, Dir, 0, Main.DiscoColor, Main.rand.NextFloat(0.1f, 1.1f));
+                    Charge.noGravity = true;
+                    //Opus.RingSpreadDustRandom(DustID.AncientLight, 7, Projectile.Center + new Vector2(0, -20).RotatedBy(Projectile.rotation), 25, 50, Main.DiscoColor, 0f, 0.5f);
                 }
             }
             else

@@ -136,7 +136,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
 
 
             UpdateLerpTime();
-			MainColor = ColorLib.StellarFireGradient(LifetimeCompletion * 8f);
+			MainColor = ColorLib.StellarFireGradient(LifetimeCompletion);
 
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
 

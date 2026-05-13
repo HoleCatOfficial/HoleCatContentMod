@@ -16,7 +16,7 @@ using DestroyerTest.Content.Tools;
 using DestroyerTest.Content.Resources.Blueprints;
 using DestroyerTest.Content.Tiles.RiftConfigurator;
 using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Content.Projectiles.Weapon.Melee;
+using DestroyerTest.Content.Projectiles.Weapon.Rogue;
 
 namespace DestroyerTest.Content.RiftArsenal
 {
@@ -36,15 +36,15 @@ namespace DestroyerTest.Content.RiftArsenal
 
 		public override void SetDefaults() {
 			Item.useStyle = ItemUseStyleID.Swing;
-			Item.shootSpeed = 30f;
-			Item.shoot = ModContent.ProjectileType<RiftThrowingKnifeProjectile>();
+			Item.shootSpeed = 01f;
+			Item.shoot = ModContent.ProjectileType<RiftThrowingKnifeThrown>();
 			Item.width = 14;
 			Item.height = 34;
 			Item.maxStack = 100;
 			Item.consumable = true;
 			Item.UseSound = SoundID.Item71;
-			Item.useAnimation = 8;
-			Item.useTime = 8;
+			Item.useAnimation = 15;
+			Item.useTime = 15;
 			Item.noUseGraphic = true;
 			Item.noMelee = true;
 			Item.value = Item.buyPrice(0, 0, 20, 0);

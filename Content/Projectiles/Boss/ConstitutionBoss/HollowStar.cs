@@ -62,7 +62,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
         public override void AI()
         {
             UpdateLerpTime();
-			MainColor = ColorLib.StellarFireGradient(LifetimeCompletion * 8f);
+			MainColor = ColorLib.StellarFireGradient(LifetimeCompletion);
             Projectile.rotation += Projectile.direction * 0.3f;
 
             if (Main.rand.NextBool(12))
@@ -97,7 +97,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
 
         public override void OnKill(int timeLeft)
         {
-            DTUtils.ConstitutionStarExplosionEffects(Projectile);
+
         }
     }
 }

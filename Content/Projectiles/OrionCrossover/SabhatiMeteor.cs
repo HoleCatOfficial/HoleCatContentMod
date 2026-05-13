@@ -80,7 +80,7 @@ namespace DestroyerTest.Content.Projectiles.OrionCrossover
             );
             Opus.ReturnToDefaultDrawing(spriteBatch);
 
-            Main.EntitySpriteDraw(DTAssetLib.FlatStar.Value, Projectile.Center - Main.screenPosition, null, Color.Black, sRot, DTAssetLib.FlatStar.Value.Size() / 2, 0.05f, SpriteEffects.None, 0f);
+            //Main.EntitySpriteDraw(DTAssetLib.FlatStar.Value, Projectile.Center - Main.screenPosition, null, Color.Black, sRot, DTAssetLib.FlatStar.Value.Size() / 2, 0.1f, SpriteEffects.None, 0f);
             return false;
         }
 
@@ -109,9 +109,9 @@ namespace DestroyerTest.Content.Projectiles.OrionCrossover
             Projectile.rotation = Projectile.velocity.ToRotation() - MathHelper.PiOver2;
             Lighting.AddLight(Projectile.Center, ColorLib.StellarFire3.ToVector3() * 0.6f);
 
-            StellarPointGlow FX = new();
-            FX.Prepare(Main.rand.NextVector2FromRectangle(Utils.CenteredRectangle(Projectile.Center, new Vector2(Projectile.width * Projectile.scale, Projectile.height * Projectile.scale))), Projectile.velocity * 0.2f);
-            ParticleEngine.ShaderParticles.Add(FX);
+            StellarPointGlow FX = new StellarPointGlow();
+            FX.Initialize(Main.rand.NextVector2FromRectangle(Utils.CenteredRectangle(Projectile.Center, new Vector2(Projectile.width * Projectile.scale, Projectile.height * Projectile.scale))), Projectile.velocity * 0.2f, default, 1.5f);
+            ParticleEngine.Particles.Add(FX);
 
             if (DelayTimer < 15)
             {

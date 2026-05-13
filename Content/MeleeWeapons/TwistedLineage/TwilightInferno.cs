@@ -9,6 +9,7 @@ using DestroyerTest.Rarity;
 using DestroyerTest.Common;
 using System;
 using DestroyerTest.Content.Projectiles.Weapon.Melee;
+using DestroyerTest.Content.Resources;
 
 namespace DestroyerTest.Content.MeleeWeapons.TwistedLineage
 {
@@ -45,6 +46,16 @@ namespace DestroyerTest.Content.MeleeWeapons.TwistedLineage
         public override bool CanUseItem(Player player)
         {
             return player.ownedProjectileCounts[Item.shoot] < 1;
+        }
+
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient<DarkFireSword>()
+                .AddIngredient(ItemID.ShadowFlameKnife)
+                .AddIngredient<CarbonizedFlesh>(4)
+                .AddTile(TileID.MythrilAnvil)
+                .Register();
         }
     }
 } 

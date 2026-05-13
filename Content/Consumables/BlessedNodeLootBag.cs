@@ -57,6 +57,7 @@ namespace DestroyerTest.Content.Consumables
             //itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<WretchedShards>(), 1, 4, 16));
             //itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<CursedFlameScroll>(), 1, 1, 1));
             itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<Purity>(), 2, 1, 1));
+            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<PureBow>(), 2, 1, 1));
             itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<GloryOrb>(), 2, 1, 1));
             //itemLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Item_CursedFlameNodeRelic>()));
             //itemLoot.Add(ItemDropRule.Common(ItemID.FlaskofCursedFlames, 3, 1, 9));

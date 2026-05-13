@@ -79,7 +79,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
         public override void AI()
         {
             UpdateLerpTime();
-			MainColor = ColorLib.StellarFireGradient(LifetimeCompletion * 8f);
+			MainColor = ColorLib.StellarFireGradient(LifetimeCompletion);
 
             Vector2 ToPlayer = Projectile.Center - Main.LocalPlayer.Center;
             TextureRotationOffset -= 0.5f;

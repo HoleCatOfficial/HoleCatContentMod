@@ -224,15 +224,20 @@ namespace DestroyerTest.Content.Entities
             
 		}
 
+		Func<bool> P = () => WorldGen.crimson;
+
+		public Condition IsCrimson => new Condition(Language.GetText("Mods.DestroyerTest.NPCs.EimvurNPC.OnlyInCrimson"), P);
+
 		public override void AddShops() {
             var npcShop = new NPCShop(Type, ShopName)
 				.Add(new Item(ModContent.ItemType<Dyrn>()) { shopCustomPrice = Item.buyPrice(silver: 2, copper: 20) })
-                .Add(new Item(ModContent.ItemType<OminousToken>()) { shopCustomPrice = Item.buyPrice(silver: 50) });
+                .Add(new Item(ModContent.ItemType<OminousToken>()) { shopCustomPrice = Item.buyPrice(silver: 50) }, IsCrimson);
 			npcShop.Register();
 		}
 
-		public override void ModifyNPCLoot(NPCLoot npcLoot) {
-			npcLoot.Add(ItemDropRule.Common(ItemID.VampireKnives, 1, 10, 26));
+		public override void ModifyNPCLoot(NPCLoot npcLoot) 
+		{
+
 		}
 
 		public override bool CanGoToStatue(bool toKingStatue) => false;

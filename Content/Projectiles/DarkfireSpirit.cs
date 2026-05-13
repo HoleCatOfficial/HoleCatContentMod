@@ -99,15 +99,18 @@ namespace DestroyerTest.Content.Projectiles
             AnimateProjectile();
             Projectile.rotation = Projectile.velocity.ToRotation();
 
-            Fire fire = new Fire();
-            fire.PrepareFire(Projectile.Center, Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.3f, 0.3f), Color.Indigo, 0.5f, 100, FireDrawMode.Additive, PixelLayer.AboveProjectiles);
-            ParticleEngine.BehindProjectiles.Add(fire);
+            if (!DTOptimizationsConfig.instance.DisableExcessParticles)
+            {
+                Fire fire = new Fire();
+                fire.PrepareFire(Projectile.Center, Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.3f, 0.3f), Color.Indigo, 0.5f, 100, FireDrawMode.Additive, PixelLayer.AboveProjectiles);
+                ParticleEngine.BehindProjectiles.Add(fire);
+            }
 
             Fire fireX = new Fire();
             fireX.PrepareFire(Projectile.Center, Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.3f, 0.3f), DTColorUtils.Pastel(Color.Purple, 0.4f), 0.3f, 100, FireDrawMode.Additive, PixelLayer.AboveProjectiles);
             ParticleEngine.BehindProjectiles.Add(fireX);
 
-            if (Main.rand.NextBool(4))
+            if (Main.rand.NextBool(4) && !DTOptimizationsConfig.instance.DisableExcessParticles)
             {
                 Fire fire2 = new Fire();
                 fire2.PrepareFire(Projectile.Center, Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.3f, 0.3f), Color.DarkMagenta, 0.5f, 100, FireDrawMode.Additive, PixelLayer.AboveProjectiles);
