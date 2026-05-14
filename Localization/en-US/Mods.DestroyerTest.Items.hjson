@@ -4626,3 +4626,8 @@ Expedition: {
 	DisplayName: Expedition
 	Tooltip: ""
 }
+
+Item_TallBookcase: {
+	DisplayName: Item_ Tall Bookcase
+	Tooltip: ""
+}

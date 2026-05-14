@@ -30,15 +30,15 @@ namespace DestroyerTest.Common
 
         public Rectangle Bounds;
 
-        public int TileType = -1;
-        public int WallType = -1;
+        public ushort TileType = 0;
+        public ushort WallType = 0;
 
         public int LeftWall = 2;
         public int RightWall = 2;
         public int Ceiling = 2;
         public int Floor = 2;
 
-        public Room(int x, int y, int width, int height, int tileType, int wallType)
+        public Room(int x, int y, int width, int height, ushort tileType, ushort wallType)
         {
             Bounds = new Rectangle(x, y, width, height);
 
@@ -46,7 +46,7 @@ namespace DestroyerTest.Common
             WallType = wallType;
         }
 
-        public Room(int x, int y, int width, int height, int leftWallWidth, int rightWallWidth, int floorWidth, int ceilingWidth, int tileType, int wallType)
+        public Room(int x, int y, int width, int height, int leftWallWidth, int rightWallWidth, int floorWidth, int ceilingWidth, ushort tileType, ushort wallType)
         {
             Bounds = new Rectangle(x, y, width, height);
 
@@ -59,7 +59,7 @@ namespace DestroyerTest.Common
             Ceiling = ceilingWidth;
         }
 
-        public static Room CenteredRoom(int x, int y, int width, int height, int tileType, int wallType, int leftWallWidth = 2, int rightWallWidth = 2, int floorWidth = 2, int ceilingWidth = 2)
+        public static Room CenteredRoom(int x, int y, int width, int height, ushort tileType, ushort wallType, int leftWallWidth = 2, int rightWallWidth = 2, int floorWidth = 2, int ceilingWidth = 2)
         {
             int XOff = x - (width / 2);
             int YOff = y - (height / 2);
@@ -67,6 +67,7 @@ namespace DestroyerTest.Common
         }
 
         public Point Position => Bounds.Location;
+        public int FloorLevel => Position.Y + (Bounds.Height - Floor);
 
         public Point Center =>
             new Point(
@@ -76,8 +77,8 @@ namespace DestroyerTest.Common
 
         public Rectangle Interior =>
             new Rectangle(
-                Bounds.X + LeftWall,
-                Bounds.Y + Ceiling,
+                Bounds.Location.X + LeftWall,
+                Bounds.Location.Y + Ceiling,
                 Bounds.Width - LeftWall - RightWall,
                 Bounds.Height - Ceiling - Floor
             );
@@ -139,6 +140,7 @@ namespace DestroyerTest.Common
                     return yBottom;
                 }
 
+                return 0;
             }
 
             for (int x = startX; x <= endX; x++)
@@ -159,18 +161,20 @@ namespace DestroyerTest.Common
 
         public Rectangle Bounds;
 
-        public int TileType = -1;
-        public int WallType = -1;
+        public ushort TileType = 1;
+        public ushort WallType = 1;
 
         int Ceiling;
         int Floor;
 
-        public Hallway(Room start, Room end, int height, int tileType, int wallType, int ceilingWidth = 2, int floorWidth = 2)
+        public Hallway(Room start, Room end, int height, ushort tileType, ushort wallType, int ceilingWidth = 2, int floorWidth = 2)
         {
-            int A = start.Position.X + start.Bounds.Width + 1;
-            int B = (start.Position.Y + start.Bounds.Height) - height;
-            int Span = (start.Position.X + start.Bounds.Width + 1) - (end.Position.X - 1);
-            Bounds = new Rectangle(A, B, Span, height);
+            int x = start.Bounds.Right;
+            int y = start.Bounds.Bottom - height;
+
+            int width = end.Bounds.Left - x;
+
+            Bounds = new Rectangle(x, y, width, height);
 
             Start = start;
             End = end;
@@ -190,8 +194,8 @@ namespace DestroyerTest.Common
 
         public Rectangle Interior =>
             new Rectangle(
-                Bounds.X,
-                Bounds.Y + Ceiling,
+                Bounds.Location.X,
+                Bounds.Location.Y + Ceiling,
                 Bounds.Width,
                 Bounds.Height - Ceiling - Floor
             );
@@ -204,27 +208,21 @@ namespace DestroyerTest.Common
 
         public Rectangle Bounds;
 
-        public int TileType = -1;
-        public int WallType = -1;
+        public ushort TileType = 1;
+        public ushort WallType = 1;
 
         int LeftWall;
         int RightWall;
 
-        public Chute(Room start, Room end, int Width, int tileType, int wallType, int leftWidth = 2, int rightWidth = 2)
+        public Chute(Room start, Room end, int x, int Width, ushort tileType, ushort wallType, int leftWidth = 2, int rightWidth = 2)
         {
-            int top = start.Bounds.Bottom;
-            int bottom = end.Bounds.Top; 
+            int top = Math.Min(start.Bounds.Bottom, end.Bounds.Top);
+            int bottom = Math.Max(start.Bounds.Bottom, end.Bounds.Top);
 
             int height = bottom - top;
-            height = Math.Min(height, bottom - top);
 
             int maxWidth = Math.Min(start.Bounds.Width, end.Bounds.Width);
             Width = Math.Min(Width, maxWidth);
-
-            int minX = Math.Max(start.Bounds.Left, end.Bounds.Left);
-            int maxX = Math.Min(start.Bounds.Right, end.Bounds.Right);
-
-            int x = Random.Shared.Next(minX, maxX - Width + 1);
 
             Bounds = new Rectangle(x, top, Width, height);
 
@@ -232,6 +230,8 @@ namespace DestroyerTest.Common
             End = end;
             TileType = tileType;
             WallType = wallType;
+            LeftWall = leftWidth;
+            RightWall = rightWidth;
         }
         public Point Position => Bounds.Location;
 
@@ -243,8 +243,8 @@ namespace DestroyerTest.Common
 
         public Rectangle Interior =>
             new Rectangle(
-                Bounds.X + LeftWall,
-                Bounds.Y,
+                Bounds.Location.X + LeftWall,
+                Bounds.Location.Y,
                 Bounds.Width - LeftWall - RightWall,
                 Bounds.Height
             );

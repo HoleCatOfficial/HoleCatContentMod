@@ -2369,6 +2369,54 @@ namespace DestroyerTest.Common
 
     public class DTGenUtils
     {
+        public static void GenRoom(Room room)
+        {
+            if (room == null)
+            {
+                throw new Exception("DTGenUtils.GenRoom: The Room to be generated is null.");
+            }
+
+            
+
+            WorldUtils.Gen(room.Position, new GenShapeActionPair(new Shapes.Rectangle(room.Bounds.Width, room.Bounds.Height), new Actions.SetTile(room.TileType, false, true)));
+            WorldUtils.Gen(room.Interior.Location, new GenShapeActionPair(new Shapes.Rectangle(room.Interior.Width, room.Interior.Height), new Actions.ClearTile(true)));
+
+            WorldUtils.Gen(room.Position, new GenShapeActionPair(new Shapes.Rectangle(room.Bounds.Width, room.Bounds.Height), new Actions.PlaceWall(room.WallType)));
+        }
+
+        public static void GenHallway(Hallway hallway)
+        {
+            if (hallway == null)
+            {
+                throw new Exception("DTGenUtils.GenHallway: The Hallway to be generated is null.");
+            }
+
+            
+
+
+            WorldUtils.Gen(hallway.Position, new GenShapeActionPair(new Shapes.Rectangle(hallway.Bounds.Width, hallway.Bounds.Height), new Actions.SetTile(hallway.TileType, false, true)));
+            WorldUtils.Gen(hallway.Interior.Location, new GenShapeActionPair(new Shapes.Rectangle(hallway.Interior.Width, hallway.Interior.Height), new Actions.ClearTile(true)));
+
+            WorldUtils.Gen(hallway.Position, new GenShapeActionPair(new Shapes.Rectangle(hallway.Bounds.Width, hallway.Bounds.Height), new Actions.PlaceWall(hallway.WallType)));
+        }
+
+        public static void GenChute(Chute chute)
+        {
+            if (chute == null)
+            {
+                throw new Exception("DTGenUtils.GenChute: The Chute to be generated is null.");
+            }
+
+            
+
+            WorldUtils.Gen(chute.Position, new GenShapeActionPair(new Shapes.Rectangle(chute.Bounds.Width, chute.Bounds.Height), new Actions.SetTile(chute.TileType, false, true)));
+            WorldUtils.Gen(chute.Interior.Location, new GenShapeActionPair(new Shapes.Rectangle(chute.Interior.Width, chute.Interior.Height), new Actions.ClearTile(true)));
+
+            WorldUtils.Gen(chute.Position, new GenShapeActionPair(new Shapes.Rectangle(chute.Bounds.Width, chute.Bounds.Height), new Actions.PlaceWall(chute.WallType)));
+        }
+
+        /*
+
         public static void GenRoom(int i, int j, int Width, int Height, int WallWidth, int CeilingWidth, bool Wall, ushort TileType, ushort WallType)
         {
             //Tile Frames
@@ -2601,73 +2649,83 @@ namespace DestroyerTest.Common
             }
         }
 
+        */
 
         //Doors
 
-        private static void CarveDoor(int x, int y)
+        private static void CarveDoor(int x, int y, int direction)
         {
-            for (int i = 0; i < 3; i++)
+            // direction:
+            // -1 = carve left
+            //  1 = carve right
+
+            int currentX = x;
+
+            // Keep carving until we hit open air/interior
+            while (WorldGen.SolidTile(currentX, y))
             {
-                WorldGen.KillTile(x, y - i);
+                for (int i = 0; i < 3; i++)
+                {
+                    WorldGen.KillTile(currentX, y - i);
+                }
+
+                currentX += direction;
             }
 
-            WorldGen.PlaceObject(x, y, TileID.ClosedDoor);
+            // Place the actual door at the original position
+            WorldGen.PlaceObject(x, y, TileID.ClosedDoor, style: 13);
         }
 
         public static void MakeDoor(Room room, RoomSide side)
         {
             if (side == RoomSide.Left || side == RoomSide.Both)
             {
-                int x = room.Bounds.Left + (room.LeftWall / 2);
+                int x = room.Bounds.Left;
                 int y = room.Interior.Bottom - 1;
 
-                CarveDoor(x, y);
+                CarveDoor(x, y, 1);
+
+               
+
+
             }
 
             if (side == RoomSide.Right || side == RoomSide.Both)
             {
-                int x = room.Bounds.Right - 1 - (room.RightWall / 2);
+                int x = room.Bounds.Right - 1;
                 int y = room.Interior.Bottom - 1;
 
-                CarveDoor(x, y);
+                CarveDoor(x, y, -1);
+
+              
+
+
             }
         }
 
-        public static void MakeHatch(Room room, HatchSide side, int Width)
+        public static void MakeHatch(Room room, HatchSide side, int Width, int x)
         {
-            int minX = room.Interior.Left;
-            int maxX = room.Interior.Right - 1;
-
             int hatchWidth = Width;
-            hatchWidth = Math.Min(hatchWidth, maxX - minX + 1);
 
-            int startX = minX + (maxX - minX - hatchWidth) / 2;
-            int endX = startX + hatchWidth;
+            int endX = x + hatchWidth;
 
-            int yTop = room.Interior.Top;
-            int yBottom = room.Interior.Bottom - 1;
+            int yTop = room.Bounds.Top;
+            int yBottom = room.Bounds.Bottom - 1;
 
-            int y()
-            {
-                if (side == HatchSide.Top)
-                {
-                    return yTop;
-                }
-                if (side == HatchSide.Bottom)
-                {
-                    return yBottom;
-                }
-
-            }
-
-            for (int x = startX; x <= endX; x++)
+            for (int k = x; k <= endX; k++)
             {
                 for (int i = 0; i < room.Ceiling; i++)
                 {
-                    WorldGen.KillTile(x, y() - i);
+                    int y = side switch
+                    {
+                        HatchSide.Top => yTop + i,
+                        HatchSide.Bottom => yBottom - i,
+                        _ => throw new Exception("Invalid HatchSide")
+                    };
+
+                    WorldGen.KillTile(k, y);
                 }
             }
-
         }
     }
 

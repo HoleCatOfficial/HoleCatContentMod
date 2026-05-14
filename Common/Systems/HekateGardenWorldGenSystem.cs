@@ -29,6 +29,7 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.UI;
 using Terraria.WorldBuilding;
+using static Terraria.GameContent.Animations.IL_Actions.NPCs;
 
 namespace DestroyerTest.Common.Systems
 {
@@ -125,16 +126,6 @@ namespace DestroyerTest.Common.Systems
         }
         public void TopFloor(int x, int y)
         {
-            Point origin = new Point(x - 10, y - 7);
-
-            //Setup Rooms
-            DTGenUtils.GenLitRoomWithDoors(origin.X, origin.Y, 21, 15, 2, 2, true, TileID.EbonstoneBrick, WallID.EbonstoneBrick, 18);
-
-            //DTGenUtils.GenLitRoomWithDoors(origin.X + 35, origin.Y, 20, 14, 2, 2, true, TileID.EbonstoneBrick, WallID.EbonstoneBrick, 18);
-
-            WorldGen.PlaceObject(origin.X + 11, origin.Y + 7, ModContent.TileType<Tile_RoseGardenEffectSource>());
-
-            //Deco
 
             int[] Variants = new int[3]
             {
@@ -143,21 +134,121 @@ namespace DestroyerTest.Common.Systems
                 ModContent.TileType<Tile_HekateTalisman3>(),
             };
 
-            WorldGen.PlaceObject(origin.X + 3, origin.Y + 2, Variants[Main.rand.Next(Variants.Length)]);
-            WorldGen.PlaceObject(origin.X + 17, origin.Y + 2, Variants[Main.rand.Next(Variants.Length)]);
+            //Setup Rooms
+            Room Central = new Room(x, y, 21, 15, TileID.EbonstoneBrick, WallID.EbonstoneBrick);
+            DTGenUtils.GenRoom(Central);
+            DTGenUtils.MakeDoor(Central, Room.RoomSide.Both);
 
-            //WorldGen.PlaceObject(origin.X + 8, origin.Y + 2, TileID.BrazierSuspended);
+            
+
+            
+
+            Room ChestRoom1 = new Room(x + 32, y + 3, 16, 12, TileID.EbonstoneBrick, WallID.EbonstoneBrick);
+            DTGenUtils.GenRoom(ChestRoom1);
+            DTGenUtils.MakeDoor(ChestRoom1, Room.RoomSide.Left);
+
+            Room FirstToSecondFloorChute = new Room(Central.Bounds.Left - 18, y + 3, 10, 12, TileID.EbonstoneBrick, WallID.EbonstoneBrick);
+            DTGenUtils.GenRoom(FirstToSecondFloorChute);
+            DTGenUtils.MakeDoor(FirstToSecondFloorChute, Room.RoomSide.Right);
+            DTGenUtils.MakeHatch(FirstToSecondFloorChute, Room.HatchSide.Bottom, 4, FirstToSecondFloorChute.Position.X + 2);
+
+            Hallway CenToChest1 = new Hallway(Central, ChestRoom1, 9, TileID.EbonstoneBrick, WallID.EbonstoneBrick);
+            DTGenUtils.GenHallway(CenToChest1);
+
+            Hallway CenToChute = new Hallway(FirstToSecondFloorChute, Central, 9, TileID.EbonstoneBrick, WallID.EbonstoneBrick);
+            DTGenUtils.GenHallway(CenToChute);
+            
+            Room Dummy = new Room(x - 20, y + 22, 35, 18, TileID.Dirt, WallID.Dirt);
+             
+            Chute FloorConnector = new Chute(FirstToSecondFloorChute, Dummy, x - 18, 9, TileID.EbonstoneBrick, WallID.EbonstoneBrick);
+            
+
+            DTGenUtils.GenChute(FloorConnector);
+
+
+            //Deco
+
+            void furnishCentral()
+            {
+                WorldGen.PlaceObject(Central.Interior.Location.X + 1, Central.Interior.Location.Y, Variants[Main.rand.Next(Variants.Length)]);
+                WorldGen.PlaceObject(Central.Interior.Location.X + Central.Interior.Width - 2, Central.Interior.Location.Y, Variants[Main.rand.Next(Variants.Length)]);
+
+                WorldGen.PlaceObject(Central.Interior.Location.X + (Central.Interior.Width / 2), Central.Interior.Y, TileID.BrazierSuspended);
+
+                for (int i = 0; i < 2; i++)
+                {
+                    int x = Central.Interior.Left + Main.rand.Next(1, Central.Interior.Width - 2);
+                    int y = Central.Interior.Y - (Central.Floor + 2);
+                    int style = Main.rand.Next(31, 34);
+
+                    WorldGen.PlaceObject(x, y, TileID.Pots, style: style);
+                }
+            }
+
+            furnishCentral();
+
+            void furnishChestTopFloor()
+            {
+                WorldGen.PlaceObject(ChestRoom1.Interior.Location.X + 1, ChestRoom1.Interior.Location.Y, Variants[Main.rand.Next(Variants.Length)]);
+                WorldGen.PlaceObject(ChestRoom1.Interior.Location.X + ChestRoom1.Interior.Width - 2, ChestRoom1.Interior.Location.Y, Variants[Main.rand.Next(Variants.Length)]);
+
+                WorldGen.PlaceObject(ChestRoom1.Interior.Location.X + ChestRoom1.Interior.Width - 1, ChestRoom1.Interior.Location.Y + 2, TileID.Torches);
+
+                int Loot1 = WorldGen.PlaceChest(ChestRoom1.Interior.Location.X + 6, ChestRoom1.Interior.Location.Y + 7, (ushort)ModContent.TileType<Tile_NightmareChest>());
+
+                var chest1 = Main.chest[Loot1];
+
+                int L1 = ModContent.ItemType<HekateBookPrologue>();
+                int L2 = ModContent.ItemType<Dyrn>();
+
+                for (int inventoryIndex = 0; inventoryIndex < Chest.maxItems; inventoryIndex++)
+                {
+                    if (chest1.item[inventoryIndex].type == ItemID.None)
+                    {
+
+                        chest1.item[0].SetDefaults(L1);
+                        chest1.item[1].SetDefaults(L2);
+                        chest1.item[1].stack = Main.rand.Next(10, 21);
+                    }
+                }
+
+                }
+
+            furnishChestTopFloor();
+
+            
 
             //Setup Hallways
 
-            DTGenUtils.GenHallway(origin.X + 20, origin.Y + 4, 15, 10, 2, true, TileID.EbonstoneBrick, WallID.EbonstoneBrick, 18);
+            //DTGenUtils.GenHallway(origin.X + 20, origin.Y + 4, 15, 10, 2, true, TileID.EbonstoneBrick, WallID.EbonstoneBrick, 18);
         }
 
+        
         public void BottomFloor(int x, int y)
         {
             Point origin = new Point(x, y);
 
-            DTGenUtils.GenLitRoomWithDoors(origin.X - 10, origin.Y - 6, 20, 12, 2, 2, true, TileID.EbonstoneBrick, WallID.EbonstoneBrick, 18);
+            Room Entry = new Room(x - 20, y + 22, 35, 18, TileID.EbonstoneBrick, WallID.EbonstoneBrick);
+            DTGenUtils.GenRoom(Entry);
+            DTGenUtils.MakeHatch(Entry, Room.HatchSide.Top, 4, Entry.Position.X + 4);
+            DTGenUtils.MakeDoor(Entry, Room.RoomSide.Both);
+
+            Room StatueRoom = new Room(x + 22, y + 24, 16, 16, TileID.EbonstoneBrick, WallID.EbonstoneBrick);
+            DTGenUtils.GenRoom(StatueRoom);
+            DTGenUtils.MakeDoor(StatueRoom, Room.RoomSide.Both);
+
+            Hallway EntryToStatue = new Hallway(Entry, StatueRoom, 9, TileID.EbonstoneBrick, WallID.EbonstoneBrick);
+            DTGenUtils.GenHallway(EntryToStatue);
+
+            void furnishEntry()
+            {
+                WorldGen.PlaceObject(Entry.Interior.Location.X + 2, Entry.Interior.Location.Y + 2, ModContent.TileType<Tile_TallBookcase>());
+            }
+
+            furnishEntry();
+            
+
+            //DTGenUtils.GenLitRoomWithDoors(origin.X - 10, origin.Y - 6, 20, 12, 2, 2, true, TileID.EbonstoneBrick, WallID.EbonstoneBrick, 18);
 
             //DTGenUtils.GenLitRoomWithDoors(origin.X + 20, origin.Y, 25, 14, 2, 2, true, TileID.EbonstoneBrick, WallID.EbonstoneBrick, 18);
 
@@ -268,7 +359,9 @@ namespace DestroyerTest.Common.Systems
 
             TopFloor(x, y);
 
-            BottomFloor(x, y + 15);
+            BottomFloor(x, y);
+
+            WorldGen.PlaceObject(x + 12, x + 6, ModContent.TileType<Tile_RoseGardenEffectSource>());
 
             //ConnectingChute(x + 41, y + 12);
 
@@ -351,28 +444,28 @@ namespace DestroyerTest.Common.Systems
             Point origin = new Point(x, y);
 
             //Setup Rooms
-            DTGenUtils.GenLitRoomWithDoors(origin.X, origin.Y, 20, 14, 2, 2, true, TileID.EbonstoneBrick, WallID.EbonstoneBrick, 18);
+            //DTGenUtils.GenLitRoomWithDoors(origin.X, origin.Y, 20, 14, 2, 2, true, TileID.EbonstoneBrick, WallID.EbonstoneBrick, 18);
 
-            DTGenUtils.GenLitRoomWithDoors(origin.X + 35, origin.Y, 20, 14, 2, 2, true, TileID.EbonstoneBrick, WallID.EbonstoneBrick, 18);
+            //DTGenUtils.GenLitRoomWithDoors(origin.X + 35, origin.Y, 20, 14, 2, 2, true, TileID.EbonstoneBrick, WallID.EbonstoneBrick, 18);
 
 
             //Setup Hallways
 
-            DTGenUtils.GenHallway(origin.X + 20, origin.Y + 4, 15, 10, 2, true, TileID.EbonstoneBrick, WallID.EbonstoneBrick, 18);
+            //DTGenUtils.GenHallway(origin.X + 20, origin.Y + 4, 15, 10, 2, true, TileID.EbonstoneBrick, WallID.EbonstoneBrick, 18);
         }
 
         public void BottomFloor(int x, int y)
         {
             Point origin = new Point(x, y);
 
-            DTGenUtils.GenLitRoomWithDoors(origin.X, origin.Y + 4, 10, 10, 2, 2, true, TileID.EbonstoneBrick, WallID.EbonstoneBrick, 18);
+            //DTGenUtils.GenLitRoomWithDoors(origin.X, origin.Y + 4, 10, 10, 2, 2, true, TileID.EbonstoneBrick, WallID.EbonstoneBrick, 18);
 
-            DTGenUtils.GenLitRoomWithDoors(origin.X + 20, origin.Y, 25, 14, 2, 2, true, TileID.EbonstoneBrick, WallID.EbonstoneBrick, 18);
+           // DTGenUtils.GenLitRoomWithDoors(origin.X + 20, origin.Y, 25, 14, 2, 2, true, TileID.EbonstoneBrick, WallID.EbonstoneBrick, 18);
 
 
             //Setup Hallways
 
-            DTGenUtils.GenHallway(origin.X + 10, origin.Y + 6, 10, 8, 2, true, TileID.EbonstoneBrick, WallID.EbonstoneBrick, 18);
+            //DTGenUtils.GenHallway(origin.X + 10, origin.Y + 6, 10, 8, 2, true, TileID.EbonstoneBrick, WallID.EbonstoneBrick, 18);
         }
 
         public void ConnectingChute(int x, int y)
@@ -380,7 +473,7 @@ namespace DestroyerTest.Common.Systems
             Point origin = new Point(x, y);
 
 
-            DTGenUtils.GenChute(x, y, 9, 5, 2, true, true, TileID.EbonstoneBrick, WallID.EbonstoneBrick);
+            //DTGenUtils.GenChute(x, y, 9, 5, 2, true, true, TileID.EbonstoneBrick, WallID.EbonstoneBrick);
         }
 
         public void PlaceAndFillChests(int x, int y)
