@@ -205,14 +205,13 @@ namespace DestroyerTest.Common.Systems
                 {
                     if (chest1.item[inventoryIndex].type == ItemID.None)
                     {
-
                         chest1.item[0].SetDefaults(L1);
                         chest1.item[1].SetDefaults(L2);
                         chest1.item[1].stack = Main.rand.Next(10, 21);
                     }
                 }
 
-                }
+            }
 
             furnishChestTopFloor();
 
@@ -226,6 +225,20 @@ namespace DestroyerTest.Common.Systems
         
         public void BottomFloor(int x, int y)
         {
+            int[] TalismanVariants = new int[3]
+            {
+                ModContent.TileType<Tile_HekateTalisman1>(),
+                ModContent.TileType<Tile_HekateTalisman2>(),
+                ModContent.TileType<Tile_HekateTalisman3>(),
+            };
+
+            int[] BookcaseVariants = new int[3]
+            {
+                ModContent.TileType<Tile_TallBookcase1>(),
+                ModContent.TileType<Tile_TallBookcase2>(),
+                ModContent.TileType<Tile_TallBookcase3>(),
+            };
+
             Point origin = new Point(x, y);
 
             Room Entry = new Room(x - 20, y + 22, 35, 18, TileID.EbonstoneBrick, WallID.EbonstoneBrick);
@@ -242,8 +255,36 @@ namespace DestroyerTest.Common.Systems
 
             void furnishEntry()
             {
-                WorldGen.PlaceObject(Entry.Interior.Location.X + 2, Entry.Interior.Location.Y + 2, ModContent.TileType<Tile_TallBookcase>());
+                WorldGen.PlaceObject(Entry.Interior.Location.X + 8, Entry.Interior.Location.Y + 2, BookcaseVariants[Main.rand.Next(BookcaseVariants.Length)]);
+
+                WorldGen.PlaceObject(Entry.Interior.Location.X + 11, Entry.Interior.Location.Y, TileID.BrazierSuspended);
+
+                WorldGen.PlaceObject(Entry.Interior.Location.X + 13, Entry.Interior.Location.Y + 2, BookcaseVariants[Main.rand.Next(BookcaseVariants.Length)]);
+
+                WorldGen.PlaceObject(Entry.Interior.Location.X + 16, Entry.Interior.Location.Y, TileID.BrazierSuspended);
+
+                WorldGen.PlaceObject(Entry.Interior.Location.X + 18, Entry.Interior.Location.Y + 2, BookcaseVariants[Main.rand.Next(BookcaseVariants.Length)]);
+
+                int Loot1 = WorldGen.PlaceChest(Entry.Interior.Location.X + 11, Entry.Interior.Location.Y + 13, TileID.Containers, style: 1);
+
+                var chest1 = Main.chest[Loot1];
+
+                int L1 = ModContent.ItemType<HekateBook1>();
+                int L2 = ModContent.ItemType<HekateBook2>();
+                int L3 = ModContent.ItemType<MalachiteKnives>();
+
+                for (int inventoryIndex = 0; inventoryIndex < Chest.maxItems; inventoryIndex++)
+                {
+                    if (chest1.item[inventoryIndex].type == ItemID.None)
+                    {
+                        chest1.item[0].SetDefaults(L1);
+                        chest1.item[1].SetDefaults(L2);
+                        chest1.item[2].SetDefaults(L3);
+                    }
+                }
             }
+
+
 
             furnishEntry();
             
