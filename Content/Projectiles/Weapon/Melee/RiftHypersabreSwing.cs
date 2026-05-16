@@ -120,7 +120,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
         public override bool? CanHitNPC(NPC target)
         {
-            return IsOnAttackFrame(target);
+            return IsOnAttackFrame(target) && !target.friendly;
         }
 
         private SoundStyle Slash = new SoundStyle("DestroyerTest/Assets/Audio/Rift_Katana_Slash") { PitchVariance = 0.2f, Volume = 0.7f };

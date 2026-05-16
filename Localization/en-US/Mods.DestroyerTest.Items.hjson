@@ -4631,3 +4631,8 @@ Item_TallBookcase: {
 	DisplayName: Item_ Tall Bookcase
 	Tooltip: ""
 }
+
+Item_IdriPainting: {
+	DisplayName: Item_ Idri Painting
+	Tooltip: ""
+}

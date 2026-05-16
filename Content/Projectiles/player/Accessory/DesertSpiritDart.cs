@@ -71,11 +71,11 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
 
             Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, Projectile.Center - Main.screenPosition, null, FireColor with { A = 0 }, Projectile.rotation, TextureAssets.Projectile[Projectile.type].Value.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
 
-            DTTrail.DrawTrailPixelated(spriteBatch, BlendState.Additive, DTAssetLib.Streak(4, true).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 40, FireColor, trailOffset, 1);
+            DTTrail.DrawTrailPixelated(spriteBatch, BlendState.AlphaBlend, DTAssetLib.Streak(4, true).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 40, FireColor with { A = 0}, trailOffset, 1);
 
             
             
-
+            
             Opus.ReturnToDefaultDrawing(spriteBatch);
         }
 

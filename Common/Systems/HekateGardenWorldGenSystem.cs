@@ -265,22 +265,35 @@ namespace DestroyerTest.Common.Systems
 
                 WorldGen.PlaceObject(Entry.Interior.Location.X + 18, Entry.Interior.Location.Y + 2, BookcaseVariants[Main.rand.Next(BookcaseVariants.Length)]);
 
-                int Loot1 = WorldGen.PlaceChest(Entry.Interior.Location.X + 11, Entry.Interior.Location.Y + 13, TileID.Containers, style: 1);
+                WorldGen.PlaceObject(Entry.Interior.Location.X + 22, Entry.Interior.Location.Y + 2, ModContent.TileType<Tile_IdriPainting>());
 
-                var chest1 = Main.chest[Loot1];
+                WorldGen.PlaceObject(Entry.Interior.Location.X + 26, Entry.Interior.Location.Y + 13, TileID.Dressers, style: 1);
 
-                int L1 = ModContent.ItemType<HekateBook1>();
-                int L2 = ModContent.ItemType<HekateBook2>();
-                int L3 = ModContent.ItemType<MalachiteKnives>();
-
-                for (int inventoryIndex = 0; inventoryIndex < Chest.maxItems; inventoryIndex++)
+                Point ChestPoint = new(Entry.Interior.Location.X + 11, Entry.Interior.Location.Y + 13);
+                int Loot1;
+                if (!Framing.GetTileSafely(ChestPoint).HasTile)
                 {
-                    if (chest1.item[inventoryIndex].type == ItemID.None)
+                    Loot1 = WorldGen.PlaceChest(ChestPoint.X, ChestPoint.Y, TileID.Containers, style: 1);
+
+                    var chest1 = Main.chest[Loot1];
+
+                    int L1 = ModContent.ItemType<HekateBook1>();
+                    int L2 = ModContent.ItemType<HekateBook2>();
+                    int L3 = ModContent.ItemType<MalachiteKnives>();
+
+                    for (int inventoryIndex = 0; inventoryIndex < Chest.maxItems; inventoryIndex++)
                     {
-                        chest1.item[0].SetDefaults(L1);
-                        chest1.item[1].SetDefaults(L2);
-                        chest1.item[2].SetDefaults(L3);
+                        if (chest1.item[inventoryIndex].type == ItemID.None)
+                        {
+                            chest1.item[0].SetDefaults(L1);
+                            chest1.item[1].SetDefaults(L2);
+                            chest1.item[2].SetDefaults(L3);
+                        }
                     }
+                }
+                else
+                {
+                    WorldGen.KillTile(ChestPoint.X, ChestPoint.Y);
                 }
             }
 
