@@ -4636,3 +4636,8 @@ Item_IdriPainting: {
 	DisplayName: Item_ Idri Painting
 	Tooltip: ""
 }
+
+Item_Dreamstone: {
+	DisplayName: Item_ Dreamstone
+	Tooltip: ""
+}

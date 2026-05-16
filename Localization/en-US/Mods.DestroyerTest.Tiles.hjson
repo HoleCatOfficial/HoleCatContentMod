@@ -25,3 +25,4 @@ Tile_NightmareChest: {
 Tile_HekateTalisman1.MapEntry: Mods.DestroyerTest.Tiles.Tile_HekateTalisman1.MapEntry
 Tile_HekateTalisman2.MapEntry: Mods.DestroyerTest.Tiles.Tile_HekateTalisman2.MapEntry
 Tile_HekateTalisman3.MapEntry: Mods.DestroyerTest.Tiles.Tile_HekateTalisman3.MapEntry
+Tile_Dreamstone.MapEntry: Tile_ Dreamstone

@@ -51,8 +51,24 @@ namespace DestroyerTest.Common.Systems
         {
             
             if (JustPressed(Keys.F))
-                TestMethod((int)Main.MouseWorld.X / 16, (int)Main.MouseWorld.Y / 16);
+            {
+                VesperGenTest((int)Main.MouseWorld.X / 16, (int)Main.MouseWorld.Y / 16);
+
+
+
+                //TestMethod((int)Main.MouseWorld.X / 16, (int)Main.MouseWorld.Y / 16);
+            }
+
+
+        }
+
+        private void VesperGenTest(int x, int y)
+        {
             
+
+            WorldGen.OreRunner(x, y, 5, 2, (ushort)ModContent.TileType<Tile_VesperOre>());
+
+            WorldGen.OreRunner(x, y, 10, 3, (ushort)ModContent.TileType<Tile_Dreamstone>());
         }
 
         public void SetupPath(int x, int y)
