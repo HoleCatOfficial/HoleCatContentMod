@@ -496,7 +496,7 @@ namespace DestroyerTest.Content.Entities
 
             if (EternityIsActive())
             {
-                SunlightModification._SunColorBrightness = 1f;
+                SunlightModification.Instance._SunColorBrightness = 1f;
                 //Main.eclipseLight = 1;
                 //Main.ColorOfTheSkies = Color.Black;
             }

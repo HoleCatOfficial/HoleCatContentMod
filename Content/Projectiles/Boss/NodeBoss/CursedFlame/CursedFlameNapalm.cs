@@ -76,7 +76,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame
 			if (Main.rand.NextBool(3))
 			{
                 LerpingFire fire = new LerpingFire();
-                fire.PrepareFire(Projectile.Center, Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.3f, 0.3f), ColorLib.WretchedColorMap, 3f, 100, FireDrawMode.Additive);
+                fire.PrepareFire(Projectile.Center, Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.3f, 0.3f), ColorLib.WretchedColorMap, 2f, 100, FireDrawMode.Additive);
                 ParticleEngine.BehindProjectiles.Add(fire);
             }
 		}

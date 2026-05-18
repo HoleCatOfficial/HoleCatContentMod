@@ -41,7 +41,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Projectile.ignoreWater = true;
             Projectile.timeLeft = 40;
             Projectile.usesLocalNPCImmunity = true;
-            Projectile.localNPCHitCooldown = 40;
+            Projectile.localNPCHitCooldown = 20;
             Projectile.netImportant = true;
             Projectile.hide = true;
         }
@@ -222,12 +222,15 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 ParticleEngine.BehindProjectiles.Add(Spark);
             }
 
-            Vector2 d = player.Center - target.Center;
-            d.Normalize();
-            Vector2 d2 = new Vector2(d.X * 0.3f, d.Y);
-            if (player.Center.Y <= target.Center.Y && Math.Abs((player.Center.X - target.Center.X)) <= 50)
+            if (DTConfig.instance.WeaponKickback)
             {
-                player.velocity += d2 * 3;
+                Vector2 d = player.Center - target.Center;
+                d.Normalize();
+                Vector2 d2 = new Vector2(d.X * 0.3f, d.Y);
+                if (player.Center.Y <= target.Center.Y && Math.Abs((player.Center.X - target.Center.X)) <= 50)
+                {
+                    player.velocity += d2 * 3;
+                }
             }
 
 

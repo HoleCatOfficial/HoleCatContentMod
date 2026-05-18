@@ -663,21 +663,94 @@ namespace DestroyerTest.Common
 
     public class SunlightModification : ModSystem
     {
-        public static float _SunColorBrightness = 0f;
+        public static SunlightModification Instance = ModContent.GetInstance<SunlightModification>();
 
-        public static void Sunlight(float SunColorBrightness)
+        public float _SunColorBrightness = 0f;
+        public Color _SunlightColor = Color.White;
+        public float percent = 0f;
+        public float _percent = 0f;
+
+
+        public static void Sunlight(float SunColorBrightness, Color SunColor, float Percent)
         {
-            _SunColorBrightness = SunColorBrightness;
+            Instance._SunColorBrightness = SunColorBrightness;
+            Instance._SunlightColor = SunColor;
+            Instance._percent = Instance.percent = Percent;
+        }
+
+        public bool Pulsing = false;
+        public int pulseTime = 0;
+        public int pulseCounter = 0;
+        public static void Pulse(float SunColorBrightness, Color SunColor, float Percent, int Time = 120)
+        {
+            Instance._SunColorBrightness = SunColorBrightness;
+            Instance._SunlightColor = SunColor;
+            Instance.pulseTime = Time;
+            Instance._percent = Instance.percent = Percent;
+            Instance.Pulsing = true;
+        }
+
+        public override void PostUpdateTime()
+        {
+            if (Pulsing)
+            {
+                pulseCounter++;
+
+                float progress = MathHelper.Clamp(
+                    (float)pulseCounter / pulseTime,
+                    0f,
+                    1f
+                );
+
+                percent = MathHelper.Lerp(_percent, 0f, progress);
+
+                if (pulseCounter >= pulseTime)
+                {
+                    Pulsing = false;
+                    pulseCounter = 0;
+                    percent = 0f;
+                }
+            }
+            else
+            {
+                pulseCounter = 0;
+            }
         }
 
         public static void Reset()
         {
-            _SunColorBrightness = 0f;
+            Instance._SunColorBrightness = 0f;
+            Instance._SunlightColor = Color.White;
+
+            Instance.percent = 0f;
+            Instance._percent = 0f;
+
+            Instance.Pulsing = false;
+            Instance.pulseCounter = 0;
+            Instance.pulseTime = 0;
         }
         public override void ModifySunLightColor(ref Color tileColor, ref Color backgroundColor)
         {
             tileColor = tileColor.Darken(_SunColorBrightness);
             backgroundColor = backgroundColor.Darken(_SunColorBrightness);
+
+            if (percent > 0)
+            {
+                tileColor = Tint(tileColor, _SunlightColor, percent);
+                backgroundColor = Tint(backgroundColor, _SunlightColor, percent);
+            }
+        }
+
+        private static Color Tint(Color original, Color tint, float strength = 0.5f)
+        {
+            Color multiplied = new Color(
+                original.R * tint.R / 255,
+                original.G * tint.G / 255,
+                original.B * tint.B / 255,
+                original.A
+            );
+
+            return Color.Lerp(original, multiplied, strength);
         }
     }
     public static class DTStaticUtils

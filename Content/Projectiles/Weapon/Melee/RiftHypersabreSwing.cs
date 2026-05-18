@@ -9,6 +9,7 @@ using GlowmaskHelper.Content;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -37,11 +38,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Projectile.tileCollide = false;
             Projectile.ignoreWater = true;
             Projectile.timeLeft = 40;
-            Projectile.usesLocalNPCImmunity = true;
-            Projectile.localNPCHitCooldown = 10;
             Projectile.netImportant = true;
             Projectile.hide = true;
         }
+
+        int HitCooldown = 0;
+        int HitCooldownMax = 15;
 
         private SpriteEffects FX = SpriteEffects.None;
         public override bool PreDraw(ref Color lightColor)
@@ -120,7 +122,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
         public override bool? CanHitNPC(NPC target)
         {
-            return IsOnAttackFrame(target) && !target.friendly;
+            return IsOnAttackFrame(target) && !target.friendly && HitCooldown >= HitCooldownMax;
         }
 
         private SoundStyle Slash = new SoundStyle("DestroyerTest/Assets/Audio/Rift_Katana_Slash") { PitchVariance = 0.2f, Volume = 0.7f };
@@ -148,10 +150,27 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 
                 FX = toCursor.X > 0 ? SpriteEffects.None : SpriteEffects.FlipVertically;
 
-                if (Projectile.ai[0]++ % 60 == 0 && F > 2)
+                int MaxFShrink = (int)Math.Round(F * player.GetTotalAttackSpeed<DTTrueMeleeClass>().Inverse()) + 1;
+
+                if (Projectile.ai[0]++ % 60 == 0 && F > MaxFShrink)
                 {
                     F--;
+                   
                 }
+
+                if (HitCooldown < HitCooldownMax)
+                {
+                    HitCooldown++;
+                }
+
+                int BaseF = 6;
+
+                int MinF = (int)Math.Round(BaseF * player.GetTotalAttackSpeed<DTTrueMeleeClass>().Inverse()) + 1;
+                float prog = 1f - ((float)(F - MinF) / (BaseF - MinF));
+
+                HitCooldownMax = (int)MathHelper.Lerp(20, 5, prog);
+
+                HitPitch = MathHelper.Lerp(0, 0.7f, prog);
 
                 Projectile.timeLeft = 10;
 
@@ -172,7 +191,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             return targetHitbox.Intersects(AdjustedHitbox);
         }
 
-
+        float HitPitch = 0f;
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             Player player = Main.player[Projectile.owner];
@@ -180,7 +199,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             ScreenShake.screenshakeMagnitude = 4;
             ScreenShake.screenshakeTimer = 10;
 
-            SoundEngine.PlaySound(DTAssetLib.Impacts.FleshHit with { MaxInstances = 0 }, target.Center);
+            SoundEngine.PlaySound(DTAssetLib.Impacts.FleshHit with { MaxInstances = 0, Pitch = HitPitch }, target.Center);
+
             List<Color> RiftLightColors = new List<Color>
             {
                 ColorLib.Rift,
@@ -196,7 +216,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             {
                 Color choice = RiftLightColors[Main.rand.Next(RiftLightColors.Count)];
                 Spark Spark = new Spark();
-                Spark.PrepareSpark(target.Center, new Vector2(Main.rand.NextFloat(2f, 6f) * splatterdir, 0).RotatedByRandom(0.1f), 0f, choice, 0.75f, false, 30, SparkDrawMode.AlphaBlend);
+                Spark.PrepareSpark(target.Center, new Vector2(Main.rand.NextFloat(2f, 6f), 0).RotatedBy((player.Center - target.Center).ToRotation()).RotatedByRandom(0.1f), 0f, choice, 0.75f, false, 30, SparkDrawMode.AlphaBlend);
                 ParticleEngine.BehindProjectiles.Add(Spark);
             }
 
@@ -215,6 +235,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 target.AddBuff(ModContent.BuffType<HeliouricShock>(), 240);
             }
 
+            HitCooldown = 0;
         }
 
     }

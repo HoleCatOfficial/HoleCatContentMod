@@ -59,7 +59,7 @@ namespace DestroyerTest.Content.MeleeWeapons
 			CreateRecipe()
                 .AddIngredient<Tenebris>(10)
 				.AddIngredient<ShimmeringSludge>(12)
-                .AddIngredient<Rift_Katana>(1)
+                .AddIngredient(ItemID.Katana, 1)
 				.AddTile(TileID.LunarCraftingStation)
 				.Register();
 		}

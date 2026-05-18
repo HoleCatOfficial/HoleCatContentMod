@@ -463,60 +463,124 @@ namespace DestroyerTest.Common.Systems
         {
         }
 
-        public void SetupPath(int x, int y)
-        {
-
-            WorldGen.TileRunner(x, y, 20, 4, TileID.Ebonstone, true, overRide: true);
-            WorldGen.TileRunner(x + 10, y, 20, 4, TileID.Ebonstone, true, overRide: true);
-            WorldGen.TileRunner(x + 20, y, 20, 4, TileID.Ebonstone, true, overRide: true);
-            WorldGen.TileRunner(x + 30, y, 20, 4, TileID.Ebonstone, true, overRide: true);
-            WorldGen.TileRunner(x + 40, y, 20, 4, TileID.Ebonstone, true, overRide: true);
-            WorldGen.TileRunner(x + 50, y, 20, 4, TileID.Ebonstone, true, overRide: true);
-
-            WorldGen.TileRunner(x, y + 10, 20, 4, TileID.Ebonstone, true, overRide: true);
-            WorldGen.TileRunner(x + 10, y + 10, 20, 4, TileID.Ebonstone, true, overRide: true);
-            WorldGen.TileRunner(x + 20, y + 10, 20, 4, TileID.Ebonstone, true, overRide: true);
-            WorldGen.TileRunner(x + 30, y + 10, 20, 4, TileID.Ebonstone, true, overRide: true);
-            WorldGen.TileRunner(x + 40, y + 10, 20, 4, TileID.Ebonstone, true, overRide: true);
-            WorldGen.TileRunner(x + 50, y + 10, 20, 4, TileID.Ebonstone, true, overRide: true);
-
-            WorldGen.TileRunner(x, y + 20, 20, 4, TileID.Ebonstone, true, overRide: true);
-            WorldGen.TileRunner(x + 10, y + 20, 20, 4, TileID.Ebonstone, true, overRide: true);
-            WorldGen.TileRunner(x + 20, y + 20, 20, 4, TileID.Ebonstone, true, overRide: true);
-            WorldGen.TileRunner(x + 30, y + 20, 20, 4, TileID.Ebonstone, true, overRide: true);
-            WorldGen.TileRunner(x + 40, y + 20, 20, 4, TileID.Ebonstone, true, overRide: true);
-            WorldGen.TileRunner(x + 50, y + 20, 20, 4, TileID.Ebonstone, true, overRide: true);
-
-            WorldGen.TileRunner(x, y + 30, 20, 4, TileID.Ebonstone, true, overRide: true);
-            WorldGen.TileRunner(x + 10, y + 30, 20, 4, TileID.Ebonstone, true, overRide: true);
-            WorldGen.TileRunner(x + 20, y + 30, 20, 4, TileID.Ebonstone, true, overRide: true);
-            WorldGen.TileRunner(x + 30, y + 30, 20, 4, TileID.Ebonstone, true, overRide: true);
-            WorldGen.TileRunner(x + 40, y + 30, 20, 4, TileID.Ebonstone, true, overRide: true);
-            WorldGen.TileRunner(x + 50, y + 30, 20, 4, TileID.Ebonstone, true, overRide: true);
-
-
-            WorldGen.TileRunner(x - 7, y - 6, 9, 12, TileID.Ebonstone, true, 1, -3, overRide: true);
-            WorldGen.TileRunner(x + 53, y - 6, 9, 12, TileID.Ebonstone, true, -1, -3, overRide: true);
-        }
-
         public void ClearTopSpace(int x, int y)
         {
-            WorldUtils.Gen(new Point(x + 24, y - 5), new GenShapeActionPair(new Shapes.Mound(28, Main.rand.Next(24, 30)), new Actions.ClearTile()));
+            Point origin = new Point(x, y);
+            Point surfacePoint;
+            // Search up to 1000 tiles above for an area 50 tiles tall and 1 tile wide without a single solid tile. Basically find the surface.
+            bool flag = WorldUtils.Find(origin, Searches.Chain(new Searches.Up(1000), new Conditions.IsSolid().AreaOr(1, 50).Not()), out surfacePoint);
+            // Search from the orgin up to the surface and make sure no sand is between origin and surface
+            if (WorldUtils.Find(origin, Searches.Chain(new Searches.Up(origin.Y - surfacePoint.Y), new Conditions.IsTile(TileID.Sand)), out Point _))
+                return;
 
-            WorldUtils.Gen(new Point(x + 24, y - 3), new GenShapeActionPair(new Shapes.Slime(7, 4, (double)Main.rand.NextFloat(1.03f, 1.5f)), new Actions.PlaceTile((ushort)ModContent.TileType<Tile_RootedDirt>())));
+            if (!flag)
+                return;
+
+            // Remove tiles to create shaft to surface. Convert Sand tiles along shaft to hardened sand tiles.
+            ShapeData shaftShapeData = new ShapeData();
+            WorldUtils.Gen(new Point(origin.X, surfacePoint.Y + 10), new Shapes.Circle(1, origin.Y - surfacePoint.Y - 9), Actions.Chain(new Modifiers.Blotches(2, 0.2), new Actions.ClearTile().Output(shaftShapeData), new Modifiers.Expand(1), new Modifiers.OnlyTiles(TileID.Sand), new Actions.SetTile(TileID.HardenedSand).Output(shaftShapeData)));
+            WorldUtils.Gen(new Point(origin.X, surfacePoint.Y + 10), new ModShapes.All(shaftShapeData), new Actions.SetFrames(frameNeighbors: true));
+
+            //Leave these in
+
+            WorldUtils.Gen(new Point(x, y - 5), new GenShapeActionPair(new Shapes.Mound(28, Main.rand.Next(24, 30)), new Actions.ClearTile()));
+
+            WorldUtils.Gen(new Point(x, y - 3), new GenShapeActionPair(new Shapes.Slime(7, 4, (double)Main.rand.NextFloat(1.03f, 1.5f)), new Actions.PlaceTile((ushort)ModContent.TileType<Tile_RootedDirt>())));
 
             //WorldGen.TileRunner(x, y - 4, 6, 8, ModContent.TileType<Tile_RootedDirt>(), true, 2, 1, overRide: true);
-
         }
 
         public void TopFloor(int x, int y)
         {
-            Point origin = new Point(x, y);
+
+            int[] Variants = new int[3]
+            {
+                ModContent.TileType<Tile_HekateTalisman1>(),
+                ModContent.TileType<Tile_HekateTalisman2>(),
+                ModContent.TileType<Tile_HekateTalisman3>(),
+            };
 
             //Setup Rooms
-            //DTGenUtils.GenLitRoomWithDoors(origin.X, origin.Y, 20, 14, 2, 2, true, TileID.EbonstoneBrick, WallID.EbonstoneBrick, 18);
+            Room Central = new Room(x, y, 21, 15, TileID.EbonstoneBrick, WallID.EbonstoneBrick);
+            DTGenUtils.GenRoom(Central);
+            DTGenUtils.MakeDoor(Central, Room.RoomSide.Both);
 
-            //DTGenUtils.GenLitRoomWithDoors(origin.X + 35, origin.Y, 20, 14, 2, 2, true, TileID.EbonstoneBrick, WallID.EbonstoneBrick, 18);
+
+
+
+
+            Room ChestRoom1 = new Room(x + 32, y + 3, 16, 12, TileID.EbonstoneBrick, WallID.EbonstoneBrick);
+            DTGenUtils.GenRoom(ChestRoom1);
+            DTGenUtils.MakeDoor(ChestRoom1, Room.RoomSide.Left);
+
+            Room FirstToSecondFloorChute = new Room(Central.Bounds.Left - 18, y + 3, 10, 12, TileID.EbonstoneBrick, WallID.EbonstoneBrick);
+            DTGenUtils.GenRoom(FirstToSecondFloorChute);
+            DTGenUtils.MakeDoor(FirstToSecondFloorChute, Room.RoomSide.Right);
+            DTGenUtils.MakeHatch(FirstToSecondFloorChute, Room.HatchSide.Bottom, 4, FirstToSecondFloorChute.Position.X + 2);
+
+            Hallway CenToChest1 = new Hallway(Central, ChestRoom1, 9, TileID.EbonstoneBrick, WallID.EbonstoneBrick);
+            DTGenUtils.GenHallway(CenToChest1);
+
+            Hallway CenToChute = new Hallway(FirstToSecondFloorChute, Central, 9, TileID.EbonstoneBrick, WallID.EbonstoneBrick);
+            DTGenUtils.GenHallway(CenToChute);
+
+            Room Dummy = new Room(x - 20, y + 22, 35, 18, TileID.Dirt, WallID.Dirt);
+
+            Chute FloorConnector = new Chute(FirstToSecondFloorChute, Dummy, x - 18, 9, TileID.EbonstoneBrick, WallID.EbonstoneBrick);
+
+
+            DTGenUtils.GenChute(FloorConnector);
+
+
+            //Deco
+
+            void furnishCentral()
+            {
+                WorldGen.PlaceObject(Central.Interior.Location.X + 1, Central.Interior.Location.Y, Variants[Main.rand.Next(Variants.Length)]);
+                WorldGen.PlaceObject(Central.Interior.Location.X + Central.Interior.Width - 2, Central.Interior.Location.Y, Variants[Main.rand.Next(Variants.Length)]);
+
+                WorldGen.PlaceObject(Central.Interior.Location.X + (Central.Interior.Width / 2), Central.Interior.Y, TileID.BrazierSuspended);
+
+                for (int i = 0; i < 2; i++)
+                {
+                    int x = Central.Interior.Left + Main.rand.Next(1, Central.Interior.Width - 2);
+                    int y = Central.Interior.Y - (Central.Floor + 2);
+                    int style = Main.rand.Next(31, 34);
+
+                    WorldGen.PlaceObject(x, y, TileID.Pots, style: style);
+                }
+            }
+
+            furnishCentral();
+
+            void furnishChestTopFloor()
+            {
+                WorldGen.PlaceObject(ChestRoom1.Interior.Location.X + 1, ChestRoom1.Interior.Location.Y, Variants[Main.rand.Next(Variants.Length)]);
+                WorldGen.PlaceObject(ChestRoom1.Interior.Location.X + ChestRoom1.Interior.Width - 2, ChestRoom1.Interior.Location.Y, Variants[Main.rand.Next(Variants.Length)]);
+
+                WorldGen.PlaceObject(ChestRoom1.Interior.Location.X + ChestRoom1.Interior.Width - 1, ChestRoom1.Interior.Location.Y + 2, TileID.Torches);
+
+                int Loot1 = WorldGen.PlaceChest(ChestRoom1.Interior.Location.X + 6, ChestRoom1.Interior.Location.Y + 7, (ushort)ModContent.TileType<Tile_NightmareChest>());
+
+                var chest1 = Main.chest[Loot1];
+
+                int L1 = ModContent.ItemType<HekateBookPrologue>();
+                int L2 = ModContent.ItemType<Dyrn>();
+
+                for (int inventoryIndex = 0; inventoryIndex < Chest.maxItems; inventoryIndex++)
+                {
+                    if (chest1.item[inventoryIndex].type == ItemID.None)
+                    {
+                        chest1.item[0].SetDefaults(L1);
+                        chest1.item[1].SetDefaults(L2);
+                        chest1.item[1].stack = Main.rand.Next(10, 21);
+                    }
+                }
+
+            }
+
+            furnishChestTopFloor();
+
 
 
             //Setup Hallways
@@ -526,11 +590,86 @@ namespace DestroyerTest.Common.Systems
 
         public void BottomFloor(int x, int y)
         {
+            int[] TalismanVariants = new int[3]
+            {
+                ModContent.TileType<Tile_HekateTalisman1>(),
+                ModContent.TileType<Tile_HekateTalisman2>(),
+                ModContent.TileType<Tile_HekateTalisman3>(),
+            };
+
+            int[] BookcaseVariants = new int[3]
+            {
+                ModContent.TileType<Tile_TallBookcase1>(),
+                ModContent.TileType<Tile_TallBookcase2>(),
+                ModContent.TileType<Tile_TallBookcase3>(),
+            };
+
             Point origin = new Point(x, y);
 
-            //DTGenUtils.GenLitRoomWithDoors(origin.X, origin.Y + 4, 10, 10, 2, 2, true, TileID.EbonstoneBrick, WallID.EbonstoneBrick, 18);
+            Room Entry = new Room(x - 20, y + 22, 35, 18, TileID.EbonstoneBrick, WallID.EbonstoneBrick);
+            DTGenUtils.GenRoom(Entry);
+            DTGenUtils.MakeHatch(Entry, Room.HatchSide.Top, 4, Entry.Position.X + 4);
+            DTGenUtils.MakeDoor(Entry, Room.RoomSide.Both);
 
-           // DTGenUtils.GenLitRoomWithDoors(origin.X + 20, origin.Y, 25, 14, 2, 2, true, TileID.EbonstoneBrick, WallID.EbonstoneBrick, 18);
+            Room StatueRoom = new Room(x + 22, y + 24, 16, 16, TileID.EbonstoneBrick, WallID.EbonstoneBrick);
+            DTGenUtils.GenRoom(StatueRoom);
+            DTGenUtils.MakeDoor(StatueRoom, Room.RoomSide.Both);
+
+            Hallway EntryToStatue = new Hallway(Entry, StatueRoom, 9, TileID.EbonstoneBrick, WallID.EbonstoneBrick);
+            DTGenUtils.GenHallway(EntryToStatue);
+
+            void furnishEntry()
+            {
+                WorldGen.PlaceObject(Entry.Interior.Location.X + 8, Entry.Interior.Location.Y + 2, BookcaseVariants[Main.rand.Next(BookcaseVariants.Length)]);
+
+                WorldGen.PlaceObject(Entry.Interior.Location.X + 11, Entry.Interior.Location.Y, TileID.BrazierSuspended);
+
+                WorldGen.PlaceObject(Entry.Interior.Location.X + 13, Entry.Interior.Location.Y + 2, BookcaseVariants[Main.rand.Next(BookcaseVariants.Length)]);
+
+                WorldGen.PlaceObject(Entry.Interior.Location.X + 16, Entry.Interior.Location.Y, TileID.BrazierSuspended);
+
+                WorldGen.PlaceObject(Entry.Interior.Location.X + 18, Entry.Interior.Location.Y + 2, BookcaseVariants[Main.rand.Next(BookcaseVariants.Length)]);
+
+                WorldGen.PlaceObject(Entry.Interior.Location.X + 22, Entry.Interior.Location.Y + 2, ModContent.TileType<Tile_IdriPainting>());
+
+                WorldGen.PlaceObject(Entry.Interior.Location.X + 26, Entry.Interior.Location.Y + 13, TileID.Dressers, style: 1);
+
+                Point ChestPoint = new(Entry.Interior.Location.X + 11, Entry.Interior.Location.Y + 13);
+                int Loot1;
+                if (!Framing.GetTileSafely(ChestPoint).HasTile)
+                {
+                    Loot1 = WorldGen.PlaceChest(ChestPoint.X, ChestPoint.Y, TileID.Containers, style: 1);
+
+                    var chest1 = Main.chest[Loot1];
+
+                    int L1 = ModContent.ItemType<HekateBook1>();
+                    int L2 = ModContent.ItemType<HekateBook2>();
+                    int L3 = ModContent.ItemType<MalachiteKnives>();
+
+                    for (int inventoryIndex = 0; inventoryIndex < Chest.maxItems; inventoryIndex++)
+                    {
+                        if (chest1.item[inventoryIndex].type == ItemID.None)
+                        {
+                            chest1.item[0].SetDefaults(L1);
+                            chest1.item[1].SetDefaults(L2);
+                            chest1.item[2].SetDefaults(L3);
+                        }
+                    }
+                }
+                else
+                {
+                    WorldGen.KillTile(ChestPoint.X, ChestPoint.Y);
+                }
+            }
+
+
+
+            furnishEntry();
+
+
+            //DTGenUtils.GenLitRoomWithDoors(origin.X - 10, origin.Y - 6, 20, 12, 2, 2, true, TileID.EbonstoneBrick, WallID.EbonstoneBrick, 18);
+
+            //DTGenUtils.GenLitRoomWithDoors(origin.X + 20, origin.Y, 25, 14, 2, 2, true, TileID.EbonstoneBrick, WallID.EbonstoneBrick, 18);
 
 
             //Setup Hallways
@@ -538,95 +677,21 @@ namespace DestroyerTest.Common.Systems
             //DTGenUtils.GenHallway(origin.X + 10, origin.Y + 6, 10, 8, 2, true, TileID.EbonstoneBrick, WallID.EbonstoneBrick, 18);
         }
 
-        public void ConnectingChute(int x, int y)
-        {
-            Point origin = new Point(x, y);
-
-
-            //DTGenUtils.GenChute(x, y, 9, 5, 2, true, true, TileID.EbonstoneBrick, WallID.EbonstoneBrick);
-        }
-
-        public void PlaceAndFillChests(int x, int y)
-        {
-            Point origin = new Point(x, y);
-
-            int Loot1 = WorldGen.PlaceChest(origin.X + 6, origin.Y + 11, (ushort)ModContent.TileType<Tile_NightmareChest>());
-
-            var chest1 = Main.chest[Loot1];
-
-            int L1 = ModContent.ItemType<HekateBookPrologue>();
-            int L2 = ModContent.ItemType<HekateBook1>();
-            int L3 = ModContent.ItemType<HekateBook2>();
-
-            int Loot2 = WorldGen.PlaceChest(origin.X + 28, origin.Y + 11, (ushort)ModContent.TileType<Tile_NightmareChest>());
-
-            var chest2 = Main.chest[Loot2];
-
-            int L4 = ModContent.ItemType<HekatesMystique>();
-            int L5 = ModContent.ItemType<HekateBook3>();
-            int L6 = ModContent.ItemType<HekateBook4>();
-            int L7 = ModContent.ItemType<MalachiteKnives>();
-
-            int Loot3 = WorldGen.PlaceChest(origin.X + 39, origin.Y + 26, (ushort)ModContent.TileType<Tile_NightmareChest>());
-
-            var chest3 = Main.chest[Loot3];
-
-            int L8 = ModContent.ItemType<TwistedFaith>();
-            int L9 = ModContent.ItemType<Dyrn>();
-            int L10 = ModContent.ItemType<IdriPotion>();
-
-            for (int inventoryIndex = 0; inventoryIndex < Chest.maxItems; inventoryIndex++)
-            {
-                if (chest1.item[inventoryIndex].type == ItemID.None)
-                {
-                    // Place the item
-                    chest1.item[0].SetDefaults(L1);
-                    chest1.item[1].SetDefaults(L2);
-                    chest1.item[2].SetDefaults(L9);
-                    chest1.item[2].stack = Main.rand.Next(10, 21);
-                    chest1.item[3].SetDefaults(L3);
-                }
-
-                if (chest2.item[inventoryIndex].type == ItemID.None)
-                {
-                    // Place the item
-                    chest2.item[0].SetDefaults(L4);
-                    chest2.item[1].SetDefaults(L5);
-                    chest2.item[2].SetDefaults(L6);
-                    chest2.item[3].SetDefaults(L7);
-                    chest2.item[4].SetDefaults(L9);
-                    chest2.item[4].stack = Main.rand.Next(10, 21);
-                    chest2.item[5].SetDefaults(L8);
-
-                }
-
-                if (chest3.item[inventoryIndex].type == ItemID.None)
-                {
-                    // Place the item
-                    chest3.item[0].SetDefaults(L4);
-                    chest3.item[1].SetDefaults(L5);
-                    chest3.item[2].SetDefaults(L6);
-                    chest3.item[3].SetDefaults(L7);
-                    chest3.item[4].SetDefaults(L10);
-                }
-            }
-
-
-        }
 
         public void MainGen(int x, int y)
         {
-            SetupPath(x, y);
-
+            Point origin = new Point(x, y);
             ClearTopSpace(x, y);
 
             TopFloor(x, y);
-            BottomFloor(x + 5, y + 15);
+            BottomFloor(x, y);
 
-            ConnectingChute(x + 41, y + 12);
-
-            PlaceAndFillChests(x, y);
-            
+            Vector2 OrigVec = origin.ToWorldCoordinates();
+            Rectangle Rect = new Rectangle((int)OrigVec.X, (int)OrigVec.Y, 60, 43);
+            if (DTCrossMod.FargosMutantIsLoaded)
+            {
+                DTCrossMod.FargosMutantMod.Call("AddIndestructibleRectangle", Rect);
+            }
         }
 
         public List<int> InvalidGenTiles = new List<int>

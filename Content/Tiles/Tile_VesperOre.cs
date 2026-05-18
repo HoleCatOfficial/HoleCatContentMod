@@ -26,6 +26,9 @@ namespace DestroyerTest.Content.Tiles
             Main.tileOreFinderPriority[Type] = 235; // Metal Detector value, see https://terraria.wiki.gg/wiki/Metal_Detector
             Main.tileShine2[Type] = true; // Modifies the draw color slightly.
             Main.tileShine[Type] = 600; // How often tiny dust appear off this tile. Larger is less frequently
+            TileID.Sets.BlockMergesWithMergeAllBlock[Type] = true;
+            TileID.Sets.BlockMergesWithMergeAllBlockOverride[Type] = true;
+			Main.tileBlendAll[Type] = true;
             Main.tileMergeDirt[Type] = true;
             Main.tileSolid[Type] = true;
             Main.tileBlockLight[Type] = true;

@@ -29,6 +29,7 @@ namespace DestroyerTest.Content.Tiles
             TileID.Sets.ChecksForMerge[Type] = true;
             TileID.Sets.BlockMergesWithMergeAllBlock[Type] = true;
             TileID.Sets.BlockMergesWithMergeAllBlockOverride[Type] = true;
+            Main.tileBlendAll[Type] = true;
             Main.tileMergeDirt[Type] = true;
             Main.tileSolid[Type] = true;
             Main.tileBlockLight[Type] = true;

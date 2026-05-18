@@ -37,6 +37,7 @@ namespace DestroyerTest.Content.Equips
         {
             player.buffImmune[ModContent.BuffType<ShimmeringFlames>()] = true;
             player.GetDamage(DamageClass.Generic) += 0.22f;
+            player.GetArmorPenetration(DamageClass.Melee) += 20;
 
             Lighting.AddLight(player.Center, ColorLib.TenebrisGradient.ToVector3());
 
@@ -52,6 +53,7 @@ namespace DestroyerTest.Content.Equips
                 .AddIngredient(ItemID.ShadowOrb)
                 .AddIngredient<Tenebris>(12)
                 .AddIngredient<GalantineIncense>()
+                .AddIngredient<StarFangNecklace>()
                 .AddIngredient(ItemID.SoulofMight, 8)
                 .AddIngredient(ItemID.SoulofFright, 8)
                 .AddIngredient(ItemID.SoulofSight, 8)

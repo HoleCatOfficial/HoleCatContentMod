@@ -26,6 +26,7 @@ using log4net.Repository.Hierarchy;
 using Microsoft.Build.Utilities;
 using Microsoft.CodeAnalysis.FlowAnalysis;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using MonoMod.Cil;
 using OpusLib;
@@ -49,6 +50,7 @@ using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.Drawing;
 using Terraria.GameContent.Events;
 using Terraria.GameContent.ItemDropRules;
+using Terraria.GameContent.Skies;
 using Terraria.Graphics;
 using Terraria.Graphics.CameraModifiers;
 using Terraria.ID;
@@ -489,19 +491,123 @@ namespace DestroyerTest.Content.Entities
             Main.windSpeedTarget = 1.2f;
 
             // Darker skies / storm clouds (0f = clear, 1f = fully stormy)
-            Main.cloudAlpha = 0.6f;
+            if (Main.cloudAlpha < 0.6f)
+            {
+                Main.cloudAlpha += 0.003f;
+            }
 
             // Restart rain with new settings
             Main.StopRain();
             Main.StartRain();
         }
 
+        int TintCounter = 0;
+        int MaxTintCount = 240;
         public void ModifyClouds()
         {
+            Player player = Main.player[NPC.target];
             Main main = ModContent.GetInstance<Main>();
             //Main.cloudAlpha = 0.2f;
-            Main.eclipseLight = 1;
-            Main.ColorOfTheSkies = Color.Black;
+
+            if (TintCounter < MaxTintCount)
+            {
+                TintCounter++;
+
+            }
+
+            if (player.statLife <= 0)
+            {
+                SunlightModification.Reset();
+            }
+            //SunlightModification.Sunlight(1f, Color.Black, (float)TintCounter / (float)MaxTintCount);
+        }
+
+        public void ModifyMusic()
+        {
+            int tribID = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Tribulation");
+            int eternID = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Placeholder4");
+            int masoID = MusicLoader.GetMusicSlot(Mod, "Assets/Music/MasoEvils");
+            int secretSeedID = MusicLoader.GetMusicSlot(Mod, "Assets/Music/EvilBossSecretSeed");
+            int idleID = MusicLoader.GetMusicSlot(Mod, "Assets/Music/RoseIdle");
+
+            void EnableMusic()
+            {
+                if (!SetVolume)
+                {
+                    Main.musicVolume = VolumeOnSpawn;
+                    SetVolume = true;
+                }
+            }
+
+            void StartPlay(IAudioTrack track)
+            {
+                if (Main.audioSystem is LegacyAudioSystem audioSystem)
+                {
+                    if (audioSystem.AudioTracks[idleID].IsPlaying)
+                    {
+                        audioSystem.AudioTracks[idleID].Stop(AudioStopOptions.Immediate);
+                    }
+                }
+
+                if (!track.IsPlaying)
+                {
+                    
+                    track.Stop(AudioStopOptions.Immediate);
+                    track.Reuse();
+                    track.Play();
+                }
+            }
+
+            if (Main.dedServ)
+                return;
+
+            if (currentState == AttackState.SpawnIdle)
+            {
+                if (!RecordedVolume)
+                {
+                    VolumeOnSpawn = Main.musicVolume;
+                    RecordedVolume = true;
+                }
+
+                Main.musicVolume -= 0.1f;
+                Music = idleID;
+                return;
+            }
+
+            if (Main.audioSystem is LegacyAudioSystem audioSystem)
+            {
+                var tribulation = audioSystem.AudioTracks[tribID];
+                var eternity = audioSystem.AudioTracks[eternID];
+                var masochist = audioSystem.AudioTracks[masoID];
+                var secretSeed = audioSystem.AudioTracks[secretSeedID];
+
+                IAudioTrack selectedTrack = tribulation;
+                int selectedID = tribID;
+
+                // Highest priority first
+                if (Main.getGoodWorld)
+                {
+                    selectedTrack = secretSeed;
+                    selectedID = secretSeedID;
+                }
+                else if (DestroyerTestMod.MasochistIsActive &&
+                         DTMusicConfig.instance.EternityMusic)
+                {
+                    selectedTrack = masochist;
+                    selectedID = masoID;
+                }
+                else if (DestroyerTestMod.EternityIsActive && !DestroyerTestMod.MasochistIsActive && DTMusicConfig.instance.EternityMusic)
+                {
+                    selectedTrack = eternity;
+                    selectedID = eternID;
+                }
+
+                EnableMusic();
+
+                StartPlay(selectedTrack);
+
+                Main.musicFade[selectedID] = 1f;
+            }
         }
 
         public void KillSentry()
@@ -600,7 +706,7 @@ namespace DestroyerTest.Content.Entities
                     Border.scale = Main.rand.NextFloat(0.2f, 4.0f);
                 }
 
-                if (!Main.masterMode && (Main.expertMode || DestroyerTestMod.EternityIsActive) && currentState != AttackState.SpawnIdle)
+                if (DestroyerTestMod.EternityIsActive || DestroyerTestMod.MasochistIsActive && currentState != AttackState.SpawnIdle)
                 {
                     ModifyClouds();
                 }
@@ -721,66 +827,7 @@ namespace DestroyerTest.Content.Entities
 
             IdleFX();
 
-            if (!Main.dedServ && currentState == AttackState.SpawnIdle)
-            {
-                if (!RecordedVolume)
-                {
-                    VolumeOnSpawn = Main.musicVolume;
-                    RecordedVolume = true;
-                }
-                Main.musicVolume -= 0.1f;
-                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/RoseIdle");
-            }
-            if (!Main.dedServ && !DestroyerTestMod.EternityIsActive && currentState != AttackState.SpawnIdle)
-            {
-                if (!SetVolume)
-                {
-                    Main.musicFade[Music] = 1;
-                    Main.musicVolume = VolumeOnSpawn;
-                    SetVolume = true;
-                }
-                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Tribulation");
-            }
-            if (!Main.dedServ && DestroyerTestMod.EternityIsActive && !muscfg.EternityMusic && currentState != AttackState.SpawnIdle)
-            {
-                if (!SetVolume)
-                {
-                    Main.musicFade[Music] = 1;
-                    Main.musicVolume = VolumeOnSpawn;
-                    SetVolume = true;
-                }
-                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Tribulation");
-            }
-            if (!Main.dedServ && DestroyerTestMod.EternityIsActive && muscfg.EternityMusic && currentState != AttackState.SpawnIdle)
-            {
-                if (!SetVolume)
-                {
-                    Main.musicFade[Music] = 1;
-                    Main.musicVolume = VolumeOnSpawn;
-                    SetVolume = true;
-                }
-                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Placeholder4");
-            }
-            if (!Main.dedServ && DestroyerTestMod.MasochistIsActive && muscfg.EternityMusic && currentState != AttackState.SpawnIdle)
-            {
-                if (!SetVolume)
-                {
-                    Main.musicFade[Music] = 1;
-                    Main.musicVolume = VolumeOnSpawn;
-                    SetVolume = true;
-                }
-                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/MasoEvils");
-            }
-            if (!Main.dedServ && SecretSeed() && currentState != AttackState.SpawnIdle)
-            {
-                if (!SetVolume)
-                {
-                    Main.musicFade[Music] = 1;
-                    Main.musicVolume = VolumeOnSpawn;
-                    SetVolume = true;
-                }
-                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/EvilBossSecretSeed");
-            }
+            ModifyMusic();
 
             NPC.velocity = Vector2.Zero;
 
@@ -801,11 +848,6 @@ namespace DestroyerTest.Content.Entities
             if (DTConfig.instance.EnableDebugMessages && Main.GameUpdateCount % 60 == 0)
             {
                 Mod.Logger.Info($"Current State: {currentState}");
-            }
-
-            if (SunlightModification._SunColorBrightness > 0)
-            {
-                SunlightModification._SunColorBrightness -= 0.001f;
             }
 
             switch (currentState)
@@ -1049,8 +1091,8 @@ namespace DestroyerTest.Content.Entities
                             {
                                 SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/NodeAttackTS") with { PitchVariance = 1f, Volume = 3f });
                                 float off = Main.rand.NextFloat(MathHelper.TwoPi);
-                                Opus.RadialSpreadProjectile(ModContent.ProjectileType<NightmareRoseCursedCrystal>(), 9, NPC.Center, 16, 4, 12, offset: off);
-                                Opus.RadialSpreadProjectile(ModContent.ProjectileType<NightmareRoseCursedCrystal>(), 9, NPC.Center, 16, 4, 12, offset: off);
+                                Opus.RadialSpreadProjectile(ModContent.ProjectileType<NightmareRoseCursedCrystal>(), 9, NPC.Center, 16, 4, 12, ai1: 1, offset: off);
+                                Opus.RadialSpreadProjectile(ModContent.ProjectileType<NightmareRoseCursedCrystal>(), 9, NPC.Center, 16, 4, 12, ai1: -1, offset: off);
                                 FlameRingCount++;
                             }
                             if (FlameRingCount >= 9)
@@ -1087,7 +1129,7 @@ namespace DestroyerTest.Content.Entities
                         else
                         {
                             Opus.RingSpreadProjectile(ModContent.ProjectileType<TormentedSoul2>(), 12, NPCHead, 30, 20, 1, 12);
-                            Opus.RingSpreadProjectile(ModContent.ProjectileType<TormentedSoul2>(), 8, NPCHead, 15, 20, 1, 9);
+                            Opus.RingSpreadProjectile(ModContent.ProjectileType<TormentedSoul2>(), 8, NPCHead, 15, 20, 1, 9, offset: 360f / 8f);
 
                             ResetState();
                         }
@@ -1930,7 +1972,10 @@ namespace DestroyerTest.Content.Entities
                 }
                 else
                 {
-                    SunlightModification._SunColorBrightness = 1;
+
+
+                    SunlightModification.Pulse(1f, ColorLib.TenebrisGradient, 0.8f);
+                    
                     SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/TenebrisLasers"), NPCHead);
 
                     int Dir = FireLR ? -1 : 1;
@@ -2071,6 +2116,7 @@ namespace DestroyerTest.Content.Entities
             Gore.NewGore(entitySource, NPC.position, new Vector2(Main.rand.Next(-14, 14), Main.rand.Next(0, 10)), Gore2);
             Gore.NewGore(entitySource, NPC.position, new Vector2(Main.rand.Next(-14, 14), Main.rand.Next(0, 10)), Gore3);
             Gore.NewGore(entitySource, NPC.position, new Vector2(Main.rand.Next(-14, 14), Main.rand.Next(0, 10)), Gore4);
+            SunlightModification.Reset();
         }
 
     }

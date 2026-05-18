@@ -85,7 +85,14 @@ namespace DestroyerTest.Content.Resources
         public override SceneEffectPriority Priority => SceneEffectPriority.BossHigh;
         public override void SpecialVisuals(Player player, bool isActive)
         {
-
+            if (isActive)
+            {
+                
+            }
+            else
+            {
+               
+            }
         }
 
     }
