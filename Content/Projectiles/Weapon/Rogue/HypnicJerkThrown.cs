@@ -66,7 +66,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 			}
 			if (Projectile.velocity.Y != oldVelocity.Y && Math.Abs(oldVelocity.Y) > 1f) 
             {
-                Opus.RadialDustRandomDir(ModContent.DustType<ColorableNeonDust>(), 6, Projectile.Center, 1, Color.White, 1f, 2.7f);
+                Opus.RadialSpreadDustRandom(ModContent.DustType<ColorableNeonDust>(), 6, Projectile.Center, 1, Color.White, 1f, 2.7f);
 				Projectile.velocity.Y = oldVelocity.Y * -0.4f;
 			}
 			return false;

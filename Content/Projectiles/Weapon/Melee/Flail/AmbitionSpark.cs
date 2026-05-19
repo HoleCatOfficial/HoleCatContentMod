@@ -146,7 +146,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee.Flail
         {
             SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/StarShot") { MaxInstances = 0, PitchVariance = 0.2f }, Projectile.Center);
 
-            Opus.RadialDustRandomDir(ModContent.DustType<ColorableNeonDust>(), 10, Projectile.Center, 0, Color.White, 2f, 2f);
+            Opus.RadialSpreadDustRandom(ModContent.DustType<ColorableNeonDust>(), 10, Projectile.Center, 0, Color.White, 2f, 2f);
         }
     }
 }

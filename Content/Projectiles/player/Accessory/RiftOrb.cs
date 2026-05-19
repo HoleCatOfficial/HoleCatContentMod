@@ -129,7 +129,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
         {
             SoundEngine.PlaySound(DTAssetLib.RiftExplosion, Projectile.Center);
             Projectile.Hitbox.Inflate(10, 10);
-            Opus.RadialDustRandomDir(ModContent.DustType<ColorableNeonDust>(), 16, Projectile.Center, 0, ColorLib.Rift, 2f, 2);
+            Opus.RadialSpreadDustRandom(ModContent.DustType<ColorableNeonDust>(), 16, Projectile.Center, 0, ColorLib.Rift, 2f, 2);
          
         }
     }

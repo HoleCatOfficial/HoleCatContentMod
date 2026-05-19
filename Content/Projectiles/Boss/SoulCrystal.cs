@@ -53,7 +53,7 @@ namespace DestroyerTest.Content.Projectiles.Boss
 
 			Opus.ReturnToDefaultDrawing(spriteBatch);
 
-			Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, TextureAssets.Projectile[Projectile.type].Value.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
+			Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation + MathHelper.PiOver2, TextureAssets.Projectile[Projectile.type].Value.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
 
 			return false;
 		}
@@ -79,7 +79,7 @@ namespace DestroyerTest.Content.Projectiles.Boss
 
                 Spark Spark = new Spark();
 
-                Spark.PrepareSpark(Main.rand.NextVector2FromRectangle(Projectile.Hitbox), (-Projectile.velocity * 0.5f).RotatedByRandom(0.5f), 0f, DTColorUtils.Pastel(ColorLib.Soul, 0.2f), 1f, false, 40, SparkDrawMode.Additive);
+                Spark.PrepareSpark(Main.rand.NextVector2FromRectangle(Projectile.Hitbox), (-Projectile.velocity * 0.5f).RotatedByRandom(0.05f), 0f, DTColorUtils.Pastel(ColorLib.Soul, 0.2f), 1f, false, 40, SparkDrawMode.Additive);
                 ParticleEngine.ShaderParticles.Add(Spark);
             }
 

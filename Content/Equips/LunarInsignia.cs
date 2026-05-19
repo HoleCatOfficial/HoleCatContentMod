@@ -22,7 +22,7 @@ namespace DestroyerTest.Content.Equips
 			// Fly time: 180 ticks = 3 seconds
 			// Fly speed: 9
 			// Acceleration multiplier: 2.5
-			ArmorIDs.Wing.Sets.Stats[Item.wingSlot] = new WingStats(600, 9.7f, 2.75f, true);
+			ArmorIDs.Wing.Sets.Stats[Item.wingSlot] = new WingStats(600, 9.2f, 2.75f, true);
             
 		}
 
@@ -44,9 +44,9 @@ namespace DestroyerTest.Content.Equips
 			ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend) {
 			ascentWhenFalling = 1f;
 			ascentWhenRising = 1f;
-			maxCanAscendMultiplier = 1.5f;
-			maxAscentMultiplier = 1.5f;
-			constantAscend = 0.08f;
+			maxCanAscendMultiplier = 1.3f;
+			maxAscentMultiplier = 1.3f;
+			constantAscend = 0.09f;
 		}
 
 		public override void AddRecipes() {

@@ -4641,3 +4641,8 @@ Item_Dreamstone: {
 	DisplayName: Item_ Dreamstone
 	Tooltip: ""
 }
+
+Depths: {
+	DisplayName: Depths
+	Tooltip: ""
+}

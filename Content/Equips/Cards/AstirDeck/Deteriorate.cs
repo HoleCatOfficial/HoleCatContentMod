@@ -37,6 +37,19 @@ namespace DestroyerTest.Content.Equips.Cards.AstirDeck
         }
     }
 
+    public class DeteriorateDropNPC : GlobalNPC
+    {
+        public override bool InstancePerEntity => true;
+        public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
+        {
+            if (npc.type == NPCID.CorruptSlime)
+            {
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Deteriorate>(), 16, 1, 1));
+            }
+
+        }
+    }
+
     public class  DeterioratePlayer : ModPlayer
     {
         public bool Active = false;

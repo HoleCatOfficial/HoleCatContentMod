@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -30,6 +31,19 @@ namespace DestroyerTest.Content.Equips.Cards.AstirDeck
             player.wallSpeed += 0.15f;
 
             player.pickSpeed += 0.08f;
+        }
+
+
+    }
+
+    public class ExpeditionGlobal : GlobalItem
+    {
+        public override void ModifyItemLoot(Item item, ItemLoot itemLoot)
+        {
+            if ((item.type == ItemID.IronCrate || item.type == ItemID.WoodenCrate) && Main.LocalPlayer.ZoneDirtLayerHeight)
+            {
+                itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<Expedition>(), 20, 1, 1));
+            }
         }
     }
 }

@@ -7,6 +7,7 @@ using DestroyerTest.Content.RiftArsenal;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,11 +41,13 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Projectile.tileCollide = false;
             Projectile.ignoreWater = true;
             Projectile.timeLeft = 40;
-            Projectile.usesLocalNPCImmunity = true;
-            Projectile.localNPCHitCooldown = 20;
             Projectile.netImportant = true;
             Projectile.hide = true;
         }
+
+        int HitCooldown = 0;
+        int HitCooldownMax = 15;
+
 
         private SpriteEffects FX = SpriteEffects.None;
         public override bool PreDraw(ref Color lightColor)
@@ -73,7 +76,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         int F = 8;
         private void AnimateProjectile()
         {
-            if (++Projectile.frameCounter >= 5)
+            if (++Projectile.frameCounter >= F)
             {
                 Projectile.frameCounter = 0;
                 if (++Projectile.frame >= Main.projFrames[Projectile.type])
@@ -134,9 +137,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
         public override bool? CanHitNPC(NPC target)
         {
-            return IsOnAttackFrame(target) && Projectile.ManualCanHitFriendly(target); 
+            return IsOnAttackFrame(target) && Projectile.ManualCanHitFriendly(target) && HitCooldown >= HitCooldownMax;
         }
 
+        float SlashPitch = 0f;
         private SoundStyle Slash = DTAssetLib.SwordSounds.MetalSwing with { PitchVariance = 0.2f };
         public override void AI()
         {
@@ -149,7 +153,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
                 if (Projectile.frame == 0 || Projectile.frame == 6 || Projectile.frame == 12)
                 {
-                    SoundEngine.PlaySound(Slash, Projectile.Center);
+                    SoundEngine.PlaySound(Slash with { Pitch = SlashPitch }, Projectile.Center);
                 }
 
                 Vector2 mountedCenter = player.MountedCenter;
@@ -161,6 +165,28 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 Projectile.rotation = toCursor.ToRotation();
 
                 FX = toCursor.X > 0 ? SpriteEffects.None : SpriteEffects.FlipVertically;
+
+                int MaxFShrink = (int)Math.Round(F * player.GetTotalAttackSpeed<DTTrueMeleeClass>().Inverse()) + 3;
+
+                if (Projectile.ai[0]++ % 60 == 0 && F > MaxFShrink)
+                {
+                    F--;
+
+                }
+
+                if (HitCooldown < HitCooldownMax)
+                {
+                    HitCooldown++;
+                }
+
+                int BaseF = 6;
+
+                int MinF = (int)Math.Round(BaseF * player.GetTotalAttackSpeed<DTTrueMeleeClass>().Inverse()) + 1;
+                float prog = 1f - ((float)(F - MinF) / (BaseF - MinF));
+
+                HitCooldownMax = (int)MathHelper.Lerp(20, 5, prog);
+                SlashPitch = MathHelper.Lerp(0f, 0.8f, prog);
+
 
                 Projectile.timeLeft = 10;
 
@@ -218,7 +244,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             {
                 Color choice = RiftLightColors[Main.rand.Next(RiftLightColors.Count)];
                 Spark Spark = new Spark();
-                Spark.PrepareSpark(target.Center, new Vector2(Main.rand.NextFloat(2f, 6f) * splatterdir, 0).RotatedByRandom(0.1f), 0f, choice, 0.75f, false, 30, SparkDrawMode.AlphaBlend);
+                Spark.PrepareSpark(target.Center, new Vector2(Main.rand.NextFloat(2f, 6f), 0).RotatedBy((target.Center - player.Center).ToRotation()).RotatedByRandom(0.1f), 0f, choice, 0.75f, false, 30, SparkDrawMode.AlphaBlend);
                 ParticleEngine.BehindProjectiles.Add(Spark);
             }
 
@@ -235,8 +261,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
 
             ShimmeringFlames.ShimmerBurn(target);
-            
 
+            HitCooldown = 0;
         }
 
 

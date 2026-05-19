@@ -55,7 +55,9 @@ namespace DestroyerTest.Content.Projectiles
         public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(SoundID.Item85, Projectile.Center);
-            Opus.RadialDustRandomDir(DustID.PinkSlime, 14, Projectile.Center, 100, default, 4f, 2.5f);
+
+           
+            Opus.RadialSpreadDustRandom(DustID.PinkSlime, 14, Projectile.Center, 100, default, 4f, 2.5f);
         }
     }
 }

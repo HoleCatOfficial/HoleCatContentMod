@@ -115,7 +115,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             toOwner = Owner.Center - Projectile.Center;
             toOwner.Normalize();
 
-            Opus.RingDustOutward(ModContent.DustType<ColorableNeonDust>(), 12, Projectile.Center, 10, 40, Main.DiscoColor, 1f, 3f, offset: offset);
+            Opus.RingSpreadDust(ModContent.DustType<ColorableNeonDust>(), 12, Projectile.Center, 10, 40, Main.DiscoColor, 1f, 3f, offset: offset);
      
 
             float interval = 10f / speedfactor;

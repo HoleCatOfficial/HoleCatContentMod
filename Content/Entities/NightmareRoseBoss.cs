@@ -107,7 +107,7 @@ namespace DestroyerTest.Content.Entities
         public SoundStyle Fire = new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/CursedFlameShoot") with { Volume = 2, PitchVariance = 1f, MaxInstances = 0 };
         public SoundStyle ArenaDivide = new SoundStyle("DestroyerTest/Assets/Audio/Impacts/HellWeaponImpact") with { Volume = 2, PitchVariance = 1f, MaxInstances = 0 };
         public SoundStyle DespShootMine = new SoundStyle("DestroyerTest/Assets/Audio/Impacts/MetalImpactV1_", 3) with { Volume = 2, PitchVariance = 1f, MaxInstances = 0 };
-        public SoundStyle NodeSpawnSound = new SoundStyle("DestroyerTest/Infernum/Assets/Audio/NightmareRoseIntroFinish") with { PitchVariance = 1f, MaxInstances = 0 };
+        public SoundStyle NodeSpawnSound = new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/NodeSpawn") with { PitchVariance = 1f, MaxInstances = 0 };
         public SoundStyle Napalm = new SoundStyle("DestroyerTest/Assets/Audio/NodeAttackNapalm") with { PitchVariance = 1f, MaxInstances = 0 };
         public SoundStyle Desperation = new SoundStyle("DestroyerTest/Assets/Audio/RoseDesperation") with { MaxInstances = 0 };
 
@@ -1393,7 +1393,7 @@ namespace DestroyerTest.Content.Entities
 
                             if (DeathIdleTimer % 20 == 0)
                             {
-                                Opus.RingSpreadDustRandom(DustID.FireworksRGB, 20, NPCHead, Main.rand.NextFloat(30f, 400f), 0, Color.White, -4f, 1f);
+                                Opus.RingSpreadDustRandom(DustID.FireworksRGB, 20, NPCHead, Main.rand.NextFloat(30f, 400f), 0, Color.White, 2f, 1f);
                             }
                         }
                         if (DeathIdleTimer <= 0)
@@ -2268,47 +2268,10 @@ namespace DestroyerTest.Content.Entities
         {
             trailOffset += 0.04f;
 
-            DTTrail.DrawTrail(spriteBatch, DTAssetLib.Streak(7).Value, TrailPositions, TrailRotations, 24f, ColorLib.WretchedGradient(), trailOffset, 10);
+            DTTrail.DrawTrail(spriteBatch, DTAssetLib.Streak(7).Value, NPC.OldCenter().ToList(), NPC.oldRot.ToList(), 24f, ColorLib.WretchedGradient(), trailOffset, 10);
             return true;
         }
 
-
-
-        public List<Vector2> TrailPositions = new();
-        public List<float> TrailRotations = new();
-        private const int TrailLength = 400;
-
-        public void CacheTrail()
-        {
-            Vector2 lastPos = TrailPositions.Count > 0 ? TrailPositions[0] : NPC.Center;
-            Vector2 newPos = NPC.Center;
-
-            float dist = Vector2.Distance(lastPos, newPos);
-            float step = 0.75f; // how closely to sample. tweak this!
-
-            if (dist > 0f)
-            {
-                int segments = (int)(dist / step);
-
-                for (int i = 1; i <= segments; i++)
-                {
-                    Vector2 pos = Vector2.Lerp(lastPos, newPos, i / (float)segments);
-                    TrailPositions.Insert(0, pos);
-                    TrailRotations.Insert(0, NPC.velocity.ToRotation());
-                }
-            }
-            else
-            {
-                TrailPositions.Insert(0, newPos);
-                TrailRotations.Insert(0, NPC.velocity.ToRotation());
-            }
-
-            // Cap trail
-            while (TrailPositions.Count > TrailLength)
-                TrailPositions.RemoveAt(TrailPositions.Count - 1);
-            while (TrailRotations.Count > TrailLength)
-                TrailRotations.RemoveAt(TrailRotations.Count - 1);
-        }
         public override void AI()
         {
             NPC bossNPC = null;
@@ -2412,9 +2375,6 @@ namespace DestroyerTest.Content.Entities
                 lerpSpeed
             );
 
-
-
-            CacheTrail();
         }
     }
 

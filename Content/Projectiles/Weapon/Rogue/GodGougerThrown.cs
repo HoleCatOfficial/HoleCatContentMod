@@ -68,8 +68,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
             SoundEngine.PlaySound(SoundID.Item14, Projectile.Center);
-            Opus.RadialDustRandomDir(DustID.TintableDustLighted, 8, Projectile.Center, 0, Color.Pink, 1f, 2.4f);
-            Opus.RadialDustRandomDir(DustID.TintableDustLighted, 8, Projectile.Center, 0, Color.PaleTurquoise, 1f, 2.4f);
+            Opus.RadialSpreadDustRandom(DustID.TintableDustLighted, 8, Projectile.Center, 0, Color.Pink, 1f, 2.4f);
+            Opus.RadialSpreadDustRandom(DustID.TintableDustLighted, 8, Projectile.Center, 0, Color.PaleTurquoise, 1f, 2.4f);
             return true;
         }
     }

@@ -108,8 +108,12 @@ namespace DestroyerTest.Content.Tiles
 					int j = WorldGen.genRand.Next(highestY, Main.UnderworldLayer);
 
 					// OreRunner will spawn ExampleOre in splotches. OnKill only runs on the server or single player, so it is safe to run world generation code.
-					WorldGen.OreRunner(i, j, WorldGen.genRand.Next(5, 9), WorldGen.genRand.Next(5, 9), (ushort)ModContent.TileType<Tile_VesperOre>());
-				}
+					//WorldGen.OreRunner(i, j, WorldGen.genRand.Next(5, 9), WorldGen.genRand.Next(5, 9), (ushort)ModContent.TileType<Tile_VesperOre>());
+
+                    WorldGen.OreRunner(i, j, WorldGen.genRand.Next(5, 9), WorldGen.genRand.Next(5, 9), (ushort)ModContent.TileType<Tile_VesperOre>());
+
+                    WorldGen.OreRunner(i, j, WorldGen.genRand.Next(10, 18), WorldGen.genRand.Next(10, 18), (ushort)ModContent.TileType<Tile_Dreamstone>());
+                }
 			});
 		}
 
@@ -151,15 +155,19 @@ namespace DestroyerTest.Content.Tiles
 
 				// Then, we call WorldGen.TileRunner with random "strength" and random "steps", as well as the Tile we wish to place.
 				// Feel free to experiment with strength and step to see the shape they generate.
-				WorldGen.TileRunner(x, y, WorldGen.genRand.Next(3, 6), WorldGen.genRand.Next(2, 6), ModContent.TileType<Tile_VesperOre>());
+				//WorldGen.TileRunner(x, y, WorldGen.genRand.Next(3, 6), WorldGen.genRand.Next(2, 6), ModContent.TileType<Tile_VesperOre>());
 
-				// Alternately, we could check the tile already present in the coordinate we are interested.
-				// Wrapping WorldGen.TileRunner in the following condition would make the ore only generate in Snow.
-				// Tile tile = Framing.GetTileSafely(x, y);
-				// if (tile.HasTile && tile.TileType == TileID.SnowBlock) {
-				// 	WorldGen.TileRunner(.....);
-				// }
-			}
+                WorldGen.TileRunner(x, y, WorldGen.genRand.Next(5, 9), WorldGen.genRand.Next(5, 9), (ushort)ModContent.TileType<Tile_VesperOre>());
+
+                WorldGen.TileRunner(x, y, WorldGen.genRand.Next(10, 18), WorldGen.genRand.Next(10, 18), (ushort)ModContent.TileType<Tile_Dreamstone>());
+
+                // Alternately, we could check the tile already present in the coordinate we are interested.
+                // Wrapping WorldGen.TileRunner in the following condition would make the ore only generate in Snow.
+                // Tile tile = Framing.GetTileSafely(x, y);
+                // if (tile.HasTile && tile.TileType == TileID.SnowBlock) {
+                // 	WorldGen.TileRunner(.....);
+                // }
+            }
 		}
 	}
 }

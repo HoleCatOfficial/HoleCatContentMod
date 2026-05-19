@@ -69,7 +69,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
         {
             SoundEngine.PlaySound(SoundID.Item14, Projectile.Center);
             Projectile.Hitbox.Inflate(10, 10);
-            Opus.RadialDustRandomDir(DustID.ToxicBubble, 16, Projectile.Center, 100, default, 2f, 2);
+            Opus.RadialSpreadDustRandom(DustID.ToxicBubble, 16, Projectile.Center, 100, default, 2f, 2);
         }
     }
 }

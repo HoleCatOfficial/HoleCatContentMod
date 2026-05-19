@@ -985,7 +985,19 @@ namespace DestroyerTest.Common
 
             for (int i = 0; i < projectile.oldPos.Length; i++)
             {
-                Positions[i] = projectile.oldPos[i] + new Vector2(projectile.width * 0.5f, projectile.height * 0.5f)/*.RotatedBy(projectile.oldRot[i])*/;
+                Positions[i] = projectile.oldPos[i] + new Vector2(projectile.width * 0.5f, projectile.height * 0.5f);
+            }
+
+            return Positions;
+        }
+
+        public static Vector2[] OldCenter(this NPC npc)
+        {
+            Vector2[] Positions = new Vector2[NPCID.Sets.TrailCacheLength[npc.type]];
+
+            for (int i = 0; i < npc.oldPos.Length; i++)
+            {
+                Positions[i] = npc.oldPos[i] + new Vector2(npc.width * 0.5f, npc.height * 0.5f);
             }
 
             return Positions;

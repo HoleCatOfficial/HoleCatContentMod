@@ -1682,14 +1682,25 @@ namespace DestroyerTest.Content.Entities
                 return;
             }
 
-            // cache orbit center
+            // Orbit settings
+            float radius = Opus.Sine(200f, 240f);
+            float speed = 0.01f;
+            float angle = Main.GameUpdateCount * speed;
 
-
-            // rebuild node list fresh each tick
-            allNodes.Clear();
             for (int i = 0; i < Main.maxNPCs; i++)
-                if (Main.npc[i].active && Main.npc[i].type == Type)
-                    allNodes.Add(Main.npc[i]);
+            {
+                NPC node = Main.npc[i];
+                if (node.active && node.type == ModContent.NPCType<IchorNode>())
+                {
+                    allNodes.Add(node);
+                }
+            }
+
+            // Sort the list by whoAmI to ensure consistent order across clients and frames
+            allNodes.Sort((a, b) => a.whoAmI.CompareTo(b.whoAmI));
+
+            
+
 
             ScreenIntervals = allNodes.Count;
 
@@ -1775,13 +1786,24 @@ namespace DestroyerTest.Content.Entities
             // Sort nodes to get stable order across clients
             allNodes.Sort((a, b) => a.whoAmI.CompareTo(b.whoAmI));
             int index = allNodes.IndexOf(NPC);
-            int total = Math.Max(allNodes.Count, 1);
+            int total = allNodes.Count;
 
-            float spacing = MathHelper.TwoPi / total;
+            // Calculate spacing
+            float spacing = MathHelper.TwoPi / (total == 0 ? 1 : total);
             float myAngle = angle + index * spacing;
 
-            Vector2 offset = new Vector2(MathF.Cos(myAngle), MathF.Sin(myAngle)) * radius;
-            NPC.Center = center + offset - new Vector2(NPC.width / 2, NPC.height / 2);
+            // Final orbit target
+            Vector2 targetOffset = new Vector2(MathF.Cos(myAngle), MathF.Sin(myAngle)) * radius;
+            Vector2 targetCenter = OrbitCenter + targetOffset;
+
+            // Smooth movement instead of instant snapping
+            float lerpSpeed = 0.08f; // lower = slower, higher = snappier
+
+            NPC.Center = Vector2.Lerp(
+                NPC.Center,
+                targetCenter,
+                lerpSpeed
+            );
         }
 
         public void Slam()

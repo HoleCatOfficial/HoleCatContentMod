@@ -525,7 +525,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee.Flail
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            Opus.RadialDustRandomDir(ModContent.DustType<ColorableNeonDust>(), 10, Projectile.Center, 0, Color.White, 2f, 2f);
+            Opus.RadialSpreadDustRandom(ModContent.DustType<ColorableNeonDust>(), 10, Projectile.Center, 0, Color.White, 2f, 2f);
             if (Charge > 120)
             {
                 damageDone = (int)(damageDone * 1.75f);
@@ -534,7 +534,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee.Flail
 				Cracks.Prepare(target.Center, Color.HotPink, 1f);
 				ParticleEngine.BehindProjectiles.Add(Cracks);
 
-                Opus.RadialDustRandomDir(ModContent.DustType<ColorableNeonDust>(), 5, Projectile.Center, 0, Color.HotPink, 2f, 3f);
+                Opus.RadialSpreadDustRandom(ModContent.DustType<ColorableNeonDust>(), 5, Projectile.Center, 0, Color.HotPink, 2f, 3f);
                 SoundEngine.PlaySound(DTAssetLib.ScholarShieldSounds.Hit, Projectile.Center);
             }
         }

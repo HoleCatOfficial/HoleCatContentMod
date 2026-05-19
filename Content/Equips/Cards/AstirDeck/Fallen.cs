@@ -33,6 +33,19 @@ namespace DestroyerTest.Content.Equips.Cards.AstirDeck
 		}
     }
 
+    public class FallenDropNPC : GlobalNPC
+    {
+        public override bool InstancePerEntity => true;
+        public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
+        {
+            if (npc.type == NPCID.DemonTaxCollector)
+            {
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Fallen>(), 10, 1, 1));
+            }
+
+        }
+    }
+
     public class FallenPlayer : ModPlayer
     {
         public bool Active = false;

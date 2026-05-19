@@ -84,7 +84,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 		public override void AI() 
 		{
 			//Just for Testing
-			StealthStrike = true;
+			//StealthStrike = true;
 
             for (int i = 0; i < ProjectileID.Sets.TrailCacheLength[Type]; i++)
             {

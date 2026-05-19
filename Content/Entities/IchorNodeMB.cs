@@ -347,7 +347,7 @@ namespace DestroyerTest.Content.Entities
                         if (IchorSpiralWarnTimer <= 0)
                         {
                             Spiral_BindPlayer(player, 500);
-                            Opus.RingDustOutward(DustID.TintableDustLighted, 30, NPC.Center, 500f, 0, ColorLib.IchorCrystalGradient, 1.5f, 3, Main.rand.NextFloat(MathHelper.TwoPi));
+                            Opus.RingSpreadDust(DustID.TintableDustLighted, 30, NPC.Center, 500f, 0, ColorLib.IchorCrystalGradient, 1.5f, 3, Main.rand.NextFloat(MathHelper.TwoPi));
                             if (IchorSpiralTimer > 0)
                             {
                                 IchorSpiralRotationOffset += 1f;

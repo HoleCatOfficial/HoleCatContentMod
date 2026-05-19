@@ -70,7 +70,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
                 MaxInstances = 0
             }, Projectile.Center);
 
-            Opus.RadialDustRandomDir(ModContent.DustType<ConstitutionDust1>(), 15, Projectile.Center, 0,  ColorLib.StellarFireGradientLooping(), 1f, 3);
+            Opus.RadialSpreadDustRandom(ModContent.DustType<ConstitutionDust1>(), 15, Projectile.Center, 0,  ColorLib.StellarFireGradientLooping(), 1f, 3);
 
             DTUtils.ConstitutionStarExplosionEffects(Projectile);
 

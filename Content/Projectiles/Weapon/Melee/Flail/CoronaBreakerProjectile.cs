@@ -200,7 +200,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee.Flail
         public bool Strike = false;
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            Opus.RadialDustRandomDir(DustID.FireworksRGB, 10, target.Center, 0, ColorLib.Rift, 1.3f, 3);
+            Opus.RadialSpreadDustRandom(DustID.FireworksRGB, 10, target.Center, 0, ColorLib.Rift, 1.3f, 3);
 
             if (Strike)
             {
