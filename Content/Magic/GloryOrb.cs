@@ -1,14 +1,16 @@
-﻿using Microsoft.Xna.Framework;
+﻿using DestroyerTest.Content.MeleeWeapons;
+using DestroyerTest.Content.Projectiles;
+using DestroyerTest.Content.Projectiles.Weapon.Magic;
+using DestroyerTest.Content.RangedItems;
+using DestroyerTest.Rarity;
+using Microsoft.Xna.Framework;
+using System.Linq;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.DataStructures;
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Rarity;
-using System.Linq;
 using UtfUnknown.Core.Models.SingleByte.Italian;
-using DestroyerTest.Content.Projectiles.Weapon.Magic;
 
 namespace DestroyerTest.Content.Magic
 {
@@ -17,6 +19,7 @@ namespace DestroyerTest.Content.Magic
         public override void SetStaticDefaults()
         {
             Item.staff[Type] = true;
+            ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<Purity>();
         }
         public override void SetDefaults()
         {

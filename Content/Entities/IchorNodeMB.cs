@@ -128,25 +128,12 @@ namespace DestroyerTest.Content.Entities
         float Opa = 0f;
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            Roff += 20;
+            Roff -= 10;
 
             Line R = new Line(NPC.Center, new Vector2(NPC.Center.X, NPC.Center.Y + 2200f));
-            DTUtils.instance.ScrollingTextureSpine(R, DTAssetLib.ArrowTelegraphCont, ColorLib.Ichor * Opa, spriteBatch, BlendState.Additive, Roff, 2f, 1f);
+            DTUtils.instance.ScrollingTextureSpine(R, DTAssetLib.ArrowTelegraphCont, ColorLib.Ichor * Opa, spriteBatch, BlendState.Additive, Roff, 0.5f, 1f);
 
-            if (DrawSlamTelegraph)
-            {
-                if (Opa < 1f)
-                {
-                    Opa += 0.05f;
-                }
-            }
-            else
-            {
-                if (Opa > 0f)
-                {
-                    Opa -= 0.05f;
-                }
-            }
+            
             return true;
         }
 
@@ -231,6 +218,22 @@ namespace DestroyerTest.Content.Entities
             DTUtils Utility = new DTUtils();
             DTMusicConfig muscfg = ModContent.GetInstance<DTMusicConfig>();
 
+
+            if (DrawSlamTelegraph)
+            {
+                if (Opa < 1f)
+                {
+                    Opa += 0.05f;
+                }
+            }
+            else
+            {
+                if (Opa > 0f)
+                {
+                    Opa -= 0.05f;
+                }
+            }
+
             if (NPC.alpha > 0 && CurrentAttack != AttackState.None)
             {
                 NPC.immortal = true;
@@ -300,6 +303,7 @@ namespace DestroyerTest.Content.Entities
                         
                         if (NPC.justHit && !DTFlags.NodeCharmEquipped && !(DormantNPCKillTally < DormantNPCKillRequirement))
                         {
+                            FablesTitleCardSystem.RegisterFablesBossIntro(FablesTitleCardSystem.IchorNodeTitle.Name, FablesTitleCardSystem.IchorNodeTitle.Title, 180, true, ColorLib.WretchedGradient(), ColorLib.IchorCrystalGradient, ColorLib.IchorCrystalGradient, ColorLib.IchorCrystalGradient, FablesTitleCardSystem.IchorNodeTitle.MusicTitle, FablesTitleCardSystem.IchorNodeTitle.MusicArtist);
                             CurrentAttack = AttackState.Idle;
                         }
                         break;
@@ -629,7 +633,14 @@ namespace DestroyerTest.Content.Entities
                 {
                     SoundEngine.PlaySound(SlamWarn, NPC.Center);
                 }
-                DrawSlamTelegraph = true;
+                if (SlamCharge >= 20)
+                {
+                    DrawSlamTelegraph = true;
+                }
+                else
+                {
+                    DrawSlamTelegraph = false;
+                }
             }
             if (SlamCharge <= 0)
             {

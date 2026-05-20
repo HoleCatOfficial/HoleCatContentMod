@@ -42,7 +42,7 @@ namespace DestroyerTest.Content.Particles
         {
             this.position = Position;
             this.velocity = Velocity;
-            this.rotation = Rotation;
+            this.rotation = Rotation + MathHelper.PiOver2;
             this.scale = Scale;
             this.maxLifetime = MaxLifetime;
             this.Lifetime = MaxLifetime;
@@ -152,7 +152,7 @@ namespace DestroyerTest.Content.Particles
         {
             this.position = Position;
             this.velocity = Velocity;
-            this.rotation = Rotation;
+            this.rotation = Rotation + MathHelper.PiOver2;
             this.scale = Scale;
             this.maxLifetime = MaxLifetime;
             this.Lifetime = MaxLifetime;

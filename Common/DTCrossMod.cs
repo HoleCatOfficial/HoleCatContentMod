@@ -24,6 +24,10 @@ namespace DestroyerTest.Common
 {
     public static class DTCrossMod
     {
+        public const string FablesName = "CalamityFables";
+        public static bool FablesIsLoaded;
+        public static Mod FablesMod;
+
         public const string OrionName = "ConstellationsofOrion";
         public static bool OrionIsLoaded;
         public static Mod OrionMod;
@@ -38,6 +42,8 @@ namespace DestroyerTest.Common
 
         public static void LoadMods()
         {
+            FablesIsLoaded = ModLoader.TryGetMod(FablesName, out Mod fables);
+            FablesMod = fables;
             OrionIsLoaded = ModLoader.TryGetMod(OrionName, out Mod orion);
             OrionMod = orion;
             FargosSoulsIsLoaded = ModLoader.TryGetMod(FargosSoulsName, out Mod frgoS);
@@ -48,6 +54,8 @@ namespace DestroyerTest.Common
 
         public static void UnloadMods()
         {
+            FablesIsLoaded = false;
+            FablesMod = null;
             OrionIsLoaded = false;
             OrionMod = null;
             FargosSoulsIsLoaded = false;

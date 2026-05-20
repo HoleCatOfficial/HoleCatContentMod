@@ -218,7 +218,7 @@ namespace DestroyerTest.Content.Entities
 
         public override void OnSpawn(IEntitySource source)
         {
-            
+            FablesTitleCardSystem.RegisterFablesBossIntro(FablesTitleCardSystem.ConstitutionTitle.Name, FablesTitleCardSystem.ConstitutionTitle.Title, 180, true, ColorLib.StellarRarityColor, ColorLib.StellarFireGradientLooping(), ColorLib.StellarFire2, ColorLib.StellarFire6, FablesTitleCardSystem.ConstitutionTitle.MusicTitle, FablesTitleCardSystem.ConstitutionTitle.MusicArtist);
         }
 
         public Line topSide = new Line(ArenaRect.TopRight(), ArenaRect.TopLeft());

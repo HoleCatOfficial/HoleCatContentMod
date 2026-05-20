@@ -17,6 +17,7 @@ ConstitutionBoss: {
 
 NodeBoss: {
 	Fight: Elemental Influence
+	FightHallow: Ethereal Influence
 	Idle: Elemental Presence
 }
 

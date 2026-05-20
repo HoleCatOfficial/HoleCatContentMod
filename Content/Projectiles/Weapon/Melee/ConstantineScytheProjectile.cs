@@ -28,7 +28,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             base.SetDefaults();
             Projectile.width = 94;
             Projectile.height = 102;
-            SweepColor = Color.HotPink;
+            SweepColor = Color.DeepPink;
+            SweepHighlightColor = Color.HotPink;
+            UsesDefaultSweepFX = true;
 
             Glowmask = ModContent.Request<Texture2D>($"{Texture}_Glow");
             SwingSpeed = 0.23f;
@@ -39,11 +41,13 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         public override void HitNPCEffects(NPC npc, NPC.HitInfo hit)
         {
             SoundEngine.PlaySound(DTAssetLib.Impacts.ShortShine with { MaxInstances = 0, PitchVariance = 0.4f }, npc.Center);
+            SoundEngine.PlaySound(DTAssetLib.SwordSounds.LightGoreCut with { MaxInstances = 0, PitchVariance = 0.4f }, npc.Center);
+
             int splatterdir = npc.position.X > Owner.MountedCenter.X ? 1 : -1;
             for (int i = 0; i < 7; i++)
             {
                 Spark Spark = new Spark();
-                Spark.PrepareSpark(npc.Center, new Vector2(Main.rand.NextFloat(2f, 6f) * splatterdir, 0).RotatedByRandom(0.1f), 0f, Color.Red * Main.rand.NextFloat(0.1f, 1f), 1f, false, 30, SparkDrawMode.Additive);
+                Spark.PrepareSpark(npc.Center, new Vector2(Main.rand.NextFloat(2f, 6f) * splatterdir, 0).RotatedByRandom(0.1f), 0f, Color.HotPink * Main.rand.NextFloat(0.1f, 1f), 1f, false, 30, SparkDrawMode.Additive);
                 ParticleEngine.BehindProjectiles.Add(Spark);
             }
         }
@@ -53,7 +57,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Vector2 dir = Main.MouseWorld - Projectile.Center;
             dir.Normalize();
 
-            Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, dir * 2, ModContent.ProjectileType<ConstantineScytheClone>(), (int)(Projectile.damage *  0.75f), 3, Owner.whoAmI);
+            Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, dir * 6, ModContent.ProjectileType<ConstantineScytheClone>(), (int)(Projectile.damage *  0.75f), 3, Owner.whoAmI);
         }
         public override void DrawOverBlade()
         {
@@ -71,7 +75,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
             ScaleMult = 1f;
 
-            SparkEdge(Owner, 0.75f, Color.Magenta, 2);
+            SparkEdge(Owner, 0.75f, Color.HotPink, 2);
         }
     }
 }

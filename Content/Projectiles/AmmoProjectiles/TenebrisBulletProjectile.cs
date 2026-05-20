@@ -29,7 +29,7 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
             }
         }
 
-        public int Variant = Main.rand.Next(1, 4);
+        public int Variant = Main.rand.Next(3);
 
         public ref float DelayTimer => ref Projectile.ai[1];
 
@@ -50,23 +50,23 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
             Projectile.tileCollide = false;
             Projectile.penetrate = 1;
             Projectile.hide = true;
-            Projectile.extraUpdates = 20;
+            Projectile.extraUpdates = 40;
         }
 
         public void ColorAffectedFX(Color color)
         {
             Lighting.AddLight(Projectile.Center, color.ToVector3() * 0.6f);
 
-            PointGlowPreMultiplied Glow = new PointGlowPreMultiplied();
-            Glow.Initialize(Projectile.Center, Projectile.velocity * 0.3f, color, 0.5f);
-            ParticleEngine.BehindProjectiles.Add(Glow);
+            //PointGlowPreMultiplied Glow = new PointGlowPreMultiplied();
+            //Glow.Initialize(Projectile.Center, Projectile.velocity * 0.3f, color, 0.5f);
+            //ParticleEngine.BehindProjectiles.Add(Glow);
 
             var d = Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<ColorableNeonDust>(), Vector2.Zero, 0, color, 1f);
             d.noGravity = true;
 
             Spark S = new Spark();
 
-            S.PrepareSpark(Projectile.Center, Projectile.velocity * 0.1f, Projectile.velocity.ToRotation(), color * 0.5f, 0.4f, false, 20, SparkDrawMode.Additive);
+            S.PrepareSpark(Projectile.Center, Projectile.velocity * 0.1f, Projectile.velocity.ToRotation(), color * 0.5f, 1f, false, 20, SparkDrawMode.Additive);
             ParticleEngine.BehindProjectiles.Add(S);
 
             /*
@@ -164,11 +164,11 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
         {
             if (hit.Crit)
             {
-                SoundEngine.PlaySound(DTAssetLib.Impacts.DarkShot with { PitchVariance = 0.2f });
+                //SoundEngine.PlaySound(DTAssetLib.Impacts.DarkShot with { PitchVariance = 0.2f });
                 ShimmeringFlames.ShimmerBurn(target);
 
                 SmallShine shine = new SmallShine();
-                shine.Prepare(target.Center, Vector2.Zero, Color.White, 0.5f);
+                shine.Prepare(target.Center, Vector2.Zero, Color.White, 1f);
                 ParticleEngine.ShaderParticles.Add(shine);
             }
         }

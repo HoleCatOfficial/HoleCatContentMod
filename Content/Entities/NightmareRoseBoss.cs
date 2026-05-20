@@ -58,7 +58,6 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
 using Terraria.UI;
-using static tModPorter.ProgressUpdate;
 
 namespace DestroyerTest.Content.Entities
 {
@@ -883,6 +882,7 @@ namespace DestroyerTest.Content.Entities
                             screenshake.screenshakeTimer = 180;
                             RoarWaveTimer = 180;
 
+                            FablesTitleCardSystem.RegisterFablesBossIntro(FablesTitleCardSystem.NightmareRoseTitle.Name, FablesTitleCardSystem.NightmareRoseTitle.Title, 180, true, ColorLib.WretchedGradient(), Color.White, Color.Red, Color.Red, FablesTitleCardSystem.NightmareRoseTitle.MusicTitle, FablesTitleCardSystem.NightmareRoseTitle.MusicArtist);
                             if (!DestroyerTestMod.MasochistIsActive)
                             {
                                 SoundEngine.PlaySound(SpawnRoar, NPCHead);

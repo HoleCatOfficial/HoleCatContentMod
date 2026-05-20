@@ -13,6 +13,7 @@ using Terraria.ModLoader;
 using DestroyerTest.Rarity;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Weapon.Melee;
+using DestroyerTest.Content.RangedItems;
 
 namespace DestroyerTest.Content.MeleeWeapons
 {
@@ -22,6 +23,7 @@ namespace DestroyerTest.Content.MeleeWeapons
         public override void SetStaticDefaults()
         {
             ItemID.Sets.ItemsThatAllowRepeatedRightClick[Type] = true;
+            ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<PureBow>();
         }
         public override void SetDefaults()
         {

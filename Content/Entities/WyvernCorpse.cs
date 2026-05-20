@@ -1596,11 +1596,7 @@ namespace DestroyerTest.Content.Entities
 
         public override void OnSpawn(IEntitySource source)
         {
-            DTOptimizationsConfig optcfg = ModContent.GetInstance<DTOptimizationsConfig>();
-            if (EternityIsActive() && !optcfg.OptimizeGame)
-            {
-                Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<WyvernCorpseBackgroundProj>(), 0, 0f);
-            }
+            FablesTitleCardSystem.RegisterFablesBossIntro(FablesTitleCardSystem.WyvernCorpseTitle.Name, FablesTitleCardSystem.WyvernCorpseTitle.Title, 180, true, ColorLib.IchorCrystalGradient, ColorLib.IchorCrystalGradient, ColorLib.Soul, ColorLib.Soul, FablesTitleCardSystem.WyvernCorpseTitle.MusicTitle, FablesTitleCardSystem.WyvernCorpseTitle.MusicArtist);
         }
 
 

@@ -53,7 +53,7 @@ namespace DestroyerTest.Content.Projectiles.Boss
 
 			Opus.ReturnToDefaultDrawing(spriteBatch);
 
-			Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation + MathHelper.PiOver2, TextureAssets.Projectile[Projectile.type].Value.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
+			Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, TextureAssets.Projectile[Projectile.type].Value.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
 
 			return false;
 		}
@@ -74,7 +74,7 @@ namespace DestroyerTest.Content.Projectiles.Boss
                 Projectile.scale += 0.05f;
             }
 
-            if (Main.rand.NextBool(3))
+            if (Main.rand.NextBool(3) && !DTOptimizationsConfig.instance.DisableExcessParticles)
             {
 
                 Spark Spark = new Spark();

@@ -293,6 +293,7 @@ namespace DestroyerTest.Content.Entities
 
                         if (NPC.justHit && !DTFlags.NodeCharmEquipped && !(DormantNPCKillTally < DormantNPCKillRequirement))
                         {
+                            FablesTitleCardSystem.RegisterFablesBossIntro(FablesTitleCardSystem.BlessedNodeTitle.Name, FablesTitleCardSystem.BlessedNodeTitle.Title, 180, true, Color.SkyBlue, Color.DeepSkyBlue, Main.DiscoColor, Main.DiscoColor, FablesTitleCardSystem.BlessedNodeTitle.MusicTitle, FablesTitleCardSystem.BlessedNodeTitle.MusicArtist);
                             CurrentAttack = AttackState.Idle;
                         }
                         break;

@@ -2,8 +2,10 @@
 using DestroyerTest.Common;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Weapon.Melee;
+using DestroyerTest.Content.RangedItems;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.Resources.Cloths;
+using DestroyerTest.Content.SummonItems;
 using DestroyerTest.Content.Tiles;
 using DestroyerTest.Content.Tiles.RiftConfigurator;
 using DestroyerTest.Content.Tiles.Riftplate;
@@ -20,6 +22,10 @@ namespace DestroyerTest.Content.MeleeWeapons
 
 	public class RibChainsaw : ModItem
 	{
+        public override void SetStaticDefaults()
+        {
+            ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<WyvernTail>();
+        }
         public const int HoldoutDistance = 45;
         public override void SetDefaults() {
 			// Common Properties

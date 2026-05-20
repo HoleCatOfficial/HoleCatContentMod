@@ -109,6 +109,10 @@ namespace DestroyerTest.Content.Entities
 
         private void RenderRope(Vector2 screenPos, Color drawColor, VerletChain Rope)
         {
+            if (NPC.IsABestiaryIconDummy)
+            {
+                return;
+            }
 
             var tex = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/GazerHandRope").Value;
 

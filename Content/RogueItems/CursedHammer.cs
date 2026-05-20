@@ -1,15 +1,16 @@
-﻿using System;
+﻿using DestroyerTest.Common;
+using DestroyerTest.Content.Projectiles;
+using DestroyerTest.Content.Projectiles.Weapon.Rogue;
+using DestroyerTest.Content.RangedItems;
+using DestroyerTest.Content.SummonItems;
+using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
+using System;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.DataStructures;
-
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Common;
-using DestroyerTest.Rarity;
-using DestroyerTest.Content.Projectiles.Weapon.Rogue;
 
 namespace DestroyerTest.Content.RogueItems
 {
@@ -18,6 +19,7 @@ namespace DestroyerTest.Content.RogueItems
 
         public override void SetStaticDefaults()
         {
+            ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<BlossomBeater>();
         }
         public override void SetDefaults()
         {

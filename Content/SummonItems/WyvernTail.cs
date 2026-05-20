@@ -1,7 +1,9 @@
 
 
+using DestroyerTest.Content.MeleeWeapons;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Weapon.Summon;
+using DestroyerTest.Content.RangedItems;
 using DestroyerTest.Rarity;
 using Terraria;
 using Terraria.ID;
@@ -12,6 +14,10 @@ namespace DestroyerTest.Content.SummonItems
 {
 	public class WyvernTail : ModItem
 	{
+        public override void SetStaticDefaults()
+        {
+            ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<GreatFlayer>();
+        }
 		public override void SetDefaults() {
 			// This method quickly sets the whip's properties.
 			// Mouse over to see its parameters.

@@ -4644,5 +4644,10 @@ Item_Dreamstone: {
 
 Depths: {
 	DisplayName: Depths
-	Tooltip: ""
+	Tooltip:
+		'''
+		Being near hot tiles or lava builds up heat.
+		As heat increases, weapon damage increases up to a 60% increase, but, defense decreases to a max of 15 defense lost.
+		Being wet or in the snow biome accelerates heat loss.
+		'''
 }

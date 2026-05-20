@@ -28,6 +28,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.Utilities.Terraria.Utilities;
 using XPT.Core.Audio.MP3Sharp.Decoding.Decoders.LayerIII;
+using static FargowiltasSouls.Content.Projectiles.EffectVisual;
 
 namespace DestroyerTest.Content.Projectiles.ParentClasses
 {
@@ -317,13 +318,48 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
         public float SweepOpacity = 0f;
         public virtual Color SweepColor { get; set; } = Color.White;
+        public virtual Color SweepHighlightColor { get; set; } = Color.White;
+        public bool UsesDefaultSweepFX { get; set; }
 
         private void DrawSweepFX()
         {
-            var Tex = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/CircularSlash2").Value;
+            var Tex = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/CircularSlash").Value;
+            var TexH = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/CircularSlash2").Value;
             float TexBasedMod = (Projectile.Size.Length() * 0.015f);
+            float rOffset = 0f;
+
+            SpriteEffects FX = SpriteEffects.None;
+
+            if (LastSwing == -1)
+            {
+                if (Projectile.spriteDirection > 0)
+                {
+                    FX = SpriteEffects.None;
+                    rOffset = MathHelper.ToRadians(45f);
+                }
+                else
+                {
+                    FX  = SpriteEffects.None;
+                    rOffset = MathHelper.ToRadians(45f);
+                }
+            }
+            else
+            {
+                if (Projectile.spriteDirection > 0)
+                {
+                    FX  = SpriteEffects.FlipHorizontally;
+                    rOffset = MathHelper.ToRadians(135f);
+                }
+                else
+                {
+                    FX = SpriteEffects.FlipHorizontally;
+                    rOffset = MathHelper.ToRadians(135f);
+                }
+            }
+
             Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-            Main.EntitySpriteDraw(Tex, Owner.MountedCenter - Main.screenPosition, null, SweepColor * SweepOpacity, (Projectile.rotation + MathHelper.PiOver4), Tex.Size() / 2, (AdjustedScale * TexBasedMod) * ScaleMult, SpriteEffects.None);
+            Main.EntitySpriteDraw(Tex, Owner.MountedCenter - Main.screenPosition, null, SweepColor * SweepOpacity, (Projectile.rotation + MathHelper.PiOver4) + rOffset, Tex.Size() / 2, (AdjustedScale * TexBasedMod), FX);
+            Main.EntitySpriteDraw(TexH, Owner.MountedCenter - Main.screenPosition, null, SweepHighlightColor * SweepOpacity, (Projectile.rotation + MathHelper.PiOver4) + rOffset, Tex.Size() / 2, (AdjustedScale * TexBasedMod), FX);
             Opus.ReturnToDefaultDrawing(Main.spriteBatch);
         }
 
@@ -373,8 +409,10 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
                 }
             }
 
-
-            DrawSweepFX();
+            if (UsesDefaultSweepFX)
+            {
+                DrawSweepFX();
+            }
 
             DrawUnderBlade();
 

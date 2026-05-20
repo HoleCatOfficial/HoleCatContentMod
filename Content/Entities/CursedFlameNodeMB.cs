@@ -32,6 +32,7 @@ using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
+using static DestroyerTest.Content.Entities.IchorNode;
 
 namespace DestroyerTest.Content.Entities
 {
@@ -185,6 +186,8 @@ namespace DestroyerTest.Content.Entities
         public float RotSpeed;
         public int StarShootID = ModContent.ProjectileType<TenebrisStarHostile>();
         public int FlameSwarmTimer = 0;
+        public int StarTimer = 0;
+        public int StarState = 0;
         public int StarShootCount = 0;
         public int MineInterval = 0;
         public int MineCount = 0;
@@ -287,6 +290,7 @@ namespace DestroyerTest.Content.Entities
 
                         if (NPC.justHit && !DTFlags.NodeCharmEquipped && !(DormantNPCKillTally < DormantNPCKillRequirement))
                         {
+                            FablesTitleCardSystem.RegisterFablesBossIntro(FablesTitleCardSystem.CursedFlameNodeTitle.Name, FablesTitleCardSystem.CursedFlameNodeTitle.Title, 180, true, ColorLib.WretchedGradient(), ColorLib.WretchedGradient(), ColorLib.WretchedGradient(), ColorLib.WretchedGradient(), FablesTitleCardSystem.CursedFlameNodeTitle.MusicTitle, FablesTitleCardSystem.CursedFlameNodeTitle.MusicArtist);
                             CurrentAttack = AttackState.Idle;
                         }
                         break;
@@ -310,30 +314,116 @@ namespace DestroyerTest.Content.Entities
                     }
                 case AttackState.Stars:
                     {
-                        float XOffMin = -350;
-                        float XOffMax = 350;
-                        float XOff = Opus.Sine(XOffMin, XOffMax, 0.05f);
+                        const float PredictStrength = 50f;
+                        const float MoveSpeed = 28f;
+                        const float Accel = 0.06f;
 
-                        KeepToPlayer(player.Center + new Vector2(XOff, -200));
+                        const int HangTime = 40;
+                        const float ArrivalDistance = 40f;
 
-                        bool Min = Math.Abs(XOffMin - XOff) < 40;
-                        bool Max = Math.Abs(XOffMax - XOff) < 40;
+                        Vector2 predictedOffset = player.velocity * PredictStrength;
+                        Vector2 predictedPos = player.Center + predictedOffset;
 
-                        if (Math.Abs(XOff) < 3f)
+                        switch ((int)StarState)
                         {
-                            Flag3 = false;
+                            // =====================
+                            // APPROACH
+                            // Boss commits toward
+                            // predicted point
+                            // =====================
+
+                            case 0:
+                                {
+                                    Vector2 move = predictedPos - NPC.Center;
+
+                                    if (move != Vector2.Zero)
+                                        move = move.SafeNormalize(Vector2.Zero) * MoveSpeed;
+
+                                    NPC.velocity = Vector2.Lerp(NPC.velocity, move, Accel);
+
+                                    // Arrived at attack point
+                                    if (NPC.Center.Distance(predictedPos) < ArrivalDistance)
+                                    {
+                                        // Overshoot slightly
+                                        NPC.velocity *= 1.25f;
+
+                                        StarState = 1;
+                                        StarTimer = 0;
+                                    }
+
+                                    break;
+                                }
+
+                            // =====================
+                            // HANG / DRIFT
+                            // Boss glides past
+                            // the point briefly
+                            // =====================
+
+                            case 1:
+                                {
+                                    StarTimer++;
+
+                                    // Gradually slow down
+                                    NPC.velocity *= 0.97f;
+
+                                    if (StarTimer >= HangTime)
+                                    {
+                                        Stars();
+
+                                        StarShootCount++;
+
+                                        StarState = 2;
+                                        StarTimer = 0;
+                                    }
+
+                                    break;
+                                }
+
+                            // =====================
+                            // RECOVERY
+                            // Pull away before
+                            // reacquiring target
+                            // =====================
+
+                            case 2:
+                                {
+                                    StarTimer++;
+
+                                    Vector2 away =
+                                        (NPC.Center - player.Center)
+                                        .SafeNormalize(Vector2.UnitY);
+
+                                    Vector2 recoveryVel = away * 10f;
+
+                                    NPC.velocity = Vector2.Lerp(
+                                        NPC.velocity,
+                                        recoveryVel,
+                                        0.05f
+                                    );
+
+                                    if (StarTimer >= 25)
+                                    {
+                                        StarState = 0;
+                                        StarTimer = 0;
+                                    }
+
+                                    break;
+                                }
                         }
 
-                        if ((Min || Max) && !Flag3)
-                        {
-                            Flag3 = true;
-                            Stars();
-                        }
+                        // =========================
+                        // EXIT
+                        // =========================
 
                         if (StarShootCount >= 6)
                         {
                             CurrentAttack = AttackState.Mines;
+
                             StarShootCount = 0;
+
+                            StarState = 0;
+                            StarTimer = 0;
                         }
 
                         break;

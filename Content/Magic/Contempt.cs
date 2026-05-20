@@ -1,20 +1,25 @@
+using DestroyerTest.Content.Projectiles;  
+using DestroyerTest.Content.Projectiles.Weapon.Magic;
+using DestroyerTest.Content.RangedItems;
+using DestroyerTest.Content.RogueItems;
+using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
+using System.Linq;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.DataStructures;
-using DestroyerTest.Content.Projectiles;  
-using DestroyerTest.Rarity;
-using System.Linq;
-using DestroyerTest.Content.Projectiles.Weapon.Magic;
 
 namespace DestroyerTest.Content.Magic
 {
 	public class Contempt : ModItem
 	{
 
-		//Weapon Properties
+        public override void SetStaticDefaults()
+        {
+            ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<CursedHammer>();
+        }
 		public override void SetDefaults()
 		{
 			// Common Properties

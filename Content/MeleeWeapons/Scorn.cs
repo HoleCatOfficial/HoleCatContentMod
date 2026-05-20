@@ -2,6 +2,7 @@
 using DestroyerTest.Common;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Weapon.Melee;
+using DestroyerTest.Content.RangedItems;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.Resources.Cloths;
 using DestroyerTest.Rarity;
@@ -21,6 +22,7 @@ namespace DestroyerTest.Content.MeleeWeapons
         {
             DTUtils.isSpecialSwingSword.Add(Type);
             DTUtils.TooltipScaleMult[Type] = 1.25f;
+            ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<DistendedPike>();
         }
         public override void SetDefaults()
         {

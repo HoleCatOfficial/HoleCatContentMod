@@ -75,11 +75,11 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
 		public override void AI()
 		{
 
-            if (Main.rand.NextBool(3))
+            if (Main.rand.NextBool(3) && !DTOptimizationsConfig.instance.DisableExcessParticles)
             {
                 Spark Spark = new Spark();
 
-                Spark.PrepareSpark(Main.rand.NextVector2FromRectangle(Projectile.Hitbox), -(Projectile.velocity * 0.1f), 0f, DTColorUtils.Pastel(ColorLib.Soul, 0.8f), 1f, true, 40, SparkDrawMode.Additive);
+                Spark.PrepareSpark(Main.rand.NextVector2FromRectangle(Projectile.Hitbox), -(Projectile.velocity * 0.1f), 0f, DTColorUtils.Pastel(ColorLib.Soul, 0.8f), 1f, false, 40, SparkDrawMode.Additive);
                 ParticleEngine.BehindProjectiles.Add(Spark);
                 
             }

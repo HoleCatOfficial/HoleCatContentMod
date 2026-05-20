@@ -7,11 +7,16 @@ using Terraria.DataStructures;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Rarity;
 using DestroyerTest.Content.Projectiles.Weapon.Ranged;
+using DestroyerTest.Content.Magic;
 
 namespace DestroyerTest.Content.RangedItems
 {
     public class PureBow : ModItem
     {
+        public override void SetStaticDefaults()
+        {
+            ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<GloryOrb>();
+        }
         public override void SetDefaults()
         {
             Item.width = 28;

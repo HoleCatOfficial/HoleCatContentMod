@@ -23,6 +23,11 @@ ConstitutionBoss: {
 	DisplayName: Constitution
 	InternalName: Constitution
 	DespawnMessage: "{0} returns to the sky, deeming you unworthy..."
+
+	Fables: {
+		Name: Constitution
+		Title: The Heaven-Descendant Parasite
+	}
 }
 
 WyvernCorpseHead: {
@@ -45,6 +50,11 @@ WyvernCorpseHead: {
 		The meat has hardened into crimstone, and the bones have dried and hardened stronger than lizard bricks.
 		'''
 	Bestiary: Mods.DestroyerTest.NPCs.WyvernCorpseHead.Bestiary
+
+	Fables: {
+		Name: The Great Wyvern's Corpse
+		Title: Victim of the Gravest Crime
+	}
 }
 
 WyvernCorpseLegs.DisplayName: The Great Wyvern's Corpse
@@ -75,6 +85,11 @@ NightmareRoseBoss: {
 		longer locate her son in the shade world, as he had left to become an apprentice of Hekate, under the guise of seizing his true potential..."
 		- Excerpt from 'Folk Tales of Pherasia: Volume LXXIII', by Uriel XXV.
 		'''
+
+	Fables: {
+		Name: The Nightmare Rose
+		Title: Embodiment of Suffering
+	}
 }
 
 EimvurNPC: {
@@ -164,6 +179,11 @@ CursedFlameNodeMB: {
 		In response to its waning ability to spread, the Corruption, much like its holy counterpart, has taken to defending what land it already has claimed.
 		Despite the ferocity with which it attacks, it is an inanimate construct puppeteered by the invisible forces of The Corruption.
 		'''
+
+	Fables: {
+		Name: Cursed Flame Node
+		Title: Defensive Construct
+	}
 }
 
 IchorNodeMB: {
@@ -174,6 +194,11 @@ IchorNodeMB: {
 		In response to its waning ability to spread, the Crimson, much like its holy counterpart, has taken to defending what land it already has claimed.
 		Despite the ferocity with which it attacks, it is an inanimate construct puppeteered by the invisible forces of The Crimson.
 		'''
+
+	Fables: {
+		Name: Ichor Node
+		Title: Defensive Construct
+	}
 }
 
 ShadeThrower: {
@@ -230,6 +255,11 @@ BlessedNodeMB: {
 		In response to its waning ability to spread, the Hallow, much like its evil counterpart, has taken to defending what land it already has claimed.
 		Despite the ferocity with which it attacks, it is an inanimate construct puppeteered by the invisible forces of The Hallow.
 		'''
+
+	Fables: {
+		Name: Blessed Node
+		Title: Defensive Construct
+	}
 }
 
 BloodGazer.DisplayName: Blood Gazer

@@ -1,10 +1,11 @@
 using DestroyerTest.Content.Projectiles;
+using DestroyerTest.Content.Projectiles.Weapon.Melee;
+using DestroyerTest.Content.RangedItems;
+using DestroyerTest.Rarity;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using DestroyerTest.Rarity;
-using DestroyerTest.Content.Projectiles.Weapon.Melee;
 
 namespace DestroyerTest.Content.MeleeWeapons
 {
@@ -16,9 +17,11 @@ namespace DestroyerTest.Content.MeleeWeapons
 				PitchVariance = 1f, 
 			}; 
 
-            public override void SetStaticDefaults() {
+            public override void SetStaticDefaults() 
+            {
                 ItemID.Sets.SkipsInitialUseSound[Item.type] = true;
                 ItemID.Sets.Spears[Item.type] = true;
+                ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<Scorn>();
             }
 
             public override void SetDefaults() {
