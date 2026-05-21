@@ -11,6 +11,7 @@ Tile_RiftCache: {
 }
 
 Tile_VesperOre.MapEntry: Vesper Ore
+Tile_Vesper.MapEntry: Tile_ Vesper
 Tile_RiftenCrate.MapEntry: Riften Crate
 Tile_HeliciteCrate.MapEntry: Helicite Crate
 Tile_RiftPylon.MapEntry: Rift Pylon

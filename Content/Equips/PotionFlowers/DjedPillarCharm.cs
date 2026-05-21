@@ -206,7 +206,7 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
                 Player.immune = true;
                 Player.eocDash = DashTimer;
                 Player.armorEffectDrawShadowEOCShield = true;
-                if (Player.miscCounter % 5 == 0)
+                if (Player.miscCounter % 5 == 0 && Active)
                 {
                     Projectile.NewProjectile(Player.GetSource_Misc("DjedPillar"), Main.rand.NextVector2FromRectangle(Player.Hitbox), (Player.velocity * 0.5f).RotatedByRandom(1), ModContent.ProjectileType<DesertSpiritDart>(), 25, 8, Player.whoAmI);
                     SoundEngine.PlaySound(SoundID.DD2_BetsyWindAttack, Player.position);

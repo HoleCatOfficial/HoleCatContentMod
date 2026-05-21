@@ -34,7 +34,7 @@ namespace DestroyerTest.Content.Tiles
             Main.tileBlockLight[Type] = true;
 
             LocalizedText name = CreateMapEntryName();
-            AddMapEntry(new Color(119, 104, 86), name);
+            AddMapEntry(new Color(208, 182, 152), name);
 
 			DustType = ModContent.DustType<VesperOreDust>();
 			
@@ -138,6 +138,7 @@ namespace DestroyerTest.Content.Tiles
 		public VesperPass(string name, float loadWeight) : base(name, loadWeight) {
 		}
 
+		
         protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration) {
 			// progress.Message is the message shown to the user while the following code is running.
 			// Try to make your message clear. You can be a little bit clever, but make sure it is descriptive enough for troubleshooting purposes.
@@ -153,20 +154,29 @@ namespace DestroyerTest.Content.Tiles
 				// WorldGen.worldSurfaceLow is actually the highest surface tile. In practice you might want to use WorldGen.rockLayer or other WorldGen values.
 				int y = WorldGen.genRand.Next((int)GenVars.worldSurfaceLow, Main.maxTilesY);
 
-				// Then, we call WorldGen.TileRunner with random "strength" and random "steps", as well as the Tile we wish to place.
-				// Feel free to experiment with strength and step to see the shape they generate.
-				//WorldGen.TileRunner(x, y, WorldGen.genRand.Next(3, 6), WorldGen.genRand.Next(2, 6), ModContent.TileType<Tile_VesperOre>());
+                // Then, we call WorldGen.TileRunner with random "strength" and random "steps", as well as the Tile we wish to place.
+                // Feel free to experiment with strength and step to see the shape they generate.
+                //WorldGen.TileRunner(x, y, WorldGen.genRand.Next(3, 6), WorldGen.genRand.Next(2, 6), ModContent.TileType<Tile_VesperOre>());
+                List<int> ProtectedTiles = new()
+				{
+					TileID.SnowBlock,
+					TileID.Sand,
+					TileID.IceBlock,
+					TileID.HardenedSand,
+					TileID.Ash
+				};
 
-                WorldGen.TileRunner(x, y, WorldGen.genRand.Next(5, 9), WorldGen.genRand.Next(5, 9), (ushort)ModContent.TileType<Tile_VesperOre>());
-
-                WorldGen.TileRunner(x, y, WorldGen.genRand.Next(10, 18), WorldGen.genRand.Next(10, 18), (ushort)ModContent.TileType<Tile_Dreamstone>());
+                Tile tile = Framing.GetTileSafely(x, y);
+                if (tile.HasTile && !ProtectedTiles.Contains(tile.TileType))
+                {
+                    WorldGen.TileRunner(x, y, WorldGen.genRand.Next(15, 22), WorldGen.genRand.Next(15, 22), (ushort)ModContent.TileType<Tile_Dreamstone>());
+                    WorldGen.TileRunner(x, y, WorldGen.genRand.Next(5, 10), WorldGen.genRand.Next(5, 10), (ushort)ModContent.TileType<Tile_VesperOre>());
+                }
+                
 
                 // Alternately, we could check the tile already present in the coordinate we are interested.
                 // Wrapping WorldGen.TileRunner in the following condition would make the ore only generate in Snow.
-                // Tile tile = Framing.GetTileSafely(x, y);
-                // if (tile.HasTile && tile.TileType == TileID.SnowBlock) {
-                // 	WorldGen.TileRunner(.....);
-                // }
+                
             }
 		}
 	}

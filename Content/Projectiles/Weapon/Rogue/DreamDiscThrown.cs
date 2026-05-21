@@ -44,7 +44,6 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             Projectile.light = 0.5f;
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;
-            Projectile.ownerHitCheck = true;
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = 10;
         }

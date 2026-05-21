@@ -19,7 +19,8 @@ namespace DestroyerTest.Content.Tiles
 			TileObjectData.newTile.LavaDeath = false;
 			TileObjectData.addTile(Type);
 
-			AddMapEntry(new Color(158, 116, 042), Language.GetText("Vesper")); // localized text for "Metal Bar"
-		}
+            LocalizedText name = CreateMapEntryName();
+            AddMapEntry(new Color(208, 182, 152), name);
+        }
 	}
 }

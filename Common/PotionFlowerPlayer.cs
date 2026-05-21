@@ -47,7 +47,7 @@ namespace DestroyerTest.Common
 
         public override bool CanUseItem(Item item)
         {
-            if (IsRegisteredPotion(item.type))
+            if (IsRegisteredPotion(item.type) && Active)
                 return false;
 
             return base.CanUseItem(item);
