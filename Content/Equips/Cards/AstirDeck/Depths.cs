@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -33,6 +34,18 @@ namespace DestroyerTest.Content.Equips.Cards.AstirDeck
             if (player.TryGetModPlayer<DepthsPlayer>(out var deep))
             {
                 deep.Active = true;
+            }
+        }
+    }
+
+    public class DepthsGlobalItem : GlobalItem
+    {
+        public override bool InstancePerEntity => true;
+        public override void ModifyItemLoot(Item item, ItemLoot itemLoot)
+        {
+            if ((item.type == ItemID.IronCrate || item.type == ItemID.WoodenCrate))
+            {
+                itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<Depths>(), 1, 1, 1));
             }
         }
     }
@@ -68,6 +81,7 @@ namespace DestroyerTest.Content.Equips.Cards.AstirDeck
         bool CanPlaySound = false;
         public override void PostUpdateEquips()
         {
+            Heat = (int)MathHelper.Clamp(Heat, 0, MaxHeat);
             if (Active)
             {
                 int ty = ModContent.ProjectileType<DepthsAudioProjectile>();

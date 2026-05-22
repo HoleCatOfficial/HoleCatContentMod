@@ -38,9 +38,10 @@ namespace DestroyerTest.Content.Equips.Cards.AstirDeck
 
     public class ExpeditionGlobal : GlobalItem
     {
+        public override bool InstancePerEntity => true;
         public override void ModifyItemLoot(Item item, ItemLoot itemLoot)
         {
-            if ((item.type == ItemID.IronCrate || item.type == ItemID.WoodenCrate) && Main.LocalPlayer.ZoneDirtLayerHeight)
+            if ((item.type == ItemID.IronCrate || item.type == ItemID.WoodenCrate))
             {
                 itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<Expedition>(), 20, 1, 1));
             }

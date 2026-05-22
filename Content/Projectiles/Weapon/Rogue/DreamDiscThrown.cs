@@ -117,11 +117,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             Opus.RingSpreadDust(ModContent.DustType<ColorableNeonDust>(), 12, Projectile.Center, 10, 40, Main.DiscoColor, 1f, 3f, offset: offset);
      
 
-            float interval = 10f / speedfactor;
+            float interval = 6f / speedfactor;
             if (timer >= interval)
             {
                 timer = 0;
-                SoundEngine.PlaySound(DTAssetLib.SwordSounds.ThinSlice with { MaxInstances = 0, PitchVariance = 0.9f }, Projectile.Center);
+                SoundEngine.PlaySound(SoundID.Item1 with { MaxInstances = 0, PitchVariance = 0.9f }, Projectile.Center);
             }
 
             if (Projectile.timeLeft > 180)
@@ -154,6 +154,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             }
             Projectile.timeLeft += 2;
             target.AddBuff(BuffID.Bleeding, 600);
+
+            SoundEngine.PlaySound(DTAssetLib.SwordSounds.ThinSlice with { MaxInstances = 0, PitchVariance = 0.9f }, Projectile.Center);
             SoundEngine.PlaySound(DTAssetLib.IdriGreatswordSlice(ChildSafety.Disabled), Projectile.Center);
 
             Vector2 li = target.Center - Projectile.Center;
