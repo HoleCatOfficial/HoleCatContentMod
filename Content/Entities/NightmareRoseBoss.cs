@@ -2132,7 +2132,7 @@ namespace DestroyerTest.Content.Entities
                 return;
 
             DTConfig cfg = ModContent.GetInstance<DTConfig>();
-            ScreenshakePlayer ScreenShake = ModContent.GetInstance<ScreenshakePlayer>();
+            ScreenshakePlayer ScreenShake = Main.LocalPlayer.GetModPlayer<ScreenshakePlayer>();
 
             if (!cfg.DragCamera)
                 return;
@@ -2165,12 +2165,12 @@ namespace DestroyerTest.Content.Entities
             }
             else
             {
-                if (!ScreenShake.isShaking)
-                {
-                    // smooth follow
-                    float lerpFactor = anyBossActive ? 0.08f : 0.12f;
-                    camPos = Vector2.Lerp(camPos, target, lerpFactor);
-                }
+
+                // smooth follow
+                float lerpFactor = anyBossActive ? 0.08f : 0.12f;
+
+                camPos = Vector2.Lerp(camPos, target, lerpFactor);
+                
             }
 
             Vector2 shakeOffset = ScreenShake.GetShakeOffset();

@@ -283,7 +283,11 @@ namespace DestroyerTest.Common.NPC_Folder
                         SoundEngine.PlaySound(TenebrisSpawn);
                         Main.NewText("Your world and the Shade World have connected!", ColorLib.TenebrisMagenta);
                     }
+
+                    CorruptionModificationSystem.Generation();
                 }
+
+
                 DownedBossSystem.downedCultistBoss = true;
                 if (!DTFlags.TenebrisCanSpawnInWorldEvilBiome)
                 {

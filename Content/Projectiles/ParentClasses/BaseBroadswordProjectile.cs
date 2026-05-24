@@ -83,7 +83,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             if (targetAngle == Vector2.Zero)
                 targetAngle = Vector2.UnitX * Projectile.spriteDirection;
 
-            LastSwing = Owner.direction == 1 ? -1 : 1;
+            LastSwing = Owner.direction == 1 ? 1 : -1;
         }
 
         public override void SendExtraAI(BinaryWriter writer)
@@ -206,6 +206,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         public float SlashProgress = 0f;
 
         public virtual float SwingSpeed { get; set; } = 0.15f;
+        public virtual float WaitTimeMultiplier { get; set; } = 1f;
         public void ControlRotation()
         {
             float speedFactor = Owner.GetTotalAttackSpeed<DTTrueMeleeClass>();
@@ -218,7 +219,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
                         if (!SetPos)
                         {
                             Projectile.rotation = DownPoint;
-                            WaitTimer = (int)(10 * Owner.GetTotalAttackSpeed<DTTrueMeleeClass>());
+                            WaitTimer = (int)((10 * WaitTimeMultiplier) * speedFactor);
                             SlashStartRotation = DownPoint;
                             SetPos = true;
                         }
@@ -250,7 +251,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
                         if (!SetPos)
                         {
                             Projectile.rotation = UpPoint;
-                            WaitTimer = (int)(10 * Owner.GetTotalAttackSpeed<DTTrueMeleeClass>());
+                            WaitTimer = (int)((10 * WaitTimeMultiplier) * speedFactor);
                             SlashStartRotation = UpPoint;
                             SetPos = true;
                         }
@@ -324,8 +325,8 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         private void DrawSweepFX()
         {
             var Tex = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/CircularSlash").Value;
-            var TexH = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/CircularSlash2").Value;
-            float TexBasedMod = (Projectile.Size.Length() * 0.015f);
+            var TexH = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/CircularSlashEdgeHighlight").Value;
+            float TexBasedMod = (Projectile.Size.Length() * 0.016f);
             float rOffset = 0f;
 
             SpriteEffects FX = SpriteEffects.None;
@@ -348,18 +349,18 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
                 if (Projectile.spriteDirection > 0)
                 {
                     FX  = SpriteEffects.FlipHorizontally;
-                    rOffset = MathHelper.ToRadians(135f);
+                    rOffset = MathHelper.ToRadians(45f);
                 }
                 else
                 {
                     FX = SpriteEffects.FlipHorizontally;
-                    rOffset = MathHelper.ToRadians(135f);
+                    rOffset = MathHelper.ToRadians(45f);
                 }
             }
 
             Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-            Main.EntitySpriteDraw(Tex, Owner.MountedCenter - Main.screenPosition, null, SweepColor * SweepOpacity, (Projectile.rotation + MathHelper.PiOver4) + rOffset, Tex.Size() / 2, (AdjustedScale * TexBasedMod), FX);
-            Main.EntitySpriteDraw(TexH, Owner.MountedCenter - Main.screenPosition, null, SweepHighlightColor * SweepOpacity, (Projectile.rotation + MathHelper.PiOver4) + rOffset, Tex.Size() / 2, (AdjustedScale * TexBasedMod), FX);
+            Main.EntitySpriteDraw(Tex, Owner.MountedCenter - Main.screenPosition, null, SweepColor * SweepOpacity, (Projectile.rotation + MathHelper.PiOver4) + rOffset, Tex.Size() / 2, (AdjustedScale * TexBasedMod) * ScaleMult, FX);
+            Main.EntitySpriteDraw(TexH, Owner.MountedCenter - Main.screenPosition, null, SweepHighlightColor * SweepOpacity, (Projectile.rotation + MathHelper.PiOver4) + rOffset, Tex.Size() / 2, (AdjustedScale * TexBasedMod) * ScaleMult, FX);
             Opus.ReturnToDefaultDrawing(Main.spriteBatch);
         }
 
@@ -445,7 +446,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
         public override bool? CanHitNPC(NPC target)
         {
-            return HitCooldown <= 0 && !target.friendly && !OpusNPCDropHelper.IgnoreEnemies.Contains(target.type);
+            return HitCooldown <= 0 && CurrentState != State.Wait && !target.friendly /*&& !OpusNPCDropHelper.IgnoreEnemies.Contains(target.type)*/;
         }
 
         public virtual void HitNPCEffects(NPC npc, NPC.HitInfo hit)

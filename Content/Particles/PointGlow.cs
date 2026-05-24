@@ -32,7 +32,16 @@ namespace DestroyerTest.Content.Particles
             this.scale = Scale;
         }
 
-        
+        public void Initialize(Vector2 Position, Vector2 Velocity, Color Color, float Scale, int Lifetime)
+        {
+            this.position = Position;
+            this.velocity = Velocity;
+            this.color = Color;
+            this.scale = Scale;
+            this.MaxLifetime = Lifetime;
+        }
+
+
         public override void Update(ref ParticleRendererSettings settings)
         {
             float Progress = (float)Lifetime / MaxLifetime;

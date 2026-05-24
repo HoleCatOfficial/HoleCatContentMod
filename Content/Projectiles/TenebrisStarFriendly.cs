@@ -1,21 +1,22 @@
-using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
+using DestroyerTest.Content.Equips;
 using DestroyerTest.Content.Particles;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using ReLogic.Content;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using OpusLib;
-using DestroyerTest.Content.Equips;
 
 namespace DestroyerTest.Content.Projectiles
 {
@@ -33,12 +34,14 @@ namespace DestroyerTest.Content.Projectiles
 
 		public float DelayTimer;
 
-		public override void SetStaticDefaults()
-		{
-			ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true;
-		}
+        public override void SetStaticDefaults()
+        {
+			ProjectileID.Sets.CultistIsResistantTo[Type] = true;
+            ProjectileID.Sets.TrailCacheLength[Type] = 160;
+            ProjectileID.Sets.TrailingMode[Type] = 3;
+        }
 
-		public override void SetDefaults()
+        public override void SetDefaults()
 		{
 			Projectile.width = 50;
 			Projectile.height = 50;
@@ -60,47 +63,12 @@ namespace DestroyerTest.Content.Projectiles
 
 
 			SpriteBatch spriteBatch = Main.spriteBatch;
-			DTUtils Utility = new DTUtils();	
 
-			DTOptimizationsConfig OptCfg = ModContent.GetInstance<DTOptimizationsConfig>();
-            if (!OptCfg.DisableExcessTrails)
-            {
-				Opus.StartSpriteBatchForTrails(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-				
-				if (TrailPositions.Count > 1)
-				{
-					List<ColoredVertex> ve = new List<ColoredVertex>();
-					float a = 0;
+            DTTrail.DrawTrail(spriteBatch, DTAssetLib.Streak(6).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 15, lightColor * 0.5f, trailOffset, 1);
 
-					for (int i = TrailPositions.Count - 1; i > 0; i--)
-					{
-						float t = 1f - (i / (float)TrailPositions.Count); // fade toward tail
-						Color b = lightColor * t;
+            DTTrail.DrawTrail(spriteBatch, DTAssetLib.Streak(14).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 15, lightColor, trailOffset, 1);
 
-						Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
-						Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * 20;
-						Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * 20;
-
-						DTUtils.AddStrips(ve, TrailPositions, i, offset, offset2, t, b, trailOffset);
-					}
-
-
-					GraphicsDevice gd = Main.graphics.GraphicsDevice;
-					if (ve.Count >= 3)
-					{
-						gd.Textures[0] = DTAssetLib.Streak(1).Value;
-						gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2);
-					}
-				}
-			}
-
-			Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-
-			Opus.DrawGlowOnProj(Projectile, lightColor, true);
-
-			Opus.ReturnToDefaultDrawing(spriteBatch);
-
-			Opus.DrawTextureOnProj(DTAssetLib.Star(3), Projectile, Color.White, true, 0f, 0.9f, 0.9f);
+            Opus.DrawTextureOnProj(DTAssetLib.Star(3), Projectile, Color.White, true, 0f, 0.9f, 0.9f);
 
 			return false;
 		}
@@ -110,43 +78,9 @@ namespace DestroyerTest.Content.Projectiles
             return DelayTimer >= 10;
         }
 
-		public List<Vector2> TrailPositions = new();
-		public List<float> TrailRotations = new();
-		private const int TrailLength = 400;
-
 		public override void AI()
 		{
-
-
-			Vector2 lastPos = TrailPositions.Count > 0 ? TrailPositions[0] : Projectile.Center;
-			Vector2 newPos  = Projectile.Center;
-
-			float dist = Vector2.Distance(lastPos, newPos);
-			float step = 1f; // how closely to sample. tweak this!
-
-			if (dist > 0f)
-			{
-				int segments = (int)(dist / step);
-
-				for (int i = 1; i <= segments; i++)
-				{
-					Vector2 pos = Vector2.Lerp(lastPos, newPos, i / (float)segments);
-					TrailPositions.Insert(0, pos);
-					TrailRotations.Insert(0, Projectile.rotation);
-				}
-			}
-			else
-			{
-				TrailPositions.Insert(0, newPos);
-				TrailRotations.Insert(0, Projectile.rotation);
-			}
-
-
-			// Cap trail
-			while (TrailPositions.Count > TrailLength)
-				TrailPositions.RemoveAt(TrailPositions.Count - 1);
-			while (TrailRotations.Count > TrailLength)
-				TrailRotations.RemoveAt(TrailRotations.Count - 1);
+			Projectile.ResetExcessTrailPoints();
 
 			DelayTimer++;
 			
@@ -250,12 +184,13 @@ namespace DestroyerTest.Content.Projectiles
 	{
 		public override string Texture => DTUtils.NoTexture;
 
-		public override void SetStaticDefaults()
-		{
+        public override void SetStaticDefaults()
+        {
+            ProjectileID.Sets.TrailCacheLength[Type] = 160;
+            ProjectileID.Sets.TrailingMode[Type] = 3;
+        }
 
-		}
-
-		public override void SetDefaults()
+        public override void SetDefaults()
 		{
 			Projectile.width = 50;
 			Projectile.height = 50;
@@ -277,45 +212,10 @@ namespace DestroyerTest.Content.Projectiles
 
 
 			SpriteBatch spriteBatch = Main.spriteBatch;
-			DTUtils Utility = new DTUtils();
 
-			DTOptimizationsConfig OptCfg = ModContent.GetInstance<DTOptimizationsConfig>();
-            if (!OptCfg.DisableExcessTrails)
-            {
-				Opus.StartSpriteBatchForTrails(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-				
-				if (TrailPositions.Count > 1)
-				{
-					List<ColoredVertex> ve = new List<ColoredVertex>();
-					float a = 0;
+            DTTrail.DrawTrail(spriteBatch, DTAssetLib.Streak(6).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 15, lightColor * 0.5f, trailOffset, 1);
 
-					for (int i = TrailPositions.Count - 1; i > 0; i--)
-					{
-						float t = 1f - (i / (float)TrailPositions.Count); // fade toward tail
-						Color b = lightColor * t;
-
-						Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
-						Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * 20;
-						Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * 20;
-
-						DTUtils.AddStrips(ve, TrailPositions, i, offset, offset2, t, b, trailOffset);
-					}
-
-
-					GraphicsDevice gd = Main.graphics.GraphicsDevice;
-					if (ve.Count >= 3)
-					{
-						gd.Textures[0] = DTAssetLib.Streak(1).Value;
-						gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2);
-					}
-				}
-			}
-
-			Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-
-			Opus.DrawGlowOnProj(Projectile, lightColor, true);
-
-			Opus.ReturnToDefaultDrawing(spriteBatch);
+            DTTrail.DrawTrail(spriteBatch, DTAssetLib.Streak(14).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 15, lightColor, trailOffset, 1);
 
 			Opus.DrawTextureOnProj(DTAssetLib.Star(3), Projectile, Color.White, true, 0f, 0.9f, 0.9f);
 
@@ -323,47 +223,13 @@ namespace DestroyerTest.Content.Projectiles
 		}
 
 
-		public List<Vector2> TrailPositions = new();
-		public List<float> TrailRotations = new();
-		private const int TrailLength = 400;
+	
 
 		public override void AI()
 		{
+            Projectile.ResetExcessTrailPoints();
 
-
-			Vector2 lastPos = TrailPositions.Count > 0 ? TrailPositions[0] : Projectile.Center;
-			Vector2 newPos  = Projectile.Center;
-
-			float dist = Vector2.Distance(lastPos, newPos);
-			float step = 1f; // how closely to sample. tweak this!
-
-			if (dist > 0f)
-			{
-				int segments = (int)(dist / step);
-
-				for (int i = 1; i <= segments; i++)
-				{
-					Vector2 pos = Vector2.Lerp(lastPos, newPos, i / (float)segments);
-					TrailPositions.Insert(0, pos);
-					TrailRotations.Insert(0, Projectile.rotation);
-				}
-			}
-			else
-			{
-				TrailPositions.Insert(0, newPos);
-				TrailRotations.Insert(0, Projectile.rotation);
-			}
-
-
-			// Cap trail
-			while (TrailPositions.Count > TrailLength)
-				TrailPositions.RemoveAt(TrailPositions.Count - 1);
-			while (TrailRotations.Count > TrailLength)
-				TrailRotations.RemoveAt(TrailRotations.Count - 1);
-			
-			Projectile.rotation += Projectile.direction * 0.07f;
-
-			
+            Projectile.rotation += Projectile.direction * 0.07f;
 
 			Lighting.AddLight(Projectile.Center, ColorLib.TenebrisGradient.ToVector3() * 0.2f);
 		}

@@ -2174,10 +2174,10 @@ WyvernCorpseLootBag: {
 }
 
 GreatFlayer: {
-	DisplayName: Great Flayer
+	DisplayName: The Great Flayer
 	Tooltip:
 		'''
-		Every third Swing is a spin, shooting teeth in all directions.
+		"On-hit effects coming soon!" -HoleCat
 		Right click to perform a short dash.
 		'''
 }
@@ -2194,7 +2194,7 @@ DeadlyBlossom: {
 		Allows you to spawn a small rose blossom at your position. Staying within a vicinity of the blossom will increase Defense and Damage Reduction.
 
 		'A small remnant of the rose. Without the power of Idri's soul to sustain its massive body, it has withered and crumbled away.
-		It's dry, putrid form is kept from truly spoiling by cursed flames that continue to burn through it.
+		Its dry, putrid form is kept from truly spoiling by cursed flames that continue to burn through it.
 		The end result of any case in which the corruption is separated from its host.'
 		'''
 }
@@ -4548,8 +4548,10 @@ ShadeHeart: {
 		'''
 		22% increased all-class damage.
 		10% chance for minions to inflict Shimmering Flames on Hit.
+		+20 Melee Armor penetration.
 		Grants immunity to shimmering flames.
 		Getting hit will release a burst of homing Tenebris Stars.
+		Natural life regen increased by 40%
 		You emit light.
 		'''
 }
@@ -4597,7 +4599,7 @@ Instinct: {
 
 Expidition: {
 	DisplayName: Expidition
-	Tooltip: ""
+	Tooltip: "Mining speed increased."
 }
 
 HoleCatHead: {
@@ -4650,4 +4652,9 @@ Depths: {
 		As heat increases, weapon damage increases up to a 60% increase, but, defense decreases to a max of 15 defense lost.
 		Being wet or in the snow biome accelerates heat loss.
 		'''
+}
+
+TCTool: {
+	DisplayName: TC Tool  (DEBUG)
+	Tooltip: "Flags your world as being fit to imbue the shade world invasion into the corruption. This will be undone when you leave the world unless the default conditions are met."
 }

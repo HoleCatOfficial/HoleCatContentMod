@@ -33,13 +33,32 @@ namespace DestroyerTest.Common.Systems
             return Main.keyState.IsKeyDown(key) && !Main.oldKeyState.IsKeyDown(key);
         }
 
+        public static bool TenebrisSpawnRequirements(NPCSpawnInfo spawnInfo, bool surface = true)
+        {
+            
+            foreach (NPC N in Main.ActiveNPCs)
+            {
+                if ((N.type == NPCID.LunarTowerNebula || N.type == NPCID.LunarTowerSolar || N.type == NPCID.LunarTowerVortex || N.type == NPCID.LunarTowerStardust) && spawnInfo.Player.Center.Distance(N.Center) < 100)
+                { 
+                    return false;
+                }
+            }
+            
+
+            if (!surface)
+            {
+                return spawnInfo.Player.ZoneCorrupt && (spawnInfo.Player.ZoneDirtLayerHeight || spawnInfo.Player.ZoneRockLayerHeight) == true && DTFlags.TenebrisCanSpawnInWorldEvilBiome == true;
+            }
+            return spawnInfo.Player.ZoneCorrupt && DTFlags.TenebrisCanSpawnInWorldEvilBiome == true;
+        }
+
         public static bool Gen = false;
         public override void PostUpdateWorld()
         {
             
             if (!Gen && DTFlags.TenebrisCanSpawnInWorldEvilBiome)
             {
-                Generation();
+                //Generation();
                 Gen = true;
             }
             
@@ -53,7 +72,7 @@ namespace DestroyerTest.Common.Systems
 
         }
 
-        public void Generation()
+        public static void Generation()
         {
             Main.NewText(ConversionMessage.Value, ColorLib.TenebrisGradient);
 

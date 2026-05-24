@@ -654,6 +654,8 @@ namespace DestroyerTest.Common
 
         public static HashSet<int> isDevItem = new();
 
+        public static HashSet<int> NeedsRework = new();
+
         public static int RandomDirection(int Chance)
         {
             return Main.rand.NextBool(Chance) ? 1 : -1;
@@ -1938,6 +1940,7 @@ namespace DestroyerTest.Common
             public static SoundStyle BrightBell = new SoundStyle($"{Path}/BrightBell");
             public static SoundStyle DarkMagicImpact = new SoundStyle($"{Path}/DarkMagicImpact", 3);
             public static SoundStyle DarkShot = new SoundStyle($"{Path}/DarkShot", 3);
+            public static SoundStyle Deflect = new SoundStyle($"{Path}/Deflect");
             public static SoundStyle DreamHit = new SoundStyle($"{Path}/DreamHit", 4);
             public static SoundStyle EnergyBounce = new SoundStyle($"{Path}/EnergyBounce", 3);
             public static SoundStyle ExplosiveImpactSmall = new SoundStyle($"{Path}/ExplosiveImpactSmall");
@@ -1950,7 +1953,7 @@ namespace DestroyerTest.Common
             public static SoundStyle LightMetalHit = new SoundStyle($"{Path}/LightMetalHit", 4);
             public static SoundStyle Malevolence = new SoundStyle($"{Path}/MalevolenceHit");
             public static SoundStyle MagicBeep = new SoundStyle($"{Path}/MagicBeep", 3);
-            public static SoundStyle MetalImpact = new SoundStyle($"{Path}/MetalImpact", 3);
+            public static SoundStyle MetalImpact = new SoundStyle($"{Path}/MetalImpactV1_", 3);
             public static SoundStyle ShortShine = new SoundStyle($"{Path}/ShortShine", 3);
             public static SoundStyle StellarFox = new SoundStyle($"{Path}/StellarFoxImpact", 5);
             public static SoundStyle SpiritOfJusticeParry = new SoundStyle($"{Path}/SpiritOfJusticeParry");
@@ -1968,6 +1971,7 @@ namespace DestroyerTest.Common
             public static SoundStyle HeavySwing = new SoundStyle($"{Path}/HeavySwing", 3);
             public static SoundStyle HellSword = new SoundStyle($"{Path}/HellSword", 3);
             public static SoundStyle LightGoreCut = new SoundStyle($"{Path}/LightGoreCut", 4);
+            public static SoundStyle LightSnap = new SoundStyle($"{Path}/LightSnap");
             public static SoundStyle MagicSwing = new SoundStyle($"{Path}/MagicSwing", 3);
             public static SoundStyle MediumSwing = new SoundStyle($"{Path}/MediumSwing", 3);
             public static SoundStyle MediumHeavySwing = new SoundStyle($"{Path}/MediumHeavySwing", 3);
@@ -1976,6 +1980,7 @@ namespace DestroyerTest.Common
             public static SoundStyle QuickSwing = new SoundStyle($"{Path}/QuickSwing", 4);
             public static SoundStyle SwiftSwing = new SoundStyle($"{Path}/SwiftSwing1");
             public static SoundStyle Slam = new SoundStyle($"{Path}/Slam", 2);
+            public static SoundStyle SpinWave = new SoundStyle($"{Path}/SpinWave");
             public static SoundStyle TenebrisSwing = new SoundStyle($"{Path}/TenebrisSwing", 3);
             public static SoundStyle ThinSlice = new SoundStyle($"{Path}/ThinSlice", 5);
             public static SoundStyle StandardSwing = new SoundStyle($"{Path}/StandardSwing");

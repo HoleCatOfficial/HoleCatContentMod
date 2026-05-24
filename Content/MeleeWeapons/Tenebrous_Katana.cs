@@ -27,7 +27,7 @@ namespace DestroyerTest.Content.MeleeWeapons
         }
 
         public override void SetDefaults() {
-			Item.damage = 200;
+			Item.damage = 325;
             Item.DamageType = ModContent.GetInstance<DTTrueMeleeClass>(); // Deals melee damage
             Item.width = 88;
 			Item.height = 196;

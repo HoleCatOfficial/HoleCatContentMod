@@ -146,7 +146,7 @@ namespace DestroyerTest.Content.Equips
         {
             if (Active)
             {
-                regen *= 1.8f;
+                regen *= 1.4f;
             }
         }
     }

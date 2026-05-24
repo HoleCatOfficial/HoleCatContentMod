@@ -17,6 +17,7 @@ using Terraria.Localization;
 using System;
 using Microsoft.Xna.Framework.Graphics;
 using BreadLibrary.Core.Graphics.Pixelation;
+using OpusLib;
 
 namespace DestroyerTest.Content.Equips.Cards.RiftenDeck
 {
@@ -77,7 +78,7 @@ namespace DestroyerTest.Content.Equips.Cards.RiftenDeck
 		}
         public override int Radius => 40;
         public override Color themeColor => ColorLib.Rift;
-        public override SoundStyle Hit => DTAssetLib.Impacts.EnergyBounce;
+        public override SoundStyle Hit => DTAssetLib.Impacts.Deflect;
         public override SoundStyle Break => DTAssetLib.Impacts.IceImpact;
         public override NetworkText[] DeathMSGs => new NetworkText[]
         {
@@ -107,54 +108,38 @@ namespace DestroyerTest.Content.Equips.Cards.RiftenDeck
         private Vector2 cachedCenter;
         private bool hasCachedData;
 
+        PlayerDrawSet D;
+
         protected override void Draw(ref PlayerDrawSet drawInfo)
         {
-            var Shield = ModContent.GetInstance<HollowShield>();
-            
-            Color color = Shield.themeColor;
-            var position = drawInfo.Center - Main.screenPosition;
-			position = new Vector2((int)position.X, (int)position.Y);
-
-            cachedCenter = drawInfo.Center;
-            /*
-            drawInfo.DrawDataCache.Add(new DrawData(
-                DTAssetLib.ShieldRing.Value,
-                position,
-                null,
-                color with {A = 0},
-                0f,
-                DTAssetLib.ShieldRing.Size() / 2,
-                Shield.Radius / (DTAssetLib.ShieldRing.Value.Width / 2f),
-                SpriteEffects.None,
-                0
-            ));
-            */
+            D = drawInfo;
         }
 
         void IDrawPixelated.DrawPixelated(SpriteBatch spriteBatch)
         {
-            if (!hasCachedData)
-                return;
 
-            var Shield = ModContent.GetInstance<HollowShield>();
+            var Shield = D.drawPlayer.GetModPlayer<HollowShield>();
             Color color = Shield.themeColor;
 
-            var position = cachedCenter - Main.screenPosition;
-            position = new Vector2((int)position.X, (int)position.Y);
+            var position = D.drawPlayer.Center - Main.screenPosition;
+
+            Opus.StartSpriteBatchPixelated(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
 
             spriteBatch.Draw(
-                DTAssetLib.ShieldRing.Value,
+                DTAssetLib.BloomRingSharp.Value,
                 position,
                 null,
                 color with { A = 0 },
                 0f,
-                DTAssetLib.ShieldRing.Size() / 2,
-                Shield.Radius / (DTAssetLib.ShieldRing.Value.Width / 2f),
+                DTAssetLib.BloomRingSharp.Value.Size() / 2,
+                Shield.Radius / (DTAssetLib.BloomRingSharp.Value.Width / 2f),
                 SpriteEffects.None,
                 0f
             );
 
-            hasCachedData = false; // optional: avoids stale draws
+            Opus.ReturnToDefaultDrawing(spriteBatch);
+
+            //hasCachedData = false; // optional: avoids stale draws
         }
     }
 }

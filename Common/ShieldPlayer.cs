@@ -22,6 +22,7 @@ using System.Linq;
 using DestroyerTest.Content.Dusts;
 using FargowiltasSouls.Common.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Particles;
+using BreadLibrary.Core.Utilities;
 
 namespace DestroyerTest.Common
 {
@@ -183,14 +184,19 @@ namespace DestroyerTest.Common
 
                 List<Dust> WallDusts = new List<Dust>();
 
-                var WallDustPositions = Opus.GetEquidistantOrbitVectors(5, Player.Center, (0.05f * Player.direction) + ((0.0005f * Player.velocity.Length()) * Player.direction), Radius);
+                var vel = Player.velocity;
+                vel.Normalize();
+                var len = vel.Length();
+               
+
+                var WallDustPositions = Opus.GetEquidistantOrbitVectors(5, Player.Center, (0.05f * Player.direction) /*+ ((0.0005f * len) * Player.direction)*/, Radius);
                 foreach(Vector2 p in WallDustPositions)
                 {
                     Dust WallDust = Dust.NewDustPerfect(p, ModContent.DustType<ColorableNeonDust>(), Vector2.Zero, 0, themeColor, 1.35f);
                     WallDusts.Add(WallDust);
 
                     PointGlowPreMultiplied Glow = new PointGlowPreMultiplied();
-                    Glow.Initialize(p, Vector2.Zero, themeColor * 0.75f, 0.3f);
+                    Glow.Initialize(p, Vector2.Zero, themeColor * 0.75f, 0.3f, 30);
                     ParticleEngine.Particles.Add(Glow);
                 }
 

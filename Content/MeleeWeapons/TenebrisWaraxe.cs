@@ -52,7 +52,7 @@ namespace DestroyerTest.Content.MeleeWeapons
 
         public override bool CanUseItem(Player player)
         {
-            return player.ownedProjectileCounts[Item.shoot] < 1;
+            return player.ownedProjectileCounts[Item.shoot] < 3;
         }
 
         // Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.

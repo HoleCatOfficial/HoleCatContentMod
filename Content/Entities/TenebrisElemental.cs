@@ -101,7 +101,7 @@ namespace DestroyerTest.Content.Entities
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
-            if ((spawnInfo.Player.ZoneCorrupt == true || spawnInfo.Player.ZoneShimmer == true) && DTFlags.TenebrisCanSpawnInWorldEvilBiome == true)
+            if (CorruptionModificationSystem.TenebrisSpawnRequirements(spawnInfo))
             {
                 return 0.4f;
             }

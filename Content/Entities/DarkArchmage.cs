@@ -92,16 +92,16 @@ namespace DestroyerTest.Content.Entities
             NPC.HitSound = Hit;
             NPC.DeathSound = Kill;
             NPC.noGravity = true;
-            NPC.aiStyle = NPCAIStyleID.HoveringFighter;
+            NPC.aiStyle = NPCAIStyleID.Firefly;
             // Sets the above
             NPC.lavaImmune = false;
             NPC.noTileCollide = true;
-            NPC.knockBackResist = 0.25f;
+            NPC.knockBackResist = 0f;
         }
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
-            if (spawnInfo.Player.ZoneCorrupt && (spawnInfo.Player.ZoneDirtLayerHeight || spawnInfo.Player.ZoneRockLayerHeight) == true && DTFlags.TenebrisCanSpawnInWorldEvilBiome == true)
+            if (CorruptionModificationSystem.TenebrisSpawnRequirements(spawnInfo, false))
             {
                 return 0.8f;
             }
@@ -134,7 +134,7 @@ namespace DestroyerTest.Content.Entities
             Player player = Main.player[NPC.target];
 
             NPC.rotation = 0.05f * NPC.velocity.Length();
-            NPC.spriteDirection = NPC.direction;
+            NPC.spriteDirection = Math.Sign(NPC.velocity.X) * -1;
 
             if (Main.GameUpdateCount % 120 == 0)
             {

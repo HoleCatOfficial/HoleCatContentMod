@@ -1,20 +1,21 @@
+using DestroyerTest.Common;
+using DestroyerTest.Common.Systems;
+using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Entities;
+using DestroyerTest.Content.Projectiles;
+using DestroyerTest.Content.Resources;
+using DestroyerTest.Content.RiftBiome;
 using Microsoft.Xna.Framework;
+using System;
 using System.IO;
 using Terraria;
+using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.Audio;
-using System;
-using DestroyerTest.Content.RiftBiome;
 using Terraria.ModLoader.Utilities;
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Common;
-using Terraria.DataStructures;
-using DestroyerTest.Content.Buffs;
-using Terraria.GameContent.ItemDropRules;
-using DestroyerTest.Content.Resources;
 
 namespace DestroyerTest.Content.Entities
 {
@@ -100,7 +101,7 @@ namespace DestroyerTest.Content.Entities
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
-            if (spawnInfo.Player.ZoneCorrupt == true && DTFlags.TenebrisCanSpawnInWorldEvilBiome == true)
+            if (CorruptionModificationSystem.TenebrisSpawnRequirements(spawnInfo))
             {
                 return 0.7f;
             }

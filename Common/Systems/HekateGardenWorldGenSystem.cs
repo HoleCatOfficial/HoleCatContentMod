@@ -52,7 +52,7 @@ namespace DestroyerTest.Common.Systems
             
             if (JustPressed(Keys.F))
             {
-                VesperGenTest((int)Main.MouseWorld.X / 16, (int)Main.MouseWorld.Y / 16);
+                //VesperGenTest((int)Main.MouseWorld.X / 16, (int)Main.MouseWorld.Y / 16);
 
 
 
