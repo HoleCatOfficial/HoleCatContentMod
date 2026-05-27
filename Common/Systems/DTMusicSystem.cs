@@ -53,6 +53,8 @@ internal class MusicDisplayCalls : ModSystem
             LocalizedText displayName = Language.GetText($"Mods.DestroyerTest.Music.{name}");
 
             display.Call("AddMusic", (short)MusicLoader.GetMusicSlot(Mod, path), displayName, author, modName, null, colors);
+
+            Mod.Logger.InfoFormat("Registered Music Display entry for {0}", displayName);
         }
 
         void AddMusic_Rift(string path, string name, string AuthorName)
@@ -68,6 +70,8 @@ internal class MusicDisplayCalls : ModSystem
             };
 
             display.Call("AddMusic", (short)MusicLoader.GetMusicSlot(Mod, path), displayName, author, modName, null, FranciumColorsRift);
+
+            Mod.Logger.InfoFormat("Registered Music Display entry for {0}", displayName);
         }
 
 

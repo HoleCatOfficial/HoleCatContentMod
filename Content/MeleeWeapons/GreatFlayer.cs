@@ -17,7 +17,11 @@ namespace DestroyerTest.Content.MeleeWeapons
 
 	public class GreatFlayer : ModItem
 	{
-
+        public override void SetStaticDefaults()
+        {
+			DTUtils.TooltipScaleMult[Type] = 1.1f;
+			DTUtils.isSpecialSwingSword.Add(Type);
+        }
 		public override void SetDefaults() 
 		{
 
@@ -28,7 +32,7 @@ namespace DestroyerTest.Content.MeleeWeapons
             Item.useStyle = ItemUseStyleID.Shoot;
 			Item.knockBack = 17;
 			Item.autoReuse = true;
-			Item.damage = 500;
+			Item.damage = 1100;
 			Item.DamageType = DamageClass.Melee;
 			Item.noMelee = true;
 			Item.noUseGraphic = true;

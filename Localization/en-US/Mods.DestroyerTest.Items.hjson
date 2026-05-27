@@ -4599,7 +4599,7 @@ Instinct: {
 
 Expidition: {
 	DisplayName: Expidition
-	Tooltip: "Mining speed increased."
+	Tooltip: Mining speed increased.
 }
 
 HoleCatHead: {
@@ -4656,5 +4656,51 @@ Depths: {
 
 TCTool: {
 	DisplayName: TC Tool  (DEBUG)
-	Tooltip: "Flags your world as being fit to imbue the shade world invasion into the corruption. This will be undone when you leave the world unless the default conditions are met."
+	Tooltip: Flags your world as being fit to imbue the shade world invasion into the corruption. This will be undone when you leave the world unless the default conditions are met.
+}
+
+CorruptionClaws: {
+	DisplayName: Corruption Claws
+	Tooltip: ""
+}
+
+FetidCrown: {
+	DisplayName: Fetid Crown
+	Tooltip: Right Click in the inventory to change modes.
+	TooltipOffensive:
+		'''
+		+2 minion Slots.
+		Minions ignore 8 points of enemy Defense.
+		'''
+	TooltipDefensive:
+		'''
+		Immune to Soul Erosion.
+		+11% Damage Reduction.
+		'''
+}
+
+CrownOfTheOldSun: {
+	DisplayName: Crown Of The Old Sun
+	Tooltip:
+		'''
+		+6 Max Minions.
+		16% increased whip speed.
+		Summons ignore 22 points of enemy defense.
+		'''
+}
+
+LuminantMedallion: {
+	DisplayName: Luminant Medallion
+	Tooltip: ""
+}
+
+HeatseekerSilohs: {
+	DisplayName: Heatseeker Silohs
+	Tooltip:
+		'''
+		Allows the wearer to run really fast.
+		Allows for walking on all liquids.
+		You run faster on sand.
+		Hold the down key to slam into the ground, creating a small explosion and homing rift stars.
+		'''
 }

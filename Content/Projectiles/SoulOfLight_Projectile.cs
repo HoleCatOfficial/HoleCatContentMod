@@ -1,51 +1,83 @@
+using DestroyerTest.Common;
+using DestroyerTest.Common.Interfaces;
+using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Dusts;
+using DestroyerTest.Content.Particles;
+using InnoVault.PRT;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
+using System;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using InnoVault.PRT;
-using DestroyerTest.Content.Particles;
-using System;
-using DestroyerTest.Content.Buffs;
 
 namespace DestroyerTest.Content.Projectiles
 {
-    // This Example shows how to implement a simple homing projectile with animation
-    public class SoulOfLight_Projectile : ModProjectile
+    public class SoulOfLight_Projectile : ModProjectile, IHomingProjectile
     {
-        // Correct asset path
-        public override string Texture => "DestroyerTest/Content/Projectiles/SoulOfLight_Projectile";
 
-        // Store the target NPC using Projectile.ai[0]
-        private NPC HomingTarget {
-            get => Projectile.ai[0] == 0 ? null : Main.npc[(int)Projectile.ai[0] - 1];
-            set {
-                Projectile.ai[0] = value == null ? 0 : value.whoAmI + 1;
-            }
-        }
-
-        public ref float DelayTimer => ref Projectile.ai[1];
-
-        public override void SetStaticDefaults() {
-            ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true; // Make the cultist resistant to this projectile, as it's resistant to all homing projectiles.
-            Main.projFrames[Projectile.type] = 4; // Set the number of frames in the sprite sheet
+        public override void SetStaticDefaults() 
+        {
+            ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true;
+            Main.projFrames[Projectile.type] = 4;
         }
 
         public override void SetDefaults()
         {
-            Projectile.width = 22; // The width of projectile hitbox
-            Projectile.height = 22; // The height of projectile hitbox
+            Projectile.width = 22;
+            Projectile.height = 22;
 
-            Projectile.DamageType = DamageClass.Melee; // What type of damage does this projectile affect?
-            Projectile.friendly = true; // Can the projectile deal damage to enemies?
-            Projectile.hostile = false; // Can the projectile deal damage to the player?
-            Projectile.ignoreWater = true; // Does the projectile's speed be influenced by water?
-            Projectile.light = 1f; // How much light emit around the projectile
-            Projectile.timeLeft = 600; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
-            Projectile.frame = 0; // Start at the first frame
+            Projectile.DamageType = DamageClass.Generic;
+            Projectile.friendly = true;
+            Projectile.hostile = false;
+            Projectile.ignoreWater = true;
+            Projectile.light = 1f;
+            Projectile.timeLeft = 600;
+            Projectile.frame = 0;
+        }
+
+        public override bool PreDraw(ref Color lightColor)
+        {
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
+
+            int frameHeight = projectileTexture.Height / Main.projFrames[Projectile.type];
+            Rectangle frame = new Rectangle(
+                0,
+                frameHeight * Projectile.frame,
+                projectileTexture.Width,
+                frameHeight
+            );
+
+            Vector2 origin = new Vector2(projectileTexture.Width / 2f, frameHeight / 2f);
+
+            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+            Main.EntitySpriteDraw(projectileTexture, Projectile.Center - Main.screenPosition, frame, ColorLib.SoulOfLightColor, Projectile.rotation, origin, Projectile.scale * 1.4f, SpriteEffects.None, 0);
+            Opus.ReturnToDefaultDrawing(spriteBatch);
+            return true;
         }
         
         public bool ExplodesWithPattern = false;
+
+        bool IHomingProjectile.TracksNPCs => true;
+
+        bool IHomingProjectile.TracksPlayers => false;
+
+        float IHomingProjectile.HomingTurnSpeed => 8f;
+
+        bool IHomingProjectile.UsesHomingAcceleration => true;
+
+        float IHomingProjectile.HomingAccelAmount => 1.08f;
+
+        float IHomingProjectile.HomingMaxAccel => 30f;
+
+        float IHomingProjectile.DetectRadius => 2400;
+
+        bool IHomingProjectile.CanHome => Projectile.ai[0] >= 40;
+
         public void DeathPrep(float Threshold = 600)
         {
             if (Projectile.timeLeft > Threshold)
@@ -72,46 +104,16 @@ namespace DestroyerTest.Content.Projectiles
             AnimateProjectile();
             DeathPrep();
 
+            Projectile.ai[0]++;
+
+            if (Projectile.ai[0] < 20)
+            {
+                Projectile.velocity *= 0.92f;
+            }
+
             if (Main.rand.NextBool(3))
-            {}
-            Dust Trail = Dust.NewDustPerfect(Projectile.Center, DustID.PinkTorch, Vector2.Zero, 0, default, 2f);
-            Trail.noGravity = true;
-            //PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), Projectile.Center, new Vector2(0, 0.01f), Color.Pink, 1f);
-
-            float maxDetectRadius = 1600f;
-
-            if (DelayTimer < 10)
             {
-                DelayTimer++;
-                return;
-            }
-
-            // acquire or validate target
-            if (HomingTarget == null || !IsValidTarget(HomingTarget))
-                HomingTarget = FindClosestNPC(maxDetectRadius);
-
-            if (HomingTarget == null)
-                return; // no target? just hover
-
-            // we have a valid target at this point
-            float targetAngle = Projectile.AngleTo(HomingTarget.Center);
-            float speed = Projectile.velocity.Length();
-
-            if (speed < 0.01f)
-            {
-                // give it an initial push toward the target
-                float startSpeed = 6f;   // pick whatever feels right
-                Projectile.velocity = targetAngle.ToRotationVector2() * startSpeed;
-            }
-            else
-            {
-                // steer current velocity toward target without changing speed
-                float turnRate = MathHelper.ToRadians(9);
-                Projectile.velocity =
-                    Projectile.velocity
-                        .ToRotation()
-                        .AngleTowards(targetAngle, turnRate)
-                        .ToRotationVector2() * speed;
+                Dust Trail = Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<SoulOfLightDust>(), Projectile.velocity * 0.2f, 0, default, 2f);
             }
 
             Projectile.rotation = Projectile.velocity.ToRotation() * 0.05f;
@@ -130,33 +132,6 @@ namespace DestroyerTest.Content.Projectiles
             }
         }
 
-        public NPC FindClosestNPC(float maxDetectDistance)
-        {
-            NPC closestNPC = null;
-
-            float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
-
-            foreach (var target in Main.ActiveNPCs)
-            {
-                if (IsValidTarget(target))
-                {
-                    float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, Projectile.Center);
-                    if (sqrDistanceToTarget < sqrMaxDetectDistance)
-                    {
-                        sqrMaxDetectDistance = sqrDistanceToTarget;
-                        closestNPC = target;
-                    }
-                }
-            }
-
-            return closestNPC;
-        }
-
-        public bool IsValidTarget(NPC target)
-        {
-            return target.CanBeChasedBy();
-        }
-
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.AddBuff(ModContent.BuffType<LightInferno>(), 300);
@@ -166,62 +141,15 @@ namespace DestroyerTest.Content.Projectiles
         public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/StarBurst2") with {MaxInstances = 0});
-            if (ExplodesWithPattern)
+
+            var P = Polar.GenerateCurvedStar(4, 3, 200f, Projectile.Center, 10, 0.4f, 0f);
+
+            foreach(Vector2 p in P)
             {
-                Vector2 center = Projectile.Center;
-
-                int points = 300;              // total dusts
-                float a = 2.5f;                // base radius factor
-                float[] exponents = { 0.5f, 1f, -0.4f }; // Fermat, Archimedean, inward spiral
-                float[] ks = { 0.15f, -0.2f }; // for logarithmic r = a e^{kφ}
-
-                for (int i = 0; i < points; i++)
-                {
-                    // pick a spiral type at random
-                    int style = Main.rand.Next(4);
-                    float φ = i * 0.1f + Main.rand.NextFloat(0f, 0.3f); // add jitter
-                    float r = 0f;
-
-                    switch (style)
-                    {
-                        case 0: // power spiral
-                            float n = exponents[Main.rand.Next(exponents.Length)];
-                            r = a * (float)Math.Pow(φ, n);
-                            break;
-                        case 1: // logarithmic
-                            float k = ks[Main.rand.Next(ks.Length)];
-                            r = a * (float)Math.Exp(k * φ);
-                            break;
-                        case 2: // simple Archimedean
-                            r = a * φ;
-                            break;
-                        default: // tight lituus-style
-                            r = a / (float)Math.Sqrt(Math.Max(φ, 0.1f));
-                            break;
-                    }
-
-                    // position on the chosen spiral
-                    Vector2 offset = new Vector2(r, 0f).RotatedBy(φ);
-                    Vector2 spawnPos = center + offset;
-
-                    // outward velocity with some tangent twist
-                    // tangent angle α: tan α = r'/r  (approx here with small delta)
-                    float drdφ = (a * (float)Math.Pow(φ + 0.01f, 1) - r) / 0.01f;
-                    float alpha = (float)Math.Atan2(drdφ, r);
-                    Vector2 vel =
-                        offset.SafeNormalize(Vector2.UnitY).RotatedBy(alpha * 0.5f) *
-                        Main.rand.NextFloat(2f, 6f);
-
-                    int dustType = Main.rand.NextBool() ? DustID.PinkTorch
-                                                        : DustID.PinkCrystalShard;
-
-                    Dust d = Dust.NewDustPerfect(spawnPos, dustType, vel, 150,
-                                                default, Main.rand.NextFloat(1f, 2f));
-                    d.noGravity = true;
-                    d.fadeIn = Main.rand.NextFloat(0.5f, 1.2f);
-
-                }
+                Vector2 D = p - Projectile.Center;
+                Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<SoulOfLightDust>(), D * 0.01f, 0, default, 3f);
             }
+            
         }
     }
 }

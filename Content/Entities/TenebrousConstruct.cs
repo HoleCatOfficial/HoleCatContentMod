@@ -6,6 +6,7 @@ using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Boss;
 using DestroyerTest.Content.Projectiles.Boss.TenebrousConstruct;
+using DestroyerTest.Content.Projectiles.Weapon.Magic;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.RiftBiome;
 using DestroyerTest.Content.SHADEMANAGEMENT;
@@ -15,6 +16,7 @@ using Microsoft.Build.Evaluation;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoMod.Cil;
+using OpusLib;
 using ReLogic.Content;
 using System;
 using System.Collections.Generic;
@@ -33,6 +35,7 @@ using UtfUnknown.Core.Models.SingleByte.Finnish;
 
 namespace DestroyerTest.Content.Entities
 {
+    [AutoloadBossHead]
     public class TenebrousConstruct : ModNPC
     {
 
@@ -106,7 +109,7 @@ namespace DestroyerTest.Content.Entities
             NPC.height = 32;
             NPC.damage = 55;
             NPC.defense = 140;
-            NPC.lifeMax = 20000;
+            NPC.lifeMax = 80000;
             NPC.HitSound = Hit;
             NPC.DeathSound = Kill;
             NPC.noGravity = true;
@@ -115,6 +118,7 @@ namespace DestroyerTest.Content.Entities
             NPC.lavaImmune = true;
             NPC.noTileCollide = true;
             NPC.knockBackResist = 0.0f;
+            NPC.boss = true;
         }
 
         public override bool CheckActive()
@@ -144,6 +148,8 @@ namespace DestroyerTest.Content.Entities
         public float WingXScale = 1f;
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
+            Utils.DrawBorderString(spriteBatch, InternalTimer.ToString(), (NPC.Center + new Vector2(0, -40)) - Main.screenPosition, Color.Red, 1f, 0.5f, 0.5f);
+
             Asset<Texture2D> WingLeft = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/TenebrousConstructWingLeft");
             Asset<Texture2D> WingRight = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/TenebrousConstructWingRight");
 
@@ -181,28 +187,27 @@ namespace DestroyerTest.Content.Entities
         public enum State
         {
             IdleChase,
-            DartCross,
-            Stunned,
-            RetaliatoryLance
+            LanceCross
         }
 
         public State CurrentState;
-        public bool Stunned = false;
-        public int StunTimer = 1200;
-        public bool ShootFlag1 = false;
-        public int OrbCount = 0;
-        public int MinimumIdle = 600;
+        public int InternalTimer = 0;
+        public int LanceCount = 0;
+
         public bool RoseAlive;
         public override void AI()
         {
             NPC.TargetClosest(faceTarget: true);
             Player player;
             player = Main.player[NPC.target];
-           
+
+            InternalTimer++;
 
             NPC.rotation = 0.05f * NPC.velocity.Length();
             Vector2 direction = player.Center - NPC.Center;
             direction.Normalize();
+
+            WingXScale = Opus.Sine(0f, 0.8f, 0.08f);
 
             if (Main.rand.NextBool(12))
             {
@@ -217,21 +222,10 @@ namespace DestroyerTest.Content.Entities
             else
             {
                 NPC.dontTakeDamage = false;
+                
             }
 
-
-
-            if (Main.GameUpdateCount % 120 == 0 && !RoseAlive)
-            {
-                for (int a = 0; a < 5; a++)
-                {
-                    Vector2 Outer = NPC.Center + Main.rand.NextVector2CircularEdge(1000, 1000);
-                    Vector2 toOrigin = NPC.Center - Outer;
-                    toOrigin = toOrigin.SafeNormalize(Vector2.UnitY);
-                    Vector2 shootdirection = toOrigin * 7f;
-                    Projectile.NewProjectile(NPC.GetSource_FromThis(), Outer, shootdirection, ModContent.ProjectileType<TenebrisStarHostile_NoHoming>(), 30, 1);
-                }
-            }
+            Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Placeholder8");
 
             switch (CurrentState)
             {
@@ -239,143 +233,39 @@ namespace DestroyerTest.Content.Entities
                     {
                         {
                             NPC.velocity = Vector2.Lerp(NPC.velocity, direction * 4f, 0.025f);
-                            WingXScale = 0.5f + 0.3f * (float)Math.Sin(Main.GameUpdateCount * 0.05f);
 
-                            Vector2 Suck = NPC.Center - player.Center;
-                            float length = Suck.Length();
-                            if (player.Center.Distance(NPC.Center) < 300 && player.Center.Distance(NPC.Center) > 20)
-                            {
-                                NPC.TargetClosest(faceTarget: true);
-                                player = Main.player[NPC.target];
-                                for (int e = 0; e < 3; e++)
-                                {
-                                    Vector2 DustSuckEdge = NPC.Center + Main.rand.NextVector2CircularEdge(200, 200);
-                                    Vector2 DustSuck = NPC.Center - DustSuckEdge;
-                                    Dust.NewDustPerfect(DustSuckEdge, DustID.TintableDustLighted, (DustSuck * 0.05f) + NPC.velocity, 0, ColorLib.TenebrisGradient, 1.0f);
-                                }
-                                Vector2 suckDirection = Suck.SafeNormalize(Vector2.Zero);
-                                float dist = Vector2.Distance(player.Center, NPC.Center);
-                                float suckStrength = MathHelper.Clamp(1f - (dist / 300f), 0f, 1f) * 0.5f;
-                                player.velocity += suckDirection * suckStrength;
-                            }
-
-
-                            if (Main.rand.NextBool(6) && Main.GameUpdateCount % 60 == 0)
+                            if (Main.rand.NextBool(32) && Main.GameUpdateCount % 60 == 0)
                             {
                                 SoundEngine.PlaySound(Idle, NPC.Center);
                             }
-
-                            if (player.HeldItem.type == ModContent.ItemType<ShiningObelisk>() && player.itemAnimation == player.itemAnimationMax - 10)
-                            {
-                                ScreenFlashSystem.FlashIntensity = 1.0f;
-                                SoundEngine.PlaySound(Stun, NPC.Center);
-                                CurrentState = State.Stunned;
-                                StunTimer = 1200;
-                                NPC.netUpdate = true;
-                            }
-                            if (MinimumIdle > 0)
-                            {
-                                MinimumIdle--;
-                            }
-                            if (MinimumIdle <= 0)
-                            {
-                                if (Main.rand.NextBool(600) && !RoseAlive)
-                                {
-                                    CurrentState = State.DartCross;
-                                    MinimumIdle = 600;
-                                }
-                            }
-                        }
-                        break;
-                    }
-                case State.DartCross:
-                    {
-                        NPC.velocity = Vector2.Lerp(NPC.velocity, direction * 4f, 0.025f);
-                        WingXScale = 0.5f + 0.3f * (float)Math.Sin(Main.GameUpdateCount * 0.05f);
-                        if (player.HeldItem.type == ModContent.ItemType<ShiningObelisk>() && player.itemAnimation == player.itemAnimationMax - 10)
-                        {
-                            ScreenFlashSystem.FlashIntensity = 1.0f;
-                            SoundEngine.PlaySound(Stun, NPC.Center);
-                            CurrentState = State.Stunned;
-                            StunTimer = 1200;
-                            NPC.netUpdate = true;
-                        }
-
-
-                        if (Main.rand.NextBool(6) && Main.GameUpdateCount % 60 == 0)
-                        {
-                            SoundEngine.PlaySound(Idle, NPC.Center);
-                        }
-
-                        if (Main.GameUpdateCount % 240 == 0)
-                        {
-                            int numProjectiles = 3;
-                            float rotationStep = MathHelper.TwoPi / numProjectiles;
-
-                            for (int i = 0; i < numProjectiles; i++)
-                            {
-                                Vector2 velocity = new Vector2(12f, 0f).RotatedBy(rotationStep * i);
-                                Projectile.NewProjectile(
-                                    Entity.GetSource_FromThis(),
-                                    NPC.Center,
-                                    velocity,
-                                    ModContent.ProjectileType<DarkEnergyOrb>(),
-                                    16,
-                                    3
-                                );
-                            }
-                            OrbCount++;
-                        }
-                        if (OrbCount >= 10)
-                        {
-                            CurrentState = State.IdleChase;
-                            OrbCount = 0;
-                        }
-                        break;
-                    }
-                case State.Stunned:
-                    {
-                        {
-                            if (StunTimer > 0)
+                            
+                            if (InternalTimer >= 300)
                             {
                                 NPC.velocity = Vector2.Zero;
-                                if (Main.rand.NextBool(4))
-                                {
-                                    NPC.Center += new Vector2(Main.rand.Next(-2, 2), Main.rand.Next(-2, 2));
-                                }
-                                StunTimer--;
-                            }
-
-                            if (StunTimer <= 0)
-                            {
-                                CurrentState = State.RetaliatoryLance;
-                                StunTimer = 1200;
-                                NPC.netUpdate = true;
+                                CurrentState = State.LanceCross;
                             }
                         }
                         break;
                     }
-                case State.RetaliatoryLance:
+                case State.LanceCross:
                     {
+                        NPC.aiStyle = NPCAIStyleID.Flocko;
+                        if (InternalTimer % 300 == 0)
                         {
-                            if (!ShootFlag1)
-                            {
-                                for (int y = 0; y < 3; y++)
-                                {
-                                    Vector2 Outer = NPC.Center + Main.rand.NextVector2CircularEdge(10, 10);
-                                    Vector2 Dir = Outer - NPC.Center;
-                                    Projectile.NewProjectile(Entity.GetSource_FromAI(), NPC.Center, Dir, ModContent.ProjectileType<TenebrisLance>(), 30, 6);
-                                }
-                                ShootFlag1 = true;
-                            }
-                            if (ShootFlag1)
-                            {
-                                CurrentState = State.IdleChase;
-                                ShootFlag1 = false;
-                            }
+                            LanceCount++;
+                            SoundEngine.PlaySound(SoundID.DD2_PhantomPhoenixShot);
+                            Opus.RingSpreadProjectile(ModContent.ProjectileType<TenebrisLance>(), 4, player.Center, 800, 40, 3, -24f, offset: Main.rand.NextFloat(MathHelper.TwoPi));
+                        }
+
+                        if (LanceCount > 5)
+                        {
+                            LanceCount = 0;
+                            InternalTimer = 0;
+                            CurrentState = State.IdleChase;
                         }
                         break;
                     }
+               
             }
 
         }
@@ -426,47 +316,5 @@ namespace DestroyerTest.Content.Entities
                 );
             }
         }
-    }
-    
-    public class ShadeBattle : ModSceneEffect
-    {
-        public override bool IsSceneEffectActive(Player player)
-        {
-            DTMusicConfig musCFG = ModContent.GetInstance<DTMusicConfig>();
-
-            // Don't play this scene's music if Rose is alive.
-            bool roseAlive = Main.npc.Any(n => n.active && n.type == ModContent.NPCType<NightmareRoseBoss>());
-            bool corpseAlive = Main.npc.Any(n => n.active && n.type == ModContent.NPCType<WyvernCorpseHead>());
-            if (roseAlive || corpseAlive)
-                return false;
-
-            if (!ShadeSystem.InDarkness && !musCFG.EternityMusic)
-                return false;
-
-            foreach (var npc in Main.npc)
-            {
-                if (!npc.active)
-                    continue;
-
-                // Check for your construct or slinger.
-                if (npc.type == ModContent.NPCType<TenebrousConstruct>() ||
-                    npc.type == ModContent.NPCType<TenebrousSlinger>())
-                {
-                    float dist = player.Center.Distance(npc.Center);
-
-                    if (dist < 3600f && musCFG.EternityMusic)
-                        return true;
-                    if (dist < 3600f && ShadeSystem.InDarkness)
-                        return true;
-                }
-            }
-
-            return false;
-        }
-
-
-        public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/TenebrousConstruct");
-
-        public override SceneEffectPriority Priority => SceneEffectPriority.BossMedium;
     }
 }

@@ -184,7 +184,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 int MinF = (int)Math.Round(BaseF * player.GetTotalAttackSpeed<DTTrueMeleeClass>().Inverse()) + 1;
                 float prog = 1f - ((float)(F - MinF) / (BaseF - MinF));
 
-                HitCooldownMax = (int)MathHelper.Lerp(20, 5, prog);
+                HitCooldownMax = (int)MathHelper.Lerp(23f, 3f, prog);
                 SlashPitch = MathHelper.Lerp(0f, 0.8f, prog);
 
 
@@ -226,7 +226,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         {
             Player player = Main.player[Projectile.owner];
             var ScreenShake = player.GetModPlayer<ScreenshakePlayer>();
-            ScreenShake.screenshakeMagnitude = 4;
+            ScreenShake.screenshakeMagnitude = 2;
             ScreenShake.screenshakeTimer = 10;
 
             SoundEngine.PlaySound(EnemySlice with { MaxInstances = 0 }, target.Center);

@@ -40,6 +40,7 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
         {
             CreateRecipe()
                 .AddIngredient(ItemID.AnkhCharm, 1)
+                .AddIngredient<FetidCrown>(1)
                 .AddIngredient<BroochOfBalance>(1)
                 .AddIngredient<RiftenOverloader>(1)
                 .AddIngredient<SpiritBauble>(1)
@@ -85,6 +86,7 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
                 Player.buffImmune[BuffID.Rabies] = true;
                 Player.buffImmune[BuffID.ShadowFlame] = true;
                 Player.buffImmune[BuffID.WindPushed] = true;
+                Player.buffImmune[ModContent.BuffType<SoulErosion>()] = true;
                 Player.buffImmune[ModContent.BuffType<Brine>()] = true;
                 Player.buffImmune[ModContent.BuffType<GalantineBurn>()] = true;
                 Player.buffImmune[ModContent.BuffType<HeliouricShock>()] = true;
@@ -110,7 +112,7 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
         public const int DashDuration = 35; // Duration of the dash afterimage effect in frames
 
         // The initial velocity.  10 velocity is about 37.5 tiles/second or 50 mph
-        public const float DashVelocity = 30f;
+        public const float DashVelocity = 20f;
 
         // The direction the player has double tapped.  Defaults to -1 for no dash double tap
         public int DashDir = -1;

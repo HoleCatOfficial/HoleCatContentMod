@@ -33,12 +33,13 @@ namespace DestroyerTest.Content.Particles
         public bool gravity;
 
         public float Width = 1f;
+        public float LengthMultiplier = 1f;
 
         public int internalCounter = 0;
 
         public SparkDrawMode sparkDrawMode = SparkDrawMode.AlphaBlend;
 
-        public void PrepareSpark(Vector2 Position, Vector2 Velocity, float Rotation, Color color, float Scale, bool Gravity, int MaxLifetime, SparkDrawMode drawMode)
+        public void PrepareSpark(Vector2 Position, Vector2 Velocity, float Rotation, Color color, float Scale, bool Gravity, int MaxLifetime, SparkDrawMode drawMode, float lengthMultiplier = 1f)
         {
             this.position = Position;
             this.velocity = Velocity;
@@ -49,9 +50,12 @@ namespace DestroyerTest.Content.Particles
             this.col = color;
             this.Opacity = 1f;
             this.gravity = Gravity;
+            this.LengthMultiplier = lengthMultiplier;
 
             sparkDrawMode = drawMode;
         }
+
+
 
         public override void Update(ref ParticleRendererSettings settings)
         {
@@ -119,7 +123,7 @@ namespace DestroyerTest.Content.Particles
         public override void Draw(ref ParticleRendererSettings settings, SpriteBatch spritebatch)
         {
             Opus.StartSpriteBatchWithBlending(spritebatch, GetBlendState(sparkDrawMode), SpriteSortMode.Deferred);
-            spritebatch.Draw(GetTextureProperties().Item1, position - Main.screenPosition, GetTextureProperties().Item2, col * Opacity, rotation, GetTextureProperties().Item3, new Vector2(scale * Width, scale), SpriteEffects.None, 0f);
+            spritebatch.Draw(GetTextureProperties().Item1, position - Main.screenPosition, GetTextureProperties().Item2, col * Opacity, rotation, GetTextureProperties().Item3, new Vector2(scale * Width, scale * LengthMultiplier), SpriteEffects.None, 0f);
             Opus.ReturnToDefaultDrawing(spritebatch);
         }
     }
@@ -143,12 +147,13 @@ namespace DestroyerTest.Content.Particles
         public bool gravity;
 
         public float Width = 1f;
+        public float LengthMultiplier = 1f;
 
         public int internalCounter = 0;
 
         public SparkDrawMode sparkDrawMode = SparkDrawMode.AlphaBlend;
 
-        public void PrepareSpark(Vector2 Position, Vector2 Velocity, float Rotation, Color startColor, Color endColor, float Scale, bool Gravity, int MaxLifetime, SparkDrawMode drawMode)
+        public void PrepareSpark(Vector2 Position, Vector2 Velocity, float Rotation, Color startColor, Color endColor, float Scale, bool Gravity, int MaxLifetime, SparkDrawMode drawMode, float lengthMultiplier = 1f)
         {
             this.position = Position;
             this.velocity = Velocity;
@@ -161,11 +166,12 @@ namespace DestroyerTest.Content.Particles
             this.usesColorMap = false;
             this.Opacity = 1f;
             this.gravity = Gravity;
+            this.LengthMultiplier = lengthMultiplier;
 
             sparkDrawMode = drawMode;
         }
 
-        public void PrepareSpark(Vector2 Position, Vector2 Velocity, float Rotation, Color[] Colormap, float Scale, bool Gravity, int MaxLifetime, SparkDrawMode drawMode)
+        public void PrepareSpark(Vector2 Position, Vector2 Velocity, float Rotation, Color[] Colormap, float Scale, bool Gravity, int MaxLifetime, SparkDrawMode drawMode, float lengthMultiplier = 1f)
         {
             this.position = Position;
             this.velocity = Velocity;
@@ -178,6 +184,7 @@ namespace DestroyerTest.Content.Particles
             this.usesColorMap = false;
             this.Opacity = 1f;
             this.gravity = Gravity;
+            this.LengthMultiplier = lengthMultiplier;
 
 
             sparkDrawMode = drawMode;
@@ -258,7 +265,7 @@ namespace DestroyerTest.Content.Particles
         {
 
             Opus.StartSpriteBatchWithBlending(spritebatch, GetBlendState(sparkDrawMode), SpriteSortMode.Deferred);
-            spritebatch.Draw(GetTextureProperties().Item1, position - Main.screenPosition, GetTextureProperties().Item2, col * Opacity, rotation, GetTextureProperties().Item3,  new Vector2(scale * Width, scale), SpriteEffects.None, 0f);
+            spritebatch.Draw(GetTextureProperties().Item1, position - Main.screenPosition, GetTextureProperties().Item2, col * Opacity, rotation, GetTextureProperties().Item3,  new Vector2(scale * Width, scale * LengthMultiplier), SpriteEffects.None, 0f);
             Opus.ReturnToDefaultDrawing(spritebatch);
         }
 
@@ -271,7 +278,7 @@ namespace DestroyerTest.Content.Particles
         {
             Opus.StartSpriteBatchWithBlending(spritebatch, GetBlendState(sparkDrawMode), SpriteSortMode.Deferred);
             spritebatch.Draw(GetTextureProperties().Item1, position - Main.screenPosition, GetTextureProperties().Item2, col * Opacity, rotation, GetTextureProperties().Item3, new Vector2(scale * Width, scale), SpriteEffects.None, 0f);
-            spritebatch.Draw(GetTextureProperties().Item1, position - Main.screenPosition, GetTextureProperties().Item2, Color.Black * Opacity, rotation, GetTextureProperties().Item3, new Vector2(scale * 0.7f * Width, scale * 0.7f), SpriteEffects.None, 0f);
+            spritebatch.Draw(GetTextureProperties().Item1, position - Main.screenPosition, GetTextureProperties().Item2, Color.Black * Opacity, rotation, GetTextureProperties().Item3, new Vector2(scale * 0.7f * Width, (scale * LengthMultiplier) * 0.7f), SpriteEffects.None, 0f);
             Opus.ReturnToDefaultDrawing(spritebatch);
         }
     }

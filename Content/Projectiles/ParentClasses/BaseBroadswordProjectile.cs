@@ -83,7 +83,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             if (targetAngle == Vector2.Zero)
                 targetAngle = Vector2.UnitX * Projectile.spriteDirection;
 
-            LastSwing = Owner.direction == 1 ? 1 : -1;
+            LastSwing = Owner.direction == 1 ? -1 : -1;
         }
 
         public override void SendExtraAI(BinaryWriter writer)
@@ -163,6 +163,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
                     targetAngle = (Main.MouseWorld - Owner.MountedCenter);
                 }
 
+
                 UpPoint = targetAngle.ToRotation() - MathHelper.ToRadians(135f);
                 DownPoint = targetAngle.ToRotation() + MathHelper.ToRadians(135f);
             }
@@ -192,6 +193,13 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         {
 
         }
+
+        public float Dir => Projectile.spriteDirection;
+        private float FixAngle(float angle)
+        {
+            return MathHelper.WrapAngle(angle);
+        }
+
 
         bool SetPos = false;
         bool f1 = false;

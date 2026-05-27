@@ -15,6 +15,7 @@ using DestroyerTest.Content.Tools;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Assets.Menu.V5;
 using Terraria.DataStructures;
+using DestroyerTest.Content.Equips;
 
 namespace DestroyerTest.Common.NPC_Folder
 {
@@ -335,8 +336,22 @@ namespace DestroyerTest.Common.NPC_Folder
             }
         }
 
-        
-
+        public override void SetupTravelShop(int[] shop, ref int nextSlot)
+        {
+            if (DownedBossSystem.downedLunarBoss)
+            {
+                shop[nextSlot] = ModContent.ItemType<HoleCatHead>();
+                nextSlot++;
+                shop[nextSlot] = ModContent.ItemType<HoleCatBody>();
+                nextSlot++;
+                shop[nextSlot] = ModContent.ItemType<HoleCatLegs>();
+                nextSlot++;
+                shop[nextSlot] = ModContent.ItemType<HoleCatTail>();
+                nextSlot++;
+                shop[nextSlot] = ModContent.ItemType<HoleCatHook>();
+                nextSlot++;
+            }
+        }
 
         public override void ModifyShop(NPCShop shop)
         {

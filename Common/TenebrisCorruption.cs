@@ -21,7 +21,7 @@ namespace DestroyerTest.Common
 
         public override int Music => MusicLoader.GetMusicSlot("DestroyerTest/Assets/Music/TenebrisCorruption");
 
-        public override SceneEffectPriority Priority =>  SceneEffectPriority.Environment;
+        public override SceneEffectPriority Priority =>  SceneEffectPriority.BiomeHigh;
         public override float GetWeight(Player player)
         {
             return 1f;

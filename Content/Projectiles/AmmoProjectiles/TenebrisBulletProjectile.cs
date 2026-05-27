@@ -66,7 +66,7 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
 
             Spark S = new Spark();
 
-            S.PrepareSpark(Projectile.Center, Projectile.velocity * 0.1f, Projectile.velocity.ToRotation(), color * 0.5f, 1f, false, 20, SparkDrawMode.Additive);
+            S.PrepareSpark(Projectile.Center, Projectile.velocity * 0.1f, Projectile.velocity.ToRotation(), color * 0.5f, 1f, false, 20, SparkDrawMode.Additive, 2f);
             ParticleEngine.BehindProjectiles.Add(S);
 
             /*

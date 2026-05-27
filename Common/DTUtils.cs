@@ -1764,6 +1764,7 @@ namespace DestroyerTest.Common
         //
         public static Asset<Texture2D> Square = TextureAssets.MagicPixel;
         public static Asset<Texture2D> PointGlow = ModContent.Request<Texture2D>($"{ParticlePath}/SimpleParticle", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> PointGlowPreMultiplied = ModContent.Request<Texture2D>($"{ExtrasPath}/PreMultiplied/PointGlow", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> AreaGlow = ModContent.Request<Texture2D>($"{ParticlePath}/Glow", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> BloomRing = ModContent.Request<Texture2D>($"{ParticlePath}/BloomRing", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> BloomRingSharp = ModContent.Request<Texture2D>($"{ParticlePath}/BloomRingSharp_FullScale", AssetRequestMode.AsyncLoad);
@@ -1794,13 +1795,21 @@ namespace DestroyerTest.Common
         public static Asset<Texture2D> FaintGlow = ModContent.Request<Texture2D>($"{ExtrasPath}/FaintGlow", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> CurseSigilRing = ModContent.Request<Texture2D>($"{ExtrasPath}/CurseSigilRing", AssetRequestMode.AsyncLoad);
 
-        public static Asset<Texture2D> Sparkle(int Variant)
+        public static Asset<Texture2D> Sparkle(int Variant, bool PreMultiplied = false)
         {
+
             if (Variant <= 0)
             {
                 Variant = 1;
             }
-            return ModContent.Request<Texture2D>($"{ParticlePath}/Shine{Variant}", AssetRequestMode.AsyncLoad);
+            if (!PreMultiplied)
+            {
+                return ModContent.Request<Texture2D>($"{ParticlePath}/Shine{Variant}", AssetRequestMode.AsyncLoad);
+            }
+            else
+            {
+                return ModContent.Request<Texture2D>($"{ExtrasPath}/PreMultiplied/Shine{Variant}", AssetRequestMode.AsyncLoad);
+            }
         }
 
         public static Asset<Texture2D> Streak(int Variant, bool PreMultiplied = false)
@@ -1948,6 +1957,7 @@ namespace DestroyerTest.Common
             public static SoundStyle FlameImpact = new SoundStyle($"{Path}/FlameImpact", 4);
             public static SoundStyle FleshHit = new SoundStyle($"{Path}/FleshHit", 5);
             public static SoundStyle HellWeaponImpact = new SoundStyle($"{Path}/HellWeaponImpact");
+            public static SoundStyle HeatseekerSilohSlam = new SoundStyle($"{Path}/HeatseekerSilohSlam");
             public static SoundStyle IceImpact = new SoundStyle($"{Path}/IceImpact", 3);
             public static SoundStyle IceMagicImpact = new SoundStyle($"{Path}/IceMagicImpact", 3);
             public static SoundStyle LightMetalHit = new SoundStyle($"{Path}/LightMetalHit", 4);

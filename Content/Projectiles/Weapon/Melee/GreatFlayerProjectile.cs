@@ -1,4 +1,5 @@
 using BreadLibrary.Core.Graphics.Particles;
+using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.MeleeWeapons;
@@ -27,7 +28,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 	public class GreatFlayerProjectile : BaseBroadswordProjectile
 	{
         public override string Texture => "DestroyerTest/Content/MeleeWeapons/GreatFlayer";
-        public override SoundStyle Swing => new SoundStyle("DestroyerTest/Assets/Audio/Constitution/ConSwing", 6);
+        public override SoundStyle Swing => new SoundStyle("DestroyerTest/Assets/Audio/Constitution/ConSwing", 6) with { MaxInstances = 0, PitchVariance = 0.3f, Pitch = -0.2f};
 		public SoundStyle Tooth = new SoundStyle("DestroyerTest/Assets/Audio/Corpse/ToothShoot") with { MaxInstances = 0 };
         public override void SetDefaults()
         {
@@ -52,6 +53,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
            
             Owner.GetModPlayer<ScreenshakePlayer>().screenshakeMagnitude = 1;
             Owner.GetModPlayer<ScreenshakePlayer>().screenshakeTimer = 20;
+
+            
 
             for (int sp = 0; sp < 3; sp++)
             {
@@ -117,6 +120,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         public Line SwordLine;
         public override void ExtraEffects()
         {
+            ScaleMult = 1.1f + MathHelper.Lerp(0, 0.3f, Utilities.Convert01To010(SlashProgress));
             swordTip = Projectile.Center + Projectile.rotation.ToRotationVector2() * (Projectile.Size.Length() * Projectile.scale);
 
             Player player = Main.player[Projectile.owner];

@@ -42,11 +42,7 @@ namespace DestroyerTest.Content.Buffs
 
         public override void ModifyItemScale(Item item, ref float scale)
         {
-            if (item.DamageType != DamageClass.Melee || item.DamageType != DamageClass.MeleeNoSpeed || item.DamageType != DamageClass.SummonMeleeSpeed)
-            {
-                return;
-            }
-            else
+            if (item.DamageType == DamageClass.Melee || item.DamageType == DamageClass.MeleeNoSpeed || item.DamageType == DamageClass.SummonMeleeSpeed)
             {
                 if (Debuff)
                 {
@@ -59,9 +55,10 @@ namespace DestroyerTest.Content.Buffs
         {
             if (Debuff)
             {
-                Player.GetAttackSpeed(DamageClass.Melee) *= 0.5f;
-                Player.GetAttackSpeed(DamageClass.MeleeNoSpeed) *= 0.5f;
-                Player.GetAttackSpeed(DamageClass.SummonMeleeSpeed) *= 0.5f;
+                Player.GetAttackSpeed(DamageClass.Melee) -= 0.5f;
+                Player.GetAttackSpeed(DamageClass.MeleeNoSpeed) -= 0.5f;
+                Player.GetAttackSpeed(DamageClass.SummonMeleeSpeed) -= 0.5f;
+                
             }
         }
     }

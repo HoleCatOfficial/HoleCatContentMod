@@ -293,6 +293,19 @@ namespace DestroyerTest.Common.Systems
 
             Entry.DownCondition.Deconstruct(out LocalizedText description, out Func<bool> predicate);
 
+            if (Entry.SpawnItem == -1)
+            {
+                Mod.Logger.WarnFormat("Failed to register spawn item for {0}. Use DoBossChecklistIntegration_NoSpawnItem if this was intentional.", Entry.BossName.Value);
+            }
+            if (Entry.Hint == null)
+            {
+                Mod.Logger.WarnFormat("Failed to register the hint for {0}. Verify that the correct localization key was used.", Entry.BossName.Value);
+            }
+            if (Entry.Portrait == null)
+            {
+                Mod.Logger.ErrorFormat("Failed to register the portrait {0}. Verify that the portrait was set up correctly.", Entry.BossName.Value);
+            }
+
             bossChecklistMod.Call(
                 "LogBoss",
                 Mod,
@@ -308,6 +321,8 @@ namespace DestroyerTest.Common.Systems
                     ["spawnInfo"] = Entry.Hint,
                 }
             );
+
+            Mod.Logger.InfoFormat("Successfully registered Boss Checklist entry for {0}", Entry.BossName.Value);
         }
  
 
@@ -347,6 +362,8 @@ namespace DestroyerTest.Common.Systems
                     ["spawnInfo"] = Entry.Hint,
                 }
             );
+
+            Mod.Logger.InfoFormat("Successfully registered Boss Checklist entry (with no spawn item) for {0}", Entry.BossName.Value);
         }
     }
 }

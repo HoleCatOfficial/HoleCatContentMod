@@ -218,7 +218,11 @@ namespace DestroyerTest.Content.Entities
 
         public override void OnSpawn(IEntitySource source)
         {
-            FablesTitleCardSystem.RegisterFablesBossIntro(FablesTitleCardSystem.ConstitutionTitle.Name, FablesTitleCardSystem.ConstitutionTitle.Title, 180, true, ColorLib.StellarRarityColor, ColorLib.StellarFireGradientLooping(), ColorLib.StellarFire2, ColorLib.StellarFire6, FablesTitleCardSystem.ConstitutionTitle.MusicTitle, FablesTitleCardSystem.ConstitutionTitle.MusicArtist);
+            if (DTCrossMod.FablesIsLoaded)
+            {
+                FablesTitleCardSystem.RegisterFablesBossIntro(new FablesTitleCardSystem.ConstitutionTitle());
+            }
+            
         }
 
         public Line topSide = new Line(ArenaRect.TopRight(), ArenaRect.TopLeft());
@@ -331,7 +335,7 @@ namespace DestroyerTest.Content.Entities
             else
             {
                 EternityAI();
-                Music = MusicLoader.GetMusicSlot("DestroyerTest/Assets/Music/Placeholder7");
+                Music = MusicLoader.GetMusicSlot("DestroyerTest/Assets/Music/Placeholder5");
             }
 
             NPC.rotation = NPC.velocity.ToRotation() + MathHelper.PiOver4;

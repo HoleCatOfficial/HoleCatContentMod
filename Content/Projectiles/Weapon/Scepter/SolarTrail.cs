@@ -16,10 +16,11 @@ using InnoVault.PRT;
 using DestroyerTest.Content.Particles;
 using Terraria.Audio;
 using System;
+using BreadLibrary.Core.Graphics.Pixelation;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 {
-	public class SolarTrail : ModProjectile
+	public class SolarTrail : ModProjectile, IDrawPixelated
 	{
         public override string Texture => DTUtils.NoTexture;
 		
@@ -34,7 +35,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 			Projectile.width = 16; // The width of projectile hitbox
 			Projectile.height = 16; // The height of projectile hitbox
 
-			Projectile.DamageType = ModContent.GetInstance<ScepterClass>();
+			Projectile.DamageType = DamageClass.Generic;
 			Projectile.friendly = true; // Can the projectile deal damage to enemies?
 			Projectile.hostile = false; // Can the projectile deal damage to the player?
 			Projectile.ignoreWater = true; // Does the projectile's speed be influenced by water?
@@ -42,22 +43,24 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 			Projectile.tileCollide = false;
             Projectile.penetrate = -1;
 		}
+
+        PixelLayer IDrawPixelated.PixelLayer => PixelLayer.AboveProjectiles;
+        bool IDrawPixelated.ShouldDrawPixelated => true;
+
+        void IDrawPixelated.DrawPixelated(SpriteBatch spriteBatch)
+        {
+            DTUtils Utility = new DTUtils();
+            float opacity = Projectile.Opacity;
+
+            Opus.StartSpriteBatchPixelated(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
+
+            Opus.DrawTextureOnProj(DTAssetLib.PointGlowPreMultiplied, Projectile, ColorLib.Rift with { A = 0 } * opacity, true, Projectile.rotation, Scale1, Scale1);
+            Opus.DrawTextureOnProj(DTAssetLib.Sparkle(5, true), Projectile, Color.White with { A = 0 } * opacity, false, 0f, Scale2, Scale2);
+
+            Opus.ReturnToDefaultDrawing(spriteBatch);
+        }
 		public override bool PreDraw(ref Color lightColor)
 		{
-
-			SpriteBatch spriteBatch = Main.spriteBatch;
-			Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
-			DTUtils Utility = new DTUtils();
-			float opacity = Projectile.Opacity;
-
-			Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-
-            Opus.DrawTextureOnProj(DTAssetLib.PointGlow, Projectile, ColorLib.Rift * opacity, true, Projectile.rotation, Scale1, Scale1);
-			Opus.DrawTextureOnProj(DTAssetLib.Sparkle(5), Projectile, Color.White * opacity, false, 0f, Scale2, Scale2);
-            
-
-			Opus.ReturnToDefaultDrawing(spriteBatch);
-
 			return false;
 		}
 

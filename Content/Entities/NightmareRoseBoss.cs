@@ -639,6 +639,16 @@ namespace DestroyerTest.Content.Entities
             }
         }
 
+        public void FablesTitleCard()
+        {
+            if (!DTCrossMod.FablesIsLoaded)
+            {
+                return;
+            }
+
+            FablesTitleCardSystem.RegisterFablesBossIntro(new FablesTitleCardSystem.NightmareRoseTitle());
+        }
+
         public int RoarWaveTimer = 0;
         public int HealAmount = 0;
         public int DeathInterval = 10;
@@ -877,12 +887,13 @@ namespace DestroyerTest.Content.Entities
                         }
                         if (SpawnCount >= SpawnIdleRoarFlag)
                         {
-                            ScreenshakePlayer screenshake = ModContent.GetInstance<ScreenshakePlayer>();
-                            screenshake.screenshakeMagnitude = 8;
+                            ScreenshakePlayer screenshake = player.GetModPlayer<ScreenshakePlayer>();
+                            screenshake.screenshakeMagnitude = 6;
                             screenshake.screenshakeTimer = 180;
                             RoarWaveTimer = 180;
 
-                            FablesTitleCardSystem.RegisterFablesBossIntro(FablesTitleCardSystem.NightmareRoseTitle.Name, FablesTitleCardSystem.NightmareRoseTitle.Title, 180, true, ColorLib.WretchedGradient(), Color.White, Color.Red, Color.Red, FablesTitleCardSystem.NightmareRoseTitle.MusicTitle, FablesTitleCardSystem.NightmareRoseTitle.MusicArtist);
+                            FablesTitleCard();
+                            
                             if (!DestroyerTestMod.MasochistIsActive)
                             {
                                 SoundEngine.PlaySound(SpawnRoar, NPCHead);
@@ -1249,6 +1260,7 @@ namespace DestroyerTest.Content.Entities
 
                 case AttackState.OvergrownHammer:
                     {
+                        ResetState();
                         NPC Minion;
                         if (NPC.life < NPC.lifeMax * 0.4f && !HammerActive)
                         {

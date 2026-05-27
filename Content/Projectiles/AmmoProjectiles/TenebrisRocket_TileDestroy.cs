@@ -47,7 +47,7 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
 
 		public override void OnSpawn(IEntitySource source)
         {
-            Projectile.frame = Main.rand.Next(1, 4);
+            Projectile.frame = Main.rand.Next(3);
         }
 
         public override bool PreDraw(ref Color lightColor)
@@ -80,22 +80,24 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
 
 		public Color colorofLight = Color.White;
 		public SlotId LoopSlot;
-		public override void AI() {
+		public override void AI() 
+		{
 
-			if (Projectile.frame == 1)
-            {
-                colorofLight = ColorLib.TenebrisMagenta;
-            }
-            if (Projectile.frame == 2)
+            if (Projectile.frame == 0)
             {
                 colorofLight = ColorLib.TenebrisBlue;
             }
-            if (Projectile.frame == 3)
+            if (Projectile.frame == 1)
+            {
+                colorofLight = ColorLib.TenebrisMagenta;
+            }
+
+            if (Projectile.frame == 2)
             {
                 colorofLight = ColorLib.TenebrisBeige;
             }
 
-			if (!SoundEngine.TryGetActiveSound(LoopSlot, out var activeSound)) {
+            if (!SoundEngine.TryGetActiveSound(LoopSlot, out var activeSound)) {
                 var tracker = new ProjectileAudioTracker(Projectile);
                 LoopSlot = SoundEngine.PlaySound(SoundID.DD2_KoboldIgniteLoop, Projectile.Center, soundInstance => {
                     soundInstance.Position = Projectile.Center;
@@ -126,7 +128,7 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
                         Spark Spark = new Spark();
 
                         Spark.PrepareSpark(Projectile.Center, (-Projectile.velocity * 0.5f).RotatedByRandom(0.1f), Projectile.velocity.ToRotation(), colorofLight, 1f, false, 40, SparkDrawMode.Additive);
-                        ParticleEngine.ShaderParticles.Add(Spark);
+                        ParticleEngine.BehindProjectiles.Add(Spark);
 
                         // Used by the liquid rockets which leave trails of their liquid instead of fire.
                         // if (fireDust.type == Dust.dustWater()) {

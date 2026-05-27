@@ -88,7 +88,12 @@ NightmareRoseBoss: {
 
 	Fables: {
 		Name: The Nightmare Rose
-		Title: Embodiment of Suffering
+
+		Title: {
+			Default: Idri's Fate
+			Eternity: Idri's Torment
+			Masochist: Idri is Gone
+		}
 	}
 }
 
