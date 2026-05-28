@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Projectiles;
+using DestroyerTest.Content.Projectiles.Weapon.Magic;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.Resources.Blueprints;
 
@@ -10,6 +11,7 @@ using DestroyerTest.Content.Tiles.RiftConfigurator;
 using DestroyerTest.Content.Tiles.Riftplate;
 using DestroyerTest.Content.Tools;
 using DestroyerTest.Rarity;
+using GlowmaskHelper.Content;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
@@ -21,9 +23,7 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.RiftArsenal
 {
-	// ExampleStaff is a typical staff. Staffs and other shooting weapons are very similar, this example serves mainly to show what makes staffs unique from other items.
-	// Staff sprites, by convention, are angled to point up and to the right. "Item.staff[Type] = true;" is essential for correctly drawing staffs.
-	// Staffs use mana and shoot a specific projectile instead of using ammo. Item.DefaultToStaff takes care of that.
+	[AutoloadGlowmask]
 	public class RiftStaff : ModItem, IRechargeFunctionality
     {
         public bool Energized
@@ -40,10 +40,9 @@ namespace DestroyerTest.Content.RiftArsenal
 			Item.staff[Type] = true;
 		}
 
-		public override void SetDefaults() {
-			// DefaultToStaff handles setting various Item values that magic staff weapons use.
-			// Hover over DefaultToStaff in Visual Studio to read the documentation!
-			Item.shoot = ModContent.ProjectileType<RiftStarFriendly>();
+		public override void SetDefaults() 
+		{
+			Item.shoot = ModContent.ProjectileType<RiftStaffHoldout>();
             Item.useTime = 90;
             Item.useAnimation = 90;
 			Item.width = 92;
@@ -53,46 +52,19 @@ namespace DestroyerTest.Content.RiftArsenal
 			Item.rare = ModContent.RarityType<RiftRarity1>();
 			Item.useStyle = ItemUseStyleID.Shoot;
 
-			// Customize the UseSound. DefaultToStaff sets UseSound to SoundID.Item43, but we want SoundID.Item2.
+			Item.noMelee = true;
+			Item.noUseGraphic = true;
 			Item.UseSound = new SoundStyle($"DestroyerTest/Assets/Audio/RiftClaymorePowerStrike");
+			Item.channel = true;
 
 			Item.DamageType = DamageClass.Magic;
-            Item.mana = 50;
             Item.damage = 70;
 		}
 
-        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        public override bool CanUseItem(Player player)
         {
-			int Count = 0;
-
-			if (!Energized)
-			{
-				Count = 6;
-			}
-			if (Energized)
-			{
-				Count = 12;
-			}
-			for (int i = 0; i < Count; i++)
-			{
-				float angle = MathHelper.TwoPi * i / Count;
-				Vector2 projPos = Main.MouseWorld + 80 * new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
-				Vector2 dustStart = position;
-				Vector2 dustEnd = projPos;
-				int dustSteps = 20;
-				for (int j = 0; j <= dustSteps; j++)
-				{
-					Vector2 dustPos = Vector2.Lerp(dustStart, dustEnd, j / (float)dustSteps);
-					Dust.NewDustPerfect(dustPos, DustID.TintableDustLighted, Vector2.Zero, 150, ColorLib.Rift, 1.2f);
-				}
-
-				Vector2 Inward = Main.MouseWorld - projPos;
-				Inward.Normalize();
-				Projectile.NewProjectile(source, projPos, Inward * 0.5f, type, damage, knockback, ai2: 1);
-			}
-            return false;
+            return player.ownedProjectileCounts[Item.shoot] < 1;
         }
-		
 		
 		public override void AddRecipes()
         {

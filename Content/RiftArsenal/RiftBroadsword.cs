@@ -1,22 +1,22 @@
+using BreadLibrary.Core.Graphics.Particles;
+using DestroyerTest.Common;
+using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Resources;
+using DestroyerTest.Content.Resources.Blueprints;
 using DestroyerTest.Content.Tiles;
+using DestroyerTest.Content.Tiles.RiftConfigurator;
 using DestroyerTest.Content.Tiles.Riftplate;
+using DestroyerTest.Content.Tools;
+using DestroyerTest.Rarity;
+using InnoVault.PRT;
 using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using DestroyerTest.Rarity;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Tools;
-
-using System.Collections.Generic;
-using InnoVault.PRT;
-using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Resources.Blueprints;
-using DestroyerTest.Content.Tiles.RiftConfigurator;
 
 
 
@@ -61,16 +61,13 @@ namespace DestroyerTest.Content.RiftArsenal
 
             if (Energized)
             {
-                int[] types = new int[]
-                {
-                    PRTLoader.GetParticleID<Arc1>(),
-                    PRTLoader.GetParticleID<Arc2>(),
-                    PRTLoader.GetParticleID<Arc3>()
-                };
+
 
 				if (Main.rand.NextBool(3))
 				{
-					PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], Main.rand.NextVector2FromRectangle(hitbox), Vector2.Zero, ColorLib.Rift, 0.3f);
+                    ElectricArc Arc = new();
+                    Arc.Create(Main.rand.NextVector2FromRectangle(hitbox), ColorLib.Rift, Main.rand.NextFloat(0.5f, 1f), 1f);
+                    ParticleEngine.ShaderParticles.Add(Arc);
 				}
             }
 		}

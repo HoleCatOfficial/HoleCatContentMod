@@ -116,17 +116,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
 
 			Vector2 tipPos = list[list.Count - 1];
 
-			int[] types = new int[]
-                {
-                    PRTLoader.GetParticleID<Arc1>(),
-                    PRTLoader.GetParticleID<Arc2>(),
-                    PRTLoader.GetParticleID<Arc3>()
-                };
-
-			if (SpawnPRTCharge == true)
-			{
-				PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], tipPos, Vector2.Zero, ColorLib.Rift, 0.2f);
-			}
+		
 
 			//Main.DrawWhip_WhipBland(Projectile, list);
 				// The code below is for custom drawing.

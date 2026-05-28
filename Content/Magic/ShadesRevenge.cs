@@ -35,7 +35,7 @@ namespace DestroyerTest.Content.Magic
 			Item.damage = 240;
 			Item.DamageType = DamageClass.Magic;
 			Item.channel = true;
-			Item.mana = 75;
+			Item.mana = 40;
 			Item.crit = 21;
 			Item.noMelee = true;
 			Item.noUseGraphic = true;

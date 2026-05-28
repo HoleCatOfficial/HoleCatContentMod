@@ -1,6 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
@@ -8,13 +6,16 @@ using DestroyerTest.Content.Particles;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using ReLogic.Content;
+using System;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using OpusLib;
 
 namespace DestroyerTest.Content.Projectiles
 {
@@ -160,7 +161,9 @@ namespace DestroyerTest.Content.Projectiles
 
             if (Main.rand.NextBool(12))
             {
-                PRTLoader.NewParticle(DTUtils.ElectricArcs[Main.rand.Next(DTUtils.ElectricArcs.Length)], Projectile.Center + Main.rand.NextVector2Circular(10, 10), Vector2.Zero, ColorLib.Rift, 0.1f);
+                ElectricArc Arc = new();
+                Arc.Create(Projectile.Center + Main.rand.NextVector2Circular(10, 10), ColorLib.Rift, Main.rand.NextFloat(0.5f, 1f), 0.2f);
+                ParticleEngine.ShaderParticles.Add(Arc);
             }
 
 			Lighting.AddLight(Projectile.Center, ColorLib.Rift.ToVector3() * 0.2f);

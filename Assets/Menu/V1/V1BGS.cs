@@ -1,7 +1,7 @@
 using Microsoft.Xna.Framework;
 using Terraria.ModLoader;
 
-namespace DestroyerTest.Assets.Menu.V1
+namespace DestroyerTest.Asset.Menu.V1
 {
 	public class V1BGS : ModSurfaceBackgroundStyle
 	{

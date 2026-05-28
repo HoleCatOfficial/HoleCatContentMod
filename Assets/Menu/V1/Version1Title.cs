@@ -7,7 +7,7 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace DestroyerTest.Assets.Menu.V1
+namespace DestroyerTest.Asset.Menu.V1
 {
 	public class Version1Title : ModMenu
 	{

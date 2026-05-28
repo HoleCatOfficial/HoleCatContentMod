@@ -251,13 +251,6 @@ namespace DestroyerTest.Common
         }
 
 
-        public static int[] ElectricArcs = new int[]
-        {
-            PRTLoader.GetParticleID<Arc1>(),
-            PRTLoader.GetParticleID<Arc2>(),
-            PRTLoader.GetParticleID<Arc3>()
-        };
-        
 
         public static int GetScepterArmorSellPricePerRarity(int rarity)
         {
@@ -659,6 +652,24 @@ namespace DestroyerTest.Common
         public static int RandomDirection(int Chance)
         {
             return Main.rand.NextBool(Chance) ? 1 : -1;
+        }
+
+        public static void PoofOfSmoke(Vector2 position)
+        {
+            int r = Main.rand.Next(3, 7);
+            for (int i = 0; i < r; i++)
+            {
+                int num2 = Gore.NewGore(Projectile.GetSource_None(), position, (Main.rand.NextFloat() * ((float)Math.PI * 2f)).ToRotationVector2() * new Vector2(2f, 0.7f) * 0.7f, Main.rand.Next(11, 14));
+                Main.gore[num2].scale = 0.7f;
+                Main.gore[num2].velocity *= 0.5f;
+            }
+
+            for (int j = 0; j < 10; j++)
+            {
+                Dust obj = Main.dust[Dust.NewDust(position, 14, 14, 16, 0f, 0f, 100, default(Color), 1.5f)];
+                obj.position += new Vector2(5f);
+                obj.velocity = (Main.rand.NextFloat() * ((float)Math.PI * 2f)).ToRotationVector2() * new Vector2(2f, 0.7f) * 0.7f * (0.5f + 0.5f * Main.rand.NextFloat());
+            }
         }
 
     }

@@ -68,10 +68,6 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 
             List<BasePRT> Arcs = new List<BasePRT>();
 
-            if (Main.rand.NextBool(5))
-            {
-                Arcs.Add(PRTLoader.NewParticle(DTUtils.ElectricArcs[DTUtils.ElectricArcs.Length - 1], Projectile.Center, Vector2.Zero, ColorLib.Rift, 0.5f));
-            }
             for (int i = 0; i < Arcs.Count; i++)
             {
                 Arcs[i].Position = Projectile.Center;

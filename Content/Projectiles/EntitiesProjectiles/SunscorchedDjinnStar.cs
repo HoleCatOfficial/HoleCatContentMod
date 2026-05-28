@@ -165,7 +165,9 @@ namespace DestroyerTest.Content.Projectiles.EntitiesProjectiles
 
             if (Main.rand.NextBool(12))
             {
-                PRTLoader.NewParticle(DTUtils.ElectricArcs[Main.rand.Next(DTUtils.ElectricArcs.Length)], Projectile.Center + Main.rand.NextVector2Circular(10, 10), Vector2.Zero, ColorLib.Rift, 0.1f);
+                ElectricArc Arc = new();
+                Arc.Create(Projectile.Center + Main.rand.NextVector2Circular(10, 10), ColorLib.Rift, Main.rand.NextFloat(0.5f, 1f), 0.2f);
+                ParticleEngine.ShaderParticles.Add(Arc);
             }
 
 			Lighting.AddLight(Projectile.Center, ColorLib.Rift.ToVector3() * 0.2f);

@@ -1,13 +1,14 @@
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
 using InnoVault.PRT;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
 
 namespace DestroyerTest.Content.Buffs
 {
@@ -47,17 +48,14 @@ namespace DestroyerTest.Content.Buffs
         {
             if (lifeRegenDebuff)
             {
-                int[] types = new int[]
-                {
-                    PRTLoader.GetParticleID<Arc1>(),
-                    PRTLoader.GetParticleID<Arc2>(),
-                    PRTLoader.GetParticleID<Arc3>()
-                };
+
 
 				Vector2 pos = npc.Center + Main.rand.NextVector2Circular(npc.width * 0.5f, npc.height * 0.5f);
 				if (Main.rand.NextBool(20) && !DTOptimizationsConfig.instance.DisableExcessParticles)
 				{
-					PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], pos, Vector2.Zero, ColorLib.Rift, 0.3f);
+                    ElectricArc Arc = new();
+                    Arc.Create(pos, ColorLib.Rift, Main.rand.NextFloat(0.5f, 1f), 1f);
+                    ParticleEngine.ShaderParticles.Add(Arc);
 				}
 
 				//Dust.NewDust(npc.position, npc.width, npc.height, DustID.Lava, 0.0f, 0.5f, 0, default, 1);
@@ -102,18 +100,17 @@ namespace DestroyerTest.Content.Buffs
         {
 			if (lifeRegenDebuff)
 			{
-                int[] types = new int[]
-                {
-                    PRTLoader.GetParticleID<Arc1>(),
-                    PRTLoader.GetParticleID<Arc2>(),
-                    PRTLoader.GetParticleID<Arc3>()
-                };
+               
 
 				Vector2 pos = Main.rand.NextVector2Circular(Player.width * 0.5f, Player.height * 0.5f);
 
 				if (Main.rand.NextBool(20) && !DTOptimizationsConfig.instance.DisableExcessParticles)
 				{
-					PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], pos, Vector2.Zero, ColorLib.Rift, 0.25f);
+                    ElectricArc Arc = new();
+                    Arc.Create(Player.Center + pos, ColorLib.Rift, Main.rand.NextFloat(0.5f, 1f), 1f);
+                    ParticleEngine.ShaderParticles.Add(Arc);
+
+                
 				}
 				Player.moveSpeed *= 0.85f;
 			}

@@ -11,7 +11,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace DestroyerTest.Assets.Menu.V5
+namespace DestroyerTest.Asset.Menu.V5
 {
     //Copied from Calamity Mod Github.
     public class MenuWyvern : ModMenu

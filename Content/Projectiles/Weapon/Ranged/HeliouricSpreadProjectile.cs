@@ -1,3 +1,4 @@
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Particles;
@@ -41,15 +42,17 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Ranged
 			}
 			if (!DTOptimizationsConfig.instance.DisableExcessParticles)
 			{
-                PRTLoader.NewParticle(DTUtils.ElectricArcs[Main.rand.Next(DTUtils.ElectricArcs.Length)], Projectile.Center, Vector2.Zero, ColorLib.Rift * 0.25f, 0.5f);
-                PRTLoader.NewParticle(DTUtils.ElectricArcs[Main.rand.Next(DTUtils.ElectricArcs.Length)], Projectile.Center, Vector2.Zero, ColorLib.Rift * 0.75f, 0.35f);
+                ElectricArc Arc = new();
+                Arc.Create(Projectile.Center, ColorLib.Rift, Main.rand.NextFloat(0.5f, 1f), 1.3f);
+                ParticleEngine.ShaderParticles.Add(Arc);
             }
 			else
 			{
 				if (Main.rand.NextBool(20))
 				{
-                    PRTLoader.NewParticle(DTUtils.ElectricArcs[Main.rand.Next(DTUtils.ElectricArcs.Length)], Projectile.Center, Vector2.Zero, ColorLib.Rift * 0.25f, 0.5f);
-                    PRTLoader.NewParticle(DTUtils.ElectricArcs[Main.rand.Next(DTUtils.ElectricArcs.Length)], Projectile.Center, Vector2.Zero, ColorLib.Rift * 0.75f, 0.35f);
+                    ElectricArc Arc = new();
+                    Arc.Create(Projectile.Center, ColorLib.Rift, Main.rand.NextFloat(0.5f, 1f), 1.3f);
+                    ParticleEngine.ShaderParticles.Add(Arc);
                 }
 			}
 		}

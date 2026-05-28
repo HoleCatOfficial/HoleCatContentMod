@@ -173,7 +173,10 @@ namespace DestroyerTest.Content.Equips
 				Dust.NewDust(Player.position, Player.Hitbox.Width, Player.Hitbox.Height, DustID.FireworksRGB, (Player.velocity.X / 2) + Main.rand.NextFloat(-2, 2), (Player.velocity.Y / 2) + Main.rand.NextFloat(-2, 2), 200, ColorLib.Rift, 0.4f);
 				if (Main.rand.NextBool(16))
                 {
-                    PRTLoader.NewParticle(DTUtils.ElectricArcs[Main.rand.Next(DTUtils.ElectricArcs.Length)], Main.rand.NextVector2FromRectangle(Player.Hitbox), Vector2.Zero, ColorLib.Rift * 0.5f, 0.05f);
+
+                    ElectricArc Arc = new();
+                    Arc.Create(Main.rand.NextVector2FromRectangle(Player.Hitbox), ColorLib.Rift, Main.rand.NextFloat(0.5f, 1f), 0.5f);
+                    ParticleEngine.ShaderParticles.Add(Arc);
                 }
 			}
 			if (Charge2)
@@ -194,7 +197,9 @@ namespace DestroyerTest.Content.Equips
 				Dust.NewDust(Player.position, Player.Hitbox.Width, Player.Hitbox.Height, DustID.FireworksRGB, (Player.velocity.X / 2) + Main.rand.NextFloat(-2, 2), (Player.velocity.Y / 2) + Main.rand.NextFloat(-2, 2), 100, ColorLib.Rift, 0.6f);
 				if (Main.rand.NextBool(12))
                 {
-                    PRTLoader.NewParticle(DTUtils.ElectricArcs[Main.rand.Next(DTUtils.ElectricArcs.Length)], Main.rand.NextVector2FromRectangle(Player.Hitbox), Vector2.Zero, ColorLib.Rift * 0.75f, 0.075f);
+                    ElectricArc Arc = new();
+                    Arc.Create(Main.rand.NextVector2FromRectangle(Player.Hitbox), ColorLib.Rift, Main.rand.NextFloat(0.5f, 1f), 0.75f);
+                    ParticleEngine.ShaderParticles.Add(Arc);
                 }
 			}
 			if (Charge3)
@@ -215,7 +220,9 @@ namespace DestroyerTest.Content.Equips
 				Dust.NewDust(Player.position, Player.Hitbox.Width, Player.Hitbox.Height, DustID.FireworksRGB, (Player.velocity.X / 2) + Main.rand.NextFloat(-2, 2), (Player.velocity.Y / 2) + Main.rand.NextFloat(-2, 2), 0, ColorLib.Rift, 1f);
 				if (Main.rand.NextBool(8))
                 {
-                    PRTLoader.NewParticle(DTUtils.ElectricArcs[Main.rand.Next(DTUtils.ElectricArcs.Length)], Main.rand.NextVector2FromRectangle(Player.Hitbox), Vector2.Zero, ColorLib.Rift, 0.1f);
+                    ElectricArc Arc = new();
+                    Arc.Create(Main.rand.NextVector2FromRectangle(Player.Hitbox), ColorLib.Rift, Main.rand.NextFloat(0.5f, 1f), 1f);
+                    ParticleEngine.ShaderParticles.Add(Arc);
                 }
 				if (ComboCounter >= 120)
 				{

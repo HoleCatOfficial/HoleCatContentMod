@@ -111,17 +111,13 @@ namespace DestroyerTest.Common
 
         public override void MeleeEffects(Item item, Rectangle hitbox)
         {
-            int[] types = new int[]
-                {
-                    PRTLoader.GetParticleID<Arc1>(),
-                    PRTLoader.GetParticleID<Arc2>(),
-                    PRTLoader.GetParticleID<Arc3>()
-                };
             if (HeliouricShock && item.DamageType.CountsAsClass<MeleeDamageClass>() && !item.noMelee && !item.noUseGraphic)
             {
                 if (Main.rand.NextBool(5))
                 {
-                    PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], new Vector2(hitbox.Width, (hitbox.Height / 2) - (hitbox.Height / 2)), Vector2.Zero, ColorLib.Rift, 0.05f);
+                    ElectricArc Arc = new();
+                    Arc.Create(new Vector2(hitbox.Width, (hitbox.Height / 2) - (hitbox.Height / 2)), ColorLib.Rift, Main.rand.NextFloat(0.5f, 1f), 0.08f);
+                    ParticleEngine.ShaderParticles.Add(Arc);
                 }
             }
             if (GalantineBurn && item.DamageType.CountsAsClass<MeleeDamageClass>() && !item.noMelee && !item.noUseGraphic)
@@ -163,17 +159,14 @@ namespace DestroyerTest.Common
 
         public override void EmitEnchantmentVisualsAt(Projectile projectile, Vector2 boxPosition, int boxWidth, int boxHeight)
         {
-            int[] types = new int[]
-                {
-                    PRTLoader.GetParticleID<Arc1>(),
-                    PRTLoader.GetParticleID<Arc2>(),
-                    PRTLoader.GetParticleID<Arc3>()
-                };
+           
             if (HeliouricShock && (projectile.DamageType.CountsAsClass<MeleeDamageClass>() || ProjectileID.Sets.IsAWhip[projectile.type]) && !projectile.noEnchantments)
             {
                 if (Main.rand.NextBool(5))
                 {
-                    PRTLoader.NewParticle(types[Main.rand.Next(types.Length)], Main.rand.NextVector2FromRectangle(new Rectangle((int)projectile.position.X, (int)projectile.position.Y, boxWidth, boxHeight)), Vector2.Zero, ColorLib.Rift, 0.05f);
+                    ElectricArc Arc = new();
+                    Arc.Create(Main.rand.NextVector2FromRectangle(new Rectangle((int)projectile.position.X, (int)projectile.position.Y, boxWidth, boxHeight)), ColorLib.Rift, Main.rand.NextFloat(0.5f, 1f), 0.08f);
+                    ParticleEngine.ShaderParticles.Add(Arc);
                 }
             }
             if (DaylightOverload && (projectile.DamageType.CountsAsClass<MeleeDamageClass>() || ProjectileID.Sets.IsAWhip[projectile.type]) && !projectile.noEnchantments)

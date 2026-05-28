@@ -2,7 +2,7 @@ using DestroyerTest.Common;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.ModLoader;
 
-namespace DestroyerTest.Assets.Menu.V5
+namespace DestroyerTest.Asset.Menu.V5
 {
     // Thanks to Nycro#0001 <@!262663471189983242> for this null background which cleanly ignores vanilla's parallax mechanics
     // Copied from Calamity Mod Github.

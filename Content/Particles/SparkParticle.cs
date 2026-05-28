@@ -34,6 +34,7 @@ namespace DestroyerTest.Content.Particles
 
         public float Width = 1f;
         public float LengthMultiplier = 1f;
+        public float _len = 1f;
 
         public int internalCounter = 0;
 
@@ -50,7 +51,7 @@ namespace DestroyerTest.Content.Particles
             this.col = color;
             this.Opacity = 1f;
             this.gravity = Gravity;
-            this.LengthMultiplier = lengthMultiplier;
+            this.LengthMultiplier = _len = lengthMultiplier;
 
             sparkDrawMode = drawMode;
         }
@@ -270,6 +271,32 @@ namespace DestroyerTest.Content.Particles
         }
 
         public override PixelLayer PixelLayer => PixelLayer.AboveTiles;
+    }
+
+    public class HeatseekerSilohSpark : Spark
+    {
+        public override void Update(ref ParticleRendererSettings settings)
+        {
+            internalCounter++;
+            Lifetime--;
+
+            position += velocity;
+
+            rotation = velocity.ToRotation() + MathHelper.PiOver2;
+            velocity *= 0.97f;
+
+            if (Lifetime < maxLifetime / 2)
+            {
+                float progress = 1f - (float)Lifetime / (maxLifetime / 2f);
+                Width = MathHelper.Lerp(1f, 0f, progress);
+                LengthMultiplier = MathHelper.Lerp(_len, 0f, progress);
+            }
+
+            if (Lifetime <= 0)
+            {
+                ShouldBeRemovedFromRenderer = true;
+            }
+        }
     }
 
     public class WitheringSpark : Spark

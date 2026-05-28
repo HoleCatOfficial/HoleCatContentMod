@@ -7,7 +7,7 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace DestroyerTest.Assets.Menu.V2
+namespace DestroyerTest.Asset.Menu.V2
 {
 	public class Version2Title_RiftSurface : ModMenu
 	{

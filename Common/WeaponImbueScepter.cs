@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using BreadLibrary.Core.Graphics.Particles;
 
 
 namespace DestroyerTest.Common
@@ -59,7 +60,11 @@ namespace DestroyerTest.Common
                             HasImbue = true;
                         }
                         DustInEnchantVisuals(thrown, DustID.FireworksRGB, 40, ColorLib.Rift, 0.5f, false);
-                        PRTLoader.NewParticle(DTUtils.ElectricArcs[Main.rand.Next(DTUtils.ElectricArcs.Length)], Main.rand.NextVector2FromRectangle(thrown.EnchantmentVisuals()), Vector2.Zero, ColorLib.Rift, 0.05f);
+
+                        ElectricArc Arc = new();
+                        Arc.Create(Main.rand.NextVector2FromRectangle(thrown.EnchantmentVisuals()), ColorLib.Rift, Main.rand.NextFloat(0.5f, 1f), 0.08f);
+                        ParticleEngine.ShaderParticles.Add(Arc);
+
                     }
                     if (DaylightOverload)
                     {

@@ -13,7 +13,7 @@ using DestroyerTest.Content.Ammunitions;
 using DestroyerTest.Content.Scepter;
 using DestroyerTest.Content.Tools;
 using DestroyerTest.Content.Resources;
-using DestroyerTest.Assets.Menu.V5;
+using DestroyerTest.Asset.Menu.V5;
 using Terraria.DataStructures;
 using DestroyerTest.Content.Equips;
 

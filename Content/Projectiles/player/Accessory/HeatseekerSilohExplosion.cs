@@ -67,6 +67,15 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
                 Dust.NewDustPerfect(Projectile.Center, DustID.FireworksRGB, ran, (int)MathHelper.Lerp(255, 0, Main.rand.NextFloat(0.5f, 1f)), ColorLib.LightRift3, Main.rand.NextFloat(0.7f, 1.4f));
             }
 
+            for (int d = 0; d < 8; d++)
+            {
+                Vector2 ran = new Vector2(Main.rand.NextFloat(-9f, 9f), Main.rand.NextFloat(-12f, -2f));
+
+                HeatseekerSilohSpark Spark = new();
+                Spark.PrepareSpark(Projectile.Center, ran, ran.ToRotation() + MathHelper.PiOver2, ColorLib.Rift, 1f, false, 80, SparkDrawMode.Additive, 2f);
+                ParticleEngine.BehindProjectiles.Add(Spark);
+            }
+
             Opus.RadialSpreadProjectileRandom(ModContent.ProjectileType<RiftStarFriendly>(), 4, Projectile.Center, (int)Owner.GetTotalDamage(DamageClass.Generic).ApplyTo(20), 4, 8f);
             Opus.RadialSpreadProjectileRandom(ModContent.ProjectileType<RiftSpark>(), 6, Projectile.Center, (int)Owner.GetTotalDamage(DamageClass.Generic).ApplyTo(10), 4, 4f);
 
