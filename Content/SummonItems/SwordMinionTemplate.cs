@@ -1,3 +1,4 @@
+using DestroyerTest.Common;
 using DestroyerTest.Content.Particles;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
@@ -153,7 +154,7 @@ namespace DestroyerTest.Content.SummonItems
 
         private void IdleDust()
         {
-            Dust dust = Dust.NewDustDirect(Projectile.position, Projectile.height, Projectile.width, IdleDustType, 0, 0, 254, Scale: 1.0f);
+            Dust dust = Dust.NewDustPerfect(Projectile.Center, IdleDustType, Vector2.Zero, 0, Scale: 1.0f);
             dust.velocity += Projectile.velocity * 0.5f;
             dust.velocity *= 0.5f;
             dust.noGravity = true;
@@ -161,7 +162,7 @@ namespace DestroyerTest.Content.SummonItems
 
         private void DashDust()
         {
-            Dust dust = Dust.NewDustDirect(Projectile.position, Projectile.height, Projectile.width, DashDustType, 0, 0, 254, Scale: 1.0f);
+            Dust dust = Dust.NewDustPerfect(Projectile.Center, DashDustType, Vector2.Zero, 0, ThemeColor, 1.0f);
             dust.velocity += Projectile.velocity * 0.5f;
             dust.velocity *= 0.5f;
             dust.noGravity = true;
@@ -169,7 +170,7 @@ namespace DestroyerTest.Content.SummonItems
 
         private void TeleDust()
         {
-            Dust dust = Dust.NewDustDirect(Projectile.position, Projectile.height, Projectile.width, TeleDustType, 0, 0, 254, Scale: 1.0f);
+            Dust dust = Dust.NewDustPerfect(Projectile.Center, DashDustType, Vector2.Zero, 0, ThemeColor, 1.0f);
             dust.velocity += Projectile.velocity * 0.5f;
             dust.velocity *= 0.5f;
             dust.noGravity = true;
@@ -193,11 +194,12 @@ namespace DestroyerTest.Content.SummonItems
         public override void SetStaticDefaults()
         {
             ProjectileID.Sets.TrailingMode[Type] = 2;
-            ProjectileID.Sets.TrailCacheLength[Type] = 12;
+            ProjectileID.Sets.TrailCacheLength[Type] = 20;
             ProjectileID.Sets.MinionTargettingFeature[Projectile.type] = true;
             Main.projPet[Projectile.type] = true;
             ProjectileID.Sets.MinionSacrificable[Projectile.type] = true;
             ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true;
+            
         }
 
         public override void SetDefaults()
@@ -302,6 +304,7 @@ namespace DestroyerTest.Content.SummonItems
         // Call this in AI() every tick to decrement cooldown.
         public void UpdateAtkCooldown()
         {
+            Projectile.velocity *= 0.99f;
             if (AtkCooldownTimer > 0)
                 AtkCooldownTimer--;
         }
@@ -491,6 +494,7 @@ namespace DestroyerTest.Content.SummonItems
                         if (Main.myPlayer == owner.whoAmI && distanceToIdlePosition > TeleDist)
                         {
                             SoundEngine.PlaySound(TeleSound);
+                            TeleDust();
                             if (UsesPRTOnTele)
                             {
                                 TeleParticle_PRT(TelePRTID, Color.AliceBlue, 1.0f);
@@ -626,6 +630,7 @@ namespace DestroyerTest.Content.SummonItems
                         if (Main.myPlayer == owner.whoAmI && distanceToIdlePosition > TeleDist)
                         {
                             SoundEngine.PlaySound(TeleSound);
+                            TeleDust();
                             if (UsesPRTOnTele)
                             {
                                 TeleParticle_PRT(TelePRTID, Color.AliceBlue, 1.0f);
@@ -716,8 +721,8 @@ namespace DestroyerTest.Content.SummonItems
 
         public virtual void Movement(bool foundTarget, float distanceFromTarget, Vector2 targetCenter, float distanceToIdlePosition, Vector2 vectorToIdlePosition)
         {
-            float speed = 50f;
-            float inertia = 100f;
+            float speed = 30f;
+            float inertia = 80f;
             Player owner = Main.player[Projectile.owner];
 
             if (Projectile.Distance(owner.Center) > TeleDist)
@@ -802,6 +807,11 @@ namespace DestroyerTest.Content.SummonItems
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
+            SoundEngine.PlaySound(DTAssetLib.Impacts.FleshHit with { Pitch = 0.4f, PitchVariance = 0.2f }, target.Center);
+            for (int t = 0; t < 4f; t++)
+            {
+                Dust.NewDustPerfect(target.Center, DustID.FireworksRGB, (Projectile.velocity * 0.5f).RotatedByRandom(0.08f), 0, ThemeColor, 1f);
+            }
             StartAtkCooldown(120);
         }
 

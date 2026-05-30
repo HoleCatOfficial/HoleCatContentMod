@@ -31,7 +31,8 @@ namespace DestroyerTest.Content.Equips
         {
             CreateRecipe()
                 .AddIngredient(ItemID.SoulofLight, 20)
-                .AddIngredient(ItemID.Ectoplasm, 10)
+                .AddIngredient(ItemID.SoulofNight, 20)
+                .AddIngredient(ItemID.GoldCoin)
             .Register();
         }
     }

@@ -462,3 +462,8 @@ Enfeebled: {
 	DisplayName: Enfeebled
 	Description: Melee and Whip size halved!
 }
+
+ShadeHeartPetBuff: {
+	DisplayName: Shade Heart Pet Buff
+	Description: Mods.DestroyerTest.Buffs.ShadeHeartPetBuff.Description
+}

@@ -79,9 +79,14 @@ namespace DestroyerTest.Content.Equips
                 Projectile.NewProjectile(player.GetSource_Accessory(Item), player.Center, Main.rand.NextVector2Circular(3f, 3f), ModContent.ProjectileType<SolarTrail>(), (int)player.GetTotalDamage(DamageClass.Summon).ApplyTo(16), 12, player.whoAmI);
             }
 
-            player.maxMinions += 6;
+            player.maxMinions += 3;
             player.GetAttackSpeed(DamageClass.SummonMeleeSpeed) += 0.16f;
             player.GetArmorPenetration(DamageClass.Summon) += 22;
+        }
+
+        public override void AddRecipes()
+        {
+            
         }
     }
 }

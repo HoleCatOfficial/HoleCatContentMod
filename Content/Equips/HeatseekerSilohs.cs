@@ -2,6 +2,7 @@
 using DestroyerTest.Common;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Projectiles.player.Accessory;
+using DestroyerTest.Content.Resources;
 using Microsoft.Xna.Framework;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
@@ -303,6 +304,17 @@ namespace DestroyerTest.Content.Equips
                 //Utils.TileActionAttempt WalkFX = new(SpawnRiftParticles);
                 //player.DoBootsEffect(WalkFX);
             }
+        }
+
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient(ItemID.TerrasparkBoots)
+                .AddIngredient(ItemID.ExplosivePowder, 3)
+                .AddIngredient<Living_Shadow>(12)
+                .AddIngredient<SunscorchedCinder>(6)
+                .AddIngredient<CarbonizedFlesh>(6)
+                .Register();
         }
     }
 }

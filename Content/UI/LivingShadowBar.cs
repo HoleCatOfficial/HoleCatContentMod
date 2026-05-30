@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
@@ -119,6 +120,8 @@ namespace DestroyerTest.Content.UI
 
 			var modPlayer = Main.LocalPlayer.GetModPlayer<LivingShadowPlayer>();
 
+
+
 			float percentage = (float)modPlayer.LivingShadowCurrent / modPlayer.LivingShadowMax2 * 100f;
 			text.SetText(Language.GetTextValue("Mods.DestroyerTest.UI.LivingShadow",
 				percentage.ToString("0.##"),
@@ -144,6 +147,24 @@ namespace DestroyerTest.Content.UI
 			float centerX = frameDims.Position().X + (frameDims.Width / 2f);
 			float textWidth = text.GetDimensions().Width;
 			text.Left.Set(centerX - (textWidth / 2f) - area.Left.Pixels, 0f);
+
+			SoundStyle Warn = new SoundStyle("DestroyerTest/Assets/Audio/RiftChargeWarning");
+			if (percentage < 20f && percentage > 5f)
+			{
+				if (Main.GameUpdateCount % 120 == 0)
+				{
+					CombatText.NewText(Main.LocalPlayer.Hitbox, Color.Red, "Low Charge!");
+					SoundEngine.PlaySound(Warn);
+				}
+			}
+			if (percentage < 5f && percentage > 0f)
+			{
+                if (Main.GameUpdateCount % 30 == 0)
+                {
+                    CombatText.NewText(Main.LocalPlayer.Hitbox, Color.Red, "Low Charge!");
+                    SoundEngine.PlaySound(Warn);
+                }
+            }
 
 			base.Update(gameTime);
 		}

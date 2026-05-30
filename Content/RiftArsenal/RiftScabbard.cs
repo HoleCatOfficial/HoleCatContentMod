@@ -63,11 +63,11 @@ namespace DestroyerTest.Content.RiftArsenal
 			ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true; // This lets the player target anywhere on the whole screen while using a controller
 			ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
 
-			ItemID.Sets.StaffMinionSlotsRequired[Type] = 1f; // The default value is 1, but other values are supported. See the docs for more guidance. 
+			ItemID.Sets.StaffMinionSlotsRequired[Type] = 2f; // The default value is 1, but other values are supported. See the docs for more guidance. 
 		}
 
 		public override void SetDefaults() {
-			Item.damage = 55;
+			Item.damage = 100;
 			Item.knockBack = 0f;
 			Item.mana = 40; // mana cost
 			Item.width = 32;
@@ -82,7 +82,7 @@ namespace DestroyerTest.Content.RiftArsenal
     			Pitch = 0.0f, 
     			PitchVariance = 0.5f, 
 			};
-			Item.accessory = true;
+			//Item.accessory = true;
 
 			// These below are needed for a minion weapon
 			Item.noMelee = true; // this item doesn't do any melee damage
@@ -245,14 +245,14 @@ namespace DestroyerTest.Content.RiftArsenal
 		public override void SetDefaults()
 		{
 			base.SetDefaults();
+			Projectile.minionSlots = 2;
 			Projectile.width = 68;
 			Projectile.height = 68;
-			Projectile.minionSlots = 0.5f;
 			ThemeColor = ColorLib.Rift;
 			TintColor = Color.White;
-			IdleDustType = ModContent.DustType<RiftDust>();
-			DashDustType = ModContent.DustType<RiftDust>();
-			TeleDustType = ModContent.DustType<RiftDust>();
+			IdleDustType = DustID.FireworksRGB;
+			DashDustType = DustID.FireworksRGB;
+			TeleDustType = DustID.FireworksRGB;
 			TeleSound = new SoundStyle("DestroyerTest/Assets/Audio/RiftSwordMinionTeleport") with { MaxInstances = 0, PitchVariance = 2 };
 			DashSound = new SoundStyle("DestroyerTest/Assets/Audio/RSDash") with { MaxInstances = 0, PitchVariance = 2 };
 			AfterImageColorless = true;
@@ -263,7 +263,7 @@ namespace DestroyerTest.Content.RiftArsenal
 			UsesParticleOrchestratorOnTele = false;
 			TeleDist = 8000;
 			Range = 8000;
-			Style = IdleStyle.Chevron;
+			Style = IdleStyle.Defensive;
 			ActiveBuff = ModContent.BuffType<RiftSwordBuff>();
 		}
 

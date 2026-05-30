@@ -16,6 +16,7 @@ using OpusLib;
 using Terraria.Audio;
 using System;
 using Terraria.DataStructures;
+using DestroyerTest.Content.RiftArsenal;
 
 namespace DestroyerTest.Content.Entities
 {
@@ -153,6 +154,7 @@ namespace DestroyerTest.Content.Entities
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Living_Shadow>(), 1, 3, 10));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<RiftWhipT1>(), 11, 1, 1));
         }
     }
 }

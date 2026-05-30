@@ -1,6 +1,7 @@
 ﻿
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Resources;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
@@ -168,7 +169,7 @@ namespace DestroyerTest.Content.Equips
         {
             if (Offensive)
             {
-                player.maxMinions += 2;
+                player.maxMinions += 1;
                 player.GetArmorPenetration(DamageClass.Summon) += 8;
             }
             else
@@ -176,6 +177,16 @@ namespace DestroyerTest.Content.Equips
                 player.buffImmune[ModContent.BuffType<SoulErosion>()] = true;
                 player.endurance += 0.11f;
             }
+        }
+
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient<Dyrn>(32)
+                .AddIngredient<LifeEcho>(6)
+                .AddIngredient(ItemID.GoldCrown)
+                .AddTile(TileID.Anvils)
+                .Register();
         }
     }
 }

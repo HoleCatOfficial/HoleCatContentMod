@@ -88,9 +88,10 @@ namespace DestroyerTest.Content.RangedItems
                     Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Launch, type, Projectile.damage, Projectile.knockBack, player.whoAmI);
                     if (state == State.Empowered)
                     {
-                        Vector2 LaunchRand = Launch.RotatedByRandom(1.35);
+                        
                         for (int r = 0; r < Main.rand.Next(3, 6); r++)
                         {
+                            Vector2 LaunchRand = Launch.RotatedByRandom(1.35);
                             Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, LaunchRand, ModContent.ProjectileType<ConstitutionStarFriendly>(), Projectile.damage / 10, Projectile.knockBack, player.whoAmI, ai2: 1);
                         }
                     }

@@ -277,18 +277,18 @@ RiftShiv: {
 RiftWhipT1: {
 	Tooltip:
 		'''
-		Can be charged up by holding down.
-		When fully charged, hits inflict Heliouric Shock.
+		Hits spawn two homing riften sparks.
+		Critical hits spawn 4.
 		'''
-	DisplayName: Solar Scorpion
+	DisplayName: Shriek
 }
 
 RiftWhipT2: {
-	DisplayName: Solar Scorpion Mk.II
+	DisplayName: Sunkiss
 	Tooltip:
 		'''
-		Can be charged up by holding down.
-		When fully charged, hits inflict Heliouric Shock.
+		Hits spawn two homing Ancient Sun Stars.
+		Critical hits spawn 4.
 		'''
 }
 
@@ -2907,6 +2907,8 @@ LilliesOfImmortality: {
 	DisplayName: Lillies Of Immortality
 	Tooltip:
 		'''
+		You are immune to knockback and most debuffs.
+		Double tap either direction to perform a spirit fire dash.
 		You will consume a Healing Potion every 45 seconds when below 50% health.
 		Your highest rank healing potions will be used first.
 		You cannot manually consume healing potions.
@@ -4691,7 +4693,11 @@ CrownOfTheOldSun: {
 
 LuminantMedallion: {
 	DisplayName: Luminant Medallion
-	Tooltip: ""
+	Tooltip:
+		'''
+		Summoner class hits have a chance to create a burst of 6 souls that slow down before homing in on enemies, inflicting Light and Night inferno respectively.
+		The chance to burst decreases with how many minions you currently have summoned.
+		'''
 }
 
 HeatseekerSilohs: {
@@ -4703,4 +4709,9 @@ HeatseekerSilohs: {
 		You run faster on sand.
 		Hold the down key to slam into the ground, creating a small explosion and homing rift stars.
 		'''
+}
+
+IchorSlamShoes: {
+	DisplayName: Ichor Slam Shoes
+	Tooltip: ""
 }

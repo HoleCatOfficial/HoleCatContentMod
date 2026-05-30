@@ -1266,7 +1266,7 @@ namespace DestroyerTest.Content.Entities
                         {
                             bool eternity = DestroyerTestMod.EternityIsActive;
                             //Main.NewText("EternityIsActive returned: " + eternity);
-
+                            /*
                             if (!eternity)
                             {
                                 Minion = NPC.NewNPCDirect(Entity.GetSource_FromThis(), NPC.Center, ModContent.NPCType<GigaCursedHammer>());
@@ -1275,7 +1275,9 @@ namespace DestroyerTest.Content.Entities
                             {
                                 Minion = NPC.NewNPCDirect(Entity.GetSource_FromThis(), NPC.Center, ModContent.NPCType<TenebrousConstruct>());
                             }
+                            
                             HammerActive = true;
+                            */
                         }
 
                         else

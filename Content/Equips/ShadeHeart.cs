@@ -7,6 +7,7 @@ using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Rarity;
+using GlowmaskHelper.Content;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -21,11 +22,18 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Equips
 {
+    [AutoloadGlowmask]
     public class ShadeHeart : ModItem
     {
+        public override void SetStaticDefaults()
+        {
+            Main.RegisterItemAnimation(Type, new DrawAnimationVertical(4, 9));
+            ItemID.Sets.AnimatesAsSoul[Type] = true;
+        }
+        
         public override void SetDefaults()
         {
-            Item.width = 34;
+            Item.width = 38;
             Item.height = 42;
             Item.maxStack = 1;
             Item.value = 1000;
@@ -39,7 +47,7 @@ namespace DestroyerTest.Content.Equips
             player.GetDamage(DamageClass.Generic) += 0.22f;
             player.GetArmorPenetration(DamageClass.Melee) += 20;
 
-            Lighting.AddLight(player.Center, ColorLib.TenebrisGradient.ToVector3());
+            Lighting.AddLight(player.Center, ColorLib.TenebrisGradient.ToVector3() * 0.1f);
 
             if (player.TryGetModPlayer<ShadeHeartPlayer>(out var Heart))
             {
@@ -54,9 +62,11 @@ namespace DestroyerTest.Content.Equips
                 .AddIngredient<Tenebris>(12)
                 .AddIngredient<GalantineIncense>()
                 .AddIngredient<StarFangNecklace>()
+                .AddIngredient<LuminantMedallion>()
                 .AddIngredient(ItemID.SoulofMight, 8)
                 .AddIngredient(ItemID.SoulofFright, 8)
                 .AddIngredient(ItemID.SoulofSight, 8)
+                .AddTile(TileID.LunarCraftingStation)
             .Register();
         }
     }
@@ -80,6 +90,15 @@ namespace DestroyerTest.Content.Equips
 
                 Spark.PrepareSpark(Main.rand.NextVector2FromRectangle(Player.Hitbox), new Vector2(0f, -5f).RotatedByRandom(0.05f), 0f, ColorLib.TenebrisGradient * 0.25f, 0.6f, false, 30, SparkDrawMode.Additive);
                 ParticleEngine.ShaderParticles.Add(Spark);
+
+                Player.AddBuff(ModContent.BuffType<ShadeHeartPetBuff>(), 120);
+            }
+            else
+            {
+                if (Player.HasBuff<ShadeHeartPetBuff>())
+                {
+                    Player.ClearBuff(ModContent.BuffType<ShadeHeartPetBuff>());
+                }
             }
         }
 
@@ -139,6 +158,11 @@ namespace DestroyerTest.Content.Equips
             if (proj.DamageType == DamageClass.Summon && Main.rand.NextBool(10) && Active)
             {
                 ShimmeringFlames.ShimmerBurn(target);
+            }
+
+            if (proj.DamageType == DamageClass.Summon && Main.rand.NextBool((int)(20 * (1 + (0.1f * Player.numMinions)))) && Active)
+            {
+                Opus.RadialSpreadProjectile(ModContent.ProjectileType<TenebrisStarFriendly>(), 6, target.Center, (int)Player.GetTotalDamage(DamageClass.Summon).ApplyTo(40), 12, 16);
             }
         }
 

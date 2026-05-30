@@ -66,15 +66,6 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
             Projectile.rotation += 0.1f * Projectile.direction;
             Projectile.ai[0]++;
 
-            List<BasePRT> Arcs = new List<BasePRT>();
-
-            for (int i = 0; i < Arcs.Count; i++)
-            {
-                Arcs[i].Position = Projectile.Center;
-                Arcs[i].Rotation = 0f;
-            }
-
-
             if (Projectile.ai[0] % 20 == 0)
             {
                 SoundEngine.PlaySound(SoundID.DD2_LightningAuraZap, Projectile.Center);

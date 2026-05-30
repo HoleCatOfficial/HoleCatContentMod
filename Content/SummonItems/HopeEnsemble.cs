@@ -1,4 +1,5 @@
 
+using DestroyerTest.Common;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.player.Accessory;
@@ -6,9 +7,11 @@ using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Mono.Cecil;
+using OpusLib;
 using Steamworks;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -57,7 +60,7 @@ namespace DestroyerTest.Content.SummonItems
 		}
 
 		public override void SetDefaults() {
-			Item.damage = 40;
+			Item.damage = 90;
 			Item.knockBack = 0f;
 			Item.mana = 100; // mana cost
 			Item.width = 32;
@@ -136,22 +139,20 @@ namespace DestroyerTest.Content.SummonItems
 		public override void AddRecipes()
 		{
 			CreateRecipe()
-				.AddIngredient(ItemID.CopperShortsword, 1)
-				.AddIngredient(ItemID.TinShortsword, 1)
-				.AddIngredient(ItemID.IronShortsword, 1)
-				.AddIngredient(ItemID.LeadShortsword, 1)
-				.AddIngredient(ItemID.GoldShortsword, 1)
-				.AddIngredient(ItemID.SilverShortsword, 1)
-				.AddIngredient(ItemID.PlatinumShortsword, 1)
-				.AddIngredient(ItemID.TungstenShortsword, 10)
+				.AddIngredient(ItemID.CopperBroadsword, 1)
+				.AddIngredient(ItemID.TinBroadsword, 1)
+				.AddIngredient(ItemID.IronBroadsword, 1)
+				.AddIngredient(ItemID.LeadBroadsword, 1)
+				.AddIngredient(ItemID.GoldBroadsword, 1)
+				.AddIngredient(ItemID.SilverBroadsword, 1)
+				.AddIngredient(ItemID.PlatinumBroadsword, 1)
+				.AddIngredient(ItemID.TungstenBroadsword, 10)
 				.AddIngredient(ItemID.BloodButcherer, 1)
 				.AddIngredient(ItemID.LightsBane, 1)
 				.AddIngredient(ItemID.Leather, 10)
 				.AddIngredient(ItemID.Silk, 5)
-				.AddIngredient(ItemID.PinkThread, 5)
 				.AddIngredient(ItemID.Wood, 10)
 				.AddCondition(Condition.InExpertMode)
-				.AddDecraftCondition(Condition.Hardmode)
 				.AddTile(TileID.DemonAltar)
 				.Register();
 		}
@@ -479,13 +480,14 @@ namespace DestroyerTest.Content.SummonItems
 			base.SetDefaults();
 			Projectile.width = 36;
 			Projectile.height = 36;
+			Projectile.minionSlots = 1;
 			ThemeColor = Color.OrangeRed;
 			TintColor = Color.White;
 			IdleDustType = DustID.Copper;
-			DashDustType = DustID.Torch;
-			TeleDustType = DustID.Torch;
+			DashDustType = DustID.FireworksRGB;
+			TeleDustType = DustID.FireworksRGB;
 			TeleSound = Tele;
-			DashSound = SoundID.Item66;
+			DashSound = DTAssetLib.SwordSounds.SpinWave with { Pitch = 0.3f, PitchVariance = 0.2f, Volume = 0 };
 			AfterImageColorless = true;
 			AfterImageTinted = false;
 			AfterImage = true;
@@ -496,7 +498,6 @@ namespace DestroyerTest.Content.SummonItems
 			Range = 2000;
 			Style = IdleStyle.Chevron;
 			ActiveBuff = ModContent.BuffType<HopeEnsemble_Buff>();
-			Projectile.minionSlots = 0.5f;
 			Group = Hope_Scabbard.minionTypes;
 			UsesGroup = true;
 		}
@@ -514,14 +515,15 @@ namespace DestroyerTest.Content.SummonItems
 			base.SetDefaults();
 			Projectile.width = 36;
 			Projectile.height = 36;
-			ThemeColor = Color.Wheat;
+            Projectile.minionSlots = 1;
+            ThemeColor = Color.Wheat;
 			TintColor = Color.White;
 			IdleDustType = DustID.Tin;
-			DashDustType = DustID.Torch;
-			TeleDustType = DustID.Torch;
-			TeleSound = Tele;
-			DashSound = SoundID.Item66;
-			AfterImageColorless = true;
+            DashDustType = DustID.FireworksRGB;
+            TeleDustType = DustID.FireworksRGB;
+            TeleSound = Tele;
+            DashSound = DTAssetLib.SwordSounds.SpinWave with { Pitch = 0.3f, PitchVariance = 0.2f, Volume = 0 };
+            AfterImageColorless = true;
 			AfterImageTinted = false;
 			AfterImage = true;
 			DefaultDraw = true;
@@ -531,7 +533,6 @@ namespace DestroyerTest.Content.SummonItems
 			Range = 2000;
 			Style = IdleStyle.Chevron;
 			ActiveBuff = ModContent.BuffType<HopeEnsemble_Buff>();
-			Projectile.minionSlots = 0.5f;
 			Group = Hope_Scabbard.minionTypes;
 			UsesGroup = true;
 		}
@@ -550,14 +551,15 @@ namespace DestroyerTest.Content.SummonItems
 			base.SetDefaults();
 			Projectile.width = 36;
 			Projectile.height = 36;
-			ThemeColor = Color.Navy;
+            Projectile.minionSlots = 1;
+            ThemeColor = Color.Navy;
 			TintColor = Color.White;
 			IdleDustType = DustID.Lead;
-			DashDustType = DustID.Torch;
-			TeleDustType = DustID.Torch;
-			TeleSound = Tele;
-			DashSound = SoundID.Item66;
-			AfterImageColorless = true;
+            DashDustType = DustID.FireworksRGB;
+            TeleDustType = DustID.FireworksRGB;
+            TeleSound = Tele;
+            DashSound = DTAssetLib.SwordSounds.SpinWave with { Pitch = 0.3f, PitchVariance = 0.2f, Volume = 0 };
+            AfterImageColorless = true;
 			AfterImageTinted = false;
 			AfterImage = true;
 			DefaultDraw = true;
@@ -567,7 +569,6 @@ namespace DestroyerTest.Content.SummonItems
 			Range = 2000;
 			Style = IdleStyle.Chevron;
 			ActiveBuff = ModContent.BuffType<HopeEnsemble_Buff>();
-			Projectile.minionSlots = 0.5f;
 			Group = Hope_Scabbard.minionTypes;
 			UsesGroup = true;
 		}
@@ -585,14 +586,15 @@ namespace DestroyerTest.Content.SummonItems
 			base.SetDefaults();
 			Projectile.width = 36;
 			Projectile.height = 36;
-			ThemeColor = Color.Wheat;
+            Projectile.minionSlots = 1;
+            ThemeColor = Color.Wheat;
 			TintColor = Color.White;
 			IdleDustType = DustID.Iron;
-			DashDustType = DustID.Torch;
-			TeleDustType = DustID.Torch;
-			TeleSound = Tele;
-			DashSound = SoundID.Item66;
-			AfterImageColorless = true;
+            DashDustType = DustID.FireworksRGB;
+            TeleDustType = DustID.FireworksRGB;
+            TeleSound = Tele;
+            DashSound = DTAssetLib.SwordSounds.SpinWave with { Pitch = 0.3f, PitchVariance = 0.2f, Volume = 0 };
+            AfterImageColorless = true;
 			AfterImageTinted = false;
 			AfterImage = true;
 			DefaultDraw = true;
@@ -602,7 +604,6 @@ namespace DestroyerTest.Content.SummonItems
 			Range = 2000;
 			Style = IdleStyle.Chevron;
 			ActiveBuff = ModContent.BuffType<HopeEnsemble_Buff>();
-			Projectile.minionSlots = 0.5f;
 			Group = Hope_Scabbard.minionTypes;
 			UsesGroup = true;
 		}
@@ -620,14 +621,15 @@ namespace DestroyerTest.Content.SummonItems
 			base.SetDefaults();
 			Projectile.width = 40;
 			Projectile.height = 40;
-			ThemeColor = Color.Gold;
+            Projectile.minionSlots = 1;
+            ThemeColor = Color.Gold;
 			TintColor = Color.White;
 			IdleDustType = DustID.GoldCoin;
-			DashDustType = DustID.Torch;
-			TeleDustType = DustID.Torch;
-			TeleSound = Tele;
-			DashSound = SoundID.Item66;
-			AfterImageColorless = true;
+            DashDustType = DustID.FireworksRGB;
+            TeleDustType = DustID.FireworksRGB;
+            TeleSound = Tele;
+            DashSound = DTAssetLib.SwordSounds.SpinWave with { Pitch = 0.3f, PitchVariance = 0.2f, Volume = 0 };
+            AfterImageColorless = true;
 			AfterImageTinted = false;
 			AfterImage = true;
 			DefaultDraw = true;
@@ -637,7 +639,6 @@ namespace DestroyerTest.Content.SummonItems
 			Range = 2000;
 			Style = IdleStyle.Chevron;
 			ActiveBuff = ModContent.BuffType<HopeEnsemble_Buff>();
-			Projectile.minionSlots = 0.5f;
 			Group = Hope_Scabbard.minionTypes;
 			UsesGroup = true;
 		}
@@ -656,14 +657,15 @@ namespace DestroyerTest.Content.SummonItems
 			base.SetDefaults();
 			Projectile.width = 38;
 			Projectile.height = 38;
-			ThemeColor = Color.White;
+            Projectile.minionSlots = 1;
+            ThemeColor = Color.White;
 			TintColor = Color.White;
 			IdleDustType = DustID.Silver;
-			DashDustType = DustID.Torch;
-			TeleDustType = DustID.Torch;
-			TeleSound = Tele;
-			DashSound = SoundID.Item66;
-			AfterImageColorless = true;
+            DashDustType = DustID.FireworksRGB;
+            TeleDustType = DustID.FireworksRGB;
+            TeleSound = Tele;
+            DashSound = DTAssetLib.SwordSounds.SpinWave with { Pitch = 0.3f, PitchVariance = 0.2f, Volume = 0 };
+            AfterImageColorless = true;
 			AfterImageTinted = false;
 			AfterImage = true;
 			DefaultDraw = true;
@@ -673,7 +675,6 @@ namespace DestroyerTest.Content.SummonItems
 			Range = 2000;
 			Style = IdleStyle.Chevron;
 			ActiveBuff = ModContent.BuffType<HopeEnsemble_Buff>();
-			Projectile.minionSlots = 0.5f;
 			Group = Hope_Scabbard.minionTypes;
 			UsesGroup = true;
 		}
@@ -691,14 +692,15 @@ namespace DestroyerTest.Content.SummonItems
 			base.SetDefaults();
 			Projectile.width = 40;
 			Projectile.height = 40;
-			ThemeColor = Color.GhostWhite;
+            Projectile.minionSlots = 1;
+            ThemeColor = Color.GhostWhite;
 			TintColor = Color.White;
 			IdleDustType = DustID.Platinum;
-			DashDustType = DustID.Torch;
-			TeleDustType = DustID.Torch;
-			TeleSound = Tele;
-			DashSound = SoundID.Item66;
-			AfterImageColorless = true;
+            DashDustType = DustID.FireworksRGB;
+            TeleDustType = DustID.FireworksRGB;
+            TeleSound = Tele;
+            DashSound = DTAssetLib.SwordSounds.SpinWave with { Pitch = 0.3f, PitchVariance = 0.2f, Volume = 0 };
+            AfterImageColorless = true;
 			AfterImageTinted = false;
 			AfterImage = true;
 			DefaultDraw = true;
@@ -708,7 +710,6 @@ namespace DestroyerTest.Content.SummonItems
 			Range = 2000;
 			Style = IdleStyle.Chevron;
 			ActiveBuff = ModContent.BuffType<HopeEnsemble_Buff>();
-			Projectile.minionSlots = 0.5f;
 			Group = Hope_Scabbard.minionTypes;
 			UsesGroup = true;
 		}
@@ -726,14 +727,15 @@ namespace DestroyerTest.Content.SummonItems
 			base.SetDefaults();
 			Projectile.width = 38;
 			Projectile.height = 38;
-			ThemeColor = Color.LightGreen;
+            Projectile.minionSlots = 1;
+            ThemeColor = Color.LightGreen;
 			TintColor = Color.White;
 			IdleDustType = DustID.Tungsten;
-			DashDustType = DustID.Torch;
-			TeleDustType = DustID.Torch;
-			TeleSound = Tele;
-			DashSound = SoundID.Item66;
-			AfterImageColorless = true;
+            DashDustType = DustID.FireworksRGB;
+            TeleDustType = DustID.FireworksRGB;
+            TeleSound = Tele;
+            DashSound = DTAssetLib.SwordSounds.SpinWave with { Pitch = 0.3f, PitchVariance = 0.2f, Volume = 0 };
+            AfterImageColorless = true;
 			AfterImageTinted = false;
 			AfterImage = true;
 			DefaultDraw = true;
@@ -743,7 +745,6 @@ namespace DestroyerTest.Content.SummonItems
 			Range = 2000;
 			Style = IdleStyle.Chevron;
 			ActiveBuff = ModContent.BuffType<HopeEnsemble_Buff>();
-			Projectile.minionSlots = 0.5f;
 			Group = Hope_Scabbard.minionTypes;
 			UsesGroup = true;
 		}
@@ -761,14 +762,15 @@ namespace DestroyerTest.Content.SummonItems
 			base.SetDefaults();
 			Projectile.width = 50;
 			Projectile.height = 58;
-			ThemeColor = Color.Red;
+            Projectile.minionSlots = 1;
+            ThemeColor = Color.Red;
 			TintColor = Color.White;
 			IdleDustType = DustID.RedTorch;
-			DashDustType = DustID.Torch;
-			TeleDustType = DustID.Torch;
-			TeleSound = Tele;
-			DashSound = SoundID.Item66;
-			AfterImageColorless = true;
+            DashDustType = DustID.FireworksRGB;
+            TeleDustType = DustID.FireworksRGB;
+            TeleSound = Tele;
+            DashSound = DTAssetLib.SwordSounds.SpinWave with { Pitch = 0.3f, PitchVariance = 0.2f, Volume = 0 };
+            AfterImageColorless = true;
 			AfterImageTinted = false;
 			AfterImage = true;
 			DefaultDraw = true;
@@ -778,7 +780,6 @@ namespace DestroyerTest.Content.SummonItems
 			Range = 2000;
 			Style = IdleStyle.Chevron;
 			ActiveBuff = ModContent.BuffType<HopeEnsemble_Buff>();
-			Projectile.minionSlots = 0.5f;
 			noDrawTint = true;
 			Group = Hope_Scabbard.minionTypes;
 			UsesGroup = true;
@@ -792,91 +793,41 @@ namespace DestroyerTest.Content.SummonItems
 
 			Texture2D pixel = TextureAssets.MagicPixel.Value;
 
-			spriteBatch.End();
-			spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-
-			for (int i = 0; i < TrailPositions.Count - 1; i++)
-			{
-				Vector2 start = TrailPositions[i] - Main.screenPosition;
-				Vector2 end = TrailPositions[i + 1] - Main.screenPosition;
-				Vector2 diff = end - start;
-
-				float length = diff.Length();
-				if (length < 0.5f)
-					continue; // skip tiny wiggle segments
-
-				float rotation = diff.ToRotation();
-
-				Vector2 DimensionMeasurement = Projectile.Hitbox.BottomLeft() - Projectile.Hitbox.TopRight();
-
-				float Width = DimensionMeasurement.Length();
-
-				float width = MathHelper.Lerp(0.01f, 0.0007f, i / (float)TrailLength);
-				float alpha = MathHelper.Lerp(1f, 0f, i / (float)TrailLength);
-				Color color = ThemeColor * alpha;
-
-				// Instead of stepping pixel by pixel, just draw one scaled pixel segment:
-				Main.spriteBatch.Draw(
-					pixel,
-					start,
-					null,
-					color,
-					rotation,
-					new Vector2(pixel.Width / 2, pixel.Height / 2), // Origin is at the left-middle of the scaled pixel
-					new Vector2(length, width),
-					SpriteEffects.None,
-					0f
-				);
-			}
-
-			spriteBatch.End();
-			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+			Opus.StartSpriteBatchForTrails(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
 
+			DTTrail.DrawTrail(spriteBatch, DTAssetLib.Streak(8).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 20, ThemeColor, 0, 6);
+			Opus.ReturnToDefaultDrawing(spriteBatch);
 			return base.PreDraw(ref lightColor); // Let the default system handle the base projectile drawing
 		}
-
-		public List<Vector2> TrailPositions = new();
-		public List<float> TrailRotations = new();
-		private const int TrailLength = 30;
 		public int ShootTimer = 0;
 
 		public override void AI()
 		{
-			TrailPositions.Insert(0, Projectile.Center);
-			TrailRotations.Insert(0, Projectile.rotation);
+			if (TargFlag && ShootTimer <= 0)
+			{
+				float rotation = MathHelper.ToRadians(45);
 
-			// Cap trail
-			while (TrailPositions.Count > TrailLength)
-				TrailPositions.RemoveAt(TrailPositions.Count - 1);
-			while (TrailRotations.Count > TrailLength)
-				TrailRotations.RemoveAt(TrailRotations.Count - 1);
+				Vector2 ShootOrig = Projectile.Center;
+				Vector2 Velocity = Projectile.velocity * 2;
 
-			
-				if (TargFlag && ShootTimer <= 0)
+				ShootOrig += Vector2.Normalize(Velocity) * 5f;
+
+				for (int i = 0; i < 6; i++)
 				{
-					float rotation = MathHelper.ToRadians(45);
-
-					Vector2 ShootOrig = Projectile.Center;
-					Vector2 Velocity = Projectile.velocity * 2;
-
-					ShootOrig += Vector2.Normalize(Velocity) * 5f;
-
-					for (int i = 0; i < 6; i++)
-					{
-						Vector2 perturbedSpeed = Velocity.RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (6 - 1))); // Watch out for dividing by 0 if there is only 1 projectile.
-						Projectile.NewProjectile(Entity.GetSource_FromThis(), ShootOrig, perturbedSpeed, ModContent.ProjectileType<EnchantedBlood>(), Projectile.damage / 3, Projectile.knockBack);
-					}
-					ShootTimer = 240;
+					Vector2 perturbedSpeed = Velocity.RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (6 - 1))); // Watch out for dividing by 0 if there is only 1 projectile.
+					Projectile.NewProjectile(Entity.GetSource_FromThis(), ShootOrig, perturbedSpeed, ModContent.ProjectileType<EnchantedBlood>(), Projectile.damage / 3, Projectile.knockBack);
 				}
-				if (TargFlag && ShootTimer > 0)
-				{
+				ShootTimer = 240;
+			}
+			if (TargFlag && ShootTimer > 0)
+			{
 
-				}
-				if (ShootTimer > 0)
-				{
-					ShootTimer--;
-				}
+			}
+			if (ShootTimer > 0)
+			{
+				ShootTimer--;
+			}
 			base.AI();
 		}
 	}
@@ -893,14 +844,15 @@ namespace DestroyerTest.Content.SummonItems
 			base.SetDefaults();
 			Projectile.width = 50;
 			Projectile.height = 50;
-			ThemeColor = Color.Purple;
+            Projectile.minionSlots = 1;
+            ThemeColor = Color.Purple;
 			TintColor = Color.White;
 			IdleDustType = DustID.Shadowflame;
-			DashDustType = DustID.Torch;
-			TeleDustType = DustID.Torch;
-			TeleSound = Tele;
-			DashSound = SoundID.Item66;
-			AfterImageColorless = true;
+            DashDustType = DustID.FireworksRGB;
+            TeleDustType = DustID.FireworksRGB;
+            TeleSound = Tele;
+            DashSound = DTAssetLib.SwordSounds.SpinWave with { Pitch = 0.3f, PitchVariance = 0.2f, Volume = 0 };
+            AfterImageColorless = true;
 			AfterImageTinted = false;
 			AfterImage = true;
 			DefaultDraw = true;
@@ -910,7 +862,6 @@ namespace DestroyerTest.Content.SummonItems
 			Range = 2000;
 			Style = IdleStyle.Chevron;
 			ActiveBuff = ModContent.BuffType<HopeEnsemble_Buff>();
-			Projectile.minionSlots = 0.5f;
 			noDrawTint = true;
 			Group = Hope_Scabbard.minionTypes;
 			UsesGroup = true;
@@ -923,64 +874,19 @@ namespace DestroyerTest.Content.SummonItems
 			Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
 
 			Texture2D pixel = TextureAssets.MagicPixel.Value;
+			
+            Opus.StartSpriteBatchForTrails(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
-			spriteBatch.End();
-			spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-
-			for (int i = 0; i < TrailPositions.Count - 1; i++)
-			{
-				Vector2 start = TrailPositions[i] - Main.screenPosition;
-				Vector2 end = TrailPositions[i + 1] - Main.screenPosition;
-				Vector2 diff = end - start;
-
-				float length = diff.Length();
-				if (length < 0.5f)
-					continue; // skip tiny wiggle segments
-
-				float rotation = diff.ToRotation();
-
-				Vector2 DimensionMeasurement = Projectile.Hitbox.BottomLeft() - Projectile.Hitbox.TopRight();
-
-				float Width = DimensionMeasurement.Length();
-
-				float width = MathHelper.Lerp(0.01f, 0.0007f, i / (float)TrailLength);
-				float alpha = MathHelper.Lerp(1f, 0f, i / (float)TrailLength);
-				Color color = ThemeColor * alpha;
-
-				// Instead of stepping pixel by pixel, just draw one scaled pixel segment:
-				Main.spriteBatch.Draw(
-					pixel,
-					start,
-					null,
-					color,
-					rotation,
-					new Vector2(pixel.Width / 2, pixel.Height / 2), // Origin is at the left-middle of the scaled pixel
-					new Vector2(length, width),
-					SpriteEffects.None,
-					0f
-				);
-			}
-
-			spriteBatch.End();
-			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+            DTTrail.DrawTrail(spriteBatch, DTAssetLib.Streak(8).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 20, ThemeColor, 0, 6);
+            Opus.ReturnToDefaultDrawing(spriteBatch);
+            
 			return base.PreDraw(ref lightColor); // Let the default system handle the base projectile drawing
 		}
 
-		public List<Vector2> TrailPositions = new();
-        public List<float> TrailRotations = new();
-		private const int TrailLength = 30;
 		public int ShootTimer = 0;
 
 		public override void AI()
 		{
-			TrailPositions.Insert(0, Projectile.Center);
-			TrailRotations.Insert(0, Projectile.rotation);
-
-			// Cap trail
-			while (TrailPositions.Count > TrailLength)
-				TrailPositions.RemoveAt(TrailPositions.Count - 1);
-			while (TrailRotations.Count > TrailLength)
-				TrailRotations.RemoveAt(TrailRotations.Count - 1);
 
 			
 				if (TargFlag && ShootTimer <= 0)
