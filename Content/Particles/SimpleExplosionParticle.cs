@@ -85,9 +85,7 @@ namespace DestroyerTest.Content.Particles
 
         //Drawing
 
-        public override PixelLayer PixelLayer => PixelLayer.AbovePlayer;
-
-        public override bool DrawsPixelated => true;
+        public override PixelLayer DefaultPixelLayer => PixelLayer.AbovePlayer;
 
         public override void Draw(ref ParticleRendererSettings settings, SpriteBatch spritebatch)
         {
@@ -107,11 +105,11 @@ namespace DestroyerTest.Content.Particles
 
             if (blendState != BlendState.Additive)
             {
-                Opus.StartSpriteBatchPixelated(spritebatch, blendState, SpriteSortMode.Immediate);
+                Opus.StartSpriteBatchWithBlending(spritebatch, blendState, SpriteSortMode.Immediate);
             }
             else
             {
-                Opus.StartSpriteBatchPixelated(spritebatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
+                Opus.StartSpriteBatchWithBlending(spritebatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
             }
 
             spritebatch.Draw(Tex, position - Main.screenPosition, null, c(), rotation, Tex.Size() / 2f, scale, SpriteEffects.None, 0f);
@@ -233,9 +231,7 @@ namespace DestroyerTest.Content.Particles
 
         //Drawing
 
-        public override PixelLayer PixelLayer => PixelLayer.AbovePlayer;
-
-        public override bool DrawsPixelated => true;
+        public override PixelLayer DefaultPixelLayer => PixelLayer.AbovePlayer;
 
         public override void Draw(ref ParticleRendererSettings settings, SpriteBatch spritebatch)
         {
@@ -255,11 +251,11 @@ namespace DestroyerTest.Content.Particles
 
             if (blendState != BlendState.Additive)
             {
-                Opus.StartSpriteBatchPixelated(spritebatch, blendState, SpriteSortMode.Immediate);
+                Opus.StartSpriteBatchWithBlending(spritebatch, blendState, SpriteSortMode.Immediate);
             }
             else
             {
-                Opus.StartSpriteBatchPixelated(spritebatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
+                Opus.StartSpriteBatchWithBlending(spritebatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
             }
 
             spritebatch.Draw(Tex, position - Main.screenPosition, null, c(), rotation, Tex.Size() / 2f, scale, SpriteEffects.None, 0f);

@@ -1906,6 +1906,11 @@ namespace DestroyerTest.Common
         public static Asset<Texture2D> RuneCircle = ModContent.Request<Texture2D>($"{ParticlePath}/RuneCircle1", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> CorruptSigil = ModContent.Request<Texture2D>($"{ExtrasPath}/CorruptSigil", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> CrimsonSigil = ModContent.Request<Texture2D>($"{ExtrasPath}/CrimsonSigil", AssetRequestMode.AsyncLoad);
+
+        public static Asset<Texture2D> ShadeSigil = ModContent.Request<Texture2D>($"{ExtrasPath}/ShadeSigil", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> ShadeSigilLine = ModContent.Request<Texture2D>($"{ExtrasPath}/ShadeSigilLine", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> ShadeSigilLine2 = ModContent.Request<Texture2D>($"{ExtrasPath}/ShadeSigilLine2", AssetRequestMode.AsyncLoad);
+       
         public static Asset<Texture2D> HallowedSigil = ModContent.Request<Texture2D>($"{ExtrasPath}/HallowedSigil", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> CrimsonBloodRune = ModContent.Request<Texture2D>($"{ExtrasPath}/CrimsonSigil", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> BloodHexHeart = ModContent.Request<Texture2D>($"{ExtrasPath}/BloodHexHeart", AssetRequestMode.AsyncLoad);

@@ -67,16 +67,14 @@ namespace DestroyerTest.Content.Particles
             }
         }
 
-        public override PixelLayer PixelLayer => PixelLayer.AboveNPCs;
-
-        public override bool DrawsPixelated => true;
+        public override PixelLayer DefaultPixelLayer => PixelLayer.AboveNPCs;
 
         public override void Draw(ref ParticleRendererSettings settings, SpriteBatch spritebatch)
         {
             Texture2D texture = ModContent.Request<Texture2D>($"DestroyerTest/Content/Particles/PreMultiplied/ElectricArc{variant}").Value;
             Vector2 origin = texture.Size() / 2f;
 
-            Opus.StartSpriteBatchPixelated(spritebatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
+            Opus.StartSpriteBatchWithBlending(spritebatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
 
             spritebatch.Draw(texture, position - Main.screenPosition, null, color with { A = 0 } * opacity, rotation, origin, scale, SpriteEffects.None, 0f);
 

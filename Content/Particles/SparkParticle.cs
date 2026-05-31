@@ -270,7 +270,7 @@ namespace DestroyerTest.Content.Particles
             Opus.ReturnToDefaultDrawing(spritebatch);
         }
 
-        public override PixelLayer PixelLayer => PixelLayer.AboveTiles;
+        public override PixelLayer DefaultPixelLayer => PixelLayer.AboveTiles;
     }
 
     public class HeatseekerSilohSpark : Spark

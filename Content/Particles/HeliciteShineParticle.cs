@@ -56,13 +56,11 @@ namespace DestroyerTest.Content.Particles
             }
         }
 
-        public override PixelLayer PixelLayer => PixelLayer.AbovePlayer;
-
-        public override bool DrawsPixelated => true;
+        public override PixelLayer DefaultPixelLayer => PixelLayer.AbovePlayer;
 
         public override void Draw(ref ParticleRendererSettings settings, SpriteBatch spriteBatch)
         {
-            Opus.StartSpriteBatchPixelated(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
+            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
 
             Main.EntitySpriteDraw(DTAssetLib.PointGlowPreMultiplied.Value, position - Main.screenPosition, null, ColorLib.Rift with { A = 0 } * Opacity, 0f, DTAssetLib.PointGlowPreMultiplied.Value.Size() / 2f, new Vector2(Scale1, Scale1), SpriteEffects.None);
             Main.EntitySpriteDraw(DTAssetLib.Sparkle(5, true).Value, position - Main.screenPosition, null, Color.White with { A = 0 } * Opacity, 0f, DTAssetLib.Sparkle(5, true).Value.Size() / 2f, new Vector2(Scale2, Scale2), SpriteEffects.None);

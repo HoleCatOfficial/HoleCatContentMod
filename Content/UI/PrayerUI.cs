@@ -1,3 +1,4 @@
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Common.Blessings;
 using DestroyerTest.Content.Particles;
@@ -186,7 +187,9 @@ namespace DestroyerTest.Content.UI
                         OfferingItem[0].TurnToAir();
                     }
                     SoundEngine.PlaySound(Reject);
-                    Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BlessingParticle>(), Main.LocalPlayer.Center, Vector2.Zero, Color.Violet, 0.01f, 2f);
+                    BlessingParticle FX = new BlessingParticle();
+                    FX.Prepare(Main.LocalPlayer.Center, Vector2.Zero, Color.Violet, 0.2f, 0.01f, 2.5f, BlendState.Additive);
+                    ParticleEngine.ShaderParticles.Add(FX);
                     CombatText.NewText(Main.LocalPlayer.Hitbox, Color.Violet, Language.GetTextValue("Mods.DestroyerTest.Blessings.RejectedMessage"), true, false);
                     Cooldown = 600;
                 }

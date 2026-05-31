@@ -63,13 +63,11 @@ namespace DestroyerTest.Content.Particles
             return new Tuple<Texture2D, Rectangle, Vector2>(TexValue, frameRect, origin);
         }
 
-        public override PixelLayer PixelLayer => PixelLayer.AbovePlayer;
-
-        public override bool DrawsPixelated => true;
+        public override PixelLayer DefaultPixelLayer => PixelLayer.AbovePlayer;
 
         public override void Draw(ref ParticleRendererSettings settings, SpriteBatch spritebatch)
         {
-            Opus.StartSpriteBatchPixelated(spritebatch, BlendState.AlphaBlend, SpriteSortMode.Deferred);
+            Opus.StartSpriteBatchWithBlending(spritebatch, BlendState.AlphaBlend, SpriteSortMode.Deferred);
             spritebatch.Draw(GetTextureProperties().Item1, position - Main.screenPosition, GetTextureProperties().Item2, col with { A = 0 } * Opacity, rotation, GetTextureProperties().Item3, new Vector2(scale, scale), SpriteEffects.None, 0f);
             Opus.ReturnToDefaultDrawing(spritebatch);
         }

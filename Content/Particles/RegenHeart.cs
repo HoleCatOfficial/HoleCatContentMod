@@ -50,16 +50,14 @@ namespace DestroyerTest.Content.Particles
             }
         }
 
-        public override PixelLayer PixelLayer => PixelLayer.AboveNPCs;
-
-        public override bool DrawsPixelated => true;
+        public override PixelLayer DefaultPixelLayer => PixelLayer.AboveNPCs;
 
         public override void Draw(ref ParticleRendererSettings settings, SpriteBatch spriteBatch)
         {
             Texture2D texture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/RegenHeart").Value;
             Vector2 origin = texture.Size() / 2f;
 
-            Opus.StartSpriteBatchPixelated(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
+            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
 
             spriteBatch.Draw(texture, position - Main.screenPosition, null, color, 0f, origin, scale, SpriteEffects.None, 0f);
 

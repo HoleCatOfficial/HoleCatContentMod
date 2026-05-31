@@ -19,6 +19,7 @@ using DestroyerTest.Content.MeleeWeapons;
 using System.Collections.Generic;
 using Terraria.Graphics.Renderers;
 using BreadLibrary.Core.Graphics.Particles;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace DestroyerTest.Common.Blessings
 {
@@ -40,7 +41,9 @@ namespace DestroyerTest.Common.Blessings
 
             CurrentBlessing = IncomingBlessing;
 
-            Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BlessingParticle>(), Player.Center, Vector2.Zero, ColorLib.Soul, 0.01f, 2f);
+            BlessingParticle FX = new BlessingParticle();
+            FX.Prepare(Player.Center, Vector2.Zero, ColorLib.Soul, 0.2f, 0.01f, 2.5f, BlendState.Additive);
+            ParticleEngine.ShaderParticles.Add(FX);
 
             Vector2[] Vels = Opus.RadialVectorOutwardRandom(10, Player.Center, 1f);
 

@@ -61,11 +61,10 @@ namespace DestroyerTest.Content.Particles.Comaceratic
                 ShouldBeRemovedFromRenderer = true;
             }
         }
-        public override PixelLayer PixelLayer => PixelLayer.AboveProjectiles;
-        public override bool DrawsPixelated => true;
+        public override PixelLayer DefaultPixelLayer => PixelLayer.AboveNPCs;
         public override void Draw(ref ParticleRendererSettings settings, SpriteBatch spriteBatch)
         {
-            Opus.StartSpriteBatchPixelated(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
+            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
 
             Texture2D texture = ModContent.Request<Texture2D>($"DestroyerTest/Content/Particles/Comaceratic/ComaceraticParticle{variant}").Value;
             Vector2 origin = texture.Size() / 2f;

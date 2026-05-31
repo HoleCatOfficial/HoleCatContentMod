@@ -60,9 +60,7 @@ namespace DestroyerTest.Content.Particles
             }
         }
 
-        public override PixelLayer PixelLayer => PixelLayer.AboveProjectiles;
-
-        public override bool DrawsPixelated => true;
+        public override PixelLayer DefaultPixelLayer => PixelLayer.AboveProjectiles;
 
         public override void Draw(ref ParticleRendererSettings settings, SpriteBatch spriteBatch)
         {
@@ -70,7 +68,7 @@ namespace DestroyerTest.Content.Particles
             Vector2 origin = texture.Size() / 2f;
 
 
-            Opus.StartSpriteBatchPixelated(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
+            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
 
             spriteBatch.Draw(texture, position - Main.screenPosition, null, color, 0f, origin, scale, SpriteEffects.None, 0f);
 
@@ -86,7 +84,7 @@ namespace DestroyerTest.Content.Particles
             Texture2D texture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/PointGlowPreMultiplied").Value;
             Vector2 origin = texture.Size() / 2f;
 
-            Opus.StartSpriteBatchPixelated(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
+            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
 
             spriteBatch.Draw(texture, position - Main.screenPosition, null, color with { A = 0 }, 0f, origin, scale, SpriteEffects.None, 0f);
 

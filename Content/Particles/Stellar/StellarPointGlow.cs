@@ -45,7 +45,7 @@ namespace DestroyerTest.Content.Particles.Stellar
             Texture2D texture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/PointGlowPreMultiplied").Value;
             Vector2 origin = texture.Size() / 2f;
 
-            Opus.StartSpriteBatchPixelated(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
+            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
 
             spriteBatch.Draw(texture, position - Main.screenPosition, null, color with { A = 0 }, 0f, origin, scale, SpriteEffects.None, 0f);
             spriteBatch.Draw(texture, position - Main.screenPosition, null, OpusColorUtils.Pastel(color, 0.5f) with { A = 0 }, 0f, origin, scale * 0.6f, SpriteEffects.None, 0f);

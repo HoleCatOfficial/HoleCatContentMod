@@ -46,9 +46,7 @@ namespace DestroyerTest.Content.Particles
             }
         }
 
-        public override PixelLayer PixelLayer => PixelLayer.AboveProjectiles;
-
-        public override bool DrawsPixelated => true;
+        public override PixelLayer DefaultPixelLayer => PixelLayer.AboveProjectiles;
 
         public override void Draw(ref ParticleRendererSettings settings, SpriteBatch spriteBatch)
         {

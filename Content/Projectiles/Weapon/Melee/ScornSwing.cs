@@ -48,6 +48,36 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             ParticleOrchestrator.RequestParticleSpawn(false, ParticleOrchestraType.Excalibur, new ParticleOrchestraSettings() { IndexOfPlayerWhoInvokedThis = (byte)Projectile.owner, PositionInWorld = npc.Center });
         }
 
+        private void DrawSweepFX2()
+        {
+            Player player = Main.player[Projectile.owner];
+            var Tex = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/CircularSlash4").Value;
+            float TexBasedMod = (Projectile.Size.Length() * 0.015f);
+            float rOffset = 0f;
+
+            SpriteEffects FX = SpriteEffects.None;
+
+            if (LastSwing == 1)
+            {
+                FX = SpriteEffects.FlipHorizontally;
+                rOffset = MathHelper.PiOver2;
+            }
+            else
+            {
+                FX = SpriteEffects.None;
+                rOffset = 0f;
+            }
+
+            Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+            Main.EntitySpriteDraw(Tex, player.MountedCenter - Main.screenPosition, null, DTColorUtils.MultiLerp(SlashProgress, ColorLib.IchorCrystalColorMap) * SweepOpacity, (Projectile.rotation + MathHelper.PiOver4) + rOffset, Tex.Size() / 2, (AdjustedScale * TexBasedMod) * ScaleMult, FX);
+            Opus.ReturnToDefaultDrawing(Main.spriteBatch);
+        }
+
+        public override void DrawUnderBlade()
+        {
+            DrawSweepFX2();
+        }
+
         public override void DrawOverBlade()
         {
         }
@@ -63,13 +93,13 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             player.heldProj = Type;
 
             SwordLine = new Line(player.Center, swordTip);
-            Vector2[] pt = SwordLine.GetPointsAlongLine(30);
-            Vector2[] ppt = pt[15..30];
+            Vector2[] pt = SwordLine.GetPointsAlongLine(40);
+            Vector2[] ppt = pt[15..40];
 
             for (int i = 0; i < 2; i++)
             {
-                Dust.NewDustPerfect(ppt[Main.rand.Next(15)], ModContent.DustType<ColorableNeonDust>(), SwordLine.GetLineRotation.ToRotationVector2() * 2, 0, ColorLib.Ichor * 0.5f, 3f);
-                //PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], pt[Main.rand.Next(30)], SwordLine.GetLineRotation.ToRotationVector2() * 2, ColorLib.Wretched3, 0.5f, 20, ai2: 2);
+                Dust P = Dust.NewDustPerfect(ppt[Main.rand.Next(25)], DustID.IchorTorch, (SwordLine.GetLineRotation - MathHelper.PiOver2).ToRotationVector2() * 2, 0, default, 1.7f);
+                P.noGravity = true;
             }
 
             ScaleMult = 1.25f;

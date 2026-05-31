@@ -374,7 +374,7 @@ namespace DestroyerTest.Content.Entities
                 }
                 else
                 {
-                    Main.EntitySpriteDraw(DTAssetLib.CorruptSigil.Value, NPC.Center - Main.screenPosition, null, ColorLib.TenebrisGradient, 0f, DTAssetLib.CorruptSigil.Value.Size() / 2, Opus.Sine(1.7f, 2f), SpriteEffects.None, 0f);
+                    Main.EntitySpriteDraw(DTAssetLib.ShadeSigil.Value, NPC.Center - Main.screenPosition, null, ColorLib.TenebrisGradient, 0f, DTAssetLib.ShadeSigil.Value.Size() / 2, Opus.Sine(1.7f, 2f), SpriteEffects.None, 0f);
                 }
                 //Opus.DrawNPCShadowsRotating(NPC, NPC.frame, 6, ColorLib.CursedFlames, 0.2f);
                 Opus.ReturnToDefaultDrawing(spriteBatch);

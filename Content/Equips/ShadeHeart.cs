@@ -160,7 +160,7 @@ namespace DestroyerTest.Content.Equips
                 ShimmeringFlames.ShimmerBurn(target);
             }
 
-            if (proj.DamageType == DamageClass.Summon && Main.rand.NextBool((int)(20 * (1 + (0.1f * Player.numMinions)))) && Active)
+            if (proj.DamageType == DamageClass.Summon && Main.rand.NextBool((int)(20 * (1 + (0.1f * Player.numMinions)))) && proj.type != ProjectileID.StardustGuardian && Active)
             {
                 Opus.RadialSpreadProjectile(ModContent.ProjectileType<TenebrisStarFriendly>(), 6, target.Center, (int)Player.GetTotalDamage(DamageClass.Summon).ApplyTo(40), 12, 16);
             }

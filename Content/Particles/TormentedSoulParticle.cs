@@ -66,9 +66,7 @@ namespace DestroyerTest.Content.Particles
             }
         }
 
-        public override PixelLayer PixelLayer => PixelLayer.AboveNPCs;
-
-        public override bool DrawsPixelated => true;
+        public override PixelLayer DefaultPixelLayer => PixelLayer.AboveNPCs;
 
         public override void Draw(ref ParticleRendererSettings settings, SpriteBatch spriteBatch)
         {
@@ -81,7 +79,7 @@ namespace DestroyerTest.Content.Particles
 
             Vector2 origin = new Vector2(texture.Width / 2f, frameHeight / 2f);
 
-            Opus.StartSpriteBatchPixelated(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
+            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
 
             spriteBatch.Draw(texture, position - Main.screenPosition, frame, color, 0f, origin, scale, SpriteEffects.None, 0f);
 

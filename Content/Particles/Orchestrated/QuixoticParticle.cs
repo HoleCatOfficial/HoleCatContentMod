@@ -78,16 +78,14 @@ namespace DestroyerTest.Content.Particles.Orchestrated
             }
         }
 
-        public override PixelLayer PixelLayer => PixelLayer.AboveProjectiles;
-
-        public override bool DrawsPixelated => true;
+        public override PixelLayer DefaultPixelLayer => PixelLayer.AboveProjectiles;
 
         public override void Draw(ref ParticleRendererSettings settings, SpriteBatch spriteBatch)
         {
             Texture2D texture = DTAssetLib.MiscSparkle144.Value;
             Vector2 origin = texture.Size() / 2f;
 
-            Opus.StartSpriteBatchPixelated(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
+            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
 
             spriteBatch.Draw(texture, position - Main.screenPosition, null, color with { A = 0 }, rotation, origin, scale, SpriteEffects.None, 0f);
 
@@ -127,16 +125,14 @@ namespace DestroyerTest.Content.Particles.Orchestrated
             }
         }
 
-        public override PixelLayer PixelLayer => PixelLayer.AboveProjectiles;
-
-        public override bool DrawsPixelated => true;
+        public override PixelLayer DefaultPixelLayer => PixelLayer.AboveProjectiles;
 
         public override void Draw(ref ParticleRendererSettings settings, SpriteBatch spriteBatch)
         {
             Texture2D texture = DTAssetLib.MiscSparkle144.Value;
             Vector2 origin = texture.Size() / 2f;
 
-            Opus.StartSpriteBatchPixelated(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
+            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
 
             spriteBatch.Draw(texture, position - Main.screenPosition, null, color with { A = 0 }, rotation, origin, scale, SpriteEffects.None, 0f);
 

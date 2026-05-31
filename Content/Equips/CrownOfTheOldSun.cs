@@ -4,6 +4,8 @@ using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles.Weapon.Scepter;
+using DestroyerTest.Content.Tiles;
+using DestroyerTest.Content.Tiles.RiftConfigurator;
 using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -86,7 +88,12 @@ namespace DestroyerTest.Content.Equips
 
         public override void AddRecipes()
         {
-            
+            CreateRecipe()
+                .AddIngredient<FetidCrown>()
+                .AddIngredient<Item_HeliciteCrystal>(16)
+                .AddIngredient(ItemID.LihzahrdBrick, 12)
+                .AddTile<Tile_RiftConfiguratorTools>()
+                .Register();
         }
     }
 }
