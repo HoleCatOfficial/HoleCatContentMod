@@ -25,6 +25,7 @@ namespace DestroyerTest.Content.Projectiles
             Projectile.ignoreWater = true; // Does the projectile's speed be influenced by water?
             Projectile.timeLeft = 600; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
             Projectile.DamageType = DamageClass.Generic;
+            Projectile.tileCollide = false;
         }
 
 

@@ -1,10 +1,15 @@
 ﻿using DestroyerTest.Common;
+using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Weapon.Rogue;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.Tiles;
+using DestroyerTest.Content.Tiles.RiftConfigurator;
 using DestroyerTest.Content.Tiles.Riftplate;
 using DestroyerTest.Rarity;
+using Microsoft.Xna.Framework;
+using System;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -34,12 +39,27 @@ namespace DestroyerTest.Content.RogueItems
 			Item.DamageType = ModContent.GetInstance<DTRogueClass>();
         }
 
-		public override void AddRecipes() {
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
+            if (Item.StealthStrike(player))
+            {
+                for (int c = 0; c < 3; c++)
+                {
+
+                    Projectile.NewProjectile(player.GetSource_ItemUse(Item), player.Center, velocity.RotatedByRandom(0.3f), ModContent.ProjectileType<RiftStarFriendly>(), (int)(Item.damage * 0.5f), 1, player.whoAmI);
+
+                }
+            }
+
+            return true;
+        }
+
+		public override void AddRecipes() 
+		{
 			CreateRecipe()
 				.AddIngredient<Item_Riftplate>(5)
-                .AddIngredient<Living_Shadow>(5)
-                .AddIngredient(ItemID.Javelin)
-				.AddTile(TileID.MythrilAnvil)
+				.AddIngredient<Living_Shadow>(5)
+				.AddTile<Tile_RiftConfiguratorWeaponry>()
 				.Register();
 		}
 	}

@@ -1,5 +1,7 @@
 ﻿using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
+using BreadLibrary.Core.Graphics.Spritebatch;
+using BreadLibrary.Core.Utilities;
 using Microsoft.CodeAnalysis;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -15,7 +17,7 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Particles
 {
-    public class PointGlow : BaseParticle<PointGlow>
+    public class PointGlow : BaseParticle<PointGlow>, IDrawPixelated
     {
         public int Lifetime = 0;
         public int MaxLifetime = 120;
@@ -62,33 +64,59 @@ namespace DestroyerTest.Content.Particles
 
         public override PixelLayer DefaultPixelLayer => PixelLayer.AboveProjectiles;
 
-        public override void Draw(ref ParticleRendererSettings settings, SpriteBatch spriteBatch)
+        PixelLayer IDrawPixelated.PixelLayer => DefaultPixelLayer;
+        bool IDrawPixelated.ShouldDrawPixelated => true;
+        void IDrawPixelated.DrawPixelated(SpriteBatch spriteBatch)
         {
             Texture2D texture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/PointGlow").Value;
             Vector2 origin = texture.Size() / 2f;
 
+            var Cap = spriteBatch.Capture();
 
-            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
+            spriteBatch.UseBlendState(BlendState.Additive);
+            Cap.TransformMatrix = PixelationSystem.PixelationMatrix;
+
+            spriteBatch.End();
+            spriteBatch.Begin(Cap);
+            //Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
 
             spriteBatch.Draw(texture, position - Main.screenPosition, null, color, 0f, origin, scale, SpriteEffects.None, 0f);
 
-            Opus.ReturnToDefaultDrawing(spriteBatch);
+            spriteBatch.ResetToDefault();
+        }
+        public override void Draw(ref ParticleRendererSettings settings, SpriteBatch spriteBatch)
+        {
+           
         }
     }
 
-    public class PointGlowPreMultiplied : PointGlow
+    public class PointGlowPreMultiplied : PointGlow, IDrawPixelated
     {
-
-        public override void Draw(ref ParticleRendererSettings settings, SpriteBatch spriteBatch)
+        PixelLayer IDrawPixelated.PixelLayer => DefaultPixelLayer;
+        bool IDrawPixelated.ShouldDrawPixelated => true;
+        void IDrawPixelated.DrawPixelated(SpriteBatch spriteBatch)
         {
-            Texture2D texture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/PointGlowPreMultiplied").Value;
+            Texture2D texture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/PointGlow").Value;
             Vector2 origin = texture.Size() / 2f;
 
-            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
+            var Cap = spriteBatch.Capture();
 
-            spriteBatch.Draw(texture, position - Main.screenPosition, null, color with { A = 0 }, 0f, origin, scale, SpriteEffects.None, 0f);
+            Cap.BlendState = BlendState.Additive;
 
-            Opus.ReturnToDefaultDrawing(spriteBatch);
+            spriteBatch.UseBlendState(BlendState.Additive);
+            Cap.TransformMatrix = PixelationSystem.PixelationMatrix;
+
+            spriteBatch.End();
+            spriteBatch.Begin(Cap);
+            //Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
+
+            spriteBatch.Draw(texture, position - Main.screenPosition, null, color, 0f, origin, scale, SpriteEffects.None, 0f);
+
+            spriteBatch.ResetToDefault();
+        }
+        public override void Draw(ref ParticleRendererSettings settings, SpriteBatch spriteBatch)
+        {
+            
         }
     }
 }

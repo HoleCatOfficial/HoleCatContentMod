@@ -58,7 +58,8 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
             }
             Projectile.rotation = Projectile.velocity.ToRotation();
 
-            Dust.NewDustPerfect(Projectile.Center, DustID.FireworksRGB, Projectile.velocity * 0.5f, 0, ColorLib.Soul3, 0.5f);
+            Dust FX = Dust.NewDustPerfect(Projectile.Center, DustID.FireworksRGB, Projectile.velocity * 0.5f, 0, ColorLib.Soul3, 0.5f);
+            FX.noGravity = true;
         }
 
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
@@ -84,9 +85,24 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
             ParticleEngine.Particles.Add(Ring);
            
 
-            Opus.RadialSpreadDustRandom(DustID.FireworksRGB, 2, Projectile.Center, 0, Color.White, 2f, 3f);
-            Opus.RadialSpreadDustRandom(DustID.FireworksRGB, 3, Projectile.Center, 0, Color.White, 0.6f, 0.5f);
-            Opus.RadialSpreadDustRandom(DustID.FireworksRGB, 5, Projectile.Center, 70, ColorLib.Soul, 1f, 0.7f);
+            var D1 = Opus.RadialSpreadDustRandom(DustID.FireworksRGB, 2, Projectile.Center, 0, Color.White, 2f, Main.rand.NextFloat(5f, 12f));
+            var D2 = Opus.RadialSpreadDustRandom(DustID.FireworksRGB, 3, Projectile.Center, 0, Color.White, 0.6f, 3f);
+            var D3 = Opus.RadialSpreadDustRandom(DustID.FireworksRGB, 5, Projectile.Center, 70, ColorLib.Soul, 1f, 4f);
+
+            for(int i =0; i < D1.Length; i++)
+            {
+                D1[i].noGravity = true;
+            }
+
+            for (int i = 0; i < D2.Length; i++)
+            {
+                D2[i].noGravity = true;
+            }
+
+            for (int i = 0; i < D3.Length; i++)
+            {
+                D3[i].noGravity = true;
+            }
         }
     }
 }

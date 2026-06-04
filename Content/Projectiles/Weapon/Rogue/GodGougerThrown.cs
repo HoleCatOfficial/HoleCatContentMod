@@ -8,6 +8,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using OpusLib;
 using Terraria.Audio;
+using DestroyerTest.Content.Projectiles.Weapon.Rogue.StealthStrike;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 {
@@ -46,10 +47,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
         public override bool PreDraw(ref Color lightColor)
         {
             Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-            Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, Projectile.Center + new Vector2(0, 3f) - Main.screenPosition, null, Color.White * 0.5f, Projectile.rotation, TextureAssets.Projectile[Projectile.type].Value.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
-            Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, Projectile.Center + new Vector2(0, -3f) - Main.screenPosition, null, Color.White * 0.5f, Projectile.rotation, TextureAssets.Projectile[Projectile.type].Value.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
-            Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, Projectile.Center + new Vector2(3f, 0) - Main.screenPosition, null, Color.White * 0.5f, Projectile.rotation, TextureAssets.Projectile[Projectile.type].Value.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
-            Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, Projectile.Center + new Vector2(-3f, 0) - Main.screenPosition, null, Color.White * 0.5f, Projectile.rotation, TextureAssets.Projectile[Projectile.type].Value.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
+            Opus.DrawProjectileShadowsRotating(Projectile, 10, Color.White, 0.3f);
             Opus.ReturnToDefaultDrawing(Main.spriteBatch);
 
             Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, TextureAssets.Projectile[Projectile.type].Value.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
@@ -61,8 +59,13 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             target.AddBuff(ModContent.BuffType<SoulErosion>(), 600);
             SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/TPHit") with { MaxInstances = 0, PitchVariance = 0.2f, Pitch = -0.8f }, Projectile.Center);
 
-            Projectile.NewProjectile(Projectile.GetSource_Death(), target.Center, -Projectile.velocity.RotatedBy(0.5f), ModContent.ProjectileType<GodGougerMiniPink>(), 6, 10, Projectile.owner);
-            Projectile.NewProjectile(Projectile.GetSource_Death(), target.Center, -Projectile.velocity.RotatedBy(-0.5f), ModContent.ProjectileType<GodGougerMiniTeal>(), 6, 10, Projectile.owner);
+            Projectile.NewProjectile(Projectile.GetSource_Death(), target.Center, -Projectile.velocity.RotatedBy(0.5f), ModContent.ProjectileType<GodGougerMiniPink>(), Projectile.damage / 2, 10, Projectile.owner);
+            Projectile.NewProjectile(Projectile.GetSource_Death(), target.Center, -Projectile.velocity.RotatedBy(-0.5f), ModContent.ProjectileType<GodGougerMiniTeal>(), Projectile.damage / 2, 10, Projectile.owner);
+            
+            if (Projectile.StealthStrike(Main.player[Projectile.owner]))
+            {
+                Projectile.NewProjectile(Projectile.GetSource_Death(), target.Center, Vector2.Zero, ModContent.ProjectileType<GodGougerExplosion>(), Projectile.damage * 2, 10, Projectile.owner);
+            }
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)

@@ -9,6 +9,7 @@ using Terraria.Audio;
 using System.Collections.Generic;
 using Terraria.DataStructures;
 using DestroyerTest.Content.Buffs;
+using OpusLib;
 
 namespace DestroyerTest.Content.Projectiles.player.Potion
 {
@@ -102,14 +103,21 @@ namespace DestroyerTest.Content.Projectiles.player.Potion
         {
             Player player = Main.player[Projectile.owner];
 
-            if (attachedNPCIndex == -1 || !Main.npc[attachedNPCIndex].active)
+            // Never attached yet
+            if (attachedNPCIndex == -1)
             {
                 UpdateRingPosition(player);
+                return;
             }
-            else
+
+            // Attached target died/despawned
+            if (!Main.npc[attachedNPCIndex].active)
             {
-                StickToNPC();
+                Projectile.Kill();
+                return;
             }
+
+            StickToNPC();
         }
 
         private void UpdateRingPosition(Player player)
@@ -142,27 +150,19 @@ namespace DestroyerTest.Content.Projectiles.player.Potion
 
         private void StickToNPC()
         {
-            if (attachedNPCIndex != -1 && Main.npc[attachedNPCIndex].active)
-            {
-                Projectile.Center = Main.npc[attachedNPCIndex].Center;
-                Projectile.velocity = Vector2.Zero;
+            NPC npc = Main.npc[attachedNPCIndex];
 
-                if (Projectile.timeLeft % 20 == 0)
-                {
-                    SoundEngine.PlaySound(SoundID.DD2_SkyDragonsFuryShot, Projectile.Center);
-                    if (!Main.hardMode)
-                    {
-                        Main.npc[attachedNPCIndex].AddBuff(BuffID.Poisoned, 300);
-                    }
-                    else
-                    {
-                        Main.npc[attachedNPCIndex].AddBuff(BuffID.Venom, 300);
-                    }
-                }
-            }
-            else
+            Projectile.Center = npc.Center;
+            Projectile.velocity = Vector2.Zero;
+
+            if (Projectile.timeLeft % 20 == 0)
             {
-                Projectile.Kill();
+                SoundEngine.PlaySound(SoundID.DD2_SkyDragonsFuryShot, Projectile.Center);
+
+                if (!Main.hardMode)
+                    npc.AddBuff(BuffID.Poisoned, 300);
+                else
+                    npc.AddBuff(BuffID.Venom, 300);
             }
         }
 
@@ -181,6 +181,23 @@ namespace DestroyerTest.Content.Projectiles.player.Potion
                     }
                 }
                 Projectile.timeLeft = ringLifetime; // start decay now
+            }
+        }
+
+        public override void OnKill(int timeLeft)
+        {
+            SoundEngine.PlaySound(SoundID.Item80, Projectile.Center);
+            if (!Main.hardMode)
+            {
+                Opus.RadialSpreadDustRandom(DustID.Poisoned, 16, Projectile.Center, 100, default, 0.9f, 2f);
+                Opus.RadialSpreadDustRandom(DustID.Poisoned, 9, Projectile.Center, 60, default, 1f, 3f);
+                Opus.RadialSpreadDustRandom(DustID.Poisoned, 4, Projectile.Center, 0, default, 1.8f, 5f);
+            }
+            else
+            {
+                Opus.RadialSpreadDustRandom(DustID.Venom, 16, Projectile.Center, 100, default, 0.9f, 2f);
+                Opus.RadialSpreadDustRandom(DustID.Venom, 9, Projectile.Center, 60, default, 1f, 3f);
+                Opus.RadialSpreadDustRandom(DustID.Venom, 4, Projectile.Center, 0, default, 1.8f, 5f);
             }
         }
 

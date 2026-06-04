@@ -1,3 +1,4 @@
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.Dusts;
@@ -7,13 +8,18 @@ using DestroyerTest.Content.Magic;
 using DestroyerTest.Content.MeleeWeapons;
 using DestroyerTest.Content.MeleeWeapons.SwordLineage;
 using DestroyerTest.Content.MeleeWeapons.TwistedLineage;
+using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.RiftArsenal;
 using DestroyerTest.Content.Scepter;
 using DestroyerTest.Content.Tiles.RoseGarden;
 using Hjson;
+using Microsoft.Build.Tasks.Deployment.ManifestUtilities;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Differencing;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using MonoMod.Cil;
+using MonoMod.RuntimeDetour;
 using OpusLib;
 using OpusLib.Content.Helpers;
 using ReLogic.Content;
@@ -22,13 +28,16 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent.UI;
+using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.UI;
 using static Terraria.Graphics.FinalFractalHelper;
 
 namespace DestroyerTest
@@ -253,28 +262,57 @@ namespace DestroyerTest
 			);
         }
 
+        //Fables strategy
+        private static readonly Type UIModItemType = typeof(ModItem).Assembly.GetType("Terraria.ModLoader.UI.UIModItem");
+        private static readonly MethodInfo InitializeModItemUIMethod = UIModItemType?.GetMethod("OnInitialize", BindingFlags.Instance | BindingFlags.Public);
+        private static readonly PropertyInfo ModNameProperty = UIModItemType?.GetProperty("ModName", BindingFlags.Instance | BindingFlags.Public);
+        private static readonly FieldInfo ModIconField = UIModItemType?.GetField("_modIcon", BindingFlags.Instance | BindingFlags.NonPublic);
+        private static readonly FieldInfo ModNameElement = UIModItemType?.GetField("_modName", BindingFlags.Instance | BindingFlags.NonPublic);
+        public delegate void orig_OnInitialize(UIElement self);
+        public static Hook CreateIconAnimation;
+
+        public void AnimatedModIcon(orig_OnInitialize orig, UIElement self)
+        {
+            orig(self);
+
+            var element = (UIElement)self;
+
+
+            if (!element.GetType().IsAssignableTo(UIModItemType))
+                return;
+
+            object potentialModName = ModNameProperty.GetValue(element);
+            if (potentialModName == null || potentialModName is not string modName || modName != "DestroyerTest")
+                return;
+
+            object potentiallyTheIcon = ModIconField.GetValue(element);
+            if (potentiallyTheIcon is UIImage modIconImage)
+            {
+                AnimatedIcon addedDrawLogic = new AnimatedIcon((UIText)ModNameElement.GetValue(element));
+                modIconImage.Append(addedDrawLogic);
+                modIconImage.Color = Color.Transparent;
+            }
+        }
+
         public override void Load()
         {
+
+            if (InitializeModItemUIMethod != null && ModIconField != null && ModNameProperty != null)
+            {
+                CreateIconAnimation = new Hook(InitializeModItemUIMethod, AnimatedModIcon);
+            }
+
             Config = ModContent.GetInstance<DTConfig>();
-            // Divider.
-            StarBlastKeybind = KeybindLoader.RegisterKeybind(this, "Conclusion Star Blast", "P");
-            // Divider.
-            HeroHelmetKeybind = KeybindLoader.RegisterKeybind(this, "Hero Helmet Guard", "J");
+
             // Divider.
             RiftTeleportKeybind = KeybindLoader.RegisterKeybind(this, "Shadow Tome Teleport", "T");
             // Divider.
 			ArmorSetBonusHotKey = KeybindLoader.RegisterKeybind(this, "ArmorSetBonus", "Y");
             // Divider.
-            ManaBurstKeybind = KeybindLoader.RegisterKeybind(this, "Mana Burst", "C");
-            // Divider.
             TenebrisTeleportKeybind = KeybindLoader.RegisterKeybind(this, "Tenebrous Clone Teleort", "L");
             // Divider.
             DeadlyBlossomKeybind = KeybindLoader.RegisterKeybind(this, "Deadly Blossom Spawn", "X");
-            // Divider.
-            OilTentacleKeybind = KeybindLoader.RegisterKeybind(this, "HoleCat Oil Tentacle", "OemTab");
-            // Divider.
-            
-           
+
             var fractalProfiles = (Dictionary<int, FinalFractalProfile>)typeof(Terraria.Graphics.FinalFractalHelper).GetField("_fractalProfiles", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
 
             fractalProfiles.Add(ModContent.ItemType<Goliath>(), new FinalFractalProfile(110.30866f, Main.DiscoColor));
@@ -293,6 +331,8 @@ namespace DestroyerTest
             AddChestLoot();
 
 			DTCrossMod.LoadMods();
+
+
         }
 
 
@@ -301,6 +341,13 @@ namespace DestroyerTest
 
         public override void Unload()
         {
+            if (InitializeModItemUIMethod == null || ModIconField == null || CreateIconAnimation == null)
+                return;
+
+            CreateIconAnimation.Undo();
+            CreateIconAnimation.Dispose();
+            CreateIconAnimation = null;
+
 
             // Unregister the keybind
             StarBlastKeybind = null;
@@ -367,6 +414,52 @@ namespace DestroyerTest
             public override void UpdateDead()
             {
                 firstJoin = false;
+            }
+        }
+    }
+
+    public class AnimatedIcon : UIElement
+    {
+        public UIText ModName;
+
+        public AnimatedIcon(UIText nameUI)
+        {
+            Width.Set(80, 0f);
+            Height.Set(80, 0f);
+
+            ModName = nameUI;
+        }
+
+        public static Asset<Texture2D> Texture => ModContent.Request<Texture2D>("DestroyerTest/icon-sheet");
+
+        int InternalTimer = 0;
+        int frameCount = 11;
+        int currentFrame = 0;
+        protected override void DrawSelf(SpriteBatch spriteBatch)
+        {
+            CalculatedStyle dimensions = GetDimensions();
+            Vector2 centerOfIcon = dimensions.Center();
+
+            InternalTimer++;
+
+            if (InternalTimer % 10 == 0)
+            {
+                currentFrame++;
+                if (currentFrame >= frameCount)
+                {
+                    currentFrame = 0;
+                }
+            }
+
+            Rectangle Frame = new Rectangle(0, currentFrame * 80, 80, 80);
+
+            spriteBatch.Draw(Texture.Value, centerOfIcon, Frame, Color.White, 0f, new Vector2(40, 40), 1f, SpriteEffects.None, 0f);
+        
+            if (Main.rand.NextBool(3))
+            {
+                Spark spark = new();
+                spark.PrepareSpark(centerOfIcon, new Vector2(3, 0), 0f, Color.Red, 1f, false, 70, SparkDrawMode.Additive, 2f);
+                ParticleEngine.Particles.Add(spark);
             }
         }
     }

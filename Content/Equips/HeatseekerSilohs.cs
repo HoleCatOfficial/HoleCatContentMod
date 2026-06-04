@@ -254,7 +254,7 @@ namespace DestroyerTest.Content.Equips
                 checkBox.Height
             );
 
-            if (player.controlDownHold)
+            if (player.controlDownHold && !player.mount.Active)
             {
                 if (Sound)
                 {

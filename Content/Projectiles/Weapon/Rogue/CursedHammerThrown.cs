@@ -1,6 +1,7 @@
 ﻿using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
 using DestroyerTest.Common;
+using DestroyerTest.Common.Interfaces;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Consumables;
 using DestroyerTest.Content.Particles;
@@ -20,9 +21,24 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 {
-    public class CursedHammerThrown : ModProjectile
+    public class CursedHammerThrown : ModProjectile, IHomingProjectile
     {
-        public int Variant = Main.rand.Next(0, 3);
+        bool IHomingProjectile.TracksNPCs => true;
+
+        bool IHomingProjectile.TracksPlayers => false;
+
+        float IHomingProjectile.HomingTurnSpeed => 7f;
+
+        bool IHomingProjectile.UsesHomingAcceleration => false;
+
+        float IHomingProjectile.HomingAccelAmount => 0f;
+
+        float IHomingProjectile.HomingMaxAccel => 0f;
+
+        float IHomingProjectile.DetectRadius => 3200;
+
+        bool IHomingProjectile.CanHome => Projectile.StealthStrike(Main.player[Projectile.owner]);
+
         private bool returning = false;
         private int flightTime = 0;
         private int soundCooldown = 0; // Initialize a cooldown timer
@@ -78,6 +94,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 
         public bool RangeOfPlayer = false;
 
+       
         public override void AI()
         {
             // Decrease the cooldown timer on each tick

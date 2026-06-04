@@ -1,5 +1,7 @@
 ﻿using BreadLibrary.Core.Graphics;
 using BreadLibrary.Core.Graphics.Particles;
+using BreadLibrary.Core.Graphics.Pixelation;
+using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
@@ -27,8 +29,6 @@ using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.Utilities.Terraria.Utilities;
-using XPT.Core.Audio.MP3Sharp.Decoding.Decoders.LayerIII;
-using static FargowiltasSouls.Content.Projectiles.EffectVisual;
 
 namespace DestroyerTest.Content.Projectiles.ParentClasses
 {
@@ -369,7 +369,8 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
             Main.EntitySpriteDraw(Tex, Owner.MountedCenter - Main.screenPosition, null, SweepColor * SweepOpacity, (Projectile.rotation + MathHelper.PiOver4) + rOffset, Tex.Size() / 2, (AdjustedScale * TexBasedMod) * ScaleMult, FX);
             Main.EntitySpriteDraw(TexH, Owner.MountedCenter - Main.screenPosition, null, SweepHighlightColor * SweepOpacity, (Projectile.rotation + MathHelper.PiOver4) + rOffset, Tex.Size() / 2, (AdjustedScale * TexBasedMod) * ScaleMult, FX);
-            Opus.ReturnToDefaultDrawing(Main.spriteBatch);
+            Main.spriteBatch.ResetToDefault();
+            //Opus.ReturnToDefaultDrawing(Main.spriteBatch);
         }
 
         public float RotationManualOffset = 0f;

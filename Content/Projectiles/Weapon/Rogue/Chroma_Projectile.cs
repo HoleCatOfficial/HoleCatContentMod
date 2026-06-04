@@ -1,5 +1,6 @@
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
+using DestroyerTest.Common.Interfaces;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles.Weapon.Rogue.StealthStrike;
 using DestroyerTest.Content.RogueItems;
@@ -20,8 +21,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 {
 	public class Chroma_Projectile : ModProjectile
 	{
-		public bool StealthStrike = false;
-		public override void SetStaticDefaults() 
+        public override void SetStaticDefaults() 
 		{
 			ProjectileID.Sets.TrailCacheLength[Type] = 100;
 			ProjectileID.Sets.TrailingMode[Type] = 3;
@@ -34,7 +34,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 			Projectile.friendly = true;
 			Projectile.hostile = false;
 			Projectile.DamageType = ModContent.GetInstance<DTRogueClass>(); 
-            Projectile.penetrate = 5;
+            Projectile.penetrate = 3;
 			Projectile.timeLeft = 600;
 			Projectile.light = 0.5f;
 			Projectile.ignoreWater = true;
@@ -192,7 +192,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
                 ParticleEngine.BehindProjectiles.Add(Star);
             }
 
-			if (Dying && StealthStrike)
+			if (Dying && Projectile.StealthStrike(Main.player[Projectile.owner]))
 			{
 				Vector2 Vel = Projectile.oldVelocity;
 				Vel.Normalize();

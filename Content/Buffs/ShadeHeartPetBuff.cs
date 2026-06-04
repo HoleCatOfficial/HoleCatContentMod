@@ -24,8 +24,8 @@ namespace DestroyerTest.Content.Buffs
         {
             Main.buffNoSave[Type] = true;
             Main.buffNoTimeDisplay[Type] = true;
-            Main.vanityPet[Type] = true;
-            Main.lightPet[Type] = true;
+            //Main.vanityPet[Type] = true;
+            //Main.lightPet[Type] = true;
         }
         public override void Update(Player player, ref int buffIndex)
         {

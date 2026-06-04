@@ -4550,11 +4550,13 @@ ShadeHeart: {
 		'''
 		22% increased all-class damage.
 		10% chance for minions to inflict Shimmering Flames on Hit.
-		+20 Melee Armor penetration.
+		+20 Melee and Whip Armor penetration.
+		+18.5% Damage Reduction.
 		Grants immunity to shimmering flames.
 		Getting hit will release a burst of homing Tenebris Stars.
 		Natural life regen increased by 40%
 		You emit light.
+		You get a shade heart light pet that doesnt consume either of the pet slots.
 		'''
 }
 
@@ -4713,5 +4715,10 @@ HeatseekerSilohs: {
 
 IchorSlamShoes: {
 	DisplayName: Ichor Slam Shoes
+	Tooltip: ""
+}
+
+ShadeInfernoPotion: {
+	DisplayName: Shade Inferno Potion
 	Tooltip: ""
 }

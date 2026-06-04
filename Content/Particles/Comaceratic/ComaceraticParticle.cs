@@ -23,16 +23,17 @@ namespace DestroyerTest.Content.Particles.Comaceratic
         Vector2 position;
         Vector2 velocity;
         Color color;
-        float scale;
-        float rotation;
+        float scale = 1f;
+        float rotation = 0f;
 
-        int variant => Main.rand.Next(1, 4);
+        int variant;
         public void Initialize(Vector2 Position, Vector2 Velocity, Color Color, float Scale)
         {
             this.position = Position;
             this.velocity = Velocity;
             this.color = Color;
             this.scale = Scale;
+            this.variant = Main.rand.Next(1, 4);
         }
         public override void Update(ref ParticleRendererSettings settings)
         {
@@ -41,15 +42,8 @@ namespace DestroyerTest.Content.Particles.Comaceratic
             float LifetimeCompletion = (float)Lifetime / MaxLifetime;
 
             velocity *= 0.96f;
-            rotation += 0.1f * Math.Sign(velocity.X);
-            if (velocity.X > 0)
-            {
-                rotation += 0.06f;
-            }
-            if (velocity.X < 0)
-            {
-                rotation -= 0.06f;
-            }
+            rotation += 0.07f * Math.Sign(velocity.X);
+            
             if (LifetimeCompletion > 0.6f)
             {
                 color *= 0.9f;

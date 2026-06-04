@@ -1,6 +1,7 @@
 ﻿using BreadLibrary.Core;
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
+using DestroyerTest.Common.Interfaces;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
@@ -85,6 +86,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
         }
         Player Owner => Main.player[Projectile.owner];
         public float speedfactor => Owner.GetTotalAttackSpeed(DamageClass.Generic);
+
+      
+
         public Vector2 a;
         public BezierCurve Path;
 

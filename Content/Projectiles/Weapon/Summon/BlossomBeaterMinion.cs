@@ -228,7 +228,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
             if (Vine != null)
             {
                 Vine.Positions[^1] = player.MountedCenter;
-                Vine.Simulate(Vector2.Zero, Handle, 1.5f, 1f);
+                Vine.Simulate(Vector2.Zero, Handle, 1.5f, 1f, collideWithPlayers: false);
             }
            
             
@@ -387,9 +387,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
                         dir.Normalize();
                         Vector2 Vel = dir * 8;
 
-                       
+                        int Interval = (int)(100f / player.GetTotalAttackSpeed(DamageClass.SummonMeleeSpeed));
 
-                        if (Projectile.ai[1] % 85 == 0)
+                        if (Projectile.ai[1] % Interval == 0)
                         {
                             SoundEngine.PlaySound(SoundID.Item36, Projectile.Center);
                             glowAMT = 1f;

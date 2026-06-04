@@ -467,3 +467,8 @@ ShadeHeartPetBuff: {
 	DisplayName: Shade Heart Pet Buff
 	Description: Mods.DestroyerTest.Buffs.ShadeHeartPetBuff.Description
 }
+
+ShadeInfernoRingBuff: {
+	DisplayName: Shade Inferno Ring Buff
+	Description: Mods.DestroyerTest.Buffs.ShadeInfernoRingBuff.Description
+}

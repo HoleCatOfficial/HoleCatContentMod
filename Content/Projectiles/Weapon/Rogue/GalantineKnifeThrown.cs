@@ -1,9 +1,11 @@
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
+using DestroyerTest.Common.Interfaces;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles.Stellar;
 using DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss;
+using DestroyerTest.Content.Projectiles.Weapon.Magic;
 using GlowmaskHelper.Content;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
@@ -21,6 +23,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
     [AutoloadGlowmask]
     public class GalantineKnifeThrown : ModProjectile
     {
+
         public override void SetDefaults()
         {
             Projectile.width = 34;
@@ -89,6 +92,13 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             }
             else
             {
+                if (Projectile.StealthStrike(Main.player[Projectile.owner]))
+                {
+                    if(LifeTime % 3 == 0)
+                    {
+                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity * 0.5f, ModContent.ProjectileType<StellarFlameFriendly>(), Projectile.damage, 0, Projectile.owner);
+                    }
+                }
                 // Regular flying / gravity behavior
                 if (LifeTime < 60)
                 {
@@ -107,7 +117,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             if (Main.rand.NextBool(3))
             {
                 ConstitutionParticle FX = new();
-                FX.Initialize(Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Vector2.Zero, 1f, 30);
+                FX.Initialize(Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Vector2.Zero, 1.7f, 30);
                 ParticleEngine.BehindProjectiles.Add(FX);
 
             }

@@ -1,5 +1,6 @@
 ﻿
 using BreadLibrary.Core.Graphics.Particles;
+using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
@@ -88,7 +89,7 @@ namespace DestroyerTest.Content.Projectiles.OrionCrossover
 
             Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
             Main.EntitySpriteDraw(Tex, player.MountedCenter - Main.screenPosition, null, ColorLib.StellarFireGradient(SlashProgress) * SweepOpacity, (Projectile.rotation + MathHelper.PiOver4) + rOffset, Tex.Size() / 2, (AdjustedScale * TexBasedMod), FX);
-            Opus.ReturnToDefaultDrawing(Main.spriteBatch);
+            Main.spriteBatch.ResetToDefault();
         }
         public override void DrawUnderBlade()
         {
