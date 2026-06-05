@@ -267,12 +267,22 @@ namespace DestroyerTest.Common.Systems
 
         public static void RegisterFablesBossIntro(string BossName, string BossTitle, int Duration, bool flipHorizontal, Color BorderColor, Color BossTitleColor, Color chromaticabberation1, Color chromaticabberation2, string MusicTitle, string MusicArtist)
         {
+            if (!DTCrossMod.FablesIsLoaded)
+            {
+                return;
+            }
+
             string CallName = "vfx.displayBossIntroCard";
             DTCrossMod.FablesMod.Call(CallName, BossName, BossTitle, Duration, flipHorizontal, BorderColor, BossTitleColor, chromaticabberation1, chromaticabberation2, MusicTitle, MusicArtist);
         }
 
         public static void RegisterFablesBossIntro(BossTitle title)
         {
+            if (!DTCrossMod.FablesIsLoaded)
+            {
+                return;
+            }
+
             string CallName = "vfx.displayBossIntroCard";
             DTCrossMod.FablesMod.Call(CallName, title.Name(), title.Title(), title.Time, title.Flip, title.BackColor(), title.TextColor(), title.TextAbberationColor1(), title.TextAbberationColor2(), title.MusicTitle(), title.MusicArtist());
         }

@@ -65,8 +65,7 @@ namespace DestroyerTest.Content.Buffs
                 Rot += RotSpeed;
                 if (!npc.boss)
                 {
-                    npc.velocity.X = 0;
-                    npc.velocity.Y = 10;
+                    npc.velocity *= 0.6f;
                 }
 
 

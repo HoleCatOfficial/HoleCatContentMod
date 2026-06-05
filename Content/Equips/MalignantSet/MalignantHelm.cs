@@ -63,6 +63,12 @@ namespace DestroyerTest.Content.Equips.MalignantSet
             player.GetDamage(DamageClass.Throwing) += 0.1f;
             player.GetDamage<ScepterClass>() += 0.14f;
 
+            if (DTCrossMod.CalamityIsLoaded)
+            {
+                DTCrossMod.CalamityMod.Call("AddMaxStealth", player, 60f);
+
+                DTCrossMod.CalamityMod.Call("SetWearingRogueArmor", player, true);
+            }
 
             player.GetModPlayer<MalignantPlayer>().Active = true;
             player.DefaultSetBonusText(player.armor[0]);

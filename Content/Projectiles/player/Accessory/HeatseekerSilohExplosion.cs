@@ -72,7 +72,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
                 Vector2 ran = new Vector2(Main.rand.NextFloat(-9f, 9f), Main.rand.NextFloat(-12f, -2f));
 
                 HeatseekerSilohSpark Spark = new();
-                Spark.PrepareSpark(Projectile.Center, ran, ran.ToRotation() + MathHelper.PiOver2, ColorLib.Rift, 1f, false, 80, SparkDrawMode.Additive, 2f);
+                Spark.PrepareSpark(Projectile.Center, ran, ran.ToRotation() + MathHelper.PiOver2, ColorLib.Rift, 1f, false, 80, SparkDrawMode.Additive, 3f);
                 ParticleEngine.BehindProjectiles.Add(Spark);
             }
 

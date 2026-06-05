@@ -1,5 +1,6 @@
 using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
+using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
@@ -65,7 +66,7 @@ namespace DestroyerTest.Content.Particles
 
             position += velocity;
 
-            rotation = velocity.ToRotation() + MathHelper.PiOver2;
+            rotation = velocity.ToRotation();
 
             if (gravity)
             {
@@ -88,7 +89,9 @@ namespace DestroyerTest.Content.Particles
 
         public Tuple<Texture2D, Rectangle, Vector2> GetTextureProperties()
         {
-            Texture2D TexValue = ModContent.Request<Texture2D>($"DestroyerTest/Content/Particles/SparkParticle").Value;
+            //Texture2D TexValue = ModContent.Request<Texture2D>($"DestroyerTest/Content/Particles/SparkParticle").Value;
+
+            Texture2D TexValue = ModContent.Request<Texture2D>($"DestroyerTest/Content/Extras/MiscSparkle2").Value;
             Rectangle frameRect = new Rectangle(0, 0, TexValue.Width, TexValue.Height);
 
             Vector2 origin = new Vector2(TexValue.Width / 2f, TexValue.Height / 2f);
@@ -124,7 +127,7 @@ namespace DestroyerTest.Content.Particles
         public override void Draw(ref ParticleRendererSettings settings, SpriteBatch spritebatch)
         {
             Opus.StartSpriteBatchWithBlending(spritebatch, GetBlendState(sparkDrawMode), SpriteSortMode.Deferred);
-            spritebatch.Draw(GetTextureProperties().Item1, position - Main.screenPosition, GetTextureProperties().Item2, col * Opacity, rotation, GetTextureProperties().Item3, new Vector2(scale * Width, scale * LengthMultiplier), SpriteEffects.None, 0f);
+            spritebatch.Draw(GetTextureProperties().Item1, position - Main.screenPosition, GetTextureProperties().Item2, col * Opacity, rotation, GetTextureProperties().Item3, new Vector2(scale * Width * LengthMultiplier, scale ) * 0.1f, SpriteEffects.None, 0f);
             Opus.ReturnToDefaultDrawing(spritebatch);
         }
     }
@@ -208,7 +211,7 @@ namespace DestroyerTest.Content.Particles
 
             position += velocity;
 
-            rotation = velocity.ToRotation() + MathHelper.PiOver2;
+            rotation = velocity.ToRotation();
 
             if (gravity)
             {
@@ -229,7 +232,9 @@ namespace DestroyerTest.Content.Particles
 
         public Tuple<Texture2D, Rectangle, Vector2> GetTextureProperties()
         {
-            Texture2D TexValue = ModContent.Request<Texture2D>($"DestroyerTest/Content/Particles/SparkParticle").Value;
+            //Texture2D TexValue = ModContent.Request<Texture2D>($"DestroyerTest/Content/Particles/SparkParticle").Value;
+
+            Texture2D TexValue = ModContent.Request<Texture2D>($"DestroyerTest/Content/Extras/MiscSparkle2").Value;
             Rectangle frameRect = new Rectangle(0, 0, TexValue.Width, TexValue.Height);
 
             Vector2 origin = new Vector2(TexValue.Width / 2f, TexValue.Height / 2f);
@@ -266,7 +271,7 @@ namespace DestroyerTest.Content.Particles
         {
 
             Opus.StartSpriteBatchWithBlending(spritebatch, GetBlendState(sparkDrawMode), SpriteSortMode.Deferred);
-            spritebatch.Draw(GetTextureProperties().Item1, position - Main.screenPosition, GetTextureProperties().Item2, col * Opacity, rotation, GetTextureProperties().Item3,  new Vector2(scale * Width, scale * LengthMultiplier), SpriteEffects.None, 0f);
+            spritebatch.Draw(GetTextureProperties().Item1, position - Main.screenPosition, GetTextureProperties().Item2, col * Opacity, rotation, GetTextureProperties().Item3, new Vector2(scale * Width * LengthMultiplier, scale) * 0.1f, SpriteEffects.None, 0f);
             Opus.ReturnToDefaultDrawing(spritebatch);
         }
 
@@ -282,7 +287,7 @@ namespace DestroyerTest.Content.Particles
 
             position += velocity;
 
-            rotation = velocity.ToRotation() + MathHelper.PiOver2;
+            rotation = velocity.ToRotation();
             velocity *= 0.97f;
 
             if (Lifetime < maxLifetime / 2)
@@ -303,10 +308,11 @@ namespace DestroyerTest.Content.Particles
     {
         public override void Draw(ref ParticleRendererSettings settings, SpriteBatch spritebatch)
         {
-            Opus.StartSpriteBatchWithBlending(spritebatch, GetBlendState(sparkDrawMode), SpriteSortMode.Deferred);
-            spritebatch.Draw(GetTextureProperties().Item1, position - Main.screenPosition, GetTextureProperties().Item2, col * Opacity, rotation, GetTextureProperties().Item3, new Vector2(scale * Width, scale * LengthMultiplier), SpriteEffects.None, 0f);
-            spritebatch.Draw(GetTextureProperties().Item1, position - Main.screenPosition, GetTextureProperties().Item2, Color.Black * Opacity, rotation, GetTextureProperties().Item3, new Vector2(scale * 0.5f * Width, (scale * LengthMultiplier) * 0.7f), SpriteEffects.None, 0f);
-            Opus.ReturnToDefaultDrawing(spritebatch);
+            spritebatch.UseBlendState(BlendState.AlphaBlend);
+            spritebatch.Draw(GetTextureProperties().Item1, position - Main.screenPosition, GetTextureProperties().Item2, col * Opacity, rotation, GetTextureProperties().Item3, new Vector2(scale * Width * LengthMultiplier, scale) * 0.1f, SpriteEffects.None, 0f);
+            
+            spritebatch.Draw(GetTextureProperties().Item1, position - Main.screenPosition, GetTextureProperties().Item2, Color.Black * Opacity, rotation, GetTextureProperties().Item3, new Vector2(scale * 0.5f * Width * LengthMultiplier, (scale) * 0.7f) * 0.1f, SpriteEffects.None, 0f);
+            spritebatch.ResetToDefault();
         }
     }
 

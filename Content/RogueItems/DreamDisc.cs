@@ -43,7 +43,7 @@ namespace DestroyerTest.Content.RogueItems
 
         public override bool CanUseItem(Player player)
         {
-            return player.ownedProjectileCounts[Item.shoot] < 10;
+            return player.ownedProjectileCounts[Item.shoot] < 3;
         }
 
         public override void AddRecipes()

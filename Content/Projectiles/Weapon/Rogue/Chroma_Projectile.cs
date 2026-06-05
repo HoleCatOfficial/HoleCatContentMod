@@ -148,7 +148,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 
             if (Projectile.penetrate > 2)
 			{
-				Projectile.velocity *= 0.75f;
+				Projectile.velocity *= 0.4f;
 			}
 			else
 			{

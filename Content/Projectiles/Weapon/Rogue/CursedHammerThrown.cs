@@ -27,7 +27,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 
         bool IHomingProjectile.TracksPlayers => false;
 
-        float IHomingProjectile.HomingTurnSpeed => 7f;
+        float IHomingProjectile.HomingTurnSpeed => 13f;
 
         bool IHomingProjectile.UsesHomingAcceleration => false;
 

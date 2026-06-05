@@ -1,4 +1,6 @@
 using BreadLibrary.Core.Graphics.Particles;
+using BreadLibrary.Core.Graphics.Pixelation;
+using BreadLibrary.Core.Graphics.Spritebatch;
 using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
 using DestroyerTest.Common.Systems;
@@ -62,7 +64,7 @@ using Terraria.UI;
 namespace DestroyerTest.Content.Entities
 {
     [AutoloadBossHead]
-    public class NightmareRoseBoss : ModNPC
+    public class NightmareRoseBoss : ModNPC, IDrawPixelated
     {
         public override string BossHeadTexture => "DestroyerTest/Content/Entities/NightmareRoseBoss_Head_Boss";
 
@@ -392,6 +394,100 @@ namespace DestroyerTest.Content.Entities
             }
 
             return false;
+        }
+
+        float RingScale = 6.2f;
+        float Rotation = 0f;
+        float OverlayAlpha = 0f;
+        public Color BorderCol;
+        public float VingetteScale = 2f;
+        public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            base.PostDraw(spriteBatch, screenPos, drawColor);
+
+
+
+            
+
+
+            DTUtils Utility = new DTUtils();
+
+            
+
+
+            string Maso = DestroyerTestMod.MasochistIsActive ? "_Maso" : "";
+            Asset<Texture2D> White = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/NightmareRoseDeathFade" + Maso);
+            if (currentState == AttackState.KillIdle)
+            {
+                Main.EntitySpriteDraw(White.Value, NPC.Center - Main.screenPosition, null, Color.White * OverlayAlpha, 0f, new Vector2(White.Value.Width / 2, White.Value.Height / 2), 1f, SpriteEffects.None, 0);
+            }
+
+        }
+
+        PixelLayer IDrawPixelated.PixelLayer => PixelLayer.AboveNPCs;
+        bool IDrawPixelated.ShouldDrawPixelated => true;
+        void IDrawPixelated.DrawPixelated(SpriteBatch spriteBatch)
+        {
+            Opus.StartSpriteBatchPixelated(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
+
+
+            if (LaserWarnTimer > 0)
+            {
+                spriteBatch.UseBlendState(BlendState.AlphaBlend);
+                Main.EntitySpriteDraw(DTAssetLib.BlessedNodeLaserTelegraph.Value, NPCHead - Main.screenPosition, null, ColorLib.TenebrisGradient with { A = 0 } * LaserWarnOpacity, LaserRotOffset - 12f, DTAssetLib.BlessedNodeLaserTelegraph.Value.Size() / 2, 1f, SpriteEffects.None);
+                Main.EntitySpriteDraw(DTAssetLib.BlessedNodeLaserTelegraph.Value, NPCHead - Main.screenPosition, null, Color.White with { A = 0 } * LaserWarnOpacity, LaserRotOffset - 12f, DTAssetLib.BlessedNodeLaserTelegraph.Value.Size() / 2, 0.65f, SpriteEffects.None);
+                spriteBatch.UseBlendState(BlendState.AlphaBlend);
+            }
+            else
+            {
+                LaserWarnOpacity = 0f;
+            }
+
+            if (FlameStartTimer < 120 && FlameStartTimer >= 0 && currentState == AttackState.CursedFlames)
+            {
+                spriteBatch.UseBlendState(BlendState.Additive);
+                if (!DestroyerTestMod.EternityIsActive)
+                {
+                    GlowConeWarning_CursedFlames();
+                }
+                if (DestroyerTestMod.EternityIsActive && !DestroyerTestMod.MasochistIsActive)
+                {
+                    GlowConeWarning_CursedFlamesEternity();
+                }
+                spriteBatch.UseBlendState(BlendState.AlphaBlend);
+                if (FlameStartTimer > 60)
+                {
+                    GlowConeScaling += 0.05f;
+                }
+                if (FlameStartTimer < 60)
+                {
+                    GlowConeScaling -= 0.05f;
+                }
+            }
+
+            if (NapalmDelay < 120 && NapalmDelay >= 0 && currentState == AttackState.Napalm)
+            {
+                spriteBatch.UseBlendState(BlendState.Additive);
+                GlowConeWarning_Napalm();
+                spriteBatch.UseBlendState(BlendState.AlphaBlend);
+                if (NapalmDelay > 60)
+                {
+                    GlowConeScaling += 0.05f;
+                }
+                if (NapalmDelay < 60)
+                {
+                    GlowConeScaling -= 0.05f;
+                }
+            }
+
+
+            if (BorderActive)
+            {
+                Main.EntitySpriteDraw(DTAssetLib.NightmareRoseArenaBorder.Value, NPCHead - Main.screenPosition, null, BorderCol with { A = 0 }, Rotation, DTAssetLib.NightmareRoseArenaBorder.Value.Size() / 2, RingScale, SpriteEffects.None, 0);
+                Main.EntitySpriteDraw(DTAssetLib.NightmareRoseArenaBorder.Value, NPCHead - Main.screenPosition, null, OpusColorUtils.Pastel(BorderCol, 0.75f) with { A = 0 }, Rotation, DTAssetLib.NightmareRoseArenaBorder.Value.Size() / 2, RingScale, SpriteEffects.None, 0);
+
+                Main.EntitySpriteDraw(DTAssetLib.Vingette.Value, NPCHead - Main.screenPosition, null, BorderCol, Rotation, DTAssetLib.Vingette.Value.Size() / 2, 2.7f, SpriteEffects.None, 0);
+            }
         }
 
 
@@ -1347,6 +1443,11 @@ namespace DestroyerTest.Content.Entities
                         NPC.dontTakeDamage = true;
                         ShouldCenterCameraOnNPC = true;
 
+                        if (DTCrossMod.CalamityIsLoaded)
+                        {
+                            DTCrossMod.CalamityMod.Call("SetShouldClossBossHealthBar", NPC, false);
+                        }
+
                         LaserRotOffset += 0.03f;
                         if (LaserWarnOpacity > 0)
                         {
@@ -1516,81 +1617,7 @@ namespace DestroyerTest.Content.Entities
             }
         }
 
-        float RingScale = 6.2f;
-        float Rotation = 0f;
-        float OverlayAlpha = 0f;
-        public Color BorderCol;
-        public float VingetteScale = 2f;
-        public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-        {
-            base.PostDraw(spriteBatch, screenPos, drawColor);
-
-
-
-            if (LaserWarnTimer > 0)
-            {
-                Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-                Main.EntitySpriteDraw(DTAssetLib.BlessedNodeLaserTelegraph.Value, NPCHead - Main.screenPosition, null, ColorLib.TenebrisGradient * LaserWarnOpacity, LaserRotOffset - 12f, DTAssetLib.BlessedNodeLaserTelegraph.Value.Size() / 2, 1f, SpriteEffects.None);
-                Main.EntitySpriteDraw(DTAssetLib.BlessedNodeLaserTelegraph.Value, NPCHead - Main.screenPosition, null, Color.White * LaserWarnOpacity, LaserRotOffset - 12f, DTAssetLib.BlessedNodeLaserTelegraph.Value.Size() / 2, 0.65f, SpriteEffects.None);
-                Opus.ReturnToDefaultDrawing(spriteBatch);
-            }
-
-            if (FlameStartTimer < 120 && FlameStartTimer >= 0 && currentState == AttackState.CursedFlames)
-            {
-                Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-                if (!DestroyerTestMod.EternityIsActive)
-                {
-                    GlowConeWarning_CursedFlames();
-                }
-                if (DestroyerTestMod.EternityIsActive && !DestroyerTestMod.MasochistIsActive)
-                {
-                    GlowConeWarning_CursedFlamesEternity();
-                }
-                Opus.ReturnToDefaultDrawing(spriteBatch);
-                if (FlameStartTimer > 60)
-                {
-                    GlowConeScaling += 0.05f;
-                }
-                if (FlameStartTimer < 60)
-                {
-                    GlowConeScaling -= 0.05f;
-                }
-            }
-
-            if (NapalmDelay < 120 && NapalmDelay >= 0 && currentState == AttackState.Napalm)
-            {
-                Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-                GlowConeWarning_Napalm();
-                Opus.ReturnToDefaultDrawing(spriteBatch);
-                if (NapalmDelay > 60)
-                {
-                    GlowConeScaling += 0.05f;
-                }
-                if (NapalmDelay < 60)
-                {
-                    GlowConeScaling -= 0.05f;
-                }
-            }
-
-
-            DTUtils Utility = new DTUtils();
-            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-            if (BorderActive)
-            {
-                Main.EntitySpriteDraw(DTAssetLib.NightmareRoseArenaBorder.Value, NPCHead - Main.screenPosition, null, BorderCol, Rotation, DTAssetLib.NightmareRoseArenaBorder.Value.Size() / 2, RingScale, SpriteEffects.None, 0);
-
-                Main.EntitySpriteDraw(DTAssetLib.Vingette.Value, NPCHead - Main.screenPosition, null, BorderCol, Rotation, DTAssetLib.Vingette.Value.Size() / 2, RingScale, SpriteEffects.None, 0);
-            }
-            Opus.ReturnToDefaultDrawing(spriteBatch);
-
-            string Maso = DestroyerTestMod.MasochistIsActive ? "_Maso" : "";
-            Asset<Texture2D> White = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/NightmareRoseDeathFade" + Maso);
-            if (currentState == AttackState.KillIdle)
-            {
-                Main.EntitySpriteDraw(White.Value, NPC.Center - Main.screenPosition, null, Color.White * OverlayAlpha, 0f, new Vector2(White.Value.Width / 2, White.Value.Height / 2), 1f, SpriteEffects.None, 0);
-            }
-
-        }
+       
 
 
         private Dictionary<AttackState, float> stateWeights = new()
@@ -1730,7 +1757,7 @@ namespace DestroyerTest.Content.Entities
         {
             Vector2 dir = DirectionToPlayerCenter;
 
-            Main.EntitySpriteDraw(DTAssetLib.GlowCone.Value, NPCHead - Main.screenPosition, null, ColorLib.CursedFlames, dir.ToRotation(), DTAssetLib.GlowCone.Value.Size() / 2, GlowConeScaling, SpriteEffects.None, 0);
+            Main.EntitySpriteDraw(DTAssetLib.GlowCone.Value, NPCHead - Main.screenPosition, null, ColorLib.CursedFlames with { A = 0 }, dir.ToRotation(), DTAssetLib.GlowCone.Value.Size() / 2, GlowConeScaling, SpriteEffects.None, 0);
         }
 
 
@@ -1740,13 +1767,13 @@ namespace DestroyerTest.Content.Entities
 
             foreach (var p in i)
             {
-                Main.EntitySpriteDraw(DTAssetLib.GlowCone.Value, NPCHead - Main.screenPosition, null, ColorLib.CursedFlames, p.Rotation, DTAssetLib.GlowCone.Value.Size() / 2, GlowConeScaling, SpriteEffects.None, 0);
+                Main.EntitySpriteDraw(DTAssetLib.GlowCone.Value, NPCHead - Main.screenPosition, null, ColorLib.CursedFlames with { A = 0 }, p.Rotation, DTAssetLib.GlowCone.Value.Size() / 2, GlowConeScaling, SpriteEffects.None, 0);
             }
         }
 
         public void GlowConeWarning_Napalm()
         {
-            Main.EntitySpriteDraw(DTAssetLib.GlowCone.Value, NPCHead - Main.screenPosition, null, ColorLib.CursedFlames, -MathHelper.PiOver2, DTAssetLib.GlowCone.Value.Size() / 2, new Vector2(GlowConeScaling * 2, GlowConeScaling), SpriteEffects.None, 0);
+            Main.EntitySpriteDraw(DTAssetLib.GlowCone.Value, NPCHead - Main.screenPosition, null, ColorLib.CursedFlames with { A = 0 }, -MathHelper.PiOver2, DTAssetLib.GlowCone.Value.Size() / 2, new Vector2(GlowConeScaling * 2, GlowConeScaling), SpriteEffects.None, 0);
         }
 
         public void GatherParticle()

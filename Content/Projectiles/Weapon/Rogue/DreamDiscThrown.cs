@@ -5,6 +5,7 @@ using DestroyerTest.Common.Interfaces;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
+using DestroyerTest.Content.Projectiles.Weapon.Rogue.StealthStrike;
 using DestroyerTest.Content.SummonItems;
 using GlowmaskHelper.Content;
 using InnoVault.PRT;
@@ -158,6 +159,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             }
             Projectile.timeLeft += 2;
             target.AddBuff(BuffID.Bleeding, 600);
+
+            if (Projectile.StealthStrike(Owner))
+            {
+                SoundEngine.PlaySound(SoundID.DD2_WitherBeastCrystalImpact, target.Center);
+                Opus.RadialSpreadProjectile(ModContent.ProjectileType<DreamDiscMini>(), 4, target.Center, Projectile.damage / 4, 8, 20, offset: Projectile.rotation);
+            }
 
             SoundEngine.PlaySound(DTAssetLib.SwordSounds.ThinSlice with { MaxInstances = 0, PitchVariance = 0.9f }, Projectile.Center);
             SoundEngine.PlaySound(DTAssetLib.IdriGreatswordSlice(ChildSafety.Disabled), Projectile.Center);

@@ -27,16 +27,5 @@ namespace DestroyerTest.Content.Equips
         {
             
 		}
-
-		public override void AddRecipes() {
-			CreateRecipe()
-				.AddIngredient(ItemID.LunarBar, 7)
-				.AddIngredient(ItemID.GoldBar, 20)
-				.AddIngredient(ItemID.Ruby, 1)
-                .AddIngredient<WhiteCloth>(17)
-                .AddIngredient<Tenebris>(8)
-				.AddTile(TileID.LunarCraftingStation)
-				.Register();
-		}
 	}
 }

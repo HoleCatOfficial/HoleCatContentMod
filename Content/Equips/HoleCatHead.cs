@@ -32,16 +32,23 @@ namespace DestroyerTest.Content.Equips
 		
 		public override bool IsArmorSet(Item head, Item body, Item legs) 
 		{
-		return body.type == ModContent.ItemType<HoleCatBody>() && legs.type == ModContent.ItemType<HoleCatLegs>();
+			return body.type == ModContent.ItemType<HoleCatBody>() && legs.type == ModContent.ItemType<HoleCatLegs>();
 		}
 
 
 		public override void UpdateArmorSet(Player player)
 		{
-			player.GetDamage(DamageClass.Generic) += 1.25f;
-			player.GetAttackSpeed(DamageClass.Generic) += 1.02f;
+			player.GetDamage(DamageClass.Generic) += 1.14f;
+			player.GetAttackSpeed(DamageClass.Generic) += 1.015f;
 			player.GetKnockback(DamageClass.Generic) += 1.1f;
 			player.maxTurrets += 3;
+
+			if (DTCrossMod.CalamityIsLoaded)
+			{
+				DTCrossMod.CalamityMod.Call("AddMaxStealth", player, 1.2f);
+
+                DTCrossMod.CalamityMod.Call("SetWearingRogueArmor", player, true);
+            }
 			player.DefaultSetBonusText(Item);
 		}
 	}

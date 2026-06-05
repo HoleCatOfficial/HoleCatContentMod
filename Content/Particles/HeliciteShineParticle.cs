@@ -6,7 +6,6 @@ using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Magic;
   
 using DestroyerTest.Content.Projectiles;
-using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;

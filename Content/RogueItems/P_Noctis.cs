@@ -18,12 +18,12 @@ namespace DestroyerTest.Content.RogueItems
 			Item.useStyle = ItemUseStyleID.Swing;
 			Item.useAnimation = 30;
 			Item.useTime = 30;
-            Item.UseSound = new SoundStyle($"DestroyerTest/Assets/Audio/P_Noctis_Throw") {Volume = 1.0f, Pitch = 0.0f, PitchVariance = 0.2f }; 
+            Item.UseSound = new SoundStyle($"DestroyerTest/Assets/Audio/P_Noctis_Throw") {Volume = 0.6f, Pitch = 0.0f, PitchVariance = 0.2f }; 
 			Item.autoReuse = true;
+			Item.reuseDelay = 120;
 			Item.consumable = false;
             Item.crit = 32;
-		
-			Item.damage = 210;
+			Item.damage = 750;
 			Item.knockBack = 16f;
 			Item.noUseGraphic = true;
 			Item.noMelee = true;
@@ -34,13 +34,13 @@ namespace DestroyerTest.Content.RogueItems
 			
 		}
 		
-		public override void AddRecipes() {
+		public override void AddRecipes() 
+		{
 			CreateRecipe()
 				.AddIngredient(ItemID.Bone, 200)
 				.AddIngredient(ItemID.BoneFeather, 5)
 				.AddIngredient(ItemID.IceFeather, 5)
 				.AddIngredient(ItemID.FireFeather, 5)
-				.AddIngredient(ItemID.GiantHarpyFeather, 5)
 				.AddIngredient(ItemID.Feather, 5)
                 .AddIngredient(ItemID.DayBreak, 1)
                 .AddIngredient(ItemID.SoulofFright, 30)

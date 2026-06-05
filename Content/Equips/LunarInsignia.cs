@@ -10,6 +10,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 using DestroyerTest.Rarity;
+using DestroyerTest.Common;
 
 namespace DestroyerTest.Content.Equips
 {
@@ -38,6 +39,11 @@ namespace DestroyerTest.Content.Equips
         {
             player.empressBrooch = true;
             player.wingTime = player.wingTimeMax;
+
+			if (DTCrossMod.CalamityIsLoaded)
+			{
+				DTCrossMod.CalamityMod.Call("ToggleInfiniteFlight", true);
+			}
         }
 
 		public override void VerticalWingSpeeds(Player player, ref float ascentWhenFalling, ref float ascentWhenRising,

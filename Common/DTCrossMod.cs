@@ -20,6 +20,7 @@ using DestroyerTest.Content.Consumables;
 using DestroyerTest.Content.Scepter;
 using DestroyerTest.Content.Equips.ScepterAccessories;
 using Terraria.DataStructures;
+using DestroyerTest.Content.RiftBiomeSpread;
 
 namespace DestroyerTest.Common
 {
@@ -94,9 +95,12 @@ namespace DestroyerTest.Common
 
         public static bool StealthStrike(this Projectile proj, Player Owner)
         {
-            if (proj.TryGetGlobalProjectile<StealthStrikeGlobalProjectile>(out var Stealth))
+            if (CalamityIsLoaded)
             {
-                return Stealth.StealthStrike;
+                if (CalamityMod.Call("GetStealthProjectile", proj) is bool isStealth && isStealth)
+                {
+                    return true;
+                }
             }
             return false;
         }
@@ -114,25 +118,17 @@ namespace DestroyerTest.Common
         }
     }
 
-    public class StealthStrikeGlobalProjectile : GlobalProjectile
+    public class RogueCompatGlobalProjectile : GlobalProjectile
     {
         public override bool InstancePerEntity => true;
 
-        public bool StealthStrike;
-
-        public override void OnSpawn(Projectile projectile, IEntitySource source)
+        public override void SetDefaults(Projectile entity)
         {
-            Player player = Main.player[projectile.owner];
             if (DTCrossMod.CalamityIsLoaded)
             {
-                if (DTCrossMod.CalamityMod.Call("CanStealthStrike", player) is bool canStealth && canStealth)
+                if (entity.DamageType == ModContent.GetInstance<DTRogueClass>() && DTCrossMod.CalamityMod.TryFind<DamageClass>("RogueDamageClass", out DamageClass rogueDamageClass))
                 {
-                    StealthStrike = true;
-                }
-
-                if (projectile.DamageType == ModContent.GetInstance<DTRogueClass>() && DTCrossMod.CalamityMod.TryFind<DamageClass>("RogueDamageClass", out DamageClass rogueDamageClass))
-                {
-                    projectile.DamageType = rogueDamageClass;
+                    entity.DamageType = rogueDamageClass;
                 }
             }
         }
@@ -144,16 +140,36 @@ namespace DestroyerTest.Common
 
         public override void SetDefaults(Item entity)
         {
-                if (DTCrossMod.CalamityIsLoaded)
+            if (DTCrossMod.CalamityIsLoaded)
+            {
+       
+                if (entity.DamageType == ModContent.GetInstance<DTRogueClass>() && DTCrossMod.CalamityMod.TryFind<DamageClass>("RogueDamageClass", out DamageClass rogueDamageClass))
                 {
-                    /*
-                    if (entity.DamageType == ModContent.GetInstance<DTRogueClass>() && DTCrossMod.CalamityMod.TryFind<DamageClass>("RogueDamageClass", out DamageClass rogueDamageClass))
-                    {
-                        entity.DamageType = rogueDamageClass;
-                    }
-                    */
+                    entity.DamageType = rogueDamageClass;
                 }
+
+             
+                    
+            }
             
         }
+    }
+
+    public class DefenseDamageGlobalNPC : GlobalNPC
+    {
+        public override bool InstancePerEntity => true;
+
+        public override void SetDefaults(NPC entity)
+        {
+            if (DTCrossMod.CalamityIsLoaded)
+            {
+                DTCrossMod.CalamityMod.Call("SetDefenseDamageNPC", entity, true);
+            }
+        }
+    }
+
+    public class AndroombaRegistrationSystem : ModSystem
+    {
+
     }
 }

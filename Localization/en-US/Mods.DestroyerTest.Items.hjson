@@ -60,8 +60,8 @@ WinterWonderland: {
 
 Chroma: {
 	DisplayName: Chroma
-	Tooltip: Throws a Vortexian-Stardust javelin
-	StealthStrike: Stealth Strikes summon two clones that converge ahead of you.
+	Tooltip: Throws a luminite Javelin that explodes after two hits.
+	StealthStrike: Stealth Strikes create 4 celestial mini-Chromas when it explodes, which home in aggressively on enemies.
 }
 
 P_Noctis: {
@@ -69,9 +69,12 @@ P_Noctis: {
 	Tooltip:
 		'''
 		Just holding this instills dread in the deepest nooks of your soul.
-		You will ciritcal hit 100% of the time, but hits will slow you down and prevent you from regenerating life.
+
+		Throws a dark Sparrow Javelin.
+		After one hit, it will be compromized, imploding on itself.
+		Hits inflict Haepien's Inferno and Blizzard simultaneously.
 		'''
-	StealthStrike: Stealth Strikes create a dark phantom that sweeps through the air.
+	StealthStrike: Stealth Strikes create 4 damagining slashes on the target.
 }
 
 Skyshredder: {
@@ -4554,6 +4557,7 @@ ShadeHeart: {
 		+18.5% Damage Reduction.
 		Grants immunity to shimmering flames.
 		Getting hit will release a burst of homing Tenebris Stars.
+		Minions have a chance to create a burst of homing Tenebris Stars upon striking an enemy directly.
 		Natural life regen increased by 40%
 		You emit light.
 		You get a shade heart light pet that doesnt consume either of the pet slots.
@@ -4568,6 +4572,7 @@ SoulSlug: {
 CursedHammer: {
 	DisplayName: Cursed Hammer
 	Tooltip: Throws returning hammers that inflict cursed inferno.
+	StealthStrike: Thrown hammers home in on enemies.
 }
 
 Sola: {
@@ -4614,6 +4619,11 @@ HoleCatHead: {
 		10% increased all-class knockback.
 		+3 Sentry Slots
 		'''
+	CalamityBonus:
+		'''
+		Counts as Rogue Armor.
+		+ 120 Max Stealth.
+		'''
 	DisplayName: Hole Cat Head
 	Tooltip: Despite just being a replica, some of the signature black sludge is inside.
 }
@@ -4634,17 +4644,17 @@ Expedition: {
 }
 
 Item_TallBookcase: {
-	DisplayName: Item_ Tall Bookcase
+	DisplayName: Tall Bookcase
 	Tooltip: ""
 }
 
 Item_IdriPainting: {
-	DisplayName: Item_ Idri Painting
-	Tooltip: ""
+	DisplayName: The Young Hero
+	Tooltip: " "
 }
 
 Item_Dreamstone: {
-	DisplayName: Item_ Dreamstone
+	DisplayName: Dreamstone
 	Tooltip: ""
 }
 
