@@ -39,6 +39,7 @@ namespace DestroyerTest.Common
                     d.noGravity = true;
                     d.noLight = true;
                     d.noLightEmittence = true;
+                    d.fadeIn = 1f;
                 }
             }
         }

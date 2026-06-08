@@ -1184,6 +1184,11 @@ namespace DestroyerTest.Common
             }
         }
 
+        public static Shield GetActiveShield(this Player player, string Name)
+        {
+            return ShieldManager.ActiveShields[player.whoAmI].FirstOrDefault(x => x.InternalName == Name);
+        }
+
     }
 
     public class DTPlayerUtil : ModPlayer
@@ -1805,6 +1810,10 @@ namespace DestroyerTest.Common
         public static Asset<Texture2D> AuraRing = ModContent.Request<Texture2D>($"{ParticlePath}/AuraRing", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> FaintGlow = ModContent.Request<Texture2D>($"{ExtrasPath}/FaintGlow", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> CurseSigilRing = ModContent.Request<Texture2D>($"{ExtrasPath}/CurseSigilRing", AssetRequestMode.AsyncLoad);
+
+        public static Asset<Texture2D> SparkDefault = ModContent.Request<Texture2D>($"{ExtrasPath}/144MiscSparkle", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> SparkSmooth = ModContent.Request<Texture2D>($"{ExtrasPath}/MiscSparkle2", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> SparkSmoothThin = ModContent.Request<Texture2D>($"{ExtrasPath}/MiscSparkle3", AssetRequestMode.AsyncLoad);
 
         public static Asset<Texture2D> Sparkle(int Variant, bool PreMultiplied = false)
         {

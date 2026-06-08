@@ -28,10 +28,11 @@ namespace DestroyerTest.Content.Particles
         public Vector2 position;
         public Vector2 velocity;
         public float rotation;
-        public  Color col;
+        public Color col;
         public float scale;
         public float Opacity;
         public bool gravity;
+        public bool[] TrackPlayer = new bool[Main.maxPlayers];
 
         public float Width = 1f;
         public float LengthMultiplier = 1f;
@@ -71,6 +72,14 @@ namespace DestroyerTest.Content.Particles
             if (gravity)
             {
                 velocity.Y += 0.8f;
+            }
+
+            for (int i = 1; i < Main.maxPlayers; i++)
+            {
+                if (TrackPlayer[i])
+                {
+                    position += Main.player[i].velocity;
+                }
             }
 
             if (Lifetime < maxLifetime / 2)
@@ -127,7 +136,7 @@ namespace DestroyerTest.Content.Particles
         public override void Draw(ref ParticleRendererSettings settings, SpriteBatch spritebatch)
         {
             Opus.StartSpriteBatchWithBlending(spritebatch, GetBlendState(sparkDrawMode), SpriteSortMode.Deferred);
-            spritebatch.Draw(GetTextureProperties().Item1, position - Main.screenPosition, GetTextureProperties().Item2, col * Opacity, rotation, GetTextureProperties().Item3, new Vector2(scale * Width * LengthMultiplier, scale ) * 0.1f, SpriteEffects.None, 0f);
+            spritebatch.Draw(GetTextureProperties().Item1, position - Main.screenPosition, GetTextureProperties().Item2, col * Opacity, rotation, GetTextureProperties().Item3, new Vector2(scale * LengthMultiplier, scale * Width) * 0.1f, SpriteEffects.None, 0f);
             Opus.ReturnToDefaultDrawing(spritebatch);
         }
     }
@@ -142,6 +151,7 @@ namespace DestroyerTest.Content.Particles
         public float Opacity;
         public Color startcol;
         public Color endcol;
+        public bool[] TrackPlayer = new bool[Main.maxPlayers];
 
         public Color[] ColorMap;
         public bool usesColorMap;
@@ -211,6 +221,15 @@ namespace DestroyerTest.Content.Particles
 
             position += velocity;
 
+            for (int i = 1; i < Main.maxPlayers; i++)
+            {
+                if (TrackPlayer[i])
+                {
+                    position += Main.player[i].velocity;
+                }
+            }
+
+
             rotation = velocity.ToRotation();
 
             if (gravity)
@@ -271,7 +290,7 @@ namespace DestroyerTest.Content.Particles
         {
 
             Opus.StartSpriteBatchWithBlending(spritebatch, GetBlendState(sparkDrawMode), SpriteSortMode.Deferred);
-            spritebatch.Draw(GetTextureProperties().Item1, position - Main.screenPosition, GetTextureProperties().Item2, col * Opacity, rotation, GetTextureProperties().Item3, new Vector2(scale * Width * LengthMultiplier, scale) * 0.1f, SpriteEffects.None, 0f);
+            spritebatch.Draw(GetTextureProperties().Item1, position - Main.screenPosition, GetTextureProperties().Item2, col * Opacity, rotation, GetTextureProperties().Item3, new Vector2(scale * LengthMultiplier, scale * Width) * 0.1f, SpriteEffects.None, 0f);
             Opus.ReturnToDefaultDrawing(spritebatch);
         }
 

@@ -52,7 +52,17 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon.RiftWhip
         }
         public override void AI2()
         {
+            if (HitCooldown > 0)
+            {
+                HitCooldown--;
+            }
+        }
 
+        public int HitCooldown = 0;
+
+        public override bool? CanHitNPC(NPC target)
+        {
+            return HitCooldown <= 0;
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
@@ -63,6 +73,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon.RiftWhip
 
             int Amt = hit.Crit ? 4 : 2;
             Opus.RadialSpreadProjectile(ModContent.ProjectileType<RiftStarFriendly2>(), Amt, target.Center, (int)Owner.GetTotalDamage(DamageClass.SummonMeleeSpeed).ApplyTo(40), 5, 12, offset: Main.rand.NextFloat(MathHelper.TwoPi));
+            
+            HitCooldown = 60;
         }
 
         #region Drawing

@@ -278,13 +278,13 @@ namespace DestroyerTest.Content.Entities
             if (Rope1 != null)
             {
                 Rope1.Positions[^1] = Offset1;
-                Rope1.Simulate(Vector2.Zero, Rope1Start, 1.5f, 1f);
+                Rope1.Simulate(Vector2.Zero, Rope1Start, 1.5f, 1f, collideWithTiles: false);
             }
 
             if (Rope2 != null)
             {
                 Rope2.Positions[^1] = Offset2;
-                Rope2.Simulate(Vector2.Zero, Rope2Start, 1.5f, 1f);
+                Rope2.Simulate(Vector2.Zero, Rope2Start, 1.5f, 1f, collideWithTiles: false);
             }
 
             if (player.Center.Distance(NPC.Center) < LookRange)

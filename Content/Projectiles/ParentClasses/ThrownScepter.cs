@@ -12,6 +12,7 @@ using OpusLib;
 using Terraria.Graphics.Shaders;
 using Humanizer;
 using System;
+using ReLogic.Content;
 
 namespace DestroyerTest.Content.Projectiles.ParentClasses
 {
@@ -83,58 +84,64 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             TileCollisions = reader.ReadInt32();
         }
 
+        public virtual Asset<Texture2D> GlowMask { get; set; } = null;
 		public override bool PreDraw(ref Color lightColor)
+		{
+			lightColor = ThemeColor;
+			if (Projectile.timeLeft < 30)
 			{
-				lightColor = ThemeColor;
-				if (Projectile.timeLeft < 30)
-				{
-					lightColor *= ((float)Projectile.timeLeft / 30f); 
-				}
+				lightColor *= ((float)Projectile.timeLeft / 30f); 
+			}
 
-				SpriteBatch spriteBatch = Main.spriteBatch;
-				Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
-				DTUtils Utility = new DTUtils();
+			SpriteBatch spriteBatch = Main.spriteBatch;
+			Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
+			DTUtils Utility = new DTUtils();
 
-                if (!ArmorSetHelper_AetherianShimmerEffects)
+            if (!ArmorSetHelper_AetherianShimmerEffects)
+            {
+                Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+
+                if (returning)
                 {
-                    Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-
-                    if (returning)
-                    {
-                        Main.EntitySpriteDraw(DTAssetLib.Cyclone(1).Value, Projectile.Center - Main.screenPosition, null, lightColor * 0.4f, Projectile.rotation, DTAssetLib.Cyclone(1).Value.Size() / 2, 0.1f * Projectile.scale, SpriteEffects.None, 0);
-                    }
-                    else
-                    {
-                        Main.EntitySpriteDraw(DTAssetLib.Cyclone(1).Value, Projectile.Center - Main.screenPosition, null, lightColor * 0.4f, Projectile.rotation, DTAssetLib.Cyclone(1).Value.Size() / 2, 0.1f * Projectile.scale, SpriteEffects.FlipHorizontally, 0);
-                    }
-                        
-                    Main.EntitySpriteDraw(DTAssetLib.BloomRing.Value, Projectile.Center - Main.screenPosition, null, lightColor * 0.4f, Projectile.rotation, DTAssetLib.BloomRing.Value.Size() / 2, 0.4f * Projectile.scale, SpriteEffects.None, 0);
-                    
-                    Opus.ReturnToDefaultDrawing(spriteBatch);
-
-                    Main.EntitySpriteDraw(projectileTexture, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, projectileTexture.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
+                    Main.EntitySpriteDraw(DTAssetLib.Cyclone(1).Value, Projectile.Center - Main.screenPosition, null, lightColor * 0.4f, Projectile.rotation, DTAssetLib.Cyclone(1).Value.Size() / 2, 0.1f * Projectile.scale, SpriteEffects.None, 0);
                 }
                 else
                 {
-                    Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-
-                    if (returning)
-                    {
-                        Main.EntitySpriteDraw(DTAssetLib.Cyclone(1).Value, Projectile.Center - Main.screenPosition, null, DTColorUtils.Pastel(Main.DiscoColor, 0.4f) * 0.4f, Projectile.rotation, DTAssetLib.Cyclone(1).Value.Size() / 2, 0.1f * Projectile.scale, SpriteEffects.None, 0);
-                    }
-                    else
-                    {
-                        Main.EntitySpriteDraw(DTAssetLib.Cyclone(1).Value, Projectile.Center - Main.screenPosition, null, DTColorUtils.Pastel(Main.DiscoColor, 0.4f) * 0.4f, Projectile.rotation, DTAssetLib.Cyclone(1).Value.Size() / 2, 0.1f * Projectile.scale, SpriteEffects.FlipHorizontally, 0);
-                    }
-                        
-                    Main.EntitySpriteDraw(DTAssetLib.BloomRing.Value, Projectile.Center - Main.screenPosition, null, DTColorUtils.Pastel(Main.DiscoColor, 0.4f) * 0.4f, Projectile.rotation, DTAssetLib.BloomRing.Value.Size() / 2, 0.4f * Projectile.scale, SpriteEffects.None, 0);
-
-                    Main.EntitySpriteDraw(projectileTexture, Projectile.Center - Main.screenPosition, null, DTColorUtils.Pastel(Main.DiscoColor, 0.4f) * 0.6f, Projectile.rotation, projectileTexture.Size() / 2, Projectile.scale, SpriteEffects.None, 0);     
-                    
-                    Opus.ReturnToDefaultDrawing(spriteBatch);
+                    Main.EntitySpriteDraw(DTAssetLib.Cyclone(1).Value, Projectile.Center - Main.screenPosition, null, lightColor * 0.4f, Projectile.rotation, DTAssetLib.Cyclone(1).Value.Size() / 2, 0.1f * Projectile.scale, SpriteEffects.FlipHorizontally, 0);
                 }
-                return false;
-			}
+                        
+                Main.EntitySpriteDraw(DTAssetLib.BloomRing.Value, Projectile.Center - Main.screenPosition, null, lightColor * 0.4f, Projectile.rotation, DTAssetLib.BloomRing.Value.Size() / 2, 0.4f * Projectile.scale, SpriteEffects.None, 0);
+                    
+                Opus.ReturnToDefaultDrawing(spriteBatch);
+
+                Main.EntitySpriteDraw(projectileTexture, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, projectileTexture.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
+
+                if (GlowMask != null)
+                {
+                    Main.EntitySpriteDraw(GlowMask.Value, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, GlowMask.Value.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
+                }
+            }
+            else
+            {
+                Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+
+                if (returning)
+                {
+                    Main.EntitySpriteDraw(DTAssetLib.Cyclone(1).Value, Projectile.Center - Main.screenPosition, null, DTColorUtils.Pastel(Main.DiscoColor, 0.4f) * 0.4f, Projectile.rotation, DTAssetLib.Cyclone(1).Value.Size() / 2, 0.1f * Projectile.scale, SpriteEffects.None, 0);
+                }
+                else
+                {
+                    Main.EntitySpriteDraw(DTAssetLib.Cyclone(1).Value, Projectile.Center - Main.screenPosition, null, DTColorUtils.Pastel(Main.DiscoColor, 0.4f) * 0.4f, Projectile.rotation, DTAssetLib.Cyclone(1).Value.Size() / 2, 0.1f * Projectile.scale, SpriteEffects.FlipHorizontally, 0);
+                }
+                        
+                Main.EntitySpriteDraw(DTAssetLib.BloomRing.Value, Projectile.Center - Main.screenPosition, null, DTColorUtils.Pastel(Main.DiscoColor, 0.4f) * 0.4f, Projectile.rotation, DTAssetLib.BloomRing.Value.Size() / 2, 0.4f * Projectile.scale, SpriteEffects.None, 0);
+
+                Main.EntitySpriteDraw(projectileTexture, Projectile.Center - Main.screenPosition, null, DTColorUtils.Pastel(Main.DiscoColor, 0.4f) * 0.6f, Projectile.rotation, projectileTexture.Size() / 2, Projectile.scale, SpriteEffects.None, 0);     
+                    
+                Opus.ReturnToDefaultDrawing(spriteBatch);
+            }
+            return false;
+		}
 
         public override void AI()
         {

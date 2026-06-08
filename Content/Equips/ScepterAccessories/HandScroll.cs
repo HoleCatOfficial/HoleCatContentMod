@@ -21,10 +21,13 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            if (player.TryGetModPlayer<ScrollScepterUsePlayer>(out ScrollScepterUsePlayer Scptr))
-			{
-				Scptr.HandScroll = true;
-			}
+            foreach (Projectile proj in Main.projectile)
+            {
+                if (proj.TryGetGlobalProjectile<ScrollScepterProj>(out ScrollScepterProj Scptr))
+                {
+                    Scptr.HandScroll = true;
+                }
+            }
         }
     }
 }

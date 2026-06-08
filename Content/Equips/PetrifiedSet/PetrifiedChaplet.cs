@@ -27,7 +27,17 @@ namespace DestroyerTest.Content.Equips.PetrifiedSet
 	[AutoloadEquip(EquipType.Head)]
 	public class PetrifiedChaplet : ModItem
 	{
-		public override void SetStaticDefaults()
+        Shield PetrifiedShield = new Shield("PetrifiedShield", 400, 160, ColorLib.JavelinEnergy, DTAssetLib.ScholarShieldSounds.Activate, DTAssetLib.Impacts.Deflect, DTAssetLib.Impacts.IceImpact,
+            new List<NetworkText>()
+            {
+                NetworkText.FromLiteral($"{Main.LocalPlayer.name} was sucked dry."),
+                NetworkText.FromLiteral($"{Main.LocalPlayer.name} gave a little too much in return for too little."),
+                NetworkText.FromLiteral($"{Main.LocalPlayer.name} was consumed by fire and frost."),
+                NetworkText.FromLiteral($"{Main.LocalPlayer.name} didnt have it in them to sustain their shield.")
+            },
+            25, 8
+        );
+        public override void SetStaticDefaults()
 		{
 			ArmorIDs.Head.Sets.DrawFullHair[Item.headSlot] = true;
 		}
@@ -46,11 +56,9 @@ namespace DestroyerTest.Content.Equips.PetrifiedSet
 		}
 		public override void UpdateArmorSet(Player player)
 		{
-			if (player.TryGetModPlayer<PetrifiedShieldPlayer>(out PetrifiedShieldPlayer Shield))
-			{
-                Shield.Active = true;
-			}
-			if (player.TryGetModPlayer<PetrifiedScepterPlayer>(out PetrifiedScepterPlayer Scepter))
+			ShieldManager.ActivateShield(PetrifiedShield, player);
+
+            if (player.TryGetModPlayer<PetrifiedScepterPlayer>(out PetrifiedScepterPlayer Scepter))
 			{
 				Scepter.Active = true;
 			}
@@ -117,90 +125,6 @@ namespace DestroyerTest.Content.Equips.PetrifiedSet
 					Cooldown = 60 * 30;
 				}
 			}
-        }
-
-
-		/*
-        public override bool Shoot(Item item, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
-		{
-			if (Active && Player.altFunctionUse != 2 && (Player.HeldItem.DamageType == ModContent.GetInstance<ScepterClass>() || Main.projectile[Player.heldProj].DamageType == ModContent.GetInstance<ScepterClass>()))
-			{
-				
-				float maxSpeed = 10f;
-
-				Vector2 Dir1 = velocity.RotatedBy(-0.5f);
-				Vector2 Dir2 = velocity.RotatedBy(0.5f);
-
-				float speed1 = Math.Min(Dir1.Length(), maxSpeed);
-				float speed2 = Math.Min(Dir2.Length(), maxSpeed);
-
-				Dir1 = Dir1.SafeNormalize(Vector2.Zero) * speed1;
-				Dir2 = Dir2.SafeNormalize(Vector2.Zero) * speed2;
-
-				Projectile.NewProjectile(source, position, Dir1, ModContent.ProjectileType<FlameBurst>(), damage / 3, 4, Player.whoAmI);
-				Projectile.NewProjectile(source, position, Dir2, ModContent.ProjectileType<FrostBurst>(), damage / 3, 4, Player.whoAmI);
-				return true;
-            }
-            return true;
-        }
-		*/
-    }
-	
-	public class PetrifiedShieldPlayer : ShieldPlayer
-    {
-        public override int MaxDurability => 400;
-        private int _durability = 400;
-		public override int Durability
-		{
-			get => _durability;
-			set => _durability = Math.Clamp(value, 0, MaxDurability);
-		}
-        public override int Radius => 160;
-        public override Color themeColor => ColorLib.JavelinEnergy;
-        public override NetworkText[] DeathMSGs => new NetworkText[]
-        {
-            NetworkText.FromLiteral($"{Player.name} was sucked dry."),
-            NetworkText.FromLiteral($"{Player.name} gave a little too much in return for too little."),
-            NetworkText.FromLiteral($"{Player.name} was consumed by fire and frost."),
-            NetworkText.FromLiteral($"{Player.name} didnt have it in them to sustain their shield.")
-        };
-        public override int RechargeHealthTax => 25;
-
-		public override int Priority => 8;
-    }
-
-	public class PetrifiedShieldDrawLayer : PlayerDrawLayer
-    {
-        public override bool GetDefaultVisibility(PlayerDrawSet drawInfo)
-        {
-            if (drawInfo.drawPlayer.TryGetModPlayer<PetrifiedShieldPlayer>(out PetrifiedShieldPlayer Shield))
-            {
-                return Shield.Active && Shield.Absorb;
-            }
-            return false;
-        }
-
-        public override Position GetDefaultPosition() => new AfterParent(PlayerDrawLayers.CaptureTheGem);
-
-        protected override void Draw(ref PlayerDrawSet drawInfo)
-        {
-            var Shield = ModContent.GetInstance<PetrifiedShieldPlayer>();
-            
-            Color color = Shield.themeColor;
-            var position = drawInfo.Center - Main.screenPosition;
-			position = new Vector2((int)position.X, (int)position.Y);
-
-            drawInfo.DrawDataCache.Add(new DrawData(
-                DTAssetLib.ShieldRing.Value,
-                position,
-                null,
-                color with {A = 0},
-                0f,
-                DTAssetLib.ShieldRing.Size() / 2,
-                Shield.Radius / (DTAssetLib.ShieldRing.Value.Width / 2f),
-                SpriteEffects.None,
-                0
-            ));
         }
     }
 }

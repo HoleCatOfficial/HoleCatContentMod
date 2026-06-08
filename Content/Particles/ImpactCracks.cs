@@ -53,11 +53,10 @@ namespace DestroyerTest.Content.Particles
             Texture2D texture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/PreMultiplied/ImpactCracks").Value;
             Vector2 origin = texture.Size() / 2f;
 
-            Opus.StartSpriteBatchPixelated(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
+            
 
             spriteBatch.Draw(texture, position - Main.screenPosition, null, color with { A = 0}, rotation, origin, scale, SpriteEffects.None, 0f);
 
-            Opus.ReturnToDefaultDrawing(spriteBatch);
         }
     }
 }

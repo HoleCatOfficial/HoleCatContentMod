@@ -72,7 +72,16 @@ namespace DestroyerTest.Content.Buffs
 						SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/ShimmeringFlamesTierRaise") { Pitch = 1f - (shimmer.Stack / shimmer.MaxStack), MaxInstances = 1 }, npc.Center);
 					}
 
-					Opus.RadialSpreadDustRandom(DustID.TintableDustLighted, 20, npc.Center, 75, ColorLib.TenebrisGradient, 1f, 3f);
+					for (int i = 0; i < 8; i++)
+					{
+						Vector2 Dir = Main.rand.NextVector2Circular(3, 3);
+						
+                        Fire F = new Fire();
+						F.PrepareFire(npc.Center, Dir, Math.Sign(Dir.X), 0.15f, ColorLib.TenebrisGradient, 0.75f, 80, FireDrawMode.Additive, PixelLayer.AboveNPCs);
+						ParticleEngine.Particles.Add(F);
+					}
+
+					Opus.RadialSpreadDustRandom(DustID.FireworksRGB, 6, npc.Center, 75, ColorLib.TenebrisGradient, 1f, 3f);
 					if (shimmer.Stack < shimmer.MaxStack)
 					{
 						shimmer.Stack += 1;

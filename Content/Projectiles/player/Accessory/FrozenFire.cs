@@ -49,9 +49,9 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
 			Lighting.AddLight(Projectile.Center, Ice.ToVector3() * 0.2f);
 
             Fire fire = new Fire();
-            fire.PrepareFire(Projectile.Center, Vector2.Zero, Main.rand.Next(1, 3), 0.1f, Ice, 1f, 100, FireDrawMode.Additive, PixelLayer.AboveProjectiles);
+            fire.PrepareFire(Projectile.Center, Vector2.Zero, DTUtils.RandomDirection(2), 0.1f, Ice, 0.3f, 100, FireDrawMode.Additive, PixelLayer.AboveProjectiles);
             Fire fire2 = new Fire();
-            fire2.PrepareFire(Projectile.Center, Vector2.Zero, Main.rand.Next(1, 3), 0.1f, Ice * 0.5f, 1.5f, 100, FireDrawMode.Additive, PixelLayer.AboveProjectiles);
+            fire2.PrepareFire(Projectile.Center, Vector2.Zero, DTUtils.RandomDirection(2), 0.1f, Ice * 0.5f, 0.7f, 100, FireDrawMode.Additive, PixelLayer.AboveProjectiles);
 
             ParticleEngine.BehindProjectiles.Add(fire);
             ParticleEngine.BehindProjectiles.Add(fire2);

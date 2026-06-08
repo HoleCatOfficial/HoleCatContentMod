@@ -121,7 +121,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
                     Spark Spark = new Spark();
 
                     Spark.PrepareSpark(sT, new Vector2(1, 0).RotatedBy(SL.GetLineRotation + MathHelper.PiOver2), 0f, color, Scale, false, 30, SparkDrawMode.Additive);
-                    Spark.position += Owner.velocity;
+                    Spark.TrackPlayer[Owner.whoAmI] = true;
                     ParticleEngine.BehindProjectiles.Add(Spark);
                 }
             }
@@ -132,7 +132,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
                     Spark Spark = new Spark();
 
                     Spark.PrepareSpark(sT, new Vector2(-1, 0).RotatedBy(SL.GetLineRotation + MathHelper.PiOver2), 0f, color, Scale, false, 30, SparkDrawMode.Additive);
-                    Spark.position += Owner.velocity;
+                    Spark.TrackPlayer[Owner.whoAmI] = true;
                     ParticleEngine.BehindProjectiles.Add(Spark);
                 }
             }

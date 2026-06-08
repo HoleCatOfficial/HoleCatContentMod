@@ -252,7 +252,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
                 }
                 if (EtherScroll)
                 {
-                    if (item.DamageType == ModContent.GetInstance<ScepterClass>() && Player.altFunctionUse == 2)
+                    if (item.DamageType == ModContent.GetInstance<ScepterClass>() && Player.altFunctionUse != 2)
                     {
                         if (Main.rand.NextBool(3))
                         {
@@ -261,7 +261,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
                                 Projectile.NewProjectile(
                                     Player.GetSource_ItemUse(item),
                                     Player.Center,
-                                    velocity.RotatedByRandom(4),
+                                    (velocity.ToRotation().ToRotationVector2() * 12).RotatedByRandom(0.01f),
                                     ProjectileID.DD2PhoenixBowShot,
                                     damage,
                                     knockback,
@@ -487,13 +487,14 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
                     {
                         if (Main.rand.NextBool(3))
                         {
-                            Vector2 outer = Player.Center + Main.rand.NextVector2CircularEdge(5, 5);
-                            Vector2 motion = outer - position;
+                            Vector2 motion = velocity;
+
+                            motion.Normalize();
 
                             Projectile.NewProjectile(
                                 Player.GetSource_ItemUse(item),
                                 Player.Center,
-                                motion,
+                                motion * 12,
                                 ModContent.ProjectileType<TempestProj>(),
                                 damage,
                                 knockback,
@@ -575,7 +576,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
                                 }
 
                                 heading.Normalize();
-                                heading *= velocity.Length();
+                                heading *= 17;
                                 heading.Y += Main.rand.Next(-40, 41) * 0.02f;
 
                                 Projectile.NewProjectile(
@@ -615,6 +616,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
         public bool HeliciteScroll = false;
         public bool FrozenFireScroll = false;
         public bool PoisonScroll1 = false;
+        public bool HandScroll = false;
         public override void SetDefaults(Projectile entity)
         {
             if (entity.DamageType == ModContent.GetInstance<ScepterClass>() && entity.Name.Contains("Thrown"))
@@ -833,6 +835,11 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
             {
                 Projectile.NewProjectile(projectile.GetSource_OnHit(target), projectile.Center, Vector2.Zero, ProjectileID.InfernoFriendlyBlast, (int)(projectile.damage * 0.75f), 2, projectile.owner);
             }
+
+            if(IsAThrownScepter && HandScroll)
+            {
+                Opus.RingSpreadProjectileRandom(ProjectileID.InsanityShadowFriendly, 3, target.Center, 200, (int)(projectile.damage * 0.7f), 4, -14f);
+            }
         }
 
     }
@@ -896,6 +903,10 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
             if (npc.type == NPCID.Deerclops)
             {
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<HandScroll>(), 1, 1, 1));
+            }
+            if (npc.type == NPCID.DD2OgreT2)
+            {
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<EtherScroll>(), 2, 1, 1));
             }
         }
 

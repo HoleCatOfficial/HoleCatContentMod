@@ -16,7 +16,18 @@ namespace DestroyerTest.Content.Equips.Cards.RiftenDeck
 {
 	public class ShineShadeDeck : ModItem
 	{
-		public override void SetDefaults()
+        public Shield ShineShadeShield = new Shield("HollowShield2", 330, 130, ColorLib.Rift, DTAssetLib.ScholarShieldSounds.Activate, DTAssetLib.Impacts.Deflect, DTAssetLib.Impacts.HeatseekerSilohSlam,
+            new List<NetworkText>()
+            {
+                NetworkText.FromLiteral($"{Main.LocalPlayer.name} felt a little hollow inside."),
+                NetworkText.FromLiteral($"{Main.LocalPlayer.name} gave a little too much in return for too little."),
+                NetworkText.FromLiteral($"{Main.LocalPlayer.name} fell victim to the eclipse."),
+                NetworkText.FromLiteral($"{Main.LocalPlayer.name} didnt have it in them to sustain their shield.")
+            },
+            20, 10
+        );
+
+        public override void SetDefaults()
 		{
 			Item.width = 16;
 			Item.height = 24;
@@ -34,10 +45,7 @@ namespace DestroyerTest.Content.Equips.Cards.RiftenDeck
             player.GetAttackSpeed(DamageClass.Ranged) *= 0.95f;
             player.GetArmorPenetration(DamageClass.Generic) += 6;
 
-            if (player.TryGetModPlayer<HollowShield>(out var shield))
-            {
-                shield.Active = true;
-            }
+            ShieldManager.ActivateShield(ShineShadeShield, player);
             player.statDefense += 10;
 
             foreach (Item item in Main.item)

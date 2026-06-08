@@ -4732,3 +4732,8 @@ ShadeInfernoPotion: {
 	DisplayName: Shade Inferno Potion
 	Tooltip: ""
 }
+
+AetherflameIgnis: {
+	DisplayName: Aetherflame Ignis
+	Tooltip: ""
+}
