@@ -12,6 +12,7 @@ using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.Drawing;
+using Terraria.Graphics;
 using Terraria.ID;
 using Terraria.ModLoader;
 namespace DestroyerTest.Content.SummonItems
@@ -193,7 +194,7 @@ namespace DestroyerTest.Content.SummonItems
 
         public override void SetStaticDefaults()
         {
-            ProjectileID.Sets.TrailingMode[Type] = 2;
+            ProjectileID.Sets.TrailingMode[Type] = 3;
             ProjectileID.Sets.TrailCacheLength[Type] = 20;
             ProjectileID.Sets.MinionTargettingFeature[Projectile.type] = true;
             Main.projPet[Projectile.type] = true;
@@ -214,11 +215,16 @@ namespace DestroyerTest.Content.SummonItems
             Projectile.tileCollide = false;
         }
 
+        EmpressBladeDrawer Trail = new EmpressBladeDrawer();
         public override bool PreDraw(ref Color lightColor)
         {
             Texture2D texture = TextureAssets.Projectile[Type].Value;
 
             Vector2 drawOrigin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
+
+            Trail.ColorStart = ThemeColor;
+            Trail.ColorEnd = ThemeColor;
+            Trail.Draw(Projectile);
 
             if (AfterImage && AfterImageColorless)
             {

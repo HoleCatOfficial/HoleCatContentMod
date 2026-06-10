@@ -33,7 +33,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
             {
 
                 // Create AmbientSpore projectile at the same position but with zero velocity
-                Projectile newProjectile = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Main.rand.NextVector2FromRectangle(EnchantmentVisuals()), Vector2.Zero, ProjectileID.Bee, 4, 2, player.whoAmI);
+                Projectile newProjectile = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Main.rand.NextVector2FromRectangle(EnchantmentVisuals()), Vector2.Zero, ProjectileID.Bee, Projectile.damage / 4, 2, player.whoAmI);
                 newProjectile.friendly = true; // If it shouldn't harm the player, for example
             }
             base.AI();

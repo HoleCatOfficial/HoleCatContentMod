@@ -455,40 +455,14 @@ namespace DestroyerTest.Common.Blessings
         }
     }
 
-    public class DTBlessings
+    public class DTBlessings : ILoadable
     {
         public const string CommonBM_Key = "Mods.DestroyerTest.Blessings";
 
-        public static void RegisterBlessing(Blessing b)
-        {
-            AllBlessings.Add(b);
-        }
+        
+        
 
-        public static readonly List<Blessing> AllBlessings = new()
-        {
-            RadiantHeart, 
-            Enchanted,
-            Attuned,
-            OozingAffection,
-            Serenity,
-            ThrivingDarknessCorr,
-            ThrivingDarknessCrim,
-            Decadence,
-            Overgrown,
-            RejuvenatingWarmth,
-            MilkywayStride,
-            ScarletSurge,
-            Clarity,
-            Tempered,
-            Alliegance,
-            Waywashed,
-            SeethingCorr,
-            SeethingCrim,
-            Bulk,
-            LifeStricken,
-            FieryPassion,
-            StarScorn
-        };
+        
 
         //Regen Blessings
         public static Blessing RadiantHeart = new Blessing(PrayerID.Regen, 
@@ -669,6 +643,53 @@ namespace DestroyerTest.Common.Blessings
            Language.GetText($"{CommonBM_Key}.StarScorn.Message"),
            Language.GetText($"{CommonBM_Key}.StarScorn.Bonus"),
            Language.GetText($"{CommonBM_Key}.StarScorn.Name"));
+
+        public static readonly List<Blessing> AllBlessings = new()
+        {
+            RadiantHeart,
+            Enchanted,
+            Attuned,
+            OozingAffection,
+            Serenity,
+            ThrivingDarknessCorr,
+            ThrivingDarknessCrim,
+            Decadence,
+            Overgrown,
+            RejuvenatingWarmth,
+            MilkywayStride,
+            ScarletSurge,
+            Clarity,
+            Tempered,
+            Alliegance,
+            Waywashed,
+            SeethingCorr,
+            SeethingCrim,
+            Bulk,
+            LifeStricken,
+            FieryPassion,
+            StarScorn
+        };
+
+        public static void RegisterBlessing(Blessing b)
+        {
+            AllBlessings.Add(b);
+        }
+
+        void ILoadable.Load(Mod mod)
+        {
+            foreach (Blessing blessing in AllBlessings)
+            {
+                if (blessing == null)
+                {
+                    mod.Logger.ErrorFormat("Blessing {0} was null", blessing);
+                }
+            }
+        }
+
+        void ILoadable.Unload()
+        {
+
+        }
     }
 
     public static class BlessingID

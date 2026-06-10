@@ -13,6 +13,8 @@ using Terraria.Graphics.Shaders;
 using Humanizer;
 using System;
 using ReLogic.Content;
+using Terraria.Graphics;
+using BreadLibrary.Core.Utilities;
 
 namespace DestroyerTest.Content.Projectiles.ParentClasses
 {
@@ -44,23 +46,27 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
         public bool ArmorSetHelper_AetherianShimmerEffects = false;
 
+        public Player Owner => Main.player[Projectile.owner];
+
         public override void SetStaticDefaults()
         {
-
+            ProjectileID.Sets.TrailCacheLength[Type] = 100;
+            ProjectileID.Sets.TrailingMode[Type] = 3;
         }
 
         public override void SetDefaults()
         {
-            Projectile.width = WidthDim + ScepterClassStats.SizeModifier;
-            Projectile.height = HeightDim + ScepterClassStats.SizeModifier;
+            Projectile.width = 16;
+            Projectile.height = 16;
             Projectile.friendly = true;
             Projectile.penetrate = -1;
             Projectile.light = 0.5f;
             Projectile.ignoreWater = true;
             Projectile.timeLeft = 9000;
             Projectile.DamageType = ModContent.GetInstance<ScepterClass>();
+            Projectile.usesLocalNPCImmunity = true;
+            Projectile.localNPCHitCooldown = 60;
             Projectile.netImportant = true;
-            Projectile.netUpdate = true;
             Projectile.tileCollide = true;
         }
 
@@ -85,7 +91,8 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         }
 
         public virtual Asset<Texture2D> GlowMask { get; set; } = null;
-		public override bool PreDraw(ref Color lightColor)
+        EmpressBladeDrawer Trail = new EmpressBladeDrawer();
+        public override bool PreDraw(ref Color lightColor)
 		{
 			lightColor = ThemeColor;
 			if (Projectile.timeLeft < 30)
@@ -96,6 +103,11 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 			SpriteBatch spriteBatch = Main.spriteBatch;
 			Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
 			DTUtils Utility = new DTUtils();
+
+            Trail.ColorStart = ThemeColor;
+            Trail.ColorEnd = ThemeColor * 0.4f;
+
+            //Trail.Draw(Projectile);
 
             if (!ArmorSetHelper_AetherianShimmerEffects)
             {
@@ -125,6 +137,8 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             {
                 Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
+                
+
                 if (returning)
                 {
                     Main.EntitySpriteDraw(DTAssetLib.Cyclone(1).Value, Projectile.Center - Main.screenPosition, null, DTColorUtils.Pastel(Main.DiscoColor, 0.4f) * 0.4f, Projectile.rotation, DTAssetLib.Cyclone(1).Value.Size() / 2, 0.1f * Projectile.scale, SpriteEffects.None, 0);
@@ -140,13 +154,31 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
                     
                 Opus.ReturnToDefaultDrawing(spriteBatch);
             }
+
+            float Width = WidthDim * Projectile.scale;
+            float Height = WidthDim * Projectile.scale;
+
+            Rectangle DamageHitbox = Utils.CenteredRectangle(Projectile.Center, new Vector2(Width, Height));
+
+            Utils.DrawRect(spriteBatch, DamageHitbox, Color.Red);
             return false;
 		}
 
         public override void AI()
         {
+            Projectile.scale = 1f * Owner.GetAdjustedItemScale(Owner.HeldItem);
             DefaultBehaviour();
             EnchantmentVisuals();
+        }
+
+        public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
+        {
+            float Width = WidthDim * Projectile.scale;
+            float Height  = WidthDim * Projectile.scale;
+
+            Rectangle DamageHitbox = Utils.CenteredRectangle(Projectile.Center, new Vector2(Width, Height));
+
+            return targetHitbox.Intersects(DamageHitbox);
         }
 
         public virtual Rectangle EnchantmentVisuals(int Width = 16, int Height = 16)
@@ -156,6 +188,22 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
                 (hitbox.Width / 2f) - (Width / 2f),
                 -(hitbox.Height / 2f) + (Height / 2f)
             );
+            Vector2 rotatedOffset = localOffset.RotatedBy(Projectile.rotation);
+
+            Vector2 rectCenter = Projectile.Center + rotatedOffset;
+
+            return new Rectangle(
+                (int)(rectCenter.X - Width / 2f),
+                (int)(rectCenter.Y - Height / 2f),
+                Width,
+                Height
+            );
+        }
+
+        public virtual Rectangle EnchantmentVisuals2(int Width = 16, int Height = 16)
+        {
+            Rectangle hitbox = Projectile.Hitbox;
+            Vector2 localOffset = new Vector2(-(hitbox.Width / 2f) + (Width / 2f), (hitbox.Height / 2f) - (Height / 2f));
             Vector2 rotatedOffset = localOffset.RotatedBy(Projectile.rotation);
 
             Vector2 rectCenter = Projectile.Center + rotatedOffset;
@@ -322,6 +370,9 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             {
                 PitchVariance = 0.5f
             };
+
+
+            Projectile.CreateImpactExplosion2_FlailTileCollision(Projectile.Center, true, oldVelocity);
 
             Collision.HitTiles(Projectile.position, Projectile.velocity, Projectile.width, Projectile.height);
             SoundEngine.PlaySound(SoundID.Tink, Projectile.position);

@@ -28,7 +28,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
@@ -202,6 +201,13 @@ namespace DestroyerTest
 				stack: 1,
 				rarity: 0.25f
 			);
+
+            ChestLootSystem.RegisterChestLoot(
+                ChestID.Ivy,
+                ItemID.JungleRose,
+                stack: 1,
+                rarity: 0.1f
+            );
             NightmareChestLoot();
         }
 

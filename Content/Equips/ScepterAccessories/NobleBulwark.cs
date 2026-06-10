@@ -30,9 +30,6 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
             player.endurance = 1f - (0.1f * (1f - player.endurance));
         }
 
-        
-
-        // Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
         public override void AddRecipes()
         {
             CreateRecipe()

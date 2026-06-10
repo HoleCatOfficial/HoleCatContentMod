@@ -645,6 +645,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
         public bool Flag1;
         public override void AI(Projectile projectile)
         {
+            ReleasedSpore = false;
             if (ChristmasScroll1 && IsAThrownScepter)
             {
                 if (Main.rand.NextBool(4))
@@ -808,6 +809,8 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
         {
             scepter.OnReturnHook += ThrownScepterOnReturn;
         }
+
+        bool ReleasedSpore = false;
         
         public static SoundStyle PoisonScrollSound = new SoundStyle("DestroyerTest/Assets/Audio/PoisonVerseBurst") { PitchVariance = 0.3f, MaxInstances = 0 };
         public void ThrownScepterOnReturn(ThrownScepter scepter)
@@ -817,9 +820,13 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
             {
                 if (PoisonScroll1)
                 {
-                    SoundEngine.PlaySound(PoisonScrollSound, projectile.Center);
-                    Opus.RadialSpreadProjectile(ModContent.ProjectileType<PoisonCloud>(), 9, projectile.Center, projectile.damage, 3, 2, offset: projectile.rotation);
-                    Opus.RadialSpreadProjectile(ModContent.ProjectileType<PoisonCloud>(), 12, projectile.Center, projectile.damage / 2, 3, 3, offset: projectile.rotation);
+                    if (!ReleasedSpore)
+                    {
+                        SoundEngine.PlaySound(PoisonScrollSound, projectile.Center);
+                        Opus.RadialSpreadProjectile(ModContent.ProjectileType<PoisonCloud>(), 9, projectile.Center, projectile.damage, 3, 2, offset: projectile.rotation);
+                        Opus.RadialSpreadProjectile(ModContent.ProjectileType<PoisonCloud>(), 12, projectile.Center, projectile.damage / 2, 3, 3, offset: projectile.rotation);
+                        ReleasedSpore = true;
+                    }
                 }
             }
         }
@@ -838,7 +845,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
 
             if(IsAThrownScepter && HandScroll)
             {
-                Opus.RingSpreadProjectileRandom(ProjectileID.InsanityShadowFriendly, 3, target.Center, 200, (int)(projectile.damage * 0.7f), 4, -14f);
+                Opus.RingSpreadProjectileRandom(ProjectileID.InsanityShadowFriendly, 3, target.Center, 200, projectile.damage, 4, -14f);
             }
         }
 

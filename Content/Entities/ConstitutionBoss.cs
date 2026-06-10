@@ -705,7 +705,7 @@ namespace DestroyerTest.Content.Entities
             }
             if (Double)
             {
-                return 14;
+                return 13;
             }
             else
             {

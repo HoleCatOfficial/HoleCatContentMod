@@ -43,7 +43,6 @@ namespace DestroyerTest.Content.Equips
         public override void UpdateEquip(Player player)
         {
             var modPlayer = player.GetModPlayer<RevenantPlayer>();
-            ScepterClassStats.SizeMultiplier *= 1.45f;
             modPlayer.Active = true;
         }
 
@@ -57,6 +56,15 @@ namespace DestroyerTest.Content.Equips
         {
             Active = false;
         }
+
+        public override void ModifyItemScale(Item item, ref float scale)
+        {
+            if (item.DamageType == ModContent.GetInstance<ScepterClass>())
+            {
+                scale = 1.3f;
+            }
+        }
+
         public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
         {
             if (Active && proj.DamageType == ModContent.GetInstance<ScepterClass>() && proj.owner == Player.whoAmI)

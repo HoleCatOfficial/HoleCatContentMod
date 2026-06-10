@@ -4737,3 +4737,17 @@ AetherflameIgnis: {
 	DisplayName: Aetherflame Ignis
 	Tooltip: ""
 }
+
+RiftElectroscythe: {
+	DisplayName: Rift Electroscythe
+	Tooltip: ""
+}
+
+QITN: {
+	DisplayName: Quiet is the Night
+	Tooltip:
+		'''
+		The wood is frozen solid.
+		Shoots weak bursts of spirits that pierce 4 times.
+		'''
+}

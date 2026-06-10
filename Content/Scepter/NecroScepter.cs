@@ -31,7 +31,7 @@ namespace DestroyerTest.Content.Scepter
             base.SetDefaults();
 
             // Override stats unique to this scepter
-            ShootDMG = 32;
+            ShootDMG = 41;
             ShootCrit = 4;
             ThrowCrit = 14;
             KB = 2;
@@ -54,38 +54,18 @@ namespace DestroyerTest.Content.Scepter
 		{
 			
             if (player.altFunctionUse != 2)
-                {
-                // Calculate the speed of the projectile
-                float speed = velocity.Length();
+            {
+                Projectile.NewProjectile(source, position, velocity.RotatedBy(-0.2f), ModContent.ProjectileType<HomingBone>(), damage, knockback, player.whoAmI);
 
-                // Define the angles based on the player's facing direction
-                float angle1, angle2;
-                if (player.direction == -1) { // Facing left
-                    angle1 = 225f;
-                    angle2 = 140f;
-                } else { // Facing right
-                    angle1 = -45f;
-                    angle2 = -315f;
-                }
+                Projectile.NewProjectile(source, position, velocity.RotatedBy(0.2f), ModContent.ProjectileType<HomingBone>(), damage, knockback, player.whoAmI);
+            }
 
-                // Calculate the velocity for the first projectile
-                Vector2 velocity1 = new Vector2(speed * (float)Math.Cos(MathHelper.ToRadians(angle1)), speed * (float)Math.Sin(MathHelper.ToRadians(angle1)));
-
-                // Calculate the velocity for the second projectile
-                Vector2 velocity2 = new Vector2(speed * (float)Math.Cos(MathHelper.ToRadians(angle2)), speed * (float)Math.Sin(MathHelper.ToRadians(angle2)));
-
-                // Fire the first projectile (SoulOfLight_Projectile)
-                Projectile.NewProjectile(source, position, velocity1, ModContent.ProjectileType<HomingBone>(), damage, knockback, player.whoAmI);
-
-                // Fire the second projectile (SoulOfNight_Projectile)
-                Projectile.NewProjectile(source, position, velocity2, ModContent.ProjectileType<HomingBone>(), damage, knockback, player.whoAmI);
-                }
-
-			return true; // Allow firing if no other projectiles exist
+			return true;
 		}
 
 
-		public override void AddRecipes() {
+		public override void AddRecipes() 
+        {
 			CreateRecipe()
 				.AddIngredient(ItemID.Bone, 18)
 				.AddIngredient<LifeEcho>(12)

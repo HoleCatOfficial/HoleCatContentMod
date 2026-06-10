@@ -1,6 +1,7 @@
 
 using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
+using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
@@ -506,13 +507,12 @@ namespace DestroyerTest.Common
         {
             DTUtils Utility = new DTUtils();
             float OuterScale = Scale * 0.12f;
-            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
             Main.spriteBatch.Draw(
                 DTAssetLib.Cyclone(2).Value,
                 Center - Main.screenPosition,
                 null,
-                colorOUT,
+                colorOUT with { A = 0 },
                 TextureRotationOffset,
                 new Vector2(DTAssetLib.Cyclone(2).Value.Width / 2f, DTAssetLib.Cyclone(2).Value.Height / 2f),
                 OuterScale,
@@ -524,15 +524,13 @@ namespace DestroyerTest.Common
                 DTAssetLib.FeatheredCircle.Value,
                 Center - Main.screenPosition,
                 null,
-                colorIN,
+                colorIN with { A = 0 },
                 0f,
                 new Vector2(DTAssetLib.FeatheredCircle.Value.Width / 2f, DTAssetLib.FeatheredCircle.Value.Height / 2f),
                 Scale,
                 SpriteEffects.None,
                 1f
             );
-
-            Opus.ReturnToDefaultDrawing(spriteBatch);
         }
 
         /// <summary>
@@ -551,7 +549,6 @@ namespace DestroyerTest.Common
         {
             DTUtils Utility = new DTUtils();
             float OuterScale = Scale * 0.1425f;
-            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
             for (int i = 0; i < TrailPositions.Count; i++)
             {
@@ -563,7 +560,7 @@ namespace DestroyerTest.Common
                     DTAssetLib.Cyclone(2).Value,
                     TrailPositions[i] - Main.screenPosition,
                     null,
-                    color,
+                    color with { A = 0 },
                     TextureRotationOffset,
                     DTAssetLib.Cyclone(2).Value.Size() / 2f,
                     scale,
@@ -582,7 +579,7 @@ namespace DestroyerTest.Common
 					DTAssetLib.FeatheredCircle.Value,
 					TrailPositions[i] - Main.screenPosition,
 					null,
-					color,
+                    color,
 					Projectile.rotation,
 					DTAssetLib.FeatheredCircle.Value.Size() / 2f,
 					scale,
@@ -595,7 +592,7 @@ namespace DestroyerTest.Common
                 DTAssetLib.Cyclone(2).Value,
                 Center - Main.screenPosition,
                 null,
-                colorOUT,
+                colorOUT with { A = 0 },
                 TextureRotationOffset,
                 new Vector2(DTAssetLib.Cyclone(2).Value.Width / 2f, DTAssetLib.Cyclone(2).Value.Height / 2f),
                 OuterScale,
@@ -1763,6 +1760,8 @@ namespace DestroyerTest.Common
         }
 
         public static Color InfectedGradient = Opus.Sine(ColorLib.CursedFlames, ColorLib.Ichor);
+
+        public static Color LifeEcho = new Color(204, 243, 255);
     }
 
     /// <summary>

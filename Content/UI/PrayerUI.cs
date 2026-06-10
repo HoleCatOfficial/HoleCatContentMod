@@ -173,6 +173,10 @@ namespace DestroyerTest.Content.UI
                             Cooldown = 600;
                         }
                     }
+                    else
+                    {
+                        RejectOffer();
+                    }
                 }
                 void RejectOffer()
                 {
@@ -200,10 +204,11 @@ namespace DestroyerTest.Content.UI
                     foreach (Blessing blessing in DTBlessings.AllBlessings)
                     {
                         ReadAndApply(blessing);
+                        return;
                     }
 
-                    RejectOffer();
                     
+    
                 }
             }
         }
@@ -228,7 +233,8 @@ namespace DestroyerTest.Content.UI
         {
             
             if (Visible)
-            {   
+            {
+                Main.LocalPlayer.creativeGodMode = true;
                 if (Cooldown > 0)
                 {
                     Cooldown--;
@@ -258,6 +264,10 @@ namespace DestroyerTest.Content.UI
                 }
 
                 base.Update(gameTime);
+            }
+            else
+            {
+                Main.LocalPlayer.creativeGodMode = false;
             }
         }
 
