@@ -107,11 +107,10 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
             {
                 if (plr.active && plr.Center.Distance(Projectile.Center) < 90f)
                 {
-                    if (!plr.noKnockback)
-                    {
-                        Vector2 direction = (plr.Center - Projectile.Center).SafeNormalize(Vector2.Zero);
-                        plr.velocity += direction * 15f;
-                    }
+ 
+                    Vector2 direction = (plr.Center - Projectile.Center).SafeNormalize(Vector2.Zero);
+                    plr.velocity += direction * 15f;
+                    
                 }
             }
         }

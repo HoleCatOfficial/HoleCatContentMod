@@ -32,13 +32,16 @@ namespace DestroyerTest.Common.Systems
         {
             if (Flag1)
             {
-                tag["Flag1"] = true;
+                tag["Flag1"] = Flag1;
             }
         }
 
         public override void LoadWorldData(TagCompound tag)
         {
-            Flag1 = tag.ContainsKey("Flag1");
+            if (tag.ContainsKey("Flag1"))
+            {
+                Flag1 = tag.GetBool("Flag1");
+            }
         }
         
     }

@@ -34,7 +34,12 @@ namespace DestroyerTest.Content.Equips
         {
             CreateRecipe()
                 .AddIngredient(ItemID.SoulofNight, 20)
-                .AddIngredient(ItemID.Ectoplasm, 10)
+                .AddIngredient(ItemID.AdamantiteBar, 10)
+            .Register();
+
+            CreateRecipe()
+                .AddIngredient(ItemID.SoulofNight, 20)
+                .AddIngredient(ItemID.TitaniumBar, 10)
             .Register();
         }
     }

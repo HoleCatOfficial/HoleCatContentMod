@@ -21,10 +21,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
     {
         public override void SetDefaults()
         {
-            ThemeColor = Color.White;
-            WidthDim = 34;
-            HeightDim = 34;
-            DustType = DustID.BeachShell;
+            ThemeColor = Color.Magenta;
+            WidthDim = 38;
+            HeightDim = 38;
+            DustType = DustID.UndergroundHallowedEnemies;
             base.SetDefaults();
         }
 
@@ -69,8 +69,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 
         private void CacheTrail2()
         {
-            Vector2 lastPos = NightPoints.Count > 0 ? NightPoints[0] : lp;
-			Vector2 newPos  = lp;
+            Vector2 lastPos = NightPoints.Count > 0 ? NightPoints[0] : np;
+			Vector2 newPos  = np;
 
 			float dist = Vector2.Distance(lastPos, newPos);
 			float step = 0.1f; // how closely to sample. tweak this!
@@ -183,11 +183,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
                 CacheTrail2();
             }
             
-            if (Main.rand.NextBool(5))
+            if (Main.rand.NextBool(15))
             {
                 SoundEngine.PlaySound(SoundID.DD2_BetsysWrathShot, Projectile.Center);
-                Projectile.NewProjectile(Projectile.GetSource_FromAI(), lp, Main.rand.NextVector2Circular(15, 15), ModContent.ProjectileType<LightFireball>(), (int)(Projectile.damage * 0.1f), 10, Projectile.owner);
-                Projectile.NewProjectile(Projectile.GetSource_FromAI(), np, Main.rand.NextVector2Circular(15, 15), ModContent.ProjectileType<NightFireball>(), (int)(Projectile.damage * 0.1f), 10, Projectile.owner);
+                Projectile.NewProjectile(Projectile.GetSource_FromAI(), lp, Projectile.velocity * 0.2f, ModContent.ProjectileType<LightFireball>(), (int)(Projectile.damage * 0.1f), 10, Projectile.owner);
+                Projectile.NewProjectile(Projectile.GetSource_FromAI(), np, Projectile.velocity * 0.2f, ModContent.ProjectileType<NightFireball>(), (int)(Projectile.damage * 0.1f), 10, Projectile.owner);
             }
         }
     }

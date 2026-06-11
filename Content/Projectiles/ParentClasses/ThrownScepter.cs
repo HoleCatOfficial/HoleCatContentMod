@@ -160,7 +160,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
             Rectangle DamageHitbox = Utils.CenteredRectangle(Projectile.Center, new Vector2(Width, Height));
 
-            Utils.DrawRect(spriteBatch, DamageHitbox, Color.Red);
+            //Utils.DrawRect(spriteBatch, DamageHitbox, Color.Red);
             return false;
 		}
 

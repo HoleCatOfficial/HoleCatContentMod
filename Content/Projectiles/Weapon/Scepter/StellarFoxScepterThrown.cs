@@ -19,10 +19,14 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
     {
         public override void SetDefaults()
         {
-            ThemeColor = Color.White;
-            WidthDim = 34;
-            HeightDim = 34;
-            DustType = DustID.Glass;
+            float returnDelayMultiplier = 1f + (ScepterClassStats.Range * 0.01f);
+            int baseFlightTime = 60;
+
+            ThemeColor = ColorLib.StellarFireGradient((float)flightTime / (float)baseFlightTime);
+            WidthDim = 54;
+            HeightDim = 54;
+            DustType = DustID.FireworksRGB;
+            DustUsesColorOnDraw = true;
             base.SetDefaults();
         }
     }

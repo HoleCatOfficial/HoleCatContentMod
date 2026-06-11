@@ -9,6 +9,7 @@ using OpusLib;
 using ReLogic.Content;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
@@ -161,6 +162,7 @@ namespace DestroyerTest.Content.UI
 
                 void ReadAndApply(Blessing blessing)
                 {
+
                     if (SlotsHaveBlessingItems(blessing))
                     {
                         if (Cooldown <= 0)
@@ -178,6 +180,7 @@ namespace DestroyerTest.Content.UI
                         RejectOffer();
                     }
                 }
+
                 void RejectOffer()
                 {
                     if (HerbItem[0].type != ItemID.None)
@@ -201,14 +204,23 @@ namespace DestroyerTest.Content.UI
 
                 if (Cooldown <= 0)
                 {
-                    foreach (Blessing blessing in DTBlessings.AllBlessings)
+                    Blessing match = DTBlessings.AllBlessings.FirstOrDefault(SlotsHaveBlessingItems);
+
+                    if (match != null)
                     {
-                        ReadAndApply(blessing);
-                        return;
+                        ReadAndApply(match);
+                    }
+                    else
+                    {
+ 
+
+                        
+
+                        RejectOffer();
                     }
 
-                    
-    
+
+
                 }
             }
         }

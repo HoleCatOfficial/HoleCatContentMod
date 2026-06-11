@@ -51,7 +51,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
             }
 
             Fire fire = new Fire();
-            fire.PrepareFire(Projectile.Center, Vector2.Zero, Projectile.direction, 0.14f, ColorLib.SoulOfNightColor, 1f, 100, FireDrawMode.Additive, PixelLayer.AboveProjectiles);
+            fire.PrepareFire(Projectile.Center, Vector2.Zero, Projectile.direction, 0.14f, ColorLib.SoulOfNightColor, 0.55f, 100, FireDrawMode.Additive, PixelLayer.AboveProjectiles);
             ParticleEngine.BehindProjectiles.Add(fire);
         }
 
