@@ -1,4 +1,5 @@
 using BreadLibrary.Core.Graphics.Particles;
+using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles.Boss.NodeBoss.Ichor;
@@ -52,10 +53,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
         public override bool PreDraw(ref Color lightColor)
         {
+            Main.spriteBatch.UseBlendState(BlendState.Additive);
 			Opus.DrawProjectileShadowsRotating(Projectile, 4, Color.Red, Opacity: 0.35f);
 			var T = TextureAssets.Projectile[Projectile.type].Value;
 
 			Main.EntitySpriteDraw(T, Projectile.Center, null, Color.Red, Projectile.rotation, T.Size() / 2, Projectile.scale, SpriteEffects.None, 0f);
+            Opus.ReturnToDefaultDrawing(Main.spriteBatch);
             return false;
         }
 
@@ -111,7 +114,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
             if (Timer == 1f) // first tick of dashing phase
             {
-                SoundEngine.PlaySound(DTAssetLib.SwordSounds.SwiftSwing with { PitchVariance = 0.4f });
+                SoundEngine.PlaySound(DTAssetLib.SwordSounds.SwiftSwing with { PitchVariance = 0.4f }, Projectile.Center);
                 Vector2 direction = (target.Center - Projectile.Center).SafeNormalize(Vector2.Zero);
                 Projectile.velocity = direction * 50f;
                 Projectile.netUpdate = true;
@@ -141,7 +144,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
         public override void OnKill(int timeLeft)
         {
-            SoundEngine.PlaySound(Hit);
+            SoundEngine.PlaySound(Hit, Projectile.Center);
         }
     }
 }

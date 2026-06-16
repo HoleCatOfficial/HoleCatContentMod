@@ -1,9 +1,11 @@
-using System.Collections.Generic;
-using System.IO;
+using BreadLibrary.Core.Graphics.Pixelation;
 using DestroyerTest.Common;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using Terraria;
 using Terraria.Enums;
 using Terraria.GameContent;
@@ -13,25 +15,20 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Scepter.DiscordScepter
 {
-	public class VortexDart : ModProjectile
+	public class VortexDart : ModProjectile, IDrawPixelated
 	{
-		public NPC HomingTarget
-		{
-			get => Projectile.ai[0] == 0 ? null : Main.npc[(int)Projectile.ai[0] - 1];
-			set
-			{
-				Projectile.ai[0] = value == null ? 0 : value.whoAmI + 1;
-			}
-		}
 
 		public ref float DelayTimer => ref Projectile.ai[1];
 
-		public override void SetStaticDefaults()
-		{
-			Main.projFrames[Projectile.type] = 5; // Set the number of frames for the projectile
-			ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true; // Make the cultist resistant to this projectile, as it's resistant to all homing projectiles.
+        PixelLayer IDrawPixelated.PixelLayer => PixelLayer.AboveProjectiles;
 
-		}
+        public override void SetStaticDefaults()
+		{
+			Main.projFrames[Projectile.type] = 5;
+			ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true;
+            ProjectileID.Sets.TrailingMode[Type] = 3;
+            ProjectileID.Sets.TrailCacheLength[Type] = 150;
+        }
 
 		public override void SetDefaults()
 		{
@@ -75,36 +72,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter.DiscordScepter
 
             Vector2 origin = new Vector2(projectileTexture.Width / 2f, frameHeight / 2f);
 
-			trailOffset += 0.01f;
-            Opus.StartSpriteBatchForTrails(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 			
-			if (TrailPositions.Count > 1)
-			{
-				List<ColoredVertex> ve = new List<ColoredVertex>();
-				float a = 0;
-
-				for (int i = TrailPositions.Count - 1; i > 0; i--)
-				{
-					float t = 1f - (i / (float)TrailPositions.Count); // fade toward tail
-					Color b = lightColor * t;
-
-					Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
-					Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * 20;
-                    Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * 20;
-
-					DTUtils.AddStrips(ve, TrailPositions, i, offset, offset2, t, b, trailOffset);
-				}
-
-
-				GraphicsDevice gd = Main.graphics.GraphicsDevice;
-				if (ve.Count >= 3)
-				{
-                    gd.Textures[0] = DTAssetLib.Streak(2).Value;
-                    gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2); 
-				}
-			}
-
-			Opus.ReturnToDefaultDrawing(spriteBatch);
 
 			Main.EntitySpriteDraw(
                     projectileTexture,
@@ -120,48 +88,14 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter.DiscordScepter
 			return false;
 		}
 
-		public List<Vector2> TrailPositions = new();
-		public List<float> TrailRotations = new();
-		private const int TrailLength = 150;
-		private void CacheTrail()
-		{
-			Vector2 lastPos = TrailPositions.Count > 0 ? TrailPositions[0] : Projectile.Center;
-			Vector2 newPos  = Projectile.Center;
-
-			float dist = Vector2.Distance(lastPos, newPos);
-			float step = 1f; // how closely to sample. tweak this!
-
-			if (dist > 0f)
-			{
-				int segments = (int)(dist / step);
-
-				for (int i = 1; i <= segments; i++)
-				{
-					Vector2 pos = Vector2.Lerp(lastPos, newPos, i / (float)segments);
-					TrailPositions.Insert(0, pos);
-					TrailRotations.Insert(0, Projectile.rotation);
-				}
-			}
-			else
-			{
-				TrailPositions.Insert(0, newPos);
-				TrailRotations.Insert(0, Projectile.rotation);
-			}
-
-			while (TrailPositions.Count > TrailLength)
-				TrailPositions.RemoveAt(TrailPositions.Count - 1);
-			while (TrailRotations.Count > TrailLength)
-				TrailRotations.RemoveAt(TrailRotations.Count - 1);
-		}
-
 		public override bool? CanHitNPC(NPC target)
 		{
-			return DelayTimer >= 35;
+			return null;
 		}
 
 		public override void AI() 
 		{
-			CacheTrail();
+			Projectile.ResetExcessTrailPoints();
 			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
 			float maxDetectRadius = 800f; 
 			AnimateProjectile();
@@ -172,57 +106,19 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter.DiscordScepter
 				return;
 			}
 
-			if (HomingTarget == null)
-			{
-				HomingTarget = FindClosestNPC(maxDetectRadius);
-			}
-
-			if (HomingTarget != null && !IsValidTarget(HomingTarget))
-			{
-				HomingTarget = null;
-			}
-
-			if (HomingTarget == null)
-				return;
-
-			float length = Projectile.velocity.Length();
-			float targetAngle = Projectile.AngleTo(HomingTarget.Center);
-			Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(30)).ToRotationVector2() * length;
-			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
 			AnimateProjectile();
-		}
-
-		public NPC FindClosestNPC(float maxDetectDistance)
-		{
-			NPC closestNPC = null;
-
-			float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
-
-			foreach (var target in Main.ActiveNPCs)
-			{
-				if (IsValidTarget(target))
-				{
-					float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, Projectile.Center);
-
-					if (sqrDistanceToTarget < sqrMaxDetectDistance)
-					{
-						sqrMaxDetectDistance = sqrDistanceToTarget;
-						closestNPC = target;
-					}
-				}
-			}
-
-			return closestNPC;
-		}
-
-		public bool IsValidTarget(NPC target)
-		{
-			return target.CanBeChasedBy();
 		}
 
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
 			target.AddBuff(BuffID.Electrified, 300);
 		}
+
+		void IDrawPixelated.DrawPixelated(SpriteBatch spriteBatch)
+		{
+			trailOffset += 0.01f;
+
+            DTTrail.DrawTrailPixelated(spriteBatch, BlendState.Additive, DTAssetLib.Streak(8, true).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 24, ColorLib.Vortex, trailOffset, 10);
+        }
 	}
 }

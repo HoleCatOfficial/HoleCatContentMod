@@ -56,15 +56,15 @@ namespace DestroyerTest.Content.Buffs
         public void Update(NPC npc)
         {
             // Only apply the effects if Levitation is active
-            if (Levitation)
+            if (Levitation && !npc.boss)
             {
-            npc.velocity = new Vector2(npc.velocity.X / 2, -1.4f);
+                npc.velocity = new Vector2(npc.velocity.X / 2, -1.4f);
 
-            // Corrected Dust usage
-            Dust.NewDust(npc.position, npc.width, npc.height, DustID.BlueMoss, 0.0f, 0.5f, 0, default, 1);
+                // Corrected Dust usage
+                Dust.NewDust(npc.position, npc.width, npc.height, DustID.BlueMoss, 0.0f, 0.5f, 0, default, 1);
 
-            // Gradually increase the blue color intensity
-            npc.color = new Color(npc.color.R, npc.color.G, (byte)MathHelper.Clamp(npc.color.B + 5, 0, 255));
+                // Gradually increase the blue color intensity
+                npc.color = new Color(npc.color.R, npc.color.G, (byte)MathHelper.Clamp(npc.color.B + 5, 0, 255));
             }
         }
     }
@@ -83,7 +83,7 @@ namespace DestroyerTest.Content.Buffs
             if (Levitation)
 			{
                 Player.velocity.Y = -4f;
-                Player.velocity.X *= 0.35f;
+                Player.velocity.X *= 0.99f;
 			}
         }
 		public override void UpdateBadLifeRegen()

@@ -36,6 +36,7 @@ using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.Graphics;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -2299,6 +2300,8 @@ namespace DestroyerTest.Common
             {
                 Opus.StartSpriteBatchForTrails(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
+            
+
                 if (Positions.Count > 1)
                 {
                     List<ColoredVertex> ve = new List<ColoredVertex>();
@@ -2363,6 +2366,8 @@ namespace DestroyerTest.Common
             if (!OptCfg.DisableExcessTrails)
             {
                 Opus.StartSpriteBatchForTrails(spriteBatch, blendState, SpriteSortMode.Immediate);
+
+             
 
                 if (Positions.Count > 1)
                 {

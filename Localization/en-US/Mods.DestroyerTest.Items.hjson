@@ -592,17 +592,35 @@ GargoyleTrepidation: {
 
 ConstantineMask: {
 	DisplayName: Constantine Mask
-	Tooltip: Great for Impersonating Suicidal Devs!
+	Tooltip: You are immune to Ichor.
+	SetBonus:
+		'''
+			3% Increased item Use Speed.
+			You have a random chance, when hitting an NPC, to inflict one of 5 debuffs for 5 seconds:
+			- Electrified
+			- Hellfire
+			- Ichor
+			- Cursed Inferno
+			- Spirit Drift
+		'''
 }
 
 CoatStantine: {
 	DisplayName: CoatStantine
-	Tooltip: Great for Impersonating Suicidal Devs!
+	Tooltip:
+		'''
+			You are immune to Electrified.
+			5% increased All-class damage.
+		'''
 }
 
 ConstanJeans: {
 	DisplayName: ConstanJeans
-	Tooltip: Great for Impersonating Suicidal Devs!
+	Tooltip:
+		'''
+			You are immune to Hellfire.
+			16% increased Critical Strike Chance.
+		'''
 }
 
 Connie_Doll: {
@@ -610,8 +628,8 @@ Connie_Doll: {
 	Tooltip:
 		'''
 		There's a tag on the hip seam.
-		"WARNING: Keep away from Shimmer. Especially if you only have one life..."
-		Sounds like a solid indicator to throw it into the shimmer.
+		"WARNING: Keep away from Shimmer."
+		You wonder why...
 		'''
 }
 

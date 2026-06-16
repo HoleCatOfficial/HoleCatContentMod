@@ -819,6 +819,10 @@ namespace DestroyerTest.Common
             if (item.type == ItemID.WallOfFleshBossBag)
             {
                 itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<ScepterEmblem>(), 5, 1, 1));
+
+                itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<ConstantineMask>(), 1, 1, 1));
+                itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<CoatStantine>(), 1, 1, 1));
+                itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<ConstanJeans>(), 1, 1, 1));
             }
         }
 

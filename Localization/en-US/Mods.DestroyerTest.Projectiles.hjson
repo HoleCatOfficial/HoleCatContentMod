@@ -395,7 +395,7 @@ TenebrisArrowPhantomProjectile.DisplayName: Tenebris Arrow Phantom Projectile
 PossessedTooth.DisplayName: Possessed Tooth
 HeartNode.DisplayName: Heart Node
 PhantomScepter.DisplayName: Phantom Scepter
-PhantomScepter2.DisplayName: Phantom Scepter2
+PhantomScepter2.DisplayName: Phantom Scepter
 PrimalBlood.DisplayName: Primal Blood
 PrimalIchor.DisplayName: Primal Ichor
 HellTrident.DisplayName: Hell Trident
@@ -405,7 +405,7 @@ HellHalberd.DisplayName: Hell Halberd
 TenebrisElementalMinion.DisplayName: Tenebris Elemental Minion
 RiftSandstormBackgroundProj.DisplayName: Rift Sandstorm Background Proj
 SharkronNecklaceMinion.DisplayName: Sharkron Necklace Minion
-TempestProj.DisplayName: Tempest Proj
+TempestProj.DisplayName: Tempest
 TempestWaterSpout.DisplayName: Tempest Water Spout
 HoleCatHookSwing.DisplayName: Hole Cat Hook Swing
 HoleCatFireSwirl.DisplayName: Hole Cat Fire Swirl
@@ -414,7 +414,7 @@ HoleCatHookJab.DisplayName: Hole Cat Hook Jab
 SpookyFirewood.DisplayName: Spooky Firewood
 TenebrisWaraxeProjectile.DisplayName: Tenebris Waraxe Projectile
 SpawnSoul.DisplayName: Spawn Soul
-GalantineKnifeThrown.DisplayName: Galantine Knife Thrown
+GalantineKnifeThrown.DisplayName: Galantine Knife
 StarConstructInactive.DisplayName: Star Construct Inactive
 StarConstructMinion.DisplayName: Star Construct Minion
 StellarEmber.DisplayName: Stellar Ember
@@ -422,89 +422,89 @@ SpookySickle.DisplayName: Spooky Sickle
 SpookySickleExplosion.DisplayName: Spooky Sickle Explosion
 Condemnation.DisplayName: Condemnation
 ShadowflameAOE.DisplayName: Shadowflame Field
-ConstitutionPet.DisplayName: StellarStabber
-RosePet.DisplayName: Mini Rose (Pet)
-CursedNodePet.DisplayName: Cursed Node (Pet)
-IchorNodePet.DisplayName: Ichor Node (Pet)
+ConstitutionPet.DisplayName: Stellar Stabber Pet
+RosePet.DisplayName: Mini Rose Pet
+CursedNodePet.DisplayName: Cursed Node Pet
+IchorNodePet.DisplayName: Ichor Node Pet
 BabyWyvernPet.DisplayName: Baby Wyvern
-TenebrousConstructPet.DisplayName: Tenebrous Construct (Pet)
+TenebrousConstructPet.DisplayName: Tenebrous Construct Pet
 TenebrousSlingerPet.DisplayName: Tenebrous Slinger Pet
-ShadeThrasherFriendlyHead.DisplayName: Shade Thrasher Friendly Head
-ShadeThrasherFriendlyBody4.DisplayName: Shade Thrasher Friendly Body4
-ShadeThrasherFriendlyBody3.DisplayName: Shade Thrasher Friendly Body3
-ShadeThrasherFriendlyBody2.DisplayName: Shade Thrasher Friendly Body2
-ShadeThrasherFriendlyBody1.DisplayName: Shade Thrasher Friendly Body1
+ShadeThrasherFriendlyHead.DisplayName: Shade Thrasher
+ShadeThrasherFriendlyBody4.DisplayName: Shade Thrasher
+ShadeThrasherFriendlyBody3.DisplayName: Shade Thrasher
+ShadeThrasherFriendlyBody2.DisplayName: Shade Thrasher
+ShadeThrasherFriendlyBody1.DisplayName: Shade Thrasher
 FrozenFireball.DisplayName: Frozen Fireball
 FrozenFire.DisplayName: Frozen Fire
-FungusSporeExplosion.DisplayName: Fungus Spore Explosion
+FungusSporeExplosion.DisplayName: Fungus Spore
 VesperDart.DisplayName: Vesper Dart
-DistendedPikeProjectile.DisplayName: Distended Pike Projectile
+DistendedPikeProjectile.DisplayName: Distended Pike
 DistendedPikeShard.DisplayName: Distended Pike Shard
-TwistedFaithProj.DisplayName: Twisted Faith Proj
-TwistedFaithSwing.DisplayName: Twisted Faith Swing
+TwistedFaithProj.DisplayName: Twisted Faith
+TwistedFaithSwing.DisplayName: Twisted Faith
 MalachiteKnife.DisplayName: Malachite Knife
-HekateStaffProj.DisplayName: Hekate Staff Proj
+HekateStaffProj.DisplayName: Hekate Staff
 HekateStaffEmber.DisplayName: Hekate Staff Ember
-HekatesMystiqueHoldout.DisplayName: Hekates Mystique Holdout
+HekatesMystiqueHoldout.DisplayName: Hekates Mystique
 HekateStaffExplosion.DisplayName: Hekate Staff Explosion
 StellarVolley.DisplayName: Stellar Volley
-MagesticStormHoldout.DisplayName: Magestic Storm Holdout
-MajesticStormProj.DisplayName: Majestic Storm Proj
+MagesticStormHoldout.DisplayName: Magestic Storm
+MajesticStormProj.DisplayName: Majestic Storm
 ElectricBolt.DisplayName: Electric Bolt
-MajesticStormExplosion.DisplayName: Majestic Storm Explosion
-MajesticStormHoldout.DisplayName: Majestic Storm Holdout
+MajesticStormExplosion.DisplayName: Majestic Storm
+MajesticStormHoldout.DisplayName: Majestic Storm
 MajesticStormOrb.DisplayName: Majestic Storm Orb
 ShadesRevengeExplosion.DisplayName: Shades Revenge Explosion
-ShadesRevengeHoldout.DisplayName: Shades Revenge Holdout
-ShadesRevengeProj.DisplayName: Shades Revenge Proj
-NightmareRoseCursedCrystal.DisplayName: Nightmare Rose Cursed Crystal
+ShadesRevengeHoldout.DisplayName: Shades Revenge
+ShadesRevengeProj.DisplayName: Shades Revenge
+NightmareRoseCursedCrystal.DisplayName: Cursed Flame Crystal
 StellarFireDart.DisplayName: Stellar Fire Dart
 StellarFireSlash.DisplayName: Stellar Fire Slash
 RGBSlash.DisplayName: R G B Slash
-PetrifiedHeadRiftLaser.DisplayName: Petrified Head Rift Laser
-TenebrisStarHostile_NoHoming.DisplayName: Tenebris Star Hostile_ No Homing
-TenebrisStarFriendly_NoHoming.DisplayName: Tenebris Star Friendly_ No Homing
+PetrifiedHeadRiftLaser.DisplayName: Petrified Head Laser
+TenebrisStarHostile_NoHoming.DisplayName: Tenebris Star
+TenebrisStarFriendly_NoHoming.DisplayName: Tenebris Star
 TeslaScuttlerScaredExplosion.DisplayName: Tesla Scuttler Scared Explosion
 TenebrousLightDart.DisplayName: Tenebrous Light Dart
-GargantuaProjectile2.DisplayName: Gargantua Projectile2
+GargantuaProjectile2.DisplayName: Gargantua Projectile
 GargantuaExplosion.DisplayName: Gargantua Explosion
 HekateBurr.DisplayName: Hekate Burr
 DesertSpiritDart.DisplayName: Desert Spirit Dart
 CursedFlameVortex.DisplayName: Cursed Flame Vortex
-TenebrisRocketProjectile_NoTileDestroy.DisplayName: Tenebris Rocket Projectile_ No Tile Destroy
-TenebrisRocketProjectile_TileDestroy.DisplayName: Tenebris Rocket Projectile_ Tile Destroy
-SiegeHoldout.DisplayName: Siege Holdout
-ConstitutionStarFriendly_NoHoming.DisplayName: Constitution Star Friendly_ No Homing
-ConstitutionStarFriendly.DisplayName: Constitution Star Friendly
-ConstitutionStarHostile_NoHoming.DisplayName: Constitution Star Hostile_ No Homing
-ConstitutionStarHostile.DisplayName: Constitution Star Hostile
-VesperThornTip.DisplayName: Vesper Thorn Tip
+TenebrisRocketProjectile_NoTileDestroy.DisplayName: Tenebris Rocket
+TenebrisRocketProjectile_TileDestroy.DisplayName: Tenebris Rocket
+SiegeHoldout.DisplayName: Siege
+ConstitutionStarFriendly_NoHoming.DisplayName: Constitution Star
+ConstitutionStarFriendly.DisplayName: Constitution Star
+ConstitutionStarHostile_NoHoming.DisplayName: Constitution Star
+ConstitutionStarHostile.DisplayName: Constitution Star
+VesperThornTip.DisplayName: Vesper Thorn
 VesperThorn.DisplayName: Vesper Thorn
 MageClone.DisplayName: Mage Clone
 GodGougerMiniPink.DisplayName: God Gouger Mini Pink
 GodGougerMiniTeal.DisplayName: God Gouger Mini Teal
-GodGougerThrown.DisplayName: God Gouger Thrown
+GodGougerThrown.DisplayName: God Gouger
 EimvurBloodProjectile.DisplayName: Eimvur Blood Projectile
 FailedPotionGreenSmoke.DisplayName: Failed Potion Green Smoke
 FailedPotionPurpleSmoke.DisplayName: Failed Potion Purple Smoke
-FailedPotionThrown.DisplayName: Failed Potion Thrown
-CursedNodeCrystal2.DisplayName: Cursed Node Crystal2
+FailedPotionThrown.DisplayName: Failed Potion
+CursedNodeCrystal2.DisplayName: Cursed Node Crystal
 BigRiftExplosion.DisplayName: Big Rift Explosion
-TrueRiftMakerThrown.DisplayName: True Rift Maker Thrown
+TrueRiftMakerThrown.DisplayName: True RiftMaker
 AncientRock.DisplayName: Ancient Rock
-InfectedScepterThrown.DisplayName: Infected Scepter Thrown
-InfectedCrystalCF.DisplayName: Infected Crystal C F
-InfectedCrystalIchor.DisplayName: Infected Crystal Ichor
+InfectedScepterThrown.DisplayName: Infected Scepter
+InfectedCrystalCF.DisplayName: Infected Crystal
+InfectedCrystalIchor.DisplayName: Infected Crystal
 InsurgentSpirit.DisplayName: Insurgent Spirit
 BouncySlimeBallMini.DisplayName: Bouncy Slime Ball Mini
 MiniBouncySlime.DisplayName: Mini Bouncy Slime
 MiniCrystalSlime.DisplayName: Mini Crystal Slime
 MiniHeavenlySlime.DisplayName: Mini Heavenly Slime
-HeliouricSpreadProjectile.DisplayName: Heliouric Spread Projectile
+HeliouricSpreadProjectile.DisplayName: Heliouric Spread
 ExplodingIcicle.DisplayName: Exploding Icicle
 TestSwing.DisplayName: Test Swing
 HeliciteDart.DisplayName: Helicite Dart
-HeliciteScepterThrown.DisplayName: Helicite Scepter Thrown
+HeliciteScepterThrown.DisplayName: Helicite Scepter
 SquareCrystal.DisplayName: Square Crystal
 SolarTrail.DisplayName: Solar Trail
 CursedShot.DisplayName: Cursed Shot
@@ -515,7 +515,7 @@ LightShot.DisplayName: Light Shot
 RiftShot.DisplayName: Rift Shot
 ShadowFireShot.DisplayName: Shadow Fire Shot
 VenomShot.DisplayName: Venom Shot
-ElementalScepterThrown.DisplayName: Elemental Scepter Thrown
+ElementalScepterThrown.DisplayName: Elemental Scepter
 ElementalTrail.DisplayName: Elemental Trail
 ShimmeringShardCluster.DisplayName: Shimmering Shard Cluster
 IchorShot.DisplayName: Ichor Shot
@@ -524,35 +524,35 @@ ShimmeringMushroomMagentaSmoke.DisplayName: Shimmering Mushroom Magenta Smoke
 ShimmeringMushroomBlueSmoke.DisplayName: Shimmering Mushroom Blue Smoke
 ShimmeringMushroomBeigeSmoke.DisplayName: Shimmering Mushroom Beige Smoke
 ShimmeringMushroom.DisplayName: Shimmering Mushroom
-DarkUnityThrown.DisplayName: Dark Unity Thrown
+DarkUnityThrown.DisplayName: Dark Unity
 AmbitionSpark.DisplayName: Ambition Spark
-AmbitionProjectile.DisplayName: Ambition Projectile
-DreampoonHoldout.DisplayName: Dreampoon Holdout
-DreampoonProjectile.DisplayName: Dreampoon Projectile
-SpearOfAspirationThrown.DisplayName: Spear Of Aspiration Thrown
+AmbitionProjectile.DisplayName: Ambition
+DreampoonHoldout.DisplayName: Dreampoon
+DreampoonProjectile.DisplayName: Dreampoon
+SpearOfAspirationThrown.DisplayName: Spear Of Aspiration
 ToxicOrb.DisplayName: Toxic Orb
-ContainedRiftBiomeProjectile.DisplayName: Contained Rift Biome Projectile
+ContainedRiftBiomeProjectile.DisplayName: Contained Rift Biome
 SunscorchedDjinnStar.DisplayName: Sunscorched Djinn Star
 RiftOrb.DisplayName: Rift Orb
 LightDart.DisplayName: Light Dart
 LightLance.DisplayName: Light Lance
-CoronaBreakerProjectile.DisplayName: Corona Breaker Projectile
-TwistedScepterThrown.DisplayName: Twisted Scepter Thrown
-MiniCometHostile.DisplayName: Mini Comet Hostile
-MiniCometFriendly.DisplayName: Mini Comet Friendly
-StellarFireSlashHostile.DisplayName: Stellar Fire Slash Hostile
-ConstitutionArenaCorner.DisplayName: Constitution Arena Corner
-GaiaScepterThrown.DisplayName: Gaia Scepter Thrown
+CoronaBreakerProjectile.DisplayName: Corona Breaker
+TwistedScepterThrown.DisplayName: Twisted Scepter
+MiniCometHostile.DisplayName: Mini Comet
+MiniCometFriendly.DisplayName: Mini Comet
+StellarFireSlashHostile.DisplayName: Stellar Fire Slash
+ConstitutionArenaCorner.DisplayName: Constitution Arena
+GaiaScepterThrown.DisplayName: Gaia Scepter
 GaiaOrb.DisplayName: Gaia Orb
 TenebrisShot.DisplayName: Tenebris Shot
-RiftShot2.DisplayName: Rift Shot2
+RiftShot2.DisplayName: Rift Shot
 NightShot.DisplayName: Night Shot
-LightShot2.DisplayName: Light Shot2
+LightShot2.DisplayName: Light Shot
 QuixotismSwing.DisplayName: Quixotism Swing
 HypnicJerkExplosion.DisplayName: Hypnic Jerk Explosion
-HypnicJerkThrown.DisplayName: Hypnic Jerk Thrown
+HypnicJerkThrown.DisplayName: Hypnic Jerk
 SmallTenebrisDart.DisplayName: Small Tenebris Dart
-BalanceScepterThrown.DisplayName: Balance Scepter Thrown
+BalanceScepterThrown.DisplayName: Balance Scepter
 LightFireball.DisplayName: Light Fireball
 NightFireball.DisplayName: Night Fireball
 BalanceBolt.DisplayName: Balance Bolt
@@ -561,73 +561,73 @@ ManifestHoldout.DisplayName: Manifest Holdout
 ManifestBolt.DisplayName: Manifest Bolt
 PoisonSpray.DisplayName: Poison Spray
 PoisonCloud.DisplayName: Poison Cloud
-BlackDiamondProjectile.DisplayName: Black Diamond Projectile
-RiftHypersabreSwing.DisplayName: Rift Hypersabre Swing
+BlackDiamondProjectile.DisplayName: Black Diamond
+RiftHypersabreSwing.DisplayName: Rift Hypersabre
 ColossusProjectile.DisplayName: Colossus Projectile
 GargantuaPhantom.DisplayName: Gargantua Phantom
 ColossusStar.DisplayName: Colossus Star
 SparkFrostSlash.DisplayName: Spark Frost Slash
-RiftScepterSun.DisplayName: Rift Scepter Sun
-SpiritOfJusticeSwing.DisplayName: Spirit Of Justice Swing
-MemoriamSwing.DisplayName: Memoriam Swing
-BlossomBeaterMinion.DisplayName: Blossom Beater Minion
+RiftScepterSun.DisplayName: Rift Scepter
+SpiritOfJusticeSwing.DisplayName: Spirit Of Justice
+MemoriamSwing.DisplayName: Memoriam
+BlossomBeaterMinion.DisplayName: Blossom Beater
 BlossomBeaterPetal.DisplayName: Blossom Beater Petal
-SoulBoundWhipProjectile.DisplayName: Soul Bound Whip Projectile
-SunSaberSwing.DisplayName: Sun Saber Swing
-MalevolenceSwing.DisplayName: Malevolence Swing
-ScornSwing.DisplayName: Scorn Swing
-SabhatiSwing.DisplayName: Sabhati Swing
+SoulBoundWhipProjectile.DisplayName: Soul Bound Whip
+SunSaberSwing.DisplayName: Sun Saber
+MalevolenceSwing.DisplayName: Malevolence
+ScornSwing.DisplayName: Scorn
+SabhatiSwing.DisplayName: Sabhati
 SabhatiWave.DisplayName: Sabhati Wave
 SabhatiSlash.DisplayName: Sabhati Slash
 SabhatiMeteor.DisplayName: Sabhati Meteor
-WyvernCorpseBackgroundProj.DisplayName: Wyvern Corpse Background Proj
+WyvernCorpseBackgroundProj.DisplayName: Wyvern Corpse Background
 ManaCluster.DisplayName: Mana Cluster
-ManaWandHoldout.DisplayName: Mana Wand Holdout
+ManaWandHoldout.DisplayName: Mana Wand
 PrimitiveTest.DisplayName: Primitive Test
-VeiledSpearProjectile.DisplayName: Veiled Spear Projectile
+VeiledSpearProjectile.DisplayName: Veiled Spear
 TrackingFireSlash.DisplayName: Tracking Fire Slash
-DreamDiscThrown.DisplayName: Dream Disc Thrown
-SoulEdgeProjectile.DisplayName: Soul Edge Projectile
-TrueSoulEdgeCursorProjectile.DisplayName: True Soul Edge Cursor Projectile
+DreamDiscThrown.DisplayName: Dream Disc
+SoulEdgeProjectile.DisplayName: Soul Edge
+TrueSoulEdgeCursorProjectile.DisplayName: True Soul Edge
 RiftSpark.DisplayName: Rift Spark
 PopRockShrapnel.DisplayName: Pop Rock Shrapnel
-PopRockThrown.DisplayName: Pop Rock Thrown
-WhisperingTomeHoldout.DisplayName: Whispering Tome Holdout
-TestSpearProjectile.DisplayName: Test Spear Projectile
-CommittmentSwing.DisplayName: Committment Swing
-ConstitutionThrow.DisplayName: Constitution Throw
-CommittmentThrow.DisplayName: Committment Throw
+PopRockThrown.DisplayName: Pop Rock
+WhisperingTomeHoldout.DisplayName: Whispering Tome
+TestSpearProjectile.DisplayName: Test Spear
+CommittmentSwing.DisplayName: Committment
+ConstitutionThrow.DisplayName: Constitution
+CommittmentThrow.DisplayName: Committment
 BlessedNodeCrystal.DisplayName: Blessed Node Crystal
-BlessedNodeCrystal2.DisplayName: Blessed Node Crystal2
+BlessedNodeCrystal2.DisplayName: Blessed Node Crystal
 BlessedLaser.DisplayName: Blessed Laser
-StarburntTerrorSwing.DisplayName: Starburnt Terror Swing
-RiftBolt2.DisplayName: Rift Bolt2
+StarburntTerrorSwing.DisplayName: Starburnt Terror
+RiftBolt2.DisplayName: Rift Bolt
 PuritySwing.DisplayName: Purity Swing
 HallowBolt.DisplayName: Hallow Bolt
-BlessedNodeDeathProjectile.DisplayName: Blessed Node Death Projectile
-BlessedNodeCrystalFriendly.DisplayName: Blessed Node Crystal Friendly
-BlessedLaserFriendly.DisplayName: Blessed Laser Friendly
-GloryOrbHoldout.DisplayName: Glory Orb Holdout
-DarkFireSwordSwing.DisplayName: Dark Fire Sword Swing
-TwilightInfernoSwing.DisplayName: Twilight Inferno Swing
+BlessedNodeDeathProjectile.DisplayName: Blessed Node Death
+BlessedNodeCrystalFriendly.DisplayName: Blessed Node
+BlessedLaserFriendly.DisplayName: Blessed Laser
+GloryOrbHoldout.DisplayName: Glory Orb
+DarkFireSwordSwing.DisplayName: Dark Fire Sword
+TwilightInfernoSwing.DisplayName: Twilight Inferno
 DarkFireSpirit.DisplayName: Dark Fire Spirit
 HomingShadowflame.DisplayName: Homing Shadowflame
 ShadowExplosion.DisplayName: Shadow Explosion
-ExasperationSwing.DisplayName: Exasperation Swing
+ExasperationSwing.DisplayName: Exasperation
 ExasperationDart.DisplayName: Exasperation Dart
-ShadowExplosion2.DisplayName: Shadow Explosion2
-TenebrisLaser.DisplayName: Tenebris Laser
-TenebrisLaserFriendly.DisplayName: Tenebris Laser Friendly
+ShadowExplosion2.DisplayName: Shadow Explosion
+TenebrisLaser.DisplayName: Beam of Shade Energy
+TenebrisLaserFriendly.DisplayName: Beam of Shade Energy
 DarkOrb.DisplayName: Dark Orb
 ShimmeringVortex.DisplayName: Shimmering Vortex
-RiftSpark_NoHoming.DisplayName: Rift Spark_ No Homing
-RiftSparkHostile.DisplayName: Rift Spark Hostile
-RiftSparkHostile_NoHoming.DisplayName: Rift Spark Hostile_ No Homing
+RiftSpark_NoHoming.DisplayName: Rift Spark
+RiftSparkHostile.DisplayName: Rift Spark
+RiftSparkHostile_NoHoming.DisplayName: Rift Spark
 SoulSpark.DisplayName: Soul Spark
-SoulSpark_NoHoming.DisplayName: Soul Spark_ No Homing
-BloodButchererSwing.DisplayName: Blood Butcherer Swing
-PureBowHoldout.DisplayName: Pure Bow Holdout
-HotHeadPumpkin.DisplayName: Hot Head Pumpkin
+SoulSpark_NoHoming.DisplayName: Soul Spark
+BloodButchererSwing.DisplayName: Blood Butcherer
+PureBowHoldout.DisplayName: Pure Bow
+HotHeadPumpkin.DisplayName: HotHead Pumpkin
 ShimmeringFireAura.DisplayName: Shimmering Fire Aura
 ComaceraticSlash.DisplayName: Comaceratic Slash
 SunExplosion.DisplayName: Sun Explosion
@@ -640,9 +640,9 @@ ChromaNebula.DisplayName: Chroma Nebula
 ChromaSolar.DisplayName: Chroma Solar
 ChromaStardust.DisplayName: Chroma Stardust
 ChromaVortex.DisplayName: Chroma Vortex
-RiftThrowingKnifeThrown.DisplayName: Rift Throwing Knife Thrown
-DepthsAudioProjectile.DisplayName: Depths Audio Projectile
-CorruptionClawsProjectile.DisplayName: Corruption Claws Projectile
+RiftThrowingKnifeThrown.DisplayName: Rift Throwing Knife
+DepthsAudioProjectile.DisplayName: Depths Audio
+CorruptionClawsProjectile.DisplayName: Corruption Claws
 HeatseekerSilohExplosion.DisplayName: Heatseeker Siloh Explosion
 RiftStaffBeam.DisplayName: Rift Staff Beam
 RiftStaffHoldout.DisplayName: Rift Staff Holdout
@@ -651,10 +651,10 @@ ShadeHeartPet.DisplayName: Shade Heart Pet
 ShadeInfernoRing.DisplayName: Shade Inferno Ring
 GodGougerExplosion.DisplayName: God Gouger Explosion
 DreamDiscMini.DisplayName: Dream Disc Mini
-PNoctisSparkFire.DisplayName: P Noctis Spark Fire
-PNoctisSparkIce.DisplayName: P Noctis Spark Ice
+PNoctisSparkFire.DisplayName: Passer Noctis Fire Spark
+PNoctisSparkIce.DisplayName: Passer Noctis Ice Spark
 AetherflameBolt.DisplayName: Aetherflame Bolt
-AetherflameIgnisThrown.DisplayName: Aetherflame Ignis Thrown
-RiftElectroscytheProjectile.DisplayName: Rift Electroscythe Projectile
+AetherflameIgnisThrown.DisplayName: Aetherflame Ignis
+RiftElectroscytheProjectile.DisplayName: Rift Electroscythe
 FrigidEcho.DisplayName: Frigid Echo
-QITNThrown.DisplayName: Q I T N Thrown
+QITNThrown.DisplayName: Quiet Is The Night

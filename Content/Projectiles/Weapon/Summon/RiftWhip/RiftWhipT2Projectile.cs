@@ -62,7 +62,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon.RiftWhip
 
         public override bool? CanHitNPC(NPC target)
         {
-            return HitCooldown <= 0;
+            return HitCooldown <= 0 && target.friendly == false;
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)

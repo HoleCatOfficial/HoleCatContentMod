@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.player.Potion
@@ -49,9 +50,9 @@ namespace DestroyerTest.Content.Projectiles.player.Potion
             var Tex = RingTexture.Value;
             var Orig = RingTexture.Value.Size() / 2;
 
-            Main.EntitySpriteDraw(Tex, Projectile.Center - Main.screenPosition, null, ColorLib.TenebrisGradient with { A = 0 }, Projectile.ai[1], Orig, 3f, SpriteEffects.None, 0f);
-            Main.EntitySpriteDraw(Tex, Projectile.Center - Main.screenPosition, null, ColorLib.TenebrisGradient with { A = 0 } * 0.5f, Projectile.ai[1] * 0.2f, Orig, 2.7f, SpriteEffects.None, 0f);
-            Main.EntitySpriteDraw(Tex, Projectile.Center - Main.screenPosition, null, ColorLib.TenebrisGradient with { A = 0 }, (Projectile.ai[1] * -1) * 0.8f, Orig, 2.6f, SpriteEffects.None, 0f);
+            Main.EntitySpriteDraw(Tex, Projectile.Center - Main.screenPosition, null, ColorLib.TenebrisGradient with { A = 0 }, Projectile.ai[1], Orig, 3.8f, SpriteEffects.None, 0f);
+            Main.EntitySpriteDraw(Tex, Projectile.Center - Main.screenPosition, null, ColorLib.TenebrisGradient with { A = 0 } * 0.5f, Projectile.ai[1] * 0.2f, Orig, 3.4f, SpriteEffects.None, 0f);
+            Main.EntitySpriteDraw(Tex, Projectile.Center - Main.screenPosition, null, ColorLib.TenebrisGradient with { A = 0 }, (Projectile.ai[1] * -1) * 0.8f, Orig, 3.6f, SpriteEffects.None, 0f);
             return false;
         }
 

@@ -1,6 +1,7 @@
 
 using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
+using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
@@ -31,7 +32,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 {
 	public class GargantuaProjectile : ModProjectile
 	{
-        public SoundStyle Swing = new SoundStyle("DestroyerTest/Assets/Audio/SwordSounds/HeavySwing", 3) with { Volume = 1.0f, PitchVariance = 0.2f, MaxInstances = 0 };
+        public SoundStyle Swing = DTAssetLib.SwordSounds.MemoriamSwing with { Volume = 1.0f, PitchVariance = 0.2f, MaxInstances = 0 };
         public SoundStyle Hit = new SoundStyle("DestroyerTest/Assets/Audio/Impacts/DreamHit", 3) with { PitchVariance = 0.4f, MaxInstances = 0 };
         private enum AttackStage
         {
@@ -160,8 +161,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 effects = SpriteEffects.FlipHorizontally;
             }
 
-            Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.NonPremultiplied, SpriteSortMode.Immediate);
-            Main.spriteBatch.Draw(DTAssetLib.FireSwing.Value, Projectile.Center - Main.screenPosition, null, (Color.DarkRed * Projectile.Opacity) * SlOpacity, Projectile.rotation - 0.2f, DTAssetLib.FireSwing.Value.Size() / 2, Scl * Projectile.scale, effects, 0);
+            Main.spriteBatch.UseBlendState(BlendState.Additive);
+            //Main.spriteBatch.Draw(DTAssetLib.FireSwing.Value, Projectile.Center - Main.screenPosition, null, (Color.DarkRed * 0.5f * Projectile.Opacity ) * SlOpacity, Projectile.rotation - 0.2f, DTAssetLib.FireSwing.Value.Size() / 2, Scl * Projectile.scale, effects, 0);
             //Main.spriteBatch.Draw(DTAssetLib.FireSwingHighlight.Value, Projectile.Center - Main.screenPosition, null, ((Color.Red * 0.5f) * Projectile.Opacity) * SlOpacity, Projectile.rotation - 0.2f, DTAssetLib.FireSwingHighlight.Value.Size() / 2, Scl * Projectile.scale, effects, 0);
             Opus.ReturnToDefaultDrawing(Main.spriteBatch);
         }
@@ -362,19 +363,19 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                     new Fire()
                 };
 
-                fire[0].PrepareFire(swordTip, Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.12f, 0.12f), Color.Red, 2f, 40, FireDrawMode.NonPremultiplied, PixelLayer.AboveProjectiles);
+                fire[0].PrepareFire(swordTip, Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.12f, 0.12f), Color.Red, 2f, 40, FireDrawMode.Additive, PixelLayer.AboveProjectiles);
                 ParticleEngine.BehindProjectiles.Add(fire[0]);
 
-                fire[1].PrepareFire(Pos[0], Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.12f, 0.12f), Color.Red * 0.8f, 2f, 35, FireDrawMode.NonPremultiplied, PixelLayer.AboveProjectiles);
+                fire[1].PrepareFire(Pos[0], Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.12f, 0.12f), Color.Red * 0.8f, 2f, 35, FireDrawMode.Additive, PixelLayer.AboveProjectiles);
                 ParticleEngine.BehindProjectiles.Add(fire[1]);
 
-                fire[2].PrepareFire(Pos[1], Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.12f, 0.12f), Color.Red * 0.6f, 2f, 30, FireDrawMode.NonPremultiplied, PixelLayer.AboveProjectiles);
+                fire[2].PrepareFire(Pos[1], Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.12f, 0.12f), Color.Red * 0.6f, 2f, 30, FireDrawMode.Additive, PixelLayer.AboveProjectiles);
                 ParticleEngine.BehindProjectiles.Add(fire[2]);
 
-                fire[3].PrepareFire(Pos[2], Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.12f, 0.12f), Color.Red * 0.4f, 2f, 25, FireDrawMode.NonPremultiplied, PixelLayer.AboveProjectiles);
+                fire[3].PrepareFire(Pos[2], Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.12f, 0.12f), Color.Red * 0.4f, 2f, 25, FireDrawMode.Additive, PixelLayer.AboveProjectiles);
                 ParticleEngine.BehindProjectiles.Add(fire[3]);
 
-                fire[4].PrepareFire(Pos[3], Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.12f, 0.12f), Color.Red * 0.2f, 2f, 10, FireDrawMode.NonPremultiplied, PixelLayer.AboveProjectiles);
+                fire[4].PrepareFire(Pos[3], Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.12f, 0.12f), Color.Red * 0.2f, 2f, 10, FireDrawMode.Additive, PixelLayer.AboveProjectiles);
                 ParticleEngine.BehindProjectiles.Add(fire[4]);
 
 

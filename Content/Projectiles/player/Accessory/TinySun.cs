@@ -33,6 +33,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
             Projectile.penetrate = -1;
             Projectile.timeLeft = 10;
             Projectile.tileCollide = false;
+            Projectile.ignoreWater = true;
         }
 
         public override bool PreDraw(ref Color lightColor)
