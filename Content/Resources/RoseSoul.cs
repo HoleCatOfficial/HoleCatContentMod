@@ -1,9 +1,10 @@
-using System;
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Particles;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Mono.CompilerServices.SymbolWriter;
+using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -57,11 +58,11 @@ namespace DestroyerTest.Content.Resources
 
         public override void PostUpdate()
         {
-            Lighting.AddLight(Item.Center, ColorLib.Soul.ToVector3() * 0.55f * Main.essScale);
-            Vector2 OuterOffset = Main.rand.NextVector2CircularEdge(160, 160);
-            Vector2 Inward = Item.Center - OuterOffset;
-            Rectangle SpawnArea = Item.Hitbox;
-            SpawnArea.Inflate(60, 60);
+            Lighting.AddLight(Item.Center, ColorLib.Soul.ToVector3() * Main.essScale);
+
+            PointGlowPreMultiplied FX = new();
+            FX.Initialize(Main.rand.NextVector2FromRectangle(Item.Hitbox), Main.rand.NextVector2Circular(2f, 2f), ColorLib.Soul, 1f);
+            ParticleEngine.ShaderParticles.Add(FX);
         }
     }
 
@@ -87,11 +88,14 @@ namespace DestroyerTest.Content.Resources
         {
             if (isActive)
             {
-                
+                SunlightModification.Sunlight(0f, ColorLib.Soul, 1f);
             }
             else
             {
-               
+                if (SunlightModification.Instance._SunlightColor == ColorLib.Soul)
+                {
+                    SunlightModification.Reset();
+                }
             }
         }
 

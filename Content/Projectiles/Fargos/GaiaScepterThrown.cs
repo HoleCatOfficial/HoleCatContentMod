@@ -70,18 +70,18 @@ namespace DestroyerTest.Content.Projectiles.Fargos
                 Dust.NewDustPerfect(Positions[i], ModContent.DustType<ColorableNeonDust>(), Vector2.Zero, 0, Main.DiscoColor * 0.25f, 2f);
             }
 
-            if (AITimer < 120)
+            if (AITimer < 80)
             {
-                Projectile.timeLeft = 60 * 32;
+                Projectile.timeLeft = (60 * 32) - 40;
             }
-            if (AITimer >= 120)
+            if (AITimer >= 80)
             {
-                Projectile.velocity *= 0.91f;
+                Projectile.velocity *= 0.82f;
                 Projectile.rotation += 0.01f * Projectile.direction;
 
                 if (AITimer % 20 == 0)
                 {
-                    SoundEngine.PlaySound(DTAssetLib.SwordSounds.SwiftSwing, Projectile.Center);
+                    SoundEngine.PlaySound(SoundID.Item30, Projectile.Center);
                     Opus.RadialSpreadProjectileRandom(ModContent.ProjectileType<GaiaOrb>(), 1, Projectile.Center, 100, 20, 10);
                 }
             }

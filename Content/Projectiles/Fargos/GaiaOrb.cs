@@ -84,7 +84,7 @@ namespace DestroyerTest.Content.Projectiles.Fargos
 
 			Opus.ReturnToDefaultDrawing(spriteBatch);
 
-			Main.EntitySpriteDraw(DTAssetLib.FeatheredCircle.Value, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, DTAssetLib.FeatheredCircle.Value.Size() / 2, new Vector2(0.5f, 1 + (0.1f * Projectile.velocity.Length())), SpriteEffects.None, 0);
+			Main.EntitySpriteDraw(DTAssetLib.FeatheredCircle.Value, Projectile.Center - Main.screenPosition, null, Color.White with { A = 0 }, Projectile.rotation, DTAssetLib.FeatheredCircle.Value.Size() / 2, new Vector2(0.5f, 1 + (0.1f * Projectile.velocity.Length())), SpriteEffects.None, 0);
 
 			return false;
 		}

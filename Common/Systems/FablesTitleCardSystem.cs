@@ -155,22 +155,22 @@ namespace DestroyerTest.Common.Systems
 
             public override string Name()
             {
-                return Language.GetTextValue("Mods.DestroyerTest.NPCs.NightmareRoseBoss.Fables.Name");
+                return Language.GetTextValue("Mods.DestroyerTest.NPCs.NightmareRoseBossBoss.Fables.Name");
             }
 
             public override string Title()
             {
                 if (DestroyerTestMod.MasochistIsActive)
                 {
-                    return Language.GetTextValue("Mods.DestroyerTest.NPCs.NightmareRoseBoss.Fables.Title.Masochist");
+                    return Language.GetTextValue("Mods.DestroyerTest.NPCs.NightmareRoseBossBoss.Fables.Title.Masochist");
                 }
                 if (DestroyerTestMod.EternityIsActive && !DestroyerTestMod.MasochistIsActive)
                 {
-                    return Language.GetTextValue("Mods.DestroyerTest.NPCs.NightmareRoseBoss.Fables.Title.Eternity");
+                    return Language.GetTextValue("Mods.DestroyerTest.NPCs.NightmareRoseBossBoss.Fables.Title.Eternity");
                 }
                 if (!DestroyerTestMod.EternityIsActive && !DestroyerTestMod.MasochistIsActive)
                 {
-                    return Language.GetTextValue("Mods.DestroyerTest.NPCs.NightmareRoseBoss.Fables.Title.Default");
+                    return Language.GetTextValue("Mods.DestroyerTest.NPCs.NightmareRoseBossBoss.Fables.Title.Default");
                 }
                 return "";
             }

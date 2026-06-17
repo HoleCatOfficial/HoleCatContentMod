@@ -85,6 +85,14 @@ NightmareRoseBoss: {
 		longer locate her son in the shade world, as he had left to become an apprentice of Hekate, under the guise of seizing his true potential..."
 		- Excerpt from 'Folk Tales of Pherasia: Volume LXXIII', by Uriel XXV.
 		'''
+	BestiaryEntry3:
+		'''
+		"Last anyone had heard from Idri, he was ill. Gravely so. Many were confused, like Hekate was, as Idri was a demigod.
+		There was no way he would fall victim to any run-of-the-mill illness, so accusations of poison were leveled at Hekate in droves, which led to the destruction
+		of their cottage by a mob. While they easily could have rebuilt their cottage, being a god and all, they decided that the people of Pherasia had made their point
+		perfectly clear, disappearing to a faraway land to live out their new aspirations of being a gardener."
+		- Transcripts of the late Terníf the Holy.
+		'''
 
 	Fables: {
 		Name: The Nightmare Rose
@@ -92,7 +100,7 @@ NightmareRoseBoss: {
 		Title: {
 			Default: Idri's Fate
 			Eternity: Idri's Torment
-			Masochist: Idri is Gone
+			Masochist: Idri's Husk
 		}
 	}
 }

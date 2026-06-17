@@ -79,7 +79,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter.ElementalShots
         public override void PostAI()
         {
             UpdateLerpTime();
-			MainColor = ColorLib.StellarFireGradient(LifetimeCompletion * 8f);
+			MainColor = ColorLib.StellarFireGradient(LifetimeCompletion);
 
             TrailColor = MainColor;
             DustColor = MainColor;

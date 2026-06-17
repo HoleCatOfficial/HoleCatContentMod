@@ -134,9 +134,9 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
 			Opus.ReturnToDefaultDrawing(spriteBatch);
 
-            Main.EntitySpriteDraw(DTAssetLib.MiscSparkle144.Value, Projectile.Center - Main.screenPosition, null, TrailColor * 0.5f, Projectile.rotation, DTAssetLib.MiscSparkle144.Value.Size() / 2, new Vector2(1f, 1.5F + (0.1f * Projectile.velocity.Length())), SpriteEffects.None, 0);
+            Main.EntitySpriteDraw(DTAssetLib.MiscSparkle144.Value, Projectile.Center - Main.screenPosition, null, TrailColor with { A = 0 } * 0.5f, Projectile.rotation, DTAssetLib.MiscSparkle144.Value.Size() / 2, new Vector2(1f, 1.5F + (0.1f * Projectile.velocity.Length())), SpriteEffects.None, 0);
 
-			Main.EntitySpriteDraw(DTAssetLib.MiscSparkle144.Value, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, DTAssetLib.MiscSparkle144.Value.Size() / 2, new Vector2(0.5f, 1 + (0.1f * Projectile.velocity.Length())), SpriteEffects.None, 0);
+			Main.EntitySpriteDraw(DTAssetLib.MiscSparkle144.Value, Projectile.Center - Main.screenPosition, null, Color.White with { A = 0 }, Projectile.rotation, DTAssetLib.MiscSparkle144.Value.Size() / 2, new Vector2(0.5f, 1 + (0.1f * Projectile.velocity.Length())), SpriteEffects.None, 0);
 
 			return false;
 		}

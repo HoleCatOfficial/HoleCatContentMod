@@ -88,7 +88,10 @@ namespace DestroyerTest.Content.Projectiles.player.Potion
                 if (npc != null && Projectile.ai[0] % 60 == 0)
                 {
                     NPC.HitInfo hit = new NPC.HitInfo() { Damage = 150, Knockback = 1f, HitDirection = npc.Center.X > Projectile.Center.X ? 1 : -1 };
-                    npc.StrikeNPC(hit);
+                    if (!npc.dontTakeDamage)
+                    {
+                        npc.StrikeNPC(hit);
+                    }
                     ShimmeringFlames.ShimmerBurn(npc, false);
                 }
             }

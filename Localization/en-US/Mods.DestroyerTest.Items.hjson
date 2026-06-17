@@ -2625,12 +2625,12 @@ BeeHeadress: {
 }
 
 RoseSoul: {
-	DisplayName: Soul of the Conglomerated Child of Mother Darkness
+	DisplayName: Soul of the Fallen Fighter
 	Tooltip:
 		'''
 		Increases max health to 240 when consumed.
 		You can only get one per world, and it can only be consumed once.
-		"The shade world weeps."
+		"The shade world weeps, for its one savior against Mother Darkness is gone."
 		'''
 }
 

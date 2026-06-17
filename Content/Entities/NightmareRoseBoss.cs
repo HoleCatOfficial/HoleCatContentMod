@@ -131,7 +131,7 @@ namespace DestroyerTest.Content.Entities
                 NPC.lifeMax = 420000;
                 NPC.defense = 30;
             }
-            if (!DestroyerTestMod.MasochistIsActive)
+            if (DestroyerTestMod.MasochistIsActive)
             {
                 NPC.lifeMax = 700000;
                 NPC.defense = 35;
@@ -156,8 +156,8 @@ namespace DestroyerTest.Content.Entities
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
-                new FlavorTextBestiaryInfoElement(Language.GetTextValue("Mods.DestroyerTest.NPCs.NightmareRoseBoss.BestiaryEntry1")),
-                new FlavorTextBestiaryInfoElement(Language.GetTextValue("Mods.DestroyerTest.NPCs.NightmareRoseBoss.BestiaryEntry2")),
+                new FlavorTextBestiaryInfoElement(Language.GetTextValue("Mods.DestroyerTest.NPCs.NightmareRoseBossBossBoss.BestiaryEntry1")),
+                new FlavorTextBestiaryInfoElement(Language.GetTextValue("Mods.DestroyerTest.NPCs.NightmareRoseBossBossBoss.BestiaryEntry2")),
                 BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.TheCorruption
             });
         }
@@ -336,7 +336,7 @@ namespace DestroyerTest.Content.Entities
             NPCHead = NPC.Center + new Vector2(0, -79);
             Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Bottom, Vector2.Zero, ModContent.ProjectileType<SpawnSoul>(), 0, 0);
 
-
+            SunlightModification.Reset();
         }
 
         void ShineHead()
@@ -823,7 +823,7 @@ namespace DestroyerTest.Content.Entities
 
             if (player.Distance(NPC.Center) >= BorderRad && BorderActive && BorderRad > 150)
             {
-                player.Hurt(new PlayerDeathReason() { CustomReason = NetworkText.FromKey("Mods.DestroyerTest.NPCs.NightmareRose.ExitBarrierDeath", player.name) }, 90, 0, false, true, -1, false, 9, 9, 0);
+                player.Hurt(new PlayerDeathReason() { CustomReason = NetworkText.FromKey("Mods.DestroyerTest.NPCs.NightmareRoseBossBossBoss.ExitBarrierDeath", player.name) }, 90, 0, false, true, -1, false, 9, 9, 0);
             }
             if (player.Distance(NPC.Center) < BorderRad && BorderActive)
             {
@@ -868,11 +868,13 @@ namespace DestroyerTest.Content.Entities
                 DesperationTimer = 0; // reset on entry
             }
 
-            if (player.dead)
+            if (player.statLife <= 0)
             {
+                SunlightModification.Reset();
                 DeathInterval--;
                 if (DeathInterval <= 0)
                 {
+                    SunlightModification.Reset();
                     NPC.active = false;
                 }
             }
@@ -887,11 +889,11 @@ namespace DestroyerTest.Content.Entities
             }
             if (DestroyerTestMod.EternityIsActive && !DestroyerTestMod.MasochistIsActive)
             {
-                HealAmount = 35;
+                HealAmount = 50;
             }
-            if (!DestroyerTestMod.MasochistIsActive)
+            if (DestroyerTestMod.MasochistIsActive)
             {
-                HealAmount = 60;
+                HealAmount = 80;
             }
 
             if (anyNodesAlive)
@@ -1455,7 +1457,7 @@ namespace DestroyerTest.Content.Entities
 
                         if (DTCrossMod.CalamityIsLoaded)
                         {
-                            DTCrossMod.CalamityMod.Call("SetShouldClossBossHealthBar", NPC, false);
+                            DTCrossMod.CalamityMod.Call("SetShouldCloseBossHealthBar", NPC, false);
                         }
 
                         LaserRotOffset += 0.03f;
@@ -1911,25 +1913,51 @@ namespace DestroyerTest.Content.Entities
         public void BlossomMines(Vector2 SpawnPos)
         {
             SoundEngine.PlaySound(SoundID.Item163);
-            for (int e = 0; e < 6; e++)
+            if (!DestroyerTestMod.MasochistIsActive)
             {
-                Vector2 minePosition = Main.rand.NextVector2FromRectangle(
-                new Rectangle(
-                    (int)Main.LocalPlayer.MountedCenter.X - Main.screenWidth / 2,
-                    (int)Main.LocalPlayer.MountedCenter.Y - Main.screenHeight / 2,
-                    Main.screenWidth,
-                    Main.screenHeight
-                    )
-                );
+                for (int e = 0; e < 6; e++)
+                {
+                    Vector2 minePosition = Main.rand.NextVector2FromRectangle(
+                    new Rectangle(
+                        (int)Main.LocalPlayer.MountedCenter.X - Main.screenWidth / 2,
+                        (int)Main.LocalPlayer.MountedCenter.Y - Main.screenHeight / 2,
+                        Main.screenWidth,
+                        Main.screenHeight
+                        )
+                    );
 
-                Projectile.NewProjectile(
-                    Entity.GetSource_FromThis(),
-                    minePosition,
-                    Vector2.Zero,
-                    ModContent.ProjectileType<BlossomMine>(),
-                    10,
-                    0f
-                );
+                    Projectile.NewProjectile(
+                        Entity.GetSource_FromThis(),
+                        minePosition,
+                        Vector2.Zero,
+                        ModContent.ProjectileType<BlossomMine>(),
+                        10,
+                        0f
+                    );
+                }
+            }
+            else
+            {
+                for (int e = 0; e < 6; e++)
+                {
+                    Vector2 minePosition = Main.rand.NextVector2FromRectangle(
+                    new Rectangle(
+                        (int)Main.LocalPlayer.MountedCenter.X - Main.screenWidth / 2,
+                        (int)Main.LocalPlayer.MountedCenter.Y - Main.screenHeight / 2,
+                        Main.screenWidth,
+                        Main.screenHeight
+                        )
+                    );
+
+                    Projectile.NewProjectile(
+                        Entity.GetSource_FromThis(),
+                        minePosition,
+                        Vector2.Zero,
+                        ModContent.ProjectileType<DarkLaserMine>(),
+                        10,
+                        0f
+                    );
+                }
             }
         }
 
@@ -2054,6 +2082,24 @@ namespace DestroyerTest.Content.Entities
 
             float rotationOffset = dartRotation;
 
+            int DartDamage()
+            {
+                if (!DestroyerTestMod.EternityIsActive)
+                {
+                    return 10;
+                }
+                if (DestroyerTestMod.EternityIsActive && !DestroyerTestMod.MasochistIsActive)
+                {
+                    return 25;
+                }
+                if (DestroyerTestMod.MasochistIsActive)
+                {
+                    return 40;
+                }
+
+                return 1;
+            }
+
 
             Projectile Dart = null;
 
@@ -2074,7 +2120,7 @@ namespace DestroyerTest.Content.Entities
                         spawnPosition,
                         toOrigin * 2f,
                         ModContent.ProjectileType<TenebrisDart>(),
-                        10,
+                        DartDamage(),
                         2
                     );
                     Dart.timeLeft = 100;
@@ -2099,7 +2145,7 @@ namespace DestroyerTest.Content.Entities
                         NPCHead,
                         velocity,
                         ModContent.ProjectileType<TenebrisLance>(),
-                        10,
+                        DartDamage(),
                         6
                     );
                 }
@@ -2117,6 +2163,9 @@ namespace DestroyerTest.Content.Entities
                 VortexFireUD = Main.rand.NextBool(2);
                 SetDir3 = false;
             }
+
+
+
             if (DestroyerTestMod.EternityIsActive && !Main.masterMode)
             {
                 for (int r = 0; r < 3; r++)

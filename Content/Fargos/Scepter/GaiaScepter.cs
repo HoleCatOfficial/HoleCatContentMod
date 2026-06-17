@@ -37,7 +37,7 @@ namespace DestroyerTest.Content.Fargos.Scepter
 		{
 			base.SetDefaults();
 
-			ShootDMG = 72;
+			ShootDMG = 200;
 			ShootCrit = 2;
 			ThrowCrit = 40;
 			KB = 8;

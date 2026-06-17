@@ -259,7 +259,7 @@ namespace DestroyerTest.Common.Systems
                 sb.Draw(texture, centered, color);
             };
             public static BossChecklistEntry NightmareRose = new BossChecklistEntry(
-                Language.GetText("Mods.DestroyerTest.NPCs.NightmareRoseBoss.InternalName"),
+                Language.GetText("Mods.DestroyerTest.NPCs.NightmareRoseBossBoss.InternalName"),
                 Language.GetText("Mods.DestroyerTest.BossChecklist.NightmareRoseBoss.Hint"),
                 ModContent.NPCType<NightmareRoseBoss>(),
                 18.0001f,
