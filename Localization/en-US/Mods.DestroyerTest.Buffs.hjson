@@ -472,3 +472,8 @@ ShadeInfernoRingBuff: {
 	DisplayName: Shade Inferno Ring Buff
 	Description: Mods.DestroyerTest.Buffs.ShadeInfernoRingBuff.Description
 }
+
+BlackKnifeBuff: {
+	DisplayName: Black Knife Buff
+	Description: Mods.DestroyerTest.Buffs.BlackKnifeBuff.Description
+}

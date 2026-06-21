@@ -18,6 +18,7 @@ using System;
 using Terraria.DataStructures;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.EntitiesProjectiles;
+using DestroyerTest.Content.MeleeWeapons;
 
 namespace DestroyerTest.Content.Entities
 {
@@ -25,21 +26,23 @@ namespace DestroyerTest.Content.Entities
     {
         public override void SetStaticDefaults()
         {
+            Main.npcFrameCount[Type] = 6;
         }
         public override void SetDefaults()
         {
             NPC.width = 40;
             NPC.height = 40;
             NPC.damage = 20;
-            NPC.defense = 15;
-            NPC.lifeMax = 400;
+            NPC.defense = 50;
+            NPC.lifeMax = 600;
             NPC.value = 1670f;
-            NPC.knockBackResist = 0.8f;
+            NPC.knockBackResist = 0f;
             NPC.aiStyle = -1;
-            NPC.HitSound = DTAssetLib.Djinn.Hit;
-            NPC.DeathSound = DTAssetLib.Djinn.Kill;
+            NPC.HitSound = DTAssetLib.Djinn.Hit with { PitchVariance = 0.2f };
+            NPC.DeathSound = DTAssetLib.Djinn.Kill with { PitchVariance = 0.2f };
             NPC.noTileCollide = true;
             NPC.noGravity = true;
+            NPC.scale = 1.6f;
         }
 
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
@@ -49,16 +52,65 @@ namespace DestroyerTest.Content.Entities
             });
         }
 
+        int CurrentFrame = 0;
+        public override void FindFrame(int frameHeight)
+        {
+            NPC.frameCounter++;
+
+            if (NPC.frameCounter % 3 == 0)
+            {
+                CurrentFrame++;
+
+                if (CurrentFrame > 5)
+                {
+                    CurrentFrame = 0;
+                }
+            }
+
+            NPC.frame.Y = CurrentFrame * frameHeight;
+        }
+
+        //Ignore this.
+        bool AfterImages = false;
+        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            if (AfterImages)
+            {
+                
+            }
+
+            Texture2D Tex = TextureAssets.Npc[Type].Value;
+            Vector2 Origin = new Vector2(NPC.frame.Width / 2, Tex.Height / Main.npcFrameCount[NPC.type] / 2);
+            
+            SpriteEffects FX = NPC.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
+
+            Main.EntitySpriteDraw(Tex, NPC.Center - screenPos, NPC.frame, drawColor, NPC.rotation, Origin, 1f, FX, 0f);
+            return false;
+        }
+
 
         public override void AI()
         {
+            Player player = Main.LocalPlayer;
             NPC.TargetClosest();
-            Player player = Main.player[NPC.target];
+            NPC.aiStyle = NPCAIStyleID.Firefly;
+
+            if (Math.Abs(NPC.velocity.X) > 6f)
+            {
+                NPC.spriteDirection = Math.Sign(NPC.velocity.X);
+            }
+
+            if (NPC.HasValidTarget)
+            {
+                 player = Main.player[NPC.target];
+            }
 
             NPC.rotation = NPC.velocity.ToRotation() * 0.1f;
             Lighting.AddLight(NPC.Center, ColorLib.Rift.ToVector3() * 0.6f);
+            
             if (NPC.HasValidTarget || NPC.Distance(player.Center) > 500f)
             {
+
                 AI_HoverNear(player);
                 return;
             }
@@ -67,22 +119,12 @@ namespace DestroyerTest.Content.Entities
                 AI_Idle(player);
                 return;
             }
+            
         }
 
         public void AI_Idle(Player player)
         {
-            wait = 0;
-            NPC.localAI[0] += 1f;
-            if (NPC.localAI[0] % 120f == 0f)
-            {
-                NPC.velocity += new Vector2(Main.rand.NextFloat(-2f, 2f), Main.rand.NextFloat(-20f, -40f));
-            }
-
-            if (NPC.velocity.Length() > 0.1f)
-            {
-                NPC.velocity *= 0.98f;
-            }
-
+            NPC.aiStyle = NPCAIStyleID.Firefly;
             AI_ValidateTarget(player);
             
         }
@@ -95,111 +137,80 @@ namespace DestroyerTest.Content.Entities
             }
         }
 
-        private Vector2 targetpos = Vector2.Zero;
-        private int wait = 0;
+        int HoverTimer = 0;
+        Vector2 DirectionToPlayer;
+        Vector2 StoredCenter;
+        Vector2 EndPosition;
+        float StoredLength = 0f;
+
+        int DashCount = 0;
+
         public void AI_HoverNear(Player target)
         {
-            NPC.localAI[1] += 1f;
-            if (NPC.localAI[1] % 300f == 0f)
+            HoverTimer++;
+            bool CanUpdateTargetDirection = HoverTimer % 120 == 0 || NPC.Distance(EndPosition) < 0.5f;
+
+            //Get Direction to player when allowed
+            if (CanUpdateTargetDirection)
             {
-                targetpos = target.Center + Main.rand.NextVector2Circular(1000, 1000);
-                NPC.localAI[1] = 0f;
-                NPC.localAI[2] ++;
-                if (NPC.localAI[2] % 3 == 0f)
+                StoredCenter = target.Center;
+                EndPosition = StoredCenter + new Vector2(Main.rand.Next(100, 300), 0).RotatedBy(DirectionToPlayer.ToRotation());
+            }
+
+            DirectionToPlayer = StoredCenter - NPC.Center;
+
+            //Overshoot the end position past the stored location
+           
+            Vector2 IdealVelocity = EndPosition - NPC.Center;
+            IdealVelocity.Normalize();
+
+            float distance = NPC.Center.Distance(EndPosition);
+
+            if (CanUpdateTargetDirection)
+            {
+                StoredLength = distance;
+                SoundEngine.PlaySound(SoundID.DD2_BookStaffCast, NPC.Center);
+                DashCount++;
+
+                if (DashCount % 3 == 0)
                 {
-                    SoundEngine.PlaySound(DTAssetLib.Djinn.Laugh, NPC.Center);
+                    SoundEngine.PlaySound(DTAssetLib.Djinn.Laugh with { PitchVariance = 0.4f }, NPC.Center);
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, IdealVelocity * 6f, ModContent.ProjectileType<SunscorchedDjinnBomb>(), 40, 80);
+                }
+                else
+                {
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, IdealVelocity * 6f, ModContent.ProjectileType<RiftSparkHostile_NoHoming>(), 40, 80);
                 }
             }
 
-            if (targetpos != Vector2.Zero)
-            {
-                Vector2 direction = targetpos - NPC.Center;
-                direction.Normalize();
-                direction *= 10f;
+            float progress = MathHelper.Clamp(distance / StoredLength, 0f, 1f);
 
-                NPC.velocity = (NPC.velocity * 20f + direction) / 21f;
+            NPC.velocity = IdealVelocity * MathHelper.SmoothStep(0f, 12f, progress);
+
+            if (distance <= 0.01f)
+            {
+                CanUpdateTargetDirection = true;
             }
 
-            if (wait++ > 180f)
-            {
-                AI_Attack();
-            }
+            //Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.RedTorch);
+            //Dust.NewDustPerfect(EndPosition, DustID.GreenTorch);
+            
+
         }
 
-        private bool releasestars = false;
-        private List<Projectile> OwnedStars = new List<Projectile>();
+     
 
         public void AI_Attack()
         {
-            int numStars = Main.expertMode ? 10 : 5;
-
-            NPC.localAI[3]++;
-
-            bool orbiting = NPC.localAI[3] < 120f; // orbit briefly
-            bool resetting = NPC.localAI[3] >= 660f;
-
-            if (resetting)
-            {
-                NPC.localAI[3] = 0f;
-                OwnedStars.Clear();
-                return;
-            }
-
-            // Spawn once, up to cap
-            while (OwnedStars.Count < numStars)
-            {
-                Projectile star = Projectile.NewProjectileDirect(
-                    NPC.GetSource_FromAI(),
-                    NPC.Center,
-                    Vector2.Zero,
-                    ModContent.ProjectileType<SunscorchedDjinnStar>(),
-                    10,
-                    3
-                );
-
-                OwnedStars.Add(star);
-            }
-
-            foreach (Projectile s in OwnedStars)
-            {
-                if (!orbiting)
-                {
-                    s.ai[1] = 1f;
-                    s.velocity += new Vector2(0, 0.01f);
-                }
-            }
-
-            if (!orbiting)
-            {
-                return;
-            }
-
-            var orbitPos = Opus.GetEquidistantOrbitVectors(
-                numStars,
-                NPC.Center,
-                0.5f,
-                100f
-            );
-
-            for (int i = 0; i < OwnedStars.Count; i++)
-            {
-                Projectile star = OwnedStars[i];
-                if (!star.active)
-                    continue;
-
-                star.Center = orbitPos[i];
-                star.velocity = Vector2.Zero;
-            }
+            
         }
-
-
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
             bool v = ModContent.GetInstance<RiftDesertUnderground>().IsBiomeActive(spawnInfo.Player);
 			if (v)
 			{
-				return 0.3f;
+				return 0.08f;
 			}
 			return 0f;
 		}

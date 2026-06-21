@@ -222,9 +222,9 @@ namespace DestroyerTest.Content.SummonItems
 
             Vector2 drawOrigin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
 
-            Trail.ColorStart = ThemeColor;
-            Trail.ColorEnd = ThemeColor;
-            Trail.Draw(Projectile);
+            //Trail.ColorStart = ThemeColor;
+            //Trail.ColorEnd = ThemeColor;
+            //Trail.Draw(Projectile);
 
             if (AfterImage && AfterImageColorless)
             {
@@ -355,6 +355,7 @@ namespace DestroyerTest.Content.SummonItems
 
             if (Projectile.Distance(owner.Center) > TeleDist)
             {
+                SoundEngine.PlaySound(TeleSound, Projectile.Center);
                 Projectile.Center = idlePosition + new Vector2(0, -20).RotatedByRandom(MathHelper.Pi);
             }
 
@@ -659,7 +660,7 @@ namespace DestroyerTest.Content.SummonItems
         }
         public void TeleParticle_PRT(int PRTID, Color color, float Scale)
         {
-            PRTLoader.NewParticle(PRTID, Projectile.Center, new Vector2(0, 0.001f), color, Scale);
+            //PRTLoader.NewParticle(PRTID, Projectile.Center, new Vector2(0, 0.001f), color, Scale);
         }
         private void SearchForTargets(Player owner, out bool foundTarget, out float distanceFromTarget, out Vector2 targetCenter)
         {
@@ -672,6 +673,7 @@ namespace DestroyerTest.Content.SummonItems
 
             if (Projectile.Distance(owner.Center) > TeleDist)
             {
+                SoundEngine.PlaySound(TeleSound, Projectile.Center);
                 Projectile.Center = owner.Center + new Vector2(0, -20).RotatedByRandom(MathHelper.Pi);
             }
 
@@ -751,7 +753,7 @@ namespace DestroyerTest.Content.SummonItems
                         Projectile.velocity = (Projectile.velocity * (inertia - 1) + direction) / inertia;
                         if (distanceFromTarget < 50f)
                         {
-                            SoundEngine.PlaySound(DashSound);
+                            SoundEngine.PlaySound(DashSound, Projectile.Center);
                             Projectile.ai[1] = 1; // Enter strike-through phase
                             Projectile.ai[0] = 0; // Reset timer
                         }
@@ -801,6 +803,7 @@ namespace DestroyerTest.Content.SummonItems
 
             if (Projectile.Distance(owner.Center) > TeleDist)
             {
+                SoundEngine.PlaySound(TeleSound, Projectile.Center);
                 Projectile.Center = owner.Center + new Vector2(0, -20).RotatedByRandom(MathHelper.Pi);
             }
         }

@@ -1,4 +1,6 @@
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
+using DestroyerTest.Common.Interfaces;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Equips;
@@ -20,19 +22,28 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles
 {
-	public class TenebrisStarFriendly : ModProjectile
+	public class TenebrisStarFriendly : ModProjectile, IHomingProjectile
 	{
-		public override string Texture => DTUtils.NoTexture;
-		private NPC NPCTarget
-		{
-			get => Projectile.ai[0] == 0 ? null : Main.npc[(int)Projectile.ai[0] - 1];
-			set
-			{
-				Projectile.ai[0] = value == null ? 0 : value.whoAmI + 1;
-			}
-		}
 
-		public float DelayTimer;
+		public override string Texture => DTUtils.NoTexture;
+
+        bool IHomingProjectile.TracksNPCs => true;
+
+        bool IHomingProjectile.TracksPlayers => false;
+
+        float IHomingProjectile.HomingTurnSpeed => 15;
+
+        bool IHomingProjectile.UsesHomingAcceleration => false;
+
+        float IHomingProjectile.HomingAccelAmount => 1f;
+
+        float IHomingProjectile.HomingMaxAccel => 1f;
+
+        float IHomingProjectile.DetectRadius => 2800;
+
+        bool IHomingProjectile.CanHome => DelayTimer >= 10;
+
+        public float DelayTimer;
 
         public override void SetStaticDefaults()
         {
@@ -86,7 +97,12 @@ namespace DestroyerTest.Content.Projectiles
 			
 			Projectile.rotation += Projectile.direction * 0.07f;
 
-			
+			if (Main.rand.NextBool(10))
+			{
+				TenebrousCloudParticle Cloud = new();
+				Cloud.Initialize(Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Projectile.velocity * 0.1f, ColorLib.TenebrisGradient * 0.6f, 0.8f, 0.2f, 120);
+				ParticleEngine.BehindProjectiles.Add(Cloud);
+			}
 
 			Lighting.AddLight(Projectile.Center, ColorLib.TenebrisGradient.ToVector3() * 0.2f);
 
@@ -97,56 +113,7 @@ namespace DestroyerTest.Content.Projectiles
 
 			float maxDetectRadius = 2800f;
 
-
-			if (NPCTarget == null)
-			{
-				NPCTarget = FindClosestNPC(maxDetectRadius);
-			}
-
-
-			if (NPCTarget != null && !IsValidNPC(NPCTarget))
-			{
-				NPCTarget = null;
-			}
-
-
-			if (NPCTarget == null)
-				return;
-
-			float length = Projectile.velocity.Length();
-			float targetAngle = Projectile.AngleTo(NPCTarget.Center);
-			Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(15)).ToRotationVector2() * length;
-		
 		}
-		public NPC FindClosestNPC(float maxDetectDistance)
-		{
-			NPC closestNPC = null;
-
-			float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
-
-			foreach (var target in Main.ActiveNPCs)
-			{
-				if (IsValidNPC(target))
-				{
-
-					float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, Projectile.Center);
-
-					if (sqrDistanceToTarget < sqrMaxDetectDistance)
-					{
-						sqrMaxDetectDistance = sqrDistanceToTarget;
-						closestNPC = target;
-					}
-				}
-			}
-
-			return closestNPC;
-		}
-
-		public bool IsValidNPC(NPC target)
-		{
-			return target.CanBeChasedBy();
-		}
-
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
 			Player player = Main.player[0];
@@ -170,12 +137,12 @@ namespace DestroyerTest.Content.Projectiles
 				}
 			}
 		}
-
-		
-
         public override void OnKill(int timeLeft)
         {
-			Dust.NewDust(Projectile.position, Projectile.Hitbox.Width, Projectile.Hitbox.Height, DustID.TintableDustLighted, Main.rand.NextFloat(-1, 1.1f), Main.rand.NextFloat(-1, 1.1f), 0, ColorLib.TenebrisGradient, 2f);
+            for (int i = 0; i < 5; i++)
+            {
+                Dust.NewDust(Projectile.position, Projectile.Hitbox.Width, Projectile.Hitbox.Height, DustID.TintableDustLighted, Main.rand.NextFloat(-1, 1.1f), Main.rand.NextFloat(-1, 1.1f), 0, ColorLib.TenebrisGradient, 2f);
+            }
         }
 
     }
@@ -231,7 +198,14 @@ namespace DestroyerTest.Content.Projectiles
 
             Projectile.rotation += Projectile.direction * 0.07f;
 
-			Lighting.AddLight(Projectile.Center, ColorLib.TenebrisGradient.ToVector3() * 0.2f);
+            if (Main.rand.NextBool(10))
+            {
+                TenebrousCloudParticle Cloud = new();
+                Cloud.Initialize(Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Projectile.velocity * 0.06f, ColorLib.TenebrisGradient * 0.6f, 1f, 0.2f, 120);
+                ParticleEngine.BehindProjectiles.Add(Cloud);
+            }
+
+            Lighting.AddLight(Projectile.Center, ColorLib.TenebrisGradient.ToVector3() * 0.2f);
 		}
 
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
@@ -258,10 +232,13 @@ namespace DestroyerTest.Content.Projectiles
 			}
 		}
 
-        public override void OnKill(int timeLeft)
-        {
-			Dust.NewDust(Projectile.position, Projectile.Hitbox.Width, Projectile.Hitbox.Height, DustID.TintableDustLighted, Main.rand.NextFloat(-1, 1.1f), Main.rand.NextFloat(-1, 1.1f), 0, ColorLib.TenebrisGradient, 2f);
-        }
+		public override void OnKill(int timeLeft)
+		{
+			for (int i = 0; i < 5; i++)
+			{
+				Dust.NewDust(Projectile.position, Projectile.Hitbox.Width, Projectile.Hitbox.Height, DustID.TintableDustLighted, Main.rand.NextFloat(-1, 1.1f), Main.rand.NextFloat(-1, 1.1f), 0, ColorLib.TenebrisGradient, 2f);
+			}
+		}
 
     }
 }

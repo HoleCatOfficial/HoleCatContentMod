@@ -1,5 +1,6 @@
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
+using DestroyerTest.Common.Interfaces;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
@@ -11,6 +12,7 @@ using OpusLib;
 using ReLogic.Content;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using Terraria;
 using Terraria.Audio;
@@ -20,23 +22,18 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles
 {
-	public class ConstitutionStarFriendly : ModProjectile
+	public class ConstitutionStarFriendly : ModProjectile, IHomingProjectile
 	{
         public override string Texture => DTUtils.NoTexture;
-		private NPC NPCTarget
-		{
-			get => Projectile.ai[0] == 0 ? null : Main.npc[(int)Projectile.ai[0] - 1];
-			set
-			{
-				Projectile.ai[0] = value == null ? 0 : value.whoAmI + 1;
-			}
-		}
 
 		public float DelayTimer;
 
 		public override void SetStaticDefaults()
 		{
 			ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true;
+
+			ProjectileID.Sets.TrailCacheLength[Type] = 400;
+			ProjectileID.Sets.TrailingMode[Type] = 3;
 		}
 
 		public override void SetDefaults()
@@ -61,31 +58,7 @@ namespace DestroyerTest.Content.Projectiles
             trailOffset += 0.04f;
             SpriteBatch spriteBatch = Main.spriteBatch;
 
-            Opus.StartSpriteBatchForTrails(spriteBatch, BlendState.NonPremultiplied, SpriteSortMode.Immediate);
-			if (TrailPositions.Count > 1)
-			{
-				List<ColoredVertex> ve = new List<ColoredVertex>();
-				float a = 0;
-
-				for (int i = TrailPositions.Count - 1; i > 0; i--)
-				{
-					float t = 1f - (i / (float)TrailPositions.Count);
-					Color b = (MainColor * t) * Projectile.Opacity;
-
-					Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
-					Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * 20;
-                    Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * 20;
-
-					DTUtils.AddStrips(ve, TrailPositions, i, offset, offset2, t, b, trailOffset);
-				}
-
-				GraphicsDevice gd = Main.graphics.GraphicsDevice;
-				if (ve.Count >= 3)
-				{
-                    gd.Textures[0] = DTAssetLib.Streak(2).Value;
-					gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2);
-				}
-			}
+			DTTrail.DrawTrail(spriteBatch, DTAssetLib.ConstitutionStarTrail.Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 24, MainColor, trailOffset, 4);
 
 			Opus.DrawTextureOnProj(DTAssetLib.StarAura, Projectile, MainColor * Projectile.Opacity, false, Projectile.velocity.ToRotation(), Projectile.scale, Projectile.scale);
 
@@ -96,9 +69,6 @@ namespace DestroyerTest.Content.Projectiles
             return false;
         }
 
-		public List<Vector2> TrailPositions = new();
-		public List<float> TrailRotations = new();
-		private const int TrailLength = 400;
         public SoundStyle Chase = new SoundStyle($"DestroyerTest/Assets/Audio/ConstitutionBoss/ConstitutionStar/Chase") { PitchVariance = 1f, MaxInstances = 0 };
 
         public bool Flag1 = false;
@@ -129,42 +99,39 @@ namespace DestroyerTest.Content.Projectiles
 				return (float)Time / (float)Lifetime;
 			}
 		}
-		public override void AI()
+
+        bool IHomingProjectile.TracksNPCs => true;
+
+        bool IHomingProjectile.TracksPlayers => false;
+
+        float IHomingProjectile.HomingTurnSpeed => 15f;
+
+        bool IHomingProjectile.UsesHomingAcceleration => true;
+
+		float IHomingProjectile.HomingAccelAmount => 1.04f;
+
+        float IHomingProjectile.HomingMaxAccel => 140f;
+
+        float IHomingProjectile.DetectRadius => 2800;
+
+        bool IHomingProjectile.CanHome => !StartKill && DelayTimer >= 20;
+
+        public override void AI()
         {
-            Vector2 lastPos = TrailPositions.Count > 0 ? TrailPositions[0] : Projectile.Center;
-			Vector2 newPos  = Projectile.Center;
-
-			float dist = Vector2.Distance(lastPos, newPos);
-			float step = 1f; // how closely to sample. tweak this!
-
-			if (dist > 0f)
-			{
-				int segments = (int)(dist / step);
-
-				for (int i = 1; i <= segments; i++)
-				{
-					Vector2 pos = Vector2.Lerp(lastPos, newPos, i / (float)segments);
-					TrailPositions.Insert(0, pos);
-					TrailRotations.Insert(0, Projectile.rotation);
-				}
-			}
-			else
-			{
-				TrailPositions.Insert(0, newPos);
-				TrailRotations.Insert(0, Projectile.rotation);
-			}
-
-
-			// Cap trail
-			while (TrailPositions.Count > TrailLength)
-				TrailPositions.RemoveAt(TrailPositions.Count - 1);
-			while (TrailRotations.Count > TrailLength)
-				TrailRotations.RemoveAt(TrailRotations.Count - 1);
-
+          
 			UpdateLerpTime();
-			MainColor = ColorLib.StellarFireGradient(LifetimeCompletion * 8f);
+			MainColor = ColorLib.StellarFireGradient(LifetimeCompletion);
 
             DelayTimer++;
+
+			if (DelayTimer == 21)
+			{
+                if (!Flag1)
+                {
+                    SoundEngine.PlaySound(SoundID.AbigailUpgrade, Projectile.Center);
+                    Flag1 = true;
+                }
+            }
 
             Projectile.rotation += Projectile.direction * 0.1f;
 
@@ -181,94 +148,18 @@ namespace DestroyerTest.Content.Projectiles
                     ParticleEngine.BehindProjectiles.Add(Particle);
 				}
 
-				if (DelayTimer < 20)
-				{
-					DelayTimer += 1;
-					return;
-				}
-
-				if (HomingTime > 0 && DelayTimer >= 20)
-				{
-					HomingTime--;
-				}
-				float maxDetectRadius = 2800f;
-
-			
-
-				if (NPCTarget == null)
-				{
-					NPCTarget = FindClosestNPC(maxDetectRadius);
-				}
 
 
-				if (NPCTarget != null && !IsValidNPC(NPCTarget))
-				{
-					NPCTarget = null;
-				}
-
-
-				if (NPCTarget == null)
-					return;
-
-				float targetAngle = Projectile.AngleTo(NPCTarget.Center);
-				if (HomingTime > 0)
-				{
-					Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(15)).ToRotationVector2() * Projectile.velocity.Length();
-				}
-
-				if (!Flag1)
-					{
-						SoundEngine.PlaySound(SoundID.AbigailUpgrade, Projectile.Center);
-						Flag1 = true;
-					}
-
-				// Acceleration
-				float speed = Projectile.velocity.Length();
-				float desiredSpeed = 20f; // your top speed
-				float acceleration = 0.3f; // how quickly it ramps up
-				if (HomingTime > 0)
-				{
-					if (speed < desiredSpeed)
-						speed += acceleration;
-					Projectile.velocity = Projectile.velocity.SafeNormalize(Vector2.Zero) * speed;
-				}
 			}
 
 			if (StartKill)
 			{
+
 				Projectile.velocity *= 0.97f;
 				Projectile.scale *= 0.97f;
 				Projectile.Opacity -= 0.01f;
 			}
         }
-		public NPC FindClosestNPC(float maxDetectDistance)
-		{
-			NPC closestNPC = null;
-
-			float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
-
-			foreach (var target in Main.ActiveNPCs)
-			{
-				if (IsValidNPC(target))
-				{
-
-					float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, Projectile.Center);
-
-					if (sqrDistanceToTarget < sqrMaxDetectDistance)
-					{
-						sqrMaxDetectDistance = sqrDistanceToTarget;
-						closestNPC = target;
-					}
-				}
-			}
-
-			return closestNPC;
-		}
-
-		public bool IsValidNPC(NPC target)
-		{
-			return target.CanBeChasedBy();
-		}
 
         public override bool? CanHitNPC(NPC target)
         {
@@ -305,8 +196,9 @@ namespace DestroyerTest.Content.Projectiles
 
 		public override void SetStaticDefaults()
 		{
-
-		}
+            ProjectileID.Sets.TrailCacheLength[Type] = 400;
+            ProjectileID.Sets.TrailingMode[Type] = 3;
+        }
 
 		public override void SetDefaults()
 		{
@@ -330,33 +222,9 @@ namespace DestroyerTest.Content.Projectiles
             trailOffset += 0.04f;
             SpriteBatch spriteBatch = Main.spriteBatch;
 
-            Opus.StartSpriteBatchForTrails(spriteBatch, BlendState.NonPremultiplied, SpriteSortMode.Immediate);
-			if (TrailPositions.Count > 1)
-			{
-				List<ColoredVertex> ve = new List<ColoredVertex>();
-				float a = 0;
+            DTTrail.DrawTrail(spriteBatch, DTAssetLib.ConstitutionStarTrail.Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 24, MainColor, trailOffset, 4);
 
-				for (int i = TrailPositions.Count - 1; i > 0; i--)
-				{
-					float t = 1f - (i / (float)TrailPositions.Count);
-					Color b = (MainColor * t) * Projectile.Opacity;
-
-					Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
-					Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * 20;
-                    Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * 20;
-
-					DTUtils.AddStrips(ve, TrailPositions, i, offset, offset2, t, b, trailOffset);
-				}
-
-				GraphicsDevice gd = Main.graphics.GraphicsDevice;
-				if (ve.Count >= 3)
-				{
-                    gd.Textures[0] = DTAssetLib.Streak(2).Value;
-					gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2);
-				}
-			}
-
-			Opus.DrawTextureOnProj(DTAssetLib.StarAura, Projectile, MainColor * Projectile.Opacity, false, Projectile.velocity.ToRotation(), Projectile.scale, Projectile.scale);
+            Opus.DrawTextureOnProj(DTAssetLib.StarAura, Projectile, MainColor * Projectile.Opacity, false, Projectile.velocity.ToRotation(), Projectile.scale, Projectile.scale);
 
             Opus.ReturnToDefaultDrawing(spriteBatch);
 
@@ -365,9 +233,7 @@ namespace DestroyerTest.Content.Projectiles
             return false;
         }
 
-		public List<Vector2> TrailPositions = new();
-		public List<float> TrailRotations = new();
-		private const int TrailLength = 400;
+	
         public SoundStyle Chase = new SoundStyle($"DestroyerTest/Assets/Audio/ConstitutionBoss/ConstitutionStar/Chase") { PitchVariance = 1f, MaxInstances = 0 };
 
 		public int Lifetime = 300;
@@ -398,42 +264,10 @@ namespace DestroyerTest.Content.Projectiles
        
 		public override void AI()
         {
-            Vector2 lastPos = TrailPositions.Count > 0 ? TrailPositions[0] : Projectile.Center;
-			Vector2 newPos  = Projectile.Center;
-
-			float dist = Vector2.Distance(lastPos, newPos);
-			float step = 1f; // how closely to sample. tweak this!
-
-			if (dist > 0f)
-			{
-				int segments = (int)(dist / step);
-
-				for (int i = 1; i <= segments; i++)
-				{
-					Vector2 pos = Vector2.Lerp(lastPos, newPos, i / (float)segments);
-					TrailPositions.Insert(0, pos);
-					TrailRotations.Insert(0, Projectile.rotation);
-				}
-			}
-			else
-			{
-				TrailPositions.Insert(0, newPos);
-				TrailRotations.Insert(0, Projectile.rotation);
-			}
-
-
-			// Cap trail
-			while (TrailPositions.Count > TrailLength)
-				TrailPositions.RemoveAt(TrailPositions.Count - 1);
-			while (TrailRotations.Count > TrailLength)
-				TrailRotations.RemoveAt(TrailRotations.Count - 1);
-
-            
-
             Projectile.rotation += Projectile.direction * 0.1f;
 
 			UpdateLerpTime();
-			MainColor = ColorLib.StellarFireGradient(LifetimeCompletion * 8f);
+			MainColor = ColorLib.StellarFireGradient(LifetimeCompletion);
 
             Lighting.AddLight(Projectile.Center,  MainColor.ToVector3() * 0.2f);
 

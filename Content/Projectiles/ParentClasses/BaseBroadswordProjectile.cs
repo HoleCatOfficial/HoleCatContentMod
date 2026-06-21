@@ -112,7 +112,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         public Line SL;
         public virtual void SparkEdge(Player owner, float Scale, Color color, int BlendMode = 2)
         {
-            sT = Projectile.Center + Projectile.rotation.ToRotationVector2() * ((Projectile.Size.Length() * Projectile.scale) * ScaleMult);
+            sT = Projectile.Center + Projectile.rotation.ToRotationVector2() * ((new Vector2(Projectile.width, Projectile.height) * Projectile.scale) * ScaleMult);
             SL = new Line(Owner.MountedCenter, sT);
             if (CurrentState == State.SwingDown)
             {
@@ -148,6 +148,9 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
         public override void AI()
         {
+            AdjustedScale = Owner.GetAdjustedItemScale(Owner.HeldItem) * ScaleMult;
+            Projectile.scale = AdjustedScale;
+
             AITimer++;
             if (HitCooldown > 0)
             {
@@ -156,8 +159,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             if (Owner.controlUseItem)
             {
                 Owner.SetDummyItemTime(60);
-                AdjustedScale = Owner.GetAdjustedItemScale(Owner.HeldItem) * ScaleMult;
-                Projectile.scale = AdjustedScale;
+                
                 if (CurrentState == State.Wait)
                 {
                     targetAngle = (Main.MouseWorld - Owner.MountedCenter);
@@ -367,8 +369,8 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             }
 
             Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-            Main.EntitySpriteDraw(Tex, Owner.MountedCenter - Main.screenPosition, null, SweepColor * SweepOpacity, (Projectile.rotation + MathHelper.PiOver4) + rOffset, Tex.Size() / 2, (AdjustedScale * TexBasedMod) * ScaleMult, FX);
-            Main.EntitySpriteDraw(TexH, Owner.MountedCenter - Main.screenPosition, null, SweepHighlightColor * SweepOpacity, (Projectile.rotation + MathHelper.PiOver4) + rOffset, Tex.Size() / 2, (AdjustedScale * TexBasedMod) * ScaleMult, FX);
+            Main.EntitySpriteDraw(Tex, Owner.MountedCenter - Main.screenPosition, null, SweepColor * SweepOpacity, (Projectile.rotation + MathHelper.PiOver4) + rOffset, Tex.Size() / 2, (TexBasedMod) * ScaleMult, FX);
+            Main.EntitySpriteDraw(TexH, Owner.MountedCenter - Main.screenPosition, null, SweepHighlightColor * SweepOpacity, (Projectile.rotation + MathHelper.PiOver4) + rOffset, Tex.Size() / 2, (TexBasedMod) * ScaleMult, FX);
             Main.spriteBatch.ResetToDefault();
             //Opus.ReturnToDefaultDrawing(Main.spriteBatch);
         }
@@ -426,10 +428,10 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
             DrawUnderBlade();
 
-            Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, null, Projectile.GetAlpha(lightColor) * Projectile.Opacity, (Projectile.rotation + rotationOffset) + RotationManualOffset, origin, Projectile.scale * AdjustedScale, effects, 0);
+            Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, null, Projectile.GetAlpha(lightColor) * Projectile.Opacity, (Projectile.rotation + rotationOffset) + RotationManualOffset, origin, Projectile.scale, effects, 0);
             if (Glowmask != null)
             {
-                Main.EntitySpriteDraw(Glowmask.Value, Projectile.Center - Main.screenPosition, null, Color.White * Projectile.Opacity, (Projectile.rotation + rotationOffset) + RotationManualOffset, origin, Projectile.scale * AdjustedScale, effects, 0);
+                Main.EntitySpriteDraw(Glowmask.Value, Projectile.Center - Main.screenPosition, null, Color.White * Projectile.Opacity, (Projectile.rotation + rotationOffset) + RotationManualOffset, origin, Projectile.scale, effects, 0);
             }
 
             DrawOverBlade();
@@ -493,7 +495,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
             armPosition.Y += Owner.gfxOffY;
             Projectile.Center = armPosition;
-            Projectile.scale = 1f * Owner.GetAdjustedItemScale(Owner.HeldItem) * ScaleMult;
+            //Projectile.scale = 1f * Owner.GetAdjustedItemScale(Owner.HeldItem) * ScaleMult;
 
             Owner.heldProj = Projectile.whoAmI;
         }

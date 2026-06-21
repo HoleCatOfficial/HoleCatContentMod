@@ -35,10 +35,10 @@ namespace DestroyerTest.Content.Entities
             NPC.width = 50;
             NPC.height = 50;
             NPC.damage = 20;
-            NPC.defense = 15;
+            NPC.defense = 0;
             NPC.lifeMax = 800;
             NPC.value = 1670f;
-            NPC.knockBackResist = 0.8f;
+            NPC.knockBackResist = 0.2f;
             NPC.aiStyle = NPCAIStyleID.EnchantedSword;
             NPC.HitSound = new SoundStyle("DestroyerTest/Assets/Audio/StellarBow/StellarBowArrowImpact", 4) { MaxInstances = 0, PitchVariance = 0.4f };
             NPC.DeathSound = SoundID.Item74;
@@ -154,7 +154,7 @@ namespace DestroyerTest.Content.Entities
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Living_Shadow>(), 1, 3, 10));
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<RiftWhipT1>(), 11, 1, 1));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<RiftWhipT1>(), 100, 1, 1));
         }
     }
 }

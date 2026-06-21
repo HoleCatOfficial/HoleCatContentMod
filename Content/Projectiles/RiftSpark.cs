@@ -363,8 +363,8 @@ namespace DestroyerTest.Content.Projectiles
             Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
             DTTrail.DrawTrail(spriteBatch, DTAssetLib.Streak(10).Value, TrailPositions, TrailRotations, 16, lightColor, trailOffset, 0.01f);
             Opus.DrawGlowOnProj(Projectile, lightColor, true);
-            Opus.DrawTextureOnProj(DTAssetLib.Star(3), Projectile, lightColor * 0.75f, false, trailOffset, 0.2f, 0.6f);
-            Opus.DrawTextureOnProj(DTAssetLib.Star(3), Projectile, lightColor, false, 0f, 0.2f, 0.6f);
+            Opus.DrawTextureOnProj(DTAssetLib.Star(3), Projectile, lightColor with { A = 0 } * 0.75f, false, trailOffset, 0.2f, 0.6f);
+            Opus.DrawTextureOnProj(DTAssetLib.Star(3), Projectile, lightColor with { A = 0 }, false, 0f, 0.2f, 0.6f);
             Opus.ReturnToDefaultDrawing(spriteBatch);
 
             return false;
@@ -539,18 +539,19 @@ namespace DestroyerTest.Content.Projectiles
 
             Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
             DTTrail.DrawTrail(spriteBatch, DTAssetLib.Streak(10).Value, TrailPositions, TrailRotations, 16, lightColor, trailOffset, 0.01f);
-            Opus.DrawGlowOnProj(Projectile, lightColor, true);
-            Opus.DrawTextureOnProj(DTAssetLib.Star(3), Projectile, lightColor * 0.75f, false, trailOffset, 0.2f, 0.6f);
-            Opus.DrawTextureOnProj(DTAssetLib.Star(3), Projectile, lightColor, false, 0f, 0.2f, 0.6f);
+            //Opus.DrawGlowOnProj(Projectile, lightColor, true);
+            Opus.DrawTextureOnProj(DTAssetLib.Star(3), Projectile, lightColor with { A = 0 } * 0.75f, false, trailOffset, 0.2f, 0.6f);
+            Opus.DrawTextureOnProj(DTAssetLib.Star(3), Projectile, lightColor with { A = 0 }, false, 0f, 0.2f, 0.6f);
             Opus.ReturnToDefaultDrawing(spriteBatch);
 
             return false;
         }
 
-        public override bool? CanHitNPC(NPC target)
+        public override bool CanHitPlayer(Player target)
         {
             return Projectile.timeLeft <= 240;
         }
+
         public List<Vector2> TrailPositions = new();
         public List<float> TrailRotations = new();
         private const int TrailLength = 400;

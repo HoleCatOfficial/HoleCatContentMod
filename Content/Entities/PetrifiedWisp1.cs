@@ -28,10 +28,10 @@ namespace DestroyerTest.Content.Entities
             NPC.width = 110;
             NPC.height = 110;
             NPC.damage = 20;
-            NPC.defense = 15;
+            NPC.defense = 5;
             NPC.lifeMax = 1200;
             NPC.value = 100f;
-            NPC.knockBackResist = 0.8f;
+            NPC.knockBackResist = 0.2f;
             NPC.aiStyle = NPCAIStyleID.Corite;
             NPC.HitSound = new SoundStyle("DestroyerTest/Assets/Audio/StellarBow/StellarBowArrowImpact", 4) { MaxInstances = 0, PitchVariance = 0.4f };
             NPC.DeathSound = SoundID.Item74;

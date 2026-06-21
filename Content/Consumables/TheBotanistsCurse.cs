@@ -1,27 +1,25 @@
 
 using DestroyerTest.Content.Entities;
+using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Rarity;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Consumables
 {
-    // This is the item used to summon a boss, in this case the modded Minion Boss from Example Mod. For vanilla boss summons, see comments in SetStaticDefaults
     public class TheBotanistsCurse : ModItem
     {
         public override void SetStaticDefaults()
         {
             Item.ResearchUnlockCount = 3;
-            ItemID.Sets.SortingPriorityBossSpawns[Type] = 12; // This helps sort inventory know that this is a boss summoning Item.
+            ItemID.Sets.SortingPriorityBossSpawns[Type] = 12;
 
-            // If this would be for a vanilla boss that has no summon item, you would have to include this line here:
-            // NPCID.Sets.MPAllowedEnemies[NPCID.Plantera] = true;
-
-            // Otherwise the UseItem code to spawn it will not work in multiplayer
         }
 
         public override void SetDefaults()
@@ -42,20 +40,50 @@ namespace DestroyerTest.Content.Consumables
             itemGroup = ContentSamples.CreativeHelper.ItemGroup.BossSpawners;
         }
 
-        public override bool CanUseItem(Player player)
+        public override bool AltFunctionUse(Player player)
         {
-            // If you decide to use the below UseItem code, you have to include !NPC.AnyNPCs(id), as this is also the check the server does when receiving MessageID.SpawnBoss.
-            // If you want more constraints for the summon item, combine them as boolean expressions:
-            //    return !Main.IsItDay() && !NPC.AnyNPCs(ModContent.NPCType<MinionBossBody>()); would mean "not daytime and no MinionBossBody currently alive"
-            return !NPC.AnyNPCs(ModContent.NPCType<NightmareRoseBoss>()) && player.ZoneCorrupt;
+            return true;
         }
 
+        public override bool CanUseItem(Player player)
+        {
+            if (player.altFunctionUse != 2)
+            {
+                return !NPC.AnyNPCs(ModContent.NPCType<NightmareRoseBoss>()) && player.ZoneCorrupt;
+            }
+            else
+            {
+                return player.ownedProjectileCounts[ModContent.ProjectileType<NightmareRoseArenaDisplay>()] < 1;
+            }
+        }
+
+        public override bool CanShoot(Player player)
+        {
+            return player.altFunctionUse == 2;
+        }
+
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
+            return false;
+        }
         public override bool? UseItem(Player player)
         {
-            if (player.whoAmI == Main.myPlayer)
+            if (player.altFunctionUse == 2)
             {
-                // If the player using the item is the client
-                // (explicitly excluded serverside here)
+                Projectile.NewProjectile(
+                    player.GetSource_ItemUse(Item),
+                    Main.MouseWorld,
+                    Vector2.Zero,
+                    ModContent.ProjectileType<NightmareRoseArenaDisplay>(),
+                    0,
+                    0,
+                    player.whoAmI);
+
+                return true;
+            }
+
+            if (player.whoAmI == Main.myPlayer && player.altFunctionUse != 2)
+            {
                 SoundStyle Summon = new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/SoulSummon");
                 SoundEngine.PlaySound(Summon, player.position);
 
@@ -63,13 +91,10 @@ namespace DestroyerTest.Content.Consumables
 
                 if (Main.netMode != NetmodeID.MultiplayerClient)
                 {
-                    // If the player is not in multiplayer, spawn directly
                     NPC.NewNPC(player.GetSource_ItemUse(Item), (int)Main.MouseWorld.X, (int)Main.MouseWorld.Y, type, 0);
                 }
                 else
                 {
-                    // If the player is in multiplayer, request a spawn
-                    // This will only work if NPCID.Sets.MPAllowedEnemies[type] is true, which we set in MinionBossBody
                     NetMessage.SendData(MessageID.SpawnBossUseLicenseStartEvent, number: player.whoAmI, number2: type);
                 }
             }
@@ -77,7 +102,8 @@ namespace DestroyerTest.Content.Consumables
             return true;
         }
 
-        public override void AddRecipes() {
+        public override void AddRecipes() 
+        {
             CreateRecipe()
                 .AddIngredient<Tenebris>(3)
                 .AddIngredient(ItemID.DemoniteOre, 8)

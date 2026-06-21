@@ -75,11 +75,16 @@ namespace DestroyerTest.Content.Buffs
 					for (int i = 0; i < 8; i++)
 					{
 						Vector2 Dir = Main.rand.NextVector2Circular(3, 3);
-						
+                        Vector2 Dir2 = Main.rand.NextVector2Circular(3, 3);
+
                         Fire F = new Fire();
 						F.PrepareFire(npc.Center, Dir, Math.Sign(Dir.X), 0.15f, ColorLib.TenebrisGradient, 0.75f, 80, FireDrawMode.Additive, PixelLayer.AboveNPCs);
 						ParticleEngine.Particles.Add(F);
-					}
+
+                        TenebrousCloudParticle C = new ();
+                        C.Initialize(npc.Center, Dir2, ColorLib.TenebrisGradient, 0.8f, 0.3f, 120);
+                        ParticleEngine.Particles.Add(C);
+                    }
 
 					Opus.RadialSpreadDustRandom(DustID.FireworksRGB, 6, npc.Center, 75, ColorLib.TenebrisGradient, 1f, 3f);
 					if (shimmer.Stack < shimmer.MaxStack)
@@ -162,6 +167,13 @@ namespace DestroyerTest.Content.Buffs
                 fire.PrepareFire(Main.rand.NextVector2FromRectangle(npc.Hitbox), new Vector2(0f, -0.1f), Main.rand.Next(1, 3), 0.08f, ColorLib.TenebrisGradient * 0.8f, 0.5f, 40, FireDrawMode.Additive, PixelLayer.AbovePlayer);
                 ParticleEngine.ShaderParticles.Add(fire);
 
+				if (Main.rand.NextBool(2))
+				{
+					TenebrousCloudParticle C = new();
+					C.Initialize(Main.rand.NextVector2FromRectangle(npc.Hitbox), new Vector2(0f, -2f), ColorLib.TenebrisGradient, 0.5f, 0.15f, 120);
+					ParticleEngine.ShaderParticles.Add(C);
+				}
+
 				if (Stack > 8)
 				{
 					int Chance = MaxStack - Stack;
@@ -194,17 +206,13 @@ namespace DestroyerTest.Content.Buffs
 
 	public class SFPlayer : ModPlayer
 	{
-
-		// Flag checking when life regen debuff should be activated
 		public bool lifeRegenDebuff;
 
-		public override void ResetEffects() {
+		public override void ResetEffects() 
+		{
 			lifeRegenDebuff = false;
 		}
 
-		// Allows you to give the player a negative life regeneration based on its state (for example, the "On Fire!" debuff makes the player take damage-over-time)
-		// This is typically done by setting player.lifeRegen to 0 if it is positive, setting player.lifeRegenTime to 0, and subtracting a number from player.lifeRegen
-		// The player will take damage at a rate of half the number you subtract per second
 		public override void UpdateBadLifeRegen() {
 			if (lifeRegenDebuff)
 			{
@@ -213,19 +221,25 @@ namespace DestroyerTest.Content.Buffs
                 fire.PrepareFire(Main.rand.NextVector2FromRectangle(Player.Hitbox), new Vector2(0f, -0.1f), Main.rand.Next(1, 3), 0.08f, ColorLib.TenebrisGradient * 0.8f, 0.5f, 40, FireDrawMode.Additive, PixelLayer.AboveNPCs);
 				ParticleEngine.ShaderParticles.Add(fire);
 
-				if (Main.rand.NextBool(6))
+                if (Main.rand.NextBool(2))
+                {
+                    TenebrousCloudParticle C = new();
+                    C.Initialize(Main.rand.NextVector2FromRectangle(Player.Hitbox), new Vector2(0f, -2f), ColorLib.TenebrisGradient, 0.5f, 0.15f, 120);
+                    ParticleEngine.ShaderParticles.Add(C);
+                }
+
+                if (Main.rand.NextBool(6))
 				{
 					SmallShine Shine = new SmallShine();
 					Shine.Prepare(Main.rand.NextVector2FromRectangle(Player.Hitbox), Vector2.Zero, Color.White, 0.5f);
 					ParticleEngine.ShaderParticles.Add(Shine);
 				} 
-				// These lines zero out any positive lifeRegen. This is expected for all bad life regeneration effects
+			
 				if (Player.lifeRegen > 0)
 					Player.lifeRegen = 0;
-				// Player.lifeRegenTime used to increase the speed at which the player reaches its maximum natural life regeneration
-				// So we set it to 0, and while this debuff is active, it never reaches it
+				
 				Player.lifeRegenTime = 0;
-				// lifeRegen is measured in 1/2 life per second. Therefore, this effect causes 8 life lost per second
+		
 				Player.lifeRegen -= 48;
 			}
 		}

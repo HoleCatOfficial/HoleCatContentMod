@@ -86,7 +86,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
         public override void AI()
         {
             UpdateLerpTime();
-            MainColor = ColorLib.StellarFireGradient(LifetimeCompletion * 8f);
+            MainColor = ColorLib.StellarFireGradient(LifetimeCompletion);
 
             if (HomingTarget != null)
             {

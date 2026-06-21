@@ -4769,3 +4769,17 @@ QITN: {
 		Shoots weak bursts of spirits that pierce 4 times.
 		'''
 }
+
+BlackKnife: {
+	DisplayName: Black Knife
+	Tooltip: "'The wind is howling.'"
+}
+
+Blitz: {
+	DisplayName: Blitz
+	Tooltip:
+		'''
+		Fires very rapidly with full knockback.
+		Hold X while firing to fire an alternate Primal Crystal Bullet that has an innate 20 armor penetration.
+		'''
+}

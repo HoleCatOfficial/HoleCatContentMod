@@ -446,16 +446,12 @@ namespace DestroyerTest.Content.Entities
             Opus.StartSpriteBatchPixelated(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
 
 
-            if (LaserWarnTimer > 0)
+            if (ShouldDrawLaserWarning)
             {
                 spriteBatch.UseBlendState(BlendState.AlphaBlend);
                 Main.EntitySpriteDraw(DTAssetLib.BlessedNodeLaserTelegraph.Value, NPCHead - Main.screenPosition, null, ColorLib.TenebrisGradient with { A = 0 } * LaserWarnOpacity, LaserRotOffset - 12f, DTAssetLib.BlessedNodeLaserTelegraph.Value.Size() / 2, 1f, SpriteEffects.None);
                 Main.EntitySpriteDraw(DTAssetLib.BlessedNodeLaserTelegraph.Value, NPCHead - Main.screenPosition, null, Color.White with { A = 0 } * LaserWarnOpacity, LaserRotOffset - 12f, DTAssetLib.BlessedNodeLaserTelegraph.Value.Size() / 2, 0.65f, SpriteEffects.None);
                 spriteBatch.UseBlendState(BlendState.AlphaBlend);
-            }
-            else
-            {
-                LaserWarnOpacity = 0f;
             }
 
             if (FlameStartTimer < 120 && FlameStartTimer >= 0 && currentState == AttackState.CursedFlames)
@@ -625,10 +621,7 @@ namespace DestroyerTest.Content.Entities
 
             }
 
-            if (player.statLife <= 0)
-            {
-                SunlightModification.Reset();
-            }
+            
             //SunlightModification.Sunlight(1f, Color.Black, (float)TintCounter / (float)MaxTintCount);
         }
 
@@ -636,7 +629,7 @@ namespace DestroyerTest.Content.Entities
         {
             int tribID = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Tribulation");
             int eternID = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Placeholder4");
-            int masoID = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Placeholder3");
+            int masoID = MusicLoader.GetMusicSlot(Mod, "Assets/Music/MasoEvils");
             int secretSeedID = MusicLoader.GetMusicSlot(Mod, "Assets/Music/EvilBossSecretSeed");
             int idleID = MusicLoader.GetMusicSlot(Mod, "Assets/Music/RoseIdle");
 
@@ -779,8 +772,18 @@ namespace DestroyerTest.Content.Entities
             }
             else
             {
-                BorderCol = ColorLib.Soul;
-                BorderDustType = ModContent.DustType<SoulDust>();
+                
+
+                if (!DestroyerTestMod.MasochistIsActive)
+                {
+                    BorderCol = ColorLib.Soul;
+                    BorderDustType = ModContent.DustType<SoulDust>();
+                }
+                else
+                {
+                    BorderCol = Color.White;
+                    BorderDustType = DustID.TintableDustLighted;
+                }
             }
 
             BorderActive = true; // This happens **after** the loop finishes
@@ -1454,6 +1457,11 @@ namespace DestroyerTest.Content.Entities
                     {
                         NPC.dontTakeDamage = true;
                         ShouldCenterCameraOnNPC = true;
+                        
+                        for (int i = 0; i < NPC.maxBuffs; i++)
+                        {
+                            NPC.DelBuff(i);
+                        }
 
                         if (DTCrossMod.CalamityIsLoaded)
                         {
@@ -1491,7 +1499,7 @@ namespace DestroyerTest.Content.Entities
                             BorderActive = false;
                             //Main.NewText("Get away from the Rose!!", ColorLib.Soul);
                             LerpingBloomRingSharp Ring = new();
-                            Color[] P = new Color[4] { Color.White, ColorLib.Soul, ColorLib.Soul2, ColorLib.Soul3 };
+                            Color[] P = new Color[4] { Color.White, DestroyerTestMod.MasochistIsActive ? Color.White : ColorLib.Soul, DestroyerTestMod.MasochistIsActive ? Color.White : ColorLib.Soul2, DestroyerTestMod.MasochistIsActive ? Color.White : ColorLib.Soul3 };
                             Ring.Prepare(NPCHead, Vector2.Zero, P, 0.2f, 0.03f, 2f);
                             ParticleEngine.ShaderParticles.Add(Ring);
                         }
@@ -1500,6 +1508,7 @@ namespace DestroyerTest.Content.Entities
                 case AttackState.KillIdle:
                     {
                         ShouldCenterCameraOnNPC = false;
+
                         if (cfg.EnableDebugMessages)
                         {
                             Mod.Logger.Info($"Death Timer: {DeathIdleTimer}");
@@ -1800,15 +1809,29 @@ namespace DestroyerTest.Content.Entities
 
         public void SoulBombSpawn()
         {
-            
-            for (int j = 0; j < 2; j++)
+            if (!DestroyerTestMod.MasochistIsActive)
             {
-                Vector2 spawnPos = NPCHead;
-                Vector2 targetPos = NPCHead + Main.rand.NextVector2CircularEdge(BorderRad, BorderRad);
-                Vector2 direction = (targetPos - spawnPos).SafeNormalize(Vector2.Zero); // SafeNormalize prevents division by zero
+                for (int j = 0; j < 2; j++)
+                {
+                    Vector2 spawnPos = NPCHead;
+                    Vector2 targetPos = NPCHead + Main.rand.NextVector2CircularEdge(BorderRad, BorderRad);
+                    Vector2 direction = (targetPos - spawnPos).SafeNormalize(Vector2.Zero); // SafeNormalize prevents division by zero
 
-                Projectile SB = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), spawnPos, direction * 6, ModContent.ProjectileType<SoulCrystalBomb>(), 0, 1);
-                SB.timeLeft = 60;
+                    Projectile SB = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), spawnPos, direction * 6, ModContent.ProjectileType<SoulCrystalBomb>(), 0, 1);
+                    SB.timeLeft = 60;
+                }
+            }
+            else
+            {
+                for (int j = 0; j < 2; j++)
+                {
+                    Vector2 spawnPos = NPCHead;
+                    Vector2 targetPos = NPCHead + Main.rand.NextVector2CircularEdge(BorderRad, BorderRad);
+                    Vector2 direction = (targetPos - spawnPos).SafeNormalize(Vector2.Zero); // SafeNormalize prevents division by zero
+
+                    Projectile SB = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), spawnPos, direction * 6, ModContent.ProjectileType<DarkLaserMine>(), 0, 1);
+                    SB.timeLeft = 60;
+                }
             }
         }
 
@@ -1968,7 +1991,10 @@ namespace DestroyerTest.Content.Entities
         public float LaserWarnOpacity = 0f;
         public float LaserRotOffset = 0;
         public int LaserWarnTimer = 120;
+        bool Flag4 = false;
         Projectile[] LaserCol;
+
+        bool ShouldDrawLaserWarning = false;
         public void ContemptAttack()
         {
             if (!SetDir1)
@@ -2048,13 +2074,17 @@ namespace DestroyerTest.Content.Entities
                     //Opus.RadialSpreadDust(DustID.AncientLight, 6, NPC.Center, 0, Main.DiscoColor, 1f, 5f, offset: LaserRotOffset);
                     LaserWarnTimer--;
 
-                    
+                    ShouldDrawLaserWarning = true;
+
                 }
                 else
                 {
 
-
-                    SunlightModification.Pulse(1f, ColorLib.TenebrisGradient, 0.8f);
+                    if (!Flag4)
+                    {
+                        SunlightModification.Pulse(1f, ColorLib.TenebrisGradient, 0.8f);
+                        Flag4 = true;
+                    }
                     
                     SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/TenebrisLasers"), NPCHead);
 
@@ -2062,6 +2092,7 @@ namespace DestroyerTest.Content.Entities
                     LaserCol = Opus.RadialSpreadProjectile(ModContent.ProjectileType<TenebrisLaser>(), 6, NPCHead, 60, 1, 0.005f, ai1: Dir, offset: LaserRotOffset);
                     LaserWarnTimer = 120;
                     LaserWarnOpacity = 0f;
+                    ShouldDrawLaserWarning = false;
                 }
             }
         }

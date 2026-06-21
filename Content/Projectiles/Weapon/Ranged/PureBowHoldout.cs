@@ -5,7 +5,6 @@ using DestroyerTest.Content.Projectiles.Weapon.Melee;
 using DestroyerTest.Content.Projectiles.Weapon.Summon;
 using DestroyerTest.Content.RangedItems;
 using DestroyerTest.Content.SummonItems;
-using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;

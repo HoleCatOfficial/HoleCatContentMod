@@ -43,7 +43,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             SweepHighlightColor = Color.Bisque;
             UsesDefaultSweepFX = true;
 
-            SwingSpeed = 0.1f;
+            WaitTimeMultiplier = 1.3f;
+            SwingSpeed = 0.15f;
             
 
             Glowmask = ModContent.Request<Texture2D>($"{Texture}_Highlight");

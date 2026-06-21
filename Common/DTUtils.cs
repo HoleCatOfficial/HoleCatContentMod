@@ -692,9 +692,11 @@ namespace DestroyerTest.Common
         public bool Pulsing = false;
         public int pulseTime = 0;
         public int pulseCounter = 0;
+        public float SCB = 0;
         public static void Pulse(float SunColorBrightness, Color SunColor, float Percent, int Time = 120)
         {
-            Instance._SunColorBrightness = SunColorBrightness;
+            Instance.pulseCounter = 0;
+            Instance.SCB = SunColorBrightness;
             Instance._SunlightColor = SunColor;
             Instance.pulseTime = Time;
             Instance._percent = Instance.percent = Percent;
@@ -714,6 +716,7 @@ namespace DestroyerTest.Common
                 );
 
                 percent = MathHelper.Lerp(_percent, 0f, progress);
+                _SunColorBrightness = MathHelper.Lerp(SCB, 0f, progress);
 
                 if (pulseCounter >= pulseTime)
                 {
@@ -1635,8 +1638,9 @@ namespace DestroyerTest.Common
         public static Color StellarFire7 = new Color(25, 33, 38);
         public static Color StellarFire8 = new Color(18, 23, 24);
 
-        public static Color[] StellarFireColormap = new Color[8]
+        public static Color[] StellarFireColormap = new Color[9]
         {
+            Color.White,
             StellarFire1,
             StellarFire2,
             StellarFire3,
@@ -1938,7 +1942,7 @@ namespace DestroyerTest.Common
         public static Asset<Texture2D> ConstitutionLanceWarning = ModContent.Request<Texture2D>($"{ExtrasPath}/ConstitutionEternityLanceWarning", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> DreamDiscHighlight = ModContent.Request<Texture2D>($"{ExtrasPath}/DreamDiscMainBlades", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> BlessedNodeLaserTelegraph = ModContent.Request<Texture2D>($"{ExtrasPath}/BlessedNodeLaserTelegraph", AssetRequestMode.AsyncLoad);
-
+        public static Asset<Texture2D> ConstitutionStarTrail = ModContent.Request<Texture2D>($"{ExtrasPath}/ConstitutionStarTrail", AssetRequestMode.AsyncLoad);
         public struct HallowedBar
         {
             public static Asset<Texture2D> Back = ModContent.Request<Texture2D>($"{ExtrasPath}/HallowedBarBack", AssetRequestMode.AsyncLoad);
@@ -2426,6 +2430,9 @@ namespace DestroyerTest.Common
             }
 
         }
+
+
+
 
         public static void DrawTrailPixelated(SpriteBatch spriteBatch, BlendState blendState, Texture2D TrailTex, List<Vector2> Positions, List<float> Rotations, float Amplitude, Color color, float Scroll, float TaperRange = 20f)
         {

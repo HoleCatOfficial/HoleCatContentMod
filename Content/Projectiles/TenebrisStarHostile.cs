@@ -1,41 +1,50 @@
-using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
+using DestroyerTest.Common.Interfaces;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
+using DestroyerTest.Content.Equips;
 using DestroyerTest.Content.Particles;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using ReLogic.Content;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using OpusLib;
-using DestroyerTest.Content.Equips;
-using System.Linq;
 
 namespace DestroyerTest.Content.Projectiles
 {
-	public class TenebrisStarHostile : ModProjectile
+	public class TenebrisStarHostile : ModProjectile, IHomingProjectile
 	{
 		public override string Texture => DTUtils.NoTexture;
 
-		private Player PLRTarget
-		{
-			get => Projectile.ai[1] == 0 ? null : Main.player[(int)Projectile.ai[1] - 1];
-			set
-			{
-				Projectile.ai[1] = value == null ? 0 : value.whoAmI + 1;
-			}
-		}
-
 		public float DelayTimer;
 
-		public override void SetStaticDefaults()
+        bool IHomingProjectile.TracksNPCs => false;
+
+        bool IHomingProjectile.TracksPlayers => true;
+
+        float IHomingProjectile.HomingTurnSpeed => 15;
+
+        bool IHomingProjectile.UsesHomingAcceleration => false;
+
+        float IHomingProjectile.HomingAccelAmount => 1f;
+
+        float IHomingProjectile.HomingMaxAccel => 1f;
+
+        float IHomingProjectile.DetectRadius => 2800;
+
+        bool IHomingProjectile.CanHome => DelayTimer >= 10;
+
+        public override void SetStaticDefaults()
 		{
 			ProjectileID.Sets.TrailCacheLength[Type] = 160;
 			ProjectileID.Sets.TrailingMode[Type] = 3;
@@ -88,64 +97,20 @@ namespace DestroyerTest.Content.Projectiles
 			DelayTimer++;
 			Projectile.rotation += Projectile.direction * 0.07f;
 
-			Lighting.AddLight(Projectile.Center, ColorLib.TenebrisGradient.ToVector3() * 0.2f);
+            if (Main.rand.NextBool(10))
+            {
+                TenebrousCloudParticle Cloud = new();
+                Cloud.Initialize(Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Projectile.velocity * 0.1f, ColorLib.TenebrisGradient * 0.6f, 0.8f, 0.2f, 120);
+                ParticleEngine.BehindProjectiles.Add(Cloud);
+            }
+
+            Lighting.AddLight(Projectile.Center, ColorLib.TenebrisGradient.ToVector3() * 0.2f);
 
 			if (DelayTimer < 20 || DelayTimer > 180)
 			{
 				return;
 			}
-
-			float maxDetectRadius = 2800f;
-
-            if (PLRTarget == null)
-            {
-                PLRTarget = FindClosestPlayer(maxDetectRadius);
-            }
-
-
-            if (PLRTarget != null && !IsValidPlayer(PLRTarget))
-            {
-                PLRTarget = null;
-            }
-
-            if (PLRTarget == null)
-                return;
-
-            float length = Projectile.velocity.Length();
-            float targetAngle = Projectile.AngleTo(PLRTarget.Center);
-            Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(5)).ToRotationVector2() * length;
-        
 		}
-
-		public Player FindClosestPlayer(float maxDetectDistance)
-		{
-			Player closestPlayer = null;
-
-			float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
-
-			foreach (var target in Main.player)
-			{
-				if (IsValidPlayer(target))
-				{
-					float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, Projectile.Center);
-
-					if (sqrDistanceToTarget < sqrMaxDetectDistance)
-					{
-						sqrMaxDetectDistance = sqrDistanceToTarget;
-						closestPlayer = target;
-					}
-				}
-			}
-
-			return closestPlayer;
-		}
-
-		public bool IsValidPlayer(Player target)
-		{
-			return target.active == true && target.statLife > 1;
-		}
-
-		
 
 		public override void OnHitPlayer(Player target, Player.HurtInfo info)
 		{
@@ -213,7 +178,14 @@ namespace DestroyerTest.Content.Projectiles
 			
 			Projectile.rotation += Projectile.direction * 0.07f;
 
-			Lighting.AddLight(Projectile.Center, ColorLib.TenebrisGradient.ToVector3() * 0.2f);
+            if (Main.rand.NextBool(10))
+            {
+                TenebrousCloudParticle Cloud = new();
+                Cloud.Initialize(Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Projectile.velocity * 0.06f, ColorLib.TenebrisGradient * 0.6f, 1f, 0.2f, 120);
+                ParticleEngine.BehindProjectiles.Add(Cloud);
+            }
+
+            Lighting.AddLight(Projectile.Center, ColorLib.TenebrisGradient.ToVector3() * 0.2f);
 		}
 
 		public override void OnHitPlayer(Player target, Player.HurtInfo info)

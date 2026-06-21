@@ -169,7 +169,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
             if (SpecialHit)
             {
-                Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, null, Color.White * Projectile.Opacity, (Projectile.rotation + rotationOffset) + RotationManualOffset, origin, Projectile.scale * AdjustedScale, effects, 0);
+                Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, null, Color.White * Projectile.Opacity, (Projectile.rotation + rotationOffset) + RotationManualOffset, origin, Projectile.scale, effects, 0);
             }
         }
 

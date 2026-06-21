@@ -54,7 +54,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
         public void TelegraphLine(SpriteBatch SB)
         {
             var LineTex = DTAssetLib.Line(1).Value;
-            Vector2 start = IntialPos;
+            Vector2 start = Projectile.Center;
 
             if (Projectile.active)
             {
@@ -97,7 +97,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
 
         public override void OnKill(int timeLeft)
         {
-
+            SoundEngine.PlaySound(DTAssetLib.Impacts.ExplosiveImpactBig, Projectile.Center);
             SoundEngine.PlaySound(new SoundStyle(DTAssetLib.AudioPath + "/NightmareRose/DarkMineLaser") with { MaxInstances = 1 }, Projectile.Center);
 
             Opus.RadialSpreadProjectile(ModContent.ProjectileType<DarkLaser>(), 8, Projectile.Center, Projectile.damage, 8, 0.001f, offset: 0);
