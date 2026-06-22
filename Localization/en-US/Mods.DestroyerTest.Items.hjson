@@ -4783,3 +4783,13 @@ Blitz: {
 		Hold X while firing to fire an alternate Primal Crystal Bullet that has an innate 20 armor penetration.
 		'''
 }
+
+UmbralCowl: {
+	DisplayName: Umbral Cowl
+	Tooltip:
+	'''
+	19% increased Magic Damage.
+	8% increased Magic Critical Strike Chance.
+	33% chance for Magic projectiles to inflict Heliouric Shock onto enemies.
+	'''
+}

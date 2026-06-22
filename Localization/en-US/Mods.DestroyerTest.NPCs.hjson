@@ -254,32 +254,32 @@ PetrifiedWisp1: {
 
 PetrifiedWisp2.DisplayName: Petrified Wisp
 PetrifiedWisp3.DisplayName: Petrified Wisp
+
 TeslaScuttler: {
 	DisplayName: Tesla Scuttler
 	BestiaryEntry1:
-	'''
-	Scuttlers tend to bury themselves in the silt to store energy, but they can easily release that energy when threatened.
-	
-	'''
+		'''
+		Scuttlers tend to bury themselves in the silt to store energy, but they can easily release that energy when threatened.
+
+		'''
 }
-BlackTwister:
-{
+
+BlackTwister: {
 	DisplayName: Black Twister
-	BestiaryEntry1:
-	'''
-	It only takes a little spark to gather riften silt grains into a whirlwinded mess!
-	'''
+	BestiaryEntry1: It only takes a little spark to gather riften silt grains into a whirlwinded mess!
 }
+
 SunscorchedDjinn: {
 	DisplayName: Sunscorched Djinn
-	BestiaryEntry1: 
-	'''
-	Djinns traditionally come trapped in a lantern, offering 3 wishes, the whole jig.
-	But these zippy spirits reside not in a lamp, but rather, a teapot. Why? Because these roaming assailants are former peoples of the desert that were enfatuated with tea!
-	Tea with all 4 meals of the day, tea as a ceremonial drink, tea as a medicine!
-	That said, they don't tend to remember much else about their past lives, and choose to spend their time playing games or reveling in the fun of attacking travelers that pass by their domain.
-	'''
+	BestiaryEntry1:
+		'''
+		Djinns traditionally come trapped in a lantern, offering 3 wishes, the whole jig.
+		But these zippy spirits reside not in a lamp, but rather, a teapot. Why? Because these roaming assailants are former peoples of the desert that were enfatuated with tea!
+		Tea with all 4 meals of the day, tea as a ceremonial drink, tea as a medicine!
+		That said, they don't tend to remember much else about their past lives, and choose to spend their time playing games or reveling in the fun of attacking travelers that pass by their domain.
+		'''
 }
+
 ProjectileShootingDummy.DisplayName: Projectile Shooting Dummy
 BlessedNodeFlyingKnife.DisplayName: Flying Knife
 
