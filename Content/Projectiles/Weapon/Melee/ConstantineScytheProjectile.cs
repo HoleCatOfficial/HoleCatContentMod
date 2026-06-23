@@ -38,7 +38,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
         public override SoundStyle Swing => new SoundStyle("DestroyerTest/Assets/Audio/ConstitutionT3Slash") with { MaxInstances = 0, PitchVariance = 0.6f };
 
-        public override void HitNPCEffects(NPC npc, NPC.HitInfo hit)
+        public override void HitNPCEffects(NPC npc, NPC.HitInfo hit, int damageDone)
         {
             SoundEngine.PlaySound(DTAssetLib.Impacts.ShortShine with { MaxInstances = 0, PitchVariance = 0.4f }, npc.Center);
             SoundEngine.PlaySound(DTAssetLib.SwordSounds.LightGoreCut with { MaxInstances = 0, PitchVariance = 0.4f }, npc.Center);

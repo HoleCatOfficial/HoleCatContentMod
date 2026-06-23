@@ -47,7 +47,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         int HitCount = 0;
 
         bool SpecialHit = false;
-        public override void HitNPCEffects(NPC npc, NPC.HitInfo hit)
+        public override void HitNPCEffects(NPC npc, NPC.HitInfo hit, int damageDone)
         {
             SoundEngine.PlaySound(DTAssetLib.SwordSounds.TenebrisSwing with { MaxInstances = 0, PitchVariance = 0.2f, Pitch = -0.7f, Volume = 0.1f }, npc.Center);
             SoundEngine.PlaySound(DTAssetLib.Impacts.FleshHit with { MaxInstances = 0, PitchVariance = 0.4f, Pitch = -0.7f }, npc.Center);

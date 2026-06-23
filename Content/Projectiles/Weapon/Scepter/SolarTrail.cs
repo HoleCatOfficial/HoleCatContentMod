@@ -49,19 +49,21 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 
         void IDrawPixelated.DrawPixelated(SpriteBatch spriteBatch)
         {
+            
+        }
+		public override bool PreDraw(ref Color lightColor)
+		{
             DTUtils Utility = new DTUtils();
             float opacity = Projectile.Opacity;
 
-            Opus.StartSpriteBatchPixelated(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
+           // Opus.StartSpriteBatchPixelated(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
 
             Opus.DrawTextureOnProj(DTAssetLib.PointGlowPreMultiplied, Projectile, ColorLib.Rift with { A = 0 } * opacity, true, Projectile.rotation, Scale1, Scale1);
             Opus.DrawTextureOnProj(DTAssetLib.Sparkle(5, true), Projectile, Color.White with { A = 0 } * opacity, false, 0f, Scale2, Scale2);
 
-            Opus.ReturnToDefaultDrawing(spriteBatch);
-        }
-		public override bool PreDraw(ref Color lightColor)
-		{
-			return false;
+            //Opus.ReturnToDefaultDrawing(spriteBatch);
+
+            return false;
 		}
 
         public float Scale1 = 0f;

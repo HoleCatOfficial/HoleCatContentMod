@@ -52,7 +52,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
         public override SoundStyle Swing => DTAssetLib.SwordSounds.BigBasicSwing;
 
-        public override void HitNPCEffects(NPC npc, NPC.HitInfo hit)
+        public override void HitNPCEffects(NPC npc, NPC.HitInfo hit, int damageDone)
         {
             npc.AddBuff(BuffID.BrokenArmor, 300);
             SoundEngine.PlaySound(DTAssetLib.Impacts.IceImpact with { MaxInstances = 0, PitchVariance = 0.4f, Pitch = -0.7f }, npc.Center);

@@ -381,7 +381,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
         public override SoundStyle Swing => DTAssetLib.SwordSounds.MagicSwing;
 
-        public override void HitNPCEffects(NPC npc, NPC.HitInfo hit)
+        public override void HitNPCEffects(NPC npc, NPC.HitInfo hit, int damageDone)
         {
             npc.AddBuff(ModContent.BuffType<GalantineBurn>(), 600);
             SoundEngine.PlaySound(DTAssetLib.Impacts.ShortShine with { MaxInstances = 0, PitchVariance = 0.4f }, npc.Center);

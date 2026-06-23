@@ -4787,9 +4787,31 @@ Blitz: {
 UmbralCowl: {
 	DisplayName: Umbral Cowl
 	Tooltip:
-	'''
-	19% increased Magic Damage.
-	8% increased Magic Critical Strike Chance.
-	33% chance for Magic projectiles to inflict Heliouric Shock onto enemies.
-	'''
+		'''
+		19% increased Magic Damage.
+		8% increased Magic Critical Strike Chance.
+		33% chance for Magic projectiles to inflict Heliouric Shock onto enemies.
+		'''
+}
+
+CrystalBlade: {
+	DisplayName: Crystal Blade
+	Tooltip:
+		'''
+		Fires crystal shards that slow down before homing in on nearby enemies.	
+		Critical hits create 4 extra shards.
+		Crystal Shards each deal 10% of the weapon's damage.
+		'''
+}
+
+Sunspot: {
+	DisplayName: Sunspot
+	Tooltip:
+		'''
+		Fires helicite shards that slow down before homing in on nearby eneimes.
+		Critical hits create 4 extra shards.
+		Shards each deal 10% of the weapon's damage.
+
+		Landing a fatal strike will cause the enemy to explode into solar sparks, dealing extra damage.
+		'''
 }

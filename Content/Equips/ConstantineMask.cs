@@ -64,11 +64,11 @@ namespace DestroyerTest.Content.Equips
             if (Active)
             {
                 IsCopy = true;
-                Main.PlayerRenderer.DrawPlayer(camera, Player, Player.position + new Vector2(10, 0), Player.fullRotation, Player.Center, 0.75f, 1f);
-                Main.PlayerRenderer.DrawPlayer(camera, Player, Player.position + new Vector2(-10, 0), Player.fullRotation, Player.Center, 0.75f, 1f);
+                //Main.PlayerRenderer.DrawPlayer(camera, Player, Player.position + new Vector2(10, 0), Player.fullRotation, Player.Center, 0.75f, 1f);
+                //Main.PlayerRenderer.DrawPlayer(camera, Player, Player.position + new Vector2(-10, 0), Player.fullRotation, Player.Center, 0.75f, 1f);
 
-                Main.PlayerRenderer.DrawPlayer(camera, Player, Player.position + new Vector2(0, 10), Player.fullRotation, Player.Center, 0.75f, 1f);
-                Main.PlayerRenderer.DrawPlayer(camera, Player, Player.position + new Vector2(0, -10), Player.fullRotation, Player.Center, 0.75f, 1f);
+               // Main.PlayerRenderer.DrawPlayer(camera, Player, Player.position + new Vector2(0, 10), Player.fullRotation, Player.Center, 0.75f, 1f);
+                //Main.PlayerRenderer.DrawPlayer(camera, Player, Player.position + new Vector2(0, -10), Player.fullRotation, Player.Center, 0.75f, 1f);
                 IsCopy = false;
             }
         }

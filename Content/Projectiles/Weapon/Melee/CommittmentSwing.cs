@@ -42,7 +42,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         public float Pitch = -1;
         public int HitCount = 0;
         public int HitTimer = 20;
-        public override void HitNPCEffects(NPC npc, NPC.HitInfo hit)
+        public override void HitNPCEffects(NPC npc, NPC.HitInfo hit, int damageDone)
         {
             if (hit.Crit)
             {

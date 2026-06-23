@@ -46,7 +46,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
         public override SoundStyle Swing => new SoundStyle("DestroyerTest/Assets/Audio/CorruptionClawsSwing") { PitchVariance = 0.4f, MaxInstances = 0 };
 
-        public override void HitNPCEffects(NPC npc, NPC.HitInfo hit)
+        public override void HitNPCEffects(NPC npc, NPC.HitInfo hit, int damageDone)
         {
             npc.AddBuff(BuffID.CursedInferno, 300);
             SoundEngine.PlaySound(DTAssetLib.Impacts.FleshHit with { MaxInstances = 0, PitchVariance = 0.4f, Pitch = -0.5f }, npc.Center);

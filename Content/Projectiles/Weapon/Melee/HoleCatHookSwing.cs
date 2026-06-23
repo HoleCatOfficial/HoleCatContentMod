@@ -39,7 +39,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
         public override SoundStyle Swing => /*DTAssetLib.SwordSounds.TenebrisSwing*/ new SoundStyle("DestroyerTest/Assets/Audio/LCSlash") with { PitchVariance = 0.5f };
 
-        public override void HitNPCEffects(NPC npc, NPC.HitInfo hit)
+        public override void HitNPCEffects(NPC npc, NPC.HitInfo hit, int damageDone)
         {
             Vector2 toTarg = npc.Center - Owner.Center;
             toTarg.Normalize();

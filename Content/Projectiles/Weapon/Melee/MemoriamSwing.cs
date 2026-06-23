@@ -102,7 +102,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             ParticleOrchestrator.RequestParticleSpawn(false, ParticleOrchestraType.Excalibur, new ParticleOrchestraSettings() { IndexOfPlayerWhoInvokedThis = (byte)Projectile.owner, PositionInWorld = Position });
         }
 
-        public override void HitNPCEffects(NPC npc, NPC.HitInfo hit)
+        public override void HitNPCEffects(NPC npc, NPC.HitInfo hit, int damageDone)
         {
             ParticleOrchestrator.RequestParticleSpawn(false, ParticleOrchestraType.PaladinsHammer, new ParticleOrchestraSettings() { IndexOfPlayerWhoInvokedThis = (byte)Projectile.owner, PositionInWorld = Main.rand.NextVector2FromRectangle(npc.Hitbox) });
             ParticleOrchestrator.RequestParticleSpawn(false, ParticleOrchestraType.Excalibur, new ParticleOrchestraSettings() { IndexOfPlayerWhoInvokedThis = (byte)Projectile.owner, PositionInWorld = Main.rand.NextVector2FromRectangle(npc.Hitbox) });

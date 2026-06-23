@@ -57,7 +57,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, (toMouse * (7 * Owner.GetTotalAttackSpeed(DamageClass.Melee))), ModContent.ProjectileType<ComaceraticSlash>(), Projectile.damage, 5, Projectile.owner);
         }
 
-        public override void HitNPCEffects(NPC npc, NPC.HitInfo hit)
+        public override void HitNPCEffects(NPC npc, NPC.HitInfo hit, int damageDone)
         {
             Projectile.NewProjectile(Projectile.GetSource_OnHit(npc), npc.Center, Vector2.Zero, ModContent.ProjectileType<SunExplosion>(), Projectile.damage / 2, 10, Owner.whoAmI);
 

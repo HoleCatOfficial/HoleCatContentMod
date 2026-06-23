@@ -1190,6 +1190,26 @@ namespace DestroyerTest.Common
             return ShieldManager.ActiveShields[player.whoAmI].FirstOrDefault(x => x.InternalName == Name);
         }
 
+        public static void SmoothMoveToPoint(this NPC npc, Vector2 targetPosition, float maxSpeed)
+        {
+            Vector2 offset = targetPosition - npc.Center;
+            float distance = offset.Length();
+
+            if (distance <= 0.001f)
+            {
+                npc.velocity = Vector2.Zero;
+                return;
+            }
+
+            offset.Normalize();
+
+            // Progress from 0 (at target) to 1 (far away)
+            float progress = MathHelper.Clamp(distance / maxSpeed, 0f, 1f);
+
+            float speed = MathHelper.SmoothStep(0f, maxSpeed, progress);
+
+            npc.velocity = offset * speed;
+        }
     }
 
     public class DTPlayerUtil : ModPlayer
@@ -1779,6 +1799,10 @@ namespace DestroyerTest.Common
         public const string ExtrasPath = "DestroyerTest/Content/Extras";
         public const string AudioPath = "DestroyerTest/Assets/Audio";
         public const string EffectPath = "DestroyerTest/Assets/Effects";
+        public const string FontPath = "DestroyerTest/Assets/Fonts";
+
+        public static Asset<SpriteFont> Arial = ModContent.Request<SpriteFont>(FontPath + "/arial", AssetRequestMode.AsyncLoad);
+
         //
         //Practical, Every-Day VFX Textures
         //
@@ -1992,6 +2016,7 @@ namespace DestroyerTest.Common
             public static SoundStyle LightMetalHit = new SoundStyle($"{Path}/LightMetalHit", 4);
             public static SoundStyle Malevolence = new SoundStyle($"{Path}/MalevolenceHit");
             public static SoundStyle MagicBeep = new SoundStyle($"{Path}/MagicBeep", 3);
+            public static SoundStyle MagicHit = new SoundStyle($"{Path}/MagicHit", 3);
             public static SoundStyle MetalImpact = new SoundStyle($"{Path}/MetalImpactV1_", 3);
             public static SoundStyle ShortShine = new SoundStyle($"{Path}/ShortShine", 3);
             public static SoundStyle StellarFox = new SoundStyle($"{Path}/StellarFoxImpact", 5);

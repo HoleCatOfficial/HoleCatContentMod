@@ -1,3 +1,4 @@
+using DestroyerTest.Common;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
@@ -9,6 +10,11 @@ public class ScreenshakePlayer : ModPlayer
     public bool isShaking = false;
     public override void ModifyScreenPosition()
     {
+        if (!DTConfig.instance.ScreenshakeEffects)
+        {
+            return;
+        }
+
         screenshakeTimer--;
         if (screenshakeTimer > 0 )
         {

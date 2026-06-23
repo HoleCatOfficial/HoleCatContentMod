@@ -38,7 +38,7 @@ namespace DestroyerTest.Content.Projectiles.Vanilla
 
         public override SoundStyle Swing => DTAssetLib.SwordSounds.EvilSwing with { PitchVariance = 0.6f };
 
-        public override void HitNPCEffects(NPC npc, NPC.HitInfo hit)
+        public override void HitNPCEffects(NPC npc, NPC.HitInfo hit, int damageDone)
         {
             //npc.AddBuff(BuffID.BloodButcherer, 300);
 

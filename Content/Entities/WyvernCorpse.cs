@@ -281,7 +281,7 @@ namespace DestroyerTest.Content.Entities
             }
             else
             {
-                NumSoulParticles = (int)MathHelper.Lerp(0, 3, LastQuarterProgress);
+                NumSoulParticles = (int)MathHelper.Lerp(8, 0, LastQuarterProgress);
             }
 
             //Bone dusts increase throughout the fight.
@@ -321,10 +321,12 @@ namespace DestroyerTest.Content.Entities
                    
                 if (!DTOptimizationsConfig.instance.DisableExcessDusts)
                 {
-                    PointGlowPreMultiplied SoulParticle = new();
+                    
                     for (int i = 0; i < NumSoulParticles; i++)
                     {
-                        SoulParticle.Initialize(Main.rand.NextVector2FromRectangle(NPC.Hitbox), new Vector2(Main.rand.NextFloat(-1, 1), Main.rand.NextFloat(-1, 1)), ColorLib.Soul, 1f);
+                        PointGlowPreMultiplied SoulParticle = new();
+                        SoulParticle.Initialize(Main.rand.NextVector2FromRectangle(NPC.Hitbox), new Vector2(Main.rand.NextFloat(-1, 1), Main.rand.NextFloat(-1, 1)), ColorLib.Soul, 1f, 120);
+                        ParticleEngine.Particles.Add(SoulParticle);
                     }
                 }
             }
@@ -336,10 +338,12 @@ namespace DestroyerTest.Content.Entities
             {
                 SoundEngine.PlaySound(DTAssetLib.Impacts.DreamHit, NPC.Center);
 
-                PointGlowPreMultiplied SoulParticle = new();
-                for (int i = 0; i < 4; i++)
+                
+                for (int i = 0; i < 10; i++)
                 {
-                    SoulParticle.Initialize(Main.rand.NextVector2FromRectangle(NPC.Hitbox), new Vector2(Main.rand.NextFloat(-1, 1), Main.rand.NextFloat(-1, 1)), ColorLib.Soul, 1f);
+                    PointGlowPreMultiplied SoulParticle = new();
+                    SoulParticle.Initialize(Main.rand.NextVector2FromRectangle(NPC.Hitbox), new Vector2(Main.rand.NextFloat(-1, 1), Main.rand.NextFloat(-1, 1)), ColorLib.Soul, 1f, 120);
+                    ParticleEngine.Particles.Add(SoulParticle);
                 }
             }
         }
@@ -411,6 +415,7 @@ namespace DestroyerTest.Content.Entities
             return base.CanCollideWithPlayerMeleeAttack(player, item, meleeAttackHitbox);
         }
 
+
         public Vector2 Center;
         public int DeathInterval = 10;
         public override void AI()
@@ -433,9 +438,6 @@ namespace DestroyerTest.Content.Entities
                     NPC.netUpdate = true;
                 }
             }
-
-            Center = NPC.Center;
-
    
 
             Vector2 ToPlayer = NPC.Center - player.Center;
@@ -459,12 +461,21 @@ namespace DestroyerTest.Content.Entities
                 NPC.dontTakeDamage = false;
             }
 
-            // Assuming this is inside your boss NPC code
-            anyNodesAlive = Main.npc.Any(n => n.active && n.type == ModContent.NPCType<IchorNode>());
-            nodeCount = Main.npc.Count(n => n.active && n.type == ModContent.NPCType<IchorNode>());
+            List<NPC> ichorNodes = Main.npc.Where(n => n.active && n.type == ModContent.NPCType<IchorNode>()).ToList();
+            anyNodesAlive = ichorNodes.Count > 0;
+            nodeCount = ichorNodes.Count;
+            float radius = Opus.Sine(200f, 240f);
 
             if (anyNodesAlive)
             {
+                Vector2[] NodePositions = Opus.GetEquidistantOrbitVectors(nodeCount, NPC.Center, 0.02f, radius);
+
+                for (int i = 0; i < nodeCount; i++)
+                {
+                    Vector2 IdealVel = ichorNodes[i].Center - NodePositions[i];
+                    ichorNodes[i].SmoothMoveToPoint(NodePositions[i], 48);
+                }
+
                 NPC.dontTakeDamage = true;
                 NPC.immortal = true;
                 NPC.life += 2;
@@ -489,7 +500,7 @@ namespace DestroyerTest.Content.Entities
                 }
             }
 
-            if (NPC.life >= NPC.lifeMax * 0.24f && NPC.life <= NPC.lifeMax * 0.25f)
+            if (NPC.life <= NPC.lifeMax * 0.75f)
             {
                 if (HasTriggeredNodes == false)
                 {
@@ -787,7 +798,7 @@ namespace DestroyerTest.Content.Entities
         public void NodeSpawn()
         {
             float radius = 200;
-            int projectileCount = 6;
+            int projectileCount = 3;
 
 
             SoundEngine.PlaySound(NodeSpawnSound);
@@ -905,23 +916,6 @@ namespace DestroyerTest.Content.Entities
                 return;
             }
 
-            // Orbit settings
-            float radius = Opus.Sine(200f, 240f);
-            float speed = 0.01f;
-            float angle = Main.GameUpdateCount * speed;
-
-            for (int i = 0; i < Main.maxNPCs; i++)
-            {
-                NPC node = Main.npc[i];
-                if (node.active && node.type == ModContent.NPCType<IchorNode>())
-                {
-                    allNodes.Add(node);
-                }
-            }
-
-            // Sort the list by whoAmI to ensure consistent order across clients and frames
-            allNodes.Sort((a, b) => a.whoAmI.CompareTo(b.whoAmI));
-
             
 
 
@@ -931,8 +925,6 @@ namespace DestroyerTest.Content.Entities
             switch (currentState)
             {
                 case AIState.Idle:
-                    OrbitCenter = bossNPC.Center;
-                    Orbit(300f, 0.05f, OrbitCenter);
                     if (DestroyerTestMod.EternityIsActive)
                     {
                         if (--AwakenTimer <= 0)
@@ -945,141 +937,12 @@ namespace DestroyerTest.Content.Entities
                         }
                     }
                     break;
-
-                case AIState.CrystalX:
-                    OrbitCenter = player.Center;
-                    Cross();
-                    break;
-
-                case AIState.Slam:
-                    OrbitCenter = bossNPC.Center;
-                    Slam();
-                    break;
                 case AIState.Pikes:
                     {
                         OrbitCenter = player.Center;
                         Pikes(300f, 0.05f, OrbitCenter);
                         break;
                     }
-            }
-        }
-
-
-        public int CrossCount = 0;
-        public void Cross()
-        {
-            // drift slowly toward the player instead of orbiting
-            Player player = Main.player[NPC.target];
-            Vector2 direction = player.Center - NPC.Center;
-            if (direction != Vector2.Zero)
-                direction.Normalize();
-
-            // gentle glide speed
-            NPC.velocity = direction * 2f;
-
-            // fire crystals every 3 seconds
-            if (Main.GameUpdateCount % 180 == 0)
-            {
-                Opus.RadialSpreadProjectile(
-                    ModContent.ProjectileType<IchorNodeCrystal2>(),
-                    4, NPC.Center, 20, 4, 8, offset: 0f);
-                CrossCount++;
-            }
-
-            // after a few volleys, switch to Slam
-            if (CrossCount > 4)
-            {
-                CrossCount = 0;
-                if (Main.rand.NextBool(8))
-                {
-                    currentState = AIState.Slam;
-                }
-                else
-                {
-                    currentState = AIState.Pikes;
-                }
-                NPC.velocity = Vector2.Zero; // stop drifting
-            }
-        }
-
-        public void Orbit(float radius, float speed, Vector2 center)
-        {
-            float angle = Main.GameUpdateCount * speed;
-
-            // Sort nodes to get stable order across clients
-            allNodes.Sort((a, b) => a.whoAmI.CompareTo(b.whoAmI));
-            int index = allNodes.IndexOf(NPC);
-            int total = allNodes.Count;
-
-            // Calculate spacing
-            float spacing = MathHelper.TwoPi / (total == 0 ? 1 : total);
-            float myAngle = angle + index * spacing;
-
-            // Final orbit target
-            Vector2 targetOffset = new Vector2(MathF.Cos(myAngle), MathF.Sin(myAngle)) * radius;
-            Vector2 targetCenter = OrbitCenter + targetOffset;
-
-            // Smooth movement instead of instant snapping
-            float lerpSpeed = 0.08f; // lower = slower, higher = snappier
-
-            NPC.Center = Vector2.Lerp(
-                NPC.Center,
-                targetCenter,
-                lerpSpeed
-            );
-        }
-
-        public void Slam()
-        {
-
-            Vector2 targetPos = Main.player[NPC.target].Center + new Vector2(0, -120f);
-
-            // slide horizontally toward your random target
-            NPC.Center = Vector2.Lerp(NPC.Center, targetPos, 0.1f);
-
-            // once close, drop straight down
-            if (!HasSlammed && Vector2.Distance(NPC.Center, targetPos) < 120f)
-            {
-                HasSlammed = true;
-                NPC.velocity += new Vector2(0f, 30f);
-            }
-
-            // impact check
-            if (HasSlammed)
-            {
-
-                int tileX = (int)(NPC.Center.X / 16f);
-                int tileY = (int)((NPC.Center.Y + NPC.height / 2) / 16f);
-                if (WorldGen.SolidTile(tileX, tileY))
-                {
-                    Opus.RadialSpreadProjectile(
-                        ProjectileID.GoldenShowerHostile, 5,
-                        NPC.Bottom, 15, 3, 10, offset: Main.rand.NextFloat(MathHelper.TwoPi));
-
-                    SoundEngine.PlaySound(
-                        new SoundStyle("DestroyerTest/Assets/Audio/StarHammerThrow"),
-                        NPC.Center);
-
-                    NPC.velocity = Vector2.Zero;
-                    HasSlammed = false;
-                    currentState = AIState.Idle;
-                    AwakenTimer = 1200; // reset for next cycle
-                }
-                else
-                {
-                    Dust.NewDust(new Vector2(NPC.Center.X, NPC.Center.Y + NPC.height / 2), 2, 2, DustID.Ichor, 2f, -1.5f, 0, ColorLib.Ichor, 2f);
-                    Dust.NewDust(new Vector2(NPC.Center.X, NPC.Center.Y + NPC.height / 2), 2, 2, DustID.Ichor, -2f, -1.5f, 0, ColorLib.Ichor, 2f);
-
-                    PointGlowPreMultiplied Glow1 = new PointGlowPreMultiplied();
-                    Glow1.Initialize(NPC.Bottom, new Vector2(3f, 0f), ColorLib.Ichor, 1f);
-                    ParticleEngine.BehindProjectiles.Add(Glow1);
-
-                    PointGlowPreMultiplied Glow2 = new PointGlowPreMultiplied();
-                    Glow2.Initialize(NPC.Bottom, new Vector2(-3f, 0f), ColorLib.Ichor, 1f);
-                    ParticleEngine.BehindProjectiles.Add(Glow2);
-
-                    NPC.velocity += new Vector2(0f, 30f);
-                }
             }
         }
 

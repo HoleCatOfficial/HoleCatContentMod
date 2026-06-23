@@ -22,6 +22,7 @@ using DestroyerTest.Content.RiftBiome;
 using DestroyerTest.Content.RogueItems;
 using DestroyerTest.Content.SummonItems;
 using DestroyerTest.Content.Tiles;
+using DestroyerTest.Content.UI;
 using GlowmaskHelper.Content;
 using InnoVault.PRT;
 using log4net.Repository.Hierarchy;
@@ -313,7 +314,7 @@ namespace DestroyerTest.Content.Entities
             PlayerCenter = reader.ReadVector2();
             DirectionToPlayerCenter = reader.ReadVector2();
             NPCHead = reader.ReadVector2();
-            BorderRad = reader.ReadInt32();
+            BorderRad = reader.ReadSingle();
             BorderActive = reader.ReadBoolean();
             FlameTimer = reader.ReadInt32();
             FlameInterval = reader.ReadInt32();
@@ -324,6 +325,11 @@ namespace DestroyerTest.Content.Entities
             HammerActive = reader.ReadBoolean();
             MinionFailsafe = reader.ReadInt32();
             HasBoosted = reader.ReadBoolean();
+
+            if (DTConfig.instance.EnableDebugMessages)
+            {
+                Mod.Logger.Info($"[NightmareRose.ReceiveExtraAI] state:{currentState} BorderRad:{BorderRad} BorderActive:{BorderActive} FlameTimer:{FlameTimer}");
+            }
         }
 
         #endregion
@@ -334,6 +340,11 @@ namespace DestroyerTest.Content.Entities
             BorderActive = true;
             currentState = AttackState.SpawnIdle;
             NPCHead = NPC.Center + new Vector2(0, -79);
+            // Debug log: AI entry
+            if (DTConfig.instance.EnableDebugMessages && Main.GameUpdateCount % 30 == 0)
+            {
+                Mod.Logger.Info($"[NightmareRose AI] Tick:{Main.GameUpdateCount} whoAmI:{NPC.whoAmI} active:{NPC.active} life:{NPC.life}/{NPC.lifeMax} state:{currentState}");
+            }
             Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Bottom, Vector2.Zero, ModContent.ProjectileType<SpawnSoul>(), 0, 0);
 
             SunlightModification.Reset();
@@ -373,12 +384,20 @@ namespace DestroyerTest.Content.Entities
                 }
             }
 
+            /*
+            for (int i = 0; i < cfNodes.Count; i++)
+            {
+                Line L = new Line(NPCHead, cfNodes[i].Center);
+                DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(1, true), ColorLib.WretchedGradient(), Main.spriteBatch, BlendState.Additive, NodeHealLineScroll, 0.5f, 1.75f);
+
+            }
+            */
 
             Rectangle sourceRect = new Rectangle(
-                0,
-                frameIndex * NPC.height,
-                NPC.width,
-                NPC.height
+            0,
+            frameIndex * NPC.height,
+            NPC.width,
+            NPC.height
             );
 
             if (anyNodesAlive)
@@ -743,6 +762,13 @@ namespace DestroyerTest.Content.Entities
         public bool RecordedVolume = false;
         public bool SetVolume = false;
         public bool Flag2 = false;
+        int NodeHealLineScroll = 0;
+
+        public List<NPC> cfNodes;
+        // Per-node shake state (one entry per node in cfNodes)
+        public int[] NodeShakeTimers;
+        public float[] NodeShakeMaxX;
+        public float[] NodeShakeMaxY;
 
         public bool FireLR = false; //True = Right, False = Left
         public bool DartsLR = false; //True = Right, False = Left
@@ -882,9 +908,67 @@ namespace DestroyerTest.Content.Entities
                 }
             }
 
-            // Assuming this is inside your boss NPC code
-            anyNodesAlive = Main.npc.Any(n => n.active && n.type == ModContent.NPCType<CursedFlameNode>());
-            nodeCount = Main.npc.Count(n => n.active && n.type == ModContent.NPCType<CursedFlameNode>());
+
+            cfNodes = Main.npc.Where(n => n.active && n.type == ModContent.NPCType<CursedFlameNode>()).ToList();
+            anyNodesAlive = cfNodes.Count > 0;
+            nodeCount = cfNodes.Count;
+
+            // Ensure per-node shake arrays are sized to the current node count and preserve previous values
+            if (nodeCount > 0)
+            {
+                if (NodeShakeTimers == null || NodeShakeTimers.Length != nodeCount)
+                {
+                    int oldLen = NodeShakeTimers?.Length ?? 0;
+                    int[] newTimers = new int[nodeCount];
+                    float[] newMaxX = new float[nodeCount];
+                    float[] newMaxY = new float[nodeCount];
+                    if (oldLen > 0)
+                    {
+                        int copy = Math.Min(oldLen, nodeCount);
+                        Array.Copy(NodeShakeTimers, newTimers, copy);
+                        if (NodeShakeMaxX != null) Array.Copy(NodeShakeMaxX, newMaxX, Math.Min(NodeShakeMaxX.Length, copy));
+                        if (NodeShakeMaxY != null) Array.Copy(NodeShakeMaxY, newMaxY, Math.Min(NodeShakeMaxY.Length, copy));
+                    }
+                    NodeShakeTimers = newTimers;
+                    NodeShakeMaxX = newMaxX;
+                    NodeShakeMaxY = newMaxY;
+                }
+
+                // Ensure UI array exists
+                if (NightmareRoseHealthBar.NodeLockShake == null || NightmareRoseHealthBar.NodeLockShake.Length != nodeCount)
+                {
+                    NightmareRoseHealthBar.NodeLockShake = new Vector2[nodeCount];
+                }
+
+                // Update each node's timer and max offsets, then drive the UI shake positions
+                for (int i = 0; i < nodeCount; i++)
+                {
+                    if (NodeShakeTimers[i] < 120)
+                        NodeShakeTimers[i]++;
+
+                    NodeShakeMaxX[i] = MathHelper.Lerp(10f, 0f, (float)NodeShakeTimers[i] / 120f);
+                    NodeShakeMaxY[i] = NodeShakeMaxX[i];
+
+                    if (cfNodes[i].active && cfNodes[i].life > 0)
+                    {
+                        // random offset in both directions
+                        NightmareRoseHealthBar.NodeLockShake[i] = new Vector2(
+                            Main.rand.NextFloat(-NodeShakeMaxX[i], NodeShakeMaxX[i]),
+                            Main.rand.NextFloat(-NodeShakeMaxY[i], NodeShakeMaxY[i])
+                        );
+                    }
+                    else
+                    {
+                        NightmareRoseHealthBar.NodeLockShake[i] = Vector2.Zero;
+                    }
+                }
+            }
+
+            if (DTConfig.instance.EnableDebugMessages)
+            {
+                //string nodeList = string.Join(",", cfNodes.Select(n => n.whoAmI.ToString()).ToArray());
+                //Mod.Logger.Info($"[NightmareRose] cfNodes.Count={cfNodes.Count} cfNodes=[{nodeList}] anyNodesAlive={anyNodesAlive}");
+            }
 
             if (!DestroyerTestMod.EternityIsActive)
             {
@@ -903,6 +987,18 @@ namespace DestroyerTest.Content.Entities
             {
                 NPC.dontTakeDamage = true;
                 NPC.immortal = true;
+
+                var NodePositions = Opus.GetEquidistantOrbitVectors(nodeCount, NPCHead, 0.02f, NodeRadius);
+
+                NodeHealLineScroll += 20;
+                for (int i = 0; i < cfNodes.Count; i++)
+                {
+                    Line L = new Line(NPCHead, cfNodes[i].Center);
+                    //DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(1, true), ColorLib.WretchedGradient(), Main.spriteBatch, BlendState.Additive, NodeHealLineScroll, 0.5f, 1.75f);
+
+                    cfNodes[i].SmoothMoveToPoint(NodePositions[i], 24f);
+                }
+
                 if (NPC.life < (NPC.lifeMax * 0.75f))
                 {
                     NPC.life += HealAmount;
@@ -936,6 +1032,7 @@ namespace DestroyerTest.Content.Entities
                 }
                 else
                 {
+                    Mod.Logger.Info($"[NightmareRose] Deactivating NPC whoAmI:{NPC.whoAmI} because player.active={player.active} dead={player.dead} Tick:{Main.GameUpdateCount}");
                     NPC.active = false;
                 }
             }
@@ -2408,9 +2505,6 @@ namespace DestroyerTest.Content.Entities
         public override void AI()
         {
             NPC bossNPC = null;
-            DTConfig cfg = ModContent.GetInstance<DTConfig>();
-            DTMusicConfig muscfg = ModContent.GetInstance<DTMusicConfig>();
-            DTOptimizationsConfig optcfg = ModContent.GetInstance<DTOptimizationsConfig>();
 
             for (int i = 0; i < Main.maxNPCs; i++)
             {
@@ -2432,82 +2526,32 @@ namespace DestroyerTest.Content.Entities
                 NPC.active = true;
             }
 
-            // Access ModNPC safely
-            NightmareRoseBoss modBoss = bossNPC.ModNPC as NightmareRoseBoss;
+            // This node's per-node shake state is handled by the NightmareRoseBoss instance.
+            // The node itself does not maintain arrays for all nodes.
+            // Keep other node AI behaviors above; nothing else required here for UI shake.
+            var NR = Main.npc.FirstOrDefault(n => n.active && n.type == ModContent.NPCType<NightmareRoseBoss>());
+        }
 
-            // If NPCHead is a custom property
-            Vector2 OrbitCenter = modBoss != null ? modBoss.NPCHead : bossNPC.Center;
-
-            if (Main.rand.NextBool(3) && optcfg.DisableExcessDusts == false)
+        public override void OnHitByItem(Player player, Item item, NPC.HitInfo hit, int damageDone)
+        {
+            var boss = Main.npc.FirstOrDefault(n => n.active && n.type == ModContent.NPCType<NightmareRoseBoss>());
+            if (boss?.ModNPC is NightmareRoseBoss nr)
             {
-                int dustCount = 12;
-                Vector2 start = NPC.Center;
-                Vector2 end = OrbitCenter;
-                Vector2 direction = (end - start).SafeNormalize(Vector2.Zero);
-                float length = Vector2.Distance(start, end);
-
-                for (int i = 0; i < dustCount; i++)
-                {
-                    float t = i / (float)(dustCount - 1);
-                    Vector2 pos = Vector2.Lerp(start, end, t);
-
-                    Dust d = Dust.NewDustPerfect(pos, DustID.CursedTorch, direction, 0, default, 1.2f);
-                    d.noGravity = true;
-                    d.fadeIn = 1f;
-                }
+                int idx = nr.cfNodes.FindIndex(n => n.whoAmI == NPC.whoAmI);
+                if (idx >= 0 && nr.NodeShakeTimers != null && idx < nr.NodeShakeTimers.Length)
+                    nr.NodeShakeTimers[idx] = 0;
             }
+        }
 
-            bool ParentAlive = Main.npc.Any(n => n.active && n.type == ModContent.NPCType<NightmareRoseBoss>());
-
-            if (ParentAlive)
+        public override void OnHitByProjectile(Projectile projectile, NPC.HitInfo hit, int damageDone)
+        {
+            var boss = Main.npc.FirstOrDefault(n => n.active && n.type == ModContent.NPCType<NightmareRoseBoss>());
+            if (boss?.ModNPC is NightmareRoseBoss nr)
             {
-                NPC.active = true;
+                int idx = nr.cfNodes.FindIndex(n => n.whoAmI == NPC.whoAmI);
+                if (idx >= 0 && nr.NodeShakeTimers != null && idx < nr.NodeShakeTimers.Length)
+                    nr.NodeShakeTimers[idx] = 0;
             }
-            else
-            {
-                NPC.active = false;
-            }
-
-            // Orbit settings
-            float radius = modBoss.NodeRadius;
-            float speed = 0.01f;
-            float angle = Main.GameUpdateCount * speed;
-
-            // Get a list of all active CursedFlameNode NPCs
-            List<NPC> allNodes = new List<NPC>();
-
-            for (int i = 0; i < Main.maxNPCs; i++)
-            {
-                NPC node = Main.npc[i];
-                if (node.active && node.type == ModContent.NPCType<CursedFlameNode>())
-                {
-                    allNodes.Add(node);
-                }
-            }
-
-            // Sort the list by whoAmI to ensure consistent order across clients and frames
-            allNodes.Sort((a, b) => a.whoAmI.CompareTo(b.whoAmI));
-
-            int index = allNodes.IndexOf(NPC);
-            int total = allNodes.Count;
-
-            // Calculate spacing
-            float spacing = MathHelper.TwoPi / (total == 0 ? 1 : total);
-            float myAngle = angle + index * spacing;
-
-            // Final orbit target
-            Vector2 targetOffset = new Vector2(MathF.Cos(myAngle), MathF.Sin(myAngle)) * radius;
-            Vector2 targetCenter = OrbitCenter + targetOffset;
-
-            // Smooth movement instead of instant snapping
-            float lerpSpeed = 0.08f; // lower = slower, higher = snappier
-
-            NPC.Center = Vector2.Lerp(
-                NPC.Center,
-                targetCenter,
-                lerpSpeed
-            );
-
         }
     }
 

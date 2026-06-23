@@ -45,7 +45,7 @@ namespace DestroyerTest.Content.Projectiles.OrionCrossover
         }
 
         public override SoundStyle Swing => DTAssetLib.SwordSounds.MediumSwing with { MaxInstances = 0, PitchVariance = 0.6f };
-        public override void HitNPCEffects(NPC npc, NPC.HitInfo hit)
+        public override void HitNPCEffects(NPC npc, NPC.HitInfo hit, int damageDone)
         {
             npc.AddBuff(ModContent.BuffType<DescendantInferno>(), 600);
             SoundEngine.PlaySound(DTAssetLib.Impacts.StellarFox with { MaxInstances = 0, PitchVariance = 0.4f }, npc.Center);

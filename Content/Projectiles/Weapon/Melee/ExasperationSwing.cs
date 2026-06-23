@@ -38,7 +38,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
         public override SoundStyle Swing => DTAssetLib.SwordSounds.TenebrisSwing with { PitchVariance = 0.6f };
 
-        public override void HitNPCEffects(NPC npc, NPC.HitInfo hit)
+        public override void HitNPCEffects(NPC npc, NPC.HitInfo hit, int damageDone)
         {
             npc.AddBuff(ModContent.BuffType<Withering>(), 300);
             SoundEngine.PlaySound(DTAssetLib.Impacts.HellWeaponImpact with { MaxInstances = 0, PitchVariance = 0.8f }, npc.Center);

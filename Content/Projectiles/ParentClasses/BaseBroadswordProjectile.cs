@@ -69,13 +69,13 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             Projectile.ownerHitCheck = true;
         }
 
-        public virtual void OnSpawnExtras()
+        public virtual void OnSpawnExtras(IEntitySource source)
         {
 
         }
         public override void OnSpawn(IEntitySource source)
         {
-            OnSpawnExtras();
+            OnSpawnExtras(source);
 
             Projectile.spriteDirection = Main.MouseWorld.X > Owner.MountedCenter.X ? 1 : -1;
 
@@ -368,10 +368,10 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
                 }
             }
 
-            Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-            Main.EntitySpriteDraw(Tex, Owner.MountedCenter - Main.screenPosition, null, SweepColor * SweepOpacity, (Projectile.rotation + MathHelper.PiOver4) + rOffset, Tex.Size() / 2, (TexBasedMod) * ScaleMult, FX);
-            Main.EntitySpriteDraw(TexH, Owner.MountedCenter - Main.screenPosition, null, SweepHighlightColor * SweepOpacity, (Projectile.rotation + MathHelper.PiOver4) + rOffset, Tex.Size() / 2, (TexBasedMod) * ScaleMult, FX);
-            Main.spriteBatch.ResetToDefault();
+            //Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+            Main.EntitySpriteDraw(Tex, Owner.MountedCenter - Main.screenPosition, null, SweepColor with { A = 0 } * SweepOpacity, (Projectile.rotation + MathHelper.PiOver4) + rOffset, Tex.Size() / 2, (TexBasedMod) * ScaleMult, FX);
+            Main.EntitySpriteDraw(TexH, Owner.MountedCenter - Main.screenPosition, null, SweepHighlightColor with { A = 0 } * SweepOpacity, (Projectile.rotation + MathHelper.PiOver4) + rOffset, Tex.Size() / 2, (TexBasedMod) * ScaleMult, FX);
+            //Main.spriteBatch.ResetToDefault();
             //Opus.ReturnToDefaultDrawing(Main.spriteBatch);
         }
 
@@ -460,7 +460,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             return HitCooldown <= 0 && CurrentState != State.Wait && !target.friendly /*&& !OpusNPCDropHelper.IgnoreEnemies.Contains(target.type)*/;
         }
 
-        public virtual void HitNPCEffects(NPC npc, NPC.HitInfo hit)
+        public virtual void HitNPCEffects(NPC npc, NPC.HitInfo hit, int damageDone)
         {
 
         }
@@ -470,7 +470,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
             if (CurrentState != State.Wait)
             {
-                HitNPCEffects(target, hit);
+                HitNPCEffects(target, hit, damageDone);
             }
         }
 

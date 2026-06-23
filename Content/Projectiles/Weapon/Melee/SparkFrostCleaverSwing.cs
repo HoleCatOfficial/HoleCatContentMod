@@ -88,7 +88,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             ScaleMult = 1.17f;
         }
 
-        public override void HitNPCEffects(NPC npc, NPC.HitInfo hit)
+        public override void HitNPCEffects(NPC npc, NPC.HitInfo hit, int damageDone)
         {
             Player player = Main.player[Projectile.owner];
 

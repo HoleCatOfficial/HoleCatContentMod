@@ -86,6 +86,11 @@ Configs: {
 			Label: Blessing V F X
 			Tooltip: ""
 		}
+
+		ScreenshakeEffects: {
+			Label: Screenshake Effects
+			Tooltip: ""
+		}
 	}
 
 	DTMusicConfig: {

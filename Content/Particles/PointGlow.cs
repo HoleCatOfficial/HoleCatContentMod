@@ -96,21 +96,18 @@ namespace DestroyerTest.Content.Particles
         bool IDrawPixelated.ShouldDrawPixelated => true;
         void IDrawPixelated.DrawPixelated(SpriteBatch spriteBatch)
         {
-            Texture2D texture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/PointGlow").Value;
+            Texture2D texture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/PointGlowPreMultiplied").Value;
             Vector2 origin = texture.Size() / 2f;
 
             var Cap = spriteBatch.Capture();
 
-            Cap.BlendState = BlendState.Additive;
-
-            spriteBatch.UseBlendState(BlendState.Additive);
             Cap.TransformMatrix = PixelationSystem.PixelationMatrix;
 
             spriteBatch.End();
             spriteBatch.Begin(Cap);
             //Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
 
-            spriteBatch.Draw(texture, position - Main.screenPosition, null, color, 0f, origin, scale, SpriteEffects.None, 0f);
+            spriteBatch.Draw(texture, position - Main.screenPosition, null, color with { A = 0 }, 0f, origin, scale, SpriteEffects.None, 0f);
 
             spriteBatch.ResetToDefault();
         }

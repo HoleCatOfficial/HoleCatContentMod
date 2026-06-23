@@ -72,7 +72,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee.Quixotism
             }
         }
 
-        public override void HitNPCEffects(NPC npc, NPC.HitInfo hit)
+        public override void HitNPCEffects(NPC npc, NPC.HitInfo hit, int damageDone)
         {
             Player Owner = Main.player[Projectile.owner];
             if (Owner.HeldItem.ModItem is MeleeWeapons.Quixotism Q)

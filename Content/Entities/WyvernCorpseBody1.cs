@@ -1,3 +1,4 @@
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.BossBar;
 using DestroyerTest.Content.Buffs;
@@ -211,7 +212,7 @@ namespace DestroyerTest.Content.Entities
             }
             else
             {
-                NumSoulParticles = (int)MathHelper.Lerp(0, 3, LastQuarterProgress);
+                NumSoulParticles = (int)MathHelper.Lerp(8, 0, LastQuarterProgress);
             }
 
             //Bone dusts increase throughout the fight.
@@ -251,10 +252,11 @@ namespace DestroyerTest.Content.Entities
 
                 if (!DTOptimizationsConfig.instance.DisableExcessDusts)
                 {
-                    PointGlowPreMultiplied SoulParticle = new();
                     for (int i = 0; i < NumSoulParticles; i++)
                     {
-                        SoulParticle.Initialize(Main.rand.NextVector2FromRectangle(NPC.Hitbox), new Vector2(Main.rand.NextFloat(-1, 1), Main.rand.NextFloat(-1, 1)), ColorLib.Soul, 1f);
+                        PointGlowPreMultiplied SoulParticle = new();
+                        SoulParticle.Initialize(Main.rand.NextVector2FromRectangle(NPC.Hitbox), new Vector2(Main.rand.NextFloat(-1, 1), Main.rand.NextFloat(-1, 1)), ColorLib.Soul, 1f, 120);
+                        ParticleEngine.Particles.Add(SoulParticle);
                     }
                 }
             }
@@ -266,10 +268,11 @@ namespace DestroyerTest.Content.Entities
             {
                 SoundEngine.PlaySound(DTAssetLib.Impacts.DreamHit, NPC.Center);
 
-                PointGlowPreMultiplied SoulParticle = new();
-                for (int i = 0; i < 4; i++)
+                for (int i = 0; i < 10; i++)
                 {
-                    SoulParticle.Initialize(Main.rand.NextVector2FromRectangle(NPC.Hitbox), new Vector2(Main.rand.NextFloat(-1, 1), Main.rand.NextFloat(-1, 1)), ColorLib.Soul, 1f);
+                    PointGlowPreMultiplied SoulParticle = new();
+                    SoulParticle.Initialize(Main.rand.NextVector2FromRectangle(NPC.Hitbox), new Vector2(Main.rand.NextFloat(-1, 1), Main.rand.NextFloat(-1, 1)), ColorLib.Soul, 1f, 120);
+                    ParticleEngine.Particles.Add(SoulParticle);
                 }
             }
         }
