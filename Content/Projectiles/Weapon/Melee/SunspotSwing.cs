@@ -74,7 +74,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 Owner.GetModPlayer<ScreenshakePlayer>().screenshakeMagnitude = 4;
                 Owner.GetModPlayer<ScreenshakePlayer>().screenshakeTimer = 20;
                 SoundEngine.PlaySound(DTAssetLib.Impacts.MagicHit with { MaxInstances = 0, PitchVariance = 0.6f, Volume = 0.7f }, npc.Center);
-                SoundEngine.PlaySound(DTAssetLib.ScholarShieldSounds.Break with { MaxInstances = 0, PitchVariance = 0.6f, Volume = 0.2f }, npc.Center);
+                SoundEngine.PlaySound(DTAssetLib.ScholarShieldSounds.Break with { MaxInstances = 0, PitchVariance = 0.6f, Volume = 0.5f }, npc.Center);
                 Opus.RadialSpreadProjectile(ModContent.ProjectileType<SolarTrail>(), 8, npc.Center, Projectile.damage / 10, 4, 0.25f);
                 Opus.RadialSpreadProjectile(ModContent.ProjectileType<SolarTrail>(), 12, npc.Center, Projectile.damage / 15, 4, 0.5f);
                 Opus.RadialSpreadProjectile(ModContent.ProjectileType<SolarTrail>(), 16, npc.Center, Projectile.damage / 20, 4, 0.75f);

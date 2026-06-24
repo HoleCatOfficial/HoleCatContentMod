@@ -62,6 +62,7 @@ WyvernCorpseTail.DisplayName: The Great Wyvern's Corpse
 
 NightmareRoseBoss: {
 	DisplayName: Nightmare Rose
+	BossBarDisplayName: N i g h t m a r e  R o s e
 	InternalName: NightmareRose
 	DespawnMessage: The amalgamation disbands...
 	ExitBarrierDeath: "{0} attempted to flee."

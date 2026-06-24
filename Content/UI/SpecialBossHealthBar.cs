@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using OpusLib.Content.Helpers;
 using ReLogic.Content;
+using ReLogic.Graphics;
 using SteelSeries.GameSense;
 using System;
 using System.Collections.Generic;
@@ -30,6 +31,7 @@ namespace DestroyerTest.Content.UI
         private UIElement area;
         private Asset<Texture2D> barFront;
         private Asset<Texture2D> barBack;
+        private Asset<Texture2D> barCaps;
 
         private Asset<Texture2D> NodeLock;
 
@@ -45,6 +47,7 @@ namespace DestroyerTest.Content.UI
 
             barBack = ModContent.Request<Texture2D>("DestroyerTest/Assets/Textures/NightmareRoseBarBack");
             barFront = ModContent.Request<Texture2D>("DestroyerTest/Assets/Textures/NightmareRoseBarFront");
+            barCaps = ModContent.Request<Texture2D>("DestroyerTest/Assets/Textures/NightmareRoseBarCaps");
 
             NodeLock = ModContent.Request<Texture2D>("DestroyerTest/Assets/Textures/NightmareRoseBar_NodeLock");
 
@@ -90,8 +93,9 @@ namespace DestroyerTest.Content.UI
                 {
                     spriteBatch.Draw(barBack.Value, drawPos, null, Color.White, 0f, barOrigin, Main.UIScale * 2.5f, 0f, 0f);
                     spriteBatch.Draw(barFront.Value, drawPos, frameCrop, OpusColorUtils.MultiLerp(quotient.Inverse(), ColorLib.WretchedColorMap), 0f, barOrigin, Main.UIScale * 2.5f, 0f, 0f);
+                    spriteBatch.Draw(barCaps.Value, drawPos, null, Color.White, 0f, barCaps.Size() / 2, Main.UIScale * 2.5f, 0f, 0f);
 
-                    
+
                     Rectangle NodeLockDimensions = new Rectangle(0, 0, 88, 30);
 
                     var cfn = nightmareRose.cfNodes;
@@ -126,11 +130,15 @@ namespace DestroyerTest.Content.UI
                             Rectangle NodeLockFrame = new Rectangle(0, NodeLockFrameNumber * NodeLockDimensions.Height, NodeLockDimensions.Width, NodeLockDimensions.Height);
                             Vector2 NodeLockOrigin = NodeLockFrame.Size() / 2f;
 
-                            Vector2 NodeLockDrawPos =  new Vector2((drawPos.X - 510) + 44, drawPos.Y) + new Vector2((NodeLockDimensions.Width * Main.UIScale * 2.5f) * i, 0);
+                            Vector2 NodeLockDrawPos =  new Vector2((drawPos.X - 510) + 44, drawPos.Y - 2) + new Vector2((NodeLockDimensions.Width * Main.UIScale * 2.5f) * i, 0);
 
                             if (cfn[i].life > 0)
                             {
                                 spriteBatch.Draw(NodeLock.Value, NodeLockDrawPos + NodeLockShake[i], NodeLockFrame, Color.White, 0f, NodeLockOrigin, Main.UIScale * 2.5f, 0f, 0f);
+
+                                DTUtils.DrawChargeBar(Main.UIScale * 2.5f, NodeLockDrawPos + new Vector2(0, 40), (float)cfn[i].life / (float)cfn[i].lifeMax, Color.DarkRed);
+                            
+                            
                             }
                         }
                     }
@@ -138,8 +146,14 @@ namespace DestroyerTest.Content.UI
 
 
 
-                    var TEXT = Language.GetTextValue("Mods.DestroyerTest.NPCs.NightmareRoseBoss.DisplayName");
-                    spriteBatch.DrawString(DTAssetLib.Arial.Value, TEXT, drawPos + new Vector2(0, -100f), Color.White, 0f, DTAssetLib.Arial.Value.MeasureString(TEXT) * 0.5f, Main.UIScale * 2.5f, SpriteEffects.None, 0f);
+                    var TEXT = Language.GetTextValue("Mods.DestroyerTest.NPCs.NightmareRoseBoss.BossBarDisplayName");
+                    spriteBatch.DrawString(DTAssetLib.Doxent.Value, TEXT, drawPos + new Vector2(0, -60f), Color.White, 0f, DTAssetLib.Doxent.Value.MeasureString(TEXT) * 0.5f, Main.UIScale * 0.7f, SpriteEffects.None, 0f);
+
+                    string DefText = $"Defense: {NR.defense}";
+                    //spriteBatch.DrawString(DTAssetLib.Doxent.Value, DefText, drawPos + new Vector2(360, 40f), Color.White, 0f, DTAssetLib.Doxent.Value.MeasureString(DefText) * 0.5f, Main.UIScale * 0.2f, SpriteEffects.None, 0f);
+                    float LifePercent = (float)Math.Round(((float)NR.life / (float)NR.lifeMax) * 100, 2);
+                    string LifePercentText = $"{LifePercent}%";
+                    spriteBatch.DrawString(DTAssetLib.Doxent.Value, LifePercentText, drawPos + new Vector2(-350, 40f), Color.White, 0f, DTAssetLib.Doxent.Value.MeasureString(DefText) - new Vector2(0, DTAssetLib.Doxent.Value.MeasureString(DefText).Y / 2), Main.UIScale * 0.35f, SpriteEffects.None, 0f);
                 }
             }
 

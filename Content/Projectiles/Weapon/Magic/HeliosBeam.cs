@@ -3,6 +3,7 @@ using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Particles;
+using FargowiltasSouls.Content.Patreon.DanielTheRobot;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
@@ -20,7 +21,7 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 {
-    public class RiftStaffBeam : ModProjectile
+    public class HeliosBeam : ModProjectile
     {
         public override string Texture => DTUtils.NoTexture;
         public override void SetDefaults()
@@ -40,7 +41,6 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
         float WidthScl = 0f;
         Line L;
         int oF = 0;
-
         float Rot = 0f;
         public override bool PreDraw(ref Color lightColor)
         {
@@ -49,8 +49,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 
             Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
             DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(3), ColorLib.Rift, Main.spriteBatch, BlendState.Additive, oF, WidthScl * 2);
-            Main.EntitySpriteDraw(DTAssetLib.Laser.Value, Projectile.Center - Main.screenPosition, null, ColorLib.DarkRift3, Projectile.rotation, new Vector2(0, DTAssetLib.Laser.Value.Height / 2), new Vector2(1f, WidthScl), SpriteEffects.None);
-            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(5), ColorLib.LightRift2, Main.spriteBatch, BlendState.Additive, oF, WidthScl * 2f, 5f);
+            Main.EntitySpriteDraw(DTAssetLib.Laser.Value, Projectile.Center - Main.screenPosition, null, ColorLib.Rift, Projectile.rotation, new Vector2(0, DTAssetLib.Laser.Value.Height / 2), new Vector2(1f, WidthScl * 0.75f), SpriteEffects.None);
+            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(5), Color.White, Main.spriteBatch, BlendState.Additive, oF, WidthScl, 5f);
             //Main.EntitySpriteDraw(DTAssetLib.Laser.Value, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(0, DTAssetLib.Laser.Value.Height / 2), new Vector2(1f, WidthScl * 0.15f), SpriteEffects.None);
 
             Rot += 0.3f;
@@ -71,7 +71,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 
         SlotId LoopSlot;
 
-        public SoundStyle Loop = new SoundStyle("DestroyerTest/Assets/Audio/AuraLoop/MagesticStormLoop")
+        public SoundStyle Loop = new SoundStyle("DestroyerTest/Assets/Audio/AuraLoop/ElectricHum")
         {
             MaxInstances = 0,
             IsLooped = true,
@@ -88,15 +88,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             Vector2 start = Projectile.Center;
 
             Vector2 end = start + new Vector2(Main.rand.NextFloat(length), 0).RotatedBy(Projectile.rotation);
-
-            if (Main.rand.NextBool(4) && !DTOptimizationsConfig.instance.DisableExcessParticles)
-            {
-                ElectricArc Arc = new();
-                Arc.Create(end, ColorLib.Rift, Main.rand.NextFloat(0.5f, 1f), 1f);
-                ParticleEngine.ShaderParticles.Add(Arc);
-            }
-
-            if (Main.player[Projectile.owner].ownedProjectileCounts[ModContent.ProjectileType<RiftStaffHoldout>()] < 1)
+            if (Main.player[Projectile.owner].ownedProjectileCounts[ModContent.ProjectileType<HeliciteStaffHoldout>()] < 1)
             {
                 GoodBeam = false;
             }
@@ -136,7 +128,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             else
             {
                 activeSound.Position = Projectile.Center;
-                activeSound.Pitch = WidthScl;
+                activeSound.Pitch = WidthScl * 0.15f;
             }
         }
 
@@ -159,8 +151,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            target.AddBuff(ModContent.BuffType<HeliouricShock>(), 240);
+            target.AddBuff(ModContent.BuffType<DaylightOverload>(), 240);
         }
     }
-    
+
 }

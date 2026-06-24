@@ -1802,7 +1802,7 @@ namespace DestroyerTest.Common
         public const string FontPath = "DestroyerTest/Assets/Fonts";
 
         public static Asset<SpriteFont> Arial = ModContent.Request<SpriteFont>(FontPath + "/arial", AssetRequestMode.AsyncLoad);
-
+        public static Asset<SpriteFont> Doxent  = ModContent.Request<SpriteFont>(FontPath + "/doxent", AssetRequestMode.AsyncLoad);
         //
         //Practical, Every-Day VFX Textures
         //

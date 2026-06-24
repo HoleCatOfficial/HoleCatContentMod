@@ -157,8 +157,8 @@ namespace DestroyerTest.Content.Entities
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
-                new FlavorTextBestiaryInfoElement(Language.GetTextValue("Mods.DestroyerTest.NPCs.NightmareRoseBossBossBoss.BestiaryEntry1")),
-                new FlavorTextBestiaryInfoElement(Language.GetTextValue("Mods.DestroyerTest.NPCs.NightmareRoseBossBossBoss.BestiaryEntry2")),
+                new FlavorTextBestiaryInfoElement(Language.GetTextValue("Mods.DestroyerTest.NPCs.NightmareRoseBoss.BestiaryEntry1")),
+                new FlavorTextBestiaryInfoElement(Language.GetTextValue("Mods.DestroyerTest.NPCs.NightmareRoseBoss.BestiaryEntry2")),
                 BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.TheCorruption
             });
         }
@@ -236,6 +236,109 @@ namespace DestroyerTest.Content.Entities
             Lances,
             WallDarts,
             KillIdle
+        }
+        private void SetChances(AttackState State)
+        {
+            var weights = stateWeights;
+            bool Eternity = DestroyerTestMod.EternityIsActive && !DestroyerTestMod.MasochistIsActive;
+            bool Masochist = DestroyerTestMod.MasochistIsActive;
+
+            switch (State)
+            {
+                case AttackState.SpawnIdle:
+                    {
+
+                        break;
+                    }
+                case AttackState.Idle:
+                    {
+                        
+                        break;
+                    }
+                case AttackState.CursedFlames:
+                    {
+                        weights[AttackState.CursedFlames] = 0.5f;
+                        weights[AttackState.Napalm] = 1f;
+                        break;
+                    }
+                case AttackState.Napalm:
+                    {
+                        weights[AttackState.Napalm] = 0f;
+                        if (Masochist)
+                        {
+                            weights[AttackState.BlossomMine] = 0f;
+                            weights[AttackState.CursedFlames] = 0.2f;
+                        }
+                        break;
+                    }
+                case AttackState.Minions:
+                    {
+                        break;
+                    }
+                case AttackState.RottenPetals:
+                    {
+                        break;
+                    }
+                case AttackState.OvergrownHammer:
+                    {
+                        break;
+                    }
+                case AttackState.DemoniteWhisper:
+                    {
+                        weights[AttackState.BlossomMine] = 1f;
+                        weights[AttackState.CursedFlames] = 1f;
+                        break;
+                    }
+                case AttackState.CorruptSigil:
+                    {
+                        break;
+                    }
+                case AttackState.ArenaDivide:
+                    {
+                        break;
+                    }
+                case AttackState.BlossomMine:
+                    {
+                        weights[AttackState.FlameRing] = 0f;
+
+                        if (Masochist)
+                        {
+                            weights[AttackState.DemoniteWhisper] = 0f;
+                            weights[AttackState.CursedFlames] = 0f;
+                        }
+                        break;
+                    }
+                case AttackState.Desperation:
+                    {
+                        break;
+                    }
+                case AttackState.Nodes:
+                    {
+                        weights[AttackState.FlameRing] = 0f;
+                        break;
+                    }
+                case AttackState.FlameRing:
+                    {
+                        weights[AttackState.BlossomMine] = 1f;
+                        break;
+                    }
+                case AttackState.Lances:
+                    {
+                        
+                        break;
+                    }
+                case AttackState.WallDarts:
+                    {
+                        weights[AttackState.DemoniteWhisper] = 1f;
+                        weights[AttackState.FlameRing] = 1f;
+                        weights[AttackState.BlossomMine] = 1f;
+                        break;
+                    }
+                case AttackState.KillIdle:
+                    {
+                        break;
+                    }
+            }
         }
 
         #region Vars
@@ -384,14 +487,16 @@ namespace DestroyerTest.Content.Entities
                 }
             }
 
-            /*
-            for (int i = 0; i < cfNodes.Count; i++)
+            if (cfNodes.Count > 0)
             {
-                Line L = new Line(NPCHead, cfNodes[i].Center);
-                DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(1, true), ColorLib.WretchedGradient(), Main.spriteBatch, BlendState.Additive, NodeHealLineScroll, 0.5f, 1.75f);
+                for (int i = 0; i < cfNodes.Count; i++)
+                {
+                    Line L = new Line(cfNodes[i].Center, NPCHead);
+                    DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(1, true), ColorLib.WretchedGradient(), Main.spriteBatch, BlendState.Additive, NodeHealLineScroll, 0.5f, 1f);
 
+                }
             }
-            */
+            
 
             Rectangle sourceRect = new Rectangle(
             0,
@@ -399,6 +504,8 @@ namespace DestroyerTest.Content.Entities
             NPC.width,
             NPC.height
             );
+
+            SetChances(currentState);
 
             if (anyNodesAlive)
             {
@@ -467,9 +574,9 @@ namespace DestroyerTest.Content.Entities
 
             if (ShouldDrawLaserWarning)
             {
-                spriteBatch.UseBlendState(BlendState.AlphaBlend);
-                Main.EntitySpriteDraw(DTAssetLib.BlessedNodeLaserTelegraph.Value, NPCHead - Main.screenPosition, null, ColorLib.TenebrisGradient with { A = 0 } * LaserWarnOpacity, LaserRotOffset - 12f, DTAssetLib.BlessedNodeLaserTelegraph.Value.Size() / 2, 1f, SpriteEffects.None);
-                Main.EntitySpriteDraw(DTAssetLib.BlessedNodeLaserTelegraph.Value, NPCHead - Main.screenPosition, null, Color.White with { A = 0 } * LaserWarnOpacity, LaserRotOffset - 12f, DTAssetLib.BlessedNodeLaserTelegraph.Value.Size() / 2, 0.65f, SpriteEffects.None);
+                spriteBatch.UseBlendState(BlendState.Additive);
+                Main.EntitySpriteDraw(DTAssetLib.BlessedNodeLaserTelegraph.Value, NPCHead - Main.screenPosition, null, ColorLib.TenebrisGradient * LaserWarnOpacity, LaserRotOffset - 12f, DTAssetLib.BlessedNodeLaserTelegraph.Value.Size() / 2, 1f, SpriteEffects.None);
+                Main.EntitySpriteDraw(DTAssetLib.BlessedNodeLaserTelegraph.Value, NPCHead - Main.screenPosition, null, Color.White * LaserWarnOpacity, LaserRotOffset - 12f, DTAssetLib.BlessedNodeLaserTelegraph.Value.Size() / 2, 0.65f, SpriteEffects.None);
                 spriteBatch.UseBlendState(BlendState.AlphaBlend);
             }
 
@@ -487,11 +594,11 @@ namespace DestroyerTest.Content.Entities
                 spriteBatch.UseBlendState(BlendState.AlphaBlend);
                 if (FlameStartTimer > 60)
                 {
-                    GlowConeScaling += 0.05f;
+                    GlowConeScaling += 0.25f;
                 }
                 if (FlameStartTimer < 60)
                 {
-                    GlowConeScaling -= 0.05f;
+                    GlowConeScaling -= 0.25f;
                 }
             }
 
@@ -502,11 +609,11 @@ namespace DestroyerTest.Content.Entities
                 spriteBatch.UseBlendState(BlendState.AlphaBlend);
                 if (NapalmDelay > 60)
                 {
-                    GlowConeScaling += 0.05f;
+                    GlowConeScaling += 0.25f;
                 }
                 if (NapalmDelay < 60)
                 {
-                    GlowConeScaling -= 0.05f;
+                    GlowConeScaling -= 0.25f;
                 }
             }
 
@@ -988,7 +1095,7 @@ namespace DestroyerTest.Content.Entities
                 NPC.dontTakeDamage = true;
                 NPC.immortal = true;
 
-                var NodePositions = Opus.GetEquidistantOrbitVectors(nodeCount, NPCHead, 0.02f, NodeRadius);
+                var NodePositions = Opus.GetEquidistantOrbitVectors(nodeCount, NPCHead, 0.003f, NodeRadius);
 
                 NodeHealLineScroll += 20;
                 for (int i = 0; i < cfNodes.Count; i++)
@@ -1152,11 +1259,11 @@ namespace DestroyerTest.Content.Entities
                         int IdleMax = -1;
                         if (!Main.expertMode && !Main.masterMode && !DestroyerTestMod.EternityIsActive)
                         {
-                            IdleMax = 80;
+                            IdleMax = 100;
                         }
                         if (Main.expertMode && !Main.masterMode && !DestroyerTestMod.EternityIsActive)
                         {
-                            IdleMax = 70;
+                            IdleMax = 80;
                         }
                         if (Main.masterMode || DestroyerTestMod.EternityIsActive)
                         {
@@ -1239,7 +1346,7 @@ namespace DestroyerTest.Content.Entities
                             }
                             FlameStartTimer--;
                             ContemptAttackRotationOffset += FireLR ? 0.01f : -0.01f;
-                            ContemptAttackWarningOffset += FireLR ? 0.005f : -0.005f;
+                            ContemptAttackWarningOffset += FireLR ? 0.00001f : -0.00001f;
                             if (FlameStartTimer > 0)
                             {
 
@@ -1258,8 +1365,6 @@ namespace DestroyerTest.Content.Entities
                     break;
                 case AttackState.WallDarts:
                     {
-                        stateWeights[AttackState.DemoniteWhisper] = 0.1f;
-                        stateWeights[AttackState.Lances] = 0.5f;
                         if (Divided)
                         {
                             ResetState();
@@ -1284,8 +1389,6 @@ namespace DestroyerTest.Content.Entities
                     }
                 case AttackState.FlameRing:
                     {
-                        stateWeights[AttackState.DemoniteWhisper] = 0f;
-                        stateWeights[AttackState.CursedFlames] = 0.5f;
 
                         if (DestroyerTestMod.EternityIsActive)
                         {
@@ -1330,8 +1433,6 @@ namespace DestroyerTest.Content.Entities
                     }
                 case AttackState.Lances:
                     {
-                        stateWeights[AttackState.DemoniteWhisper] = 1f;
-                        stateWeights[AttackState.CursedFlames] = 1f;
                         if (DestroyerTestMod.EternityIsActive)
                         {
                             int numProjectiles = 7;
@@ -1363,8 +1464,6 @@ namespace DestroyerTest.Content.Entities
                     }
                 case AttackState.Napalm:
                     {
-                        stateWeights[AttackState.DemoniteWhisper] = 1f;
-                        stateWeights[AttackState.CursedFlames] = 1f;
 
                         VileThornCooldown++;
                         if (!DestroyerTestMod.MasochistIsActive)
@@ -1379,7 +1478,7 @@ namespace DestroyerTest.Content.Entities
                                 ShineHead();
 
                                 WingDisableParticle particle = new WingDisableParticle();
-                                particle.Initialize(player.MountedCenter, Vector2.Zero, Color.White, 3f);
+                                particle.Initialize(player.MountedCenter, Vector2.Zero, Color.White, 9f);
                                 ParticleEngine.ShaderParticles.Add(particle);
 
 
@@ -1760,27 +1859,7 @@ namespace DestroyerTest.Content.Entities
 
         private AttackState GetRandomState()
         {
-            if (lastAttack == AttackState.DemoniteWhisper)
-            {
-                stateWeights[AttackState.CursedFlames] = 0f;
-                stateWeights[AttackState.WallDarts] = 0f;
-                stateWeights[AttackState.Lances] = 0f;
-            }
-            else
-            {
-                ResetWeights();
-            }
-
-            if (Divided)
-            {
-                stateWeights[AttackState.CursedFlames] = 0f;
-                stateWeights[AttackState.WallDarts] = 0f;
-            }
-            else
-            {
-                ResetWeights();
-            }
-
+            
             // Exclude the current state
             var validStates = stateWeights
                 .Where(pair => pair.Key != currentState && pair.Value > 0)
@@ -1870,12 +1949,15 @@ namespace DestroyerTest.Content.Entities
             }
         }
 
+
         public float GlowConeScaling = 0.01f;
         public void GlowConeWarning_CursedFlames()
         {
             Vector2 dir = DirectionToPlayerCenter;
 
-            Main.EntitySpriteDraw(DTAssetLib.GlowCone.Value, NPCHead - Main.screenPosition, null, ColorLib.CursedFlames, dir.ToRotation(), DTAssetLib.GlowCone.Value.Size() / 2, GlowConeScaling, SpriteEffects.None, 0);
+            Main.EntitySpriteDraw(DTAssetLib.GlowCone.Value, NPCHead - Main.screenPosition, null, ColorLib.CursedFlames, dir.ToRotation() + MathHelper.PiOver4, DTAssetLib.GlowCone.Value.Size() / 2, GlowConeScaling, SpriteEffects.None, 0);
+
+            
         }
 
 
@@ -1885,13 +1967,13 @@ namespace DestroyerTest.Content.Entities
 
             foreach (var p in i)
             {
-                Main.EntitySpriteDraw(DTAssetLib.GlowCone.Value, NPCHead - Main.screenPosition, null, ColorLib.CursedFlames, p.Rotation, DTAssetLib.GlowCone.Value.Size() / 2, GlowConeScaling, SpriteEffects.None, 0);
+                Main.EntitySpriteDraw(DTAssetLib.GlowCone.Value, NPCHead - Main.screenPosition, null, ColorLib.CursedFlames, p.Rotation + MathHelper.PiOver4, DTAssetLib.GlowCone.Value.Size() / 2, GlowConeScaling, SpriteEffects.None, 0);
             }
         }
 
         public void GlowConeWarning_Napalm()
         {
-            Main.EntitySpriteDraw(DTAssetLib.GlowCone.Value, NPCHead - Main.screenPosition, null, ColorLib.CursedFlames, -MathHelper.PiOver2, DTAssetLib.GlowCone.Value.Size() / 2, new Vector2(GlowConeScaling * 2, GlowConeScaling), SpriteEffects.None, 0);
+            Main.EntitySpriteDraw(DTAssetLib.GlowCone.Value, NPCHead - Main.screenPosition, null, ColorLib.CursedFlames, -MathHelper.PiOver4, DTAssetLib.GlowCone.Value.Size() / 2, new Vector2(GlowConeScaling * 2, GlowConeScaling), SpriteEffects.None, 0);
         }
 
         public void GatherParticle()
@@ -2074,7 +2156,7 @@ namespace DestroyerTest.Content.Entities
                         minePosition,
                         Vector2.Zero,
                         ModContent.ProjectileType<DarkLaserMine>(),
-                        10,
+                        100,
                         0f
                     );
                 }
@@ -2214,15 +2296,15 @@ namespace DestroyerTest.Content.Entities
             {
                 if (!DestroyerTestMod.EternityIsActive)
                 {
-                    return 10;
+                    return 40;
                 }
                 if (DestroyerTestMod.EternityIsActive && !DestroyerTestMod.MasochistIsActive)
                 {
-                    return 25;
+                    return 60;
                 }
                 if (DestroyerTestMod.MasochistIsActive)
                 {
-                    return 40;
+                    return 80;
                 }
 
                 return 1;
@@ -2273,7 +2355,7 @@ namespace DestroyerTest.Content.Entities
                         NPCHead,
                         velocity,
                         ModContent.ProjectileType<TenebrisLance>(),
-                        DartDamage(),
+                        DartDamage() * 2,
                         6
                     );
                 }
@@ -2524,6 +2606,16 @@ namespace DestroyerTest.Content.Entities
             else
             {
                 NPC.active = true;
+            }
+
+            NPC.ai[0]++;
+
+            if (NPC.ai[0] % 60 == 0)
+            {
+                SoundEngine.PlaySound(SoundID.DD2_WitherBeastAuraPulse, NPC.Center);
+                LerpingBloomRingSharp Ring = new();
+                Ring.Prepare(NPC.Center, Vector2.Zero, ColorLib.WretchedColorMap, 0.2f, 0.01f, 3f);
+                ParticleEngine.Particles.Add(Ring);
             }
 
             // This node's per-node shake state is handled by the NightmareRoseBoss instance.

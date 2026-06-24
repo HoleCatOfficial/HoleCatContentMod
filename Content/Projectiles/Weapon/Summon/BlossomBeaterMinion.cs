@@ -2,6 +2,7 @@
 using BreadLibrary.Core.Verlet;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Equips;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss;
 using DestroyerTest.Content.SummonItems;
@@ -15,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
@@ -65,9 +67,23 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
         public float ScaleY;
         public override bool PreDraw(ref Color lightColor)
         {
-            Texture2D PT = TextureAssets.Projectile[Type].Value;
-            var GT = Projectile.GetGlowTexture("DestroyerTest/Content/Projectiles/Weapon/Summon", "BlossomBeaterMinion");
+            Texture2D PT;
+            Asset<Texture2D> GT;
             SpriteEffects FX = SpriteEffects.None;
+
+            Player owner = Main.player[Projectile.owner];
+            bool HoleCat = owner.armor[0].type == ModContent.ItemType<HoleCatHead>() && owner.armor[1].type == ModContent.ItemType<HoleCatBody>() && owner.armor[2].type == ModContent.ItemType<HoleCatLegs>();
+
+            if (HoleCat)
+            {
+                PT = ModContent.Request<Texture2D>(Texture + "_HoleCat").Value;
+                GT = ModContent.Request<Texture2D>(Texture + "_Glow_HoleCat");
+            }
+            else
+            {
+                PT = TextureAssets.Projectile[Type].Value;
+                GT = Projectile.GetGlowTexture("DestroyerTest/Content/Projectiles/Weapon/Summon", "BlossomBeaterMinion");
+            }
 
             float rot = Projectile.rotation;
 
@@ -83,9 +99,13 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
             RenderRope(Main.screenPosition, Projectile.GetAlpha(lightColor));
 
             Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-            Opus.DrawProjectileShadowsRotating(Projectile, Opus.Sine(2f, 5.3f), ColorLib.CursedFlames, 0.06f);
+            if (!HoleCat)
+            {
+                Opus.DrawProjectileShadowsRotating(Projectile, Opus.Sine(2f, 5.3f), ColorLib.CursedFlames, 0.06f);
+            }
             Opus.ReturnToDefaultDrawing(Main.spriteBatch);
 
+            
             Main.EntitySpriteDraw(PT, Projectile.Center - Main.screenPosition, null, Projectile.GetAlpha(lightColor), Projectile.rotation, PT.Size() / 2, Projectile.scale, FX);
             Main.EntitySpriteDraw(GT.Value, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, GT.Value.Size() / 2, Projectile.scale, FX);
             return false;
@@ -93,9 +113,19 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
 
         private void RenderRope(Vector2 screenPos, Color drawColor)
         {
+            Player owner = Main.player[Projectile.owner];
+            bool HoleCat = owner.armor[0].type == ModContent.ItemType<HoleCatHead>() && owner.armor[1].type == ModContent.ItemType<HoleCatBody>() && owner.armor[2].type == ModContent.ItemType<HoleCatLegs>();
 
             var tex = DTAssetLib.BlossomBeaterRope.Value;
 
+            if (!HoleCat)
+            {
+                tex = DTAssetLib.BlossomBeaterRope.Value;
+            }
+            else
+            {
+                tex = ModContent.Request<Texture2D>(DTAssetLib.ExtrasPath + "/BlossomBeaterRope_HoleCat").Value;
+            }
 
             int segmentCount = Vine.Positions.Length;
             for (var i = 0; i < segmentCount - 1; i++)
@@ -354,11 +384,23 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
             Rotation(foundTarget, targetCenter);
             Spread();
 
+            Player owner = Main.player[Projectile.owner];
+            bool HoleCat = owner.armor[0].type == ModContent.ItemType<HoleCatHead>() && owner.armor[1].type == ModContent.ItemType<HoleCatBody>() && owner.armor[2].type == ModContent.ItemType<HoleCatLegs>();
+
+
             var FX = new BlossomBeaterFire();
 
             if (CanFire)
             {
-                FX.Initiate(Muzzle, Projectile.rotation + MathHelper.PiOver2, DTColorUtils.Pastel(ColorLib.CursedFlames, 0.3f), 0.15f, 10);
+                if (!HoleCat)
+                {
+                    FX.Initiate(Muzzle, Projectile.rotation + MathHelper.PiOver2, DTColorUtils.Pastel(ColorLib.CursedFlames, 0.3f), 0.15f, 10);
+                }
+                else
+                {
+                    FX.Initiate(Muzzle, Projectile.rotation + MathHelper.PiOver2, DTColorUtils.Pastel(ColorLib.HoleCatFireBeige, 0.3f), 0.15f, 10);
+                }
+
                 CanFire = false;
             }
             
@@ -371,6 +413,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
                 if (CheckAmmoForConsumption(player, out int projToShoot, out float speed, out int damage, out float knockBack, out int usedAmmoItemId, out Item B))
                 {
                     var Config = ModContent.GetInstance<DTConfig>();
+
+                    
+
                     if (Config.MinionAmmoReplace)
                     {
                         projToShoot = ProjectileID.CursedBullet;
@@ -392,26 +437,56 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
                         {
                             SoundEngine.PlaySound(SoundID.Item36, Projectile.Center);
                             glowAMT = 1f;
-                            Lighting.AddLight(Muzzle, ColorLib.CursedFlames.ToVector3() * glowAMT);
+
+                            Color C;
+
+                            if (!HoleCat)
+                            {
+                                C = ColorLib.CursedFlames;
+                                
+                            }
+                            else
+                            {
+                                C = ColorLib.HoleCatFireBeige;
+                            }
+
+                            Lighting.AddLight(Muzzle, C.ToVector3() * glowAMT);
 
                             CanFire = true;
                             
 
                             for (int i = 0; i < 4; i++)
                             {
-
-                                Spark Spark = new Spark();
-                                Spark.PrepareSpark(Muzzle, Vel.RotatedByRandom(0.1f), 0f, ColorLib.CursedFlames, 0.25f, false, 30, SparkDrawMode.Additive);
-                                ParticleEngine.BehindProjectiles.Add(Spark);
+                                if (!HoleCat)
+                                {
+                                    Spark Spark = new Spark();
+                                    Spark.PrepareSpark(Muzzle, Vel.RotatedByRandom(0.1f), 0f, ColorLib.CursedFlames, 0.25f, false, 30, SparkDrawMode.Additive);
+                                    ParticleEngine.BehindProjectiles.Add(Spark);
+                                }
+                                else
+                                {
+                                    LerpingSpark Spark = new LerpingSpark();
+                                    Spark.PrepareSpark(Muzzle, Vel.RotatedByRandom(0.1f), 0f, ColorLib.HoleCatFireColormap, 0.25f, false, 30, SparkDrawMode.Additive);
+                                    ParticleEngine.BehindProjectiles.Add(Spark);
+                                }
                             }
                             Projectile.velocity += dir * -4f;
+
+                            
                             Projectile bullet = Projectile.NewProjectileDirect(Source, Muzzle, Vel, projToShoot, damage, knockBack, player.whoAmI);
                             bullet.ArmorPenetration = 8;
 
                             if (Main.rand.NextBool(5))
                             {
                                 SoundEngine.PlaySound(DTAssetLib.Impacts.ExplosiveImpactSmall with { MaxInstances = 4, PitchVariance = 0.2f });
-                                Projectile petal = Projectile.NewProjectileDirect(Source, Muzzle, Vel * 3f, ModContent.ProjectileType<BlossomBeaterPetal>(), (int)(damage * 2.5f), knockBack, player.whoAmI);
+                                if (!HoleCat)
+                                {
+                                    Projectile petal = Projectile.NewProjectileDirect(Source, Muzzle, Vel * 3f, ModContent.ProjectileType<BlossomBeaterPetal>(), (int)(damage * 2.5f), knockBack, player.whoAmI);
+                                }
+                                else
+                                {
+                                    Projectile fireball = Projectile.NewProjectileDirect(Source, Muzzle, Vel, ModContent.ProjectileType<BBHoleCatFireball>(), (int)(damage * 2.5f), knockBack, player.whoAmI);
+                                }
                             }
                         }
                     }

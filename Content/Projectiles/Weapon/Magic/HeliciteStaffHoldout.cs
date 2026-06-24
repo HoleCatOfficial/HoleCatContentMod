@@ -1,7 +1,7 @@
 ﻿using DestroyerTest.Common;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Magic;
-using DestroyerTest.Content.RiftArsenal;
+using DestroyerTest.Content.Projectiles.Weapon.Melee;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -21,7 +21,7 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 {
-    public class RiftStaffHoldout : ModProjectile
+    public class HeliciteStaffHoldout : ModProjectile
     {
         Asset<Texture2D> Glowmask;
 
@@ -60,19 +60,19 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
                 effects = SpriteEffects.None;
                 rotationOffset = MathHelper.ToRadians(45f);
             }
-           
+
 
             Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, null, Projectile.GetAlpha(lightColor) * Projectile.Opacity, (Projectile.rotation + rotationOffset), origin, Projectile.scale, effects, 0);
 
             Main.EntitySpriteDraw(Glowmask.Value, Projectile.Center - Main.screenPosition, null, Color.White * Projectile.Opacity, (Projectile.rotation + rotationOffset), origin, Projectile.scale, effects, 0);
-            
+
 
             return false;
         }
 
         int beamWhoAmI = -1;
 
-        public RiftStaffBeam BeamProjectile
+        public HeliosBeam BeamProjectile
         {
             get
             {
@@ -84,13 +84,13 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
                 if (!proj.active)
                     return null;
 
-                if (proj.type != ModContent.ProjectileType<RiftStaffBeam>())
+                if (proj.type != ModContent.ProjectileType<HeliosBeam>())
                     return null;
 
                 if (proj.owner != Projectile.owner)
                     return null;
 
-                return proj.ModProjectile as RiftStaffBeam;
+                return proj.ModProjectile as HeliosBeam;
             }
         }
 
@@ -101,7 +101,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 
             var SpawnPT = Dir * 50;
 
-            Projectile Beam = Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center + Dir, Vector2.Zero, ModContent.ProjectileType<RiftStaffBeam>(), Projectile.damage, 10, Owner.whoAmI, Projectile.rotation);
+            Projectile Beam = Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center + Dir, Vector2.Zero, ModContent.ProjectileType<HeliosBeam>(), Projectile.damage, 10, Owner.whoAmI, Projectile.rotation);
 
             beamWhoAmI = Beam.whoAmI;
 
@@ -111,6 +111,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
         bool canMana = false;
         public override void AI()
         {
+
             Projectile.ai[0]++;
             Vector2 Dir = Main.MouseWorld - Projectile.Center;
             Dir.Normalize();
@@ -118,10 +119,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 
             var PT = Dir * 110;
 
+            
+
             Projectile.rotation = Dir.ToRotation();
             Projectile.Center = Owner.Center;
 
-            
+
 
             if (BeamProjectile != null)
             {
@@ -129,29 +132,37 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
                 BeamProjectile.Projectile.ai[0] = Projectile.rotation;
             }
 
-            if (Owner.controlUseItem && Owner.HeldItem.type == ModContent.ItemType<RiftStaff>())
+            
+
+            if (Owner.controlUseItem && Owner.HeldItem.type == ModContent.ItemType<HeliciteStaff>())
             {
                 Owner.SetDummyItemTime(60);
                 Projectile.timeLeft = 120;
 
                 if (BeamProjectile == null && canMana)
                 {
-                    Projectile Beam = Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center + Dir, Vector2.Zero, ModContent.ProjectileType<RiftStaffBeam>(), Projectile.damage, 10, Owner.whoAmI, Projectile.rotation);
+                    Projectile Beam = Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center + Dir, Vector2.Zero, ModContent.ProjectileType<HeliosBeam>(), Projectile.damage, 10, Owner.whoAmI, Projectile.rotation);
 
                     beamWhoAmI = Beam.whoAmI;
                 }
 
+                
 
                 if (Projectile.ai[0] % 30 == 0)
                 {
                     canMana = Owner.CheckMana(60, true, false);
                 }
-                
+
                 if (canMana)
                 {
                     if (BeamProjectile != null)
                     {
                         BeamProjectile.GoodBeam = true;
+                    }
+
+                    if (Main.GameUpdateCount % 6 == 0)
+                    {
+                        Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center + PT, Dir.RotatedByRandom(2f) * Main.rand.NextFloat(6f, 12f), ModContent.ProjectileType<HeliosSpark>(), Projectile.damage / 6, 9, Owner.whoAmI);
                     }
                 }
                 else
@@ -184,7 +195,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             }
         }
 
-        
+
 
 
         Player Owner => Main.player[Projectile.owner];

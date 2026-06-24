@@ -23,7 +23,7 @@ namespace DestroyerTest.Content.Projectiles.Pets
         public Effect RedShader;
         public override void Load()
         {
-            RedShader = ModContent.Request<Effect>("DestroyerTest/Assets/Effects/ColorShitRed").Value;
+            //RedShader = ModContent.Request<Effect>("DestroyerTest/Assets/Effects/ColorShitRed").Value;
         }
         public override void SetStaticDefaults()
         {
@@ -54,8 +54,8 @@ namespace DestroyerTest.Content.Projectiles.Pets
             Asset<Texture2D> WingLeft = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/TenebrousConstructPetWingLeft");
             Asset<Texture2D> WingRight = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/TenebrousConstructPetWingRight");
 
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.Default, RasterizerState.CullNone, RedShader, Main.GameViewMatrix.TransformationMatrix);
+            //spriteBatch.End();
+            //spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.Default, RasterizerState.CullNone, RedShader, Main.GameViewMatrix.TransformationMatrix);
 
             // Left wing: origin at RIGHT edge, middle vertically
             Vector2 originLeft = new Vector2(WingLeft.Width(), WingLeft.Height() / 2);

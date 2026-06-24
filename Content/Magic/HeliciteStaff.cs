@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Projectiles;
+using DestroyerTest.Content.Projectiles.Weapon.Magic;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.Resources.Blueprints;
 using DestroyerTest.Content.RiftArsenal;
@@ -28,49 +29,33 @@ namespace DestroyerTest.Content.Magic
 			Item.staff[Type] = true;
 		}
 
-		public override void SetDefaults() {
-			// DefaultToStaff handles setting various Item values that magic staff weapons use.
-			// Hover over DefaultToStaff in Visual Studio to read the documentation!
-			Item.shoot = ModContent.ProjectileType<RiftStarFriendly2>();
-            Item.useTime = 30;
-            Item.useAnimation = 30;
+		public override void SetDefaults() 
+		{
+
+			Item.shoot = ModContent.ProjectileType<HeliciteStaffHoldout>();
+            Item.useTime = 90;
+            Item.useAnimation = 90;
 			Item.width = 92;
 			Item.height = 92;
 			Item.autoReuse = true;
 			Item.crit = 12;
-			Item.rare = ModContent.RarityType<RiftRarity1>();
+			Item.rare = ModContent.RarityType<RiftRarity2>();
 			Item.useStyle = ItemUseStyleID.Shoot;
+			Item.channel = true;
+			Item.InterruptChannelOnHurt = false;
+			Item.StopAnimationOnHurt = false;
 
-			// Customize the UseSound. DefaultToStaff sets UseSound to SoundID.Item43, but we want SoundID.Item2.
-			Item.UseSound = new SoundStyle($"DestroyerTest/Assets/Audio/RiftClaymorePowerStrike");
+            Item.noMelee = true;
+            Item.noUseGraphic = true;
 
-			Item.DamageType = DamageClass.Magic;
+            Item.DamageType = DamageClass.Magic;
             Item.mana = 60;
-            Item.damage = 90;
+            Item.damage = 150;
 		}
 
-        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        public override bool CanUseItem(Player player)
         {
-			int Count = 9;
-
-			for (int i = 0; i < Count; i++)
-			{
-				float angle = MathHelper.TwoPi * i / Count;
-				Vector2 projPos = Main.MouseWorld + 80 * new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
-				Vector2 dustStart = position;
-				Vector2 dustEnd = projPos;
-				int dustSteps = 20;
-				for (int j = 0; j <= dustSteps; j++)
-				{
-					Vector2 dustPos = Vector2.Lerp(dustStart, dustEnd, j / (float)dustSteps);
-					Dust.NewDustPerfect(dustPos, DustID.TintableDustLighted, Vector2.Zero, 150, ColorLib.Rift, 1.2f);
-				}
-
-				Vector2 Inward = Main.MouseWorld - projPos;
-				Inward.Normalize();
-				Projectile.NewProjectile(source, projPos, Inward * 0.5f, type, damage, knockback, ai2: 1);
-			}
-            return false;
+            return player.ownedProjectileCounts[Item.shoot] < 1;
         }
 		
 		
