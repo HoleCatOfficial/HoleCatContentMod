@@ -114,6 +114,9 @@ namespace DestroyerTest.Content.Entities
         public SoundStyle Desperation = new SoundStyle("DestroyerTest/Assets/Audio/RoseDesperation") with { MaxInstances = 0 };
 
         public SoundStyle WingDisable = new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/WingDisable") with { MaxInstances = 0 };
+
+        public SoundStyle IdleCroak = new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/Ambient/AmbientCroak", 5) with { MaxInstances = 0 };
+
         public override void SetDefaults()
         {
             NPC.width = 144;
@@ -1789,6 +1792,10 @@ namespace DestroyerTest.Content.Entities
             }
             else
             {
+                if (Main.rand.NextBool(600))
+                {
+                    SoundEngine.PlaySound(IdleCroak, NPCHead);
+                }
                 if (!DestroyerTestMod.EternityIsActive && !DestroyerTestMod.MasochistIsActive)
                 {
                     if (Main.rand.NextBool())

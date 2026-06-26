@@ -129,7 +129,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
                 BeamProjectile.Projectile.ai[0] = Projectile.rotation;
             }
 
-            if (Owner.controlUseItem && Owner.HeldItem.type == ModContent.ItemType<RiftStaff>())
+            if (Owner.controlUseItem && !Owner.dead && Owner.HeldItem.type == ModContent.ItemType<RiftStaff>())
             {
                 Owner.SetDummyItemTime(60);
                 Projectile.timeLeft = 120;

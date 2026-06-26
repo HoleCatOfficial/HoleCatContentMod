@@ -71,7 +71,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 
         SlotId LoopSlot;
 
-        public SoundStyle Loop = new SoundStyle("DestroyerTest/Assets/Audio/AuraLoop/MagesticStormLoop")
+        public SoundStyle Loop = DTAssetLib.ElectricLoopSound(3) with
         {
             MaxInstances = 0,
             IsLooped = true,

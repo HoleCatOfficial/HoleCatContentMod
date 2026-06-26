@@ -115,7 +115,7 @@ HaepiensBlizzard: {
 
 SpiritDrift: {
 	DisplayName: Spirit Drift
-	Description: Mods.DestroyerTest.Buffs.SpiritDrift.Description
+	Description: The spirits carry you up!
 }
 
 GalantineBurn: {
@@ -314,7 +314,7 @@ TenebrousSlingerPetBuff: {
 }
 
 ShadeThrasherBuff: {
-	Description: Mods.DestroyerTest.Buffs.ShadeThrasherBuff.Description
+	Description: Its hungry...
 	DisplayName: Shade Thrasher Buff
 }
 
@@ -440,7 +440,7 @@ BlossomBeaterBuff: {
 
 StardustSummonBoost: {
 	DisplayName: Stardust Summon Boost
-	Description: Mods.DestroyerTest.Buffs.StardustSummonBoost.Description
+	Description: +2 Minion slots
 }
 
 DescendantInferno: {
@@ -450,12 +450,12 @@ DescendantInferno: {
 
 WyvernTailTagBuff: {
 	DisplayName: Wyvern Tail Tag Buff
-	Description: Mods.DestroyerTest.Buffs.WyvernTailTagBuff.Description
+	Description: Description
 }
 
 Withering: {
 	DisplayName: Withering
-	Description: Mods.DestroyerTest.Buffs.Withering.Description
+	Description: Your strength is eroding rapidly!
 }
 
 Enfeebled: {
@@ -465,15 +465,20 @@ Enfeebled: {
 
 ShadeHeartPetBuff: {
 	DisplayName: Shade Heart Pet Buff
-	Description: Mods.DestroyerTest.Buffs.ShadeHeartPetBuff.Description
+	Description: It pulses with unease...
 }
 
 ShadeInfernoRingBuff: {
 	DisplayName: Shade Inferno Ring Buff
-	Description: Mods.DestroyerTest.Buffs.ShadeInfernoRingBuff.Description
+	Description: Enemies are ignited!
 }
 
 BlackKnifeBuff: {
 	DisplayName: Black Knife Buff
-	Description: Mods.DestroyerTest.Buffs.BlackKnifeBuff.Description
+	Description: Roaring Kitchen
+}
+
+Defilement: {
+	DisplayName: Defilement
+	Description: Your essence is being thoroughly violated.
 }

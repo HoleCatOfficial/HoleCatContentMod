@@ -1,6 +1,7 @@
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Common.Systems;
+using DestroyerTest.Content.Consumables;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Equips;
 using DestroyerTest.Content.Equips.ScepterAccessories;
@@ -422,6 +423,38 @@ namespace DestroyerTest
                 firstJoin = false;
             }
         }
+
+        //I hate example mod organization. Why do I need all this bullshit in another class?
+        internal enum MessageType : byte
+        {
+            HeliciteManaSync
+        }
+
+        public override void HandlePacket(BinaryReader reader, int whoAmI)
+        {
+            MessageType msgType = (MessageType)reader.ReadByte();
+
+            switch (msgType)
+            {
+                // This message syncs ExampleStatIncreasePlayer.exampleLifeFruits and ExampleStatIncreasePlayer.exampleManaCrystals
+                case MessageType.HeliciteManaSync:
+                    byte playerNumber = reader.ReadByte();
+                    HeliciteManaPlayer examplePlayer = Main.player[playerNumber].GetModPlayer<HeliciteManaPlayer>();
+                    examplePlayer.ReceivePlayerSync(reader);
+
+                    if (Main.netMode == NetmodeID.Server)
+                    {
+                        // Forward the changes to the other clients
+                        examplePlayer.SyncPlayer(-1, whoAmI, false);
+                    }
+                    break;
+       
+                default:
+                    Logger.WarnFormat("DestroyerTest: Unknown Message type: {0}", msgType);
+                    break;
+            }
+        }
+
     }
 
     public class AnimatedIcon : UIElement

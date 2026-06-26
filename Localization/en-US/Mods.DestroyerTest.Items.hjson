@@ -248,7 +248,7 @@ Riftplate_Item: {
 }
 
 Item_HeliciteCrystal: {
-	Tooltip: The heat of an ancient star radiates from it...
+	Tooltip: The heat of the ancient sun radiates from it...
 	DisplayName: Helicite Crystal
 }
 
@@ -1381,7 +1381,7 @@ RiftScythe: {
 
 RiftStaff: {
 	DisplayName: Rift Staff
-	Tooltip: ""
+	Tooltip: Fires a ray of continuous nightmares that zaps foes.
 }
 
 RiftPhasesaber: {
@@ -3108,7 +3108,11 @@ IchorNodeLootBag: {
 
 HeliciteStaff: {
 	DisplayName: Helicite Staff
-	Tooltip: ""
+	Tooltip:
+		'''
+		Fires a continuous beam of ancient obliteration.
+		Releases sparks that slow down before homing in on enemies.
+		'''
 }
 
 PrimalShards: {
@@ -4813,5 +4817,15 @@ Sunspot: {
 		Shards each deal 10% of the weapon's damage.
 
 		Landing a fatal strike will cause the enemy to explode into solar sparks, dealing extra damage.
+		'''
+}
+
+KenomaiciCrystal: {
+	DisplayName: Kenomaici Crystal
+	Tooltip:
+		'''
+		A crystal made from fragments of the ancient sun.
+		Increases max mana by {0}.
+		You may only consume {1}.
 		'''
 }

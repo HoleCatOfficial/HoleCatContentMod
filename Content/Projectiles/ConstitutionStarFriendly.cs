@@ -118,8 +118,8 @@ namespace DestroyerTest.Content.Projectiles
 
         public override void AI()
         {
-          
-			UpdateLerpTime();
+            Projectile.ResetExcessTrailPoints();
+            UpdateLerpTime();
 			MainColor = ColorLib.StellarFireGradient(LifetimeCompletion);
 
             DelayTimer++;
@@ -264,6 +264,7 @@ namespace DestroyerTest.Content.Projectiles
        
 		public override void AI()
         {
+            Projectile.ResetExcessTrailPoints();
             Projectile.rotation += Projectile.direction * 0.1f;
 
 			UpdateLerpTime();

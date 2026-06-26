@@ -39,7 +39,7 @@ namespace DestroyerTest.Content.Equips
 		public override void UpdateArmorSet(Player player)
 		{
 			player.GetDamage(DamageClass.Generic) += 1.14f;
-			player.GetAttackSpeed(DamageClass.Generic) += 1.015f;
+			player.GetAttackSpeed(DamageClass.Generic) += 0.15f;
 			player.GetKnockback(DamageClass.Generic) += 1.1f;
 			player.maxTurrets += 3;
 

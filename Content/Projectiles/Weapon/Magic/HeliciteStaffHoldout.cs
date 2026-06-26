@@ -134,7 +134,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 
             
 
-            if (Owner.controlUseItem && Owner.HeldItem.type == ModContent.ItemType<HeliciteStaff>())
+            if (Owner.controlUseItem && !Owner.dead && Owner.HeldItem.type == ModContent.ItemType<HeliciteStaff>())
             {
                 Owner.SetDummyItemTime(60);
                 Projectile.timeLeft = 120;

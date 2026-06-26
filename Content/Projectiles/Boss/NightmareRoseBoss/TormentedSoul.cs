@@ -12,6 +12,7 @@ using Terraria.ModLoader;
 using OpusLib;
 using System.Collections.Generic;
 using OpusLib.Content.Helpers;
+using System.Linq;
 
 namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
 {
@@ -52,6 +53,9 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
         public override void SetStaticDefaults()
         {
             Main.projFrames[Type] = 3;
+
+            ProjectileID.Sets.TrailCacheLength[Type] = 300;
+            ProjectileID.Sets.TrailingMode[Type] = 3;
         }
 
         public override void SetDefaults()
@@ -124,7 +128,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
             DTUtils.instance.ScrollingTextureSpine(l, DTAssetLib.SoulStreak, Color.MediumPurple * WarnOpacity, Main.spriteBatch, BlendState.Additive, WOffset, 1f);
             
 
-            DTTrail.DrawTrail(sb, DTAssetLib.SoulStreak.Value, TrailPositions, TrailRotations, 16, Color.Lavender, trailOffset, 5);
+            DTTrail.DrawTrail(sb, DTAssetLib.SoulStreak.Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 16, Color.Lavender, trailOffset, 5);
             
             Opus.ReturnToDefaultDrawing(sb);
 
@@ -146,46 +150,11 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
             behindNPCsAndTiles.Add(index);
         }
 
-        public List<Vector2> TrailPositions = new();
-        public List<float> TrailRotations = new();
-        private const int TrailLength = 300;
         public override void AI()
         {
+            Projectile.ResetExcessTrailPoints();
             AnimateProjectile();
             Dust.NewDustPerfect(Projectile.Center, DustID.DemonTorch, Scale: 1.8f);
-
-            if (!DTOptimizationsConfig.instance.DisableExcessTrails)
-            {
-                Vector2 lastPos = TrailPositions.Count > 0 ? TrailPositions[0] : Projectile.Center;
-                Vector2 newPos = Projectile.Center;
-
-                float dist = Vector2.Distance(lastPos, newPos);
-                float step = 1f; // how closely to sample. tweak this!
-
-                if (dist > 0f)
-                {
-                    int segments = (int)(dist / step);
-
-                    for (int i = 1; i <= segments; i++)
-                    {
-                        Vector2 pos = Vector2.Lerp(lastPos, newPos, i / (float)segments);
-                        TrailPositions.Insert(0, pos);
-                        TrailRotations.Insert(0, Projectile.rotation);
-                    }
-                }
-                else
-                {
-                    TrailPositions.Insert(0, newPos);
-                    TrailRotations.Insert(0, Projectile.rotation);
-                }
-
-
-                // Cap trail
-                while (TrailPositions.Count > TrailLength)
-                    TrailPositions.RemoveAt(TrailPositions.Count - 1);
-                while (TrailRotations.Count > TrailLength)
-                    TrailRotations.RemoveAt(TrailRotations.Count - 1);
-            }
 
             float maxDetectRadius = 120f; // The maximum radius at which a projectile can detect a target
 

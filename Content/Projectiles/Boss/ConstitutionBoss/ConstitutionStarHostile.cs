@@ -341,6 +341,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
 
 		public override void AI()
         {
+            Projectile.ResetExcessTrailPoints();
             Projectile.rotation += Projectile.direction * 0.1f;
 
 			UpdateLerpTime();

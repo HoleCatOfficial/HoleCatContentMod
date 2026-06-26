@@ -47,7 +47,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
 
 		public override void OnHitPlayer(Player target, Player.HurtInfo info)
 		{
-			target.AddBuff(BuffID.CursedInferno, 120);
+			target.AddBuff(ModContent.BuffType<Defilement>(), 300);
 		}
 	}
 

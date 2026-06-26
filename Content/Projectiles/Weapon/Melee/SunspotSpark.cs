@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -50,6 +51,13 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Projectile.tileCollide = false;
         }
 
+        int TurnDir = 0;
+        public override void OnSpawn(IEntitySource source)
+        {
+            TurnDir = Main.rand.Next(-1, 2);
+        }
+
+
         float Scl = 1f;
         public override bool PreDraw(ref Color lightColor)
         {
@@ -70,6 +78,16 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             if (Timer < 90)
             {
                 Projectile.velocity *= 0.94f;
+
+                if (TurnDir == -1)
+                {
+                    Projectile.velocity = Projectile.velocity.RotatedBy(-0.05f);
+                }
+                if (TurnDir == 1)
+                {
+                    Projectile.velocity = Projectile.velocity.RotatedBy(0.05f);
+                }
+
             }
         }
 
@@ -117,6 +135,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Projectile.tileCollide = false;
         }
 
+        int TurnDir = 0;
+        public override void OnSpawn(IEntitySource source)
+        {
+            TurnDir = Main.rand.Next(-1, 2);
+        }
+
         float Scl = 1f;
         public override bool PreDraw(ref Color lightColor)
         {
@@ -125,6 +149,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         }
 
         int Timer = 0;
+
+        
         public override void AI()
         {
             Timer++;
@@ -137,6 +163,14 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             if (Timer < 90)
             {
                 Projectile.velocity *= 0.94f;
+                if(TurnDir == -1)
+                {
+                    Projectile.velocity = Projectile.velocity.RotatedBy(-0.05f);
+                }
+                if (TurnDir == 1)
+                {
+                    Projectile.velocity = Projectile.velocity.RotatedBy(0.05f);
+                }
             }
         }
 
