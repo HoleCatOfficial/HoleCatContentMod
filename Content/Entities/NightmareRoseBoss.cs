@@ -149,12 +149,17 @@ namespace DestroyerTest.Content.Entities
             NPC.boss = true;
             NPC.npcSlots = 90f;
             NPC.netID = ModContent.NPCType<NightmareRoseBoss>();
-            NPC.BossBar = ModContent.GetInstance<CorruptBossBar>();
+            //NPC.BossBar = ModContent.GetInstance<CorruptBossBar>();
 
             if (DestroyerTestMod.MasochistIsActive)
             {
                 SpawnRoar = new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/MasoSpawn") with { MaxInstances = 0 };
             }
+        }
+
+        public override bool? DrawHealthBar(byte hbPosition, ref float scale, ref Vector2 position)
+        {
+            return false;
         }
 
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
@@ -290,6 +295,7 @@ namespace DestroyerTest.Content.Entities
                     {
                         weights[AttackState.BlossomMine] = 1f;
                         weights[AttackState.CursedFlames] = 1f;
+                        weights[AttackState.WallDarts] = 1f;
                         break;
                     }
                 case AttackState.CorruptSigil:
@@ -303,11 +309,13 @@ namespace DestroyerTest.Content.Entities
                 case AttackState.BlossomMine:
                     {
                         weights[AttackState.FlameRing] = 0f;
+                        
 
                         if (Masochist)
                         {
                             weights[AttackState.DemoniteWhisper] = 0f;
                             weights[AttackState.CursedFlames] = 0f;
+                            weights[AttackState.WallDarts] = 0f;
                         }
                         break;
                     }
@@ -1742,7 +1750,8 @@ namespace DestroyerTest.Content.Entities
                             {
                                 Item.NewItem(Item.GetSource_None(), NPCHead, ModContent.ItemType<RoseSoul>(), 1, true, 0, false, false);
                             }
-                            NPC.immortal = false;
+
+                            NPC.dontTakeDamage = false;
                             NPC.StrikeInstantKill();
 
                         }

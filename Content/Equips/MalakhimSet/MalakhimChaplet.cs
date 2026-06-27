@@ -29,7 +29,7 @@ namespace DestroyerTest.Content.Equips.MalakhimSet
             Item.height = 20;
             Item.value = Item.sellPrice(gold: 1);
             Item.rare = ModContent.RarityType<PearlRarity>();
-            Item.defense = 3;
+            Item.defense = 5;
         }
 
         public override bool IsArmorSet(Item head, Item body, Item legs)
@@ -48,7 +48,9 @@ namespace DestroyerTest.Content.Equips.MalakhimSet
 
         public override void UpdateEquip(Player player)
         {
-            player.GetDamage(ModContent.GetInstance<ScepterClass>()) *= 1.12f;
+            player.GetDamage(ModContent.GetInstance<ScepterClass>()) += 0.08f;
+            player.GetDamage(DamageClass.Magic) += 0.13f;
+            player.GetDamage(DamageClass.Melee) += 0.06f;
             player.statLifeMax2 += 40;
         }
 
@@ -69,6 +71,7 @@ namespace DestroyerTest.Content.Equips.MalakhimSet
         {
             Active = false;
         }
+
 
         public override void PostUpdateEquips()
         {
@@ -101,7 +104,10 @@ namespace DestroyerTest.Content.Equips.MalakhimSet
 
         public override void OnHurt(Player.HurtInfo info)
         {
-            Player.AddImmuneTime(ImmunityCooldownID.General, 100);
+            if (Active)
+            {
+                Player.AddImmuneTime(ImmunityCooldownID.General, 100);
+            }
         }
     }
     

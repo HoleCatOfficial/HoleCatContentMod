@@ -69,7 +69,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 }
             }
 
-            if (damageDone > npc.life)
+            if (!npc.active)
             {
                 Owner.GetModPlayer<ScreenshakePlayer>().screenshakeMagnitude = 4;
                 Owner.GetModPlayer<ScreenshakePlayer>().screenshakeTimer = 20;

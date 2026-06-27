@@ -33,6 +33,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee.Quixotism
             base.SetDefaults();
             Projectile.width = 72;
             Projectile.height = 72;
+            UsesDefaultSweepFX = true;
+            SweepColor = Color.Gray;
+            SweepHighlightColor = Color.White;
         }
 
         public override SoundStyle Swing => DTAssetLib.SwordSounds.Woosh;
@@ -54,20 +57,22 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee.Quixotism
                     for (int i = 0; i < 3; i++)
                     {
                         PointGlowPreMultiplied FX = new();
-                        FX.Initialize(pt[Main.rand.Next(30)], SwordLine.GetLineRotation.ToRotationVector2() * 2, new Color(255, 219, 6), 1.5f);
+                        FX.Initialize(pt[Main.rand.Next(30)], SwordLine.GetLineRotation.ToRotationVector2() * 2, new Color(255, 219, 6) * 0.3f, 1.5f);
                         ParticleEngine.BehindProjectiles.Add(FX);
 
-                        Dust.NewDustPerfect(pt[Main.rand.Next(30)], ModContent.DustType<ColorableNeonDust>(), SwordLine.GetLineRotation.ToRotationVector2() * 2, 0, new Color(255, 219, 6), 2f);
+                        Dust.NewDustPerfect(pt[Main.rand.Next(30)], ModContent.DustType<ColorableNeonDust>(), SwordLine.GetLineRotation.ToRotationVector2() * 2, 0, new Color(255, 219, 6) * 0.5f, 2f);
                     }
                     SweepColor = ColorLib.Soul2;
+                    SweepHighlightColor = ColorLib.Soul;
                 }
                 else
                 {
                     for (int i = 0; i < 3; i++)
                     {
-                        Dust.NewDustPerfect(pt[Main.rand.Next(30)], ModContent.DustType<ColorableNeonDust>(), SwordLine.GetLineRotation.ToRotationVector2() * 2, 0, Color.White, 2f);
+                        Dust.NewDustPerfect(pt[Main.rand.Next(30)], ModContent.DustType<ColorableNeonDust>(), SwordLine.GetLineRotation.ToRotationVector2() * 2, 0, Color.White * 0.5f, 2f);
                     }
-                    SweepColor = Color.White;
+                    SweepColor = Color.Gray;
+                    SweepHighlightColor = Color.White;
                 }
             }
         }
@@ -163,9 +168,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee.Quixotism
                     }
                 }
 
-                Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-                Main.EntitySpriteDraw(powertexture, Projectile.Center - Main.screenPosition, null, (Color.White * Q.PowerOpacity) * Projectile.Opacity, Projectile.rotation + rotationOffset, origin, AdjustedScale, effects, 0);
-                Opus.ReturnToDefaultDrawing(Main.spriteBatch);
+                //Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+                Main.EntitySpriteDraw(powertexture, Projectile.Center - Main.screenPosition, null, (Color.White * Q.PowerOpacity) with { A = 0 } * Projectile.Opacity, Projectile.rotation + rotationOffset, origin, AdjustedScale, effects, 0);
+                //Opus.ReturnToDefaultDrawing(Main.spriteBatch);
 
             }
         }

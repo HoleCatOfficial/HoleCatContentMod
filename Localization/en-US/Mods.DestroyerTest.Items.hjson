@@ -2298,12 +2298,12 @@ TenebrousChakram: {
 }
 
 TheBotanistsCurse: {
-	DisplayName: The Botanists Curse
+	DisplayName: The Botanists' Curse
 	Tooltip:
 		'''
-		A collection of horrible, gorey stories about various Botanists and Farmers supposedly afflicted by "The Botanists Curse"
-		Summons the Nightmare Rose
-		NOTE: The rose will spawn with the bottom center on the cursor, and will fall to any solid tile below.
+		A collection of horrible, gorey stories about various Botanists and Farmers supposedly afflicted by "The Botanists' Curse"
+		Summons the Nightmare Rose on the cursor position.
+		Right click to create a dummmy that previews the size of the arena.
 		'''
 }
 

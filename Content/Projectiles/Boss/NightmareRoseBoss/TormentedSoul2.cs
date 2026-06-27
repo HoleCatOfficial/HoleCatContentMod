@@ -58,7 +58,6 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
             SpriteBatch sb = Main.spriteBatch;
             Asset<Texture2D> texture = Terraria.GameContent.TextureAssets.Projectile[Projectile.type];
             DTUtils Utility = new DTUtils();
-            lightColor = Color.Lavender;
             trailOffset += 0.04f;
 
             // Calculate source rectangle for current frame
@@ -70,7 +69,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
 
             Opus.StartSpriteBatchWithBlending(sb, BlendState.Additive, SpriteSortMode.Immediate);
 
-            DTTrail.DrawTrail(sb, DTAssetLib.SoulStreak.Value, TrailPositions, TrailRotations, 16, Color.Lavender, trailOffset, 5);
+            DTTrail.DrawTrail(sb, DTAssetLib.SoulStreak.Value, TrailPositions, TrailRotations, 16, Color.MediumPurple, trailOffset, 5);
 
             Opus.ReturnToDefaultDrawing(sb);
 

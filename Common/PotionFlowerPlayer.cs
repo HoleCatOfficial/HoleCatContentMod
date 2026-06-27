@@ -34,8 +34,14 @@ namespace DestroyerTest.Common
 
         public List<PotionProfile> Potions = new List<PotionProfile>
         {
+            new PotionProfile("Mushroom", ItemID.Mushroom, 15),
+            new PotionProfile("BottledWater", ItemID.Mushroom, 30),
             new PotionProfile("LesserHealing", ItemID.LesserHealingPotion, 50),
+            new PotionProfile("BottledHoney", ItemID.BottledHoney, 80),
+            new PotionProfile("Eggnog", ItemID.Eggnog, 80),
+            new PotionProfile("Restoration", ItemID.RestorationPotion, 80),
             new PotionProfile("Healing", ItemID.HealingPotion, 100),
+            new PotionProfile("HoneyFin", ItemID.Honeyfin, 120),
             new PotionProfile("GreaterHealing", ItemID.GreaterHealingPotion, 150),
             new PotionProfile("SuperHealing", ItemID.SuperHealingPotion, 200),
         };
@@ -126,7 +132,7 @@ namespace DestroyerTest.Common
                             }
                             if (Lillies)
                             {
-                                Dust.NewDust(Player.position, Player.Hitbox.Width, Player.Hitbox.Height, DustID.LastPrism, Player.velocity.X * 0.5f, Player.velocity.Y * 0.5f, 0, default, 2.25f);
+                                Dust.NewDust(Player.position, Player.Hitbox.Width, Player.Hitbox.Height, DustID.WhiteTorch, Player.velocity.X * 0.5f, Player.velocity.Y * 0.5f, 0, default, 2.25f);
                             }
                         }
                         if (UseCooldown >= (60 * 45))
@@ -188,11 +194,11 @@ namespace DestroyerTest.Common
             }
             if (EphemeralSolvent)
             {
-                Player.lifeRegen += 9;
+                Player.lifeRegen += 5;
             }
             if (Lillies)
             {
-                Player.lifeRegen += 18;
+                Player.lifeRegen += 10;
             }
         }
     }

@@ -97,7 +97,6 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
             SpriteBatch sb = Main.spriteBatch;
             Asset<Texture2D> texture = Terraria.GameContent.TextureAssets.Projectile[Projectile.type];
             DTUtils Utility = new DTUtils();
-            lightColor = Color.Lavender;
             trailOffset += 0.04f;
             WOffset += 3;
 
@@ -128,7 +127,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
             DTUtils.instance.ScrollingTextureSpine(l, DTAssetLib.SoulStreak, Color.MediumPurple * WarnOpacity, Main.spriteBatch, BlendState.Additive, WOffset, 1f);
             
 
-            DTTrail.DrawTrail(sb, DTAssetLib.SoulStreak.Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 16, Color.Lavender, trailOffset, 5);
+            DTTrail.DrawTrail(sb, DTAssetLib.SoulStreak.Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 16, Color.MediumPurple, trailOffset, 5);
             
             Opus.ReturnToDefaultDrawing(sb);
 
