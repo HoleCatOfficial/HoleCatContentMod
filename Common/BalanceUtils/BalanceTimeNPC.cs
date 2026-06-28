@@ -23,7 +23,7 @@ namespace DestroyerTest.Common.BalanceUtils
 
         public override void OnSpawn(NPC npc, IEntitySource source)
         {
-            if (npc.boss)
+            if (npc.boss && npc.realLife == -1)
             {
                 Time = 0f;
                 Main.NewText($"Boss Logging Initiated for: {npc.TypeName}");

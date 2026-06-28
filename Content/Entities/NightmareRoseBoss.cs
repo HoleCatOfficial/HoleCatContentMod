@@ -2112,13 +2112,13 @@ namespace DestroyerTest.Content.Entities
                         if (Side)
                         {
                             MoveDir = new Vector2(-16, 0);
-                            SpawnPoint = new Vector2(NPC.Center.X + 1000, NPC.Center.Y + Main.rand.NextFloat(-BorderRad, BorderRad));
+                            SpawnPoint = new Vector2(NPC.Center.X + 1700, NPC.Center.Y + Main.rand.NextFloat(-BorderRad, BorderRad));
                             S = 1;
                         }
                         else
                         {
                             MoveDir = new Vector2(16, 0);
-                            SpawnPoint = new Vector2(NPC.Center.X - 1000, NPC.Center.Y + Main.rand.NextFloat(-BorderRad, BorderRad));
+                            SpawnPoint = new Vector2(NPC.Center.X - 1700, NPC.Center.Y + Main.rand.NextFloat(-BorderRad, BorderRad));
                             S = 2;
                         }
 

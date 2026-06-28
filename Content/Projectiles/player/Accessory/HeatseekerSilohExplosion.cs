@@ -79,6 +79,11 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
             Opus.RadialSpreadProjectileRandom(ModContent.ProjectileType<RiftStarFriendly>(), 4, Projectile.Center, (int)Owner.GetTotalDamage(DamageClass.Generic).ApplyTo(20), 4, 8f);
             Opus.RadialSpreadProjectileRandom(ModContent.ProjectileType<RiftSpark>(), 6, Projectile.Center, (int)Owner.GetTotalDamage(DamageClass.Generic).ApplyTo(10), 4, 4f);
 
+            Rectangle S = Utils.CenteredRectangle(Projectile.Center, new Vector2(48, 48));
+            Point ST = S.TopLeft().ToTileCoordinates();
+            Point SB = S.BottomRight().ToTileCoordinates();
+            Projectile.CreateImpactExplosion(5, Projectile.Center, ref ST, ref SB, 60, out bool Shockwave);
+
             KnockbackNPCs();
         }
 

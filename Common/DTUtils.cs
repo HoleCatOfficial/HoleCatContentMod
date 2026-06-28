@@ -647,6 +647,10 @@ namespace DestroyerTest.Common
 
         public static HashSet<int> NeedsRework = new();
 
+        public static HashSet<int> NoUpgradeStack = new();
+
+        public static Dictionary<int, HashSet<int>> NoEquipWith = new();
+
         public static int RandomDirection(int Chance)
         {
             return Main.rand.NextBool(Chance) ? 1 : -1;

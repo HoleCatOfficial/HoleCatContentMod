@@ -24,8 +24,8 @@ namespace DestroyerTest.Content.Equips
 			// Fly speed: 9
 			// Acceleration multiplier: 2.5
 			ArmorIDs.Wing.Sets.Stats[Item.wingSlot] = new WingStats(600, 9.2f, 2.75f, true);
-            
-		}
+            DTUtils.NoUpgradeStack.Add(Type);
+        }
 
 		public override void SetDefaults() {
 			Item.width = 80;

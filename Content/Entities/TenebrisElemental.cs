@@ -5,8 +5,10 @@ using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.RiftBiome;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using MonoMod.Cil;
 using OpusLib;
+using ReLogic.Content;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -21,6 +23,22 @@ using Terraria.ModLoader.Utilities;
 
 namespace DestroyerTest.Content.Entities
 {
+    class TEBit
+    {
+        public Vector2 Position;
+        public readonly Texture2D Texture;
+        public readonly Vector2 Dimensions = new(10, 14);
+        public readonly NPC Master;
+
+        public TEBit(NPC master)
+        {
+            Master = master;
+            Texture = ModContent.Request<Texture2D>(
+                "DestroyerTest/Content/Entities/TenebrisElementalBit"
+            ).Value;
+        }
+    }
+
     public class TenebrisElemental : ModNPC
     {
 
@@ -33,7 +51,6 @@ namespace DestroyerTest.Content.Entities
                 Direction = 1
             };
             NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
-            Main.npcFrameCount[Type] = 8;
         }
         public void immunities()
         {
@@ -68,26 +85,14 @@ namespace DestroyerTest.Content.Entities
             ]);
         }
 
-        SoundStyle Kill = new SoundStyle("DestroyerTest/Assets/Audio/TPKill")
-        {
-            Volume = 0.3f,
-            PitchVariance = 1f,
-            MaxInstances = 0
-        };
-
-        SoundStyle Hit = new SoundStyle("DestroyerTest/Assets/Audio/TPHit")
-        {
-            Volume = 0.3f,
-            PitchVariance = 1f,
-            MaxInstances = 0
-        };
+        public int Variety = 0;
 
         public override void SetDefaults()
         {
-            NPC.width = 22;
-            NPC.height = 46;
+            NPC.width = 42;
+            NPC.height = 42;
             NPC.damage = 55;
-            NPC.defense = 26;
+            NPC.defense = 36;
             NPC.lifeMax = 1700;
             NPC.HitSound = SoundID.DD2_WitherBeastHurt;
             NPC.DeathSound = SoundID.DD2_WitherBeastDeath;
@@ -97,6 +102,7 @@ namespace DestroyerTest.Content.Entities
             NPC.lavaImmune = false;
             NPC.noTileCollide = true;
             NPC.knockBackResist = 0.25f;
+            Variety = Main.rand.Next(3);
         }
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
@@ -108,23 +114,65 @@ namespace DestroyerTest.Content.Entities
             return 0f;
         }
 
-        public override void FindFrame(int frameHeight)
+        void DrawBits(ref Vector2 screenPos)
         {
-            int startFrame = 0;
-            int finalFrame = 7;
-            int frameSpeed = 5;
-            NPC.frameCounter += 0.5f;
-            NPC.frameCounter += NPC.velocity.Length() / 10f;
-            if (NPC.frameCounter > frameSpeed)
+            if (OwnedBits == null)
             {
-                NPC.frameCounter = 0;
-                NPC.frame.Y += frameHeight;
-
-                if (NPC.frame.Y > finalFrame * frameHeight)
-                {
-                    NPC.frame.Y = startFrame * frameHeight;
-                }
+                return;
             }
+
+            for(int i = 0; i < OwnedBits.Count; i++)
+            {
+                TEBit bit = OwnedBits[i];
+                Rectangle Frame = new Rectangle(0, (int)bit.Dimensions.Y * Variety, (int)bit.Dimensions.X, (int)bit.Dimensions.Y);
+
+
+                Main.EntitySpriteDraw(bit.Texture, bit.Position - screenPos, Frame, Color.White, 0f, bit.Dimensions / 2, 1f, SpriteEffects.None, 0f);
+            }
+        }
+
+        Asset<Texture2D> GetTexFromVariant()
+        {
+            switch (Variety)
+            {
+                case 0:
+                    {
+                        return ModContent.Request<Texture2D>("DestroyerTest/Content/Entities/TenebrisElementalMagenta");
+                    }
+                case 1:
+                    {
+                        return ModContent.Request<Texture2D>("DestroyerTest/Content/Entities/TenebrisElementalBlue");
+                    }
+                case 2:
+                    {
+                        return ModContent.Request<Texture2D>("DestroyerTest/Content/Entities/TenebrisElementalBeige");
+                    }
+                default:
+                    {
+                        return null;
+                    }
+            }
+        }
+
+        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            if (NPC.IsABestiaryIconDummy)
+            {
+                return false;
+            }
+
+            
+
+            if (GetTexFromVariant() != null)
+            {
+                Texture2D Tex = GetTexFromVariant().Value;
+
+                DrawBits(ref screenPos);
+
+                Main.EntitySpriteDraw(Tex, NPC.Center - screenPos, null, Color.White, NPC.rotation, Tex.Size() / 2, NPC.scale, SpriteEffects.None, 0f);
+            }
+
+            return false;
         }
 
 
@@ -133,19 +181,93 @@ namespace DestroyerTest.Content.Entities
             NPC.TargetClosest();
             Player player = Main.player[NPC.target];
 
-            NPC.rotation = 0.05f * NPC.velocity.Length();
+            NPC.rotation = 0.05f * NPC.velocity.Length() * NPC.direction;
+
+            
+
+            Color GetColorFromVariant()
+            {
+                switch (Variety)
+                {
+                    case 0:
+                        {
+                            return ColorLib.TenebrisMagenta;
+                        }
+                    case 1:
+                        {
+                            return ColorLib.TenebrisBlue;
+                        }
+                    case 2:
+                        {
+                            return ColorLib.TenebrisBeige;
+                        }
+                    default:
+                        {
+                            return Color.White;
+                        }
+                }
+            }
+
+            Lighting.AddLight(NPC.Center, (GetColorFromVariant() * 0.3f).ToVector3());
+
+            ManageBits();
+        }
+
+        List<TEBit> OwnedBits;
+
+        private void ManageBits()
+        {
+            int Amt()
+            {
+                if (!DestroyerTestMod.EternityIsActive)
+                {
+                    if (Main.expertMode && !Main.masterMode)
+                    {
+                        return 6;
+                    }
+                    if (Main.masterMode)
+                    {
+                        return 7;
+                    }
+                }
+                else
+                {
+                    return 10;
+                }
+
+                return 5;
+            }
+
+            if (OwnedBits == null)
+            {
+                OwnedBits = new List<TEBit>();
+            }
+
+            Vector2[] OrbitalPositions = Opus.GetEquidistantOrbitVectors( Amt(), NPC.Center, Math.Abs(0.05f) * NPC.direction, 50);
+
+            for (int i = 0; i < Amt(); i++)
+            {
+                if (OwnedBits.Count <= i)
+                    OwnedBits.Add(new TEBit(NPC));
+
+                OwnedBits[i].Position = OrbitalPositions[i];
+            }
 
             if (Main.GameUpdateCount % 240 == 0)
             {
                 SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/ChargeBreak") with { PitchVariance = 1f, Volume = 3f });
-                Opus.RingSpreadProjectile(ModContent.ProjectileType<TenebrisFlamesHostile>(), 12, NPC.Center, 120, 20, 5, 8, offset: Main.rand.NextFloat(MathHelper.TwoPi));
+
+                for (int i = 0; i < Amt(); i++)
+                {
+                    Vector2 Outward = OrbitalPositions[i] - NPC.Center;
+                    Outward.Normalize();
+
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), OrbitalPositions[i], Outward * 5, ModContent.ProjectileType<TenebrisFlamesHostile>(), 100, 5);
+                }
             }
+
         }
 
-        public override void OnHitPlayer(Player target, Player.HurtInfo hurtInfo)
-        {
-            target.AddBuff(ModContent.BuffType<ShimmeringFlames>(), 120, true, false);
-        }
         
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {

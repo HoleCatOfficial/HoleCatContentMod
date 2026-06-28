@@ -86,12 +86,32 @@ namespace DestroyerTest.Common
     {
         public override bool InstancePerEntity => true;
 
-        
+
 
         public override bool CanAccessoryBeEquippedWith(Item equippedItem, Item incomingItem, Player player)
         {
-            // Incoming is crafted from equipped.
-            if (RecipeAccessoryConflicts.UsesIngredient(incomingItem.type, equippedItem.type))
+            // Upgrade chain
+            if (DTUtils.NoUpgradeStack.Contains(incomingItem.type) &&
+                RecipeAccessoryConflicts.UsesIngredient(incomingItem.type, equippedItem.type))
+            {
+                return false;
+            }
+
+            if (DTUtils.NoUpgradeStack.Contains(equippedItem.type) &&
+                RecipeAccessoryConflicts.UsesIngredient(equippedItem.type, incomingItem.type))
+            {
+                return false;
+            }
+
+            // Explicit blacklist
+            if (DTUtils.NoEquipWith.TryGetValue(incomingItem.type, out var incomingBlacklist) &&
+                incomingBlacklist.Contains(equippedItem.type))
+            {
+                return false;
+            }
+
+            if (DTUtils.NoEquipWith.TryGetValue(equippedItem.type, out var equippedBlacklist) &&
+                equippedBlacklist.Contains(incomingItem.type))
             {
                 return false;
             }

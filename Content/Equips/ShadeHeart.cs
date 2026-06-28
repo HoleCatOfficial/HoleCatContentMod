@@ -29,6 +29,7 @@ namespace DestroyerTest.Content.Equips
         {
             Main.RegisterItemAnimation(Type, new DrawAnimationVertical(4, 9));
             ItemID.Sets.AnimatesAsSoul[Type] = true;
+            DTUtils.NoUpgradeStack.Add(Type);
         }
         
         public override void SetDefaults()

@@ -1,18 +1,24 @@
 ﻿using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
+using Humanizer;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
+using MonoMod.Cil;
+using MonoMod.RuntimeDetour;
+using MonoMod.RuntimeDetour.HookGen;
 using OpusLib;
 using OpusLib.Content.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -20,11 +26,42 @@ namespace DestroyerTest.Content.Projectiles.Pets
 {
     public class ShadeHeartPet : ModProjectile
     {
+        private Hook GetShaderHook;
+
+        private delegate int orig_GetShaderHook(Projectile projectile);
+
+        private static int ProjShaderDerailment(orig_GetShaderHook orig, Projectile projectile)
+        {
+            if (projectile.type != ModContent.ProjectileType<ShadeHeartPet>())
+            {
+                return orig(projectile);
+            }
+            else
+            {
+                return Main.player[projectile.owner].cMinion;
+            }
+        }
+
+
+        public override void Load()
+        {
+            MethodInfo method = typeof(Main).GetMethod(nameof(Main.GetProjectileDesiredShader));
+            GetShaderHook = new Hook(method, ProjShaderDerailment);
+
+        }
+
+        public override void Unload()
+        {
+            GetShaderHook?.Dispose();
+            GetShaderHook = null;
+        }
+
         public override void SetStaticDefaults()
         {
             Main.projFrames[Projectile.type] = 9;
             Main.projPet[Projectile.type] = true;
             ProjectileID.Sets.LightPet[Projectile.type] = true;
+            
         }
 
         public override void SetDefaults()
@@ -38,7 +75,10 @@ namespace DestroyerTest.Content.Projectiles.Pets
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;
             Projectile.aiStyle = ProjAIStyleID.FloatBehindPet;
+   
         }
+
+       
 
         public override bool PreDraw(ref Color lightColor)
         {
@@ -56,6 +96,12 @@ namespace DestroyerTest.Content.Projectiles.Pets
             Vector2 origin = new Vector2(texture.Width / 2f, frameHeight / 2f);
 
             SpriteEffects FX = Projectile.direction == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
+
+            ArmorShaderData DumbassShader = GameShaders.Armor.GetSecondaryShader(Main.GetProjectileDesiredShader(Projectile), Main.player[Projectile.owner]);
+            if (DumbassShader != null)
+            {
+                DumbassShader.Apply(Projectile);
+            }
 
             Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, frame, lightColor, Projectile.rotation, origin, Projectile.scale, FX, 0f);
             Main.EntitySpriteDraw(glowtexture, Projectile.Center - Main.screenPosition, frame, Color.White, Projectile.rotation, origin, Projectile.scale, FX, 0f);

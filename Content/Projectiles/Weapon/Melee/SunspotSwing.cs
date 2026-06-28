@@ -49,8 +49,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         {
             npc.AddBuff(BuffID.BrokenArmor, 300);
             SoundEngine.PlaySound(SoundID.DD2_WitherBeastDeath, npc.Center);
-            
-           
+
+
 
             Vector2 T = npc.Center - Owner.Center;
             T.Normalize();
@@ -69,25 +69,49 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 }
             }
 
-            if (!npc.active)
+            if (npc.realLife == -1)
             {
-                Owner.GetModPlayer<ScreenshakePlayer>().screenshakeMagnitude = 4;
-                Owner.GetModPlayer<ScreenshakePlayer>().screenshakeTimer = 20;
-                SoundEngine.PlaySound(DTAssetLib.Impacts.MagicHit with { MaxInstances = 0, PitchVariance = 0.6f }, npc.Center);
-                SoundEngine.PlaySound(DTAssetLib.ScholarShieldSounds.Break with { MaxInstances = 0, PitchVariance = 0.6f, Volume = 0.65f }, npc.Center);
-                Opus.RadialSpreadProjectile(ModContent.ProjectileType<SolarTrail>(), 8, npc.Center, Projectile.damage / 10, 4, 0.25f);
-                Opus.RadialSpreadProjectile(ModContent.ProjectileType<SolarTrail>(), 12, npc.Center, Projectile.damage / 15, 4, 0.5f);
-                Opus.RadialSpreadProjectile(ModContent.ProjectileType<SolarTrail>(), 16, npc.Center, Projectile.damage / 20, 4, 0.75f);
-                SmallShine Shine = new();
-                Shine.Prepare(npc.Center, Vector2.Zero, Color.White, 3f);
-                ParticleEngine.ShaderParticles.Add(Shine);
+                if (!npc.active)
+                {
+
+                    Owner.GetModPlayer<ScreenshakePlayer>().screenshakeMagnitude = 4;
+                    Owner.GetModPlayer<ScreenshakePlayer>().screenshakeTimer = 20;
+                    SoundEngine.PlaySound(DTAssetLib.Impacts.MagicHit with { MaxInstances = 0, PitchVariance = 0.6f }, npc.Center);
+                    SoundEngine.PlaySound(DTAssetLib.ScholarShieldSounds.Break with { MaxInstances = 0, PitchVariance = 0.6f, Volume = 0.65f }, npc.Center);
+                    Opus.RadialSpreadProjectile(ModContent.ProjectileType<SolarTrail>(), 8, npc.Center, Projectile.damage / 10, 4, 0.25f);
+                    Opus.RadialSpreadProjectile(ModContent.ProjectileType<SolarTrail>(), 12, npc.Center, Projectile.damage / 15, 4, 0.5f);
+                    Opus.RadialSpreadProjectile(ModContent.ProjectileType<SolarTrail>(), 16, npc.Center, Projectile.damage / 20, 4, 0.75f);
+                    SmallShine Shine = new();
+                    Shine.Prepare(npc.Center, Vector2.Zero, Color.White, 3f);
+                    ParticleEngine.ShaderParticles.Add(Shine);
+                }
+                else
+                {
+                    SoundEngine.PlaySound(DTAssetLib.ScholarShieldSounds.Hit with { MaxInstances = 0, PitchVariance = 0.6f }, npc.Center);
+                }
             }
             else
             {
-                SoundEngine.PlaySound(DTAssetLib.ScholarShieldSounds.Hit with { MaxInstances = 0, PitchVariance = 0.6f }, npc.Center);
+                NPC parent = Main.npc[npc.realLife];
+                if (!parent.active)
+                {
+                    
+                    Owner.GetModPlayer<ScreenshakePlayer>().screenshakeMagnitude = 4;
+                    Owner.GetModPlayer<ScreenshakePlayer>().screenshakeTimer = 20;
+                    SoundEngine.PlaySound(DTAssetLib.Impacts.MagicHit with { MaxInstances = 0, PitchVariance = 0.6f }, parent.Center);
+                    SoundEngine.PlaySound(DTAssetLib.ScholarShieldSounds.Break with { MaxInstances = 0, PitchVariance = 0.6f, Volume = 0.65f }, parent.Center);
+                    Opus.RadialSpreadProjectile(ModContent.ProjectileType<SolarTrail>(), 8, parent.Center, Projectile.damage / 10, 4, 0.25f);
+                    Opus.RadialSpreadProjectile(ModContent.ProjectileType<SolarTrail>(), 12, parent.Center, Projectile.damage / 15, 4, 0.5f);
+                    Opus.RadialSpreadProjectile(ModContent.ProjectileType<SolarTrail>(), 16, parent.Center, Projectile.damage / 20, 4, 0.75f);
+                    SmallShine Shine = new();
+                    Shine.Prepare(parent.Center, Vector2.Zero, Color.White, 3f);
+                    ParticleEngine.ShaderParticles.Add(Shine);
+                }
+                else
+                {
+                    SoundEngine.PlaySound(DTAssetLib.ScholarShieldSounds.Hit with { MaxInstances = 0, PitchVariance = 0.6f }, parent.Center);
+                }
             }
-
-
         }
 
         public override void OnStartSwing()

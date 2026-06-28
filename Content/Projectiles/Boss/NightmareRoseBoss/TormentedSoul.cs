@@ -56,6 +56,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
 
             ProjectileID.Sets.TrailCacheLength[Type] = 300;
             ProjectileID.Sets.TrailingMode[Type] = 3;
+            ProjectileID.Sets.DrawScreenCheckFluff[Type] = 2400;
         }
 
         public override void SetDefaults()

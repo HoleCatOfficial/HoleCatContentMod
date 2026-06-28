@@ -64,6 +64,11 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
                 Dust.NewDustPerfect(Projectile.Center, DustID.IchorTorch, ran, (int)MathHelper.Lerp(255, 0, Main.rand.NextFloat(0.5f, 1f)), default, Main.rand.NextFloat(1f, 2f));
             }
 
+            Rectangle S = Utils.CenteredRectangle(Projectile.Center, new Vector2(48, 48));
+            Point ST = S.TopLeft().ToTileCoordinates();
+            Point SB = S.BottomRight().ToTileCoordinates();
+            Projectile.CreateImpactExplosion(5, Projectile.Center, ref ST, ref SB, 60, out bool Shockwave);
+
             KnockbackNPCs();
         }
 

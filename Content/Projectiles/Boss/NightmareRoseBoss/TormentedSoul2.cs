@@ -21,6 +21,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
         public override void SetStaticDefaults()
         {
             Main.projFrames[Type] = 3;
+            ProjectileID.Sets.DrawScreenCheckFluff[Type] = 2400;
         }
 
         public override void SetDefaults()

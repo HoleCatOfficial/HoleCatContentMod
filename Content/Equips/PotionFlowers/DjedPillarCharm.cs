@@ -1,10 +1,11 @@
-using System.Linq;
+using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.player.Accessory;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using System.Linq;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -15,6 +16,10 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
 {
     public class DjedPillarCharm : ModItem
     {
+        public override void SetStaticDefaults()
+        {
+            DTUtils.NoUpgradeStack.Add(Type);
+        }
         public override void SetDefaults()
         {
             Item.width = 26;

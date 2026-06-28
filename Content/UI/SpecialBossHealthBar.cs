@@ -64,22 +64,35 @@ namespace DestroyerTest.Content.UI
 
             var NR = Main.npc.FirstOrDefault(n => n.active && n.type == ModContent.NPCType<NightmareRoseBoss>());
 
-            if (NR.dontTakeDamage)
+            if (NR.ModNPC is NightmareRoseBoss nightmareRose)
             {
-                if (BarOpacity > 0)
+                if (!nightmareRose.anyNodesAlive)
                 {
-                    BarOpacity -= 0.05f;
+                    if (NR.dontTakeDamage)
+                    {
+                        if (BarOpacity > 0)
+                        {
+                            BarOpacity -= 0.05f;
+                        }
+                        else
+                        {
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        if (BarOpacity < 1)
+                        {
+                            BarOpacity += 0.05f;
+                        }
+                    }
                 }
                 else
                 {
-                    return;
-                }
-            }
-            else
-            {
-                if (BarOpacity < 1)
-                {
-                    BarOpacity += 0.05f;
+                    if (BarOpacity < 1)
+                    {
+                        BarOpacity += 0.05f;
+                    }
                 }
             }
 

@@ -41,7 +41,8 @@ namespace DestroyerTest.Content.Entities
 		private static int ShimmerHeadIndex;
 		private static Profiles.StackedNPCProfile NPCProfile;
 
-		public override void Load() {
+		public override void Load() 
+		{
 			// Adds our Shimmer Head to the NPCHeadLoader.
 			ShimmerHeadIndex = Mod.AddNPCHeadTexture(Type, Texture + "_Shimmer_Head");
 		}
@@ -129,7 +130,8 @@ namespace DestroyerTest.Content.Entities
 			});
 		}
 
-		public override void HitEffect(NPC.HitInfo hit) {
+		public override void HitEffect(NPC.HitInfo hit) 
+		{
 			int num = NPC.life > 0 ? 1 : 5;
 
 			for (int k = 0; k < num; k++) {
@@ -178,7 +180,8 @@ namespace DestroyerTest.Content.Entities
 			}*/
 		}
 
-		public override string GetChat() {
+		public override string GetChat() 
+		{
 			WeightedRandom<string> chat = new WeightedRandom<string>();
 
 			int partyGirl = NPC.FindFirstNPC(NPCID.PartyGirl);
@@ -193,7 +196,7 @@ namespace DestroyerTest.Content.Entities
 			chat.Add(Language.GetTextValue("Sometimes I wake up and everything’s fine. That’s how I know something’s about to go wrong."));
 			chat.Add(Language.GetTextValue("The merchant said the sun’s been looking at him funny. I told him to stop looking back."));
 			chat.Add(Language.GetTextValue("Have I been taking notes? Goodness, as if I'd ever be able to get through all the wierd stuff on your island!"));
-			chat.Add(Language.GetTextValue("Everyone thinks I'm a trans woman. Can a guy not have long hair? Then again, I'm not opposed to people seeing a feminine side of me."));
+			chat.Add(Language.GetTextValue("Everyone thinks I'm a woman. Can a guy not have long hair?"));
 			chat.Add(Language.GetTextValue("Yknow, its wierd how this island is both modern and medieval."));
 			chat.Add(Language.GetTextValue("I miss his smell... OH! Hey! What do you need?"));
 
@@ -254,13 +257,15 @@ namespace DestroyerTest.Content.Entities
 		}
 
 		// Not completely finished, but below is what the NPC will sell
-		public override void AddShops() {
+		public override void AddShops() 
+		{
             var npcShop = new NPCShop(Type, ShopName)
 				.Add(new Item(ModContent.ItemType<Dalmon>()) { shopCustomPrice = Item.buyPrice(silver: 1, copper: 60) });
 			npcShop.Register(); // Name of this shop tab
 		}
 
-		public override void ModifyActiveShop(string shopName, Item[] items) {
+		public override void ModifyActiveShop(string shopName, Item[] items) 
+		{
 			foreach (Item item in items) {
 				// Skip 'air' items and null items.
 				if (item == null || item.type == ItemID.None) {
@@ -275,12 +280,11 @@ namespace DestroyerTest.Content.Entities
 			}
 		}
 
-		public override void ModifyNPCLoot(NPCLoot npcLoot) {
-			if (Main.hardMode == false)
-			{
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ScholarAutobiography>(), 1, 1, 1));
-			}
-		}
+		public override void ModifyNPCLoot(NPCLoot npcLoot) 
+		{
+			npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ScholarAutobiography>(), 1, 1, 1));
+            npcLoot.Add(ItemDropRule.Common(ItemID.JungleRose, 1, 1, 1));
+        }
 
 		// Make this Town NPC teleport to the King and/or Queen statue when triggered. Return toKingStatue for only King Statues. Return !toKingStatue for only Queen Statues. Return true for both.
 		public override bool CanGoToStatue(bool toQueenStatue) => true;
@@ -292,7 +296,8 @@ namespace DestroyerTest.Content.Entities
 				packet.Write((byte)NPC.whoAmI);
 				packet.Send();
 			}
-			else {
+			else 
+			{
 				StatueTeleport();
 			}
 		}
@@ -333,7 +338,8 @@ namespace DestroyerTest.Content.Entities
 			// SparklingBall is not affected by gravity, so gravityCorrection is left alone.
 		}
 
-		public override void LoadData(TagCompound tag) {
+		public override void LoadData(TagCompound tag) 
+		{
 			NumberOfTimesTalkedTo = tag.GetInt("numberOfTimesTalkedTo");
 		}
 

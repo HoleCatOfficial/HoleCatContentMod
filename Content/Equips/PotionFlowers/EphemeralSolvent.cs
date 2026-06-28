@@ -8,6 +8,11 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
 {
     public class EphemeralSolvent : ModItem
     {
+        public override void SetStaticDefaults()
+        {
+            DTUtils.NoUpgradeStack.Add(Type);
+ 
+        }
         public override void SetDefaults()
         {
             Item.width = 56;

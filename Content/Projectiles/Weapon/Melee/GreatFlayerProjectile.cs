@@ -28,7 +28,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 	public class GreatFlayerProjectile : BaseBroadswordProjectile
 	{
         public override string Texture => "DestroyerTest/Content/MeleeWeapons/GreatFlayer";
-        public override SoundStyle Swing => new SoundStyle("DestroyerTest/Assets/Audio/Constitution/ConSwing", 6) with { MaxInstances = 0, PitchVariance = 0.3f, Pitch = -0.2f};
+        public override SoundStyle Swing => new SoundStyle("DestroyerTest/Assets/Audio/SwordSounds/Constitution/ConSwing", 6) with { MaxInstances = 0, PitchVariance = 0.3f, Pitch = -0.2f};
 		public SoundStyle Tooth = new SoundStyle("DestroyerTest/Assets/Audio/Corpse/ToothShoot") with { MaxInstances = 0 };
         public override void SetDefaults()
         {

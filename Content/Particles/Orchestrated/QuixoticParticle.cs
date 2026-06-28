@@ -64,13 +64,14 @@ namespace DestroyerTest.Content.Particles.Orchestrated
             this.scale = Scale;
         }
 
-        float LifetimeCompletion => (float)Lifetime / MaxLifetime;
+        float LifetimeCompletion => (float)Lifetime / (float)MaxLifetime;
         public override void Update(ref ParticleRendererSettings settings)
         {
-            _scale = MathHelper.Lerp(_scale, scale, Utilities.Convert01To010(LifetimeCompletion));
+            Lifetime++;
+            _scale = MathHelper.Lerp(0f, scale, Utilities.Convert01To010(LifetimeCompletion));
             rotation += 0.1f;
             position += velocity;
-            Lifetime++;
+            
 
             if (Lifetime > MaxLifetime)
             {
@@ -87,7 +88,7 @@ namespace DestroyerTest.Content.Particles.Orchestrated
 
             Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
 
-            spriteBatch.Draw(texture, position - Main.screenPosition, null, color with { A = 0 }, rotation, origin, scale, SpriteEffects.None, 0f);
+            spriteBatch.Draw(texture, position - Main.screenPosition, null, color with { A = 0 }, rotation, origin, _scale, SpriteEffects.None, 0f);
 
             Opus.ReturnToDefaultDrawing(spriteBatch);
         }
@@ -112,12 +113,13 @@ namespace DestroyerTest.Content.Particles.Orchestrated
             this.scale = Scale;
         }
 
-        float LifetimeCompletion => (float)Lifetime / MaxLifetime;
+        float LifetimeCompletion => (float)Lifetime / (float)MaxLifetime;
         public override void Update(ref ParticleRendererSettings settings)
         {
-            _scale = MathHelper.Lerp(_scale, scale, Utilities.Convert01To010(LifetimeCompletion));
-            position += velocity;
             Lifetime++;
+            _scale = MathHelper.Lerp(0f, scale, Utilities.Convert01To010(LifetimeCompletion));
+            position += velocity;
+           
 
             if (Lifetime > MaxLifetime)
             {
@@ -134,7 +136,7 @@ namespace DestroyerTest.Content.Particles.Orchestrated
 
             Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
 
-            spriteBatch.Draw(texture, position - Main.screenPosition, null, color with { A = 0 }, rotation, origin, scale, SpriteEffects.None, 0f);
+            spriteBatch.Draw(texture, position - Main.screenPosition, null, color with { A = 0 }, rotation, origin, _scale, SpriteEffects.None, 0f);
 
             Opus.ReturnToDefaultDrawing(spriteBatch);
         }

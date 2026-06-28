@@ -23,6 +23,7 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
+using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -96,16 +97,20 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
                 FX = SpriteEffects.None;
             }
 
+            ArmorShaderData DumbassShader = GameShaders.Armor.GetSecondaryShader(Main.GetProjectileDesiredShader(Projectile), Main.player[Projectile.owner]);
+            DumbassShader.Apply(Projectile);
+
             RenderRope(Main.screenPosition, Projectile.GetAlpha(lightColor));
 
-            Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+
             if (!HoleCat)
             {
-                Opus.DrawProjectileShadowsRotating(Projectile, Opus.Sine(2f, 5.3f), ColorLib.CursedFlames, 0.06f);
+                Opus.DrawProjectileShadowsRotating(Projectile, Opus.Sine(2f, 5.3f), ColorLib.CursedFlames with { A = 0}, 0.06f);
             }
-            Opus.ReturnToDefaultDrawing(Main.spriteBatch);
 
             
+            DumbassShader.Apply(Projectile);
+
             Main.EntitySpriteDraw(PT, Projectile.Center - Main.screenPosition, null, Projectile.GetAlpha(lightColor), Projectile.rotation, PT.Size() / 2, Projectile.scale, FX);
             Main.EntitySpriteDraw(GT.Value, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, GT.Value.Size() / 2, Projectile.scale, FX);
             return false;

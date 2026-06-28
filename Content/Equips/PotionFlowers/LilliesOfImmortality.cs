@@ -8,6 +8,12 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
 {
     public class LilliesOfImmortality : ModItem
     {
+        public override void SetStaticDefaults()
+        {
+            DTUtils.NoUpgradeStack.Add(Type);
+
+        }
+
         public override void SetDefaults()
         {
             Item.width = 82;
