@@ -10,8 +10,6 @@
 	</PropertyGroup>
 	
 	<ItemGroup>
-	  <PackageReference Include="OpenRGB.NET" Version="3.1.1" />
-	  <PackageReference Include="System.Memory.Data" Version="10.0.9" />
 	</ItemGroup>
 
 	<ItemGroup>
