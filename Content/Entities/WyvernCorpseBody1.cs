@@ -16,11 +16,6 @@ using Terraria.ID;
 using Terraria.ModLoader;
 
 
-/// <summary>
-/// This is the code from Consolaria's Arch Wyvern. I do not own any of this except for the textures I paint over it. This code will be replaced in the future, when I am capable of modding something so advanced. (Trust me. I tried many times with the example worm. It did not go well.)
-/// </summary>
-
-
 namespace DestroyerTest.Content.Entities
 {
     public class WyvernCorpseBody1 : ModNPC
@@ -152,8 +147,12 @@ namespace DestroyerTest.Content.Entities
             {
                 if (DestroyerTestMod.MasochistIsActive)
                 {
+                    /*
                     texture = NPC.GetMasoTexture("DestroyerTest/Content/Entities/MasoMode", "WyvernCorpseBody1");
                     Glowtexture = NPC.GetMasoTexture("DestroyerTest/Content/Entities/MasoMode", "WyvernCorpseBody1");
+                    */
+                    texture = TextureAssets.Npc[Type];
+                    Glowtexture = ModContent.Request<Texture2D>($"{Texture}_Glow", AssetRequestMode.AsyncLoad);
                 }
                 else
                 {

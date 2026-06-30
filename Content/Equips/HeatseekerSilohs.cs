@@ -153,11 +153,12 @@ namespace DestroyerTest.Content.Equips
                 SoundEngine.PlaySound(SoundID.Item20, player.Center);
                 Sound = true;
             }
-            // These 2 stat changes are equal to the Lightning Boots
-            player.moveSpeed += MoveSpeedBonus / 100f; // Modifies the player movement speed bonus.
-            player.accRunSpeed = 9.4f; // Sets the players sprint speed in boots.
+
 
             // player.maxRunSpeed and player.runAcceleration are usually not set by boots and should not be changed in UpdateAccessory due to the logic order. See ExampleStatBonusAccessoryPlayer.PostUpdateRunSpeeds for an example of adjusting those speed stats.
+            // These 2 stat changes are equal to the Lightning Boots
+            player.moveSpeed += 0.12f; // Modifies the player movement speed bonus.
+            player.accRunSpeed = 12.2f; // Sets the players sprint speed in boots.
 
             /*
             if (player.rocketBoots == 0)
@@ -315,6 +316,24 @@ namespace DestroyerTest.Content.Equips
                 .AddIngredient<SunscorchedCinder>(6)
                 .AddIngredient<CarbonizedFlesh>(6)
                 .Register();
+        }
+    }
+
+    public class HeatseekerSilohPlayer : ModPlayer
+    {
+        public bool Active = false;
+
+        public override void ResetEffects()
+        {
+            Active = false;
+        }
+
+        public override void PostUpdateRunSpeeds()
+        {
+            if (Active)
+            {
+                
+            }
         }
     }
 }

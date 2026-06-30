@@ -30,7 +30,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         public float ShineOpacity = 0f;
         public override bool PreDraw(ref Color lightColor)
         {
-            Main.EntitySpriteDraw(DTAssetLib.MiscSparkle144.Value, Projectile.Center - Main.screenPosition, null, DTColorUtils.Pastel(ColorLib.TenebrisBlue, 0.5f) * ShineOpacity, Projectile.velocity.ToRotation() + MathHelper.PiOver2, DTAssetLib.MiscSparkle144.Value.Size() / 2, new Vector2(1f, 2f), SpriteEffects.None, 0f);
+            Main.EntitySpriteDraw(DTAssetLib.MiscSparkle144.Value, Projectile.Center - Main.screenPosition, null, DTColorUtils.Pastel(ColorLib.TenebrisBlue, 0.5f) with { A = 0 } * ShineOpacity, Projectile.velocity.ToRotation() + MathHelper.PiOver2, DTAssetLib.MiscSparkle144.Value.Size() / 2, new Vector2(1f, 2f), SpriteEffects.None, 0f);
             return true;
         }
 

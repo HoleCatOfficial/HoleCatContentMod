@@ -109,7 +109,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 }
                 else
                 {
-                    SoundEngine.PlaySound(DTAssetLib.ScholarShieldSounds.Hit with { MaxInstances = 0, PitchVariance = 0.6f }, parent.Center);
+                    SoundEngine.PlaySound(DTAssetLib.ScholarShieldSounds.Hit with { MaxInstances = 0, PitchVariance = 0.6f }, npc.Center);
                 }
             }
         }

@@ -1,4 +1,5 @@
 
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.BossBar;
@@ -8,16 +9,22 @@ using DestroyerTest.Content.Equips;
 using DestroyerTest.Content.MeleeWeapons;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss;
+using DestroyerTest.Content.Projectiles.Boss;
+using DestroyerTest.Content.Projectiles.Boss.NodeBoss.Ichor;
 using DestroyerTest.Content.Projectiles.Boss.VampireBoss;
+using DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.SummonItems;
 using DestroyerTest.Content.Tiles;
+using GlowmaskHelper.Content;
 using InnoVault.PRT;
 using log4net.Util;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
+using OpusLib.Content.Helpers;
 using ReLogic.Content;
+using ReLogic.Utilities;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -26,6 +33,7 @@ using System.Net;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.GameContent.Animations;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
@@ -34,28 +42,19 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
 using UtfUnknown.Core.Models.SingleByte.Finnish;
-using GlowmaskHelper.Content;
-using OpusLib;
-using DestroyerTest.Content.Projectiles.Boss;
-using DestroyerTest.Content.Projectiles.Boss.NodeBoss.Ichor;
-using ReLogic.Utilities;
-using OpusLib.Content.Helpers;
-using Terraria.GameContent;
-using BreadLibrary.Core.Graphics.Particles;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace DestroyerTest.Content.Entities
 {
-    /// <summary>
-    /// This is the code from Consolaria's Arch Wyvern. I do not own any of this except for the textures I paint over it. This code will be replaced in the future, when I am capable of modding something so advanced. (Trust me. I tried many times with the example worm. It did not go well.)
-    /// </summary>
     [AutoloadBossHead]
     public class WyvernCorpseHead : ModNPC
     {
         public enum attackType
         {
             Follow,
+            BloodBombs,
+            Organs,
             Nodes,
-            Desperation,
             Enraged
         }
 
@@ -134,6 +133,8 @@ namespace DestroyerTest.Content.Entities
 
             NPC.hide = true;
             NPC.value = Item.buyPrice(platinum: 1, gold: 15, silver: 75);
+
+            HasShedBlisters = false;
         }
 
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
@@ -180,8 +181,13 @@ namespace DestroyerTest.Content.Entities
             {
                 if (DestroyerTestMod.MasochistIsActive)
                 {
+                    /*
                     texture = NPC.GetMasoTexture("DestroyerTest/Content/Entities/MasoMode", "WyvernCorpseHead");
                     Glowtexture = NPC.GetMasoTexture("DestroyerTest/Content/Entities/MasoMode", "WyvernCorpseHead");
+                    */
+
+                    texture = TextureAssets.Npc[Type];
+                    Glowtexture = ModContent.Request<Texture2D>($"{Texture}_Glow", AssetRequestMode.AsyncLoad);
                 }
                 else
                 {
@@ -223,7 +229,7 @@ namespace DestroyerTest.Content.Entities
             return false;
         }
 
-        // Multiplayer-synced fields
+
         public attackType CurrentAttack = attackType.Follow;
 
         public bool SpawnFlag = false;
@@ -242,20 +248,20 @@ namespace DestroyerTest.Content.Entities
         };
         public float PitchVal = -2;
 
-        
+        public int AITimer = 0;
 
-        // Write extra AI fields for multiplayer sync
         public override void SendExtraAI(BinaryWriter writer)
         {
             writer.Write((int)CurrentAttack);
             writer.Write(anyNodesAlive);
+            writer.Write7BitEncodedInt(AITimer);
         }
 
-        // Read extra AI fields for multiplayer sync
         public override void ReceiveExtraAI(BinaryReader reader)
         {
             CurrentAttack = (attackType)reader.ReadInt32();
             anyNodesAlive = reader.ReadBoolean();
+            AITimer = reader.Read7BitEncodedInt();
         }
 
         public override void DrawBehind(int index)
@@ -289,9 +295,10 @@ namespace DestroyerTest.Content.Entities
         
         }
 
+        public float LifeProgress => (float)NPC.life / (float)NPC.lifeMax;
         public override void HitEffect(NPC.HitInfo hit)
         {
-            float Progress = (float)NPC.life / (float)NPC.lifeMax;
+            float Progress = LifeProgress;
 
             if (Progress > 0.5f)
             {
@@ -330,8 +337,6 @@ namespace DestroyerTest.Content.Entities
                     }
                 }
             }
-
-
             
             
             if (Progress <= 0.001f)
@@ -351,7 +356,7 @@ namespace DestroyerTest.Content.Entities
 
         public override bool? CanBeHitByProjectile(Projectile projectile)
         {
-            if (CurrentAttack == attackType.Desperation || anyNodesAlive)
+            if (anyNodesAlive)
                 return false;
 
             return base.CanBeHitByProjectile(projectile);
@@ -382,7 +387,7 @@ namespace DestroyerTest.Content.Entities
 
         public override void ModifyHitByProjectile(Projectile projectile, ref NPC.HitModifiers modifiers)
         {
-            if (CurrentAttack == attackType.Desperation || anyNodesAlive)
+            if (anyNodesAlive)
             {
                 NPC.immortal = true;
                 modifiers.FinalDamage *= 0f;
@@ -395,7 +400,7 @@ namespace DestroyerTest.Content.Entities
             
         public override bool? CanBeHitByItem(Player player, Item item)
         {
-            if (CurrentAttack == attackType.Desperation || anyNodesAlive)
+            if (anyNodesAlive)
                 return false;
 
             return base.CanBeHitByItem(player, item);
@@ -403,7 +408,7 @@ namespace DestroyerTest.Content.Entities
 
         public override void ModifyHitByItem(Player player, Item item, ref NPC.HitModifiers modifiers)
         {
-            if (CurrentAttack == attackType.Desperation || anyNodesAlive)
+            if (anyNodesAlive)
             {
                 NPC.immortal = true;
                 modifiers.FinalDamage *= 0f;
@@ -418,33 +423,30 @@ namespace DestroyerTest.Content.Entities
 
         public Vector2 Center;
         public int DeathInterval = 10;
+
+        public List<NPC> BodySegments = new List<NPC>();
+
+        bool HasShedBlisters = false;
         public override void AI()
         {
-            
-            DTConfig cfg = ModContent.GetInstance<DTConfig>();
-            DTMusicConfig muscfg = ModContent.GetInstance<DTMusicConfig>();
-            DTOptimizationsConfig optcfg = ModContent.GetInstance<DTOptimizationsConfig>();
+            AITimer++;
 
             NPC.TargetClosest();
             Player player = Main.player[NPC.target];
-
-            if (Main.netMode == NetmodeID.Server && Main.GameUpdateCount % 1200 == 0)
-            {
-                var alivePlayers = Main.player.Where(p => p.active && !p.dead).ToList();
-                if (alivePlayers.Count > 0)
-                {
-                    var newTarget = Main.rand.Next(alivePlayers.Count);
-                    NPC.target = alivePlayers[newTarget].whoAmI;
-                    NPC.netUpdate = true;
-                }
-            }
    
 
             Vector2 ToPlayer = NPC.Center - player.Center;
 
             Vector2 ToPlayerInverse = player.Center - NPC.Center;
 
-         
+            if (Frame == 1 && !HasShedBlisters)
+            {
+                for (int i = 0; i < BodySegments.Count(); i++)
+                {
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), BodySegments[i].Center, Main.rand.NextVector2Circular(2, 2), ModContent.ProjectileType<IchorBlister>(), 50, 4);
+                }
+                HasShedBlisters = true;
+            }
 
             Vector2 RandNearPlayer = player.Center + new Vector2(Main.rand.NextFloat(-200f, 200f), Main.rand.NextFloat(-200f, 200f));
 
@@ -480,7 +482,7 @@ namespace DestroyerTest.Content.Entities
                 NPC.immortal = true;
                 NPC.life += 2;
             }
-            else if (!anyNodesAlive && CurrentAttack == attackType.Desperation)
+            else if (!anyNodesAlive)
             {
                 NPC.immortal = true;
                 NPC.dontTakeDamage = true;
@@ -511,17 +513,6 @@ namespace DestroyerTest.Content.Entities
                 }
             }
 
-            if (NPC.life <= NPC.lifeMax * 0.05f)
-            {
-                CurrentAttack = attackType.Desperation;
-            }
-
-            if (CurrentAttack == attackType.Desperation)
-            {
-                NPC.dontTakeDamage = true;
-                NPC.immortal = true;
-            }
-
             if (Main.netMode != NetmodeID.MultiplayerClient && SpawnFlag == false)
             {
                 if (NPC.ai[0] == 0f)
@@ -529,31 +520,33 @@ namespace DestroyerTest.Content.Entities
                     NPC.ai[2] = NPC.whoAmI;
                     NPC.realLife = NPC.whoAmI;
 
-                    int num96 = NPC.whoAmI;
-                    for (int num97 = 0; num97 < 60; num97++)
+                    int Me = NPC.whoAmI;
+                    for (int i = 0; i < 60; i++)
                     {
                         int WyvBodyInt = ModContent.NPCType<WyvernCorpseBody1>();
-                        if (num97 == 4 || num97 == 16 || num97 == 32 || num97 == 48)
+                        if (i == 4 || i == 16 || i == 32 || i == 48)
                             WyvBodyInt = ModContent.NPCType<WyvernCorpseLegs>();
-                        else if (num97 == 57)
+                        else if (i == 57)
                             WyvBodyInt = ModContent.NPCType<WyvernCorpseBody2>();
-                        else if (num97 == 58)
+                        else if (i == 58)
                             WyvBodyInt = ModContent.NPCType<WyvernCorpseBody3>();
-                        else if (num97 == 59)
+                        else if (i == 59)
                             WyvBodyInt = ModContent.NPCType<WyvernCorpseTail>();
 
-                        int num99 = NPC.NewNPC(NPC.GetSource_FromAI(),
+                        int BodySegment = NPC.NewNPC(NPC.GetSource_FromAI(),
                             (int)(NPC.position.X + NPC.width / 2),
                             (int)(NPC.position.Y + NPC.height),
                             WyvBodyInt, NPC.whoAmI);
 
-                        Main.npc[num99].ai[2] = NPC.whoAmI;
-                        Main.npc[num99].realLife = NPC.whoAmI;
-                        Main.npc[num99].ai[1] = num96;
-                        Main.npc[num96].ai[0] = num99;
+                        BodySegments.Add(Main.npc[BodySegment]);
 
-                        NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, num99);
-                        num96 = num99;
+                        Main.npc[BodySegment].ai[2] = NPC.whoAmI;
+                        Main.npc[BodySegment].realLife = NPC.whoAmI;
+                        Main.npc[BodySegment].ai[1] = Me;
+                        Main.npc[Me].ai[0] = BodySegment;
+
+                        NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, BodySegment);
+                        Me = BodySegment;
                     }
                     NPC.netUpdate = true;
                     SpawnFlag = true;
@@ -564,24 +557,10 @@ namespace DestroyerTest.Content.Entities
             {
                 Mod.Logger.Info($"Current State: {CurrentAttack}");
             }
-            
 
-            if (!Main.dedServ && !DestroyerTestMod.EternityIsActive)
-            {
-                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Tribulation");
-            }
-            if (!Main.dedServ && DestroyerTestMod.EternityIsActive && !muscfg.EternityMusic)
-            {
-                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Tribulation");
-            }
-            if (!Main.dedServ && DestroyerTestMod.EternityIsActive && muscfg.EternityMusic)
-            {
-                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Placeholder4");
-            }
-            if (!Main.dedServ && DestroyerTestMod.EternityIsActive && DestroyerTestMod.MasochistIsActive && muscfg.EternityMusic)
-            {
-                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/MasoEvils");
-            }
+            Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/UnfinishedBoss");
+            
+        
 
             ImportantMathematics();
 
@@ -589,18 +568,37 @@ namespace DestroyerTest.Content.Entities
             {
                 case attackType.Follow:
                     {
-                       
+                        if (AITimer >= 240)
+                        {
+                            CurrentAttack = attackType.BloodBombs;
+                        }
+                        break;
                     }
-                    break;
-                case attackType.Nodes:
-                    if (NPC.type == ModContent.NPCType<WyvernCorpseHead>())
+                    
+                case attackType.BloodBombs:
                     {
-                        NPC.aiStyle = -1;
-                        NodeSpawn();
+                        AI_BloodBombs();
 
-                        CurrentAttack = attackType.Follow;
-                        ResetStats();
+                        if (AITimer >= 600)
+                        {
+                            CurrentAttack = attackType.Organs;
+                        }
+                        break;
                     }
+                case attackType.Organs:
+                    {
+                        AI_Organs();
+                        CurrentAttack = attackType.Follow;
+                        AITimer = 0;
+                        break;
+                    }
+                case attackType.Nodes:
+
+                    NPC.aiStyle = -1;
+                    NodeSpawn();
+
+                    CurrentAttack = attackType.Follow;
+                    
                     break;
                 case attackType.Enraged:
                     {
@@ -614,13 +612,6 @@ namespace DestroyerTest.Content.Entities
 
             NPC.rotation = (float)Math.Atan2(NPC.velocity.Y, NPC.velocity.X) + 1.57f;
             
-        }
-
-
-
-        public void ResetStats()
-        {
-
         }
 
         public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
@@ -755,45 +746,32 @@ namespace DestroyerTest.Content.Entities
             Main.EntitySpriteDraw(value, Center + offset.RotatedBy(rotationOffset) - Main.screenPosition, new Rectangle?(npc.frame), color * 0.5f, npc.rotation, value.Size() / 2f, npc.scale, effects);
         }
 
-        
-
-        int DashTGscroll = 0;
-        public void DrawDashTelegraph(Vector2 start, Vector2 end, Texture2D texture)
+    
+        public void AI_BloodBombs()
         {
-            DashTGscroll -= 10;
-            // Compute direction and total length
-            Vector2 direction = end - start;
-   
-            DTUtils.instance.ScrollingTextureSpine(new Line(start, end), DTAssetLib.ArrowTelegraphCont, ColorLib.IchorCrystalGradient, Main.spriteBatch, BlendState.Additive, DashTGscroll, 1f);
+            int Damage = (int)MathHelper.Lerp(5, 100, LifeProgress);
+            int Interval = (int)MathHelper.Lerp(12, 4, LifeProgress);
+            if (AITimer % Interval == 0)
+            {
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, Main.rand.NextVector2Circular(10, 10), ModContent.ProjectileType<FleshBomb>(), Damage, 4);
+            }
         }
 
-        float tOffset = 0f;
-        public void DrawTelePoint(SpriteBatch spriteBatch, Vector2 Center)
+        public void AI_Organs()
         {
-            tOffset += 0.1f;
-            DTUtils Utility = new DTUtils();
-            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+            int Damage = (int)MathHelper.Lerp(5, 100, LifeProgress);
+            Player player = Main.player[NPC.target];
 
-            DTUtils.DrawCrystalCore(spriteBatch, Center, Color.White, ColorLib.Ichor, tOffset, 2f);
+            SoundEngine.PlaySound(Attack);
+            for (int i = 0; i < BodySegments.Count; i++)
+            {
+                Vector2 toPlayer = player.Center - BodySegments[i].Center;
+                toPlayer.Normalize();
 
-            Opus.ReturnToDefaultDrawing(spriteBatch);
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), BodySegments[i].Center, toPlayer * 2, ModContent.ProjectileType<OrganProjectile>(), Damage, 4, ai0: player.whoAmI);
+            }
         }
 
-        
-
-        public void DashParticle()
-        {
-            Spark Spark1 = new Spark();
-
-            Spark1.PrepareSpark(NPC.Center + new Vector2(NPC.width / 2, (NPC.height / 2) - NPC.height / 2).RotatedBy(NPC.rotation), new Vector2(10, 80).RotatedBy(NPC.rotation), 0f, ColorLib.Ichor, 1f, false, 40, SparkDrawMode.Additive);
-            ParticleEngine.ShaderParticles.Add(Spark1);
-
-            Spark Spark2 = new Spark();
-
-            Spark2.PrepareSpark(NPC.Center + new Vector2(NPC.width / 2, (NPC.height / 2) - NPC.height / 2).RotatedBy(NPC.rotation), new Vector2(10, -80).RotatedBy(NPC.rotation), 0f, ColorLib.Ichor, 1f, false, 40, SparkDrawMode.Additive);
-            ParticleEngine.ShaderParticles.Add(Spark2);
-
-        }
 
         public void NodeSpawn()
         {
@@ -970,111 +948,5 @@ namespace DestroyerTest.Content.Entities
                 PikeCount = 0;
             }
         }
-
-         
-    }
-
-    public class WyvernCorpseBackgroundProj : ModProjectile
-    {
-        public override string Texture => "DestroyerTest/Content/Extras/FadeLine";
-        private Asset<Texture2D> WindTex;
-        public override void SetDefaults()
-        {
-            Projectile.width = 10;
-            Projectile.height = 10;
-            Projectile.aiStyle = 0;
-            Projectile.friendly = false;
-            Projectile.hostile = false;
-            Projectile.penetrate = -1;
-            Projectile.timeLeft = 248000;
-            Projectile.tileCollide = false;
-            Projectile.ignoreWater = true;
-            Projectile.hide = true;
-            WindTex = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/EvilBossWind", AssetRequestMode.AsyncLoad);
-            Projectile.scale = 4;
-        }
-
-        public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
-        {
-            behindNPCsAndTiles.Add(index);
-        }
-
-        public override void AI()
-        {
-            bool ParentAlive = Main.npc.Any(n => n.active && (n.type == ModContent.NPCType<NightmareRoseBoss>() || n.type == ModContent.NPCType<WyvernCorpseHead>()));
-            if (ParentAlive)
-            {
-                Projectile.active = true;
-            }
-            else
-            {
-                Projectile.active = false;
-            }
-            Projectile.Center = Main.LocalPlayer.Center;
-        }
-
-        public override bool PreDraw(ref Color lightColor)
-        {
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            DTUtils Utility = new DTUtils();
-            DTOptimizationsConfig optcfg = ModContent.GetInstance<DTOptimizationsConfig>();
-
-            Color drawColor = Opus.Sine(Color.Black, ColorLib.Soul3);
-
-            if (!optcfg.OptimizeGame)
-            {
-                Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-
-                float time = (float)Main.GameUpdateCount / 60f;
-
-                // --- Layer 1 scroll parameters ---
-                float scrollSpeedX1 = 200f;
-                float scrollSpeedY1 = 30f;
-
-                float scrollOffsetX1 = (time * scrollSpeedX1) % WindTex.Value.Width * Projectile.scale;
-                float scrollOffsetY1 = (time * scrollSpeedY1) % WindTex.Value.Height * Projectile.scale;
-
-                int screenW = Main.screenWidth;
-                int screenH = Main.screenHeight;
-
-                // --- draw one tile beyond each edge ---
-                float startX = -WindTex.Value.Width * Projectile.scale;
-                float startY = -WindTex.Value.Height * Projectile.scale;
-                float endX = screenW + WindTex.Value.Width * Projectile.scale;
-                float endY = screenH + WindTex.Value.Height * Projectile.scale;
-
-                // --- Draw first layer ---
-                for (float x = -scrollOffsetX1 + startX; x < endX; x += WindTex.Value.Width)
-                {
-                    for (float y = -scrollOffsetY1 + startY; y < endY; y += WindTex.Value.Height)
-                    {
-                        spriteBatch.Draw(WindTex.Value, new Vector2(x, y), null, drawColor * 0.5f, 0f, Vector2.Zero, 1f * Projectile.scale, SpriteEffects.None, 0f);
-                    }
-                }
-
-                float scrollSpeedX2 = 150f;
-                float scrollSpeedY2 = -60f; // opposite direction for contrast
-
-                float scrollOffsetX2 = (time * scrollSpeedX2) % WindTex.Value.Width * Projectile.scale;
-                float scrollOffsetY2 = (time * scrollSpeedY2) % WindTex.Value.Height * Projectile.scale;
-
-                Color drawColor2 = drawColor * 0.8f; // slightly dimmer to layer properly
-
-                // --- Draw second layer ---
-                for (float x = -scrollOffsetX2 + startX; x < endX; x += WindTex.Value.Width)
-                {
-                    for (float y = -scrollOffsetY2 + startY; y < endY; y += WindTex.Value.Height)
-                    {
-                        spriteBatch.Draw(WindTex.Value, new Vector2(x, y), null, drawColor2 * 0.5f, 0f, Vector2.Zero, 1f * Projectile.scale, SpriteEffects.None, 0f);
-                    }
-                }
-
-                Opus.ReturnToDefaultDrawing(spriteBatch);
-            }
-            return false;
-        }
-
-
-
     }
 }

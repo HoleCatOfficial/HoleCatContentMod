@@ -1822,7 +1822,7 @@ AuraThiefHeadgear: {
 	SetBonus:
 		'''
 		11% increased Melee damage.
-		You are immune to Frostburn, FrostBite, Frozen, and Chilled.
+		You are immune to Frostburn, Frozen, and Chilled.
 		'''
 }
 
@@ -2437,7 +2437,11 @@ Vesper: {
 
 VesperOre: {
 	DisplayName: Vesper Ore
-	Tooltip: Fragments of the dreams of creatures and people of Terraria.
+	Tooltip:
+		'''
+		Fragments of the dreams of creatures and people of Terraria.
+		Dreamstone placed next to Vesper Ore has a chance to convert at night.
+		'''
 }
 
 RevenantMask: {
@@ -2666,8 +2670,14 @@ DetritizedPendant: {
 }
 
 AuraThiefHeadress: {
-	Tooltip: ""
+	Tooltip: A headress of thievery and dishonor. As pale as your eyes.
 	DisplayName: Aura Thief Headress
+	SetBonus:
+		'''
+		You have a chance to create a homing vortex of spirits when using your scepter.
+		8% increased Scepter Class Damage.
+		Increased Scepter Throw Speed.
+		'''
 }
 
 VisceraPendant: {
@@ -2895,27 +2905,22 @@ RiftVeil: {
 RadiantRose: {
 	Tooltip:
 		'''
-		You will auto-consume a Healing Potion every 45 seconds when below 50% health.
+		You will auto-consume a Healing Potion on a 1-minute 30-second cooldown when below 50% health.
 		Your highest rank healing potions will be used first.
 		You cannot manually consume healing potions.
-		Passive life regen is increased.
+		Cannot be worn with Band of Regeneration or its upgrades.
 		'''
 	DisplayName: Radiant Rose
-}
-
-LifeTalisman: {
-	Tooltip: Increases pickup range for hearts.
-	DisplayName: Life Talisman
 }
 
 EphemeralSolvent: {
 	DisplayName: Ephemeral Solvent
 	Tooltip:
 		'''
-		You will consume a Healing Potion every 45 seconds when below 50% health.
+		You will auto-consume a Healing Potion on a 1-minute 30-second cooldown when below 50% health.
 		Your highest rank healing potions will be used first.
 		You cannot manually consume healing potions.
-		Passive life regen and heart pickup range are massively increased.
+		Cannot be worn with Band of Regeneration or its upgrades.
 		'''
 }
 
@@ -2930,10 +2935,10 @@ LilliesOfImmortality: {
 		'''
 		You are immune to knockback and most debuffs.
 		Double tap either direction to perform a spirit fire dash.
-		You will consume a Healing Potion every 45 seconds when below 50% health.
+		You will auto-consume a Healing Potion on a 1-minute 30-second cooldown when below 50% health.
 		Your highest rank healing potions will be used first.
 		You cannot manually consume healing potions.
-		Passive life regen and heart pickup range are massively increased.
+		Cannot be worn with Band of Regeneration or its upgrades.
 		'''
 }
 
@@ -4677,7 +4682,7 @@ Item_IdriPainting: {
 
 Item_Dreamstone: {
 	DisplayName: Dreamstone
-	Tooltip: ""
+	Tooltip: Has a chance to convert to Vesper during the night, while new dreams are dreamt...
 }
 
 Depths: {
@@ -4828,4 +4833,9 @@ KenomaiciCrystal: {
 		Increases max mana by {0}.
 		You may only consume {1}.
 		'''
+}
+
+Item_DreamstoneBrick: {
+	DisplayName: Item_ Dreamstone Brick
+	Tooltip: ""
 }

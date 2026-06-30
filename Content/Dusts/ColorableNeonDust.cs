@@ -1,3 +1,4 @@
+using BreadLibrary.Core.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
@@ -11,7 +12,8 @@ namespace DestroyerTest.Content.Dusts
 {
 	public class ColorableNeonDust : ModDust
 	{
-		public override void OnSpawn(Dust dust) {
+		public override void OnSpawn(Dust dust) 
+		{
 			dust.noGravity = true;
 			dust.noLight = false;
 		}
@@ -19,9 +21,9 @@ namespace DestroyerTest.Content.Dusts
         public override bool PreDraw(Dust dust)
         {
             Asset<Texture2D> Dusttex = ModContent.Request<Texture2D>(Texture);
-            Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+            Main.spriteBatch.UseBlendState(BlendState.Additive);
             Main.spriteBatch.Draw(Dusttex.Value, dust.position - Main.screenPosition, dust.frame, dust.color, dust.rotation, dust.frame.Size() / 2f, dust.scale, SpriteEffects.None, 0f);
-            Opus.ReturnToDefaultDrawing(Main.spriteBatch);
+            Main.spriteBatch.ResetToDefault();
             return false;
         }
 

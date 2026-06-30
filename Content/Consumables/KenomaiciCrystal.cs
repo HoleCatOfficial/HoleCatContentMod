@@ -11,7 +11,7 @@ using Terraria.ModLoader.IO;
 
 namespace DestroyerTest.Content.Consumables
 {
-    internal class KenomaiciCrystal : ModItem
+    public class KenomaiciCrystal : ModItem
     {
         public static readonly int MaxKCrystals = 10;
         public static readonly int ManaPerCrystal = 20;

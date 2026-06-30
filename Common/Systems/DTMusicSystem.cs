@@ -77,11 +77,12 @@ internal class MusicDisplayCalls : ModSystem
 
         //Boss Tracks
 		AddMusic("Assets/Music/Tribulation", "EvilBoss.Default", "Author1", FranciumColors);
-        AddMusic("Assets/Music/Placeholder4", "EvilBoss.Eternity", "Author2", ZantasColors);
+        AddMusic("Assets/Music/EternityEvils", "EvilBoss.Eternity", "Author2", ZantasColors);
+        AddMusic("Assets/Music/MasoEvils", "EvilBoss.Eternity", "Author5", MiscColors);
         AddMusic("Assets/Music/EvilBossSecretSeed", "EvilBoss.SecretSeed", "Author4", JokeColors);
         AddMusic("Assets/Music/ConstitutionBoss", "ConstitutionBoss.Default", "Author1", FranciumColors);
         AddMusic("Assets/Music/ConstitutionDespiration", "ConstitutionBoss.Desperate", "Author1", FranciumColors);
-        AddMusic("Assets/Music/Placeholder5", "ConstitutionBoss.Eternity", "Author3", MiscColors);
+        AddMusic("Assets/Music/ConstEternityPlaceholder", "ConstitutionBoss.Eternity", "Author3", MiscColors);
         AddMusic("Assets/Music/NodeBoss", "NodeBoss.Fight", "Author1", FranciumColors);
         AddMusic("Assets/Music/BlessedNode", "NodeBoss.FightHallow", "Author1", FranciumColors);
         AddMusic("Assets/Music/NodeIdle", "NodeBoss.Idle", "Author1", FranciumColors);
@@ -90,6 +91,8 @@ internal class MusicDisplayCalls : ModSystem
         AddMusic("Assets/Music/WyvernSoulAmbience", "WyvernSoulAmbience", "Author1", FranciumColors);
         AddMusic("Assets/Music/HekateGarden", "HekateGarden", "Author1", FranciumColors);
         AddMusic("Assets/Music/TenebrisCorruption", "TenebrisCorruption", "Author1", FranciumColors);
+        AddMusic("Assets/Music/DTShimmerMusic", "Shimmer", "Author1", FranciumColors);
+        AddMusic("Assets/Music/UnfinishedBoss", "BetaBoss", "Author2", ZantasColors);
 
         //Rift Biome
         AddMusic_Rift("Assets/Music/RiftV2", "Rift.Surface", "Author1");

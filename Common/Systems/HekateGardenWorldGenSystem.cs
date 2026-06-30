@@ -8,7 +8,6 @@ using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.Tiles;
 using DestroyerTest.Content.Tiles.Altar;
 using DestroyerTest.Content.Tiles.RoseGarden;
-using InnoVault;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;

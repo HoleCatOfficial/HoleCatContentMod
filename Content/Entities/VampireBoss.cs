@@ -73,7 +73,7 @@ namespace DestroyerTest.Content.Entities
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
-                new FlavorTextBestiaryInfoElement("Gentleman by day, Predator by night, the Vampire is the child of The Blood Goddess; Eimvur, The Witchcraft Goddess; Hequain (also known as Hekate), and a woman; Gövic. His nature is mostly unknown, though perhaps he may open up if you talk to him enough."),
+                new FlavorTextBestiaryInfoElement(DTUtils.GetModNPCLocalizationEntry(this, 1)),
                 BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface
             });
         }
@@ -121,30 +121,9 @@ namespace DestroyerTest.Content.Entities
 
             PlayerCenter = player.Center;
 
-
-
-
-            // Removed unused 'effects' variable.
-
             if (!Main.dedServ) {
-				Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/OrdealBoss");
-			}
-
-
-
-            /*
-            if (NPC.Center.DistanceSQ(player.Center) > 40000)
-            {
-                TeleManager(player, ref TeleCircumferencePoint);
+                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/UnfinishedBoss");
             }
-            */
-
-
-
-
-
-
-            Mod.Logger.Info($"Current State: {currentState}");
 
             switch (currentState)
             {
@@ -152,123 +131,13 @@ namespace DestroyerTest.Content.Entities
                     if (NPC.type == ModContent.NPCType<VampireBoss>())
                     {
                         NPC.aiStyle = 10;
-                        
 
-                        if (Main.rand.NextBool(3))
-                        {
-                            currentState = GetRandomState();
-                        }
-                    }
-                    break;
-                case AttackState.ShootBlood:
-                    if (NPC.type == ModContent.NPCType<VampireBoss>())
-                    {
-                        NPC.aiStyle = 10;
-                        BloodShotTimer++;
-
-                        if (BloodShotCount < 6 && BloodShotTimer == 60)
-                        {
-                            ShootBlood(NPC, player);
-                            BloodShotTimer = 0;
-                            BloodShotCount += 1;
-                        }
-
-                        if (BloodShotCount >= 6)
-                        {
-                            currentState = AttackState.Idle;
-                        }
-                    }
-                    break;
-                case AttackState.BrethrenBats:
-                    if (NPC.type == ModContent.NPCType<VampireBoss>())
-                    {
-                        NPC.aiStyle = 10;
-                        
-
-                        BatTimer++;
-                        if (BatTimer == 60 && BatCount < 4)
-                        {
-                            BreathrenBatSpawn(NPC, player);
-                            BatCount += 1;
-                            BatTimer = 0;
-                        }
-
-                        if (BatCount >= 4)
-                        {
-                            currentState = AttackState.Idle;
-                        }
-                    }
-                    break;
-                case AttackState.GoldenShots:
-                    if (NPC.type == ModContent.NPCType<VampireBoss>())
-                    {
-                        // This will be worke out with newer sprites that allow the NPC to hold a gun.
-                        currentState = AttackState.Idle;
-                    }
-                    break;
-                case AttackState.ChargeNoBite:
-                    if (NPC.type == ModContent.NPCType<VampireBoss>())
-                    {
-                        NPC.aiStyle = 10;
-                        
-                    }
-                    break;
-                case AttackState.ChargeAndBite:
-                    if (NPC.type == ModContent.NPCType<VampireBoss>())
-                    {
-                        NPC.aiStyle = 10;
-                       
                     }
                     break;
 
             }
         }
 
-        private Dictionary<AttackState, float> stateWeights = new()
-        {
-            { AttackState.Idle, 1.0f },
-            { AttackState.ShootBlood, 1.0f },
-            { AttackState.BrethrenBats, 1.0f },
-            { AttackState.GoldenShots, 1.0f },
-            { AttackState.ChargeNoBite, 1.0f },
-            { AttackState.ChargeAndBite, 1.0f },
-            { AttackState.DarkHands, 1.0f },
-            { AttackState.GetHelpFromMommyEimvur, 1.0f }
-            };
-
-
-        private AttackState GetRandomState()
-        {
-
-            // Exclude the current state
-            var validStates = stateWeights
-                .Where(pair => pair.Key != currentState && pair.Value > 0)
-                .ToList();
-
-            float totalWeight = validStates.Sum(pair => pair.Value);
-            float roll = Main.rand.NextFloat() * totalWeight;
-
-            float cumulative = 0f;
-            foreach (var pair in validStates)
-            {
-                cumulative += pair.Value;
-                if (roll <= cumulative)
-                    return pair.Key;
-            }
-
-            // Fallback (should never happen unless all weights are 0)
-            return currentState;
-        }
-
-
-        private void ResetState()
-        {
-            if (NPC.type == ModContent.NPCType<VampireBoss>())
-            {
-                currentState = GetRandomState();
-                NPC.ai[0] = NPC.ai[1] = NPC.ai[2] = NPC.ai[3] = 0;
-            }
-        }
 
         public void ShootBlood(NPC npc, Player player)
         {

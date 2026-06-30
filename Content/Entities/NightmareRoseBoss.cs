@@ -159,7 +159,8 @@ namespace DestroyerTest.Content.Entities
 
         public override bool? DrawHealthBar(byte hbPosition, ref float scale, ref Vector2 position)
         {
-            return false;
+            position = new Vector2(0, 0);
+            return true;
         }
 
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
@@ -765,7 +766,7 @@ namespace DestroyerTest.Content.Entities
         public void ModifyMusic()
         {
             int tribID = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Tribulation");
-            int eternID = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Placeholder4");
+            int eternID = MusicLoader.GetMusicSlot(Mod, "Assets/Music/EternityEvils");
             int masoID = MusicLoader.GetMusicSlot(Mod, "Assets/Music/MasoEvils");
             int secretSeedID = MusicLoader.GetMusicSlot(Mod, "Assets/Music/EvilBossSecretSeed");
             int idleID = MusicLoader.GetMusicSlot(Mod, "Assets/Music/RoseIdle");

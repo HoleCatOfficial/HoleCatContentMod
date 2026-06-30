@@ -34,7 +34,7 @@ namespace DestroyerTest.Content.Equips.MalakhimSet
 		public override void VerticalWingSpeeds(Player player, ref float ascentWhenFalling, ref float ascentWhenRising, ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend)
 		{
 			ascentWhenFalling = 3.0f; // Falling glide speed
-			ascentWhenRising = 3.0f; // Rising speed
+			ascentWhenRising = 1.8f; // Rising speed
 			maxCanAscendMultiplier = 1.45f;
 			maxAscentMultiplier = 1.45f;
 			constantAscend = 0.135f;

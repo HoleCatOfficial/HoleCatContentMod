@@ -649,7 +649,13 @@ namespace DestroyerTest.Common
 
         public static HashSet<int> NoUpgradeStack = new();
 
-        public static Dictionary<int, HashSet<int>> NoEquipWith = new();
+        public static Dictionary<int, HashSet<int>> NoEquipWith = new Dictionary<int, HashSet<int>>();
+
+        public static void IncompatibleWith(int itemType, int incompatibleType)
+        {
+            NoEquipWith.TryAdd(itemType, new HashSet<int>());
+            NoEquipWith[itemType].Add(incompatibleType);
+        }
 
         public static int RandomDirection(int Chance)
         {

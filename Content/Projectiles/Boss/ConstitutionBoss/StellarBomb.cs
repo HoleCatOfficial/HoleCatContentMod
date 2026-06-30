@@ -91,12 +91,10 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
             }
         }
 
-        public override void OnHitPlayer(Player target, Player.HurtInfo info)
+        public override bool CanHitPlayer(Player target)
         {
-            target.AddBuff(ModContent.BuffType<GalantineBurn>(), 600);
+            return false;
         }
-
-
         public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(SoundID.Item14, Projectile.Center);

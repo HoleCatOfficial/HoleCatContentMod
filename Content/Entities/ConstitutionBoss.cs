@@ -15,7 +15,6 @@ using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.RiftBiome;
 using DestroyerTest.Content.Tiles;
 using Humanizer.Localisation.DateToOrdinalWords;
-using InnoVault.PRT;
 using log4net.Repository.Hierarchy;
 using Microsoft.Build.Utilities;
 using Microsoft.Xna.Framework;
@@ -151,7 +150,7 @@ namespace DestroyerTest.Content.Entities
         public static SoundStyle Shoot1 = new SoundStyle("DestroyerTest/Assets/Audio/ConstitutionBoss/ConstitutionBossShootStars3");
         public static SoundStyle StellarVolley = new SoundStyle("DestroyerTest/Assets/Audio/ConstitutionBoss/StellarVolley");
         public static SoundStyle WallWarn = new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/CursedFlamesWarn");
-        public static SoundStyle Teleport = new SoundStyle("DestroyerTest/Assets/Audio/Constitution/ConSwing", 6);
+        public static SoundStyle Teleport = DTAssetLib.SwordSounds.ConSwing;
         public static SoundStyle Dash = DTAssetLib.SwordSounds.MagicSwing;
     
     }
@@ -186,6 +185,23 @@ namespace DestroyerTest.Content.Entities
             NPC.aiStyle = -1;
             NPC.damage = 24;
             NPC.defense = 24;
+
+            if (!DestroyerTestMod.EternityIsActive)
+            {
+                NPC.lifeMax = 6000;
+                NPC.defense = 20;
+            }
+            if (DestroyerTestMod.EternityIsActive && !DestroyerTestMod.MasochistIsActive)
+            {
+                NPC.lifeMax = 8000;
+                NPC.defense = 25;
+            }
+            if (DestroyerTestMod.MasochistIsActive)
+            {
+                NPC.lifeMax = 10000;
+                NPC.defense = 30;
+            }
+
             NPC.lifeMax = 6000;
             NPC.HitSound = new SoundStyle("DestroyerTest/Assets/Audio/ConstitutionBoss/ConstitutionBossHit") with { PitchVariance = 1, MaxInstances = 100 };
             NPC.DeathSound = new SoundStyle("DestroyerTest/Assets/Audio/ConstitutionBoss/ConstitutionBossKill") with { PitchVariance = 1, MaxInstances = 1, Volume = 8 };
@@ -399,11 +415,11 @@ namespace DestroyerTest.Content.Entities
                     SoundEngine.PlaySound(ConstitutionSounds.Shoot1);
                     if (Main.masterMode)
                     {
-                        EternityMineAI(16);
+                        EternityMineAI(9);
                     }
                     else
                     {
-                        EternityMineAI(10);
+                        EternityMineAI(7);
                     }
                 }
             }

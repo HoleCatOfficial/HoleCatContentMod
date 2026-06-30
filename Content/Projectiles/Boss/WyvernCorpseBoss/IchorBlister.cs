@@ -1,4 +1,4 @@
-using BreadLibrary.Core.Graphics.Particles;
+﻿using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Particles;
@@ -18,12 +18,18 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
 {
-    public class FleshBomb : ModProjectile
+    public class IchorBlister : ModProjectile
     {
-        public SoundStyle BombPlant = SoundID.Item50;
+        public SoundStyle BombPlant = SoundID.NPCHit32;
         public SoundStyle BombBlow = new SoundStyle("DestroyerTest/Assets/Audio/Corpse/FleshBombExplode") with { PitchVariance = 1.0f, MaxInstances = 0 };
 
-        
+        public override void SetStaticDefaults()
+        {
+            Main.projFrames[Type] = 2;
+        }
+
+
+        int variant = 0;
         public override void SetDefaults()
         {
             Projectile.width = 24; // The width of projectile hitbox
@@ -38,12 +44,29 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
             Projectile.tileCollide = false;
             Projectile.alpha = 0;
             Projectile.ArmorPenetration = 100;
+            variant = Main.rand.Next(1);
+            Projectile.frame = variant;
+        }
+
+        public override bool PreDraw(ref Color lightColor)
+        {
+            Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
+
+            int frameHeight = projectileTexture.Height / Main.projFrames[Projectile.type];
+            Rectangle frame = new Rectangle(
+                0,
+                frameHeight * Projectile.frame,
+                projectileTexture.Width,
+                frameHeight
+            );
+            Vector2 origin = new Vector2(projectileTexture.Width / 2f, frameHeight / 2f);
+
+            Main.EntitySpriteDraw(projectileTexture, Projectile.Center - Main.screenPosition, frame, lightColor, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
+            return false;
         }
 
         public override bool CanHitPlayer(Player target)
         {
-            
-
             return true;
         }
 
@@ -57,7 +80,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
             Vector2 ToPlayer = Projectile.Center - Main.LocalPlayer.Center;
             Projectile.velocity *= 0.99f;
             Projectile.rotation += Main.rand.NextFloat(-1f, 1.1f) * 0.1f;
-            Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Blood, 0, 0, 0, default, 1.0f);
+            Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Ichor, 0, 0, 0, default, 1.0f);
             if (Projectile.timeLeft == 1)
             {
                 Projectile.Resize(200, 200);
@@ -69,15 +92,15 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
             SoundEngine.PlaySound(BombBlow, Projectile.Center);
 
             SimpleExplosionParticle Explosion = new();
-            Explosion.Prepare(Projectile.Center, Vector2.Zero, Color.Red, 0.1f, 0.05f, 1.7f, BlendState.Additive);
+            Explosion.Prepare(Projectile.Center, Vector2.Zero, ColorLib.Ichor, 0.1f, 0.05f, 1.7f, BlendState.Additive);
             ParticleEngine.BehindProjectiles.Add(Explosion);
             SimpleExplosionParticle Explosion2 = new();
-            Explosion2.Prepare(Projectile.Center, Vector2.Zero, Color.Red * 0.5f, 0.1f, 0.05f, 1f, BlendState.Additive);
+            Explosion2.Prepare(Projectile.Center, Vector2.Zero, ColorLib.Ichor * 0.5f, 0.1f, 0.05f, 1f, BlendState.Additive);
             ParticleEngine.BehindProjectiles.Add(Explosion2);
 
-            Opus.RadialSpreadDustRandom(DustID.Blood, 10, Projectile.Center, 0, default, 1f, 8);
-            Opus.RadialSpreadDustRandom(DustID.FireworksRGB, 10, Projectile.Center, 0, Color.Red, 1f, 8);
-            Opus.RadialSpreadDustRandom(DustID.Blood, 6, Projectile.Center, 0, default, 0.75f, 6);
+            Opus.RadialSpreadDustRandom(DustID.Ichor, 10, Projectile.Center, 0, default, 1f, 8);
+            Opus.RadialSpreadDustRandom(DustID.FireworksRGB, 10, Projectile.Center, 0, ColorLib.Ichor, 1f, 8);
+            Opus.RadialSpreadDustRandom(DustID.Ichor, 6, Projectile.Center, 0, default, 0.75f, 6);
         }
     }
 }

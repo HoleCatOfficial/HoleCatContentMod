@@ -11,7 +11,29 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
         public override void SetStaticDefaults()
         {
             DTUtils.NoUpgradeStack.Add(Type);
- 
+
+            DTUtils.IncompatibleWith(Type, ItemID.BandofRegeneration);
+            DTUtils.IncompatibleWith(Type, ItemID.CharmofMyths);
+
+            if (DTCrossMod.FargosSoulsIsLoaded)
+            {
+                if (DTCrossMod.FargosSoulsMod.TryFind<ModItem>("ConcentratedRainbowMatter", out ModItem CRM))
+                {
+                    DTUtils.IncompatibleWith(Type, CRM.Type);
+                }
+                if (DTCrossMod.FargosSoulsMod.TryFind<ModItem>("BionomicCluster", out ModItem BC))
+                {
+                    DTUtils.IncompatibleWith(Type, BC.Type);
+                }
+                if (DTCrossMod.FargosSoulsMod.TryFind<ModItem>("MasochistSoul", out ModItem SM))
+                {
+                    DTUtils.IncompatibleWith(Type, SM.Type);
+                }
+                if (DTCrossMod.FargosSoulsMod.TryFind<ModItem>("EternitySoul", out ModItem SE))
+                {
+                    DTUtils.IncompatibleWith(Type, SE.Type);
+                }
+            }
         }
         public override void SetDefaults()
         {
@@ -35,7 +57,6 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
         {
             CreateRecipe()
                 .AddIngredient<RadiantRose>(1)
-                .AddIngredient<LifeTalisman>(1)
                 .AddIngredient<LifeEcho>(8)
                 .AddIngredient<StellarMatter>(12)
                 .Register();

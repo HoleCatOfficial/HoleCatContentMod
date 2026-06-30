@@ -104,7 +104,6 @@ namespace DestroyerTest.Common
 
         public bool RadiantRose = false;
         public bool EphemeralSolvent = false;
-        public bool LifeTalisman = false;
         public bool Lillies = false;
 
         public bool Active => RadiantRose || EphemeralSolvent || Lillies;
@@ -112,8 +111,6 @@ namespace DestroyerTest.Common
         {
             RadiantRose = false;
             EphemeralSolvent = false;
-            LifeTalisman = false;
-            Item.lifeGrabRange = 0;
             Lillies = false;
         }
         public int UseCooldown = 0;
@@ -164,42 +161,12 @@ namespace DestroyerTest.Common
                         }
                     }
 
-                    if (UseCooldown < (60 * 45))
+                    if (UseCooldown < (60 * 90))
                     {
                         UseCooldown++;
                     }
                 }
-            if (LifeTalisman)
-            {
-                Player.lifeMagnet = true;
-                Item.lifeGrabRange = 80;
-            }
-            if (EphemeralSolvent)
-            {
-                Player.lifeMagnet = true;
-                Item.lifeGrabRange = 180;
-            }
-            if (Lillies)
-            {
-                Player.lifeMagnet = true;
-                Item.lifeGrabRange = 260;
-            }
-        }
-
-        public override void UpdateLifeRegen()
-        {
-            if (RadiantRose)
-            {
-                Player.lifeRegen += 3;
-            }
-            if (EphemeralSolvent)
-            {
-                Player.lifeRegen += 5;
-            }
-            if (Lillies)
-            {
-                Player.lifeRegen += 10;
-            }
+    
         }
     }
 }

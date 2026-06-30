@@ -37,9 +37,8 @@ namespace DestroyerTest.Content.Tiles
             LocalizedText name = CreateMapEntryName();
             AddMapEntry(new Color(119, 104, 86), name);
 
-            DustType = ModContent.DustType<VesperOreDust>();
+            DustType = ModContent.DustType<DreamstoneDust>();
 
-            VanillaFallbackOnModDeletion = TileID.Iron;
             HitSound = SoundID.Tink;
             MineResist = 1f;
             MinPick = 6;

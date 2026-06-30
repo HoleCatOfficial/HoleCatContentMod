@@ -38,6 +38,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 
         }
 
+        public override bool? CanHitNPC(NPC target)
+        {
+            return false;
+        }
+
         public override bool PreDraw(ref Color lightColor)
         {
             Glowmask = ModContent.Request<Texture2D>(Texture + "_Glow");

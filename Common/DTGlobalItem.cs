@@ -48,8 +48,10 @@ namespace DestroyerTest.Common
 
     public static class SootFurnaceRecipeCallback
 	{
-		public static void GetSoot(Recipe recipe, Item item, List<Item> consumedItems, Item destinationStack) {
-			if (Main.rand.NextBool(4)) {
+		public static void GetSoot(Recipe recipe, Item item, List<Item> consumedItems, Item destinationStack) 
+        {
+			if (Main.rand.NextBool(24)) 
+            {
 				
 				Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_FromThis(), ModContent.ItemType<Soot>(), Main.rand.Next(1, 5));
 			}

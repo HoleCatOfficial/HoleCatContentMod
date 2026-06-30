@@ -34,7 +34,6 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
             Projectile.light = 0.5f;
             Projectile.timeLeft = 120;
             Projectile.tileCollide = false;
-            Projectile.alpha = 0;
             Variant = Main.rand.Next(4);
             Projectile.frame = Variant;
         }
@@ -45,30 +44,23 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
 
         public override void SendExtraAI(BinaryWriter writer)
         {
-            writer.WriteVector2(toPlayer);
-            writer.WriteVector2(Projectile.Center);
-            writer.WriteVector2(PlayerOldPos.Count > 0 ? PlayerOldPos[0] : Vector2.Zero);
+          
         }
 
         public override void ReceiveExtraAI(BinaryReader reader)
         {
-            toPlayer = reader.ReadVector2();
-            Projectile.Center = reader.ReadVector2();
-            if (PlayerOldPos.Count > 0)
-            {
-                PlayerOldPos[0] = reader.ReadVector2();
-            }
+          
         }
         public override void AI()
         {
-
-            PlayerOldPos.Add(Main.LocalPlayer.Center);
+            Player player = Main.player[(int)Projectile.ai[0]];
+            PlayerOldPos.Add(player.Center);
             if (PlayerOldPos.Count > 35)
             {
                 PlayerOldPos.RemoveAt(0);
             }
-            Vector2 ToPlayer = Projectile.Center - Main.LocalPlayer.Center;
-            Projectile.velocity *= 0.999f;
+            Vector2 ToPlayer = player.Center - Projectile.Center;
+            Projectile.velocity *= 0.99f;
             Projectile.rotation += Main.rand.NextFloat(-1f, 1.1f) * 0.1f;
             if (Main.rand.NextBool(3))
             {
@@ -79,12 +71,10 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
             if (PlayerOldPos.Count > 4)
             {
                 toPlayer = PlayerOldPos[4] - Projectile.Center;
-                // Your aiming code here
             }
             else
             {
-                // Not enough data yet, maybe use the current player position instead:
-                toPlayer = Main.LocalPlayer.Center - Projectile.Center;
+                toPlayer = player.Center - Projectile.Center;
             }
 
             toPlayer.SafeNormalize(Vector2.UnitY);
@@ -94,12 +84,13 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
         public override void PostDraw(Color lightColor)
         {
             base.PostDraw(lightColor);
-            DrawTelegraph(Projectile.Center, Main.LocalPlayer.Center, DTAssetLib.Line(5).Value);
+            Player player = Main.player[(int)Projectile.ai[0]];
+            DrawTelegraph(Projectile.Center, player.Center, DTAssetLib.Line(5).Value);
         }
 
         public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
-            target.AddBuff(BuffID.Slow, 600);
+
         }
         
 

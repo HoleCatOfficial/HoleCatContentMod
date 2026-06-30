@@ -225,7 +225,7 @@ namespace DestroyerTest.Content.Entities
                 
             }
 
-            Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Placeholder8");
+            Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/UnfinishedBoss");
 
             switch (CurrentState)
             {
