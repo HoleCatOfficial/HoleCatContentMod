@@ -77,7 +77,12 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
 
         public override void AI()
         {
-            Vector2 ToPlayer = Projectile.Center - Main.LocalPlayer.Center;
+            Player player = Main.player[(int)Projectile.ai[0]];
+            Vector2 ToPlayer = player.Center - Projectile.Center;
+            ToPlayer.Normalize();
+
+            Projectile.velocity = Vector2.Lerp(Projectile.velocity, ToPlayer * 12, 0.05f);
+
             Projectile.velocity *= 0.99f;
             Projectile.rotation += Main.rand.NextFloat(-1f, 1.1f) * 0.1f;
             Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Ichor, 0, 0, 0, default, 1.0f);

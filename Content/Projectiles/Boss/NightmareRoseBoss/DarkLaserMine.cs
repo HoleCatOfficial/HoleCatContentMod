@@ -22,6 +22,12 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
     public class DarkLaserMine : ModProjectile
     {
         public override string Texture => DTUtils.NoTexture;
+
+        public override void SetStaticDefaults()
+        {
+            ProjectileID.Sets.DrawScreenCheckFluff[Type] = 2000;
+        }
+
         public override void SetDefaults()
         {
             Projectile.width = 24; // The width of projectile hitbox

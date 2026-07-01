@@ -238,6 +238,7 @@ OrganProjectile_Variant1.DisplayName: Organ Projectile
 OrganProjectile_Variant2.DisplayName: Organ Projectile
 OrganProjectile_Variant3.DisplayName: Organ Projectile
 OrganProjectile_Variant4.DisplayName: Organ Projectile
+OrganProjectile.DisplayName: Organ Projectile
 FleshBomb.DisplayName: Flesh Bomb
 CFP3.DisplayName: C F P3
 CFP2.DisplayName: C F P2
@@ -676,3 +677,4 @@ HeliciteStaffHoldout.DisplayName: Helicite Staff Holdout
 HeliosBeam.DisplayName: Helios Beam
 HeliosSpark.DisplayName: Helios Spark
 IchorBlister.DisplayName: Ichor Blister
+SoulBeam.DisplayName: Soul Beam

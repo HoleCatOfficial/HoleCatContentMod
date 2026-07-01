@@ -246,7 +246,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
                 }
 
                 Projectile.timeLeft = 100;
-                Projectile.velocity = Vector2.Lerp(Projectile.velocity, (Main.MouseWorld - Projectile.Center).SafeNormalize(Vector2.Zero) * 12f, 0.1f);
+                Projectile.velocity = Vector2.Lerp(Projectile.velocity, (Main.MouseWorld - Projectile.Center).SafeNormalize(Vector2.Zero) * 17f, 0.1f);
 
                 if (PitchVal < 0)
                 {
@@ -257,7 +257,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
                 {
                     if (Main.rand.NextBool(10))
                     {
-                        Vector2 OuterVel = Main.rand.NextVector2CircularEdge(10, 10);
+                        Vector2 OuterVel = Main.rand.NextVector2CircularEdge(20, 20);
                         Projectile.NewProjectileDirect(Projectile.InheritSource(Projectile), Projectile.Center, OuterVel, ModContent.ProjectileType<TenebrisStarFriendly>(), Projectile.damage / 2, 4, Projectile.owner, ai2: 1);
                     }
                     Leeway = 60;

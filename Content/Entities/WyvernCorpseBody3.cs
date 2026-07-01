@@ -94,10 +94,49 @@ namespace DestroyerTest.Content.Entities
 
 
         public bool anyNodesAlive;
+
+        public override bool CanHitPlayer(Player target, ref int cooldownSlot)
+        {
+            NPC Parent = Main.npc[NPC.realLife];
+            if (Parent.ModNPC is WyvernCorpseHead Head)
+            {
+                return Head.ShouldHit;
+            }
+            return true;
+        }
+
+        public void NoDamageEffects()
+        {
+            if (Parent.ModNPC is WyvernCorpseHead Head)
+            {
+                if (Head.shouldBeInvisible)
+                {
+                    if (NPC.Opacity > 0)
+                    {
+                        NPC.Opacity -= 0.05f;
+                    }
+                }
+                else
+                {
+
+                    if (NPC.Opacity < 1)
+                    {
+                        NPC.Opacity += 0.05f;
+                    }
+                }
+            }
+
+
+        }
+
+        NPC Parent => Main.npc[NPC.realLife];
+
         public override void AI()
         {
             ModifyHitDustAmounts();
             anyNodesAlive = Main.npc.Any(n => n.active && n.type == ModContent.NPCType<IchorNode>());
+
+            NoDamageEffects();
 
             if (anyNodesAlive)
             {
@@ -110,6 +149,12 @@ namespace DestroyerTest.Content.Entities
                 NPC.dontTakeDamage = false;
                 NPC.immortal = false;
             }
+
+            NPC Parent = Main.npc[NPC.realLife];
+
+            NPC.dontTakeDamage = Parent.dontTakeDamage;
+            NPC.damage = Parent.damage;
+
             if (!Main.npc[(int)NPC.ai[1]].active)
             {
                 NPC.life = 0;
@@ -188,8 +233,8 @@ namespace DestroyerTest.Content.Entities
 
             SpriteEffects effects = SpriteEffects.None;
             if (NPC.spriteDirection == 1) effects = SpriteEffects.FlipHorizontally;
-            spriteBatch.Draw(texture.Value, new Vector2(NPC.position.X - Main.screenPosition.X + (NPC.width / 2) - texture.Value.Width * NPC.scale / 2f + origin.X * NPC.scale, NPC.position.Y - Main.screenPosition.Y + NPC.height - (texture.Value.Height / 6) * NPC.scale + 4f + origin.Y * NPC.scale + 56f), NPC.frame, drawColor, NPC.rotation, origin, NPC.scale, effects, 0f);
-            spriteBatch.Draw(Glowtexture.Value, new Vector2(NPC.position.X - Main.screenPosition.X + (NPC.width / 2) - texture.Value.Width * NPC.scale / 2f + origin.X * NPC.scale, NPC.position.Y - Main.screenPosition.Y + NPC.height - (texture.Value.Height / 6) * NPC.scale + 4f + origin.Y * NPC.scale + 56f), NPC.frame, Color.White, NPC.rotation, origin, NPC.scale, effects, 0f);
+            spriteBatch.Draw(texture.Value, new Vector2(NPC.position.X - Main.screenPosition.X + (NPC.width / 2) - texture.Value.Width * NPC.scale / 2f + origin.X * NPC.scale, NPC.position.Y - Main.screenPosition.Y + NPC.height - (texture.Value.Height / 6) * NPC.scale + 4f + origin.Y * NPC.scale + 56f), NPC.frame, drawColor * NPC.Opacity, NPC.rotation, origin, NPC.scale, effects, 0f);
+            spriteBatch.Draw(Glowtexture.Value, new Vector2(NPC.position.X - Main.screenPosition.X + (NPC.width / 2) - texture.Value.Width * NPC.scale / 2f + origin.X * NPC.scale, NPC.position.Y - Main.screenPosition.Y + NPC.height - (texture.Value.Height / 6) * NPC.scale + 4f + origin.Y * NPC.scale + 56f), NPC.frame, Color.White * NPC.Opacity, NPC.rotation, origin, NPC.scale, effects, 0f);
             return false;
         }
 

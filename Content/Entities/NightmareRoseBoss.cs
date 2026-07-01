@@ -2662,6 +2662,18 @@ namespace DestroyerTest.Content.Entities
                     nr.NodeShakeTimers[idx] = 0;
             }
         }
+
+
+        public override void OnKill()
+        {
+            var boss = Main.npc.FirstOrDefault(n => n.active && n.type == ModContent.NPCType<NightmareRoseBoss>());
+            if (boss?.ModNPC is NightmareRoseBoss nr)
+            {
+                int idx = nr.cfNodes.FindIndex(n => n.whoAmI == NPC.whoAmI);
+                nr.cfNodes.RemoveAt(idx);
+            }
+        }
+
     }
 
     /*
@@ -2848,6 +2860,6 @@ namespace DestroyerTest.Content.Entities
 
 
 
-    
+
 
 }

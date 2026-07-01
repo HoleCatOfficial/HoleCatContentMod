@@ -20,6 +20,11 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.Ichor
 {
     public class CrystalBomb : ModProjectile
     {
+        public override void SetStaticDefaults()
+        {
+            ProjectileID.Sets.DrawScreenCheckFluff[Type] = 2000;
+        }
+
         public override void SetDefaults()
         {
             Projectile.width = 22; // The width of projectile hitbox

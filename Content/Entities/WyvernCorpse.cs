@@ -16,6 +16,7 @@ using DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.SummonItems;
 using DestroyerTest.Content.Tiles;
+using DestroyerTest.Content.UI;
 using GlowmaskHelper.Content;
 using InnoVault.PRT;
 using log4net.Util;
@@ -42,6 +43,7 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
 using UtfUnknown.Core.Models.SingleByte.Finnish;
+using static BreadLibrary.Core.SoftBodySim.SoftbodySim;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace DestroyerTest.Content.Entities
@@ -54,6 +56,8 @@ namespace DestroyerTest.Content.Entities
             Follow,
             BloodBombs,
             Organs,
+            CrystalBombMatrix,
+            ChargeLaserOrb,
             Nodes,
             Enraged
         }
@@ -111,7 +115,7 @@ namespace DestroyerTest.Content.Entities
 
             NPC.aiStyle = NPCAIStyleID.Worm;
 
-            NPC.damage = 0;
+            NPC.damage = 70;
             NPC.defense = 65;
             NPC.lifeMax = 420000;
 
@@ -148,6 +152,28 @@ namespace DestroyerTest.Content.Entities
         public override bool CheckActive()
         {
             return false;
+        }
+
+       
+        public void NoDamageEffects()
+        {
+            if (shouldBeInvisible)
+            {
+                //Fade out
+                if (NPC.Opacity > 0)
+                {
+                    NPC.Opacity -= 0.05f;
+                }
+
+            }
+            else
+            {
+                //Fade in
+                if (NPC.Opacity < 1)
+                {
+                    NPC.Opacity += 0.05f;
+                }
+            }
         }
 
         public override bool? DrawHealthBar(byte hbPosition, ref float scale, ref Vector2 position)
@@ -224,8 +250,8 @@ namespace DestroyerTest.Content.Entities
 
             SpriteEffects effects = SpriteEffects.None;
             if (NPC.spriteDirection == 1) effects = SpriteEffects.FlipHorizontally;
-            spriteBatch.Draw(texture.Value, drawPos, NPC.frame, drawColor, NPC.rotation, origin, NPC.scale, effects, 0f);
-            spriteBatch.Draw(Glowtexture.Value, drawPos, NPC.frame, Color.White, NPC.rotation, origin, NPC.scale, effects, 0f);
+            spriteBatch.Draw(texture.Value, drawPos, NPC.frame, drawColor * NPC.Opacity, NPC.rotation, origin, NPC.scale, effects, 0f);
+            spriteBatch.Draw(Glowtexture.Value, drawPos, NPC.frame, Color.White * NPC.Opacity, NPC.rotation, origin, NPC.scale, effects, 0f);
             return false;
         }
 
@@ -237,18 +263,21 @@ namespace DestroyerTest.Content.Entities
         public bool anyNodesAlive;
         public int nodeCount;
 
+        public bool invulnerableFromNodes => anyNodesAlive;
+        public bool invulnerableFromAttack => CurrentAttack == attackType.CrystalBombMatrix;
+
+        public bool shouldBeInvisible => invulnerableFromAttack;
+
+
+
+
         public bool SoundFlag1 = false;
 
-        SlotId DesperationLoopSlot;
-        public SoundStyle Loop = new SoundStyle("DestroyerTest/Assets/Audio/AuraLoop/LaserLoop1") 
-        { 
-            MaxInstances = 0,
-            IsLooped = true,
-            PauseBehavior = PauseBehavior.PauseWithGame
-        };
-        public float PitchVal = -2;
+       
 
         public int AITimer = 0;
+
+        bool UsesRegularAI = true;
 
         public override void SendExtraAI(BinaryWriter writer)
         {
@@ -415,6 +444,12 @@ namespace DestroyerTest.Content.Entities
             }
         }
 
+        public bool ShouldHit = false;
+        public override bool CanHitPlayer(Player target, ref int cooldownSlot)
+        {
+            return ShouldHit;
+        }
+
         public override bool? CanCollideWithPlayerMeleeAttack(Player player, Item item, Rectangle meleeAttackHitbox)
         {
             return base.CanCollideWithPlayerMeleeAttack(player, item, meleeAttackHitbox);
@@ -426,14 +461,25 @@ namespace DestroyerTest.Content.Entities
 
         public List<NPC> BodySegments = new List<NPC>();
 
+        public List<NPC> iNodes;
+        public int[] NodeShakeTimers;
+        public float[] NodeShakeMaxX;
+        public float[] NodeShakeMaxY;
+
         bool HasShedBlisters = false;
+        bool HasSpawnedOrb = false;
+
+        int PostCrystalWaitTime = 0;
+
+
+        Player player => Main.player[NPC.target];
         public override void AI()
         {
             AITimer++;
 
             NPC.TargetClosest();
-            Player player = Main.player[NPC.target];
-   
+
+            NPC.dontTakeDamage = invulnerableFromNodes || invulnerableFromAttack;
 
             Vector2 ToPlayer = NPC.Center - player.Center;
 
@@ -443,7 +489,7 @@ namespace DestroyerTest.Content.Entities
             {
                 for (int i = 0; i < BodySegments.Count(); i++)
                 {
-                    Projectile.NewProjectile(NPC.GetSource_FromAI(), BodySegments[i].Center, Main.rand.NextVector2Circular(2, 2), ModContent.ProjectileType<IchorBlister>(), 50, 4);
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), BodySegments[i].Center, Main.rand.NextVector2Circular(2, 2), ModContent.ProjectileType<IchorBlister>(), 50, 4, ai0: player.whoAmI);
                 }
                 HasShedBlisters = true;
             }
@@ -454,18 +500,25 @@ namespace DestroyerTest.Content.Entities
             if (NPC.target < 0 || NPC.target == 250 || player.dead) NPC.TargetClosest(true);
             if (player.dead && NPC.timeLeft > 300) NPC.timeLeft = 300;
 
-            if (!(player.ZoneCrimson && (player.ZoneOverworldHeight || player.ZoneSkyHeight)) && Main.masterMode)
+            iNodes = Main.npc.Where(n => n.active && n.type == ModContent.NPCType<IchorNode>()).ToList();
+
+            foreach (NPC node in iNodes)
             {
-                NPC.dontTakeDamage = true;
-            }
-            else
-            {
-                NPC.dontTakeDamage = false;
+                if (node != null && node.active)
+                {
+                    anyNodesAlive = true;
+                } 
             }
 
-            List<NPC> ichorNodes = Main.npc.Where(n => n.active && n.type == ModContent.NPCType<IchorNode>()).ToList();
-            anyNodesAlive = ichorNodes.Count > 0;
-            nodeCount = ichorNodes.Count;
+          
+
+            nodeCount = iNodes.Count;
+
+            if (nodeCount <= 0)
+            {
+                anyNodesAlive = false;
+            }
+
             float radius = Opus.Sine(200f, 240f);
 
             if (anyNodesAlive)
@@ -474,23 +527,11 @@ namespace DestroyerTest.Content.Entities
 
                 for (int i = 0; i < nodeCount; i++)
                 {
-                    Vector2 IdealVel = ichorNodes[i].Center - NodePositions[i];
-                    ichorNodes[i].SmoothMoveToPoint(NodePositions[i], 48);
+                    Vector2 IdealVel = iNodes[i].Center - NodePositions[i];
+                    iNodes[i].SmoothMoveToPoint(NodePositions[i], 48);
                 }
 
                 NPC.dontTakeDamage = true;
-                NPC.immortal = true;
-                NPC.life += 2;
-            }
-            else if (!anyNodesAlive)
-            {
-                NPC.immortal = true;
-                NPC.dontTakeDamage = true;
-            }
-            else
-            {
-                NPC.dontTakeDamage = false;
-                NPC.immortal = false;
             }
 
             if (player.dead)
@@ -501,6 +542,8 @@ namespace DestroyerTest.Content.Entities
                     NPC.active = false;
                 }
             }
+
+            NoDamageEffects();
 
             if (NPC.life <= NPC.lifeMax * 0.75f)
             {
@@ -559,15 +602,20 @@ namespace DestroyerTest.Content.Entities
             }
 
             Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/UnfinishedBoss");
-            
-        
+
+            ManageShakeTimers();
 
             ImportantMathematics();
+            
 
             switch (CurrentAttack)
             {
                 case attackType.Follow:
                     {
+                        NumBombs = 0;
+                        PostCrystalWaitTime = 0;
+                        HasSpawnedOrb = false;
+
                         if (AITimer >= 240)
                         {
                             CurrentAttack = attackType.BloodBombs;
@@ -587,11 +635,72 @@ namespace DestroyerTest.Content.Entities
                     }
                 case attackType.Organs:
                     {
-                        AI_Organs();
-                        CurrentAttack = attackType.Follow;
-                        AITimer = 0;
+                        if (AI_Organs())
+                        {
+                            CurrentAttack = attackType.CrystalBombMatrix;
+                        }
                         break;
                     }
+                case attackType.CrystalBombMatrix:
+                    {
+                        AI_CrystalBombMatrix();
+
+                        Vector2 Above = player.Center + new Vector2(0, -400);
+
+                        NPC.SmoothMoveToPoint(Above, 40f);
+
+                        NPC.dontTakeDamage = true;
+                        ShouldHit = false;
+
+                        for(int i = 0; i < iNodes.Count; i++)
+                        {
+                            iNodes[i].dontTakeDamage = true;
+                        }
+
+                        if (NumBombs >= 5)
+                        {
+                            if (PostCrystalWaitTime < 120)
+                            {
+                                PostCrystalWaitTime++;
+                            }
+                            else
+                            {
+                                CurrentAttack = attackType.ChargeLaserOrb;
+                                NPC.dontTakeDamage = false;
+                                ShouldHit = true;
+                                for (int i = 0; i < iNodes.Count; i++)
+                                {
+                                    iNodes[i].dontTakeDamage = false;
+                                }
+                                NPC.damage = 70;
+                            }
+                        }
+                    }
+                    break;
+                case attackType.ChargeLaserOrb:
+                    {
+                        bool Active = Main.npc.Any(n => n.active && n.type == ModContent.NPCType<SoulOrb>());
+
+                        if (Active)
+                        {
+
+                        }
+                        else
+                        {
+                            if (!HasSpawnedOrb)
+                            {
+                                SoundEngine.PlaySound(Kill);
+                                NPC.NewNPCDirect(NPC.GetSource_FromAI(), NPC.Center, ModContent.NPCType<SoulOrb>(), ai0: player.whoAmI);
+                                HasSpawnedOrb = true;
+                            }
+                            else
+                            {
+                                CurrentAttack = attackType.Follow;
+                                AITimer = 0;
+                            }
+                        }
+                    }
+                    break;
                 case attackType.Nodes:
 
                     NPC.aiStyle = -1;
@@ -612,6 +721,60 @@ namespace DestroyerTest.Content.Entities
 
             NPC.rotation = (float)Math.Atan2(NPC.velocity.Y, NPC.velocity.X) + 1.57f;
             
+        }
+
+        void ManageShakeTimers()
+        {
+            // Ensure per-node shake arrays are sized to the current node count and preserve previous values
+            if (nodeCount > 0)
+            {
+                if (NodeShakeTimers == null || NodeShakeTimers.Length != nodeCount)
+                {
+                    int oldLen = NodeShakeTimers?.Length ?? 0;
+                    int[] newTimers = new int[nodeCount];
+                    float[] newMaxX = new float[nodeCount];
+                    float[] newMaxY = new float[nodeCount];
+                    if (oldLen > 0)
+                    {
+                        int copy = Math.Min(oldLen, nodeCount);
+                        Array.Copy(NodeShakeTimers, newTimers, copy);
+                        if (NodeShakeMaxX != null) Array.Copy(NodeShakeMaxX, newMaxX, Math.Min(NodeShakeMaxX.Length, copy));
+                        if (NodeShakeMaxY != null) Array.Copy(NodeShakeMaxY, newMaxY, Math.Min(NodeShakeMaxY.Length, copy));
+                    }
+                    NodeShakeTimers = newTimers;
+                    NodeShakeMaxX = newMaxX;
+                    NodeShakeMaxY = newMaxY;
+                }
+
+                // Ensure UI array exists
+                if (WyvernCorpseHealthBar.NodeLockShake == null || WyvernCorpseHealthBar.NodeLockShake.Length != nodeCount)
+                {
+                    WyvernCorpseHealthBar.NodeLockShake = new Vector2[nodeCount];
+                }
+
+                // Update each node's timer and max offsets, then drive the UI shake positions
+                for (int i = 0; i < nodeCount; i++)
+                {
+                    if (NodeShakeTimers[i] < 120)
+                        NodeShakeTimers[i]++;
+
+                    NodeShakeMaxX[i] = MathHelper.Lerp(10f, 0f, (float)NodeShakeTimers[i] / 120f);
+                    NodeShakeMaxY[i] = NodeShakeMaxX[i];
+
+                    if (iNodes[i].active && iNodes[i].life > 0)
+                    {
+                        // random offset in both directions
+                        WyvernCorpseHealthBar.NodeLockShake[i] = new Vector2(
+                            Main.rand.NextFloat(-NodeShakeMaxX[i], NodeShakeMaxX[i]),
+                            Main.rand.NextFloat(-NodeShakeMaxY[i], NodeShakeMaxY[i])
+                        );
+                    }
+                    else
+                    {
+                        WyvernCorpseHealthBar.NodeLockShake[i] = Vector2.Zero;
+                    }
+                }
+            }
         }
 
         public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
@@ -757,18 +920,75 @@ namespace DestroyerTest.Content.Entities
             }
         }
 
-        public void AI_Organs()
+        private int organSegmentIndex = 0;
+
+        public bool AI_Organs()
         {
-            int Damage = (int)MathHelper.Lerp(5, 100, LifeProgress);
+            int damage = (int)MathHelper.Lerp(5, 100, LifeProgress);
             Player player = Main.player[NPC.target];
 
-            SoundEngine.PlaySound(Attack);
-            for (int i = 0; i < BodySegments.Count; i++)
-            {
-                Vector2 toPlayer = player.Center - BodySegments[i].Center;
-                toPlayer.Normalize();
+            Vector2 toPlayer = player.Center - BodySegments[organSegmentIndex].Center;
+            toPlayer.Normalize();
 
-                Projectile.NewProjectile(NPC.GetSource_FromAI(), BodySegments[i].Center, toPlayer * 2, ModContent.ProjectileType<OrganProjectile>(), Damage, 4, ai0: player.whoAmI);
+            if (AITimer % 6 == 0)
+            {
+                if (organSegmentIndex >= BodySegments.Count - 1)
+                {
+                    organSegmentIndex = 0;
+                    return true;
+                }
+
+                SoundEngine.PlaySound(Attack);
+
+                
+
+                Projectile organ = Projectile.NewProjectileDirect(
+                    NPC.GetSource_FromAI(),
+                    BodySegments[organSegmentIndex].Center,
+                    toPlayer * 6,
+                    ModContent.ProjectileType<OrganProjectile>(),
+                    damage,
+                    4,
+                    ai0: player.whoAmI);
+
+                organSegmentIndex++;
+            }
+
+            return false;
+        }
+
+        int NumBombs = 0;
+        public void AI_CrystalBombMatrix()
+        {
+            int Damage = (int)MathHelper.Lerp(5, 100, LifeProgress);
+            int Interval = (int)MathHelper.Lerp(600, 240, LifeProgress);
+
+            Vector2[] Positions = Opus.GetEquidistantVectors(4, player.Center, 700, MathHelper.PiOver4);
+
+            int type = ModContent.ProjectileType<CrystalBomb>();
+            if (Frame == 4 || Frame == 5)
+            {
+                type = ModContent.ProjectileType<SoulCrystalBomb>();
+            }
+
+            if (AITimer % Interval == 0)
+            {
+                SoundEngine.PlaySound(Attack);
+                for (int i = 0; i < Positions.Length; i++)
+                {
+                    Projectile B = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), Positions[i], Vector2.Zero, type, Damage, 0);
+                    B.timeLeft = 180;
+                }
+                
+                if (Main.masterMode)
+                {
+                    for (int i = 0; i < Positions.Length; i++)
+                    {
+                        Projectile B2 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), Positions[i], Main.rand.NextVector2Circular(3, 3), type, (int)(Damage * 0.75f), 0);
+                        B2.timeLeft = 180;
+                    }
+                }
+                NumBombs++;
             }
         }
 
@@ -853,6 +1073,27 @@ namespace DestroyerTest.Content.Entities
             NPC.netID = ModContent.NPCType<IchorNode>();
         }
 
+        public void NoDamageEffects()
+        {
+            if (NPC.dontTakeDamage)
+            {
+                //Fade out
+                if (NPC.Opacity > 0)
+                {
+                    NPC.Opacity -= 0.05f;
+                }
+
+            }
+            else
+            {
+                //Fade in
+                if (NPC.Opacity < 1)
+                {
+                    NPC.Opacity += 0.05f;
+                }
+            }
+        }
+
         public override bool? DrawHealthBar(byte hbPosition, ref float scale, ref Vector2 position) => new bool?(false);
 
         public override void SetBestiary(Terraria.GameContent.Bestiary.BestiaryDatabase database, Terraria.GameContent.Bestiary.BestiaryEntry bestiaryEntry)
@@ -883,6 +1124,8 @@ namespace DestroyerTest.Content.Entities
         {
             NPC.TargetClosest();
             Player player = Main.player[NPC.target];
+
+            NoDamageEffects();
 
             // Find the boss once per tick
             NPC bossNPC = Main.npc.FirstOrDefault(n =>
@@ -923,6 +1166,39 @@ namespace DestroyerTest.Content.Entities
                     }
             }
         }
+
+        public override void OnHitByItem(Player player, Item item, NPC.HitInfo hit, int damageDone)
+        {
+            var boss = Main.npc.FirstOrDefault(n => n.active && n.type == ModContent.NPCType<WyvernCorpseHead>());
+            if (boss?.ModNPC is WyvernCorpseHead Head)
+            {
+                int idx = Head.iNodes.FindIndex(n => n.whoAmI == NPC.whoAmI);
+                if (idx >= 0 && Head.NodeShakeTimers != null && idx < Head.NodeShakeTimers.Length)
+                    Head.NodeShakeTimers[idx] = 0;
+            }
+        }
+
+        public override void OnHitByProjectile(Projectile projectile, NPC.HitInfo hit, int damageDone)
+        {
+            var boss = Main.npc.FirstOrDefault(n => n.active && n.type == ModContent.NPCType<WyvernCorpseHead>());
+            if (boss?.ModNPC is WyvernCorpseHead Head)
+            {
+                int idx = Head.iNodes.FindIndex(n => n.whoAmI == NPC.whoAmI);
+                if (idx >= 0 && Head.NodeShakeTimers != null && idx < Head.NodeShakeTimers.Length)
+                    Head.NodeShakeTimers[idx] = 0;
+            }
+        }
+
+        public override void OnKill()
+        {
+            var boss = Main.npc.FirstOrDefault(n => n.active && n.type == ModContent.NPCType<WyvernCorpseHead>());
+            if (boss?.ModNPC is WyvernCorpseHead Head)
+            {
+                int idx = Head.iNodes.FindIndex(n => n.whoAmI == NPC.whoAmI);
+                Head.iNodes.RemoveAt(idx);
+            }
+        }
+
 
         public int PikeCount = 0;
         public void Pikes(float radius, float speed, Vector2 center)

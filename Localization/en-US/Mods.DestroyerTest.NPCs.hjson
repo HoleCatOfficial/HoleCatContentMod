@@ -32,6 +32,7 @@ ConstitutionBoss: {
 
 WyvernCorpseHead: {
 	DisplayName: The Great Wyvern's Corpse
+	BossBarDisplayName: THE GREAT WYVERN'S CORPSE
 	InternalName: WyvernCorpse
 	DespawnMessage: The Wyvern escapes to look for more food...
 	BestiaryEntry1:
@@ -300,3 +301,4 @@ BlessedNodeMB: {
 }
 
 BloodGazer.DisplayName: Blood Gazer
+SoulOrb.DisplayName: Soul Orb

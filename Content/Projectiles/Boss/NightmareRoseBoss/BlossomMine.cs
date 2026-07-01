@@ -22,7 +22,10 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
 {
     public class BlossomMine : ModProjectile
     {
-      
+        public override void SetStaticDefaults()
+        {
+            ProjectileID.Sets.DrawScreenCheckFluff[Type] = 2000;
+        }
 
         public override void SetDefaults()
         {
