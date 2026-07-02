@@ -22,77 +22,85 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.SummonItems
 {
-	// This file contains all the code necessary for a minion
-	// - ModItem - the weapon which you use to summon the minion with
-	// - ModBuff - the icon you can click on to despawn the minion
-	// - ModProjectile - the minion itself
+    // This file contains all the code necessary for a minion
+    // - ModItem - the weapon which you use to summon the minion with
+    // - ModBuff - the icon you can click on to despawn the minion
+    // - ModProjectile - the minion itself
 
-	// It is not recommended to put all these classes in the same file. For demonstrations sake they are all compacted together so you get a better overview.
-	// To get a better understanding of how everything works together, and how to code minion AI, read the guide: https://github.com/tModLoader/tModLoader/wiki/Basic-Minion-Guide
-	// This is NOT an in-depth guide to advanced minion AI
-	public class HopeEnsemble_Buff : ModBuff
-	{
-		public override void SetStaticDefaults() {
-			Main.buffNoSave[Type] = true; // This buff won't save when you exit the world
-			Main.buffNoTimeDisplay[Type] = true; // The time remaining won't display on this buff
-		}
+    // It is not recommended to put all these classes in the same file. For demonstrations sake they are all compacted together so you get a better overview.
+    // To get a better understanding of how everything works together, and how to code minion AI, read the guide: https://github.com/tModLoader/tModLoader/wiki/Basic-Minion-Guide
+    // This is NOT an in-depth guide to advanced minion AI
+    public class HopeEnsemble_Buff : ModBuff
+    {
+        public override void SetStaticDefaults()
+        {
+            Main.buffNoSave[Type] = true; // This buff won't save when you exit the world
+            Main.buffNoTimeDisplay[Type] = true; // The time remaining won't display on this buff
+        }
 
-		public override void Update(Player player, ref int buffIndex) {
-			// If the minions exist reset the buff time, otherwise remove the buff from the player
-			if (player.ownedProjectileCounts[ModContent.ProjectileType<Copper_Broadsword>()] > 0) {
-				player.buffTime[buffIndex] = 18000;
-			}
-			else {
-				player.DelBuff(buffIndex);
-				buffIndex--;
-			}
-		}
-	}
+        public override void Update(Player player, ref int buffIndex)
+        {
+            // If the minions exist reset the buff time, otherwise remove the buff from the player
+            if (player.ownedProjectileCounts[ModContent.ProjectileType<Copper_Broadsword>()] > 0)
+            {
+                player.buffTime[buffIndex] = 18000;
+            }
+            else
+            {
+                player.DelBuff(buffIndex);
+                buffIndex--;
+            }
+        }
+    }
 
-	[AutoloadEquip(EquipType.Waist)]
-	public class Hope_Scabbard : ModItem
-	{
-		public override void SetStaticDefaults() {
-			ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true; // This lets the player target anywhere on the whole screen while using a controller
-			ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
+    [AutoloadEquip(EquipType.Waist)]
+    public class Hope_Scabbard : ModItem
+    {
+        public override void SetStaticDefaults()
+        {
+            ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true; // This lets the player target anywhere on the whole screen while using a controller
+            ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
 
-			ItemID.Sets.StaffMinionSlotsRequired[Type] = 1f; // The default value is 1, but other values are supported. See the docs for more guidance. 
-		}
+            ItemID.Sets.StaffMinionSlotsRequired[Type] = 1f; // The default value is 1, but other values are supported. See the docs for more guidance. 
+        }
 
-		public override void SetDefaults() {
-			Item.damage = 90;
-			Item.knockBack = 0f;
-			Item.mana = 100; // mana cost
-			Item.width = 32;
-			Item.height = 32;
-			Item.useTime = 36;
-			Item.useAnimation = 36;
-			Item.useStyle = ItemUseStyleID.RaiseLamp; // how the player's arm moves when using the item
-			Item.value = 18000;
-			Item.rare = ItemRarityID.Expert;
-			Item.UseSound = new SoundStyle($"DestroyerTest/Assets/Audio/HopeScabbardOpen") with {
-				Volume = 1.0f, 
-    			Pitch = 0.0f, 
-    			PitchVariance = 0.5f, 
-			}; // The sound when the weapon is being used.
-			Item.accessory = true;
+        public override void SetDefaults()
+        {
+            Item.damage = 90;
+            Item.knockBack = 0f;
+            Item.mana = 100; // mana cost
+            Item.width = 32;
+            Item.height = 32;
+            Item.useTime = 36;
+            Item.useAnimation = 36;
+            Item.useStyle = ItemUseStyleID.RaiseLamp; // how the player's arm moves when using the item
+            Item.value = 18000;
+            Item.rare = ItemRarityID.Expert;
+            Item.UseSound = new SoundStyle($"DestroyerTest/Assets/Audio/HopeScabbardOpen") with
+            {
+                Volume = 1.0f,
+                Pitch = 0.0f,
+                PitchVariance = 0.5f,
+            }; // The sound when the weapon is being used.
+            Item.accessory = true;
 
-			// These below are needed for a minion weapon
-			Item.noMelee = true; // this item doesn't do any melee damage
-			Item.DamageType = DamageClass.Summon; // Makes the damage register as summon. If your item does not have any damage type, it becomes true damage (which means that damage scalars will not affect it). Be sure to have a damage type
-			Item.buffType = ModContent.BuffType<HopeEnsemble_Buff>();
-			// No buffTime because otherwise the item tooltip would say something like "1 minute duration"
-			Item.shoot = ModContent.ProjectileType<Copper_Broadsword>(); // This item creates the minion projectile
-		}
+            // These below are needed for a minion weapon
+            Item.noMelee = true; // this item doesn't do any melee damage
+            Item.DamageType = DamageClass.Summon; // Makes the damage register as summon. If your item does not have any damage type, it becomes true damage (which means that damage scalars will not affect it). Be sure to have a damage type
+            Item.buffType = ModContent.BuffType<HopeEnsemble_Buff>();
+            // No buffTime because otherwise the item tooltip would say something like "1 minute duration"
+            Item.shoot = ModContent.ProjectileType<Copper_Broadsword>(); // This item creates the minion projectile
+        }
 
-		public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
-			// Here you can change where the minion is spawned. Most vanilla minions spawn at the cursor position
-			position = Main.MouseWorld;
-		}
+        public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
+        {
+            // Here you can change where the minion is spawned. Most vanilla minions spawn at the cursor position
+            position = Main.MouseWorld;
+        }
 
-       
-       // Define minionTypes as a class field so both methods can access it
-    public static readonly List<int> minionTypes = new List<int>
+
+        // Define minionTypes as a class field so both methods can access it
+        public static readonly List<int> minionTypes = new List<int>
     {
         ModContent.ProjectileType<Copper_Broadsword>(),
         ModContent.ProjectileType<Tin_Broadsword>(),
@@ -106,61 +114,61 @@ namespace DestroyerTest.Content.SummonItems
         ModContent.ProjectileType<Lights_Bane>()
     };
 
-    public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
-    {
-        // This is needed so the buff that keeps your minion alive and allows you to despawn it properly applies
-        player.AddBuff(Item.buffType, 2);
-
-        // Iterate through the list and spawn each minion
-        foreach (int minionType in minionTypes)
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            var projectile = Projectile.NewProjectileDirect(source, position, velocity, minionType, damage, knockback, Main.myPlayer);
-            projectile.originalDamage = Item.damage;
+            // This is needed so the buff that keeps your minion alive and allows you to despawn it properly applies
+            player.AddBuff(Item.buffType, 2);
+
+            // Iterate through the list and spawn each minion
+            foreach (int minionType in minionTypes)
+            {
+                var projectile = Projectile.NewProjectileDirect(source, position, velocity, minionType, damage, knockback, Main.myPlayer);
+                projectile.originalDamage = Item.damage;
+            }
+
+            // Since we spawned the projectile manually already, return false so the game doesn't spawn another one
+            return false;
         }
 
-        // Since we spawned the projectile manually already, return false so the game doesn't spawn another one
-        return false;
-    }
-
-    public void UpdateEquip(Player player, EntitySource_ItemUse_WithAmmo source, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
-    {
-        player.AddBuff(ModContent.BuffType<HopeEnsemble_Buff>(), 60);
-
-        // Use the shared minionTypes list
-        foreach (int minionType in minionTypes)
+        public void UpdateEquip(Player player, EntitySource_ItemUse_WithAmmo source, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
-            var projectile = Projectile.NewProjectileDirect(source, position, velocity, minionType, damage, knockback, Main.myPlayer);
-            projectile.originalDamage = Item.damage;
+            player.AddBuff(ModContent.BuffType<HopeEnsemble_Buff>(), 60);
+
+            // Use the shared minionTypes list
+            foreach (int minionType in minionTypes)
+            {
+                var projectile = Projectile.NewProjectileDirect(source, position, velocity, minionType, damage, knockback, Main.myPlayer);
+                projectile.originalDamage = Item.damage;
+            }
         }
+
+
+
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient(ItemID.CopperBroadsword, 1)
+                .AddIngredient(ItemID.TinBroadsword, 1)
+                .AddIngredient(ItemID.IronBroadsword, 1)
+                .AddIngredient(ItemID.LeadBroadsword, 1)
+                .AddIngredient(ItemID.GoldBroadsword, 1)
+                .AddIngredient(ItemID.SilverBroadsword, 1)
+                .AddIngredient(ItemID.PlatinumBroadsword, 1)
+                .AddIngredient(ItemID.TungstenBroadsword, 10)
+                .AddIngredient(ItemID.BloodButcherer, 1)
+                .AddIngredient(ItemID.LightsBane, 1)
+                .AddIngredient(ItemID.Leather, 10)
+                .AddIngredient(ItemID.Silk, 5)
+                .AddIngredient(ItemID.Wood, 10)
+                .AddCondition(Condition.InExpertMode)
+                .AddTile(TileID.DemonAltar)
+                .Register();
+        }
+
     }
 
 
-		
-		public override void AddRecipes()
-		{
-			CreateRecipe()
-				.AddIngredient(ItemID.CopperBroadsword, 1)
-				.AddIngredient(ItemID.TinBroadsword, 1)
-				.AddIngredient(ItemID.IronBroadsword, 1)
-				.AddIngredient(ItemID.LeadBroadsword, 1)
-				.AddIngredient(ItemID.GoldBroadsword, 1)
-				.AddIngredient(ItemID.SilverBroadsword, 1)
-				.AddIngredient(ItemID.PlatinumBroadsword, 1)
-				.AddIngredient(ItemID.TungstenBroadsword, 10)
-				.AddIngredient(ItemID.BloodButcherer, 1)
-				.AddIngredient(ItemID.LightsBane, 1)
-				.AddIngredient(ItemID.Leather, 10)
-				.AddIngredient(ItemID.Silk, 5)
-				.AddIngredient(ItemID.Wood, 10)
-				.AddCondition(Condition.InExpertMode)
-				.AddTile(TileID.DemonAltar)
-				.Register();
-		}
-
-	}
-
-
-	/*
+    /*
 	// This minion shows a few mandatory things that make it behave properly.
 	// Its attack pattern is simple: If an enemy is in range of 43 tiles, it will fly to it and deal contact damage
 	// If the player targets a certain NPC with right-click, it will fly through tiles to it
@@ -467,454 +475,454 @@ namespace DestroyerTest.Content.SummonItems
 	}
 	*/
 
-	public class Copper_Broadsword : SwordMinionTemplate
-	{
-		public SoundStyle Tele = new SoundStyle("DestroyerTest/Assets/Audio/HopeScabbardTele") with { PitchVariance = 1 };
-		public override void SetStaticDefaults()
-		{
-			base.SetStaticDefaults();
-		}
+    public class Copper_Broadsword : SwordMinionTemplate
+    {
+        public SoundStyle Tele = new SoundStyle("DestroyerTest/Assets/Audio/HopeScabbardTele") with { PitchVariance = 1 };
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+        }
 
-		public override void SetDefaults()
-		{
-			base.SetDefaults();
-			Projectile.width = 36;
-			Projectile.height = 36;
-			Projectile.minionSlots = 1;
-			ThemeColor = Color.OrangeRed;
-			TintColor = Color.White;
-			IdleDustType = DustID.Copper;
-			DashDustType = DustID.FireworksRGB;
-			TeleDustType = DustID.FireworksRGB;
-			TeleSound = Tele;
-			DashSound = DTAssetLib.SwordSounds.SpinWave with { Pitch = 0.3f, PitchVariance = 0.2f, Volume = 0 };
-			AfterImageColorless = true;
-			AfterImageTinted = false;
-			AfterImage = true;
-			DefaultDraw = true;
-			TickSpeed = 3;
-			UsesParticleOrchestratorOnTele = false;
-			TeleDist = 2000;
-			Range = 2000;
-			Style = IdleStyle.Chevron;
-			ActiveBuff = ModContent.BuffType<HopeEnsemble_Buff>();
-			Group = Hope_Scabbard.minionTypes;
-			UsesGroup = true;
-		}
-	}
-	public class Tin_Broadsword : SwordMinionTemplate
-	{
-		public SoundStyle Tele = new SoundStyle("DestroyerTest/Assets/Audio/HopeScabbardTele") with { PitchVariance = 1 };
-		public override void SetStaticDefaults()
-		{
-			base.SetStaticDefaults();
-		}
-
-		public override void SetDefaults()
-		{
-			base.SetDefaults();
-			Projectile.width = 36;
-			Projectile.height = 36;
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Projectile.width = 36;
+            Projectile.height = 36;
             Projectile.minionSlots = 1;
-            ThemeColor = Color.Wheat;
-			TintColor = Color.White;
-			IdleDustType = DustID.Tin;
+            ThemeColor = Color.OrangeRed;
+            TintColor = Color.White;
+            IdleDustType = DustID.Copper;
             DashDustType = DustID.FireworksRGB;
             TeleDustType = DustID.FireworksRGB;
             TeleSound = Tele;
             DashSound = DTAssetLib.SwordSounds.SpinWave with { Pitch = 0.3f, PitchVariance = 0.2f, Volume = 0 };
             AfterImageColorless = true;
-			AfterImageTinted = false;
-			AfterImage = true;
-			DefaultDraw = true;
-			TickSpeed = 3;
-			UsesParticleOrchestratorOnTele = false;
-			TeleDist = 2000;
-			Range = 2000;
-			Style = IdleStyle.Chevron;
-			ActiveBuff = ModContent.BuffType<HopeEnsemble_Buff>();
-			Group = Hope_Scabbard.minionTypes;
-			UsesGroup = true;
-		}
+            AfterImageTinted = false;
+            AfterImage = true;
+            DefaultDraw = true;
+            TickSpeed = 3;
+            UsesParticleOrchestratorOnTele = false;
+            TeleDist = 2000;
+            Range = 2000;
+            Style = IdleStyle.Chevron;
+            ActiveBuff = ModContent.BuffType<HopeEnsemble_Buff>();
+            Group = Hope_Scabbard.minionTypes;
+            UsesGroup = true;
+        }
+    }
+    public class Tin_Broadsword : SwordMinionTemplate
+    {
+        public SoundStyle Tele = new SoundStyle("DestroyerTest/Assets/Audio/HopeScabbardTele") with { PitchVariance = 1 };
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+        }
 
-	}
-	public class Lead_Broadsword : SwordMinionTemplate
-	{
-		public SoundStyle Tele = new SoundStyle("DestroyerTest/Assets/Audio/HopeScabbardTele") with { PitchVariance = 1 };
-		public override void SetStaticDefaults()
-		{
-			base.SetStaticDefaults();
-		}
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Projectile.width = 36;
+            Projectile.height = 36;
+            Projectile.minionSlots = 1;
+            ThemeColor = Color.Wheat;
+            TintColor = Color.White;
+            IdleDustType = DustID.Tin;
+            DashDustType = DustID.FireworksRGB;
+            TeleDustType = DustID.FireworksRGB;
+            TeleSound = Tele;
+            DashSound = DTAssetLib.SwordSounds.SpinWave with { Pitch = 0.3f, PitchVariance = 0.2f, Volume = 0 };
+            AfterImageColorless = true;
+            AfterImageTinted = false;
+            AfterImage = true;
+            DefaultDraw = true;
+            TickSpeed = 3;
+            UsesParticleOrchestratorOnTele = false;
+            TeleDist = 2000;
+            Range = 2000;
+            Style = IdleStyle.Chevron;
+            ActiveBuff = ModContent.BuffType<HopeEnsemble_Buff>();
+            Group = Hope_Scabbard.minionTypes;
+            UsesGroup = true;
+        }
 
-		public override void SetDefaults()
-		{
-			base.SetDefaults();
-			Projectile.width = 36;
-			Projectile.height = 36;
+    }
+    public class Lead_Broadsword : SwordMinionTemplate
+    {
+        public SoundStyle Tele = new SoundStyle("DestroyerTest/Assets/Audio/HopeScabbardTele") with { PitchVariance = 1 };
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+        }
+
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Projectile.width = 36;
+            Projectile.height = 36;
             Projectile.minionSlots = 1;
             ThemeColor = Color.Navy;
-			TintColor = Color.White;
-			IdleDustType = DustID.Lead;
+            TintColor = Color.White;
+            IdleDustType = DustID.Lead;
             DashDustType = DustID.FireworksRGB;
             TeleDustType = DustID.FireworksRGB;
             TeleSound = Tele;
             DashSound = DTAssetLib.SwordSounds.SpinWave with { Pitch = 0.3f, PitchVariance = 0.2f, Volume = 0 };
             AfterImageColorless = true;
-			AfterImageTinted = false;
-			AfterImage = true;
-			DefaultDraw = true;
-			TickSpeed = 3;
-			UsesParticleOrchestratorOnTele = false;
-			TeleDist = 2000;
-			Range = 2000;
-			Style = IdleStyle.Chevron;
-			ActiveBuff = ModContent.BuffType<HopeEnsemble_Buff>();
-			Group = Hope_Scabbard.minionTypes;
-			UsesGroup = true;
-		}
-	}
-	public class Iron_Broadsword : SwordMinionTemplate
-	{
-		public SoundStyle Tele = new SoundStyle("DestroyerTest/Assets/Audio/HopeScabbardTele") with { PitchVariance = 1 };
-		public override void SetStaticDefaults()
-		{
-			base.SetStaticDefaults();
-		}
+            AfterImageTinted = false;
+            AfterImage = true;
+            DefaultDraw = true;
+            TickSpeed = 3;
+            UsesParticleOrchestratorOnTele = false;
+            TeleDist = 2000;
+            Range = 2000;
+            Style = IdleStyle.Chevron;
+            ActiveBuff = ModContent.BuffType<HopeEnsemble_Buff>();
+            Group = Hope_Scabbard.minionTypes;
+            UsesGroup = true;
+        }
+    }
+    public class Iron_Broadsword : SwordMinionTemplate
+    {
+        public SoundStyle Tele = new SoundStyle("DestroyerTest/Assets/Audio/HopeScabbardTele") with { PitchVariance = 1 };
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+        }
 
-		public override void SetDefaults()
-		{
-			base.SetDefaults();
-			Projectile.width = 36;
-			Projectile.height = 36;
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Projectile.width = 36;
+            Projectile.height = 36;
             Projectile.minionSlots = 1;
             ThemeColor = Color.Wheat;
-			TintColor = Color.White;
-			IdleDustType = DustID.Iron;
+            TintColor = Color.White;
+            IdleDustType = DustID.Iron;
             DashDustType = DustID.FireworksRGB;
             TeleDustType = DustID.FireworksRGB;
             TeleSound = Tele;
             DashSound = DTAssetLib.SwordSounds.SpinWave with { Pitch = 0.3f, PitchVariance = 0.2f, Volume = 0 };
             AfterImageColorless = true;
-			AfterImageTinted = false;
-			AfterImage = true;
-			DefaultDraw = true;
-			TickSpeed = 3;
-			UsesParticleOrchestratorOnTele = false;
-			TeleDist = 2000;
-			Range = 2000;
-			Style = IdleStyle.Chevron;
-			ActiveBuff = ModContent.BuffType<HopeEnsemble_Buff>();
-			Group = Hope_Scabbard.minionTypes;
-			UsesGroup = true;
-		}
-	}
-	public class Gold_Broadsword : SwordMinionTemplate
-	{
-		public SoundStyle Tele = new SoundStyle("DestroyerTest/Assets/Audio/HopeScabbardTele") with { PitchVariance = 1 };
-		public override void SetStaticDefaults()
-		{
-			base.SetStaticDefaults();
-		}
+            AfterImageTinted = false;
+            AfterImage = true;
+            DefaultDraw = true;
+            TickSpeed = 3;
+            UsesParticleOrchestratorOnTele = false;
+            TeleDist = 2000;
+            Range = 2000;
+            Style = IdleStyle.Chevron;
+            ActiveBuff = ModContent.BuffType<HopeEnsemble_Buff>();
+            Group = Hope_Scabbard.minionTypes;
+            UsesGroup = true;
+        }
+    }
+    public class Gold_Broadsword : SwordMinionTemplate
+    {
+        public SoundStyle Tele = new SoundStyle("DestroyerTest/Assets/Audio/HopeScabbardTele") with { PitchVariance = 1 };
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+        }
 
-		public override void SetDefaults()
-		{
-			base.SetDefaults();
-			Projectile.width = 40;
-			Projectile.height = 40;
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Projectile.width = 40;
+            Projectile.height = 40;
             Projectile.minionSlots = 1;
             ThemeColor = Color.Gold;
-			TintColor = Color.White;
-			IdleDustType = DustID.GoldCoin;
+            TintColor = Color.White;
+            IdleDustType = DustID.GoldCoin;
             DashDustType = DustID.FireworksRGB;
             TeleDustType = DustID.FireworksRGB;
             TeleSound = Tele;
             DashSound = DTAssetLib.SwordSounds.SpinWave with { Pitch = 0.3f, PitchVariance = 0.2f, Volume = 0 };
             AfterImageColorless = true;
-			AfterImageTinted = false;
-			AfterImage = true;
-			DefaultDraw = true;
-			TickSpeed = 3;
-			UsesParticleOrchestratorOnTele = false;
-			TeleDist = 2000;
-			Range = 2000;
-			Style = IdleStyle.Chevron;
-			ActiveBuff = ModContent.BuffType<HopeEnsemble_Buff>();
-			Group = Hope_Scabbard.minionTypes;
-			UsesGroup = true;
-		}
+            AfterImageTinted = false;
+            AfterImage = true;
+            DefaultDraw = true;
+            TickSpeed = 3;
+            UsesParticleOrchestratorOnTele = false;
+            TeleDist = 2000;
+            Range = 2000;
+            Style = IdleStyle.Chevron;
+            ActiveBuff = ModContent.BuffType<HopeEnsemble_Buff>();
+            Group = Hope_Scabbard.minionTypes;
+            UsesGroup = true;
+        }
 
-	}
-	public class Silver_Broadsword : SwordMinionTemplate
-	{
-		public SoundStyle Tele = new SoundStyle("DestroyerTest/Assets/Audio/HopeScabbardTele") with { PitchVariance = 1 };
-		public override void SetStaticDefaults()
-		{
-			base.SetStaticDefaults();
-		}
+    }
+    public class Silver_Broadsword : SwordMinionTemplate
+    {
+        public SoundStyle Tele = new SoundStyle("DestroyerTest/Assets/Audio/HopeScabbardTele") with { PitchVariance = 1 };
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+        }
 
-		public override void SetDefaults()
-		{
-			base.SetDefaults();
-			Projectile.width = 38;
-			Projectile.height = 38;
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Projectile.width = 38;
+            Projectile.height = 38;
             Projectile.minionSlots = 1;
             ThemeColor = Color.White;
-			TintColor = Color.White;
-			IdleDustType = DustID.Silver;
+            TintColor = Color.White;
+            IdleDustType = DustID.Silver;
             DashDustType = DustID.FireworksRGB;
             TeleDustType = DustID.FireworksRGB;
             TeleSound = Tele;
             DashSound = DTAssetLib.SwordSounds.SpinWave with { Pitch = 0.3f, PitchVariance = 0.2f, Volume = 0 };
             AfterImageColorless = true;
-			AfterImageTinted = false;
-			AfterImage = true;
-			DefaultDraw = true;
-			TickSpeed = 3;
-			UsesParticleOrchestratorOnTele = false;
-			TeleDist = 2000;
-			Range = 2000;
-			Style = IdleStyle.Chevron;
-			ActiveBuff = ModContent.BuffType<HopeEnsemble_Buff>();
-			Group = Hope_Scabbard.minionTypes;
-			UsesGroup = true;
-		}
-	}
-	public class Platinum_Broadsword : SwordMinionTemplate
-	{
-		public SoundStyle Tele = new SoundStyle("DestroyerTest/Assets/Audio/HopeScabbardTele") with { PitchVariance = 1 };
-		public override void SetStaticDefaults()
-		{
-			base.SetStaticDefaults();
-		}
+            AfterImageTinted = false;
+            AfterImage = true;
+            DefaultDraw = true;
+            TickSpeed = 3;
+            UsesParticleOrchestratorOnTele = false;
+            TeleDist = 2000;
+            Range = 2000;
+            Style = IdleStyle.Chevron;
+            ActiveBuff = ModContent.BuffType<HopeEnsemble_Buff>();
+            Group = Hope_Scabbard.minionTypes;
+            UsesGroup = true;
+        }
+    }
+    public class Platinum_Broadsword : SwordMinionTemplate
+    {
+        public SoundStyle Tele = new SoundStyle("DestroyerTest/Assets/Audio/HopeScabbardTele") with { PitchVariance = 1 };
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+        }
 
-		public override void SetDefaults()
-		{
-			base.SetDefaults();
-			Projectile.width = 40;
-			Projectile.height = 40;
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Projectile.width = 40;
+            Projectile.height = 40;
             Projectile.minionSlots = 1;
             ThemeColor = Color.GhostWhite;
-			TintColor = Color.White;
-			IdleDustType = DustID.Platinum;
+            TintColor = Color.White;
+            IdleDustType = DustID.Platinum;
             DashDustType = DustID.FireworksRGB;
             TeleDustType = DustID.FireworksRGB;
             TeleSound = Tele;
             DashSound = DTAssetLib.SwordSounds.SpinWave with { Pitch = 0.3f, PitchVariance = 0.2f, Volume = 0 };
             AfterImageColorless = true;
-			AfterImageTinted = false;
-			AfterImage = true;
-			DefaultDraw = true;
-			TickSpeed = 3;
-			UsesParticleOrchestratorOnTele = false;
-			TeleDist = 2000;
-			Range = 2000;
-			Style = IdleStyle.Chevron;
-			ActiveBuff = ModContent.BuffType<HopeEnsemble_Buff>();
-			Group = Hope_Scabbard.minionTypes;
-			UsesGroup = true;
-		}
-	}
-	public class Tungsten_Broadsword : SwordMinionTemplate
-	{
-		public SoundStyle Tele = new SoundStyle("DestroyerTest/Assets/Audio/HopeScabbardTele") with { PitchVariance = 1 };
-		public override void SetStaticDefaults()
-		{
-			base.SetStaticDefaults();
-		}
+            AfterImageTinted = false;
+            AfterImage = true;
+            DefaultDraw = true;
+            TickSpeed = 3;
+            UsesParticleOrchestratorOnTele = false;
+            TeleDist = 2000;
+            Range = 2000;
+            Style = IdleStyle.Chevron;
+            ActiveBuff = ModContent.BuffType<HopeEnsemble_Buff>();
+            Group = Hope_Scabbard.minionTypes;
+            UsesGroup = true;
+        }
+    }
+    public class Tungsten_Broadsword : SwordMinionTemplate
+    {
+        public SoundStyle Tele = new SoundStyle("DestroyerTest/Assets/Audio/HopeScabbardTele") with { PitchVariance = 1 };
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+        }
 
-		public override void SetDefaults()
-		{
-			base.SetDefaults();
-			Projectile.width = 38;
-			Projectile.height = 38;
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Projectile.width = 38;
+            Projectile.height = 38;
             Projectile.minionSlots = 1;
             ThemeColor = Color.LightGreen;
-			TintColor = Color.White;
-			IdleDustType = DustID.Tungsten;
+            TintColor = Color.White;
+            IdleDustType = DustID.Tungsten;
             DashDustType = DustID.FireworksRGB;
             TeleDustType = DustID.FireworksRGB;
             TeleSound = Tele;
             DashSound = DTAssetLib.SwordSounds.SpinWave with { Pitch = 0.3f, PitchVariance = 0.2f, Volume = 0 };
             AfterImageColorless = true;
-			AfterImageTinted = false;
-			AfterImage = true;
-			DefaultDraw = true;
-			TickSpeed = 3;
-			UsesParticleOrchestratorOnTele = false;
-			TeleDist = 2000;
-			Range = 2000;
-			Style = IdleStyle.Chevron;
-			ActiveBuff = ModContent.BuffType<HopeEnsemble_Buff>();
-			Group = Hope_Scabbard.minionTypes;
-			UsesGroup = true;
-		}
-	}
-	public class Blood_Butcherer : SwordMinionTemplate
-	{
-		public SoundStyle Tele = new SoundStyle("DestroyerTest/Assets/Audio/HopeScabbardTele") with { PitchVariance = 1 };
-		public override void SetStaticDefaults()
-		{
-			base.SetStaticDefaults();
-		}
+            AfterImageTinted = false;
+            AfterImage = true;
+            DefaultDraw = true;
+            TickSpeed = 3;
+            UsesParticleOrchestratorOnTele = false;
+            TeleDist = 2000;
+            Range = 2000;
+            Style = IdleStyle.Chevron;
+            ActiveBuff = ModContent.BuffType<HopeEnsemble_Buff>();
+            Group = Hope_Scabbard.minionTypes;
+            UsesGroup = true;
+        }
+    }
+    public class Blood_Butcherer : SwordMinionTemplate
+    {
+        public SoundStyle Tele = new SoundStyle("DestroyerTest/Assets/Audio/HopeScabbardTele") with { PitchVariance = 1 };
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+        }
 
-		public override void SetDefaults()
-		{
-			base.SetDefaults();
-			Projectile.width = 50;
-			Projectile.height = 58;
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Projectile.width = 50;
+            Projectile.height = 58;
             Projectile.minionSlots = 1;
             ThemeColor = Color.Red;
-			TintColor = Color.White;
-			IdleDustType = DustID.RedTorch;
+            TintColor = Color.White;
+            IdleDustType = DustID.RedTorch;
             DashDustType = DustID.FireworksRGB;
             TeleDustType = DustID.FireworksRGB;
             TeleSound = Tele;
             DashSound = DTAssetLib.SwordSounds.SpinWave with { Pitch = 0.3f, PitchVariance = 0.2f, Volume = 0 };
             AfterImageColorless = true;
-			AfterImageTinted = false;
-			AfterImage = true;
-			DefaultDraw = true;
-			TickSpeed = 3;
-			UsesParticleOrchestratorOnTele = false;
-			TeleDist = 2000;
-			Range = 2000;
-			Style = IdleStyle.Chevron;
-			ActiveBuff = ModContent.BuffType<HopeEnsemble_Buff>();
-			noDrawTint = true;
-			Group = Hope_Scabbard.minionTypes;
-			UsesGroup = true;
-		}
+            AfterImageTinted = false;
+            AfterImage = true;
+            DefaultDraw = true;
+            TickSpeed = 3;
+            UsesParticleOrchestratorOnTele = false;
+            TeleDist = 2000;
+            Range = 2000;
+            Style = IdleStyle.Chevron;
+            ActiveBuff = ModContent.BuffType<HopeEnsemble_Buff>();
+            noDrawTint = true;
+            Group = Hope_Scabbard.minionTypes;
+            UsesGroup = true;
+        }
 
-		public override bool PreDraw(ref Color lightColor)
-		{
-			//lightColor = ThemeColor;
-			SpriteBatch spriteBatch = Main.spriteBatch;
-			Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
+        public override bool PreDraw(ref Color lightColor)
+        {
+            //lightColor = ThemeColor;
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
 
-			Texture2D pixel = TextureAssets.MagicPixel.Value;
+            Texture2D pixel = TextureAssets.MagicPixel.Value;
 
-			Opus.StartSpriteBatchForTrails(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+            Opus.StartSpriteBatchForTrails(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
 
-			DTTrail.DrawTrail(spriteBatch, DTAssetLib.Streak(8).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 20, ThemeColor, 0, 6);
-			Opus.ReturnToDefaultDrawing(spriteBatch);
-			return base.PreDraw(ref lightColor); // Let the default system handle the base projectile drawing
-		}
-		public int ShootTimer = 0;
+            DTTrail.DrawTrail(spriteBatch, DTAssetLib.Streak(8).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 20, ThemeColor, 0, 6);
+            Opus.ReturnToDefaultDrawing(spriteBatch);
+            return base.PreDraw(ref lightColor); // Let the default system handle the base projectile drawing
+        }
+        public int ShootTimer = 0;
 
-		public override void AI()
-		{
-			if (TargFlag && ShootTimer <= 0)
-			{
-				float rotation = MathHelper.ToRadians(45);
+        public override void AI()
+        {
+            if (TargFlag && ShootTimer <= 0)
+            {
+                float rotation = MathHelper.ToRadians(45);
 
-				Vector2 ShootOrig = Projectile.Center;
-				Vector2 Velocity = Projectile.velocity * 2;
+                Vector2 ShootOrig = Projectile.Center;
+                Vector2 Velocity = Projectile.velocity * 2;
 
-				ShootOrig += Vector2.Normalize(Velocity) * 5f;
+                ShootOrig += Vector2.Normalize(Velocity) * 5f;
 
-				for (int i = 0; i < 6; i++)
-				{
-					Vector2 perturbedSpeed = Velocity.RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (6 - 1))); // Watch out for dividing by 0 if there is only 1 projectile.
-					Projectile.NewProjectile(Entity.GetSource_FromThis(), ShootOrig, perturbedSpeed, ModContent.ProjectileType<EnchantedBlood>(), Projectile.damage / 3, Projectile.knockBack);
-				}
-				ShootTimer = 240;
-			}
-			if (TargFlag && ShootTimer > 0)
-			{
+                for (int i = 0; i < 6; i++)
+                {
+                    Vector2 perturbedSpeed = Velocity.RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (6 - 1))); // Watch out for dividing by 0 if there is only 1 projectile.
+                    Projectile.NewProjectile(Entity.GetSource_FromThis(), ShootOrig, perturbedSpeed, ModContent.ProjectileType<EnchantedBlood>(), Projectile.damage / 3, Projectile.knockBack);
+                }
+                ShootTimer = 240;
+            }
+            if (TargFlag && ShootTimer > 0)
+            {
 
-			}
-			if (ShootTimer > 0)
-			{
-				ShootTimer--;
-			}
-			base.AI();
-		}
-	}
+            }
+            if (ShootTimer > 0)
+            {
+                ShootTimer--;
+            }
+            base.AI();
+        }
+    }
     public class Lights_Bane : SwordMinionTemplate
-	{
-		public SoundStyle Tele = new SoundStyle("DestroyerTest/Assets/Audio/HopeScabbardTele") with { PitchVariance = 1 };
-		public override void SetStaticDefaults()
-		{
-			base.SetStaticDefaults();
-		}
+    {
+        public SoundStyle Tele = new SoundStyle("DestroyerTest/Assets/Audio/HopeScabbardTele") with { PitchVariance = 1 };
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+        }
 
-		public override void SetDefaults()
-		{
-			base.SetDefaults();
-			Projectile.width = 50;
-			Projectile.height = 50;
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Projectile.width = 50;
+            Projectile.height = 50;
             Projectile.minionSlots = 1;
             ThemeColor = Color.Purple;
-			TintColor = Color.White;
-			IdleDustType = DustID.Shadowflame;
+            TintColor = Color.White;
+            IdleDustType = DustID.Shadowflame;
             DashDustType = DustID.FireworksRGB;
             TeleDustType = DustID.FireworksRGB;
             TeleSound = Tele;
             DashSound = DTAssetLib.SwordSounds.SpinWave with { Pitch = 0.3f, PitchVariance = 0.2f, Volume = 0 };
             AfterImageColorless = true;
-			AfterImageTinted = false;
-			AfterImage = true;
-			DefaultDraw = true;
-			TickSpeed = 3;
-			UsesParticleOrchestratorOnTele = false;
-			TeleDist = 2000;
-			Range = 2000;
-			Style = IdleStyle.Chevron;
-			ActiveBuff = ModContent.BuffType<HopeEnsemble_Buff>();
-			noDrawTint = true;
-			Group = Hope_Scabbard.minionTypes;
-			UsesGroup = true;
-		}
+            AfterImageTinted = false;
+            AfterImage = true;
+            DefaultDraw = true;
+            TickSpeed = 3;
+            UsesParticleOrchestratorOnTele = false;
+            TeleDist = 2000;
+            Range = 2000;
+            Style = IdleStyle.Chevron;
+            ActiveBuff = ModContent.BuffType<HopeEnsemble_Buff>();
+            noDrawTint = true;
+            Group = Hope_Scabbard.minionTypes;
+            UsesGroup = true;
+        }
 
-		public override bool PreDraw(ref Color lightColor)
-		{
-			//lightColor = ThemeColor;
-			SpriteBatch spriteBatch = Main.spriteBatch;
-			Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
+        public override bool PreDraw(ref Color lightColor)
+        {
+            //lightColor = ThemeColor;
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
 
-			Texture2D pixel = TextureAssets.MagicPixel.Value;
-			
+            Texture2D pixel = TextureAssets.MagicPixel.Value;
+
             Opus.StartSpriteBatchForTrails(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
             DTTrail.DrawTrail(spriteBatch, DTAssetLib.Streak(8).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 20, ThemeColor, 0, 6);
             Opus.ReturnToDefaultDrawing(spriteBatch);
-            
-			return base.PreDraw(ref lightColor); // Let the default system handle the base projectile drawing
-		}
 
-		public int ShootTimer = 0;
+            return base.PreDraw(ref lightColor); // Let the default system handle the base projectile drawing
+        }
 
-		public override void AI()
-		{
+        public int ShootTimer = 0;
 
-			
-				if (TargFlag && ShootTimer <= 0)
-				{
-					float rotation = MathHelper.ToRadians(45);
+        public override void AI()
+        {
 
-					Vector2 ShootOrig = Projectile.Center;
-					Vector2 Velocity = Projectile.velocity *  2;
 
-					ShootOrig += Vector2.Normalize(Velocity) * 5f;
+            if (TargFlag && ShootTimer <= 0)
+            {
+                float rotation = MathHelper.ToRadians(45);
 
-					for (int i = 0; i < 6; i++)
-					{
-						Vector2 perturbedSpeed = Velocity.RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (6 - 1))); // Watch out for dividing by 0 if there is only 1 projectile.
-						Projectile.NewProjectile(Entity.GetSource_FromThis(), ShootOrig, perturbedSpeed, ModContent.ProjectileType<EnchantedShadowflame>(), Projectile.damage / 3, Projectile.knockBack);
-					}
-					ShootTimer = 240;
-				}
-				if (TargFlag && ShootTimer > 0)
-				{
+                Vector2 ShootOrig = Projectile.Center;
+                Vector2 Velocity = Projectile.velocity * 2;
 
-				}
-				if (ShootTimer > 0)
-				{
-					ShootTimer--;
-				}
-			
-			base.AI();
-		}
-	}
+                ShootOrig += Vector2.Normalize(Velocity) * 5f;
+
+                for (int i = 0; i < 6; i++)
+                {
+                    Vector2 perturbedSpeed = Velocity.RotatedBy(MathHelper.Lerp(-rotation, rotation, i / (6 - 1))); // Watch out for dividing by 0 if there is only 1 projectile.
+                    Projectile.NewProjectile(Entity.GetSource_FromThis(), ShootOrig, perturbedSpeed, ModContent.ProjectileType<EnchantedShadowflame>(), Projectile.damage / 3, Projectile.knockBack);
+                }
+                ShootTimer = 240;
+            }
+            if (TargFlag && ShootTimer > 0)
+            {
+
+            }
+            if (ShootTimer > 0)
+            {
+                ShootTimer--;
+            }
+
+            base.AI();
+        }
+    }
 }

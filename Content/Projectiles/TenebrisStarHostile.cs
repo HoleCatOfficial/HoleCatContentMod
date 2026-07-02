@@ -22,11 +22,11 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles
 {
-	public class TenebrisStarHostile : ModProjectile, IHomingProjectile
-	{
-		public override string Texture => DTUtils.NoTexture;
+    public class TenebrisStarHostile : ModProjectile, IHomingProjectile
+    {
+        public override string Texture => DTUtils.NoTexture;
 
-		public float DelayTimer;
+        public float DelayTimer;
 
         bool IHomingProjectile.TracksNPCs => false;
 
@@ -45,44 +45,44 @@ namespace DestroyerTest.Content.Projectiles
         bool IHomingProjectile.CanHome => DelayTimer >= 10;
 
         public override void SetStaticDefaults()
-		{
-			ProjectileID.Sets.TrailCacheLength[Type] = 160;
-			ProjectileID.Sets.TrailingMode[Type] = 3;
-		}
+        {
+            ProjectileID.Sets.TrailCacheLength[Type] = 160;
+            ProjectileID.Sets.TrailingMode[Type] = 3;
+        }
 
-		public override void SetDefaults()
-		{
-			Projectile.width = 50;
-			Projectile.height = 50;
+        public override void SetDefaults()
+        {
+            Projectile.width = 50;
+            Projectile.height = 50;
 
-			Projectile.DamageType = DamageClass.Generic;
-			Projectile.friendly = false;
-			Projectile.hostile = true;
-			Projectile.ignoreWater = true;
-			Projectile.light = 1f;
-			Projectile.timeLeft = 600;
-			Projectile.tileCollide = false;
-		}
+            Projectile.DamageType = DamageClass.Generic;
+            Projectile.friendly = false;
+            Projectile.hostile = true;
+            Projectile.ignoreWater = true;
+            Projectile.light = 1f;
+            Projectile.timeLeft = 600;
+            Projectile.tileCollide = false;
+        }
 
-		public float trailOffset = 0f;
-		public override bool PreDraw(ref Color lightColor)
-		{
-			lightColor = ColorLib.TenebrisGradient;
-			trailOffset += 0.04f;
-
-
+        public float trailOffset = 0f;
+        public override bool PreDraw(ref Color lightColor)
+        {
+            lightColor = ColorLib.TenebrisGradient;
+            trailOffset += 0.04f;
 
 
-			SpriteBatch spriteBatch = Main.spriteBatch;
+
+
+            SpriteBatch spriteBatch = Main.spriteBatch;
 
             DTTrail.DrawTrail(spriteBatch, DTAssetLib.Streak(6).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 15, lightColor * 0.5f, trailOffset, 1);
 
             DTTrail.DrawTrail(spriteBatch, DTAssetLib.Streak(14).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 15, lightColor, trailOffset, 1);
 
-			Opus.DrawTextureOnProj(DTAssetLib.Star(3), Projectile, Color.White, true, 0f, 0.9f, 0.9f);
+            Opus.DrawTextureOnProj(DTAssetLib.Star(3), Projectile, Color.White, true, 0f, 0.9f, 0.9f);
 
-			return false;
-		}
+            return false;
+        }
 
         public override bool CanHitPlayer(Player target)
         {
@@ -90,12 +90,12 @@ namespace DestroyerTest.Content.Projectiles
         }
 
 
-		public override void AI()
-		{
-			Projectile.ResetExcessTrailPoints();
+        public override void AI()
+        {
+            Projectile.ResetExcessTrailPoints();
 
-			DelayTimer++;
-			Projectile.rotation += Projectile.direction * 0.07f;
+            DelayTimer++;
+            Projectile.rotation += Projectile.direction * 0.07f;
 
             if (Main.rand.NextBool(10))
             {
@@ -106,77 +106,77 @@ namespace DestroyerTest.Content.Projectiles
 
             Lighting.AddLight(Projectile.Center, ColorLib.TenebrisGradient.ToVector3() * 0.2f);
 
-			if (DelayTimer < 20 || DelayTimer > 180)
-			{
-				return;
-			}
-		}
+            if (DelayTimer < 20 || DelayTimer > 180)
+            {
+                return;
+            }
+        }
 
-		public override void OnHitPlayer(Player target, Player.HurtInfo info)
-		{
-          
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
+        {
+
             target.AddBuff(ModContent.BuffType<ShimmeringFlames>(), 30 * 60);
-		}
+        }
 
-		public override void OnKill(int timeLeft)
-		{
-			for (int i = 0; i < 10; i++)
-			{
-				Dust.NewDust(Projectile.position, Projectile.Hitbox.Width, Projectile.Hitbox.Height, DustID.TintableDustLighted, Main.rand.NextFloat(-1, 1.1f), Main.rand.NextFloat(-1, 1.1f), 0, ColorLib.TenebrisGradient, 2f);
-			}
-		}
+        public override void OnKill(int timeLeft)
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                Dust.NewDust(Projectile.position, Projectile.Hitbox.Width, Projectile.Hitbox.Height, DustID.TintableDustLighted, Main.rand.NextFloat(-1, 1.1f), Main.rand.NextFloat(-1, 1.1f), 0, ColorLib.TenebrisGradient, 2f);
+            }
+        }
 
     }
 
     public class TenebrisStarHostile_NoHoming : ModProjectile
-	{
-		public override string Texture => DTUtils.NoTexture;
+    {
+        public override string Texture => DTUtils.NoTexture;
 
 
-		public override void SetStaticDefaults()
-		{
+        public override void SetStaticDefaults()
+        {
             ProjectileID.Sets.TrailCacheLength[Type] = 160;
             ProjectileID.Sets.TrailingMode[Type] = 3;
         }
 
-		public override void SetDefaults()
-		{
-			Projectile.width = 50;
-			Projectile.height = 50;
+        public override void SetDefaults()
+        {
+            Projectile.width = 50;
+            Projectile.height = 50;
 
-			Projectile.DamageType = DamageClass.Generic;
-			Projectile.friendly = false;
-			Projectile.hostile = true;
-			Projectile.ignoreWater = true;
-			Projectile.light = 1f;
-			Projectile.timeLeft = 600;
-			Projectile.tileCollide = false;
-		}
+            Projectile.DamageType = DamageClass.Generic;
+            Projectile.friendly = false;
+            Projectile.hostile = true;
+            Projectile.ignoreWater = true;
+            Projectile.light = 1f;
+            Projectile.timeLeft = 600;
+            Projectile.tileCollide = false;
+        }
 
-		public float trailOffset = 0f;
-		public override bool PreDraw(ref Color lightColor)
-		{
-			lightColor = ColorLib.TenebrisGradient;
-			trailOffset += 0.04f;
+        public float trailOffset = 0f;
+        public override bool PreDraw(ref Color lightColor)
+        {
+            lightColor = ColorLib.TenebrisGradient;
+            trailOffset += 0.04f;
 
 
-			SpriteBatch spriteBatch = Main.spriteBatch;
+            SpriteBatch spriteBatch = Main.spriteBatch;
 
             DTTrail.DrawTrail(spriteBatch, DTAssetLib.Streak(6).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 15, lightColor * 0.5f, trailOffset, 1);
 
             DTTrail.DrawTrail(spriteBatch, DTAssetLib.Streak(14).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 15, lightColor, trailOffset, 1);
 
 
-			Opus.DrawTextureOnProj(DTAssetLib.Star(3), Projectile, Color.White, true, 0f, 0.9f, 0.9f);
+            Opus.DrawTextureOnProj(DTAssetLib.Star(3), Projectile, Color.White, true, 0f, 0.9f, 0.9f);
 
-			return false;
-		}
+            return false;
+        }
 
-		public override void AI()
-		{
+        public override void AI()
+        {
             Projectile.ResetExcessTrailPoints();
-			
-			Projectile.rotation += Projectile.direction * 0.07f;
+
+            Projectile.rotation += Projectile.direction * 0.07f;
 
             if (Main.rand.NextBool(10))
             {
@@ -186,13 +186,13 @@ namespace DestroyerTest.Content.Projectiles
             }
 
             Lighting.AddLight(Projectile.Center, ColorLib.TenebrisGradient.ToVector3() * 0.2f);
-		}
+        }
 
-		public override void OnHitPlayer(Player target, Player.HurtInfo info)
-		{
-          
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
+        {
+
             target.AddBuff(ModContent.BuffType<ShimmeringFlames>(), 30 * 60);
-		}
+        }
 
         public override void OnKill(int timeLeft)
         {

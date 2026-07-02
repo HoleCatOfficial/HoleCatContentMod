@@ -81,7 +81,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
         public PixelLayer PixelLayer => PixelLayer.AbovePlayer;
         void IDrawPixelated.DrawPixelated(SpriteBatch spriteBatch)
         {
-            
+
             Texture2D texture = DTAssetLib.CurseSigilRing.Value;
             Texture2D SparkTex = DTAssetLib.MiscSparkle144.Value;
             Vector2 origin = texture.Size() / 2f;
@@ -96,7 +96,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
             spriteBatch.Draw(SparkTex, Projectile.Center - Main.screenPosition, null, Color.White with { A = 0 }, MathHelper.PiOver2, SparkOrigin, Projectile.scale * 0.5f, SpriteEffects.None, 0f);
             spriteBatch.Draw(SparkTex, Projectile.Center - Main.screenPosition, null, Col() with { A = 0 }, MathHelper.PiOver2, SparkOrigin, Projectile.scale * 1.4f, SpriteEffects.None, 0f);
             spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null, Col() with { A = 0 }, rot, origin, 0.2f * Projectile.scale, SpriteEffects.None, 0f);
-            
+
             Opus.ReturnToDefaultDrawing(spriteBatch);
         }
 
@@ -114,7 +114,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
                     return 8;
             }
         }
-        
+
         Color Col()
         {
             switch (CurseType)
@@ -169,5 +169,5 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
 
             }
         }
-	}
+    }
 }

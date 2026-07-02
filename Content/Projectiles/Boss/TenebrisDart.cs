@@ -38,7 +38,7 @@ namespace DestroyerTest.Content.Projectiles.Boss
             Projectile.friendly = false; // Can the projectile deal damage to enemies?
             Projectile.hostile = true; // Can the projectile deal damage to the player?
             Projectile.ignoreWater = true; // Does the projectile's speed be influenced by water?
-      
+
             Projectile.timeLeft = 180; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
             Projectile.tileCollide = false;
             Projectile.penetrate = 1;
@@ -46,12 +46,12 @@ namespace DestroyerTest.Content.Projectiles.Boss
 
         public float trailOffset = 0;
         public override bool PreDraw(ref Color lightColor)
-		{
-			lightColor = ColorLib.TenebrisGradient;
+        {
+            lightColor = ColorLib.TenebrisGradient;
             trailOffset += 0.04f;
-			
-			SpriteBatch spriteBatch = Main.spriteBatch;
-			DTUtils Utility = new DTUtils();
+
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            DTUtils Utility = new DTUtils();
 
             DTTrail.DrawTrail(spriteBatch, DTAssetLib.Streak(3).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 40, ColorLib.TenebrisGradient, trailOffset, 0);
 
@@ -62,25 +62,25 @@ namespace DestroyerTest.Content.Projectiles.Boss
                 Opus.DrawGlowOnProj(Projectile, lightColor, true);
             }
 
-            
-			if (WaitTimer < 20)
-			{
-				Opus.DrawTextureOnProj(DTAssetLib.FadeLine, Projectile, DTColorUtils.Pastel(ColorLib.TenebrisGradient, 50), false, Projectile.rotation + MathHelper.PiOver2, 4f, 1f);
-			}
-            
+
+            if (WaitTimer < 20)
+            {
+                Opus.DrawTextureOnProj(DTAssetLib.FadeLine, Projectile, DTColorUtils.Pastel(ColorLib.TenebrisGradient, 50), false, Projectile.rotation + MathHelper.PiOver2, 4f, 1f);
+            }
+
 
             Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, Projectile.Center - Main.screenPosition, null, lightColor, Projectile.rotation, TextureAssets.Projectile[Projectile.type].Value.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
 
-			Opus.ReturnToDefaultDrawing(spriteBatch);
+            Opus.ReturnToDefaultDrawing(spriteBatch);
 
-			return false;
-		}
+            return false;
+        }
 
         public int WaitTimer = 0;
         public bool SoundFlag = false;
 
-		public override void AI()
-		{
+        public override void AI()
+        {
             for (int i = 0; i < ProjectileID.Sets.TrailCacheLength[Type]; i++)
             {
                 if (Projectile.oldPos[i] == Vector2.Zero)

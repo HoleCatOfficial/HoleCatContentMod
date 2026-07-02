@@ -45,29 +45,29 @@ namespace DestroyerTest.Content.Projectiles.Boss
 
         public float trailOffset = 0;
         public override bool PreDraw(ref Color lightColor)
-		{
-			lightColor = ColorLib.TenebrisGradient;
+        {
+            lightColor = ColorLib.TenebrisGradient;
             trailOffset += 0.04f;
-			
-			SpriteBatch spriteBatch = Main.spriteBatch;
-			DTUtils Utility = new DTUtils();
+
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            DTUtils Utility = new DTUtils();
 
             DTTrail.DrawTrail(spriteBatch, DTAssetLib.Streak(3).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 40, ColorLib.TenebrisGradient, trailOffset, 0);
 
             Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-        
-			Opus.DrawGlowOnProj(Projectile, lightColor, true);
+
+            Opus.DrawGlowOnProj(Projectile, lightColor, true);
 
             Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, Projectile.Center - Main.screenPosition, null, lightColor, Projectile.rotation, TextureAssets.Projectile[Projectile.type].Value.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
 
-			Opus.ReturnToDefaultDrawing(spriteBatch);
+            Opus.ReturnToDefaultDrawing(spriteBatch);
 
-			return false;
-		}
+            return false;
+        }
 
 
-		public override void AI()
-		{
+        public override void AI()
+        {
 
             if (Main.rand.NextBool(3))
             {
@@ -79,7 +79,7 @@ namespace DestroyerTest.Content.Projectiles.Boss
 
             if (Main.GameUpdateCount % 10 == 0 && Projectile.velocity.Length() > 2)
             {
-                
+
                 SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/TenebrisBlock") with { MaxInstances = 0, PitchVariance = 0.3f, Volume = 0.15f }, Projectile.Center);
                 Projectile.NewProjectile(Entity.GetSource_FromAI(), Projectile.Center, FlankLeft * 0.02f, ModContent.ProjectileType<TenebrisDart>(), Projectile.damage / 2, 3);
                 Projectile.NewProjectile(Entity.GetSource_FromAI(), Projectile.Center, FlankRight * 0.02f, ModContent.ProjectileType<TenebrisDart>(), Projectile.damage / 2, 3);
