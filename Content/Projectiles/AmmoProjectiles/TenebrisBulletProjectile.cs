@@ -3,6 +3,7 @@ using System.Formats.Tar;
 using System.Runtime.CompilerServices;
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
+using DestroyerTest.Common.Interfaces;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
@@ -12,26 +13,35 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
 {
-    public class TenebrisBulletProjectile : ModProjectile
+    public class TenebrisBulletProjectile : ModProjectile, IHomingProjectile
     {
-        private NPC HomingTarget
-        {
-            get => Projectile.ai[0] == 0 ? null : Main.npc[(int)Projectile.ai[0] - 1];
-            set
-            {
-                Projectile.ai[0] = value == null ? 0 : value.whoAmI + 1;
-            }
-        }
 
         public int Variant = Main.rand.Next(3);
 
-        public ref float DelayTimer => ref Projectile.ai[1];
+        int DelayTimer = 0;
+
+        bool IHomingProjectile.TracksNPCs => true;
+
+        bool IHomingProjectile.TracksPlayers => false;
+
+        float IHomingProjectile.HomingTurnSpeed => 0.8f;
+
+        bool IHomingProjectile.UsesHomingAcceleration => true;
+
+        float IHomingProjectile.HomingAccelAmount => 1.03f;
+
+        float IHomingProjectile.HomingMaxAccel => 4f;
+
+        float IHomingProjectile.DetectRadius => 400;
+
+        bool IHomingProjectile.CanHome => DelayTimer >= 100;
 
         public override void SetStaticDefaults()
         {
@@ -46,35 +56,24 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
             Projectile.friendly = true; // Can the projectile deal damage to enemies?
             Projectile.hostile = false; // Can the projectile deal damage to the player?
             Projectile.ignoreWater = true; // Does the projectile's speed be influenced by water?
-            Projectile.timeLeft = 360; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
+            Projectile.timeLeft = 600; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
             Projectile.tileCollide = false;
             Projectile.penetrate = 1;
             Projectile.hide = true;
-            Projectile.extraUpdates = 40;
+            Projectile.extraUpdates = 5;
+        }
+
+        public override void OnSpawn(IEntitySource source)
+        {
+            Projectile.velocity *= 0.2f;
         }
 
         public void ColorAffectedFX(Color color)
         {
             Lighting.AddLight(Projectile.Center, color.ToVector3() * 0.6f);
 
-            //PointGlowPreMultiplied Glow = new PointGlowPreMultiplied();
-            //Glow.Initialize(Projectile.Center, Projectile.velocity * 0.3f, color, 0.5f);
-            //ParticleEngine.BehindProjectiles.Add(Glow);
-
             var d = Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<ColorableNeonDust>(), Vector2.Zero, 0, color, 1f);
             d.noGravity = true;
-
-            Spark S = new Spark();
-
-            S.PrepareSpark(Projectile.Center, Projectile.velocity * 0.1f, Projectile.velocity.ToRotation(), color * 0.5f, 1f, false, 20, SparkDrawMode.Additive, 2f);
-            ParticleEngine.BehindProjectiles.Add(S);
-
-            /*
-            if (Main.rand.NextBool(5))
-            {
-                PRTLoader.NewParticle(Projectile.Center, new Vector2((Projectile.velocity.X / 2) + Main.rand.NextFloat(-0.5f, 0.5f), (Projectile.velocity.Y / 2) + Main.rand.NextFloat(-0.5f, 0.5f)), PRTLoader.GetParticleID<StarParticle>(), Color.White, 0.5f);
-            }
-            */
         }
 
         public override void AI()
@@ -103,63 +102,14 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
             
            
 
-            if (DelayTimer < 10)
+            if (DelayTimer < 100)
             {
                 DelayTimer += 1;
                 return;
             }
-
-            float maxDetectRadius = 400f;
-
-            if (HomingTarget == null)
-            {
-                HomingTarget = FindClosestNPC(maxDetectRadius);
-            }
-
-            if (HomingTarget != null && !IsValidTarget(HomingTarget))
-            {
-                HomingTarget = null;
-            }
-
-            if (HomingTarget == null)
-                return;
-
-            float length = Projectile.velocity.Length();
-            float targetAngle = Projectile.AngleTo(HomingTarget.Center);
-            int turnspeed = 5;
-            turnspeed += 10;
-            Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(turnspeed)).ToRotationVector2() * length;
         }
 
-
-        public NPC FindClosestNPC(float maxDetectDistance)
-        {
-            NPC closestNPC = null;
-
-            float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
-
-            foreach (var target in Main.ActiveNPCs)
-            {
-                if (IsValidTarget(target))
-                {
-                    float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, Projectile.Center);
-
-                    if (sqrDistanceToTarget < sqrMaxDetectDistance)
-                    {
-                        sqrMaxDetectDistance = sqrDistanceToTarget;
-                        closestNPC = target;
-                    }
-                }
-            }
-
-            return closestNPC;
-        }
-
-        public bool IsValidTarget(NPC target)
-        {
-            return target.CanBeChasedBy();
-        }
-
+        
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             if (hit.Crit)

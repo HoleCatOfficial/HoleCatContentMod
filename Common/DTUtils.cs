@@ -29,6 +29,7 @@ using System.Linq;
 using System.Media;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Runtime.Intrinsics.X86;
 using Terraria;
 using Terraria.Audio;
@@ -1957,7 +1958,7 @@ namespace DestroyerTest.Common
 
     public class DTTrail : ModSystem
     {
-        public static void DrawTrail(SpriteBatch spriteBatch, Texture2D TrailTex, List<Vector2> Positions, List<float> Rotations, float Amplitude, Color color, float Scroll, float TaperRange = 20f)
+        public static void DrawTrail(SpriteBatch spriteBatch, Texture2D TrailTex, List<Vector2> Positions, List<float> Rotations, float Amplitude, Color color, float Scroll, float TaperRange = 0f)
         {
             DTOptimizationsConfig OptCfg = ModContent.GetInstance<DTOptimizationsConfig>();
             if (!OptCfg.DisableExcessTrails)
@@ -1973,15 +1974,12 @@ namespace DestroyerTest.Common
 
                     for (int i = Positions.Count - 1; i > 0; i--)
                     {
-                        float taper = MathHelper.Clamp(i / TaperRange, 0f, 1f);
-
-                        // optional smoothing (feels nicer than linear)
-                        taper = taper * taper; // quadratic ease-in
-
+                        float t = 1f - (i / (float)Positions.Count);
+                        float taper = MathHelper.Lerp(0f, 1f, t);
                         float AdjAmplitude = Amplitude * taper;
-                        float t = 1f - (i / (float)Positions.Count); // fade toward tail
+
                         Color b = color * t;
-             
+
 
                         //Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
                         Vector2 curr = Positions[i];
@@ -2024,7 +2022,7 @@ namespace DestroyerTest.Common
 
         }
 
-        public static void DrawTrail(SpriteBatch spriteBatch, BlendState blendState, Texture2D TrailTex, List<Vector2> Positions, List<float> Rotations, float Amplitude, Color color, float Scroll, float TaperRange = 20f)
+        public static void DrawTrail(SpriteBatch spriteBatch, BlendState blendState, Texture2D TrailTex, List<Vector2> Positions, List<float> Rotations, float Amplitude, Color color, float Scroll, float TaperRange = 0f)
         {
             DTOptimizationsConfig OptCfg = ModContent.GetInstance<DTOptimizationsConfig>();
             if (!OptCfg.DisableExcessTrails)
@@ -2040,13 +2038,10 @@ namespace DestroyerTest.Common
 
                     for (int i = Positions.Count - 1; i > 0; i--)
                     {
-                        float taper = MathHelper.Clamp(i / TaperRange, 0f, 1f);
-
-                        // optional smoothing (feels nicer than linear)
-                        taper = taper * taper; // quadratic ease-in
-
-                        float AdjAmplitude = Amplitude * taper;
-                        float t = 1f - (i / (float)Positions.Count); // fade toward tail
+                        float t = 1f - (i / (float)Positions.Count);
+                        float taper = MathHelper.Lerp(1f, 0f, t);
+                        float AdjAmplitude = Amplitude * 1;
+                       
                         Color b = color * t;
 
 
@@ -2111,15 +2106,11 @@ namespace DestroyerTest.Common
 
                     for (int i = Positions.Count - 1; i > 0; i--)
                     {
-                        float taper = MathHelper.Clamp(i / TaperRange, 0f, 1f);
+                        float t = 1f - (i / (float)Positions.Count);
+                        float taper = MathHelper.Lerp(1f, 0f, t);
+                        float AdjAmplitude = Amplitude * 1;
 
-                        // optional smoothing (feels nicer than linear)
-                        taper = taper * taper; // quadratic ease-in
-
-                        float AdjAmplitude = Amplitude * taper;
-                        float t = 1f - (i / (float)Positions.Count); // fade toward tail
                         Color b = color * t;
-
 
                         //Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
                         Vector2 curr = Positions[i];

@@ -75,9 +75,9 @@ namespace DestroyerTest.Content.Projectiles
 
             SpriteBatch spriteBatch = Main.spriteBatch;
 
-            DTTrail.DrawTrail(spriteBatch, DTAssetLib.Streak(6).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 15, lightColor * 0.5f, trailOffset, 1);
+            DTTrail.DrawTrail(spriteBatch, DTAssetLib.Streak(6).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 15, lightColor * 0.5f, trailOffset);
 
-            DTTrail.DrawTrail(spriteBatch, DTAssetLib.Streak(14).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 15, lightColor, trailOffset, 1);
+            DTTrail.DrawTrail(spriteBatch, DTAssetLib.Streak(14).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 15, lightColor, trailOffset);
 
             Opus.DrawTextureOnProj(DTAssetLib.Star(3), Projectile, Color.White, true, 0f, 0.9f, 0.9f);
 
@@ -180,9 +180,9 @@ namespace DestroyerTest.Content.Projectiles
 
             SpriteBatch spriteBatch = Main.spriteBatch;
 
-            DTTrail.DrawTrail(spriteBatch, DTAssetLib.Streak(6).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 15, lightColor * 0.5f, trailOffset, 1);
+            DTTrail.DrawTrail(spriteBatch, DTAssetLib.Streak(6).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 15, lightColor * 0.5f, trailOffset);
 
-            DTTrail.DrawTrail(spriteBatch, DTAssetLib.Streak(14).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 15, lightColor, trailOffset, 1);
+            DTTrail.DrawTrail(spriteBatch, DTAssetLib.Streak(14).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 15, lightColor, trailOffset);
 
             Opus.DrawTextureOnProj(DTAssetLib.Star(3), Projectile, Color.White, true, 0f, 0.9f, 0.9f);
 
