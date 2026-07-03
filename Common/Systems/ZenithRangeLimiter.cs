@@ -127,6 +127,14 @@ namespace DestroyerTest.Common.Systems
     {
         public override bool InstancePerEntity => true;
 
+        public override void SetDefaults(Item entity)
+        {
+            if (entity.type == ItemID.Zenith)
+            {
+                entity.UseSound = new SoundStyle("DestroyerTest/Assets/Audio/SwordSounds/ZenithSound") { PitchVariance = 0.4f, MaxInstances = 0 };
+            }
+        }
+
         float MaxDist = 600f;
         Color LineColor = Color.White;
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
