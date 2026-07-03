@@ -90,7 +90,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
             SoundEngine.PlaySound(SoundID.NPCDeath22, Projectile.Center);
 
 
-            Projectile spit = Projectile.NewProjectileDirect(Projectile.GetSource_Death(), Projectile.Center, toPlayer * 17, ProjectileID.GoldenShowerHostile, (int)(Projectile.damage * 0.5f), 4);
+            Projectile spit = Projectile.NewProjectileDirect(Projectile.GetSource_Death(), Projectile.Center, toPlayer * 17, ModContent.ProjectileType<GoldenShowerNoGravity>(), (int)(Projectile.damage * 0.5f), 4);
             
         }
 
