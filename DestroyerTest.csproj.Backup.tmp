@@ -1,0 +1,56 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+
+	<!-- Import tModLoader mod properties -->
+	<Import Project="..\tModLoader.targets" />
+
+	<!-- GenTenebris eral -->
+	<PropertyGroup>
+		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+	</PropertyGroup>
+	
+	<ItemGroup>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Reference Include="FargowiltasSouls">
+			<ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+			<HintPath>lib\FargowiltasSouls.dll</HintPath>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Reference>
+		
+		<Reference Include="Fargowiltas">
+			<ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+			<HintPath>lib\Fargowiltas.dll</HintPath>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Reference>
+		
+		<Reference Include="GlowmaskHelper">
+			<HintPath>lib\GlowmaskHelper.dll</HintPath>
+		</Reference>
+		
+		<Reference Include="InnoVault">
+			<HintPath>lib\InnoVault.dll</HintPath>
+		</Reference>
+		
+		<Reference Include="OpusLib">
+			<HintPath>lib\OpusLib.dll</HintPath>
+		</Reference>
+		
+		<Reference Include="ConstellationsOfOrion">
+			<ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+			<HintPath>lib\ConstellationsOfOrion.dll</HintPath>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Reference>
+		
+		<Reference Include="BreadLibrary">
+			<HintPath>lib\BreadLibrary.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+	
+	
+	
+
+	<!-- References -->
+
+</Project>

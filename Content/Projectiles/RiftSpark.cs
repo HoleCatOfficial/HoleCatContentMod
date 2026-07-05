@@ -1,4 +1,5 @@
 ﻿using DestroyerTest.Common;
+using DestroyerTest.Common.Interfaces;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Equips;
 using Microsoft.Xna.Framework;
@@ -16,23 +17,35 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles
 {
-    public class RiftSpark : ModProjectile
+    public class RiftSpark : ModProjectile, IHomingProjectile
     {
         public override string Texture => DTUtils.NoTexture;
-        private NPC NPCTarget
-        {
-            get => Projectile.ai[0] == 0 ? null : Main.npc[(int)Projectile.ai[0] - 1];
-            set
-            {
-                Projectile.ai[0] = value == null ? 0 : value.whoAmI + 1;
-            }
-        }
+
+        bool IHomingProjectile.TracksNPCs => true;
+
+        bool IHomingProjectile.TracksPlayers => false;
+
+        float IHomingProjectile.HomingTurnSpeed => 5f;
+
+        bool IHomingProjectile.UsesHomingAcceleration => true;
+
+        float IHomingProjectile.HomingAccelAmount => 1.01f;
+
+        float IHomingProjectile.HomingMaxAccel => 4f;
+
+        float IHomingProjectile.DetectRadius => 600f;
+
+        bool IHomingProjectile.CanHome => DelayTimer >= 30;
 
         public float DelayTimer;
 
+
+
         public override void SetStaticDefaults()
         {
-
+            ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true;
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 30;
+            ProjectileID.Sets.TrailingMode[Projectile.type] = 3;
         }
 
         public override void SetDefaults()
@@ -58,8 +71,8 @@ namespace DestroyerTest.Content.Projectiles
             SpriteBatch spriteBatch = Main.spriteBatch;
             DTUtils Utility = new DTUtils();
 
-            
-            DTTrail.DrawTrail(spriteBatch, DTAssetLib.Streak(10).Value, TrailPositions, TrailRotations, 16, lightColor, trailOffset, 0.01f);
+
+            DTTrail.DrawTrail(spriteBatch, DTAssetLib.Streak(10).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 22, lightColor, trailOffset);
 
             Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
             Opus.DrawGlowOnProj(Projectile, lightColor, true);
@@ -72,122 +85,18 @@ namespace DestroyerTest.Content.Projectiles
 
         public override bool? CanHitNPC(NPC target)
         {
-            return Projectile.timeLeft <= 240;
+            return DelayTimer >= 30;
         }
-        public List<Vector2> TrailPositions = new();
-        public List<float> TrailRotations = new();
-        private const int TrailLength = 400;
+
         public float length = 0;
         public override void AI()
         {
-
-
-            Vector2 lastPos = TrailPositions.Count > 0 ? TrailPositions[0] : Projectile.Center;
-            Vector2 newPos = Projectile.Center;
-
-            float dist = Vector2.Distance(lastPos, newPos);
-            float step = 1f; // how closely to sample. tweak this!
-
-            if (dist > 0f)
-            {
-                int segments = (int)(dist / step);
-
-                for (int i = 1; i <= segments; i++)
-                {
-                    Vector2 pos = Vector2.Lerp(lastPos, newPos, i / (float)segments);
-                    TrailPositions.Insert(0, pos);
-                    TrailRotations.Insert(0, Projectile.rotation);
-                }
-            }
-            else
-            {
-                TrailPositions.Insert(0, newPos);
-                TrailRotations.Insert(0, Projectile.rotation);
-            }
-
-
-            // Cap trail
-            while (TrailPositions.Count > TrailLength)
-                TrailPositions.RemoveAt(TrailPositions.Count - 1);
-            while (TrailRotations.Count > TrailLength)
-                TrailRotations.RemoveAt(TrailRotations.Count - 1);
-
-            if (Projectile.timeLeft < 285)
-            {
-                Projectile.velocity = Projectile.velocity.RotatedBy(Opus.Sine(-0.25f, 0.25f, 0.35f));
-            }
+            DelayTimer++;
+            Projectile.ResetExcessTrailPoints();
 
             Dust.NewDust(Projectile.position, Projectile.Hitbox.Width, Projectile.Hitbox.Height, DustID.FireworksRGB, Main.rand.NextFloat(-1, 1.1f), Main.rand.NextFloat(-1, 1.1f), 0, ColorLib.Rift, 0.5f);
 
             Lighting.AddLight(Projectile.Center, ColorLib.Rift.ToVector3());
-
-            if (Projectile.timeLeft > 240)
-            {
-                length = Projectile.velocity.Length();
-                return;
-            }
-            else
-            {
-                float maxDetectRadius = 2800f;
-
-
-                if (NPCTarget == null)
-                {
-                    NPCTarget = FindClosestNPC(maxDetectRadius);
-                }
-
-
-                if (NPCTarget != null && !IsValidNPC(NPCTarget))
-                {
-                    NPCTarget = null;
-                }
-
-
-                if (NPCTarget == null)
-                    return;
-
-                
-                if (Projectile.velocity.Length() < 40)
-                {
-                    length += 0.1f;
-                }
-                else
-                {
-                    length = Projectile.velocity.Length();
-                }
-                float targetAngle = Projectile.AngleTo(NPCTarget.Center);
-                Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(5)).ToRotationVector2() * length;
-                
-            }
-        }
-
-        public NPC FindClosestNPC(float maxDetectDistance)
-        {
-            NPC closestNPC = null;
-
-            float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
-
-            foreach (var target in Main.ActiveNPCs)
-            {
-                if (IsValidNPC(target))
-                {
-
-                    float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, Projectile.Center);
-
-                    if (sqrDistanceToTarget < sqrMaxDetectDistance)
-                    {
-                        sqrMaxDetectDistance = sqrDistanceToTarget;
-                        closestNPC = target;
-                    }
-                }
-            }
-
-            return closestNPC;
-        }
-
-        public bool IsValidNPC(NPC target)
-        {
-            return target.CanBeChasedBy();
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
@@ -212,8 +121,11 @@ namespace DestroyerTest.Content.Projectiles
 
         public override void SetStaticDefaults()
         {
-
+            ProjectileID.Sets.TrailCacheLength[Projectile.type] = 30;
+            ProjectileID.Sets.TrailingMode[Projectile.type] = 3;
         }
+
+        public int DelayTimer;
 
         public override void SetDefaults()
         {
@@ -239,7 +151,7 @@ namespace DestroyerTest.Content.Projectiles
             DTUtils Utility = new DTUtils();
 
             Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-            DTTrail.DrawTrail(spriteBatch, DTAssetLib.Streak(10).Value, TrailPositions, TrailRotations, 16, lightColor, trailOffset, 0.01f);
+            DTTrail.DrawTrail(spriteBatch, DTAssetLib.Streak(10).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 22, lightColor, trailOffset);
             Opus.DrawGlowOnProj(Projectile, lightColor, true);
             Opus.DrawTextureOnProj(DTAssetLib.Star(3), Projectile, lightColor * 0.75f, false, trailOffset, 0.2f, 0.6f);
             Opus.DrawTextureOnProj(DTAssetLib.Star(3), Projectile, lightColor, false, 0f, 0.2f, 0.6f);
@@ -250,50 +162,15 @@ namespace DestroyerTest.Content.Projectiles
 
         public override bool? CanHitNPC(NPC target)
         {
-            return Projectile.timeLeft <= 240;
+            return DelayTimer >= 30;
         }
-        public List<Vector2> TrailPositions = new();
-        public List<float> TrailRotations = new();
-        private const int TrailLength = 400;
+
         public float length = 0;
         public override void AI()
         {
+            DelayTimer++;
 
-
-            Vector2 lastPos = TrailPositions.Count > 0 ? TrailPositions[0] : Projectile.Center;
-            Vector2 newPos = Projectile.Center;
-
-            float dist = Vector2.Distance(lastPos, newPos);
-            float step = 1f; // how closely to sample. tweak this!
-
-            if (dist > 0f)
-            {
-                int segments = (int)(dist / step);
-
-                for (int i = 1; i <= segments; i++)
-                {
-                    Vector2 pos = Vector2.Lerp(lastPos, newPos, i / (float)segments);
-                    TrailPositions.Insert(0, pos);
-                    TrailRotations.Insert(0, Projectile.rotation);
-                }
-            }
-            else
-            {
-                TrailPositions.Insert(0, newPos);
-                TrailRotations.Insert(0, Projectile.rotation);
-            }
-
-
-            // Cap trail
-            while (TrailPositions.Count > TrailLength)
-                TrailPositions.RemoveAt(TrailPositions.Count - 1);
-            while (TrailRotations.Count > TrailLength)
-                TrailRotations.RemoveAt(TrailRotations.Count - 1);
-
-            if (Projectile.timeLeft < 285)
-            {
-                Projectile.velocity = Projectile.velocity.RotatedBy(Opus.Sine(-0.25f, 0.25f, 0.35f));
-            }
+            Projectile.ResetExcessTrailPoints();
 
             Dust.NewDust(Projectile.position, Projectile.Hitbox.Width, Projectile.Hitbox.Height, DustID.FireworksRGB, Main.rand.NextFloat(-1, 1.1f), Main.rand.NextFloat(-1, 1.1f), 0, ColorLib.Rift, 0.5f);
 

@@ -31,7 +31,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Projectile.width = 124;
             Projectile.height = 124;
             MinExtension = 0.6f;
-            MaxExtension = 200f * Owner.GetAttackSpeed(ModContent.GetInstance<DTTrueMeleeClass>());
+            MaxExtension = 185f;
             Projectile.DamageType = ModContent.GetInstance<DTTrueMeleeClass>();
             Projectile.friendly = true;
             Projectile.penetrate = -1;
@@ -56,6 +56,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
         public override void ExtraEffects()
         {
+            MaxExtension = 185f * Projectile.scale;
             ShineOpacity = MathHelper.Lerp(0, 1, Utilities.Convert01To010(progress));
             SC = Color.Lerp(ColorLib.TenebrisBlue, OpusColorUtils.Pastel(ColorLib.TenebrisBlue, 0.3f), Utilities.Convert01To010(progress));
             

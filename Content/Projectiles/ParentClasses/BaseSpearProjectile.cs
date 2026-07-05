@@ -143,6 +143,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
 
         public float RotationManualOffset = 0f;
+        float Off = 0;
         public Vector2 Draworigin;
 
         public override bool PreDraw(ref Color lightColor)
@@ -150,24 +151,27 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             SpriteEffects effects;
 
             Texture2D texture = TextureAssets.Projectile[Type].Value;
+            
 
             if (Projectile.spriteDirection > 0)
             {
                 //Draworigin = new Vector2(0, texture.Height);
                 effects = SpriteEffects.None;
+                Off = 0;
             }
             else
             {
                 //Draworigin = new Vector2(0, texture.Height);
-                effects = SpriteEffects.None;
+                effects = SpriteEffects.FlipHorizontally;
+                Off = MathHelper.PiOver2;
             }
 
             DrawUnder();
 
-            Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, null, Projectile.GetAlpha(lightColor) * Projectile.Opacity, (Projectile.rotation) + RotationManualOffset, texture.Size() / 2, Projectile.scale, effects, 0);
+            Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, null, Projectile.GetAlpha(lightColor) * Projectile.Opacity, (Projectile.rotation + Off) + RotationManualOffset, texture.Size() / 2, Projectile.scale, effects, 0);
             if (Glowmask != null)
             {
-                Main.EntitySpriteDraw(Glowmask.Value, Projectile.Center - Main.screenPosition, null, Color.White * Projectile.Opacity, (Projectile.rotation) + RotationManualOffset, texture.Size() / 2, Projectile.scale, effects, 0);
+                Main.EntitySpriteDraw(Glowmask.Value, Projectile.Center - Main.screenPosition, null, Color.White * Projectile.Opacity, (Projectile.rotation + Off) + RotationManualOffset, texture.Size() / 2, Projectile.scale, effects, 0);
             }
 
             DrawOver();
@@ -188,7 +192,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
         public override bool? CanHitNPC(NPC target)
         {
-            return Projectile.ManualCanHitFriendly(target) && progress >= 0.1f && progress < 0.9f;
+            return !target.friendly && progress >= 0.1f && progress < 0.9f;
         }
 
         public bool FirstHalf = true;
