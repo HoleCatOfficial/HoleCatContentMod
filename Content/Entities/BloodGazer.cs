@@ -1,31 +1,35 @@
-﻿using BreadLibrary.Core.Verlet;
+﻿using BreadLibrary.Core.Graphics.Pixelation;
+using BreadLibrary.Core.Utilities;
+using BreadLibrary.Core.Verlet;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.RiftBiome;
-using DestroyerTest.Content.RiftBiome.RiftSurfaceResources;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
-using OpusLib.Content.Helpers;
+using ReLogic.Content;
 using System;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
-using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Utilities;
 
 namespace DestroyerTest.Content.Entities
 {
-    public class BloodGazer : ModNPC
+    public class BloodGazer : ModNPC, IDrawPixelated
     {
         public override string Texture => DTUtils.NoTexture;
+
+
+
+
+        public int Timer
+        {
+            get => (int)NPC.ai[0];
+            set => NPC.ai[0] = value;
+        }
+        public static Asset<Texture2D> Hand;
         public override void SetStaticDefaults()
         {
+            Hand = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/GazerHand");
         }
         public override void SetDefaults()
         {
@@ -37,13 +41,17 @@ namespace DestroyerTest.Content.Entities
             NPC.value = 100f;
             NPC.knockBackResist = 0.3f;
             NPC.aiStyle = NPCAIStyleID.StarCell;
-            //NPC.aiStyle = NPCAIStyleID.AncientVision;
             NPC.HitSound = DTAssetLib.Impacts.StellarFox with { MaxInstances = 0, Pitch = -0.7f, PitchVariance = 0.2f };
             NPC.DeathSound = SoundID.Item74;
             NPC.noTileCollide = true;
             NPC.noGravity = true;
         }
 
+        public override void ModifyHoverBoundingBox(ref Rectangle boundingBox)
+        {
+            boundingBox = NPC.Hitbox;
+            boundingBox.Inflate(2, 2);
+        }
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
@@ -51,62 +59,15 @@ namespace DestroyerTest.Content.Entities
             });
         }
 
-        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+
+
+        public Vector2[] Offsets = new[]
         {
-            DrawCrystalCore(spriteBatch, NPC.Center, Color.Black, Color.DarkRed, TextureRotationOffset, 1.5f);
-            return true;
-        }
+            new Vector2(-25, 0),
+            new Vector2(25, 0)
+        };
 
-        public void DrawCrystalCore(SpriteBatch spriteBatch, Vector2 Center, Color colorIN, Color colorOUT, float TextureRotationOffset, float Scale = 1f)
-        {
-            DTUtils Utility = new DTUtils();
-            float OuterScale = Scale * 0.12f;
-
-            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.NonPremultiplied, SpriteSortMode.Immediate);
-
-            Main.spriteBatch.Draw(
-                DTAssetLib.Cyclone(2).Value,
-                Center - Main.screenPosition,
-                null,
-                colorOUT,
-                TextureRotationOffset,
-                new Vector2(DTAssetLib.Cyclone(2).Value.Width / 2f, DTAssetLib.Cyclone(2).Value.Height / 2f),
-                OuterScale,
-                SpriteEffects.None,
-                1f
-            );
-
-            Main.spriteBatch.Draw(
-                DTAssetLib.FeatheredCircle.Value,
-                Center - Main.screenPosition,
-                null,
-                colorIN,
-                0f,
-                new Vector2(DTAssetLib.FeatheredCircle.Value.Width / 2f, DTAssetLib.FeatheredCircle.Value.Height / 2f),
-                Scale,
-                SpriteEffects.None,
-                1f
-            );
-
-            Opus.ReturnToDefaultDrawing(spriteBatch);
-        }
-
-        public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-        {
-
-            RenderRope(screenPos, Color.Black, Rope1);
-            RenderRope(screenPos, Color.Black, Rope2);
-            Hands();
-
-            Main.EntitySpriteDraw(DTAssetLib.Star(3).Value, drawPos - Main.screenPosition, null, Color.Red, 0f, DTAssetLib.Star(3).Value.Size() / 2, new Vector2(0.8f, 1.2f), SpriteEffects.None, 0f);
-        }
-
-        private VerletChain Rope1;
-        private VerletChain Rope2;
-
-        public Vector2 Rope1Start;
-        public Vector2 Rope2Start;
-
+        public List<VerletChain> Ropes = null;
         private void RenderRope(Vector2 screenPos, Color drawColor, VerletChain Rope)
         {
             if (NPC.IsABestiaryIconDummy)
@@ -179,133 +140,65 @@ namespace DestroyerTest.Content.Entities
         }
 
 
-        public Texture2D Hand = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/GazerHand").Value;
-        public Vector2 Offset1;
-        public Vector2 Offset2;
-        public void Hands()
-        {
-            NPC.localAI[0]++;
-            if (NPC.localAI[0] > 1)
-            {
-                Vector2 Offset1Ideal = NPC.Center + new Vector2(-25, 200);
-                Offset1 = Vector2.Lerp(Offset1, Offset1Ideal, 0.05f);
-                Vector2 Offset2Ideal = NPC.Center + new Vector2(25, 200);
-                Offset2 = Vector2.Lerp(Offset2, Offset2Ideal, 0.05f);
-
-
-                Main.EntitySpriteDraw(Hand, Offset1 - Main.screenPosition, null, Color.Black, MathHelper.PiOver2, (Hand.Size() / 2), 1f, SpriteEffects.FlipVertically, 0f);
-                Main.EntitySpriteDraw(Hand, Offset2 - Main.screenPosition, null, Color.Black, MathHelper.PiOver2, (Hand.Size() / 2), 1f, SpriteEffects.None, 0f);
-            }
-        }
 
         public float TextureRotationOffset = 0f;
-        public float LookDir = 0f;
+        public Vector2 LookDir = Vector2.Zero;
         public float LookRange = 300;
 
-        public Vector2 drawPos;
 
-        public override void OnSpawn(IEntitySource source)
+        public void UpdateHands()
         {
-            Offset1 = NPC.Center;
-            Offset2 = NPC.Center;
-
-            Rope1Start = NPC.Center + new Vector2(-25, 0);
-            Rope2Start = NPC.Center + new Vector2(25, 0);
-
-            Line R1 = new Line(Rope1Start, Offset1);
-            Line R2 = new Line(Rope2Start, Offset2);
-
-            if (Rope1 == null)
+            for (int i = 0; i < Ropes.Count; i++)
             {
-                Rope1 = new VerletChain(18, 2, Rope1Start);
-
-                Vector2[] pt = R1.GetPointsAlongLine(18);
-
-                for (int k = 0; k < pt.Length - 1; k++)
-                {
-                    Rope1.Positions[k] = pt[k];
-                }
-            }
-
-            if (Rope2 == null)
-            {
-                Rope2 = new VerletChain(18, 2, Rope2Start);
-
-                Vector2[] pt = R2.GetPointsAlongLine(18);
-
-                for (int k = 0; k < pt.Length - 1; k++)
-                {
-                    Rope2.Positions[k] = pt[k];
-                }
+                Vector2 Root = NPC.Center + Offsets[i];
+                Vector2 AdjustedVelocity = Vector2.UnitX * MathF.Sin(Main.GameUpdateCount * 0.05f + NPC.whoAmI + i * MathHelper.Pi);
+                AdjustedVelocity *= 1-Math.Clamp(NPC.velocity.Length(), 0, 1);
+                Ropes[i].Simulate(AdjustedVelocity, Root, 1f, 0.5f, collideWithTiles: false, collideWithPlayers: false);
+                Ropes[i].Positions[0] = Root;
             }
         }
 
+
+        public const int MaxArms = 2;
+        public override bool PreAI()
+        {
+            if (Ropes is null)
+            {
+                Ropes = new List<VerletChain>(MaxArms);
+                for (int i = 0; i < MaxArms; i++)
+                {
+                    Ropes.Add(new VerletChain(18, 2, NPC.Center + Offsets[i]));
+                }
+            }
+
+
+            return base.PreAI();
+        }
         public override void AI()
         {
             NPC.TargetClosest();
             Player player = Main.player[NPC.target];
 
-            Rope1Start = NPC.Center + new Vector2(-25, 0);
-            Rope2Start = NPC.Center + new Vector2(25, 0);
+            if(NPC.Distance(player.Center)<LookRange *2)
+            NPC.velocity = Vector2.Lerp(NPC.velocity, NPC.DirectionTo(player.Center + Vector2.UnitY * -60+ Vector2.UnitY* MathF.Sin(Timer*0.1f)*10)* NPC.velocity.Length(), 0.65f);
 
-            Line R1 = new Line(Rope1Start, Offset1);
-            Line R2 = new Line(Rope2Start, Offset2);
 
-            if (Rope1 == null)
-            {
-                Rope1 = new VerletChain(18, 2, Rope1Start);
-
-                Vector2[] pt = R1.GetPointsAlongLine(18);
-
-                for (int k = 0; k < pt.Length - 1; k++)
-                {
-                    Rope1.Positions[k] = pt[k];
-                }
-            }
-
-            if (Rope2 == null)
-            {
-                Rope2 = new VerletChain(18, 2, Rope2Start);
-
-                Vector2[] pt = R2.GetPointsAlongLine(18);
-
-                for (int k = 0; k < pt.Length - 1; k++)
-                {
-                    Rope2.Positions[k] = pt[k];
-                }
-            }
-
-            if (Rope1 != null)
-            {
-                Rope1.Positions[^1] = Offset1;
-                Rope1.Simulate(Vector2.Zero, Rope1Start, 1.5f, 1f, collideWithTiles: false);
-            }
-
-            if (Rope2 != null)
-            {
-                Rope2.Positions[^1] = Offset2;
-                Rope2.Simulate(Vector2.Zero, Rope2Start, 1.5f, 1f, collideWithTiles: false);
-            }
 
             if (player.Center.Distance(NPC.Center) < LookRange)
             {
-                LookDir = (player.Center - NPC.Center).ToRotation();
-                if (drawPos != NPC.Center + new Vector2(15, 0).RotatedBy(LookDir))
-                {
-                    drawPos = Vector2.Lerp(drawPos, NPC.Center + new Vector2(15, 0).RotatedBy(LookDir), 0.5f);
-                }
-                else
-                {
-                    drawPos = NPC.Center + new Vector2(15, 0).RotatedBy(LookDir);
-                }
+                LookDir = NPC.DirectionTo(player.Center);
+
             }
             else
             {
-                drawPos = Vector2.Lerp(drawPos, NPC.Center, 0.8f);
+                LookDir = Vector2.Lerp(LookDir, NPC.velocity, 0.2f);
             }
-
+            LookDir = Vector2.Clamp(LookDir, new Vector2(0), new Vector2(5));
             TextureRotationOffset -= 0.02f;
+            UpdateHands();
+            Timer++;
         }
+
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
@@ -321,5 +214,64 @@ namespace DestroyerTest.Content.Entities
         {
 
         }
+
+        PixelLayer IDrawPixelated.PixelLayer => PixelLayer.AboveTiles;
+        void IDrawPixelated.DrawPixelated(SpriteBatch spriteBatch)
+        {
+
+        }
+        #region Drawcode
+        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            DrawCrystalCore(spriteBatch, NPC.Center, Color.Black, Color.DarkRed, TextureRotationOffset, 1.5f);
+            return true;
+        }
+
+        public void DrawCrystalCore(SpriteBatch spriteBatch, Vector2 Center, Color colorIN, Color colorOUT, float TextureRotationOffset, float Scale = 1f)
+        {
+            DTUtils Utility = new DTUtils();
+            float OuterScale = Scale * 0.12f;
+
+            spriteBatch.UseBlendState(BlendState.NonPremultiplied);
+
+            var tex = Core.AssetReferences.Content.Particles.Cyclone2.Asset.Value;
+            var drawPos = Center - Main.screenPosition;
+            Vector2 Origin = tex.Size() / 2;
+            Main.spriteBatch.Draw(tex, drawPos, null, colorOUT, TextureRotationOffset,
+                Origin,
+                OuterScale,
+                SpriteEffects.None,
+                1f
+            );
+
+            tex = Core.AssetReferences.Content.Extras.FeatheredCircle.Asset.Value;
+            Main.spriteBatch.Draw(tex, drawPos, null, colorIN,
+                0f,
+                tex.Size() / 2f,
+                Scale,
+                SpriteEffects.None,
+                1f
+            );
+
+            spriteBatch.ResetToDefault();
+        }
+
+        public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+
+            if (Ropes is not null)
+                for (int i = 0; i < Ropes.Count; i++)
+                {
+                    RenderRope(screenPos, Color.Black, Ropes[i]);
+                    float rot = Ropes[i].Positions[^1].AngleFrom(Ropes[i].Positions[Ropes[i].Positions.Length - 2]);
+
+                    SpriteEffects flip = i % 2 != 0 ? SpriteEffects.None : SpriteEffects.FlipVertically;
+                    Main.EntitySpriteDraw(Hand.Value, Ropes[i].Positions[^1] - screenPos, null, Color.Black, rot, Hand.Value.Size() / 2, 1, flip);
+                }
+
+            Vector2 DrawPos = NPC.Center - screenPos;
+            Main.EntitySpriteDraw(DTAssetLib.Star(3).Value, DrawPos + LookDir * 10, null, Color.Red, 0f, DTAssetLib.Star(3).Value.Size() / 2, new Vector2(0.8f, 1.2f), SpriteEffects.None, 0f);
+        }
+        #endregion
     }
 }

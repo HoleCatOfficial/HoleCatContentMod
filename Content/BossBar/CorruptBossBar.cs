@@ -28,7 +28,7 @@ namespace DestroyerTest.Content.BossBar
         {
 
             NPC npc = Main.npc[info.npcIndexToAimAt];
-            if (!npc.active)
+            if (npc.type == ModContent.NPCType<NightmareRoseBoss>())
                 return false;
 
             bossHeadIndex = npc.GetBossHeadTextureIndex();

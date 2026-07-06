@@ -15,7 +15,7 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Particles
 {
-    public class TenebrousCloudParticle : BaseParticle<PointGlow>, IDrawPixelated
+    public class TenebrousCloudParticle : BaseParticle<PointGlow>
     {
         public int Lifetime = 0;
         public int MaxLifetime = 120;
@@ -70,9 +70,9 @@ namespace DestroyerTest.Content.Particles
 
         public override PixelLayer DefaultPixelLayer => PixelLayer.AboveProjectiles;
 
-        PixelLayer IDrawPixelated.PixelLayer => DefaultPixelLayer;
-        bool IDrawPixelated.ShouldDrawPixelated => true;
-        void IDrawPixelated.DrawPixelated(SpriteBatch spriteBatch)
+    
+      
+        public override void Draw(ref ParticleRendererSettings settings, SpriteBatch spriteBatch)
         {
             Texture2D texture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/TenebrousCloudParticle").Value;
             Vector2 origin = texture.Size() / 2f;
@@ -80,7 +80,6 @@ namespace DestroyerTest.Content.Particles
             var Cap = spriteBatch.Capture();
 
             spriteBatch.UseBlendState(BlendState.AlphaBlend);
-            Cap.TransformMatrix = PixelationSystem.PixelationMatrix;
 
             spriteBatch.End();
             spriteBatch.Begin(Cap);
@@ -89,10 +88,6 @@ namespace DestroyerTest.Content.Particles
             spriteBatch.Draw(texture, position - Main.screenPosition, null, color with { A = 0 } * Opacity, Rotation, origin, scale, SpriteEffects.None, 0f);
 
             spriteBatch.ResetToDefault();
-        }
-        public override void Draw(ref ParticleRendererSettings settings, SpriteBatch spriteBatch)
-        {
-
         }
     }
 }

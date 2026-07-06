@@ -15,31 +15,38 @@ namespace DestroyerTest.Content.MeleeWeapons
 
         public override void SetStaticDefaults()
         {
+            ItemID.Sets.SkipsInitialUseSound[Item.type] = true;
             ItemID.Sets.Spears[Item.type] = true;
         }
 
         public override void SetDefaults()
         {
             Item.width = 160;
-            Item.height = 610;
-            Item.value = Item.sellPrice(gold: 2, silver: 50);
-            Item.rare = ModContent.RarityType<ShimmeringRarity>();
-            Item.useTime = 30;
-            Item.useAnimation = 30;
+            Item.height = 160;
+
+            Item.rare = ItemRarityID.Pink;
+            Item.value = Item.sellPrice(silver: 10);
+
             Item.useStyle = ItemUseStyleID.Shoot;
-            Item.knockBack = 70;
+            Item.useAnimation = 25;
+            Item.useTime = 25;
+            Item.UseSound = DTAssetLib.SwordSounds.EvilSwing;
             Item.autoReuse = true;
-            Item.damage = 1200;
-            Item.DamageType = DamageClass.Melee;
-            Item.noMelee = true;
+
+            Item.damage = 300;
+            Item.knockBack = 6.5f;
             Item.noUseGraphic = true;
+            Item.DamageType = ModContent.GetInstance<DTTrueMeleeClass>();
+            Item.noMelee = true;
+
+            Item.shootSpeed = 3.7f;
             Item.shoot = ModContent.ProjectileType<BlackDiamondProjectile>();
-            Item.channel = true;
         }
 
-        public override bool CanUseItem(Player player)
+        public override bool? UseItem(Player player)
         {
-            return player.ownedProjectileCounts[Item.shoot] < 1;
+            SoundEngine.PlaySound(Item.UseSound, player.Center);
+            return base.UseItem(player);
         }
 
         public override void AddRecipes()

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Tomat.Terraria.ModLoader.Sdk/2.1.0">
 
 
 	<!-- Import tModLoader mod properties -->
@@ -8,8 +8,35 @@
 	<PropertyGroup>
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 	</PropertyGroup>
-	
 	<ItemGroup>
+	  <None Include=".git\config" />
+	  <None Include=".git\description" />
+	  <None Include=".git\HEAD" />
+	  <None Include=".git\hooks\applypatch-msg.sample" />
+	  <None Include=".git\hooks\commit-msg.sample" />
+	  <None Include=".git\hooks\fsmonitor-watchman.sample" />
+	  <None Include=".git\hooks\post-update.sample" />
+	  <None Include=".git\hooks\pre-applypatch.sample" />
+	  <None Include=".git\hooks\pre-commit.sample" />
+	  <None Include=".git\hooks\pre-merge-commit.sample" />
+	  <None Include=".git\hooks\pre-push.sample" />
+	  <None Include=".git\hooks\pre-rebase.sample" />
+	  <None Include=".git\hooks\pre-receive.sample" />
+	  <None Include=".git\hooks\prepare-commit-msg.sample" />
+	  <None Include=".git\hooks\push-to-checkout.sample" />
+	  <None Include=".git\hooks\sendemail-validate.sample" />
+	  <None Include=".git\hooks\update.sample" />
+	  <None Include=".git\index" />
+	  <None Include=".git\info\exclude" />
+	  <None Include=".git\logs\HEAD" />
+	  <None Include=".git\logs\refs\heads\main" />
+	  <None Include=".git\logs\refs\remotes\origin\HEAD" />
+	  <None Include=".git\objects\pack\pack-19128be9b76a19f19d9a8d25fa18060480c25247.idx" />
+	  <None Include=".git\objects\pack\pack-19128be9b76a19f19d9a8d25fa18060480c25247.pack" />
+	  <None Include=".git\objects\pack\pack-19128be9b76a19f19d9a8d25fa18060480c25247.rev" />
+	  <None Include=".git\packed-refs" />
+	  <None Include=".git\refs\heads\main" />
+	  <None Include=".git\refs\remotes\origin\HEAD" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -46,6 +73,11 @@
 		<Reference Include="BreadLibrary">
 			<HintPath>lib\BreadLibrary.dll</HintPath>
 		</Reference>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include=".git\objects\info\" />
+	  <Folder Include=".git\refs\tags\" />
 	</ItemGroup>
 	
 	

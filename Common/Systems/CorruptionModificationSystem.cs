@@ -52,21 +52,21 @@ namespace DestroyerTest.Common.Systems
             return spawnInfo.Player.ZoneCorrupt && DTFlags.TenebrisCanSpawnInWorldEvilBiome == true;
         }
 
-        public static bool GenTenebris = false;
+        public static bool Gen = false;
         public override void PostUpdateWorld()
         {
             
-            if (!GenTenebris  && DTFlags.TenebrisCanSpawnInWorldEvilBiome)
+            if (!Gen && DTFlags.TenebrisCanSpawnInWorldEvilBiome)
             {
-                Generation();
-                GenTenebris  = true;
+                //Generation();
+                Gen = true;
             }
             
 
             /*
             if (JustPressed(Keys.F))
             {
-                GenTenebris eration();
+                Generation();
             }
             */
 
@@ -84,25 +84,25 @@ namespace DestroyerTest.Common.Systems
                 Tile T = Framing.GetTileSafely(P);
                 if (T.HasTile && T.TileType == TileID.Ebonstone)
                 {
-                    WorldGen .OreRunner(P.X, P.Y, 32, 12, (ushort)ModContent.TileType<Tile_ShadeParticleBlock>());
+                    WorldGen.OreRunner(P.X, P.Y, 32, 12, (ushort)ModContent.TileType<Tile_ShadeParticleBlock>());
                 }
             }
         }
 
         public override void ClearWorld()
         {
-            GenTenebris = false;
+            Gen = false;
         }
         public override void SaveWorldData(TagCompound tag)
         {
-            tag["GenTenebris"] = GenTenebris;
+            tag.Add("Gen", Gen);
         }
 
         public override void LoadWorldData(TagCompound tag)
         {
-            if (tag.ContainsKey("GenTenebris"))
+            if (tag.ContainsKey("Gen"));
             {
-                GenTenebris  = tag.GetBool("GenTenebris");
+                Gen = tag.GetBool("Gen");
             }
         }
     }

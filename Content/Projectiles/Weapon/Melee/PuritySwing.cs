@@ -1,5 +1,6 @@
 ﻿
 using BreadLibrary.Core.Graphics.Particles;
+using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
@@ -163,7 +164,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 offset = MathHelper.ToRadians(135f);
             }
 
-            Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+            Main.spriteBatch.UseBlendState(BlendState.Additive);
             Main.EntitySpriteDraw(DTAssetLib.CutSwing.Value, Projectile.Center - Main.screenPosition, null, (MainColor * Projectile.Opacity) * SlOpacity, Projectile.rotation + offset, DTAssetLib.CutSwing.Value.Size() / 2, Scl * Projectile.scale, effects, 0);
             //Main.spriteBatch.Draw(DTAssetLib.FireSwingHighlight.Value, Projectile.Center - Main.screenPosition, null, ((Color.Red * 0.5f) * Projectile.Opacity) * SlOpacity, Projectile.rotation - 0.2f, DTAssetLib.FireSwingHighlight.Value.Size() / 2, Scl * Projectile.scale, effects, 0);
             Opus.ReturnToDefaultDrawing(Main.spriteBatch);

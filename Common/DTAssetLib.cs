@@ -224,9 +224,6 @@ namespace DestroyerTest.Common
         public static Asset<Texture2D> DreamDiscHighlight = ModContent.Request<Texture2D>($"{ExtrasPath}/DreamDiscMainBlades", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> BlessedNodeLaserTelegraph = ModContent.Request<Texture2D>($"{ExtrasPath}/BlessedNodeLaserTelegraph", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> ConstitutionStarTrail = ModContent.Request<Texture2D>($"{ExtrasPath}/ConstitutionStarTrail", AssetRequestMode.AsyncLoad);
-
-        public static Asset<Texture2D> TenebrisCorruptionWorldIcon = ModContent.Request<Texture2D>($"{ExtrasPath}/TenebrisWorldIcon", AssetRequestMode.AsyncLoad);
-
         public struct HallowedBar
         {
             public static Asset<Texture2D> Back = ModContent.Request<Texture2D>($"{ExtrasPath}/HallowedBarBack", AssetRequestMode.AsyncLoad);
@@ -427,15 +424,6 @@ namespace DestroyerTest.Common
             public static SoundStyle ArrowImpact = new SoundStyle($"{Path}/StellarBowArrowImpact", 4);
             public static SoundStyle Shoot = new SoundStyle($"{Path}/StellarBowShoot", 3);
             public static SoundStyle EmpoweredShoot = new SoundStyle($"{Path}/StellarBowEmpoweredShoot", 3);
-        }
-
-
-        public struct FrigidFenzim
-        {
-            public static string Path = $"{AudioPath}/FrigidFenzim";
-            public static SoundStyle TileHit = new SoundStyle($"{Path}/TileImpact");
-            public static SoundStyle Hit = new SoundStyle($"{Path}/Impact");
-            public static SoundStyle Crit = new SoundStyle($"{Path}/CritImpact");
         }
 
         public struct TileMine

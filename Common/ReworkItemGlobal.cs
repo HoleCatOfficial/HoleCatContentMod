@@ -8,7 +8,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
-using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -21,9 +20,6 @@ namespace DestroyerTest.Common
         public override void Load()
         {
             TextureAssets.Item[ItemID.BloodButcherer] = ModContent.Request<Texture2D>(VanillaOverridePath + "/BloodButcherer");
-            TextureAssets.Item[ItemID.Zenith] = TextureAssets.Projectile[ProjectileID.FinalFractal] = ModContent.Request<Texture2D>(VanillaOverridePath + "/Zenith");
-
-
         }
         public override bool InstancePerEntity => true;
 

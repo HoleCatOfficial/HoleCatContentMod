@@ -69,8 +69,6 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 }
             }
 
-            float r = SwordLine.GetLineRotation + MathHelper.PiOver2;
-
             if (npc.realLife == -1)
             {
                 if (!npc.active)
@@ -80,13 +78,6 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                     Owner.GetModPlayer<ScreenshakePlayer>().screenshakeTimer = 20;
                     SoundEngine.PlaySound(DTAssetLib.Impacts.MagicHit with { MaxInstances = 0, PitchVariance = 0.6f }, npc.Center);
                     SoundEngine.PlaySound(DTAssetLib.ScholarShieldSounds.Break with { MaxInstances = 0, PitchVariance = 0.6f, Volume = 0.65f }, npc.Center);
-                    Spark FX = new();
-                    FX.PrepareSpark(npc.Center, r.ToRotationVector2() * 0.001f, r, ColorLib.Rift, 1f, false, 60, SparkDrawMode.Additive, 8f);
-                    ParticleEngine.Particles.Add(FX);
-                    Spark FX2 = new();
-                    FX2.PrepareSpark(npc.Center, r.ToRotationVector2() * 0.001f, r, Color.White, 0.75f, false, 60, SparkDrawMode.Additive, 6f);
-                    ParticleEngine.Particles.Add(FX2);
-
                     Opus.RadialSpreadProjectile(ModContent.ProjectileType<SolarTrail>(), 8, npc.Center, Projectile.damage / 10, 4, 0.25f);
                     Opus.RadialSpreadProjectile(ModContent.ProjectileType<SolarTrail>(), 12, npc.Center, Projectile.damage / 15, 4, 0.5f);
                     Opus.RadialSpreadProjectile(ModContent.ProjectileType<SolarTrail>(), 16, npc.Center, Projectile.damage / 20, 4, 0.75f);
@@ -109,13 +100,6 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                     Owner.GetModPlayer<ScreenshakePlayer>().screenshakeTimer = 20;
                     SoundEngine.PlaySound(DTAssetLib.Impacts.MagicHit with { MaxInstances = 0, PitchVariance = 0.6f }, parent.Center);
                     SoundEngine.PlaySound(DTAssetLib.ScholarShieldSounds.Break with { MaxInstances = 0, PitchVariance = 0.6f, Volume = 0.65f }, parent.Center);
-                    Spark FX = new();
-                    FX.PrepareSpark(parent.Center, r.ToRotationVector2() * 0.001f, r, ColorLib.Rift, 1f, false, 60, SparkDrawMode.Additive, 8f);
-                    ParticleEngine.Particles.Add(FX);
-                    Spark FX2 = new();
-                    FX2.PrepareSpark(parent.Center, r.ToRotationVector2() * 0.001f, r, Color.White, 0.75f, false, 60, SparkDrawMode.Additive, 6f);
-                    ParticleEngine.Particles.Add(FX2);
-
                     Opus.RadialSpreadProjectile(ModContent.ProjectileType<SolarTrail>(), 8, parent.Center, Projectile.damage / 10, 4, 0.25f);
                     Opus.RadialSpreadProjectile(ModContent.ProjectileType<SolarTrail>(), 12, parent.Center, Projectile.damage / 15, 4, 0.5f);
                     Opus.RadialSpreadProjectile(ModContent.ProjectileType<SolarTrail>(), 16, parent.Center, Projectile.damage / 20, 4, 0.75f);

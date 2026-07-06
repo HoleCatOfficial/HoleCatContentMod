@@ -13,102 +13,107 @@ using InnoVault.PRT;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Particles.Orchestrated;
 using BreadLibrary.Core.Graphics.Particles;
-using DestroyerTest.Content.Projectiles.ParentClasses;
-using BreadLibrary.Core.Utilities;
-using OpusLib.Content.Helpers;
-using DestroyerTest.Content.Dusts;
-using OpusLib.Content.Particles;
-using System;
-using BreadLibrary.Core.Graphics.Pixelation;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 {
-    public class BlackDiamondProjectile : BaseSpearProjectile
+    public class BlackDiamondProjectile : ModProjectile
     {
+        // Define the range of the Spear Projectile. These are overridable properties, in case you'll want to make a class inheriting from this one.
+        protected virtual float HoldoutRangeMin => 24f;
+        protected virtual float HoldoutRangeMax => 60f;
 
         public override void SetDefaults()
         {
-            Projectile.width = 124;
-            Projectile.height = 124;
-            MinExtension = 0.6f;
-            MaxExtension = 185f;
-            Projectile.DamageType = ModContent.GetInstance<DTTrueMeleeClass>();
-            Projectile.friendly = true;
-            Projectile.penetrate = -1;
-            Projectile.tileCollide = false;
-            Projectile.ignoreWater = true;
-            Projectile.timeLeft = 40;
-            Projectile.usesLocalNPCImmunity = true;
-            Projectile.localNPCHitCooldown = 20;
-            ExtraLength = 110f;
-            JabSound = DTAssetLib.SwordSounds.SpinWave with { PitchVariance = 0.6f };
+            Projectile.CloneDefaults(ProjectileID.Spear); // Clone the default values for a vanilla spear. Spear specific values set for width, height, aiStyle, friendly, penetrate, tileCollide, scale, hide, ownerHitCheck, and melee.
         }
 
         public float ShineOpacity = 0f;
-        Vector2 DPos;
-        Color SC;
-        public override void DrawUnder()
+        public override bool PreDraw(ref Color lightColor)
         {
-            DPos = Projectile.Center + (new Vector2(110, -110) * Projectile.scale).RotatedBy(Projectile.rotation);
-            Main.EntitySpriteDraw(DTAssetLib.SparkSmoothThin.Value, DPos - Main.screenPosition, null, SC with { A = 0 } * ShineOpacity * 0.5f, Projectile.rotation + MathHelper.PiOver4, DTAssetLib.SparkSmoothThin.Value.Size() / 2, new Vector2(0.05f, 3.15f), SpriteEffects.None, 0f);
-            Main.EntitySpriteDraw(DTAssetLib.SparkSmoothThin.Value, DPos - Main.screenPosition, null, SC with { A = 0 } * ShineOpacity, Projectile.rotation + MathHelper.PiOver4, DTAssetLib.SparkSmoothThin.Value.Size() / 2, new Vector2(0.03f, 3f), SpriteEffects.None, 0f);
+            Main.EntitySpriteDraw(DTAssetLib.MiscSparkle144.Value, Projectile.Center - Main.screenPosition, null, DTColorUtils.Pastel(ColorLib.TenebrisBlue, 0.5f) with { A = 0 } * ShineOpacity, Projectile.velocity.ToRotation() + MathHelper.PiOver2, DTAssetLib.MiscSparkle144.Value.Size() / 2, new Vector2(1f, 2f), SpriteEffects.None, 0f);
+            return true;
         }
 
-        public override void ExtraEffects()
+        public override bool PreAI()
         {
-            MaxExtension = 185f * Projectile.scale;
-            ShineOpacity = MathHelper.Lerp(0, 1, Utilities.Convert01To010(progress));
-            SC = Color.Lerp(ColorLib.TenebrisBlue, OpusColorUtils.Pastel(ColorLib.TenebrisBlue, 0.3f), Utilities.Convert01To010(progress));
+            Player player = Main.player[Projectile.owner]; // Since we access the owner player instance so much, it's useful to create a helper local variable for this
+            int duration = player.itemAnimationMax; // Define the duration the projectile will exist in frames
+
+            Vector2 d = Main.MouseWorld - player.MountedCenter;
+            player.SetCompositeArmFront(Projectile.active, Player.CompositeArmStretchAmount.ThreeQuarters, d.ToRotation() - MathHelper.PiOver2);
+
             
+
+            player.heldProj = Projectile.whoAmI; // Update the player's held projectile id
+
+            // Reset projectile time left if necessary
+            if (Projectile.timeLeft > duration)
+            {
+                Projectile.timeLeft = duration;
+            }
+
+            //Projectile.velocity = Vector2.Normalize(Projectile.velocity); // Velocity isn't used in this spear implementation, but we use the field to store the spear's attack direction.
+
+            float halfDuration = duration * 0.5f;
+            float progress;
+
+            // Here 'progress' is set to a value that goes from 0.0 to 1.0 and back during the item use animation.
+            if (Projectile.timeLeft < halfDuration)
+            {
+                progress = Projectile.timeLeft / halfDuration;
+                ShineOpacity = MathHelper.Lerp(1f, 0f, progress.Inverse());
+            }
+            else
+            {
+                progress = (duration - Projectile.timeLeft) / halfDuration;
+                ShineOpacity = MathHelper.Lerp(1f, 0f, progress.Inverse());
+            }
+
+            // Move the projectile from the HoldoutRangeMin to the HoldoutRangeMax and back, using SmoothStep for easing the movement
+            Projectile.Center = player.MountedCenter + Vector2.SmoothStep(Projectile.velocity * HoldoutRangeMin, Projectile.velocity * HoldoutRangeMax, progress);
+
+            // Apply proper rotation to the sprite.
+            if (Projectile.spriteDirection == -1)
+            {
+                // If sprite is facing left, rotate 45 degrees
+                Projectile.rotation += MathHelper.PiOver2;
+            }
+            else
+            {
+                // If sprite is facing right, rotate 135 degrees
+                Projectile.rotation += MathHelper.PiOver2;
+            }
+
+
+            //Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
+
+            // Avoid spawning dusts on dedicated servers
             if (!Main.dedServ)
             {
-                
-                Vector2 D = Projectile.rotation.ToRotationVector2() * 1f;
-                Fire F = new Fire();
-                F.PrepareFire(DPos, D, Math.Sign(D.X), 0.1f, SC, Main.rand.NextFloat(0.3f, 0.5f), 60, FireDrawMode.Additive, PixelLayer.AboveTiles);
-                ParticleEngine.BehindProjectiles.Add(F);
+                if (Main.rand.NextBool(3))
+                {
+                    Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.FireworksRGB, Projectile.velocity.X * 2f, Projectile.velocity.Y * 2f, 50, ColorLib.TenebrisBlue, 1f);
+                }
 
-                TenebrousCloudParticle FX = new();
-                FX.Initialize(DPos, D, SC, ShineOpacity, Main.rand.NextFloat(0.1f, 0.2f));
-                ParticleEngine.BehindProjectiles.Add(FX);
-               
+                Dust T = Dust.NewDustPerfect(Projectile.Center, DustID.FireworksRGB, Projectile.velocity * 0.5f, 0, DTColorUtils.Pastel(ColorLib.TenebrisBlue, 0.5f) * ShineOpacity, 1f);
+                T.noGravity = true;
             }
-            
-            if (LodgeCooldown > 0)
-            {
-                LodgeCooldown--;
-            }
+            Projectile.rotation = d.ToRotation();
+
+            return false; // Don't execute vanilla AI.
         }
 
-        public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
-        {
-            /*
-            Rectangle ExtHitbox = Utils.CenteredRectangle(DPos, new Vector2(120, 120));
-            if (ExtHitbox.Intersects(targetHitbox))
-            {
-                return true;
-            }
-            */
-            return base.Colliding(projHitbox, targetHitbox);
-        }
-
-        int LodgeCooldown = 0;
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-
             SoundEngine.PlaySound(DTAssetLib.Impacts.FleshHit with { PitchVariance = 0.2f });
             SoundEngine.PlaySound(DTAssetLib.Impacts.ShortShine with { PitchVariance = 0.2f });
 
             BlackDiamondParticle FX = new();
-            FX.Initiate(target.Center, Projectile.rotation);
+            FX.Initiate(Projectile.Center, Projectile.velocity.ToRotation());
             ParticleEngine.BehindProjectiles.Add(FX);
 
-            if (LodgeCooldown <= 0)
-            {
-                Projectile.NewProjectile(Projectile.GetSource_OnHit(target), Tip, Vector2.Zero, ModContent.ProjectileType<BlackDiamondShard>(), Projectile.damage, 0f, Owner.whoAmI, target.whoAmI, Projectile.rotation + MathHelper.PiOver4);
-                LodgeCooldown = 5;
-            }
-
+      
+            
         }
     }
 }

@@ -2,6 +2,7 @@
 using DestroyerTest.Content.Particles;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using OpusLib.Content.Helpers;
 using System;
 using System.Linq;
@@ -15,6 +16,7 @@ namespace DestroyerTest.Content.Resources
 {
 	public class LifeEcho : ModItem
 	{
+		public int Timer;
 		public override void SetStaticDefaults() {
 			Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(5, 4));
 			ItemID.Sets.AnimatesAsSoul[Item.type] = true;
@@ -23,22 +25,34 @@ namespace DestroyerTest.Content.Resources
 		}
 
 		public override void SetDefaults() {
-			Item.width = 18;
-			Item.height = 18;
+			Item.Size = new(45);
 			Item.maxStack = Item.CommonMaxStack;
 			Item.value = 1000;
 			Item.alpha = 100;
 			Item.rare = ItemRarityID.White;
 		}
-
-		public override void PostUpdate() 
+		
+		public override void PostUpdate()	
 		{
-			Lighting.AddLight(Item.Center, Color.WhiteSmoke.ToVector3() * 0.55f * Main.essScale);
 
+			float LightMulti = MathHelper.SmoothStep(0.5f, 3, Item.stack / 60f);
+			Lighting.AddLight(Item.Center, Color.WhiteSmoke.ToVector3() *LightMulti * Main.essScale);
 			PointGlowPreMultiplied FX = new();
-			FX.Initialize(Main.rand.NextVector2FromRectangle(Item.Hitbox), Main.rand.NextVector2Circular(1f, 1f), new Color(184, 228, 242), 0.5f);
-			ParticleEngine.ShaderParticles.Add(FX);
+			var a = Color.Lerp(Color.LightSkyBlue, Color.LightSlateGray, 0.9f);
+			Color color = Color.Lerp(a, Color.LightGreen, MathF.Sin(Timer));
+			Vector2 Velocity = Main.rand.NextVector2Circular(0.1f, 0) - Vector2.UnitY.RotatedBy(MathF.Sin(Timer) * 0.1f)*Main.rand.NextFloat(0.2f, 2);
+
+            FX.Initialize(Item.Center + Main.rand.NextVector2Circular(1f, 1)*2, Velocity, color, 0.75f, 60);
+			ParticleEngine.ShaderParticles.Add(FX, FX.DefaultPixelLayer);
+
+			Timer++;
             
+        }
+		
+        public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
+        {
+			//hide the item so that it just looks like the particle
+			return false;
         }
 	}
 

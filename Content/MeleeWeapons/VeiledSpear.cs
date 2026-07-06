@@ -17,6 +17,7 @@ namespace DestroyerTest.Content.MeleeWeapons
 
         public override void SetStaticDefaults()
         {
+            ItemID.Sets.SkipsInitialUseSound[Item.type] = true;
             ItemID.Sets.Spears[Item.type] = true;
         }
 
@@ -31,6 +32,7 @@ namespace DestroyerTest.Content.MeleeWeapons
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.useAnimation = 25;
             Item.useTime = 25;
+            Item.UseSound = DTAssetLib.SwordSounds.Woosh;
             Item.autoReuse = true;
 
             Item.damage = 240;
@@ -38,18 +40,15 @@ namespace DestroyerTest.Content.MeleeWeapons
             Item.noUseGraphic = true;
             Item.DamageType = DamageClass.Melee;
             Item.noMelee = true;
-            Item.channel = true;
+
+            Item.shootSpeed = 3.7f;
             Item.shoot = ModContent.ProjectileType<VeiledSpearProjectile>();
         }
 
-        public override bool CanUseItem(Player player)
+        public override bool? UseItem(Player player)
         {
-            return player.ownedProjectileCounts[Item.shoot] < 1;
-        }
-
-        public override bool MeleePrefix()
-        {
-            return true;
+            SoundEngine.PlaySound(Item.UseSound, player.Center);
+            return base.UseItem(player);
         }
     }
 

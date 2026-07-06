@@ -44,7 +44,11 @@ namespace DestroyerTest
 {
 	// Please read https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Modding-Guide#mod-skeleton-contents for more information about the various files in a mod.
 	public class DestroyerTestMod : Mod
-	{
+    {
+        public DestroyerTestMod()
+        {
+            MusicAutoloadingEnabled = false;
+        }
         public override object Call(params object[] args)
         {
             if (args is null)
