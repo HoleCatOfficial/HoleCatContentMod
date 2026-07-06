@@ -10,50 +10,42 @@ using Terraria.ModLoader;
 namespace DestroyerTest.Content.MeleeWeapons
 {
     public class DistendedPike : ModItem
+    {
+        public override void SetStaticDefaults()
         {
-            SoundStyle Jab = new SoundStyle($"DestroyerTest/Assets/Audio/HellWeaponDash", 3) {
-				Volume = 1.0f, 
-				Pitch = 0.0f, 
-				PitchVariance = 1f, 
-			}; 
+            ItemID.Sets.Spears[Item.type] = true;
+            ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<Scorn>();
+        }
 
-            public override void SetStaticDefaults() 
-            {
-                ItemID.Sets.SkipsInitialUseSound[Item.type] = true;
-                ItemID.Sets.Spears[Item.type] = true;
-                ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<Scorn>();
-            }
+        public override void SetDefaults()
+        {
+            Item.width = 94;
+            Item.height = 94;
 
-            public override void SetDefaults() {
-                Item.width = 108;
-                Item.height = 106;
+            Item.rare = ModContent.RarityType<PrimalRarity>();
+            Item.value = Item.sellPrice(silver: 10);
 
-                Item.rare = ItemRarityID.Pink;
-                Item.value = Item.sellPrice(silver: 10);
+            Item.useStyle = ItemUseStyleID.Shoot;
+            Item.useAnimation = 30;
+            Item.useTime = 30;
+            Item.autoReuse = true;
 
-                Item.useStyle = ItemUseStyleID.Shoot; 
-                Item.useAnimation = 30; 
-                Item.useTime = 30;
-                Item.UseSound = Jab;
-                Item.autoReuse = true; 
+            Item.damage = 150;
+            Item.knockBack = 3f;
+            Item.noUseGraphic = true;
+            Item.DamageType = DamageClass.Melee;
+            Item.noMelee = true;
+            Item.channel = false;
 
-                Item.damage = 100;
-                Item.knockBack = 6.5f;
-                Item.noUseGraphic = true;
-                Item.DamageType = DamageClass.Melee;
-                Item.noMelee = true;
+            Item.shootSpeed = 3.7f;
+            Item.shoot = ModContent.ProjectileType<DistendedPikeProjectile>();
+        }
 
-                Item.shootSpeed = 3.7f;
-                Item.shoot = ModContent.ProjectileType<DistendedPikeProjectile>(); 
-            }
-
-            public override bool? UseItem(Player player)
-            {
-                SoundEngine.PlaySound(Jab, player.Center);
-                return base.UseItem(player);
-            }
+        public override bool CanUseItem(Player player)
+        {
+            return player.ownedProjectileCounts[Item.shoot] < 1;
+        }
     }
-        
 }
 
 		

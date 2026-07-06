@@ -984,8 +984,8 @@ namespace DestroyerTest.Content.Entities
                 {
                     for (int i = 0; i < Positions.Length; i++)
                     {
-                        Projectile B2 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), Positions[i], Main.rand.NextVector2Circular(3, 3), type, (int)(Damage * 0.75f), 0);
-                        B2.timeLeft = 180;
+						Projectile B2 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), Positions[i], Main.rand.NextVector2Circular(3, 3), ModContent.ProjectileType<IchorBlister>(), (int)(Damage * 0.75f), 0);
+						B2.timeLeft = 180;
                     }
                 }
                 NumBombs++;

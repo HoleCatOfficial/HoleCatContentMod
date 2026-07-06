@@ -1,10 +1,13 @@
 ﻿using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
+using DestroyerTest.Common;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Particles.Stellar;
 using InnoVault.PRT;
 using Microsoft.Xna.Framework;
+using OpusLib.Content.Helpers;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -103,9 +106,18 @@ namespace DestroyerTest.Content.Buffs
         {
             if (lifeRegenDebuff)
             {
-                Player.maxRunSpeed *= 0.666666666666666f;
-                Player.runAcceleration *= 0.333333333333333f;
-                Player.wingAccRunSpeed *= 0.75f;
+                if (Player.HeldItem.type == ItemID.LifeCrystal || Player.HeldItem.type == ItemID.LifeFruit)
+                {
+                    Player.maxRunSpeed *= 0.333333333333f;
+                    Player.runAcceleration *= 0.75f;
+                    Player.wingAccRunSpeed *= 0.9f;
+                }
+                else
+                {
+                    Player.maxRunSpeed *= 0.666666666666666f;
+                    Player.runAcceleration *= 0.333333333333333f;
+                    Player.wingAccRunSpeed *= 0.75f;
+                }
             }
         }
         public override void UpdateBadLifeRegen()
@@ -113,7 +125,14 @@ namespace DestroyerTest.Content.Buffs
             if (lifeRegenDebuff)
             {
                 Player.lifeRegenTime = 0;
-                Player.lifeRegen -= 90;
+                if (Player.HeldItem.type == ItemID.LifeCrystal || Player.HeldItem.type == ItemID.LifeFruit)
+                {
+                    Player.lifeRegen -= 50;
+                }
+                else
+                {
+                    Player.lifeRegen -= 90;
+                }
             }
         }
 
@@ -122,6 +141,23 @@ namespace DestroyerTest.Content.Buffs
             if (lifeRegenDebuff)
             {
                 damageSource.CustomReason = NetworkText.FromFormattable("{0} succumbed to hopelessness", Player.name);
+            }
+        }
+    }
+
+    public class DefilementTooltip : GlobalItem
+    {
+        public override bool InstancePerEntity => true;
+
+        public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
+        {
+            if (item.type == ItemID.LifeCrystal || item.type == ItemID.LifeFruit)
+            {
+                TooltipLine line = new(Mod, "DefilementTooltip", "This item drastically reduces the effects of Defilement when held.")
+                {
+                    OverrideColor = OpusColorUtils.Pastel(ColorLib.WretchedGradient(), 0.4f)
+                };
+                tooltips.Add(line);
             }
         }
     }

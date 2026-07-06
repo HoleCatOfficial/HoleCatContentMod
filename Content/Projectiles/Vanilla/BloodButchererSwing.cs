@@ -1,4 +1,5 @@
-﻿using DestroyerTest.Common;
+﻿using BreadLibrary.Core.Graphics.Particles;
+using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
@@ -30,8 +31,11 @@ namespace DestroyerTest.Content.Projectiles.Vanilla
             base.SetDefaults();
             Projectile.width = 60;
             Projectile.height = 64;
-            SweepColor = Color.Red;
-            SwingSpeed = 0.08f;
+            SweepColor = Color.DarkRed;
+            SweepHighlightColor = Color.OrangeRed;
+            WaitTimeMultiplier = 0.6f;
+            SwingSpeed = 0.18f;
+            UsesDefaultSweepFX = true;
 
             Glowmask = ModContent.Request<Texture2D>($"{Texture}_Glow");
         }
@@ -42,42 +46,29 @@ namespace DestroyerTest.Content.Projectiles.Vanilla
         {
             //npc.AddBuff(BuffID.BloodButcherer, 300);
 
+            SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/Corpse/FleshBombExplode") with { PitchVariance = 1.0f, MaxInstances = 0 });
+
+            SimpleExplosionParticle Explosion = new();
+            Explosion.Prepare(npc.Center, Vector2.Zero, Color.Red, 0.1f, 0.05f, 1f, BlendState.Additive);
+            ParticleEngine.BehindProjectiles.Add(Explosion);
+            SimpleExplosionParticle Explosion2 = new();
+            Explosion2.Prepare(npc.Center, Vector2.Zero, Color.Red * 0.5f, 0.1f, 0.05f, 0.4f, BlendState.Additive);
+            ParticleEngine.BehindProjectiles.Add(Explosion2);
+
+            Opus.RadialSpreadDustRandom(DustID.Blood, 10, npc.Center, 0, default, 1f, 8);
+            Opus.RadialSpreadDustRandom(DustID.FireworksRGB, 10, npc.Center, 0, Color.Red, 1f, 8);
+            Opus.RadialSpreadDustRandom(DustID.Blood, 6, npc.Center, 0, default, 0.75f, 6);
+
+
             Vector2 toOwner = npc.Center - Owner.Center;
             toOwner.Normalize();
             Projectile.NewProjectile(Projectile.GetSource_OnHit(npc), npc.Center + (toOwner.RotatedByRandom(0.4f) * -3), Vector2.Zero, ProjectileID.BloodButcherer, Projectile.damage / 8, 0f, Owner.whoAmI);
-            SoundEngine.PlaySound(DTAssetLib.SwordSounds.LightGoreCut with { MaxInstances = 0, Pitch = -0.6f, PitchVariance = 1f, Volume = 0.6f }, npc.Center);
+            //SoundEngine.PlaySound(DTAssetLib.SwordSounds.LightGoreCut with { MaxInstances = 0, Pitch = -0.6f, PitchVariance = 1f, Volume = 0.6f }, npc.Center);
         }
-
-        private void DrawSweepFX2()
-        {
-            Player player = Main.player[Projectile.owner];
-            var Tex = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/CircularSlash").Value;
-            float TexBasedMod = (Projectile.Size.Length() * 0.015f);
-            float rOffset = 0f;
-
-            SpriteEffects FX = SpriteEffects.None;
-
-            if (LastSwing == 1)
-            {
-                FX = SpriteEffects.FlipHorizontally;
-                rOffset = MathHelper.PiOver2;
-            }
-            else
-            {
-                FX = SpriteEffects.None;
-                rOffset = 0f;
-            }
-
-            Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.NonPremultiplied, SpriteSortMode.Immediate);
-
-            Main.EntitySpriteDraw(Tex, player.MountedCenter - Main.screenPosition, null, (Color.Red * SweepOpacity) * 0.5f, (Projectile.rotation + MathHelper.PiOver4) + rOffset, Tex.Size() / 2, (AdjustedScale * TexBasedMod), FX);
-
-
-            Opus.ReturnToDefaultDrawing(Main.spriteBatch);
-        }
+       
         public override void DrawUnderBlade()
         {
-            DrawSweepFX2();
+
         }
         public override void DrawOverBlade()
         {

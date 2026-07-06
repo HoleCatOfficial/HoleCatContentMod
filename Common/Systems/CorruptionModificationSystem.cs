@@ -52,14 +52,14 @@ namespace DestroyerTest.Common.Systems
             return spawnInfo.Player.ZoneCorrupt && DTFlags.TenebrisCanSpawnInWorldEvilBiome == true;
         }
 
-        public static bool Gen = false;
+        public static bool GenTenebris = false;
         public override void PostUpdateWorld()
         {
             
-            if (!Gen && DTFlags.TenebrisCanSpawnInWorldEvilBiome)
+            if (!GenTenebris && DTFlags.TenebrisCanSpawnInWorldEvilBiome)
             {
                 //Generation();
-                Gen = true;
+                GenTenebris = true;
             }
             
 
@@ -91,18 +91,18 @@ namespace DestroyerTest.Common.Systems
 
         public override void ClearWorld()
         {
-            Gen = false;
+            GenTenebris = false;
         }
         public override void SaveWorldData(TagCompound tag)
         {
-            tag.Add("Gen", Gen);
+            tag.Add("GenTenebris", GenTenebris);
         }
 
         public override void LoadWorldData(TagCompound tag)
         {
-            if (tag.ContainsKey("Gen"));
+            if (tag.ContainsKey("GenTenebris"))
             {
-                Gen = tag.GetBool("Gen");
+                GenTenebris = tag.GetBool("GenTenebris");
             }
         }
     }

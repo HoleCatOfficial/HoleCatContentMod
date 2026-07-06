@@ -32,6 +32,7 @@ namespace DestroyerTest.Content.CheatItems
         public override bool? UseItem(Player player)
         {
             DTFlags.TenebrisCanSpawnInWorldEvilBiome = true;
+            CorruptionModificationSystem.GenTenebris = false;
             return true;
         }
     }

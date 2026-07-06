@@ -3514,7 +3514,11 @@ Item_IchorNodeRelic: {
 
 DistendedPike: {
 	DisplayName: Distended Pike
-	Tooltip: ""
+	Tooltip:
+		'''
+		Shoots a crystal at full extension.
+		Both the crystal and the Pike ignore 17 points of enemy defense.
+		'''
 }
 
 Item_RootedDirtWall: {
@@ -4217,7 +4221,11 @@ Item_BlessingAltar: {
 
 BlackDiamond: {
 	DisplayName: Black Diamond
-	Tooltip: ""
+	Tooltip:
+		'''
+		True Melee hits embed a shining crystal in the enemy that explodes for 100% of the weapon's damage.
+		'The most opulent weapon one can make from filthy shade matter.'
+		'''
 }
 
 RiftHypersabre: {
@@ -4837,5 +4845,10 @@ KenomaiciCrystal: {
 
 Item_DreamstoneBrick: {
 	DisplayName: Item_ Dreamstone Brick
+	Tooltip: ""
+}
+
+FrigidFenzim: {
+	DisplayName: Frigid Fenzim
 	Tooltip: ""
 }

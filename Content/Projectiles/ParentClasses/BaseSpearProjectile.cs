@@ -49,6 +49,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             Projectile.penetrate = -1;
             Projectile.tileCollide = false;
             Projectile.DamageType = DamageClass.Melee;
+            Projectile.ownerHitCheck = true;
         }
 
         public virtual void OnSpawnExtras()
@@ -95,7 +96,8 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         public Vector2 targetAngle = Vector2.Zero;
         public int AITimer = 0;
 
-
+        bool OnStartFlag = false;
+        bool OnExtendFlag = false;
         public override void AI()
         {
             //Dust.NewDustPerfect(ShotPos(), DustID.Torch);
@@ -141,7 +143,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
         public float RotationManualOffset = 0f;
         public Vector2 Draworigin;
-
+        float Off = 0;
         public override bool PreDraw(ref Color lightColor)
         {
             SpriteEffects effects;
@@ -152,19 +154,21 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             {
                 //Draworigin = new Vector2(0, texture.Height);
                 effects = SpriteEffects.None;
+                Off = 0;
             }
             else
             {
                 //Draworigin = new Vector2(0, texture.Height);
-                effects = SpriteEffects.None;
+                effects = SpriteEffects.FlipHorizontally;
+                Off = MathHelper.PiOver2;
             }
 
             DrawUnder();
 
-            Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, null, Projectile.GetAlpha(lightColor) * Projectile.Opacity, (Projectile.rotation) + RotationManualOffset, texture.Size() / 2, Projectile.scale, effects, 0);
+            Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, null, Projectile.GetAlpha(lightColor) * Projectile.Opacity, (Projectile.rotation + Off) + RotationManualOffset, texture.Size() / 2, Projectile.scale, effects, 0);
             if (Glowmask != null)
             {
-                Main.EntitySpriteDraw(Glowmask.Value, Projectile.Center - Main.screenPosition, null, Color.White * Projectile.Opacity, (Projectile.rotation) + RotationManualOffset, texture.Size() / 2, Projectile.scale, effects, 0);
+                Main.EntitySpriteDraw(Glowmask.Value, Projectile.Center - Main.screenPosition, null, Color.White * Projectile.Opacity, (Projectile.rotation + Off) + RotationManualOffset, texture.Size() / 2, Projectile.scale, effects, 0);
             }
 
             DrawOver();
@@ -172,27 +176,33 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         }
 
 
+        public Vector2 Tip;
+        public float ExtraLength = 0f;
+
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
-            Vector2 start = Projectile.Center - (Projectile.Size / 2).RotatedBy(Projectile.rotation);
-            Vector2 end = start + Projectile.rotation.ToRotationVector2() * ((Projectile.Size.Length()) * Projectile.scale);
+            Vector2 start = Projectile.Center /*- (new Vector2(-Projectile.width / 2, Projectile.height / 2)).RotatedBy(Projectile.rotation)*/;
+            Vector2 end = start + (Projectile.rotation - MathHelper.PiOver4).ToRotationVector2() * (new Vector2(-((Projectile.width / 2) + ExtraLength), ((Projectile.height / 2) + ExtraLength)).Length()) * Projectile.scale;
+            //Dust.NewDustPerfect(end, DustID.WhiteTorch).noGravity = true;
+            Tip = end;
             float collisionPoint = 0f;
             return Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), start, end, 15f * Projectile.scale, ref collisionPoint);
         }
 
         public override bool? CanHitNPC(NPC target)
         {
-            return true;
+            return null;
         }
 
         public bool FirstHalf = true;
+        public float progress;
         public void SetPosition()
         {
             Projectile.ai[0]++;
             Owner.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, Projectile.rotation + MathHelper.Pi + MathHelper.PiOver4);
             
 
-            float progress = Projectile.ai[0] / (30f / (Owner.GetTotalAttackSpeed(DamageClass.Melee))); // 20 = duration of thrust
+            progress = Projectile.ai[0] / (30f / (Owner.GetTotalAttackSpeed(DamageClass.Melee))); // 20 = duration of thrust
             progress = Saturate(progress);
 
             /*
@@ -206,12 +216,18 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
             float CurrentExtension = MathHelper.Lerp(MinExtension, MaxExtension, bump);
 
-            if (CurrentExtension == MinExtension && FirstHalf)
+            if (progress < 0.5f)
             {
-                SoundEngine.PlaySound(JabSound, Projectile.Center);
+                if (!OnStartFlag)
+                {
+                    SoundEngine.PlaySound(JabSound, Projectile.Center);
+                    OnStart();
+                    OnStartFlag = true;
+                    OnExtendFlag = false;
+                }
                 OnStart();
             }
-            if (CurrentExtension == MaxExtension)
+            if (progress >= 0.5f)
             {
                 SoundEngine.PlaySound(JabSound, Projectile.Center);
                 AtFullExtension();
@@ -220,7 +236,12 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
             if (CurrentExtension == MinExtension && !FirstHalf)
             {
-                FirstHalf = true;
+                if (!OnExtendFlag)
+                {
+                    AtFullExtension();
+                    OnExtendFlag = true;
+                    OnStartFlag = false;
+                }
             }
             //Projectile.Center = Owner.MountedCenter + new Vector2(CurrentExtension, 0f).RotatedBy(targetAngle.ToRotation());
             Projectile.Center = Owner.GetFrontHandPosition(Player.CompositeArmStretchAmount.None, targetAngle.ToRotation()) + new Vector2(CurrentExtension, 0f).RotatedBy(targetAngle.ToRotation());
