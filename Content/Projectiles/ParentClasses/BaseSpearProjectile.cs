@@ -229,20 +229,15 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             }
             if (progress >= 0.5f)
             {
-                SoundEngine.PlaySound(JabSound, Projectile.Center);
-                AtFullExtension();
-                FirstHalf = false;
-            }
-
-            if (CurrentExtension == MinExtension && !FirstHalf)
-            {
                 if (!OnExtendFlag)
                 {
                     AtFullExtension();
-                    OnExtendFlag = true;
                     OnStartFlag = false;
+                    OnExtendFlag = true;
                 }
+              
             }
+
             //Projectile.Center = Owner.MountedCenter + new Vector2(CurrentExtension, 0f).RotatedBy(targetAngle.ToRotation());
             Projectile.Center = Owner.GetFrontHandPosition(Player.CompositeArmStretchAmount.None, targetAngle.ToRotation()) + new Vector2(CurrentExtension, 0f).RotatedBy(targetAngle.ToRotation());
 

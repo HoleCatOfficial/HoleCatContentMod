@@ -228,37 +228,61 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
                 && !Player.mount.Active
                 && EntryWindow <= 0;
         }
+    }
 
-        private Asset<Texture2D> Djed => ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/DjedDash");
-        public override void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
+    public class SpiritFlameDashDrawLayer : PlayerDrawLayer
+    {
+        public override Position GetDefaultPosition() => PlayerDrawLayers.AfterLastVanillaLayer;
+
+        public override bool GetDefaultVisibility(PlayerDrawSet drawInfo)
         {
-            if (drawInfo.shadow == 0)
+            return (drawInfo.drawPlayer.TryGetModPlayer<SpiritFlameDash>(out var Dash) && Dash.DashTimer > 0) || (drawInfo.drawPlayer.TryGetModPlayer<LilliesDash>(out var Dash2) && Dash2.DashTimer > 0);
+        }
+        private Asset<Texture2D> Djed => ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/DjedDash");
+
+        DrawData Data(PlayerDrawSet Set)
+        {
+            Player Player = Set.drawPlayer;
+            if (Player.TryGetModPlayer<SpiritFlameDash>(out var Dash))
             {
-                if (Player.direction == 1 && DashTimer > 0)
+                if (Player.direction == 1 && Dash.DashTimer > 0)
                 {
-                    Main.EntitySpriteDraw(
+                    return new DrawData(
                         Djed.Value,
                         Player.Center - Main.screenPosition + new Vector2(12, Player.gfxOffY),
                         null,
-                        new Color(255, 255, 255) * ((float)DashTimer / DashDuration),
+                        new Color(255, 255, 255) * ((float)Dash.DashTimer / (float)SpiritFlameDash.DashDuration),
                         Player.bodyRotation,
                         Djed.Value.Size() / 2f,
                         1f,
                         SpriteEffects.None,
                         0);
                 }
-                if (Player.direction == -1 && DashTimer > 0)
+                if (Player.direction == -1 && Dash.DashTimer > 0)
                 {
-                    Main.EntitySpriteDraw(
+                    return new DrawData(
                         Djed.Value,
                         Player.Center - Main.screenPosition + new Vector2(-12, Player.gfxOffY),
                         null,
-                        new Color(255, 255, 255) * ((float)DashTimer / DashDuration),
+                        new Color(255, 255, 255) * ((float)Dash.DashTimer / (float)SpiritFlameDash.DashDuration),
                         Player.bodyRotation,
                         Djed.Value.Size() / 2f,
                         1f,
                         SpriteEffects.FlipHorizontally,
                         0);
+                }
+            }
+
+            return new DrawData();
+        }
+
+        protected override void Draw(ref PlayerDrawSet drawInfo)
+        {
+            if (drawInfo.drawPlayer.TryGetModPlayer<SpiritFlameDash>(out SpiritFlameDash modPlayer))
+            {
+                if (modPlayer.DashTimer > 0)
+                {
+                    Main.EntitySpriteDraw(Data(drawInfo));
                 }
             }
         }
