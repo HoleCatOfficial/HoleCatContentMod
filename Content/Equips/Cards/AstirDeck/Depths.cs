@@ -1,6 +1,10 @@
-﻿using DestroyerTest.Common;
+﻿using BreadLibrary.Core.Graphics.Particles;
+using BreadLibrary.Core.Graphics.Pixelation;
+using DestroyerTest.Common;
+using DestroyerTest.Content.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using ReLogic.Utilities;
 using System;
 using System.Collections.Generic;
@@ -14,6 +18,7 @@ using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
+
 namespace DestroyerTest.Content.Equips.Cards.AstirDeck
 {
     public class Depths : ModItem
@@ -25,7 +30,7 @@ namespace DestroyerTest.Content.Equips.Cards.AstirDeck
             Item.maxStack = 1;
             Item.value = 1;
             Item.accessory = true;
-            Item.rare = ItemRarityID.Blue;
+            Item.rare = ItemRarityID.Orange;
         }
 
         public override void UpdateAccessory(Player player, bool hideVisual)
@@ -45,7 +50,7 @@ namespace DestroyerTest.Content.Equips.Cards.AstirDeck
         {
             if ((item.type == ItemID.IronCrate || item.type == ItemID.WoodenCrate))
             {
-                itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<Depths>(), 1, 1, 1));
+                itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<Depths>(), 10, 1, 1));
             }
         }
     }
@@ -82,6 +87,8 @@ namespace DestroyerTest.Content.Equips.Cards.AstirDeck
         public override void PostUpdateEquips()
         {
             Heat = (int)MathHelper.Clamp(Heat, 0, MaxHeat);
+
+            float Prog = (float)Heat / (float)MaxHeat;
             if (Active)
             {
                 int ty = ModContent.ProjectileType<DepthsAudioProjectile>();
@@ -96,6 +103,7 @@ namespace DestroyerTest.Content.Equips.Cards.AstirDeck
                     if (CanPlaySound)
                     {
                         SoundEngine.PlaySound(Ping);
+                        Opus.RadialSpreadDust(DustID.Torch, 16, Player.MountedCenter, 50, default, 3f, 2f);
                         CanPlaySound = false;
                     }
                 }
@@ -136,8 +144,35 @@ namespace DestroyerTest.Content.Equips.Cards.AstirDeck
                     }
                 }
 
-                curDMGBonus = MathHelper.Lerp(0f, MaxDMGBonus, (float)Heat / (float)MaxHeat);
-                DefenseLoss = (int)MathHelper.Lerp(0, MaxDefenseLoss, (float)Heat / (float)MaxHeat);
+                int Amount = (int)MathHelper.Lerp(0, 4, Prog);
+
+                for (int i = 0; i < Amount; i++)
+                {
+                    if (Main.rand.NextBool(6))
+                    {
+                        //Gore.NewGore(Entity.GetSource_FromThis(), , Main.rand.Next(11, 14), 0.8f);
+                        var P = new TintableSmoke();
+                        P.Create(Main.rand.NextVector2FromRectangle(Player.Hitbox), Main.rand.NextVector2Circular(0.5f, 0.5f), new Color(57, 57, 57), 0.4f, 0.7f, 80, PixelLayer.AbovePlayer, false);
+                        ParticleEngine.Particles.Add(P, PixelLayer.AbovePlayer);
+
+                        Dust D = Dust.NewDustDirect(Player.position, Player.width, Player.height, DustID.Torch, Main.rand.NextFloat(-1f, 1f), Main.rand.NextFloat(-1f, 1f), 50, Scale: 2f);
+                        D.noGravity = true;
+                    }
+
+                    if(Main.rand.NextBool(20))
+                    {
+                        Spark S = new();
+                        Color C = Color.Lerp(Color.Orange, Color.OrangeRed, Main.rand.NextFloat(1.01f));
+                        S.PrepareSpark(Main.rand.NextVector2FromRectangle(Player.Hitbox), new Vector2(Main.rand.NextFloat(-1f, 1f), -4), 0f, C, 0.2f, false, 20, SparkDrawMode.Additive, 2f);
+                        ParticleEngine.Particles.Add(S);
+                        S.TrackPlayer[Player.whoAmI] = true;
+
+                        
+                    }
+                }
+
+                curDMGBonus = MathHelper.Lerp(0f, MaxDMGBonus, Prog);
+                DefenseLoss = (int)MathHelper.Lerp(0, MaxDefenseLoss, Prog);
 
                 Player.statDefense -= DefenseLoss;
             }
@@ -146,7 +181,7 @@ namespace DestroyerTest.Content.Equips.Cards.AstirDeck
         }
 
         int DefenseLoss = 0;
-        int MaxDefenseLoss = 15;
+        int MaxDefenseLoss = 8;
 
         float MaxDMGBonus = 0.6f;
         float curDMGBonus = 0f;

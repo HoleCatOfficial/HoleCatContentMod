@@ -601,6 +601,8 @@ namespace DestroyerTest.Content.Entities
                 Mod.Logger.Info($"Current State: {CurrentAttack}");
             }
 
+         
+
             Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/UnfinishedBoss");
 
             ManageShakeTimers();

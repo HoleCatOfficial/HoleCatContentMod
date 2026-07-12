@@ -1221,6 +1221,27 @@ namespace DestroyerTest.Common
 
             npc.velocity = offset * speed;
         }
+
+        public static void SmoothMoveToPoint(this Projectile projectile, Vector2 targetPosition, float maxSpeed)
+        {
+            Vector2 offset = targetPosition - projectile.Center;
+            float distance = offset.Length();
+
+            if (distance <= 0.001f)
+            {
+                projectile.velocity = Vector2.Zero;
+                return;
+            }
+
+            offset.Normalize();
+
+            // Progress from 0 (at target) to 1 (far away)
+            float progress = MathHelper.Clamp(distance / maxSpeed, 0f, 1f);
+
+            float speed = MathHelper.SmoothStep(0f, maxSpeed, progress);
+
+            projectile.velocity = offset * speed;
+        }
     }
 
     public class DTPlayerUtil : ModPlayer

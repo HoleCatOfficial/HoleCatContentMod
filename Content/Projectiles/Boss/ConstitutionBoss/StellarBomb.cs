@@ -40,8 +40,19 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
         public override void PostDraw(Color lightColor)
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
+            var TG = ModContent.Request<Texture2D>(DTAssetLib.ExtrasPath + "/DirectionalTelegraph");
+            float Len = MathHelper.Lerp(0, 1f, LifetimeCompletion);
             Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-            Main.EntitySpriteDraw(DTAssetLib.FlatStar.Value, Projectile.Center - Main.screenPosition, null, ColorLib.StellarFireGradientLooping(), Projectile.rotation + 4.1f, DTAssetLib.FlatStar.Value.Size() / 2, WarnScale, SpriteEffects.None, 0f);
+            var Offsets = Opus.GetEquidistantVectors(5, Projectile.Center, 80, 0f);
+
+            for (int i = 0; i < Offsets.Length; i++)
+            {
+                Vector2 D = Offsets[i] - Projectile.Center;
+                
+
+                Main.EntitySpriteDraw(TG.Value, Projectile.Center - Main.screenPosition, null, ColorLib.StellarFire3, D.ToRotation(), new Vector2(0, TG.Height() / 2), new Vector2(Len, 0.5f), SpriteEffects.None, 0f);
+            }
+
             Opus.ReturnToDefaultDrawing(spriteBatch);
             DTUtils.DrawCrystalCore(spriteBatch, Projectile.Center, Color.White, MainColor, TextureRotationOffset, 1f);
         }

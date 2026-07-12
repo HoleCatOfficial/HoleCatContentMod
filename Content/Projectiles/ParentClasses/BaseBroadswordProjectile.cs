@@ -145,11 +145,16 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         public float DownPoint = 0f;
         public virtual float ScaleMult { get; set; } = 1f;
         public float AdjustedScale = 0f;
+        public int NPCHitCooldown = 15;
 
         public override void AI()
         {
             AdjustedScale = Owner.GetAdjustedItemScale(Owner.HeldItem) * ScaleMult;
             Projectile.scale = AdjustedScale;
+
+            //Slower swing speed, longer cooldown.
+            //Swing speed gets slower the lower the number is.
+            HitCooldownGlobal = (int)MathHelper.Lerp(5, 15, SwingSpeed / 1f);
 
             AITimer++;
             if (HitCooldown > 0)
@@ -466,7 +471,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            HitCooldown = HitCooldownGlobal;
+            HitCooldown = target.realLife == -1 ? HitCooldownGlobal : 15; 
 
             if (CurrentState != State.Wait)
             {

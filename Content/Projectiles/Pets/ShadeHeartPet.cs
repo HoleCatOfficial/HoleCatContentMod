@@ -188,7 +188,7 @@ namespace DestroyerTest.Content.Projectiles.Pets
                 {
                     SoundEngine.PlaySound(Heartbeat, Projectile.Center);
                 }
-                //Opus.RadialSpreadDustRandom(DustID.TintableDustLighted, 3, Projectile.Center, 170, ColorLib.TenebrisMagenta, 0.4f, 0.2f);
+                Opus.RadialSpreadDustRandom(DustID.TintableDustLighted, 3, Projectile.Center, 200, ColorLib.TenebrisMagenta * 0.5f, 0.4f, 0.5f);
                 LightAmount = 0.01f;
             }
 

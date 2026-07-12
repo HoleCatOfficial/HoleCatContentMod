@@ -106,11 +106,11 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
                 ParticleEngine.BehindProjectiles.Add(Glow);
 
                 Fire fire = new Fire();
-                fire.PrepareFire(dustPos, Vector2.Zero, Main.rand.Next(1, 3), 0.1f, ColorLib.CursedFlames * 0.75f, 1f, 100, FireDrawMode.Additive, PixelLayer.AboveNPCs);
+                fire.PrepareFire(dustPos, Vector2.Zero, DTUtils.RandomDirection(2), 0.1f, ColorLib.CursedFlames * 0.75f, 0.2f, 100, FireDrawMode.Additive, PixelLayer.AboveNPCs);
                 ParticleEngine.BehindProjectiles.Add(fire);
 
                 Fire fire2 = new Fire();
-                fire2.PrepareFire(dustPos, Vector2.Zero, Main.rand.Next(1, 3), 0.1f, ColorLib.CursedFlames, 1f, 100, FireDrawMode.Additive, PixelLayer.AboveNPCs);
+                fire2.PrepareFire(dustPos, Vector2.Zero, DTUtils.RandomDirection(2), 0.1f, ColorLib.CursedFlames, 0.5f, 100, FireDrawMode.Additive, PixelLayer.AboveNPCs);
                 ParticleEngine.BehindProjectiles.Add(fire2);
             }
 

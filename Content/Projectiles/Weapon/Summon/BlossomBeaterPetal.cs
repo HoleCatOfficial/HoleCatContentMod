@@ -55,7 +55,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
 
             Vector2 origin = new Vector2(projectileTexture.Width / 2f, frameHeight / 2f);
 
-            Main.EntitySpriteDraw(projectileTexture, Projectile.Center - Main.screenPosition, frame, Projectile.GetAlpha(lightColor), Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
+            Main.EntitySpriteDraw(projectileTexture, Projectile.Center - Main.screenPosition, frame, Color.White, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
             return false;
         }
 

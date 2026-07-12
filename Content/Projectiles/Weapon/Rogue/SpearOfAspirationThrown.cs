@@ -11,6 +11,8 @@ using Terraria.Audio;
 using InnoVault.PRT;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Dusts;
+using BreadLibrary.Core.Graphics.Particles;
+using System.Collections.Generic;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 {
@@ -18,7 +20,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
     {
         public override void SetStaticDefaults()
         {
-
+            ProjectileID.Sets.TrailCacheLength[Type] = 20;
+            ProjectileID.Sets.TrailingMode[Type] = 3;
         }
         public override void SetDefaults()
         {
@@ -31,12 +34,41 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             Projectile.timeLeft = 600;
             Projectile.ignoreWater = true;
             Projectile.tileCollide = true;
+            Projectile.ContinuouslyUpdateDamageStats = true;
+            AdditiveDamage = 0;
+            OSE = new List<SpriteEffects>();
+            OR = new List<float>();
         }
 
+        public int AdditiveDamage = 0;
         public override void AI()
         {
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
+            SpriteEffects Fx = Projectile.direction == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
 
+            float Rot = Projectile.direction == 1 ? Projectile.velocity.ToRotation() + MathHelper.PiOver4 : Projectile.velocity.ToRotation() - MathHelper.PiOver4;
+            OSE.Add(Fx);
+            OR.Add(Rot);
+
+            Projectile.ai[0]++;
+
+            if (Projectile.ai[0] % 2 == 0)
+            {
+                Spark R = new Spark();
+                R.PrepareSpark(Projectile.Center + new Vector2(5, 5).RotatedBy(Projectile.rotation), (Projectile.velocity * -0.1f).RotatedBy(-0.05f), Projectile.rotation + MathHelper.PiOver4, Main.DiscoColor, 0.5f, false, 30, SparkDrawMode.Additive, 4f);
+                ParticleEngine.BehindProjectiles.Add(R);
+                Spark L = new Spark();
+                L.PrepareSpark(Projectile.Center + new Vector2(-5, -5).RotatedBy(Projectile.rotation), (Projectile.velocity * -0.1f).RotatedBy(0.05f), Projectile.rotation + MathHelper.PiOver4, Main.DiscoColor, 0.5f, false, 30, SparkDrawMode.Additive, 4f);
+                ParticleEngine.BehindProjectiles.Add(L);
+            }
+
+            
+            if (AdditiveDamage < 50)
+            {
+                AdditiveDamage++;
+            }
+                
+            
             if (Main.rand.NextBool(3))
             {
                 /*
@@ -47,12 +79,21 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
                 //PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticle>(), Projectile.Center, Projectile.velocity * 0.5f, Color.White, 1f);
             }
 
+            Projectile.damage = Projectile.originalDamage + AdditiveDamage;
 
         }
+
+        List<SpriteEffects> OSE;
+        List<float> OR;
         public override bool PreDraw(ref Color lightColor)
         {
+            //Projectile.DrawDirectionalAfterimages(Main.spriteBatch, TextureAssets.Projectile[Type].Value, Color.White, OSE.ToArray(), OR.ToArray(), 1f, true);
+            //Projectile.DrawAfterimagesWithRotOffset(Main.spriteBatch, Color.White, 1f, true, RotOffset: MathHelper.PiOver4, shrink: false);
+
             Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-            Opus.DrawProjectileShadowsRotating(Projectile, 8, Color.White, 0.2f);
+            
+
+            Opus.DrawProjectileShadowsRotating(Projectile, 4, Color.White, 0.2f);
             Opus.ReturnToDefaultDrawing(Main.spriteBatch);
 
             Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, TextureAssets.Projectile[Projectile.type].Value.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
@@ -61,6 +102,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
+            
             DTUtils.GenericSparkleEffect(target.Center);
         }
 

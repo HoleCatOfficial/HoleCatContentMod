@@ -31,7 +31,7 @@ namespace DestroyerTest.Asset.Menu.V5
             }
         }
 
-        private static readonly string TexPath = DTUtils.NoTexture;
+        private static readonly string TexPath = "DestroyerTest/Assets/Textures/Backgrounds/NoTexture";
         public override int ChooseCloseTexture(ref float scale, ref double parallax, ref float a, ref float b) => BackgroundTextureLoader.GetBackgroundSlot(TexPath);
         public override int ChooseFarTexture() => BackgroundTextureLoader.GetBackgroundSlot(TexPath);
         public override int ChooseMiddleTexture() => BackgroundTextureLoader.GetBackgroundSlot(TexPath);

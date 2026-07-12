@@ -63,7 +63,8 @@ namespace DestroyerTest.Content.Particles
 
         public override void Draw(ref ParticleRendererSettings settings, SpriteBatch spritebatch)
         {
-            Opus.StartSpriteBatchPixelated(spritebatch, BlendState.AlphaBlend, SpriteSortMode.Immediate); 
+            Opus.StartSpriteBatchPixelated(spritebatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
+            spritebatch.Draw(Tex.Value, position - Main.screenPosition, null, C with { A = 0 } * 0.25f, Rotation, Tex.Size() / 2, scale * 1.7f, SpriteEffects.None, 0f);
             spritebatch.Draw(Tex.Value, position - Main.screenPosition, null, C with { A = 0 }, Rotation, Tex.Size() / 2, scale, SpriteEffects.None, 0f);
             spritebatch.ResetToDefault();
         }

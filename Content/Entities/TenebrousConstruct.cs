@@ -29,6 +29,7 @@ using Terraria.Cinematics;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
 using UtfUnknown.Core.Models.SingleByte.Finnish;
@@ -103,6 +104,9 @@ namespace DestroyerTest.Content.Entities
             MaxInstances = 0
         };
 
+        public static List<string> FightDialogue;
+        public readonly int NumFightDialogueLines = 21;
+
         public override void SetDefaults()
         {
             NPC.width = 32;
@@ -119,6 +123,13 @@ namespace DestroyerTest.Content.Entities
             NPC.noTileCollide = true;
             NPC.knockBackResist = 0.0f;
             NPC.boss = true;
+
+            FightDialogue = new List<string>();
+
+            for (int i = 0; i < NumFightDialogueLines - 1; i++)
+            {
+                FightDialogue.Add(Language.GetTextValue($"Mods.DestroyerTest.NPCs.TenebrousConstruct.FightDialogue{i}"));
+            }
         }
 
         public override bool CheckActive()
@@ -195,6 +206,21 @@ namespace DestroyerTest.Content.Entities
         public int LanceCount = 0;
 
         public bool RoseAlive;
+        bool[] DisplayedDialogue = new bool[21];
+        int CurrentDialogue = 0;
+
+        void ControlDialogue()
+        {
+            float Prog = ((float)NPC.life / (float)NPC.lifeMax).Inverse();
+            CurrentDialogue = (int)MathHelper.Lerp(0, NumFightDialogueLines - 1, Prog);
+
+            if (!DisplayedDialogue[CurrentDialogue])
+            {
+                Main.NewText(FightDialogue[CurrentDialogue]);
+                DisplayedDialogue[CurrentDialogue] = true;
+            }
+        }
+
         public override void AI()
         {
             NPC.TargetClosest(faceTarget: true);
@@ -208,6 +234,8 @@ namespace DestroyerTest.Content.Entities
             direction.Normalize();
 
             WingXScale = Opus.Sine(0f, 0.8f, 0.08f);
+
+            ControlDialogue();
 
             if (Main.rand.NextBool(12))
             {
@@ -224,6 +252,9 @@ namespace DestroyerTest.Content.Entities
                 NPC.dontTakeDamage = false;
                 
             }
+
+            
+
 
             Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/UnfinishedBoss");
 

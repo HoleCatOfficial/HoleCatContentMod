@@ -67,7 +67,7 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
             }
             if(player.TryGetModPlayer<LilliesDash>(out LilliesDash Dash))
             {
-                Dash.Active = true;
+                //Dash.Active = true;
             }
         }
         

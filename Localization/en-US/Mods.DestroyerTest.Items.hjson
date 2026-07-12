@@ -3993,7 +3993,7 @@ Dreampoon: {
 }
 
 SpearOfAspiration: {
-	Tooltip: ""
+	Tooltip: Deals more damage to far away enemies.
 	DisplayName: Spear Of Aspiration
 }
 
@@ -4258,7 +4258,7 @@ BlossomBeater: {
 	Tooltip:
 		'''
 		Summons an overgrown gun that floats near you and fires at enemies.
-		Each shot consumes one bullet, and converts bullets into cursed flame bullets (this effect can be toggled in configs).
+		Each shot consumes one bullet, and converts bullets into Defilement Bullets (this effect can be toggled in configs).
 		They will not attack if the Blossom Beater is not in your inventory, or if you are out of bullets.
 		Each summon takes two minion slots.
 		'''
@@ -4844,11 +4844,21 @@ KenomaiciCrystal: {
 }
 
 Item_DreamstoneBrick: {
-	DisplayName: Item_ Dreamstone Brick
+	DisplayName: Dreamstone Brick
 	Tooltip: ""
 }
 
 FrigidFenzim: {
 	DisplayName: Frigid Fenzim
 	Tooltip: ""
+}
+
+Pristine: {
+	DisplayName: Pristine
+	Tooltip:
+		'''
+		Summons a miniature icy halberd to defend you.
+		The halberd deals summon damage, but is not counted as a minion, and does not consume minion slots.
+		The halberd's contact damage starts at 40 and scales with summon damage.
+		'''
 }

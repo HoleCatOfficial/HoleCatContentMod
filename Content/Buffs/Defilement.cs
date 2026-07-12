@@ -54,11 +54,13 @@ namespace DestroyerTest.Content.Buffs
         {
             if (lifeRegenDebuff)
             {
+
+                Lighting.AddLight(npc.Center, ColorLib.Wretched4.ToVector3() * 0.75f);
                 Vector2 p1 = Main.rand.NextVector2FromRectangle(Utils.CenteredRectangle(npc.Center, npc.Size));
                 Vector2 d = npc.Center - p1;
                 d.Normalize();
 
-                var P = DamnationParticle.Create(p1, new Vector2(Main.rand.NextFloat(-2f, 2f), Main.rand.NextFloat(-0.2f, 0.2f)), Main.rand.NextFloat(0.2f, 1.4f), 60, PixelLayer.AboveNPCs);
+                var P = DamnationParticle.Create(p1, new Vector2(Main.rand.NextFloat(-0.5f, 0.5f), Main.rand.NextFloat(-0.2f, 0.2f)), Main.rand.NextFloat(0.2f, 1.4f), 60, PixelLayer.AboveNPCs);
                 ParticleEngine.ShaderParticles.Add(P);
             }
             base.AI(npc);
@@ -91,6 +93,9 @@ namespace DestroyerTest.Content.Buffs
         {
             if (lifeRegenDebuff)
             {
+
+                Lighting.AddLight(Player.MountedCenter, ColorLib.Wretched4.ToVector3() * 0.75f);
+
                 Vector2 p1 = Main.rand.NextVector2FromRectangle(Utils.CenteredRectangle(Player.Center, Player.Size));
                 Vector2 d = Player.Center - p1;
                 d.Normalize();

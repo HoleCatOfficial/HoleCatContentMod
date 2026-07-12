@@ -24,14 +24,16 @@ namespace DestroyerTest.Content.RogueItems
 			Item.width = 56;
 			Item.height = 56;
 			Item.maxStack = 1;
-			Item.UseSound = new SoundStyle("DestroyerTest/Assets/Audio/MCTrident", 2) with { MaxInstances = 0, PitchVariance = 0.2f };
-			Item.useAnimation = 30;
+            Item.UseSound = new SoundStyle("DestroyerTest/Assets/Audio/MCTrident", 2) with { MaxInstances = 0, PitchVariance = 0.2f };
+
+
+            Item.useAnimation = 30;
 			Item.useTime = 30;
 			Item.noUseGraphic = true;
 			Item.noMelee = true;
 			Item.value = Item.buyPrice(0, 0, 20, 0);
 			Item.rare = ModContent.RarityType<VesperRarity>();
-			Item.damage = 10;
+			Item.damage = 24;
 			Item.autoReuse = true;
 			Item.DamageType = ModContent.GetInstance<DTRogueClass>();
         }

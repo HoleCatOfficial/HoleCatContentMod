@@ -98,7 +98,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
             }
 
             ArmorShaderData DumbassShader = GameShaders.Armor.GetSecondaryShader(Main.GetProjectileDesiredShader(Projectile), Main.player[Projectile.owner]);
-            DumbassShader.Apply(Projectile);
+            if (DumbassShader != null)
+            {
+                DumbassShader.Apply(Projectile);
+            }
 
             RenderRope(Main.screenPosition, Projectile.GetAlpha(lightColor));
 
@@ -108,8 +111,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
                 Opus.DrawProjectileShadowsRotating(Projectile, Opus.Sine(2f, 5.3f), ColorLib.CursedFlames with { A = 0}, 0.06f);
             }
 
-            
-            DumbassShader.Apply(Projectile);
+            if (DumbassShader != null)
+            {
+                DumbassShader.Apply(Projectile);
+            }
 
             Main.EntitySpriteDraw(PT, Projectile.Center - Main.screenPosition, null, Projectile.GetAlpha(lightColor), Projectile.rotation, PT.Size() / 2, Projectile.scale, FX);
             Main.EntitySpriteDraw(GT.Value, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, GT.Value.Size() / 2, Projectile.scale, FX);
@@ -423,7 +428,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
 
                     if (Config.MinionAmmoReplace)
                     {
-                        projToShoot = ProjectileID.CursedBullet;
+                        projToShoot = ModContent.ProjectileType<BBDefileBullet>();
                     }
                     else
                     {
@@ -464,14 +469,14 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
                             {
                                 if (!HoleCat)
                                 {
-                                    Spark Spark = new Spark();
-                                    Spark.PrepareSpark(Muzzle, Vel.RotatedByRandom(0.1f), 0f, ColorLib.CursedFlames, 0.25f, false, 30, SparkDrawMode.Additive);
+                                    LerpingSpark Spark = new LerpingSpark();
+                                    Spark.PrepareSpark(Muzzle, Vel.RotatedByRandom(0.1f), 0f, ColorLib.WretchedColorMap, 0.25f, false, 60, SparkDrawMode.Additive);
                                     ParticleEngine.BehindProjectiles.Add(Spark);
                                 }
                                 else
                                 {
                                     LerpingSpark Spark = new LerpingSpark();
-                                    Spark.PrepareSpark(Muzzle, Vel.RotatedByRandom(0.1f), 0f, ColorLib.HoleCatFireColormap, 0.25f, false, 30, SparkDrawMode.Additive);
+                                    Spark.PrepareSpark(Muzzle, Vel.RotatedByRandom(0.1f), 0f, ColorLib.HoleCatFireColormap, 0.25f, false, 60, SparkDrawMode.Additive);
                                     ParticleEngine.BehindProjectiles.Add(Spark);
                                 }
                             }

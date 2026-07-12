@@ -233,7 +233,28 @@ DarkArchmage: {
 
 TenebrousConstruct: {
 	DisplayName: Tenebrous Construct
-	BestiaryEntry1: ""
+	BestiaryEntry1: An early defector of the Shade World to Mother Darkness's side, this deceitful construct sacrifcied its humanity for immportality and power.
+	FightDialogue0: Long ago, our worlds were not too different.
+	FightDialogue1: By now, our world has long lost its name. You call it ‘the shade world’. I call it Home.
+	FightDialogue2: I and my kind lived a simple life, much like yours.
+	FightDialogue3: We farmed. We played. We fought. We changed.
+	FightDialogue4: Such glorified idiocy masquerades as a proper and just existence.
+	FightDialogue5: Thankfully, descending from the heavens was our saviour.
+	FightDialogue6: SHE razed our statues. SHE brought a bitter, eternal winter to Home. SHE elevated us to sentience by stripping all of our primitive nonsense away.
+	FightDialogue7: Those who did not fight were not hurt, and I was among the earliest defectors of my people.
+	FightDialogue8: My eagerness proved a valuable asset.
+	FightDialogue9: I watched my people fall in droves at HER hand, trying to protect what remained of our past.
+	FightDialogue10: What fools they were. They were blind, and could not see that the future lay with Mother Darkness, as we had all come to call her.
+	FightDialogue11: What I lost in flesh, I gained in power. The less like my people I looked, the more she appreciated my presence.
+	FightDialogue12: Before long, I was among her most-tolerated presences.
+	FightDialogue13: While the rest of my people starved and froze out in the never-ending nighttime, I stayed in the palace, where I lived lavishly as Mother Darkness’s errand doer.
+	FightDialogue14: Life had struck a nice balance, if I do say so.
+	FightDialogue15: But then HE arrived.
+	FightDialogue16: She bragged about her pet constantly. Everywhere she went, he went with her.
+	FightDialogue17: He looked persistently miserable, and had to be bundled up in coats to not freeze to death.
+	FightDialogue18: What was not as welcome was his disappearance.
+	FightDialogue19: Of course, I was selected as the one to locate her pet. Who else would she trust with something so high-profile? Herself? (Her laziness gets on my nerves here and there...)
+	FightDialogue20: Ow Im dead
 }
 
 CorruptSigil.DisplayName: Corrupt Sigil
