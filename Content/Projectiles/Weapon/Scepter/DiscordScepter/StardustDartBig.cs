@@ -78,7 +78,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter.DiscordScepter
 
         public override bool? CanHitNPC(NPC target)
         {
-            return DelayTimer >= 35;
+            return DelayTimer >= 35 && Projectile.ManualCanHitFriendly(target);
         }
 
 

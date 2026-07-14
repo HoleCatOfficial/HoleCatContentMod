@@ -16,7 +16,7 @@ using Terraria.GameInput;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Tiles.Riftplate;
-using DestroyerTest.Content.Resources.Blueprints;
+ 
 using DestroyerTest.Content.Tiles.RiftConfigurator;
 using DestroyerTest.Content.Projectiles.Weapon.Melee;
 using GlowmaskHelper.Content;
@@ -66,9 +66,8 @@ namespace DestroyerTest.Content.RiftArsenal
             CreateRecipe()
             .AddIngredient<Living_Shadow>(20)
             .AddIngredient<Item_Riftplate>(10)
-            .AddIngredient<BroadswordData>(1)
             .AddIngredient<ShadowCircuitry>(3)
-            .AddTile<Tile_RiftConfiguratorWeaponry>()
+            .AddTile<Tile_RiftConfigurator>()
             .Register();
         }
 

@@ -25,7 +25,7 @@ namespace DestroyerTest.Content.RiftBiome.RiftSurfaceResources
             CreateRecipe()
 			.AddIngredient(ItemID.MusicBox)
 			.AddIngredient<Item_RiftClay>(10)
-			.AddTile<Tile_RiftConfiguratorCore>()
+			.AddTile<Tile_RiftConfigurator>()
 			.Register();
         }
     }

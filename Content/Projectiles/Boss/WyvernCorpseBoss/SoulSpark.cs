@@ -68,7 +68,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
 
         public override bool? CanHitNPC(NPC target)
         {
-            return Projectile.timeLeft <= 240;
+            return Projectile.timeLeft <= 240 && Projectile.ManualCanHitFriendly(target);
         }
         public List<Vector2> TrailPositions = new();
         public List<float> TrailRotations = new();
@@ -245,7 +245,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
 
         public override bool? CanHitNPC(NPC target)
         {
-            return Projectile.timeLeft <= 240;
+            return Projectile.timeLeft <= 240 && Projectile.ManualCanHitFriendly(target);
         }
         public List<Vector2> TrailPositions = new();
         public List<float> TrailRotations = new();

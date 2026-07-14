@@ -53,7 +53,7 @@ namespace DestroyerTest.Content.MeleeWeapons
             public override void AddRecipes() {
 			CreateRecipe()
                 .AddIngredient<Item_Riftplate>(12)
-				.AddTile<Tile_RiftConfiguratorWeaponry>()
+				.AddTile<Tile_RiftConfigurator>()
 				.Register();
 		    }
 

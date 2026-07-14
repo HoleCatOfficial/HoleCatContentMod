@@ -31,6 +31,8 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
+            player.GetDamage(DamageClass.Summon) += 0.21f;
+            player.maxMinions += 2;
             if(player.TryGetModPlayer<DjedPillarCharmPlayer>(out DjedPillarCharmPlayer modPlayer))
             {
                 modPlayer.Active = true;

@@ -51,7 +51,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 
         public override bool? CanHitNPC(NPC target)
         {
-            return DelayTimer >= 10;
+            return DelayTimer >= 10 && Projectile.ManualCanHitFriendly(target);
         }
 
         private List<Vector2> trailPoints = new List<Vector2>();

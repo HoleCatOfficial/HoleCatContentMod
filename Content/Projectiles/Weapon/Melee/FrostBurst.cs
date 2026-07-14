@@ -95,7 +95,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
         public override bool? CanHitNPC(NPC target)
         {
-            return DelayTimer >= 20;
+            return DelayTimer >= 20 && Projectile.ManualCanHitFriendly(target);
         }
 
 

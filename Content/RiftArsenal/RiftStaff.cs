@@ -4,7 +4,7 @@ using DestroyerTest.Common;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Weapon.Magic;
 using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.Resources.Blueprints;
+ 
 
 using DestroyerTest.Content.Tiles;
 using DestroyerTest.Content.Tiles.RiftConfigurator;
@@ -69,10 +69,9 @@ namespace DestroyerTest.Content.RiftArsenal
 		public override void AddRecipes()
         {
             CreateRecipe()
-                .AddIngredient<StaffData>()
                 .AddIngredient<ShadowCircuitry>(4)
                 .AddIngredient<Item_Riftplate>(20)
-                .AddTile<Tile_RiftConfiguratorWeaponry>()
+                .AddTile<Tile_RiftConfigurator>()
             .Register();
         }
 	}

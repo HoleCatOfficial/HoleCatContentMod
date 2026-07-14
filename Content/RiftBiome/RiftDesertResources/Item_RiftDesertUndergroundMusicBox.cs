@@ -28,7 +28,7 @@ namespace DestroyerTest.Content.RiftBiome.RiftDesertResources
             CreateRecipe()
                 .AddIngredient(ItemID.MusicBox)
                 .AddIngredient<Item_HardenedRiftSilt>(10)
-                .AddTile<Tile_RiftConfiguratorCore>()
+                .AddTile<Tile_RiftConfigurator>()
                 .Register();
         }
     }

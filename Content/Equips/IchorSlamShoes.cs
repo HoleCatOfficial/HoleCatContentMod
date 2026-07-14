@@ -3,6 +3,7 @@ using DestroyerTest.Common;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Projectiles.player.Accessory;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using System;
@@ -62,7 +63,9 @@ namespace DestroyerTest.Content.Equips
                 checkBox.Height
             );
 
-            if (player.controlDownHold)
+            bool ShiftKey = (Main.keyState.IsKeyDown(Keys.LeftShift) && Main.oldKeyState.IsKeyDown(Keys.LeftShift)) || (Main.keyState.IsKeyDown(Keys.RightShift) && Main.oldKeyState.IsKeyDown(Keys.RightShift));
+
+            if (player.controlDownHold && ShiftKey)
             {
                 if (Sound)
                 {

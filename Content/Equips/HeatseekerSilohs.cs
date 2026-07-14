@@ -4,6 +4,7 @@ using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Projectiles.player.Accessory;
 using DestroyerTest.Content.Resources;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using System;
@@ -139,6 +140,10 @@ namespace DestroyerTest.Content.Equips
 
         int SlamCooldown = 0;
         bool Sound = true;
+        bool HasSlammed = false;
+
+        int SlamCancelTimer = 0;
+        bool F1 = false;
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
@@ -150,12 +155,14 @@ namespace DestroyerTest.Content.Equips
             }
             if (SlamCooldown == 1)
             {
-                SoundEngine.PlaySound(SoundID.Item20, player.Center);
+                SoundEngine.PlaySound(new SoundStyle(DTAssetLib.AudioPath + "/HeatseekerSilohCancelSlam"), player.Center);
                 Sound = true;
+                HasSlammed = false;
+                F1 = false;
             }
 
 
-            // player.maxRunSpeed and player.runAcceleration are usually not set by boots and should not be changed in UpdateAccessory due to the logic order. See ExampleStatBonusAccessoryPlayer.PostUpdateRunSpeeds for an example of adjusting those speed stats.
+            // player.maxRunSpeed and playe r.runAcceleration are usually not set by boots and should not be changed in UpdateAccessory due to the logic order. See ExampleStatBonusAccessoryPlayer.PostUpdateRunSpeeds for an example of adjusting those speed stats.
             // These 2 stat changes are equal to the Lightning Boots
             player.moveSpeed += 0.12f; // Modifies the player movement speed bonus.
             player.accRunSpeed = 12.2f; // Sets the players sprint speed in boots.
@@ -255,7 +262,9 @@ namespace DestroyerTest.Content.Equips
                 checkBox.Height
             );
 
-            if (player.controlDownHold && !player.mount.Active)
+            bool ShiftKey = (Main.keyState.IsKeyDown(Keys.LeftShift) && Main.oldKeyState.IsKeyDown(Keys.LeftShift)) || (Main.keyState.IsKeyDown(Keys.RightShift) && Main.oldKeyState.IsKeyDown(Keys.RightShift));
+
+            if (player.controlDownHold && ShiftKey && !player.mount.Active)
             {
                 if (Sound)
                 {
@@ -267,7 +276,7 @@ namespace DestroyerTest.Content.Equips
                     SlamCooldown = 300;
                     player.controlDownHold = false;
 
-                    player.velocity = Vector2.Zero;
+                    player.velocity = Vector2.Zero; 
 
                     Projectile.NewProjectile(
                         player.GetSource_Accessory(Item),
@@ -278,6 +287,9 @@ namespace DestroyerTest.Content.Equips
                         7,
                         player.whoAmI
                     );
+
+                    
+                    HasSlammed = true;
                 }
                 else
                 {
@@ -288,7 +300,6 @@ namespace DestroyerTest.Content.Equips
                     }
                 }
             }
-
            
 
 

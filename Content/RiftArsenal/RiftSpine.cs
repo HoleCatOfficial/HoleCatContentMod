@@ -50,7 +50,7 @@ namespace DestroyerTest.Content.RiftArsenal
 			CreateRecipe()
 				.AddIngredient<RiftMaker>()
                 .AddIngredient<Item_HeliciteCrystal>(15)
-				.AddTile<Tile_RiftConfiguratorWeaponry>()
+				.AddTile<Tile_RiftConfigurator>()
 				.Register();
 		}
 	}

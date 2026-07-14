@@ -272,7 +272,7 @@ namespace DestroyerTest.Content.Entities
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ShadeParticle>(), 3, 1, 5));
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ShimmeringShards>(), 4, 12, 13));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ShimmeringShards>(), 4, 22, 50));
         }
     }
 }

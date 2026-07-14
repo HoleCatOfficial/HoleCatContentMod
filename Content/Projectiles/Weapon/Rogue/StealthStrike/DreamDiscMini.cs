@@ -39,7 +39,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue.StealthStrike
 
         public override bool? CanHitNPC(NPC target)
         {
-            return DelayTimer >= 10;
+            return DelayTimer >= 10 && Projectile.ManualCanHitFriendly(target);
         }
 
         public override void SetStaticDefaults()

@@ -44,7 +44,7 @@ namespace DestroyerTest.Content.Equips
 			CreateRecipe()
                 .AddIngredient<Living_Shadow>(30)
                 .AddIngredient<Item_Riftplate>(10)
-                .AddTile<Tile_RiftConfiguratorArmory>()
+                .AddTile<Tile_RiftConfigurator>()
                 .Register();
 		}
 	}

@@ -34,7 +34,7 @@ namespace DestroyerTest.Content.Tools
                 .AddIngredient<ShadowCircuitry>(24)
                 .AddIngredient<Item_Riftplate>(20)
                 .AddIngredient<RiftData>(3)
-                .AddTile<Tile_RiftConfiguratorTools>()
+                .AddTile<Tile_RiftConfigurator>()
 				.Register();
 		}
 

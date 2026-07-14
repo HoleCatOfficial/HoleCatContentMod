@@ -57,7 +57,7 @@ namespace DestroyerTest.Content.MeleeWeapons.Flails
 			CreateRecipe()
 				.AddIngredient<Living_Shadow>(14)
                 .AddIngredient(ItemID.Chain, 6)
-				.AddTile<Tile_RiftConfiguratorWeaponry>()
+				.AddTile<Tile_RiftConfigurator>()
 				.Register();
 		}
 	}

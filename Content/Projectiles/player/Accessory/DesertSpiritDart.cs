@@ -82,7 +82,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
 
         public override bool? CanHitNPC(NPC target)
         {
-            return DelayTimer >= 10;
+            return DelayTimer >= 10 && Projectile.ManualCanHitFriendly(target);
         }
 
         public float spiritFireTime;

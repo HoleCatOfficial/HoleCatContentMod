@@ -1,13 +1,9 @@
-Tile_RiftConfiguratorArmory.MapEntry: Rift Configurator Armory
-Tile_RiftConfiguratorCore.MapEntry: Rift Configurator Core
-Tile_RiftConfiguratorWeaponry.MapEntry: Rift Configurator Weaponry
-Tile_RiftConfiguratorTools.MapEntry: Rift Configurator Tools
-Tile_RiftConfiguratorFurniture.MapEntry: Rift Configurator Furniture
+Tile_RiftConfigurator.MapEntry: Rift Configurator Furniture
 Tile_HeliciteCrystal.MapEntry: Helicite Crystal
 
 Tile_RiftCache: {
 	MapEntry1: Rift Cache
-	MapEntry0: Rift Cace
+	MapEntry0: Rift Cache
 }
 
 Tile_VesperOre.MapEntry: Vesper Ore
@@ -23,8 +19,8 @@ Tile_NightmareChest: {
 	MapEntry0: Nightmare Chest
 }
 
-Tile_HekateTalisman1.MapEntry: Mods.DestroyerTest.Tiles.Tile_HekateTalisman1.MapEntry
-Tile_HekateTalisman2.MapEntry: Mods.DestroyerTest.Tiles.Tile_HekateTalisman2.MapEntry
-Tile_HekateTalisman3.MapEntry: Mods.DestroyerTest.Tiles.Tile_HekateTalisman3.MapEntry
-Tile_Dreamstone.MapEntry: Tile_ Dreamstone
-Tile_DreamstoneBrick.MapEntry: Tile_ Dreamstone Brick
+Tile_HekateTalisman1.MapEntry: Protective Talisman
+Tile_HekateTalisman2.MapEntry: Protective Talisman
+Tile_HekateTalisman3.MapEntry: Protective Talisman
+Tile_Dreamstone.MapEntry: Dreamstone
+Tile_DreamstoneBrick.MapEntry: Dreamstone Brick

@@ -1,4 +1,5 @@
 using BreadLibrary.Core.Graphics.Particles;
+using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Particles.Stellar;
 using InnoVault.PRT;
@@ -79,13 +80,13 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
         {
 
             Color BeamColor = ColorLib.StellarFireGradient(LifetimeCompletion);
-            lightColor = BeamColor * Projectile.Opacity;
             SpriteBatch SB = Main.spriteBatch;
 
-            Opus.StartSpriteBatchWithBlending(SB, BlendState.Additive, SpriteSortMode.Immediate);
-            Main.EntitySpriteDraw(DTAssetLib.ConstitutionBeamGlow.Value, Projectile.Center, null, lightColor * 0.8f, Projectile.rotation, new Vector2(Projectile.width / 2, Projectile.height / 2), Projectile.scale * 0.5f, SpriteEffects.None, 0);
-            Opus.ReturnToDefaultDrawing(SB);
-            Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, Projectile.Center - Main.screenPosition, null, lightColor, Projectile.rotation, new Vector2(Projectile.width / 2, Projectile.height / 2), Projectile.scale, SpriteEffects.None, 0);
+            SB.UseBlendState(BlendState.Additive);
+            Main.EntitySpriteDraw(DTAssetLib.ConstitutionBeamGlow.Value, Projectile.Center - Main.screenPosition, null, BeamColor * Projectile.Opacity, Projectile.rotation, DTAssetLib.ConstitutionBeamGlow.Value.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
+            Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, Projectile.Center - Main.screenPosition, null, BeamColor * Projectile.Opacity, Projectile.rotation, TextureAssets.Projectile[Projectile.type].Value.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
+            SB.ResetToDefault();
+           
             return false;
         }
     }

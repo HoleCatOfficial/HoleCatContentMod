@@ -3,7 +3,7 @@ using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.AmmoProjectiles;
 using DestroyerTest.Content.Projectiles.Weapon.Ranged;
 using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.Resources.Blueprints;
+ 
 using DestroyerTest.Content.RiftArsenal;
 using DestroyerTest.Content.Tiles.RiftConfigurator;
 using DestroyerTest.Rarity;
@@ -50,9 +50,8 @@ namespace DestroyerTest.Content.RangedItems
         {
             CreateRecipe()
                 .AddIngredient(ItemID.Flamethrower)
-                .AddIngredient<MiscData>(3)
                 .AddIngredient<RiftBattery>()
-                .AddTile<Tile_RiftConfiguratorWeaponry>()
+                .AddTile<Tile_RiftConfigurator>()
                 .Register();
         }
 

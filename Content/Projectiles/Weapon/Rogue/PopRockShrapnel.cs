@@ -64,7 +64,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 
         public override bool? CanHitNPC(NPC target)
         {
-            return LifeTime >= 15;
+            return LifeTime >= 15 && Projectile.ManualCanHitFriendly(target);
         }
 
         public override void OnKill(int timeLeft)

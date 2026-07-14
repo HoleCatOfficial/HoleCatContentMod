@@ -67,7 +67,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon.RiftWhip
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            SoundEngine.PlaySound(DTAssetLib.Impacts.IceImpact with { MaxInstances = 0, PitchVariance = 0.2f });
+            SoundEngine.PlaySound(DTAssetLib.Impacts.IceImpact with { MaxInstances = 0, PitchVariance = 0.8f });
 
             Opus.RadialSpreadDustRandom(DustID.FireworksRGB, Main.rand.Next(3, 13), target.Center, 0, ColorLib.LightRift2, Main.rand.NextFloat(0.5f, 1f), Main.rand.NextFloat(2f, 9f));
 

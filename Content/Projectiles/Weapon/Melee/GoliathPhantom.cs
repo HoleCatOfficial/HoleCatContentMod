@@ -83,7 +83,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
         public override bool? CanHitNPC(NPC target)
         {
-            return State == AIState.Dashing; ;
+            return State == AIState.Dashing && Projectile.ManualCanHitFriendly(target);
         }
 
         private void DoSlowingPhase(NPC target)

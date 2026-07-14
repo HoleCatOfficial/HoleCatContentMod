@@ -35,7 +35,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
         {
             CreateRecipe()
                 .AddIngredient<Item_HeliciteCrystal>(12)
-                .AddTile<Tile_RiftConfiguratorArmory>()
+                .AddTile<Tile_RiftConfigurator>()
                 .Register();
         }
     }

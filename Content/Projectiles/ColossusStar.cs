@@ -76,7 +76,7 @@ namespace DestroyerTest.Content.Projectiles
 
         public override bool? CanHitNPC(NPC target)
         {
-            return DelayTimer >= 10;
+            return DelayTimer >= 10 && Projectile.ManualCanHitFriendly(target);
         }
 
         public List<Vector2> TrailPositions = new();

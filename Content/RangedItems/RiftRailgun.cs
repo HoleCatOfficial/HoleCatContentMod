@@ -56,7 +56,7 @@ namespace DestroyerTest.Content.RangedItems
 				.AddIngredient<ShadowCircuitry>(16)
 				.AddIngredient<Motherboard>(2)
 				.AddIngredient(ItemID.IllegalGunParts)
-				.AddTile<Tile_RiftConfiguratorCore>()
+				.AddTile<Tile_RiftConfigurator>()
 				//.AddCondition(Language.GetText("Mods.DestroyerTest.RecipeCondition.WeaponryDrive"), 
     			//() => Main.LocalPlayer.GetModPlayer<RiftConfiguratorPlayer>().WeaponryDrive)
 				.Register();

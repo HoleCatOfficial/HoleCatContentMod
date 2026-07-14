@@ -55,7 +55,7 @@ namespace DestroyerTest.Content.Equips
 				.AddIngredient<Living_Shadow>(8)
 				.AddIngredient<Item_HeliciteCrystal>(20)
 				.AddIngredient<Item_RiftClay>(6)
-				.AddTile<Tile_RiftConfiguratorArmory>()
+				.AddTile<Tile_RiftConfigurator>()
 				.Register();
 		}
 	}

@@ -34,7 +34,7 @@ namespace DestroyerTest.Content.Ammunitions
 		public override void AddRecipes() {
 			CreateRecipe(2)
                 .AddIngredient<Item_HeliciteCrystal>()
-				.AddTile<Tile_RiftConfiguratorWeaponry>()
+				.AddTile<Tile_RiftConfigurator>()
 				.Register();
 		}
 	}

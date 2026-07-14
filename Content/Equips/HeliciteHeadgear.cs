@@ -44,7 +44,7 @@ namespace DestroyerTest.Content.Equips
 				.AddIngredient<Item_HeliciteCrystal>(5)
 				.AddIngredient<Item_RiftClay>(3)
                 .AddIngredient(ItemID.Silk, 15)
-				.AddTile<Tile_RiftConfiguratorArmory>()
+				.AddTile<Tile_RiftConfigurator>()
 				.Register();
 		}
 	}

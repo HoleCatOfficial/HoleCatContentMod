@@ -5,9 +5,10 @@ using DestroyerTest.Common;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.AmmoProjectiles;
 using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.Resources.Blueprints;
+ 
 
 using DestroyerTest.Content.Tiles;
+using DestroyerTest.Content.Tiles.RiftConfigurator;
 using DestroyerTest.Content.Tiles.Riftplate;
 using DestroyerTest.Content.Tools;
 using DestroyerTest.Rarity;
@@ -71,8 +72,7 @@ namespace DestroyerTest.Content.RiftArsenal
 			CreateRecipe()
 				.AddIngredient<Item_Riftplate>(16)
 				.AddIngredient<ShadowCircuitry>(7)
-                .AddIngredient<ZapinatorData>()
-				.AddTile(TileID.MythrilAnvil)
+				.AddTile<Tile_RiftConfigurator>()
 				.Register();
 		}
 	}

@@ -14,15 +14,17 @@ using Terraria.ObjectData;
 
 namespace DestroyerTest.Content.Tiles.RiftConfigurator
 {
-	public class Tile_RiftConfiguratorTools: ModTile
+	public class Tile_RiftConfigurator : ModTile
 	{
 		public override void SetStaticDefaults() {
 			Main.tileFrameImportant[Type] = true;
 			TileObjectData.newTile.CopyFrom(TileObjectData.Style3x3);
+            TileObjectData.newTile.Width = 4;
 			TileObjectData.newTile.CoordinateWidth = 16;
             TileObjectData.newTile.CoordinateHeights = new[] { 16, 16, 16 };
             TileObjectData.newTile.CoordinatePadding = 2;
             TileObjectData.newTile.AnchorBottom = new AnchorData(AnchorType.SolidTile | AnchorType.SolidWithTop | AnchorType.Table | AnchorType.SolidSide, TileObjectData.newTile.Width, 0);
+            AnimationFrameHeight = TileObjectData.newTile.CoordinateFullHeight;
             TileObjectData.addTile(Type);
 
 			LocalizedText name = CreateMapEntryName();
@@ -33,10 +35,11 @@ namespace DestroyerTest.Content.Tiles.RiftConfigurator
                 PitchVariance = 0.2f,
                 MaxInstances = 0
             };
+
             DustType = ModContent.DustType<RiftDust>();
 
 
-			AnimationFrameHeight = 54;
+			
 		}
 
         
@@ -45,23 +48,10 @@ namespace DestroyerTest.Content.Tiles.RiftConfigurator
 
             if (++frameCounter >= 8) {
                 frameCounter = 0;
-                if (++frame >= 4) {
+                if (++frame >= 25) {
                     frame = 0;
                 }
             }
-        }
-
-        /*
-        public override void AnimateIndividualTile(int type, int i, int j, ref int frameXOffset, ref int frameYOffset) {
-
-            Tile tile = Main.tile[i, j];
-            frameYOffset = 54; //Keep this to draw correctly!!!
-        }
-        */
-
-        public override void AnimateIndividualTile(int type, int i, int j, ref int frameXOffset, ref int frameYOffset) {
-            Tile tile = Main.tile[i, j];
-            frameYOffset = (tile.TileFrameY / AnimationFrameHeight) * AnimationFrameHeight;
         }
 	}
 }

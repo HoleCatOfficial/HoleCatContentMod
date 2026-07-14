@@ -42,7 +42,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
         public override bool? CanHitNPC(NPC target)
         {
-            return Flag3 && !Flag2;
+            return Flag3 && !Flag2 && Projectile.ManualCanHitFriendly(target);
         }
 
         public int BeginAttack = 49;

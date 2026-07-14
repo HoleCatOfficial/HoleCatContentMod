@@ -36,7 +36,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
 
         public override bool? CanHitNPC(NPC target)
         {
-            return Bursting;
+            return Bursting && Projectile.ManualCanHitFriendly(target);
         }
 
         public override void OnSpawn(IEntitySource source)

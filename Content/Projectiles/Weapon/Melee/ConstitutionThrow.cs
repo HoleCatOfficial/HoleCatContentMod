@@ -38,7 +38,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         }
         public override bool? CanHitNPC(NPC target)
         {
-            return true;
+            return Projectile.ManualCanHitFriendly(target);
         }
 
         public bool returning = false;

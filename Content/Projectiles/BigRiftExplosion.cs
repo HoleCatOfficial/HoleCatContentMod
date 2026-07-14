@@ -60,7 +60,7 @@ namespace DestroyerTest.Content.Projectiles
 
         public override bool? CanHitNPC(NPC target)
         {
-            return Bursting;
+            return Bursting && Projectile.ManualCanHitFriendly(target);
         }
 
         public SoundStyle Burst = DTAssetLib.Impacts.FlameImpact;

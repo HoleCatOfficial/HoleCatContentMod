@@ -13,7 +13,7 @@ using DestroyerTest.Common;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using DestroyerTest.Content.Tools;
-using DestroyerTest.Content.Resources.Blueprints;
+ 
 using DestroyerTest.Content.Tiles.RiftConfigurator;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Weapon.Rogue;
@@ -57,9 +57,8 @@ namespace DestroyerTest.Content.RiftArsenal
 		public override void AddRecipes()
         {
             CreateRecipe()
-                .AddIngredient<MiscData>()
                 .AddIngredient<Item_Riftplate>(10)
-                .AddTile<Tile_RiftConfiguratorWeaponry>()
+                .AddTile<Tile_RiftConfigurator>()
 			.Register();
         }
 	}

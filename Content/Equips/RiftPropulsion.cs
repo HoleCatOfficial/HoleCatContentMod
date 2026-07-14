@@ -55,7 +55,7 @@ namespace DestroyerTest.Content.Equips
 				.AddIngredient<Living_Shadow>(16)
 				.AddIngredient<Item_Riftplate>(8)
                 .AddIngredient(ItemID.RocketI, 4)
-                .AddTile<Tile_RiftConfiguratorTools>()
+                .AddTile<Tile_RiftConfigurator>()
                 .SortBefore(Main.recipe.First(recipe => recipe.createItem.wingSlot != -1)) // Places this recipe before any wing so every wing stays together in the crafting menu.
 				.Register();
 		}

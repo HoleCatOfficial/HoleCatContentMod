@@ -3,7 +3,7 @@ using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.Resources.Blueprints;
+ 
 using DestroyerTest.Content.Tiles;
 using DestroyerTest.Content.Tiles.RiftConfigurator;
 using DestroyerTest.Content.Tiles.Riftplate;
@@ -83,10 +83,9 @@ namespace DestroyerTest.Content.RiftArsenal
 		public override void AddRecipes()
         {
             CreateRecipe()
-                .AddIngredient<BroadswordData>()
                 .AddIngredient<ShadowCircuitry>(2)
                 .AddIngredient<Item_Riftplate>(12)
-                .AddTile<Tile_RiftConfiguratorWeaponry>()
+                .AddTile<Tile_RiftConfigurator>()
 			.Register();
         }
 	}

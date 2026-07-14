@@ -1,3 +1,4 @@
+using DestroyerTest.Common;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -63,7 +64,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
         public override bool? CanHitNPC(NPC target)
         {
-            return Bursting;
+            return Bursting && Projectile.ManualCanHitFriendly(target);
         }
 
         public SoundStyle Burst = new SoundStyle("DestroyerTest/Assets/Audio/Impacts/BrightBell") { MaxInstances = 0, PitchVariance = 0.4f };

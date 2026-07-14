@@ -1652,6 +1652,11 @@ Item_RiftConfiguratorFurniture: {
 		'''
 }
 
+Item_RiftConfigurator: {
+	DisplayName: Item_ Rift Configurator
+	Tooltip: ""
+}
+
 Item_RiftLamp: {
 	Tooltip: ""
 	DisplayName: Rift Lamp
@@ -3070,8 +3075,10 @@ RechargeItem: {
 DjedPillarCharm: {
 	Tooltip:
 		'''
-		You are immune to most debuffs.
+		You are immune to most debuffs and to knockback.
 		Double tapping in the left or right direction allows you to dash, leaving behind a trail of spirit flames that home in on enemies.
+		+21% Summoner Damage
+		+2 Minon Slots
 		'''
 	DisplayName: Djed Pillar Charm
 }
@@ -4754,13 +4761,13 @@ HeatseekerSilohs: {
 		Allows the wearer to run really fast.
 		Allows for walking on all liquids.
 		You run faster on sand.
-		Hold the down key to slam into the ground, creating a small explosion and homing rift stars.
+		Hold the Down Key and either Shift Key to slam into the ground, creating a small explosion and homing rift stars.
 		'''
 }
 
 IchorSlamShoes: {
 	DisplayName: Ichor Slam Shoes
-	Tooltip: ""
+	Tooltip: Hold the Down Key and either Shift Key to slam into the ground, creating a small explosion.
 }
 
 ShadeInfernoPotion: {

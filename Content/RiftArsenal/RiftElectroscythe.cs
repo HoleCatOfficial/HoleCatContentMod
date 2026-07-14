@@ -16,7 +16,7 @@ using DestroyerTest.Common;
 using System.Collections.Generic;
 
 using Terraria.Localization;
-using DestroyerTest.Content.Resources.Blueprints;
+ 
 using DestroyerTest.Content.Tiles.RiftConfigurator;
 using DestroyerTest.Content.Projectiles.Weapon.Melee;
 using DestroyerTest.Content.Projectiles.Weapon.Magic;
@@ -66,9 +66,8 @@ namespace DestroyerTest.Content.RiftArsenal
         public override void AddRecipes()
         {
             CreateRecipe()
-                .AddIngredient<GreatSwordData>()
                 .AddIngredient<Item_Riftplate>(28)
-                .AddTile<Tile_RiftConfiguratorWeaponry>()
+                .AddTile<Tile_RiftConfigurator>()
             .Register();
         }
     }

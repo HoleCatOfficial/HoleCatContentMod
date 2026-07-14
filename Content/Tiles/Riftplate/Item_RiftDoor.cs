@@ -18,7 +18,7 @@ namespace DestroyerTest.Content.Tiles.Riftplate
 		public override void AddRecipes() {
 			CreateRecipe(2)
 				.AddIngredient<Item_Riftplate>(10)
-				.AddTile<Tile_RiftConfiguratorCore>()
+				.AddTile<Tile_RiftConfigurator>()
 				.Register();
 		}
 	}

@@ -163,7 +163,7 @@ namespace DestroyerTest.Content.Projectiles
 
         public override bool? CanHitNPC(NPC target)
         {
-            return !StartKill && DelayTimer >= 20;
+            return !StartKill && DelayTimer >= 20 && Projectile.ManualCanHitFriendly(target);
         }
 
 

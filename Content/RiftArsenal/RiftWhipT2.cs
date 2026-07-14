@@ -28,7 +28,7 @@ namespace DestroyerTest.Content.RiftArsenal
 			CreateRecipe()
 				.AddIngredient<Item_HeliciteCrystal>(8)
                 .AddIngredient<RiftWhipT1>()
-                .AddTile<Tile_RiftConfiguratorWeaponry>()
+                .AddTile<Tile_RiftConfigurator>()
 				.Register();
 		}
 

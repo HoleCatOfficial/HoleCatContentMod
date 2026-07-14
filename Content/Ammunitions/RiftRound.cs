@@ -34,7 +34,7 @@ namespace DestroyerTest.Content.Ammunitions
 			CreateRecipe(2)
 				.AddIngredient(ItemID.MusketBall)
                 .AddIngredient<Living_Shadow>(2)
-				.AddTile<Tile_RiftConfiguratorWeaponry>()
+				.AddTile<Tile_RiftConfigurator>()
 				.Register();
 		}
 	}

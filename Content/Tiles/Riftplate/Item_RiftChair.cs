@@ -19,7 +19,7 @@ namespace DestroyerTest.Content.Tiles.Riftplate
 			CreateRecipe()
 				.AddIngredient<Item_Riftplate>(5)
                 .AddIngredient<Living_Shadow>(3)
-				.AddTile<Tile_RiftConfiguratorCore>()
+				.AddTile<Tile_RiftConfigurator>()
 				.Register();
 		}
 	}

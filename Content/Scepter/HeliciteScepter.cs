@@ -55,7 +55,7 @@ namespace DestroyerTest.Content.Scepter
             CreateRecipe()
             .AddIngredient<HolyScepter>()
             .AddIngredient<Item_HeliciteCrystal>(35)
-            .AddTile<Tile_RiftConfiguratorWeaponry>()
+            .AddTile<Tile_RiftConfigurator>()
             .Register();
         }
     }

@@ -82,7 +82,7 @@ namespace DestroyerTest.Content.Projectiles
 
         public override bool? CanHitNPC(NPC target)
         {
-            return DelayTimer >= 30;
+            return DelayTimer >= 30 && Projectile.ManualCanHitFriendly(target);
         }
 
         public override void AI()
@@ -155,8 +155,9 @@ namespace DestroyerTest.Content.Projectiles
 
         public override bool? CanHitNPC(NPC target)
         {
-            return DelayTimer >= 30;
+            return DelayTimer >= 30 && Projectile.ManualCanHitFriendly(target);
         }
+
         public List<Vector2> TrailPositions = new();
         public List<float> TrailRotations = new();
         private const int TrailLength = 400;
@@ -244,7 +245,7 @@ namespace DestroyerTest.Content.Projectiles
 
         public override bool? CanHitNPC(NPC target)
         {
-            return Projectile.timeLeft <= 240;
+            return Projectile.timeLeft <= 240 && Projectile.ManualCanHitFriendly(target);
         }
         public List<Vector2> TrailPositions = new();
         public List<float> TrailRotations = new();

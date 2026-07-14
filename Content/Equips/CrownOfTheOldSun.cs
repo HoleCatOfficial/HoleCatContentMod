@@ -36,7 +36,15 @@ namespace DestroyerTest.Content.Equips
             Item.rare = ModContent.RarityType<RiftRarity2>();
         }
 
-      
+        public override void UpdateEquip(Player player)
+        {
+            InvGlowRot += 0.01f;
+        }
+
+        public override void UpdateVanity(Player player)
+        {
+            InvGlowRot += 0.01f;
+        }
 
         public override void UpdateInventory(Player player)
         {
@@ -92,7 +100,7 @@ namespace DestroyerTest.Content.Equips
                 .AddIngredient<FetidCrown>()
                 .AddIngredient<Item_HeliciteCrystal>(16)
                 .AddIngredient(ItemID.LihzahrdBrick, 12)
-                .AddTile<Tile_RiftConfiguratorTools>()
+                .AddTile<Tile_RiftConfigurator>()
                 .Register();
         }
     }

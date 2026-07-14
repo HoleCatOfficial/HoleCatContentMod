@@ -59,7 +59,7 @@ namespace DestroyerTest.Content.RogueItems
 			CreateRecipe()
 				.AddIngredient<Item_Riftplate>(5)
 				.AddIngredient<Living_Shadow>(5)
-				.AddTile<Tile_RiftConfiguratorWeaponry>()
+				.AddTile<Tile_RiftConfigurator>()
 				.Register();
 		}
 	}

@@ -24,7 +24,7 @@ namespace DestroyerTest.Content.Tiles
         {
             CreateRecipe(16)
                 .AddIngredient<Item_HeliciteCrystal>(4)
-                .AddTile<Tile_RiftConfiguratorCore>()
+                .AddTile<Tile_RiftConfigurator>()
                 .Register();
         }
     }

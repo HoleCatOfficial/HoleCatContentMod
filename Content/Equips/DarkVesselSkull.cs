@@ -35,7 +35,7 @@ namespace DestroyerTest.Content.Equips
 			Item.height = 22;
 			Item.value = Item.sellPrice(gold: 70);
 			Item.rare = ModContent.RarityType<ShimmeringRarity>();
-			Item.defense = 24;
+			Item.defense = 32;
 		}
 
         public bool Scepter = false;

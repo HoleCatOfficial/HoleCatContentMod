@@ -4,7 +4,7 @@ using DestroyerTest.Common;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Weapon.Magic;
 using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.Resources.Blueprints;
+ 
 using DestroyerTest.Content.RiftArsenal;
 using DestroyerTest.Content.Tiles;
 using DestroyerTest.Content.Tiles.RiftConfigurator;
@@ -64,7 +64,7 @@ namespace DestroyerTest.Content.Magic
             CreateRecipe()
                 .AddIngredient<RiftStaff>()
                 .AddIngredient<Item_HeliciteCrystal>(15)
-                .AddTile<Tile_RiftConfiguratorWeaponry>()
+                .AddTile<Tile_RiftConfigurator>()
             .Register();
         }
 	}

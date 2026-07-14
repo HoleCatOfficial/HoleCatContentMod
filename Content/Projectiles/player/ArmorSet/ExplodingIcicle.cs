@@ -63,7 +63,7 @@ namespace DestroyerTest.Content.Projectiles.player.ArmorSet
 
         public override bool? CanHitNPC(NPC target)
         {
-            return LifeTime >= 15;
+            return LifeTime >= 15 && Projectile.ManualCanHitFriendly(target);
         }
 
         public override void OnKill(int timeLeft)

@@ -1,5 +1,6 @@
 
 using BreadLibrary.Core.Graphics.Particles;
+using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
 using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.BossBar;
@@ -189,7 +190,11 @@ namespace DestroyerTest.Content.Entities
         public int StarTimer = 0;
         public int StarState = 0;
         public int StarShootCount = 0;
+        public Vector2 StarTeleportPos = Vector2.Zero;
+
         public int MineInterval = 0;
+        Dust[] Dusts = new Dust[10];
+
         public int MineCount = 0;
         public int MineCooldown = 240;
         public int NapalmRainTimer = 800;
@@ -314,117 +319,48 @@ namespace DestroyerTest.Content.Entities
                     }
                 case AttackState.Stars:
                     {
-                        const float PredictStrength = 50f;
-                        const float MoveSpeed = 28f;
-                        const float Accel = 0.06f;
+                        StarTimer++;
+                        NPC.velocity *= 0;
 
-                        const int HangTime = 40;
-                        const float ArrivalDistance = 40f;
-
-                        Vector2 predictedOffset = player.velocity * PredictStrength;
-                        Vector2 predictedPos = player.Center + predictedOffset;
-
-                        switch ((int)StarState)
+                        if (StarTeleportPos == Vector2.Zero)
                         {
-                            // =====================
-                            // APPROACH
-                            // Boss commits toward
-                            // predicted point
-                            // =====================
-
-                            case 0:
-                                {
-                                    Vector2 move = predictedPos - NPC.Center;
-
-                                    if (move != Vector2.Zero)
-                                        move = move.SafeNormalize(Vector2.Zero) * MoveSpeed;
-
-                                    NPC.velocity = Vector2.Lerp(NPC.velocity, move, Accel);
-
-                                    // Arrived at attack point
-                                    if (NPC.Center.Distance(predictedPos) < ArrivalDistance)
-                                    {
-                                        // Overshoot slightly
-                                        NPC.velocity *= 1.25f;
-
-                                        StarState = 1;
-                                        StarTimer = 0;
-                                    }
-
-                                    break;
-                                }
-
-                            // =====================
-                            // HANG / DRIFT
-                            // Boss glides past
-                            // the point briefly
-                            // =====================
-
-                            case 1:
-                                {
-                                    StarTimer++;
-
-                                    // Gradually slow down
-                                    NPC.velocity *= 0.97f;
-
-                                    if (StarTimer >= HangTime)
-                                    {
-                                        Stars();
-
-                                        StarShootCount++;
-
-                                        StarState = 2;
-                                        StarTimer = 0;
-                                    }
-
-                                    break;
-                                }
-
-                            // =====================
-                            // RECOVERY
-                            // Pull away before
-                            // reacquiring target
-                            // =====================
-
-                            case 2:
-                                {
-                                    StarTimer++;
-
-                                    Vector2 away =
-                                        (NPC.Center - player.Center)
-                                        .SafeNormalize(Vector2.UnitY);
-
-                                    Vector2 recoveryVel = away * 10f;
-
-                                    NPC.velocity = Vector2.Lerp(
-                                        NPC.velocity,
-                                        recoveryVel,
-                                        0.05f
-                                    );
-
-                                    if (StarTimer >= 25)
-                                    {
-                                        StarState = 0;
-                                        StarTimer = 0;
-                                    }
-
-                                    break;
-                                }
+                            StarTeleportPos = player.MountedCenter + new Vector2(500, 0).RotatedBy(player.velocity.ToRotation());
                         }
 
-                        // =========================
-                        // EXIT
-                        // =========================
-
-                        if (StarShootCount >= 6)
+                        if (StarTimer < 90)
                         {
-                            CurrentAttack = AttackState.Mines;
+                            if (StarTimer == 1)
+                            {
+                                StarTeleportPos = player.MountedCenter + new Vector2(500, 0).RotatedBy(player.velocity.ToRotation());
+                            }
 
-                            StarShootCount = 0;
+                            for (int i = 0; i < 10; i++)
+                            {
+                                Vector2 Pos = Main.rand.NextVector2FromRectangle(Utils.CenteredRectangle(StarTeleportPos, new Vector2(140, 140)));
+                                Vector2 Dir = StarTeleportPos - Pos;
 
-                            StarState = 0;
+                                Dust D = Dust.NewDustPerfect(Pos, DustID.CursedTorch, Dir * 0.1f);
+                                D.noGravity = true;
+                            }
+                        }
+                        else
+                        {
+                            
+                            NPC.Center = StarTeleportPos;
+                            Stars();
+                            StarTeleportPos = player.MountedCenter + new Vector2(500, 0).RotatedBy(player.velocity.ToRotation());
                             StarTimer = 0;
                         }
+
+                        
+                        if (StarShootCount > 5)
+                        {
+                            CurrentAttack = AttackState.Mines;
+                            StarShootCount = 0;
+                            StarTimer = 0;
+                        }
+                         
+
 
                         break;
                     }
@@ -439,7 +375,7 @@ namespace DestroyerTest.Content.Entities
 
                         if (MineInterval <= 0)
                         {
-                            for (int q = 0; q < 9; q++)
+                            for (int q = 0; q < 5; q++)
                             {
                                 Vector2 Position = new Vector2(player.Center.X + Main.rand.Next(-1000, 1000), player.Center.Y + Main.rand.Next(-1000, 1000));
                                 Projectile Mine = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), Position, Vector2.Zero, ModContent.ProjectileType<BlossomMine>(), 25, 5);
@@ -491,7 +427,7 @@ namespace DestroyerTest.Content.Entities
                             {
                                 SoundEngine.PlaySound(NapalmShoot, NPC.Center);
                                 Projectile.NewProjectile(Entity.GetSource_FromThis(), NPC.Center, Velocity, ModContent.ProjectileType<CursedFlameNapalm>(), 20, 2);
-                                NapalmRainInterval = 5;
+                                NapalmRainInterval = 10;
                             }
                             NapalmRainTimer--;
                         }
@@ -740,7 +676,8 @@ namespace DestroyerTest.Content.Entities
             {
                 Vector2 spawnPos = new Vector2(player.Center.X + Main.rand.Next(-200, 201), player.Center.Y + 1000);
                 Vector2 velocity = (player.Center - spawnPos).SafeNormalize(Vector2.Zero) * 10f; // Adjust speed as needed
-                Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), spawnPos, velocity, ModContent.ProjectileType<CursedFlameVortex>(), 20, 2);
+                Projectile p = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), spawnPos, velocity, ProjectileID.CursedFlameHostile, 20, 2);
+                p.tileCollide = false;
             }
         }
 

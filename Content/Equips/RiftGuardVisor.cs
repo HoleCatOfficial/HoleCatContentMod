@@ -77,14 +77,14 @@ namespace DestroyerTest.Content.Equips
 				.AddIngredient<Item_Riftpane>(3)
 				.AddIngredient<ShadowCircuitry>(6)
                 .AddIngredient(ItemID.PalladiumBar, 8)
-				.AddTile<Tile_RiftConfiguratorArmory>()
+				.AddTile<Tile_RiftConfigurator>()
 				.Register();
 			CreateRecipe()
 				.AddIngredient<Item_Riftplate>(10)
 				.AddIngredient<Item_Riftpane>(3)
 				.AddIngredient<ShadowCircuitry>(6)
                 .AddIngredient(ItemID.CobaltBar, 8)
-				.AddTile<Tile_RiftConfiguratorArmory>()
+				.AddTile<Tile_RiftConfigurator>()
 				.Register();
 		}
 	}

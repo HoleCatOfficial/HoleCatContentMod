@@ -681,6 +681,24 @@ namespace DestroyerTest.Common
             }
         }
 
+        public static Vector2 Spiral(Vector2 center, float angle, float radiusPerRadian)
+        {
+            float radius = angle * radiusPerRadian;
+            return center + angle.ToRotationVector2() * radius;
+        }
+
+        public static Vector2 ArchimedeanSpiral(
+        Vector2 center,
+        float angle,
+        float startRadius,
+        float spacing)
+        {
+            float radius = startRadius + spacing * angle;
+            return center + angle.ToRotationVector2() * radius;
+        }
+
+
+
     }
 
     public class SunlightModification : ModSystem

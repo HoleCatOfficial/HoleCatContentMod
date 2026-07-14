@@ -33,7 +33,7 @@ namespace DestroyerTest.Content.Equips
                 .AddIngredient<Living_Shadow>(20)
                 .AddIngredient<Item_Riftplate>(20)
 				.AddIngredient(ItemID.AnkletoftheWind)
-                .AddTile<Tile_RiftConfiguratorArmory>()
+                .AddTile<Tile_RiftConfigurator>()
                 .Register();
 		}
 	}

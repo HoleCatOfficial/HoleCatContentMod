@@ -78,8 +78,6 @@ namespace DestroyerTest.Content.Projectiles.Pets
    
         }
 
-       
-
         public override bool PreDraw(ref Color lightColor)
         {
             Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;

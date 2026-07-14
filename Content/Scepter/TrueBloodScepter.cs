@@ -15,7 +15,7 @@ using DestroyerTest.Content.Tools;
 using DestroyerTest.Content.Tiles.Riftplate;
 using System.Collections.Generic;
 using DestroyerTest.Content.RiftArsenal;
-using DestroyerTest.Content.Resources.Blueprints;
+ 
 using System.Security.Cryptography.X509Certificates;
 using DestroyerTest.Content.Projectiles.Weapon.Scepter;
 using DestroyerTest.Rarity.Scepter;
@@ -66,11 +66,7 @@ namespace DestroyerTest.Content.Scepter
         }
 		public override void AddRecipes()
 		{
-			CreateRecipe()
-				.AddIngredient<ScepterData>()
-				.AddIngredient<Item_Riftplate>(22)
-				.AddTile<Tile_RiftConfiguratorWeaponry>()
-			.Register();
+
 		}
 	}
 } 

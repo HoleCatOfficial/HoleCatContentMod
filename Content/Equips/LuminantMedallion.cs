@@ -53,7 +53,8 @@ namespace DestroyerTest.Content.Equips
         {
             if (Main.player[projectile.owner].TryGetModPlayer<LuminantMedallionPlayer>(out LuminantMedallionPlayer player) && player.Active)
             {
-                if ((projectile.DamageType == DamageClass.Summon && projectile.DamageType != DamageClass.Generic) && Main.rand.NextBool((int)(16 * (1 + (0.1f * Main.player[projectile.owner].numMinions)))) && projectile.type != ProjectileID.StardustGuardian)
+                int Chance = (int)(16 * (1 + (0.04f * Main.player[projectile.owner].numMinions)));
+                if ((projectile.IsMinionOrSentryRelated || (projectile.DamageType == DamageClass.Summon && projectile.DamageType != DamageClass.Generic)) && Main.rand.NextBool(Chance) && projectile.type != ProjectileID.StardustGuardian)
                 {
                     DTUtils.InfectedScepter_RingSpreadProjectileAlternating(ModContent.ProjectileType<SoulOfLight_Projectile>(), ModContent.ProjectileType<SoulOfNight_Projectile>(), 6, projectile.Center, 40f, 40, 3, 10);
                 }

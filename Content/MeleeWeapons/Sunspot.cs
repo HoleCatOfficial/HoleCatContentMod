@@ -61,7 +61,7 @@ namespace DestroyerTest.Content.MeleeWeapons
                 .AddIngredient<CrystalBlade>()
                 .AddIngredient<Item_HeliciteCrystal>(16)
                 .AddIngredient<SunscorchedCinder>(12)
-                .AddTile<Tile_RiftConfiguratorWeaponry>()
+                .AddTile<Tile_RiftConfigurator>()
                 .Register();
         }
     }

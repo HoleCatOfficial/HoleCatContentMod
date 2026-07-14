@@ -16,7 +16,7 @@ using Terraria.GameInput;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Tiles.Riftplate;
-using DestroyerTest.Content.Resources.Blueprints;
+ 
 using DestroyerTest.Content.Tiles.RiftConfigurator;
 using DestroyerTest.Content.Projectiles.Weapon.Melee;
 

@@ -127,7 +127,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
         public override bool? CanHitNPC(NPC target)
         {
-            return IsOnAttackFrame(target);
+            return IsOnAttackFrame(target) && Projectile.ManualCanHitFriendly(target);
         }
 
         public override void AI()

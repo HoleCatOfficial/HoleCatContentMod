@@ -32,7 +32,7 @@ namespace DestroyerTest.Content.Tools
 			CreateRecipe()
 				.AddIngredient<Item_Riftplate>(10)
                 .AddIngredient<ShadowCircuitry>(10)
-				.AddTile<Tile_RiftConfiguratorTools>()
+				.AddTile<Tile_RiftConfigurator>()
 				.Register();
 		}
 	}

@@ -50,7 +50,7 @@ namespace DestroyerTest.Content.RiftArsenal
 			CreateRecipe()
 				.AddIngredient<RiftMaker>()
                 .AddIngredient<Living_Shadow>(15)
-				.AddTile<Tile_RiftConfiguratorWeaponry>()
+				.AddTile<Tile_RiftConfigurator>()
 				.Register();
 		}
 	}
