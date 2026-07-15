@@ -67,9 +67,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 F.PrepareFire(DPos, D, Math.Sign(D.X), 0.1f, SC, Main.rand.NextFloat(0.3f, 0.5f), 60, FireDrawMode.Additive, PixelLayer.AboveTiles);
                 ParticleEngine.BehindProjectiles.Add(F);
 
-                TenebrousCloudParticle FX = new();
-                FX.Initialize(DPos, D, SC, ShineOpacity, Main.rand.NextFloat(0.1f, 0.2f));
-                ParticleEngine.BehindProjectiles.Add(FX);
+                if (!DTOptimizationsConfig.instance.DisableExcessParticles)
+                {
+                    TenebrousCloudParticle FX = new();
+                    FX.Initialize(DPos, D, SC, ShineOpacity, Main.rand.NextFloat(0.1f, 0.2f));
+                    ParticleEngine.BehindProjectiles.Add(FX);
+                }
 
             }
 

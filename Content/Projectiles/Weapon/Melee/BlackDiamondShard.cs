@@ -67,9 +67,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 F.PrepareFire(Projectile.Center, D, DTUtils.RandomDirection(2), 0.1f, ColorLib.TenebrisBlue, Main.rand.NextFloat(0.3f, 0.5f), 60, FireDrawMode.Additive, PixelLayer.AboveTiles);
                 ParticleEngine.BehindProjectiles.Add(F);
 
-                TenebrousCloudParticle FX = new();
-                FX.Initialize(Projectile.Center, D, ColorLib.TenebrisBlue, 0.6f, Main.rand.NextFloat(0.1f, 0.2f));
-                ParticleEngine.BehindProjectiles.Add(FX);
+                if (!DTOptimizationsConfig.instance.DisableExcessParticles)
+                {
+                    TenebrousCloudParticle FX = new();
+                    FX.Initialize(Projectile.Center, D, ColorLib.TenebrisBlue, 0.6f, Main.rand.NextFloat(0.1f, 0.2f));
+                    ParticleEngine.BehindProjectiles.Add(FX);
+                }
 
                 Projectile.Center += StuckNPC.velocity;
             }
@@ -113,9 +116,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 F.PrepareFire(Projectile.Center, Main.rand.NextVector2Circular(3, 3), DTUtils.RandomDirection(2), 0.1f, ColorLib.TenebrisBlue, Main.rand.NextFloat(0.3f, 0.5f), 60, FireDrawMode.Additive, PixelLayer.AboveTiles);
                 ParticleEngine.BehindProjectiles.Add(F);
 
-                TenebrousCloudParticle FX = new();
-                FX.Initialize(Projectile.Center, Main.rand.NextVector2Circular(3, 3), ColorLib.TenebrisBlue, 0.6f, Main.rand.NextFloat(0.1f, 0.2f));
-                ParticleEngine.BehindProjectiles.Add(FX);
+                if (!DTOptimizationsConfig.instance.DisableExcessParticles)
+                {
+                    TenebrousCloudParticle FX = new();
+                    FX.Initialize(Projectile.Center, Main.rand.NextVector2Circular(3, 3), ColorLib.TenebrisBlue, 0.6f, Main.rand.NextFloat(0.1f, 0.2f));
+                    ParticleEngine.BehindProjectiles.Add(FX);
+                }
             }
             Opus.RadialSpreadDustRandom(DustID.FireworksRGB, 10, Projectile.Center, 0, ColorLib.TenebrisBlue, 1f, 8);
             Opus.RadialSpreadDustRandom(DustID.FireworksRGB, 10, Projectile.Center, 0, OpusColorUtils.Pastel(ColorLib.TenebrisBlue, 0.4f), 1f, 8);

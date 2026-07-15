@@ -28,8 +28,9 @@ namespace DestroyerTest.Content.BossBar
         {
 
             NPC npc = Main.npc[info.npcIndexToAimAt];
-            if (!npc.active)
+            if (npc.type == ModContent.NPCType<WyvernCorpseHead>() || !npc.active)
                 return false;
+
 
             bossHeadIndex = npc.GetBossHeadTextureIndex();
 

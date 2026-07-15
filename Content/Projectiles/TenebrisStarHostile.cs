@@ -97,7 +97,7 @@ namespace DestroyerTest.Content.Projectiles
             DelayTimer++;
             Projectile.rotation += Projectile.direction * 0.07f;
 
-            if (Main.rand.NextBool(10))
+            if (Main.rand.NextBool(10) && !DTOptimizationsConfig.instance.DisableExcessParticles)
             {
                 TenebrousCloudParticle Cloud = new();
                 Cloud.Initialize(Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Projectile.velocity * 0.1f, ColorLib.TenebrisGradient * 0.6f, 0.8f, 0.2f, 120);
@@ -178,7 +178,7 @@ namespace DestroyerTest.Content.Projectiles
 
             Projectile.rotation += Projectile.direction * 0.07f;
 
-            if (Main.rand.NextBool(10))
+            if (Main.rand.NextBool(10) && !DTOptimizationsConfig.instance.DisableExcessParticles)
             {
                 TenebrousCloudParticle Cloud = new();
                 Cloud.Initialize(Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Projectile.velocity * 0.06f, ColorLib.TenebrisGradient * 0.6f, 1f, 0.2f, 120);

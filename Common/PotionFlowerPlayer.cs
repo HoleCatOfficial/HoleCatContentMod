@@ -161,7 +161,7 @@ namespace DestroyerTest.Common
                         }
                     }
 
-                    if (UseCooldown < (60 * 90))
+                    if (UseCooldown < (60 * 45))
                     {
                         UseCooldown++;
                     }

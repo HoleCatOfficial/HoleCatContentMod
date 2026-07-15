@@ -81,9 +81,12 @@ namespace DestroyerTest.Content.Buffs
 						F.PrepareFire(npc.Center, Dir, Math.Sign(Dir.X), 0.15f, ColorLib.TenebrisGradient, 0.75f, 80, FireDrawMode.Additive, PixelLayer.AboveNPCs);
 						ParticleEngine.Particles.Add(F);
 
-                        TenebrousCloudParticle C = new ();
-                        C.Initialize(npc.Center, Dir2, ColorLib.TenebrisGradient, 0.8f, 0.3f, 120);
-                        ParticleEngine.Particles.Add(C);
+						if (!DTOptimizationsConfig.instance.DisableExcessParticles)
+						{
+							TenebrousCloudParticle C = new();
+							C.Initialize(npc.Center, Dir2, ColorLib.TenebrisGradient, 0.8f, 0.3f, 120);
+							ParticleEngine.Particles.Add(C);
+						}
                     }
 
 					Opus.RadialSpreadDustRandom(DustID.FireworksRGB, 6, npc.Center, 75, ColorLib.TenebrisGradient, 1f, 3f);
@@ -167,7 +170,7 @@ namespace DestroyerTest.Content.Buffs
                 fire.PrepareFire(Main.rand.NextVector2FromRectangle(npc.Hitbox), new Vector2(0f, -0.1f), Main.rand.Next(1, 3), 0.08f, ColorLib.TenebrisGradient * 0.8f, 0.5f, 40, FireDrawMode.Additive, PixelLayer.AbovePlayer);
                 ParticleEngine.ShaderParticles.Add(fire);
 
-				if (Main.rand.NextBool(2))
+				if (Main.rand.NextBool(2) && !DTOptimizationsConfig.instance.DisableExcessParticles)
 				{
 					TenebrousCloudParticle C = new();
 					C.Initialize(Main.rand.NextVector2FromRectangle(npc.Hitbox), new Vector2(0f, -2f), ColorLib.TenebrisGradient, 0.5f, 0.15f, 120);
@@ -178,7 +181,7 @@ namespace DestroyerTest.Content.Buffs
 				{
 					int Chance = MaxStack - Stack;
 					Chance = (int)MathHelper.Clamp(Chance, 1, MaxStack);
-					if (Main.rand.NextBool(Chance))
+					if (Main.rand.NextBool(Chance) && !DTOptimizationsConfig.instance.DisableExcessParticles)
 					{
                         Spark Spark = new Spark();
 
@@ -186,7 +189,7 @@ namespace DestroyerTest.Content.Buffs
                         ParticleEngine.ShaderParticles.Add(Spark);
 					}
 				}
-				if (Main.rand.NextBool(6))
+				if (Main.rand.NextBool(6) && !DTOptimizationsConfig.instance.DisableExcessParticles)
 				{
 					SmallShine Shine = new SmallShine();
 					Shine.Prepare(Main.rand.NextVector2FromRectangle(npc.Hitbox), Vector2.Zero, Color.White, 0.25f);
@@ -221,14 +224,14 @@ namespace DestroyerTest.Content.Buffs
                 fire.PrepareFire(Main.rand.NextVector2FromRectangle(Player.Hitbox), new Vector2(0f, -0.1f), Main.rand.Next(1, 3), 0.08f, ColorLib.TenebrisGradient * 0.8f, 0.5f, 40, FireDrawMode.Additive, PixelLayer.AboveNPCs);
 				ParticleEngine.ShaderParticles.Add(fire);
 
-                if (Main.rand.NextBool(2))
+                if (Main.rand.NextBool(2) && !DTOptimizationsConfig.instance.DisableExcessParticles)
                 {
                     TenebrousCloudParticle C = new();
                     C.Initialize(Main.rand.NextVector2FromRectangle(Player.Hitbox), new Vector2(0f, -2f), ColorLib.TenebrisGradient, 0.5f, 0.15f, 120);
                     ParticleEngine.ShaderParticles.Add(C);
                 }
 
-                if (Main.rand.NextBool(6))
+                if (Main.rand.NextBool(6) && !DTOptimizationsConfig.instance.DisableExcessParticles)
 				{
 					SmallShine Shine = new SmallShine();
 					Shine.Prepare(Main.rand.NextVector2FromRectangle(Player.Hitbox), Vector2.Zero, Color.White, 0.5f);
