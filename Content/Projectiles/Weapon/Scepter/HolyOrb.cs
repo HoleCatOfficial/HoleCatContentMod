@@ -22,15 +22,6 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 {
 	public class HolyOrb : ModProjectile
 	{
-		private NPC HomingTarget {
-			get => Projectile.ai[0] == 0 ? null : Main.npc[(int)Projectile.ai[0] - 1];
-			set {
-				Projectile.ai[0] = value == null ? 0 : value.whoAmI + 1;
-			}
-		}
-
-		public ref float DelayTimer => ref Projectile.ai[1];
-
 		
 		public override void SetStaticDefaults() {
 			ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true; // Make the cultist resistant to this projectile, as it's resistant to all homing projectiles.
@@ -50,29 +41,26 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 			Projectile.light = 1f; // How much light emit around the projectile
 			Projectile.timeLeft = 600; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
 			Projectile.tileCollide = false;
-			}
-		public int trailLength = 10;
+		}
+
 		public override bool PreDraw(ref Color lightColor)
 		{
-			lightColor = Color.Red;
 
 			SpriteBatch spriteBatch = Main.spriteBatch;
 			Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
 			DTUtils Utility = new DTUtils();
 
-			Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+			Opus.DrawGlowOnProj(Projectile, Color.Red with { A = 0 }, false, 0);
 
-			Opus.DrawGlowOnProj(Projectile, Color.Red, false, 0);
-
-			for (int i = 0; i < TrailPositions.Count; i++)
+			for (int i = 0; i < Projectile.oldPos.Length; i++)
             {
-                float progress = i / (float)TrailLength;
+                float progress = i / (float)Projectile.oldPos.Length;
                 float scale = MathHelper.Lerp(1f, 0.0005f, progress);
-                Color color = Color.Red;
+                Color color = Color.Red with { A = 0 };
 
                 Main.EntitySpriteDraw(
                     projectileTexture,
-                    TrailPositions[i] - Main.screenPosition,
+                    Projectile.OldCenter()[i] - Main.screenPosition,
                     null,
                     color,
                     Projectile.rotation,
@@ -83,13 +71,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
                 );
             }
 
-			Opus.ReturnToDefaultDrawing(spriteBatch);
-
 			Main.EntitySpriteDraw(
 				projectileTexture,
 				Projectile.Center - Main.screenPosition,
 				null,
-				lightColor,
+				Color.Red,
 				Projectile.rotation,
 				projectileTexture.Size() / 2,
 				Projectile.scale,
@@ -100,18 +86,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 			return false;
 		}
 
-		public List<Vector2> TrailPositions = new();
-		public List<float> TrailRotations = new();
-        private const int TrailLength = 40;
 		public override void AI()
 		{
-			TrailPositions.Insert(0, Projectile.Center);
-			TrailRotations.Insert(0, Projectile.rotation);
-
-			while (TrailPositions.Count > TrailLength)
-				TrailPositions.RemoveAt(TrailPositions.Count - 1);
-			while (TrailRotations.Count > TrailLength)
-				TrailRotations.RemoveAt(TrailRotations.Count - 1);
 
 			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
 
@@ -134,7 +110,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 
 			
 			SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/Impacts/IceMagicImpact", 3) with { PitchVariance = 0.4f, MaxInstances = 0 }, Projectile.Center);
-			Opus.RadialSpreadProjectile(ModContent.ProjectileType<Condemnation>(), 4, Projectile.Center, Projectile.damage, 4, 8, offset: Main.rand.NextFloat(MathHelper.TwoPi));
+			Opus.RadialSpreadProjectile(ModContent.ProjectileType<Condemnation>(), 4, Projectile.Center, Projectile.damage, 4, 2f, offset: Main.rand.NextFloat(MathHelper.TwoPi));
         }
 
 

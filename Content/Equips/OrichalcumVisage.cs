@@ -44,7 +44,7 @@ namespace DestroyerTest.Content.Equips
 		public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(SoloRangeBonus);
 		public override void UpdateEquip(Player player)
         {
-            ScepterClassStats.Range += SoloRangeBonus;
+            player.ScepterClass().Range += SoloRangeBonus;
         }
 
 		public override void AddRecipes() {

@@ -14,6 +14,7 @@ using ReLogic.Content;
 using DestroyerTest.Content.Equips.ScepterAccessories;
 using System.Linq;
 using DestroyerTest.Common.Primitives;
+using Terraria.DataStructures;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 {
@@ -40,10 +41,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
         /// Increments when TileBounce is true and a tile is collided with.
         /// </summary>
         public int TileHitCount = 0;
+
         /// <summary>
         /// The max amount of tile collisions before the projectile dies.
         /// </summary>
-        public int MaxTileHitCount = 5 + ScepterClassStats.ShotBounceModifier;
+        /// 
+        public int MaxTileHitCount = 5;
         /// <summary>
         /// If the tile will die upon hitting a tile for the first time. 
         /// </summary>
@@ -123,6 +126,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
                 Projectile.tileCollide = true;
             }
             
+        }
+
+        public override void OnSpawn(IEntitySource source)
+        {
+            MaxTileHitCount += Main.player[Projectile.owner].ScepterClass().ShotBounceModifier;
         }
 
         public float trailOffset = 0f;

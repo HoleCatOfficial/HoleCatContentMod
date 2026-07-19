@@ -10,6 +10,7 @@ using ReLogic.Content;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
@@ -25,6 +26,7 @@ namespace DestroyerTest.Content.Particles
         public Vector2 velocity = Vector2.Zero;
 
         public float Opacity = 1.0f;
+        public float _Opacity;
         float Rotation = 0f;
         public float scale = 0f;
         int LifeTime = 0;
@@ -44,7 +46,7 @@ namespace DestroyerTest.Content.Particles
             this.velocity = Velocity;
             this.scale = Scale;
             this.color = Color;
-            this.Opacity = Opcaity;
+            this._Opacity = Opcaity;
             this.MaxLifetime = LifeTime;
             this.PixelLayer = Layer;
             this.Flat = Flat;
@@ -57,7 +59,7 @@ namespace DestroyerTest.Content.Particles
             this.velocity = Velocity;
             this.scale = Scale;
             this.color = Color;
-            this.Opacity = Opacoty;
+            this._Opacity = Opacoty;
             this.MaxLifetime = LifeTime;
             this.PixelLayer = Layer;
             this.Flat = Flat;
@@ -73,6 +75,7 @@ namespace DestroyerTest.Content.Particles
 
             position += velocity;
             Rotation += Main.rand.NextFloat(0.1f) * Math.Sign(velocity.X);
+            Opacity = MathHelper.Lerp(_Opacity, 0f, Progress);
 
             if (Progress >= 1)
             {

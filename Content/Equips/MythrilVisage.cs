@@ -29,14 +29,14 @@ namespace DestroyerTest.Content.Equips
         public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(SoloRangeBonus);
 		public LocalizedText setBonus => base.Tooltip.WithFormatArgs(SetRangeBonus, (ThrowSpeedBonus - 1f).ToString("P1"));
 		public override void UpdateArmorSet(Player player) {
-			ScepterClassStats.Range += SetRangeBonus;
-			ScepterClassStats.ThrowSpeedModifier *= ThrowSpeedBonus;
+			player.ScepterClass().Range += SetRangeBonus;
+			player.ScepterClass().ThrowSpeedModifier *= ThrowSpeedBonus;
 			player.DefaultSetBonusText(player.armor[0]);
 		}
 
         public override void UpdateEquip(Player player)
         {
-            ScepterClassStats.Range += SoloRangeBonus;
+            player.ScepterClass().Range += SoloRangeBonus;
         }
 
 

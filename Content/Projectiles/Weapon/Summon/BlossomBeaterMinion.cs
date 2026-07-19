@@ -439,7 +439,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
                         var Source = player.GetSource_ItemUse_WithPotentialAmmo(B, usedAmmoItemId, "BlossomBeaterFire");
                         Vector2 dir = targetCenter - Projectile.Center;
                         dir.Normalize();
-                        Vector2 Vel = DTConfig.instance.MinionAmmoReplace ? dir * 32 : dir * 8;
+                        Vector2 Vel = DTConfig.instance.MinionAmmoReplace ? dir * 50 : dir * 8;
 
                         int Interval = (int)(100f / player.GetTotalAttackSpeed(DamageClass.SummonMeleeSpeed));
 

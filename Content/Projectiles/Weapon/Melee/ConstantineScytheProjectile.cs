@@ -222,18 +222,23 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
             //SparkEdge(Owner, 0.75f, Color.HotPink, 2);
 
+            
+        }
+
+        public override void PostAI()
+        {
             UpdateEnd();
 
             if (Ribbon == null)
             {
-               
+
             }
             else
             {
                 //RibbonStart = Projectile.Center + new Vector2(80, 90).RotatedBy(Projectile.rotation - MathHelper.PiOver4);
                 Ribbon.Simulate(Vector2.Zero, RibbonStart, 0f, 0.85f, 10, collideWithTiles: false, collideWithPlayers: false);
                 Ribbon.Positions[0] = RibbonStart;
-                
+
                 if (!EndFlag)
                 {
                     Ribbon.Positions[^1] = Owner.MountedCenter;

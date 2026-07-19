@@ -26,7 +26,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             player.GetDamage(ModContent.GetInstance<ScepterClass>()) += 0.8f;
-            ScepterClassStats.Range += 8;
+            player.ScepterClass().Range += 8;
             player.endurance = 1f - (0.1f * (1f - player.endurance));
         }
 
@@ -54,7 +54,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             player.GetDamage(ModContent.GetInstance<ScepterClass>()) += 0.8f;
-            ScepterClassStats.Range += 8;
+            player.ScepterClass().Range += 8;
             player.endurance = 1f - (0.1f * (1f - player.endurance));
         }
 

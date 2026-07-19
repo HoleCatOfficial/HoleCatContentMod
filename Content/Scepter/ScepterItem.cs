@@ -34,7 +34,7 @@ namespace DestroyerTest.Content.Scepter
         public bool ChannelingDuringThrow = false;
         public int ShootID = -1;
         public int ThrowID = -1;
-        public float ThrowVelocity = 15f * ScepterClassStats.ThrowSpeedModifier;
+        public float ThrowVelocity = 15f;
         public override void SetStaticDefaults()
         {
             Item.staff[Type] = true;
@@ -55,6 +55,7 @@ namespace DestroyerTest.Content.Scepter
             Item.DamageType = ModContent.GetInstance<ScepterClass>();
             Item.knockBack = KB;
             Item.shoot = ModContent.ProjectileType<EnchantedShot>(); // The sword as a projectile
+            ThrowVelocity = 15f;
         }
 
 
@@ -135,7 +136,7 @@ namespace DestroyerTest.Content.Scepter
 
         public virtual void ThrowDefaults()
         {   
-            ThrowVelocity = 15f * ScepterClassStats.ThrowSpeedModifier;
+            ThrowVelocity = 15f * Main.LocalPlayer.ScepterClass().ThrowSpeedModifier;
             Item.shoot = ThrowID;
             Item.channel = ChannelingDuringThrow;
             Item.damage = ThrowDMG;

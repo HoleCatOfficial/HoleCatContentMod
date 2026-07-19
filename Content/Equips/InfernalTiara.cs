@@ -66,7 +66,7 @@ namespace DestroyerTest.Content.Equips
         public override void UpdateArmorSet(Player player)
         {
             
-            ScepterClassStats.Range += 2;
+            player.ScepterClass().Range += 2;
             player.lavaImmune = true;
             player.DefaultSetBonusText(player.armor[0]);
         }

@@ -19,7 +19,6 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
     {
         public override void SetDefaults()
         {
-            float returnDelayMultiplier = 1f + (ScepterClassStats.Range * 0.01f);
             int baseFlightTime = 60;
 
             ThemeColor = ColorLib.StellarFireGradient((float)flightTime / (float)baseFlightTime);

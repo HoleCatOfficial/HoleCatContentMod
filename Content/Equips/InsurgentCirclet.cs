@@ -50,7 +50,7 @@ namespace DestroyerTest.Content.Equips
         {
             player.DefaultSetBonusText(player.armor[0]);
             player.GetDamage(ModContent.GetInstance<ScepterClass>()) *= 1.10f;
-            ScepterClassStats.Range += 2;
+            player.ScepterClass().Range += 2;
 			if (player.TryGetModPlayer<InsurgentPlayer>(out var t))
 			{
 				t.Active = true;

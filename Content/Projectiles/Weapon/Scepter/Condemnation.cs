@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Formats.Tar;
 using System.Runtime.CompilerServices;
 using DestroyerTest.Common;
+using DestroyerTest.Common.Interfaces;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Particles;
 using Microsoft.Xna.Framework;
@@ -14,18 +15,26 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 {
-    public class Condemnation : ModProjectile
+    public class Condemnation : ModProjectile, IHomingProjectile
     {
-        private NPC HomingTarget
-        {
-            get => Projectile.ai[0] == 0 ? null : Main.npc[(int)Projectile.ai[0] - 1];
-            set
-            {
-                Projectile.ai[0] = value == null ? 0 : value.whoAmI + 1;
-            }
-        }
 
-        public ref float DelayTimer => ref Projectile.ai[1];
+        public float DelayTimer;
+
+        bool IHomingProjectile.TracksNPCs => true;
+
+        bool IHomingProjectile.TracksPlayers => false;
+
+        float IHomingProjectile.HomingTurnSpeed => 10f;
+
+        bool IHomingProjectile.UsesHomingAcceleration => false;
+
+        float IHomingProjectile.HomingAccelAmount => 1f;
+
+        float IHomingProjectile.HomingMaxAccel => 1f;
+
+        float IHomingProjectile.DetectRadius => 1200f;
+
+        bool IHomingProjectile.CanHome => DelayTimer >= 30;
 
         public override void SetStaticDefaults()
         {
@@ -40,110 +49,63 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
             Projectile.friendly = true; // Can the projectile deal damage to enemies?
             Projectile.hostile = false; // Can the projectile deal damage to the player?
             Projectile.ignoreWater = true; // Does the projectile's speed be influenced by water?
-            Projectile.timeLeft = 360; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
+            Projectile.timeLeft = 1800; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
             Projectile.tileCollide = false;
             Projectile.penetrate = 1;
             Projectile.hide = true;
-            Projectile.extraUpdates = 2;
+            Projectile.extraUpdates = 12;
+        }
+
+        public override bool PreDraw(ref Color lightColor)
+        {
+            Texture2D projectileTexture = ModContent.Request<Texture2D>("DestroyerTest/Content/Projectiles/Weapon/Scepter/HolyOrb").Value;
+            
+            for (int i = 0; i < Projectile.oldPos.Length; i++)
+            {
+                float progress = i / (float)Projectile.oldPos.Length;
+                float scale = MathHelper.Lerp(0.2f, 0.0005f, progress);
+                Color color = Color.Red with { A = 0 };
+
+                Main.EntitySpriteDraw(
+                    projectileTexture,
+                    Projectile.OldCenter()[i] - Main.screenPosition,
+                    null,
+                    color,
+                    Projectile.rotation,
+                    projectileTexture.Size() / 2,
+                    scale * Projectile.scale,
+                    SpriteEffects.None,
+                    0
+                );
+            }
+
+            Main.EntitySpriteDraw(
+                projectileTexture,
+                Projectile.Center - Main.screenPosition,
+                null,
+                Color.Red,
+                Projectile.rotation,
+                projectileTexture.Size() / 2,
+                0.2f * Projectile.scale,
+                SpriteEffects.None,
+                0
+            );
+
+            return false;
         }
 
         public override bool? CanHitNPC(NPC target)
         {
-            return DelayTimer >= 10 && Projectile.ManualCanHitFriendly(target);
+            return DelayTimer >= 30 && Projectile.ManualCanHitFriendly(target);
         }
-
-        private List<Vector2> trailPoints = new List<Vector2>();
-        private Vector2 lastTickPosition;
-        private const int MaxTrailCount = 60;
-        private const int DustSpawnStep = 3; 
 
         public override void AI()
         {
-            int subdivisions = Projectile.extraUpdates + 1;
-            Vector2 start = lastTickPosition;
-            Vector2 end = Projectile.Center;
+            DelayTimer++;
 
-            if (start == Vector2.Zero) // safety for first frame
-                start = end;
-
-            // Insert interpolated points between last tick and this tick.
-            // We append newest at the end, and trim the oldest at index 0 when full.
-            for (int s = 1; s <= subdivisions; s++)
-            {
-                float t = s / (float)subdivisions;
-                Vector2 pos = Vector2.Lerp(start, end, t);
-                trailPoints.Add(pos);
-                if (trailPoints.Count > MaxTrailCount)
-                    trailPoints.RemoveAt(0); // drop oldest
-            }
-
-            lastTickPosition = end;
-
-            for (int i = 0; i < trailPoints.Count; i += DustSpawnStep)
-            {
-                Vector2 p = trailPoints[i];
-                var d = Dust.NewDustPerfect(p, DustID.TintableDustLighted, Vector2.Zero, 50, Color.Red, 1f);
-                d.noGravity = true;
-            }
-
-            Lighting.AddLight(Projectile.Center, Color.Red.ToVector3() * 0.6f);
-            //PRTLoader.NewParticle(Projectile.Center, new Vector2((Projectile.velocity.X / 2) + Main.rand.NextFloat(-1, 1), (Projectile.velocity.Y / 2) + Main.rand.NextFloat(-1, 1)), PRTLoader.GetParticleID<SimpleParticle>(), Color.Red, 0.25f);
-
-            if (DelayTimer < 10)
-            {
-                DelayTimer += 1;
-                return;
-            }
-
-            float maxDetectRadius = 4000f;
-
-            if (HomingTarget == null)
-            {
-                HomingTarget = FindClosestNPC(maxDetectRadius);
-            }
-
-            if (HomingTarget != null && !IsValidTarget(HomingTarget))
-            {
-                HomingTarget = null;
-            }
-
-            if (HomingTarget == null)
-                return;
-
-            float length = Projectile.velocity.Length();
-            float targetAngle = Projectile.AngleTo(HomingTarget.Center);
-            int turnspeed = 5;
-            turnspeed += 10;
-            Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(turnspeed)).ToRotationVector2() * length;
-        }
-
-
-        public NPC FindClosestNPC(float maxDetectDistance)
-        {
-            NPC closestNPC = null;
-
-            float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
-
-            foreach (var target in Main.ActiveNPCs)
-            {
-                if (IsValidTarget(target))
-                {
-                    float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, Projectile.Center);
-
-                    if (sqrDistanceToTarget < sqrMaxDetectDistance)
-                    {
-                        sqrMaxDetectDistance = sqrDistanceToTarget;
-                        closestNPC = target;
-                    }
-                }
-            }
-
-            return closestNPC;
-        }
-
-        public bool IsValidTarget(NPC target)
-        {
-            return target.CanBeChasedBy();
+            var d = Dust.NewDustPerfect(Projectile.Center, DustID.CrimsonSpray, Vector2.Zero, 50, Color.Red, 1f);
+            d.noGravity = true;
+            
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)

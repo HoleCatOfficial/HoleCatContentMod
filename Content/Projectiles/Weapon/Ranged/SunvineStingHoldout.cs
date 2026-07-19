@@ -38,12 +38,22 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Ranged
             Projectile.tileCollide = false;
         }
 
+        public float swayRotation;
+
         public override bool PreDraw(ref Color lightColor)
         {
             Texture2D Tex = TextureAssets.Projectile[Type].Value;
+
+            Texture2D VineTex1 = ModContent.Request<Texture2D>(DTAssetLib.ExtrasPath + "/SunvineStingVine1").Value;
+            Texture2D VineTex2 = ModContent.Request<Texture2D>(DTAssetLib.ExtrasPath + "/SunvineStingVine2").Value;
+
             SpriteEffects Fx = Math.Sign(Pointing.X) == 1 ? SpriteEffects.None : SpriteEffects.FlipVertically;
 
             Main.EntitySpriteDraw(Tex, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, Tex.Size() / 2, Projectile.scale, Fx);
+
+            Main.EntitySpriteDraw(VineTex1, (Projectile.Center + new Vector2(-7f, -17f).RotatedBy(Projectile.rotation)) - Main.screenPosition, null, Color.White, 0f, new Vector2(VineTex1.Width / 2, 0f), Projectile.scale, Fx);
+            Main.EntitySpriteDraw(VineTex2, (Projectile.Center + new Vector2(-20.5f, -20f).RotatedBy(Projectile.rotation)) - Main.screenPosition, null, Color.White, 0f, new Vector2(VineTex2.Width / 2, 0f), Projectile.scale, Fx);
+
             return false;
 
         }
@@ -52,34 +62,24 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Ranged
 
         Vector2 Pointing => Main.MouseWorld - Owner.Center;
 
-        SoundStyle Empty = new SoundStyle(DTAssetLib.AudioPath + "/ClickMetal") { PitchVariance = 0.1f, MaxInstances = 0 };
-        SoundStyle Fire = new SoundStyle(DTAssetLib.AudioPath + "/BlitzFire") { PitchVariance = 0.1f, MaxInstances = 0 };
-        SoundStyle HeavyFire = new SoundStyle(DTAssetLib.AudioPath + "/BlitzHeavyFire") { PitchVariance = 0.1f, MaxInstances = 0 };
-
-        bool HeavyShot = false;
+        SoundStyle Fire = SoundID.Item5;
 
         Vector2 GetMuzzle()
         {
-            return Projectile.Center + new Vector2(10, 4 * Math.Sign(Pointing.X)).RotatedBy(Pointing.ToRotation());
+            return Projectile.Center + new Vector2(4, 4).RotatedBy(Pointing.ToRotation());
         }
 
         void SetPosition()
         {
 
             Owner.SetCompositeArmFront(Projectile.active, Player.CompositeArmStretchAmount.Full, Pointing.ToRotation() - MathHelper.PiOver2);
-            Projectile.Center = Owner.MountedCenter + new Vector2(24, 0).RotatedBy(Projectile.rotation);
+            Projectile.Center = Owner.MountedCenter + new Vector2(20, 0).RotatedBy(Projectile.rotation);
             Projectile.rotation = Pointing.ToRotation();
         }
 
-        public bool JustPressed(Keys key)
+        public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
         {
-            return Main.keyState.IsKeyDown(key);
-        }
-
-        public override bool PreAI()
-        {
-            HeavyShot = JustPressed(Keys.X);
-            return true;
+            overPlayers.Add(index);
         }
 
         public override void AI()
@@ -87,55 +87,40 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Ranged
             SetPosition();
 
 
-            if (Owner.controlUseItem && !Owner.CCed && !Owner.dead && Owner.HeldItem.type == ModContent.ItemType<Blitz>())
+            if (Owner.controlUseItem && !Owner.CCed && !Owner.dead && Owner.HeldItem.type == ModContent.ItemType<SunvineSting>())
             {
                 Projectile.timeLeft = 60;
-                if (!HeavyShot)
+               
+                Projectile.ai[0]++;
+                int interval = (int)(15 * Owner.GetAttackSpeed(DamageClass.Ranged));
+
+                if (Projectile.ai[0] % interval == 0)
                 {
-                    Projectile.ai[0]++;
-
-                    if (Projectile.ai[0] % 3 == 0)
+                    if (Owner.PickAmmo(Owner.HeldItem, out int Shot, out float Speed, out int Dmg, out float KB, out int ammoID))
                     {
-                        if (Owner.PickAmmo(Owner.HeldItem, out int Shot, out float Speed, out int Dmg, out float KB, out int ammoID))
+                        Vector2 Dir = Pointing;
+                        Dir.Normalize();
+
+
+
+                        SoundEngine.PlaySound(Fire, GetMuzzle());
+
+                        Projectile PrimaryFire = Projectile.NewProjectileDirect(Owner.GetSource_ItemUse_WithPotentialAmmo(Owner.HeldItem, Owner.FindAmmoDT(AmmoID.Arrow).type), GetMuzzle(), Dir * Speed, ModContent.ProjectileType<SunvineStingArrow>(), (int)Owner.GetTotalDamage(DamageClass.Ranged).ApplyTo(40), KB, Owner.whoAmI);
+
+                        if (Owner.HeldItem.ModItem is SunvineSting Sting)
                         {
-                            Vector2 Dir = Pointing;
-                            Dir.Normalize();
-
-
-
-                            SoundEngine.PlaySound(Fire, GetMuzzle());
-
-                            Projectile PrimaryFire = Projectile.NewProjectileDirect(Owner.GetSource_ItemUse_WithPotentialAmmo(Owner.HeldItem, Owner.FindAmmoDT(AmmoID.Bullet).type), GetMuzzle(), Dir * Speed, Owner.FindAmmoDT(AmmoID.Bullet).shoot, (int)Owner.GetTotalDamage(DamageClass.Ranged).ApplyTo(40), KB, Owner.whoAmI);
-                        }
-                        else
-                        {
-                            SoundEngine.PlaySound(Empty, GetMuzzle());
+                            if (Sting.HitCount >= 20)
+                            {
+                                SoundEngine.PlaySound(SoundID.Zombie104, GetMuzzle());
+                                Projectile SecondaryFire = Projectile.NewProjectileDirect(Owner.GetSource_ItemUse_WithPotentialAmmo(Owner.HeldItem, Owner.FindAmmoDT(AmmoID.Arrow).type), GetMuzzle(), Dir * 0.01f, ModContent.ProjectileType<SunvineStingBeam>(), (int)Owner.GetTotalDamage(DamageClass.Ranged).ApplyTo(180), KB, Owner.whoAmI, Dir.ToRotation());
+                                Sting.HitCount = 0;
+                            }
                         }
                     }
+
+                    
                 }
-                else
-                {
-                    Projectile.ai[1]++;
-
-                    if (Projectile.ai[1] % 40 == 0)
-                    {
-                        if (Owner.PickAmmo(Owner.HeldItem, out int Shot, out float Speed, out int Dmg, out float KB, out int ammoID))
-                        {
-                            Vector2 Dir = Pointing;
-                            Dir.Normalize();
-
-                            SoundEngine.PlaySound(HeavyFire, GetMuzzle());
-
-                            Utils.PoofOfSmoke(GetMuzzle());
-
-                            Projectile SecondaryFire = Projectile.NewProjectileDirect(Owner.GetSource_ItemUse_WithPotentialAmmo(Owner.HeldItem, Owner.FindAmmoDT(AmmoID.Bullet).type), GetMuzzle(), Dir * Speed, ModContent.ProjectileType<BlitzCrystalBullet>(), (int)Owner.GetTotalDamage(DamageClass.Ranged).ApplyTo(40) * 2, KB, Owner.whoAmI);
-                        }
-                        else
-                        {
-                            SoundEngine.PlaySound(Empty, GetMuzzle());
-                        }
-                    }
-                }
+              
             }
             else
             {

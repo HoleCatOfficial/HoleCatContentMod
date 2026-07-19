@@ -158,7 +158,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             {
                 // OutPhase: Count time before returning
                 flightTime++;
-                if (flightTime >= 60 + ScepterClassStats.Range)
+                if (flightTime >= 60 + player.ScepterClass().Range)
                 {
                     returning = true;
                 }

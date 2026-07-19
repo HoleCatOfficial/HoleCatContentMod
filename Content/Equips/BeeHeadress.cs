@@ -39,7 +39,7 @@ namespace DestroyerTest.Content.Equips
 
         public override void UpdateArmorSet(Player player)
         {
-            ScepterClassStats.Range += 2;
+            player.ScepterClass().Range += 2;
             var modPlayer = player.GetModPlayer<BeeScepterPlayer>();
             modPlayer.Active = true;
             player.setBonus = Language.GetText("Mods.DestroyerTest.Items.BeeHeadress.SetBonus").Value;

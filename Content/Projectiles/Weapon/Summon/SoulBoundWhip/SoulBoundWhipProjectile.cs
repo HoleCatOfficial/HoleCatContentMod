@@ -48,7 +48,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon.SoulBoundWhip
 
             SetupModifiers(WhipController);
 
-            Projectile.WhipSettings.Segments = 48;
+            Projectile.WhipSettings.Segments = 180;
         }
         public override void AI2()
         {
@@ -91,29 +91,27 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon.SoulBoundWhip
             _Head_y = (int)(5 * Math.Abs(MathF.Sin(Main.GlobalTimeWrappedHourly)));
             Texture2D tex = ModContent.Request<Texture2D>($"{Path}/SoulBoundWhip_MidChain").Value;
 
-            
 
 
+
+            //Number of segments.
             float whipLength = Projectile.WhipSettings.Segments;
 
-            float spacingPixels = tex.Width;
+            //Spacing
+            float spacingPixels = 6;
 
+            //How many spacing intervals fit in the number of segments?
             int count = Math.Max(1, (int)(whipLength / spacingPixels));
 
-            Vector2 End = GetPointAlongWhip(points, whipLength);
-
-            //PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), End, Vector2.Zero, ColorLib.Soul3, 1f);
-
             // shared sliding parameter
+            // Oscillates from 1 to -1.
             float slide = (MathF.Sin(Main.GlobalTimeWrappedHourly * 1f)) % 1f;
 
             for (int i = 0; i < count; i++)
             {
-                // fixed offset per element
-                float offset = i / (float)count;
 
-                // sliding + offset
-                float t = (slide + offset) % 1f;
+                float distance = (slide + i * spacingPixels) % whipLength;
+                float t = distance / whipLength;
 
                 Vector2 point = GetPointAlongWhip(points, t);
 

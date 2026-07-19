@@ -17,25 +17,32 @@ namespace DestroyerTest.Common
     /// <para/> <b>SizeModifier</b> - This float controls the size of the thrown projectiles. This value can tend to be finicky due to the scepters' tile-bouncing AI stopping them from properly reaching the player past a certain size.
     /// <para/> <b>ManaBurstPower</b> - This integer is for a not-yet-implemented mechanic involving the player's mana. This currently does nothing.
 	/// </summary>
-	public class ScepterClassStats
+	public class ScepterClassStats : ModPlayer
     {   
-
+        
         /// <summary>
         /// An integer modifier affecting how far a scepter will fly before automatically returning to the player.
         /// <para/> The formula is as follows: 1f + (ScepterClassStats.Range * 0.01f). As you can observe, it is impossible to decrease the range, not that it would be useful to. For debuffs you can just decrease the effectiveness of the range multiplier.
         /// <para/><b>Note:</b> Because the thrown projectiles run on a timer, range value measures in <b>In-Game ticks</b>. 
         /// </summary>
-        public static int Range { get; set; } = 0;
+        public int Range { get; set; } 
 
         /// <summary>
         /// A multiplicative modifer that affects how fast thrown scepters travel.
         /// </summary>
-        public static float ThrowSpeedModifier { get; set; } = 1f;
+        public float ThrowSpeedModifier { get; set; }
 
         /// <summary>
         /// An additive modifier that increases or decreases the amount of times a shot will bounce, if it is set to bounce.
         /// </summary>
-        public static int ShotBounceModifier { get; set; } = 0;
+        public int ShotBounceModifier { get; set; }
+
+        public override void ResetEffects()
+        {
+            Range = 0;
+            ThrowSpeedModifier = 1f;
+        }
+
     }
 
     public static class ScepterRegistry
@@ -77,16 +84,6 @@ namespace DestroyerTest.Common
         {
 
         };
-    }
-
-    public class ScepterClassStatResetPlayer : ModPlayer
-    {
-        public override void ResetEffects()
-        {
-            ScepterClassStats.Range = 0;
-            ScepterClassStats.ThrowSpeedModifier = 1f;
-        }
-
     }
 
     

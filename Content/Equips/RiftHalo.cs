@@ -54,8 +54,8 @@ namespace DestroyerTest.Content.Equips
 		public override void UpdateArmorSet(Player player) {
 			player.AddBuff(ModContent.BuffType<RiftBallBuff>(), 3600);
 			player.GetDamage(ModContent.GetInstance<ScepterClass>()) *= 1.12f;
-			ScepterClassStats.Range += 100;
-			ScepterClassStats.ThrowSpeedModifier *= 1.45f; 
+			player.ScepterClass().Range += 100;
+			player.ScepterClass().ThrowSpeedModifier *= 1.45f; 
 			if (player.TryGetModPlayer<RiftHaloPlayer>(out var Halo))
 			{
 				Halo.Active = true;

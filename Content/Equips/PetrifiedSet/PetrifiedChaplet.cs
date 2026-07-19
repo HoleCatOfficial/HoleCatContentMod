@@ -62,7 +62,7 @@ namespace DestroyerTest.Content.Equips.PetrifiedSet
 			{
 				Scepter.Active = true;
 			}
-			ScepterClassStats.ThrowSpeedModifier = 2.5f;
+			player.ScepterClass().ThrowSpeedModifier = 2.5f;
 			player.buffImmune[BuffID.OnFire] = true;
 			player.buffImmune[BuffID.Burning] = true;
 			player.buffImmune[BuffID.OnFire3] = true;

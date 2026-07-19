@@ -89,7 +89,7 @@ namespace DestroyerTest.Content.Equips
                 Projectile.NewProjectile(player.GetSource_Accessory(Item), player.Center, Main.rand.NextVector2Circular(3f, 3f), ModContent.ProjectileType<SolarTrail>(), (int)player.GetTotalDamage(DamageClass.Summon).ApplyTo(16), 12, player.whoAmI);
             }
 
-            player.maxMinions += 3;
+            player.maxMinions += 5;
             player.GetAttackSpeed(DamageClass.SummonMeleeSpeed) += 0.16f;
             player.GetArmorPenetration(DamageClass.Summon) += 22;
         }
@@ -98,6 +98,7 @@ namespace DestroyerTest.Content.Equips
         {
             CreateRecipe()
                 .AddIngredient<FetidCrown>()
+                .AddIngredient(ItemID.PapyrusScarab)
                 .AddIngredient<Item_HeliciteCrystal>(16)
                 .AddIngredient(ItemID.LihzahrdBrick, 12)
                 .AddTile<Tile_RiftConfigurator>()

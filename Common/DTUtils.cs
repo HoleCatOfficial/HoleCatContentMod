@@ -418,8 +418,20 @@ namespace DestroyerTest.Common
         public static DrawData CenteredDraw(Projectile projectile, Color color)
         {
             Texture2D texture = TextureAssets.Projectile[projectile.type].Value;
-            return new DrawData(texture, projectile.Center - Main.screenPosition, null, color, projectile.rotation, texture.Size() / 2, projectile.scale, SpriteEffects.None, 0f);
+
+            int frameHeight = texture.Height / Main.projFrames[projectile.type];
+            Rectangle frame = new Rectangle(
+                0,
+                frameHeight * projectile.frame,
+                texture.Width,
+                frameHeight
+            );
+
+            Vector2 origin = new Vector2(texture.Width / 2f, frameHeight / 2f);
+            return new DrawData(texture, projectile.Center - Main.screenPosition, frame, color * projectile.Opacity, projectile.rotation, origin, projectile.scale, SpriteEffects.None, 0f);
         }
+
+
 
         /// <summary>
         /// A scale of 1 is equal to the size of the smallest variant of Petrified Wisp.
@@ -1259,6 +1271,77 @@ namespace DestroyerTest.Common
             float speed = MathHelper.SmoothStep(0f, maxSpeed, progress);
 
             projectile.velocity = offset * speed;
+        }
+
+        public static ScepterClassStats ScepterClass(this Player player)
+        {
+            if (player.TryGetModPlayer<ScepterClassStats>(out var stats))
+            {
+                return stats;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public static int AutoTarget(this Projectile projectile)
+        {
+            Player Owner = Main.player[projectile.owner];
+            int chosen = -1;
+
+            // #1 — Player whip target
+            if (Owner.MinionAttackTargetNPC >= 0 &&
+                Owner.MinionAttackTargetNPC < Main.maxNPCs)
+            {
+                NPC whipTarget = Main.npc[Owner.MinionAttackTargetNPC];
+                if (whipTarget.CanBeChasedBy())
+                {
+                    chosen = Owner.MinionAttackTargetNPC;
+                }
+            }
+
+            // #2 — Bosses (if no whip target)
+            if (chosen == -1)
+            {
+                float bossDist = float.MaxValue;
+
+                for (int i = 0; i < Main.maxNPCs; i++)
+                {
+                    NPC npc = Main.npc[i];
+                    if (npc.CanBeChasedBy() && npc.boss)
+                    {
+                        float dist = Vector2.DistanceSquared(npc.Center, Owner.Center);
+                        if (dist < bossDist)
+                        {
+                            bossDist = dist;
+                            chosen = i;
+                        }
+                    }
+                }
+            }
+
+            // #3 — Closest to player
+            if (chosen == -1)
+            {
+                float closestDist = float.MaxValue;
+
+                for (int i = 0; i < Main.maxNPCs; i++)
+                {
+                    NPC npc = Main.npc[i];
+                    if (npc.CanBeChasedBy())
+                    {
+                        float dist = Vector2.DistanceSquared(npc.Center, Owner.Center);
+                        if (dist < closestDist)
+                        {
+                            closestDist = dist;
+                            chosen = i;
+                        }
+                    }
+                }
+            }
+
+            return chosen;
         }
     }
 

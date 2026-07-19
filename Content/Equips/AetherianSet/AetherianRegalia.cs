@@ -47,7 +47,7 @@ namespace DestroyerTest.Content.Equips.AetherianSet
 
         public override void UpdateEquip(Player player)
         {
-            ScepterClassStats.ThrowSpeedModifier *= SpeedBonus;
+            player.ScepterClass().ThrowSpeedModifier *= SpeedBonus;
         }
 
         public override void SetMatch(bool male, ref int equipSlot, ref bool robes)

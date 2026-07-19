@@ -27,7 +27,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
 		public override void UpdateEquip(Player player) {
 			player.GetAttackSpeed<ScepterClass>() += 0.05f;
             player.GetDamage<ScepterClass>() += 0.10f;
-            ScepterClassStats.Range += 300;
+            player.ScepterClass().Range += 300;
 		}
 
        public class EA_DROP_NPC : GlobalNPC

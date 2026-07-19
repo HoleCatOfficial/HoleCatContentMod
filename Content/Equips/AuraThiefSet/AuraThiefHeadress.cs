@@ -59,7 +59,7 @@ namespace DestroyerTest.Content.Equips.AuraThiefSet
 			}
             player.DefaultSetBonusText(Item);
             player.GetDamage(ModContent.GetInstance<ScepterClass>()) += 0.08f;
-			ScepterClassStats.ThrowSpeedModifier = 1.75f;
+			player.ScepterClass().ThrowSpeedModifier = 1.75f;
 			player.buffImmune[BuffID.Frostburn] = true;
 			player.buffImmune[BuffID.Frostburn2] = true;
 			player.buffImmune[BuffID.Frozen] = true;

@@ -49,8 +49,8 @@ namespace DestroyerTest.Content.Equips
         {
             player.DefaultSetBonusText(player.armor[0]);
             player.GetCritChance(ModContent.GetInstance<ScepterClass>()) += 15;
-            ScepterClassStats.ThrowSpeedModifier *= 1.30f;
-            ScepterClassStats.Range += 40;
+            player.ScepterClass().ThrowSpeedModifier *= 1.30f;
+            player.ScepterClass().Range += 40;
 		}
 
 		public override void ArmorSetShadows(Player player)

@@ -48,7 +48,7 @@ namespace DestroyerTest.Content.Equips
 		public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(RangeBonus);
         public override void UpdateEquip(Player player)
         {
-            ScepterClassStats.Range += RangeBonus;
+            player.ScepterClass().Range += RangeBonus;
         }
 	}
 

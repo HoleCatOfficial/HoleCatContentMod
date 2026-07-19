@@ -36,7 +36,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
         {
             player.GetDamage(ModContent.GetInstance<ScepterClass>()) += DMGBonus;
             player.GetCritChance(ModContent.GetInstance<ScepterClass>()) += CritBonus;
-            ScepterClassStats.Range += RangeBonus;
+            player.ScepterClass().Range += RangeBonus;
         }
 
         public override void AddRecipes()

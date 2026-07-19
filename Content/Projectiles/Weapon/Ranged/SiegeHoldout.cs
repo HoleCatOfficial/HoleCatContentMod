@@ -162,6 +162,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Ranged
 
         public void HoldAnim(Player player)
         {
+            player.SetDummyItemTime(2);
             // Lock the projectile's position relative to the player
             float holdDistance = 10f;
             Vector2 mountedCenter = player.MountedCenter;

@@ -39,7 +39,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
         {
             player.GetDamage(ModContent.GetInstance<ScepterClass>()) += 0.2f;
             player.GetArmorPenetration(ModContent.GetInstance<ScepterClass>()) += 10;
-            ScepterClassStats.Range += 120;
+            player.ScepterClass().Range += 120;
         }
 
         public override void AddRecipes()

@@ -22,7 +22,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
 		}
 
 		public override void UpdateEquip(Player player) {
-            ScepterClassStats.Range += 20;
+            player.ScepterClass().Range += 20;
 		}
 	}
 }

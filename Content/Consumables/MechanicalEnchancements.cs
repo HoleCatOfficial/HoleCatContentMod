@@ -77,7 +77,7 @@ namespace DestroyerTest.Content.Consumables
 
             if (Effects)
             {
-                ScepterClassStats.ThrowSpeedModifier += 1.4f;
+                Player.ScepterClass().ThrowSpeedModifier += 1.4f;
             }
         }
     }

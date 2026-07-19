@@ -23,7 +23,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             player.GetDamage(ModContent.GetInstance<ScepterClass>()) += 0.08f;
-            ScepterClassStats.Range += 30;
+            player.ScepterClass().Range += 30;
         }
     }
 }

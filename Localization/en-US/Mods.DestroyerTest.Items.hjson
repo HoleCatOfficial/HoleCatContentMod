@@ -4869,3 +4869,23 @@ Pristine: {
 		The halberd's contact damage starts at 40 and scales with summon damage.
 		'''
 }
+
+CosmicCrisis: {
+	DisplayName: Cosmic Crisis
+	Tooltip: ""
+}
+
+WispStaff: {
+	DisplayName: Wisp Staff
+	Tooltip: ""
+}
+
+SunvineSting: {
+	DisplayName: Sunvine Sting
+	Tooltip: ""
+}
+
+ForsakenMaelstrom: {
+	DisplayName: Forsaken Maelstrom
+	Tooltip: ""
+}

@@ -31,6 +31,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 
         public override void SetStaticDefaults()
         {
+            ProjectileID.Sets.DrawScreenCheckFluff[Type] = 260000;
             ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true; // Make the cultist resistant to this projectile, as it's resistant to all homing projectiles.
         }
 

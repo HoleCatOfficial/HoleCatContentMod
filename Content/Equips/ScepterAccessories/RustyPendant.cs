@@ -24,7 +24,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
         {
             player.GetDamage(ModContent.GetInstance<ScepterClass>()) *= 1.25f;
             player.GetArmorPenetration(ModContent.GetInstance<ScepterClass>()) += 8;
-            ScepterClassStats.Range += 5;
+            player.ScepterClass().Range += 5;
         }
     }
 }

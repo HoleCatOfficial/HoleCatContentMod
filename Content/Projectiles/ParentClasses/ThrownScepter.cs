@@ -15,6 +15,9 @@ using System;
 using ReLogic.Content;
 using Terraria.Graphics;
 using BreadLibrary.Core.Utilities;
+using DestroyerTest.Common.Primitives;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace DestroyerTest.Content.Projectiles.ParentClasses
 {
@@ -91,7 +94,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         }
 
         public virtual Asset<Texture2D> GlowMask { get; set; } = null;
-        EmpressBladeDrawer Trail = new EmpressBladeDrawer();
+        EmpressTrailDiagonal Trail = new();
         public override bool PreDraw(ref Color lightColor)
 		{
 			lightColor = ThemeColor;
@@ -107,7 +110,10 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             Trail.ColorStart = ThemeColor;
             Trail.ColorEnd = ThemeColor * 0.4f;
 
-            //Trail.Draw(Projectile);
+            if (OldRotations.Count > 2)
+            {
+                //Trail.Draw(Projectile, Projectile.OldCenter().ToList(), OldRotations);
+            }
 
             if (!ArmorSetHelper_AetherianShimmerEffects)
             {
@@ -223,6 +229,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         }
 
         public bool OnReturnFlag = false;
+        List<float> OldRotations = new();
         public virtual void DefaultBehaviour()
         {
             // Decrease the cooldown timer on each tick
@@ -254,6 +261,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             }
             
             Projectile.rotation += (Projectile.velocity.Length() * 0.03f) * Projectile.direction;
+            OldRotations.Add(Projectile.rotation);
 
             if (Main.rand.NextBool(3) && !ArmorSetHelper_AetherianShimmerEffects)
             {
@@ -273,13 +281,13 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             {
                 
                 flightTime++;
-                float returnDelayMultiplier = 1f + (ScepterClassStats.Range * 0.01f);
+                float returnDelayMultiplier = 1f + (player.ScepterClass().Range * 0.01f);
                 int baseFlightTime = 60;
                 if (flightTime >= baseFlightTime * returnDelayMultiplier)
                 {
                     if (config.EnableDebugMessages)
                     {
-                        Main.NewText($"Range: {ScepterClassStats.Range}, FlightTime: {flightTime}, Multiplier: {returnDelayMultiplier}");
+                        Main.NewText($"Range: {player.ScepterClass().Range}, FlightTime: {flightTime}, Multiplier: {returnDelayMultiplier}");
                     }
                     returning = true;
                 }
@@ -295,7 +303,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
                 ArmCatchAnimate(player);
                 // InPhase: Smooth return using Lerp
                 Vector2 returnDirection = player.Center - Projectile.Center;
-                float speed = MathHelper.Lerp(Projectile.velocity.Length(), 15f, 0.8f); // Smooth acceleration
+                float speed = MathHelper.Lerp(Projectile.velocity.Length(), 15f * player.ScepterClass().ThrowSpeedModifier, 0.8f); // Smooth acceleration
                 Projectile.velocity = returnDirection.SafeNormalize(Vector2.Zero) * speed;
 
                 // If close enough, remove the projectile

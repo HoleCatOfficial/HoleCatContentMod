@@ -482,3 +482,8 @@ Defilement: {
 	DisplayName: Defilement
 	Description: Your essence is being thoroughly violated.
 }
+
+WispMinionBuff: {
+	DisplayName: Wisp Minion Buff
+	Description: Mods.DestroyerTest.Buffs.WispMinionBuff.Description
+}
