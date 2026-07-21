@@ -13,12 +13,18 @@ using OpusLib;
 using Terraria.DataStructures;
 using OpusLib.Content.Helpers;
 using DestroyerTest.Content.Buffs;
+using Terraria.ID;
 
 namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
 {
     public class TenebrisLaser : ModProjectile
     {
         public override string Texture => DTUtils.NoTexture;
+
+        public override void SetStaticDefaults()
+        {
+            ProjectileID.Sets.DrawScreenCheckFluff[Type] = 16 * 500;
+        }
         public override void SetDefaults()
         {
             Projectile.width = 30;

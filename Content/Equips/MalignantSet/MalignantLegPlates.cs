@@ -31,7 +31,7 @@ namespace DestroyerTest.Content.Equips.MalignantSet
             Item.height = 18;
             Item.value = Item.sellPrice(gold: 1);
             Item.rare = ModContent.RarityType<WretchedRarity>();
-            Item.defense = 28;
+            Item.defense = 12;
         }
 
         public override void UpdateEquip(Player player)

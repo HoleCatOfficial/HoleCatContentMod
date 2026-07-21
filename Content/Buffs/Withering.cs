@@ -58,7 +58,7 @@ namespace DestroyerTest.Content.Buffs
                 {
                     WitheringSpark Spark = new WitheringSpark();
 
-                    Spark.PrepareSpark(Main.rand.NextVector2FromRectangle(npc.Hitbox), Main.rand.NextVector2Circular(2f, 2f), 0f, Color.DarkMagenta, Main.rand.NextFloat(0.05f, 0.1f), false, 40, SparkDrawMode.Additive);
+                    Spark.PrepareSpark(Main.rand.NextVector2FromRectangle(npc.Hitbox), Main.rand.NextVector2Circular(2f, 2f), 0f, Color.DarkMagenta, Main.rand.NextFloat(0.3f, 1f), false, 40, SparkDrawMode.AlphaBlend, 2f);
                     ParticleEngine.ShaderParticles.Add(Spark);
                 }
 
@@ -107,7 +107,7 @@ namespace DestroyerTest.Content.Buffs
                 {
                     WitheringSpark Spark = new WitheringSpark();
 
-                    Spark.PrepareSpark(Main.rand.NextVector2FromRectangle(Player.Hitbox), Main.rand.NextVector2Circular(2f, 2f), 0f, Color.DarkMagenta, Main.rand.NextFloat(0.05f, 0.1f), false, 40, SparkDrawMode.Additive);
+                    Spark.PrepareSpark(Main.rand.NextVector2FromRectangle(Player.Hitbox), Main.rand.NextVector2Circular(2f, 2f), 0f, Color.DarkMagenta, Main.rand.NextFloat(0.3f, 1f), false, 40, SparkDrawMode.Additive, 2f);
                     ParticleEngine.ShaderParticles.Add(Spark);
                 }
             }
@@ -121,4 +121,5 @@ namespace DestroyerTest.Content.Buffs
             }
         }
     }
+
 }

@@ -22,7 +22,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.Ichor
     {
         public override void SetStaticDefaults()
         {
-            ProjectileID.Sets.DrawScreenCheckFluff[Type] = 2000;
+            ProjectileID.Sets.DrawScreenCheckFluff[Type] = 16 * 500;
         }
 
         public override void SetDefaults()

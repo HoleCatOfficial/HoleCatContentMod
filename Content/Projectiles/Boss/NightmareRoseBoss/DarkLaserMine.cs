@@ -25,7 +25,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
 
         public override void SetStaticDefaults()
         {
-            ProjectileID.Sets.DrawScreenCheckFluff[Type] = 2000;
+            ProjectileID.Sets.DrawScreenCheckFluff[Type] = 16 * 500;
         }
 
         public override void SetDefaults()
@@ -90,8 +90,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
         float SoundPitch = 0f;
         public override void AI()
         {
-            Vector2 ToPlayer = Projectile.Center - Main.LocalPlayer.Center;
-            Projectile.velocity *= 0.999f;
+            Projectile.velocity *= 0.99f;
 
             RotOff -= 0.08f;
         }
@@ -113,6 +112,11 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
     public class DarkLaser : ModProjectile
     {
         public override string Texture => DTUtils.NoTexture;
+
+        public override void SetStaticDefaults()
+        {
+            ProjectileID.Sets.DrawScreenCheckFluff[Type] = 16 * 500;
+        }
         public override void SetDefaults()
         {
             Projectile.width = 30;
@@ -146,6 +150,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
             DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(14), Color.Black, Main.spriteBatch, BlendState.Additive, oF, WidthScl * 0.65f, 3f);
            
             Main.EntitySpriteDraw(DTAssetLib.Laser.Value, Projectile.Center - Main.screenPosition, null, Color.Black, Projectile.rotation, new Vector2(0, DTAssetLib.Laser.Value.Height / 2), new Vector2(1f, WidthScl * 0.5f), SpriteEffects.None);
+            
             return false;
         }
 

@@ -327,11 +327,9 @@ namespace DestroyerTest.Content.Particles
     {
         public override void Draw(ref ParticleRendererSettings settings, SpriteBatch spritebatch)
         {
-            spritebatch.UseBlendState(BlendState.AlphaBlend);
-            spritebatch.Draw(GetTextureProperties().Item1, position - Main.screenPosition, GetTextureProperties().Item2, col * Opacity, rotation, GetTextureProperties().Item3, new Vector2(scale * Width * LengthMultiplier, scale) * 0.1f, SpriteEffects.None, 0f);
+            spritebatch.Draw(GetTextureProperties().Item1, position - Main.screenPosition, GetTextureProperties().Item2, col with { A = 0 } * Opacity, rotation, GetTextureProperties().Item3, new Vector2(scale * Width * LengthMultiplier, scale) * 0.1f, SpriteEffects.None, 0f);
             
             spritebatch.Draw(GetTextureProperties().Item1, position - Main.screenPosition, GetTextureProperties().Item2, Color.Black * Opacity, rotation, GetTextureProperties().Item3, new Vector2(scale * 0.5f * Width * LengthMultiplier, (scale) * 0.7f) * 0.1f, SpriteEffects.None, 0f);
-            spritebatch.ResetToDefault();
         }
     }
 

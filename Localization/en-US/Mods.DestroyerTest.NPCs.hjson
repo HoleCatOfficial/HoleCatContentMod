@@ -234,6 +234,11 @@ DarkArchmage: {
 TenebrousConstruct: {
 	DisplayName: Tenebrous Construct
 	BestiaryEntry1: An early defector of the Shade World to Mother Darkness's side, this deceitful construct sacrifcied its humanity for immportality and power.
+	SpawnDialogue0: Hello. Local.
+	SpawnDialogue1: I bet you’ve had plenty of work on your hands tracking down and destroying all of the attendants here in your world.
+	SpawnDialogue2: I have been tasked with ending your interference.
+	SpawnDialogue3: But I wouldn’t dare let your final moments be so dour.
+	SpawnDialogue4: So let me tell you a tale, Local.
 	FightDialogue0: Long ago, our worlds were not too different.
 	FightDialogue1: By now, our world has long lost its name. You call it ‘the shade world’. I call it Home.
 	FightDialogue2: I and my kind lived a simple life, much like yours.
@@ -249,12 +254,17 @@ TenebrousConstruct: {
 	FightDialogue12: Before long, I was among her most-tolerated presences.
 	FightDialogue13: While the rest of my people starved and froze out in the never-ending nighttime, I stayed in the palace, where I lived lavishly as Mother Darkness’s errand doer.
 	FightDialogue14: Life had struck a nice balance, if I do say so.
-	FightDialogue15: But then HE arrived.
-	FightDialogue16: She bragged about her pet constantly. Everywhere she went, he went with her.
-	FightDialogue17: He looked persistently miserable, and had to be bundled up in coats to not freeze to death.
-	FightDialogue18: What was not as welcome was his disappearance.
-	FightDialogue19: Of course, I was selected as the one to locate her pet. Who else would she trust with something so high-profile? Herself? (Her laziness gets on my nerves here and there...)
+	FightDialogue15: Jeez, you're really tiring me out! Just go away already! No more storytime!
+	FightDialogue16: You've done enough meddling with her plans! If she wants this world, she will have it!
+	FightDialogue17: Give up! I'll just keep getting sent here until I succeed!
+	FightDialogue18: You better stop!
+	FightDialogue19: NO!!
 	FightDialogue20: Ow Im dead
+
+	Fables: {
+		Name: Tenebrous Construct
+		Title: Devout Official
+	}
 }
 
 CorruptSigil.DisplayName: Corrupt Sigil
@@ -323,3 +333,4 @@ BlessedNodeMB: {
 
 BloodGazer.DisplayName: Blood Gazer
 SoulOrb.DisplayName: Soul Orb
+TenebrousConstructSpawn.DisplayName: Tenebrous Construct Spawn

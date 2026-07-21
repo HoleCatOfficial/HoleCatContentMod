@@ -91,13 +91,14 @@ namespace DestroyerTest.Common
             }
         }
     }
-    public class DTUtils
+    public class DTUtils : ModSystem
     {
-        //public static DTUtils instance = ModContent.GetInstance<DTUtils>();
+        public static DTUtils instance = null;
 
-        private static DTUtils _instance;
-
-        public static DTUtils instance => _instance ??= new DTUtils();
+        public override void PostSetupContent()
+        {
+            instance = ModContent.GetInstance<DTUtils>();
+        }
         
         public static string GetModNPCLocalizationEntry(ModNPC npc, int variant = 1)
         {
@@ -127,73 +128,6 @@ namespace DestroyerTest.Common
             }
 
             StellarParticleUtils.FlatStar(projectile.Center, 1f, ParticleEngine.BehindProjectiles);
-        }
-
-        /// <summary>
-        /// Draws a laser texture anchored at its center-bottom, with an internal AABBV line 
-        /// from (Tex.Width/2, Tex.Height) to (Tex.Width/2, 0).
-        /// </summary>
-        /// <param name="spriteBatch">The SpriteBatch to draw with.</param>
-        /// <param name="texture">The laser texture to draw.</param>
-        /// <param name="center">The world-space center point of the laser.</param>
-        /// <param name="color">The color to draw the laser with.</param>
-        /// <param name="rotation">Rotation in radians.</param>
-        /// <param name="scale">Scale factor (default 1f).</param>
-        /// <param name="sourceRect">Optional source rectangle (null for full texture).</param>
-        public static void DrawLaser(SpriteBatch spriteBatch, Texture2D texture, Vector2 center, Color color, float rotation = 0f, float scale = 1f, Rectangle? sourceRect = null)
-        {
-            if (texture == null)
-                return;
-
-            Rectangle source = sourceRect ?? texture.Bounds;
-
-            // Anchor: bottom-center of the texture
-            Vector2 origin = new Vector2(source.Width / 2f, source.Height);
-
-            // Convert world-space to screen-space
-            Vector2 screenPos = center - Main.screenPosition;
-
-            // Draw the laser texture
-            spriteBatch.Draw(
-                texture,
-                screenPos,
-                source,
-                color,
-                rotation,
-                origin,
-                scale,
-                SpriteEffects.None,
-                0f
-            );
-        }
-
-        /// <summary>
-        /// Returns the AABBV line segment for the laser’s internal direction,
-        /// based on its texture dimensions and optional scaling/rotation.
-        /// </summary>
-        public static (Vector2 Start, Vector2 End) GetLaserLine(Texture2D texture, Vector2 center, float rotation = 0f, float scale = 1f)
-        {
-            if (texture == null)
-                return (center, center);
-
-            // Local positions
-            Vector2 localStart = new Vector2(texture.Width / 2f, texture.Height);
-            Vector2 localEnd = new Vector2(texture.Width / 2f, 0);
-
-            // Translate local line to world-space relative to the center
-            Vector2 offset = localStart - new Vector2(texture.Width / 2f, texture.Height);
-            localStart -= offset;
-            localEnd -= offset;
-
-            // Apply rotation and scale
-            Matrix transform = Matrix.CreateRotationZ(rotation) * Matrix.CreateScale(scale);
-            localStart = Vector2.Transform(localStart, transform);
-            localEnd = Vector2.Transform(localEnd, transform);
-
-            Vector2 worldStart = center + localStart;
-            Vector2 worldEnd = center + localEnd;
-
-            return (worldStart, worldEnd);
         }
 
         //From Cal Entropy. Too good not to have due to its usefulness.
@@ -332,12 +266,9 @@ namespace DestroyerTest.Common
                 return;
             }
 
-
-            Opus.StartSpriteBatchForTrails(spriteBatch, blendState, SpriteSortMode.Immediate);
-
+            spriteBatch.UseBlendState(blendState);
             spriteBatch.Draw(texture.Value, line.Start - Main.screenPosition, new Rectangle(TexOffset, 0, (int)line.GetLineLength, texture.Value.Height), drawColor, line.GetLineRotation, new Vector2(0, texture.Value.Height) / 2, new Vector2(1, Width), SpriteEffects.None, 0);
-
-            Opus.ReturnToDefaultDrawing(spriteBatch);
+            spriteBatch.ResetToDefault();
         }
 
         /// <summary>
@@ -356,12 +287,9 @@ namespace DestroyerTest.Common
                 return;
             }
 
-
-            Opus.StartSpriteBatchForTrails(spriteBatch, blendState, SpriteSortMode.Immediate);
-
+            spriteBatch.UseBlendState(blendState);
             spriteBatch.Draw(texture.Value, line.Start - Main.screenPosition, new Rectangle(TexOffset, 0, (int)line.GetLineLength, texture.Value.Height), drawColor, line.GetLineRotation, new Vector2(0, texture.Value.Height) / 2, new Vector2(Stretch, Width), SpriteEffects.None, 0);
-
-            Opus.ReturnToDefaultDrawing(spriteBatch);
+            spriteBatch.ResetToDefault();
         }
 
         public static void SweepColorOverString(string input, Color[] colors, Vector2 textPos, float speed = 6f)
@@ -709,7 +637,8 @@ namespace DestroyerTest.Common
             return center + angle.ToRotationVector2() * radius;
         }
 
-
+       
+        
 
     }
 
@@ -1342,6 +1271,19 @@ namespace DestroyerTest.Common
             }
 
             return chosen;
+        }
+
+        /// <summary>
+        /// 
+        ///
+        /// NOTE: This method can only be used if you know the radius, in pixels, or the ring in your texture.
+        /// </summary>
+        /// <param name="RadiusToCompare"> The ideal radius that the ring in the texture should be. </param>
+        /// <param name="DistanceFromTextureCenter"> The original radius, in pixels, of the ring in the texture. </param>
+        /// <returns></returns>
+        public static float ScaleRingTextureToMatchRadius(this Texture2D Texture, float RadiusToCompare, int DistanceFromTextureCenter = 0)
+        {
+            return RadiusToCompare / (float)DistanceFromTextureCenter;
         }
     }
 

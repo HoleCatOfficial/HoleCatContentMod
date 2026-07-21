@@ -12,12 +12,18 @@ using BreadLibrary.Core.Utilities;
 using OpusLib;
 using Terraria.DataStructures;
 using OpusLib.Content.Helpers;
+using Terraria.ID;
 
 namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.Blessed
 {
     public class BlessedLaser : ModProjectile
     {
         public override string Texture => DTUtils.NoTexture;
+        public override void SetStaticDefaults()
+        {
+            ProjectileID.Sets.DrawScreenCheckFluff[Type] = 16 * 500;
+        }
+
         public override void SetDefaults()
         {
             Projectile.width = 30;
@@ -42,13 +48,14 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.Blessed
             DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(2), Main.DiscoColor, Main.spriteBatch, BlendState.Additive, oF, WidthScl, 3f);
 
             Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-            Main.EntitySpriteDraw(DTAssetLib.Laser.Value, Projectile.Center - Main.screenPosition, null, Main.DiscoColor, Projectile.rotation, new Vector2(0, DTAssetLib.Laser.Value.Height / 2), new Vector2(1f, WidthScl), SpriteEffects.None);
+            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.LaserRepeating(true), Main.DiscoColor, Main.spriteBatch, BlendState.Additive, oF, WidthScl, 3f);
             
             DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(1), Color.White, Main.spriteBatch, BlendState.Additive, oF, WidthScl * 0.5f, 2f);
             
             Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-            Main.EntitySpriteDraw(DTAssetLib.Laser.Value, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(0, DTAssetLib.Laser.Value.Height / 2), new Vector2(1f, WidthScl * 0.5f), SpriteEffects.None);
+            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.LaserRepeating(true), Color.White, Main.spriteBatch, BlendState.Additive, oF, WidthScl * 0.5f, 2f);
             Opus.ReturnToDefaultDrawing(Main.spriteBatch);
+
             return false;
         }
 

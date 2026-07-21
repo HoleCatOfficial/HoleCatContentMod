@@ -90,6 +90,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Ranged
         private bool[] soundflag = new bool[3];
         private bool fireFlag = false;
 
+        Vector2 ShootPoint;
+
         public override void AI()
         {
             Vector2 dir = Main.MouseWorld - Projectile.Center;
@@ -97,7 +99,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Ranged
             Projectile.rotation = dir.ToRotation();
             Owner.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, dir.ToRotation() - MathHelper.PiOver2);
             Projectile.Center = Owner.Center + new Vector2(15, 0).RotatedBy(Projectile.rotation);
-
+            ShootPoint = Projectile.Center + new Vector2(50, 0).RotatedBy(Projectile.rotation);
 
             if (Owner.HeldItem.type == ModContent.ItemType<ForsakenMaelstrom>() && Owner.controlUseItem)
             {
@@ -105,7 +107,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Ranged
                 Projectile.timeLeft = 60;
                 Projectile.ai[0]++;
 
-                if (Projectile.ai[0] % 6 == 0)
+                if (Projectile.ai[0] % 4 == 0)
                 {
                     SoundEngine.PlaySound(FireSound);
                     Fire();
@@ -119,25 +121,21 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Ranged
             Vector2 dir = Main.MouseWorld - Projectile.Center;
             dir.Normalize();
             Vector2 Vel = dir * 7;
-            if (CheckAmmoForConsumption(Owner, out int projToShoot, out float speed, out int damage, out float knockBack, out int usedAmmoItemId, out Item B))
-            {
-                projToShoot = Owner.FindAmmoDT(AmmoID.Gel).shoot;
 
-                if (B != null)
-                {
-                    var Source = Owner.GetSource_ItemUse_WithPotentialAmmo(B, usedAmmoItemId, "ForsakenMaelstromFire");
 
-                    Projectile.ai[2]++;
-                    Projectile Shot1 = Projectile.NewProjectileDirect(Source, Projectile.Center, Vel, ModContent.ProjectileType<ForsakenMaelstromFire>(), damage, knockBack, Owner.whoAmI);
+            var Source = Owner.GetSource_ItemUse(Owner.HeldItem);
+
+            Projectile.ai[2]++;
+            Projectile Shot1 = Projectile.NewProjectileDirect(Source, ShootPoint, Vel, ModContent.ProjectileType<ForsakenMaelstromFire>(), Owner.HeldItem.damage, Owner.HeldItem.knockBack, Owner.whoAmI);
                     
-                    if (Projectile.ai[2] % 5 == 0)
-                    {
-                        Projectile ExtraShot1 = Projectile.NewProjectileDirect(Source, Projectile.Center, (Vel * 2f).RotatedBy(-0.1f), ModContent.ProjectileType<ForsakenMaelstromHomingFireball>(), damage, knockBack, Owner.whoAmI);
-                        Projectile ExtraShot2 = Projectile.NewProjectileDirect(Source, Projectile.Center, Vel * 2f, ModContent.ProjectileType<ForsakenMaelstromHomingFireball>(), damage, knockBack, Owner.whoAmI);
-                        Projectile ExtraShot3 = Projectile.NewProjectileDirect(Source, Projectile.Center, (Vel * 2f).RotatedBy(0.1f), ModContent.ProjectileType<ForsakenMaelstromHomingFireball>(), damage, knockBack, Owner.whoAmI);
-                    }
-                }
+            if (Projectile.ai[2] % 5 == 0)
+            {
+                Projectile ExtraShot1 = Projectile.NewProjectileDirect(Source, ShootPoint, (Vel * 2f).RotatedBy(-0.1f), ModContent.ProjectileType<ForsakenMaelstromHomingFireball>(), Owner.HeldItem.damage, Owner.HeldItem.knockBack, Owner.whoAmI);
+                Projectile ExtraShot2 = Projectile.NewProjectileDirect(Source, ShootPoint, Vel * 2f, ModContent.ProjectileType<ForsakenMaelstromHomingFireball>(), Owner.HeldItem.damage, Owner.HeldItem.knockBack, Owner.whoAmI);
+                Projectile ExtraShot3 = Projectile.NewProjectileDirect(Source, ShootPoint, (Vel * 2f).RotatedBy(0.1f), ModContent.ProjectileType<ForsakenMaelstromHomingFireball>(), Owner.HeldItem.damage, Owner.HeldItem.knockBack, Owner.whoAmI);
             }
+                
+            
         }
 
         private bool CheckAmmoForConsumption(Player player, out int projToShoot, out float speed, out int damage, out float knockBack, out int usedAmmoItemId, out Item Beater)

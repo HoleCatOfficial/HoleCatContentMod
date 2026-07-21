@@ -4872,20 +4872,54 @@ Pristine: {
 
 CosmicCrisis: {
 	DisplayName: Cosmic Crisis
-	Tooltip: ""
+	Tooltip:
+		'''
+		Shoots homing molten stars.
+		Thrown hits summon molten stars from the sky.
+		'''
 }
 
 WispStaff: {
 	DisplayName: Wisp Staff
-	Tooltip: ""
+	Tooltip:
+		'''
+		Summons a wisp to fight for you.
+		Right click to call the wisps to possess you, granting increased damage but slower movement speed.
+		'''
 }
 
 SunvineSting: {
 	DisplayName: Sunvine Sting
-	Tooltip: ""
+	Tooltip:
+		'''
+		Shoots sunvine arrows that leave solar sparks in their wake.
+		After 20 hits, the bow fires a deadly solar ray.
+		'''
 }
 
 ForsakenMaelstrom: {
 	DisplayName: Forsaken Maelstrom
+	Tooltip:
+		'''
+		Unleashes a torrent of damned souls upon enemies, inflicting Soul Erosion.
+		Occasionally spawns bursts of 3 homing souls that inflict Withering.
+		Does not consume any ammo.
+		'''
+}
+
+HolyBreaker: {
+	DisplayName: Holy Breaker
+	Tooltip:
+		'''
+		Increases defense by 16.
+		Getting hit will summon a holy ray upon your attacker that deals a flat 1600 damage.
+		Hits that deal less than 20 damage will not activate the effect.
+		Getting hit by a hostile projectile while a boss is active will summon the holy ray upon the boss.
+		Has a 20 second cooldown.
+		'''
+}
+
+TenebrousConstructSummoner: {
+	DisplayName: Tenebrous Construct Summoner
 	Tooltip: ""
 }

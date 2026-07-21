@@ -125,6 +125,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
             {
                 l = new Line(new Vector2(InitialPos.X + 4000, InitialPos.Y), new Vector2(InitialPos.X, InitialPos.Y));
             }
+
             DTUtils.instance.ScrollingTextureSpine(l, DTAssetLib.SoulStreak, Color.MediumPurple * WarnOpacity, Main.spriteBatch, BlendState.Additive, WOffset, 1f);
             
 

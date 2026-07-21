@@ -92,6 +92,12 @@ namespace DestroyerTest.Common
         public static Asset<Texture2D> FireSwingHighlight = ModContent.Request<Texture2D>($"{ExtrasPath}/CircularSlash3Highlight", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> CutSwing = ModContent.Request<Texture2D>($"{ExtrasPath}/CircularSlashCut", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> Laser = ModContent.Request<Texture2D>($"{ExtrasPath}/LongLaser", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> LaserRepeating(bool PreMultiplied)
+        {
+            string P = PreMultiplied ? "/PreMultiplied" : "";
+            return ModContent.Request<Texture2D>($"{ExtrasPath}{P}/LaserRepeating", AssetRequestMode.AsyncLoad);
+        }
+
         public static Asset<Texture2D> AuraRing = ModContent.Request<Texture2D>($"{ParticlePath}/AuraRing", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> FaintGlow = ModContent.Request<Texture2D>($"{ExtrasPath}/FaintGlow", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> CurseSigilRing = ModContent.Request<Texture2D>($"{ExtrasPath}/CurseSigilRing", AssetRequestMode.AsyncLoad);
@@ -100,6 +106,11 @@ namespace DestroyerTest.Common
         public static Asset<Texture2D> SparkSmooth = ModContent.Request<Texture2D>($"{ExtrasPath}/MiscSparkle2", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> SparkSmoothThin = ModContent.Request<Texture2D>($"{ExtrasPath}/MiscSparkle3", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> TinyBloom = ModContent.Request<Texture2D>($"{ParticlePath}/TinyBloom", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> BarrierRing(bool PreMultiplied)
+        {
+            string P = PreMultiplied ? "/PreMultiplied" : "";
+            return ModContent.Request<Texture2D>($"{ExtrasPath}{P}/BarrierRing", AssetRequestMode.AsyncLoad);
+        }
         public static Asset<Texture2D> Sparkle(int Variant, bool PreMultiplied = false)
         {
 

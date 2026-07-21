@@ -31,7 +31,7 @@ namespace DestroyerTest.Content.RangedItems
 
             Item.knockBack = 10;
             Item.autoReuse = true;
-            Item.damage = 40;
+            Item.damage = 116;
             Item.DamageType = DamageClass.Ranged;
             Item.channel = true;
             Item.crit = 16;

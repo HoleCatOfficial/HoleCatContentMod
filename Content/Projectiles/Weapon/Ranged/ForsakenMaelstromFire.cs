@@ -1,4 +1,5 @@
 ﻿using BreadLibrary.Core.Graphics.Particles;
+using BreadLibrary.Core.Graphics.Pixelation;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Particles;
@@ -15,25 +16,35 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Ranged
 {
     public class ForsakenMaelstromFire : ModProjectile
     {
-        public override string Texture => DTUtils.NoTexture;
+        public override void SetStaticDefaults()
+        {
+            Main.projFrames[Type] = 7;
+        }
         public override void SetDefaults()
         {
-            Projectile.width = 80;
-            Projectile.height = 80;
+            Projectile.width = 110;
+            Projectile.height = 110;
 
             Projectile.DamageType = DamageClass.Ranged;
             Projectile.friendly = true;
             Projectile.hostile = false;
             Projectile.ignoreWater = true;
-            Projectile.timeLeft = 300;
+            Projectile.timeLeft = 60;
             Projectile.tileCollide = false;
-            Projectile.alpha = 255;
             Projectile.penetrate = -1;
+            Projectile.idStaticNPCHitCooldown = 15;
+            Projectile.usesIDStaticNPCImmunity = true;
+        }
+
+        public override bool PreDraw(ref Color lightColor)
+        {
+            Main.EntitySpriteDraw(DTUtils.CenteredDraw(Projectile, Color.White));
+            return false;
         }
 
         public void AnimateProjectile()
         {
-            if (++Projectile.frameCounter >= 5)
+            if (++Projectile.frameCounter >= 9)
             {
                 Projectile.frameCounter = 0;
                 if (++Projectile.frame >= Main.projFrames[Projectile.type])
@@ -43,7 +54,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Ranged
 
         public override void AI()
         {
-            
+            AnimateProjectile();
+
+            TintableSmoke Smoke = new();
+            Smoke.Create(Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Projectile.velocity * Main.rand.NextFloat(0.05f, 0.3f), Color.MediumPurple, 0.5f, Main.rand.NextFloat(0.1f, 1f), 100, PixelLayer.AbovePlayer, true);
+            ParticleEngine.BehindProjectiles.Add(Smoke);
         }
 
 
@@ -51,7 +66,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Ranged
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
+
             target.AddBuff(ModContent.BuffType<SoulErosion>(), 300);
+
+
         }
     }
 

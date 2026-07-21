@@ -118,7 +118,7 @@ namespace DestroyerTest.Content.Equips
                 Ring.Prepare(Player.Center, Vector2.Zero, ColorLib.TenebrisGradient, 0.03f, 0.007f, 0.6f, BlendState.Additive);
                 ParticleEngine.ShaderParticles.Add(Ring);
 
-                Opus.RadialSpreadProjectile(ModContent.ProjectileType<TenebrisStarFriendly>(), 5, Player.Center, 14, 4, 6, offset: Main.rand.NextFloat(MathHelper.TwoPi));
+                Opus.RadialSpreadProjectile(ModContent.ProjectileType<TenebrisStarFriendly>(), 5, Player.Center, 14, 4, 16, offset: Main.rand.NextFloat(MathHelper.TwoPi));
             }
         }
 
@@ -134,7 +134,7 @@ namespace DestroyerTest.Content.Equips
                 Ring.Prepare(Player.Center, Vector2.Zero, ColorLib.TenebrisGradient, 0.03f, 0.007f, 0.6f, BlendState.Additive);
                 ParticleEngine.ShaderParticles.Add(Ring);
 
-                Opus.RadialSpreadProjectile(ModContent.ProjectileType<TenebrisStarFriendly>(), 3, Player.Center, 10, 4, 6, offset: Main.rand.NextFloat(MathHelper.TwoPi));
+                Opus.RadialSpreadProjectile(ModContent.ProjectileType<TenebrisStarFriendly>(), 3, Player.Center, 10, 4, 16, offset: Main.rand.NextFloat(MathHelper.TwoPi));
             }
         }
 

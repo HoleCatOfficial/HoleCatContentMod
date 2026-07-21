@@ -62,10 +62,8 @@ namespace DestroyerTest.Content.Buffs
 
                 // Corrected Dust usage
                 Dust.NewDust(npc.position, npc.width, npc.height, DustID.BlueMoss, 0.0f, 0.5f, 0, default, 1);
-
-                // Gradually increase the blue color intensity
-                npc.color = new Color(npc.color.R, npc.color.G, (byte)MathHelper.Clamp(npc.color.B + 5, 0, 255));
             }
+
         }
     }
 
