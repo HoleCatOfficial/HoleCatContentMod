@@ -674,6 +674,8 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         public float SlashStartRotation = 0f;
         public float SlashProgress = 0f;
 
+        public int RotationCount = 1;
+
         public virtual float SwingSpeed { get; set; } = 0.15f;
         public virtual float WaitTimeMultiplier { get; set; } = 1f;
         public void ControlRotation()
@@ -706,7 +708,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
                             SweepOpacity = MathHelper.Lerp(SweepOpacity, 0f, t);
 
-                            float off = Projectile.spriteDirection == 1 ? UpPoint + MathHelper.TwoPi : UpPoint - MathHelper.TwoPi;
+                            float off = Projectile.spriteDirection == 1 ? UpPoint + (MathHelper.TwoPi * RotationCount) : UpPoint - (MathHelper.TwoPi * RotationCount);
                             Projectile.rotation = MathHelper.Lerp(Projectile.rotation, off, t);
 
                             if (Math.Abs(Projectile.rotation - (off)) < 0.07)
