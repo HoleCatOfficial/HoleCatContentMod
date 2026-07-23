@@ -4923,3 +4923,8 @@ TenebrousConstructSummoner: {
 	DisplayName: Tenebrous Construct Summoner
 	Tooltip: ""
 }
+
+TestSword: {
+	DisplayName: Test Sword
+	Tooltip: ""
+}

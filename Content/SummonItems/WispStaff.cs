@@ -38,7 +38,7 @@ namespace DestroyerTest.Content.SummonItems
 
         public override void SetDefaults()
         {
-            Item.damage = 100;
+            Item.damage = 10;
             Item.knockBack = 3f;
             Item.mana = 12;
             Item.width = 44;

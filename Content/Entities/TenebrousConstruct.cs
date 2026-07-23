@@ -1,3 +1,5 @@
+using BreadLibrary.Core.Graphics.Pixelation;
+using BreadLibrary.Core.Graphics.Spritebatch;
 using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
 using DestroyerTest.Common.Systems;
@@ -39,7 +41,7 @@ using UtfUnknown.Core.Models.SingleByte.Finnish;
 namespace DestroyerTest.Content.Entities
 {
     [AutoloadBossHead]
-    public class TenebrousConstruct : ModNPC
+    public class TenebrousConstruct : ModNPC, IDrawPixelated
     {
 
         public override void SetStaticDefaults()
@@ -111,7 +113,7 @@ namespace DestroyerTest.Content.Entities
             NPC.height = 32;
             NPC.damage = 55;
             NPC.defense = 140;
-            NPC.lifeMax = 80000;
+            NPC.lifeMax = 100000;
             NPC.HitSound = Hit;
             NPC.DeathSound = Kill;
             NPC.noGravity = true;
@@ -121,6 +123,8 @@ namespace DestroyerTest.Content.Entities
             NPC.noTileCollide = true;
             NPC.knockBackResist = 0.0f;
             NPC.boss = true;
+            NPC.takenDamageMultiplier = 0.95f;
+            
 
             FightDialogue = new List<string>();
 
@@ -159,14 +163,16 @@ namespace DestroyerTest.Content.Entities
 
         float[] RingRotAmt = new float[16];
         float[] RingRot = new float[16];
-        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+
+        PixelLayer IDrawPixelated.PixelLayer => PixelLayer.AboveTiles;
+        void IDrawPixelated.DrawPixelated(SpriteBatch spriteBatch)
         {
             if (NPC.IsABestiaryIconDummy)
             {
-                return true;
+                return;
             }
 
-            for(int i = 0; i < RingRotAmt.Length; i++)
+            for (int i = 0; i < RingRotAmt.Length; i++)
             {
                 if (RingRotAmt[i] == 0f)
                 {
@@ -179,12 +185,6 @@ namespace DestroyerTest.Content.Entities
             {
                 RingRot[i2] += RingRotAmt[i2];
             }
-
-
-            Utils.DrawBorderString(spriteBatch, InternalTimer.ToString(), (NPC.Center + new Vector2(0, -40)) - Main.screenPosition, Color.Red, 1f, 0.5f, 0.5f);
-
-            Asset<Texture2D> WingLeft = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/TenebrousConstructWingLeft");
-            Asset<Texture2D> WingRight = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/TenebrousConstructWingRight");
 
             if (CurrentState == State.Orbit)
             {
@@ -201,34 +201,61 @@ namespace DestroyerTest.Content.Entities
                 }
             }
 
-            spriteBatch.UseBlendState(BlendState.Additive);
+            Vector2 screenPos = Main.screenPosition;
+
+
+
+            var Cap = spriteBatch.Capture();
+            Cap.TransformMatrix = PixelationSystem.PixelationMatrix;
+
+            spriteBatch.End();
+            spriteBatch.Begin(Cap);
 
             //Inner Ring
-            Main.EntitySpriteDraw(DTAssetLib.AuraRing.Value, NPC.Center - screenPos, null, (ColorLib.TenebrisGradient * 0.5f) * OrbitBarrierOpacity, RingRot[0], DTAssetLib.AuraRing.Value.Size() / 2, DTAssetLib.AuraRing.Value.ScaleRingTextureToMatchRadius(200f, 39), SpriteEffects.None, 0);
-            Main.EntitySpriteDraw(DTAssetLib.AuraRing.Value, NPC.Center - screenPos, null, (ColorLib.TenebrisGradient * 0.5f) * OrbitBarrierOpacity, RingRot[1], DTAssetLib.AuraRing.Value.Size() / 2, DTAssetLib.AuraRing.Value.ScaleRingTextureToMatchRadius(200f, 39), SpriteEffects.None, 0);
-            Main.EntitySpriteDraw(DTAssetLib.AuraRing.Value, NPC.Center - screenPos, null, (ColorLib.TenebrisGradient * 0.5f) * OrbitBarrierOpacity, RingRot[2], DTAssetLib.AuraRing.Value.Size() / 2, DTAssetLib.AuraRing.Value.ScaleRingTextureToMatchRadius(200f, 39), SpriteEffects.None, 0);
-            Main.EntitySpriteDraw(DTAssetLib.AuraRing.Value, NPC.Center - screenPos, null, (ColorLib.TenebrisGradient * 0.5f) * OrbitBarrierOpacity, RingRot[3], DTAssetLib.AuraRing.Value.Size() / 2, DTAssetLib.AuraRing.Value.ScaleRingTextureToMatchRadius(200f, 39), SpriteEffects.None, 0);
+            Main.EntitySpriteDraw(DTAssetLib.AuraRing.Value, NPC.Center - screenPos, null, (ColorLib.TenebrisGradient with { A = 0 } * 0.25f) * OrbitBarrierOpacity, RingRot[0], DTAssetLib.AuraRing.Value.Size() / 2, DTAssetLib.AuraRing.Value.ScaleRingTextureToMatchRadius(200f, 34), SpriteEffects.None, 0);
+            Main.EntitySpriteDraw(DTAssetLib.AuraRing.Value, NPC.Center - screenPos, null, (ColorLib.TenebrisGradient with { A = 0 } * 0.25f) * OrbitBarrierOpacity, RingRot[1], DTAssetLib.AuraRing.Value.Size() / 2, DTAssetLib.AuraRing.Value.ScaleRingTextureToMatchRadius(200f, 34), SpriteEffects.None, 0);
+            Main.EntitySpriteDraw(DTAssetLib.AuraRing.Value, NPC.Center - screenPos, null, (ColorLib.TenebrisGradient with { A = 0 } * 0.25f) * OrbitBarrierOpacity, RingRot[2], DTAssetLib.AuraRing.Value.Size() / 2, DTAssetLib.AuraRing.Value.ScaleRingTextureToMatchRadius(200f, 34), SpriteEffects.None, 0);
+            Main.EntitySpriteDraw(DTAssetLib.AuraRing.Value, NPC.Center - screenPos, null, (ColorLib.TenebrisGradient with { A = 0 } * 0.25f) * OrbitBarrierOpacity, RingRot[3], DTAssetLib.AuraRing.Value.Size() / 2, DTAssetLib.AuraRing.Value.ScaleRingTextureToMatchRadius(200f, 34), SpriteEffects.None, 0);
 
             //Second ring
-            Main.EntitySpriteDraw(DTAssetLib.AuraRing.Value, NPC.Center - screenPos, null, (ColorLib.TenebrisGradient * 0.5f) * OrbitBarrierOpacity, RingRot[4], DTAssetLib.AuraRing.Value.Size() / 2, DTAssetLib.AuraRing.Value.ScaleRingTextureToMatchRadius(500f, 39), SpriteEffects.None, 0);
-            Main.EntitySpriteDraw(DTAssetLib.AuraRing.Value, NPC.Center - screenPos, null, (ColorLib.TenebrisGradient * 0.5f) * OrbitBarrierOpacity, RingRot[5], DTAssetLib.AuraRing.Value.Size() / 2, DTAssetLib.AuraRing.Value.ScaleRingTextureToMatchRadius(500f, 39), SpriteEffects.None, 0);
-            Main.EntitySpriteDraw(DTAssetLib.AuraRing.Value, NPC.Center - screenPos, null, (ColorLib.TenebrisGradient * 0.5f) * OrbitBarrierOpacity, RingRot[6], DTAssetLib.AuraRing.Value.Size() / 2, DTAssetLib.AuraRing.Value.ScaleRingTextureToMatchRadius(500f, 39), SpriteEffects.None, 0);
-            Main.EntitySpriteDraw(DTAssetLib.AuraRing.Value, NPC.Center - screenPos, null, (ColorLib.TenebrisGradient * 0.5f) * OrbitBarrierOpacity, RingRot[7], DTAssetLib.AuraRing.Value.Size() / 2, DTAssetLib.AuraRing.Value.ScaleRingTextureToMatchRadius(500f, 39), SpriteEffects.None, 0);
+            Main.EntitySpriteDraw(DTAssetLib.AuraRing.Value, NPC.Center - screenPos, null, (ColorLib.TenebrisGradient with { A = 0 } * 0.25f) * OrbitBarrierOpacity, RingRot[4], DTAssetLib.AuraRing.Value.Size() / 2, DTAssetLib.AuraRing.Value.ScaleRingTextureToMatchRadius(500f, 34), SpriteEffects.None, 0);
+            Main.EntitySpriteDraw(DTAssetLib.AuraRing.Value, NPC.Center - screenPos, null, (ColorLib.TenebrisGradient with { A = 0 } * 0.25f) * OrbitBarrierOpacity, RingRot[5], DTAssetLib.AuraRing.Value.Size() / 2, DTAssetLib.AuraRing.Value.ScaleRingTextureToMatchRadius(500f, 34), SpriteEffects.None, 0);
+            Main.EntitySpriteDraw(DTAssetLib.AuraRing.Value, NPC.Center - screenPos, null, (ColorLib.TenebrisGradient with { A = 0 } * 0.25f) * OrbitBarrierOpacity, RingRot[6], DTAssetLib.AuraRing.Value.Size() / 2, DTAssetLib.AuraRing.Value.ScaleRingTextureToMatchRadius(500f, 34), SpriteEffects.None, 0);
+            Main.EntitySpriteDraw(DTAssetLib.AuraRing.Value, NPC.Center - screenPos, null, (ColorLib.TenebrisGradient with { A = 0 } * 0.25f) * OrbitBarrierOpacity, RingRot[7], DTAssetLib.AuraRing.Value.Size() / 2, DTAssetLib.AuraRing.Value.ScaleRingTextureToMatchRadius(500f, 34), SpriteEffects.None, 0);
 
             //third
-            Main.EntitySpriteDraw(DTAssetLib.AuraRing.Value, NPC.Center - screenPos, null, (ColorLib.TenebrisGradient * 0.5f) * OrbitBarrierOpacity, RingRot[8], DTAssetLib.AuraRing.Value.Size() / 2, DTAssetLib.AuraRing.Value.ScaleRingTextureToMatchRadius(800f, 39), SpriteEffects.None, 0);
-            Main.EntitySpriteDraw(DTAssetLib.AuraRing.Value, NPC.Center - screenPos, null, (ColorLib.TenebrisGradient * 0.5f) * OrbitBarrierOpacity, RingRot[9], DTAssetLib.AuraRing.Value.Size() / 2, DTAssetLib.AuraRing.Value.ScaleRingTextureToMatchRadius(800f, 39), SpriteEffects.None, 0);
-            Main.EntitySpriteDraw(DTAssetLib.AuraRing.Value, NPC.Center - screenPos, null, (ColorLib.TenebrisGradient * 0.5f) * OrbitBarrierOpacity, RingRot[10], DTAssetLib.AuraRing.Value.Size() / 2, DTAssetLib.AuraRing.Value.ScaleRingTextureToMatchRadius(800f, 39), SpriteEffects.None, 0);
-            Main.EntitySpriteDraw(DTAssetLib.AuraRing.Value, NPC.Center - screenPos, null, (ColorLib.TenebrisGradient * 0.5f) * OrbitBarrierOpacity, RingRot[11], DTAssetLib.AuraRing.Value.Size() / 2, DTAssetLib.AuraRing.Value.ScaleRingTextureToMatchRadius(800f, 39), SpriteEffects.None, 0);
+            Main.EntitySpriteDraw(DTAssetLib.AuraRing.Value, NPC.Center - screenPos, null, (ColorLib.TenebrisGradient with { A = 0 } * 0.25f) * OrbitBarrierOpacity, RingRot[8], DTAssetLib.AuraRing.Value.Size() / 2, DTAssetLib.AuraRing.Value.ScaleRingTextureToMatchRadius(800f, 34), SpriteEffects.None, 0);
+            Main.EntitySpriteDraw(DTAssetLib.AuraRing.Value, NPC.Center - screenPos, null, (ColorLib.TenebrisGradient with { A = 0 } * 0.25f) * OrbitBarrierOpacity, RingRot[9], DTAssetLib.AuraRing.Value.Size() / 2, DTAssetLib.AuraRing.Value.ScaleRingTextureToMatchRadius(800f, 34), SpriteEffects.None, 0);
+            Main.EntitySpriteDraw(DTAssetLib.AuraRing.Value, NPC.Center - screenPos, null, (ColorLib.TenebrisGradient with { A = 0 } * 0.25f) * OrbitBarrierOpacity, RingRot[10], DTAssetLib.AuraRing.Value.Size() / 2, DTAssetLib.AuraRing.Value.ScaleRingTextureToMatchRadius(800f, 34), SpriteEffects.None, 0);
+            Main.EntitySpriteDraw(DTAssetLib.AuraRing.Value, NPC.Center - screenPos, null, (ColorLib.TenebrisGradient with { A = 0 } * 0.25f) * OrbitBarrierOpacity, RingRot[11], DTAssetLib.AuraRing.Value.Size() / 2, DTAssetLib.AuraRing.Value.ScaleRingTextureToMatchRadius(800f, 34), SpriteEffects.None, 0);
 
             //outer
-            Main.EntitySpriteDraw(DTAssetLib.AuraRing.Value, NPC.Center - screenPos, null, (ColorLib.TenebrisGradient * 0.5f) * OrbitBarrierOpacity, RingRot[12], DTAssetLib.AuraRing.Value.Size() / 2, DTAssetLib.AuraRing.Value.ScaleRingTextureToMatchRadius(1100f, 39), SpriteEffects.None, 0);
-            Main.EntitySpriteDraw(DTAssetLib.AuraRing.Value, NPC.Center - screenPos, null, (ColorLib.TenebrisGradient * 0.5f) * OrbitBarrierOpacity, RingRot[13], DTAssetLib.AuraRing.Value.Size() / 2, DTAssetLib.AuraRing.Value.ScaleRingTextureToMatchRadius(1100f, 39), SpriteEffects.None, 0);
-            Main.EntitySpriteDraw(DTAssetLib.AuraRing.Value, NPC.Center - screenPos, null, (ColorLib.TenebrisGradient * 0.5f) * OrbitBarrierOpacity, RingRot[14], DTAssetLib.AuraRing.Value.Size() / 2, DTAssetLib.AuraRing.Value.ScaleRingTextureToMatchRadius(1100f, 39), SpriteEffects.None, 0);
-            Main.EntitySpriteDraw(DTAssetLib.AuraRing.Value, NPC.Center - screenPos, null, (ColorLib.TenebrisGradient * 0.5f) * OrbitBarrierOpacity, RingRot[15], DTAssetLib.AuraRing.Value.Size() / 2, DTAssetLib.AuraRing.Value.ScaleRingTextureToMatchRadius(1100f, 39), SpriteEffects.None, 0);
+            Main.EntitySpriteDraw(DTAssetLib.AuraRing.Value, NPC.Center - screenPos, null, (ColorLib.TenebrisGradient with { A = 0 } * 0.25f) * OrbitBarrierOpacity, RingRot[12], DTAssetLib.AuraRing.Value.Size() / 2, DTAssetLib.AuraRing.Value.ScaleRingTextureToMatchRadius(1100f, 34), SpriteEffects.None, 0);
+            Main.EntitySpriteDraw(DTAssetLib.AuraRing.Value, NPC.Center - screenPos, null, (ColorLib.TenebrisGradient with { A = 0 } * 0.25f) * OrbitBarrierOpacity, RingRot[13], DTAssetLib.AuraRing.Value.Size() / 2, DTAssetLib.AuraRing.Value.ScaleRingTextureToMatchRadius(1100f, 34), SpriteEffects.None, 0);
+            Main.EntitySpriteDraw(DTAssetLib.AuraRing.Value, NPC.Center - screenPos, null, (ColorLib.TenebrisGradient with { A = 0 } * 0.25f) * OrbitBarrierOpacity, RingRot[14], DTAssetLib.AuraRing.Value.Size() / 2, DTAssetLib.AuraRing.Value.ScaleRingTextureToMatchRadius(1100f, 34), SpriteEffects.None, 0);
+            Main.EntitySpriteDraw(DTAssetLib.AuraRing.Value, NPC.Center - screenPos, null, (ColorLib.TenebrisGradient with { A = 0 } * 0.25f) * OrbitBarrierOpacity, RingRot[15], DTAssetLib.AuraRing.Value.Size() / 2, DTAssetLib.AuraRing.Value.ScaleRingTextureToMatchRadius(1100f, 34), SpriteEffects.None, 0);
 
-            Main.EntitySpriteDraw(DTAssetLib.BarrierRing(true).Value, NPC.Center - screenPos, null, Color.White * OrbitBarrierOpacity, 0f, DTAssetLib.BarrierRing(true).Value.Size() / 2, DTAssetLib.BarrierRing(true).Value.ScaleRingTextureToMatchRadius(1300f, 186), SpriteEffects.None, 0);
+            Main.EntitySpriteDraw(DTAssetLib.BarrierRing(true).Value, NPC.Center - screenPos, null, Color.White with { A = 0 } * OrbitBarrierOpacity, 0f, DTAssetLib.BarrierRing(true).Value.Size() / 2, DTAssetLib.BarrierRing(true).Value.ScaleRingTextureToMatchRadius(1300f, 186), SpriteEffects.None, 0);
             spriteBatch.ResetToDefault();
+
+        }
+
+        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            if (NPC.IsABestiaryIconDummy)
+            {
+                return true;
+            }
+
+         
+
+
+            Utils.DrawBorderString(spriteBatch, InternalTimer.ToString(), (NPC.Center + new Vector2(0, -40)) - Main.screenPosition, Color.Red, 1f, 0.5f, 0.5f);
+
+            Asset<Texture2D> WingLeft = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/TenebrousConstructWingLeft");
+            Asset<Texture2D> WingRight = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/TenebrousConstructWingRight");
+
+         
 
             // Left wing: origin at RIGHT edge, middle vertically
             Vector2 originLeft = new Vector2(WingLeft.Width(), WingLeft.Height() / 2);
@@ -345,7 +372,7 @@ namespace DestroyerTest.Content.Entities
                         {
                             LanceCount++;
                             SoundEngine.PlaySound(SoundID.Item84);
-                            Opus.RingSpreadProjectile(ModContent.ProjectileType<TenebrisLance>(), 4, player.Center, 800, 40, 3, -24f, offset: Main.rand.NextFloat(MathHelper.TwoPi));
+                            Opus.RingSpreadProjectile(ModContent.ProjectileType<TenebrisLance>(), 4, player.Center, 1200, 40, 3, -24f, offset: Main.rand.NextFloat(MathHelper.TwoPi));
                         }
 
                         if (InternalTimer > 2000)
@@ -416,7 +443,7 @@ namespace DestroyerTest.Content.Entities
                             }
                         }
 
-                        if (InternalTimer % 300 == 0)
+                        if (InternalTimer % 150 == 0)
                         {
                             Projectile Mine = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, Main.rand.NextVector2Circular(10, 10), ModContent.ProjectileType<DarkLaserMine>(), 100, 2);
                             Mine.timeLeft = 180;
@@ -503,6 +530,8 @@ namespace DestroyerTest.Content.Entities
             ProjectileID.EmpressBlade,
         };
 
+        
+
         public override void OnHitByProjectile(Projectile projectile, NPC.HitInfo hit, int damageDone)
         {
             if (FiftyPercentDamageProjectiles.Contains(projectile.type))
@@ -565,5 +594,7 @@ namespace DestroyerTest.Content.Entities
                 );
             }
         }
+
+
     }
 }

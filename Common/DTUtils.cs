@@ -1,6 +1,7 @@
 
 using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
+using BreadLibrary.Core.Graphics.Spritebatch;
 using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.Buffs;
@@ -267,6 +268,10 @@ namespace DestroyerTest.Common
             }
 
             spriteBatch.UseBlendState(blendState);
+            var Cap = spriteBatch.Capture();
+            Cap.SamplerState = SamplerState.LinearWrap;
+            spriteBatch.End();
+            spriteBatch.Begin(Cap);
             spriteBatch.Draw(texture.Value, line.Start - Main.screenPosition, new Rectangle(TexOffset, 0, (int)line.GetLineLength, texture.Value.Height), drawColor, line.GetLineRotation, new Vector2(0, texture.Value.Height) / 2, new Vector2(1, Width), SpriteEffects.None, 0);
             spriteBatch.ResetToDefault();
         }
@@ -288,6 +293,10 @@ namespace DestroyerTest.Common
             }
 
             spriteBatch.UseBlendState(blendState);
+            var Cap = spriteBatch.Capture();
+            Cap.SamplerState = SamplerState.LinearWrap;
+            spriteBatch.End();
+            spriteBatch.Begin(Cap);
             spriteBatch.Draw(texture.Value, line.Start - Main.screenPosition, new Rectangle(TexOffset, 0, (int)line.GetLineLength, texture.Value.Height), drawColor, line.GetLineRotation, new Vector2(0, texture.Value.Height) / 2, new Vector2(Stretch, Width), SpriteEffects.None, 0);
             spriteBatch.ResetToDefault();
         }

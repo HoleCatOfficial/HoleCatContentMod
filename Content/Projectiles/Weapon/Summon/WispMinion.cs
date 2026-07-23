@@ -5,6 +5,7 @@ using DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
+using OpusLib.Content.Helpers;
 using SteelSeries.GameSense;
 using System;
 using Terraria;
@@ -23,6 +24,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
             Main.projFrames[Type] = 1;
             Main.projPet[Type] = true;
             ProjectileID.Sets.MinionSacrificable[Type] = true;
+
+            ProjectileID.Sets.TrailCacheLength[Type] = 50;
+            ProjectileID.Sets.TrailingMode[Type] = 3;
         }
 
         public override void SetDefaults()
@@ -56,12 +60,13 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
             {
                 float progress = i / (float)Projectile.oldPos.Length;
                 float scale = MathHelper.Lerp(Projectile.scale, 0.0005f, progress);
+                float Opacity = MathHelper.Lerp(1f, 0f, progress);
 
                 Main.EntitySpriteDraw(
                     DTAssetLib.TinyBloom.Value,
                     Projectile.OldCenter()[i] - Main.screenPosition,
                     null,
-                    ColorLib.LifeEcho with { A = 0 },
+                    OpusColorUtils.Darken(ColorLib.LifeEcho, 0.6f) with { A = 0 } * Opacity,
                     Projectile.rotation,
                     DTAssetLib.TinyBloom.Value.Size() / 2,
                     scale,
@@ -168,8 +173,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
 
                     if (Projectile.Distance(Targ) < 1f || !Target.Hitbox.IntersectsConeFastInaccurate(Projectile.Center, 100f, (Targ - Projectile.Center).ToRotation(), 10f))
                     {
-                        off = Main.rand.NextFloat(MathHelper.TwoPi);
+                        off = (Targ - Projectile.Center).ToRotation() + Main.rand.NextFloat(-0.1f, 0.1f);
                     }
+                    
                 }
                 
             }

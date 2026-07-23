@@ -53,12 +53,14 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
         public override bool PreDraw(ref Color lightColor)
         {
-            Main.spriteBatch.UseBlendState(BlendState.Additive);
+            //Main.spriteBatch.UseBlendState(BlendState.Additive);
 			Opus.DrawProjectileShadowsRotating(Projectile, 4, Color.Red, Opacity: 0.35f);
 			var T = TextureAssets.Projectile[Projectile.type].Value;
 
-			Main.EntitySpriteDraw(T, Projectile.Center, null, Color.Red, Projectile.rotation, T.Size() / 2, Projectile.scale, SpriteEffects.None, 0f);
-            Opus.ReturnToDefaultDrawing(Main.spriteBatch);
+            //Opus.ReturnToDefaultDrawing(Main.spriteBatch);
+
+            Main.EntitySpriteDraw(T, Projectile.Center, null, Color.Red, Projectile.rotation, T.Size() / 2, Projectile.scale, SpriteEffects.None, 0f);
+            
             return false;
         }
 

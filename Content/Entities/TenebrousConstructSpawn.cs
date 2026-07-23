@@ -240,7 +240,18 @@ namespace DestroyerTest.Content.Entities
                 {
                     WingXScale += 0.025f;
                 }
-                else
+
+                if (WingXScale > 0.5f && WingXScale < 0.75f)
+                {
+                    WingXScale += 0.01f;
+                }
+
+                if (WingXScale > 0.75f && WingXScale < 1f)
+                {
+                    WingXScale += 0.005f;
+                }
+
+                if( WingXScale >= 1f )
                 {
                     if (!Roared)
                     {
