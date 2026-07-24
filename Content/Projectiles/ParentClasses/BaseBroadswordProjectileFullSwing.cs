@@ -1,42 +1,29 @@
-﻿using BreadLibrary.Core.Graphics;
-using BreadLibrary.Core.Graphics.Particles;
-using BreadLibrary.Core.Graphics.Pixelation;
-using BreadLibrary.Core.Utilities;
+﻿using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Particles.Orchestrated;
-using DestroyerTest.Content.Projectiles.Weapon.Rogue;
-using FargowiltasSouls.Content.UI;
-using InnoVault.PRT;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
 using OpusLib.Content.Helpers;
 using ReLogic.Content;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
+using System.Text;
+using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
-using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.Utilities.Terraria.Utilities;
 
 namespace DestroyerTest.Content.Projectiles.ParentClasses
 {
-
-    public abstract class BaseBroadswordProjectile : ModProjectile
+    public abstract class BaseBroadswordProjectileFullSwing : ModProjectile
     {
         public Player Owner => Main.player[Projectile.owner];
-        public virtual SoundStyle Swing { get; set; } = DTAssetLib.SwordSounds.Woosh;
+        public virtual SoundStyle Swing { get; set; } = DTAssetLib.SwordSounds.StandardSwing;
         public Asset<Texture2D> Glowmask = null;
 
         public static int HitCooldownGlobal = 10;
@@ -82,8 +69,6 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             targetAngle = (Main.MouseWorld - Owner.MountedCenter);
             if (targetAngle == Vector2.Zero)
                 targetAngle = Vector2.UnitX * Projectile.spriteDirection;
-
-            LastSwing = Owner.direction == 1 ? -1 : -1;
         }
 
         public override void SendExtraAI(BinaryWriter writer)
@@ -98,8 +83,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
         public enum State
         {
-            SwingDown,
-            SwingUp,
+            Swing,
             Wait
         }
 
@@ -114,7 +98,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         {
             sT = Projectile.Center + Projectile.rotation.ToRotationVector2() * ((new Vector2(Projectile.width, Projectile.height) * Projectile.scale) * ScaleMult);
             SL = new Line(Owner.MountedCenter, sT);
-            if (CurrentState == State.SwingDown)
+            if (CurrentState == State.Swing)
             {
                 if (SL != null)
                 {
@@ -125,24 +109,13 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
                     ParticleEngine.BehindProjectiles.Add(Spark);
                 }
             }
-            if (CurrentState == State.SwingUp)
-            {
-                if (SL != null)
-                {
-                    Spark Spark = new Spark();
-
-                    Spark.PrepareSpark(sT, new Vector2(-1, 0).RotatedBy(SL.GetLineRotation + MathHelper.PiOver2), 0f, color, Scale, false, 30, SparkDrawMode.Additive);
-                    Spark.TrackPlayer[Owner.whoAmI] = true;
-                    ParticleEngine.BehindProjectiles.Add(Spark);
-                }
-            }
         }
 
         public State CurrentState;
         public Vector2 targetAngle = Vector2.Zero;
         public int AITimer = 0;
         public float UpPoint = 0f;
-        public float DownPoint = 0f;
+
         public virtual float ScaleMult { get; set; } = 1f;
         public float AdjustedScale = 0f;
         public int NPCHitCooldown = 15;
@@ -151,6 +124,8 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         {
             AdjustedScale = Owner.GetAdjustedItemScale(Owner.HeldItem) * ScaleMult;
             Projectile.scale = AdjustedScale;
+
+            Projectile.spriteDirection = Math.Sign(Main.MouseWorld.X - Owner.Center.X);
 
             //Slower swing speed, longer cooldown.
             //Swing speed gets slower the lower the number is.
@@ -164,15 +139,14 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             if (Owner.controlUseItem)
             {
                 Owner.SetDummyItemTime(60);
-                
+
                 if (CurrentState == State.Wait)
                 {
                     targetAngle = (Main.MouseWorld - Owner.MountedCenter);
                 }
 
 
-                UpPoint = targetAngle.ToRotation() - MathHelper.ToRadians(135f);
-                DownPoint = targetAngle.ToRotation() + MathHelper.ToRadians(135f);
+                UpPoint = targetAngle.ToRotation() + (Projectile.spriteDirection == 1 ? -MathHelper.ToRadians(135f) : MathHelper.ToRadians(135f));
             }
 
             if (!Owner.active || Owner.dead || Owner.noItems || Owner.CCed || !Owner.controlUseItem)
@@ -192,11 +166,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="LastSwing"> -1 if the last swing was an upward swing, 1 if it was a downward swing </param> 
-        public virtual void BetweenSwing(ref int LastSwing)
+        public virtual void BetweenSwing()
         {
 
         }
@@ -210,11 +180,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
         bool SetPos = false;
         bool f1 = false;
-        /// <summary>
-        /// -1 = Up, 1 = Down
-        /// <br/> If -1, the current swing will be down.
-        /// </summary>
-        public int LastSwing = -1;
+
         public int WaitTimer = 10;
 
         public float SlashStartRotation = 0f;
@@ -229,39 +195,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
             switch (CurrentState)
             {
-                case State.SwingUp:
-                    {
-                        if (!SetPos)
-                        {
-                            Projectile.rotation = DownPoint;
-                            WaitTimer = (int)((10 * WaitTimeMultiplier) * speedFactor);
-                            SlashStartRotation = DownPoint;
-                            SetPos = true;
-                        }
-                        else
-                        {
-                            if (!f1)
-                            {
-                                OnStartSwing();
-                                SoundEngine.PlaySound(Swing, Projectile.Center);
-                                SweepOpacity = 0.7f;
-                                f1 = true;
-                            }
-
-                            SlashProgress = Math.Abs(Projectile.rotation - UpPoint) / Math.Abs(SlashStartRotation - UpPoint);
-
-                            SweepOpacity = MathHelper.Lerp(SweepOpacity, 0f, t);
-                            Projectile.rotation = MathHelper.Lerp(Projectile.rotation, UpPoint, t);
-                            if (Math.Abs(Projectile.rotation - UpPoint) < 0.07)
-                            {
-                                LastSwing = -1;
-                                CurrentState = State.Wait;
-                            }
-                        }
-
-                        break;
-                    }
-                case State.SwingDown:
+                case State.Swing:
                     {
                         if (!SetPos)
                         {
@@ -280,21 +214,26 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
                                 f1 = true;
                             }
 
-                            SlashProgress = Math.Abs(Projectile.rotation - DownPoint) / Math.Abs(SlashStartRotation - DownPoint);
+
+                            float off = Projectile.spriteDirection == 1 ? UpPoint + (MathHelper.TwoPi) : UpPoint - (MathHelper.TwoPi);
+
+                            SlashProgress = Math.Abs(Projectile.rotation - off) / Math.Abs(SlashStartRotation - off);
 
                             SweepOpacity = MathHelper.Lerp(SweepOpacity, 0f, t);
-                            Projectile.rotation = MathHelper.Lerp(Projectile.rotation, DownPoint, t);
-                            if (Math.Abs(Projectile.rotation - DownPoint) < 0.07)
+
+                            Projectile.rotation = MathHelper.Lerp(Projectile.rotation, off, t);
+
+                            if (Math.Abs(Projectile.rotation - (off)) < 0.07)
                             {
-                                LastSwing = 1;
                                 CurrentState = State.Wait;
                             }
                         }
+
                         break;
                     }
                 case State.Wait:
                     {
-                        BetweenSwing(ref LastSwing);
+                        BetweenSwing();
                         if (WaitTimer > 0)
                         {
                             SetPos = false;
@@ -305,14 +244,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
                         }
                         else
                         {
-                            if (LastSwing == -1)
-                            {
-                                CurrentState = State.SwingDown;
-                            }
-                            if (LastSwing == 1)
-                            {
-                                CurrentState = State.SwingUp;
-                            }
+                            CurrentState = State.Swing;
                         }
                         break;
                     }
@@ -360,32 +292,18 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
             SpriteEffects FX = SpriteEffects.None;
 
-            if (LastSwing == -1)
+            if (Projectile.spriteDirection > 0)
             {
-                if (Projectile.spriteDirection > 0)
-                {
-                    FX = SpriteEffects.None;
-                    rOffset = MathHelper.ToRadians(45f);
-                }
-                else
-                {
-                    FX  = SpriteEffects.None;
-                    rOffset = MathHelper.ToRadians(45f);
-                }
+                FX = SpriteEffects.None;
+                rOffset = MathHelper.ToRadians(45f);
             }
             else
             {
-                if (Projectile.spriteDirection > 0)
-                {
-                    FX  = SpriteEffects.FlipHorizontally;
-                    rOffset = MathHelper.ToRadians(45f);
-                }
-                else
-                {
-                    FX = SpriteEffects.FlipHorizontally;
-                    rOffset = MathHelper.ToRadians(45f);
-                }
+                FX = SpriteEffects.FlipVertically;
+                rOffset = MathHelper.ToRadians(-135f);
             }
+
+
 
             //Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
             Main.EntitySpriteDraw(Tex, Owner.MountedCenter - Main.screenPosition, null, SweepColor with { A = 0 } * SweepOpacity, (Projectile.rotation + MathHelper.PiOver4) + rOffset, Tex.Size() / 2, (TexBasedMod) * ScaleMult, FX);
@@ -409,36 +327,19 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             //dont touch this shit.
             //FUCK ROTATIONS DUDE.
 
-            if (LastSwing == -1)
+            if (Projectile.spriteDirection > 0)
             {
-                if (Projectile.spriteDirection > 0)
-                {
-                    origin = new Vector2(0, texture.Height);
-                    effects = SpriteEffects.None;
-                    rotationOffset = MathHelper.ToRadians(45f);
-                }
-                else
-                {
-                    origin = new Vector2(0, texture.Height);
-                    effects = SpriteEffects.None;
-                    rotationOffset = MathHelper.ToRadians(45f);
-                }
+                origin = new Vector2(0, texture.Height);
+                effects = SpriteEffects.None;
+                rotationOffset = MathHelper.ToRadians(45f);
             }
             else
             {
-                if (Projectile.spriteDirection > 0)
-                {
-                    origin = new Vector2(texture.Width, texture.Height);
-                    effects = SpriteEffects.FlipHorizontally;
-                    rotationOffset = MathHelper.ToRadians(135f);
-                }
-                else
-                {
-                    origin = new Vector2(texture.Width, texture.Height);
-                    effects = SpriteEffects.FlipHorizontally;
-                    rotationOffset = MathHelper.ToRadians(135f);
-                }
+                origin = new Vector2(0, texture.Height);
+                effects = SpriteEffects.None;
+                rotationOffset = MathHelper.ToRadians(45f);
             }
+
 
             if (UsesDefaultSweepFX)
             {
@@ -485,7 +386,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            HitCooldown = target.realLife == -1 ? HitCooldownGlobal : 15; 
+            HitCooldown = target.realLife == -1 ? HitCooldownGlobal : 15;
 
             if (CurrentState != State.Wait)
             {
@@ -519,6 +420,6 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             Owner.heldProj = Projectile.whoAmI;
         }
 
-        
+
     }
 }

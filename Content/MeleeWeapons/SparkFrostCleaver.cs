@@ -23,8 +23,8 @@ namespace DestroyerTest.Content.MeleeWeapons
         }
 
         public override void SetDefaults() {
-			Item.width = 162;
-			Item.height = 162;
+			Item.width = 96;
+			Item.height = 96;
 			Item.value = Item.sellPrice(gold: 2, silver: 50);
 			Item.rare = ItemRarityID.Green;
             Item.SetSpecialMeleeStats();

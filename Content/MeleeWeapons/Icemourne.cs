@@ -34,9 +34,9 @@ namespace DestroyerTest.Content.MeleeWeapons
             Item.UseSound = SoundID.Item66;
 
 			// Weapon Properties
-			Item.knockBack = 30;  // The knockback of your sword, this is dynamically adjusted in the projectile code.
+			Item.knockBack = 5;  // The knockback of your sword, this is dynamically adjusted in the projectile code.
 			Item.autoReuse = true; // This determines whether the weapon has autoswing
-			Item.damage = 25; // The damage of your sword, this is dynamically adjusted in the projectile code.
+			Item.damage = 15; // The damage of your sword, this is dynamically adjusted in the projectile code.
             Item.DamageType = ModContent.GetInstance<DTTrueMeleeClass>(); // Deals melee damage
             Item.crit = 16; // The critical strike chance the weapon has. The player, by default, has a 4% critical strike chance.
 
@@ -51,11 +51,11 @@ namespace DestroyerTest.Content.MeleeWeapons
 			return base.Shoot(player, source, position, velocity, type, damage, knockback);
 		}
 
-		//Hit Inflictions
-		public override void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone) {
-				player.AddBuff(BuffID.Chilled, 60);
-				target.AddBuff(BuffID.Frostburn, 600);
-			}
+		public override void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone) 
+		{
+			player.AddBuff(BuffID.Chilled, 60);
+			target.AddBuff(BuffID.Frostburn, 600);
+		}
 
 	
 
@@ -63,7 +63,7 @@ namespace DestroyerTest.Content.MeleeWeapons
 			CreateRecipe()
 				.AddIngredient(ItemID.IronBar, 6)
                 .AddIngredient(ItemID.IceBlock, 25)
-				.AddTile(TileID.MythrilAnvil)
+				.AddTile(TileID.Anvils)
 				.Register();
 		}
     }

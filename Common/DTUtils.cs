@@ -369,7 +369,6 @@ namespace DestroyerTest.Common
         }
 
 
-
         /// <summary>
         /// A scale of 1 is equal to the size of the smallest variant of Petrified Wisp.
         /// The outer ring will always be 20% larger than the inner black circle.
@@ -1006,6 +1005,15 @@ namespace DestroyerTest.Common
 
             int cacheLength = projectile.oldPos.Length;
 
+            int frameHeight = texture.Height / Main.projFrames[projectile.type];
+            Rectangle frame = new Rectangle(
+                0,
+                frameHeight * projectile.frame,
+                texture.Width,
+                frameHeight
+            );
+
+
             for (int i = 0; i < cacheLength; i++)
             {
                 // 0 -> 1 progress through trail
@@ -1030,7 +1038,7 @@ namespace DestroyerTest.Common
                 spriteBatch.Draw(
                     texture,
                     drawPos,
-                    null,
+                    frame,
                     drawColor,
                     useProjectileRotation ? projectile.oldRot[i] : projectile.rotation,
                     origin,
