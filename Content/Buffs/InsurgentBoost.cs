@@ -7,7 +7,7 @@ using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles.player.ArmorSet;
 using DestroyerTest.Content.Projectiles.player.Potion;
 using Humanizer;
-using InnoVault.PRT;
+ 
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;

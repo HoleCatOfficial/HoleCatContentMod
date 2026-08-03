@@ -1,4 +1,5 @@
 
+using BreadLibrary.Core;
 using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
 using BreadLibrary.Core.Graphics.Spritebatch;
@@ -11,7 +12,7 @@ using DestroyerTest.Content.Magic;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Particles.Stellar;
 using DestroyerTest.Rarity.Scepter;
-using InnoVault.PRT;
+ 
 using InnoVault.TileProcessors;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
@@ -48,6 +49,7 @@ using Terraria.UI.Chat;
 using Terraria.Utilities;
 using Terraria.WorldBuilding;
 using static DestroyerTest.Common.Room;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace DestroyerTest.Common
 {
@@ -95,6 +97,11 @@ namespace DestroyerTest.Common
     public class DTUtils : ModSystem
     {
         public static DTUtils instance = null;
+
+        public override void Load()
+        {
+            GameShaders.Misc["DrawBarrier"] = new MiscShaderData(ModContent.Request<Effect>("DestroyerTest/Assets/Effects/RadialBarrier"), "DrawBarrier");
+        }
 
         public override void PostSetupContent()
         {
@@ -645,8 +652,28 @@ namespace DestroyerTest.Common
             return center + angle.ToRotationVector2() * radius;
         }
 
-       
-        
+
+        public static BezierCurve EasyBezier(Vector2 Start, Vector2 StartDir, Vector2 End, Vector2 EndDir, float CurveModifer = 0.3f, float InterpolationAmount = 0.5f)
+        {
+            float distance = Vector2.Distance(Start, End);
+            float handle = distance * CurveModifer;
+
+            Vector2 c0 = Start + StartDir * handle;
+            Vector2 c2 = End - EndDir * handle;
+
+            Vector2 c1 = Vector2.Lerp(c0, c2, InterpolationAmount);
+
+            Vector2[] CurvePoints = new Vector2[]
+            {
+                Start,
+                c0,
+                c1,
+                c2,
+                End
+            };
+
+            return new BezierCurve(CurvePoints);
+        }
 
     }
 

@@ -2,7 +2,7 @@ using DestroyerTest.Common;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Weapon.Magic;
-using InnoVault.PRT;
+ 
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;

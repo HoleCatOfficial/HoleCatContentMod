@@ -7,7 +7,7 @@ using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Particles.Orchestrated;
 using DestroyerTest.Content.Projectiles.ParentClasses;
 using DestroyerTest.Content.Projectiles.Weapon.Rogue;
-using InnoVault.PRT;
+ 
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Xna.Framework;
@@ -38,6 +38,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Projectile.width = 60;
             Projectile.height = 60;
             SweepColor = ColorLib.Wretched4;
+            SweepHighlightColor = ColorLib.Wretched2;
+            SweepScale = 0.8f;
             SwingSpeed = 0.17f;
 
             Glowmask = ModContent.Request<Texture2D>($"{Texture}_Glow");
@@ -85,7 +87,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         public override void DrawOverBlade()
         {
             Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-            Main.EntitySpriteDraw(DTAssetLib.MiscSparkle144.Value, swordTip - Main.screenPosition, null, DTColorUtils.MultiLerp(SlashProgress, ColorLib.WretchedColorMap), 0f, DTAssetLib.MiscSparkle144.Value.Size() / 2, 1f, SpriteEffects.None);
+            //Main.EntitySpriteDraw(DTAssetLib.MiscSparkle144.Value, swordTip - Main.screenPosition, null, DTColorUtils.MultiLerp(SlashProgress, ColorLib.WretchedColorMap), 0f, DTAssetLib.MiscSparkle144.Value.Size() / 2, 1f, SpriteEffects.None);
             Opus.ReturnToDefaultDrawing(Main.spriteBatch);
         }
 

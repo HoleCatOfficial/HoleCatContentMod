@@ -44,5 +44,10 @@ namespace DestroyerTest.Content.MeleeWeapons
             player.AddBuff(BuffID.Lifeforce, 360);
 		}
 
-	}
+        public override bool MeleePrefix()
+        {
+            return true;
+        }
+
+    }
 }

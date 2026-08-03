@@ -12,7 +12,7 @@ using Terraria.Audio;
 using OpusLib;
 using DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss;
 using System.Collections.Generic;
-using InnoVault.PRT;
+ 
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Dusts;
 using BreadLibrary.Core.Graphics.Particles;

@@ -55,6 +55,11 @@ namespace DestroyerTest.Content.MeleeWeapons
 
         }
 
+        public override bool MeleePrefix()
+        {
+            return true;
+        }
+
         public override void AddRecipes() {
 			CreateRecipe()
                 .AddIngredient<Tenebris>(10)

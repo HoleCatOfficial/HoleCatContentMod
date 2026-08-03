@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Particles;
-using InnoVault.PRT;
+ 
 using InnoVault.Trails;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -205,7 +205,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 		
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 			target.AddBuff(ModContent.BuffType<HaepiensInferno>(), 600);
-			SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/FlameImpact1"));
+			
 			
 		}
 	}

@@ -4,7 +4,7 @@ using Terraria;
 using Terraria.ModLoader;
 using Terraria.ID;
 using Terraria.Localization;
-using InnoVault.PRT;
+ 
 using OpusLib;
 using DestroyerTest.Content.Particles;
 using Microsoft.Xna.Framework;

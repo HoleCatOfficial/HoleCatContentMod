@@ -10,7 +10,7 @@ using DestroyerTest.Content.Projectiles;
 using OpusLib;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.Projectiles.player.ArmorSet;
-using InnoVault;
+ 
 using Terraria.Audio;
 
 namespace DestroyerTest.Content.Equips.MalakhimSet

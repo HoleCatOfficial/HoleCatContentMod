@@ -46,6 +46,11 @@ namespace DestroyerTest.Content.MeleeWeapons
         {
             return player.ownedProjectileCounts[Item.shoot] < 1;
         }
+
+        public override bool MeleePrefix()
+        {
+            return true;
+        }
     }
 
 }

@@ -6,7 +6,7 @@ using DestroyerTest.Common;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles.ParentClasses;
-using InnoVault.PRT;
+ 
 using Microsoft.CodeAnalysis;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -66,7 +66,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Vector2 dir = Main.MouseWorld - Projectile.Center;
             dir.Normalize();
 
-            //Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, dir * 6, ModContent.ProjectileType<ConstantineScytheClone>(), (int)(Projectile.damage *  0.75f), 3, Owner.whoAmI);
+            Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, dir * 6, ModContent.ProjectileType<ConstantineScytheClone>(), (int)(Projectile.damage *  0.75f), 3, Owner.whoAmI);
         }
 
 

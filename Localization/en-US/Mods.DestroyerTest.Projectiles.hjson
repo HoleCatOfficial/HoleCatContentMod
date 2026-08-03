@@ -663,6 +663,7 @@ DarkLaser.DisplayName: Dark Laser
 DarkLaserMine.DisplayName: Dark Laser Mine
 NightmareRoseArenaDisplay.DisplayName: Nightmare Rose Arena Display
 BlackKnifeMinion.DisplayName: Black Knife Minion
+BlackKnife.DisplayName: Black Knife
 BlitzCrystalBullet.DisplayName: Blitz Crystal Bullet
 BlitzHoldout.DisplayName: Blitz Holdout
 SunscorchedDjinnBomb.DisplayName: Sunscorched Djinn Bomb
@@ -696,3 +697,10 @@ ForsakenMaelstromHomingFireball.DisplayName: Forsaken Maelstrom Homing Fireball
 HolyRay.DisplayName: Holy Ray
 TestSwordProjectile.DisplayName: Test Sword Projectile
 RimeheartSnowflake.DisplayName: Rimeheart Snowflake
+GhostBullet.DisplayName: Ghost Bullet
+SpectralStyngerBolt.DisplayName: Spectral Stynger Bolt
+SpectralStyngerShard.DisplayName: Spectral Stynger Shard
+SpiritArrowProjectile.DisplayName: Spirit Arrow Projectile
+FriendlyGreekFire.DisplayName: Friendly Greek Fire
+PurityBlessedNodeCrystal.DisplayName: Purity Blessed Node Crystal
+KnifeArena.DisplayName: Knife Arena

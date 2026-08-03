@@ -9,7 +9,7 @@ using DestroyerTest.Content.Consumables;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using System;
-using InnoVault.PRT;
+ 
 using DestroyerTest.Content.Particles;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Rogue

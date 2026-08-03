@@ -2,7 +2,7 @@
 using DestroyerTest.Content.Projectiles.Weapon.Melee;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Rarity;
-using InnoVault.PRT;
+ 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -48,6 +48,11 @@ namespace DestroyerTest.Content.MeleeWeapons
             {
                 Projectile.NewProjectile(Item.GetSource_OnHit(target), player.MountedCenter, target.Center.DirectionTo(player.Center).RotatedByRandom(0.6f) * 15f, ModContent.ProjectileType<RimeheartSnowflake>(), Item.damage / 2, 8, player.whoAmI);
             }
+        }
+
+        public override bool MeleePrefix()
+        {
+            return true;
         }
 
         public override void AddRecipes()

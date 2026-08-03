@@ -1,9 +1,10 @@
-﻿using DestroyerTest.Common;
+﻿using BreadLibrary.Core.Utilities;
+using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles.ParentClasses;
-using InnoVault.PRT;
+ 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
@@ -68,11 +69,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 rOffset = 0f;
             }
 
-            Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.NonPremultiplied, SpriteSortMode.Immediate);
+            Main.spriteBatch.UseBlendState(BlendState.NonPremultiplied);
 
             Main.EntitySpriteDraw(Tex, player.MountedCenter - Main.screenPosition, null, Color.Black * SweepOpacity, (Projectile.rotation + MathHelper.PiOver4) + rOffset, Tex.Size() / 2, (AdjustedScale * TexBasedMod), FX);
             
-            Main.EntitySpriteDraw(TexH, player.MountedCenter - Main.screenPosition, null, Color.DarkMagenta * SweepOpacity, (Projectile.rotation + MathHelper.PiOver4) + rOffset, Tex.Size() / 2, (AdjustedScale * TexBasedMod), FX);
+            Main.EntitySpriteDraw(TexH, player.MountedCenter - Main.screenPosition, null, Color.Magenta * SweepOpacity, (Projectile.rotation + MathHelper.PiOver4) + rOffset, Tex.Size() / 2, (AdjustedScale * TexBasedMod), FX);
 
             Opus.ReturnToDefaultDrawing(Main.spriteBatch);
         }

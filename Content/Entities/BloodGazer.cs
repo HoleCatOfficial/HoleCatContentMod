@@ -234,7 +234,7 @@ namespace DestroyerTest.Content.Entities
 
             spriteBatch.UseBlendState(BlendState.NonPremultiplied);
 
-            var tex = Core.AssetReferences.Content.Particles.Cyclone2.Asset.Value;
+            var tex = DTAssetLib.Cyclone(2).Value;
             var drawPos = Center - Main.screenPosition;
             Vector2 Origin = tex.Size() / 2;
             Main.spriteBatch.Draw(tex, drawPos, null, colorOUT, TextureRotationOffset,
@@ -244,7 +244,7 @@ namespace DestroyerTest.Content.Entities
                 1f
             );
 
-            tex = Core.AssetReferences.Content.Extras.FeatheredCircle.Asset.Value;
+            tex = DTAssetLib.FeatheredCircle.Value;
             Main.spriteBatch.Draw(tex, drawPos, null, colorIN,
                 0f,
                 tex.Size() / 2f,

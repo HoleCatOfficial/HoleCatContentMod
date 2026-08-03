@@ -71,6 +71,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.TenebrousConstruct
         }
         public override void AI()
         {
+            Projectile.ResetExcessTrailPoints();
             AnimateProjectile();
 
             Projectile.ai[0]++;

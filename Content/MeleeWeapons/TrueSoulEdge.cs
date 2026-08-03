@@ -11,7 +11,7 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using DestroyerTest.Rarity;
-using InnoVault.PRT;
+ 
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.MeleeWeapons;
 using DestroyerTest.Content.Projectiles.Weapon.Melee;
@@ -222,6 +222,10 @@ namespace DestroyerTest.Content.MeleeWeapons
             Item.shoot = ModContent.ProjectileType<TrueSoulEdgeCursorProjectile>();
             Item.shootSpeed = 1f;
             Item.channel = true;
+        }
+        public override bool MeleePrefix()
+        {
+            return true;
         }
 
         public override void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone)

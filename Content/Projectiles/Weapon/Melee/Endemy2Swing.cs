@@ -8,7 +8,7 @@ using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Particles.Orchestrated;
 using DestroyerTest.Content.Projectiles.ParentClasses;
 using DestroyerTest.Content.Projectiles.Weapon.Rogue;
-using InnoVault.PRT;
+ 
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Xna.Framework;
@@ -42,6 +42,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             SweepColor = Color.Goldenrod;
             SweepHighlightColor = Color.Bisque;
             UsesDefaultSweepFX = true;
+            SweepScale = 2.6f;
 
             WaitTimeMultiplier = 1.3f;
             SwingSpeed = 0.15f;

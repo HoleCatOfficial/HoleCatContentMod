@@ -108,7 +108,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 
             if (Timer % 30 == 0)
             {
-                SoundEngine.PlaySound(SoundID.Item9 with { Pitch = -0.4f, pitchVariance = 0.1f }, Projectile.Center);
+                SoundEngine.PlaySound(SoundID.Item9 with { Pitch = -0.4f, PitchVariance = 0.1f }, Projectile.Center);
             }
         }
 

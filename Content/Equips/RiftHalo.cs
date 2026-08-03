@@ -14,7 +14,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using System;
-using InnoVault.PRT;
+ 
 using DestroyerTest.Content.Equips.AuraThiefSet;
 using DestroyerTest.Content.RiftBiome.RiftSurfaceResources;
 using DestroyerTest.Common;

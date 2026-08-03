@@ -106,7 +106,12 @@ namespace DestroyerTest.Content.MeleeWeapons
                 SoundEngine.PlaySound(Jab, player.Center);
                 return base.UseItem(player);
             }
-             public override void AddRecipes() {
+
+        public override bool MeleePrefix()
+        {
+            return true;
+        }
+        public override void AddRecipes() {
 			CreateRecipe()
                 .AddIngredient<FrigidHalberd>(1)
                 .AddIngredient(ItemID.FrostCore, 5)

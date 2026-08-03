@@ -9,7 +9,7 @@ using Terraria.ModLoader;
 using DestroyerTest.Rarity;
 using DestroyerTest.Content.Tiles.Riftplate;
 using DestroyerTest.Common;
-using InnoVault.PRT;
+ 
 using DestroyerTest.Content.Particles;
 using Microsoft.Xna.Framework;
 using Terraria.Audio;

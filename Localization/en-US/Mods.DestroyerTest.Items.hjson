@@ -1846,17 +1846,11 @@ PosessedPickaxe: {
 SparkFrostCleaver: {
 	Tooltip:
 		'''
-		A gargantuan cleaver of fire and ice energies.
-		Swings up and down.
-		True melee hits create a stationary after-slash. This slash has a small hitbox, but deals 200% damage.
-		Critical hits create a frost and a flame burst that home in on enemies.
-		When dealing critical hits, you have a 20% chance of dealing a Supercrit, creating the two bursts as well as 7 after-slashes on top of eachother.
-
-		Frost bursts inflict Haepien's Blizzard, while Flame bursts, Haepien's Inferno.
-
-		This creation is not entiely worldly, though... The Spark-Frost Cleaver is a construct of the Haepien, an elemental sprite with special powers gifted to them by the heavens.
+		Swings in a circle.
+		Alternates between spark and frost at the end of every swing.
+		Spark hits inflict Hellfire, and frost hits inflict frozen.
 		'''
-	DisplayName: Spark Frost Cleaver
+	DisplayName: Spark-Frost Cleaver
 }
 
 WrittenPromise: {
@@ -4931,5 +4925,49 @@ TestSword: {
 
 Rimeheart: {
 	DisplayName: Rimeheart
-	Tooltip: ""
+	Tooltip: Striking an NPC creates multiple homing snowflakes.
+}
+
+MarksmanGhostArtifact: {
+	DisplayName: Marksman's Spectral Amulet
+	Tooltip:
+		'''
+		15% increased Ranged damage.
+		Ranged projectiles ignore 10 points of enemy defense.
+		12% increased Ranged Critical Strike Chance.
+		1 in 5 bullets fired from a ranged item is a ghost bullet, and 1 in 5 Stynger Bolts fired from The Stynger is a spectral stynger bolt that explodes into homing shrapnel.
+		'''
+}
+
+SpiritArrow: {
+	DisplayName: Vital Arrow
+	Tooltip:
+		'''
+		Imbued with the ghoulish essence of the undead.
+		May find its best use with a certain bow...
+		'''
+}
+
+ReanimationBow: {
+	DisplayName: Reanimation Bow
+	Tooltip: Using [i:DestroyerTest/SpiritArrow] Vital Arrows allows you to reanimate the undead, allowing them to deal damage on your behalf!
+}
+
+LaserPointer: {
+	DisplayName: Laser Pointer
+	Tooltip: Increases Ranged critical strike chance by 18.5%.
+}
+
+MoltenEmblem: {
+	DisplayName: Molten Emblem
+	Tooltip: Ranged projectiles have a chance to create a burst of lingering fire when hitting an NPC.
+}
+
+RingFromBeyond: {
+	DisplayName: Ring From Beyond
+	Tooltip:
+		'''
+		24% increased Ranged, Scepter, and Magic Damage.
+		16% increased critical strike chance.
+		'''
 }

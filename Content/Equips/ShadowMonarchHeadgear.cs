@@ -14,7 +14,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using System;
-using InnoVault.PRT;
+ 
 using DestroyerTest.Common;
 using DestroyerTest.Content.Projectiles;
 using Terraria.Audio;

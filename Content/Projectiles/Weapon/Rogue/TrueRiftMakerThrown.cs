@@ -8,7 +8,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using OpusLib;
 using Terraria.Audio;
-using InnoVault.PRT;
+ 
 using DestroyerTest.Content.Particles;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Rogue

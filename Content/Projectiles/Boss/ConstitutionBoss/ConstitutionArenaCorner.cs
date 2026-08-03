@@ -6,7 +6,7 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 using OpusLib;
-using InnoVault.PRT;
+ 
 using DestroyerTest.Content.Particles.Stellar;
 
 namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss

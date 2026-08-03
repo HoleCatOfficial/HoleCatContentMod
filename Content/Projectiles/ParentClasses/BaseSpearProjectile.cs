@@ -38,6 +38,8 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         public override void SetStaticDefaults()
         {
             ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY[Type] = true;
+            ProjectileID.Sets.AllowsContactDamageFromJellyfish[Type] = true;
+            ProjectileID.Sets.CanDistortWater[Type] = false;
             SetStaticDefaultsExtra();
         }
 
@@ -48,8 +50,9 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             Projectile.timeLeft = 10000;
             Projectile.penetrate = -1;
             Projectile.tileCollide = false;
-            Projectile.DamageType = DamageClass.Melee;
+            Projectile.DamageType = ModContent.GetInstance<DTTrueMeleeClass>();
             Projectile.ownerHitCheck = true;
+            Projectile.ignoreWater = true;
         }
 
         public virtual void OnSpawnExtras()

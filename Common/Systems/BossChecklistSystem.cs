@@ -1,4 +1,5 @@
 ﻿using DestroyerTest.Content.BossSummons;
+using DestroyerTest.Content.CheatItems;
 using DestroyerTest.Content.Consumables;
 using DestroyerTest.Content.Entities;
 using DestroyerTest.Content.Equips;
@@ -82,6 +83,9 @@ namespace DestroyerTest.Common.Systems
             DoBossChecklistIntegration_NoSpawnItem(DTBossEntries.BlessedNode);
             DoBossChecklistIntegration(DTBossEntries.WyvernCorpse);
             DoBossChecklistIntegration(DTBossEntries.NightmareRose);
+
+
+            DoBossChecklistIntegration(DTBossEntries.TenebrousConstruct);
         }
 
         public struct DTLootTables
@@ -158,6 +162,7 @@ namespace DestroyerTest.Common.Systems
                 ModContent.ItemType<Contempt>(),
                 ModContent.ItemType<BlossomBeater>(),
                 ModContent.ItemType<CursedHammer>(),
+                ModContent.ItemType<ForsakenMaelstrom>(),
 
                 ModContent.ItemType<DeadlyBlossom>(),
                 ModContent.ItemType<HaepienNodeCharm>(),
@@ -165,6 +170,18 @@ namespace DestroyerTest.Common.Systems
                 ModContent.ItemType<NightmarePowder>(),
                 ModContent.ItemType<Item_NightmareRoseTrophy>(),
                 ModContent.ItemType<Item_NightmareRoseRelic>(),
+            };
+
+            public static List<int> TenebrousConstructLootTable = new List<int>
+            {
+                ModContent.ItemType<HoleCatHead>(),
+                ModContent.ItemType<HoleCatBody>(),
+                ModContent.ItemType<HoleCatLegs>(),
+                ModContent.ItemType<HoleCatHook>(),
+
+                ModContent.ItemType<RingFromBeyond>(),
+
+                ModContent.ItemType<MiniConstruct>(),
             };
         }
         public struct DTBossEntries
@@ -259,7 +276,7 @@ namespace DestroyerTest.Common.Systems
                 sb.Draw(texture, centered, color);
             };
             public static BossChecklistEntry NightmareRose = new BossChecklistEntry(
-                Language.GetText("Mods.DestroyerTest.NPCs.NightmareRoseBossBoss.InternalName"),
+                Language.GetText("Mods.DestroyerTest.NPCs.NightmareRoseBoss.InternalName"),
                 Language.GetText("Mods.DestroyerTest.BossChecklist.NightmareRoseBoss.Hint"),
                 ModContent.NPCType<NightmareRoseBoss>(),
                 18.0001f,
@@ -267,6 +284,23 @@ namespace DestroyerTest.Common.Systems
                 NightmareRosePortrait,
                 ModContent.ItemType<TheBotanistsCurse>(),
                 DTLootTables.NightmareRoseLootTable);
+
+            public static Action<SpriteBatch, Rectangle, Color> TenebrousConstructPortrait = (SpriteBatch sb, Rectangle rect, Color color) =>
+            {
+                Texture2D texture = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/TenebrousConstructBestiary").Value;
+                Vector2 centered = new Vector2(rect.X + (rect.Width / 2) - (texture.Width / 2), rect.Y + (rect.Height / 2) - (texture.Height / 2));
+                sb.Draw(texture, centered, color);
+            };
+            public static BossChecklistEntry TenebrousConstruct = new BossChecklistEntry(
+                Language.GetText("Mods.DestroyerTest.NPCs.TenebrousConstruct.InternalName"),
+                Language.GetText("Mods.DestroyerTest.BossChecklist.TenebrousConstruct.Hint"),
+                ModContent.NPCType<TenebrousConstruct>(),
+                !ModLoader.HasMod("CalamityMod") ? 17.7195f : 22f,
+                DownedBossSystem.downedNightmareRoseBossCondition,
+                TenebrousConstructPortrait,
+                ModContent.ItemType<TenebrousConstructSummoner>(),
+                DTLootTables.TenebrousConstructLootTable);
+
 
         }
 

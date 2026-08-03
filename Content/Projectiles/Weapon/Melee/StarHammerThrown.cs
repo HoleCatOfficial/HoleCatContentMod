@@ -11,7 +11,7 @@ using Terraria.DataStructures;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Buffs;
 using System.IO;
-using InnoVault.PRT;
+ 
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 {

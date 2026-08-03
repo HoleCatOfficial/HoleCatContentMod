@@ -18,7 +18,7 @@ using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Buffs;
 using Terraria.Audio;
-using InnoVault.PRT;
+ 
 using DestroyerTest.Content.Particles;
 
 namespace DestroyerTest.Common

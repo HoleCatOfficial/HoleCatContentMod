@@ -11,7 +11,7 @@ using DestroyerTest.Content.Dusts;
 using System;
 using Terraria.DataStructures;
 using System.IO;
-using InnoVault.PRT;
+ 
 using DestroyerTest.Content.Projectiles.ParentClasses;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Scepter

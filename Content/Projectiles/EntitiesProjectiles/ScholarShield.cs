@@ -5,7 +5,7 @@ using DestroyerTest.Content.Entities;
 using ReLogic.Content;
 using Microsoft.Xna.Framework.Graphics;
 using DestroyerTest.Common;
-using InnoVault.PRT;
+ 
 using DestroyerTest.Content.Particles;
 using Microsoft.Xna.Framework.Audio;
 using Terraria.Audio;

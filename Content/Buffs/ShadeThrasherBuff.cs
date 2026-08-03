@@ -6,7 +6,7 @@ using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Pets;
 using DestroyerTest.Content.Projectiles.ShadeThrasherFriendly;
 using Humanizer;
-using InnoVault.PRT;
+ 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;

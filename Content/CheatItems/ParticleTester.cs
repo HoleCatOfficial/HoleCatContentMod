@@ -6,7 +6,7 @@ using DestroyerTest.Content.Particles.PotionFlowers;
 using DestroyerTest.Content.Particles.Stellar;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Weapon.Magic;
-using InnoVault.PRT;
+ 
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;

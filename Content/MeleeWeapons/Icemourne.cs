@@ -51,7 +51,12 @@ namespace DestroyerTest.Content.MeleeWeapons
 			return base.Shoot(player, source, position, velocity, type, damage, knockback);
 		}
 
-		public override void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone) 
+        public override bool MeleePrefix()
+        {
+            return true;
+        }
+
+        public override void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone) 
 		{
 			player.AddBuff(BuffID.Chilled, 60);
 			target.AddBuff(BuffID.Frostburn, 600);

@@ -37,7 +37,7 @@ namespace DestroyerTest.Content.MeleeWeapons
             Item.useTurn = true;
 
             Item.DamageType = ModContent.GetInstance<DTTrueMeleeClass>();
-            Item.damage = 180;
+            Item.damage = 250;
             Item.knockBack = 6;
             Item.crit = 4;
 
@@ -51,6 +51,11 @@ namespace DestroyerTest.Content.MeleeWeapons
         public override bool CanUseItem(Player player)
         {
             return player.ownedProjectileCounts[Item.shoot] < 1;
+        }
+
+        public override bool MeleePrefix()
+        {
+            return true;
         }
 
         public override void AddRecipes()

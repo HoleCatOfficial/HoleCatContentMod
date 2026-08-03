@@ -35,8 +35,6 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
-using UtfUnknown.Core.Models.SingleByte.Finnish;
-using static DestroyerTest.Core.AssetReferences.Assets.Audio.TenebrousConstruct;
 
 namespace DestroyerTest.Content.Entities
 {

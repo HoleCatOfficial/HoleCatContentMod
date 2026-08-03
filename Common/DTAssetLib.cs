@@ -60,10 +60,14 @@ namespace DestroyerTest.Common
 
         public static Asset<SpriteFont> Arial = ModContent.Request<SpriteFont>(FontPath + "/arial", AssetRequestMode.AsyncLoad);
         public static Asset<SpriteFont> Doxent = ModContent.Request<SpriteFont>(FontPath + "/doxent", AssetRequestMode.AsyncLoad);
+
+        
+
         //
         //Practical, Every-Day VFX Textures
         //
         public static Asset<Texture2D> Square = TextureAssets.MagicPixel;
+        public static Asset<Texture2D> Circle = ModContent.Request<Texture2D>($"{ExtrasPath}/CrispCircle", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> PointGlow = ModContent.Request<Texture2D>($"{ParticlePath}/SimpleParticle", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> PointGlowPreMultiplied = ModContent.Request<Texture2D>($"{ExtrasPath}/PreMultiplied/PointGlow", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> AreaGlow = ModContent.Request<Texture2D>($"{ParticlePath}/Glow", AssetRequestMode.AsyncLoad);
@@ -347,6 +351,7 @@ namespace DestroyerTest.Common
             public static SoundStyle BrightBell = new SoundStyle($"{Path}/BrightBell");
             public static SoundStyle DarkMagicImpact = new SoundStyle($"{Path}/DarkMagicImpact", 3);
             public static SoundStyle DarkShot = new SoundStyle($"{Path}/DarkShot", 3);
+            public static SoundStyle DarkShatter = new SoundStyle($"{Path}/DarkShatter");
             public static SoundStyle Deflect = new SoundStyle($"{Path}/Deflect");
             public static SoundStyle DreamHit = new SoundStyle($"{Path}/DreamHit", 4);
             public static SoundStyle EnergyBounce = new SoundStyle($"{Path}/EnergyBounce", 3);

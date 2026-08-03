@@ -36,7 +36,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.Blessed
         public float trailOffset = 0f;
         public override bool PreDraw(ref Color lightColor)
         {
-            lightColor = Color.SkyBlue;
+            lightColor = new Color(16, 149, 162);
             trailOffset += 0.04f;
 
 
@@ -183,7 +183,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.Blessed
         public float trailOffset = 0f;
         public override bool PreDraw(ref Color lightColor)
         {
-            lightColor = Color.SkyBlue;
+            lightColor = new Color(16, 149, 162);
             trailOffset += 0.04f;
 
 

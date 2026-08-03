@@ -13,7 +13,7 @@ using DestroyerTest.Rarity;
 using DestroyerTest.Rarity.Scepter;
 using DestroyerTest.Content.Projectiles.Weapon.Scepter;
 using OpusLib;
-using InnoVault.PRT;
+ 
 using DestroyerTest.Content.Particles;
 
 namespace DestroyerTest.Content.Scepter

@@ -4,7 +4,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.Audio;
 using DestroyerTest.Content.Particles;
-using InnoVault.PRT;
+ 
 using OpusLib;
 
 namespace DestroyerTest.Content.Projectiles.ParentClasses

@@ -2,7 +2,7 @@ using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles.Weapon.Melee;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Rarity;
-using InnoVault.PRT;
+ 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -43,9 +43,12 @@ namespace DestroyerTest.Content.MeleeWeapons
             Item.shootSpeed = 0.02f;
 		}
 
-        
+        public override bool MeleePrefix()
+        {
+            return true;
+        }
 
-		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             return true;
         }

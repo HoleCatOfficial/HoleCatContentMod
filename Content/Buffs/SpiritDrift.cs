@@ -60,8 +60,9 @@ namespace DestroyerTest.Content.Buffs
             {
                 npc.velocity = new Vector2(npc.velocity.X / 2, -1.4f);
 
-                // Corrected Dust usage
-                Dust.NewDust(npc.position, npc.width, npc.height, DustID.BlueMoss, 0.0f, 0.5f, 0, default, 1);
+
+                Dust d = Dust.NewDustDirect(npc.position, npc.width, npc.height, DustID.BlueMoss, 0.0f, -0.5f, 0, default, 1);
+                d.noGravity = true;
             }
 
         }

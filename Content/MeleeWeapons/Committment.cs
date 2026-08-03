@@ -86,8 +86,9 @@ namespace DestroyerTest.Content.MeleeWeapons
 
         public override bool MeleePrefix()
         {
-            return true; // return true to allow weapon to have melee prefixes (e.g. Legendary)
+            return true;
         }
+
 
 
         public override void AddRecipes()

@@ -6,7 +6,7 @@ using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Weapon.Summon;
 using DestroyerTest.Content.SummonItems.FractalSummon;
 using Humanizer;
-using InnoVault.PRT;
+ 
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;

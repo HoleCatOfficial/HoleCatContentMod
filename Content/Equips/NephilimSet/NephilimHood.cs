@@ -5,7 +5,7 @@ using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.Resources.Cloths;
 using DestroyerTest.Content.SummonItems;
 using DestroyerTest.Content.Tiles;
-using InnoVault.PRT;
+ 
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;

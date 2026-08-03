@@ -44,11 +44,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             MaxExtension = 70f * Projectile.scale;
             if (progress > 0.2f && progress < 0.8f)
             {
-                if (Main.GameUpdateCount % 3 == 0)
+                if (Projectile.ai[0] % 3 == 0)
                 {
                     SoundEngine.PlaySound(DTAssetLib.ChargeBreak with { PitchVariance = 0.3f }, Projectile.Center);
 
-                    Projectile.NewProjectile(Projectile.GetSource_FromAI(), Tip, (Projectile.rotation - MathHelper.PiOver4).ToRotationVector2() * 12, ModContent.ProjectileType<RiftSpark>(), Projectile.damage / 5, 5, Owner.whoAmI);
+                    Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, (Projectile.rotation - MathHelper.PiOver4).ToRotationVector2() * 12, ModContent.ProjectileType<RiftSpark>(), Projectile.damage / 5, 5, Owner.whoAmI);
                 }
             }
         }

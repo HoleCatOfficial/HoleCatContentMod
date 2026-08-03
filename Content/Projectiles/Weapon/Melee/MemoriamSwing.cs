@@ -6,7 +6,7 @@ using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Particles.Orchestrated;
 using DestroyerTest.Content.Projectiles.ParentClasses;
 using DestroyerTest.Content.Projectiles.Weapon.Rogue;
-using InnoVault.PRT;
+ 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
@@ -38,6 +38,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             base.SetDefaults();
             Projectile.width = 112;
             Projectile.height = 112;
+            SweepColor = Color.NavajoWhite;
+            SweepHighlightColor = Color.White;
+            UsesDefaultSweepFX = true;
+            SweepScale = 2f;
             Glowmask = ModContent.Request<Texture2D>($"{Texture}_Glow");
         }
 
@@ -93,7 +97,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 }
             }
 
-            SparkEdge(Main.player[Projectile.owner], 1f, Color.NavajoWhite);
+            //SparkEdge(Main.player[Projectile.owner], 1f, Color.NavajoWhite);
         }
 
         public void Parry(Vector2 Position)

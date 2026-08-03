@@ -3,7 +3,7 @@ using DestroyerTest.Common;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles.ParentClasses;
-using InnoVault.PRT;
+ 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
@@ -61,6 +61,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
             Texture2D texture = Hot ? HotTex.Value : ColdTex.Value;
 
+
+
             //i swear to FUCKING GOD.
             //dont touch this shit.
             //FUCK ROTATIONS DUDE.
@@ -72,15 +74,18 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 rotationOffset = MathHelper.ToRadians(45f);
             }
             else
-            {
-                origin = new Vector2(0, texture.Height);
-                effects = SpriteEffects.None;
-                rotationOffset = MathHelper.ToRadians(45f);
+            { 
+                origin = new Vector2(texture.Width, texture.Height);
+                effects = SpriteEffects.FlipHorizontally;
+                rotationOffset = MathHelper.ToRadians(135f);
             }
+
 
             Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, null, Color.White * Projectile.Opacity, (Projectile.rotation + rotationOffset) + RotationManualOffset, origin, Projectile.scale, effects, 0);
             
             Main.EntitySpriteDraw(DTAssetLib.SparkFrostCleaverMask.Value, Projectile.Center - Main.screenPosition, null, Color.White * MaskOpacity, (Projectile.rotation + rotationOffset) + RotationManualOffset, origin, Projectile.scale, effects, 0);
+            
+
         }
 
         public Vector2 swordTip;
@@ -143,12 +148,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
             if (Hot)
             {
-                SoundEngine.PlaySound(DTAssetLib.Impacts.FlameImpact with { MaxInstances = 0 }, npc.Center);
+                SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/FlameImpact1"), npc.Center);
                 npc.AddBuff(BuffID.OnFire3, 300);
             }
             else
             {
-                SoundEngine.PlaySound(DTAssetLib.Impacts.IceMagicImpact with { MaxInstances = 0 }, npc.Center);
+                SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/IceImpact1"), npc.Center);
                 npc.AddBuff(BuffID.Frozen, 300);
             }
 

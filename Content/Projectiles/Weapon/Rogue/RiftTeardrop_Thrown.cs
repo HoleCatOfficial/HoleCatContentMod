@@ -4,7 +4,7 @@ using DestroyerTest.Common.Interfaces;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.RogueItems;
-using InnoVault.PRT;
+ 
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria;

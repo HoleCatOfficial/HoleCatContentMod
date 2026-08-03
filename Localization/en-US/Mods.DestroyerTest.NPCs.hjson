@@ -233,7 +233,8 @@ DarkArchmage: {
 
 TenebrousConstruct: {
 	DisplayName: Tenebrous Construct
-	BestiaryEntry1: An early defector of the Shade World to Mother Darkness's side, this deceitful construct sacrifcied its humanity for immportality and power.
+	InternalName: TenebrousConstruct
+	BestiaryEntry1: A delusional zealot perched eternally at Mother Darkness's side, this deceitful construct sacrifcied its humanity for immortality and power.
 	SpawnDialogue0: Hello. Local.
 	SpawnDialogue1: I bet you’ve had plenty of work on your hands tracking down and destroying all of the attendants here in your world.
 	SpawnDialogue2: I have been tasked with ending your interference.

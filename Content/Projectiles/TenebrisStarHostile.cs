@@ -5,7 +5,7 @@ using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Equips;
 using DestroyerTest.Content.Particles;
-using InnoVault.PRT;
+ 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
@@ -42,7 +42,7 @@ namespace DestroyerTest.Content.Projectiles
 
         float IHomingProjectile.DetectRadius => 2800;
 
-        bool IHomingProjectile.CanHome => DelayTimer >= 10;
+        bool IHomingProjectile.CanHome => DelayTimer >= 10 && DelayTimer < 60;
 
         public override void SetStaticDefaults()
         {

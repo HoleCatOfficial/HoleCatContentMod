@@ -2,7 +2,7 @@ using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Particles;
-using InnoVault.PRT;
+ 
 using InnoVault.Trails;
 using Microsoft.Build.ObjectModelRemoting;
 using Microsoft.Xna.Framework;
@@ -209,7 +209,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 		
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
 			target.AddBuff(ModContent.BuffType<HaepiensBlizzard>(), 600);
-			SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/IceImpact1"));
+
 			
 		}
 	}

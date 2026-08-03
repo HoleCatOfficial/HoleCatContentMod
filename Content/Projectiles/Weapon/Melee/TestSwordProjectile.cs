@@ -5,7 +5,7 @@ using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Particles.Stellar;
 using DestroyerTest.Content.Projectiles.ParentClasses;
-using InnoVault.PRT;
+ 
 using InnoVault.Trails;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -34,8 +34,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Projectile.width = 90;
             Projectile.height = 90;
             SweepColor = Color.Teal;
-            SwingSpeed = 0.012f;
+            SwingSpeed = 0.13f;
             UsesDefaultSweepFX = true;
+            Projectile.extraUpdates = 30;
 
             //Glowmask = ModContent.Request<Texture2D>($"{Texture}_Glow");
         }

@@ -7,7 +7,9 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
+using MonoMod.RuntimeDetour;
 using System;
+using System.Reflection;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.Drawing;
@@ -15,7 +17,6 @@ using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using static FargowiltasSouls.Content.Projectiles.EffectVisual;
 
 namespace DestroyerTest.Content.Equips
 {
@@ -24,61 +25,78 @@ namespace DestroyerTest.Content.Equips
     [AutoloadEquip(EquipType.Shoes)]
     public class HeatseekerSilohs : ModItem
     {
+        private Hook rocketBootVisualsHook;
+
+        private delegate void orig_RocketBootVisuals(Player self);
+
         public override void Load()
         {
-            IL_Player.RocketBootVisuals += il =>
+            MethodInfo method = typeof(Player).GetMethod("RocketBootVisuals", BindingFlags.Instance | BindingFlags.NonPublic);
+
+            if (method == null)
             {
-                try
-                {
-                    var c = new ILCursor(il);
-
-                    ILLabel continueLabel = il.DefineLabel();
-
-                    // Load Player self ("this")
-                    c.Emit(OpCodes.Ldarg_0);
-
-                    // Call delegate
-                    c.EmitDelegate<Func<Player, bool>>(BootEffects);
-
-                    // If false, continue vanilla
-                    c.Emit(OpCodes.Brfalse_S, continueLabel);
-
-                    // Otherwise return early
-                    c.Emit(OpCodes.Ret);
-
-                    c.MarkLabel(continueLabel);
-                }
-                catch (Exception e)
-                {
-                    // If there are any failures with the IL editing, this method will dump the IL to Logs/ILDumps/{Mod Name}/{Method Name}.txt
-                    MonoModHooks.DumpIL(ModContent.GetInstance<DestroyerTestMod>(), il);
-
-                    // If the mod cannot run without the IL hook, throw an exception instead. The exception will call DumpIL internally
-                    // throw new ILPatchFailureException(ModContent.GetInstance<ExampleMod>(), il, e);
-                }
-
-            };
-        }
-
-        Player P;
-
-        private static bool BootEffects(Player self)
-        {
-            if (self.vanityRocketBoots != 6)
-                return false;
-
-            if (self.miscCounter % 2 == 0 &&
-                self.velocity.Y == 0f &&
-                self.grappling[0] == -1 &&
-                self.velocity.X != 0f)
+                throw new Exception("RocketBootVisuals was not found.");
+            }
+            else
             {
-                int x = (int)self.Center.X / 16;
-                int y = (int)(self.position.Y + self.height - 1f) / 16;
-
-                SpawnRiftParticles(self, x, y);
+                rocketBootVisualsHook = new Hook(method, BootEffectsDetour);
             }
 
-            return true;
+            
+        }
+
+        public override void Unload()
+        {
+            rocketBootVisualsHook?.Dispose();
+            rocketBootVisualsHook = null;
+        }
+
+        public const int MyRocketBoots = 1999;
+        
+        private static void BootEffectsDetour(orig_RocketBootVisuals orig, Player self)
+        {
+            if (self.vanityRocketBoots == MyRocketBoots)
+            {
+                int num = self.height;
+                if (self.gravDir == -1f)
+                {
+                    num = 4;
+                }
+
+                for (int i = 0; i < 2; i++)
+                {
+                    int num2 = ((i == 0) ? 2 : (-2));
+                    Rectangle r = ((i != 0) ? new Rectangle((int)self.position.X + self.width - 4, (int)self.position.Y + num - 10, 8, 8) : new Rectangle((int)self.position.X - 4, (int)self.position.Y + num - 10, 8, 8));
+                    if (self.direction == -1)
+                    {
+                        r.X -= 4;
+                    }
+                    int type = ModContent.DustType<RiftDust>();
+                    float scale = 1.5f;
+                    int alpha = 50;
+                    float num3 = 1f;
+                    Vector2 vector = new Vector2((float)(-num2) - self.velocity.X * 0.3f, 2f * self.gravDir - self.velocity.Y * 0.3f);
+                    Dust dust;
+
+                    dust = Dust.NewDustDirect(r.TopLeft(), r.Width, r.Height, type, 0f, 0f, alpha, ColorLib.Rift, scale);
+                    //dust.shader = GameShaders.Armor.GetSecondaryShader(self.cShoe, self);
+                    dust.noGravity = true;
+                    dust.velocity *= 0.25f;
+                    dust.velocity -= self.velocity * 0.5f;
+                    dust.velocity += vector * 0.5f;
+                    dust.position += dust.velocity * 4f;
+
+                }
+
+                if (self.miscCounter % 10 == 0)
+                {
+                    SoundEngine.PlaySound(SoundID.Item13, self.MountedCenter);
+                }
+
+                return;
+            }
+
+            orig(self);
         }
 
         public static readonly int MoveSpeedBonus = 8;
@@ -147,7 +165,6 @@ namespace DestroyerTest.Content.Equips
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            P = player;
 
             if (SlamCooldown > 0)
             {
@@ -217,7 +234,7 @@ namespace DestroyerTest.Content.Equips
             // 3 - Frostspark Boots
             // 4 - Terrraspark Boots
             // 5 - Hellfire Treads
-            player.vanityRocketBoots = 5;
+            player.vanityRocketBoots = MyRocketBoots;
 
             player.waterWalk2 = true; // Allows walking on all liquids without falling into it
             player.waterWalk = true; // Allows walking on water, honey, and shimmer without falling into it

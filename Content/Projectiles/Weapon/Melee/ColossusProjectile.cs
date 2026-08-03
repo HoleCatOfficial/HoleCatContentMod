@@ -8,8 +8,8 @@ using DestroyerTest.Content.MeleeWeapons;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Particles.Orchestrated;
 using DestroyerTest.Content.Projectiles.ParentClasses;
-using InnoVault;
-using InnoVault.PRT;
+ 
+ 
 using log4net.Appender;
 using Microsoft.Build.Evaluation;
 using Microsoft.Xna.Framework;
@@ -42,6 +42,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             SweepColor = ColorLib.TenebrisMagenta;
             SwingSpeed = 0.10f;
             UsesDefaultSweepFX = true;
+            SweepScale = 1.7f;
         }
         public override void HitNPCEffects(NPC npc, NPC.HitInfo hit, int damageDone)
         {

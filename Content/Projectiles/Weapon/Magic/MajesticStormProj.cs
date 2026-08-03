@@ -18,7 +18,7 @@ using Terraria.ModLoader;
 using OpusLib;
 using ReLogic.Utilities;
 using DestroyerTest.Content.Particles;
-using InnoVault.PRT;
+ 
 
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Magic

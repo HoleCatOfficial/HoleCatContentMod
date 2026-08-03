@@ -1,3 +1,4 @@
+using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
 using BreadLibrary.Core.Graphics.Spritebatch;
 using BreadLibrary.Core.Utilities;
@@ -54,6 +55,7 @@ namespace DestroyerTest.Content.Entities
             };
             NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
             Main.npcFrameCount[Type] = 55;
+            
         }
         public void immunities()
         {
@@ -90,6 +92,14 @@ namespace DestroyerTest.Content.Entities
 
         };
 
+        SoundStyle Laugh = new SoundStyle("DestroyerTest/Assets/Audio/TenebrousConstruct/Laugh")
+        {
+            PitchVariance = 0.5f,
+            MaxInstances = 0,
+
+        };
+
+
         SoundStyle Idle = new SoundStyle("DestroyerTest/Assets/Audio/TenebrousConstruct/Idle", 8)
         {
             PitchVariance = 0.2f,
@@ -113,7 +123,7 @@ namespace DestroyerTest.Content.Entities
             NPC.height = 32;
             NPC.damage = 55;
             NPC.defense = 140;
-            NPC.lifeMax = 100000;
+            NPC.lifeMax = ModLoader.HasMod("CalamityMod") ? 800000 : 100000;
             NPC.HitSound = Hit;
             NPC.DeathSound = Kill;
             NPC.noGravity = true;
@@ -123,7 +133,7 @@ namespace DestroyerTest.Content.Entities
             NPC.noTileCollide = true;
             NPC.knockBackResist = 0.0f;
             NPC.boss = true;
-            NPC.takenDamageMultiplier = 0.95f;
+            NPC.takenDamageMultiplier = ModLoader.HasMod("CalamityMod") ? 0.85f : 0.95f;
             
 
             FightDialogue = new List<string>();
@@ -164,6 +174,8 @@ namespace DestroyerTest.Content.Entities
         float[] RingRotAmt = new float[16];
         float[] RingRot = new float[16];
 
+        float BGScale = 0f;
+
         PixelLayer IDrawPixelated.PixelLayer => PixelLayer.AboveTiles;
         void IDrawPixelated.DrawPixelated(SpriteBatch spriteBatch)
         {
@@ -171,6 +183,14 @@ namespace DestroyerTest.Content.Entities
             {
                 return;
             }
+
+            if (BGScale < 100f)
+            {
+                BGScale += 0.1f;
+            }
+
+            //Main.EntitySpriteDraw(DTAssetLib.Circle.Value, NPC.Center - Main.screenPosition, null, Color.Black, 0f, DTAssetLib.Circle.Value.Size() / 2, BGScale, SpriteEffects.None, 0f);
+
 
             for (int i = 0; i < RingRotAmt.Length; i++)
             {
@@ -211,6 +231,7 @@ namespace DestroyerTest.Content.Entities
             spriteBatch.End();
             spriteBatch.Begin(Cap);
 
+            /*
             //Inner Ring
             Main.EntitySpriteDraw(DTAssetLib.AuraRing.Value, NPC.Center - screenPos, null, (ColorLib.TenebrisGradient with { A = 0 } * 0.25f) * OrbitBarrierOpacity, RingRot[0], DTAssetLib.AuraRing.Value.Size() / 2, DTAssetLib.AuraRing.Value.ScaleRingTextureToMatchRadius(200f, 34), SpriteEffects.None, 0);
             Main.EntitySpriteDraw(DTAssetLib.AuraRing.Value, NPC.Center - screenPos, null, (ColorLib.TenebrisGradient with { A = 0 } * 0.25f) * OrbitBarrierOpacity, RingRot[1], DTAssetLib.AuraRing.Value.Size() / 2, DTAssetLib.AuraRing.Value.ScaleRingTextureToMatchRadius(200f, 34), SpriteEffects.None, 0);
@@ -234,6 +255,7 @@ namespace DestroyerTest.Content.Entities
             Main.EntitySpriteDraw(DTAssetLib.AuraRing.Value, NPC.Center - screenPos, null, (ColorLib.TenebrisGradient with { A = 0 } * 0.25f) * OrbitBarrierOpacity, RingRot[13], DTAssetLib.AuraRing.Value.Size() / 2, DTAssetLib.AuraRing.Value.ScaleRingTextureToMatchRadius(1100f, 34), SpriteEffects.None, 0);
             Main.EntitySpriteDraw(DTAssetLib.AuraRing.Value, NPC.Center - screenPos, null, (ColorLib.TenebrisGradient with { A = 0 } * 0.25f) * OrbitBarrierOpacity, RingRot[14], DTAssetLib.AuraRing.Value.Size() / 2, DTAssetLib.AuraRing.Value.ScaleRingTextureToMatchRadius(1100f, 34), SpriteEffects.None, 0);
             Main.EntitySpriteDraw(DTAssetLib.AuraRing.Value, NPC.Center - screenPos, null, (ColorLib.TenebrisGradient with { A = 0 } * 0.25f) * OrbitBarrierOpacity, RingRot[15], DTAssetLib.AuraRing.Value.Size() / 2, DTAssetLib.AuraRing.Value.ScaleRingTextureToMatchRadius(1100f, 34), SpriteEffects.None, 0);
+            */
 
             Main.EntitySpriteDraw(DTAssetLib.BarrierRing(true).Value, NPC.Center - screenPos, null, Color.White with { A = 0 } * OrbitBarrierOpacity, 0f, DTAssetLib.BarrierRing(true).Value.Size() / 2, DTAssetLib.BarrierRing(true).Value.ScaleRingTextureToMatchRadius(1300f, 186), SpriteEffects.None, 0);
             spriteBatch.ResetToDefault();
@@ -263,7 +285,7 @@ namespace DestroyerTest.Content.Entities
                 WingLeft.Value,
                 NPC.Center - screenPos + new Vector2(-30, -30),
                 null,
-                Color.White,
+                Color.White with { A = 0 } * NPC.Opacity,
                 0f,
                 originLeft,
                 new Vector2(WingXScale * 2, 2f),
@@ -277,7 +299,7 @@ namespace DestroyerTest.Content.Entities
                 WingRight.Value,
                 NPC.Center - screenPos + new Vector2(30, -30),
                 null,
-                Color.White,
+                Color.White with { A = 0 } * NPC.Opacity,
                 0f,
                 originRight,
                 new Vector2(WingXScale * 2, 2f),
@@ -289,12 +311,16 @@ namespace DestroyerTest.Content.Entities
             return true;
         }
 
+        public bool HasCalamity => ModLoader.TryGetMod("CalamityMod", out Mod CalamityMod);
         public enum State
         {
             IdleChase,
             LanceCross,
             Orbit,
-            StarShoot
+            StarShoot,
+            Knives,
+
+            Calamity_TeleportBurst
         }
 
         public State CurrentState;
@@ -302,6 +328,15 @@ namespace DestroyerTest.Content.Entities
         public int LanceCount = 0;
         public List<Vector2[]> Rings = new List<Vector2[]>();
         public List<Projectile[]> RingProjectiles = new List<Projectile[]>();
+        public int KnifeCount = 0;
+        public Vector2[] KnifePositions;
+
+        public bool Knife_GetPlayerCenter = false;
+        public Vector2 Knife_PlayerCenter;
+
+        public int TeleportBurstTimer = 0;
+        public bool TeleportBurstHasPosition = false;
+        public Vector2 TeleportBurstTarget;
 
         bool[] DisplayedDialogue = new bool[21];
         int CurrentDialogue = 0;
@@ -319,6 +354,8 @@ namespace DestroyerTest.Content.Entities
                 DisplayedDialogue[CurrentDialogue] = true;
             }
         }
+
+        
 
         public override void AI()
         {
@@ -343,6 +380,7 @@ namespace DestroyerTest.Content.Entities
 
 
             Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/UnfinishedBoss");
+            //Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/TenebrousConstruct");
 
             switch (CurrentState)
             {
@@ -367,7 +405,7 @@ namespace DestroyerTest.Content.Entities
                     }
                 case State.LanceCross:
                     {
-                        NPC.aiStyle = NPCAIStyleID.DungeonSpirit;
+                        NPC.aiStyle = NPCAIStyleID.AncientVision;
                         if (InternalTimer % 300 == 0)
                         {
                             LanceCount++;
@@ -449,7 +487,7 @@ namespace DestroyerTest.Content.Entities
                             Mine.timeLeft = 180;
                         }
 
-                        if (InternalTimer > 5000)
+                        if (InternalTimer > 3500)
                         {
 
                             for (int i = 0; i < RingProjectiles.Count; i++)
@@ -480,7 +518,7 @@ namespace DestroyerTest.Content.Entities
                     {
                         Vector2[] PossibleShootPositions = Opus.GetEquidistantVectors(12, NPC.Center, 50f);  
                         
-                        if (InternalTimer % 4 == 0 && InternalTimer > 5060)
+                        if (InternalTimer % 4 == 0 && InternalTimer > 3560)
                         {
                             Vector2 ShootPosition = PossibleShootPositions[Main.rand.Next(PossibleShootPositions.Length)];
                             
@@ -498,9 +536,132 @@ namespace DestroyerTest.Content.Entities
                             }
                         }
 
-                        if (InternalTimer > 5660)
+                        if (InternalTimer > 4660)
+                        {
+                            SoundEngine.PlaySound(Stun);
+                            CurrentState = State.Knives;
+                        }
+                        break;
+                    }
+                case State.Knives:
+                    {
+                        NPC.aiStyle = -1;
+                        NPC.velocity = new Vector2(0f, Opus.Sine(2f, -2f));
+
+                        if (!Knife_GetPlayerCenter)
+                        {
+                            Knife_PlayerCenter = player.Center;
+                            KnifePositions = Opus.GetEquidistantVectors(8, Knife_PlayerCenter, 400f);
+
+                            Projectile.NewProjectile(NPC.GetSource_FromAI(), player.Center, Vector2.Zero, ModContent.ProjectileType<KnifeArena>(), 0, 0, ai0: player.whoAmI);
+
+                            Knife_GetPlayerCenter = true;
+                        }
+                        
+                        if (InternalTimer % 15 == 0)
+                        {
+                            SoundEngine.PlaySound(SoundID.Item80, NPC.Center);
+
+                            Vector2 P = KnifePositions[Main.rand.Next(KnifePositions.Length)];
+                            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, NPC.Center.DirectionTo(P), ModContent.ProjectileType<BlackKnife>(), 20, 5, ai0: player.whoAmI, ai1: Main.rand.Next(KnifePositions.Length));
+                               
+                            if (Main.rand.NextBool(16) && Main.masterMode)
+                            {
+
+                                Vector2 vel = KnifePositions[Main.rand.Next(KnifePositions.Length)].DirectionTo(Knife_PlayerCenter);
+
+                                Projectile.NewProjectile(NPC.GetSource_FromAI(), Knife_PlayerCenter + (vel * -400f), vel * 10f, ModContent.ProjectileType<TenebrisLance>(), 20, 5);
+                              
+                            }
+                        }
+                       
+
+                        
+                        if (InternalTimer > 6000)
+                        {
+                            if (!HasCalamity)
+                            {
+                                InternalTimer = 0;
+                                Knife_GetPlayerCenter = false;
+                                SoundEngine.PlaySound(Stun);
+                                CurrentState = State.IdleChase;
+                            }
+                            else
+                            {
+                                Knife_GetPlayerCenter = false;
+                                SoundEngine.PlaySound(Stun);
+
+                                NPC.velocity = Vector2.Zero;
+                                for (int i = 0; i < 12; i++)
+                                {
+                                    StarParticle Star = new();
+                                    Star.Initialize(NPC.Center, Main.rand.NextVector2Circular(4, 4), ColorLib.TenebrisGradient, 2.5f);
+                                    ParticleEngine.BehindProjectiles.Add(Star);
+                                }
+                                NPC.Opacity = 0f;
+                                CurrentState = State.Calamity_TeleportBurst;
+                            }
+                        }
+                        
+                        break;
+                    }
+                case State.Calamity_TeleportBurst:
+                    {
+                        
+                        if (InternalTimer % 120 == 0)
+                        {
+                            SoundEngine.PlaySound(Laugh);
+
+                            NPC.Opacity -= 0.02f;
+
+                            TeleportBurstTarget = player.Center + new Vector2(Main.rand.Next(-300, 300), Main.rand.Next(-300, 300));
+                            TeleportBurstHasPosition = true;
+                        }
+
+                        if (TeleportBurstHasPosition)
+                        {
+                            if (TeleportBurstTimer < 90)
+                            {
+                                Vector2[] P = Opus.GetEquidistantOrbitVectors(8, TeleportBurstTarget, 0.1f, 100);
+
+                                for (int i = 0; i < P.Length; i++)
+                                {
+                                    StarParticle Star = new();
+                                    Star.Initialize(P[i], P[i].DirectionTo(TeleportBurstTarget) * 1.5f, ColorLib.TenebrisGradient, 0.5f);
+                                    ParticleEngine.BehindProjectiles.Add(Star);
+                                }
+
+                                NPC.velocity *= 0.9f;
+                                TeleportBurstTimer++;
+                            }
+                            else
+                            {
+                                SoundEngine.PlaySound(DTAssetLib.Impacts.DarkShatter);
+                                
+                                NPC.Opacity = 1f;
+                                NPC.Center = TeleportBurstTarget;
+
+                                for (int i = 0; i < 12; i++)
+                                {
+                                    StarParticle Star = new();
+                                    Star.Initialize(NPC.Center, Main.rand.NextVector2Circular(4, 4), ColorLib.TenebrisGradient, 2.5f);
+                                    ParticleEngine.BehindProjectiles.Add(Star);
+                                }
+
+                                NPC.velocity = NPC.Center.DirectionTo(player.Center) * 22f;
+                                Opus.RadialSpreadProjectile(ModContent.ProjectileType<TenebrisFlamesHostile_NoHoming>(), 8, NPC.Center, 30, 4, 10);
+                                Opus.RadialSpreadProjectile(ModContent.ProjectileType<TenebrisStarHostile>(), 16, NPC.Center, 30, 4, 16);
+
+                                TeleportBurstTimer = 0;
+                                TeleportBurstHasPosition = false;
+                            }
+                        }
+
+                        if (InternalTimer > (6000 + (120 * 10)) - 1)
                         {
                             InternalTimer = 0;
+                            TeleportBurstHasPosition = false;
+                            TeleportBurstTimer = 0;
                             SoundEngine.PlaySound(Stun);
                             CurrentState = State.IdleChase;
                         }

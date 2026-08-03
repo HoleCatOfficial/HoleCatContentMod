@@ -12,7 +12,7 @@ using Terraria.GameContent;
 using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
-using InnoVault.PRT;
+ 
 using DestroyerTest.Content.Particles;
 using System.Collections.Generic;
 using OpusLib;

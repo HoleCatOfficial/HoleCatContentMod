@@ -9,8 +9,8 @@ using DestroyerTest.Content.MeleeWeapons;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Particles.Orchestrated;
 using DestroyerTest.Content.Projectiles.ParentClasses;
-using InnoVault;
-using InnoVault.PRT;
+ 
+ 
 using log4net.Appender;
 using Microsoft.Build.Evaluation;
 using Microsoft.Xna.Framework;
@@ -44,6 +44,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             SweepColor = Color.Red;
             SwingSpeed = 0.12f;
             UsesDefaultSweepFX = true;
+            SweepScale = 1.6f;
+
+            Projectile.extraUpdates = 3;
         }
         public override void HitNPCEffects(NPC npc, NPC.HitInfo hit, int damageDone)
         {
@@ -81,9 +84,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
         public Vector2 swordTip;
         public Line SwordLine;
-
+        int timer = 0;
         public override void ExtraEffects()
         {
+            timer++;
             swordTip = Projectile.Center + Projectile.rotation.ToRotationVector2() * (Projectile.Size.Length() * Projectile.scale);
 
             SwordLine = new Line(Owner.Center, swordTip);
@@ -98,29 +102,53 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 Projectile.Center + Projectile.rotation.ToRotationVector2() * (Projectile.Size.Length() * (Projectile.scale * 0.20f)),
             };
 
-            Fire[] fire = new Fire[5]
+            
+
+            Vector2[] positions =
             {
-                new Fire(),
-                new Fire(),
-                new Fire(),
-                new Fire(),
-                new Fire()
+                swordTip,
+                Pos[0],
+                Pos[1],
+                Pos[2],
+                Pos[3]
             };
 
-            fire[0].PrepareFire(swordTip, Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.12f, 0.12f), Color.Red, 2f, 40, FireDrawMode.Additive, PixelLayer.AboveProjectiles);
-            ParticleEngine.BehindProjectiles.Add(fire[0]);
+            float[] alpha =
+            {
+                1f,
+                0.8f,
+                0.6f,
+                0.4f,
+                0.2f
+            };
 
-            fire[1].PrepareFire(Pos[0], Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.12f, 0.12f), Color.Red * 0.8f, 2f, 35, FireDrawMode.Additive, PixelLayer.AboveProjectiles);
-            ParticleEngine.BehindProjectiles.Add(fire[1]);
+            int[] lifetime =
+            {
+                40,
+                35,
+                30,
+                25,
+                10
+            };
 
-            fire[2].PrepareFire(Pos[1], Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.12f, 0.12f), Color.Red * 0.6f, 2f, 30, FireDrawMode.Additive, PixelLayer.AboveProjectiles);
-            ParticleEngine.BehindProjectiles.Add(fire[2]);
+            for (int i = 0; i < positions.Length; i++)
+            {
+                Fire fire = new Fire();
+                Vector2 RandSpeed = (SwordLine.GetLineRotation - MathHelper.PiOver2).ToRotationVector2().RotatedByRandom(0.2f) * Main.rand.NextFloat(2f, 6f);
 
-            fire[3].PrepareFire(Pos[2], Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.12f, 0.12f), Color.Red * 0.4f, 2f, 25, FireDrawMode.Additive, PixelLayer.AboveProjectiles);
-            ParticleEngine.BehindProjectiles.Add(fire[3]);
+                fire.PrepareFire(
+                    positions[Main.rand.Next(positions.Length)],
+                    RandSpeed,
+                    DTUtils.RandomDirection(2),
+                    Main.rand.NextFloat(-0.12f, 0.12f),
+                    Color.Red * 0.3f,
+                    1.25f,
+                    lifetime[i],
+                    FireDrawMode.Additive,
+                    PixelLayer.AboveProjectiles);
 
-            fire[4].PrepareFire(Pos[3], Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.12f, 0.12f), Color.Red * 0.2f, 2f, 10, FireDrawMode.Additive, PixelLayer.AboveProjectiles);
-            ParticleEngine.BehindProjectiles.Add(fire[4]);
+                ParticleEngine.BehindProjectiles.Add(fire);
+            }
         }
     }
 }

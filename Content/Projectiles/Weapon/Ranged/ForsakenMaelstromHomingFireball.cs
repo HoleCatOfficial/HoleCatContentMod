@@ -106,7 +106,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Ranged
         public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(SoundID.DD2_BetsyFireballImpact, Projectile.Center);
-            SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/DAHit") with { pitchVariance = 0.5f, MaxInstances = 0}, Projectile.Center);
+            SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/DAHit") with { PitchVariance = 0.5f, MaxInstances = 0}, Projectile.Center);
 
             SimpleExplosionParticle Explosion1 = new();
             Explosion1.Prepare(Projectile.Center, Vector2.Zero, Color.MediumPurple, 0.1f, 0.02f, 1.6f, BlendState.Additive);

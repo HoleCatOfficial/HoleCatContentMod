@@ -1,4 +1,5 @@
 ﻿using BreadLibrary.Core.Graphics.Particles;
+using BreadLibrary.Core.Graphics.Pixelation;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Particles;
 using Microsoft.Xna.Framework;
@@ -20,7 +21,7 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.ParentClasses
 {
-    public abstract class BaseBroadswordProjectileFullSwing : ModProjectile
+    public abstract class BaseBroadswordProjectileFullSwing : ModProjectile, IDrawPixelated
     {
         public Player Owner => Main.player[Projectile.owner];
         public virtual SoundStyle Swing { get; set; } = DTAssetLib.SwordSounds.StandardSwing;
@@ -40,6 +41,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         {
             ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY[Type] = true;
             ProjectileID.Sets.AllowsContactDamageFromJellyfish[Type] = true;
+            ProjectileID.Sets.CanDistortWater[Type] = false;
             SetStaticDefaultsExtra();
         }
 
@@ -54,6 +56,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = 15;
             Projectile.ownerHitCheck = true;
+            Projectile.ignoreWater = true;
         }
 
         public virtual void OnSpawnExtras(IEntitySource source)
@@ -96,7 +99,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         public Line SL;
         public virtual void SparkEdge(Player owner, float Scale, Color color, int BlendMode = 2)
         {
-            sT = Projectile.Center + Projectile.rotation.ToRotationVector2() * ((new Vector2(Projectile.width, Projectile.height) * Projectile.scale) * ScaleMult);
+            sT = Projectile.Center + Projectile.rotation.ToRotationVector2() * (78f * SweepScale * AdjustedScale * ScaleMult);
             SL = new Line(Owner.MountedCenter, sT);
             if (CurrentState == State.Swing)
             {
@@ -104,7 +107,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
                 {
                     Spark Spark = new Spark();
 
-                    Spark.PrepareSpark(sT, new Vector2(1, 0).RotatedBy(SL.GetLineRotation + MathHelper.PiOver2), 0f, color, Scale, false, 30, SparkDrawMode.Additive);
+                    Spark.PrepareSpark(sT, new Vector2(1, 0).RotatedBy(SL.GetLineRotation + MathHelper.PiOver2), SL.GetLineRotation, color, Scale, false, 30, SparkDrawMode.Additive);
                     Spark.TrackPlayer[Owner.whoAmI] = true;
                     ParticleEngine.BehindProjectiles.Add(Spark);
                 }
@@ -125,7 +128,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             AdjustedScale = Owner.GetAdjustedItemScale(Owner.HeldItem) * ScaleMult;
             Projectile.scale = AdjustedScale;
 
-            Projectile.spriteDirection = Math.Sign(Main.MouseWorld.X - Owner.Center.X);
+            Projectile.spriteDirection = Projectile.direction = Math.Sign(Main.MouseWorld.X - Owner.Center.X);
 
             //Slower swing speed, longer cooldown.
             //Swing speed gets slower the lower the number is.
@@ -190,8 +193,16 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         public virtual float WaitTimeMultiplier { get; set; } = 1f;
         public void ControlRotation()
         {
+            //float speedFactor = Owner.GetTotalAttackSpeed<DTTrueMeleeClass>();
+            //float t = SwingSpeed * speedFactor;
+
+            float baseT = SwingSpeed;
             float speedFactor = Owner.GetTotalAttackSpeed<DTTrueMeleeClass>();
-            float t = SwingSpeed * speedFactor;
+
+            float t = 1f - MathF.Pow(
+                1f - baseT,
+                speedFactor / (Projectile.extraUpdates + 1)
+            );
 
             switch (CurrentState)
             {
@@ -200,7 +211,8 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
                         if (!SetPos)
                         {
                             Projectile.rotation = UpPoint;
-                            WaitTimer = (int)((10 * WaitTimeMultiplier) * speedFactor);
+                            //WaitTimer = (int)((10 * WaitTimeMultiplier) * speedFactor);
+                            WaitTimer = (int)((10 * WaitTimeMultiplier) * speedFactor * (Projectile.extraUpdates + 1));
                             SlashStartRotation = UpPoint;
                             SetPos = true;
                         }
@@ -265,11 +277,33 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         }
 
         public float SweepOpacity = 0f;
-        public virtual Color SweepColor { get; set; } = Color.White;
-        public virtual Color SweepHighlightColor { get; set; } = Color.White;
-        public bool UsesDefaultSweepFX { get; set; }
 
-        public bool UsesFireSweepFX { get; set; }
+        /// <summary>
+        /// Used by the main sweep texture.
+        /// </summary>
+        public virtual Color SweepColor { get; set; } = Color.White;
+
+        /// <summary>
+        /// Using by the sweep highlight texture.
+        /// </summary>
+        public virtual Color SweepHighlightColor { get; set; } = Color.White;
+
+        /// <summary>
+        /// Attempting to do automatic scaling for the sweep textures to match up to the blade's tip have proven generally unsuccessful, plus, what if someone wants a big sweep?
+        /// <br>Note that this value will be multiplied by both the player's melee scale modifier and ScaleMult. </br>
+        /// </summary>
+        public virtual float SweepScale { get; set; } = 1f;
+
+        /// <summary>
+        /// Return true if you want your sword to use a standard sweeping effect.
+        /// Returns false by default.
+        /// </summary>
+        public bool UsesDefaultSweepFX { get; set; } = false;
+
+        /// <summary>
+        /// Used alongside UsesDefaultSweepFX to draw a fire variant of the sweep effect.
+        /// </summary>
+        public bool UsesFireSweepFX { get; set; } = false;
 
         Texture2D Tex = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/CircularSlash").Value;
         Texture2D TexH = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/CircularSlashEdgeHighlight").Value;
@@ -287,7 +321,6 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
                 TexH = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/CircularSlashEdgeHighlight").Value;
             }
 
-            float TexBasedMod = (Projectile.Size.Length() * 0.016f);
             float rOffset = 0f;
 
             SpriteEffects FX = SpriteEffects.None;
@@ -306,8 +339,8 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
 
             //Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-            Main.EntitySpriteDraw(Tex, Owner.MountedCenter - Main.screenPosition, null, SweepColor with { A = 0 } * SweepOpacity, (Projectile.rotation + MathHelper.PiOver4) + rOffset, Tex.Size() / 2, (TexBasedMod) * ScaleMult, FX);
-            Main.EntitySpriteDraw(TexH, Owner.MountedCenter - Main.screenPosition, null, SweepHighlightColor with { A = 0 } * SweepOpacity, (Projectile.rotation + MathHelper.PiOver4) + rOffset, Tex.Size() / 2, (TexBasedMod) * ScaleMult, FX);
+            Main.EntitySpriteDraw(Tex, Owner.MountedCenter - Main.screenPosition, null, SweepColor with { A = 0 } * SweepOpacity, (Projectile.rotation + MathHelper.PiOver4) + rOffset, Tex.Size() / 2, (SweepScale * AdjustedScale) * ScaleMult, FX);
+            Main.EntitySpriteDraw(TexH, Owner.MountedCenter - Main.screenPosition, null, SweepHighlightColor with { A = 0 } * SweepOpacity, (Projectile.rotation + MathHelper.PiOver4) + rOffset, Tex.Size() / 2, (SweepScale * AdjustedScale) * ScaleMult, FX);
             //Main.spriteBatch.ResetToDefault();
             //Opus.ReturnToDefaultDrawing(Main.spriteBatch);
         }
@@ -334,16 +367,10 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
                 rotationOffset = MathHelper.ToRadians(45f);
             }
             else
-            {
-                origin = new Vector2(0, texture.Height);
-                effects = SpriteEffects.None;
-                rotationOffset = MathHelper.ToRadians(45f);
-            }
-
-
-            if (UsesDefaultSweepFX)
-            {
-                DrawSweepFX();
+            { 
+                origin = new Vector2(texture.Width, texture.Height);
+                effects = SpriteEffects.FlipHorizontally;
+                rotationOffset = MathHelper.ToRadians(135f);
             }
 
             DrawUnderBlade();
@@ -356,6 +383,17 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
             DrawOverBlade();
             return false;
+        }
+        PixelLayer IDrawPixelated.PixelLayer => PixelLayer.AboveNPCs;
+
+        bool IDrawPixelated.ShouldDrawPixelated => true;
+
+        void IDrawPixelated.DrawPixelated(SpriteBatch spriteBatch)
+        {
+            if (UsesDefaultSweepFX)
+            {
+                DrawSweepFX();
+            }
         }
 
 

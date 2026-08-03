@@ -10,7 +10,7 @@ using Terraria.Localization;
 using Terraria.DataStructures;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Dusts;
-using InnoVault.PRT;
+ 
 using DestroyerTest.Content.Particles.Stellar;
 using BreadLibrary.Core.Graphics.Particles;
 

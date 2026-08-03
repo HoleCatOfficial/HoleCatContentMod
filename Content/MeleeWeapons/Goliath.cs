@@ -76,8 +76,12 @@ namespace DestroyerTest.Content.MeleeWeapons
             return false; // Return false to prevent the default projectile from being spawned
         }
 
-
-		public override void MeleeEffects(Player player, Rectangle hitbox) {
+        public override bool MeleePrefix()
+        {
+            return true;
+        }
+        
+        public override void MeleeEffects(Player player, Rectangle hitbox) {
 			if (Main.rand.NextBool(3)) {
 				// Emit dusts when the sword is swung
 				Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, ModContent.DustType<Dusts.Sparkle>());

@@ -15,7 +15,7 @@ using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
 using OpusLib;
-using InnoVault.PRT;
+ 
 using DestroyerTest.Content.Projectiles.Gores;
 
 namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss

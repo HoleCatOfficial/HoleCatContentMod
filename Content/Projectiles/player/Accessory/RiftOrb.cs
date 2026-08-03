@@ -12,7 +12,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using DestroyerTest.Content.Buffs;
 using System.Collections.Generic;
-using InnoVault.PRT;
+ 
 using DestroyerTest.Content.Particles;
 
 namespace DestroyerTest.Content.Projectiles.player.Accessory
