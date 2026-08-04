@@ -39,9 +39,13 @@ namespace DestroyerTest.Common.Systems
 
 		public static bool downedPlanteraBoss = false;
 
-		public static bool downedNodeMiniBoss = false;
+		public static bool downedIchorNodeMiniBoss = false;
 
-		public static bool downedGolemBoss = false;
+        public static bool downedCursedFlameNodeMiniBoss = false;
+
+        public static bool downedBlessedNodeMiniBoss = false;
+
+        public static bool downedGolemBoss = false;
 
 		public static bool downedFishronBoss = false;
 
@@ -55,19 +59,35 @@ namespace DestroyerTest.Common.Systems
 
 		public static bool downedNightmareRoseBoss = false;
 
-		public static Func<bool> downedConstitutionConditionbool = () => downedConstitutionBoss;
+        public static bool downedTenebrousConstructBoss = false;
+
+        public static Func<bool> downedConstitutionConditionbool = () => downedConstitutionBoss;
 		public static Condition downedConstitutionCondition = new Condition("Mods.DestroyerTest.Conditions.ConstitutionBossDowned", downedConstitutionConditionbool);
 
-		public static Func<bool> downedNodeConditionbool = () => downedNodeMiniBoss;
-		public static Condition downedNodeCondition = new Condition("Mods.DestroyerTest.Conditions.NodeBossDowned", downedNodeConditionbool);
 
-		public static Func<bool> downedWyvernCorpseBossConditionbool = () => downedWyvernCorpseBoss;
+		public static Func<bool> downedAnyNodeConditionbool = () => (downedIchorNodeMiniBoss || downedCursedFlameNodeMiniBoss || downedBlessedNodeMiniBoss);
+		public static Condition downedAnyNodeCondition = new Condition("Mods.DestroyerTest.Conditions.AnyNodeBossDowned", downedAnyNodeConditionbool);
+
+        public static Func<bool> downedIchorNodeConditionbool = () => downedIchorNodeMiniBoss;
+        public static Condition downedIchorNodeCondition = new Condition("Mods.DestroyerTest.Conditions.IchorNodeBossDowned", downedIchorNodeConditionbool);
+
+        public static Func<bool> downedCursedFlameNodeConditionbool = () => downedCursedFlameNodeMiniBoss;
+        public static Condition downedCursedFlameNodeCondition = new Condition("Mods.DestroyerTest.Conditions.CursedFlameNodeBossDowned", downedCursedFlameNodeConditionbool);
+
+        public static Func<bool> downedBlessedNodeConditionbool = () => downedBlessedNodeMiniBoss;
+        public static Condition downedBlessedNodeCondition = new Condition("Mods.DestroyerTest.Conditions.BlessedNodeBossDowned", downedBlessedNodeConditionbool);
+
+
+        public static Func<bool> downedWyvernCorpseBossConditionbool = () => downedWyvernCorpseBoss;
 		public static Condition downedWyvernCorpseBossCondition = new Condition("Mods.DestroyerTest.Conditions.WyvernCorpseBossDowned", downedWyvernCorpseBossConditionbool);
 		
 		public static Func<bool> downedNightmareRoseBossConditionbool = () => downedNightmareRoseBoss;
 		public static Condition downedNightmareRoseBossCondition = new Condition("Mods.DestroyerTest.Conditions.NightmareRoseBossDowned", downedNightmareRoseBossConditionbool);
 
-		public override void ClearWorld()
+        public static Func<bool> downedTenebrousConstructBossConditionbool = () => downedTenebrousConstructBoss;
+        public static Condition downedTenebrousConstructBossCondition = new Condition("Mods.DestroyerTest.Conditions.TenebrousConstructBossDowned", downedTenebrousConstructBossConditionbool);
+
+        public override void ClearWorld()
 		{
 			downedEoCBoss = false;
 			downedKingSlimeBoss = false;
@@ -84,7 +104,9 @@ namespace DestroyerTest.Common.Systems
 			downedSkeletronPrimeBoss = false;
 			downedNautilusMiniBoss = false;
 			downedPlanteraBoss = false;
-			downedNodeMiniBoss = false;
+			downedIchorNodeMiniBoss = false;
+			downedCursedFlameNodeMiniBoss = false;
+			downedBlessedNodeMiniBoss = false;
 			downedFishronBoss = false;
 			downedEmpressBoss = false;
 			downedGolemBoss = false;
@@ -92,7 +114,8 @@ namespace DestroyerTest.Common.Systems
 			downedLunarBoss = false;
 			downedWyvernCorpseBoss = false;
 			downedNightmareRoseBoss = false;
-		}
+            downedTenebrousConstructBoss = false;
+        }
         public override void SaveWorldData(TagCompound tag)
         {
             tag.Add("downedEoCBoss", downedEoCBoss);
@@ -109,7 +132,9 @@ namespace DestroyerTest.Common.Systems
             tag.Add("downedPrimeBoss", downedSkeletronPrimeBoss);
             tag.Add("downedNautilusMiniBoss", downedNautilusMiniBoss);
             tag.Add("downedPlanteraBoss", downedPlanteraBoss);
-            tag.Add("downedNodeMiniBoss", downedNodeMiniBoss);
+            tag.Add("downedIchorNodeMiniBoss", downedIchorNodeMiniBoss);
+            tag.Add("downedCursedFlameNodeMiniBoss", downedCursedFlameNodeMiniBoss);
+            tag.Add("downedBlessedNodeMiniBoss", downedBlessedNodeMiniBoss);
             tag.Add("downedGolemBoss", downedGolemBoss);
             tag.Add("downedFishronBoss", downedFishronBoss);
             tag.Add("downedEmpressBoss", downedEmpressBoss);
@@ -117,6 +142,7 @@ namespace DestroyerTest.Common.Systems
             tag.Add("downedLunarBoss", downedLunarBoss);
             tag.Add("downedWyvernCorpseBoss", downedWyvernCorpseBoss);
             tag.Add("downedNightmareRoseBoss", downedNightmareRoseBoss);
+            tag.Add("downedTenebrousConstruct Boss", downedTenebrousConstructBoss);
         }
 
 
@@ -192,9 +218,24 @@ namespace DestroyerTest.Common.Systems
                 downedPlanteraBoss = tag.GetBool("downedPlanteraBoss");
             }
 
-            if (tag.ContainsKey("downedNodeMiniBoss"))
+            if (tag.ContainsKey("downedIchorNodeMiniBoss"))
             {
-                downedNodeMiniBoss = tag.GetBool("downedNodeMiniBoss");
+                downedIchorNodeMiniBoss = tag.GetBool("downedIchorNodeMiniBoss");
+            }
+
+            if (tag.ContainsKey("downedCursedFlameNodeMiniBoss"))
+            {
+                downedCursedFlameNodeMiniBoss = tag.GetBool("downedCursedFlameNodeMiniBoss");
+            }
+
+            if (tag.ContainsKey("downedBlessedNodeMiniBoss"))
+            {
+                downedBlessedNodeMiniBoss = tag.GetBool("downedBlessedNodeMiniBoss");
+            }
+
+            if (tag.ContainsKey("downedTenebrousConstructBoss"))
+            {
+                downedTenebrousConstructBoss = tag.GetBool("downedTenebrousConstructBoss");
             }
 
             if (tag.ContainsKey("downedGolemBoss"))
@@ -231,6 +272,11 @@ namespace DestroyerTest.Common.Systems
             {
                 downedNightmareRoseBoss = tag.GetBool("downedNightmareRoseBoss");
             }
+
+            if (tag.ContainsKey("downedTenebrousConstructBoss"))
+            {
+                downedTenebrousConstructBoss = tag.GetBool("downedTenebrousConstructBoss");
+            }
         }
 
         public override void NetSend(BinaryWriter writer) {
@@ -253,19 +299,25 @@ namespace DestroyerTest.Common.Systems
 				downedSkeletronPrimeBoss, 
 				downedNautilusMiniBoss, 
 				downedPlanteraBoss, 
-				downedNodeMiniBoss
+				downedIchorNodeMiniBoss
 			);
 			writer.WriteFlags(
+                downedCursedFlameNodeMiniBoss,
+                downedBlessedNodeMiniBoss,
 				downedGolemBoss,
 				downedFishronBoss,
 				downedEmpressBoss, 
-				downedCultistBoss, 
-				downedLunarBoss,
-				downedWyvernCorpseBoss,
-				downedNightmareRoseBoss
+				downedCultistBoss
 			);
-		
-		}
+
+            writer.WriteFlags(
+                downedLunarBoss,
+                downedWyvernCorpseBoss,
+                downedNightmareRoseBoss,
+                downedTenebrousConstructBoss
+            );
+
+        }
 
 		public override void NetReceive(BinaryReader reader) {
 			reader.ReadFlags(
@@ -286,19 +338,25 @@ namespace DestroyerTest.Common.Systems
 				out downedSkeletronPrimeBoss, 
 				out downedNautilusMiniBoss, 
 				out downedPlanteraBoss, 
-				out downedNodeMiniBoss
+				out downedIchorNodeMiniBoss
 			);
 			reader.ReadFlags(
+                out downedCursedFlameNodeMiniBoss,
+                out downedBlessedNodeMiniBoss,
 				out downedGolemBoss,
 				out downedFishronBoss,
 				out downedEmpressBoss, 
-				out downedCultistBoss, 
-				out downedLunarBoss,
-				out downedWyvernCorpseBoss,
-				out downedNightmareRoseBoss
+				out downedCultistBoss
 			);
 
-		}
+            reader.ReadFlags(
+                out downedLunarBoss,
+                out downedWyvernCorpseBoss,
+                out downedNightmareRoseBoss,
+                out downedTenebrousConstructBoss
+            );
+
+        }
 	}
 
 	

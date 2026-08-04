@@ -20,6 +20,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Mono.Cecil.Cil;
 using OpusLib;
 using OpusLib.Content.Helpers;
+using OpusLib.Content.Particles;
 using ReLogic.Content;
 using ReLogic.Graphics;
 using Steamworks;
@@ -1328,6 +1329,20 @@ namespace DestroyerTest.Common
         public static float ScaleRingTextureToMatchRadius(this Texture2D Texture, float RadiusToCompare, int DistanceFromTextureCenter = 0)
         {
             return RadiusToCompare / (float)DistanceFromTextureCenter;
+        }
+
+        public static void CommonRiftRocketExplosion(this Projectile projectile)
+        {
+            BloomRingSharp Ring = new();
+            Ring.Prepare(projectile.Center, Vector2.Zero, ColorLib.Rift, 0.1f, 0.01f, 0.7f, BlendState.Additive);
+            ParticleEngine.Particles.Add(Ring);
+
+            for (int i = 0; i < 20; i++)
+            {
+                Vector2 velocity = Main.rand.NextVector2CircularEdge(10f, 10f);
+                Dust dust = Dust.NewDustPerfect(projectile.Center, DustID.FireworksRGB, velocity, newColor: ColorLib.Rift, Scale: Main.rand.NextFloat(1.5f, 2.5f));
+                dust.noGravity = true;
+            }
         }
     }
 

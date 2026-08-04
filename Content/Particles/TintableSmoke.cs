@@ -34,8 +34,6 @@ namespace DestroyerTest.Content.Particles
         Color color;
         int variant = 0;
 
-        
-
         public bool Flat = false;
         Asset<Texture2D> Tex => Flat ? ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/TintableSmokeFlat") : ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/TintableSmoke");
         BlendState internalBlending = BlendState.AlphaBlend;

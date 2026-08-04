@@ -35,6 +35,15 @@ namespace DestroyerTest.Content.Equips
             player.GetCritChance(DamageClass.Ranged) += 12;
             player.GetModPlayer<MarksmanGhostArtifactPlayer>().Active = true;
         }
+
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient(ItemID.SpectreBar, 10)
+                .AddIngredient(ItemID.TitaniumBar, 4)
+                .AddTile(TileID.MythrilAnvil)
+                .Register();
+        }
     }
 
     public class MarksmanGhostArtifactPlayer : ModPlayer

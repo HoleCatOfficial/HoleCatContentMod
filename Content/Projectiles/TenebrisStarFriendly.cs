@@ -79,7 +79,7 @@ namespace DestroyerTest.Content.Projectiles
 
             DTTrail.DrawTrail(spriteBatch, DTAssetLib.Streak(14).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 15, lightColor, trailOffset);
 
-            Opus.DrawTextureOnProj(DTAssetLib.Star(3), Projectile, Color.White, true, 0f, 0.9f, 0.9f);
+            Opus.DrawTextureOnProj(DTAssetLib.Star(3), Projectile, Color.White with { A = 0 }, true, 0f, 0.9f, 0.9f);
 
             return false;
         }
@@ -184,7 +184,7 @@ namespace DestroyerTest.Content.Projectiles
 
             DTTrail.DrawTrail(spriteBatch, DTAssetLib.Streak(14).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 15, lightColor, trailOffset);
 
-            Opus.DrawTextureOnProj(DTAssetLib.Star(3), Projectile, Color.White, true, 0f, 0.9f, 0.9f);
+            Opus.DrawTextureOnProj(DTAssetLib.Star(3), Projectile, Color.White with { A = 0 }, true, 0f, 0.9f, 0.9f);
 
             return false;
         }

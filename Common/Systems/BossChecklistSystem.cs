@@ -214,7 +214,7 @@ namespace DestroyerTest.Common.Systems
                 Language.GetText("Mods.DestroyerTest.BossChecklist.BlessedNodeMB.Hint"),
                 ModContent.NPCType<BlessedNodeMB>(), 
                 12.8f,
-                DownedBossSystem.downedNodeCondition,
+                DownedBossSystem.downedBlessedNodeCondition,
                 BlessedNodePortrait,
                 -1,
                 DTLootTables.BlessedNodeLootTable);
@@ -231,7 +231,7 @@ namespace DestroyerTest.Common.Systems
                 Language.GetText("Mods.DestroyerTest.BossChecklist.IchorNodeMB.Hint"), 
                 ModContent.NPCType<IchorNodeMB>(), 
                 12.7f, 
-                DownedBossSystem.downedNodeCondition, 
+                DownedBossSystem.downedIchorNodeCondition, 
                 IchorNodePortrait, 
                 -1, 
                 DTLootTables.IchorNodeLootTable);
@@ -247,7 +247,7 @@ namespace DestroyerTest.Common.Systems
                 Language.GetText("Mods.DestroyerTest.BossChecklist.CursedFlameNodeMB.Hint"), 
                 ModContent.NPCType<CursedFlameNodeMB>(), 
                 12.7f, 
-                DownedBossSystem.downedNodeCondition, 
+                DownedBossSystem.downedCursedFlameNodeCondition, 
                 CursedFlameNodePortrait, 
                 -1, 
                 DTLootTables.CursedFlameNodeLootTable);
@@ -296,7 +296,7 @@ namespace DestroyerTest.Common.Systems
                 Language.GetText("Mods.DestroyerTest.BossChecklist.TenebrousConstruct.Hint"),
                 ModContent.NPCType<TenebrousConstruct>(),
                 !ModLoader.HasMod("CalamityMod") ? 17.7195f : 22f,
-                DownedBossSystem.downedNightmareRoseBossCondition,
+                DownedBossSystem.downedTenebrousConstructBossCondition,
                 TenebrousConstructPortrait,
                 ModContent.ItemType<TenebrousConstructSummoner>(),
                 DTLootTables.TenebrousConstructLootTable);

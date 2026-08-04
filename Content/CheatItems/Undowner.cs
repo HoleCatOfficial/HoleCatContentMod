@@ -47,7 +47,9 @@ namespace DestroyerTest.Content.CheatItems
             DownedBossSystem.downedSkeletronPrimeBoss = false;
             DownedBossSystem.downedNautilusMiniBoss = false;
             DownedBossSystem.downedPlanteraBoss = false;
-            DownedBossSystem.downedNodeMiniBoss = false;
+            DownedBossSystem.downedIchorNodeMiniBoss = false;
+            DownedBossSystem.downedCursedFlameNodeMiniBoss = false;
+            DownedBossSystem.downedBlessedNodeMiniBoss = false;
             DownedBossSystem.downedGolemBoss = false;
             DownedBossSystem.downedFishronBoss = false;
             DownedBossSystem.downedEmpressBoss = false;
@@ -55,6 +57,7 @@ namespace DestroyerTest.Content.CheatItems
             DownedBossSystem.downedLunarBoss = false;
             DownedBossSystem.downedWyvernCorpseBoss = false;
             DownedBossSystem.downedNightmareRoseBoss = false;
+            DownedBossSystem.downedTenebrousConstructBoss = false;
             return true;
         }
     }

@@ -4971,3 +4971,31 @@ RingFromBeyond: {
 		16% increased critical strike chance.
 		'''
 }
+
+HematoidVisage: {
+	DisplayName: Hematoid Visage
+	Tooltip:
+		'''
+		8% increased Ranged damage.
+		Ranged projectiles have a 20% chance to create a Hematoid Blob when hitting an enemy.
+		'''
+}
+
+QuiverOfDuality: {
+	DisplayName: Quiver Of Duality
+	Tooltip:
+		'''
+		15% increased Ranged damage.
+		16% increased fire rate for bows.
+		25% increased chance not to consume arrows.
+
+		Enemies within range of you will be afflicted with either Cursed Inferno or Ichor.
+		The buff applied can be switched by shift + right clicking in the inventory.
+		This effect will be disabled if visibility is turned off.
+		'''
+}
+
+RiftRocket: {
+	DisplayName: Rift Rocket
+	Tooltip: ""
+}

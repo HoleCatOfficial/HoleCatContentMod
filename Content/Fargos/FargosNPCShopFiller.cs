@@ -18,8 +18,9 @@ namespace DestroyerTest.Content.Fargos
                 var Mutant = fargos.TryFind<ModNPC>("Mutant", out ModNPC mutant);
                 if (shop.NpcType == mutant.Type && Mutant)
                 {
-                    shop.Add<CrimsonCaller>(DownedBossSystem.downedNodeCondition);
-                    shop.Add<CorruptionCaller>(DownedBossSystem.downedNodeCondition);
+                    shop.Add<CrimsonCaller>(DownedBossSystem.downedIchorNodeCondition);
+                    shop.Add<CorruptionCaller>(DownedBossSystem.downedCursedFlameNodeCondition);
+                    shop.Add<HallowCaller>(DownedBossSystem.downedBlessedNodeCondition);
                 }
             }
         }

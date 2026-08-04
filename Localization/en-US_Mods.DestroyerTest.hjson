@@ -41,6 +41,11 @@ Conditions: {
 	WyvernCorpseBossDowned: Defeated the Wyvern Corpse
 	NodeBossDowned: Defeated a Node
 	ConstitutionBossDowned: Defeated Constitution
+	AnyNodeBossDowned: Mods.DestroyerTest.Conditions.AnyNodeBossDowned
+	IchorNodeBossDowned: Mods.DestroyerTest.Conditions.IchorNodeBossDowned
+	CursedFlameNodeBossDowned: Mods.DestroyerTest.Conditions.CursedFlameNodeBossDowned
+	BlessedNodeBossDowned: Mods.DestroyerTest.Conditions.BlessedNodeBossDowned
+	TenebrousConstructBossDowned: Mods.DestroyerTest.Conditions.TenebrousConstructBossDowned
 }
 
 Configs: {

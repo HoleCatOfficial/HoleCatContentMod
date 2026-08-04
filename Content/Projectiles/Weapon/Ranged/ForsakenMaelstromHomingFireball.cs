@@ -1,4 +1,5 @@
 ﻿using BreadLibrary.Core.Graphics.Particles;
+using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
 using DestroyerTest.Common.Interfaces;
 using DestroyerTest.Content.Buffs;
@@ -57,7 +58,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Ranged
 
         public override bool PreDraw(ref Color lightColor)
         {
-            Main.EntitySpriteDraw(DTUtils.CenteredDraw(Projectile, lightColor));
+            Main.EntitySpriteDraw(DTUtils.CenteredDraw(Projectile, Color.White with { A = 0 }));
             return false;
         }
 
@@ -113,7 +114,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Ranged
             ParticleEngine.Particles.Add(Explosion1);
 
             SimpleExplosionParticle Explosion2 = new();
-            Explosion2.Prepare(Projectile.Center, Vector2.Zero, Color.DeepSkyBlue, 0.2f, 0.02f, 2f, BlendState.Additive);
+            Explosion2.Prepare(Projectile.Center, Vector2.Zero, Color.Yellow, 0.2f, 0.02f, 2f, Utilities.SubtractiveBlending);
             ParticleEngine.Particles.Add(Explosion2);
         }
     }

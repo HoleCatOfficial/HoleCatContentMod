@@ -56,7 +56,9 @@ namespace DestroyerTest.Content.Buffs
         {
             if (Eroding)
             {
-                Dust.NewDust(npc.position, npc.width, npc.height, DustID.SnowflakeIce, 0f, 0.5f);
+                Dust D = Dust.NewDustDirect(npc.position, npc.width, npc.height, ModContent.DustType<SoulErosionDust>(), 0f, 0.5f);
+                D.noGravity = true;
+
                 ErosionTimer += 1f;
                 float reductionFactor = 1f - (0.05f * (ErosionTimer / 60f));
                 int newDamage = (int)(baseDamage * MathHelper.Clamp(reductionFactor, 0.1f, 1f));
@@ -86,7 +88,8 @@ namespace DestroyerTest.Content.Buffs
         {
             if (Eroding)
             {
-                Dust.NewDust(Player.position, Player.width, Player.height, DustID.SnowflakeIce, 0f, 0.5f);
+                Dust D = Dust.NewDustDirect(Player.position, Player.width, Player.height, ModContent.DustType<SoulErosionDust>(), 0f, 0.5f);
+                D.noGravity = true;
                 ErosionTimer++;
             }
             else

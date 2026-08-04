@@ -219,21 +219,31 @@ namespace DestroyerTest.Common.NPC_Folder
                     NetMessage.SendData(MessageID.WorldData);
                 }
             }
-            if (npc.type == ModContent.NPCType<IchorNodeMB>() && !DownedBossSystem.downedNodeMiniBoss)
+            if (npc.type == ModContent.NPCType<IchorNodeMB>() && !DownedBossSystem.downedIchorNodeMiniBoss)
             {
                 DTUtils.NPCDownTally[ModContent.NPCType<IchorNodeMB>()]++;
                 UpdateDivinePlayers();
-                DownedBossSystem.downedNodeMiniBoss = true;
+                DownedBossSystem.downedIchorNodeMiniBoss = true;
                 if (Main.netMode == NetmodeID.Server)
                 {
                     NetMessage.SendData(MessageID.WorldData);
                 }
             }
-            if (npc.type == ModContent.NPCType<CursedFlameNodeMB>() && !DownedBossSystem.downedNodeMiniBoss)
+            if (npc.type == ModContent.NPCType<CursedFlameNodeMB>() && !DownedBossSystem.downedCursedFlameNodeMiniBoss)
             {
                 DTUtils.NPCDownTally[ModContent.NPCType<CursedFlameNodeMB>()]++;
                 UpdateDivinePlayers();
-                DownedBossSystem.downedNodeMiniBoss = true;
+                DownedBossSystem.downedCursedFlameNodeMiniBoss = true;
+                if (Main.netMode == NetmodeID.Server)
+                {
+                    NetMessage.SendData(MessageID.WorldData);
+                }
+            }
+            if (npc.type == ModContent.NPCType<BlessedNodeMB>() && !DownedBossSystem.downedBlessedNodeMiniBoss)
+            {
+                DTUtils.NPCDownTally[ModContent.NPCType<BlessedNodeMB>()]++;
+                UpdateDivinePlayers();
+                DownedBossSystem.downedBlessedNodeMiniBoss = true;
                 if (Main.netMode == NetmodeID.Server)
                 {
                     NetMessage.SendData(MessageID.WorldData);
@@ -334,6 +344,16 @@ namespace DestroyerTest.Common.NPC_Folder
                         NetMessage.SendData(MessageID.WorldData);
                     }
             }
+            if (npc.type == ModContent.NPCType<TenebrousConstruct>() && !DownedBossSystem.downedTenebrousConstructBoss)
+            {
+                DTUtils.NPCDownTally[ModContent.NPCType<TenebrousConstruct>()]++;
+                UpdateDivinePlayers();
+                DownedBossSystem.downedTenebrousConstructBoss = true;
+                if (Main.netMode == NetmodeID.Server)
+                {
+                    NetMessage.SendData(MessageID.WorldData);
+                }
+            }
         }
 
         public override void SetupTravelShop(int[] shop, ref int nextSlot)
@@ -351,6 +371,9 @@ namespace DestroyerTest.Common.NPC_Folder
                 shop[nextSlot] = ModContent.ItemType<HoleCatHook>();
                 nextSlot++;
             }
+
+            shop[nextSlot] = ModContent.ItemType<LaserPointer>();
+            nextSlot++;
         }
 
         public override void ModifyShop(NPCShop shop)
@@ -366,11 +389,6 @@ namespace DestroyerTest.Common.NPC_Folder
                 shop.Add<BrineFlask>();
                 shop.Add<MineralOil>();
                 shop.Add<CursedStar>(Condition.DownedSkeletron);
-            }
-
-            if (shop.NpcType == ModContent.NPCType<Scholar>())
-            {
-                shop.Add<ShiningObelisk>(Condition.DownedCultist);
             }
 
             if (shop.NpcType == NPCID.ArmsDealer && (DownedBossSystem.downedNightmareRoseBoss || DownedBossSystem.downedWyvernCorpseBoss))

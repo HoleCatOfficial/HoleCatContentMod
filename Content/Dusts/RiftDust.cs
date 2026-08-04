@@ -26,7 +26,7 @@ namespace DestroyerTest.Content.Dusts
             Asset<Texture2D> Dusttex = ModContent.Request<Texture2D>(Texture);
 			//Main.spriteBatch.UseBlendState(BlendState.Additive);
 		
-            Main.spriteBatch.Draw(Dusttex.Value, dust.position - Main.screenPosition, dust.frame, dust.color with { A = 0 }, dust.rotation, dust.frame.Size() / 2f, dust.scale, SpriteEffects.None, 0f);
+            Main.spriteBatch.Draw(Dusttex.Value, dust.position - Main.screenPosition, dust.frame, dust.color, dust.rotation, dust.frame.Size() / 2f, dust.scale, SpriteEffects.None, 0f);
 			//Main.spriteBatch.ResetToDefault();
             return false;
         }

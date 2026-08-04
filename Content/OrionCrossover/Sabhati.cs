@@ -1,5 +1,4 @@
-﻿using ConstellationsOfOrion.Content.Items.Weapons;
-using DestroyerTest.Common;
+﻿using DestroyerTest.Common;
 using DestroyerTest.Content.MeleeWeapons;
 using DestroyerTest.Content.MeleeWeapons.SwordLineage;
 using DestroyerTest.Content.Projectiles;

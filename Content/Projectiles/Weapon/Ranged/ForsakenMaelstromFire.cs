@@ -38,7 +38,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Ranged
 
         public override bool PreDraw(ref Color lightColor)
         {
-            Main.EntitySpriteDraw(DTUtils.CenteredDraw(Projectile, Color.White));
+            Main.EntitySpriteDraw(DTUtils.CenteredDraw(Projectile, Color.White with { A = 0 }));
             return false;
         }
 
@@ -57,7 +57,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Ranged
             AnimateProjectile();
 
             TintableSmoke Smoke = new();
-            Smoke.Create(Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Projectile.velocity * Main.rand.NextFloat(0.05f, 0.3f), Color.MediumPurple, 0.5f, Main.rand.NextFloat(0.1f, 1f), 100, PixelLayer.AbovePlayer, true);
+            Smoke.CreateWithBlending(Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Projectile.velocity * Main.rand.NextFloat(0.05f, 0.3f), Color.MediumPurple, 0.5f, Main.rand.NextFloat(0.1f, 1f), 100, PixelLayer.AbovePlayer, BlendState.Additive, true);
             ParticleEngine.BehindProjectiles.Add(Smoke);
         }
 

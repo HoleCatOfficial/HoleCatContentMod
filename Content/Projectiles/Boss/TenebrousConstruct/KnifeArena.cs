@@ -45,8 +45,12 @@ namespace DestroyerTest.Content.Projectiles.Boss.TenebrousConstruct
 
 
         PixelLayer IDrawPixelated.PixelLayer => PixelLayer.AboveTiles;
+
+        float R;
         void IDrawPixelated.DrawPixelated(SpriteBatch spriteBatch)
         {
+            R += 0.04f;
+
             var Cap = spriteBatch.Capture();
             Cap.TransformMatrix = PixelationSystem.PixelationMatrix;
 
@@ -57,7 +61,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.TenebrousConstruct
 
             Main.EntitySpriteDraw(DTAssetLib.Circle.Value, Projectile.Center - Main.screenPosition, null, Color.Black, 0f, DTAssetLib.Circle.Value.Size() / 2, DTAssetLib.Circle.Value.ScaleRingTextureToMatchRadius(301f, 300), SpriteEffects.None, 0);
 
-            Main.EntitySpriteDraw(DTAssetLib.BarrierRing(true).Value, Projectile.Center - Main.screenPosition, null, Color.White with { A = 0 }, 0f, DTAssetLib.BarrierRing(true).Value.Size() / 2, DTAssetLib.BarrierRing(true).Value.ScaleRingTextureToMatchRadius(300f, 186), SpriteEffects.None, 0);
+            Main.EntitySpriteDraw(DTAssetLib.BarrierRing.Value, Projectile.Center - Main.screenPosition, null, Color.White with { A = 0 }, R, DTAssetLib.BarrierRing.Value.Size() / 2, DTAssetLib.BarrierRing.Value.ScaleRingTextureToMatchRadius(300f, 1300), SpriteEffects.None, 0);
 
             if (Main.GameUpdateCount % 10 == 0)
             {

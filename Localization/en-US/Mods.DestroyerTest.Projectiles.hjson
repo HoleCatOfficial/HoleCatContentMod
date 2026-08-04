@@ -704,3 +704,8 @@ SpiritArrowProjectile.DisplayName: Spirit Arrow Projectile
 FriendlyGreekFire.DisplayName: Friendly Greek Fire
 PurityBlessedNodeCrystal.DisplayName: Purity Blessed Node Crystal
 KnifeArena.DisplayName: Knife Arena
+HematoidBlob.DisplayName: Hematoid Blob
+RiftGrenadeProjectile.DisplayName: Rift Grenade Projectile
+RiftMineProjectile.DisplayName: Rift Mine Projectile
+RiftRocketProjectile.DisplayName: Rift Rocket Projectile
+RiftSnowmanRocketProjectile.DisplayName: Rift Snowman Rocket Projectile

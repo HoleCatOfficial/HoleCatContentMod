@@ -174,6 +174,8 @@ namespace DestroyerTest.Content.Entities
         float[] RingRotAmt = new float[16];
         float[] RingRot = new float[16];
 
+        float R = 0f;
+
         float BGScale = 0f;
 
         PixelLayer IDrawPixelated.PixelLayer => PixelLayer.AboveTiles;
@@ -183,6 +185,8 @@ namespace DestroyerTest.Content.Entities
             {
                 return;
             }
+
+            R += 0.04f;
 
             if (BGScale < 100f)
             {
@@ -257,7 +261,7 @@ namespace DestroyerTest.Content.Entities
             Main.EntitySpriteDraw(DTAssetLib.AuraRing.Value, NPC.Center - screenPos, null, (ColorLib.TenebrisGradient with { A = 0 } * 0.25f) * OrbitBarrierOpacity, RingRot[15], DTAssetLib.AuraRing.Value.Size() / 2, DTAssetLib.AuraRing.Value.ScaleRingTextureToMatchRadius(1100f, 34), SpriteEffects.None, 0);
             */
 
-            Main.EntitySpriteDraw(DTAssetLib.BarrierRing(true).Value, NPC.Center - screenPos, null, Color.White with { A = 0 } * OrbitBarrierOpacity, 0f, DTAssetLib.BarrierRing(true).Value.Size() / 2, DTAssetLib.BarrierRing(true).Value.ScaleRingTextureToMatchRadius(1300f, 186), SpriteEffects.None, 0);
+            Main.EntitySpriteDraw(DTAssetLib.BarrierRing.Value, NPC.Center - screenPos, null, Color.White with { A = 0 } * OrbitBarrierOpacity, R, DTAssetLib.BarrierRing.Value.Size() / 2, DTAssetLib.BarrierRing.Value.ScaleRingTextureToMatchRadius(1300f, 1300), SpriteEffects.None, 0);
             spriteBatch.ResetToDefault();
 
         }
@@ -563,7 +567,7 @@ namespace DestroyerTest.Content.Entities
                             SoundEngine.PlaySound(SoundID.Item80, NPC.Center);
 
                             Vector2 P = KnifePositions[Main.rand.Next(KnifePositions.Length)];
-                            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, NPC.Center.DirectionTo(P), ModContent.ProjectileType<BlackKnife>(), 20, 5, ai0: player.whoAmI, ai1: Main.rand.Next(KnifePositions.Length));
+                            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, NPC.Center.DirectionTo(P), ModContent.ProjectileType<BlackKnife>(), 30, 5, ai0: player.whoAmI, ai1: Main.rand.Next(KnifePositions.Length));
                                
                             if (Main.rand.NextBool(16) && Main.masterMode)
                             {
