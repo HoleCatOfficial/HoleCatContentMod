@@ -34,6 +34,8 @@ namespace DestroyerTest.Content.Entities
             };
             NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
             Main.npcFrameCount[Type] = 4;
+            Banner = Type;
+            BannerItem = Mod.Find<ModItem>("Item_DarkArchmageBanner").Type;
         }
         public void immunities()
         {

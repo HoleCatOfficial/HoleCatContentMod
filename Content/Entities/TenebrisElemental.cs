@@ -51,6 +51,8 @@ namespace DestroyerTest.Content.Entities
                 Direction = 1
             };
             NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
+            Banner = Type;
+            BannerItem = Mod.Find<ModItem>("Item_TenebrisElementalBanner").Type;
         }
         public void immunities()
         {

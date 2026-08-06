@@ -15,29 +15,30 @@ using Terraria.ModLoader.Utilities;
 
 namespace DestroyerTest.Content.Entities
 {
-	// These three class showcase usage of the WormHead, WormBody and WormTail classes from Worm.cs
 	internal class RiftDiggerHead : WormHead
 	{
 		public override int BodyType => ModContent.NPCType<RiftDiggerBody>();
 
 		public override int TailType => ModContent.NPCType<RiftDiggerTail>();
 
-		SoundStyle Roar = new SoundStyle("DestroyerTest/Assets/Audio/WormRoar") // The sound played when the worm roars, can be overridden by the tail or body if desired
+		SoundStyle Roar = new SoundStyle("DestroyerTest/Assets/Audio/WormRoar")
 		{
 			Volume = 0.4f,
 			PitchVariance = 0.2f,
-			MaxInstances = 3 // Allow up to 3 instances of this sound to play at once
+			MaxInstances = 3
 		};
 
 		public override void SetStaticDefaults() {
-			var drawModifier = new NPCID.Sets.NPCBestiaryDrawModifiers() { // Influences how the NPC looks in the Bestiary
-				CustomTexturePath = "DestroyerTest/Content/Entities/RiftDiggerHeadBestiary", // If the NPC is multiple parts like a worm, a custom texture for the Bestiary is encouraged.
+			var drawModifier = new NPCID.Sets.NPCBestiaryDrawModifiers() { 
+				CustomTexturePath = "DestroyerTest/Content/Entities/RiftDiggerHeadBestiary", 
 				Position = new Vector2(40f, 24f),
 				PortraitPositionXOverride = 0f,
 				PortraitPositionYOverride = 12f
 			};
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(NPC.type, drawModifier);
-		}
+            Banner = Type;
+            BannerItem = Mod.Find<ModItem>("Item_RiftDiggerBanner").Type;
+        }
 
 		public override void SetDefaults() {
 			// Head is 10 defense, body 20, tail 30.

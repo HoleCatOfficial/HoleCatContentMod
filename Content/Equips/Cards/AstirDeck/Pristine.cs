@@ -84,10 +84,11 @@ namespace DestroyerTest.Content.Equips.Cards.AstirDeck
            
             if (Active)
             {
-                int DMG = (int)Player.GetTotalDamage(DamageClass.Summon).ApplyTo(40);
-                if (DMG  < 1)
+
+                int DMG = (int)Player.GetTotalDamage(DamageClass.Summon).ApplyTo(26);
+                if (DMG < 1)
                 {
-                    DMG = 40;
+                    DMG = 26;
                 }
                 if (Player.ownedProjectileCounts[ModContent.ProjectileType<UrcerisMini>()] < 1)
                 {

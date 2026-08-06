@@ -16,7 +16,6 @@ using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.Utilities;
-using static DestroyerTest.Core.AssetReferences.Content.Projectiles;
 
 
 namespace DestroyerTest.Content.Equips

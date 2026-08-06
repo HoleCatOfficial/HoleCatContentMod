@@ -24,6 +24,8 @@ namespace DestroyerTest.Content.Entities
         public override void SetStaticDefaults()
         {
             Main.npcFrameCount[Type] = 4;
+            Banner = Type;
+            BannerItem = Mod.Find<ModItem>("Item_RiftObserverBanner").Type;
         }
         public override void SetDefaults()
         {

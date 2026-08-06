@@ -27,6 +27,8 @@ namespace DestroyerTest.Content.Entities
         public override void SetStaticDefaults()
         {
             Main.npcFrameCount[Type] = 6;
+            Banner = Type;
+            BannerItem = Mod.Find<ModItem>("Item_SunscorchedDjinnBanner").Type;
         }
         public override void SetDefaults()
         {

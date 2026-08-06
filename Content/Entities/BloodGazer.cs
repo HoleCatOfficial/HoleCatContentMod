@@ -29,6 +29,8 @@ namespace DestroyerTest.Content.Entities
         public static Asset<Texture2D> Hand;
         public override void SetStaticDefaults()
         {
+            Banner = Type;
+            BannerItem = Mod.Find<ModItem>("Item_BloodGazerBanner").Type;
             Hand = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/GazerHand");
         }
         public override void SetDefaults()

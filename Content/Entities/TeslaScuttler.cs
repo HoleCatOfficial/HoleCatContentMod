@@ -29,6 +29,8 @@ namespace DestroyerTest.Content.Entities
         public override void SetStaticDefaults()
         {
             Main.npcFrameCount[NPC.type] = 5;
+            Banner = Type;
+            BannerItem = Mod.Find<ModItem>("Item_TeslaScuttlerBanner").Type;
         }
 
         public override void SetDefaults()

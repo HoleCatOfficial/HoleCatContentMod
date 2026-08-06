@@ -51,6 +51,8 @@ namespace DestroyerTest.Content.Entities
                 PortraitPositionYOverride = 12f
             };
             NPCID.Sets.NPCBestiaryDrawOffset.Add(NPC.type, drawModifier);
+            Banner = Type;
+            BannerItem = Mod.Find<ModItem>("Item_DarkGluttonBanner").Type;
         }
 
         public void immunities()

@@ -6,6 +6,7 @@ using DestroyerTest.Common;
 using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
+using DestroyerTest.Content.Equips;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Boss;
@@ -16,6 +17,7 @@ using DestroyerTest.Content.Projectiles.Weapon.Summon;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.RiftBiome;
 using DestroyerTest.Content.SHADEMANAGEMENT;
+using DestroyerTest.Content.Tiles;
 using DestroyerTest.Content.Tools;
 using Microsoft.Build.Evaluation;
 using Microsoft.Xna.Framework;
@@ -289,6 +291,18 @@ namespace DestroyerTest.Content.Entities
                 WingLeft.Value,
                 NPC.Center - screenPos + new Vector2(-30, -30),
                 null,
+                Color.White with { A = 0 } * 0.5f * NPC.Opacity,
+                0f,
+                originLeft,
+                new Vector2(WingXScale * 2.15f, 2.15f),
+                SpriteEffects.None,
+                0
+            );
+
+            Main.EntitySpriteDraw(
+                WingLeft.Value,
+                NPC.Center - screenPos + new Vector2(-30, -30),
+                null,
                 Color.White with { A = 0 } * NPC.Opacity,
                 0f,
                 originLeft,
@@ -299,6 +313,19 @@ namespace DestroyerTest.Content.Entities
 
             // Right wing: origin at LEFT edge, middle vertically
             Vector2 originRight = new Vector2(0, WingRight.Height() / 2);
+
+            Main.EntitySpriteDraw(
+               WingRight.Value,
+               NPC.Center - screenPos + new Vector2(30, -30),
+               null,
+               Color.White with { A = 0 } * 0.5f * NPC.Opacity,
+               0f,
+               originRight,
+               new Vector2(WingXScale * 2.15f, 2.15f),
+               SpriteEffects.None,
+               0
+           );
+
             Main.EntitySpriteDraw(
                 WingRight.Value,
                 NPC.Center - screenPos + new Vector2(30, -30),
@@ -306,7 +333,7 @@ namespace DestroyerTest.Content.Entities
                 Color.White with { A = 0 } * NPC.Opacity,
                 0f,
                 originRight,
-                new Vector2(WingXScale * 2, 2f),
+                new Vector2(WingXScale * 2f, 2f),
                 SpriteEffects.None,
                 0
             );
@@ -707,19 +734,18 @@ namespace DestroyerTest.Content.Entities
             {
                 hit.Damage = (int)(hit.Damage * 0.25f);
             }
-
-            if (damageDone > 700 && Main.rand.NextBool(50) )
-            {
-                AdvancedPopupRequest T = new AdvancedPopupRequest() with { Text = "Ouch!!!", Color = Color.Red, DurationInFrames = 180, Velocity = new Vector2(0, -4) };
-                PopupText.NewText(T, NPC.Center);
-            }
         }
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ShadeParticle>(), 3, 24, 36));
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ShimmeringShards>(), 3, 13, 23));
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ShimmeringSludge>(), 4, 2, 9));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Item_NightmareRoseTrophy>(), 10));
+
+            npcLoot.Add(ItemDropRule.MasterModeDropOnAllPlayers(ModContent.ItemType<MiniConstruct>()));
+            npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<RingFromBeyond>()));
+            npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Item_NightmareRoseRelic>()));
+
+
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<HaepienNodeCharm>(), 20, 1, 1));
         }
 
         public override void OnKill()
@@ -739,25 +765,6 @@ namespace DestroyerTest.Content.Entities
 
             AdvancedPopupRequest T = new AdvancedPopupRequest() with { Text = "YOU BRAT!!!", Color = Color.Red, DurationInFrames = 180, Velocity = new Vector2(0, -4) };
             PopupText.NewText(T, NPC.Center);
-
-           
-            int numProjectiles = 36;
-            float rotationStep = MathHelper.TwoPi / numProjectiles;
-
-            for (int i = 0; i < numProjectiles; i++)
-            {
-                Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.TintableDustLighted, NPC.velocity.X * 0.7f, NPC.velocity.Y * 0.7f, 0, ColorLib.TenebrisGradient, 1);
-
-                Vector2 velocity = new Vector2(1f, 0f).RotatedBy(rotationStep * i);
-                Projectile.NewProjectile(
-                    Entity.GetSource_FromThis(),
-                    NPC.Center,
-                    velocity,
-                    ModContent.ProjectileType<TenebrisDart>(),
-                    30,
-                    6
-                );
-            }
         }
 
 

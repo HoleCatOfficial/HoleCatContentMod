@@ -4999,3 +4999,83 @@ RiftRocket: {
 	DisplayName: Rift Rocket
 	Tooltip: ""
 }
+
+Item_BlackTwisterBanner: {
+	DisplayName: Item_ Black Twister Banner
+	Tooltip: ""
+}
+
+Item_BloodGazerBanner: {
+	DisplayName: Item_ Blood Gazer Banner
+	Tooltip: ""
+}
+
+Item_DarkArchmageBanner: {
+	DisplayName: Item_ Dark Archmage Banner
+	Tooltip: ""
+}
+
+Item_DarkGluttonBanner: {
+	DisplayName: Item_ Dark Glutton Banner
+	Tooltip: ""
+}
+
+Item_DarkPredatorBanner: {
+	DisplayName: Item_ Dark Predator Banner
+	Tooltip: ""
+}
+
+Item_PetrifiedLurkerBanner: {
+	DisplayName: Item_ Petrified Lurker Banner
+	Tooltip: ""
+}
+
+Item_PetrifiedWispBanner: {
+	DisplayName: Item_ Petrified Wisp Banner
+	Tooltip: ""
+}
+
+Item_PossesedScepterBanner: {
+	DisplayName: Item_ Possesed Scepter Banner
+	Tooltip: ""
+}
+
+Item_RiftDiggerBanner: {
+	DisplayName: Item_ Rift Digger Banner
+	Tooltip: ""
+}
+
+Item_RiftObserverBanner: {
+	DisplayName: Item_ Rift Observer Banner
+	Tooltip: ""
+}
+
+Item_RiftOculusBanner: {
+	DisplayName: Item_ Rift Oculus Banner
+	Tooltip: ""
+}
+
+Item_SunscorchedDjinnBanner: {
+	DisplayName: Item_ Sunscorched Djinn Banner
+	Tooltip: ""
+}
+
+Item_TenebrisElementalBanner: {
+	DisplayName: Item_ Tenebris Elemental Banner
+	Tooltip: ""
+}
+
+Item_TenebrousPhantasmBanner: {
+	DisplayName: Item_ Tenebrous Phantasm Banner
+	Tooltip: ""
+}
+
+Item_TenebrousSlimeBanner: {
+	DisplayName: Item_ Tenebrous Slime Banner
+	Tooltip: ""
+}
+
+Item_TeslaScuttlerBanner: {
+	DisplayName: Item_ Tesla Scuttler Banner
+	Tooltip: ""
+}

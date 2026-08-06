@@ -58,7 +58,9 @@ namespace DestroyerTest.Content.Entities
 			};
 
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
-		}
+            Banner = Type;
+            BannerItem = Mod.Find<ModItem>("Item_TenebrousPhantasmBanner").Type;
+        }
 		public void immunities()
 		{
 			NPCID.Sets.SpecificDebuffImmunity[Type][ModContent.BuffType<ShimmeringFlames>()] = true;

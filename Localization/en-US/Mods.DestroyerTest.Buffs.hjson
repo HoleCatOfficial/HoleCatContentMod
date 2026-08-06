@@ -487,3 +487,8 @@ WispMinionBuff: {
 	DisplayName: Wisp Minion Buff
 	Description: Mods.DestroyerTest.Buffs.WispMinionBuff.Description
 }
+
+UrcerisMiniBuff: {
+	DisplayName: Urceris Mini Buff
+	Description: Mods.DestroyerTest.Buffs.UrcerisMiniBuff.Description
+}

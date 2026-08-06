@@ -23,6 +23,8 @@ namespace DestroyerTest.Content.Entities
     {
         public override void SetStaticDefaults()
         {
+            Banner = Type;
+            BannerItem = Mod.Find<ModItem>("Item_BlackTwisterBanner").Type;
             Main.npcFrameCount[NPC.type] = 6;
         }
         public override void SetDefaults()

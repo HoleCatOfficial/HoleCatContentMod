@@ -41,6 +41,8 @@ namespace DestroyerTest.Content.Entities
             };
             NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
             NPCID.Sets.ImmuneToAllBuffs[Type] = true;
+            Banner = ModContent.NPCType<PetrifiedLurker>();
+            BannerItem = Mod.Find<ModItem>("Item_PetrifiedLurkerBanner").Type;
         }
 
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)

@@ -29,6 +29,9 @@ namespace DestroyerTest.Content.Entities
             {
                 Hide = true
             };
+
+            Banner = Type;
+            BannerItem = Mod.Find<ModItem>("Item_PetrifiedWispBanner").Type;
         }
         public override void SetDefaults()
         {

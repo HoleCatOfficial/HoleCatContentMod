@@ -1,6 +1,5 @@
 ﻿<Project Sdk="Tomat.Terraria.ModLoader.Sdk/2.1.0">
 
-
 	<!-- Import tModLoader mod properties -->
 	<Import Project="..\tModLoader.targets" />
 

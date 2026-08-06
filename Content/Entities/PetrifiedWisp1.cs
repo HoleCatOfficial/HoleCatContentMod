@@ -22,6 +22,7 @@ namespace DestroyerTest.Content.Entities
         public override string Texture => DTUtils.NoTexture;
         public override void SetStaticDefaults()
         {
+            Banner = Type;
         }
         public override void SetDefaults()
         {
