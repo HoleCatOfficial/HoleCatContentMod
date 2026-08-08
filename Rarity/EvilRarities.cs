@@ -85,5 +85,14 @@ namespace DestroyerTest.Rarity
             return Type;
         }
     }
+    public class InfectedRarity : ModRarity
+    {
+        public override Color RarityColor => Opus.Sine(Color.DarkRed, ColorLib.Wretched6, 0.1f);
+
+        public override int GetPrefixedRarity(int offset, float valueMult)
+        {
+            return Type;
+        }
+    }
 
 }

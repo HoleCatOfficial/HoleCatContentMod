@@ -1,4 +1,5 @@
-﻿using DestroyerTest.Content.Tiles.RiftConfigurator;
+﻿
+using DestroyerTest.Content.Tiles.RiftConfigurator;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,13 +24,5 @@ namespace DestroyerTest.Content.RiftBiome.RiftDesertResources
             Item.DefaultToMusicBox(ModContent.TileType<Tile_RiftDesertUndergroundMusicBox>(), 0);
         }
 
-        public override void AddRecipes()
-        {
-            CreateRecipe()
-                .AddIngredient(ItemID.MusicBox)
-                .AddIngredient<Item_HardenedRiftSilt>(10)
-                .AddTile<Tile_RiftConfigurator>()
-                .Register();
-        }
     }
 }

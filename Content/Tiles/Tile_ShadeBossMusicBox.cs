@@ -35,7 +35,7 @@ namespace DestroyerTest.Content.Tiles
 			Player player = Main.LocalPlayer;
 			player.noThrow = 2;
 			player.cursorItemIconEnabled = true;
-			player.cursorItemIconID = ModContent.ItemType<Item_SpecialTownMusicBoxDay>();
+			player.cursorItemIconID = ModContent.ItemType<Item_ShadeBossMusicBox>();
 		}
 
 		public override bool HasSmartInteract(int i, int j, SmartInteractScanSettings settings) {

@@ -13,7 +13,7 @@ namespace DestroyerTest.Common.Systems
 
         public override void PostUpdateWorld()
         {
-            if (Main.hardMode && !WorldGen.crimson && !Flag1)
+            if (Main.hardMode && WorldGen.crimson && !Flag1)
             {
                 if (Delay > 0)
                 {

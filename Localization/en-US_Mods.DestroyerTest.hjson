@@ -107,8 +107,13 @@ Configs: {
 		}
 
 		EternityMusic: {
-			Label: Eternity Music
-			Tooltip: Talid's bosses use separate tracks for Eternity and Masochist Mode. Enable this to hear them.
+			Label: Eternity/Death and Maso Music
+			Tooltip: Talid's bosses use separate tracks for Eternity/Death and Masochist Mode. Enable this to hear them.
+		}
+
+		ReplaceVanillaTracks: {
+			Label: Custom tracks
+			Tooltip: Some areas, such as the Shimmer and Solar Eclipse, will have their music replaced with custom tracks if this config is enabled.
 		}
 	}
 

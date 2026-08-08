@@ -10,6 +10,7 @@ using DestroyerTest.Common;
 using Terraria.DataStructures;
 using System.IO;
 using DestroyerTest.Content.Projectiles.ParentClasses;
+using DestroyerTest.Content.Projectiles.player.Accessory;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 {
@@ -28,10 +29,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
         {
             if (Main.rand.NextBool(3)) // 33% chance per tick
             {
-
-                Projectile newProjectile = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(),
-                Projectile.Center, Vector2.Zero, ProjectileID.SporeGas, (int)(Projectile.damage * 0.45f), 2, Main.LocalPlayer.whoAmI);
-                newProjectile.friendly = true; // If it shouldn't harm the player, for example
+                Projectile newProjectile = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), Projectile.Center, Projectile.velocity * 0.2f, ModContent.ProjectileType<PoisonCloud>(), (int)(Projectile.damage * 0.7f), 2, Projectile.owner);
             }
             base.AI();
         }

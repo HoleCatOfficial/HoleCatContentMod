@@ -343,7 +343,7 @@ namespace DestroyerTest.Content.Entities
 
             AITimer++;
 
-            if (!DestroyerTestMod.EternityIsActive)
+            if (!DestroyerTestMod.EternityIsActive && !DestroyerTestMod.DeathIsActive)
             {
                 NormalAI();
                 Music = MusicLoader.GetMusicSlot("DestroyerTest/Assets/Music/ConstitutionBoss");

@@ -119,6 +119,15 @@ namespace DestroyerTest.Common
                 return false;
             }
 
+            if (item.rare == ModContent.RarityType<InfectedRarity>() && line.Name == "ItemName")
+            {
+                Color In = Opus.Sine(ColorLib.Wretched6, Color.DarkRed, 0.01f);
+                //line.SpecialColorInnerOuter(ColorLib.WretchedGradient(), In);
+
+                Utils.DrawBorderStringFourWay(Main.spriteBatch, FontAssets.MouseText.Value, line.Text, line.X, line.Y, In, Opus.Sine(ColorLib.WretchedGradient(), ColorLib.IchorCrystalGradient, 0.01f), new Vector2(0.5f, 0.5f));
+                return false;
+            }
+
             if (item.rare == ModContent.RarityType<SoulRarity>() && line.Name == "ItemName")
             {
                 Color In = Opus.Sine(ColorLib.Soul, ColorLib.Soul3, 0.01f);

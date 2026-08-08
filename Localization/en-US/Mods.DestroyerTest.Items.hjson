@@ -5001,81 +5001,107 @@ RiftRocket: {
 }
 
 Item_BlackTwisterBanner: {
-	DisplayName: Item_ Black Twister Banner
+	DisplayName: Black Twister Banner
 	Tooltip: ""
 }
 
 Item_BloodGazerBanner: {
-	DisplayName: Item_ Blood Gazer Banner
+	DisplayName: Blood Gazer Banner
 	Tooltip: ""
 }
 
 Item_DarkArchmageBanner: {
-	DisplayName: Item_ Dark Archmage Banner
+	DisplayName: Dark Archmage Banner
 	Tooltip: ""
 }
 
 Item_DarkGluttonBanner: {
-	DisplayName: Item_ Dark Glutton Banner
+	DisplayName: Dark Glutton Banner
 	Tooltip: ""
 }
 
 Item_DarkPredatorBanner: {
-	DisplayName: Item_ Dark Predator Banner
+	DisplayName: Dark Predator Banner
 	Tooltip: ""
 }
 
 Item_PetrifiedLurkerBanner: {
-	DisplayName: Item_ Petrified Lurker Banner
+	DisplayName: Petrified Lurker Banner
 	Tooltip: ""
 }
 
 Item_PetrifiedWispBanner: {
-	DisplayName: Item_ Petrified Wisp Banner
+	DisplayName: Petrified Wisp Banner
 	Tooltip: ""
 }
 
 Item_PossesedScepterBanner: {
-	DisplayName: Item_ Possesed Scepter Banner
+	DisplayName: Possesed Scepter Banner
 	Tooltip: ""
 }
 
 Item_RiftDiggerBanner: {
-	DisplayName: Item_ Rift Digger Banner
+	DisplayName: Rift Digger Banner
 	Tooltip: ""
 }
 
 Item_RiftObserverBanner: {
-	DisplayName: Item_ Rift Observer Banner
+	DisplayName: Rift Observer Banner
 	Tooltip: ""
 }
 
 Item_RiftOculusBanner: {
-	DisplayName: Item_ Rift Oculus Banner
+	DisplayName: Rift Oculus Banner
 	Tooltip: ""
 }
 
 Item_SunscorchedDjinnBanner: {
-	DisplayName: Item_ Sunscorched Djinn Banner
+	DisplayName: Sunscorched Djinn Banner
 	Tooltip: ""
 }
 
 Item_TenebrisElementalBanner: {
-	DisplayName: Item_ Tenebris Elemental Banner
+	DisplayName: Tenebris Elemental Banner
 	Tooltip: ""
 }
 
 Item_TenebrousPhantasmBanner: {
-	DisplayName: Item_ Tenebrous Phantasm Banner
+	DisplayName: Tenebrous Phantasm Banner
 	Tooltip: ""
 }
 
 Item_TenebrousSlimeBanner: {
-	DisplayName: Item_ Tenebrous Slime Banner
+	DisplayName: Tenebrous Slime Banner
 	Tooltip: ""
 }
 
 Item_TeslaScuttlerBanner: {
-	DisplayName: Item_ Tesla Scuttler Banner
+	DisplayName: Tesla Scuttler Banner
+	Tooltip: ""
+}
+
+RiftenTeapot: {
+	DisplayName: Riften Teapot
+	Tooltip: ""
+}
+
+DarkRapture: {
+	DisplayName: Dark Rapture
+	Tooltip:
+		'''
+		Shoots homing Shimmering Sparks.
+		Both sparks and throws create explosions on hit for 100% damage.
+
+		'Thar she blows!!!'
+		'''
+}
+
+PhantasmalRemnant: {
+	DisplayName: Phantasmal Remnant
+	Tooltip: A vile, sticky tack found alongside the souls of powerful enemies.
+}
+
+Union: {
+	DisplayName: Union
 	Tooltip: ""
 }

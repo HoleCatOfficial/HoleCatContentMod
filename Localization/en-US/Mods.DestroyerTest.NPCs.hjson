@@ -332,6 +332,14 @@ BlessedNodeMB: {
 	}
 }
 
-BloodGazer.DisplayName: Blood Gazer
+BloodGazer: {
+	DisplayName: Blood Gazer
+	BestiaryEntry1:
+		'''
+		A simple creature created by Mother Darkness. It wafts around during a blood moon, attempting to ram into any human target.
+		Who knows what she may release next into the world...?
+		'''
+}
+
 SoulOrb.DisplayName: Soul Orb
 TenebrousConstructSpawn.DisplayName: Tenebrous Construct Spawn

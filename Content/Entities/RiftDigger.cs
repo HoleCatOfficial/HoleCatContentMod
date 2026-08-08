@@ -3,6 +3,7 @@ using DestroyerTest.Content.Entities;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.RiftBiome;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.IO;
 using Terraria;
@@ -92,27 +93,45 @@ namespace DestroyerTest.Content.Entities
 			attackCounter = reader.ReadInt32();
 		}
 
-		public override void AI() {
-			if (Main.netMode != NetmodeID.MultiplayerClient) {
-				if (attackCounter > 0) {
-					attackCounter--; // Tick down the attack counter.
+        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            if (attackCounter < 120 && NPC.HasValidTarget)
+            {
+                Vector2 V = NPC.Center.DirectionTo(Main.player[NPC.target].Center);
+
+				Main.EntitySpriteDraw(DTAssetLib.GlowCone.Value, NPC.Center - Main.screenPosition, null, Color.Red, V.ToRotation() + MathHelper.PiOver4, DTAssetLib.GlowCone.Value.Size() / 2, MathHelper.Lerp(0f, 1.4f, (float)attackCounter / 120f), SpriteEffects.None);
+            }
+            return true;
+        }
+
+		public override void AI() 
+		{
+			NPC.TargetClosest();
+			if (NPC.HasValidTarget)
+			{
+				Player player = Main.player[NPC.target];
+				Vector2 Ideal = player.MountedCenter + new Vector2(0f, 200f);
+
+                attackCounter++;
+
+				if (attackCounter < 120)
+				{
+					NPC.SmoothMoveToPoint(Ideal, 16f);
 				}
-
-				Player target = Main.player[NPC.target];
-
-				// Play the Roar sound dynamically based on conditions
-				if (NPC.HasValidTarget && attackCounter == 0) {
-					// Check if the worm is close to the player or has changed direction significantly
-					float distanceToPlayer = Vector2.Distance(NPC.Center, target.Center);
-					bool significantDirectionChange = Math.Abs(NPC.velocity.X - NPC.oldVelocity.X) > 2f || Math.Abs(NPC.velocity.Y - NPC.oldVelocity.Y) > 2f;
-
-					if (distanceToPlayer < 500f || significantDirectionChange) {
-						attackCounter = 120; // Reset the attack counter (e.g., 2 seconds cooldown)
-						SoundEngine.PlaySound(Roar, NPC.position); // Play the Roar sound
+				else
+				{
+					if (attackCounter == 121)
+					{
+						SoundEngine.PlaySound(Roar, NPC.position);
+						Vector2 V = NPC.Center.DirectionTo(player.Center);
+						NPC.velocity += V * 10f;
+					}
+					
+					if (attackCounter > 240)
+					{
+						attackCounter = 0;
 					}
 				}
-
-				// Additional AI logic for movement or other behaviors can go here
 			}
 		}
 

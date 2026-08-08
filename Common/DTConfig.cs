@@ -71,8 +71,11 @@ namespace DestroyerTest.Common
         [DefaultValue(true)]
         public bool NodeIdleMusic { get; set; }
 
-        [DefaultValue(false)]
+        [DefaultValue(true)]
         public bool EternityMusic { get; set; }
+
+        [DefaultValue(true)]
+        public bool ReplaceVanillaTracks { get; set; }
     }
 
     public class DTUIConfig : ModConfig

@@ -98,7 +98,11 @@ namespace DestroyerTest.Content.Entities
                     drawColor = ColorLib.TenebrisBeige;
                     break;
             }
-			return true;
+
+			Texture2D Tex = ModContent.Request<Texture2D>(Texture).Value;
+
+			Main.EntitySpriteDraw(Tex, NPC.position - Main.screenPosition, NPC.frame, drawColor * NPC.Opacity, NPC.rotation, Vector2.Zero, NPC.scale, SpriteEffects.None);
+			return false;
         }
 
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)

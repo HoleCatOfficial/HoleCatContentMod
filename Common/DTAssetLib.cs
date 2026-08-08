@@ -111,6 +111,7 @@ namespace DestroyerTest.Common
         public static Asset<Texture2D> SparkSmoothThin = ModContent.Request<Texture2D>($"{ExtrasPath}/MiscSparkle3", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> TinyBloom = ModContent.Request<Texture2D>($"{ParticlePath}/TinyBloom", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> BarrierRing = ModContent.Request<Texture2D>($"{ExtrasPath}/BarrierRing", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> ShockwaveExplosion = ModContent.Request<Texture2D>($"{ExtrasPath}/ShockwaveExplosion", AssetRequestMode.AsyncLoad);
 
         public static Asset<Texture2D> Sparkle(int Variant, bool PreMultiplied = false)
         {

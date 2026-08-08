@@ -1,4 +1,5 @@
-﻿using DestroyerTest.Content.Tiles.RiftConfigurator;
+﻿
+using DestroyerTest.Content.Tiles.RiftConfigurator;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,14 +23,6 @@ namespace DestroyerTest.Content.RiftBiome.RiftTundraResources
         {
             Item.DefaultToMusicBox(ModContent.TileType<Tile_RiftTundraMusicBox>(), 0);
         }
-
-        public override void AddRecipes()
-        {
-            CreateRecipe()
-            .AddIngredient(ItemID.MusicBox)
-            .AddIngredient<Item_RiftSnow>(10)
-            .AddTile<Tile_RiftConfigurator>()
-            .Register();
-        }
     }
 }
+

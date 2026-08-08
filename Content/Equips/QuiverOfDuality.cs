@@ -4,6 +4,8 @@ using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
 using DestroyerTest.Content.MeleeWeapons;
 using DestroyerTest.Content.Projectiles;
+using DestroyerTest.Content.Resources;
+using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -34,7 +36,7 @@ namespace DestroyerTest.Content.Equips
             Item.height = 32;
             Item.maxStack = 1;
             Item.value = 1400;
-            Item.rare = ItemRarityID.White;
+            Item.rare = ModContent.RarityType<InfectedRarity>();
             Item.accessory = true;
         }
 
@@ -103,6 +105,15 @@ namespace DestroyerTest.Content.Equips
             {
                 tooltips.Add(new TooltipLine(Mod, "QuiverOfDualityI", "Current Area Buff: Ichor"));
             }
+        }
+
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient<WretchedShards>(8)
+                .AddIngredient<PrimalShards>(8)
+                .AddIngredient(ItemID.SpectreBar, 10)
+                .Register();
         }
     }
 

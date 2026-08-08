@@ -45,7 +45,7 @@ namespace DestroyerTest.Content.Consumables
 
         public override void ModifyItemLoot(ItemLoot itemLoot)
         {
-            itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<Tenebris>(), 1, 20, 20));
+            itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<Tenebris>(), 1, 25, 40));
         }
     }
     

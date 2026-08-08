@@ -58,6 +58,7 @@ namespace DestroyerTest.Content.Entities
 			};
 
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
+			Main.npcFrameCount[Type] = 3;
             Banner = Type;
             BannerItem = Mod.Find<ModItem>("Item_TenebrousPhantasmBanner").Type;
         }
@@ -85,8 +86,7 @@ namespace DestroyerTest.Content.Entities
 		{
 			// We can use AddRange instead of calling Add multiple times in order to add multiple items at once
 			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
-				new FlavorTextBestiaryInfoElement("Originating from the Shade World, this clump of sludge has parasitized an eater of souls."),
-				new FlavorTextBestiaryInfoElement("In addition to freeing the moon lord from imprisonment, breaking the seal also tore open holes across space, allowing enemies from the shade world to enter yours."),
+				new FlavorTextBestiaryInfoElement(DTUtils.GetModNPCLocalizationEntry(this))
 			});
 
 			bestiaryEntry.Info.AddRange([
@@ -109,7 +109,9 @@ namespace DestroyerTest.Content.Entities
 			MaxInstances = 0
 		};
 
-		public override void SetDefaults()
+        public int variant = 0;
+
+        public override void SetDefaults()
 		{
 			NPC.width = 42;
 			NPC.height = 78;
@@ -122,7 +124,8 @@ namespace DestroyerTest.Content.Entities
 			// Sets the above
 			NPC.lavaImmune = true;
 			NPC.noTileCollide = false;
-		}
+            variant = Main.rand.Next(3);
+        }
 
 		public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
@@ -132,6 +135,11 @@ namespace DestroyerTest.Content.Entities
 			}
 			return 0f;
 		}
+
+        public override void FindFrame(int frameHeight)
+        {
+			NPC.frame.Y = frameHeight * variant;
+        }
 
 		public override void AI()
 		{
@@ -202,9 +210,9 @@ namespace DestroyerTest.Content.Entities
 				{
 					Vector2 shootDirection = directionToPlayer;
 					shootDirection.Normalize();
-					shootDirection *= 10f; // Projectile speed
-					Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, shootDirection, ModContent.ProjectileType<TenebrisFireBall>(), 15, 1f, Main.myPlayer);
-					SoundEngine.PlaySound(SoundID.Item20, NPC.position); // Play shooting sound
+					shootDirection *= 10f;
+					Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, shootDirection, ModContent.ProjectileType<TenebrisFlamesHostile>(), 15, 1f);
+					SoundEngine.PlaySound(SoundID.Item20, NPC.position); 
 				}
 
 				if (NPC.ai[1] >= 180) // After 3 seconds, switch back to idle state

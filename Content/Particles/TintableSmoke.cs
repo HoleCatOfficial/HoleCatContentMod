@@ -44,7 +44,7 @@ namespace DestroyerTest.Content.Particles
             this.velocity = Velocity;
             this.scale = Scale;
             this.color = Color;
-            this._Opacity = Opcaity;
+            this._Opacity = this.Opacity = Opcaity;
             this.MaxLifetime = LifeTime;
             this.PixelLayer = Layer;
             this.Flat = Flat;
@@ -57,7 +57,7 @@ namespace DestroyerTest.Content.Particles
             this.velocity = Velocity;
             this.scale = Scale;
             this.color = Color;
-            this._Opacity = Opacoty;
+            this._Opacity = this.Opacity = Opacoty;
             this.MaxLifetime = LifeTime;
             this.PixelLayer = Layer;
             this.Flat = Flat;

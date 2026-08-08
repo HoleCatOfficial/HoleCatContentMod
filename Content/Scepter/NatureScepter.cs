@@ -38,16 +38,37 @@ namespace DestroyerTest.Content.Scepter
             Rarity = ModContent.RarityType<PearlRarity>();
 
             // Assign projectile types
-            ShootID = ModContent.ProjectileType<NatureShot>();
+            ShootID = ModContent.ProjectileType<JungleSporeCloud>();
             ThrowID = ModContent.ProjectileType<NatureScepterThrown>();
 
             // Optional: change sounds
-            ShootSound = SoundID.Item25;
+            ShootSound = new SoundStyle(DTAssetLib.AudioPath + "/NatureScepterSpray") with { PitchVariance = 0.4f, MaxInstances = 0 };
             ThrowSound = SoundID.Item169;
 
             // Refresh defaults after overriding values
             base.SetDefaults();
         }
+
+        public override void ShootDefaults()
+        {
+            base.ShootDefaults();
+            Item.useTime = 80;
+            Item.useAnimation = 80;
+        }
+
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
+            if (player.altFunctionUse != 2)
+            {
+                for (int i = 0; i < Main.rand.Next(3, 6); i++)
+                {
+                    Projectile.NewProjectile(source, position, (velocity * Main.rand.NextFloat(0.8f, 1.2f)).RotatedByRandom(0.6f), Item.shoot, damage, knockback, player.whoAmI);
+                }
+                return false;
+            }
+            return base.Shoot(player, source, position, velocity, type, damage, knockback);
+        }
+        
 
 		public override void AddRecipes() {
 			CreateRecipe()

@@ -8,7 +8,7 @@ namespace DestroyerTest.Common.Systems;
 
 internal class MusicDisplayCalls : ModSystem
 {
-	public override void PostAddRecipes()
+	public override void PostSetupContent()
 	{
 		if (!ModLoader.TryGetMod("MusicDisplay", out Mod display))
 			return;

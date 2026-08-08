@@ -709,3 +709,11 @@ RiftGrenadeProjectile.DisplayName: Rift Grenade Projectile
 RiftMineProjectile.DisplayName: Rift Mine Projectile
 RiftRocketProjectile.DisplayName: Rift Rocket Projectile
 RiftSnowmanRocketProjectile.DisplayName: Rift Snowman Rocket Projectile
+JungleSporeCloud.DisplayName: Jungle Spore Cloud
+DarkRaptureExplosion.DisplayName: Dark Rapture Explosion
+DarkRaptureThrown.DisplayName: Dark Rapture Thrown
+ShimmeringSpark.DisplayName: Shimmering Spark
+UnionFireball.DisplayName: Union Fireball
+UnionSwing.DisplayName: Union Swing
+UnionSwing2.DisplayName: Union Swing2
+UnionThrown.DisplayName: Union Thrown

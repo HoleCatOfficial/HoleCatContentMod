@@ -22,7 +22,15 @@ namespace DestroyerTest.Content.Fargos
                     shop.Add<CorruptionCaller>(DownedBossSystem.downedCursedFlameNodeCondition);
                     shop.Add<HallowCaller>(DownedBossSystem.downedBlessedNodeCondition);
                 }
+
+                var Deviantt = fargos.TryFind<ModNPC>("Mutant", out ModNPC deviantt);
+                if (shop.NpcType == deviantt.Type && Deviantt)
+                {
+                    shop.Add<RiftenTeapot>(Condition.DownedMechBossAny);
+                }
             }
+
+
         }
 	}
 }

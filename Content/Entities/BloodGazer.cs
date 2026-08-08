@@ -2,6 +2,7 @@
 using BreadLibrary.Core.Utilities;
 using BreadLibrary.Core.Verlet;
 using DestroyerTest.Common;
+using DestroyerTest.Content.Equips;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -9,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -215,6 +217,14 @@ namespace DestroyerTest.Content.Entities
         public override void HitEffect(NPC.HitInfo hit)
         {
 
+        }
+
+        public override void ModifyNPCLoot(NPCLoot npcLoot)
+        {
+            if (Main.hardMode)
+            {
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<HematoidVisage>(), 3));
+            }
         }
 
         PixelLayer IDrawPixelated.PixelLayer => PixelLayer.AboveTiles;

@@ -47,7 +47,7 @@ namespace DestroyerTest
     {
         public DestroyerTestMod()
         {
-            MusicAutoloadingEnabled = false;
+            MusicAutoloadingEnabled = true;
         }
         public override object Call(params object[] args)
         {
@@ -408,9 +408,53 @@ namespace DestroyerTest
             return false;
         }
 
-		public static bool EternityIsActive => Eternity();
+        private static bool Revengance()
+        {
+            if (ModLoader.TryGetMod(DTCrossMod.CalamityName, out Mod calamity))
+            {
+                object result = calamity.Call("GetDifficultyActive", "revengance");
+                if (result is bool enabled)
+                {
+                    if (enabled)
+                        return true;
+                    else
+                        return false;
+                }
+            }
+            else
+            {
+
+            }
+            return false;
+        }
+
+        private static bool Death()
+        {
+            if (ModLoader.TryGetMod(DTCrossMod.CalamityName, out Mod calamity))
+            {
+                object result = calamity.Call("GetDifficultyActive", "death");
+                if (result is bool enabled)
+                {
+                    if (enabled)
+                        return true;
+                    else
+                        return false;
+                }
+            }
+            else
+            {
+
+            }
+            return false;
+        }
+
+        public static bool EternityIsActive => Eternity();
 
 		public static bool MasochistIsActive => EternityIsActive && Main.masterMode;
+
+        public static bool RevenganceIsActive => Revengance();
+
+        public static bool DeathIsActive => Death();
 
         public class WorldEnterPlayer : ModPlayer
         {
