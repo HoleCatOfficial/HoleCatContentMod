@@ -1,12 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
   
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.AmmoProjectiles;
 using DestroyerTest.Content.Projectiles.Weapon.Melee;
+using DestroyerTest.Content.Resources;
 using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -56,6 +57,12 @@ namespace DestroyerTest.Content.MeleeWeapons
 			return false; // return false to stop vanilla from calling Projectile.NewProjectile.
 		}
 
-
-	}
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient(Type)
+                .AddIngredient<Dyrn>(8)
+                .Register();
+        }
+    }
 }

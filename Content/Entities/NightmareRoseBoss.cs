@@ -474,7 +474,11 @@ namespace DestroyerTest.Content.Entities
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-
+            if (NPC.IsABestiaryIconDummy)
+            {
+                return true;
+            }
+            
             Texture2D Tex()
             {
                 if (DestroyerTestMod.MasochistIsActive)
@@ -549,7 +553,7 @@ namespace DestroyerTest.Content.Entities
             return false;
         }
 
-        float RingScale = 6.2f;
+        float RingScale = 1f;
         float Rotation = 0f;
         float OverlayAlpha = 0f;
         public Color BorderCol;
@@ -558,9 +562,12 @@ namespace DestroyerTest.Content.Entities
         {
             base.PostDraw(spriteBatch, screenPos, drawColor);
 
+            if (NPC.IsABestiaryIconDummy)
+            {
+                return;
+            }
 
 
-            
 
 
             DTUtils Utility = new DTUtils();
@@ -581,6 +588,11 @@ namespace DestroyerTest.Content.Entities
         bool IDrawPixelated.ShouldDrawPixelated => true;
         void IDrawPixelated.DrawPixelated(SpriteBatch spriteBatch)
         {
+            if (NPC.IsABestiaryIconDummy)
+            {
+                return;
+            }
+
             Opus.StartSpriteBatchPixelated(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
 
 
@@ -632,8 +644,8 @@ namespace DestroyerTest.Content.Entities
 
             if (BorderActive)
             {
-                Main.EntitySpriteDraw(DTAssetLib.NightmareRoseArenaBorder.Value, NPCHead - Main.screenPosition, null, BorderCol with { A = 0 }, Rotation, DTAssetLib.NightmareRoseArenaBorder.Value.Size() / 2, RingScale, SpriteEffects.None, 0);
-                Main.EntitySpriteDraw(DTAssetLib.NightmareRoseArenaBorder.Value, NPCHead - Main.screenPosition, null, OpusColorUtils.Pastel(BorderCol, 0.75f) with { A = 0 }, Rotation, DTAssetLib.NightmareRoseArenaBorder.Value.Size() / 2, RingScale, SpriteEffects.None, 0);
+                Main.EntitySpriteDraw(DTAssetLib.NightmareRoseArenaBorder.Value, NPCHead - Main.screenPosition, null, BorderCol with { A = 0 }, Rotation, DTAssetLib.NightmareRoseArenaBorder.Value.Size() / 2, RingScale, SpriteEffects.FlipHorizontally, 0);
+                Main.EntitySpriteDraw(DTAssetLib.NightmareRoseArenaBorder.Value, NPCHead - Main.screenPosition, null, OpusColorUtils.Pastel(BorderCol, 0.75f) with { A = 0 }, Rotation, DTAssetLib.NightmareRoseArenaBorder.Value.Size() / 2, RingScale, SpriteEffects.FlipHorizontally, 0);
 
                 Main.EntitySpriteDraw(DTAssetLib.Vingette.Value, NPCHead - Main.screenPosition, null, BorderCol, Rotation, DTAssetLib.Vingette.Value.Size() / 2, 2.7f, SpriteEffects.None, 0);
             }
@@ -901,6 +913,10 @@ namespace DestroyerTest.Content.Entities
             NPCHead = NPC.Center + new Vector2(0, -79);
             DirectionToPlayerCenter = (player.MountedCenter - NPCHead).SafeNormalize(Vector2.UnitY);
 
+
+            RingScale = DTAssetLib.NightmareRoseArenaBorder.Value.ScaleRingTextureToMatchRadius(BorderRad, 1327);
+            
+
             if (currentState != AttackState.Desperation && currentState != AttackState.KillIdle)
             {
                 if (!DestroyerTestMod.MasochistIsActive)
@@ -948,10 +964,14 @@ namespace DestroyerTest.Content.Entities
                     // Keep them on the same circumference
                     Vector2 Pos = NPCHead + Main.rand.NextVector2CircularEdge(BorderRad, BorderRad);
 
-                    Dust Border = Dust.NewDustPerfect(Pos, BorderDustType, Vector2.Zero, 0, BorderCol, 1f);
-                    Border.noGravity = true;
-                    Border.fadeIn = 1f;
-                    Border.scale = Main.rand.NextFloat(0.2f, 4.0f);
+                    //Dust Border = Dust.NewDustPerfect(Pos, BorderDustType, Vector2.Zero, 0, BorderCol, 1f);
+                    //Border.noGravity = true;
+                    //Border.fadeIn = 1f;
+                    //Border.scale = Main.rand.NextFloat(0.2f, 4.0f);
+
+                    PointGlowPreMultiplied Border = new();
+                    Border.Initialize(Pos, Vector2.Zero, BorderCol, 0.6f);
+                    ParticleEngine.BehindProjectiles.Add(Border);
                 }
 
                 if (DestroyerTestMod.EternityIsActive || DestroyerTestMod.DeathIsActive || DestroyerTestMod.MasochistIsActive && currentState != AttackState.SpawnIdle)
@@ -1630,7 +1650,7 @@ namespace DestroyerTest.Content.Entities
                     break;
                 case AttackState.ArenaDivide:
                     {
-                        if (DestroyerTestMod.EternityIsActive || DestroyerTestMod.DeathIsActive)
+                        if (DestroyerTestMod.EternityIsActive|| DestroyerTestMod.DeathIsActive)
                         {
                             if (Main.GameUpdateCount % 60 == 0)
                             {
@@ -1696,7 +1716,7 @@ namespace DestroyerTest.Content.Entities
 
                             float progress = (float)DesperationTimer / 1200f;
                             BorderRad = MathHelper.Lerp(1200f, 0f, progress);
-                            RingScale = MathHelper.Lerp(6.2f, 0, progress);
+                            //RingScale = MathHelper.Lerp(DTAssetLib.NightmareRoseArenaBorder.Value.ScaleRingTextureToMatchRadius(BorderRad, 1327), 0, progress);
 
                         }
                         if (DesperationTimer >= 1200)
@@ -2392,7 +2412,7 @@ namespace DestroyerTest.Content.Entities
 
 
 
-            if ((DestroyerTestMod.EternityIsActive || DestroyerTestMod.DeathIsActive) && !Main.masterMode)
+            if ((DestroyerTestMod.EternityIsActive || DestroyerTestMod.DeathIsActive) && !DestroyerTestMod.MasochistIsActive)
             {
                 for (int r = 0; r < 3; r++)
                 {

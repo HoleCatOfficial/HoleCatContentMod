@@ -1,32 +1,23 @@
-using System;
+﻿using System;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
+
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.Tiles.RiftConfigurator;
 using DestroyerTest.Rarity;
-using Terraria.Localization;
-using DestroyerTest.Content.Tools;
-using DestroyerTest.Content.Tiles.Riftplate;
-using System.Collections.Generic;
-using DestroyerTest.Content.RiftArsenal;
- 
-using System.Security.Cryptography.X509Certificates;
-using DestroyerTest.Content.Projectiles.Weapon.Scepter;
 using DestroyerTest.Rarity.Scepter;
-using DestroyerTest.Content.Projectiles.EntitiesProjectiles;
+using DestroyerTest.Content.Projectiles.Weapon.Scepter;
 
 namespace DestroyerTest.Content.Scepter
 {
-	public class TrueBloodScepter : ScepterItem
-	{
-		public override int Width => 114;
-        public override int Height => 94;
+    public class BloodScepter : ScepterItem
+    {
+        public override int Width => 54;
+        public override int Height => 54;
 
         public override void SetStaticDefaults()
         {
@@ -39,17 +30,16 @@ namespace DestroyerTest.Content.Scepter
             base.SetDefaults();
 
             // Override stats unique to this scepter
-            ShootDMG = 57;
-            ShootCrit = 4;
-            ThrowCrit = 14;
-            KB = 2;
+            ShootDMG = 78;
+            ShootCrit = 2;
+            ThrowCrit = 8;
+            KB = 8;
             AdditiveValue = Item.sellPrice(silver: 80);
             Rarity = ModContent.RarityType<CerisePinkRarity>();
-            Item.shootSpeed = 20f;
 
             // Assign projectile types
-            ShootID = ModContent.ProjectileType<EimvurBloodProjectile>();
-            ThrowID = ModContent.ProjectileType<RiftScepterThrown>();
+            ShootID = ModContent.ProjectileType<BloodShot>();
+            ThrowID = ModContent.ProjectileType<BloodScepterThrown>();
 
             // Optional: change sounds
             ShootSound = SoundID.Item25;
@@ -62,11 +52,8 @@ namespace DestroyerTest.Content.Scepter
         public override void ShootDefaults()
         {
             base.ShootDefaults();
-            Item.shootSpeed = 120;
-        }
-		public override void AddRecipes()
-		{
 
-		}
-	}
-} 
+            Item.shootSpeed = 2f;
+        }
+    }
+}

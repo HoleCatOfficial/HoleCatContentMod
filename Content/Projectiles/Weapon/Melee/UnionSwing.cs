@@ -34,8 +34,13 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Projectile.width = 54;
             Projectile.height = 88;
             Projectile.extraUpdates = 5;
-            SweepColor = Color.YellowGreen;
+            SweepColor = Color.Goldenrod;
+            SweepHighlightColor = Color.YellowGreen;
+            UsesDefaultSweepFX = true;
+            UsesFireSweepFX = true;
             SwingSpeed = 0.17f;
+            ScaleMult = 1.36f;
+
 
             Glowmask = ModContent.Request<Texture2D>($"{Texture}");
         }
@@ -54,18 +59,14 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         public int S = 0;
         public override void OnStartSwing()
         {
-            if (Owner.HeldItem.ModItem is Union union)
-            {
-                S++;
 
-            }
 
             Vector2 toMouse = Main.MouseWorld - Projectile.Center;
             toMouse.Normalize();
 
             for (int i = 0; i < 3; i++)
             {
-                Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, (toMouse * (15 * Owner.GetTotalAttackSpeed(DamageClass.Melee))), ModContent.ProjectileType<UnionFireball>(), Projectile.damage, 5, Projectile.owner);
+                Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, (toMouse.RotatedBy(Main.rand.NextFloat(0.1f, 1.1f) * LastSwing) * (15 * Owner.GetTotalAttackSpeed(DamageClass.Melee))), ModContent.ProjectileType<UnionFireball>(), Projectile.damage, 5, Projectile.owner);
             }
         }
 
@@ -75,19 +76,6 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         int t = 0;
         public override void ExtraEffects()
         {
-            if (Owner.HeldItem.ModItem is Union union)
-            {
-                if (S >= 2 && CurrentState == State.SwingUp && SlashProgress >= 0.59f && t > 10)
-                {
-                    union.CurrentAttack = Union.Attacks.FullSwing;
-                    Projectile.Kill();
-                }
-            }
-
-            if (S >= 2 && CurrentState == State.SwingUp)
-            {
-                t++;
-            }
 
 
             swordTip = Projectile.Center + Projectile.rotation.ToRotationVector2() * (Projectile.Size.Length() * Projectile.scale);

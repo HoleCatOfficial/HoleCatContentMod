@@ -1,14 +1,15 @@
+using DestroyerTest.Content.Projectiles;  
+using DestroyerTest.Content.Projectiles.Weapon.Magic;
+using DestroyerTest.Content.Resources;
+using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
+using System.Linq;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.DataStructures;
-using DestroyerTest.Content.Projectiles;  
-using DestroyerTest.Rarity;
-using System.Linq;
 using UtfUnknown.Core.Models.SingleByte.Italian;
-using DestroyerTest.Content.Projectiles.Weapon.Magic;
 
 namespace DestroyerTest.Content.Magic
 {
@@ -55,6 +56,12 @@ namespace DestroyerTest.Content.Magic
 			return player.ownedProjectileCounts[Item.shoot] < 1;
 		}
 
-
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient(Type)
+                .AddIngredient<Dyrn>(8)
+                .Register();
+        }
     }
 } 

@@ -1,4 +1,5 @@
 ﻿using BreadLibrary.Core.Graphics.Pixelation;
+using BreadLibrary.Core.Graphics.Spritebatch;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Particles;
  
@@ -87,8 +88,12 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
 
         void IDrawPixelated.DrawPixelated(SpriteBatch spriteBatch)
         {
+            var Cap = spriteBatch.Capture();
             spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.LinearWrap, DepthStencilState.None, RasterizerState.CullNone, null, PixelationSystem.PixelationMatrix);
+
+            Cap.TransformMatrix = PixelationSystem.PixelationMatrix;
+
+            spriteBatch.Begin(Cap);
 
 
 

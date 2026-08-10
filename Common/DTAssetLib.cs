@@ -204,7 +204,7 @@ namespace DestroyerTest.Common
         //Textures with more niche use cases.
         //
         public static Asset<Texture2D> RiftStar = ModContent.Request<Texture2D>($"{ParticlePath}/RiftStar", AssetRequestMode.AsyncLoad);
-        public static Asset<Texture2D> NightmareRoseArenaBorder = ModContent.Request<Texture2D>($"{ParticlePath}/NightmareRoseBarrier", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> NightmareRoseArenaBorder = ModContent.Request<Texture2D>($"{ExtrasPath}/NightmareRoseArenaBorder", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> ConstitutionBeamGlow = ModContent.Request<Texture2D>($"{ExtrasPath}/ConstitutionBeamGlow", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> GalantineLanceGlow = ModContent.Request<Texture2D>($"{ExtrasPath}/GalantineLanceGlow", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> TenebrousConstructWingLeft = ModContent.Request<Texture2D>($"{ExtrasPath}/TenebrousConstructWingLeft", AssetRequestMode.AsyncLoad);

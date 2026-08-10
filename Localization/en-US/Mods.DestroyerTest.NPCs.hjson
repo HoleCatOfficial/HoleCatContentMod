@@ -7,7 +7,12 @@ TenebrousSlime.DisplayName: Tenebrous Slime
 TenebrousPhantasm.DisplayName: Tenebrous Phantasm
 RiftSchade.DisplayName: Rift Schade
 RiftDiggerTail.DisplayName: Rift Digger Tail
-RiftDiggerHead.DisplayName: Rift Digger Head
+
+RiftDiggerHead: {
+	DisplayName: Rift Digger Head
+	BestiaryEntry1: These predators have disguised themselves to match the streaky Riften Silt, and ambush from below.
+}
+
 RiftDiggerBody.DisplayName: Rift Digger Body
 VampireBoss.DisplayName: Vampire Boss
 WyvernCorpseBody1.DisplayName: The Great Wyvern's Corpse

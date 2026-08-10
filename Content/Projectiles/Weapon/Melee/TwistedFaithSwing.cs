@@ -182,9 +182,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 		}
 
 		public override void OnHitPlayer(Player target, Player.HurtInfo info) {
-			ParticleOrchestrator.RequestParticleSpawn(clientOnly: false, ParticleOrchestraType.TerraBlade,
-				new ParticleOrchestraSettings { PositionInWorld = Main.rand.NextVector2FromRectangle(target.Hitbox), UniqueInfoPiece = 3 },
-				Projectile.owner);
+			
 
 			info.HitDirection = (Main.player[Projectile.owner].Center.X < target.Center.X) ? 1 : (-1);
 		}

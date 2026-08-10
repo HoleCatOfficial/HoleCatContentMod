@@ -10,18 +10,24 @@ using DestroyerTest.Content.Equips;
 using DestroyerTest.Content.Projectiles;
 using Terraria.DataStructures;
 using DestroyerTest.Content.Projectiles.Weapon.Melee;
+using DestroyerTest.Common;
+using DestroyerTest.Content.Resources;
 
 namespace DestroyerTest.Content.MeleeWeapons
 {
 	public class TwistedFaith : ModItem
 	{
+        public override void SetStaticDefaults()
+        {
+			ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<ScarletDragon>();
+        }
 		public override void SetDefaults() {
 			Item.width = 96;
 			Item.height = 97;
 
 			Item.useStyle = ItemUseStyleID.Swing;
-			Item.useTime = 20;
-			Item.useAnimation = 20;
+			Item.useTime = 35;
+			Item.useAnimation = 35;
 
 			Item.DamageType = DamageClass.Melee;
 			Item.damage = 35;
@@ -33,7 +39,7 @@ namespace DestroyerTest.Content.MeleeWeapons
 
 			Item.value = Item.buyPrice(gold: 16); // The value of the weapon in copper coins.
 			Item.rare = ModContent.RarityType<CorruptionSpecialRarity>();
-			Item.UseSound = Item.UseSound = new SoundStyle("DestroyerTest/Assets/Audio/ConstitutionT3Slash") with { MaxInstances = 0, PitchVariance = 0.25f };
+			Item.UseSound = Item.UseSound = DTAssetLib.SwordSounds.ConSwing;
 		}
 
         public override bool MeleePrefix()
@@ -45,13 +51,17 @@ namespace DestroyerTest.Content.MeleeWeapons
 			float adjustedItemScale = player.GetAdjustedItemScale(Item); // Get the melee scale of the player and item.
 			Projectile.NewProjectile(source, player.MountedCenter, new Vector2(player.direction, 0f), type, damage, knockback, player.whoAmI, player.direction * player.gravDir, player.itemAnimationMax, adjustedItemScale);
 			NetMessage.SendData(MessageID.PlayerControls, number: player.whoAmI); // Sync the changes in multiplayer.
-
-			Vector2 MS = player.Center - Main.MouseWorld;
-            float Rot = MS.ToRotation();
-            Projectile.NewProjectile(source, position, new Vector2(-4, 0).RotatedBy(Rot), ModContent.ProjectileType<TwistedFaithProj>(), damage / 2, 1.5f, player.whoAmI);
             
 
 			return base.Shoot(player, source, position, velocity, type, damage, knockback);
 		}
+
+        public override void AddRecipes()
+        {
+			CreateRecipe()
+				.AddIngredient(Type)
+				.AddIngredient<Dyrn>(8)
+				.Register();
+        }
 	}
 }

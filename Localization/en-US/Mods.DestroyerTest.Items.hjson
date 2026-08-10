@@ -2029,18 +2029,13 @@ DebugStar: {
 	Tooltip: ""
 }
 
-FoxScepter: {
-	DisplayName: Fox Scepter
-	Tooltip: Dedicated to: TopFox6 the PipeBomb Fox, for being a part of what motivates me to follow through with this mod by making me want to impress him.
-}
-
 StellarFoxScepter: {
 	DisplayName: Stellar Fox Scepter
 	Tooltip:
 		'''
 		Shoots homing stellar fox apparitions that explode on collision and inflict galantine burn.
 		Throws have no native special effect.
-		Dedicated to: TopFox6 the PipeBomb Fox, for being a part of what motivates me to follow through with this mod by making me want to impress him.
+		Dedicated to: TopFox6 the PipeBomb Fox.
 		'''
 }
 
@@ -5104,4 +5099,9 @@ PhantasmalRemnant: {
 Union: {
 	DisplayName: Union
 	Tooltip: ""
+}
+
+BloodScepter: {
+	DisplayName: Blood Scepter
+	Tooltip: Shoots accelerating bloody spikes.
 }

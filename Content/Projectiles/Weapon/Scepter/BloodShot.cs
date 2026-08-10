@@ -20,31 +20,15 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 {
-    public class ShimmeringSpark : ModProjectile, IHomingProjectile
+    public class BloodShot : ModProjectile
     {
         public override string Texture => DTUtils.NoTexture;
 
-        int DelayTimer = 0;
-
-        bool IHomingProjectile.TracksNPCs => true;
-
-        bool IHomingProjectile.TracksPlayers => false;
-
-        float IHomingProjectile.HomingTurnSpeed => 1.3f;
-
-        bool IHomingProjectile.UsesHomingAcceleration => true;
-
-        float IHomingProjectile.HomingAccelAmount => 1.03f;
-
-        float IHomingProjectile.HomingMaxAccel => 4f;
-
-        float IHomingProjectile.DetectRadius => 400;
-
-        bool IHomingProjectile.CanHome => DelayTimer >= 100;
+      
 
         public override void SetStaticDefaults()
         {
-            ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true; // Make the cultist resistant to this projectile, as it's resistant to all homing projectiles.
+           
         }
 
         public override void SetDefaults()
@@ -68,44 +52,48 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 
         public override bool PreDraw(ref Color lightColor)
         {
-            Main.EntitySpriteDraw(DTAssetLib.SparkSmoothThin.Value, Projectile.Center - Main.screenPosition, null, OpusColorUtils.Pastel(ColorLib.TenebrisMagenta, 0.75f) with { A = 0 }, Projectile.rotation, DTAssetLib.SparkSmoothThin.Value.Size() / 2, 0.2f, SpriteEffects.None, 0f);
+            Main.EntitySpriteDraw(DTAssetLib.SparkSmoothThin.Value, Projectile.Center - Main.screenPosition, null, Color.Red, Projectile.rotation, DTAssetLib.SparkSmoothThin.Value.Size() / 2, 0.2f, SpriteEffects.None, 0f);
             return false;
         }
 
+
+        int t = 0;
         public override void AI()
         {
             Projectile.rotation = Projectile.velocity.ToRotation();
 
-            Lighting.AddLight(Projectile.Center, ColorLib.TenebrisMagenta.ToVector3() * 0.6f);
-            var d = Dust.NewDustPerfect(Projectile.Center, DustID.SnowSpray, Vector2.Zero, 0, ColorLib.TenebrisMagenta, 1f);
+            Lighting.AddLight(Projectile.Center, Color.Red.ToVector3() * 0.6f);
+            var d = Dust.NewDustPerfect(Projectile.Center, DustID.Blood, Vector2.Zero, 0, default, 1f);
             d.noGravity = true;
 
+            t++;
 
-            if (DelayTimer < 100)
+            if (t < 120)
             {
-                DelayTimer += 1;
-                return;
+
+            }
+            else
+            {
+                if (Projectile.velocity.Length() < 30)
+                {
+                    Projectile.velocity *= 1.05f;
+                }
             }
         }
 
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if (hit.Crit)
-            {
-                //SoundEngine.PlaySound(DTAssetLib.Impacts.DarkShot with { PitchVariance = 0.2f });
-                ShimmeringFlames.ShimmerBurn(target);
-            }
+            
 
-            SoundEngine.PlaySound(SoundID.DD2_KoboldExplosion, target.Center);
-            Projectile.NewProjectile(Projectile.GetSource_OnHit(target), target.Center, Vector2.Zero, ModContent.ProjectileType<DarkRaptureExplosion>(), Projectile.damage, 10f, Projectile.owner);
         }
 
         public override void OnKill(int timeLeft)
         {
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 9; i++)
             {
-                Dust.NewDustPerfect(Projectile.Center, DustID.SnowSpray, Main.rand.NextVector2Circular(5f, 5f), 0, ColorLib.TenebrisMagenta, Main.rand.NextFloat(1f, 3f));
+                var d = Dust.NewDustPerfect(Projectile.Center, DustID.Blood, Projectile.velocity.RotatedByRandom(0.2f), 0, default, 2f);
+                d.noGravity = true;
             }
         }
     }

@@ -12,6 +12,7 @@ using System;
 using Terraria.DataStructures;
 using System.IO;
 using DestroyerTest.Content.Projectiles.ParentClasses;
+using OpusLib;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 {
@@ -26,62 +27,23 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
             base.SetDefaults();
         }
 
-        public override void AI()
-        {
-            Player player = Main.player[Projectile.owner];
-              // Generate flying dust effect
-            if (Main.rand.NextBool(3)) // 33% chance per tick
-            {
-                
-    
-                 // Create AmbientSpore projectile at the same position but with zero velocity
-                Projectile newProjectile = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), 
-                Projectile.Center, Vector2.Zero, ProjectileID.SporeGas, 30, 0, player.whoAmI);
-                newProjectile.friendly = true; // If it shouldn't harm the player, for example
-            }
-            if (Main.rand.NextBool(6) && player.statLife == player.statLifeMax) // 33% chance per tick
-            {
-               
-                Projectile newProjectile2 = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(), 
-                Projectile.Center, Projectile.velocity, ModContent.ProjectileType<NatureShot>(), 15, 0, player.whoAmI);
-                newProjectile2.friendly = true; // If it shouldn't harm the player, for example
-                
-            }
-            base.AI();
-        }
-
-
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
 
-            target.AddBuff(BuffID.Poisoned, 120);
+            target.AddBuff(BuffID.Venom, 300);
 
-            Vector2 launchVelocity = new Vector2(-8, 0); // Create a velocity moving the left.
-            for (int i = 0; i < 8; i++)
-            {
-                // Every iteration, rotate the newly spawned projectile by the equivalent 1/4th of a circle (MathHelper.PiOver4)
-                // (Remember that all rotation in Terraria is based on Radians, NOT Degrees!)
-                launchVelocity = launchVelocity.RotatedBy(MathHelper.PiOver4);
+            Opus.RadialSpreadProjectileRandom(ProjectileID.SporeGas, 8, Projectile.Center, Projectile.damage, 5f, 8f);
 
-                // Spawn a new projectile with the newly rotated velocity, belonging to the original projectile owner. The new projectile will inherit the spawning source of this projectile.
-                Projectile.NewProjectile(Projectile.InheritSource(Projectile), Projectile.Center, launchVelocity, ProjectileID.SporeGas, Projectile.damage, Projectile.knockBack, Projectile.owner);
-            }
             base.OnHitNPC(target, hit, damageDone);
         }
 
+        
+
         public override bool OnTileCollide(Vector2 oldVelocity) {
-            
 
-            Vector2 launchVelocity = new Vector2(-8, 0); // Create a velocity moving the left.
-                for (int i = 0; i < 8; i++) {
-                    // Every iteration, rotate the newly spawned projectile by the equivalent 1/4th of a circle (MathHelper.PiOver4)
-                    // (Remember that all rotation in Terraria is based on Radians, NOT Degrees!)
-                    launchVelocity = launchVelocity.RotatedBy(MathHelper.PiOver4);
 
-                    // Spawn a new projectile with the newly rotated velocity, belonging to the original projectile owner. The new projectile will inherit the spawning source of this projectile.
-                    Projectile.NewProjectile(Projectile.InheritSource(Projectile), Projectile.Center, launchVelocity, ProjectileID.SporeGas, Projectile.damage, Projectile.knockBack, Projectile.owner);
-                }
+            Opus.RadialSpreadProjectileRandom(ProjectileID.SporeGas, 8, Projectile.Center, Projectile.damage, 5f, 8f);
 
 
             base.OnTileCollide(oldVelocity);

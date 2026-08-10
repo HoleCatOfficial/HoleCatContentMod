@@ -1,21 +1,29 @@
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
-using Terraria.Audio;
-using DestroyerTest.Content.Consumables;
+using BreadLibrary.Core.Graphics.Particles;
+using BreadLibrary.Core.Graphics.Pixelation;
+using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Consumables;
 using DestroyerTest.Content.Magic;
  
 using DestroyerTest.Content.Particles;
+using Humanizer;
+using Microsoft.CodeAnalysis;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
+using OpusLib.Content.Helpers;
+using ReLogic.Utilities;
 using System.Text;
+using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 {
-    public class ContemptCursorProjectile : ModProjectile
+    public class ContemptCursorProjectile : ModProjectile, IDrawPixelated
     {
 
 
@@ -36,119 +44,131 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             Projectile.timeLeft = 180; // 10 seconds max lifespan
             Projectile.DamageType = DamageClass.Magic;
             Projectile.tileCollide = false;
-            Projectile.alpha = 255;
         }
 
         public override bool PreDraw(ref Color lightColor)
         {
             SpriteBatch sb = Main.spriteBatch;
 
-            sb.End(); // End vanilla drawing
-            sb.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, 
-                    DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-
-            DrawSigil(sb);
-
-            sb.End(); // End additive
-            sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp,
-                    DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+            
 
             return false;
         }
 
-        public void DrawSigil(SpriteBatch sb)
+        PixelLayer IDrawPixelated.PixelLayer => PixelLayer.AboveProjectiles;
+
+        bool IDrawPixelated.ShouldDrawPixelated => true;
+
+        float r = 0;
+
+        void IDrawPixelated.DrawPixelated(SpriteBatch spriteBatch)
         {
+            r += 0.2f;
             Texture2D glowTexture = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/CorruptSigil").Value;
 
             Main.EntitySpriteDraw(
                 glowTexture,
                 Projectile.Center - Main.screenPosition,
                 null,
-                ColorLib.CursedFlames,
+                ColorLib.CursedFlames with { A = 0 } * Projectile.Opacity,
                 Projectile.rotation,
                 glowTexture.Size() / 2,
                 Projectile.scale * 0.4f,
                 SpriteEffects.None,
                 0
             );
+
+            float RingScale =  DTAssetLib.NightmareRoseArenaBorder.Value.ScaleRingTextureToMatchRadius(rad, 1327);
+            Main.EntitySpriteDraw(DTAssetLib.NightmareRoseArenaBorder.Value, Projectile.Center - Main.screenPosition, null, ColorLib.CursedFlames with { A = 0 } * Projectile.Opacity, r, DTAssetLib.NightmareRoseArenaBorder.Value.Size() / 2, RingScale, SpriteEffects.FlipHorizontally, 0);
+            Main.EntitySpriteDraw(DTAssetLib.NightmareRoseArenaBorder.Value, Projectile.Center - Main.screenPosition, null, OpusColorUtils.Pastel(ColorLib.CursedFlames, 0.75f) with { A = 0 } * Projectile.Opacity, r, DTAssetLib.NightmareRoseArenaBorder.Value.Size() / 2, RingScale, SpriteEffects.FlipHorizontally, 0);
         }
 
 
-        public bool HasSpawned = false;
 
-        public Vector2 CurrentCenter;
+        public bool Good = false;
 
-        public float ProjSpawnTimer = 0;
+        SlotId LoopSlot;
+        public SoundStyle Loop = new SoundStyle("DestroyerTest/Assets/Audio/AuraLoop/HateLaser")
+        {
+            MaxInstances = 0,
+            IsLooped = true,
+            PauseBehavior = PauseBehavior.PauseWithGame
+        };
+        float P = 0f;
 
+        float rad = 500f;
         public override void AI()
         {
-            ProjSpawnTimer++;
             Player player = Main.player[Projectile.owner];
-            if (!player.channel || player.dead || player.CCed)
+
+            if (!SoundEngine.TryGetActiveSound(LoopSlot, out var activeSound))
             {
-                Projectile.Kill(); // Stop when player stops channeling, dies, or is crowd controlled
-                return;
+                var tracker = new ProjectileAudioTracker(Projectile);
+                LoopSlot = SoundEngine.PlaySound(Loop, Projectile.Center, soundInstance => {
+                    soundInstance.Position = Projectile.Center;
+                    return tracker.IsActiveAndInGame();
+                });
+            }
+            else
+            {
+                activeSound.Position = Projectile.Center;
+                activeSound.Pitch = P;
             }
 
-            CurrentCenter = Projectile.Center;
+            Projectile.Center = Main.MouseWorld;
 
-            
-          
 
-            if (player.HeldItem.type == ModContent.ItemType<Contempt>() && player.channel)
+            if (player.HeldItem.type == ModContent.ItemType<Contempt>() && player.controlUseItem)
             {
+                Good = true;
+                
+                
 
+
+                
+
+
+
+            }
+            else
+            {
+                Good = false;
+            }
+
+
+            if (Good)
+            {
                 Projectile.timeLeft = 120;
-                Projectile.Center = Main.MouseWorld;
-                if (HasSpawned == false)
+                for (int i = 0; i < 5; i++)
                 {
-                    //PRTLoader.NewParticle(PRTLoader.GetParticleID<RuneCircle1>(), Projectile.Center, Projectile.velocity, ColorLib.CursedFlames, 0.4f);
-                    HasSpawned = true;
+                    Vector2 P = Projectile.Center + Main.rand.NextVector2CircularEdge(rad, rad);
+
+                    PointGlowPreMultiplied Border = new();
+                    Border.Initialize(P, Vector2.Zero, ColorLib.Wretched3, 0.6f);
+                    ParticleEngine.BehindProjectiles.Add(Border);
                 }
+            }
+            else
+            {
+                Projectile.Opacity = MathHelper.Lerp(1f, 0f, ((float)Projectile.timeLeft / 120f).Inverse());
 
-
-
-
-                float rad = 1000;
-                Vector2 Spawn = Projectile.Center + Main.rand.NextVector2CircularEdge(rad, rad);
-                Vector2 toOrigin = CurrentCenter - Spawn;
-                toOrigin = toOrigin.SafeNormalize(Vector2.UnitY); // fallback to downwards if zero
-
-                if (ProjSpawnTimer >= 30)
-                {
-                    player.statMana -= player.HeldItem.mana;
-                    SoundEngine.PlaySound(SoundID.Item20);
-
-                    for (int a = 0; a < 12; a++)
-                    {
-                        Spawn = Projectile.Center + Main.rand.NextVector2CircularEdge(rad, rad);
-                        toOrigin = CurrentCenter - Spawn;
-                        toOrigin = toOrigin.SafeNormalize(Vector2.UnitY);
-                        Projectile Flames = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), Spawn, toOrigin * 20f, ModContent.ProjectileType<CursedFlamesFriendly>(), 40, 2, Main.LocalPlayer.whoAmI);
-                        if (Flames.Center == Projectile.Center)
-                        {
-                            Flames.Kill();
-                        }
-                    }
-                    //PRTLoader.NewParticle(PRTLoader.GetParticleID<BloomRingSharp>(), Projectile.Center, Projectile.velocity, ColorLib.CursedFlames, 0.025f);
-                    ProjSpawnTimer = 0;
-                }
-
-
-
+                P = MathHelper.Lerp(0f, -0.8f, ((float)Projectile.timeLeft / 120f).Inverse());
             }
 
 
         }
 
-
+        public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
+        {
+            return Utilities.CircularHitboxCollision(Projectile.Center, rad, targetHitbox);
+        }
 
 
 
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-          
+            target.AddBuff(ModContent.BuffType<Defilement>(), 180);
            
         }
 
