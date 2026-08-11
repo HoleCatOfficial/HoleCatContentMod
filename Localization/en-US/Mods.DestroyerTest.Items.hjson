@@ -5098,10 +5098,21 @@ PhantasmalRemnant: {
 
 Union: {
 	DisplayName: Union
-	Tooltip: ""
+	Tooltip: Swings create homing volleys of infected energy.
 }
 
 BloodScepter: {
 	DisplayName: Blood Scepter
 	Tooltip: Shoots accelerating bloody spikes.
+}
+
+BladeChunk: {
+	DisplayName: Blade Chunk
+	Tooltip:
+		'''
+		A broken-off chunk of some greater whole.
+		It hums with energy...
+
+		Holding it up in the air may call upon its whole to come reunite.
+		'''
 }

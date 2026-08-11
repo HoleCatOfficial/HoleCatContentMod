@@ -33,6 +33,7 @@ using System.Linq;
 using Terraria;
 using Terraria.Audio;
 using Terraria.Cinematics;
+using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
@@ -57,7 +58,9 @@ namespace DestroyerTest.Content.Entities
             };
             NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
             Main.npcFrameCount[Type] = 55;
-            
+
+            NPCID.Sets.TrailCacheLength[Type] = 100;
+            NPCID.Sets.TrailingMode[Type] = 3;
         }
         public void immunities()
         {
@@ -275,7 +278,11 @@ namespace DestroyerTest.Content.Entities
                 return true;
             }
 
-         
+            for (int i = 0; i < NPC.oldPos.Length; i++)
+            {
+                float Alpha = MathHelper.Lerp(0.4f, 0f, (float)i / (float)NPC.oldPos.Length);
+                Main.EntitySpriteDraw(TextureAssets.Npc[Type].Value, (NPC.oldPos[i] + new Vector2(NPC.width / 2, NPC.height / 2)) - screenPos, NPC.frame, drawColor * Alpha, NPC.oldRot[i], new Vector2(NPC.width / 2, (NPC.frame.Height) / 2), NPC.scale, SpriteEffects.None);
+            }
 
 
             Utils.DrawBorderString(spriteBatch, InternalTimer.ToString(), (NPC.Center + new Vector2(0, -40)) - Main.screenPosition, Color.Red, 1f, 0.5f, 0.5f);
@@ -410,7 +417,8 @@ namespace DestroyerTest.Content.Entities
             }
 
 
-            Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/UnfinishedBoss");
+            //Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/UnfinishedBoss");
+            Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/tc4");
             //Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/TenebrousConstruct");
 
             switch (CurrentState)
@@ -601,7 +609,7 @@ namespace DestroyerTest.Content.Entities
 
                                 Vector2 vel = KnifePositions[Main.rand.Next(KnifePositions.Length)].DirectionTo(Knife_PlayerCenter);
 
-                                Projectile.NewProjectile(NPC.GetSource_FromAI(), Knife_PlayerCenter + (vel * -400f), vel * 10f, ModContent.ProjectileType<TenebrisLance>(), 20, 5);
+                                //Projectile.NewProjectile(NPC.GetSource_FromAI(), Knife_PlayerCenter + (vel * -400f), vel * 10f, ModContent.ProjectileType<TenebrisLance>(), 20, 5);
                               
                             }
                         }

@@ -388,7 +388,6 @@ namespace DestroyerTest.Common.NPC_Folder
                 shop.Add<OilFlask>();
                 shop.Add<BrineFlask>();
                 shop.Add<MineralOil>();
-                shop.Add<CursedStar>(Condition.DownedSkeletron);
             }
 
             if (shop.NpcType == NPCID.ArmsDealer && (DownedBossSystem.downedNightmareRoseBoss || DownedBossSystem.downedWyvernCorpseBoss))

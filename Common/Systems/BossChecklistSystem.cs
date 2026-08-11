@@ -199,7 +199,7 @@ namespace DestroyerTest.Common.Systems
                 6.9999999f, 
                 DownedBossSystem.downedConstitutionCondition,
                 ConstitutionPortrait, 
-                ModContent.ItemType<CursedStar>(), 
+                ModContent.ItemType<BladeChunk>(), 
                 DTLootTables.ConstitutionLootTable);
 
 

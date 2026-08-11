@@ -51,9 +51,9 @@ namespace DestroyerTest.Content.Particles.Stellar
 
             spriteBatch.UseBlendState(BlendState.Additive);
 
-            spriteBatch.Draw(texture, position - Main.screenPosition, null, color with { A = 0 }, 0f, origin, scale, SpriteEffects.None, 0f);
-            spriteBatch.Draw(texture, position - Main.screenPosition, null, OpusColorUtils.Pastel(color, 0.5f) with { A = 0 }, 0f, origin, scale * 0.6f, SpriteEffects.None, 0f);
-            spriteBatch.Draw(texture, position - Main.screenPosition, null, OpusColorUtils.Pastel(color, 0.8f) with { A = 0 }, 0f, origin, scale * 0.3f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(texture, position - Main.screenPosition, null, color, 0f, origin, scale, SpriteEffects.None, 0f);
+            spriteBatch.Draw(texture, position - Main.screenPosition, null, OpusColorUtils.Pastel(color, 0.5f), 0f, origin, scale * 0.6f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(texture, position - Main.screenPosition, null, OpusColorUtils.Pastel(color, 0.8f), 0f, origin, scale * 0.3f, SpriteEffects.None, 0f);
 
             Opus.ReturnToDefaultDrawing(spriteBatch);
         }

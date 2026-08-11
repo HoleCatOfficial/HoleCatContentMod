@@ -1,11 +1,15 @@
-using System;
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss;
+using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles.Boss.VampireBoss;
+using DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss;
 using DestroyerTest.Content.RiftArsenal;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
+using System;
+using System.Linq;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -14,7 +18,6 @@ using Terraria.GameContent;
 using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
-using System.Linq;
 
 namespace DestroyerTest.Content.Projectiles.Boss.TenebrousConstruct
 {
@@ -69,12 +72,44 @@ namespace DestroyerTest.Content.Projectiles.Boss.TenebrousConstruct
         {
             return Projectile.ai[0] >= 180;
         }
+
+        public void DustSpawn1()
+        {
+            Vector2 Pos1 = Projectile.Center + new Vector2(0, -12).RotatedBy(Projectile.velocity.ToRotation());
+            Vector2 Pos2 = Projectile.Center + new Vector2(0, 12).RotatedBy(Projectile.velocity.ToRotation());
+
+            Vector2 DustPos = Opus.Sine(Pos1, Pos2, 0.05f);
+
+            StarParticle Star = new();
+            Star.Initialize(DustPos, Vector2.Zero, ColorLib.TenebrisGradient, 0.4f);
+            ParticleEngine.BehindProjectiles.Add(Star);
+        }
+
+        public void DustSpawn2()
+        {
+            Vector2 Pos1 = Projectile.Center + new Vector2(0, 12).RotatedBy(Projectile.velocity.ToRotation());
+            Vector2 Pos2 = Projectile.Center + new Vector2(0, -12).RotatedBy(Projectile.velocity.ToRotation());
+
+            Vector2 DustPos = Opus.Sine(Pos1, Pos2, 0.05f);
+
+            StarParticle Star = new();
+            Star.Initialize(DustPos, Vector2.Zero, ColorLib.TenebrisGradient, 0.4f);
+            ParticleEngine.BehindProjectiles.Add(Star);
+        }
         public override void AI()
         {
             Projectile.ResetExcessTrailPoints();
             AnimateProjectile();
 
+            
+
             Projectile.ai[0]++;
+
+            if (Projectile.ai[0] % 5 == 0)
+            {
+                DustSpawn1();
+                DustSpawn2();
+            }
 
             if (Projectile.ai[0] > 180)
             {
