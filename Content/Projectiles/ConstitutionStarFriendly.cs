@@ -32,7 +32,7 @@ namespace DestroyerTest.Content.Projectiles
         {
             ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true;
 
-            ProjectileID.Sets.TrailCacheLength[Type] = 400;
+            ProjectileID.Sets.TrailCacheLength[Type] = 140;
             ProjectileID.Sets.TrailingMode[Type] = 3;
         }
 
@@ -58,7 +58,7 @@ namespace DestroyerTest.Content.Projectiles
             trailOffset += 0.04f;
             SpriteBatch spriteBatch = Main.spriteBatch;
 
-            DTTrail.DrawTrail(spriteBatch, DTAssetLib.ConstitutionStarTrail.Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 24, MainColor, trailOffset, 4);
+            DTTrail.DrawTrail(spriteBatch, DTAssetLib.ConstitutionStarTrail.Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 24, MainColor, trailOffset);
 
             Opus.DrawTextureOnProj(DTAssetLib.StarAura, Projectile, MainColor * Projectile.Opacity, false, Projectile.velocity.ToRotation(), Projectile.scale, Projectile.scale);
 
@@ -196,7 +196,7 @@ namespace DestroyerTest.Content.Projectiles
 
         public override void SetStaticDefaults()
         {
-            ProjectileID.Sets.TrailCacheLength[Type] = 400;
+            ProjectileID.Sets.TrailCacheLength[Type] = 140;
             ProjectileID.Sets.TrailingMode[Type] = 3;
         }
 
@@ -222,7 +222,7 @@ namespace DestroyerTest.Content.Projectiles
             trailOffset += 0.04f;
             SpriteBatch spriteBatch = Main.spriteBatch;
 
-            DTTrail.DrawTrail(spriteBatch, DTAssetLib.ConstitutionStarTrail.Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 24, MainColor, trailOffset, 4);
+            DTTrail.DrawTrail(spriteBatch, DTAssetLib.ConstitutionStarTrail.Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 24, MainColor, trailOffset);
 
             Opus.DrawTextureOnProj(DTAssetLib.StarAura, Projectile, MainColor * Projectile.Opacity, false, Projectile.velocity.ToRotation(), Projectile.scale, Projectile.scale);
 

@@ -104,7 +104,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Projectile.rotation = Projectile.velocity.ToRotation();
             Timer++;
 
-            TSpeed = MathHelper.Lerp(1f, 9f, (float)Timer / 300f);
+            TSpeed = MathHelper.Lerp(1f, 20f, (float)Timer / 300f);
 
             if (Timer < 20)
             {

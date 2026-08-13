@@ -97,6 +97,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
         float P = 0f;
 
         float rad = 500f;
+
+        int HoldTime = 0;
+
+        bool used = false;
         public override void AI()
         {
             Player player = Main.player[Projectile.owner];
@@ -111,6 +115,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             }
             else
             {
+                activeSound.Volume = 0.5f;
                 activeSound.Position = Projectile.Center;
                 activeSound.Pitch = P;
             }
@@ -118,14 +123,20 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             Projectile.Center = Main.MouseWorld;
 
 
-            if (player.HeldItem.type == ModContent.ItemType<Contempt>() && player.controlUseItem)
+            if (player.HeldItem.type == ModContent.ItemType<Contempt>() && player.controlUseItem && !used)
             {
                 Good = true;
                 
-                
+
+                if (HoldTime < 120)
+                {
+                    HoldTime++;
+                }
 
 
-                
+                Projectile.Opacity = MathHelper.Lerp(0f, 1f, (float)HoldTime / 120f);
+                P = MathHelper.Lerp(-0.8f, 0f, (float)HoldTime / 120f);
+
 
 
 
@@ -133,6 +144,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             else
             {
                 Good = false;
+                HoldTime = 0;
             }
 
 
@@ -144,12 +156,13 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
                     Vector2 P = Projectile.Center + Main.rand.NextVector2CircularEdge(rad, rad);
 
                     PointGlowPreMultiplied Border = new();
-                    Border.Initialize(P, Vector2.Zero, ColorLib.Wretched3, 0.6f);
+                    Border.Initialize(P, P.DirectionFrom(Projectile.Center).RotatedBy(Main.rand.NextFloat(-1.5f, -1.1f)) * Main.rand.NextFloat(1f, 9f), ColorLib.Wretched3, 0.6f);
                     ParticleEngine.BehindProjectiles.Add(Border);
                 }
             }
             else
             {
+                used = true;
                 Projectile.Opacity = MathHelper.Lerp(1f, 0f, ((float)Projectile.timeLeft / 120f).Inverse());
 
                 P = MathHelper.Lerp(0f, -0.8f, ((float)Projectile.timeLeft / 120f).Inverse());

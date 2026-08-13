@@ -38,7 +38,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
 		public override void SetStaticDefaults()
 		{
 			ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true;
-            ProjectileID.Sets.TrailCacheLength[Type] = 400;
+            ProjectileID.Sets.TrailCacheLength[Type] = 140;
             ProjectileID.Sets.TrailingMode[Type] = 3;
 
         }
@@ -76,9 +76,6 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
             return false;
         }
 
-		public List<Vector2> TrailPositions = new();
-		public List<float> TrailRotations = new();
-		private const int TrailLength = 400;
         public SoundStyle Chase = new SoundStyle($"DestroyerTest/Assets/Audio/ConstitutionBoss/ConstitutionStar/Chase") { PitchVariance = 1f, MaxInstances = 0 };
 
         public bool Flag1 = false;
@@ -112,35 +109,6 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
 
 		public override void AI()
         {
-            Vector2 lastPos = TrailPositions.Count > 0 ? TrailPositions[0] : Projectile.Center;
-			Vector2 newPos  = Projectile.Center;
-
-			float dist = Vector2.Distance(lastPos, newPos);
-			float step = 1f; // how closely to sample. tweak this!
-
-			if (dist > 0f)
-			{
-				int segments = (int)(dist / step);
-
-				for (int i = 1; i <= segments; i++)
-				{
-					Vector2 pos = Vector2.Lerp(lastPos, newPos, i / (float)segments);
-					TrailPositions.Insert(0, pos);
-					TrailRotations.Insert(0, Projectile.rotation);
-				}
-			}
-			else
-			{
-				TrailPositions.Insert(0, newPos);
-				TrailRotations.Insert(0, Projectile.rotation);
-			}
-
-
-			// Cap trail
-			while (TrailPositions.Count > TrailLength)
-				TrailPositions.RemoveAt(TrailPositions.Count - 1);
-			while (TrailRotations.Count > TrailLength)
-				TrailRotations.RemoveAt(TrailRotations.Count - 1);
 
             DelayTimer++;
 
@@ -276,7 +244,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
 
 		public override void SetStaticDefaults()
 		{
-            ProjectileID.Sets.TrailCacheLength[Type] = 400;
+            ProjectileID.Sets.TrailCacheLength[Type] = 140;
             ProjectileID.Sets.TrailingMode[Type] = 3;
         }
 

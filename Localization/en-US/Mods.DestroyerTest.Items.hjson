@@ -5116,3 +5116,8 @@ BladeChunk: {
 		Holding it up in the air may call upon its whole to come reunite.
 		'''
 }
+
+ConstellationWeaverScarf: {
+	DisplayName: Constellation Weaver Scarf
+	Tooltip: ""
+}

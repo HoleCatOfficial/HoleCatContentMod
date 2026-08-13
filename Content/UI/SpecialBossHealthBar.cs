@@ -21,7 +21,6 @@ using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.UI;
-using static Terraria.GameContent.Animations.IL_Actions.Sprites;
 
 namespace DestroyerTest.Content.UI
 {
@@ -33,7 +32,11 @@ namespace DestroyerTest.Content.UI
         private Asset<Texture2D> barBack;
         private Asset<Texture2D> barCaps;
 
+        private Asset<Texture2D> barFront_Fables;
+        private Asset<Texture2D> barBack_Fables;
+
         private Asset<Texture2D> NodeLock;
+        private Asset<Texture2D> NodeLock_Fables;
 
         public override void OnInitialize()
         {
@@ -49,7 +52,12 @@ namespace DestroyerTest.Content.UI
             barFront = ModContent.Request<Texture2D>("DestroyerTest/Assets/Textures/NightmareRoseBarFront");
             barCaps = ModContent.Request<Texture2D>("DestroyerTest/Assets/Textures/NightmareRoseBarCaps");
 
+            barBack_Fables = ModContent.Request<Texture2D>("DestroyerTest/Assets/Textures/FablesBossBarBack");
+            barFront_Fables = ModContent.Request<Texture2D>("DestroyerTest/Assets/Textures/FablesBossBarFront");
+
             NodeLock = ModContent.Request<Texture2D>("DestroyerTest/Assets/Textures/NightmareRoseBar_NodeLock");
+
+            NodeLock_Fables = ModContent.Request<Texture2D>("DestroyerTest/Assets/Textures/NightmareRoseBar_NodeLock_Fables");
 
             Append(area);
         }
@@ -119,7 +127,7 @@ namespace DestroyerTest.Content.UI
                 float quotient = (float)NR.life / (float)NR.lifeMax;
                 quotient = Utils.Clamp(quotient, 0f, 1f);
 
-                Vector2 barOrigin = barBack.Size() * 0.5f;
+                Vector2 barOrigin = !DTCrossMod.FablesIsLoaded ? barBack.Size() * 0.5f : barBack_Fables.Size() * 0.5f;
                 Vector2 drawPos = new Vector2(GetDimensions().Width / 2, GetDimensions().Height / 2) + new Vector2(0, -400);
                 Rectangle frameCrop = new Rectangle(0, 0, (int)(quotient * barFront.Width()), barFront.Height());
 
@@ -127,10 +135,21 @@ namespace DestroyerTest.Content.UI
 
                 if (NR.ModNPC is NightmareRoseBoss nightmareRose)
                 {
-                    Color BarFrontColor = !DestroyerTestMod.MasochistIsActive ? OpusColorUtils.MultiLerp(quotient.Inverse(), ColorLib.WretchedColorMap) : ColorLib.TenebrisGradient;
-                    spriteBatch.Draw(barBack.Value, drawPos, null, Color.White * BarOpacity, 0f, barOrigin, Main.UIScale * 2.5f, 0f, 0f);
-                    spriteBatch.Draw(barFront.Value, drawPos, frameCrop, BarFrontColor * BarOpacity, 0f, barOrigin, Main.UIScale * 2.5f, 0f, 0f);
-                    spriteBatch.Draw(barCaps.Value, drawPos, null, Color.White * BarOpacity, 0f, barCaps.Size() / 2, Main.UIScale * 2.5f, 0f, 0f);
+                    Color BarFrontColor = !DTCrossMod.FablesIsLoaded ? (!DestroyerTestMod.MasochistIsActive ? OpusColorUtils.MultiLerp(quotient.Inverse(), ColorLib.WretchedColorMap) : ColorLib.TenebrisGradient) : (!DestroyerTestMod.MasochistIsActive ? OpusColorUtils.MultiLerp(quotient.Inverse(), ColorLib.WretchedColorMap) : ColorLib.TenebrisGradient) with { A = 0 };
+
+                    if (!DTCrossMod.FablesIsLoaded)
+                    {
+                        spriteBatch.Draw(barBack.Value, drawPos, null, Color.White * BarOpacity, 0f, barOrigin, Main.UIScale * DTUIConfig.instance.CustomBossBarScaleModifier, 0f, 0f);
+                        spriteBatch.Draw(barFront.Value, drawPos, frameCrop, BarFrontColor * BarOpacity, 0f, barOrigin, Main.UIScale * DTUIConfig.instance.CustomBossBarScaleModifier, 0f, 0f);
+
+                    
+                        spriteBatch.Draw(barCaps.Value, drawPos, null, Color.White * BarOpacity, 0f, barCaps.Size() / 2, Main.UIScale * DTUIConfig.instance.CustomBossBarScaleModifier, 0f, 0f);
+                    }
+                    else
+                    {
+                        spriteBatch.Draw(barBack_Fables.Value, drawPos, null, Color.White * BarOpacity, 0f, barOrigin, Main.UIScale * DTUIConfig.instance.CustomBossBarScaleModifier, 0f, 0f);
+                        spriteBatch.Draw(barFront_Fables.Value, drawPos, frameCrop, BarFrontColor * BarOpacity, 0f, barFront_Fables.Size() / 2, Main.UIScale * DTUIConfig.instance.CustomBossBarScaleModifier, 0f, 0f);
+                    }
 
 
                     Rectangle NodeLockDimensions = new Rectangle(0, 0, 88, 30);
@@ -155,7 +174,7 @@ namespace DestroyerTest.Content.UI
                                 newShake[j] = NodeLockShake[j];
                             }
                         } 
-                        NodeLockShake = newShake;
+                        NodeLockShake = newShake ;
                     }
 
                     if (cfn.Count > 0)
@@ -167,13 +186,20 @@ namespace DestroyerTest.Content.UI
                             Rectangle NodeLockFrame = new Rectangle(0, NodeLockFrameNumber * NodeLockDimensions.Height, NodeLockDimensions.Width, NodeLockDimensions.Height);
                             Vector2 NodeLockOrigin = NodeLockFrame.Size() / 2f;
 
-                            Vector2 NodeLockDrawPos =  new Vector2((drawPos.X - 466), drawPos.Y - 2) + new Vector2((NodeLockDimensions.Width * Main.UIScale * 2.5f) * i, 0);
+                            Vector2 NodeLockDrawPos =  new Vector2((drawPos.X - (186.4f * DTUIConfig.instance.CustomBossBarScaleModifier)), drawPos.Y - (0.8f * DTUIConfig.instance.CustomBossBarScaleModifier)) + new Vector2((NodeLockDimensions.Width * Main.UIScale * DTUIConfig.instance.CustomBossBarScaleModifier) * i, 0);
 
                             if (cfn[i].life > 0)
                             {
-                                spriteBatch.Draw(NodeLock.Value, NodeLockDrawPos + NodeLockShake[i], NodeLockFrame, Color.White * BarOpacity, 0f, NodeLockOrigin, Main.UIScale * 2.5f, 0f, 0f);
+                                if (!DTCrossMod.FablesIsLoaded)
+                                {
+                                    spriteBatch.Draw(NodeLock.Value, NodeLockDrawPos + ((NodeLockShake[i] / 2.5f) * DTUIConfig.instance.CustomBossBarScaleModifier), NodeLockFrame, Color.White * BarOpacity, 0f, NodeLockOrigin, Main.UIScale * DTUIConfig.instance.CustomBossBarScaleModifier, 0f, 0f);
+                                }
+                                else
+                                {
+                                    spriteBatch.Draw(NodeLock_Fables.Value, NodeLockDrawPos + ((NodeLockShake[i] / 2.5f) * DTUIConfig.instance.CustomBossBarScaleModifier), NodeLockFrame, Color.White * BarOpacity, 0f, NodeLockOrigin, Main.UIScale * DTUIConfig.instance.CustomBossBarScaleModifier, 0f, 0f);
+                                }
 
-                                DTUtils.DrawChargeBar(Main.UIScale * 2.5f, NodeLockDrawPos + new Vector2(0, 40), (float)cfn[i].life / (float)cfn[i].lifeMax, Color.DarkRed * BarOpacity);
+                                DTUtils.DrawChargeBar(Main.UIScale * DTUIConfig.instance.CustomBossBarScaleModifier, NodeLockDrawPos + new Vector2(0, (16f * DTUIConfig.instance.CustomBossBarScaleModifier)), (float)cfn[i].life / (float)cfn[i].lifeMax, Color.DarkRed * BarOpacity);
                             
                             
                             }
@@ -184,13 +210,13 @@ namespace DestroyerTest.Content.UI
 
 
                     var TEXT = Language.GetTextValue("Mods.DestroyerTest.NPCs.NightmareRoseBoss.BossBarDisplayName");
-                    spriteBatch.DrawString(DTAssetLib.Doxent.Value, TEXT, drawPos + new Vector2(0, -60f), Color.White * BarOpacity, 0f, DTAssetLib.Doxent.Value.MeasureString(TEXT) * 0.5f, Main.UIScale * 0.7f, SpriteEffects.None, 0f);
+                    spriteBatch.DrawString(DTAssetLib.Doxent.Value, TEXT, drawPos + new Vector2(0, -24f * DTUIConfig.instance.CustomBossBarScaleModifier), Color.White * BarOpacity, 0f, DTAssetLib.Doxent.Value.MeasureString(TEXT) * 0.5f, Main.UIScale * ((DTUIConfig.instance.CustomBossBarScaleModifier / 2.5f) * 0.7f ), SpriteEffects.None, 0f);
 
                     string DefText = $"Defense: {NR.defense}";
                     //spriteBatch.DrawString(DTAssetLib.Doxent.Value, DefText, drawPos + new Vector2(360, 40f), Color.White, 0f, DTAssetLib.Doxent.Value.MeasureString(DefText) * 0.5f, Main.UIScale * 0.2f, SpriteEffects.None, 0f);
                     float LifePercent = (float)Math.Round(((float)NR.life / (float)NR.lifeMax) * 100, 2);
                     string LifePercentText = $"{LifePercent}%";
-                    spriteBatch.DrawString(DTAssetLib.Doxent.Value, LifePercentText, drawPos + new Vector2(-350, 40f), Color.White * BarOpacity, 0f, DTAssetLib.Doxent.Value.MeasureString(DefText) - new Vector2(0, DTAssetLib.Doxent.Value.MeasureString(DefText).Y / 2), Main.UIScale * 0.35f, SpriteEffects.None, 0f);
+                    spriteBatch.DrawString(DTAssetLib.Doxent.Value, LifePercentText, drawPos + new Vector2(-140 * DTUIConfig.instance.CustomBossBarScaleModifier, 40f), Color.White * BarOpacity, 0f, DTAssetLib.Doxent.Value.MeasureString(DefText) - new Vector2(0, DTAssetLib.Doxent.Value.MeasureString(DefText).Y / 2), Main.UIScale * ((DTUIConfig.instance.CustomBossBarScaleModifier / 2.5f) * 0.35f), SpriteEffects.None, 0f);
                 }
             }
 
@@ -245,8 +271,11 @@ namespace DestroyerTest.Content.UI
         private Asset<Texture2D> barFront;
         private Asset<Texture2D> barBack;
         private Asset<Texture2D> barCaps;
+        private Asset<Texture2D> barFront_Fables;
+        private Asset<Texture2D> barBack_Fables;
 
         private Asset<Texture2D> NodeLock;
+        private Asset<Texture2D> NodeLock_Fables;
 
         public override void OnInitialize()
         {
@@ -262,7 +291,12 @@ namespace DestroyerTest.Content.UI
             barFront = ModContent.Request<Texture2D>("DestroyerTest/Assets/Textures/NightmareRoseBarFront");
             barCaps = ModContent.Request<Texture2D>("DestroyerTest/Assets/Textures/NightmareRoseBarCaps");
 
+            barBack_Fables = ModContent.Request<Texture2D>("DestroyerTest/Assets/Textures/FablesBossBarBack");
+            barFront_Fables = ModContent.Request<Texture2D>("DestroyerTest/Assets/Textures/FablesBossBarFront");
+
             NodeLock = ModContent.Request<Texture2D>("DestroyerTest/Assets/Textures/WyvernCorpseBar_NodeLock");
+
+            NodeLock_Fables = ModContent.Request<Texture2D>("DestroyerTest/Assets/Textures/WyvernCorpseBar_NodeLock_Fables");
 
             Append(area);
         }
@@ -332,7 +366,7 @@ namespace DestroyerTest.Content.UI
                 float quotient = (float)WC.life / (float)WC.lifeMax;
                 quotient = Utils.Clamp(quotient, 0f, 1f);
 
-                Vector2 barOrigin = barBack.Size() * 0.5f;
+                Vector2 barOrigin = !DTCrossMod.FablesIsLoaded ? barBack.Size() * 0.5f : barBack_Fables.Size() * 0.5f;
                 Vector2 drawPos = new Vector2(GetDimensions().Width / 2, GetDimensions().Height / 2) + new Vector2(0, -400);
                 Rectangle frameCrop = new Rectangle(0, 0, (int)(quotient * barFront.Width()), barFront.Height());
 
@@ -340,10 +374,21 @@ namespace DestroyerTest.Content.UI
 
                 if (WC.ModNPC is WyvernCorpseHead Head)
                 {
-                    Color BarFrontColor = !DestroyerTestMod.MasochistIsActive ? OpusColorUtils.MultiLerp(quotient.Inverse(), ColorLib.IchorCrystalColorMap) : ColorLib.Soul;
-                    spriteBatch.Draw(barBack.Value, drawPos, null, Color.White * BarOpacity, 0f, barOrigin, Main.UIScale * 2.5f, 0f, 0f);
-                    spriteBatch.Draw(barFront.Value, drawPos, frameCrop, BarFrontColor * BarOpacity, 0f, barOrigin, Main.UIScale * 2.5f, 0f, 0f);
-                    spriteBatch.Draw(barCaps.Value, drawPos, null, Color.White * BarOpacity, 0f, barCaps.Size() / 2, Main.UIScale * 2.5f, 0f, 0f);
+                    Color BarFrontColor = !DTCrossMod.FablesIsLoaded ? (!DestroyerTestMod.MasochistIsActive ? OpusColorUtils.MultiLerp(quotient.Inverse(), ColorLib.IchorCrystalColorMap) : ColorLib.Soul) : (!DestroyerTestMod.MasochistIsActive ? OpusColorUtils.MultiLerp(quotient.Inverse(), ColorLib.IchorCrystalColorMap) : ColorLib.Soul) with { A = 0 };
+                    
+                    if (!DTCrossMod.FablesIsLoaded)
+                    {
+                        spriteBatch.Draw(barBack.Value, drawPos, null, Color.White * BarOpacity, 0f, barOrigin, Main.UIScale * DTUIConfig.instance.CustomBossBarScaleModifier, 0f, 0f);
+                        spriteBatch.Draw(barFront.Value, drawPos, frameCrop, BarFrontColor * BarOpacity, 0f, barOrigin, Main.UIScale * DTUIConfig.instance.CustomBossBarScaleModifier, 0f, 0f);
+
+
+                        spriteBatch.Draw(barCaps.Value, drawPos, null, Color.White * BarOpacity, 0f, barCaps.Size() / 2, Main.UIScale * DTUIConfig.instance.CustomBossBarScaleModifier, 0f, 0f);
+                    }
+                    else
+                    {
+                        spriteBatch.Draw(barBack_Fables.Value, drawPos, null, Color.White * BarOpacity, 0f, barOrigin, Main.UIScale * DTUIConfig.instance.CustomBossBarScaleModifier, 0f, 0f);
+                        spriteBatch.Draw(barFront_Fables.Value, drawPos, frameCrop, BarFrontColor * BarOpacity, 0f, barFront_Fables.Size() / 2, Main.UIScale * DTUIConfig.instance.CustomBossBarScaleModifier, 0f, 0f);
+                    }
 
 
                     Rectangle NodeLockDimensions = new Rectangle(0, 0, 176, 30);
@@ -380,13 +425,20 @@ namespace DestroyerTest.Content.UI
                             Rectangle NodeLockFrame = new Rectangle(0, NodeLockFrameNumber * NodeLockDimensions.Height, NodeLockDimensions.Width, NodeLockDimensions.Height);
                             Vector2 NodeLockOrigin = NodeLockFrame.Size() / 2f;
 
-                            Vector2 NodeLockDrawPos = new Vector2((drawPos.X - 375), drawPos.Y - 2) + new Vector2((NodeLockDimensions.Width * Main.UIScale * 2.5f) * i, 0);
+                            Vector2 NodeLockDrawPos = new Vector2((drawPos.X - 375), drawPos.Y - 2) + new Vector2((NodeLockDimensions.Width * Main.UIScale * DTUIConfig.instance.CustomBossBarScaleModifier) * i, 0);
 
                             if (IN[i].life > 0)
                             {
-                                spriteBatch.Draw(NodeLock.Value, NodeLockDrawPos + NodeLockShake[i], NodeLockFrame, Color.White * BarOpacity, 0f, NodeLockOrigin, Main.UIScale * 2.5f, 0f, 0f);
+                                if (!DTCrossMod.FablesIsLoaded)
+                                {
+                                    spriteBatch.Draw(NodeLock.Value, NodeLockDrawPos + NodeLockShake[i], NodeLockFrame, Color.White * BarOpacity, 0f, NodeLockOrigin, Main.UIScale * DTUIConfig.instance.CustomBossBarScaleModifier, 0f, 0f);
+                                }
+                                else
+                                {
+                                    spriteBatch.Draw(NodeLock_Fables.Value, NodeLockDrawPos + NodeLockShake[i], NodeLockFrame, Color.White * BarOpacity, 0f, NodeLockOrigin, Main.UIScale * DTUIConfig.instance.CustomBossBarScaleModifier, 0f, 0f);
+                                }
 
-                                DTUtils.DrawChargeBar(Main.UIScale * 2.5f, NodeLockDrawPos + new Vector2(0, 40), (float)IN[i].life / (float)IN[i].lifeMax, Color.DarkRed * BarOpacity);
+                                DTUtils.DrawChargeBar(Main.UIScale * DTUIConfig.instance.CustomBossBarScaleModifier, NodeLockDrawPos + new Vector2(0, 40), (float)IN[i].life / (float)IN[i].lifeMax, Color.DarkRed * BarOpacity);
 
 
                             }

@@ -109,6 +109,14 @@ namespace DestroyerTest.Common
         [Range(-1800f, 1800f)]
         [DefaultValue(0f)]
         public float NightBarYPos { get; set; }
+
+        /// <summary>
+        /// A multiplier on the scale of custom boss bars.
+        /// </summary>
+
+        [Range(1f, 10f)]
+        [DefaultValue(2.5f)]
+        public float CustomBossBarScaleModifier { get; set; }
     }
     
     public class DTConfigDataModifications : ModSystem

@@ -9,6 +9,7 @@ using DestroyerTest.Content.Resources;
 using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib.Content.Helpers;
 using OpusLib.Content.Particles;
 using Terraria;
 using Terraria.Audio;
@@ -88,7 +89,7 @@ namespace DestroyerTest.Content.RangedItems
         {
             if (source != null)
             {
-                if (source.Context == "ReanimationBowShot" && projectile.type == ModContent.ProjectileType<SpiritArrowProjectile>())
+                if (source.Context == "ReanimationBowShot" && Main.rand.NextBool(4) && projectile.type == ModContent.ProjectileType<SpiritArrowProjectile>())
                 {
                     CanReanimate = true;
                 }
@@ -102,6 +103,12 @@ namespace DestroyerTest.Content.RangedItems
         public int ReanimationTimer = 0;
 
         public override bool InstancePerEntity => true;
+
+        public override void SetDefaults(NPC entity)
+        {
+            UndeadEnemies.AddRange(OpusNPCDropHelper.Zombies);
+            UndeadEnemies.AddRange(OpusNPCDropHelper.Skeletons);
+        }
 
         List<int> UndeadEnemies = new()
         {

@@ -163,5 +163,10 @@ Configs: {
 			Label: Night Armor Teleport Cooldown Bar Y Offset
 			Tooltip: ""
 		}
+
+		CustomBossBarScaleModifier: {
+			Label: Custom Boss Bar Scale Modifier
+			Tooltip: ""
+		}
 	}
 }

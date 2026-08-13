@@ -32,7 +32,7 @@ namespace DestroyerTest.Common.Systems
     {
         public override void PostUpdateTime()
         {
-            if (Main.rand.NextBool(2000) && !Main.dayTime && !Main.dedServ)
+            if (Main.rand.NextBool(3500) && !Main.dayTime && !Main.dedServ && !Main.CurrentFrameFlags.AnyActiveBossNPC)
             {
                 Main.NewText("Something zips down from the skies...");
                 Projectile.NewProjectile(Projectile.GetSource_NaturalSpawn(), Main.LocalPlayer.Center + new Vector2(Main.rand.Next(-600, 600), -2000), Vector2.Zero, ModContent.ProjectileType<BladeChunkProjectile>(), 50, 10);

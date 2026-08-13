@@ -13,22 +13,31 @@ using OpusLib;
 using System.Collections.Generic;
 using OpusLib.Content.Helpers;
 using System.Linq;
+using DestroyerTest.Common.Interfaces;
 
 namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
 {
-    public class TormentedSoul : ModProjectile
+    public class TormentedSoul : ModProjectile, IHomingProjectile
     {
 
-        private Player HomingTarget
-        {
-            get => Projectile.ai[0] == 0 ? null : Main.player[(int)Projectile.ai[0] - 1];
-            set
-            {
-                Projectile.ai[0] = value == null ? 0 : value.whoAmI + 1;
-            }
-        }
+      
+        public float DelayTimer;
 
-        public ref float DelayTimer => ref Projectile.ai[1];
+        bool IHomingProjectile.TracksNPCs => false;
+
+        bool IHomingProjectile.TracksPlayers => true;
+
+        float IHomingProjectile.HomingTurnSpeed => 10f;
+
+        bool IHomingProjectile.UsesHomingAcceleration => false;
+
+        float IHomingProjectile.HomingAccelAmount => 1f;
+
+        float IHomingProjectile.HomingMaxAccel => 20f;
+
+        float IHomingProjectile.DetectRadius => 120f;
+
+        bool IHomingProjectile.CanHome => !DestroyerTestMod.EternityIsActive && !DestroyerTestMod.DeathIsActive;
 
         public static bool EternityIsActive()
         {
@@ -109,7 +118,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
             Vector2 drawPos = Projectile.Center - Main.screenPosition;
 
             Opus.StartSpriteBatchWithBlending(sb, BlendState.Additive, SpriteSortMode.Immediate);
-            if (HomingTarget == null)
+            if (Projectile.TryGetGlobalProjectile<HomingGlobal>(out var homing) && homing.TrackingPlayer == null)
             {
                 SoulCenter = Projectile.Center;
             }
@@ -166,68 +175,8 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
                 WarnOpacity -= 0.02f;
             }
 
-            // First, we find a homing target if we don't have one
-            if (HomingTarget == null)
-            {
-                HomingTarget = FindClosestPlayer(maxDetectRadius);
-            }
-
-            // If we have a homing target, make sure it is still valid. If the NPC dies or moves away, we'll want to find a new target
-            if (HomingTarget != null && !IsValidTarget(HomingTarget))
-            {
-                HomingTarget = null;
-            }
-
-            // If we don't have a target, don't adjust trajectory
-            if (HomingTarget == null)
-                return;
-
-            if (!EternityIsActive())
-            {
-                float length = Projectile.velocity.Length();
-                float targetAngle = Projectile.AngleTo(HomingTarget.Center);
-                Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(30)).ToRotationVector2() * length;
-                Projectile.rotation = Projectile.velocity.ToRotation() - MathHelper.PiOver2;
-            }
-            
-
         }
 
-        // Finding the closest NPC to attack within maxDetectDistance range
-        // If not found then returns null
-        public Player FindClosestPlayer(float maxDetectDistance)
-        {
-            Player closestPlayer = null;
-
-            // Using squared values in distance checks will let us skip square root calculations, drastically improving this method's speed.
-            float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
-
-            // Loop through all NPCs
-            foreach (var target in Main.player)
-            {
-                // Check if NPC able to be targeted. 
-                if (IsValidTarget(target))
-                {
-                    // The DistanceSquared function returns a squared distance between 2 points, skipping relatively expensive square root calculations
-                    float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, Projectile.Center);
-
-                    // Check if it is within the radius
-                    if (sqrDistanceToTarget < sqrMaxDetectDistance)
-                    {
-                        sqrMaxDetectDistance = sqrDistanceToTarget;
-                        closestPlayer = target;
-                    }
-                }
-            }
-
-            return closestPlayer;
-        }
-
-        public bool IsValidTarget(Player target)
-        {
-
-            return (target.active == true && target.statLife > 1);
-        }
         public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
 

@@ -56,8 +56,8 @@ namespace DestroyerTest.Common.Interfaces
     {
         public override bool InstancePerEntity => true;
 
-        NPC TrackingNPC;
-        Player TrackingPlayer;
+        public NPC TrackingNPC;
+        public Player TrackingPlayer;
         public bool IsValidNPCTarget(NPC target)
         {
             return target.CanBeChasedBy() && !target.friendly && target.active;

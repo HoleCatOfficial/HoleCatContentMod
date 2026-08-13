@@ -1,5 +1,6 @@
 using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
+using BreadLibrary.Core.Graphics.Spritebatch;
 using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
  
@@ -54,6 +55,7 @@ namespace DestroyerTest.Content.Particles
             this.Opacity = 1f;
             this.gravity = Gravity;
             this.LengthMultiplier = _len = lengthMultiplier;
+            this.HasExplicitPixelLayer = true;
 
             sparkDrawMode = drawMode;
         }
@@ -108,6 +110,8 @@ namespace DestroyerTest.Content.Particles
             return new Tuple<Texture2D, Rectangle, Vector2>(TexValue, frameRect, origin);
         }
 
+        public override PixelLayer DefaultPixelLayer => PixelLayer.AboveTiles;
+
         public BlendState GetBlendState(SparkDrawMode drawMode)
         {
             switch (drawMode)
@@ -135,9 +139,17 @@ namespace DestroyerTest.Content.Particles
 
         public override void Draw(ref ParticleRendererSettings settings, SpriteBatch spritebatch)
         {
-            Opus.StartSpriteBatchWithBlending(spritebatch, GetBlendState(sparkDrawMode), SpriteSortMode.Deferred);
+            var Cap = spritebatch.Capture();
+            spritebatch.End();
+
+            Cap.TransformMatrix = PixelationSystem.PixelationMatrix;
+            Cap.BlendState = GetBlendState(sparkDrawMode);
+
+            spritebatch.Begin(Cap);
+
             spritebatch.Draw(GetTextureProperties().Item1, position - Main.screenPosition, GetTextureProperties().Item2, col * Opacity, rotation, GetTextureProperties().Item3, new Vector2(scale * LengthMultiplier, scale * Width) * 0.1f, SpriteEffects.None, 0f);
-            Opus.ReturnToDefaultDrawing(spritebatch);
+            
+            spritebatch.ResetToDefault();
         }
     }
 
@@ -181,6 +193,7 @@ namespace DestroyerTest.Content.Particles
             this.Opacity = 1f;
             this.gravity = Gravity;
             this.LengthMultiplier = lengthMultiplier;
+            this.HasExplicitPixelLayer = true;
 
             sparkDrawMode = drawMode;
         }
@@ -199,6 +212,7 @@ namespace DestroyerTest.Content.Particles
             this.Opacity = 1f;
             this.gravity = Gravity;
             this.LengthMultiplier = lengthMultiplier;
+            this.HasExplicitPixelLayer = true;
 
 
             sparkDrawMode = drawMode;
@@ -286,15 +300,24 @@ namespace DestroyerTest.Content.Particles
             return BlendState.AlphaBlend;
         }
 
+        public override PixelLayer DefaultPixelLayer => PixelLayer.AboveTiles;
+
         public override void Draw(ref ParticleRendererSettings settings, SpriteBatch spritebatch)
         {
+            var Cap = spritebatch.Capture();
+            spritebatch.End();
 
-            Opus.StartSpriteBatchWithBlending(spritebatch, GetBlendState(sparkDrawMode), SpriteSortMode.Deferred);
+            Cap.TransformMatrix = PixelationSystem.PixelationMatrix;
+            Cap.BlendState = GetBlendState(sparkDrawMode);
+
+            spritebatch.Begin(Cap);
+
             spritebatch.Draw(GetTextureProperties().Item1, position - Main.screenPosition, GetTextureProperties().Item2, col * Opacity, rotation, GetTextureProperties().Item3, new Vector2(scale * LengthMultiplier, scale * Width) * 0.1f, SpriteEffects.None, 0f);
-            Opus.ReturnToDefaultDrawing(spritebatch);
+
+            spritebatch.ResetToDefault();
         }
 
-        public override PixelLayer DefaultPixelLayer => PixelLayer.AboveTiles;
+       
     }
 
     public class HeatseekerSilohSpark : Spark

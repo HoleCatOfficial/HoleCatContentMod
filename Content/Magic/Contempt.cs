@@ -43,7 +43,7 @@ namespace DestroyerTest.Content.Magic
 			Item.damage = 120; // The damage of your sword, this is dynamically adjusted in the projectile code.
 			Item.DamageType = DamageClass.Magic; // Deals melee damage\
 			Item.channel = true;
-			Item.mana = 25;
+			Item.mana = 80;
 			Item.crit = 16; // The critical strike chance the weapon has. The player, by default, has a 4% critical strike chance.
 			Item.noMelee = true;  // This makes sure the item does not deal damage from the swinging animation
 			Item.noUseGraphic = true; // This makes sure the item does not get shown when the player swings his hand

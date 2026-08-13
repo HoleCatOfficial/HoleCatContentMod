@@ -1019,7 +1019,7 @@ namespace DestroyerTest.Content.Entities
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<PhantasmalRemnant>(), 1, 4, 9));
             npcLoot.Add(ItemDropRule.Common(ItemID.SoulofFlight, 1, 5, 20));
 
 
@@ -1030,6 +1030,9 @@ namespace DestroyerTest.Content.Entities
         {
             SunlightModification.Reset();
             //SoundEngine.StopTrackedSounds();
+
+            
+
         }
 
         public override void OnSpawn(IEntitySource source)

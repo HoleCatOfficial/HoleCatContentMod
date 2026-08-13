@@ -118,6 +118,13 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
                     DTUtils.AddStrips(ve, Projectile.OldCenter().ToList(), i, offset, offset2, u, ColorLib.TenebrisGradient with { A = 0 }, trailOffset);
                 }
 
+                var Cap2 = spriteBatch.Capture();
+                spriteBatch.End();
+
+                Cap2.TransformMatrix = PixelationSystem.PixelationMatrix;
+
+                spriteBatch.Begin(Cap2);
+
                 for (int i = Projectile.OldCenter().Length - 1; i > 0; i--)
                 {
                     float u = i / (float)(Projectile.OldCenter().Length - 1);

@@ -44,6 +44,7 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
 using Terraria.Social.Base;
+using Terraria.Utilities.Terraria.Utilities;
 
 namespace DestroyerTest.Content.Entities
 {
@@ -348,10 +349,23 @@ namespace DestroyerTest.Content.Entities
                 NormalAI();
                 Music = MusicLoader.GetMusicSlot("DestroyerTest/Assets/Music/ConstitutionBoss");
             }
-            else
+
+            if (DestroyerTestMod.EternityIsActive && !DestroyerTestMod.DeathIsActive)
             {
                 EternityAI();
-                Music = MusicLoader.GetMusicSlot("DestroyerTest/Assets/Music/Placeholder5");
+                Music = MusicLoader.GetMusicSlot("DestroyerTest/Assets/Music/ConstEternityPlaceholder");
+            }
+
+            if (!DestroyerTestMod.EternityIsActive && DestroyerTestMod.DeathIsActive)
+            {
+                EternityAI();
+                Music = MusicLoader.GetMusicSlot("DestroyerTest/Assets/Music/ConstEternityPlaceholder");
+            }
+
+            if (DestroyerTestMod.EternityIsActive || DestroyerTestMod.DeathIsActive)
+            {
+                EternityAI();
+                Music = MusicLoader.GetMusicSlot("DestroyerTest/Assets/Music/ConstEternityPlaceholder");
             }
 
             NPC.rotation = NPC.velocity.ToRotation() + MathHelper.PiOver4;
@@ -400,8 +414,25 @@ namespace DestroyerTest.Content.Entities
 
         public float LanceWarningOpacity = 0f;
         public bool SpawnedHomingSlash = false;
+
+        List<Projectile> OrbitingMines = new();
+        
         public void EternityAI()
         {
+            Vector2[] P = Opus.GetEquidistantOrbitVectors(Main.masterMode ? 9 : 7, ArenaCTR, 0.01f, 500);
+
+            for (int i = OrbitingMines.Count - 1; i >= 0; i--)
+            {
+                if (!OrbitingMines[i].active)
+                {
+                    OrbitingMines.RemoveAt(i);
+                    continue;
+                }
+
+                if (i < P.Length)
+                    OrbitingMines[i].Center = P[i];
+            }
+
             if (AITimer < 300 && AITimer >= 0)
             {
                 Side = Main.rand.NextBool() ? 1 : -1;
@@ -415,16 +446,27 @@ namespace DestroyerTest.Content.Entities
                     SoundEngine.PlaySound(ConstitutionSounds.Shoot1);
                     if (Main.masterMode)
                     {
-                        EternityMineAI(9);
+                        EternityMineAI(P);
                     }
                     else
                     {
-                        EternityMineAI(7);
+                        EternityMineAI(P);
+                    }
+                }
+
+                if (NPC.life <= NPC.lifeMax / 2)
+                {
+                    if (AITimer % 10 == 0)
+                    {
+                        Vector2 Starspawn = ArenaCTR + new Vector2(Main.rand.NextFloat(-10, 10), -((ArenaRect.Height / 2) + 80));
+                        Projectile G = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), Starspawn, new Vector2(0, 20f), ModContent.ProjectileType<ConstitutionStarHostile_NoHoming>(), ConstitutionDamageValues.StellarVolleyDamage(), 8);
+                        G.timeLeft = 120;
                     }
                 }
             }
             if (AITimer < 1300 && AITimer >= 1200)
             {
+                OrbitingMines.Clear();
                 IdleAI();
             }
             if (AITimer < 2400 && AITimer >= 1300)
@@ -473,13 +515,6 @@ namespace DestroyerTest.Content.Entities
                     
                 }
 
-                if (!SpawnedHomingSlash)
-                {
-                    Vector2 v = player.Center - NPC.Center;
-                    v.Normalize();
-                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, v * 7, ModContent.ProjectileType<TrackingFireSlash>(), 70, 10);
-                    SpawnedHomingSlash = true;
-                }
                 EternityLanceAI();
 
                 if (ShotLance)
@@ -493,6 +528,14 @@ namespace DestroyerTest.Content.Entities
             if (AITimer < 4800 && AITimer >= 3600)
             {
                 SpawnedHomingSlash = false;
+                
+            }
+            if (AITimer > 3600)
+            {
+                EternityOrbitBursts();
+            }
+            if (AITimer > 4200)
+            {
                 AITimer = 0;
             }
         }
@@ -1015,13 +1058,32 @@ namespace DestroyerTest.Content.Entities
 
         #region Eternity
 
-        public void EternityMineAI(int Iterations)
+        public void EternityMineAI(Vector2[] P)
         {
-            for (int k = 0; k < Iterations; k++)
+            foreach (Projectile mine in OrbitingMines)
             {
-                Vector2 Pos = Main.rand.NextVector2FromRectangle(ArenaRect);
+                if (mine.active)
+                {
+                    mine.Kill();
+                }
+            }
 
-                Projectile.NewProjectile(NPC.GetSource_FromAI(), Pos, Vector2.Zero, ModContent.ProjectileType<StellarBomb>(), ConstitutionDamageValues.EternityStellarBombDamage(), 5);
+
+            OrbitingMines.Clear();
+
+            for (int k = 0; k < P.Length; k++)
+            {
+                Projectile p = Projectile.NewProjectileDirect(
+                    NPC.GetSource_FromAI(),
+                    P[k],
+                    Vector2.Zero,
+                    ModContent.ProjectileType<StellarBomb>(),
+                    ConstitutionDamageValues.EternityStellarBombDamage(),
+                    5
+                );
+
+                p.timeLeft = 119;
+                OrbitingMines.Add(p);
             }
         }
 
@@ -1064,6 +1126,9 @@ namespace DestroyerTest.Content.Entities
                     }
 
                     SoundEngine.PlaySound(DTAssetLib.Impacts.MagicBeep);
+
+                    Opus.RingSpreadProjectile(ModContent.ProjectileType<StarfuryClone>(), 6, player.MountedCenter, 200, ConstitutionDamageValues.EternityStarfuryCloneDamage(), 8, 8);
+
                     for (int i = 0; i < Ps.Length; i++)
                     {
                         Vector2 Pos = Ps[i];
@@ -1076,6 +1141,22 @@ namespace DestroyerTest.Content.Entities
                     u++;
                     ShotLance = true;
                 }
+            }
+        }
+
+        float off = 0f;
+        public void EternityOrbitBursts()
+        {
+            off += 0.05f;
+            Vector2 Ideal = player.MountedCenter + new Vector2(500, 0).RotatedBy(off);
+            Vector2 Opposite = player.MountedCenter + new Vector2(-300, 0).RotatedBy(off);
+
+            NPC.SmoothMoveToPoint(Ideal, 40f);
+
+            if (AITimer % 20 == 0)
+            {
+                SoundEngine.PlaySound(ConstitutionSounds.StellarVolley);
+                Opus.RadialSpreadProjectile(ModContent.ProjectileType<HollowStar>(), 8, Ideal, 90, 4f, 16f);
             }
         }
 

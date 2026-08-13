@@ -160,7 +160,7 @@ namespace DestroyerTest.Content.Entities
         public override bool? DrawHealthBar(byte hbPosition, ref float scale, ref Vector2 position)
         {
             position = new Vector2(0, 0);
-            return true;
+            return false;
         }
 
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
@@ -503,15 +503,7 @@ namespace DestroyerTest.Content.Entities
                 }
             }
 
-            if (cfNodes.Count > 0)
-            {
-                for (int i = 0; i < cfNodes.Count; i++)
-                {
-                    Line L = new Line(cfNodes[i].Center, NPCHead);
-                    DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(1, true), ColorLib.WretchedGradient(), Main.spriteBatch, BlendState.Additive, NodeHealLineScroll, 0.5f, 1f);
-
-                }
-            }
+            
             
 
             Rectangle sourceRect = new Rectangle(
@@ -593,8 +585,32 @@ namespace DestroyerTest.Content.Entities
                 return;
             }
 
-            Opus.StartSpriteBatchPixelated(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
+            var Cap = spriteBatch.Capture();
+            spriteBatch.End();
 
+            Cap.TransformMatrix = PixelationSystem.PixelationMatrix;
+
+            spriteBatch.Begin(Cap);
+
+
+            if (cfNodes.Count > 0)
+            {
+                Main.EntitySpriteDraw(DTAssetLib.Star(3).Value, NPCHead - Main.screenPosition, null, ColorLib.CursedFlames with { A = 0 }, 0.1f * NodeHealLineScroll, DTAssetLib.Star(3).Value.Size() / 2, 2f, SpriteEffects.None);
+                for (int i = 0; i < cfNodes.Count; i++)
+                {
+                    Line L = new Line(cfNodes[i].Center, NPCHead);
+
+                    Main.EntitySpriteDraw(DTAssetLib.Star(3).Value, cfNodes[i].Center - Main.screenPosition, null, ColorLib.CursedFlames, 0.1f * NodeHealLineScroll, DTAssetLib.Star(3).Value.Size() / 2, 2f, SpriteEffects.None);
+                    DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(1, true), ColorLib.WretchedGradient() with { A = 0 }, Main.spriteBatch, BlendState.Additive, NodeHealLineScroll, 0.5f, 1f);
+                    var Cap2 = spriteBatch.Capture();
+                    spriteBatch.End();
+
+                    Cap2.TransformMatrix = PixelationSystem.PixelationMatrix;
+
+                    spriteBatch.Begin(Cap2);
+
+                }
+            }
 
             if (ShouldDrawLaserWarning)
             {
@@ -611,7 +627,7 @@ namespace DestroyerTest.Content.Entities
                 {
                     GlowConeWarning_CursedFlames();
                 }
-                if (DestroyerTestMod.EternityIsActive && !DestroyerTestMod.MasochistIsActive)
+                if ((DestroyerTestMod.EternityIsActive || DestroyerTestMod.DeathIsActive) && !DestroyerTestMod.MasochistIsActive)
                 {
                     GlowConeWarning_CursedFlamesEternity();
                 }
@@ -970,7 +986,7 @@ namespace DestroyerTest.Content.Entities
                     //Border.scale = Main.rand.NextFloat(0.2f, 4.0f);
 
                     PointGlowPreMultiplied Border = new();
-                    Border.Initialize(Pos, Vector2.Zero, BorderCol, 0.6f);
+                    Border.Initialize(Pos, Pos.DirectionFrom(NPCHead).RotatedBy(Main.rand.NextFloat(-1.5f, -1.1f)) * Main.rand.NextFloat(1f, 9f), BorderCol, 0.6f);
                     ParticleEngine.BehindProjectiles.Add(Border);
                 }
 
@@ -1128,7 +1144,7 @@ namespace DestroyerTest.Content.Entities
 
                 var NodePositions = Opus.GetEquidistantOrbitVectors(nodeCount, NPCHead, 0.003f, NodeRadius);
 
-                NodeHealLineScroll += 20;
+                NodeHealLineScroll -= 8;
                 for (int i = 0; i < cfNodes.Count; i++)
                 {
                     Line L = new Line(NPCHead, cfNodes[i].Center);
@@ -1736,6 +1752,7 @@ namespace DestroyerTest.Content.Entities
                     {
                         ShouldCenterCameraOnNPC = false;
 
+
                         if (cfg.EnableDebugMessages)
                         {
                             Mod.Logger.Info($"Death Timer: {DeathIdleTimer}");
@@ -1756,7 +1773,10 @@ namespace DestroyerTest.Content.Entities
 
                             if (DeathIdleTimer % 20 == 0)
                             {
-                                Opus.RingSpreadDustRandom(DustID.FireworksRGB, 20, NPCHead, Main.rand.NextFloat(30f, 400f), 0, Color.White, 2f, 1f);
+                                foreach (Dust dust in Opus.RingSpreadDustRandom(DustID.FireworksRGB, 20, NPCHead, Main.rand.NextFloat(30f, 400f), 0, Color.White, -10f, 1f))
+                                {
+                                    dust.noGravity = true;
+                                }
                             }
                         }
                         if (DeathIdleTimer <= 0)
@@ -1774,6 +1794,10 @@ namespace DestroyerTest.Content.Entities
                             NPC.dontTakeDamage = false;
                             NPC.StrikeInstantKill();
 
+                        }
+                        else
+                        {
+                            NPC.dontTakeDamage = true;
                         }
                     }
                     break;
@@ -1799,7 +1823,7 @@ namespace DestroyerTest.Content.Entities
 
                 Spark Spark = new Spark();
 
-                Spark.PrepareSpark(Main.rand.NextVector2FromRectangle(NPC.Hitbox), new Vector2(Main.rand.NextFloat(-0.2f, 0.2f), Main.rand.NextFloat(-10.5f, -2.5f)), 0f, ColorLib.Soul, 0.5f, false, 40, SparkDrawMode.Additive);
+                Spark.PrepareSpark(Main.rand.NextVector2FromRectangle(NPC.Hitbox), new Vector2(Main.rand.NextFloat(-0.2f, 0.2f), Main.rand.NextFloat(-10.5f, -2.5f)), 0f, ColorLib.Soul, 0.5f, false, 40, SparkDrawMode.Additive, 2f);
                 ParticleEngine.ShaderParticles.Add(Spark);
 
                 Lighting.AddLight(NPC.Center, ColorLib.Soul.ToVector3() * 0.5f);
@@ -1814,7 +1838,7 @@ namespace DestroyerTest.Content.Entities
 
                 Spark Spark = new Spark();
 
-                Spark.PrepareSpark(Main.rand.NextVector2FromRectangle(NPC.Hitbox), new Vector2(Main.rand.NextFloat(-0.2f, 0.2f), Main.rand.NextFloat(-10.5f, -2.5f)), 0f, ColorLib.Soul, 0.5f, false, 40, SparkDrawMode.Additive);
+                Spark.PrepareSpark(Main.rand.NextVector2FromRectangle(NPC.Hitbox), new Vector2(Main.rand.NextFloat(-0.2f, 0.2f), Main.rand.NextFloat(-10.5f, -2.5f)), 0f, ColorLib.Soul, 0.5f, false, 40, SparkDrawMode.Additive, 2f);
                 ParticleEngine.ShaderParticles.Add(Spark);
 
                 Lighting.AddLight(NPC.Center, ColorLib.Soul.ToVector3() * 0.5f);
@@ -1834,7 +1858,7 @@ namespace DestroyerTest.Content.Entities
 
                         Spark Spark = new Spark();
 
-                        Spark.PrepareSpark(Main.rand.NextVector2FromRectangle(NPC.Hitbox), new Vector2(Main.rand.NextFloat(-0.2f, 0.2f), Main.rand.NextFloat(-10.5f, -2.5f)), 0f, ColorLib.CursedFlames, 0.5f, false, 40, SparkDrawMode.Additive);
+                        Spark.PrepareSpark(Main.rand.NextVector2FromRectangle(NPC.Hitbox), new Vector2(Main.rand.NextFloat(-0.2f, 0.2f), Main.rand.NextFloat(-10.5f, -2.5f)), 0f, ColorLib.CursedFlames, 0.5f, false, 40, SparkDrawMode.Additive, 2f);
                         ParticleEngine.ShaderParticles.Add(Spark);
                     }
                     Lighting.AddLight(NPC.Center, ColorLib.CursedFlames.ToVector3() * 0.5f);
@@ -1848,7 +1872,7 @@ namespace DestroyerTest.Content.Entities
 
                         Spark Spark = new Spark();
 
-                        Spark.PrepareSpark(Main.rand.NextVector2FromRectangle(NPC.Hitbox), new Vector2(Main.rand.NextFloat(-0.2f, 0.2f), Main.rand.NextFloat(-10.5f, -2.5f)), 0f, ColorLib.CursedFlames, 0.5f, false, 40, SparkDrawMode.Additive);
+                        Spark.PrepareSpark(Main.rand.NextVector2FromRectangle(NPC.Hitbox), new Vector2(Main.rand.NextFloat(-0.2f, 0.2f), Main.rand.NextFloat(-10.5f, -2.5f)), 0f, ColorLib.CursedFlames, 0.5f, false, 40, SparkDrawMode.Additive, 2f);
                         ParticleEngine.ShaderParticles.Add(Spark);
                     }
                     Lighting.AddLight(NPC.Center, ColorLib.CursedFlames.ToVector3() * 0.5f);
@@ -1862,7 +1886,7 @@ namespace DestroyerTest.Content.Entities
 
                         Spark Spark = new Spark();
 
-                        Spark.PrepareSpark(Main.rand.NextVector2FromRectangle(NPC.Hitbox), new Vector2(Main.rand.NextFloat(-0.2f, 0.2f), Main.rand.NextFloat(-10.5f, -2.5f)), 0f, ColorLib.TenebrisGradient, 0.5f, false, 40, SparkDrawMode.Additive);
+                        Spark.PrepareSpark(Main.rand.NextVector2FromRectangle(NPC.Hitbox), new Vector2(Main.rand.NextFloat(-0.2f, 0.2f), Main.rand.NextFloat(-10.5f, -2.5f)), 0f, ColorLib.TenebrisGradient, 0.5f, false, 40, SparkDrawMode.Additive, 2f);
                         ParticleEngine.ShaderParticles.Add(Spark);
                     }
                     Lighting.AddLight(NPC.Center, ColorLib.TenebrisGradient.ToVector3() * 0.5f);
@@ -2108,7 +2132,7 @@ namespace DestroyerTest.Content.Entities
                 SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/SoulSummon") with { MaxInstances = 0, PitchVariance = 0.2f });
                 player.GetModPlayer<ScreenshakePlayer>().screenshakeTimer = 10;
                 player.GetModPlayer<ScreenshakePlayer>().screenshakeMagnitude = 8;
-                if (!DestroyerTestMod.EternityIsActive)
+                if (!DestroyerTestMod.EternityIsActive && !DestroyerTestMod.DeathIsActive)
                 {
                     for (int a = 0; a < 10; a++)
                     {
@@ -2116,7 +2140,7 @@ namespace DestroyerTest.Content.Entities
                         Projectile.NewProjectile(Entity.GetSource_FromThis(), SpawnPoint, new Vector2(0, -8), ModContent.ProjectileType<TormentedSoul>(), 25, 2);
                     }
                 }
-                if (DestroyerTestMod.EternityIsActive)
+                if (DestroyerTestMod.EternityIsActive || DestroyerTestMod.DeathIsActive)
                 {
                     for (int a = 0; a < 5; a++)
                     {
@@ -2440,6 +2464,7 @@ namespace DestroyerTest.Content.Entities
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Item_NightmareRoseTrophy>(), 10));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<PhantasmalRemnant>(), 1, 4, 9));
             LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
 
             npcLoot.Add(notExpertRule);

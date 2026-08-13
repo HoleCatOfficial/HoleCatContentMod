@@ -1,4 +1,11 @@
-﻿using BreadLibrary.Core.Graphics.Particles;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using BreadLibrary.Core.Graphics.Particles;
+using BreadLibrary.Core.Graphics.Pixelation;
+using BreadLibrary.Core.Graphics.Spritebatch;
 using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
@@ -8,11 +15,6 @@ using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using OpusLib.Content.Helpers;
 using ReLogic.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -20,9 +22,12 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 {
-    public class RiftStaffBeam : ModProjectile
+    public class RiftStaffBeam : ModProjectile, IDrawPixelated
     {
         public override string Texture => DTUtils.NoTexture;
+
+        PixelLayer IDrawPixelated.PixelLayer => PixelLayer.AbovePlayer;
+
         public override void SetDefaults()
         {
             Projectile.width = 30;
@@ -42,23 +47,40 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
         int oF = 0;
 
         float Rot = 0f;
-        public override bool PreDraw(ref Color lightColor)
+
+        void IDrawPixelated.DrawPixelated(SpriteBatch spriteBatch)
         {
             oF -= 30;
             L = new Line(Projectile.Center, Projectile.Center + new Vector2(2000, 0).RotatedBy(Projectile.rotation));
 
-            Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(3), ColorLib.Rift, Main.spriteBatch, BlendState.Additive, oF, WidthScl * 2);
-            Main.EntitySpriteDraw(DTAssetLib.Laser.Value, Projectile.Center - Main.screenPosition, null, ColorLib.DarkRift3, Projectile.rotation, new Vector2(0, DTAssetLib.Laser.Value.Height / 2), new Vector2(1f, WidthScl), SpriteEffects.None);
-            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(5), ColorLib.LightRift2, Main.spriteBatch, BlendState.Additive, oF, WidthScl * 2f, 5f);
-            //Main.EntitySpriteDraw(DTAssetLib.Laser.Value, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(0, DTAssetLib.Laser.Value.Height / 2), new Vector2(1f, WidthScl * 0.15f), SpriteEffects.None);
+            var Cap = spriteBatch.Capture();
+            spriteBatch.End();
+
+            Cap.TransformMatrix = PixelationSystem.PixelationMatrix;
+
+
+            spriteBatch.Begin(Cap);
+
+            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(3, true), ColorLib.Rift with { A = 0 }, Main.spriteBatch, BlendState.Additive, oF, WidthScl * 2);
+            spriteBatch.End();
+            spriteBatch.Begin(Cap);
+
+            Main.EntitySpriteDraw(DTAssetLib.Laser.Value, Projectile.Center - Main.screenPosition, null, ColorLib.DarkRift3 with { A = 0 }, Projectile.rotation, new Vector2(0, DTAssetLib.Laser.Value.Height / 2), new Vector2(1f, WidthScl), SpriteEffects.None);
+            
+            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(5, true), ColorLib.LightRift2 with { A = 0 }, Main.spriteBatch, BlendState.Additive, oF, WidthScl * 2f, 5f);
+            spriteBatch.End();
+            spriteBatch.Begin(Cap);
 
             Rot += 0.3f;
 
             Main.EntitySpriteDraw(DTAssetLib.Star(3).Value, Projectile.Center - Main.screenPosition, null, ColorLib.Rift with { A = 0 }, Rot, DTAssetLib.Star(3).Value.Size() / 2, 1.4f, SpriteEffects.None);
             Main.EntitySpriteDraw(DTAssetLib.Star(3).Value, Projectile.Center - Main.screenPosition, null, Color.White with { A = 0 }, Rot, DTAssetLib.Star(3).Value.Size() / 2, 1f, SpriteEffects.None);
+            spriteBatch.ResetToDefault();
+        }
 
-            Opus.ReturnToDefaultDrawing(Main.spriteBatch);
+        public override bool PreDraw(ref Color lightColor)
+        {
+
             return false;
         }
 
@@ -161,6 +183,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
         {
             target.AddBuff(ModContent.BuffType<HeliouricShock>(), 240);
         }
+
+        
     }
     
 }
