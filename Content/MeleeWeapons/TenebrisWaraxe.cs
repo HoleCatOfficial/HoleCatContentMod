@@ -38,7 +38,7 @@ namespace DestroyerTest.Content.MeleeWeapons
             Item.noMelee = true;
             Item.noUseGraphic = true;
 
-            Item.DamageType = ModContent.GetInstance<DTRogueClass>(); // Whether your item is part of the melee class.
+            Item.DamageType = DamageClass.Throwing; // Whether your item is part of the melee class.
             Item.damage = 300; // The damage your item deals.
             Item.knockBack = 17; // The force of knockback of the weapon. Maximum is 20
             Item.crit = 4; // The critical strike chance the weapon has. The player, by default, has a 4% critical strike chance.

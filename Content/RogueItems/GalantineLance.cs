@@ -37,7 +37,7 @@ namespace DestroyerTest.Content.RogueItems
             Item.rare = ModContent.RarityType<StellarRarity>();
             Item.damage = 30;
             Item.autoReuse = false; // Prevents animation overlap
-            Item.DamageType = ModContent.GetInstance<DTRogueClass>();
+            Item.DamageType = DamageClass.Throwing;
         }
 
 		public override void AddRecipes()

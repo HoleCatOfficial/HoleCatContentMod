@@ -37,7 +37,7 @@ namespace DestroyerTest.Content.RogueItems
             Item.rare = ModContent.RarityType<RiftRarity1>();
             Item.damage = 120;
             Item.autoReuse = true;
-            Item.DamageType = ModContent.GetInstance<DTRogueClass>();
+            Item.DamageType = DamageClass.Throwing;
         }
     }
 }

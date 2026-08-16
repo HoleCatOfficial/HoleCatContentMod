@@ -109,7 +109,7 @@ namespace DestroyerTest.Common
         {
             if (CalamityIsLoaded)
             {
-                if (CalamityMod.Call("CanStealthStrike", player) is bool canStealth && canStealth && item.DamageType == ModContent.GetInstance<DTRogueClass>() || (CalamityMod.TryFind<DamageClass>("RogueDamageClass", out DamageClass rogueDamageClass) && item.DamageType == rogueDamageClass))
+                if (CalamityMod.Call("CanStealthStrike", player) is bool canStealth && canStealth && item.DamageType == DamageClass.Throwing || (CalamityMod.TryFind<DamageClass>("RogueDamageClass", out DamageClass rogueDamageClass) && item.DamageType == rogueDamageClass))
                 {
                     return true;
                 }
@@ -126,7 +126,7 @@ namespace DestroyerTest.Common
         {
             if (DTCrossMod.CalamityIsLoaded)
             {
-                if (entity.DamageType == ModContent.GetInstance<DTRogueClass>() && DTCrossMod.CalamityMod.TryFind<DamageClass>("RogueDamageClass", out DamageClass rogueDamageClass))
+                if (entity.DamageType == DamageClass.Throwing && DTCrossMod.CalamityMod.TryFind<DamageClass>("RogueDamageClass", out DamageClass rogueDamageClass))
                 {
                     entity.DamageType = rogueDamageClass;
                 }
@@ -143,7 +143,7 @@ namespace DestroyerTest.Common
             if (DTCrossMod.CalamityIsLoaded)
             {
        
-                if (entity.DamageType == ModContent.GetInstance<DTRogueClass>() && DTCrossMod.CalamityMod.TryFind<DamageClass>("RogueDamageClass", out DamageClass rogueDamageClass))
+                if (entity.DamageType == DamageClass.Throwing && DTCrossMod.CalamityMod.TryFind<DamageClass>("RogueDamageClass", out DamageClass rogueDamageClass))
                 {
                     entity.DamageType = rogueDamageClass;
                 }

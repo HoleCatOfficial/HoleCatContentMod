@@ -35,7 +35,7 @@ namespace DestroyerTest.Content.RogueItems
 			Item.rare = ModContent.RarityType<VesperRarity>();
 			Item.damage = 24;
 			Item.autoReuse = true;
-			Item.DamageType = ModContent.GetInstance<DTRogueClass>();
+			Item.DamageType = DamageClass.Throwing;
         }
 
 		public override void AddRecipes() {

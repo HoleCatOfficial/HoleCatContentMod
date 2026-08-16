@@ -1,5 +1,5 @@
 displayName = [c/bfbef1:Talid Mod (Private Beta)]
-author = HoleCat
+author = HoleCat and Bread
 version = 2.1.7274
 modReferences = InnoVault, OpusLib, GlowmaskHelper, BreadLibrary
 dependencies = InnoVault, OpusLib, GlowmaskHelper, BreadLibrary

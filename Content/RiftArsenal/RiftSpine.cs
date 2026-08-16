@@ -42,7 +42,7 @@ namespace DestroyerTest.Content.RiftArsenal
 			Item.value = Item.buyPrice(0, 0, 20, 0);
 			Item.rare = ModContent.RarityType<RiftRarity2>();
 			Item.damage = 160;
-			Item.DamageType = ModContent.GetInstance<DTRogueClass>();
+			Item.DamageType = DamageClass.Throwing;
 			Item.autoReuse = true;
 		}
 

@@ -40,7 +40,7 @@ namespace DestroyerTest.Content.RangedItems
 			Item.knockBack = 0;  // The knockback of your sword, this is dynamically adjusted in the projectile code.
 			Item.autoReuse = true; // This determines whether the weapon has autoswing
 			Item.damage = 45; // The damage of your sword, this is dynamically adjusted in the projectile code.
-			Item.DamageType = ModContent.GetInstance<DTRogueClass>();
+			Item.DamageType = DamageClass.Throwing;
             Item.crit = 30; // The critical strike chance the weapon has. The player, by default, has a 4% critical strike chance.ion
 			Item.shoot = ModContent.ProjectileType<TenebrousChakramThrown>(); // The sword as a projectile
             Item.shootSpeed = 20f;

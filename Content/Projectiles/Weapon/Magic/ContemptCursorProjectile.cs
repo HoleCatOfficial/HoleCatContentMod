@@ -1,5 +1,7 @@
+using System.Text;
 using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
+using BreadLibrary.Core.Graphics.Spritebatch;
 using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
@@ -14,7 +16,6 @@ using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using OpusLib.Content.Helpers;
 using ReLogic.Utilities;
-using System.Text;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -66,6 +67,13 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             r += 0.2f;
             Texture2D glowTexture = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/CorruptSigil").Value;
 
+            var Cap = spriteBatch.Capture();
+            spriteBatch.End();
+
+            Cap.TransformMatrix = PixelationSystem.PixelationMatrix;
+
+            spriteBatch.Begin(Cap);
+
             Main.EntitySpriteDraw(
                 glowTexture,
                 Projectile.Center - Main.screenPosition,
@@ -81,6 +89,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             float RingScale =  DTAssetLib.NightmareRoseArenaBorder.Value.ScaleRingTextureToMatchRadius(rad, 1327);
             Main.EntitySpriteDraw(DTAssetLib.NightmareRoseArenaBorder.Value, Projectile.Center - Main.screenPosition, null, ColorLib.CursedFlames with { A = 0 } * Projectile.Opacity, r, DTAssetLib.NightmareRoseArenaBorder.Value.Size() / 2, RingScale, SpriteEffects.FlipHorizontally, 0);
             Main.EntitySpriteDraw(DTAssetLib.NightmareRoseArenaBorder.Value, Projectile.Center - Main.screenPosition, null, OpusColorUtils.Pastel(ColorLib.CursedFlames, 0.75f) with { A = 0 } * Projectile.Opacity, r, DTAssetLib.NightmareRoseArenaBorder.Value.Size() / 2, RingScale, SpriteEffects.FlipHorizontally, 0);
+            spriteBatch.ResetToDefault();
         }
 
 

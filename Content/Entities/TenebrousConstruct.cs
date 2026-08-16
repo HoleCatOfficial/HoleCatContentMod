@@ -215,7 +215,7 @@ namespace DestroyerTest.Content.Entities
                 RingRot[i2] += RingRotAmt[i2];
             }
 
-            if (CurrentState == State.Orbit)
+            if (PlayerShouldBeTrapped)
             {
                 if (OrbitBarrierOpacity < 1f)
                 {
@@ -267,8 +267,32 @@ namespace DestroyerTest.Content.Entities
             */
 
             Main.EntitySpriteDraw(DTAssetLib.BarrierRing.Value, NPC.Center - screenPos, null, Color.White with { A = 0 } * OrbitBarrierOpacity, R, DTAssetLib.BarrierRing.Value.Size() / 2, DTAssetLib.BarrierRing.Value.ScaleRingTextureToMatchRadius(1300f, 1300), SpriteEffects.None, 0);
+
+
+            spriteBatch.UseBlendState(BlendState.Additive);
+            Main.EntitySpriteDraw(DTAssetLib.BlessedNodeLaserTelegraph.Value, NPC.Center - Main.screenPosition, null, ColorLib.TenebrisGradient * LaserWarnOpacity, LaserRotOffset - 12f, DTAssetLib.BlessedNodeLaserTelegraph.Value.Size() / 2, 1f, SpriteEffects.None);
+            Main.EntitySpriteDraw(DTAssetLib.BlessedNodeLaserTelegraph.Value, NPC.Center - Main.screenPosition, null, Color.White * LaserWarnOpacity, LaserRotOffset - 12f, DTAssetLib.BlessedNodeLaserTelegraph.Value.Size() / 2, 0.65f, SpriteEffects.None);
+            spriteBatch.UseBlendState(BlendState.AlphaBlend);
+
+            if (ShouldDrawVingette)
+            {
+                DrawVingette();
+            }
+
             spriteBatch.ResetToDefault();
 
+        }
+
+        public float VingetteOpacity = 0f;
+        public float vOpacity = 0f;
+
+        public float VingetteScale = 0.5f;
+        public float vScale = 0.5f;
+
+        public bool ShouldDrawVingette = false;
+        public void DrawVingette()
+        {
+            Main.EntitySpriteDraw(DTAssetLib.Vingette.Value, NPC.Center - Main.screenPosition, null, Color.Black * vOpacity, 0f, DTAssetLib.Vingette.Value.Size() / 2, vScale, SpriteEffects.None);
         }
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
@@ -280,8 +304,8 @@ namespace DestroyerTest.Content.Entities
 
             for (int i = 0; i < NPC.oldPos.Length; i++)
             {
-                float Alpha = MathHelper.Lerp(0.4f, 0f, (float)i / (float)NPC.oldPos.Length);
-                Main.EntitySpriteDraw(TextureAssets.Npc[Type].Value, (NPC.oldPos[i] + new Vector2(NPC.width / 2, NPC.height / 2)) - screenPos, NPC.frame, drawColor * Alpha, NPC.oldRot[i], new Vector2(NPC.width / 2, (NPC.frame.Height) / 2), NPC.scale, SpriteEffects.None);
+                float Alpha = MathHelper.Lerp(0.2f, 0f, (float)i / (float)NPC.oldPos.Length);
+                Main.EntitySpriteDraw(TextureAssets.Npc[Type].Value, (NPC.oldPos[i] + new Vector2(NPC.width / 2, (NPC.height / 2) + 2)) - screenPos, NPC.frame, drawColor * Alpha, NPC.oldRot[i], new Vector2(NPC.width / 2, (NPC.frame.Height) / 2), NPC.scale, SpriteEffects.None);
             }
 
 
@@ -357,6 +381,8 @@ namespace DestroyerTest.Content.Entities
             Orbit,
             StarShoot,
             Knives,
+            Suck,
+            Lasers,
 
             Calamity_TeleportBurst
         }
@@ -379,6 +405,14 @@ namespace DestroyerTest.Content.Entities
         bool[] DisplayedDialogue = new bool[21];
         int CurrentDialogue = 0;
 
+        public bool PlayerShouldBeTrapped = false;
+
+        public int Consumed = 0;
+        public int ConsumptionThreshold = 100;
+        float LaserWarnOpacity = 0f;
+        float LaserRotOffset = 0f;
+        public float ConsumptionProgress => (float)Consumed / (float)ConsumptionThreshold;
+
         void ControlDialogue()
         {
             float Prog = ((float)NPC.life / (float)NPC.lifeMax).Inverse();
@@ -393,7 +427,28 @@ namespace DestroyerTest.Content.Entities
             }
         }
 
-        
+        public int IdleChaseTime = 300;
+        public int LanceCrossTime = 2000;
+        public int OrbitTime = 3500;
+        public int StarShootTime = 1160;
+        public int KnivesTime = 1460;
+        public int SuckTime = 1200;
+        public int LasersTime = 1320;
+        public int CalamityTeleportBurstTime = 1200;
+
+        public int IdleChaseEnd => IdleChaseTime;
+
+        public int LanceCrossEnd => IdleChaseEnd + LanceCrossTime;
+
+        public int OrbitEnd => LanceCrossEnd + OrbitTime;
+
+        public int StarShootEnd => OrbitEnd + StarShootTime;
+
+        public int KnivesEnd => StarShootEnd + KnivesTime;
+
+        public int SuckEnd => KnivesEnd + (HasCalamity ? CalamityTeleportBurstTime : 0) + SuckTime;
+
+        public int LasersEnd => SuckEnd + LasersTime;
 
         public override void AI()
         {
@@ -411,9 +466,40 @@ namespace DestroyerTest.Content.Entities
 
             ControlDialogue();
 
+            if (!Main.projectile.Any(n => n.active && n.type == ModContent.ProjectileType<TenebrousConstructBG>()))
+            {
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<TenebrousConstructBG>(), 0, 0);
+            }
+
+            if (vOpacity < VingetteOpacity)
+            {
+                vOpacity += 0.05f;
+            }
+            if (vScale < VingetteScale)
+            {
+                vScale += 0.05f;
+            }
+
+            if (vOpacity > VingetteOpacity)
+            {
+                vOpacity -= 0.05f;
+            }
+            if (vScale > VingetteScale)
+            {
+                vScale -= 0.05f;
+            }
+
             if (Main.rand.NextBool(12))
             {
                 Dust.NewDust(NPC.Center, NPC.width, NPC.height, ModContent.DustType<TenebrisDarkmatterDust>(), 0, 0, 0, default, 1.0f);
+            }
+
+            if (PlayerShouldBeTrapped)
+            {
+                if (player.Center.Distance(NPC.Center) > 1300)
+                {
+                    player.Center = NPC.Center + new Vector2(1280, 0).RotatedBy(player.DirectionFrom(NPC.Center).ToRotation());
+                }
             }
 
 
@@ -426,6 +512,12 @@ namespace DestroyerTest.Content.Entities
                 case State.IdleChase:
                     {
                         {
+                            PlayerShouldBeTrapped = false;
+
+                            ShouldDrawVingette = true;
+                            VingetteScale = 5f;
+                            VingetteOpacity = 0f;
+
                             NPC.velocity = Vector2.Lerp(NPC.velocity, direction * 4f, 0.025f);
 
                             if (Main.rand.NextBool(32) && Main.GameUpdateCount % 60 == 0)
@@ -433,7 +525,7 @@ namespace DestroyerTest.Content.Entities
                                 SoundEngine.PlaySound(Idle, NPC.Center);
                             }
                             
-                            if (InternalTimer >= 300)
+                            if (InternalTimer >= IdleChaseEnd)
                             {
                                 NPC.velocity = Vector2.Zero;
                                 SoundEngine.PlaySound(Stun);
@@ -444,6 +536,9 @@ namespace DestroyerTest.Content.Entities
                     }
                 case State.LanceCross:
                     {
+
+                        ShouldDrawVingette = false;
+
                         NPC.aiStyle = NPCAIStyleID.AncientVision;
                         if (InternalTimer % 300 == 0)
                         {
@@ -452,7 +547,7 @@ namespace DestroyerTest.Content.Entities
                             Opus.RingSpreadProjectile(ModContent.ProjectileType<TenebrisLance>(), 4, player.Center, 1200, 40, 3, -24f, offset: Main.rand.NextFloat(MathHelper.TwoPi));
                         }
 
-                        if (InternalTimer > 2000)
+                        if (InternalTimer > LanceCrossEnd)
                         {
                             LanceCount = 0;
                             SoundEngine.PlaySound(Stun);
@@ -463,12 +558,12 @@ namespace DestroyerTest.Content.Entities
                 case State.Orbit:
                     {
                         NPC.SmoothMoveToPoint(player.Center, 1f);
+                        PlayerShouldBeTrapped = true;
+                        ShouldDrawVingette = true;
+                        VingetteScale = 2.75f;
+                        VingetteOpacity = 1f;
 
-                        if (player.Center.Distance(NPC.Center) > 1300)
-                        {
-                            player.Center = NPC.Center + new Vector2(1200, 0).RotatedBy(player.DirectionFrom(NPC.Center).ToRotation());
-                        }
-
+                        
                         if (Rings.Count == 0)
                         {
                             Rings.Add(Opus.GetEquidistantOrbitVectors(6, NPC.Center, 0.04f, 200));
@@ -526,7 +621,7 @@ namespace DestroyerTest.Content.Entities
                             Mine.timeLeft = 180;
                         }
 
-                        if (InternalTimer > 3500)
+                        if (InternalTimer > OrbitEnd)
                         {
 
                             for (int i = 0; i < RingProjectiles.Count; i++)
@@ -555,8 +650,13 @@ namespace DestroyerTest.Content.Entities
                     }
                 case State.StarShoot:
                     {
-                        Vector2[] PossibleShootPositions = Opus.GetEquidistantVectors(12, NPC.Center, 50f);  
-                        
+                        Vector2[] PossibleShootPositions = Opus.GetEquidistantVectors(12, NPC.Center, 50f);
+                        PlayerShouldBeTrapped = false;
+                        ShouldDrawVingette = true;
+                        VingetteScale = 5f;
+                        VingetteOpacity = 0f;
+
+
                         if (InternalTimer % 4 == 0 && InternalTimer > 3560)
                         {
                             Vector2 ShootPosition = PossibleShootPositions[Main.rand.Next(PossibleShootPositions.Length)];
@@ -575,7 +675,7 @@ namespace DestroyerTest.Content.Entities
                             }
                         }
 
-                        if (InternalTimer > 4660)
+                        if (InternalTimer > StarShootEnd)
                         {
                             SoundEngine.PlaySound(Stun);
                             CurrentState = State.Knives;
@@ -586,6 +686,8 @@ namespace DestroyerTest.Content.Entities
                     {
                         NPC.aiStyle = -1;
                         NPC.velocity = new Vector2(0f, Opus.Sine(2f, -2f));
+
+
 
                         if (!Knife_GetPlayerCenter)
                         {
@@ -616,14 +718,13 @@ namespace DestroyerTest.Content.Entities
                        
 
                         
-                        if (InternalTimer > 6000)
+                        if (InternalTimer > KnivesEnd)
                         {
                             if (!HasCalamity)
                             {
-                                InternalTimer = 0;
                                 Knife_GetPlayerCenter = false;
                                 SoundEngine.PlaySound(Stun);
-                                CurrentState = State.IdleChase;
+                                CurrentState = State.Suck;
                             }
                             else
                             {
@@ -644,9 +745,100 @@ namespace DestroyerTest.Content.Entities
                         
                         break;
                     }
+                case State.Suck:
+                    {
+                        PlayerShouldBeTrapped = true;
+
+                        ShouldDrawVingette = true;
+                        VingetteScale = MathHelper.Lerp(2.75f, 0.5f, ConsumptionProgress);
+                        VingetteOpacity = 1f;
+
+                        NPC.aiStyle = -1;
+                        NPC.velocity *= 0.99f;
+
+                        player.velocity += player.Center.DirectionTo(NPC.Center) * 0.7f;
+
+                        if (Consumed >= ConsumptionThreshold)
+                        {
+                            SoundEngine.PlaySound(Laugh);
+                            InternalTimer = SuckEnd;
+                            CurrentState = State.Lasers;
+                        }
+                        else
+                        {
+                            if (InternalTimer >= SuckEnd)
+                            {
+                                SoundEngine.PlaySound(Stun);
+                                CurrentState = State.IdleChase;
+                                InternalTimer = 0;
+                            }
+                            else
+                            {
+                                if (InternalTimer % 10 == 0)
+                                {
+                                    Vector2 Spawn = NPC.Center + Main.rand.NextVector2CircularEdge(1200f, 1200f);
+                                    NPC.NewNPC(NPC.GetSource_FromAI(), (int)Spawn.X, (int)Spawn.Y, ModContent.NPCType<KillableChargeSpirit>(), ai0: NPC.whoAmI);
+                                }
+
+                                if (InternalTimer % 120 == 0)
+                                {
+                                    Opus.RingSpreadProjectile(ModContent.ProjectileType<TenebrisStarHostile_NoHoming>(), 3, NPC.Center, 1200f, 50, 4, -12f, offset: Main.rand.NextFloat(MathHelper.TwoPi));
+                                }
+                            }
+                        }
+                        break;
+                    }
+                case State.Lasers:
+                    {
+                        PlayerShouldBeTrapped = true;
+
+                        ShouldDrawVingette = true;
+                        VingetteScale = 2.75f;
+                        VingetteOpacity = 1f;
+
+                        if (InternalTimer < (SuckEnd + 120))
+                        {
+                            LaserRotOffset += 0.01f;
+
+                            LaserWarnOpacity = MathHelper.Lerp(0f, 1f, Utilities.Convert01To010((float)(InternalTimer - SuckEnd) / 120f));
+                            
+                        }
+                        else
+                        {
+                            if (InternalTimer == SuckEnd + 120)
+                            {
+                                SoundEngine.PlaySound(DTAssetLib.Impacts.MagicHit);
+
+                                Projectile.NewProjectile(NPC.GetSource_FromAI(), player.Center, Vector2.Zero, ModContent.ProjectileType<LaserAudioController>(), 0, 0);
+                                foreach (Projectile projectile in Opus.RadialSpreadProjectile(ModContent.ProjectileType<TenebrisLaser2>(), 6, NPC.Center, 100, 4, 0.001f, ai1: 1))
+                                {
+
+                                }
+                            }
+                            
+                            if (InternalTimer % 90 == 0)
+                            {
+                                Opus.RadialSpreadProjectile(ModContent.ProjectileType<TenebrisStarHostile_NoHoming>(), 20, NPC.Center, 100, 4, 6f);
+                            }
+
+                            if (InternalTimer >= (LasersEnd + 120))
+                            {
+                                SoundEngine.PlaySound(Stun);
+                                CurrentState = State.IdleChase;
+                                Consumed = 0;
+                                InternalTimer = 0;
+                                
+                            }
+                        }
+                        break;
+
+                    }
+
                 case State.Calamity_TeleportBurst:
                     {
-                        
+                        ShouldDrawVingette = false;
+   
+
                         if (InternalTimer % 120 == 0)
                         {
                             SoundEngine.PlaySound(Laugh);
@@ -696,13 +888,13 @@ namespace DestroyerTest.Content.Entities
                             }
                         }
 
-                        if (InternalTimer > (6000 + (120 * 10)) - 1)
+                        if (InternalTimer > (KnivesEnd + CalamityTeleportBurstTime))
                         {
-                            InternalTimer = 0;
+                            
                             TeleportBurstHasPosition = false;
                             TeleportBurstTimer = 0;
                             SoundEngine.PlaySound(Stun);
-                            CurrentState = State.IdleChase;
+                            CurrentState = State.Suck;
                         }
                         break;
                     }
@@ -776,5 +968,70 @@ namespace DestroyerTest.Content.Entities
         }
 
 
+    }
+
+    public class TenebrousConstructBG : ModProjectile, IDrawPixelated
+    {
+
+        public override string Texture => DTUtils.NoTexture;
+
+        public override void SetDefaults()
+        {
+            Projectile.width = Projectile.height = 1;
+            Projectile.timeLeft = 80000;
+        }
+
+        public override void AI()
+        {
+            Projectile.Center = Main.screenPosition + new Vector2(Main.screenWidth / 2, (Main.screenHeight / 2) + 200);
+            if (!Active)
+            {
+                if (Opacity <= 0)
+                {
+                    Projectile.Kill();
+                }
+            }
+        }
+
+        PixelLayer IDrawPixelated.PixelLayer => PixelLayer.BehindTiles;
+
+        bool IDrawPixelated.ShouldDrawPixelated => true;
+
+        public static bool Active => Main.npc.Any(n => n.active && n.type == ModContent.NPCType<TenebrousConstruct>());
+        public static NPC Subject => Main.npc.First(n => n.active && n.type == ModContent.NPCType<TenebrousConstruct>());
+        float Opacity;
+        void IDrawPixelated.DrawPixelated(SpriteBatch spriteBatch)
+        {
+
+            Texture2D T = ModContent.Request<Texture2D>(DTAssetLib.ExtrasPath + "/TenebrousConstructBGGlow").Value;
+
+            if (Active)
+            {
+                Opacity = ((float)Subject.life / (float)Subject.lifeMax).Inverse();
+            }
+            else
+            {
+                Opacity -= 0.05f;
+            }
+
+
+            var Cap = spriteBatch.Capture();
+            Cap.TransformMatrix = PixelationSystem.PixelationMatrix;
+
+            spriteBatch.End();
+            spriteBatch.Begin(Cap);
+
+            spriteBatch.Draw(T, Projectile.Center - Main.screenPosition, null, ColorLib.TenebrisGradient * Opacity, 0f, T.Size() / 2, new Vector2(200f, 0.8f), SpriteEffects.None, 0f);
+
+            spriteBatch.ResetToDefault();
+
+            
+            PointGlowPreMultiplied Particle = new();
+            Particle.Initialize(Main.screenPosition + new Vector2(Main.rand.NextFloat(Main.screenWidth), Main.screenHeight), new Vector2(0f, Main.rand.NextFloat(-9f, -2f)), ColorLib.TenebrisGradient * Opacity, 1f);
+            Particle.PixelLayer = PixelLayer.BehindTiles;
+            Particle.color = ColorLib.TenebrisGradient * Opacity;
+            ParticleEngine.BehindProjectiles.Add(Particle);
+            
+        }
     }
 }

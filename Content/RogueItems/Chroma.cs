@@ -29,7 +29,7 @@ namespace DestroyerTest.Content.RogueItems
 			Item.knockBack = 15f;
 			Item.noUseGraphic = true;
 			Item.noMelee = true;
-			Item.DamageType = ModContent.GetInstance<DTRogueClass>();
+			Item.DamageType = DamageClass.Throwing;
 
             Item.shootSpeed = 25f;
 			Item.shoot = ModContent.ProjectileType<Chroma_Projectile>();

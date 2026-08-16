@@ -5,7 +5,7 @@ using DestroyerTest.Common.Interfaces;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Consumables;
 using DestroyerTest.Content.Particles;
- 
+using DestroyerTest.Content.RogueItems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
@@ -23,26 +23,26 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 {
     public class CursedHammerThrown : ModProjectile, IHomingProjectile
     {
-        bool IHomingProjectile.TracksNPCs => true;
+        bool IHomingProjectile.TracksNPCs => !returning;
 
-        bool IHomingProjectile.TracksPlayers => false;
+        bool IHomingProjectile.TracksPlayers => returning;
 
         float IHomingProjectile.HomingTurnSpeed => 13f;
+        
+        bool IHomingProjectile.UsesHomingAcceleration => true;
 
-        bool IHomingProjectile.UsesHomingAcceleration => false;
+        float IHomingProjectile.HomingAccelAmount => 1.005f;
 
-        float IHomingProjectile.HomingAccelAmount => 0f;
-
-        float IHomingProjectile.HomingMaxAccel => 0f;
+        float IHomingProjectile.HomingMaxAccel => 50f;
 
         float IHomingProjectile.DetectRadius => 3200;
 
-        bool IHomingProjectile.CanHome => Projectile.StealthStrike(Main.player[Projectile.owner]);
+        bool IHomingProjectile.CanHome => returning;
 
         private bool returning = false;
         private int flightTime = 0;
         private int soundCooldown = 0; // Initialize a cooldown timer
-        private SoundStyle Woosh = DTAssetLib.SwordSounds.StandardSwing with { Pitch = -0.7f, PitchVariance = 0.7f, MaxInstances = 0 };
+        private SoundStyle Woosh = DTAssetLib.SwordSounds.StandardSwing with { Pitch = -0.7f, PitchVariance = 0.7f, MaxInstances = 0, Volume = 0.4f };
         private SoundStyle TileHit = DTAssetLib.Charge.MetalTinkLight;
 
         public override void SetStaticDefaults()
@@ -58,10 +58,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             Projectile.penetrate = 4;
             Projectile.light = 0.5f;
             Projectile.ignoreWater = true;
-            Projectile.timeLeft = 300;
-            Projectile.DamageType = ModContent.GetInstance<DTRogueClass>();
+            Projectile.timeLeft = 600;
+            Projectile.DamageType = DamageClass.Throwing;
             Projectile.tileCollide = true;
             Projectile.ArmorPenetration = 22;
+            Projectile.extraUpdates = 1;
         }
 
         public override void OnSpawn(IEntitySource source)
@@ -116,17 +117,27 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             RangeOfPlayer = Projectile.Center.Distance(player.Center) < 20;
 
             // Always spinning
-            Projectile.rotation += 0.7f * Projectile.direction;
+            Projectile.rotation += 0.35f * Projectile.direction;
 
             LerpingFire fire = new LerpingFire();
-            fire.PrepareFire(Projectile.Center + new Vector2(Projectile.width / 2, -(Projectile.width / 2)).RotatedBy(Projectile.rotation), Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.3f, 0.3f), ColorLib.WretchedColorMap, 1f, 100, FireDrawMode.Additive);
+            fire.PrepareFire(Projectile.Center + new Vector2(Projectile.width / 2, -(Projectile.width / 2)).RotatedBy(Projectile.rotation), Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.3f, 0.3f), ColorLib.WretchedColorMap, 0.7f, 100, FireDrawMode.Additive);
             ParticleEngine.BehindProjectiles.Add(fire);
+
+            if (!DTOptimizationsConfig.instance.DisableExcessParticles)
+            {
+
+                PointGlowPreMultiplied Glow = new();
+                Glow.Initialize(Projectile.Center + new Vector2(Projectile.width / 2, -(Projectile.width / 2)).RotatedBy(Projectile.rotation), Vector2.Zero, ColorLib.Wretched3, 2f);
+                ParticleEngine.BehindProjectiles.Add(Glow);
+            }
 
             if (!returning)
             {
                 // OutPhase: Count time before returning
                 flightTime++;
-                if (flightTime >= 60)
+                Projectile.velocity *= 0.95f;
+
+                if (flightTime >= 120)
                 {
                     returning = true;
                 }
@@ -134,15 +145,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 
             if (returning)
             {
-                // InPhase: Smooth return using Lerp
-                Vector2 returnDirection = player.Center - Projectile.Center;
-                float speed = MathHelper.Lerp(Projectile.velocity.Length(), 25f, 0.08f); // Smooth acceleration
-                Projectile.velocity = returnDirection.SafeNormalize(Vector2.Zero) * speed;
+                Projectile.SmoothMoveToPoint(player.MountedCenter, 30f);
 
 
 
-                // If close enough, remove the projectile
-                if (returnDirection.LengthSquared() < 45f || RangeOfPlayer) // 4 pixels radius
+
+                if  (RangeOfPlayer) 
                 {
                     Projectile.Kill();
                 }
@@ -151,15 +159,54 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            SoundStyle Hit = DTAssetLib.Impacts.FleshHit with
+            SoundStyle Hit = DTAssetLib.Impacts.FlameImpact with
             {
-                PitchVariance = 0.5f
+                PitchVariance = 0.1f, Pitch = -0.8f
+            };
+
+            SoundStyle Hit2 = DTAssetLib.Impacts.BrightBell with
+            {
+                PitchVariance = 0.1f,
+                Pitch = -0.8f
             };
 
             Player player = Main.player[Main.myPlayer];  // Accessing the current player
             hit.Knockback = 4f;
             target.StrikeNPC(hit);
             SoundEngine.PlaySound(Hit, Projectile.position);
+
+            if (player.HeldItem.ModItem is CursedHammer hammer)
+            {
+                hammer.HitCount++;
+
+
+
+                if (hammer.HitCount >= 4)
+                {
+                    SoundEngine.PlaySound(Hit2, Projectile.Center);
+                    for (int j = 0; j < 7; j++)
+                    {
+                        float offset = MathHelper.TwoPi / 7f * j;
+                        Vector2 vel = new Vector2(12, -4).RotatedBy(offset);
+                        Projectile.NewProjectile(Projectile.GetSource_OnHit(target), target.Center, vel, ModContent.ProjectileType<CursedHammerBolt>(), Projectile.damage / 3, 10, player.whoAmI);
+                    }
+
+                    hammer.HitCount = 0;
+                }
+                else
+                {
+                    for (int j = 0; j < 3; j++)
+                    {
+                        float offset = MathHelper.TwoPi / 3f * j;
+                        Vector2 vel = new Vector2(12, -2).RotatedBy(offset);
+                        Projectile.NewProjectile(Projectile.GetSource_OnHit(target), target.Center, vel, ModContent.ProjectileType<CursedHammerBolt>(), Projectile.damage / 3, 10, player.whoAmI);
+                    }
+                }
+            }
+
+
+
+            
             for (int i = 0; i < 10; i++)
             {
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.FireworksRGB, 0, 0, 150, ColorLib.CursedFlames, 1f);
@@ -175,8 +222,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             ParticleEngine.ShaderParticles.Add(ExplosionFX);
 
             BloomRingSharp Ring = new BloomRingSharp();
-            Ring.Prepare(Projectile.Center, Vector2.Zero, DTColorUtils.Pastel(ColorLib.CursedFlames, 0.7f), 0.05f, 0.01f, 0.4f, BlendState.Additive);
+            Ring.Prepare(Projectile.Center, Vector2.Zero, DTColorUtils.Pastel(ColorLib.CursedFlames, 0.2f), 0.05f, 0.01f, 1f, BlendState.Additive);
             ParticleEngine.ShaderParticles.Add(Ring);
+
+            
 
             if (Projectile.penetrate == 1)
             {
@@ -205,7 +254,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             ParticleEngine.ShaderParticles.Add(ExplosionFX);
 
             BloomRingSharp Ring = new BloomRingSharp();
-            Ring.Prepare(Projectile.Center, Vector2.Zero, DTColorUtils.Pastel(ColorLib.CursedFlames, 0.7f), 0.05f, 0.01f, 0.4f, BlendState.Additive);
+            Ring.Prepare(Projectile.Center, Vector2.Zero, DTColorUtils.Pastel(ColorLib.CursedFlames, 0.4f), 0.05f, 0.01f, 0.4f, BlendState.Additive);
             ParticleEngine.ShaderParticles.Add(Ring);
 
             returning = true;

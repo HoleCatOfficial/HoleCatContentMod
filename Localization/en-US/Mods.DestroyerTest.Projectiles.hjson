@@ -721,3 +721,12 @@ SporeBomb.DisplayName: Spore Bomb
 BloodScepterThrown.DisplayName: Blood Scepter Thrown
 BloodShot.DisplayName: Blood Shot
 BladeChunkProjectile.DisplayName: Blade Chunk Projectile
+NodeDefilementAura.DisplayName: Node Defilement Aura
+StellarNeedle.DisplayName: Stellar Needle
+StellarShard.DisplayName: Stellar Shard
+TenebrisLaser2.DisplayName: Tenebris Laser2
+LaserAudioController.DisplayName: Laser Audio Controller
+TenebrousConstructBG.DisplayName: Tenebrous Construct B G
+ElementalFenzimSpark.DisplayName: Elemental Fenzim Spark
+ElementalFenzimThrown.DisplayName: Elemental Fenzim Thrown
+CursedHammerBolt.DisplayName: Cursed Hammer Bolt

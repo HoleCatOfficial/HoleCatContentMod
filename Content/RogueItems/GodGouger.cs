@@ -37,7 +37,7 @@ namespace DestroyerTest.Content.RogueItems
             Item.damage = 16;
             Item.knockBack = 5;
             Item.autoReuse = false;
-            Item.DamageType = ModContent.GetInstance<DTRogueClass>();
+            Item.DamageType = DamageClass.Throwing;
         }
 	}
 }

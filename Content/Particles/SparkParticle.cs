@@ -130,7 +130,7 @@ namespace DestroyerTest.Content.Particles
                     }
                 case SparkDrawMode.Additive:
                     {
-                        return BlendState.Additive;
+                        return BlendState.AlphaBlend;
                     }
             }
 
@@ -147,8 +147,14 @@ namespace DestroyerTest.Content.Particles
 
             spritebatch.Begin(Cap);
 
-            spritebatch.Draw(GetTextureProperties().Item1, position - Main.screenPosition, GetTextureProperties().Item2, col * Opacity, rotation, GetTextureProperties().Item3, new Vector2(scale * LengthMultiplier, scale * Width) * 0.1f, SpriteEffects.None, 0f);
-            
+            if (sparkDrawMode != SparkDrawMode.Additive)
+            {
+                spritebatch.Draw(GetTextureProperties().Item1, position - Main.screenPosition, GetTextureProperties().Item2, col * Opacity, rotation, GetTextureProperties().Item3, new Vector2(scale * LengthMultiplier, scale * Width) * 0.1f, SpriteEffects.None, 0f);
+            }
+            else
+            {
+                spritebatch.Draw(GetTextureProperties().Item1, position - Main.screenPosition, GetTextureProperties().Item2, col with { A = 0 } * Opacity, rotation, GetTextureProperties().Item3, new Vector2(scale * LengthMultiplier, scale * Width) * 0.1f, SpriteEffects.None, 0f);
+            }
             spritebatch.ResetToDefault();
         }
     }
@@ -293,7 +299,7 @@ namespace DestroyerTest.Content.Particles
                     }
                 case SparkDrawMode.Additive:
                     {
-                        return BlendState.Additive;
+                        return BlendState.AlphaBlend;
                     }
             }
 
@@ -312,7 +318,14 @@ namespace DestroyerTest.Content.Particles
 
             spritebatch.Begin(Cap);
 
-            spritebatch.Draw(GetTextureProperties().Item1, position - Main.screenPosition, GetTextureProperties().Item2, col * Opacity, rotation, GetTextureProperties().Item3, new Vector2(scale * LengthMultiplier, scale * Width) * 0.1f, SpriteEffects.None, 0f);
+            if (sparkDrawMode != SparkDrawMode.Additive)
+            {
+                spritebatch.Draw(GetTextureProperties().Item1, position - Main.screenPosition, GetTextureProperties().Item2, col * Opacity, rotation, GetTextureProperties().Item3, new Vector2(scale * LengthMultiplier, scale * Width) * 0.1f, SpriteEffects.None, 0f);
+            }
+            else
+            {
+                spritebatch.Draw(GetTextureProperties().Item1, position - Main.screenPosition, GetTextureProperties().Item2, col with { A = 0 } * Opacity, rotation, GetTextureProperties().Item3, new Vector2(scale * LengthMultiplier, scale * Width) * 0.1f, SpriteEffects.None, 0f);
+            }
 
             spritebatch.ResetToDefault();
         }

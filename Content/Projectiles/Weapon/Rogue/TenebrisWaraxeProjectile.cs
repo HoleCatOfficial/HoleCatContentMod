@@ -43,7 +43,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             Projectile.light = 0.5f;
             Projectile.ignoreWater = true;
             Projectile.timeLeft = 600; // 10 seconds max lifespan
-            Projectile.DamageType = ModContent.GetInstance<DTRogueClass>();
+            Projectile.DamageType = DamageClass.Throwing;
             Projectile.netImportant = true;
             Projectile.netUpdate = true;
             Projectile.tileCollide = true;

@@ -20,7 +20,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 			Projectile.width = 40;
 			Projectile.height = 40;
 			Projectile.friendly = true;
-			Projectile.DamageType = ModContent.GetInstance<DTRogueClass>();
+			Projectile.DamageType = DamageClass.Throwing;
 			Projectile.timeLeft = 1200;
 			Projectile.netImportant = true;
 			Projectile.netUpdate = true;

@@ -5121,3 +5121,18 @@ ConstellationWeaverScarf: {
 	DisplayName: Constellation Weaver Scarf
 	Tooltip: ""
 }
+
+TwinklingBarrage: {
+	DisplayName: Twinkling Barrage
+	Tooltip:
+		'''
+		Shoots a barrage of energized particles.
+		Has a 1 in 10 chance to instead shoot a needle that lodges into targets, setting the target on fire.
+		'Mmmm... Forbidden Rock Candy...'
+		'''
+}
+
+ElementalFenzim: {
+	DisplayName: Elemental Fenzim
+	Tooltip: ""
+}

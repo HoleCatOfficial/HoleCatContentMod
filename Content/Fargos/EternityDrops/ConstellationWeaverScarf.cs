@@ -10,6 +10,7 @@ using DestroyerTest.Content.Resources;
 using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using OpusLib.Content.Helpers;
 using Terraria;
 using Terraria.Audio;
@@ -60,7 +61,7 @@ namespace DestroyerTest.Content.Fargos.EternityDrops
         bool f1 = false;
         public override void PostUpdateEquips()
         {
-            RingColor = OpusColorUtils.MultiLerp(StarRadius / 150f, ColorLib.StellarFireColormap);
+            RingColor = OpusColorUtils.MultiLerp((StarRadius / 150f).Inverse(), ColorLib.StellarFireColormap);
 
             if (Active)
             {

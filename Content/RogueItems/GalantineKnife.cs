@@ -39,7 +39,7 @@ namespace DestroyerTest.Content.RogueItems
             Item.rare = ModContent.RarityType<StellarRarity>();
             Item.damage = 100;
             Item.autoReuse = true;
-            Item.DamageType = ModContent.GetInstance<DTRogueClass>();
+            Item.DamageType = DamageClass.Throwing;
         }
 
 		

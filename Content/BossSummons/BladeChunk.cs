@@ -28,12 +28,13 @@ namespace DestroyerTest.Content.BossSummons
         {
             Item.width = 12;
             Item.height = 8;
-            Item.maxStack = 1;
+            Item.maxStack = 99;
             Item.value = 100;
             Item.rare = ModContent.RarityType<StellarRarity>();
             Item.useAnimation = 30;
             Item.useTime = 30;
             Item.useStyle = ItemUseStyleID.HoldUp;
+            Item.consumable = true;
         }
 
         public override void ModifyResearchSorting(ref ContentSamples.CreativeHelper.ItemGroup itemGroup)

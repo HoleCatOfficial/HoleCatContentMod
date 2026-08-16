@@ -54,7 +54,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue.StealthStrike
             Projectile.width = 32;
             Projectile.height = 32;
 
-            Projectile.DamageType = ModContent.GetInstance<DTRogueClass>();
+            Projectile.DamageType = DamageClass.Throwing;
             Projectile.friendly = true;
             Projectile.hostile = false;
             Projectile.ignoreWater = true;

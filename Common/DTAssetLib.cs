@@ -297,6 +297,7 @@ namespace DestroyerTest.Common
             public static SoundStyle Electric2 = new SoundStyle($"{Path}/ElectricLoop2");
             public static SoundStyle Electric3 = new SoundStyle($"{Path}/ElectricLoop3");
             public static SoundStyle GenericLaser = new SoundStyle($"{Path}/LaserLoop1");
+            public static SoundStyle HateLaser = new SoundStyle($"{Path}/HateLaser");
             public static SoundStyle Corona = new SoundStyle($"{Path}/RiftYoyoT3Loop");
             public static SoundStyle ShadowflameAura = new SoundStyle($"{Path}/ShadowflameAuraLoop");
             public static SoundStyle Spirit = new SoundStyle($"{Path}/SpiritAura", 4);

@@ -149,7 +149,7 @@ namespace DestroyerTest.Content.Entities
             NPC.boss = true;
             NPC.npcSlots = 90f;
             NPC.netID = ModContent.NPCType<NightmareRoseBoss>();
-            //NPC.BossBar = ModContent.GetInstance<CorruptBossBar>();
+            NPC.BossBar = ModContent.GetInstance<CorruptBossBar>();
 
             if (DestroyerTestMod.MasochistIsActive)
             {
@@ -297,6 +297,7 @@ namespace DestroyerTest.Content.Entities
                         weights[AttackState.BlossomMine] = 1f;
                         weights[AttackState.CursedFlames] = 1f;
                         weights[AttackState.WallDarts] = 1f;
+                        weights[AttackState.Lances] = 1f;
                         break;
                     }
                 case AttackState.CorruptSigil:
@@ -305,12 +306,14 @@ namespace DestroyerTest.Content.Entities
                     }
                 case AttackState.ArenaDivide:
                     {
+                        weights[AttackState.Lances] = 0.5f;
+                        weights[AttackState.DemoniteWhisper] = 1f;
                         break;
                     }
                 case AttackState.BlossomMine:
                     {
                         weights[AttackState.FlameRing] = 0f;
-                        
+                        weights[AttackState.ArenaDivide] = 1f;
 
                         if (Masochist)
                         {
@@ -336,7 +339,7 @@ namespace DestroyerTest.Content.Entities
                     }
                 case AttackState.Lances:
                     {
-                        
+                        weights[AttackState.ArenaDivide] = 0.1f;
                         break;
                     }
                 case AttackState.WallDarts:
@@ -513,7 +516,7 @@ namespace DestroyerTest.Content.Entities
             NPC.height
             );
 
-            SetChances(currentState);
+            
 
             if (anyNodesAlive)
             {
@@ -564,8 +567,32 @@ namespace DestroyerTest.Content.Entities
 
             DTUtils Utility = new DTUtils();
 
-            
 
+            AttackState[] states = Enum.GetValues<AttackState>();
+
+            if (DTConfig.instance.EnableDebugMessages)
+            {
+                for (int i = 0; i < states.Length; i++)
+                {
+                    float X = NPC.Center.X + 80f;
+                    float Y = NPC.Top.Y + (20f * i);
+
+                    AttackState state = states[i];
+
+                    if (stateWeights.TryGetValue(state, out float weight))
+                    {
+                        Utils.DrawBorderString(
+                            spriteBatch,
+                            $"{state}: {weight}",
+                            new Vector2(X, Y) - screenPos,
+                            Color.Red,
+                            0.75f,
+                            0f,
+                            0.5f
+                        );
+                    }
+                }
+            }
 
             string Maso = DestroyerTestMod.MasochistIsActive ? "_Maso" : "";
             Asset<Texture2D> White = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/NightmareRoseDeathFade" + Maso);
@@ -595,13 +622,17 @@ namespace DestroyerTest.Content.Entities
 
             if (cfNodes.Count > 0)
             {
-                Main.EntitySpriteDraw(DTAssetLib.Star(3).Value, NPCHead - Main.screenPosition, null, ColorLib.CursedFlames with { A = 0 }, 0.1f * NodeHealLineScroll, DTAssetLib.Star(3).Value.Size() / 2, 2f, SpriteEffects.None);
+                Main.EntitySpriteDraw(DTAssetLib.Star(3).Value, NPCHead - Main.screenPosition, null, ColorLib.CursedFlames with { A = 0 }, nodeHealShineRot, DTAssetLib.Star(3).Value.Size() / 2, 2.4f, SpriteEffects.None);
+                Main.EntitySpriteDraw(DTAssetLib.Star(3).Value, NPCHead - Main.screenPosition, null, Color.White with { A = 0 }, nodeHealShineRot, DTAssetLib.Star(3).Value.Size() / 2, 1.8f, SpriteEffects.None);
+
                 for (int i = 0; i < cfNodes.Count; i++)
                 {
                     Line L = new Line(cfNodes[i].Center, NPCHead);
 
-                    Main.EntitySpriteDraw(DTAssetLib.Star(3).Value, cfNodes[i].Center - Main.screenPosition, null, ColorLib.CursedFlames, 0.1f * NodeHealLineScroll, DTAssetLib.Star(3).Value.Size() / 2, 2f, SpriteEffects.None);
-                    DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(1, true), ColorLib.WretchedGradient() with { A = 0 }, Main.spriteBatch, BlendState.Additive, NodeHealLineScroll, 0.5f, 1f);
+                    Main.EntitySpriteDraw(DTAssetLib.Star(3).Value, cfNodes[i].Center - Main.screenPosition, null, ColorLib.CursedFlames with { A = 0 }, nodeHealShineRot, DTAssetLib.Star(3).Value.Size() / 2, 2f, SpriteEffects.None);
+                    Main.EntitySpriteDraw(DTAssetLib.Star(3).Value, cfNodes[i].Center - Main.screenPosition, null, Color.White with { A = 0 }, nodeHealShineRot, DTAssetLib.Star(3).Value.Size() / 2, 1.3f, SpriteEffects.None);
+
+                    DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(1, true), ColorLib.WretchedGradient() with { A = 0 }, Main.spriteBatch, BlendState.Additive, NodeHealLineScroll, 0.3f, 1f);
                     var Cap2 = spriteBatch.Capture();
                     spriteBatch.End();
 
@@ -909,6 +940,9 @@ namespace DestroyerTest.Content.Entities
         public bool SetVolume = false;
         public bool Flag2 = false;
         int NodeHealLineScroll = 0;
+        float nodeHealShineRot = 0f;
+        bool SpawnAuraOnNodes1 = false;
+        bool SpawnAuraOnNodes2 = false;
 
         public List<NPC> cfNodes;
         // Per-node shake state (one entry per node in cfNodes)
@@ -918,6 +952,8 @@ namespace DestroyerTest.Content.Entities
 
         public bool FireLR = false; //True = Right, False = Left
         public bool DartsLR = false; //True = Right, False = Left
+
+        int LastChoice;
         public override void AI()
         {
             NPC.TargetClosest();
@@ -931,7 +967,8 @@ namespace DestroyerTest.Content.Entities
 
 
             RingScale = DTAssetLib.NightmareRoseArenaBorder.Value.ScaleRingTextureToMatchRadius(BorderRad, 1327);
-            
+
+            SetChances(currentState);
 
             if (currentState != AttackState.Desperation && currentState != AttackState.KillIdle)
             {
@@ -1145,12 +1182,29 @@ namespace DestroyerTest.Content.Entities
                 var NodePositions = Opus.GetEquidistantOrbitVectors(nodeCount, NPCHead, 0.003f, NodeRadius);
 
                 NodeHealLineScroll -= 8;
+                nodeHealShineRot -= 0.1f;
+                bool AnyAuras = Main.projectile.Any(n => n.active && n.type == ModContent.ProjectileType<NodeDefilementAura>());
+
+                if (Main.GameUpdateCount % 150 == 0)
+                {
+                    int choice = Main.rand.Next(nodeCount);
+                    choice = choice == LastChoice ? Main.rand.Next(nodeCount) : choice;
+                    LastChoice = choice;
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), cfNodes[choice].Center, Vector2.Zero, ModContent.ProjectileType<NodeDefilementAura>(), 10, 0, ai2: cfNodes[choice].whoAmI);
+                }
+
+
+
                 for (int i = 0; i < cfNodes.Count; i++)
                 {
                     Line L = new Line(NPCHead, cfNodes[i].Center);
                     //DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(1, true), ColorLib.WretchedGradient(), Main.spriteBatch, BlendState.Additive, NodeHealLineScroll, 0.5f, 1.75f);
 
                     cfNodes[i].SmoothMoveToPoint(NodePositions[i], 24f);
+
+
+                    
+         
                 }
 
                 if (NPC.life < (NPC.lifeMax * 0.75f))
@@ -1167,6 +1221,7 @@ namespace DestroyerTest.Content.Entities
             }
             else
             {
+                SpawnAuraOnNodes1 = false;
                 NPC.immortal = false;
                 NPC.dontTakeDamage = false;
             }
@@ -1443,7 +1498,8 @@ namespace DestroyerTest.Content.Entities
                             {
                                 SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/ChargeBreak") with { PitchVariance = 1f });
 
-                                var P = Opus.GetEquidistantVectors(5, player.MountedCenter, 300, 0);
+                                int amount = anyNodesAlive ? 3 : 5;
+                                var P = Opus.GetEquidistantVectors(amount, player.MountedCenter, 300, 0);
                                 for (int i = 0; i < P.Length; i++)
                                 {
                                     SmallShine shine = new SmallShine();
@@ -1451,7 +1507,7 @@ namespace DestroyerTest.Content.Entities
                                     ParticleEngine.ShaderParticles.Add(shine);
                                 }
 
-                                Opus.RingSpreadProjectile(ModContent.ProjectileType<TenebrisFlamesHostile>(), 5, player.MountedCenter, 300, 30, 2, 8);
+                                Opus.RingSpreadProjectile(ModContent.ProjectileType<TenebrisFlamesHostile>(), amount, player.MountedCenter, 300, 30, 2, 8);
                                 FlameRingCount++;
                             }
                             if (FlameRingCount >= 9)
@@ -1482,7 +1538,7 @@ namespace DestroyerTest.Content.Entities
                     {
                         if (DestroyerTestMod.EternityIsActive || DestroyerTestMod.DeathIsActive)
                         {
-                            int numProjectiles = 7;
+                            int numProjectiles = anyNodesAlive ? 4 : 7;
                             float rotationStep = MathHelper.TwoPi / numProjectiles;
 
                             SoundEngine.PlaySound(SoundID.Item14, NPC.Center);
@@ -1565,9 +1621,10 @@ namespace DestroyerTest.Content.Entities
                         }
                         if (DestroyerTestMod.MasochistIsActive)
                         {
+                            int amount = anyNodesAlive ? 1 : 3;
                             if (Main.GameUpdateCount % 120 == 0)
                             {
-                                Opus.RadialSpreadProjectileRandom(ModContent.ProjectileType<DarkOrb>(), 3, NPCHead, 30, 3, 8);
+                                Opus.RadialSpreadProjectileRandom(ModContent.ProjectileType<DarkOrb>(), amount, NPCHead, 30, 3, 8);
                                 VileThornCount += 1;
                                 //Main.NewText(VileThornCount.ToString(), Color.Blue);
                             }
@@ -1668,7 +1725,8 @@ namespace DestroyerTest.Content.Entities
                     {
                         if (DestroyerTestMod.EternityIsActive|| DestroyerTestMod.DeathIsActive)
                         {
-                            if (Main.GameUpdateCount % 60 == 0)
+                            int interval = DestroyerTestMod.MasochistIsActive ? 15 : 60;
+                            if (Main.GameUpdateCount % interval == 0)
                             {
                                 VortexFire(player);
                             }
@@ -1692,8 +1750,18 @@ namespace DestroyerTest.Content.Entities
                     break;
                 case AttackState.BlossomMine:
                     {
-                        BlossomMines(Main.rand.NextVector2FromRectangle(new Rectangle(0, 0, (int)BorderRad, (int)BorderRad)));
-                        ResetState();
+                        int CountBlossomMines = Main.projectile.Where(n => n.active && n.type == ModContent.ProjectileType<BlossomMine>()).Count();
+                        int CountDarkMines = Main.projectile.Where(n => n.active && n.type == ModContent.ProjectileType<DarkLaserMine>()).Count();
+
+                        if (CountBlossomMines < 6 && CountDarkMines < 6)
+                        {
+                            BlossomMines(Main.rand.NextVector2FromRectangle(new Rectangle(0, 0, (int)BorderRad, (int)BorderRad)));
+                        }
+                        else
+                        {
+                            ResetState();
+                        }
+                        
                     }
                     break;
                 case AttackState.Desperation:
@@ -1845,10 +1913,6 @@ namespace DestroyerTest.Content.Entities
             }
             else
             {
-                if (Main.rand.NextBool(600))
-                {
-                    SoundEngine.PlaySound(IdleCroak, NPCHead);
-                }
                 if (!DestroyerTestMod.EternityIsActive && !DestroyerTestMod.MasochistIsActive)
                 {
                     if (Main.rand.NextBool())
@@ -2314,7 +2378,7 @@ namespace DestroyerTest.Content.Entities
                     LaserWarnTimer--;
 
                     ShouldDrawLaserWarning = true;
-
+                    Flag4 = false;
                 }
                 else
                 {
@@ -2322,6 +2386,10 @@ namespace DestroyerTest.Content.Entities
                     if (!Flag4)
                     {
                         SunlightModification.Pulse(1f, ColorLib.TenebrisGradient, 0.8f);
+                        foreach (Projectile P in Opus.RadialSpreadProjectile(ModContent.ProjectileType<DarkLaserMine>(), 10, NPCHead, 70, 8, 10))
+                        {
+                            P.timeLeft = 300;
+                        }
                         Flag4 = true;
                     }
                     
@@ -2373,7 +2441,9 @@ namespace DestroyerTest.Content.Entities
 
             Projectile Dart = null;
 
-            if (Main.GameUpdateCount % 15 == 0)
+            int interval = anyNodesAlive ? 20 : 15;
+
+            if (Main.GameUpdateCount % interval == 0)
             {
                 for (int i = 0; i < projectileCount; i++)
                 {
@@ -2403,7 +2473,7 @@ namespace DestroyerTest.Content.Entities
 
             if (Main.GameUpdateCount % 240 == 0)
             {
-                int numProjectiles = 5;
+                int numProjectiles = anyNodesAlive ? 3 : 5;
                 float rotationStep = MathHelper.TwoPi / numProjectiles;
 
                 SoundEngine.PlaySound(SoundID.Item14, NPC.Center);

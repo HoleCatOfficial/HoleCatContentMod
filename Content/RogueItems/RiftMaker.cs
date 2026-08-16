@@ -36,7 +36,7 @@ namespace DestroyerTest.Content.RogueItems
 			Item.rare = ModContent.RarityType<RiftRarity1>();
 			Item.damage = 80;
 			Item.autoReuse = true;
-			Item.DamageType = ModContent.GetInstance<DTRogueClass>();
+			Item.DamageType = DamageClass.Throwing;
         }
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)

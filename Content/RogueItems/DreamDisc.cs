@@ -38,7 +38,7 @@ namespace DestroyerTest.Content.RogueItems
             Item.damage = 16;
             Item.knockBack = 5;
             Item.autoReuse = true;
-            Item.DamageType = ModContent.GetInstance<DTRogueClass>();
+            Item.DamageType = DamageClass.Throwing;
         }
 
         public override bool CanUseItem(Player player)

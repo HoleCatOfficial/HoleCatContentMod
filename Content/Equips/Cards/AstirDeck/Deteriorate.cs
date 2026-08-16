@@ -28,7 +28,7 @@ namespace DestroyerTest.Content.Equips.Cards.AstirDeck
 
 		public override void UpdateAccessory(Player player, bool hideVisual)
 		{
-			player.GetDamage<DTRogueClass>() += 0.3f;
+			player.GetDamage(DamageClass.Throwing) += 0.3f;
 
             if (player.TryGetModPlayer<DeterioratePlayer>(out var deteriorate))
             {
@@ -68,7 +68,7 @@ namespace DestroyerTest.Content.Equips.Cards.AstirDeck
             Player Owner = Main.player[projectile.owner];
             if (Owner.TryGetModPlayer<DeterioratePlayer>(out var deterioratePlayer))
             {
-                if (deterioratePlayer.Active && Main.rand.NextBool() && projectile.DamageType == ModContent.GetInstance<DTRogueClass>())
+                if (deterioratePlayer.Active && Main.rand.NextBool() && projectile.DamageType == DamageClass.Throwing)
                 {
                     Projectile.NewProjectile(Projectile.GetSource_None(), target.Center, Vector2.Zero, ModContent.ProjectileType<DeteriorateBurst>(), projectile.damage / 2, 15, projectile.owner);
                 }

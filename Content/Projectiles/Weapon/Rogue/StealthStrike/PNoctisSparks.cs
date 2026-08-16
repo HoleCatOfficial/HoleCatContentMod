@@ -25,7 +25,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue.StealthStrike
             Projectile.penetrate = -1;
             Projectile.ignoreWater = true;
             Projectile.timeLeft = 15;
-            Projectile.DamageType = ModContent.GetInstance<DTRogueClass>();
+            Projectile.DamageType = DamageClass.Throwing;
             Projectile.tileCollide = false;
             Projectile.ArmorPenetration = 16;
         }
@@ -72,7 +72,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue.StealthStrike
             Projectile.penetrate = -1;
             Projectile.ignoreWater = true;
             Projectile.timeLeft = 15;
-            Projectile.DamageType = ModContent.GetInstance<DTRogueClass>();
+            Projectile.DamageType = DamageClass.Throwing;
             Projectile.tileCollide = false;
             Projectile.ArmorPenetration = 16;
         }

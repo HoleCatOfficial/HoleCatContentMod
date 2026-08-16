@@ -115,7 +115,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         public Line SL;
         public virtual void SparkEdge(Player owner, float Scale, Color color, int BlendMode = 2)
         {
-            sT = Projectile.Center + Projectile.rotation.ToRotationVector2() * (78f * SweepScale * AdjustedScale * ScaleMult);
+            sT = Projectile.Center + Projectile.rotation.ToRotationVector2() * (78f * SweepScale * AdjustedScale);
             SL = new Line(Owner.MountedCenter, sT);
             if (CurrentState == State.SwingDown)
             {
@@ -449,8 +449,8 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             Cap.TransformMatrix = PixelationSystem.PixelationMatrix;
             spriteBatch.End();
             spriteBatch.Begin(Cap);
-            Main.EntitySpriteDraw(Tex, Owner.MountedCenter - Main.screenPosition, null, SweepColor with { A = 0 } * SweepOpacity, (Projectile.rotation + MathHelper.PiOver4) + rOffset, Tex.Size() / 2, (SweepScale * AdjustedScale) * ScaleMult, FX);
-            Main.EntitySpriteDraw(TexH, Owner.MountedCenter - Main.screenPosition, null, SweepHighlightColor with { A = 0 } * SweepOpacity, (Projectile.rotation + MathHelper.PiOver4) + rOffset, Tex.Size() / 2, (SweepScale * AdjustedScale) * ScaleMult, FX);
+            Main.EntitySpriteDraw(Tex, Owner.MountedCenter - Main.screenPosition, null, SweepColor with { A = 0 } * SweepOpacity, (Projectile.rotation + MathHelper.PiOver4) + rOffset, Tex.Size() / 2, (SweepScale * AdjustedScale), FX);
+            Main.EntitySpriteDraw(TexH, Owner.MountedCenter - Main.screenPosition, null, SweepHighlightColor with { A = 0 } * SweepOpacity, (Projectile.rotation + MathHelper.PiOver4) + rOffset, Tex.Size() / 2, (SweepScale * AdjustedScale), FX);
             spriteBatch.ResetToDefault();
         }
 
