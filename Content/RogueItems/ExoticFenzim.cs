@@ -14,12 +14,12 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.RogueItems
 {
-    public class ElementalFenzim : ModItem
+    public class ExoticFenzim : ModItem
     {
 
         public override void SetStaticDefaults()
         {
-            ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<ExoticFenzim>();
+            ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<ElementalFenzim>();
         }
         public override void SetDefaults()
         {
@@ -33,10 +33,10 @@ namespace DestroyerTest.Content.RogueItems
             Item.UseSound = SoundID.Item1;
             Item.knockBack = 6;
             Item.autoReuse = true;
-            Item.damage = 140;
+            Item.damage = 165;
             Item.DamageType = DamageClass.Throwing;
             Item.crit = 10;
-            Item.shoot = ModContent.ProjectileType<ElementalFenzimThrown>();
+            Item.shoot = ModContent.ProjectileType<ExoticFenzimThrown>();
             Item.shootSpeed = 55f;
             Item.noUseGraphic = true;
         }

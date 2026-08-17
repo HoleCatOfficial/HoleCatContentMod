@@ -91,7 +91,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
-            Projectile.velocity = new Vector2(-oldVelocity.X, -oldVelocity.Y);
+            Projectile.velocity = new Vector2(-oldVelocity.X * 0.6f, -oldVelocity.Y * 0.6f);
             SoundEngine.PlaySound(DTAssetLib.FrigidFenzim.TileHit with { PitchVariance = 0.3f }, Projectile.Center);
             return HitCount > 4;
         }
@@ -100,7 +100,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
         {
             SoundEngine.PlaySound(DTAssetLib.Impacts.IceImpact with { PitchVariance = 0.3f }, Projectile.Center);
 
-            Opus.RadialSpreadProjectileRandom(ModContent.ProjectileType<ExplodingIcicle>(), 7, Projectile.Center, Projectile.damage / 4, 5, 10);
+         
 
         }
     }

@@ -157,7 +157,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 
         public override bool? CanHitNPC(NPC target)
         {
-            return DelayTimer >= 30;
+            return DelayTimer >= 30 && Projectile.ManualCanHitFriendly(target);
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)

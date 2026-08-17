@@ -432,7 +432,7 @@ namespace DestroyerTest.Content.Entities
         public int OrbitTime = 3500;
         public int StarShootTime = 1160;
         public int KnivesTime = 1460;
-        public int SuckTime = 1200;
+        public int SuckTime = 1800;
         public int LasersTime = 1320;
         public int CalamityTeleportBurstTime = 1200;
 
@@ -770,6 +770,15 @@ namespace DestroyerTest.Content.Entities
                             {
                                 SoundEngine.PlaySound(Stun);
                                 CurrentState = State.IdleChase;
+                                Consumed = 0;
+                                foreach (NPC npc in Main.npc)
+                                {
+                                    if (npc.active && npc.type == ModContent.NPCType<KillableChargeSpirit>())
+                                    {
+                                        npc.StrikeInstantKill();
+                                    }
+                                }
+
                                 InternalTimer = 0;
                             }
                             else

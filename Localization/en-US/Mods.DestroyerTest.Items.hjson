@@ -5134,5 +5134,27 @@ TwinklingBarrage: {
 
 ElementalFenzim: {
 	DisplayName: Elemental Fenzim
-	Tooltip: ""
+	Tooltip:
+		'''
+		Throws a fast-moving Axe that slows before returning.
+		Hits ignore 22 points of defense and create 6 homing sparks that inflict a variety of debuffs.
+		'''
+}
+
+ExoticFenzim: {
+	DisplayName: Exotic Fenzim
+	Tooltip:
+		'''
+		Throws a fast-moving Aether Axe that slows before returning.
+		Hits ignore 22 points of defense and strike deep into the enemy's essence, drawing out 6 stars of unstable energy.
+		'''
+}
+
+HestiasBane: {
+	DisplayName: Hestia's Bane
+	Tooltip:
+		'''
+		Throws a heavy axe that homes in on enemies.
+		Hits create an explosion that deals 100% damage.
+		'''
 }

@@ -1,14 +1,16 @@
-﻿using BreadLibrary.Core.Graphics.Pixelation;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using BreadLibrary.Core.Graphics.Pixelation;
+using BreadLibrary.Core.Graphics.Spritebatch;
+using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Equips.Cards.AstirDeck;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
@@ -73,9 +75,15 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
 
             Texture2D value = DTAssetLib.FaintGlow.Value;
 
+            var Cap = spriteBatch.Capture();
+
             spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, null, PixelationSystem.PixelationMatrix);
+
+            Cap.TransformMatrix = PixelationSystem.PixelationMatrix;
+
             
+            spriteBatch.Begin(Cap);
+
             for (int i = 0; i < Projectile.oldPos.Length; i++)
             {
                 float num = (Projectile.scale * 1.3f) * (Projectile.oldPos.Length - i) / (Projectile.oldPos.Length * 0.8f);
@@ -89,8 +97,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
             Main.EntitySpriteDraw(Tex.Value, Projectile.Center - Main.screenPosition, null, Color.Gold with { A = 0 }, -Rot * 1.5f, Tex.Value.Size() / 2, Projectile.scale * 0.4f, SpriteEffects.None, 0f);
             Main.EntitySpriteDraw(Tex.Value, Projectile.Center - Main.screenPosition, null, Color.White with { A = 0 }, -Rot * 1.5f, Tex.Value.Size() / 2, Projectile.scale * 0.3f, SpriteEffects.None, 0f);
 
-            spriteBatch.End();
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, null, PixelationSystem.PixelationMatrix);
+            spriteBatch.ResetToDefault();
         }
 
 

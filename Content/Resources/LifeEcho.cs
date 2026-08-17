@@ -42,8 +42,8 @@ namespace DestroyerTest.Content.Resources
 			Color color = Color.Lerp(a, Color.LightGreen, MathF.Sin(Timer));
 			Vector2 Velocity = Main.rand.NextVector2Circular(0.1f, 0) - Vector2.UnitY.RotatedBy(MathF.Sin(Timer) * 0.1f)*Main.rand.NextFloat(0.2f, 2);
 
-            FX.Initialize(Item.Center + Main.rand.NextVector2Circular(1f, 1)*2, Velocity, color, 0.75f, 60);
-			ParticleEngine.ShaderParticles.Add(FX, FX.DefaultPixelLayer);
+            FX.Initialize(Item.Center + Main.rand.NextVector2Circular(1f, 1) * 2, Velocity, color, 0.75f, 60);
+			ParticleEngine.ShaderParticles.Add(FX);
 
 			Timer++;
             

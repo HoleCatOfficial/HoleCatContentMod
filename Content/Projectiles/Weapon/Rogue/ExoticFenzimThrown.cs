@@ -5,7 +5,7 @@ using DestroyerTest.Common.Interfaces;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Consumables;
 using DestroyerTest.Content.Particles;
-
+using DestroyerTest.Content.Projectiles.Weapon.Melee;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
@@ -21,7 +21,7 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 {
-    public class ElementalFenzimThrown : ModProjectile, IHomingProjectile
+    public class ExoticFenzimThrown : ModProjectile, IHomingProjectile
     {
         bool IHomingProjectile.TracksNPCs => !returning;
 
@@ -42,7 +42,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
         private bool returning = false;
         private int flightTime = 0;
         private int soundCooldown = 0; // Initialize a cooldown timer
-        private SoundStyle Woosh = DTAssetLib.SwordSounds.QuickSwing with { Pitch = -0.7f, PitchVariance = 0.7f, MaxInstances = 0, Volume = 0.4f };
+        private SoundStyle Woosh = DTAssetLib.SwordSounds.TenebrisSwing with { Pitch = -0.7f, PitchVariance = 0.7f, MaxInstances = 0, Volume = 0.4f };
         private SoundStyle TileHit = DTAssetLib.Charge.Anvil;
 
         public override void SetStaticDefaults()
@@ -60,8 +60,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             Projectile.timeLeft = 600;
             Projectile.DamageType = DamageClass.Throwing;
             Projectile.tileCollide = true;
+            Projectile.ArmorPenetration = 22;
             Projectile.extraUpdates = 1;
-            Projectile.scale = 1.5f;
         }
 
         public override void OnSpawn(IEntitySource source)
@@ -89,7 +89,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 
             Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
             float ROff = Projectile.direction == 1 ? Projectile.rotation + MathHelper.PiOver4 : Projectile.rotation + MathHelper.PiOver4;
-            Main.EntitySpriteDraw(DTAssetLib.CircularSwingThin.Value, Projectile.Center - Main.screenPosition, null, Color.Teal, ROff, DTAssetLib.CircularSwingThin.Value.Size() / 2, 0.5f, SpriteEffects.None, 0);
+            Main.EntitySpriteDraw(DTAssetLib.CircularSwingThin.Value, Projectile.Center - Main.screenPosition, null, Color.SlateBlue, ROff, DTAssetLib.CircularSwingThin.Value.Size() / 2, 0.5f, SpriteEffects.None, 0);
             Opus.ReturnToDefaultDrawing(Main.spriteBatch);
 
             Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;
@@ -104,7 +104,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 
             Vector2 origin = new Vector2(texture.Width / 2f, frameHeight / 2f);
 
-            
+
 
             Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, frame, lightColor * Projectile.Opacity, Projectile.rotation, origin, Projectile.scale, FX, 0f);
             return false;
@@ -146,10 +146,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             {
 
                 PointGlowPreMultiplied Glow = new();
-                Glow.Initialize(Projectile.Center + new Vector2(Projectile.width / 2, -(Projectile.width / 2)).RotatedBy(Projectile.rotation), Vector2.Zero, Color.SeaGreen, 1f);
+                Glow.Initialize(Projectile.Center + new Vector2(Projectile.width / 2, -(Projectile.width / 2)).RotatedBy(Projectile.rotation), Vector2.Zero, Color.SlateBlue, 1f);
                 ParticleEngine.BehindProjectiles.Add(Glow);
 
-                Dust d = Dust.NewDustPerfect(Projectile.Center + new Vector2(Projectile.width / 2, -(Projectile.width / 2)).RotatedBy(Projectile.rotation), DustID.FireworksRGB, new Vector2(4, 0).RotatedBy(Projectile.rotation + (Main.rand.NextFloat(0.25f) * Projectile.direction)), 0, Color.SeaGreen);
+                Dust d = Dust.NewDustPerfect(Projectile.Center + new Vector2(Projectile.width / 2, -(Projectile.width / 2)).RotatedBy(Projectile.rotation), DustID.FireworksRGB, new Vector2(4, 0).RotatedBy(Projectile.rotation + (Main.rand.NextFloat(0.25f) * Projectile.direction)), 0, Main.DiscoColor);
                 d.noGravity = true;
             }
 
@@ -181,10 +181,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            SoundStyle Hit = DTAssetLib.Impacts.ShortShine with
+            SoundStyle Hit = DTAssetLib.Impacts.MagicHit with
             {
                 PitchVariance = 0.1f,
-                Pitch = -0.8f
+                Pitch = -0.5f
             };
 
 
@@ -195,20 +195,20 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 
             for (int i = 0; i < 10; i++)
             {
-                LerpingSpark Spark = new LerpingSpark();
-                Spark.PrepareSpark(Projectile.Center, Main.rand.NextVector2Circular(16f, 16f), 0f, Color.ForestGreen, Color.Teal, 1f, false, 15, SparkDrawMode.Additive, 3f);
+                Spark Spark = new Spark();
+                Spark.PrepareSpark(Projectile.Center, Main.rand.NextVector2Circular(16f, 16f), 0f, Color.SlateBlue, 1f, false, 15, SparkDrawMode.Additive, 3f);
                 ParticleEngine.BehindProjectiles.Add(Spark);
             }
 
-            LerpingSimpleExplosionParticle ExplosionFX = new LerpingSimpleExplosionParticle();
-            ExplosionFX.Prepare(Projectile.Center, Vector2.Zero, Color.ForestGreen, Color.Teal, 0.3f, 0.01f, BlendState.Additive);
+            SimpleExplosionParticle ExplosionFX = new SimpleExplosionParticle();
+            ExplosionFX.Prepare(Projectile.Center, Vector2.Zero, Main.DiscoColor, 0.3f, 0.01f, BlendState.Additive);
             ParticleEngine.ShaderParticles.Add(ExplosionFX);
 
             BloomRingSharp Ring = new BloomRingSharp();
-            Ring.Prepare(Projectile.Center, Vector2.Zero, DTColorUtils.Pastel(Color.SeaGreen, 0.2f), 0.05f, 0.01f, 1f, BlendState.Additive);
+            Ring.Prepare(Projectile.Center, Vector2.Zero, Color.SlateBlue, 0.05f, 0.01f, 1f, BlendState.Additive);
             ParticleEngine.ShaderParticles.Add(Ring);
 
-            Opus.RadialSpreadProjectile(ModContent.ProjectileType<ElementalFenzimSpark>(), 6, target.Center, Projectile.damage / 3, 4, 24f, ai0: Main.rand.Next(5), offset: Main.rand.NextFloat(MathHelper.TwoPi));
+            Opus.RadialSpreadProjectile(ModContent.ProjectileType<ContinuumStar>(), 6, target.Center, Projectile.damage / 3, 4, 24f, ai0: Main.rand.Next(5), offset: Main.rand.NextFloat(MathHelper.TwoPi));
 
             if (Projectile.penetrate == 1)
             {
@@ -224,17 +224,17 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 
             for (int i = 0; i < 10; i++)
             {
-                LerpingSpark Spark = new LerpingSpark();
-                Spark.PrepareSpark(Projectile.Center, Main.rand.NextVector2Circular(16f, 16f), 0f, Color.ForestGreen, Color.Teal, 1f, false, 15, SparkDrawMode.Additive, 3f);
+                Spark Spark = new Spark();
+                Spark.PrepareSpark(Projectile.Center, Main.rand.NextVector2Circular(16f, 16f), 0f, Color.SlateBlue, 1f, false, 15, SparkDrawMode.Additive, 3f);
                 ParticleEngine.BehindProjectiles.Add(Spark);
             }
 
-            LerpingSimpleExplosionParticle ExplosionFX = new LerpingSimpleExplosionParticle();
-            ExplosionFX.Prepare(Projectile.Center, Vector2.Zero, Color.ForestGreen, Color.Teal, 0.3f, 0.01f, BlendState.Additive);
+            SimpleExplosionParticle ExplosionFX = new SimpleExplosionParticle();
+            ExplosionFX.Prepare(Projectile.Center, Vector2.Zero, Main.DiscoColor, 0.3f, 0.01f, BlendState.Additive);
             ParticleEngine.ShaderParticles.Add(ExplosionFX);
 
             BloomRingSharp Ring = new BloomRingSharp();
-            Ring.Prepare(Projectile.Center, Vector2.Zero, DTColorUtils.Pastel(Color.SeaGreen, 0.2f), 0.05f, 0.01f, 1f, BlendState.Additive);
+            Ring.Prepare(Projectile.Center, Vector2.Zero, Color.SlateBlue, 0.05f, 0.01f, 1f, BlendState.Additive);
             ParticleEngine.ShaderParticles.Add(Ring);
 
             returning = true;
@@ -247,11 +247,6 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             if (!RangeOfPlayer)
             {
                 SoundEngine.PlaySound(SoundID.Item14, Projectile.Center);
-
-                for (int i = 0; i < 10; i++)
-                {
-                    Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.TintableDustLighted, 0, 0, 150, ColorLib.CursedFlames, 5f);
-                }
             }
 
         }

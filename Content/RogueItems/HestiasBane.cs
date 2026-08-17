@@ -14,12 +14,12 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.RogueItems
 {
-    public class ElementalFenzim : ModItem
+    public class HestiasBane : ModItem
     {
 
         public override void SetStaticDefaults()
         {
-            ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<ExoticFenzim>();
+
         }
         public override void SetDefaults()
         {
@@ -27,17 +27,17 @@ namespace DestroyerTest.Content.RogueItems
             Item.height = 44;
             Item.value = Item.sellPrice(gold: 2, silver: 50);
             Item.rare = ItemRarityID.Expert;
-            Item.useTime = 60;
+            Item.useTime = 120;
             Item.useAnimation = 20;
             Item.useStyle = ItemUseStyleID.Swing;
             Item.UseSound = SoundID.Item1;
-            Item.knockBack = 6;
+            Item.knockBack = 11;
             Item.autoReuse = true;
-            Item.damage = 140;
+            Item.damage = 500;
             Item.DamageType = DamageClass.Throwing;
-            Item.crit = 10;
-            Item.shoot = ModContent.ProjectileType<ElementalFenzimThrown>();
-            Item.shootSpeed = 55f;
+            Item.crit = 22;
+            Item.shoot = ModContent.ProjectileType<HestiasBaneThrown>();
+            Item.shootSpeed = 12.5f;
             Item.noUseGraphic = true;
         }
     }
