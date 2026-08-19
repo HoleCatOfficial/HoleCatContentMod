@@ -16,6 +16,7 @@ using DestroyerTest.Content.Resources;
 using DestroyerTest.Asset.Menu.V5;
 using Terraria.DataStructures;
 using DestroyerTest.Content.Equips;
+using DestroyerTest.Content.Consumables.Flasks;
 
 namespace DestroyerTest.Common.NPC_Folder
 {

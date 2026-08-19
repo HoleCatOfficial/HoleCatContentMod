@@ -13,6 +13,9 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using BreadLibrary.Core.Graphics.Particles;
+using DestroyerTest.Content.Particles.Stellar;
+using OpusLib.Content.Particles;
+using BreadLibrary.Core.Graphics.Pixelation;
 
 
 namespace DestroyerTest.Common
@@ -20,24 +23,6 @@ namespace DestroyerTest.Common
     public class WeaponImbueScepter : GlobalProjectile
     {
         public override bool InstancePerEntity => true;
-        public bool HasImbue = false;
-
-        public bool GalantineBurn = false;
-        public bool Honey;
-        public bool Mud;
-        public bool GalantineHoney = false;
-        public bool Brine = false;
-        public bool FrostBurn = false;
-        public bool FrostBite = false;
-        public bool Fire = false;
-        public bool HellFire = false;
-        public bool Ichor = false;
-        public bool CursedFlame = false;
-        public bool HeliouricShock = false;
-        public bool DaylightOverload = false;
-        public bool ComaceraticBurn = false;
-        public bool shimmeringFlames = false;
-        public bool Scepter = false;
 
         private void DustInEnchantVisuals(ThrownScepter t, int ID, int alpha, Color color, float scale, bool noGravity = true)
         {
@@ -50,233 +35,149 @@ namespace DestroyerTest.Common
             Player player = Main.player[projectile.owner];
             if (projectile.ModProjectile is ThrownScepter thrown)
             {
-                Scepter = true;
-
-                //GalantineBurn = player.HasBuff<WeaponImbueGB>();
-                
-                if (Scepter)
+                if (player.HasBuff(BuffID.WeaponImbueFire))
                 {
-                    if (HeliouricShock)
-                    {
+                    DustInEnchantVisuals(thrown, DustID.Torch, 40, default, 1f);
+                }
+                if (player.HasBuff(BuffID.WeaponImbueIchor))
+                {
+                    DustInEnchantVisuals(thrown, DustID.IchorTorch, 40, default, 1f);
+                }
+                if (player.HasBuff(BuffID.WeaponImbueCursedFlames))
+                {
+                    DustInEnchantVisuals(thrown, DustID.CursedTorch, 40, default, 1f);
+                }
+                if (player.HasBuff(BuffID.WeaponImbuePoison))
+                {
+                    DustInEnchantVisuals(thrown, DustID.Poisoned, 40, default, 1f);
+                }
+                if (player.HasBuff(BuffID.WeaponImbueVenom))
+                {
+                    DustInEnchantVisuals(thrown, DustID.Venom, 40, default, 1f);
+                }
+                if (player.HasBuff(BuffID.WeaponImbueNanites))
+                {
+                    DustInEnchantVisuals(thrown, DustID.HallowSpray, 40, default, 1f);
+                }
 
-                        HasImbue = true;
-                        DustInEnchantVisuals(thrown, DustID.FireworksRGB, 40, ColorLib.Rift, 0.5f, false);
-
-                        ElectricArc Arc = new();
-                        Arc.Create(Main.rand.NextVector2FromRectangle(thrown.EnchantmentVisuals()), ColorLib.Rift, Main.rand.NextFloat(0.5f, 1f), 0.08f);
-                        ParticleEngine.ShaderParticles.Add(Arc);
-
-                    }
-                    if (DaylightOverload)
-                    {
-                        HasImbue = true;
-                        DustInEnchantVisuals(thrown, ModContent.DustType<RiftDust>(), 40, Color.White, 1f);
-                        //Dust.NewDust(thrown.EnchantmentVisuals().TopLeft(), thrown.EnchantmentVisuals().Width, thrown.EnchantmentVisuals().Height, ModContent.DustType<RiftDust>(), 0, 0, 40, ColorLib.Rift, 1.0f);
-                    }
-                    if (ComaceraticBurn)
-                    {
-                        HasImbue = true;
-                        DustInEnchantVisuals(thrown, ModContent.DustType<RiftDust>(), 40, Color.White, 1f);
-                        //Dust.NewDust(thrown.EnchantmentVisuals().TopLeft(), thrown.EnchantmentVisuals().Width, thrown.EnchantmentVisuals().Height, ModContent.DustType<RiftDust>(), 0, 0, 40, ColorLib.Rift, 1.0f);
-                    }
-                    if (GalantineBurn)
-                    {
-                        HasImbue = true;
-                        DustInEnchantVisuals(thrown, DustID.FireworksRGB, 40,  ColorLib.StellarFireGradientLooping(), 0.7f, false);
-                        //Dust.NewDust(thrown.EnchantmentVisuals().TopLeft(), thrown.EnchantmentVisuals().Width, thrown.EnchantmentVisuals().Height, DustID.TintableDustLighted, 0, 0, 40,  ColorLib.StellarFireGradientLooping(), 1.0f);
-                    }
-                    if (Brine)
-                    {
-                        HasImbue = true;
-                        DustInEnchantVisuals(thrown, DustID.Water_Snow, 40, default, 1f);
-                        //Dust.NewDust(thrown.EnchantmentVisuals().TopLeft(), thrown.EnchantmentVisuals().Width, thrown.EnchantmentVisuals().Height, DustID.Water_Snow, 0, 0, 40, default, 1.0f);  
-                    }
-                    if (Mud)
-                    {
-                        HasImbue = true;
-                        DustInEnchantVisuals(thrown, DustID.Mud, 40, default, 1f);
-                        //Dust.NewDust(thrown.EnchantmentVisuals().TopLeft(), thrown.EnchantmentVisuals().Width, thrown.EnchantmentVisuals().Height, DustID.Mud, 0, 0, 40, default, 1.0f);
-                    }
-                    if (FrostBurn)
-                    {
-                        HasImbue = true;
-                        DustInEnchantVisuals(thrown, DustID.IceTorch, 40, default, 1f);
-                        //Dust.NewDust(thrown.EnchantmentVisuals().TopLeft(), thrown.EnchantmentVisuals().Width, thrown.EnchantmentVisuals().Height, DustID.IceTorch, 0, 0, 40, default, 1.0f);
-                    }
-                    if (FrostBite)
-                    {
-                        HasImbue = true;
-                        DustInEnchantVisuals(thrown, DustID.IceTorch, 40, default, 1f);
-                    }
-                    if (shimmeringFlames)
-                    {
-                        HasImbue = true;
-                        DustInEnchantVisuals(thrown, DustID.TintableDustLighted, 0, ColorLib.TenebrisGradient, 1f);
-                    }
-                    if (Fire)
-                    {
-                        HasImbue = true;
-                        DustInEnchantVisuals(thrown, DustID.Torch, 40, default, 1f);
-                        //Dust.NewDust(thrown.EnchantmentVisuals().TopLeft(), thrown.EnchantmentVisuals().Width, thrown.EnchantmentVisuals().Height, DustID.Torch, 0, 0, 40, default, 1.0f);
-                    }
-                    if (HellFire)
-                    {
-                        HasImbue = true;
-                        DustInEnchantVisuals(thrown, DustID.Lava, 40, default, 1f);
-                        //Dust.NewDust(thrown.EnchantmentVisuals().TopLeft(), thrown.EnchantmentVisuals().Width, thrown.EnchantmentVisuals().Height, DustID.Torch, 0, 0, 40, default, 1.0f);
-                    }
-                    if (Ichor)
-                    {
-                        HasImbue = true;
-                        DustInEnchantVisuals(thrown, DustID.Ichor, 40, default, 1f);
-                        //Dust.NewDust(thrown.EnchantmentVisuals().TopLeft(), thrown.EnchantmentVisuals().Width, thrown.EnchantmentVisuals().Height, DustID.Ichor, 0, 0, 40, default, 1.0f);
-                    }
-                    if (CursedFlame)
-                    {
-                        HasImbue = true;
-                        DustInEnchantVisuals(thrown, DustID.CursedTorch, 40, default, 1f);
-                    }
-                    
-
-                    if (Honey)
-                    {
-                        HasImbue = true;
-                        DustInEnchantVisuals(thrown, DustID.Honey, 40, default, 1f);
-                        //Dust.NewDust(thrown.EnchantmentVisuals().TopLeft(), thrown.EnchantmentVisuals().Width, thrown.EnchantmentVisuals().Height, DustID.Honey, 0, 0, 40, default, 1.0f);
-                        if (Main.rand.NextBool(10))
+                switch (player.GetModPlayer<WeaponImbuePlayer>().currentImbue)
+                {
+                    case WeaponImbuePlayer.Imbues.None:
                         {
-                            Projectile.NewProjectile(projectile.GetSource_FromThis(), projectile.Center, Vector2.Zero, ProjectileID.Bee, projectile.damage / 3, 4, projectile.owner);
+                            break;
                         }
-                    }
-                    if (GalantineHoney)
-                    {
-                        HasImbue = true;
-                        DustInEnchantVisuals(thrown, DustID.Honey, 40, default, 1f);
-                        DustInEnchantVisuals(thrown, DustID.FireworksRGB, 40,  ColorLib.StellarFireGradientLooping(), 0.7f, false);
-
-                        //Dust.NewDust(thrown.EnchantmentVisuals().TopLeft(), thrown.EnchantmentVisuals().Width, thrown.EnchantmentVisuals().Height, DustID.Honey, 0, 0, 40, default, 1.0f);
-                        //Dust.NewDust(thrown.EnchantmentVisuals().TopLeft(), thrown.EnchantmentVisuals().Width, thrown.EnchantmentVisuals().Height, DustID.TintableDustLighted, 0, 0, 40,  ColorLib.StellarFireGradientLooping(), 1.0f);
-                        if (Main.rand.NextBool(10))
+                    case WeaponImbuePlayer.Imbues.Brine:
                         {
-                            Projectile.NewProjectile(projectile.GetSource_FromThis(), projectile.Center, projectile.velocity.RotatedByRandom(MathHelper.TwoPi), ModContent.ProjectileType<GalantineBee>(), projectile.damage / 3, 4, projectile.owner);
-                        }   
-                    }
+                            DustInEnchantVisuals(thrown, DustID.Water_Snow, 40, default, 1f);
+                            break;
+                        }
+                    case WeaponImbuePlayer.Imbues.ComaceraticBurn:
+                        {
+                            DustInEnchantVisuals(thrown, ModContent.DustType<RiftDust>(), 40, Color.White, 1f);
+                            break;
+                        }
+                    case WeaponImbuePlayer.Imbues.DaylightOverload:
+                        {
+                            DustInEnchantVisuals(thrown, ModContent.DustType<RiftDust>(), 40, Color.White, 1f);
+                            break;
+                        }
+                    case WeaponImbuePlayer.Imbues.Defilement:
+                        {
+                            
+                            break;
+                        }
+                    case WeaponImbuePlayer.Imbues.FrostBite:
+                        {
+                            DustInEnchantVisuals(thrown, DustID.IceTorch, 40, default, 1f);
+                            break;
+                        }
+                    case WeaponImbuePlayer.Imbues.FrostBurn:
+                        {
+                            DustInEnchantVisuals(thrown, DustID.IceTorch, 40, default, 1f);
+                            break;
+                        }
+                    case WeaponImbuePlayer.Imbues.GalantineBurn:
+                        {
+                            ConstitutionParticle Particle = new();
+                            Particle.Initialize(Main.rand.NextVector2FromRectangle(thrown.EnchantmentVisuals()), projectile.Center.DirectionTo(Utils.Center(thrown.EnchantmentVisuals())) * 3f, Main.rand.NextFloat(0.5f, 1f), 30);
+                            ParticleEngine.ShaderParticles.Add(Particle);
+                            break;
+                        }
+                    case WeaponImbuePlayer.Imbues.HeliouricShock:
+                        {
+                            DustInEnchantVisuals(thrown, DustID.FireworksRGB, 40, ColorLib.Rift, 0.5f, false);
+
+                            ElectricArc Arc = new();
+                            Arc.Create(Main.rand.NextVector2FromRectangle(thrown.EnchantmentVisuals()), ColorLib.Rift, Main.rand.NextFloat(0.5f, 1f), 0.08f);
+                            ParticleEngine.ShaderParticles.Add(Arc);
+                            break;
+                        }
+                    case WeaponImbuePlayer.Imbues.Hellfire:
+                        {
+                            DustInEnchantVisuals(thrown, DustID.Lava, 40, default, 1f);
+                            break;
+                        }
+                    case WeaponImbuePlayer.Imbues.Honey:
+                        {
+                            DustInEnchantVisuals(thrown, DustID.Honey, 40, default, 1f);
+                            //Dust.NewDust(thrown.EnchantmentVisuals().TopLeft(), thrown.EnchantmentVisuals().Width, thrown.EnchantmentVisuals().Height, DustID.Honey, 0, 0, 40, default, 1.0f);
+                            if (Main.rand.NextBool(10))
+                            {
+                                Projectile.NewProjectile(projectile.GetSource_FromThis(), projectile.Center, Vector2.Zero, ProjectileID.Bee, projectile.damage / 3, 4, projectile.owner);
+                            }
+                            break;
+                        }
+                    case WeaponImbuePlayer.Imbues.Mud:
+                        {
+                            DustInEnchantVisuals(thrown, DustID.Mud, 40, default, 1f);
+                            break;
+                        }
+                    case WeaponImbuePlayer.Imbues.SpiritDrift:
+                        {
+                            
+                            break;
+                        }
+                    case WeaponImbuePlayer.Imbues.ShimmeringFlames:
+                        {
+                            Fire fire = new Fire();
+                            fire.PrepareFire(Main.rand.NextVector2FromRectangle(thrown.EnchantmentVisuals()), projectile.Center.DirectionTo(Utils.Center(thrown.EnchantmentVisuals())) * 3f, DTUtils.RandomDirection(2), 0.1f, ColorLib.TenebrisGradient, Main.rand.NextFloat(0.5f, 1f), 30, FireDrawMode.Additive, PixelLayer.AboveTiles);
+                            ParticleEngine.BehindProjectiles.Add(fire);
+                            break;
+                        }
+                    case WeaponImbuePlayer.Imbues.SoulInferno:
+                        {
+                            
+                            break;
+                        }
+                    case WeaponImbuePlayer.Imbues.Withering:
+                        {
+
+                            break;
+                        }
+                }
+            }
+        }
+
+        public void ApplyImbue(NPC target, Projectile projectile)
+        {
+            Player player = Main.player[projectile.owner];
+
+            if (player.TryGetModPlayer<WeaponImbuePlayer>(out var imbuePlayer))
+            {
+                if (imbuePlayer.currentImbue != WeaponImbuePlayer.Imbues.ShimmeringFlames)
+                {
+                    target.AddBuff(imbuePlayer.GetImbueToBuff(), imbuePlayer.GetImbueTime());
+                }
+                else
+                {
+                    ShimmeringFlames.ShimmerBurn(target, true);
                 }
             }
         }
 
         public override void OnHitNPC(Projectile projectile, NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if (Scepter)
-            {
-                if (HeliouricShock)
-                {
-                    target.AddBuff(ModContent.BuffType<HeliouricShock>(), 60 * Main.rand.Next(10, 17));
-                }
-                if (DaylightOverload)
-                {
-                    target.AddBuff(ModContent.BuffType<DaylightOverload>(), 60 * Main.rand.Next(10, 17));
-                }
-                if (ComaceraticBurn)
-                {
-                    target.AddBuff(ModContent.BuffType<ComaceraticBurn>(), 60 * Main.rand.Next(10, 17));
-                }
-                if (GalantineBurn || GalantineHoney)
-                {
-                    target.AddBuff(ModContent.BuffType<GalantineBurn>(), 60 * Main.rand.Next(10, 17));
-                }
-                if (Brine)
-                {
-                    target.AddBuff(ModContent.BuffType<Brine>(), 60 * Main.rand.Next(10, 17));
-                }
-                if (Mud)
-                {
-                    target.AddBuff(ModContent.BuffType<Muddy>(), 60 * Main.rand.Next(10, 17));
-                }
-                if (FrostBurn)
-                {
-                    target.AddBuff(BuffID.Frostburn, 60 * Main.rand.Next(10, 17));
-                }
-                if (FrostBite)
-                {
-                    target.AddBuff(BuffID.Frostburn2, 60 * Main.rand.Next(10, 17));
-                }
-                if (Fire)
-                {
-                    target.AddBuff(BuffID.OnFire, 60 * Main.rand.Next(10, 17));
-                }
-                if (HellFire)
-                {
-                    target.AddBuff(BuffID.OnFire3, 60 * Main.rand.Next(10, 17));
-                }
-                if (Ichor)
-                {
-                    target.AddBuff(BuffID.Ichor, 60 * Main.rand.Next(10, 17));
-                }
-                if (CursedFlame)
-                {
-                    target.AddBuff(BuffID.CursedInferno, 60 * Main.rand.Next(10, 17));
-                }
-                if (shimmeringFlames)
-                {
-                    ShimmeringFlames.ShimmerBurn(target);
-                }
-                if (Honey || GalantineHoney)
-                {
-                    target.AddBuff(BuffID.Slow, 60 * Main.rand.Next(10, 17));
-                }
-            }
-        }
-
-        public override void OnHitPlayer(Projectile projectile, Player target, Player.HurtInfo info)
-        {
-            if (Scepter)
-            {
-                if (HeliouricShock)
-                {
-                    target.AddBuff(ModContent.BuffType<HeliouricShock>(), 60 * Main.rand.Next(10, 17));
-                }
-                if (DaylightOverload)
-                {
-                    target.AddBuff(ModContent.BuffType<DaylightOverload>(), 60 * Main.rand.Next(10, 17));
-                }
-                if (ComaceraticBurn)
-                {
-                    target.AddBuff(ModContent.BuffType<ComaceraticBurn>(), 60 * Main.rand.Next(10, 17));
-                }
-                if (GalantineBurn || GalantineHoney)
-                {
-                    target.AddBuff(ModContent.BuffType<GalantineBurn>(), 60 * Main.rand.Next(10, 17));
-                }
-                if (Brine)
-                {
-                    target.AddBuff(ModContent.BuffType<Brine>(), 60 * Main.rand.Next(10, 17));
-                }
-                if (Mud)
-                {
-                    target.AddBuff(ModContent.BuffType<Muddy>(), 60 * Main.rand.Next(10, 17));
-                }
-                if (FrostBurn)
-                {
-                    target.AddBuff(BuffID.Frostburn, 60 * Main.rand.Next(10, 17));
-                }
-                if (Fire)
-                {
-                    target.AddBuff(BuffID.OnFire, 60 * Main.rand.Next(10, 17));
-                }
-                if (Ichor)
-                {
-                    target.AddBuff(BuffID.Ichor, 60 * Main.rand.Next(10, 17));
-                }
-                if (CursedFlame)
-                {
-                    target.AddBuff(BuffID.CursedInferno, 60 * Main.rand.Next(10, 17));
-                }
-                if (Honey || GalantineHoney)
-                {
-                    target.AddBuff(BuffID.Slow, 60 * Main.rand.Next(10, 17));
-                }
-            }
+            ApplyImbue(target, projectile);
         }
     }
 }

@@ -1,6 +1,8 @@
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Buffs.Imbues;
 using DestroyerTest.Content.Consumables;
+using DestroyerTest.Content.Consumables.Flasks;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.Tiles;
 using DestroyerTest.Rarity;
@@ -13,20 +15,15 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Consumables
 {
-	public class BrineFlask : ModItem
-	{
-		public override void SetStaticDefaults() {
-			Item.ResearchUnlockCount = 20;
+	public class BrineFlask : BaseFlask
+    {
+        public override Color[] DrinkColors => [Color.SkyBlue, Color.White];
 
-			ItemID.Sets.DrinkParticleColors[Type] = [
-				Color.SkyBlue
-			];
-		}
-		public override void SetDefaults() 
-		{
-			Item.width = 18;
-			Item.height = 32;
-			Item.DefaultToFlask(ModContent.BuffType<WeaponImbueBrine>(), ItemRarityID.White, Item.sellPrice(0, 0, 5));
-		}
-	}
+        public override int BuffType => ModContent.BuffType<WeaponImbueBrine>();
+
+        public override Vector2 Dimensions => new Vector2(22, 22);
+
+        public override int Rarity => ItemRarityID.White;
+
+    }
 }

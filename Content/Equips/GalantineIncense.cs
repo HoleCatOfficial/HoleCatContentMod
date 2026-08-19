@@ -18,6 +18,7 @@ using Terraria.ModLoader;
 using OpusLib;
 using DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss;
 using Terraria.GameContent;
+using DestroyerTest.Content.Buffs.Imbues;
 
 namespace DestroyerTest.Content.Equips
 {
@@ -63,10 +64,7 @@ namespace DestroyerTest.Content.Equips
             {
                 TexRot += 0.05f * Player.direction;
                 Player.buffImmune[ModContent.BuffType<GalantineBurn>()] = true;
-                if (Player.TryGetModPlayer<WeaponImbuePlayer>(out WeaponImbuePlayer Weapon))
-                {
-                    Weapon.GalantineBurn = true;
-                }
+                Player.AddBuff(ModContent.BuffType<WeaponImbueGalantineBurn>(), 60);
             }
         }
 

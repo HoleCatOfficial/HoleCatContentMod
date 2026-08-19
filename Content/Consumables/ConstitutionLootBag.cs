@@ -20,6 +20,7 @@ using Terraria.Localization;
 using DestroyerTest.Content.Equips.ScepterAccessories;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.MeleeWeapons;
+using DestroyerTest.Content.Consumables.Flasks;
 
 namespace DestroyerTest.Content.Consumables
 {

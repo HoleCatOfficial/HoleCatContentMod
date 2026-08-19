@@ -1,0 +1,14 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using DestroyerTest.Common;
+
+namespace DestroyerTest.Content.Buffs.Imbues
+{
+    public class WeaponImbueHoney : BaseImbueBuff
+    {
+        public override WeaponImbuePlayer.Imbues Imbue => WeaponImbuePlayer.Imbues.Honey;
+    }
+}

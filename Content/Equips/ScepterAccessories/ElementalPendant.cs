@@ -1,7 +1,7 @@
 
 using System.Collections.Generic;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Buffs.Imbues;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.Tiles;
 using DestroyerTest.Content.Tiles.RiftConfigurator;
@@ -66,7 +66,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
             player.GetArmorPenetration<ScepterClass>() += 5f;
             if (Main.expertMode)
             {
-                player.AddBuff(ModContent.BuffType<WeaponImbueFF>(), 60);
+                player.AddBuff(ModContent.BuffType<WeaponImbueFrostburn>(), 60);
                 player.AddBuff(BuffID.WeaponImbueFire, 60);
                 player.AddBuff(BuffID.WeaponImbueCursedFlames, 60);
                 player.AddBuff(BuffID.WeaponImbueIchor, 60);

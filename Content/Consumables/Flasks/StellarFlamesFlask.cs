@@ -1,5 +1,4 @@
 using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Scepter;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.Tiles;
@@ -9,24 +8,24 @@ using Newtonsoft.Json.Linq;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.Audio;
+using DestroyerTest.Content.Buffs.Imbues;
 
-namespace DestroyerTest.Content.Consumables
+namespace DestroyerTest.Content.Consumables.Flasks
 {
-	public class RiftFlask : ModItem
+	// This one? This one's got a special use sound. This one can be spared the conversion.
+	public class StellarFlamesFlask : ModItem
 	{
 		public override void SetStaticDefaults() {
-
 			Item.ResearchUnlockCount = 20;
 
 			ItemID.Sets.DrinkParticleColors[Type] = [
-				ColorLib.Rift,
-				ColorLib.DarkRift3,
-				ColorLib.LightRift2
+				 ColorLib.StellarFireGradientLooping()
 			];
 		}
 
 		public override void SetDefaults() {
-			Item.UseSound = SoundID.Item3;
+			Item.UseSound = new SoundStyle("DestroyerTest/Assets/Audio/StellarFlamesFlask") with { PitchVariance = 0.2f, MaxInstances = 0 };
 			Item.useStyle = ItemUseStyleID.DrinkLiquid;
 			Item.useTurn = true;
 			Item.useAnimation = 17;
@@ -34,18 +33,18 @@ namespace DestroyerTest.Content.Consumables
 			Item.maxStack = Item.CommonMaxStack;
 			Item.consumable = true;
 			Item.width = 22;
-			Item.height = 32;
-			Item.buffType = ModContent.BuffType<WeaponImbueDO>();
+			Item.height = 34;
+			Item.buffType = ModContent.BuffType<WeaponImbueGalantineBurn>();
 			Item.buffTime = Item.flaskTime;
-			Item.value = Item.sellPrice(0, 0, 5);
-			Item.rare = ModContent.RarityType<RiftRarity1>();
+			Item.value = Item.sellPrice(0, 2, 55);
+			Item.rare = ModContent.RarityType<StellarRarity>();
 		}
 
         public override void AddRecipes()
         {
             CreateRecipe()
                 .AddIngredient(ItemID.BottledWater)
-                .AddIngredient<Item_HeliciteCrystal>(8)
+                .AddIngredient<StellarMatter>(8)
                 .AddTile(TileID.ImbuingStation)
                 .Register();
 		}

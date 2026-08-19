@@ -492,3 +492,68 @@ UrcerisMiniBuff: {
 	DisplayName: Urceris Mini Buff
 	Description: Mods.DestroyerTest.Buffs.UrcerisMiniBuff.Description
 }
+
+WeaponImbueComaceraticBurn: {
+	DisplayName: Weapon Imbue Comaceratic Burn
+	Description: Mods.DestroyerTest.Buffs.WeaponImbueComaceraticBurn.Description
+}
+
+WeaponImbueDaylightOverload: {
+	DisplayName: Weapon Imbue Daylight Overload
+	Description: Mods.DestroyerTest.Buffs.WeaponImbueDaylightOverload.Description
+}
+
+WeaponImbueDefilement: {
+	DisplayName: Weapon Imbue Defilement
+	Description: Mods.DestroyerTest.Buffs.WeaponImbueDefilement.Description
+}
+
+WeaponImbueFrostbite: {
+	DisplayName: Weapon Imbue Frostbite
+	Description: Mods.DestroyerTest.Buffs.WeaponImbueFrostbite.Description
+}
+
+WeaponImbueFrostburn: {
+	DisplayName: Weapon Imbue Frostburn
+	Description: Mods.DestroyerTest.Buffs.WeaponImbueFrostburn.Description
+}
+
+WeaponImbueGalantineBurn: {
+	DisplayName: Weapon Imbue Galantine Burn
+	Description: Mods.DestroyerTest.Buffs.WeaponImbueGalantineBurn.Description
+}
+
+WeaponImbueHeliouricShock: {
+	DisplayName: Weapon Imbue Heliouric Shock
+	Description: Mods.DestroyerTest.Buffs.WeaponImbueHeliouricShock.Description
+}
+
+WeaponImbueHellfire: {
+	DisplayName: Weapon Imbue Hellfire
+	Description: Mods.DestroyerTest.Buffs.WeaponImbueHellfire.Description
+}
+
+WeaponImbueHoney: {
+	DisplayName: Weapon Imbue Honey
+	Description: Mods.DestroyerTest.Buffs.WeaponImbueHoney.Description
+}
+
+WeaponImbueShimmeringFlames: {
+	DisplayName: Weapon Imbue Shimmering Flames
+	Description: Mods.DestroyerTest.Buffs.WeaponImbueShimmeringFlames.Description
+}
+
+WeaponImbueSoulInferno: {
+	DisplayName: Weapon Imbue Soul Inferno
+	Description: Mods.DestroyerTest.Buffs.WeaponImbueSoulInferno.Description
+}
+
+WeaponImbueSpiritDrift: {
+	DisplayName: Weapon Imbue Spirit Drift
+	Description: Mods.DestroyerTest.Buffs.WeaponImbueSpiritDrift.Description
+}
+
+WeaponImbueWithering: {
+	DisplayName: Weapon Imbue Withering
+	Description: Mods.DestroyerTest.Buffs.WeaponImbueWithering.Description
+}

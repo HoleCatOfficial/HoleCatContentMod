@@ -1,4 +1,5 @@
-﻿using DestroyerTest.Content.Projectiles.Vanilla;
+﻿using DestroyerTest.Content.Buffs.Imbues;
+using DestroyerTest.Content.Projectiles.Vanilla;
 using DestroyerTest.Content.Projectiles.Weapon.Melee;
 using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework.Graphics;
@@ -30,6 +31,27 @@ namespace DestroyerTest.Common
             {
                 BloodButchererDefaults(entity);
             }
+            if (entity.type == ItemID.FlaskofFire)
+            {
+                FlaskOfFireDefaults(entity);
+            }
+        }
+
+        private void FlaskOfFireDefaults(Item item)
+        {
+            item.UseSound = SoundID.Item3;
+            item.useStyle = ItemUseStyleID.DrinkLiquid;
+            item.useTurn = true;
+            item.useAnimation = 17;
+            item.useTime = 17;
+            item.maxStack = Item.CommonMaxStack;
+            item.consumable = true;
+            item.width = 14;
+            item.height = 24;
+            item.buffType = ModContent.BuffType<WeaponImbueHellfire>();
+            item.buffTime = 72000;
+            item.value = Item.sellPrice(0, 0, 5);
+            item.rare = ItemRarityID.LightRed;
         }
 
         private void BloodButchererDefaults(Item item)

@@ -1,6 +1,6 @@
 
 using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Buffs.Imbues;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Rarity.Scepter;
 using Microsoft.Xna.Framework;
@@ -27,7 +27,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             player.GetArmorPenetration<ScepterClass>() += 5f;
-            player.AddBuff(ModContent.BuffType<WeaponImbueFF>(), 60);
+            player.AddBuff(ModContent.BuffType<WeaponImbueFrostburn>(), 60);
         }
 
         public override void AddRecipes()

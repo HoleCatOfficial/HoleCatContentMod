@@ -10,6 +10,7 @@ using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 using DestroyerTest.Content.Equips.ScepterAccessories;
+using DestroyerTest.Content.Consumables.Flasks;
 
 namespace DestroyerTest.Content.Consumables
 {
@@ -83,7 +84,7 @@ namespace DestroyerTest.Content.Consumables
 				ItemDropRule.Common(ItemID.MiningPotion, 1, 2, 5),
 				ItemDropRule.Common(ItemID.HeartreachPotion, 1, 2, 5),
 				ItemDropRule.Common(ModContent.ItemType<HeliouricFlask>(), 1, 2, 5),
-				ItemDropRule.Common(ModContent.ItemType<RiftFlask>(), 1, 2, 5)
+				ItemDropRule.Common(ModContent.ItemType<DaylightFlask>(), 1, 2, 5)
 			];
 
 			// Pass the array to OneFromRulesRule

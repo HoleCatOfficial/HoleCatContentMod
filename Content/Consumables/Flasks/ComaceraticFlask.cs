@@ -1,5 +1,4 @@
 using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Scepter;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.Tiles;
@@ -9,28 +8,19 @@ using Newtonsoft.Json.Linq;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using DestroyerTest.Content.Buffs.Imbues;
 
-namespace DestroyerTest.Content.Consumables
+namespace DestroyerTest.Content.Consumables.Flasks
 {
-	public class ComaceraticFlask : ModItem
+	public class ComaceraticFlask : BaseFlask
 	{
-		public override void SetStaticDefaults() 
-		{
-			Item.ResearchUnlockCount = 20;
+        public override Color[] DrinkColors => new Color[2] { ColorLib.LightRift2, ColorLib.Rift };
 
-			ItemID.Sets.DrinkParticleColors[Type] = [
-				ColorLib.Rift,
-				ColorLib.DarkRift3,
-				ColorLib.LightRift2
-			];
-		}
+        public override int BuffType => ModContent.BuffType<WeaponImbueComaceraticBurn>();
 
-		public override void SetDefaults() 
-		{
-			Item.width = 22;
-			Item.height = 32;
-			Item.DefaultToFlask(ModContent.BuffType<WeaponImbueCB>(), ModContent.RarityType<RiftRarity1>(), Item.sellPrice(0, 0, 5));
-		}
+        public override Vector2 Dimensions => new Vector2(22, 32);
+
+        public override int Rarity => ModContent.RarityType<RiftRarity2>();
 
         public override void AddRecipes()
         {

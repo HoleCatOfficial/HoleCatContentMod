@@ -77,7 +77,6 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
             Projectile.velocity = new Vector2(-oldVelocity.X * 0.6f, -oldVelocity.Y * 0.6f);
-            SoundEngine.PlaySound(DTAssetLib.FrigidFenzim.TileHit with { PitchVariance = 0.3f }, Projectile.Center);
             Projectile.penetrate--;
             return Projectile.penetrate > 1;
         }

@@ -5189,3 +5189,43 @@ Fangshred: {
 	DisplayName: Fangshred
 	Tooltip: ""
 }
+
+DaylightFlask: {
+	DisplayName: Daylight Flask
+	Tooltip: ""
+}
+
+DefilementFlask: {
+	DisplayName: Defilement Flask
+	Tooltip: ""
+}
+
+FrostbiteFlask: {
+	DisplayName: Frostbite Flask
+	Tooltip: ""
+}
+
+HoneyFlask: {
+	DisplayName: Honey Flask
+	Tooltip: ""
+}
+
+ShimmeringFlask: {
+	DisplayName: Shimmering Flask
+	Tooltip: ""
+}
+
+SoulInfernoFlask: {
+	DisplayName: Soul Inferno Flask
+	Tooltip: ""
+}
+
+SpiritDriftFlask: {
+	DisplayName: Spirit Drift Flask
+	Tooltip: ""
+}
+
+WitheringFlask: {
+	DisplayName: Withering Flask
+	Tooltip: ""
+}
