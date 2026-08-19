@@ -35,6 +35,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 			ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true; // Make the cultist resistant to this projectile, as it's resistant to all homing projectiles.
 			ProjectileID.Sets.TrailingMode[Type] = 3;
 			ProjectileID.Sets.TrailCacheLength[Type] = 12;
+            DTUtils.ThrowerProjectilesThatCantTriggerEquipEffects[Type] = true;
 		}
 
 		public override void SetDefaults()

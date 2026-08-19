@@ -36,6 +36,7 @@ namespace DestroyerTest.Content.Equips
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             player.GetDamage(DamageClass.Ranged) += 0.08f;
+            player.GetDamage(DamageClass.Throwing) += 0.1f;
             player.GetModPlayer<HematoidVisagePlayer>().Active = true;
         }
     }
@@ -57,9 +58,10 @@ namespace DestroyerTest.Content.Equips
 
         public override void OnHitNPC(Projectile projectile, NPC target, NPC.HitInfo hit, int damageDone)
         {
+
             if (Main.player[projectile.owner].GetModPlayer<HematoidVisagePlayer>().Active)
             {
-                if (Main.rand.NextBool(5))
+                if (projectile.type != ModContent.ProjectileType<HematoidBlob>() && !DTUtils.ThrowerProjectilesThatCantTriggerEquipEffects[projectile.type] && (projectile.DamageType.CountsAsClass(DamageClass.Throwing) || projectile.DamageType == DamageClass.Ranged) && Main.rand.NextBool(5))
                 {
                     Vector2 v = projectile.velocity;
                     v.Normalize();

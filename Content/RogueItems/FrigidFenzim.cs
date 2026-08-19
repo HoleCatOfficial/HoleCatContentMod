@@ -34,11 +34,20 @@ namespace DestroyerTest.Content.RogueItems
             Item.noUseGraphic = true;
             Item.noMelee = true;
             Item.rare = ItemRarityID.Blue;
+            Item.DamageType = DamageClass.Throwing;
             Item.damage = 20;
             Item.autoReuse = true;
             Item.crit = 15;
         }
 
-
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient(ItemID.IceBlock, 10)
+                .AddIngredient(ItemID.Shiverthorn, 2)
+                .AddIngredient<LifeEcho>(3)
+                .AddTile(TileID.Anvils)
+                .Register();
+        }
     }
 }

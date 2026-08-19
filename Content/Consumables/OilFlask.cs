@@ -17,7 +17,6 @@ namespace DestroyerTest.Content.Consumables
 	{
 		public override void SetStaticDefaults() 
 		{
-			ItemID.Sets.ShimmerTransformToItem[ModContent.ItemType<OilVial>()] = Type;
 			Item.ResearchUnlockCount = 20;
 
 			ItemID.Sets.DrinkParticleColors[Type] = [

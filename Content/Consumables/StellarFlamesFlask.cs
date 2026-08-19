@@ -46,9 +46,6 @@ namespace DestroyerTest.Content.Consumables
                 .AddIngredient<StellarMatter>(8)
                 .AddTile(TileID.ImbuingStation)
                 .Register();
-            Recipe.Create(ModContent.ItemType<GalantineVial>(), 1)
-                .AddIngredient(Type)
-                .Register();
 		}
 	}
 }

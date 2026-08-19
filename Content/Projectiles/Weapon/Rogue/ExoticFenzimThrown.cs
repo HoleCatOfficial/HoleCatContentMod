@@ -106,7 +106,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 
 
 
-            Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, frame, lightColor * Projectile.Opacity, Projectile.rotation, origin, Projectile.scale, FX, 0f);
+            Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, frame, Color.White * Projectile.Opacity, Projectile.rotation, origin, Projectile.scale, FX, 0f);
             return false;
         }
 
@@ -181,10 +181,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            SoundStyle Hit = DTAssetLib.Impacts.MagicHit with
+            SoundStyle Hit = DTAssetLib.SwordSounds.LightSnap with
             {
                 PitchVariance = 0.1f,
-                Pitch = -0.5f
+                Volume = 1.6f
             };
 
 
@@ -208,7 +208,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             Ring.Prepare(Projectile.Center, Vector2.Zero, Color.SlateBlue, 0.05f, 0.01f, 1f, BlendState.Additive);
             ParticleEngine.ShaderParticles.Add(Ring);
 
-            Opus.RadialSpreadProjectile(ModContent.ProjectileType<ContinuumStar>(), 6, target.Center, Projectile.damage / 3, 4, 24f, ai0: Main.rand.Next(5), offset: Main.rand.NextFloat(MathHelper.TwoPi));
+            Vector2[] PossiblePositions = Opus.GetEquidistantVectors(12, target.Center, 140);
+
+            int idx  = Main.rand.Next(PossiblePositions.Length);
+            Projectile.NewProjectile(Projectile.GetSource_OnHit(target), PossiblePositions[idx], PossiblePositions[idx].DirectionTo(target.Center) * 30, ModContent.ProjectileType<RainbowSlash>(), Projectile.damage / 2, 5, Projectile.owner);
 
             if (Projectile.penetrate == 1)
             {

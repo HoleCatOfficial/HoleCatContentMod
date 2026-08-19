@@ -15,7 +15,7 @@ namespace DestroyerTest.Content.Consumables
 	public class RiftFlask : ModItem
 	{
 		public override void SetStaticDefaults() {
-			ItemID.Sets.ShimmerTransformToItem[ModContent.ItemType<RiftVial>()] = Type;
+
 			Item.ResearchUnlockCount = 20;
 
 			ItemID.Sets.DrinkParticleColors[Type] = [

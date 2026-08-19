@@ -12,8 +12,8 @@ namespace DestroyerTest.Content.Consumables
 {
 	public class HeliouricFlask : ModItem
 	{
-		public override void SetStaticDefaults() {
-			ItemID.Sets.ShimmerTransformToItem[ModContent.ItemType<HeliouricVial>()] = Type;
+		public override void SetStaticDefaults() 
+		{
 			Item.ResearchUnlockCount = 20;
 
 			ItemID.Sets.DrinkParticleColors[Type] = [

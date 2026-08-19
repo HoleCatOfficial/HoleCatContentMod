@@ -678,6 +678,7 @@ namespace DestroyerTest.Common
             return new BezierCurve(CurvePoints);
         }
 
+        public static bool[] ThrowerProjectilesThatCantTriggerEquipEffects = ProjectileID.Sets.Factory.CreateNamedSet("NoHematoidVisageActivation").Description("Cannot trigger the effects of Hematoid Visage and related items.").RegisterBoolSet();
     }
 
     public class SunlightModification : ModSystem
@@ -1346,6 +1347,8 @@ namespace DestroyerTest.Common
                 dust.noGravity = true;
             }
         }
+
+        
     }
 
     public class DTPlayerUtil : ModPlayer
@@ -1451,12 +1454,13 @@ namespace DestroyerTest.Common
         
     }
 
+
     public class DTUtilLoading : ModSystem
     {
-        public override void Load()
+        public override void PostSetupContent()
         {
-            DTUtils.TenebrisBuffImmunities = new int[]
-            {
+           DTUtils.TenebrisBuffImmunities = new int[]
+           {
                 ModContent.BuffType<ShimmeringFlames>(),
                 ModContent.BuffType<HaepiensInferno>(),
                 BuffID.OnFire,
@@ -1472,9 +1476,7 @@ namespace DestroyerTest.Common
                 BuffID.ShadowFlame,
                 BuffID.Slimed,
                 BuffID.SoulDrain
-            };
-
-
+           };
         }
     }
 

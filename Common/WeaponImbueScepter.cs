@@ -47,18 +47,19 @@ namespace DestroyerTest.Common
 
         public override void AI(Projectile projectile)
         {
+            Player player = Main.player[projectile.owner];
             if (projectile.ModProjectile is ThrownScepter thrown)
             {
                 Scepter = true;
+
+                //GalantineBurn = player.HasBuff<WeaponImbueGB>();
                 
                 if (Scepter)
                 {
                     if (HeliouricShock)
                     {
-                        if (!Main.masterMode)
-                        {
-                            HasImbue = true;
-                        }
+
+                        HasImbue = true;
                         DustInEnchantVisuals(thrown, DustID.FireworksRGB, 40, ColorLib.Rift, 0.5f, false);
 
                         ElectricArc Arc = new();
@@ -68,117 +69,78 @@ namespace DestroyerTest.Common
                     }
                     if (DaylightOverload)
                     {
-                        if (!Main.masterMode)
-                        {
-                            HasImbue = true;
-                        }
+                        HasImbue = true;
                         DustInEnchantVisuals(thrown, ModContent.DustType<RiftDust>(), 40, Color.White, 1f);
                         //Dust.NewDust(thrown.EnchantmentVisuals().TopLeft(), thrown.EnchantmentVisuals().Width, thrown.EnchantmentVisuals().Height, ModContent.DustType<RiftDust>(), 0, 0, 40, ColorLib.Rift, 1.0f);
                     }
                     if (ComaceraticBurn)
                     {
-                        if (!Main.masterMode)
-                        {
-                            HasImbue = true;
-                        }
+                        HasImbue = true;
                         DustInEnchantVisuals(thrown, ModContent.DustType<RiftDust>(), 40, Color.White, 1f);
                         //Dust.NewDust(thrown.EnchantmentVisuals().TopLeft(), thrown.EnchantmentVisuals().Width, thrown.EnchantmentVisuals().Height, ModContent.DustType<RiftDust>(), 0, 0, 40, ColorLib.Rift, 1.0f);
                     }
                     if (GalantineBurn)
                     {
-                        if (!Main.masterMode)
-                        {
-                            HasImbue = true;
-                        }
+                        HasImbue = true;
                         DustInEnchantVisuals(thrown, DustID.FireworksRGB, 40,  ColorLib.StellarFireGradientLooping(), 0.7f, false);
                         //Dust.NewDust(thrown.EnchantmentVisuals().TopLeft(), thrown.EnchantmentVisuals().Width, thrown.EnchantmentVisuals().Height, DustID.TintableDustLighted, 0, 0, 40,  ColorLib.StellarFireGradientLooping(), 1.0f);
                     }
                     if (Brine)
                     {
-                        if (!Main.masterMode)
-                        {
-                            HasImbue = true;
-                        }
+                        HasImbue = true;
                         DustInEnchantVisuals(thrown, DustID.Water_Snow, 40, default, 1f);
                         //Dust.NewDust(thrown.EnchantmentVisuals().TopLeft(), thrown.EnchantmentVisuals().Width, thrown.EnchantmentVisuals().Height, DustID.Water_Snow, 0, 0, 40, default, 1.0f);  
                     }
                     if (Mud)
                     {
-                        if (!Main.masterMode)
-                        {
-                            HasImbue = true;
-                        }
+                        HasImbue = true;
                         DustInEnchantVisuals(thrown, DustID.Mud, 40, default, 1f);
                         //Dust.NewDust(thrown.EnchantmentVisuals().TopLeft(), thrown.EnchantmentVisuals().Width, thrown.EnchantmentVisuals().Height, DustID.Mud, 0, 0, 40, default, 1.0f);
                     }
                     if (FrostBurn)
                     {
-                        if (!Main.masterMode)
-                        {
-                            HasImbue = true;
-                        }
+                        HasImbue = true;
                         DustInEnchantVisuals(thrown, DustID.IceTorch, 40, default, 1f);
                         //Dust.NewDust(thrown.EnchantmentVisuals().TopLeft(), thrown.EnchantmentVisuals().Width, thrown.EnchantmentVisuals().Height, DustID.IceTorch, 0, 0, 40, default, 1.0f);
                     }
                     if (FrostBite)
                     {
-                        if (!Main.masterMode)
-                        {
-                            HasImbue = true;
-                        }
+                        HasImbue = true;
                         DustInEnchantVisuals(thrown, DustID.IceTorch, 40, default, 1f);
                     }
                     if (shimmeringFlames)
                     {
-                        if (!Main.masterMode)
-                        {
-                            HasImbue = true;
-                        }
+                        HasImbue = true;
                         DustInEnchantVisuals(thrown, DustID.TintableDustLighted, 0, ColorLib.TenebrisGradient, 1f);
                     }
                     if (Fire)
                     {
-                        if (!Main.masterMode)
-                        {
-                            HasImbue = true;
-                        }
+                        HasImbue = true;
                         DustInEnchantVisuals(thrown, DustID.Torch, 40, default, 1f);
                         //Dust.NewDust(thrown.EnchantmentVisuals().TopLeft(), thrown.EnchantmentVisuals().Width, thrown.EnchantmentVisuals().Height, DustID.Torch, 0, 0, 40, default, 1.0f);
                     }
                     if (HellFire)
                     {
-                        if (!Main.masterMode)
-                        {
-                            HasImbue = true;
-                        }
+                        HasImbue = true;
                         DustInEnchantVisuals(thrown, DustID.Lava, 40, default, 1f);
                         //Dust.NewDust(thrown.EnchantmentVisuals().TopLeft(), thrown.EnchantmentVisuals().Width, thrown.EnchantmentVisuals().Height, DustID.Torch, 0, 0, 40, default, 1.0f);
                     }
                     if (Ichor)
                     {
-                        if (!Main.masterMode)
-                        {
-                            HasImbue = true;
-                        }
+                        HasImbue = true;
                         DustInEnchantVisuals(thrown, DustID.Ichor, 40, default, 1f);
                         //Dust.NewDust(thrown.EnchantmentVisuals().TopLeft(), thrown.EnchantmentVisuals().Width, thrown.EnchantmentVisuals().Height, DustID.Ichor, 0, 0, 40, default, 1.0f);
                     }
                     if (CursedFlame)
                     {
-                        if (!Main.masterMode)
-                        {
-                            HasImbue = true;
-                        }
+                        HasImbue = true;
                         DustInEnchantVisuals(thrown, DustID.CursedTorch, 40, default, 1f);
                     }
                     
 
                     if (Honey)
                     {
-                        if (!Main.masterMode)
-                        {
-                            HasImbue = true;
-                        }
+                        HasImbue = true;
                         DustInEnchantVisuals(thrown, DustID.Honey, 40, default, 1f);
                         //Dust.NewDust(thrown.EnchantmentVisuals().TopLeft(), thrown.EnchantmentVisuals().Width, thrown.EnchantmentVisuals().Height, DustID.Honey, 0, 0, 40, default, 1.0f);
                         if (Main.rand.NextBool(10))
@@ -188,10 +150,7 @@ namespace DestroyerTest.Common
                     }
                     if (GalantineHoney)
                     {
-                        if (!Main.masterMode)
-                        {
-                            HasImbue = true;
-                        }
+                        HasImbue = true;
                         DustInEnchantVisuals(thrown, DustID.Honey, 40, default, 1f);
                         DustInEnchantVisuals(thrown, DustID.FireworksRGB, 40,  ColorLib.StellarFireGradientLooping(), 0.7f, false);
 

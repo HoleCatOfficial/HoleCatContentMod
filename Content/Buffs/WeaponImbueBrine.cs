@@ -13,7 +13,7 @@ namespace DestroyerTest.Content.Buffs
 
 		public override void Update(Player player, ref int buffIndex) {
 			player.GetModPlayer<WeaponImbuePlayer>().Brine = true;
-			player.MeleeEnchantActive = true;
+            player.MeleeEnchantActive = true;
 		}
 	}
 }

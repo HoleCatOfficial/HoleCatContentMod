@@ -52,6 +52,19 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
         {
           
         }
+
+        public override bool PreDraw(ref Color lightColor)
+        {
+            Player player = Main.player[(int)Projectile.ai[0]];
+            float rot = Projectile.Center.DirectionTo(player.Center).ToRotation();
+
+            var Tex = ModContent.Request<Texture2D>(DTAssetLib.ExtrasPath + "/DirectionalTelegraph2");
+            Main.EntitySpriteDraw(Tex.Value, Projectile.Center - Main.screenPosition, null, ColorLib.Ichor with { A = 0 }, rot, new Vector2(0f, Tex.Height() / 2), new Vector2(4f, 1f), SpriteEffects.None);
+
+            Main.EntitySpriteDraw(DTUtils.CenteredDraw(Projectile, Color.White));
+            return false;
+        }
+
         public override void AI()
         {
             Player player = Main.player[(int)Projectile.ai[0]];
@@ -71,13 +84,6 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
 
         }
 
-        public override void PostDraw(Color lightColor)
-        {
-            base.PostDraw(lightColor);
-            Player player = Main.player[(int)Projectile.ai[0]];
-            DrawTelegraph(Projectile.Center, player.Center, DTAssetLib.Line(5).Value);
-        }
-
         public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
 
@@ -93,12 +99,5 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
 			Projectile spit = Projectile.NewProjectileDirect(Projectile.GetSource_Death(), Projectile.Center, toPlayer * 17, ModContent.ProjectileType<GoldenShowerNoGravity>(), (int)(Projectile.damage * 0.5f), 4);
 
 		}
-
-        public void DrawTelegraph(Vector2 start, Vector2 end, Texture2D texture)
-        {
-            Line L = new Line(start, end);
-
-            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Line(1), ColorLib.Ichor, Main.spriteBatch, BlendState.Additive, 0, 1f);
-        }       
     }
 }

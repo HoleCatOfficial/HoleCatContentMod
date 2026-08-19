@@ -55,8 +55,8 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
 			}
 
             player.GetCritChance(ModContent.GetInstance<ScepterClass>()) += CritBonus;
-            player.AddBuff(ModContent.BuffType<ScepterImbueCF>(), 60);
-            player.AddBuff(ModContent.BuffType<ScepterImbueIchor>(), 60);
+            player.AddBuff(BuffID.WeaponImbueCursedFlames, 60);
+            player.AddBuff(BuffID.WeaponImbueIchor, 60);
         }
 
         public override void AddRecipes()

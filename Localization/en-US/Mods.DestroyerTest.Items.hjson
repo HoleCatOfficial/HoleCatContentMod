@@ -2169,7 +2169,7 @@ TinyHammer: {
 }
 
 Contempt: {
-	Tooltip: Creates a corrupt Sigil at the cursor position. Cursed flames will fly towards the Sigil from all around.
+	Tooltip: Creates a corrupt sigil at the cursor position. Enemies within range of the sigil take damage.
 	DisplayName: Contempt
 }
 
@@ -4602,7 +4602,12 @@ SoulSlug: {
 
 CursedHammer: {
 	DisplayName: Cursed Hammer
-	Tooltip: Throws returning hammers that inflict cursed inferno.
+	Tooltip:
+		'''
+		Throws heavy hammers that slow before returning.
+		Hits create small homing energy bolts that inflict Defilement.
+		Every 4th hit creates many more energy bolts.
+		'''
 	StealthStrike: Thrown hammers home in on enemies.
 }
 
@@ -4846,7 +4851,12 @@ Item_DreamstoneBrick: {
 
 FrigidFenzim: {
 	DisplayName: Frigid Fenzim
-	Tooltip: ""
+	Tooltip:
+		'''
+		Throws a gravity-affected ice axe.
+		Critical hits freeze enemies.
+		Penetrates 3 times before breaking.
+		'''
 }
 
 Pristine: {
@@ -4972,7 +4982,8 @@ HematoidVisage: {
 	Tooltip:
 		'''
 		8% increased Ranged damage.
-		Ranged projectiles have a 20% chance to create a Hematoid Blob when hitting an enemy.
+		10% increased Thrower damage.
+		Ranged and Thrower projectiles have a 20% chance to create a Hematoid Blob when hitting an enemy.
 		'''
 }
 
@@ -5146,7 +5157,7 @@ ExoticFenzim: {
 	Tooltip:
 		'''
 		Throws a fast-moving Aether Axe that slows before returning.
-		Hits ignore 22 points of defense and strike deep into the enemy's essence, drawing out 6 stars of unstable energy.
+		Hits ignore 22 points of defense and create a shimmer slash that deals 50% damage.
 		'''
 }
 
@@ -5157,4 +5168,24 @@ HestiasBane: {
 		Throws a heavy axe that homes in on enemies.
 		Hits create an explosion that deals 100% damage.
 		'''
+}
+
+Item_TenebrousConstructRelic: {
+	DisplayName: Tenebrous Construct Relic
+	Tooltip: ""
+}
+
+Zwei: {
+	DisplayName: Zwei
+	Tooltip:
+		'''
+		Alternates between two untamed knives that inflict Light and Night inferno respectively.
+		Both knives penetrate 3 times and slow down as they travel.
+		'Forever locked in a dance, tuned precisely to Terraria's heartbeat.'
+		'''
+}
+
+Fangshred: {
+	DisplayName: Fangshred
+	Tooltip: ""
 }

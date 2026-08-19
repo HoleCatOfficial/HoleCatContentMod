@@ -16,6 +16,7 @@ using DestroyerTest.Content.Projectiles.Weapon.Magic;
 using DestroyerTest.Content.Projectiles.Weapon.Summon;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.RiftBiome;
+using DestroyerTest.Content.RogueItems;
 using DestroyerTest.Content.SHADEMANAGEMENT;
 using DestroyerTest.Content.Tiles;
 using DestroyerTest.Content.Tools;
@@ -947,14 +948,11 @@ namespace DestroyerTest.Content.Entities
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Item_NightmareRoseTrophy>(), 10));
 
             npcLoot.Add(ItemDropRule.MasterModeDropOnAllPlayers(ModContent.ItemType<MiniConstruct>()));
             npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<RingFromBeyond>()));
-            npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Item_NightmareRoseRelic>()));
-
-
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<HaepienNodeCharm>(), 20, 1, 1));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<HestiasBane>()));
+            npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Item_TenebrousConstructRelic>()));
         }
 
         public override void OnKill()

@@ -16,7 +16,7 @@ namespace DestroyerTest.Content.Consumables
 	public class FrostFireFlask : ModItem
 	{
 		public override void SetStaticDefaults() {
-            ItemID.Sets.ShimmerTransformToItem[ModContent.ItemType<FrostFireVial>()] = Type;
+
 			Item.ResearchUnlockCount = 20;
 
 			ItemID.Sets.DrinkParticleColors[Type] = [

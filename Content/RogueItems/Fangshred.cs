@@ -14,42 +14,35 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.RogueItems
 {
-    public class ElementalFenzim : ModItem
+    public class Fangshred : ModItem
     {
 
         public override void SetStaticDefaults()
         {
-            ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<ExoticFenzim>();
+
         }
+
+
         public override void SetDefaults()
         {
-            Item.width = 42;
-            Item.height = 44;
-            Item.value = Item.sellPrice(gold: 2, silver: 50);
-            Item.rare = ItemRarityID.Expert;
+            Item.width = 38;
+            Item.height = 40;
+            Item.value = Item.sellPrice(silver: 50);
+            Item.rare = ItemRarityID.Purple;
             Item.useTime = 60;
-            Item.useAnimation = 20;
+            Item.useAnimation = 60;
             Item.useStyle = ItemUseStyleID.Swing;
             Item.UseSound = SoundID.Item1;
             Item.knockBack = 6;
             Item.autoReuse = true;
-            Item.damage = 140;
+            Item.damage = 40;
             Item.DamageType = DamageClass.Throwing;
             Item.crit = 10;
-            Item.shoot = ModContent.ProjectileType<ElementalFenzimThrown>();
-            Item.shootSpeed = 55f;
+            Item.shoot = ModContent.ProjectileType<FangshredThrown>();
+            Item.shootSpeed = 24f;
             Item.noUseGraphic = true;
         }
 
-        public override void AddRecipes()
-        {
-            CreateRecipe()
-                .AddIngredient<FrigidFenzim>()
-                .AddIngredient<Fangshred>()
-                .AddIngredient<Zwei>()
-                .AddIngredient(ItemID.ChlorophyteBar, 4)
-                .AddTile(TileID.MythrilAnvil)
-                .Register();
-        }
+
     }
 }

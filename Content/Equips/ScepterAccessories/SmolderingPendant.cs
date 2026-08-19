@@ -27,7 +27,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             player.GetDamage<ScepterClass>() += 0.1f;
-            player.AddBuff(ModContent.BuffType<ScepterImbueHF>(), 60);
+            player.AddBuff(BuffID.WeaponImbueFire, 60);
         }
 
         public override void AddRecipes()

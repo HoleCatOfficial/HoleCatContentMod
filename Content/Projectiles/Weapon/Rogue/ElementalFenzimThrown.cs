@@ -106,7 +106,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 
             
 
-            Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, frame, lightColor * Projectile.Opacity, Projectile.rotation, origin, Projectile.scale, FX, 0f);
+            Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, frame, Color.White * Projectile.Opacity, Projectile.rotation, origin, Projectile.scale, FX, 0f);
             return false;
         }
 
@@ -208,7 +208,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             Ring.Prepare(Projectile.Center, Vector2.Zero, DTColorUtils.Pastel(Color.SeaGreen, 0.2f), 0.05f, 0.01f, 1f, BlendState.Additive);
             ParticleEngine.ShaderParticles.Add(Ring);
 
-            Opus.RadialSpreadProjectile(ModContent.ProjectileType<ElementalFenzimSpark>(), 6, target.Center, Projectile.damage / 3, 4, 24f, ai0: Main.rand.Next(5), offset: Main.rand.NextFloat(MathHelper.TwoPi));
+            Opus.RadialSpreadProjectile(ModContent.ProjectileType<ElementalFenzimSpark>(), 6, target.Center, Projectile.damage / 3, 4, 24f, ai0: Main.rand.Next(7), offset: Main.rand.NextFloat(MathHelper.TwoPi));
 
             if (Projectile.penetrate == 1)
             {

@@ -17,18 +17,17 @@ using DestroyerTest.Content.Projectiles.player.ArmorSet;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 {
-    public class FrigidFenzimThrown : ModProjectile
+    public class FangshredThrown : ModProjectile
     {
         public override void SetDefaults()
         {
-            Projectile.width = 58;
-            Projectile.height = 58;
+            Projectile.width = 38;
+            Projectile.height = 40;
             Projectile.friendly = true;
             Projectile.hostile = false;
             Projectile.DamageType = DamageClass.Throwing;
             Projectile.penetrate = 4;
             Projectile.timeLeft = 1200;
-            Projectile.light = 0.5f;
             Projectile.ignoreWater = true;
             Projectile.tileCollide = true;
             Projectile.usesLocalNPCImmunity = true;
@@ -48,7 +47,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             Projectile.ai[0] += 1f;
 
             Projectile.rotation += 0.5f * Projectile.direction;
-            Lighting.AddLight(Projectile.Center, Color.DeepSkyBlue.ToVector3());
+
+            if (Main.GameUpdateCount % 10 == 0)
+            {
+                SoundEngine.PlaySound(SoundID.Item1 with { }, Projectile.Center);
+            }
 
             if (LifeTime < 30)
             {
@@ -56,10 +59,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             }
             else
             {
-                if (Main.GameUpdateCount % 10 == 0)
-                {
-                    SoundEngine.PlaySound(SoundID.Item1 with { }, Projectile.Center);
-                }
+                
 
                 Projectile.velocity.Y += 0.4f;
 
@@ -70,17 +70,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            Projectile.velocity = new Vector2(-Projectile.oldVelocity.X * 0.6f, -Projectile.oldVelocity.Y * 0.6f);
 
-            if (hit.Crit)
-            {
-                SoundEngine.PlaySound(DTAssetLib.FrigidFenzim.Crit with { PitchVariance = 0.1f }, Projectile.Center);
-                target.AddBuff(BuffID.Frozen, 240);
-            }
-            else
-            {
-                SoundEngine.PlaySound(DTAssetLib.FrigidFenzim.Hit with { PitchVariance = 0.1f }, Projectile.Center);
-            }
+            target.AddBuff(BuffID.Venom, 600);
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)
@@ -93,18 +84,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 
         public override void OnKill(int timeLeft)
         {
-            SoundEngine.PlaySound(DTAssetLib.Impacts.IceImpact with { PitchVariance = 0.3f }, Projectile.Center);
+            SoundEngine.PlaySound(SoundID.Dig, Projectile.Center);
 
-            int Gore1 = Mod.Find<ModGore>("FrigidFenzimGore1").Type;
-            int Gore2 = Mod.Find<ModGore>("FrigidFenzimGore2").Type;
-            int Gore3 = Mod.Find<ModGore>("FrigidFenzimGore3").Type;
-
-            var entitySource = Projectile.GetSource_Death();
-            if (DTOptimizationsConfig.instance.OptimizeGame == false)
+            for (int i = 0; i < 10; i++)
             {
-                Gore.NewGore(entitySource, Projectile.position, Projectile.velocity * 0.5f, Gore1);
-                Gore.NewGore(entitySource, Projectile.position, Projectile.velocity * 0.5f, Gore2);
-                Gore.NewGore(entitySource, Projectile.position, Projectile.velocity * 0.5f, Gore3);
+                Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.RichMahogany, Projectile.velocity.X, Projectile.velocity.Y, 0, default, 1f);
             }
 
         }

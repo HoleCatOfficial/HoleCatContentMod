@@ -18,7 +18,6 @@ using Terraria.GameContent;
 using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Terraria.GameContent.Animations.IL_Actions.Sprites;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 {
@@ -48,6 +47,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true; // Make the cultist resistant to this projectile, as it's resistant to all homing projectiles.
             ProjectileID.Sets.TrailingMode[Type] = 3;
             ProjectileID.Sets.TrailCacheLength[Type] = 20;
+            DTUtils.ThrowerProjectilesThatCantTriggerEquipEffects[Type] = true;
         }
 
         public int variant;

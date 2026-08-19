@@ -49,6 +49,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true; // Make the cultist resistant to this projectile, as it's resistant to all homing projectiles.
             ProjectileID.Sets.TrailingMode[Type] = 3;
             ProjectileID.Sets.TrailCacheLength[Type] = 12;
+            DTUtils.ThrowerProjectilesThatCantTriggerEquipEffects[Type] = true;
         }
 
         public int variant;
@@ -113,7 +114,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
                     DustType = DustID.CorruptSpray;
                     break;
                 case 2:
-                    drawColor = Color.DeepSkyBlue;
+                    drawColor = Color.Aqua;
                     Buff = BuffID.Electrified;
                     DustType = DustID.Electric;
                     break;
@@ -126,6 +127,16 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
                     drawColor = ColorLib.SoulOfNightColor;
                     Buff = ModContent.BuffType<NightInferno>();
                     DustType = ModContent.DustType<SoulOfNightDust>();
+                    break;
+                case 5:
+                    drawColor = Color.DeepSkyBlue;
+                    Buff = BuffID.Frozen;
+                    DustType = DustID.IceTorch;
+                    break;
+                case 6:
+                    drawColor = ColorLib.CursedFlames;
+                    Buff = BuffID.CursedInferno;
+                    DustType = DustID.CursedTorch;
                     break;
             }
 

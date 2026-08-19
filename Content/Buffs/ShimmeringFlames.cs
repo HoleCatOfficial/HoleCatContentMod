@@ -127,7 +127,7 @@ namespace DestroyerTest.Content.Buffs
 
         public override void PostDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-			if (lifeRegenDebuff)
+			if (lifeRegenDebuff && npc.realLife != -1)
 			{
 				Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive,SpriteSortMode.Immediate);
 				DynamicSpriteFont spriteFont = FontAssets.MouseText.Value;
@@ -141,6 +141,38 @@ namespace DestroyerTest.Content.Buffs
         {
             if (lifeRegenDebuff)
 			{
+				if (npc.realLife != -1)
+				{
+                    Fire fire = new Fire();
+                    fire.PrepareFire(Main.rand.NextVector2FromRectangle(npc.Hitbox), new Vector2(0f, -0.1f), Main.rand.Next(1, 3), 0.08f, ColorLib.TenebrisGradient * 0.8f, 0.5f, 40, FireDrawMode.Additive, PixelLayer.AbovePlayer);
+                    ParticleEngine.ShaderParticles.Add(fire);
+
+                    if (Main.rand.NextBool(2) && !DTOptimizationsConfig.instance.DisableExcessParticles)
+                    {
+                        TenebrousCloudParticle C = new();
+                        C.Initialize(Main.rand.NextVector2FromRectangle(npc.Hitbox), new Vector2(0f, -2f), ColorLib.TenebrisGradient, 0.5f, 0.15f, 120);
+                        ParticleEngine.ShaderParticles.Add(C);
+                    }
+
+                    if (Stack > 8)
+                    {
+                        int Chance = MaxStack - Stack;
+                        Chance = (int)MathHelper.Clamp(Chance, 1, MaxStack);
+                        if (Main.rand.NextBool(Chance) && !DTOptimizationsConfig.instance.DisableExcessParticles)
+                        {
+                            Spark Spark = new Spark();
+
+                            Spark.PrepareSpark(Main.rand.NextVector2FromRectangle(npc.Hitbox), new Vector2(0f, -1f).RotatedByRandom(0.05f), 0f, ColorLib.TenebrisGradient, 1f, false, 40, SparkDrawMode.Additive);
+                            ParticleEngine.ShaderParticles.Add(Spark);
+                        }
+                    }
+                    if (Main.rand.NextBool(6) && !DTOptimizationsConfig.instance.DisableExcessParticles)
+                    {
+                        SmallShine Shine = new SmallShine();
+                        Shine.Prepare(Main.rand.NextVector2FromRectangle(npc.Hitbox), Vector2.Zero, Color.White, 0.25f);
+                        ParticleEngine.ShaderParticles.Add(Shine);
+                    }
+                }
 				if (MinTimer > 0)
 				{
 					MinTimer--;
@@ -166,35 +198,9 @@ namespace DestroyerTest.Content.Buffs
 		{
             if (lifeRegenDebuff) 
 			{
-                Fire fire = new Fire();
-                fire.PrepareFire(Main.rand.NextVector2FromRectangle(npc.Hitbox), new Vector2(0f, -0.1f), Main.rand.Next(1, 3), 0.08f, ColorLib.TenebrisGradient * 0.8f, 0.5f, 40, FireDrawMode.Additive, PixelLayer.AbovePlayer);
-                ParticleEngine.ShaderParticles.Add(fire);
+                
 
-				if (Main.rand.NextBool(2) && !DTOptimizationsConfig.instance.DisableExcessParticles)
-				{
-					TenebrousCloudParticle C = new();
-					C.Initialize(Main.rand.NextVector2FromRectangle(npc.Hitbox), new Vector2(0f, -2f), ColorLib.TenebrisGradient, 0.5f, 0.15f, 120);
-					ParticleEngine.ShaderParticles.Add(C);
-				}
-
-				if (Stack > 8)
-				{
-					int Chance = MaxStack - Stack;
-					Chance = (int)MathHelper.Clamp(Chance, 1, MaxStack);
-					if (Main.rand.NextBool(Chance) && !DTOptimizationsConfig.instance.DisableExcessParticles)
-					{
-                        Spark Spark = new Spark();
-
-                        Spark.PrepareSpark(Main.rand.NextVector2FromRectangle(npc.Hitbox), new Vector2(0f, -1f).RotatedByRandom(0.05f), 0f, ColorLib.TenebrisGradient, 1f, false, 40, SparkDrawMode.Additive);
-                        ParticleEngine.ShaderParticles.Add(Spark);
-					}
-				}
-				if (Main.rand.NextBool(6) && !DTOptimizationsConfig.instance.DisableExcessParticles)
-				{
-					SmallShine Shine = new SmallShine();
-					Shine.Prepare(Main.rand.NextVector2FromRectangle(npc.Hitbox), Vector2.Zero, Color.White, 0.25f);
-                    ParticleEngine.ShaderParticles.Add(Shine);
-                }
+				
 
                 if (npc.lifeRegen > 0)
 					npc.lifeRegen = 0;
