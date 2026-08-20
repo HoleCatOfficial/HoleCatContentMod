@@ -1,3 +1,10 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Security.Policy;
 using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
 using BreadLibrary.Core.Graphics.Spritebatch;
@@ -17,6 +24,7 @@ using DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss;
 using DestroyerTest.Content.Projectiles.Boss.NodeBoss.Blessed;
 using DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame;
 using DestroyerTest.Content.Projectiles.Boss.VampireBoss;
+using DestroyerTest.Content.RangedItems;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.RiftBiome;
 using DestroyerTest.Content.RogueItems;
@@ -38,13 +46,6 @@ using OpusLib.Content.Particles;
 using rail;
 using ReLogic.Content;
 using ReLogic.Localization.IME;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Security.Policy;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -1185,7 +1186,7 @@ namespace DestroyerTest.Content.Entities
                 nodeHealShineRot -= 0.1f;
                 bool AnyAuras = Main.projectile.Any(n => n.active && n.type == ModContent.ProjectileType<NodeDefilementAura>());
 
-                if (Main.GameUpdateCount % 150 == 0)
+                if (Main.GameUpdateCount % 150 == 0 && (DestroyerTestMod.EternityIsActive || DestroyerTestMod.DeathIsActive))
                 {
                     int choice = Main.rand.Next(nodeCount);
                     choice = choice == LastChoice ? Main.rand.Next(nodeCount) : choice;
@@ -2533,9 +2534,28 @@ namespace DestroyerTest.Content.Entities
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
+
+            // Do NOT misuse the ModifyNPCLoot and OnKill hooks: the former is only used for registering drops, the latter for everything else
+
+            // The order in which you add loot will appear as such in the Bestiary. To mirror vanilla boss order:
+            // 1. Trophy
+            // 2. Classic Mode ("not expert")
+            // 3. Expert Mode (usually just the treasure bag)
+            // 4. Master Mode (relic first, pet last, everything else in between)
+
+
+
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Item_NightmareRoseTrophy>(), 10));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<PhantasmalRemnant>(), 1, 4, 9));
+
             LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
+
+            notExpertRule.OnSuccess(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<Contempt>(), 2, 1, 1));
+            notExpertRule.OnSuccess(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<CursedHammer>(), 2, 1, 1));
+            notExpertRule.OnSuccess(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<DeadlyBlossom>(), 2, 1, 1));
+            notExpertRule.OnSuccess(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<BlossomBeater>(), 2, 1, 1));
+            notExpertRule.OnSuccess(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<ForsakenMaelstrom>(), 4, 1, 1));
+            notExpertRule.OnSuccess(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<HaepienNodeCharm>(), 6, 1, 1));
 
             npcLoot.Add(notExpertRule);
 

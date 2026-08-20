@@ -131,7 +131,7 @@ namespace DestroyerTest.Content.Entities
             Roff -= 10;
 
             Line R = new Line(NPC.Center, new Vector2(NPC.Center.X, NPC.Center.Y + 2200f));
-            DTUtils.instance.ScrollingTextureSpine(R, DTAssetLib.ArrowTelegraphCont, ColorLib.Ichor * Opa, spriteBatch, BlendState.Additive, Roff, 0.5f, 1f);
+            DTUtils.instance.ScrollingTextureSpine(R, DTAssetLib.ArrowTelegraphCont, ColorLib.Ichor with { A = 0 } * Opa, spriteBatch, BlendState.Additive, Roff, 0.5f, 1f);
 
             
             return true;

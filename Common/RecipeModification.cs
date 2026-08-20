@@ -44,7 +44,14 @@ namespace DestroyerTest.Common
             };
 
             foreach (Recipe recipe in Main.recipe)
-            {
+            {  
+                if (recipe.HasResult(ItemID.FlaskofFire))
+                {
+                    recipe.AddCondition(Condition.Hardmode);
+                }
+
+
+
                 if (recipe.HasResult(ItemID.Zenith))
                 {
                     if (ModLoader.HasMod("CalamityMod") && ModLoader.TryGetMod("CalamityMod", out Mod Calamity))

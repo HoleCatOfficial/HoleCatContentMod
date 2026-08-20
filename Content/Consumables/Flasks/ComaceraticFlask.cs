@@ -31,5 +31,6 @@ namespace DestroyerTest.Content.Consumables.Flasks
                 .AddTile(TileID.ImbuingStation)
                 .Register();
 		}
+
 	}
 }

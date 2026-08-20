@@ -18,6 +18,8 @@ using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 using DestroyerTest.Content.Tiles;
+using DestroyerTest.Common.DropRules;
+using DestroyerTest.Content.Fargos.EternityDrops;
 
 namespace DestroyerTest.Content.Consumables
 {
@@ -57,19 +59,9 @@ namespace DestroyerTest.Content.Consumables
             itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<BlossomBeater>(), 2, 1, 1));
             itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<ForsakenMaelstrom>(), 4, 1, 1));
             itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<HaepienNodeCharm>(), 6, 1, 1));
-            itemLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<NightmarePowder>()));
+            itemLoot.Add(ItemDropRule.ByCondition(new EternityDropRuleCondition(), ModContent.ItemType<LittleBuggy>()));
             itemLoot.Add(ItemDropRule.NotScalingWithLuck(ItemID.CursedFlame, 2, 20, 60));
             itemLoot.Add(ItemDropRule.Coins(1250, true));
         }
     }
-    
-    public class LootBagDropHandler_NightmareRose : GlobalNPC
-	{
-		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot) {
-
-			if (npc.type == ModContent.NPCType<NightmareRoseBoss>() && Main.expertMode) {
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<NightmareRoseLootBag>(), 1, 1, 1));
-			}
-		}
-	}
 }

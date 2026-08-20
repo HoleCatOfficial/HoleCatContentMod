@@ -186,7 +186,18 @@ namespace DestroyerTest.Content.UI
                             Rectangle NodeLockFrame = new Rectangle(0, NodeLockFrameNumber * NodeLockDimensions.Height, NodeLockDimensions.Width, NodeLockDimensions.Height);
                             Vector2 NodeLockOrigin = NodeLockFrame.Size() / 2f;
 
-                            Vector2 NodeLockDrawPos =  new Vector2((drawPos.X - (186.4f * DTUIConfig.instance.CustomBossBarScaleModifier)), drawPos.Y - (0.8f * DTUIConfig.instance.CustomBossBarScaleModifier)) + new Vector2((NodeLockDimensions.Width * Main.UIScale * DTUIConfig.instance.CustomBossBarScaleModifier) * i, 0);
+                            Vector2 GetNodeLockDrawPos()
+                            {
+                                if (DTCrossMod.FablesIsLoaded)
+                                {
+                                    return new Vector2((drawPos.X - (186.4f * DTUIConfig.instance.CustomBossBarScaleModifier)), drawPos.Y - (0.8f * DTUIConfig.instance.CustomBossBarScaleModifier)) + new Vector2((NodeLockDimensions.Width * Main.UIScale * DTUIConfig.instance.CustomBossBarScaleModifier) * i, 0);
+                                }
+                                else
+                                {
+                                    return new Vector2((drawPos.X - (205f * DTUIConfig.instance.CustomBossBarScaleModifier)), drawPos.Y - (0.8f * DTUIConfig.instance.CustomBossBarScaleModifier)) + new Vector2((NodeLockDimensions.Width * Main.UIScale * DTUIConfig.instance.CustomBossBarScaleModifier) * i, 0);
+                                }
+                            }
+                            Vector2 NodeLockDrawPos = GetNodeLockDrawPos();
 
                             if (cfn[i].life > 0)
                             {

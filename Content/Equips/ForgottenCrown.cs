@@ -56,6 +56,8 @@ namespace DestroyerTest.Content.Equips
         {
             CreateRecipe()
             .AddIngredient(ItemID.PlatinumBar, 4)
+            .AddIngredient(ItemID.IceBlock, 2)
+            .AddTile(TileID.Anvils)
             .Register();
         }
 	}

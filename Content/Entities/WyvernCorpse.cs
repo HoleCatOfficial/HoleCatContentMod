@@ -1,4 +1,9 @@
 
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net;
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Common.Systems;
@@ -6,6 +11,7 @@ using DestroyerTest.Content.BossBar;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Consumables;
 using DestroyerTest.Content.Equips;
+using DestroyerTest.Content.Magic;
 using DestroyerTest.Content.MeleeWeapons;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles;
@@ -13,7 +19,9 @@ using DestroyerTest.Content.Projectiles.Boss;
 using DestroyerTest.Content.Projectiles.Boss.NodeBoss.Ichor;
 using DestroyerTest.Content.Projectiles.Boss.VampireBoss;
 using DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss;
+using DestroyerTest.Content.RangedItems;
 using DestroyerTest.Content.Resources;
+using DestroyerTest.Content.RogueItems;
 using DestroyerTest.Content.SummonItems;
 using DestroyerTest.Content.Tiles;
 using DestroyerTest.Content.UI;
@@ -26,11 +34,6 @@ using OpusLib;
 using OpusLib.Content.Helpers;
 using ReLogic.Content;
 using ReLogic.Utilities;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -43,8 +46,8 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
 using UtfUnknown.Core.Models.SingleByte.Finnish;
-using static BreadLibrary.Core.SoftBodySim.SoftbodySim;
 using static System.Net.Mime.MediaTypeNames;
+using static BreadLibrary.Core.SoftBodySim.SoftbodySim;
 
 namespace DestroyerTest.Content.Entities
 {
@@ -1019,9 +1022,38 @@ namespace DestroyerTest.Content.Entities
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<PhantasmalRemnant>(), 1, 4, 9));
+            
+
+            // Do NOT misuse the ModifyNPCLoot and OnKill hooks: the former is only used for registering drops, the latter for everything else
+
+            // The order in which you add loot will appear as such in the Bestiary. To mirror vanilla boss order:
+            // 1. Trophy
+            // 2. Classic Mode ("not expert")
+            // 3. Expert Mode (usually just the treasure bag)
+            // 4. Master Mode (relic first, pet last, everything else in between)
+
+
+
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Item_WyvernCorpseTrophy>(), 10));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<PhantasmalRemnant>(), 1, 10, 22));
             npcLoot.Add(ItemDropRule.Common(ItemID.SoulofFlight, 1, 5, 20));
 
+            LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
+
+            notExpertRule.OnSuccess(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<RibChainsaw>(), 2, 1, 1));
+            notExpertRule.OnSuccess(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<WyvernTail>(), 2, 1, 1));
+            notExpertRule.OnSuccess(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<GreatFlayer>(), 2, 1, 1));
+            notExpertRule.OnSuccess(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<WyvernSkull>(), 5, 1, 1));
+
+            npcLoot.Add(notExpertRule);
+
+            npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<WyvernCorpseLootBag>()));
+
+            npcLoot.Add(ItemDropRule.MasterModeDropOnAllPlayers(ModContent.ItemType<DivineVessel>()));
+            npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Item_WyvernCorpseRelic>()));
+
+
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<HaepienNodeCharm>(), 20, 1, 1));
 
 
         }

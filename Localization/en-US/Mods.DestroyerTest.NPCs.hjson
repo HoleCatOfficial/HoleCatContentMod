@@ -262,10 +262,20 @@ TenebrousConstruct: {
 	FightDialogue14: Life had struck a nice balance, if I do say so.
 	FightDialogue15: Jeez, you're really tiring me out! Just go away already! No more storytime!
 	FightDialogue16: You've done enough meddling with her plans! If she wants this world, she will have it!
-	FightDialogue17: Give up! I'll just keep getting sent here until I succeed!
+	FightDialogue17: Give up! I'll just keep coming back here until I succeed!
 	FightDialogue18: You better stop!
 	FightDialogue19: NO!!
 	FightDialogue20: Ow Im dead
+	KilledPlayer1: Eat it!
+	KilledPlayer2: Suck it, brat!
+	KilledPlayer3: Thanks for finally getting out of my way!
+	KilledPlayer4: Hahahaha!!!
+	KilledPlayer5: Die! Die! Die!
+	KilledPlayer_SecondHalf1: Finally!
+	KilledPlayer_SecondHalf2: God, you take a long time to kill!
+	KilledPlayer_SecondHalf3: Wasting my time...
+	KilledPlayer_SecondHalf4: Yes! Eat it! Haha!!
+	Death: Tenebrous Construct was banished back to the shade world by use of lethal force.
 
 	Fables: {
 		Name: Tenebrous Construct

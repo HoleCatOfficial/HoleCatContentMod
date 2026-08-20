@@ -65,7 +65,7 @@ namespace DestroyerTest.Content.Buffs
 		{
 			if (npc.HasBuff<ShimmeringFlames>())
 			{
-				if (npc.TryGetGlobalNPC<SFTarget>(out var shimmer))
+				if (npc.TryGetGlobalNPC<SFTarget>(out var shimmer) && npc.realLife == -1)
 				{
 					if (Sound)
 					{
@@ -127,7 +127,7 @@ namespace DestroyerTest.Content.Buffs
 
         public override void PostDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-			if (lifeRegenDebuff && npc.realLife != -1)
+			if (lifeRegenDebuff && npc.realLife == -1)
 			{
 				Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive,SpriteSortMode.Immediate);
 				DynamicSpriteFont spriteFont = FontAssets.MouseText.Value;
@@ -141,7 +141,7 @@ namespace DestroyerTest.Content.Buffs
         {
             if (lifeRegenDebuff)
 			{
-				if (npc.realLife != -1)
+				if (npc.realLife == -1)
 				{
                     Fire fire = new Fire();
                     fire.PrepareFire(Main.rand.NextVector2FromRectangle(npc.Hitbox), new Vector2(0f, -0.1f), Main.rand.Next(1, 3), 0.08f, ColorLib.TenebrisGradient * 0.8f, 0.5f, 40, FireDrawMode.Additive, PixelLayer.AbovePlayer);

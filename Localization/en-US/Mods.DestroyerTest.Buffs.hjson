@@ -128,11 +128,6 @@ OminousPrescence: {
 	Description: Someone special is watching you...
 }
 
-HammerBuff: {
-	DisplayName: Hammer Buff
-	Description: Mods.DestroyerTest.Buffs.HammerBuff.Description
-}
-
 DartRifleMinionBuff: {
 	DisplayName: Dart Rifle Minion Buff
 	Description: A cursed dart rifle is defending you!
@@ -159,38 +154,8 @@ NodePower: {
 }
 
 ComaceraticBurn: {
-	Description: You are being eradicated by the energy of a hundred suns!
+	Description: You are being undone by the energy of a hundred suns!
 	DisplayName: Comaceratic Burn
-}
-
-ScepterImbueCB: {
-	DisplayName: Scepter Imbue (Comaceratic Burn)
-	Description: Your scepters have been imbued with Comaceratic Burn!
-}
-
-ScepterImbueDO: {
-	DisplayName: Scepter Imbue (Daylight Overload)
-	Description: Your scepters have been imbued with Daylight Overload!
-}
-
-ScepterImbueHSk: {
-	DisplayName: Scepter Imbue (Heliouric Shock)
-	Description: Your scepters have been imbued with Heliouric Shock!
-}
-
-WeaponImbueCB: {
-	DisplayName: Weapon Imbue (Comaceratic Burn)
-	Description: Your Weapons have been imbued with Comaceratic Burn!
-}
-
-WeaponImbueDO: {
-	DisplayName: Weapon Imbue (Daylight Overload)
-	Description: Your Weapons have been imbued with Daylight Overload!
-}
-
-WeaponImbueHSk: {
-	DisplayName: Weapon Imbue (Heliouric Shock)
-	Description: Your Weapons have been imbued with Heliouric Shock!
 }
 
 SoulInferno: {
@@ -213,44 +178,14 @@ SoulErosion: {
 	DisplayName: Soul Erosion
 }
 
-ScepterImbueGB: {
-	Description: Your scepter has been imbued with Galantine Burn!
-	DisplayName: Scepter Imbue (Galantine Burn)
-}
-
 Brine: {
 	DisplayName: Brine
 	Description: Salty water irritates your skin!
 }
 
-ScepterImbueBrine: {
-	DisplayName: Scepter Imbue (Brine)
-	Description: Your scepter has been imbued with salty water!
-}
-
-ScepterImbueFF: {
-	DisplayName: Scepter Imbue (Frostburn)
-	Description: Your scepter has been imbued with Frozen Flames!
-}
-
-ScepterImbueHoney: {
-	Description: Your scepter has honey all over it!
-	DisplayName: Scepter Imbue (Honey)
-}
-
-ScepterImbueGH: {
-	Description: Your scepter has enchanted honey all over it!
-	DisplayName: Scepter Imbue (Galantine Honey)
-}
-
 Muddy: {
 	Description: You are bogged down by thick mud!
 	DisplayName: Muddy
-}
-
-ScepterImbueMud: {
-	DisplayName: Scepter Imbue (Mud)
-	Description: Your scepter has thick mud all over it!
 }
 
 Vigor: {
@@ -276,11 +211,6 @@ HoleCatFire: {
 MobilityHex: {
 	Description: Your body has been hexxed, stopping you from moving!
 	DisplayName: Mobility Hex
-}
-
-WeaponImbueGB: {
-	DisplayName: Weapon Imbue (Galantine Burn)
-	Description: Your Weapons have been imbued with Galantine Burn!
 }
 
 StarConstructMinionBuff: {
@@ -348,39 +278,14 @@ TaintedBrew: {
 	Description: Cannot Consume Idri's Concoction again.
 }
 
-ScepterImbueCF: {
-	DisplayName: Scepter Imbue (Cursed Flames)
-	Description: Your scepter has been imbued with Cursed Flames!
-}
-
-ScepterImbueFire: {
-	DisplayName: Scepter Imbue Fire
-	Description: Your scepter is on Fire!!
-}
-
-ScepterImbueIchor: {
-	DisplayName: Scepter Imbue (Ichor)
-	Description: Your scepter has been imbued with Ichor!
-}
-
 WeaponImbueBrine: {
 	DisplayName: Weapon Imbue (Brine)
 	Description: Your weapons are soaking in salty water!
 }
 
-WeaponImbueFF: {
-	DisplayName: Weapon Imbue (Frostburn)
-	Description: Your weapons have been imbued with Frozen Flames!
-}
-
-WeaponImbueFire: {
-	DisplayName: Weapon Imbue (Fire)
-	Description: Your weapons are on Fire!!
-}
-
 WeaponImbueMud: {
 	DisplayName: Weapon Imbue (Mud)
-	Description: Your weapons have thick mud all over them!
+	Description: Melee and Whip attacks slow enemies.
 }
 
 InsurgentBoost: {
@@ -411,21 +316,6 @@ LeeFractalBuff: {
 MiniRoseBoost: {
 	DisplayName: Mini Rose Boost
 	Description: Increased damage reduction and defense.
-}
-
-ScepterImbueFB: {
-	DisplayName: Scepter Imbue (Frostbite)
-	Description: Your weapons have been imbued with even more potent Frozen Flames!
-}
-
-ScepterImbueHF: {
-	DisplayName: Scepter Imbue (Hellfire)
-	Description: Your weapons have been imbued with Hellfire!
-}
-
-ScepterImbueSF: {
-	DisplayName: Scepter Imbue (Shimmering Flames)
-	Description: Your weapons have been imbued with Shimmering Flames!
 }
 
 BlessingBuff: {
@@ -484,76 +374,76 @@ Defilement: {
 }
 
 WispMinionBuff: {
-	DisplayName: Wisp Minion Buff
-	Description: Mods.DestroyerTest.Buffs.WispMinionBuff.Description
+	DisplayName: Wisp
+	Description: It's cold...
 }
 
 UrcerisMiniBuff: {
-	DisplayName: Urceris Mini Buff
-	Description: Mods.DestroyerTest.Buffs.UrcerisMiniBuff.Description
+	DisplayName: Urceris Mini
+	Description: A scrapped boss is defending you!
 }
 
 WeaponImbueComaceraticBurn: {
-	DisplayName: Weapon Imbue Comaceratic Burn
-	Description: Mods.DestroyerTest.Buffs.WeaponImbueComaceraticBurn.Description
+	DisplayName: Weapon Imbue (Comaceratic Burn)
+	Description: Melee and Whip attacks sear enemies with exotic light.
 }
 
 WeaponImbueDaylightOverload: {
-	DisplayName: Weapon Imbue Daylight Overload
-	Description: Mods.DestroyerTest.Buffs.WeaponImbueDaylightOverload.Description
+	DisplayName: Weapon Imbue (Daylight Overload)
+	Description: Melee and Whip attacks flood enemies with more solar energy than they can handle.
 }
 
 WeaponImbueDefilement: {
-	DisplayName: Weapon Imbue Defilement
-	Description: Mods.DestroyerTest.Buffs.WeaponImbueDefilement.Description
+	DisplayName: Weapon Imbue (Defilement)
+	Description: Melee and Whip attacks violate enemies on a spiritual level.
 }
 
 WeaponImbueFrostbite: {
-	DisplayName: Weapon Imbue Frostbite
-	Description: Mods.DestroyerTest.Buffs.WeaponImbueFrostbite.Description
+	DisplayName: Weapon Imbue (Frostbite)
+	Description: Melee and Whip attacks cause freezer burn.
 }
 
 WeaponImbueFrostburn: {
-	DisplayName: Weapon Imbue Frostburn
-	Description: Mods.DestroyerTest.Buffs.WeaponImbueFrostburn.Description
+	DisplayName: Weapon Imbue (Frostburn)
+	Description: Melee and Whip attacks set enemies ablaze.
 }
 
 WeaponImbueGalantineBurn: {
-	DisplayName: Weapon Imbue Galantine Burn
-	Description: Mods.DestroyerTest.Buffs.WeaponImbueGalantineBurn.Description
+	DisplayName: Weapon Imbue (Galantine Burn)
+	Description: Melee and Whip attacks burn enemies with the energy of the stars.
 }
 
 WeaponImbueHeliouricShock: {
-	DisplayName: Weapon Imbue Heliouric Shock
-	Description: Mods.DestroyerTest.Buffs.WeaponImbueHeliouricShock.Description
+	DisplayName: Weapon Imbue (Heliouric Shock)
+	Description: Melee and Whip attacks fry enemies alive.
 }
 
 WeaponImbueHellfire: {
-	DisplayName: Weapon Imbue Hellfire
-	Description: Mods.DestroyerTest.Buffs.WeaponImbueHellfire.Description
+	DisplayName: Weapon Imbue (Hellfire)
+	Description: Melee and Whip attacks sear enemies with hellfire.
 }
 
 WeaponImbueHoney: {
-	DisplayName: Weapon Imbue Honey
-	Description: Mods.DestroyerTest.Buffs.WeaponImbueHoney.Description
+	DisplayName: Weapon Imbue (Honey)
+	Description: Melee and Whip attacks slow enemies.
 }
 
 WeaponImbueShimmeringFlames: {
-	DisplayName: Weapon Imbue Shimmering Flames
-	Description: Mods.DestroyerTest.Buffs.WeaponImbueShimmeringFlames.Description
+	DisplayName: Weapon Imbue (Shimmering Flames)
+	Description: Melee and Whip attacks set enemies ablaze.
 }
 
 WeaponImbueSoulInferno: {
-	DisplayName: Weapon Imbue Soul Inferno
-	Description: Mods.DestroyerTest.Buffs.WeaponImbueSoulInferno.Description
+	DisplayName: Weapon Imbue (Soul Inferno)
+	Description: Melee and Whip attacks alter enemies' self perception.
 }
 
 WeaponImbueSpiritDrift: {
-	DisplayName: Weapon Imbue Spirit Drift
-	Description: Mods.DestroyerTest.Buffs.WeaponImbueSpiritDrift.Description
+	DisplayName: Weapon Imbue (Spirit Drift)
+	Description: Melee and Whip attacks catch enemes in a whirlwind of supernatural energy.
 }
 
 WeaponImbueWithering: {
-	DisplayName: Weapon Imbue Withering
-	Description: Mods.DestroyerTest.Buffs.WeaponImbueWithering.Description
+	DisplayName: Weapon Imbue (Withering)
+	Description: Melee and Whip attacks atrophy enemies.
 }

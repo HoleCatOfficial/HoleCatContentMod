@@ -54,8 +54,10 @@ namespace DestroyerTest.Content.Equips
         public override void AddRecipes()
         {
             CreateRecipe()
-            .AddIngredient(ItemID.PlatinumBar, 10)
+            .AddIngredient(ItemID.PlatinumBar, 8)
+            .AddIngredient(ItemID.IceBlock, 2)
             .AddIngredient<BlueCloth>(6)
+            .AddTile(TileID.Anvils)
             .Register();
         }
 	}

@@ -5187,45 +5187,54 @@ Zwei: {
 
 Fangshred: {
 	DisplayName: Fangshred
-	Tooltip: ""
+	Tooltip: Throws a toothed stick that afflicts enemies with venom on hit.
 }
 
 DaylightFlask: {
-	DisplayName: Daylight Flask
-	Tooltip: ""
+	DisplayName: Flask of Daylight
+	Tooltip: Melee and Whip attacks inflict enemies with Daylight Overload.
 }
 
 DefilementFlask: {
-	DisplayName: Defilement Flask
-	Tooltip: ""
+	DisplayName: Flask of Defilement
+	Tooltip: Melee and Whip attacks inflict enemies with Defilement.
 }
 
 FrostbiteFlask: {
-	DisplayName: Frostbite Flask
-	Tooltip: ""
+	DisplayName: Frostbitten Flask
+	Tooltip: Melee and Whip attacks inflict enemies with Frostbite.
 }
 
 HoneyFlask: {
-	DisplayName: Honey Flask
-	Tooltip: ""
+	DisplayName: Flask of Honey
+	Tooltip: Melee and Whip attacks douse enemies in honey.
 }
 
 ShimmeringFlask: {
-	DisplayName: Shimmering Flask
-	Tooltip: ""
+	DisplayName: Flask of Shade
+	Tooltip: Melee and Whip attacks inflict enemies with Shimmering Flames.
 }
 
 SoulInfernoFlask: {
-	DisplayName: Soul Inferno Flask
-	Tooltip: ""
+	DisplayName: Flask of Soul
+	Tooltip: Melee and Whip attacks inflict enemies with Soul Inferno.
 }
 
 SpiritDriftFlask: {
-	DisplayName: Spirit Drift Flask
-	Tooltip: ""
+	DisplayName: Flask of Drifting
+	Tooltip: Melee and Whip attacks inflict enemies with Spirit Drift.
 }
 
 WitheringFlask: {
-	DisplayName: Withering Flask
-	Tooltip: ""
+	DisplayName: Flask of Withering
+	Tooltip: Melee and Whip attacks inflict enemies with Withering.
+}
+
+LittleBuggy: {
+	DisplayName: "'Little Buggy'"
+	Tooltip:
+		'''
+		A tiny toy shaped like a bug.
+		Summons a trio of nodes to defend you.
+		'''
 }

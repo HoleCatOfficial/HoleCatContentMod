@@ -52,8 +52,7 @@ namespace DestroyerTest.Content.Consumables
             itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<WyvernTail>(), 2, 1, 1));
             itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<GreatFlayer>(), 2, 1, 1));
             itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<WyvernSkull>(), 5, 1, 1));
-            itemLoot.Add(ItemDropRule.NotScalingWithLuck(ItemID.Ichor, 2, 20, 60));
-            itemLoot.Add(ItemDropRule.Coins(1250, true));
+
         }
     }
     

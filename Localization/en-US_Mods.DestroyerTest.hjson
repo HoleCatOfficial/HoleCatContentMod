@@ -170,3 +170,5 @@ Configs: {
 		}
 	}
 }
+
+DropConditions.EternityMode: Mods.DestroyerTest.DropConditions.EternityMode
