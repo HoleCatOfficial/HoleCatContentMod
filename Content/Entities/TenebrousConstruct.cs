@@ -436,6 +436,10 @@ namespace DestroyerTest.Content.Entities
             DeathTimer++;
             NPC.aiStyle = 0;
             NPC.dontTakeDamage = true;
+            ShouldDrawVingette = true;
+            VingetteScale = 5f;
+            VingetteOpacity = 0f;
+
 
             if (DeathTimer == 60)
             {
