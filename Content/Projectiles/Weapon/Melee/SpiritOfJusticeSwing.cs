@@ -37,6 +37,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Projectile.width = 92;
             Projectile.height = 92;
             SweepColor = Color.Goldenrod;
+            UsesDefaultSweepFX = true;
+            SweepScale = 2f;
             Glowmask = ModContent.Request<Texture2D>($"{Texture}_Glow");
         }
 

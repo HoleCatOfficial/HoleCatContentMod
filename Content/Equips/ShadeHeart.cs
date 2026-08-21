@@ -1,4 +1,5 @@
 ﻿
+using System.Collections.Generic;
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
@@ -11,10 +12,11 @@ using GlowmaskHelper.Content;
  
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using OpusLib;
 using OpusLib.Content.Particles;
-using System.Collections.Generic;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
@@ -39,8 +41,48 @@ namespace DestroyerTest.Content.Equips
             Item.maxStack = 1;
             Item.value = 1000;
             Item.accessory = true;
+
             Item.rare = ModContent.RarityType<ShimmeringRarity>();
+            Item.expertOnly = true;
+            Item.expert = true;
         }
+
+        public bool Pet = true;
+
+        public override bool CanRightClick()
+        {
+            bool ShiftKey = (Main.keyState.IsKeyDown(Keys.LeftShift) && Main.oldKeyState.IsKeyDown(Keys.LeftShift)) || (Main.keyState.IsKeyDown(Keys.RightShift) && Main.oldKeyState.IsKeyDown(Keys.RightShift));
+            return ShiftKey;
+        }
+
+        int SwitchTime = 0;
+        public override void RightClick(Player player)
+        {
+            if (SwitchTime <= 0)
+            {
+                if (Pet)
+                {
+                    Pet = false;
+                    SoundEngine.PlaySound(SoundID.Item20);
+                    SwitchTime = 60;
+                }
+                else
+                {
+                    Pet = true;
+                    SoundEngine.PlaySound(SoundID.Item20);
+                    SwitchTime = 60;
+                }
+            }
+            else
+            {
+                SwitchTime--;
+            }
+        }
+        public override bool ConsumeItem(Player player)
+        {
+            return false;
+        }
+
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
@@ -55,6 +97,14 @@ namespace DestroyerTest.Content.Equips
             if (player.TryGetModPlayer<ShadeHeartPlayer>(out var Heart))
             {
                 Heart.Active = true;
+                if (Pet)
+                {
+                    Heart.Pet = true;
+                }
+                else
+                {
+                    Heart.Pet = false;
+                }
             }
         }
 
@@ -78,10 +128,12 @@ namespace DestroyerTest.Content.Equips
     public class ShadeHeartPlayer : ModPlayer
     {
         public bool Active = false;
+        public bool Pet = false;
         public float TexRot = 0f;
         public override void ResetEffects()
         {
             Active = false;
+            Pet = false;
         }
 
         public override void PostUpdateEquips()
@@ -95,7 +147,10 @@ namespace DestroyerTest.Content.Equips
                 Spark.PrepareSpark(Main.rand.NextVector2FromRectangle(Player.Hitbox), new Vector2(0f, -5f).RotatedByRandom(0.05f), 0f, ColorLib.TenebrisGradient * 0.25f, 0.6f, false, 30, SparkDrawMode.Additive);
                 ParticleEngine.ShaderParticles.Add(Spark);
 
-                Player.AddBuff(ModContent.BuffType<ShadeHeartPetBuff>(), 120);
+                if (Pet)
+                {
+                    Player.AddBuff(ModContent.BuffType<ShadeHeartPetBuff>(), 120);
+                }
             }
             else
             {

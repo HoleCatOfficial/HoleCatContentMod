@@ -435,6 +435,7 @@ namespace DestroyerTest.Content.Entities
         {
             DeathTimer++;
             NPC.aiStyle = 0;
+            CurrentState = State.IdleChase;
             NPC.dontTakeDamage = true;
             ShouldDrawVingette = true;
             VingetteScale = 5f;
@@ -869,7 +870,7 @@ namespace DestroyerTest.Content.Entities
 
                                 if (InternalTimer % 90 == 0)
                                 {
-                                    Opus.RadialSpreadProjectile(ModContent.ProjectileType<TenebrisStarHostile_NoHoming>(), 20, NPC.Center, 100, 4, 6f);
+                                    Opus.RadialSpreadProjectile(ModContent.ProjectileType<TenebrisStarHostile_NoHoming>(), 18, NPC.Center, 60, 4, 6f);
                                 }
 
                                 if (InternalTimer >= (LasersEnd + 120))

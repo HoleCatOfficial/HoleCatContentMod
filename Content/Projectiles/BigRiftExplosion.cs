@@ -1,6 +1,9 @@
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
+using DestroyerTest.Content.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib.Content.Particles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -28,6 +31,7 @@ namespace DestroyerTest.Content.Projectiles
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = -1;
             Projectile.rotation = Main.rand.NextFloat(MathHelper.TwoPi);
+            Projectile.hide = true; //Ugly ass sprite
         }
 
         public override bool PreDraw(ref Color lightColor)
@@ -77,13 +81,34 @@ namespace DestroyerTest.Content.Projectiles
                 }
             }
         }
+        bool f1 = false;
         public override void AI()
         {
             AnimateProjectile();
 
-            if (Projectile.frame == 2 && Projectile.frameCounter == 0)
+            if (Projectile.frame < 2)
             {
-                SoundEngine.PlaySound(Burst, Projectile.position);
+               // Dust.NewDustPerfect(Projectile.Center + Main.rand.NextVector2Circular(10, 10), DustID.)
+            }
+            else
+            {
+                if (!f1)
+                {
+                    SoundEngine.PlaySound(Burst, Projectile.position);
+                    LerpingBloomRingSharp Ring = new();
+                    Ring.Prepare(Projectile.Center, Vector2.Zero, [Color.White, ColorLib.LightRift4, ColorLib.LightRift1, ColorLib.Rift], 0.1f, 0.03f, 1f);
+                    ParticleEngine.BehindProjectiles.Add(Ring);
+
+                    for (int i = 0; i < 6; i++)
+                    {
+                        Vector2 pos = Projectile.Center + Main.rand.NextVector2Circular(60, 60);
+                        ElectricArc Arc = new();
+                        Arc.Create(pos, ColorLib.Rift);
+                        ParticleEngine.BehindProjectiles.Add(Arc);
+                    }
+
+                    f1 = true;
+                }
             }
 
             if (Projectile.frame >= 6)

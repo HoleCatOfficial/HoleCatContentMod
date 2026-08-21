@@ -152,11 +152,16 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         public float AdjustedScale = 0f;
         public int NPCHitCooldown = 15;
 
+        public override bool PreAI()
+        {
+            float AdjScale = Owner.GetAdjustedItemScale(Owner.HeldItem);
+            AdjustedScale = AdjScale  * ScaleMult;
+            Projectile.scale = AdjustedScale;
+            return true;
+        }
         public override void AI()
         {
-            AdjustedScale = Owner.GetAdjustedItemScale(Owner.HeldItem) * ScaleMult;
-            Projectile.scale = AdjustedScale;
-
+           
             //Slower swing speed, longer cooldown.
             //Swing speed gets slower the lower the number is.
             HitCooldownGlobal = (int)MathHelper.Lerp(5, 15, SwingSpeed / 1f);

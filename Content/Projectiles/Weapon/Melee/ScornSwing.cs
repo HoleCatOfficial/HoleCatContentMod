@@ -35,6 +35,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Projectile.width = 68;
             Projectile.height = 68;
             SweepColor = ColorLib.IchorCrystal2;
+            SweepScale = 1.2f;
 
             Glowmask = ModContent.Request<Texture2D>($"{Texture}_Glow");
         }
@@ -69,7 +70,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             }
 
             Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-            Main.EntitySpriteDraw(Tex, player.MountedCenter - Main.screenPosition, null, DTColorUtils.MultiLerp(SlashProgress, ColorLib.IchorCrystalColorMap) * SweepOpacity, (Projectile.rotation + MathHelper.PiOver4) + rOffset, Tex.Size() / 2, (AdjustedScale * TexBasedMod) * ScaleMult, FX);
+            Main.EntitySpriteDraw(Tex, player.MountedCenter - Main.screenPosition, null, DTColorUtils.MultiLerp(SlashProgress, ColorLib.IchorCrystalColorMap) * SweepOpacity, (Projectile.rotation + MathHelper.PiOver4) + rOffset, Tex.Size() / 2, AdjustedScale * SweepScale, FX);
             Opus.ReturnToDefaultDrawing(Main.spriteBatch);
         }
 

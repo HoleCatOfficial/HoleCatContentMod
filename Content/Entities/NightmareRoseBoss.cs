@@ -2429,11 +2429,11 @@ namespace DestroyerTest.Content.Entities
                 }
                 if ((DestroyerTestMod.EternityIsActive || DestroyerTestMod.DeathIsActive) && !DestroyerTestMod.MasochistIsActive)
                 {
-                    return 60;
+                    return 50;
                 }
                 if (DestroyerTestMod.MasochistIsActive)
                 {
-                    return 80;
+                    return 60;
                 }
 
                 return 1;

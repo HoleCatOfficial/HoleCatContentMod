@@ -123,11 +123,14 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         public float AdjustedScale = 0f;
         public int NPCHitCooldown = 15;
 
-        public override void AI()
+        public override bool PreAI()
         {
             AdjustedScale = Owner.GetAdjustedItemScale(Owner.HeldItem) * ScaleMult;
             Projectile.scale = AdjustedScale;
-
+            return true;
+        }
+        public override void AI()
+        {
             Projectile.spriteDirection = Projectile.direction = Math.Sign(Main.MouseWorld.X - Owner.Center.X);
 
             //Slower swing speed, longer cooldown.

@@ -1261,7 +1261,7 @@ NatureScepter: {
 	Tooltip:
 		'''
 		A wild scepter with all the lustre of a verdant emerald, and all the potency of the Jungle.
-		Left click to shoot homing dendro darts, Right click to throw the scepter, which will release spores in its path.
+		Left click to shoot jungle spore clouds, Right click to throw the scepter, which will release spores in its path.
 		'''
 }
 
@@ -1927,7 +1927,11 @@ TitanScepter: {
 
 ChlorophyteScepter: {
 	DisplayName: Chlorophyte Scepter
-	Tooltip: ""
+	Tooltip:
+		'''
+		Shoots homing spore bombs.
+		Throws inflict venom and create bursts of spores on hit.
+		'''
 }
 
 GhoulishScepter: {
@@ -2114,7 +2118,12 @@ WyvernsDestruction: {
 }
 
 RibChainsaw: {
-	Tooltip: Rip and tear through your foes using.... the flesh of another foe.
+	Tooltip:
+		'''
+		Rips through enemies with a belt of ichor-coated ribs.
+		Sprays ichor projectiles.
+		'Rip and tear through your foes using.... the flesh of another foe.'
+		'''
 	DisplayName: Rib Chainsaw
 }
 
@@ -2608,7 +2617,7 @@ KeeperStaff: {
 }
 
 ShadeBow: {
-	Tooltip: ""
+	Tooltip: Creates a homing tenebris star with every shot.
 	DisplayName: Shade Bow
 }
 
@@ -4591,7 +4600,7 @@ ShadeHeart: {
 		Minions have a chance to create a burst of homing Tenebris Stars upon striking an enemy directly.
 		Natural life regen increased by 40%
 		You emit light.
-		You get a shade heart light pet that doesnt consume either of the pet slots.
+		You get a shade heart light pet that doesnt consume either of the pet slots. This can be disabled by Shift + Right-Clicking the item in the inventory.
 		'''
 }
 
@@ -4771,7 +4780,7 @@ ShadeInfernoPotion: {
 
 AetherflameIgnis: {
 	DisplayName: Aetherflame Ignis
-	Tooltip: ""
+	Tooltip: Shoots a piercing ray of aetherian fire.
 }
 
 RiftElectroscythe: {
@@ -5237,4 +5246,12 @@ LittleBuggy: {
 		A tiny toy shaped like a bug.
 		Summons a trio of nodes to defend you.
 		'''
+}
+
+DarkDelight: {
+	DisplayName: Dark Delight
+	Tooltip:
+	'''
+	Summons the Dark Prince to follow you around.
+	'''
 }

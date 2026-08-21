@@ -447,3 +447,8 @@ WeaponImbueWithering: {
 	DisplayName: Weapon Imbue (Withering)
 	Description: Melee and Whip attacks atrophy enemies.
 }
+
+DarkPrincePetBuff: {
+	DisplayName: Dark Prince Pet Buff
+	Description: Mods.DestroyerTest.Buffs.DarkPrincePetBuff.Description
+}

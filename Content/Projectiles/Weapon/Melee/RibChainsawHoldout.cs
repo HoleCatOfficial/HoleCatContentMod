@@ -35,10 +35,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Projectile.tileCollide = false;
             Projectile.ignoreWater = true;
             Projectile.timeLeft = 40;
-            /*
+            
             Projectile.usesLocalNPCImmunity = true;
-            Projectile.localNPCHitCooldown = -1;
-            */
+            Projectile.localNPCHitCooldown = 5;
+            
             Projectile.netImportant = true;
             Projectile.hide = true;
             Projectile.DamageType = ModContent.GetInstance<DTTrueMeleeClass>();
@@ -68,14 +68,18 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             );
 
             Vector2 origin = new Vector2(T.Width / 2f, frameHeight / 2f);
+
+            SpriteEffects FX = Projectile.direction == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
             
-            Main.EntitySpriteDraw(T, Projectile.Center - Main.screenPosition, frame, Projectile.GetAlpha(lightColor), Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0f);
+            Main.EntitySpriteDraw(T, Projectile.Center - Main.screenPosition, frame, Projectile.GetAlpha(lightColor), Projectile.rotation, origin, Projectile.scale, FX, 0f);
             return false;
         }
 
+        int t = 0;
         public override void AI()
         {
             Player player = Main.player[Projectile.owner];
+            t++;
 
             SoundInterval--;
             if (SoundInterval <= 0)
@@ -100,6 +104,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
                 // Set the projectile velocity, which is actually the holdout offset for held projectiles.
                 Projectile.velocity = holdoutOffset;
+
+                if (t % 5 == 0)
+                {
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center + (new Vector2(40 * -Projectile.direction, -10) * Projectile.scale).RotatedBy(Projectile.rotation), Projectile.Center.DirectionTo(Main.MouseWorld).RotatedBy(Projectile.direction == 1 ? -Main.rand.NextFloat(0.2f) : Main.rand.NextFloat(0.2f)) * 12f, ProjectileID.GoldenShowerFriendly, Projectile.damage, 6, Projectile.owner);
+                }
             }
             else
             {
@@ -127,7 +136,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             ScreenShake.screenshakeMagnitude = 4;
             ScreenShake.screenshakeTimer = 10;
 
-            SoundEngine.PlaySound(DTAssetLib.Impacts.ShortShine with { MaxInstances = 0 }, Projectile.position);
+            SoundEngine.PlaySound(DTAssetLib.Impacts.FleshHit with { MaxInstances = 0 }, Projectile.position);
             int splatterdir = target.position.X > player.MountedCenter.X ? 1 : -1;
             for (int i = 0; i < 7; i++)
             {
@@ -135,6 +144,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 Spark.PrepareSpark(target.Center, new Vector2(Main.rand.NextFloat(2f, 6f) * splatterdir, 0).RotatedByRandom(0.1f), 0f, ColorLib.Ichor, 1f, false, 30, SparkDrawMode.Additive);
                 ParticleEngine.BehindProjectiles.Add(Spark);
             }
+
+
         }
 
     }

@@ -39,6 +39,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             SweepColor = Color.Blue;
             SweepHighlightColor = Color.SkyBlue;
             WaitTimeMultiplier = 2f;
+            SweepScale = 1.8f;
 
             ColdTex = ModContent.Request<Texture2D>($"{Texture}_Cold");
             HotTex = ModContent.Request<Texture2D>($"{Texture}_Hot");

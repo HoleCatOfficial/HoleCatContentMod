@@ -37,6 +37,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 			SwingSpeed = 0.15f;
 			WaitTimeMultiplier = 1.3f;
 			ScaleMult = 1.6f;
+			SweepScale = 1.8f;
 
 			UsesDefaultSweepFX = true;
 

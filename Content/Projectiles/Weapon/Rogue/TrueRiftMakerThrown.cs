@@ -30,17 +30,37 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             Projectile.timeLeft = 600;
             Projectile.ignoreWater = true;
             Projectile.tileCollide = true;
+            Projectile.extraUpdates = 1;
+        }
+
+        public void DustSpawn1()
+        {
+            Vector2 Pos1 = Projectile.Center + new Vector2(0, -16).RotatedBy(Projectile.rotation);
+            Vector2 Pos2 = Projectile.Center + new Vector2(0, 16).RotatedBy(Projectile.rotation);
+
+            Vector2 DustPos = Opus.Sine(Pos1, Pos2, 0.75f);
+
+            Dust trail1 = Dust.NewDustPerfect(DustPos, DustID.FireworksRGB, Projectile.velocity * 0.05f, 0, ColorLib.Rift, 0.75f);
+            trail1.noGravity = true;
+        }
+
+        public void DustSpawn2()
+        {
+            Vector2 Pos1 = Projectile.Center + new Vector2(0, 16).RotatedBy(Projectile.rotation);
+            Vector2 Pos2 = Projectile.Center + new Vector2(0, -16).RotatedBy(Projectile.rotation);
+
+            Vector2 DustPos = Opus.Sine(Pos1, Pos2, 0.75f);
+
+            Dust trail2 = Dust.NewDustPerfect(DustPos, DustID.FireworksRGB, Projectile.velocity * 0.05f, 0, ColorLib.Rift, 0.75f);
+            trail2.noGravity = true;
         }
 
         public override void AI()
         {
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
 
-            if (Main.rand.NextBool(3))
-            {
-                Dust dust = Dust.NewDustPerfect(Projectile.Center, DustID.FireworksRGB, Projectile.velocity * 0.2f, 100, ColorLib.Rift, 1.2f);
-                dust.noGravity = true;
-            }
+            DustSpawn1();
+            DustSpawn2();
         }
         public override bool PreDraw(ref Color lightColor)
         {
@@ -57,9 +77,6 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 
         public override void OnKill(int timeLeft)
         {
-			SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/RiftMaker_Boom") with { MaxInstances = 0, PitchVariance = 0.2f }, Projectile.Center);
-			//PRTLoader.NewParticle(PRTLoader.GetParticleID<SmallShine>(), Projectile.Center, Vector2.Zero, ColorLib.Rift, 1);
-            Opus.RadialSpreadDustRandom(DustID.FireworksRGB, 24, Projectile.Center, 0, ColorLib.Rift, 2f, 3f);
             Projectile.NewProjectile(Projectile.GetSource_Death(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<BigRiftExplosion>(), Projectile.damage / 2, 10f, Projectile.owner);
         }
 

@@ -41,7 +41,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             SweepColor = Color.NavajoWhite;
             SweepHighlightColor = Color.White;
             UsesDefaultSweepFX = true;
-            SweepScale = 2f;
+            SweepScale = 2.2f;
             Glowmask = ModContent.Request<Texture2D>($"{Texture}_Glow");
         }
 

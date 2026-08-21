@@ -1464,7 +1464,7 @@ namespace DestroyerTest.Common
                 ModContent.BuffType<ShimmeringFlames>(),
                 ModContent.BuffType<HaepiensInferno>(),
                 BuffID.OnFire,
-                BuffID.OnFire3,
+                BuffID.OnFire3, 
                 BuffID.CursedInferno,
                 BuffID.Frostburn,
                 BuffID.Frostburn2,

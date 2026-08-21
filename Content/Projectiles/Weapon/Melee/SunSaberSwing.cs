@@ -37,16 +37,19 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Projectile.width = 118;
             Projectile.height = 118;
             SweepColor = Color.DarkOrange;
+            SweepHighlightColor = Color.Yellow;
+            UsesDefaultSweepFX = true;
             Glowmask = ModContent.Request<Texture2D>($"{Texture}_Glow");
 
             SwingSpeed = 0.17f;
+            SweepScale = 2.2f;
         }
 
         public override SoundStyle Swing => DTAssetLib.SwordSounds.ColdSword with { Pitch = -0.4f, PitchVariance = 0.2f};
 
         public override void ExtraEffects()
         {
-            SparkEdge(Main.player[Projectile.owner], 1f, Color.PaleGoldenrod);
+            //SparkEdge(Main.player[Projectile.owner], 1f, Color.PaleGoldenrod);
         }
 
         public override void OnStartSwing()

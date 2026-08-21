@@ -39,7 +39,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Projectile.height = 60;
             SweepColor = ColorLib.Wretched4;
             SweepHighlightColor = ColorLib.Wretched2;
-            SweepScale = 0.8f;
+            UsesDefaultSweepFX = true;
+            UsesFireSweepFX = true;
+            SweepScale = 1.3f;
             SwingSpeed = 0.17f;
 
             Glowmask = ModContent.Request<Texture2D>($"{Texture}_Glow");
@@ -56,39 +58,15 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
         private void DrawSweepFX2()
         {
-            Player player = Main.player[Projectile.owner];
-            var Tex = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/CircularSlash3").Value;
-            var TexH = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/CircularSlash3Highlight").Value;
-            float TexBasedMod = (Projectile.Size.Length() * 0.015f);
-            float rOffset = 0f;
-
-            SpriteEffects FX = SpriteEffects.None;
-
-            if (LastSwing == 1)
-            {
-                FX = SpriteEffects.FlipHorizontally;
-                rOffset = MathHelper.PiOver2;
-            }
-            else
-            {
-                FX = SpriteEffects.None;
-                rOffset = 0f;
-            }
-
-            Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-            Main.EntitySpriteDraw(Tex, player.MountedCenter - Main.screenPosition, null, DTColorUtils.MultiLerp(SlashProgress, ColorLib.WretchedColorMap) * SweepOpacity, (Projectile.rotation + MathHelper.PiOver4) + rOffset, Tex.Size() / 2, (AdjustedScale * TexBasedMod) * ScaleMult, FX);
-            Main.EntitySpriteDraw(TexH, player.MountedCenter - Main.screenPosition, null, Color.White * SweepOpacity, (Projectile.rotation + MathHelper.PiOver4) + rOffset, Tex.Size() / 2, (AdjustedScale * TexBasedMod) * ScaleMult, FX);
-            Opus.ReturnToDefaultDrawing(Main.spriteBatch);
+          
         }
         public override void DrawUnderBlade()
         {
-            DrawSweepFX2();
+
         }
         public override void DrawOverBlade()
         {
-            Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-            //Main.EntitySpriteDraw(DTAssetLib.MiscSparkle144.Value, swordTip - Main.screenPosition, null, DTColorUtils.MultiLerp(SlashProgress, ColorLib.WretchedColorMap), 0f, DTAssetLib.MiscSparkle144.Value.Size() / 2, 1f, SpriteEffects.None);
-            Opus.ReturnToDefaultDrawing(Main.spriteBatch);
+
         }
 
         public Vector2 swordTip;

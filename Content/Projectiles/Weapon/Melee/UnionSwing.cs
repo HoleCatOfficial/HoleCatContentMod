@@ -40,7 +40,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             UsesFireSweepFX = true;
             SwingSpeed = 0.17f;
             ScaleMult = 1.36f;
+            SweepScale = 1.6f;
 
+            
 
             Glowmask = ModContent.Request<Texture2D>($"{Texture}");
         }
@@ -76,7 +78,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         int t = 0;
         public override void ExtraEffects()
         {
-
+            float s = Projectile.scale;
 
             swordTip = Projectile.Center + Projectile.rotation.ToRotationVector2() * (Projectile.Size.Length() * Projectile.scale);
 

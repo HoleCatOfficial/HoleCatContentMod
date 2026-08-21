@@ -38,7 +38,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             UsesDefaultSweepFX = true;
             SweepColor = ColorLib.Ichor;
             SweepHighlightColor = ColorLib.IchorCrystal4;
-            SweepScale = 2.6f;
+            SweepScale = 2.9f;
             SwingSpeed = 0.13f;
             WaitTimeMultiplier = 3f;
             ScaleMult = 1.1f;

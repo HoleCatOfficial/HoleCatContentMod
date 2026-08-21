@@ -17,7 +17,7 @@ namespace DestroyerTest.Content.RogueItems
 
 		public override void SetDefaults() {
 			Item.useStyle = ItemUseStyleID.Swing;
-			Item.shootSpeed = 30f;
+			Item.shootSpeed = 20f;
 			Item.shoot = ModContent.ProjectileType<TrueRiftMakerThrown>();
 			Item.width = 128;
 			Item.height = 128;

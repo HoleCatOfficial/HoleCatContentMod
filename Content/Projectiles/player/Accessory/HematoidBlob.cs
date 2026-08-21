@@ -109,7 +109,8 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
             foreach (Vector2 p1 in Star1)
             {
                 Vector2 Vel = p1 - Projectile.Center;
-                Dust.NewDustPerfect(Projectile.Center, DustID.FireworksRGB, Vel, 0, Color.Red, 1f);
+                Dust d = Dust.NewDustPerfect(Projectile.Center, DustID.FireworksRGB, Vel, 0, Color.Red, 1f);
+                d.noGravity = true;
             }
             
            

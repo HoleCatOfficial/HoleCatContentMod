@@ -36,6 +36,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee.Quixotism
             UsesDefaultSweepFX = true;
             SweepColor = Color.Gray;
             SweepHighlightColor = Color.White;
+            SweepScale = 1.3f;
         }
 
         public override SoundStyle Swing => DTAssetLib.SwordSounds.Woosh;
@@ -64,15 +65,18 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee.Quixotism
                     }
                     SweepColor = ColorLib.Soul2;
                     SweepHighlightColor = ColorLib.Soul;
+                    SweepScale = 1.9f;
                 }
                 else
                 {
+
                     for (int i = 0; i < 3; i++)
                     {
                         Dust.NewDustPerfect(pt[Main.rand.Next(30)], ModContent.DustType<ColorableNeonDust>(), SwordLine.GetLineRotation.ToRotationVector2() * 2, 0, Color.White * 0.5f, 2f);
                     }
                     SweepColor = Color.Gray;
                     SweepHighlightColor = Color.White;
+                    SweepScale = 1.4f;
                 }
             }
         }

@@ -101,6 +101,15 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
         bool OnStartFlag = false;
         bool OnExtendFlag = false;
+        public float AdjustedScale = 1f;
+
+        public override bool PreAI()
+        {
+            AdjustedScale = Owner.GetAdjustedItemScale(Owner.HeldItem);
+            Projectile.scale = AdjustedScale;
+            return true;
+        }
+
         public override void AI()
         {
             //Dust.NewDustPerfect(ShotPos(), DustID.Torch);
