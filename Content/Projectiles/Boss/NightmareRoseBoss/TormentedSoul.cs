@@ -37,7 +37,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
 
         float IHomingProjectile.DetectRadius => 120f;
 
-        bool IHomingProjectile.CanHome => !DestroyerTestMod.EternityIsActive && !DestroyerTestMod.DeathIsActive;
+        bool IHomingProjectile.CanHome => (!DestroyerTestMod.EternityIsActive && !DestroyerTestMod.DeathIsActive) && homingTime < 120;
 
         public static bool EternityIsActive()
         {
@@ -160,6 +160,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
             behindNPCsAndTiles.Add(index);
         }
 
+        int homingTime = 0;
         public override void AI()
         {
             Projectile.ResetExcessTrailPoints();
@@ -173,6 +174,11 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
             if (WarnOpacity > 0)
             {
                 WarnOpacity -= 0.02f;
+            }
+
+            if (Projectile.GetGlobalProjectile<HomingGlobal>().TrackingPlayer != null && Projectile.GetGlobalProjectile<HomingGlobal>().TrackingPlayer.whoAmI != -1)
+            {
+                homingTime++;
             }
 
         }

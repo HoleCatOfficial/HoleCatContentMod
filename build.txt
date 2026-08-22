@@ -1,6 +1,6 @@
-displayName = [c/bfbef1:Talid Mod (Private Beta)]
+displayName = [c/bfbef1:Talid Mod]
 author = HoleCat and Shadey
-version = 2.1.7276 
+version = 2.1.7277
 modReferences = InnoVault, OpusLib, GlowmaskHelper, BreadLibrary
 dependencies = InnoVault, OpusLib, GlowmaskHelper, BreadLibrary
 weakReferences = FargowiltasSouls, Fargowiltas, ConstellationsOfOrion

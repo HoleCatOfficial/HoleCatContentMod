@@ -62,6 +62,8 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
 using Terraria.UI;
+using Terraria.WorldBuilding;
+using Conditions = Terraria.GameContent.ItemDropRules.Conditions;
 
 namespace DestroyerTest.Content.Entities
 {
@@ -74,6 +76,7 @@ namespace DestroyerTest.Content.Entities
         public void immunities()
         {
             NPCID.Sets.SpecificDebuffImmunity[Type][ModContent.BuffType<ShimmeringFlames>()] = true;
+            NPCID.Sets.SpecificDebuffImmunity[Type][ModContent.BuffType<Defilement>()] = true;
             NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.OnFire] = true;
             NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.OnFire3] = true;
             NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.CursedInferno] = true;
@@ -269,11 +272,13 @@ namespace DestroyerTest.Content.Entities
                     {
                         weights[AttackState.CursedFlames] = 0.5f;
                         weights[AttackState.Napalm] = 1f;
+                        weights[AttackState.Lances] = 1f;
                         break;
                     }
                 case AttackState.Napalm:
                     {
                         weights[AttackState.Napalm] = 0f;
+                        weights[AttackState.Lances] = 0.0f;
                         if (Masochist)
                         {
                             weights[AttackState.BlossomMine] = 0f;
@@ -299,6 +304,7 @@ namespace DestroyerTest.Content.Entities
                         weights[AttackState.CursedFlames] = 1f;
                         weights[AttackState.WallDarts] = 1f;
                         weights[AttackState.Lances] = 1f;
+                        weights[AttackState.Napalm] = 1f;
                         break;
                     }
                 case AttackState.CorruptSigil:
@@ -315,11 +321,12 @@ namespace DestroyerTest.Content.Entities
                     {
                         weights[AttackState.FlameRing] = 0f;
                         weights[AttackState.ArenaDivide] = 1f;
+                        weights[AttackState.CursedFlames] = 0f;
 
                         if (Masochist)
                         {
                             weights[AttackState.DemoniteWhisper] = 0f;
-                            weights[AttackState.CursedFlames] = 0f;
+                            
                             weights[AttackState.WallDarts] = 0f;
                         }
                         break;
@@ -341,6 +348,7 @@ namespace DestroyerTest.Content.Entities
                 case AttackState.Lances:
                     {
                         weights[AttackState.ArenaDivide] = 0.1f;
+                        weights[AttackState.Napalm] = 0.0f;
                         break;
                     }
                 case AttackState.WallDarts:
@@ -455,18 +463,76 @@ namespace DestroyerTest.Content.Entities
 
         public override void OnSpawn(IEntitySource source)
         {
-            NPC.life = NPC.lifeMax;
-            BorderActive = true;
-            currentState = AttackState.SpawnIdle;
-            NPCHead = NPC.Center + new Vector2(0, -79);
-            // Debug log: AI entry
-            if (DTConfig.instance.EnableDebugMessages && Main.GameUpdateCount % 30 == 0)
+            if (!DestroyerTestMod.EternityIsActive && !DestroyerTestMod.DeathIsActive)
             {
-                Mod.Logger.Info($"[NightmareRose AI] Tick:{Main.GameUpdateCount} whoAmI:{NPC.whoAmI} active:{NPC.active} life:{NPC.life}/{NPC.lifeMax} state:{currentState}");
-            }
-            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Bottom, Vector2.Zero, ModContent.ProjectileType<SpawnSoul>(), 0, 0);
+                Point resultPoint;
+                Point resultPoint2;
 
-            SunlightModification.Reset();
+                Rectangle SearchArea = Utils.CenteredRectangle(NPC.Bottom.ToTileCoordinates().ToWorldCoordinates() + new Vector2(0, 5 * 16), new Vector2(125 * 16, 8 * 16));
+                Rectangle SearchArea2 = Utils.CenteredRectangle(NPC.Bottom.ToTileCoordinates().ToWorldCoordinates() + new Vector2(0, -50 * 16), new Vector2(125 * 16, 100 * 16));
+                //Visualize
+                Dust.DrawDebugBox(SearchArea);
+                Dust.DrawDebugBox(SearchArea2);
+
+                bool TileCheck = WorldUtils.Find(
+                    SearchArea.TopLeft().ToTileCoordinates(),
+                    Searches.Chain(new Searches.Rectangle(1, 1),
+                    new GenCondition[]
+                    {
+                    new Terraria.WorldBuilding.Conditions.IsSolid().AreaAnd(125, 8),
+                    }),
+                    out resultPoint);
+
+                bool AirCheck = WorldUtils.Find(
+                    SearchArea.TopLeft().ToTileCoordinates(),
+                    Searches.Chain(new Searches.Rectangle(1, 1),
+                    new GenCondition[]
+                    {
+                    new Terraria.WorldBuilding.Conditions.IsSolid().AreaAnd(125, 100),
+                    }),
+                    out resultPoint2);
+
+                if (TileCheck && AirCheck)
+                {
+                    Main.NewText(Language.GetTextValue("Mods.DestroyerTest.NPCs.NightmareRoseBoss.AirClutterDespawn"), Color.Red);
+                }
+
+                if (!TileCheck && AirCheck)
+                {
+                    Main.NewText(Language.GetTextValue("Mods.DestroyerTest.NPCs.NightmareRoseBoss.GroundHolesDespawn"), Color.Red);
+                }
+
+                if (!TileCheck && !AirCheck)
+                {
+                    Main.NewText(Language.GetTextValue("Mods.DestroyerTest.NPCs.NightmareRoseBoss.GroundHolesAndAirClutterDespawn"), Color.Red);
+                }
+
+                if (TileCheck && !AirCheck)
+                {
+
+                    NPC.life = NPC.lifeMax;
+                    BorderActive = true;
+                    currentState = AttackState.SpawnIdle;
+                    NPCHead = NPC.Center + new Vector2(0, -79);
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Bottom, Vector2.Zero, ModContent.ProjectileType<SpawnSoul>(), 0, 0);
+
+                    SunlightModification.Reset();
+                }
+                else
+                {
+                    NPC.active = false;
+                }
+            }
+            else
+            {
+                NPC.life = NPC.lifeMax;
+                BorderActive = true;
+                currentState = AttackState.SpawnIdle;
+                NPCHead = NPC.Center + new Vector2(0, -79);
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Bottom, Vector2.Zero, ModContent.ProjectileType<SpawnSoul>(), 0, 0);
+
+                SunlightModification.Reset();
+            }
         }
 
         void ShineHead()
@@ -1238,11 +1304,10 @@ namespace DestroyerTest.Content.Entities
             {
                 if (NPC.Opacity > 0)
                 {
-                    NPC.Opacity -= 0.1f;
+                    NPC.Opacity -= 0.02f;
                 }
                 else
                 {
-                    Mod.Logger.Info($"[NightmareRose] Deactivating NPC whoAmI:{NPC.whoAmI} because player.active={player.active} dead={player.dead} Tick:{Main.GameUpdateCount}");
                     NPC.active = false;
                 }
             }
@@ -1422,12 +1487,19 @@ namespace DestroyerTest.Content.Entities
                                 FlameTimer++;
                                 FlameInterval++;
                                 Vector2 velocity = DirectionToPlayerCenter.SafeNormalize(Vector2.UnitY);
+                                if (FlameTimer % 20 == 0)
+                                {
+                                    Vector2 targ = player.Center + player.velocity * 4f;
+                                    Projectile.NewProjectile(Entity.GetSource_FromThis(), NPCHead, NPCHead.DirectionTo(targ) * 15f, ModContent.ProjectileType<BloomTurret>(), 40, 0, ai0: player.whoAmI);
+                                }
+
                                 if (FlameInterval >= 10)
                                 {
                                     SoundEngine.PlaySound(Fire);
                                     Projectile.NewProjectile(Entity.GetSource_FromThis(), NPCHead, velocity * 20f, ModContent.ProjectileType<CursedFlameProj>(), 15, 0);
                                     FlameInterval = 0;
                                 }
+                                
                             }
                             if (FlameTimer >= 240)
                             {
@@ -1524,8 +1596,8 @@ namespace DestroyerTest.Content.Entities
                             {
                                 SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/NodeAttackTS") with { PitchVariance = 1f, Volume = 3f });
                                 float off = Main.rand.NextFloat(MathHelper.TwoPi);
-                                Opus.RadialSpreadProjectile(ModContent.ProjectileType<NightmareRoseCursedCrystal>(), 9, NPC.Center, 16, 4, 12, ai1: 1, offset: off);
-                                Opus.RadialSpreadProjectile(ModContent.ProjectileType<NightmareRoseCursedCrystal>(), 9, NPC.Center, 16, 4, 12, ai1: -1, offset: off);
+                                Opus.RadialSpreadProjectile(ModContent.ProjectileType<NightmareRoseCursedCrystal>(), 9, NPC.Center, 40, 4, 12, ai1: 1, offset: off);
+                                Opus.RadialSpreadProjectile(ModContent.ProjectileType<NightmareRoseCursedCrystal>(), 9, NPC.Center, 40, 4, 12, ai1: -1, offset: off);
                                 FlameRingCount++;
                             }
                             if (FlameRingCount >= 9)
@@ -1559,8 +1631,9 @@ namespace DestroyerTest.Content.Entities
                         }
                         else
                         {
-                            Opus.RingSpreadProjectile(ModContent.ProjectileType<TormentedSoul2>(), 12, NPCHead, 30, 20, 1, 12);
-                            Opus.RingSpreadProjectile(ModContent.ProjectileType<TormentedSoul2>(), 8, NPCHead, 15, 20, 1, 9, offset: 360f / 8f);
+                            Opus.RingSpreadProjectile(ModContent.ProjectileType<BloomTurret2>(), 12, NPCHead, 30, 20, 1, 8, ai0: player.whoAmI);
+
+                            Opus.RadialSpreadProjectile(ModContent.ProjectileType<VileSpike>(), 8, NPCHead, 20, 1, 18);
 
                             ResetState();
                         }
@@ -1585,8 +1658,24 @@ namespace DestroyerTest.Content.Entities
                                 particle.Initialize(player.MountedCenter, Vector2.Zero, Color.White, 9f);
                                 ParticleEngine.ShaderParticles.Add(particle);
 
+                                for (int i = 0; i < 7; i++)
+                                {
+                                    Vector2 Pos = new Vector2(NPC.Bottom.X + Main.rand.NextFloat(-1600, 1600), NPC.Bottom.Y + 20);
+                                    Projectile proj =  Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), Pos, new Vector2(Main.rand.NextFloat(-3f, 3f), -6f), ModContent.ProjectileType<VileSpike>(), 30, 4);
+                                    proj.timeLeft = 480;
+                                }
 
-                                player.velocity.Y += 100;
+                                Projectile p1 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPCHead, new Vector2(-10f, 0f), ModContent.ProjectileType<VileSpike>(), 30, 4);
+                                p1.timeLeft = 480;
+
+                                Projectile p2 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPCHead, new Vector2(10f, 0f), ModContent.ProjectileType<VileSpike>(), 30, 4);
+                                p2.timeLeft = 480;
+
+
+                                if (!player.mount.Active)
+                                {
+                                    player.velocity.Y += 100;
+                                }
                             }
                             NapalmDelay--;
                             if (NapalmDelay > 0)
@@ -1707,7 +1796,25 @@ namespace DestroyerTest.Content.Entities
                     break;
                 case AttackState.DemoniteWhisper:
                     {
-                        if (Main.GameUpdateCount % 180 == 0)
+                        int getinterval()
+                        {
+                            if (DTUtils.ClassicMode())
+                            {
+                                return 180;
+                            }
+                            if (Main.expertMode && !Main.masterMode)
+                            {
+                                return 120;
+                            }
+                            if (Main.masterMode)
+                            {
+                                return 90;
+                            }
+                            return 180;
+                        }
+
+                        int interval = (DestroyerTestMod.EternityIsActive || DestroyerTestMod.DeathIsActive) ? 180 : getinterval();
+                        if (Main.GameUpdateCount % interval == 0)
                         {
                             SummonSouls();
                             SoulSpawnCount++;
@@ -1916,7 +2023,7 @@ namespace DestroyerTest.Content.Entities
             {
                 if (!DestroyerTestMod.EternityIsActive && !DestroyerTestMod.MasochistIsActive)
                 {
-                    if (Main.rand.NextBool())
+                    if (Main.rand.NextBool(8))
                     {
                         Dust fire = Dust.NewDustDirect(NPC.position, NPC.width, NPC.height, DustID.FireworksRGB, Main.rand.NextFloat(-0.2f, 0.2f), Main.rand.NextFloat(-13.5f, -2.5f), 40, ColorLib.CursedFlames, 2.5f);
                         fire.noGravity = true;
@@ -1930,7 +2037,7 @@ namespace DestroyerTest.Content.Entities
                 }
                 if (DestroyerTestMod.EternityIsActive && !DestroyerTestMod.MasochistIsActive)
                 {
-                    if (Main.rand.NextBool())
+                    if (Main.rand.NextBool(8))
                     {
                         Dust fire = Dust.NewDustDirect(NPC.position, NPC.width, NPC.height, DustID.FireworksRGB, Main.rand.NextFloat(-0.2f, 0.2f), Main.rand.NextFloat(-13.5f, -2.5f), 40, ColorLib.CursedFlames, 2.5f);
                         fire.noGravity = true;
@@ -1944,7 +2051,7 @@ namespace DestroyerTest.Content.Entities
                 }
                 if (DestroyerTestMod.MasochistIsActive)
                 {
-                    if (Main.rand.NextBool())
+                    if (Main.rand.NextBool(8))
                     {
                         Dust fire = Dust.NewDustDirect(NPC.position, NPC.width, NPC.height, DustID.FireworksRGB, Main.rand.NextFloat(-0.2f, 0.2f), Main.rand.NextFloat(-13.5f, -2.5f), 40, ColorLib.TenebrisGradient, 2.5f);
                         fire.noGravity = true;
@@ -2258,7 +2365,7 @@ namespace DestroyerTest.Content.Entities
                         minePosition,
                         Vector2.Zero,
                         ModContent.ProjectileType<BlossomMine>(),
-                        10,
+                        50,
                         0f
                     );
                 }

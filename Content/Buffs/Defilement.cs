@@ -130,6 +130,7 @@ namespace DestroyerTest.Content.Buffs
             if (lifeRegenDebuff)
             {
                 Player.lifeRegenTime = 0;
+
                 if (Player.HeldItem.type == ItemID.LifeCrystal || Player.HeldItem.type == ItemID.LifeFruit)
                 {
                     Player.lifeRegen -= 50;

@@ -1,11 +1,17 @@
 using System;
+using BreadLibrary.Core.Graphics.Pixelation;
+using BreadLibrary.Core.Graphics.Spritebatch;
+using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss;
 using DestroyerTest.Content.Projectiles.Boss.VampireBoss;
+using DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss;
+ 
+using DestroyerTest.Content.Projectiles.Gores;
 using DestroyerTest.Content.RiftArsenal;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -14,13 +20,10 @@ using Terraria.GameContent;
 using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
-using OpusLib;
- 
-using DestroyerTest.Content.Projectiles.Gores;
 
 namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
 {
-    public class BlossomMine : ModProjectile
+    public class BlossomMine : ModProjectile, IDrawPixelated
     {
         public override void SetStaticDefaults()
         {
@@ -37,46 +40,44 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
             Projectile.hostile = true; // Can the projectile deal damage to the player?
             Projectile.ignoreWater = true; // Does the projectile's speed be influenced by water?
             Projectile.light = 0.5f; // How much light emit around the projectile
-            Projectile.timeLeft = 600; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
+            Projectile.timeLeft = 300; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
             Projectile.tileCollide = false;
             Projectile.alpha = 0;
         }
 
-        public override bool PreDrawExtras()
-        {
-            SpriteBatch sb = Main.spriteBatch;
-            DTUtils Utility = new DTUtils();
 
-            Opus.StartSpriteBatchWithBlending(sb, BlendState.Additive, SpriteSortMode.Immediate);
-            Opus.DrawGlowOnProj(Projectile, new Color(43, 37, 154), false);
-            TelegraphLine(sb);
-            Opus.ReturnToDefaultDrawing(sb);
-            return false;
+        void IDrawPixelated.DrawPixelated(SpriteBatch spriteBatch)
+        {
+            var Cap = spriteBatch.Capture();
+            spriteBatch.End();
+
+            Cap.TransformMatrix = PixelationSystem.PixelationMatrix;
+
+            spriteBatch.Begin(Cap);
+
+            Opus.DrawGlowOnProj(Projectile, new Color(43, 37, 154) with { A = 0 }, false);
+            TelegraphLine(spriteBatch);
+
+            spriteBatch.ResetToDefault();
         }
 
         public void TelegraphLine(SpriteBatch SB)
         {
-            var LineTex = DTAssetLib.Line(1).Value;
-            Vector2 start = IntialPos;
+            var LineTex = DTAssetLib.Streak(13, true).Value;
 
-            if (Projectile.active)
+            Vector2[] V = Opus.GetEquidistantVectors(8, Projectile.Center, 10, rOff);
+
+            for (int i = 0; i < V.Length; i++)
             {
-                for (int dir = 0; dir < 8; dir++)
-                {
-                    float angle = MathHelper.TwoPi * dir / 8f;
-                    Vector2 direction = new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
-
-                    Vector2 drawPos = start - Main.screenPosition;
-                    Vector2 scale = new Vector2(3600, 1f);
-
-                    SB.Draw(DTAssetLib.Line(1).Value, drawPos, null, new Color(43, 37, 154), angle, new Vector2(0, DTAssetLib.Line(1).Value.Height / 2f), scale, SpriteEffects.None, 0f);
-                }
+                Main.EntitySpriteDraw(LineTex, Projectile.Center - Main.screenPosition, null, new Color(43, 37, 154) with { A = 0 }, Projectile.Center.DirectionTo(V[i]).ToRotation(), new Vector2(0, LineTex.Height / 2), new Vector2(50f, 0.85f), SpriteEffects.None);
+                Main.EntitySpriteDraw(LineTex, Projectile.Center - Main.screenPosition, null, new Color(43, 37, 154) with { A = 0}, Projectile.Center.DirectionTo(V[i]).ToRotation(), new Vector2(0, LineTex.Height / 2), new Vector2(50f, 0.2f), SpriteEffects.None);
             }
         }
 
 
         public Vector2 IntialPos;
 
+        float rAmt = 0f;
         public override void OnSpawn(IEntitySource source)
         {
             for (int u = 0; u < 12; u++)
@@ -84,24 +85,34 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
                 Gore.NewGore(source, Projectile.Center, new Vector2(Main.rand.NextFloat(-6, 6), Main.rand.NextFloat(-6, 6)), ModContent.GoreType<RosePetalGore1>(), 2f);
             }
             IntialPos = Projectile.Center;
+            rAmt = Main.rand.NextFloat(-0.001f, 0.001f);
         }
         
         int DustAlpha = 255;
         float SoundPitch = 0f;
+
+        float rOff = 0f;
+
+        PixelLayer IDrawPixelated.PixelLayer => PixelLayer.AboveTiles;
+
+        float prog;
         public override void AI()
         {
             Vector2 ToPlayer = Projectile.Center - Main.LocalPlayer.Center;
-            Projectile.velocity *= 0.999f;
+            Projectile.velocity *= 0.99f;
             Projectile.rotation += Main.rand.NextFloat(-1f, 1.1f) * 0.1f;
 
-            if (Projectile.timeLeft % 20 == 0)
+            rAmt *= 0.994f;
+            rOff += rAmt;
+
+            if (Projectile.timeLeft % 60 == 0)
             {
                 Opus.RadialSpreadDust(DustID.ShadowbeamStaff, 18, Projectile.Center, DustAlpha, default, 2.3f, 7, offset: Main.rand.NextFloat(MathHelper.TwoPi));
-                DustAlpha -= 255 / 30;
+                DustAlpha -= 255 / 5;
                 Projectile.scale *= 1.01f;
-                SoundPitch += 1f / 30f;
+                SoundPitch += 1f / 5f;
                 SoundEngine.PlaySound(SoundID.Item42 with {Volume = 0.5f, Pitch = SoundPitch, MaxInstances = 0});
-                if (Projectile.timeLeft <= 20)
+                if (Projectile.timeLeft <= 60)
                 {
                     Opus.RadialSpreadDust(DustID.ShadowbeamStaff, 18, Projectile.Center, DustAlpha, default, 5f, 10, offset: Main.rand.NextFloat(MathHelper.TwoPi));
                     SoundEngine.PlaySound(SoundID.Item167 with { MaxInstances = 0});
@@ -127,7 +138,9 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
             {
                 Gore.NewGore(Projectile.GetSource_Death(), Projectile.Center, new Vector2(Main.rand.NextFloat(-6, 6), Main.rand.NextFloat(-6, 6)), ModContent.GoreType<RosePetalGore1>(), 2f);
             }
-            Opus.RadialSpreadProjectile(ModContent.ProjectileType<CorruptPetalHostile>(), 8, Projectile.Center, Projectile.damage, 8, 22, offset: 0);
+            Opus.RadialSpreadProjectile(ModContent.ProjectileType<CorruptPetalHostile>(), 8, Projectile.Center, Projectile.damage, 8, 22, offset: rOff);
         }
+
+      
     }
 }

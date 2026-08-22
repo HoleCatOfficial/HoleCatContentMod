@@ -5245,13 +5245,11 @@ LittleBuggy: {
 		'''
 		A tiny toy shaped like a bug.
 		Summons a trio of nodes to defend you.
+		Grants immunity to Defilement.
 		'''
 }
 
 DarkDelight: {
 	DisplayName: Dark Delight
-	Tooltip:
-	'''
-	Summons the Dark Prince to follow you around.
-	'''
+	Tooltip: Summons the Dark Prince to follow you around.
 }
