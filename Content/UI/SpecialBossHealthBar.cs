@@ -436,7 +436,20 @@ namespace DestroyerTest.Content.UI
                             Rectangle NodeLockFrame = new Rectangle(0, NodeLockFrameNumber * NodeLockDimensions.Height, NodeLockDimensions.Width, NodeLockDimensions.Height);
                             Vector2 NodeLockOrigin = NodeLockFrame.Size() / 2f;
 
-                            Vector2 NodeLockDrawPos = new Vector2((drawPos.X - 375), drawPos.Y - 2) + new Vector2((NodeLockDimensions.Width * Main.UIScale * DTUIConfig.instance.CustomBossBarScaleModifier) * i, 0);
+                            Vector2 GetNodeLockDrawPos()
+                            {
+                                if (DTCrossMod.FablesIsLoaded)
+                                {
+                                    return new Vector2((drawPos.X - 231), drawPos.Y - 2) + new Vector2((NodeLockDimensions.Width * Main.UIScale * DTUIConfig.instance.CustomBossBarScaleModifier) * i, 0);
+                                }
+                                else
+                                {
+                                    return new Vector2((drawPos.X - 375), drawPos.Y - 2) + new Vector2((NodeLockDimensions.Width * Main.UIScale * DTUIConfig.instance.CustomBossBarScaleModifier) * i, 0);
+                                }
+                            }
+                            Vector2 NodeLockDrawPos = GetNodeLockDrawPos();
+
+       
 
                             if (IN[i].life > 0)
                             {
@@ -449,7 +462,7 @@ namespace DestroyerTest.Content.UI
                                     spriteBatch.Draw(NodeLock_Fables.Value, NodeLockDrawPos + NodeLockShake[i], NodeLockFrame, Color.White * BarOpacity, 0f, NodeLockOrigin, Main.UIScale * DTUIConfig.instance.CustomBossBarScaleModifier, 0f, 0f);
                                 }
 
-                                DTUtils.DrawChargeBar(Main.UIScale * DTUIConfig.instance.CustomBossBarScaleModifier, NodeLockDrawPos + new Vector2(0, 40), (float)IN[i].life / (float)IN[i].lifeMax, Color.DarkRed * BarOpacity);
+                                DTUtils.DrawChargeBar(Main.UIScale * DTUIConfig.instance.CustomBossBarScaleModifier, NodeLockDrawPos + new Vector2(0, (16f * DTUIConfig.instance.CustomBossBarScaleModifier)), (float)IN[i].life / (float)IN[i].lifeMax, Color.DarkRed * BarOpacity);
 
 
                             }
@@ -460,13 +473,13 @@ namespace DestroyerTest.Content.UI
 
 
                     var TEXT = Language.GetTextValue("Mods.DestroyerTest.NPCs.WyvernCorpseHead.BossBarDisplayName");
-                    spriteBatch.DrawString(DTAssetLib.Doxent.Value, TEXT, drawPos + new Vector2(0, -60f), Color.White * BarOpacity, 0f, DTAssetLib.Doxent.Value.MeasureString(TEXT) * 0.5f, Main.UIScale * 0.7f, SpriteEffects.None, 0f);
+                    spriteBatch.DrawString(DTAssetLib.Doxent.Value, TEXT, drawPos + new Vector2(0, -24f * DTUIConfig.instance.CustomBossBarScaleModifier), Color.White * BarOpacity, 0f, DTAssetLib.Doxent.Value.MeasureString(TEXT) * 0.5f, Main.UIScale * ((DTUIConfig.instance.CustomBossBarScaleModifier / 2.5f) * 0.7f), SpriteEffects.None, 0f);
 
                     string DefText = $"Defense: {WC.defense}";
                     //spriteBatch.DrawString(DTAssetLib.Doxent.Value, DefText, drawPos + new Vector2(360, 40f), Color.White, 0f, DTAssetLib.Doxent.Value.MeasureString(DefText) * 0.5f, Main.UIScale * 0.2f, SpriteEffects.None, 0f);
                     float LifePercent = (float)Math.Round(((float)WC.life / (float)WC.lifeMax) * 100, 2);
                     string LifePercentText = $"{LifePercent}%";
-                    spriteBatch.DrawString(DTAssetLib.Doxent.Value, LifePercentText, drawPos + new Vector2(-350, 40f), Color.White * BarOpacity, 0f, DTAssetLib.Doxent.Value.MeasureString(DefText) - new Vector2(0, DTAssetLib.Doxent.Value.MeasureString(DefText).Y / 2), Main.UIScale * 0.35f, SpriteEffects.None, 0f);
+                    spriteBatch.DrawString(DTAssetLib.Doxent.Value, LifePercentText, drawPos + new Vector2(-140 * DTUIConfig.instance.CustomBossBarScaleModifier, 40f), Color.White * BarOpacity, 0f, DTAssetLib.Doxent.Value.MeasureString(DefText) - new Vector2(0, DTAssetLib.Doxent.Value.MeasureString(DefText).Y / 2), Main.UIScale * ((DTUIConfig.instance.CustomBossBarScaleModifier / 2.5f) * 0.35f), SpriteEffects.None, 0f);
                 }
             }
 

@@ -27,8 +27,8 @@ namespace DestroyerTest.Content.RangedItems
             Item.height = 44;
             Item.rare = ItemRarityID.White;
 
-            Item.useTime = 10;
-            Item.useAnimation = 10;
+            Item.useTime = 20;
+            Item.useAnimation = 20;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.autoReuse = true;
 

@@ -41,32 +41,21 @@ namespace DestroyerTest.Content.Projectiles.Boss
         {
             SpriteBatch sb = Main.spriteBatch;
 
-            sb.End(); // End vanilla drawing
-            sb.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-
             TelegraphLine(sb);
 
-            sb.End(); // End additive
-            sb.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
             return false;
         }
 
         public void TelegraphLine(SpriteBatch SB)
         {
-            Vector2 start = Projectile.Center;
+            var LineTex = DTAssetLib.Streak(13, true).Value;
 
-            if (Projectile.active)
+            Vector2[] V = Opus.GetEquidistantVectors(8, Projectile.Center, 10, 0f);
+
+            for (int i = 0; i < V.Length; i++)
             {
-                for (int dir = 0; dir < 8; dir++)
-                {
-                    float angle = MathHelper.TwoPi * dir / 8f;
-                    Vector2 direction = new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
-
-                    Vector2 drawPos = start - Main.screenPosition;
-                    Vector2 scale = new Vector2(3600, 1f);
-
-                    SB.Draw(DTAssetLib.Line(1).Value, drawPos, null, ColorLib.Soul, angle, new Vector2(0, DTAssetLib.Line(1).Value.Height / 2f), scale, SpriteEffects.None, 0f);
-                }
+                Main.EntitySpriteDraw(LineTex, Projectile.Center - Main.screenPosition, null, ColorLib.Soul2 with { A = 0 }, Projectile.Center.DirectionTo(V[i]).ToRotation(), new Vector2(0, LineTex.Height / 2), new Vector2(50f, 0.85f), SpriteEffects.None);
+                Main.EntitySpriteDraw(LineTex, Projectile.Center - Main.screenPosition, null, ColorLib.Soul with { A = 0 }, Projectile.Center.DirectionTo(V[i]).ToRotation(), new Vector2(0, LineTex.Height / 2), new Vector2(50f, 0.2f), SpriteEffects.None);
             }
         }
 

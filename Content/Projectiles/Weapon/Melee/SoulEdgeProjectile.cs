@@ -82,13 +82,13 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             {
                 if (Projectile.velocity.Length() < 18)
                 {
-                    Projectile.velocity *= 1.07f;
+                    Projectile.velocity *= 1.15f;
                 }
             }
 
             
             // Always spinning
-            Projectile.rotation += (Projectile.velocity.Length() * 0.1f) * Projectile.direction;
+            Projectile.rotation += (Projectile.velocity.Length() * 0.06f) * Projectile.direction;
 
             // Generate flying dust effect
             if (Main.rand.NextBool(3)) // 33% chance per tick

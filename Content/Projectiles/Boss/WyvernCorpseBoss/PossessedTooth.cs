@@ -57,7 +57,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
         private void DoSlowingPhase(Player target)
         {
             Projectile.rotation += Projectile.direction * Projectile.velocity.Length() * 0.1f;
-            Projectile.velocity *= 0.96f;
+            Projectile.velocity *= 0.99f;
             Projectile.timeLeft = 180;
 
             if (Projectile.velocity.Length() < 1f || Timer > 60f)

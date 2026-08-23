@@ -47,16 +47,15 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
             oF2 -= 10;
             L = new Line(Projectile.Center, Projectile.Center + new Vector2(2000, 0).RotatedBy(Projectile.rotation));
 
-            Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(6), ColorLib.TenebrisGradient * 0.8f, Main.spriteBatch, BlendState.Additive, oF2, WidthScl * 2.7f, 4f);
-            Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(6, true), ColorLib.TenebrisGradient with { A = 0 } * 0.8f, Main.spriteBatch, BlendState.Additive, oF2, WidthScl * 2.7f, 4f);
+
             
-            Main.EntitySpriteDraw(DTAssetLib.Laser.Value, Projectile.Center - Main.screenPosition, null, ColorLib.TenebrisGradient, Projectile.rotation, new Vector2(0, DTAssetLib.Laser.Value.Height / 2), new Vector2(1f, WidthScl), SpriteEffects.None);
+            Main.EntitySpriteDraw(DTAssetLib.Laser.Value, Projectile.Center - Main.screenPosition, null, ColorLib.TenebrisGradient with { A = 0 }, Projectile.rotation, new Vector2(0, DTAssetLib.Laser.Value.Height / 2), new Vector2(1f, WidthScl), SpriteEffects.None);
             
-            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(9), Color.White, Main.spriteBatch, BlendState.Additive, oF, WidthScl * 0.2f, 3f);
-            Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-            Main.EntitySpriteDraw(DTAssetLib.Laser.Value, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(0, DTAssetLib.Laser.Value.Height / 2), new Vector2(1f, WidthScl * 0.5f), SpriteEffects.None);
-            Opus.ReturnToDefaultDrawing(Main.spriteBatch);
+            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(9, true), Color.White with { A = 0 }, Main.spriteBatch, BlendState.Additive, oF, WidthScl * 0.2f, 3f);
+          
+            Main.EntitySpriteDraw(DTAssetLib.Laser.Value, Projectile.Center - Main.screenPosition, null, Color.White with { A = 0 }, Projectile.rotation, new Vector2(0, DTAssetLib.Laser.Value.Height / 2), new Vector2(1f, WidthScl * 0.5f), SpriteEffects.None);
+
             return false;
         }
 
@@ -147,16 +146,13 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
             oF2 -= 10;
             L = new Line(Projectile.Center, Projectile.Center + new Vector2(2000, 0).RotatedBy(Projectile.rotation));
 
-            Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(6), ColorLib.TenebrisGradient * 0.8f, Main.spriteBatch, BlendState.Additive, oF2, WidthScl * 2.7f, 4f);
-            Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-
-            Main.EntitySpriteDraw(DTAssetLib.Laser.Value, Projectile.Center - Main.screenPosition, null, ColorLib.TenebrisGradient, Projectile.rotation, new Vector2(0, DTAssetLib.Laser.Value.Height / 2), new Vector2(1f, WidthScl), SpriteEffects.None);
-
-            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(9), Color.White, Main.spriteBatch, BlendState.Additive, oF, WidthScl * 0.2f, 3f);
-            Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-            Main.EntitySpriteDraw(DTAssetLib.Laser.Value, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(0, DTAssetLib.Laser.Value.Height / 2), new Vector2(1f, WidthScl * 0.5f), SpriteEffects.None);
-            Opus.ReturnToDefaultDrawing(Main.spriteBatch);
+            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(6, true), ColorLib.TenebrisGradient with { A = 0 } * 0.8f, Main.spriteBatch, BlendState.Additive, oF2, WidthScl * 2.7f, 4f);
+            
+            Main.EntitySpriteDraw(DTAssetLib.Laser.Value, Projectile.Center - Main.screenPosition, null, ColorLib.TenebrisGradient with { A = 0 }, Projectile.rotation, new Vector2(0, DTAssetLib.Laser.Value.Height / 2), new Vector2(1f, WidthScl), SpriteEffects.None);
+            
+            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(9, true), Color.White with { A = 0 }, Main.spriteBatch, BlendState.Additive, oF, WidthScl * 0.2f, 3f);
+          
+            Main.EntitySpriteDraw(DTAssetLib.Laser.Value, Projectile.Center - Main.screenPosition, null, Color.White with { A = 0 }, Projectile.rotation, new Vector2(0, DTAssetLib.Laser.Value.Height / 2), new Vector2(1f, WidthScl * 0.5f), SpriteEffects.None);
             return false;
         }
 

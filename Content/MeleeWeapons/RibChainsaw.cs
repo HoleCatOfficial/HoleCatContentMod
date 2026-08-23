@@ -25,6 +25,7 @@ namespace DestroyerTest.Content.MeleeWeapons
         public override void SetStaticDefaults()
         {
             ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<WyvernTail>();
+			ItemID.Sets.IsChainsaw[Type] = true;
         }
         public const int HoldoutDistance = 45;
         public override void SetDefaults() {
@@ -56,9 +57,12 @@ namespace DestroyerTest.Content.MeleeWeapons
 
 			// Projectile Properties
 			Item.shoot = ModContent.ProjectileType<RibChainsawHoldout>(); // The sword as a projectile
-		}
 
-		public override bool MeleePrefix() {
+            Item.tileBoost = 45;
+			Item.axe = 50;
+        }
+
+        public override bool MeleePrefix() {
 			return true; // return true to allow weapon to have melee prefixes (e.g. Legendary)
 		}
 

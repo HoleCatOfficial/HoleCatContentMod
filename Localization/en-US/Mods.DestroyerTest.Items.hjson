@@ -5253,3 +5253,21 @@ DarkDelight: {
 	DisplayName: Dark Delight
 	Tooltip: Summons the Dark Prince to follow you around.
 }
+
+Item_NightmareRoseMemoryPedistal: {
+	DisplayName: Memory Pedistal (Will)
+	Tooltip:
+		'''
+		The longer you gaze into it, the stronger your will to fight becomes.
+		Plays "Sun For Two Worlds -Idri Prime Days-" by FRANCIUMKILLA
+		'''
+}
+
+Item_WyvernCorpseMemoryPedistal: {
+	DisplayName: Memory Pedistal (Light)
+	Tooltip:
+		'''
+		The longer you gaze into it, the more divine light fills your soul.
+		Plays "Finest Fruit of the Firmament -Great Wyvern Prime Days-" by FRANCIUMKILLA
+		'''
+}

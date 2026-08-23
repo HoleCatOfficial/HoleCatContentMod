@@ -44,17 +44,14 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.Blessed
             oF -= 30;
             L = new Line(Projectile.Center, Projectile.Center + new Vector2(2000, 0).RotatedBy(Projectile.rotation));
 
-            Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(2), Main.DiscoColor, Main.spriteBatch, BlendState.Additive, oF, WidthScl, 3f);
+            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(2, true), Main.DiscoColor with { A = 0 }, Main.spriteBatch, BlendState.Additive, oF, WidthScl, 3f);
 
-            Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.LaserRepeating(true), Main.DiscoColor, Main.spriteBatch, BlendState.Additive, oF, WidthScl, 3f);
+            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.LaserRepeating(true), Main.DiscoColor with { A = 0 }, Main.spriteBatch, BlendState.Additive, oF, WidthScl, 3f);
             
-            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(1), Color.White, Main.spriteBatch, BlendState.Additive, oF, WidthScl * 0.5f, 2f);
+            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(1, true), Color.White with { A = 0 }, Main.spriteBatch, BlendState.Additive, oF, WidthScl * 0.5f, 2f);
             
-            Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.LaserRepeating(true), Color.White, Main.spriteBatch, BlendState.Additive, oF, WidthScl * 0.5f, 2f);
-            Opus.ReturnToDefaultDrawing(Main.spriteBatch);
+            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.LaserRepeating(true), Color.White with { A = 0 }, Main.spriteBatch, BlendState.Additive, oF, WidthScl * 0.5f, 2f);
+    
 
             return false;
         }
@@ -118,11 +115,13 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.Blessed
             oF -= 30;
             L = new Line(Projectile.Center, Projectile.Center + new Vector2(2000, 0).RotatedBy(Projectile.rotation));
 
-            Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(2), Main.DiscoColor, Main.spriteBatch, BlendState.Additive, oF, WidthScl);
-            Main.EntitySpriteDraw(DTAssetLib.Laser.Value, Projectile.Center - Main.screenPosition, null, Main.DiscoColor, Projectile.rotation, new Vector2(0, DTAssetLib.Laser.Value.Height / 2), new Vector2(1f, WidthScl), SpriteEffects.None);
-            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(1), Color.White, Main.spriteBatch, BlendState.Additive, oF, WidthScl * 0.5f);
-            Main.EntitySpriteDraw(DTAssetLib.Laser.Value, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(0, DTAssetLib.Laser.Value.Height / 2), new Vector2(1f, WidthScl * 0.5f), SpriteEffects.None);
+            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(2, true), Main.DiscoColor with { A = 0 }, Main.spriteBatch, BlendState.Additive, oF, WidthScl, 3f);
+
+            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.LaserRepeating(true), Main.DiscoColor with { A = 0 }, Main.spriteBatch, BlendState.Additive, oF, WidthScl, 3f);
+
+            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(1, true), Color.White with { A = 0 }, Main.spriteBatch, BlendState.Additive, oF, WidthScl * 0.5f, 2f);
+
+            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.LaserRepeating(true), Color.White with { A = 0 }, Main.spriteBatch, BlendState.Additive, oF, WidthScl * 0.5f, 2f);
 
             Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
             Main.EntitySpriteDraw(DTAssetLib.Star(3).Value, Projectile.Center - Main.screenPosition, null, Main.DiscoColor, 0f, DTAssetLib.Star(3).Value.Size() / 2, WidthScl * 3.4f, SpriteEffects.None);

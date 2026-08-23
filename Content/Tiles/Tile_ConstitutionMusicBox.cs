@@ -38,10 +38,7 @@ namespace DestroyerTest.Content.Tiles
 			player.cursorItemIconID = ModContent.ItemType<Item_ConstitutionMusicBox>();
 		}
 
-		public override bool HasSmartInteract(int i, int j, SmartInteractScanSettings settings) {
-			return true;
-		}
-
+		 
 		public override void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref TileDrawInfo drawData) {
 			// This code spawns the music notes when the music box is open.
 			if (Lighting.UpdateEveryFrame && new FastRandom(Main.TileFrameSeed).WithModifier(i, j).Next(4) != 0) {

@@ -23,6 +23,7 @@ using Terraria.DataStructures;
 using DestroyerTest.Content.SummonItems;
 using OpusLib;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib.Content.Helpers;
 
 namespace DestroyerTest.Common
 {
@@ -434,28 +435,13 @@ namespace DestroyerTest.Common
             }
             if (item.rare == ModContent.RarityType<StellarRarity>() && line.Name == "ItemName")
             {
-                
-                Color strokeColor = ColorLib.StellarRarityColor;
 
-                // Main text color
-                Color textColor = Color.Black;
+                float prog1 = Opus.Sine(0f, 1f);
+                float prog2 = Opus.Sine(1f, 0f);
 
-                // Extract the correct font reference
-                DynamicSpriteFont font = FontAssets.MouseText.Value;
-
-                // Draw the outline first by offsetting in all directions
-                Vector2 position = new Vector2(line.X, line.Y);
-                for (int i = -1; i <= 1; i++)
-                {
-                    for (int j = -1; j <= 1; j++)
-                    {
-                        if (i == 0 && j == 0) continue; // Skip center (main text)
-                        ChatManager.DrawColorCodedString(Main.spriteBatch, font, line.Text, position + new Vector2(i, j), strokeColor, 0f, Vector2.Zero, Vector2.One);
-                    }
-                }
-
-                // Draw the actual text on top
-                ChatManager.DrawColorCodedString(Main.spriteBatch, font, line.Text, position, textColor, 0f, Vector2.Zero, Vector2.One);
+                Color In = OpusColorUtils.MultiLerp(prog1, ColorLib.StellarFireColormap);
+                Color Out = OpusColorUtils.MultiLerp(prog2, ColorLib.StellarFireColormap);
+                Utils.DrawBorderStringFourWay(Main.spriteBatch, FontAssets.MouseText.Value, line.Text, line.X, line.Y, In, Out, new Vector2(0.5f, 0.5f));
 
                 return false; // Prevents Terraria from drawing the default text
             }

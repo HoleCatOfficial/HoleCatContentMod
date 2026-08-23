@@ -47,10 +47,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Ranged
             oF -= 30;
             L = new Line(Projectile.Center, Projectile.Center + new Vector2(2000, 0).RotatedBy(Projectile.rotation));
 
-            Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(3), ColorLib.Rift, Main.spriteBatch, BlendState.Additive, oF, WidthScl * 2);
-            Main.EntitySpriteDraw(DTAssetLib.Laser.Value, Projectile.Center - Main.screenPosition, null, ColorLib.Rift, Projectile.rotation, new Vector2(0, DTAssetLib.Laser.Value.Height / 2), new Vector2(1f, WidthScl * 0.75f), SpriteEffects.None);
-            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(5), Color.White, Main.spriteBatch, BlendState.Additive, oF, WidthScl, 5f);
+            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(3, true), ColorLib.Rift with { A = 0 }, Main.spriteBatch, BlendState.Additive, oF, WidthScl * 2);
+            Main.EntitySpriteDraw(DTAssetLib.Laser.Value, Projectile.Center - Main.screenPosition, null, ColorLib.Rift with { A = 0 }, Projectile.rotation, new Vector2(0, DTAssetLib.Laser.Value.Height / 2), new Vector2(1f, WidthScl * 0.75f), SpriteEffects.None);
+            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(5, true), Color.White with { A = 0 }, Main.spriteBatch, BlendState.Additive, oF, WidthScl, 5f);
             //Main.EntitySpriteDraw(DTAssetLib.Laser.Value, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(0, DTAssetLib.Laser.Value.Height / 2), new Vector2(1f, WidthScl * 0.15f), SpriteEffects.None);
 
             Rot += 0.3f;

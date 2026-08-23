@@ -45,29 +45,20 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.Ichor
             SpriteBatch sb = Main.spriteBatch;
             DTUtils Utility = new DTUtils();
 
-            Opus.StartSpriteBatchWithBlending(sb, BlendState.Additive, SpriteSortMode.Immediate);
             TelegraphLine(sb);
-            Opus.ReturnToDefaultDrawing(sb);
             return false;
         }
 
         public void TelegraphLine(SpriteBatch SB)
         {
-            var LineTex = DTAssetLib.Line(1).Value;
-            Vector2 start = Projectile.Center;
+            var LineTex = DTAssetLib.Streak(13, true).Value;
 
-            if (Projectile.active)
+            Vector2[] V = Opus.GetEquidistantVectors(8, Projectile.Center, 10, 0f);
+
+            for (int i = 0; i < V.Length; i++)
             {
-                for (int dir = 0; dir < 8; dir++)
-                {
-                    float angle = MathHelper.TwoPi * dir / 8f;
-                    Vector2 direction = new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
-
-                    Vector2 drawPos = start - Main.screenPosition;
-                    Vector2 scale = new Vector2(3600, 1f);
-
-                    SB.Draw(DTAssetLib.Line(1).Value, drawPos, null, ColorLib.Ichor, angle, new Vector2(0, DTAssetLib.Line(1).Value.Height / 2f), scale, SpriteEffects.None, 0f);
-                }
+                Main.EntitySpriteDraw(LineTex, Projectile.Center - Main.screenPosition, null, ColorLib.IchorCrystal3 with { A = 0 }, Projectile.Center.DirectionTo(V[i]).ToRotation(), new Vector2(0, LineTex.Height / 2), new Vector2(50f, 0.85f), SpriteEffects.None);
+                Main.EntitySpriteDraw(LineTex, Projectile.Center - Main.screenPosition, null, ColorLib.IchorCrystal1 with { A = 0 }, Projectile.Center.DirectionTo(V[i]).ToRotation(), new Vector2(0, LineTex.Height / 2), new Vector2(50f, 0.2f), SpriteEffects.None);
             }
         }
 

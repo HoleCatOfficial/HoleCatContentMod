@@ -12,6 +12,7 @@ using DestroyerTest.Content.Projectiles.ParentClasses;
 using System.Collections.Generic;
 using DestroyerTest.Content.Fargos.EternityDrops;
 using Terraria.Audio;
+using Terraria.Graphics.Shaders;
 
 namespace DestroyerTest.Content.Projectiles.Fargos
 {
@@ -41,6 +42,12 @@ namespace DestroyerTest.Content.Projectiles.Fargos
 
         public override bool PreDraw(ref Color lightColor)
         {
+            ArmorShaderData DumbassShader = GameShaders.Armor.GetSecondaryShader(Main.GetProjectileDesiredShader(Projectile), Main.player[Projectile.owner]);
+            if (DumbassShader != null)
+            {
+                DumbassShader.Apply(Projectile);
+            }
+
             Main.EntitySpriteDraw(DTUtils.CenteredDraw(Projectile, Color.White));
             return false;
         }

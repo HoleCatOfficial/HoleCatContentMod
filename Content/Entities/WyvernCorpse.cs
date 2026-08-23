@@ -25,6 +25,7 @@ using DestroyerTest.Content.RogueItems;
 using DestroyerTest.Content.SummonItems;
 using DestroyerTest.Content.Tiles;
 using DestroyerTest.Content.UI;
+using FargowiltasSouls;
 using GlowmaskHelper.Content;
  
 using log4net.Util;
@@ -36,6 +37,7 @@ using ReLogic.Content;
 using ReLogic.Utilities;
 using Terraria;
 using Terraria.Audio;
+using Terraria.Cinematics;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.Animations;
@@ -61,6 +63,8 @@ namespace DestroyerTest.Content.Entities
             Organs,
             CrystalBombMatrix,
             ChargeLaserOrb,
+            MagicTeeth,
+            OrganCircle,
             Nodes,
             Enraged
         }
@@ -473,7 +477,12 @@ namespace DestroyerTest.Content.Entities
         bool HasSpawnedOrb = false;
 
         int PostCrystalWaitTime = 0;
-
+        int ToothRoundCount = 0;
+        float OrganSpinRotOff = 0f;
+        bool OrganSpinRecordPlayer = false;
+    
+        Vector2 OrganSpinCenter;
+        int OrganSpinSpawnCount = 0;
 
         Player player => Main.player[NPC.target];
         public override void AI()
@@ -531,7 +540,8 @@ namespace DestroyerTest.Content.Entities
                 for (int i = 0; i < nodeCount; i++)
                 {
                     Vector2 IdealVel = iNodes[i].Center - NodePositions[i];
-                    iNodes[i].SmoothMoveToPoint(NodePositions[i], 48);
+                    float MSpeed = CurrentAttack == attackType.OrganCircle ? 200 : 48;
+                    iNodes[i].SmoothMoveToPoint(NodePositions[i], MSpeed);
                 }
 
                 NPC.dontTakeDamage = true;
@@ -700,12 +710,70 @@ namespace DestroyerTest.Content.Entities
                             }
                             else
                             {
-                                CurrentAttack = attackType.Follow;
-                                AITimer = 0;
+                                CurrentAttack = attackType.MagicTeeth;
                             }
                         }
                     }
                     break;
+                case attackType.MagicTeeth:
+                    {
+                        AI_ToothRounds();
+
+                        if (ToothRoundCount >= 4)
+                        {
+                            CurrentAttack = attackType.OrganCircle;
+                            ToothRoundCount = 0;
+                            
+                        }
+                        break;
+                    }
+                case attackType.OrganCircle:
+                    {
+                        OrganSpinRotOff += 0.1f;
+
+                        if (!OrganSpinRecordPlayer)
+                        {
+                            OrganSpinCenter = player.MountedCenter;
+                            OrganSpinRecordPlayer = true;
+                        }
+                        else
+                        {
+                            if (OrganSpinSpawnCount < 20)
+                            {
+                                player.wingTime = player.wingTimeMax;
+
+                                float orbitradius = anyNodesAlive ? 1700 : 1000;
+                                Vector2 targetPoint = OrganSpinCenter + new Vector2(orbitradius, 0).RotatedBy(OrganSpinRotOff);
+
+                                NPC.SmoothMoveToPoint(targetPoint, 160);
+
+                                if (player.Distance(OrganSpinCenter) > 990)
+                                {
+                                    player.Center = OrganSpinCenter + new Vector2(950, 0).RotatedBy(OrganSpinCenter.DirectionTo(player.Center).ToRotation());
+                                }
+
+                                if (AITimer % 120 == 0)
+                                {
+                                    SoundEngine.PlaySound(Attack);
+                                    for (int i = 0; i < 2; i++)
+                                    {
+                                        Vector2 sp = BodySegments[Main.rand.Next(BodySegments.Count)].Center;
+                                        Projectile.NewProjectile(NPC.GetSource_FromAI(), sp, sp.DirectionTo(OrganSpinCenter) * 8f, ModContent.ProjectileType<OrganProjectile>(), 50, 6, ai0: player.whoAmI);
+                                    }
+                                    OrganSpinSpawnCount++;
+                                }
+                            }
+                            else
+                            {
+                                CurrentAttack = attackType.Follow;
+                                NPC.velocity *= 0.05f;
+                                OrganSpinRecordPlayer = false;
+                                OrganSpinSpawnCount = 0;
+                                AITimer = 0;
+                            }
+                        }
+                        break;
+                    }
                 case attackType.Nodes:
 
                     NPC.aiStyle = -1;
@@ -997,6 +1065,20 @@ namespace DestroyerTest.Content.Entities
             }
         }
 
+        public void AI_ToothRounds()
+        {
+            Vector2[] P = Opus.GetEquidistantVectors(6, Main.player[NPC.target].Center, 300, Main.rand.NextFloat(MathHelper.TwoPi));
+            if (ToothRoundCount < 4 && AITimer % 240 == 0)
+            {
+                SoundEngine.PlaySound(Roar);
+                for (int i = 0; i < P.Length; i++)
+                {
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, NPC.Center.DirectionTo(P[i]) * 20f, ModContent.ProjectileType<PossessedTooth>(), 50, 6);
+                }
+                ToothRoundCount++;
+            }
+        }
+
 
         public void NodeSpawn()
         {
@@ -1259,6 +1341,45 @@ namespace DestroyerTest.Content.Entities
             {
                 currentState = AIState.Slam;
                 PikeCount = 0;
+            }
+        }
+    }
+
+    public class WyvernCorpseDeathCutscene : ModSystem
+    {
+        public bool CutsceneActive = false;
+        public static int CutsceneTime = 2400;
+        public int CutsceneTimer = 0;
+
+        void OnCutsceneEnd()
+        {
+
+        }
+
+        public override void PreUpdatePlayers()
+        {
+            if (CutsceneActive)
+            {
+                foreach (Player player in Main.player)
+                {
+                    if (player != null && player.active)
+                    {
+                        player.SetCCed();
+                        player.noItems = true;
+                    }
+                }
+
+
+
+                if (CutsceneTimer < 0)
+                {
+                    CutsceneTimer--;
+                }
+                else
+                {
+                    OnCutsceneEnd();
+                    CutsceneActive = false;
+                }
             }
         }
     }

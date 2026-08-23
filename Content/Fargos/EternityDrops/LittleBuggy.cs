@@ -76,6 +76,17 @@ namespace DestroyerTest.Content.Fargos.EternityDrops
                     }
                 }
             }
+            else
+            {
+                for (int i = 0; i < Nodes.Length; i++)
+                {
+                    if (Nodes[i] != null)
+                    {
+                        Nodes[i].Kill();
+                        Nodes[i] = null;
+                    }
+                }
+            }
         }
 
         public override void Kill(double damage, int hitDirection, bool pvp, PlayerDeathReason damageSource)
