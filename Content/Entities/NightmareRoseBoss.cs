@@ -144,6 +144,12 @@ namespace DestroyerTest.Content.Entities
                 NPC.lifeMax = 700000;
                 NPC.defense = 35;
             }
+            if (DTUtils.CalamityBossRushActive())
+            {
+                NPC.lifeMax = 1000000;
+                NPC.defense = 60;
+            }
+
             NPC.HitSound = SoundID.DD2_MonkStaffGroundImpact;
             NPC.noGravity = false;
             NPC.lavaImmune = true;
@@ -461,9 +467,12 @@ namespace DestroyerTest.Content.Entities
 
         #endregion
 
+        bool ShouldCheckForTilesOnSpawn = true;
         public override void OnSpawn(IEntitySource source)
         {
-            if (!DestroyerTestMod.EternityIsActive && !DestroyerTestMod.DeathIsActive)
+            ShouldCheckForTilesOnSpawn = !DTUtils.CalamityBossRushActive() && !DestroyerTestMod.EternityIsActive && !DestroyerTestMod.DeathIsActive;
+
+            if (ShouldCheckForTilesOnSpawn)
             {
                 Point resultPoint;
                 Point resultPoint2;
@@ -686,27 +695,29 @@ namespace DestroyerTest.Content.Entities
 
             spriteBatch.Begin(Cap);
 
-
-            if (cfNodes.Count > 0)
+            if (cfNodes != null)
             {
-                Main.EntitySpriteDraw(DTAssetLib.Star(3).Value, NPCHead - Main.screenPosition, null, ColorLib.CursedFlames with { A = 0 }, nodeHealShineRot, DTAssetLib.Star(3).Value.Size() / 2, 2.4f, SpriteEffects.None);
-                Main.EntitySpriteDraw(DTAssetLib.Star(3).Value, NPCHead - Main.screenPosition, null, Color.White with { A = 0 }, nodeHealShineRot, DTAssetLib.Star(3).Value.Size() / 2, 1.8f, SpriteEffects.None);
-
-                for (int i = 0; i < cfNodes.Count; i++)
+                if (cfNodes.Count > 0)
                 {
-                    Line L = new Line(cfNodes[i].Center, NPCHead);
+                    Main.EntitySpriteDraw(DTAssetLib.Star(3).Value, NPCHead - Main.screenPosition, null, ColorLib.CursedFlames with { A = 0 }, nodeHealShineRot, DTAssetLib.Star(3).Value.Size() / 2, 2.4f, SpriteEffects.None);
+                    Main.EntitySpriteDraw(DTAssetLib.Star(3).Value, NPCHead - Main.screenPosition, null, Color.White with { A = 0 }, nodeHealShineRot, DTAssetLib.Star(3).Value.Size() / 2, 1.8f, SpriteEffects.None);
 
-                    Main.EntitySpriteDraw(DTAssetLib.Star(3).Value, cfNodes[i].Center - Main.screenPosition, null, ColorLib.CursedFlames with { A = 0 }, nodeHealShineRot, DTAssetLib.Star(3).Value.Size() / 2, 2f, SpriteEffects.None);
-                    Main.EntitySpriteDraw(DTAssetLib.Star(3).Value, cfNodes[i].Center - Main.screenPosition, null, Color.White with { A = 0 }, nodeHealShineRot, DTAssetLib.Star(3).Value.Size() / 2, 1.3f, SpriteEffects.None);
+                    for (int i = 0; i < cfNodes.Count; i++)
+                    {
+                        Line L = new Line(cfNodes[i].Center, NPCHead);
 
-                    DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(1, true), ColorLib.WretchedGradient() with { A = 0 }, Main.spriteBatch, BlendState.Additive, NodeHealLineScroll, 0.3f, 1f);
-                    var Cap2 = spriteBatch.Capture();
-                    spriteBatch.End();
+                        Main.EntitySpriteDraw(DTAssetLib.Star(3).Value, cfNodes[i].Center - Main.screenPosition, null, ColorLib.CursedFlames with { A = 0 }, nodeHealShineRot, DTAssetLib.Star(3).Value.Size() / 2, 2f, SpriteEffects.None);
+                        Main.EntitySpriteDraw(DTAssetLib.Star(3).Value, cfNodes[i].Center - Main.screenPosition, null, Color.White with { A = 0 }, nodeHealShineRot, DTAssetLib.Star(3).Value.Size() / 2, 1.3f, SpriteEffects.None);
 
-                    Cap2.TransformMatrix = PixelationSystem.PixelationMatrix;
+                        DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(1, true), ColorLib.WretchedGradient() with { A = 0 }, Main.spriteBatch, BlendState.Additive, NodeHealLineScroll, 0.3f, 1f);
+                        var Cap2 = spriteBatch.Capture();
+                        spriteBatch.End();
 
-                    spriteBatch.Begin(Cap2);
+                        Cap2.TransformMatrix = PixelationSystem.PixelationMatrix;
 
+                        spriteBatch.Begin(Cap2);
+
+                    }
                 }
             }
 
@@ -1318,9 +1329,12 @@ namespace DestroyerTest.Content.Entities
 
             IdleFX();
 
-            ModifyMusic();
+            if (!DTUtils.CalamityBossRushActive())
+            {
+                ModifyMusic();
+            }
 
-            NPC.velocity = Vector2.Zero;
+                NPC.velocity = Vector2.Zero;
 
             int MinionSpawnType = Main.rand.Next(new int[]
                 {
@@ -2807,6 +2821,12 @@ namespace DestroyerTest.Content.Entities
             NPC.damage = 25;
             NPC.defense = 16;
             NPC.lifeMax = 16000;
+
+            if (DTUtils.CalamityBossRushActive())
+            {
+                NPC.lifeMax = 400000;
+                NPC.defense = 60;
+            }
             NPC.HitSound = new SoundStyle("DestroyerTest/Assets/Audio/NodeHit");
             NPC.DeathSound = new SoundStyle("DestroyerTest/Assets/Audio/NodeExplode");
             NPC.noGravity = true;

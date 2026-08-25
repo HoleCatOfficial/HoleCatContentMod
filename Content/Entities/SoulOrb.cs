@@ -44,6 +44,13 @@ namespace DestroyerTest.Content.Entities
             NPC.damage = 0;
             NPC.defense = 200;
             NPC.lifeMax = 20000;
+
+            if (DTUtils.CalamityBossRushActive())
+            {
+                NPC.lifeMax = 250000;
+                NPC.defense = 300;
+            }
+
             NPC.HitSound = SoundID.Item49;
             NPC.noGravity = true;
             NPC.lavaImmune = true;

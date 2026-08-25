@@ -171,4 +171,7 @@ Configs: {
 	}
 }
 
-DropConditions.EternityMode: Eternity Mode
+DropConditions: {
+	EternityMode: Eternity Mode
+	MasochistMode: Mods.DestroyerTest.DropConditions.MasochistMode
+}

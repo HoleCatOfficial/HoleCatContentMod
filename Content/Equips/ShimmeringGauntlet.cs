@@ -91,7 +91,7 @@ namespace DestroyerTest.Content.Equips
                 return;
             }
 
-            if (item.DamageType == DamageClass.Melee && Active)
+            if (item.DamageType.CountsAsClass(DamageClass.Melee) && Active)
             {
                 ShimmeringFlames.ShimmerBurn(target);
             }
@@ -104,7 +104,7 @@ namespace DestroyerTest.Content.Equips
                 return;
             }
 
-            if (proj.DamageType == DamageClass.Melee && Active)
+            if (proj.DamageType.CountsAsClass(DamageClass.Melee) && Active)
             {
                 ShimmeringFlames.ShimmerBurn(target);
             }

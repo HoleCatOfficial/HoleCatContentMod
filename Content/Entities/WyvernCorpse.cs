@@ -71,7 +71,7 @@ namespace DestroyerTest.Content.Entities
 
         public bool HasTriggeredNodes = false;
 
-        public SoundStyle Roar = new SoundStyle("DestroyerTest/Assets/Audio/Corpse/CorpseRoar1") with { PitchVariance = 1.0f, MaxInstances = 0  };
+        public SoundStyle Roar = new SoundStyle("DestroyerTest/Assets/Audio/Corpse/CorpseRoar1") with { PitchVariance = 1.0f, MaxInstances = 0 };
         public SoundStyle Kill = new SoundStyle("DestroyerTest/Assets/Audio/Corpse/Enrage") with { PitchVariance = 1.0f, Volume = 4 };
         public SoundStyle Teeth = new SoundStyle("DestroyerTest/Assets/Audio/Corpse/ToothShoot") with { PitchVariance = 1.0f };
         public SoundStyle TeleportSetPosition = new SoundStyle("DestroyerTest/Assets/Audio/Corpse/TeleportSetPosition") with { PitchVariance = 1.0f };
@@ -126,10 +126,16 @@ namespace DestroyerTest.Content.Entities
             NPC.defense = 65;
             NPC.lifeMax = 420000;
 
+            if (DTUtils.CalamityBossRushActive())
+            {
+                NPC.lifeMax = 1000000;
+                NPC.defense = 90;
+            }
+
             NPC.noGravity = true;
             NPC.noTileCollide = true;
 
-            
+
             NPC.DeathSound = Kill;
             NPC.boss = true;
 
@@ -161,7 +167,7 @@ namespace DestroyerTest.Content.Entities
             return false;
         }
 
-       
+
         public void NoDamageEffects()
         {
             if (shouldBeInvisible)
@@ -280,7 +286,7 @@ namespace DestroyerTest.Content.Entities
 
         public bool SoundFlag1 = false;
 
-       
+
 
         public int AITimer = 0;
 
@@ -328,7 +334,7 @@ namespace DestroyerTest.Content.Entities
 
             //Bone dusts increase throughout the fight.
             NumBoneDusts = (int)MathHelper.Lerp(1, 3, Progress);
-        
+
         }
 
         public float LifeProgress => (float)NPC.life / (float)NPC.lifeMax;
@@ -361,10 +367,10 @@ namespace DestroyerTest.Content.Entities
             if (Progress < 0.25f)
             {
                 SoundEngine.PlaySound(SoundID.DD2_PhantomPhoenixShot with { Pitch = 0.6f, PitchVariance = 0.2f }, NPC.Center);
-                   
+
                 if (!DTOptimizationsConfig.instance.DisableExcessDusts)
                 {
-                    
+
                     for (int i = 0; i < NumSoulParticles; i++)
                     {
                         PointGlowPreMultiplied SoulParticle = new();
@@ -373,13 +379,13 @@ namespace DestroyerTest.Content.Entities
                     }
                 }
             }
-            
-            
+
+
             if (Progress <= 0.001f)
             {
                 SoundEngine.PlaySound(DTAssetLib.Impacts.DreamHit, NPC.Center);
 
-                
+
                 for (int i = 0; i < 10; i++)
                 {
                     PointGlowPreMultiplied SoulParticle = new();
@@ -397,7 +403,7 @@ namespace DestroyerTest.Content.Entities
 
             return base.CanBeHitByProjectile(projectile);
         }
-            
+
         public List<int> ImmuneProjectiles = new List<int>()
         {
             ProjectileID.LastPrismLaser,
@@ -433,7 +439,7 @@ namespace DestroyerTest.Content.Entities
                 modifiers.FinalDamage *= 0.5f;
             }
         }
-            
+
         public override bool? CanBeHitByItem(Player player, Item item)
         {
             if (anyNodesAlive)
@@ -467,6 +473,7 @@ namespace DestroyerTest.Content.Entities
         public int DeathInterval = 10;
 
         public List<NPC> BodySegments = new List<NPC>();
+        public int bodySegmentHolder = 0;
 
         public List<NPC> iNodes;
         public int[] NodeShakeTimers;
@@ -480,7 +487,7 @@ namespace DestroyerTest.Content.Entities
         int ToothRoundCount = 0;
         float OrganSpinRotOff = 0f;
         bool OrganSpinRecordPlayer = false;
-    
+
         Vector2 OrganSpinCenter;
         int OrganSpinSpawnCount = 0;
 
@@ -490,6 +497,47 @@ namespace DestroyerTest.Content.Entities
             AITimer++;
 
             NPC.TargetClosest();
+
+            if (Main.netMode != NetmodeID.MultiplayerClient && SpawnFlag == false)
+            {
+                if (bodySegmentHolder == 0)
+                {
+                    NPC.ai[2] = NPC.whoAmI;
+                    NPC.realLife = NPC.whoAmI;
+
+                    int Me = NPC.whoAmI;
+                    for (int i = 0; i < 60; i++)
+                    {
+                        int WyvBodyInt = ModContent.NPCType<WyvernCorpseBody1>();
+                        if (i == 4 || i == 16 || i == 32 || i == 48)
+                            WyvBodyInt = ModContent.NPCType<WyvernCorpseLegs>();
+                        else if (i == 57)
+                            WyvBodyInt = ModContent.NPCType<WyvernCorpseBody2>();
+                        else if (i == 58)
+                            WyvBodyInt = ModContent.NPCType<WyvernCorpseBody3>();
+                        else if (i == 59)
+                            WyvBodyInt = ModContent.NPCType<WyvernCorpseTail>();
+
+                        int BodySegment = NPC.NewNPC(NPC.GetSource_FromAI(), (int)(NPC.position.X + NPC.width / 2), (int)(NPC.position.Y + NPC.height), WyvBodyInt, NPC.whoAmI);
+
+                        BodySegments.Add(Main.npc[BodySegment]);
+
+                        Main.npc[BodySegment].ai[2] = NPC.whoAmI;
+                        Main.npc[BodySegment].realLife = NPC.whoAmI;
+                        Main.npc[BodySegment].ai[1] = Me;
+                        Main.npc[BodySegment].ai[3] = i + 1;
+
+                        // THIS is missing from your second implementation.
+                        Main.npc[Me].ai[0] = BodySegment;
+
+                        NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, BodySegment);
+
+                        Me = BodySegment;
+                    }
+                    NPC.netUpdate = true;
+                    SpawnFlag = true;
+                }
+            }
 
             NPC.dontTakeDamage = invulnerableFromNodes || invulnerableFromAttack;
 
@@ -519,10 +567,10 @@ namespace DestroyerTest.Content.Entities
                 if (node != null && node.active)
                 {
                     anyNodesAlive = true;
-                } 
+                }
             }
 
-          
+
 
             nodeCount = iNodes.Count;
 
@@ -569,59 +617,21 @@ namespace DestroyerTest.Content.Entities
                 }
             }
 
-            if (Main.netMode != NetmodeID.MultiplayerClient && SpawnFlag == false)
-            {
-                if (NPC.ai[0] == 0f)
-                {
-                    NPC.ai[2] = NPC.whoAmI;
-                    NPC.realLife = NPC.whoAmI;
 
-                    int Me = NPC.whoAmI;
-                    for (int i = 0; i < 60; i++)
-                    {
-                        int WyvBodyInt = ModContent.NPCType<WyvernCorpseBody1>();
-                        if (i == 4 || i == 16 || i == 32 || i == 48)
-                            WyvBodyInt = ModContent.NPCType<WyvernCorpseLegs>();
-                        else if (i == 57)
-                            WyvBodyInt = ModContent.NPCType<WyvernCorpseBody2>();
-                        else if (i == 58)
-                            WyvBodyInt = ModContent.NPCType<WyvernCorpseBody3>();
-                        else if (i == 59)
-                            WyvBodyInt = ModContent.NPCType<WyvernCorpseTail>();
-
-                        int BodySegment = NPC.NewNPC(NPC.GetSource_FromAI(),
-                            (int)(NPC.position.X + NPC.width / 2),
-                            (int)(NPC.position.Y + NPC.height),
-                            WyvBodyInt, NPC.whoAmI);
-
-                        BodySegments.Add(Main.npc[BodySegment]);
-
-                        Main.npc[BodySegment].ai[2] = NPC.whoAmI;
-                        Main.npc[BodySegment].realLife = NPC.whoAmI;
-                        Main.npc[BodySegment].ai[1] = Me;
-                        Main.npc[Me].ai[0] = BodySegment;
-
-                        NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, BodySegment);
-                        Me = BodySegment;
-                    }
-                    NPC.netUpdate = true;
-                    SpawnFlag = true;
-                }
-            }
 
             if (ModContent.GetInstance<DTConfig>().EnableDebugMessages && Main.GameUpdateCount % 120 == 0)
             {
                 Mod.Logger.Info($"Current State: {CurrentAttack}");
             }
 
-         
+
 
             Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/UnfinishedBoss");
 
             ManageShakeTimers();
 
             ImportantMathematics();
-            
+
 
             switch (CurrentAttack)
             {
@@ -637,7 +647,7 @@ namespace DestroyerTest.Content.Entities
                         }
                         break;
                     }
-                    
+
                 case attackType.BloodBombs:
                     {
                         AI_BloodBombs();
@@ -667,7 +677,7 @@ namespace DestroyerTest.Content.Entities
                         NPC.dontTakeDamage = true;
                         ShouldHit = false;
 
-                        for(int i = 0; i < iNodes.Count; i++)
+                        for (int i = 0; i < iNodes.Count; i++)
                         {
                             iNodes[i].dontTakeDamage = true;
                         }
@@ -723,7 +733,7 @@ namespace DestroyerTest.Content.Entities
                         {
                             CurrentAttack = attackType.OrganCircle;
                             ToothRoundCount = 0;
-                            
+
                         }
                         break;
                     }
@@ -780,7 +790,7 @@ namespace DestroyerTest.Content.Entities
                     NodeSpawn();
 
                     CurrentAttack = attackType.Follow;
-                    
+
                     break;
                 case attackType.Enraged:
                     {
@@ -793,7 +803,7 @@ namespace DestroyerTest.Content.Entities
 
 
             NPC.rotation = (float)Math.Atan2(NPC.velocity.Y, NPC.velocity.X) + 1.57f;
-            
+
         }
 
         void ManageShakeTimers()
@@ -856,7 +866,7 @@ namespace DestroyerTest.Content.Entities
 
         }
 
-      
+
 
 
         public void ImportantMathematics()
@@ -975,14 +985,14 @@ namespace DestroyerTest.Content.Entities
             Texture2D value = TextureAssets.Npc[npc.type].Value;
             Vector2 origin = value.Size() / 2f;
             SpriteEffects effects = SpriteEffects.None;
-            if (npc.spriteDirection == 1) 
+            if (npc.spriteDirection == 1)
             {
                 effects = SpriteEffects.FlipHorizontally;
             }
             Main.EntitySpriteDraw(value, Center + offset.RotatedBy(rotationOffset) - Main.screenPosition, new Rectangle?(npc.frame), color * 0.5f, npc.rotation, value.Size() / 2f, npc.scale, effects);
         }
 
-    
+
         public void AI_BloodBombs()
         {
             int Damage = (int)MathHelper.Lerp(5, 100, LifeProgress);
@@ -1013,7 +1023,7 @@ namespace DestroyerTest.Content.Entities
 
                 SoundEngine.PlaySound(Attack);
 
-                
+
 
                 Projectile organ = Projectile.NewProjectileDirect(
                     NPC.GetSource_FromAI(),
@@ -1034,7 +1044,7 @@ namespace DestroyerTest.Content.Entities
         public void AI_CrystalBombMatrix()
         {
             int Damage = (int)MathHelper.Lerp(5, 100, LifeProgress);
-            int Interval = (int)MathHelper.Lerp(600, 240, LifeProgress);
+            int Interval = DTUtils.CalamityBossRushActive() ? 240 : (int)MathHelper.Lerp(600, 240, LifeProgress);
 
             Vector2[] Positions = Opus.GetEquidistantVectors(4, player.Center, 700, MathHelper.PiOver4);
 
@@ -1052,13 +1062,13 @@ namespace DestroyerTest.Content.Entities
                     Projectile B = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), Positions[i], Vector2.Zero, type, Damage, 0);
                     B.timeLeft = 180;
                 }
-                
+
                 if (Main.masterMode)
                 {
                     for (int i = 0; i < Positions.Length; i++)
                     {
-						Projectile B2 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), Positions[i], Main.rand.NextVector2Circular(3, 3), ModContent.ProjectileType<IchorBlister>(), (int)(Damage * 0.75f), 0);
-						B2.timeLeft = 180;
+                        Projectile B2 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), Positions[i], Main.rand.NextVector2Circular(3, 3), ModContent.ProjectileType<IchorBlister>(), (int)(Damage * 0.75f), 0);
+                        B2.timeLeft = 180;
                     }
                 }
                 NumBombs++;
@@ -1100,11 +1110,11 @@ namespace DestroyerTest.Content.Entities
             }
         }
 
-        
+
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-            
+
 
             // Do NOT misuse the ModifyNPCLoot and OnKill hooks: the former is only used for registering drops, the latter for everything else
 
@@ -1145,14 +1155,18 @@ namespace DestroyerTest.Content.Entities
             SunlightModification.Reset();
             //SoundEngine.StopTrackedSounds();
 
-            
+
 
         }
 
         public override void OnSpawn(IEntitySource source)
         {
             FablesTitleCardSystem.RegisterFablesBossIntro(FablesTitleCardSystem.WyvernCorpseTitle.Name, FablesTitleCardSystem.WyvernCorpseTitle.Title, 180, true, ColorLib.IchorCrystalGradient, ColorLib.IchorCrystalGradient, ColorLib.Soul, ColorLib.Soul, FablesTitleCardSystem.WyvernCorpseTitle.MusicTitle, FablesTitleCardSystem.WyvernCorpseTitle.MusicArtist);
+        
+            
         }
+
+
 
 
     }
@@ -1180,6 +1194,12 @@ namespace DestroyerTest.Content.Entities
             NPC.damage = 25;
             NPC.defense = 50;
             NPC.lifeMax = 17000;
+            if (DTUtils.CalamityBossRushActive())
+            {
+                NPC.lifeMax = 500000;
+                NPC.defense = 60;
+            }
+
             NPC.HitSound = new SoundStyle("DestroyerTest/Assets/Audio/NodeHit");
             NPC.DeathSound = new SoundStyle("DestroyerTest/Assets/Audio/NodeExplode");
             NPC.noGravity = true;

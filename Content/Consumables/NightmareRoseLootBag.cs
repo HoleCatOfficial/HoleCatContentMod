@@ -20,6 +20,7 @@ using Terraria.ModLoader;
 using DestroyerTest.Content.Tiles;
 using DestroyerTest.Common.DropRules;
 using DestroyerTest.Content.Fargos.EternityDrops;
+using DestroyerTest.Content.MeleeWeapons;
 
 namespace DestroyerTest.Content.Consumables
 {
@@ -60,6 +61,7 @@ namespace DestroyerTest.Content.Consumables
             itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<ForsakenMaelstrom>(), 4, 1, 1));
             itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<HaepienNodeCharm>(), 6, 1, 1));
             itemLoot.Add(ItemDropRule.ByCondition(new EternityDropRuleCondition(), ModContent.ItemType<LittleBuggy>()));
+            itemLoot.Add(ItemDropRule.ByCondition(new MasochistDropRuleCondition(), ModContent.ItemType<IdriGreatsword>()));
             itemLoot.Add(ItemDropRule.NotScalingWithLuck(ItemID.CursedFlame, 2, 20, 60));
             itemLoot.Add(ItemDropRule.Coins(1250, true));
         }

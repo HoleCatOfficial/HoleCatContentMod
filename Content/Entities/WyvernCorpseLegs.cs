@@ -66,6 +66,19 @@ namespace DestroyerTest.Content.Entities
             return false;
         }
 
+        public override bool CheckDead()
+        {
+            if (DTUtils.CalamityBossRushActive())
+            {
+                return !Parent.active;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+
         public override void SetDefaults()
         {
             int width = 32; int height = width;
@@ -76,6 +89,13 @@ namespace DestroyerTest.Content.Entities
             NPC.damage = 70;
             NPC.defense = 65;
             NPC.lifeMax = 8000;
+
+            if (DTUtils.CalamityBossRushActive())
+            {
+                NPC.lifeMax = 10000;
+                NPC.defense = 90;
+            }
+
 
             NPC.noGravity = true;
             NPC.noTileCollide = true;

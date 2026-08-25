@@ -679,6 +679,19 @@ namespace DestroyerTest.Common
         }
 
         public static bool[] ThrowerProjectilesThatCantTriggerEquipEffects = ProjectileID.Sets.Factory.CreateNamedSet("NoHematoidVisageActivation").Description("Cannot trigger the effects of Hematoid Visage and related items.").RegisterBoolSet();
+    
+        public static bool CalamityBossRushActive()
+        {
+            if (ModLoader.HasMod("FranciumCalamityWeapons"))
+            {
+                if (ModLoader.TryGetMod("FranciumCalamityWeapons", out Mod CalamityCompat))
+                {
+                    return (bool)CalamityCompat.Call("BossRushActive");
+                }
+            }
+
+            return false;
+        }
     }
 
     public class SunlightModification : ModSystem

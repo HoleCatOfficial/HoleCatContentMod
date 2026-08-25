@@ -64,6 +64,12 @@ namespace DestroyerTest.Content.Entities
             {
                 return 20;
             }
+
+            if (DTUtils.CalamityBossRushActive())
+            {
+                return 70;
+            }
+
             return 12;
         }
 
@@ -81,6 +87,12 @@ namespace DestroyerTest.Content.Entities
             {
                 return 18;
             }
+
+            if (DTUtils.CalamityBossRushActive())
+            {
+                return 55;
+            }
+
             return 10;
         }
 
@@ -98,6 +110,12 @@ namespace DestroyerTest.Content.Entities
             {
                 return 22;
             }
+
+            if (DTUtils.CalamityBossRushActive())
+            {
+                return 130;
+            }
+
             return 12;
         }
 
@@ -115,6 +133,12 @@ namespace DestroyerTest.Content.Entities
             {
                 return 8;
             }
+
+            if (DTUtils.CalamityBossRushActive())
+            {
+                return 90;
+            }
+
             return 16;
         }
 
@@ -202,8 +226,13 @@ namespace DestroyerTest.Content.Entities
                 NPC.lifeMax = 10000;
                 NPC.defense = 30;
             }
+            if (DTUtils.CalamityBossRushActive())
+            {
+                NPC.lifeMax = 380000;
+                NPC.defense = 70;
+            }
 
-            NPC.lifeMax = 6000;
+     
             NPC.HitSound = new SoundStyle("DestroyerTest/Assets/Audio/ConstitutionBoss/ConstitutionBossHit") with { PitchVariance = 1, MaxInstances = 100 };
             NPC.DeathSound = new SoundStyle("DestroyerTest/Assets/Audio/ConstitutionBoss/ConstitutionBossKill") with { PitchVariance = 1, MaxInstances = 1, Volume = 8 };
             NPC.noGravity = true;
@@ -317,7 +346,7 @@ namespace DestroyerTest.Content.Entities
 
         public override void AI()
         {
-           
+
             if (NPC.HasValidTarget)
             {
                 if (!Flag1)
@@ -383,7 +412,8 @@ namespace DestroyerTest.Content.Entities
             }
             if (AITimer < 1200 && AITimer >= 300)
             {
-                if (AITimer % 80 == 0)
+                int interval1 = DTUtils.CalamityBossRushActive() ? 40 : 80;
+                if (AITimer % interval1 == 0)
                 {
                     BeamBoomAI();
                 }

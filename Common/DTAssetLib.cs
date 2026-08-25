@@ -451,6 +451,13 @@ namespace DestroyerTest.Common
             public static SoundStyle EmpoweredShoot = new SoundStyle($"{Path}/StellarBowEmpoweredShoot", 3);
         }
 
+        public struct TenebrousSlinger
+        {
+            public static string Path = $"{AudioPath}/TenebrisSlinger";
+            public static SoundStyle ArrowImpact = new SoundStyle($"{Path}/TenebrisSlingerArrowImpact", 4);
+            public static SoundStyle Shoot = new SoundStyle($"{Path}/TenebrisSlingerShoot", 3);
+        }
+
         public struct TileMine
         {
             public static SoundStyle Altar = new SoundStyle($"{AudioPath}/AltarMine", 3);

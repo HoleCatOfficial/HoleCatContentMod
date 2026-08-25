@@ -5271,3 +5271,13 @@ Item_WyvernCorpseMemoryPedistal: {
 		Plays "Finest Fruit of the Firmament -Great Wyvern Prime Days-" by FRANCIUMKILLA
 		'''
 }
+
+IdriGreatsword: {
+	DisplayName: Relic of the Fallen
+	Tooltip:
+		'''
+		Swings in a circle, ignoreing 100 points of enemy defense and inflicting Soul Inferno on critical hits.
+
+		'A worn and well-used greatsword. Judging from where it came from, one can inferred who owned it last.'
+		'''
+}

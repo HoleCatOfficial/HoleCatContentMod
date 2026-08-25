@@ -201,7 +201,7 @@ namespace DestroyerTest.Content.Equips
                 return;
             }
 
-            if (item.DamageType == DamageClass.Summon && Main.rand.NextBool(10) && Active)
+            if (item.DamageType.CountsAsClass(DamageClass.Summon) && Main.rand.NextBool(10) && Active)
             {
                 ShimmeringFlames.ShimmerBurn(target);
             }
@@ -214,12 +214,12 @@ namespace DestroyerTest.Content.Equips
                 return;
             }
 
-            if (proj.DamageType == DamageClass.Summon && Main.rand.NextBool(10) && Active)
+            if (proj.DamageType.CountsAsClass(DamageClass.Summon) && Main.rand.NextBool(10) && Active)
             {
                 ShimmeringFlames.ShimmerBurn(target);
             }
 
-            if (proj.DamageType == DamageClass.Summon && Main.rand.NextBool((int)(20 * (1 + (0.1f * Player.numMinions)))) && proj.type != ProjectileID.StardustGuardian && Active)
+            if (proj.DamageType.CountsAsClass(DamageClass.Summon) && Main.rand.NextBool((int)(20 * (1 + (0.1f * Player.numMinions)))) && proj.type != ProjectileID.StardustGuardian && Active)
             {
                 Opus.RadialSpreadProjectile(ModContent.ProjectileType<TenebrisStarFriendly>(), 6, target.Center, (int)Player.GetTotalDamage(DamageClass.Summon).ApplyTo(40), 12, 16);
             }
