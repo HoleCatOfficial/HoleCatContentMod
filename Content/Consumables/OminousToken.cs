@@ -53,7 +53,7 @@ namespace DestroyerTest.Content.Consumables
 
             itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<HekatesMystique>(), 10, 1, 1));
             itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<MalachiteKnives>(), 5, 1, 1));
-            itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<TwistedFaith>(), 5, 1, 1));
+            itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<NeglectedRegards>(), 5, 1, 1));
             itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<FailedPotion>(), 5, 1, 1));
             itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<GodGouger>(), 5, 1, 1));
 

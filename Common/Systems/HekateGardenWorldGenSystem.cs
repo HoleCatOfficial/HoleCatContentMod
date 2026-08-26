@@ -1,4 +1,7 @@
-﻿using DestroyerTest.Common;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using DestroyerTest.Common;
 using DestroyerTest.Content.Consumables;
 using DestroyerTest.Content.Lorebooks;
 using DestroyerTest.Content.Magic;
@@ -13,21 +16,21 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using ReLogic.Content;
 using SteelSeries.GameSense;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
+using Terraria.GameContent.Tile_Entities;
 using Terraria.Graphics;
 using Terraria.Graphics.Effects;
 using Terraria.ID;
 using Terraria.IO;
 using Terraria.Localization;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 using Terraria.UI;
 using Terraria.WorldBuilding;
+using static DestroyerTest.Content.Tiles.Tile_MemoryPedistal;
 using static Terraria.GameContent.Animations.IL_Actions.NPCs;
 
 namespace DestroyerTest.Common.Systems
@@ -55,7 +58,7 @@ namespace DestroyerTest.Common.Systems
 
 
 
-                //TestMethod((int)Main.MouseWorld.X / 16, (int)Main.MouseWorld.Y / 16);
+                TestMethod((int)Main.MouseWorld.X / 16, (int)Main.MouseWorld.Y / 16);
             }
 
 
@@ -176,9 +179,12 @@ namespace DestroyerTest.Common.Systems
             Room Dummy = new Room(x - 20, y + 22, 35, 18, TileID.Dirt, WallID.Dirt);
              
             Chute FloorConnector = new Chute(FirstToSecondFloorChute, Dummy, x - 18, 9, TileID.EbonstoneBrick, WallID.EbonstoneBrick);
+
             
 
             DTGenUtils.GenChute(FloorConnector);
+
+            
 
 
             //Deco
@@ -209,6 +215,7 @@ namespace DestroyerTest.Common.Systems
 
                 WorldGen.PlaceObject(ChestRoom1.Interior.Location.X + ChestRoom1.Interior.Width - 1, ChestRoom1.Interior.Location.Y + 2, TileID.Torches);
 
+                /*
                 int Loot1 = WorldGen.PlaceChest(ChestRoom1.Interior.Location.X + 6, ChestRoom1.Interior.Location.Y + 7, (ushort)ModContent.TileType<Tile_NightmareChest>());
 
                 var chest1 = Main.chest[Loot1];
@@ -225,12 +232,15 @@ namespace DestroyerTest.Common.Systems
                         chest1.item[1].stack = Main.rand.Next(10, 21);
                     }
                 }
-
+                '*/
             }
 
             furnishChestTopFloor();
 
-            
+            for (int i = 0; i < 26; i++)
+            {
+                WorldGen.PlaceObject(FloorConnector.Center.X, FloorConnector.Interior.Location.Y + 4 + i, TileID.Dirt);
+            }
 
             //Setup Hallways
 
@@ -268,6 +278,10 @@ namespace DestroyerTest.Common.Systems
             Hallway EntryToStatue = new Hallway(Entry, StatueRoom, 9, TileID.EbonstoneBrick, WallID.EbonstoneBrick);
             DTGenUtils.GenHallway(EntryToStatue);
 
+            Room SeedBank = new Room(x - 49, y + 25, 31, 15, TileID.EbonstoneBrick, WallID.EbonstoneBrick);
+            DTGenUtils.GenRoom(SeedBank);
+            DTGenUtils.MakeDoor(SeedBank, Room.RoomSide.Both);
+
             void furnishEntry()
             {
                 WorldGen.PlaceObject(Entry.Interior.Location.X + 8, Entry.Interior.Location.Y + 2, BookcaseVariants[Main.rand.Next(BookcaseVariants.Length)]);
@@ -286,6 +300,7 @@ namespace DestroyerTest.Common.Systems
 
                 Point ChestPoint = new(Entry.Interior.Location.X + 11, Entry.Interior.Location.Y + 13);
                 int Loot1;
+                /*
                 if (!Framing.GetTileSafely(ChestPoint).HasTile)
                 {
                     Loot1 = WorldGen.PlaceChest(ChestPoint.X, ChestPoint.Y, TileID.Containers, style: 1);
@@ -310,21 +325,138 @@ namespace DestroyerTest.Common.Systems
                 {
                     WorldGen.KillTile(ChestPoint.X, ChestPoint.Y);
                 }
+                */
+            }
+
+            void furnishSeedBank()
+            {
+                WorldGen.PlaceObject(SeedBank.Interior.Location.X + 2, SeedBank.Interior.Location.Y, TileID.BrazierSuspended);
+                WorldGen.PlaceObject(SeedBank.Interior.Location.X + (SeedBank.Interior.Width - 4), SeedBank.Interior.Location.Y, TileID.BrazierSuspended);
+
+                for (int i = 0; i < 4; i++)
+                {
+                    
+                    for (int j = 0; j < 4; j++)
+                    {
+                        int X = 0;
+                        int Y = 0;
+                        switch (i)
+                        {
+                            case 0:
+                                {
+                                    X = (SeedBank.Interior.Location.X + 2) + j;
+                                    Y = SeedBank.Interior.Location.Y + (SeedBank.Interior.Height - 2);
+                                    break;
+                                }
+                            case 1:
+                                {
+                                    X = (SeedBank.Interior.Location.X + 2) + j;
+                                    Y = SeedBank.Interior.Location.Y + (SeedBank.Interior.Height - 6);
+                                    break;
+                                }
+                            case 2:
+                                {
+                                    X = (SeedBank.Interior.Location.X + (SeedBank.Interior.Width - 6)) + j;
+                                    Y = SeedBank.Interior.Location.Y + (SeedBank.Interior.Height - 2);
+                                    break;
+                                }
+                            case 3:
+                                {
+                                    X = (SeedBank.Interior.Location.X + (SeedBank.Interior.Width - 6)) + j;
+                                    Y = SeedBank.Interior.Location.Y + (SeedBank.Interior.Height - 6);
+                                    break;
+                                }
+                        }
+                        
+
+                        WorldGen.PlaceObject(X, Y, TileID.Platforms, style: 1);
+                    }
+                }
+
+                for (int i = 0; i < 8; i++)
+                {
+                    int X = 0;
+                    int Y = 0;
+                    switch (i)
+                    {
+                        case 0:
+                            {
+                                X = (SeedBank.Interior.Location.X + 2);
+                                Y = SeedBank.Interior.Location.Y + (SeedBank.Interior.Height - 4);
+                                break;
+                            }
+                        case 1:
+                            {
+                                X = (SeedBank.Interior.Location.X + 2);
+                                Y = SeedBank.Interior.Location.Y + (SeedBank.Interior.Height - 8);
+                                break;
+                            }
+                        case 2:
+                            {
+                                X = (SeedBank.Interior.Location.X + 4);
+                                Y = SeedBank.Interior.Location.Y + (SeedBank.Interior.Height - 4);
+                                break;
+                            }
+                        case 3:
+                            {
+                                X = (SeedBank.Interior.Location.X + 4);
+                                Y = SeedBank.Interior.Location.Y + (SeedBank.Interior.Height - 8);
+                                break;
+                            }
+
+                        case 4:
+                            {
+                                X = (SeedBank.Interior.Location.X + (SeedBank.Interior.Width - 4));
+                                Y = SeedBank.Interior.Location.Y + (SeedBank.Interior.Height - 4);
+                                break;
+                            }
+                        case 5:
+                            {
+                                X = (SeedBank.Interior.Location.X + (SeedBank.Interior.Width - 4));
+                                Y = SeedBank.Interior.Location.Y + (SeedBank.Interior.Height - 8);
+                                break;
+                            }
+                        case 6:
+                            {
+                                X = (SeedBank.Interior.Location.X + (SeedBank.Interior.Width - 6));
+                                Y = SeedBank.Interior.Location.Y + (SeedBank.Interior.Height - 4);
+                                break;
+                            }
+                        case 7:
+                            {
+                                X = (SeedBank.Interior.Location.X + (SeedBank.Interior.Width - 6));
+                                Y = SeedBank.Interior.Location.Y + (SeedBank.Interior.Height - 8);
+                                break;
+                            }
+                    }
+
+
+                    int Loot1 = WorldGen.PlaceChest(X, Y + 1, TileID.Containers, style: 0);
+                }
+
+
+
+                for (int i = 0; i < 7; i++)
+                {
+                    int X = (SeedBank.Interior.Location.X + (SeedBank.Interior.Width / 2) - 3) + i;
+                    int Y = SeedBank.Interior.Location.Y + 4;
+
+                    WorldGen.PlaceObject(X, Y, TileID.Platforms, style: 1);
+                }
+
+                WorldGen.PlaceObject((SeedBank.Interior.Location.X + (SeedBank.Interior.Width / 2) - 3), SeedBank.Interior.Location.Y + 3, (ushort)ModContent.TileType<NeglectedRegardsDisplay>());
+
+
+                WorldGen.PlaceObject(SeedBank.Interior.Location.X + 7, SeedBank.Interior.Location.Y, TalismanVariants[Main.rand.Next(TalismanVariants.Length)]);
+                WorldGen.PlaceObject(SeedBank.Interior.Location.X + SeedBank.Interior.Width - 8, SeedBank.Interior.Location.Y, TalismanVariants[Main.rand.Next(TalismanVariants.Length)]);
+
             }
 
 
 
             furnishEntry();
-            
-
-            //DTGenUtils.GenLitRoomWithDoors(origin.X - 10, origin.Y - 6, 20, 12, 2, 2, true, TileID.EbonstoneBrick, WallID.EbonstoneBrick, 18);
-
-            //DTGenUtils.GenLitRoomWithDoors(origin.X + 20, origin.Y, 25, 14, 2, 2, true, TileID.EbonstoneBrick, WallID.EbonstoneBrick, 18);
-
-
-            //Setup Hallways
-
-            //DTGenUtils.GenHallway(origin.X + 10, origin.Y + 6, 10, 8, 2, true, TileID.EbonstoneBrick, WallID.EbonstoneBrick, 18);
+            furnishSeedBank();
+      
         }
 
         public void ConnectingChute(int x, int y)
@@ -360,7 +492,6 @@ namespace DestroyerTest.Common.Systems
 
             var chest3 = Main.chest[Loot3];
 
-            int L8= ModContent.ItemType<TwistedFaith>();
             int L9 = ModContent.ItemType<Dyrn>();
             int L10 = ModContent.ItemType<IdriPotion>();
 
@@ -385,7 +516,6 @@ namespace DestroyerTest.Common.Systems
                     chest2.item[3].SetDefaults(L7);
                     chest2.item[4].SetDefaults(L9);
                     chest2.item[4].stack = Main.rand.Next(10, 21);
-                    chest2.item[5].SetDefaults(L8);
 
                 }
 
@@ -430,6 +560,9 @@ namespace DestroyerTest.Common.Systems
 
             BottomFloor(x, y);
 
+            WorldGen.PlaceObject(x + 12, x + 6, ModContent.TileType<Tile_RoseGardenEffectSource>());
+            WorldGen.PlaceObject(x + 12, x + 6, ModContent.TileType<Tile_RoseGardenEffectSource>());
+            WorldGen.PlaceObject(x + 12, x + 6, ModContent.TileType<Tile_RoseGardenEffectSource>());
             WorldGen.PlaceObject(x + 12, x + 6, ModContent.TileType<Tile_RoseGardenEffectSource>());
 
             //ConnectingChute(x + 41, y + 12);

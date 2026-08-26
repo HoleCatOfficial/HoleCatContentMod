@@ -16,7 +16,7 @@ namespace DestroyerTest.Content.MeleeWeapons
 	{
         public override void SetStaticDefaults()
         {
-            ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<TwistedFaith>();
+
         }
 
         public override void SetDefaults() 

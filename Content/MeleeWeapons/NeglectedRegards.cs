@@ -2,6 +2,8 @@
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Weapon.Melee;
 using DestroyerTest.Content.Resources;
+using DestroyerTest.Content.Tiles;
+using DestroyerTest.Content.Tiles.RiftConfigurator;
 using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
 using Terraria;
@@ -15,52 +17,36 @@ using Terraria.ModLoader.Config;
 
 namespace DestroyerTest.Content.MeleeWeapons
 {
-
-    public class Union : ModItem
+    public class NeglectedRegards : ModItem
     {
-        public int AttackCounter = -1;
-
-        public enum Attacks
-        {
-            SwingDefault,
-            FullSwing,
-            Throw
-        }
-
-        public Attacks CurrentAttack = Attacks.SwingDefault;
 
         public override void SetDefaults()
         {
-            Item.width = 52;
-            Item.height = 50;
+            Item.width = 78;
+            Item.height = 78;
 
             Item.useStyle = ItemUseStyleID.Shoot;
-            Item.useTime = Item.useAnimation = 10;
+            Item.SetSpecialMeleeStats();
             Item.autoReuse = true;
 
             Item.DamageType = DamageClass.Melee;
-            Item.damage = 200;
-            Item.knockBack = 4f; 
-            Item.crit = 6;
+            Item.damage = 13;
+            Item.knockBack = 1f;
+            Item.crit = 7;
 
-            Item.value = Item.buyPrice(gold: 16);
-            Item.rare = ModContent.RarityType<InfectedRarity>();
+            Item.value = Item.buyPrice(gold: 3);
+            Item.rare = ModContent.RarityType<CorruptionSpecialRarity>();
             Item.noUseGraphic = true;
             Item.noMelee = true;
-            Item.shoot = ModContent.ProjectileType<UnionSwing>();
+            Item.shoot = ModContent.ProjectileType<NeglectedRegardsSwing>();
             Item.channel = true;
 
 
         }
 
-        public override void UpdateInventory(Player player)
-        {
-            
-        }
-    
+
         public override bool CanUseItem(Player player)
         {
-
             return player.ownedProjectileCounts[Item.shoot] < 1;
         }
 
@@ -72,11 +58,8 @@ namespace DestroyerTest.Content.MeleeWeapons
         public override void AddRecipes()
         {
             CreateRecipe()
-                .AddIngredient<Malevolence>()
                 .AddIngredient<NeglectedRegards>()
-                .AddIngredient<Scorn>()
-                .AddIngredient<PhantasmalRemnant>(6)
-                .AddCondition(Condition.DownedMoonLord)
+                .AddIngredient<Dyrn>(16)
                 .Register();
         }
     }

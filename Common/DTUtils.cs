@@ -1361,6 +1361,11 @@ namespace DestroyerTest.Common
             }
         }
 
+        public static Item FromID(this Item item, int ID)
+        {
+            return  new Item(ID);
+        }
+
         
     }
 
@@ -2309,6 +2314,8 @@ namespace DestroyerTest.Common
             WorldUtils.Gen(room.Interior.Location, new GenShapeActionPair(new Shapes.Rectangle(room.Interior.Width, room.Interior.Height), new Actions.ClearTile(true)));
 
             WorldUtils.Gen(room.Position, new GenShapeActionPair(new Shapes.Rectangle(room.Bounds.Width, room.Bounds.Height), new Actions.PlaceWall(room.WallType)));
+
+            Dust.QuickBox(room.Bounds.TopLeft(), room.Bounds.BottomRight(), 24, Color.Red, null);
         }
 
         public static void GenHallway(Hallway hallway)

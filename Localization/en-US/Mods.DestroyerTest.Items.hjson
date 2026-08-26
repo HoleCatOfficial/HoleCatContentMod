@@ -5281,3 +5281,8 @@ IdriGreatsword: {
 		'A worn and well-used greatsword. Judging from where it came from, one can inferred who owned it last.'
 		'''
 }
+
+NeglectedRegards: {
+	DisplayName: Neglected Regards
+	Tooltip: ""
+}
