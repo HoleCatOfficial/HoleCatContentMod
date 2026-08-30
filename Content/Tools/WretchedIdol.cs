@@ -33,7 +33,29 @@ namespace DestroyerTest.Content.Tools
             Item.consumable = true;
         }
 
+        public override bool CanUseItem(Player player)
+        {
+            foreach (NPC npc in Main.npc)
+            {
+                if (npc.active && npc.TryGetGlobalNPC<CFNGlobal>(out var cf))
+                {
+                    if (cf.IsNodeSpawned)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        
         public override bool? UseItem(Player player)
+        {
+            return null;
+        }
+
+        public override bool ConsumeItem(Player player)
         {
             return true;
         }
@@ -44,7 +66,7 @@ namespace DestroyerTest.Content.Tools
             {
                 if (npc.active && npc.TryGetGlobalNPC<CFNGlobal>(out var cf))
                 {
-                    if (cf.IsNodeSpawned)
+                    if (cf.IsNodeSpawned || cf.Node != null)
                     {
                         npc.StrikeInstantKill();
                     }

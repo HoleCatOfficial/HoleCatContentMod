@@ -1,7 +1,11 @@
+using System;
 using System.Collections.Generic;
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
+using DestroyerTest.Content.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using ReLogic.Content;
 using Terraria;
 using Terraria.Audio;
@@ -9,8 +13,6 @@ using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using OpusLib;
-using System;
 
 namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame
 {
@@ -101,6 +103,13 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame
             
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
             GlowMult = MathHelper.Lerp(0.25f, 1f, (float)Math.Sin(Main.GameUpdateCount * 0.05f) * 0.5f + 0.5f);
+
+            if (Main.rand.NextBool(6))
+            {
+                WretchedPointGlow glow = new();
+                glow.Prepare(Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Main.rand.NextVector2Circular(0.5f, 0.5f), 1f);
+                ParticleEngine.Particles.Add(glow);
+            }
         }
 
         public override void OnHitPlayer(Player target, Player.HurtInfo info)

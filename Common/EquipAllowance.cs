@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Terraria.ModLoader;
+using DestroyerTest.Content.Equips;
 using Terraria;
 using Terraria.ID;
-using DestroyerTest.Content.Equips;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Common
 {
@@ -91,27 +91,25 @@ namespace DestroyerTest.Common
         public override bool CanAccessoryBeEquippedWith(Item equippedItem, Item incomingItem, Player player)
         {
             // Upgrade chain
-            if (DTUtils.NoUpgradeStack.Contains(incomingItem.type) &&
+            if (DTUtils.NoUpgradeStack[incomingItem.type] &&
                 RecipeAccessoryConflicts.UsesIngredient(incomingItem.type, equippedItem.type))
             {
                 return false;
             }
 
-            if (DTUtils.NoUpgradeStack.Contains(equippedItem.type) &&
+            if (DTUtils.NoUpgradeStack[incomingItem.type] &&
                 RecipeAccessoryConflicts.UsesIngredient(equippedItem.type, incomingItem.type))
             {
                 return false;
             }
 
             // Explicit blacklist
-            if (DTUtils.NoEquipWith.TryGetValue(incomingItem.type, out var incomingBlacklist) &&
-                incomingBlacklist.Contains(equippedItem.type))
+            if (DTUtils.NoEquipWith[incomingItem.type].Contains(equippedItem.type))
             {
                 return false;
             }
 
-            if (DTUtils.NoEquipWith.TryGetValue(equippedItem.type, out var equippedBlacklist) &&
-                equippedBlacklist.Contains(incomingItem.type))
+            if (DTUtils.NoEquipWith[equippedItem.type].Contains(incomingItem.type))
             {
                 return false;
             }

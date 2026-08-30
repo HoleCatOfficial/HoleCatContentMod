@@ -12,6 +12,7 @@ using DestroyerTest.Content.Projectiles.ParentClasses;
 using DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss;
 using DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss;
 using DestroyerTest.Content.Projectiles.Boss.NodeBoss.Blessed;
+using DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame;
 
 namespace DestroyerTest.Content.MeleeWeapons
 {
@@ -31,8 +32,8 @@ namespace DestroyerTest.Content.MeleeWeapons
 			Item.useAnimation = 10;
 			Item.useStyle = ItemUseStyleID.Shoot;
 
-			Item.shoot = ModContent.ProjectileType<BlessedLaser>();
-			Item.damage = 4;
+			Item.shoot = ModContent.ProjectileType<CursedFireBomb>();
+			Item.damage = 20;
 			Item.channel = true;
 			Item.autoReuse = true;
 			Item.noUseGraphic = true;

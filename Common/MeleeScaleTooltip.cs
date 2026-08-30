@@ -22,7 +22,7 @@ namespace DestroyerTest.Common
 
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
         {
-            if (DTUtils.isSpecialSwingSword.Contains(item.type))
+            if (DTUtils.isSpecialSwingSword[item.type])
             {
                 var ScaleText = Language.GetText("Mods.DestroyerTest.Tooltips.MeleeScaleTooltip").Format(DTUtils.TooltipScaleMult[item.type]);
                 TooltipLine Line = new TooltipLine(Mod, "SpecialMeleeScale", ScaleText);
@@ -32,7 +32,7 @@ namespace DestroyerTest.Common
 
         public override bool PreDrawTooltipLine(Item item, DrawableTooltipLine line, ref int yOffset)
         {
-            if (line.Name == "SpecialMeleeScale" && DTUtils.isSpecialSwingSword.Contains(item.type))
+            if (line.Name == "SpecialMeleeScale" && DTUtils.isSpecialSwingSword[item.type])
             {
                 Utils.DrawBorderStringFourWay(Main.spriteBatch, FontAssets.MouseText.Value, line.Text, line.X, line.Y, Color.White, Main.DiscoColor, new Vector2(0.5f, 0.5f), 1f);
             }

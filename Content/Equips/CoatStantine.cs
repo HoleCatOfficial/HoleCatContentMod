@@ -13,7 +13,7 @@ namespace DestroyerTest.Content.Equips
 	{
         public override void SetStaticDefaults()
         {
-            DTUtils.isDevItem.Add(Type);
+			DTUtils.isDevItem[Type] = true;
         }
 
         public override void SetDefaults() {

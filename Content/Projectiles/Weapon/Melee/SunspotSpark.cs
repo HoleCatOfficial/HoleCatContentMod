@@ -39,8 +39,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
         public override void SetDefaults()
         {
-            Projectile.width = 16;
-            Projectile.height = 16;
+            Projectile.width = 32;
+            Projectile.height = 32;
             Projectile.friendly = true;
             Projectile.hostile = false;
             Projectile.DamageType = DamageClass.MeleeNoSpeed;
@@ -113,9 +113,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
         bool IHomingProjectile.UsesHomingAcceleration => true;
 
-        float IHomingProjectile.HomingAccelAmount => 1.04f;
+        float IHomingProjectile.HomingAccelAmount => 1.02f;
 
-        float IHomingProjectile.HomingMaxAccel => 18f;
+        float IHomingProjectile.HomingMaxAccel => 9f;
 
         float IHomingProjectile.DetectRadius => 900f;
 
@@ -123,13 +123,13 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
         public override void SetDefaults()
         {
-            Projectile.width = 16;
-            Projectile.height = 16;
+            Projectile.width = 32;
+            Projectile.height = 32;
             Projectile.friendly = true;
             Projectile.hostile = false;
             Projectile.DamageType = DamageClass.Magic;
             Projectile.penetrate = 1;
-            Projectile.extraUpdates = 3;
+            Projectile.extraUpdates = 4;
             Projectile.timeLeft = 1800;
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;

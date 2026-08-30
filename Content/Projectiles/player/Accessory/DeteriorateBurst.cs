@@ -60,7 +60,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
             return Projectile.ManualCanHitFriendly(target);
         }
 
-        public SoundStyle Burst = new SoundStyle("DestroyerTest/Assets/Audio/DeteriorateBurst") { PitchVariance = 0.2f };
+        public SoundStyle Burst = new SoundStyle("DestroyerTest/Assets/Audio/DeteriorateBurst") { PitchVariance = 0.2f, Pitch = -0.4f };
 
 
         private void AnimateProjectile()

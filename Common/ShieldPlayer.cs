@@ -25,7 +25,6 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using static InnoVault.VaultUtils.ItemDropScanner;
 
 namespace DestroyerTest.Common
 {

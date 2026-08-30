@@ -28,24 +28,33 @@ ShieldPlayer.ShieldLine:
 	[i:DestroyerTest/ShieldMarkBig] These Shields kill harmful projectiles inside their radius and do not protect from NPC contact damage.
 	[i:DestroyerTest/ShieldMarkBig] Shields do not regenerate until they break, and pull from your health to regenerate.
 	'''
-ModName: Talid Mod (Private Beta)
+ModName: Talid Mod
 
 Extras: {
 	ShadeWorldCommonBestiary: In addition to freeing the moon lord from imprisonment, breaking the seal also tore open holes across space, allowing enemies from the shade world to enter yours.
 	ShadeWorldRareBestiary: The Shade World is a reflection of your own world, but is forever in the limbo of superposition. Where you stand, a shade equal of you stands in the same place, their molecules occupying the same space.
-	ShadeWorldEpicBestiary: Mother Darkness can create a menagerie of creatures unlike what anyone has seen. She can do this day and night for centuries if she wished. Though not even the most spectacular of her creations can match her coveted object of affection, Idri.
+	ShadeWorldEpicBestiary: Mother Darkness can create a menagerie of creatures unlike what anyone has seen. She can do this day and night for centuries if she wished. Though not even the most spectacular of her creations can match her coveted object of affection, the late Idri.
+
+	LegendaryItems: {
+		Title: —Relic of Nepostria—
+		Clue: Hold SHIFT to view information
+		StandardTooltip:
+			'''
+			Relics of Nepostria posses hidden properties and use cases.
+			Relics of Nepostria that are weapons also have an innate 10% critical strike chance on top of what they would originally have.
+			'''
+	}
 }
 
 Conditions: {
 	NightmareRoseBossDowned: Defeated Nightmare Rose
 	WyvernCorpseBossDowned: Defeated the Wyvern Corpse
-	NodeBossDowned: Defeated a Node
 	ConstitutionBossDowned: Defeated Constitution
-	AnyNodeBossDowned: Mods.DestroyerTest.Conditions.AnyNodeBossDowned
-	IchorNodeBossDowned: Mods.DestroyerTest.Conditions.IchorNodeBossDowned
-	CursedFlameNodeBossDowned: Mods.DestroyerTest.Conditions.CursedFlameNodeBossDowned
-	BlessedNodeBossDowned: Mods.DestroyerTest.Conditions.BlessedNodeBossDowned
-	TenebrousConstructBossDowned: Mods.DestroyerTest.Conditions.TenebrousConstructBossDowned
+	AnyNodeBossDowned: Defeated Any Node
+	IchorNodeBossDowned: Defeated the Ichor Node
+	CursedFlameNodeBossDowned: Defeated the Cursed Flame Node
+	BlessedNodeBossDowned: Defeated the Blessed Node
+	TenebrousConstructBossDowned: Defeated the Tenebrous Construct
 }
 
 Configs: {
@@ -165,13 +174,17 @@ Configs: {
 		}
 
 		CustomBossBarScaleModifier: {
-			Label: Custom Boss Bar Scale Modifier
-			Tooltip: ""
+			Label: Custom Boss Bar Scale
+			Tooltip:
+				'''
+				Certain bosses use a custom in-house health bar.
+				This modifies the scale that the bar is drawn with.
+				'''
 		}
 	}
 }
 
 DropConditions: {
 	EternityMode: Eternity Mode
-	MasochistMode: Mods.DestroyerTest.DropConditions.MasochistMode
+	MasochistMode: Masochist Mode
 }

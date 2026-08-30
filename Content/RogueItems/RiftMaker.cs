@@ -1,4 +1,5 @@
-﻿using DestroyerTest.Common;
+﻿using System;
+using DestroyerTest.Common;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Weapon.Rogue;
 using DestroyerTest.Content.Resources;
@@ -7,9 +8,11 @@ using DestroyerTest.Content.Tiles.RiftConfigurator;
 using DestroyerTest.Content.Tiles.Riftplate;
 using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
-using System;
+using OpusLib.Content.Helpers;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -17,19 +20,22 @@ namespace DestroyerTest.Content.RogueItems
 {
 	public class RiftMaker : ModItem
 	{
-		public override void SetStaticDefaults() {
+		public override void SetStaticDefaults() 
+		{
+			DTUtils.LegendaryWeapon[Type] = true;
+			OpusNPCDropHelper.DropsFromNPC[Type] = new NPCDropData(NPCID.Mothron, ItemDropRule.Common(Type, 10));
 		}
 
 		public override void SetDefaults() {
 			Item.useStyle = ItemUseStyleID.Swing;
-			Item.shootSpeed = 12f;
+			Item.shootSpeed = 17.5f;
 			Item.shoot = ModContent.ProjectileType<RiftMaker_Thrown>();
-			Item.width = 14;
-			Item.height = 56;
+			Item.width = 92;
+			Item.height = 92;
 			Item.maxStack = 1;
-			Item.UseSound = SoundID.Item71;
-			Item.useAnimation = 15;
-			Item.useTime = 15;
+			Item.UseSound = new SoundStyle("DestroyerTest/Assets/Audio/SwordSounds/ZenithSound") { PitchVariance = 0.4f, MaxInstances = 0 };
+            Item.useAnimation = 120;
+			Item.useTime = 120;
 			Item.noUseGraphic = true;
 			Item.noMelee = true;
 			Item.value = Item.buyPrice(0, 0, 20, 0);
@@ -39,28 +45,8 @@ namespace DestroyerTest.Content.RogueItems
 			Item.DamageType = DamageClass.Throwing;
         }
 
-        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
-        {
-            if (Item.StealthStrike(player))
-            {
-                for (int c = 0; c < 3; c++)
-                {
-
-                    Projectile.NewProjectile(player.GetSource_ItemUse(Item), player.Center, velocity.RotatedByRandom(0.3f), ModContent.ProjectileType<RiftStarFriendly>(), (int)(Item.damage * 0.5f), 1, player.whoAmI);
-
-                }
-            }
-
-            return true;
-        }
-
-		public override void AddRecipes() 
-		{
-			CreateRecipe()
-				.AddIngredient<Item_Riftplate>(5)
-				.AddIngredient<Living_Shadow>(5)
-				.AddTile<Tile_RiftConfigurator>()
-				.Register();
-		}
+		
 	}
+
+
 }

@@ -31,8 +31,8 @@ namespace DestroyerTest.Content.Tiles.RoseGarden
             TileObjectData.newTile.CoordinateWidth = 16;
             TileObjectData.newTile.CoordinateHeights = [16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16];
             TileObjectData.newTile.CoordinatePadding = 2;
-            new AnchorData(AnchorType.SolidTile | AnchorType.SolidWithTop | AnchorType.Table, TileObjectData.newTile.Width, 0);
-            // Additional edits here, such as lava immunity, alternate placements, and subtiles
+            TileObjectData.newTile.AnchorBottom = new AnchorData(AnchorType.SolidTile | AnchorType.SolidWithTop, TileObjectData.newTile.Width, 0);
+            TileObjectData.newTile.Origin = new Point16(0, 11);
             TileObjectData.addTile(Type);
 
 
@@ -70,8 +70,8 @@ namespace DestroyerTest.Content.Tiles.RoseGarden
             TileObjectData.newTile.CoordinateWidth = 16;
             TileObjectData.newTile.CoordinateHeights = [16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16];
             TileObjectData.newTile.CoordinatePadding = 2;
-            new AnchorData(AnchorType.SolidTile | AnchorType.SolidWithTop | AnchorType.Table, TileObjectData.newTile.Width, 0);
-            // Additional edits here, such as lava immunity, alternate placements, and subtiles
+            TileObjectData.newTile.AnchorBottom = new AnchorData(AnchorType.SolidTile | AnchorType.SolidWithTop, TileObjectData.newTile.Width, 0);
+            TileObjectData.newTile.Origin = new Point16(0, 11);
             TileObjectData.addTile(Type);
 
 
@@ -109,7 +109,8 @@ namespace DestroyerTest.Content.Tiles.RoseGarden
             TileObjectData.newTile.CoordinateWidth = 16;
             TileObjectData.newTile.CoordinateHeights = [16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16, 16];
             TileObjectData.newTile.CoordinatePadding = 2;
-            new AnchorData(AnchorType.SolidTile | AnchorType.SolidWithTop | AnchorType.Table, TileObjectData.newTile.Width, 0);
+            TileObjectData.newTile.AnchorBottom = new AnchorData(AnchorType.SolidTile | AnchorType.SolidWithTop, TileObjectData.newTile.Width, 0);
+            TileObjectData.newTile.Origin = new Point16(0, 11);
             // Additional edits here, such as lava immunity, alternate placements, and subtiles
             TileObjectData.addTile(Type);
 

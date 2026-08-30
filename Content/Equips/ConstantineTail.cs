@@ -1,3 +1,4 @@
+using DestroyerTest.Common;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -9,8 +10,8 @@ namespace DestroyerTest.Content.Equips
 	{
 		public override void SetStaticDefaults()
 		{
-
-		}
+            DTUtils.isDevItem[Type] = true;
+        }
 
 		public override void SetDefaults()
 		{

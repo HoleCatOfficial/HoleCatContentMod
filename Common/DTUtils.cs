@@ -12,8 +12,6 @@ using DestroyerTest.Content.Magic;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Particles.Stellar;
 using DestroyerTest.Rarity.Scepter;
- 
-using InnoVault.TileProcessors;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
@@ -597,23 +595,30 @@ namespace DestroyerTest.Common
             }
         }
 
-        public static Dictionary<int, float> TooltipScaleMult = new();
+        public static float[] TooltipScaleMult = ItemID.Sets.Factory.CreateNamedSet("TooltipScaleMult").Description("Used in tandem with SpecialSwingSword to display the innate scale multiplier on the sword.").RegisterFloatSet(1f);
 
-        public static HashSet<int> isSpecialSwingSword = new();
+        public static bool[] isSpecialSwingSword = ItemID.Sets.Factory.CreateNamedSet("SpecialSwingSword").Description("Items in the set are counted as using special swing projectiles. Only used for swords.").RegisterBoolSet();
 
+        public static bool[] isDevItem = ItemID.Sets.Factory.CreateNamedSet("DevItems").Description("Items in the set are considered Developer Items. Vanilla Dev Sets are not included.").RegisterBoolSet();
 
-        public static HashSet<int> isDevItem = new();
+        public static bool[] NeedsRework = ItemID.Sets.Factory.CreateNamedSet("NeedsRework").Description("Items in the set are awaiting reworks.").RegisterBoolSet();
 
-        public static HashSet<int> NeedsRework = new();
+        public static bool[] NoUpgradeStack = ItemID.Sets.Factory.CreateNamedSet("NoUpgradeStack").Description("Items in the set cannot be equipped with items that are crafted using them.").RegisterBoolSet();
 
-        public static HashSet<int> NoUpgradeStack = new();
+        public static int[][] NoEquipWith = ItemID.Sets.Factory.CreateNamedSet("NoEquipWith").Description("Items in the set cannot be equipped together.").RegisterCustomSet<int[]>([-1]);
 
-        public static Dictionary<int, HashSet<int>> NoEquipWith = new Dictionary<int, HashSet<int>>();
+        public static bool[] LegendaryWeapon = ItemID.Sets.Factory.CreateNamedSet("LegendaryWeapon").Description("Items in the set are considered special for multiple purposes.").RegisterBoolSet();
+
+        
 
         public static void IncompatibleWith(int itemType, int incompatibleType)
         {
-            NoEquipWith.TryAdd(itemType, new HashSet<int>());
-            NoEquipWith[itemType].Add(incompatibleType);
+            NoEquipWith[itemType] = [incompatibleType];
+        }
+
+        public static void IncompatibleWith(int itemType, int[] incompatibleTypes)
+        {
+            NoEquipWith[itemType] = incompatibleTypes;
         }
 
         public static int RandomDirection(int Chance)
@@ -1366,7 +1371,14 @@ namespace DestroyerTest.Common
             return  new Item(ID);
         }
 
-        
+        // To achieve independence, some theft is required.
+
+        // Credits to HoCha113 for this cast.
+        public static Vector3 ToVector3(this Vector2 vector) => new Vector3(vector.X, vector.Y, 0);
+
+        public static Vector3 ToVector3(this Vector2 vector, float fullZ) => new Vector3(vector.X, vector.Y, fullZ);
+
+
     }
 
     public class DTPlayerUtil : ModPlayer
@@ -2101,6 +2113,53 @@ namespace DestroyerTest.Common
         }
     }
 
+
+    // Credits to HoCha113. It is silly to require the entirety of Innovault for one struct, so it is justified to pull it.
+    public struct ColoredVertex : IVertexType
+    {
+        public readonly VertexDeclaration VertexDeclaration => _vertexDeclaration;
+
+        public Vector2 Position;
+
+        public Color Color;
+
+        public Vector3 TexCoord;
+
+        private static readonly VertexDeclaration _vertexDeclaration = new VertexDeclaration(new VertexElement[] {
+        new VertexElement(0, VertexElementFormat.Vector2, VertexElementUsage.Position, 0),
+        new VertexElement(8, VertexElementFormat.Color, VertexElementUsage.Color, 0),
+        new VertexElement(12, VertexElementFormat.Vector3, VertexElementUsage.TextureCoordinate, 0)
+        });
+
+        public ColoredVertex(Vector2 position, Color color, Vector3 texCoord)
+        {
+            Position = position;
+            Color = color;
+            TexCoord = texCoord;
+        }
+
+        public ColoredVertex(Vector2 position, Vector3 texCoord, Color color)
+        {
+            Position = position;
+            TexCoord = texCoord;
+            Color = color;
+        }
+
+        public ColoredVertex(Vector2 position, Color color, Vector2 texCoord)
+        {
+            Position = position;
+            Color = color;
+            TexCoord = texCoord.ToVector3();
+        }
+
+        public ColoredVertex(Vector2 position, Vector2 texCoord, Color color)
+        {
+            Position = position;
+            TexCoord = texCoord.ToVector3();
+            Color = color;
+        }
+    }
+
     public class DTTrail : ModSystem
     {
         public static void DrawTrail(SpriteBatch spriteBatch, Texture2D TrailTex, List<Vector2> Positions, List<float> Rotations, float Amplitude, Color color, float Scroll, float TaperRange = 0f)
@@ -2125,8 +2184,6 @@ namespace DestroyerTest.Common
 
                         Color b = color * t;
 
-
-                        //Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
                         Vector2 curr = Positions[i];
                         Vector2 prev = Positions[i - 1];
                         Vector2 next = i < Positions.Count - 1 ? Positions[i + 1] : curr;
@@ -2240,8 +2297,15 @@ namespace DestroyerTest.Common
             if (!OptCfg.DisableExcessTrails)
             {
 
+                var Cap = spriteBatch.Capture();
+
                 spriteBatch.End();
-                spriteBatch.Begin(SpriteSortMode.Immediate, blendState, SamplerState.LinearWrap, DepthStencilState.None, RasterizerState.CullNone, null, PixelationSystem.PixelationMatrix);
+
+                Cap.BlendState = blendState;
+                Cap.SamplerState = SamplerState.LinearWrap;
+                Cap.TransformMatrix = PixelationSystem.PixelationMatrix;
+
+                spriteBatch.Begin(Cap);
 
 
                 if (Positions.Count > 1)
@@ -2293,7 +2357,7 @@ namespace DestroyerTest.Common
                     }
                 }
 
-                Opus.ReturnToDefaultDrawing(Main.spriteBatch);
+                spriteBatch.ResetToDefault();
             }
 
         }
@@ -2600,7 +2664,7 @@ namespace DestroyerTest.Common
             {
                 for (int i = 0; i < 3; i++)
                 {
-                    WorldGen.KillTile(currentX, y - i);
+                    WorldGen.KillTile(currentX, y - i, noItem: true);
                 }
 
                 currentX += direction;
@@ -2657,7 +2721,7 @@ namespace DestroyerTest.Common
                         _ => throw new Exception("Invalid HatchSide")
                     };
 
-                    WorldGen.KillTile(k, y);
+                    WorldGen.KillTile(k, y, noItem: true);
                 }
             }
         }

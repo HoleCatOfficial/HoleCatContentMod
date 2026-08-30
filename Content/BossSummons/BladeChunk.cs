@@ -55,7 +55,7 @@ namespace DestroyerTest.Content.BossSummons
             if (Main.rand.NextBool(5))
             {
                 StellarPointGlow Glow = new();
-                Glow.Prepare(Main.rand.NextVector2FromRectangle(Item.Hitbox), new Vector2(0f, -1f));
+                Glow.Prepare(Main.rand.NextVector2FromRectangle(Item.Hitbox), new Vector2(0f, -1f), 1f);
                 ParticleEngine.BehindProjectiles.Add(Glow);
             }
 

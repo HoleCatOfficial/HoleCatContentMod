@@ -18,8 +18,9 @@ namespace DestroyerTest.Content.Equips
 		public override void SetStaticDefaults()
 		{
 			ArmorIDs.Head.Sets.DrawHead[Item.headSlot] = false;
-			
-		}
+			DTUtils.isDevItem[Type] = true;
+
+        }
 		public override void SetDefaults()
 		{
 			Item.width = 28;
@@ -45,7 +46,7 @@ namespace DestroyerTest.Content.Equips
 
 			if (DTCrossMod.CalamityIsLoaded)
 			{
-				DTCrossMod.CalamityMod.Call("AddMaxStealth", player, 1.2f);
+				DTCrossMod.CalamityMod.Call("AddMaxStealth", player, 0.2f);
 
                 DTCrossMod.CalamityMod.Call("SetWearingRogueArmor", player, true);
             }

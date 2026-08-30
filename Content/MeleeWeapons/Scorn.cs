@@ -20,7 +20,7 @@ namespace DestroyerTest.Content.MeleeWeapons
 
         public override void SetStaticDefaults()
         {
-            DTUtils.isSpecialSwingSword.Add(Type);
+            DTUtils.isSpecialSwingSword[Type] = true;
             DTUtils.TooltipScaleMult[Type] = 1.25f;
             ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<DistendedPike>();
         }

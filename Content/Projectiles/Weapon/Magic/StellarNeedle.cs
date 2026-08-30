@@ -77,7 +77,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             Projectile.ResetExcessTrailPoints();
 
             StellarPointGlow particle = new();
-            particle.Prepare(Projectile.Center, Projectile.velocity * 0.1f);
+            particle.Prepare(Projectile.Center, Projectile.velocity * 0.1f, 1.3f);
             ParticleEngine.BehindProjectiles.Add(particle);
 
             Lighting.AddLight(Projectile.Center, ColorLib.StellarFire2.ToVector3());

@@ -15,11 +15,11 @@ namespace DestroyerTest.Content.Particles.Stellar
 {
     public class StellarPointGlow : PointGlowPreMultiplied
     {
-        public void Prepare(Vector2 Position, Vector2 Velocity)
+        public void Prepare(Vector2 Position, Vector2 Velocity, float Scale)
         {
             position = Position;
             velocity = Velocity;
-            scale = 1f;
+            scale = Scale;
         }
         public override void Update(ref ParticleRendererSettings settings)
         {

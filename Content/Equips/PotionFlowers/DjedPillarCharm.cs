@@ -18,7 +18,7 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
     {
         public override void SetStaticDefaults()
         {
-            DTUtils.NoUpgradeStack.Add(Type);
+            DTUtils.NoUpgradeStack[Type] = true;
         }
         public override void SetDefaults()
         {

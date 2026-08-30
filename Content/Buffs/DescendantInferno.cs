@@ -55,7 +55,7 @@ namespace DestroyerTest.Content.Buffs
                 Vector2 d = npc.Center - p1;
                 d.Normalize();
                 StellarPointGlow G = new();
-                G.Prepare(p1, d);
+                G.Prepare(p1, d, 1.5f);
                 ParticleEngine.ShaderParticles.Add(G);
 
                 if (Main.rand.NextBool(10))
@@ -99,7 +99,7 @@ namespace DestroyerTest.Content.Buffs
                 Vector2 d = Player.Center - p1;
                 d.Normalize();
                 StellarPointGlow G = new();
-                G.Prepare(p1, d);
+                G.Prepare(p1, d, 1.5f);
                 ParticleEngine.ShaderParticles.Add(G);
 
                 if (Main.rand.NextBool(10))

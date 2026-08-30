@@ -408,6 +408,11 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             return Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), start, end, 25f * Projectile.scale * AdjustedScale, ref collisionPoint);
         }
 
+        public override bool? CanCutTiles()
+        {
+            return CurrentState != State.Wait;
+        }
+
         public override void CutTiles()
         {
             Vector2 start = Owner.MountedCenter;

@@ -238,6 +238,7 @@ namespace DestroyerTest.Common
         public static Asset<Texture2D> BlessedNodeLaserTelegraph = ModContent.Request<Texture2D>($"{ExtrasPath}/BlessedNodeLaserTelegraph", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> ConstitutionStarTrail = ModContent.Request<Texture2D>($"{ExtrasPath}/ConstitutionStarTrail", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> SparkFrostCleaverMask = ModContent.Request<Texture2D>($"{ExtrasPath}/SparkFrostCleaverMask", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> Corona = ModContent.Request<Texture2D>($"{ExtrasPath}/Corona", AssetRequestMode.AsyncLoad);
 
 
         public static Asset<Texture2D> TenebrisCorruptionWorldIcon = ModContent.Request<Texture2D>($"{ExtrasPath}/TenebrisWorldIcon", AssetRequestMode.AsyncLoad);

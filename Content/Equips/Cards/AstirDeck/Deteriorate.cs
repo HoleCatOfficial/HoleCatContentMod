@@ -68,7 +68,7 @@ namespace DestroyerTest.Content.Equips.Cards.AstirDeck
             Player Owner = Main.player[projectile.owner];
             if (Owner.TryGetModPlayer<DeterioratePlayer>(out var deterioratePlayer))
             {
-                if (deterioratePlayer.Active && Main.rand.NextBool() && projectile.DamageType == DamageClass.Throwing)
+                if (deterioratePlayer.Active && Main.rand.NextBool(3) && projectile.DamageType.CountsAsClass(DamageClass.Throwing))
                 {
                     Projectile.NewProjectile(Projectile.GetSource_None(), target.Center, Vector2.Zero, ModContent.ProjectileType<DeteriorateBurst>(), projectile.damage / 2, 15, projectile.owner);
                 }

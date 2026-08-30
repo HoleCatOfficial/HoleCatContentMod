@@ -17,8 +17,12 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame
 	public class CursedFlameNapalm : ModProjectile
 	{
 		public override string Texture => DTUtils.NoTexture;
-		private List<Vector2> trailPositions = new List<Vector2>();
-		private const int TrailCacheLength = 40;
+
+        public override void SetStaticDefaults()
+        {
+			ProjectileID.Sets.TrailCacheLength[Type] = 40;
+			ProjectileID.Sets.TrailingMode[Type] = 3;
+        }
 
 		public override void SetDefaults()
 		{
@@ -35,29 +39,23 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame
 		}
 
 		public bool DrawTrail = true;
-		private bool FadingTrail = false;
-		private float trailFadeSpeed = 0.5f; // how fast the trail collapses
-
+		public bool FadeTrail = false;
+		public float TrailOpacity = 1f;
 
 		public override void AI()
 		{
-			// Record position only if not fading
-			if (DrawTrail && !FadingTrail)
+			if (FadeTrail)
 			{
-				trailPositions.Insert(0, Projectile.Center);
-				if (trailPositions.Count > TrailCacheLength)
-					trailPositions.RemoveAt(trailPositions.Count - 1);
-			}
-			else if (FadingTrail)
-			{
-				// Gradually remove old points to collapse the trail
-				if (trailPositions.Count > 0)
+				if (TrailOpacity > 0)
 				{
-					// You can tune how many points are removed per frame
-					int collapseCount = (int)Math.Ceiling(trailFadeSpeed);
-					for (int i = 0; i < collapseCount && trailPositions.Count > 0; i++)
-						trailPositions.RemoveAt(trailPositions.Count - 1);
+					TrailOpacity -= 0.02f;
 				}
+				else
+				{
+					FadeTrail = false;
+					DrawTrail = false;
+				}
+
 			}
 
 			// Gravity + motion
@@ -79,7 +77,14 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame
                 fire.PrepareFire(Projectile.Center, Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.3f, 0.3f), ColorLib.WretchedColorMap, 1.6f, 100, FireDrawMode.Additive);
                 ParticleEngine.BehindProjectiles.Add(fire);
             }
-		}
+
+            if (Main.rand.NextBool(6))
+            {
+                WretchedPointGlow glow = new();
+                glow.Prepare(Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Main.rand.NextVector2Circular(0.5f, 0.5f), 2f);
+                ParticleEngine.Particles.Add(glow);
+            }
+        }
 
 		public override bool PreDraw(ref Color lightColor)
 		{
@@ -88,15 +93,15 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame
 			DTUtils Utility = new DTUtils();
 
 			Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-			for (int i = 0; i < trailPositions.Count; i++)
+			for (int i = 0; i < Projectile.oldPos.Length; i++)
 			{
-				float progress = i / (float)TrailCacheLength;
-				float scale = MathHelper.Lerp(2f, 0.0005f, progress);
-				Color color = DTColorUtils.MultiLerp(progress, ColorLib.WretchedColorMap);
+				float progress = i / (float)Projectile.oldPos.Length;
+				float scale = MathHelper.Lerp(1.5f, 0.0005f, progress);
+				Color color = DTColorUtils.MultiLerp(progress, ColorLib.WretchedColorMap) * TrailOpacity;
 
 				Main.EntitySpriteDraw(
 					glowTex,
-					trailPositions[i] - Main.screenPosition,
+					Projectile.OldCenter()[i] - Main.screenPosition,
 					null,
 					color,
 					Projectile.rotation,
@@ -108,7 +113,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame
 
                 Main.EntitySpriteDraw(
                     glowTex,
-                    trailPositions[i] - Main.screenPosition,
+                    Projectile.OldCenter()[i] - Main.screenPosition,
                     null,
                     DTColorUtils.Pastel(color, 0.8f),
                     Projectile.rotation,
@@ -127,7 +132,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame
 				ColorLib.Wretched1,
 				Projectile.velocity.ToRotation(),
 				glowTex.Size() / 2f,
-				2f,
+				1.5f,
 				SpriteEffects.None,
 				0
 			);
@@ -139,22 +144,23 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame
                 DTColorUtils.Pastel(ColorLib.Wretched1, 0.8f),
                 Projectile.velocity.ToRotation(),
                 glowTex.Size() / 2f,
-                1.25f,
+                1.5f * 0.4f,
                 SpriteEffects.None,
                 0
             );
 
             Opus.ReturnToDefaultDrawing(spriteBatch);
 
-			return false; // we handled drawing ourselves
+			return false;
 		}
 
 		public bool Flag1 = false;
 		public override bool OnTileCollide(Vector2 oldVelocity)
 		{
 			Projectile.velocity = Vector2.Zero;
-			DrawTrail = true; // keep drawing while it fades
-			FadingTrail = true; // start collapse
+			DrawTrail = true;
+			FadeTrail = true;
+		
 			if (!Flag1)
 			{
 				Projectile.netUpdate = true;

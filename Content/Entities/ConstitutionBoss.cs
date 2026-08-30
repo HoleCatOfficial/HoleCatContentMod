@@ -1178,8 +1178,8 @@ namespace DestroyerTest.Content.Entities
         public void EternityOrbitBursts()
         {
             off += 0.05f;
-            Vector2 Ideal = player.MountedCenter + new Vector2(500, 0).RotatedBy(off);
-            Vector2 Opposite = player.MountedCenter + new Vector2(-300, 0).RotatedBy(off);
+            Vector2 Ideal = ArenaCTR + new Vector2(500, 0).RotatedBy(off);
+            Vector2 Opposite = ArenaCTR + new Vector2(-300, 0).RotatedBy(off);
 
             NPC.SmoothMoveToPoint(Ideal, 40f);
 

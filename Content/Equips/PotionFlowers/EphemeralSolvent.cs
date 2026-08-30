@@ -10,7 +10,7 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
     {
         public override void SetStaticDefaults()
         {
-            DTUtils.NoUpgradeStack.Add(Type);
+            DTUtils.NoUpgradeStack[Type] = true;
 
             DTUtils.IncompatibleWith(Type, ItemID.BandofRegeneration);
             DTUtils.IncompatibleWith(Type, ItemID.CharmofMyths);

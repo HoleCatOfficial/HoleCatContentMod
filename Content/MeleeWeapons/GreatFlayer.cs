@@ -20,7 +20,7 @@ namespace DestroyerTest.Content.MeleeWeapons
         public override void SetStaticDefaults()
         {
 			DTUtils.TooltipScaleMult[Type] = 1.1f;
-			DTUtils.isSpecialSwingSword.Add(Type);
+            DTUtils.isSpecialSwingSword[Type] = true;
         }
 		public override void SetDefaults() 
 		{

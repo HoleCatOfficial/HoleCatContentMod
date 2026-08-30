@@ -258,8 +258,19 @@ Rift_Katana: {
 }
 
 RiftMaker: {
-	DisplayName: Riftmaker
-	Tooltip: A small javelin that explodes after a short time.
+	DisplayName: RiftMaker
+	Tooltip:
+		'''
+		A fast-moving trident that pierces 4 times, creating a miniature Rift on the 5th hit.
+		Lodges into tiles and creates miniature eclipses.
+		Eclipses create 4 homing Rift Stars, pierce infinitely, inflict Heliouric Shock, and linger for about 5 seconds.
+		'''
+	NepostriaTooltip:
+		'''
+		Often we imagine the Eclipse as being the Moon in front of the Sun, blocking it's light from reaching us fully.
+		But, what if the eclipse was, in fact, a hole being torn through the sky where the sun should be; and sealing back just as it opened fully?
+		They don't call it the "Milky Way" for nothing, do they? It constantly is sloshing about and filling any rips that form within itself.
+		'''
 	StealthStrike: Stealth Strikes spawn 5 rift stars that home in on enemies.
 }
 
@@ -5285,4 +5296,18 @@ IdriGreatsword: {
 NeglectedRegards: {
 	DisplayName: Neglected Regards
 	Tooltip: ""
+}
+
+Item_HoleisBed: {
+	DisplayName: Holeis Bed
+	Tooltip: ""
+}
+
+UnyieldingSkull: {
+	DisplayName: Unyielding Skull
+	Tooltip:
+		'''
+		Permanently adds 1 sentry slot.
+		Permanently increases Summoner critical strike chance by 8% and Summoner knockback by 22%.
+		'''
 }

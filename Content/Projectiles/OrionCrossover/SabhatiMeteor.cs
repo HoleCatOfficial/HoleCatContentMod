@@ -181,7 +181,7 @@ namespace DestroyerTest.Content.Projectiles.OrionCrossover
             for (int i = 0; i < Vel.Length; i++)
             {
                 StellarPointGlow FX = new();
-                FX.Prepare(Projectile.Center, Vel[i]);
+                FX.Prepare(Projectile.Center, Vel[i], 1.4f);
                 ParticleEngine.ShaderParticles.Add(FX);
             }
             target.AddBuff(ModContent.BuffType<DescendantInferno>(), 1200);

@@ -31,7 +31,7 @@ namespace DestroyerTest.Content.Tiles.RoseGarden
             TileObjectData.newTile.CoordinateHeights = [16, 16, 16];
             TileObjectData.newTile.CoordinatePadding = 2;
             TileObjectData.newTile.Origin = new Point16(0, 2);
-            new AnchorData(AnchorType.PlatformNonHammered, 7, 0);
+            TileObjectData.newTile.AnchorBottom = new AnchorData(AnchorType.PlatformNonHammered | AnchorType.SolidTile | AnchorType.SolidWithTop, 7, 0);
             TileObjectData.addTile(Type);
 
 

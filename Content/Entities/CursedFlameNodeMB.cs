@@ -190,14 +190,17 @@ namespace DestroyerTest.Content.Entities
         public int StarTimer = 0;
         public int StarState = 0;
         public int StarShootCount = 0;
+        float off = 0f;
         public Vector2 StarTeleportPos = Vector2.Zero;
 
         public int MineInterval = 0;
         Dust[] Dusts = new Dust[10];
 
+        public Projectile[] Flares;
+
         public int MineCount = 0;
         public int MineCooldown = 240;
-        public int NapalmRainTimer = 800;
+        public int NapalmRainTimer = 720;
         public int NapalmRainInterval = 0;
         public bool RecordCenterFlag1 = false;
         public bool Flag2 = false;
@@ -322,45 +325,105 @@ namespace DestroyerTest.Content.Entities
                         StarTimer++;
                         NPC.velocity *= 0;
 
-                        if (StarTeleportPos == Vector2.Zero)
+                        if (!DestroyerTestMod.EternityIsActive && !DestroyerTestMod.DeathIsActive)
                         {
-                            StarTeleportPos = player.MountedCenter + new Vector2(500, 0).RotatedBy(player.velocity.ToRotation());
-                        }
+                            
 
-                        if (StarTimer < 90)
-                        {
-                            if (StarTimer == 1)
+
+                            if (StarTeleportPos == Vector2.Zero)
                             {
                                 StarTeleportPos = player.MountedCenter + new Vector2(500, 0).RotatedBy(player.velocity.ToRotation());
                             }
 
-                            for (int i = 0; i < 10; i++)
+                            if (StarTimer < 90)
                             {
-                                Vector2 Pos = Main.rand.NextVector2FromRectangle(Utils.CenteredRectangle(StarTeleportPos, new Vector2(140, 140)));
-                                Vector2 Dir = StarTeleportPos - Pos;
+                                if (StarTimer == 1)
+                                {
+                                    StarTeleportPos = player.MountedCenter + new Vector2(500, 0).RotatedBy(player.velocity.ToRotation());
+                                }
 
-                                Dust D = Dust.NewDustPerfect(Pos, DustID.CursedTorch, Dir * 0.1f);
-                                D.noGravity = true;
+                                for (int i = 0; i < 10; i++)
+                                {
+                                    Vector2 Pos = Main.rand.NextVector2FromRectangle(Utils.CenteredRectangle(StarTeleportPos, new Vector2(140, 140)));
+                                    Vector2 Dir = StarTeleportPos - Pos;
+
+                                    Dust D = Dust.NewDustPerfect(Pos, DustID.CursedTorch, Dir * 0.1f);
+                                    D.noGravity = true;
+                                }
                             }
+                            else
+                            {
+
+                                NPC.Center = StarTeleportPos;
+                                Stars();
+                                StarTeleportPos = player.MountedCenter + new Vector2(500, 0).RotatedBy(player.velocity.ToRotation());
+                                StarTimer = 0;
+                            }
+
+
+                            if (StarShootCount > 5)
+                            {
+                                CurrentAttack = AttackState.Mines;
+                                StarShootCount = 0;
+                                StarTimer = 0;
+                            }
+
                         }
                         else
                         {
-                            
-                            NPC.Center = StarTeleportPos;
-                            Stars();
-                            StarTeleportPos = player.MountedCenter + new Vector2(500, 0).RotatedBy(player.velocity.ToRotation());
-                            StarTimer = 0;
-                        }
+                            if (StarTimer % 90 == 0)
+                            {
+                                SoundEngine.PlaySound(StarShoot);
+                                off += MathHelper.PiOver4;
 
-                        
-                        if (StarShootCount > 5)
-                        {
-                            CurrentAttack = AttackState.Mines;
-                            StarShootCount = 0;
-                            StarTimer = 0;
-                        }
-                         
+                                for (int i = 0; i < 2; i++)
+                                {
+                                    Vector2 SpawnPos = NPC.Center;
+                                    Vector2 SpawnPos2 = NPC.Center;
+                                    Vector2 SpawnPos3 = NPC.Center;
 
+                                    Vector2 Dir = NPC.Center;
+
+                                    switch (i)
+                                    {
+                                        case 0:
+                                            {
+                                                SpawnPos = player.MountedCenter + new Vector2(500, 0).RotatedBy(off);
+                                                SpawnPos2 = player.MountedCenter + new Vector2(500, 300).RotatedBy(off);
+                                                SpawnPos3 = player.MountedCenter + new Vector2(500, -300).RotatedBy(off);
+
+                                                Dir = new Vector2(-12f, 0).RotatedBy(off);
+   
+                                                break;
+                                            }
+                                        case 1:
+                                            {
+                                                SpawnPos = player.MountedCenter + new Vector2(-500, 0).RotatedBy(off);
+                                                SpawnPos2 = player.MountedCenter + new Vector2(-500, 300).RotatedBy(off);
+                                                SpawnPos3 = player.MountedCenter + new Vector2(-500, -300).RotatedBy(off);
+
+                                                Dir = new Vector2(12f, 0).RotatedBy(off);
+                                                break;
+                                            }
+                                    }
+
+                                    Projectile.NewProjectile(NPC.GetSource_FromAI(), SpawnPos, SpawnPos.DirectionTo(player.MountedCenter) * 12f, ModContent.ProjectileType<CursedNodeCrystal2>(), 40, 5, ai1: 1f);
+                                    Projectile.NewProjectile(NPC.GetSource_FromAI(), SpawnPos, SpawnPos.DirectionTo(player.MountedCenter) * 12f, ModContent.ProjectileType<CursedNodeCrystal2>(), 40, 5, ai1: -1f);
+                                    Projectile.NewProjectile(NPC.GetSource_FromAI(), SpawnPos, SpawnPos.DirectionTo(player.MountedCenter) * 12f, ModContent.ProjectileType<CursedNodeCrystal>(), 40, 5);
+
+                                    Projectile.NewProjectile(NPC.GetSource_FromAI(), SpawnPos2, Dir, ModContent.ProjectileType<CursedNodeCrystal>(), 40, 5);
+                                    Projectile.NewProjectile(NPC.GetSource_FromAI(), SpawnPos3, Dir, ModContent.ProjectileType<CursedNodeCrystal>(), 40, 5);
+                                }
+                                StarShootCount++;
+                            }
+
+                            if (StarShootCount > 8)
+                            {
+                                CurrentAttack = AttackState.Mines;
+                                StarShootCount = 0;
+                                StarTimer = 0;
+                            }
+                        }
 
                         break;
                     }
@@ -375,11 +438,23 @@ namespace DestroyerTest.Content.Entities
 
                         if (MineInterval <= 0)
                         {
-                            for (int q = 0; q < 5; q++)
+                            if (!DestroyerTestMod.EternityIsActive && !DestroyerTestMod.DeathIsActive)
                             {
-                                Vector2 Position = new Vector2(player.Center.X + Main.rand.Next(-1000, 1000), player.Center.Y + Main.rand.Next(-1000, 1000));
-                                Projectile Mine = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), Position, Vector2.Zero, ModContent.ProjectileType<BlossomMine>(), 25, 5);
-                                Mine.timeLeft = 100;
+                                for (int q = 0; q < 5; q++)
+                                {
+                                    Vector2 Position = new Vector2(player.Center.X + Main.rand.Next(-1000, 1000), player.Center.Y + Main.rand.Next(-1000, 1000));
+                                    Projectile Mine = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), Position, Vector2.Zero, ModContent.ProjectileType<BlossomMine>(), 25, 5);
+                                    Mine.timeLeft = 100;
+                                }
+                            }
+                            else
+                            {
+                                for (int q = 0; q < 9; q++)
+                                {
+                                    Vector2 Position = new Vector2(player.Center.X + Main.rand.Next(-1000, 1000), player.Center.Y + Main.rand.Next(-1000, 1000));
+                                    Projectile Mine = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), Position, Position.DirectionTo(player.Center) * 3f, ModContent.ProjectileType<CursedFireBomb>(), 25, 5);
+                                    Mine.timeLeft = 100;
+                                }
                             }
                             MineInterval = 120;
                             MineCount += 1;
@@ -400,19 +475,86 @@ namespace DestroyerTest.Content.Entities
                     }
                 case AttackState.FlameSwarm:
                 {
-                    KeepToPlayer(player.Center + new Vector2(0, -200));
+                        if (!DestroyerTestMod.EternityIsActive && !DestroyerTestMod.DeathIsActive)
+                        {
+                            KeepToPlayer(player.Center + new Vector2(0, -200));
+                        }
+                        else
+                        {
+                            NPC.velocity *= 0f;
+                        }
+
                     
-                    FlameSwarmTimer++;
-                    if (FlameSwarmTimer % 20 == 0) // Spawn every 60 ticks (1 second)
-                    {
-                        FlameSwarm(player);
-                    }
-                    
-                    if (FlameSwarmTimer > 300) // After 5 seconds, switch to Napalm
-                    {
-                        CurrentAttack = AttackState.Napalm;
-                        FlameSwarmTimer = 0;
-                    }
+                        FlameSwarmTimer++;
+
+                        if (!DestroyerTestMod.EternityIsActive && !DestroyerTestMod.DeathIsActive)
+                        {
+                            if (FlameSwarmTimer % 20 == 0) // Spawn every 60 ticks (1 second)
+                            {
+
+                                FlameSwarm(player);
+
+
+                            }
+
+                            if (FlameSwarmTimer > 300) // After 5 seconds, switch to Napalm
+                            {
+                                CurrentAttack = AttackState.Napalm;
+                                FlameSwarmTimer = 0;
+                            }
+                        }
+                        else
+                        {
+                            for(int i = 0; i < 3; i++)
+                            {
+                                WretchedPointGlow glow = new();
+                                Vector2 RPoint = NPC.Center + Main.rand.NextVector2CircularEdge(1100, 1100);
+                                glow.Prepare(RPoint, RPoint.DirectionTo(NPC.Center), 2f);
+                                ParticleEngine.Particles.Add(glow);
+                            }
+
+                            if (player.Center.Distance(NPC.Center) > 1100)
+                            {
+                                player.Center = NPC.Center + new Vector2(1080, 0).RotatedBy(player.DirectionFrom(NPC.Center).ToRotation());
+                            }
+
+                            if (FlameSwarmTimer % 20 == 0)
+                            {
+                                SoundEngine.PlaySound(Wallwarn);
+                                Opus.RadialSpreadProjectile(ModContent.ProjectileType<CursedNodeCrystal>(), 5, NPC.Center, 50, 5f, 18f, offset: NPC.Center.DirectionTo(player.Center).ToRotation());
+                                //Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, NPC.Center.DirectionTo(player.Center) * 18f, ModContent.ProjectileType<CursedNodeCrystal>(), 40, 5);
+                            }
+
+                            if (Flares == null)
+                            {
+                                Flares = Opus.RadialSpreadProjectile(ModContent.ProjectileType<CursedFlameFlare>(), 8, NPC.Center, 50, 5f, 3f);
+                                SoundEngine.PlaySound(WallShoot1);
+                            }
+                            else
+                            {
+                                Vector2[] Ideal = Opus.GetEquidistantOrbitVectors(8, NPC.Center, 0.02f, Opus.Sine(100f, 1000f, 0.01f));
+
+                                for (int i = 0; i < Flares.Length; i++)
+                                {
+                                    Flares[i].SmoothMoveToPoint(Ideal[i], 20f);
+                                }
+                                 
+                                if (FlameSwarmTimer > 1800)
+                                {
+                                    for (int i = 0; i < Flares.Length; i++)
+                                    {
+                                        Flares[i].Kill();
+                                        Flares[i] = null;
+                                    }
+
+                                    CurrentAttack = AttackState.Napalm;
+                                    FlameSwarmTimer = 0;
+                                    Flares = null;
+                                }
+                                
+                            }
+
+                        }
                     break;
                 }
                 case AttackState.Napalm:
@@ -423,11 +565,29 @@ namespace DestroyerTest.Content.Entities
 
                         if (NapalmRainTimer > 0)
                         {
-                            if (NapalmRainInterval <= 0)
+                            if (!DestroyerTestMod.EternityIsActive && !DestroyerTestMod.DeathIsActive)
                             {
-                                SoundEngine.PlaySound(NapalmShoot, NPC.Center);
-                                Projectile.NewProjectile(Entity.GetSource_FromThis(), NPC.Center, Velocity, ModContent.ProjectileType<CursedFlameNapalm>(), 20, 2);
-                                NapalmRainInterval = 10;
+                                if (NapalmRainTimer % 7.2f == 0)
+                                {
+                                    SoundEngine.PlaySound(NapalmShoot, NPC.Center);
+                                    Projectile.NewProjectile(Entity.GetSource_FromThis(), NPC.Center, Velocity, ModContent.ProjectileType<CursedFlameNapalm>(), 20, 2);
+
+                                }
+                            }
+                            else
+                            {
+                                if (NapalmRainTimer % 120 == 0)
+                                {
+                                    SoundEngine.PlaySound(NapalmShoot, NPC.Center);
+                                    for (int i = -10; i < 11; i++)
+                                    {
+                                        Vector2 Velocity2 = new Vector2(i * 2f, -15);
+
+                                        
+                                        Projectile.NewProjectile(Entity.GetSource_FromThis(), NPC.Center, Velocity2, ModContent.ProjectileType<CursedFlameNapalm>(), 20, 2);
+                                    }
+
+                                }
                             }
                             NapalmRainTimer--;
                         }
@@ -440,7 +600,7 @@ namespace DestroyerTest.Content.Entities
                         if (NapalmRainTimer <= 0)
                         {
                             CurrentAttack = AttackState.Idle;
-                            NapalmRainTimer = 800;
+                            NapalmRainTimer = 720;
                         }
                         break;
                     }
@@ -586,6 +746,12 @@ namespace DestroyerTest.Content.Entities
                 WaveTimeout = 0;
 
                 SoundEngine.PlaySound(DTAssetLib.Impacts.DarkMagicImpact);
+
+                if (DestroyerTestMod.EternityIsActive || DestroyerTestMod.DeathIsActive)
+                {
+                    Opus.RadialSpreadProjectile(ModContent.ProjectileType<CursedFireBomb>(), 3, NPC.Center, 60, 4, 2.2f, offset: Main.rand.NextFloat(MathHelper.TwoPi));
+                }
+
                 for (int i = 0; i < SpawnPositions.Length; i++)
                 {
                     BloomRingSharp Ring = new();
@@ -596,6 +762,7 @@ namespace DestroyerTest.Content.Entities
                     wavenpc.scale = 1.5f;
                     wavenpc.knockBackResist = 0f;
                     var g = wavenpc.GetGlobalNPC<CFNGlobal>();
+                    g.IsNodeSpawned = true;
                     g.Node = this;
                 }
             }
@@ -732,7 +899,7 @@ namespace DestroyerTest.Content.Entities
 
                 Line L = new Line(npc.Center, Node.NPC.Center);
                 TexOffset += 10;
-                DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(10), DTColorUtils.MultiLerp(Modifier, ColorLib.WretchedColorMap), spriteBatch, BlendState.Additive, TexOffset, 0.5f);
+                DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(10, true), DTColorUtils.MultiLerp(Modifier, ColorLib.WretchedColorMap) with { A = 0 }, spriteBatch, BlendState.Additive, TexOffset, 0.5f);
             }
             return base.PreDraw(npc, spriteBatch, screenPos, drawColor);
         }
@@ -746,10 +913,7 @@ namespace DestroyerTest.Content.Entities
 
                 float Modifier = CurDist / (float)MaxRad;
 
-
-                Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-                Main.EntitySpriteDraw(DTAssetLib.CorruptSigil.Value, npc.Center - screenPos, null, DTColorUtils.MultiLerp(Modifier, ColorLib.WretchedColorMap) * 0.5f, 0f, DTAssetLib.CorruptSigil.Value.Size() / 2, 0.5f, SpriteEffects.None, 0f);
-                Opus.ReturnToDefaultDrawing(spriteBatch);
+                Main.EntitySpriteDraw(DTAssetLib.CorruptSigil.Value, npc.Center - screenPos, null, DTColorUtils.MultiLerp(Modifier, ColorLib.WretchedColorMap) with { A = 0 } * 0.5f, 0f, DTAssetLib.CorruptSigil.Value.Size() / 2, 0.5f, SpriteEffects.None, 0f);
             }
         }
 

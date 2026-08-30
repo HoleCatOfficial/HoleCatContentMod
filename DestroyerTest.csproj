@@ -56,9 +56,6 @@
 			<HintPath>lib\GlowmaskHelper.dll</HintPath>
 		</Reference>
 		
-		<Reference Include="InnoVault">
-			<HintPath>lib\InnoVault.dll</HintPath>
-		</Reference>
 		
 		<Reference Include="OpusLib">
 			<HintPath>lib\OpusLib.dll</HintPath>

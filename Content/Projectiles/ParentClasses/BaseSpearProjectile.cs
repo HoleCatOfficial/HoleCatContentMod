@@ -206,6 +206,8 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             return null;
         }
 
+
+
         public bool FirstHalf = true;
         public float progress;
         public void SetPosition()

@@ -16,7 +16,7 @@ namespace DestroyerTest.Content.MeleeWeapons
 	{
         public override void SetStaticDefaults()
         {
-            DTUtils.isDevItem.Add(Type);
+            DTUtils.isDevItem[Type] = true;
         }
         public override void SetDefaults()
         {

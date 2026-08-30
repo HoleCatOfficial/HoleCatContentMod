@@ -1,4 +1,5 @@
 using System;
+using DestroyerTest.Common;
 using DestroyerTest.Content.MeleeWeapons;
 using DestroyerTest.Content.Projectiles;
 using Microsoft.Xna.Framework;
@@ -15,7 +16,8 @@ namespace DestroyerTest.Content.Equips
     {
         public override void SetStaticDefaults()
         {
-            Item.ResearchUnlockCount = 2500;
+            DTUtils.isDevItem[Type] = true;
+            Item.ResearchUnlockCount = 3;
         }
 
         public override void SetDefaults()

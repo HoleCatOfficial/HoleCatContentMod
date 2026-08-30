@@ -17,7 +17,7 @@ namespace DestroyerTest.Content.MeleeWeapons.TwistedLineage
     {
         public override void SetStaticDefaults()
         {
-            DTUtils.isSpecialSwingSword.Add(Type);
+            DTUtils.isSpecialSwingSword[Type] = true;
             DTUtils.TooltipScaleMult[Type] = 1.22f;
         }
 

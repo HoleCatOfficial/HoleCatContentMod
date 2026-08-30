@@ -1,4 +1,5 @@
-﻿using DestroyerTest.Content.Projectiles.player.Accessory;
+﻿using DestroyerTest.Common;
+using DestroyerTest.Content.Projectiles.player.Accessory;
 using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -16,7 +17,7 @@ namespace DestroyerTest.Content.Equips
     {
         public override void SetStaticDefaults()
         {
-
+            DTUtils.isDevItem[Type] = true;
         }
 
         public override void SetDefaults()

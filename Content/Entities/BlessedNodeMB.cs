@@ -154,7 +154,9 @@ namespace DestroyerTest.Content.Entities
 
             Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
             Main.EntitySpriteDraw(v, NPC.Center - screenPos, null, Color.SkyBlue * ShieldOpacity, 0f, v.Size() / 2, ShieldScale, SpriteEffects.None);
-            Utils.DrawBorderString(spriteBatch, $"{DormantNPCKillTally} / {DormantNPCKillRequirement}", (NPC.Center + new Vector2(0, -90)) - screenPos, Color.SkyBlue * ShieldOpacity, 3f, 0.5f, 0.5f);
+
+            spriteBatch.DrawString(DTAssetLib.Doxent.Value, $"{DormantNPCKillTally} / {DormantNPCKillRequirement}", (NPC.Center + new Vector2(0, -90)) - screenPos, Color.SkyBlue * ShieldOpacity, 0f, DTAssetLib.Doxent.Value.MeasureString($"{DormantNPCKillTally} / {DormantNPCKillRequirement}") * 0.5f, 0.5f, SpriteEffects.None, 0f);
+            //Utils.DrawBorderString(spriteBatch, $"{DormantNPCKillTally} / {DormantNPCKillRequirement}", (NPC.Center + new Vector2(0, -90)) - screenPos, Color.SkyBlue * ShieldOpacity, 3f, 0.5f, 0.5f);
             Opus.ReturnToDefaultDrawing(spriteBatch);
             return true;
         }
@@ -285,10 +287,12 @@ namespace DestroyerTest.Content.Entities
                         if ((DormantNPCKillTally < DormantNPCKillRequirement))
                         {
                             NPC.dontTakeDamage = true;
+                            NPC.immortal = true;
                         }
                         else
                         {
                             NPC.dontTakeDamage = false;
+                            NPC.immortal = false;
                         }
 
                         if (NPC.justHit && !DTFlags.NodeCharmEquipped && !(DormantNPCKillTally < DormantNPCKillRequirement))
@@ -532,8 +536,8 @@ namespace DestroyerTest.Content.Entities
         {
             NPCID.Pixie,
             NPCID.Unicorn,
-            NPCID.RainbowSlime,
-            NPCID.Gastropod
+            NPCID.Gastropod,
+            NPCID.LightMummy
         };
 
         public int WaveTimeout = 0;
@@ -599,6 +603,7 @@ namespace DestroyerTest.Content.Entities
                     wavenpc.scale = 1.5f;
                     wavenpc.knockBackResist = 0f;
                     var g = wavenpc.GetGlobalNPC<BNGlobal>();
+                    g.IsNodeSpawned = true;
                     g.Node = this;
                 }
             }
@@ -716,8 +721,7 @@ namespace DestroyerTest.Content.Entities
         public override void Unload()
         {
             WaveNPCCount = 0;
-            IsNodeSpawned = false;
-            Node = null;
+            
         }
 
         public override void OnSpawn(NPC npc, IEntitySource source)
@@ -725,9 +729,7 @@ namespace DestroyerTest.Content.Entities
             if (source is EntitySource_Parent parent && parent.Context == BlessedNodeMB.NPCIdentifierContext)
             {
                 WaveNPCCount += 1;
-                IsNodeSpawned = true;
             }
-
         }
 
         public int TexOffset = 0;
@@ -737,7 +739,7 @@ namespace DestroyerTest.Content.Entities
             {
                 Line L = new Line(npc.Center, Node.NPC.Center);
                 TexOffset += 10;
-                DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(10), Color.SkyBlue, spriteBatch, BlendState.Additive, TexOffset, 0.5f);
+                DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(10, true), Color.SkyBlue with { A = 0 }, spriteBatch, BlendState.Additive, TexOffset, 0.5f);
             }
             return base.PreDraw(npc, spriteBatch, screenPos, drawColor);
         }
@@ -756,7 +758,16 @@ namespace DestroyerTest.Content.Entities
 
         public override void AI(NPC npc)
         {
-
+            if (IsNodeSpawned)
+            {
+                if (Node != null)
+                {
+                    if (npc.Center.Distance(Node.NPC.Center) > 1200f)
+                    {
+                        npc.Center = Node.NPC.Center + new Vector2(1180f, 0f).RotatedBy(Node.NPC.Center.DirectionTo(npc.Center).ToRotation());
+                    } 
+                }
+            }
 
         }
 
@@ -788,6 +799,9 @@ namespace DestroyerTest.Content.Entities
                 }
                 WaveNPCCount = 0;
             }
+
+            IsNodeSpawned = false;
+            Node = null;
         }
     }
 }

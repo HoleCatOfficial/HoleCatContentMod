@@ -74,7 +74,7 @@ namespace DestroyerTest.Content.Projectiles
             for (int i = 0; i < 8; i++)
             {
                 StellarPointGlow Glow = new();
-                Glow.Prepare(Projectile.Center, Main.rand.NextVector2Circular(4f, 4f));
+                Glow.Prepare(Projectile.Center, Main.rand.NextVector2Circular(4f, 4f), 1.8f);
                 ParticleEngine.BehindProjectiles.Add(Glow);
             }
 
