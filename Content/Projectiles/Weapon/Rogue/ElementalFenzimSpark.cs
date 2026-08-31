@@ -62,7 +62,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             Projectile.friendly = true;
             Projectile.hostile = false;
             Projectile.ignoreWater = true;
-            Projectile.timeLeft = 300;
+            Projectile.timeLeft = 90;
             Projectile.tileCollide = false;
             Projectile.penetrate = 1;
             variant = (int)Projectile.ai[0];

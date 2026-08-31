@@ -17,13 +17,12 @@ using Terraria.ModLoader.Config;
 
 namespace DestroyerTest.Content.MeleeWeapons
 {
-    public class NeglectedRegards : ModItem
+    public class Unrest : ModItem
     {
         public override void SetStaticDefaults()
         {
-            ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<Unrest>();
+            ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<NeglectedRegards>();
         }
-
         public override void SetDefaults()
         {
             Item.width = 78;
@@ -39,10 +38,10 @@ namespace DestroyerTest.Content.MeleeWeapons
             Item.crit = 7;
 
             Item.value = Item.buyPrice(gold: 3);
-            Item.rare = ModContent.RarityType<CorruptionSpecialRarity>();
+            Item.rare = ModContent.RarityType<CrimsonSpecialRarity>();
             Item.noUseGraphic = true;
             Item.noMelee = true;
-            Item.shoot = ModContent.ProjectileType<NeglectedRegardsSwing>();
+            Item.shoot = ModContent.ProjectileType<UnrestSwing>();
             Item.channel = true;
 
 
@@ -57,14 +56,6 @@ namespace DestroyerTest.Content.MeleeWeapons
         public override bool MeleePrefix()
         {
             return true;
-        }
-
-        public override void AddRecipes()
-        {
-            CreateRecipe()
-                .AddIngredient<NeglectedRegards>()
-                .AddIngredient<Dyrn>(16)
-                .Register();
         }
     }
 }

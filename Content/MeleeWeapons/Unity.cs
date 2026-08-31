@@ -75,6 +75,7 @@ namespace DestroyerTest.Content.MeleeWeapons
                 .AddIngredient<Malevolence>()
                 .AddIngredient<NeglectedRegards>()
                 .AddIngredient<Scorn>()
+                .AddIngredient<Unrest>()
                 .AddIngredient<PhantasmalRemnant>(6)
                 .AddCondition(Condition.DownedMoonLord)
                 .Register();

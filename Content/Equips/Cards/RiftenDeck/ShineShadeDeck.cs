@@ -69,7 +69,7 @@ namespace DestroyerTest.Content.Equips.Cards.RiftenDeck
         public override void AddRecipes()
         {
             CreateRecipe()
-                .AddIngredient<Item_HeliciteCrystal>(30)
+                .AddIngredient<SunscorchedCinder>(3)
                 .AddIngredient<Scourge>()
                 .AddIngredient<Hollow>()
                 .AddIngredient<Vortex>()

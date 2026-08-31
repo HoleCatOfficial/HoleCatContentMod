@@ -284,6 +284,14 @@ namespace DestroyerTest.Content.Entities
                 ManageShieldOut();
             }
 
+            foreach (Projectile projectile in Main.projectile)
+            {
+                if (projectile.active && projectile.Distance(NPC.Center) < 30 && projectile.type == ModContent.ProjectileType<BloodCloudBall>())
+                {
+                    projectile.Kill();
+                }
+            }
+
             switch (CurrentAttack)
             {
                 case AttackState.Dormant:
@@ -327,7 +335,7 @@ namespace DestroyerTest.Content.Entities
                     }
                 case AttackState.BloodRain:
                     {
-                        KeepToPlayer(player.Center + new Vector2(0, -200));
+                        
                         BloodRainAI(player);
                         break;
                     }
@@ -559,30 +567,57 @@ namespace DestroyerTest.Content.Entities
             }
         }
 
+        int BR_EternityTimer = 0;
         public void BloodRainAI(Player player)
         {
-            if (BloodRainSpawnTimer > 0)
+            if (!DestroyerTestMod.EternityIsActive && !DestroyerTestMod.DeathIsActive)
             {
-                if (BloodRainSpawnTimer % 8 == 0)
+                KeepToPlayer(player.Center + new Vector2(0, -200));
+
+                if (BloodRainSpawnTimer > 0)
+                {
+                    if (BloodRainSpawnTimer % 8 == 0)
+                    {
+                        SoundEngine.PlaySound(SoundID.Item66, NPC.Center);
+                        Vector2 Position = new Vector2(
+                            player.Center.X + Main.rand.Next(-200, 200),
+                            player.Center.Y - 400f // blanket above
+                        );
+                        Projectile.NewProjectile(Entity.GetSource_FromThis(), Position, Vector2.Zero, ModContent.ProjectileType<BloodCloud>(), 16, 8);
+                    }
+                    BloodRainSpawnTimer--;
+                }
+                if (BloodRainSpawnTimer <= 0 && BloodRainWaitTimer > 0)
+                {
+                    BloodRainWaitTimer--;
+                }
+                if (BloodRainSpawnTimer <= 0 && BloodRainWaitTimer <= 0)
+                {
+                    CurrentAttack = AttackState.IchorSpiral;
+                    BloodRainSpawnTimer = 180;
+                    BloodRainWaitTimer = 240;
+                }
+            }
+            else
+            {
+                NPC.velocity *= 0;
+                BR_EternityTimer++;
+
+                
+
+                if (BR_EternityTimer % 60 == 0)
                 {
                     SoundEngine.PlaySound(SoundID.Item66, NPC.Center);
-                    Vector2 Position = new Vector2(
-                        player.Center.X + Main.rand.Next(-200, 200),
-                        player.Center.Y - 400f // blanket above
-                    );
-                    Projectile.NewProjectile(Entity.GetSource_FromThis(), Position, Vector2.Zero, ModContent.ProjectileType<BloodCloud>(), 16, 8);
+
+                    Opus.RingSpreadProjectile(ModContent.ProjectileType<BloodCloudBall>(), 18, NPC.Center, 1200f, 40, 6, -5f, offset: 0.05f * BR_EternityTimer);
+                    Opus.RingSpreadProjectile(ModContent.ProjectileType<BloodRain>(), 5, NPC.Center, 1200f, 20, 6, -5f, offset: 0.5f * BR_EternityTimer);
                 }
-                BloodRainSpawnTimer--;
-            }
-            if (BloodRainSpawnTimer <= 0 && BloodRainWaitTimer > 0)
-            {
-                BloodRainWaitTimer--;
-            }
-            if (BloodRainSpawnTimer <= 0 && BloodRainWaitTimer <= 0)
-            {
-                CurrentAttack = AttackState.IchorSpiral;
-                BloodRainSpawnTimer = 180;
-                BloodRainWaitTimer = 240;
+
+                if (BR_EternityTimer >= 1200)
+                {
+                    CurrentAttack = AttackState.IchorSpiral;
+                    BR_EternityTimer = 0;
+                }
             }
         }
 
@@ -860,7 +895,7 @@ namespace DestroyerTest.Content.Entities
             {
                 Line L = new Line(npc.Center, Node.NPC.Center);
                 TexOffset += 10;
-                DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(10), ColorLib.IchorCrystalGradient, spriteBatch, BlendState.Additive, TexOffset, 0.5f);
+                DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(10, true), ColorLib.IchorCrystalGradient with { A = 0 }, spriteBatch, BlendState.Additive, TexOffset, 0.5f);
             }
             return base.PreDraw(npc, spriteBatch, screenPos, drawColor);
         }
@@ -868,9 +903,8 @@ namespace DestroyerTest.Content.Entities
         {
             if (IsNodeSpawned)
             {
-                Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
                 Main.EntitySpriteDraw(DTAssetLib.CrimsonSigil.Value, npc.Center - screenPos, null, ColorLib.Ichor * 0.5f, 0f, DTAssetLib.CrimsonSigil.Value.Size() / 2, 0.15f, SpriteEffects.None, 0f);
-                Opus.ReturnToDefaultDrawing(spriteBatch);
+ 
             }
         }
 

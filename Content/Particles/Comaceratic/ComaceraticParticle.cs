@@ -42,6 +42,7 @@ namespace DestroyerTest.Content.Particles.Comaceratic
             float LifetimeCompletion = (float)Lifetime / MaxLifetime;
 
             velocity *= 0.96f;
+            position += velocity;
             rotation += 0.07f * Math.Sign(velocity.X);
             
             if (LifetimeCompletion > 0.6f)

@@ -44,26 +44,34 @@ namespace DestroyerTest.Content.Buffs
 
         public bool lifeRegenDebuff;
 
+
         public override void ResetEffects(NPC npc) 
 		{
-            
-			lifeRegenDebuff = false;
+
+            lifeRegenDebuff = false;
         }
 
+        public override bool PreAI(NPC npc)
+        {
+            
+            return base.PreAI(npc);
+        }
         public override void AI(NPC npc)
         {
-            base.AI(npc);
-            if (lifeRegenDebuff)
+
+            if (lifeRegenDebuff && !npc.boss)
             {
-                npc.velocity *= 1.2f;
+                npc.position += (npc.velocity * 0.5f);
+
             }
         }
 
         public override void PostAI(NPC npc)
         {
-            if (lifeRegenDebuff)
+            if (lifeRegenDebuff && !npc.boss)
             {
-                npc.velocity *= 0.8f;
+               
+
             }
         }
 

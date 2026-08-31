@@ -5,6 +5,7 @@ using DestroyerTest.Content.Tiles;
 using DestroyerTest.Content.Tiles.Riftplate;
 using DestroyerTest.Rarity;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -19,12 +20,12 @@ namespace DestroyerTest.Content.RogueItems
 			Item.useStyle = ItemUseStyleID.Swing;
 			Item.shootSpeed = 20f;
 			Item.shoot = ModContent.ProjectileType<TrueRiftMakerThrown>();
-			Item.width = 128;
-			Item.height = 128;
+			Item.width = 200;
+			Item.height = 200;
 			Item.maxStack = 1;
-			Item.UseSound = SoundID.Item71;
-			Item.useAnimation = 30;
-			Item.useTime = 30;
+			Item.UseSound = new SoundStyle(DTAssetLib.AudioPath + "/Riftmaker/TrueRiftmakerThrow");
+			Item.useAnimation = 120;
+			Item.useTime = 120;
 			Item.noUseGraphic = true;
 			Item.noMelee = true;
 			Item.value = Item.buyPrice(0, 0, 20, 0);
@@ -37,8 +38,8 @@ namespace DestroyerTest.Content.RogueItems
 		public override void AddRecipes() {
 			CreateRecipe()
             .AddIngredient<RiftMaker>()
-            .AddIngredient(ItemID.DayBreak, 1)
             .AddIngredient(ItemID.FragmentSolar, 16)
+            .AddIngredient<PhantasmalRemnant>(2)
             .AddTile(TileID.LunarCraftingStation)
             .Register();
 		}

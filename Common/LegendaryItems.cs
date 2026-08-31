@@ -66,7 +66,7 @@ namespace DestroyerTest.Common
             TooltipLine Hint = new TooltipLine(Mod, "RelicOfNepostriaHint", Language.GetTextValue("Mods.DestroyerTest.Extras.LegendaryItems.Clue"));
             int HintIndex = tooltips.IndexOf(tooltips.Find(t => t.Name == Hint.Name));
 
-            TooltipLine ExtraLore = new TooltipLine(Mod, "RelicOfNepostriaExtraLore", Language.GetTextValue($"Mods.DestroyerTest.Items.{item.Name}.NepostriaTooltip"));
+            TooltipLine ExtraLore = new TooltipLine(Mod, "RelicOfNepostriaExtraLore", Language.GetTextValue($"Mods.DestroyerTest.Items.{item.ModItem.Name}.NepostriaTooltip"));
             int ExtraLoreIndex = tooltips.IndexOf(tooltips.Find(t => t.Name == ExtraLore.Name));
 
             TooltipLine Standard= new TooltipLine(Mod, "RelicOfNepostriaStandardTooltip", Language.GetTextValue("Mods.DestroyerTest.Extras.LegendaryItems.StandardTooltip")) { OverrideColor = Colors.CoinGold};

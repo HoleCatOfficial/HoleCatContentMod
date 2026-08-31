@@ -25,7 +25,8 @@ namespace DestroyerTest.Content.Tiles
         public enum Variants
         {
             NightmareRose,
-            WyvernCorpse
+            WyvernCorpse,
+            SolarEclipse
         }
 
         public Variants variant;
@@ -69,6 +70,11 @@ namespace DestroyerTest.Content.Tiles
                         player.cursorItemIconID = ModContent.ItemType<Item_WyvernCorpseMemoryPedistal>();
                         break;
                     }
+                case 72:
+                    {
+                        player.cursorItemIconID = ModContent.ItemType<Item_EclipseMemoryPedistal>();
+                        break;
+                    }
             }
         }
 
@@ -92,6 +98,11 @@ namespace DestroyerTest.Content.Tiles
                     {
                         variant = Variants.WyvernCorpse;
                         return ColorLib.Soul2;
+                    }
+                case 72:
+                    {
+                        variant = Variants.SolarEclipse;
+                        return ColorLib.Rift;
                     }
             }
             return Color.White;

@@ -346,6 +346,20 @@ namespace DestroyerTest.Content.Entities
 
         public override void AI()
         {
+            if (Dangerous)
+            {
+                if (NPC.Opacity < 1)
+                {
+                    NPC.Opacity += 0.01f;
+                }
+            }
+            else
+            {
+                if (NPC.Opacity > 0.5f)
+                {
+                    NPC.Opacity -= 0.01f;
+                }
+            }
 
             if (NPC.HasValidTarget)
             {
@@ -471,6 +485,8 @@ namespace DestroyerTest.Content.Entities
             }
             if (AITimer < 1200 && AITimer >= 300)
             {
+                Dangerous = false;
+
                 if (AITimer % 120 == 0)
                 {
                     SoundEngine.PlaySound(ConstitutionSounds.Shoot1);
@@ -496,6 +512,7 @@ namespace DestroyerTest.Content.Entities
             }
             if (AITimer < 1300 && AITimer >= 1200)
             {
+                Dangerous = true;
                 OrbitingMines.Clear();
                 IdleAI();
             }
@@ -545,6 +562,7 @@ namespace DestroyerTest.Content.Entities
                     
                 }
 
+                Dangerous = false;
                 EternityLanceAI();
 
                 if (ShotLance)
@@ -562,6 +580,7 @@ namespace DestroyerTest.Content.Entities
             }
             if (AITimer > 3600)
             {
+                Dangerous = true;
                 EternityOrbitBursts();
             }
             if (AITimer > 4200)
@@ -758,6 +777,21 @@ namespace DestroyerTest.Content.Entities
 
             StellarParticleUtils.FlatStar(NPC.Center, 1f, ParticleEngine.BehindProjectiles);
         }
+
+        public bool Dangerous = true;
+
+        public override void ModifyIncomingHit(ref NPC.HitModifiers modifiers)
+        {
+            if (!Dangerous)
+            {
+                modifiers.FinalDamage *= 0.6f;
+            }
+        }
+        public override bool CanHitPlayer(Player target, ref int cooldownSlot)
+        {
+            return Dangerous;
+        }
+
 
         public void IdleAI()
         {

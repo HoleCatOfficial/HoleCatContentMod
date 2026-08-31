@@ -40,7 +40,7 @@ Extras: {
 		Clue: Hold SHIFT to view information
 		StandardTooltip:
 			'''
-			Relics of Nepostria posses hidden properties and use cases.
+			Relics of Nepostria possess hidden properties and use cases.
 			Relics of Nepostria that are weapons also have an innate 10% critical strike chance on top of what they would originally have.
 			'''
 	}

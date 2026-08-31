@@ -2189,7 +2189,11 @@ TinyHammer: {
 }
 
 Contempt: {
-	Tooltip: Creates a corrupt sigil at the cursor position. Enemies within range of the sigil take damage.
+	Tooltip:
+		'''
+		Creates a corrupt sigil at the cursor position. Enemies within range of the sigil take damage.
+		'Hate. Let me tell you how much I've come to HATE you...'
+		'''
 	DisplayName: Contempt
 }
 
@@ -3776,8 +3780,14 @@ LivingPendant: {
 }
 
 TrueRiftMaker: {
-	Tooltip: ""
-	DisplayName: True Riftmaker
+	Tooltip:
+		'''
+		Throws a warped sun javelin that lodges into tiles, creating a radiant field.
+		Pierces 10 times and summons a radiant field on the 11th hit.
+		The javelin and the field both inflict Comaceratic Burn on-hit.
+		The field rains down clones on the nearest NPC.
+		'''
+	DisplayName: Bane
 }
 
 MineralOil: {
@@ -5309,5 +5319,29 @@ UnyieldingSkull: {
 		'''
 		Permanently adds 1 sentry slot.
 		Permanently increases Summoner critical strike chance by 8% and Summoner knockback by 22%.
+		'''
+}
+
+Unrest: {
+	DisplayName: Unrest
+	Tooltip: ""
+}
+
+Item_EclipseMemoryPedistal: {
+	DisplayName: Memory Pedestal (Eclipse)
+	Tooltip:
+		'''
+		Savage caws and shrills echo from the sunlight.
+		Plays "Within Shadow" by FRANCIUMKILLA
+		'''
+	NepostriaTooltip:
+		'''
+		Given that dreams in Terraria can manifest in the physical plane, it is not outlandish to think the same can be true of nightmares.
+		The faces of the Eclipse's horde all reflect some fear of society. 
+		Deadly Spheres, the visions of the luddites.
+		Frankenstein, the fear of what surgical advancements can open the door to. 
+		Vampires, that anyone you know might not be who they say they are.
+		The Possessed, that spiritual evils could run deeper than abstract beliefs.
+		Terraria must be highly fertile in magic, thus, the land must also move at my whisper.
 		'''
 }

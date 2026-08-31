@@ -59,6 +59,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             Projectile.ignoreWater = true;
             Projectile.timeLeft = 600;
             Projectile.DamageType = DamageClass.Throwing;
+            Projectile.usesIDStaticNPCImmunity = true;
+            Projectile.idStaticNPCHitCooldown = 20;
+
             Projectile.tileCollide = true;
             Projectile.ArmorPenetration = 22;
             Projectile.extraUpdates = 1;
