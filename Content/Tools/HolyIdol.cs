@@ -33,24 +33,39 @@ namespace DestroyerTest.Content.Tools
             Item.consumable = true;
         }
 
+        public override bool CanUseItem(Player player)
+        {
+            foreach (NPC npc in Main.npc)
+            {
+                if (npc.active && npc.type == ModContent.NPCType<CrystallineAngel>())
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+
         public override bool? UseItem(Player player)
+        {
+            return true;
+        }
+
+        public override bool ConsumeItem(Player player)
         {
             return true;
         }
 
         public override void OnConsumeItem(Player player)
         {
-            foreach(NPC npc in Main.npc)
+            foreach (NPC npc in Main.npc)
             {
-                if (npc.active && npc.TryGetGlobalNPC<BNGlobal>(out var B))
+                if (npc.active && npc.type == ModContent.NPCType<CrystallineAngel>())
                 {
-                    if (B.IsNodeSpawned)
-                    {
-                        npc.StrikeInstantKill();
-                    }
+                    npc.StrikeInstantKill();
                 }
             }
         }
-       
     }
 }

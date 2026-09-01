@@ -33,7 +33,6 @@ using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static DestroyerTest.Content.Entities.IchorNode;
 
 namespace DestroyerTest.Content.Entities
 {
@@ -114,8 +113,7 @@ namespace DestroyerTest.Content.Entities
 
         public void ResetData()
         {
-            DormantNPCKillTally = 0;
-            CFNGlobal.WaveNPCCount = 0;
+            SentinelKillTally = 0;
         }
 
         public override bool CheckActive()
@@ -127,7 +125,7 @@ namespace DestroyerTest.Content.Entities
         public float ShieldScale = 1f;
         public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            float progress = (float)DormantNPCKillTally / (float)DormantNPCKillRequirement;
+            float progress = (float)SentinelKillTally / (float)SentinelKillRequirement;
             if (CurrentAttack == AttackState.Dormant)
             {
 
@@ -143,19 +141,19 @@ namespace DestroyerTest.Content.Entities
 
             Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
             Main.EntitySpriteDraw(v, NPC.Center - screenPos, null, ColorLib.WretchedGradient() * ShieldOpacity, 0f, v.Size() / 2, ShieldScale, SpriteEffects.None);
-            Utils.DrawBorderString(spriteBatch, $"{DormantNPCKillTally} / {DormantNPCKillRequirement}", (NPC.Center + new Vector2(0, -90)) - screenPos, ColorLib.WretchedGradient() * ShieldOpacity, 3f, 0.5f, 0.5f);
+            Utils.DrawBorderString(spriteBatch, $"{SentinelKillTally} / {SentinelKillRequirement}", (NPC.Center + new Vector2(0, -90)) - screenPos, ColorLib.WretchedGradient() * ShieldOpacity, 3f, 0.5f, 0.5f);
             Opus.ReturnToDefaultDrawing(spriteBatch);
             return true;
         }
         public override bool? CanBeHitByItem(Player player, Item item)
         {
-            return !DTFlags.NodeCharmEquipped && !(DormantNPCKillTally < DormantNPCKillRequirement);
+            return !DTFlags.NodeCharmEquipped && !(SentinelKillTally < SentinelKillRequirement);
         }
 
         public override bool? CanBeHitByProjectile(Projectile projectile)
         {
             if (projectile.friendly)
-                return !DTFlags.NodeCharmEquipped && !(DormantNPCKillTally < DormantNPCKillRequirement); ; // prevent friendly damage when charm is equipped
+                return !DTFlags.NodeCharmEquipped && !(SentinelKillTally < SentinelKillRequirement); ; // prevent friendly damage when charm is equipped
 
             // hostile projectiles behave normally
             return null;
@@ -181,8 +179,8 @@ namespace DestroyerTest.Content.Entities
         public bool HasBuffed = false;
         public bool HasDebuffed = false;
         public int IdleTimer = 60;
-        public int DormantNPCKillTally = 0;
-        public const int DormantNPCKillRequirement = 50;
+        public int SentinelKillTally = 0;
+        public const int SentinelKillRequirement = 30;
 
         public float RotSpeed;
         public int StarShootID = ModContent.ProjectileType<TenebrisStarHostile>();
@@ -252,10 +250,6 @@ namespace DestroyerTest.Content.Entities
             {
                 StarShootID = ModContent.ProjectileType<CursedNodeCrystal>();
             }
-            if ((Main.expertMode && DownedBossSystem.downedLunarBoss) || Main.masterMode)
-            {
-                StarShootID = ModContent.ProjectileType<TenebrisStarHostile>();
-            }
             if (!Main.expertMode && !Main.masterMode)
             {
                 StarShootID = ProjectileID.CursedFlameHostile;
@@ -264,12 +258,12 @@ namespace DestroyerTest.Content.Entities
             Vector2 PRTPos;
             PRTPos = NPC.Center;
 
-            if ((DormantNPCKillTally < DormantNPCKillRequirement))
+            if ((SentinelKillTally < SentinelKillRequirement))
             {
                 ManageShieldIn();
             }
 
-            if (DormantNPCKillTally >= DormantNPCKillRequirement)
+            if (SentinelKillTally >= SentinelKillRequirement)
             {
                 if (!Flag2)
                 {
@@ -285,7 +279,7 @@ namespace DestroyerTest.Content.Entities
                     {
                         
                         DormantAI();
-                        if ((DormantNPCKillTally < DormantNPCKillRequirement))
+                        if ((SentinelKillTally < SentinelKillRequirement))
                         {
                             NPC.immortal = true;
                             NPC.dontTakeDamage = true;
@@ -296,7 +290,7 @@ namespace DestroyerTest.Content.Entities
                             NPC.dontTakeDamage = false;
                         }
 
-                        if (NPC.justHit && !DTFlags.NodeCharmEquipped && !(DormantNPCKillTally < DormantNPCKillRequirement))
+                        if (NPC.justHit && !DTFlags.NodeCharmEquipped && !(SentinelKillTally < SentinelKillRequirement))
                         {
                             FablesTitleCardSystem.RegisterFablesBossIntro(FablesTitleCardSystem.CursedFlameNodeTitle.Name, FablesTitleCardSystem.CursedFlameNodeTitle.Title, 180, true, ColorLib.WretchedGradient(), ColorLib.WretchedGradient(), ColorLib.WretchedGradient(), ColorLib.WretchedGradient(), FablesTitleCardSystem.CursedFlameNodeTitle.MusicTitle, FablesTitleCardSystem.CursedFlameNodeTitle.MusicArtist);
                             CurrentAttack = AttackState.Idle;
@@ -567,7 +561,7 @@ namespace DestroyerTest.Content.Entities
                         {
                             if (!DestroyerTestMod.EternityIsActive && !DestroyerTestMod.DeathIsActive)
                             {
-                                if (NapalmRainTimer % 7.2f == 0)
+                                if (NapalmRainTimer % 7 == 0)
                                 {
                                     SoundEngine.PlaySound(NapalmShoot, NPC.Center);
                                     Projectile.NewProjectile(Entity.GetSource_FromThis(), NPC.Center, Velocity, ModContent.ProjectileType<CursedFlameNapalm>(), 20, 2);
@@ -697,7 +691,7 @@ namespace DestroyerTest.Content.Entities
                         p.AddBuff(ModContent.BuffType<NodePower>(), 60);
                     }
 
-                    if (DormantNPCKillTally < DormantNPCKillRequirement)
+                    if (SentinelKillTally < SentinelKillRequirement)
                     {
                         SpawnNPCWave();
                     }
@@ -707,6 +701,7 @@ namespace DestroyerTest.Content.Entities
 
         public int SpawnNPCTimer = 0;
         public static string NPCIdentifierContext = "CusedFlameNodeWaveEnemy";
+        public int SentinelCount = Main.npc.Where(n => n.active && n.type == ModContent.NPCType<CursedFlameSentinel>()).Count();
 
         public static List<int> CursedFlameNodeWaveEnemies = new List<int>
         {
@@ -720,28 +715,28 @@ namespace DestroyerTest.Content.Entities
         {
             SpawnNPCTimer++;
             WaveTimeout++;
-            Vector2[] SpawnPositions = Opus.GetEquidistantVectors(5, NPC.Center, 250);
+            Vector2[] SpawnPositions = Opus.GetEquidistantVectors(3, NPC.Center, 250);
+            SentinelCount = Main.npc.Where(n => n.active && n.type == ModContent.NPCType<CursedFlameSentinel>()).Count();
 
-            if ((SpawnNPCTimer % 300 == 0 && CFNGlobal.WaveNPCCount == 0) || WaveTimeout > 1800)
+
+            if ((SpawnNPCTimer % 300 == 0 && SentinelCount == 0) || WaveTimeout > 1800)
             {
                 if (WaveTimeout > 1800)
                 {
                     CombatText.NewText(NPC.Hitbox, Color.Red, "30 Seconds have passed. Wave failsafe intiated.");
-                    Main.NewText("TALID: 30 Seconds have passed. Wave failsafe intiated.", Color.Red);
+                    Main.NewText("30 Seconds have passed. Wave failsafe intiated.", Color.Red);
 
                     foreach (NPC child in Main.npc)
                     {
                         if (!child.active) continue;
 
-                        var g = child.GetGlobalNPC<CFNGlobal>();
-
-                        if (g.IsNodeSpawned && g.Node == this)
+                        if (child.type == ModContent.NPCType<CursedFlameSentinel>())
                         {
                             child.StrikeInstantKill();
                         }
                     }
 
-                    DormantNPCKillTally = ((DormantNPCKillTally + 9) / 10) * 10;
+                    SentinelKillTally = ((SentinelKillTally + 9) / 10) * 10;
                 }
                 WaveTimeout = 0;
 
@@ -758,12 +753,12 @@ namespace DestroyerTest.Content.Entities
                     Ring.Prepare(SpawnPositions[i], Vector2.Zero, ColorLib.CursedFlames, 0.1f, 0.01f, 0.4f, BlendState.Additive);
                     ParticleEngine.ShaderParticles.Add(Ring);
 
-                    NPC wavenpc = NPC.NewNPCDirect(NPC.GetSource_FromAI(NPCIdentifierContext), SpawnPositions[i], CursedFlameNodeWaveEnemies[Main.rand.Next(CursedFlameNodeWaveEnemies.Count)]);
-                    wavenpc.scale = 1.5f;
-                    wavenpc.knockBackResist = 0f;
-                    var g = wavenpc.GetGlobalNPC<CFNGlobal>();
-                    g.IsNodeSpawned = true;
-                    g.Node = this;
+                    NPC wavenpc = NPC.NewNPCDirect(NPC.GetSource_FromAI(), SpawnPositions[i], ModContent.NPCType<CursedFlameSentinel>());
+                    if (wavenpc.ModNPC is CursedFlameSentinel sentinel)
+                    {
+                        sentinel.Node = this;
+                    }
+                    
                 }
             }
         }
@@ -850,107 +845,12 @@ namespace DestroyerTest.Content.Entities
 
         public override void OnKill()
         {
-            CFNGlobal.WaveNPCCount = 0;
+            SentinelKillTally = 0;
         }
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
             npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<CursedNodeLootBag>()));
-        }
-    }
-
-    public class CFNGlobal : GlobalNPC
-    {
-        public override bool InstancePerEntity => true;
-
-        public static int WaveNPCCount = 0;
-
-        public bool IsNodeSpawned = false;
-
-        public CursedFlameNodeMB Node = null;
-
-        public override void Unload()
-        {
-            WaveNPCCount = 0;
-            IsNodeSpawned = false;
-            Node = null;
-        }
-
-        public override void OnSpawn(NPC npc, IEntitySource source)
-        {
-            if (source is EntitySource_Parent parent && parent.Context == CursedFlameNodeMB.NPCIdentifierContext)
-            {
-                WaveNPCCount += 1;
-                IsNodeSpawned = true;
-            }
-
-        }
-
-        public int TexOffset = 0;
-        public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-        {
-            if (IsNodeSpawned)
-            {
-                int MaxRad = 1200;
-                float CurDist = npc.Center.Distance(Node.NPC.Center);
-
-                float Modifier = CurDist / (float)MaxRad;
-
-
-                Line L = new Line(npc.Center, Node.NPC.Center);
-                TexOffset += 10;
-                DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(10, true), DTColorUtils.MultiLerp(Modifier, ColorLib.WretchedColorMap) with { A = 0 }, spriteBatch, BlendState.Additive, TexOffset, 0.5f);
-            }
-            return base.PreDraw(npc, spriteBatch, screenPos, drawColor);
-        }
-        public override void PostDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-        {
-
-            if (IsNodeSpawned)
-            {
-                int MaxRad = 1200;
-                float CurDist = npc.Center.Distance(Node.NPC.Center);
-
-                float Modifier = CurDist / (float)MaxRad;
-
-                Main.EntitySpriteDraw(DTAssetLib.CorruptSigil.Value, npc.Center - screenPos, null, DTColorUtils.MultiLerp(Modifier, ColorLib.WretchedColorMap) with { A = 0 } * 0.5f, 0f, DTAssetLib.CorruptSigil.Value.Size() / 2, 0.5f, SpriteEffects.None, 0f);
-            }
-        }
-
-        public override void AI(NPC npc)
-        {
-
-            
-        }
-
-        public override bool CheckActive(NPC npc)
-        {
-            if (IsNodeSpawned)
-            {
-                return false;
-            }
-            return true;
-        }
-
-        public override void OnKill(NPC npc)
-        {
-            if (IsNodeSpawned)
-            {
-                if (Node != null)
-                {
-                    Node.DormantNPCKillTally += 1;
-                }
-                WaveNPCCount--;
-            }
-
-            if (npc.type == ModContent.NPCType<CursedFlameNodeMB>())
-            {
-                if (Node != null)
-                {
-                    Node.DormantNPCKillTally = 0;
-                }
-                WaveNPCCount = 0;
-            }
         }
     }
 }

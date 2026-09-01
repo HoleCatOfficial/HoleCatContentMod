@@ -7,6 +7,7 @@ using Terraria.DataStructures;
 using DestroyerTest.Content.Projectiles;  
 using DestroyerTest.Rarity;
 using DestroyerTest.Content.Projectiles.Weapon.Magic;
+using DestroyerTest.Content.Resources;
 
 namespace DestroyerTest.Content.Magic
 {
@@ -51,7 +52,15 @@ namespace DestroyerTest.Content.Magic
             return player.ownedProjectileCounts[Item.shoot] < 1;
         }
 
-		
+        public override void AddRecipes()
+        {
+			CreateRecipe()
+				.AddIngredient(ItemID.SpellTome)
+                .AddIngredient(ItemID.DemonScythe)
+                .AddIngredient<Tenebris>(6)
+				.AddTile(TileID.LunarCraftingStation)
+                .Register();
+        }
 
     }
 } 

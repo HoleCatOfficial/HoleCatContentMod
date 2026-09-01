@@ -35,7 +35,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         public float stellarFireTime;
         public override bool PreAI()
         {
-            stellarFireTime += 0.025f;
+            stellarFireTime = ((float)Projectile.timeLeft / 240f).Inverse();
             themeColor = ColorLib.StellarFireGradient(stellarFireTime);
             return true;
         }

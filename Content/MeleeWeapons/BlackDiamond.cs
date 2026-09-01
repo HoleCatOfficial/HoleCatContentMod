@@ -29,7 +29,7 @@ namespace DestroyerTest.Content.MeleeWeapons
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.knockBack = 70;
             Item.autoReuse = true;
-            Item.damage = 1200;
+            Item.damage = 780;
             Item.DamageType = DamageClass.Melee;
             Item.noMelee = true;
             Item.noUseGraphic = true;

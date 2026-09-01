@@ -5,7 +5,7 @@ namespace DestroyerTest.Common.DropRules
 {
     public class EternityDropRuleCondition : IItemDropRuleCondition
     {
-        private static LocalizedText Description;
+        public static LocalizedText Description;
 
         public EternityDropRuleCondition()
         {

@@ -37,12 +37,9 @@ namespace DestroyerTest.Content.Tools
         {
             foreach (NPC npc in Main.npc)
             {
-                if (npc.active && npc.TryGetGlobalNPC<CFNGlobal>(out var cf))
+                if (npc.active && npc.type == ModContent.NPCType<CursedFlameSentinel>())
                 {
-                    if (cf.IsNodeSpawned)
-                    {
-                        return true;
-                    }
+                    return true;
                 }
             }
 
@@ -52,7 +49,7 @@ namespace DestroyerTest.Content.Tools
         
         public override bool? UseItem(Player player)
         {
-            return null;
+            return true;
         }
 
         public override bool ConsumeItem(Player player)
@@ -64,12 +61,9 @@ namespace DestroyerTest.Content.Tools
         {
             foreach (NPC npc in Main.npc)
             {
-                if (npc.active && npc.TryGetGlobalNPC<CFNGlobal>(out var cf))
+                if (npc.active && npc.type == ModContent.NPCType<CursedFlameSentinel>())
                 {
-                    if (cf.IsNodeSpawned || cf.Node != null)
-                    {
-                        npc.StrikeInstantKill();
-                    }
+                    npc.StrikeInstantKill();
                 }
             }
         }

@@ -46,7 +46,7 @@ namespace DestroyerTest.Content.MeleeWeapons
             Item.value = Item.buyPrice(gold: 1); // The value of the weapon in copper coins.
             Item.rare = ModContent.RarityType<ShimmeringRarity>(); // Give this item our custom rarity.
             Item.shoot = ModContent.ProjectileType<TenebrisWaraxeProjectile>();
-            Item.shootSpeed = 36f;
+            Item.shootSpeed = 42f;
             Item.ArmorPenetration = 15;
         }
 

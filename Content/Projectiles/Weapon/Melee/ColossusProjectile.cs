@@ -62,7 +62,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             FX.Initiate(npc.Center);
             ParticleEngine.ShaderParticles.Add(FX);
 
-            Opus.RadialSpreadProjectileRandom(ModContent.ProjectileType<ColossusStar>(), 2, npc.Center, (int)(Projectile.damage * 0.2f), (int)(Projectile.knockBack * 0.5f), 14f);
+            Opus.RadialSpreadProjectileRandom(ModContent.ProjectileType<ColossusStar>(), 2, npc.Center, (int)(Projectile.damage * 0.18f), (int)(Projectile.knockBack * 0.5f), 14f);
             if (hit.Crit)
             {
                 ScreenShake.screenshakeMagnitude = 8;
@@ -70,7 +70,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 SoundEngine.PlaySound(DTAssetLib.EnergyWoosh with { PitchVariance = 0.4f });
                 for (int t = 0; t < 2; t++)
                 {
-                    Projectile.NewProjectile(Projectile.GetSource_OnHit(npc), npc.Center, new Vector2(20f * splatterdir, 0).RotatedByRandom(0.1f), ModContent.ProjectileType<GargantuaPhantom>(), (int)(Projectile.damage * 0.2f), 4, Projectile.owner);
+                    Projectile.NewProjectile(Projectile.GetSource_OnHit(npc), npc.Center, new Vector2(20f * splatterdir, 0).RotatedByRandom(0.1f), ModContent.ProjectileType<GargantuaPhantom>(), (int)(Projectile.damage * 0.17f), 4, Projectile.owner);
                 }
             }
             else

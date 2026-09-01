@@ -37,6 +37,11 @@ namespace DestroyerTest.Content.Projectiles
             return timer > 30 && !target.friendly;
         }
 
+        public override bool CanHitPlayer(Player target)
+        {
+            return false;
+        }
+
         public override void AI()
         {
             Projectile.rotation = 0f;

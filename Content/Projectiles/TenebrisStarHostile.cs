@@ -115,7 +115,7 @@ namespace DestroyerTest.Content.Projectiles
         public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
 
-            target.AddBuff(ModContent.BuffType<ShimmeringFlames>(), 30 * 60);
+            target.AddBuff(ModContent.BuffType<ShimmeringFlames>(), 360);
         }
 
         public override void OnKill(int timeLeft)
@@ -191,7 +191,7 @@ namespace DestroyerTest.Content.Projectiles
         public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
 
-            target.AddBuff(ModContent.BuffType<ShimmeringFlames>(), 30 * 60);
+            target.AddBuff(ModContent.BuffType<ShimmeringFlames>(), 360);
         }
 
         public override void OnKill(int timeLeft)

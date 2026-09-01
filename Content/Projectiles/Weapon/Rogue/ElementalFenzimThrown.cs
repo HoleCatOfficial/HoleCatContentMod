@@ -91,7 +91,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 
             Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
             float ROff = Projectile.direction == 1 ? Projectile.rotation + MathHelper.PiOver4 : Projectile.rotation + MathHelper.PiOver4;
-            Main.EntitySpriteDraw(DTAssetLib.CircularSwingThin.Value, Projectile.Center - Main.screenPosition, null, Color.Teal, ROff, DTAssetLib.CircularSwingThin.Value.Size() / 2, 0.5f, SpriteEffects.None, 0);
+            Main.EntitySpriteDraw(DTAssetLib.CircularSwingThin.Value, Projectile.Center - Main.screenPosition, null, Color.Teal, ROff, DTAssetLib.CircularSwingThin.Value.Size() / 2, 0.4f * Projectile.scale, SpriteEffects.None, 0);
             Opus.ReturnToDefaultDrawing(Main.spriteBatch);
 
             Texture2D texture = TextureAssets.Projectile[Projectile.type].Value;

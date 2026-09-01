@@ -25,13 +25,14 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
         private bool returning = false;
         private int flightTime = 0;
         private int soundCooldown = 0; // Initialize a cooldown timer
-        private SoundStyle Woosh = new SoundStyle("DestroyerTest/Assets/Audio/SwordSounds/HeavySwing", 3) with { PitchVariance = 0.4f, MaxInstances = 0 };
-        private SoundStyle TileHit = new SoundStyle("DestroyerTest/Assets/Audio/TenebrousConstruct/Hit", 5) with { PitchVariance = 0.4f, MaxInstances = 0 };
+        private SoundStyle Woosh = new SoundStyle("DestroyerTest/Assets/Audio/SwordSounds/HeavySwing", 3) with { PitchVariance = 0.4f, MaxInstances = 0, Pitch = 0.7f };
+        private SoundStyle TileHit = DTAssetLib.Impacts.LightMetalHit with { PitchVariance = 0.4f, MaxInstances = 0, Pitch = -0.8f, Volume = 0.4f };
         public Color clr = Color.White;
 
         public override void SetStaticDefaults()
         {
             Main.projFrames[Type] = 3;
+            
         }
 
         public override void SetDefaults()
@@ -48,7 +49,14 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             Projectile.netUpdate = true;
             Projectile.tileCollide = true;
             Projectile.ArmorPenetration = 10;
+
+            Projectile.usesIDStaticNPCImmunity = true;
+            Projectile.idStaticNPCHitCooldown = 15;
+
+            
         }
+
+        
         
         public override void OnSpawn(IEntitySource source)
         {
@@ -75,7 +83,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
         {
 
             Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-            Main.EntitySpriteDraw(DTAssetLib.SwingFX.Value, Projectile.Center - Main.screenPosition, null, clr, Projectile.rotation, DTAssetLib.SwingFX.Value.Size() / 2, 0.65f, SpriteEffects.None, 0);
+            Main.EntitySpriteDraw(DTAssetLib.SwingFX.Value, Projectile.Center - Main.screenPosition, null, clr, Projectile.rotation, DTAssetLib.SwingFX.Value.Size() / 2, Projectile.scale * 1f, SpriteEffects.None, 0);
             Opus.ReturnToDefaultDrawing(Main.spriteBatch);
             return true;
         }
@@ -106,12 +114,23 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             if (soundCooldown <= 0)
             {
                 SoundEngine.PlaySound(Woosh, Projectile.Center);
-                soundCooldown = 10;
+                soundCooldown = 12;
             }
 
 
 
-
+            if (returning)
+            {
+                Projectile.velocity.Y += 1.7f;
+            }
+            else
+            {
+                flightTime++;
+                if (flightTime > 2)
+                {
+                    returning = true;
+                }
+            }
 
             Player player = Main.player[Projectile.owner];
 
@@ -119,37 +138,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 
             // Always spinning
             Projectile.rotation += 0.4f * Projectile.direction;
-
-            if (!returning)
-            {
-                // OutPhase: Count time before returning
-                flightTime++;
-                if (flightTime >= 60)
-                {
-                    returning = true;
-                }
-            }
-
-            if (returning)
-            {
-                // InPhase: Smooth return using Lerp
-                Vector2 returnDirection = player.Center - Projectile.Center;
-                float speed = MathHelper.Lerp(Projectile.velocity.Length(), 25f, 0.08f); // Smooth acceleration
-                Projectile.velocity = returnDirection.SafeNormalize(Vector2.Zero) * speed;
-
-                
-
-                // If close enough, remove the projectile
-                if (returnDirection.LengthSquared() < 45f || RangeOfPlayer) // 4 pixels radius
-                {
-                    Projectile.Kill();
-                }
-            }
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            SoundStyle Hit = new SoundStyle("DestroyerTest/Assets/Audio/Scholar/ShieldHit", 3) with
+            SoundStyle Hit = DTAssetLib.Impacts.DarkShot with
             {
             PitchVariance = 0.5f
             };
@@ -180,7 +173,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             {
                 returning = true;
             }
-            Opus.RadialSpreadProjectile(ModContent.ProjectileType<TenebrisStarFriendly>(), 9, Projectile.Center, Projectile.damage / 3, 4, 15, ai2: 1, offset: Projectile.rotation);
+            Opus.RadialSpreadProjectile(ModContent.ProjectileType<TenebrisStarFriendly>(), 3, Projectile.Center, Projectile.damage / 3, 4, 15, ai2: 1, offset: Projectile.rotation);
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)
@@ -206,6 +199,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             Ring.Prepare(Projectile.Center, Vector2.Zero, DTColorUtils.Pastel(clr, 0.5f), 0.02f, 0.01f, 0.3f, BlendState.Additive);
             ParticleEngine.BehindProjectiles.Add(Ring);
 
+            float X = -oldVelocity.X * 0.5f;
+            X = MathHelper.Clamp(X, -80f, 80f);
+            float Y = -oldVelocity.Y * 0.8f;
+            Y = MathHelper.Clamp(Y, -40f, 40f);
+
+            Projectile.velocity = new Vector2(X, Y);
             returning = true;
 
             return false;

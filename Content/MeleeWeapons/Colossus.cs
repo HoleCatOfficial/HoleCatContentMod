@@ -37,7 +37,7 @@ namespace DestroyerTest.Content.MeleeWeapons
             Item.useTurn = true;
 
             Item.DamageType = ModContent.GetInstance<DTTrueMeleeClass>();
-            Item.damage = 250;
+            Item.damage = 300;
             Item.knockBack = 6;
             Item.crit = 4;
 

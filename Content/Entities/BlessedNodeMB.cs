@@ -115,8 +115,7 @@ namespace DestroyerTest.Content.Entities
 
         public void ResetData()
         {
-            DormantNPCKillTally = 0;
-            BNGlobal.WaveNPCCount = 0;
+            SentinelKillTally = 0;
         }
 
         public override bool CheckActive()
@@ -132,7 +131,7 @@ namespace DestroyerTest.Content.Entities
         {
             if (CurrentAttack == AttackState.Dormant)
             {
-                DTUtils.DrawChargeBar(2f, (NPC.Center + new Vector2(0, 100)) - Main.screenPosition, (float)DormantNPCKillTally / (float)DormantNPCKillRequirement, Color.SkyBlue);
+                DTUtils.DrawChargeBar(2f, (NPC.Center + new Vector2(0, 100)) - Main.screenPosition, (float)SentinelKillTally / (float)SentinelKillRequirement, Color.SkyBlue);
             }
 
             if (CurrentAttack == AttackState.Lasers)
@@ -155,20 +154,20 @@ namespace DestroyerTest.Content.Entities
             Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
             Main.EntitySpriteDraw(v, NPC.Center - screenPos, null, Color.SkyBlue * ShieldOpacity, 0f, v.Size() / 2, ShieldScale, SpriteEffects.None);
 
-            spriteBatch.DrawString(DTAssetLib.Doxent.Value, $"{DormantNPCKillTally} / {DormantNPCKillRequirement}", (NPC.Center + new Vector2(0, -90)) - screenPos, Color.SkyBlue * ShieldOpacity, 0f, DTAssetLib.Doxent.Value.MeasureString($"{DormantNPCKillTally} / {DormantNPCKillRequirement}") * 0.5f, 0.5f, SpriteEffects.None, 0f);
-            //Utils.DrawBorderString(spriteBatch, $"{DormantNPCKillTally} / {DormantNPCKillRequirement}", (NPC.Center + new Vector2(0, -90)) - screenPos, Color.SkyBlue * ShieldOpacity, 3f, 0.5f, 0.5f);
+            spriteBatch.DrawString(DTAssetLib.Doxent.Value, $"{SentinelKillTally} / {SentinelKillRequirement}", (NPC.Center + new Vector2(0, -90)) - screenPos, Color.SkyBlue * ShieldOpacity, 0f, DTAssetLib.Doxent.Value.MeasureString($"{SentinelKillTally} / {SentinelKillRequirement}") * 0.5f, 0.5f, SpriteEffects.None, 0f);
+            //Utils.DrawBorderString(spriteBatch, $"{SentinelKillTally} / {SentinelKillRequirement}", (NPC.Center + new Vector2(0, -90)) - screenPos, Color.SkyBlue * ShieldOpacity, 3f, 0.5f, 0.5f);
             Opus.ReturnToDefaultDrawing(spriteBatch);
             return true;
         }
         public override bool? CanBeHitByItem(Player player, Item item)
         {
-            return !DTFlags.NodeCharmEquipped && !(DormantNPCKillTally < DormantNPCKillRequirement);
+            return !DTFlags.NodeCharmEquipped && !(SentinelKillTally < SentinelKillRequirement);
         }
 
         public override bool? CanBeHitByProjectile(Projectile projectile)
         {
             if (projectile.friendly)
-                return !DTFlags.NodeCharmEquipped && !(DormantNPCKillTally < DormantNPCKillRequirement); ; // prevent friendly damage when charm is equipped
+                return !DTFlags.NodeCharmEquipped && !(SentinelKillTally < SentinelKillRequirement); ; // prevent friendly damage when charm is equipped
 
             // hostile projectiles behave normally
             return null;
@@ -194,8 +193,8 @@ namespace DestroyerTest.Content.Entities
         public bool HasBuffed = false;
         public bool HasDebuffed = false;
         public int IdleTimer = 60;
-        public int DormantNPCKillTally = 0;
-        public const int DormantNPCKillRequirement = 50;
+        public int SentinelKillTally = 0;
+        public const int SentinelKillRequirement = 30;
         public bool Flag2 = false;
 
         public int CrossCount = 0;
@@ -263,12 +262,12 @@ namespace DestroyerTest.Content.Entities
             Vector2 PRTPos;
             PRTPos = NPC.Center;
 
-            if ((DormantNPCKillTally < DormantNPCKillRequirement))
+            if ((SentinelKillTally < SentinelKillRequirement))
             {
                 ManageShieldIn();
             }
 
-            if (DormantNPCKillTally >= DormantNPCKillRequirement)
+            if (SentinelKillTally >= SentinelKillRequirement)
             {
                 if (!Flag2)
                 {
@@ -284,7 +283,7 @@ namespace DestroyerTest.Content.Entities
                     {
 
                         DormantAI();
-                        if ((DormantNPCKillTally < DormantNPCKillRequirement))
+                        if ((SentinelKillTally < SentinelKillRequirement))
                         {
                             NPC.dontTakeDamage = true;
                             NPC.immortal = true;
@@ -295,7 +294,7 @@ namespace DestroyerTest.Content.Entities
                             NPC.immortal = false;
                         }
 
-                        if (NPC.justHit && !DTFlags.NodeCharmEquipped && !(DormantNPCKillTally < DormantNPCKillRequirement))
+                        if (NPC.justHit && !DTFlags.NodeCharmEquipped && !(SentinelKillTally < SentinelKillRequirement))
                         {
                             FablesTitleCardSystem.RegisterFablesBossIntro(FablesTitleCardSystem.BlessedNodeTitle.Name, FablesTitleCardSystem.BlessedNodeTitle.Title, 180, true, Color.SkyBlue, Color.DeepSkyBlue, Main.DiscoColor, Main.DiscoColor, FablesTitleCardSystem.BlessedNodeTitle.MusicTitle, FablesTitleCardSystem.BlessedNodeTitle.MusicArtist);
                             CurrentAttack = AttackState.Idle;
@@ -521,7 +520,7 @@ namespace DestroyerTest.Content.Entities
                         p.AddBuff(ModContent.BuffType<NodePower>(), 60);
                     }
 
-                    if (DormantNPCKillTally < DormantNPCKillRequirement)
+                    if (SentinelKillTally < SentinelKillRequirement)
                     {
                         SpawnNPCWave();
                     }
@@ -530,81 +529,65 @@ namespace DestroyerTest.Content.Entities
         }
 
         public int SpawnNPCTimer = 0;
-        public static string NPCIdentifierContext = "BlessedNodeWaveEnemy";
+        public static string NPCIdentifierContext = "CusedFlameNodeWaveEnemy";
+        public int SentinelCount = Main.npc.Where(n => n.active && n.type == ModContent.NPCType<CrystallineAngel>()).Count();
 
-        public static List<int> BlessedNodeWaveEnemies = new List<int>
+        public static List<int> CursedFlameNodeWaveEnemies = new List<int>
         {
-            NPCID.Pixie,
-            NPCID.Unicorn,
-            NPCID.Gastropod,
-            NPCID.LightMummy
+            NPCID.EaterofSouls,
+            NPCID.Corruptor,
+            NPCID.Slimer
         };
 
         public int WaveTimeout = 0;
-        public int ClickCooldown = 60;
         public void SpawnNPCWave()
         {
             SpawnNPCTimer++;
             WaveTimeout++;
+            Vector2[] SpawnPositions = Opus.GetEquidistantVectors(3, NPC.Center, 250);
+            SentinelCount = Main.npc.Where(n => n.active && n.type == ModContent.NPCType<CrystallineAngel>()).Count();
 
-            if (ClickCooldown > 0)
+
+            if ((SpawnNPCTimer % 300 == 0 && SentinelCount == 0) || WaveTimeout > 1800)
             {
-                ClickCooldown--;
-            }
-
-            Vector2[] SpawnPositions = Opus.GetEquidistantVectors(5, NPC.Center, 250);
-
-            if ((SpawnNPCTimer % 300 == 0 && BNGlobal.WaveNPCCount == 0) || WaveTimeout > 1800)
-            {
-                if (Main.netMode == NetmodeID.MultiplayerClient || Main.netMode == NetmodeID.SinglePlayer)
-                {
-                    if (Main.MouseWorld.Distance(NPC.Center) < 20 && ClickCooldown <= 0)
-                    {
-                        if (Main.LocalPlayer.controlUseTile)
-                        {
-                            SoundEngine.PlaySound(SoundID.Item129);
-                            WaveTimeout = 1801;
-                            ClickCooldown = 60;
-                        }
-                    }
-                }
-
                 if (WaveTimeout > 1800)
                 {
-                    CombatText.NewText(NPC.Hitbox, Color.Red, "Wave failsafe intiated.");
-                    Main.NewText("TALID: Wave failsafe intiated.", Color.Red);
+                    CombatText.NewText(NPC.Hitbox, Color.Red, "30 Seconds have passed. Wave failsafe intiated.");
+                    Main.NewText("30 Seconds have passed. Wave failsafe intiated.", Color.Red);
 
                     foreach (NPC child in Main.npc)
                     {
                         if (!child.active) continue;
 
-                        var g = child.GetGlobalNPC<BNGlobal>();
-
-                        if (g.IsNodeSpawned && g.Node == this)
+                        if (child.type == ModContent.NPCType<CursedFlameSentinel>())
                         {
                             child.StrikeInstantKill();
                         }
                     }
 
-                    DormantNPCKillTally = ((DormantNPCKillTally + 9) / 10) * 10;
+                    SentinelKillTally = ((SentinelKillTally + 9) / 10) * 10;
                 }
                 WaveTimeout = 0;
 
-                
-
                 SoundEngine.PlaySound(DTAssetLib.Impacts.DarkMagicImpact);
+
+                if (DestroyerTestMod.EternityIsActive || DestroyerTestMod.DeathIsActive)
+                {
+                    
+                }
+
                 for (int i = 0; i < SpawnPositions.Length; i++)
                 {
                     BloomRingSharp Ring = new();
-                    Ring.Prepare(SpawnPositions[i], Vector2.Zero, Color.SkyBlue, 0.1f, 0.01f, 0.4f, BlendState.Additive);
+                    Ring.Prepare(SpawnPositions[i], Vector2.Zero, Color.DeepSkyBlue, 0.1f, 0.01f, 0.4f, BlendState.Additive);
                     ParticleEngine.ShaderParticles.Add(Ring);
 
-                    NPC wavenpc = NPC.NewNPCDirect(NPC.GetSource_FromAI(NPCIdentifierContext), SpawnPositions[i], BlessedNodeWaveEnemies[Main.rand.Next(BlessedNodeWaveEnemies.Count)]);
-                    wavenpc.scale = 1.5f;
-                    wavenpc.knockBackResist = 0f;
-                    var g = wavenpc.GetGlobalNPC<BNGlobal>();
-                    g.IsNodeSpawned = true;
-                    g.Node = this;
+                    NPC wavenpc = NPC.NewNPCDirect(NPC.GetSource_FromAI(), SpawnPositions[i], ModContent.NPCType<CrystallineAngel>());
+                    if (wavenpc.ModNPC is CrystallineAngel sentinel)
+                    {
+                        sentinel.Node = this;
+                    }
+
                 }
             }
         }
@@ -698,110 +681,12 @@ namespace DestroyerTest.Content.Entities
 
         public override void OnKill()
         {
-            BNGlobal.WaveNPCCount = 0;
             Projectile.NewProjectile(NPC.GetSource_Death(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<BlessedNodeDeathProjectile>(), 100, 0);
         }
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
             npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<BlessedNodeLootBag>()));
-        }
-    }
-
-    public class BNGlobal : GlobalNPC
-    {
-        public override bool InstancePerEntity => true;
-
-        public static int WaveNPCCount = 0;
-
-        public bool IsNodeSpawned = false;
-
-        public BlessedNodeMB Node = null;
-
-        public override void Unload()
-        {
-            WaveNPCCount = 0;
-            
-        }
-
-        public override void OnSpawn(NPC npc, IEntitySource source)
-        {
-            if (source is EntitySource_Parent parent && parent.Context == BlessedNodeMB.NPCIdentifierContext)
-            {
-                WaveNPCCount += 1;
-            }
-        }
-
-        public int TexOffset = 0;
-        public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-        {
-            if (IsNodeSpawned)
-            {
-                Line L = new Line(npc.Center, Node.NPC.Center);
-                TexOffset += 10;
-                DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(10, true), Color.SkyBlue with { A = 0 }, spriteBatch, BlendState.Additive, TexOffset, 0.5f);
-            }
-            return base.PreDraw(npc, spriteBatch, screenPos, drawColor);
-        }
-
-        public float rOff = 0f;
-        public override void PostDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-        {
-            rOff += 0.05f;
-            if (IsNodeSpawned)
-            {
-                Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-                Main.EntitySpriteDraw(DTAssetLib.HallowedSigil.Value, npc.Center - screenPos, null, Color.SkyBlue * 0.5f, rOff, DTAssetLib.HallowedSigil.Value.Size() / 2, 0.5f, SpriteEffects.None, 0f);
-                Opus.ReturnToDefaultDrawing(spriteBatch);
-            }
-        }
-
-        public override void AI(NPC npc)
-        {
-            if (IsNodeSpawned)
-            {
-                if (Node != null)
-                {
-                    if (npc.Center.Distance(Node.NPC.Center) > 1200f)
-                    {
-                        npc.Center = Node.NPC.Center + new Vector2(1180f, 0f).RotatedBy(Node.NPC.Center.DirectionTo(npc.Center).ToRotation());
-                    } 
-                }
-            }
-
-        }
-
-        public override bool CheckActive(NPC npc)
-        {
-            if (IsNodeSpawned)
-            {
-                return false;
-            }
-            return true;
-        }
-
-        public override void OnKill(NPC npc)
-        {
-            if (IsNodeSpawned)
-            {
-                if (Node != null)
-                {
-                    Node.DormantNPCKillTally += 1;
-                }
-                WaveNPCCount--;
-            }
-
-            if (npc.type == ModContent.NPCType<BlessedNodeMB>())
-            {
-                if (Node != null)
-                {
-                    Node.DormantNPCKillTally = 0;
-                }
-                WaveNPCCount = 0;
-            }
-
-            IsNodeSpawned = false;
-            Node = null;
         }
     }
 }

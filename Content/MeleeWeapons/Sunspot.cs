@@ -19,7 +19,9 @@ namespace DestroyerTest.Content.MeleeWeapons
 {
     public class Sunspot : ModItem
     {
-
+        public override void SetStaticDefaults()
+        {
+        }
         public override void SetDefaults()
         {
             Item.width = 96;
@@ -30,7 +32,7 @@ namespace DestroyerTest.Content.MeleeWeapons
             Item.autoReuse = true;
 
             Item.DamageType = DamageClass.Melee;
-            Item.damage = 300;
+            Item.damage = 310;
             Item.knockBack = 4f;
             Item.crit = 16;
 

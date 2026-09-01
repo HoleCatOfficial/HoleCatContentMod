@@ -5,7 +5,7 @@ namespace DestroyerTest.Common.DropRules
 {
     public class MasochistDropRuleCondition : IItemDropRuleCondition
     {
-        private static LocalizedText Description;
+        public static LocalizedText Description;
 
         public MasochistDropRuleCondition()
         {

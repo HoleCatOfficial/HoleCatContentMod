@@ -18,6 +18,8 @@ using Terraria.ModLoader;
 using System.Collections.Generic;
 using Terraria.Localization;
 using DestroyerTest.Content.Resources;
+using OpusLib.Content.Helpers;
+using DestroyerTest.Common.DropRules;
 
 namespace DestroyerTest.Content.Consumables
 {
@@ -27,6 +29,7 @@ namespace DestroyerTest.Content.Consumables
         public override void SetStaticDefaults()
         {
             Item.ResearchUnlockCount = 1;
+            OpusNPCDropHelper.DropsFromNPC[Type] = new NPCDropData(NPCID.CultistBoss, ItemDropRule.ByCondition(new EvilBiomeDropRule(true), Type));
         }
 
         public override void SetDefaults()
@@ -48,16 +51,4 @@ namespace DestroyerTest.Content.Consumables
             itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<Tenebris>(), 1, 25, 40));
         }
     }
-    
-    public class TenebrisDelivery : GlobalNPC
-	{
-		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
-         {
-
-			if (npc.type == NPCID.CultistBoss && WorldGen.crimson) 
-            {
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<TenebrisDeliveryBox>(), 1, 1, 1));
-			}
-		}
-	}
 }
