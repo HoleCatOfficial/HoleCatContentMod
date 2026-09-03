@@ -1226,7 +1226,7 @@ namespace DestroyerTest.Common
             return ShieldManager.ActiveShields[player.whoAmI].FirstOrDefault(x => x.InternalName == Name);
         }
 
-        public static void SmoothMoveToPoint(this NPC npc, Vector2 targetPosition, float maxSpeed)
+        public static void SmoothMoveToPoint(this NPC npc, Vector2 targetPosition, float maxSpeed, float decelerationDistance = 50f)
         {
             Vector2 offset = targetPosition - npc.Center;
             float distance = offset.Length();
@@ -1237,17 +1237,18 @@ namespace DestroyerTest.Common
                 return;
             }
 
-            offset.Normalize();
+            offset /= distance;
 
-            // Progress from 0 (at target) to 1 (far away)
-            float progress = MathHelper.Clamp(distance / maxSpeed, 0f, 1f);
+            // 0 = at target
+            // 1 = at or beyond the deceleration distance
+            float progress = MathHelper.Clamp(distance / decelerationDistance, 0f, 1f);
 
             float speed = MathHelper.SmoothStep(0f, maxSpeed, progress);
 
             npc.velocity = offset * speed;
         }
 
-        public static void SmoothMoveToPoint(this Projectile projectile, Vector2 targetPosition, float maxSpeed)
+        public static void SmoothMoveToPoint(this Projectile projectile, Vector2 targetPosition, float maxSpeed, float decelerationDistance = 50f)
         {
             Vector2 offset = targetPosition - projectile.Center;
             float distance = offset.Length();
@@ -1258,10 +1259,11 @@ namespace DestroyerTest.Common
                 return;
             }
 
-            offset.Normalize();
+            offset /= distance;
 
-            // Progress from 0 (at target) to 1 (far away)
-            float progress = MathHelper.Clamp(distance / maxSpeed, 0f, 1f);
+            // 0 = at target
+            // 1 = at or beyond the deceleration distance
+            float progress = MathHelper.Clamp(distance / decelerationDistance, 0f, 1f);
 
             float speed = MathHelper.SmoothStep(0f, maxSpeed, progress);
 

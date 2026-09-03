@@ -26,7 +26,7 @@ namespace DestroyerTest.Content.RogueItems
 			Item.autoReuse = true;
 			Item.consumable = false;	
 			Item.damage = 180;
-			Item.knockBack = 15f;
+			Item.knockBack = 8f;
 			Item.noUseGraphic = true;
 			Item.noMelee = true;
 			Item.DamageType = DamageClass.Throwing;

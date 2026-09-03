@@ -171,8 +171,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             };
 
             Player player = Main.player[Main.myPlayer];  // Accessing the current player
-            hit.Knockback = 4f;
-            target.StrikeNPC(hit);
+
             SoundEngine.PlaySound(Hit, Projectile.position);
 
             if (player.HeldItem.ModItem is CursedHammer hammer)

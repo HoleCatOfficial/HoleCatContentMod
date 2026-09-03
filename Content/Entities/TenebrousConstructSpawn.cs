@@ -226,9 +226,17 @@ namespace DestroyerTest.Content.Entities
         };
 
         bool Roared = false;
+        float recordedvolume = 1f;
+        bool record = false;
         public override void AI()
         {
             ControlDialogue();
+
+            if (!record)
+            {
+                recordedvolume = Main.musicVolume;
+                record = true;
+            }
 
             NPC.SmoothMoveToPoint(Main.LocalPlayer.Center + new Vector2(300 * Main.LocalPlayer.direction, -300), 16f);
 
@@ -259,7 +267,7 @@ namespace DestroyerTest.Content.Entities
                     }
                     else
                     {
-                        Main.musicVolume = 1f;
+                        Main.musicVolume = recordedvolume;
                         NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<TenebrousConstruct>());
                         NPC.StrikeInstantKill();
                     }

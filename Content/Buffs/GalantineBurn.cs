@@ -169,6 +169,7 @@ namespace DestroyerTest.Content.Buffs
         public override void UpdateLifeRegen(NPC npc, ref int damage) {
 			int amount = 24;
 
+
 			if (!Main.hardMode)
 			{
 				amount = 24;
@@ -178,11 +179,15 @@ namespace DestroyerTest.Content.Buffs
 				amount = 56;
 			}
 
+            damage = amount;
+
             if (lifeRegenDebuff) {
                 
 
                 if (npc.lifeRegen > 0)
                     npc.lifeRegen = 0;
+
+				
 
                 npc.lifeRegen -= amount;
             }

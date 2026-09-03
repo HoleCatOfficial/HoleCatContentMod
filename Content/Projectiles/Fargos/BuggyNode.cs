@@ -71,7 +71,7 @@ namespace DestroyerTest.Content.Projectiles.Fargos
                         Vector2 velocitynormal = targetNPC.velocity;
                         Vector2 targ = targetNPC.Center + (velocitynormal * 2f);
                         Vector2 dir = Projectile.Center.DirectionTo(targ) * 10f;
-                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, dir, ModContent.ProjectileType<BuggyNodeSpark>(), 20, 10, Projectile.owner);
+                        Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, dir, ModContent.ProjectileType<BuggyNodeSpark>(), (int)Main.player[Projectile.owner].GetTotalDamage(DamageClass.Generic).ApplyTo(70), 10, Projectile.owner);
                     }
                 }
             }

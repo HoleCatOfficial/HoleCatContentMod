@@ -297,6 +297,7 @@ namespace DestroyerTest.Common
             public static SoundStyle Electric1 = new SoundStyle($"{Path}/ElectricLoop1");
             public static SoundStyle Electric2 = new SoundStyle($"{Path}/ElectricLoop2");
             public static SoundStyle Electric3 = new SoundStyle($"{Path}/ElectricLoop3");
+            public static SoundStyle Electric4 = new SoundStyle($"{Path}/ElectricLoop3");
             public static SoundStyle GenericLaser = new SoundStyle($"{Path}/LaserLoop1");
             public static SoundStyle HateLaser = new SoundStyle($"{Path}/HateLaser");
             public static SoundStyle Corona = new SoundStyle($"{Path}/RiftYoyoT3Loop");
@@ -320,6 +321,10 @@ namespace DestroyerTest.Common
                 case 3:
                     {
                         return LoopedSounds.Electric3;
+                    }
+                case 4:
+                    {
+                        return LoopedSounds.Electric4;
                     }
                 default:
                     {
@@ -361,6 +366,7 @@ namespace DestroyerTest.Common
             public static SoundStyle FleshHit = new SoundStyle($"{Path}/FleshHit", 5);
             public static SoundStyle HellWeaponImpact = new SoundStyle($"{Path}/HellWeaponImpact");
             public static SoundStyle HeatseekerSilohSlam = new SoundStyle($"{Path}/HeatseekerSilohSlam");
+            public static SoundStyle HeavyCrit = new SoundStyle($"{Path}/HeavyCrit");
             public static SoundStyle IceImpact = new SoundStyle($"{Path}/IceImpact", 3);
             public static SoundStyle IceMagicImpact = new SoundStyle($"{Path}/IceMagicImpact", 3);
             public static SoundStyle KCrystalConsume = new SoundStyle($"{Path}/KCrystalConsume");

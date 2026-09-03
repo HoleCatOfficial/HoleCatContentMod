@@ -5,10 +5,12 @@ using DestroyerTest.Content.RangedItems;
 using DestroyerTest.Content.SummonItems;
 using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
+using OpusLib.Content.Helpers;
 using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -19,7 +21,7 @@ namespace DestroyerTest.Content.RogueItems
 
         public override void SetStaticDefaults()
         {
-
+            OpusNPCDropHelper.DropsFromNPC[Type] = new NPCDropData(NPCID.MossHornet, ItemDropRule.Common(Type, 16));
         }
 
 

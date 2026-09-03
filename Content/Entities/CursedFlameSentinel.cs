@@ -89,7 +89,7 @@ namespace DestroyerTest.Content.Entities
             NPC.HitSound = Hit;
             NPC.DeathSound = Kill;
             NPC.noGravity = true;
-            NPC.aiStyle = NPCAIStyleID.Flying;
+            NPC.aiStyle = NPCAIStyleID.FlyingFish;
             NPC.lavaImmune = true;
             NPC.noTileCollide = true;
             NPC.knockBackResist = 0.1f;

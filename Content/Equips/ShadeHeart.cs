@@ -87,10 +87,10 @@ namespace DestroyerTest.Content.Equips
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             player.buffImmune[ModContent.BuffType<ShimmeringFlames>()] = true;
-            player.GetDamage(DamageClass.Generic) += 0.22f;
+            player.GetDamage(DamageClass.Generic) += 0.13f;
             player.GetArmorPenetration(DamageClass.Melee) += 20;
             player.GetArmorPenetration(DamageClass.SummonMeleeSpeed) += 20;
-            player.endurance += 0.185f;
+            player.endurance += 0.145f;
 
             Lighting.AddLight(player.Center, ColorLib.TenebrisGradient.ToVector3() * 0.1f);
 
@@ -117,9 +117,6 @@ namespace DestroyerTest.Content.Equips
                 .AddIngredient<StarFangNecklace>()
                 .AddIngredient<LuminantMedallion>()
                 .AddIngredient(ItemID.WormScarf)
-                .AddIngredient(ItemID.SoulofMight, 8)
-                .AddIngredient(ItemID.SoulofFright, 8)
-                .AddIngredient(ItemID.SoulofSight, 8)
                 .AddTile(TileID.LunarCraftingStation)
             .Register();
         }
@@ -229,7 +226,7 @@ namespace DestroyerTest.Content.Equips
         {
             if (Active)
             {
-                regen *= 1.4f;
+                regen *= 1.27f;
             }
         }
     }

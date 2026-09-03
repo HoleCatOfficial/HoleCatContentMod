@@ -26,7 +26,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
         private int flightTime = 0;
         private int soundCooldown = 0; // Initialize a cooldown timer
         private SoundStyle Woosh = new SoundStyle("DestroyerTest/Assets/Audio/SwordSounds/HeavySwing", 3) with { PitchVariance = 0.4f, MaxInstances = 0, Pitch = 0.7f };
-        private SoundStyle TileHit = DTAssetLib.Impacts.LightMetalHit with { PitchVariance = 0.4f, MaxInstances = 0, Pitch = -0.8f, Volume = 0.4f };
+        //private SoundStyle TileHit = DTAssetLib.Impacts.LightMetalHit with { PitchVariance = 0.4f, MaxInstances = 0, Pitch = -0.8f, Volume = 0.4f };
+        private SoundStyle TileHit = SoundID.Item37 with { PitchVariance = 0.4f, MaxInstances = 0, Pitch = -0.3f, Volume = 1.2f };
         public Color clr = Color.White;
 
         public override void SetStaticDefaults()
@@ -43,7 +44,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             Projectile.penetrate = 4;
             Projectile.light = 0.5f;
             Projectile.ignoreWater = true;
-            Projectile.timeLeft = 600; // 10 seconds max lifespan
+            Projectile.timeLeft = 300; // 10 seconds max lifespan
             Projectile.DamageType = DamageClass.Throwing;
             Projectile.netImportant = true;
             Projectile.netUpdate = true;
@@ -81,9 +82,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 
         public override bool PreDraw(ref Color lightColor)
         {
-
+            float rOff = Projectile.direction == 1 ? 0f : MathHelper.PiOver4;
+            SpriteEffects Fx = Projectile.direction == 1 ? SpriteEffects.None : SpriteEffects.FlipVertically;
             Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-            Main.EntitySpriteDraw(DTAssetLib.SwingFX.Value, Projectile.Center - Main.screenPosition, null, clr, Projectile.rotation, DTAssetLib.SwingFX.Value.Size() / 2, Projectile.scale * 1f, SpriteEffects.None, 0);
+
+
+            Main.EntitySpriteDraw(DTAssetLib.SwingFX.Value, Projectile.Center - Main.screenPosition, null, clr, Projectile.rotation - rOff, DTAssetLib.SwingFX.Value.Size() / 2, Projectile.scale * 1f, Fx, 0);
             Opus.ReturnToDefaultDrawing(Main.spriteBatch);
             return true;
         }
@@ -142,21 +146,18 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            SoundStyle Hit = DTAssetLib.Impacts.DarkShot with
-            {
-            PitchVariance = 0.5f
-            };
+            SoundStyle Hit = hit.Crit ? DTAssetLib.Impacts.HeavyCrit with { PitchVariance = 0.2f, Volume = 1.7f } : DTAssetLib.Impacts.MetalImpact with { PitchVariance = 0.5f };
 
             Player player = Main.player[Main.myPlayer];  // Accessing the current player
             hit.Knockback = 4f;
-            target.StrikeNPC(hit);
+
             SoundEngine.PlaySound(Hit, Projectile.position);
             for (int i = 0; i < 10; i++)
             {
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.FireworksRGB, -Projectile.velocity.X, -Projectile.velocity.Y, 150, clr, 2f);
 
                 Spark Spark = new Spark();
-                Spark.PrepareSpark(Projectile.Center, new Vector2(Main.rand.NextFloat(-8, 8), Main.rand.NextFloat(-15, -10)), 0f, clr, 1f, true, 30, SparkDrawMode.Additive);
+                Spark.PrepareSpark(Projectile.Center, new Vector2(Main.rand.NextFloat(-8, 8), Main.rand.NextFloat(-15, -10)), 0f, clr, 1f, true, 30, SparkDrawMode.Additive, 3f);
                 ParticleEngine.BehindProjectiles.Add(Spark);
 
             }
@@ -169,24 +170,35 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
             Ring.Prepare(target.Center, Vector2.Zero, DTColorUtils.Pastel(clr, 0.5f), 0.02f, 0.01f, 0.3f, BlendState.Additive);
             ParticleEngine.BehindProjectiles.Add(Ring);
 
+            float X = -Projectile.oldVelocity.X * 0.5f;
+            X = MathHelper.Clamp(X, -80f, 80f);
+            float Y = -Projectile.oldVelocity.Y * 0.8f;
+            Y = MathHelper.Clamp(Y, -40f, 40f);
+
+            Projectile.velocity = new Vector2(X, Y);
+
             if (Projectile.penetrate == 1)
             {
                 returning = true;
             }
-            Opus.RadialSpreadProjectile(ModContent.ProjectileType<TenebrisStarFriendly>(), 3, Projectile.Center, Projectile.damage / 3, 4, 15, ai2: 1, offset: Projectile.rotation);
+
+            if (hit.Crit)
+            {
+                Opus.RadialSpreadProjectile(ModContent.ProjectileType<TenebrisStarFriendly>(), 3, Projectile.Center, Projectile.damage / 3, 4, 15, ai2: 1, offset: Projectile.rotation);
+            }
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
             Collision.HitTiles(Projectile.position, Projectile.velocity, Projectile.width, Projectile.height);
             SoundEngine.PlaySound(TileHit, Projectile.Center);
-            Projectile.penetrate--;
+            
 
             for (int i = 0; i < 10; i++)
             {
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.FireworksRGB, -oldVelocity.X, -oldVelocity.Y, 150, clr, 2f);
                 Spark Spark = new Spark();
-                Spark.PrepareSpark(Projectile.Center, new Vector2(Main.rand.NextFloat(-8, 8), Main.rand.NextFloat(-15, -10)), 0f, clr, 1f, true, 30, SparkDrawMode.Additive);
+                Spark.PrepareSpark(Projectile.Center, new Vector2(Main.rand.NextFloat(-12, 12), Main.rand.NextFloat(-25, -10)), 0f, clr, 1f, true, 30, SparkDrawMode.Additive, 2.5f);
                 ParticleEngine.BehindProjectiles.Add(Spark);
 
             }
@@ -206,7 +218,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 
             Projectile.velocity = new Vector2(X, Y);
             returning = true;
-
+            Projectile.penetrate--;
             return false;
         }
 

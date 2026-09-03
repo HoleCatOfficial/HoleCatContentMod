@@ -37,7 +37,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Projectile.timeLeft = 40;
             
             Projectile.usesLocalNPCImmunity = true;
-            Projectile.localNPCHitCooldown = 5;
+            Projectile.localNPCHitCooldown = 10;
             
             Projectile.netImportant = true;
             Projectile.hide = true;

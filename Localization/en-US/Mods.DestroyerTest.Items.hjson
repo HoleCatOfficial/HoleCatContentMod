@@ -4612,14 +4612,14 @@ ShadeHeart: {
 	DisplayName: Shade Heart
 	Tooltip:
 		'''
-		22% increased all-class damage.
+		13% increased all-class damage.
 		10% chance for minions to inflict Shimmering Flames on Hit.
 		+20 Melee and Whip Armor penetration.
-		+18.5% Damage Reduction.
+		+14.5% Damage Reduction.
 		Grants immunity to shimmering flames.
 		Getting hit will release a burst of homing Tenebris Stars.
 		Minions have a chance to create a burst of homing Tenebris Stars upon striking an enemy directly.
-		Natural life regen increased by 40%
+		Natural life regen increased by 27%
 		You emit light.
 		You get a shade heart light pet that doesnt consume either of the pet slots. This can be disabled by Shift + Right-Clicking the item in the inventory.
 		'''
@@ -5002,8 +5002,14 @@ RingFromBeyond: {
 	DisplayName: Ring From Beyond
 	Tooltip:
 		'''
-		24% increased Ranged, Scepter, and Magic Damage.
+		11% increased Ranged, Scepter, and Magic Damage.
 		16% increased critical strike chance.
+		'''
+	NepostriaTooltip:
+		'''
+		Funny to think that, after all he's been through, all he's done to himself...
+		He's no closer to being a god than he is to a man.
+		For he's but a ring you can slip on your finger.
 		'''
 }
 
@@ -5344,4 +5350,30 @@ Item_EclipseMemoryPedistal: {
 		The Possessed, that spiritual evils could run deeper than abstract beliefs.
 		Terraria must be highly fertile in magic, thus, the land must also move at my whisper.
 		'''
+}
+
+VoltaicFenzim: {
+	DisplayName: Voltaic Fenzim
+	Tooltip:
+		'''
+		A throwing axe in the likeness of a thunderbolt.
+		Thrown fenzims lodge into the ground, creating an electric field. The faster it's moving when it lands, the larger the field will be.
+
+		Enemies near the fenzim when it first lands are zapped once for 100% of the projectile's damage.
+		Enemies in the field are zapped repeatedly for 1/3rd of the weapon's damage, slowed down, and electrified for 5 seconds.
+		If an enemy is killed by being zapped, the projectile will have its lifespan extended by 2 seconds.
+		Can zap enemies even if tiles are in the way.
+
+		Only one can be active at a time, and throwing a new one will destroy any existing ones.
+		'''
+}
+
+HellfireFenzim: {
+	DisplayName: Hellfire Fenzim
+	Tooltip:
+	'''
+	Throws a volatile fire disc.
+	The disc lights enemies on fire when hit, and inflicts Hellfire on critical hits.
+	Hitting a tile will cause it to become gravity affected and fall to the ground.
+	'''
 }

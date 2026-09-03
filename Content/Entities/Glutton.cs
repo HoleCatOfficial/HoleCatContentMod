@@ -14,7 +14,6 @@ using Microsoft.Xna.Framework.Graphics;
 using MonoMod.Cil;
 using OpusLib;
 using OpusLib.Content.Helpers;
-using OpusLib.Content.Particles;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -31,7 +30,7 @@ using Terraria.ModLoader.Utilities;
 
 namespace DestroyerTest.Content.Entities
 {
-    public class CrystallineAngel : ModNPC, IDrawPixelated
+    public class Glutton : ModNPC, IDrawPixelated
     {
 
         public override void SetStaticDefaults()
@@ -46,7 +45,7 @@ namespace DestroyerTest.Content.Entities
         }
         public void immunities()
         {
-            NPCID.Sets.SpecificDebuffImmunity[Type][ModContent.BuffType<LightInferno>()] = true;
+            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Ichor] = true;
             NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Frostburn] = true;
             NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Frostburn2] = true;
             NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.Electrified] = true;
@@ -81,8 +80,8 @@ namespace DestroyerTest.Content.Entities
 
         public override void SetDefaults()
         {
-            NPC.width = 32;
-            NPC.height = 20;
+            NPC.width = 90;
+            NPC.height = 90;
             NPC.damage = 0;
             NPC.defense = 20;
             NPC.lifeMax = 400;
@@ -97,11 +96,17 @@ namespace DestroyerTest.Content.Entities
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            drawColor = Color.White;
-            return true;
+            Texture2D Back = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/GluttonBack").Value;
+            Main.EntitySpriteDraw(Back, NPC.Center - Main.screenPosition, null, Color.White, r, Back.Size() / 2, NPC.scale * 1.4f, SpriteEffects.None);
+
+            //drawColor = Color.White;
+
+            Main.EntitySpriteDraw(TextureAssets.Npc[Type].Value, NPC.Center - Main.screenPosition, null, Color.White, 0f, TextureAssets.Npc[Type].Value.Size() / 2, NPC.scale, SpriteEffects.None);
+
+            return false;
         }
 
-        public BlessedNodeMB Node;
+        public IchorNodeMB Node;
         Line toNode;
 
         PixelLayer IDrawPixelated.PixelLayer => PixelLayer.AboveTiles;
@@ -111,18 +116,12 @@ namespace DestroyerTest.Content.Entities
             return false;
         }
 
+        float r = 0f;
         public override void AI()
         {
-            NPC.TargetClosest();
-            if (NPC.HasValidTarget)
-            {
-                NPC.rotation = NPC.DirectionTo(Main.player[NPC.target].Center).ToRotation();
-            }
-            else
-            {
-                NPC.rotation = (0.02f * NPC.velocity.Length() * NPC.direction) - MathHelper.PiOver2;
-            }
-            Lighting.AddLight(NPC.Center, Color.DeepSkyBlue.ToVector3());
+            NPC.rotation = 0f;
+            r += 0.01f * NPC.velocity.X;
+            Lighting.AddLight(NPC.Center, ColorLib.IchorCrystal2.ToVector3());
 
             if (Node != null)
             {
@@ -136,25 +135,23 @@ namespace DestroyerTest.Content.Entities
 
             List<int> Enemies = new List<int>
             {
-                NPCID.Pixie,
-                NPCID.Gastropod,
-                NPCID.RainbowSlime
+                NPCID.Crimera,
+                NPCID.Crimslime,
+                NPCID.FaceMonster,
+                NPCID.BloodCrawler
             };
 
             if (Main.rand.NextBool(150))
             {
                 for (int i = 0; i < 5; i++)
                 {
-                    Fire fire = new();
-                    fire.PrepareFire(NPC.Center, Main.rand.NextVector2Circular(3, 3), DTUtils.RandomDirection(2), ColorLib.SoulOfLightColor, 2f, 60, FireDrawMode.Additive, PixelLayer.AboveTiles);
-                    ParticleEngine.Particles.Add(fire);
+                    PointGlowPreMultiplied Point = new();
+                    Point.Initialize(NPC.Center, Main.rand.NextVector2Circular(3, 3), ColorLib.IchorCrystal3, 2f);
+                    ParticleEngine.Particles.Add(Point);
                 }
 
-                SoundEngine.PlaySound(SoundID.Item84, NPC.Center);
+                SoundEngine.PlaySound(SoundID.Zombie43, NPC.Center);
                 NPC wavenpc = NPC.NewNPCDirect(NPC.GetSource_FromAI(), NPC.Center, Enemies[Main.rand.Next(Enemies.Count)]);
-                wavenpc.velocity = NPC.rotation.ToRotationVector2() * 6f;
-
-                NPC.velocity += -NPC.rotation.ToRotationVector2() * 3f;
             }
         }
 
@@ -171,7 +168,7 @@ namespace DestroyerTest.Content.Entities
 
             if (toNode != null)
             {
-                DTUtils.instance.ScrollingTextureSpine(toNode, DTAssetLib.Streak(3, true), Color.DeepSkyBlue with { A = 0 }, Main.spriteBatch, BlendState.Additive, O, 0.4f);
+                DTUtils.instance.ScrollingTextureSpine(toNode, DTAssetLib.Streak(3, true), ColorLib.IchorCrystal3, Main.spriteBatch, BlendState.Additive, O, 0.4f);
             }
 
             spriteBatch.End();
@@ -180,7 +177,7 @@ namespace DestroyerTest.Content.Entities
 
             spriteBatch.Begin(Cap);
 
-            Main.EntitySpriteDraw(DTAssetLib.PointGlowPreMultiplied.Value, NPC.Center - Main.screenPosition, null, Color.DeepSkyBlue with { A = 0 }, 0f, DTAssetLib.PointGlowPreMultiplied.Value.Size() / 2, 1f, SpriteEffects.None);
+            Main.EntitySpriteDraw(DTAssetLib.PointGlowPreMultiplied.Value, NPC.Center - Main.screenPosition, null, ColorLib.IchorCrystal3 with { A = 0 }, 0f, DTAssetLib.PointGlowPreMultiplied.Value.Size() / 2, 1f, SpriteEffects.None);
 
             spriteBatch.ResetToDefault();
         }
@@ -193,18 +190,17 @@ namespace DestroyerTest.Content.Entities
 
                 for (int i = 0; i < Positions.Length; i++)
                 {
-
-                    Fire fire = new();
-                    fire.PrepareFire(NPC.Center, Main.rand.NextVector2Circular(1, 1), DTUtils.RandomDirection(2), ColorLib.SoulOfLightColor, 1f, 30, FireDrawMode.Additive, PixelLayer.AboveTiles);
-                    ParticleEngine.Particles.Add(fire);
+                    PointGlowPreMultiplied Point = new();
+                    Point.Initialize(Positions[i], Main.rand.NextVector2Circular(1, 1), ColorLib.IchorCrystal3, 2f);
+                    ParticleEngine.Particles.Add(Point);
                 }
             }
 
             for (int i = 0; i < 5; i++)
             {
-                Fire fire = new();
-                fire.PrepareFire(NPC.Center, Main.rand.NextVector2Circular(3, 3), DTUtils.RandomDirection(2), ColorLib.SoulOfLightColor, 2f, 60, FireDrawMode.Additive, PixelLayer.AboveTiles);
-                ParticleEngine.Particles.Add(fire);
+                PointGlowPreMultiplied Point = new();
+                Point.Initialize(NPC.Center, Main.rand.NextVector2Circular(3, 3), ColorLib.IchorCrystal3, 2f);
+                ParticleEngine.Particles.Add(Point);
             }
 
             if (Node != null)

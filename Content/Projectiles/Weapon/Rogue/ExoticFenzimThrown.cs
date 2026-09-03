@@ -192,8 +192,6 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 
 
             Player player = Main.player[Main.myPlayer];  // Accessing the current player
-            hit.Knockback = 4f;
-            target.StrikeNPC(hit);
             SoundEngine.PlaySound(Hit, Projectile.position);
 
             for (int i = 0; i < 10; i++)

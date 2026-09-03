@@ -16,6 +16,7 @@ using DestroyerTest.Content.Equips;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss;
+using DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame;
 using DestroyerTest.Content.Projectiles.Boss.NodeBoss.Ichor;
 using GlowmaskHelper.Content;
  
@@ -114,8 +115,7 @@ namespace DestroyerTest.Content.Entities
 
         public void ResetData()
         {
-            DormantNPCKillTally = 0;
-            INGlobal.WaveNPCCount = 0;
+            SentinelKillTally = 0;
         }
 
 
@@ -146,24 +146,24 @@ namespace DestroyerTest.Content.Entities
 
             Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
             Main.EntitySpriteDraw(v, NPC.Center - Main.screenPosition, null, ColorLib.IchorCrystalGradient * ShieldOpacity, 0f, v.Size() / 2, ShieldScale, SpriteEffects.None);
-            Utils.DrawBorderString(spriteBatch, $"{DormantNPCKillTally} / {DormantNPCKillRequirement}", (NPC.Center + new Vector2(0, -90) - Main.screenPosition), ColorLib.IchorCrystalGradient * ShieldOpacity, 3f, 0.5f, 0.5f);
+            Utils.DrawBorderString(spriteBatch, $"{SentinelKillTally} / {SentinelKillRequirement}", (NPC.Center + new Vector2(0, -90) - Main.screenPosition), ColorLib.IchorCrystalGradient * ShieldOpacity, 3f, 0.5f, 0.5f);
             Opus.ReturnToDefaultDrawing(spriteBatch);
 
             if (CurrentAttack == AttackState.Dormant)
             {
-                DTUtils.DrawChargeBar(2f, (NPC.Center + new Vector2(0, 100)) - Main.screenPosition, (float)DormantNPCKillTally / (float)DormantNPCKillRequirement, ColorLib.IchorCrystalGradient);
+                DTUtils.DrawChargeBar(2f, (NPC.Center + new Vector2(0, 100)) - Main.screenPosition, (float)SentinelKillTally / (float)SentinelKillRequirement, ColorLib.IchorCrystalGradient);
             }
         }
 
         public override bool? CanBeHitByItem(Player player, Item item)
         {
-            return !DTFlags.NodeCharmEquipped && !(DormantNPCKillTally < DormantNPCKillRequirement);
+            return !DTFlags.NodeCharmEquipped && !(SentinelKillTally < SentinelKillRequirement);
         }
 
         public override bool? CanBeHitByProjectile(Projectile projectile)
         {
             if (projectile.friendly)
-                return !DTFlags.NodeCharmEquipped && !(DormantNPCKillTally < DormantNPCKillRequirement); ; // prevent friendly damage when charm is equipped
+                return !DTFlags.NodeCharmEquipped && !(SentinelKillTally < SentinelKillRequirement); ; // prevent friendly damage when charm is equipped
 
             // hostile projectiles behave normally
             return null;
@@ -184,8 +184,8 @@ namespace DestroyerTest.Content.Entities
         public AttackState CurrentAttack;
 
         public int DormantPulseTimer = 60;
-        public int DormantNPCKillTally = 0;
-        public const int DormantNPCKillRequirement = 50;
+        public int SentinelKillTally = 0;
+        public const int SentinelKillRequirement = 30;
 
 
         public int IdleTimer = 60;
@@ -205,7 +205,10 @@ namespace DestroyerTest.Content.Entities
         public int WaveIndex = 0;
         public bool SoundFlag1 = false;
 
+        int IS_Timer = 0;
+
         public bool Flag2 = false;
+        public bool Flag3 = false;
         public SoundStyle SlamWarn = new SoundStyle("DestroyerTest/Assets/Audio/ChimeIn") with { MaxInstances = 0, PitchVariance = 1 };
         public SoundStyle Spiralwarn = new SoundStyle("DestroyerTest/Assets/Audio/RailGunCharge") with { MaxInstances = 0 };
         public SoundStyle GroundImpact = new SoundStyle("DestroyerTest/Assets/Audio/TenebrisTesticleKill") with { MaxInstances = 0, PitchVariance = 0.5f };
@@ -269,12 +272,12 @@ namespace DestroyerTest.Content.Entities
             Vector2 PRTPos;
             PRTPos = NPC.Center;
 
-            if ((DormantNPCKillTally < DormantNPCKillRequirement))
+            if ((SentinelKillTally < SentinelKillRequirement))
             {
                 ManageShieldIn();
             }
 
-            if (!(DormantNPCKillTally < DormantNPCKillRequirement))
+            if (!(SentinelKillTally < SentinelKillRequirement))
             {
                 if (!Flag2)
                 {
@@ -298,7 +301,7 @@ namespace DestroyerTest.Content.Entities
                     {
                         
                         DormantAI();
-                        if ((DormantNPCKillTally < DormantNPCKillRequirement))
+                        if ((SentinelKillTally < SentinelKillRequirement))
                         {
                             NPC.immortal = true;
                             NPC.dontTakeDamage = true;
@@ -309,7 +312,7 @@ namespace DestroyerTest.Content.Entities
                             NPC.dontTakeDamage = false;
                         }
                         
-                        if (NPC.justHit && !DTFlags.NodeCharmEquipped && !(DormantNPCKillTally < DormantNPCKillRequirement))
+                        if (NPC.justHit && !DTFlags.NodeCharmEquipped && !(SentinelKillTally < SentinelKillRequirement))
                         {
                             FablesTitleCardSystem.RegisterFablesBossIntro(FablesTitleCardSystem.IchorNodeTitle.Name, FablesTitleCardSystem.IchorNodeTitle.Title, 180, true, ColorLib.WretchedGradient(), ColorLib.IchorCrystalGradient, ColorLib.IchorCrystalGradient, ColorLib.IchorCrystalGradient, FablesTitleCardSystem.IchorNodeTitle.MusicTitle, FablesTitleCardSystem.IchorNodeTitle.MusicArtist);
                             CurrentAttack = AttackState.Idle;
@@ -342,58 +345,95 @@ namespace DestroyerTest.Content.Entities
                 case AttackState.IchorSpiral:
                     {
                         NPC.velocity = Vector2.Zero;
-                        if (IchorSpiralWarnTimer > 0)
+
+                        if (!DestroyerTestMod.EternityIsActive && !DestroyerTestMod.DeathIsActive)
                         {
-                            IchorSpiralWarnTimer--;
-                            if (!IchorSpiralWarnParticleFlag)
+                            if (IchorSpiralWarnTimer > 0)
                             {
-                                SoundEngine.PlaySound(Spiralwarn);
+                                IchorSpiralWarnTimer--;
+                                if (!IchorSpiralWarnParticleFlag)
+                                {
+                                    SoundEngine.PlaySound(Spiralwarn);
 
-                                BloomRingSharp Ring = new();
-                                Ring.Prepare(NPC.Center, Vector2.Zero, Color.Red, 0.2f, 0.05f, 3.75f, BlendState.Additive);
-                                ParticleEngine.BehindProjectiles.Add(Ring);
+                                    BloomRingSharp Ring = new();
+                                    Ring.Prepare(NPC.Center, Vector2.Zero, Color.Red, 0.2f, 0.05f, 3.75f, BlendState.Additive);
+                                    ParticleEngine.BehindProjectiles.Add(Ring);
 
-                                IchorSpiralWarnParticleFlag = true;
+                                    IchorSpiralWarnParticleFlag = true;
+                                }
+                            }
+                            if (IchorSpiralWarnTimer <= 0)
+                            {
+                                Spiral_BindPlayer(player, 500);
+                                Opus.RingSpreadDust(DustID.TintableDustLighted, 30, NPC.Center, 500f, 0, ColorLib.IchorCrystalGradient, 1.5f, 3, Main.rand.NextFloat(MathHelper.TwoPi));
+                                if (IchorSpiralTimer > 0)
+                                {
+
+                                    IchorSpiralRotationOffset += 1f;
+                                    //var launchVelocity = new Vector2(-8, 0);
+                                    NPC.rotation = IchorSpiralRotationOffset;
+
+                                    if (IchorSpiralTimer % 4 == 0)
+                                    {
+                                        SoundEngine.PlaySound(SoundID.Item156, NPC.Center);
+
+
+
+                                        for (int i = 0; i < 6; i++)
+                                        {
+                                            var angle = IchorSpiralRotationOffset + (i * MathHelper.TwoPi / 6f);
+                                            var launchVelocity = new Vector2(8, 0).RotatedBy(angle);
+                                            Projectile Crys = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), NPC.Center, launchVelocity, ModContent.ProjectileType<IchorNodeCrystal2>(), 15, 4);
+                                            Crys.timeLeft = 120;
+                                        }
+
+                                        IchorSpiralRotationOffset += 0.75f; // spiral effect
+                                    }
+                                    IchorSpiralTimer--;
+                                }
+                                if (IchorSpiralTimer <= 0 && IchorSpiralCooldownTimer > 0)
+                                {
+                                    IchorSpiralCooldownTimer--;
+                                }
+                                if (IchorSpiralTimer <= 0 && IchorSpiralCooldownTimer <= 0)
+                                {
+                                    CurrentAttack = AttackState.ToothBombs;
+                                    IchorSpiralWarnTimer = 180;
+                                    IchorSpiralWarnParticleFlag = false;
+                                    IchorSpiralTimer = 240;
+                                    IchorSpiralCooldownTimer = 120;
+                                    Flag3 = false;
+                                    NPC.rotation = 0f;
+                                }
                             }
                         }
-                        if (IchorSpiralWarnTimer <= 0)
+                        else
                         {
-                            Spiral_BindPlayer(player, 500);
-                            Opus.RingSpreadDust(DustID.TintableDustLighted, 30, NPC.Center, 500f, 0, ColorLib.IchorCrystalGradient, 1.5f, 3, Main.rand.NextFloat(MathHelper.TwoPi));
-                            if (IchorSpiralTimer > 0)
+                            if (!Flag3)
                             {
-                                IchorSpiralRotationOffset += 1f;
-                                //var launchVelocity = new Vector2(-8, 0);
-                                NPC.rotation = IchorSpiralRotationOffset;
-
-                                if (IchorSpiralTimer % 4 == 0)
+                                Opus.RadialSpreadProjectile(ModContent.ProjectileType<BloodCloudBall>(), 18, NPC.Center, 40, 6, 10f);
+                                Opus.RadialSpreadProjectile(ModContent.ProjectileType<BloodCloudBall>(), 12, NPC.Center, 40, 6, 6f);
+                                Opus.RadialSpreadProjectile(ModContent.ProjectileType<BloodCloudBall>(), 8, NPC.Center, 40, 6, 4f);
+                                Flag3 = true;
+                            }
+                            else
+                            {
+                                if (IS_Timer < 120)
                                 {
-                                    SoundEngine.PlaySound(SoundID.Item156, NPC.Center);
-
-                                    for (int i = 0; i < 6; i++)
-                                    {
-                                        var angle = IchorSpiralRotationOffset + (i * MathHelper.TwoPi / 6f);
-                                        var launchVelocity = new Vector2(8, 0).RotatedBy(angle);
-                                        Projectile Crys = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), NPC.Center, launchVelocity, ModContent.ProjectileType<IchorNodeCrystal2>(), 15, 4);
-                                        Crys.timeLeft = 120;
-                                    }
-
-                                    IchorSpiralRotationOffset += 0.75f; // spiral effect
+                                    IS_Timer++;
                                 }
-                                IchorSpiralTimer--;
-                            }
-                            if (IchorSpiralTimer <= 0 && IchorSpiralCooldownTimer > 0)
-                            {
-                                IchorSpiralCooldownTimer--;
-                            }
-                            if (IchorSpiralTimer <= 0 && IchorSpiralCooldownTimer <= 0)
-                            {
-                                CurrentAttack = AttackState.ToothBombs;
-                                IchorSpiralWarnTimer = 180;
-                                IchorSpiralWarnParticleFlag = false;
-                                IchorSpiralTimer = 240;
-                                IchorSpiralCooldownTimer = 120;
-                                NPC.rotation = 0f;
+                                else
+                                {
+                                    CurrentAttack = AttackState.ToothBombs;
+                                    IchorSpiralWarnTimer = 180;
+                                    IchorSpiralWarnParticleFlag = false;
+                                    IchorSpiralTimer = 240;
+                                    IchorSpiralCooldownTimer = 120;
+                                    Flag3 = false;
+                                    NPC.rotation = 0f;
+                                    IS_Timer = 0;
+                                }
+                                
                             }
                         }
                         break;
@@ -501,7 +541,7 @@ namespace DestroyerTest.Content.Entities
                         p.AddBuff(ModContent.BuffType<NodePower>(), 60);
                     }
 
-                    if (DormantNPCKillTally < DormantNPCKillRequirement)
+                    if (SentinelKillTally < SentinelKillRequirement)
                     {
                         SpawnNPCWave();
                     }
@@ -510,59 +550,58 @@ namespace DestroyerTest.Content.Entities
         }
 
         public int SpawnNPCTimer = 0;
-        public static string NPCIdentifierContext = "IchorNodeWaveEnemy";
-
-        public static List<int> IchorNodeWaveEnemies = new List<int>
-        {
-            NPCID.Crimera,
-            NPCID.CrimsonAxe,
-            NPCID.Crimslime,
-            NPCID.BloodCrawler,
-            NPCID.FaceMonster
-        };
+        public static string NPCIdentifierContext = "CusedFlameNodeWaveEnemy";
+        public int SentinelCount = Main.npc.Where(n => n.active && n.type == ModContent.NPCType<Glutton>()).Count();
 
         public int WaveTimeout = 0;
         public void SpawnNPCWave()
         {
             SpawnNPCTimer++;
             WaveTimeout++;
-            Vector2[] SpawnPositions = Opus.GetEquidistantVectors(5, NPC.Center, 250);
+            Vector2[] SpawnPositions = Opus.GetEquidistantVectors(3, NPC.Center, 250);
+            SentinelCount = Main.npc.Where(n => n.active && n.type == ModContent.NPCType<Glutton>()).Count();
 
-            if ((SpawnNPCTimer % 300 == 0 && INGlobal.WaveNPCCount == 0) || WaveTimeout > 1800)
+
+            if ((SpawnNPCTimer % 300 == 0 && SentinelCount == 0) || WaveTimeout > 1800)
             {
                 if (WaveTimeout > 1800)
                 {
                     CombatText.NewText(NPC.Hitbox, Color.Red, "30 Seconds have passed. Wave failsafe intiated.");
-                    Main.NewText("TALID: 30 Seconds have passed. Wave failsafe intiated.", Color.Red);
+                    Main.NewText("30 Seconds have passed. Wave failsafe intiated.", Color.Red);
 
                     foreach (NPC child in Main.npc)
                     {
                         if (!child.active) continue;
 
-                        var g = child.GetGlobalNPC<INGlobal>();
-
-                        if (g.IsNodeSpawned && g.Node == this)
+                        if (child.type == ModContent.NPCType<Glutton>())
                         {
                             child.StrikeInstantKill();
                         }
                     }
 
-                    DormantNPCKillTally = ((DormantNPCKillTally + 9) / 10) * 10;
+                    SentinelKillTally = ((SentinelKillTally + 9) / 10) * 10;
                 }
                 WaveTimeout = 0;
 
                 SoundEngine.PlaySound(DTAssetLib.Impacts.DarkMagicImpact);
+
+                if (DestroyerTestMod.EternityIsActive || DestroyerTestMod.DeathIsActive)
+                {
+                    
+                }
+
                 for (int i = 0; i < SpawnPositions.Length; i++)
                 {
-                    LerpingBloomRingSharp Ring = new();
-                    Ring.Prepare(SpawnPositions[i], Vector2.Zero, ColorLib.IchorCrystalColorMap, 0.2f, 2f, BlendState.Additive);
-                    ParticleEngine.BehindProjectiles.Add(Ring);
+                    BloomRingSharp Ring = new();
+                    Ring.Prepare(SpawnPositions[i], Vector2.Zero, ColorLib.Ichor, 0.1f, 0.01f, 0.4f, BlendState.Additive);
+                    ParticleEngine.ShaderParticles.Add(Ring);
 
-                    NPC wavenpc = NPC.NewNPCDirect(NPC.GetSource_FromAI(NPCIdentifierContext), SpawnPositions[i], IchorNodeWaveEnemies[Main.rand.Next(IchorNodeWaveEnemies.Count)]);
-                    wavenpc.scale = 1.5f;
-                    wavenpc.knockBackResist = 0f;
-                    var g = wavenpc.GetGlobalNPC<INGlobal>();
-                    g.Node = this;
+                    NPC wavenpc = NPC.NewNPCDirect(NPC.GetSource_FromAI(), SpawnPositions[i], ModContent.NPCType<Glutton>());
+                    if (wavenpc.ModNPC is Glutton sentinel)
+                    {
+                        sentinel.Node = this;
+                    }
+
                 }
             }
         }
@@ -610,7 +649,7 @@ namespace DestroyerTest.Content.Entities
                     SoundEngine.PlaySound(SoundID.Item66, NPC.Center);
 
                     Opus.RingSpreadProjectile(ModContent.ProjectileType<BloodCloudBall>(), 18, NPC.Center, 1200f, 40, 6, -5f, offset: 0.05f * BR_EternityTimer);
-                    Opus.RingSpreadProjectile(ModContent.ProjectileType<BloodRain>(), 5, NPC.Center, 1200f, 20, 6, -5f, offset: 0.5f * BR_EternityTimer);
+
                 }
 
                 if (BR_EternityTimer >= 1200)
@@ -860,86 +899,6 @@ namespace DestroyerTest.Content.Entities
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
             npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<IchorNodeLootBag>()));
-        }
-    }
-
-    public class INGlobal : GlobalNPC
-    {
-        public override bool InstancePerEntity => true;
-
-        public static int WaveNPCCount = 0;
-
-        public bool IsNodeSpawned = false;
-        public IchorNodeMB Node = null;
-
-        public override void Unload()
-        {
-            WaveNPCCount = 0;
-            IsNodeSpawned = false;
-            Node = null;
-        }
-
-        public override void OnSpawn(NPC npc, IEntitySource source)
-        {
-            if (source is EntitySource_Parent parent && parent.Context == IchorNodeMB.NPCIdentifierContext)
-            {
-                WaveNPCCount += 1;
-                IsNodeSpawned = true;
-            }
-        }
-
-        public int TexOffset = 0;
-        public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-        {
-            if (IsNodeSpawned)
-            {
-                Line L = new Line(npc.Center, Node.NPC.Center);
-                TexOffset += 10;
-                DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(10, true), ColorLib.IchorCrystalGradient with { A = 0 }, spriteBatch, BlendState.Additive, TexOffset, 0.5f);
-            }
-            return base.PreDraw(npc, spriteBatch, screenPos, drawColor);
-        }
-        public override void PostDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
-        {
-            if (IsNodeSpawned)
-            {
-                Main.EntitySpriteDraw(DTAssetLib.CrimsonSigil.Value, npc.Center - screenPos, null, ColorLib.Ichor * 0.5f, 0f, DTAssetLib.CrimsonSigil.Value.Size() / 2, 0.15f, SpriteEffects.None, 0f);
- 
-            }
-        }
-
-        public override void AI(NPC npc)
-        {
-            
-        }
-        public override bool CheckActive(NPC npc)
-        {
-            if (IsNodeSpawned)
-            {
-                return false;
-            }
-            return true;
-        }
-
-        public override void OnKill(NPC npc)
-        {
-            if (IsNodeSpawned)
-            {
-                if (Node != null)
-                {
-                    Node.DormantNPCKillTally += 1;
-                }
-                WaveNPCCount--;
-            }
-
-            if (npc.type == ModContent.NPCType<IchorNodeMB>())
-            {
-                if (Node != null)
-                {
-                    Node.DormantNPCKillTally = 0;
-                }
-                WaveNPCCount = 0;
-            }
         }
     }
 }

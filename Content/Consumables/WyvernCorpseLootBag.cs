@@ -55,14 +55,4 @@ namespace DestroyerTest.Content.Consumables
 
         }
     }
-    
-    public class LootBagDropHandler_WyvernCorpse : GlobalNPC
-	{
-		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot) {
-
-			if (npc.type == ModContent.NPCType<WyvernCorpseHead>()) {
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<WyvernCorpseLootBag>(), 1, 1, 1));
-			}
-		}
-	}
 }

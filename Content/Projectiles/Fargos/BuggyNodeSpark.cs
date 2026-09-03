@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using DestroyerTest.Common;
 using DestroyerTest.Common.Interfaces;
 using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Projectiles.Weapon.Scepter;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -68,7 +69,7 @@ namespace DestroyerTest.Content.Projectiles.Fargos
 
         public override bool PreDraw(ref Color lightColor)
         {
-            Main.EntitySpriteDraw(DTAssetLib.SparkSmoothThin.Value, Projectile.Center - Main.screenPosition, null, OpusColorUtils.Pastel(ColorLib.Wretched2, 0.75f) with { A = 0 }, Projectile.rotation, DTAssetLib.SparkSmoothThin.Value.Size() / 2, 0.2f, SpriteEffects.None, 0f);
+            Main.EntitySpriteDraw(DTAssetLib.SparkSmoothThin.Value, Projectile.Center - Main.screenPosition, null, OpusColorUtils.Pastel(ColorLib.Wretched2, 0.5f) with { A = 0 }, Projectile.rotation, DTAssetLib.SparkSmoothThin.Value.Size() / 2, 0.2f, SpriteEffects.None, 0f);
             return false;
         }
 
@@ -77,7 +78,7 @@ namespace DestroyerTest.Content.Projectiles.Fargos
             Projectile.rotation = Projectile.velocity.ToRotation();
 
             Lighting.AddLight(Projectile.Center, ColorLib.Wretched4.ToVector3() * 0.6f);
-            var d = Dust.NewDustPerfect(Projectile.Center, DustID.SnowSpray, Vector2.Zero, 0, ColorLib.Wretched2, 1f);
+            var d = Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<ColorableNeonDust>(), Vector2.Zero, 0, ColorLib.Wretched2, 1f);
             d.noGravity = true;
 
 

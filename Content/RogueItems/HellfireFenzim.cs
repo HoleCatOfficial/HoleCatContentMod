@@ -14,12 +14,12 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.RogueItems
 {
-    public class ElementalFenzim : ModItem
+    public class HellfireFenzim : ModItem
     {
 
         public override void SetStaticDefaults()
         {
-            ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<ExoticFenzim>();
+
         }
         public override void SetDefaults()
         {
@@ -31,27 +31,14 @@ namespace DestroyerTest.Content.RogueItems
             Item.useAnimation = 20;
             Item.useStyle = ItemUseStyleID.Swing;
             Item.UseSound = SoundID.Item1;
-            Item.knockBack = 4;
+            Item.knockBack = 6;
             Item.autoReuse = true;
-            Item.damage = 140;
+            Item.damage = 65;
             Item.DamageType = DamageClass.Throwing;
             Item.crit = 10;
-            Item.shoot = ModContent.ProjectileType<ElementalFenzimThrown>();
-            Item.shootSpeed = 55f;
+            Item.shoot = ModContent.ProjectileType<HellfireFenzimThrown>();
+            Item.shootSpeed = 35f;
             Item.noUseGraphic = true;
-        }
-
-        public override void AddRecipes()
-        {
-            CreateRecipe()
-                .AddIngredient<VoltaicFenzim>()
-                .AddIngredient<FrigidFenzim>()
-                .AddIngredient<HellfireFenzim>()
-                .AddIngredient<Fangshred>()
-                .AddIngredient<Zwei>()
-                .AddIngredient(ItemID.ChlorophyteBar, 4)
-                .AddTile(TileID.MythrilAnvil)
-                .Register();
         }
     }
 }

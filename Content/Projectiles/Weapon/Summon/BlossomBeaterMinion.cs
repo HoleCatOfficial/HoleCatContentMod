@@ -267,7 +267,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
             if (Vine != null)
             {
                 Vine.Positions[^1] = player.MountedCenter;
-                Vine.Simulate(Vector2.Zero, Handle, 1.5f, 1f, collideWithPlayers: false);
+                Vine.Simulate(Vector2.Zero, Handle, 1.5f, 1f, collideWithPlayers: false, collideWithTiles: false);
             }
            
             

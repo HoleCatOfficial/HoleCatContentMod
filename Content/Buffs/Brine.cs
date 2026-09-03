@@ -56,8 +56,9 @@ namespace DestroyerTest.Content.Buffs
 				
 				if (npc.lifeRegen > 0)
 					npc.lifeRegen = 0;
+				damage = 20;
 
-				npc.lifeRegen -= 19;
+				npc.lifeRegen -= 20;
 			}
 		}
     }
