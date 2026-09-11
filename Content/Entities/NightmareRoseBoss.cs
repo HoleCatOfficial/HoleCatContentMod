@@ -709,7 +709,7 @@ namespace DestroyerTest.Content.Entities
                         Main.EntitySpriteDraw(DTAssetLib.Star(3).Value, cfNodes[i].Center - Main.screenPosition, null, ColorLib.CursedFlames with { A = 0 }, nodeHealShineRot, DTAssetLib.Star(3).Value.Size() / 2, 2f, SpriteEffects.None);
                         Main.EntitySpriteDraw(DTAssetLib.Star(3).Value, cfNodes[i].Center - Main.screenPosition, null, Color.White with { A = 0 }, nodeHealShineRot, DTAssetLib.Star(3).Value.Size() / 2, 1.3f, SpriteEffects.None);
 
-                        DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(1, true), ColorLib.WretchedGradient() with { A = 0 }, Main.spriteBatch, BlendState.Additive, NodeHealLineScroll, 0.3f, 1f);
+                        DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(2, true), ColorLib.WretchedGradient() with { A = 0 }, Main.spriteBatch, BlendState.Additive, NodeHealLineScroll, 0.3f, 1f);
                         var Cap2 = spriteBatch.Capture();
                         spriteBatch.End();
 
@@ -772,7 +772,7 @@ namespace DestroyerTest.Content.Entities
                 Main.EntitySpriteDraw(DTAssetLib.NightmareRoseArenaBorder.Value, NPCHead - Main.screenPosition, null, BorderCol with { A = 0 }, Rotation, DTAssetLib.NightmareRoseArenaBorder.Value.Size() / 2, RingScale, SpriteEffects.FlipHorizontally, 0);
                 Main.EntitySpriteDraw(DTAssetLib.NightmareRoseArenaBorder.Value, NPCHead - Main.screenPosition, null, OpusColorUtils.Pastel(BorderCol, 0.75f) with { A = 0 }, Rotation, DTAssetLib.NightmareRoseArenaBorder.Value.Size() / 2, RingScale, SpriteEffects.FlipHorizontally, 0);
 
-                Main.EntitySpriteDraw(DTAssetLib.Vingette.Value, NPCHead - Main.screenPosition, null, BorderCol, Rotation, DTAssetLib.Vingette.Value.Size() / 2, 2.7f, SpriteEffects.None, 0);
+                Main.EntitySpriteDraw(DTAssetLib.Vingette.Value, NPCHead - Main.screenPosition, null, Color.Black, Rotation, DTAssetLib.Vingette.Value.Size() / 2, 2.7f, SpriteEffects.None, 0);
             }
         }
 

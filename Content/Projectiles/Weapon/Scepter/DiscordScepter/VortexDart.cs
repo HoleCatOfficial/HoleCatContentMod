@@ -1,11 +1,16 @@
-using BreadLibrary.Core.Graphics.Pixelation;
-using DestroyerTest.Common;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using BreadLibrary.Core.Graphics.Particles;
+using BreadLibrary.Core.Graphics.Pixelation;
+using BreadLibrary.Core.Graphics.Spritebatch;
+using BreadLibrary.Core.Utilities;
+using DestroyerTest.Common;
+using DestroyerTest.Content.Particles;
+using DestroyerTest.Content.Scepter;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using Terraria;
 using Terraria.Enums;
 using Terraria.GameContent;
@@ -18,7 +23,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter.DiscordScepter
 	public class VortexDart : ModProjectile, IDrawPixelated
 	{
 
-		public ref float DelayTimer => ref Projectile.ai[1];
+		public float DelayTimer;
 
         PixelLayer IDrawPixelated.PixelLayer => PixelLayer.AboveProjectiles;
 
@@ -45,7 +50,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter.DiscordScepter
 
 		private void AnimateProjectile()
 		{
-			if (++Projectile.frameCounter >= 2)
+			if (++Projectile.frameCounter >= 5)
 			{
 				Projectile.frameCounter = 0;
 				if (++Projectile.frame >= Main.projFrames[Projectile.type])
@@ -93,32 +98,71 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter.DiscordScepter
 			return null;
 		}
 
-		public override void AI() 
+        public void DustSpawn1()
+        {
+            Vector2 Pos1 = Projectile.Center + new Vector2(0, -20).RotatedBy(Projectile.rotation + MathHelper.PiOver2);
+            Vector2 Pos2 = Projectile.Center + new Vector2(0, 20).RotatedBy(Projectile.rotation + MathHelper.PiOver2);
+
+            Vector2 DustPos = Opus.Sine(Pos1, Pos2, 0.5f);
+
+			Spark spark1 = new();
+			spark1.PrepareSpark(DustPos, -Projectile.velocity * 0.5f, Projectile.velocity.ToRotation() + MathHelper.PiOver2, ColorLib.Vortex, 0.4f, false, 30, SparkDrawMode.Additive, 2.6f);
+			ParticleEngine.Particles.Add(spark1);
+
+            Vector2 Pos3 = Projectile.Center + new Vector2(0, 20).RotatedBy(Projectile.rotation + MathHelper.PiOver2);
+            Vector2 Pos4 = Projectile.Center + new Vector2(0, -20).RotatedBy(Projectile.rotation + MathHelper.PiOver2);
+
+            Vector2 DustPos2 = Opus.Sine(Pos3, Pos4, 0.5f);
+
+            Spark spark2 = new();
+            spark2.PrepareSpark(DustPos2, -Projectile.velocity * 0.5f, Projectile.velocity.ToRotation() + MathHelper.PiOver2, ColorLib.Vortex, 0.4f, false, 30, SparkDrawMode.Additive, 2.6f);
+            ParticleEngine.Particles.Add(spark2);
+        }
+
+        public override void AI() 
 		{
-			Projectile.ResetExcessTrailPoints();
-			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
-			float maxDetectRadius = 800f; 
+            DustSpawn1();
+
+            Projectile.ResetExcessTrailPoints();
+			Projectile.rotation = Projectile.velocity.ToRotation();
 			AnimateProjectile();
 
+            Lighting.AddLight(Projectile.Center, ColorLib.Vortex.ToVector3());
+
+           
 			if (DelayTimer < 35)
 			{
 				DelayTimer++;
 				return;
 			}
-
-			AnimateProjectile();
 		}
 
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
-			target.AddBuff(BuffID.Electrified, 300);
+            Player player = Main.player[Projectile.owner];
+            if (player.HeldItem.ModItem is CelestialDiscord CD && CD.Charge < 100)
+            {
+                CD.Charge++;
+                CD.ChargeIncrementInterval = 60;
+            }
+
+            target.AddBuff(BuffID.Electrified, 300);
 		}
 
 		void IDrawPixelated.DrawPixelated(SpriteBatch spriteBatch)
 		{
 			trailOffset += 0.01f;
 
-            DTTrail.DrawTrailPixelated(spriteBatch, BlendState.Additive, DTAssetLib.Streak(8, true).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 24, ColorLib.Vortex, trailOffset, 10);
-        }
+            var Cap = spriteBatch.Capture();
+            spriteBatch.End();
+
+            Cap.TransformMatrix = PixelationSystem.PixelationMatrix;
+
+            spriteBatch.Begin(Cap);
+
+            DTTrail.DrawTrailPixelated(spriteBatch, BlendState.Additive, DTAssetLib.Streak(8, true).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 7, ColorLib.Vortex with { A = 0 }, trailOffset, 10);
+
+			spriteBatch.ResetToDefault();
+		}
 	}
 }

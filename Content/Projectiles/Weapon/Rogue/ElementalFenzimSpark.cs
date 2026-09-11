@@ -114,7 +114,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
                     DustType = DustID.CorruptSpray;
                     break;
                 case 2:
-                    drawColor = Color.Aqua;
+                    drawColor = Color.DeepSkyBlue;
                     Buff = BuffID.Electrified;
                     DustType = DustID.Electric;
                     break;
@@ -129,7 +129,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
                     DustType = ModContent.DustType<SoulOfNightDust>();
                     break;
                 case 5:
-                    drawColor = Color.DeepSkyBlue;
+                    drawColor = Color.Aqua;
                     Buff = BuffID.Frozen;
                     DustType = DustID.IceTorch;
                     break;

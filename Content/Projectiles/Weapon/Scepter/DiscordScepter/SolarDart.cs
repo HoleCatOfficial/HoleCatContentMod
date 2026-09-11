@@ -2,8 +2,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using BreadLibrary.Core.Graphics.Pixelation;
+using BreadLibrary.Core.Graphics.Spritebatch;
+using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
 using DestroyerTest.Common.Interfaces;
+using DestroyerTest.Content.Scepter;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
@@ -19,7 +22,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter.DiscordScepter
 	public class SolarDart : ModProjectile, IDrawPixelated, IHomingProjectile
 	{
 
-		public ref float DelayTimer => ref Projectile.ai[1];
+		public float DelayTimer;
 
         PixelLayer IDrawPixelated.PixelLayer => PixelLayer.AboveProjectiles;
 
@@ -40,7 +43,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter.DiscordScepter
         bool IHomingProjectile.CanHome => DelayTimer >= 35;
 
         public override void SetStaticDefaults() {
-			ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true; // Make the cultist resistant to this projectile, as it's resistant to all homing projectiles.
+			ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true;
 			ProjectileID.Sets.TrailingMode[Type] = 3;
 			ProjectileID.Sets.TrailCacheLength[Type] = 150;
 		}
@@ -54,11 +57,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter.DiscordScepter
 			Projectile.friendly = true;
 			Projectile.hostile = false;
 			Projectile.ignoreWater = true; 
-			Projectile.timeLeft = 600;
+			Projectile.timeLeft = 240;
 			Projectile.tileCollide = false;
-			Projectile.damage += 15;
-			Projectile.netImportant = true;
-			Projectile.netUpdate = true;
 		}
 
 		public float trailOffset = 0f;
@@ -78,8 +78,17 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter.DiscordScepter
         {
             trailOffset += 0.01f;
 
-			DTTrail.DrawTrailPixelated(spriteBatch, BlendState.Additive, DTAssetLib.Streak(12, true).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 24, ColorLib.Solar, trailOffset, 10);
-        }
+            var Cap = spriteBatch.Capture();
+            spriteBatch.End();
+
+            Cap.TransformMatrix = PixelationSystem.PixelationMatrix;
+
+            spriteBatch.Begin(Cap);
+
+            DTTrail.DrawTrailPixelated(spriteBatch, BlendState.Additive, DTAssetLib.Streak(12, true).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 12, ColorLib.Solar with { A = 0 }, trailOffset, 10);
+
+			spriteBatch.ResetToDefault();
+		}
 		public override bool? CanHitNPC(NPC target)
 		{
 			return DelayTimer >= 35 && Projectile.ManualCanHitFriendly(target);
@@ -90,7 +99,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter.DiscordScepter
 			Projectile.ResetExcessTrailPoints();
 			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
 
-            Lighting.AddLight(Projectile.Center, ColorLib.Solar.ToVector3() * 0.01f);
+            Lighting.AddLight(Projectile.Center, ColorLib.Solar.ToVector3());
 
             if (DelayTimer < 35)
 			{
@@ -100,7 +109,14 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter.DiscordScepter
 		}
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
 		{
-			Projectile.NewProjectile(Projectile.GetSource_Death(), Projectile.Center, Vector2.Zero, ProjectileID.SolarWhipSwordExplosion, Projectile.damage / 2, 3, Projectile.owner);
+            Player player = Main.player[Projectile.owner];
+            if (player.HeldItem.ModItem is CelestialDiscord CD && CD.Charge < 100)
+            {
+                CD.Charge++;
+                CD.ChargeIncrementInterval = 60;
+            }
+
+            Projectile.NewProjectile(Projectile.GetSource_Death(), Projectile.Center, Vector2.Zero, ProjectileID.SolarWhipSwordExplosion, Projectile.damage / 2, 3, Projectile.owner);
 			target.AddBuff(BuffID.Daybreak, 300);
 		}
     }

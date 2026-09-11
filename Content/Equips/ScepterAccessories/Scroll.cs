@@ -1,22 +1,25 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
+using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles;
+using DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss;
 using DestroyerTest.Content.Projectiles.HellWeapons;
+using DestroyerTest.Content.Projectiles.ParentClasses;
+using DestroyerTest.Content.Projectiles.player.Accessory;
+using DestroyerTest.Content.Projectiles.Weapon.Scepter;
+using DestroyerTest.Rarity.Scepter;
 using Microsoft.Xna.Framework;
+using OpusLib;
+using OpusLib.Content.Helpers;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using OpusLib.Content.Helpers;
-using System;
-using System.Linq;
-using Terraria.GameContent.ItemDropRules;
-using OpusLib;
-using DestroyerTest.Rarity.Scepter;
-using DestroyerTest.Content.Projectiles.player.Accessory;
-using DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss;
-using DestroyerTest.Content.Projectiles.Weapon.Scepter;
-using DestroyerTest.Content.Projectiles.ParentClasses;
 
 namespace DestroyerTest.Content.Equips.ScepterAccessories
 {
@@ -159,6 +162,98 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
         }
     }
 
+    public class ScrollManager
+    {
+        public static readonly Dictionary<Player, List<EventHandler>> TileEventSubscriptions = new();
+        public static readonly Dictionary<Player, List<EventHandler<NPC>>> HitNPCEventSubscriptions = new();
+        public static readonly Dictionary<Player, List<EventHandler>> OnReturnEventSubscriptions = new();
+
+
+
+        public static void AddTileEffect(Player player, EventHandler handler)
+        {
+            ThrownScepter thrownScepter = Main.projectile.First(n => n.active && n.owner == player.whoAmI).ModProjectile as ThrownScepter;
+            thrownScepter.TileCollideEvent += handler;
+
+            if (!TileEventSubscriptions.TryGetValue(player, out var handlers))
+            {
+                TileEventSubscriptions[player] = handlers = [];
+            }
+
+            handlers.Add(handler);
+        }
+
+        public static void AddReturnEffect(Player player, EventHandler handler)
+        {
+            ThrownScepter thrownScepter = Main.projectile.First(n => n.active && n.owner == player.whoAmI).ModProjectile as ThrownScepter;
+            thrownScepter.OnReturnEvent += handler;
+
+            if (!OnReturnEventSubscriptions.TryGetValue(player, out var handlers))
+            {
+                OnReturnEventSubscriptions[player] = handlers = [];
+            }
+
+            handlers.Add(handler);
+        }
+
+        public static void AddHitNPCEffect(Player player, NPC target, EventHandler<NPC> handler)
+        {
+            ThrownScepter thrownScepter = Main.projectile.First(n => n.active && n.owner == player.whoAmI).ModProjectile as ThrownScepter;
+            thrownScepter.HitNPCEvent += handler;
+
+            if (!HitNPCEventSubscriptions.TryGetValue(player, out var handlers))
+            {
+                HitNPCEventSubscriptions[player] = handlers = [];
+            }
+
+            handlers.Add(handler);
+        }
+
+        public static void RemoveAllTileEffects(Player player)
+        {
+            ThrownScepter thrownScepter = Main.projectile.First(n => n.active && n.owner == player.whoAmI).ModProjectile as ThrownScepter;
+
+            if (!TileEventSubscriptions.TryGetValue(player, out var handlers))
+                return;
+
+            foreach (EventHandler handler in handlers)
+            {
+                thrownScepter.TileCollideEvent -= handler;
+            }
+
+            TileEventSubscriptions.Remove(player);
+        }
+
+        public static void RemoveAllReturnEffects(Player player)
+        {
+            ThrownScepter thrownScepter = Main.projectile.First(n => n.active && n.owner == player.whoAmI).ModProjectile as ThrownScepter;
+
+            if (!OnReturnEventSubscriptions.TryGetValue(player, out var handlers))
+                return;
+
+            foreach (EventHandler handler in handlers)
+            {
+                thrownScepter.OnReturnEvent -= handler;
+            }
+
+            OnReturnEventSubscriptions.Remove(player);
+        }
+
+        public static void RemoveAllHitNPCEffects(Player player)
+        {
+            ThrownScepter thrownScepter = Main.projectile.First(n => n.active && n.owner == player.whoAmI).ModProjectile as ThrownScepter;
+
+            if (!HitNPCEventSubscriptions.TryGetValue(player, out var handlers))
+                return;
+
+            foreach (EventHandler<NPC> handler in handlers)
+            {
+                thrownScepter.HitNPCEvent -= handler;  
+            }
+
+            HitNPCEventSubscriptions.Remove(player);
+        }
+    }
 
     public class ScrollScepterUsePlayer : ModPlayer
     {
@@ -617,6 +712,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
         public bool FrozenFireScroll = false;
         public bool PoisonScroll1 = false;
         public bool HandScroll = false;
+        public bool ZapScroll = false;
         public override void SetDefaults(Projectile entity)
         {
             if (entity.DamageType == ModContent.GetInstance<ScepterClass>() && entity.Name.Contains("Thrown"))
@@ -798,18 +894,8 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
                     Opus.RingSpreadProjectile(ModContent.ProjectileType<FrozenFire>(), 4, projectile.Center, 20, projectile.damage / 4, 0, 3f, offset: projectile.rotation);
                 }
             }
-            
-            if (projectile.ModProjectile is ThrownScepter scepter)
-            {
-                AttachTo(scepter);
-            }
         }
         
-        public void AttachTo(ThrownScepter scepter)
-        {
-            scepter.OnReturnHook += ThrownScepterOnReturn;
-        }
-
         bool ReleasedSpore = false;
         
         public static SoundStyle PoisonScrollSound = new SoundStyle("DestroyerTest/Assets/Audio/PoisonVerseBurst") { PitchVariance = 0.3f, MaxInstances = 0 };
@@ -847,6 +933,21 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
             {
                 Opus.RingSpreadProjectileRandom(ProjectileID.InsanityShadowFriendly, 3, target.Center, 200, projectile.damage, 4, -14f);
             }
+
+            if (IsAThrownScepter && ZapScroll)
+            {
+                Projectile.NewProjectile(projectile.GetSource_OnHit(target), projectile.Center, Vector2.Zero, ModContent.ProjectileType<ElectricField>(), (int)(projectile.damage * 0.75f), 2, projectile.owner);
+            }
+        }
+
+        public override bool OnTileCollide(Projectile projectile, Vector2 oldVelocity)
+        {
+            if (IsAThrownScepter && ZapScroll && ((projectile.ModProjectile is ThrownScepter ts) && ts.TileCollideFXTimer <= 0))
+            {
+                Projectile.NewProjectile(projectile.GetSource_FromAI(), projectile.Center, Vector2.Zero, ModContent.ProjectileType<ElectricField>(), (int)(projectile.damage * 0.75f), 2, projectile.owner);
+            }
+
+            return base.OnTileCollide(projectile, oldVelocity);
         }
 
     }

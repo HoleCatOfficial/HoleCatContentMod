@@ -20,7 +20,7 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.player.Accessory
 {
-    public class CurseProjectile : ModProjectile, IHomingProjectile, IDrawPixelated
+    public class CurseProjectile : ModProjectile, IHomingProjectile
     {
         enum curseType
         {
@@ -78,26 +78,23 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
         }
 
         int scroll = 0;
-        public PixelLayer PixelLayer => PixelLayer.AbovePlayer;
-        void IDrawPixelated.DrawPixelated(SpriteBatch spriteBatch)
-        {
 
+        public override bool PreDraw(ref Color lightColor)
+        {
             Texture2D texture = DTAssetLib.CurseSigilRing.Value;
             Texture2D SparkTex = DTAssetLib.MiscSparkle144.Value;
             Vector2 origin = texture.Size() / 2f;
             Vector2 SparkOrigin = SparkTex.Size() / 2f;
+            SpriteBatch spriteBatch = Main.spriteBatch;
+ 
 
-            Opus.StartSpriteBatchPixelated(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
-
-            DTTrail.DrawTrailPixelated(spriteBatch, BlendState.AlphaBlend, DTAssetLib.Streak(Trailtype(), true).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 16, Col() with { A = 0 }, scroll, 1);
-
-            Opus.StartSpriteBatchPixelated(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
+            DTTrail.DrawTrail(spriteBatch, BlendState.AlphaBlend, DTAssetLib.Streak(Trailtype(), true).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 16, Col() with { A = 0 }, scroll, 1);
 
             spriteBatch.Draw(SparkTex, Projectile.Center - Main.screenPosition, null, Color.White with { A = 0 }, MathHelper.PiOver2, SparkOrigin, Projectile.scale * 0.5f, SpriteEffects.None, 0f);
             spriteBatch.Draw(SparkTex, Projectile.Center - Main.screenPosition, null, Col() with { A = 0 }, MathHelper.PiOver2, SparkOrigin, Projectile.scale * 1.4f, SpriteEffects.None, 0f);
             spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null, Col() with { A = 0 }, rot, origin, 0.2f * Projectile.scale, SpriteEffects.None, 0f);
 
-            Opus.ReturnToDefaultDrawing(spriteBatch);
+            return false;
         }
 
         int Trailtype()

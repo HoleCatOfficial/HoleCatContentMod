@@ -51,17 +51,17 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
             R += 0.01f;
 
             PointGlowPreMultiplied FX = new();
-            FX.Initialize(Projectile.Center, Main.rand.NextVector2Circular(0.5f, 0.5f), ColorLib.LifeEcho, 0.8f);
+            FX.Initialize(Projectile.Center, Main.rand.NextVector2Circular(0.25f, 0.25f), ColorLib.LifeEcho, 0.8f);
             ParticleEngine.BehindProjectiles.Add(FX);
 
             PointGlowPreMultiplied FX2 = new();
-            FX2.Initialize(Projectile.Center, Main.rand.NextVector2Circular(0.2f, 0.2f), Color.White, 0.3f);
+            FX2.Initialize(Projectile.Center, Main.rand.NextVector2Circular(0.25f, 0.25f), Color.White, 0.3f);
             ParticleEngine.BehindProjectiles.Add(FX2);
         }
 
         public override void OnKill(int timeLeft)
         {
-            SoundEngine.PlaySound(new SoundStyle(DTAssetLib.AudioPath + "/TenebrisTesticleKill") with { Pitch = 0.8f, PitchVariance = 0.1f }, Projectile.Center);
+            SoundEngine.PlaySound(SoundID.Item100, Projectile.Center);
             SimpleExplosionParticle Explosion = new();
             Explosion.Prepare(Projectile.Center, Vector2.Zero, Color.White, 0.2f, 0.003f, 1.4f, BlendState.Additive);
             ParticleEngine.BehindProjectiles.Add(Explosion);

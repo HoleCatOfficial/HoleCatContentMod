@@ -8,6 +8,10 @@ using DestroyerTest.Content.Projectiles.Weapon.Melee;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Resources;
 using GlowmaskHelper.Content;
+using OpusLib;
+using OpusLib.Content.Helpers;
+using DestroyerTest.Content.Entities;
+using Terraria.GameContent.ItemDropRules;
 
 namespace DestroyerTest.Content.MeleeWeapons
 {
@@ -18,6 +22,7 @@ namespace DestroyerTest.Content.MeleeWeapons
         public override void SetStaticDefaults()
         {
             ItemID.Sets.Spears[Item.type] = true;
+            OpusNPCDropHelper.DropsFromNPC[Type] = new NPCDropData(ModContent.NPCType<RiftObserver>(), ItemDropRule.Common(Type, 10));
         }
 
         public override void SetDefaults()

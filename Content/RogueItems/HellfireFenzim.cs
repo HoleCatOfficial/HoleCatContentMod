@@ -40,5 +40,13 @@ namespace DestroyerTest.Content.RogueItems
             Item.shootSpeed = 35f;
             Item.noUseGraphic = true;
         }
+
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient(ItemID.HellstoneBar, 15)
+                .AddIngredient(ItemID.Obsidian, 6)
+                .Register();
+        }
     }
 }

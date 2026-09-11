@@ -1,4 +1,5 @@
-﻿using BreadLibrary.Core.Graphics.Particles;
+﻿using System.Collections.Generic;
+using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Spritebatch;
 using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
@@ -15,6 +16,7 @@ namespace DestroyerTest.Content.Particles
 {
     public class WretchedPointGlow : PointGlowPreMultiplied
     {
+        List<Vector2> OldPositions = new();
         public void Prepare(Vector2 Position, Vector2 Velocity, float Scale)
         {
             position = Position;
@@ -29,6 +31,13 @@ namespace DestroyerTest.Content.Particles
 
             color = DTColorUtils.MultiLerp(LifetimeCompletion, ColorLib.WretchedColorMap);
             position += velocity;
+
+            OldPositions.Add(position);
+
+            if (OldPositions.Count > 12)
+            {
+                OldPositions.RemoveAt(0);
+            }
 
             if (LifetimeCompletion > 0.5f)
             {
@@ -50,6 +59,15 @@ namespace DestroyerTest.Content.Particles
             var capture = spriteBatch.Capture();
 
             spriteBatch.UseBlendState(BlendState.Additive);
+
+            if (OldPositions != null)
+            {
+                for (int i = 0; i < OldPositions.Count; i++)
+                {
+                    float SclMod = MathHelper.Lerp(0f, 1f, (float)i / 12f);
+                    spriteBatch.Draw(texture, OldPositions[i] - Main.screenPosition, null, color * 0.3f, 0f, origin, scale * SclMod, SpriteEffects.None, 0f);
+                }
+            }
 
             spriteBatch.Draw(texture, position - Main.screenPosition, null, color, 0f, origin, scale, SpriteEffects.None, 0f);
             spriteBatch.Draw(texture, position - Main.screenPosition, null, OpusColorUtils.Pastel(color, 0.5f), 0f, origin, scale * 0.6f, SpriteEffects.None, 0f);

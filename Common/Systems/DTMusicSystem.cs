@@ -86,7 +86,7 @@ internal class MusicDisplayCalls : ModSystem
         AddMusic("Assets/Music/NodeBoss", "NodeBoss.Fight", "Author1", FranciumColors);
         AddMusic("Assets/Music/BlessedNode", "NodeBoss.FightHallow", "Author1", FranciumColors);
         AddMusic("Assets/Music/NodeIdle", "NodeBoss.Idle", "Author1", FranciumColors);
-        AddMusic("Assets/Music/TenebrousConstruct", "TenebrousConstruct", "Author1", FranciumColors);
+        AddMusic("Assets/Music/tc4", "TenebrousConstruct", "Author1", FranciumColors);
         AddMusic("Assets/Music/RoseSoulAmbience", "RoseSoulAmbience", "Author1", FranciumColors);
         AddMusic("Assets/Music/WyvernSoulAmbience", "WyvernSoulAmbience", "Author1", FranciumColors);
         AddMusic("Assets/Music/HekateGarden", "HekateGarden", "Author1", FranciumColors);

@@ -108,6 +108,49 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
         float P = -0.3f;
 
         public float effectRadius = 150;
+
+        void ZapEnemies()
+        {
+            foreach (NPC target in Main.ActiveNPCs)
+            {
+                if (target.Center.Distance(Projectile.Center) < effectRadius && !target.friendly)
+                {
+                    SoundEngine.PlaySound(SoundID.DD2_LightningBugZap, target.Center);
+
+                    Vector2 outer = target.Center;
+                    var curve = DTUtils.EasyBezier(Projectile.Center, Projectile.Center.DirectionTo(outer).RotatedByRandom(3f), outer, outer.DirectionFrom(Projectile.Center).RotatedByRandom(3f), 0.5f);
+                    var points = curve.GetEvenlySpacedPoints(15);
+                    for (int i = 0; i < points.Count; i++)
+                    {
+                        PointGlowPreMultiplied ArcGlow = new();
+                        ArcGlow.Initialize(Projectile.Center, Main.rand.NextVector2Circular(4f, 4f), Color.DeepSkyBlue with { A = 0 } * 0.05f, 2.5f);
+                        ParticleEngine.BehindProjectiles.Add(ArcGlow);
+
+                        PixelParticle Arc = new();
+                        Arc.Initialize(points[i], Vector2.Zero, Color.DeepSkyBlue with { A = 0 }, 2f, 60);
+                        ParticleEngine.BehindProjectiles.Add(Arc);
+
+
+                    }
+
+                    target.AddBuff(BuffID.Electrified, 300);
+                    int Damage = (int)(Projectile.damage);
+                    Damage = Utils.Clamp(Damage, 10, 100);
+                    if (Damage > target.life)
+                    {
+                        Projectile.timeLeft += 120;
+                    }
+                    target.SimpleStrikeNPC(Damage, Math.Sign((target.Center - Projectile.Center).X), false, 1f, DamageClass.Default);
+
+                    if (!target.boss)
+                    {
+                        target.velocity *= 0.1f;
+                    }
+
+                    MaskAlpha = 0.5f;
+                }
+            }
+        }
         public override void AI()
         {
             Projectile.ai[0]++;
@@ -223,40 +266,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 
                 if (Projectile.ai[0] % 30 == 0)
                 {
-                    foreach (NPC target in Main.ActiveNPCs)
-                    {
-                        if (target.Center.Distance(Projectile.Center) < effectRadius && !target.friendly)
-                        {
-                            SoundEngine.PlaySound(SoundID.DD2_LightningBugZap, target.Center);
-
-                            Vector2 outer = target.Center;
-                            var curve = DTUtils.EasyBezier(Projectile.Center, Projectile.Center.DirectionTo(outer).RotatedByRandom(3f), outer, outer.DirectionFrom(Projectile.Center).RotatedByRandom(3f), 0.5f);
-                            var points = curve.GetEvenlySpacedPoints(15);
-                            for (int i = 0; i < points.Count; i++)
-                            {
-                                PointGlowPreMultiplied ArcGlow = new();
-                                ArcGlow.Initialize(points[i], Main.rand.NextVector2Circular(0.2f, 0.2f), Color.DeepSkyBlue with { A = 0 } * 0.05f, 2.5f);
-                                ParticleEngine.BehindProjectiles.Add(ArcGlow);
-
-                                PixelParticle Arc = new();
-                                Arc.Initialize(points[i], Vector2.Zero, Color.DeepSkyBlue with { A = 0 }, 2f, 60);
-                                ParticleEngine.BehindProjectiles.Add(Arc);
-                            }
-
-                            target.AddBuff(BuffID.Electrified, 300);
-                            int Damage = (int)(Projectile.damage * 0.3f);
-                            Damage = Utils.Clamp(Damage, 10, 50);
-                            target.SimpleStrikeNPC(Damage, Math.Sign((target.Center - Projectile.Center).X), false, 1f, DamageClass.Default);
-                            target.velocity *= 0.1f;
-
-                            MaskAlpha = 0.5f;
-
-                            if (target.life < 0)
-                            {
-                                Projectile.timeLeft += 120;
-                            }
-                        }
-                    }
+                    ZapEnemies();
                 }
             }
         }
@@ -319,42 +329,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
                     }
                 }
 
-                foreach (NPC target in Main.ActiveNPCs)
-                {
-                    if (target.Center.Distance(Projectile.Center) < effectRadius && !target.friendly)
-                    {
-                        SoundEngine.PlaySound(SoundID.DD2_LightningBugZap, target.Center);
-
-                        Vector2 outer = target.Center;
-                        var curve = DTUtils.EasyBezier(Projectile.Center, Projectile.Center.DirectionTo(outer).RotatedByRandom(3f), outer, outer.DirectionFrom(Projectile.Center).RotatedByRandom(3f), 0.5f);
-                        var points = curve.GetEvenlySpacedPoints(15);
-                        for (int i = 0; i < points.Count; i++)
-                        {
-                            PointGlowPreMultiplied ArcGlow = new();
-                            ArcGlow.Initialize(Projectile.Center, Main.rand.NextVector2Circular(4f, 4f), Color.DeepSkyBlue with { A = 0 } * 0.05f, 2.5f);
-                            ParticleEngine.BehindProjectiles.Add(ArcGlow);
-
-                            PixelParticle Arc = new();
-                            Arc.Initialize(points[i], Vector2.Zero, Color.DeepSkyBlue with { A = 0 }, 2f, 60);
-                            ParticleEngine.BehindProjectiles.Add(Arc);
-
-
-                        }
-
-                        target.AddBuff(BuffID.Electrified, 300);
-                        int Damage = (int)(Projectile.damage);
-                        Damage = Utils.Clamp(Damage, 10, 100);
-                        target.SimpleStrikeNPC(Damage, Math.Sign((target.Center - Projectile.Center).X), false, 1f, DamageClass.Default);
-                        target.velocity *= 0.1f;
-
-                        MaskAlpha = 0.5f;
-
-                        if (target.life < 0)
-                        {
-                            Projectile.timeLeft += 60;
-                        }
-                    }
-                }
+                ZapEnemies();
 
                 RecordedOldVelocity = -oldVelocity.RotatedBy(MathHelper.PiOver2);
 

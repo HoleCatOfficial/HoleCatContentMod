@@ -11,6 +11,7 @@ using DestroyerTest.Content.MeleeWeapons.SwordLineage;
 using DestroyerTest.Content.MeleeWeapons.TwistedLineage;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.RiftArsenal;
+using DestroyerTest.Content.RogueItems;
 using DestroyerTest.Content.Scepter;
 using DestroyerTest.Content.Tiles.RoseGarden;
 using Hjson;
@@ -78,13 +79,72 @@ namespace DestroyerTest
                             break;
                         }
 
+                    case "ShadeEvilBiome":
+                    case "ShadeInCorruption":
+                    case "ShadeCorruption":
                     case "TenebrisEvilBiome":
                     case "TenebrisInCorruption":
                     case "TenebrisCorruption":
                         {
                             return DTFlags.TenebrisCanSpawnInWorldEvilBiome;
                         }
-                 }
+
+                    case "ConstitutionDefeated":
+                    case "ConstitutionDowned":
+                    case "ConstitutionBossDefeated":
+                    case "ConstitutionBossDowned":
+                        {
+                            return DownedBossSystem.downedConstitutionBoss;
+                        }
+
+                    case "CusedFlameNodeDefeated":
+                    case "CusedFlameNodeDowned":
+                    case "CusedFlameNodeMiniBossDefeated":
+                    case "CusedFlameNodeMiniBossDowned":
+                        {
+                            return DownedBossSystem.downedCursedFlameNodeMiniBoss;
+                        }
+
+                    case "IchorNodeDefeated":
+                    case "IchorNodeDowned":
+                    case "IchorNodeMiniBossDefeated":
+                    case "IchorNodeMiniBossDowned":
+                        {
+                            return DownedBossSystem.downedIchorNodeMiniBoss;
+                        }
+
+                    case "BlessedNodeDefeated":
+                    case "BlessedNodeDowned":
+                    case "BlessedNodeMiniBossDefeated":
+                    case "BlessedNodeMiniBossDowned":
+                        {
+                            return DownedBossSystem.downedBlessedNodeMiniBoss;
+                        }
+
+                    case "NightmareRoseDefeated":
+                    case "NightmareRoseDowned":
+                    case "NightmareRoseBossDefeated":
+                    case "NightmareRoseBossDowned":
+                        {
+                            return DownedBossSystem.downedNightmareRoseBoss;
+                        }
+
+                    case "WyvernCorpseDefeated":
+                    case "WyvernCorpseDowned":
+                    case "WyvernCorpseBossDefeated":
+                    case "WyvernCorpseBossDowned":
+                        {
+                            return DownedBossSystem.downedWyvernCorpseBoss;
+                        }
+
+                    case "TenebrousConstructDefeated":
+                    case "TenebrousConstructDowned":
+                    case "TenebrousConstructBossDefeated":
+                    case "TenebrousConstructBossDowned":
+                        {
+                            return DownedBossSystem.downedNightmareRoseBoss;
+                        }
+                }
             }
 
             return false;
@@ -206,6 +266,12 @@ namespace DestroyerTest
 				stack: 1,
 				rarity: 0.25f
 			);
+            ChestLootSystem.RegisterChestLoot(
+                ChestID.Sandstone,
+                ModContent.ItemType<VoltaicFenzim>(),
+                stack: 1,
+                rarity: 0.15f
+            );
 
             ChestLootSystem.RegisterChestLoot(
                 ChestID.Ivy,

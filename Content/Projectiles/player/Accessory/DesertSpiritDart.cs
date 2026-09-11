@@ -45,7 +45,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
         {
             Projectile.width = 38;
             Projectile.height = 38;
-            Projectile.DamageType = DamageClass.Magic;
+            Projectile.DamageType = DamageClass.Generic;
             Projectile.friendly = true; 
             Projectile.ignoreWater = true;
             Projectile.timeLeft = 600;

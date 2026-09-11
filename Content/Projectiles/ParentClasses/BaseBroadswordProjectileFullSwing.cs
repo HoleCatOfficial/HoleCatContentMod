@@ -123,6 +123,8 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         public float AdjustedScale = 0f;
         public int NPCHitCooldown = 15;
 
+        public bool RightClickDependant { get; set; }
+
         public override bool PreAI()
         {
             AdjustedScale = Owner.GetAdjustedItemScale(Owner.HeldItem) * ScaleMult;
@@ -142,7 +144,8 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             {
                 HitCooldown--;
             }
-            if (Owner.controlUseItem)
+            bool ActiveCondition = RightClickDependant ? Owner.controlUseTile : Owner.controlUseItem;
+            if (ActiveCondition)
             {
                 Owner.SetDummyItemTime(60);
 
@@ -155,7 +158,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
                 UpPoint = targetAngle.ToRotation() + (Projectile.spriteDirection == 1 ? -MathHelper.ToRadians(135f) : MathHelper.ToRadians(135f));
             }
 
-            if (!Owner.active || Owner.dead || Owner.noItems || Owner.CCed || !Owner.controlUseItem)
+            if (!Owner.active || Owner.dead || Owner.noItems || Owner.CCed || !ActiveCondition)
             {
                 Projectile.Kill();
                 return;
@@ -315,7 +318,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         {
             if (UsesFireSweepFX)
             {
-                Tex = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/CircularSlash3").Value;
+                Tex = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/CircularSlash").Value;
                 TexH = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/CircularSlash3Highlight").Value;
             }
             else

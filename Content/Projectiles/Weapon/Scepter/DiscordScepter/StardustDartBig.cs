@@ -1,9 +1,14 @@
+using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
+using BreadLibrary.Core.Graphics.Spritebatch;
+using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
 using DestroyerTest.Common.Interfaces;
+using DestroyerTest.Content.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
+using OpusLib.Content.Particles;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -22,11 +27,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter.DiscordScepter
 	public class StardustDartBig : ModProjectile, IDrawPixelated, IHomingProjectile
 	{
 
-		public ref float DelayTimer => ref Projectile.ai[1];
+		public float DelayTimer;
 
         bool IHomingProjectile.TracksNPCs => true;
 
-        bool IHomingProjectile.TracksPlayers => true;
+        bool IHomingProjectile.TracksPlayers => false;
 
         float IHomingProjectile.HomingTurnSpeed => 8f;
 
@@ -69,10 +74,13 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter.DiscordScepter
 			SpriteBatch spriteBatch = Main.spriteBatch;
 			Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
 
-		
+            Opus.DrawTextureOnProj(DTAssetLib.MiscSparkle144, Projectile, ColorLib.Stardust with { A = 0 }, false, Projectile.rotation + MathHelper.PiOver2);
+            Opus.DrawTextureOnProj(DTAssetLib.MiscSparkle144, Projectile, ColorLib.Stardust with { A = 0 }, false, Projectile.rotation, ScaleY: 2f);
 
-			Main.EntitySpriteDraw(DTUtils.CenteredDraw(Projectile, Color.White));
-			return false;
+            Opus.DrawTextureOnProj(DTAssetLib.MiscSparkle144, Projectile, Color.White with { A = 0 }, false, Projectile.rotation + MathHelper.PiOver2);
+            Opus.DrawTextureOnProj(DTAssetLib.MiscSparkle144, Projectile, Color.White with { A = 0 }, false, Projectile.rotation, ScaleY: 2f);
+
+            return false;
 		}
 
 
@@ -87,7 +95,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter.DiscordScepter
 			Projectile.ResetExcessTrailPoints();
 			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
 
-			Lighting.AddLight(Projectile.Center, ColorLib.Stardust.ToVector3() * 0.01f);
+			Lighting.AddLight(Projectile.Center, ColorLib.Stardust.ToVector3());
 
 			if (DelayTimer < 35)
 			{
@@ -101,6 +109,17 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter.DiscordScepter
 			if (timeLeft > 0)
 			{
 				SoundEngine.PlaySound(DTAssetLib.Impacts.DarkMagicImpact, Projectile.Center);
+				BloomRingSharp Ring = new();
+				Ring.Prepare(Projectile.Center, Vector2.Zero, ColorLib.Stardust, 0.3f, 0.01f, 2f, BlendState.Additive);
+				ParticleEngine.Particles.Add(Ring);
+
+				for (int i = 0; i < 14; i++)
+				{
+					StarParticle star = new();
+					star.Initialize(Projectile.Center, Main.rand.NextVector2Circular(5f, 5f), ColorLib.Stardust, 1f);
+					ParticleEngine.Particles.Add(star);
+				}
+
 				Opus.RadialSpreadProjectile(ModContent.ProjectileType<StardustDartSmall>(), 8, Projectile.Center, Projectile.damage / 2, 0, 4, offset: Main.rand.NextFloat(MathHelper.TwoPi));
 			}
 		}
@@ -109,7 +128,16 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter.DiscordScepter
         {
             trailOffset += 0.01f;
 
-            DTTrail.DrawTrailPixelated(spriteBatch, BlendState.Additive, DTAssetLib.Streak(1, true).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 48, ColorLib.Stardust, trailOffset, 10);
-        }
+            var Cap = spriteBatch.Capture();
+            spriteBatch.End();
+
+            Cap.TransformMatrix = PixelationSystem.PixelationMatrix;
+
+            spriteBatch.Begin(Cap);
+
+            DTTrail.DrawTrailPixelated(spriteBatch, BlendState.Additive, DTAssetLib.Streak(1, true).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 12, ColorLib.Stardust with { A = 0 }, trailOffset, 10);
+
+			spriteBatch.ResetToDefault();
+		}
     }
 }

@@ -222,10 +222,10 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             );
         }
 
-        public event Action<ThrownScepter> OnReturnHook;
+        public event EventHandler? OnReturnEvent;
         public virtual void OnReturn()
         {
-            OnReturnHook?.Invoke(this);
+            OnReturnEvent?.Invoke(this, EventArgs.Empty);
         }
 
         public bool OnReturnFlag = false;
@@ -352,13 +352,19 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             }
         }
 
+        public EventHandler<NPC>? HitNPCEvent;
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.AddBuff(BuffID.Confused, 120);
             SoundEngine.PlaySound(SoundID.Item175, Projectile.position);
             HitCount += 1;
-            returning = true; // Immediately start returning when hitting something
+
+            HitNPCEvent?.Invoke(this, target);
+
+            returning = true;
         }
+
+        public event EventHandler? TileCollideEvent;
 
         /// <summary>
         /// Use this for any tile collision effects. Always return base at the end so that the timer works right.
@@ -368,6 +374,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             if (TileCollideFXTimer <= 0f)
             {
                 //Blah Blah run here.
+                TileCollideEvent?.Invoke(this, EventArgs.Empty);
                 TileCollideFXTimer = ModContent.GetInstance<DTConfig>().ScepterTileCollsionsCooldown;
             }
         }

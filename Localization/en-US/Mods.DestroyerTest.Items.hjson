@@ -2009,8 +2009,14 @@ CelestialDiscord: {
 	DisplayName: Celestial Discord
 	Tooltip:
 		'''
-		Primary fire selects between 4 celestial dart types.
-		Thrown scepters create an aura of empowerment when hitting an npc or tile.
+		Primary shots can be 1 of 4 types: 
+		A homing sun dart that inflicts daybroken and creates an explosion, 
+		a cloud of nebulous fireballs that home in on nearby enemies, 
+		a homing stardust dart that splits into 8 smaller darts when hitting an enemy or tile,
+		or a vortex dart that pierces and inflicts electrified
+
+		Racking up 100 hits with the item will put it into "Fusion State", in which the 4 types becomes upgraded and mix all 4 celestial elements.
+		Hits cannot be re-stacked until all 100 points are spent.
 		'''
 }
 
@@ -4990,7 +4996,7 @@ ReanimationBow: {
 
 LaserPointer: {
 	DisplayName: Laser Pointer
-	Tooltip: Increases Ranged critical strike chance by 18.5%.
+	Tooltip: Increases Ranged critical strike chance by 11.5%.
 }
 
 MoltenEmblem: {
@@ -5371,9 +5377,34 @@ VoltaicFenzim: {
 HellfireFenzim: {
 	DisplayName: Hellfire Fenzim
 	Tooltip:
-	'''
-	Throws a volatile fire disc.
-	The disc lights enemies on fire when hit, and inflicts Hellfire on critical hits.
-	Hitting a tile will cause it to become gravity affected and fall to the ground.
-	'''
+		'''
+		Throws a volatile fire disc.
+		The disc lights enemies on fire when hit, and inflicts Hellfire on critical hits.
+		Hitting a tile will cause it to become gravity affected and fall to the ground.
+		'''
+}
+
+CursedKunai: {
+	DisplayName: Cursed Kunai
+	Tooltip: Inflicts cursed inferno on it, and bounces off of tiles.
+}
+
+BlueBarItem: {
+	DisplayName: Blue Bar Item
+	Tooltip: ""
+}
+
+GreenBarItem: {
+	DisplayName: Green Bar Item
+	Tooltip: ""
+}
+
+RedBarItem: {
+	DisplayName: Red Bar Item
+	Tooltip: ""
+}
+
+ZapScroll: {
+	DisplayName: Zap Scroll
+	Tooltip: Thrown scepters create electric fields when hitting a tile or an enemy.
 }

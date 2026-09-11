@@ -30,7 +30,7 @@ namespace DestroyerTest.Content.Equips
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.GetCritChance(DamageClass.Ranged) += 18.5f;
+            player.GetCritChance(DamageClass.Ranged) += 11.5f;
         }
     }
 }

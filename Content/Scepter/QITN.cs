@@ -38,7 +38,7 @@ namespace DestroyerTest.Content.Scepter
             ShootID = ModContent.ProjectileType<FrigidEcho>();
             ThrowID = ModContent.ProjectileType<QITNThrown>();
 
-            ShootSound = new SoundStyle(DTAssetLib.AudioPath + "/MiniRoseSummon") { Pitch = -0.6f, PitchVariance = 0.4f, MaxInstances = 0 };
+            ShootSound = SoundID.Item77 with { Pitch = -0.6f, PitchVariance = 0.4f, MaxInstances = 0 };
             ThrowSound = SoundID.Item169;
 
             base.SetDefaults();

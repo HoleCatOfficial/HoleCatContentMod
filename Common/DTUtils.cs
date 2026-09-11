@@ -994,8 +994,8 @@ namespace DestroyerTest.Common
 
         public static void SetSpecialMeleeStats(this Item item)
         {
-            item.useTime = 60;
-            item.useAnimation = 60;
+            item.useTime = 30;
+            item.useAnimation = 30;
             item.useTurn = true;
         }
 
@@ -2310,6 +2310,7 @@ namespace DestroyerTest.Common
                 spriteBatch.Begin(Cap);
 
 
+
                 if (Positions.Count > 1)
                 {
                     List<ColoredVertex> ve = new List<ColoredVertex>();
@@ -2318,12 +2319,11 @@ namespace DestroyerTest.Common
                     for (int i = Positions.Count - 1; i > 0; i--)
                     {
                         float t = 1f - (i / (float)Positions.Count);
-                        float taper = MathHelper.Lerp(1f, 0f, t);
-                        float AdjAmplitude = Amplitude * 1;
+                        float taper = MathHelper.Lerp(0f, 1f, t);
+                        float AdjAmplitude = Amplitude * taper;
 
                         Color b = color * t;
 
-                        //Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
                         Vector2 curr = Positions[i];
                         Vector2 prev = Positions[i - 1];
                         Vector2 next = i < Positions.Count - 1 ? Positions[i + 1] : curr;

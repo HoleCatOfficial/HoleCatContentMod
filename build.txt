@@ -1,8 +1,8 @@
 displayName = [c/bfbef1:Talid Mod]
 author = HoleCat and Shadey
-version = 2.1.7278
-modReferences = InnoVault, OpusLib, GlowmaskHelper, BreadLibrary
-dependencies = InnoVault, OpusLib, GlowmaskHelper, BreadLibrary
+version = 2.1.7279
+modReferences = OpusLib, GlowmaskHelper, BreadLibrary
+dependencies = OpusLib, GlowmaskHelper, BreadLibrary
 weakReferences = FargowiltasSouls, Fargowiltas, ConstellationsOfOrion
 playableOnPreview = true
 homepage = https://linktr.ee/HoleCat

@@ -51,7 +51,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter.DiscordScepter
                     ModContent.ProjectileType<NebulaFlame>(),
                     50,
                     2,
-                    Main.myPlayer
+                    Projectile.owner
                 );
             }
         }

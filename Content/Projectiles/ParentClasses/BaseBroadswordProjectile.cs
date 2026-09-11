@@ -113,9 +113,9 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
         public Vector2 sT;
         public Line SL;
-        public virtual void SparkEdge(Player owner, float Scale, Color color, int BlendMode = 2)
+        public virtual void SparkEdge(Player owner, float Scale, Color color, int BlendMode = 2, float DistBase = 78f)
         {
-            sT = Projectile.Center + Projectile.rotation.ToRotationVector2() * (78f * SweepScale * AdjustedScale);
+            sT = Projectile.Center + Projectile.rotation.ToRotationVector2() * (DistBase * SweepScale * AdjustedScale);
             SL = new Line(Owner.MountedCenter, sT);
             if (CurrentState == State.SwingDown)
             {
@@ -152,6 +152,8 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         public float AdjustedScale = 0f;
         public int NPCHitCooldown = 15;
 
+        public bool RightClickDependant { get; set; }
+
         public override bool PreAI()
         {
             float AdjScale = Owner.GetAdjustedItemScale(Owner.HeldItem);
@@ -171,7 +173,9 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             {
                 HitCooldown--;
             }
-            if (Owner.controlUseItem)
+
+            bool ActiveCondition = RightClickDependant ? Owner.controlUseTile : Owner.controlUseItem;
+            if (ActiveCondition)
             {
                 Owner.SetDummyItemTime(60);
                 
@@ -186,7 +190,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
                 DownPoint = targetAngle.ToRotation() + MathHelper.ToRadians(135f);
             }
 
-            if (!Owner.active || Owner.dead || Owner.noItems || Owner.CCed || !Owner.controlUseItem)
+            if (!Owner.active || Owner.dead || Owner.noItems || Owner.CCed || !ActiveCondition)
             {
                 Projectile.Kill();
                 return;
@@ -410,7 +414,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             SpriteBatch spriteBatch = Main.spriteBatch;
             if (UsesFireSweepFX)
             {
-                Tex = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/CircularSlash3").Value;
+                Tex = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/CircularSlash").Value;
                 TexH = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/CircularSlash3Highlight").Value;
             }
             else

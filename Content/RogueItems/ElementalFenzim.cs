@@ -26,7 +26,7 @@ namespace DestroyerTest.Content.RogueItems
             Item.width = 42;
             Item.height = 44;
             Item.value = Item.sellPrice(gold: 2, silver: 50);
-            Item.rare = ItemRarityID.Expert;
+            Item.rare = ItemRarityID.Orange;
             Item.useTime = 60;
             Item.useAnimation = 20;
             Item.useStyle = ItemUseStyleID.Swing;
@@ -49,6 +49,7 @@ namespace DestroyerTest.Content.RogueItems
                 .AddIngredient<HellfireFenzim>()
                 .AddIngredient<Fangshred>()
                 .AddIngredient<Zwei>()
+                .AddIngredient<CursedKunai>()
                 .AddIngredient(ItemID.ChlorophyteBar, 4)
                 .AddTile(TileID.MythrilAnvil)
                 .Register();

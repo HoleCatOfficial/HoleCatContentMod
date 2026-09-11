@@ -15,6 +15,7 @@ using System.IO;
  
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles.ParentClasses;
+using DestroyerTest.Content.Projectiles.Weapon.Scepter.DiscordScepter.Power;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 {
@@ -29,27 +30,18 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
             base.SetDefaults();
         }
 
-
-
-
-        public int AreaTimer = 600;
-        public bool TriggeredArea = false;
-
-        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        public override void OnReturn()
         {
-            
-            target.AddBuff(BuffID.Confused, 120);
-            //Projectile.NewProjectile(Projectile.GetSource_OnHit(null), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<CDAreaParticle>(), 0, 0, Projectile.owner);
-            base.OnHitNPC(target, hit, damageDone);
+            base.OnReturn();
+
+            for (int i = 0; i < 3; i++)
+            {
+                Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Projectile.velocity.RotatedByRandom(1f), ModContent.ProjectileType<FusionSmallDart>(), Projectile.damage / 4, 4, Projectile.owner);
+            }
         }
 
-        public override bool OnTileCollide(Vector2 oldVelocity) {
-            
-            //Projectile.NewProjectile(Projectile.GetSource_OnHit(null), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<CDAreaParticle>(), 0, 0, Projectile.owner);
 
-            base.OnTileCollide(oldVelocity);
-            return false; // Prevents the projectile from being destroyed on collision
-        }
+       
 
     }
     public class CDAreaParticle : ModProjectile
