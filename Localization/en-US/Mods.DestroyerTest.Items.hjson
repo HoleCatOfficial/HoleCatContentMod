@@ -2205,7 +2205,7 @@ Contempt: {
 
 WyvernTail: {
 	DisplayName: Wyvern Tail
-	Tooltip: Hitting an enemy will heal you a random amount on random chance. Ichor will rain from the sky onto the enemy.
+	Tooltip: Ichor will rain from the sky onto the struck enemy.
 }
 
 NightmareRoseLootBag: {
@@ -2228,7 +2228,7 @@ GreatFlayer: {
 }
 
 WyvernSkull: {
-	Tooltip: Allows you to dash and create a trail of Flesh Bombs that quickly explode into ichor, lowering your enemies' defense.
+	Tooltip: Allows you to dash and create a trail of Flesh Bombs that quickly explode and ignore 100 points of enemy defense.
 	DisplayName: Wyvern Skull
 }
 
@@ -2929,7 +2929,7 @@ RiftVeil: {
 RadiantRose: {
 	Tooltip:
 		'''
-		You will auto-consume a Healing Potion on a 1-minute 30-second cooldown when below 50% health.
+		You will auto-consume a Healing Potion on a 1-minute cooldown when below 50% health.
 		Your highest rank healing potions will be used first.
 		You cannot manually consume healing potions.
 		Cannot be worn with Band of Regeneration or its upgrades.
@@ -2941,7 +2941,7 @@ EphemeralSolvent: {
 	DisplayName: Ephemeral Solvent
 	Tooltip:
 		'''
-		You will auto-consume a Healing Potion on a 1-minute 30-second cooldown when below 50% health.
+		You will auto-consume a Healing Potion on a 50-second cooldown when below 50% health.
 		Your highest rank healing potions will be used first.
 		You cannot manually consume healing potions.
 		Cannot be worn with Band of Regeneration or its upgrades.
@@ -2954,15 +2954,17 @@ TenebrousSniperRifle: {
 }
 
 LilliesOfImmortality: {
-	DisplayName: Lillies Of Immortality
+	DisplayName: Shade-Rotten Lillies of Immortality
 	Tooltip:
 		'''
 		You are immune to knockback and most debuffs.
-		Double tap either direction to perform a spirit fire dash.
-		You will auto-consume a Healing Potion on a 1-minute 30-second cooldown when below 50% health.
+		You can perform fastx dashes that grant immunity to NPC collision and dont create momentum. (May have unpredictable behaviour when combined with other dashes)
+		You will auto-consume a Healing Potion on a 40-second cooldown when below 50% health.
 		Your highest rank healing potions will be used first.
 		You cannot manually consume healing potions.
 		Cannot be worn with Band of Regeneration or its upgrades.
+
+		"The petals are stiff and freezing cold."
 		'''
 }
 
@@ -5407,4 +5409,9 @@ RedBarItem: {
 ZapScroll: {
 	DisplayName: Zap Scroll
 	Tooltip: Thrown scepters create electric fields when hitting a tile or an enemy.
+}
+
+BundleOfMagicLillies: {
+	DisplayName: Bundle of Magic Lillies
+	Tooltip: You can perform fastx dashes that grant immunity to NPC collision and dont create momentum. (May have unpredictable behaviour when combined with other dashes)
 }

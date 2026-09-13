@@ -114,59 +114,101 @@ namespace DestroyerTest.Common
             Lillies = false;
         }
         public int UseCooldown = 0;
+        public int CooldownTime = 0;
         public override void PostUpdateMiscEffects()
         {
-            if (RadiantRose || EphemeralSolvent || Lillies)
+            int GetT()
+            {
+                if (RadiantRose)
                 {
-                    if (Player.statLife < Player.statLifeMax2 / 2)
+                    return 60;
+                }
+                if (EphemeralSolvent)
+                {
+                    return 50;
+                }
+                if (Lillies)
+                {
+                    return 40;
+                }
+
+                return 60;
+            }
+            CooldownTime = GetT();
+            if (RadiantRose || EphemeralSolvent || Lillies)
+            {
+                if (Player.statLife < Player.statLifeMax2 / 2)
+                {
+                    if (Main.rand.NextBool(5))
                     {
-                        if (Main.rand.NextBool(5))
+                        Dust.NewDust(Player.position, Player.Hitbox.Width, Player.Hitbox.Height, DustID.YellowTorch, Player.velocity.X * 0.5f, Player.velocity.Y * 0.5f, 0, default, 2.25f);
+                        if (EphemeralSolvent)
                         {
-                            Dust.NewDust(Player.position, Player.Hitbox.Width, Player.Hitbox.Height, DustID.YellowTorch, Player.velocity.X * 0.5f, Player.velocity.Y * 0.5f, 0, default, 2.25f);
+                            Dust.NewDust(Player.position, Player.Hitbox.Width, Player.Hitbox.Height, DustID.PinkTorch, Player.velocity.X * 0.5f, Player.velocity.Y * 0.5f, 0, default, 2.25f);
+                        }
+                        if (Lillies)
+                        {
+                            Dust.NewDust(Player.position, Player.Hitbox.Width, Player.Hitbox.Height, DustID.WhiteTorch, Player.velocity.X * 0.5f, Player.velocity.Y * 0.5f, 0, default, 2.25f);
+                        }
+                    }
+                    if (UseCooldown >= (60 * CooldownTime))
+                    {
+                        if (TryConsumeBestHealingPotion(Player))
+                        {
+                            SoundEngine.PlaySound(HealSound, Player.Center);
+                            if (RadiantRose)
+                            {
+                                RadiantRoseParticle FX = new();
+                                FX.Spawn(Player.Center, 1f);
+                                ParticleEngine.BehindProjectiles.Add(FX);
+                            }
                             if (EphemeralSolvent)
                             {
-                                Dust.NewDust(Player.position, Player.Hitbox.Width, Player.Hitbox.Height, DustID.PinkTorch, Player.velocity.X * 0.5f, Player.velocity.Y * 0.5f, 0, default, 2.25f);
+                                EphemeralSolventParticle FX = new();
+                                FX.Spawn(Player.Center, 1f);
+                                ParticleEngine.BehindProjectiles.Add(FX);
                             }
                             if (Lillies)
                             {
-                                Dust.NewDust(Player.position, Player.Hitbox.Width, Player.Hitbox.Height, DustID.WhiteTorch, Player.velocity.X * 0.5f, Player.velocity.Y * 0.5f, 0, default, 2.25f);
+                                LilliesOfImmortalityParticle FX = new();
+                                FX.Spawn(Player.Center, 1f);
+                                ParticleEngine.BehindProjectiles.Add(FX);
                             }
-                        }
-                        if (UseCooldown >= (60 * 45))
-                        {
-                            if (TryConsumeBestHealingPotion(Player))
-                            {
-                                SoundEngine.PlaySound(HealSound, Player.Center);
-                                if (RadiantRose)
-                                {
-                                    RadiantRoseParticle FX = new();
-                                    FX.Spawn(Player.Center, 1f);
-                                    ParticleEngine.BehindProjectiles.Add(FX);
-                                }
-                                if (EphemeralSolvent)
-                                {
-                                    EphemeralSolventParticle FX = new();
-                                    FX.Spawn(Player.Center, 1f);
-                                    ParticleEngine.BehindProjectiles.Add(FX);
-                                }
-                                if (Lillies)
-                                {
-                                    LilliesOfImmortalityParticle FX = new();
-                                    FX.Spawn(Player.Center, 1f);
-                                    ParticleEngine.BehindProjectiles.Add(FX);
-                                }
 
-                                UseCooldown = 0;
-                            }
+                            UseCooldown = 0;
                         }
-                    }
-
-                    if (UseCooldown < (60 * 45))
-                    {
-                        UseCooldown++;
                     }
                 }
-    
+
+                if (UseCooldown < (60 * CooldownTime))
+                {
+                    UseCooldown++;
+                }
+            }
+
+            if (EphemeralSolvent)
+            {
+                Player.moveSpeed += 0.19f;
+            }
+
+            if (Lillies)
+            {
+                Player.moveSpeed += 0.22f;
+            }
+            
+        }
+
+        public override void PostUpdateRunSpeeds()
+        {
+            if (EphemeralSolvent)
+            {
+                Player.runAcceleration *= 1.77f;
+            }
+
+            if (Lillies)
+            {
+                Player.runAcceleration *= 1.8f;
+            }
         }
     }
 }

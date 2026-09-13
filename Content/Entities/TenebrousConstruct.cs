@@ -599,7 +599,7 @@ namespace DestroyerTest.Content.Entities
                             {
                                 LanceCount++;
                                 SoundEngine.PlaySound(SoundID.Item84);
-                                Opus.RingSpreadProjectile(ModContent.ProjectileType<TenebrisLance>(), 4, player.Center, 1200, 40, 3, -24f, offset: Main.rand.NextFloat(MathHelper.TwoPi));
+                                Opus.RingSpreadProjectile(ModContent.ProjectileType<TenebrisLance>(), 4, player.Center, 1200, 30, 3, -24f, offset: Main.rand.NextFloat(MathHelper.TwoPi));
                             }
 
                             if (InternalTimer > LanceCrossEnd)

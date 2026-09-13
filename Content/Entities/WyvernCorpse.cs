@@ -755,7 +755,7 @@ namespace DestroyerTest.Content.Entities
                                 float orbitradius = anyNodesAlive ? 1700 : 1000;
                                 Vector2 targetPoint = OrganSpinCenter + new Vector2(orbitradius, 0).RotatedBy(OrganSpinRotOff);
 
-                                NPC.SmoothMoveToPoint(targetPoint, 160);
+                                NPC.SmoothMoveToPoint(targetPoint, 160, 200);
 
                                 if (player.Distance(OrganSpinCenter) > 990)
                                 {

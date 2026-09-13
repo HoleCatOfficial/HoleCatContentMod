@@ -206,7 +206,13 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             return null;
         }
 
-
+        public override void EmitEnchantmentVisualsAt(Vector2 boxPosition, int boxWidth, int boxHeight)
+        {
+            Rectangle box = Utils.CenteredRectangle(Tip, new Vector2(32, 32));
+            boxPosition = box.TopLeft();
+            boxWidth = box.Width;
+            boxHeight = box.Height;
+        }
 
         public bool FirstHalf = true;
         public float progress;

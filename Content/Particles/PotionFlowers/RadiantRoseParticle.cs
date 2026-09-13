@@ -72,6 +72,11 @@ namespace DestroyerTest.Content.Particles.PotionFlowers
         {
             Texture2D Texture = TextureAssets.Item[ModContent.ItemType<RadiantRose>()].Value;
             spritebatch.Draw(Texture, position - Main.screenPosition, null, Color.White * Opacity, 0f, Texture.Size() / 2, new Vector2(scale * WidthModifier, scale), Fx, 0f);
+
+            if (RadiantRose.Halo != null)
+            {
+                spritebatch.Draw(RadiantRose.Halo.Value, position - Main.screenPosition, null, Color.White with { A = 0 } * Opacity, 0f, Texture.Size() / 2, new Vector2(scale * WidthModifier, scale), Fx, 0f);
+            }
         }
 
     }

@@ -379,11 +379,6 @@ namespace DestroyerTest.Common.NPC_Folder
 
         public override void ModifyShop(NPCShop shop)
         {
-            if (shop.NpcType == NPCID.SantaClaus)
-            {
-                shop.Add<WinterWonderland>(Condition.Hardmode);
-            }
-
             if (shop.NpcType == NPCID.Merchant)
             {
                 shop.Add<OilFlask>();

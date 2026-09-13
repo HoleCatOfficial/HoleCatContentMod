@@ -1,95 +1,51 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib.Content.Particles;
-using ReLogic.Content;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.Graphics.Renderers;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Equips.PotionFlowers
 {
-    public class LilliesOfImmortality : ModItem
+    public class BundleOfMagicLillies : ModItem
     {
-        List<int> blocked;
         public override void SetStaticDefaults()
         {
             DTUtils.NoUpgradeStack[Type] = true;
-            blocked = [ItemID.AnkhCharm, ItemID.AnkhShield, ItemID.BandofRegeneration, ItemID.CharmofMyths];
-            
-
-            if (DTCrossMod.FargosSoulsIsLoaded)
-            {
-                if (DTCrossMod.FargosSoulsMod.TryFind<ModItem>("ConcentratedRainbowMatter", out ModItem CRM))
-                {
-                    blocked.Add(CRM.Type);
-                }
-                if (DTCrossMod.FargosSoulsMod.TryFind<ModItem>("BionomicCluster", out ModItem BC))
-                {
-                    blocked.Add(BC.Type);
-                }
-                if (DTCrossMod.FargosSoulsMod.TryFind<ModItem>("MasochistSoul", out ModItem SM))
-                {
-                    blocked.Add(SM.Type);
-                }
-                if (DTCrossMod.FargosSoulsMod.TryFind<ModItem>("EternitySoul", out ModItem SE))
-                {
-                    blocked.Add(SE.Type);
-                }
-            }
-
-            DTUtils.IncompatibleWith(Type, blocked.ToArray());
         }
 
         public override void SetDefaults()
         {
-            Item.width = 82;
-            Item.height = 98;
+            Item.width = 62;
+            Item.height = 86;
             Item.maxStack = 1;
-            Item.value = 1000;
+            Item.value = 100;
             Item.accessory = true;
-            Item.rare = ModContent.RarityType<ShimmeringRarity>();
+            Item.rare = ItemRarityID.Blue;
         }
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            if (player.TryGetModPlayer<PotionFlowerPlayer>(out PotionFlowerPlayer flower))
-            {
-                flower.Lillies = true;
-            }
-            if(player.TryGetModPlayer<DjedPillarCharmPlayer>(out DjedPillarCharmPlayer modPlayer))
-            {
-                modPlayer.Active = true;
-            }
-            if(player.TryGetModPlayer<ShadeLilliesDash>(out ShadeLilliesDash Dash))
+            if (player.TryGetModPlayer<LilliesDash>(out LilliesDash Dash))
             {
                 Dash.Active = true;
             }
         }
-        
-        public override void AddRecipes()
-        {
-            CreateRecipe()
-                .AddIngredient<EphemeralSolvent>(1)
-                .AddIngredient<DjedPillarCharm>(1)
-                .AddIngredient<BundleOfMagicLillies>(1)
-                .AddIngredient<Tenebris>(6)
-                .Register();
-        }
-	}
+    }
 
-    public class ShadeLilliesDash : ModPlayer
+    public class LilliesDash : ModPlayer
     {
 
         public bool Active = false;
@@ -103,7 +59,7 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
         public int DashDuration = 10; // Duration of the dash afterimage effect in frames
 
         // The initial velocity.  10 velocity is about 37.5 tiles/second or 50 mph
-        public float DashVelocity = 70f;
+        public float DashVelocity = 30f;
 
         // The direction the player has double tapped.  Defaults to -1 for no dash double tap
         public int DashDir = -1;
@@ -120,13 +76,11 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
             ImmunityDuration = 10;
             if (DashTimer > 0)
             {
-                
+
             }
         }
 
         List<Vector2> Positions = new();
-
-        Color Choice = ColorLib.TenebrisBeige;
 
         public override void ResetEffects()
         {
@@ -179,36 +133,23 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
                 DashDelay = DashCooldown;
                 DashTimer = DashDuration;
                 ImmunityTimer = ImmunityDuration;
-                Choice = Main.rand.NextFromCollection([ColorLib.TenebrisBeige, ColorLib.TenebrisBlue, ColorLib.TenebrisMagenta]);
 
                 Player.velocity = newVelocity;
 
 
                 BloomRingSharp Ring = new();
-                Ring.Prepare(Player.Center, Vector2.Zero, Choice, 0.1f, 0.01f, 0.7f, BlendState.Additive);
+                Ring.Prepare(Player.Center, Vector2.Zero, new Color(182, 82, 240), 0.1f, 0.01f, 0.7f, BlendState.Additive);
                 ParticleEngine.Particles.Add(Ring);
 
                 BloomRingSharp Ring2 = new();
-                Ring2.Prepare(Player.Center, Vector2.Zero, Choice, 0.03f, 0.01f, 0.5f, BlendState.Additive);
+                Ring2.Prepare(Player.Center, Vector2.Zero, new Color(182, 82, 240), 0.03f, 0.01f, 0.5f, BlendState.Additive);
                 ParticleEngine.Particles.Add(Ring2);
 
-                ImpactCracks cracks = new();
-                cracks.Prepare(Player.MountedCenter, Choice, 1.7f);
-                ParticleEngine.BehindProjectiles.Add(cracks);
-
                 SoundEngine.PlaySound(SoundID.DD2_BetsyFireballShot, Player.position);
-                SoundEngine.PlaySound(DTAssetLib.Impacts.HeavyCrit with { Pitch = -0.6f, PitchVariance = 0.3f }, Player.position);
-                SoundEngine.PlaySound(DTAssetLib.Impacts.HeatseekerSilohSlam with { Pitch = -0.6f, PitchVariance = 0.3f }, Player.position);
 
                 for (int i = 0; i < 10; i++)
                 {
-                    PixelParticle pixel = new();
-                    pixel.Initialize(Main.rand.NextVector2FromRectangle(Player.Hitbox), Player.velocity.RotatedByRandom(0.3f) * 0.05f, Choice, 2f);
-                    ParticleEngine.Particles.Add(pixel);
 
-                    PixelParticle pixel2 = new();
-                    pixel2.Initialize(Player.MountedCenter, Main.rand.NextVector2Circular(2f, 2f), Choice, 2f);
-                    ParticleEngine.Particles.Add(pixel2);
 
                 }
             }
@@ -230,35 +171,25 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
                 }
             }
 
-           
+
 
             if (DashTimer > 0)
             {
                 Positions.Add(Player.MountedCenter);
-                
+
                 Player.eocDash = DashTimer;
                 Player.armorEffectDrawShadowEOCShield = true;
 
-                
+
                 if (Active)
                 {
-                    for (int i = 0; i < Positions.Count; i++)
-                    {
-                        Spark trail1 = new();
-                        trail1.PrepareSpark(Positions[i] + new Vector2(0, -20), -Player.velocity.RotatedBy(0.1f * Math.Sign(Player.velocity.X)) * 0.2f, -Player.velocity.ToRotation() + MathHelper.PiOver2, Choice * 0.5f, 0.5f, false, 10, SparkDrawMode.Additive, 3f);
-                        ParticleEngine.Particles.Add(trail1);
-
-                        Spark trail2 = new();
-                        trail2.PrepareSpark(Positions[i] + new Vector2(0, 20), -Player.velocity.RotatedBy(-0.1f * Math.Sign(Player.velocity.X)) * 0.2f, -Player.velocity.ToRotation() + MathHelper.PiOver2, Choice * 0.5f, 0.5f, false, 10, SparkDrawMode.Additive, 3f);
-                        ParticleEngine.Particles.Add(trail2);
-                    }
-
+                  
                     Spark spark = new();
-                    spark.PrepareSpark(Main.rand.NextVector2FromRectangle(Player.Hitbox), -Player.velocity * 0.5f, -Player.velocity.ToRotation() + MathHelper.PiOver2, Choice, 0.5f, false, 20, SparkDrawMode.Additive, 2f);
+                    spark.PrepareSpark(Main.rand.NextVector2FromRectangle(Player.Hitbox), -Player.velocity * 0.5f, -Player.velocity.ToRotation() + MathHelper.PiOver2, new Color(182, 82, 240), 0.5f, false, 20, SparkDrawMode.Additive, 2f);
                     ParticleEngine.Particles.Add(spark);
 
                     Spark spark2 = new();
-                    spark2.PrepareSpark(Main.rand.NextVector2FromRectangle(Player.Hitbox), -Player.velocity * 0.3f, -Player.velocity.ToRotation() + MathHelper.PiOver2, Choice, 0.2f, false, 20, SparkDrawMode.Additive, 3f);
+                    spark2.PrepareSpark(Main.rand.NextVector2FromRectangle(Player.Hitbox), -Player.velocity * 0.3f, -Player.velocity.ToRotation() + MathHelper.PiOver2, new Color(182, 82, 240), 0.2f, false, 20, SparkDrawMode.Additive, 3f);
                     ParticleEngine.Particles.Add(spark2);
 
                 }
@@ -285,7 +216,7 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
 
         public override void ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers)
         {
-          
+
         }
 
         public override void ModifyHitByProjectile(Projectile proj, ref Player.HurtModifiers modifiers)

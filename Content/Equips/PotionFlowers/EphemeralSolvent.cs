@@ -1,5 +1,6 @@
 using DestroyerTest.Common;
 using DestroyerTest.Content.Resources;
+using DestroyerTest.Rarity;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -37,12 +38,12 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
         }
         public override void SetDefaults()
         {
-            Item.width = 56;
-            Item.height = 106;
+            Item.width = 60;
+            Item.height = 74;
             Item.maxStack = 1;
             Item.value = 1000;
             Item.accessory = true;
-            Item.rare = ItemRarityID.Cyan;
+            Item.rare = ModContent.RarityType<StellarRarity>();
         }
 
         public override void UpdateAccessory(Player player, bool hideVisual)
@@ -57,6 +58,7 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
         {
             CreateRecipe()
                 .AddIngredient<RadiantRose>(1)
+                .AddIngredient(ItemID.Magiluminescence, 1)
                 .AddIngredient<LifeEcho>(8)
                 .AddIngredient<StellarMatter>(12)
                 .Register();

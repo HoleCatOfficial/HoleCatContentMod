@@ -1,5 +1,8 @@
 using System.Collections.Generic;
 using DestroyerTest.Common;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -9,6 +12,8 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
     public class RadiantRose : ModItem
     {
         List<int> blocked;
+
+        public static Asset<Texture2D> Halo;
         public override void SetStaticDefaults()
         {
             DTUtils.NoUpgradeStack[Type] = true;
@@ -37,6 +42,8 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
             }
 
             DTUtils.IncompatibleWith(Type, blocked.ToArray());
+
+            Halo = ModContent.Request<Texture2D>(Texture + "Halo");
         }
 
         public override void SetDefaults()
@@ -47,6 +54,28 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
             Item.value = 1000;
             Item.accessory = true;
             Item.rare = ItemRarityID.Cyan;
+        }
+
+        Vector2 InventoryOffset = Vector2.Zero;
+        int InvT = 0;
+        public override void PostDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
+        {
+            InvT++;
+
+           
+
+            spriteBatch.Draw(Halo.Value, position + InventoryOffset, frame, Color.White with { A = 0 }, 0f, origin, scale, SpriteEffects.None, 0f);
+        }
+
+        Vector2 WorldOffset = Vector2.Zero;
+        int WorT = 0;
+        public override void PostDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, float rotation, float scale, int whoAmI)
+        {
+            WorT++;
+
+        
+
+            spriteBatch.Draw(Halo.Value, (Item.position + WorldOffset) - Main.screenPosition, null, Color.White with { A = 0 }, rotation, Vector2.Zero, scale, SpriteEffects.None, 0f);
         }
 
         public override void UpdateAccessory(Player player, bool hideVisual)

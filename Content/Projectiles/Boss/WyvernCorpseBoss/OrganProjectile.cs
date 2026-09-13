@@ -59,7 +59,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
             float rot = Projectile.Center.DirectionTo(player.Center).ToRotation();
 
             var Tex = ModContent.Request<Texture2D>(DTAssetLib.ExtrasPath + "/DirectionalTelegraph2");
-            Main.EntitySpriteDraw(Tex.Value, Projectile.Center - Main.screenPosition, null, ColorLib.Ichor with { A = 0 }, rot, new Vector2(0f, Tex.Height() / 2), new Vector2(4f, 1f), SpriteEffects.None);
+            Main.EntitySpriteDraw(Tex.Value, Projectile.Center - Main.screenPosition, null, ColorLib.Ichor with { A = 0 }, rot, new Vector2(0f, Tex.Height() / 2), new Vector2(4f, 0.7f), SpriteEffects.None);
 
             Main.EntitySpriteDraw(DTUtils.CenteredDraw(Projectile, Color.White));
             return false;

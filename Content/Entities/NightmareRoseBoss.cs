@@ -2546,15 +2546,15 @@ namespace DestroyerTest.Content.Entities
             {
                 if (!DestroyerTestMod.EternityIsActive && !DestroyerTestMod.DeathIsActive)
                 {
-                    return 40;
+                    return 30;
                 }
                 if ((DestroyerTestMod.EternityIsActive || DestroyerTestMod.DeathIsActive) && !DestroyerTestMod.MasochistIsActive)
                 {
-                    return 50;
+                    return 35;
                 }
                 if (DestroyerTestMod.MasochistIsActive)
                 {
-                    return 60;
+                    return 40;
                 }
 
                 return 1;
