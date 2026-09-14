@@ -12,15 +12,18 @@ using DestroyerTest.Content.Tiles;
 using DestroyerTest.Content.Tiles.Altar;
 using DestroyerTest.Content.Tiles.RoseGarden;
 using DestroyerTest.Content.Tiles.RoseGarden.Flowers;
+using DestroyerTest.Content.Tiles.Walls;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using ReLogic.Content;
+using ReLogic.Utilities;
 using SteelSeries.GameSense;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
+using Terraria.GameContent.Generation;
 using Terraria.GameContent.Tile_Entities;
 using Terraria.Graphics;
 using Terraria.Graphics.Effects;
@@ -55,6 +58,7 @@ namespace DestroyerTest.Common.Systems
             {
                 //VesperGenTest((int)Main.MouseWorld.X / 16, (int)Main.MouseWorld.Y / 16);
 
+                CerebralGeodeGenTest((int)Main.MouseWorld.X / 16, (int)Main.MouseWorld.Y / 16);
 
 
                 //TestMethod((int)Main.MouseWorld.X / 16, (int)Main.MouseWorld.Y / 16);
@@ -63,13 +67,39 @@ namespace DestroyerTest.Common.Systems
 
         }
 
+        void CerebralGeodeGenTest(int x, int y)
+        {
+            GenShapeActionPair BackWallGen = new GenShapeActionPair(new Shapes.Circle(6), new Actions.PlaceWall((ushort)ModContent.WallType<Wall_DreamstoneWall>()));
+            WorldUtils.Gen(new Point(x, y), BackWallGen);
+
+
+            GenShapeActionPair DreamstoneGen = new GenShapeActionPair(new Shapes.Circle(7), new Actions.SetTileKeepWall((ushort)ModContent.TileType<Tile_Dreamstone>(), true, true));
+            WorldUtils.Gen(new Point(x, y), DreamstoneGen);
+
+            GenShapeActionPair Cavity = new GenShapeActionPair(new Shapes.Circle(5), new Actions.ClearTile(true));
+            WorldUtils.Gen(new Point(x, y), Cavity);
+
+            GenShapeActionPair Mound = new GenShapeActionPair(new Shapes.Mound(5, 3), new Actions.SetTileKeepWall((ushort)ModContent.TileType<Tile_Dreamstone>(), true, true));
+            WorldUtils.Gen(new Point(x , y + 5), Mound);
+
+            WorldGen.PlaceChest(x + (Main.rand.NextBool() ? 0 : -1), y + 2, (ushort)ModContent.TileType<Tile_CerebralChest>());
+
+
+        }
+
         private void VesperGenTest(int x, int y)
         {
             
 
-            WorldGen.OreRunner(x, y, 5, 2, (ushort)ModContent.TileType<Tile_VesperOre>());
+            GenShapeActionPair DreamstoneGen = new GenShapeActionPair(new Shapes.Circle(Main.rand.Next(5, 11)), new Actions.SetTile((ushort)ModContent.TileType<Tile_Dreamstone>(), true, true));
+            WorldUtils.Gen(new Point(x, y), DreamstoneGen);
 
-            WorldGen.OreRunner(x, y, 10, 3, (ushort)ModContent.TileType<Tile_Dreamstone>());
+            GenShapeActionPair VesperGen = new GenShapeActionPair(new ShapeRoot((double)Main.rand.NextFloat(MathHelper.TwoPi)), new Actions.SetTile((ushort)ModContent.TileType<Tile_VesperOre>(), true, true));
+            WorldUtils.Gen(new Point(x, y), VesperGen);
+
+
+
+            //WorldGen.OreRunner(x, y, 10, 19, (ushort)ModContent.TileType<Tile_Dreamstone>());
         }
 
         public void SetupPath(int x, int y)

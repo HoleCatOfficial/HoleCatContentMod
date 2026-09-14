@@ -5415,3 +5415,28 @@ BundleOfMagicLillies: {
 	DisplayName: Bundle of Magic Lillies
 	Tooltip: You can perform fastx dashes that grant immunity to NPC collision and dont create momentum. (May have unpredictable behaviour when combined with other dashes)
 }
+
+SunplateBreaker: {
+	DisplayName: Sunplate Breaker
+	Tooltip: ""
+}
+
+TheCircle: {
+	DisplayName: The Circle
+	Tooltip: ""
+}
+
+Item_CerebralChest: {
+	DisplayName: Item_ Cerebral Chest
+	Tooltip: ""
+}
+
+Item_DreamstoneBrickWall: {
+	DisplayName: Item_ Dreamstone Brick Wall
+	Tooltip: ""
+}
+
+Item_DreamstoneWallCraftable: {
+	DisplayName: Item_ Dreamstone Wall Craftable
+	Tooltip: ""
+}

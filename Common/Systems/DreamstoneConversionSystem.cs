@@ -37,7 +37,7 @@ namespace DestroyerTest.Common.Systems
     {
         public override void PostUpdateWorld()
         {
-            if (!Main.dayTime)
+            if (!Main.dayTime && Main.rand.NextBool(30))
             {
                 for (int i = 0; i < Main.maxTilesX - 1; i++)
                 {
