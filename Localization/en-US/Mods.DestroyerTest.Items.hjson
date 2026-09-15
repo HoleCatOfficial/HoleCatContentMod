@@ -5423,20 +5423,62 @@ SunplateBreaker: {
 
 TheCircle: {
 	DisplayName: The Circle
-	Tooltip: ""
+	Tooltip:
+		'''
+		Emits light.
+		"God, do you see the radiant light?"
+		'''
 }
 
 Item_CerebralChest: {
-	DisplayName: Item_ Cerebral Chest
+	DisplayName: Cerebral Chest
 	Tooltip: ""
 }
 
 Item_DreamstoneBrickWall: {
-	DisplayName: Item_ Dreamstone Brick Wall
+	DisplayName: Dreamstone Brick Wall
 	Tooltip: ""
 }
 
 Item_DreamstoneWallCraftable: {
-	DisplayName: Item_ Dreamstone Wall Craftable
+	DisplayName: Dreamstone Wall
 	Tooltip: ""
+}
+
+ThermosGlove: {
+	DisplayName: Thermos Glove
+	Tooltip:
+		'''
+		Hold LMB to gather heat energy in your hand, coalescing into a plasma ball.
+		Release to blast all tiles in a straight line.
+		The longer you hold, the further out the blast will go.
+		Uses the pickaxe power of the best pickaxe in your inventory.
+		'''
+}
+
+Heavenbleed: {
+	DisplayName: Heavenbleed
+	Tooltip: Creates a fountain of light at a tile below the cursor that lasts for 10 seconds.
+}
+
+Providence: {
+	DisplayName: Providence
+	Tooltip:
+		'''
+		You are surrounded by mysterious radiance that damages and burns enemies next to you.
+		Damage scales will all damage bonuses.
+		'''
+}
+
+ZyplonRing: {
+	DisplayName: Zyplon Ring
+	Tooltip: 6% chance to dodge an incoming attack.
+}
+
+QuintetLocator: {
+	DisplayName: Gleaming Guidance
+	Tooltip:
+	'''
+	Points in the directions of the 5 Cerebral Geodes in your world.
+	'''
 }

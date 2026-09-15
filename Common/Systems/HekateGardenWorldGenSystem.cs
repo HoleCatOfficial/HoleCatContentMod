@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Consumables;
+using DestroyerTest.Content.Equips;
+using DestroyerTest.Content.Equips.Cards;
 using DestroyerTest.Content.Lorebooks;
 using DestroyerTest.Content.Magic;
 using DestroyerTest.Content.MeleeWeapons;
@@ -13,6 +15,7 @@ using DestroyerTest.Content.Tiles.Altar;
 using DestroyerTest.Content.Tiles.RoseGarden;
 using DestroyerTest.Content.Tiles.RoseGarden.Flowers;
 using DestroyerTest.Content.Tiles.Walls;
+using DestroyerTest.Content.Tools;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -58,7 +61,7 @@ namespace DestroyerTest.Common.Systems
             {
                 //VesperGenTest((int)Main.MouseWorld.X / 16, (int)Main.MouseWorld.Y / 16);
 
-                CerebralGeodeGenTest((int)Main.MouseWorld.X / 16, (int)Main.MouseWorld.Y / 16);
+                //CerebralGeodeGenTest((int)Main.MouseWorld.X / 16, (int)Main.MouseWorld.Y / 16);
 
 
                 //TestMethod((int)Main.MouseWorld.X / 16, (int)Main.MouseWorld.Y / 16);
@@ -82,63 +85,87 @@ namespace DestroyerTest.Common.Systems
             GenShapeActionPair Mound = new GenShapeActionPair(new Shapes.Mound(5, 3), new Actions.SetTileKeepWall((ushort)ModContent.TileType<Tile_Dreamstone>(), true, true));
             WorldUtils.Gen(new Point(x , y + 5), Mound);
 
-            WorldGen.PlaceChest(x + (Main.rand.NextBool() ? 0 : -1), y + 2, (ushort)ModContent.TileType<Tile_CerebralChest>());
-
-
-        }
-
-        private void VesperGenTest(int x, int y)
-        {
+            Point ChestPoint = new Point(x + (Main.rand.NextBool() ? 0 : -1), y + 2);
+            int Loot1;
             
+            if (!Framing.GetTileSafely(ChestPoint).HasTile)
+            {
+                Loot1 = WorldGen.PlaceChest(ChestPoint.X, ChestPoint.Y, (ushort)ModContent.TileType<Tile_CerebralChest>());
 
-            GenShapeActionPair DreamstoneGen = new GenShapeActionPair(new Shapes.Circle(Main.rand.Next(5, 11)), new Actions.SetTile((ushort)ModContent.TileType<Tile_Dreamstone>(), true, true));
-            WorldUtils.Gen(new Point(x, y), DreamstoneGen);
+                var chest1 = Main.chest[Loot1];
 
-            GenShapeActionPair VesperGen = new GenShapeActionPair(new ShapeRoot((double)Main.rand.NextFloat(MathHelper.TwoPi)), new Actions.SetTile((ushort)ModContent.TileType<Tile_VesperOre>(), true, true));
-            WorldUtils.Gen(new Point(x, y), VesperGen);
-
-
-
-            //WorldGen.OreRunner(x, y, 10, 19, (ushort)ModContent.TileType<Tile_Dreamstone>());
-        }
-
-        public void SetupPath(int x, int y)
-        {
+                int[] SpecialItemTable = [ModContent.ItemType<ThermosGlove>(), ModContent.ItemType<ZyplonRing>(), ModContent.ItemType<Providence>(), ModContent.ItemType<TheCircle>(), ModContent.ItemType<Heavenbleed>()];
 
 
-            /*
-            WorldGen.TileRunner(x, y, 20, 4, TileID.Ebonstone, true, overRide: true);
-            WorldGen.TileRunner(x + 10, y, 20, 4, TileID.Ebonstone, true, overRide: true);
-            WorldGen.TileRunner(x + 20, y, 20, 4, TileID.Ebonstone, true, overRide: true);
-            WorldGen.TileRunner(x + 30, y, 20, 4, TileID.Ebonstone, true, overRide: true);
-            WorldGen.TileRunner(x + 40, y, 20, 4, TileID.Ebonstone, true, overRide: true);
-            WorldGen.TileRunner(x + 50, y, 20, 4, TileID.Ebonstone, true, overRide: true);
-
-            WorldGen.TileRunner(x, y + 10, 20, 4, TileID.Ebonstone, true, overRide: true);
-            WorldGen.TileRunner(x + 10, y + 10, 20, 4, TileID.Ebonstone, true, overRide: true);
-            WorldGen.TileRunner(x + 20, y + 10, 20, 4, TileID.Ebonstone, true, overRide: true);
-            WorldGen.TileRunner(x + 30, y + 10, 20, 4, TileID.Ebonstone, true, overRide: true);
-            WorldGen.TileRunner(x + 40, y + 10, 20, 4, TileID.Ebonstone, true, overRide: true);
-            WorldGen.TileRunner(x + 50, y + 10, 20, 4, TileID.Ebonstone, true, overRide: true);
-
-            WorldGen.TileRunner(x, y + 20, 20, 4, TileID.Ebonstone, true, overRide: true);
-            WorldGen.TileRunner(x + 10, y + 20, 20, 4, TileID.Ebonstone, true, overRide: true);
-            WorldGen.TileRunner(x + 20, y + 20, 20, 4, TileID.Ebonstone, true, overRide: true);
-            WorldGen.TileRunner(x + 30, y + 20, 20, 4, TileID.Ebonstone, true, overRide: true);
-            WorldGen.TileRunner(x + 40, y + 20, 20, 4, TileID.Ebonstone, true, overRide: true);
-            WorldGen.TileRunner(x + 50, y + 20, 20, 4, TileID.Ebonstone, true, overRide: true);
-
-            WorldGen.TileRunner(x, y + 30, 20, 4, TileID.Ebonstone, true, overRide: true);
-            WorldGen.TileRunner(x + 10, y + 30, 20, 4, TileID.Ebonstone, true, overRide: true);
-            WorldGen.TileRunner(x + 20, y + 30, 20, 4, TileID.Ebonstone, true, overRide: true);
-            WorldGen.TileRunner(x + 30, y + 30, 20, 4, TileID.Ebonstone, true, overRide: true);
-            WorldGen.TileRunner(x + 40, y + 30, 20, 4, TileID.Ebonstone, true, overRide: true);
-            WorldGen.TileRunner(x + 50, y + 30, 20, 4, TileID.Ebonstone, true, overRide: true);
 
 
-            WorldGen.TileRunner(x - 7, y - 6, 9, 12, TileID.Ebonstone, true, 1, -3, overRide: true);
-            WorldGen.TileRunner(x + 53, y - 6, 9, 12, TileID.Ebonstone, true, -1, -3, overRide: true);
-            */
+                for (int inventoryIndex = 0; inventoryIndex < Chest.maxItems; inventoryIndex++)
+                {
+                    if (chest1.item[inventoryIndex].type == ItemID.None)
+                    {
+                        
+
+                    }
+                }
+            }
+
+        
+
+
+    }
+
+    private void VesperGenTest(int x, int y)
+    {
+
+
+        GenShapeActionPair DreamstoneGen = new GenShapeActionPair(new Shapes.Circle(Main.rand.Next(5, 11)), new Actions.SetTile((ushort)ModContent.TileType<Tile_Dreamstone>(), true, true));
+        WorldUtils.Gen(new Point(x, y), DreamstoneGen);
+
+        GenShapeActionPair VesperGen = new GenShapeActionPair(new ShapeRoot((double)Main.rand.NextFloat(MathHelper.TwoPi)), new Actions.SetTile((ushort)ModContent.TileType<Tile_VesperOre>(), true, true));
+        WorldUtils.Gen(new Point(x, y), VesperGen);
+
+
+
+        //WorldGen.OreRunner(x, y, 10, 19, (ushort)ModContent.TileType<Tile_Dreamstone>());
+    }
+
+    public void SetupPath(int x, int y)
+    {
+
+
+        /*
+        WorldGen.TileRunner(x, y, 20, 4, TileID.Ebonstone, true, overRide: true);
+        WorldGen.TileRunner(x + 10, y, 20, 4, TileID.Ebonstone, true, overRide: true);
+        WorldGen.TileRunner(x + 20, y, 20, 4, TileID.Ebonstone, true, overRide: true);
+        WorldGen.TileRunner(x + 30, y, 20, 4, TileID.Ebonstone, true, overRide: true);
+        WorldGen.TileRunner(x + 40, y, 20, 4, TileID.Ebonstone, true, overRide: true);
+        WorldGen.TileRunner(x + 50, y, 20, 4, TileID.Ebonstone, true, overRide: true);
+
+        WorldGen.TileRunner(x, y + 10, 20, 4, TileID.Ebonstone, true, overRide: true);
+        WorldGen.TileRunner(x + 10, y + 10, 20, 4, TileID.Ebonstone, true, overRide: true);
+        WorldGen.TileRunner(x + 20, y + 10, 20, 4, TileID.Ebonstone, true, overRide: true);
+        WorldGen.TileRunner(x + 30, y + 10, 20, 4, TileID.Ebonstone, true, overRide: true);
+        WorldGen.TileRunner(x + 40, y + 10, 20, 4, TileID.Ebonstone, true, overRide: true);
+        WorldGen.TileRunner(x + 50, y + 10, 20, 4, TileID.Ebonstone, true, overRide: true);
+
+        WorldGen.TileRunner(x, y + 20, 20, 4, TileID.Ebonstone, true, overRide: true);
+        WorldGen.TileRunner(x + 10, y + 20, 20, 4, TileID.Ebonstone, true, overRide: true);
+        WorldGen.TileRunner(x + 20, y + 20, 20, 4, TileID.Ebonstone, true, overRide: true);
+        WorldGen.TileRunner(x + 30, y + 20, 20, 4, TileID.Ebonstone, true, overRide: true);
+        WorldGen.TileRunner(x + 40, y + 20, 20, 4, TileID.Ebonstone, true, overRide: true);
+        WorldGen.TileRunner(x + 50, y + 20, 20, 4, TileID.Ebonstone, true, overRide: true);
+
+        WorldGen.TileRunner(x, y + 30, 20, 4, TileID.Ebonstone, true, overRide: true);
+        WorldGen.TileRunner(x + 10, y + 30, 20, 4, TileID.Ebonstone, true, overRide: true);
+        WorldGen.TileRunner(x + 20, y + 30, 20, 4, TileID.Ebonstone, true, overRide: true);
+        WorldGen.TileRunner(x + 30, y + 30, 20, 4, TileID.Ebonstone, true, overRide: true);
+        WorldGen.TileRunner(x + 40, y + 30, 20, 4, TileID.Ebonstone, true, overRide: true);
+        WorldGen.TileRunner(x + 50, y + 30, 20, 4, TileID.Ebonstone, true, overRide: true);
+
+
+        WorldGen.TileRunner(x - 7, y - 6, 9, 12, TileID.Ebonstone, true, 1, -3, overRide: true);
+        WorldGen.TileRunner(x + 53, y - 6, 9, 12, TileID.Ebonstone, true, -1, -3, overRide: true);
+        */
         }
 
         public void TopGen(int x, int y)
