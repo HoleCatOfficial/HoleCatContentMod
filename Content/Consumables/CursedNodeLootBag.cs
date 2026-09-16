@@ -52,15 +52,7 @@ namespace DestroyerTest.Content.Consumables
 
         public override void ModifyItemLoot(ItemLoot itemLoot)
         {
-            itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<HaepienNodeCharm>(), 24, 1, 1));
-            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<WretchedIdol>(), 1, 1, 3));
-            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<WretchedShards>(), 1, 4, 16));
-            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<CursedFlameScroll>(), 1, 1, 1));
-            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<Malevolence>(), 2, 1, 1));
-            itemLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Item_CursedFlameNodeRelic>()));
-            itemLoot.Add(ItemDropRule.Common(ItemID.FlaskofCursedFlames, 3, 1, 9));
-            itemLoot.Add(ItemDropRule.NotScalingWithLuck(ItemID.CursedFlame, 2, 20, 60));
-            itemLoot.Add(ItemDropRule.Coins(1250, true));
+           
         }
     }
 }

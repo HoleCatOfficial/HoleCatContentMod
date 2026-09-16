@@ -402,6 +402,8 @@ namespace DestroyerTest.Common
             public static SoundStyle MemoriamSwing = new SoundStyle($"{Path}/MemoriamSwing");
             public static SoundStyle MetalSwing = new SoundStyle($"{Path}/MetalSwing", 4);
             public static SoundStyle QuickSwing = new SoundStyle($"{Path}/QuickSwing", 4);
+
+            public static SoundStyle RuneSong = new SoundStyle($"{Path}/RuneSongSwing");
             public static SoundStyle SwiftSwing = new SoundStyle($"{Path}/SwiftSwing1");
             public static SoundStyle Slam = new SoundStyle($"{Path}/Slam", 2);
             public static SoundStyle SpinWave = new SoundStyle($"{Path}/SpinWave");

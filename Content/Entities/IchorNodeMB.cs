@@ -8,21 +8,28 @@ using System.Runtime.InteropServices;
 using System.Security.Policy;
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
+using DestroyerTest.Common.DropRules;
 using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.BossBar;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Consumables;
 using DestroyerTest.Content.Equips;
+using DestroyerTest.Content.Equips.ScepterAccessories;
+using DestroyerTest.Content.MeleeWeapons;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss;
 using DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame;
 using DestroyerTest.Content.Projectiles.Boss.NodeBoss.Ichor;
+using DestroyerTest.Content.Resources;
+using DestroyerTest.Content.Tiles;
+using DestroyerTest.Content.Tools;
 using GlowmaskHelper.Content;
  
  
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Newtonsoft.Json.Linq;
 using OpusLib;
 using OpusLib.Content.Helpers;
 using OpusLib.Content.Particles;
@@ -36,6 +43,7 @@ using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.UI;
 
 namespace DestroyerTest.Content.Entities
 {
@@ -131,7 +139,7 @@ namespace DestroyerTest.Content.Entities
             Roff -= 10;
 
             Line R = new Line(NPC.Center, new Vector2(NPC.Center.X, NPC.Center.Y + 2200f));
-            DTUtils.instance.ScrollingTextureSpine(R, DTAssetLib.ArrowTelegraphCont, ColorLib.Ichor with { A = 0 } * Opa, spriteBatch, BlendState.Additive, Roff, 0.5f, 1f);
+            DTUtils.instance.ScrollingTextureSpine(R, DTAssetLib.ArrowTelegraphCont, ColorLib.Ichor with { A = 0 } * Opa, spriteBatch, BlendState.Additive, Roff, 0.3f, 1f);
 
             
             return true;
@@ -174,8 +182,7 @@ namespace DestroyerTest.Content.Entities
         {
             Dormant,
             Idle,
-            BloodRain,
-            IchorSpiral,
+            Spikes,
             ToothBombs,
             GroundSlam,
             None
@@ -183,19 +190,18 @@ namespace DestroyerTest.Content.Entities
 
         public AttackState CurrentAttack;
 
+        public int InternalTimer = 0;
+
         public int DormantPulseTimer = 60;
         public int SentinelKillTally = 0;
         public const int SentinelKillRequirement = 30;
 
 
-        public int IdleTimer = 60;
-        public int BloodRainSpawnTimer = 180;
-        public int BloodRainWaitTimer = 240;
-        public int IchorSpiralWarnTimer = 180;
-        public bool IchorSpiralWarnParticleFlag = false;
-        public int IchorSpiralTimer = 240;
-        public int IchorSpiralCooldownTimer = 120;
-        public float IchorSpiralRotationOffset = 0;
+        public int IdleTime = 60;
+
+        public int SpikeTime => IdleTime + 600;
+        public int SpikeTimeTrans => SpikeTime + 90;
+
         public int MineInterval = 0;
         public int MineCount = 0;
         public int MineCooldown = 240;
@@ -221,6 +227,7 @@ namespace DestroyerTest.Content.Entities
             DTUtils Utility = new DTUtils();
             DTMusicConfig muscfg = ModContent.GetInstance<DTMusicConfig>();
 
+            InternalTimer++;
 
             if (DrawSlamTelegraph)
             {
@@ -324,118 +331,39 @@ namespace DestroyerTest.Content.Entities
                         NPC.boss = true;
                         NPC.npcSlots = 10f;
                         KeepToPlayer(player.Center + new Vector2(0, -200));
-                        if (IdleTimer > 0)
-                        {
-                            IdleTimer--;
-                        }
-
-                        if (IdleTimer <= 0)
-                        {
-                            CurrentAttack = AttackState.BloodRain;
-                            IdleTimer = 60;
-                        }
-                        break;
-                    }
-                case AttackState.BloodRain:
-                    {
                         
-                        BloodRainAI(player);
+                        if (InternalTimer >= IdleTime)
+                        {
+                            CurrentAttack = AttackState.Spikes;
+                        }
                         break;
                     }
-                case AttackState.IchorSpiral:
+                case AttackState.Spikes:
                     {
-                        NPC.velocity = Vector2.Zero;
-
-                        if (!DestroyerTestMod.EternityIsActive && !DestroyerTestMod.DeathIsActive)
+                        KeepToPlayer(player.Center + new Vector2(0, -200));
+                        if (InternalTimer % 150 == 0 && InternalTimer < SpikeTime)
                         {
-                            if (IchorSpiralWarnTimer > 0)
+                            SoundEngine.PlaySound(SoundID.Item73);
+                            for (int i = 0; i < 15; i++)
                             {
-                                IchorSpiralWarnTimer--;
-                                if (!IchorSpiralWarnParticleFlag)
-                                {
-                                    SoundEngine.PlaySound(Spiralwarn);
+                                float X = NPC.Center.X + ((i * 16) * 6);
+                                float AltX = NPC.Center.X - ((i * 16) * 6);
+                                float Y = NPC.Center.Y + 900;
 
-                                    BloomRingSharp Ring = new();
-                                    Ring.Prepare(NPC.Center, Vector2.Zero, Color.Red, 0.2f, 0.05f, 3.75f, BlendState.Additive);
-                                    ParticleEngine.BehindProjectiles.Add(Ring);
-
-                                    IchorSpiralWarnParticleFlag = true;
-                                }
-                            }
-                            if (IchorSpiralWarnTimer <= 0)
-                            {
-                                Spiral_BindPlayer(player, 500);
-                                Opus.RingSpreadDust(DustID.TintableDustLighted, 30, NPC.Center, 500f, 0, ColorLib.IchorCrystalGradient, 1.5f, 3, Main.rand.NextFloat(MathHelper.TwoPi));
-                                if (IchorSpiralTimer > 0)
-                                {
-
-                                    IchorSpiralRotationOffset += 1f;
-                                    //var launchVelocity = new Vector2(-8, 0);
-                                    NPC.rotation = IchorSpiralRotationOffset;
-
-                                    if (IchorSpiralTimer % 4 == 0)
-                                    {
-                                        SoundEngine.PlaySound(SoundID.Item156, NPC.Center);
-
-
-
-                                        for (int i = 0; i < 6; i++)
-                                        {
-                                            var angle = IchorSpiralRotationOffset + (i * MathHelper.TwoPi / 6f);
-                                            var launchVelocity = new Vector2(8, 0).RotatedBy(angle);
-                                            Projectile Crys = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), NPC.Center, launchVelocity, ModContent.ProjectileType<IchorNodeCrystal2>(), 15, 4);
-                                            Crys.timeLeft = 120;
-                                        }
-
-                                        IchorSpiralRotationOffset += 0.75f; // spiral effect
-                                    }
-                                    IchorSpiralTimer--;
-                                }
-                                if (IchorSpiralTimer <= 0 && IchorSpiralCooldownTimer > 0)
-                                {
-                                    IchorSpiralCooldownTimer--;
-                                }
-                                if (IchorSpiralTimer <= 0 && IchorSpiralCooldownTimer <= 0)
-                                {
-                                    CurrentAttack = AttackState.ToothBombs;
-                                    IchorSpiralWarnTimer = 180;
-                                    IchorSpiralWarnParticleFlag = false;
-                                    IchorSpiralTimer = 240;
-                                    IchorSpiralCooldownTimer = 120;
-                                    Flag3 = false;
-                                    NPC.rotation = 0f;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            if (!Flag3)
-                            {
-                                Opus.RadialSpreadProjectile(ModContent.ProjectileType<BloodCloudBall>(), 18, NPC.Center, 40, 6, 10f);
-                                Opus.RadialSpreadProjectile(ModContent.ProjectileType<BloodCloudBall>(), 12, NPC.Center, 40, 6, 6f);
-                                Opus.RadialSpreadProjectile(ModContent.ProjectileType<BloodCloudBall>(), 8, NPC.Center, 40, 6, 4f);
-                                Flag3 = true;
-                            }
-                            else
-                            {
-                                if (IS_Timer < 120)
-                                {
-                                    IS_Timer++;
-                                }
-                                else
-                                {
-                                    CurrentAttack = AttackState.ToothBombs;
-                                    IchorSpiralWarnTimer = 180;
-                                    IchorSpiralWarnParticleFlag = false;
-                                    IchorSpiralTimer = 240;
-                                    IchorSpiralCooldownTimer = 120;
-                                    Flag3 = false;
-                                    NPC.rotation = 0f;
-                                    IS_Timer = 0;
-                                }
                                 
+                                Projectile.NewProjectile(NPC.GetSource_FromAI(), new Vector2(X, Y), new Vector2(0, -40), ModContent.ProjectileType<CrimsonSpike>(), 15, 2);
+                                if (i != 0)
+                                {
+                                    Projectile.NewProjectile(NPC.GetSource_FromAI(), new Vector2(AltX, Y), new Vector2(0, -40), ModContent.ProjectileType<CrimsonSpike>(), 15, 2);
+                                }
                             }
                         }
+
+                        if (InternalTimer >= SpikeTimeTrans)
+                        {
+                            CurrentAttack = AttackState.ToothBombs;
+                        }
+
                         break;
                     }
                 case AttackState.ToothBombs:
@@ -606,60 +534,6 @@ namespace DestroyerTest.Content.Entities
             }
         }
 
-        int BR_EternityTimer = 0;
-        public void BloodRainAI(Player player)
-        {
-            if (!DestroyerTestMod.EternityIsActive && !DestroyerTestMod.DeathIsActive)
-            {
-                KeepToPlayer(player.Center + new Vector2(0, -200));
-
-                if (BloodRainSpawnTimer > 0)
-                {
-                    if (BloodRainSpawnTimer % 8 == 0)
-                    {
-                        SoundEngine.PlaySound(SoundID.Item66, NPC.Center);
-                        Vector2 Position = new Vector2(
-                            player.Center.X + Main.rand.Next(-200, 200),
-                            player.Center.Y - 400f // blanket above
-                        );
-                        Projectile.NewProjectile(Entity.GetSource_FromThis(), Position, Vector2.Zero, ModContent.ProjectileType<BloodCloud>(), 16, 8);
-                    }
-                    BloodRainSpawnTimer--;
-                }
-                if (BloodRainSpawnTimer <= 0 && BloodRainWaitTimer > 0)
-                {
-                    BloodRainWaitTimer--;
-                }
-                if (BloodRainSpawnTimer <= 0 && BloodRainWaitTimer <= 0)
-                {
-                    CurrentAttack = AttackState.IchorSpiral;
-                    BloodRainSpawnTimer = 180;
-                    BloodRainWaitTimer = 240;
-                }
-            }
-            else
-            {
-                NPC.velocity *= 0;
-                BR_EternityTimer++;
-
-                
-
-                if (BR_EternityTimer % 60 == 0)
-                {
-                    SoundEngine.PlaySound(SoundID.Item66, NPC.Center);
-
-                    Opus.RingSpreadProjectile(ModContent.ProjectileType<BloodCloudBall>(), 18, NPC.Center, 1200f, 40, 6, -5f, offset: 0.05f * BR_EternityTimer);
-
-                }
-
-                if (BR_EternityTimer >= 1200)
-                {
-                    CurrentAttack = AttackState.IchorSpiral;
-                    BR_EternityTimer = 0;
-                }
-            }
-        }
-
         public void MineAI()
         {
             if (MineInterval > 0)
@@ -736,7 +610,7 @@ namespace DestroyerTest.Content.Entities
 
                 NPC.noTileCollide = false;
                 NPC.velocity.Y = 0f;
-                NPC.velocity.Y = 24f;
+                NPC.velocity.Y = 40f;
                 NPC.velocity.X = 0f;
             }
             if (NPC.collideY && NPC.velocity.Y >= 0f)
@@ -755,6 +629,7 @@ namespace DestroyerTest.Content.Entities
                 CurrentAttack = AttackState.Idle;
                 SlamCharge = 120;
                 SlamCount = 0;
+                InternalTimer = 0;
             }
         }
 
@@ -898,7 +773,17 @@ namespace DestroyerTest.Content.Entities
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-            npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<IchorNodeLootBag>()));
+            npcLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<HaepienNodeCharm>(), 24, 1, 1));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<PrimalShards>(), 1, 4, 16));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<PrimalIdol>(), 1, 1, 3));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<IchorScroll>(), 1, 1, 1));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Scorn>(), 2, 1, 1));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<DistendedPike>(), 2, 1, 1));
+            npcLoot.Add(ItemDropRule.ByCondition(new EternityDropRuleCondition(), ModContent.ItemType<GreedyGraze>(), 1, 1, 1));
+            npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Item_IchorNodeRelic>()));
+            npcLoot.Add(ItemDropRule.Common(ItemID.FlaskofIchor, 3, 1, 9));
+            npcLoot.Add(ItemDropRule.NotScalingWithLuck(ItemID.Ichor, 2, 20, 60));
+            npcLoot.Add(ItemDropRule.Coins(1250, true));
         }
     }
 }

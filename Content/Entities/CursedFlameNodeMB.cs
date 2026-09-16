@@ -1,16 +1,29 @@
 
+using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Security.Policy;
 using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
+using DestroyerTest.Common.DropRules;
 using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.BossBar;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Consumables;
 using DestroyerTest.Content.Equips;
+using DestroyerTest.Content.Equips.ScepterAccessories;
+using DestroyerTest.Content.Fargos.EternityDrops;
+using DestroyerTest.Content.MeleeWeapons;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss;
 using DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame;
+using DestroyerTest.Content.Resources;
+using DestroyerTest.Content.Tiles;
+using DestroyerTest.Content.Tools;
 using GlowmaskHelper.Content;
  
  
@@ -19,12 +32,6 @@ using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using OpusLib.Content.Helpers;
 using OpusLib.Content.Particles;
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Security.Policy;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -33,6 +40,7 @@ using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.UI;
 
 namespace DestroyerTest.Content.Entities
 {
@@ -850,7 +858,16 @@ namespace DestroyerTest.Content.Entities
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-            npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<CursedNodeLootBag>()));
+            npcLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<HaepienNodeCharm>(), 24, 1, 1));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<WretchedIdol>(), 1, 1, 3));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<WretchedShards>(), 1, 4, 16));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CursedFlameScroll>(), 1, 1, 1));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Malevolence>(), 2, 1, 1));
+            npcLoot.Add(ItemDropRule.ByCondition(new EternityDropRuleCondition(), ModContent.ItemType<UnyieldingSkull>(), 1, 1, 1));
+            npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Item_CursedFlameNodeRelic>()));
+            npcLoot.Add(ItemDropRule.Common(ItemID.FlaskofCursedFlames, 3, 1, 9));
+            npcLoot.Add(ItemDropRule.NotScalingWithLuck(ItemID.CursedFlame, 2, 20, 60));
+            npcLoot.Add(ItemDropRule.Coins(1250, true));
         }
     }
 }

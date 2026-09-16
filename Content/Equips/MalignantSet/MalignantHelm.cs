@@ -156,7 +156,7 @@ namespace DestroyerTest.Content.Equips.MalignantSet
             {
                 if (item.DamageType == DamageClass.Melee || item.DamageType == DamageClass.MeleeNoSpeed)
                 {
-                    scale = 1.425f;
+                    scale = 1.225f;
                 }
             }
         }

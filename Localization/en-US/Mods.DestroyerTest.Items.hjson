@@ -3715,10 +3715,10 @@ GodGouger: {
 	DisplayName: God Gouger
 	Tooltip:
 		'''
-		A javelin in the image of a gaping, toothy maw, empowered by a god's emotional torment and regret, that splits into two smaller javelins that both home in on enemies.
+		A javelin in the image of a gaping, toothy maw.
 		Inflicts Soul Erosion on enemies, lowering their attack stat.
-		"The Devastation said to have struck Hekate after their loss was so deep and grave that in some notes left in their garden work area, they had written that they would:
-		'rather gouge my heart out with a blighted maw than have to live with the baggage of a decision that was never mine to make.'"
+
+		'Pained croaks worm their way out from it.'
 		'''
 }
 
@@ -4340,7 +4340,7 @@ MalignantHelm: {
 		Scepter: 14%
 		Rogue / Thrower: 10%
 
-		Increases Melee weapon scale by 85%.
+		Increases Melee weapon scale by 22.5%.
 		Decreases Mana cost by 30%.
 
 		Increases the speed of classes accordingly:
@@ -5368,7 +5368,7 @@ VoltaicFenzim: {
 		Thrown fenzims lodge into the ground, creating an electric field. The faster it's moving when it lands, the larger the field will be.
 
 		Enemies near the fenzim when it first lands are zapped once for 100% of the projectile's damage.
-		Enemies in the field are zapped repeatedly for 1/3rd of the weapon's damage, slowed down, and electrified for 5 seconds.
+		Enemies in the field are zapped repeatedly for 33% of the weapon's damage, slowed down, and electrified for 5 seconds.
 		If an enemy is killed by being zapped, the projectile will have its lifespan extended by 2 seconds.
 		Can zap enemies even if tiles are in the way.
 
@@ -5477,8 +5477,10 @@ ZyplonRing: {
 
 QuintetLocator: {
 	DisplayName: Gleaming Guidance
-	Tooltip:
-	'''
-	Points in the directions of the 5 Cerebral Geodes in your world.
-	'''
+	Tooltip: Points in the directions of the 5 Cerebral Geodes in your world.
+}
+
+GreedyGraze: {
+	DisplayName: Greedy Graze
+	Tooltip: Has a 10% chance to heal on-hit for 5% of the damage dealt.
 }
