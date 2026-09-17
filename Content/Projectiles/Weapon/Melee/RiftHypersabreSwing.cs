@@ -43,7 +43,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         }
 
         int HitCooldown = 0;
-        int HitCooldownMax = 15;
+        int HitCooldownMax = 150;
 
         private SpriteEffects FX = SpriteEffects.None;
         public override bool PreDraw(ref Color lightColor)
@@ -72,9 +72,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         int F = 6;
         private void AnimateProjectile()
         {
-            if (++Projectile.frameCounter >= F)
+            Projectile.ai[2]++;
+            if (Projectile.ai[2] % F == 0)
             {
-                Projectile.frameCounter = 0;
                 if (++Projectile.frame >= Main.projFrames[Projectile.type])
                 {
                     Projectile.frame = 0;
@@ -150,7 +150,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 
                 FX = toCursor.X > 0 ? SpriteEffects.None : SpriteEffects.FlipVertically;
 
-                int MaxFShrink = (int)Math.Round(F * player.GetTotalAttackSpeed<DTTrueMeleeClass>().Inverse()) + 1;
+                float MaxFShrink = (int)Math.Round(F * player.GetTotalAttackSpeed<DTTrueMeleeClass>().Inverse()) + 1;
 
                 if (Projectile.ai[0]++ % 60 == 0 && F > MaxFShrink)
                 {
@@ -163,16 +163,16 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                     HitCooldown++;
                 }
 
-                int BaseF = 6;
+                float BaseF = 6;
 
-                int MinF = (int)Math.Round(BaseF * player.GetTotalAttackSpeed<DTTrueMeleeClass>().Inverse()) + 1;
+                float MinF = (int)Math.Round(BaseF * player.GetTotalAttackSpeed<DTTrueMeleeClass>().Inverse()) + 1;
                 float prog = 1f - ((float)(F - MinF) / (BaseF - MinF));
 
                 HitCooldownMax = (int)MathHelper.Lerp(20, 5, prog);
 
                 HitPitch = MathHelper.Lerp(0, 0.7f, prog);
 
-                Projectile.timeLeft = 10;
+                Projectile.timeLeft = 30;
 
             }
             else

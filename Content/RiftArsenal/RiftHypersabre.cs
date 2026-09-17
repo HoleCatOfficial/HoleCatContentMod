@@ -32,7 +32,7 @@ namespace DestroyerTest.Content.RiftArsenal
 
         public override void SetDefaults()
         {
-            Item.damage = 150;
+            Item.damage = 230;
             Item.DamageType = DamageClass.MeleeNoSpeed;
             Item.width = 112;
             Item.height = 116;

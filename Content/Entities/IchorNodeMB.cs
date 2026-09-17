@@ -21,9 +21,11 @@ using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss;
 using DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame;
 using DestroyerTest.Content.Projectiles.Boss.NodeBoss.Ichor;
+using DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.Tiles;
 using DestroyerTest.Content.Tools;
+using FargowiltasSouls.Content.Bosses.VanillaEternity;
 using GlowmaskHelper.Content;
  
  
@@ -184,6 +186,7 @@ namespace DestroyerTest.Content.Entities
             Idle,
             Spikes,
             ToothBombs,
+            Pikes,
             GroundSlam,
             None
         }
@@ -201,6 +204,9 @@ namespace DestroyerTest.Content.Entities
 
         public int SpikeTime => IdleTime + 600;
         public int SpikeTimeTrans => SpikeTime + 90;
+        public int MineTime => SpikeTimeTrans + 360;
+        public int MineTimeTrans => MineTime + 90;
+        public int PikesTime => MineTimeTrans + 600;
 
         public int MineInterval = 0;
         public int MineCount = 0;
@@ -227,7 +233,10 @@ namespace DestroyerTest.Content.Entities
             DTUtils Utility = new DTUtils();
             DTMusicConfig muscfg = ModContent.GetInstance<DTMusicConfig>();
 
-            InternalTimer++;
+            if (CurrentAttack != AttackState.Dormant)
+            {
+                InternalTimer++;
+            }
 
             if (DrawSlamTelegraph)
             {
@@ -357,6 +366,19 @@ namespace DestroyerTest.Content.Entities
                                     Projectile.NewProjectile(NPC.GetSource_FromAI(), new Vector2(AltX, Y), new Vector2(0, -40), ModContent.ProjectileType<CrimsonSpike>(), 15, 2);
                                 }
                             }
+
+                            if (DestroyerTestMod.EternityIsActive || DestroyerTestMod.DeathIsActive)
+                            {
+                                for (int i = 0; i < 30; i++)
+                                {
+                                    int Side = i % 2 == 0 ? -1 : 1;
+                                    float X = NPC.Center.X + (1000 * Side);
+                                    float Y = NPC.Center.Y + (-900 + ((i * 16) * 12));
+
+
+                                    Projectile.NewProjectile(NPC.GetSource_FromAI(), new Vector2(X, Y), new Vector2(-40 * Side, 0), ModContent.ProjectileType<CrimsonSpike>(), 15, 2);
+                                }
+                            }
                         }
 
                         if (InternalTimer >= SpikeTimeTrans)
@@ -370,6 +392,38 @@ namespace DestroyerTest.Content.Entities
                     {
                         KeepToPlayer(player.Center + new Vector2(0, -200));
                         MineAI();
+                        break;
+                    }
+                case AttackState.Pikes:
+                    {
+                        KeepToPlayer(player.Center + new Vector2(0, -200));
+
+                        if (!DestroyerTestMod.EternityIsActive && !DestroyerTestMod.DeathIsActive)
+                        {
+                            if (InternalTimer % 120 == 0)
+                            {
+                                SoundEngine.PlaySound(DTAssetLib.ScholarShieldSounds.Activate, NPC.Center);
+                                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, new Vector2(30, -4), ModContent.ProjectileType<NodeBossDistendedPike>(), 15, 2);
+                                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, new Vector2(-30, -4), ModContent.ProjectileType<NodeBossDistendedPike>(), 15, 2);
+
+
+                            }
+                        }
+                        else
+                        {
+                            if (InternalTimer % 20 == 0)
+                            {
+                                SoundEngine.PlaySound(DTAssetLib.ScholarShieldSounds.Activate, NPC.Center);
+                                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, NPC.Center.DirectionFrom(player.Center) * 10f, ModContent.ProjectileType<NodeBossDistendedPike2>(), 15, 2);
+
+
+                            }
+                        }
+
+                        if (InternalTimer >= PikesTime)
+                        {
+                            CurrentAttack = AttackState.GroundSlam;
+                        }
                         break;
                     }
                 case AttackState.GroundSlam:
@@ -536,32 +590,39 @@ namespace DestroyerTest.Content.Entities
 
         public void MineAI()
         {
-            if (MineInterval > 0)
-            {
-                MineInterval--;
-            }
 
-            if (MineInterval <= 0)
+            if (InternalTimer % 120 == 0 && InternalTimer < MineTime)
             {
-                for (int q = 0; q < 6; q++)
+                if (!DestroyerTestMod.EternityIsActive && !DestroyerTestMod.DeathIsActive)
                 {
-                    Vector2 Position = NPC.Center + new Vector2(Main.rand.Next(-400, 400), Main.rand.Next(-400, 400));
-                    Vector2 Velocity = Position - NPC.Center;
-                    Projectile Mine = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), NPC.Center, Velocity * 0.03f, ModContent.ProjectileType<CrystalBomb>(), 30, 5);
-                    Mine.timeLeft = 120;
+                    for (int q = 0; q < 6; q++)
+                    {
+                        Vector2 Position = NPC.Center + new Vector2(Main.rand.Next(-400, 400), Main.rand.Next(-400, 400));
+                        Vector2 Velocity = Position - NPC.Center;
+                        Projectile Mine = Projectile.NewProjectileDirect(Entity.GetSource_FromThis(), NPC.Center, Velocity * 0.03f, ModContent.ProjectileType<CrystalBomb>(), 30, 5);
+                        Mine.timeLeft = 120;
+                    }
                 }
-                MineInterval = 120;
-                MineCount += 1;
+                else
+                {
+                    Opus.RadialSpreadProjectile(ModContent.ProjectileType<CrimsonSpike>(), 6, NPC.Center, 12, 2, 30, offset: 0);
+                    Opus.RadialSpreadProjectile(ModContent.ProjectileType<CrimsonSpike>(), 6, NPC.Center, 12, 2, 15, offset: MathHelper.TwoPi / 12);
+
+                    foreach (Projectile Mine in Opus.RadialSpreadProjectile(ModContent.ProjectileType<FleshBomb>(), 6, NPC.Center, 12, 2, 17, offset: 0))
+                    {
+                        Mine.timeLeft = 90;
+                    }
+
+                    foreach (Projectile Mine in Opus.RadialSpreadProjectile(ModContent.ProjectileType<FleshBomb>(), 6, NPC.Center, 12, 2, 6, offset: MathHelper.TwoPi / 12))
+                    {
+                        Mine.timeLeft = 90;
+                    }
+                }
             }
 
-            if (MineCount >= 3)
+            if (InternalTimer > MineTimeTrans)
             {
-                MineCooldown--;
-            }
-
-            if (MineCount >= 3 && MineCooldown <= 0)
-            {
-                CurrentAttack = AttackState.GroundSlam;
+                CurrentAttack = AttackState.Pikes;
                 MineCount = 0;
                 MineCooldown = 240;
             }
@@ -745,6 +806,11 @@ namespace DestroyerTest.Content.Entities
             {
                 Vector2 velo = new Vector2(Main.rand.Next(-10, 10), -12);
                 Projectile.NewProjectile(Entity.GetSource_FromThis(), NPC.Center, velo, ProjectileID.GoldenShowerHostile, 15, 4);
+            }
+
+            if (DestroyerTestMod.EternityIsActive || DestroyerTestMod.DeathIsActive)
+            {
+                Opus.RadialSpreadProjectile(ModContent.ProjectileType<CrimsonSpike>(), 10, NPC.Center, 12, 2, 30, offset: 0);
             }
         }
 
