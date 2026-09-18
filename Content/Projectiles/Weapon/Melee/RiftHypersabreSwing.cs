@@ -125,7 +125,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             return IsOnAttackFrame(target) && !target.friendly && HitCooldown >= HitCooldownMax;
         }
 
-        private SoundStyle Slash = new SoundStyle("DestroyerTest/Assets/Audio/Rift_Katana_Slash") { PitchVariance = 0.2f, Volume = 0.7f };
+        private SoundStyle Slash = new SoundStyle("DestroyerTest/Assets/Audio/Rift_Katana_Slash") { PitchVariance = 0.2f, Volume = 0.4f };
         public override void AI()
         {
             Player player = Main.player[Projectile.owner];
@@ -200,6 +200,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             ScreenShake.screenshakeTimer = 10;
 
             SoundEngine.PlaySound(DTAssetLib.Impacts.FleshHit with { MaxInstances = 0, Pitch = HitPitch }, target.Center);
+            SoundEngine.PlaySound(DTAssetLib.ChargeBreak with { MaxInstances = 0, Volume = 2f }, target.Center);
 
             List<Color> RiftLightColors = new List<Color>
             {

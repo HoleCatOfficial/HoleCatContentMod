@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using OpusLib.Content.Particles;
+using ReLogic.Content;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -29,6 +30,12 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.Ichor
         }
 
         private ref float Timer => ref Projectile.ai[1];
+        Asset<Texture2D> Afterimage;
+
+        public override void SetStaticDefaults()
+        {
+            
+        }
 
         public override void SetDefaults()
         {
@@ -124,6 +131,8 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.Ichor
         }
         public override bool PreDraw(ref Color lightColor)
         {
+            
+
             Main.EntitySpriteDraw(DTAssetLib.NodeBossPikeOutline.Value, Projectile.Center - Main.screenPosition, null, ColorLib.IchorCrystalGradient, Projectile.rotation, new Vector2(DTAssetLib.NodeBossPikeOutline.Value.Width / 2, DTAssetLib.NodeBossPikeOutline.Value.Height / 2), Projectile.scale, SpriteEffects.None, 0);
             Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(Projectile.width / 2, Projectile.height / 2), Projectile.scale, SpriteEffects.None, 0);
             return false;

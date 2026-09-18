@@ -30,23 +30,34 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
         {
             Player player = Main.player[Projectile.owner];
 
+            if (EffectCooldown > 0)
+            {
+                EffectCooldown--;
+            }
             base.AI();
         }
 
 
+        int EffectCooldown = 0;
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
 
             target.AddBuff(BuffID.OnFire, 240);
 
-            for (int i = 0; i < 3; i++)
-            {
-                Vector2 AboveTarget = target.Center + new Vector2(Main.rand.NextFloat(-300, 300), -900);
-                Vector2 ToTarget = target.Center - AboveTarget;
-                ToTarget.Normalize();
+            
 
-                Projectile.NewProjectile(Projectile.GetSource_OnHit(target), AboveTarget, ToTarget * 27, ModContent.ProjectileType<MoltenStar>(), (int)(Projectile.damage * 0.75f), 2, Projectile.owner);
+            if (EffectCooldown <= 0)
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    Vector2 AboveTarget = target.Center + new Vector2(Main.rand.NextFloat(-300, 300), -900);
+                    Vector2 ToTarget = target.Center - AboveTarget;
+                    ToTarget.Normalize();
+
+                    Projectile.NewProjectile(Projectile.GetSource_OnHit(target), AboveTarget, ToTarget * 27, ModContent.ProjectileType<MoltenStar>(), (int)(Projectile.damage * 0.75f), 2, Projectile.owner);
+                }
+                EffectCooldown = 20;
             }
 
             base.OnHitNPC(target, hit, damageDone);

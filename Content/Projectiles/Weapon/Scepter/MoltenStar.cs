@@ -35,7 +35,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 
         float IHomingProjectile.DetectRadius => 15000;
 
-        bool IHomingProjectile.CanHome => Timer >= 30;
+        bool IHomingProjectile.CanHome => Timer > 30 && Timer < 120;
 
         public override void SetStaticDefaults()
         {
@@ -52,7 +52,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
             Projectile.hostile = false;
             Projectile.DamageType = DamageClass.Generic;
             Projectile.penetrate = 1;
-            Projectile.timeLeft = 600;
+            Projectile.timeLeft = 300;
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;
         }

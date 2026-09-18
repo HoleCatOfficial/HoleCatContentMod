@@ -13,11 +13,11 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Consumables
 {
-    public class MechanicalEnhancements : ModItem
+    public class MechanicalEnhancements : OneTimeConsumable
     {
         public override void SetStaticDefaults()
         {
-            Item.ResearchUnlockCount = 20;
+            Item.ResearchUnlockCount = 1;
         }
 
         public override void SetDefaults()
@@ -36,25 +36,11 @@ namespace DestroyerTest.Content.Consumables
             Item.maxStack = 1;
         }
 
-        public override bool ConsumeItem(Player player)
+        public override void OnConsume(Player player)
         {
             if (player.TryGetModPlayer<MechanicalEnhancementsPlayer>(out var Enchancement))
             {
                 Enchancement.EnhancedJorkingMethods = true;
-            }
-            return true;
-        }
-
-
-        public override bool CanUseItem(Player player)
-        {
-            if (player.TryGetModPlayer<MechanicalEnhancementsPlayer>(out var Enchancement))
-            {
-                return !Enchancement.EnhancedJorkingMethods;
-            }
-            else
-            {
-                return false;
             }
         }
     }
@@ -72,12 +58,12 @@ namespace DestroyerTest.Content.Consumables
         {
             if (EnhancedJorkingMethods)
             {
-                Effects = true;
+                Player.ScepterClass().ThrowSpeedModifier += 0.4f;
             }
 
             if (Effects)
             {
-                Player.ScepterClass().ThrowSpeedModifier += 1.4f;
+                
             }
         }
     }

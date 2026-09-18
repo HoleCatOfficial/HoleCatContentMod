@@ -21,7 +21,7 @@ namespace DestroyerTest.Content.Equips
 			Item.height = 18;
 			Item.value = Item.sellPrice(gold: 2);
             Item.rare = ModContent.RarityType<DevRarity>();
-			Item.defense = 32;
+			Item.defense = 17;
             Item.vanity = false;
 		}
 

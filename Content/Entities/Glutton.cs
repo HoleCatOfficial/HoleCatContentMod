@@ -168,7 +168,7 @@ namespace DestroyerTest.Content.Entities
 
             if (toNode != null)
             {
-                DTUtils.instance.ScrollingTextureSpine(toNode, DTAssetLib.Streak(3, true), ColorLib.IchorCrystal3, Main.spriteBatch, BlendState.Additive, O, 0.4f);
+                DTUtils.instance.ScrollingTextureSpine(toNode, DTAssetLib.Streak(3, true), ColorLib.IchorCrystal3 with { A = 0 }, Main.spriteBatch, BlendState.Additive, O, 0.4f);
             }
 
             spriteBatch.End();

@@ -51,7 +51,7 @@ namespace DestroyerTest.Content.Scepter
 
 		public override void AddRecipes() {
 			CreateRecipe()
-				.AddIngredient(ItemID.DarkShard, 6)
+				.AddIngredient(ItemID.DarkShard)
 				.AddIngredient(ItemID.SoulofNight, 12)
 				.AddIngredient<ShadowScepter>()
 				.AddTile(TileID.MythrilAnvil)

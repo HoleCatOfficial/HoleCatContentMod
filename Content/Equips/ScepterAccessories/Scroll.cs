@@ -321,9 +321,25 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
             }
             if (UseEffectCooldown >= config.ScrollEffectsCooldown)
             {
+                if (HellfireScroll1)
+                {
+                  
+                    if (item.DamageType == ModContent.GetInstance<ScepterClass>() && Player.altFunctionUse == 2)
+                    {
+                        if (Main.rand.NextBool(3))
+                        {
+                            for (int t = 0; t < 3; t++)
+                            {
+                                 
+                                Projectile.NewProjectile(Player.GetSource_ItemUse(item), Player.Center, velocity.RotatedByRandom(2f), ModContent.ProjectileType<Hellfire>(), damage, knockback, Player.whoAmI );
+                            }
+                        }
+                    }
+                    
+                }
                 if (CurseScroll)
                 {
-                    if (item.DamageType == ModContent.GetInstance<ScepterClass>() && Player.altFunctionUse == 2)
+                    if (item.DamageType == ModContent.GetInstance<ScepterClass>() && Player.altFunctionUse != 2)
                     {
                         if (Main.rand.NextBool(3))
                         {
@@ -332,15 +348,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
                                 Vector2 outer = Player.Center + Main.rand.NextVector2CircularEdge(10, 10);
                                 Vector2 motion = outer - position;
 
-                                Projectile.NewProjectile(
-                                    Player.GetSource_ItemUse(item),
-                                    Player.Center,
-                                    motion,
-                                    ModContent.ProjectileType<CurseProjectile>(),
-                                    damage / 2,
-                                    knockback,
-                                    Player.whoAmI
-                                );
+                                Projectile.NewProjectile(Player.GetSource_ItemUse(item), Player.Center, velocity.RotatedByRandom(0.3f), ModContent.ProjectileType<CurseProjectile>(), damage / 2, knockback, Player.whoAmI);
                             }
                         }
                     }
@@ -713,6 +721,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
         public bool PoisonScroll1 = false;
         public bool HandScroll = false;
         public bool ZapScroll = false;
+        public bool LavaScroll = false;
         public override void SetDefaults(Projectile entity)
         {
             if (entity.DamageType == ModContent.GetInstance<ScepterClass>() && entity.Name.Contains("Thrown"))
@@ -937,6 +946,11 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
             if (IsAThrownScepter && ZapScroll)
             {
                 Projectile.NewProjectile(projectile.GetSource_OnHit(target), projectile.Center, Vector2.Zero, ModContent.ProjectileType<ElectricField>(), (int)(projectile.damage * 0.75f), 2, projectile.owner);
+            }
+
+            if (IsAThrownScepter && LavaScroll)
+            {
+                Opus.RadialSpreadProjectileRandom(ModContent.ProjectileType<LavaScrollLava>(), 4, target.Center, projectile.damage / 2, 4, 9);
             }
         }
 

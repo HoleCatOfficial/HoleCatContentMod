@@ -51,9 +51,9 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
                 .AddIngredient<OrchidPendant>()
                 .AddIngredient<AdamantPendant>()
                 .AddIngredient<TitanPendant>()
-                .AddIngredient(ItemID.SoulofFright, 16)
-                .AddIngredient(ItemID.SoulofMight, 16)
-                .AddIngredient(ItemID.SoulofSight, 16)
+                .AddIngredient(ItemID.SoulofFright, 3)
+                .AddIngredient(ItemID.SoulofMight, 3)
+                .AddIngredient(ItemID.SoulofSight, 3)
                 .AddIngredient(ItemID.ChlorophyteBar, 6)
                 .AddTile(TileID.MythrilAnvil)
             .Register();

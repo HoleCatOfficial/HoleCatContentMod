@@ -1,6 +1,7 @@
 using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
 using DestroyerTest.Common;
+using DestroyerTest.Common.Interfaces;
 using DestroyerTest.Content.Particles;
  
 using Microsoft.Xna.Framework;
@@ -11,18 +12,26 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.player.Accessory
 {
-    public class Hellfire : ModProjectile
+    public class Hellfire : ModProjectile, IHomingProjectile
     {
-        private NPC HomingTarget
-        {
-            get => Projectile.ai[0] == 0 ? null : Main.npc[(int)Projectile.ai[0] - 1];
-            set
-            {
-                Projectile.ai[0] = value == null ? 0 : value.whoAmI + 1;
-            }
-        }
+        
+        public float DelayTimer;
 
-        public ref float DelayTimer => ref Projectile.ai[1];
+        bool IHomingProjectile.TracksNPCs => true;
+
+        bool IHomingProjectile.TracksPlayers => false;
+
+        float IHomingProjectile.HomingTurnSpeed => 7f;
+
+        bool IHomingProjectile.UsesHomingAcceleration => false;
+
+        float IHomingProjectile.HomingAccelAmount => 1f;
+
+        float IHomingProjectile.HomingMaxAccel => 10f;
+
+        float IHomingProjectile.DetectRadius => 700f;
+
+        bool IHomingProjectile.CanHome => DelayTimer >= 30;
 
         public override void SetStaticDefaults()
         {
@@ -32,15 +41,14 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
 
         public override void SetDefaults()
         {
-            Projectile.width = 16; // The width of projectile hitbox
-            Projectile.height = 16; // The height of projectile hitbox
+            Projectile.width = 16;
+            Projectile.height = 16;
 
-            Projectile.DamageType = DamageClass.Generic; // What type of damage does this projectile affect?
-            Projectile.friendly = true; // Can the projectile deal damage to enemies?
-            Projectile.hostile = false; // Can the projectile deal damage to the player?
-            Projectile.ignoreWater = true; // Does the projectile's speed be influenced by water?
-            Projectile.light = 1f; // How much light emit around the projectile
-            Projectile.timeLeft = 180; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
+            Projectile.DamageType = DamageClass.Generic;
+            Projectile.friendly = true;
+            Projectile.hostile = false;
+            Projectile.ignoreWater = true; 
+            Projectile.timeLeft = 180;
             Projectile.tileCollide = true;
             Projectile.hide = true;
         }
@@ -51,64 +59,13 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
             fire.PrepareFire(Projectile.Center, Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.3f, 0.3f), ColorLib.HellFire, 1f, 100, FireDrawMode.Additive, PixelLayer.AboveProjectiles);
             ParticleEngine.BehindProjectiles.Add(fire);
 
+            Fire fire2 = new Fire();
+            fire2.PrepareFire(Projectile.Center, Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.3f, 0.3f), ColorLib.HellFire, 0.5f, 100, FireDrawMode.Additive, PixelLayer.AboveProjectiles);
+            ParticleEngine.BehindProjectiles.Add(fire2);
+
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
-            float maxDetectRadius = 400f;
 
-            if (DelayTimer < 10)
-            {
-                DelayTimer += 1;
-                return;
-            }
-
-            if (HomingTarget == null)
-            {
-                HomingTarget = FindClosestNPC(maxDetectRadius);
-            }
-
-            if (HomingTarget != null && !IsValidTarget(HomingTarget))
-            {
-                HomingTarget = null;
-            }
-
-            if (HomingTarget == null)
-                return;
-
-            float length = Projectile.velocity.Length();
-            float targetAngle = Projectile.AngleTo(HomingTarget.Center);
-            Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(3)).ToRotationVector2() * length;
-            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
-        }
-        public NPC FindClosestNPC(float maxDetectDistance)
-        {
-            NPC closestNPC = null;
-
-            // Using squared values in distance checks will let us skip square root calculations, drastically improving this method's speed.
-            float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
-
-            // Loop through all NPCs
-            foreach (var target in Main.ActiveNPCs)
-            {
-                // Check if NPC able to be targeted. 
-                if (IsValidTarget(target))
-                {
-                    // The DistanceSquared function returns a squared distance between 2 points, skipping relatively expensive square root calculations
-                    float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, Projectile.Center);
-
-                    // Check if it is within the radius
-                    if (sqrDistanceToTarget < sqrMaxDetectDistance)
-                    {
-                        sqrMaxDetectDistance = sqrDistanceToTarget;
-                        closestNPC = target;
-                    }
-                }
-            }
-
-            return closestNPC;
-        }
-
-        public bool IsValidTarget(NPC target)
-        {
-            return target.CanBeChasedBy();
+            DelayTimer++;
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)

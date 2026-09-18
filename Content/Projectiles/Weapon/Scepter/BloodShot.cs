@@ -6,6 +6,7 @@ using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using OpusLib.Content.Helpers;
 using System;
 using System.Collections.Generic;
@@ -63,7 +64,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
             Projectile.rotation = Projectile.velocity.ToRotation();
 
             Lighting.AddLight(Projectile.Center, Color.Red.ToVector3() * 0.6f);
-            var d = Dust.NewDustPerfect(Projectile.Center, DustID.Blood, Vector2.Zero, 0, default, 1f);
+            var d = Dust.NewDustPerfect(Projectile.Center, DustID.FireworksRGB, Projectile.velocity * 0.4f, 0, Color.Red, 1f);
             d.noGravity = true;
 
             t++;
@@ -90,10 +91,18 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 
         public override void OnKill(int timeLeft)
         {
-            for (int i = 0; i < 9; i++)
+            SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/Corpse/FleshBombExplode") with { PitchVariance = 1.0f, MaxInstances = 0 }, Projectile.Center);
+
+            SimpleExplosionParticle Explosion = new();
+            Explosion.Prepare(Projectile.Center, Vector2.Zero, Color.Red, 0.1f, 0.05f, 1.7f, BlendState.Additive);
+            ParticleEngine.BehindProjectiles.Add(Explosion);
+            SimpleExplosionParticle Explosion2 = new();
+            Explosion2.Prepare(Projectile.Center, Vector2.Zero, Color.Red * 0.8f, 0.1f, 0.05f, 1f, BlendState.Additive);
+            ParticleEngine.BehindProjectiles.Add(Explosion2);
+
+            foreach (Dust dust in Opus.RadialSpreadDust(DustID.FireworksRGB, 24, Projectile.Center, 0, Color.Red, 2f, 5f, Main.rand.NextFloat(MathHelper.TwoPi)))
             {
-                var d = Dust.NewDustPerfect(Projectile.Center, DustID.Blood, Projectile.velocity.RotatedByRandom(0.2f), 0, default, 2f);
-                d.noGravity = true;
+                dust.noGravity = true;
             }
         }
     }

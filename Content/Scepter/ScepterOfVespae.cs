@@ -23,6 +23,8 @@ namespace DestroyerTest.Content.Scepter
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
+
+            ItemID.Sets.ShimmerTransformToItem[Type] = ItemID.BeeGun;
         }
 
         public override void SetDefaults()

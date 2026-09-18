@@ -1584,7 +1584,7 @@ TenebrousBlueDye: {
 }
 
 ScepterPolish: {
-	Tooltip: ""
+	Tooltip: Increased scepter throw range by 30
 	DisplayName: Scepter Polish
 }
 
@@ -2726,17 +2726,22 @@ TreasonScroll: {
 
 FadedHood: {
 	DisplayName: Faded Hood
-	Tooltip: ""
+	Tooltip: 15% increased scepter class damage.
+	SetBonus:
+		'''
+		35% increased scepter throw speed.
+		Throwing a scepter releases 4 homing light stars.
+		'''
 }
 
 FadedRobes: {
 	DisplayName: Faded Robes
-	Tooltip: ""
+	Tooltip: +5 hp/s life regen.
 }
 
 ScepterEmblem: {
 	DisplayName: Scepter Emblem
-	Tooltip: ""
+	Tooltip: 10% increased Scepter Damage
 }
 
 FrigidScroll: {
@@ -2770,7 +2775,7 @@ TurbulenceScroll: {
 }
 
 CurseScroll: {
-	Tooltip: Thrown Scepters have a chance to release curses onto enemies.
+	Tooltip: Primary scepter shots have a chance to release curses onto enemies.
 	DisplayName: Curse Scroll
 }
 
@@ -3055,7 +3060,7 @@ TitanPendant: {
 
 MechanicalEnhancements: {
 	DisplayName: Mechanical Enhancements
-	Tooltip: Permanently increases Scepter Class throw speed by 65%.
+	Tooltip: Permanently increases Scepter Class throw speed by 40%.
 }
 
 SandSurgeScroll: {
@@ -3096,10 +3101,11 @@ RechargeItem: {
 DjedPillarCharm: {
 	Tooltip:
 		'''
-		You are immune to most debuffs and to knockback.
-		Double tapping in the left or right direction allows you to dash, leaving behind a trail of spirit flames that home in on enemies.
-		+21% Summoner Damage
+		You are immune to lava, most debuffs, and knockback.
+		Allows you to walk on all liquids.
+		+7% Summoner Damage
 		+2 Minon Slots
+
 		'''
 	DisplayName: Djed Pillar Charm
 }
@@ -3850,13 +3856,27 @@ InfectedScepter: {
 }
 
 ShadowMonarchHeadgear: {
-	Tooltip: ""
+	Tooltip: 5% increased critical strike chance
 	DisplayName: Shadow Monarch Headgear
+	SetBonus:
+		'''
+		Increased movement speed and acceleration
+		7% increased knockback.
+		30% increased Scepter Throw Speed.
+		+40 scepter range.
+		'''
 }
 
 CrimsonHeadgear: {
-	Tooltip: ""
+	Tooltip: 3% increased damage
 	DisplayName: Crimson Headgear
+	SetBonus:
+		'''
+		Greatly increased life regen
+		19% increased Scepter Class Damage.
+		30% increased Scepter Throw Speed.
+		+40 scepter range.
+		'''
 }
 
 TrueBloodScepter: {
@@ -5483,4 +5503,9 @@ QuintetLocator: {
 GreedyGraze: {
 	DisplayName: Greedy Graze
 	Tooltip: Has a 10% chance to heal on-hit for 5% of the damage dealt.
+}
+
+MoltenScroll: {
+	DisplayName: Molten Scroll
+	Tooltip: "Thrown scepters create 4 homing magma blobs on hit."
 }

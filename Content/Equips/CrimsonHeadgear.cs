@@ -46,11 +46,15 @@ namespace DestroyerTest.Content.Equips
 			return body.type == ItemID.CrimsonScalemail && legs.type == ItemID.CrimsonGreaves;
 		}
 
+        public override void UpdateEquip(Player player)
+        {
+			player.GetDamage(DamageClass.Generic) += 0.03f;
+        }
         public override void UpdateArmorSet(Player player)
         {
             player.DefaultSetBonusText(player.armor[0]);
-            player.GetDamage(ModContent.GetInstance<ScepterClass>()) *= 1.09f;
-            player.lifeRegen += 10;
+			player.crimsonRegen = true;
+            player.GetDamage<ScepterClass>() += 0.19f;
             player.ScepterClass().ThrowSpeedModifier *= 1.30f;
             player.ScepterClass().Range += 40;
 		}

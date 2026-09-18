@@ -33,6 +33,12 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
         {
             player.GetDamage(DamageClass.Summon) += 0.07f;
             player.maxMinions += 2;
+            player.lavaImmune = true;
+            player.lavaRose = true;
+            player.lavaMax += 600;
+            player.fireWalk = true;
+            player.waterWalk = true;
+            player.waterWalk2 = true;
             if(player.TryGetModPlayer<DjedPillarCharmPlayer>(out DjedPillarCharmPlayer modPlayer))
             {
                 modPlayer.Active = true;
@@ -42,6 +48,7 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
         public override void AddRecipes()
         {
             CreateRecipe()
+                .AddIngredient(ItemID.ObsidianSkullRose, 1)
                 .AddIngredient(ItemID.AnkhCharm, 1)
                 .AddIngredient<FetidCrown>(1)
                 .AddIngredient<BroochOfBalance>(1)

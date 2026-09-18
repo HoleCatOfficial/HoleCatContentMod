@@ -33,7 +33,7 @@ namespace DestroyerTest.Content.Scepter
             ShootDMG = 28;
             ShootCrit = 2;
             ThrowCrit = 8;
-            KB = 8;
+            KB = 2;
             AdditiveValue = Item.sellPrice(silver: 80);
             Rarity = ModContent.RarityType<PaleFuchsiaRarity>();
             

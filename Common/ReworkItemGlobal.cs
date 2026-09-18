@@ -1,6 +1,7 @@
 ﻿using DestroyerTest.Content.Buffs.Imbues;
 using DestroyerTest.Content.Projectiles.Vanilla;
 using DestroyerTest.Content.Projectiles.Weapon.Melee;
+using DestroyerTest.Content.Scepter;
 using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -25,6 +26,10 @@ namespace DestroyerTest.Common
 		}
         public override bool InstancePerEntity => true;
 
+        public override void SetStaticDefaults()
+        {
+            ItemID.Sets.ShimmerTransformToItem[ItemID.BeeKeeper] = ModContent.ItemType<ScepterOfVespae>();
+        }
         public override void SetDefaults(Item entity)
         {
             if (entity.type == ItemID.BloodButcherer)

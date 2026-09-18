@@ -46,6 +46,8 @@ using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
+using static FargowiltasSouls.Content.Projectiles.Masomode.PlanteraTooth;
+using static FargowiltasSouls.FargoSoulsSets;
 
 namespace DestroyerTest.Content.Entities
 {
@@ -149,19 +151,30 @@ namespace DestroyerTest.Content.Entities
 
         public float ShieldOpacity = 0f;
         public float ShieldScale = 1f;
+
+        float BorderRotation = 0f;
         public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             Texture2D pixel = TextureAssets.MagicPixel.Value;
             var v = DTAssetLib.BloomRingSharp.Value;
 
+            BorderRotation += 0.13f;
+
             Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-            Main.EntitySpriteDraw(v, NPC.Center - Main.screenPosition, null, ColorLib.IchorCrystalGradient * ShieldOpacity, 0f, v.Size() / 2, ShieldScale, SpriteEffects.None);
-            Utils.DrawBorderString(spriteBatch, $"{SentinelKillTally} / {SentinelKillRequirement}", (NPC.Center + new Vector2(0, -90) - Main.screenPosition), ColorLib.IchorCrystalGradient * ShieldOpacity, 3f, 0.5f, 0.5f);
+
+            Main.EntitySpriteDraw(v, NPC.Center - Main.screenPosition, null, OpusColorUtils.MultiLerp(((float)SentinelKillTally / (float)SentinelKillRequirement).Inverse(), ColorLib.IchorCrystalColorMap) * ShieldOpacity, 0f, v.Size() / 2, ShieldScale, SpriteEffects.None);
+
+            Main.EntitySpriteDraw(DTAssetLib.BarrierRing.Value, NPC.Center - Main.screenPosition, null, OpusColorUtils.MultiLerp(((float)SentinelKillTally / (float)SentinelKillRequirement).Inverse(), ColorLib.IchorCrystalColorMap) * ShieldOpacity, BorderRotation, DTAssetLib.BarrierRing.Value.Size() / 2, DTAssetLib.BarrierRing.Value.ScaleRingTextureToMatchRadius(1200f, 1300), SpriteEffects.None);
+
+            //Utils.DrawBorderString(spriteBatch, $"{SentinelKillTally} / {SentinelKillRequirement}", (NPC.Center + new Vector2(0, -90) - Main.screenPosition), ColorLib.IchorCrystalGradient * ShieldOpacity, 3f, 0.5f, 0.5f);
+
+            spriteBatch.DrawString(DTAssetLib.Doxent.Value, $"{SentinelKillTally} / {SentinelKillRequirement}", (NPC.Center + new Vector2(0, -90)) - screenPos, ColorLib.IchorCrystal3 * ShieldOpacity, 0f, DTAssetLib.Doxent.Value.MeasureString($"{SentinelKillTally} / {SentinelKillRequirement}") * 0.5f, 0.5f, SpriteEffects.None, 0f);
+
             Opus.ReturnToDefaultDrawing(spriteBatch);
 
             if (CurrentAttack == AttackState.Dormant)
             {
-                DTUtils.DrawChargeBar(2f, (NPC.Center + new Vector2(0, 100)) - Main.screenPosition, (float)SentinelKillTally / (float)SentinelKillRequirement, ColorLib.IchorCrystalGradient);
+                DTUtils.DrawChargeBar(2f, (NPC.Center + new Vector2(0, 100)) - Main.screenPosition, (float)SentinelKillTally / (float)SentinelKillRequirement, OpusColorUtils.MultiLerp(((float)SentinelKillTally / (float)SentinelKillRequirement), ColorLib.IchorCrystalColorMap));
             }
         }
 
@@ -198,7 +211,7 @@ namespace DestroyerTest.Content.Entities
         public int DormantPulseTimer = 60;
         public int SentinelKillTally = 0;
         public const int SentinelKillRequirement = 30;
-
+        public float SpikeOffsetEternity = 0f;
 
         public int IdleTime = 60;
 
@@ -215,6 +228,8 @@ namespace DestroyerTest.Content.Entities
         public int SlamCount = 0;
         public int WaveTimer = 0;
         public int WaveIndex = 0;
+        public float WaveRecoredY = 0f;
+        public float WaveRecordedX = 0f;
         public bool SoundFlag1 = false;
 
         int IS_Timer = 0;
@@ -285,6 +300,33 @@ namespace DestroyerTest.Content.Entities
                 Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/NodeBoss");
             }
 
+            if (WaveTimer > 0)
+            {
+                WaveTimer--;
+
+                if (WaveTimer % 10 == 0)
+                {
+                    WaveIndex++;
+
+                    float Y = WaveRecoredY + 300;
+                    float X = WaveRecordedX + (WaveIndex * 16) * 4;
+                    float AltX = WaveRecordedX + (WaveIndex * 16) * -4;
+
+                    SoundEngine.PlaySound(SoundID.DD2_EtherianPortalSpawnEnemy with { Volume = 2f, MaxInstances = 0 });
+
+                    if (WaveIndex != 0)
+                    {
+                        Projectile.NewProjectile(NPC.GetSource_FromAI(), new Vector2(X, Y), new Vector2(0, -40), ModContent.ProjectileType<CrimsonSpike>(), 15, 2);
+                    
+                        Projectile.NewProjectile(NPC.GetSource_FromAI(), new Vector2(AltX, Y), new Vector2(0, -40), ModContent.ProjectileType<CrimsonSpike>(), 15, 2);
+                    }
+                }
+            }
+            else
+            {
+                WaveIndex = 0;
+            }
+
             Vector2 PRTPos;
             PRTPos = NPC.Center;
 
@@ -349,26 +391,41 @@ namespace DestroyerTest.Content.Entities
                     }
                 case AttackState.Spikes:
                     {
-                        KeepToPlayer(player.Center + new Vector2(0, -200));
-                        if (InternalTimer % 150 == 0 && InternalTimer < SpikeTime)
+                        
+
+                        if ((DestroyerTestMod.EternityIsActive || DestroyerTestMod.DeathIsActive) && InternalTimer < SpikeTime)
                         {
-                            SoundEngine.PlaySound(SoundID.Item73);
-                            for (int i = 0; i < 15; i++)
-                            {
-                                float X = NPC.Center.X + ((i * 16) * 6);
-                                float AltX = NPC.Center.X - ((i * 16) * 6);
-                                float Y = NPC.Center.Y + 900;
+                            NPC.velocity *= 0;
+                            SpikeOffsetEternity += 0.08f;
 
-                                
-                                Projectile.NewProjectile(NPC.GetSource_FromAI(), new Vector2(X, Y), new Vector2(0, -40), ModContent.ProjectileType<CrimsonSpike>(), 15, 2);
-                                if (i != 0)
-                                {
-                                    Projectile.NewProjectile(NPC.GetSource_FromAI(), new Vector2(AltX, Y), new Vector2(0, -40), ModContent.ProjectileType<CrimsonSpike>(), 15, 2);
-                                }
+                            if (InternalTimer % 3 == 0)
+                            {
+                                SoundEngine.PlaySound(SoundID.DD2_EtherianPortalSpawnEnemy with { Volume = 2f, MaxInstances = 0 });
+                                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, new Vector2(50, 0).RotatedBy(SpikeOffsetEternity), ModContent.ProjectileType<CrimsonSpike>(), 15, 2);
                             }
-
-                            if (DestroyerTestMod.EternityIsActive || DestroyerTestMod.DeathIsActive)
+                        }
+                        else
+                        {
+                            KeepToPlayer(player.Center + new Vector2(0, -200));
+                            if (InternalTimer % 150 == 0 && InternalTimer < SpikeTime)
                             {
+                                SoundEngine.PlaySound(SoundID.DD2_EtherianPortalSpawnEnemy with { Volume = 2f, MaxInstances = 0 });
+                                for (int i = 0; i < 15; i++)
+                                {
+                                    float X = NPC.Center.X + ((i * 16) * 6);
+                                    float AltX = NPC.Center.X - ((i * 16) * 6);
+                                    float Y = NPC.Center.Y + 900;
+
+
+                                    Projectile.NewProjectile(NPC.GetSource_FromAI(), new Vector2(X, Y), new Vector2(0, -40), ModContent.ProjectileType<CrimsonSpike>(), 15, 2);
+                                    if (i != 0)
+                                    {
+                                        Projectile.NewProjectile(NPC.GetSource_FromAI(), new Vector2(AltX, Y), new Vector2(0, -40), ModContent.ProjectileType<CrimsonSpike>(), 15, 2);
+                                    }
+
+
+                                }
+
                                 for (int i = 0; i < 30; i++)
                                 {
                                     int Side = i % 2 == 0 ? -1 : 1;
@@ -378,9 +435,10 @@ namespace DestroyerTest.Content.Entities
 
                                     Projectile.NewProjectile(NPC.GetSource_FromAI(), new Vector2(X, Y), new Vector2(-40 * Side, 0), ModContent.ProjectileType<CrimsonSpike>(), 15, 2);
                                 }
+
+
                             }
                         }
-
                         if (InternalTimer >= SpikeTimeTrans)
                         {
                             CurrentAttack = AttackState.ToothBombs;
@@ -507,13 +565,7 @@ namespace DestroyerTest.Content.Entities
 
             Vector2[] P = Opus.GetEquidistantOrbitVectors(16, NPC.Center, 0.1f, 1200);
 
-            for (int i = 0; i < P.Length; i++)
-            {
-                PointGlowPreMultiplied Glow = new PointGlowPreMultiplied();
-                Glow.Initialize(P[i], Vector2.Zero, ColorLib.IchorCrystalGradient, 1f);
-                ParticleEngine.BehindProjectiles.Add(Glow);
-            }
-
+         
             foreach (Player p in Main.player)
             {
                 if (p.Center.Distance(NPC.Center) < 1200)
@@ -569,7 +621,7 @@ namespace DestroyerTest.Content.Entities
 
                 if (DestroyerTestMod.EternityIsActive || DestroyerTestMod.DeathIsActive)
                 {
-                    
+                    Opus.RadialSpreadProjectile(ModContent.ProjectileType<FleshBomb>(), 10, NPC.Center, 12, 2, 9, offset: 0);
                 }
 
                 for (int i = 0; i < SpawnPositions.Length; i++)
@@ -634,9 +686,7 @@ namespace DestroyerTest.Content.Entities
             if (SlamCharge > 0)
             {
                 NPC.noTileCollide = true;
-                Vector2 toTarget = new Vector2(player.Center.X, player.Center.Y - 300f) - NPC.Center;
-                float speed = 10f;
-                NPC.velocity = toTarget.SafeNormalize(Vector2.Zero) * speed;
+                NPC.SmoothMoveToPoint(new Vector2(player.Center.X, player.Center.Y - 300f), 30, 200);
                 SlamCharge--;
                 if (SlamCharge == 20)
                 {
@@ -668,6 +718,12 @@ namespace DestroyerTest.Content.Entities
                 PointGlowPreMultiplied Glow2 = new PointGlowPreMultiplied();
                 Glow2.Initialize(NPC.Bottom, new Vector2(-3f, 0f), ColorLib.Ichor, 1f);
                 ParticleEngine.BehindProjectiles.Add(Glow2);
+
+                if ((DestroyerTestMod.EternityIsActive || DestroyerTestMod.DeathIsActive) && InternalTimer % 4 == 0)
+                {
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, new Vector2(15f, 0f), ModContent.ProjectileType<IchorNodeCrystal2>(), 16, 2);
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, new Vector2(-15f, 0f), ModContent.ProjectileType<IchorNodeCrystal2>(), 16, 2);
+                }
 
                 NPC.noTileCollide = false;
                 NPC.velocity.Y = 0f;
@@ -759,45 +815,12 @@ namespace DestroyerTest.Content.Entities
         }
 
 
+        
         public void SlamWave()
         {
-            int left = (int)(NPC.position.X / 16);
-            int right = (int)((NPC.position.X + NPC.width) / 16);
-            int bottom = (int)((NPC.position.Y + NPC.height) / 16);
-
-            WaveTimer++;
-            if (WaveTimer % 10 == 0)
-            {
-                int x = left + WaveIndex;
-                Tile tile = Framing.GetTileSafely(x, bottom);
-                bool isGround =
-                    tile.HasUnactuatedTile &&
-                    Main.tileSolid[tile.TileType] &&
-                    !Main.tileSolidTop[tile.TileType];
-
-                if (x <= right && isGround)
-                {
-                    Vector2 spawnPos = new Vector2(x * 16 + 8, bottom * 16);
-                    Projectile.NewProjectile(
-                        Entity.GetSource_FromThis(),
-                        spawnPos,
-                        Vector2.Zero,
-                        ModContent.ProjectileType<NodeSlam>(),
-                        25,
-                        4f
-                    );
-                }
-
-
-                WaveIndex++;
-
-                if (x > right)
-                {
-                    // finished wave
-                    WaveIndex = 0;
-                    WaveTimer = 0;
-                }
-            }
+            WaveRecoredY = NPC.Center.Y;
+            WaveRecordedX = NPC.Center.X;
+            WaveTimer = 60;
         }
 
         public void SlamSpray()
@@ -807,10 +830,10 @@ namespace DestroyerTest.Content.Entities
                 Vector2 velo = new Vector2(Main.rand.Next(-10, 10), -12);
                 Projectile.NewProjectile(Entity.GetSource_FromThis(), NPC.Center, velo, ProjectileID.GoldenShowerHostile, 15, 4);
             }
-
+            
             if (DestroyerTestMod.EternityIsActive || DestroyerTestMod.DeathIsActive)
             {
-                Opus.RadialSpreadProjectile(ModContent.ProjectileType<CrimsonSpike>(), 10, NPC.Center, 12, 2, 30, offset: 0);
+                //Opus.RadialSpreadProjectile(ModContent.ProjectileType<CrimsonSpike>(), 10, NPC.Center, 12, 2, 30, offset: 0);
             }
         }
 

@@ -11,6 +11,8 @@ using DestroyerTest.Common;
 using DestroyerTest.Rarity;
 using DestroyerTest.Rarity.Scepter;
 using DestroyerTest.Content.Projectiles.Weapon.Scepter;
+using OpusLib.Content.Helpers;
+using Terraria.GameContent.ItemDropRules;
 
 namespace DestroyerTest.Content.Scepter
 {
@@ -22,6 +24,8 @@ namespace DestroyerTest.Content.Scepter
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
+
+            OpusNPCDropHelper.DropsFromNPC[Type] = new NPCDropData(NPCID.BloodNautilus, ItemDropRule.Common(Type, 5));
         }
 
         public override void SetDefaults()
@@ -30,7 +34,7 @@ namespace DestroyerTest.Content.Scepter
             base.SetDefaults();
 
             // Override stats unique to this scepter
-            ShootDMG = 78;
+            ShootDMG = 100;
             ShootCrit = 2;
             ThrowCrit = 8;
             KB = 8;

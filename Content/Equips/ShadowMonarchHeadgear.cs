@@ -45,11 +45,16 @@ namespace DestroyerTest.Content.Equips
 			return body.type == ItemID.ShadowScalemail && legs.type == ItemID.ShadowGreaves;
 		}
 
+        public override void UpdateEquip(Player player)
+        {
+            player.GetCritChance(DamageClass.Generic) += 0.05f;
+        }
         public override void UpdateArmorSet(Player player)
         {
             player.DefaultSetBonusText(player.armor[0]);
-            player.GetCritChance(ModContent.GetInstance<ScepterClass>()) += 15;
-            player.ScepterClass().ThrowSpeedModifier *= 1.30f;
+			player.shadowArmor = true;
+            player.GetKnockback(DamageClass.Generic) += 0.07f;
+            player.ScepterClass().ThrowSpeedModifier += 0.30f;
             player.ScepterClass().Range += 40;
 		}
 

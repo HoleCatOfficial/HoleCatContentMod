@@ -1,36 +1,32 @@
 ﻿
-using System;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Equips.ScepterAccessories;
-using DestroyerTest.Rarity;
-using DestroyerTest.Rarity.Scepter;
+using DestroyerTest.Content.Projectiles;
+using DestroyerTest.Content.Resources;
+using DestroyerTest.Content.Tiles;
+using Microsoft.Xna.Framework;
+using Steamworks;
 using Terraria;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Equips.ScepterAccessories
 {
-    public class ZapScroll : PreHardmodeScroll
+    public class MoltenScroll : PreHardmodeScroll
     {
-        
         public override void SetDefaults()
         {
-            Item.width = 32; // Width of the item
-            Item.height = 30; // Height of the item
+            Item.width = 32;
+            Item.height = 30;
             Item.accessory = true;
         }
 
-
-        public override void UpdateEquip(Player player)
+        public override void UpdateAccessory(Player player, bool hideVisual)
         {
-
-
             foreach (Projectile proj in Main.projectile)
             {
                 if (proj.TryGetGlobalProjectile<ScrollScepterProj>(out ScrollScepterProj Scptr))
                 {
-                    Scptr.ZapScroll = true;
+                    Scptr.LavaScroll = true;
                 }
             }
         }

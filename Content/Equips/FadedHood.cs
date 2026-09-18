@@ -15,38 +15,37 @@ using DestroyerTest.Content.Projectiles.player.ArmorSet;
 
 namespace DestroyerTest.Content.Equips
 {
-    // The AutoloadEquip attribute automatically attaches an equip texture to this item.
-    // Providing the EquipType.Head value here will result in TML expecting a X_Head.png file to be placed next to the item's main texture.
     [AutoloadEquip(EquipType.Head)]
     public class FadedHood : ModItem
     {
         public override void SetStaticDefaults()
         {
-            // If your head equipment should draw hair while drawn, use one of the following:
-            ArmorIDs.Head.Sets.DrawHead[Item.headSlot] = false; // Don't draw the head at all. Used by Space Creature Mask
-            //ArmorIDs.Head.Sets.DrawHatHair[Item.headSlot] = true; // Draw hair as if a hat was covering the top. Used by Wizards Hat
-                                                                  //ArmorIDs.Head.Sets.DrawFullHair[Item.headSlot] = true; // Draw all hair as normal. Used by Mime Mask, Sunglasses
-                                                                  // ArmorIDs.Head.Sets.DrawsBackHairWithoutHeadgear[Item.headSlot] = true;
+            ArmorIDs.Head.Sets.DrawHead[Item.headSlot] = false;
         }
 
         public override void SetDefaults()
         {
-            Item.width = 26; // Width of the item
-            Item.height = 24; // Height of the item
-            Item.value = Item.sellPrice(gold: 8); // How many coins the item is worth
-            Item.rare = ModContent.RarityType<ScepterArmorPHMRarity>(); // The rarity of the item
-            Item.defense = 6; // The amount of defense the item will give when equipped
+            Item.width = 26;
+            Item.height = 24;
+            Item.value = Item.sellPrice(gold: 8);
+            Item.rare = ModContent.RarityType<ScepterArmorPHMRarity>();
+            Item.defense = 6;
         }
 
-        // IsArmorSet determines what armor pieces are needed for the setbonus to take effect
         public override bool IsArmorSet(Item head, Item body, Item legs)
         {
             return body.type == ModContent.ItemType<FadedRobes>();
         }
 
+        public override void UpdateEquip(Player player)
+        {
+            player.GetDamage<ScepterClass>() += 0.15f;
+        }
+
         public override void UpdateArmorSet(Player player)
         {
             player.DefaultSetBonusText(player.armor[0]);
+            player.ScepterClass().ThrowSpeedModifier += 0.35f;
             if (player.TryGetModPlayer<CultScepterPlayer>(out CultScepterPlayer Scptr))
 			{
 				Scptr.Active = true;
@@ -62,38 +61,11 @@ namespace DestroyerTest.Content.Equips
             Active = false;
         }
 
-        public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo)
-        {
-            if (Active)
-            {
-                for (int y = 0; y < 4; y++)
-                {
-                    Vector2 ofst = new Vector2(100, 0);
-                    Vector2 velocity = Player.Center + ofst.RotatedByRandom(MathHelper.Pi);
-                    Projectile.NewProjectile(Entity.GetSource_OnHurt(hurtInfo.DamageSource), Player.Center, velocity, ModContent.ProjectileType<FakeAncientLight>(), 16, 2, Player.whoAmI);
-                }
-            }
-            base.OnHitByNPC(npc, hurtInfo);
-        }
-
-        public override void OnHitByProjectile(Projectile proj, Player.HurtInfo hurtInfo)
-        {
-            if (Active)
-            {
-                for (int y = 0; y < 4; y++)
-                {
-                    Vector2 ofst = new Vector2(100, 0);
-                    Vector2 velocity = Player.Center + ofst.RotatedByRandom(MathHelper.Pi);
-                    Projectile.NewProjectile(Entity.GetSource_OnHurt(hurtInfo.DamageSource), Player.Center, velocity, ModContent.ProjectileType<FakeAncientLight>(), 16, 2, Player.whoAmI);
-                }
-            }
-            base.OnHitByProjectile(proj, hurtInfo);
-        }
         public override void ModifyShootStats(Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
             if (Active)
             {
-                if (item.DamageType == ModContent.GetInstance<ScepterClass>())
+                if (item.DamageType.CountsAsClass(ModContent.GetInstance<ScepterClass>()))
                 {
                     if (Player.altFunctionUse == 2)
                     {

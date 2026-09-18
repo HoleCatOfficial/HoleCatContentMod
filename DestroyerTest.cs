@@ -272,6 +272,12 @@ namespace DestroyerTest
                 stack: 1,
                 rarity: 0.15f
             );
+            ChestLootSystem.RegisterChestLoot(
+               ChestID.Sandstone,
+               ModContent.ItemType<ZapScroll>(),
+               stack: 1,
+               rarity: 0.15f
+           );
 
             ChestLootSystem.RegisterChestLoot(
                 ChestID.Ivy,

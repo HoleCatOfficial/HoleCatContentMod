@@ -29,8 +29,8 @@ namespace DestroyerTest.Content.Scepter
         {
             base.SetDefaults();
             
-            ShootDMG = 30;
-            ShootCrit = 2;
+            ShootDMG = 42;
+            ShootCrit = 12;
             ThrowCrit = 8;
             KB = 8;
             AdditiveValue = Item.sellPrice(silver: 3);
