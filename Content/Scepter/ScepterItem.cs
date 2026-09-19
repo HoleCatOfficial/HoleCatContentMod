@@ -104,7 +104,7 @@ namespace DestroyerTest.Content.Scepter
                 Item.staff[Type] = true;
                 ShootDefaults();
             }
-            return player.ownedProjectileCounts[ThrowID] < 1;
+            return player.ownedProjectileCounts[ThrowID] < 1 && !player.CCed && !player.cursed;
         }
 
         public override void UpdateInventory(Player player)

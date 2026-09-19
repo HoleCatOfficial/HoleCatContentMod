@@ -65,11 +65,32 @@ namespace DestroyerTest.Common.Systems
 
 
                 //TestMethod((int)Main.MouseWorld.X / 16, (int)Main.MouseWorld.Y / 16);
+
+                //HeliciteGenTest((int)Main.MouseWorld.X / 16, (int)Main.MouseWorld.Y / 16);
+
+                Main.NewText(new Point((int)Main.MouseWorld.X / 16, (int)Main.MouseWorld.Y / 16), Color.Green);
             }
 
 
         }
+        
+        void HeliciteGenTest(int x, int y)
+        {
+            int outerRadius = Main.rand.Next(8, 12);
+            ShapeData shapeData = new ShapeData();
+            WorldUtils.Gen(new Point(x, y), new Shapes.Circle(outerRadius), new Actions.Blank().Output(shapeData));
 
+            GenShapeActionPair OuterRing = new GenShapeActionPair(new ModShapes.InnerOutline(shapeData, true), new Actions.SetTile((ushort)ModContent.TileType<Tile_HeliciteCrystal>(), true, true));
+            WorldUtils.Gen(new Point(x, y), OuterRing);
+
+            ShapeData shapeData2 = new ShapeData();
+            WorldUtils.Gen(new Point(x, y), new Shapes.Circle(outerRadius - 1), new Actions.Blank().Output(shapeData2));
+
+            GenShapeActionPair OuterRing2 = new GenShapeActionPair(new ModShapes.InnerOutline(shapeData2, true), new Actions.SetTile((ushort)ModContent.TileType<Tile_HeliciteCrystal>(), true, true));
+            WorldUtils.Gen(new Point(x, y), OuterRing2);
+
+            WorldUtils.Gen(new Point(x, y), new Shapes.Circle(Main.rand.Next(2, 5)), new Actions.SetTile((ushort)ModContent.TileType<Tile_HeliciteCrystal>(), true, true));
+        }
         void CerebralGeodeGenTest(int x, int y)
         {
             GenShapeActionPair BackWallGen = new GenShapeActionPair(new Shapes.Circle(6), new Actions.PlaceWall((ushort)ModContent.WallType<Wall_DreamstoneWall>()));
@@ -1263,7 +1284,10 @@ namespace DestroyerTest.Common.Systems
         public void MainGen(int x, int y)
         {
             Point origin = new Point(x, y);
-            ClearTopSpace(x, y);
+            if (!ModLoader.HasMod("Remnants"))
+            {
+                ClearTopSpace(x, y);
+            }
 
             TopFloor(x, y);
             BottomFloor(x, y);

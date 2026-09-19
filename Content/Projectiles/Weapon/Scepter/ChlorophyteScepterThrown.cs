@@ -13,6 +13,7 @@ using Terraria.DataStructures;
 using System.IO;
 using DestroyerTest.Content.Projectiles.ParentClasses;
 using OpusLib;
+using DestroyerTest.Content.Projectiles.player.Accessory;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 {
@@ -33,7 +34,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 
             target.AddBuff(BuffID.Venom, 300);
 
-            Opus.RadialSpreadProjectileRandom(ProjectileID.SporeGas, 8, Projectile.Center, Projectile.damage, 5f, 8f);
+            Opus.RadialSpreadProjectileRandom(ModContent.ProjectileType<PoisonCloud>(), 8, Projectile.Center, Projectile.damage, 5f, 8f);
 
             base.OnHitNPC(target, hit, damageDone);
         }
@@ -43,7 +44,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
         public override bool OnTileCollide(Vector2 oldVelocity) {
 
 
-            Opus.RadialSpreadProjectileRandom(ProjectileID.SporeGas, 8, Projectile.Center, Projectile.damage, 5f, 8f);
+            Opus.RadialSpreadProjectileRandom(ModContent.ProjectileType<PoisonCloud>(), 8, Projectile.Center, Projectile.damage, 5f, 8f);
 
 
             base.OnTileCollide(oldVelocity);

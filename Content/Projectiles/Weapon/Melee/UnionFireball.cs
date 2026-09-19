@@ -72,7 +72,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Cap.TransformMatrix = PixelationSystem.PixelationMatrix;
 
             spriteBatch.Begin(Cap);
-            DTTrail.DrawTrailPixelated(spriteBatch, BlendState.Additive, DTAssetLib.Streak(9).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 15f, ColorLib.Ichor, 0f, Projectile.OldCenter().Length);
+            DTTrail.DrawTrailPixelated(spriteBatch, BlendState.AlphaBlend, DTAssetLib.Streak(9).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 15f, ColorLib.Ichor with { A = 0 }, 0f, Projectile.OldCenter().Length);
 
             spriteBatch.ResetToDefault();
         }

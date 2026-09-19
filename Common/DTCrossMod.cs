@@ -46,6 +46,10 @@ namespace DestroyerTest.Common
         public static bool FargosMutantIsLoaded;
         public static Mod FargosMutantMod;
 
+        public const string RuptureName = "Rupture";
+        public static bool RuptureIsLoaded;
+        public static Mod RuptureMod;
+
         public static void LoadMods()
         {
             if (ModLoader.HasMod(CalamityName))
@@ -116,6 +120,34 @@ namespace DestroyerTest.Common
             }
             return false;
         }
+
+        public static ModItem GetItem(Mod mod, string itemName)
+        {
+            if (ModLoader.HasMod(mod.Name))
+            {
+                if (mod.TryFind(itemName, out ModItem item))
+                {
+                    return item;
+                }
+            }
+
+            return null;
+        }
+
+        public static ModNPC GetNPC(Mod mod, string npcName)
+        {
+            if (ModLoader.HasMod(mod.Name))
+            {
+                if (mod.TryFind(npcName, out ModNPC npc))
+                {
+                    return npc;
+                }
+            }
+
+            return null;
+        }
+
+ 
     }
 
     public class RogueCompatGlobalProjectile : GlobalProjectile

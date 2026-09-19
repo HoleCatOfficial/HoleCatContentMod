@@ -697,6 +697,31 @@ namespace DestroyerTest.Common
 
             return false;
         }
+
+
+    }
+
+    public class SwapSolidTileAndFrame : GenAction
+    {
+        private ushort _type;
+
+        public SwapSolidTileAndFrame(ushort type)
+        {
+            _type = type;
+        }
+
+        public override bool Apply(Point origin, int x, int y, params object[] args)
+        {
+            Tile tile = GenBase._tiles[x, y];
+            if (WorldGen.SolidTile(tile))
+            {
+                tile.ResetToType(_type);
+                Framing.SelfFrame8Way(x, y, tile, true);
+                return UnitApply(origin, x, y, args);
+            }
+
+            return Fail();
+        }
     }
 
     public class SunlightModification : ModSystem
@@ -1010,9 +1035,58 @@ namespace DestroyerTest.Common
             return ImmunityTimer >= ImmunityTime;
         }
 
+        public static int[] HomingIgnoreEnemies = new int[]
+        {
+            NPCID.MoonLordLeechBlob,
+            NPCID.AncientCultistSquidhead,
+            NPCID.AncientDoom,
+            NPCID.AncientLight,
+            NPCID.BartenderUnconscious,
+            NPCID.BloodEelBody,
+            NPCID.BloodEelTail,
+            NPCID.VileSpit,
+            NPCID.VileSpitEaterOfWorlds,
+            NPCID.WaterSphere,
+            NPCID.ChaosBall,
+            NPCID.ChaosBallTim,
+            NPCID.RedDragonfly,
+            NPCID.BlueDragonfly,
+            NPCID.GoldDragonfly,
+            NPCID.BlackDragonfly,
+            NPCID.GreenDragonfly,
+            NPCID.OrangeDragonfly,
+            NPCID.YellowDragonfly,
+            NPCID.Butterfly,
+            NPCID.GoldButterfly,
+            NPCID.HellButterfly,
+            NPCID.EmpressButterfly,
+            NPCID.Bunny,
+            NPCID.BunnySlimed,
+            NPCID.BunnyXmas,
+            NPCID.GemBunnyAmber,
+            NPCID.GemBunnyAmethyst,
+            NPCID.GemBunnyDiamond,
+            NPCID.GemBunnyEmerald,
+            NPCID.GemBunnyRuby,
+            NPCID.GemBunnySapphire,
+            NPCID.GemBunnyTopaz,
+            NPCID.GemSquirrelAmber,
+            NPCID.GemSquirrelAmethyst,
+            NPCID.GemSquirrelDiamond,
+            NPCID.GemSquirrelEmerald,
+            NPCID.GemSquirrelRuby,
+            NPCID.GemSquirrelSapphire,
+            NPCID.GemSquirrelTopaz,
+            NPCID.GolemFistLeft,
+            NPCID.GolemFistRight,
+            NPCID.GolemHeadFree,
+            NPCID.Firefly,
+            NPCID.Stinkbug
+        };
+
         public static bool ManualCanHitFriendly(this Projectile proj, NPC npc)
         {
-            return !OpusNPCDropHelper.IgnoreEnemies.Contains(npc.type) && !npc.friendly && !npc.dontTakeDamage;
+            return !HomingIgnoreEnemies.Contains(npc.type) && !npc.friendly && !npc.dontTakeDamage && NPCID.Sets.ProjectileNPC[npc.type] == false;
         }
 
         public static Vector2 ShoulderPosition(this Player player)

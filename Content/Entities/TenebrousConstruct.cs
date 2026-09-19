@@ -1094,12 +1094,14 @@ namespace DestroyerTest.Content.Entities
 
             spriteBatch.ResetToDefault();
 
-            
-            PointGlowPreMultiplied Particle = new();
-            Particle.Initialize(Main.screenPosition + new Vector2(Main.rand.NextFloat(Main.screenWidth), Main.screenHeight), new Vector2(0f, Main.rand.NextFloat(-9f, -2f)), ColorLib.TenebrisGradient * Opacity, 1f);
-            Particle.PixelLayer = PixelLayer.BehindTiles;
-            Particle.color = ColorLib.TenebrisGradient * Opacity;
-            ParticleEngine.BehindProjectiles.Add(Particle);
+            if (!Main.gameInactive && !Main.gamePaused)
+            {
+                PointGlowPreMultiplied Particle = new();
+                Particle.Initialize(Main.screenPosition + new Vector2(Main.rand.NextFloat(Main.screenWidth), Main.screenHeight), new Vector2(0f, Main.rand.NextFloat(-9f, -2f)), ColorLib.TenebrisGradient * Opacity, 1f);
+                Particle.PixelLayer = PixelLayer.BehindTiles;
+                Particle.color = ColorLib.TenebrisGradient * Opacity;
+                ParticleEngine.BehindProjectiles.Add(Particle);
+            }
             
         }
     }

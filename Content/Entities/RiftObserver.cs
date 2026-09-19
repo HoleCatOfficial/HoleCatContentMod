@@ -132,8 +132,10 @@ namespace DestroyerTest.Content.Entities
 		public List<float> TrailRotations = new();
         private const int TrailLength = 40;
 
+        int internalT = 0;
         public override void AI()
         {
+            internalT++;
             NPC.TargetClosest();
             Player player = Main.player[NPC.target];
             TrailPositions.Insert(0, NPC.Center);
@@ -148,12 +150,22 @@ namespace DestroyerTest.Content.Entities
             NPC.rotation = look.ToRotation();
             //NPC.spriteDirection = look.X > 0 ? 1 : -1;
 
-            if (Main.rand.NextBool(200) && NPC.life < NPC.lifeMax / 2)
+
+
+            if (NPC.life < NPC.lifeMax / 2)
             {
-                SoundEngine.PlaySound(SoundID.ForceRoarPitched with { PitchVariance = 0.5f } , NPC.Center);
-                Opus.RingSpreadDust(ModContent.DustType<RiftDust>(), 30, NPC.Center, 10, 0, default, 1.2f, 3f, offset: NPC.rotation);
-                NPC.velocity += look.ToRotation().ToRotationVector2() * 3f;
-                Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, look.ToRotation().ToRotationVector2() * 2f, ModContent.ProjectileType<RiftSparkHostile>(), 14, 5f);
+                if (internalT % 90 == 0)
+                {
+                    SoundEngine.PlaySound(SoundID.ForceRoarPitched with { PitchVariance = 0.5f }, NPC.Center);
+                    Opus.RingSpreadDust(ModContent.DustType<RiftDust>(), 30, NPC.Center, 10, 0, default, 1.2f, 3f, offset: NPC.rotation);
+                    NPC.velocity += look.ToRotation().ToRotationVector2() * 20f;
+                }
+                else
+                {
+                    NPC.velocity *= 0.9f;
+                }
+
+                
             }
         }
 

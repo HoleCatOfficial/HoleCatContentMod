@@ -33,7 +33,7 @@ namespace DestroyerTest.Content.Equips
         {
             if (DTUtils.RiftEnemies.Contains(npc.type))
 			{
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<RiftenOverloader>(), 10, 1, 1));
+				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<RiftenOverloader>(), 30, 1, 1));
 			}
         }
 

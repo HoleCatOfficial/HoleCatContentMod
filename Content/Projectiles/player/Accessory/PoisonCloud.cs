@@ -38,6 +38,8 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
             Projectile.penetrate = -1;
             Projectile.timeLeft = 240;
             Projectile.tileCollide = false;
+            Projectile.usesIDStaticNPCImmunity = true;
+            Projectile.idStaticNPCHitCooldown = 20;
         }
 
         public override void AI() 

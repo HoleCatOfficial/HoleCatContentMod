@@ -40,6 +40,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
             Projectile.timeLeft = 90;
             Projectile.penetrate = -1;
             Projectile.tileCollide = false;
+            Projectile.usesIDStaticNPCImmunity = true;
+            Projectile.idStaticNPCHitCooldown = 20;
         }
 
         public override bool PreDraw(ref Color lightColor)

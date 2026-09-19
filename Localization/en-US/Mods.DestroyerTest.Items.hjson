@@ -1354,11 +1354,11 @@ RiftRevolver: {
 }
 
 TenebrousArchmageHat: {
-	Tooltip: ""
+	Tooltip: 10% increased Scepter Throw Speed
 	SetBonus:
 		'''
 		30% increased Movement Speed.
-		8% increased Damage Reduction.
+		6% increased Damage Reduction.
 		15 increased Scepter Armor Penetration.
 		15% increased Scepter Class Damage.
 
@@ -1372,7 +1372,7 @@ TenebrousArchmageHat: {
 
 TenebrousArchmagePants: {
 	DisplayName: Tenebrous Archmage Pants
-	Tooltip: ""
+	Tooltip: 12% increased critical strike chance
 }
 
 TenebrousArchmageVest: {
@@ -1564,7 +1564,7 @@ RiftplateWire: {
 }
 
 TenebrousArchmageCoat: {
-	Tooltip: ""
+	Tooltip: Incoming damage reduced by 5%.
 	DisplayName: Tenebrous Archmage Coat
 }
 
@@ -1903,7 +1903,7 @@ TenebrousArchmageCowl: {
 		They do not move, and will charge for three seconds before firing homing shimmering flames at enemies.
 		This has a 10 second cooldown.
 		'''
-	Tooltip: ""
+	Tooltip: -16% mana cost
 }
 
 TenebrousTradewinds: {
@@ -2326,7 +2326,10 @@ TheBotanistsCurse: {
 	Tooltip:
 		'''
 		A collection of horrible, gorey stories about various Botanists and Farmers supposedly afflicted by "The Botanists' Curse"
-		Summons the Nightmare Rose on the cursor position.
+		Summons the Nightmare Rose on the cursor position when the following conditions are satisfied:
+		- There is a flat, open stretch of solid tiles at least 125 tiles wide and 5 tiles thick directly underneath the cursor.
+		- There are no tiles nor walls in the air.
+		- You are in the Corruption.
 		Right click to create a dummmy that previews the size of the arena.
 		'''
 }
@@ -4304,7 +4307,11 @@ Colossus: {
 
 RiftRipper: {
 	DisplayName: Rift Ripper
-	Tooltip: ""
+	Tooltip:
+		'''
+		Fires bullets rapidly.
+		Fires energy bolts if charged.
+		'''
 }
 
 BlossomBeater: {
@@ -4874,7 +4881,7 @@ CrystalBlade: {
 	DisplayName: Crystal Blade
 	Tooltip:
 		'''
-		Fires crystal shards that slow down before homing in on nearby enemies.	
+		Fires crystal shards that slow down before homing in on nearby enemies.
 		Critical hits create 4 extra shards.
 		Crystal Shards each deal 10% of the weapon's damage.
 		'''
@@ -5486,7 +5493,7 @@ Providence: {
 	Tooltip:
 		'''
 		You are surrounded by mysterious radiance that damages and burns enemies next to you.
-		Damage scales will all damage bonuses.
+		Damage scales with all damage bonuses.
 		'''
 }
 
@@ -5507,5 +5514,5 @@ GreedyGraze: {
 
 MoltenScroll: {
 	DisplayName: Molten Scroll
-	Tooltip: "Thrown scepters create 4 homing magma blobs on hit."
+	Tooltip: Thrown scepters create 4 homing magma blobs on hit.
 }

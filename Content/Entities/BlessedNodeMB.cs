@@ -146,15 +146,20 @@ namespace DestroyerTest.Content.Entities
             }
         }
 
+        float BorderRotation = 0f;
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             Texture2D pixel = TextureAssets.MagicPixel.Value;
             var v = DTAssetLib.BloomRingSharp.Value;
 
-            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-            Main.EntitySpriteDraw(v, NPC.Center - screenPos, null, Color.SkyBlue * ShieldOpacity, 0f, v.Size() / 2, ShieldScale, SpriteEffects.None);
+            BorderRotation += 0.13f;
 
-            spriteBatch.DrawString(DTAssetLib.Doxent.Value, $"{SentinelKillTally} / {SentinelKillRequirement}", (NPC.Center + new Vector2(0, -90)) - screenPos, Color.SkyBlue * ShieldOpacity, 0f, DTAssetLib.Doxent.Value.MeasureString($"{SentinelKillTally} / {SentinelKillRequirement}") * 0.5f, 0.5f, SpriteEffects.None, 0f);
+            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+            Main.EntitySpriteDraw(v, NPC.Center - screenPos, null, OpusColorUtils.MultiLerp(((float)SentinelKillTally / (float)SentinelKillRequirement).Inverse(), [Color.DeepSkyBlue, Color.SkyBlue]) * ShieldOpacity, 0f, v.Size() / 2, ShieldScale, SpriteEffects.None);
+
+            Main.EntitySpriteDraw(DTAssetLib.BarrierRing.Value, NPC.Center - Main.screenPosition, null, OpusColorUtils.MultiLerp(((float)SentinelKillTally / (float)SentinelKillRequirement).Inverse(), [Color.DeepSkyBlue, Color.SkyBlue]) * ShieldOpacity, BorderRotation, DTAssetLib.BarrierRing.Value.Size() / 2, DTAssetLib.BarrierRing.Value.ScaleRingTextureToMatchRadius(1200f, 1300), SpriteEffects.None);
+
+            spriteBatch.DrawString(DTAssetLib.Doxent.Value, $"{SentinelKillTally} / {SentinelKillRequirement}", (NPC.Center + new Vector2(0, -90)) - screenPos, OpusColorUtils.MultiLerp(((float)SentinelKillTally / (float)SentinelKillRequirement).Inverse(), [Color.DeepSkyBlue, Color.SkyBlue]) * ShieldOpacity, 0f, DTAssetLib.Doxent.Value.MeasureString($"{SentinelKillTally} / {SentinelKillRequirement}") * 0.5f, 0.5f, SpriteEffects.None, 0f);
             //Utils.DrawBorderString(spriteBatch, $"{SentinelKillTally} / {SentinelKillRequirement}", (NPC.Center + new Vector2(0, -90)) - screenPos, Color.SkyBlue * ShieldOpacity, 3f, 0.5f, 0.5f);
             Opus.ReturnToDefaultDrawing(spriteBatch);
             return true;
@@ -501,15 +506,7 @@ namespace DestroyerTest.Content.Entities
                 }
             }
 
-            Vector2[] P = Opus.GetEquidistantOrbitVectors(16, NPC.Center, 0.1f, 1200);
 
-            for (int i = 0; i < P.Length; i++)
-            {
-                PointGlowPreMultiplied G = new();
-                G.Initialize(P[i], Vector2.Zero, Color.SkyBlue, 1f);
-                ParticleEngine.ShaderParticles.Add(G);
-
-            }
 
             foreach (Player p in Main.player)
             {
@@ -652,6 +649,8 @@ namespace DestroyerTest.Content.Entities
         public void CrystalCross(Player target)
         {
             SoundEngine.PlaySound(SoundID.Item9, target.Center);
+
+      
             if (!Main.masterMode)
             {
                 Opus.RingSpreadProjectile(ModContent.ProjectileType<BlessedNodeCrystal2>(), 4, target.Center, 200, 30, 5, -1, offset: Main.rand.NextFloat(MathHelper.TwoPi));

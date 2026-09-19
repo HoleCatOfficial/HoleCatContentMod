@@ -233,6 +233,7 @@ namespace DestroyerTest.Content.Entities
         {
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ShadeParticle>(), 3, 3, 10));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ShimmeringSludge>(), 4, 3, 13));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ShimmeringShards>(), 2, 11, 36));
         }
     }
 }

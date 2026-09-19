@@ -47,13 +47,13 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 
         public override void SetDefaults()
         {
-            Projectile.width = 36; // The width of projectile hitbox
-            Projectile.height = 36; // The height of projectile hitbox
-            Projectile.DamageType = ModContent.GetInstance<ScepterClass>(); // What type of damage does this projectile affect?
-            Projectile.friendly = true; // Can the projectile deal damage to enemies?
-            Projectile.hostile = false; // Can the projectile deal damage to the player?
-            Projectile.ignoreWater = true; // Does the projectile's speed be influenced by water?
-            Projectile.timeLeft = 240; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
+            Projectile.width = 36;
+            Projectile.height = 36; 
+            Projectile.DamageType = ModContent.GetInstance<ScepterClass>();
+            Projectile.friendly = true;
+            Projectile.hostile = false;
+            Projectile.ignoreWater = true;
+            Projectile.timeLeft = 240;
             Projectile.tileCollide = false;
             Projectile.penetrate = 1;
         }
@@ -99,7 +99,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 
         public override void OnKill(int timeLeft)
         {
-            SoundEngine.PlaySound(DTAssetLib.Impacts.ExplosiveImpactSmall, Projectile.Center);
+            SoundEngine.PlaySound(SoundID.DD2_GhastlyGlaiveImpactGhost, Projectile.Center);
             Opus.RadialSpreadProjectileRandom(ModContent.ProjectileType<JungleSporeCloud>(), 6, Projectile.Center, Projectile.damage / 2, 3, 5f);
         }
     }

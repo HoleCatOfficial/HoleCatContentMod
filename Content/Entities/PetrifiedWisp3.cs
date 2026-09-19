@@ -43,8 +43,8 @@ namespace DestroyerTest.Content.Entities
             NPC.value = 1670f;
             NPC.knockBackResist = 0.2f;
             NPC.aiStyle = NPCAIStyleID.EnchantedSword;
-            NPC.HitSound = new SoundStyle("DestroyerTest/Assets/Audio/StellarBow/StellarBowArrowImpact", 4) { MaxInstances = 0, PitchVariance = 0.4f };
-            NPC.DeathSound = SoundID.Item74;
+            NPC.HitSound = SoundID.Item115 with { Pitch = -0.75f };
+            NPC.DeathSound = SoundID.Item148;
             NPC.noTileCollide = true;
             NPC.noGravity = true;
         }

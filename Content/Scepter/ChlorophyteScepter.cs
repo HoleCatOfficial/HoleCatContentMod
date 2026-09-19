@@ -58,8 +58,7 @@ namespace DestroyerTest.Content.Scepter
 	
         public override void AddRecipes() {
 			CreateRecipe()
-				.AddIngredient(ItemID.ChlorophyteBar, 22)
-				.AddIngredient(ItemID.SporeSac)
+				.AddIngredient(ItemID.ChlorophyteBar, 12)
 				.AddIngredient<NatureScepter>(1)
 				.AddTile(TileID.MythrilAnvil)
 				.Register();

@@ -9,7 +9,7 @@ namespace DestroyerTest.Content.Tiles
 		public override void SetStaticDefaults() {
 			Item.ResearchUnlockCount = 100;
 			ItemID.Sets.SortingPriorityMaterials[Item.type] = 58;
-			
+			ItemID.Sets.IsLavaImmuneRegardlessOfRarity[Type] = true;
 		}
 
 		public override void SetDefaults() {

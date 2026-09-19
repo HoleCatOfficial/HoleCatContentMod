@@ -184,7 +184,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 int MinF = (int)Math.Round(BaseF * player.GetTotalAttackSpeed<DTTrueMeleeClass>().Inverse()) + 1;
                 float prog = 1f - ((float)(F - MinF) / (BaseF - MinF));
 
-                HitCooldownMax = (int)MathHelper.Lerp(23f, 3f, prog);
+                HitCooldownMax = (int)MathHelper.Lerp(30f, 5f, prog);
                 SlashPitch = MathHelper.Lerp(0f, 0.8f, prog);
 
 
@@ -230,6 +230,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             ScreenShake.screenshakeTimer = 10;
 
             SoundEngine.PlaySound(EnemySlice with { MaxInstances = 0 }, target.Center);
+            SoundEngine.PlaySound(DTAssetLib.Impacts.FleshHit with { MaxInstances = 0 }, target.Center);
 
             List<Color> RiftLightColors = new List<Color>
             {

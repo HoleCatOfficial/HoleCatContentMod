@@ -55,7 +55,6 @@ WyvernCorpseHead: {
 		So now, only the flesh and bones remain, only consumable by the Crimson itself, and anyone of divine stature themselves.
 		The meat has hardened into crimstone, and the bones have dried and hardened stronger than lizard bricks.
 		'''
-	Bestiary: Mods.DestroyerTest.NPCs.WyvernCorpseHead.Bestiary
 
 	Fables: {
 		Name: The Great Wyvern's Corpse
@@ -100,6 +99,9 @@ NightmareRoseBoss: {
 		perfectly clear, disappearing to a faraway land to live out their new aspirations of being a gardener."
 		- Transcripts of the late Terníf the Holy.
 		'''
+	AirClutterDespawn: The Rose cannot rise with clutter in the air (this is also caused by having walls).
+	GroundHolesDespawn: The Rose refuses to rise on uneven land, or land that is not deep enough to root into.
+	GroundHolesAndAirClutterDespawn: The Rose must be summoned on flat, full ground in an open area.
 
 	Fables: {
 		Name: The Nightmare Rose
@@ -276,10 +278,15 @@ TenebrousConstruct: {
 	KilledPlayer_SecondHalf3: Wasting my time...
 	KilledPlayer_SecondHalf4: Yes! Eat it! Haha!!
 	Death: Tenebrous Construct was banished back to the shade world by use of lethal force.
+	SpawnDialogue0_AvatarRift: My... It's quite barren here...
+	SpawnDialogue1_AvatarRift: This is what she wanted? Eh, thats not important.
+	SpawnDialogue2_AvatarRift: I have been tasked with ending your interference in our worlds' merging.
+	SpawnDialogue3_AvatarRift: But I wouldn’t dare let your final moments be so dour.
+	SpawnDialogue4_AvatarRift: So let me tell you a tale, Local.
 
 	Fables: {
 		Name: Tenebrous Construct
-		Title: Devout Official
+		Title: Megalomaniacal Zealot
 	}
 }
 
@@ -358,7 +365,31 @@ BloodGazer: {
 
 SoulOrb.DisplayName: Soul Orb
 TenebrousConstructSpawn.DisplayName: Tenebrous Construct Spawn
-KillableChargeSpirit.DisplayName: Killable Charge Spirit
-CursedFlameSentinel.DisplayName: Cursed Flame Sentinel
-CrystallineAngel.DisplayName: Crystalline Angel
-Glutton.DisplayName: Glutton
+KillableChargeSpirit.DisplayName: Charge Spirit
+
+CursedFlameSentinel: {
+	DisplayName: Cursed Flame Sentinel
+	BestiaryEntry1:
+		'''
+		A mindless glob of tar animated by magic to help defend the Corruption from invaders such as yourself.
+		Using it's brilliant gemstone, it makes the accursed flames blaze stronger.
+		'''
+}
+
+CrystallineAngel: {
+	DisplayName: Crystalline Angel
+	BestiaryEntry1:
+		'''
+		A mindless glob of tar animated by magic to help defend the Corruption from invaders such as yourself.
+		From its brilliant halo come magnificent materializations!
+		'''
+}
+
+Glutton: {
+	DisplayName: Glutton
+	BestiaryEntry1:
+		'''
+		A mindless glob of tar animated by magic to help defend the Corruption from invaders such as yourself.
+		It hunts only by scent, and has an endless appetite for flesh of any kind.
+		'''
+}

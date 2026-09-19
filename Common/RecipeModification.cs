@@ -5,6 +5,7 @@ using DestroyerTest.Content.MeleeWeapons.TwistedLineage;
 using DestroyerTest.Content.OrionCrossover;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.RiftArsenal;
+using DestroyerTest.Content.Scepter;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -40,8 +41,49 @@ namespace DestroyerTest.Common
                 ItemID.StardustLeggings,
                 ItemID.NebulaHelmet,
                 ItemID.NebulaBreastplate,
-                ItemID.NebulaLeggings
+                ItemID.NebulaLeggings,
+
+                ItemID.SolarFlareAxe,
+                ItemID.SolarFlareChainsaw,
+                ItemID.SolarFlareDrill,
+                ItemID.SolarFlareHammer,
+                ItemID.SolarFlarePickaxe,
+                ItemID.WingsSolar,
+
+                ItemID.VortexAxe,
+                ItemID.VortexChainsaw,
+                ItemID.VortexDrill,
+                ItemID.VortexHammer,
+                ItemID.VortexPickaxe,
+                ItemID.WingsVortex,
+
+                ItemID.StardustAxe,
+                ItemID.StardustChainsaw,
+                ItemID.StardustDrill,
+                ItemID.StardustHammer,
+                ItemID.StardustPickaxe,
+                ItemID.WingsStardust,
+
+                ItemID.NebulaAxe,
+                ItemID.NebulaChainsaw,
+                ItemID.NebulaDrill,
+                ItemID.NebulaHammer,
+                ItemID.NebulaPickaxe,
+                ItemID.WingsNebula,
             };
+
+            if (DTCrossMod.RuptureIsLoaded)
+            {
+                PillarArmor.Add(DTCrossMod.GetItem(DTCrossMod.RuptureMod, "RiftHood").Type);
+                PillarArmor.Add(DTCrossMod.GetItem(DTCrossMod.RuptureMod, "RiftPlating").Type);
+                PillarArmor.Add(DTCrossMod.GetItem(DTCrossMod.RuptureMod, "RiftLeggings").Type);
+
+                PillarArmor.Add(DTCrossMod.GetItem(DTCrossMod.RuptureMod, "RiftWings").Type);
+
+                PillarArmor.Add(DTCrossMod.GetItem(DTCrossMod.RuptureMod, "RiftHamaxe").Type);
+                PillarArmor.Add(DTCrossMod.GetItem(DTCrossMod.RuptureMod, "RiftDrill").Type);
+                PillarArmor.Add(DTCrossMod.GetItem(DTCrossMod.RuptureMod, "RiftPickaxe").Type);
+            }
 
             foreach (Recipe recipe in Main.recipe)
             {  
@@ -50,6 +92,16 @@ namespace DestroyerTest.Common
                     recipe.AddCondition(Condition.Hardmode);
                 }
 
+                if (recipe.HasResult<ElementalScepter>())
+                {
+                    if (DTCrossMod.CalamityIsLoaded)
+                    {
+                        if (DTCrossMod.CalamityMod.TryFind("LivingShard", out ModItem LivingShard))
+                        {
+                            recipe.AddIngredient(LivingShard.Type, 12);
+                        }
+                    }
+                }
 
 
                 if (recipe.HasResult(ItemID.Zenith))

@@ -27,7 +27,7 @@ Tile_Dreamstone.MapEntry: Dreamstone
 Tile_DreamstoneBrick.MapEntry: Dreamstone Brick
 
 Tile_CerebralChest: {
-	MapEntry0: Mods.DestroyerTest.Tiles.Tile_CerebralChest.MapEntry0
-	MapEntry1: Mods.DestroyerTest.Tiles.Tile_CerebralChest.MapEntry1
-	Locked: Mods.DestroyerTest.Tiles.Tile_CerebralChest.Locked
+	MapEntry0: Cerebral Chest
+	MapEntry1: Cerebral Chest
+	Locked: Locked Cerebral Chest
 }

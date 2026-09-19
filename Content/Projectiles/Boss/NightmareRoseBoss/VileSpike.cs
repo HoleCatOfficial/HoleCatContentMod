@@ -96,17 +96,24 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
 
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
-            float length = Line.GetLineLength;
+            if (Line != null)
+            {
+                float length = Line.GetLineLength;
 
-            Vector2 start = Line.Start;
+                Vector2 start = Line.Start;
 
-            Vector2 end = Line.End;
+                Vector2 end = Line.End;
 
-            float collisionPoint = 0f;
+                float collisionPoint = 0f;
 
-            float beamWidth = 50f;
+                float beamWidth = 50f;
 
-            return Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), start, end, beamWidth, ref collisionPoint);
+                return Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), start, end, beamWidth, ref collisionPoint);
+            }
+            else
+            {
+                return base.Colliding(projHitbox, targetHitbox);
+            }
         }
     }
 }

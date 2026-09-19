@@ -81,7 +81,7 @@ namespace DestroyerTest.Content.RiftBiome
 			{
 				for (int t = 0; t < 5; t++)
 				{
-					Dust.NewDust(Main.screenPosition, Main.screenWidth, Main.screenHeight, ModContent.DustType<RiftDust>(), Main.rand.NextFloat(-2, 2), Main.rand.NextFloat(-1, -3));
+					//Dust.NewDust(Main.screenPosition, Main.screenWidth, Main.screenHeight, ModContent.DustType<RiftDust>(), Main.rand.NextFloat(-2, 2), Main.rand.NextFloat(-1, -3));
 				}
 			}
 		}

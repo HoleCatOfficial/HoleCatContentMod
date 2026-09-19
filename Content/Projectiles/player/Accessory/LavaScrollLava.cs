@@ -51,6 +51,8 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
             Projectile.timeLeft = 300;
             Projectile.tileCollide = false;
             Projectile.penetrate = 1;
+            Projectile.usesIDStaticNPCImmunity = true;
+            Projectile.idStaticNPCHitCooldown = 20;
         }
 
       

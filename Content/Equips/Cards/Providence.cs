@@ -61,7 +61,7 @@ namespace DestroyerTest.Content.Equips.Cards
             {
                 if (Player.ownedProjectileCounts[ModContent.ProjectileType<ProvidenceRadiance>()] < 1)
                 {
-                    Projectile.NewProjectile(Player.GetSource_FromThis(), Player.MountedCenter, Vector2.Zero, ModContent.ProjectileType<ProvidenceRadiance>(), (int)Player.GetTotalDamage(DamageClass.Generic).ApplyTo(4), 2f, Player.whoAmI);
+                    Projectile.NewProjectile(Player.GetSource_FromThis(), Player.MountedCenter, Vector2.Zero, ModContent.ProjectileType<ProvidenceRadiance>(), (int)Player.GetTotalDamage(DamageClass.Generic).ApplyTo(14), 2f, Player.whoAmI);
                 }
             }
         }

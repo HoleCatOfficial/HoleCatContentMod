@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Common.Interfaces
@@ -60,7 +61,7 @@ namespace DestroyerTest.Common.Interfaces
         public Player TrackingPlayer;
         public bool IsValidNPCTarget(NPC target)
         {
-            return target.CanBeChasedBy() && !target.friendly && target.active;
+            return target.CanBeChasedBy() && !target.friendly && target.active && !target.isLikeATownNPC && !NPCID.Sets.ProjectileNPC[target.type] == true;
         }
         public NPC FindClosestNPC(float maxDetectDistance, Projectile projectile)
         {

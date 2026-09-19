@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Terraria;
 using Terraria.Localization;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 
 namespace DestroyerTest.Common
 {
@@ -25,6 +26,18 @@ namespace DestroyerTest.Common
         {
             return !Consumed;
         }
+
+        public override void SaveData(TagCompound tag)
+        {
+            tag["Consumed"] = Consumed;
+        }
+
+        public override void LoadData(TagCompound tag)
+        {
+            Consumed = tag.GetBool("Consumed");
+        }
+
+
 
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {

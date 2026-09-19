@@ -19,36 +19,34 @@ using Terraria.Audio;
 
 namespace DestroyerTest.Content.Equips
 {
-	// The AutoloadEquip attribute automatically attaches an equip texture to this item.
-	// Providing the EquipType.Head value here will result in TML expecting a X_Head.png file to be placed next to the item's main texture.
 	[AutoloadEquip(EquipType.Head)]
 	public class TenebrousArchmageCowl : ModItem
 	{
 
-        public override void SetStaticDefaults() {
-			// If your head equipment should draw hair while drawn, use one of the following:
-			ArmorIDs.Head.Sets.DrawHead[Item.headSlot] = false; // Don't draw the head at all. Used by Space Creature Mask
-			//ArmorIDs.Head.Sets.DrawHatHair[Item.headSlot] = true; // Draw hair as if a hat was covering the top. Used by Wizards Hat
-			//ArmorIDs.Head.Sets.DrawFullHair[Item.headSlot] = true; // Draw all hair as normal. Used by Mime Mask, Sunglasses
-			// ArmorIDs.Head.Sets.DrawsBackHairWithoutHeadgear[Item.headSlot] = true;
+        public override void SetStaticDefaults() 
+		{
+			ArmorIDs.Head.Sets.DrawHead[Item.headSlot] = false;
 
 		}
 
 		public override void SetDefaults() {
-			Item.width = 28; // Width of the item
-			Item.height = 22; // Height of the item
-			Item.value = Item.sellPrice(gold: 70); // How many coins the item is worth
-			Item.rare = ModContent.RarityType<ShimmeringRarity>(); // The rarity of the item
-			Item.defense = 26; // The amount of defense the item will give when equipped
-            Item.vanity = true;
+			Item.width = 28;
+			Item.height = 22;
+			Item.value = Item.sellPrice(gold: 70);
+			Item.rare = ModContent.RarityType<ShimmeringRarity>();
+			Item.defense = 29;
 		}
 
-		//IsArmorSet determines what armor pieces are needed for the setbonus to take effect
-		public override bool IsArmorSet(Item head, Item body, Item legs) {
+		public override bool IsArmorSet(Item head, Item body, Item legs) 
+		{
 			return body.type == ModContent.ItemType<TenebrousArchmageCoat>() && legs.type == ModContent.ItemType<TenebrousArchmagePants>();
 		}
 
-		// UpdateArmorSet allows you to give set bonuses to the armor.
+        public override void UpdateEquip(Player player)
+        {
+			player.GetModPlayer<TenebrisArchmageManaCost>().Active = true;
+        }
+
 		public override void UpdateArmorSet(Player player) 
 		{
 			player.DefaultSetBonusText(player.armor[0]);
@@ -58,7 +56,6 @@ namespace DestroyerTest.Content.Equips
             }
 		}
 
-		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
 			CreateRecipe()
                 .AddIngredient<Tenebris>(8)
@@ -66,6 +63,23 @@ namespace DestroyerTest.Content.Equips
 				.Register();
 		}
 	}
+
+	public class TenebrisArchmageManaCost : ModPlayer
+	{
+        public bool Active = false;
+        public override void ResetEffects()
+        {
+            Active = false;
+        }
+
+        public override void ModifyManaCost(Item item, ref float reduce, ref float mult)
+        {
+            if (Active)
+			{
+				reduce -= (int)(item.mana * 0.84f);
+			}
+        }
+    }
 
 	public class TenebrisMagicPlayer : ModPlayer
     {

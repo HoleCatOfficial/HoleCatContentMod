@@ -61,7 +61,10 @@ namespace DestroyerTest.Content.Buffs
 
             if (lifeRegenDebuff && !npc.boss)
             {
-                npc.position += (npc.velocity * 0.5f);
+                if (!Framing.GetTileSafely((npc.position + (npc.velocity * 0.5f)).ToTileCoordinates()).HasTile)
+                {
+                    npc.position += (npc.velocity * 0.5f);
+                }
 
             }
         }

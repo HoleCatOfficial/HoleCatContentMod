@@ -43,7 +43,7 @@ namespace DestroyerTest.Content.Scepter
 			Charge = 0;
 			ChargeIncrementInterval = 0;
 
-			ShootDMG = 180;
+			ShootDMG = 200;
 			ShootCrit = 10;
 			ThrowCrit = 18;
 			KB = 15;

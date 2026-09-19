@@ -88,12 +88,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
 
             spriteBatch.Begin(Cap);
 
-            for (int i = 0; i < Projectile.oldPos.Length; i++)
-            {
-                float num = (Projectile.scale * 1.3f) * (Projectile.oldPos.Length - i) / (Projectile.oldPos.Length * 0.8f);
-                Color val4 = Color.OrangeRed with { A = 0 } * (1f - Projectile.alpha) * ((Projectile.oldPos.Length - i) / (float)Projectile.oldPos.Length);
-                Main.EntitySpriteDraw(value, Projectile.OldCenter()[i] - Main.screenPosition, null, val4, 0f, value.Size() / 2f, num, 0, 0f);
-            }
+      
 
             Main.EntitySpriteDraw(Tex.Value, Projectile.Center - Main.screenPosition, null, Color.DarkGoldenrod with { A = 0 } * 0.15f, Rot, Tex.Value.Size() / 2, Projectile.scale * Sc, SpriteEffects.None, 0f);
 

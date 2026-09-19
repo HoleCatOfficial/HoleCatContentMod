@@ -13,6 +13,10 @@ using Terraria.WorldBuilding;
 using Terraria.Audio;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Particles;
+using DestroyerTest.Common;
+using BreadLibrary.Core.Graphics.Particles;
+using OpusLib;
 
 namespace DestroyerTest.Content.Tiles
 {
@@ -29,7 +33,7 @@ namespace DestroyerTest.Content.Tiles
 			Main.tileShine[Type] = 800;
 			Main.tileMergeDirt[Type] = true;
 			Main.tileSolid[Type] = true;
-			Main.tileBlockLight[Type] = true;
+			Main.tileLighted[Type] = true;
 
 			LocalizedText name = CreateMapEntryName();
 			AddMapEntry(new Color(255, 155, 0), name);
@@ -46,7 +50,7 @@ namespace DestroyerTest.Content.Tiles
 		public override void NearbyEffects(int i, int j, bool closer)
 		{
 			Player player = Main.LocalPlayer;
-			Vector2 tileWorldPos = new Vector2(i * 16 + 8, j * 16 + 8); // center of tile
+			Vector2 tileWorldPos = new Vector2(i * 16 + 8, j * 16 + 8);
 
 			float distance = Vector2.Distance(player.Center, tileWorldPos);
 
@@ -56,11 +60,24 @@ namespace DestroyerTest.Content.Tiles
 				player.AddBuff(ModContent.BuffType<DaylightOverload>(), 60);
 
 				// Optionally, sparkle when active
-				if (Main.rand.NextBool(20))
+				if (Main.rand.NextBool(100) && !Main.gamePaused && !Main.gameInactive)
 				{
-					Dust.NewDust(tileWorldPos, 4, 4, DustType);
-				}
-			}
+					PixelParticle Pixel = new();
+					Pixel.Initialize(tileWorldPos, tileWorldPos.DirectionTo(player.Center).RotatedByRandom(0.6f) * 0.5f, ColorLib.Rift, 2f);
+					ParticleEngine.Particles.Add(Pixel);
+
+					PointGlowPreMultiplied Glow = new();
+                    Glow.Initialize(tileWorldPos, tileWorldPos.DirectionTo(player.Center).RotatedByRandom(0.6f) * 0.5f, ColorLib.Rift * 0.2f, 2f);
+                    ParticleEngine.Particles.Add(Glow);
+                }
+
+                if (Main.rand.NextBool(600) && !Main.gamePaused && !Main.gameInactive)
+                {
+					HeliciteShineParticle shine = new();
+					shine.Initialize(tileWorldPos, tileWorldPos.DirectionTo(player.Center).RotatedByRandom(0.6f) * 0.2f);
+                    ParticleEngine.Particles.Add(shine);
+                }
+            }
 		}
 
 		public override void WalkDust(ref int dustType, ref bool makeDust, ref Color color)
@@ -71,10 +88,24 @@ namespace DestroyerTest.Content.Tiles
 
 		public override void ModifyLight(int i, int j, ref float r, ref float g, ref float b)
 		{
-			// Helicyte crystals emit a warm orange glow
-			r = 1f;
-			g = 0.6f;
-			b = 0.1f;
+            Player player = Main.LocalPlayer;
+            Vector2 tileWorldPos = new Vector2(i * 16 + 8, j * 16 + 8);
+
+            float distance = Vector2.Distance(player.Center, tileWorldPos);
+
+			if (distance < 400f)
+			{
+				float DistanceMult = MathHelper.Lerp(0f, 1f, distance / 160f);
+
+				float Modifier = Opus.Sine(0.25f, 0.05f) * DistanceMult;
+				r = 2.55f * Modifier;
+				g = 1.55f * Modifier;
+				b = 0f;
+			}
+			else
+			{
+				r = g = b = 0;
+			}
 		}
 	}
 
@@ -108,16 +139,34 @@ namespace DestroyerTest.Content.Tiles
 				}
 
 				// 100 controls how many splotches of ore are spawned into the world, scaled by world size. For comparison, the first 3 times altars are smashed about 275, 190, or 120 splotches of the respective hardmode ores are spawned. 
-				int splotches = (int)(100 * (Main.maxTilesX / 4200f));
-				int highestY = (int)Utils.Lerp(Main.rockLayer, Main.UnderworldLayer, 0.5);
+				int splotches = (int)(100 * (Main.maxTilesX / 3000f));
+				int highestY = ModLoader.HasMod("Remnants") ? Main.UnderworldLayer - 80 : (int)Utils.Lerp(Main.rockLayer, Main.UnderworldLayer, 0.35);
 				for (int iteration = 0; iteration < splotches; iteration++) {
 					// Find a point in the lower half of the rock layer but above the underworld depth.
 					int i = WorldGen.genRand.Next(100, Main.maxTilesX - 100);
 					int j = WorldGen.genRand.Next(highestY, Main.UnderworldLayer);
 
 					// OreRunner will spawn Helicite in splotches. OnKill only runs on the server or single player, so it is safe to run world generation code.
-					WorldGen.OreRunner(i, j, WorldGen.genRand.Next(5, 9), WorldGen.genRand.Next(5, 9), (ushort)ModContent.TileType<Tile_HeliciteCrystal>());
-				}
+
+					Point P = new Point(i, j);
+
+                    int outerRadius = Main.rand.Next(8, 12);
+                    ShapeData shapeData = new ShapeData();
+                    WorldUtils.Gen(P, new Shapes.Circle(outerRadius), new Actions.Blank().Output(shapeData));
+
+                    GenShapeActionPair OuterRing = new GenShapeActionPair(new ModShapes.InnerOutline(shapeData, true), new SwapSolidTileAndFrame((ushort)ModContent.TileType<Tile_HeliciteCrystal>()));
+                    WorldUtils.Gen(P, OuterRing);
+
+                    ShapeData shapeData2 = new ShapeData();
+                    WorldUtils.Gen(P, new Shapes.Circle(outerRadius - 1), new Actions.Blank().Output(shapeData2));
+
+                    GenShapeActionPair OuterRing2 = new GenShapeActionPair(new ModShapes.InnerOutline(shapeData2, true), new SwapSolidTileAndFrame((ushort)ModContent.TileType<Tile_HeliciteCrystal>()));
+                    WorldUtils.Gen(P, OuterRing2);
+
+                    WorldUtils.Gen(P, new Shapes.Circle(Main.rand.Next(2, 5)), new SwapSolidTileAndFrame((ushort)ModContent.TileType<Tile_HeliciteCrystal>()));
+                    
+					//WorldGen.OreRunner(i, j, WorldGen.genRand.Next(6, 11), WorldGen.genRand.Next(5, 9), (ushort)ModContent.TileType<Tile_HeliciteCrystal>());
+                }
 			});
 		}
 	}

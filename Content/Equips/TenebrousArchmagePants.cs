@@ -18,11 +18,12 @@ namespace DestroyerTest.Content.Equips
 			Item.height = 18;
 			Item.value = Item.sellPrice(gold: 1);
 			Item.rare = ModContent.RarityType<ShimmeringRarity>();
-			Item.defense = 21;
+			Item.defense = 31;
 		}
 
-		public override void UpdateEquip(Player player) {
-			player.GetCritChance(DamageClass.Magic) += 5f;
+		public override void UpdateEquip(Player player) 
+		{
+			player.GetCritChance(DamageClass.Magic) += 12;
 		}
 		public override void AddRecipes() {
 			CreateRecipe()

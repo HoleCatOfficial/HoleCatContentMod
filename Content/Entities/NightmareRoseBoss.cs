@@ -474,8 +474,8 @@ namespace DestroyerTest.Content.Entities
 
             if (ShouldCheckForTilesOnSpawn)
             {
-                Point resultPoint;
-                Point resultPoint2;
+                bool GroundValid = false;
+                bool AirValid = false;
 
                 Rectangle SearchArea = Utils.CenteredRectangle(NPC.Bottom.ToTileCoordinates().ToWorldCoordinates() + new Vector2(0, 5 * 16), new Vector2(125 * 16, 8 * 16));
                 Rectangle SearchArea2 = Utils.CenteredRectangle(NPC.Bottom.ToTileCoordinates().ToWorldCoordinates() + new Vector2(0, -50 * 16), new Vector2(125 * 16, 100 * 16));
@@ -483,6 +483,7 @@ namespace DestroyerTest.Content.Entities
                 Dust.DrawDebugBox(SearchArea);
                 Dust.DrawDebugBox(SearchArea2);
 
+                /*
                 bool TileCheck = WorldUtils.Find(
                     SearchArea.TopLeft().ToTileCoordinates(),
                     Searches.Chain(new Searches.Rectangle(1, 1),
@@ -500,23 +501,66 @@ namespace DestroyerTest.Content.Entities
                     new Terraria.WorldBuilding.Conditions.IsSolid().AreaAnd(125, 100),
                     }),
                     out resultPoint2);
+                */
 
-                if (TileCheck && AirCheck)
+                Point TopLeft = SearchArea.TopLeft().ToTileCoordinates();
+
+                for (int i = 0; i < SearchArea.Width / 16; i++)
+                {
+                    for (int j = 0; j < SearchArea.Height / 16; j++)
+                    {
+                        Tile T = Framing.GetTileSafely(TopLeft.X + i, TopLeft.Y + j);
+
+                        if (!T.HasTile)
+                        {
+                            T.TileColor = PaintID.RedPaint;
+                            GroundValid = false;
+                            goto GroundDone;
+                        }
+                    }
+                }
+
+                GroundValid = true;
+
+                GroundDone:;
+
+                Point TopLeft2 = SearchArea2.TopLeft().ToTileCoordinates();
+
+                for (int i = 0; i < SearchArea2.Width / 16; i++)
+                {
+                    for (int j = 0; j < SearchArea2.Height / 16; j++)
+                    {
+                        Tile T = Framing.GetTileSafely(TopLeft2.X + i, TopLeft2.Y + j);
+
+                        if (T.HasTile)
+                        {
+                            T.TileColor = PaintID.RedPaint;
+                            AirValid = false;
+                            goto AirDone;
+                        }
+                    }
+                }
+
+                AirValid = true;
+
+                AirDone:;
+
+                if (GroundValid && !AirValid)
                 {
                     Main.NewText(Language.GetTextValue("Mods.DestroyerTest.NPCs.NightmareRoseBoss.AirClutterDespawn"), Color.Red);
                 }
 
-                if (!TileCheck && AirCheck)
+                if (!GroundValid && AirValid)
                 {
                     Main.NewText(Language.GetTextValue("Mods.DestroyerTest.NPCs.NightmareRoseBoss.GroundHolesDespawn"), Color.Red);
                 }
 
-                if (!TileCheck && !AirCheck)
+                if (!GroundValid && !AirValid)
                 {
                     Main.NewText(Language.GetTextValue("Mods.DestroyerTest.NPCs.NightmareRoseBoss.GroundHolesAndAirClutterDespawn"), Color.Red);
                 }
 
-                if (TileCheck && !AirCheck)
+                if (GroundValid && AirValid)
                 {
 
                     NPC.life = NPC.lifeMax;
