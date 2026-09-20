@@ -25,10 +25,7 @@ using DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.Tiles;
 using DestroyerTest.Content.Tools;
-using FargowiltasSouls.Content.Bosses.VanillaEternity;
 using GlowmaskHelper.Content;
- 
- 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json.Linq;
@@ -46,8 +43,6 @@ using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.UI;
-using static FargowiltasSouls.Content.Projectiles.Masomode.PlanteraTooth;
-using static FargowiltasSouls.FargoSoulsSets;
 
 namespace DestroyerTest.Content.Entities
 {

@@ -1,4 +1,6 @@
 ﻿using BreadLibrary.Core.Graphics.Particles;
+using BreadLibrary.Core.Graphics.Pixelation;
+using BreadLibrary.Core.Graphics.Spritebatch;
 using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
 using Microsoft.Xna.Framework;
@@ -43,13 +45,22 @@ namespace DestroyerTest.Content.Particles
             }
         }
 
+        public override PixelLayer DefaultPixelLayer => PixelLayer.AboveTiles;
+
         public override void Draw(ref ParticleRendererSettings settings, SpriteBatch spritebatch)
         {
-            Texture2D tinybloom = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/TinyBloom").Value;
+            var Cap = spritebatch.Capture();
 
-            spritebatch.UseBlendState(BlendState.AlphaBlend);
+            Cap.TransformMatrix = PixelationSystem.PixelationMatrix;
+            Cap.BlendState = BlendState.AlphaBlend;
+
+            spritebatch.End();
+            spritebatch.Begin(Cap);
+
+            Texture2D tinybloom = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/TinyBloom").Value;
             spritebatch.Draw(DTAssetLib.PointGlowPreMultiplied.Value, position - Main.screenPosition, null, color, 0f, DTAssetLib.PointGlow.Size() / 2f, scale * 1.5f, SpriteEffects.None, 0f);
             spritebatch.Draw(tinybloom, position - Main.screenPosition, null, Color.Black, 0f, tinybloom.Size() / 2f, scale, SpriteEffects.None, 0f);
+           
             spritebatch.ResetToDefault();
         }
 

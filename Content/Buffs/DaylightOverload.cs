@@ -2,6 +2,7 @@ using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -46,9 +47,17 @@ namespace DestroyerTest.Content.Buffs
         {
 			if (lifeRegenDebuff)
 			{
-				Dust.NewDust(npc.position, npc.width, npc.height, DustID.FireworksRGB, 0.0f, 0.5f, 0, ColorLib.DarkRift2, 1);
+				//Dust.NewDust(npc.position, npc.width, npc.height, DustID.FireworksRGB, 0.0f, 0.5f, 0, ColorLib.DarkRift2, 1);
 
-				if (Main.rand.NextBool(60))
+				PixelParticle Pixel = new();
+				Pixel.Initialize(Main.rand.NextVector2FromRectangle(npc.Hitbox), new Vector2(0, -0.5f).RotatedByRandom(0.2f), ColorLib.DarkRift2, 2f);
+                ParticleEngine.ShaderParticles.Add(Pixel);
+
+                PointGlowPreMultiplied Glow = new();
+                Glow.Initialize(Main.rand.NextVector2FromRectangle(npc.Hitbox), new Vector2(0, -0.5f).RotatedByRandom(0.2f), ColorLib.DarkRift2 * 0.15f, 1f);
+                ParticleEngine.ShaderParticles.Add(Glow);
+
+                if (Main.rand.NextBool(60))
 				{
                     HeliciteShineParticle Shine = new();
                     Shine.Initialize(npc.Center, Main.rand.NextVector2Circular(1f, 1f));
@@ -90,7 +99,13 @@ namespace DestroyerTest.Content.Buffs
         {
 			if (lifeRegenDebuff)
 			{
-				Dust.NewDust(Player.position, Player.width, Player.height, DustID.FireworksRGB, 0.0f, 0.5f, 0, ColorLib.DarkRift2, 1);
+                PixelParticle Pixel = new();
+                Pixel.Initialize(Main.rand.NextVector2FromRectangle(Player.Hitbox), new Vector2(0, -0.5f).RotatedByRandom(0.2f), ColorLib.DarkRift2, 2f);
+                ParticleEngine.ShaderParticles.Add(Pixel);
+
+                PointGlowPreMultiplied Glow = new();
+                Glow.Initialize(Main.rand.NextVector2FromRectangle(Player.Hitbox), new Vector2(0, -0.5f).RotatedByRandom(0.2f), ColorLib.DarkRift2 * 0.15f, 1f);
+                ParticleEngine.ShaderParticles.Add(Glow);
 
                 if (Main.rand.NextBool(60))
                 {

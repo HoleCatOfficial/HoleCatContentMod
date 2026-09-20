@@ -25,7 +25,6 @@ using DestroyerTest.Content.RogueItems;
 using DestroyerTest.Content.SummonItems;
 using DestroyerTest.Content.Tiles;
 using DestroyerTest.Content.UI;
-using FargowiltasSouls;
 using GlowmaskHelper.Content;
  
 using log4net.Util;

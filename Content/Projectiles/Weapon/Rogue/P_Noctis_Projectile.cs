@@ -1,4 +1,5 @@
 using BreadLibrary.Core.Graphics.Particles;
+using BreadLibrary.Core.Graphics.Pixelation;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Particles;
@@ -55,7 +56,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 
             OutlineCircleParticle Particle = new OutlineCircleParticle();
             Particle.Create(Main.rand.NextVector2FromRectangle(DustBox), Projectile.velocity * 0.2f, Color.Blue, 1.5f);
-            ParticleEngine.BehindProjectiles.Add(Particle);
+            ParticleEngine.BehindProjectiles.Add(Particle, PixelLayer.AboveTiles);
 
             Dust F = Dust.NewDustPerfect(Projectile.Center + new Vector2(-6, -6).RotatedBy(Projectile.rotation), DustID.Torch, Projectile.velocity * 0.2f, 0, default, 1.2f);
             Dust I = Dust.NewDustPerfect(Projectile.Center + new Vector2(6, 6).RotatedBy(Projectile.rotation), DustID.IceTorch, Projectile.velocity * 0.2f, 100, default, 1.2f);
@@ -90,14 +91,14 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 
 		public override void OnKill(int timeLeft)
 		{
-            SoundEngine.PlaySound(SoundID.DD2_WitherBeastDeath, Projectile.Center);
+            SoundEngine.PlaySound(SoundID.DD2_WitherBeastDeath with { Volume = 2f }, Projectile.Center);
             SoundEngine.PlaySound(DTAssetLib.EnergyWoosh with { Volume = 0.85f }, Projectile.Center);
 
-			for (int i = 0; i < 16; i++)
+            for (int i = 0; i < 16; i++)
 			{
 				OutlineCircleParticle Particle = new OutlineCircleParticle();
 				Particle.Create(Projectile.Center, Main.rand.NextVector2Circular(Main.rand.NextFloat(1f, 5f), Main.rand.NextFloat(1f, 5f)), Color.Blue, 2f);
-				ParticleEngine.BehindProjectiles.Add(Particle);
+				ParticleEngine.BehindProjectiles.Add(Particle, PixelLayer.AboveTiles);
 			}
 		}
 

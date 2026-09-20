@@ -38,7 +38,7 @@ namespace DestroyerTest.Content.Tiles
 			LocalizedText name = CreateMapEntryName();
 			AddMapEntry(new Color(255, 155, 0), name);
 
-			DustType = ModContent.DustType<HeliciteCrystalDust>();
+			//DustType = ModContent.DustType<HeliciteCrystalDust>();
 			HitSound = new SoundStyle("DestroyerTest/Assets/Audio/Scholar/ShieldHit", 3)
 			{
 				PitchVariance = 0.5f
@@ -107,6 +107,20 @@ namespace DestroyerTest.Content.Tiles
 				r = g = b = 0;
 			}
 		}
+
+        public override bool CreateDust(int i, int j, ref int type)
+        {
+
+            Vector2 tileWorldPos = new Vector2(i * 16 + 8, j * 16 + 8);
+            PixelParticle Pixel = new();
+            Pixel.Initialize(tileWorldPos, Main.rand.NextVector2Circular(2f, 2f), ColorLib.Rift, 2f);
+            ParticleEngine.Particles.Add(Pixel);
+
+            PointGlowPreMultiplied Glow = new();
+            Glow.Initialize(tileWorldPos,  Main.rand.NextVector2Circular(2f, 2f), ColorLib.Rift * 0.2f, 2f);
+            ParticleEngine.Particles.Add(Glow);
+            return false;
+        }
 	}
 
 	

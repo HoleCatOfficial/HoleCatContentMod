@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
-using FargowiltasSouls.Content.Patreon.DanielTheRobot;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;

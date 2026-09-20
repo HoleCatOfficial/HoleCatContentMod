@@ -1,5 +1,4 @@
-﻿using FargowiltasSouls.Content.Projectiles.Masomode;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
