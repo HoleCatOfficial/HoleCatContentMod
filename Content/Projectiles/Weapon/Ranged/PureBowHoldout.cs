@@ -99,7 +99,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Ranged
             Projectile.Center = Owner.Center + new Vector2(15, 0).RotatedBy(Projectile.rotation);
             
 
-            if (Owner.HeldItem.type == ModContent.ItemType<PureBow>() && Owner.controlUseItem && !fireFlag)
+            if (Owner.HeldItem.type == ModContent.ItemType<PureBow>() && Owner.controlUseItem && !fireFlag && !Owner.CCed && !Owner.dead)
             {
                 Owner.SetDummyItemTime(2);
                 Projectile.timeLeft = 60;

@@ -1,6 +1,9 @@
-﻿using DestroyerTest.Common;
+﻿using BreadLibrary.Core.Graphics.Particles;
+using DestroyerTest.Common;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles.Boss.NodeBoss.Blessed;
+using DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss;
+using DestroyerTest.Content.Projectiles.Weapon.Magic;
 using DestroyerTest.Content.Projectiles.Weapon.Melee;
 using DestroyerTest.Content.Projectiles.Weapon.Summon;
 using DestroyerTest.Content.RangedItems;
@@ -21,11 +24,11 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Ranged
 {
-    public class ForsakenMaelstromHoldout : ModProjectile
+    public class IchorDisruptorHoldout : ModProjectile
     {
         public override void SetStaticDefaults()
         {
-            Main.projFrames[Type] = 1;
+
         }
         public override void SetDefaults()
         {
@@ -61,10 +64,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Ranged
 
             if (rot > MathHelper.PiOver2 || rot < -MathHelper.PiOver2)
             {
+                Projectile.direction = -1;
                 FX = SpriteEffects.FlipVertically;
             }
             else
             {
+                Projectile.direction = 1;
                 FX = SpriteEffects.None;
             }
 
@@ -74,7 +79,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Ranged
 
         public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
         {
-            overPlayers.Add(index);
+
         }
         public override bool? CanHitNPC(NPC target)
         {
@@ -83,12 +88,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Ranged
 
         public Player Owner => Main.player[Projectile.owner];
 
-        public SoundStyle FireSound = SoundID.DD2_BetsyFlameBreath with { Pitch = -0.7f };
-
-        public bool[] Level = new bool[3];
-
-        private bool[] soundflag = new bool[3];
-        private bool fireFlag = false;
+        public SoundStyle FireSound = new SoundStyle(DTAssetLib.AudioPath + "/OB_Shot");
 
         Vector2 ShootPoint;
 
@@ -99,54 +99,78 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Ranged
             dir.Normalize();
             Projectile.rotation = dir.ToRotation();
             Owner.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, dir.ToRotation() - MathHelper.PiOver2);
-            Projectile.Center = Owner.Center + new Vector2(15, 0).RotatedBy(Projectile.rotation);
-            ShootPoint = Projectile.Center + new Vector2(50, 0).RotatedBy(Projectile.rotation);
+            Projectile.Center = Owner.Center + new Vector2(30, 0).RotatedBy(Projectile.rotation);
+            ShootPoint = Projectile.Center + new Vector2(70, -10 * Projectile.direction).RotatedBy(Projectile.rotation);
 
-            if (Owner.HeldItem.type == ModContent.ItemType<ForsakenMaelstrom>() && Owner.controlUseItem && !Owner.CCed && !Owner.dead)
+            if (Owner.HeldItem.type == ModContent.ItemType<IchorDisruptor>() && Owner.controlUseItem && !Owner.CCed && !Owner.dead)
             {
                 Owner.SetDummyItemTime(2);
                 Projectile.timeLeft = 60;
                 Projectile.ai[0]++;
 
-                if (Projectile.ai[0] % 4 == 0)
+                if (Projectile.ai[0] == 60)
                 {
-                    SoundEngine.PlaySound(FireSound);
+                    SoundEngine.PlaySound(SoundID.Item149 with { Pitch = -0.5f }, Projectile.Center);
+                }
+                if (Projectile.ai[0] >= 120)
+                {
+                    Projectile.ai[0] = 0;
+                    if (DTConfig.instance.WeaponKickback)
+                    {
+                        Owner.velocity += -dir * 5f;
+                    }
+                    SoundEngine.PlaySound(FireSound, Projectile.Center);
                     Fire();
+                    Effects();
                 }
 
             }
         }
 
-        private void Fire()
+        private void Effects()
         {
-            Vector2 dir = Main.MouseWorld - Projectile.Center;
-            dir.Normalize();
-            Vector2 Vel = dir * 7;
+            Vector2 dir = ShootPoint.DirectionTo(Main.MouseWorld);
 
-
-            var Source = Owner.GetSource_ItemUse(Owner.HeldItem);
-
-            Projectile.ai[2]++;
-            Projectile Shot1 = Projectile.NewProjectileDirect(Source, ShootPoint, Vel, ModContent.ProjectileType<ForsakenMaelstromFire>(), Owner.HeldItem.damage, Owner.HeldItem.knockBack, Owner.whoAmI);
-                    
-            if (Projectile.ai[2] % 5 == 0)
-            {
-                Projectile ExtraShot1 = Projectile.NewProjectileDirect(Source, ShootPoint, (Vel * 2f).RotatedBy(-0.1f), ModContent.ProjectileType<ForsakenMaelstromHomingFireball>(), Owner.HeldItem.damage, Owner.HeldItem.knockBack, Owner.whoAmI);
-                Projectile ExtraShot2 = Projectile.NewProjectileDirect(Source, ShootPoint, Vel * 2f, ModContent.ProjectileType<ForsakenMaelstromHomingFireball>(), Owner.HeldItem.damage, Owner.HeldItem.knockBack, Owner.whoAmI);
-                Projectile ExtraShot3 = Projectile.NewProjectileDirect(Source, ShootPoint, (Vel * 2f).RotatedBy(0.1f), ModContent.ProjectileType<ForsakenMaelstromHomingFireball>(), Owner.HeldItem.damage, Owner.HeldItem.knockBack, Owner.whoAmI);
-            }
-                
-            
+            BlossomBeaterFire Flare = new();
+            Flare.Initiate(ShootPoint, dir.ToRotation() + MathHelper.PiOver2, ColorLib.IchorCrystal1, 0.2f, 30);
+            ParticleEngine.Particles.Add(Flare);
         }
 
-        private bool CheckAmmoForConsumption(Player player, out int projToShoot, out float speed, out int damage, out float knockBack, out int usedAmmoItemId, out Item Beater)
+        private void Fire()
+        {
+            Vector2 dir = ShootPoint.DirectionTo(Main.MouseWorld);
+
+            if (CheckAmmoForConsumption(Owner, out int projToShoot, out float speed, out int damage, out float knockBack, out int usedAmmoItemId, out Item D))
+            {
+                projToShoot = Owner.FindAmmoDT(AmmoID.Bullet).shoot;
+
+
+                if (D != null)
+                {
+                    var Source = Owner.GetSource_ItemUse_WithPotentialAmmo(D, usedAmmoItemId, "IchorDisruptorFire");
+
+                    for (int i = 0; i < 3; i++)
+                    {
+                        Projectile Shot1 = Projectile.NewProjectileDirect(Source, ShootPoint, dir.RotatedByRandom(0.1f) * speed * 1000f, projToShoot, damage, knockBack, Owner.whoAmI);
+                    }
+
+                    Projectile Shot2 = Projectile.NewProjectileDirect(Source, ShootPoint, dir * speed * 1000f, ProjectileID.GoldenShowerFriendly, damage, knockBack, Owner.whoAmI);
+                    
+                }
+            }
+
+
+
+        }
+
+        private bool CheckAmmoForConsumption(Player player, out int projToShoot, out float speed, out int damage, out float knockBack, out int usedAmmoItemId, out Item Disruptor)
         {
             foreach (Item i in player.inventory)
             {
-                if (i.ModItem is ForsakenMaelstrom F)
+                if (i.ModItem is IchorDisruptor D)
                 {
-                    Beater = F.Item;
-                    if (player.PickAmmo(F.Item, out projToShoot, out speed, out damage, out knockBack, out usedAmmoItemId))
+                    Disruptor = D.Item;
+                    if (player.PickAmmo(D.Item, out projToShoot, out speed, out damage, out knockBack, out usedAmmoItemId))
                     {
                         return true;
                     }
@@ -158,7 +182,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Ranged
             damage = 0;
             knockBack = 0f;
             usedAmmoItemId = -1;
-            Beater = null;
+            Disruptor = null;
 
             return false;
         }

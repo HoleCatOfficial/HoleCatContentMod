@@ -65,8 +65,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Ranged
         public override void AI()
         {
             Player player = Main.player[Projectile.owner];
+            Projectile.velocity *= 0;
 
-            if (player.HeldItem.type == ModContent.ItemType<Siege>() && player.channel)
+            if (player.HeldItem.type == ModContent.ItemType<Siege>() && player.controlUseItem && !player.CCed && !player.dead)
             {
                 Vector2 mountedCenter = player.MountedCenter;
                 Vector2 toCursor = Main.MouseWorld - mountedCenter;

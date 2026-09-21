@@ -25,7 +25,7 @@ namespace DestroyerTest.Content.Resources
 		public override void SetDefaults()
 		{
 			Item.width = 12;
-			Item.height = 34;
+			Item.height = 36;
 
 			Item.maxStack = Item.CommonMaxStack;
 			Item.value = Item.buyPrice(silver: 1);

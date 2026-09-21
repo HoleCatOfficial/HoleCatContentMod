@@ -452,3 +452,8 @@ DarkPrincePetBuff: {
 	DisplayName: Dark Prince Pet Buff
 	Description: Mods.DestroyerTest.Buffs.DarkPrincePetBuff.Description
 }
+
+InfernalBatBuff: {
+	DisplayName: Infernal Bat Buff
+	Description: Mods.DestroyerTest.Buffs.InfernalBatBuff.Description
+}

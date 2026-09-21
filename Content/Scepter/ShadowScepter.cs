@@ -30,7 +30,7 @@ namespace DestroyerTest.Content.Scepter
             base.SetDefaults();
 
             // Override stats unique to this scepter
-            ShootDMG = 35;
+            ShootDMG = 42;
             ShootCrit = 4;
             ThrowCrit = 14;
             KB = 4;
@@ -42,7 +42,7 @@ namespace DestroyerTest.Content.Scepter
             ThrowID = ModContent.ProjectileType<ShadowScepterThrown>();
 
             // Optional: change sounds
-            ShootSound = SoundID.Item25;
+            ShootSound = SoundID.Item176 with { Pitch = -0.5f, MaxInstances = 0 };
             ThrowSound = SoundID.Item169;
 
             // Refresh defaults after overriding values

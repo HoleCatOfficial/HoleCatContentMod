@@ -71,7 +71,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Ranged
 
         void SetPosition()
         {
-
+            Projectile.velocity *= 0;
             Owner.SetCompositeArmFront(Projectile.active, Player.CompositeArmStretchAmount.Full, Pointing.ToRotation() - MathHelper.PiOver2);
             Projectile.Center = Owner.MountedCenter + new Vector2(20, 0).RotatedBy(Projectile.rotation);
             Projectile.rotation = Pointing.ToRotation();

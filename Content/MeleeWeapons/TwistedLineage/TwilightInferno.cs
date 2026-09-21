@@ -1,19 +1,21 @@
+using System;
+using DestroyerTest.Common;
+using DestroyerTest.Content.Projectiles;  
+using DestroyerTest.Content.Projectiles.Weapon.Melee;
+using DestroyerTest.Content.Resources;
+using DestroyerTest.Rarity;
+using GlowmaskHelper.Content;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.DataStructures;
-using DestroyerTest.Content.Projectiles;  
-using DestroyerTest.Rarity;
-using DestroyerTest.Common;
-using System;
-using DestroyerTest.Content.Projectiles.Weapon.Melee;
-using DestroyerTest.Content.Resources;
 
 namespace DestroyerTest.Content.MeleeWeapons.TwistedLineage
 {
-	public class TwilightInferno : ModItem
+    [AutoloadGlowmask]
+    public class TwilightInferno : ModItem
 	{
 
         public override void SetStaticDefaults()

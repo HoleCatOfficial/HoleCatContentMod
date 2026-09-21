@@ -1454,7 +1454,10 @@ namespace DestroyerTest.Common
 
         public static Vector3 ToVector3(this Vector2 vector, float fullZ) => new Vector3(vector.X, vector.Y, fullZ);
 
-
+        public static int WrapToTwo(this int value)
+        {
+            return (value + 1) / 2 * 2;
+        }
     }
 
     public class DTPlayerUtil : ModPlayer

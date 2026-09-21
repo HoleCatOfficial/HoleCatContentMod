@@ -26,7 +26,7 @@ namespace DestroyerTest.Content.Projectiles
 
         public override void SetStaticDefaults()
         {
-            Main.projFrames[Type] = 5;
+            Main.projFrames[Type] = 6;
             ProjectileID.Sets.TrailCacheLength[Type] = 20;
             ProjectileID.Sets.TrailingMode[Type] = 3;
         }

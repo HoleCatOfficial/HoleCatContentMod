@@ -1,6 +1,7 @@
 ﻿using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
 using DestroyerTest.Common;
+using DestroyerTest.Common.Interfaces;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
@@ -21,22 +22,29 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles
 {
-    public class HomingShadowflame : ModProjectile
+    public class HomingShadowflame : ModProjectile, IHomingProjectile
     {
-        private NPC NPCTarget
-        {
-            get => Projectile.ai[0] == 0 ? null : Main.npc[(int)Projectile.ai[0] - 1];
-            set
-            {
-                Projectile.ai[0] = value == null ? 0 : value.whoAmI + 1;
-            }
-        }
-
         public float DelayTimer;
+
+        bool IHomingProjectile.TracksNPCs => true;
+
+        bool IHomingProjectile.TracksPlayers => false;
+
+        float IHomingProjectile.HomingTurnSpeed => 4f;
+
+        bool IHomingProjectile.UsesHomingAcceleration => true;
+
+        float IHomingProjectile.HomingAccelAmount => 1.02f;
+
+        float IHomingProjectile.HomingMaxAccel => 20f;
+
+        float IHomingProjectile.DetectRadius => 600;
+
+        bool IHomingProjectile.CanHome => DelayTimer >= 20;
 
         public override void SetStaticDefaults()
         {
-            Main.projFrames[Type] = 4;
+            Main.projFrames[Type] = 5;
             ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true;
             ProjectileID.Sets.TrailCacheLength[Type] = 20;
             ProjectileID.Sets.TrailingMode[Type] = 3;
@@ -142,66 +150,6 @@ namespace DestroyerTest.Content.Projectiles
 
             Lighting.AddLight(Projectile.Center, Color.DarkMagenta.ToVector3() * 0.2f);
 
-            if (DelayTimer < 20)
-            {
-                return;
-            }
-
-            float maxDetectRadius = 1400f;
-
-            if (NPCTarget == null)
-            {
-                NPCTarget = FindClosestNPC(maxDetectRadius);
-            }
-
-
-            if (NPCTarget != null && !IsValidNPC(NPCTarget))
-            {
-                NPCTarget = null;
-            }
-
-
-            if (NPCTarget == null)
-                return;
-
-            float targetAngle = Projectile.AngleTo(NPCTarget.Center);
-            Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(15)).ToRotationVector2() * Projectile.velocity.Length();
-
-            float speed = Projectile.velocity.Length();
-            float desiredSpeed = 35f;
-            float acceleration = 0.3f;
-            if (speed < desiredSpeed)
-                speed += acceleration;
-            Projectile.velocity = Projectile.velocity.SafeNormalize(Vector2.Zero) * speed;
-
-        }
-        public NPC FindClosestNPC(float maxDetectDistance)
-        {
-            NPC closestNPC = null;
-
-            float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
-
-            foreach (var target in Main.ActiveNPCs)
-            {
-                if (IsValidNPC(target))
-                {
-
-                    float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, Projectile.Center);
-
-                    if (sqrDistanceToTarget < sqrMaxDetectDistance)
-                    {
-                        sqrMaxDetectDistance = sqrDistanceToTarget;
-                        closestNPC = target;
-                    }
-                }
-            }
-
-            return closestNPC;
-        }
-
-        public bool IsValidNPC(NPC target)
-        {
-            return target.CanBeChasedBy();
         }
 
         public override void OnKill(int timeLeft)

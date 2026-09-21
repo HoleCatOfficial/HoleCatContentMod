@@ -1,18 +1,20 @@
-﻿using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.Audio;
-using Terraria.ID;
-using Terraria.ModLoader;
-using Terraria.DataStructures;
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Rarity;
+﻿using System;
 using DestroyerTest.Common;
-using System;
+using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Weapon.Melee;
 using DestroyerTest.Content.Resources;
+using DestroyerTest.Rarity;
+using GlowmaskHelper.Content;
+using Microsoft.Xna.Framework;
+using Terraria;
+using Terraria.Audio;
+using Terraria.DataStructures;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.MeleeWeapons.TwistedLineage
 {
+    [AutoloadGlowmask]
     public class Exasperation : ModItem
     {
         public override void SetStaticDefaults()

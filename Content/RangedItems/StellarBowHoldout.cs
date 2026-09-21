@@ -66,6 +66,7 @@ namespace DestroyerTest.Content.RangedItems
         public override void AI()
         {
             Player player = Main.player[Projectile.owner];
+            Projectile.velocity *= 0;
 
             if (player.HeldItem.type == ModContent.ItemType<StellarBow>() && player.controlUseItem)
             {
@@ -84,7 +85,7 @@ namespace DestroyerTest.Content.RangedItems
                 if (Main.GameUpdateCount % player.HeldItem.useTime == 0)
                 {
                     SoundEngine.PlaySound(Shot);
-                    Vector2 Launch = Projectile.rotation.ToRotationVector2() * 24;
+                    Vector2 Launch = Projectile.rotation.ToRotationVector2() * 30;
                     Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Launch, type, Projectile.damage, Projectile.knockBack, player.whoAmI);
                     if (state == State.Empowered)
                     {

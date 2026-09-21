@@ -1,6 +1,10 @@
 
+using BreadLibrary.Core.Graphics.Particles;
+using DestroyerTest.Common;
+using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Resources.Cloths;
 using DestroyerTest.Rarity;
+using GlowmaskHelper.Content;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -11,28 +15,23 @@ using Terraria.ModLoader;
 namespace DestroyerTest.Content.Equips
 {
     [AutoloadEquip(EquipType.Body)]
+    [AutoloadGlowmask]
     public class InfernalDress : ModItem
     {
         public override void Load()
         {
-            // The code below runs only if we're not loading on a server
             if (Main.netMode == NetmodeID.Server)
             {
                 return;
             }
 
-            // By passing this (the ModItem) into the item parameter we can reference it later in GetEquipSlot with just the item's name
             EquipLoader.AddEquipTexture(Mod, $"{Texture}_{EquipType.Legs}", EquipType.Legs, this);
-            EquipLoader.AddEquipTexture(Mod, $"{Texture}_{EquipType.Legs}_Highlight", EquipType.Legs, null, $"{Name}_Legs_Highlight");
-
-            /* Here is example code for supporting a female-specifig legs equip texture. See SetMatch as well.
-			EquipLoader.AddEquipTexture(Mod, $"{Texture}_{EquipType.Legs}_Female", EquipType.Legs, this, Name + "_Female");
-			*/
+            GlowmaskLoader.QueueGlowmaskRegistration($"{Texture}_Legs_Glow");
         }
 
         public override void SetStaticDefaults()
         {
-            // HidesHands defaults to true which we don't want.
+            GlowmaskLoader.AssignGlowmaskTexture_Equip(Item.glowMask, EquipType.Legs, EquipLoader.GetEquipSlot(Mod, "InfernalDress_Legs", EquipType.Legs));
             ArmorIDs.Body.Sets.HidesHands[Item.bodySlot] = true;
         }
 
@@ -46,35 +45,30 @@ namespace DestroyerTest.Content.Equips
 
         public override void SetMatch(bool male, ref int equipSlot, ref bool robes)
         {
-            // By changing the equipSlot to the leg equip texture slot, the leg texture will now be drawn on the player
-            // We're changing the leg slot so we set this to true
             robes = true;
-            // Here we can get the equip slot by name since we referenced the item when adding the texture
-            // You can also cache the equip slot in a variable when you add it so this way you don't have to call GetEquipSlot
             equipSlot = EquipLoader.GetEquipSlot(Mod, Name, EquipType.Legs);
-
-            /* Here is example code for supporting a female-specifig legs equip texture. See Load as well.
-			if (!male) {
-				equipSlot = EquipLoader.GetEquipSlot(Mod, Name + "_Female", EquipType.Legs);
-			}
-			*/
         }
 
         public override void UpdateEquip(Player player)
         {
-            int legHeight = player.height / 2;
-            Vector2 legPos = player.position + new Vector2(0, legHeight);
-            Dust.NewDust(legPos, player.width, legHeight, DustID.TintableDustLighted, 0f, 0f, 100, Color.OrangeRed, 0.6f);
-            Lighting.AddLight(player.Center, Color.OrangeRed.ToVector3() * 0.5f);
+            Rectangle DustBox = Utils.CenteredRectangle(player.Bottom + new Vector2(0, -4), new Vector2(((int)player.width).WrapToTwo(), 12));
+            if (Main.rand.NextBool(4))
+            {
+                PixelParticlePlayer Pixel = new(player);
+                Pixel.Initialize((new Vector2(((int)DustBox.TopLeft().X).WrapToTwo(), ((int)DustBox.TopLeft().Y).WrapToTwo()) + new Vector2(Main.rand.Next(DustBox.Width).WrapToTwo(), Main.rand.Next(DustBox.Height).WrapToTwo())) + new Vector2(1f, 1f), new Vector2(0f, 0.2f), new Color(255, 49, 32), 2f, 30);
+                ParticleEngine.Particles.Add(Pixel);
+            }
+            
+            Lighting.AddLight(player.Center, new Color(255, 49, 32).ToVector3() * 0.5f);
         }
 
         public override void AddRecipes()
         {
             CreateRecipe()
-            .AddIngredient<BlackCloth>(4)
+            .AddIngredient(ItemID.Silk, 4)
             .AddIngredient(ItemID.HellstoneBar, 6)
             .AddIngredient(ItemID.Obsidian, 4)
-            .AddTile(TileID.Loom)
+            .AddTile(TileID.Anvils)
             .Register();
         }
     }

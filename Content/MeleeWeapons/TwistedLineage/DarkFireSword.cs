@@ -10,9 +10,11 @@ using DestroyerTest.Common;
 using System;
 using DestroyerTest.Content.Projectiles.Weapon.Melee;
 using Terraria.GameContent.ItemDropRules;
+using GlowmaskHelper.Content;
 
 namespace DestroyerTest.Content.MeleeWeapons.TwistedLineage
 {
+	[AutoloadGlowmask]
 	public class DarkFireSword : ModItem
 	{
         public override void SetStaticDefaults()

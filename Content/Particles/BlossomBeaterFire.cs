@@ -39,11 +39,11 @@ namespace DestroyerTest.Content.Particles
 
         public override void Update(ref ParticleRendererSettings settings)
         {
-            Lifetime--;
+            Lifetime--; 
 
 
-            float progress = (float)Lifetime / (maxLifetime / 2f);
-            Opacity = MathHelper.Lerp(1f, 0f, progress);
+            float progress = (float)Lifetime / (float)(maxLifetime);
+            Opacity = MathHelper.Lerp(0f, 1f, progress);
             //scale = MathHelper.Lerp(InitScale, InitScale * 0.5f, progress);
             
 

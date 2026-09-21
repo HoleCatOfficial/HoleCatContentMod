@@ -1111,7 +1111,7 @@ WretchedSteel: {
 
 IchorDisruptor: {
 	DisplayName: Ichor Disruptor
-	Tooltip: ""
+	Tooltip: Fires 3 bullets and a stream of Ichor.
 }
 
 RiftThrowingKnife: {
@@ -5515,4 +5515,19 @@ GreedyGraze: {
 MoltenScroll: {
 	DisplayName: Molten Scroll
 	Tooltip: Thrown scepters create 4 homing magma blobs on hit.
+}
+
+SavageSpray: {
+	DisplayName: Savage Spray
+	Tooltip: Fires a spread of 5 bullets and 2 ichor crystals.
+}
+
+InfernalHat: {
+	DisplayName: Infernal Hat
+	Tooltip: "10% increased Ranged Damage."
+	SetBonus:
+	''' 
+	You are immune to lava.
+	A small hellbat will fight alongside you, shooting fireballs whenever you use a ranged weapon.
+	''' 
 }
