@@ -50,6 +50,10 @@ namespace DestroyerTest.Common
         public static bool RuptureIsLoaded;
         public static Mod RuptureMod;
 
+        public const string RemnantsName = "Remnants";
+        public static bool RemnantsIsLoaded;
+        public static Mod RemnantsMod;
+
         public static void LoadMods()
         {
             if (ModLoader.HasMod(CalamityName))
@@ -81,6 +85,20 @@ namespace DestroyerTest.Common
                 FargosMutantIsLoaded = ModLoader.TryGetMod(FargosMutantName, out Mod frgoM);
                 FargosMutantMod = frgoM;
             }
+
+
+            if (ModLoader.HasMod(RuptureName))
+            {
+                RuptureIsLoaded = ModLoader.TryGetMod(RuptureName, out Mod rupture);
+                RuptureMod = rupture;
+            }
+
+
+            if (ModLoader.HasMod(RemnantsName))
+            {
+                RemnantsIsLoaded = ModLoader.TryGetMod(RemnantsName, out Mod remnants);
+                RemnantsMod = remnants;
+            }
         }
 
         public static void UnloadMods()
@@ -95,6 +113,10 @@ namespace DestroyerTest.Common
             FargosSoulsMod = null;
             FargosMutantIsLoaded = false;
             FargosMutantMod = null;
+            RuptureIsLoaded = false;
+            RuptureMod = null;
+            RemnantsIsLoaded = false;
+            RemnantsMod = null;
         }
 
         public static bool StealthStrike(this Projectile proj, Player Owner)

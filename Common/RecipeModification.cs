@@ -1,3 +1,4 @@
+using DestroyerTest.Content.Equips;
 using DestroyerTest.Content.Fargos.Scepter;
 using DestroyerTest.Content.MeleeWeapons;
 using DestroyerTest.Content.MeleeWeapons.SwordLineage;
@@ -99,6 +100,18 @@ namespace DestroyerTest.Common
                         if (DTCrossMod.CalamityMod.TryFind("LivingShard", out ModItem LivingShard))
                         {
                             recipe.AddIngredient(LivingShard.Type, 12);
+                        }
+                    }
+                }
+
+                if (DTCrossMod.CalamityIsLoaded)
+                {
+                    if (DTCrossMod.CalamityMod.TryFind("AngelTreads", out ModItem AngelTreads))
+                    {
+                        recipe.AddIngredient<HeatseekerSilohs>();
+                        if (recipe.HasIngredient(ItemID.TerrasparkBoots))
+                        {
+                            recipe.RemoveIngredient(ItemID.TerrasparkBoots);
                         }
                     }
                 }

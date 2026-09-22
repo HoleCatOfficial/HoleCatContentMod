@@ -33,7 +33,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
             Projectile.timeLeft = 1200;
             Projectile.tileCollide = true;
             Projectile.DamageType = ModContent.GetInstance<ScepterClass>();
-            Projectile.extraUpdates = 17;
+            Projectile.extraUpdates = 26;
             Projectile.scale = 0.05f;
         }
 

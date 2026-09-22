@@ -40,7 +40,9 @@ namespace DestroyerTest.Content.Projectiles.OrionCrossover
             Projectile.height = 120;
             SweepColor = Color.Black;
             UsesDefaultSweepFX = true;
-            SweepScale = 2.1f;
+            SweepScale = 2.2f;
+            WaitTimeMultiplier = 4f;
+            SwingSpeed = 0.28f;
             Projectile.extraUpdates = 3;
             Glowmask = ModContent.Request<Texture2D>($"{Texture}");
         }

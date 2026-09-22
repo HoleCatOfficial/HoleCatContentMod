@@ -301,13 +301,11 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
                     OnReturnFlag = true;
                 }
                 ArmCatchAnimate(player);
-                // InPhase: Smooth return using Lerp
-                Vector2 returnDirection = player.Center - Projectile.Center;
-                float speed = MathHelper.Lerp(Projectile.velocity.Length(), 15f * player.ScepterClass().ThrowSpeedModifier, 0.8f); // Smooth acceleration
-                Projectile.velocity = returnDirection.SafeNormalize(Vector2.Zero) * speed;
+
+                Projectile.SmoothMoveToPoint(player.MountedCenter, 12f * (player.ScepterClass().ThrowSpeedModifier), 120);
 
                 // If close enough, remove the projectile
-                if (Projectile.Distance(player.Center) < 8) // 8 pixels radius
+                if (Projectile.Distance(player.Center) < 20) // 8 pixels radius
                 {
                     HitCount = 0;
                     existenceTimer = 0;

@@ -5524,10 +5524,29 @@ SavageSpray: {
 
 InfernalHat: {
 	DisplayName: Infernal Hat
-	Tooltip: "10% increased Ranged Damage."
+	Tooltip: 10% increased Ranged Damage.
 	SetBonus:
-	''' 
-	You are immune to lava.
-	A small hellbat will fight alongside you, shooting fireballs whenever you use a ranged weapon.
-	''' 
+		'''
+		You are immune to lava.
+		A small hellbat will fight alongside you, shooting fireballs whenever you use a ranged weapon.
+		'''
+}
+
+FrostBracer: {
+	DisplayName: Frost Bracer
+	Tooltip:
+		'''
+		5% increased ranged Critical Strike Chance.
+		12% increased ranged damage.
+		'''
+}
+
+AccursedScepter: {
+	DisplayName: Accursed Scepter
+	Tooltip: ""
+}
+
+GildedGlove: {
+	DisplayName: Gilded Glove
+	Tooltip: ""
 }

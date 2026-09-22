@@ -63,7 +63,7 @@ namespace DestroyerTest.Content.Equips.NightSet
                 Night.Active = true;
             }
             player.ScepterClass().Range += 60;
-            player.ScepterClass().ThrowSpeedModifier = 4f;
+            player.ScepterClass().ThrowSpeedModifier = 2f;
 
             if (Math.Abs(player.velocity.X)> 5.5)
             {

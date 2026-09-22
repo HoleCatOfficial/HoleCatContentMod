@@ -22,6 +22,8 @@ namespace DestroyerTest.Content.Buffs
         {
             bool unused = false;
             player.BuffHandle_SpawnPetIfNeededAndSetTime(buffIndex, ref unused, ModContent.ProjectileType<InfernalBat>());
+
+
         }
     }
 }

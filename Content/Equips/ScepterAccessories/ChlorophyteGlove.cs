@@ -18,8 +18,8 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
 		public override void SetDefaults() {
 			Item.width = 22; // Width of the item
 			Item.height = 28; // Height of the item
-			Item.value = Item.sellPrice(gold: 86); // How many coins the item is worth
-			Item.rare = ModContent.RarityType<CerisePinkRarity>(); // The rarity of the item
+			Item.value = Item.sellPrice(gold: 6); // How many coins the item is worth
+			Item.rare = ModContent.RarityType<WineRarity>(); // The rarity of the item
             Item.vanity = false;
             Item.accessory = true;
 		}
@@ -27,7 +27,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
 		public override void UpdateEquip(Player player) {
 			player.GetAttackSpeed<ScepterClass>() += 0.05f;
             player.GetDamage<ScepterClass>() += 0.10f;
-            player.ScepterClass().Range += 6;
+            player.ScepterClass().Range += 30;
 		}
 
         public override void AddRecipes() {

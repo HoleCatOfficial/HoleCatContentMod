@@ -14,6 +14,8 @@ using ReLogic.Content;
 using DestroyerTest.Content.Equips.ScepterAccessories;
 using System.Linq;
 using Terraria.Graphics.Shaders;
+using DestroyerTest.Content.Particles;
+using BreadLibrary.Core.Graphics.Particles;
 
 namespace DestroyerTest.Content.Projectiles.ParentClasses
 {
@@ -184,8 +186,9 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
             Vector2 DustPos = Opus.Sine(Pos1, Pos2, 0.5f);
 
-            Dust trail1 = Dust.NewDustPerfect(DustPos, TravelDust, Projectile.velocity * 0.05f, 0, DustColor, 0.75f);
-            trail1.noGravity = true;
+            PixelParticle Pixel = new();
+            Pixel.Initialize(DustPos, Projectile.velocity * 0.05f, TrailColor, 2f);
+            ParticleEngine.Particles.Add(Pixel);
         }
 
         public void DustSpawn2()
@@ -195,8 +198,9 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
             Vector2 DustPos = Opus.Sine(Pos1, Pos2, 0.5f);
 
-            Dust trail2 = Dust.NewDustPerfect(DustPos, TravelDust, Projectile.velocity * 0.05f, 0, DustColor, 0.75f);
-            trail2.noGravity = true;
+            PixelParticle Pixel = new();
+            Pixel.Initialize(DustPos, Projectile.velocity * 0.05f, TrailColor, 2f);
+            ParticleEngine.Particles.Add(Pixel);
         }
 
         public override bool? CanHitNPC(NPC target)

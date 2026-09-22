@@ -22,6 +22,7 @@ using DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss;
 using DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame;
 using DestroyerTest.Content.Projectiles.Boss.NodeBoss.Ichor;
 using DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss;
+using DestroyerTest.Content.RangedItems;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.Tiles;
 using DestroyerTest.Content.Tools;
@@ -863,6 +864,7 @@ namespace DestroyerTest.Content.Entities
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<IchorScroll>(), 1, 1, 1));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Scorn>(), 2, 1, 1));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<DistendedPike>(), 2, 1, 1));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<SavageSpray>(), 3, 1, 1));
             npcLoot.Add(ItemDropRule.ByCondition(new EternityDropRuleCondition(), ModContent.ItemType<GreedyGraze>(), 1, 1, 1));
             npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Item_IchorNodeRelic>()));
             npcLoot.Add(ItemDropRule.Common(ItemID.FlaskofIchor, 3, 1, 9));

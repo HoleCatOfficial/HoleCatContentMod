@@ -66,6 +66,19 @@ namespace DestroyerTest.Content.Scepter
             return true;
 		}
 
+        public override void AddRecipes()
+        {
+            if (DTCrossMod.RemnantsIsLoaded)
+            {
+                if (DTCrossMod.RemnantsMod.TryFind("QueenBeeArtifact", out ModItem QueenBeeArtifact))
+                {
+                    CreateRecipe()
+                        .AddIngredient(QueenBeeArtifact.Type)
+                        .Register();
+                }
+            }
+        }
+
 
     }
 } 

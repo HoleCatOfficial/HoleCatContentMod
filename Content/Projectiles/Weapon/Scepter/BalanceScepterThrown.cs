@@ -38,33 +38,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
         public Vector2 np = Vector2.Zero;
         private void CacheTrail1()
         {
-            Vector2 lastPos = LightPoints.Count > 0 ? LightPoints[0] : lp;
-			Vector2 newPos  = lp;
-
-			float dist = Vector2.Distance(lastPos, newPos);
-			float step = 0.1f; // how closely to sample. tweak this!
-
-			if (dist > 0f)
-			{
-				int segments = (int)(dist / step);
-
-				for (int i = 1; i <= segments; i++)
-				{
-					Vector2 pos = Vector2.Lerp(lastPos, newPos, i / (float)segments);
-					LightPoints.Insert(0, pos);
-					LightRots.Insert(0, Projectile.rotation);
-				}
-			}
-			else
-			{
-				LightPoints.Insert(0, newPos);
-				LightRots.Insert(0, Projectile.rotation);
-			}
-
-			while (LightPoints.Count > TrailLength)
-				LightPoints.RemoveAt(LightPoints.Count - 1);
-			while (LightRots.Count > TrailLength)
-				LightRots.RemoveAt(LightRots.Count - 1);
+           
         }
 
         private void CacheTrail2()
@@ -115,79 +89,23 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 
         public void LightTrail()
         {
-            if (LightPoints.Count > 1)
-			{
-				List<ColoredVertex> ve = new List<ColoredVertex>();
-				float a = 0;
 
-				for (int i = LightPoints.Count - 1; i > 0; i--)
-				{
-					float t = 1f - (i / (float)LightPoints.Count); // fade toward tail
-					Color b = ColorLib.SoulOfLightColor * t;
-
-					Vector2 dir = (LightPoints[i] - LightPoints[i - 1]).ToRotation().ToRotationVector2();
-					Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * 20;
-                    Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * 20;
-
-					DTUtils.AddStrips(ve, LightPoints, i, offset, offset2, t, b, trailOffset);
-				}
-
-
-				GraphicsDevice gd = Main.graphics.GraphicsDevice;
-				if (ve.Count >= 3)
-				{
-                    gd.Textures[0] = DTAssetLib.Streak(2).Value;
-                    gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2); 
-				}
-			}
         }
 
         public void NightTrail()
         {
-            if (NightPoints.Count > 1)
-			{
-				List<ColoredVertex> ve = new List<ColoredVertex>();
-				float a = 0;
-
-				for (int i = NightPoints.Count - 1; i > 0; i--)
-				{
-					float t = 1f - (i / (float)NightPoints.Count); // fade toward tail
-					Color b = ColorLib.SoulOfNightColor * t;
-
-					Vector2 dir = (NightPoints[i] - NightPoints[i - 1]).ToRotation().ToRotationVector2();
-					Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * 20;
-                    Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * 20;
-
-					DTUtils.AddStrips(ve, NightPoints, i, offset, offset2, t, b, trailOffset);
-				}
-
-
-				GraphicsDevice gd = Main.graphics.GraphicsDevice;
-				if (ve.Count >= 3)
-				{
-                    gd.Textures[0] = DTAssetLib.Streak(2).Value;
-                    gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2); 
-				}
-			}
+          
         }
   
         public override void AI()
         {
             base.AI();
-            lp = Projectile.Center + (new Vector2(-Projectile.width / 2, Projectile.height / 2).RotatedBy(Projectile.rotation));
-            np = Projectile.Center + (new Vector2(Projectile.width / 2, -Projectile.height / 2).RotatedBy(Projectile.rotation));
 
-            if (lp != Vector2.Zero && np != Vector2.Zero)
-            {
-                CacheTrail1();
-                CacheTrail2();
-            }
-            
             if (Main.rand.NextBool(15))
             {
                 SoundEngine.PlaySound(SoundID.DD2_BetsysWrathShot, Projectile.Center);
-                Projectile.NewProjectile(Projectile.GetSource_FromAI(), lp, Projectile.velocity * 0.2f, ModContent.ProjectileType<LightFireball>(), (int)(Projectile.damage * 0.1f), 10, Projectile.owner);
-                Projectile.NewProjectile(Projectile.GetSource_FromAI(), np, Projectile.velocity * 0.2f, ModContent.ProjectileType<NightFireball>(), (int)(Projectile.damage * 0.1f), 10, Projectile.owner);
+                Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Projectile.velocity * 0.2f, ModContent.ProjectileType<SoulOfLight_Projectile>(), (int)(Projectile.damage * 0.1f), 10, Projectile.owner);
+                Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Projectile.velocity * 0.2f, ModContent.ProjectileType<SoulOfNight_Projectile>(), (int)(Projectile.damage * 0.1f), 10, Projectile.owner);
             }
         }
     }
