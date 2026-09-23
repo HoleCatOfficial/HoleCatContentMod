@@ -1,4 +1,6 @@
-﻿using Terraria;
+﻿using DestroyerTest.Common;
+using DestroyerTest.Content.Remnants;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -29,6 +31,16 @@ namespace DestroyerTest.Content.Tiles
             Item.rare = ItemRarityID.Master;
             Item.master = true; // This makes sure that "Master" displays in the tooltip, as the rarity only changes the item name color
             Item.value = Item.buyPrice(0, 5);
+        }
+
+        public override void AddRecipes()
+        {
+            if (DTCrossMod.RemnantsIsLoaded)
+            {
+                CreateRecipe()
+                    .AddIngredient<NightmareRoseArtifact>(6)
+                    .Register();
+            }
         }
     }
 }

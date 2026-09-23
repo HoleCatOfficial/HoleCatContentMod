@@ -1,29 +1,36 @@
 using System;
+using System.IO.Pipelines;
+using DestroyerTest.Common;
+using DestroyerTest.Content.MeleeWeapons;
+using DestroyerTest.Content.Projectiles;
+using DestroyerTest.Content.Projectiles.Weapon.Scepter;
+using DestroyerTest.Content.Remnants;
+using DestroyerTest.Content.Resources;
+using DestroyerTest.Rarity;
+using DestroyerTest.Rarity.Scepter;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.DataStructures;
- 
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Resources;
-using System.IO.Pipelines;
-using DestroyerTest.Rarity;
-using DestroyerTest.Rarity.Scepter;
-using DestroyerTest.Content.Projectiles.Weapon.Scepter;  
 
 namespace DestroyerTest.Content.Scepter
 {
 	public class StellarFoxScepter : ScepterItem
 	{
+
 		public override int Width => 54;
         public override int Height => 54;
 
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
+
+            if (ModLoader.HasMod("QoLCompendium"))
+            {
+                ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<Constitution>();
+            }
         }
 
         public override void SetDefaults()
@@ -56,6 +63,16 @@ namespace DestroyerTest.Content.Scepter
             base.ShootDefaults();
             Item.shootSpeed = 2f;
         }
-    
+
+        public override void AddRecipes()
+        {
+            if (DTCrossMod.RemnantsIsLoaded)
+            {
+                CreateRecipe()
+                    .AddIngredient<ConstitutionArtifact>(3)
+                    .Register();
+            }
+        }
+
     }
 } 

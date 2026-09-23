@@ -287,7 +287,7 @@ namespace DestroyerTest.Common.NPC_Folder
             {
                 DTUtils.NPCDownTally[NPCID.CultistBoss]++;
                 UpdateDivinePlayers();
-                if (!DownedBossSystem.downedCultistBoss && !WorldGen.crimson)
+                if (!DownedBossSystem.downedCultistBoss && (DTCrossMod.RemnantsIsLoaded || !WorldGen.crimson))
                 {
                     SoundStyle TenebrisSpawn = new SoundStyle("DestroyerTest/Assets/Audio/TenebrisSpawn");
                     if (Main.dedServ == false)
@@ -359,7 +359,7 @@ namespace DestroyerTest.Common.NPC_Folder
 
         public override void SetupTravelShop(int[] shop, ref int nextSlot)
         {
-            if (DownedBossSystem.downedLunarBoss)
+            if (DTCrossMod.CalamityIsLoaded ? DownedBossSystem.downedLunarBoss : DownedBossSystem.downedTenebrousConstructBoss)
             {
                 shop[nextSlot] = ModContent.ItemType<HoleCatHead>();
                 nextSlot++;

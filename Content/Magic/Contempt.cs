@@ -1,10 +1,12 @@
+using System.Linq;
+using DestroyerTest.Common;
 using DestroyerTest.Content.Projectiles;  
 using DestroyerTest.Content.Projectiles.Weapon.Magic;
 using DestroyerTest.Content.RangedItems;
+using DestroyerTest.Content.Remnants;
 using DestroyerTest.Content.RogueItems;
 using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
-using System.Linq;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -18,7 +20,10 @@ namespace DestroyerTest.Content.Magic
 
         public override void SetStaticDefaults()
         {
-            ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<CursedHammer>();
+			if (ModLoader.HasMod("QoLCompendium"))
+			{
+				ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<CursedHammer>();
+			}
         }
 		public override void SetDefaults()
 		{
@@ -73,6 +78,14 @@ namespace DestroyerTest.Content.Magic
 			return player.ownedProjectileCounts[Item.shoot] < 1;
 		}
 
-
+        public override void AddRecipes()
+        {
+            if (DTCrossMod.RemnantsIsLoaded)
+            {
+                CreateRecipe()
+                    .AddIngredient<NightmareRoseArtifact>(3)
+                    .Register();
+            }
+        }
     }
 } 

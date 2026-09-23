@@ -24,7 +24,10 @@ namespace DestroyerTest.Content.Scepter
         {
             base.SetStaticDefaults();
 
-            ItemID.Sets.ShimmerTransformToItem[Type] = ItemID.BeeGun;
+            if (ModLoader.HasMod("QoLCompendium"))
+            {
+                ItemID.Sets.ShimmerTransformToItem[Type] = ItemID.BeeGun;
+            }
         }
 
         public override void SetDefaults()
@@ -73,7 +76,7 @@ namespace DestroyerTest.Content.Scepter
                 if (DTCrossMod.RemnantsMod.TryFind("QueenBeeArtifact", out ModItem QueenBeeArtifact))
                 {
                     CreateRecipe()
-                        .AddIngredient(QueenBeeArtifact.Type)
+                        .AddIngredient(QueenBeeArtifact.Type, 3)
                         .Register();
                 }
             }

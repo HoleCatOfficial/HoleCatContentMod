@@ -46,7 +46,7 @@ namespace DestroyerTest.Content.BossSummons
         {
             
 
-            Main.EntitySpriteDraw(DTAssetLib.PointGlowPreMultiplied.Value, Item.Center - Main.screenPosition, null, ColorLib.StellarFireGradientLooping(), 0f, DTAssetLib.PointGlowPreMultiplied.Value.Size() / 2, Opus.Sine(1f, 1.7f), SpriteEffects.None);
+            Main.EntitySpriteDraw(DTAssetLib.PointGlowPreMultiplied.Value, Item.Center - Main.screenPosition, null, ColorLib.StellarFireGradientLooping() with { A = 0 }, 0f, DTAssetLib.PointGlowPreMultiplied.Value.Size() / 2, Opus.Sine(1f, 1.7f), SpriteEffects.None);
             return true;
         }
 

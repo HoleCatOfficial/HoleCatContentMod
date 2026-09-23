@@ -1,9 +1,10 @@
 
+using DestroyerTest.Common;
+using DestroyerTest.Content.Remnants;
+using DestroyerTest.Rarity;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using DestroyerTest.Common;
-using DestroyerTest.Rarity;
 
 namespace DestroyerTest.Content.Equips
 {
@@ -25,5 +26,15 @@ namespace DestroyerTest.Content.Equips
 		{
 			DTFlags.StellarGogglesEquipped = true;
 		}
-	}
+
+        public override void AddRecipes()
+        {
+            if (DTCrossMod.RemnantsIsLoaded)
+            {
+                CreateRecipe()
+                    .AddIngredient<ConstitutionArtifact>(3)
+                    .Register();
+            }
+        }
+    }
 }

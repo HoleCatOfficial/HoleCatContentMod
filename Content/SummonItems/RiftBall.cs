@@ -1,7 +1,15 @@
 
+using System;
+using BreadLibrary.Core.Graphics.Particles;
+using BreadLibrary.Core.Graphics.Pixelation;
+using BreadLibrary.Core.Graphics.Spritebatch;
+using BreadLibrary.Core.Utilities;
+using DestroyerTest.Common;
+using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.SummonItems;
 using Microsoft.Xna.Framework;
-using System;
+using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -9,11 +17,14 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.SummonItems
 {
-	public class RiftBall : ModProjectile
+	public class RiftBall : ModProjectile, IDrawPixelated
 	{
+        public override string Texture => DTUtils.NoTexture;
 
-		public override void SetStaticDefaults() {
-			Main.projFrames[Projectile.type] = 10;
+        PixelLayer IDrawPixelated.PixelLayer => PixelLayer.AboveProjectiles;
+
+        public override void SetStaticDefaults() 
+        {
 			Main.projPet[Projectile.type] = true;
 			ProjectileID.Sets.LightPet[Projectile.type] = true;
 		}
@@ -24,28 +35,29 @@ namespace DestroyerTest.Content.SummonItems
             Projectile.height = 42;
             Projectile.penetrate = -1;
             Projectile.netImportant = true;
-            Projectile.timeLeft *= 5;
+            Projectile.timeLeft = 60;
             Projectile.friendly = true;
             Projectile.ignoreWater = true;
-            Projectile.scale = 0.8f;
             Projectile.tileCollide = false;
             Projectile.CloneDefaults(ProjectileID.FairyQueenPet);
             Projectile.netImportant = true;
-			Projectile.netUpdate = true;
 		}
 
-        private void AnimateProjectile() {
-            // Loop through the frames, assuming each frame lasts 5 ticks
-            if (++Projectile.frameCounter >= 5) {
-                Projectile.frameCounter = 0;
-                if (++Projectile.frame >= Main.projFrames[Projectile.type]) {
-                    Projectile.frame = 0;
-                }
-            }
+        float roff = 0f;
+        public override bool PreDraw(ref Color lightColor)
+        {
+            roff += 0.3f;
+            
+
+            return false;
         }
 
-		public override void AI() {
+        float Scale = 0f;
+		public override void AI() 
+        {
 			Player player = Main.player[Projectile.owner];
+
+            Scale = Opus.Sine(0.1f, 0.15f);
 
             // If the player is no longer active (online) - deactivate (remove) the projectile.
             if (!player.active)
@@ -59,6 +71,11 @@ namespace DestroyerTest.Content.SummonItems
             {
                 Projectile.timeLeft = 2;
             }
+            if (!player.HasBuff(ModContent.BuffType<RiftBallBuff>()))
+            {
+                Projectile.Kill();
+            }
+
 
             Vector2 targetPos = player.Center + new Vector2(0, Projectile.ai[0] - 40) + new Vector2(player.velocity.X, player.velocity.Y);
             int ForcedMovementSpeed = 3;
@@ -99,12 +116,30 @@ namespace DestroyerTest.Content.SummonItems
 
             Projectile.rotation = Projectile.velocity.X * 0.06f;
 
-            AnimateProjectile();
 
-
-            if (!Main.dedServ) {
-                    Lighting.AddLight(Projectile.Center, Projectile.Opacity * 2.55f, Projectile.Opacity * 1.55f, Projectile.Opacity * 0.0f);
-                }
+            if (!Main.dedServ) 
+            {
+                Lighting.AddLight(Projectile.Center, Projectile.Opacity * 2.55f, Projectile.Opacity * 1.55f, Projectile.Opacity * 0.0f);
+            }
         }
-	}
+
+        void IDrawPixelated.DrawPixelated(SpriteBatch spriteBatch)
+        {
+            var Cap = spriteBatch.Capture();
+            Cap.TransformMatrix = PixelationSystem.PixelationMatrix;
+
+            spriteBatch.End();
+            spriteBatch.Begin(Cap);
+
+            Main.EntitySpriteDraw(DTAssetLib.Corona.Value, Projectile.Center - Main.screenPosition, null, ColorLib.DarkRift2 with { A = 0 } * 0.5f, -roff, DTAssetLib.Corona.Value.Size() / 2, (Scale * 0.3f) * Projectile.scale, SpriteEffects.None, 0);
+            Main.EntitySpriteDraw(DTAssetLib.Corona.Value, Projectile.Center - Main.screenPosition, null, ColorLib.Rift with { A = 0 }, roff, DTAssetLib.Corona.Value.Size() / 2, (Scale * 0.22f) * Projectile.scale, SpriteEffects.None, 0);
+            Main.EntitySpriteDraw(DTAssetLib.Corona.Value, Projectile.Center - Main.screenPosition, null, ColorLib.Rift with { A = 0 }, roff * 0.5f, DTAssetLib.Corona.Value.Size() / 2, (Scale * 0.20f) * Projectile.scale, SpriteEffects.None, 0);
+
+
+            Main.EntitySpriteDraw(DTAssetLib.Circle.Value, Projectile.Center - Main.screenPosition, null, Color.Black, Projectile.rotation, DTAssetLib.Circle.Value.Size() / 2, (Scale * 0.5f) * Projectile.scale, SpriteEffects.None, 0);
+            Main.EntitySpriteDraw(DTAssetLib.BloomRing.Value, Projectile.Center - Main.screenPosition, null, ColorLib.Rift with { A = 0 }, roff * 0.5f, DTAssetLib.BloomRing.Value.Size() / 2, (Scale * 2.2f) * Projectile.scale, SpriteEffects.None, 0);
+
+            spriteBatch.ResetToDefault();
+        }
+    }
 }

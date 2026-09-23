@@ -53,8 +53,8 @@ namespace DestroyerTest.Content.Particles
             movementRemainder += velocity;
 
             Vector2 movement = new Vector2(
-                (int)movementRemainder.X,
-                (int)movementRemainder.Y
+                ((int)movementRemainder.X).WrapToTwo(),
+                ((int)movementRemainder.Y).WrapToTwo()
             );
 
             movementRemainder -= movement;

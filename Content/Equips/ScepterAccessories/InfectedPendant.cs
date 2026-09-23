@@ -18,6 +18,11 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
 {
     public class InfectedPendant : ModItem
     {
+        public override void SetStaticDefaults()
+        {
+            DTUtils.NoUpgradeStack[Type] = true;
+        }
+
         public override void SetDefaults()
         {
             Item.width = 30;
@@ -55,8 +60,6 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
 			}
 
             player.GetCritChance(ModContent.GetInstance<ScepterClass>()) += CritBonus;
-            player.AddBuff(BuffID.WeaponImbueCursedFlames, 60);
-            player.AddBuff(BuffID.WeaponImbueIchor, 60);
         }
 
         public override void AddRecipes()

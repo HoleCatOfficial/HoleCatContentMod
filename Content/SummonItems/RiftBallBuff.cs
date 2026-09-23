@@ -14,14 +14,8 @@ namespace DestroyerTest.Content.SummonItems
 
         public override void Update(Player player, ref int buffIndex)
         {
-            if (player.ownedProjectileCounts[ModContent.ProjectileType<RiftBall>()] > 0)
-            {
-                player.buffTime[buffIndex] = 18000; // Keep the buff active
-            }
-            else
-            {
-                Projectile.NewProjectile(player.GetSource_Buff(buffIndex), player.Center, Vector2.Zero, ModContent.ProjectileType<RiftBall>(), 0, 0f, player.whoAmI);
-            }
+            bool unused = false;
+            player.BuffHandle_SpawnPetIfNeededAndSetTime(buffIndex, ref unused, ModContent.ProjectileType<RiftBall>());
         }
     }
 }

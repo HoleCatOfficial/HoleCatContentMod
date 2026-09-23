@@ -1,6 +1,7 @@
 
 using DestroyerTest.Common;
 using DestroyerTest.Content.Projectiles;
+using DestroyerTest.Content.Remnants;
 using DestroyerTest.Content.Resources;
 using Microsoft.Xna.Framework;
 using Steamworks;
@@ -12,6 +13,10 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
 {
     public class GalantineScroll : PreHardmodeScroll
     {
+        public override void SetStaticDefaults()
+        {
+            DTUtils.NoUpgradeStack[Type] = true;
+        }
         public override void SetDefaults()
         {
             Item.width = 32;
@@ -25,6 +30,16 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
 			{
 				Scptr.GalantineScroll = true;
 			}
+        }
+
+        public override void AddRecipes()
+        {
+            if (DTCrossMod.RemnantsIsLoaded)
+            {
+                CreateRecipe()
+                    .AddIngredient<ConstitutionArtifact>(3)
+                    .Register();
+            }
         }
     }
 }

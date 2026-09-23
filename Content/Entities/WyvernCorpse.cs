@@ -20,6 +20,7 @@ using DestroyerTest.Content.Projectiles.Boss.NodeBoss.Ichor;
 using DestroyerTest.Content.Projectiles.Boss.VampireBoss;
 using DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss;
 using DestroyerTest.Content.RangedItems;
+using DestroyerTest.Content.Remnants;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.RogueItems;
 using DestroyerTest.Content.SummonItems;
@@ -1129,6 +1130,8 @@ namespace DestroyerTest.Content.Entities
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<PhantasmalRemnant>(), 1, 10, 22));
             npcLoot.Add(ItemDropRule.Common(ItemID.SoulofFlight, 1, 5, 20));
 
+            
+
             LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
 
             notExpertRule.OnSuccess(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<RibChainsaw>(), 2, 1, 1));
@@ -1136,9 +1139,15 @@ namespace DestroyerTest.Content.Entities
             notExpertRule.OnSuccess(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<GreatFlayer>(), 2, 1, 1));
             notExpertRule.OnSuccess(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<WyvernSkull>(), 5, 1, 1));
 
+            if (DTCrossMod.RemnantsIsLoaded)
+            {
+                notExpertRule.OnFailedConditions(ItemDropRule.Common(ModContent.ItemType<WyvernCorpseArtifact>()));
+            }
+
             npcLoot.Add(notExpertRule);
 
             npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<WyvernCorpseLootBag>()));
+            
 
             npcLoot.Add(ItemDropRule.MasterModeDropOnAllPlayers(ModContent.ItemType<DivineVessel>()));
             npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Item_WyvernCorpseRelic>()));

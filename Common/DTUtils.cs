@@ -1434,11 +1434,11 @@ namespace DestroyerTest.Common
             Ring.Prepare(projectile.Center, Vector2.Zero, ColorLib.Rift, 0.1f, 0.01f, 0.7f, BlendState.Additive);
             ParticleEngine.Particles.Add(Ring);
 
-            for (int i = 0; i < 20; i++)
+            for(int i = 0; i < 24; i++)
             {
-                Vector2 velocity = Main.rand.NextVector2CircularEdge(10f, 10f);
-                Dust dust = Dust.NewDustPerfect(projectile.Center, DustID.FireworksRGB, velocity, newColor: ColorLib.Rift, Scale: Main.rand.NextFloat(1.5f, 2.5f));
-                dust.noGravity = true;
+                PixelParticle Pixel = new();
+                Pixel.Initialize(projectile.Center, Main.rand.NextVector2Circular(2f, 2f), ColorLib.Rift, 2f);
+                ParticleEngine.Particles.Add(Pixel);
             }
         }
 

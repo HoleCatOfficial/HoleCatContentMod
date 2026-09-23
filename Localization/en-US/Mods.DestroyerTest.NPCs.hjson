@@ -28,6 +28,18 @@ ConstitutionBoss: {
 	DisplayName: Constitution
 	InternalName: Constitution
 	DespawnMessage: "{0} returns to the sky, deeming you unworthy..."
+	BestiaryEntry1:
+		'''
+		Many millenia ago, a parasitic mass began taking over small asteroids, breaking them apart and consuming them to make more if itself.
+		In due time, they came to understand that their infection advanced quicker when they were separated into chunks before conglomerating,
+		so the mass split itself into thousands of smaller copies.
+		How they end up taking the form of a sword is up to interpretation. Some believe they parasitized swords from a civilization and couldn't break them apart, others believe that it is a preference of the mass itself.
+		The constituents fly around the cosmos, infecting more asteroids to this day.
+		With the smaller form comes an occupational hazard: being shattered by fast-moving objects.
+		Those that are dispatched in such a manner tend not to reform without the help of fellow constituents, due to how fast their pieces spread apart.
+		Thus, they drift endlessly until they end up in the thrall of the gravity of a greater mass, such as Terraria.
+		There, they lay in wait, calling to their constituents to come find them and put them with matching pieces.
+		'''
 
 	Fables: {
 		Name: Constitution
@@ -47,7 +59,6 @@ WyvernCorpseHead: {
 		And so, to dare harm, let alone slay, such a divine figure is unforgivable. A crime without equal and beyond compare, even to genocide.
 		Despite that, someone actually took it upon themselves to shoot The Great Wyvern as it flew over, sending it careening into the Crimson.
 		'''
-	Hint: Not much remains of the Great Wyvern, but if you can repurpose the small amounts of its soul inside the [i:DestroyerTest/Item_BlessingAltar] Blessing Altar, you may be able to draw it to you.
 	BestiaryEntry2:
 		'''
 		The crimson hivemind, whos members were too feeble-minded to understand divinity, wasted no time gorging on the Wyvern's Bountiful feathers and fur.

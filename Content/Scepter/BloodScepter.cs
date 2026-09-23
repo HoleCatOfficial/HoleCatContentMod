@@ -39,7 +39,7 @@ namespace DestroyerTest.Content.Scepter
             ThrowCrit = 8;
             KB = 8;
             AdditiveValue = Item.sellPrice(silver: 80);
-            Rarity = ModContent.RarityType<CerisePinkRarity>();
+            Rarity = ModContent.RarityType<WineRarity>();
 
             // Assign projectile types
             ShootID = ModContent.ProjectileType<BloodShot>();

@@ -1357,15 +1357,10 @@ TenebrousArchmageHat: {
 	Tooltip: 10% increased Scepter Throw Speed
 	SetBonus:
 		'''
-		30% increased Movement Speed.
-		6% increased Damage Reduction.
-		15 increased Scepter Armor Penetration.
+		10% increased Movement Speed.
 		15% increased Scepter Class Damage.
 
-		When below half health, you gain a defensive aura that damages enemies and inflicts them with Shimmering Flames.
-
-		Pressing the Armor Set Bonus key will spawn three shimmering shard clusters in random locations near you.
-		Being within their area of effect will boost damage by 20%.
+		Scepter's have a 33% chance to fire homing shimmering flames alongside their primary fires.
 		'''
 	DisplayName: Tenebrous Archmage Hat
 }
@@ -3793,7 +3788,7 @@ BrineFlask: {
 
 LivingPendant: {
 	DisplayName: Living Pendant
-	Tooltip: Scepter Shots heal for 5% of their damage on-hit.
+	Tooltip: Scepter Class projectiles create homing orbs that heal for 5% of the dealt damage on-hit. Has a 60 second cooldown.
 }
 
 TrueRiftMaker: {
@@ -3985,17 +3980,26 @@ ElementalScepter: {
 }
 
 PendantofUnity: {
-	Tooltip: ""
+	Tooltip:
+		'''
+		20% increased Scepter Class damage.
+		Scepter class projectiles ignore 10 points of enemy defense.
+		Scepter Throw Range increased by 120.
+		'''
 	DisplayName: Pendant of Unity
 }
 
 InfectedPendant: {
-	Tooltip: ""
+	Tooltip:
+		'''
+		You have a chance to release [i:DestroyerTest/VisceraPendant] Enchanted Blood and [i:DestroyerTest/DetritizedPendant] Tiny Eaters when throwing a scepter.
+		13% increased Scepter Critical Strike Chance.
+		'''
 	DisplayName: Infected Pendant
 }
 
 HelicitePendant: {
-	Tooltip: ""
+	Tooltip: 4% increased Scepter Class Damage.
 	DisplayName: Helicite Pendant
 }
 
@@ -4004,19 +4008,23 @@ ElementalPendant: {
 		'''
 		Increases Scepter Class Damage by {0}.
 		Increases Scepter Class crit chance by {1}.
-		Increases Scepter Class armor penetration by 5.
-		You get the following imbues in Expert Mode:
+		Increases Scepter Class armor penetration by 15.
+		You have a 50% chance to release Terra Bolts and/or Terra Eaters when throwing a scepter.
+		Scepter Class projectiles will inflict the following debuffs on top of whatever Imbue you currently have.
 		[i:DestroyerTest/InfectedPendant] Cursed Flames,
 		[i:DestroyerTest/InfectedPendant] Ichor,
 		[i:DestroyerTest/FrigidPendant] Frostbite,
 		[i:DestroyerTest/SmolderingPendant] Hellfire
+		[i:DestroyerTest/HelicitePendant] Daylight Overload
+
+		'Elemental harmony, now hung from your neck!'
 		'''
 	DisplayName: Elemental Pendant
 }
 
 FrigidPendant: {
 	DisplayName: Frigid Pendant
-	Tooltip: ""
+	Tooltip: Scepter Class projectiles ignore 15 points of enemy defense and inflict frostbite on top of existing imbues.
 }
 
 DarkUnity: {
@@ -4205,7 +4213,11 @@ ShadeInfernoPendant: {
 
 SmolderingPendant: {
 	DisplayName: Smoldering Pendant
-	Tooltip: ""
+	Tooltip:
+		'''
+		10% increased Scepter Class damage.
+		Scepter Class projectiles inflict hellfire on top of existing imbues.
+		'''
 }
 
 TenebrousScroll: {
@@ -5543,10 +5555,43 @@ FrostBracer: {
 
 AccursedScepter: {
 	DisplayName: Accursed Scepter
-	Tooltip: ""
+	Tooltip:
+		'''
+		Creates shadowflames around the cursor that home in on enemies and explode, inflicting shadowflame.
+		Throws create 4 homing gold chunks on hit.
+		'''
 }
 
 GildedGlove: {
 	DisplayName: Gilded Glove
-	Tooltip: ""
+	Tooltip:
+		'''
+		6% increased Scepter Class damage.
+		Scepter Throw range increased by 60.
+		30% increased Scepter Throw speed.
+		'''
+}
+
+ConstitutionArtifact: {
+	DisplayName: Constitution Artifact
+	Tooltip: Contains a small fragment of Constitution's Power
+}
+
+NightmareRoseArtifact: {
+	DisplayName: Nightmare Rose Artifact
+	Tooltip: Contains a small fragment of Idri's Soul
+}
+
+WyvernCorpseArtifact: {
+	DisplayName: Wyvern Corpse Artifact
+	Tooltip: Contains a small fragment of The Great Wyvern's Soul
+}
+
+SpectrumScepter: {
+	DisplayName: Spectrum Scepter
+	Tooltip:
+		'''
+		Fires fast moving Spectrum Bolts.
+		Throws create crystals on hit that inflict Light Inferno.
+		'''
 }

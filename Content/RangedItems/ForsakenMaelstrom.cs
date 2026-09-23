@@ -1,13 +1,16 @@
-﻿using DestroyerTest.Content.Projectiles.AmmoProjectiles;
+﻿using System.Collections.Generic;
+using DestroyerTest.Common;
+using DestroyerTest.Content.Magic;
+using DestroyerTest.Content.Projectiles.AmmoProjectiles;
+using DestroyerTest.Content.Projectiles.Weapon.Ranged;
+using DestroyerTest.Content.Remnants;
 using DestroyerTest.Content.Resources;
+using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using DestroyerTest.Content.Projectiles.Weapon.Ranged;
-using DestroyerTest.Rarity;
 
 namespace DestroyerTest.Content.RangedItems
 {
@@ -15,7 +18,10 @@ namespace DestroyerTest.Content.RangedItems
     {
         public override void SetStaticDefaults()
         {
-
+            if (ModLoader.HasMod("QoLCompendium"))
+            {
+                ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<Contempt>();
+            }
         }
 
         public override void SetDefaults()
@@ -48,6 +54,16 @@ namespace DestroyerTest.Content.RangedItems
         public override bool CanUseItem(Player player)
         {
             return player.ownedProjectileCounts[Item.shoot] < 1;
+        }
+
+        public override void AddRecipes()
+        {
+            if (DTCrossMod.RemnantsIsLoaded)
+            {
+                CreateRecipe()
+                    .AddIngredient<NightmareRoseArtifact>(3)
+                    .Register();
+            }
         }
     }
 }

@@ -6,6 +6,7 @@ using DestroyerTest.Content.Tiles;
 using DestroyerTest.Content.Tiles.RiftConfigurator;
 using DestroyerTest.Content.Tiles.Riftplate;
 using DestroyerTest.Rarity;
+using GlowmaskHelper.Content;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
@@ -16,7 +17,8 @@ namespace DestroyerTest.Content.Equips
 	// The AutoloadEquip attribute automatically attaches an equip texture to this item.
 	// Providing the EquipType.Head value here will result in TML expecting a X_Head.png file to be placed next to the item's main texture.
 	[AutoloadEquip(EquipType.Head)]
-	public class RiftPlateBerserkerHelm : ModItem
+    [AutoloadGlowmask]
+    public class RiftPlateBerserkerHelm : ModItem
 	{
 
 
@@ -33,7 +35,8 @@ namespace DestroyerTest.Content.Equips
 			Item.defense = 10; // The amount of defense the item will give when equipped
 		}
 
-        public override void UpdateEquip(Player player) {
+        public override void UpdateEquip(Player player) 
+		{
 			player.GetCritChance(DamageClass.Melee) += 4;
 
 		}
@@ -61,7 +64,9 @@ namespace DestroyerTest.Content.Equips
 		public static string Key = "Mods.DestroyerTest.Items.RiftPlateBerserkerHelm";
 		public override void UpdateArmorSet(Player player)
 		{
-			if (player.body == ModContent.ItemType<RiftplateTitanBody>() &&
+
+            player.AddBuff(ModContent.BuffType<RiftBallBuff>(), 30);
+            if (player.body == ModContent.ItemType<RiftplateTitanBody>() &&
 				player.legs == ModContent.ItemType<RiftplateTitanGreaves>())
 			{
 				TitanBonus(player);
@@ -77,7 +82,7 @@ namespace DestroyerTest.Content.Equips
 		{
 			player.GetDamage(DamageClass.Melee) += 0.15f;
             player.GetModPlayer<RiftBerserkerRunSpeeds>().Slow = true;
-            player.AddBuff(ModContent.BuffType<RiftBallBuff>(), 3600);
+           
 			player.setBonus = Language.GetTextValue($"{Key}.SetBonusTitan");
 		}
 
@@ -87,7 +92,6 @@ namespace DestroyerTest.Content.Equips
 			player.GetAttackSpeed(DamageClass.Melee) += 0.12f;
 			player.GetAttackSpeed(DamageClass.SummonMeleeSpeed) += 0.10f;
 			player.GetModPlayer<RiftBerserkerRunSpeeds>().Fast = true;
-			player.AddBuff(ModContent.BuffType<RiftBallBuff>(), 3600);
             player.setBonus = Language.GetTextValue($"{Key}.SetBonusAgility");
         }
 

@@ -1,15 +1,17 @@
 using DestroyerTest.Common;
-using DestroyerTest.Content.Scepter;
+using DestroyerTest.Common.Systems;
+using DestroyerTest.Content.Buffs.Imbues;
+using DestroyerTest.Content.Remnants;
 using DestroyerTest.Content.Resources;
+using DestroyerTest.Content.Scepter;
 using DestroyerTest.Content.Tiles;
 using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
 using Newtonsoft.Json.Linq;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.Audio;
-using DestroyerTest.Content.Buffs.Imbues;
 
 namespace DestroyerTest.Content.Consumables.Flasks
 {
@@ -46,7 +48,15 @@ namespace DestroyerTest.Content.Consumables.Flasks
                 .AddIngredient(ItemID.BottledWater)
                 .AddIngredient<StellarMatter>(8)
                 .AddTile(TileID.ImbuingStation)
+				.AddCondition(DownedBossSystem.downedConstitutionCondition)
                 .Register();
+
+            if (DTCrossMod.RemnantsIsLoaded)
+            {
+                CreateRecipe(12)
+                    .AddIngredient<ConstitutionArtifact>(3)
+                    .Register();
+            }
 		}
 	}
 }

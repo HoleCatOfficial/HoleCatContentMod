@@ -73,15 +73,15 @@ namespace DestroyerTest.Content.Consumables
         {
             // We have to replicate the expert drops from MinionBossBody here
 
-            itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<Constitution>(), 1, 1, 1));
-            itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<StellarMatter>(), 1, 10, 20));
-            itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<StellarTintedGoggles>(), 4, 1, 1));
-            itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<GalantineScroll>(), 6, 1, 1));
-            itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<StellarBow>(), 2, 1, 1));
-            itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<StellarFlames>(), 3, 1, 1));
-            itemLoot.Add(new PityChanceDropRule(Type, ModContent.ItemType<GalantineKnife>(), 0.02f, 0.05f)); // +1% chance per fail
-            itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<StellarFoxScepter>(), 3, 1, 1));
-            itemLoot.Add(ItemDropRule.NormalvsExpertNotScalingWithLuck(ModContent.ItemType<GalantineIncense>(), 100, 1));
+            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<Constitution>(), 1, 1, 1));
+            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<StellarMatter>(), 1, 10, 20));
+            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<StellarTintedGoggles>(), 4, 1, 1));
+            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<GalantineScroll>(), 6, 1, 1));
+            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<StellarBow>(), 2, 1, 1));
+            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<StellarFlames>(), 3, 1, 1));
+            itemLoot.Add(new PityChanceDropRule(Type, ModContent.ItemType<GalantineKnife>(), 0.02f, 0.05f));
+            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<StellarFoxScepter>(), 3, 1, 1));
+            itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<GalantineIncense>()));
             itemLoot.Add(new PityAmountDropRule(Type, ModContent.ItemType<StellarFlamesFlask>(), 0.5f, 1, 2, 20));
             itemLoot.Add(ItemDropRule.Coins(350, true));
         }
@@ -102,14 +102,4 @@ namespace DestroyerTest.Content.Consumables
             }
         }
     }
-    
-    public class LootBagDropHandler_Constitution : GlobalNPC
-	{
-		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot) {
-
-			if (npc.type == ModContent.NPCType<ConstitutionBoss>()) {
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ConstitutionLootBag>(), 1, 1, 1));
-			}
-		}
-	}
 }

@@ -12,6 +12,10 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
 {
     public class DiabolicScroll : LateHardmodeScroll
     {
+        public override void SetStaticDefaults()
+        {
+            DTUtils.NoUpgradeStack[Type] = true;
+        }
         public override void SetDefaults()
         {
             Item.width = 32;

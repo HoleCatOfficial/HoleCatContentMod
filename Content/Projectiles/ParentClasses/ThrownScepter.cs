@@ -230,6 +230,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
         public bool OnReturnFlag = false;
         List<float> OldRotations = new();
+        float returnspeed = 12f;
         public virtual void DefaultBehaviour()
         {
             // Decrease the cooldown timer on each tick
@@ -277,6 +278,8 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             DTConfig config = ModContent.GetInstance<DTConfig>();
             DTOptimizationsConfig optcfg = ModContent.GetInstance<DTOptimizationsConfig>();
 
+
+           
             if (!returning)
             {
                 
@@ -289,12 +292,14 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
                     {
                         Main.NewText($"Range: {player.ScepterClass().Range}, FlightTime: {flightTime}, Multiplier: {returnDelayMultiplier}");
                     }
+                    returnspeed = 24f;
                     returning = true;
                 }
             }
 
             if (returning)
             {
+                
                 if (!OnReturnFlag)
                 {
                     OnReturn();
@@ -302,10 +307,10 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
                 }
                 ArmCatchAnimate(player);
 
-                Projectile.SmoothMoveToPoint(player.MountedCenter, 12f * (player.ScepterClass().ThrowSpeedModifier), 120);
+                Projectile.SmoothMoveToPoint(player.MountedCenter, returnspeed * (player.ScepterClass().ThrowSpeedModifier), 100);
 
                 // If close enough, remove the projectile
-                if (Projectile.Distance(player.Center) < 20) // 8 pixels radius
+                if (Projectile.Distance(player.Center) < 50) // 8 pixels radius
                 {
                     HitCount = 0;
                     existenceTimer = 0;

@@ -1,11 +1,12 @@
-﻿using DestroyerTest.Common;
+﻿using System;
+using DestroyerTest.Common;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Weapon.Rogue;
 using DestroyerTest.Content.RangedItems;
+using DestroyerTest.Content.Remnants;
 using DestroyerTest.Content.SummonItems;
 using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
-using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -19,7 +20,10 @@ namespace DestroyerTest.Content.RogueItems
 
         public override void SetStaticDefaults()
         {
-            ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<BlossomBeater>();
+            if (ModLoader.HasMod("QoLCompendium"))
+            {
+                ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<BlossomBeater>();
+            }
         }
 
         public int HitCount = 0;
@@ -42,6 +46,16 @@ namespace DestroyerTest.Content.RogueItems
             Item.shoot = ModContent.ProjectileType<CursedHammerThrown>();
             Item.shootSpeed = 55f;
             Item.noUseGraphic = true;
+        }
+
+        public override void AddRecipes()
+        {
+            if (DTCrossMod.RemnantsIsLoaded)
+            {
+                CreateRecipe()
+                    .AddIngredient<NightmareRoseArtifact>(3)
+                    .Register();
+            }
         }
     }
 }

@@ -1,11 +1,13 @@
   
+using DestroyerTest.Common;
+using DestroyerTest.Content.Remnants;
 using DestroyerTest.Content.Resources.Cloths;
+using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using DestroyerTest.Rarity;
 
 namespace DestroyerTest.Content.Resources
 {
@@ -26,5 +28,15 @@ namespace DestroyerTest.Content.Resources
 			Item.maxStack = Item.CommonMaxStack;
             Item.rare = ModContent.RarityType<StellarRarity>();
 		}
-	}
+
+        public override void AddRecipes()
+        {
+            if (DTCrossMod.RemnantsIsLoaded)
+            {
+                CreateRecipe(10)
+                    .AddIngredient<ConstitutionArtifact>()
+                    .Register();
+            }
+        }
+    }
 }

@@ -1,4 +1,5 @@
 
+using System.Linq;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Resources;
@@ -6,8 +7,8 @@ using DestroyerTest.Content.Tiles;
 using DestroyerTest.Content.Tiles.RiftConfigurator;
 using DestroyerTest.Content.Tiles.Riftplate;
 using DestroyerTest.Rarity;
+using GlowmaskHelper.Content;
 using Microsoft.Xna.Framework;
-using System.Linq;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -17,7 +18,8 @@ using Terraria.ModLoader;
 namespace DestroyerTest.Content.Equips
 {
 	[AutoloadEquip(EquipType.Wings)]
-	public class RiftPropulsion : ModItem
+    [AutoloadGlowmask]
+    public class RiftPropulsion : ModItem
 	{
 
 		public override void SetStaticDefaults() {

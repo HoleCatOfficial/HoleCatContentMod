@@ -1,4 +1,7 @@
 ﻿
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Entities;
@@ -7,15 +10,13 @@ using DestroyerTest.Content.MeleeWeapons;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Weapon.Summon;
 using DestroyerTest.Content.RangedItems;
+using DestroyerTest.Content.Remnants;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.SummonItems;
 using DestroyerTest.Content.Tiles;
 using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -36,7 +37,10 @@ namespace DestroyerTest.Content.SummonItems
 
             ItemID.Sets.StaffMinionSlotsRequired[Type] = 1f;
 
-            ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<Contempt>();
+            if (ModLoader.HasMod("QoLCompendium"))
+            {
+                ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<ForsakenMaelstrom>();
+            }
         }
 
         public override void SetDefaults()
@@ -70,6 +74,16 @@ namespace DestroyerTest.Content.SummonItems
         {
             player.AddBuff(Item.buffType, 2);
             return true;
+        }
+
+        public override void AddRecipes()
+        {
+            if (DTCrossMod.RemnantsIsLoaded)
+            {
+                CreateRecipe()
+                    .AddIngredient<NightmareRoseArtifact>(3)
+                    .Register();
+            }
         }
     }
 }

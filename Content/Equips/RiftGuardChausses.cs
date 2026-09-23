@@ -1,17 +1,19 @@
-﻿using Terraria;
+﻿using DestroyerTest.Content.Resources;
+using DestroyerTest.Content.RiftArsenal;
+using DestroyerTest.Content.Tiles.RiftConfigurator;
+using DestroyerTest.Content.Tiles.Riftplate;
+using DestroyerTest.Rarity;
+using GlowmaskHelper.Content;
+using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Rarity;
-using DestroyerTest.Content.Tiles.Riftplate;
-using DestroyerTest.Content.Tiles.RiftConfigurator;
-using DestroyerTest.Content.RiftArsenal;
 
 namespace DestroyerTest.Content.Equips
 {
 	[AutoloadEquip(EquipType.Legs)]
-	public class RiftGuardChausses : ModItem, IRechargeFunctionality
+    [AutoloadGlowmask]
+    public class RiftGuardChausses : ModItem, IRechargeFunctionality
     {
         public bool Energized
         {

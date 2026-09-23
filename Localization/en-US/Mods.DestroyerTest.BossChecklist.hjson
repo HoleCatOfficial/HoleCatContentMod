@@ -1,11 +1,12 @@
-Constitution.Hint: Speak with the merchant after defeating skeletron...
-WyvernCorpse.Hint: Kill a vicious bunny, and use it's fresh, bleeding body to bait out the Wyvern.
+ConstitutionBoss.Hint: Hold a [i:DestroyerTest/BladeChunk] Blade Chunk up to the sky. Its resonant energy will signal for others to arrive.
+WyvernCorpse.Hint: Not much remains of the Great Wyvern, but if you can repurpose the small amounts of its soul inside the [i:DestroyerTest/Item_BlessingAltar] Blessing Altar, you may be able to draw it to you.
 NightmareRose.Hint:
 	'''
 	Obtain a Collection of stories no person should ever be reading, and unfurl its pages in the corruption. 
-	Please Note: The boss will spawn with its Bottom Center on top of the cursor, and will fall to a solid tile below.
-	Keep that in mind when spawning.
+	The Rose requires all solid tiles in a sizable area to be removed and for the land below the cleared area to be flat and filled in.
+	In Eternity Mode / Death Mode, this requirement is ignored.
 	'''
 CursedFlameNodeMB.Hint: Spawns naturally in the corruption after Plantera is defeated.
 IchorNodeMB.Hint: Spawns naturally in the crimson after Plantera is defeated.
 BlessedNodeMB.Hint: Spawns naturally in the hallow after Plantera is defeated.
+TenebrousConstruct.Hint: This boss and it's related content is under construction and is reserved for a later update. Thus, you will have to cheat in the spawn item.

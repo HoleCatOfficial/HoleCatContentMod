@@ -1,21 +1,23 @@
+using DestroyerTest.Common;
+using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.SummonItems;
 using DestroyerTest.Content.Tiles;
+using DestroyerTest.Content.Tiles.RiftConfigurator;
 using DestroyerTest.Content.Tiles.Riftplate;
+using DestroyerTest.Rarity;
+using GlowmaskHelper.Content;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using DestroyerTest.Rarity;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Tiles.RiftConfigurator;
 
 namespace DestroyerTest.Content.Equips
 {
-	// The AutoloadEquip attribute automatically attaches an equip texture to this item.
-	// Providing the EquipType.Head value here will result in TML expecting a X_Head.png file to be placed next to the item's main texture.
-	[AutoloadEquip(EquipType.Head)]
+    // The AutoloadEquip attribute automatically attaches an equip texture to this item.
+    // Providing the EquipType.Head value here will result in TML expecting a X_Head.png file to be placed next to the item's main texture.
+    [AutoloadGlowmask]
+    [AutoloadEquip(EquipType.Head)]
 	public class RiftPlateHoodedJaw : ModItem
 	{
 
@@ -58,7 +60,8 @@ namespace DestroyerTest.Content.Equips
 		public override void UpdateArmorSet(Player player) 
 		{
 			player.maxMinions += 4;
-			if (player.body == ModContent.ItemType<RiftplateTitanBody>() &&
+            player.AddBuff(ModContent.BuffType<RiftBallBuff>(), 30);
+            if (player.body == ModContent.ItemType<RiftplateTitanBody>() &&
 				player.legs == ModContent.ItemType<RiftplateTitanGreaves>())
 			{
 				TitanBonus(player);
@@ -75,14 +78,12 @@ namespace DestroyerTest.Content.Equips
 			player.GetDamage(DamageClass.Summon) += 0.25f;
 			player.statLifeMax2 += 15;
             player.GetModPlayer<RiftBerserkerRunSpeeds>().Slow = true;
-            player.AddBuff(ModContent.BuffType<RiftBallBuff>(), 3600);
 		}
 
 		private void AgilityBonus(Player player)
 		{
 			player.GetAttackSpeed(DamageClass.SummonMeleeSpeed) += 0.16f;
             player.GetModPlayer<RiftBerserkerRunSpeeds>().Fast = true;
-            player.AddBuff(ModContent.BuffType<RiftBallBuff>(), 3600);
 		}
 
 		public override void AddRecipes()

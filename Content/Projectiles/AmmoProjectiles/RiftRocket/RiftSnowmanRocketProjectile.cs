@@ -1,8 +1,9 @@
-﻿using DestroyerTest.Common;
+﻿using System;
+using DestroyerTest.Common;
 using DestroyerTest.Common.Interfaces;
 using DestroyerTest.Content.Dusts;
+using GlowmaskHelper.Content;
 using Microsoft.Xna.Framework;
-using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -10,6 +11,7 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.AmmoProjectiles.RiftRocket
 {
+    [AutoloadGlowmask]
     public class RiftSnowmanRocketProjectile : ModProjectile, IHomingProjectile
     {
         bool IHomingProjectile.TracksNPCs => true;

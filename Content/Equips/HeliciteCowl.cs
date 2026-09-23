@@ -40,7 +40,6 @@ namespace DestroyerTest.Content.Equips
 
 		public override void UpdateArmorSet(Player player) {
 			player.GetDamage<RangedDamageClass>() *= 3.0f;
-			player.AddBuff(ModContent.BuffType<RiftBallBuff>(), 6);
 			player.AddBuff(ModContent.BuffType<AirSeal>(), 6);
 		}
 

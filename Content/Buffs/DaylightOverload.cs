@@ -64,7 +64,20 @@ namespace DestroyerTest.Content.Buffs
                     ParticleEngine.ShaderParticles.Add(Shine);
                 }
 
-				if (npc.boss == false)
+				bool OwnedByBoss()
+				{
+					if (npc.realLife != -1)
+					{
+						if (Main.npc[npc.realLife].boss)
+						{
+							return true;
+						}
+					}
+
+					return false;
+				}
+
+				if (npc.boss == false && !OwnedByBoss())
                 {
                     npc.velocity *= 0.65f;
                 }

@@ -3,6 +3,7 @@ using System.Linq;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.player.Accessory;
+using DestroyerTest.Content.Remnants;
 using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
 using Terraria;
@@ -37,7 +38,15 @@ namespace DestroyerTest.Content.Equips
             }
         }
 
-
+        public override void AddRecipes()
+        {
+            if (DTCrossMod.RemnantsIsLoaded)
+            {
+                CreateRecipe()
+                    .AddIngredient<NightmareRoseArtifact>(3)
+                    .Register();
+            }
+        }
     }
     
     public class DBPlayer : ModPlayer

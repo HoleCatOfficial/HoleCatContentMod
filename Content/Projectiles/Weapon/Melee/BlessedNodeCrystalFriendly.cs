@@ -74,7 +74,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.Blessed
 
         public override void AI()
         {
-
+            Projectile.ResetExcessTrailPoints();
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
             GlowMult = MathHelper.Lerp(0.25f, 1f, (float)Math.Sin(Main.GameUpdateCount * 0.05f) * 0.5f + 0.5f);
         }

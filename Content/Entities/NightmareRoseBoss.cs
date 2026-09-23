@@ -25,6 +25,7 @@ using DestroyerTest.Content.Projectiles.Boss.NodeBoss.Blessed;
 using DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame;
 using DestroyerTest.Content.Projectiles.Boss.VampireBoss;
 using DestroyerTest.Content.RangedItems;
+using DestroyerTest.Content.Remnants;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.RiftBiome;
 using DestroyerTest.Content.RogueItems;
@@ -480,8 +481,9 @@ namespace DestroyerTest.Content.Entities
                 Rectangle SearchArea = Utils.CenteredRectangle(NPC.Bottom.ToTileCoordinates().ToWorldCoordinates() + new Vector2(0, 5 * 16), new Vector2(125 * 16, 8 * 16));
                 Rectangle SearchArea2 = Utils.CenteredRectangle(NPC.Bottom.ToTileCoordinates().ToWorldCoordinates() + new Vector2(0, -50 * 16), new Vector2(125 * 16, 100 * 16));
                 //Visualize
-                Dust.DrawDebugBox(SearchArea);
-                Dust.DrawDebugBox(SearchArea2);
+                Dust.QuickBox(SearchArea.TopLeft(), SearchArea.BottomRight(), 12, Color.Red, null);
+                Dust.QuickBox(SearchArea2.TopLeft(), SearchArea2.BottomRight(), 12, Color.Red, null);
+
 
                 /*
                 bool TileCheck = WorldUtils.Find(
@@ -2721,6 +2723,11 @@ namespace DestroyerTest.Content.Entities
             notExpertRule.OnSuccess(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<BlossomBeater>(), 2, 1, 1));
             notExpertRule.OnSuccess(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<ForsakenMaelstrom>(), 4, 1, 1));
             notExpertRule.OnSuccess(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<HaepienNodeCharm>(), 6, 1, 1));
+
+            if (DTCrossMod.RemnantsIsLoaded)
+            {
+                notExpertRule.OnFailedConditions(ItemDropRule.Common(ModContent.ItemType<NightmareRoseArtifact>()));
+            }
 
             npcLoot.Add(notExpertRule);
 

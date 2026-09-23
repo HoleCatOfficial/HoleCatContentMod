@@ -1,6 +1,7 @@
 ﻿using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Equips;
+using GlowmaskHelper.Content;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib.Content.Particles;
@@ -12,6 +13,7 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.AmmoProjectiles.RiftRocket
 {
+    [AutoloadGlowmask]
     public class RiftGrenadeProjectile : ModProjectile
     {
         public override void SetStaticDefaults()

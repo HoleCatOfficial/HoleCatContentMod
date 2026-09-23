@@ -323,7 +323,9 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         {
             for (int i = 0; i < 4; i++)
             {
-                Dust.NewDustPerfect(Projectile.Center, KillDust, Main.rand.NextVector2Circular(10, 10), 0, DustColor, 1.4f);
+                PixelParticle Pixel = new();
+                Pixel.Initialize(Projectile.Center, Main.rand.NextVector2Circular(5f, 5f), TrailColor, 2f);
+                ParticleEngine.Particles.Add(Pixel);
             }
         }
 

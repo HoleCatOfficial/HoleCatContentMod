@@ -1,29 +1,31 @@
+using System;
+using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
+ 
+using DestroyerTest.Content.Equips.AuraThiefSet;
 using DestroyerTest.Content.MeleeWeapons;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.Resources.Cloths;
+using DestroyerTest.Content.RiftBiome.RiftSurfaceResources;
 using DestroyerTest.Content.SummonItems;
 using DestroyerTest.Content.Tiles;
 using DestroyerTest.Rarity;
+using GlowmaskHelper.Content;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using System;
- 
-using DestroyerTest.Content.Equips.AuraThiefSet;
-using DestroyerTest.Content.RiftBiome.RiftSurfaceResources;
-using DestroyerTest.Common;
-using OpusLib;
 
 namespace DestroyerTest.Content.Equips
 {
 	[AutoloadEquip(EquipType.Head)]
-	public class RiftHalo : ModItem
+    [AutoloadGlowmask]
+    public class RiftHalo : ModItem
 	{
 
 		public int ParticleSpawnTimer = 0;
@@ -52,7 +54,7 @@ namespace DestroyerTest.Content.Equips
 		}
 
 		public override void UpdateArmorSet(Player player) {
-			player.AddBuff(ModContent.BuffType<RiftBallBuff>(), 3600);
+			player.AddBuff(ModContent.BuffType<RiftBallBuff>(), 30);
 			player.GetDamage(ModContent.GetInstance<ScepterClass>()) *= 1.12f;
 			player.ScepterClass().Range += 100;
 			player.ScepterClass().ThrowSpeedModifier *= 1.45f; 

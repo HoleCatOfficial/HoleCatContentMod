@@ -2,8 +2,10 @@
 using DestroyerTest.Common;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Weapon.Melee;
+using DestroyerTest.Content.Remnants;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.Resources.Cloths;
+using DestroyerTest.Content.SummonItems;
 using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
 using Terraria;
@@ -21,6 +23,11 @@ namespace DestroyerTest.Content.MeleeWeapons
         {
 			DTUtils.TooltipScaleMult[Type] = 1.1f;
             DTUtils.isSpecialSwingSword[Type] = true;
+
+			if (ModLoader.HasMod("QoLCompendium"))
+			{
+                ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<RibChainsaw>();
+            }
         }
 		public override void SetDefaults() 
 		{
@@ -88,5 +95,14 @@ namespace DestroyerTest.Content.MeleeWeapons
 			return true; 
 		}
 
-	}
+        public override void AddRecipes()
+        {
+            if (DTCrossMod.RemnantsIsLoaded)
+            {
+                CreateRecipe()
+                    .AddIngredient<WyvernCorpseArtifact>(3)
+                    .Register();
+            }
+        }
+    }
 }

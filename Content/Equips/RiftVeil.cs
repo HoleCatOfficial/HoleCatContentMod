@@ -4,6 +4,7 @@ using DestroyerTest.Content.Resources.Cloths;
 using DestroyerTest.Content.RiftBiome.RiftSurfaceResources;
 using DestroyerTest.Rarity;
 using DestroyerTest.Rarity.Scepter;
+using GlowmaskHelper.Content;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -11,6 +12,7 @@ using Terraria.ModLoader;
 namespace DestroyerTest.Content.Equips
 {
     [AutoloadEquip(EquipType.Body)]
+    [AutoloadGlowmask]
     public class RiftVeil : ModItem
     {
         public override void Load()
@@ -20,10 +22,12 @@ namespace DestroyerTest.Content.Equips
                 return;
             }
             EquipLoader.AddEquipTexture(Mod, $"{Texture}_{EquipType.Legs}", EquipType.Legs, this);
+            GlowmaskLoader.QueueGlowmaskRegistration($"{Texture}_Legs_Glow");
         }
 
         public override void SetStaticDefaults()
         {
+            GlowmaskLoader.AssignGlowmaskTexture_Equip(Item.glowMask, EquipType.Legs, EquipLoader.GetEquipSlot(Mod, "InfernalDress_Legs", EquipType.Legs));
             ArmorIDs.Body.Sets.HidesHands[Item.bodySlot] = false;
         }
 

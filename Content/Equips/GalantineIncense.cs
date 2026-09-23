@@ -3,22 +3,23 @@ using System;
 using System.Linq;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Buffs.Imbues;
 using DestroyerTest.Content.Projectiles;
+using DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss;
+using DestroyerTest.Content.Remnants;
 using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.GameContent.ObjectInteractions;
 using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using OpusLib;
-using DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss;
-using Terraria.GameContent;
-using DestroyerTest.Content.Buffs.Imbues;
 
 namespace DestroyerTest.Content.Equips
 {
@@ -46,7 +47,15 @@ namespace DestroyerTest.Content.Equips
             }
         }
 
-
+        public override void AddRecipes()
+        {
+            if (DTCrossMod.RemnantsIsLoaded)
+            {
+                CreateRecipe()
+                    .AddIngredient<ConstitutionArtifact>(6)
+                    .Register();
+            }
+        }
     }
     
     public class GalantineIncensePlayer : ModPlayer

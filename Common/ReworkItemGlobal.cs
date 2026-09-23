@@ -28,7 +28,10 @@ namespace DestroyerTest.Common
 
         public override void SetStaticDefaults()
         {
-            ItemID.Sets.ShimmerTransformToItem[ItemID.BeeKeeper] = ModContent.ItemType<ScepterOfVespae>();
+            if (ModLoader.HasMod("QoLCompendium"))
+            {
+                ItemID.Sets.ShimmerTransformToItem[ItemID.BeeKeeper] = ModContent.ItemType<ScepterOfVespae>();
+            }
         }
         public override void SetDefaults(Item entity)
         {

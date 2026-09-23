@@ -181,6 +181,7 @@ namespace DestroyerTest.Common.Systems
                 ModContent.ItemType<HoleCatHook>(),
 
                 ModContent.ItemType<RingFromBeyond>(),
+                ModContent.ItemType<HestiasBane>(),
 
                 ModContent.ItemType<MiniConstruct>(),
             };
@@ -262,7 +263,7 @@ namespace DestroyerTest.Common.Systems
             };
             public static BossChecklistEntry WyvernCorpse = new BossChecklistEntry(
                 Language.GetText("Mods.DestroyerTest.NPCs.WyvernCorpseHead.InternalName"),
-                Language.GetText("Mods.DestroyerTest.BossChecklist.WyvernCorpseHead.Hint"),
+                Language.GetText("Mods.DestroyerTest.BossChecklist.WyvernCorpse.Hint"),
                 ModContent.NPCType<WyvernCorpseHead>(),
                 18.0001f,
                 DownedBossSystem.downedWyvernCorpseBossCondition,
@@ -278,7 +279,7 @@ namespace DestroyerTest.Common.Systems
             };
             public static BossChecklistEntry NightmareRose = new BossChecklistEntry(
                 Language.GetText("Mods.DestroyerTest.NPCs.NightmareRoseBoss.InternalName"),
-                Language.GetText("Mods.DestroyerTest.BossChecklist.NightmareRoseBoss.Hint"),
+                Language.GetText("Mods.DestroyerTest.BossChecklist.NightmareRose.Hint"),
                 ModContent.NPCType<NightmareRoseBoss>(),
                 18.0001f,
                 DownedBossSystem.downedNightmareRoseBossCondition,
@@ -296,7 +297,7 @@ namespace DestroyerTest.Common.Systems
                 Language.GetText("Mods.DestroyerTest.NPCs.TenebrousConstruct.InternalName"),
                 Language.GetText("Mods.DestroyerTest.BossChecklist.TenebrousConstruct.Hint"),
                 ModContent.NPCType<TenebrousConstruct>(),
-                !ModLoader.HasMod("CalamityMod") ? 17.7195f : 22f,
+                !ModLoader.HasMod("CalamityMod") ? 17.7195f : 21.7f,
                 DownedBossSystem.downedTenebrousConstructBossCondition,
                 TenebrousConstructPortrait,
                 ModContent.ItemType<TenebrousConstructSummoner>(),

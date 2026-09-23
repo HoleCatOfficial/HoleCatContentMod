@@ -1,4 +1,5 @@
 ﻿using DestroyerTest.Common;
+using GlowmaskHelper.Content;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
@@ -8,6 +9,7 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.AmmoProjectiles.RiftRocket
 {
+    [AutoloadGlowmask]
     public class RiftMineProjectile : ModProjectile
     {
         public override void SetStaticDefaults()

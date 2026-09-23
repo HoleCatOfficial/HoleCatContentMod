@@ -3,6 +3,7 @@ using DestroyerTest.Common;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Weapon.Melee;
 using DestroyerTest.Content.RangedItems;
+using DestroyerTest.Content.Remnants;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.Resources.Cloths;
 using DestroyerTest.Content.SummonItems;
@@ -24,7 +25,10 @@ namespace DestroyerTest.Content.MeleeWeapons
 	{
         public override void SetStaticDefaults()
         {
-            ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<WyvernTail>();
+            if (ModLoader.HasMod("QoLCompendium"))
+            {
+                ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<WyvernTail>();
+            }
 			ItemID.Sets.IsChainsaw[Type] = true;
         }
         public const int HoldoutDistance = 45;
@@ -78,5 +82,14 @@ namespace DestroyerTest.Content.MeleeWeapons
             return false;
         }
 
+        public override void AddRecipes()
+        {
+            if (DTCrossMod.RemnantsIsLoaded)
+            {
+                CreateRecipe()
+                    .AddIngredient<WyvernCorpseArtifact>(3)
+                    .Register();
+            }
+        }
     }
 }

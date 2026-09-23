@@ -1,9 +1,11 @@
 
 
+using DestroyerTest.Common;
 using DestroyerTest.Content.MeleeWeapons;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Weapon.Summon;
 using DestroyerTest.Content.RangedItems;
+using DestroyerTest.Content.Remnants;
 using DestroyerTest.Rarity;
 using Terraria;
 using Terraria.ID;
@@ -16,7 +18,10 @@ namespace DestroyerTest.Content.SummonItems
 	{
         public override void SetStaticDefaults()
         {
-            ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<GreatFlayer>();
+            if (ModLoader.HasMod("QoLCompendium"))
+            {
+                ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<GreatFlayer>();
+            }
         }
 		public override void SetDefaults() {
 			// This method quickly sets the whip's properties.
@@ -33,5 +38,15 @@ namespace DestroyerTest.Content.SummonItems
 		public override bool MeleePrefix() {
 			return false;
 		}
-	}
+
+        public override void AddRecipes()
+        {
+            if (DTCrossMod.RemnantsIsLoaded)
+            {
+                CreateRecipe()
+                    .AddIngredient<WyvernCorpseArtifact>(3)
+                    .Register();
+            }
+        }
+    }
 }

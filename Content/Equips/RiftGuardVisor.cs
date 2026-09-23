@@ -1,29 +1,31 @@
+using BreadLibrary.Core.Graphics.Particles;
+using DestroyerTest.Common;
+using DestroyerTest.Content.Particles;
+using DestroyerTest.Content.Projectiles;
+using DestroyerTest.Content.Projectiles.Weapon.Ranged;
 using DestroyerTest.Content.Resources;
+using DestroyerTest.Content.RiftArsenal;
 using DestroyerTest.Content.SummonItems;
+using DestroyerTest.Content.Tiles.RiftConfigurator;
+using DestroyerTest.Content.Tiles.Riftplate;
+using DestroyerTest.Rarity;
+using GlowmaskHelper.Content;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using Terraria;
+ 
+using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using DestroyerTest.Rarity;
-using DestroyerTest.Common;
-using DestroyerTest.Content.RiftArsenal;
- 
-using Terraria.Audio;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.DataStructures;
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Projectiles.Weapon.Ranged;
-using OpusLib;
-using DestroyerTest.Content.Tiles.Riftplate;
-using DestroyerTest.Content.Tiles.RiftConfigurator;
-using BreadLibrary.Core.Graphics.Particles;
 
 namespace DestroyerTest.Content.Equips
 {
 	[AutoloadEquip(EquipType.Head)]
-	public class RiftGuardVisor : ModItem, IRechargeFunctionality
+    [AutoloadGlowmask]
+    public class RiftGuardVisor : ModItem, IRechargeFunctionality
     {
         public bool Energized
         {
@@ -45,12 +47,13 @@ namespace DestroyerTest.Content.Equips
 			Item.defense = 10;
 		}
 
-		public override bool IsArmorSet(Item head, Item body, Item legs) {
+		public override bool IsArmorSet(Item head, Item body, Item legs) 
+		{
 			return body.type == ModContent.ItemType<RiftGuardChestPlate>() && legs.type == ModContent.ItemType<RiftGuardChausses>();
 		}
 
 		public override void UpdateArmorSet(Player player) {
-			player.AddBuff(ModContent.BuffType<RiftBallBuff>(), 3600);
+			player.AddBuff(ModContent.BuffType<RiftBallBuff>(), 30);
 			if (player.TryGetModPlayer<RiftGuardPlayer>(out var guard))
 			{
 				guard.Active = true;

@@ -7,6 +7,7 @@ using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Equips;
+using DestroyerTest.Content.MeleeWeapons;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Boss;
@@ -1008,6 +1009,11 @@ namespace DestroyerTest.Content.Entities
             npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<RingFromBeyond>()));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<HestiasBane>()));
             npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Item_TenebrousConstructRelic>()));
+
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<HoleCatHead>(), 15));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<HoleCatBody>(), 15));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<HoleCatLegs>(), 15));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<HoleCatHook>(), 15));
         }
 
         public override bool ModifyDeathMessage(ref NetworkText customText, ref Color color)

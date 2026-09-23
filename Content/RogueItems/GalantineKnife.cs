@@ -1,6 +1,7 @@
 using DestroyerTest.Common;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Weapon.Rogue;
+using DestroyerTest.Content.Remnants;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.Tiles;
 using DestroyerTest.Content.Tiles.Riftplate;
@@ -42,6 +43,14 @@ namespace DestroyerTest.Content.RogueItems
             Item.DamageType = DamageClass.Throwing;
         }
 
-		
-	}
+        public override void AddRecipes()
+        {
+            if (DTCrossMod.RemnantsIsLoaded)
+            {
+                CreateRecipe()
+                    .AddIngredient<ConstitutionArtifact>(6)
+                    .Register();
+            }
+        }
+    }
 }

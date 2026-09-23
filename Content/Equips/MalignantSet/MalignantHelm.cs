@@ -62,6 +62,7 @@ namespace DestroyerTest.Content.Equips.MalignantSet
             player.GetDamage(DamageClass.Summon) += 0.16f;
             player.GetDamage(DamageClass.Throwing) += 0.1f;
             player.GetDamage<ScepterClass>() += 0.14f;
+            player.ScepterClass().ThrowSpeedModifier += 0.8f;
 
             /*
             if (DTCrossMod.CalamityIsLoaded)

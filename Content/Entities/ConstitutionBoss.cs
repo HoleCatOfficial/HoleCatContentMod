@@ -1,18 +1,33 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.IO;
+using System.Linq;
+using System.Runtime.Intrinsics.X86;
 using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
 using DestroyerTest.Common;
 using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Consumables;
+using DestroyerTest.Content.Consumables.Flasks;
 using DestroyerTest.Content.Equips;
+using DestroyerTest.Content.Equips.ScepterAccessories;
 using DestroyerTest.Content.Magic;
+using DestroyerTest.Content.MeleeWeapons;
 using DestroyerTest.Content.MeleeWeapons.SwordLineage;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Particles.Stellar;
 using DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss;
 using DestroyerTest.Content.RangedItems;
+using DestroyerTest.Content.Remnants;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.RiftBiome;
+using DestroyerTest.Content.RogueItems;
+using DestroyerTest.Content.Scepter;
+using DestroyerTest.Content.SummonItems;
 using DestroyerTest.Content.Tiles;
 using Humanizer.Localisation.DateToOrdinalWords;
 using log4net.Repository.Hierarchy;
@@ -23,14 +38,6 @@ using MonoMod.Cil;
 using OpusLib;
 using OpusLib.Content.Helpers;
 using ReLogic.Content;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.IO;
-using System.Linq;
-using System.Runtime.Intrinsics.X86;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -196,8 +203,8 @@ namespace DestroyerTest.Content.Entities
             NPCID.Sets.TrailingMode[Type] = 3;
             NPCID.Sets.MPAllowedEnemies[Type] = true;
             var drawModifier = new NPCID.Sets.NPCBestiaryDrawModifiers()
-            { // Influences how the NPC looks in the Bestiary
-                CustomTexturePath = "DestroyerTest/Content/Entities/ConstitutionBestiary", // If the NPC is multiple parts like a worm, a custom texture for the Bestiary is encouraged.
+            {
+             
                 Position = Vector2.Zero,
             };
             NPCID.Sets.NPCBestiaryDrawOffset.Add(NPC.type, drawModifier);
@@ -252,6 +259,41 @@ namespace DestroyerTest.Content.Entities
                 new FlavorTextBestiaryInfoElement(DTUtils.GetModNPCLocalizationEntry(this, 1)),
                 BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface
             });
+        }
+
+        public override void ModifyNPCLoot(NPCLoot npcLoot)
+        {
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Item_ConstitutionTrophy>(), 10));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<StellarMatter>(), 1, 35, 50));
+
+            LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
+
+            notExpertRule.OnSuccess(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<Constitution>(), 1, 1, 1));
+            notExpertRule.OnSuccess(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<StellarMatter>(), 1, 10, 20));
+            notExpertRule.OnSuccess(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<StellarTintedGoggles>(), 4, 1, 1));
+            notExpertRule.OnSuccess(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<GalantineScroll>(), 6, 1, 1));
+            notExpertRule.OnSuccess(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<StellarBow>(), 2, 1, 1));
+            notExpertRule.OnSuccess(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<StellarFlames>(), 3, 1, 1));
+            notExpertRule.OnSuccess(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<StellarFoxScepter>(), 3, 1, 1));
+            notExpertRule.OnSuccess(new PityChanceDropRule(Type, ModContent.ItemType<GalantineKnife>(), 0.02f, 0.05f));
+            notExpertRule.OnSuccess(new PityAmountDropRule(Type, ModContent.ItemType<StellarFlamesFlask>(), 0.5f, 1, 2, 20));
+            notExpertRule.OnSuccess(ItemDropRule.Coins(350, true));
+
+
+            if (DTCrossMod.RemnantsIsLoaded)
+            {
+                notExpertRule.OnFailedConditions(ItemDropRule.Common(ModContent.ItemType<ConstitutionArtifact>()));
+            }
+
+            notExpertRule.OnFailedConditions(ItemDropRule.Common(ModContent.ItemType<GalantineIncense>()));
+
+            npcLoot.Add(notExpertRule);
+
+            npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<ConstitutionLootBag>()));
+
+
+            npcLoot.Add(ItemDropRule.MasterModeDropOnAllPlayers(ModContent.ItemType<StarBadge>()));
+            npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Item_ConstitutionRelic>()));
         }
 
         public override bool CheckActive()

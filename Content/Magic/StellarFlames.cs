@@ -1,5 +1,8 @@
+using DestroyerTest.Common;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Weapon.Magic;
+using DestroyerTest.Content.Remnants;
+using DestroyerTest.Content.Scepter;
 using DestroyerTest.Rarity;
 using Terraria;
 using Terraria.Enums;
@@ -10,7 +13,15 @@ namespace DestroyerTest.Content.Magic
 {
 	public class StellarFlames : ModItem
 	{
-		public override void SetDefaults() {
+        public override void SetStaticDefaults()
+        {
+            if (ModLoader.HasMod("QoLCompendium"))
+            {
+                ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<StellarFoxScepter>();
+            }
+        }
+        
+        public override void SetDefaults() {
             
 			// DefaultToStaff handles setting various Item values that magic staff weapons use.
             // Hover over DefaultToStaff in Visual Studio to read the documentation!
@@ -32,8 +43,16 @@ namespace DestroyerTest.Content.Magic
 			Item.rare = ModContent.RarityType<StellarRarity>();
 		}
 
-		
-		
-		
-	}
+
+        public override void AddRecipes()
+        {
+            if (DTCrossMod.RemnantsIsLoaded)
+            {
+                CreateRecipe()
+                    .AddIngredient<ConstitutionArtifact>(3)
+                    .Register();
+            }
+        }
+
+    }
 }

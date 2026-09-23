@@ -1,19 +1,21 @@
+using DestroyerTest.Content.Resources;
+using DestroyerTest.Content.RiftArsenal;
+using DestroyerTest.Content.Tiles;
+using DestroyerTest.Content.Tiles.RiftConfigurator;
+using DestroyerTest.Content.Tiles.Riftplate;
+using DestroyerTest.Rarity;
+using GlowmaskHelper.Content;
 using rail;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using DestroyerTest.Content.Tiles;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Rarity;
-using DestroyerTest.Content.Tiles.Riftplate;
-using DestroyerTest.Content.Tiles.RiftConfigurator;
-using DestroyerTest.Content.RiftArsenal;
 
 namespace DestroyerTest.Content.Equips
 {
 	[AutoloadEquip(EquipType.Body)]
-	public class RiftGuardChestPlate : ModItem, IRechargeFunctionality
+    [AutoloadGlowmask]
+    public class RiftGuardChestPlate : ModItem, IRechargeFunctionality
     {
         public bool Energized
         {

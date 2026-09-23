@@ -943,7 +943,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
                 Opus.RingSpreadProjectileRandom(ProjectileID.InsanityShadowFriendly, 3, target.Center, 200, projectile.damage, 4, -14f);
             }
 
-            if (IsAThrownScepter && ZapScroll)
+            if (IsAThrownScepter && ZapScroll && Main.player[projectile.owner].ownedProjectileCounts[ModContent.ProjectileType<ElectricField>()] < 1)
             {
                 Projectile.NewProjectile(projectile.GetSource_OnHit(target), projectile.Center, Vector2.Zero, ModContent.ProjectileType<ElectricField>(), (int)(projectile.damage * 0.75f), 2, projectile.owner);
             }
@@ -956,7 +956,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
 
         public override bool OnTileCollide(Projectile projectile, Vector2 oldVelocity)
         {
-            if (IsAThrownScepter && ZapScroll && ((projectile.ModProjectile is ThrownScepter ts) && ts.TileCollideFXTimer <= 0))
+            if (IsAThrownScepter && ZapScroll && ((projectile.ModProjectile is ThrownScepter ts) && ts.TileCollideFXTimer <= 0) && Main.player[projectile.owner].ownedProjectileCounts[ModContent.ProjectileType<ElectricField>()] < 1)
             {
                 Projectile.NewProjectile(projectile.GetSource_FromAI(), projectile.Center, Vector2.Zero, ModContent.ProjectileType<ElectricField>(), (int)(projectile.damage * 0.75f), 2, projectile.owner);
             }

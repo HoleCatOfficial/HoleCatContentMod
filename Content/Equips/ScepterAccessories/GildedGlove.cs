@@ -30,7 +30,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
 
         public override void UpdateEquip(Player player)
         {
-            player.GetDamage<ScepterClass>() += 0.04f;
+            player.GetDamage<ScepterClass>() += 0.06f;
             player.ScepterClass().Range += 60;
             player.ScepterClass().ThrowSpeedModifier += 0.3f;
         }

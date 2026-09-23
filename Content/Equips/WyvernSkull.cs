@@ -1,8 +1,13 @@
 
 using System.Linq;
+using DestroyerTest.Common;
+using DestroyerTest.Content.Projectiles;
+using DestroyerTest.Content.Projectiles.player.Accessory;
+using DestroyerTest.Content.Remnants;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.Tiles;
 using DestroyerTest.Content.Tiles.Riftplate;
+using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -11,9 +16,6 @@ using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using DestroyerTest.Rarity;
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Content.Projectiles.player.Accessory;
 
 namespace DestroyerTest.Content.Equips
 {
@@ -39,10 +41,18 @@ namespace DestroyerTest.Content.Equips
 
 
 
-       
 
-		
-	}
+
+        public override void AddRecipes()
+        {
+            if (DTCrossMod.RemnantsIsLoaded)
+            {
+                CreateRecipe()
+                    .AddIngredient<WyvernCorpseArtifact>(3)
+                    .Register();
+            }
+        }
+    }
 
     public class WyvernSkullDash : ModPlayer
     {
