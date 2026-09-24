@@ -5595,3 +5595,12 @@ SpectrumScepter: {
 		Throws create crystals on hit that inflict Light Inferno.
 		'''
 }
+
+CosmicPing: {
+	Tooltip:
+		'''
+		Creates a flicker of energy at the cursor position.
+		Right click to throw the scepter.
+		'''
+	DisplayName: Cosmic Ping
+}

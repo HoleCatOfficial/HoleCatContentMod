@@ -756,6 +756,7 @@ namespace DestroyerTest.Content.Entities
                 new Vector2(arenaWidth, arenaHeight)
             );
 
+
             topSide = new Line(ArenaRect.TopRight(), ArenaRect.TopLeft());
             bottomSide = new Line(ArenaRect.BottomLeft(), ArenaRect.BottomRight());
             leftSide = new Line(ArenaRect.TopLeft(), ArenaRect.BottomLeft());

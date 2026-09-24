@@ -108,10 +108,13 @@ namespace DestroyerTest.Common
                 {
                     if (DTCrossMod.CalamityMod.TryFind("AngelTreads", out ModItem AngelTreads))
                     {
-                        recipe.AddIngredient<HeatseekerSilohs>();
-                        if (recipe.HasIngredient(ItemID.TerrasparkBoots))
+                        if (recipe.HasResult(AngelTreads.Type))
                         {
-                            recipe.RemoveIngredient(ItemID.TerrasparkBoots);
+                            if (recipe.HasIngredient(ItemID.TerrasparkBoots))
+                            {
+                                recipe.RemoveIngredient(ItemID.TerrasparkBoots);
+                            }
+                            recipe.AddIngredient<HeatseekerSilohs>();
                         }
                     }
                 }

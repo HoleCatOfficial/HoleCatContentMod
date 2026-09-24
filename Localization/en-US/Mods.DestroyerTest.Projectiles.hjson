@@ -791,3 +791,5 @@ LivingPendantHeal.DisplayName: Living Pendant Heal
 TerraBolt.DisplayName: Terra Bolt
 TerraBoltExplosion.DisplayName: Terra Bolt Explosion
 TerraEater.DisplayName: Terra Eater
+Ping.DisplayName: Ping
+CosmicPingThrown.DisplayName: Cosmic Ping Thrown
