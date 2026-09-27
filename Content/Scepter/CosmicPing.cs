@@ -59,7 +59,7 @@ namespace DestroyerTest.Content.Scepter
             if (player.altFunctionUse != 2)
             {
                 position = Main.MouseWorld;
-                velocity = Vector2.Zero;
+                velocity *= 0.0001f;
             }
         }
 

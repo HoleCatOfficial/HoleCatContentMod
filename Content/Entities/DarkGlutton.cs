@@ -3,6 +3,7 @@ using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Entities;
 using DestroyerTest.Content.Projectiles;
+using DestroyerTest.Content.Projectiles.EntitiesProjectiles;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.RiftBiome;
 using Microsoft.Xna.Framework;
@@ -139,7 +140,7 @@ namespace DestroyerTest.Content.Entities
         bool charging = false;
         int chargeWindup = 30;
         int chargeDuration = 60;
-        float chargeSpeed = 14f;
+        float chargeSpeed = 16f;
         float turnRate = 0.02f; // low = overshoot
 
         public bool MistakeFixed = false;
@@ -176,12 +177,13 @@ namespace DestroyerTest.Content.Entities
 
                 // soft turning toward the player
                 float newAngle = currentAngle.AngleTowards(desiredAngle, MathHelper.ToRadians(4));
-                NPC.velocity = newAngle.ToRotationVector2() * NPC.velocity.Length();
+                NPC.aiStyle = NPCAIStyleID.Worm;
             }
 
             // --- CHARGE TRIGGER ---
             if (!charging && NPC.Distance(player.Center) < 400f)
             {
+                NPC.aiStyle = -1;
                 chargeDirection = Vector2.Normalize(player.Center - NPC.Center);
                 charging = true;
                 chargeWindup = 10;    // short delay before burst
@@ -212,9 +214,18 @@ namespace DestroyerTest.Content.Entities
                 if (Main.GameUpdateCount % 10 == 0)
                 {
                     SoundEngine.PlaySound(SoundID.Item20, NPC.Center);
-                    Projectile Fire = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, NPC.velocity, ModContent.ProjectileType<TenebrisFlamesHostile_NoHoming>(), 20, 0f, ai2: 4);
-                    Fire.scale = 0.65f;
-                    Fire.timeLeft = 60;
+
+                    if (!DestroyerTestMod.EternityIsActive)
+                    {
+
+
+                        Projectile Fire = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, NPC.velocity, ModContent.ProjectileType<TenebrisFlamesHostile_NoHoming>(), 20, 0f, ai2: 4);
+                        Fire.timeLeft = 60;
+                    }
+                    else
+                    {
+                        Projectile Bomb = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<DarkGluttonTrail>(), 100, 0f);
+                    }
                 }
 
                 if (chargeDuration <= 0)

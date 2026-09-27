@@ -1,3 +1,4 @@
+using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
 using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.Buffs;
@@ -5,6 +6,7 @@ using DestroyerTest.Content.RiftBiome;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoMod.Cil;
+using OpusLib.Content.Helpers;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -72,7 +74,7 @@ namespace DestroyerTest.Content.Entities
 		{
 			NPC.width = 74;
 			NPC.height = 52;
-			NPC.aiStyle = NPCAIStyleID.Slime;
+			NPC.aiStyle = DestroyerTestMod.EternityIsActive ? -1 : NPCAIStyleID.Slime;
 			NPC.damage = 15;
 			NPC.defense = 12;
 			NPC.lifeMax = 300;
@@ -84,8 +86,10 @@ namespace DestroyerTest.Content.Entities
 			NPC.Opacity = 0.75f;
 		}
 
+        int O = 0;
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
+            O -= 20;
 			switch(variant) 
 			{ 
 				case 0:
@@ -102,10 +106,34 @@ namespace DestroyerTest.Content.Entities
 			Texture2D Tex = ModContent.Request<Texture2D>(Texture).Value;
 
 			Main.EntitySpriteDraw(Tex, NPC.position - Main.screenPosition, NPC.frame, drawColor * NPC.Opacity, NPC.rotation, Vector2.Zero, NPC.scale, SpriteEffects.None);
-			return false;
+
+            Line Warn = new(NPC.Center, NPC.Center + new Vector2(0, 1300));
+            if (NPC.ai[0] > 120 && NPC.ai[0] < 135)
+            {
+                float Opac = MathHelper.Lerp(0f, 1f, Utilities.Convert01To010(NPC.ai[2] / 15f));
+                DTUtils.instance.ScrollingTextureSpine(Warn, DTAssetLib.ArrowTelegraphCont, drawColor with { A = 0 } * Opac, spriteBatch, BlendState.Additive, O, 0.3f);
+            }
+            
+            
+            return false;
         }
 
-		public override float SpawnChance(NPCSpawnInfo spawnInfo)
+        int CurrentFrame = 0;
+        public override void FindFrame(int frameHeight)
+        {
+            if (!DestroyerTestMod.EternityIsActive)
+            {
+                base.FindFrame(frameHeight);
+                return;
+            }
+            else
+            {
+                NPC.frame.Y = CurrentFrame * frameHeight;
+            }
+        }
+
+
+        public override float SpawnChance(NPCSpawnInfo spawnInfo)
 		{
             DTUtils Utility = new DTUtils();
             if (spawnInfo.Player.ZoneCorrupt == true && DTFlags.TenebrisCanSpawnInWorldEvilBiome == true)
@@ -115,6 +143,105 @@ namespace DestroyerTest.Content.Entities
 			return 0f;
 		}
 
+		public enum EternityAIState
+		{
+			Float,
+			Slam,
+            Idle
+		}
+
+        EternityAIState state = EternityAIState.Idle;
+
+        public override void AI()
+        {
+            NPC.TargetClosest();
+            Player target = Main.player[NPC.target];
+
+            if (DestroyerTestMod.EternityIsActive)
+			{
+                
+                Color c = Color.White;
+                switch (variant)
+                {
+                    case 0:
+                        c = ColorLib.TenebrisBlue;
+                        break;
+                    case 1:
+                        c = ColorLib.TenebrisMagenta;
+                        break;
+                    case 2:
+                        c = ColorLib.TenebrisBeige;
+                        break;
+                }
+
+                switch (state)
+                {
+                    case EternityAIState.Float:
+                        {
+                            NPC.noGravity = true;
+                            NPC.ai[0]++;
+
+                            if (NPC.ai[0] < 120)
+                            {
+                                
+                                NPC.SmoothMoveToPoint(target.Center + new Vector2(0, -300), 15f, 100);
+                                CurrentFrame = 1;
+                            }
+                            if (NPC.ai[0] > 120 && NPC.ai[0] < 135)
+                            {
+                                NPC.ai[2]++;
+                                if (NPC.ai[0] == 121)
+                                {
+                                    SoundEngine.PlaySound(SoundID.DD2_GhastlyGlaiveImpactGhost with { Pitch = -0.7f });
+                                }
+                            }
+                            if (NPC.ai[0] >= 135)
+                            {
+                                state = EternityAIState.Slam;
+                                NPC.ai[0] = 0;
+                                NPC.ai[2] = 0;
+                            }
+                            break;
+                        }
+                    case EternityAIState.Slam:
+                        {
+                            if (!NPC.collideY)
+                            {
+                                NPC.velocity.Y = 30f;
+                                NPC.velocity.X = 0;
+                                CurrentFrame = 1;
+                            }
+                            else
+                            {
+                                SoundEngine.PlaySound(SoundID.DD2_MonkStaffGroundImpact, NPC.Center);
+                                state = EternityAIState.Idle;
+                            }
+                            break;
+                        }
+                    case EternityAIState.Idle:
+                        {
+                            NPC.noGravity = false;
+
+                            NPC.ai[1]++;
+
+                            if (NPC.ai[1] % 15 == 0)
+                            {
+                                if (CurrentFrame++ >= 1)
+                                {
+                                    CurrentFrame = 0;
+                                }
+                            }
+
+                            if (NPC.ai[1] >= 240)
+                            {
+                                state = EternityAIState.Float;
+                                NPC.ai[1] = 0;
+                            }
+                            break;
+                        }
+                }
+            }
+        }
 
         public override void OnHitPlayer(Player target, Player.HurtInfo hurtInfo)
         {

@@ -68,7 +68,7 @@ namespace DestroyerTest.Common.Systems
 
                 //HeliciteGenTest((int)Main.MouseWorld.X / 16, (int)Main.MouseWorld.Y / 16);
 
-                Main.NewText(new Point((int)Main.MouseWorld.X / 16, (int)Main.MouseWorld.Y / 16), Color.Green);
+                //Main.NewText(new Point((int)Main.MouseWorld.X / 16, (int)Main.MouseWorld.Y / 16), Color.Green);
             }
 
 

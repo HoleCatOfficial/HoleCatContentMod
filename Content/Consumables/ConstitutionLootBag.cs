@@ -21,6 +21,8 @@ using DestroyerTest.Content.Equips.ScepterAccessories;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.MeleeWeapons;
 using DestroyerTest.Content.Consumables.Flasks;
+using DestroyerTest.Common.DropRules;
+using DestroyerTest.Content.Fargos.EternityDrops;
 
 namespace DestroyerTest.Content.Consumables
 {
@@ -82,6 +84,7 @@ namespace DestroyerTest.Content.Consumables
             itemLoot.Add(new PityChanceDropRule(Type, ModContent.ItemType<GalantineKnife>(), 0.02f, 0.05f));
             itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<StellarFoxScepter>(), 3, 1, 1));
             itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<GalantineIncense>()));
+            itemLoot.Add(ItemDropRule.ByCondition(new EternityDropRuleCondition(), (ModContent.ItemType<ConstellationWeaverScarf>())));
             itemLoot.Add(new PityAmountDropRule(Type, ModContent.ItemType<StellarFlamesFlask>(), 0.5f, 1, 2, 20));
             itemLoot.Add(ItemDropRule.Coins(350, true));
         }

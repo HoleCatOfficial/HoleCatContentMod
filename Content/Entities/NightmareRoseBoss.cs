@@ -755,7 +755,7 @@ namespace DestroyerTest.Content.Entities
                         Main.EntitySpriteDraw(DTAssetLib.Star(3).Value, cfNodes[i].Center - Main.screenPosition, null, ColorLib.CursedFlames with { A = 0 }, nodeHealShineRot, DTAssetLib.Star(3).Value.Size() / 2, 2f, SpriteEffects.None);
                         Main.EntitySpriteDraw(DTAssetLib.Star(3).Value, cfNodes[i].Center - Main.screenPosition, null, Color.White with { A = 0 }, nodeHealShineRot, DTAssetLib.Star(3).Value.Size() / 2, 1.3f, SpriteEffects.None);
 
-                        DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(2, true), ColorLib.WretchedGradient() with { A = 0 }, Main.spriteBatch, BlendState.Additive, NodeHealLineScroll, 0.3f, 1f);
+                        DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(2, true), ColorLib.Wretched2 with { A = 0 }, Main.spriteBatch, BlendState.Additive, NodeHealLineScroll, 0.3f, 1f);
                         var Cap2 = spriteBatch.Capture();
                         spriteBatch.End();
 
@@ -2053,13 +2053,13 @@ namespace DestroyerTest.Content.Entities
             {
                 for (int i = 0; i < 4; i++)
                 {
-                    Dust spark = Dust.NewDustDirect(NPC.position, NPC.width, NPC.height, ModContent.DustType<SoulDust>(), Main.rand.NextFloat(-0.02f, 0.02f), Main.rand.NextFloat(-3.5f, -2.5f), 40, default, 0.75f);
+                    Dust spark = Dust.NewDustDirect(NPC.position, NPC.width, NPC.height, DestroyerTestMod.MasochistIsActive ? DustID.SnowSpray : ModContent.DustType<SoulDust>(), Main.rand.NextFloat(-0.02f, 0.02f), Main.rand.NextFloat(-3.5f, -2.5f), 40, default, 0.75f);
                     spark.noGravity = true;
                 }
 
                 Spark Spark = new Spark();
 
-                Spark.PrepareSpark(Main.rand.NextVector2FromRectangle(NPC.Hitbox), new Vector2(Main.rand.NextFloat(-0.2f, 0.2f), Main.rand.NextFloat(-10.5f, -2.5f)), 0f, ColorLib.Soul, 0.5f, false, 40, SparkDrawMode.Additive, 2f);
+                Spark.PrepareSpark(Main.rand.NextVector2FromRectangle(NPC.Hitbox), new Vector2(Main.rand.NextFloat(-0.2f, 0.2f), Main.rand.NextFloat(-10.5f, -2.5f)), 0f, DestroyerTestMod.MasochistIsActive ? Color.White : ColorLib.Soul, 0.5f, false, 40, SparkDrawMode.Additive, 2f);
                 ParticleEngine.ShaderParticles.Add(Spark);
 
                 Lighting.AddLight(NPC.Center, ColorLib.Soul.ToVector3() * 0.5f);
@@ -2068,13 +2068,13 @@ namespace DestroyerTest.Content.Entities
             {
                 for (int i = 0; i < 4; i++)
                 {
-                    Dust spark = Dust.NewDustDirect(NPC.position, NPC.width, NPC.height, ModContent.DustType<SoulDust>(), Main.rand.NextFloat(-0.02f, 0.02f), Main.rand.NextFloat(-3.5f, -2.5f), 40, default, 0.75f);
+                    Dust spark = Dust.NewDustDirect(NPC.position, NPC.width, NPC.height, DestroyerTestMod.MasochistIsActive ? DustID.SnowSpray : ModContent.DustType<SoulDust>(), Main.rand.NextFloat(-0.02f, 0.02f), Main.rand.NextFloat(-3.5f, -2.5f), 40, default, 0.75f);
                     spark.noGravity = true;
                 }
 
                 Spark Spark = new Spark();
 
-                Spark.PrepareSpark(Main.rand.NextVector2FromRectangle(NPC.Hitbox), new Vector2(Main.rand.NextFloat(-0.2f, 0.2f), Main.rand.NextFloat(-10.5f, -2.5f)), 0f, ColorLib.Soul, 0.5f, false, 40, SparkDrawMode.Additive, 2f);
+                Spark.PrepareSpark(Main.rand.NextVector2FromRectangle(NPC.Hitbox), new Vector2(Main.rand.NextFloat(-0.2f, 0.2f), Main.rand.NextFloat(-10.5f, -2.5f)), 0f, DestroyerTestMod.MasochistIsActive ? Color.White : ColorLib.Soul, 0.5f, false, 40, SparkDrawMode.Additive, 2f);
                 ParticleEngine.ShaderParticles.Add(Spark);
 
                 Lighting.AddLight(NPC.Center, ColorLib.Soul.ToVector3() * 0.5f);
@@ -2609,7 +2609,7 @@ namespace DestroyerTest.Content.Entities
 
             Projectile Dart = null;
 
-            int interval = anyNodesAlive ? 20 : 15;
+            int interval = anyNodesAlive ? 20 : 17;
 
             if (Main.GameUpdateCount % interval == 0)
             {

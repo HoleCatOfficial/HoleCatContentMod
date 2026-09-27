@@ -48,10 +48,7 @@ namespace DestroyerTest.Content.Projectiles
                 dust.fadeIn = 1.5f;
             }
 
-            if (DestroyerTestMod.TenebrisTeleportKeybind.JustPressed)
-				{
-                    Projectile.timeLeft = 0;
-                }
+           
         }
     }
 

@@ -152,13 +152,9 @@ namespace DestroyerTest
         
         public static DTConfig Config;
         public static ModKeybind StarBlastKeybind { get; private set; }
-        public static ModKeybind HeroHelmetKeybind { get; private set; }
-        public static ModKeybind RiftTeleportKeybind { get; private set; }
+        public static ModKeybind LunarInsigniaModeSwitchKeybind { get; private set; }
 		public static ModKeybind ArmorSetBonusHotKey { get; private set; }
-        public static ModKeybind ManaBurstKeybind { get; private set; }
-        public static ModKeybind TenebrisTeleportKeybind { get; private set; }
         public static ModKeybind DeadlyBlossomKeybind { get; private set; }
-        public static ModKeybind OilTentacleKeybind { get; private set; }
 
         public static int RouletteTokenCurrencyId;
 
@@ -388,13 +384,11 @@ namespace DestroyerTest
             Config = ModContent.GetInstance<DTConfig>();
 
             // Divider.
-            RiftTeleportKeybind = KeybindLoader.RegisterKeybind(this, "Shadow Tome Teleport", "T");
+            LunarInsigniaModeSwitchKeybind = KeybindLoader.RegisterKeybind(this, "LunarInsigniaModeSwitch", "Q");
             // Divider.
-			ArmorSetBonusHotKey = KeybindLoader.RegisterKeybind(this, "ArmorSetBonus", "Y");
+            ArmorSetBonusHotKey = KeybindLoader.RegisterKeybind(this, "ArmorSetBonus", "Y");
             // Divider.
-            TenebrisTeleportKeybind = KeybindLoader.RegisterKeybind(this, "Tenebrous Clone Teleort", "L");
-            // Divider.
-            DeadlyBlossomKeybind = KeybindLoader.RegisterKeybind(this, "Deadly Blossom Spawn", "X");
+            DeadlyBlossomKeybind = KeybindLoader.RegisterKeybind(this, "DeadlyBlossomSpawn", "X");
 
             var fractalProfiles = (Dictionary<int, FinalFractalProfile>)typeof(Terraria.Graphics.FinalFractalHelper).GetField("_fractalProfiles", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
 
@@ -433,14 +427,9 @@ namespace DestroyerTest
 
 
             // Unregister the keybind
-            StarBlastKeybind = null;
-            HeroHelmetKeybind = null;
-            RiftTeleportKeybind = null;
+            LunarInsigniaModeSwitchKeybind = null;
 			ArmorSetBonusHotKey = null;
-            ManaBurstKeybind = null;
-            TenebrisTeleportKeybind = null;
             DeadlyBlossomKeybind = null;
-            OilTentacleKeybind = null;
 
             var fractalProfiles = (Dictionary<int, FinalFractalProfile>)typeof(Terraria.Graphics.FinalFractalHelper).GetField("_fractalProfiles", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
 

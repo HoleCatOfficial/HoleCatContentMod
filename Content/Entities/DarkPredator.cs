@@ -175,12 +175,13 @@ namespace DestroyerTest.Content.Entities
 
                 // soft turning toward the player
                 float newAngle = currentAngle.AngleTowards(desiredAngle, MathHelper.ToRadians(4));
-                NPC.velocity = newAngle.ToRotationVector2() * NPC.velocity.Length();
+                NPC.aiStyle = NPCAIStyleID.Worm;
             }
 
             // --- CHARGE TRIGGER ---
             if (!charging && NPC.Distance(player.Center) < 400f)
             {
+                NPC.aiStyle = -1;
                 chargeDirection = Vector2.Normalize(player.Center - NPC.Center);
                 charging = true;
                 chargeWindup = 10;    // short delay before burst

@@ -44,8 +44,8 @@ GlacialJabber: {
 	DisplayName: Glacial Jabber
 	Tooltip:
 		'''
-		A stronger version of your original Halberd, with a much more potent Jab.
-		"How Ice of you to show this old thing some love again!"
+		A boreal pike.
+		Right click to spin it in a circle.
 		'''
 }
 
@@ -597,8 +597,8 @@ HistoryTextbook: {
 }
 
 GargoyleTrepidation: {
-	DisplayName: (WIP) Gargoyle Trepidation
-	Tooltip: Place this statue to know true fear.
+	DisplayName: Gargoyle Trepidation
+	Tooltip: This item is part of an abandoned tangent from early development. It does nothing.
 }
 
 ConstantineMask: {
@@ -646,18 +646,12 @@ Connie_Doll: {
 
 ConstantineTail: {
 	DisplayName: Constantine Tail
-	Tooltip: Great for Impersonating Suicidal Devs!
+	Tooltip: Great for Impersonating Devs!
 }
 
 Goliath: {
 	DisplayName: Goliath
-	Tooltip:
-		'''
-		Shoots small energy blades that linger in the air for a moment before darting at a target.
-
-		Thanks to the usage of obsidian in the blade, it is very, very sharp. 
-		It rests in your hand in an eerily familar way.
-		'''
+	Tooltip: Shoots small energy blades that linger in the air for a moment before darting at a target.
 }
 
 ConstantineScythe: {
@@ -679,30 +673,6 @@ Memoriam_Placed: {
 LungShot: {
 	DisplayName: Lung Shot
 	Tooltip: Turns your Lungs to stone, making you immune to suffocaton in the Rift.
-}
-
-HeroBreastplate: {
-	DisplayName: Hero Breastplate
-	Tooltip: A clunky breastplate befitting of a lazy emperor under siege.
-}
-
-HeroGreaves: {
-	DisplayName: Hero Greaves
-	Tooltip: Uncomfortable, heavy leggings, which are definitely not assuaged by the lack of padding in the metal shoes.
-}
-
-HeroHelmet: {
-	DisplayName: Hero Helmet
-	Tooltip:
-		'''
-		Heavy, but breatheable, that is, of course if you keep the visor up.
-		Press J to bring down your Visor, increasing defense by 4.
-		'''
-}
-
-HeroWings: {
-	DisplayName: Hero Wings
-	Tooltip: A defender of their people must also be able to come to their aide promptly!
 }
 
 GoliathHilt: {
@@ -798,12 +768,8 @@ Gargantua: {
 	DisplayName: Gargantua
 	Tooltip:
 		'''
-		Despite having the same hilt as its inferior forme, it feels completely alien to you.
-		Perhaps it is the fact that it is ignited in a scarlet inferno, perhaps it is the increased size, perhaps it is indicative of some change within.
-		~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		Swinging 5 times summons homing stars, 15 times spawns groups of Goliath Phantoms that shoot towards enemies after a short delay.
-		Swinging 30 times will empower Gargantua, but beware, if you change items while the boost is active, you will be inflicted with severe damage.
-		Goliath Phantoms will not search forever, and if no target is found in 6 seconds, they will turn around and shoot into you.
+		Hits create homing stars.
+		Critical hits create Goliath phantoms that stab into enemies.
 		'''
 }
 
@@ -3696,7 +3662,9 @@ LunarInsignia: {
 	DisplayName: Lunar Insignia
 	Tooltip:
 		'''
-		Grants infinite flight.
+		Functions as wings with infinite flight.
+		Press the Mode Switch Keybind to toggle Precision Mode.
+		Precision mode slows player movement while flying, making tighter maneuvers more doable.
 		"So the Calamity Team doesn't like infinite flight? This. Means. War."
 		'''
 }

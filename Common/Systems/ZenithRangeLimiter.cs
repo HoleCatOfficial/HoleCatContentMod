@@ -1,4 +1,6 @@
-﻿using DestroyerTest.Content.Dusts;
+﻿using BreadLibrary.Core.Graphics.Particles;
+using DestroyerTest.Content.Dusts;
+using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Tiles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
@@ -48,7 +50,7 @@ namespace DestroyerTest.Common.Systems
                 Vector2 toMouse = p.DirectionTo(mouseWorld);
                 float toMouseRot = toMouse.ToRotation();
 
-                if (mouseWorld.Distance(p.MountedCenter) > MaxDist)
+                if (mouseWorld.Distance(p.MountedCenter) > MaxDist && p.controlUseItem && !p.mouseInterface && !p.DeadOrGhost)
                 {
                     Vector2 NMouse = (p.MountedCenter - Main.screenPosition) + new Vector2(MaxDist - 20, 0).RotatedBy(toMouseRot);
                     Mouse.SetPosition((int)NMouse.X, (int)NMouse.Y);
@@ -108,8 +110,10 @@ namespace DestroyerTest.Common.Systems
                     Vector2 Outer = Player.Center + Main.rand.NextVector2CircularEdge(MaxDist, MaxDist);
                     Vector2 Inwards = Player.Center - Outer;
                     Inwards.Normalize();
-                    Dust d = Dust.NewDustPerfect(Outer, ModContent.DustType<ColorableNeonDust>(), Inwards * 1.6f, 100, Main.DiscoColor, 1f);
-                    d.position += Player.velocity;
+
+                    PixelParticlePlayer Pixel = new(Player);
+                    Pixel.Initialize(Outer, Inwards * 1.6f, Main.DiscoColor, 2f, 30);
+                    ParticleEngine.BehindProjectiles.Add(Pixel);
                 }
             }
         }

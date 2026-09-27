@@ -70,31 +70,4 @@ namespace DestroyerTest.Content.MeleeWeapons
 		}
 
 	}
-
-	public class TKPlayer : ModPlayer
-    {
-        public override void ProcessTriggers(TriggersSet triggersSet)
-		{
-			foreach (Projectile projectile in Main.projectile)
-			{
-				if (DestroyerTestMod.TenebrisTeleportKeybind.JustPressed && projectile.active && projectile.owner == Player.whoAmI && projectile.type == ModContent.ProjectileType<TenebrisClone>())
-				{
-					var StarBurstSound = new SoundStyle("DestroyerTest/Assets/Audio/RiftSwordMinionTeleport") with {
-						Volume = 1.0f, 
-						Pitch = 0.0f, 
-						PitchVariance = 0.5f, 
-					};
-					SoundEngine.PlaySound(StarBurstSound);
-
-					
-					if (projectile.active && projectile.owner == Player.whoAmI && projectile.type == ModContent.ProjectileType<TenebrisClone>())
-					{
-							// Teleport the player to the projectile's center
-							Player.position = projectile.Center - new Vector2(Player.width / 2, Player.height / 2);
-							break;
-					}
-				}
-			}
-		}
-    }
 }

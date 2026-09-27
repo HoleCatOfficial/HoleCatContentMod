@@ -1,10 +1,3 @@
-StarBlast.DisplayName: Star Blast
-"Conclusion Star Blast.DisplayName": Conclusion Star Blast
-"Hero Helmet Guard.DisplayName": Hero Helmet Guard
-"Shadow Tome Teleport.DisplayName": Shadow Tome Teleport
-"Open Achievement Book.DisplayName": Open Achievement Book
-"Mana Burst.DisplayName": Mana Burst
-"Tenebrous Clone Teleort.DisplayName": Tenebrous Clone Teleort
-"Deadly Blossom Spawn.DisplayName": Deadly  Blossom  Spawn
-"HoleCat Oil Tentacle.DisplayName": HoleCat Oil Tentacle
-ArmorSetBonus.DisplayName: Armor Set Bonus
+DeadlyBlossomSpawn.DisplayName: "[i:DestroyerTest/DeadlyBlossom] Deadly  Blossom  Spawn"
+ArmorSetBonus.DisplayName: "[i:80] Armor Set Bonus"
+LunarInsigniaModeSwitch.DisplayName: "[i:DestroyerTest/LunarInsignia] Lunar Insignia Mode Switch"

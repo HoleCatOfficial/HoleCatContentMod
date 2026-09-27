@@ -16,7 +16,7 @@ namespace DestroyerTest.Asset.Menu.V5
     //Copied from Calamity Mod Github.
     public class MenuWyvern : ModMenu
     {
-        public override string DisplayName => "Talid v3.0: The Great Wyvern";
+        public override string DisplayName => "Talid v2.3: The Great Wyvern";
 
         //public override bool IsAvailable => DTUtils.NPCDownTally[ModContent.NPCType<WyvernCorpseHead>()] > 0;
 
@@ -76,7 +76,7 @@ namespace DestroyerTest.Asset.Menu.V5
 
     public class MenuRose : ModMenu
     {
-        public override string DisplayName => "Talid v3.0: Nightmare Rose";
+        public override string DisplayName => "Talid v2.3: Nightmare Rose";
 
         //public override bool IsAvailable => DTUtils.NPCDownTally[ModContent.NPCType<NightmareRoseBoss>()] > 0;
         public override Asset<Texture2D> Logo => ModContent.Request<Texture2D>("DestroyerTest/Assets/Menu/V5/Logo_ShadeWorld");

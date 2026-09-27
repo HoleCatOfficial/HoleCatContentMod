@@ -331,7 +331,7 @@ namespace DestroyerTest.Content.Entities
 
             if (LancesEternity)
             {
-                spriteBatch.Draw(DTAssetLib.ConstitutionLanceWarning.Value, ArenaCTR - Main.screenPosition, null, ColorLib.StellarFireGradientLooping() * LanceWarningOpacity, 0f, DTAssetLib.ConstitutionLanceWarning.Value.Size() / 2, 1f, SpriteEffects.None, 0f);
+                spriteBatch.Draw(DTAssetLib.ConstitutionLanceWarning.Value, ArenaCTR - Main.screenPosition, null, OpusColorUtils.MultiLerp(LanceWarningOpacity, ColorLib.StellarFireColormap) with { A = 0 } * LanceWarningOpacity, 0f, DTAssetLib.ConstitutionLanceWarning.Value.Size() / 2, 1f, SpriteEffects.None, 0f);
             }
             DTConfig cfg = ModContent.GetInstance<DTConfig>();
             if (cfg.EnableDebugMessages)
@@ -605,7 +605,8 @@ namespace DestroyerTest.Content.Entities
                 }
 
                 Dangerous = false;
-                EternityLanceAI();
+
+                
 
                 if (ShotLance)
                 {
@@ -613,6 +614,11 @@ namespace DestroyerTest.Content.Entities
                     {
                         ShotLance = false;
                     }
+                }
+                else
+                {
+                    EternityLanceAI();
+
                 }
             }
             if (AITimer < 4800 && AITimer >= 3600)
@@ -1227,6 +1233,7 @@ namespace DestroyerTest.Content.Entities
                 else
                 {
                     Vector2[] Ps = bottomSide.GetPointsAlongLine(12);
+                    Main.NewText($"u={u}, top={(u % 2 == 0)}");
                     if (u % 2 == 0)
                     {
                         Ps = topSide.GetPointsAlongLine(12);

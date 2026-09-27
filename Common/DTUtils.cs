@@ -276,7 +276,7 @@ namespace DestroyerTest.Common
             
             var Cap = spriteBatch.Capture();
             spriteBatch.End();
-            Cap.SamplerState = SamplerState.LinearWrap;
+            Cap.SamplerState = SamplerState.PointWrap;
             
             spriteBatch.Begin(Cap);
             spriteBatch.Draw(texture.Value, line.Start - Main.screenPosition, new Rectangle(TexOffset, 0, (int)line.GetLineLength, texture.Value.Height), drawColor, line.GetLineRotation, new Vector2(0, texture.Value.Height) / 2, new Vector2(1, Width), SpriteEffects.None, 0);

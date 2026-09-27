@@ -30,31 +30,13 @@ namespace DestroyerTest.Content.Entities
 	public class TenebrousPhantasm : ModNPC
 	{
 
-		/// <summary>
-		/// Change the following code sequence in Wiring.HitWireSingle
-		/// <code>
-		///case 61:
-		///num115 = 361;
-		/// </code>
-		/// to
-		/// <code>
-		///case 61:
-		///num115 = Main.rand.NextBool() ? 361 : NPC.type
-		/// </code>
-		/// This causes the frog statue to spawn this NPC 50% of the time
-		/// </summary>
-		/// <param name="ilContext"> </param>
-
 		public override void SetStaticDefaults()
 		{
 			immunities();
-			// Influences how the NPC looks in the Bestiary
 			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers()
 			{
-				Velocity = 1f, // Draws the NPC in the bestiary as if its walking +1 tiles in the x direction
-				Direction = 1 // -1 is left and 1 is right. NPCs are drawn facing the left by default but ExamplePerson will be drawn facing the right
-							  // Rotation = MathHelper.ToRadians(180) // You can also change the rotation of an NPC. Rotation is measured in radians
-							  // If you want to see an example of manually modifying these when the NPC is drawn, see PreDraw
+				Velocity = 1f,
+				Direction = 1
 			};
 
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
@@ -208,11 +190,22 @@ namespace DestroyerTest.Content.Entities
 				NPC.ai[1]++;
 				if (NPC.ai[1] % 60 == 0) // Fire a projectile every second
 				{
-					Vector2 shootDirection = directionToPlayer;
-					shootDirection.Normalize();
-					shootDirection *= 10f;
-					Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, shootDirection, ModContent.ProjectileType<TenebrisFlamesHostile>(), 15, 1f);
-					SoundEngine.PlaySound(SoundID.Item20, NPC.position); 
+					if (!DestroyerTestMod.EternityIsActive)
+					{
+						Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, NPC.Center.DirectionTo(player.Center) * 10f, ModContent.ProjectileType<TenebrisFlamesHostile>(), 15, 1f);
+						SoundEngine.PlaySound(SoundID.Item20, NPC.position);
+					}
+					else
+					{
+                        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, NPC.Center.DirectionTo(player.Center).RotatedBy(-0.5f) * 30f, ModContent.ProjectileType<TenebrisFlamesHostile_NoHoming>(), 20, 1f);
+                        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, NPC.Center.DirectionTo(player.Center).RotatedBy(-0.25f) * 30f, ModContent.ProjectileType<TenebrisFlamesHostile_NoHoming>(), 20, 1f);
+                        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, NPC.Center.DirectionTo(player.Center) * 30f, ModContent.ProjectileType<TenebrisFlamesHostile_NoHoming>(), 20, 1f);
+                        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, NPC.Center.DirectionTo(player.Center).RotatedBy(0.25f) * 30f, ModContent.ProjectileType<TenebrisFlamesHostile_NoHoming>(), 20, 1f);
+                        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, NPC.Center.DirectionTo(player.Center).RotatedBy(0.5f) * 30f, ModContent.ProjectileType<TenebrisFlamesHostile_NoHoming>(), 20, 1f);
+
+
+                        SoundEngine.PlaySound(SoundID.Item20, NPC.position);
+                    }
 				}
 
 				if (NPC.ai[1] >= 180) // After 3 seconds, switch back to idle state

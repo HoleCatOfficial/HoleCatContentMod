@@ -140,6 +140,33 @@ namespace DestroyerTest.Common
                         }
                     }
 
+                    if (ModLoader.HasMod("ContinentOfJourney") && ModLoader.TryGetMod("ContinentOfJourney", out Mod HomewardJourney))
+                    {
+                        if (HomewardJourney.TryFind("DoctorExpeller", out ModItem DE))
+                        {
+                            if (recipe.HasIngredient(DE.Type))
+                            {
+                                recipe.RemoveIngredient(DE.Type);
+                            }
+                        }
+
+                        if (HomewardJourney.TryFind("CosmicBoardsword", out ModItem CB))
+                        {
+                            if (recipe.HasIngredient(CB.Type))
+                            {
+                                recipe.RemoveIngredient(CB.Type);
+                            }
+                        }
+
+                        if (HomewardJourney.TryFind("EssenceofBright", out ModItem Essence))
+                        {
+                            if (recipe.HasIngredient(Essence.Type))
+                            {
+                                recipe.RemoveIngredient(Essence.Type);
+                            }
+                        }
+                    }
+
                     recipe.AddIngredient<Gargantua>();
                     recipe.AddIngredient<Committment>();
                     recipe.AddIngredient<SoulEdge>();

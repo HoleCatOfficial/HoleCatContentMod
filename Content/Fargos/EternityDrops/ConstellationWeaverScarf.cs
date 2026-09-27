@@ -5,6 +5,7 @@ using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Equips;
 using DestroyerTest.Content.Projectiles;
+using DestroyerTest.Content.Projectiles.OrionCrossover;
 using DestroyerTest.Content.Projectiles.Pets;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Rarity;
@@ -94,7 +95,7 @@ namespace DestroyerTest.Content.Fargos.EternityDrops
                             if (currentDodgeTime % 20 == 0)
                             {
                                 Vector2 off = Player.Center + Main.rand.NextVector2Circular(StarRadius, StarRadius);
-                                Projectile.NewProjectile(Projectile.GetSource_None(), off, (off).DirectionFrom(Player.Center) * 6f, ModContent.ProjectileType<ConstitutionStarFriendly>(), (int)Player.GetDamage(DamageClass.Generic).ApplyTo(15), 5, Player.whoAmI);
+                                Projectile.NewProjectile(Projectile.GetSource_None(), off, (off).DirectionFrom(Player.Center) * 6f, ModContent.ProjectileType<SabhatiMeteor>(), (int)Player.GetDamage(DamageClass.Generic).ApplyTo(15), 5, Player.whoAmI);
                             }
                             remainingStarTime--;
                         }

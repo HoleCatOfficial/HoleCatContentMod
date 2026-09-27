@@ -342,10 +342,10 @@ ToothFriendly.DisplayName: Tooth Friendly
 GreatFlayerDash.DisplayName: Great Flayer Dash
 SoulCrystalBomb.DisplayName: Soul Crystal Bomb
 SoulExplosion.DisplayName: Soul Explosion
-TenebrisFlamesFriendly.DisplayName: Tenebris Flames
-TenebrisFlamesFriendly_NoHoming.DisplayName: Tenebris Flames
-TenebrisFlamesHostile.DisplayName: Tenebris Flames
-TenebrisFlamesHostile_NoHoming.DisplayName: Tenebris Flames
+TenebrisFlamesFriendly.DisplayName: Shimmering Flames
+TenebrisFlamesFriendly_NoHoming.DisplayName: Shimmering Flames
+TenebrisFlamesHostile.DisplayName: Shimmering Flames
+TenebrisFlamesHostile_NoHoming.DisplayName: Shimmering Flames
 AuraThiefFireball.DisplayName: Aura Thief Fireball
 TreasonScrollBomb.DisplayName: Treason Scroll Bomb
 FakeAncientLight.DisplayName: Fake Ancient Light
@@ -793,3 +793,4 @@ TerraBoltExplosion.DisplayName: Terra Bolt Explosion
 TerraEater.DisplayName: Terra Eater
 Ping.DisplayName: Ping
 CosmicPingThrown.DisplayName: Cosmic Ping Thrown
+DarkGluttonTrail.DisplayName: Dark Glutton Trail

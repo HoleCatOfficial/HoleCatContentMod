@@ -91,7 +91,7 @@ namespace DestroyerTest.Content.Projectiles.OrionCrossover
 
         private void AnimateProjectile()
         {
-            if (++Projectile.frameCounter >= 3)
+            if (++Projectile.frameCounter >= 10)
             {
                 Projectile.frameCounter = 0;
                 if (++Projectile.frame >= Main.projFrames[Projectile.type])

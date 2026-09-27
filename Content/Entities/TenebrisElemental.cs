@@ -177,7 +177,7 @@ namespace DestroyerTest.Content.Entities
             return false;
         }
 
-
+        public List<Projectile> Fires = new();
         public override void AI()
         {
             NPC.TargetClosest();
@@ -219,6 +219,7 @@ namespace DestroyerTest.Content.Entities
 
         private void ManageBits()
         {
+            Player player = Main.player[NPC.target];
             int Amt()
             {
                 if (!DestroyerTestMod.EternityIsActive)
@@ -245,7 +246,11 @@ namespace DestroyerTest.Content.Entities
                 OwnedBits = new List<TEBit>();
             }
 
-            Vector2[] OrbitalPositions = Opus.GetEquidistantOrbitVectors( Amt(), NPC.Center, Math.Abs(0.05f) * NPC.direction, 50);
+            Vector2[] OrbitalPositions = Opus.GetEquidistantOrbitVectors(Amt(), NPC.Center, Math.Abs(0.05f) * NPC.direction, 50);
+            if (DestroyerTestMod.EternityIsActive)
+            {
+                OrbitalPositions = Opus.GetEquidistantOrbitVectors(Amt(), NPC.Center, Math.Abs(0.05f) * NPC.direction, Opus.Sine(50, 300, 0.01f));
+            }
 
             for (int i = 0; i < Amt(); i++)
             {
@@ -255,16 +260,34 @@ namespace DestroyerTest.Content.Entities
                 OwnedBits[i].Position = OrbitalPositions[i];
             }
 
-            if (Main.GameUpdateCount % 240 == 0)
+            if (!DestroyerTestMod.EternityIsActive)
             {
-                SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/ChargeBreak") with { PitchVariance = 1f, Volume = 3f });
-
-                for (int i = 0; i < Amt(); i++)
+                if (Main.GameUpdateCount % 240 == 0)
                 {
-                    Vector2 Outward = OrbitalPositions[i] - NPC.Center;
-                    Outward.Normalize();
+                    SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/ChargeBreak") with { PitchVariance = 1f, Volume = 3f });
 
-                    Projectile.NewProjectile(NPC.GetSource_FromAI(), OrbitalPositions[i], Outward * 5, ModContent.ProjectileType<TenebrisFlamesHostile>(), 100, 5);
+                    for (int i = 0; i < Amt(); i++)
+                    {
+                        Vector2 Outward = OrbitalPositions[i] - NPC.Center;
+                        Outward.Normalize();
+
+                        Projectile.NewProjectile(NPC.GetSource_FromAI(), OrbitalPositions[i], Outward * 5, ModContent.ProjectileType<TenebrisFlamesHostile>(), 100, 5);
+                    }
+                }
+            }
+            else
+            {
+                
+
+                if (Main.GameUpdateCount % 60 == 0)
+                {
+                    SoundEngine.PlaySound(SoundID.Item20, NPC.Center);
+                    for (int i = 0; i < Amt(); i++)
+                    {
+
+                        Projectile fire = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), OrbitalPositions[i], OrbitalPositions[i].DirectionTo(player.Center) * 2f, ModContent.ProjectileType<TenebrisStarHostile_NoHoming>(), 100, 5);
+                        fire.timeLeft = 300;
+                    }
                 }
             }
 
