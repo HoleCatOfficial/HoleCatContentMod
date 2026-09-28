@@ -17,7 +17,7 @@ namespace DestroyerTest.Content.Tiles
 			//   When an item with the given item type is equipped, it will play the music that has musicSlot as its ID.
 			//   When a tile with the given type and Y-frame is nearby, if its X-frame is >= 36, it will play the music that has musicSlot as its ID.
 			// When getting the music slot, you should not add the file extensions!
-			MusicLoader.AddMusicBox(Mod, MusicLoader.GetMusicSlot(Mod, "Assets/Music/TenebrousConstruct"), ModContent.ItemType<Item_ShadeBossMusicBox>(), ModContent.TileType<Tile_ShadeBossMusicBox>());
+			MusicLoader.AddMusicBox(Mod, MusicLoader.GetMusicSlot(Mod, "Assets/Music/tc4"), ModContent.ItemType<Item_ShadeBossMusicBox>(), ModContent.TileType<Tile_ShadeBossMusicBox>());
 		}
 
 		public override void SetDefaults() {

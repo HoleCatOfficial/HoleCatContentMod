@@ -161,7 +161,7 @@ namespace DestroyerTest.Common.Systems
 
             if (item.type == ItemID.Zenith)
             {
-                TooltipLine line = new(Mod, "ZenithRangeLimit", $"Mouse range is limited to {MaxDist} pixels while holding this weapon.");
+                TooltipLine line = new(Mod, "ZenithRangeLimit", $"Mouse range is limited to {MaxDist} pixels while using this weapon.");
                 line.OverrideColor = LineColor;
 
                 TooltipLine line2 = new(Mod, "ZenithDamageCap", "Damage per hit is capped at 200.");

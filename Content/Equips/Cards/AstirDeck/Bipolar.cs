@@ -40,5 +40,14 @@ namespace DestroyerTest.Content.Equips.Cards.AstirDeck
                 sola.Active = true;
             }
         }
+
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient<Sola>()
+                .AddIngredient<Luna>()
+                .AddIngredient<Vesper>(6)
+                .Register();
+        }
     }
 }

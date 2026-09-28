@@ -147,7 +147,7 @@ namespace DestroyerTest.Common
 
         public override void OnHitNPCWithItem(Item item, NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if (item.DamageType.CountsAsClass(DamageClass.Melee))
+            if (item.DamageType.CountsAsClass(DamageClass.Melee) || item.DamageType.CountsAsClass(DamageClass.SummonMeleeSpeed))
             {
                 ApplyImbue(target);
             }
@@ -165,7 +165,7 @@ namespace DestroyerTest.Common
 
         public override void MeleeEffects(Item item, Rectangle hitbox)
         {
-            if (item.DamageType.CountsAsClass(DamageClass.Melee))
+            if (item.DamageType.CountsAsClass(DamageClass.Melee) || item.DamageType.CountsAsClass(DamageClass.SummonMeleeSpeed))
             {
                 switch (currentImbue)
                 {
@@ -331,7 +331,7 @@ namespace DestroyerTest.Common
         {
             Rectangle hitbox = new Rectangle((int)boxPosition.X, (int)boxPosition.Y, boxWidth, boxHeight);
 
-            if (projectile.friendly && (projectile.DamageType.CountsAsClass(DamageClass.Melee) || projectile.DamageType.CountsAsClass(DamageClass.MeleeNoSpeed) || projectile.DamageType.CountsAsClass<ScepterClass>()))
+            if (projectile.friendly && (projectile.DamageType.CountsAsClass(DamageClass.Melee) || projectile.DamageType.CountsAsClass(DamageClass.MeleeNoSpeed) || projectile.DamageType.CountsAsClass(DamageClass.SummonMeleeSpeed) || projectile.DamageType.CountsAsClass<ScepterClass>()))
             {
                 switch (currentImbue)
                 {
@@ -399,6 +399,7 @@ namespace DestroyerTest.Common
                             if (Main.rand.NextBool(5))
                             {
                                 Dust dust = Dust.NewDustDirect(boxPosition, boxWidth, boxHeight, DustID.IceTorch);
+                                dust.scale = 2f;
                                 dust.velocity *= 0.5f;
                             }
                             break;

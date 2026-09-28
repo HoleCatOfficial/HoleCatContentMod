@@ -285,8 +285,6 @@ namespace DestroyerTest.Content.Entities
                 notExpertRule.OnFailedConditions(ItemDropRule.Common(ModContent.ItemType<ConstitutionArtifact>()));
             }
 
-            notExpertRule.OnFailedConditions(ItemDropRule.Common(ModContent.ItemType<GalantineIncense>()));
-
             npcLoot.Add(notExpertRule);
 
             npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<ConstitutionLootBag>()));
@@ -367,15 +365,19 @@ namespace DestroyerTest.Content.Entities
             WO2 += 6;
 
             float OuterWidth = Opus.Sine(1f, 0.6f);
-            ScrollingTextureSpine(topSide, DTAssetLib.Streak(2, true), ColorLib.StellarFireGradientLooping() * 0.75f, spriteBatch, WO1, OuterWidth);
-            ScrollingTextureSpine(bottomSide, DTAssetLib.Streak(2, true), ColorLib.StellarFireGradientLooping() * 0.75f, spriteBatch, WO1, OuterWidth);
-            ScrollingTextureSpine(leftSide, DTAssetLib.Streak(2, true), ColorLib.StellarFireGradientLooping() * 0.75f, spriteBatch, WO1, OuterWidth);
-            ScrollingTextureSpine(rightSide, DTAssetLib.Streak(2, true), ColorLib.StellarFireGradientLooping() * 0.75f, spriteBatch, WO1, OuterWidth);
+            float progress = (float)NPC.life / (float)NPC.lifeMax;
+            float Progress = progress.Inverse();
 
-            ScrollingTextureSpine(topSide, DTAssetLib.Streak(1, true), DTColorUtils.Pastel(ColorLib.StellarFireGradientLooping(), 0.9f), spriteBatch, WO2, 0.2f);
-            ScrollingTextureSpine(bottomSide, DTAssetLib.Streak(1, true), DTColorUtils.Pastel(ColorLib.StellarFireGradientLooping(), 0.9f), spriteBatch, WO2, 0.2f);
-            ScrollingTextureSpine(leftSide, DTAssetLib.Streak(1, true), DTColorUtils.Pastel(ColorLib.StellarFireGradientLooping(), 0.9f), spriteBatch, WO2, 0.2f);
-            ScrollingTextureSpine(rightSide, DTAssetLib.Streak(1, true), DTColorUtils.Pastel(ColorLib.StellarFireGradientLooping(), 0.9f), spriteBatch, WO2, 0.2f);
+
+            ScrollingTextureSpine(topSide, DTAssetLib.Streak(2, true), OpusColorUtils.MultiLerp(Progress, ColorLib.StellarFireColormap) with { A = 0 } * 0.75f, spriteBatch, WO1, OuterWidth);
+            ScrollingTextureSpine(bottomSide, DTAssetLib.Streak(2, true), OpusColorUtils.MultiLerp(Progress, ColorLib.StellarFireColormap) with { A = 0 } * 0.75f, spriteBatch, WO1, OuterWidth);
+            ScrollingTextureSpine(leftSide, DTAssetLib.Streak(2, true), OpusColorUtils.MultiLerp(Progress, ColorLib.StellarFireColormap) with { A = 0 } * 0.75f, spriteBatch, WO1, OuterWidth);
+            ScrollingTextureSpine(rightSide, DTAssetLib.Streak(2, true), OpusColorUtils.MultiLerp(Progress, ColorLib.StellarFireColormap) with { A = 0 } * 0.75f, spriteBatch, WO1, OuterWidth);
+
+            ScrollingTextureSpine(topSide, DTAssetLib.Streak(1, true), DTColorUtils.Pastel(OpusColorUtils.MultiLerp(Progress, ColorLib.StellarFireColormap), 0.6f) with { A = 0 }, spriteBatch, WO2, 0.2f);
+            ScrollingTextureSpine(bottomSide, DTAssetLib.Streak(1, true), DTColorUtils.Pastel(OpusColorUtils.MultiLerp(Progress, ColorLib.StellarFireColormap), 0.6f) with { A = 0 }, spriteBatch, WO2, 0.2f);
+            ScrollingTextureSpine(leftSide, DTAssetLib.Streak(1, true), DTColorUtils.Pastel(OpusColorUtils.MultiLerp(Progress, ColorLib.StellarFireColormap), 0.6f) with { A = 0 }, spriteBatch, WO2, 0.2f);
+            ScrollingTextureSpine(rightSide, DTAssetLib.Streak(1, true), DTColorUtils.Pastel(OpusColorUtils.MultiLerp(Progress, ColorLib.StellarFireColormap), 0.6f) with { A = 0 }, spriteBatch, WO2, 0.2f);
 
         }
 
@@ -425,7 +427,8 @@ namespace DestroyerTest.Content.Entities
                 Arena();
             }
 
-            
+            NPC.rotation = NPC.velocity.ToRotation() + MathHelper.PiOver4;
+            NPC.spriteDirection = -1;
 
             AITimer++;
 
@@ -435,25 +438,16 @@ namespace DestroyerTest.Content.Entities
                 Music = MusicLoader.GetMusicSlot("DestroyerTest/Assets/Music/ConstitutionBoss");
             }
 
-            if (DestroyerTestMod.EternityIsActive && !DestroyerTestMod.DeathIsActive)
+            if ((DestroyerTestMod.EternityIsActive || DestroyerTestMod.DeathIsActive) && !DestroyerTestMod.MasochistIsActive)
             {
                 EternityAI();
                 Music = MusicLoader.GetMusicSlot("DestroyerTest/Assets/Music/ConstEternityPlaceholder");
             }
-
-            if (!DestroyerTestMod.EternityIsActive && DestroyerTestMod.DeathIsActive)
+            if (DestroyerTestMod.MasochistIsActive)
             {
                 EternityAI();
-                Music = MusicLoader.GetMusicSlot("DestroyerTest/Assets/Music/ConstEternityPlaceholder");
+                Music = MusicLoader.GetMusicSlot("DestroyerTest/Assets/Music/ConstMasoPlaceholder");
             }
-
-            if (DestroyerTestMod.EternityIsActive || DestroyerTestMod.DeathIsActive)
-            {
-                EternityAI();
-                Music = MusicLoader.GetMusicSlot("DestroyerTest/Assets/Music/ConstEternityPlaceholder");
-            }
-
-            NPC.rotation = NPC.velocity.ToRotation() + MathHelper.PiOver4;
 
             
         }
@@ -581,7 +575,11 @@ namespace DestroyerTest.Content.Entities
                     if (AITimer % 60 == 0)
                     {
                         SoundEngine.PlaySound(DTAssetLib.ScholarShieldSounds.Activate);
-                        Opus.RadialSpreadProjectile(ModContent.ProjectileType<StarfuryClone>(), 8, NPC.Center, ConstitutionDamageValues.EternityStarfuryCloneDamage(), 3, 6, offset: NPC.rotation);
+                        Opus.RadialSpreadProjectile(ModContent.ProjectileType<LightNeedle>(), 8, NPC.Center, ConstitutionDamageValues.EternityStarfuryCloneDamage(), 3, 6, offset: NPC.rotation);
+                        if (DestroyerTestMod.MasochistIsActive)
+                        {
+                            Opus.RadialSpreadProjectile(ModContent.ProjectileType<LightNeedle>(), 8, new Vector2(ArenaCTR.X - 560, player.Center.Y), ConstitutionDamageValues.EternityStarfuryCloneDamage(), 3, 6, offset: NPC.rotation);
+                        }
                     }
                 }
             }
@@ -629,10 +627,11 @@ namespace DestroyerTest.Content.Entities
             if (AITimer > 3600)
             {
                 Dangerous = true;
-                EternityOrbitBursts();
+                EternityDashAI();
             }
             if (AITimer > 4200)
             {
+                NPC.velocity *= 0.5f;
                 AITimer = 0;
             }
         }
@@ -1116,6 +1115,8 @@ namespace DestroyerTest.Content.Entities
             }            
         }
 
+
+
         public bool VolleyTele = false;
         public int Side = Main.rand.NextBool() ? 1 : -1;
         public void VolleyAI()
@@ -1241,7 +1242,11 @@ namespace DestroyerTest.Content.Entities
 
                     SoundEngine.PlaySound(DTAssetLib.Impacts.MagicBeep);
 
-                    Opus.RingSpreadProjectile(ModContent.ProjectileType<StarfuryClone>(), 6, player.MountedCenter, 200, ConstitutionDamageValues.EternityStarfuryCloneDamage(), 8, 8);
+                    Opus.RingSpreadProjectile(ModContent.ProjectileType<LightNeedle>(), 2, player.MountedCenter, 200, ConstitutionDamageValues.EternityStarfuryCloneDamage(), 8, 8);
+                    if (DestroyerTestMod.MasochistIsActive)
+                    {
+                        Opus.RingSpreadProjectile(ModContent.ProjectileType<LightNeedle>(), 2, player.MountedCenter, 300, ConstitutionDamageValues.EternityStarfuryCloneDamage(), 8, 10);
+                    }
 
                     for (int i = 0; i < Ps.Length; i++)
                     {
@@ -1259,6 +1264,7 @@ namespace DestroyerTest.Content.Entities
         }
 
         float off = 0f;
+        bool f1 = false;
         public void EternityOrbitBursts()
         {
             off += 0.05f;
@@ -1269,8 +1275,94 @@ namespace DestroyerTest.Content.Entities
 
             if (AITimer % 20 == 0)
             {
-                SoundEngine.PlaySound(ConstitutionSounds.StellarVolley);
-                Opus.RadialSpreadProjectile(ModContent.ProjectileType<HollowStar>(), 8, Ideal, 90, 4f, 16f);
+                if (!f1)
+                {
+                    SoundEngine.PlaySound(ConstitutionSounds.StellarVolley);
+                    Opus.RadialSpreadProjectile(ModContent.ProjectileType<StellarFireDart>(), 8, Ideal, 90, 4f, 16f);
+                    f1 = true;
+                }
+            }
+            else
+            {
+                f1 = false;
+            }
+        }
+
+        public void EternityDashAI()
+        {
+            Player player = Main.player[NPC.target];
+            NPC.aiStyle = -1;
+
+            if (DashCooldown > 0)
+            {
+                DashCooldown--;
+            }
+
+            // --- TURNING OUTSIDE OF CHARGES ---
+            if (!charging)
+            {
+                float desiredAngle = NPC.AngleTo(player.Center);
+                float currentAngle = NPC.velocity.ToRotation();
+
+                // soft turning toward the player
+                float newAngle = currentAngle.AngleTowards(desiredAngle, MathHelper.ToRadians(4));
+                NPC.velocity = newAngle.ToRotationVector2() * (NPC.velocity.Length());
+            }
+
+            // --- CHARGE TRIGGER ---
+            if (!charging && NPC.Distance(player.Center) < 1600f && DashCooldown <= 0)
+            {
+                chargeDirection = Vector2.Normalize(player.Center - NPC.Center);
+                charging = true;
+                chargeWindup = 10;    // short delay before burst
+                DashCooldown = 150;
+                SoundEngine.PlaySound(ConstitutionSounds.Dash, NPC.Center);
+            }
+
+            // --- WINDUP ---
+            if (charging && chargeWindup > 0)
+            {
+                chargeWindup--;
+                if (chargeWindup == 0)
+                {
+                    // commit to a direction
+                    NPC.velocity = chargeDirection * (chargeSpeed * 2.4f);
+
+                    if (!DestroyerTestMod.MasochistIsActive)
+                    {
+                        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, -NPC.velocity * 0.5f, ModContent.ProjectileType<LightNeedle>(), ConstitutionDamageValues.DashSlashDamage(), 0f);
+                    }
+                    else
+                    {
+                        Opus.RadialSpreadProjectile(ModContent.ProjectileType<LightNeedle>(), 8, NPC.Center, ConstitutionDamageValues.EternityStarfuryCloneDamage(), 3, 6, offset: NPC.rotation);
+                    }
+                }
+            }
+
+            // --- ACTIVE CHARGE ---
+            if (charging && chargeWindup == 0)
+            {
+                chargeDuration--;
+
+                // VERY slight steering, but not enough to prevent overshoot
+                float desiredAngle = chargeDirection.ToRotation();
+                float newAngle = NPC.velocity.ToRotation().AngleTowards(desiredAngle, turnRate);
+                //NPC.velocity = newAngle.ToRotationVector2() * chargeSpeed;
+                //NPC.rotation += 0.8f * NPC.direction;
+
+                if (Main.GameUpdateCount % 7 == 0)
+                {
+                    Projectile Fire = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, NPC.velocity.RotatedBy(MathHelper.PiOver2), ModContent.ProjectileType<StellarFireDart>(), ConstitutionDamageValues.DashSlashDamage(), 0f);
+                    Projectile Fire2 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, NPC.velocity.RotatedBy(-MathHelper.PiOver2), ModContent.ProjectileType<StellarFireDart>(), ConstitutionDamageValues.DashSlashDamage(), 0f);
+                }
+
+                if (chargeDuration <= 0)
+                {
+                    DashCount++;
+                    charging = false;
+                    chargeDuration = 50;
+                    NPC.velocity *= 0.4f;
+                }
             }
         }
 

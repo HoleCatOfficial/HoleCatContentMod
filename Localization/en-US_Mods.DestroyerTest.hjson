@@ -36,12 +36,12 @@ Extras: {
 	ShadeWorldEpicBestiary: Mother Darkness can create a menagerie of creatures unlike what anyone has seen. She can do this day and night for centuries if she wished. Though not even the most spectacular of her creations can match her coveted object of affection, the late Idri.
 
 	LegendaryItems: {
-		Title: —Relic of Nepostria—
+		Title: —Marvel of Nepostria—
 		Clue: Hold SHIFT to view information
 		StandardTooltip:
 			'''
-			Relics of Nepostria possess hidden properties and use cases.
-			Relics of Nepostria that are weapons also have an innate 10% critical strike chance on top of what they would originally have.
+			Marvels of Nepostria possess hidden properties and use cases.
+			Marvels of Nepostria that are weapons also have an innate 10% critical strike chance on top of what they would originally have.
 			'''
 	}
 }
@@ -55,6 +55,8 @@ Conditions: {
 	CursedFlameNodeBossDowned: Defeated the Cursed Flame Node
 	BlessedNodeBossDowned: Defeated the Blessed Node
 	TenebrousConstructBossDowned: Defeated the Tenebrous Construct
+	NightTime: Mods.DestroyerTest.Conditions.NightTime
+	DayTime: Mods.DestroyerTest.Conditions.DayTime
 }
 
 Configs: {

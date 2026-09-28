@@ -1,22 +1,27 @@
 
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
+using System.Collections.Generic;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
-using Terraria.GameContent.ItemDropRules;
-using System.Collections.Generic;
 using DestroyerTest.Content.Equips.ScepterAccessories;
-using DestroyerTest.Rarity;
-using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.Projectiles.player.Accessory;
+using DestroyerTest.Content.Resources;
+using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
+using OpusLib.Content.Helpers;
+using Terraria;
+using Terraria.GameContent.ItemDropRules;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Equips.Cards.AstirDeck
 {
 	public class Deteriorate : ModItem
 	{
-		public override void SetDefaults()
+        public override void SetStaticDefaults()
+        {
+            OpusNPCDropHelper.DropsFromNPC[Type] = new NPCDropData(NPCID.CorruptSlime, ItemDropRule.Common(Type, 20));
+        }
+        public override void SetDefaults()
 		{
 			Item.width = 16;
 			Item.height = 24;
@@ -34,19 +39,6 @@ namespace DestroyerTest.Content.Equips.Cards.AstirDeck
             {
                 deteriorate.Active = true;
             }
-        }
-    }
-
-    public class DeteriorateDropNPC : GlobalNPC
-    {
-        public override bool InstancePerEntity => true;
-        public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
-        {
-            if (npc.type == NPCID.CorruptSlime)
-            {
-                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Deteriorate>(), 16, 1, 1));
-            }
-
         }
     }
 

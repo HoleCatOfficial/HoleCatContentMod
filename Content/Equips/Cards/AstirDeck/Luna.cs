@@ -35,6 +35,14 @@ namespace DestroyerTest.Content.Equips.Cards.AstirDeck
                 luna.Active = true;
             }
         }
+
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient(ItemID.Moonglow)
+                .AddCondition(DTUtils.NightTimeCondition)
+                .Register();
+        }
     }
 
     public class LunaPlayer : ModPlayer

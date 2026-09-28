@@ -25,12 +25,8 @@ namespace DestroyerTest.Content.Equips.Cards.AstirDeck
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.findTreasure = true;
-
-            player.tileSpeed += 0.15f;
-            player.wallSpeed += 0.15f;
-
-            player.pickSpeed += 0.08f;
+            player.pickSpeed -= 0.2f;
+            player.moveSpeed += 0.08f;
         }
 
 

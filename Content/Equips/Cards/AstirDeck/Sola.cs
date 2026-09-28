@@ -26,6 +26,14 @@ namespace DestroyerTest.Content.Equips.Cards.AstirDeck
                 sola.Active = true;
             }
         }
+
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient(ItemID.Daybloom)
+                .AddCondition(DTUtils.DayTimeCondition)
+                .Register();
+        }
     }
 
     public class SolaPlayer : ModPlayer

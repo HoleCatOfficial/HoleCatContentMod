@@ -33,8 +33,9 @@ namespace DestroyerTest.Content.Buffs
 
 		public override void SetStaticDefaults()
 		{
-			Main.buffNoTimeDisplay[Type] = true;
 			Main.buffNoSave[Type] = true;
+
+			Main.persistentBuff[Type] = false;
 			animatedTexture = ModContent.Request<Texture2D>(AnimationSheetPath);
 		}
 
@@ -111,11 +112,22 @@ namespace DestroyerTest.Content.Buffs
 			lifeRegenDebuff = false;
 		}
 
+        public override void UpdateDead()
+        {
+            if (Player.HasBuff<GalantineBurn>())
+            {
+                Player.ClearBuff(ModContent.BuffType<GalantineBurn>());
+            }
+            lifeRegenDebuff = false;
+        }
+
 		// Allows you to give the player a negative life regeneration based on its state (for example, the "On Fire!" debuff makes the player take damage-over-time)
 		// This is typically done by setting player.lifeRegen to 0 if it is positive, setting player.lifeRegenTime to 0, and subtracting a number from player.lifeRegen
 		// The player will take damage at a rate of half the number you subtract per second
 		public override void UpdateBadLifeRegen()
 		{
+			
+
 			if (lifeRegenDebuff)
 			{
 				int amount = 13;

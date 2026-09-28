@@ -698,7 +698,11 @@ namespace DestroyerTest.Common
             return false;
         }
 
+        public static Func<bool> NightTimeConditionBool = () => !Main.dayTime;
+        public static Condition NightTimeCondition = new Condition("Mods.DestroyerTest.Conditions.NightTime", NightTimeConditionBool);
 
+        public static Func<bool> DayTimeConditionBool = () => Main.dayTime;
+        public static Condition DayTimeCondition = new Condition("Mods.DestroyerTest.Conditions.DayTime", DayTimeConditionBool);
     }
 
     public class SwapSolidTileAndFrame : GenAction

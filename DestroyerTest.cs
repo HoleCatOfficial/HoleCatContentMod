@@ -151,10 +151,10 @@ namespace DestroyerTest
         }
         
         public static DTConfig Config;
-        public static ModKeybind StarBlastKeybind { get; private set; }
         public static ModKeybind LunarInsigniaModeSwitchKeybind { get; private set; }
 		public static ModKeybind ArmorSetBonusHotKey { get; private set; }
         public static ModKeybind DeadlyBlossomKeybind { get; private set; }
+        public static ModKeybind ConstellationKeybind { get; private set; }
 
         public static int RouletteTokenCurrencyId;
 
@@ -389,6 +389,8 @@ namespace DestroyerTest
             ArmorSetBonusHotKey = KeybindLoader.RegisterKeybind(this, "ArmorSetBonus", "Y");
             // Divider.
             DeadlyBlossomKeybind = KeybindLoader.RegisterKeybind(this, "DeadlyBlossomSpawn", "X");
+            // Divider.
+            ConstellationKeybind = KeybindLoader.RegisterKeybind(this, "Constellation", "G");
 
             var fractalProfiles = (Dictionary<int, FinalFractalProfile>)typeof(Terraria.Graphics.FinalFractalHelper).GetField("_fractalProfiles", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
 
@@ -430,6 +432,7 @@ namespace DestroyerTest
             LunarInsigniaModeSwitchKeybind = null;
 			ArmorSetBonusHotKey = null;
             DeadlyBlossomKeybind = null;
+            ConstellationKeybind = null;
 
             var fractalProfiles = (Dictionary<int, FinalFractalProfile>)typeof(Terraria.Graphics.FinalFractalHelper).GetField("_fractalProfiles", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
 
