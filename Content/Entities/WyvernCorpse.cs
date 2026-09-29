@@ -123,13 +123,13 @@ namespace DestroyerTest.Content.Entities
             NPC.aiStyle = NPCAIStyleID.Worm;
 
             NPC.damage = 70;
-            NPC.defense = 65;
+            NPC.defense = 15;
             NPC.lifeMax = 420000;
 
             if (DTUtils.CalamityBossRushActive())
             {
                 NPC.lifeMax = 1000000;
-                NPC.defense = 90;
+                NPC.defense = 50;
             }
 
             NPC.noGravity = true;
@@ -520,12 +520,14 @@ namespace DestroyerTest.Content.Entities
 
                         int BodySegment = NPC.NewNPC(NPC.GetSource_FromAI(), (int)(NPC.position.X + NPC.width / 2), (int)(NPC.position.Y + NPC.height), WyvBodyInt, NPC.whoAmI);
 
-                        BodySegments.Add(Main.npc[BodySegment]);
+                      
 
                         Main.npc[BodySegment].ai[2] = NPC.whoAmI;
                         Main.npc[BodySegment].realLife = NPC.whoAmI;
                         Main.npc[BodySegment].ai[1] = Me;
                         Main.npc[BodySegment].ai[3] = i + 1;
+
+                        BodySegments.Add(Main.npc[BodySegment]);
 
                         // THIS is missing from your second implementation.
                         Main.npc[Me].ai[0] = BodySegment;
@@ -650,9 +652,20 @@ namespace DestroyerTest.Content.Entities
 
                 case attackType.BloodBombs:
                     {
-                        AI_BloodBombs();
+                        if (!DestroyerTestMod.EternityIsActive && !DestroyerTestMod.DeathIsActive)
+                        {
+                            AI_BloodBombs();
+                        }
+                        else
+                        {
+                            if (AITimer == 241)
+                            {
+                                Projectile.NewProjectile(NPC.GetSource_FromAI(), player.Center + new Vector2(500, 100), Vector2.Zero, ModContent.ProjectileType<SoulFountain>(), 200, 4);
+                                Projectile.NewProjectile(NPC.GetSource_FromAI(), player.Center + new Vector2(-500, 100), Vector2.Zero, ModContent.ProjectileType<SoulFountain>(), 200, 4);
+                            }
+                        }
 
-                        if (AITimer >= 600)
+                        if (AITimer >= ((DestroyerTestMod.EternityIsActive || DestroyerTestMod.DeathIsActive) ? 840 : 600))
                         {
                             CurrentAttack = attackType.Organs;
                         }

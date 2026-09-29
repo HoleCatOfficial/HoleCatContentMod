@@ -87,13 +87,13 @@ namespace DestroyerTest.Content.Entities
             NPC.aiStyle = NPCAIStyleID.Worm;
 
             NPC.damage = 70;
-            NPC.defense = 65;
-            NPC.lifeMax = 8000;
+            NPC.defense = 15;
+            NPC.lifeMax = 420000;
 
             if (DTUtils.CalamityBossRushActive())
             {
-                NPC.lifeMax = 10000;
-                NPC.defense = 90;
+                NPC.lifeMax = 1000000;
+                NPC.defense = 50;
             }
 
 
@@ -107,7 +107,6 @@ namespace DestroyerTest.Content.Entities
             NPC.netAlways = true;
             NPC.dontCountMe = true;
             NPC.hide = true;
-            NPC.realLife = ModContent.NPCType<WyvernCorpseHead>();
         }
 
         public override bool? DrawHealthBar(byte hbPosition, ref float scale, ref Vector2 position) => new bool?(false);
@@ -116,7 +115,10 @@ namespace DestroyerTest.Content.Entities
 
         public override bool CanHitPlayer(Player target, ref int cooldownSlot)
         {
-            NPC Parent = Main.npc[NPC.realLife];
+            if (Parent == null)
+            {
+                return true;
+            }
             if (Parent.ModNPC is WyvernCorpseHead Head)
             {
                 return Head.ShouldHit;
@@ -126,13 +128,22 @@ namespace DestroyerTest.Content.Entities
 
         public void NoDamageEffects()
         {
-            if (Parent.ModNPC is WyvernCorpseHead Head)
+            if (Parent == null)
+            {
+                return;
+            }
+
+            if (Main.npc[(int)NPC.ai[2]].ModNPC is WyvernCorpseHead Head)
             {
                 if (Head.shouldBeInvisible)
                 {
                     if (NPC.Opacity > 0)
                     {
                         NPC.Opacity -= 0.05f;
+                    }
+                    else
+                    {
+                        NPC.Opacity = 0;
                     }
                 }
                 else
@@ -142,17 +153,40 @@ namespace DestroyerTest.Content.Entities
                     {
                         NPC.Opacity += 0.05f;
                     }
+                    else
+                    {
+                        NPC.Opacity = 1;
+                    }
                 }
             }
 
 
+
+
         }
 
-        NPC Parent => Main.npc[NPC.realLife];
+        NPC Parent => NPC.realLife > -1 && NPC.realLife < Main.maxNPCs ? Main.npc[NPC.realLife] : null;
 
+        bool getinv()
+        {
+            if (Parent.ModNPC is WyvernCorpseHead Head)
+            {
+                return Head.shouldBeInvisible;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool invulnerableFromAttack => getinv();
+
+        public bool shouldBeInvisible => invulnerableFromAttack;
 
         public override void AI()
         {
+            NPC.realLife = (int)NPC.ai[2];
+
             ModifyHitDustAmounts();
             anyNodesAlive = Main.npc.Any(n => n.active && n.type == ModContent.NPCType<IchorNode>());
 
@@ -170,7 +204,7 @@ namespace DestroyerTest.Content.Entities
                 NPC.immortal = false;
             }
 
-            NPC Parent = Main.npc[NPC.realLife];
+           
 
             NPC.dontTakeDamage = Parent.dontTakeDamage;
             NPC.damage = Parent.damage;
@@ -188,12 +222,12 @@ namespace DestroyerTest.Content.Entities
         int Frame = 0;
         public override void FindFrame(int frameHeight)
         {
-            if (NPC.IsABestiaryIconDummy)
+            if (NPC.IsABestiaryIconDummy || Parent == null)
             {
                 return;
             }
 
-            float Progress = (float)NPC.life / (float)NPC.lifeMax;
+            float Progress = (float)Parent.life / (float)Parent.lifeMax;
             Frame = (int)MathHelper.Lerp(5, 0, Progress);
 
 
@@ -265,7 +299,12 @@ namespace DestroyerTest.Content.Entities
 
         void ModifyHitDustAmounts()
         {
-            float Progress = (float)Main.npc[NPC.realLife].life / (float)Main.npc[NPC.realLife].lifeMax;
+            if (Parent == null)
+            {
+                return;
+            }
+
+            float Progress = (float)Parent.life / (float)Parent.lifeMax;
 
             float FirstQuarterProgress = (float)NPC.life / (float)NPC.lifeMax / 4;
             float LastQuarterProgress = (float)NPC.life / (float)NPC.lifeMax * 0.75f;
@@ -287,7 +326,12 @@ namespace DestroyerTest.Content.Entities
 
         public override void HitEffect(NPC.HitInfo hit)
         {
-            float Progress = (float)Main.npc[NPC.realLife].life / (float)Main.npc[NPC.realLife].lifeMax;
+            if (Parent == null)
+            {
+                return;
+            }
+
+            float Progress = (float)Parent.life / (float)Parent.lifeMax;
 
             if (Progress > 0.5f)
             {

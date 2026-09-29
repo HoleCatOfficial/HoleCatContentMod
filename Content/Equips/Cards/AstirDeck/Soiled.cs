@@ -49,9 +49,21 @@ namespace DestroyerTest.Content.Equips.Cards.AstirDeck
     {
         public bool Active = false;
 
+        public int Cooldown = 90;
         public override void ResetEffects()
         {
             Active = false;
+        }
+
+        public override void PostUpdateEquips()
+        {
+            if (Active)
+            {
+                if (Cooldown > 0)
+                {
+                    Cooldown--;
+                }
+            }
         }
     }
 
@@ -67,6 +79,7 @@ namespace DestroyerTest.Content.Equips.Cards.AstirDeck
                 {
                     SoundEngine.PlaySound(SoundID.NPCDeath13, target.Center);
                     Projectile.NewProjectile(Projectile.GetSource_None(), target.Center, Main.rand.NextVector2Circular(5f, 5f), ModContent.ProjectileType<SoiledHeal>(), projectile.damage / 2, 15, projectile.owner, ai1: damageDone * 0.1f);
+                    soiledPlayer.Cooldown = 90;
                 }
             }
         }

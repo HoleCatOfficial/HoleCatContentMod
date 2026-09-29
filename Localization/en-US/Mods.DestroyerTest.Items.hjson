@@ -4669,7 +4669,7 @@ Sola: {
 }
 
 Bipolar: {
-	DisplayName: Bipolar
+	DisplayName: Order
 	Tooltip:
 		'''
 		Summons a miniature moon and miniature sun that orbit you and deal classless damage on hit.
@@ -5585,24 +5585,24 @@ CosmicPing: {
 CaveDeck: {
 	DisplayName: Worldly Deck
 	Tooltip:
-	'''
-	In the heat of the Hellforge, much like the Origin, Terraria's material layers fuse together.
-	Combines the effects of [i:DestroyerTest/Instinct] [c/a6f244:Instinct], [i:DestroyerTest/Expedition] [c/837023:Expedition], [i:DestroyerTest/Depths] [c/1c1627:Depths], and [i:DestroyerTest/Fallen] [c/b04024:Fallen].
-	[i:DestroyerTest/Instinct] You get a dodge on a cooldown.
-	[i:DestroyerTest/Expedition] 22% faster pick speed.
-	[i:DestroyerTest/Expedition] 10% movement speed.
-	[i:DestroyerTest/Depths] You build up heat in hot areas that increases damage but decreases defense.
-	[i:DestroyerTest/Fallen] Increased Melee Scale
-	'''
+		'''
+		In the heat of the Hellforge, much like the Origin, Terraria's material layers fuse together.
+		Combines the effects of [i:DestroyerTest/Instinct] [c/a6f244:Instinct], [i:DestroyerTest/Expedition] [c/837023:Expedition], [i:DestroyerTest/Depths] [c/1c1627:Depths], and [i:DestroyerTest/Fallen] [c/b04024:Fallen].
+		[i:DestroyerTest/Instinct] You get a dodge on a cooldown.
+		[i:DestroyerTest/Expedition] 22% faster pick speed.
+		[i:DestroyerTest/Expedition] 10% movement speed.
+		[i:DestroyerTest/Depths] You build up heat in hot areas that increases damage but decreases defense.
+		[i:DestroyerTest/Fallen] Increased Melee Scale
+		'''
 }
 
 Soiled: {
 	DisplayName: Soiled
 	Tooltip:
-	'''
-	Melee damage increased by 16%.
-	Whip damage increased by 14%.
-	Scepter damage increased by 11%.
-	You have a 10% chance on hit for all 3 classes above to create a blob that heals you for 10% of the damage dealt.
-	'''
+		'''
+		Melee damage increased by 16%.
+		Whip damage increased by 14%.
+		Scepter damage increased by 11%.
+		You have a 10% chance on hit for all 3 classes above to create a blob that heals you for 10% of the damage dealt.
+		'''
 }

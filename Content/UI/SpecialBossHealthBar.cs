@@ -449,7 +449,7 @@ namespace DestroyerTest.Content.UI
                                 {
                                     if (DTCrossMod.FablesIsLoaded)
                                     {
-                                        return new Vector2((drawPos.X - 231), drawPos.Y - 2) + new Vector2((NodeLockDimensions.Width * Main.UIScale * DTUIConfig.instance.CustomBossBarScaleModifier) * i, 0);
+                                        return new Vector2((drawPos.X - 317), drawPos.Y - 2) + new Vector2((NodeLockDimensions.Width * Main.UIScale * DTUIConfig.instance.CustomBossBarScaleModifier) * i, 0);
                                     }
                                     else
                                     {
