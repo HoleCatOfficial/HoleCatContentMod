@@ -58,7 +58,7 @@ namespace DestroyerTest.Content.BossSummons
 
                 int type = ModContent.NPCType<WyvernCorpseHead>();
 
-                if (Main.netMode != NetmodeID.MultiplayerClient && player.ZoneCrimson)
+                if (Main.netMode != NetmodeID.MultiplayerClient && (DestroyerTestMod.EternityIsActive ? !player.dead : player.ZoneCrimson))
                 {
                     NPC.SpawnOnPlayer(player.whoAmI, type);
                 }

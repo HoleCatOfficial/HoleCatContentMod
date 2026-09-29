@@ -20,7 +20,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
         public override void SetDefaults()
         {
             Projectile.width = 200;
-            Projectile.height = 700;
+            Projectile.height = 100;
             Projectile.friendly = false;
             Projectile.hostile = true;
             Projectile.penetrate = -1;
@@ -35,8 +35,8 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
             Mult = Opus.Sine(1f, 1.1f, 0.3f);
 
 
-            Main.EntitySpriteDraw(DTAssetLib.MiscSparkle144.Value, Projectile.Bottom - Main.screenPosition, null, ColorLib.Soul with { A = 0 }, MathHelper.PiOver2, DTAssetLib.MiscSparkle144.Value.Size() / 2, new Vector2(0.6f, 2f) * Mult, SpriteEffects.None);
-            Main.EntitySpriteDraw(DTAssetLib.MiscSparkle144.Value, Projectile.Bottom - Main.screenPosition, null, ColorLib.Soul with { A = 0 }, 0f, DTAssetLib.MiscSparkle144.Value.Size() / 2, new Vector2(0.2f, 1f) * Mult, SpriteEffects.None);
+            Main.EntitySpriteDraw(DTAssetLib.MiscSparkle144.Value, Projectile.Bottom - Main.screenPosition, null, ColorLib.Soul with { A = 0 }, MathHelper.PiOver2, DTAssetLib.MiscSparkle144.Value.Size() / 2, new Vector2(3f, 6f) * Mult, SpriteEffects.None);
+            Main.EntitySpriteDraw(DTAssetLib.MiscSparkle144.Value, Projectile.Bottom - Main.screenPosition, null, ColorLib.Soul with { A = 0 }, 0f, DTAssetLib.MiscSparkle144.Value.Size() / 2, new Vector2(3f, 5f) * Mult, SpriteEffects.None);
 
             Main.EntitySpriteDraw(DTAssetLib.ThinGlowCone.Value, Projectile.Bottom - Main.screenPosition, null, ColorLib.Soul with { A = 0 }, -MathHelper.PiOver2, new Vector2(0f, DTAssetLib.ThinGlowCone.Value.Height / 2), new Vector2(3f, 6f) * Mult, SpriteEffects.None);
             return false;

@@ -244,13 +244,9 @@ namespace DestroyerTest.Content.Entities
             {
                 if (DestroyerTestMod.MasochistIsActive)
                 {
-                    /*
                     texture = NPC.GetMasoTexture("DestroyerTest/Content/Entities/MasoMode", "WyvernCorpseLegs");
                     Glowtexture = NPC.GetMasoTexture("DestroyerTest/Content/Entities/MasoMode", "WyvernCorpseLegs");
-                    */
 
-                    texture = TextureAssets.Npc[Type];
-                    Glowtexture = ModContent.Request<Texture2D>($"{Texture}_Glow", AssetRequestMode.AsyncLoad);
                 }
                 else
                 {
@@ -331,37 +327,55 @@ namespace DestroyerTest.Content.Entities
                 return;
             }
 
-            float Progress = (float)Parent.life / (float)Parent.lifeMax;
-
-            if (Progress > 0.5f)
+            if (!DestroyerTestMod.MasochistIsActive)
             {
-                SoundEngine.PlaySound(SoundID.Tink with { Pitch = -0.6f, PitchVariance = 0.4f }, NPC.Center);
-                if (!DTOptimizationsConfig.instance.DisableExcessDusts)
+                float Progress = (float)Parent.life / (float)Parent.lifeMax;
+
+                if (Progress > 0.5f)
                 {
-                    for (int i = 0; i < NumCrimstoneDusts; i++)
+                    SoundEngine.PlaySound(SoundID.Tink with { Pitch = -0.6f, PitchVariance = 0.4f }, NPC.Center);
+                    if (!DTOptimizationsConfig.instance.DisableExcessDusts)
                     {
-                        Dust.NewDust(Main.rand.NextVector2FromRectangle(NPC.Hitbox), 20, 20, DustID.Crimstone, Main.rand.NextFloat(-1, 1), Main.rand.NextFloat(-1, 1), 0, default, 2);
+                        for (int i = 0; i < NumCrimstoneDusts; i++)
+                        {
+                            Dust.NewDust(Main.rand.NextVector2FromRectangle(NPC.Hitbox), 20, 20, DustID.Crimstone, Main.rand.NextFloat(-1, 1), Main.rand.NextFloat(-1, 1), 0, default, 2);
+                        }
                     }
                 }
-            }
-            if (Progress < 0.5f && Progress > 0.25f)
-            {
-                SoundEngine.PlaySound(SoundID.DD2_SkeletonHurt with { Pitch = 0.6f, PitchVariance = 0.2f }, NPC.Center);
-                if (!DTOptimizationsConfig.instance.DisableExcessDusts)
+                if (Progress < 0.5f && Progress > 0.25f)
                 {
-                    for (int i = 0; i < NumBoneDusts; i++)
+                    SoundEngine.PlaySound(SoundID.DD2_SkeletonHurt with { Pitch = 0.6f, PitchVariance = 0.2f }, NPC.Center);
+                    if (!DTOptimizationsConfig.instance.DisableExcessDusts)
                     {
-                        Dust.NewDust(Main.rand.NextVector2FromRectangle(NPC.Hitbox), 20, 20, DustID.Bone, Main.rand.NextFloat(-1, 1), Main.rand.NextFloat(-1, 1), 0, default, 2);
+                        for (int i = 0; i < NumBoneDusts; i++)
+                        {
+                            Dust.NewDust(Main.rand.NextVector2FromRectangle(NPC.Hitbox), 20, 20, DustID.Bone, Main.rand.NextFloat(-1, 1), Main.rand.NextFloat(-1, 1), 0, default, 2);
+                        }
                     }
                 }
-            }
-            if (Progress < 0.25f)
-            {
-                SoundEngine.PlaySound(SoundID.DD2_PhantomPhoenixShot with { Pitch = 0.6f, PitchVariance = 0.2f }, NPC.Center);
-
-                if (!DTOptimizationsConfig.instance.DisableExcessDusts)
+                if (Progress < 0.25f)
                 {
-                    for (int i = 0; i < NumSoulParticles; i++)
+                    SoundEngine.PlaySound(SoundID.DD2_PhantomPhoenixShot with { Pitch = 0.6f, PitchVariance = 0.2f }, NPC.Center);
+
+                    if (!DTOptimizationsConfig.instance.DisableExcessDusts)
+                    {
+                        for (int i = 0; i < NumSoulParticles; i++)
+                        {
+                            PointGlowPreMultiplied SoulParticle = new();
+                            SoulParticle.Initialize(Main.rand.NextVector2FromRectangle(NPC.Hitbox), new Vector2(Main.rand.NextFloat(-1, 1), Main.rand.NextFloat(-1, 1)), ColorLib.Soul, 1f, 120);
+                            ParticleEngine.Particles.Add(SoulParticle);
+                        }
+                    }
+                }
+
+
+
+
+                if (Progress <= 0.001f)
+                {
+                    SoundEngine.PlaySound(DTAssetLib.Impacts.DreamHit, NPC.Center);
+
+                    for (int i = 0; i < 10; i++)
                     {
                         PointGlowPreMultiplied SoulParticle = new();
                         SoulParticle.Initialize(Main.rand.NextVector2FromRectangle(NPC.Hitbox), new Vector2(Main.rand.NextFloat(-1, 1), Main.rand.NextFloat(-1, 1)), ColorLib.Soul, 1f, 120);
@@ -369,15 +383,12 @@ namespace DestroyerTest.Content.Entities
                     }
                 }
             }
-
-
-
-
-            if (Progress <= 0.001f)
+            else
             {
-                SoundEngine.PlaySound(DTAssetLib.Impacts.DreamHit, NPC.Center);
+                SoundEngine.PlaySound(DTAssetLib.Impacts.StellarFox, NPC.Center);
 
-                for (int i = 0; i < 10; i++)
+
+                for (int i = 0; i < 4; i++)
                 {
                     PointGlowPreMultiplied SoulParticle = new();
                     SoulParticle.Initialize(Main.rand.NextVector2FromRectangle(NPC.Hitbox), new Vector2(Main.rand.NextFloat(-1, 1), Main.rand.NextFloat(-1, 1)), ColorLib.Soul, 1f, 120);

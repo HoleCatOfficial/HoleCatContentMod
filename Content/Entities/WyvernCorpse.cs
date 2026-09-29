@@ -5,6 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using BreadLibrary.Core.Graphics.Particles;
+using BreadLibrary.Core.Graphics.Spritebatch;
+using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
 using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.BossBar;
@@ -220,13 +222,10 @@ namespace DestroyerTest.Content.Entities
             {
                 if (DestroyerTestMod.MasochistIsActive)
                 {
-                    /*
+                    
                     texture = NPC.GetMasoTexture("DestroyerTest/Content/Entities/MasoMode", "WyvernCorpseHead");
                     Glowtexture = NPC.GetMasoTexture("DestroyerTest/Content/Entities/MasoMode", "WyvernCorpseHead");
-                    */
-
-                    texture = TextureAssets.Npc[Type];
-                    Glowtexture = ModContent.Request<Texture2D>($"{Texture}_Glow", AssetRequestMode.AsyncLoad);
+                   
                 }
                 else
                 {
@@ -236,12 +235,59 @@ namespace DestroyerTest.Content.Entities
                 flag = true;
             }
         }
+
+        int EternityScrollX = 0;
+        int EternityScrollY = 0;
+
+        float RingOpacity = 0f;
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             if (NPC.IsABestiaryIconDummy)
             {
                 return false;
             }
+
+            if ((DestroyerTestMod.EternityIsActive || DestroyerTestMod.DeathIsActive) && !DTUtils.CalamityBossRushActive())
+            {
+                EternityScrollX += 4;
+                EternityScrollY += 2;
+
+
+                Main.EntitySpriteDraw(DTAssetLib.Vingette.Value, player.Center - Main.screenPosition, null, Color.White, 0f, DTAssetLib.Vingette.Value.Size() / 2, 1f, SpriteEffects.None, 0f);
+
+                var Cap = spriteBatch.Capture();
+
+                spriteBatch.End();
+
+                Cap.SamplerState = SamplerState.PointWrap;
+
+                spriteBatch.Begin(Cap);
+
+                Main.EntitySpriteDraw(DTAssetLib.TilableNoise(10).Value, player.Center - Main.screenPosition, new Rectangle(EternityScrollX, EternityScrollY, DTAssetLib.TilableNoise(3).Value.Width, DTAssetLib.TilableNoise(3).Value.Height), ColorLib.Soul3 with { A = 0 } * 0.8f, 0f, DTAssetLib.TilableNoise(3).Value.Size() / 2, 6f, SpriteEffects.None, 0f);
+                Main.EntitySpriteDraw(DTAssetLib.TilableNoise(10).Value, player.Center - Main.screenPosition, new Rectangle((int)(EternityScrollX * 1.2f), (int)(EternityScrollY * 1.2f), DTAssetLib.TilableNoise(3).Value.Width, DTAssetLib.TilableNoise(3).Value.Height), ColorLib.Soul3 with { A = 0 } * 0.5f, 0f, DTAssetLib.TilableNoise(3).Value.Size() / 2, 6f, SpriteEffects.None, 0f);
+                Main.EntitySpriteDraw(DTAssetLib.TilableNoise(10).Value, player.Center - Main.screenPosition, new Rectangle((int)(EternityScrollX * 1.1f), (int)(EternityScrollY * 1.1f), DTAssetLib.TilableNoise(3).Value.Width, DTAssetLib.TilableNoise(3).Value.Height), Color.White with { A = 0 } * 0.75f, 0f, DTAssetLib.TilableNoise(3).Value.Size() / 2, 6f, SpriteEffects.None, 0f);
+
+                spriteBatch.ResetToDefault();
+            }
+
+
+            if (CurrentAttack == attackType.OrganCircle)
+            {
+                if (RingOpacity < 1)
+                {
+                    RingOpacity += 0.05f;
+                }
+            }
+            else
+            {
+                if (RingOpacity > 0)
+                {
+                    RingOpacity -= 0.05f;
+                }
+            }
+
+            Main.EntitySpriteDraw(DTAssetLib.BarrierRing.Value, OrganSpinCenter - Main.screenPosition, null, ((DestroyerTestMod.EternityIsActive || DestroyerTestMod.DeathIsActive) ? ColorLib.Soul with { A = 0 } : Color.Red with { A = 0 }) * RingOpacity, -OrganSpinRotOff, DTAssetLib.BarrierRing.Value.Size() / 2, DTAssetLib.BarrierRing.Value.ScaleRingTextureToMatchRadius(anyNodesAlive ? 1700 : 1000, 1300), SpriteEffects.None, 0);
+
 
             SetTex();
 
@@ -340,38 +386,55 @@ namespace DestroyerTest.Content.Entities
         public float LifeProgress => (float)NPC.life / (float)NPC.lifeMax;
         public override void HitEffect(NPC.HitInfo hit)
         {
-            float Progress = LifeProgress;
-
-            if (Progress > 0.5f)
+            if (!DestroyerTestMod.MasochistIsActive)
             {
-                SoundEngine.PlaySound(SoundID.Tink with { Pitch = -0.6f, PitchVariance = 0.4f }, NPC.Center);
-                if (!DTOptimizationsConfig.instance.DisableExcessDusts)
+                float Progress = LifeProgress;
+
+                if (Progress > 0.5f)
                 {
-                    for (int i = 0; i < NumCrimstoneDusts; i++)
+                    SoundEngine.PlaySound(SoundID.Tink with { Pitch = -0.6f, PitchVariance = 0.4f }, NPC.Center);
+                    if (!DTOptimizationsConfig.instance.DisableExcessDusts)
                     {
-                        Dust.NewDust(Main.rand.NextVector2FromRectangle(NPC.Hitbox), 20, 20, DustID.Crimstone, Main.rand.NextFloat(-1, 1), Main.rand.NextFloat(-1, 1), 0, default, 2);
+                        for (int i = 0; i < NumCrimstoneDusts; i++)
+                        {
+                            Dust.NewDust(Main.rand.NextVector2FromRectangle(NPC.Hitbox), 20, 20, DustID.Crimstone, Main.rand.NextFloat(-1, 1), Main.rand.NextFloat(-1, 1), 0, default, 2);
+                        }
                     }
                 }
-            }
-            if (Progress < 0.5f && Progress > 0.25f)
-            {
-                SoundEngine.PlaySound(SoundID.DD2_SkeletonHurt with { Pitch = 0.6f, PitchVariance = 0.2f }, NPC.Center);
-                if (!DTOptimizationsConfig.instance.DisableExcessDusts)
+                if (Progress < 0.5f && Progress > 0.25f)
                 {
-                    for (int i = 0; i < NumBoneDusts; i++)
+                    SoundEngine.PlaySound(SoundID.DD2_SkeletonHurt with { Pitch = 0.6f, PitchVariance = 0.2f }, NPC.Center);
+                    if (!DTOptimizationsConfig.instance.DisableExcessDusts)
                     {
-                        Dust.NewDust(Main.rand.NextVector2FromRectangle(NPC.Hitbox), 20, 20, DustID.Bone, Main.rand.NextFloat(-1, 1), Main.rand.NextFloat(-1, 1), 0, default, 2);
+                        for (int i = 0; i < NumBoneDusts; i++)
+                        {
+                            Dust.NewDust(Main.rand.NextVector2FromRectangle(NPC.Hitbox), 20, 20, DustID.Bone, Main.rand.NextFloat(-1, 1), Main.rand.NextFloat(-1, 1), 0, default, 2);
+                        }
                     }
                 }
-            }
-            if (Progress < 0.25f)
-            {
-                SoundEngine.PlaySound(SoundID.DD2_PhantomPhoenixShot with { Pitch = 0.6f, PitchVariance = 0.2f }, NPC.Center);
-
-                if (!DTOptimizationsConfig.instance.DisableExcessDusts)
+                if (Progress < 0.25f)
                 {
+                    SoundEngine.PlaySound(SoundID.DD2_PhantomPhoenixShot with { Pitch = 0.6f, PitchVariance = 0.2f }, NPC.Center);
 
-                    for (int i = 0; i < NumSoulParticles; i++)
+                    if (!DTOptimizationsConfig.instance.DisableExcessDusts)
+                    {
+
+                        for (int i = 0; i < NumSoulParticles; i++)
+                        {
+                            PointGlowPreMultiplied SoulParticle = new();
+                            SoulParticle.Initialize(Main.rand.NextVector2FromRectangle(NPC.Hitbox), new Vector2(Main.rand.NextFloat(-1, 1), Main.rand.NextFloat(-1, 1)), ColorLib.Soul, 1f, 120);
+                            ParticleEngine.Particles.Add(SoulParticle);
+                        }
+                    }
+                }
+
+
+                if (Progress <= 0.001f)
+                {
+                    SoundEngine.PlaySound(DTAssetLib.Impacts.DreamHit, NPC.Center);
+
+
+                    for (int i = 0; i < 10; i++)
                     {
                         PointGlowPreMultiplied SoulParticle = new();
                         SoulParticle.Initialize(Main.rand.NextVector2FromRectangle(NPC.Hitbox), new Vector2(Main.rand.NextFloat(-1, 1), Main.rand.NextFloat(-1, 1)), ColorLib.Soul, 1f, 120);
@@ -379,14 +442,12 @@ namespace DestroyerTest.Content.Entities
                     }
                 }
             }
-
-
-            if (Progress <= 0.001f)
+            else
             {
-                SoundEngine.PlaySound(DTAssetLib.Impacts.DreamHit, NPC.Center);
+                SoundEngine.PlaySound(DTAssetLib.Impacts.StellarFox, NPC.Center);
 
 
-                for (int i = 0; i < 10; i++)
+                for (int i = 0; i < 4; i++)
                 {
                     PointGlowPreMultiplied SoulParticle = new();
                     SoulParticle.Initialize(Main.rand.NextVector2FromRectangle(NPC.Hitbox), new Vector2(Main.rand.NextFloat(-1, 1), Main.rand.NextFloat(-1, 1)), ColorLib.Soul, 1f, 120);
@@ -491,6 +552,20 @@ namespace DestroyerTest.Content.Entities
         Vector2 OrganSpinCenter;
         int OrganSpinSpawnCount = 0;
 
+        Projectile[] EternityHeadBeams;
+
+        float NeedleOffset = 0f;
+        Vector2 StoredCenter = Vector2.Zero;
+
+        int IdleTime = 240;
+
+        int BombTime => IdleTime + ((DestroyerTestMod.EternityIsActive || DestroyerTestMod.DeathIsActive) ? 600 : 360);
+
+        int OrganTime => BombTime + ((DestroyerTestMod.EternityIsActive || DestroyerTestMod.DeathIsActive) ? 600 : 360);
+
+        int MatrixTime => OrganTime + ((DestroyerTestMod.EternityIsActive || DestroyerTestMod.DeathIsActive) ? 30 * 60 : 360);
+
+
         Player player => Main.player[NPC.target];
         public override void AI()
         {
@@ -518,7 +593,7 @@ namespace DestroyerTest.Content.Entities
                         else if (i == 59)
                             WyvBodyInt = ModContent.NPCType<WyvernCorpseTail>();
 
-                        int BodySegment = NPC.NewNPC(NPC.GetSource_FromAI(), (int)(NPC.position.X + NPC.width / 2), (int)(NPC.position.Y + NPC.height), WyvBodyInt, NPC.whoAmI);
+                        int BodySegment = NPC.NewNPC(NPC.GetSource_FromAI(), (int)(NPC.position.X + NPC.width / 2), (int)(NPC.position.Y + NPC.height), WyvBodyInt/*, NPC.whoAmI*/);
 
                       
 
@@ -547,13 +622,16 @@ namespace DestroyerTest.Content.Entities
 
             Vector2 ToPlayerInverse = player.Center - NPC.Center;
 
-            if (Frame == 1 && !HasShedBlisters)
+            if ((!DestroyerTestMod.EternityIsActive && !DestroyerTestMod.DeathIsActive))
             {
-                for (int i = 0; i < BodySegments.Count(); i++)
+                if (Frame == 1 && !HasShedBlisters)
                 {
-                    Projectile.NewProjectile(NPC.GetSource_FromAI(), BodySegments[i].Center, Main.rand.NextVector2Circular(2, 2), ModContent.ProjectileType<IchorBlister>(), 50, 4, ai0: player.whoAmI);
+                    for (int i = 0; i < BodySegments.Count(); i++)
+                    {
+                        Projectile.NewProjectile(NPC.GetSource_FromAI(), BodySegments[i].Center, Main.rand.NextVector2Circular(2, 2), ModContent.ProjectileType<IchorBlister>(), 50, 4, ai0: player.whoAmI);
+                    }
+                    HasShedBlisters = true;
                 }
-                HasShedBlisters = true;
             }
 
             Vector2 RandNearPlayer = player.Center + new Vector2(Main.rand.NextFloat(-200f, 200f), Main.rand.NextFloat(-200f, 200f));
@@ -572,7 +650,7 @@ namespace DestroyerTest.Content.Entities
                 }
             }
 
-
+            
 
             nodeCount = iNodes.Count;
 
@@ -606,6 +684,12 @@ namespace DestroyerTest.Content.Entities
                 }
             }
 
+            if ((DestroyerTestMod.EternityIsActive || DestroyerTestMod.DeathIsActive) && !DTUtils.CalamityBossRushActive())
+            {
+                SunlightModification.Sunlight(1f, Color.Black, 1f);
+
+            }
+
             NoDamageEffects();
 
             if (NPC.life <= NPC.lifeMax * 0.75f)
@@ -627,8 +711,19 @@ namespace DestroyerTest.Content.Entities
             }
 
 
+            if (!DestroyerTestMod.EternityIsActive && !DestroyerTestMod.DeathIsActive)
+            {
 
-            Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/UnfinishedBoss");
+                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/UnfinishedBoss");
+            }
+            if ((DestroyerTestMod.EternityIsActive || DestroyerTestMod.DeathIsActive) && !DestroyerTestMod.MasochistIsActive)
+            {
+                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/TribulationEternity");
+            }
+            if (DestroyerTestMod.MasochistIsActive)
+            {
+                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/MasoWyvern");
+            }
 
             ManageShakeTimers();
 
@@ -643,7 +738,7 @@ namespace DestroyerTest.Content.Entities
                         PostCrystalWaitTime = 0;
                         HasSpawnedOrb = false;
 
-                        if (AITimer >= 240)
+                        if (AITimer >= IdleTime)
                         {
                             CurrentAttack = attackType.BloodBombs;
                         }
@@ -660,12 +755,13 @@ namespace DestroyerTest.Content.Entities
                         {
                             if (AITimer == 241)
                             {
+                                SoundEngine.PlaySound(Roar);
                                 Projectile.NewProjectile(NPC.GetSource_FromAI(), player.Center + new Vector2(500, 100), Vector2.Zero, ModContent.ProjectileType<SoulFountain>(), 200, 4);
                                 Projectile.NewProjectile(NPC.GetSource_FromAI(), player.Center + new Vector2(-500, 100), Vector2.Zero, ModContent.ProjectileType<SoulFountain>(), 200, 4);
                             }
                         }
 
-                        if (AITimer >= ((DestroyerTestMod.EternityIsActive || DestroyerTestMod.DeathIsActive) ? 840 : 600))
+                        if (AITimer >= BombTime)
                         {
                             CurrentAttack = attackType.Organs;
                         }
@@ -673,44 +769,190 @@ namespace DestroyerTest.Content.Entities
                     }
                 case attackType.Organs:
                     {
-                        if (AI_Organs())
+
+                        if (!DestroyerTestMod.EternityIsActive && !DestroyerTestMod.DeathIsActive)
                         {
-                            CurrentAttack = attackType.CrystalBombMatrix;
+                            if (AI_Organs())
+                            {
+                                CurrentAttack = attackType.CrystalBombMatrix;
+                            }
+                        }
+                        else
+                        {
+                            if (AITimer == BombTime + 1)
+                            {
+                                SoundEngine.PlaySound(Kill);
+                                SoundEngine.PlaySound(DTAssetLib.Impacts.KCrystalConsume);
+                                SoundEngine.PlaySound(SoundID.Zombie104);
+                                EternityHeadBeams = Opus.RadialSpreadProjectile(ModContent.ProjectileType<SoulBeam2>(), 2, NPC.Center, 60, 4, 0.0001f, ai1: NPC.rotation, offset: NPC.rotation);
+                            }
+
+                            if (EternityHeadBeams != null)
+                            {
+                                EternityHeadBeams[0].rotation = NPC.rotation;
+                                EternityHeadBeams[0].Center = NPC.Center;
+                                EternityHeadBeams[1].rotation = NPC.rotation + MathHelper.Pi;
+                                EternityHeadBeams[1].Center = NPC.Center;
+                            }
+                            if (AITimer >= OrganTime)
+                            {
+                                CurrentAttack = attackType.CrystalBombMatrix;
+                                EternityHeadBeams[0] = null;
+                                EternityHeadBeams[1] = null;
+                            }
                         }
                         break;
                     }
                 case attackType.CrystalBombMatrix:
                     {
-                        AI_CrystalBombMatrix();
-
-                        Vector2 Above = player.Center + new Vector2(0, -400);
-
-                        NPC.SmoothMoveToPoint(Above, 40f);
-
-                        NPC.dontTakeDamage = true;
-                        ShouldHit = false;
-
-                        for (int i = 0; i < iNodes.Count; i++)
+                        if (!DestroyerTestMod.EternityIsActive && !DestroyerTestMod.DeathIsActive)
                         {
-                            iNodes[i].dontTakeDamage = true;
-                        }
+                            AI_CrystalBombMatrix();
 
-                        if (NumBombs >= 5)
-                        {
-                            if (PostCrystalWaitTime < 120)
+                            Vector2 Above = player.Center + new Vector2(0, -400);
+
+                            NPC.SmoothMoveToPoint(Above, 40f);
+
+                            NPC.dontTakeDamage = true;
+                            ShouldHit = false;
+
+                            for (int i = 0; i < iNodes.Count; i++)
                             {
-                                PostCrystalWaitTime++;
+                                iNodes[i].dontTakeDamage = true;
                             }
-                            else
+
+                            if (NumBombs >= 5)
                             {
-                                CurrentAttack = attackType.ChargeLaserOrb;
-                                NPC.dontTakeDamage = false;
-                                ShouldHit = true;
-                                for (int i = 0; i < iNodes.Count; i++)
+                                if (PostCrystalWaitTime < 120)
                                 {
-                                    iNodes[i].dontTakeDamage = false;
+                                    PostCrystalWaitTime++;
                                 }
-                                NPC.damage = 70;
+                                else
+                                {
+                                    CurrentAttack = attackType.ChargeLaserOrb;
+                                    NPC.dontTakeDamage = false;
+                                    ShouldHit = true;
+                                    for (int i = 0; i < iNodes.Count; i++)
+                                    {
+                                        iNodes[i].dontTakeDamage = false;
+                                    }
+                                    NPC.damage = 70;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            Vector2 Above = player.Center + new Vector2(0, -400);
+
+                            NPC.SmoothMoveToPoint(Above, 40f);
+
+                            NPC.dontTakeDamage = true;
+                            ShouldHit = false;
+
+                            for (int i = 0; i < iNodes.Count; i++)
+                            {
+                                iNodes[i].dontTakeDamage = true;
+                            }
+
+                            if (AITimer == OrganTime + 1)
+                            {
+                                StoredCenter = player.Center;
+                                Projectile.NewProjectile(NPC.GetSource_FromAI(), player.Center, Vector2.Zero, ModContent.ProjectileType<BindingRing>(), 0, 0, ai0: player.whoAmI, ai1: 400);
+                            }
+
+                            if (AITimer == OrganTime + 10)
+                            {
+                                Opus.RingSpreadProjectile(ModContent.ProjectileType<SoulNeedle>(), DestroyerTestMod.MasochistIsActive ? 6 : 3, StoredCenter, 410, 30, 3, 7, offset: Main.rand.NextFloat(MathHelper.TwoPi));
+                            }
+                            if (AITimer == OrganTime + 70)
+                            {
+                                Opus.RingSpreadProjectile(ModContent.ProjectileType<SoulNeedle>(), DestroyerTestMod.MasochistIsActive ? 8 : 4, StoredCenter, 410, 30, 3, 7, offset: Main.rand.NextFloat(MathHelper.TwoPi));
+                            }
+                            if (AITimer == OrganTime + 130)
+                            {
+                                Opus.RingSpreadProjectile(ModContent.ProjectileType<SoulNeedle>(), DestroyerTestMod.MasochistIsActive ? 10 : 5, StoredCenter, 410, 30, 3, 7, offset: Main.rand.NextFloat(MathHelper.TwoPi));
+                            }
+
+                            if (AITimer < OrganTime + 800 && AITimer > OrganTime + 200)
+                            {
+                                NeedleOffset += 0.01f;
+
+                                if (AITimer % 10 == 0)
+                                {
+                                    if (!DestroyerTestMod.MasochistIsActive)
+                                    {
+                                        Vector2 Outer = StoredCenter + new Vector2(410, 0).RotatedBy(NeedleOffset);
+                                        Projectile.NewProjectile(NPC.GetSource_FromAI(), Outer, Outer.DirectionFrom(StoredCenter) * 7f, ModContent.ProjectileType<SoulNeedle>(), 30, 2);
+                                    }
+                                    else
+                                    {
+                                        Vector2 Outer = StoredCenter + new Vector2(410, 0).RotatedBy(NeedleOffset);
+                                        Projectile.NewProjectile(NPC.GetSource_FromAI(), Outer, Outer.DirectionFrom(StoredCenter) * 7f, ModContent.ProjectileType<SoulNeedle>(), 30, 2);
+
+                                        Vector2 Outer2 = StoredCenter + new Vector2(410, 0).RotatedBy(NeedleOffset + MathHelper.PiOver2);
+                                        Projectile.NewProjectile(NPC.GetSource_FromAI(), Outer2, Outer2.DirectionFrom(StoredCenter) * 7f, ModContent.ProjectileType<SoulNeedle>(), 30, 2);
+                                    }
+                                }
+                            }
+
+
+                            if (AITimer < OrganTime + 1600 && AITimer > OrganTime + 800)
+                            {
+                                if (!DestroyerTestMod.MasochistIsActive)
+                                {
+                                    NeedleOffset += 0.01f;
+                                }
+                                else
+                                {
+                                    NeedleOffset -= 0.01f;
+                                }
+
+                                if (AITimer % 10 == 0)
+                                {
+                                    if (!DestroyerTestMod.MasochistIsActive)
+                                    {
+                                        Vector2 Outer = StoredCenter + new Vector2(410, 0).RotatedBy(NeedleOffset);
+                                        Projectile.NewProjectile(NPC.GetSource_FromAI(), Outer, Outer.DirectionFrom(StoredCenter) * 7f, ModContent.ProjectileType<SoulNeedle>(), 30, 2);
+
+                                        Vector2 Outer2 = StoredCenter + new Vector2(410, 0).RotatedBy(NeedleOffset + MathHelper.PiOver2);
+                                        Projectile.NewProjectile(NPC.GetSource_FromAI(), Outer2, Outer2.DirectionFrom(StoredCenter) * 7f, ModContent.ProjectileType<SoulNeedle>(), 30, 2);
+                                    }
+                                    else
+                                    {
+
+                                        Vector2 Outer = StoredCenter + new Vector2(410, 0).RotatedBy(NeedleOffset);
+                                        Projectile.NewProjectile(NPC.GetSource_FromAI(), Outer, Outer.DirectionFrom(StoredCenter) * 7f, ModContent.ProjectileType<SoulNeedle>(), 30, 2);
+
+                                        Vector2 Outer2 = StoredCenter + new Vector2(410, 0).RotatedBy(NeedleOffset + MathHelper.PiOver4);
+                                        Projectile.NewProjectile(NPC.GetSource_FromAI(), Outer2, Outer2.DirectionFrom(StoredCenter) * 7f, ModContent.ProjectileType<SoulNeedle>(), 30, 2);
+
+                                        Vector2 Outer3 = StoredCenter + new Vector2(410, 0).RotatedBy(NeedleOffset + (MathHelper.PiOver4 * 2));
+                                        Projectile.NewProjectile(NPC.GetSource_FromAI(), Outer3, Outer3.DirectionFrom(StoredCenter) * 7f, ModContent.ProjectileType<SoulNeedle>(), 30, 2);
+
+                                        Vector2 Outer4 = StoredCenter + new Vector2(410, 0).RotatedBy(NeedleOffset + (MathHelper.PiOver4 * 3));
+                                        Projectile.NewProjectile(NPC.GetSource_FromAI(), Outer4, Outer4.DirectionFrom(StoredCenter) * 7f, ModContent.ProjectileType<SoulNeedle>(), 30, 2);
+                                    }
+                                }
+
+                                for (int i = 0; i < 4; i++)
+                                {
+                                    PixelParticle pixel = new();
+                                    pixel.Initialize(StoredCenter, new Vector2(10, 0).RotatedBy((MathHelper.PiOver4 + (MathHelper.PiOver2 * i)) + Main.rand.NextFloat(-0.05f, 0.05f)), ColorLib.Soul, 2f);
+                                    ParticleEngine.BehindProjectiles.Add(pixel);
+                                }
+                            }
+
+
+                            if (AITimer == OrganTime + 1660)
+                            {
+                                SoundEngine.PlaySound(DTAssetLib.ScholarShieldSounds.Break);
+                                Opus.RadialSpreadProjectile(ModContent.ProjectileType<SoulBeam>(), 4, StoredCenter, 30, 3, 0.00001f, offset: MathHelper.PiOver4);
+                            }
+
+
+                            if (AITimer > MatrixTime)
+                            {
+                                CurrentAttack = attackType.MagicTeeth;
                             }
                         }
                     }
@@ -740,12 +982,40 @@ namespace DestroyerTest.Content.Entities
                     break;
                 case attackType.MagicTeeth:
                     {
-                        AI_ToothRounds();
-
-                        if (ToothRoundCount >= 4)
+                        if (!DestroyerTestMod.EternityIsActive && !DestroyerTestMod.DeathIsActive)
                         {
-                            CurrentAttack = attackType.OrganCircle;
-                            ToothRoundCount = 0;
+                            AI_ToothRounds();
+
+                            if (ToothRoundCount >= 4)
+                            {
+                                CurrentAttack = attackType.OrganCircle;
+                                ToothRoundCount = 0;
+
+                            }
+                        }
+                        else
+                        {
+                            if (AITimer < MatrixTime + 180)
+                            {
+                                NPC.velocity *= 0.9f;
+                            }
+                            if (AITimer == MatrixTime + 180)
+                            {
+                                SoundEngine.PlaySound(Roar);
+                                for (int i = 0; i < 25; i++)
+                                {
+                                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, NPC.Center.DirectionTo(player.Center).RotatedByRandom(MathHelper.PiOver2) * Main.rand.NextFloat(7f, 20f), ModContent.ProjectileType<SoulSpit>(), 60, 4);
+                                }
+                                for (int i = 0; i < 7; i++)
+                                {
+                                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, NPC.Center.DirectionTo(player.Center).RotatedByRandom(MathHelper.PiOver2) * Main.rand.NextFloat(7f, 20f), ModContent.ProjectileType<StunBomb>(), 60, 4);
+                                }
+                            }
+
+                            if (AITimer >= MatrixTime + 240)
+                            {
+                                CurrentAttack = attackType.OrganCircle;
+                            }
 
                         }
                         break;
@@ -761,7 +1031,44 @@ namespace DestroyerTest.Content.Entities
                         }
                         else
                         {
-                            if (OrganSpinSpawnCount < 20)
+                            if (!DestroyerTestMod.EternityIsActive && !DestroyerTestMod.DeathIsActive)
+                            {
+                                if (OrganSpinSpawnCount < 20)
+                                {
+                                    player.wingTime = player.wingTimeMax;
+
+                                    float orbitradius = anyNodesAlive ? 1700 : 1000;
+                                    Vector2 targetPoint = OrganSpinCenter + new Vector2(orbitradius, 0).RotatedBy(OrganSpinRotOff);
+
+                                    NPC.SmoothMoveToPoint(targetPoint, 160, 200);
+
+                                    if (player.Distance(OrganSpinCenter) > 990)
+                                    {
+                                        player.Center = OrganSpinCenter + new Vector2(950, 0).RotatedBy(OrganSpinCenter.DirectionTo(player.Center).ToRotation());
+                                    }
+
+                                    if (AITimer % 120 == 0)
+                                    {
+                                        SoundEngine.PlaySound(Attack);
+                                        for (int i = 0; i < 2; i++)
+                                        {
+                                            Vector2 sp = BodySegments[Main.rand.Next(BodySegments.Count)].Center;
+                                            Projectile.NewProjectile(NPC.GetSource_FromAI(), sp, sp.DirectionTo(OrganSpinCenter) * 8f, ModContent.ProjectileType<OrganProjectile>(), 50, 6, ai0: player.whoAmI);
+                                        }
+                                        OrganSpinSpawnCount++;
+                                    }
+                                }
+
+                                else
+                                {
+                                    CurrentAttack = attackType.Follow;
+                                    NPC.velocity *= 0.05f;
+                                    OrganSpinRecordPlayer = false;
+                                    OrganSpinSpawnCount = 0;
+                                    AITimer = 0;
+                                }
+                            }
+                            else
                             {
                                 player.wingTime = player.wingTimeMax;
 
@@ -770,29 +1077,41 @@ namespace DestroyerTest.Content.Entities
 
                                 NPC.SmoothMoveToPoint(targetPoint, 160, 200);
 
-                                if (player.Distance(OrganSpinCenter) > 990)
+                                if (AITimer == MatrixTime + 300)
                                 {
-                                    player.Center = OrganSpinCenter + new Vector2(950, 0).RotatedBy(OrganSpinCenter.DirectionTo(player.Center).ToRotation());
+                                    if (DestroyerTestMod.MasochistIsActive)
+                                    {
+                                        Projectile Ring = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), OrganSpinCenter, Vector2.Zero, ModContent.ProjectileType<BindingRing>(), 0, 0, ai0: player.whoAmI, ai1: 900);
+                                        Ring.timeLeft = 600;
+                                        Projectile Radiance1 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), Ring.Center, Main.rand.NextVector2CircularEdge(12f, 12f), ModContent.ProjectileType<DivineRadiance>(), 100, 2);
+                                        Projectile Radiance2 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), Ring.Center, Main.rand.NextVector2CircularEdge(12f, 12f), ModContent.ProjectileType<DivineRadiance>(), 100, 2);
+                                        if (Radiance1.ModProjectile is DivineRadiance radiance1 && Radiance2.ModProjectile is DivineRadiance radiance2 && Ring.ModProjectile is BindingRing ring)
+                                        {
+                                            radiance1.Parent = ring;
+                                            radiance2.Parent = ring;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Projectile Ring = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), OrganSpinCenter, Vector2.Zero, ModContent.ProjectileType<BindingRing>(), 0, 0, ai0: player.whoAmI, ai1: 900);
+                                        Ring.timeLeft = 600;
+                                        Projectile Radiance = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), Ring.Center, Main.rand.NextVector2CircularEdge(12f, 12f), ModContent.ProjectileType<DivineRadiance>(), 100, 2);
+                                        if (Radiance.ModProjectile is DivineRadiance radiance && Ring.ModProjectile is BindingRing ring)
+                                        {
+                                            radiance.Parent = ring;
+                                        }
+                                    }
+                                    
                                 }
 
-                                if (AITimer % 120 == 0)
+                                if (AITimer == MatrixTime + 1020)
                                 {
-                                    SoundEngine.PlaySound(Attack);
-                                    for (int i = 0; i < 2; i++)
-                                    {
-                                        Vector2 sp = BodySegments[Main.rand.Next(BodySegments.Count)].Center;
-                                        Projectile.NewProjectile(NPC.GetSource_FromAI(), sp, sp.DirectionTo(OrganSpinCenter) * 8f, ModContent.ProjectileType<OrganProjectile>(), 50, 6, ai0: player.whoAmI);
-                                    }
-                                    OrganSpinSpawnCount++;
+                                    CurrentAttack = attackType.Follow;
+                                    NPC.velocity *= 0.05f;
+                                    OrganSpinRecordPlayer = false;
+                                    OrganSpinSpawnCount = 0;
+                                    AITimer = 0;
                                 }
-                            }
-                            else
-                            {
-                                CurrentAttack = attackType.Follow;
-                                NPC.velocity *= 0.05f;
-                                OrganSpinRecordPlayer = false;
-                                OrganSpinSpawnCount = 0;
-                                AITimer = 0;
                             }
                         }
                         break;
@@ -1177,15 +1496,18 @@ namespace DestroyerTest.Content.Entities
             SunlightModification.Reset();
             //SoundEngine.StopTrackedSounds();
 
-
+            if (DestroyerTestMod.MasochistIsActive)
+            {
+                ScreenFlashSystem.FlashIntensity = 1f;
+            }
 
         }
 
         public override void OnSpawn(IEntitySource source)
         {
             FablesTitleCardSystem.RegisterFablesBossIntro(FablesTitleCardSystem.WyvernCorpseTitle.Name, FablesTitleCardSystem.WyvernCorpseTitle.Title, 180, true, ColorLib.IchorCrystalGradient, ColorLib.IchorCrystalGradient, ColorLib.Soul, ColorLib.Soul, FablesTitleCardSystem.WyvernCorpseTitle.MusicTitle, FablesTitleCardSystem.WyvernCorpseTitle.MusicArtist);
-        
-            
+
+            SunlightModification.Reset();
         }
 
 
@@ -1289,8 +1611,9 @@ namespace DestroyerTest.Content.Entities
             NoDamageEffects();
 
             // Find the boss once per tick
-            NPC bossNPC = Main.npc.FirstOrDefault(n =>
-                n.active && n.type == ModContent.NPCType<WyvernCorpseHead>());
+            NPC bossNPC = Main.npc.FirstOrDefault(n => n.active && n.type == ModContent.NPCType<WyvernCorpseHead>());
+
+            
 
             if (bossNPC == null)
             {
@@ -1298,7 +1621,17 @@ namespace DestroyerTest.Content.Entities
                 return;
             }
 
-            
+            if (bossNPC.ModNPC is WyvernCorpseHead head)
+            {
+                if (head.invulnerableFromAttack)
+                {
+                    NPC.dontTakeDamage = true;
+                }
+                else
+                {
+                    NPC.dontTakeDamage = false;
+                }
+            }
 
 
             ScreenIntervals = allNodes.Count;
