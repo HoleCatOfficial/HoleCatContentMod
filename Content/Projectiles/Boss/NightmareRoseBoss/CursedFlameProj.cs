@@ -17,6 +17,10 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
 {
 	public class CursedFlameProj : ModProjectile
 	{
+        public override void SetStaticDefaults()
+        {
+            DTUtils.OwnedByBossNPC[Type] = ModContent.NPCType<Entities.NightmareRoseBoss>();
+        }
 		public override void SetDefaults()
 		{
 			Projectile.width = 80; // The width of projectile hitbox

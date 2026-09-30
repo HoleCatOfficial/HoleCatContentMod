@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
@@ -20,6 +21,11 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
     public class SoulBeam : ModProjectile
     {
         public override string Texture => DTUtils.NoTexture;
+
+        public override void SetStaticDefaults()
+        {
+            DTUtils.OwnedByBossNPC[Type] = ModContent.NPCType<WyvernCorpseHead>();
+        }
         public override void SetDefaults()
         {
             Projectile.width = 30;
@@ -92,6 +98,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
         public override void SetStaticDefaults()
         {
             ProjectileID.Sets.DrawScreenCheckFluff[Type] = 16 * 500;
+            DTUtils.OwnedByBossNPC[Type] = ModContent.NPCType<WyvernCorpseHead>();
         }
         public override void SetDefaults()
         {

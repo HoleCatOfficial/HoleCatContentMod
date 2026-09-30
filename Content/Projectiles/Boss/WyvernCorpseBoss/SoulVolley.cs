@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
@@ -25,6 +26,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
             ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true;
             ProjectileID.Sets.TrailCacheLength[Type] = 40;
             ProjectileID.Sets.TrailingMode[Type] = 3;
+            DTUtils.OwnedByBossNPC[Type] = ModContent.NPCType<WyvernCorpseHead>();
         }
 
         public override void SetDefaults()

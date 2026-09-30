@@ -2,6 +2,7 @@ using System;
 using System.Xml;
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
+using DestroyerTest.Content.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
@@ -34,7 +35,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.Ichor
 
         public override void SetStaticDefaults()
         {
-            
+            DTUtils.OwnedByBossNPC[Type] = ModContent.NPCType<IchorNodeMB>();
         }
 
         public override void SetDefaults()

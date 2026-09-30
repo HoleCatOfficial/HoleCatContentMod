@@ -1,3 +1,4 @@
+using DestroyerTest.Common;
 using DestroyerTest.Content.Projectiles.Gores;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -21,6 +22,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
         public override void SetStaticDefaults() {
             ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true; // Make the cultist resistant to this projectile, as it's resistant to all homing projectiles.
             Main.projFrames[Projectile.type] = 4; // Set the number of frames in the sprite sheet
+            DTUtils.OwnedByBossNPC[Type] = ModContent.NPCType<Entities.NightmareRoseBoss>();
         }
 
         public override void SetDefaults()

@@ -76,6 +76,12 @@ namespace DestroyerTest.Content.Entities
             }
             else
             {
+                if (Parent.ModNPC is WyvernCorpseHead head)
+                {
+                    NPC.dontTakeDamage = true;
+                    NPC.active = true;
+                    return head.CanDie;
+                }
                 return true;
             }
         }
@@ -284,12 +290,27 @@ namespace DestroyerTest.Content.Entities
                 WyvernCorpseHead.DrawHealingShadow(NPC, new Vector2(0f - 6, 0f), drawPos, ColorLib.Ichor, rotationOffset);
             }
 
+
             
+
             SpriteEffects effects = SpriteEffects.None;
             if (NPC.spriteDirection == 1) effects = SpriteEffects.FlipHorizontally;
             spriteBatch.Draw(texture.Value, new Vector2(NPC.position.X - Main.screenPosition.X + (NPC.width / 2) - texture.Value.Width * NPC.scale / 2f + origin.X * NPC.scale, NPC.position.Y - Main.screenPosition.Y + NPC.height - (texture.Value.Height / 6) * NPC.scale + 4f + origin.Y * NPC.scale + 56f), NPC.frame, drawColor * NPC.Opacity, NPC.rotation, origin, NPC.scale, effects, 0f);
             spriteBatch.Draw(Glowtexture.Value, new Vector2(NPC.position.X - Main.screenPosition.X + (NPC.width / 2) - texture.Value.Width * NPC.scale / 2f + origin.X * NPC.scale, NPC.position.Y - Main.screenPosition.Y + NPC.height - (texture.Value.Height / 6) * NPC.scale + 4f + origin.Y * NPC.scale + 56f), NPC.frame, Color.White * NPC.Opacity, NPC.rotation, origin, NPC.scale, effects, 0f);
+
+            
             return false;
+        }
+
+        public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            if (NPC.IsABestiaryIconDummy)
+            {
+                return;
+            }
+
+
+            //Utils.DrawBorderString(spriteBatch, $"{NPC.whoAmI}", (NPC.position + new Vector2(-90, -90)) - screenPos, Color.Green, 1f);
         }
 
         int NumCrimstoneDusts = 0;
@@ -404,5 +425,7 @@ namespace DestroyerTest.Content.Entities
         {
             Main.instance.DrawCacheNPCsBehindNonSolidTiles.Add(index);
         }
+
+        
     }
 }

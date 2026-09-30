@@ -29,6 +29,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.TenebrousConstruct
         public override string Texture => DTUtils.NoTexture;
         public override void SetStaticDefaults()
         {
+            DTUtils.OwnedByBossNPC[Type] = ModContent.NPCType<Entities.TenebrousConstruct>();
         }
 
         public override void SetDefaults()

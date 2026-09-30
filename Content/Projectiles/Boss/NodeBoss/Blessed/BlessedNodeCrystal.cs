@@ -1,7 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using DestroyerTest.Common;
+using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using ReLogic.Content;
 using Terraria;
 using Terraria.Audio;
@@ -9,9 +13,6 @@ using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using OpusLib;
-using System;
-using DestroyerTest.Content.Buffs;
 
 namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.Blessed
 {
@@ -19,6 +20,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.Blessed
     {
         public override void SetStaticDefaults()
         {
+            DTUtils.OwnedByBossNPC[Type] = ModContent.NPCType<BlessedNodeMB>();
         }
 
         public override void SetDefaults()
@@ -166,6 +168,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.Blessed
         public override string Texture => "DestroyerTest/Content/Projectiles/Boss/NodeBoss/Blessed/BlessedNodeCrystal";
         public override void SetStaticDefaults()
         {
+            DTUtils.OwnedByBossNPC[Type] = ModContent.NPCType<BlessedNodeMB>();
         }
 
         public override void SetDefaults()

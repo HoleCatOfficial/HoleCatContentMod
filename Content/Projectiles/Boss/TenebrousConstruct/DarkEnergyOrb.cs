@@ -29,6 +29,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.TenebrousConstruct
 
             ProjectileID.Sets.TrailCacheLength[Type] = 160;
             ProjectileID.Sets.TrailingMode[Type] = 3;
+            DTUtils.OwnedByBossNPC[Type] = ModContent.NPCType<Entities.TenebrousConstruct>();
         }
         public override void SetDefaults()
         {

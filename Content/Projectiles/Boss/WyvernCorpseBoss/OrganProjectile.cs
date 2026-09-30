@@ -2,8 +2,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 using DestroyerTest.Common;
+using DestroyerTest.Content.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
+using OpusLib.Content.Helpers;
 using Terraria;
 using Terraria.Audio;
 using Terraria.Enums;
@@ -11,8 +14,6 @@ using Terraria.GameContent;
 using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
-using OpusLib;
-using OpusLib.Content.Helpers;
 
 namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
 {
@@ -22,6 +23,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
         {
             Main.projFrames[Type] = 4;
             ProjectileID.Sets.DrawScreenCheckFluff[Type] = 2000;
+            DTUtils.OwnedByBossNPC[Type] = ModContent.NPCType<WyvernCorpseHead>();
         }
 
         public int Variant;

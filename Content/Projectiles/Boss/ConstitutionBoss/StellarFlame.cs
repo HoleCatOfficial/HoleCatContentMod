@@ -20,6 +20,11 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
 	{
 		public override string Texture => DTUtils.NoTexture;
 
+        public override void SetStaticDefaults()
+        {
+            DTUtils.OwnedByBossNPC[Type] = ModContent.NPCType<Entities.ConstitutionBoss>();
+        }
+
 		public override void SetDefaults()
 		{
 			Projectile.width = 80; // The width of projectile hitbox

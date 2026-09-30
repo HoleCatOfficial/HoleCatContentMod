@@ -22,6 +22,12 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
     {
         public int UpDown => (int)Projectile.ai[0];
         public override string Texture => "DestroyerTest/Content/Extras/144Slash";
+
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            DTUtils.OwnedByBossNPC[Type] = ModContent.NPCType<Entities.ConstitutionBoss>();
+        }
         public override void SetDefaults()
         {
             Projectile.width = 170;

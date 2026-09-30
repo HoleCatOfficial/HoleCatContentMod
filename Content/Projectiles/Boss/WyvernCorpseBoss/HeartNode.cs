@@ -1,13 +1,14 @@
+using System;
+using System.Linq;
+using System.Xml;
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Entities;
 using DestroyerTest.Content.Particles;
  
 using Microsoft.Xna.Framework;
 using OpusLib;
-using System;
-using System.Linq;
-using System.Xml;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -40,6 +41,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
         public override void SetStaticDefaults()
         {
             Main.projFrames[Type] = 2;
+            DTUtils.OwnedByBossNPC[Type] = ModContent.NPCType<WyvernCorpseHead>();
         }
 
         public override void SetDefaults()

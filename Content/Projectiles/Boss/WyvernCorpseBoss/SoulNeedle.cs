@@ -1,5 +1,6 @@
 ﻿using System;
 using DestroyerTest.Common;
+using DestroyerTest.Content.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib.Content.Helpers;
@@ -31,6 +32,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
         {
             ProjectileID.Sets.TrailCacheLength[Type] = 40;
             ProjectileID.Sets.TrailingMode[Type] = 3;
+            DTUtils.OwnedByBossNPC[Type] = ModContent.NPCType<WyvernCorpseHead>();
         }
 
         public override void SetDefaults()
@@ -81,7 +83,8 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
 
             if (Timer == 1f)
             {
-                SoundEngine.PlaySound(DTAssetLib.SwordSounds.TenebrisSwing with { PitchVariance = 0.4f });
+                SoundEngine.PlaySound(SoundID.Item92 with { PitchVariance = 0.4f });
+                SoundEngine.PlaySound(DTAssetLib.SwordSounds.TenebrisSwing with { PitchVariance = 0.4f, Volume = 0.3f });
                 Vector2 direction = -Projectile.velocity;
                 direction.Normalize();
                 Projectile.velocity = direction * 42f;

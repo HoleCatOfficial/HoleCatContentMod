@@ -1,8 +1,14 @@
 using System;
+using System.Collections.Generic;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Dusts;
+using DestroyerTest.Content.Entities;
+ 
+using DestroyerTest.Content.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using ReLogic.Content;
 using Terraria;
 using Terraria.Audio;
@@ -12,11 +18,6 @@ using Terraria.GameContent;
 using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
- 
-using DestroyerTest.Content.Particles;
-using System.Collections.Generic;
-using OpusLib;
-using DestroyerTest.Content.Dusts;
 
 namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
 {
@@ -25,6 +26,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
 
         public override void SetStaticDefaults()
         {
+            DTUtils.OwnedByBossNPC[Type] = ModContent.NPCType<WyvernCorpseHead>();
         }
 
         public override void SetDefaults()

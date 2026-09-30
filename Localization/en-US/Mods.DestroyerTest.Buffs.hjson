@@ -449,11 +449,20 @@ WeaponImbueWithering: {
 }
 
 DarkPrincePetBuff: {
-	DisplayName: Dark Prince Pet Buff
-	Description: Mods.DestroyerTest.Buffs.DarkPrincePetBuff.Description
+	DisplayName: Dark Prince
+	Description: Dark history too...
 }
 
 InfernalBatBuff: {
-	DisplayName: Infernal Bat Buff
-	Description: Mods.DestroyerTest.Buffs.InfernalBatBuff.Description
+	DisplayName: Infernal Bat
+	Description: A hot bat is fighting alonside you!
+}
+
+Passion: {
+	DisplayName: Passion
+	Description:
+		'''
+		You're giving it your all!
+		Damage increased by 10% and Potions heal for 20% more!
+		'''
 }

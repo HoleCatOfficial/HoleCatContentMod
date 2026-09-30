@@ -10,6 +10,9 @@ namespace DestroyerTest.Common
         public static DTConfig instance = ModContent.GetInstance<DTConfig>();
         public override ConfigScope Mode => ConfigScope.ClientSide;
 
+        [DefaultValue(false)]
+        public bool PhotosensitivityMode { get; set; }
+
         [DefaultValue(true)]
         public bool MinionExtrasToggle { get; set; }
 

@@ -355,6 +355,28 @@ namespace DestroyerTest.Common.NPC_Folder
                     NetMessage.SendData(MessageID.WorldData);
                 }
             }
+
+
+           
+        }
+
+        public bool OldActive;
+        public override void AI(NPC npc)
+        {
+            base.AI(npc);
+
+            if (OldActive && !npc.active)
+            {
+                foreach (Projectile projectile in Main.projectile)
+                {
+                    if (DTUtils.OwnedByBossNPC[projectile.type] == npc.type)
+                    {
+                        projectile.active = false;
+                    }
+                }
+            }
+
+            OldActive = npc.active;
         }
 
         public override void SetupTravelShop(int[] shop, ref int nextSlot)

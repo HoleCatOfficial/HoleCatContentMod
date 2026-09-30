@@ -75,6 +75,7 @@ namespace DestroyerTest.Common
         public static Asset<Texture2D> BloomRingSharp = ModContent.Request<Texture2D>($"{ParticlePath}/BloomRingSharp_FullScale", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> FeatheredCircle = ModContent.Request<Texture2D>($"{ExtrasPath}/FeatheredCircle", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> Vingette = ModContent.Request<Texture2D>($"{ExtrasPath}/BigVingette", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> Vingette2 = ModContent.Request<Texture2D>($"{ExtrasPath}/BigVingette_White", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> FadeLine = ModContent.Request<Texture2D>($"{ExtrasPath}/FadeLine", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> StarAura = ModContent.Request<Texture2D>($"{ExtrasPath}/StarWrathAura", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> ColorlessStar = ModContent.Request<Texture2D>($"{ExtrasPath}/ColorlessStar", AssetRequestMode.AsyncLoad);

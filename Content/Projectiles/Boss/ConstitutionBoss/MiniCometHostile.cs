@@ -34,8 +34,8 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
 
 		public override void SetStaticDefaults()
 		{
-			
-		}
+            DTUtils.OwnedByBossNPC[Type] = ModContent.NPCType<Entities.ConstitutionBoss>();
+        }
 
 		public override void SetDefaults()
 		{

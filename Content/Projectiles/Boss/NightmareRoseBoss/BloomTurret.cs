@@ -27,6 +27,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
         {
             ProjectileID.Sets.DrawScreenCheckFluff[Type] = 16 * 500;
             Main.projFrames[Type] = 3;
+            DTUtils.OwnedByBossNPC[Type] = ModContent.NPCType<Entities.NightmareRoseBoss>();
         }
 
         public override void SetDefaults()
@@ -112,6 +113,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
         {
             ProjectileID.Sets.DrawScreenCheckFluff[Type] = 16 * 500;
             Main.projFrames[Type] = 3;
+            DTUtils.OwnedByBossNPC[Type] = ModContent.NPCType<Entities.NightmareRoseBoss>();
         }
 
         public override void SetDefaults()

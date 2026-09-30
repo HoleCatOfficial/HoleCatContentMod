@@ -138,7 +138,7 @@ namespace DestroyerTest.Content.Entities
             NPC.noTileCollide = true;
 
 
-            NPC.DeathSound = Kill;
+            //NPC.DeathSound = Kill;
             NPC.boss = true;
 
             NPC.knockBackResist = 0.0f;
@@ -240,6 +240,12 @@ namespace DestroyerTest.Content.Entities
         int EternityScrollY = 0;
 
         float RingOpacity = 0f;
+
+        float FlashOpacity = 1f;
+        int IntroTime = 0;
+
+        Color ScrollBackColor = ColorLib.Soul;
+
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             if (NPC.IsABestiaryIconDummy)
@@ -252,23 +258,33 @@ namespace DestroyerTest.Content.Entities
                 EternityScrollX += 4;
                 EternityScrollY += 2;
 
+                if (!DTConfig.instance.PhotosensitivityMode)
+                {
 
-                Main.EntitySpriteDraw(DTAssetLib.Vingette.Value, player.Center - Main.screenPosition, null, Color.White, 0f, DTAssetLib.Vingette.Value.Size() / 2, 1f, SpriteEffects.None, 0f);
+                    Main.EntitySpriteDraw(DTAssetLib.Vingette2.Value, player.Center - Main.screenPosition, null, Color.White with { A = 0 }, 0f, DTAssetLib.Vingette2.Value.Size() / 2, 1.5f, SpriteEffects.None, 0f);
 
-                var Cap = spriteBatch.Capture();
+                    var Cap = spriteBatch.Capture();
 
-                spriteBatch.End();
+                    spriteBatch.End();
 
-                Cap.SamplerState = SamplerState.PointWrap;
+                    Cap.SamplerState = SamplerState.PointWrap;
 
-                spriteBatch.Begin(Cap);
+                    spriteBatch.Begin(Cap);
 
-                Main.EntitySpriteDraw(DTAssetLib.TilableNoise(10).Value, player.Center - Main.screenPosition, new Rectangle(EternityScrollX, EternityScrollY, DTAssetLib.TilableNoise(3).Value.Width, DTAssetLib.TilableNoise(3).Value.Height), ColorLib.Soul3 with { A = 0 } * 0.8f, 0f, DTAssetLib.TilableNoise(3).Value.Size() / 2, 6f, SpriteEffects.None, 0f);
-                Main.EntitySpriteDraw(DTAssetLib.TilableNoise(10).Value, player.Center - Main.screenPosition, new Rectangle((int)(EternityScrollX * 1.2f), (int)(EternityScrollY * 1.2f), DTAssetLib.TilableNoise(3).Value.Width, DTAssetLib.TilableNoise(3).Value.Height), ColorLib.Soul3 with { A = 0 } * 0.5f, 0f, DTAssetLib.TilableNoise(3).Value.Size() / 2, 6f, SpriteEffects.None, 0f);
-                Main.EntitySpriteDraw(DTAssetLib.TilableNoise(10).Value, player.Center - Main.screenPosition, new Rectangle((int)(EternityScrollX * 1.1f), (int)(EternityScrollY * 1.1f), DTAssetLib.TilableNoise(3).Value.Width, DTAssetLib.TilableNoise(3).Value.Height), Color.White with { A = 0 } * 0.75f, 0f, DTAssetLib.TilableNoise(3).Value.Size() / 2, 6f, SpriteEffects.None, 0f);
 
-                spriteBatch.ResetToDefault();
+                    //Why do you use noise 3 for noise 10's drawing?
+                    //I don't know, but doing it any other way causes it to not fit properly on the screen without needing to scale up the texture further, and I like the scale it's at.
+                    Main.EntitySpriteDraw(DTAssetLib.TilableNoise(10).Value, player.Center - Main.screenPosition, new Rectangle(EternityScrollX, EternityScrollY, DTAssetLib.TilableNoise(3).Value.Width, DTAssetLib.TilableNoise(3).Value.Height), ScrollBackColor with { A = 0 } * 0.8f, 0f, DTAssetLib.TilableNoise(3).Value.Size() / 2, 6f, SpriteEffects.None, 0f);
+                    Main.EntitySpriteDraw(DTAssetLib.TilableNoise(10).Value, player.Center - Main.screenPosition, new Rectangle((int)(EternityScrollX * 1.2f), (int)(EternityScrollY * 1.2f), DTAssetLib.TilableNoise(3).Value.Width, DTAssetLib.TilableNoise(3).Value.Height), ScrollBackColor with { A = 0 } * 0.5f, 0f, DTAssetLib.TilableNoise(3).Value.Size() / 2, 6f, SpriteEffects.None, 0f);
+                    Main.EntitySpriteDraw(DTAssetLib.TilableNoise(10).Value, player.Center - Main.screenPosition, new Rectangle((int)(EternityScrollX * 1.1f), (int)(EternityScrollY * 1.1f), DTAssetLib.TilableNoise(3).Value.Width, DTAssetLib.TilableNoise(3).Value.Height), Color.White with { A = 0 } * 0.75f, 0f, DTAssetLib.TilableNoise(3).Value.Size() / 2, 6f, SpriteEffects.None, 0f);
+
+                    Main.EntitySpriteDraw(DTAssetLib.Square.Value, player.Center - Main.screenPosition, null, Color.White with { A = 0 } * FlashOpacity, 0f, DTAssetLib.Square.Value.Size() / 2, 4000f, SpriteEffects.None, 0f);
+
+                    spriteBatch.ResetToDefault();
+                }
             }
+
+            
 
 
             if (CurrentAttack == attackType.OrganCircle)
@@ -305,6 +321,8 @@ namespace DestroyerTest.Content.Entities
                 DrawHealingShadow(NPC, new Vector2(6, 0f), drawPos, ColorLib.Ichor, rotationOffset);
                 DrawHealingShadow(NPC, new Vector2(0f - 6, 0f), drawPos, ColorLib.Ichor, rotationOffset);
             }
+
+            Main.EntitySpriteDraw(DTAssetLib.MiscSparkle144.Value, NPC.Center - Main.screenPosition, null, ColorLib.Soul3 with { A = 0 } * EternityHeadBeamWarningOpacity, NPC.rotation + MathHelper.PiOver2, DTAssetLib.MiscSparkle144.Value.Size() / 2, new Vector2(1f, 9f), SpriteEffects.None, 0);
 
 
             SpriteEffects effects = SpriteEffects.None;
@@ -553,6 +571,7 @@ namespace DestroyerTest.Content.Entities
         int OrganSpinSpawnCount = 0;
 
         Projectile[] EternityHeadBeams;
+        float EternityHeadBeamWarningOpacity = 0f;
 
         float NeedleOffset = 0f;
         Vector2 StoredCenter = Vector2.Zero;
@@ -581,6 +600,9 @@ namespace DestroyerTest.Content.Entities
                     NPC.realLife = NPC.whoAmI;
 
                     int Me = NPC.whoAmI;
+
+                    //Normal spawn order
+                    
                     for (int i = 0; i < 60; i++)
                     {
                         int WyvBodyInt = ModContent.NPCType<WyvernCorpseBody1>();
@@ -593,7 +615,7 @@ namespace DestroyerTest.Content.Entities
                         else if (i == 59)
                             WyvBodyInt = ModContent.NPCType<WyvernCorpseTail>();
 
-                        int BodySegment = NPC.NewNPC(NPC.GetSource_FromAI(), (int)(NPC.position.X + NPC.width / 2), (int)(NPC.position.Y + NPC.height), WyvBodyInt/*, NPC.whoAmI*/);
+                        int BodySegment = NPC.NewNPC(NPC.GetSource_FromAI(), (int)(NPC.position.X + NPC.width / 2), (int)(NPC.position.Y + NPC.height), WyvBodyInt, Me, 0, Me);
 
                       
 
@@ -611,12 +633,60 @@ namespace DestroyerTest.Content.Entities
 
                         Me = BodySegment;
                     }
+                    
+
+                    //Reverse spawn order
+
+                    /*
+                    for (int i = 60; i > 0; i--)
+                    {
+                        int WyvBodyInt = ModContent.NPCType<WyvernCorpseBody1>();
+                        if (i == 4 || i == 16 || i == 32 || i == 48)
+                            WyvBodyInt = ModContent.NPCType<WyvernCorpseLegs>();
+                        else if (i == 2)
+                            WyvBodyInt = ModContent.NPCType<WyvernCorpseBody2>();
+                        else if (i == 1)
+                            WyvBodyInt = ModContent.NPCType<WyvernCorpseBody3>();
+                        else if (i == 0)
+                            WyvBodyInt = ModContent.NPCType<WyvernCorpseTail>();
+
+                        int BodySegment = NPC.NewNPC(NPC.GetSource_FromAI(), (int)(NPC.position.X + NPC.width / 2), (int)(NPC.position.Y + NPC.height), WyvBodyInt, Main.maxNPCs);
+
+
+
+                        Main.npc[BodySegment].ai[2] = NPC.whoAmI;
+                        Main.npc[BodySegment].realLife = NPC.whoAmI;
+                        Main.npc[BodySegment].ai[1] = Me;
+                        Main.npc[BodySegment].ai[3] = i - 1;
+
+                        BodySegments.Add(Main.npc[BodySegment]);
+
+                        // THIS is missing from your second implementation.
+                        Main.npc[Me].ai[0] = BodySegment;
+
+                        NetMessage.SendData(MessageID.SyncNPC, -1, -1, null, BodySegment);
+
+                        Me = BodySegment;
+                    }
+                    */
+                
+
                     NPC.netUpdate = true;
                     SpawnFlag = true;
                 }
             }
 
             NPC.dontTakeDamage = invulnerableFromNodes || invulnerableFromAttack;
+
+            if (IntroTime < 120)
+            {
+                IntroTime++;
+
+                FlashOpacity = MathHelper.Lerp(1f, 0f, (float)IntroTime / 120f);
+                ScrollBackColor = Color.Lerp(ColorLib.Soul, ColorLib.Soul3, (float)IntroTime / 120f);
+            }
+
+
 
             Vector2 ToPlayer = NPC.Center - player.Center;
 
@@ -684,6 +754,41 @@ namespace DestroyerTest.Content.Entities
                 }
             }
 
+            CanDie = DeathTimer >= 301;
+
+            if (NPC.life <= NPC.lifeMax * 0.01f)
+            {
+                DeathTimer++;
+                if (CanDie)
+                {
+                    NPC.dontTakeDamage = false;
+                    NPC.StrikeInstantKill();
+                }
+                else
+                {
+                    
+                    AITimer = 0;
+                    CurrentAttack = attackType.Follow;
+                    NPC.aiStyle = -1;
+                    NPC.dontTakeDamage = true;
+                    NPC.life = (int)(NPC.lifeMax * 0.01f);
+
+                    if (DeathTimer == 1)
+                    {
+                        SoundEngine.PlaySound(new SoundStyle(DTAssetLib.AudioFolder.Corpse + "/Death") { PauseBehavior = PauseBehavior.PauseWithGame, MaxInstances = 1 });
+                    }
+
+                    NPC.velocity *= 0.97f;
+                    
+                }
+                
+            }
+
+            if (DestroyerTestMod.MasochistIsActive)
+            {
+                player.AddBuff(ModContent.BuffType<Passion>(), 60);
+            }
+
             if ((DestroyerTestMod.EternityIsActive || DestroyerTestMod.DeathIsActive) && !DTUtils.CalamityBossRushActive())
             {
                 SunlightModification.Sunlight(1f, Color.Black, 1f);
@@ -692,14 +797,17 @@ namespace DestroyerTest.Content.Entities
 
             NoDamageEffects();
 
-            if (NPC.life <= NPC.lifeMax * 0.75f)
+            if (!DestroyerTestMod.MasochistIsActive)
             {
-                if (HasTriggeredNodes == false)
+                if (NPC.life <= NPC.lifeMax * 0.75f)
                 {
-                    CurrentAttack = attackType.Nodes;
+                    if (HasTriggeredNodes == false)
+                    {
+                        CurrentAttack = attackType.Nodes;
 
-                    HasTriggeredNodes = true;
+                        HasTriggeredNodes = true;
 
+                    }
                 }
             }
 
@@ -759,6 +867,11 @@ namespace DestroyerTest.Content.Entities
                                 Projectile.NewProjectile(NPC.GetSource_FromAI(), player.Center + new Vector2(500, 100), Vector2.Zero, ModContent.ProjectileType<SoulFountain>(), 200, 4);
                                 Projectile.NewProjectile(NPC.GetSource_FromAI(), player.Center + new Vector2(-500, 100), Vector2.Zero, ModContent.ProjectileType<SoulFountain>(), 200, 4);
                             }
+
+                            if (AITimer > 540)
+                            {
+                                EternityHeadBeamWarningOpacity += 0.01f;
+                            }
                         }
 
                         if (AITimer >= BombTime)
@@ -781,6 +894,7 @@ namespace DestroyerTest.Content.Entities
                         {
                             if (AITimer == BombTime + 1)
                             {
+                                EternityHeadBeamWarningOpacity = 0f;
                                 SoundEngine.PlaySound(Kill);
                                 SoundEngine.PlaySound(DTAssetLib.Impacts.KCrystalConsume);
                                 SoundEngine.PlaySound(SoundID.Zombie104);
@@ -789,10 +903,16 @@ namespace DestroyerTest.Content.Entities
 
                             if (EternityHeadBeams != null)
                             {
-                                EternityHeadBeams[0].rotation = NPC.rotation;
-                                EternityHeadBeams[0].Center = NPC.Center;
-                                EternityHeadBeams[1].rotation = NPC.rotation + MathHelper.Pi;
-                                EternityHeadBeams[1].Center = NPC.Center;
+                                if (EternityHeadBeams[0] != null)
+                                {
+                                    EternityHeadBeams[0].rotation = NPC.rotation;
+                                    EternityHeadBeams[0].Center = NPC.Center;
+                                }
+                                if (EternityHeadBeams[1] != null)
+                                {
+                                    EternityHeadBeams[1].rotation = NPC.rotation + MathHelper.Pi;
+                                    EternityHeadBeams[1].Center = NPC.Center;
+                                }
                             }
                             if (AITimer >= OrganTime)
                             {
@@ -923,14 +1043,11 @@ namespace DestroyerTest.Content.Entities
                                         Vector2 Outer = StoredCenter + new Vector2(410, 0).RotatedBy(NeedleOffset);
                                         Projectile.NewProjectile(NPC.GetSource_FromAI(), Outer, Outer.DirectionFrom(StoredCenter) * 7f, ModContent.ProjectileType<SoulNeedle>(), 30, 2);
 
-                                        Vector2 Outer2 = StoredCenter + new Vector2(410, 0).RotatedBy(NeedleOffset + MathHelper.PiOver4);
+                                        Vector2 Outer2 = StoredCenter + new Vector2(410, 0).RotatedBy(NeedleOffset + (MathHelper.Pi / 3));
                                         Projectile.NewProjectile(NPC.GetSource_FromAI(), Outer2, Outer2.DirectionFrom(StoredCenter) * 7f, ModContent.ProjectileType<SoulNeedle>(), 30, 2);
 
-                                        Vector2 Outer3 = StoredCenter + new Vector2(410, 0).RotatedBy(NeedleOffset + (MathHelper.PiOver4 * 2));
+                                        Vector2 Outer3 = StoredCenter + new Vector2(410, 0).RotatedBy(NeedleOffset + ((MathHelper.Pi / 3) * 2));
                                         Projectile.NewProjectile(NPC.GetSource_FromAI(), Outer3, Outer3.DirectionFrom(StoredCenter) * 7f, ModContent.ProjectileType<SoulNeedle>(), 30, 2);
-
-                                        Vector2 Outer4 = StoredCenter + new Vector2(410, 0).RotatedBy(NeedleOffset + (MathHelper.PiOver4 * 3));
-                                        Projectile.NewProjectile(NPC.GetSource_FromAI(), Outer4, Outer4.DirectionFrom(StoredCenter) * 7f, ModContent.ProjectileType<SoulNeedle>(), 30, 2);
                                     }
                                 }
 
@@ -1083,8 +1200,8 @@ namespace DestroyerTest.Content.Entities
                                     {
                                         Projectile Ring = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), OrganSpinCenter, Vector2.Zero, ModContent.ProjectileType<BindingRing>(), 0, 0, ai0: player.whoAmI, ai1: 900);
                                         Ring.timeLeft = 600;
-                                        Projectile Radiance1 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), Ring.Center, Main.rand.NextVector2CircularEdge(12f, 12f), ModContent.ProjectileType<DivineRadiance>(), 100, 2);
-                                        Projectile Radiance2 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), Ring.Center, Main.rand.NextVector2CircularEdge(12f, 12f), ModContent.ProjectileType<DivineRadiance>(), 100, 2);
+                                        Projectile Radiance1 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), Ring.Center, Main.rand.NextVector2CircularEdge(12f, 12f), ModContent.ProjectileType<DivineRadiance>(), 40, 2);
+                                        Projectile Radiance2 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), Ring.Center, Main.rand.NextVector2CircularEdge(12f, 12f), ModContent.ProjectileType<DivineRadiance>(), 40, 2);
                                         if (Radiance1.ModProjectile is DivineRadiance radiance1 && Radiance2.ModProjectile is DivineRadiance radiance2 && Ring.ModProjectile is BindingRing ring)
                                         {
                                             radiance1.Parent = ring;
@@ -1095,7 +1212,7 @@ namespace DestroyerTest.Content.Entities
                                     {
                                         Projectile Ring = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), OrganSpinCenter, Vector2.Zero, ModContent.ProjectileType<BindingRing>(), 0, 0, ai0: player.whoAmI, ai1: 900);
                                         Ring.timeLeft = 600;
-                                        Projectile Radiance = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), Ring.Center, Main.rand.NextVector2CircularEdge(12f, 12f), ModContent.ProjectileType<DivineRadiance>(), 100, 2);
+                                        Projectile Radiance = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), Ring.Center, Main.rand.NextVector2CircularEdge(12f, 12f), ModContent.ProjectileType<DivineRadiance>(), 40, 2);
                                         if (Radiance.ModProjectile is DivineRadiance radiance && Ring.ModProjectile is BindingRing ring)
                                         {
                                             radiance.Parent = ring;
@@ -1501,6 +1618,14 @@ namespace DestroyerTest.Content.Entities
                 ScreenFlashSystem.FlashIntensity = 1f;
             }
 
+        }
+
+        int DeathTimer = 0;
+        public bool CanDie = false;
+        public override bool CheckDead()
+        {
+            
+            return CanDie;
         }
 
         public override void OnSpawn(IEntitySource source)

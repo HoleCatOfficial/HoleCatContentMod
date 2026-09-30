@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
+using DestroyerTest.Content.Entities;
 using DestroyerTest.Content.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -17,6 +18,11 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
     public class SoulFountain : ModProjectile
     {
         public override string Texture => DTUtils.NoTexture;
+
+        public override void SetStaticDefaults()
+        {
+            DTUtils.OwnedByBossNPC[Type] = ModContent.NPCType<WyvernCorpseHead>();
+        }
         public override void SetDefaults()
         {
             Projectile.width = 200;
@@ -56,7 +62,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
 
             if (Projectile.ai[0] % 20 == 0)
             {
-                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Bottom + new Vector2(Main.rand.NextFloat(-100, 100), 0), new Vector2(Main.rand.NextFloat(-12, 12), -20), ModContent.ProjectileType<SoulVolley>(), Projectile.damage, 4);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Bottom + new Vector2(Main.rand.NextFloat(-100, 100), 0), new Vector2(Main.rand.NextFloat(-12, 12), -20), ModContent.ProjectileType<SoulVolley>(), (int)(Projectile.damage * 0.1f), 4);
             }
 
             Lighting.AddLight(Projectile.Center, Color.Goldenrod.ToVector3() * Mult);

@@ -28,6 +28,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
         public override void SetStaticDefaults()
         {
             ProjectileID.Sets.DrawScreenCheckFluff[Type] = 16 * 500;
+            DTUtils.OwnedByBossNPC[Type] = ModContent.NPCType<Entities.NightmareRoseBoss>();
         }
 
         public override void SetDefaults()

@@ -22,6 +22,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
         public override void SetStaticDefaults()
         {
             Main.projFrames[Type] = 4;
+            DTUtils.OwnedByBossNPC[Type] = ModContent.NPCType<Entities.NightmareRoseBoss>();
         }
 
         public override void SetDefaults()

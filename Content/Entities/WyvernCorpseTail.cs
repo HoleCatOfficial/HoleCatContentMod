@@ -49,6 +49,7 @@ namespace DestroyerTest.Content.Entities
 
             immunities();
             Main.npcFrameCount[Type] = 6;
+
         }
 
         public override void ModifyHitByProjectile(Projectile projectile, ref NPC.HitModifiers modifiers)
@@ -76,6 +77,12 @@ namespace DestroyerTest.Content.Entities
             }
             else
             {
+                if (Parent.ModNPC is WyvernCorpseHead head)
+                {
+                    NPC.dontTakeDamage = true;
+                    NPC.active = true;
+                    return head.CanDie;
+                }
                 return true;
             }
         }

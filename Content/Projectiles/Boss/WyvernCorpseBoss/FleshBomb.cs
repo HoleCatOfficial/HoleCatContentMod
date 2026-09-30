@@ -1,6 +1,7 @@
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Entities;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles.Boss.VampireBoss;
 using DestroyerTest.Content.RiftArsenal;
@@ -23,7 +24,10 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
         public SoundStyle BombPlant = SoundID.Item50;
         public SoundStyle BombBlow = new SoundStyle("DestroyerTest/Assets/Audio/Corpse/FleshBombExplode") with { PitchVariance = 1.0f, MaxInstances = 0 };
 
-        
+        public override void SetStaticDefaults()
+        {
+            DTUtils.OwnedByBossNPC[Type] = ModContent.NPCType<WyvernCorpseHead>();
+        }
         public override void SetDefaults()
         {
             Projectile.width = 24; // The width of projectile hitbox

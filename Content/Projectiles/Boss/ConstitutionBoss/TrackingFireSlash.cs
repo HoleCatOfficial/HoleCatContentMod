@@ -30,6 +30,11 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
 
         public ref float DelayTimer => ref Projectile.ai[1];
 
+        public override void SetStaticDefaults()
+        {
+            DTUtils.OwnedByBossNPC[Type] = ModContent.NPCType<Entities.ConstitutionBoss>();
+        }
+
         public override void SetDefaults()
         {
             Projectile.width = 200;

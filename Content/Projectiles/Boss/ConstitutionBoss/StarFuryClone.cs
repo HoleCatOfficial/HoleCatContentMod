@@ -26,6 +26,10 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
 
         private ref float Timer => ref Projectile.ai[1];
 
+        public override void SetStaticDefaults()
+        {
+            DTUtils.OwnedByBossNPC[Type] = ModContent.NPCType<Entities.ConstitutionBoss>();
+        }
         public override void SetDefaults()
         {
             Projectile.width = 42;

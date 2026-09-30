@@ -1,4 +1,5 @@
 using DestroyerTest.Common;
+using DestroyerTest.Content.Entities;
 using DestroyerTest.Content.Particles;
  
 using Microsoft.Xna.Framework;
@@ -15,7 +16,8 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.Ichor
 	{
         public override void SetStaticDefaults()
         {
-		}
+            DTUtils.OwnedByBossNPC[Type] = ModContent.NPCType<IchorNodeMB>();
+        }
 
         public override void SetDefaults()
         {

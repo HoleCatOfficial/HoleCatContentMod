@@ -1,13 +1,13 @@
-﻿using BreadLibrary.Core.Graphics.Particles;
+﻿using System;
+using System.Collections.Generic;
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
+using DestroyerTest.Content.Entities;
 using DestroyerTest.Content.Particles;
-
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using OpusLib.Content.Particles;
-using System;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -22,6 +22,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame
         {
             ProjectileID.Sets.TrailCacheLength[Type] = 40;
             ProjectileID.Sets.TrailingMode[Type] = 3;
+            DTUtils.OwnedByBossNPC[Type] = ModContent.NPCType<CursedFlameNodeMB>();
         }
 
         public override void SetDefaults()

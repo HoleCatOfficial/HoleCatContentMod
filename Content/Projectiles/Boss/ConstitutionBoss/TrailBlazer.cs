@@ -29,7 +29,8 @@ public class TrailBlazer : ModProjectile
             ProjectileID.Sets.TrailingMode[Type] = 2;
             ProjectileID.Sets.TrailCacheLength[Type] = 20;
             Main.projFrames[Type] = 8;
-		}
+            DTUtils.OwnedByBossNPC[Type] = ModContent.NPCType<Entities.ConstitutionBoss>();
+        }
 
 		public override void SetDefaults()
 		{

@@ -8,6 +8,7 @@ using BreadLibrary.Core.Graphics.Pixelation;
 using BreadLibrary.Core.Graphics.Spritebatch;
 using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
+using DestroyerTest.Content.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
@@ -25,6 +26,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
         public override string Texture => DTUtils.NoTexture;
         public override void SetStaticDefaults()
         {
+            DTUtils.OwnedByBossNPC[Type] = ModContent.NPCType<WyvernCorpseHead>();
         }
 
         public override void SetDefaults()
@@ -83,7 +85,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
         public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(SoundID.Item30);
-            foreach (Dust dust in Opus.RingSpreadDust(DustID.FireworksRGB, 40, Projectile.Center, 300f, 0, Color.White, 1f, 8f))
+            foreach (Dust dust in Opus.RingSpreadDust(DustID.FireworksRGB, 40, Projectile.Center, Projectile.ai[0], 0, ColorLib.Soul, 1f, 8f))
             {
                 dust.noGravity = true;
             }

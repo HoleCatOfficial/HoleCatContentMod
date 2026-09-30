@@ -15,7 +15,9 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
         public override void SetStaticDefaults()
         {
             ProjectileID.Sets.TrailCacheLength[Projectile.type] = 5;
+
             ProjectileID.Sets.TrailingMode[Projectile.type] = 3;
+            DTUtils.OwnedByBossNPC[Type] = ModContent.NPCType<Entities.ConstitutionBoss>();
         }
         public override void SetDefaults()
         {

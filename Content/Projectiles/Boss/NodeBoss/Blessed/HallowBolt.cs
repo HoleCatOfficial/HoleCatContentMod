@@ -1,18 +1,19 @@
 ﻿using System;
+using System.Collections.Generic;
 using DestroyerTest.Common;
+using DestroyerTest.Content.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
+using OpusLib.Content.Helpers;
 using ReLogic.Content;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.Enums;
 using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
-using OpusLib;
-using System.Collections.Generic;
-using OpusLib.Content.Helpers;
-using Terraria.Audio;
 
 namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.Blessed
 {
@@ -35,6 +36,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.Blessed
         public override void SetStaticDefaults()
         {
             Main.projFrames[Type] = 5;
+            DTUtils.OwnedByBossNPC[Type] = ModContent.NPCType<BlessedNodeMB>();
         }
 
         public override void SetDefaults()

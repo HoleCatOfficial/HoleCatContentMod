@@ -7,6 +7,7 @@ using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Entities;
 using DestroyerTest.Content.Particles;
 using FargowiltasSouls.Content.Patreon.DanielTheRobot;
 using Microsoft.Xna.Framework;
@@ -25,6 +26,10 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
     {
         public override string Texture => "DestroyerTest/Content/Projectiles/player/Accessory/ProvidenceRadiance";
 
+        public override void SetStaticDefaults()
+        {
+            DTUtils.OwnedByBossNPC[Type] = ModContent.NPCType<WyvernCorpseHead>();
+        }
 
         public override void SetDefaults()
         {
@@ -94,7 +99,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
                     Vector2 reflected = vel - 2f * Vector2.Dot(vel, normal) * normal;
 
                     // add slight randomness AFTER reflection
-                    reflected = reflected.RotatedByRandom(0.3f);
+                    reflected = reflected.RotatedByRandom(0.2f);
 
                     Projectile.velocity = reflected;
 
@@ -132,9 +137,9 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
                 ParticleEngine.Particles.Add(spark);
             }
 
-            Opus.RadialSpreadProjectile(ModContent.ProjectileType<SoulSpit>(), 9, Projectile.Center, (int)(Projectile.damage * 0.2f), 6, 6);
-            Opus.RadialSpreadProjectile(ModContent.ProjectileType<SoulSpit>(), 12, Projectile.Center, (int)(Projectile.damage * 0.2f), 6, 10);
-            Opus.RadialSpreadProjectile(ModContent.ProjectileType<SoulSpit>(), 20, Projectile.Center, (int)(Projectile.damage * 0.2f), 6, 14);
+            Opus.RadialSpreadProjectile(ModContent.ProjectileType<SoulSpit>(), 9, Projectile.Center, (int)(Projectile.damage * 0.5f), 6, 6);
+            Opus.RadialSpreadProjectile(ModContent.ProjectileType<SoulSpit>(), 12, Projectile.Center, (int)(Projectile.damage * 0.5f), 6, 10);
+            Opus.RadialSpreadProjectile(ModContent.ProjectileType<SoulSpit>(), 20, Projectile.Center, (int)(Projectile.damage * 0.5f), 6, 14);
         }
     }
 }

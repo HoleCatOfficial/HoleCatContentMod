@@ -99,13 +99,22 @@ Configs: {
 		}
 
 		BlessingVFX: {
-			Label: Blessing V F X
+			Label: Blessing VFX
 			Tooltip: ""
 		}
 
 		ScreenshakeEffects: {
 			Label: Screenshake Effects
 			Tooltip: ""
+		}
+
+		PhotosensitivityMode: {
+			Label: Photosensitivity Mode
+			Tooltip:
+				'''
+				As is common game design, VFX must account for those sensitive to bright lights and/or flashing lights.
+				This config will disable most of the brighter effects in the mod.
+				'''
 		}
 	}
 

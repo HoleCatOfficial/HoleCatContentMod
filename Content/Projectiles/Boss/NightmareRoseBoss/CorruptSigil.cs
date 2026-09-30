@@ -30,7 +30,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
 
         public override void SetStaticDefaults()
         {
-            
+            DTUtils.OwnedByBossNPC[Type] = ModContent.NPCType<Entities.NightmareRoseBoss>();
         }
 
         public override void SetDefaults()

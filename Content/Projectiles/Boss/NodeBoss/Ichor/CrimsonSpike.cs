@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
+using DestroyerTest.Content.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
@@ -26,8 +27,8 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.Ichor
 
             ProjectileID.Sets.TrailCacheLength[Type] = 30;
             ProjectileID.Sets.TrailingMode[Type] = 3;
+            DTUtils.OwnedByBossNPC[Type] = ModContent.NPCType<IchorNodeMB>();
 
-            
         }
 
         public override void SetDefaults()

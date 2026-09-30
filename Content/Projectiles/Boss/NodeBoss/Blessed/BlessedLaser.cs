@@ -13,6 +13,7 @@ using OpusLib;
 using Terraria.DataStructures;
 using OpusLib.Content.Helpers;
 using Terraria.ID;
+using DestroyerTest.Content.Entities;
 
 namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.Blessed
 {
@@ -22,6 +23,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.Blessed
         public override void SetStaticDefaults()
         {
             ProjectileID.Sets.DrawScreenCheckFluff[Type] = 16 * 500;
+            DTUtils.OwnedByBossNPC[Type] = ModContent.NPCType<BlessedNodeMB>();
         }
 
         public override void SetDefaults()

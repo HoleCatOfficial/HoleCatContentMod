@@ -1,6 +1,7 @@
 using System;
 using System.Xml;
 using DestroyerTest.Common;
+using DestroyerTest.Content.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -27,6 +28,10 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
 
         private ref float Timer => ref Projectile.ai[1];
 
+        public override void SetStaticDefaults()
+        {
+            DTUtils.OwnedByBossNPC[Type] = ModContent.NPCType<WyvernCorpseHead>();
+        }
         public override void SetDefaults()
         {
             Projectile.width = 26;

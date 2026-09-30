@@ -1,4 +1,5 @@
 using DestroyerTest.Common;
+using DestroyerTest.Content.Entities;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
@@ -12,9 +13,10 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.Ichor
 	{
 		public override void SetStaticDefaults()
 		{
-			// If this arrow would have strong effects (like Holy Arrow pierce), we can make it fire fewer projectiles from Daedalus Stormbow for game balance considerations like this:
-			//ProjectileID.Sets.FiresFewerFromDaedalusStormbow[Type] = true;
-		}
+            // If this arrow would have strong effects (like Holy Arrow pierce), we can make it fire fewer projectiles from Daedalus Stormbow for game balance considerations like this:
+            //ProjectileID.Sets.FiresFewerFromDaedalusStormbow[Type] = true;
+            DTUtils.OwnedByBossNPC[Type] = ModContent.NPCType<IchorNodeMB>();
+        }
 
 		public override void SetDefaults()
 		{

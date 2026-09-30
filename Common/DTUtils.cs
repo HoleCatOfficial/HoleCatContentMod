@@ -703,6 +703,8 @@ namespace DestroyerTest.Common
 
         public static Func<bool> DayTimeConditionBool = () => Main.dayTime;
         public static Condition DayTimeCondition = new Condition("Mods.DestroyerTest.Conditions.DayTime", DayTimeConditionBool);
+
+        public static int[] OwnedByBossNPC = ProjectileID.Sets.Factory.CreateNamedSet("OnwedByBossNPC").Description("When bosses of a given type despawn, instances of projectiles with types 'owned' by that type will be despawned instantly.").RegisterIntSet();
     }
 
     public class SwapSolidTileAndFrame : GenAction

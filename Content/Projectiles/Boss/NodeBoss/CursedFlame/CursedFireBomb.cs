@@ -1,6 +1,9 @@
-﻿using BreadLibrary.Core.Graphics.Particles;
+﻿using System;
+using System.Collections.Generic;
+using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
+using DestroyerTest.Content.Entities;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss;
 using Microsoft.Xna.Framework;
@@ -8,8 +11,6 @@ using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using OpusLib.Content.Helpers;
 using OpusLib.Content.Particles;
-using System;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -21,6 +22,11 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame
     public class CursedFireBomb : ModProjectile
     {
         public override string Texture => DTUtils.NoTexture;
+
+        public override void SetStaticDefaults()
+        {
+            DTUtils.OwnedByBossNPC[Type] = ModContent.NPCType<CursedFlameNodeMB>();
+        }
         public override void SetDefaults()
         {
             Projectile.width = 60;

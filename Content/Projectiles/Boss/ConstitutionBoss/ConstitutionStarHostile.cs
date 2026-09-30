@@ -40,7 +40,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
 			ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true;
             ProjectileID.Sets.TrailCacheLength[Type] = 140;
             ProjectileID.Sets.TrailingMode[Type] = 3;
-
+            DTUtils.OwnedByBossNPC[Type] = ModContent.NPCType<Entities.ConstitutionBoss>();
         }
 
 		public override void SetDefaults()

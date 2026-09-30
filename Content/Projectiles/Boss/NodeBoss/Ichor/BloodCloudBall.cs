@@ -1,15 +1,16 @@
-﻿using BreadLibrary.Core.Graphics.Particles;
+﻿using System.Collections.Generic;
+using System.Formats.Tar;
+using System.Runtime.CompilerServices;
+using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
 using DestroyerTest.Common;
 using DestroyerTest.Common.Interfaces;
 using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Entities;
 using DestroyerTest.Content.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
-using System.Collections.Generic;
-using System.Formats.Tar;
-using System.Runtime.CompilerServices;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -24,6 +25,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.Ichor
         public override void SetStaticDefaults()
         {
             Main.projFrames[Type] = 3;
+            DTUtils.OwnedByBossNPC[Type] = ModContent.NPCType<IchorNodeMB>();
         }
 
         public override void SetDefaults()

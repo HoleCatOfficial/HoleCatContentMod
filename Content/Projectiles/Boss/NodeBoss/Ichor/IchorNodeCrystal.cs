@@ -1,7 +1,10 @@
+using System;
 using System.Collections.Generic;
 using DestroyerTest.Common;
+using DestroyerTest.Content.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using ReLogic.Content;
 using Terraria;
 using Terraria.Audio;
@@ -9,8 +12,6 @@ using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using OpusLib;
-using System;
 
 namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.Ichor
 {
@@ -18,6 +19,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.Ichor
     {
         public override void SetStaticDefaults()
         {
+
         }
 
         public override void SetDefaults()

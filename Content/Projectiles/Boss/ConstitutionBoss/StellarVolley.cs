@@ -43,7 +43,8 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
 		public override void SetStaticDefaults()
 		{
 			ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true;
-		}
+            DTUtils.OwnedByBossNPC[Type] = ModContent.NPCType<Entities.ConstitutionBoss>();
+        }
 
 		public override void SetDefaults()
 		{

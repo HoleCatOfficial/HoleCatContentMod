@@ -22,7 +22,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
         public override string Texture => DTUtils.NoTexture;
         public override void SetStaticDefaults()
         {
-
+            DTUtils.OwnedByBossNPC[Type] = ModContent.NPCType<Entities.NightmareRoseBoss>();
         }
 
         public override void SetDefaults()
@@ -99,7 +99,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
                     Vector2 reflected = vel - 2f * Vector2.Dot(vel, normal) * normal;
 
                     // add slight randomness AFTER reflection
-                    reflected = reflected.RotatedByRandom(0.3f);
+                    reflected = reflected.RotatedByRandom(0.2f);
 
                     Projectile.velocity = reflected;
                 }

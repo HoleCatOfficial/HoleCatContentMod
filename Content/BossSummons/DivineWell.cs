@@ -1,6 +1,7 @@
 ﻿
 using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.Entities;
+using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Tiles;
 using DestroyerTest.Content.Tiles.Altar;
 using Microsoft.Xna.Framework;
@@ -37,6 +38,9 @@ namespace DestroyerTest.Content.BossSummons
             Item.useStyle = ItemUseStyleID.HoldUp;
             Item.consumable = false;
             Item.maxStack = 1;
+            Item.noMelee = true;
+            Item.noUseGraphic = true;
+            
         }
 
         public override void ModifyResearchSorting(ref ContentSamples.CreativeHelper.ItemGroup itemGroup)
@@ -46,27 +50,12 @@ namespace DestroyerTest.Content.BossSummons
 
         public override bool CanUseItem(Player player)
         {
-            return !NPC.AnyNPCs(ModContent.NPCType<WyvernCorpseHead>());
+            return (!NPC.AnyNPCs(ModContent.NPCType<WyvernCorpseHead>()) && (DestroyerTestMod.EternityIsActive ? !player.dead : player.ZoneCrimson)) && player.ownedProjectileCounts[ModContent.ProjectileType<DivineWellProjectile>()] < 1;
         }
 
         public override bool? UseItem(Player player)
         {
-            if (player.whoAmI == Main.myPlayer)
-            {
-                SoundStyle Summon = new SoundStyle("DestroyerTest/Assets/Audio/Corpse/CorpseRoar1");
-                SoundEngine.PlaySound(Summon, player.position);
-
-                int type = ModContent.NPCType<WyvernCorpseHead>();
-
-                if (Main.netMode != NetmodeID.MultiplayerClient && (DestroyerTestMod.EternityIsActive ? !player.dead : player.ZoneCrimson))
-                {
-                    NPC.SpawnOnPlayer(player.whoAmI, type);
-                }
-                else
-                {
-                    NetMessage.SendData(MessageID.SpawnBossUseLicenseStartEvent, number: player.whoAmI, number2: type);
-                }
-            }
+            Projectile.NewProjectile(player.GetSource_ItemUse(Item), player.MountedCenter + new Vector2(0, -100), Vector2.Zero, ModContent.ProjectileType<DivineWellProjectile>(), 0, 0, player.whoAmI);
 
             return true;
         }

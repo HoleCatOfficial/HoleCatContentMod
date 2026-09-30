@@ -15,6 +15,10 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
 {
     public class ConstitutionBeam : ModProjectile
     {
+        public override void SetStaticDefaults()
+        {
+            DTUtils.OwnedByBossNPC[Type] = ModContent.NPCType<Entities.ConstitutionBoss>();
+        }
         public override void SetDefaults()
         {
             Projectile.width = 38;
