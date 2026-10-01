@@ -107,7 +107,7 @@ namespace DestroyerTest.Content.Entities
             NPC.noGravity = true;
             NPC.noTileCollide = true;
 
-            NPC.HitSound = SoundID.Tink with { Pitch = -0.6f, PitchVariance = 0.4f };
+            //NPC.HitSound = SoundID.Tink with { Pitch = -0.6f, PitchVariance = 0.4f };
 
             NPC.knockBackResist = 0.0f;
 
@@ -392,7 +392,7 @@ namespace DestroyerTest.Content.Entities
             }
             else
             {
-                SoundEngine.PlaySound(DTAssetLib.Impacts.StellarFox, NPC.Center);
+                SoundEngine.PlaySound(SoundID.Item154 with { PitchVariance = 0.5f }, NPC.Center);
 
 
                 for (int i = 0; i < 4; i++)

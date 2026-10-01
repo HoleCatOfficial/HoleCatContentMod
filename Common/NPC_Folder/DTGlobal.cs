@@ -357,7 +357,13 @@ namespace DestroyerTest.Common.NPC_Folder
             }
 
 
-           
+            foreach (Projectile projectile in Main.projectile)
+            {
+                if (DTUtils.OwnedByBossNPC[projectile.type] == npc.type)
+                {
+                    projectile.active = false;
+                }
+            }
         }
 
         public bool OldActive;

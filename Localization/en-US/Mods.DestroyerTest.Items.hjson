@@ -5606,3 +5606,18 @@ Soiled: {
 		You have a 10% chance on hit for all 3 classes above to create a blob that heals you for 10% of the damage dealt.
 		'''
 }
+
+TheBookofLifeAndDeath: {
+	DisplayName: The Book of Life and Death
+	Tooltip:
+		'''
+		Fires a barrage of divine matter.
+		All projectiles inflict Soul Inferno.
+		'Beyond all, do you recognize me?"
+		'''
+}
+
+WretchedWhip: {
+	DisplayName: Wretched Whip
+	Tooltip: ""
+}

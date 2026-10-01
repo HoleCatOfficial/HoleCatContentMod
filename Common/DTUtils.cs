@@ -1728,6 +1728,11 @@ namespace DestroyerTest.Common
         public static Color RainbowGradient => new Color(Main.DiscoR / 2, (byte)(Main.DiscoG / 1.25f), (byte)(Main.DiscoB / 1.5f));
 
         /// <summary>
+        /// A lighter variant of Soul.
+        /// </summary>
+        public static Color SoulLight = new Color(255, 246, 189);
+
+        /// <summary>
         /// The main color used in Soul related things. All other Soul colors derive from this.
         /// </summary>
         public static Color Soul = new Color(255, 235, 113);
@@ -1735,12 +1740,12 @@ namespace DestroyerTest.Common
         /// <summary>
         /// The main color used in Soul related things. All other Soul colors derive from this.
         /// </summary>
-        public static Color Soul2 = new Color(197, 142, 31);
+        public static Color Soul2 = new Color(255, 202, 95);
 
         /// <summary>
         /// The main color used in Soul related things. All other Soul colors derive from this.
         /// </summary>
-        public static Color Soul3 = new Color(154, 99, 27);
+        public static Color Soul3 = new Color(255, 182, 35);
 
         /// <summary>
         /// Used for all things Hellfire!
@@ -2314,9 +2319,16 @@ namespace DestroyerTest.Common
             DTOptimizationsConfig OptCfg = ModContent.GetInstance<DTOptimizationsConfig>();
             if (!OptCfg.DisableExcessTrails)
             {
-                Opus.StartSpriteBatchForTrails(spriteBatch, blendState, SpriteSortMode.Immediate);
+                var Cap = spriteBatch.Capture();
 
-             
+                spriteBatch.End();
+
+                Cap.SamplerState = SamplerState.LinearWrap;
+                Cap.BlendState = blendState;
+
+                spriteBatch.Begin(Cap);
+
+
 
                 if (Positions.Count > 1)
                 {

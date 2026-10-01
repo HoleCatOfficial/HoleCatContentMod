@@ -16,6 +16,8 @@ using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
+using DestroyerTest.Common.DropRules;
+using DestroyerTest.Content.ClasslessItems;
 
 namespace DestroyerTest.Content.Consumables
 {
@@ -52,6 +54,8 @@ namespace DestroyerTest.Content.Consumables
             itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<WyvernTail>(), 2, 1, 1));
             itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<GreatFlayer>(), 2, 1, 1));
             itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<WyvernSkull>(), 5, 1, 1));
+
+            itemLoot.Add(ItemDropRule.ByCondition(new MasochistDropRuleCondition(), ModContent.ItemType<TheBookofLifeAndDeath>(), 1, 1, 1));
 
         }
     }

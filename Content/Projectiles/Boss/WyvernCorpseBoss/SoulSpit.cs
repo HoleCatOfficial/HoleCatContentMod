@@ -40,9 +40,14 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
 
         public override void AI()
         {
+
             PointGlowPreMultiplied glow = new();
-            glow.Initialize(Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Main.rand.NextVector2Circular(2, 2), ColorLib.Soul, 2f);
+            glow.Initialize(Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Main.rand.NextVector2Circular(2, 2), ColorLib.Soul, 1f);
             ParticleEngine.Particles.Add(glow);
+
+            PointGlowPreMultiplied glow2 = new();
+            glow2.Initialize(Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Main.rand.NextVector2Circular(2, 2), ColorLib.Soul3, 2f);
+            ParticleEngine.Particles.Add(glow2);
 
             Projectile.rotation = Projectile.velocity.ToRotation();
         }

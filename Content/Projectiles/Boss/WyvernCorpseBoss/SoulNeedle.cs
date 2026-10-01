@@ -114,7 +114,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
             }
 
             Main.EntitySpriteDraw(DTAssetLib.LightNeedleTrail.Value, Projectile.Center, null, ColorLib.Soul3 with { A = 0 }, Projectile.rotation, DTAssetLib.LightNeedleTrail.Value.Size() / 2, 1f, SpriteEffects.None, 0);
-            Main.EntitySpriteDraw(DTUtils.CenteredDraw(Projectile, Color.White with { A = 0 }));
+            Main.EntitySpriteDraw(DTUtils.CenteredDraw(Projectile, ColorLib.SoulLight with { A = 0 }));
 
             return false;
         }

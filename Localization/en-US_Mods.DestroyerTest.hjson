@@ -44,6 +44,8 @@ Extras: {
 			Marvels of Nepostria that are weapons also have an innate 10% critical strike chance on top of what they would originally have.
 			'''
 	}
+
+	ThankYouMessage: Thank you for playing!!!
 }
 
 Conditions: {

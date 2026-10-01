@@ -274,8 +274,8 @@ namespace DestroyerTest.Content.Entities
 
                     //Why do you use noise 3 for noise 10's drawing?
                     //I don't know, but doing it any other way causes it to not fit properly on the screen without needing to scale up the texture further, and I like the scale it's at.
-                    Main.EntitySpriteDraw(DTAssetLib.TilableNoise(10).Value, player.Center - Main.screenPosition, new Rectangle(EternityScrollX, EternityScrollY, DTAssetLib.TilableNoise(3).Value.Width, DTAssetLib.TilableNoise(3).Value.Height), ScrollBackColor with { A = 0 } * 0.8f, 0f, DTAssetLib.TilableNoise(3).Value.Size() / 2, 6f, SpriteEffects.None, 0f);
-                    Main.EntitySpriteDraw(DTAssetLib.TilableNoise(10).Value, player.Center - Main.screenPosition, new Rectangle((int)(EternityScrollX * 1.2f), (int)(EternityScrollY * 1.2f), DTAssetLib.TilableNoise(3).Value.Width, DTAssetLib.TilableNoise(3).Value.Height), ScrollBackColor with { A = 0 } * 0.5f, 0f, DTAssetLib.TilableNoise(3).Value.Size() / 2, 6f, SpriteEffects.None, 0f);
+                    Main.EntitySpriteDraw(DTAssetLib.TilableNoise(10).Value, player.Center - Main.screenPosition, new Rectangle(EternityScrollX, EternityScrollY, DTAssetLib.TilableNoise(3).Value.Width, DTAssetLib.TilableNoise(3).Value.Height), ColorLib.Soul3 with { A = 0 } * 0.5f, 0f, DTAssetLib.TilableNoise(3).Value.Size() / 2, 6f, SpriteEffects.None, 0f);
+                    Main.EntitySpriteDraw(DTAssetLib.TilableNoise(10).Value, player.Center - Main.screenPosition, new Rectangle((int)(EternityScrollX * 1.2f), (int)(EternityScrollY * 1.2f), DTAssetLib.TilableNoise(3).Value.Width, DTAssetLib.TilableNoise(3).Value.Height), ScrollBackColor with { A = 0 } * 0.35f, 0f, DTAssetLib.TilableNoise(3).Value.Size() / 2, 6f, SpriteEffects.None, 0f);
                     Main.EntitySpriteDraw(DTAssetLib.TilableNoise(10).Value, player.Center - Main.screenPosition, new Rectangle((int)(EternityScrollX * 1.1f), (int)(EternityScrollY * 1.1f), DTAssetLib.TilableNoise(3).Value.Width, DTAssetLib.TilableNoise(3).Value.Height), Color.White with { A = 0 } * 0.75f, 0f, DTAssetLib.TilableNoise(3).Value.Size() / 2, 6f, SpriteEffects.None, 0f);
 
                     Main.EntitySpriteDraw(DTAssetLib.Square.Value, player.Center - Main.screenPosition, null, Color.White with { A = 0 } * FlashOpacity, 0f, DTAssetLib.Square.Value.Size() / 2, 4000f, SpriteEffects.None, 0f);
@@ -462,7 +462,7 @@ namespace DestroyerTest.Content.Entities
             }
             else
             {
-                SoundEngine.PlaySound(DTAssetLib.Impacts.StellarFox, NPC.Center);
+                SoundEngine.PlaySound(SoundID.Item154 with { PitchVariance = 0.5f }, NPC.Center);
 
 
                 for (int i = 0; i < 4; i++)
@@ -575,6 +575,7 @@ namespace DestroyerTest.Content.Entities
 
         float NeedleOffset = 0f;
         Vector2 StoredCenter = Vector2.Zero;
+        public float StoredVolume = 1f;
 
         int IdleTime = 240;
 
@@ -775,11 +776,27 @@ namespace DestroyerTest.Content.Entities
 
                     if (DeathTimer == 1)
                     {
+                        StoredVolume = Main.musicVolume;
                         SoundEngine.PlaySound(new SoundStyle(DTAssetLib.AudioFolder.Corpse + "/Death") { PauseBehavior = PauseBehavior.PauseWithGame, MaxInstances = 1 });
+                    
+                        foreach (Projectile proj in Main.projectile)
+                        {
+                            if (proj.active && DTUtils.OwnedByBossNPC[proj.type] == Type)
+                            {
+                                proj.active = false;
+                            }
+                        }
+                        
+                        if (player.HasBuff<SoulInferno>())
+                        {
+                            player.ClearBuff(ModContent.BuffType<SoulInferno>());
+                        }
                     }
 
                     NPC.velocity *= 0.97f;
-                    
+                    FlashOpacity = MathHelper.Lerp(0f, 1f, (float)DeathTimer / 300f);
+                    ScrollBackColor = Color.Lerp(ColorLib.Soul3, ColorLib.Soul, (float)DeathTimer/ 300f);
+                    Main.musicVolume = MathHelper.Lerp(StoredVolume, 0, (float)DeathTimer / 300f);
                 }
                 
             }
@@ -791,7 +808,7 @@ namespace DestroyerTest.Content.Entities
 
             if ((DestroyerTestMod.EternityIsActive || DestroyerTestMod.DeathIsActive) && !DTUtils.CalamityBossRushActive())
             {
-                SunlightModification.Sunlight(1f, Color.Black, 1f);
+                SunlightModification.Sunlight(0.3f, ColorLib.Soul3, 1f);
 
             }
 
@@ -1006,11 +1023,14 @@ namespace DestroyerTest.Content.Entities
                                     }
                                     else
                                     {
+
                                         Vector2 Outer = StoredCenter + new Vector2(410, 0).RotatedBy(NeedleOffset);
                                         Projectile.NewProjectile(NPC.GetSource_FromAI(), Outer, Outer.DirectionFrom(StoredCenter) * 7f, ModContent.ProjectileType<SoulNeedle>(), 30, 2);
 
                                         Vector2 Outer2 = StoredCenter + new Vector2(410, 0).RotatedBy(NeedleOffset + MathHelper.PiOver2);
                                         Projectile.NewProjectile(NPC.GetSource_FromAI(), Outer2, Outer2.DirectionFrom(StoredCenter) * 7f, ModContent.ProjectileType<SoulNeedle>(), 30, 2);
+
+                                       
                                     }
                                 }
                             }
@@ -1051,19 +1071,39 @@ namespace DestroyerTest.Content.Entities
                                     }
                                 }
 
-                                for (int i = 0; i < 4; i++)
+                                if (NPC.life > NPC.lifeMax * 0.2f)
                                 {
-                                    PixelParticle pixel = new();
-                                    pixel.Initialize(StoredCenter, new Vector2(10, 0).RotatedBy((MathHelper.PiOver4 + (MathHelper.PiOver2 * i)) + Main.rand.NextFloat(-0.05f, 0.05f)), ColorLib.Soul, 2f);
-                                    ParticleEngine.BehindProjectiles.Add(pixel);
+                                    for (int i = 0; i < 4; i++)
+                                    {
+                                        PixelParticle pixel = new();
+                                        pixel.Initialize(StoredCenter, new Vector2(10, 0).RotatedBy((MathHelper.PiOver4 + (MathHelper.PiOver2 * i)) + Main.rand.NextFloat(-0.05f, 0.05f)), ColorLib.Soul, 2f);
+                                        ParticleEngine.BehindProjectiles.Add(pixel);
+                                    }
                                 }
+                                else
+                                {
+                                    for (int i = 0; i < 6; i++)
+                                    {
+                                        PixelParticle pixel = new();
+                                        pixel.Initialize(StoredCenter, new Vector2(10, 0).RotatedBy(((MathHelper.Pi / 3) * i) + Main.rand.NextFloat(-0.05f, 0.05f)), ColorLib.Soul, 2f);
+                                        ParticleEngine.BehindProjectiles.Add(pixel);
+                                    }
+                                }
+                                
                             }
 
 
                             if (AITimer == OrganTime + 1660)
                             {
                                 SoundEngine.PlaySound(DTAssetLib.ScholarShieldSounds.Break);
-                                Opus.RadialSpreadProjectile(ModContent.ProjectileType<SoulBeam>(), 4, StoredCenter, 30, 3, 0.00001f, offset: MathHelper.PiOver4);
+                                if (NPC.life > NPC.lifeMax * 0.2f)
+                                {
+                                    Opus.RadialSpreadProjectile(ModContent.ProjectileType<SoulBeam>(), 4, StoredCenter, 30, 3, 0.00001f, offset: MathHelper.PiOver4);
+                                }
+                                else
+                                {
+                                    Opus.RadialSpreadProjectile(ModContent.ProjectileType<SoulBeam>(), 6, StoredCenter, 30, 3, 0.00001f, offset: 0);
+                                }
                             }
 
 
@@ -1194,14 +1234,16 @@ namespace DestroyerTest.Content.Entities
 
                                 NPC.SmoothMoveToPoint(targetPoint, 160, 200);
 
+                                float velocity = (NPC.life > NPC.lifeMax * 0.2f) ? 12f : 21f;
+
                                 if (AITimer == MatrixTime + 300)
                                 {
                                     if (DestroyerTestMod.MasochistIsActive)
                                     {
                                         Projectile Ring = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), OrganSpinCenter, Vector2.Zero, ModContent.ProjectileType<BindingRing>(), 0, 0, ai0: player.whoAmI, ai1: 900);
                                         Ring.timeLeft = 600;
-                                        Projectile Radiance1 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), Ring.Center, Main.rand.NextVector2CircularEdge(12f, 12f), ModContent.ProjectileType<DivineRadiance>(), 40, 2);
-                                        Projectile Radiance2 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), Ring.Center, Main.rand.NextVector2CircularEdge(12f, 12f), ModContent.ProjectileType<DivineRadiance>(), 40, 2);
+                                        Projectile Radiance1 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), Ring.Center, Main.rand.NextVector2CircularEdge(velocity, velocity), ModContent.ProjectileType<DivineRadiance>(), 40, 2);
+                                        Projectile Radiance2 = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), Ring.Center, Main.rand.NextVector2CircularEdge(velocity, velocity), ModContent.ProjectileType<DivineRadiance>(), 40, 2);
                                         if (Radiance1.ModProjectile is DivineRadiance radiance1 && Radiance2.ModProjectile is DivineRadiance radiance2 && Ring.ModProjectile is BindingRing ring)
                                         {
                                             radiance1.Parent = ring;
@@ -1616,6 +1658,7 @@ namespace DestroyerTest.Content.Entities
             if (DestroyerTestMod.MasochistIsActive)
             {
                 ScreenFlashSystem.FlashIntensity = 1f;
+                ModContent.GetInstance<WyvernCorpseMasochistMusicVolumeRestorationSystem>().ShouldFadeBackMusic = true;
             }
 
         }
@@ -1638,6 +1681,31 @@ namespace DestroyerTest.Content.Entities
 
 
 
+    }
+
+    public class WyvernCorpseMasochistMusicVolumeRestorationSystem : ModSystem
+    {
+        public bool ShouldFadeBackMusic = false;
+        float storedVolume = 1f;
+        public override void PostUpdateNPCs()
+        {
+            WyvernCorpseHead head = Main.npc.Where(n => n.active && n.type == ModContent.NPCType<WyvernCorpseHead>()).Select(n => n.ModNPC as WyvernCorpseHead).FirstOrDefault();
+
+            
+            if (head != null)
+            {
+                storedVolume = head.StoredVolume;
+                
+            }
+
+            if (ShouldFadeBackMusic)
+            {
+                if (Main.musicVolume < storedVolume)
+                {
+                    Main.musicVolume += 0.005f;
+                }
+            }
+        }
     }
 
     [AutoloadHead]

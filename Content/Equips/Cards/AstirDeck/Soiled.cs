@@ -75,7 +75,7 @@ namespace DestroyerTest.Content.Equips.Cards.AstirDeck
             Player Owner = Main.player[projectile.owner];
             if (Owner.TryGetModPlayer<SoiledPlayer>(out var soiledPlayer))
             {
-                if (soiledPlayer.Active && Main.rand.NextBool(10) && (projectile.DamageType.CountsAsClass(DamageClass.Melee) || projectile.DamageType.CountsAsClass(DamageClass.SummonMeleeSpeed) || projectile.DamageType.CountsAsClass<ScepterClass>()))
+                if (soiledPlayer.Active && soiledPlayer.Cooldown <= 0 && Main.rand.NextBool(10) && (projectile.DamageType.CountsAsClass(DamageClass.Melee) || projectile.DamageType.CountsAsClass(DamageClass.SummonMeleeSpeed) || projectile.DamageType.CountsAsClass<ScepterClass>()))
                 {
                     SoundEngine.PlaySound(SoundID.NPCDeath13, target.Center);
                     Projectile.NewProjectile(Projectile.GetSource_None(), target.Center, Main.rand.NextVector2Circular(5f, 5f), ModContent.ProjectileType<SoiledHeal>(), projectile.damage / 2, 15, projectile.owner, ai1: damageDone * 0.1f);

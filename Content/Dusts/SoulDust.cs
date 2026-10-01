@@ -28,7 +28,7 @@ namespace DestroyerTest.Content.Dusts
 
 			float light = 0.005f * dust.scale;
 
-			Lighting.AddLight(dust.position, ColorLib.Soul.ToVector3() * 0.5f);
+			Lighting.AddLight(dust.position, ColorLib.Soul.ToVector3() * 0.7f);
 
 			if (dust.scale < 0.005f)
 			{

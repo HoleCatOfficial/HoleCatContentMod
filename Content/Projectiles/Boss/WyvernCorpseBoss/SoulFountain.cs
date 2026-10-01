@@ -65,7 +65,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
                 Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Bottom + new Vector2(Main.rand.NextFloat(-100, 100), 0), new Vector2(Main.rand.NextFloat(-12, 12), -20), ModContent.ProjectileType<SoulVolley>(), (int)(Projectile.damage * 0.1f), 4);
             }
 
-            Lighting.AddLight(Projectile.Center, Color.Goldenrod.ToVector3() * Mult);
+            Lighting.AddLight(Projectile.Center, ColorLib.Soul3.ToVector3() * Mult);
         }
 
     }

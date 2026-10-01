@@ -41,22 +41,24 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
         float WidthScl = 0f;
         Line L;
         int oF = 0;
+        int oF2 = 0;
         public override bool PreDraw(ref Color lightColor)
         {
-            oF -= 30;
+            oF -= 15;
+            oF2 -= 10;
             L = new Line(Projectile.Center, Projectile.Center + new Vector2(2000, 0).RotatedBy(Projectile.rotation));
 
-            Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(2), ColorLib.Soul3, Main.spriteBatch, BlendState.Additive, oF, WidthScl, 3f);
+            Main.spriteBatch.UseBlendState(BlendState.Additive);
+            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(8, true), ColorLib.Soul3 * 0.8f, Main.spriteBatch, BlendState.Additive, oF2, WidthScl * 1.4f, 4f);
 
-            Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-            Main.EntitySpriteDraw(DTAssetLib.Laser.Value, Projectile.Center - Main.screenPosition, null, ColorLib.Soul2, Projectile.rotation, new Vector2(0, DTAssetLib.Laser.Value.Height / 2), new Vector2(1f, WidthScl), SpriteEffects.None);
 
-            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(1), ColorLib.Soul, Main.spriteBatch, BlendState.Additive, oF, WidthScl * 0.5f, 2f);
+            Main.EntitySpriteDraw(DTAssetLib.Laser.Value, Projectile.Center - Main.screenPosition, null, ColorLib.Soul2 with { A = 0 }, Projectile.rotation, new Vector2(0, DTAssetLib.Laser.Value.Height / 2), new Vector2(1f, WidthScl * 1.2f), SpriteEffects.None);
 
-            Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-            Main.EntitySpriteDraw(DTAssetLib.Laser.Value, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(0, DTAssetLib.Laser.Value.Height / 2), new Vector2(1f, WidthScl * 0.5f), SpriteEffects.None);
-            Opus.ReturnToDefaultDrawing(Main.spriteBatch);
+
+            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(8, true), ColorLib.Soul, Main.spriteBatch, BlendState.Additive, oF, WidthScl * 1f, 3f);
+
+            Main.EntitySpriteDraw(DTAssetLib.Laser.Value, Projectile.Center - Main.screenPosition, null, Color.White with { A = 0 }, Projectile.rotation, new Vector2(0, DTAssetLib.Laser.Value.Height / 2), new Vector2(1f, WidthScl * 1f), SpriteEffects.None);
+
             return false;
         }
 

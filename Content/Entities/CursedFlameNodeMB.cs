@@ -520,7 +520,7 @@ namespace DestroyerTest.Content.Entities
                                 player.Center = NPC.Center + new Vector2(1080, 0).RotatedBy(player.DirectionFrom(NPC.Center).ToRotation());
                             }
 
-                            if (FlameSwarmTimer % 20 == 0)
+                            if (FlameSwarmTimer % 20 == 0 && DestroyerTestMod.MasochistIsActive)
                             {
                                 SoundEngine.PlaySound(Wallwarn);
                                 Opus.RadialSpreadProjectile(ModContent.ProjectileType<CursedNodeCrystal>(), 5, NPC.Center, 50, 5f, 18f, offset: NPC.Center.DirectionTo(player.Center).ToRotation());
