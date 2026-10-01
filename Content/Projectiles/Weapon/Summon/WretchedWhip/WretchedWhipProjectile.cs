@@ -5,7 +5,9 @@ using BreadLibrary.Common.Whip;
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Buffs.Whip;
 using DestroyerTest.Content.Particles;
+using DestroyerTest.Content.Projectiles.Weapon.Melee;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
@@ -65,7 +67,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon.WretchedWhip
 
             if (PowerStrike)
             {
-                SoundEngine.PlaySound(SoundID.LiquidsWaterLava, Projectile.WhipPointsForCollision[Projectile.WhipPointsForCollision.Count - 1]);
+                SoundEngine.PlaySound(SoundID.LiquidsWaterLava with { Volume = 0.5f }, Projectile.WhipPointsForCollision[Projectile.WhipPointsForCollision.Count - 1]);
                 for (int i = 0; i < 2; i++)
                 {
                     LerpingFire backfire = new();
@@ -86,9 +88,37 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon.WretchedWhip
 
         public override void PlayCrackSound()
         {
+            LerpingBloomRingSharp Ring = new();
+            Ring.Prepare(Projectile.WhipPointsForCollision[Projectile.WhipPointsForCollision.Count - 1], Vector2.Zero, ColorLib.WretchedColorMap, 0.05f, 0.01f, 0.5f);
+            ParticleEngine.Particles.Add(Ring);
 
-      
+            SoundEngine.PlaySound(WhipCrack_SFX, Projectile.WhipPointsForCollision[Projectile.WhipPointsForCollision.Count - 1]);
 
+
+        }
+
+        public override void OnTipHit(Entity target)
+        {
+            if (PowerStrike)
+            {
+                SoundEngine.PlaySound(DTAssetLib.Impacts.FlameImpact with { Volume = 0.6f }, target.Center);
+                SoundEngine.PlaySound(DTAssetLib.Impacts.HeavyCrit with { PitchVariance = 0.4f, Pitch = -0.6f }, target.Center);
+
+                for (int i = 0; i < 7; i++)
+                {
+                    WretchedPointGlow glow = new();
+                    glow.Prepare(target.Center, Main.rand.NextVector2Circular(3, 3), 1f);
+                    ParticleEngine.Particles.Add(glow);
+                }
+
+                Opus.RadialSpreadProjectile(ModContent.ProjectileType<MalevolenceBolt>(), 3, target.Center, Projectile.damage, 4, 9, offset: Main.rand.NextFloat(MathHelper.TwoPi));
+
+                Owner.AddBuff(ModContent.BuffType<WretchedWhipSpeedBoost>(), 300);
+            }
+            else
+            {
+                SoundEngine.PlaySound(DTAssetLib.Impacts.HeavyCrit with { PitchVariance = 0.4f }, target.Center);
+            }
         }
 
         bool f1 = false;
@@ -99,16 +129,13 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon.WretchedWhip
 
 
 
-            float extensionFactor = GetExtensionFactor(progress);
-            if (Projectile.ai[0] == 46)
-            {
-                LerpingBloomRingSharp Ring = new();
-                Ring.Prepare(Projectile.WhipPointsForCollision[Projectile.WhipPointsForCollision.Count - 1], Vector2.Zero, ColorLib.WretchedColorMap, 0.05f, 0.01f, 0.5f);
-                ParticleEngine.Particles.Add(Ring);
+            Projectile.GetWhipSettings(base.Projectile, out var timeToFlyOut, out var segments, out var rangeMultiplier);
+            float Progress = MathHelper.Clamp((float)Time / timeToFlyOut, 0f, 1f);
 
-                SoundEngine.PlaySound(WhipCrack_SFX, Projectile.WhipPointsForCollision[Projectile.WhipPointsForCollision.Count - 1]);
-                f1 = true;
-            }
+            float OnePointProgress = (float)Math.Round(Progress, 1);
+            float TwoPointProgress = (float)Math.Round(Progress, 2);
+            //Main.NewText($"Progress: {OnePointProgress}, 2PProgress: {TwoPointProgress}");
+
         }
 
         public int HitCooldown = 0;
@@ -124,17 +151,18 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon.WretchedWhip
             if (Owner.HeldItem.ModItem is SummonItems.WretchedWhip Whip)
             {
                 Whip.HitCount++;
-                Pitch = MathHelper.Lerp(-3f, -1.6f, (float)Whip.HitCount / 5f);
+                Pitch = MathHelper.Lerp(-3f, -2f, (float)Whip.HitCount / 5f);
             }
 
             
 
-            SoundEngine.PlaySound(DTAssetLib.Impacts.ShortShine with { Pitch = Pitch, Volume = 1.6f }, target.Center);
+            
 
             if (PowerStrike)
             {
                 SoundEngine.PlaySound(DTAssetLib.Impacts.FlameImpact with { Volume = 0.6f }, target.Center);
-                SoundEngine.PlaySound(SoundID.DD2_SkyDragonsFuryShot with { Volume = 1.6f }, target.Center);
+                SoundEngine.PlaySound(SoundID.DD2_KoboldIgnite with { Volume = 4f }, target.Center);
+                SoundEngine.PlaySound(SoundID.DD2_KoboldIgnite with { Volume = 4f }, target.Center);
 
                 for (int i = 0; i < 7; i++)
                 {
@@ -142,6 +170,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon.WretchedWhip
                     glow.Prepare(target.Center, Main.rand.NextVector2Circular(3, 3), 1f);
                     ParticleEngine.Particles.Add(glow);
                 }
+
+                Owner.AddBuff(ModContent.BuffType<WretchedWhipSpeedBoost>(), 300);
+            }
+            else
+            {
+                SoundEngine.PlaySound(DTAssetLib.Impacts.ShortShine with { Pitch = Pitch, Volume = 1.6f }, target.Center);
             }
 
             HitCooldown = 60;

@@ -466,3 +466,8 @@ Passion: {
 		Damage increased by 10% and Potions heal for 20% more!
 		'''
 }
+
+WretchedWhipSpeedBoost: {
+	DisplayName: Wretched Whip Speed Boost
+	Description: Mods.DestroyerTest.Buffs.WretchedWhipSpeedBoost.Description
+}

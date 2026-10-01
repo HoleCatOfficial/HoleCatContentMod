@@ -5618,6 +5618,10 @@ TheBookofLifeAndDeath: {
 }
 
 WretchedWhip: {
-	DisplayName: Wretched Whip
-	Tooltip: ""
+	DisplayName: Feverish Chain
+	Tooltip:
+	'''
+	Every 5 hits, the whip will perform a power strike, granting increased whip speed for a short duration.
+	Strike with the tip to deal more damage.
+	'''
 }

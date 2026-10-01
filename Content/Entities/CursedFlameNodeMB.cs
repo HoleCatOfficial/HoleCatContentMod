@@ -141,15 +141,22 @@ namespace DestroyerTest.Content.Entities
             }
         }
 
+        float BorderRotation = 0f;
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             Texture2D pixel = TextureAssets.MagicPixel.Value;
             var v = DTAssetLib.BloomRingSharp.Value;
 
+            BorderRotation += 0.13f;
 
             Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
             Main.EntitySpriteDraw(v, NPC.Center - screenPos, null, ColorLib.WretchedGradient() * ShieldOpacity, 0f, v.Size() / 2, ShieldScale, SpriteEffects.None);
-            Utils.DrawBorderString(spriteBatch, $"{SentinelKillTally} / {SentinelKillRequirement}", (NPC.Center + new Vector2(0, -90)) - screenPos, ColorLib.WretchedGradient() * ShieldOpacity, 3f, 0.5f, 0.5f);
+
+
+            Main.EntitySpriteDraw(DTAssetLib.BarrierRing.Value, NPC.Center - Main.screenPosition, null, OpusColorUtils.MultiLerp(((float)SentinelKillTally / (float)SentinelKillRequirement).Inverse(), ColorLib.WretchedColorMap) * ShieldOpacity, BorderRotation, DTAssetLib.BarrierRing.Value.Size() / 2, DTAssetLib.BarrierRing.Value.ScaleRingTextureToMatchRadius(1200f, 1300), SpriteEffects.None);
+
+            spriteBatch.DrawString(DTAssetLib.Doxent.Value, $"{SentinelKillTally} / {SentinelKillRequirement}", (NPC.Center + new Vector2(0, -90)) - screenPos, OpusColorUtils.MultiLerp(((float)SentinelKillTally / (float)SentinelKillRequirement).Inverse(), ColorLib.WretchedColorMap) * ShieldOpacity, 0f, DTAssetLib.Doxent.Value.MeasureString($"{SentinelKillTally} / {SentinelKillRequirement}") * 0.5f, 0.5f, SpriteEffects.None, 0f);
+            //Utils.DrawBorderString(spriteBatch, $"{SentinelKillTally} / {SentinelKillRequirement}", (NPC.Center + new Vector2(0, -90)) - screenPos, ColorLib.WretchedGradient() * ShieldOpacity, 3f, 0.5f, 0.5f);
             Opus.ReturnToDefaultDrawing(spriteBatch);
             return true;
         }
@@ -681,14 +688,7 @@ namespace DestroyerTest.Content.Entities
             int currad = Opus.Sine(1200, 1000, 0.06f);
             float progress = (float)currad / (float)MaxRad;
 
-            Vector2[] P = Opus.GetEquidistantOrbitVectors(16, NPC.Center, 0.1f, currad);
-
-            for (int i = 0; i < P.Length; i++)
-            {
-                PointGlowPreMultiplied G = new();
-                G.Initialize(P[i], Vector2.Zero, OpusColorUtils.MultiLerp(progress, ColorLib.WretchedColorMap), 1f);
-                ParticleEngine.ShaderParticles.Add(G);
-            }
+        
 
             foreach (Player p in Main.player)
             {
