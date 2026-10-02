@@ -1200,13 +1200,6 @@ namespace DestroyerTest.Content.Entities
 
             if (NPC.life <= NPC.lifeMax * 0.05f && currentState != AttackState.Desperation && currentState != AttackState.KillIdle)
             {
-                foreach (NPC Const in Main.npc)
-                {
-                    if (Const.active && (Const.type == ModContent.NPCType<TenebrousConstruct>() || Const.type == ModContent.NPCType<GigaCursedHammer>()))
-                    {
-                        Const.StrikeInstantKill();
-                    }
-                }
                 SoundEngine.PlaySound(Desperation);
                 currentState = AttackState.Desperation;
                 DesperationTimer = 0; // reset on entry
@@ -2352,7 +2345,7 @@ namespace DestroyerTest.Content.Entities
 
         public void ManageSigil(Vector2 SpawnPos)
         {
-            NPC.NewNPC(Entity.GetSource_FromAI(), (int)SpawnPos.X, (int)SpawnPos.Y, ModContent.NPCType<CorruptSigil>(), 0);
+
         }
 
         public void SummonSouls()
@@ -2845,7 +2838,6 @@ namespace DestroyerTest.Content.Entities
     }
 
     [AutoloadHead]
-    [AutoloadGlowmask]
     public class CursedFlameNode : ModNPC
     {
         public override void SetStaticDefaults()
@@ -2857,12 +2849,12 @@ namespace DestroyerTest.Content.Entities
             NPCID.Sets.TrailingMode[Type] = 3;
             NPCID.Sets.MPAllowedEnemies[Type] = true;
 
-            var drawModifier = new NPCID.Sets.NPCBestiaryDrawModifiers()
+            NPCID.Sets.NPCBestiaryDrawModifiers value = new NPCID.Sets.NPCBestiaryDrawModifiers()
             {
-                CustomTexturePath = "DestroyerTest/Content/Entities/NodesBestiary",
-                Position = Vector2.Zero,
+                Hide = true
             };
-            NPCID.Sets.NPCBestiaryDrawOffset.Add(NPC.type, drawModifier);
+            NPCID.Sets.NPCBestiaryDrawOffset.Add(NPC.type, value);
+
         }
 
         public override void SetDefaults()
@@ -2894,10 +2886,7 @@ namespace DestroyerTest.Content.Entities
 
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
-            bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
-                new FlavorTextBestiaryInfoElement("Elemental Constructs that strengthen the potency of Cursed Flames and Ichor."),
-                BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface
-            });
+         
         }
 
         public override bool CheckActive()
@@ -2905,13 +2894,31 @@ namespace DestroyerTest.Content.Entities
             return false;
         }
 
-        public float trailOffset = 0f;
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            trailOffset += 0.04f;
+            
 
-            DTTrail.DrawTrail(spriteBatch, DTAssetLib.Streak(7).Value, NPC.OldCenter().ToList(), NPC.oldRot.ToList(), 24f, ColorLib.WretchedGradient(), trailOffset, 10);
-            return true;
+            Texture2D Tex = TextureAssets.Npc[Type].Value;
+            Texture2D GlowTex = ModContent.Request<Texture2D>(Texture + "_Glow").Value;
+            Texture2D Trail = ModContent.Request<Texture2D>(DTAssetLib.ExtrasPath + "/CursedFlameNodeMask").Value;
+
+            for (int i = NPC.oldPos.Length - 1; i > 0; i--)
+            {
+                float progress = (float)i / NPC.oldPos.Length;
+
+                float Mult = MathHelper.Lerp(1f, 0f, progress);
+
+                Color TrailColor = OpusColorUtils.MultiLerp(progress, ColorLib.WretchedColorMap);
+
+                Main.EntitySpriteDraw(Trail, NPC.OldCenter()[i] - screenPos, null, TrailColor * Mult * NPC.Opacity, NPC.oldRot[i], Trail.Size() / 2, NPC.scale, SpriteEffects.None);
+            }
+
+
+
+
+            Main.EntitySpriteDraw(Tex, NPC.Center - screenPos, null, drawColor * NPC.Opacity, NPC.rotation, Tex.Size() / 2, NPC.scale, SpriteEffects.None);
+            Main.EntitySpriteDraw(GlowTex, NPC.Center - screenPos, null, Color.White * NPC.Opacity, NPC.rotation, GlowTex.Size() / 2, NPC.scale, SpriteEffects.None);
+            return false;
         }
 
         public override void AI()

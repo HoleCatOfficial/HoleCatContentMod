@@ -40,7 +40,6 @@ namespace DestroyerTest.Content.Entities
 {
 
     [AutoloadBossHead]
-    [AutoloadGlowmask]
     public class BlessedNodeMB : ModNPC
     {
         public override string BossHeadTexture => "DestroyerTest/Content/Entities/BlessedNodeMB_Head_Boss";
@@ -52,9 +51,9 @@ namespace DestroyerTest.Content.Entities
             NPCID.Sets.TrailingMode[Type] = 3;
             NPCID.Sets.MPAllowedEnemies[Type] = true;
             var drawModifier = new NPCID.Sets.NPCBestiaryDrawModifiers()
-            { // Influences how the NPC looks in the Bestiary
-                CustomTexturePath = "DestroyerTest/Content/Entities/NodesBestiary", // If the NPC is multiple parts like a worm, a custom texture for the Bestiary is encouraged.
-                Position = Vector2.Zero,
+            {
+                Position = new Vector2(0f, 10f),
+                PortraitScale = 2.7f
             };
             NPCID.Sets.NPCBestiaryDrawOffset.Add(NPC.type, drawModifier);
         }
@@ -87,7 +86,7 @@ namespace DestroyerTest.Content.Entities
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
                 new FlavorTextBestiaryInfoElement(DTUtils.GetModNPCLocalizationEntry(this, 1)),
 
-                BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.TheCorruption
+                BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.TheHallow
             });
         }
 
@@ -147,22 +146,81 @@ namespace DestroyerTest.Content.Entities
         }
 
         float BorderRotation = 0f;
+        float portraitoutlinerot = 0f;
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
+            Texture2D Tex = TextureAssets.Npc[Type].Value;
+            Texture2D GlowTex = ModContent.Request<Texture2D>(Texture + "_Glow").Value;
+            Texture2D Trail = ModContent.Request<Texture2D>(DTAssetLib.ExtrasPath + "/BlessedNodeMask").Value;
+
+            if (NPC.IsABestiaryIconDummy)
+            {
+                
+                
+                portraitoutlinerot += 0.05f;
+                for (int i = 0; i < 4; i++)
+                {
+                    Main.EntitySpriteDraw(Trail, NPC.Center + new Vector2(Opus.Sine(3f, 20f, 0.08f), 0).RotatedBy((MathHelper.PiOver2 * i) + portraitoutlinerot), null, Main.DiscoColor with { A = 0 } * 0.25f, 0f, Trail.Size() / 2, 1f, SpriteEffects.None);
+                }
+
+                Main.EntitySpriteDraw(Tex, NPC.Center, null, Color.White, 0f, Tex.Size() / 2, 1f, SpriteEffects.None);
+                return true;
+            }
+
             Texture2D pixel = TextureAssets.MagicPixel.Value;
             var v = DTAssetLib.BloomRingSharp.Value;
 
             BorderRotation += 0.13f;
 
+            Color baseColor = new Color(Main.DiscoR, Main.DiscoG, Main.DiscoB);
+
+            Vector3 HSL = Main.rgbToHsl(baseColor);
+
+            for (int i = NPC.oldPos.Length - 1; i > 0; i--)
+            {
+                float progress = (float)i / NPC.oldPos.Length;
+
+                float shiftedHue = (HSL.X - progress) % 1f;
+
+                float Mult = MathHelper.Lerp(1f, 0f, progress);
+
+                Color TrailColor = Main.hslToRgb(new Vector3(shiftedHue, HSL.Y, HSL.Z));
+
+                Main.EntitySpriteDraw(Trail, NPC.OldCenter()[i] - screenPos, null, TrailColor * Mult * NPC.Opacity, NPC.oldRot[i], Trail.Size() / 2, NPC.scale, SpriteEffects.None);
+            }
+
             Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+
+
+            
+
+
+
             Main.EntitySpriteDraw(v, NPC.Center - screenPos, null, OpusColorUtils.MultiLerp(((float)SentinelKillTally / (float)SentinelKillRequirement).Inverse(), [Color.DeepSkyBlue, Color.SkyBlue]) * ShieldOpacity, 0f, v.Size() / 2, ShieldScale, SpriteEffects.None);
 
-            Main.EntitySpriteDraw(DTAssetLib.BarrierRing.Value, NPC.Center - Main.screenPosition, null, OpusColorUtils.MultiLerp(((float)SentinelKillTally / (float)SentinelKillRequirement).Inverse(), [Color.DeepSkyBlue, Color.SkyBlue]) * ShieldOpacity, BorderRotation, DTAssetLib.BarrierRing.Value.Size() / 2, DTAssetLib.BarrierRing.Value.ScaleRingTextureToMatchRadius(1200f, 1300), SpriteEffects.None);
+            Main.EntitySpriteDraw(DTAssetLib.BarrierRing.Value, NPC.Center - screenPos, null, OpusColorUtils.MultiLerp(((float)SentinelKillTally / (float)SentinelKillRequirement).Inverse(), [Color.DeepSkyBlue, Color.SkyBlue]) * ShieldOpacity, BorderRotation, DTAssetLib.BarrierRing.Value.Size() / 2, DTAssetLib.BarrierRing.Value.ScaleRingTextureToMatchRadius(1200f, 1300), SpriteEffects.None);
 
             spriteBatch.DrawString(DTAssetLib.Doxent.Value, $"{SentinelKillTally} / {SentinelKillRequirement}", (NPC.Center + new Vector2(0, -90)) - screenPos, OpusColorUtils.MultiLerp(((float)SentinelKillTally / (float)SentinelKillRequirement).Inverse(), [Color.DeepSkyBlue, Color.SkyBlue]) * ShieldOpacity, 0f, DTAssetLib.Doxent.Value.MeasureString($"{SentinelKillTally} / {SentinelKillRequirement}") * 0.5f, 0.5f, SpriteEffects.None, 0f);
             //Utils.DrawBorderString(spriteBatch, $"{SentinelKillTally} / {SentinelKillRequirement}", (NPC.Center + new Vector2(0, -90)) - screenPos, Color.SkyBlue * ShieldOpacity, 3f, 0.5f, 0.5f);
+
+            if (DrawEternityLaserWallWarnings)
+            {
+                Texture2D Line = DTAssetLib.FadeLine.Value;
+                Texture2D Star = DTAssetLib.Star(3).Value;
+                for (int i = 0; i < EternityLaserWallPositions.Count; i++)
+                {
+                   
+                    
+                    Main.EntitySpriteDraw(Line, EternityLaserWallPositions[i] - screenPos, null, Main.DiscoColor * EternityLaserWallWarningOpacity, EternityLaserWallRotation + MathHelper.Pi, new Vector2(0f, Line.Height / 2f), new Vector2(4f, 1f), SpriteEffects.None);
+                    Main.EntitySpriteDraw(Star, EternityLaserWallPositions[i] - screenPos, null, Main.DiscoColor * EternityLaserWallWarningOpacity, 0f, Star.Size() / 2, 1f, SpriteEffects.None);
+                }
+            }
+
             Opus.ReturnToDefaultDrawing(spriteBatch);
-            return true;
+
+            Main.EntitySpriteDraw(Tex, NPC.Center - screenPos, null, drawColor * NPC.Opacity, NPC.rotation, Tex.Size() / 2, NPC.scale, SpriteEffects.None);
+            Main.EntitySpriteDraw(GlowTex, NPC.Center - screenPos, null, Color.White * NPC.Opacity, NPC.rotation, GlowTex.Size() / 2, NPC.scale, SpriteEffects.None);
+            return false;
         }
         public override bool? CanBeHitByItem(Player player, Item item)
         {
@@ -209,6 +267,12 @@ namespace DestroyerTest.Content.Entities
         public int LaserCount = 0;
         public int BoltCount = 0;
         public int DespawnTimer = 60;
+
+        public int EternityLaserWallTime = 0;
+        public bool DrawEternityLaserWallWarnings = false;
+        public float EternityLaserWallRotation = 0f;
+        List<Vector2> EternityLaserWallPositions = new Vector2[20].ToList();
+        public float EternityLaserWallWarningOpacity = 0f;
         
         public override void AI()
         {
@@ -326,6 +390,7 @@ namespace DestroyerTest.Content.Entities
                 case AttackState.CrystalCross:
                     {
                         NPC.velocity *= 0.8f;
+
                         if (CrossCount < 6)
                         {
                             if (Main.GameUpdateCount % 60 == 0)
@@ -345,21 +410,72 @@ namespace DestroyerTest.Content.Entities
                     {
                         KeepToPlayer(player.Center + new Vector2(0, -300));
 
-                        if (KnifeCount < 6)
+                        if (!DestroyerTestMod.EternityIsActive && !DestroyerTestMod.DeathIsActive)
                         {
-                            if (Main.GameUpdateCount % 240 == 0)
+                            if (KnifeCount < 6)
                             {
-                                for (int o = 0; o < 3; o++)
+                                if (Main.GameUpdateCount % 240 == 0)
                                 {
-                                    NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<BlessedNodeFlyingKnife>());
+                                    for (int o = 0; o < 3; o++)
+                                    {
+                                        NPC.NewNPC(NPC.GetSource_FromAI(), (int)NPC.Center.X, (int)NPC.Center.Y, ModContent.NPCType<BlessedNodeFlyingKnife>());
+                                    }
+                                    KnifeCount++;
                                 }
-                                KnifeCount++;
+                            }
+                            else
+                            {
+                                CurrentAttack = AttackState.Lasers;
+                                KnifeCount = 0;
                             }
                         }
                         else
                         {
-                            CurrentAttack = AttackState.Lasers;
-                            KnifeCount = 0;
+                            if (KnifeCount < 5)
+                            {
+                                EternityLaserWallTime++;
+                                if (EternityLaserWallTime > 240)
+                                {
+                                    DrawEternityLaserWallWarnings = false;
+                                    EternityLaserWallWarningOpacity = 0f;
+                                    for (int i = 0; i < EternityLaserWallPositions.Count; i++)
+                                    {
+                                        Projectile.NewProjectile(NPC.GetSource_FromAI(), EternityLaserWallPositions[i], EternityLaserWallRotation.ToRotationVector2() * -0.001f, ModContent.ProjectileType<BlessedLaser2>(), 50, 5);
+                                    }
+                                    EternityLaserWallTime = 0;
+                                    KnifeCount++;
+                                }
+                                else
+                                {
+                                    if (EternityLaserWallWarningOpacity < 1f)
+                                    {
+                                        EternityLaserWallWarningOpacity += 0.01f;
+                                    }
+                                    EternityLaserWallRotation += 0.05f;
+                                    DrawEternityLaserWallWarnings = true;
+                                    for (int i = 0; i < 20; i++)
+                                    {
+                                        float Y = (-1200 + ((16 * i) * 10));
+                                        float X = 1000;
+
+                                        if(EternityLaserWallPositions[i] == Vector2.Zero)
+                                        {
+                                            EternityLaserWallPositions[i] = player.Center + new Vector2(X, Y).RotatedBy(EternityLaserWallRotation);
+                                        }
+                                        else
+                                        {
+                                            EternityLaserWallPositions[i] = player.Center + new Vector2(X, Y).RotatedBy(EternityLaserWallRotation);
+                                        }
+
+                                        Dust.NewDustPerfect(EternityLaserWallPositions[i], DustID.WhiteTorch);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                CurrentAttack = AttackState.Lasers;
+                                KnifeCount = 0;
+                            }
                         }
                         break;
                     }
@@ -650,14 +766,22 @@ namespace DestroyerTest.Content.Entities
         {
             SoundEngine.PlaySound(SoundID.Item9, target.Center);
 
-      
-            if (!Main.masterMode)
+            if (!DestroyerTestMod.EternityIsActive && !DestroyerTestMod.DeathIsActive)
             {
-                Opus.RingSpreadProjectile(ModContent.ProjectileType<BlessedNodeCrystal2>(), 4, target.Center, 200, 30, 5, -1, offset: Main.rand.NextFloat(MathHelper.TwoPi));
+
+
+                if (!Main.masterMode)
+                {
+                    Opus.RingSpreadProjectile(ModContent.ProjectileType<BlessedNodeCrystal2>(), 4, target.Center, 200, 30, 5, -1, offset: Main.rand.NextFloat(MathHelper.TwoPi));
+                }
+                else
+                {
+                    Opus.RingSpreadProjectile(ModContent.ProjectileType<BlessedNodeCrystal2>(), 8, target.Center, 360, 30, 5, -1, offset: Main.rand.NextFloat(MathHelper.TwoPi));
+                }
             }
             else
             {
-                Opus.RingSpreadProjectile(ModContent.ProjectileType<BlessedNodeCrystal2>(), 8, target.Center, 360, 30, 5, -1, offset: Main.rand.NextFloat(MathHelper.TwoPi));
+                Projectile.NewProjectile(NPC.GetSource_FromAI(), target.Center, Vector2.Zero, ModContent.ProjectileType<HolyMarker>(), 50, 5, ai0: Main.rand.NextFloat(MathHelper.TwoPi));
             }
         }
 

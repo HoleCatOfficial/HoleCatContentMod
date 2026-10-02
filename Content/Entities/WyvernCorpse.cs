@@ -271,14 +271,16 @@ namespace DestroyerTest.Content.Entities
 
                     spriteBatch.Begin(Cap);
 
+                    Vector2 Position = Main.Camera.ScaledPosition;
+
 
                     //Why do you use noise 3 for noise 10's drawing?
                     //I don't know, but doing it any other way causes it to not fit properly on the screen without needing to scale up the texture further, and I like the scale it's at.
-                    Main.EntitySpriteDraw(DTAssetLib.TilableNoise(10).Value, player.Center - Main.screenPosition, new Rectangle(EternityScrollX, EternityScrollY, DTAssetLib.TilableNoise(3).Value.Width, DTAssetLib.TilableNoise(3).Value.Height), ColorLib.Soul3 with { A = 0 } * 0.5f, 0f, DTAssetLib.TilableNoise(3).Value.Size() / 2, 6f, SpriteEffects.None, 0f);
-                    Main.EntitySpriteDraw(DTAssetLib.TilableNoise(10).Value, player.Center - Main.screenPosition, new Rectangle((int)(EternityScrollX * 1.2f), (int)(EternityScrollY * 1.2f), DTAssetLib.TilableNoise(3).Value.Width, DTAssetLib.TilableNoise(3).Value.Height), ScrollBackColor with { A = 0 } * 0.35f, 0f, DTAssetLib.TilableNoise(3).Value.Size() / 2, 6f, SpriteEffects.None, 0f);
-                    Main.EntitySpriteDraw(DTAssetLib.TilableNoise(10).Value, player.Center - Main.screenPosition, new Rectangle((int)(EternityScrollX * 1.1f), (int)(EternityScrollY * 1.1f), DTAssetLib.TilableNoise(3).Value.Width, DTAssetLib.TilableNoise(3).Value.Height), Color.White with { A = 0 } * 0.75f, 0f, DTAssetLib.TilableNoise(3).Value.Size() / 2, 6f, SpriteEffects.None, 0f);
+                    Main.EntitySpriteDraw(DTAssetLib.TilableNoise(10).Value, Position - Main.screenPosition, new Rectangle(EternityScrollX, EternityScrollY, Main.screenWidth, Main.screenHeight), ColorLib.Soul3 with { A = 0 } * 0.5f, 0f, DTAssetLib.TilableNoise(3).Value.Size() / 2, 6f, SpriteEffects.None, 0f);
+                    Main.EntitySpriteDraw(DTAssetLib.TilableNoise(10).Value, Position - Main.screenPosition, new Rectangle((int)(EternityScrollX * 1.2f), (int)(EternityScrollY * 1.2f),  Main.screenWidth, Main.screenHeight), ScrollBackColor with { A = 0 } * 0.35f, 0f, DTAssetLib.TilableNoise(3).Value.Size() / 2, 6f, SpriteEffects.None, 0f);
+                    Main.EntitySpriteDraw(DTAssetLib.TilableNoise(10).Value, Position - Main.screenPosition, new Rectangle((int)(EternityScrollX * 1.1f), (int)(EternityScrollY * 1.1f), Main.screenWidth, Main.screenHeight), Color.White with { A = 0 } * 0.75f, 0f, DTAssetLib.TilableNoise(3).Value.Size() / 2, 6f, SpriteEffects.None, 0f);
 
-                    Main.EntitySpriteDraw(DTAssetLib.Square.Value, player.Center - Main.screenPosition, null, Color.White with { A = 0 } * FlashOpacity, 0f, DTAssetLib.Square.Value.Size() / 2, 4000f, SpriteEffects.None, 0f);
+                    Main.EntitySpriteDraw(DTAssetLib.Square.Value, Position - Main.screenPosition, null, Color.White with { A = 0 } * FlashOpacity, 0f, DTAssetLib.Square.Value.Size() / 2, 4000f, SpriteEffects.None, 0f);
 
                     spriteBatch.ResetToDefault();
                 }
@@ -843,7 +845,7 @@ namespace DestroyerTest.Content.Entities
             }
             if ((DestroyerTestMod.EternityIsActive || DestroyerTestMod.DeathIsActive) && !DestroyerTestMod.MasochistIsActive)
             {
-                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/TribulationEternity");
+                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/MasoWyvern");
             }
             if (DestroyerTestMod.MasochistIsActive)
             {
@@ -1687,6 +1689,8 @@ namespace DestroyerTest.Content.Entities
     {
         public bool ShouldFadeBackMusic = false;
         float storedVolume = 1f;
+
+        public int Wait = 0;
         public override void PostUpdateNPCs()
         {
             WyvernCorpseHead head = Main.npc.Where(n => n.active && n.type == ModContent.NPCType<WyvernCorpseHead>()).Select(n => n.ModNPC as WyvernCorpseHead).FirstOrDefault();
@@ -1700,16 +1704,26 @@ namespace DestroyerTest.Content.Entities
 
             if (ShouldFadeBackMusic)
             {
-                if (Main.musicVolume < storedVolume)
+                if (Wait < 180)
                 {
-                    Main.musicVolume += 0.005f;
+                    Wait++;
                 }
+                else
+                {
+                    if (Main.musicVolume < storedVolume)
+                    {
+                        Main.musicVolume += 0.005f;
+                    }
+                }
+            }
+            else
+            {
+                Wait = 0;
             }
         }
     }
 
     [AutoloadHead]
-    [AutoloadGlowmask]
     public class IchorNode : ModNPC
     {
         public override void SetStaticDefaults()
@@ -1720,7 +1734,11 @@ namespace DestroyerTest.Content.Entities
             NPCID.Sets.TrailCacheLength[Type] = 20;
             NPCID.Sets.TrailingMode[Type] = 3;
             NPCID.Sets.MPAllowedEnemies[Type] = true;
-            // To hide from bestiary, override SetBestiary and leave it empty.
+            NPCID.Sets.NPCBestiaryDrawModifiers value = new NPCID.Sets.NPCBestiaryDrawModifiers()
+            {
+                Hide = true
+            };
+            NPCID.Sets.NPCBestiaryDrawOffset.Add(NPC.type, value);
         }
 
         public override void SetDefaults()
@@ -1730,10 +1748,10 @@ namespace DestroyerTest.Content.Entities
             NPC.aiStyle = -1;
             NPC.damage = 25;
             NPC.defense = 50;
-            NPC.lifeMax = 17000;
+            NPC.lifeMax = 20000;
             if (DTUtils.CalamityBossRushActive())
             {
-                NPC.lifeMax = 500000;
+                NPC.lifeMax = 900000;
                 NPC.defense = 60;
             }
 
@@ -1770,11 +1788,36 @@ namespace DestroyerTest.Content.Entities
             }
         }
 
+        public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            Texture2D Tex = TextureAssets.Npc[Type].Value;
+            Texture2D GlowTex = ModContent.Request<Texture2D>(Texture + "_Glow").Value;
+            Texture2D Trail = ModContent.Request<Texture2D>(DTAssetLib.ExtrasPath + "/IchorNodeMask").Value;
+
+            for (int i = NPC.oldPos.Length - 1; i > 0; i--)
+            {
+                float progress = (float)i / NPC.oldPos.Length;
+
+                float Mult = MathHelper.Lerp(1f, 0f, progress);
+
+                Color TrailColor = OpusColorUtils.MultiLerp(progress, ColorLib.IchorCrystalColorMap);
+
+                Main.EntitySpriteDraw(Trail, NPC.OldCenter()[i] - screenPos, null, TrailColor * Mult * NPC.Opacity, NPC.oldRot[i], Trail.Size() / 2, NPC.scale, SpriteEffects.None);
+            }
+
+
+
+
+            Main.EntitySpriteDraw(Tex, NPC.Center - screenPos, null, drawColor * NPC.Opacity, NPC.rotation, Tex.Size() / 2, NPC.scale, SpriteEffects.None);
+            Main.EntitySpriteDraw(GlowTex, NPC.Center - screenPos, null, Color.White * NPC.Opacity, NPC.rotation, GlowTex.Size() / 2, NPC.scale, SpriteEffects.None);
+            return false;
+        }
+
         public override bool? DrawHealthBar(byte hbPosition, ref float scale, ref Vector2 position) => new bool?(false);
 
         public override void SetBestiary(Terraria.GameContent.Bestiary.BestiaryDatabase database, Terraria.GameContent.Bestiary.BestiaryEntry bestiaryEntry)
         {
-            // Do not add any info elements to hide from bestiary
+
         }
         public override bool CheckActive()
         {

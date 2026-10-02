@@ -141,6 +141,11 @@ namespace DestroyerTest.Content.Entities
                 NPCID.RainbowSlime
             };
 
+            if (DestroyerTestMod.EternityIsActive)
+            {
+                Enemies.Remove(NPCID.RainbowSlime);
+            }
+
             if (Main.rand.NextBool(150))
             {
                 for (int i = 0; i < 5; i++)

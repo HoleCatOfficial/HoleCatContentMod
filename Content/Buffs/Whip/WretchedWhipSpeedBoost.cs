@@ -13,7 +13,9 @@ namespace DestroyerTest.Content.Buffs.Whip
             Main.debuff[Type] = false;
             Main.pvpBuff[Type] = false;
             Main.buffNoSave[Type] = true;
+            Main.buffNoTimeDisplay[Type] = true;
             BuffID.Sets.NurseCannotRemoveDebuff[Type] = true;
+
         }
 
         public override void Update(Player player, ref int buffIndex)

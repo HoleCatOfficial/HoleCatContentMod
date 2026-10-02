@@ -3665,7 +3665,7 @@ LunarInsignia: {
 		Functions as wings with infinite flight.
 		Press the Mode Switch Keybind to toggle Precision Mode.
 		Precision mode slows player movement while flying, making tighter maneuvers more doable.
-		"So the Calamity Team doesn't like infinite flight? This. Means. War."
+		"I win."
 		'''
 }
 
@@ -5620,8 +5620,8 @@ TheBookofLifeAndDeath: {
 WretchedWhip: {
 	DisplayName: Feverish Chain
 	Tooltip:
-	'''
-	Every 5 hits, the whip will perform a power strike, granting increased whip speed for a short duration.
-	Strike with the tip to deal more damage.
-	'''
+		'''
+		Every 5 hits, the whip will perform a power strike, granting increased whip speed for a short duration.
+		Strike with the tip to deal more damage.
+		'''
 }

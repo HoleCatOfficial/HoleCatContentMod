@@ -109,7 +109,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon.RiftWhip
         public string Path = "DestroyerTest/Content/Projectiles/Weapon/Summon/RiftWhip";
         protected override void DrawOverPrimitive(List<Vector2> points)
         {
-            _Head_y = (int)(5 * Math.Abs(MathF.Sin(Main.GlobalTimeWrappedHourly)));
+            //_Head_y = (int)(5 * Math.Abs(MathF.Sin(Main.GlobalTimeWrappedHourly)));
             Texture2D tex = ModContent.Request<Texture2D>($"{Path}/RiftWhipT2_MidChain").Value;
 
 
@@ -126,7 +126,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon.RiftWhip
             //PRTLoader.NewParticle(PRTLoader.GetParticleID<SimpleParticle>(), End, Vector2.Zero, ColorLib.Soul3, 1f);
 
             // shared sliding parameter
-            float slide = (MathF.Sin(Main.GlobalTimeWrappedHourly * 1f)) % 1f;
+            float slide = 1f;
 
             for (int i = 0; i < count; i++)
             {

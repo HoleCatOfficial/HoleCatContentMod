@@ -468,6 +468,6 @@ Passion: {
 }
 
 WretchedWhipSpeedBoost: {
-	DisplayName: Wretched Whip Speed Boost
-	Description: Mods.DestroyerTest.Buffs.WretchedWhipSpeedBoost.Description
+	DisplayName: Malign
+	Description: ""
 }

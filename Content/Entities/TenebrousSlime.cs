@@ -64,7 +64,7 @@ namespace DestroyerTest.Content.Entities
 			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
 				new FlavorTextBestiaryInfoElement("Originating from the Shade World, this mindless glob of sludge seeks to explore, but prefers not to be in the light, as is common with life in the shade world."),
 				new FlavorTextBestiaryInfoElement("In addition to freeing the moon lord from imprisonment, breaking the seal also tore open holes across space, allowing enemies from the shade world to enter yours."),
-				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Caverns
+				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.TheCorruption
 			});
 		}
 
@@ -89,12 +89,13 @@ namespace DestroyerTest.Content.Entities
         int O = 0;
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            O -= 20;
-			switch(variant) 
-			{ 
-				case 0:
-					drawColor = ColorLib.TenebrisBlue;
-					break;
+            Texture2D Tex = ModContent.Request<Texture2D>(Texture).Value;
+
+            switch (variant)
+            {
+                case 0:
+                    drawColor = ColorLib.TenebrisBlue;
+                    break;
                 case 1:
                     drawColor = ColorLib.TenebrisMagenta;
                     break;
@@ -103,17 +104,26 @@ namespace DestroyerTest.Content.Entities
                     break;
             }
 
-			Texture2D Tex = ModContent.Request<Texture2D>(Texture).Value;
+            if (NPC.IsABestiaryIconDummy)
+            {
+                Main.EntitySpriteDraw(Tex, NPC.position, NPC.frame, drawColor * NPC.Opacity, NPC.rotation, Vector2.Zero, NPC.scale, SpriteEffects.None);
+                return false;
+            }
+            O -= 20;
+			
 
+            
 			Main.EntitySpriteDraw(Tex, NPC.position - Main.screenPosition, NPC.frame, drawColor * NPC.Opacity, NPC.rotation, Vector2.Zero, NPC.scale, SpriteEffects.None);
 
             Line Warn = new(NPC.Center, NPC.Center + new Vector2(0, 1300));
-            if (NPC.ai[0] > 120 && NPC.ai[0] < 135)
+            if (DestroyerTestMod.EternityIsActive)
             {
-                float Opac = MathHelper.Lerp(0f, 1f, Utilities.Convert01To010(NPC.ai[2] / 15f));
-                DTUtils.instance.ScrollingTextureSpine(Warn, DTAssetLib.ArrowTelegraphCont, drawColor with { A = 0 } * Opac, spriteBatch, BlendState.Additive, O, 0.3f);
+                if (NPC.ai[0] > 120 && NPC.ai[0] < 135)
+                {
+                    float Opac = MathHelper.Lerp(0f, 1f, Utilities.Convert01To010(NPC.ai[2] / 15f));
+                    DTUtils.instance.ScrollingTextureSpine(Warn, DTAssetLib.ArrowTelegraphCont, drawColor with { A = 0 } * Opac, spriteBatch, BlendState.Additive, O, 0.3f);
+                }
             }
-            
             
             return false;
         }

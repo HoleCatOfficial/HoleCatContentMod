@@ -46,7 +46,6 @@ namespace DestroyerTest.Content.Entities
 {
 
     [AutoloadBossHead]
-    [AutoloadGlowmask]
     public class CursedFlameNodeMB : ModNPC
     {
         public override string BossHeadTexture => "DestroyerTest/Content/Entities/CursedFlameNode_Head_Boss";
@@ -58,9 +57,10 @@ namespace DestroyerTest.Content.Entities
             NPCID.Sets.TrailingMode[Type] = 3;
             NPCID.Sets.MPAllowedEnemies[Type] = true;
             var drawModifier = new NPCID.Sets.NPCBestiaryDrawModifiers()
-            { // Influences how the NPC looks in the Bestiary
-                CustomTexturePath = "DestroyerTest/Content/Entities/NodesBestiary", // If the NPC is multiple parts like a worm, a custom texture for the Bestiary is encouraged.
-                Position = Vector2.Zero,
+            {
+
+                Position = new Vector2(0f, 10f),
+                PortraitScale = 2.7f
             };
             NPCID.Sets.NPCBestiaryDrawOffset.Add(NPC.type, drawModifier);
         }
@@ -142,23 +142,59 @@ namespace DestroyerTest.Content.Entities
         }
 
         float BorderRotation = 0f;
+        float portraitoutlinerot = 0f;
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
+            Texture2D Tex = TextureAssets.Npc[Type].Value;
+            Texture2D GlowTex = ModContent.Request<Texture2D>(Texture + "_Glow").Value;
+            Texture2D Trail = ModContent.Request<Texture2D>(DTAssetLib.ExtrasPath + "/CursedFlameNodeMask").Value;
+
+            if (NPC.IsABestiaryIconDummy)
+            {
+                
+                portraitoutlinerot += 0.05f;
+                for (int i = 0; i < 4; i++)
+                {
+                    Main.EntitySpriteDraw(Trail, NPC.Center + new Vector2(Opus.Sine(3f, 20f, 0.08f), 0).RotatedBy((MathHelper.PiOver2 * i) + portraitoutlinerot), null, ColorLib.Wretched4 with { A = 0 } * 0.25f, 0f, Trail.Size() / 2, 1f, SpriteEffects.None);
+                }
+
+                Main.EntitySpriteDraw(Tex, NPC.Center, null, Color.White, 0f, Tex.Size() / 2, 1f, SpriteEffects.None);
+                return true;
+            }
+
             Texture2D pixel = TextureAssets.MagicPixel.Value;
             var v = DTAssetLib.BloomRingSharp.Value;
 
             BorderRotation += 0.13f;
 
+            for (int i = NPC.oldPos.Length - 1; i > 0; i--)
+            {
+                float progress = (float)i / NPC.oldPos.Length;
+
+                float Mult = MathHelper.Lerp(1f, 0f, progress);
+
+                Color TrailColor = OpusColorUtils.MultiLerp(progress, ColorLib.WretchedColorMap);
+
+                Main.EntitySpriteDraw(Trail, NPC.OldCenter()[i] - screenPos, null, TrailColor * Mult * NPC.Opacity, NPC.oldRot[i], Trail.Size() / 2, NPC.scale, SpriteEffects.None);
+            }
+
             Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+
+            
+
             Main.EntitySpriteDraw(v, NPC.Center - screenPos, null, ColorLib.WretchedGradient() * ShieldOpacity, 0f, v.Size() / 2, ShieldScale, SpriteEffects.None);
 
 
-            Main.EntitySpriteDraw(DTAssetLib.BarrierRing.Value, NPC.Center - Main.screenPosition, null, OpusColorUtils.MultiLerp(((float)SentinelKillTally / (float)SentinelKillRequirement).Inverse(), ColorLib.WretchedColorMap) * ShieldOpacity, BorderRotation, DTAssetLib.BarrierRing.Value.Size() / 2, DTAssetLib.BarrierRing.Value.ScaleRingTextureToMatchRadius(1200f, 1300), SpriteEffects.None);
+            Main.EntitySpriteDraw(DTAssetLib.BarrierRing.Value, NPC.Center - screenPos, null, OpusColorUtils.MultiLerp(((float)SentinelKillTally / (float)SentinelKillRequirement), ColorLib.WretchedColorMap) * ShieldOpacity, BorderRotation, DTAssetLib.BarrierRing.Value.Size() / 2, DTAssetLib.BarrierRing.Value.ScaleRingTextureToMatchRadius(1200f, 1300), SpriteEffects.None);
 
-            spriteBatch.DrawString(DTAssetLib.Doxent.Value, $"{SentinelKillTally} / {SentinelKillRequirement}", (NPC.Center + new Vector2(0, -90)) - screenPos, OpusColorUtils.MultiLerp(((float)SentinelKillTally / (float)SentinelKillRequirement).Inverse(), ColorLib.WretchedColorMap) * ShieldOpacity, 0f, DTAssetLib.Doxent.Value.MeasureString($"{SentinelKillTally} / {SentinelKillRequirement}") * 0.5f, 0.5f, SpriteEffects.None, 0f);
+            spriteBatch.DrawString(DTAssetLib.Doxent.Value, $"{SentinelKillTally} / {SentinelKillRequirement}", (NPC.Center + new Vector2(0, -90)) - screenPos, OpusColorUtils.MultiLerp(((float)SentinelKillTally / (float)SentinelKillRequirement), ColorLib.WretchedColorMap) * ShieldOpacity, 0f, DTAssetLib.Doxent.Value.MeasureString($"{SentinelKillTally} / {SentinelKillRequirement}") * 0.5f, 0.5f, SpriteEffects.None, 0f);
             //Utils.DrawBorderString(spriteBatch, $"{SentinelKillTally} / {SentinelKillRequirement}", (NPC.Center + new Vector2(0, -90)) - screenPos, ColorLib.WretchedGradient() * ShieldOpacity, 3f, 0.5f, 0.5f);
             Opus.ReturnToDefaultDrawing(spriteBatch);
-            return true;
+
+            Main.EntitySpriteDraw(Tex, NPC.Center - screenPos, null, drawColor * NPC.Opacity, NPC.rotation, Tex.Size() / 2, NPC.scale, SpriteEffects.None);
+            Main.EntitySpriteDraw(GlowTex, NPC.Center - screenPos, null, Color.White * NPC.Opacity, NPC.rotation, GlowTex.Size() / 2, NPC.scale, SpriteEffects.None);
+
+            return false;
         }
         public override bool? CanBeHitByItem(Player player, Item item)
         {

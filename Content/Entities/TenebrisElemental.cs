@@ -47,8 +47,7 @@ namespace DestroyerTest.Content.Entities
             immunities();
             NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers()
             {
-                Velocity = 1f,
-                Direction = 1
+                Position = Vector2.Zero
             };
             NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
             Banner = Type;
@@ -77,13 +76,12 @@ namespace DestroyerTest.Content.Entities
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
-                new FlavorTextBestiaryInfoElement("Originating from the Shade World, this Crystal is home to enough energy to gain basic sentience."),
+                new FlavorTextBestiaryInfoElement(DTUtils.GetModNPCLocalizationEntry(this, 1)),
                 new FlavorTextBestiaryInfoElement("In addition to freeing the moon lord from imprisonment, breaking the seal also tore open holes across space, allowing enemies from the shade world to enter yours."),
             });
 
             bestiaryEntry.Info.AddRange([
-				// Sets the spawning conditions of this NPC that is listed in the bestiary.
-				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.TheCrimson
+				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.TheCorruption
             ]);
         }
 
@@ -156,10 +154,62 @@ namespace DestroyerTest.Content.Entities
             }
         }
 
+        List<TEBit> BestiaryBits;
+
+        private void ManageBestiaryBits()
+        {
+            int Amt = 5;
+
+            if (BestiaryBits == null)
+            {
+                BestiaryBits = new List<TEBit>();
+            }
+
+            Vector2[] OrbitalDrawPositions = Opus.GetEquidistantOrbitVectors(Amt, NPC.Center, Math.Abs(0.05f) * NPC.direction, 50);
+            if (DestroyerTestMod.EternityIsActive)
+            {
+                OrbitalDrawPositions = Opus.GetEquidistantOrbitVectors(Amt, NPC.Center, Math.Abs(0.05f) * NPC.direction, Opus.Sine(30, 90, 0.01f));
+            }
+
+            for (int i = 0; i < Amt; i++)
+            {
+                if (BestiaryBits.Count <= i)
+                    BestiaryBits.Add(new TEBit(NPC));
+
+                BestiaryBits[i].Position = OrbitalDrawPositions[i];
+            }
+
+        }
+
+        void DrawBestiaryBits()
+        {
+            if (BestiaryBits == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < BestiaryBits.Count; i++)
+            {
+                TEBit bit = BestiaryBits[i];
+                Rectangle Frame = new Rectangle(0, (int)bit.Dimensions.Y * Variety, (int)bit.Dimensions.X, (int)bit.Dimensions.Y);
+
+
+                Main.EntitySpriteDraw(bit.Texture, bit.Position, Frame, Color.White, 0f, bit.Dimensions / 2, 1f, SpriteEffects.None, 0f);
+            }
+        }
+
+
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             if (NPC.IsABestiaryIconDummy)
             {
+                if (GetTexFromVariant() != null)
+                {
+                    Texture2D Tex = GetTexFromVariant().Value;
+                    ManageBestiaryBits();
+                    DrawBestiaryBits();
+                    Main.EntitySpriteDraw(Tex, NPC.Center, null, Color.White, NPC.rotation, Tex.Size() / 2, NPC.scale, SpriteEffects.None, 0f);
+                }
                 return false;
             }
 
