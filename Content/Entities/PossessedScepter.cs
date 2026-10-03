@@ -1,3 +1,5 @@
+using System;
+using System.IO;
 using DestroyerTest.Common;
 using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.Equips;
@@ -9,10 +11,9 @@ using Microsoft.Xna.Framework.Graphics;
 using MonoMod.Cil;
 using OpusLib;
 using OpusLib.Content.Helpers;
-using System;
-using System.IO;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
@@ -32,8 +33,8 @@ namespace DestroyerTest.Content.Entities
         }
 
 		public override void SetDefaults() {
-			NPC.width = 66;
-			NPC.height = 66;
+			NPC.width = 24;
+			NPC.height = 24;
 			NPC.aiStyle = -1;
 			NPC.damage = 34;
 			NPC.defense = 0;
@@ -53,30 +54,56 @@ namespace DestroyerTest.Content.Entities
 			});
 		}
 
+		public int currentframe = 0;
 		public override void FindFrame(int frameHeight)
         {
             int startFrame = 0;
-            int finalFrame = 3;
-            int frameSpeed = 3;
+            int finalFrame = 2;
+            int frameSpeed = 5;
             NPC.frameCounter += 1f;
             if (NPC.frameCounter > frameSpeed)
             {
                 NPC.frameCounter = 0;
-                NPC.frame.Y += frameHeight;
+                currentframe++;
 
                 if (NPC.frame.Y > finalFrame * frameHeight)
                 {
-                    NPC.frame.Y = startFrame * frameHeight;
+					currentframe = startFrame;
                 }
             }
+
+            NPC.frame.Y = currentframe * frameHeight;
         }
 
+		public float GlowRotation = 0f;
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-			Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-			Opus.DrawNPCShadowsRotating(NPC, NPC.frame, 2f, ColorLib.PossessedScepterColor, 0.2f);
-			Opus.ReturnToDefaultDrawing(spriteBatch);
-            return true;
+            Texture2D Tex = TextureAssets.Npc[Type].Value;
+
+            Rectangle sourceRect = new Rectangle(0, currentframe * (Tex.Height / Main.npcFrameCount[Type]), Tex.Width, (Tex.Height / Main.npcFrameCount[Type]));
+
+			GlowRotation += 0.1f;
+
+			if (NPC.IsABestiaryIconDummy)
+			{
+				NPC.rotation += 0.03f;
+                for (int i = 0; i < 4; i++)
+                {
+                    Main.EntitySpriteDraw(Tex, NPC.Center + new Vector2(12, 0).RotatedBy(GlowRotation + (MathHelper.PiOver2 * i)), sourceRect, Color.DeepSkyBlue with { A = 0 } * 0.5f, NPC.rotation, sourceRect.Size() / 2, 1f, SpriteEffects.None, 0);
+                }
+
+                Main.EntitySpriteDraw(Tex, NPC.Center, sourceRect, Color.White, NPC.rotation, sourceRect.Size() / 2, 1f, SpriteEffects.None, 0);
+				return false;
+            }
+
+            for (int i = 0; i < 4; i++)
+            {
+                Main.EntitySpriteDraw(Tex, (NPC.Center + new Vector2(5, 0).RotatedBy(GlowRotation + (MathHelper.PiOver2 * i))) - screenPos, sourceRect, Color.DeepSkyBlue with { A = 0 } * 0.5f, NPC.rotation, sourceRect.Size() / 2, 1f, SpriteEffects.None, 0);
+            }
+
+            Main.EntitySpriteDraw(Tex, NPC.Center - screenPos, sourceRect, Color.White, NPC.rotation, sourceRect.Size() / 2, 1f, SpriteEffects.None, 0);
+
+            return false;
         }
 
 

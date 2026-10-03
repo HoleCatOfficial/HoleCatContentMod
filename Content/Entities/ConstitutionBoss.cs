@@ -257,7 +257,7 @@ namespace DestroyerTest.Content.Entities
         {
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
                 new FlavorTextBestiaryInfoElement(DTUtils.GetModNPCLocalizationEntry(this, 1)),
-                BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Surface
+                BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Sky
             });
         }
 

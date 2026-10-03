@@ -46,7 +46,7 @@ namespace DestroyerTest.Content.Magic
 
         public override void AddRecipes()
         {
-            if (DTCrossMod.RemnantsIsLoaded)
+            if (DTCrossMod.WGIIsLoaded)
             {
                 CreateRecipe()
                     .AddIngredient<ConstitutionArtifact>(3)

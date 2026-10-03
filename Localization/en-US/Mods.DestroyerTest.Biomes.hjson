@@ -9,13 +9,13 @@ RiftDesert: {
 }
 
 ShadeWorldBestiary: {
-	TownNPCDialogueName: the Shade World Bestiary
-	DisplayName: Shade World Bestiary
+	TownNPCDialogueName: the Shade World
+	DisplayName: Shade World
 }
 
 RiftBestiary: {
-	TownNPCDialogueName: the Rift Bestiary
-	DisplayName: Rift Bestiary
+	TownNPCDialogueName: the Rift
+	DisplayName: Rift
 }
 
 RiftTundra: {

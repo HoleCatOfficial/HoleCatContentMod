@@ -258,28 +258,28 @@ TenebrousConstruct: {
 	SpawnDialogue0: Hello. Local.
 	SpawnDialogue1: I bet you’ve had plenty of work on your hands tracking down and destroying all of the attendants here in your world.
 	SpawnDialogue2: I have been tasked with ending your interference.
-	SpawnDialogue3: But I wouldn’t dare let your final moments be so dour.
+	SpawnDialogue3: But I wouldn’t dare let your final moments be so boring
 	SpawnDialogue4: So let me tell you a tale, Local.
 	FightDialogue0: Long ago, our worlds were not too different.
 	FightDialogue1: By now, our world has long lost its name. You call it ‘the shade world’. I call it Home.
 	FightDialogue2: I and my kind lived a simple life, much like yours.
-	FightDialogue3: We farmed. We played. We fought. We changed.
-	FightDialogue4: Such glorified idiocy masquerades as a proper and just existence.
-	FightDialogue5: Thankfully, descending from the heavens was our saviour.
-	FightDialogue6: SHE razed our statues. SHE brought a bitter, eternal winter to Home. SHE elevated us to sentience by stripping all of our primitive nonsense away.
-	FightDialogue7: Those who did not fight were not hurt, and I was among the earliest defectors of my people.
-	FightDialogue8: My eagerness proved a valuable asset.
-	FightDialogue9: I watched my people fall in droves at HER hand, trying to protect what remained of our past.
-	FightDialogue10: What fools they were. They were blind, and could not see that the future lay with Mother Darkness, as we had all come to call her.
-	FightDialogue11: What I lost in flesh, I gained in power. The less like my people I looked, the more she appreciated my presence.
-	FightDialogue12: Before long, I was among her most-tolerated presences.
-	FightDialogue13: While the rest of my people starved and froze out in the never-ending nighttime, I stayed in the palace, where I lived lavishly as Mother Darkness’s errand doer.
-	FightDialogue14: Life had struck a nice balance, if I do say so.
-	FightDialogue15: Jeez, you're really tiring me out! Just go away already! No more storytime!
-	FightDialogue16: You've done enough meddling with her plans! If she wants this world, she will have it!
-	FightDialogue17: Give up! I'll just keep coming back here until I succeed!
-	FightDialogue18: You better stop!
-	FightDialogue19: NO!!
+	FightDialogue3: Such glorified idiocy masquerades as a proper and just existence.
+	FightDialogue4: I knew better than them, but lacked the power to show them the superior way.
+	FightDialogue5: That was until, SHE arrived.
+	FightDialogue6: SHE helped me raze our statues. SHE brought a bitter, eternal winter to Home. SHE helped me elevate these simpletons to sentience.
+	FightDialogue7: In due time, my reach began to extend beyond Home.
+	FightDialogue8: I, much like Mother Darkness's former son, was on a crusade to bring order to the celestial neighborhood.
+	FightDialogue9: We were not alone, however. A queen was trying to consume the celestial neighborhood to transform it into her reborn kingdom.
+	FightDialogue10: I opposed her, for these planets, these people, were in need of MY guidance, not hers.
+	FightDialogue11: I even came face to fact with The Fighter. I offered him my hand. Together we could take down the queen and fix the celestial neighborhood.
+	FightDialogue12: Being the fool he was, he declined, saying I was just as rotten as she. Insulting.
+	FightDialogue13: Though we did tackle her together, he immediately turned to vanquish me upon her defeat.
+	FightDialogue14: Weak and defeated, I returned home and begged Mother Darkness for more power.
+	FightDialogue15: I haven't seen him in a long time since.
+	FightDialogue16: Now I find myself here, overseeing the exploration of this new world.
+	FightDialogue17: You may defeat me in combat, but it will not impede the progress of the exploration.
+	FightDialogue18: I can keep coming back with more and more power.
+	FightDialogue19: As many times as necessary...
 	FightDialogue20: Ow Im dead
 	KilledPlayer1: Eat it!
 	KilledPlayer2: Suck it, brat!
@@ -313,16 +313,29 @@ TenebrousSlinger: {
 RiftSlime.DisplayName: Rift Slime
 PetrifiedHead.DisplayName: Petrified Head
 PetrifiedLurker.DisplayName: Petrified Lurker
-RiftOculus.DisplayName: Rift Oculus
-RiftObserver.DisplayName: Rift Observer
 
-PetrifiedWisp1: {
-	DisplayName: Petrified Wisp
-	BestiaryEntry1: Every now and then, Living Shadows can escape from wherever theyve been trapped inside, and coalesce into new life.
+RiftOculus: {
+	DisplayName: Rift Oculus
+	BestiaryEntry1:
+		'''
+		A demon eye that has been covered in living shadows.
+		Its stickiness as a result has caused it to be covered in small rocks.
+		'''
 }
 
-PetrifiedWisp2.DisplayName: Petrified Wisp
-PetrifiedWisp3.DisplayName: Petrified Wisp
+RiftObserver: {
+	DisplayName: Rift Observer
+	BestiaryEntry1:
+		'''
+		A wandering eye that has been covered in living shadows.
+		Its stickiness as a result has caused it to be covered in small rocks.
+		'''
+}
+
+PetrifiedWisp: {
+	DisplayName: Petrified Wisp
+	BestiaryEntry1: Amorphous clouds of a potent neurotoxin that causes immense fear in even small amounts. Pure living shadows.
+}
 
 TeslaScuttler: {
 	DisplayName: Tesla Scuttler
@@ -342,10 +355,10 @@ SunscorchedDjinn: {
 	DisplayName: Sunscorched Djinn
 	BestiaryEntry1:
 		'''
-		Djinns traditionally come trapped in a lantern, offering 3 wishes, the whole jig.
-		But these zippy spirits reside not in a lamp, but rather, a teapot. Why? Because these roaming assailants are former peoples of the desert that were enfatuated with tea!
-		Tea with all 4 meals of the day, tea as a ceremonial drink, tea as a medicine!
-		That said, they don't tend to remember much else about their past lives, and choose to spend their time playing games or reveling in the fun of attacking travelers that pass by their domain.
+		The origins of Djinns are hard to pin down most of the time.
+		For these though, it is quite easy.
+		Long-dead peoples of the desert have had their spirits called back from the heavens by the mysterious properties of The Rift, and those spirits inhabit this form.
+		Despite having no recognizable organs, they still love tea the same way they loved it when they were alive, and don't stop trying to drink it before the heat radiating from their head vaporizes it.
 		'''
 }
 

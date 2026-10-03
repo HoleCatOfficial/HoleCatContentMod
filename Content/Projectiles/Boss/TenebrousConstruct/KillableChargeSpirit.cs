@@ -30,6 +30,12 @@ namespace DestroyerTest.Content.Projectiles.Boss.TenebrousConstruct
             NPCID.Sets.ProjectileNPC[Type] = true;
             NPCID.Sets.TrailCacheLength[Type] = 200;
             NPCID.Sets.TrailingMode[Type] = 3;
+
+            var drawModifier = new NPCID.Sets.NPCBestiaryDrawModifiers()
+            {
+                Hide = true
+            };
+            NPCID.Sets.NPCBestiaryDrawOffset.Add(NPC.type, drawModifier);
         }
 
         public override void SetDefaults()

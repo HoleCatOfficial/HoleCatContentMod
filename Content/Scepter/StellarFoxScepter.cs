@@ -66,7 +66,7 @@ namespace DestroyerTest.Content.Scepter
 
         public override void AddRecipes()
         {
-            if (DTCrossMod.RemnantsIsLoaded)
+            if (DTCrossMod.WGIIsLoaded)
             {
                 CreateRecipe()
                     .AddIngredient<ConstitutionArtifact>(3)

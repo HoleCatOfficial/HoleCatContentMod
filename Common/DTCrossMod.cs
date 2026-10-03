@@ -54,6 +54,11 @@ namespace DestroyerTest.Common
         public static bool RemnantsIsLoaded;
         public static Mod RemnantsMod;
 
+        public const string WGIName = "WombatQOL";
+        public static bool WGIIsLoaded;
+        public static Mod WGIMod;
+
+
         public static void LoadMods()
         {
             if (ModLoader.HasMod(CalamityName))
@@ -99,6 +104,12 @@ namespace DestroyerTest.Common
                 RemnantsIsLoaded = ModLoader.TryGetMod(RemnantsName, out Mod remnants);
                 RemnantsMod = remnants;
             }
+
+            if (ModLoader.HasMod(WGIName))
+            {
+                WGIIsLoaded = ModLoader.TryGetMod(WGIName, out Mod wgi);
+                WGIMod = wgi;
+            }
         }
 
         public static void UnloadMods()
@@ -117,6 +128,8 @@ namespace DestroyerTest.Common
             RuptureMod = null;
             RemnantsIsLoaded = false;
             RemnantsMod = null;
+            WGIIsLoaded = false;
+            WGIMod = null;
         }
 
         public static bool StealthStrike(this Projectile proj, Player Owner)

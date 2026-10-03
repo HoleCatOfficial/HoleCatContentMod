@@ -1,21 +1,47 @@
-# TALID MOD
+[h1] TALID [/h1]
 
-The Talid mod is a medium-sized content mod that adds the following:
+The Talid Mod is a content mod that adds a multitude of new items, a damage class, 3 bosses, and 3 minibosses.
+Content exists to see all throughout progression, with WorldGen Structures, a Town NPC, new ores, and more!
 
-### 3 Bosses
-- Constitution: Fought before the Wall of Flesh using a summon bought from the merchant. It is the source of the Stellar Item set.
+(I'm not very good at advertising)
 
-- Nightmare Rose: A stationary conglomeration that stands to be the last stand of the corruption after the Moon Lord is defeated. Summoned using a book titled "The Botanist's Curse".
-- Wyvern Corpse: The rotten body of the Great Wyvern, a once immensely powerful creature of the sky. Summoned using the carcass of a vicious bunny.
+[hr][/hr] 
 
-### 2 Minibosses:
-- Ichor Node: An amplifier of the Crimson's power, and a defender against invaders such as you.
-- Cursed Flame Node: The corrupt counterpart to the Ichor Node.
+[h3] The Ideal Mod Experience [/h3]
 
-### A Hardmode Biome
-- The Rift is an artifical biome obtainable after a solar eclipse happens. It induces suffocation unless you enter with proper gear.
+This segment is much less a mandate on how to play the mod as it is recommendations that I’d make if you want to have the best experience with Talid.
 
-### A custom damage class
-- Scepters are a halfway between Thrower and Ranged. The primary fire varies, but every scepter can be thrown using right click, functioning like a boomerang. The class has armor and accessories, but cannot recieve reforges.
 
-### And a load of items for you to see for yourself! 
+[b] Recommended [/b]
+
+[list]
+[*] Fargo’s Souls: Talid has official compatibility with Eternity and Masochist mode. Eternity and Masochist mode also offer the fullest exploration of Talid’s story. 
+
+The Eternity Mode bossfights can be experienced in Calamity Mod’s Death Mode, but normal enemy reworks and eternity drops will not be included.
+
+[*] Remnants: Talid has support for Remnants both in worldgen and in QoL parity. Support will only get stronger with time.
+
+[*] Calamity: Fables: Talid only adds titlecard support at the moment, but expect to see further cross-mod integration with Fables in the future.
+
+[*] Vanilla Exposure: It is recommended that you play Vanilla Terraria through at least once before approaching Talid. There is content that makes the most sense if you have prior exposure to Vanilla Terraria.
+
+
+[/list]
+
+[b] Not Recommended: [/b]
+
+[list]
+[*] Auto Potion Mods: Any mod that auto-consumes healing potions is not recommended to be played with Talid. Talid has its own mechanic of this nature and the two would interfere. That said, Talid does have a system to deal with Fargo’s implementation of this mechanic, so the two can still be played together.
+
+[*] Zenith Modification Mods: Talid’s ideal experience puts the Zenith at just after moonlord. Talid alters mod recipes to keep the Zenith at this progression point. Not post-Yharon, not post-Son, post-moonlord. Mods that alter the zenith to accommodate other mods recipe changes, such as adding post-moonlord calamity profiles to the zenith, are not recommended for this reason.
+[/list]
+
+[hr][/hr] 
+If youre interested in keeping up with the mod, [url=https://discord.gg/jU92EmBCPQ]join the discord server[/url]!
+
+
+
+[quote=tModLoader DestroyerTest]
+Developed By HoleCat and BreadIGuess[/quote]
+
+

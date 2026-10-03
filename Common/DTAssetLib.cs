@@ -383,6 +383,7 @@ namespace DestroyerTest.Common
             public static SoundStyle StellarFox = new SoundStyle($"{Path}/StellarFoxImpact", 5);
             public static SoundStyle SpiritOfJusticeParry = new SoundStyle($"{Path}/SpiritOfJusticeParry");
             public static SoundStyle Void = new SoundStyle($"{Path}/VoidImpact", 3);
+            public static SoundStyle WindHit = new SoundStyle($"{Path}/WindHit");
 
         }
 

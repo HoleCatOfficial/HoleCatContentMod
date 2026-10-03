@@ -23,7 +23,7 @@ namespace DestroyerTest.Content.Fargos
                     shop.Add<HallowCaller>(DownedBossSystem.downedBlessedNodeCondition);
                 }
 
-                var Deviantt = fargos.TryFind<ModNPC>("Mutant", out ModNPC deviantt);
+                var Deviantt = fargos.TryFind<ModNPC>("Deviantt", out ModNPC deviantt);
                 if (shop.NpcType == deviantt.Type && Deviantt)
                 {
                     shop.Add<RiftenTeapot>(Condition.DownedMechBossAny);

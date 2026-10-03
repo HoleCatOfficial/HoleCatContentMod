@@ -97,7 +97,7 @@ namespace DestroyerTest.Content.MeleeWeapons
 
         public override void AddRecipes()
         {
-            if (DTCrossMod.RemnantsIsLoaded)
+            if (DTCrossMod.WGIIsLoaded)
             {
                 CreateRecipe()
                     .AddIngredient<WyvernCorpseArtifact>(3)

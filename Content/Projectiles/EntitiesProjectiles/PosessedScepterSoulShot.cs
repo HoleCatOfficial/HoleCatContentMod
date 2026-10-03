@@ -10,6 +10,7 @@ using OpusLib;
 using DestroyerTest.Common;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using System.Linq;
 
 namespace DestroyerTest.Content.Projectiles.EntitiesProjectiles
 {
@@ -18,7 +19,9 @@ namespace DestroyerTest.Content.Projectiles.EntitiesProjectiles
         public override string Texture => DTUtils.NoTexture;
 		public override void SetStaticDefaults()
 		{
-		}
+            ProjectileID.Sets.TrailCacheLength[Type] = 40;
+            ProjectileID.Sets.TrailingMode[Type] = 3;
+        }
 
 		public override void SetDefaults()
 		{
@@ -34,82 +37,23 @@ namespace DestroyerTest.Content.Projectiles.EntitiesProjectiles
         {
 			trailOffset -= 0.01f;
 			SpriteBatch spriteBatch = Main.spriteBatch;
-			Opus.StartSpriteBatchForTrails(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-			
-			if (TrailPositions.Count > 1)
-			{
-				List<ColoredVertex> ve = new List<ColoredVertex>();
-				float a = 0;
+			DTTrail.DrawTrail(spriteBatch, DTAssetLib.SoulStreak.Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 12f, ColorLib.PossessedScepterColor, trailOffset);
 
-				for (int i = TrailPositions.Count - 1; i > 0; i--)
-				{
-					float t = 1f - (i / (float)TrailPositions.Count); // fade toward tail
-					Color b = ColorLib.PossessedScepterColor * t;
+            
+			Opus.DrawTextureOnProj(DTAssetLib.PointGlowPreMultiplied, Projectile, DTColorUtils.Pastel(ColorLib.PossessedScepterColor, 0.4f) with { A = 0 }, false, 0f, 0.7f, 0.7f);
 
-					Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
-					Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * 20;
-                    Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * 20;
+            Opus.DrawTextureOnProj(DTAssetLib.Star(3), Projectile, ColorLib.PossessedScepterColor with { A = 0 }, false, 0f, S, S);
 
-					DTUtils.AddStrips(ve, TrailPositions, i, offset, offset2, t, b, trailOffset);
-				}
-
-
-				GraphicsDevice gd = Main.graphics.GraphicsDevice;
-				if (ve.Count >= 3)
-				{
-                    gd.Textures[0] = DTAssetLib.SoulStreak.Value;
-                    gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2); 
-				}
-			}
-			Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-
-			Opus.DrawGlowOnProj(Projectile, ColorLib.PossessedScepterColor, false, 0f);
-			Opus.DrawTextureOnProj(DTAssetLib.PointGlow, Projectile, DTColorUtils.Pastel(ColorLib.PossessedScepterColor, 0.4f), false, 0f, 0.7f, 0.7f);
-			Opus.DrawTextureOnProj(DTAssetLib.Star(2), Projectile, Color.White, false, 0f, S, S);
-            Opus.ReturnToDefaultDrawing(spriteBatch);
+            Opus.DrawTextureOnProj(DTAssetLib.Star(3), Projectile, Color.White with { A = 0 }, false, 0f, S * 0.6f, S * 0.6f);
 			return false;
         }
 
-		public List<Vector2> TrailPositions = new();
-        public List<float> TrailRotations = new();
-        private const int TrailLength = 500;
-        private void CacheTrail()
-        {
-            Vector2 lastPos = TrailPositions.Count > 0 ? TrailPositions[0] : Projectile.Center;
-			Vector2 newPos  = Projectile.Center;
-
-			float dist = Vector2.Distance(lastPos, newPos);
-			float step = 0.5f; // how closely to sample. tweak this!
-
-			if (dist > 0f)
-			{
-				int segments = (int)(dist / step);
-
-				for (int i = 1; i <= segments; i++)
-				{
-					Vector2 pos = Vector2.Lerp(lastPos, newPos, i / (float)segments);
-					TrailPositions.Insert(0, pos);
-					TrailRotations.Insert(0, Projectile.rotation);
-				}
-			}
-			else
-			{
-				TrailPositions.Insert(0, newPos);
-				TrailRotations.Insert(0, Projectile.rotation);
-			}
-
-
-			// Cap trail
-			while (TrailPositions.Count > TrailLength)
-				TrailPositions.RemoveAt(TrailPositions.Count - 1);
-			while (TrailRotations.Count > TrailLength)
-				TrailRotations.RemoveAt(TrailRotations.Count - 1);
-        }
-
+	
+     
 		public float S = 0f;
 		public override void AI() 
 		{
-			CacheTrail();
+			Projectile.ResetExcessTrailPoints();
 			Projectile.rotation = Projectile.velocity.ToRotation();
 			Lighting.AddLight(Projectile.Center, ColorLib.PossessedScepterColor.ToVector3() * 0.25f);
 			S = Opus.Sine(0.75f, 1f);

@@ -5625,3 +5625,23 @@ WretchedWhip: {
 		Strike with the tip to deal more damage.
 		'''
 }
+
+LostWonder: {
+	DisplayName: Lost Wonder
+	Tooltip:
+		'''
+		A dull blade from an earlier time.
+		Shatters enemy defense on hit.
+		Creates homing origin sparks.
+		'''
+}
+
+Calosar: {
+	DisplayName: Calosar
+	Tooltip: ""
+}
+
+HellArmorScrap: {
+	DisplayName: Hell Armor Scrap
+	Tooltip: ""
+}

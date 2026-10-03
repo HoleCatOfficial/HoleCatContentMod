@@ -13,6 +13,8 @@ using Terraria.WorldBuilding;
  
 using DestroyerTest.Content.Particles;
 using BreadLibrary.Core.Graphics.Particles;
+using Terraria.Audio;
+using DestroyerTest.Common;
 
 namespace DestroyerTest.Content.Tiles
 {
@@ -39,7 +41,7 @@ namespace DestroyerTest.Content.Tiles
 			DustType = ModContent.DustType<VesperOreDust>();
 			
             VanillaFallbackOnModDeletion = TileID.Iron;
-            HitSound = SoundID.Tink;
+            HitSound = new SoundStyle($"{DTAssetLib.AudioPath}/Vesper/VesperOreMine", 8) { PitchVariance = 0.1f, MaxInstances = 0 };
             MineResist = 1.5f;
             MinPick = 10;
         }

@@ -88,7 +88,7 @@ namespace DestroyerTest.Content.Entities
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
-                new FlavorTextBestiaryInfoElement("An inanimate creation of unknown origin. Despite being composed of shade matter, it is not related to anything in the shade world."),
+                new FlavorTextBestiaryInfoElement(DTUtils.GetModNPCLocalizationEntry(this, 1)),
                 ModContent.GetInstance<ShadeWorldBestiary>().ModBiomeBestiaryInfoElement,
             });
         }
@@ -164,23 +164,25 @@ namespace DestroyerTest.Content.Entities
             return false;
         }
 
+        private int frameIndex;
         public override void FindFrame(int frameHeight)
         {
             int startFrame = 0;
             int finalFrame = 54;
-            int frameSpeed = 1;
-            NPC.frameCounter += 0.5f;
-            NPC.frameCounter += NPC.velocity.Length() / 10f;
-            if (NPC.frameCounter > frameSpeed)
+            int frameSpeed = 5;
+
+            NPC.frameCounter++;
+            if (NPC.frameCounter >= frameSpeed)
             {
                 NPC.frameCounter = 0;
-                NPC.frame.Y += frameHeight;
-
-                if (NPC.frame.Y > finalFrame * frameHeight)
+                frameIndex++;
+                if (frameIndex > finalFrame)
                 {
-                    NPC.frame.Y = startFrame * frameHeight;
+                    frameIndex = startFrame;
                 }
             }
+
+            NPC.frame.Y = frameIndex * frameHeight;
         }
 
         public float WingXScale = 1f;
@@ -306,6 +308,7 @@ namespace DestroyerTest.Content.Entities
         public float vScale = 0.5f;
 
         public bool ShouldDrawVingette = false;
+        public float BestiaryMaskRotation = 0f;
         public void DrawVingette()
         {
             Main.EntitySpriteDraw(DTAssetLib.Vingette.Value, NPC.Center - Main.screenPosition, null, Color.Black * vOpacity, 0f, DTAssetLib.Vingette.Value.Size() / 2, vScale, SpriteEffects.None);
@@ -313,80 +316,69 @@ namespace DestroyerTest.Content.Entities
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
+            Asset<Texture2D> WingLeft = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/TenebrousConstructWingLeft");
+            Asset<Texture2D> WingRight = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/TenebrousConstructWingRight");
+            Vector2 originLeft = new Vector2(WingLeft.Width(), WingLeft.Height() / 2);
+            Vector2 originRight = new Vector2(0, WingRight.Height() / 2);
+
+            Asset<Texture2D> Mask = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/TenebrousConstructMask");
+            Texture2D Tex = TextureAssets.Npc[Type].Value;
+
+            Rectangle sourceRect = new Rectangle(0, frameIndex * NPC.height, NPC.width, NPC.height);
+
+
             if (NPC.IsABestiaryIconDummy)
             {
-                return true;
+                WingXScale = Opus.Sine(0.05f, 0.8f, 0.08f);
+                BestiaryMaskRotation += 0.01f;
+
+                Main.EntitySpriteDraw(WingLeft.Value, NPC.Center + new Vector2(-30, -30), null, Color.White with { A = 0 } * 0.5f * NPC.Opacity, 0f, originLeft, new Vector2(WingXScale * 2.15f, 2.15f), SpriteEffects.None, 0);
+
+                Main.EntitySpriteDraw(WingLeft.Value, NPC.Center + new Vector2(-30, -30), null, Color.White with { A = 0 } * NPC.Opacity, 0f, originLeft, new Vector2(WingXScale * 2, 2f), SpriteEffects.None, 0);
+
+
+                Main.EntitySpriteDraw(WingRight.Value, NPC.Center + new Vector2(30, -30), null, Color.White with { A = 0 } * 0.5f * NPC.Opacity, 0f, originRight, new Vector2(WingXScale * 2.15f, 2.15f), SpriteEffects.None, 0);
+
+                Main.EntitySpriteDraw(WingRight.Value, NPC.Center + new Vector2(30, -30), null, Color.White with { A = 0 } * NPC.Opacity, 0f, originRight, new Vector2(WingXScale * 2f, 2f), SpriteEffects.None, 0);
+
+                for (int i = 0; i < 4; i++)
+                {
+                    Main.EntitySpriteDraw(Mask.Value, NPC.Center + new Vector2(5, 0).RotatedBy(BestiaryMaskRotation + (MathHelper.PiOver2 * i)), null, ColorLib.TenebrisGradient with { A = 0 } * 0.5f, 0f, Mask.Size() / 2, 1f, SpriteEffects.None, 0);
+                }
+
+                Main.EntitySpriteDraw(Tex, NPC.Center, sourceRect, Color.White, 0f, sourceRect.Size() / 2, 1f, SpriteEffects.None, 0);
+
+                return false;
             }
 
             for (int i = 0; i < NPC.oldPos.Length; i++)
             {
                 float Alpha = MathHelper.Lerp(0.2f, 0f, (float)i / (float)NPC.oldPos.Length);
-                Main.EntitySpriteDraw(TextureAssets.Npc[Type].Value, (NPC.oldPos[i] + new Vector2(NPC.width / 2, (NPC.height / 2) + 2)) - screenPos, NPC.frame, drawColor * Alpha, NPC.oldRot[i], new Vector2(NPC.width / 2, (NPC.frame.Height) / 2), NPC.scale, SpriteEffects.None);
+                Main.EntitySpriteDraw(TextureAssets.Npc[Type].Value, NPC.OldCenter()[i]- screenPos, NPC.frame, drawColor * Alpha, NPC.oldRot[i], new Vector2(NPC.width / 2, (NPC.frame.Height) / 2), NPC.scale, SpriteEffects.None);
             }
 
-
-            Utils.DrawBorderString(spriteBatch, InternalTimer.ToString(), (NPC.Center + new Vector2(0, -40)) - Main.screenPosition, Color.Red, 1f, 0.5f, 0.5f);
-
-            Asset<Texture2D> WingLeft = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/TenebrousConstructWingLeft");
-            Asset<Texture2D> WingRight = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/TenebrousConstructWingRight");
-
+            if (DTConfig.instance.EnableDebugMessages)
+            {
+                Utils.DrawBorderString(spriteBatch, InternalTimer.ToString(), (NPC.Center + new Vector2(0, -40)) - Main.screenPosition, Color.Red, 1f, 0.5f, 0.5f);
+            }
          
 
             // Left wing: origin at RIGHT edge, middle vertically
-            Vector2 originLeft = new Vector2(WingLeft.Width(), WingLeft.Height() / 2);
-            Main.EntitySpriteDraw(
-                WingLeft.Value,
-                NPC.Center - screenPos + new Vector2(-30, -30),
-                null,
-                Color.White with { A = 0 } * 0.5f * NPC.Opacity,
-                0f,
-                originLeft,
-                new Vector2(WingXScale * 2.15f, 2.15f),
-                SpriteEffects.None,
-                0
-            );
+            
+            Main.EntitySpriteDraw(WingLeft.Value, NPC.Center - screenPos + new Vector2(-30, -30), null, Color.White with { A = 0 } * 0.5f * NPC.Opacity, 0f, originLeft, new Vector2(WingXScale * 2.15f, 2.15f), SpriteEffects.None, 0);
 
-            Main.EntitySpriteDraw(
-                WingLeft.Value,
-                NPC.Center - screenPos + new Vector2(-30, -30),
-                null,
-                Color.White with { A = 0 } * NPC.Opacity,
-                0f,
-                originLeft,
-                new Vector2(WingXScale * 2, 2f),
-                SpriteEffects.None,
-                0
-            );
+            Main.EntitySpriteDraw(WingLeft.Value, NPC.Center - screenPos + new Vector2(-30, -30), null, Color.White with { A = 0 } * NPC.Opacity, 0f, originLeft, new Vector2(WingXScale * 2, 2f), SpriteEffects.None, 0);
 
             // Right wing: origin at LEFT edge, middle vertically
-            Vector2 originRight = new Vector2(0, WingRight.Height() / 2);
+          
 
-            Main.EntitySpriteDraw(
-               WingRight.Value,
-               NPC.Center - screenPos + new Vector2(30, -30),
-               null,
-               Color.White with { A = 0 } * 0.5f * NPC.Opacity,
-               0f,
-               originRight,
-               new Vector2(WingXScale * 2.15f, 2.15f),
-               SpriteEffects.None,
-               0
-           );
+            Main.EntitySpriteDraw(WingRight.Value, NPC.Center - screenPos + new Vector2(30, -30), null, Color.White with { A = 0 } * 0.5f * NPC.Opacity, 0f, originRight, new Vector2(WingXScale * 2.15f, 2.15f), SpriteEffects.None, 0);
 
-            Main.EntitySpriteDraw(
-                WingRight.Value,
-                NPC.Center - screenPos + new Vector2(30, -30),
-                null,
-                Color.White with { A = 0 } * NPC.Opacity,
-                0f,
-                originRight,
-                new Vector2(WingXScale * 2f, 2f),
-                SpriteEffects.None,
-                0
-            );
+            Main.EntitySpriteDraw(WingRight.Value, NPC.Center - screenPos + new Vector2(30, -30), null, Color.White with { A = 0 } * NPC.Opacity, 0f, originRight,  new Vector2(WingXScale * 2f, 2f), SpriteEffects.None, 0 );
 
+            Main.EntitySpriteDraw(Tex, NPC.Center - screenPos, sourceRect, Color.White, 0f, sourceRect.Size() / 2, 1f, SpriteEffects.None, 0);
 
-            return true;
+            return false;
         }
 
         public bool HasCalamity => ModLoader.TryGetMod("CalamityMod", out Mod CalamityMod);
@@ -510,7 +502,7 @@ namespace DestroyerTest.Content.Entities
             Vector2 direction = player.Center - NPC.Center;
             direction.Normalize();
 
-            WingXScale = Opus.Sine(0f, 0.8f, 0.08f);
+            WingXScale = Opus.Sine(0.05f, 0.8f, 0.08f);
 
             ControlDialogue();
 
@@ -1075,6 +1067,10 @@ namespace DestroyerTest.Content.Entities
         public static bool Active => Main.npc.Any(n => n.active && n.type == ModContent.NPCType<TenebrousConstruct>());
         public static NPC Subject => Main.npc.First(n => n.active && n.type == ModContent.NPCType<TenebrousConstruct>());
         float Opacity;
+        int ScrollX = 0;
+        int ScrollY = 0;
+
+
         void IDrawPixelated.DrawPixelated(SpriteBatch spriteBatch)
         {
 
@@ -1089,6 +1085,8 @@ namespace DestroyerTest.Content.Entities
                 Opacity -= 0.05f;
             }
 
+            ScrollX += 4;
+            ScrollY += 2;
 
             var Cap = spriteBatch.Capture();
             Cap.TransformMatrix = PixelationSystem.PixelationMatrix;
@@ -1096,7 +1094,33 @@ namespace DestroyerTest.Content.Entities
             spriteBatch.End();
             spriteBatch.Begin(Cap);
 
+            var Cap2 = spriteBatch.Capture();
+
             spriteBatch.Draw(T, Projectile.Center - Main.screenPosition, null, ColorLib.TenebrisGradient * Opacity, 0f, T.Size() / 2, new Vector2(200f, 0.8f), SpriteEffects.None, 0f);
+
+
+            spriteBatch.End();
+
+            Cap2.SamplerState = SamplerState.PointWrap;
+            Cap2.BlendState = BlendState.NonPremultiplied;
+
+            spriteBatch.Begin(Cap2);
+
+            var Cap3 = spriteBatch.Capture();
+
+            Main.EntitySpriteDraw(DTAssetLib.TilableNoise(11).Value, Projectile.Center - Main.screenPosition, new Rectangle((int)(ScrollX * -1.5f), (int)(ScrollY * -0.5f), Main.screenWidth, Main.screenHeight), Color.Black, 0f, (DTAssetLib.TilableNoise(10).Value.Size() / 2) + new Vector2(30, 0), 6f, SpriteEffects.None, 0f);
+            Main.EntitySpriteDraw(DTAssetLib.TilableNoise(11).Value, Projectile.Center - Main.screenPosition, new Rectangle((int)(ScrollX * -1.5f), (int)(ScrollY * -0.5f), Main.screenWidth, Main.screenHeight), Color.Black, 0f, (DTAssetLib.TilableNoise(10).Value.Size() / 2) + new Vector2(30, 0), 6f, SpriteEffects.None, 0f);
+            Main.EntitySpriteDraw(DTAssetLib.TilableNoise(11).Value, Projectile.Center - Main.screenPosition, new Rectangle((int)(ScrollX * -1f), (int)(ScrollY * 0.5f), Main.screenWidth, Main.screenHeight), Color.Black * 0.8f, 0f, (DTAssetLib.TilableNoise(10).Value.Size() / 2) + new Vector2(30, 0), 6f, SpriteEffects.None, 0f);
+
+            spriteBatch.End();
+
+            Cap3.SamplerState = SamplerState.PointWrap;
+            Cap3.BlendState = BlendState.AlphaBlend;
+
+            spriteBatch.Begin(Cap3);
+
+
+            Main.EntitySpriteDraw(DTAssetLib.TilableNoise(4).Value, Projectile.Center - Main.screenPosition, new Rectangle(ScrollX, ScrollY, Main.screenWidth, Main.screenHeight), ColorLib.TenebrisGradient with { A = 0 } * 0.5f, 0f, (DTAssetLib.TilableNoise(10).Value.Size() / 2) + new Vector2(30, 0), 6f, SpriteEffects.None, 0f);
 
             spriteBatch.ResetToDefault();
 

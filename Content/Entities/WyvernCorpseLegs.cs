@@ -44,6 +44,7 @@ namespace DestroyerTest.Content.Entities
             {
                 Hide = true
             };
+            NPCID.Sets.NPCBestiaryDrawOffset.Add(NPC.type, value);
 
             immunities();
             Main.npcFrameCount[Type] = 6;

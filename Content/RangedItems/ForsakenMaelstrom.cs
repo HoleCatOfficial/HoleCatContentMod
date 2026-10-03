@@ -58,7 +58,7 @@ namespace DestroyerTest.Content.RangedItems
 
         public override void AddRecipes()
         {
-            if (DTCrossMod.RemnantsIsLoaded)
+            if (DTCrossMod.WGIIsLoaded)
             {
                 CreateRecipe()
                     .AddIngredient<NightmareRoseArtifact>(3)

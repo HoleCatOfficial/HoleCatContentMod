@@ -100,9 +100,8 @@ namespace DestroyerTest.Content.Entities
             NPCID.Sets.TrailingMode[Type] = 3;
             NPCID.Sets.MPAllowedEnemies[Type] = true;
             var drawModifier = new NPCID.Sets.NPCBestiaryDrawModifiers()
-            { // Influences how the NPC looks in the Bestiary
-                CustomTexturePath = "DestroyerTest/Content/Entities/NightmareRoseBossBestiary", // If the NPC is multiple parts like a worm, a custom texture for the Bestiary is encouraged.
-                Position = Vector2.Zero,
+            { 
+                Position = new Vector2(0, 190),
             };
             NPCID.Sets.NPCBestiaryDrawOffset.Add(NPC.type, drawModifier);
             Main.npcFrameCount[NPC.type] = 12;
@@ -597,13 +596,11 @@ namespace DestroyerTest.Content.Entities
             ParticleEngine.ShaderParticles.Add(shine);
         }
 
+        int BestiaryTime = 0;
+        float BestiaryMaskOpacity = 0f;
+        float IdriOpacity = 0f;
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            if (NPC.IsABestiaryIconDummy)
-            {
-                return true;
-            }
-            
             Texture2D Tex()
             {
                 if (DestroyerTestMod.MasochistIsActive)
@@ -615,6 +612,63 @@ namespace DestroyerTest.Content.Entities
                     return ModContent.Request<Texture2D>(Texture).Value;
                 }
             }
+
+            Texture2D MaskTex = ModContent.Request<Texture2D>(DTAssetLib.ExtrasPath + "/NightmareRoseBossMask").Value;
+            Texture2D IdriTex = ModContent.Request<Texture2D>(DTAssetLib.ExtrasPath + "/IdriBestiary").Value;
+
+            Rectangle sourceRect = new Rectangle(
+            0,
+            frameIndex * NPC.height,
+            NPC.width,
+            NPC.height
+            );
+
+            if (NPC.IsABestiaryIconDummy)
+            {
+                BestiaryTime++;
+
+                if (BestiaryTime < 120)
+                {
+
+                }
+                if (BestiaryTime > 120 && BestiaryTime < 240)
+                {
+                    BestiaryMaskOpacity += 1f / 120f;
+                }
+                if (BestiaryTime > 240 && BestiaryTime < 360)
+                {
+                    IdriOpacity += 1f / 120f;
+                }
+                if (BestiaryTime > 360 && BestiaryTime < 480)
+                {
+                   
+                }
+                if (BestiaryTime > 480 && BestiaryTime < 600)
+                {
+                    IdriOpacity -= 1f / 120f;
+                }
+                if (BestiaryTime > 600 && BestiaryTime < 720)
+                {
+                    BestiaryMaskOpacity -= 1f / 120f;
+                }
+                if (BestiaryTime > 720)
+                {
+                    BestiaryTime = 0;
+                }
+
+                Main.EntitySpriteDraw(Tex(), NPC.Center, sourceRect, Color.White, 0, sourceRect.Size() / 2, 1f, SpriteEffects.None, 0);
+
+                if (!DestroyerTestMod.MasochistIsActive)
+                {
+                    Main.EntitySpriteDraw(MaskTex, NPC.Center, sourceRect, Color.White * BestiaryMaskOpacity, 0, sourceRect.Size() / 2, 1f, SpriteEffects.None, 0);
+                    Main.EntitySpriteDraw(IdriTex, NPC.Center, null, Color.White * IdriOpacity, 0, IdriTex.Size() / 2, 1f, SpriteEffects.None, 0);
+                }
+
+
+                return false;
+            }
+            
+           
 
             Texture2D GlowTex()
             {
@@ -631,12 +685,7 @@ namespace DestroyerTest.Content.Entities
             
             
 
-            Rectangle sourceRect = new Rectangle(
-            0,
-            frameIndex * NPC.height,
-            NPC.width,
-            NPC.height
-            );
+            
 
             
 
@@ -646,11 +695,11 @@ namespace DestroyerTest.Content.Entities
 
                 if (!DestroyerTestMod.MasochistIsActive)
                 {
-                    Main.EntitySpriteDraw(DTAssetLib.CorruptSigil.Value, NPC.Center - Main.screenPosition, null, ColorLib.CursedFlames, 0f, DTAssetLib.CorruptSigil.Value.Size() / 2, Opus.Sine(1.7f, 2f), SpriteEffects.None, 0f);
+                    Main.EntitySpriteDraw(DTAssetLib.CorruptSigil.Value, NPC.Center - screenPos, null, ColorLib.CursedFlames, 0f, DTAssetLib.CorruptSigil.Value.Size() / 2, Opus.Sine(1.7f, 2f), SpriteEffects.None, 0f);
                 }
                 else
                 {
-                    Main.EntitySpriteDraw(DTAssetLib.ShadeSigil.Value, NPC.Center - Main.screenPosition, null, ColorLib.TenebrisGradient, 0f, DTAssetLib.ShadeSigil.Value.Size() / 2, Opus.Sine(0.7f, 1f), SpriteEffects.None, 0f);
+                    Main.EntitySpriteDraw(DTAssetLib.ShadeSigil.Value, NPC.Center - screenPos, null, ColorLib.TenebrisGradient, 0f, DTAssetLib.ShadeSigil.Value.Size() / 2, Opus.Sine(0.7f, 1f), SpriteEffects.None, 0f);
                 }
                 //Opus.DrawNPCShadowsRotating(NPC, NPC.frame, 6, ColorLib.CursedFlames, 0.2f);
                 Opus.ReturnToDefaultDrawing(spriteBatch);
@@ -658,13 +707,13 @@ namespace DestroyerTest.Content.Entities
 
             if (SecretSeed())
             {
-                Main.EntitySpriteDraw(TextureAssets.Npc[NPC.type].Value, NPC.Center - Main.screenPosition, sourceRect, Main.DiscoColor, 180, sourceRect.Size() / 2, 1f, SpriteEffects.None, 0);
+                Main.EntitySpriteDraw(TextureAssets.Npc[NPC.type].Value, NPC.Center - screenPos, sourceRect, Main.DiscoColor, 180, sourceRect.Size() / 2, 1f, SpriteEffects.None, 0);
             }
             else
             {
-                Main.EntitySpriteDraw(Tex(), NPC.Center - Main.screenPosition, sourceRect, drawColor, 0, sourceRect.Size() / 2, 1f, SpriteEffects.None, 0);
+                Main.EntitySpriteDraw(Tex(), NPC.Center - screenPos, sourceRect, drawColor, 0, sourceRect.Size() / 2, 1f, SpriteEffects.None, 0);
 
-                Main.EntitySpriteDraw(GlowTex(), NPC.Center - Main.screenPosition, sourceRect, Color.White, 0, sourceRect.Size() / 2, 1f, SpriteEffects.None, 0);
+                Main.EntitySpriteDraw(GlowTex(), NPC.Center - screenPos, sourceRect, Color.White, 0, sourceRect.Size() / 2, 1f, SpriteEffects.None, 0);
             }
 
             return false;

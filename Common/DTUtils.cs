@@ -251,7 +251,7 @@ namespace DestroyerTest.Common
 
         public static List<int> RiftEnemies = new List<int>
         {
-            ModContent.NPCType<PetrifiedWisp3>(),
+            ModContent.NPCType<PetrifiedWisp>(),
             ModContent.NPCType<PetrifiedHead>(),  
             ModContent.NPCType<RiftDiggerHead>(),  
         };
@@ -575,7 +575,7 @@ namespace DestroyerTest.Common
 
         public static List<int> RiftSurfaceEnemies = new List<int>
         {
-            ModContent.NPCType<PetrifiedWisp1>(),
+            ModContent.NPCType<PetrifiedWisp>(),
             ModContent.NPCType<RiftDiggerHead>(),
             ModContent.NPCType<RiftSlime>(),
             ModContent.NPCType<PetrifiedLurker>(),
