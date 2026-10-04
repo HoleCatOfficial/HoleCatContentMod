@@ -471,3 +471,8 @@ WretchedWhipSpeedBoost: {
 	DisplayName: Malign
 	Description: ""
 }
+
+Brute: {
+	DisplayName: Brute
+	Description: True Melee scale and damage increased.
+}

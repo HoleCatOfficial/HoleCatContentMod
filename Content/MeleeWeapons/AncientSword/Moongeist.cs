@@ -19,7 +19,7 @@ using Terraria.ModLoader;
 namespace DestroyerTest.Content.MeleeWeapons.AncientSword
 {
     [AutoloadGlowmask]
-    public class Calosar : ModItem
+    public class Moongeist : ModItem
     {
         public override void SetStaticDefaults()
         {
@@ -27,8 +27,8 @@ namespace DestroyerTest.Content.MeleeWeapons.AncientSword
         }
         public override void SetDefaults()
         {
-            Item.width = 94;
-            Item.height = 100;
+            Item.width = 102;
+            Item.height = 110;
 
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.useTime = 20;
@@ -37,13 +37,13 @@ namespace DestroyerTest.Content.MeleeWeapons.AncientSword
             Item.useTurn = true;
 
             Item.DamageType = ModContent.GetInstance<DTTrueMeleeClass>();
-            Item.damage = 400;
+            Item.damage = 580;
             Item.knockBack = 6;
             Item.crit = 4;
 
             Item.value = Item.buyPrice(gold: 1);
             Item.rare = ItemRarityID.Orange;
-            Item.shoot = ModContent.ProjectileType<CalosarSwing>();
+            Item.shoot = ModContent.ProjectileType<MoongeistSwing>();
             Item.noUseGraphic = true;
             Item.channel = true;
         }
@@ -60,11 +60,11 @@ namespace DestroyerTest.Content.MeleeWeapons.AncientSword
 
         public override void AddRecipes()
         {
-           
+
             CreateRecipe()
-                .AddIngredient<Lifeblade>()
-                .AddIngredient<HellArmorScrap>(14)
-                .AddTile(TileID.MythrilAnvil)
+                .AddIngredient<Calosar>()
+                .AddIngredient(ItemID.LunarBar, 14)
+                .AddTile(TileID.LunarCraftingStation)
                 .Register();
 
         }

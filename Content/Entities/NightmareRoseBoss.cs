@@ -128,26 +128,26 @@ namespace DestroyerTest.Content.Entities
             NPC.aiStyle = -1;
             NPC.damage = 0;
             NPC.lifeMax = 342000;
-            NPC.defense = 25;
+            NPC.defense = 50;
             if (!DestroyerTestMod.EternityIsActive && !DestroyerTestMod.DeathIsActive)
             {
                 NPC.lifeMax = 342000;
-                NPC.defense = 25;
+                NPC.defense = 50;
             }
             if ((DestroyerTestMod.EternityIsActive || DestroyerTestMod.DeathIsActive) && !DestroyerTestMod.MasochistIsActive)
             {
                 NPC.lifeMax = 420000;
-                NPC.defense = 30;
+                NPC.defense = 60;
             }
             if (DestroyerTestMod.MasochistIsActive)
             {
                 NPC.lifeMax = 700000;
-                NPC.defense = 35;
+                NPC.defense = 70;
             }
             if (DTUtils.CalamityBossRushActive())
             {
                 NPC.lifeMax = 1000000;
-                NPC.defense = 60;
+                NPC.defense = 120;
             }
 
             NPC.HitSound = SoundID.DD2_MonkStaffGroundImpact;

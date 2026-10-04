@@ -19,7 +19,7 @@ using Terraria.ModLoader;
 namespace DestroyerTest.Content.MeleeWeapons.AncientSword
 {
     [AutoloadGlowmask]
-    public class Calosar : ModItem
+    public class Tibel : ModItem
     {
         public override void SetStaticDefaults()
         {
@@ -27,8 +27,8 @@ namespace DestroyerTest.Content.MeleeWeapons.AncientSword
         }
         public override void SetDefaults()
         {
-            Item.width = 94;
-            Item.height = 100;
+            Item.width = 128;
+            Item.height = 128;
 
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.useTime = 20;
@@ -37,13 +37,19 @@ namespace DestroyerTest.Content.MeleeWeapons.AncientSword
             Item.useTurn = true;
 
             Item.DamageType = ModContent.GetInstance<DTTrueMeleeClass>();
-            Item.damage = 400;
+            Item.damage = 1000;
             Item.knockBack = 6;
             Item.crit = 4;
 
             Item.value = Item.buyPrice(gold: 1);
-            Item.rare = ItemRarityID.Orange;
-            Item.shoot = ModContent.ProjectileType<CalosarSwing>();
+            if (DTCrossMod.CallOfVoidIsLoaded)
+            {
+                if (DTCrossMod.CallOfVoidMod.TryFind("VoidPurple", out ModRarity voidPurple))
+                {
+                    Item.rare = voidPurple.Type;
+                }
+            }
+            Item.shoot = ModContent.ProjectileType<TibelSwing>();
             Item.noUseGraphic = true;
             Item.channel = true;
         }
@@ -60,12 +66,18 @@ namespace DestroyerTest.Content.MeleeWeapons.AncientSword
 
         public override void AddRecipes()
         {
-           
-            CreateRecipe()
-                .AddIngredient<Lifeblade>()
-                .AddIngredient<HellArmorScrap>(14)
-                .AddTile(TileID.MythrilAnvil)
-                .Register();
+            if (DTCrossMod.CallOfVoidIsLoaded)
+            {
+                if (DTCrossMod.CallOfVoidMod.TryFind("VoidBar", out ModItem VoidBar) && DTCrossMod.CallOfVoidMod.TryFind("StarlessNight", out ModItem StarlessNight) && DTCrossMod.CallOfVoidMod.TryFind("VoidWellTile", out ModTile voidWell))
+                {
+                    CreateRecipe()
+                        .AddIngredient<Moongeist>()
+                        .AddIngredient(StarlessNight.Type, 1)
+                        .AddIngredient(VoidBar.Type, 6)
+                        .AddTile(voidWell.Type)
+                        .Register();
+                }
+            }
 
         }
     }

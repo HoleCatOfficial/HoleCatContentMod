@@ -4608,9 +4608,11 @@ ShimmeringGauntlet: {
 	DisplayName: Shimmering Gauntlet
 	Tooltip:
 		'''
+		Enables autoswing for melee weapons.
 		Melee hits inflict Shimmering Flames.
-		19% increased melee scale.
-		22% increased melee damage.
+		19% increased Melee scale.
+		22% increased Melee damage.
+		9% increased True Melee damage.
 		'''
 }
 
@@ -5631,17 +5633,66 @@ LostWonder: {
 	Tooltip:
 		'''
 		A dull blade from an earlier time.
-		Shatters enemy defense on hit.
-		Creates homing origin sparks.
+		Shatters enemy defense and creates homing origin sparks on hit.
 		'''
 }
 
 Calosar: {
 	DisplayName: Calosar
-	Tooltip: ""
+	Tooltip:
+		'''
+		Forged from the scraps of the molten legion.
+		Inflicts hellfire from all projectiles.
+		Shatters enemy defense on hit.
+		'''
 }
 
 HellArmorScrap: {
 	DisplayName: Hell Armor Scrap
 	Tooltip: ""
+}
+
+Lifeblade: {
+	DisplayName: Lifeblade
+	Tooltip:
+		'''
+		Inundated with the vital energy coursing through the jungle.
+		Hits create homing sparks that have a 1 in 6 chance to heal for 5% of damage dealt and shatter enemy defense.
+		'''
+}
+
+BrutePotion: {
+	DisplayName: Brute Potion
+	Tooltip: Increases True Melee scale and Damage.
+}
+
+Moongeist: {
+	DisplayName: Moongeist
+	Tooltip: 
+	'''
+	Hits call 4 lunar flares down onto the enemy and shatter their defense.
+	Shatters enemy defense on hit.
+	'''
+}
+
+Tibel: {
+	DisplayName: Tibel
+	Tooltip:
+	'''
+	Hits inflict Void Touched, release homng stars, and shatter enemy defense.
+	A spray of 5 stars is released between swings.
+
+	'''
+}
+
+VoidGauntlet: {
+	DisplayName: Void Gauntlet
+	Tooltip:
+	'''
+	Enables autoswing for melee weapons.
+	Melee attacks inflict Void Touch with a maximum stack of 100.
+	22% increased Melee Scale.
+	27% increased Melee damage.
+	17% increased True Melee damage.
+	'''
 }

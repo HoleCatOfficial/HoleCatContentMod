@@ -9,17 +9,19 @@ using DestroyerTest.Rarity;
 using GlowmaskHelper.Content;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib.Content.Helpers;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.MeleeWeapons.AncientSword
 {
     [AutoloadGlowmask]
-    public class Calosar : ModItem
+    public class Lifeblade : ModItem
     {
         public override void SetStaticDefaults()
         {
@@ -27,8 +29,8 @@ namespace DestroyerTest.Content.MeleeWeapons.AncientSword
         }
         public override void SetDefaults()
         {
-            Item.width = 94;
-            Item.height = 100;
+            Item.width = 84;
+            Item.height = 84;
 
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.useTime = 20;
@@ -37,13 +39,13 @@ namespace DestroyerTest.Content.MeleeWeapons.AncientSword
             Item.useTurn = true;
 
             Item.DamageType = ModContent.GetInstance<DTTrueMeleeClass>();
-            Item.damage = 400;
+            Item.damage = 370;
             Item.knockBack = 6;
             Item.crit = 4;
 
             Item.value = Item.buyPrice(gold: 1);
-            Item.rare = ItemRarityID.Orange;
-            Item.shoot = ModContent.ProjectileType<CalosarSwing>();
+            Item.rare = ModContent.RarityType<VesperRarity>();
+            Item.shoot = ModContent.ProjectileType<LifebladeSwing>();
             Item.noUseGraphic = true;
             Item.channel = true;
         }
@@ -60,13 +62,32 @@ namespace DestroyerTest.Content.MeleeWeapons.AncientSword
 
         public override void AddRecipes()
         {
-           
+            //Might + Sight
             CreateRecipe()
-                .AddIngredient<Lifeblade>()
-                .AddIngredient<HellArmorScrap>(14)
+                .AddIngredient<LostWonder>()
+                .AddIngredient(ItemID.LifeFruit, 4)
+                .AddIngredient(ItemID.SoulofMight, 2)
+                .AddIngredient(ItemID.SoulofSight, 2)
                 .AddTile(TileID.MythrilAnvil)
                 .Register();
 
+            //Might + Fright
+            CreateRecipe()
+                .AddIngredient<LostWonder>()
+                .AddIngredient(ItemID.LifeFruit, 4)
+                .AddIngredient(ItemID.SoulofMight, 2)
+                .AddIngredient(ItemID.SoulofFright, 2)
+                .AddTile(TileID.MythrilAnvil)
+                .Register();
+
+            //Fright + Sight
+            CreateRecipe()
+                .AddIngredient<LostWonder>()
+                .AddIngredient(ItemID.LifeFruit, 4)
+                .AddIngredient(ItemID.SoulofFright, 2)
+                .AddIngredient(ItemID.SoulofSight, 2)
+                .AddTile(TileID.MythrilAnvil)
+                .Register();
         }
     }
 }

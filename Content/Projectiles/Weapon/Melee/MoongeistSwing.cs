@@ -24,56 +24,63 @@ using Terraria.ModLoader;
 namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 {
 
-    public class CalosarSwing : BaseBroadswordProjectile
+    public class MoongeistSwing : BaseBroadswordProjectile
     {
 
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Projectile.width = 94;
-            Projectile.height = 100;
+            Projectile.width = 102;
+            Projectile.height = 110;
             UsesDefaultSweepFX = true;
-            SweepScale = 1.9f;
-            SweepColor = Color.IndianRed;
-            SweepHighlightColor = Color.OrangeRed;
+            SweepScale = 2f;
+            SweepColor = Color.Aquamarine;
+            SweepHighlightColor = Color.White;
             WaitTimeMultiplier = 1f;
-            SwingSpeed = 0.2f;
-            Projectile.ArmorPenetration = 50;
+            SwingSpeed = 0.3f;
+            Projectile.ArmorPenetration = 90;
 
-            Glowmask = ModContent.Request<Texture2D>($"{Texture}");
+            ScaleMult = 1.5f;
+
+            Glowmask = ModContent.Request<Texture2D>($"{Texture}_Glow");
         }
 
-        public override SoundStyle Swing => DTAssetLib.SwordSounds.RuneSong with { Pitch = LastSwing == -1 ? -1f : -0.7f, PitchVariance = 0.1f };
+        public override SoundStyle Swing => DTAssetLib.SwordSounds.MagicSwing with { Pitch = LastSwing == -1 ? -0.3f : 0f, PitchVariance = 0.1f, MaxInstances = 0 };
 
         public override void HitNPCEffects(NPC npc, NPC.HitInfo hit, int damageDone)
         {
             npc.AddBuff(BuffID.BrokenArmor, 300);
-            npc.AddBuff(BuffID.OnFire3, 300);
+            
 
             if (DTConfig.instance.ScreenshakeEffects)
             {
                 ScreenShakeSystem.ShakeAt(npc.Center, 7f, 20);
             }
+
             for (int i = 0; i < 12; i++)
             {
                 PixelParticle FX = new();
-                FX.Initialize(npc.Center, npc.Center.DirectionFrom(Owner.Center).RotatedByRandom(0.2f) * (Main.rand.NextFloat(10f, 18f) * Owner.GetTotalAttackSpeed(DamageClass.Melee)), Color.OrangeRed, 2f, 15);
+                FX.Initialize(npc.Center, npc.Center.DirectionFrom(Owner.Center).RotatedByRandom(0.2f) * (Main.rand.NextFloat(10f, 18f) * Owner.GetTotalAttackSpeed(DamageClass.Melee)), Color.Aquamarine, 2f, 15);
                 ParticleEngine.Particles.Add(FX);
 
                 Spark spark = new();
-                spark.PrepareSpark(npc.Center, npc.Center.DirectionFrom(Owner.Center).RotatedByRandom(0.2f) * (Main.rand.NextFloat(20f, 30f) * Owner.GetTotalAttackSpeed(DamageClass.Melee)), npc.Center.DirectionFrom(Owner.Center).ToRotation() + MathHelper.PiOver2, Color.OrangeRed, 0.5f, false, 15, SparkDrawMode.Additive, 4f);
+                spark.PrepareSpark(npc.Center, npc.Center.DirectionFrom(Owner.Center).RotatedByRandom(0.2f) * (Main.rand.NextFloat(20f, 30f) * Owner.GetTotalAttackSpeed(DamageClass.Melee)), npc.Center.DirectionFrom(Owner.Center).ToRotation() + MathHelper.PiOver2, Color.Aquamarine, 0.5f, false, 15, SparkDrawMode.Additive, 4f);
                 ParticleEngine.Particles.Add(spark);
             }
 
-            
 
-            Lighting.AddLight(Projectile.Center, Color.OrangeRed.ToVector3());
-            Lighting.AddLight(npc.Center, Color.OrangeRed.ToVector3());
+            for (int i = 0; i < 4; i++)
+            {
+                Vector2 pos = npc.Center + new Vector2(Main.rand.Next(-200, 200), -800);
+                Projectile.NewProjectile(Projectile.GetSource_FromThis(), pos, pos.DirectionTo(npc.Center) * (8f * Owner.GetTotalAttackSpeed(DamageClass.Melee)), ModContent.ProjectileType<MoongeistFlare>(), Projectile.damage / 10, 2f, Projectile.owner);
+            }
 
-            SoundEngine.PlaySound(DTAssetLib.Impacts.LightMetalHit with { MaxInstances = 0, Pitch = -2.6f, PitchVariance = 0.2f, Volume = 0.05f }, npc.Center);
 
-            SoundEngine.PlaySound(DTAssetLib.ScholarShieldSounds.Hit with { MaxInstances = 0, PitchVariance = 0.4f, Volume = 0.5f }, npc.Center);
-            SoundEngine.PlaySound(DTAssetLib.Impacts.WindHit with { MaxInstances = 0, PitchVariance = 0.4f, Pitch = -0.3f }, npc.Center);
+            Lighting.AddLight(Projectile.Center, Color.Aquamarine.ToVector3());
+            Lighting.AddLight(npc.Center, Color.Aquamarine.ToVector3());
+
+            SoundEngine.PlaySound(DTAssetLib.Impacts.MagicHit with { MaxInstances = 0, PitchVariance = 0.6f, Variants = new(3) }, npc.Center);
+           // SoundEngine.PlaySound(DTAssetLib.Impacts.WindHit with { MaxInstances = 0, PitchVariance = 0.4f, Pitch = -0.3f }, npc.Center);
         }
 
         bool f1 = false;
@@ -84,7 +91,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 SoundEngine.PlaySound(SoundID.Item109 with { Pitch = 0.5f }, Projectile.Center);
                 for (int i = 0; i < 2; i++)
                 {
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), swordTip, SwordLine.GetLineRotation.ToRotationVector2().RotatedByRandom(0.2f) * (Main.rand.NextFloat(20f, 30f) * Owner.GetTotalAttackSpeed(DamageClass.Melee)), ModContent.ProjectileType<CalosarSpark>(), Projectile.damage / 4, 2f, Projectile.owner);
+                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), swordTip, SwordLine.GetLineRotation.ToRotationVector2().RotatedByRandom(0.2f) * (Main.rand.NextFloat(20f, 30f) * Owner.GetTotalAttackSpeed(DamageClass.Melee)), ModContent.ProjectileType<MoongeistBolt>(), Projectile.damage / 12, 2f, Projectile.owner);
                 }
                 f1 = true;
             }
@@ -117,13 +124,13 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             if (CurrentState != State.Wait)
             {
                 f1 = false;
-                Lighting.AddLight(Projectile.Center, Color.OrangeRed.ToVector3() * 0.7f);
+                Lighting.AddLight(Projectile.Center, Color.Aquamarine.ToVector3() * 0.7f);
 
 
 
 
                 PixelParticlePlayer FX = new(Owner);
-                FX.Initialize(swordTip, (Projectile.rotation + (MathHelper.PiOver2 * Projectile.direction)).ToRotationVector2() * 0.3f, Color.OrangeRed, 2f, 30);
+                FX.Initialize(swordTip, (Projectile.rotation + (MathHelper.PiOver2 * Projectile.direction)).ToRotationVector2() * 0.3f, Color.Aquamarine, 2f, 30);
                 ParticleEngine.Particles.Add(FX);
             }
 

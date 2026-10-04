@@ -2,7 +2,7 @@
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Resources;
- 
+
 using Microsoft.Xna.Framework;
 using OpusLib.Content.Particles;
 using System;
@@ -17,7 +17,7 @@ using Terraria.ModLoader;
 namespace DestroyerTest.Content.Equips
 {
     [AutoloadEquip(EquipType.HandsOn)]
-    public class ShimmeringGauntlet : ModItem
+    public class VoidGauntlet : ModItem
     {
         public override void SetDefaults()
         {
@@ -25,15 +25,22 @@ namespace DestroyerTest.Content.Equips
             Item.height = 30;
             Item.maxStack = 1;
             Item.value = 100;
+            if (DTCrossMod.CallOfVoidIsLoaded)
+            {
+                if (DTCrossMod.CallOfVoidMod.TryFind("VoidPurple", out ModRarity voidPurple))
+                {
+                    Item.rare = voidPurple.Type;
+                }
+            }
             Item.accessory = true;
         }
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             player.autoReuseAllWeapons = true;
-            player.GetDamage(DamageClass.Melee) += 0.22f;
-            player.GetDamage<DTTrueMeleeClass>() += 0.09f;
-            if (player.TryGetModPlayer<ShimmeringGauntletPlayer>(out var G))
+            player.GetDamage(DamageClass.Melee) += 0.27f;
+            player.GetDamage<DTTrueMeleeClass>() += 0.17f;
+            if (player.TryGetModPlayer<VoidGauntletPlayer>(out var G))
             {
                 G.Active = true;
             }
@@ -41,15 +48,21 @@ namespace DestroyerTest.Content.Equips
 
         public override void AddRecipes()
         {
-            CreateRecipe()
-                .AddIngredient(ItemID.FireGauntlet)
-                .AddIngredient<ShimmeringShards>(22)
-                .AddTile(TileID.LunarCraftingStation)
-                .Register();
+            if (DTCrossMod.CallOfVoidIsLoaded)
+            {
+                if (DTCrossMod.CallOfVoidMod.TryFind("VoidBar", out ModItem VoidBar) && DTCrossMod.CallOfVoidMod.TryFind("VoidWellTile", out ModTile voidWell))
+                {
+                    CreateRecipe()
+                        .AddIngredient<ShimmeringGauntlet>()
+                        .AddIngredient(VoidBar.Type, 10)
+                        .AddTile(voidWell.Type)
+                        .Register();
+                }
+            }
         }
     }
 
-    public class ShimmeringGauntletPlayer : ModPlayer
+    public class VoidGauntletPlayer : ModPlayer
     {
         public bool Active = false;
 
@@ -62,7 +75,7 @@ namespace DestroyerTest.Content.Equips
         {
             if (Active)
             {
-                scale = 1.19f;
+                scale = 1.22f;
             }
         }
 
@@ -70,17 +83,7 @@ namespace DestroyerTest.Content.Equips
         {
             if (Active)
             {
-                if (Player.HandPosition != null)
-                {
-                    Vector2 Handpos = (Vector2)Player.HandPosition;
-
-                    if (Main.rand.NextBool(5))
-                    {
-                        Fire fire = new Fire();
-                        fire.PrepareFire(Handpos, Vector2.Zero, Main.rand.Next(1, 3), 0.08f, ColorLib.TenebrisGradient * 0.8f, 0.3f, 40, FireDrawMode.Additive, BreadLibrary.Core.Graphics.Pixelation.PixelLayer.AbovePlayer);
-                        ParticleEngine.ShaderParticles.Add(fire);
-                    }
-                }
+               
             }
         }
 
@@ -93,7 +96,7 @@ namespace DestroyerTest.Content.Equips
 
             if (item.DamageType.CountsAsClass(DamageClass.Melee) && Active)
             {
-                ShimmeringFlames.ShimmerBurn(target);
+                DTCrossMod.CallofVoid_AddVoidTouch(target, 120, 1, maxLevel: 100);
             }
         }
 
@@ -106,7 +109,7 @@ namespace DestroyerTest.Content.Equips
 
             if (proj.DamageType.CountsAsClass(DamageClass.Melee) && Active)
             {
-                ShimmeringFlames.ShimmerBurn(target);
+                DTCrossMod.CallofVoid_AddVoidTouch(target, 120, 1, maxLevel: 100);
             }
         }
     }

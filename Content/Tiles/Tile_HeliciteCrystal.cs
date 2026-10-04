@@ -29,8 +29,6 @@ namespace DestroyerTest.Content.Tiles
 			TileID.Sets.BlockMergesWithMergeAllBlock[Type] = true;
 			Main.tileSpelunker[Type] = true;
 			Main.tileOreFinderPriority[Type] = 765;
-			Main.tileShine2[Type] = true;
-			Main.tileShine[Type] = 800;
 			Main.tileMergeDirt[Type] = true;
 			Main.tileSolid[Type] = true;
 			Main.tileLighted[Type] = true;

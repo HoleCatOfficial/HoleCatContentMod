@@ -23,26 +23,26 @@ using Terraria.ModLoader;
 namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 {
 
-    public class LostWonderSwing : BaseBroadswordProjectile
+    public class LifebladeSwing : BaseBroadswordProjectile
     {
 
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Projectile.width = 84;
-            Projectile.height = 84;
+            Projectile.width = 88;
+            Projectile.height = 88;
             UsesDefaultSweepFX = true;
             SweepScale = 1.7f;
-            SweepColor = Color.SteelBlue;
-            SweepHighlightColor = Color.LightSteelBlue;
-            WaitTimeMultiplier = 4f;
+            SweepColor = new Color(219, 157, 64);
+            SweepHighlightColor = new Color(222, 218, 61);
+            WaitTimeMultiplier = 3.2f;
             SwingSpeed = 0.2f;
-            Projectile.ArmorPenetration = 40;
+            Projectile.ArmorPenetration = 46;
 
             Glowmask = ModContent.Request<Texture2D>($"{Texture}_Glow");
         }
 
-        public override SoundStyle Swing => DTAssetLib.SwordSounds.RuneSong with { Pitch = LastSwing == -1 ? -0.3f : 0f, PitchVariance = 0.1f};
+        public override SoundStyle Swing => DTAssetLib.SwordSounds.RuneSong with { Pitch = LastSwing == -1 ? -0.5f : -0.2f, PitchVariance = 0.1f };
 
         public override void HitNPCEffects(NPC npc, NPC.HitInfo hit, int damageDone)
         {
@@ -54,28 +54,28 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             for (int i = 0; i < 12; i++)
             {
                 PixelParticle FX = new();
-                FX.Initialize(npc.Center, npc.Center.DirectionFrom(Owner.Center).RotatedByRandom(0.2f) * (Main.rand.NextFloat(10f, 18f) * Owner.GetTotalAttackSpeed(DamageClass.Melee)), new Color(94, 242, 219), 2f, 15);
+                FX.Initialize(npc.Center, npc.Center.DirectionFrom(Owner.Center).RotatedByRandom(0.2f) * (Main.rand.NextFloat(10f, 18f) * Owner.GetTotalAttackSpeed(DamageClass.Melee)), new Color(219, 157, 64), 2f, 15);
                 ParticleEngine.Particles.Add(FX);
 
                 Spark spark = new();
-                spark.PrepareSpark(npc.Center, npc.Center.DirectionFrom(Owner.Center).RotatedByRandom(0.2f) * (Main.rand.NextFloat(20f, 30f) * Owner.GetTotalAttackSpeed(DamageClass.Melee)), npc.Center.DirectionFrom(Owner.Center).ToRotation() + MathHelper.PiOver2, new Color(94, 242, 219), 0.5f, false, 15, SparkDrawMode.Additive, 4f);
+                spark.PrepareSpark(npc.Center, npc.Center.DirectionFrom(Owner.Center).RotatedByRandom(0.2f) * (Main.rand.NextFloat(20f, 30f) * Owner.GetTotalAttackSpeed(DamageClass.Melee)), npc.Center.DirectionFrom(Owner.Center).ToRotation() + MathHelper.PiOver2, new Color(219, 157, 64), 0.5f, false, 15, SparkDrawMode.Additive, 4f);
                 ParticleEngine.Particles.Add(spark);
             }
 
             for (int i = 0; i < 2; i++)
             {
-                Projectile.NewProjectile(Projectile.GetSource_OnHit(npc), npc.Center, npc.Center.DirectionFrom(Owner.Center).RotatedByRandom(0.2f) * (Main.rand.NextFloat(20f, 30f) * Owner.GetTotalAttackSpeed(DamageClass.Melee)), ModContent.ProjectileType<LostWonderSpark>(), Projectile.damage / 4, 2f, Projectile.owner);
+                Projectile.NewProjectile(Projectile.GetSource_OnHit(npc), npc.Center, npc.Center.DirectionFrom(Owner.Center).RotatedByRandom(0.2f) * (Main.rand.NextFloat(20f, 30f) * Owner.GetTotalAttackSpeed(DamageClass.Melee)), ModContent.ProjectileType<LifebladeSpark>(), Projectile.damage / 4, 2f, Projectile.owner);
             }
 
-            Lighting.AddLight(Projectile.Center, new Color(94, 242, 219).ToVector3());
-            Lighting.AddLight(npc.Center, new Color(94, 242, 219).ToVector3());
+            Lighting.AddLight(Projectile.Center, new Color(219, 157, 64).ToVector3());
+            Lighting.AddLight(npc.Center, new Color(219, 157, 64).ToVector3());
 
             SoundEngine.PlaySound(DTAssetLib.Impacts.LightMetalHit with { MaxInstances = 0, Pitch = -2f, PitchVariance = 0.2f, Volume = 0.05f }, npc.Center);
 
-            SoundEngine.PlaySound(DTAssetLib.Impacts.MetalImpact with { MaxInstances = 0, PitchVariance = 0.4f, Volume = 0.3f }, npc.Center);
-            SoundEngine.PlaySound(DTAssetLib.Impacts.WindHit with { MaxInstances = 0, PitchVariance = 0.4f }, npc.Center);
+            SoundEngine.PlaySound(DTAssetLib.Impacts.Malevolence with { MaxInstances = 0, PitchVariance = 0.4f, Volume = 0.3f }, npc.Center);
+            SoundEngine.PlaySound(DTAssetLib.Impacts.WindHit with { MaxInstances = 0, Pitch = -0.2f, PitchVariance = 0.4f }, npc.Center);
         }
-  
+
         public override void DrawUnderBlade()
         {
 
@@ -100,14 +100,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
             if (CurrentState != State.Wait)
             {
-                Lighting.AddLight(Projectile.Center, new Color(94, 242, 219).ToVector3() * 0.7f);
+                Lighting.AddLight(Projectile.Center, new Color(219, 157, 64).ToVector3() * 0.7f);
 
                 PixelParticlePlayer FX = new(Owner);
-                FX.Initialize(swordTip, (Projectile.rotation + (MathHelper.PiOver2 * Projectile.direction)).ToRotationVector2() * 0.3f, new Color(94, 242, 219), 2f, 30);
+                FX.Initialize(swordTip, (Projectile.rotation + (MathHelper.PiOver2 * Projectile.direction)).ToRotationVector2() * 0.3f, new Color(219, 157, 64), 2f, 30);
                 ParticleEngine.Particles.Add(FX);
             }
-
-
 
             //SparkEdge(Main.player[Projectile.owner], 1f, ColorLib.Wretched3);
         }

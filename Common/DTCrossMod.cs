@@ -21,6 +21,7 @@ using DestroyerTest.Content.Scepter;
 using DestroyerTest.Content.Equips.ScepterAccessories;
 using Terraria.DataStructures;
 using DestroyerTest.Content.RiftBiomeSpread;
+using System.Reflection;
 
 namespace DestroyerTest.Common
 {
@@ -57,6 +58,10 @@ namespace DestroyerTest.Common
         public const string WGIName = "WombatQOL";
         public static bool WGIIsLoaded;
         public static Mod WGIMod;
+
+        public const string CallOfVoidName = "CalamityEntropy";
+        public static bool CallOfVoidIsLoaded;
+        public static Mod CallOfVoidMod;
 
 
         public static void LoadMods()
@@ -110,6 +115,13 @@ namespace DestroyerTest.Common
                 WGIIsLoaded = ModLoader.TryGetMod(WGIName, out Mod wgi);
                 WGIMod = wgi;
             }
+
+
+            if (ModLoader.HasMod(CallOfVoidName))
+            {
+                CallOfVoidIsLoaded = ModLoader.TryGetMod(CallOfVoidName, out Mod callOfVoid);
+                CallOfVoidMod = callOfVoid;
+            }
         }
 
         public static void UnloadMods()
@@ -130,6 +142,8 @@ namespace DestroyerTest.Common
             RemnantsMod = null;
             WGIIsLoaded = false;
             WGIMod = null;
+            CallOfVoidIsLoaded = false;
+            CallOfVoidMod = null;
         }
 
         public static bool StealthStrike(this Projectile proj, Player Owner)
@@ -154,6 +168,24 @@ namespace DestroyerTest.Common
                 }
             }
             return false;
+        }
+
+        public static bool CallofVoid_AddVoidTouch(NPC NPC, int time, float level, int maxTime = 600, int maxLevel = 10)
+        {
+            if (CallOfVoidIsLoaded)
+            {
+                if (CallOfVoidMod.TryFind("EGlobalNPC", out GlobalNPC eglobal))
+                {
+                    MethodInfo voidtouch = eglobal.GetType().GetMethod("AddVoidTouch", BindingFlags.Public | BindingFlags.Static, null, new Type[] { typeof(NPC), typeof(int), typeof(float), typeof(int), typeof(int) }, null);
+                    object[] Params = new object[] { NPC, time, level, maxTime, maxLevel };
+
+                    bool result = (bool)voidtouch.Invoke(null, Params);
+
+                    return result;
+                }
+            }
+            return false;
+
         }
 
         public static ModItem GetItem(Mod mod, string itemName)
