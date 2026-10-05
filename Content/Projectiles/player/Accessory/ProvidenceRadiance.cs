@@ -71,7 +71,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
             return false;
         }
 
-        public PixelLayer PixelLayer => PixelLayer.AboveTiles;
+        public PixelLayer PixelLayer => PixelLayer.BehindTiles;
 
         void IDrawPixelated.DrawPixelated(SpriteBatch spriteBatch)
         {
@@ -128,21 +128,31 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
            
         public override void AI()
         {
-            Projectile.timeLeft = 60;
-            Projectile.scale = 0.5f;
+            if (!Owner.dead)
+            {
+                Projectile.timeLeft = 60;
+            }
 
-            float spd = Opus.Sine(0.07f, 0.16f, 0.01f);
+
+
+            Projectile.scale = 0.5f * MathHelper.Lerp(1f, 2f, (float)Owner.statLifeMax2 / 400f);
+
+            Projectile.width =(int)(50 * MathHelper.Lerp(1f, 2f, (float)Owner.statLifeMax2 / 400f));
+            Projectile.height =(int)(50 * MathHelper.Lerp(1f, 2f, (float)Owner.statLifeMax2 / 400f));
+
+
+            float spd = Opus.Sine(0.03f, 0.12f, 0.01f);
             Rot += spd;
             Sc = Opus.Sine(0.2f, 0.8f, 0.01f);
 
 
-            Lighting.AddLight(Projectile.Center, Color.DarkGoldenrod.ToVector3());
+            Lighting.AddLight(Projectile.Center, Color.Goldenrod.ToVector3() * 1.5f);
 
             Projectile.Center = Owner.MountedCenter;
 
             ProvidenceSpark spark = new(Owner);
-            spark.PrepareSpark(Projectile.Center, Main.rand.NextVector2Circular(3f, 3f), 0f, Main.rand.NextBool(12) ? Color.DeepPink : Color.Goldenrod, 0.8f, false, 20, SparkDrawMode.Additive, 1.7f);
-            ParticleEngine.BehindProjectiles.Add(spark);
+            spark.PrepareSpark(Projectile.Center, Main.rand.NextVector2Circular(3f, 3f) * MathHelper.Lerp(1f, 2f, (float)Owner.statLifeMax2 / 400f), 0f, Main.rand.NextBool(12) ? Color.DeepPink : Color.Goldenrod, 0.8f, false, 20, SparkDrawMode.Additive, 1.7f * MathHelper.Lerp(1f, 2f, (float)Owner.statLifeMax2 / 400f));
+            ParticleEngine.BehindProjectiles.Add(spark, PixelLayer.BehindTiles);
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)

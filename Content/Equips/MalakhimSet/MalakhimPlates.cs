@@ -66,7 +66,7 @@ namespace DestroyerTest.Content.Equips.MalakhimSet
         {
 			CreateRecipe()
 				.AddIngredient<Vesper>(45)
-                .AddIngredient<WhiteCloth>(10)
+                .AddIngredient(ItemID.Silk, 10)
 				.AddTile(TileID.Anvils)
 				.Register();
         }

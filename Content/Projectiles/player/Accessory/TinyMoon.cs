@@ -72,12 +72,12 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
             
             for (int i = 0; i < Projectile.oldPos.Length; i++)
             {
-                float num = (Projectile.scale * 1.3f) * (Projectile.oldPos.Length - i) / (Projectile.oldPos.Length * 0.8f);
+                float num = (Projectile.scale * 1.3f * Sc) * (Projectile.oldPos.Length - i) / (Projectile.oldPos.Length * 0.8f);
                 Color val4 = Color.MediumPurple with { A = 0 } * (1f - Projectile.alpha) * ((Projectile.oldPos.Length - i) / (float)Projectile.oldPos.Length);
                 Main.EntitySpriteDraw(value, Projectile.OldCenter()[i] - Main.screenPosition, null, val4, 0f, value.Size() / 2f, num, 0, 0f);
             }
 
-            Main.EntitySpriteDraw(Tex.Value, Projectile.Center - Main.screenPosition, null, Color.White, -Rot * 1.5f, Tex.Value.Size() / 2, Projectile.scale * 0.03f, SpriteEffects.None, 0f);
+            Main.EntitySpriteDraw(Tex.Value, Projectile.Center - Main.screenPosition, null, Color.White, -Rot * 1.5f, Tex.Value.Size() / 2, Projectile.scale * 0.03f * Sc, SpriteEffects.None, 0f);
 
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, null, PixelationSystem.PixelationMatrix);
@@ -111,9 +111,15 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
         float Dis = 80f;
         public override void AI()
         {
-            Projectile.timeLeft = 60;
+            if (!Owner.dead)
+            {
+                Projectile.timeLeft = 60;
+            }
 
             Projectile.scale = 1f + Owner.GetAdjustedItemScale(Owner.HeldItem);
+
+            Projectile.width = (int)(70 * Projectile.scale * Sc);
+            Projectile.height = (int)(70 * Projectile.scale * Sc);
 
             float spd = Opus.Sine(0.02f, 0.09f, 0.01f);
             Rot += spd;

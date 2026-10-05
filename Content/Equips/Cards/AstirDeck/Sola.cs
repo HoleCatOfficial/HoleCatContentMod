@@ -59,7 +59,7 @@ namespace DestroyerTest.Content.Equips.Cards.AstirDeck
             if (Active)
             {
                 Player.runAcceleration *= 1.4f;
-                Player.maxRunSpeed *= 1.1f;
+                Player.maxRunSpeed *= 1.5f;
             }
         }
     }

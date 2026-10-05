@@ -373,7 +373,7 @@ namespace DestroyerTest.Content.Particles
             Lifetime--;
 
             position += velocity;
-            position += Player.velocity;
+            position += (Player.velocity);
 
             rotation = velocity.ToRotation();
             velocity *= 0.97f;

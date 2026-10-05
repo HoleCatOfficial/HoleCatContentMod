@@ -241,6 +241,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
 
         public static void RemoveAllHitNPCEffects(Player player)
         {
+            
             ThrownScepter thrownScepter = Main.projectile.First(n => n.active && n.owner == player.whoAmI).ModProjectile as ThrownScepter;
 
             if (!HitNPCEventSubscriptions.TryGetValue(player, out var handlers))

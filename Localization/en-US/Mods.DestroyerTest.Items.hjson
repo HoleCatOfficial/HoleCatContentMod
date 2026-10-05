@@ -5668,31 +5668,31 @@ BrutePotion: {
 
 Moongeist: {
 	DisplayName: Moongeist
-	Tooltip: 
-	'''
-	Hits call 4 lunar flares down onto the enemy and shatter their defense.
-	Shatters enemy defense on hit.
-	'''
+	Tooltip:
+		'''
+		Hits call 4 lunar flares down onto the enemy and shatter their defense.
+		Shatters enemy defense on hit.
+		'''
 }
 
 Tibel: {
 	DisplayName: Tibel
 	Tooltip:
-	'''
-	Hits inflict Void Touched, release homng stars, and shatter enemy defense.
-	A spray of 5 stars is released between swings.
+		'''
+		Hits inflict Void Touched, release homng stars, and shatter enemy defense.
+		A spray of 5 stars is released between swings.
 
-	'''
+		'''
 }
 
 VoidGauntlet: {
 	DisplayName: Void Gauntlet
 	Tooltip:
-	'''
-	Enables autoswing for melee weapons.
-	Melee attacks inflict Void Touch with a maximum stack of 100.
-	22% increased Melee Scale.
-	27% increased Melee damage.
-	17% increased True Melee damage.
-	'''
+		'''
+		Enables autoswing for melee weapons.
+		Melee attacks inflict Void Touch with a maximum stack of 100.
+		22% increased Melee Scale.
+		27% increased Melee damage.
+		17% increased True Melee damage.
+		'''
 }

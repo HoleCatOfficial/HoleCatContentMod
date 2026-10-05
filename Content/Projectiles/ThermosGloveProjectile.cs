@@ -85,6 +85,7 @@ namespace DestroyerTest.Content.Projectiles
             PauseBehavior = PauseBehavior.PauseWithGame
         };
         float P = -1.3f;
+        float V = 0f;
 
         Line Plot;
         Line PrimPlot;
@@ -131,20 +132,23 @@ namespace DestroyerTest.Content.Projectiles
                 }
 
                 P = MathHelper.Lerp(-1.3f, 0.6f, Progress);
+                V = MathHelper.Lerp(0f, 0.5f, Progress);
 
-               
+
 
                 if (!SoundEngine.TryGetActiveSound(LoopSlot, out var activeSound))
                 {
                     var tracker = new ProjectileAudioTracker(Projectile);
                     LoopSlot = SoundEngine.PlaySound(Loop, Projectile.Center, soundInstance => {
                         soundInstance.Position = Projectile.Center;
+                        soundInstance.Volume = V;
+                        soundInstance.Pitch = P;
                         return tracker.IsActiveAndInGame();
                     });
                 }
                 else
                 {
-                    activeSound.Volume = 0.5f;
+                    activeSound.Volume = V;
                     activeSound.Position = Projectile.Center;
                     activeSound.Pitch = P;
                 }
@@ -155,6 +159,7 @@ namespace DestroyerTest.Content.Projectiles
             {
                 Projectile.ai[0]++;
                 Draw = false;
+                V = 0;
 
                 Deactivated = true;
 
