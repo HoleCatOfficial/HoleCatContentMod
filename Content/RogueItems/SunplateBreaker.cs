@@ -43,9 +43,7 @@ namespace DestroyerTest.Content.RogueItems
         public override void AddRecipes()
         {
             CreateRecipe()
-                .AddIngredient(ItemID.IceBlock, 10)
-                .AddIngredient(ItemID.Shiverthorn, 2)
-                .AddIngredient<LifeEcho>(3)
+                .AddIngredient(ItemID.SunplateBlock, 10)
                 .AddTile(TileID.Anvils)
                 .Register();
         }

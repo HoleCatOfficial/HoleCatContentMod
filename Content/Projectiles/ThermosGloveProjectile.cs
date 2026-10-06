@@ -98,7 +98,10 @@ namespace DestroyerTest.Content.Projectiles
         {
             Player Owner = Main.player[Projectile.owner];
 
-          
+            if (Owner.GetBestPickaxe() == null)
+            {
+                Projectile.active = false;
+            }
             
             if (Owner.HeldItem.ModItem is ThermosGlove Glove && Owner.controlUseItem && !Owner.CCed && !Deactivated)
             {

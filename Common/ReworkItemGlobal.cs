@@ -32,6 +32,9 @@ namespace DestroyerTest.Common
             {
                 ItemID.Sets.ShimmerTransformToItem[ItemID.BeeKeeper] = ModContent.ItemType<ScepterOfVespae>();
             }
+
+            ItemID.Sets.ShimmerTransformToItem[ItemID.NaturesGift] = ItemID.JungleRose;
+            ItemID.Sets.ShimmerTransformToItem[ItemID.JungleRose] = ItemID.NaturesGift;
         }
         public override void SetDefaults(Item entity)
         {

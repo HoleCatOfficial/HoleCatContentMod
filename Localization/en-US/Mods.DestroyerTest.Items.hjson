@@ -5484,7 +5484,7 @@ Providence: {
 	Tooltip:
 		'''
 		You are surrounded by mysterious radiance that damages and burns enemies next to you.
-		Damage scales with all damage bonuses.
+		Damage scales with all damage bonuses and radius increases with your maximum life.
 		'''
 }
 

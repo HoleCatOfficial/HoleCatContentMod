@@ -91,6 +91,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
       
 
             Main.EntitySpriteDraw(Tex.Value, Projectile.Center - Main.screenPosition, null, Color.DarkGoldenrod with { A = 0 } * 0.15f, Rot, Tex.Value.Size() / 2, Projectile.scale * Sc, SpriteEffects.None, 0f);
+            Main.EntitySpriteDraw(Tex.Value, Projectile.Center - Main.screenPosition, null, Color.DarkGoldenrod with { A = 0 } * 0.35f, Rot * 0.5f, Tex.Value.Size() / 2, Projectile.scale * 0.8f * Sc, SpriteEffects.None, 0f);
 
             Main.EntitySpriteDraw(Tex.Value, Projectile.Center - Main.screenPosition, null, Color.DarkGoldenrod with { A = 0 } * 0.25f, -Rot * 1.5f, Tex.Value.Size() / 2, Projectile.scale * 0.65f, SpriteEffects.None, 0f);
             Main.EntitySpriteDraw(Tex.Value, Projectile.Center - Main.screenPosition, null, Color.Goldenrod with { A = 0 }, -Rot * 1.5f, Tex.Value.Size() / 2, Projectile.scale * 0.4f, SpriteEffects.None, 0f);
@@ -133,32 +134,35 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
                 Projectile.timeLeft = 60;
             }
 
+            float Maximum = Main.hardMode ? 500f : 400f;
+            float MaxLife = (float)Owner.statLifeMax2;
+            float Progress = MaxLife / Maximum;
 
+            Projectile.scale = 0.5f * MathHelper.Lerp(1f, 2f, Progress);
 
-            Projectile.scale = 0.5f * MathHelper.Lerp(1f, 2f, (float)Owner.statLifeMax2 / 400f);
+            Projectile.width =(int)(50 * MathHelper.Lerp(1f, 2f, Progress));
+            Projectile.height =(int)(50 * MathHelper.Lerp(1f, 2f, Progress));
 
-            Projectile.width =(int)(50 * MathHelper.Lerp(1f, 2f, (float)Owner.statLifeMax2 / 400f));
-            Projectile.height =(int)(50 * MathHelper.Lerp(1f, 2f, (float)Owner.statLifeMax2 / 400f));
-
-
-            float spd = Opus.Sine(0.03f, 0.12f, 0.01f);
+            float CurrentSpeed = Owner.velocity.X;
+            float MaxSpeed = Owner.maxRunSpeed;
+            float spd = MathHelper.Lerp(0.01f, 0.1f, CurrentSpeed / MaxSpeed);
             Rot += spd;
             Sc = Opus.Sine(0.2f, 0.8f, 0.01f);
 
 
-            Lighting.AddLight(Projectile.Center, Color.Goldenrod.ToVector3() * 1.5f);
+            Lighting.AddLight(Projectile.Center, Color.Goldenrod.ToVector3() * MathHelper.Lerp(1.5f, 2.4f, Progress));
 
             Projectile.Center = Owner.MountedCenter;
 
             ProvidenceSpark spark = new(Owner);
-            spark.PrepareSpark(Projectile.Center, Main.rand.NextVector2Circular(3f, 3f) * MathHelper.Lerp(1f, 2f, (float)Owner.statLifeMax2 / 400f), 0f, Main.rand.NextBool(12) ? Color.DeepPink : Color.Goldenrod, 0.8f, false, 20, SparkDrawMode.Additive, 1.7f * MathHelper.Lerp(1f, 2f, (float)Owner.statLifeMax2 / 400f));
+            spark.PrepareSpark(Projectile.Center, Main.rand.NextVector2Circular(3f, 3f) * MathHelper.Lerp(1f, 2f, Progress), 0f, Main.rand.NextBool(12) ? Color.DeepPink : Color.Goldenrod, 0.8f, false, 20, SparkDrawMode.Additive, 1.7f * MathHelper.Lerp(1f, 2f, Progress));
             ParticleEngine.BehindProjectiles.Add(spark, PixelLayer.BehindTiles);
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             SoundEngine.PlaySound(SoundID.LiquidsWaterLava, target.Center);
-            target.AddBuff(BuffID.OnFire, 300);
+            target.AddBuff(Main.hardMode ? BuffID.OnFire3 : BuffID.OnFire, 300);
         }
     }
 }

@@ -19,7 +19,7 @@ namespace DestroyerTest.Content.Equips.Cards.AstirDeck
 	{
         public override void SetStaticDefaults()
         {
-            OpusNPCDropHelper.DropsFromNPC[Type] = new NPCDropData(NPCID.CorruptSlime, ItemDropRule.Common(Type, 20));
+            OpusNPCDropHelper.DropsFromNPC[Type] = new NPCDropData(NPCID.EaterofSouls, ItemDropRule.Common(Type, 20));
         }
         public override void SetDefaults()
 		{

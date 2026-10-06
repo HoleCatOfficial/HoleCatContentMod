@@ -1025,8 +1025,8 @@ namespace DestroyerTest.Common
 
         public static void SetSpecialMeleeStats(this Item item)
         {
-            item.useTime = 30;
-            item.useAnimation = 30;
+            item.useTime = 20;
+            item.useAnimation = 20;
             item.useTurn = true;
         }
 

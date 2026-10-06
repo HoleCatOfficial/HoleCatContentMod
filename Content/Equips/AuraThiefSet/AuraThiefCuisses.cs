@@ -50,7 +50,7 @@ namespace DestroyerTest.Content.Equips.AuraThiefSet
 		public override void AddRecipes() {
 			CreateRecipe()
 				.AddIngredient<LifeEcho>(15)
-                .AddIngredient<BlackCloth>(15)
+                .AddIngredient(ItemID.Silk, 15)
                 .AddIngredient(ItemID.Wood, 10)
 				.AddTile(TileID.Anvils)
 				.Register();

@@ -188,6 +188,7 @@ namespace DestroyerTest.Common.Systems
         }
         public struct DTBossEntries
         {
+
             public static Action<SpriteBatch, Rectangle, Color> ConstitutionPortrait = (SpriteBatch sb, Rectangle rect, Color color) =>
             {
                 Texture2D texture = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/ConstitutionBossChecklist").Value;

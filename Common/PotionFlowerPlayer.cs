@@ -210,5 +210,10 @@ namespace DestroyerTest.Common
                 Player.runAcceleration *= 1.8f;
             }
         }
+
+        public override void UpdateDead()
+        {
+            UseCooldown = (60 * CooldownTime);
+        }
     }
 }

@@ -61,7 +61,6 @@ namespace DestroyerTest.Content.MeleeWeapons
         public override void AddRecipes() {
 			CreateRecipe()
                 .AddIngredient<Goliath>(1)
-                .AddIngredient<LivingDiamond>(14)
                 .AddIngredient(ItemID.SpectreBar, 10)
 				.AddTile(TileID.Anvils)
 				.Register();

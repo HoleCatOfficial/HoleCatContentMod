@@ -1,4 +1,4 @@
 DeadlyBlossomSpawn.DisplayName: "[i:DestroyerTest/DeadlyBlossom] Deadly  Blossom  Spawn"
 ArmorSetBonus.DisplayName: "[i:80] Armor Set Bonus"
 LunarInsigniaModeSwitch.DisplayName: "[i:DestroyerTest/LunarInsignia] Lunar Insignia Mode Switch"
-Constellation.DisplayName: Mods.DestroyerTest.Keybinds.Constellation.DisplayName
+Constellation.DisplayName: "[i:DestroyerTest/ConstellationWeaverScarf] Constellation"
