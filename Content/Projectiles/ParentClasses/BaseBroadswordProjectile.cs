@@ -151,20 +151,17 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         public int NPCHitCooldown = 15;
 
         public bool RightClickDependant { get; set; }
-
+        float AdjScale;
         public override bool PreAI()
         {
-            float AdjScale = Owner.GetAdjustedItemScale(Owner.HeldItem);
+            AdjScale = 1f * Owner.GetAdjustedItemScale(Owner.HeldItem);
             AdjustedScale = AdjScale  * ScaleMult;
             Projectile.scale = AdjustedScale;
             return true;
         }
         public override void AI()
         {
-           
-            //Slower swing speed, longer cooldown.
-            //Swing speed gets slower the lower the number is.
-            HitCooldownGlobal = (int)MathHelper.Lerp(5, 15, SwingSpeed / 1f);
+            HitCooldownGlobal = (int)MathHelper.Lerp(5, 15, SwingSpeed);
 
             AITimer++;
             if (HitCooldown > 0)
@@ -176,8 +173,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             if (ActiveCondition)
             {
                 Owner.SetDummyItemTime(60);
-                
-                
+
                 if (CurrentState == State.Wait)
                 {
                     targetAngle = (Main.MouseWorld - Owner.MountedCenter);
@@ -212,7 +208,6 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
             armPosition.Y += Owner.gfxOffY;
             Projectile.Center = armPosition;
-            //Projectile.scale = 1f * Owner.GetAdjustedItemScale(Owner.HeldItem) * ScaleMult;
 
             Owner.heldProj = Projectile.whoAmI;
         }
@@ -254,8 +249,6 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         public virtual float WaitTimeMultiplier { get; set; } = 1f;
         public void ControlRotation()
         {
-            //float speedFactor = Owner.GetTotalAttackSpeed<DTTrueMeleeClass>();
-            //float t = SwingSpeed * speedFactor;
             float baseT = SwingSpeed;
             float speedFactor = Owner.GetTotalAttackSpeed<DTTrueMeleeClass>();
 
@@ -304,7 +297,6 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
                         if (!SetPos)
                         {
                             Projectile.rotation = UpPoint;
-                            //WaitTimer = (int)((10 * WaitTimeMultiplier) * speedFactor);
                             WaitTimer = (int)((10 * WaitTimeMultiplier) * speedFactor * (Projectile.extraUpdates + 1));
                             SlashStartRotation = UpPoint;
                             SetPos = true;
@@ -472,7 +464,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
             Texture2D texture = TextureAssets.Projectile[Type].Value;
 
-            //i swear to FUCKING GOD.
+            //I swear to FUCKING GOD.
             //dont touch this shit.
             //FUCK ROTATIONS DUDE.
 
@@ -539,9 +531,9 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
             Vector2 start = Owner.MountedCenter;
-            Vector2 end = start + Projectile.rotation.ToRotationVector2() * ((Projectile.Size.Length()) * AdjustedScale);
+            Vector2 end = start + Projectile.rotation.ToRotationVector2() * ((Projectile.Size.Length()) * Projectile.scale);
             float collisionPoint = 0f;
-            return Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), start, end, 25f * Projectile.scale * AdjustedScale, ref collisionPoint);
+            return Collision.CheckAABBvLineCollision(targetHitbox.TopLeft(), targetHitbox.Size(), start, end, 25f * Projectile.scale, ref collisionPoint);
         }
 
         public override bool? CanCutTiles()
@@ -552,8 +544,8 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         public override void CutTiles()
         {
             Vector2 start = Owner.MountedCenter;
-            Vector2 end = start + Projectile.rotation.ToRotationVector2() * (Projectile.Size.Length() * AdjustedScale);
-            Utils.PlotTileLine(start, end, 15 * AdjustedScale, DelegateMethods.CutTiles);
+            Vector2 end = start + Projectile.rotation.ToRotationVector2() * (Projectile.Size.Length() * Projectile.scale);
+            Utils.PlotTileLine(start, end, 15 * Projectile.scale, DelegateMethods.CutTiles);
         }
 
 

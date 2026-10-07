@@ -76,7 +76,7 @@ namespace DestroyerTest.Content.Entities
             NPC.aiStyle = -1;
             NPC.damage = 25;
             NPC.defense = 24;
-            NPC.lifeMax = 60000;
+            NPC.lifeMax = 45000;
             NPC.HitSound = new SoundStyle("DestroyerTest/Assets/Audio/NodeHit");
             NPC.DeathSound = new SoundStyle("DestroyerTest/Assets/Audio/NodeExplode");
             NPC.noGravity = true;

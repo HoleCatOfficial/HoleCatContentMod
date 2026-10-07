@@ -65,7 +65,7 @@ namespace DestroyerTest.Content.Entities
             NPC.aiStyle = -1;
             NPC.damage = 25;
             NPC.defense = 24;
-            NPC.lifeMax = 60000;
+            NPC.lifeMax = 45000;
             NPC.HitSound = new SoundStyle("DestroyerTest/Assets/Audio/NodeHit");
             NPC.DeathSound = new SoundStyle("DestroyerTest/Assets/Audio/NodeExplode");
             NPC.noGravity = true;
@@ -789,15 +789,15 @@ namespace DestroyerTest.Content.Entities
         public void LaserBurst()
         {
             SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/BlessedNodeLasers"), NPC.Center);
-            LaserBurstCol = Opus.RadialSpreadProjectile(ModContent.ProjectileType<BlessedLaser>(), 6, NPC.Center, 80, 1, 0.005f, offset: LaserRotOffset);
+            LaserBurstCol = Opus.RadialSpreadProjectile(ModContent.ProjectileType<BlessedLaser>(), 6, NPC.Center, 50, 1, 0.005f, offset: LaserRotOffset);
 
             if (Main.expertMode && !Main.masterMode)
             {
-                Opus.RingSpreadProjectile(ModContent.ProjectileType<BlessedNodeCrystal2>(), 16, NPC.Center, 10, 20, 4, 1, offset: Main.rand.NextFloat(MathHelper.TwoPi));
+                Opus.RingSpreadProjectile(ModContent.ProjectileType<BlessedNodeCrystal2>(), 16, NPC.Center, 10, 10, 4, 1, offset: Main.rand.NextFloat(MathHelper.TwoPi));
             }
             if (Main.masterMode)
             {
-                Opus.RingSpreadProjectile(ModContent.ProjectileType<BlessedNodeCrystal2>(), 24, NPC.Center, 10, 20, 4, 1, offset: Main.rand.NextFloat(MathHelper.TwoPi));
+                Opus.RingSpreadProjectile(ModContent.ProjectileType<BlessedNodeCrystal2>(), 24, NPC.Center, 10, 10, 4, 1, offset: Main.rand.NextFloat(MathHelper.TwoPi));
             }
         }
         

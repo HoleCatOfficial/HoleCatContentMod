@@ -54,10 +54,6 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
                 .AddIngredient<BroochOfBalance>(1)
                 .AddIngredient<RiftenOverloader>(1)
                 .AddIngredient<SpiritBauble>(1)
-                .AddIngredient(ItemID.SpiritFlame, 1)
-                .AddIngredient(ItemID.OmegaBanner, 1)
-                .AddIngredient(ItemID.AnkhBanner, 1)
-                .AddIngredient(ItemID.SnakeBanner, 1)
                 .AddTile(TileID.TinkerersWorkbench)
                 .Register();
         }

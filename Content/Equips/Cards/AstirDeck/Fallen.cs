@@ -38,7 +38,7 @@ namespace DestroyerTest.Content.Equips.Cards.AstirDeck
         public override bool InstancePerEntity => true;
         public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
         {
-            if (npc.type == NPCID.DemonTaxCollector)
+            if (npc.type == NPCID.Lavabat)
             {
                 npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Fallen>(), 10, 1, 1));
             }
@@ -57,7 +57,7 @@ namespace DestroyerTest.Content.Equips.Cards.AstirDeck
         {
             if (Active && item.DamageType == DamageClass.Melee)
             {
-                scale = 1.225f;
+                scale = 1.5f;
             }
         }
     }
