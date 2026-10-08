@@ -63,7 +63,8 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             Projectile.timeLeft = 10000;
             Projectile.penetrate = -1;
             Projectile.tileCollide = false;
-            Projectile.DamageType = ModContent.GetInstance<DTTrueMeleeClass>();
+            //Projectile.DamageType = ModContent.GetInstance<DTTrueMeleeClass>();
+            Projectile.DamageType = DamageClass.Melee;
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = 15;
             Projectile.ownerHitCheck = true;
@@ -560,7 +561,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            HitCooldown = target.realLife == -1 ? HitCooldownGlobal : 15; 
+            HitCooldown = target.realLife == -1 ? HitCooldownGlobal * Projectile.extraUpdates : 15 * Projectile.extraUpdates; 
 
             if (CurrentState != State.Wait)
             {

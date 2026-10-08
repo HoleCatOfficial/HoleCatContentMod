@@ -50,7 +50,7 @@ namespace DestroyerTest.Content.BossSummons
 
         public override bool CanUseItem(Player player)
         {
-            return (!NPC.AnyNPCs(ModContent.NPCType<WyvernCorpseHead>()) && (DestroyerTestMod.EternityIsActive ? !player.dead : player.ZoneCrimson)) && player.ownedProjectileCounts[ModContent.ProjectileType<DivineWellProjectile>()] < 1;
+            return (!NPC.AnyNPCs(ModContent.NPCType<WyvernCorpseHead>()) && (DestroyerTestMod.EternityIsActive ? !player.dead : true)) && player.ownedProjectileCounts[ModContent.ProjectileType<DivineWellProjectile>()] < 1;
         }
 
         public override bool? UseItem(Player player)

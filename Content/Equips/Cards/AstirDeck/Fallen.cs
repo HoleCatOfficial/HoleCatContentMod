@@ -55,9 +55,9 @@ namespace DestroyerTest.Content.Equips.Cards.AstirDeck
         }
         public override void ModifyItemScale(Item item, ref float scale)
         {
-            if (Active && item.DamageType == DamageClass.Melee)
+            if (Active && (item.DamageType.CountsAsClass(DamageClass.Melee) || item.DamageType.CountsAsClass<DTTrueMeleeClass>()))
             {
-                scale = 1.5f;
+                scale += 0.5f;
             }
         }
     }

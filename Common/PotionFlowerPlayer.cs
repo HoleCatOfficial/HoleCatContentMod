@@ -173,7 +173,25 @@ namespace DestroyerTest.Common
                                 LilliesOfImmortalityParticle FX = new();
                                 FX.Spawn(Player.Center, 1f);
                                 ParticleEngine.BehindProjectiles.Add(FX);
+
+                                for (int i = 0; i < Player.MaxBuffs; i++)
+                                {
+                                    int buff = Player.buffType[i];
+                                    if (Player.HasBuff(buff) && Player.buffTime[i] > 0)
+                                    {
+                                        if (Main.debuff[buff])
+                                        {
+                                            //Neither of these approaches worked.
+
+                                            //Player.buffTime[i] = 0;
+
+                                            Player.DelBuff(i);
+                                        }
+                                    }
+                                }
                             }
+
+                            
 
                             UseCooldown = 0;
                         }

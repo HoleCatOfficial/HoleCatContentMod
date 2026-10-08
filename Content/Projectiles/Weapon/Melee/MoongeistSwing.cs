@@ -40,7 +40,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             SwingSpeed = 0.3f;
             Projectile.ArmorPenetration = 90;
 
-            ScaleMult = 1.5f;
+            ScaleMult = 1.25f;
+            Projectile.extraUpdates = 3;
 
             Glowmask = ModContent.Request<Texture2D>($"{Texture}_Glow");
         }
@@ -88,7 +89,14 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         {
             if (!f1)
             {
-                SoundEngine.PlaySound(SoundID.Item109 with { Pitch = 0.5f }, Projectile.Center);
+                SoundEngine.PlaySound(new SoundStyle(DTAssetLib.AudioPath + "/HopeScabbardTele") { PitchVariance = 0.5f, MaxInstances = 0 }, Projectile.Center);
+                for (int i = 0; i < 5; i++)
+                {
+                    StarParticle star = new();
+                    star.Initialize(swordTip, Main.rand.NextVector2Circular(2f, 2f), Color.Aquamarine, 1f, Main.rand.NextFloat(-0.1f, 0.1f), 90);
+                    ParticleEngine.Particles.Add(star);
+                }
+                
                 for (int i = 0; i < 2; i++)
                 {
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), swordTip, SwordLine.GetLineRotation.ToRotationVector2().RotatedByRandom(0.2f) * (Main.rand.NextFloat(20f, 30f) * Owner.GetTotalAttackSpeed(DamageClass.Melee)), ModContent.ProjectileType<MoongeistBolt>(), Projectile.damage / 12, 2f, Projectile.owner);
@@ -116,7 +124,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
             SwordLine = new Line(player.Center, swordTip);
             Vector2[] pt = SwordLine.GetPointsAlongLine(30);
-            Vector2[] ppt = pt[15..30];
+            Vector2[] ppt = pt[10..30];
 
             //Dust d = Dust.NewDustPerfect(swordTip, DustID.Electric, (Projectile.rotation + (MathHelper.PiOver2 * -Projectile.direction)).ToRotationVector2() * 5f, 60, Scale: 1.5f);
             //d.noGravity = true;
@@ -127,7 +135,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 Lighting.AddLight(Projectile.Center, Color.Aquamarine.ToVector3() * 0.7f);
 
 
-
+                StarParticle star = new();
+                star.Initialize(ppt[Main.rand.Next(ppt.Length)], (Projectile.rotation + (MathHelper.PiOver2 * Projectile.direction)).ToRotationVector2() * 0.5f, Color.Aquamarine, 0.4f, Main.rand.NextFloat(-0.1f, 0.1f), 90);
+                ParticleEngine.Particles.Add(star);
+                
 
                 PixelParticlePlayer FX = new(Owner);
                 FX.Initialize(swordTip, (Projectile.rotation + (MathHelper.PiOver2 * Projectile.direction)).ToRotationVector2() * 0.3f, Color.Aquamarine, 2f, 30);

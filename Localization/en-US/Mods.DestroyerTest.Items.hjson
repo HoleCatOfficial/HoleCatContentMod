@@ -2929,6 +2929,7 @@ LilliesOfImmortality: {
 		You are immune to knockback and most debuffs.
 		You can perform fastx dashes that grant immunity to NPC collision and dont create momentum. (May have unpredictable behaviour when combined with other dashes)
 		You will auto-consume a Healing Potion on a 40-second cooldown when below 50% health.
+		Consuming the potion also clears all debuffs instantly.
 		Your highest rank healing potions will be used first.
 		You cannot manually consume healing potions.
 		Cannot be worn with Band of Regeneration or its upgrades.
@@ -4047,7 +4048,7 @@ Scourge: {
 		8% increased whip range.
 		+1 minion slot.
 		5% decreased ranged use speed.
-		All classes will ignore 6 points of enemy defense.
+		All classes will ignore 16 points of enemy defense.
 
 		On the back of the card is a faint enscription that wasnt there when you created it:
 		'The best things come in fives!'
@@ -4069,7 +4070,7 @@ ShineShadeDeck: {
 		8% increased whip range.
 		+1 minion slot.
 		5% decreased ranged use speed.
-		All classes will ignore 6 points of enemy defense.
+		All classes will ignore 16 points of enemy defense.
 
 		Generates a 90-point shield around the player.
 		+10 Defense.
@@ -5668,11 +5669,7 @@ BrutePotion: {
 
 Moongeist: {
 	DisplayName: Moongeist
-	Tooltip:
-		'''
-		Hits call 4 lunar flares down onto the enemy and shatter their defense.
-		Shatters enemy defense on hit.
-		'''
+	Tooltip: Hits call 4 lunar flares down onto the enemy and shatter their defense.
 }
 
 Tibel: {

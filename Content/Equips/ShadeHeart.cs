@@ -237,6 +237,11 @@ namespace DestroyerTest.Content.Equips
         public override bool GetDefaultVisibility(PlayerDrawSet drawInfo)
         {
             Player player = drawInfo.drawPlayer;
+            if (player.dead)
+            {
+                return false;
+            }
+
             if (player.TryGetModPlayer<ShadeHeartPlayer>(out var Heart))
             {
                 if (Heart.Active)

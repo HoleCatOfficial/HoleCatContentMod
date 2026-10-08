@@ -31,6 +31,8 @@ namespace DestroyerTest.Content.Equips
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             player.autoReuseAllWeapons = true;
+            player.kbGlove = true;
+            player.meleeScaleGlove = true;
             player.GetDamage(DamageClass.Melee) += 0.22f;
             player.GetDamage<DTTrueMeleeClass>() += 0.09f;
             if (player.TryGetModPlayer<ShimmeringGauntletPlayer>(out var G))
@@ -62,7 +64,7 @@ namespace DestroyerTest.Content.Equips
         {
             if (Active)
             {
-                scale = 1.19f;
+                scale += 0.19f;
             }
         }
 

@@ -121,6 +121,12 @@ namespace DestroyerTest.Content.Equips
 
         public override bool GetDefaultVisibility(PlayerDrawSet drawInfo) {
             Player player = drawInfo.drawPlayer;
+
+            if (player.dead)
+            {
+                return false;
+            }
+
             if (player.TryGetModPlayer<GalantineIncensePlayer>(out var Incense))
             {
                 if (Incense.Active)

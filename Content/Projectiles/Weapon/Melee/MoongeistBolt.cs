@@ -94,6 +94,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Lighting.AddLight(Projectile.Center, Color.Aquamarine.ToVector3());
 
 
+            StarParticle star = new();
+            star.Initialize(Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Projectile.velocity * 0.05f, Color.Aquamarine, 0.4f, Main.rand.NextFloat(-0.1f, 0.1f), 90);
+            ParticleEngine.Particles.Add(star);
+
+
+
             if (DelayTimer < 30)
             {
                 Projectile.velocity *= 0.94f;
@@ -102,7 +108,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
         public override bool? CanHitNPC(NPC target)
         {
-            return DelayTimer >= 30;
+            return DelayTimer >= 30 && Projectile.ManualCanHitFriendly(target);
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
@@ -115,6 +121,13 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
         public override void OnKill(int timeLeft)
         {
+            for (int i = 0; i < 5; i++)
+            {
+                StarParticle star = new();
+                star.Initialize(Projectile.Center, Main.rand.NextVector2Circular(2f, 2f), Color.Aquamarine, 1f, Main.rand.NextFloat(-0.1f, 0.1f), 90);
+                ParticleEngine.Particles.Add(star);
+            }
+
             for (int i = 0; i < 10; i++)
             {
                 float spd = 0.3f * i;

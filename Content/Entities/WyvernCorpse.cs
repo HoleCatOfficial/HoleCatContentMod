@@ -758,50 +758,53 @@ namespace DestroyerTest.Content.Entities
 
             CanDie = DeathTimer >= 301;
 
-            if (NPC.life <= NPC.lifeMax * 0.01f)
+            if (DestroyerTestMod.EternityIsActive)
             {
-                DeathTimer++;
-                if (CanDie)
+                if (NPC.life <= NPC.lifeMax * 0.01f)
                 {
-                    NPC.dontTakeDamage = false;
-                    NPC.StrikeInstantKill();
-                }
-                else
-                {
-                    
-                    AITimer = 0;
-                    CurrentAttack = attackType.Follow;
-                    NPC.aiStyle = -1;
-                    NPC.dontTakeDamage = true;
-                    NPC.life = (int)(NPC.lifeMax * 0.01f);
-
-                    if (DeathTimer == 1)
+                    DeathTimer++;
+                    if (CanDie)
                     {
-                        StoredVolume = Main.musicVolume;
-                        SoundEngine.PlaySound(new SoundStyle(DTAssetLib.AudioFolder.Corpse + "/Death") { PauseBehavior = PauseBehavior.PauseWithGame, MaxInstances = 1 });
-                    
-                        foreach (Projectile proj in Main.projectile)
+                        NPC.dontTakeDamage = false;
+                        NPC.StrikeInstantKill();
+                    }
+                    else
+                    {
+
+                        AITimer = 0;
+                        CurrentAttack = attackType.Follow;
+                        NPC.aiStyle = -1;
+                        NPC.dontTakeDamage = true;
+                        NPC.life = (int)(NPC.lifeMax * 0.01f);
+
+                        if (DeathTimer == 1)
                         {
-                            if (proj.active && DTUtils.OwnedByBossNPC[proj.type] == Type)
+                            StoredVolume = Main.musicVolume;
+                            SoundEngine.PlaySound(new SoundStyle(DTAssetLib.AudioFolder.Corpse + "/Death") { PauseBehavior = PauseBehavior.PauseWithGame, MaxInstances = 1 });
+
+                            foreach (Projectile proj in Main.projectile)
                             {
-                                proj.active = false;
+                                if (proj.active && DTUtils.OwnedByBossNPC[proj.type] == Type)
+                                {
+                                    proj.active = false;
+                                }
+                            }
+
+                            if (player.HasBuff<SoulInferno>())
+                            {
+                                player.ClearBuff(ModContent.BuffType<SoulInferno>());
                             }
                         }
-                        
-                        if (player.HasBuff<SoulInferno>())
-                        {
-                            player.ClearBuff(ModContent.BuffType<SoulInferno>());
-                        }
+
+                        NPC.velocity *= 0.97f;
+                        FlashOpacity = MathHelper.Lerp(0f, 1f, (float)DeathTimer / 300f);
+                        ScrollBackColor = Color.Lerp(ColorLib.Soul3, ColorLib.Soul, (float)DeathTimer / 300f);
+                        Main.musicVolume = MathHelper.Lerp(StoredVolume, 0, (float)DeathTimer / 300f);
                     }
 
-                    NPC.velocity *= 0.97f;
-                    FlashOpacity = MathHelper.Lerp(0f, 1f, (float)DeathTimer / 300f);
-                    ScrollBackColor = Color.Lerp(ColorLib.Soul3, ColorLib.Soul, (float)DeathTimer/ 300f);
-                    Main.musicVolume = MathHelper.Lerp(StoredVolume, 0, (float)DeathTimer / 300f);
                 }
-                
             }
-
+             
             if (DestroyerTestMod.MasochistIsActive)
             {
                 player.AddBuff(ModContent.BuffType<Passion>(), 60);

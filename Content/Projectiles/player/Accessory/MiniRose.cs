@@ -52,8 +52,8 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
         {
             if (oldCenter.Count > 11)
             {
-                Main.EntitySpriteDraw(DTAssetLib.MiniRoseFragment(1).Value, oldCenter[5] - Main.screenPosition, null, Color.White, 0f, DTAssetLib.MiniRoseFragment(1).Value.Size() / 2, 1f, SpriteEffects.None);
-                Main.EntitySpriteDraw(DTAssetLib.MiniRoseFragment(2).Value, oldCenter[10] - Main.screenPosition, null, Color.White, 0f, DTAssetLib.MiniRoseFragment(2).Value.Size() / 2, 1f, SpriteEffects.None);
+                Main.EntitySpriteDraw(DTAssetLib.MiniRoseFragment(1).Value, new Vector2(Projectile.Center.X, oldCenter[5].Y) - Main.screenPosition, null, Color.White, 0f, DTAssetLib.MiniRoseFragment(1).Value.Size() / 2, 1f, SpriteEffects.None);
+                Main.EntitySpriteDraw(DTAssetLib.MiniRoseFragment(2).Value, new Vector2(Projectile.Center.X, oldCenter[10].Y) - Main.screenPosition, null, Color.White, 0f, DTAssetLib.MiniRoseFragment(2).Value.Size() / 2, 1f, SpriteEffects.None);
             }
         }
 
@@ -133,6 +133,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
                 }
             }
 
+            Projectile.SmoothMoveToPoint(Main.player[Projectile.owner].Center, 10, 200);
             Projectile.Center += new Vector2(0, Opus.Sine(-1f, 1f, 0.01f));
 
             oldCenter.Insert(0, Projectile.Center);

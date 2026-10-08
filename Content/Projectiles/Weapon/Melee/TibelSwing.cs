@@ -32,14 +32,14 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Projectile.width = 128;
             Projectile.height = 128;
             UsesDefaultSweepFX = true;
-            SweepScale = 1.4f;
+            SweepScale = 2.35f;
             SweepColor = VoidColorDark;
             SweepHighlightColor = VoidColor;
             WaitTimeMultiplier = 0.8f;
-            SwingSpeed = 0.11f;
+            SwingSpeed = 0.09f;
             Projectile.ArmorPenetration = 120;
 
-            ScaleMult = 1.8f;
+            ScaleMult = 1f;
 
             Glowmask = ModContent.Request<Texture2D>($"{Texture}_Glow");
         }

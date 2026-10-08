@@ -155,7 +155,7 @@ namespace DestroyerTest.Content.Equips.MalignantSet
         {
             if (Active)
             {
-                if (item.DamageType == DamageClass.Melee || item.DamageType == DamageClass.MeleeNoSpeed)
+                if ((item.DamageType.CountsAsClass(DamageClass.Melee) || item.DamageType.CountsAsClass<DTTrueMeleeClass>()))
                 {
                     scale = 1.225f;
                 }

@@ -62,11 +62,24 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         public override void AI()
         {
             Projectile.rotation = Projectile.velocity.ToRotation();
+
+            StarParticle star = new();
+            star.Initialize(Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Projectile.velocity * 0.05f, Color.Aquamarine, 0.4f, Main.rand.NextFloat(-0.1f, 0.1f), 90);
+            ParticleEngine.Particles.Add(star);
+
+
         }
 
         public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(SoundID.Item88, Projectile.Center);
+            for (int i = 0; i < 5; i++)
+            {
+                StarParticle star = new();
+                star.Initialize(Projectile.Center, Main.rand.NextVector2Circular(2f, 2f), Color.Aquamarine, 1f, Main.rand.NextFloat(-0.1f, 0.1f), 90);
+                ParticleEngine.Particles.Add(star);
+            }
+
             Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<MoongeistFlareExplosion>(), Projectile.damage, Projectile.knockBack);
         }
     }

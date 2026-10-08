@@ -8,8 +8,9 @@ namespace DestroyerTest.Common
     {
         public override StatInheritanceData GetModifierInheritance(DamageClass damageClass)
         {
-            if (damageClass == DamageClass.Generic)
-                return new StatInheritanceData(1f, 1f);
+            if (damageClass == Melee || damageClass == Generic)
+                return StatInheritanceData.Full;
+
 
             return new StatInheritanceData(
                 damageInheritance: 0f,

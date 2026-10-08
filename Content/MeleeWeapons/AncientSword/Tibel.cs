@@ -37,7 +37,7 @@ namespace DestroyerTest.Content.MeleeWeapons.AncientSword
             Item.useTurn = true;
 
             Item.DamageType = ModContent.GetInstance<DTTrueMeleeClass>();
-            Item.damage = 1000;
+            Item.damage = 1400;
             Item.knockBack = 6;
             Item.crit = 4;
 

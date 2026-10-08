@@ -30,7 +30,7 @@ namespace DestroyerTest.Content.Equips.Cards.RiftenDeck
             player.whipRangeMultiplier *= 1.08f;
             player.maxMinions += 1;
             player.GetAttackSpeed(DamageClass.Ranged) *= 0.95f;
-            player.GetArmorPenetration(DamageClass.Generic) += 6;
+            player.GetArmorPenetration(DamageClass.Generic) += 16;
 		}
 
         public override bool CanAccessoryBeEquippedWith(Item equippedItem, Item incomingItem, Player player)

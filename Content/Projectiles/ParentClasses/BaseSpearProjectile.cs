@@ -105,7 +105,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
         public override bool PreAI()
         {
-            AdjustedScale = 1f + Owner.GetAdjustedItemScale(Owner.HeldItem);
+            AdjustedScale = Owner.GetAdjustedItemScale(Owner.HeldItem);
             Projectile.scale = AdjustedScale;
             return true;
         }

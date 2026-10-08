@@ -235,6 +235,7 @@ namespace DestroyerTest.Content.Entities
         {
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ShadeParticle>(), 3, 10, 20));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ShimmeringSludge>(), 4, 20, 35));
+            npcLoot.Add(ItemDropRule.Common(ItemID.SoulofNight, 1, 8, 20));
         }
 	}
 
