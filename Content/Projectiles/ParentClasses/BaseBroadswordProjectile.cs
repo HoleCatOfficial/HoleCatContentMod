@@ -1,4 +1,10 @@
-﻿using BreadLibrary.Core.Graphics;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using BreadLibrary.Core.Graphics;
 using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
 using BreadLibrary.Core.Graphics.Spritebatch;
@@ -9,17 +15,14 @@ using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Particles.Orchestrated;
 using DestroyerTest.Content.Projectiles.Weapon.Rogue;
+using FargowiltasSouls.Content.Items.Accessories.Enchantments;
+using FargowiltasSouls.Core.AccessoryEffectSystem;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using OpusLib.Content.Helpers;
 using ReLogic.Content;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -400,6 +403,18 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         Texture2D Tex = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/CircularSlash").Value;
         Texture2D TexH = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/CircularSlashEdgeHighlight").Value;
 
+        public float TungstenEnchantAdjustment => DTCrossMod.FargosSoulsIsLoaded ? GetTungstenEnchantAdjustment() : 1f;
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        [JITWhenModsEnabled(DTCrossMod.FargosSoulsName)]
+        float GetTungstenEnchantAdjustment()
+        {
+            if (Owner.HasEffect<TungstenEffect>())
+            {
+                return 1.5f;
+            }
+            return 1f;
+        }
         private void DrawSweepFX()
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
@@ -449,12 +464,14 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             Cap.TransformMatrix = PixelationSystem.PixelationMatrix;
             spriteBatch.End();
             spriteBatch.Begin(Cap);
-            Main.EntitySpriteDraw(Tex, Owner.MountedCenter - Main.screenPosition, null, SweepColor with { A = 0 } * SweepOpacity, (Projectile.rotation + MathHelper.PiOver4) + rOffset, Tex.Size() / 2, (SweepScale * AdjustedScale), FX);
-            Main.EntitySpriteDraw(TexH, Owner.MountedCenter - Main.screenPosition, null, SweepHighlightColor with { A = 0 } * SweepOpacity, (Projectile.rotation + MathHelper.PiOver4) + rOffset, Tex.Size() / 2, (SweepScale * AdjustedScale), FX);
+            Main.EntitySpriteDraw(Tex, Owner.MountedCenter - Main.screenPosition, null, SweepColor with { A = 0 } * SweepOpacity, (Projectile.rotation + MathHelper.PiOver4) + rOffset, Tex.Size() / 2, (SweepScale * Projectile.scale) * TungstenEnchantAdjustment, FX);
+            Main.EntitySpriteDraw(TexH, Owner.MountedCenter - Main.screenPosition, null, SweepHighlightColor with { A = 0 } * SweepOpacity, (Projectile.rotation + MathHelper.PiOver4) + rOffset, Tex.Size() / 2, (SweepScale * Projectile.scale) * TungstenEnchantAdjustment, FX);
             spriteBatch.ResetToDefault();
         }
 
         public float RotationManualOffset = 0f;
+
+        
 
         public override bool PreDraw(ref Color lightColor)
         {
@@ -504,10 +521,10 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
             DrawUnderBlade();
 
-            Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, null, Projectile.GetAlpha(lightColor) * Projectile.Opacity, (Projectile.rotation + rotationOffset) + RotationManualOffset, origin, Projectile.scale, effects, 0);
+            Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, null, Projectile.GetAlpha(lightColor) * Projectile.Opacity, (Projectile.rotation + rotationOffset) + RotationManualOffset, origin, Projectile.scale * TungstenEnchantAdjustment, effects, 0);
             if (Glowmask != null)
             {
-                Main.EntitySpriteDraw(Glowmask.Value, Projectile.Center - Main.screenPosition, null, Color.White * Projectile.Opacity, (Projectile.rotation + rotationOffset) + RotationManualOffset, origin, Projectile.scale, effects, 0);
+                Main.EntitySpriteDraw(Glowmask.Value, Projectile.Center - Main.screenPosition, null, Color.White * Projectile.Opacity, (Projectile.rotation + rotationOffset) + RotationManualOffset, origin, Projectile.scale * TungstenEnchantAdjustment, effects, 0);
             }
 
             DrawOverBlade();
@@ -582,4 +599,6 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
         
     }
+
+
 }

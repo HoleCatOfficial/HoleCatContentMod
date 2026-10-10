@@ -23,7 +23,13 @@ namespace DestroyerTest.Content.MeleeWeapons
         public override void SetStaticDefaults()
         {
             ItemID.Sets.ItemsThatAllowRepeatedRightClick[Type] = true;
-            ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<PureBow>();
+
+
+            if (ModLoader.HasMod("QoLCompendium"))
+            {
+                ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<PureBow>();
+            }
+            
         }
         public override void SetDefaults()
         {

@@ -309,19 +309,20 @@ namespace DestroyerTest.Common
             spriteBatch.ResetToDefault();
         }
 
+
         public static void SweepColorOverString(string input, Color[] colors, Vector2 textPos, float speed = 6f)
         {
             if (string.IsNullOrEmpty(input) || colors == null || colors.Length == 0)
                 return;
 
-            float time = Main.GlobalTimeWrappedHourly * 6f; // speed control
+            float time = Main.GlobalTimeWrappedHourly * speed; // speed control
             int offset = (int)time;
 
             TextSnippet[] snippets = new TextSnippet[input.Length];
 
             for (int i = 0; i < input.Length; i++)
             {
-                int colorIndex = (i + offset) % colors.Length;
+                int colorIndex = ((i + offset) % colors.Length + colors.Length) % colors.Length;
 
                 snippets[i] = new TextSnippet(
                     input[i].ToString(),
@@ -329,18 +330,41 @@ namespace DestroyerTest.Common
                 );
             }
 
-            ChatManager.DrawColorCodedString(
-                Main.spriteBatch,
-                FontAssets.MouseText.Value,
-                snippets,
-                textPos,
-                Color.White,
-                0f,
-                Vector2.Zero,
-                Vector2.One,
-                out _,
-                float.MaxValue
-            );
+            for (int i = 0; i < 8; i++)
+            {
+                ChatManager.DrawColorCodedString(Main.spriteBatch, FontAssets.MouseText.Value, input, textPos + new Vector2(1f, 0f).RotatedBy(MathHelper.PiOver4 * i), Color.Black, 0f, Vector2.Zero, Vector2.One);
+            }
+
+            ChatManager.DrawColorCodedString(Main.spriteBatch, FontAssets.MouseText.Value, snippets, textPos, Color.White, 0f, Vector2.Zero, Vector2.One, out _, float.MaxValue);
+
+        }
+
+        public static void SweepColorOverString(string input, Color[] colors, Color OutlineColor, Vector2 textPos, float speed = 6f)
+        {
+            if (string.IsNullOrEmpty(input) || colors == null || colors.Length == 0)
+                return;
+
+            float time = Main.GlobalTimeWrappedHourly * speed; // speed control
+            int offset = (int)time;
+
+            TextSnippet[] snippets = new TextSnippet[input.Length];
+
+            for (int i = 0; i < input.Length; i++)
+            {
+                int colorIndex = ((i + offset) % colors.Length + colors.Length) % colors.Length;
+
+                snippets[i] = new TextSnippet(
+                    input[i].ToString(),
+                    colors[colorIndex]
+                );
+            }
+
+            for (int i = 0; i < 8; i++)
+            {
+                ChatManager.DrawColorCodedString(Main.spriteBatch, FontAssets.MouseText.Value, input, textPos + new Vector2(1f, 0f).RotatedBy(MathHelper.PiOver4 * i), OutlineColor, 0f, Vector2.Zero, Vector2.One);
+            }
+
+            ChatManager.DrawColorCodedString(Main.spriteBatch, FontAssets.MouseText.Value, snippets, textPos, Color.White, 0f, Vector2.Zero, Vector2.One, out _, float.MaxValue);
 
         }
 
@@ -705,6 +729,8 @@ namespace DestroyerTest.Common
         public static Condition DayTimeCondition = new Condition("Mods.DestroyerTest.Conditions.DayTime", DayTimeConditionBool);
 
         public static int[] OwnedByBossNPC = ProjectileID.Sets.Factory.CreateNamedSet("OnwedByBossNPC").Description("When bosses of a given type despawn, instances of projectiles with types 'owned' by that type will be despawned instantly.").RegisterIntSet();
+        public static Tuple<int[], int[]>[] InflictsDebuffs = ProjectileID.Sets.Factory.CreateNamedSet("InflictsDebuffs").Description("Used by Talid for easy infliction of modded debuffs by vanilla projectiles.").RegisterCustomSet<Tuple<int[], int[]>>(new Tuple<int[], int[]>([0], [0]));
+
     }
 
     public class SwapSolidTileAndFrame : GenAction
@@ -1464,6 +1490,8 @@ namespace DestroyerTest.Common
         {
             return (value + 1) / 2 * 2;
         }
+
+
     }
 
     public class DTPlayerUtil : ModPlayer

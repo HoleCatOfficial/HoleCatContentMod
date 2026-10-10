@@ -1,4 +1,10 @@
 ﻿
+using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Security.Policy;
 using BreadLibrary.Core;
 using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Utilities;
@@ -8,11 +14,16 @@ using DestroyerTest.Content.BossBar;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Consumables;
 using DestroyerTest.Content.Equips;
+using DestroyerTest.Content.Magic;
+using DestroyerTest.Content.MeleeWeapons;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss;
 using DestroyerTest.Content.Projectiles.Boss.NodeBoss.Blessed;
 using DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame;
+using DestroyerTest.Content.RangedItems;
+using DestroyerTest.Content.Scepter;
+using DestroyerTest.Content.Tools;
 using GlowmaskHelper.Content;
  
  
@@ -21,12 +32,6 @@ using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using OpusLib.Content.Helpers;
 using OpusLib.Content.Particles;
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Security.Policy;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -35,6 +40,7 @@ using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.UI;
 
 namespace DestroyerTest.Content.Entities
 {
@@ -809,7 +815,14 @@ namespace DestroyerTest.Content.Entities
 
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
-            npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<BlessedNodeLootBag>()));
+
+            npcLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<HaepienNodeCharm>(), 24, 1, 1));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<HolyIdol>(), 1, 1, 3));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Purity>(), 2, 1, 1));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<PureBow>(), 2, 1, 1));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<GloryOrb>(), 2, 1, 1));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<SpectrumScepter>(), 2, 1, 1));
+            npcLoot.Add(ItemDropRule.Coins(1250, true));
         }
     }
 }

@@ -206,7 +206,7 @@ namespace DestroyerTest.Content.Entities
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
         {
-            bool v = Main.bloodMoon;
+            bool v = Main.bloodMoon && spawnInfo.Player.ZoneOverworldHeight;
             if (v)
             {
                 return 0.15f;

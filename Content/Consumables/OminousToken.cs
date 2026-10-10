@@ -18,6 +18,8 @@ using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 using DestroyerTest.Content.Tiles;
+using DestroyerTest.Content.Resources;
+using DestroyerTest.Content.Equips.PotionFlowers;
 
 namespace DestroyerTest.Content.Consumables
 {
@@ -42,6 +44,7 @@ namespace DestroyerTest.Content.Consumables
         }
 
 
+
         public override bool CanRightClick()
         {
             return true;
@@ -56,6 +59,8 @@ namespace DestroyerTest.Content.Consumables
             itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<NeglectedRegards>(), 5, 1, 1));
             itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<FailedPotion>(), 5, 1, 1));
             itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<GodGouger>(), 5, 1, 1));
+            itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<Dyrn>(), 5, 10, 30));
+            itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<BundleOfMagicLillies>(), 5, 1, 1));
 
             itemLoot.Add(ItemDropRule.Coins(1250, true));
         }

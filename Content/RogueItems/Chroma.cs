@@ -1,5 +1,6 @@
 ﻿using DestroyerTest.Common;
 using DestroyerTest.Content.Projectiles.Weapon.Rogue;
+using DestroyerTest.Rarity;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -12,7 +13,7 @@ namespace DestroyerTest.Content.RogueItems
 		public override void SetDefaults() 
 		{
 
-			Item.rare = ItemRarityID.Pink;
+			Item.rare = ModContent.RarityType<CelestialRarity>();
 			Item.value = Item.sellPrice(silver: 5);
 			Item.maxStack = 1;
 			Item.useStyle = ItemUseStyleID.Swing;

@@ -135,6 +135,8 @@ namespace DestroyerTest.Common.Systems
             {
                 ModContent.ItemType<Purity>(),
                 ModContent.ItemType<GloryOrb>(),
+                ModContent.ItemType<PureBow>(),
+                ModContent.ItemType<SpectrumScepter>(),
                 ModContent.ItemType<Item_BlessedNodeTrophy>(),
                 ModContent.ItemType<Item_BlessedNodeRelic>(),
             };

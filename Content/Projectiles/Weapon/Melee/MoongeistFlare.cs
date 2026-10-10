@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
+using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -47,13 +48,13 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             for (int i = 0; i < Projectile.oldPos.Length; i++)
             {
                 float Mult = MathHelper.Lerp(1f, 0f, (float)i / (float)Projectile.oldPos.Length);
-                Main.EntitySpriteDraw(DTAssetLib.PointGlowPreMultiplied.Value, Projectile.OldCenter()[i] - Main.screenPosition, null, (Color.MediumAquamarine with { A = 0 } * 0.2f * Mult) * Projectile.Opacity, 0f, DTAssetLib.PointGlowPreMultiplied.Value.Size() / 2, 0.7f, SpriteEffects.None);
+                Main.EntitySpriteDraw(DTAssetLib.PointGlowPreMultiplied.Value, Projectile.OldCenter()[i] - Main.screenPosition, null, (ColorLib.CelestialGradient with { A = 0 } * 0.2f * Mult) * Projectile.Opacity, 0f, DTAssetLib.PointGlowPreMultiplied.Value.Size() / 2, 0.7f, SpriteEffects.None);
 
-                Main.EntitySpriteDraw(DTAssetLib.SparkSmoothThin.Value, Projectile.OldCenter()[i] - Main.screenPosition, null, (Color.Aquamarine with { A = 0 } * 0.3f * Mult) * Projectile.Opacity, i == 0 ? Projectile.velocity.ToRotation() : Projectile.oldRot[i], DTAssetLib.SparkSmoothThin.Value.Size() / 2, 0.06f, SpriteEffects.None);
+                Main.EntitySpriteDraw(DTAssetLib.SparkSmoothThin.Value, Projectile.OldCenter()[i] - Main.screenPosition, null, (ColorLib.CelestialGradient with { A = 0 } * 0.3f * Mult) * Projectile.Opacity, i == 0 ? Projectile.velocity.ToRotation() : Projectile.oldRot[i], DTAssetLib.SparkSmoothThin.Value.Size() / 2, 0.06f, SpriteEffects.None);
             }
 
 
-            Main.EntitySpriteDraw(DTAssetLib.Star(1).Value, Projectile.Center - Main.screenPosition, null, Color.Aquamarine with { A = 0 }, Projectile.rotation, DTAssetLib.Star(1).Value.Size() / 2, new Vector2(0.3f, 0.15f), SpriteEffects.None);
+            Main.EntitySpriteDraw(DTAssetLib.Star(1).Value, Projectile.Center - Main.screenPosition, null, ColorLib.CelestialGradient with { A = 0 }, Projectile.rotation, DTAssetLib.Star(1).Value.Size() / 2, new Vector2(0.3f, 0.15f), SpriteEffects.None);
             Main.EntitySpriteDraw(DTAssetLib.Star(1).Value, Projectile.Center - Main.screenPosition, null, Color.White with { A = 0 }, Projectile.rotation, DTAssetLib.Star(1).Value.Size() / 2, new Vector2(0.15f, 0.05f), SpriteEffects.None);
 
             return false;
@@ -64,11 +65,16 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Projectile.rotation = Projectile.velocity.ToRotation();
 
             StarParticle star = new();
-            star.Initialize(Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Projectile.velocity * 0.05f, Color.Aquamarine, 0.4f, Main.rand.NextFloat(-0.1f, 0.1f), 90);
+            star.Initialize(Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Projectile.velocity * 0.05f, ColorLib.CelestialGradient, 0.4f, Main.rand.NextFloat(-0.1f, 0.1f), 90);
             ParticleEngine.Particles.Add(star);
 
 
         }
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            target.AddBuff(ModContent.BuffType<FusionBurn>(), 600);
+        }
+
 
         public override void OnKill(int timeLeft)
         {
@@ -76,7 +82,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             for (int i = 0; i < 5; i++)
             {
                 StarParticle star = new();
-                star.Initialize(Projectile.Center, Main.rand.NextVector2Circular(2f, 2f), Color.Aquamarine, 1f, Main.rand.NextFloat(-0.1f, 0.1f), 90);
+                star.Initialize(Projectile.Center, Main.rand.NextVector2Circular(2f, 2f), ColorLib.CelestialGradient, 1f, Main.rand.NextFloat(-0.1f, 0.1f), 90);
                 ParticleEngine.Particles.Add(star);
             }
 
@@ -108,16 +114,21 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         public override void OnSpawn(IEntitySource source)
         {
             SimpleExplosionParticle Explosion = new();
-            Explosion.Prepare(Projectile.Center, Vector2.Zero, Color.Aquamarine, 0.3f, 0.01f, 2f, BlendState.Additive);
+            Explosion.Prepare(Projectile.Center, Vector2.Zero, ColorLib.CelestialGradient, 0.3f, 0.01f, 2f, BlendState.Additive);
             ParticleEngine.BehindProjectiles.Add(Explosion);
 
             BloomRingSharp Ring1 = new();
-            Ring1.Prepare(Projectile.Center, Vector2.Zero, Color.Aquamarine, 0.1f, 0.01f, 0.3f, BlendState.Additive);
+            Ring1.Prepare(Projectile.Center, Vector2.Zero, ColorLib.CelestialGradient, 0.1f, 0.01f, 0.3f, BlendState.Additive);
             ParticleEngine.BehindProjectiles.Add(Ring1);
         }
         public override void AI()
         {
 
+        }
+
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            target.AddBuff(ModContent.BuffType<FusionBurn>(), 600);
         }
     }
 }

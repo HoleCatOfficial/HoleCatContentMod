@@ -476,3 +476,8 @@ Brute: {
 	DisplayName: Brute
 	Description: True Melee scale and damage increased.
 }
+
+FusionBurn: {
+	DisplayName: Fusion Burn
+	Description: Mods.DestroyerTest.Buffs.FusionBurn.Description
+}

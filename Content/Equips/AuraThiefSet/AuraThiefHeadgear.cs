@@ -37,46 +37,18 @@ namespace DestroyerTest.Content.Equips.AuraThiefSet
 		}
 
 		public override void SetDefaults() {
-			Item.width = 36; // Width of the item
-			Item.height = 28; // Height of the item
-			Item.value = Item.sellPrice(gold: 1); // How many coins the item is worth
-			Item.rare = ModContent.RarityType<LifeEchoRarity>(); // The rarity of the item
-			Item.defense = 4; // The amount of defense the item will give when equipped
+			Item.width = 36;
+			Item.height = 28;
+			Item.value = Item.sellPrice(gold: 1);
+			Item.rare = ModContent.RarityType<LifeEchoRarity>();
+			Item.defense = 4;
 		}
 
-	
-		/*
-        public override void EquipFrameEffects(Player player, EquipType type)
-        {
-            if (player.armor[0].type == ModContent.ItemType<AuraThiefHeadgear>()) // Ensure player is wearing the headgear
-			{
-				Texture2D glowmaskTexture = ModContent.Request<Texture2D>("DestroyerTest/Content/Equips/AuraThiefSet/AuraThiefHeadgear_Head_Highlight").Value;
-
-				Vector2 position = player.headPosition + new Vector2(player.width / 2, player.height / 2) - Main.screenPosition;
-
-				// Draw the glowmask
-				Main.spriteBatch.Draw(
-					glowmaskTexture,
-					position,
-					null,
-					Color.White,
-					player.headRotation,
-					new Vector2(glowmaskTexture.Width / 2, glowmaskTexture.Height / 2),
-					1f,
-					SpriteEffects.None,
-					0f
-				);
-			}
-        }
-		*/
-
-		// IsArmorSet determines what armor pieces are needed for the setbonus to take effect
 		public override bool IsArmorSet(Item head, Item body, Item legs)
 		{
 			return body.type == ModContent.ItemType<AuraThiefBreastplate>() && legs.type == ModContent.ItemType<AuraThiefCuisses>();
 		}
 
-		// UpdateArmorSet allows you to give set bonuses to the armor.
 		public override void UpdateArmorSet(Player player) 
 		{
 			player.DefaultSetBonusText(Item);
@@ -90,8 +62,6 @@ namespace DestroyerTest.Content.Equips.AuraThiefSet
         {
             player.armorEffectDrawOutlines = true;
         }
-
-		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
 		public override void AddRecipes() {
 			CreateRecipe()
 				.AddIngredient<LifeEcho>(16)

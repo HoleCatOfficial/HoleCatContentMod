@@ -1,18 +1,19 @@
 ﻿using System;
-using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.Audio;
-using Terraria.ID;
-using Terraria.ModLoader;
-using Terraria.DataStructures;
-
-using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Common;
+using DestroyerTest.Content.MeleeWeapons;
+using DestroyerTest.Content.Projectiles;
+using DestroyerTest.Content.Projectiles.Weapon.Scepter;
+using DestroyerTest.Content.RangedItems;
 using DestroyerTest.Rarity;
 using DestroyerTest.Rarity.Scepter;
-using DestroyerTest.Content.Projectiles.Weapon.Scepter;
+using Microsoft.Xna.Framework;
 using OpusLib.Content.Helpers;
+using Terraria;
+using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.GameContent.ItemDropRules;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Scepter
 {
@@ -24,6 +25,11 @@ namespace DestroyerTest.Content.Scepter
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
+
+            if (ModLoader.HasMod("QoLCompendium"))
+            {
+                ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<Purity>();
+            }
         }
 
         public override void SetDefaults()

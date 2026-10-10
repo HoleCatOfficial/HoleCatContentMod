@@ -1,14 +1,17 @@
-﻿using BreadLibrary.Core;
-using DestroyerTest.Common;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using BreadLibrary.Core;
+using DestroyerTest.Common;
+using FargowiltasSouls.Content.Items.Accessories.Enchantments;
+using FargowiltasSouls.Core.AccessoryEffectSystem;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -156,6 +159,20 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         public float RotationManualOffset = 0f;
         public Vector2 Draworigin;
         float Off = 0;
+
+        public float TungstenEnchantAdjustment => DTCrossMod.FargosSoulsIsLoaded ? GetTungstenEnchantAdjustment() : 1f;
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        [JITWhenModsEnabled(DTCrossMod.FargosSoulsName)]
+        float GetTungstenEnchantAdjustment()
+        {
+            if (Owner.HasEffect<TungstenEffect>())
+            {
+                return 1.5f;
+            }
+            return 1f;
+        }
+
         public override bool PreDraw(ref Color lightColor)
         {
             SpriteEffects effects;
@@ -177,10 +194,10 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
             DrawUnder();
 
-            Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, null, Projectile.GetAlpha(lightColor) * Projectile.Opacity, (Projectile.rotation + Off) + RotationManualOffset, texture.Size() / 2, Projectile.scale, effects, 0);
+            Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, null, Projectile.GetAlpha(lightColor) * Projectile.Opacity, (Projectile.rotation + Off) + RotationManualOffset, texture.Size() / 2, Projectile.scale * TungstenEnchantAdjustment, effects, 0);
             if (Glowmask != null)
             {
-                Main.EntitySpriteDraw(Glowmask.Value, Projectile.Center - Main.screenPosition, null, Color.White * Projectile.Opacity, (Projectile.rotation + Off) + RotationManualOffset, texture.Size() / 2, Projectile.scale, effects, 0);
+                Main.EntitySpriteDraw(Glowmask.Value, Projectile.Center - Main.screenPosition, null, Color.White * Projectile.Opacity, (Projectile.rotation + Off) + RotationManualOffset, texture.Size() / 2, Projectile.scale * TungstenEnchantAdjustment, effects, 0);
             }
 
             DrawOver();

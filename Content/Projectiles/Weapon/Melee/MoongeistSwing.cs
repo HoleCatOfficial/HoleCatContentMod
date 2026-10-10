@@ -105,9 +105,56 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             }
         }
 
+        float rot = 0f;
         public override void DrawUnderBlade()
         {
+            Vector2 origin;
+            float rotationOffset;
+            SpriteEffects effects;
 
+            Texture2D texture = TextureAssets.Projectile[Type].Value;
+
+            //I swear to FUCKING GOD.
+            //dont touch this shit.
+            //FUCK ROTATIONS DUDE.
+
+            if (LastSwing == -1)
+            {
+                if (Projectile.spriteDirection > 0)
+                {
+                    origin = new Vector2(0, texture.Height);
+                    effects = SpriteEffects.None;
+                    rotationOffset = MathHelper.ToRadians(45f);
+                }
+                else
+                {
+                    origin = new Vector2(0, texture.Height);
+                    effects = SpriteEffects.None;
+                    rotationOffset = MathHelper.ToRadians(45f);
+                }
+            }
+            else
+            {
+                if (Projectile.spriteDirection > 0)
+                {
+                    origin = new Vector2(texture.Width, texture.Height);
+                    effects = SpriteEffects.FlipHorizontally;
+                    rotationOffset = MathHelper.ToRadians(135f);
+                }
+                else
+                {
+                    origin = new Vector2(texture.Width, texture.Height);
+                    effects = SpriteEffects.FlipHorizontally;
+                    rotationOffset = MathHelper.ToRadians(135f);
+                }
+            }
+
+            rot += 0.1f;
+
+            for (int i = 0; i < 4; i++)
+            {
+                Main.EntitySpriteDraw(texture, (Projectile.Center + new Vector2(7f, 0f).RotatedBy((MathHelper.PiOver2 * i) + rot)) - Main.screenPosition, null, ColorLib.CelestialGradient with { A = 0 } * 0.5f * Projectile.Opacity, (Projectile.rotation + rotationOffset) + RotationManualOffset, origin, (Projectile.scale * TungstenEnchantAdjustment), effects, 0);
+            }
         }
         public override void DrawOverBlade()
         {
@@ -138,7 +185,14 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 StarParticle star = new();
                 star.Initialize(ppt[Main.rand.Next(ppt.Length)], (Projectile.rotation + (MathHelper.PiOver2 * Projectile.direction)).ToRotationVector2() * 0.5f, Color.Aquamarine, 0.4f, Main.rand.NextFloat(-0.1f, 0.1f), 90);
                 ParticleEngine.Particles.Add(star);
-                
+
+                if (Main.rand.NextBool(3))
+                {
+                    StarParticle star2 = new();
+                    star2.Initialize(ppt[Main.rand.Next(ppt.Length)], (Projectile.rotation + (MathHelper.PiOver2 * Projectile.direction)).ToRotationVector2() * 0.5f, ColorLib.CelestialGradient, 0.4f, Main.rand.NextFloat(-0.1f, 0.1f), 90);
+                    ParticleEngine.Particles.Add(star2);
+                }
+
 
                 PixelParticlePlayer FX = new(Owner);
                 FX.Initialize(swordTip, (Projectile.rotation + (MathHelper.PiOver2 * Projectile.direction)).ToRotationVector2() * 0.3f, Color.Aquamarine, 2f, 30);

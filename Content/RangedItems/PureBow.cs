@@ -15,7 +15,11 @@ namespace DestroyerTest.Content.RangedItems
     {
         public override void SetStaticDefaults()
         {
-            ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<GloryOrb>();
+
+            if (ModLoader.HasMod("QoLCompendium"))
+            {
+                ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<GloryOrb>();
+            }
         }
         public override void SetDefaults()
         {

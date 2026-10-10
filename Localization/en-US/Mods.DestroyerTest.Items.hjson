@@ -5669,7 +5669,11 @@ BrutePotion: {
 
 Moongeist: {
 	DisplayName: Moongeist
-	Tooltip: Hits call 4 lunar flares down onto the enemy and shatter their defense.
+	Tooltip:
+		'''
+		Hits call 4 fusion flares down onto the enemy and shatter their defense.
+		Flares inflict Fusion Burn and explode.
+		'''
 }
 
 Tibel: {
@@ -5678,7 +5682,6 @@ Tibel: {
 		'''
 		Hits inflict Void Touched, release homng stars, and shatter enemy defense.
 		A spray of 5 stars is released between swings.
-
 		'''
 }
 
@@ -5691,5 +5694,38 @@ VoidGauntlet: {
 		22% increased Melee Scale.
 		27% increased Melee damage.
 		17% increased True Melee damage.
+		'''
+}
+
+HellBoots: {
+	DisplayName: Hell Boots
+	Tooltip: 10% increased movement speed.
+}
+
+HellKnighthelm: {
+	DisplayName: Hell Knighthelm
+	Tooltip: Increases True Melee armor penetration by 20.
+	SetBonus:
+		'''
+		Melee scale increased by 35%.
+		Damage taken reduced by 20%.
+		12% increased Melee damage.
+		You emit light.
+		'''
+}
+
+HellPlatemail: {
+	DisplayName: Hell Platemail
+	Tooltip: 9% increased Damage.
+}
+
+HellEldritchHelmet: {
+	DisplayName: Hell Eldritch Helmet
+	Tooltip: 3% increased Damage
+	SetBonus:
+		'''
+		20% increased damage.
+		You have a 10% chance when hitting an enemy to create a hellfire explosion dealing 300 damage and scaling with all damage modifiers.
+		You emit light.
 		'''
 }

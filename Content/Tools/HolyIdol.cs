@@ -17,6 +17,7 @@ namespace DestroyerTest.Content.Tools
         public override void SetStaticDefaults()
         {
             Item.ResearchUnlockCount = 5;
+
         }
 
         public override void SetDefaults()

@@ -35,7 +35,7 @@ namespace DestroyerTest.Content.MeleeWeapons
             Item.useTurn = true;
 
             Item.DamageType = DamageClass.Melee;
-            Item.damage = 800;
+            Item.damage = 3400;
             Item.knockBack = 6;
             Item.crit = 4;
 

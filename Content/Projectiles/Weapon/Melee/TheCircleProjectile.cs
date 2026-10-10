@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BreadLibrary.Core.Utilities;
+using DestroyerTest.Common;
 using DestroyerTest.Content.Dusts;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -53,9 +56,36 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         // ai[0] being negative makes the yoyo move back towards the player
         // Any AI method can be used for dust, spawning projectiles, etc specific to your yoyo.
 
+        float radius = 0f;
+
+  
         public override void PostAI()
         {
-            Lighting.AddLight(Projectile.Center, Color.LightCoral.ToVector3() * 0.5f);
+            if (radius < 30)
+            {
+                radius += 0.1f;
+            }
+
+
+
+            //Lighting.AddLight(Projectile.Center, Color.Coral.ToVector3());
+        }
+
+        public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
+        {
+            return Utilities.CircularHitboxCollision(Projectile.Center, radius, targetHitbox);
+        }
+
+        public override bool PreDraw(ref Color lightColor)
+        {
+            for( int i = 0; i < 4; i++ )
+            {
+                Main.EntitySpriteDraw(DTAssetLib.Circle.Value,  (Projectile.Center + new Vector2(10, 0).RotatedBy((Projectile.rotation * 0.1f) + (MathHelper.PiOver2 * i))) - Main.screenPosition, null, Color.DarkRed with { A = 0 } * 0.1f, Projectile.rotation, DTAssetLib.Circle.Size() / 2, DTAssetLib.Circle.Value.ScaleRingTextureToMatchRadius(radius, 300), SpriteEffects.None, 0f);
+            }
+          
+            
+            Main.EntitySpriteDraw(DTAssetLib.Circle.Value, Projectile.Center - Main.screenPosition, null, Color.DarkRed with { A = 0 } * 0.4f, Projectile.rotation, DTAssetLib.Circle.Size() / 2, DTAssetLib.Circle.Value.ScaleRingTextureToMatchRadius(radius * 0.8f, 300), SpriteEffects.None, 0f);
+            return true;
         }
     }
 }

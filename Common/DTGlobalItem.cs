@@ -51,7 +51,7 @@ namespace DestroyerTest.Common
 	{
 		public static void GetSoot(Recipe recipe, Item item, List<Item> consumedItems, Item destinationStack) 
         {
-			if (Main.rand.NextBool(24)) 
+			if (Main.rand.NextBool(200)) 
             {
 				
 				Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_FromThis(), ModContent.ItemType<Soot>(), Main.rand.Next(1, 5));
@@ -194,6 +194,13 @@ namespace DestroyerTest.Common
 
                 return false;
             }
+            if (item.rare == ModContent.RarityType<CelestialRarity>() && line.Name == "ItemName")
+            {
+                Color[] colors = [ColorLib.Solar, Color.Lerp(ColorLib.Solar, ColorLib.Nebula, 0.5f), ColorLib.Nebula, Color.Lerp(ColorLib.Nebula , ColorLib.Stardust, 0.5f), ColorLib.Stardust, Color.Lerp(ColorLib.Stardust, ColorLib.Vortex, 0.5f), ColorLib.Vortex, Color.Lerp(ColorLib.Vortex, ColorLib.Solar, 0.5f)];
+                DTUtils.SweepColorOverString(line.Text, colors, Color.White, new Vector2(line.X, line.Y), -20);
+                return false;
+            }
+
             if (item.rare == ModContent.RarityType<ContenderRarity>() && line.Name == "ItemName")
             {
                 float speed = 0.08f;

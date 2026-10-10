@@ -135,7 +135,7 @@ namespace DestroyerTest.Content.Projectiles
                 }
 
                 P = MathHelper.Lerp(-1.3f, 0.6f, Progress);
-                V = MathHelper.Lerp(0f, 0.5f, Progress);
+                V = MathHelper.Lerp(0f, 0.4f, Progress);
 
 
 

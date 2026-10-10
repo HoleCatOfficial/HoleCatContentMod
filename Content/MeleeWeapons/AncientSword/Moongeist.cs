@@ -42,7 +42,7 @@ namespace DestroyerTest.Content.MeleeWeapons.AncientSword
             Item.crit = 4;
 
             Item.value = Item.buyPrice(gold: 1);
-            Item.rare = ItemRarityID.Orange;
+            Item.rare = ModContent.RarityType<CelestialRarity>();
             Item.shoot = ModContent.ProjectileType<MoongeistSwing>();
             Item.noUseGraphic = true;
             Item.channel = true;

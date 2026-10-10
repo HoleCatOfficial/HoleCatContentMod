@@ -2,6 +2,7 @@
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Weapon.Magic;
 using DestroyerTest.Content.RangedItems;
+using DestroyerTest.Content.Scepter;
 using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
 using System.Linq;
@@ -19,7 +20,11 @@ namespace DestroyerTest.Content.Magic
         public override void SetStaticDefaults()
         {
             Item.staff[Type] = true;
-            ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<Purity>();
+
+            if (ModLoader.HasMod("QoLCompendium"))
+            {
+                ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<SpectrumScepter>();
+            }
         }
         public override void SetDefaults()
         {
