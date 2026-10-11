@@ -15,16 +15,18 @@ namespace DestroyerTest.Common.Systems
     {
         public override void PostDrawInterface(SpriteBatch spriteBatch)
         {
+            /*
             foreach (NPC N in Main.ActiveNPCs)
             {
                 if (N.type == ModContent.NPCType<WyvernCorpseHead>())
                 {
                     if (Main.FrameSkipMode == Terraria.Enums.FrameSkipMode.On)
                     {
-                        Utils.DrawBorderStringBig(spriteBatch, "You may experience framrate drops when using Frame Skip mode: ON. Use subtle to avoid this.", new Vector2(Main.screenWidth / 2, (Main.screenHeight / 2) + 400), Color.Orange, 1f, 0.5f, 0.5f);
+                        //Utils.DrawBorderStringBig(spriteBatch, "You may experience framrate drops when using Frame Skip mode: ON. Use subtle to avoid this.", new Vector2(Main.screenWidth / 2, (Main.screenHeight / 2) + 400), Color.Orange, 1f, 0.5f, 0.5f);
                     }
                 }
             }
+            */
         }
     }
 }

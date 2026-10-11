@@ -257,32 +257,35 @@ namespace DestroyerTest.Content.Entities
                 EternityScrollX += 4;
                 EternityScrollY += 2;
 
+                float GlobalOpacity = DTConfig.instance.PhotosensitivityMode ? 0.3f : 1f;
+
+                Main.EntitySpriteDraw(DTAssetLib.Vingette2.Value, player.Center - Main.screenPosition, null, Color.White with { A = 0 } * GlobalOpacity, 0f, DTAssetLib.Vingette2.Value.Size() / 2, 1.5f, SpriteEffects.None, 0f);
+
+                var Cap = spriteBatch.Capture();
+
+                spriteBatch.End();
+
+                Cap.SamplerState = SamplerState.PointWrap;
+
+                spriteBatch.Begin(Cap);
+
+                Vector2 Position = Main.Camera.ScaledPosition;
+
+
+                //Why do you use noise 3 for noise 10's drawing?
+                //I don't know, but doing it any other way causes it to not fit properly on the screen without needing to scale up the texture further, and I like the scale it's at.
+                Main.EntitySpriteDraw(DTAssetLib.TilableNoise(10).Value, Position - Main.screenPosition, new Rectangle(EternityScrollX, EternityScrollY, Main.screenWidth, Main.screenHeight), (ColorLib.Soul3 with { A = 0 } * 0.5f) * GlobalOpacity, 0f, DTAssetLib.TilableNoise(3).Value.Size() / 2, 6f, SpriteEffects.None, 0f);
+                Main.EntitySpriteDraw(DTAssetLib.TilableNoise(10).Value, Position - Main.screenPosition, new Rectangle((int)(EternityScrollX * 1.2f), (int)(EternityScrollY * 1.2f),  Main.screenWidth, Main.screenHeight), (ScrollBackColor with { A = 0 } * 0.35f) * GlobalOpacity, 0f, DTAssetLib.TilableNoise(3).Value.Size() / 2, 6f, SpriteEffects.None, 0f);
+                Main.EntitySpriteDraw(DTAssetLib.TilableNoise(10).Value, Position - Main.screenPosition, new Rectangle((int)(EternityScrollX * 1.1f), (int)(EternityScrollY * 1.1f), Main.screenWidth, Main.screenHeight), (Color.White with { A = 0 } * 0.75f) * GlobalOpacity, 0f, DTAssetLib.TilableNoise(3).Value.Size() / 2, 6f, SpriteEffects.None, 0f);
+
+
                 if (!DTConfig.instance.PhotosensitivityMode)
                 {
-
-                    Main.EntitySpriteDraw(DTAssetLib.Vingette2.Value, player.Center - Main.screenPosition, null, Color.White with { A = 0 }, 0f, DTAssetLib.Vingette2.Value.Size() / 2, 1.5f, SpriteEffects.None, 0f);
-
-                    var Cap = spriteBatch.Capture();
-
-                    spriteBatch.End();
-
-                    Cap.SamplerState = SamplerState.PointWrap;
-
-                    spriteBatch.Begin(Cap);
-
-                    Vector2 Position = Main.Camera.ScaledPosition;
-
-
-                    //Why do you use noise 3 for noise 10's drawing?
-                    //I don't know, but doing it any other way causes it to not fit properly on the screen without needing to scale up the texture further, and I like the scale it's at.
-                    Main.EntitySpriteDraw(DTAssetLib.TilableNoise(10).Value, Position - Main.screenPosition, new Rectangle(EternityScrollX, EternityScrollY, Main.screenWidth, Main.screenHeight), ColorLib.Soul3 with { A = 0 } * 0.5f, 0f, DTAssetLib.TilableNoise(3).Value.Size() / 2, 6f, SpriteEffects.None, 0f);
-                    Main.EntitySpriteDraw(DTAssetLib.TilableNoise(10).Value, Position - Main.screenPosition, new Rectangle((int)(EternityScrollX * 1.2f), (int)(EternityScrollY * 1.2f),  Main.screenWidth, Main.screenHeight), ScrollBackColor with { A = 0 } * 0.35f, 0f, DTAssetLib.TilableNoise(3).Value.Size() / 2, 6f, SpriteEffects.None, 0f);
-                    Main.EntitySpriteDraw(DTAssetLib.TilableNoise(10).Value, Position - Main.screenPosition, new Rectangle((int)(EternityScrollX * 1.1f), (int)(EternityScrollY * 1.1f), Main.screenWidth, Main.screenHeight), Color.White with { A = 0 } * 0.75f, 0f, DTAssetLib.TilableNoise(3).Value.Size() / 2, 6f, SpriteEffects.None, 0f);
-
                     Main.EntitySpriteDraw(DTAssetLib.Square.Value, Position - Main.screenPosition, null, Color.White with { A = 0 } * FlashOpacity, 0f, DTAssetLib.Square.Value.Size() / 2, 4000f, SpriteEffects.None, 0f);
-
-                    spriteBatch.ResetToDefault();
                 }
+
+                spriteBatch.ResetToDefault();
+                
             }
 
             
@@ -758,7 +761,7 @@ namespace DestroyerTest.Content.Entities
 
             CanDie = DeathTimer >= 301;
 
-            if (DestroyerTestMod.EternityIsActive)
+            if (DestroyerTestMod.EternityIsActive || DestroyerTestMod.DeathIsActive)
             {
                 if (NPC.life <= NPC.lifeMax * 0.01f)
                 {

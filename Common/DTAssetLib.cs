@@ -58,10 +58,11 @@ namespace DestroyerTest.Common
         public const string EffectPath = "DestroyerTest/Assets/Effects";
         public const string FontPath = "DestroyerTest/Assets/Fonts";
 
-        public static Asset<SpriteFont> Arial = ModContent.Request<SpriteFont>(FontPath + "/arial", AssetRequestMode.AsyncLoad);
-        public static Asset<SpriteFont> Doxent = ModContent.Request<SpriteFont>(FontPath + "/doxent", AssetRequestMode.AsyncLoad);
+        public static Asset<SpriteFont> Arial = ModContent.Request<SpriteFont>(FontPath + "/arial", AssetRequestMode.ImmediateLoad);
+        public static Asset<SpriteFont> Doxent = ModContent.Request<SpriteFont>(FontPath + "/doxent", AssetRequestMode.ImmediateLoad);
+        public static Asset<DynamicSpriteFont> DoxentDynamic = new DynamicSpriteFont(DTAssetLib.Doxent.Value.Spacing, DTAssetLib.Doxent.Value.LineSpacing, (char)DTAssetLib.Doxent.Value.DefaultCharacter);
 
-        
+        FontAssets
 
         //
         //Practical, Every-Day VFX Textures

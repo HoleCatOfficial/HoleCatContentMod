@@ -322,7 +322,7 @@ namespace DestroyerTest.Common
 
             for (int i = 0; i < input.Length; i++)
             {
-                int colorIndex = ((i + offset) % colors.Length + colors.Length) % colors.Length;
+                int colorIndex = (i + offset) % colors.Length;
 
                 snippets[i] = new TextSnippet(
                     input[i].ToString(),
@@ -365,6 +365,64 @@ namespace DestroyerTest.Common
             }
 
             ChatManager.DrawColorCodedString(Main.spriteBatch, FontAssets.MouseText.Value, snippets, textPos, Color.White, 0f, Vector2.Zero, Vector2.One, out _, float.MaxValue);
+
+        }
+
+        public static void SweepColorOverString(DynamicSpriteFont font, string input, Color[] colors, Vector2 textPos, float speed = 6f)
+        {
+            if (string.IsNullOrEmpty(input) || colors == null || colors.Length == 0)
+                return;
+
+            float time = Main.GlobalTimeWrappedHourly * speed; // speed control
+            int offset = (int)time;
+
+            TextSnippet[] snippets = new TextSnippet[input.Length];
+
+            for (int i = 0; i < input.Length; i++)
+            {
+                int colorIndex = (i + offset) % colors.Length;
+
+                snippets[i] = new TextSnippet(
+                    input[i].ToString(),
+                    colors[colorIndex]
+                );
+            }
+
+            for (int i = 0; i < 8; i++)
+            {
+                ChatManager.DrawColorCodedString(Main.spriteBatch, font, input, textPos + new Vector2(1f, 0f).RotatedBy(MathHelper.PiOver4 * i), Color.Black, 0f, Vector2.Zero, Vector2.One);
+            }
+
+            ChatManager.DrawColorCodedString(Main.spriteBatch, font, snippets, textPos, Color.White, 0f, Vector2.Zero, Vector2.One, out _, float.MaxValue);
+
+        }
+
+        public static void SweepColorOverString(DynamicSpriteFont font, string input, Color[] colors, Color OutlineColor, Vector2 textPos, float speed = 6f)
+        {
+            if (string.IsNullOrEmpty(input) || colors == null || colors.Length == 0)
+                return;
+
+            float time = Main.GlobalTimeWrappedHourly * speed; // speed control
+            int offset = (int)time;
+
+            TextSnippet[] snippets = new TextSnippet[input.Length];
+
+            for (int i = 0; i < input.Length; i++)
+            {
+                int colorIndex = ((i + offset) % colors.Length + colors.Length) % colors.Length;
+
+                snippets[i] = new TextSnippet(
+                    input[i].ToString(),
+                    colors[colorIndex]
+                );
+            }
+
+            for (int i = 0; i < 8; i++)
+            {
+                ChatManager.DrawColorCodedString(Main.spriteBatch, font, input, textPos + new Vector2(1f, 0f).RotatedBy(MathHelper.PiOver4 * i), OutlineColor, 0f, Vector2.Zero, Vector2.One);
+            }
+
+            ChatManager.DrawColorCodedString(Main.spriteBatch, font, snippets, textPos, Color.White, 0f, Vector2.Zero, Vector2.One, out _, float.MaxValue);
 
         }
 
@@ -1774,6 +1832,14 @@ namespace DestroyerTest.Common
         /// The main color used in Soul related things. All other Soul colors derive from this.
         /// </summary>
         public static Color Soul3 = new Color(255, 182, 35);
+
+        public static Color[] SoulColorMap = 
+        [
+            SoulLight,
+            Soul,
+            Soul2,
+            Soul3
+        ];
 
         /// <summary>
         /// Used for all things Hellfire!

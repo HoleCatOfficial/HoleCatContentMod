@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Terraria;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 
 namespace DestroyerTest.Common.Systems
 {
@@ -22,5 +23,20 @@ namespace DestroyerTest.Common.Systems
                 }
             }
         }
+
+        public override void SaveWorldData(TagCompound tag)
+        {
+            tag.Add("FirstEclipse", FirstEclipse);
+        }
+
+        public override void LoadWorldData(TagCompound tag)
+        {
+            if (tag.ContainsKey("FirstEclipse"))
+            {
+                FirstEclipse = tag.GetBool("FirstEclipse");
+            }
+        }
     }
+
+    
 }

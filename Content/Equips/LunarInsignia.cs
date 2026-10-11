@@ -52,7 +52,7 @@ namespace DestroyerTest.Content.Equips
 
             if (Precision)
             {
-                player.moveSpeed *= 0.6f;
+                player.velocity.X *= 0.8f;
             }
 
             if (SwitchCooldown <= 0 && DestroyerTestMod.LunarInsigniaModeSwitchKeybind.JustPressed)

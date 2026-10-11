@@ -22,11 +22,11 @@ namespace DestroyerTest.Content.SummonItems
         public int HitCount = 0;
         public override void SetDefaults()
         {
-            Item.DefaultToWhip(ModContent.ProjectileType<WretchedWhipProjectile>(), 76, 1, 0.5f);
+            Item.DefaultToWhip(ModContent.ProjectileType<WretchedWhipProjectile>(), 96, 1, 0.5f);
             Item.UseSound = new SoundStyle(DTAssetLib.AudioPath + "/WretchedWhip/Swing", 2) { MaxInstances = 0, PitchVariance = 0.4f };
             Item.useAnimation = 34;
             Item.useTime = 34;
-            Item.shootSpeed = 8f;
+            Item.shootSpeed = 10.5f;
             Item.useStyle = ItemUseStyleID.Thrust;
             Item.rare = ModContent.RarityType<WretchedRarity>();
             Item.channel = true;

@@ -21,6 +21,7 @@ using Terraria.DataStructures;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 
 namespace DestroyerTest.Content.Equips
 {
@@ -105,6 +106,19 @@ namespace DestroyerTest.Content.Equips
                 {
                     Heart.Pet = false;
                 }
+            }
+        }
+
+        public override void SaveData(TagCompound tag)
+        {
+            tag.Add("Pet", Pet);
+        }
+
+        public override void LoadData(TagCompound tag)
+        {
+            if (tag.ContainsKey("Pet"))
+            {
+                Pet = tag.GetBool("Pet");
             }
         }
 

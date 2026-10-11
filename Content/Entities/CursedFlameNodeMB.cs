@@ -22,6 +22,7 @@ using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss;
 using DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame;
 using DestroyerTest.Content.Resources;
+using DestroyerTest.Content.SummonItems;
 using DestroyerTest.Content.Tiles;
 using DestroyerTest.Content.Tools;
 using GlowmaskHelper.Content;
@@ -260,6 +261,8 @@ namespace DestroyerTest.Content.Entities
         public SoundStyle WallShoot1 = new SoundStyle("DestroyerTest/Assets/Audio/FlameWall") with { MaxInstances = 0, PitchVariance = 1, Volume = 2 };
         public SoundStyle NapalmShoot = new SoundStyle("DestroyerTest/Assets/Audio/NodeAttackNapalm") with { MaxInstances = 0, PitchVariance = 1 };
         public int DespawnTimer = 60;
+
+        public int EternAttackCooldown = 240;
         public override void AI()
         {
             NPC.TargetClosest();
@@ -464,9 +467,26 @@ namespace DestroyerTest.Content.Entities
 
                             if (StarShootCount > 8)
                             {
-                                CurrentAttack = AttackState.Mines;
-                                StarShootCount = 0;
-                                StarTimer = 0;
+                                if (!DestroyerTestMod.EternityIsActive && !DestroyerTestMod.DeathIsActive)
+                                {
+                                    CurrentAttack = AttackState.Mines;
+                                    StarShootCount = 0;
+                                    StarTimer = 0;
+                                }
+                                else
+                                {
+                                    if (EternAttackCooldown > 0)
+                                    {
+                                        EternAttackCooldown--;
+                                    }
+                                    else
+                                    {
+                                        CurrentAttack = AttackState.Mines;
+                                        StarShootCount = 0;
+                                        StarTimer = 0;
+                                        EternAttackCooldown = 240;
+                                    }
+                                }
                             }
                         }
 
@@ -512,9 +532,26 @@ namespace DestroyerTest.Content.Entities
 
                         if (MineCount >= 3 && MineCooldown <= 0)
                         {
-                            CurrentAttack = AttackState.FlameSwarm;
-                            MineCount = 0;
-                            MineCooldown = 240;
+                            if (!DestroyerTestMod.EternityIsActive && !DestroyerTestMod.DeathIsActive)
+                            {
+                                CurrentAttack = AttackState.FlameSwarm;
+                                MineCount = 0;
+                                MineCooldown = 240;
+                            }
+                            else
+                            {
+                                if (EternAttackCooldown > 0)
+                                {
+                                    EternAttackCooldown--;
+                                }
+                                else
+                                {
+                                    CurrentAttack = AttackState.FlameSwarm;
+                                    MineCount = 0;
+                                    MineCooldown = 240;
+                                    EternAttackCooldown = 240;
+                                }
+                            }
                         }
                         break;
                     }
@@ -899,6 +936,7 @@ namespace DestroyerTest.Content.Entities
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<WretchedShards>(), 1, 4, 16));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CursedFlameScroll>(), 1, 1, 1));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Malevolence>(), 2, 1, 1));
+            npcLoot.Add(ItemDropRule.ByCondition(new ExpertOnlyDropRuleCondition(), ModContent.ItemType<WretchedWhip>(), 1, 1, 1));
             npcLoot.Add(ItemDropRule.ByCondition(new EternityDropRuleCondition(), ModContent.ItemType<UnyieldingSkull>(), 1, 1, 1));
             npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Item_CursedFlameNodeRelic>()));
             npcLoot.Add(ItemDropRule.Common(ItemID.FlaskofCursedFlames, 3, 1, 9));

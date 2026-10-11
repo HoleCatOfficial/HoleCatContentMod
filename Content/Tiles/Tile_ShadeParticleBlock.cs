@@ -14,7 +14,7 @@ namespace DestroyerTest.Content.Tiles
 	{
 		public override void SetStaticDefaults() {
 			Main.tileSolid[Type] = true;
-			Main.tileMergeDirt[Type] = false;
+            Main.tileBlendAll[Type] = true;
             Main.tileLighted[Type] = true;
             
             HitSound = SoundID.Item50;

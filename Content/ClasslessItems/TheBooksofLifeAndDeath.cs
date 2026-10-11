@@ -71,7 +71,7 @@ namespace DestroyerTest.Content.ClasslessItems
                     Rainbow[i] = Main.hslToRgb(new Vector3(shiftedHue, HSL.Y, HSL.Z));
                 }
 
-                DTUtils.SweepColorOverString(line.Text, Rainbow, new Vector2(line.X, line.Y), 16f);
+                DTUtils.SweepColorOverString(line.Text, Rainbow, new Vector2(line.X, line.Y), 22f);
                 return false;
             }
             return true;

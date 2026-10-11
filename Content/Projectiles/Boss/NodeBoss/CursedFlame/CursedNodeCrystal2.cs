@@ -26,8 +26,8 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame
 
         public override void SetDefaults()
         {
-            Projectile.width = 30; // The width of projectile hitbox
-            Projectile.height = 30; // The height of projectile hitbox
+            Projectile.width = 18; // The width of projectile hitbox
+            Projectile.height = 18; // The height of projectile hitbox
             Projectile.friendly = false; // Can the projectile deal damage to enemies?
             Projectile.hostile = true; // Can the projectile deal damage to the player?
             Projectile.ignoreWater = true; // Does the projectile's speed be influenced by water?

@@ -366,6 +366,7 @@ namespace DestroyerTest.Content.UI
         public static Vector2[] NodeLockShake;
 
         float BarOpacity = 1f;
+        public float eternityShadowRot = 0;
 
         protected override void DrawSelf(SpriteBatch spriteBatch)
         {
@@ -449,11 +450,11 @@ namespace DestroyerTest.Content.UI
                                 {
                                     if (DTCrossMod.FablesIsLoaded)
                                     {
-                                        return new Vector2((drawPos.X - 317), drawPos.Y - 2) + new Vector2((NodeLockDimensions.Width * Main.UIScale * DTUIConfig.instance.CustomBossBarScaleModifier) * i, 0);
+                                        return new Vector2((drawPos.X - (150 * DTUIConfig.instance.CustomBossBarScaleModifier)), drawPos.Y - 2) + new Vector2((NodeLockDimensions.Width * Main.UIScale * DTUIConfig.instance.CustomBossBarScaleModifier) * i, 0);
                                     }
                                     else
                                     {
-                                        return new Vector2((drawPos.X - 375), drawPos.Y - 2) + new Vector2((NodeLockDimensions.Width * Main.UIScale * DTUIConfig.instance.CustomBossBarScaleModifier) * i, 0);
+                                        return new Vector2((drawPos.X - (300 * DTUIConfig.instance.CustomBossBarScaleModifier)), drawPos.Y - 2) + new Vector2((NodeLockDimensions.Width * Main.UIScale * DTUIConfig.instance.CustomBossBarScaleModifier) * i, 0);
                                     }
                                 }
                                 Vector2 NodeLockDrawPos = GetNodeLockDrawPos();
@@ -483,6 +484,15 @@ namespace DestroyerTest.Content.UI
 
 
                     var TEXT = Language.GetTextValue("Mods.DestroyerTest.NPCs.WyvernCorpseHead.BossBarDisplayName");
+                    Color[] EternShadowColors = ColorLib.SoulColorMap.Select(n => { n.A = 0; return n; }).ToArray();
+                    if ((DestroyerTestMod.EternityIsActive || DestroyerTestMod.DeathIsActive) && DTAssetLib.DoxentDynamic != null)
+                    {
+                        eternityShadowRot += 0.2f;
+                        for (int i = 0; i < 4; i++)
+                        {
+                            DTUtils.SweepColorOverString(DTAssetLib.DoxentDynamic, TEXT, EternShadowColors, Color.White with { A = 0 }, (drawPos + new Vector2(0, -24f * DTUIConfig.instance.CustomBossBarScaleModifier)) + new Vector2(DTUIConfig.instance.CustomBossBarScaleModifier, 0f).RotatedBy((MathHelper.PiOver2 * i) + eternityShadowRot));
+                        }
+                    }
                     spriteBatch.DrawString(DTAssetLib.Doxent.Value, TEXT, drawPos + new Vector2(0, -24f * DTUIConfig.instance.CustomBossBarScaleModifier), Color.White * BarOpacity, 0f, DTAssetLib.Doxent.Value.MeasureString(TEXT) * 0.5f, Main.UIScale * ((DTUIConfig.instance.CustomBossBarScaleModifier / 2.5f) * 0.7f), SpriteEffects.None, 0f);
 
                     string DefText = $"Defense: {WC.defense}";

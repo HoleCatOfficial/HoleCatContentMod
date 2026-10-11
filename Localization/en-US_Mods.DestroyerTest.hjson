@@ -201,4 +201,5 @@ DropConditions: {
 	EternityMode: Eternity Mode
 	MasochistMode: Masochist Mode
 	EvilBiome: Mods.DestroyerTest.DropConditions.EvilBiome
+	ExpertOnly: Mods.DestroyerTest.DropConditions.ExpertOnly
 }
