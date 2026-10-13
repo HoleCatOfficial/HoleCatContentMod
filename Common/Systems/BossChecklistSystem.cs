@@ -1,6 +1,5 @@
 ﻿using DestroyerTest.Content.BossSummons;
 using DestroyerTest.Content.CheatItems;
-using DestroyerTest.Content.Consumables;
 using DestroyerTest.Content.Consumables.Flasks;
 using DestroyerTest.Content.Entities;
 using DestroyerTest.Content.Equips;

@@ -9,6 +9,7 @@
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 	</PropertyGroup>
 	<ItemGroup>
+	  <None Include=".github\.workflows\build.yml" />
 	  <None Include=".git\config" />
 	  <None Include=".git\description" />
 	  <None Include=".git\HEAD" />

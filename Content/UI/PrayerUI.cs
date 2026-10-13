@@ -46,16 +46,17 @@ namespace DestroyerTest.Content.UI
             panel = new UIPanel();
             panel.HAlign = 0.5f;
             panel.VAlign = 0.5f;
-            panel.Top.Set(-150f, 0f);
-            panel.Width.Set(200f, 0f);
-            panel.Height.Set(200f, 0f);
-            panel.BackgroundColor = new Color(20, 20, 40, 200);
+            panel.Top.Set(-150f * Main.UIScale, 0f);
+            panel.Width.Set(200f * Main.UIScale, 0f);
+            panel.Height.Set(160f * Main.UIScale, 0f);
+            panel.BackgroundColor = new Color(0, 0, 0, 0);
 
+            panel.BorderColor = Color.Transparent;
             panel.OnLeftMouseDown += StartDrag;
             panel.OnLeftMouseUp += EndDrag;
             Append(panel);
 
-            Header = new UIText("Make an offer", 0.85f, false);
+            Header = new UIText("Make an offer", 0.85f * Main.UIScale, false);
             Header.HAlign = 0.5f;
             Header.VAlign = 0.1f;
             Header.TextColor = ColorLib.Soul;
@@ -63,9 +64,9 @@ namespace DestroyerTest.Content.UI
 
             //Offer Slot
 
-            offeringSlotLabel = new UIText("Offering", 0.75f, false);
-            offeringSlotLabel.HAlign = 0.5f;
-            offeringSlotLabel.VAlign = 0.35f;
+            offeringSlotLabel = new UIText("Offering", 0.75f * Main.UIScale, false);
+            offeringSlotLabel.HAlign = 0.2f;
+            offeringSlotLabel.VAlign = 0.2f;
             offeringSlotLabel.TextColor = Color.White;
             panel.Append(offeringSlotLabel);
 
@@ -73,18 +74,18 @@ namespace DestroyerTest.Content.UI
             OfferingItem[0] = new Item();
             OfferingItem[0].TurnToAir();
             OfferingSlot = new UIItemSlot(OfferingItem, 0, 0);
-            OfferingSlot.Width.Set(24, 0);
-            OfferingSlot.Height.Set(24, 0);
-            OfferingSlot.HAlign = 0.5f;
-            OfferingSlot.VAlign = 0.5f;
+            OfferingSlot.Width.Set(24 * Main.UIScale, 0);
+            OfferingSlot.Height.Set(24 * Main.UIScale, 0);
+            OfferingSlot.HAlign = 0.2f;
+            OfferingSlot.VAlign = 0.4f;
 
             panel.Append(OfferingSlot);
 
             //Herb slot
 
-            herbSlotLabel = new UIText("Herb", 0.75f, false);
+            herbSlotLabel = new UIText("Herb", 0.75f * Main.UIScale, false);
             herbSlotLabel.HAlign = 0.8f;
-            herbSlotLabel.VAlign = 0.35f;
+            herbSlotLabel.VAlign = 0.2f;
             herbSlotLabel.TextColor = Color.White;
             panel.Append(herbSlotLabel);
 
@@ -92,34 +93,28 @@ namespace DestroyerTest.Content.UI
             HerbItem[0] = new Item();
             HerbItem[0].TurnToAir();
             HerbSlot = new UIItemSlot(HerbItem, 0, 0);
-            HerbSlot.Width.Set(24, 0);
-            HerbSlot.Height.Set(24, 0);
+            HerbSlot.Width.Set(24 * Main.UIScale, 0);
+            HerbSlot.Height.Set(24 * Main.UIScale, 0);
             HerbSlot.HAlign = 0.8f;
-            HerbSlot.VAlign = 0.5f;
+            HerbSlot.VAlign = 0.4f;
             
             panel.Append(HerbSlot);
 
             //Button
 
             blessButton = new UIImageButton(ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/BlessingButton"));
-            blessButton.Width.Set(76, 0);
-            blessButton.Height.Set(28, 0);
-            blessButton.HAlign = 0.5f;
-            blessButton.VAlign = 0.85f;
+            blessButton.Width.Set(76 * Main.UIScale, 0);
+            blessButton.Height.Set(28 * Main.UIScale, 0);
+            blessButton.HAlign = 0.68f;
+            blessButton.VAlign = 0.54f;
             blessButton.OnLeftClick += CheckOffer;
             panel.Append(blessButton);
-
-            blessButtonText = new UIText("Offer", 0.75f, false);
-            blessButtonText.HAlign = 0.5f;
-            blessButtonText.VAlign = 0.8f;
-            blessButtonText.TextColor = Color.White;
-            panel.Append(blessButtonText);
 
             //Close functionality
 
             CloseButton = new UIImageButton(ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/CloseButton"));
-            CloseButton.Width.Set(24f, 0f);
-            CloseButton.Height.Set(24f, 0f);
+            CloseButton.Width.Set(24f * Main.UIScale, 0f);
+            CloseButton.Height.Set(24f * Main.UIScale, 0f);
             CloseButton.HAlign = 0.05f;
             CloseButton.VAlign = 0.05f;
             CloseButton.OnLeftClick += close;
@@ -129,6 +124,13 @@ namespace DestroyerTest.Content.UI
         public override void OnActivate()
         {
             
+        }
+
+        protected override void DrawSelf(SpriteBatch spriteBatch)
+        {
+            Texture2D Panel = ModContent.Request<Texture2D>("DestroyerTest/Content/Extras/AltarUI").Value;
+
+            spriteBatch.Draw(Panel, panel.GetDimensions().Center(), null, Color.White, 0f, Panel.Size() / 2, 1f, SpriteEffects.None, 0f);
         }
 
         public List<int> ValidHerbTypes = new List<int>

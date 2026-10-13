@@ -3,12 +3,15 @@ using BreadLibrary.Core.Utilities;
 using BreadLibrary.Core.Verlet;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Equips;
+using DestroyerTest.Content.Projectiles.EntitiesProjectiles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using ReLogic.Content;
 using System;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
@@ -178,13 +181,15 @@ namespace DestroyerTest.Content.Entities
 
             return base.PreAI();
         }
+
+        int EternityHandTimer = 0;
         public override void AI()
         {
             NPC.TargetClosest();
             Player player = Main.player[NPC.target];
 
-            if(NPC.Distance(player.Center)<LookRange *2)
-            NPC.velocity = Vector2.Lerp(NPC.velocity, NPC.DirectionTo(player.Center + Vector2.UnitY * -60+ Vector2.UnitY* MathF.Sin(Timer*0.1f)*10)* NPC.velocity.Length(), 0.65f);
+            if (NPC.Distance(player.Center) < LookRange * 2)
+                NPC.velocity = Vector2.Lerp(NPC.velocity, NPC.DirectionTo(player.Center + Vector2.UnitY * -60 + Vector2.UnitY * MathF.Sin(Timer * 0.1f) * 10) * NPC.velocity.Length(), 0.65f);
 
 
 
@@ -201,6 +206,16 @@ namespace DestroyerTest.Content.Entities
             TextureRotationOffset -= 0.02f;
             UpdateHands();
             Timer++;
+
+            if (DestroyerTestMod.EternityIsActive)
+            {
+                EternityHandTimer++;
+                if (EternityHandTimer % 300 == 0)
+                {
+                    SoundEngine.PlaySound(DTAssetLib.Djinn.Hit with { Pitch = -0.4f, PitchVariance = 0.3f }, NPC.Center);
+                    Opus.RingSpreadProjectileRandom(ModContent.ProjectileType<GazerShadow>(), 3, player.Center, 300, 30, 4, -2f);
+                }
+            }
         }
 
 

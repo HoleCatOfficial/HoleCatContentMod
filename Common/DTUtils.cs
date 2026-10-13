@@ -1,4 +1,14 @@
 
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.Metrics;
+using System.IO;
+using System.Linq;
+using System.Media;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using System.Runtime.Intrinsics.X86;
 using BreadLibrary.Core;
 using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
@@ -22,16 +32,6 @@ using OpusLib.Content.Particles;
 using ReLogic.Content;
 using ReLogic.Graphics;
 using Steamworks;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.Metrics;
-using System.IO;
-using System.Linq;
-using System.Media;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Runtime.Intrinsics.X86;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -47,8 +47,9 @@ using Terraria.Modules;
 using Terraria.UI.Chat;
 using Terraria.Utilities;
 using Terraria.WorldBuilding;
-using static DestroyerTest.Common.Room;
 using static System.Net.Mime.MediaTypeNames;
+using static DestroyerTest.Common.Room;
+using static Terraria.GameContent.Animations.IL_Actions.Sprites;
 
 namespace DestroyerTest.Common
 {
@@ -310,7 +311,7 @@ namespace DestroyerTest.Common
         }
 
 
-        public static void SweepColorOverString(string input, Color[] colors, Vector2 textPos, float speed = 6f)
+        public static void SweepColorOverString(string input, Color[] colors, Vector2 textPos, float speed = 6f, float Scale = 1f)
         {
             if (string.IsNullOrEmpty(input) || colors == null || colors.Length == 0)
                 return;
@@ -332,14 +333,14 @@ namespace DestroyerTest.Common
 
             for (int i = 0; i < 8; i++)
             {
-                ChatManager.DrawColorCodedString(Main.spriteBatch, FontAssets.MouseText.Value, input, textPos + new Vector2(1f, 0f).RotatedBy(MathHelper.PiOver4 * i), Color.Black, 0f, Vector2.Zero, Vector2.One);
+                ChatManager.DrawColorCodedString(Main.spriteBatch, FontAssets.MouseText.Value, input, textPos + new Vector2(1f, 0f).RotatedBy(MathHelper.PiOver4 * i), Color.Black, 0f, Vector2.Zero, Vector2.One * Scale);
             }
 
-            ChatManager.DrawColorCodedString(Main.spriteBatch, FontAssets.MouseText.Value, snippets, textPos, Color.White, 0f, Vector2.Zero, Vector2.One, out _, float.MaxValue);
+            ChatManager.DrawColorCodedString(Main.spriteBatch, FontAssets.MouseText.Value, snippets, textPos, Color.White, 0f, Vector2.Zero, Vector2.One * Scale, out _, float.MaxValue);
 
         }
 
-        public static void SweepColorOverString(string input, Color[] colors, Color OutlineColor, Vector2 textPos, float speed = 6f)
+        public static void SweepColorOverString(string input, Color[] colors, Color OutlineColor, Vector2 textPos, float speed = 6f, float Scale = 1f)
         {
             if (string.IsNullOrEmpty(input) || colors == null || colors.Length == 0)
                 return;
@@ -361,14 +362,14 @@ namespace DestroyerTest.Common
 
             for (int i = 0; i < 8; i++)
             {
-                ChatManager.DrawColorCodedString(Main.spriteBatch, FontAssets.MouseText.Value, input, textPos + new Vector2(1f, 0f).RotatedBy(MathHelper.PiOver4 * i), OutlineColor, 0f, Vector2.Zero, Vector2.One);
+                ChatManager.DrawColorCodedString(Main.spriteBatch, FontAssets.MouseText.Value, input, textPos + new Vector2(1f, 0f).RotatedBy(MathHelper.PiOver4 * i), OutlineColor, 0f, Vector2.Zero, Vector2.One * Scale);
             }
 
-            ChatManager.DrawColorCodedString(Main.spriteBatch, FontAssets.MouseText.Value, snippets, textPos, Color.White, 0f, Vector2.Zero, Vector2.One, out _, float.MaxValue);
+            ChatManager.DrawColorCodedString(Main.spriteBatch, FontAssets.MouseText.Value, snippets, textPos, Color.White, 0f, Vector2.Zero, Vector2.One * Scale, out _, float.MaxValue);
 
         }
 
-        public static void SweepColorOverString(DynamicSpriteFont font, string input, Color[] colors, Vector2 textPos, float speed = 6f)
+        public static void SweepColorOverString(DynamicSpriteFont font, string input, Color[] colors, Vector2 textPos, float speed = 6f, float Scale = 1f)
         {
             if (string.IsNullOrEmpty(input) || colors == null || colors.Length == 0)
                 return;
@@ -390,14 +391,14 @@ namespace DestroyerTest.Common
 
             for (int i = 0; i < 8; i++)
             {
-                ChatManager.DrawColorCodedString(Main.spriteBatch, font, input, textPos + new Vector2(1f, 0f).RotatedBy(MathHelper.PiOver4 * i), Color.Black, 0f, Vector2.Zero, Vector2.One);
+                ChatManager.DrawColorCodedString(Main.spriteBatch, font, input, textPos + new Vector2(1f, 0f).RotatedBy(MathHelper.PiOver4 * i), Color.Black, 0f, Vector2.Zero, Vector2.One * Scale);
             }
 
-            ChatManager.DrawColorCodedString(Main.spriteBatch, font, snippets, textPos, Color.White, 0f, Vector2.Zero, Vector2.One, out _, float.MaxValue);
+            ChatManager.DrawColorCodedString(Main.spriteBatch, font, snippets, textPos, Color.White, 0f, Vector2.Zero, Vector2.One * Scale, out _, float.MaxValue);
 
         }
 
-        public static void SweepColorOverString(DynamicSpriteFont font, string input, Color[] colors, Color OutlineColor, Vector2 textPos, float speed = 6f)
+        public static void SweepColorOverString(DynamicSpriteFont font, string input, Color[] colors, Color OutlineColor, Vector2 textPos, float speed = 6f, float Scale = 1f)
         {
             if (string.IsNullOrEmpty(input) || colors == null || colors.Length == 0)
                 return;
@@ -419,10 +420,10 @@ namespace DestroyerTest.Common
 
             for (int i = 0; i < 8; i++)
             {
-                ChatManager.DrawColorCodedString(Main.spriteBatch, font, input, textPos + new Vector2(1f, 0f).RotatedBy(MathHelper.PiOver4 * i), OutlineColor, 0f, Vector2.Zero, Vector2.One);
+                ChatManager.DrawColorCodedString(Main.spriteBatch, font, input, textPos + new Vector2(1f, 0f).RotatedBy(MathHelper.PiOver4 * i), OutlineColor, 0f, Vector2.Zero, Vector2.One * Scale);
             }
 
-            ChatManager.DrawColorCodedString(Main.spriteBatch, font, snippets, textPos, Color.White, 0f, Vector2.Zero, Vector2.One, out _, float.MaxValue);
+            ChatManager.DrawColorCodedString(Main.spriteBatch, font, snippets, textPos, Color.White, 0f, Vector2.Zero, Vector2.One * Scale, out _, float.MaxValue);
 
         }
 

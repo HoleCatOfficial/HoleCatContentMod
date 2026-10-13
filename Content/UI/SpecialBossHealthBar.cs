@@ -484,13 +484,15 @@ namespace DestroyerTest.Content.UI
 
 
                     var TEXT = Language.GetTextValue("Mods.DestroyerTest.NPCs.WyvernCorpseHead.BossBarDisplayName");
-                    Color[] EternShadowColors = ColorLib.SoulColorMap.Select(n => { n.A = 0; return n; }).ToArray();
+                    //Color[] EternShadowColors = ColorLib.SoulColorMap.Select(n => { n.A = 0; return n; }).ToArray();
                     if ((DestroyerTestMod.EternityIsActive || DestroyerTestMod.DeathIsActive) && DTAssetLib.DoxentDynamic != null)
                     {
                         eternityShadowRot += 0.2f;
                         for (int i = 0; i < 4; i++)
                         {
-                            DTUtils.SweepColorOverString(DTAssetLib.DoxentDynamic, TEXT, EternShadowColors, Color.White with { A = 0 }, (drawPos + new Vector2(0, -24f * DTUIConfig.instance.CustomBossBarScaleModifier)) + new Vector2(DTUIConfig.instance.CustomBossBarScaleModifier, 0f).RotatedBy((MathHelper.PiOver2 * i) + eternityShadowRot));
+                            //DTUtils.SweepColorOverString(DTAssetLib.DoxentDynamic.Value, TEXT, EternShadowColors, Color.White with { A = 0 }, (drawPos + new Vector2(0, -24f * DTUIConfig.instance.CustomBossBarScaleModifier)) + new Vector2(DTUIConfig.instance.CustomBossBarScaleModifier, 0f).RotatedBy((MathHelper.PiOver2 * i) + eternityShadowRot), Scale: Main.UIScale * ((DTUIConfig.instance.CustomBossBarScaleModifier / 2.5f) * 0.7f));
+
+                            spriteBatch.DrawString(DTAssetLib.Doxent.Value, TEXT, (drawPos + new Vector2(0, -24f * DTUIConfig.instance.CustomBossBarScaleModifier)) + new Vector2(DTUIConfig.instance.CustomBossBarScaleModifier, 0f).RotatedBy((MathHelper.PiOver2 * i) + eternityShadowRot), ColorLib.Soul with { A = 0 } * 0.5f * BarOpacity, 0f, DTAssetLib.Doxent.Value.MeasureString(TEXT) * 0.5f, Main.UIScale * ((DTUIConfig.instance.CustomBossBarScaleModifier / 2.5f) * 0.7f), SpriteEffects.None, 0f);
                         }
                     }
                     spriteBatch.DrawString(DTAssetLib.Doxent.Value, TEXT, drawPos + new Vector2(0, -24f * DTUIConfig.instance.CustomBossBarScaleModifier), Color.White * BarOpacity, 0f, DTAssetLib.Doxent.Value.MeasureString(TEXT) * 0.5f, Main.UIScale * ((DTUIConfig.instance.CustomBossBarScaleModifier / 2.5f) * 0.7f), SpriteEffects.None, 0f);

@@ -190,7 +190,6 @@ namespace DestroyerTest.Common
                                     }
                                 }
                             }
-
                             
 
                             UseCooldown = 0;

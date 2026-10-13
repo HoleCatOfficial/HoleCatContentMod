@@ -1,4 +1,3 @@
-
 using DestroyerTest.Content.Entities;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Resources;
@@ -11,7 +10,7 @@ using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace DestroyerTest.Content.Consumables
+namespace DestroyerTest.Content.BossSummons
 {
     public class TheBotanistsCurse : ModItem
     {
@@ -33,6 +32,7 @@ namespace DestroyerTest.Content.Consumables
             Item.useTime = 30;
             Item.useStyle = ItemUseStyleID.HoldUp;
             Item.consumable = false;
+            Item.maxStack = 1;
         }
 
         public override void ModifyResearchSorting(ref ContentSamples.CreativeHelper.ItemGroup itemGroup)

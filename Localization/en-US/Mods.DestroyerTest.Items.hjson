@@ -2919,7 +2919,11 @@ EphemeralSolvent: {
 
 TenebrousSniperRifle: {
 	DisplayName: Tenebrous Sniper Rifle
-	Tooltip: Because a certain someone likes High Velocity bullets over homing bullets.
+	Tooltip:
+		'''
+		Bullets loaded in the chamber become Shade-Tipped.
+		Shade-Tipped bullets explode on contact and create clones of themselves.
+		'''
 }
 
 LilliesOfImmortality: {
@@ -5650,7 +5654,7 @@ Calosar: {
 
 HellArmorScrap: {
 	DisplayName: Hell Armor Scrap
-	Tooltip: ""
+	Tooltip: It smolders with raw strength...
 }
 
 Lifeblade: {
@@ -5728,4 +5732,9 @@ HellEldritchHelmet: {
 		You have a 10% chance when hitting an enemy to create a hellfire explosion dealing 300 damage and scaling with all damage modifiers.
 		You emit light.
 		'''
+}
+
+Celestine: {
+	DisplayName: Celestine
+	Tooltip: ""
 }
