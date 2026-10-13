@@ -290,7 +290,7 @@ namespace DestroyerTest.Common
         public static SoundStyle FlailSpin = new SoundStyle($"{AudioPath}/FlailSpin");
         public static SoundStyle FlailThrow = new SoundStyle($"{AudioPath}/FlailThrow");
         public static SoundStyle ConstitutionStarKill = new SoundStyle($"{AudioPath}/ConstitutionBoss/ConstitutionStar/Kill", 14) { PitchVariance = 0.2f, Volume = 0.85f, MaxInstances = 0 };
-        public static SoundStyle EnergyWoosh = new SoundStyle($"{AudioPath}/EnergyWoosh", 3);
+        public static SoundStyle EnergyWoosh = new SoundStyle($"{AudioPath}/EnergyWoosh", 4);
         public static SoundStyle RiftExplosion = new SoundStyle($"{AudioPath}/RiftMaker_Boom");
         public static SoundStyle Zap = new SoundStyle($"{AudioPath}/Zap", 3);
 

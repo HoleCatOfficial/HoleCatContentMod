@@ -481,3 +481,8 @@ FusionBurn: {
 	DisplayName: Fusion Burn
 	Description: Mods.DestroyerTest.Buffs.FusionBurn.Description
 }
+
+MalachiteBuff: {
+	DisplayName: Malachite Buff
+	Description: Mods.DestroyerTest.Buffs.MalachiteBuff.Description
+}

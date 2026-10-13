@@ -3564,6 +3564,11 @@ MalachiteKnives: {
 		'''
 }
 
+Malachite: {
+	DisplayName: Malachite
+	Tooltip: ""
+}
+
 HekatesMystique: {
 	DisplayName: Hekate's Mystique
 	Tooltip:
