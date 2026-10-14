@@ -16,6 +16,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Transactions;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -44,13 +45,14 @@ namespace DestroyerTest.Content.SummonItems
             Item.mana = 30;
             Item.width = 58;
             Item.height = 34;
-            Item.useTime = 60;
-            Item.useAnimation = 60;
-            Item.useStyle = ItemUseStyleID.HoldUp;
+            Item.useTime = 20;
+            Item.useAnimation = 20;
+            Item.useStyle = ItemUseStyleID.Swing;
             Item.value = 18000;
             Item.rare = ModContent.RarityType<ShimmeringRarity>();
             Item.UseSound = new SoundStyle("DestroyerTest/Assets/Audio/BlackKnifeTP");
 
+            Item.autoReuse = true;
             Item.noMelee = true;
             Item.DamageType = DamageClass.Summon;
             Item.buffType = ModContent.BuffType<BlackKnifeBuff>();
@@ -68,13 +70,6 @@ namespace DestroyerTest.Content.SummonItems
         {
             player.AddBuff(Item.buffType, 2);
             return true;
-        }
-
-        public override void AddRecipes()
-        {
-            CreateRecipe()
-                .AddIngredient<Tenebris>(18)
-                .Register();
         }
     }
 }

@@ -25,7 +25,7 @@ namespace DestroyerTest.Content.MeleeWeapons.AncientSword
     {
         public override void SetStaticDefaults()
         {
-
+            ItemID.Sets.IsLavaImmuneRegardlessOfRarity[Type] = true;
         }
         public override void SetDefaults()
         {

@@ -26,6 +26,7 @@ namespace DestroyerTest.Content.MeleeWeapons.AncientSword
         public override void SetStaticDefaults()
         {
             OpusNPCDropHelper.DropsFromNPC[Type] = new NPCDropData(NPCID.WallofFlesh, ItemDropRule.Common(Type, 5));
+            ItemID.Sets.IsLavaImmuneRegardlessOfRarity[Type] = true;
         }
         public override void SetDefaults()
         {

@@ -479,10 +479,20 @@ Brute: {
 
 FusionBurn: {
 	DisplayName: Fusion Burn
-	Description: Mods.DestroyerTest.Buffs.FusionBurn.Description
+	Description: Cosmic resonance erupts all over you!
 }
 
 MalachiteBuff: {
-	DisplayName: Malachite Buff
-	Description: Mods.DestroyerTest.Buffs.MalachiteBuff.Description
+	DisplayName: Malachite
+	Description: Steadfast
+}
+
+EnceladusBuff: {
+	DisplayName: Enceladus
+	Description: Not implemented.
+}
+
+EyeSwordBuff: {
+	DisplayName: Eye Sword
+	Description: Goob
 }

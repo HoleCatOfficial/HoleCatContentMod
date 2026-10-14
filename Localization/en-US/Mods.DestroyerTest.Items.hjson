@@ -3556,17 +3556,12 @@ TwistedFaith: {
 }
 
 MalachiteKnives: {
-	DisplayName: Malachite Knives
+	DisplayName: Rotten Knives
 	Tooltip:
 		'''
 		Throws a volley of tiny Defiled Knives. 
 		Knives inflict Soul Erosion, which lowers enemy damage.
 		'''
-}
-
-Malachite: {
-	DisplayName: Malachite
-	Tooltip: ""
 }
 
 HekatesMystique: {
@@ -5742,4 +5737,29 @@ HellEldritchHelmet: {
 Celestine: {
 	DisplayName: Celestine
 	Tooltip: ""
+}
+
+Malachite: {
+	DisplayName: Malachite
+	Tooltip:
+		'''
+		Calls upon crystalline sabers to hack at your enemies.
+		Grows with you as you progress.
+		The leveling effects for this item are unfinished, so the level damage boosts have been inflated to compensate.
+		'''
+	Level1Tooltip: Level 1 (Unlocks after Skeletron): Damage increased by 20%
+	Level2Tooltip: Level 2 (Unlocks after The Wall of flesh): Damage increased by 80%
+	Level3Tooltip: Level 3 (Unlocks after Plantera): Damage increased by 120%
+	Level4Tooltip: Level 4 (Unlocks after The Lunatic Cultist): Damage increased by 180%
+	NepostriaTooltip: How original.
+}
+
+Enceladus: {
+	DisplayName: Enceladus
+	Tooltip: You shouldn't have this weapon.
+}
+
+EyeSword: {
+	DisplayName: Lucid Sword
+	Tooltip: Summons a living sword.
 }

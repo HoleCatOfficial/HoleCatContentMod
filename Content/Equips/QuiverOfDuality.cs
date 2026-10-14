@@ -17,6 +17,7 @@ using Terraria.DataStructures;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 using Terraria.Utilities;
 
 
@@ -104,6 +105,19 @@ namespace DestroyerTest.Content.Equips
             else if (AreaBuff == BuffID.Ichor)
             {
                 tooltips.Add(new TooltipLine(Mod, "QuiverOfDualityI", "Current Area Buff: Ichor"));
+            }
+        }
+
+        public override void SaveData(TagCompound tag)
+        {
+            tag.Add("QDAreaBuff", AreaBuff);
+        }
+
+        public override void LoadData(TagCompound tag)
+        {
+            if (tag.ContainsKey("QDAreaBuff"))
+            {
+                AreaBuff = tag.GetAsInt("QDAreaBuff");
             }
         }
 

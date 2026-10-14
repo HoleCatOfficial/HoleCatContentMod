@@ -11,6 +11,7 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 
 namespace DestroyerTest.Content.Equips
 {
@@ -177,6 +178,20 @@ namespace DestroyerTest.Content.Equips
                 player.buffImmune[ModContent.BuffType<SoulErosion>()] = true;
                 player.endurance += 0.11f;
             }
+        }
+
+        public override void SaveData(TagCompound tag)
+        {
+            tag.Add("FCOffensive", Offensive);
+        }
+
+        public override void LoadData(TagCompound tag)
+        {
+            if (tag.ContainsKey("FCOffensive"))
+            {
+                Offensive = tag.GetBool("FCOffensive");
+            }
+
         }
 
         public override void AddRecipes()

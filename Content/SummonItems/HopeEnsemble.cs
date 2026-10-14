@@ -142,29 +142,6 @@ namespace DestroyerTest.Content.SummonItems
             }
         }
 
-
-
-        public override void AddRecipes()
-        {
-            CreateRecipe()
-                .AddIngredient(ItemID.CopperBroadsword, 1)
-                .AddIngredient(ItemID.TinBroadsword, 1)
-                .AddIngredient(ItemID.IronBroadsword, 1)
-                .AddIngredient(ItemID.LeadBroadsword, 1)
-                .AddIngredient(ItemID.GoldBroadsword, 1)
-                .AddIngredient(ItemID.SilverBroadsword, 1)
-                .AddIngredient(ItemID.PlatinumBroadsword, 1)
-                .AddIngredient(ItemID.TungstenBroadsword, 10)
-                .AddIngredient(ItemID.BloodButcherer, 1)
-                .AddIngredient(ItemID.LightsBane, 1)
-                .AddIngredient(ItemID.Leather, 10)
-                .AddIngredient(ItemID.Silk, 5)
-                .AddIngredient(ItemID.Wood, 10)
-                .AddCondition(Condition.InExpertMode)
-                .AddTile(TileID.DemonAltar)
-                .Register();
-        }
-
     }
 
 

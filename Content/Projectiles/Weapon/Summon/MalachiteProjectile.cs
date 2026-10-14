@@ -4,6 +4,7 @@ using System.Linq;
 using BreadLibrary.Core;
 using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Spritebatch;
+using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Equips.ScepterAccessories;
@@ -15,6 +16,7 @@ using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.Graphics;
 using Terraria.Graphics.Shaders;
@@ -32,7 +34,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
             Main.projPet[Type] = true;
             ProjectileID.Sets.MinionSacrificable[Type] = true;
 
-            ProjectileID.Sets.TrailCacheLength[Type] = 60;
+            ProjectileID.Sets.TrailCacheLength[Type] = 40;
             ProjectileID.Sets.TrailingMode[Type] = 3;
         }
 
@@ -85,6 +87,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
             private float StripWidth(float progressOnStrip) => 36f;
         }
 
+        float shadrot = 0;
         public override bool PreDraw(ref Color lightColor)
         {
             MalachiteTrailDrawer drawer = new();
@@ -106,10 +109,16 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
                     }
                 }
             }
-            
 
-
+            shadrot += 0.1f;
+            for (int i = 0; i < 4; i++)
+            {
+                DrawData data = DTUtils.CenteredDraw(Projectile, Color.White with { A = 0} * 0.5f ) with { position = (Projectile.Center + new Vector2(2f, 0).RotatedBy((MathHelper.PiOver2 * i) + shadrot)) - Main.screenPosition };
+                Main.EntitySpriteDraw(data);
+            }
             Main.EntitySpriteDraw(DTUtils.CenteredDraw(Projectile, lightColor));
+
+            //Utils.DrawRectangle(Main.spriteBatch, visualHitbox.TopLeft(), visualHitbox.BottomRight(), Color.Green, Color.Green, 2f);
             return false;
         }
 
@@ -120,13 +129,13 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
         }
         public override bool? CanHitNPC(NPC target)
         {
-            return Projectile.ai[1] != 0 &&  Projectile.ManualCanHitFriendly(target);
+            return Projectile.ai[0] != 0 &&  Projectile.ManualCanHitFriendly(target);
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            SoundEngine.PlaySound(SoundID.DD2_CrystalCartImpact, target.Center);
-            SoundEngine.PlaySound(new SoundStyle(DTAssetLib.AudioPath + "/DamascusSlash") { Pitch = 1.5f, PitchVariance = 0.2f, Volume = 1.2f }, target.Center);
+            SoundEngine.PlaySound(SoundID.DD2_CrystalCartImpact with { Volume = 1f }, target.Center);
+            SoundEngine.PlaySound(new SoundStyle(DTAssetLib.AudioPath + "/DamascusSlash") { Pitch = 1.5f, PitchVariance = 0.2f, Volume = 0.8f }, target.Center);
             
 
             for (int i = 0; i < 5; i++)
@@ -134,16 +143,28 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
                 Spark Trail = new();
                 Trail.PrepareSpark(target.Center, Projectile.velocity.RotatedByRandom(0.1f) * 0.5f, Projectile.velocity.ToRotation() + MathHelper.PiOver2, Color.Aquamarine, 0.4f, false, 20, SparkDrawMode.Additive, 6f);
                 ParticleEngine.BehindProjectiles.Add(Trail);
+
             }
-            
+
+            if (Projectile.ai[1] == 2 && (Projectile.ai[2] > 30 && Projectile.ai[2] < 40))
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    Spark Trail = new();
+                    Trail.PrepareSpark(target.Center, Projectile.velocity.RotatedBy(Main.rand.NextBool() ? MathHelper.PiOver2 : -MathHelper.PiOver2).RotatedByRandom(0.1f) * Main.rand.NextFloat(0.02f, 0.25f), Projectile.velocity.ToRotation(), Color.Aquamarine, 0.3f, false, 20, SparkDrawMode.Additive, 5f);
+                    ParticleEngine.BehindProjectiles.Add(Trail);
+                }
+            }
+
         }
 
         Player Owner => Main.player[Projectile.owner];
-
+        Rectangle visualHitbox => Utils.CenteredRectangle(Projectile.Center, new Vector2(58, 58));
         public override void AI()
         {
             Projectile.ResetExcessTrailPoints();
             Projectile.direction = Math.Sign(Projectile.velocity.X);
+            Lighting.AddLight(Projectile.Center, Color.MediumAquamarine.ToVector3());
 
             if (Owner.dead || !Owner.active)
             {
@@ -153,6 +174,19 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
             if (Owner.HasBuff(ModContent.BuffType<MalachiteBuff>()))
             {
                 Projectile.timeLeft = 2;
+            }
+
+            if(Projectile.Center.Distance(Owner.Center) > 4000)
+            {
+                Projectile.Center = Owner.Center;
+            }
+
+
+            if (Main.rand.NextBool(10))
+            {
+                StarParticle star = new();
+                star.Initialize(Main.rand.NextVector2FromRectangle(visualHitbox), Projectile.velocity * 0.02f, Color.MediumAquamarine, 0.1f, Main.rand.NextFloat(0.1f, 0.1f), 60, 2);
+                ParticleEngine.Particles.Add(star);
             }
 
             int targetindex = Projectile.AutoTarget();
@@ -185,9 +219,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
             float phase = myIndex * 0.6f;
             float bob = MathF.Sin(Main.GlobalTimeWrappedHourly * 2f + phase) * 5f;
 
-            Projectile.rotation = -MathHelper.PiOver4 + (-0.1f * myIndex * Owner.direction);
+            Projectile.rotation = -MathHelper.PiOver4 + ((-0.1f * myIndex * Owner.direction) + (0.03f * bob * Owner.direction));
 
-            Vector2 targetPosition = Owner.MountedCenter + new Vector2(-10 + (-10 * myIndex * Owner.direction), bob);
+            Vector2 targetPosition = Owner.MountedCenter + new Vector2((-10 * Owner.direction) + (-10 * myIndex * Owner.direction), bob);
 
             if (Projectile.Distance(targetPosition) < 2000)
             {
@@ -215,6 +249,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
         Vector2 RememberedCenter;
         Vector2 mid;
         Vector2 end;
+
+
         public void Attack(NPC target)
         {
             if (Projectile.ai[1] == 0)
@@ -242,7 +278,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
                 {
                     if (Projectile.ai[2] == 31)
                     {
-                        SoundEngine.PlaySound(DTAssetLib.SwordSounds.MediumHeavySwing with { Pitch = 1.5f, PitchVariance = 0.2f });
+                        SoundEngine.PlaySound(DTAssetLib.SwordSounds.MediumHeavySwing with { Pitch = 1.5f, PitchVariance = 0.2f, MaxInstances = 0, Volume = 0.7f }, Projectile.Center);
                     }
                   
 
@@ -284,9 +320,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
                 {
                     if (Projectile.ai[2] == 31)
                     {
-                        SoundEngine.PlaySound(DTAssetLib.SwordSounds.ConSwing with { Pitch = 1.5f, PitchVariance = 0.2f });
+                        Projectile.velocity *= 0;
+                        SoundEngine.PlaySound(DTAssetLib.SwordSounds.ConSwing with { Pitch = 1.5f, PitchVariance = 0.2f, MaxInstances = 0, Volume = 0.7f }, Projectile.Center);
                     }
-                    Projectile.velocity = RememberedDirection * 40f;
+                    Projectile.velocity = RememberedDirection * 50f;
 
 
                 }
@@ -332,6 +369,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
     {
         public List<Vector2> SiblingPositions = new();
         public List<Projectile> Siblings => Main.projectile.Where(n => n.type == ModContent.ProjectileType<MalachiteProjectile>() && n.owner == Player.whoAmI && n.ai[0] == 0 && n.active).ToList();
+        public int Level = 1;
         public override void PostUpdateBuffs()
         {
 
