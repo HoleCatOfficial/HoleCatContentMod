@@ -5736,7 +5736,7 @@ HellEldritchHelmet: {
 
 Celestine: {
 	DisplayName: Celestine
-	Tooltip: ""
+	Tooltip: What is tModLoader even about?
 }
 
 Malachite: {
@@ -5745,12 +5745,11 @@ Malachite: {
 		'''
 		Calls upon crystalline sabers to hack at your enemies.
 		Grows with you as you progress.
-		The leveling effects for this item are unfinished, so the level damage boosts have been inflated to compensate.
 		'''
 	Level1Tooltip: Level 1 (Unlocks after Skeletron): Damage increased by 20%
-	Level2Tooltip: Level 2 (Unlocks after The Wall of flesh): Damage increased by 80%
-	Level3Tooltip: Level 3 (Unlocks after Plantera): Damage increased by 120%
-	Level4Tooltip: Level 4 (Unlocks after The Lunatic Cultist): Damage increased by 180%
+	Level2Tooltip: Level 2 (Unlocks after The Wall of flesh): Damage increased by 80%, targeting range increased, and can now create afterslashes on-hit for extra damage.
+	Level3Tooltip: Level 3 (Unlocks after Plantera): Damage increased by 120%, targeting range and afterslash chance increased.
+	Level4Tooltip: Level 4 (Unlocks after The Lunatic Cultist): Damage increased by 180%, targeting range and afterslash chance increased.
 	NepostriaTooltip: How original.
 }
 
@@ -5762,4 +5761,9 @@ Enceladus: {
 EyeSword: {
 	DisplayName: Lucid Sword
 	Tooltip: Summons a living sword.
+}
+
+BrutalAbsolvency: {
+	DisplayName: Brutal Absolvency
+	Tooltip: ""
 }

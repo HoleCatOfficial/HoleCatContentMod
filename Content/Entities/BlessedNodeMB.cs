@@ -120,6 +120,7 @@ namespace DestroyerTest.Content.Entities
 
         public void ResetData()
         {
+            
             SentinelKillTally = 0;
         }
 
@@ -209,19 +210,6 @@ namespace DestroyerTest.Content.Entities
             spriteBatch.DrawString(DTAssetLib.Doxent.Value, $"{SentinelKillTally} / {SentinelKillRequirement}", (NPC.Center + new Vector2(0, -90)) - screenPos, OpusColorUtils.MultiLerp(((float)SentinelKillTally / (float)SentinelKillRequirement).Inverse(), [Color.DeepSkyBlue, Color.SkyBlue]) * ShieldOpacity, 0f, DTAssetLib.Doxent.Value.MeasureString($"{SentinelKillTally} / {SentinelKillRequirement}") * 0.5f, 0.5f, SpriteEffects.None, 0f);
             //Utils.DrawBorderString(spriteBatch, $"{SentinelKillTally} / {SentinelKillRequirement}", (NPC.Center + new Vector2(0, -90)) - screenPos, Color.SkyBlue * ShieldOpacity, 3f, 0.5f, 0.5f);
 
-            if (DrawEternityLaserWallWarnings)
-            {
-                Texture2D Line = DTAssetLib.FadeLine.Value;
-                Texture2D Star = DTAssetLib.Star(3).Value;
-                for (int i = 0; i < EternityLaserWallPositions.Count; i++)
-                {
-                   
-                    
-                    Main.EntitySpriteDraw(Line, EternityLaserWallPositions[i] - screenPos, null, Main.DiscoColor * EternityLaserWallWarningOpacity, EternityLaserWallRotation + MathHelper.Pi, new Vector2(0f, Line.Height / 2f), new Vector2(4f, 1f), SpriteEffects.None);
-                    Main.EntitySpriteDraw(Star, EternityLaserWallPositions[i] - screenPos, null, Main.DiscoColor * EternityLaserWallWarningOpacity, 0f, Star.Size() / 2, 1f, SpriteEffects.None);
-                }
-            }
-
             Opus.ReturnToDefaultDrawing(spriteBatch);
 
             Main.EntitySpriteDraw(Tex, NPC.Center - screenPos, null, drawColor * NPC.Opacity, NPC.rotation, Tex.Size() / 2, NPC.scale, SpriteEffects.None);
@@ -279,6 +267,17 @@ namespace DestroyerTest.Content.Entities
         public float EternityLaserWallRotation = 0f;
         List<Vector2> EternityLaserWallPositions = new Vector2[20].ToList();
         public float EternityLaserWallWarningOpacity = 0f;
+
+        public int EternCooldownTime = 0;
+
+        public int GrandCrossXindex = -50;
+
+        public int GrandCrossPassCount = 0;
+
+        public int EternityCrystalBombTimer = 0;
+        public Projectile[] EternityOwnedCrystalBombs;
+        public (Vector2, float)[] EternityOwnedCrystalBombOrbits;
+        public int EternityCrystalBombCount = 0;
         
         public override void AI()
         {
@@ -310,6 +309,10 @@ namespace DestroyerTest.Content.Entities
                 }
             }
 
+            if (EternCooldownTime > 0)
+            {
+                EternCooldownTime --;
+            }
 
             TryFindTileBelow();
 
@@ -407,6 +410,22 @@ namespace DestroyerTest.Content.Entities
                         }
                         else
                         {
+                            if (!DestroyerTestMod.EternityIsActive && !DestroyerTestMod.DeathIsActive)
+                            {
+                                CurrentAttack = AttackState.SummonKnives;
+                                CrossCount = 0;
+                            }
+                            else
+                            {
+                                if (EternCooldownTime <= 0)
+                                {
+                                    EternCooldownTime = 90;
+                                }
+                            }
+                        }
+
+                        if ((DestroyerTestMod.EternityIsActive || DestroyerTestMod.DeathIsActive) && CrossCount >= 6 && EternCooldownTime <= 0)
+                        {
                             CurrentAttack = AttackState.SummonKnives;
                             CrossCount = 0;
                         }
@@ -414,10 +433,11 @@ namespace DestroyerTest.Content.Entities
                     }
                 case AttackState.SummonKnives:
                     {
-                        KeepToPlayer(player.Center + new Vector2(0, -300));
+                        
 
                         if (!DestroyerTestMod.EternityIsActive && !DestroyerTestMod.DeathIsActive)
                         {
+                            KeepToPlayer(player.Center + new Vector2(0, -300));
                             if (KnifeCount < 6)
                             {
                                 if (Main.GameUpdateCount % 240 == 0)
@@ -437,47 +457,44 @@ namespace DestroyerTest.Content.Entities
                         }
                         else
                         {
-                            if (KnifeCount < 5)
+                            if (KnifeCount < 10)
                             {
-                                EternityLaserWallTime++;
-                                if (EternityLaserWallTime > 240)
+                                if (Main.GameUpdateCount % 120 == 0)
                                 {
-                                    DrawEternityLaserWallWarnings = false;
-                                    EternityLaserWallWarningOpacity = 0f;
-                                    for (int i = 0; i < EternityLaserWallPositions.Count; i++)
+                                    int gapStart = Main.rand.Next(29);
+                                    int gapSize = 3;
+
+
+                                    for (int i = 0; i < 32; i++)
                                     {
-                                        Projectile.NewProjectile(NPC.GetSource_FromAI(), EternityLaserWallPositions[i], EternityLaserWallRotation.ToRotationVector2() * -0.001f, ModContent.ProjectileType<BlessedLaser2>(), 50, 5);
+                                        if (i >= gapStart && i < gapStart + gapSize)
+                                        {
+                                            continue;
+                                        }
+
+                                        float angle = MathHelper.TwoPi * i / 32f;
+
+                                        Projectile.NewProjectile(NPC.GetSource_FromThis(), NPC.Center, new Vector2(1f, 0).RotatedBy(angle), ModContent.ProjectileType<BlessedNodeCrystal2>(), NPC.GetAttackDamage_ForProjectiles(20, 35), 3);
+
+                                        Spark warning = new();
+                                        warning.PrepareSpark(NPC.Center, new Vector2(30f, 0).RotatedBy(angle), (new Vector2(30f, 0).RotatedBy(angle).ToRotation()), Main.DiscoColor, 1f, false, 60, SparkDrawMode.Additive, 6f);
+                                        ParticleEngine.Particles.Add(warning);
+                                    
                                     }
-                                    EternityLaserWallTime = 0;
+
                                     KnifeCount++;
-                                }
-                                else
-                                {
-                                    if (EternityLaserWallWarningOpacity < 1f)
-                                    {
-                                        EternityLaserWallWarningOpacity += 0.01f;
-                                    }
-                                    EternityLaserWallRotation += 0.05f;
-                                    DrawEternityLaserWallWarnings = true;
-                                    for (int i = 0; i < 20; i++)
-                                    {
-                                        float Y = (-1200 + ((16 * i) * 10));
-                                        float X = 1000;
-
-                                        if(EternityLaserWallPositions[i] == Vector2.Zero)
-                                        {
-                                            EternityLaserWallPositions[i] = player.Center + new Vector2(X, Y).RotatedBy(EternityLaserWallRotation);
-                                        }
-                                        else
-                                        {
-                                            EternityLaserWallPositions[i] = player.Center + new Vector2(X, Y).RotatedBy(EternityLaserWallRotation);
-                                        }
-
-                                        Dust.NewDustPerfect(EternityLaserWallPositions[i], DustID.WhiteTorch);
-                                    }
                                 }
                             }
                             else
+                            {
+                                if (EternCooldownTime <= 0)
+                                {
+                                    EternCooldownTime = 120;
+                                }
+
+                            }
+
+                            if ((DestroyerTestMod.EternityIsActive || DestroyerTestMod.DeathIsActive) && KnifeCount >= 10 && EternCooldownTime <= 0)
                             {
                                 CurrentAttack = AttackState.Lasers;
                                 KnifeCount = 0;
@@ -487,71 +504,163 @@ namespace DestroyerTest.Content.Entities
                     }
                 case AttackState.Lasers:
                     {
-                        
-                        NPC.velocity *= 0.8f;
-
-                        
-
-                        if (LaserCount < 3)
+                        if (!DestroyerTestMod.EternityIsActive && !DestroyerTestMod.DeathIsActive)
                         {
-                            if (LaserWarnTimer == 119)
-                            {
-                                SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/BlessedNodeLasersCharge"), NPC.Center);
-                            }
-                            if (LaserWarnTimer > 0)
-                            {
-                                float t = Utilities.Convert01To010((LaserWarnTimer / 120f));
-                                LaserWarnOpacity = MathHelper.Lerp(0f, 1f, t);
+                            NPC.velocity *= 0.8f;
 
-                                Opus.RadialSpreadDust(DustID.AncientLight, 6, NPC.Center, 0, Main.DiscoColor, 1f, 5f, offset: LaserRotOffset);
-                                LaserWarnTimer--;
+
+
+                            if (LaserCount < 3)
+                            {
+                                if (LaserWarnTimer == 119)
+                                {
+                                    SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/BlessedNodeLasersCharge"), NPC.Center);
+                                }
+                                if (LaserWarnTimer > 0)
+                                {
+                                    float t = Utilities.Convert01To010((LaserWarnTimer / 120f));
+                                    LaserWarnOpacity = MathHelper.Lerp(0f, 1f, t);
+
+                                    Opus.RadialSpreadDust(DustID.AncientLight, 6, NPC.Center, 0, Main.DiscoColor, 1f, 5f, offset: LaserRotOffset);
+                                    LaserWarnTimer--;
+                                }
+                                else
+                                {
+                                    LaserBurst();
+                                    LaserCount++;
+                                    LaserWarnTimer = 120;
+                                }
                             }
                             else
                             {
-                                LaserBurst();
-                                LaserCount++;
+                                CurrentAttack = AttackState.HallowBolts;
+                                LaserCount = 0;
                                 LaserWarnTimer = 120;
                             }
                         }
                         else
                         {
-                            CurrentAttack = AttackState.HallowBolts;
-                            LaserCount = 0;
-                            LaserWarnTimer = 120;
+                            if (Main.GameUpdateCount % 20 == 0)
+                            {
+                                int X = 10 * GrandCrossXindex;
+                                float Y = -500;
+
+                                Vector2 Pos = NPC.Center + new Vector2((float)X, Y);
+
+                                Projectile.NewProjectile(NPC.GetSource_FromAI(), Pos, new Vector2(0, 30).RotatedByRandom(0.05f), ModContent.ProjectileType<GrandCross>(), NPC.GetAttackDamage_ForProjectiles(20, 35), 5);
+                                GrandCrossXindex += 20;
+                            }
+
+                            if (GrandCrossXindex >= 100)
+                            {
+                                GrandCrossPassCount++;
+                                GrandCrossXindex = -100;
+                            }
+
+                            if (GrandCrossPassCount > 5)
+                            {
+                                CurrentAttack = AttackState.HallowBolts;
+                                GrandCrossPassCount = 0;
+                                GrandCrossXindex = -50;
+                                LaserCount = 0;
+                                LaserWarnTimer = 120;
+                            }
                         }
                         break;
                     }
                 case AttackState.HallowBolts:
                     {
-                        KeepToPlayer(player.Center + new Vector2(0, -300));
-
-                        Vector2 toPlayer = player.Center - NPC.Center;
-                        toPlayer.Normalize();
-                        if (BoltCount < 4)
+                        if (!DestroyerTestMod.EternityIsActive && !DestroyerTestMod.DeathIsActive)
                         {
-                            if (Main.GameUpdateCount % 240 == 0)
+                            KeepToPlayer(player.Center + new Vector2(0, -300));
+
+                            Vector2 toPlayer = player.Center - NPC.Center;
+                            toPlayer.Normalize();
+                            if (BoltCount < 4)
                             {
-                                SoundEngine.PlaySound(DTAssetLib.Impacts.AmbitionChargeBurst with { PitchRange = (-0.4f, -0.1f), MaxInstances = 0 }, NPC.Center);
-                                int amt = 3;
-                                if (Main.expertMode && !Main.masterMode)
+                                if (Main.GameUpdateCount % 240 == 0)
                                 {
-                                    amt = 5;
+                                    SoundEngine.PlaySound(DTAssetLib.Impacts.AmbitionChargeBurst with { PitchRange = (-0.4f, -0.1f), MaxInstances = 0 }, NPC.Center);
+                                    int amt = 3;
+                                    if (Main.expertMode && !Main.masterMode)
+                                    {
+                                        amt = 5;
+                                    }
+                                    if (Main.masterMode)
+                                    {
+                                        amt = 7;
+                                    }
+                                    for (int o = 0; o < amt; o++)
+                                    {
+                                        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, toPlayer.RotatedByRandom(0.5f) * 10, ModContent.ProjectileType<HallowBolt>(), NPC.GetAttackDamage_ForProjectiles(20, 35), 15);
+                                    }
+                                    BoltCount++;
                                 }
-                                if (Main.masterMode)
-                                {
-                                    amt = 7;
-                                }
-                                for (int o = 0; o < amt; o++)
-                                {
-                                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, toPlayer.RotatedByRandom(0.5f) * 10, ModContent.ProjectileType<HallowBolt>(), 30, 15);
-                                }
-                                BoltCount++;
+                            }
+                            else
+                            {
+                                CurrentAttack = AttackState.Idle;
+                                BoltCount = 0;
                             }
                         }
                         else
                         {
-                            CurrentAttack = AttackState.Idle;
-                            BoltCount = 0;
+                            NPC.SmoothMoveToPoint(player.MountedCenter, 4f, 100);
+
+                            EternityCrystalBombTimer++;
+
+                            if (EternityCrystalBombTimer == 1)
+                            {
+                                if (EternityOwnedCrystalBombs == null)
+                                {
+                                    EternityOwnedCrystalBombs = Opus.RingSpreadProjectile(ModContent.ProjectileType<ClusterBomb>(), 20, NPC.Center, 100f, NPC.GetAttackDamage_ForProjectiles(50, 60), 5, 0);
+                                }
+                            }
+
+                            if (EternityOwnedCrystalBombs != null)
+                            {
+                                EternityOwnedCrystalBombOrbits = Opus.GetEquidistantOrbitVectorsAndRots(EternityOwnedCrystalBombs.Length, NPC.Center, 0.1f, 100f);
+                            }
+
+                            if (EternityCrystalBombTimer < 120)
+                            {
+                                if (EternityOwnedCrystalBombs != null)
+                                {
+                                    for (int i = 0; i < EternityOwnedCrystalBombs.Length; i++)
+                                    {
+                                        EternityOwnedCrystalBombs[i].Center = EternityOwnedCrystalBombOrbits[i].Item1;
+                                    }
+                                }
+                            }
+
+                            if (EternityCrystalBombTimer == 121)
+                            {
+                                if (EternityOwnedCrystalBombs != null)
+                                {
+                                    for (int i = 0; i < EternityOwnedCrystalBombs.Length; i++)
+                                    {
+                                        EternityOwnedCrystalBombs[i].velocity = new Vector2(8, 0).RotatedBy(EternityOwnedCrystalBombOrbits[i].Item2);
+                                        EternityOwnedCrystalBombs[i].ai[0] = 1;
+                                    }
+                                }
+
+                               
+                            }
+
+                            if (EternityCrystalBombTimer >= 300)
+                            {
+                                EternityCrystalBombTimer = 0;
+                                EternityOwnedCrystalBombs = null;
+                                EternityCrystalBombCount++;
+                            }
+
+                            if (EternityCrystalBombCount >= 6)
+                            {
+                                EternityCrystalBombCount = 0;
+                                EternityCrystalBombTimer = 0;
+                                CurrentAttack = AttackState.Idle;
+                                BoltCount = 0;
+                            }
                         }
                         break;
                     }

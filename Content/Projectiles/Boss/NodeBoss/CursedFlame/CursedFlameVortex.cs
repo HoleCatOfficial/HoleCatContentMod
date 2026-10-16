@@ -142,9 +142,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame
                 GraphicsDevice gd = Main.graphics.GraphicsDevice;
                 if (ve.Count >= 3)
                 {
-                    gd.Textures[0] = DTAssetLib.Streak(9).Value;
-                    gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2);
-                    gd.Textures[0] = DTAssetLib.Streak(4).Value;
+                    gd.Textures[0] = DTAssetLib.Streak(15, true).Value;
                     gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2);
                 }
             }

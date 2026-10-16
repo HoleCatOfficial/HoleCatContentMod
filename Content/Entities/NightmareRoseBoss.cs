@@ -1145,6 +1145,10 @@ namespace DestroyerTest.Content.Entities
 
             if (currentState != AttackState.Desperation && currentState != AttackState.KillIdle)
             {
+                if (Main.rand.NextBool(1200))
+                {
+                    SoundEngine.PlaySound(IdleCroak, NPCHead);
+                }
                 if (!DestroyerTestMod.MasochistIsActive)
                 {
                     BorderCol = ColorLib.CursedFlames;

@@ -88,6 +88,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
         }
 
         float shadrot = 0;
+        float glowOpacity = 0;
         public override bool PreDraw(ref Color lightColor)
         {
             MalachiteTrailDrawer drawer = new();
@@ -117,6 +118,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
                 Main.EntitySpriteDraw(data);
             }
             Main.EntitySpriteDraw(DTUtils.CenteredDraw(Projectile, lightColor));
+            Main.EntitySpriteDraw(DTUtils.CenteredDraw(Projectile, Color.Aquamarine with { A = 0 } * glowOpacity));
 
             //Utils.DrawRectangle(Main.spriteBatch, visualHitbox.TopLeft(), visualHitbox.BottomRight(), Color.Green, Color.Green, 2f);
             return false;
@@ -132,11 +134,13 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
             return Projectile.ai[0] != 0 &&  Projectile.ManualCanHitFriendly(target);
         }
 
+        int SnapChance = 24;
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             SoundEngine.PlaySound(SoundID.DD2_CrystalCartImpact with { Volume = 1f }, target.Center);
             SoundEngine.PlaySound(new SoundStyle(DTAssetLib.AudioPath + "/DamascusSlash") { Pitch = 1.5f, PitchVariance = 0.2f, Volume = 0.8f }, target.Center);
-            
+            MalachiteOrganizer organizer = Owner.GetModPlayer<MalachiteOrganizer>();
+
 
             for (int i = 0; i < 5; i++)
             {
@@ -156,10 +160,33 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
                 }
             }
 
+            if (organizer.Level == 2)
+            {
+                SnapChance = 24;
+            }
+            if (organizer.Level == 3)
+            {
+                SnapChance = 18;
+            }
+            if (organizer.Level == 4)
+            {
+                SnapChance = 12;
+            }
+
+            if (organizer.Level >= 2)
+            {
+                if (Main.rand.NextBool(SnapChance))
+                {
+                    Projectile.NewProjectile(Projectile.GetSource_OnHit(target), target.Center, Vector2.Zero, ModContent.ProjectileType<MalachiteLevel3Snap>(), Projectile.damage / 2, 10f, Projectile.owner);
+                }
+            }
+
         }
 
         Player Owner => Main.player[Projectile.owner];
         Rectangle visualHitbox => Utils.CenteredRectangle(Projectile.Center, new Vector2(58, 58));
+
+        int range = 600;
         public override void AI()
         {
             Projectile.ResetExcessTrailPoints();
@@ -181,6 +208,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
                 Projectile.Center = Owner.Center;
             }
 
+            
 
             if (Main.rand.NextBool(10))
             {
@@ -189,7 +217,34 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
                 ParticleEngine.Particles.Add(star);
             }
 
-            int targetindex = Projectile.AutoTarget();
+            MalachiteOrganizer organizer = Owner.GetModPlayer<MalachiteOrganizer>();
+
+            switch (organizer.Level)
+            {
+                case 0:
+                case 1:
+                    {
+                        range = 900;
+                        break;
+                    }
+                case 2:
+                    {
+                        range = 1200;
+                        break;
+                    }
+                case 3:
+                    {
+                        range = 1500;
+                        break;
+                    }
+                case 4:
+                    {
+                        range = 1800;
+                        break;
+                    }
+            }
+
+            int targetindex = Projectile.AutoTarget(range);
 
             if (targetindex == -1)
             {
@@ -220,6 +275,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
             float bob = MathF.Sin(Main.GlobalTimeWrappedHourly * 2f + phase) * 5f;
 
             Projectile.rotation = -MathHelper.PiOver4 + ((-0.1f * myIndex * Owner.direction) + (0.03f * bob * Owner.direction));
+
+            glowOpacity = bob * 0.3f;
 
             Vector2 targetPosition = Owner.MountedCenter + new Vector2((-10 * Owner.direction) + (-10 * myIndex * Owner.direction), bob);
 
@@ -253,6 +310,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
 
         public void Attack(NPC target)
         {
+
             if (Projectile.ai[1] == 0)
             {
                 Projectile.ai[1] = Main.rand.Next(1, 3);
@@ -261,8 +319,15 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
             // A stab
             if (Projectile.ai[1] == 1)
             {
-                
+
+                if (glowOpacity > 0)
+                {
+                    glowOpacity -= 0.05f;
+                }
+
                 Projectile.ai[2]++;
+
+
                 if (Projectile.ai[2] < 30)
                 {
                     
@@ -300,7 +365,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
             //A linear slash
             if (Projectile.ai[1] == 2)
             {
+              
                 Projectile.ai[2]++;
+             
+
                 if (Projectile.ai[2] < 30)
                 {
                    
@@ -322,6 +390,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
                     {
                         Projectile.velocity *= 0;
                         SoundEngine.PlaySound(DTAssetLib.SwordSounds.ConSwing with { Pitch = 1.5f, PitchVariance = 0.2f, MaxInstances = 0, Volume = 0.7f }, Projectile.Center);
+                        glowOpacity = 1f;
                     }
                     Projectile.velocity = RememberedDirection * 50f;
 
@@ -330,6 +399,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
                 if (Projectile.ai[2] > 40 && Projectile.ai[2] < 60)
                 {
                     Projectile.velocity *= 0.73f;
+                    glowOpacity -= 0.05f;
                 }
                 if (Projectile.ai[2] > 60)
                 {

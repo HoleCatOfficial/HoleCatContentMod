@@ -20,17 +20,6 @@ namespace DestroyerTest.Common
             {
                 itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<EnchantedScepter>(), 5, 1, 1));
             }
-            if (item.type == ItemID.MoonLordBossBag && (!DownedBossSystem.downedNightmareRoseBoss && !DownedBossSystem.downedWyvernCorpseBoss))
-            {
-                itemLoot.RemoveWhere(rule =>
-                {
-                    if (rule is ItemDropWithConditionRule dropRule)
-                    {
-                        return dropRule.itemId == ItemID.Meowmere && dropRule.itemId == ItemID.LastPrism && dropRule.itemId == ItemID.RainbowCrystalStaff && dropRule.itemId == 3569 && dropRule.itemId == ItemID.StarWrath && dropRule.itemId == ItemID.Celeb2 && dropRule.itemId == ItemID.Terrarian && dropRule.itemId == ItemID.SDMG; //3569 is Lunar Portal Staff
-                    }
-                    return false;
-                }, true);
-            }
         }
     }
 

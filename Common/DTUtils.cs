@@ -1506,6 +1506,78 @@ namespace DestroyerTest.Common
             return chosen;
         }
 
+        public static int AutoTarget(this Projectile projectile, float DetectionRadius = 1000)
+        {
+            Player Owner = Main.player[projectile.owner];
+            int chosen = -1;
+
+            // #1 — Player whip target
+            if (Owner.MinionAttackTargetNPC >= 0 &&
+                Owner.MinionAttackTargetNPC < Main.maxNPCs)
+            {
+                NPC whipTarget = Main.npc[Owner.MinionAttackTargetNPC];
+                if (whipTarget.CanBeChasedBy())
+                {
+                    chosen = Owner.MinionAttackTargetNPC;
+                }
+            }
+
+            // #2 — Bosses (if no whip target)
+            if (chosen == -1)
+            {
+                float bossDist = float.MaxValue;
+
+                for (int i = 0; i < Main.maxNPCs; i++)
+                {
+                    NPC npc = Main.npc[i];
+
+                    if (npc.Distance(Owner.Center) > DetectionRadius)
+                    {
+                        continue;
+                    }
+
+                    if (npc.CanBeChasedBy() && npc.boss)
+                    {
+                        float dist = Vector2.DistanceSquared(npc.Center, Owner.Center);
+                        if (dist < bossDist)
+                        {
+                            bossDist = dist;
+                            chosen = i;
+                        }
+                    }
+                }
+            }
+
+            // #3 — Closest to player
+            if (chosen == -1)
+            {
+                float closestDist = float.MaxValue;
+
+                for (int i = 0; i < Main.maxNPCs; i++)
+                {
+                    NPC npc = Main.npc[i];
+
+                    if (npc.Distance(Owner.Center) > DetectionRadius)
+                    {
+                        continue;
+                    }
+
+                    if (npc.CanBeChasedBy())
+                    {
+                        float dist = Vector2.DistanceSquared(npc.Center, Owner.Center);
+                        if (dist < closestDist)
+                        {
+                            closestDist = dist;
+                            chosen = i;
+                        }
+                    }
+                }
+            }
+
+            return chosen;
+        }
+
+
         /// <summary>
         /// 
         ///
@@ -1550,6 +1622,20 @@ namespace DestroyerTest.Common
             return (value + 1) / 2 * 2;
         }
 
+        public static bool InBounds(this int value, int upperBound, int lowerBound)
+        {
+            return value >= lowerBound && value < upperBound;
+        }
+
+        public static bool InBounds(this float value, float upperBound, float lowerBound)
+        {
+            return value >= lowerBound && value < upperBound;
+        }
+
+        public static bool InBounds(this double value, double upperBound, double lowerBound)
+        {
+            return value >= lowerBound && value < upperBound;
+        }
 
     }
 
