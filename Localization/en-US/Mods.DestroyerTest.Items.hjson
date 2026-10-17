@@ -3285,9 +3285,8 @@ RustyPendant: {
 ShadeArmada: {
 	Tooltip:
 		'''
-		Summons a Tenebris Elemental to fight for you.
-		Each minion consumes 1 slot.
-		Minions will not auto-target, and the item must be right clicked or a whip used.
+		Summons a Tiny Tenebris Elemental to fight for you.
+		Elementals will release tracking flares that inflict Shimmering Flames.
 		'''
 	DisplayName: Shade Armada
 }
@@ -3352,8 +3351,8 @@ NightLegArmor: {
 }
 
 SpookyScroll1: {
-	DisplayName: Spooky Scroll1
-	Tooltip: ""
+	DisplayName: Spooky Scroll (Smolder)
+	Tooltip: Enemies in range of thrown scepters are ignited.
 }
 
 TenebrisWaraxe: {
@@ -3427,13 +3426,13 @@ PreHardmodeScroll: {
 }
 
 SpookyScroll2: {
-	DisplayName: Spooky Scroll2
-	Tooltip: ""
+	DisplayName: Spooky Scroll (Harvest)
+	Tooltip: Throws create small homing jackolanterns..
 }
 
 SpookyScroll3: {
-	DisplayName: Spooky Scroll3
-	Tooltip: ""
+	DisplayName: Spooky Scroll (Ignition)
+	Tooltip: Primary shots have a chance to also create flaming wood.
 }
 
 SpookyScroll4: {

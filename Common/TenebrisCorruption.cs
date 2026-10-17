@@ -1,9 +1,10 @@
-﻿using DestroyerTest.Common.Systems;
+﻿using BreadLibrary.Core.Graphics.Particles;
+using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.Dusts;
- 
+using DestroyerTest.Content.Particles;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -40,6 +41,18 @@ namespace DestroyerTest.Common
                     d.noLight = true;
                     d.noLightEmittence = true;
                     d.fadeIn = 1f;
+
+
+                }
+
+                if (!Main.dayTime)
+                {
+                    if (Main.rand.NextBool(16))
+                    {
+                        StarParticle star = new();
+                        star.Initialize(Main.rand.NextVector2FromRectangle(Screen), new Vector2(Main.rand.NextFloat(-2, 2), -4), ColorLib.TenebrisGradient, 1f, 300, 1);
+                        ParticleEngine.Particles.Add(star);
+                    }
                 }
             }
         }

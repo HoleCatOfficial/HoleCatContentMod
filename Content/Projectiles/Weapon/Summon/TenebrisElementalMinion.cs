@@ -115,9 +115,20 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
             // Always reset lifetime while valid
             Projectile.timeLeft = 2;
 
+           
+
             var organizer = Owner.GetModPlayer<TEOrganizer>();
             List<Projectile> summons = organizer.Summons;
             int count = summons.Count;
+
+            if (DTConfig.instance.MinionExtrasToggle)
+            {
+                if (Main.rand.NextBool((int)MathHelper.Clamp(200 * (count * 0.5f), 200, int.MaxValue)))
+                {
+                    SoundEngine.PlaySound(SoundID.Item25 with { Pitch = -2.5f, PitchVariance = 0.3f, Volume = 0.2f, MaxInstances = 0 }, Projectile.Center);
+                }
+            }
+
 
             int myIndex = summons.IndexOf(Projectile);
 

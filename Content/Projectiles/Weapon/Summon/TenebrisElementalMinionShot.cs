@@ -152,7 +152,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            SoundEngine.PlaySound(new SoundStyle(DTAssetLib.AudioPath + "/BurnMagic") { MaxInstances = 0, PitchVariance = 0.5f, Volume = 0.6f, Pitch = 1f }, Projectile.Center);
+            SoundEngine.PlaySound(new SoundStyle(DTAssetLib.AudioPath + "/BurnMagic") { MaxInstances = 0, PitchVariance = 0.5f, Pitch = 1f }, Projectile.Center);
             BloomRingSharp ring = new();
             ring.Prepare(Projectile.Center, Vector2.Zero, ColorLib.TenebrisGradient, 0.01f, 0.001f, 0.3f, BlendState.Additive);
             ParticleEngine.Particles.Add(ring);

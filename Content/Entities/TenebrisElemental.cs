@@ -235,7 +235,10 @@ namespace DestroyerTest.Content.Entities
 
             NPC.rotation = 0.05f * NPC.velocity.Length() * NPC.direction;
 
-            
+            if (Main.rand.NextBool(120))
+            {
+                SoundEngine.PlaySound(SoundID.Item25 with { Pitch = -4f, PitchVariance = 0.3f, Volume = 0.2f, MaxInstances = 0 }, NPC.Center);
+            }
 
             Color GetColorFromVariant()
             {

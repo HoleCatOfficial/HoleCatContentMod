@@ -69,5 +69,12 @@ namespace DestroyerTest.Content.SummonItems
 			var projectile = Projectile.NewProjectileDirect(source, position, velocity, ModContent.ProjectileType<TenebrisElementalMinion>(), damage, knockback, Main.myPlayer);
 			return false;
 		}
+
+        public override void AddRecipes()
+        {
+			CreateRecipe()
+				.AddIngredient<Tenebris>(16)
+				.Register();
+        }
 	}
 }

@@ -619,7 +619,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
                                     Player.GetSource_ItemUse(item),
                                     Player.Center,
                                     velocity.RotatedByRandom(0.75),
-                                    ProjectileID.FlamingJack,
+                                    ModContent.ProjectileType<FlamingPumpkin>(),
                                     damage,
                                     knockback,
                                     Player.whoAmI
@@ -853,8 +853,8 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
             {
                 for (int y = 0; y < 26; y++)
                 {
-                    Vector2 Outer = projectile.Center + Main.rand.NextVector2CircularEdge(300, 300);
-                    Dust.NewDustPerfect(Outer, DustID.Torch, projectile.velocity, 0, default, 1.5f);
+                    Vector2 Outer = projectile.Center + Main.rand.NextVector2CircularEdge(400, 400);
+                    Dust.NewDustPerfect(Outer, DustID.Torch, projectile.velocity * 0.5f, 0, default, 1.5f).noGravity = true;
                 }
 
                 foreach (NPC npc in Main.npc)
@@ -863,15 +863,6 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
                     {
                         npc.AddBuff(BuffID.OnFire3, 600);
                     }
-                }
-
-                if (!Flag1)
-                {
-                    for (int f = 0; f < 6; f++)
-                    {
-                        Projectile.NewProjectile(projectile.GetSource_FromAI(), projectile.Center, projectile.velocity, ModContent.ProjectileType<SpookyFirewood>(), (int)(projectile.damage * 0.65f), 4, projectile.owner, projectile.whoAmI);
-                    }
-                    Flag1 = true;
                 }
 
             }
