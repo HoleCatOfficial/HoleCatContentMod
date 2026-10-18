@@ -196,6 +196,11 @@ namespace DestroyerTest.Content.Projectiles
 
                         GenShapeActionPair TunnelSegment = new(new Shapes.Circle(Main.rand.Next(2, 3)), Actions.Chain(new GenAction[] { new Modifiers.IsSolid(), new Actions.Custom((i, j, args) => { Owner.PickTile(i, j, Owner.GetBestPickaxe().pick); return true; }), new Actions.Scanner(TooHardCount) }));
 
+                        if (Projectile.ai[0] == 1)
+                        {
+                            WorldUtils.Gen(Owner.MountedCenter.ToTileCoordinates(), TunnelSegment);
+                        }
+
                         if (WorldUtils.Gen(p, TunnelSegment))
                         {
                             BloomRingSharp Ring = new();

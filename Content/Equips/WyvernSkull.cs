@@ -205,7 +205,7 @@ namespace DestroyerTest.Content.Equips
 
     public class WyvernDashDrawLayer : PlayerDrawLayer
     {
-        public override Position GetDefaultPosition() => PlayerDrawLayers.AfterLastVanillaLayer;
+        public override Position GetDefaultPosition() => new AfterParent(PlayerDrawLayers.Magiluminescence);
 
         public override bool GetDefaultVisibility(PlayerDrawSet drawInfo)
         {
@@ -217,13 +217,14 @@ namespace DestroyerTest.Content.Equips
         {
             if (Set.drawPlayer.TryGetModPlayer<WyvernSkullDash>(out var Dash))
             {
+
                 if (Set.drawPlayer.direction == 1 && Dash.DashTimer > 0)
                 {
                     return new DrawData(
                         Wyvern.Value,
                         Set.drawPlayer.Center - Main.screenPosition + new Vector2(12, Set.drawPlayer.gfxOffY),
                         null,
-                        new Color(255, 255, 255) * ((float)Dash.DashTimer / (float)WyvernSkullDash.DashDuration),
+                        Color.White * ((float)Dash.DashTimer / (float)WyvernSkullDash.DashDuration),
                         Set.drawPlayer.bodyRotation,
                         Wyvern.Value.Size() / 2f,
                         1f,
@@ -236,7 +237,7 @@ namespace DestroyerTest.Content.Equips
                         Wyvern.Value,
                         Set.drawPlayer.Center - Main.screenPosition + new Vector2(-12, Set.drawPlayer.gfxOffY),
                         null,
-                        new Color(255, 255, 255) * ((float)Dash.DashTimer / (float)WyvernSkullDash.DashDuration),
+                        Color.White * ((float)Dash.DashTimer / (float)WyvernSkullDash.DashDuration),
                         Set.drawPlayer.bodyRotation,
                         Wyvern.Value.Size() / 2f,
                         1f,
@@ -250,10 +251,9 @@ namespace DestroyerTest.Content.Equips
         protected override void Draw(ref PlayerDrawSet drawInfo)
         {
             var modPlayer = drawInfo.drawPlayer.GetModPlayer<WyvernSkullDash>();
-            if (modPlayer.DashTimer > 0)
+            if (modPlayer.DashTimer > 0 &&  drawInfo.shadow == 0)
             {
-                Vector2 position = drawInfo.Position + new Vector2(0, drawInfo.drawPlayer.gfxOffY);
-                Main.EntitySpriteDraw(Data(drawInfo));
+                drawInfo.DrawDataCache.Add(Data(drawInfo));
             }
         }
     }

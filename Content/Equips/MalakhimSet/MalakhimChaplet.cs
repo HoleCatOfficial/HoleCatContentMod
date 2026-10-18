@@ -40,6 +40,7 @@ namespace DestroyerTest.Content.Equips.MalakhimSet
         public override void UpdateArmorSet(Player player)
         {
             player.setBonus = Language.GetTextValue("Mods.DestroyerTest.Items.MalakhimChaplet.SetBonus");
+            player.maxMinions += 1;
             if (player.TryGetModPlayer<MalakhimPlayer>(out MalakhimPlayer MK))
             {
                 MK.Active = true;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BreadLibrary.Core.Graphics;
 using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
 using BreadLibrary.Core.Graphics.Spritebatch;
@@ -89,13 +90,24 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
             spriteBatch.Begin(Cap);
 
       
-
+            
             Main.EntitySpriteDraw(Tex.Value, Projectile.Center - Main.screenPosition, null, Color.DarkGoldenrod with { A = 0 } * 0.15f, Rot, Tex.Value.Size() / 2, Projectile.scale * Sc * 0.2f, SpriteEffects.None, 0f);
             Main.EntitySpriteDraw(Tex.Value, Projectile.Center - Main.screenPosition, null, Color.DarkGoldenrod with { A = 0 } * 0.35f, Rot * 0.5f, Tex.Value.Size() / 2, Projectile.scale * 0.3f * Sc, SpriteEffects.None, 0f);
 
             Main.EntitySpriteDraw(Tex.Value, Projectile.Center - Main.screenPosition, null, Color.DarkGoldenrod with { A = 0 } * 0.25f, -Rot * 1.5f, Tex.Value.Size() / 2, Projectile.scale * 0.65f, SpriteEffects.None, 0f);
             Main.EntitySpriteDraw(Tex.Value, Projectile.Center - Main.screenPosition, null, Color.Goldenrod with { A = 0 }, -Rot * 1.5f, Tex.Value.Size() / 2, Projectile.scale * 0.4f, SpriteEffects.None, 0f);
             Main.EntitySpriteDraw(Tex.Value, Projectile.Center - Main.screenPosition, null, Color.White with { A = 0 }, -Rot * 1.5f, Tex.Value.Size() / 2, Projectile.scale * 0.3f, SpriteEffects.None, 0f);
+
+            
+            /*
+            if (lightCast != null)
+            {
+                spriteBatch.End();
+                lightCast.DrawDust();
+                spriteBatch.Begin(Cap);
+            }
+            */
+
 
             spriteBatch.ResetToDefault();
         }
@@ -126,7 +138,8 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
 
         float Rot = 0f;
         float Sc = 0f;
-           
+
+        Raycast lightCast;
         public override void AI()
         {
             if (!Owner.dead)
@@ -145,18 +158,24 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
 
             float CurrentSpeed = Owner.velocity.X;
             float MaxSpeed = Owner.maxRunSpeed;
-            float spd = MathHelper.Lerp(0.01f, 0.1f, CurrentSpeed / MaxSpeed);
+            float spd = MathHelper.Lerp(0.006f, 0.07f, CurrentSpeed / MaxSpeed);
             Rot += spd;
             Sc = MathHelper.Lerp(1f, 2.5f, Progress);
 
 
             Lighting.AddLight(Projectile.Center, Color.Goldenrod.ToVector3() * MathHelper.Lerp(1.5f, 2.4f, Progress));
 
+            lightCast = new(Projectile.Center, Projectile.Center + (new Vector2(100, 0)), Color.Goldenrod);
+            
+
+            
             Projectile.Center = Owner.MountedCenter;
 
+            
             ProvidenceSpark spark = new(Owner);
             spark.PrepareSpark(Projectile.Center, Main.rand.NextVector2Circular(3f, 3f) * MathHelper.Lerp(1f, 3f, Progress), 0f, Main.rand.NextBool(12) ? Color.DeepPink : Color.Goldenrod, 0.8f, false, 20, SparkDrawMode.Additive, 1.7f * MathHelper.Lerp(1f, 3f, Progress));
             ParticleEngine.BehindProjectiles.Add(spark, PixelLayer.BehindTiles);
+            
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)

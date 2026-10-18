@@ -322,7 +322,7 @@ namespace DestroyerTest.Common.Systems
 
             for (int k = 0; k < attempts && geodes.Count > 0; k++)
             {
-                int x = WorldGen.genRand.Next(0, Main.maxTilesX);
+                int x = WorldGen.genRand.Next(100, Main.maxTilesX - 100);
 
                 int y = WorldGen.genRand.Next((int)Main.worldSurface, Main.maxTilesY - 200);
 
