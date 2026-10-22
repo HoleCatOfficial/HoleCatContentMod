@@ -179,17 +179,17 @@ namespace DestroyerTest.Common
                 return false;
             }
 
-            if (item.rare == ModContent.RarityType<RiftRarity1>() && line.Name == "ItemName")
+            if (item.rare == ModContent.RarityType<RiftRarity>() && line.Name == "ItemName")
             {
                 Color In = Opus.Sine(Color.Black, ColorLib.Rift, 0.1f);
                 Color Out = Opus.Sine(ColorLib.Rift, Color.Black, 0.1f);
                 Utils.DrawBorderStringFourWay(Main.spriteBatch, FontAssets.MouseText.Value, line.Text, line.X, line.Y, In, Out, new Vector2(0.5f, 0.5f));
                 return false; 
             }
-            if (item.rare == ModContent.RarityType<RiftRarity2>() && line.Name == "ItemName")
+            if (item.rare == ModContent.RarityType<HeliciteRarity>() && line.Name == "ItemName")
             {
-                Color In = Opus.Sine(ColorLib.DarkRift2, ColorLib.LightRift3, 0.1f);
-                Color Out = Opus.Sine(ColorLib.Rift, Color.White, 0.1f);
+                Color In = Color.White;
+                Color Out = OpusColorUtils.MultiLerp(Opus.Sine(1f, 0f), ColorLib.HeliciteColorMap);
                 Utils.DrawBorderStringFourWay(Main.spriteBatch, FontAssets.MouseText.Value, line.Text, line.X, line.Y, In, Out, new Vector2(0.5f, 0.5f));
 
                 return false;

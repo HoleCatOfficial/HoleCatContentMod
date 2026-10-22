@@ -1,22 +1,24 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using BreadLibrary.Core.Graphics.Particles;
+using DestroyerTest.Common;
+using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Dusts;
+using DestroyerTest.Content.Particles;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
+using OpusLib.Content.Helpers;
+using OpusLib.Content.Particles;
 using Terraria;
+using Terraria.Audio;
 using Terraria.Chat;
 using Terraria.ID;
 using Terraria.IO;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.WorldBuilding;
-using Terraria.Audio;
-using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Particles;
-using DestroyerTest.Common;
-using BreadLibrary.Core.Graphics.Particles;
-using OpusLib;
 
 namespace DestroyerTest.Content.Tiles
 {
@@ -29,18 +31,15 @@ namespace DestroyerTest.Content.Tiles
 			TileID.Sets.BlockMergesWithMergeAllBlock[Type] = true;
 			Main.tileSpelunker[Type] = true;
 			Main.tileOreFinderPriority[Type] = 765;
-			Main.tileMergeDirt[Type] = true;
 			Main.tileSolid[Type] = true;
 			Main.tileLighted[Type] = true;
+			Main.tileBlendAll[Type] = true;
 
 			LocalizedText name = CreateMapEntryName();
 			AddMapEntry(new Color(255, 155, 0), name);
 
 			//DustType = ModContent.DustType<HeliciteCrystalDust>();
-			HitSound = new SoundStyle("DestroyerTest/Assets/Audio/Scholar/ShieldHit", 3)
-			{
-				PitchVariance = 0.5f
-			};
+			HitSound = new SoundStyle("DestroyerTest/Assets/Audio/Scholar/ShieldHit", 3) with { Pitch = 1.6f, PitchVariance = 0.2f, MaxInstances = 0 };
 			MineResist = 1.5f;
 			MinPick = 200;
 		}
@@ -57,15 +56,18 @@ namespace DestroyerTest.Content.Tiles
 			{
 				player.AddBuff(ModContent.BuffType<DaylightOverload>(), 60);
 
+                Color color = OpusColorUtils.MultiLerp(Opus.Sine(1f, 0f), ColorLib.HeliciteColorMap);
+
+                
 				// Optionally, sparkle when active
-				if (Main.rand.NextBool(100) && !Main.gamePaused && !Main.gameInactive)
+                if (Main.rand.NextBool(100) && !Main.gamePaused && !Main.gameInactive)
 				{
 					PixelParticle Pixel = new();
-					Pixel.Initialize(tileWorldPos, tileWorldPos.DirectionTo(player.Center).RotatedByRandom(0.6f) * 0.5f, ColorLib.Rift, 2f);
+					Pixel.Initialize(tileWorldPos, tileWorldPos.DirectionTo(player.Center).RotatedByRandom(0.6f) * 0.5f, color, 2f);
 					ParticleEngine.Particles.Add(Pixel);
 
 					PointGlowPreMultiplied Glow = new();
-                    Glow.Initialize(tileWorldPos, tileWorldPos.DirectionTo(player.Center).RotatedByRandom(0.6f) * 0.5f, ColorLib.Rift * 0.2f, 2f);
+                    Glow.Initialize(tileWorldPos, tileWorldPos.DirectionTo(player.Center).RotatedByRandom(0.6f) * 0.5f, color * 0.2f, 2f);
                     ParticleEngine.Particles.Add(Glow);
                 }
 
@@ -90,15 +92,18 @@ namespace DestroyerTest.Content.Tiles
             Vector2 tileWorldPos = new Vector2(i * 16 + 8, j * 16 + 8);
 
             float distance = Vector2.Distance(player.Center, tileWorldPos);
+			Color color = OpusColorUtils.MultiLerp(Opus.Sine(1f, 0f), ColorLib.HeliciteColorMap);
 
-			if (distance < 400f)
+
+
+            if (distance < 400f)
 			{
 				float DistanceMult = MathHelper.Lerp(0f, 1f, distance / 160f);
 
 				float Modifier = Opus.Sine(0.25f, 0.05f) * DistanceMult;
-				r = 2.55f * Modifier;
-				g = 1.55f * Modifier;
-				b = 0f;
+				r = (color.R * 0.05f) * Modifier;
+				g = (color.G * 0.05f) * Modifier;
+				b = (color.B * 0.05f) * Modifier;
 			}
 			else
 			{
@@ -110,12 +115,19 @@ namespace DestroyerTest.Content.Tiles
         {
 
             Vector2 tileWorldPos = new Vector2(i * 16 + 8, j * 16 + 8);
+
+
+			LerpingBloomRingSharp Ring = new();
+			Ring.Prepare(tileWorldPos, Vector2.Zero, ColorLib.HeliciteColorMap, 0.05f, 0.01f, 0.3f);
+			ParticleEngine.Particles.Add(Ring);
+
+
             PixelParticle Pixel = new();
-            Pixel.Initialize(tileWorldPos, Main.rand.NextVector2Circular(2f, 2f), ColorLib.Rift, 2f);
+            Pixel.Initialize(tileWorldPos, Main.rand.NextVector2Circular(2f, 2f), ColorLib.HeliciteColorMap[Main.rand.Next(ColorLib.HeliciteColorMap.Length)], 2f);
             ParticleEngine.Particles.Add(Pixel);
 
             PointGlowPreMultiplied Glow = new();
-            Glow.Initialize(tileWorldPos,  Main.rand.NextVector2Circular(2f, 2f), ColorLib.Rift * 0.2f, 2f);
+            Glow.Initialize(tileWorldPos,  Main.rand.NextVector2Circular(2f, 2f), ColorLib.HeliciteColorMap[Main.rand.Next(ColorLib.HeliciteColorMap.Length)] * 0.2f, 2f);
             ParticleEngine.Particles.Add(Glow);
             return false;
         }

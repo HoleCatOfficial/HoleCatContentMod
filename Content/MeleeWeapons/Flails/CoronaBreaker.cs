@@ -35,7 +35,7 @@ namespace DestroyerTest.Content.MeleeWeapons.Flails
 			Item.shoot = ModContent.ProjectileType<CoronaBreakerProjectile>();
 			Item.shootSpeed = 12f;
 			Item.UseSound = SoundID.Item71;
-			Item.rare = ModContent.RarityType<RiftRarity1>();
+			Item.rare = ModContent.RarityType<RiftRarity>();
 			Item.value = Item.sellPrice(gold: 1, silver: 50);
 			Item.DamageType = DamageClass.Melee;
 			Item.noMelee = true;

@@ -37,7 +37,7 @@ namespace DestroyerTest.Content.MeleeWeapons
             Item.crit = 16;
 
             Item.value = Item.buyPrice(gold: 3);
-            Item.rare = ModContent.RarityType<RiftRarity2>();
+            Item.rare = ModContent.RarityType<HeliciteRarity>();
             Item.noUseGraphic = true;
             Item.noMelee = true;
             Item.shoot = ModContent.ProjectileType<SunspotSwing>();

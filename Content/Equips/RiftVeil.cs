@@ -35,7 +35,7 @@ namespace DestroyerTest.Content.Equips
         {
             Item.width = 30;
             Item.height = 28;
-            Item.rare = ModContent.RarityType<RiftRarity1>();
+            Item.rare = ModContent.RarityType<RiftRarity>();
             Item.defense = 26;
         }
 

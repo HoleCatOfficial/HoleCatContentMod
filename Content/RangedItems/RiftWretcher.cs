@@ -22,7 +22,7 @@ namespace DestroyerTest.Content.RangedItems
         {
             Item.width = 150;
             Item.height = 46;
-            Item.rare = ModContent.RarityType<RiftRarity1>();
+            Item.rare = ModContent.RarityType<RiftRarity>();
 
             Item.useTime = 10;
             Item.useAnimation = 10;

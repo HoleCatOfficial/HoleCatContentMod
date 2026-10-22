@@ -11,7 +11,7 @@ using Terraria.UI.Chat;
 
 namespace DestroyerTest.Rarity
 {
-	public class RiftRarity1 : ModRarity
+	public class RiftRarity : ModRarity
     {
         public override Color RarityColor => Opus.Sine(Color.Black, ColorLib.Rift, 0.1f); // Change color as needed
 

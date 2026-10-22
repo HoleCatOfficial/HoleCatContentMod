@@ -42,7 +42,7 @@ namespace DestroyerTest.Content.RiftArsenal
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.knockBack = 0;
             Item.value = 10000;
-            Item.rare = ModContent.RarityType<RiftRarity1>();
+            Item.rare = ModContent.RarityType<RiftRarity>();
             Item.autoReuse = true;
             Item.shoot = ModContent.ProjectileType<RiftHypersabreSwing>();
             Item.shootSpeed = 1f;

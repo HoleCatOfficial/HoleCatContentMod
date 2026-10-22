@@ -14,6 +14,7 @@ using DestroyerTest.Content.Tiles;
 using DestroyerTest.Content.Tiles.Altar;
 using DestroyerTest.Content.Tiles.RoseGarden;
 using DestroyerTest.Content.Tiles.RoseGarden.Flowers;
+using DestroyerTest.Content.Tiles.RoseGarden.Walls;
 using DestroyerTest.Content.Tiles.Walls;
 using DestroyerTest.Content.Tools;
 using Microsoft.Xna.Framework;
@@ -64,11 +65,11 @@ namespace DestroyerTest.Common.Systems
                 //CerebralGeodeGenTest((int)Main.MouseWorld.X / 16, (int)Main.MouseWorld.Y / 16);
 
 
-                //TestMethod((int)Main.MouseWorld.X / 16, (int)Main.MouseWorld.Y / 16);
+                TestMethod((int)Main.MouseWorld.X / 16, (int)Main.MouseWorld.Y / 16);
 
                 //HeliciteGenTest((int)Main.MouseWorld.X / 16, (int)Main.MouseWorld.Y / 16);
 
-                //Main.NewText(new Point((int)Main.MouseWorld.X / 16, (int)Main.MouseWorld.Y / 16), Color.Green);
+                Main.NewText(new Point((int)Main.MouseWorld.X / 16, (int)Main.MouseWorld.Y / 16), Color.Green);
             }
 
 
@@ -150,78 +151,10 @@ namespace DestroyerTest.Common.Systems
         //WorldGen.OreRunner(x, y, 10, 19, (ushort)ModContent.TileType<Tile_Dreamstone>());
     }
 
-    public void SetupPath(int x, int y)
-    {
-
-
-        /*
-        WorldGen.TileRunner(x, y, 20, 4, TileID.Ebonstone, true, overRide: true);
-        WorldGen.TileRunner(x + 10, y, 20, 4, TileID.Ebonstone, true, overRide: true);
-        WorldGen.TileRunner(x + 20, y, 20, 4, TileID.Ebonstone, true, overRide: true);
-        WorldGen.TileRunner(x + 30, y, 20, 4, TileID.Ebonstone, true, overRide: true);
-        WorldGen.TileRunner(x + 40, y, 20, 4, TileID.Ebonstone, true, overRide: true);
-        WorldGen.TileRunner(x + 50, y, 20, 4, TileID.Ebonstone, true, overRide: true);
-
-        WorldGen.TileRunner(x, y + 10, 20, 4, TileID.Ebonstone, true, overRide: true);
-        WorldGen.TileRunner(x + 10, y + 10, 20, 4, TileID.Ebonstone, true, overRide: true);
-        WorldGen.TileRunner(x + 20, y + 10, 20, 4, TileID.Ebonstone, true, overRide: true);
-        WorldGen.TileRunner(x + 30, y + 10, 20, 4, TileID.Ebonstone, true, overRide: true);
-        WorldGen.TileRunner(x + 40, y + 10, 20, 4, TileID.Ebonstone, true, overRide: true);
-        WorldGen.TileRunner(x + 50, y + 10, 20, 4, TileID.Ebonstone, true, overRide: true);
-
-        WorldGen.TileRunner(x, y + 20, 20, 4, TileID.Ebonstone, true, overRide: true);
-        WorldGen.TileRunner(x + 10, y + 20, 20, 4, TileID.Ebonstone, true, overRide: true);
-        WorldGen.TileRunner(x + 20, y + 20, 20, 4, TileID.Ebonstone, true, overRide: true);
-        WorldGen.TileRunner(x + 30, y + 20, 20, 4, TileID.Ebonstone, true, overRide: true);
-        WorldGen.TileRunner(x + 40, y + 20, 20, 4, TileID.Ebonstone, true, overRide: true);
-        WorldGen.TileRunner(x + 50, y + 20, 20, 4, TileID.Ebonstone, true, overRide: true);
-
-        WorldGen.TileRunner(x, y + 30, 20, 4, TileID.Ebonstone, true, overRide: true);
-        WorldGen.TileRunner(x + 10, y + 30, 20, 4, TileID.Ebonstone, true, overRide: true);
-        WorldGen.TileRunner(x + 20, y + 30, 20, 4, TileID.Ebonstone, true, overRide: true);
-        WorldGen.TileRunner(x + 30, y + 30, 20, 4, TileID.Ebonstone, true, overRide: true);
-        WorldGen.TileRunner(x + 40, y + 30, 20, 4, TileID.Ebonstone, true, overRide: true);
-        WorldGen.TileRunner(x + 50, y + 30, 20, 4, TileID.Ebonstone, true, overRide: true);
-
-
-        WorldGen.TileRunner(x - 7, y - 6, 9, 12, TileID.Ebonstone, true, 1, -3, overRide: true);
-        WorldGen.TileRunner(x + 53, y - 6, 9, 12, TileID.Ebonstone, true, -1, -3, overRide: true);
-        */
-        }
-
-        public void TopGen(int x, int y)
+        public void FirstFloor(int x, int y)
         {
-            WorldGen.PlaceTile(x, y, TileID.GoldBrick);
-        }
-        public void ClearTopSpace(int x, int y)
-        {
-            Point origin = new Point(x, y);
-            Point surfacePoint;
-            // Search up to 1000 tiles above for an area 50 tiles tall and 1 tile wide without a single solid tile. Basically find the surface.
-            bool flag = WorldUtils.Find(origin, Searches.Chain(new Searches.Up(1000), new Conditions.IsSolid().AreaOr(1, 50).Not()), out surfacePoint);
-            // Search from the orgin up to the surface and make sure no sand is between origin and surface
-            if (WorldUtils.Find(origin, Searches.Chain(new Searches.Up(origin.Y - surfacePoint.Y), new Conditions.IsTile(TileID.Sand)), out Point _))
-                return;
-
-            if (!flag)
-                return;
-
-            // Remove tiles to create shaft to surface. Convert Sand tiles along shaft to hardened sand tiles.
-            ShapeData shaftShapeData = new ShapeData();
-            WorldUtils.Gen(new Point(origin.X, surfacePoint.Y + 10), new Shapes.Circle(1, origin.Y - surfacePoint.Y - 9), Actions.Chain(new Modifiers.Blotches(2, 0.2), new Actions.ClearTile().Output(shaftShapeData), new Modifiers.Expand(1), new Modifiers.OnlyTiles(TileID.Sand), new Actions.SetTile(TileID.HardenedSand).Output(shaftShapeData)));
-            WorldUtils.Gen(new Point(origin.X, surfacePoint.Y + 10), new ModShapes.All(shaftShapeData), new Actions.SetFrames(frameNeighbors: true));
-
-            //Leave these in
-
-            WorldUtils.Gen(new Point(x, y - 5), new GenShapeActionPair(new Shapes.Mound(28, Main.rand.Next(24, 30)), new Actions.ClearTile()));
-
-            WorldUtils.Gen(new Point(x, y - 3), new GenShapeActionPair(new Shapes.Slime(7, 4, (double)Main.rand.NextFloat(1.03f, 1.5f)), new Actions.PlaceTile((ushort)ModContent.TileType<Tile_RootedDirt>())));
-
-            //WorldGen.TileRunner(x, y - 4, 6, 8, ModContent.TileType<Tile_RootedDirt>(), true, 2, 1, overRide: true);
-        }
-        public void TopFloor(int x, int y)
-        {
-
+            ushort TT = (ushort)ModContent.TileType<Tile_SanctifiedBrick>();
+            ushort WT = (ushort)ModContent.WallType<Wall_SanctifiedBrickWall>();
             int[] Variants = new int[3]
             {
                 ModContent.TileType<Tile_HekateTalisman1>(),
@@ -229,8 +162,10 @@ namespace DestroyerTest.Common.Systems
                 ModContent.TileType<Tile_HekateTalisman3>(),
             };
 
+            ushort BT = (ushort)ModContent.TileType<Tile_SanctifiedBrazier>();
+
             //Setup Rooms
-            Room Central = new Room(x, y, 21, 15, TileID.EbonstoneBrick, WallID.EbonstoneBrick);
+            Room Central = new Room(x, y, 21, 15, TT, WT);
             DTGenUtils.GenRoom(Central);
             DTGenUtils.MakeDoor(Central, Room.RoomSide.Both);
 
@@ -238,24 +173,24 @@ namespace DestroyerTest.Common.Systems
 
             
 
-            Room ChestRoom1 = new Room(x + 32, y + 3, 16, 12, TileID.EbonstoneBrick, WallID.EbonstoneBrick);
+            Room ChestRoom1 = new Room(x + 32, y + 3, 16, 12, TT, WT);
             DTGenUtils.GenRoom(ChestRoom1);
             DTGenUtils.MakeDoor(ChestRoom1, Room.RoomSide.Left);
 
-            Room FirstToSecondFloorChute = new Room(Central.Bounds.Left - 18, y + 3, 10, 12, TileID.EbonstoneBrick, WallID.EbonstoneBrick);
+            Room FirstToSecondFloorChute = new Room(Central.Bounds.Left - 18, y + 3, 10, 12, TT, WT);
             DTGenUtils.GenRoom(FirstToSecondFloorChute);
             DTGenUtils.MakeDoor(FirstToSecondFloorChute, Room.RoomSide.Right);
             DTGenUtils.MakeHatch(FirstToSecondFloorChute, Room.HatchSide.Bottom, 4, FirstToSecondFloorChute.Position.X + 2);
 
-            Hallway CenToChest1 = new Hallway(Central, ChestRoom1, 9, TileID.EbonstoneBrick, WallID.EbonstoneBrick);
+            Hallway CenToChest1 = new Hallway(Central, ChestRoom1, 9, TT, WT);
             DTGenUtils.GenHallway(CenToChest1);
 
-            Hallway CenToChute = new Hallway(FirstToSecondFloorChute, Central, 9, TileID.EbonstoneBrick, WallID.EbonstoneBrick);
+            Hallway CenToChute = new Hallway(FirstToSecondFloorChute, Central, 9, TT, WT);
             DTGenUtils.GenHallway(CenToChute);
             
             Room Dummy = new Room(x - 20, y + 22, 35, 18, TileID.Dirt, WallID.Dirt);
              
-            Chute FloorConnector = new Chute(FirstToSecondFloorChute, Dummy, x - 18, 9, TileID.EbonstoneBrick, WallID.EbonstoneBrick);
+            Chute FloorConnector = new Chute(FirstToSecondFloorChute, Dummy, x - 18, 9, TT, WT);
 
             
 
@@ -271,7 +206,7 @@ namespace DestroyerTest.Common.Systems
                 WorldGen.PlaceObject(Central.Interior.Location.X + 1, Central.Interior.Location.Y, Variants[Main.rand.Next(Variants.Length)]);
                 WorldGen.PlaceObject(Central.Interior.Location.X + Central.Interior.Width - 2, Central.Interior.Location.Y, Variants[Main.rand.Next(Variants.Length)]);
 
-                WorldGen.PlaceObject(Central.Interior.Location.X + (Central.Interior.Width / 2), Central.Interior.Y, TileID.BrazierSuspended);
+                WorldGen.PlaceObject(Central.Interior.Location.X + (Central.Interior.Width / 2), Central.Interior.Y, BT);
 
                 for (int i = 0; i < 2; i++)
                 {
@@ -290,9 +225,9 @@ namespace DestroyerTest.Common.Systems
                 WorldGen.PlaceObject(ChestRoom1.Interior.Location.X + 1, ChestRoom1.Interior.Location.Y, Variants[Main.rand.Next(Variants.Length)]);
                 WorldGen.PlaceObject(ChestRoom1.Interior.Location.X + ChestRoom1.Interior.Width - 2, ChestRoom1.Interior.Location.Y, Variants[Main.rand.Next(Variants.Length)]);
 
-                WorldGen.PlaceObject(ChestRoom1.Interior.Location.X + ChestRoom1.Interior.Width - 1, ChestRoom1.Interior.Location.Y + 2, TileID.Torches);
+                //WorldGen.PlaceObject(ChestRoom1.Interior.Location.X + ChestRoom1.Interior.Width - 1, ChestRoom1.Interior.Location.Y + 2, TileID.Torches);
 
-                /*
+                
                 int Loot1 = WorldGen.PlaceChest(ChestRoom1.Interior.Location.X + 6, ChestRoom1.Interior.Location.Y + 7, (ushort)ModContent.TileType<Tile_NightmareChest>());
 
                 var chest1 = Main.chest[Loot1];
@@ -309,7 +244,7 @@ namespace DestroyerTest.Common.Systems
                         chest1.item[1].stack = Main.rand.Next(10, 21);
                     }
                 }
-                '*/
+                
             }
 
             furnishChestTopFloor();
@@ -318,15 +253,16 @@ namespace DestroyerTest.Common.Systems
             {
                 WorldGen.PlaceObject(FloorConnector.Center.X, FloorConnector.Interior.Location.Y + 4 + i, TileID.Dirt);
             }
-
-            //Setup Hallways
-
-            //DTGenUtils.GenHallway(origin.X + 20, origin.Y + 4, 15, 10, 2, true, TileID.EbonstoneBrick, WallID.EbonstoneBrick, 18);
         }
 
         
-        public void BottomFloor(int x, int y)
+        public void SecondFloor(int x, int y)
         {
+            ushort TT = (ushort)ModContent.TileType<Tile_SanctifiedBrick>();
+            ushort WT = (ushort)ModContent.WallType<Wall_SanctifiedBrickWall>();
+
+            ushort BT = (ushort)ModContent.TileType<Tile_SanctifiedBrazier>();
+
             int[] TalismanVariants = new int[3]
             {
                 ModContent.TileType<Tile_HekateTalisman1>(),
@@ -343,83 +279,68 @@ namespace DestroyerTest.Common.Systems
 
             Point origin = new Point(x, y);
 
-            Room Entry = new Room(x - 20, y + 22, 35, 18, TileID.EbonstoneBrick, WallID.EbonstoneBrick);
+            Room Entry = new Room(x - 20, y + 22, 35, 18, TT, WT);
             DTGenUtils.GenRoom(Entry);
             DTGenUtils.MakeHatch(Entry, Room.HatchSide.Top, 4, Entry.Position.X + 4);
             DTGenUtils.MakeDoor(Entry, Room.RoomSide.Both);
 
-            Room StatueRoom = new Room(x + 22, y + 20, 21, 20, TileID.EbonstoneBrick, WallID.EbonstoneBrick);
+            Room StatueRoom = new Room(x + 22, y + 20, 21, 20, TT, WT);
             DTGenUtils.GenRoom(StatueRoom);
             DTGenUtils.MakeDoor(StatueRoom, Room.RoomSide.Both);
 
-            Hallway EntryToStatue = new Hallway(Entry, StatueRoom, 9, TileID.EbonstoneBrick, WallID.EbonstoneBrick);
+            Hallway EntryToStatue = new Hallway(Entry, StatueRoom, 9, TT, WT);
             DTGenUtils.GenHallway(EntryToStatue);
 
 
-            Room PotionRoom = new Room(x + 41, y + 22, 30, 18, TileID.EbonstoneBrick, WallID.EbonstoneBrick);
+            Room PotionRoom = new Room(x + 41, y + 22, 30, 18, TT, WT);
             DTGenUtils.GenRoom(PotionRoom);
             DTGenUtils.MakeDoor(PotionRoom, Room.RoomSide.Left);
 
 
-            Room SeedBank = new Room(x - 49, y + 25, 31, 15, TileID.EbonstoneBrick, WallID.EbonstoneBrick);
+            Room SeedBank = new Room(x - 49, y + 25, 31, 15, TT, WT);
             DTGenUtils.GenRoom(SeedBank);
             DTGenUtils.MakeDoor(SeedBank, Room.RoomSide.Both);
+
+
+            Room Foyer = new Room(x - 56, y + 30, 9, 10, TT, WT);
+            DTGenUtils.GenRoom(Foyer);
+            DTGenUtils.MakeDoor(Foyer, Room.RoomSide.Right);
+            DTGenUtils.MakeHatch(Foyer, Room.HatchSide.Bottom, 4, Foyer.Interior.Left);
+
+            Room BottomFoyer = new Room(x - 59, y + 85, 15, 16, TT, WT);
+            DTGenUtils.GenRoom(BottomFoyer);
+            DTGenUtils.MakeDoor(BottomFoyer, Room.RoomSide.Right);
+            DTGenUtils.MakeHatch(BottomFoyer, Room.HatchSide.Top, 4, Foyer.Interior.Left);
+
+            Chute ToFourthFloor = new Chute(Foyer, BottomFoyer, Foyer.Center.X - 4, 9, TT, WT);
+            DTGenUtils.GenChute(ToFourthFloor);
 
             void furnishEntry()
             {
                 WorldGen.PlaceObject(Entry.Interior.Location.X + 8, Entry.Interior.Location.Y + (Entry.Interior.Height - 1), BookcaseVariants[Main.rand.Next(BookcaseVariants.Length)]);
 
-                WorldGen.PlaceObject(Entry.Interior.Location.X + 11, Entry.Interior.Location.Y, TileID.BrazierSuspended);
+                WorldGen.PlaceObject(Entry.Interior.Location.X + 11, Entry.Interior.Location.Y, BT);
 
                 WorldGen.PlaceObject(Entry.Interior.Location.X + 13, Entry.Interior.Location.Y + (Entry.Interior.Height - 1), BookcaseVariants[Main.rand.Next(BookcaseVariants.Length)]);
 
-                WorldGen.PlaceObject(Entry.Interior.Location.X + 16, Entry.Interior.Location.Y, TileID.BrazierSuspended);
+                WorldGen.PlaceObject(Entry.Interior.Location.X + 16, Entry.Interior.Location.Y, BT);
 
                 WorldGen.PlaceObject(Entry.Interior.Location.X + 18, Entry.Interior.Location.Y + (Entry.Interior.Height - 1), BookcaseVariants[Main.rand.Next(BookcaseVariants.Length)]);
-
-                Point ChestPoint = new(Entry.Interior.Location.X + 11, Entry.Interior.Location.Y + 13);
-                int Loot1;
-                /*
-                if (!Framing.GetTileSafely(ChestPoint).HasTile)
-                {
-                    Loot1 = WorldGen.PlaceChest(ChestPoint.X, ChestPoint.Y, TileID.Containers, style: 1);
-
-                    var chest1 = Main.chest[Loot1];
-
-                    int L1 = ModContent.ItemType<HekateBook1>();
-                    int L2 = ModContent.ItemType<HekateBook2>();
-                    int L3 = ModContent.ItemType<MalachiteKnives>();
-
-                    for (int inventoryIndex = 0; inventoryIndex < Chest.maxItems; inventoryIndex++)
-                    {
-                        if (chest1.item[inventoryIndex].type == ItemID.None)
-                        {
-                            chest1.item[0].SetDefaults(L1);
-                            chest1.item[1].SetDefaults(L2);
-                            chest1.item[2].SetDefaults(L3);
-                        }
-                    }
-                }
-                else
-                {
-                    WorldGen.KillTile(ChestPoint.X, ChestPoint.Y);
-                }
-                */
             }
 
             void FurnishPaintingRoom()
             {
 
                 WorldGen.PlaceObject(StatueRoom.Interior.Location.X + 5, StatueRoom.Interior.Location.Y + 1, ModContent.TileType<Tile_IdriPainting>());
-                WorldGen.PlaceObject(StatueRoom.Interior.Location.X + 1, StatueRoom.Interior.Location.Y, TileID.BrazierSuspended);
-                WorldGen.PlaceObject(StatueRoom.Interior.Location.X + (StatueRoom.Interior.Width - 3), StatueRoom.Interior.Location.Y, TileID.BrazierSuspended);
+                WorldGen.PlaceObject(StatueRoom.Interior.Location.X + 1, StatueRoom.Interior.Location.Y, BT);
+                WorldGen.PlaceObject(StatueRoom.Interior.Location.X + (StatueRoom.Interior.Width - 3), StatueRoom.Interior.Location.Y, BT);
 
             }
 
             void furnishSeedBank()
             {
-                WorldGen.PlaceObject(SeedBank.Interior.Location.X + 2, SeedBank.Interior.Location.Y, TileID.BrazierSuspended);
-                WorldGen.PlaceObject(SeedBank.Interior.Location.X + (SeedBank.Interior.Width - 4), SeedBank.Interior.Location.Y, TileID.BrazierSuspended);
+                WorldGen.PlaceObject(SeedBank.Interior.Location.X + 2, SeedBank.Interior.Location.Y, BT);
+                WorldGen.PlaceObject(SeedBank.Interior.Location.X + (SeedBank.Interior.Width - 4), SeedBank.Interior.Location.Y, BT);
 
                 for (int i = 0; i < 4; i++)
                 {
@@ -534,13 +455,9 @@ namespace DestroyerTest.Common.Systems
                 }
 
                 
-
-                Dust.QuickDust((SeedBank.Interior.Location.X + (SeedBank.Interior.Width / 2) - 3), SeedBank.Interior.Location.Y + 3, Color.Red);
                 WorldGen.PlaceObject((SeedBank.Interior.Location.X + (SeedBank.Interior.Width / 2) - 3), SeedBank.Interior.Location.Y + 3, (ushort)ModContent.TileType<NeglectedRegardsDisplay>());
 
-                Dust.QuickDust((SeedBank.Interior.Location.X + (SeedBank.Interior.Width / 2) - 2), SeedBank.Interior.Location.Y + 10, Color.Orange);
                 WorldGen.PlaceObject((SeedBank.Interior.Location.X + (SeedBank.Interior.Width / 2) - 2), SeedBank.Interior.Location.Y + 10, (ushort)ModContent.TileType<Tile_HoleisBed>());
-
 
                 WorldGen.PlaceObject(SeedBank.Interior.Location.X + 7, SeedBank.Interior.Location.Y, TalismanVariants[Main.rand.Next(TalismanVariants.Length)]);
                 WorldGen.PlaceObject(SeedBank.Interior.Location.X + SeedBank.Interior.Width - 8, SeedBank.Interior.Location.Y, TalismanVariants[Main.rand.Next(TalismanVariants.Length)]);
@@ -549,9 +466,9 @@ namespace DestroyerTest.Common.Systems
 
             void furnishPotionRoom()
             {
-                WorldGen.PlaceObject(PotionRoom.Interior.Location.X + 2, PotionRoom.Interior.Location.Y, TileID.BrazierSuspended);
+                WorldGen.PlaceObject(PotionRoom.Interior.Location.X + 2, PotionRoom.Interior.Location.Y, BT);
 
-                WorldGen.PlaceObject(PotionRoom.Interior.Location.X + PotionRoom.Interior.Width - 4, PotionRoom.Interior.Location.Y, TileID.BrazierSuspended);
+                WorldGen.PlaceObject(PotionRoom.Interior.Location.X + PotionRoom.Interior.Width - 4, PotionRoom.Interior.Location.Y, BT);
 
                 for (int i = 0; i < 2; i++)
                 {
@@ -602,6 +519,11 @@ namespace DestroyerTest.Common.Systems
 
         public void ThirdFloor(int x, int y)
         {
+            ushort TT = (ushort)ModContent.TileType<Tile_SanctifiedBrick>();
+            ushort WT = (ushort)ModContent.WallType<Wall_SanctifiedBrickWall>();
+
+            ushort BT = (ushort)ModContent.TileType<Tile_SanctifiedBrazier>();
+
             int[] TalismanVariants = new int[3]
             {
                 ModContent.TileType<Tile_HekateTalisman1>(),
@@ -609,13 +531,21 @@ namespace DestroyerTest.Common.Systems
                 ModContent.TileType<Tile_HekateTalisman3>(),
             };
 
-            Room ForestRoom = new Room(x - 33, y + 38, 25, 40, TileID.EbonstoneBrick, WallID.EbonstoneBrick);
+            Room ForestRoom = new Room(x - 33, y + 38, 25, 40, TT, WT);
             DTGenUtils.GenRoom(ForestRoom);
 
-            Room Entry = new Room(x - 10, y + 38, 25, 13, TileID.EbonstoneBrick, WallID.EbonstoneBrick);
+            Room Entry = new Room(x - 10, y + 38, 25, 13, TT, WT);
             DTGenUtils.GenRoom(Entry);
             DTGenUtils.MakeHatch(Entry, Room.HatchSide.Top, 4, Entry.Position.X + 16);
             DTGenUtils.MakeDoor(Entry, Room.RoomSide.Both);
+
+            Room CritterCollection = new Room(x + 22, y + 38, 27, 13, TT, WT);
+            DTGenUtils.GenRoom(CritterCollection);
+            DTGenUtils.MakeDoor(CritterCollection, Room.RoomSide.Left);
+
+            Hallway ToCritters = new Hallway(Entry, CritterCollection, 9, TT, WT);
+            DTGenUtils.GenHallway(ToCritters);
+
 
             Rectangle ForestFloor = new(ForestRoom.Interior.X, ForestRoom.Interior.Y + (ForestRoom.Interior.Height - 3), ForestRoom.Interior.Width, 3);
             WorldUtils.Gen(ForestFloor.Location, new GenShapeActionPair(new Shapes.Rectangle(ForestFloor.Width, ForestFloor.Height), new Actions.SetTile(TileID.Dirt)));
@@ -626,85 +556,114 @@ namespace DestroyerTest.Common.Systems
                 WorldGen.PlaceTile(X, Y, TileID.CorruptGrass);
             }
 
+            
+
             WorldGen.PlaceObject(ForestRoom.Interior.Location.X + 7, ForestRoom.Interior.Location.Y + ForestRoom.Interior.Height - 4, (ushort)ModContent.TileType<Tile_ForeignTree>());
 
-        }
 
-        public void ConnectingChute(int x, int y)
-        {
-            Point origin = new Point(x, y);
-
-
-            //DTGenUtils.GenChute(x, y, 9, 5, 2, true, true, TileID.EbonstoneBrick, WallID.EbonstoneBrick);
-        }
-
-        public void PlaceAndFillChests(int x, int y)
-        {
-            Point origin = new Point(x, y);
-
-            int Loot1 = WorldGen.PlaceChest(origin.X + 6, origin.Y + 11, (ushort)ModContent.TileType<Tile_NightmareChest>());
-
-            var chest1 = Main.chest[Loot1];
-
-            int L1 = ModContent.ItemType<HekateBookPrologue>();
-            int L2 = ModContent.ItemType<HekateBook1>();
-            int L3 = ModContent.ItemType<HekateBook2>();
-
-            int Loot2 = WorldGen.PlaceChest(origin.X + 28, origin.Y + 11, (ushort)ModContent.TileType<Tile_NightmareChest>());
-
-            var chest2 = Main.chest[Loot2];
-
-            int L4 = ModContent.ItemType<HekatesMystique>();
-            int L5 = ModContent.ItemType<HekateBook3>();
-            int L6 = ModContent.ItemType<HekateBook4>();
-            int L7 = ModContent.ItemType<MalachiteKnives>();
-
-            int Loot3= WorldGen.PlaceChest(origin.X + 39, origin.Y + 26, (ushort)ModContent.TileType<Tile_NightmareChest>());
-
-            var chest3 = Main.chest[Loot3];
-
-            int L9 = ModContent.ItemType<Dyrn>();
-            int L10 = ModContent.ItemType<IdriPotion>();
-
-            for (int inventoryIndex = 0; inventoryIndex < Chest.maxItems; inventoryIndex++)
+            void furnishCritterRoom()
             {
-                if (chest1.item[inventoryIndex].type == ItemID.None)
-                {
-                    // Place the item
-                    chest1.item[0].SetDefaults(L1);
-                    chest1.item[1].SetDefaults(L2);
-                    chest1.item[2].SetDefaults(L9);
-                    chest1.item[2].stack = Main.rand.Next(10, 21);
-                    chest1.item[3].SetDefaults(L3);
-                }
+                
+                WorldGen.PlaceObject(CritterCollection.Interior.Left + 4, CritterCollection.Interior.Top + (CritterCollection.Interior.Height - 1), TileID.AmberBunnyCage);
+                WorldGen.PlaceObject(CritterCollection.Interior.Left + 4, CritterCollection.Interior.Top + (CritterCollection.Interior.Height - 4), TileID.CageGrubby);
 
-                if (chest2.item[inventoryIndex].type == ItemID.None)
-                {
-                    // Place the item
-                    chest2.item[0].SetDefaults(L4);
-                    chest2.item[1].SetDefaults(L5);
-                    chest2.item[2].SetDefaults(L6);
-                    chest2.item[3].SetDefaults(L7);
-                    chest2.item[4].SetDefaults(L9);
-                    chest2.item[4].stack = Main.rand.Next(10, 21);
-
-                }
-
-                if (chest3.item[inventoryIndex].type == ItemID.None)
-                {
-                    // Place the item
-                    chest3.item[0].SetDefaults(L4);
-                    chest3.item[1].SetDefaults(L5);
-                    chest3.item[2].SetDefaults(L6);
-                    chest3.item[3].SetDefaults(L7);
-                    chest3.item[4].SetDefaults(L10);
-                }
+                WorldGen.PlaceObject(CritterCollection.Interior.Left + 10, CritterCollection.Interior.Top + (CritterCollection.Interior.Height - 1), (ushort)ModContent.TileType<Tile_Terrarium>());
+                WorldGen.PlaceObject(CritterCollection.Interior.Left + 10, CritterCollection.Interior.Top + (CritterCollection.Interior.Height - 3), (ushort)ModContent.TileType<Tile_Terrarium>());
             }
 
+            furnishCritterRoom();
+        }
+
+        public void FourthFloor(int X, int Y)
+        {
+            ushort TT = (ushort)ModContent.TileType<Tile_SanctifiedBrick>();
+            ushort WT = (ushort)ModContent.WallType<Wall_SanctifiedBrickWall>();
+
+            ushort BT = (ushort)ModContent.TileType<Tile_SanctifiedBrazier>();
+
+            int[] TalismanVariants = new int[3]
+            {
+                ModContent.TileType<Tile_HekateTalisman1>(),
+                ModContent.TileType<Tile_HekateTalisman2>(),
+                ModContent.TileType<Tile_HekateTalisman3>(),
+            };
+
+            Room Entry = new Room(X - 38, Y + 80, 40, 21, TT, WT);
+            DTGenUtils.GenRoom(Entry);
+            DTGenUtils.MakeDoor(Entry, Room.RoomSide.Both);
+
+            Room BottomFoyer = new Room(X - 59, Y + 85, 15, 16, TT, WT);
+            DTGenUtils.GenRoom(BottomFoyer);
+            DTGenUtils.MakeDoor(BottomFoyer, Room.RoomSide.Right);
+            DTGenUtils.MakeHatch(BottomFoyer, Room.HatchSide.Top, 4, X - 54);
+
+            Hallway connector1 = new Hallway(BottomFoyer, Entry, 9, TT, WT);
+            DTGenUtils.GenHallway(connector1);
+
+
+            Room RightRoom = new Room(X + 70, Y + 85, 20, 16, TT, WT);
+            DTGenUtils.GenRoom(RightRoom);
+            DTGenUtils.MakeDoor(RightRoom, Room.RoomSide.Left);
+            DTGenUtils.MakeHatch(RightRoom, Room.HatchSide.Bottom, 3, X + 82);
+
+            Hallway connector2 = new Hallway(Entry, RightRoom, 9, TT, WT);
+            DTGenUtils.GenHallway(connector2);
+
+            Room PreBoss = new Room(X + 70, Y + 140, 20, 16, TT, WT);
+            DTGenUtils.GenRoom(PreBoss);
+            DTGenUtils.MakeDoor(PreBoss, Room.RoomSide.Left);
+            DTGenUtils.MakeHatch(PreBoss, Room.HatchSide.Top, 3, X + 82);
+
+            Chute connector3 = new(RightRoom, PreBoss, RightRoom.Center.X, 8, TT, WT);
+            DTGenUtils.GenChute(connector3);
+
+
+            //Walls
+            ShapeData shapeData = new ShapeData();
+            WorldUtils.Gen(new Point(X, Y + 145), new Shapes.Mound(60, 30), Actions.Chain(new GenAction[]
+            {
+                new Actions.Blank().Output(shapeData),
+
+                new Actions.ClearTile(true),
+                new Actions.Clear(),
+
+                new Actions.PlaceWall(WT)
+            }));
+
+            
+            WorldUtils.Gen(new Point(X - 120, Y + 145), new Shapes.Rectangle((60 * 2) - 1, 10), Actions.Chain(new GenAction[]
+            {
+                new Modifiers.Offset(- 60, 0),
+                new Actions.Blank().Output(shapeData),
+
+
+                new Modifiers.Offset(120, 0),
+                new Actions.ClearTile(true),
+                new Actions.Clear(),
+                new Actions.PlaceWall(WT)
+            }));
+            WorldUtils.Gen(new Point(X, Y + 145), new ModShapes.InnerOutline(shapeData, true), new Actions.SetTile(TT, true));
+
+            
+            ShapeData shapeData2 = new ShapeData();
+            WorldUtils.Gen(new Point(X, Y + 146), new Shapes.Mound(61, 30), new Actions.Blank().Output(shapeData2));
+            WorldUtils.Gen(new Point(X - 120, Y + 146), new Shapes.Rectangle((61 * 2) - 1, 10), Actions.Chain(new GenAction[]
+            {
+                new Modifiers.Offset(- 61, 0),
+                new Actions.Blank().Output(shapeData2)
+            }));
+            WorldUtils.Gen(new Point(X, Y + 146), new ModShapes.InnerOutline(shapeData2, true), new Actions.SetTile(TT, true));
+
+
+
+            WorldUtils.Gen(new Point(X + 58, Y + 146), new Shapes.Rectangle(12, 10), new Actions.SetTile(TT, true));
+            WorldUtils.Gen(new Point(X + 58, Y + 146), new Shapes.Rectangle(12, 10), new Actions.PlaceWall(WT, true));
+            WorldUtils.Gen(new Point(X + 58, Y + 148), new Shapes.Rectangle(12, 6), new Actions.ClearTile(true));
 
         }
 
-        
+
+
 
         private void TestMethod(int x, int y)
         {
@@ -723,15 +682,13 @@ namespace DestroyerTest.Common.Systems
             //WorldUtils.Gen(origin, new GenShapeActionPair(new Shapes.Rectangle(100, 100), new Actions.ClearTile(true)));
             //WorldUtils.Gen(origin, new GenShapeActionPair(new Shapes.Rectangle(100, 100), new Actions.PlaceWall(WallID.DirtUnsafe)));
 
-            SetupPath(x, y);
+            FirstFloor(x, y);
 
-            ClearTopSpace(x, y);
-
-            TopFloor(x, y);
-
-            BottomFloor(x, y);
+            SecondFloor(x, y);
 
             ThirdFloor(x, y);
+
+            FourthFloor(x, y);
 
             WorldGen.PlaceObject(x + 12, x + 6, ModContent.TileType<Tile_RoseGardenEffectSource>());
             WorldGen.PlaceObject(x + 12, x + 6, ModContent.TileType<Tile_RoseGardenEffectSource>());

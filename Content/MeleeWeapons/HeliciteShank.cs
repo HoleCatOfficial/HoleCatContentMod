@@ -26,7 +26,7 @@ namespace DestroyerTest.Content.MeleeWeapons
 			Item.width = 46;
 			Item.height = 46;
 			Item.value = Item.sellPrice(gold: 2, silver: 50);
-			Item.rare = ModContent.RarityType<RiftRarity2>();
+			Item.rare = ModContent.RarityType<HeliciteRarity>();
 			Item.UseSound = new SoundStyle("DestroyerTest/Assets/Audio/SwiftSlice");
         
 

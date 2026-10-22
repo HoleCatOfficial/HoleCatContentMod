@@ -25,7 +25,7 @@ namespace DestroyerTest.Content.RangedItems
             Item.width = 34;
             Item.height = 42;
             Item.value = Item.sellPrice(gold: 35, silver: 72, copper: 6);
-            Item.rare = ModContent.RarityType<RiftRarity2>();
+            Item.rare = ModContent.RarityType<HeliciteRarity>();
 
             Item.useTime = 80;
             Item.useAnimation = 80;

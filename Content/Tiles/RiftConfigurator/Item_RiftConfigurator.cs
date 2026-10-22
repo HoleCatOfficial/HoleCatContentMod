@@ -23,7 +23,7 @@ namespace DestroyerTest.Content.Tiles.RiftConfigurator
 			Item.height = 64;
 			Item.width = 46;
 			Item.value = 6000;
-			Item.rare = ModContent.RarityType<RiftRarity1>();
+			Item.rare = ModContent.RarityType<RiftRarity>();
 		}
 
 		public override void AddRecipes()

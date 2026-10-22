@@ -18,7 +18,7 @@ namespace DestroyerTest.Content.Consumables.Flasks
 
         public override Vector2 Dimensions => new Vector2(22, 32);
 
-        public override int Rarity => ModContent.RarityType<RiftRarity1>();
+        public override int Rarity => ModContent.RarityType<RiftRarity>();
 
         public override void AddRecipes()
         {

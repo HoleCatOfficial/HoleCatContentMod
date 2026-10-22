@@ -25,7 +25,7 @@ namespace DestroyerTest.Content.Resources
 			Item.height = 32;
 			Item.maxStack = Item.CommonMaxStack;
 			Item.value = 1000;
-			Item.rare = ModContent.RarityType<RiftRarity1>();
+			Item.rare = ModContent.RarityType<RiftRarity>();
 		}
 
 		public override void PostUpdate() {

@@ -9,6 +9,7 @@ using DestroyerTest.Content.Projectiles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
+using OpusLib.Content.Helpers;
 using Terraria;
 using Terraria.Graphics.Renderers;
 using Terraria.ModLoader;
@@ -39,7 +40,7 @@ namespace DestroyerTest.Content.Particles
             Scale1 = Opus.Sine(0.5f, 0.8f, 0.01f);
             Scale2 = Opus.Sine(0.1f, 0.5f, 0.2f);
 
-            Lighting.AddLight(position, ColorLib.DarkRift3.ToVector3() * Scale2);
+            Lighting.AddLight(position, OpusColorUtils.MultiLerp(Opus.Sine(1f, 0f), ColorLib.HeliciteColorMap).ToVector3() * Scale2);
 
             Lifetime++;
             position += velocity;
@@ -61,7 +62,7 @@ namespace DestroyerTest.Content.Particles
         {
             Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
 
-            Main.EntitySpriteDraw(DTAssetLib.PointGlowPreMultiplied.Value, position - Main.screenPosition, null, ColorLib.Rift with { A = 0 } * Opacity, 0f, DTAssetLib.PointGlowPreMultiplied.Value.Size() / 2f, new Vector2(Scale1, Scale1), SpriteEffects.None);
+            Main.EntitySpriteDraw(DTAssetLib.PointGlowPreMultiplied.Value, position - Main.screenPosition, null, OpusColorUtils.MultiLerp(Opus.Sine(1f, 0f), ColorLib.HeliciteColorMap) with { A = 0 } * Opacity, 0f, DTAssetLib.PointGlowPreMultiplied.Value.Size() / 2f, new Vector2(Scale1, Scale1), SpriteEffects.None);
             Main.EntitySpriteDraw(DTAssetLib.Sparkle(5, true).Value, position - Main.screenPosition, null, Color.White with { A = 0 } * Opacity, 0f, DTAssetLib.Sparkle(5, true).Value.Size() / 2f, new Vector2(Scale2, Scale2), SpriteEffects.None);
 
             Opus.ReturnToDefaultDrawing(spriteBatch);

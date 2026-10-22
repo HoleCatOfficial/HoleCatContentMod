@@ -23,7 +23,7 @@ namespace DestroyerTest.Content.Equips.Cards.RiftenDeck
 			Item.maxStack = 1;
 			Item.value = 100;
 			Item.accessory = true;
-            Item.rare = ModContent.RarityType<RiftRarity1>();
+            Item.rare = ModContent.RarityType<RiftRarity>();
 		}
 
 		public override void UpdateAccessory(Player player, bool hideVisual)

@@ -29,7 +29,7 @@ namespace DestroyerTest.Content.Tiles
 
             Item.width = 30;
             Item.height = 40;
-            Item.rare = ModContent.RarityType<RiftRarity1>();
+            Item.rare = ModContent.RarityType<RiftRarity>();
             Item.master = true; // This makes sure that "Master" displays in the tooltip, as the rarity only changes the item name color
             Item.value = Item.buyPrice(0, 5);
         }

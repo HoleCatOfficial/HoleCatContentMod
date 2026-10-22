@@ -35,7 +35,7 @@ namespace DestroyerTest.Content.Equips
 			Item.width = 60;
 			Item.height = 26;
 			Item.value = 10000;
-			Item.rare = ModContent.RarityType<RiftRarity1>(); // The rarity of the item
+			Item.rare = ModContent.RarityType<RiftRarity>(); // The rarity of the item
 			Item.accessory = true;
             Item.UseSound = SoundID.Item24;
 		}

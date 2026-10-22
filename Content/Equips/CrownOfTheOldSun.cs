@@ -33,7 +33,7 @@ namespace DestroyerTest.Content.Equips
             Item.maxStack = 1;
             Item.value = 310;
             Item.accessory = true;
-            Item.rare = ModContent.RarityType<RiftRarity2>();
+            Item.rare = ModContent.RarityType<HeliciteRarity>();
         }
 
         public override void UpdateEquip(Player player)

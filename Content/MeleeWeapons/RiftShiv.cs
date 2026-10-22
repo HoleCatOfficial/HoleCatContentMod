@@ -24,7 +24,7 @@ namespace DestroyerTest.Content.MeleeWeapons
                 Item.width = 38; // The item texture's width.
                 Item.height = 38; // The item texture's height.
                 // Common Properties
-                Item.rare = ModContent.RarityType<RiftRarity1>(); // Assign this item a rarity level of Pink
+                Item.rare = ModContent.RarityType<RiftRarity>(); // Assign this item a rarity level of Pink
                 Item.value = Item.sellPrice(silver: 10); // The number and type of coins item can be sold for to an NPC
 
                 // Use Properties

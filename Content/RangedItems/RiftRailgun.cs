@@ -25,7 +25,7 @@ namespace DestroyerTest.Content.RangedItems
 		public override void SetDefaults() {
 			Item.width = 120;
 			Item.height = 26;
-			Item.rare = ModContent.RarityType<RiftRarity1>(); // Set the rarity of the item, this will determine the color of the item's name in-game. Use ModContent.RarityType<YourRarityClass>() to set a custom rarity.
+			Item.rare = ModContent.RarityType<RiftRarity>(); // Set the rarity of the item, this will determine the color of the item's name in-game. Use ModContent.RarityType<YourRarityClass>() to set a custom rarity.
 			Item.value = Item.buyPrice(0, 22, 10, 0);
 			Item.useTime = 60;
 			Item.useAnimation = 60;

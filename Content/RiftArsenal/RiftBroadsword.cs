@@ -40,7 +40,7 @@ namespace DestroyerTest.Content.RiftArsenal
 			Item.crit = 16;
 
 			Item.value = Item.buyPrice(gold: 16);
-			Item.rare = ModContent.RarityType<RiftRarity1>();
+			Item.rare = ModContent.RarityType<RiftRarity>();
 			Item.UseSound = SoundID.Item71;
 		}
 

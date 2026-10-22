@@ -31,3 +31,5 @@ Tile_CerebralChest: {
 	MapEntry1: Cerebral Chest
 	Locked: Locked Cerebral Chest
 }
+
+Tile_SanctifiedBrick.MapEntry: Mods.DestroyerTest.Tiles.Tile_SanctifiedBrick.MapEntry

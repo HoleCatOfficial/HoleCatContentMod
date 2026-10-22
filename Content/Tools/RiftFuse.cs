@@ -26,7 +26,7 @@ namespace DestroyerTest.Content.Tools
 			Item.width = 80; // The item texture's width.
 			Item.height = 80; // The item texture's height.
 			Item.value = Item.buyPrice(gold: 16); // The value of the weapon in copper coins.
-			Item.rare = ModContent.RarityType<RiftRarity1>();
+			Item.rare = ModContent.RarityType<RiftRarity>();
 		}
 
 		public override void AddRecipes() {

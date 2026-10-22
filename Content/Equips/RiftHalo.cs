@@ -44,7 +44,7 @@ namespace DestroyerTest.Content.Equips
 			Item.width = 20;
 			Item.height = 16;
 			Item.value = Item.sellPrice(gold: 1);
-			Item.rare = ModContent.RarityType<RiftRarity1>();
+			Item.rare = ModContent.RarityType<RiftRarity>();
 			Item.defense = 14;
 		}
 

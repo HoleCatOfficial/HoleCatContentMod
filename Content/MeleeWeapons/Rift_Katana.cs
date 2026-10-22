@@ -39,7 +39,7 @@ namespace DestroyerTest.Content.MeleeWeapons
 			Item.useStyle = ItemUseStyleID.Shoot;
 			Item.knockBack = 0;
 			Item.value = 10000;
-			Item.rare = ModContent.RarityType<RiftRarity1>();
+			Item.rare = ModContent.RarityType<RiftRarity>();
 			Item.autoReuse = true;
 			Item.shoot = ModContent.ProjectileType<Rift_Katana_Projectile>();
 			Item.shootSpeed = 5f;

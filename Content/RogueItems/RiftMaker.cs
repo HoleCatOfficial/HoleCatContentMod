@@ -39,7 +39,7 @@ namespace DestroyerTest.Content.RogueItems
 			Item.noUseGraphic = true;
 			Item.noMelee = true;
 			Item.value = Item.buyPrice(0, 0, 20, 0);
-			Item.rare = ModContent.RarityType<RiftRarity1>();
+			Item.rare = ModContent.RarityType<RiftRarity>();
 			Item.damage = 80;
 			Item.autoReuse = true;
 			Item.DamageType = DamageClass.Throwing;

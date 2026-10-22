@@ -3,6 +3,8 @@ using DestroyerTest.Common;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
 using Microsoft.Xna.Framework;
+using OpusLib;
+using OpusLib.Content.Helpers;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -26,8 +28,10 @@ namespace DestroyerTest.Content.Buffs
 		{
 			player.GetModPlayer<DOPlayer>().lifeRegenDebuff = true;
 		}
-		public override void Update(NPC target, ref int buffIndex) {
-			if (target.TryGetGlobalNPC<DOTarget>(out var modNPC)) {
+		public override void Update(NPC target, ref int buffIndex) 
+		{
+			if (target.TryGetGlobalNPC<DOTarget>(out var modNPC)) 
+			{
                 modNPC.lifeRegenDebuff = true;
             }
 		}
@@ -47,14 +51,16 @@ namespace DestroyerTest.Content.Buffs
         {
 			if (lifeRegenDebuff)
 			{
-				//Dust.NewDust(npc.position, npc.width, npc.height, DustID.FireworksRGB, 0.0f, 0.5f, 0, ColorLib.DarkRift2, 1);
+                //Dust.NewDust(npc.position, npc.width, npc.height, DustID.FireworksRGB, 0.0f, 0.5f, 0, ColorLib.DarkRift2, 1);
 
-				PixelParticle Pixel = new();
-				Pixel.Initialize(Main.rand.NextVector2FromRectangle(npc.Hitbox), new Vector2(0, -0.5f).RotatedByRandom(0.2f), ColorLib.DarkRift2, 2f);
+                Color color = OpusColorUtils.MultiLerp(Opus.Sine(1f, 0f), ColorLib.HeliciteColorMap);
+
+                PixelParticle Pixel = new();
+				Pixel.Initialize(Main.rand.NextVector2FromRectangle(npc.Hitbox), new Vector2(0, -0.5f).RotatedByRandom(0.2f), color, 2f);
                 ParticleEngine.ShaderParticles.Add(Pixel);
 
                 PointGlowPreMultiplied Glow = new();
-                Glow.Initialize(Main.rand.NextVector2FromRectangle(npc.Hitbox), new Vector2(0, -0.5f).RotatedByRandom(0.2f), ColorLib.DarkRift2 * 0.15f, 1f);
+                Glow.Initialize(Main.rand.NextVector2FromRectangle(npc.Hitbox), new Vector2(0, -0.5f).RotatedByRandom(0.2f), color * 0.15f, 1f);
                 ParticleEngine.ShaderParticles.Add(Glow);
 
                 if (Main.rand.NextBool(60))
@@ -112,12 +118,15 @@ namespace DestroyerTest.Content.Buffs
         {
 			if (lifeRegenDebuff)
 			{
+                Color color = OpusColorUtils.MultiLerp(Opus.Sine(1f, 0f), ColorLib.HeliciteColorMap);
+
+
                 PixelParticle Pixel = new();
-                Pixel.Initialize(Main.rand.NextVector2FromRectangle(Player.Hitbox), new Vector2(0, -0.5f).RotatedByRandom(0.2f), ColorLib.DarkRift2, 2f);
+                Pixel.Initialize(Main.rand.NextVector2FromRectangle(Player.Hitbox), new Vector2(0, -0.5f).RotatedByRandom(0.2f), color, 2f);
                 ParticleEngine.ShaderParticles.Add(Pixel);
 
                 PointGlowPreMultiplied Glow = new();
-                Glow.Initialize(Main.rand.NextVector2FromRectangle(Player.Hitbox), new Vector2(0, -0.5f).RotatedByRandom(0.2f), ColorLib.DarkRift2 * 0.15f, 1f);
+                Glow.Initialize(Main.rand.NextVector2FromRectangle(Player.Hitbox), new Vector2(0, -0.5f).RotatedByRandom(0.2f), color * 0.15f, 1f);
                 ParticleEngine.ShaderParticles.Add(Glow);
 
                 if (Main.rand.NextBool(60))

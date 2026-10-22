@@ -447,39 +447,23 @@ RiftPropulsion: {
 
 HeliciteChausses: {
 	DisplayName: Helicite Chausses
-	Tooltip:
-		'''
-		Despite being made of Cloth, these do not leak any oxygen, and will protect you from suffocation in The Rift.
-		The infusion of Helicite into the cloth allows for this to happen. Quite an anomaly, those crystals are...
-		'''
+	Tooltip: ""
 }
 
 HeliciteCowl: {
 	DisplayName: Helicite Cowl
-	Tooltip:
-		'''
-		Despite being made of Cloth, this does not leak any oxygen, and will protect you from suffocation in The Rift.
-		The infusion of Helicite into the cloth allows for this to happen. Quite an anomaly, those crystals are...
-		Ranged Damage is increased when wearing this!
-		'''
+	Tooltip: ""
 }
 
 HeliciteRobe: {
 	DisplayName: Helicite Robe
-	Tooltip:
-		'''
-		Despite being made of Cloth, this does not leak any oxygen, and will protect you from suffocation in The Rift.
-		The infusion of Helicite into the cloth allows for this to happen. Quite an anomaly, those crystals are...
-		'''
+	Tooltip: ""
 }
 
 HeliciteHeadgear: {
 	DisplayName: Helicite Headgear
-	Tooltip:
-		'''
-		Unfortunately for you, just having helicite crystals next to your head does not prevent suffocation in The Rift.
-		Try using a Lung Shot.
-		'''
+	Tooltip: ""
+	SetBonus: Hold the armor set bonus key to convert mana to life.
 }
 
 RiftplateTitanBody: {
@@ -3115,7 +3099,7 @@ IchorNodeLootBag: {
 }
 
 HeliciteStaff: {
-	DisplayName: Helicite Staff
+	DisplayName: Helios
 	Tooltip:
 		'''
 		Fires a continuous beam of ancient obliteration.
@@ -4166,7 +4150,7 @@ Luna: {
 
 Deteriorate: {
 	DisplayName: Deteriorate
-	Tooltip: Rogue hits have a 50% chance to create a classless explosion that deals 50% of the weapon's damage.
+	Tooltip: Thrower hits have a 50% chance to create a classless explosion that deals 50% of the weapon's damage.
 }
 
 Fallen: {
@@ -5764,5 +5748,20 @@ EyeSword: {
 
 BrutalAbsolvency: {
 	DisplayName: Brutal Absolvency
+	Tooltip: ""
+}
+
+Item_SanctifiedBrick: {
+	DisplayName: Item_ Sanctified Brick
+	Tooltip: ""
+}
+
+Item_SanctifiedBrickWall: {
+	DisplayName: Item_ Sanctified Brick Wall
+	Tooltip: ""
+}
+
+Item_SanctifiedBrazier: {
+	DisplayName: Item_ Sanctified Brazier
 	Tooltip: ""
 }

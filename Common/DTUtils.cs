@@ -2226,6 +2226,14 @@ namespace DestroyerTest.Common
         public static Color InfectedGradient = Opus.Sine(ColorLib.CursedFlames, ColorLib.Ichor);
 
         public static Color LifeEcho = new Color(204, 243, 255);
+
+        public static Color HeliciteBlue = new Color(27, 255, 245);
+        public static Color HeliciteCyan = new Color(103, 235, 180);
+        public static Color HeliciteLime = new Color(141, 226, 148);
+        public static Color HeliciteYellow = new Color(217, 206, 83);
+        public static Color HeliciteOrange = new Color(255, 197, 51);
+
+        public static Color[] HeliciteColorMap = [HeliciteBlue, HeliciteCyan, HeliciteCyan, HeliciteYellow, HeliciteOrange];
     }
 
     

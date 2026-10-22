@@ -37,7 +37,7 @@ namespace DestroyerTest.Content.RiftArsenal
         {
             Item.width = 100;
             Item.height = 36;
-            Item.rare = ModContent.RarityType<RiftRarity1>();
+            Item.rare = ModContent.RarityType<RiftRarity>();
 
             Item.useTime = 5;
             Item.useAnimation = 5;

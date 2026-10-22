@@ -30,7 +30,7 @@ namespace DestroyerTest.Content.MeleeWeapons
             Item.width = 108;
             Item.height = 108;
 
-            Item.rare = ModContent.RarityType<RiftRarity1>();
+            Item.rare = ModContent.RarityType<RiftRarity>();
             Item.value = Item.sellPrice(silver: 10);
 
             Item.useStyle = ItemUseStyleID.Shoot;

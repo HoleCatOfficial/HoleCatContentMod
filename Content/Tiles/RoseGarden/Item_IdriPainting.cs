@@ -8,7 +8,7 @@ namespace DestroyerTest.Content.Tiles.RoseGarden
     {
         public override void SetStaticDefaults()
         {
-            Item.ResearchUnlockCount = 100;
+            Item.ResearchUnlockCount = 1;
             ItemID.Sets.SortingPriorityMaterials[Item.type] = 13;
         }
 

@@ -42,7 +42,7 @@ namespace DestroyerTest.Content.RiftArsenal
 			Item.knockBack = 2.5f; // The amount of knockback the item inflicts.
 			Item.crit = 12; // The percent chance for the weapon to deal a critical strike. Defaults to 4.
 			Item.channel = true; // Set to true for items that require the attack button to be held out (e.g. yoyos and magic missile weapons)
-			Item.rare = ModContent.RarityType<RiftRarity1>(); // The item's rarity. This changes the color of the item's name.
+			Item.rare = ModContent.RarityType<RiftRarity>(); // The item's rarity. This changes the color of the item's name.
 			Item.value = Item.buyPrice(gold: 1); // The amount of money that the item is can be bought for.
 
 			Item.shoot = ModContent.ProjectileType<RiftYoyoT2Projectile>(); // Which projectile this item will shoot. We set this to our corresponding projectile.

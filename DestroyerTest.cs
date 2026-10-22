@@ -522,18 +522,9 @@ namespace DestroyerTest
 
         public class WorldEnterPlayer : ModPlayer
         {
-            public bool firstJoin = true;
 
-            public override void OnEnterWorld()
-            {
-				Main.NewText($"You are running Talid v{Mod.Version.ToString()}", ColorLib.Rift);
-                firstJoin = true;
-            }
 
-            public override void UpdateDead()
-            {
-                firstJoin = false;
-            }
+
         }
 
         //I hate example mod organization. Why do I need all this bullshit in another class?

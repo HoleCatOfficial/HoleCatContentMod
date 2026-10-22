@@ -455,7 +455,7 @@ namespace DestroyerTest.Common.Blessings
         }
     }
 
-    public class DTBlessings : ILoadable
+    public class DTBlessings : ModSystem
     {
         public const string CommonBM_Key = "Mods.DestroyerTest.Blessings";
 
@@ -519,183 +519,51 @@ namespace DestroyerTest.Common.Blessings
             AllBlessings.Add(b);
         }
 
-        void ILoadable.Load(Mod mod)
+        public override void SetStaticDefaults()
         {
-            RadiantHeart = new Blessing(PrayerID.Regen,
-            ItemID.Daybloom,
-            ItemID.LifeCrystal,
-            BlessingID.RadiantHeart,
-            Language.GetText($"{CommonBM_Key}.RadiantHeart.Message"),
-            Language.GetText($"{CommonBM_Key}.RadiantHeart.Bonus"),
-            Language.GetText($"{CommonBM_Key}.RadiantHeart.Name"));
+            RadiantHeart = new Blessing(PrayerID.Regen, ItemID.Daybloom, ItemID.LifeCrystal, BlessingID.RadiantHeart, Language.GetText($"{CommonBM_Key}.RadiantHeart.Message"), Language.GetText($"{CommonBM_Key}.RadiantHeart.Bonus"), Language.GetText($"{CommonBM_Key}.RadiantHeart.Name"));
 
-            Enchanted = new Blessing(PrayerID.Regen,
-                ItemID.Daybloom,
-                ItemID.ManaCrystal,
-                BlessingID.Enchanted,
-                Language.GetText($"{CommonBM_Key}.Enchanted.Message"),
-                Language.GetText($"{CommonBM_Key}.Enchanted.Bonus"),
-                Language.GetText($"{CommonBM_Key}.Enchanted.Name"));
+            Enchanted = new Blessing(PrayerID.Regen, ItemID.Daybloom, ItemID.ManaCrystal, BlessingID.Enchanted, Language.GetText($"{CommonBM_Key}.Enchanted.Message"), Language.GetText($"{CommonBM_Key}.Enchanted.Bonus"), Language.GetText($"{CommonBM_Key}.Enchanted.Name"));
 
-            Attuned = new Blessing(PrayerID.Regen,
-                ItemID.Daybloom,
-                ItemID.NaturesGift,
-                BlessingID.Attuned,
-                Language.GetText($"{CommonBM_Key}.Attuned.Message"),
-                Language.GetText($"{CommonBM_Key}.Attuned.Bonus"),
-                Language.GetText($"{CommonBM_Key}.Attuned.Name"));
+            Attuned = new Blessing(PrayerID.Regen, ItemID.Daybloom, ItemID.NaturesGift, BlessingID.Attuned, Language.GetText($"{CommonBM_Key}.Attuned.Message"), Language.GetText($"{CommonBM_Key}.Attuned.Bonus"), Language.GetText($"{CommonBM_Key}.Attuned.Name"));
 
-            OozingAffection = new Blessing(PrayerID.Regen,
-                ItemID.Daybloom,
-                ItemID.BottledHoney,
-                BlessingID.OozingAffection,
-                Language.GetText($"{CommonBM_Key}.OozingAffection.Message"),
-                Language.GetText($"{CommonBM_Key}.OozingAffection.Bonus"),
-                Language.GetText($"{CommonBM_Key}.OozingAffection.Name"));
+            OozingAffection = new Blessing(PrayerID.Regen, ItemID.Daybloom, ItemID.BottledHoney, BlessingID.OozingAffection, Language.GetText($"{CommonBM_Key}.OozingAffection.Message"), Language.GetText($"{CommonBM_Key}.OozingAffection.Bonus"), Language.GetText($"{CommonBM_Key}.OozingAffection.Name"));
 
-            Serenity = new Blessing(PrayerID.Regen,
-                ItemID.Daybloom,
-                ItemID.Starfish,
-                BlessingID.Serenity,
-                Language.GetText($"{CommonBM_Key}.Serenity.Message"),
-                Language.GetText($"{CommonBM_Key}.Serenity.Bonus"),
-                Language.GetText($"{CommonBM_Key}.Serenity.Name"));
+            Serenity = new Blessing(PrayerID.Regen, ItemID.Daybloom, ItemID.Starfish, BlessingID.Serenity, Language.GetText($"{CommonBM_Key}.Serenity.Message"), Language.GetText($"{CommonBM_Key}.Serenity.Bonus"), Language.GetText($"{CommonBM_Key}.Serenity.Name"));
 
-            ThrivingDarknessCorr = new Blessing(PrayerID.Regen,
-                ItemID.Daybloom,
-                ItemID.ShadowScale,
-                BlessingID.ThrivingDarknessCorr,
-                Language.GetText($"{CommonBM_Key}.ThrivingDarkness.Message"),
-                Language.GetText($"{CommonBM_Key}.ThrivingDarkness.Bonus"),
-                Language.GetText($"{CommonBM_Key}.ThrivingDarkness.Name"));
+            ThrivingDarknessCorr = new Blessing(PrayerID.Regen, ItemID.Daybloom, ItemID.ShadowScale, BlessingID.ThrivingDarknessCorr, Language.GetText($"{CommonBM_Key}.ThrivingDarkness.Message"), Language.GetText($"{CommonBM_Key}.ThrivingDarkness.Bonus"), Language.GetText($"{CommonBM_Key}.ThrivingDarkness.Name"));
 
-            ThrivingDarknessCrim = new Blessing(PrayerID.Regen,
-                ItemID.Daybloom,
-                ItemID.TissueSample,
-                BlessingID.ThrivingDarknessCrim,
-                Language.GetText($"{CommonBM_Key}.ThrivingDarkness.Message"),
-                Language.GetText($"{CommonBM_Key}.ThrivingDarkness.Bonus"),
-                Language.GetText($"{CommonBM_Key}.ThrivingDarkness.Name"));
+            ThrivingDarknessCrim = new Blessing(PrayerID.Regen, ItemID.Daybloom, ItemID.TissueSample, BlessingID.ThrivingDarknessCrim, Language.GetText($"{CommonBM_Key}.ThrivingDarkness.Message"), Language.GetText($"{CommonBM_Key}.ThrivingDarkness.Bonus"), Language.GetText($"{CommonBM_Key}.ThrivingDarkness.Name"));
 
-            Decadence = new Blessing(PrayerID.Regen,
-                ItemID.Daybloom,
-                ItemID.Ambrosia,
-                BlessingID.Decadence,
-                Language.GetText($"{CommonBM_Key}.Decadence.Message"),
-                Language.GetText($"{CommonBM_Key}.Decadence.Bonus"),
-                Language.GetText($"{CommonBM_Key}.Decadence.Name"));
+            Decadence = new Blessing(PrayerID.Regen, ItemID.Daybloom, ItemID.Ambrosia, BlessingID.Decadence, Language.GetText($"{CommonBM_Key}.Decadence.Message"), Language.GetText($"{CommonBM_Key}.Decadence.Bonus"), Language.GetText($"{CommonBM_Key}.Decadence.Name"));
 
-            Overgrown = new Blessing(PrayerID.Regen,
-                ItemID.Daybloom,
-                ItemID.JungleSpores,
-                BlessingID.Overgrown,
-                Language.GetText($"{CommonBM_Key}.Overgrown.Message"),
-                Language.GetText($"{CommonBM_Key}.Overgrown.Bonus"),
-                Language.GetText($"{CommonBM_Key}.Overgrown.Name"));
+            Overgrown = new Blessing(PrayerID.Regen, ItemID.Daybloom, ItemID.JungleSpores, BlessingID.Overgrown, Language.GetText($"{CommonBM_Key}.Overgrown.Message"), Language.GetText($"{CommonBM_Key}.Overgrown.Bonus"), Language.GetText($"{CommonBM_Key}.Overgrown.Name"));
 
-            MilkywayStride = new Blessing(PrayerID.Regen,
-                ItemID.Daybloom,
-                ModContent.ItemType<StellarMatter>(),
-                BlessingID.MilkywayStride,
-                Language.GetText($"{CommonBM_Key}.MilkywayStride.Message"),
-                Language.GetText($"{CommonBM_Key}.MilkywayStride.Bonus"),
-                Language.GetText($"{CommonBM_Key}.MilkywayStride.Name"));
+            MilkywayStride = new Blessing(PrayerID.Regen, ItemID.Daybloom, ModContent.ItemType<StellarMatter>(), BlessingID.MilkywayStride, Language.GetText($"{CommonBM_Key}.MilkywayStride.Message"), Language.GetText($"{CommonBM_Key}.MilkywayStride.Bonus"), Language.GetText($"{CommonBM_Key}.MilkywayStride.Name"));
 
-            RejuvenatingWarmth = new Blessing(PrayerID.Regen,
-                ItemID.Daybloom,
-                ItemID.HellstoneBar,
-                BlessingID.RejuvenatingWarmth,
-                Language.GetText($"{CommonBM_Key}.RejuvenatingWarmth.Message"),
-                Language.GetText($"{CommonBM_Key}.RejuvenatingWarmth.Bonus"),
-                Language.GetText($"{CommonBM_Key}.RejuvenatingWarmth.Name"));
+            RejuvenatingWarmth = new Blessing(PrayerID.Regen, ItemID.Daybloom, ItemID.HellstoneBar, BlessingID.RejuvenatingWarmth, Language.GetText($"{CommonBM_Key}.RejuvenatingWarmth.Message"), Language.GetText($"{CommonBM_Key}.RejuvenatingWarmth.Bonus"), Language.GetText($"{CommonBM_Key}.RejuvenatingWarmth.Name"));
 
-            ScarletSurge = new Blessing(PrayerID.DamageOutput,
-                ItemID.Moonglow,
-                ItemID.LifeCrystal,
-                BlessingID.ScarletSurge,
-                Language.GetText($"{CommonBM_Key}.ScarletSurge.Message"),
-                Language.GetText($"{CommonBM_Key}.ScarletSurge.Bonus"),
-                Language.GetText($"{CommonBM_Key}.ScarletSurge.Name"));
+            ScarletSurge = new Blessing(PrayerID.DamageOutput, ItemID.Moonglow, ItemID.LifeCrystal, BlessingID.ScarletSurge, Language.GetText($"{CommonBM_Key}.ScarletSurge.Message"), Language.GetText($"{CommonBM_Key}.ScarletSurge.Bonus"), Language.GetText($"{CommonBM_Key}.ScarletSurge.Name"));
 
-            Clarity = new Blessing(PrayerID.DamageOutput,
-                ItemID.Moonglow,
-                ItemID.ManaCrystal,
-                BlessingID.Clarity,
-                Language.GetText($"{CommonBM_Key}.Clarity.Message"),
-                Language.GetText($"{CommonBM_Key}.Clarity.Bonus"),
-                Language.GetText($"{CommonBM_Key}.Clarity.Name"));
+            Clarity = new Blessing(PrayerID.DamageOutput, ItemID.Moonglow, ItemID.ManaCrystal, BlessingID.Clarity, Language.GetText($"{CommonBM_Key}.Clarity.Message"), Language.GetText($"{CommonBM_Key}.Clarity.Bonus"), Language.GetText($"{CommonBM_Key}.Clarity.Name"));
 
-            Tempered = new Blessing(PrayerID.DamageOutput,
-                ItemID.Moonglow,
-                ItemID.NaturesGift,
-                BlessingID.Tempered,
-                Language.GetText($"{CommonBM_Key}.Tempered.Message"),
-                Language.GetText($"{CommonBM_Key}.Tempered.Bonus"),
-                Language.GetText($"{CommonBM_Key}.Tempered.Name"));
+            Tempered = new Blessing(PrayerID.DamageOutput, ItemID.Moonglow, ItemID.NaturesGift, BlessingID.Tempered, Language.GetText($"{CommonBM_Key}.Tempered.Message"), Language.GetText($"{CommonBM_Key}.Tempered.Bonus"), Language.GetText($"{CommonBM_Key}.Tempered.Name"));
 
-            Alliegance = new Blessing(PrayerID.DamageOutput,
-                ItemID.Moonglow,
-                ItemID.BottledHoney,
-                BlessingID.Alliegance,
-                Language.GetText($"{CommonBM_Key}.Alliegance.Message"),
-                Language.GetText($"{CommonBM_Key}.Alliegance.Bonus"),
-                Language.GetText($"{CommonBM_Key}.Alliegance.Name"));
+            Alliegance = new Blessing(PrayerID.DamageOutput, ItemID.Moonglow, ItemID.BottledHoney, BlessingID.Alliegance, Language.GetText($"{CommonBM_Key}.Alliegance.Message"), Language.GetText($"{CommonBM_Key}.Alliegance.Bonus"), Language.GetText($"{CommonBM_Key}.Alliegance.Name"));
 
-            Waywashed = new Blessing(PrayerID.DamageOutput,
-                ItemID.Moonglow,
-                ItemID.Starfish,
-                BlessingID.Waywashed,
-                Language.GetText($"{CommonBM_Key}.Waywashed.Message"),
-                Language.GetText($"{CommonBM_Key}.Waywashed.Bonus"),
-                Language.GetText($"{CommonBM_Key}.Waywashed.Name"));
+            Waywashed = new Blessing(PrayerID.DamageOutput, ItemID.Moonglow, ItemID.Starfish, BlessingID.Waywashed, Language.GetText($"{CommonBM_Key}.Waywashed.Message"), Language.GetText($"{CommonBM_Key}.Waywashed.Bonus"), Language.GetText($"{CommonBM_Key}.Waywashed.Name"));
 
-            SeethingCrim = new Blessing(PrayerID.DamageOutput,
-                ItemID.Moonglow,
-                ItemID.TissueSample,
-                BlessingID.Seething,
-                Language.GetText($"{CommonBM_Key}.Seething.Message"),
-                Language.GetText($"{CommonBM_Key}.Seething.Bonus"),
-                Language.GetText($"{CommonBM_Key}.Seething.Name"));
+            SeethingCrim = new Blessing(PrayerID.DamageOutput, ItemID.Moonglow, ItemID.TissueSample, BlessingID.Seething, Language.GetText($"{CommonBM_Key}.Seething.Message"), Language.GetText($"{CommonBM_Key}.Seething.Bonus"), Language.GetText($"{CommonBM_Key}.Seething.Name"));
 
-            SeethingCorr = new Blessing(PrayerID.DamageOutput,
-                ItemID.Moonglow,
-                ItemID.ShadowScale,
-                BlessingID.Seething,
-                Language.GetText($"{CommonBM_Key}.Seething.Message"),
-                Language.GetText($"{CommonBM_Key}.Seething.Bonus"),
-                Language.GetText($"{CommonBM_Key}.Seething.Name"));
+            SeethingCorr = new Blessing(PrayerID.DamageOutput, ItemID.Moonglow, ItemID.ShadowScale, BlessingID.Seething, Language.GetText($"{CommonBM_Key}.Seething.Message"), Language.GetText($"{CommonBM_Key}.Seething.Bonus"), Language.GetText($"{CommonBM_Key}.Seething.Name"));
 
-            Bulk = new Blessing(PrayerID.DamageOutput,
-                ItemID.Moonglow,
-                ItemID.Ambrosia,
-                BlessingID.Bulk,
-                Language.GetText($"{CommonBM_Key}.Bulk.Message"),
-                Language.GetText($"{CommonBM_Key}.Bulk.Bonus"),
-                Language.GetText($"{CommonBM_Key}.Bulk.Name"));
+            Bulk = new Blessing(PrayerID.DamageOutput, ItemID.Moonglow, ItemID.Ambrosia, BlessingID.Bulk, Language.GetText($"{CommonBM_Key}.Bulk.Message"), Language.GetText($"{CommonBM_Key}.Bulk.Bonus"), Language.GetText($"{CommonBM_Key}.Bulk.Name"));
 
-            LifeStricken = new Blessing(PrayerID.DamageOutput,
-                ItemID.Moonglow,
-                ItemID.JungleSpores,
-                BlessingID.LifeStriken,
-                Language.GetText($"{CommonBM_Key}.LifeStricken.Message"),
-                Language.GetText($"{CommonBM_Key}.LifeStricken.Bonus"),
-                Language.GetText($"{CommonBM_Key}.LifeStricken.Name"));
+            LifeStricken = new Blessing(PrayerID.DamageOutput, ItemID.Moonglow, ItemID.JungleSpores, BlessingID.LifeStriken, Language.GetText($"{CommonBM_Key}.LifeStricken.Message"), Language.GetText($"{CommonBM_Key}.LifeStricken.Bonus"), Language.GetText($"{CommonBM_Key}.LifeStricken.Name"));
 
-            FieryPassion = new Blessing(PrayerID.DamageOutput,
-                ItemID.Moonglow,
-                ItemID.HellstoneBar,
-                BlessingID.LifeStriken,
-                Language.GetText($"{CommonBM_Key}.FieryPassion.Message"),
-                Language.GetText($"{CommonBM_Key}.FieryPassion.Bonus"),
-                Language.GetText($"{CommonBM_Key}.FieryPassion.Name"));
+            FieryPassion = new Blessing(PrayerID.DamageOutput, ItemID.Moonglow, ItemID.HellstoneBar, BlessingID.LifeStriken, Language.GetText($"{CommonBM_Key}.FieryPassion.Message"), Language.GetText($"{CommonBM_Key}.FieryPassion.Bonus"), Language.GetText($"{CommonBM_Key}.FieryPassion.Name"));
 
-            StarScorn = new Blessing(PrayerID.DamageOutput,
-                ItemID.Moonglow,
-                ModContent.ItemType<StellarMatter>(),
-                BlessingID.StarScorn,
-                Language.GetText($"{CommonBM_Key}.StarScorn.Message"),
-                Language.GetText($"{CommonBM_Key}.StarScorn.Bonus"),
-                Language.GetText($"{CommonBM_Key}.StarScorn.Name"));
+            StarScorn = new Blessing(PrayerID.DamageOutput, ItemID.Moonglow, ModContent.ItemType<StellarMatter>(), BlessingID.StarScorn, Language.GetText($"{CommonBM_Key}.StarScorn.Message"), Language.GetText($"{CommonBM_Key}.StarScorn.Bonus"), Language.GetText($"{CommonBM_Key}.StarScorn.Name"));
 
             // Register all blessings
             AllBlessings.Clear();
@@ -723,7 +591,7 @@ namespace DestroyerTest.Common.Blessings
             RegisterBlessing(StarScorn);
         }
 
-        void ILoadable.Unload()
+        public override void Unload()
         {
             RadiantHeart = null;
             Enchanted = null;

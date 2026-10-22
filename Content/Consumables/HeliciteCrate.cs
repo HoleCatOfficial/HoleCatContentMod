@@ -31,7 +31,7 @@ namespace DestroyerTest.Content.Consumables
 			Item.DefaultToPlaceableTile(ModContent.TileType<Tile_HeliciteCrate>());
 			Item.width = 12; // The hitbox dimensions are intentionally smaller so that it looks nicer when fished up on a bobber
 			Item.height = 12;
-			Item.rare = ModContent.RarityType<RiftRarity2>();
+			Item.rare = ModContent.RarityType<HeliciteRarity>();
 			Item.value = Item.sellPrice(0, 2);
 		}
 

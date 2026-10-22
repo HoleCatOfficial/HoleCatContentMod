@@ -1,6 +1,7 @@
 using DestroyerTest.Common;
 using Microsoft.Xna.Framework;
 using OpusLib;
+using OpusLib.Content.Helpers;
 using ReLogic.Graphics;
 using System;
 using Terraria;
@@ -11,16 +12,12 @@ using Terraria.UI.Chat;
 
 namespace DestroyerTest.Rarity
 {
-	public class RiftRarity2 : ModRarity
+	public class HeliciteRarity : ModRarity
     {
-        public override Color RarityColor => Opus.Sine(ColorLib.Rift, ColorLib.LightRift3, 0.1f); // Change color as needed
+        public override Color RarityColor => OpusColorUtils.MultiLerp(Opus.Sine(1f, 0f), ColorLib.HeliciteColorMap);
 
         public override int GetPrefixedRarity(int offset, float valueMult)
         {
-            if (offset > 0) 
-            {
-                return ItemRarityID.Red;
-            }
             return Type;
         }
     }

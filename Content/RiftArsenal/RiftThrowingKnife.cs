@@ -48,7 +48,7 @@ namespace DestroyerTest.Content.RiftArsenal
 			Item.noUseGraphic = true;
 			Item.noMelee = true;
 			Item.value = Item.buyPrice(0, 0, 20, 0);
-			Item.rare = ModContent.RarityType<RiftRarity2>();
+			Item.rare = ModContent.RarityType<HeliciteRarity>();
 			Item.damage = 60;
             Item.DamageType = DamageClass.Throwing;
             Item.autoReuse = true;

@@ -76,7 +76,7 @@ namespace DestroyerTest.Content.RiftArsenal
 			Item.useAnimation = 36;
 			Item.useStyle = ItemUseStyleID.RaiseLamp; // how the player's arm moves when using the item
 			Item.value = 18000;
-			Item.rare = ModContent.RarityType<RiftRarity1>(); // The rarity of the item
+			Item.rare = ModContent.RarityType<RiftRarity>(); // The rarity of the item
 			Item.UseSound = new SoundStyle($"DestroyerTest/Assets/Audio/Rift_Katana_Hold") with {
 				Volume = 1.0f, 
     			Pitch = 0.0f, 

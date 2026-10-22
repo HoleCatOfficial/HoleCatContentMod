@@ -39,7 +39,7 @@ namespace DestroyerTest.Content.RiftArsenal
 			Item.width = 46; // Hitbox width of the item.
 			Item.height = 22; // Hitbox height of the item.
 			Item.scale = 0.75f;
-			Item.rare = ModContent.RarityType<RiftRarity1>(); // The color that the item's name will be in-game.
+			Item.rare = ModContent.RarityType<RiftRarity>(); // The color that the item's name will be in-game.
 
 			// Use Properties
 			Item.useTime = 40; // The item's use time in ticks (60 ticks == 1 second.)

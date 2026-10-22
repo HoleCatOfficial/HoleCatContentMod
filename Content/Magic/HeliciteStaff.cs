@@ -39,7 +39,7 @@ namespace DestroyerTest.Content.Magic
 			Item.height = 92;
 			Item.autoReuse = true;
 			Item.crit = 12;
-			Item.rare = ModContent.RarityType<RiftRarity2>();
+			Item.rare = ModContent.RarityType<HeliciteRarity>();
 			Item.useStyle = ItemUseStyleID.Shoot;
 			Item.channel = true;
 			Item.InterruptChannelOnHurt = false;

@@ -49,7 +49,7 @@ namespace DestroyerTest.Content.RiftArsenal
 			Item.height = 92;
 			Item.autoReuse = true;
 			Item.crit = 12;
-			Item.rare = ModContent.RarityType<RiftRarity1>();
+			Item.rare = ModContent.RarityType<RiftRarity>();
 			Item.useStyle = ItemUseStyleID.Shoot;
 
 			Item.noMelee = true;

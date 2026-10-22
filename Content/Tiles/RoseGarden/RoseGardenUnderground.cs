@@ -3,12 +3,14 @@ using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.RiftBiome;
+using DestroyerTest.Content.Tiles.RoseGarden.Walls;
 using Microsoft.Xna.Framework;
 using System;
 using System.Reflection;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.Drawing;
 using Terraria.Graphics.Capture;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -56,11 +58,12 @@ namespace DestroyerTest.Content.Tiles.RoseGarden
 		public override Color? BackgroundColor => base.BackgroundColor;
 		public override string MapBackground => BackgroundPath;
 
-		public override bool IsBiomeActive(Player player) {
-			if (player.TryGetModPlayer<RoseGardenPlayer>(out RoseGardenPlayer Garden))
-				{
-					return Garden.Active;
-				}
+		public override bool IsBiomeActive(Player player) 
+		{
+            if (Main.tile[player.Center.ToTileCoordinates()].WallType == ModContent.WallType<Wall_SanctifiedBrickWall>())
+			{
+				return true;
+			}
 			return false;
 		}
 

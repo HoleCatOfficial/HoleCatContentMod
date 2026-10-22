@@ -133,7 +133,16 @@ namespace DestroyerTest.Content.RiftBiomeSpread
 		public static int ClayType;
 		public static int SnowType;
 		public static int IceType;
-		public static int[] Grasses = new int[]
+
+        public static int LargeRubbleType;
+		public static int[] LargeRubbleConversionTargets = [7, 8, 9, 10, 11, 12];
+
+        public static int LargeRubble2Type;
+        public static int[] LargeRubble2ConversionTargets = [7, 8, 9, 10, 11, 12];
+        public static int MediumRubbleType;
+        public static int SmallRubbleType;
+
+        public static int[] Grasses = new int[]
 		{
 			TileID.Grass,
 			TileID.GolfGrass,
@@ -180,9 +189,13 @@ namespace DestroyerTest.Content.RiftBiomeSpread
 			SnowType = ModContent.TileType<Tile_RiftSnow>();
 			IceType = ModContent.TileType<Tile_RiftIce>();
 
-			// Normally we'd just use WallLoader.RegisterSimpleConversion on the basic wall types and rely on the fallback system
-			// but we want to convert safe walls to safe example walls and unsafe to unsafe, where vanilla convers safe walls to unsafe walls on all conversions
-			for (int i = 0; i < WallLoader.WallCount; i++) {
+            LargeRubbleType = ModContent.TileType<Tile_RiftStoneRubble3x2Natural>();
+            MediumRubbleType = ModContent.TileType<Tile_RiftStoneRubble2x1Natural>();
+            SmallRubbleType = ModContent.TileType<Tile_RiftStoneRubble1x1Natural>();
+
+            // Normally we'd just use WallLoader.RegisterSimpleConversion on the basic wall types and rely on the fallback system
+            // but we want to convert safe walls to safe example walls and unsafe to unsafe, where vanilla convers safe walls to unsafe walls on all conversions
+            for (int i = 0; i < WallLoader.WallCount; i++) {
 				if (WallID.Sets.Conversion.Dirt[i] ||
 					WallID.Sets.Conversion.Grass[i] ||
 					WallID.Sets.Conversion.Stone[i] ||
@@ -215,6 +228,7 @@ namespace DestroyerTest.Content.RiftBiomeSpread
 			TileLoader.RegisterSimpleConversion(TileID.ClayBlock, Type, ClayType);
 			TileLoader.RegisterSimpleConversion(TileID.SnowBlock, Type, SnowType);
 			TileLoader.RegisterSimpleConversion(TileID.IceBlock, Type, IceType);
+			//TileLoader.RegisterConversion(TileID.LargePilesEcho, Type, );
 
 		}
 
