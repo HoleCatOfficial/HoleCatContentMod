@@ -67,6 +67,8 @@ namespace DestroyerTest.Content.Entities
             NPC.frame.Y = frameIndex * frameHeight;
         }
 
+        int EternityCoinCount = 0;
+        int ECtime = 0;
         public override void AI()
         {
             NPC.TargetClosest();
@@ -74,6 +76,22 @@ namespace DestroyerTest.Content.Entities
 
             NPC.rotation = NPC.velocity.ToRotation() * 0.05f;
             Lighting.AddLight(NPC.Center, ColorLib.Rift.ToVector3() * 0.6f);
+
+            if (DestroyerTestMod.EternityIsActive)
+            {
+                if (player.Distance(NPC.Center) < 300)
+                {
+                    ECtime++;
+
+                    if (ECtime % 10 == 0)
+                    {
+                        if (player.HasItemInInventoryOrOpenVoidBag(ItemID.PlatinumCoin))
+                        {
+                            
+                        }
+                    }
+                }
+            }
         }
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)

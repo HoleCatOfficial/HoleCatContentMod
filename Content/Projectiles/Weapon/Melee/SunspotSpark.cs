@@ -1,15 +1,16 @@
-﻿using BreadLibrary.Core.Graphics.Particles;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Common.Interfaces;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
 using Microsoft.Xna.Framework;
 using OpusLib;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using OpusLib.Content.Helpers;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -70,8 +71,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         {
             Timer++;
 
-            Dust D = Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<ColorableNeonDust>(), Vector2.Zero, 50, ColorLib.Rift, 1f);
-            D.noGravity = true;
+            Color color = OpusColorUtils.MultiLerp(Opus.Sine(1f, 0f), ColorLib.HeliciteColorMap);
+
+            PixelParticle pixel = new();
+            pixel.Initialize(Projectile.Center, Vector2.Zero, color, 4f, 10);
+            ParticleEngine.BehindProjectiles.Add(pixel);
 
             Scl = Opus.Sine(0.8f, 0.4f, 0.6f);
 
@@ -155,8 +159,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         {
             Timer++;
 
-            Dust D = Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<ColorableNeonDust>(), Vector2.Zero, 50, ColorLib.Rift, 1f);
-            D.noGravity = true;
+            Color color = OpusColorUtils.MultiLerp(Opus.Sine(1f, 0f), ColorLib.HeliciteColorMap);
+
+            PixelParticle pixel = new();
+            pixel.Initialize(Projectile.Center, Vector2.Zero, color, 4f, 10);
+            ParticleEngine.BehindProjectiles.Add(pixel);
 
             Scl = Opus.Sine(0.8f, 0.4f, 0.6f);
 

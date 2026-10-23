@@ -107,7 +107,20 @@ namespace DestroyerTest.Content.Tiles
 			}
 			else
 			{
-				r = g = b = 0;
+				if (r > 0)
+				{
+					r -= 0.0005f;
+				}
+
+                if (g > 0)
+                {
+                    g -= 0.0005f;
+                }
+
+                if (b > 0)
+                {
+                    b -= 0.0005f;
+                }
 			}
 		}
 

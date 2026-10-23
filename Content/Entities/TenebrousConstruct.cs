@@ -288,8 +288,8 @@ namespace DestroyerTest.Content.Entities
 
 
             spriteBatch.UseBlendState(BlendState.Additive);
-            Main.EntitySpriteDraw(DTAssetLib.BlessedNodeLaserTelegraph.Value, NPC.Center - Main.screenPosition, null, ColorLib.TenebrisGradient * LaserWarnOpacity, LaserRotOffset - 12f, DTAssetLib.BlessedNodeLaserTelegraph.Value.Size() / 2, 1f, SpriteEffects.None);
-            Main.EntitySpriteDraw(DTAssetLib.BlessedNodeLaserTelegraph.Value, NPC.Center - Main.screenPosition, null, Color.White * LaserWarnOpacity, LaserRotOffset - 12f, DTAssetLib.BlessedNodeLaserTelegraph.Value.Size() / 2, 0.65f, SpriteEffects.None);
+            Main.EntitySpriteDraw(DTAssetLib.BlessedNodeLaserTelegraph.Value, NPC.Center - Main.screenPosition, null, ColorLib.TenebrisGradient * LaserWarnOpacity, LaserRotOffset + (MathHelper.Pi / 6), DTAssetLib.BlessedNodeLaserTelegraph.Value.Size() / 2, 1f, SpriteEffects.None);
+            Main.EntitySpriteDraw(DTAssetLib.BlessedNodeLaserTelegraph.Value, NPC.Center - Main.screenPosition, null, Color.White * LaserWarnOpacity, LaserRotOffset + (MathHelper.Pi / 6), DTAssetLib.BlessedNodeLaserTelegraph.Value.Size() / 2, 0.65f, SpriteEffects.None);
             spriteBatch.UseBlendState(BlendState.AlphaBlend);
 
             if (ShouldDrawVingette)

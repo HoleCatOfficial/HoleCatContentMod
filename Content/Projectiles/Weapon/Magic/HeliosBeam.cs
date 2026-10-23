@@ -19,6 +19,7 @@ using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Magic
@@ -50,8 +51,15 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
         float Rot = 0f;
         void IDrawPixelated.DrawPixelated(SpriteBatch spriteBatch)
         {
-            oF -= 30;
-            L = new Line(Projectile.Center, Projectile.Center + new Vector2(2000, 0).RotatedBy(Projectile.rotation));
+            oF -= 50;
+            L = new Line(Projectile.Center, Projectile.Center + new Vector2(length, 0).RotatedBy(Projectile.rotation));
+
+            Color color = OpusColorUtils.MultiLerp(Opus.Sine(1f, 0f), ColorLib.HeliciteColorMap);
+
+            if (WidthScl < 0.0001f || (L == null || L.GetLineLength < 0.001f))
+            {
+                return;
+            }
 
             var Cap = spriteBatch.Capture();
             spriteBatch.End();
@@ -61,22 +69,34 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 
             spriteBatch.Begin(Cap);
 
-            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(3, true), ColorLib.Rift with { A = 0 }, Main.spriteBatch, BlendState.Additive, oF, WidthScl * 2);
+            
+            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(8, true), color with { A = 0 } * 0.5f, Main.spriteBatch, BlendState.Additive, oF, WidthScl);
             spriteBatch.End();
             spriteBatch.Begin(Cap);
-            
-            Main.EntitySpriteDraw(DTAssetLib.Laser.Value, Projectile.Center - Main.screenPosition, null, ColorLib.Rift with { A = 0 }, Projectile.rotation, new Vector2(0, DTAssetLib.Laser.Value.Height / 2), new Vector2(1f, WidthScl * 0.75f), SpriteEffects.None);
-            
-            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(5, true), Color.White with { A = 0 }, Main.spriteBatch, BlendState.Additive, oF, WidthScl, 5f);
+
+            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(10, true), color with { A = 0 }, Main.spriteBatch, BlendState.Additive, oF, WidthScl);
+            spriteBatch.End();
+            spriteBatch.Begin(Cap);
+
+            //Main.EntitySpriteDraw(DTAssetLib.Laser.Value, Projectile.Center - Main.screenPosition, null, color with { A = 0 }, Projectile.rotation, new Vector2(0, DTAssetLib.Laser.Value.Height / 2), new Vector2(1f, WidthScl * 0.75f), SpriteEffects.None);
+
+            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(10, true), Color.White with { A = 0 }, Main.spriteBatch, BlendState.Additive, oF, WidthScl * 0.5f, 1f);
             spriteBatch.End();
             spriteBatch.Begin(Cap);
             //Main.EntitySpriteDraw(DTAssetLib.Laser.Value, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(0, DTAssetLib.Laser.Value.Height / 2), new Vector2(1f, WidthScl * 0.15f), SpriteEffects.None);
 
             Rot += 0.3f;
 
-            Main.EntitySpriteDraw(DTAssetLib.Star(3).Value, Projectile.Center - Main.screenPosition, null, ColorLib.Rift with { A = 0 }, Rot, DTAssetLib.Star(3).Value.Size() / 2, 1.4f, SpriteEffects.None);
-            Main.EntitySpriteDraw(DTAssetLib.Star(3).Value, Projectile.Center - Main.screenPosition, null, Color.White with { A = 0 }, Rot, DTAssetLib.Star(3).Value.Size() / 2, 1f, SpriteEffects.None);
+            Main.EntitySpriteDraw(DTAssetLib.Star(3).Value, Projectile.Center - Main.screenPosition, null, color with { A = 0 }, Rot, DTAssetLib.Star(3).Value.Size() / 2, WidthScl * 1.4f , SpriteEffects.None);
+            Main.EntitySpriteDraw(DTAssetLib.Star(3).Value, Projectile.Center - Main.screenPosition, null, Color.White with { A = 0 }, Rot, DTAssetLib.Star(3).Value.Size() / 2, WidthScl * 1f, SpriteEffects.None);
 
+
+            Main.EntitySpriteDraw(DTAssetLib.MiscSparkle144.Value, L.End - Main.screenPosition, null, color with { A = 0 }, 0f, DTAssetLib.MiscSparkle144.Value.Size() / 2, new Vector2(1f, WidthScl * 4f), SpriteEffects.None);
+            Main.EntitySpriteDraw(DTAssetLib.MiscSparkle144.Value, L.End - Main.screenPosition, null, Color.White with { A = 0 }, 0f, DTAssetLib.MiscSparkle144.Value.Size() / 2, new Vector2(1f, WidthScl * 5f), SpriteEffects.None);
+            
+            Main.EntitySpriteDraw(DTAssetLib.MiscSparkle144.Value, L.End - Main.screenPosition, null, color with { A = 0 }, MathHelper.PiOver2, DTAssetLib.MiscSparkle144.Value.Size() / 2, new Vector2(1f, WidthScl * 10f), SpriteEffects.None);
+            Main.EntitySpriteDraw(DTAssetLib.MiscSparkle144.Value, L.End - Main.screenPosition, null, Color.White with { A = 0 }, MathHelper.PiOver2, DTAssetLib.MiscSparkle144.Value.Size() / 2, new Vector2(1f, WidthScl * 8f), SpriteEffects.None);
+            
             spriteBatch.ResetToDefault();
         }
 
@@ -102,22 +122,38 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             PauseBehavior = PauseBehavior.PauseWithGame
         };
 
+        float length = 2000f;
+
         public override void AI()
         {
             Projectile.rotation = Projectile.ai[0];
             UpdateSound();
 
-            DelegateMethods.v3_1 = ColorLib.Rift.ToVector3();
-            if (L != null)
+            length = PerformBeamHitscan(6);
+
+            Color color = OpusColorUtils.MultiLerp(Opus.Sine(1f, 0f), ColorLib.HeliciteColorMap);
+
+            if (!DTOptimizationsConfig.instance.DisableExcessParticles && length < 2000f)
             {
-                Utils.PlotTileLine(Projectile.Center, Projectile.Center + Projectile.velocity * L.GetLineLength, 30f * WidthScl, DelegateMethods.CastLight);
+                PointGlowPreMultiplied glow = new PointGlowPreMultiplied();
+                glow.Initialize(Projectile.Center + new Vector2(length, 0).RotatedBy(Projectile.rotation), Main.rand.NextVector2Circular(0.1f, 0.1f), color * 0.5f, 2f);
+                ParticleEngine.Particles.Add(glow);
+
+                PointGlowPreMultiplied glow2 = new PointGlowPreMultiplied();
+                glow2.Initialize(Projectile.Center + new Vector2(length, 0).RotatedBy(Projectile.rotation), Main.rand.NextVector2Circular(1f, 1f), Color.White, 0.7f);
+                ParticleEngine.Particles.Add(glow2);
+
+                PointGlowPreMultiplied glow3 = new PointGlowPreMultiplied();
+                glow3.Initialize(Projectile.Center + new Vector2(length, 0).RotatedBy(Projectile.rotation), new Vector2(0f, Main.rand.NextFloat(-2f, -1f)), color, 0.5f);
+                ParticleEngine.Particles.Add(glow3);
+
+                PixelParticle pixel = new();
+                pixel.Initialize(Projectile.Center + new Vector2(length, 0).RotatedBy(Projectile.rotation), Main.rand.NextVector2Circular(1f, 1f), Color.White, 2f);
+                ParticleEngine.Particles.Add(pixel);
             }
 
-            float length = 2000f; // however long your laser should be
 
-            Vector2 start = Projectile.Center;
 
-            Vector2 end = start + new Vector2(Main.rand.NextFloat(length), 0).RotatedBy(Projectile.rotation);
             if (Main.player[Projectile.owner].ownedProjectileCounts[ModContent.ProjectileType<HeliciteStaffHoldout>()] < 1)
             {
                 GoodBeam = false;
@@ -162,6 +198,30 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             }
         }
 
+        private float PerformBeamHitscan(int NumSamplePoints)
+        {
+            Vector2 direction = new Vector2(1f, 0f).RotatedBy(Projectile.rotation);
+
+            float[] laserScanResults = new float[NumSamplePoints];
+
+            Collision.LaserScan(
+                Projectile.Center,
+                direction,
+                0f,
+                2000f,
+                laserScanResults
+            );
+
+            float averageLengthSample = 0f;
+
+            for (int i = 0; i < laserScanResults.Length; i++)
+            {
+                averageLengthSample += laserScanResults[i];
+            }
+
+            return averageLengthSample / NumSamplePoints;
+        }
+
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
  
@@ -180,6 +240,18 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
+            Color color = OpusColorUtils.MultiLerp(Opus.Sine(1f, 0f), ColorLib.HeliciteColorMap);
+            SoundEngine.PlaySound(SoundID.DD2_KoboldIgnite with { MaxInstances = 0 }, target.Center);
+            Player Owner = Main.player[Projectile.owner];
+            for (int i = 0; i < 12; i++)
+            {
+
+                Spark spark = new();
+                spark.PrepareSpark(target.Center, target.Center.DirectionFrom(Owner.MountedCenter).RotatedByRandom(0.2f) * (Main.rand.NextFloat(20f, 30f)), target.Center.DirectionFrom(Owner.MountedCenter).ToRotation() + MathHelper.PiOver2, color, 0.5f, false, 15, SparkDrawMode.Additive, 8f);
+                ParticleEngine.Particles.Add(spark);
+            }
+
+
             target.AddBuff(ModContent.BuffType<DaylightOverload>(), 240);
         }
 

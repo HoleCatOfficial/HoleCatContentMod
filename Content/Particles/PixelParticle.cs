@@ -87,7 +87,7 @@ namespace DestroyerTest.Content.Particles
 
             //Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
 
-            spriteBatch.Draw(texture, position - Main.screenPosition, null, color with { A = 0 }, 0f, Vector2.Zero, scale * 0.5f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(texture, position - Main.screenPosition, null, color with { A = 0 }, 0f, texture.Size() / 2, scale * 0.5f, SpriteEffects.None, 0f);
 
             spriteBatch.ResetToDefault();
         }
@@ -167,7 +167,7 @@ namespace DestroyerTest.Content.Particles
 
             //Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
 
-            spriteBatch.Draw(texture, position - Main.screenPosition, null, color with { A = 0 }, 0f, Vector2.Zero, scale * 0.5f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(texture, position - Main.screenPosition, null, color with { A = 0 }, 0f, texture.Size() / 2, scale * 0.5f, SpriteEffects.None, 0f);
 
             spriteBatch.ResetToDefault();
         }

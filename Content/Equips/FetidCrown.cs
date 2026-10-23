@@ -1,13 +1,18 @@
 ﻿
+using System.Collections.Generic;
+using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Resources;
+using FargowiltasSouls.Content.NPCs.EternityModeNPCs.VanillaEnemies.BloodMoon;
+using FargowiltasSouls.Core.ModPlayers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
-using System.Collections.Generic;
+using ReLogic.Content;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -17,12 +22,15 @@ namespace DestroyerTest.Content.Equips
 {
     public class FetidCrown : ModItem
     {
-        bool Offensive = false;
-        int clickCooldown = 0;
+        public bool Offensive = false;
+        public int clickCooldown = 0;
+
+        public Asset<Texture2D> ClosedEquipTexture;
+        public Asset<Texture2D> OpenEquipTexture;
 
         public override void SetStaticDefaults()
         {
-
+            
         }
         public override void SetDefaults()
         {
@@ -31,6 +39,15 @@ namespace DestroyerTest.Content.Equips
             Item.maxStack = 1;
             Item.value = 10;
             Item.accessory = true;
+            ClosedEquipTexture = ModContent.Request<Texture2D>(Texture + "_Closed_Head");
+            OpenEquipTexture = ModContent.Request<Texture2D>(Texture + "_Open_Head");
+
+            /*
+            Mod.Logger.Info($"Open asset null: {OpenEquipTexture is null}");
+            Mod.Logger.Info($"Closed asset null: {ClosedEquipTexture is null}");
+            Mod.Logger.Info($"Open texture null: {OpenEquipTexture?.Value is null}");
+            Mod.Logger.Info($"Closed texture null: {ClosedEquipTexture?.Value is null}");
+            */
         }
 
         public override bool ConsumeItem(Player player)
@@ -168,6 +185,11 @@ namespace DestroyerTest.Content.Equips
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
+            ClosedEquipTexture = ModContent.Request<Texture2D>(Texture + "_Closed_Head");
+            OpenEquipTexture = ModContent.Request<Texture2D>(Texture + "_Open_Head");
+            player.GetModPlayer<FetidCrownModePlayer>().Crown = Item;
+            player.GetModPlayer<FetidCrownModePlayer>().DisplayLayer = true;
+
             if (Offensive)
             {
                 player.maxMinions += 1;
@@ -202,6 +224,54 @@ namespace DestroyerTest.Content.Equips
                 .AddIngredient(ItemID.GoldCrown)
                 .AddTile(TileID.Anvils)
                 .Register();
+        }
+    }
+
+    public class FetidCrownModePlayer : ModPlayer
+    {
+
+        public Item Crown;
+
+        public bool DisplayLayer = false;
+
+        public override void ResetEffects()
+        {
+            DisplayLayer = false;
+        }
+        public override void Unload()
+        {
+            Crown = null;
+        }
+    }
+
+    public class FetidCrownDrawLayer : PlayerDrawLayer
+    {
+        public override Position GetDefaultPosition()
+        {
+            return new AfterParent(PlayerDrawLayers.FaceAcc);
+        }
+
+        public override bool GetDefaultVisibility(PlayerDrawSet drawInfo)
+        {
+            return drawInfo.drawPlayer.GetModPlayer<FetidCrownModePlayer>().DisplayLayer;
+        }
+
+        protected override void Draw(ref PlayerDrawSet drawInfo)
+        {
+            Player player = drawInfo.drawPlayer;
+            bool draw = player.GetModPlayer<FetidCrownModePlayer>().Crown != null;
+            if (draw)
+            {
+                Item item = player.GetModPlayer<FetidCrownModePlayer>().Crown;
+                FetidCrown crown = item.ModItem as FetidCrown;
+                if (crown != null)
+                {
+                    Texture2D selectedHeadTex = crown.Offensive ? crown.OpenEquipTexture.Value : crown.ClosedEquipTexture.Value;
+                    SpriteEffects effects = player.direction == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
+                    DrawData data = new(selectedHeadTex, player.headPosition - Main.screenPosition, player.headFrame, Lighting.GetSubLight(player.headPosition).ToColor(), player.headRotation, Vector2.Zero, 1f, effects);
+                    drawInfo.DrawDataCache.Add(data);
+                }
+            }
         }
     }
 }

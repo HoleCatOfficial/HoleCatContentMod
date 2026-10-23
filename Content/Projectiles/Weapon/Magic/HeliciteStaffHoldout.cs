@@ -1,16 +1,18 @@
-﻿using DestroyerTest.Common;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using DestroyerTest.Common;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Magic;
 using DestroyerTest.Content.Projectiles.Weapon.Melee;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
+using OpusLib.Content.Helpers;
 using ReLogic.Content;
 using ReLogic.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -31,11 +33,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
         }
         public override void SetDefaults()
         {
-            Projectile.width = Projectile.height = 92;
+            Projectile.width = 68;
+            Projectile.height = 62;
             Projectile.friendly = true;
-            Projectile.timeLeft = 120;
+            Projectile.timeLeft = 60;
             Projectile.netImportant = true;
-
+            Projectile.tileCollide = false;
         }
 
         public override bool? CanHitNPC(NPC target)
@@ -61,9 +64,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             }
             else
             {
-                origin = new Vector2(0, texture.Height);
-                effects = SpriteEffects.None;
-                rotationOffset = MathHelper.ToRadians(45f);
+                origin = new Vector2(0, 0);
+                effects = SpriteEffects.FlipVertically;
+                rotationOffset = MathHelper.ToRadians(-45f);
             }
 
 
@@ -122,12 +125,14 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             Dir.Normalize();
 
 
-            var PT = Dir * 110;
+            var PT = Dir * 80;
 
             
 
             Projectile.rotation = Dir.ToRotation();
             Projectile.Center = Owner.Center;
+
+            Projectile.spriteDirection = Math.Sign((Main.MouseWorld - Owner.MountedCenter).X);
 
 
 
@@ -142,7 +147,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             if (Owner.controlUseItem && !Owner.dead && Owner.HeldItem.type == ModContent.ItemType<HeliciteStaff>())
             {
                 Owner.SetDummyItemTime(60);
-                Projectile.timeLeft = 120;
+                Projectile.timeLeft = 60;
 
                 if (BeamProjectile == null && canMana)
                 {
@@ -172,14 +177,14 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
                 }
                 else
                 {
-                    Dust D = Dust.NewDustPerfect(Projectile.Center + PT, ModContent.DustType<ColorableNeonDust>(), new Vector2(0, -4f), 0, ColorLib.Rift, 1f);
+                    Color color = OpusColorUtils.MultiLerp(Opus.Sine(1f, 0f), ColorLib.HeliciteColorMap);
+                    Dust D = Dust.NewDustPerfect(Projectile.Center + PT, ModContent.DustType<ColorableNeonDust>(), new Vector2(0, -4f), 0, color, 1f);
                     D.noGravity = true;
                     if (Projectile.ai[0] % 30 == 0)
                     {
-                        SoundEngine.PlaySound(SoundID.Item109, Projectile.Center);
-                        SoundEngine.PlaySound(SoundID.Item108, Projectile.Center);
+                        SoundEngine.PlaySound(SoundID.Item24, Projectile.Center);
 
-                        CombatText.NewText(Utils.CenteredRectangle(Projectile.Center + PT, new Vector2(12, 12)), ColorLib.Rift, "NO MANA", false);
+                        CombatText.NewText(Utils.CenteredRectangle(Projectile.Center + PT, new Vector2(12, 12)), color, "NO MANA", false);
 
                         Utils.PoofOfSmoke(Projectile.Center + PT);
 

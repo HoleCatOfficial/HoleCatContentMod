@@ -14,6 +14,10 @@ using Terraria.DataStructures;
 using OpusLib.Content.Helpers;
 using DestroyerTest.Content.Buffs;
 using Terraria.ID;
+using DestroyerTest.Content.Particles;
+using BreadLibrary.Core.Graphics.Particles;
+using OpusLib.Content.Particles;
+using BreadLibrary.Core.Graphics.Pixelation;
 
 namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
 {
@@ -45,16 +49,13 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
         {
             oF -= 15;
             oF2 -= 10;
-            L = new Line(Projectile.Center, Projectile.Center + new Vector2(2000, 0).RotatedBy(Projectile.rotation));
+            L = new Line(Projectile.Center, Projectile.Center + new Vector2(length, 0).RotatedBy(Projectile.rotation));
 
-            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(6, true), ColorLib.TenebrisGradient with { A = 0 } * 0.8f, Main.spriteBatch, BlendState.Additive, oF2, WidthScl * 2.7f, 4f);
+            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(3, true), ColorLib.TenebrisGradient with { A = 0 } * 0.8f, Main.spriteBatch, BlendState.Additive, oF2, WidthScl * 0.3f, 1f);
 
-            
-            Main.EntitySpriteDraw(DTAssetLib.Laser.Value, Projectile.Center - Main.screenPosition, null, ColorLib.TenebrisGradient with { A = 0 }, Projectile.rotation, new Vector2(0, DTAssetLib.Laser.Value.Height / 2), new Vector2(1f, WidthScl), SpriteEffects.None);
-            
-            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(9, true), Color.White with { A = 0 }, Main.spriteBatch, BlendState.Additive, oF, WidthScl * 0.2f, 3f);
-          
-            Main.EntitySpriteDraw(DTAssetLib.Laser.Value, Projectile.Center - Main.screenPosition, null, Color.White with { A = 0 }, Projectile.rotation, new Vector2(0, DTAssetLib.Laser.Value.Height / 2), new Vector2(1f, WidthScl * 0.5f), SpriteEffects.None);
+            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(8, true), ColorLib.TenebrisGradient with { A = 0 }, Main.spriteBatch, BlendState.Additive, oF, WidthScl * 0.5f, 1f);
+
+            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(3, true), Color.White with { A = 0 } * 0.8f, Main.spriteBatch, BlendState.Additive, oF2, WidthScl * 0.6f, 1f);
 
             return false;
         }
@@ -63,11 +64,32 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
         {
             Projectile.rotation = Projectile.velocity.ToRotation() + Projectile.ai[1];
         }
-
+        float length = 2000f;
         public override void AI()
         {
             Projectile.ai[0]++;
             float MaxScl = 1.5f;
+
+            length = PerformBeamHitscan(6);
+
+            if (!DTOptimizationsConfig.instance.DisableExcessParticles && length < 2000f && L != null)
+            {
+                PointGlowPreMultiplied glow = new PointGlowPreMultiplied();
+                glow.Initialize(L.End, Main.rand.NextVector2Circular(0.1f, 0.1f), ColorLib.TenebrisGradient * 0.5f, 2f);
+                ParticleEngine.Particles.Add(glow);
+
+                PointGlowPreMultiplied glow2 = new PointGlowPreMultiplied();
+                glow2.Initialize(L.End, Main.rand.NextVector2Circular(1f, 1f), Color.White, 0.7f);
+                ParticleEngine.Particles.Add(glow2);
+
+                Fire fire = new();
+                fire.PrepareFire(L.End, Main.rand.NextVector2Circular(1f, 1f), DTUtils.RandomDirection(2), Main.rand.NextFloat(0.1f, 0.5f), ColorLib.TenebrisGradient, 1f, 30, FireDrawMode.Additive, PixelLayer.AboveTiles);
+                ParticleEngine.Particles.Add(fire);
+            
+            }
+
+
+
 
             float t = ((Projectile.ai[0] / 30));
             if (Projectile.timeLeft > 210)
@@ -99,9 +121,32 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
             target.AddBuff(ModContent.BuffType<ShimmeringFlames>(), 300);
         }
 
+        private float PerformBeamHitscan(int NumSamplePoints)
+        {
+            Vector2 direction = new Vector2(1f, 0f).RotatedBy(Projectile.rotation);
+
+            float[] laserScanResults = new float[NumSamplePoints];
+
+            Collision.LaserScan(
+                Projectile.Center,
+                direction,
+                0f,
+                2000f,
+                laserScanResults
+            );
+
+            float averageLengthSample = 0f;
+
+            for (int i = 0; i < laserScanResults.Length; i++)
+            {
+                averageLengthSample += laserScanResults[i];
+            }
+
+            return averageLengthSample / NumSamplePoints;
+        }
+
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
-            float length = 2000f; // however long your laser should be
 
             Vector2 start = Projectile.Center;
 
@@ -142,17 +187,16 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
         int oF2 = 0;
         public override bool PreDraw(ref Color lightColor)
         {
-            oF -= 15;
-            oF2 -= 10;
-            L = new Line(Projectile.Center, Projectile.Center + new Vector2(2000, 0).RotatedBy(Projectile.rotation));
+            oF -= 40;
+            oF2 -= 30;
+            L = new Line(Projectile.Center, Projectile.Center + new Vector2(length, 0).RotatedBy(Projectile.rotation));
 
-            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(6, true), ColorLib.TenebrisGradient with { A = 0 } * 0.8f, Main.spriteBatch, BlendState.Additive, oF2, WidthScl * 2.7f, 4f);
+            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(3, true), ColorLib.TenebrisGradient with { A = 0 } * 0.8f, Main.spriteBatch, BlendState.Additive, oF2, WidthScl * 0.3f, 1f);
             
-            Main.EntitySpriteDraw(DTAssetLib.Laser.Value, Projectile.Center - Main.screenPosition, null, ColorLib.TenebrisGradient with { A = 0 }, Projectile.rotation, new Vector2(0, DTAssetLib.Laser.Value.Height / 2), new Vector2(1f, WidthScl), SpriteEffects.None);
-            
-            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(9, true), Color.White with { A = 0 }, Main.spriteBatch, BlendState.Additive, oF, WidthScl * 0.2f, 3f);
-          
-            Main.EntitySpriteDraw(DTAssetLib.Laser.Value, Projectile.Center - Main.screenPosition, null, Color.White with { A = 0 }, Projectile.rotation, new Vector2(0, DTAssetLib.Laser.Value.Height / 2), new Vector2(1f, WidthScl * 0.5f), SpriteEffects.None);
+            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(8, true), ColorLib.TenebrisGradient with { A = 0 }, Main.spriteBatch, BlendState.Additive, oF, WidthScl * 0.5f, 1f);
+
+            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(3, true), Color.White with { A = 0 } * 0.8f, Main.spriteBatch, BlendState.Additive, oF2, WidthScl * 0.6f, 1f);
+
             return false;
         }
 
@@ -161,10 +205,30 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
             Projectile.rotation = Projectile.velocity.ToRotation() + Projectile.ai[1];
         }
 
+        float length = 2000f;
+
         public override void AI()
         {
             Projectile.ai[0]++;
             float MaxScl = 2f;
+
+            length = PerformBeamHitscan(6);
+
+            if (!DTOptimizationsConfig.instance.DisableExcessParticles && length < 2000f && L != null)
+            {
+                PointGlowPreMultiplied glow = new PointGlowPreMultiplied();
+                glow.Initialize(L.End, Main.rand.NextVector2Circular(0.1f, 0.1f), ColorLib.TenebrisGradient * 0.5f, 2f);
+                ParticleEngine.Particles.Add(glow);
+
+                PointGlowPreMultiplied glow2 = new PointGlowPreMultiplied();
+                glow2.Initialize(L.End, Main.rand.NextVector2Circular(1f, 1f), Color.White, 0.7f);
+                ParticleEngine.Particles.Add(glow2);
+
+                Fire fire = new();
+                fire.PrepareFire(L.End, Main.rand.NextVector2Circular(1f, 1f), DTUtils.RandomDirection(2), Main.rand.NextFloat(0.1f, 0.5f), ColorLib.TenebrisGradient, 1f, 30, FireDrawMode.Additive, PixelLayer.AboveTiles);
+                ParticleEngine.Particles.Add(fire);
+
+            }
 
             float t = ((Projectile.ai[0] / 30f));
             if (Projectile.timeLeft > 1170)
@@ -196,9 +260,31 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
             target.AddBuff(ModContent.BuffType<ShimmeringFlames>(), 300);
         }
 
+        private float PerformBeamHitscan(int NumSamplePoints)
+        {
+            Vector2 direction = new Vector2(1f, 0f).RotatedBy(Projectile.rotation);
+
+            float[] laserScanResults = new float[NumSamplePoints];
+
+            Collision.LaserScan(
+                Projectile.Center,
+                direction,
+                0f,
+                2000f,
+                laserScanResults
+            );
+
+            float averageLengthSample = 0f;
+
+            for (int i = 0; i < laserScanResults.Length; i++)
+            {
+                averageLengthSample += laserScanResults[i];
+            }
+
+            return averageLengthSample / NumSamplePoints;
+        }
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
-            float length = 2000f; // however long your laser should be
 
             Vector2 start = Projectile.Center;
 
@@ -239,7 +325,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
         {
             oF -= 15;
             oF2 -= 10;
-            L = new Line(Projectile.Center, Projectile.Center + new Vector2(2000, 0).RotatedBy(Projectile.rotation));
+            L = new Line(Projectile.Center, Projectile.Center + new Vector2(length, 0).RotatedBy(Projectile.rotation));
 
             Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
             DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(6), ColorLib.TenebrisGradient * 0.8f, Main.spriteBatch, BlendState.Additive, oF2, WidthScl * 2.7f, 4f);
@@ -259,10 +345,31 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
             Projectile.rotation = Projectile.velocity.ToRotation();
         }
 
+        float length = 2000f;
+
         public override void AI()
         {
             Projectile.ai[0]++;
             float MaxScl = 1.5f;
+
+            length = PerformBeamHitscan(6);
+
+            if (!DTOptimizationsConfig.instance.DisableExcessParticles && length < 2000f && L != null)
+            {
+                PointGlowPreMultiplied glow = new PointGlowPreMultiplied();
+                glow.Initialize(L.End, Main.rand.NextVector2Circular(0.1f, 0.1f), ColorLib.TenebrisGradient * 0.5f, 2f);
+                ParticleEngine.Particles.Add(glow);
+
+                PointGlowPreMultiplied glow2 = new PointGlowPreMultiplied();
+                glow2.Initialize(L.End, Main.rand.NextVector2Circular(1f, 1f), Color.White, 0.7f);
+                ParticleEngine.Particles.Add(glow2);
+
+                Fire fire = new();
+                fire.PrepareFire(L.End, Main.rand.NextVector2Circular(1f, 1f), DTUtils.RandomDirection(2), Main.rand.NextFloat(0.1f, 0.5f), ColorLib.TenebrisGradient, 1f, 30, FireDrawMode.Additive, PixelLayer.AboveTiles);
+                ParticleEngine.Particles.Add(fire);
+
+            }
+
 
             float t = Utilities.Convert01To010((Projectile.ai[0] / 30));
             WidthScl = MathHelper.Lerp(0f, MaxScl, t);
@@ -270,9 +377,32 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
             Projectile.rotation = Projectile.velocity.ToRotation();
         }
 
+        private float PerformBeamHitscan(int NumSamplePoints)
+        {
+            Vector2 direction = new Vector2(1f, 0f).RotatedBy(Projectile.rotation);
+
+            float[] laserScanResults = new float[NumSamplePoints];
+
+            Collision.LaserScan(
+                Projectile.Center,
+                direction,
+                0f,
+                2000f,
+                laserScanResults
+            );
+
+            float averageLengthSample = 0f;
+
+            for (int i = 0; i < laserScanResults.Length; i++)
+            {
+                averageLengthSample += laserScanResults[i];
+            }
+
+            return averageLengthSample / NumSamplePoints;
+        }
+
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
-            float length = 2000f; // however long your laser should be
 
             Vector2 start = Projectile.Center;
 
