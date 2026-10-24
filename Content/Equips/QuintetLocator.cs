@@ -65,7 +65,7 @@ namespace DestroyerTest.Content.Equips
 
                 //Zyplon Ring
                 ProvidenceSpark spark2 = new(Player);
-                spark2.PrepareSpark(Player.Center, Player.Center.DirectionTo(Instance.ZyplonGeodePosition) * 7f, Player.Center.DirectionTo(Instance.ZyplonGeodePosition).ToRotation(), Color.SkyBlue, 1f, false, 30, SparkDrawMode.Additive, 2f);
+                spark2.PrepareSpark(Player.Center, Player.Center.DirectionTo(Instance.ZyplonGeodePosition) * 7f, Player.Center.DirectionTo(Instance.ZyplonGeodePosition).ToRotation(), Color.Blue, 1f, false, 30, SparkDrawMode.Additive, 2f);
                 ParticleEngine.Particles.Add(spark2, PixelLayer.AboveTiles);
 
                 //Providence
@@ -82,6 +82,11 @@ namespace DestroyerTest.Content.Equips
                 ProvidenceSpark spark5 = new(Player);
                 spark5.PrepareSpark(Player.Center, Player.Center.DirectionTo(Instance.HeavenbleedGeodePosition) * 7f, Player.Center.DirectionTo(Instance.HeavenbleedGeodePosition).ToRotation(), Color.PaleGoldenrod, 1f, false, 30, SparkDrawMode.Additive, 2f);
                 ParticleEngine.Particles.Add(spark5, PixelLayer.AboveTiles);
+
+                //Swirl Stone
+                ProvidenceSpark spark6 = new(Player);
+                spark6.PrepareSpark(Player.Center, Player.Center.DirectionTo(Instance.SwirlStoneGeodePosition) * 7f, Player.Center.DirectionTo(Instance.SwirlStoneGeodePosition).ToRotation(), Color.SkyBlue, 1f, false, 30, SparkDrawMode.Additive, 2f);
+                ParticleEngine.Particles.Add(spark6, PixelLayer.AboveTiles);
             }
         }
     }

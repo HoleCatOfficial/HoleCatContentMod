@@ -8,7 +8,7 @@ using Terraria.Audio;
 
 namespace DestroyerTest.Content.Tiles
 {
-	internal class Tile_HeliciteCrate : ModTile
+	public class Tile_HeliciteCrate : ModTile
 	{
 		public override void SetStaticDefaults() {
 			// Properties

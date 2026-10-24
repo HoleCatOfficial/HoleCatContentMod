@@ -65,11 +65,11 @@ namespace DestroyerTest.Common.Systems
                 //CerebralGeodeGenTest((int)Main.MouseWorld.X / 16, (int)Main.MouseWorld.Y / 16);
 
 
-                //TestMethod((int)Main.MouseWorld.X / 16, (int)Main.MouseWorld.Y / 16);
+                TestMethod((int)Main.MouseWorld.X / 16, (int)Main.MouseWorld.Y / 16);
 
                 //HeliciteGenTest((int)Main.MouseWorld.X / 16, (int)Main.MouseWorld.Y / 16);
 
-                //Main.NewText(new Point((int)Main.MouseWorld.X / 16, (int)Main.MouseWorld.Y / 16), Color.Green);
+                Main.NewText(new Point((int)Main.MouseWorld.X / 16, (int)Main.MouseWorld.Y / 16), Color.Green);
             }
 
 
@@ -247,7 +247,7 @@ namespace DestroyerTest.Common.Systems
                 
             }
 
-            furnishChestTopFloor();
+            //furnishChestTopFloor();
 
             for (int i = 0; i < 26; i++)
             {
@@ -292,7 +292,7 @@ namespace DestroyerTest.Common.Systems
             DTGenUtils.GenHallway(EntryToStatue);
 
 
-            Room PotionRoom = new Room(x + 41, y + 22, 30, 18, TT, WT);
+            Room PotionRoom = new Room(x + 41, y + 27, 24, 13, TT, WT);
             DTGenUtils.GenRoom(PotionRoom);
             DTGenUtils.MakeDoor(PotionRoom, Room.RoomSide.Left);
 
@@ -466,7 +466,7 @@ namespace DestroyerTest.Common.Systems
 
             void furnishPotionRoom()
             {
-                WorldGen.PlaceObject(PotionRoom.Interior.Location.X + 2, PotionRoom.Interior.Location.Y, BT);
+                WorldGen.PlaceObject(PotionRoom.Interior.Location.X + 4, PotionRoom.Interior.Location.Y, BT);
 
                 WorldGen.PlaceObject(PotionRoom.Interior.Location.X + PotionRoom.Interior.Width - 4, PotionRoom.Interior.Location.Y, BT);
 
@@ -481,13 +481,13 @@ namespace DestroyerTest.Common.Systems
                         {
                             case 0:
                                 {
-                                    X = (PotionRoom.Interior.Location.X + 2) + j;
+                                    X = (PotionRoom.Interior.Location.X + 1) + j;
                                     Y = PotionRoom.Interior.Location.Y + (PotionRoom.Interior.Height - 2);
                                     break;
                                 }
                             case 1:
                                 {
-                                    X = (PotionRoom.Interior.Location.X + 2) + j;
+                                    X = (PotionRoom.Interior.Location.X + 1) + j;
                                     Y = PotionRoom.Interior.Location.Y + (PotionRoom.Interior.Height - 6);
                                     break;
                                 }
@@ -496,16 +496,20 @@ namespace DestroyerTest.Common.Systems
 
                         WorldGen.PlaceObject(X, Y, TileID.Platforms, style: 1);
 
-                        int Loot = WorldGen.PlaceChest((PotionRoom.Interior.Location.X + 2), Y - 1);
+                        int Loot = WorldGen.PlaceChest((PotionRoom.Interior.Location.X + 1), Y - 1);
                     }
                 }
 
 
-                WorldGen.PlaceObject(PotionRoom.Interior.Location.X + 8, PotionRoom.Interior.Location.Y + PotionRoom.Interior.Height - 1, ModContent.TileType<Tile_PotionDesk>());
+                WorldGen.PlaceObject(PotionRoom.Interior.Location.X + 5, PotionRoom.Interior.Location.Y + PotionRoom.Interior.Height - 1, ModContent.TileType<Tile_PotionDesk>());
 
                 WorldGen.PlaceObject(PotionRoom.Interior.Location.X + 11, PotionRoom.Interior.Location.Y + PotionRoom.Interior.Height - 7, TileID.AmethystGemspark);
 
+                WorldGen.PlaceObject(PotionRoom.Interior.Left + 14, PotionRoom.Interior.Bottom - 1, ModContent.TileType<Tile_DecoCrate>());
+                WorldGen.PlaceObject(PotionRoom.Interior.Left + 16, PotionRoom.Interior.Bottom - 1, ModContent.TileType<Tile_DecoCrate>());
+                WorldGen.PlaceObject(PotionRoom.Interior.Left + 18, PotionRoom.Interior.Bottom - 1, ModContent.TileType<Tile_DecoCrate>());
 
+                WorldGen.PlaceObject(PotionRoom.Interior.Left + 17, PotionRoom.Interior.Bottom - 3, ModContent.TileType<Tile_DecoCrate>());
             }
 
 
@@ -588,6 +592,13 @@ namespace DestroyerTest.Common.Systems
                 ModContent.TileType<Tile_HekateTalisman3>(),
             };
 
+            int[] BookcaseVariants = new int[3]
+            {
+                ModContent.TileType<Tile_TallBookcase1>(),
+                ModContent.TileType<Tile_TallBookcase2>(),
+                ModContent.TileType<Tile_TallBookcase3>(),
+            };
+
             Room Entry = new Room(X - 38, Y + 80, 40, 21, TT, WT);
             DTGenUtils.GenRoom(Entry);
             DTGenUtils.MakeDoor(Entry, Room.RoomSide.Both);
@@ -660,6 +671,50 @@ namespace DestroyerTest.Common.Systems
             WorldUtils.Gen(new Point(X + 58, Y + 146), new Shapes.Rectangle(12, 10), new Actions.PlaceWall(WT, true));
             WorldUtils.Gen(new Point(X + 58, Y + 148), new Shapes.Rectangle(12, 6), new Actions.ClearTile(true));
 
+
+            void furnishEntry()
+            {
+                WorldGen.PlaceObject(Entry.Interior.Left + 2, Entry.Interior.Bottom - 1, BookcaseVariants[Main.rand.Next(BookcaseVariants.Length)]);
+
+                WorldGen.PlaceObject(Entry.Interior.Left + 5, Entry.Interior.Bottom - 1, ModContent.TileType<Tile_DecoCrate>());
+                WorldGen.PlaceObject(Entry.Interior.Left + 7, Entry.Interior.Bottom - 1, ModContent.TileType<Tile_DecoCrate>());
+
+                WorldGen.PlaceObject(Entry.Interior.Left + 6, Entry.Interior.Bottom - 3, ModContent.TileType<Tile_DecoCrate>());
+
+                for (int i = 0; i < 9; i++)
+                {
+                    WorldGen.PlaceObject(Entry.Interior.Left + 6 + i, Entry.Interior.Top + 5, TileID.Platforms, style: 1);
+
+                }
+
+                for (int i = 0; i < 4; i++)
+                {
+                    WorldGen.PlaceObject(Entry.Interior.Left + 6, Entry.Interior.Top + i, TileID.Chain);
+
+                    WorldGen.PlaceObject(Entry.Interior.Left + 15, Entry.Interior.Top + i, TileID.Chain);
+                }
+
+                WorldGen.PlaceObject(Entry.Interior.Left + 7, Entry.Interior.Top + 4, ModContent.TileType<Tile_DecoCrate>());
+                WorldGen.PlaceObject(Entry.Interior.Left + 9, Entry.Interior.Top + 4, ModContent.TileType<Tile_DecoCrate>());
+                WorldGen.PlaceObject(Entry.Interior.Left + 11, Entry.Interior.Top + 4, ModContent.TileType<Tile_DecoCrate>());
+                WorldGen.PlaceObject(Entry.Interior.Left + 8, Entry.Interior.Top + 2, ModContent.TileType<Tile_DecoCrate>());
+                WorldGen.PlaceObject(Entry.Interior.Left + 10, Entry.Interior.Top + 2, ModContent.TileType<Tile_DecoCrate>());
+
+                WorldGen.PlaceObject(Entry.Interior.Left + 17, Entry.Interior.Top, ModContent.TileType<Tile_SanctifiedBrazier>());
+
+
+                WorldUtils.ClearTile(Entry.Interior.Left + 10, Entry.Interior.Bottom - 1);
+                int WandIndex = WorldGen.PlaceChest(Entry.Interior.Left + 10, Entry.Interior.Bottom - 1, TileID.Containers);
+                Chest WandChest = Main.chest[WandIndex];
+                WandChest.item[Main.rand.Next(WandChest.item.Length - 1)].SetDefaults(ModContent.ItemType<HekatesMystique>());
+
+                WorldGen.PlaceObject(Entry.Interior.Left + 20, Entry.Interior.Bottom - 1, ModContent.TileType<Tile_DecoCrate>());
+                WorldGen.PlaceObject(Entry.Interior.Left + 22, Entry.Interior.Bottom - 1, ModContent.TileType<Tile_DecoCrate>());
+                WorldGen.PlaceObject(Entry.Interior.Left + 24, Entry.Interior.Bottom - 1, ModContent.TileType<Tile_DecoCrate>());
+                WorldGen.PlaceObject(Entry.Interior.Left + 21, Entry.Interior.Bottom - 3, ModContent.TileType<Tile_DecoCrate>());
+            }
+
+            furnishEntry();
         }
 
 

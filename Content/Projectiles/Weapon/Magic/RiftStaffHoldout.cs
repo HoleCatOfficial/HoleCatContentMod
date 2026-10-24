@@ -120,9 +120,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             Dir.Normalize();
 
 
-            var PT = Dir * 110;
+            var PT = new Vector2(100, 0).RotatedBy(Projectile.rotation);
 
-            Projectile.rotation = Dir.ToRotation();
+            float TargetRot = Dir.ToRotation();
+
+            Projectile.rotation = Projectile.rotation.AngleLerp(TargetRot, 0.1f);
             Projectile.Center = Owner.Center;
 
             

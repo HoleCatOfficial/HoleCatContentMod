@@ -33,6 +33,10 @@ namespace DestroyerTest.Common.Systems
                 {
                     return DTAssetLib.TenebrisCorruptionWorldIcon;
                 }
+                if (tag.ContainsKey("TenebrisCanSpawnInWorldEvilBiome") && (self.Data.WorldGenModsRecorded && self.Data.TryGetModVersionGeneratedWith("AAModClassic", out _)))
+                {
+                    return DTAssetLib.TenebrisCorruptionWorldIcon_AAClassic;
+                }
             }
             return orig(self);
         }

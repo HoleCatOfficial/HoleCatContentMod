@@ -1,4 +1,5 @@
 ﻿
+using System.Collections.Generic;
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
@@ -10,7 +11,7 @@ using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
-using System.Collections.Generic;
+using OpusLib.Content.Helpers;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -19,6 +20,7 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Equips
 {
+    [AutoloadEquip(EquipType.Face)]
     public class CrownOfTheOldSun : ModItem
     {
 
@@ -54,8 +56,8 @@ namespace DestroyerTest.Content.Equips
         float InvGlowRot= 0f;
         public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
         {
-
-            spriteBatch.Draw(DTAssetLib.Sparkle(1).Value, position, null, ColorLib.Rift with { A = 0 } * 0.8f, InvGlowRot, DTAssetLib.Sparkle(1).Value.Size() / 2, 0.12f, SpriteEffects.None, 0f);
+            Color color = OpusColorUtils.MultiLerp(Opus.Sine(1f, 0f), ColorLib.HeliciteColorMap);
+            spriteBatch.Draw(DTAssetLib.Sparkle(1).Value, position, null, color with { A = 0 } * 0.8f, InvGlowRot, DTAssetLib.Sparkle(1).Value.Size() / 2, 0.12f, SpriteEffects.None, 0f);
             spriteBatch.Draw(DTAssetLib.Sparkle(1).Value, position, null, Color.White with { A = 0 } * 0.8f, InvGlowRot, DTAssetLib.Sparkle(1).Value.Size() / 2, 0.07f, SpriteEffects.None, 0f);
 
             return true;
@@ -72,15 +74,16 @@ namespace DestroyerTest.Content.Equips
             Main.GetItemDrawFrame(Type, out var T, out var Frame);
             Vector2 orig = Frame.Size() / 2;
             Vector2 position = Item.Bottom - Main.screenPosition - new Vector2(0, orig.Y + 12);
+            Color color = OpusColorUtils.MultiLerp(Opus.Sine(1f, 0f), ColorLib.HeliciteColorMap);
 
-            spriteBatch.Draw(DTAssetLib.Sparkle(1).Value, position, null, ColorLib.Rift with { A = 0 } * 0.5f, WorldGlowRot, DTAssetLib.Sparkle(1).Value.Size() / 2, 0.24f, SpriteEffects.None, 0f);
+            spriteBatch.Draw(DTAssetLib.Sparkle(1).Value, position, null, color with { A = 0 } * 0.5f, WorldGlowRot, DTAssetLib.Sparkle(1).Value.Size() / 2, 0.24f, SpriteEffects.None, 0f);
             spriteBatch.Draw(DTAssetLib.Sparkle(1).Value, position, null, Color.White with { A = 0 } * 0.5f, WorldGlowRot, DTAssetLib.Sparkle(1).Value.Size() / 2, 0.14f, SpriteEffects.None, 0f);
             return true;
         }
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            if (Main.rand.NextBool(32) && !hideVisual)
+            if (Main.rand.NextBool(64) && !hideVisual)
             {
                 HeliciteShineParticle Shine = new();
                 Shine.Initialize(player.Center, Main.rand.NextVector2Circular(3f, 3f));

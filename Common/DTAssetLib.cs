@@ -245,6 +245,7 @@ namespace DestroyerTest.Common
 
 
         public static Asset<Texture2D> TenebrisCorruptionWorldIcon = ModContent.Request<Texture2D>($"{ExtrasPath}/TenebrisWorldIcon", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> TenebrisCorruptionWorldIcon_AAClassic = ModContent.Request<Texture2D>($"{ExtrasPath}/TenebrisWorldIcon_AAClassic", AssetRequestMode.AsyncLoad);
         public struct HallowedBar
         {
             public static Asset<Texture2D> Back = ModContent.Request<Texture2D>($"{ExtrasPath}/HallowedBarBack", AssetRequestMode.AsyncLoad);
@@ -383,6 +384,7 @@ namespace DestroyerTest.Common
             public static SoundStyle SpiritOfJusticeParry = new SoundStyle($"{Path}/SpiritOfJusticeParry");
             public static SoundStyle Void = new SoundStyle($"{Path}/VoidImpact", 3);
             public static SoundStyle WindHit = new SoundStyle($"{Path}/WindHit");
+            public static SoundStyle WoodBreak = new SoundStyle($"{Path}/WoodBreak", 2);
 
         }
 

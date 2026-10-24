@@ -9,6 +9,7 @@ using DestroyerTest.Common.Interfaces;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using OpusLib.Content.Helpers;
 using Terraria;
@@ -38,6 +39,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
         bool IHomingProjectile.CanHome => Timer >= 90;
 
+        public override void SetStaticDefaults()
+        {
+            ProjectileID.Sets.TrailCacheLength[Type] = 40;
+            ProjectileID.Sets.TrailingMode[Type] = 3;
+        }
+
         public override void SetDefaults()
         {
             Projectile.width = 32;
@@ -62,7 +69,17 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         float Scl = 1f;
         public override bool PreDraw(ref Color lightColor)
         {
-            Opus.DrawTextureOnProj(DTAssetLib.Sparkle(5, true), Projectile, Color.White with { A = 0 }, false, 0f, Scl, Scl);
+            Color color = OpusColorUtils.MultiLerp(Opus.Sine(1f, 0f), ColorLib.HeliciteColorMap);
+
+            DTTrail.DrawTrail(Main.spriteBatch, DTAssetLib.Streak(8, true).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 10f, color, 0f);
+
+            Main.EntitySpriteDraw(DTAssetLib.SparkSmoothThin.Value, Projectile.Center - Main.screenPosition, null, color with { A = 0 }, 0f, DTAssetLib.SparkSmoothThin.Value.Size() / 2, new Vector2(Scl, 0.5f) * 0.3f, SpriteEffects.None);
+            Main.EntitySpriteDraw(DTAssetLib.SparkSmoothThin.Value, Projectile.Center - Main.screenPosition, null, Color.White with { A = 0 }, 0f, DTAssetLib.SparkSmoothThin.Value.Size() / 2, new Vector2(Scl, 0.5f) * 0.15f, SpriteEffects.None);
+
+            Main.EntitySpriteDraw(DTAssetLib.SparkSmoothThin.Value, Projectile.Center - Main.screenPosition, null, color with { A = 0 }, MathHelper.PiOver2, DTAssetLib.SparkSmoothThin.Value.Size() / 2, new Vector2(Scl, 0.5f) * 0.15f, SpriteEffects.None);
+            Main.EntitySpriteDraw(DTAssetLib.SparkSmoothThin.Value, Projectile.Center - Main.screenPosition, null, Color.White with { A = 0 }, MathHelper.PiOver2, DTAssetLib.SparkSmoothThin.Value.Size() / 2, new Vector2(Scl, 0.5f) * 0.07f, SpriteEffects.None);
+
+
             return false;
         }
 
@@ -71,11 +88,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         {
             Timer++;
 
-            Color color = OpusColorUtils.MultiLerp(Opus.Sine(1f, 0f), ColorLib.HeliciteColorMap);
+            Projectile.ResetExcessTrailPoints();
 
-            PixelParticle pixel = new();
-            pixel.Initialize(Projectile.Center, Vector2.Zero, color, 4f, 10);
-            ParticleEngine.BehindProjectiles.Add(pixel);
+            Color color = OpusColorUtils.MultiLerp(Opus.Sine(1f, 0f), ColorLib.HeliciteColorMap);
 
             Scl = Opus.Sine(0.8f, 0.4f, 0.6f);
 
@@ -125,6 +140,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
         bool IHomingProjectile.CanHome => Timer >= 90;
 
+        public override void SetStaticDefaults()
+        {
+            ProjectileID.Sets.TrailCacheLength[Type] = 40;
+            ProjectileID.Sets.TrailingMode[Type] = 3;
+        }
+
         public override void SetDefaults()
         {
             Projectile.width = 32;
@@ -148,7 +169,16 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         float Scl = 1f;
         public override bool PreDraw(ref Color lightColor)
         {
-            Opus.DrawTextureOnProj(DTAssetLib.Sparkle(5, true), Projectile, Color.White with { A = 0 }, false, 0f, Scl, Scl);
+            Color color = OpusColorUtils.MultiLerp(Opus.Sine(1f, 0f), ColorLib.HeliciteColorMap);
+
+            DTTrail.DrawTrail(Main.spriteBatch, DTAssetLib.Streak(8, true).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 10f, color, 0f);
+
+            Main.EntitySpriteDraw(DTAssetLib.SparkSmoothThin.Value, Projectile.Center - Main.screenPosition, null, color with { A = 0 }, 0f, DTAssetLib.SparkSmoothThin.Value.Size() / 2, new Vector2(Scl, 0.5f) * 0.3f, SpriteEffects.None);
+            Main.EntitySpriteDraw(DTAssetLib.SparkSmoothThin.Value, Projectile.Center - Main.screenPosition, null, Color.White with { A = 0 }, 0f, DTAssetLib.SparkSmoothThin.Value.Size() / 2, new Vector2(Scl, 0.5f) * 0.15f, SpriteEffects.None);
+
+            Main.EntitySpriteDraw(DTAssetLib.SparkSmoothThin.Value, Projectile.Center - Main.screenPosition, null, color with { A = 0 }, MathHelper.PiOver2, DTAssetLib.SparkSmoothThin.Value.Size() / 2, new Vector2(Scl, 0.5f) * 0.15f, SpriteEffects.None);
+            Main.EntitySpriteDraw(DTAssetLib.SparkSmoothThin.Value, Projectile.Center - Main.screenPosition, null, Color.White with { A = 0 }, MathHelper.PiOver2, DTAssetLib.SparkSmoothThin.Value.Size() / 2, new Vector2(Scl, 0.5f) * 0.07f, SpriteEffects.None);
+
             return false;
         }
 
@@ -159,11 +189,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         {
             Timer++;
 
-            Color color = OpusColorUtils.MultiLerp(Opus.Sine(1f, 0f), ColorLib.HeliciteColorMap);
+            Projectile.ResetExcessTrailPoints();
 
-            PixelParticle pixel = new();
-            pixel.Initialize(Projectile.Center, Vector2.Zero, color, 4f, 10);
-            ParticleEngine.BehindProjectiles.Add(pixel);
+            Color color = OpusColorUtils.MultiLerp(Opus.Sine(1f, 0f), ColorLib.HeliciteColorMap);
 
             Scl = Opus.Sine(0.8f, 0.4f, 0.6f);
 

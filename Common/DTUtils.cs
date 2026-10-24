@@ -2645,9 +2645,78 @@ namespace DestroyerTest.Common
 
                 spriteBatch.ResetToDefault();
             }
-
         }
-    }
+
+        public static void DrawTrailNoTaperPixelated(SpriteBatch spriteBatch, BlendState blendState, Texture2D TrailTex, List<Vector2> Positions, List<float> Rotations, float Amplitude, Color color, float Scroll)
+        {
+            DTOptimizationsConfig OptCfg = ModContent.GetInstance<DTOptimizationsConfig>();
+            if (!OptCfg.DisableExcessTrails)
+            {
+
+                var Cap = spriteBatch.Capture();
+
+                spriteBatch.End();
+
+                Cap.BlendState = blendState;
+                Cap.SamplerState = SamplerState.LinearWrap;
+                Cap.TransformMatrix = PixelationSystem.PixelationMatrix;
+
+                spriteBatch.Begin(Cap);
+
+
+
+                if (Positions.Count > 1)
+                {
+                    List<ColoredVertex> ve = new List<ColoredVertex>();
+                    float a = 0;
+
+                    for (int i = Positions.Count - 1; i > 0; i--)
+                    {
+                        float t = 1f;
+                        float taper = 1f;
+                        float AdjAmplitude = Amplitude * taper;
+
+                        Color b = color * t;
+
+                        Vector2 curr = Positions[i];
+                        Vector2 prev = Positions[i - 1];
+                        Vector2 next = i < Positions.Count - 1 ? Positions[i + 1] : curr;
+
+                        Vector2 dirPrev = curr - prev;
+                        Vector2 dirNext = next - curr;
+
+                        if (dirPrev != Vector2.Zero) dirPrev.Normalize();
+                        if (dirNext != Vector2.Zero) dirNext.Normalize();
+
+                        if (dirPrev == Vector2.Zero) dirPrev = dirNext;
+                        if (dirNext == Vector2.Zero) dirNext = dirPrev;
+
+                        Vector2 dir = dirPrev + dirNext;
+                        if (dir != Vector2.Zero)
+                            dir.Normalize();
+                        else
+                            dir = dirPrev;
+
+                        Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * AdjAmplitude;
+                        Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * AdjAmplitude;
+
+                        DTUtils.AddStrips(ve, Positions, i, offset, offset2, t, b, Scroll);
+
+                    }
+
+
+                    GraphicsDevice gd = Main.graphics.GraphicsDevice;
+                    if (ve.Count >= 3)
+                    {
+                        gd.Textures[0] = TrailTex;
+                        gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2);
+                    }
+                }
+
+                spriteBatch.ResetToDefault();
+            }
+        }
+        }
 
     public class DTGenUtils
     {

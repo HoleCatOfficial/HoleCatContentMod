@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using DestroyerTest.Content.Consumables;
 using DestroyerTest.Content.Equips;
 using DestroyerTest.Content.Equips.Cards;
+using DestroyerTest.Content.Equips.ScepterAccessories;
 using DestroyerTest.Content.Lorebooks;
 using DestroyerTest.Content.Magic;
 using DestroyerTest.Content.MeleeWeapons;
@@ -35,7 +36,8 @@ namespace DestroyerTest.Common.Systems
         ZyplonRing,
         Providence,
         TheCircle,
-        Heavenbleed
+        Heavenbleed,
+        SwirlStone
 
     }
 
@@ -47,6 +49,7 @@ namespace DestroyerTest.Common.Systems
         public Vector2 ProvidenceGeodePosition;
         public Vector2 CircleGeodePosition;
         public Vector2 HeavenbleedGeodePosition;
+        public Vector2 SwirlStoneGeodePosition;
 
         public override void Load()
         {
@@ -162,6 +165,7 @@ namespace DestroyerTest.Common.Systems
             tag.Add("ProvidenceGeodePosition", ProvidenceGeodePosition);
             tag.Add("CircleGeodePosition", CircleGeodePosition);
             tag.Add("HeavenbleedGeodePosition", HeavenbleedGeodePosition);
+            tag.Add("SwirlStoneGeodePosition", HeavenbleedGeodePosition);
         }
 
         public override void LoadWorldData(TagCompound tag)
@@ -189,6 +193,11 @@ namespace DestroyerTest.Common.Systems
             if (tag.ContainsKey("HeavenbleedGeodePosition"))
             {
                 HeavenbleedGeodePosition = tag.Get<Vector2>("HeavenbleedGeodePosition");
+            }
+
+            if (tag.ContainsKey("SwirlStoneGeodePosition"))
+            {
+                SwirlStoneGeodePosition= tag.Get<Vector2>("SwirlStoneGeodePosition");
             }
         }
 
@@ -247,6 +256,11 @@ namespace DestroyerTest.Common.Systems
                         Instance.HeavenbleedGeodePosition = ChestPoint.ToWorldCoordinates();
                         break;
                     }
+                case CerebralGeodeType.SwirlStone:
+                    {
+                        Instance.SwirlStoneGeodePosition = ChestPoint.ToWorldCoordinates();
+                        break;
+                    }
             }
             int Loot;
 
@@ -280,6 +294,10 @@ namespace DestroyerTest.Common.Systems
                         case CerebralGeodeType.Heavenbleed:
                         {
                             return ModContent.ItemType<Heavenbleed>();
+                        }
+                        case CerebralGeodeType.SwirlStone:
+                        {
+                            return ModContent.ItemType<SwirlStone>();
                         }
                     }
 

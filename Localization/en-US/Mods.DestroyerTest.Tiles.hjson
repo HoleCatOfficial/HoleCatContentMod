@@ -33,3 +33,4 @@ Tile_CerebralChest: {
 }
 
 Tile_SanctifiedBrick.MapEntry: Mods.DestroyerTest.Tiles.Tile_SanctifiedBrick.MapEntry
+Tile_DecoCrate.MapEntry: Mods.DestroyerTest.Tiles.Tile_DecoCrate.MapEntry

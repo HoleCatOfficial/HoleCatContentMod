@@ -69,6 +69,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 
             spriteBatch.Begin(Cap);
 
+            //DTTrail.DrawTrailNoTaperPixelated(spriteBatch, BlendState.Additive, DTAssetLib.Streak(8, true).Value, L.GetPointsAlongLine(40).ToList(), [L.GetLineRotation], WidthScl * 50, color with { A = 0 }, oF * 0.1f);
+
             
             DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(8, true), color with { A = 0 } * 0.5f, Main.spriteBatch, BlendState.Additive, oF, WidthScl);
             spriteBatch.End();
@@ -84,6 +86,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             spriteBatch.End();
             spriteBatch.Begin(Cap);
             //Main.EntitySpriteDraw(DTAssetLib.Laser.Value, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(0, DTAssetLib.Laser.Value.Height / 2), new Vector2(1f, WidthScl * 0.15f), SpriteEffects.None);
+            
+
 
             Rot += 0.3f;
 

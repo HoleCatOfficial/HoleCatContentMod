@@ -51,7 +51,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
         void IDrawPixelated.DrawPixelated(SpriteBatch spriteBatch)
         {
             oF -= 30;
-            L = new Line(Projectile.Center, Projectile.Center + new Vector2(2000, 0).RotatedBy(Projectile.rotation));
+            L = new Line(Projectile.Center, Projectile.Center + new Vector2(length, 0).RotatedBy(Projectile.rotation));
 
             var Cap = spriteBatch.Capture();
             spriteBatch.End();
@@ -61,13 +61,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 
             spriteBatch.Begin(Cap);
 
-            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(3, true), ColorLib.Rift with { A = 0 }, Main.spriteBatch, BlendState.Additive, oF, WidthScl * 2);
+            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(5, true), ColorLib.Rift with { A = 0 } * 0.2f, Main.spriteBatch, BlendState.Additive, oF, WidthScl * 1.2f);
             spriteBatch.End();
             spriteBatch.Begin(Cap);
-
-            Main.EntitySpriteDraw(DTAssetLib.Laser.Value, Projectile.Center - Main.screenPosition, null, ColorLib.DarkRift3 with { A = 0 }, Projectile.rotation, new Vector2(0, DTAssetLib.Laser.Value.Height / 2), new Vector2(1f, WidthScl), SpriteEffects.None);
             
-            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(5, true), ColorLib.LightRift2 with { A = 0 }, Main.spriteBatch, BlendState.Additive, oF, WidthScl * 2f, 5f);
+            DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.ZapTrail, Color.White, Main.spriteBatch, BlendState.Additive, oF, WidthScl);
             spriteBatch.End();
             spriteBatch.Begin(Cap);
 
@@ -100,23 +98,40 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             PauseBehavior = PauseBehavior.PauseWithGame
         };
 
+        float length = 2000f;
         public override void AI()
         {
             Projectile.rotation = Projectile.ai[0];
             UpdateSound();
 
-            float length = 2000f; // however long your laser should be
+            length = PerformBeamHitscan(6);
+            if (!DTOptimizationsConfig.instance.DisableExcessParticles && length < 2000f)
+            {
+                if (L != null)
+                {
+                    ElectricArc Arc = new();
+                    Arc.Create(L.End, ColorLib.Rift, Main.rand.NextFloat(0.5f, 1f), 0.5f);
+                    ParticleEngine.ShaderParticles.Add(Arc);
 
-            Vector2 start = Projectile.Center;
+                    PointGlowPreMultiplied glow = new PointGlowPreMultiplied();
+                    glow.Initialize(L.End, Main.rand.NextVector2Circular(0.1f, 0.1f), ColorLib.Rift, 2f);
+                    ParticleEngine.Particles.Add(glow);
+                }
+            }
 
-            Vector2 end = start + new Vector2(Main.rand.NextFloat(length), 0).RotatedBy(Projectile.rotation);
 
             if (Main.rand.NextBool(4) && !DTOptimizationsConfig.instance.DisableExcessParticles)
             {
-                ElectricArc Arc = new();
-                Arc.Create(end, ColorLib.Rift, Main.rand.NextFloat(0.5f, 1f), 1f);
-                ParticleEngine.ShaderParticles.Add(Arc);
+                if (L != null)
+                {
+                    ElectricArc Arc = new();
+                    Arc.Create(L.GetPointsAlongLine(20)[Main.rand.Next(20)], ColorLib.Rift, Main.rand.NextFloat(0.5f, 1f), 1f);
+                    ParticleEngine.ShaderParticles.Add(Arc);
+                }
             }
+
+
+
 
             if (Main.player[Projectile.owner].ownedProjectileCounts[ModContent.ProjectileType<RiftStaffHoldout>()] < 1)
             {
@@ -160,6 +175,30 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
                 activeSound.Position = Projectile.Center;
                 activeSound.Pitch = WidthScl;
             }
+        }
+
+        private float PerformBeamHitscan(int NumSamplePoints)
+        {
+            Vector2 direction = new Vector2(1f, 0f).RotatedBy(Projectile.rotation);
+
+            float[] laserScanResults = new float[NumSamplePoints];
+
+            Collision.LaserScan(
+                Projectile.Center,
+                direction,
+                0f,
+                2000f,
+                laserScanResults
+            );
+
+            float averageLengthSample = 0f;
+
+            for (int i = 0; i < laserScanResults.Length; i++)
+            {
+                averageLengthSample += laserScanResults[i];
+            }
+
+            return averageLengthSample / NumSamplePoints;
         }
 
 

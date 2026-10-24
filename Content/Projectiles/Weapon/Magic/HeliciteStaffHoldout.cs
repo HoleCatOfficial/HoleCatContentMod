@@ -125,11 +125,14 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             Dir.Normalize();
 
 
-            var PT = Dir * 80;
+            var PT = new Vector2(80, 0).RotatedBy(Projectile.rotation);
 
-            
+            float TargetRot = Dir.ToRotation();
 
-            Projectile.rotation = Dir.ToRotation();
+            Projectile.rotation = Projectile.rotation.AngleLerp(TargetRot, 0.1f);
+
+
+
             Projectile.Center = Owner.Center;
 
             Projectile.spriteDirection = Math.Sign((Main.MouseWorld - Owner.MountedCenter).X);
