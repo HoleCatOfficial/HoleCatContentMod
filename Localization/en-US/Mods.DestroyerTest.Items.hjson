@@ -5770,3 +5770,13 @@ SwirlStone: {
 	DisplayName: Swirl Stone
 	Tooltip: ""
 }
+
+UnstableSeedPouch: {
+	DisplayName: Unstable Seed Pouch
+	Tooltip:
+	'''
+	Throw a volley of 9 unstable seeds that explode on contact with tiles. 
+	Seeds stick to enemies for 2 seconds continuous damage and Soul Erosion, lowering their damage.
+	If the stuck enemy is killed, all seeds on the enemy instantly detonate and heal the player for 3 life.
+	'''
+}

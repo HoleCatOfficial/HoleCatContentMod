@@ -55,7 +55,7 @@ namespace DestroyerTest.Content.Consumables
             // We have to replicate the expert drops from MinionBossBody here
 
             itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<HekatesMystique>(), 10, 1, 1));
-            itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<MalachiteKnives>(), 5, 1, 1));
+            itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<UnstableSeedPouch>(), 5, 1, 1));
             itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<NeglectedRegards>(), 5, 1, 1));
             itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<FailedPotion>(), 5, 1, 1));
             itemLoot.Add(ItemDropRule.NotScalingWithLuck(ModContent.ItemType<GodGouger>(), 5, 1, 1));

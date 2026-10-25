@@ -10,6 +10,7 @@ using DestroyerTest.Content.Magic;
 using DestroyerTest.Content.MeleeWeapons;
 using DestroyerTest.Content.Projectiles.Weapon.Melee;
 using DestroyerTest.Content.Resources;
+using DestroyerTest.Content.RogueItems;
 using DestroyerTest.Content.Tiles;
 using DestroyerTest.Content.Tiles.Altar;
 using DestroyerTest.Content.Tiles.RoseGarden;
@@ -20,6 +21,7 @@ using DestroyerTest.Content.Tools;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using OpusLib;
 using ReLogic.Content;
 using ReLogic.Utilities;
 using SteelSeries.GameSense;
@@ -335,116 +337,80 @@ namespace DestroyerTest.Common.Systems
                 WorldGen.PlaceObject(StatueRoom.Interior.Location.X + 1, StatueRoom.Interior.Location.Y, BT);
                 WorldGen.PlaceObject(StatueRoom.Interior.Location.X + (StatueRoom.Interior.Width - 3), StatueRoom.Interior.Location.Y, BT);
 
+                WorldGen.PlaceObject(StatueRoom.Interior.Center.X - 2, StatueRoom.Interior.Bottom, ModContent.TileType<Tile_WallDoor>());
+
             }
 
             void furnishSeedBank()
             {
-                WorldGen.PlaceObject(SeedBank.Interior.Location.X + 2, SeedBank.Interior.Location.Y, BT);
-                WorldGen.PlaceObject(SeedBank.Interior.Location.X + (SeedBank.Interior.Width - 4), SeedBank.Interior.Location.Y, BT);
+                WorldGen.PlaceObject(SeedBank.Interior.Left + 2, SeedBank.Interior.Top, BT);
+                WorldGen.PlaceObject(SeedBank.Interior.Left + (SeedBank.Interior.Width - 4), SeedBank.Interior.Top, BT);
 
-                for (int i = 0; i < 4; i++)
+                int[] HerbTypes = [ItemID.Daybloom, ItemID.Moonglow, ItemID.Blinkroot, ItemID.Deathweed, ItemID.Fireblossom];
+                int[] SeedTypes = [ItemID.DaybloomSeeds, ItemID.MoonglowSeeds, ItemID.BlinkrootSeeds, ItemID.DeathweedSeeds, ItemID.FireblossomSeeds];
+
+                void Chest1()
                 {
-                    
-                    for (int j = 0; j < 4; j++)
+                    int ChestX = SeedBank.Interior.Left + 2;
+                    int ChestY  = SeedBank.Interior.Bottom - 1;
+
+                    WorldUtils.ClearChestLocation(ChestX, ChestY);
+
+                    int Loot = WorldGen.PlaceChest(ChestX, ChestY);
+
+
+                    // Don't index Main.chest if placement failed.
+                    if (Loot >= 0)
                     {
-                        int X = 0;
-                        int Y = 0;
-                        switch (i)
+
+                        var Chest = Main.chest[Loot];
+
+                        if (Chest?.item != null || Chest.item.Length > 0)
                         {
-                            case 0:
-                                {
-                                    X = (SeedBank.Interior.Location.X + 2) + j;
-                                    Y = SeedBank.Interior.Location.Y + (SeedBank.Interior.Height - 2);
-                                    break;
-                                }
-                            case 1:
-                                {
-                                    X = (SeedBank.Interior.Location.X + 2) + j;
-                                    Y = SeedBank.Interior.Location.Y + (SeedBank.Interior.Height - 6);
-                                    break;
-                                }
-                            case 2:
-                                {
-                                    X = (SeedBank.Interior.Location.X + (SeedBank.Interior.Width - 6)) + j;
-                                    Y = SeedBank.Interior.Location.Y + (SeedBank.Interior.Height - 2);
-                                    break;
-                                }
-                            case 3:
-                                {
-                                    X = (SeedBank.Interior.Location.X + (SeedBank.Interior.Width - 6)) + j;
-                                    Y = SeedBank.Interior.Location.Y + (SeedBank.Interior.Height - 6);
-                                    break;
-                                }
+                            for (int i = 0; i < 16; i++)
+                            {
+
+                                int slot = Main.rand.Next(Chest.item.Length);
+                                int selection = Main.rand.Next(HerbTypes.Length);
+
+                                Chest.item[slot].SetDefaults(Main.rand.NextBool() ? HerbTypes[selection] : SeedTypes[selection]);
+                            }
                         }
-                        
-
-                        WorldGen.PlaceObject(X, Y, TileID.Platforms, style: 1);
                     }
                 }
 
-                for (int i = 0; i < 8; i++)
+                void Chest2()
                 {
-                    int X = 0;
-                    int Y = 0;
-                    switch (i)
+                    int ChestX = SeedBank.Interior.Left + 5;
+                    int ChestY = SeedBank.Interior.Bottom - 1;
+
+                    WorldUtils.ClearChestLocation(ChestX, ChestY);
+
+                    int Loot = WorldGen.PlaceChest(ChestX, ChestY);
+
+                    // Don't index Main.chest if placement failed.
+                    if (Loot >= 0)
                     {
-                        case 0:
-                            {
-                                X = (SeedBank.Interior.Location.X + 2);
-                                Y = SeedBank.Interior.Location.Y + (SeedBank.Interior.Height - 4);
-                                break;
-                            }
-                        case 1:
-                            {
-                                X = (SeedBank.Interior.Location.X + 2);
-                                Y = SeedBank.Interior.Location.Y + (SeedBank.Interior.Height - 8);
-                                break;
-                            }
-                        case 2:
-                            {
-                                X = (SeedBank.Interior.Location.X + 4);
-                                Y = SeedBank.Interior.Location.Y + (SeedBank.Interior.Height - 4);
-                                break;
-                            }
-                        case 3:
-                            {
-                                X = (SeedBank.Interior.Location.X + 4);
-                                Y = SeedBank.Interior.Location.Y + (SeedBank.Interior.Height - 8);
-                                break;
-                            }
 
-                        case 4:
+                        var Chest = Main.chest[Loot];
+
+                        if (Chest?.item != null || Chest.item.Length > 0)
+                        {
+                            for (int i = 0; i < 16; i++)
                             {
-                                X = (SeedBank.Interior.Location.X + (SeedBank.Interior.Width - 4));
-                                Y = SeedBank.Interior.Location.Y + (SeedBank.Interior.Height - 4);
-                                break;
+
+                                int slot = Main.rand.Next(Chest.item.Length);
+                                int selection = Main.rand.Next(HerbTypes.Length);
+
+                                Chest.item[slot].SetDefaults(Main.rand.NextBool() ? HerbTypes[selection] : SeedTypes[selection]);
                             }
-                        case 5:
-                            {
-                                X = (SeedBank.Interior.Location.X + (SeedBank.Interior.Width - 4));
-                                Y = SeedBank.Interior.Location.Y + (SeedBank.Interior.Height - 8);
-                                break;
-                            }
-                        case 6:
-                            {
-                                X = (SeedBank.Interior.Location.X + (SeedBank.Interior.Width - 6));
-                                Y = SeedBank.Interior.Location.Y + (SeedBank.Interior.Height - 4);
-                                break;
-                            }
-                        case 7:
-                            {
-                                X = (SeedBank.Interior.Location.X + (SeedBank.Interior.Width - 6));
-                                Y = SeedBank.Interior.Location.Y + (SeedBank.Interior.Height - 8);
-                                break;
-                            }
+                        }
                     }
-
-
-                    int Loot = WorldGen.PlaceChest(X, Y + 1, TileID.Containers, style: 0);
-
                 }
 
 
+                Chest1();
+                Chest2();
 
                 for (int i = 0; i < 7; i++)
                 {
@@ -472,31 +438,59 @@ namespace DestroyerTest.Common.Systems
 
                 for (int i = 0; i < 2; i++)
                 {
+                    int Y = PotionRoom.Interior.Location.Y
+                        + (PotionRoom.Interior.Height - (i == 0 ? 2 : 6));
 
+                    // Two tiles of platform.
                     for (int j = 0; j < 2; j++)
                     {
-                        int X = 0;
-                        int Y = 0;
-                        switch (i)
-                        {
-                            case 0:
-                                {
-                                    X = (PotionRoom.Interior.Location.X + 1) + j;
-                                    Y = PotionRoom.Interior.Location.Y + (PotionRoom.Interior.Height - 2);
-                                    break;
-                                }
-                            case 1:
-                                {
-                                    X = (PotionRoom.Interior.Location.X + 1) + j;
-                                    Y = PotionRoom.Interior.Location.Y + (PotionRoom.Interior.Height - 6);
-                                    break;
-                                }
-                        }
-
-
+                        int X = PotionRoom.Interior.Location.X + 1 + j;
                         WorldGen.PlaceObject(X, Y, TileID.Platforms, style: 1);
+                    }
 
-                        int Loot = WorldGen.PlaceChest((PotionRoom.Interior.Location.X + 1), Y - 1);
+                    // Place one chest on each platform.
+                    int ChestX = PotionRoom.Interior.Location.X + 1;
+                    int ChestY = Y - 1;
+
+                    WorldUtils.ClearChestLocation(ChestX, ChestY);
+
+                    int Loot = WorldGen.PlaceChest(ChestX, ChestY);
+
+                    int attempts = 0;
+                    while (Loot < 0 && attempts < 10)
+                    {
+                        WorldUtils.ClearChestLocation(ChestX, ChestY);
+                        Loot = WorldGen.PlaceChest(ChestX, ChestY);
+                        attempts++;
+                    }
+
+                    // Don't index Main.chest if placement failed.
+                    if (Loot < 0)
+                        continue;
+
+                    var Chest = Main.chest[Loot];
+
+                    if (Chest?.item == null || Chest.item.Length == 0)
+                        continue;
+
+                    switch (i)
+                    {
+                        case 0:
+                            for (int t = 0; t < 9; t++)
+                            {
+                                int slot = Main.rand.Next(Chest.item.Length);
+                                int potion = Main.rand.Next(Opus.CommonPotion.Count);
+
+                                Chest.item[slot].SetDefaults(
+                                    Opus.CommonPotion[potion].ItemType);
+                            }
+                            break;
+
+                        case 1:
+                            int idx = Main.rand.Next(Chest.item.Length);
+                            Chest.item[idx].SetDefaults(ModContent.ItemType<Dyrn>());
+                            Chest.item[idx].stack = Main.rand.Next(20, 30);
+                            break;
                     }
                 }
 
@@ -702,8 +696,7 @@ namespace DestroyerTest.Common.Systems
 
                 WorldGen.PlaceObject(Entry.Interior.Left + 17, Entry.Interior.Top, ModContent.TileType<Tile_SanctifiedBrazier>());
 
-
-                WorldUtils.ClearTile(Entry.Interior.Left + 10, Entry.Interior.Bottom - 1);
+                WorldUtils.ClearChestLocation(Entry.Interior.Left + 10, Entry.Interior.Bottom - 1);
                 int WandIndex = WorldGen.PlaceChest(Entry.Interior.Left + 10, Entry.Interior.Bottom - 1, TileID.Containers);
                 Chest WandChest = Main.chest[WandIndex];
                 WandChest.item[Main.rand.Next(WandChest.item.Length - 1)].SetDefaults(ModContent.ItemType<HekatesMystique>());
@@ -1244,7 +1237,7 @@ namespace DestroyerTest.Common.Systems
             int L4 = ModContent.ItemType<HekatesMystique>();
             int L5 = ModContent.ItemType<HekateBook3>();
             int L6 = ModContent.ItemType<HekateBook4>();
-            int L7 = ModContent.ItemType<MalachiteKnives>();
+            int L7 = ModContent.ItemType<UnstableSeedPouch>();
 
             int Loot3 = WorldGen.PlaceChest(origin.X + 39, origin.Y + 26, (ushort)ModContent.TileType<Tile_NightmareChest>());
 

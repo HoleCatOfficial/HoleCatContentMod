@@ -417,6 +417,7 @@ namespace DestroyerTest.Common
             public static SoundStyle SpiritOfJusticeSwing = new SoundStyle($"{Path}/SpiritOfJusticeSwing");
         }
 
+        public static SoundStyle RapidThrow = new SoundStyle($"{AudioPath}/RapidThrow");
         public static SoundStyle IdriGreatswordSlice(bool Gore)
         {
             if (Gore)

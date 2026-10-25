@@ -25,13 +25,13 @@ namespace DestroyerTest.Content.Tiles.RoseGarden
 
             TileObjectData.newTile.UsesCustomCanPlace = true;
             TileObjectData.newTile.StyleHorizontal = true;
-            TileObjectData.newTile.Width = 3;
+            TileObjectData.newTile.Width = 4;
             TileObjectData.newTile.Height = 4;
             TileObjectData.newTile.CoordinateWidth = 16;
             TileObjectData.newTile.CoordinateHeights = [16, 16, 16, 16];
             TileObjectData.newTile.CoordinatePadding = 2;
             TileObjectData.newTile.AnchorBottom = new AnchorData(AnchorType.SolidTile | AnchorType.SolidWithTop, TileObjectData.newTile.Width, 0);
-            TileObjectData.newTile.Origin = new Point16(3, 1);
+            TileObjectData.newTile.Origin = new Point16(0, 4);
             TileObjectData.addTile(Type);
 
             MinPick = 2400;
