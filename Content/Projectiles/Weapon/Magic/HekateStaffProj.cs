@@ -1,12 +1,18 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss;
+using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles.Boss.VampireBoss;
+using DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss;
 using DestroyerTest.Content.RiftArsenal;
+ 
+using Humanizer;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
+using ReLogic.Utilities;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -15,17 +21,18 @@ using Terraria.GameContent;
 using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
-using OpusLib;
-using ReLogic.Utilities;
-using DestroyerTest.Content.Particles;
- 
-using Humanizer;
+using static tModPorter.ProgressUpdate;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 {
     public class HekateStaffProj : ModProjectile
     {
-            
+
+        public override void SetStaticDefaults()
+        {
+            ProjectileID.Sets.TrailCacheLength[Type] = 40;
+            ProjectileID.Sets.TrailingMode[Type] = 3;
+        }
         public override void SetDefaults()
         {
             Projectile.width = 30;
@@ -41,85 +48,28 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             Projectile.penetrate = -1;
         }
 
+        public float r = 0;
+
         public override void PostDraw(Color lightColor)
         {
-            SpriteBatch spriteBatch = Main.spriteBatch;
-            DrawCrystalCore(spriteBatch, Projectile.Center);
-        }
-        public void DrawCrystalCore(SpriteBatch spriteBatch, Vector2 Center)
-        {
-            DTUtils Utility = new DTUtils();
-            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+            r += 0.1f;
 
-            for (int i = 0; i < TrailPositions.Count; i++)
-            {
-                float progress = i / (float)TrailLength;
-                float scale = MathHelper.Lerp(1.5f, 0.0005f, progress);
-                Color color = new Color(184, 45, 117);
-
-                Main.EntitySpriteDraw(
-                    DTAssetLib.FeatheredCircle.Value,
-                    TrailPositions[i] - Main.screenPosition,
-                    null,
-                    color,
-                    TextureRotationOffset,
-                    DTAssetLib.FeatheredCircle.Value.Size() / 2f,
-                    scale * TextureScale,
-                    SpriteEffects.None,
-                    0
-                );
-            }
             
-            for (int i = 0; i < TrailPositions.Count; i++)
-			{
-				float progress = i / (float)TrailLength;
-				float scale = MathHelper.Lerp(1.8f, 0.0005f, progress);
-				Color color = Color.White;
+            DTTrail.DrawTrail(Main.spriteBatch, DTAssetLib.Streak(8, true).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 50f * TextureScale, new Color(184, 45, 117), r * -0.2f, 2);
+            
 
-				Main.EntitySpriteDraw(
-					DTAssetLib.FeatheredCircle.Value,
-					TrailPositions[i] - Main.screenPosition,
-					null,
-					color,
-					Projectile.rotation,
-					DTAssetLib.FeatheredCircle.Value.Size() / 2f,
-					scale * TextureScale,
-					SpriteEffects.None,
-					0
-				);
-			}
 
-            Main.spriteBatch.Draw(
-                DTAssetLib.FeatheredCircle.Value,
-                Center - Main.screenPosition,
-                null,
-                new Color(184, 45, 117),
-                TextureRotationOffset,
-                DTAssetLib.FeatheredCircle.Value.Size() / 2f,
-                1.5f * TextureScale,
-                SpriteEffects.None,
-                1f
-            );
+            Main.EntitySpriteDraw(DTAssetLib.Swirl.Value, Projectile.Center - Main.screenPosition, null, new Color(184, 45, 117) with { A = 0 }, r, DTAssetLib.Swirl.Value.Size() / 2, 0.5f * TextureScale, SpriteEffects.None);
+            Main.EntitySpriteDraw(DTAssetLib.Swirl.Value, Projectile.Center - Main.screenPosition, null, new Color(184, 45, 117) with { A = 0 }, r * 1.5f, DTAssetLib.Swirl.Value.Size() / 2, 0.4f * TextureScale, SpriteEffects.None);
+            Main.EntitySpriteDraw(DTAssetLib.Swirl.Value, Projectile.Center - Main.screenPosition, null, Color.White with { A = 0 }, r * 2, DTAssetLib.Swirl.Value.Size() / 2, 0.3f * TextureScale, SpriteEffects.None);
+            Main.EntitySpriteDraw(DTAssetLib.FeatheredCircle.Value, Projectile.Center - Main.screenPosition, null, Color.White with { A = 0 }, r * 2, DTAssetLib.FeatheredCircle.Value.Size() / 2, 0.7f * TextureScale, SpriteEffects.None);
 
-            Main.spriteBatch.Draw(
-                DTAssetLib.FeatheredCircle.Value,
-                Center - Main.screenPosition,
-                null,
-                Color.White,
-                0f,
-                new Vector2(DTAssetLib.FeatheredCircle.Value.Width / 2f, DTAssetLib.FeatheredCircle.Value.Height / 2f),
-                1.8f * TextureScale,
-                SpriteEffects.None,
-                1f
-            );
 
-            Opus.ReturnToDefaultDrawing(spriteBatch);
+            Main.EntitySpriteDraw(DTAssetLib.CurseSigilRing.Value, Projectile.Center - Main.screenPosition, null, new Color(184, 45, 117) with { A = 0 }, r, DTAssetLib.CurseSigilRing.Value.Size() / 2, 0.2f * TextureScale, SpriteEffects.None);
+            Main.EntitySpriteDraw(DTAssetLib.CurseSigilRing.Value, Projectile.Center - Main.screenPosition, null, new Color(184, 45, 117) with { A = 0 }, r * -1.5f, DTAssetLib.CurseSigilRing.Value.Size() / 2, 0.25f * TextureScale, SpriteEffects.None);
         }
-        
-        public List<Vector2> TrailPositions = new();
-		public List<float> TrailRotations = new();
-        private const int TrailLength = 40;
-        public float TextureRotationOffset = 0f;
+
+
         public int Leeway = 15;
 
         public float TextureScale = 1f;
@@ -163,24 +113,16 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
         }
 
         public List<Projectile> ownedEmbers = new List<Projectile>();
+        int KillTimer = 0;
+        int KillIndex = -1;
         public override void AI()
         {
-            TrailPositions.Insert(0, Projectile.Center);
-            TrailRotations.Insert(0, Projectile.rotation);
-
-            while (TrailPositions.Count > TrailLength)
-                TrailPositions.RemoveAt(TrailPositions.Count - 1);
-            while (TrailRotations.Count > TrailLength)
-                TrailRotations.RemoveAt(TrailRotations.Count - 1);
-
-            TextureRotationOffset -= 0.5f;
             Lighting.AddLight(Projectile.Center, new Color(184, 45, 117).ToVector3());
+
+            Projectile.ResetExcessTrailPoints();
             
 
-            for (int i = 0; i < 4; i++)
-            {
-                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.FireworksRGB, 0f, 0f, 0, new Color(184, 45, 117), 0.5f);
-            }
+           
 
             if (!SoundEngine.TryGetActiveSound(LoopSlot, out var activeSound)) {
                 var tracker = new ProjectileAudioTracker(Projectile);
@@ -236,8 +178,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
                     Leeway--;
                 }
 
-                Projectile.timeLeft = 100;
-                Projectile.velocity = Vector2.Lerp(Projectile.velocity, (Main.MouseWorld - Projectile.Center).SafeNormalize(Vector2.Zero) * 12f, 0.1f);
+                Projectile.timeLeft = 1200;
+                Projectile.SmoothMoveToPoint(Main.MouseWorld, 20, 200f);
 
                 if (PitchVal < 0)
                 {
@@ -248,12 +190,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
                 {
                     if (Main.rand.NextBool(10) && ownedEmbers.Count <= 30)
                     {
-                        Vector2 OuterPos = Projectile.Center + Main.rand.NextVector2CircularEdge(100, 100);
+                        Vector2 OuterPos = Projectile.oldPos[5];
                         Projectile Ember = Projectile.NewProjectileDirect(Projectile.InheritSource(Projectile), OuterPos, Vector2.Zero, ModContent.ProjectileType<HekateStaffEmber>(), Projectile.damage / 4, 4, Projectile.owner);
-                        if (Ember.owner == Projectile.owner)
-                        {
-                            ownedEmbers.Add(Ember);
-                        }
+
+                        ownedEmbers.Add(Ember);
+                        
                     }
                     Leeway = 60;
                     TextureScale = 1f;
@@ -261,18 +202,41 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             }
             else
             {
-                Projectile.Kill();
+                if (TextureScale > 0f)
+                {
+                    TextureScale -= 0.05f;
+                    Projectile.velocity *= 0.9f;
+                }
+                else
+                {
+                    KillTimer++;
+
+                    if (KillTimer % 3 == 0)
+                    {
+                        while (KillIndex < ownedEmbers.Count - 1)
+                        {
+                            KillIndex++;
+
+                            if (ownedEmbers[KillIndex].active)
+                            {
+                                ownedEmbers[KillIndex].Kill();
+                                ownedEmbers[KillIndex].active = false;
+                                break;
+                            }
+                        }
+
+                        if (KillIndex >= ownedEmbers.Count - 1)
+                        {
+                            Projectile.Kill();
+                        }
+                    }
+                }
+
             }
         }
         public void UpdateOwnedSubProj()
         {
-            foreach (Projectile p in Main.projectile)
-            {
-                if (ownedEmbers.Contains(p) && !p.active)
-                {
-                    ownedEmbers.Remove(p);
-                }
-            }
+           
         }
 
         public override void ModifyDamageHitbox(ref Rectangle hitbox)
@@ -284,10 +248,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
         public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(SoundID.Item60, Projectile.Center);
-            for (int u = 0; u < 15; u++)
-            {
-                Dust.NewDustPerfect(Projectile.Center, DustID.FireworksRGB, Main.rand.NextVector2CircularEdge(10, 10), 0, new Color(184, 45, 117), 2);
-            }
+            Projectile.NewProjectile(Projectile.GetSource_Death(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<HekateStaffExplosion>(), Projectile.damage, 12, Projectile.owner);
         }
     }
 }

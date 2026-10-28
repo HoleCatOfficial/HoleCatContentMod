@@ -87,6 +87,8 @@ namespace DestroyerTest.Content.Entities
 		}
 
         int O = 0;
+        float XScale = 1f;
+        float YScale = 1f;
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
             Texture2D Tex = ModContent.Request<Texture2D>(Texture).Value;
@@ -113,7 +115,7 @@ namespace DestroyerTest.Content.Entities
 			
 
             
-			Main.EntitySpriteDraw(Tex, NPC.position - Main.screenPosition, NPC.frame, drawColor * NPC.Opacity, NPC.rotation, Vector2.Zero, NPC.scale, SpriteEffects.None);
+			Main.EntitySpriteDraw(Tex, NPC.Center - Main.screenPosition, NPC.frame, drawColor * NPC.Opacity, NPC.rotation, new Vector2(NPC.frame.Width / 2, NPC.frame.Height / 2), new Vector2(NPC.scale * XScale, NPC.scale * YScale), SpriteEffects.None);
 
             Line Warn = new(NPC.Center, NPC.Center + new Vector2(0, 1300));
             if (DestroyerTestMod.EternityIsActive)
@@ -191,6 +193,8 @@ namespace DestroyerTest.Content.Entities
                             NPC.noGravity = true;
                             NPC.ai[0]++;
 
+                            XScale = MathHelper.Lerp(XScale, 0.7f, 0.01f);
+
                             if (NPC.ai[0] < 120)
                             {
                                 
@@ -224,6 +228,7 @@ namespace DestroyerTest.Content.Entities
                             else
                             {
                                 SoundEngine.PlaySound(SoundID.DD2_MonkStaffGroundImpact, NPC.Center);
+                                XScale = MathHelper.Lerp(XScale, 1.6f, 0.4f);
                                 state = EternityAIState.Idle;
                             }
                             break;
@@ -233,6 +238,11 @@ namespace DestroyerTest.Content.Entities
                             NPC.noGravity = false;
 
                             NPC.ai[1]++;
+
+                            if (XScale > 1f)
+                            {
+                                XScale -= 0.003f;
+                            }
 
                             if (NPC.ai[1] % 15 == 0)
                             {

@@ -13,13 +13,13 @@ using DestroyerTest.Content.Projectiles.Weapon.Summon.RiftWhip;
 
 namespace DestroyerTest.Content.RiftArsenal
 {
-	public class RiftWhipT1 : ModItem
+	public class RiftWhip : ModItem
 	{
 
 		public override void SetDefaults() {
 			Item.width = 38;
 			Item.height = 34;
-			Item.DefaultToWhip(ModContent.ProjectileType<RiftWhipT1Projectile>(), 70, 2, 10);
+			Item.DefaultToWhip(ModContent.ProjectileType<RiftWhipProjectile>(), 70, 2, 10);
 			Item.rare = ModContent.RarityType<HeliciteRarity>();
 			Item.autoReuse = true;
 

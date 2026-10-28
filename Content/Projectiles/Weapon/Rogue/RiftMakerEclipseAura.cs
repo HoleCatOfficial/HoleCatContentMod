@@ -203,7 +203,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
                     Ring.Prepare(Projectile.Center, Vector2.Zero, ColorLib.Rift, ColorLib.DarkRift1, 0.05f, 0.01f, 4f);
                     ParticleEngine.ShaderParticles.Add(Ring);
 
-                    Opus.RadialSpreadProjectile(ModContent.ProjectileType<RiftStarFriendly2>(), 4, Projectile.Center, Projectile.damage / 8, 5, 10, offset: Main.rand.NextFloat(MathHelper.TwoPi));
+                    Opus.RadialSpreadProjectile(ModContent.ProjectileType<HeliciteStarFriendly>(), 4, Projectile.Center, Projectile.damage / 8, 5, 10, offset: Main.rand.NextFloat(MathHelper.TwoPi));
                     f1 = true;
                 }
                 if (Projectile.timeLeft > 30)

@@ -1,15 +1,15 @@
 
+using System;
+using System.Collections.Generic;
 using BreadLibrary.Common.Whip;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Buffs.Whip;
 using DestroyerTest.Content.Particles;
- 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using ReLogic.Content;
-using System;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -17,9 +17,9 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace DestroyerTest.Content.Projectiles.Weapon.Summon.RiftWhip
+namespace DestroyerTest.Content.Projectiles.Weapon.Summon.HeliciteWhip
 {
-    public class RiftWhipT1Projectile : BaseWhipProjectile
+    public class HeliciteWhipProjectile : BaseWhipProjectile
     {
         public override string Texture => DTUtils.NoTexture;
 
@@ -42,7 +42,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon.RiftWhip
 
         public override void Prepare()
         {
-            AddHitEffects(ModContent.BuffType<HeliouricShock>(), 600);
+            AddHitEffects(ModContent.BuffType<DaylightOverload>(), 600);
 
             WhipController = new ModularWhipController(CreateMotion());
 
@@ -67,16 +67,18 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon.RiftWhip
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            SoundEngine.PlaySound(DTAssetLib.Zap with { MaxInstances = 0, PitchVariance = 0.5f });
+            SoundEngine.PlaySound(DTAssetLib.Impacts.IceImpact with { MaxInstances = 0, PitchVariance = 0.8f });
 
-            Opus.RadialSpreadDustRandom(DustID.FireworksRGB, Main.rand.Next(3, 13), target.Center, 0, ColorLib.Rift, Main.rand.NextFloat(0.5f, 1f), Main.rand.NextFloat(2f, 9f));
+            Opus.RadialSpreadDustRandom(DustID.FireworksRGB, Main.rand.Next(3, 13), target.Center, 0, ColorLib.LightRift2, Main.rand.NextFloat(0.5f, 1f), Main.rand.NextFloat(2f, 9f));
 
             int Amt = hit.Crit ? 4 : 2;
-            Opus.RadialSpreadProjectile(ModContent.ProjectileType<RiftSpark>(), Amt, target.Center, (int)Owner.GetTotalDamage(DamageClass.SummonMeleeSpeed).ApplyTo(20), 5, 12, offset: Main.rand.NextFloat(MathHelper.TwoPi));
+            Opus.RadialSpreadProjectile(ModContent.ProjectileType<HeliciteStarFriendly>(), Amt, target.Center, (int)Owner.GetTotalDamage(DamageClass.SummonMeleeSpeed).ApplyTo(40), 5, 12, offset: Main.rand.NextFloat(MathHelper.TwoPi));
+
+            target.AddBuff(ModContent.BuffType<HeliciteWhipTagBuff>(), 300);
+            Main.player[Projectile.owner].MinionAttackTargetNPC = target.whoAmI;
 
             HitCooldown = 60;
         }
-
 
         #region Drawing
         public override float GetWhipWidth(float baseWidth, float t)
@@ -93,7 +95,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon.RiftWhip
         public override Color GetWhipColor(float t, float w)
         {
             Projectile.alpha = 0;
-            return ColorLib.Rift;
+            return Color.White;
             //return Color.Lerp(Color.White, Color.Blue, MathF.Sin(Main.GlobalTimeWrappedHourly) * MathF.Cos(t * 10f));
         }
 
@@ -107,11 +109,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon.RiftWhip
             return x;
         }
 
-        public string Path = "DestroyerTest/Content/Projectiles/Weapon/Summon/RiftWhip";
+        public string Path = "DestroyerTest/Content/Projectiles/Weapon/Summon/HeliciteWhip";
         protected override void DrawOverPrimitive(List<Vector2> points)
         {
-            // _Head_y = (int)(5 * Math.Abs(MathF.Sin(Main.GlobalTimeWrappedHourly)));
-            Texture2D tex = ModContent.Request<Texture2D>($"{Path}/RiftWhipT1_MidChain").Value;
+            //_Head_y = (int)(5 * Math.Abs(MathF.Sin(Main.GlobalTimeWrappedHourly)));
+            Texture2D tex = ModContent.Request<Texture2D>($"{Path}/HeliciteWhip_MidChain").Value;
 
 
 
@@ -149,8 +151,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon.RiftWhip
         public override bool _PrimitiveIsScrollingTexture => true;
         protected override Asset<Texture2D> PrimitiveTex => DTAssetLib.Square;
 
-        protected override Asset<Texture2D> WhipHandle => ModContent.Request<Texture2D>($"{Path}/RiftWhipT1Hilt");
-        protected override Asset<Texture2D> WhipHead => ModContent.Request<Texture2D>($"{Path}/RiftWhipT1Head");
+        protected override Asset<Texture2D> WhipHandle => ModContent.Request<Texture2D>($"{Path}/HeliciteWhipHilt");
+        protected override Asset<Texture2D> WhipHead => ModContent.Request<Texture2D>($"{Path}/HeliciteWhipHead");
 
         #endregion
     }

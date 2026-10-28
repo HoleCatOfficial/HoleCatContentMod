@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Formats.Tar;
 using System.Runtime.CompilerServices;
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Particles;
@@ -8,6 +10,7 @@ using DestroyerTest.Content.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
+using OpusLib.Content.Particles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -18,12 +21,6 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 {
     public class MajesticStormOrb : ModProjectile
     {
-        public NPC HomingTarget {
-            get => Projectile.ai[0] == 0 ? null : Main.npc[(int)Projectile.ai[0] - 1];
-            set {
-                Projectile.ai[0] = value == null ? 0 : value.whoAmI + 1;
-            }
-        }
         public override void SetStaticDefaults()
         {
             Main.projFrames[Type] = 5;
@@ -37,7 +34,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             Projectile.friendly = true;
             Projectile.hostile = false;
             Projectile.ignoreWater = true;
-            Projectile.timeLeft = 360;
+            Projectile.timeLeft = 1200;
             Projectile.tileCollide = false;
             Projectile.penetrate = 1;
         }
@@ -76,7 +73,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 
             return false;
         }
-        private void AnimateProjectile() {
+        private void AnimateProjectile() 
+        {
             if (++Projectile.frameCounter >= 10) {
                 Projectile.frameCounter = 0;
                 if (++Projectile.frame >= Main.projFrames[Projectile.type]) {
@@ -91,75 +89,58 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             AnimateProjectile();
             Lighting.AddLight(Projectile.Center, new Color(29, 226, 186).ToVector3() * 0.6f);
 
-            // --- CHANNELING LOGIC ---
-            bool shouldDie = (!player.channel || Projectile.ai[1] > 3);
-            if (!shouldDie)
-                Projectile.timeLeft = 120;
+            Projectile.ai[0]++;
 
-            // --- TARGETING LOGIC ---
-            float maxDetectRadius = 220f;
+            PointGlowPreMultiplied Glow2 = new();
+            Glow2.Initialize(Projectile.Center + Main.rand.NextVector2CircularEdge(220f, 220f), Vector2.Zero, new Color(29, 226, 186) with { A = 0 } * 0.2f, 1f, 20);
+            ParticleEngine.BehindProjectiles.Add(Glow2);
 
-            if (HomingTarget == null)
-                HomingTarget = FindClosestNPC(maxDetectRadius);
+            PixelParticle Pixel2 = new();
+            Pixel2.Initialize(Projectile.Center + Main.rand.NextVector2CircularEdge(220f, 220f), Main.rand.NextVector2Circular(1f, 1f), new Color(29, 226, 186) with { A = 0 }, 2f);
+            ParticleEngine.BehindProjectiles.Add(Pixel2);
 
-            if (HomingTarget != null && !IsValidTarget(HomingTarget))
-                HomingTarget = null;
 
-            if (HomingTarget != null && Main.GameUpdateCount % 20 == 0)
+            if (Projectile.ai[0] % 15 == 0)
             {
-                Vector2 shootVel =
-                    (Projectile.Center - HomingTarget.Center)
-                    .ToRotation()
-                    .ToRotationVector2() * 6f;
+                foreach (NPC target in Main.ActiveNPCs)
+                {
+                    if (target.Center.Distance(Projectile.Center) < 200f && !target.friendly)
+                    {
+                        SoundEngine.PlaySound(SoundID.DD2_LightningBugZap, target.Center);
 
-                Projectile.NewProjectile(
-                    Projectile.GetSource_FromAI(),
-                    Projectile.Center,
-                    shootVel,
-                    ModContent.ProjectileType<ElectricBolt>(),
-                    Projectile.damage,
-                    4,
-                    Projectile.owner
-                );
-                Projectile.ai[1]++;
+                        Vector2 outer = target.Center;
+                        var curve = DTUtils.EasyBezier(Projectile.Center, Projectile.Center.DirectionTo(outer).RotatedByRandom(3f), outer, outer.DirectionFrom(Projectile.Center).RotatedByRandom(3f), 0.5f);
+                        var points = curve.GetEvenlySpacedPoints(15);
+                        for (int i = 0; i < points.Count; i++)
+                        {
+                            PointGlowPreMultiplied ArcGlow = new();
+                            ArcGlow.Initialize(Projectile.Center, Main.rand.NextVector2Circular(4f, 4f), new Color(29, 226, 186) with { A = 0 } * 0.05f, 2.5f);
+                            ParticleEngine.BehindProjectiles.Add(ArcGlow);
+
+                            PixelParticle Arc = new();
+                            Arc.Initialize(points[i], Vector2.Zero, new Color(29, 226, 186) with { A = 0 }, 2f, 60);
+                            ParticleEngine.BehindProjectiles.Add(Arc);
+
+
+                        }
+
+                        target.AddBuff(BuffID.Electrified, 300);
+                        int Damage = (int)(Projectile.damage);
+                        Damage = Utils.Clamp(Damage, 10, 100);
+                        target.SimpleStrikeNPC(Damage, Math.Sign((target.Center - Projectile.Center).X), false, 1f, DamageClass.Default);
+
+                        if (!target.boss)
+                        {
+                            target.velocity *= 0.1f;
+                        }
+                    }
+                }
             }
-
-            if (shouldDie)
-                Projectile.Kill();
         }
-
-
-        public NPC FindClosestNPC(float maxDetectDistance) {
-			NPC closestNPC = null;
-
-			// Using squared values in distance checks will let us skip square root calculations, drastically improving this method's speed.
-			float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
-
-			// Loop through all NPCs
-			foreach (var target in Main.ActiveNPCs) {
-				// Check if NPC able to be targeted. 
-				if (IsValidTarget(target)) {
-					// The DistanceSquared function returns a squared distance between 2 points, skipping relatively expensive square root calculations
-					float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, Projectile.Center);
-
-					// Check if it is within the radius
-					if (sqrDistanceToTarget < sqrMaxDetectDistance) {
-						sqrMaxDetectDistance = sqrDistanceToTarget;
-						closestNPC = target;
-					}
-				}
-			}
-
-			return closestNPC;
-		}
-
-		public bool IsValidTarget(NPC target) {
-			return target.CanBeChasedBy();
-		}
 
         public override void OnKill(int timeLeft)
         {
-            SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/MagnetOrbBreak") { PitchVariance = 0.2f, MaxInstances = 0 });
+            SoundEngine.PlaySound(DTAssetLib.Zap with { PitchVariance = 0.2f, MaxInstances = 0 });
             Projectile.NewProjectile(Projectile.GetSource_Death(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<MajesticStormExplosion>(), Projectile.damage, 12, Projectile.owner);
         }
 

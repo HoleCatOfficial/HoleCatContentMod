@@ -174,14 +174,35 @@ namespace DestroyerTest.Content.Entities
                 SoundEngine.PlaySound(SoundID.DD2_BookStaffCast, NPC.Center);
                 DashCount++;
 
-                if (DashCount % 3 == 0)
+                if (!DestroyerTestMod.EternityIsActive)
                 {
-                    SoundEngine.PlaySound(DTAssetLib.Djinn.Laugh with { PitchVariance = 0.4f }, NPC.Center);
-                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, IdealVelocity * 6f, ModContent.ProjectileType<SunscorchedDjinnBomb>(), 40, 80);
+                    if (DashCount % 3 == 0)
+                    {
+                        SoundEngine.PlaySound(DTAssetLib.Djinn.Laugh with { PitchVariance = 0.4f }, NPC.Center);
+                        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, IdealVelocity * 6f, ModContent.ProjectileType<SunscorchedDjinnBomb>(), 40, 80);
+                    }
+                    else
+                    {
+                        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, IdealVelocity * 6f, ModContent.ProjectileType<RiftSparkHostile_NoHoming>(), 40, 80);
+                    }
                 }
                 else
                 {
-                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, IdealVelocity * 6f, ModContent.ProjectileType<RiftSparkHostile_NoHoming>(), 40, 80);
+                    if (DashCount % 3 == 0)
+                    {
+                        SoundEngine.PlaySound(DTAssetLib.Djinn.Laugh with { PitchVariance = 0.4f }, NPC.Center);
+                        for (int i = 0; i < 5; i++)
+                        {
+                            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, IdealVelocity.RotatedByRandom(0.4f) * 6f, ModContent.ProjectileType<SunscorchedDjinnBomb>(), 40, 80);
+                        }
+                    }
+                    else
+                    {
+                        SoundEngine.PlaySound(DTAssetLib.Djinn.Laugh with { PitchVariance = 0.4f }, NPC.Center);
+
+                        Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, IdealVelocity.RotatedByRandom(0.4f) * 6f, ModContent.ProjectileType<SunscorchedDjinnBomb>(), 40, 80);
+                        
+                    }
                 }
             }
 

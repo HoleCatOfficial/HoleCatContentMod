@@ -1,8 +1,10 @@
 using System;
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.MeleeWeapons;
+using DestroyerTest.Content.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
@@ -28,14 +30,15 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             Projectile.penetrate = -1;
             Projectile.timeLeft = 60;
             Projectile.tileCollide = false;
+            Projectile.usesLocalNPCImmunity = true;
+            Projectile.localNPCHitCooldown = -1;
         }
 
         public override void OnSpawn(IEntitySource source)
         {
-            for (int u = 0; u < 15; u++)
-            {
-                Dust.NewDustPerfect(Projectile.Center, DustID.FireworksRGB, Main.rand.NextVector2CircularEdge(5, 5), 0, new Color(184, 45, 117), 2);
-            }
+            SimpleExplosionParticle explosion = new();
+            explosion.Prepare(Projectile.Center, Vector2.Zero, new Color(184, 45, 117), 0.1f, 0.01f, 2f, BlendState.Additive);
+            ParticleEngine.Particles.Add(explosion);
         }
 
 		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)

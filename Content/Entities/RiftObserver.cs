@@ -16,6 +16,8 @@ using OpusLib;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Projectiles;
 using Terraria.Audio;
+using OpusLib.Content.Helpers;
+using Mono.Cecil.Cil;
 
 namespace DestroyerTest.Content.Entities
 {
@@ -86,11 +88,16 @@ namespace DestroyerTest.Content.Entities
             SpriteEffects effects = SpriteEffects.None;
             if (NPC.direction == -1)
             {
-                effects = SpriteEffects.FlipHorizontally;
+                effects = SpriteEffects.FlipVertically;
+            }
+
+            if (Scan != null)
+            {
+                Main.EntitySpriteDraw(DTAssetLib.ThinGlowCone.Value, NPC.Center - Main.screenPosition, null, Color.SlateBlue with { A = 0 }, Scan.GetLineRotation, new Vector2(0, DTAssetLib.ThinGlowCone.Height() / 2), 0.8f, SpriteEffects.None);
             }
             DrawCrystalCore(spriteBatch, NPC.Center);
-            //Main.EntitySpriteDraw(TextureAssets.Npc[NPC.type].Value, NPC.Center - screenPos, NPC.frame, drawColor, NPC.rotation, new Vector2(TextureAssets.Npc[NPC.type].Value.Width / 2, TextureAssets.Npc[NPC.type].Value.Height / Main.npcFrameCount[NPC.type] / 2), NPC.scale, effects, 0);
-            return true;
+            Main.EntitySpriteDraw(TextureAssets.Npc[NPC.type].Value, NPC.Center - screenPos, NPC.frame, drawColor, NPC.rotation, new Vector2(NPC.frame.Width / 2, NPC.frame.Height / 2), NPC.scale, effects, 0);
+            return false;
         }
         public void DrawCrystalCore(SpriteBatch spriteBatch, Vector2 Center)
         {
@@ -133,6 +140,8 @@ namespace DestroyerTest.Content.Entities
         private const int TrailLength = 40;
 
         int internalT = 0;
+
+        Line Scan;
         public override void AI()
         {
             internalT++;
@@ -150,23 +159,46 @@ namespace DestroyerTest.Content.Entities
             NPC.rotation = look.ToRotation();
             //NPC.spriteDirection = look.X > 0 ? 1 : -1;
 
-
-
-            if (NPC.life < NPC.lifeMax / 2)
+            if (!DestroyerTestMod.EternityIsActive)
             {
-                if (internalT % 90 == 0)
+
+                if (NPC.life < NPC.lifeMax / 2)
                 {
-                    SoundEngine.PlaySound(SoundID.ForceRoarPitched with { PitchVariance = 0.5f }, NPC.Center);
-                    Opus.RingSpreadDust(ModContent.DustType<RiftDust>(), 30, NPC.Center, 10, 0, default, 1.2f, 3f, offset: NPC.rotation);
-                    NPC.velocity += look.ToRotation().ToRotationVector2() * 20f;
+                    if (internalT % 90 == 0)
+                    {
+                        SoundEngine.PlaySound(SoundID.ForceRoarPitched with { PitchVariance = 0.5f }, NPC.Center);
+                        Opus.RingSpreadDust(ModContent.DustType<RiftDust>(), 30, NPC.Center, 10, 0, default, 1.2f, 3f, offset: NPC.rotation);
+                        NPC.velocity += look.ToRotation().ToRotationVector2() * 20f;
+                    }
+                    else
+                    {
+                        NPC.velocity *= 0.9f;
+                    }
+
+
+                }
+            }
+            else
+            {
+                Scan = new Line(NPC.Center, NPC.Center + new Vector2(200, 0).RotatedBy(NPC.rotation));
+
+                if (!player.HasBuff(BuffID.Stoned))
+                {
+                    NPC.aiStyle = NPCAIStyleID.DemonEye;
+                    float collisionPoint = 0;
+                    if (Collision.CheckAABBvLineCollision(player.position, player.Size, Scan.Start, Scan.End, 40, ref collisionPoint))
+                    {
+                        player.AddBuff(BuffID.Stoned, 180);
+                    }
                 }
                 else
                 {
-                    NPC.velocity *= 0.9f;
+                    NPC.aiStyle = -1;
+                    NPC.SmoothMoveToPoint(player.Center + new Vector2(Opus.Sine(-1200f, 1200f), -1200), 3, 200);
                 }
 
-                
             }
+
         }
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)

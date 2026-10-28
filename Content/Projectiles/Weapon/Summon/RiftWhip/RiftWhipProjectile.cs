@@ -1,15 +1,16 @@
 
+using System;
+using System.Collections.Generic;
 using BreadLibrary.Common.Whip;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Buffs.Whip;
 using DestroyerTest.Content.Particles;
  
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using ReLogic.Content;
-using System;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -19,7 +20,7 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Summon.RiftWhip
 {
-    public class RiftWhipT2Projectile : BaseWhipProjectile
+    public class RiftWhipProjectile : BaseWhipProjectile
     {
         public override string Texture => DTUtils.NoTexture;
 
@@ -42,7 +43,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon.RiftWhip
 
         public override void Prepare()
         {
-            AddHitEffects(ModContent.BuffType<DaylightOverload>(), 600);
+            AddHitEffects(ModContent.BuffType<HeliouricShock>(), 600);
 
             WhipController = new ModularWhipController(CreateMotion());
 
@@ -67,15 +68,19 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon.RiftWhip
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            SoundEngine.PlaySound(DTAssetLib.Impacts.IceImpact with { MaxInstances = 0, PitchVariance = 0.8f });
+            SoundEngine.PlaySound(DTAssetLib.Zap with { MaxInstances = 0, PitchVariance = 0.5f });
 
-            Opus.RadialSpreadDustRandom(DustID.FireworksRGB, Main.rand.Next(3, 13), target.Center, 0, ColorLib.LightRift2, Main.rand.NextFloat(0.5f, 1f), Main.rand.NextFloat(2f, 9f));
+            Opus.RadialSpreadDustRandom(DustID.FireworksRGB, Main.rand.Next(3, 13), target.Center, 0, ColorLib.Rift, Main.rand.NextFloat(0.5f, 1f), Main.rand.NextFloat(2f, 9f));
 
             int Amt = hit.Crit ? 4 : 2;
-            Opus.RadialSpreadProjectile(ModContent.ProjectileType<RiftStarFriendly2>(), Amt, target.Center, (int)Owner.GetTotalDamage(DamageClass.SummonMeleeSpeed).ApplyTo(40), 5, 12, offset: Main.rand.NextFloat(MathHelper.TwoPi));
-            
+            Opus.RadialSpreadProjectile(ModContent.ProjectileType<RiftSpark>(), Amt, target.Center, (int)Owner.GetTotalDamage(DamageClass.SummonMeleeSpeed).ApplyTo(20), 5, 12, offset: Main.rand.NextFloat(MathHelper.TwoPi));
+
+            target.AddBuff(ModContent.BuffType<RiftWhipTagBuff>(), 300);
+            Main.player[Projectile.owner].MinionAttackTargetNPC = target.whoAmI;
+
             HitCooldown = 60;
         }
+
 
         #region Drawing
         public override float GetWhipWidth(float baseWidth, float t)
@@ -109,8 +114,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon.RiftWhip
         public string Path = "DestroyerTest/Content/Projectiles/Weapon/Summon/RiftWhip";
         protected override void DrawOverPrimitive(List<Vector2> points)
         {
-            //_Head_y = (int)(5 * Math.Abs(MathF.Sin(Main.GlobalTimeWrappedHourly)));
-            Texture2D tex = ModContent.Request<Texture2D>($"{Path}/RiftWhipT2_MidChain").Value;
+            // _Head_y = (int)(5 * Math.Abs(MathF.Sin(Main.GlobalTimeWrappedHourly)));
+            Texture2D tex = ModContent.Request<Texture2D>($"{Path}/RiftWhip_MidChain").Value;
 
 
 
@@ -148,8 +153,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon.RiftWhip
         public override bool _PrimitiveIsScrollingTexture => true;
         protected override Asset<Texture2D> PrimitiveTex => DTAssetLib.Square;
 
-        protected override Asset<Texture2D> WhipHandle => ModContent.Request<Texture2D>($"{Path}/RiftWhipT2Hilt");
-        protected override Asset<Texture2D> WhipHead => ModContent.Request<Texture2D>($"{Path}/RiftWhipT2Head");
+        protected override Asset<Texture2D> WhipHandle => ModContent.Request<Texture2D>($"{Path}/RiftWhipHilt");
+        protected override Asset<Texture2D> WhipHead => ModContent.Request<Texture2D>($"{Path}/RiftWhipHead");
 
         #endregion
     }

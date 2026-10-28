@@ -1,10 +1,12 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework.Graphics;
+using MonoMod.RuntimeDetour.HookGen;
+using ReLogic.Content;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader;
@@ -12,12 +14,17 @@ using Terraria.ModLoader.IO;
 
 namespace DestroyerTest.Common.Systems
 {
-    //Thanks Lucille for exposing which hook to detour!
+    //Approach modeled after Wrath of the Gods. I would not have been able to figure this out myself.
     public class WorldIconSystem : ModSystem
     {
         public override void OnModLoad()
         {
 
+            
+        }
+
+        public override void SetStaticDefaults()
+        {
             Main.QueueMainThreadAction(() =>
             {
                 On_AWorldListItem.GetIcon += UseCustomIcons;
@@ -29,15 +36,24 @@ namespace DestroyerTest.Common.Systems
             if (self.Data.TryGetHeaderData<WorldIconSystem>(out TagCompound tag))
             {
 
+
                 if (tag.ContainsKey("TenebrisCanSpawnInWorldEvilBiome"))
                 {
+                    if (tag.ContainsKey("TenebrisCanSpawnInWorldEvilBiome") && tag.ContainsKey("AvatarWorld"))
+                    {
+                        return DTAssetLib.TenebrisCorruptionWorldIcon_WOTG;
+                    }
+
+                    if (tag.ContainsKey("TenebrisCanSpawnInWorldEvilBiome") && (self.Data.WorldGenModsRecorded && self.Data.TryGetModVersionGeneratedWith("AAModClassic", out _)))
+                    {
+                        return DTAssetLib.TenebrisCorruptionWorldIcon_AAClassic;
+                    }
+
                     return DTAssetLib.TenebrisCorruptionWorldIcon;
                 }
-                if (tag.ContainsKey("TenebrisCanSpawnInWorldEvilBiome") && (self.Data.WorldGenModsRecorded && self.Data.TryGetModVersionGeneratedWith("AAModClassic", out _)))
-                {
-                    return DTAssetLib.TenebrisCorruptionWorldIcon_AAClassic;
-                }
+
             }
+            
             return orig(self);
         }
 

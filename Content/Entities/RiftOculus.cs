@@ -1,17 +1,18 @@
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
-using Terraria.GameContent.Bestiary;
-using Terraria.ModLoader.Utilities;
-using DestroyerTest.Content.RiftBiome;
-using DestroyerTest.Common;
 using System.Collections.Generic;
+using DestroyerTest.Common;
+using DestroyerTest.Content.Projectiles;
+using DestroyerTest.Content.Resources;
+using DestroyerTest.Content.RiftBiome;
+using DestroyerTest.Content.RiftBiome.RiftSurfaceResources;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent.ItemDropRules;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.RiftBiome.RiftSurfaceResources;
+using Terraria;
 using Terraria.GameContent;
+using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ItemDropRules;
+using Terraria.ID;
+using Terraria.ModLoader;
+using Terraria.ModLoader.Utilities;
 
 namespace DestroyerTest.Content.Entities
 {
@@ -114,6 +115,7 @@ namespace DestroyerTest.Content.Entities
         public List<Vector2> TrailPositions = new();
 		public List<float> TrailRotations = new();
         private const int TrailLength = 40;
+        int t = 0;
 
         public override void AI()
         {
@@ -130,6 +132,16 @@ namespace DestroyerTest.Content.Entities
             Vector2 look = player.Center - NPC.Center;
             NPC.rotation = look.ToRotation();
             //NPC.spriteDirection = look.X > 0 ? 1 : -1;
+
+            if (DestroyerTestMod.EternityIsActive)
+            {
+                t++;
+
+                if (t % 20 == 0)
+                {
+                    Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, NPC.DirectionTo(player.Center) * 6f, ModContent.ProjectileType<RiftSparkHostile_NoHoming>(), 40, 80);
+                }
+            }
         }
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)

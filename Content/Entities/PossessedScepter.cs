@@ -166,7 +166,7 @@ namespace DestroyerTest.Content.Entities
 				{
 					if (t % 60 == 0)
 					{
-						SoundEngine.PlaySound(SoundID.Zombie103, NPC.Center);
+						SoundEngine.PlaySound(SoundID.Zombie103 with { MaxInstances = 0 }, NPC.Center);
 						Shoot();
 					}
 				}
@@ -175,7 +175,14 @@ namespace DestroyerTest.Content.Entities
 
 		private void Shoot()
 		{
-			Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, Dir.GetLineRotation.ToRotationVector2() * 10, ModContent.ProjectileType<PosessedScepterSoulShot>(), NPC.damage / 2, 2);
+			if (!DestroyerTestMod.EternityIsActive)
+			{
+				Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, Dir.GetLineRotation.ToRotationVector2() * 10, ModContent.ProjectileType<PosessedScepterSoulShot>(), NPC.damage / 2, 2);
+			}
+			else
+			{
+				Opus.RadialSpreadProjectile(ModContent.ProjectileType<PosessedScepterSoulShot>(), 20, NPC.Center, NPC.damage, 4, 10f);
+			}
 		}
 
         public override void OnKill()

@@ -17,7 +17,7 @@ namespace DestroyerTest.Content.Projectiles.EntitiesProjectiles
     {
         public override void SetDefaults()
         {
-            Projectile.width = Projectile.height = 32;
+            Projectile.width = Projectile.height = 64;
             Projectile.timeLeft = 600;
             Projectile.hostile = true;
             Projectile.friendly = false;

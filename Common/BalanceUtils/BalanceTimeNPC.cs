@@ -22,20 +22,22 @@ namespace DestroyerTest.Common.BalanceUtils
         }
 
         public override void OnSpawn(NPC npc, IEntitySource source)
-        {
+        {/*
             if (npc.boss && npc.realLife == -1)
             {
                 Time = 0f;
                 Main.NewText($"Boss Logging Initiated for: {npc.TypeName}");
             }
+            */
         }
         public override void AI(NPC npc)
         {
-            Time += 1f / 60f;
+           // Time += 1f / 60f;
         }
 
         public override void OnKill(NPC npc)
         {
+            /*
             if (!npc.boss)
                 return;
 
@@ -49,6 +51,7 @@ namespace DestroyerTest.Common.BalanceUtils
             );
 
             File.AppendAllText(path, Time.ToString("0.00") + Environment.NewLine);
+            */
         }
     }
 }

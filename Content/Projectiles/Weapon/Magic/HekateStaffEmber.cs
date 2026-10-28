@@ -30,11 +30,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             Projectile.friendly = true;
             Projectile.hostile = false;
             Projectile.ignoreWater = true;
-            Projectile.timeLeft = 360;
+            Projectile.timeLeft = 600;
             Projectile.tileCollide = false;
-            Projectile.penetrate = 1;
+            Projectile.penetrate = 11;
             Projectile.hide = true;
-            Projectile.extraUpdates = 3;
         }
 
         public override void AI()
@@ -44,31 +43,20 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             Lighting.AddLight(Projectile.Center, new Color(184, 45, 117).ToVector3() * 0.6f);
 
             PointGlowPreMultiplied Particle = new PointGlowPreMultiplied();
-
-            Particle.Initialize(Projectile.Center, new Vector2((Projectile.velocity.X / 2) + Main.rand.NextFloat(-1, 1), (Projectile.velocity.Y / 2) + Main.rand.NextFloat(-1, 1)), new Color(184, 45, 117), 0.25f);
-
+            Particle.Initialize(Projectile.Center, Main.rand.NextVector2Circular(0.3f, 0.3f), new Color(184, 45, 117), 0.5f);
             ParticleEngine.Particles.Add(Particle);
-
-            if (player.channel)
-            {
-                Projectile.timeLeft = 120;
-                return;
-            }
-            else
-            {
-                Projectile.Kill();
-            }
         }
 
         public override void OnKill(int timeLeft)
         {
-            SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/Impacts/ExplosiveImpactSmall") { PitchVariance = 0.2f, MaxInstances = 0 });
+            SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/SeedStick") { PitchVariance = 0.2f, MaxInstances = 0 });
             Projectile.NewProjectile(Projectile.GetSource_Death(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<HekateStaffExplosion>(), Projectile.damage, 12, Projectile.owner);
         }
 
-        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        public override bool? CanHitNPC(NPC target)
         {
-            target.AddBuff(ModContent.BuffType<SoulErosion>(), 20 * 60);
+            return false;
         }
+        
 	}
 }

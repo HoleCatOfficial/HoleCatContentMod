@@ -8,18 +8,19 @@ using Terraria.ModLoader;
 using DestroyerTest.Rarity;
 using DestroyerTest.Content.Tiles.Riftplate;
 using DestroyerTest.Content.Projectiles.Weapon.Summon;
-using DestroyerTest.Content.Projectiles.Weapon.Summon.RiftWhip;
 using DestroyerTest.Content.Tiles.RiftConfigurator;
+using DestroyerTest.Content.Projectiles.Weapon.Summon.HeliciteWhip;
+using DestroyerTest.Content.RiftArsenal;
 
-namespace DestroyerTest.Content.RiftArsenal
+namespace DestroyerTest.Content.SummonItems
 {
-	public class RiftWhipT2 : ModItem
+	public class HeliciteWhip : ModItem
 	{
 
 		public override void SetDefaults() {
 			Item.width = 38;
 			Item.height = 34;
-			Item.DefaultToWhip(ModContent.ProjectileType<RiftWhipT2Projectile>(), 70, 2, 14);
+			Item.DefaultToWhip(ModContent.ProjectileType<HeliciteWhipProjectile>(), 120, 2, 14);
 			Item.rare = ModContent.RarityType<HeliciteRarity>();
 			Item.autoReuse = true;
 		}
@@ -27,7 +28,7 @@ namespace DestroyerTest.Content.RiftArsenal
 		public override void AddRecipes() {
 			CreateRecipe()
 				.AddIngredient<Item_HeliciteCrystal>(8)
-                .AddIngredient<RiftWhipT1>()
+                .AddIngredient<RiftWhip>()
                 .AddTile<Tile_RiftConfigurator>()
 				.Register();
 		}

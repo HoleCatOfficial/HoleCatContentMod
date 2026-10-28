@@ -178,6 +178,7 @@ namespace DestroyerTest.Common
         public static Asset<Texture2D> ArrowTelegraph = ModContent.Request<Texture2D>($"{ExtrasPath}/DashTelegraphArrow", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> ArrowTelegraphCont = ModContent.Request<Texture2D>($"{ExtrasPath}/DashTelegraphArrowContinuous", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> Warning = ModContent.Request<Texture2D>($"{ParticlePath}/WarningTriangle", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> ShineFlare = ModContent.Request<Texture2D>($"{ExtrasPath}/ShineFlare", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> Trail(int Variant)
         {
             if (Variant <= 0)
@@ -246,6 +247,7 @@ namespace DestroyerTest.Common
 
         public static Asset<Texture2D> TenebrisCorruptionWorldIcon = ModContent.Request<Texture2D>($"{ExtrasPath}/TenebrisWorldIcon", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> TenebrisCorruptionWorldIcon_AAClassic = ModContent.Request<Texture2D>($"{ExtrasPath}/TenebrisWorldIcon_AAClassic", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> TenebrisCorruptionWorldIcon_WOTG = ModContent.Request<Texture2D>($"{ExtrasPath}/TenebrisWorldIcon_WOTG", AssetRequestMode.AsyncLoad);
         public struct HallowedBar
         {
             public static Asset<Texture2D> Back = ModContent.Request<Texture2D>($"{ExtrasPath}/HallowedBarBack", AssetRequestMode.AsyncLoad);

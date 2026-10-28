@@ -306,6 +306,11 @@ RiftWhipT2: {
 		'''
 }
 
+RiftWhip: {
+	DisplayName: Rift Whip
+	Tooltip: ""
+}
+
 RiftBroadsword: {
 	DisplayName: Rift Broadsword
 	Tooltip: A durable broadsword made from Riftplate and living shadows. In terms of weaponry, it's standard faire.
@@ -5774,9 +5779,33 @@ SwirlStone: {
 UnstableSeedPouch: {
 	DisplayName: Unstable Seed Pouch
 	Tooltip:
-	'''
-	Throw a volley of 9 unstable seeds that explode on contact with tiles. 
-	Seeds stick to enemies for 2 seconds continuous damage and Soul Erosion, lowering their damage.
-	If the stuck enemy is killed, all seeds on the enemy instantly detonate and heal the player for 3 life.
-	'''
+		'''
+		Throw a volley of 9 unstable seeds that explode on contact with tiles. 
+		Seeds stick to enemies for 2 seconds continuous damage and Soul Erosion, lowering their damage.
+		If the stuck enemy is killed, all seeds on the enemy instantly detonate and heal the player for 3 life.
+		'''
+}
+
+MidnightBloom: {
+	DisplayName: Midnight Bloom
+	Tooltip: Spreads twinkling midnight pollen that explodes.
+}
+
+HeliciteWhip: {
+	DisplayName: Sunkiss
+	Tooltip:
+		'''
+		Hits spawn two homing Ancient Sun Stars.
+		Critical hits spawn 4.
+		'''
+}
+
+PurityJewel: {
+	DisplayName: Serene Jewel
+	Tooltip:
+		'''
+		Increases life and mana regeneration.
+		You get a boost in speed after taking damage.
+		Reduces the potency of Defilement.
+		'''
 }

@@ -20,9 +20,6 @@ namespace DestroyerTest.Common
         public bool EnableDebugMessages { get; set; }
 
         [DefaultValue(true)]
-        public bool DragCamera { get; set; }
-
-        [DefaultValue(true)]
         public bool MinionAmmoReplace { get; set; }
 
         [DefaultValue(true)]

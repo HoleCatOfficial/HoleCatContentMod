@@ -79,17 +79,9 @@ namespace DestroyerTest.Content.Entities
 
             if (DestroyerTestMod.EternityIsActive)
             {
-                if (player.Distance(NPC.Center) < 300)
+                if (Math.Abs((player.Center - NPC.Center).X) < 300)
                 {
-                    ECtime++;
-
-                    if (ECtime % 10 == 0)
-                    {
-                        if (player.HasItemInInventoryOrOpenVoidBag(ItemID.PlatinumCoin))
-                        {
-                            
-                        }
-                    }
+                    player.velocity.X += player.DirectionTo(NPC.Center).X * 0.3f;
                 }
             }
         }

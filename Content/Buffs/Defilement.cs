@@ -84,9 +84,12 @@ namespace DestroyerTest.Content.Buffs
     {
         public bool lifeRegenDebuff;
 
+        public bool HasPurityJewel = false;
+
         public override void ResetEffects()
         {
             lifeRegenDebuff = false;
+            HasPurityJewel = false;
         }
 
         public override void PostUpdateBuffs()
@@ -111,7 +114,7 @@ namespace DestroyerTest.Content.Buffs
         {
             if (lifeRegenDebuff)
             {
-                if (Player.HeldItem.type == ItemID.LifeCrystal || Player.HeldItem.type == ItemID.LifeFruit)
+                if ((Player.HeldItem.type == ItemID.LifeCrystal || Player.HeldItem.type == ItemID.LifeFruit) || HasPurityJewel)
                 {
                     Player.maxRunSpeed *= 0.333333333333f;
                     Player.runAcceleration *= 0.75f;
@@ -131,7 +134,7 @@ namespace DestroyerTest.Content.Buffs
             {
                 Player.lifeRegenTime = 0;
 
-                if (Player.HeldItem.type == ItemID.LifeCrystal || Player.HeldItem.type == ItemID.LifeFruit)
+                if ((Player.HeldItem.type == ItemID.LifeCrystal || Player.HeldItem.type == ItemID.LifeFruit) || HasPurityJewel)
                 {
                     Player.lifeRegen -= 50;
                 }

@@ -1042,7 +1042,10 @@ namespace DestroyerTest.Content.Entities
                     RecordedVolume = true;
                 }
 
-                Main.musicVolume -= 0.1f;
+                if (Main.musicVolume > 0f)
+                {
+                    Main.musicVolume -= 0.05f;
+                }
                 Music = idleID;
                 return;
             }
@@ -1108,6 +1111,7 @@ namespace DestroyerTest.Content.Entities
         public int DeathInterval = 10;
         public int BorderDustType;
         public static bool ShouldCenterCameraOnNPC = false;
+        public static bool ShouldCenterCameraOnPlayer = false;
         public float VolumeOnSpawn = 0f;
         public bool RecordedVolume = false;
         public bool SetVolume = false;
@@ -1127,6 +1131,8 @@ namespace DestroyerTest.Content.Entities
         public bool DartsLR = false; //True = Right, False = Left
 
         int LastChoice;
+
+        int ReLockTimer = 0;
         public override void AI()
         {
             NPC.TargetClosest();
@@ -1224,16 +1230,7 @@ namespace DestroyerTest.Content.Entities
             }
             if (player.Distance(NPC.Center) < BorderRad && BorderActive)
             {
-                // Infinite wing time
                 player.wingTime = player.wingTimeMax;
-
-                // Reduce wing speed to half
-                //player.moveSpeed *= 0.5f; // baseWingSpeed should be stored somewhere
-                //player.GetModPlayer<ApplyArenaEffectsPlayer>().CurrentArenaBoss = ModContent.NPCType<NightmareRoseBoss>();
-                //if (Main.masterMode)
-                //{
-                //player.AddBuff(ModContent.BuffType<ArenaEffects>(), 20);
-                //}
             }
 
             if (HitCount > 0)
@@ -1250,6 +1247,19 @@ namespace DestroyerTest.Content.Entities
                 }
             }
 
+            if (currentState != AttackState.SpawnIdle)
+            {
+                if (ReLockTimer < 90)
+                {
+                    ShouldCenterCameraOnNPC = false;
+                    ShouldCenterCameraOnPlayer = true;
+                    ReLockTimer++;
+                }
+                else
+                {
+                    ShouldCenterCameraOnPlayer = false;
+                }
+            }
 
             if (NPC.life <= NPC.lifeMax * 0.05f && currentState != AttackState.Desperation && currentState != AttackState.KillIdle)
             {
@@ -1519,12 +1529,9 @@ namespace DestroyerTest.Content.Entities
                                 ParticleEngine.ShaderParticles.Add(soundwave);
                             }
                         }
-                        else
-                        {
-                            ShouldCenterCameraOnNPC = false;
-                        }
+
                         NPC.aiStyle = -1;
-                        ShouldCenterCameraOnNPC = false;
+                        
                         if (VingetteScale < 10)
                         {
                             VingetteScale += 0.75f;
@@ -1981,6 +1988,7 @@ namespace DestroyerTest.Content.Entities
                 case AttackState.Desperation:
                     {
                         NPC.dontTakeDamage = true;
+                        ModContent.GetInstance<NightmareRoseCameraModification>().ControlCam = true;
                         ShouldCenterCameraOnNPC = true;
                         
                         for (int i = 0; i < NPC.maxBuffs; i++)
@@ -2799,6 +2807,7 @@ namespace DestroyerTest.Content.Entities
             Gore.NewGore(entitySource, NPC.position, new Vector2(Main.rand.Next(-14, 14), Main.rand.Next(0, 10)), Gore3);
             Gore.NewGore(entitySource, NPC.position, new Vector2(Main.rand.Next(-14, 14), Main.rand.Next(0, 10)), Gore4);
             SunlightModification.Reset();
+            ModContent.GetInstance<NightmareRoseCameraModification>().ControlCam = true;
         }
 
     }
@@ -2807,17 +2816,14 @@ namespace DestroyerTest.Content.Entities
     {
         private Vector2 camPos;
         private bool hasCamPos = false;
+        public bool ControlCam = true;
 
         public override void ModifyScreenPosition()
         {
-            if (Main.dedServ)
+            if (Main.dedServ || !ControlCam)
+            {
                 return;
-
-            DTConfig cfg = ModContent.GetInstance<DTConfig>();
-            ScreenshakePlayer ScreenShake = Main.LocalPlayer.GetModPlayer<ScreenshakePlayer>();
-
-            if (!cfg.DragCamera)
-                return;
+            }
 
             if (!hasCamPos)
             {
@@ -2830,36 +2836,40 @@ namespace DestroyerTest.Content.Entities
 
             bool anyBossActive = IsAnyBossActive();
 
-            // initialize to default to silence compiler warnings
             NPC nightmareBoss = default!;
             bool hasNightmareBoss = NightmareRoseBoss.ShouldCenterCameraOnNPC && TryGetNightmareRoseBoss(out nightmareBoss);
 
-            Vector2 target = hasNightmareBoss
-                ? nightmareBoss.Center - screenHalf
-                : playerCenter - screenHalf;
+            Vector2 target = hasNightmareBoss ? nightmareBoss.Center - screenHalf : playerCenter - screenHalf;
 
             float distToPlayer = Vector2.Distance(camPos + screenHalf, playerCenter);
 
-            if (!anyBossActive && distToPlayer > Main.screenWidth)
+            if (!anyBossActive || distToPlayer > Main.screenWidth)
             {
-                // snap if too far and no boss is active
                 camPos = playerCenter - screenHalf;
+                return;
             }
             else
             {
-
-                // smooth follow
-                float lerpFactor = anyBossActive ? 0.08f : 0.12f;
+                float lerpFactor = 0.12f;
 
                 camPos = Vector2.Lerp(camPos, target, lerpFactor);
-                
+
+                if (!NightmareRoseBoss.ShouldCenterCameraOnNPC)
+                {
+
+                    if (camPos.Distance(playerCenter - screenHalf) < 10)
+                    {
+                        ControlCam = false;
+                        return;
+                    }
+                }
+                else
+                {
+                    camPos = Vector2.Lerp(camPos, target, lerpFactor);
+                }
             }
 
-            Vector2 shakeOffset = ScreenShake.GetShakeOffset();
-
             Main.screenPosition = camPos;
-            camPos += shakeOffset;
-            Main.screenPosition += shakeOffset;
         }
 
         private bool IsAnyBossActive()
@@ -2887,6 +2897,14 @@ namespace DestroyerTest.Content.Entities
 
             boss = default;
             return false;
+        }
+    }
+
+    internal class NightmareRoseCameraModificationFlagResetPlayer : ModPlayer
+    {
+        public override void UpdateDead()
+        {
+            ModContent.GetInstance<NightmareRoseCameraModification>().ControlCam = true;
         }
     }
 

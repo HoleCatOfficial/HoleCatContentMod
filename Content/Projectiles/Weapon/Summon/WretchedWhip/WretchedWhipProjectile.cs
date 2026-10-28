@@ -178,6 +178,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon.WretchedWhip
                 SoundEngine.PlaySound(DTAssetLib.Impacts.ShortShine with { Pitch = Pitch, Volume = 1.6f }, target.Center);
             }
 
+            target.AddBuff(ModContent.BuffType<WretchedWhipTagBuff>(), 300);
+            Main.player[Projectile.owner].MinionAttackTargetNPC = target.whoAmI;
+
             HitCooldown = 60;
         }
 

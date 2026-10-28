@@ -496,3 +496,23 @@ EyeSwordBuff: {
 	DisplayName: Eye Sword
 	Description: Goob
 }
+
+HeliciteWhipTagBuff: {
+	DisplayName: Helicite Whip Tag Buff
+	Description: Mods.DestroyerTest.Buffs.HeliciteWhipTagBuff.Description
+}
+
+RiftWhipTagBuff: {
+	DisplayName: Rift Whip Tag Buff
+	Description: Mods.DestroyerTest.Buffs.RiftWhipTagBuff.Description
+}
+
+SoulBoundWhipTagBuff: {
+	DisplayName: Soul Bound Whip Tag Buff
+	Description: Mods.DestroyerTest.Buffs.SoulBoundWhipTagBuff.Description
+}
+
+WretchedWhipTagBuff: {
+	DisplayName: Wretched Whip Tag Buff
+	Description: Mods.DestroyerTest.Buffs.WretchedWhipTagBuff.Description
+}

@@ -230,7 +230,7 @@ namespace DestroyerTest.Content.Entities
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<Living_Shadow>(), 1, 3, 10));
-            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<RiftWhipT1>(), 100, 1, 1));
+            npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<RiftWhip>(), 100, 1, 1));
         }
     }
 }
