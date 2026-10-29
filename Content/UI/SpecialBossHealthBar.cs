@@ -392,7 +392,7 @@ namespace DestroyerTest.Content.UI
 
                 if (WC.ModNPC is WyvernCorpseHead Head)
                 {
-                    Color BarFrontColor = !DTCrossMod.FablesIsLoaded ? (!DestroyerTestMod.MasochistIsActive ? OpusColorUtils.MultiLerp(quotient.Inverse(), ColorLib.IchorCrystalColorMap) : ColorLib.Soul) : (!DestroyerTestMod.MasochistIsActive ? OpusColorUtils.MultiLerp(quotient.Inverse(), ColorLib.IchorCrystalColorMap) : ColorLib.Soul) with { A = 0 };
+                    Color BarFrontColor = !DTCrossMod.FablesIsLoaded ? (!DestroyerTestMod.MasochistIsActive ? OpusColorUtils.MultiLerp(quotient, ColorLib.IchorCrystalColorMap) : ColorLib.Soul) : (!DestroyerTestMod.MasochistIsActive ? OpusColorUtils.MultiLerp(quotient, ColorLib.IchorCrystalColorMap) : ColorLib.Soul) with { A = 0 };
 
                     if (!DTCrossMod.FablesIsLoaded)
                     {
@@ -454,7 +454,7 @@ namespace DestroyerTest.Content.UI
                                     }
                                     else
                                     {
-                                        return new Vector2((drawPos.X - (300 * DTUIConfig.instance.CustomBossBarScaleModifier)), drawPos.Y - 2) + new Vector2((NodeLockDimensions.Width * Main.UIScale * DTUIConfig.instance.CustomBossBarScaleModifier) * i, 0);
+                                        return new Vector2((drawPos.X - (150 * DTUIConfig.instance.CustomBossBarScaleModifier)), drawPos.Y - 2) + new Vector2((NodeLockDimensions.Width * Main.UIScale * DTUIConfig.instance.CustomBossBarScaleModifier) * i, 0);
                                     }
                                 }
                                 Vector2 NodeLockDrawPos = GetNodeLockDrawPos();

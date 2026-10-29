@@ -845,8 +845,8 @@ namespace DestroyerTest.Content.Entities
 
             if (!DestroyerTestMod.EternityIsActive && !DestroyerTestMod.DeathIsActive)
             {
-
-                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/UnfinishedBoss");
+                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Tribulation");
+                //Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/UnfinishedBoss");
             }
             if ((DestroyerTestMod.EternityIsActive || DestroyerTestMod.DeathIsActive) && !DestroyerTestMod.MasochistIsActive)
             {
@@ -1672,11 +1672,7 @@ namespace DestroyerTest.Content.Entities
 
         int DeathTimer = 0;
         public bool CanDie = false;
-        public override bool CheckDead()
-        {
-            
-            return CanDie;
-        }
+
 
         public override void OnSpawn(IEntitySource source)
         {
@@ -1709,7 +1705,7 @@ namespace DestroyerTest.Content.Entities
 
             if (ShouldFadeBackMusic)
             {
-                if (Wait < 180)
+                if (Wait < 300)
                 {
                     Wait++;
                 }
@@ -1717,7 +1713,7 @@ namespace DestroyerTest.Content.Entities
                 {
                     if (Main.musicVolume < storedVolume)
                     {
-                        Main.musicVolume += 0.005f;
+                        Main.musicVolume += 0.0001f;
                     }
                 }
             }

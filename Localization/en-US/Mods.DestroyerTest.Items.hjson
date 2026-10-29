@@ -2172,8 +2172,8 @@ GreatFlayer: {
 	DisplayName: The Great Flayer
 	Tooltip:
 		'''
-		"On-hit effects coming soon!" -HoleCat
-		Right click to perform a short dash.
+		A conglomeration of crimstone and bones meant to resemble a weapon you'd use.
+		Every two hits are carnaged, biting into the target.
 		'''
 }
 
@@ -5773,7 +5773,7 @@ Item_SanctifiedBrazier: {
 
 SwirlStone: {
 	DisplayName: Swirl Stone
-	Tooltip: ""
+	Tooltip: "Scepter class hits have a chance to create a powerful wind burst."
 }
 
 UnstableSeedPouch: {

@@ -73,7 +73,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
-            return Utilities.CircularHitboxCollision(Projectile.Center, radius, targetHitbox);
+            if (Utilities.CircularHitboxCollision(Projectile.Center, radius, targetHitbox))
+            {
+                return true;
+            }
+            return null;
         }
 
         public override bool PreDraw(ref Color lightColor)
