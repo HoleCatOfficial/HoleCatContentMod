@@ -1,5 +1,6 @@
 ﻿using DestroyerTest;
 using DestroyerTest.Common;
+using DestroyerTest.Common.DropRules;
 using DestroyerTest.Content.MeleeWeapons;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Weapon.Melee;
@@ -25,7 +26,7 @@ namespace DestroyerTest.Content.MeleeWeapons.AncientSword
     {
         public override void SetStaticDefaults()
         {
-            OpusNPCDropHelper.DropsFromNPC[Type] = new NPCDropData(NPCID.WallofFlesh, ItemDropRule.Common(Type, 5));
+            OpusNPCDropHelper.DropsFromNPC[Type] = new NPCDropData(NPCID.WallofFlesh, ItemDropRule.ByCondition(new ExpertOnlyDropRuleCondition(), Type, 5));
             ItemID.Sets.IsLavaImmuneRegardlessOfRarity[Type] = true;
         }
         public override void SetDefaults()

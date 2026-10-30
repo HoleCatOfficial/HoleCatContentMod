@@ -46,6 +46,7 @@ Extras: {
 	}
 
 	ThankYouMessage: Thank you for playing!!!
+	CobaltShieldRework: Talid: Knockback reduction modified from 100% to 75%
 }
 
 Conditions: {
@@ -195,6 +196,66 @@ Configs: {
 				'''
 		}
 	}
+
+	DTVanillaChangesConfig: {
+		DisplayName: Vanilla Changes
+
+		CobaltShieldRework: {
+			Label: "[i:156] Cobalt Shield Rework"
+			Tooltip:
+				'''
+				Talid has an alternative path to knockback immunity. 
+				To prevent it being outclassed, as it is later in progression, the Cobalt shield grants 75% reduced knockback instead of full knockback immunity.
+				Talid is intended to be played with this enabled.
+				'''
+		}
+
+		BossTreasureBagLoot: {
+			Label: "[i:3319] Boss Treasure Bag Loot"
+			Tooltip:
+				'''
+				Talid adds items to vanilla treasure bags.
+				Talid is intended to be played with this enabled.
+				'''
+		}
+
+		BossLoot: {
+			Label: "[i:DestroyerTest/LostWonder][i:DestroyerTest/TheAlkahest] Boss Loot"
+			Tooltip:
+				'''
+				Talid adds boss drops.
+				This is related to the Boss Treasure Bag Loot config, but the two work independently of eachother.
+				Talid is intended to be played with this enabled.
+				'''
+		}
+
+		RecipeModification: {
+			Label: "[i:35] Recipe Modification"
+			Tooltip:
+				'''
+				Talid makes major recipe changes to a few items.
+				Talid is intended to be played with this enabled.
+				'''
+		}
+
+		WeaponRework: {
+			Label: "[i:795] Vanilla Weapon Reworks"
+			Tooltip:
+				'''
+				Talid reworks some vanilla weapons.
+				Talid is intended to be played with this enabled.
+				'''
+		}
+
+		Resprites: {
+			Label: "[i:795] Resprites"
+			Tooltip:
+				'''
+				Talid resprites some vanilla weapons.
+				Talid is intended to be played with this enabled.
+				'''
+		}
+	}
 }
 
 DropConditions: {
@@ -202,4 +263,5 @@ DropConditions: {
 	MasochistMode: Masochist Mode
 	EvilBiome: World Evil Biome.
 	ExpertOnly: Expert Mode.
+	NotExpert: Mods.DestroyerTest.DropConditions.NotExpert
 }

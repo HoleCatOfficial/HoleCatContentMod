@@ -17,6 +17,10 @@ using DestroyerTest.Asset.Menu.V5;
 using Terraria.DataStructures;
 using DestroyerTest.Content.Equips;
 using DestroyerTest.Content.Consumables.Flasks;
+using Terraria.GameContent.ItemDropRules;
+using DestroyerTest.Common.DropRules;
+using DestroyerTest.Content.MeleeWeapons.AncientSword;
+using DestroyerTest.Content.Equips.ScepterAccessories;
 
 namespace DestroyerTest.Common.NPC_Folder
 {
@@ -387,7 +391,7 @@ namespace DestroyerTest.Common.NPC_Folder
 
         public override void SetupTravelShop(int[] shop, ref int nextSlot)
         {
-            if (DTCrossMod.CalamityIsLoaded ? DownedBossSystem.downedLunarBoss : DownedBossSystem.downedTenebrousConstructBoss)
+            if ((DTCrossMod.CalamityIsLoaded ? DownedBossSystem.downedLunarBoss : DownedBossSystem.downedTenebrousConstructBoss) && Main.rand.NextBool(4))
             {
                 shop[nextSlot] = ModContent.ItemType<HoleCatHead>();
                 nextSlot++;
@@ -401,7 +405,10 @@ namespace DestroyerTest.Common.NPC_Folder
                 nextSlot++;
             }
 
-            shop[nextSlot] = ModContent.ItemType<LaserPointer>();
+            if (Main.rand.NextBool(4))
+            {
+                shop[nextSlot] = ModContent.ItemType<LaserPointer>();
+            }
             nextSlot++;
         }
 
@@ -418,12 +425,39 @@ namespace DestroyerTest.Common.NPC_Folder
             {
                 shop.Add<EndlessTenebrisBullets>(Condition.DownedCultist);
                 shop.Add<EndlessHeliciteRounds>(Condition.DownedGolem);
-                shop.Add<EndlessRiftRounds>(Condition.DownedMechBossAll);
+                shop.Add<EndlessRiftRounds>(Condition.DownedMechBossAny);
             }
 
             if (shop.NpcType == NPCID.Mechanic)
             {
                 shop.Add<MechanicalEnhancements>();
+            }
+        }
+
+        public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
+        {
+            if (!DTVanillaChangesConfig.instance.BossLoot)
+            {
+                return;
+            }
+
+            if (npc.type == NPCID.WallofFlesh)
+            {
+                npcLoot.Add(ItemDropRule.ByCondition(new NotExpertDropRuleCondition(), ModContent.ItemType<LostWonder>(), 5));
+                npcLoot.Add(ItemDropRule.ByCondition(new NotExpertDropRuleCondition(), ModContent.ItemType<ScepterEmblem>(), 5, 1, 1));
+
+                npcLoot.Add(ItemDropRule.ByCondition(new NotExpertDropRuleCondition(), ModContent.ItemType<ConstantineMask>(), 1, 1, 1));
+                npcLoot.Add(ItemDropRule.ByCondition(new NotExpertDropRuleCondition(), ModContent.ItemType<CoatStantine>(), 1, 1, 1));
+                npcLoot.Add(ItemDropRule.ByCondition(new NotExpertDropRuleCondition(), ModContent.ItemType<ConstanJeans>(), 1, 1, 1));
+            }
+            if (npc.type == NPCID.QueenBee)
+            {
+                npcLoot.Add(ItemDropRule.ByCondition(new NotExpertDropRuleCondition(), ModContent.ItemType<ScepterOfVespae>(), 5));
+            }
+
+            if (npc.type == NPCID.MoonLordCore)
+            {
+                npcLoot.Add(ItemDropRule.ByCondition(new NotExpertDropRuleCondition(), ModContent.ItemType<TheAlkahest>(), 4));
             }
         }
 	}

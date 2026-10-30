@@ -1758,7 +1758,11 @@ RiftElectrifier: {
 }
 
 HeliciteShank: {
-	Tooltip: A small, crystalline blade imbued with the Ancient Sun's essence.
+	Tooltip:
+	'''
+	Jabs rapidly and inaccurately at the cursor.
+	Hits create small homing sparkles.
+	'''
 	DisplayName: Helicite Shank
 }
 
@@ -5773,7 +5777,7 @@ Item_SanctifiedBrazier: {
 
 SwirlStone: {
 	DisplayName: Swirl Stone
-	Tooltip: "Scepter class hits have a chance to create a powerful wind burst."
+	Tooltip: Scepter class hits have a chance to create a powerful wind burst.
 }
 
 UnstableSeedPouch: {
@@ -5807,5 +5811,16 @@ PurityJewel: {
 		Increases life and mana regeneration.
 		You get a boost in speed after taking damage.
 		Reduces the potency of Defilement.
+		'''
+}
+
+TheAlkahest: {
+	DisplayName: The Alkahest
+	Tooltip:
+		'''
+		Enables autoswing for melee weapons.
+		Increases knockback and speed of melee weapons.
+		12% increased true melee damage.
+		Melee hits inflict Fusion Burn.
 		'''
 }

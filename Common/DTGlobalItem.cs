@@ -24,6 +24,7 @@ using DestroyerTest.Content.SummonItems;
 using OpusLib;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib.Content.Helpers;
+using Terraria.Localization;
 
 namespace DestroyerTest.Common
 {
@@ -796,9 +797,14 @@ namespace DestroyerTest.Common
     {
         public override void ModifyItemLoot(Item item, ItemLoot itemLoot)
         {
+            if (!DTVanillaChangesConfig.instance.BossTreasureBagLoot)
+            {
+                return;
+            }
+
             if (item.type == ItemID.QueenBeeBossBag)
             {
-                itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<ScepterOfVespae>(), 3, 1, 1));
+                itemLoot.Add(ItemDropRule.ByCondition(new Conditions.IsExpert(), ModContent.ItemType<ScepterOfVespae>(), 3, 1, 1));
             }
             if (item.type == ItemID.QueenSlimeBossBag)
             {
@@ -806,20 +812,20 @@ namespace DestroyerTest.Common
             }
             if (item.type == ItemID.FairyQueenBossBag)
             {
-                itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<PrismaticScepter>(), 5, 1, 1));
+                itemLoot.Add(ItemDropRule.ByCondition(new Conditions.IsExpert(), ModContent.ItemType<PrismaticScepter>(), 5, 1, 1));
             }
             if (item.type == ItemID.MoonLordBossBag)
             {
-                itemLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<ElementalAlkahest>()));
+                itemLoot.Add(ItemDropRule.ByCondition(new Conditions.IsExpert(), ModContent.ItemType<TheAlkahest>(), 4));
             }
 
             if (item.type == ItemID.WallOfFleshBossBag)
             {
-                itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<ScepterEmblem>(), 5, 1, 1));
+                itemLoot.Add(ItemDropRule.ByCondition(new Conditions.IsExpert(), ModContent.ItemType<ScepterEmblem>(), 5, 1, 1));
 
-                itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<ConstantineMask>(), 1, 1, 1));
-                itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<CoatStantine>(), 1, 1, 1));
-                itemLoot.Add(ItemDropRule.Common(ModContent.ItemType<ConstanJeans>(), 1, 1, 1));
+                itemLoot.Add(ItemDropRule.ByCondition(new Conditions.IsExpert(), ModContent.ItemType<ConstantineMask>(), 1, 1, 1));
+                itemLoot.Add(ItemDropRule.ByCondition(new Conditions.IsExpert(), ModContent.ItemType<CoatStantine>(), 1, 1, 1));
+                itemLoot.Add(ItemDropRule.ByCondition(new Conditions.IsExpert(), ModContent.ItemType<ConstanJeans>(), 1, 1, 1));
             }
         }
 
@@ -829,13 +835,28 @@ namespace DestroyerTest.Common
     {
         public override void UpdateEquip(Item item, Player player)
         {
-            if (item.type == ItemID.CobaltShield || item.type == ItemID.ObsidianShield)
+            if (DTVanillaChangesConfig.instance.CobaltShieldRework)
             {
-                player.noKnockback = false;
-                if (player.TryGetModPlayer<BroochKnockbackPlayer>(out var knockbackPlayer))
+                if (item.type == ItemID.CobaltShield || item.type == ItemID.ObsidianShield)
                 {
-                    knockbackPlayer.Active = true;
-                    knockbackPlayer.CobaltShieldKnockback = true;
+                    player.noKnockback = false;
+                    if (player.TryGetModPlayer<BroochKnockbackPlayer>(out var knockbackPlayer))
+                    {
+                        knockbackPlayer.Active = true;
+                        knockbackPlayer.CobaltShieldKnockback = true;
+                    }
+                }
+            }
+        }
+
+        public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)
+        {
+            TooltipLine line = new TooltipLine(Mod, "CobaltShieldRework", Language.GetTextValue("Mods.DestroyerTest.Extras.CobaltShieldRework"));
+            if (DTVanillaChangesConfig.instance.CobaltShieldRework)
+            { 
+                if (item.type == ItemID.CobaltShield || item.type == ItemID.ObsidianShield)
+                {
+                    tooltips.Add(line);
                 }
             }
         }

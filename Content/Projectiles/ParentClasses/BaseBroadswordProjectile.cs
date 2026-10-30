@@ -66,8 +66,8 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             Projectile.timeLeft = 10000;
             Projectile.penetrate = -1;
             Projectile.tileCollide = false;
-            //Projectile.DamageType = ModContent.GetInstance<DTTrueMeleeClass>();
-            Projectile.DamageType = DamageClass.Melee;
+            Projectile.DamageType = ModContent.GetInstance<DTTrueMeleeClass>();
+            //Projectile.DamageType = DamageClass.Melee;
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = 15;
             Projectile.ownerHitCheck = true;

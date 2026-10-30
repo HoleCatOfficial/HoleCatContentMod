@@ -31,6 +31,8 @@ namespace DestroyerTest.Common
         [DefaultValue(true)]
         public bool ScreenshakeEffects { get; set; }
 
+
+
         /// <summary>
         /// The cooldown timer for triggering effects for Thrown Scepter tile collisions.
         /// <br/> Has a minimum of half a second and a maximum of 20 seconds.
@@ -117,6 +119,33 @@ namespace DestroyerTest.Common
         [Range(1f, 10f)]
         [DefaultValue(2.5f)]
         public float CustomBossBarScaleModifier { get; set; }
+    }
+
+    public class DTVanillaChangesConfig : ModConfig
+    {
+        public static DTVanillaChangesConfig instance = ModContent.GetInstance<DTVanillaChangesConfig>();
+        public override ConfigScope Mode => ConfigScope.ServerSide;
+
+
+        [DefaultValue(true)]
+        public bool CobaltShieldRework { get; set; }
+
+        [DefaultValue(true)]
+        public bool BossTreasureBagLoot { get; set; }
+
+        [DefaultValue(true)]
+        public bool BossLoot { get; set; }
+
+        [DefaultValue(true)]
+        [ReloadRequired()]
+        public bool RecipeModification { get; set; }
+
+        [DefaultValue(true)]
+        public bool WeaponRework { get; set; }
+
+        [DefaultValue(true)]
+        [ReloadRequired()]
+        public bool Resprites { get; set; }
     }
     
     public class DTConfigDataModifications : ModSystem

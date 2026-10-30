@@ -87,10 +87,13 @@ namespace DestroyerTest.Common
             }
 
             foreach (Recipe recipe in Main.recipe)
-            {  
-                if (recipe.HasResult(ItemID.FlaskofFire))
+            {
+                if (!DTVanillaChangesConfig.instance.RecipeModification)
                 {
-                    recipe.AddCondition(Condition.Hardmode);
+                    if (recipe.HasResult(ItemID.FlaskofFire))
+                    {
+                        recipe.AddCondition(Condition.Hardmode);
+                    }
                 }
 
                 if (recipe.HasResult<ElementalScepter>())
@@ -174,11 +177,14 @@ namespace DestroyerTest.Common
                     recipe.AddIngredient<Exasperation>();
                 }
 
-                foreach (int A in PillarArmor)
+                if (!DTVanillaChangesConfig.instance.RecipeModification)
                 {
-                    if (recipe.HasResult(A) && recipe.HasIngredient(ItemID.LunarBar))
+                    foreach (int A in PillarArmor)
                     {
-                        recipe.RemoveIngredient(ItemID.LunarBar);
+                        if (recipe.HasResult(A) && recipe.HasIngredient(ItemID.LunarBar))
+                        {
+                            recipe.RemoveIngredient(ItemID.LunarBar);
+                        }
                     }
                 }
 

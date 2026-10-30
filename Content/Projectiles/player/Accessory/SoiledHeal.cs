@@ -60,8 +60,8 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
         public override bool PreDraw(ref Color lightColor)
         {
             Main.EntitySpriteDraw(DTAssetLib.PointGlowPreMultiplied.Value, Projectile.Center - Main.screenPosition, null, Color.DeepPink with { A = 0 }, Projectile.rotation, DTAssetLib.PointGlowPreMultiplied.Value.Size() / 2, 1f, SpriteEffects.None);
-            Main.EntitySpriteDraw(DTAssetLib.TinyBloom.Value, Projectile.Center - Main.screenPosition, null, Color.Maroon, Projectile.rotation, DTAssetLib.TinyBloom.Value.Size() / 2, 1f, SpriteEffects.None);
-            Main.EntitySpriteDraw(DTAssetLib.TinyBloom.Value, Projectile.Center - Main.screenPosition, null, Color.Red, Projectile.rotation, DTAssetLib.TinyBloom.Value.Size() / 2, 0.6f, SpriteEffects.None);
+            Main.EntitySpriteDraw(DTAssetLib.TinyBloom.Value, Projectile.Center - Main.screenPosition, null, Color.Maroon with { A = 0 }, Projectile.rotation, DTAssetLib.TinyBloom.Value.Size() / 2, 1f, SpriteEffects.None);
+            Main.EntitySpriteDraw(DTAssetLib.TinyBloom.Value, Projectile.Center - Main.screenPosition, null, Color.Red with { A = 0 }, Projectile.rotation, DTAssetLib.TinyBloom.Value.Size() / 2, 0.6f, SpriteEffects.None);
             return false;
         }
 

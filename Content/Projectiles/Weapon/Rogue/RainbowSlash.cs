@@ -56,12 +56,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            for (int i = 0; i < 8; i++)
-            {
-                Spark spark = new();
-                spark.PrepareSpark(Projectile.Center, Projectile.velocity.RotatedBy(Main.rand.NextFloat(-1f, 1f)), Projectile.rotation, Main.DiscoColor, 1f, false, 60, SparkDrawMode.Additive, 2f);
-                ParticleEngine.BehindProjectiles.Add(spark);
-            }
+
         }
 
         public override void OnKill(int timeLeft)

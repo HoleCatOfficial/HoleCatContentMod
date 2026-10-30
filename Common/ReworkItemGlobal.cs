@@ -21,13 +21,18 @@ namespace DestroyerTest.Common
         public static string VanillaOverridePath = "DestroyerTest/Content/Extras/VanillaTextures";
         public override void Load()
         {
-            TextureAssets.Item[ItemID.BloodButcherer] = ModContent.Request<Texture2D>(VanillaOverridePath + "/BloodButcherer");
-			TextureAssets.Item[ItemID.Zenith] = TextureAssets.Projectile[ProjectileID.FinalFractal] = ModContent.Request<Texture2D>(VanillaOverridePath + "/Zenith");
-		}
+            
+        }
         public override bool InstancePerEntity => true;
 
         public override void SetStaticDefaults()
         {
+            if (DTVanillaChangesConfig.instance.Resprites)
+            {
+                TextureAssets.Item[ItemID.BloodButcherer] = ModContent.Request<Texture2D>(VanillaOverridePath + "/BloodButcherer");
+                TextureAssets.Item[ItemID.Zenith] = TextureAssets.Projectile[ProjectileID.FinalFractal] = ModContent.Request<Texture2D>(VanillaOverridePath + "/Zenith");
+            }
+
             if (ModLoader.HasMod("QoLCompendium"))
             {
                 ItemID.Sets.ShimmerTransformToItem[ItemID.BeeKeeper] = ModContent.ItemType<ScepterOfVespae>();

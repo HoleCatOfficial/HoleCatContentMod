@@ -28,5 +28,30 @@ namespace DestroyerTest.Common.DropRules
             return Description.Value;
         }
     }
+
+    public class NotExpertDropRuleCondition : IItemDropRuleCondition
+    {
+        public static LocalizedText Description;
+
+        public NotExpertDropRuleCondition()
+        {
+            Description ??= Language.GetOrRegister("Mods.DestroyerTest.DropConditions.NotExpert");
+        }
+
+        public bool CanDrop(DropAttemptInfo info)
+        {
+            return !Main.expertMode;
+        }
+
+        public bool CanShowItemDropInUI()
+        {
+            return !Main.expertMode;
+        }
+
+        public string GetConditionDescription()
+        {
+            return Description.Value;
+        }
+    }
 }
 
