@@ -73,8 +73,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
             DTTrail.DrawTrail(Main.spriteBatch, DTAssetLib.Streak(8, true).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 10f, color, 0f);
 
-            Main.EntitySpriteDraw(DTAssetLib.SparkSmoothThin.Value, Projectile.Center - Main.screenPosition, null, color with { A = 0 }, 0f, DTAssetLib.SparkSmoothThin.Value.Size() / 2, new Vector2(Scl, 0.5f) * 0.3f, SpriteEffects.None);
-            Main.EntitySpriteDraw(DTAssetLib.SparkSmoothThin.Value, Projectile.Center - Main.screenPosition, null, Color.White with { A = 0 }, 0f, DTAssetLib.SparkSmoothThin.Value.Size() / 2, new Vector2(Scl, 0.5f) * 0.15f, SpriteEffects.None);
+            Main.EntitySpriteDraw(DTAssetLib.SparkSmoothThin.Value, Projectile.Center - Main.screenPosition, null, color with { A = 0 }, 0f, DTAssetLib.SparkSmoothThin.Value.Size() / 2, new Vector2(Scl * 1.4f, 0.5f) * 0.15f, SpriteEffects.None);
+            Main.EntitySpriteDraw(DTAssetLib.SparkSmoothThin.Value, Projectile.Center - Main.screenPosition, null, Color.White with { A = 0 }, 0f, DTAssetLib.SparkSmoothThin.Value.Size() / 2, new Vector2(Scl * 1.4f, 0.5f) * 0.07f, SpriteEffects.None);
 
             Main.EntitySpriteDraw(DTAssetLib.SparkSmoothThin.Value, Projectile.Center - Main.screenPosition, null, color with { A = 0 }, MathHelper.PiOver2, DTAssetLib.SparkSmoothThin.Value.Size() / 2, new Vector2(Scl, 0.5f) * 0.15f, SpriteEffects.None);
             Main.EntitySpriteDraw(DTAssetLib.SparkSmoothThin.Value, Projectile.Center - Main.screenPosition, null, Color.White with { A = 0 }, MathHelper.PiOver2, DTAssetLib.SparkSmoothThin.Value.Size() / 2, new Vector2(Scl, 0.5f) * 0.07f, SpriteEffects.None);
@@ -173,8 +173,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
             DTTrail.DrawTrail(Main.spriteBatch, DTAssetLib.Streak(8, true).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 10f, color, 0f);
 
-            Main.EntitySpriteDraw(DTAssetLib.SparkSmoothThin.Value, Projectile.Center - Main.screenPosition, null, color with { A = 0 }, 0f, DTAssetLib.SparkSmoothThin.Value.Size() / 2, new Vector2(Scl, 0.5f) * 0.3f, SpriteEffects.None);
-            Main.EntitySpriteDraw(DTAssetLib.SparkSmoothThin.Value, Projectile.Center - Main.screenPosition, null, Color.White with { A = 0 }, 0f, DTAssetLib.SparkSmoothThin.Value.Size() / 2, new Vector2(Scl, 0.5f) * 0.15f, SpriteEffects.None);
+            Main.EntitySpriteDraw(DTAssetLib.SparkSmoothThin.Value, Projectile.Center - Main.screenPosition, null, color with { A = 0 }, 0f, DTAssetLib.SparkSmoothThin.Value.Size() / 2, new Vector2(Scl, 0.5f) * 0.15f, SpriteEffects.None);
+            Main.EntitySpriteDraw(DTAssetLib.SparkSmoothThin.Value, Projectile.Center - Main.screenPosition, null, Color.White with { A = 0 }, 0f, DTAssetLib.SparkSmoothThin.Value.Size() / 2, new Vector2(Scl, 0.5f) * 0.07f, SpriteEffects.None);
 
             Main.EntitySpriteDraw(DTAssetLib.SparkSmoothThin.Value, Projectile.Center - Main.screenPosition, null, color with { A = 0 }, MathHelper.PiOver2, DTAssetLib.SparkSmoothThin.Value.Size() / 2, new Vector2(Scl, 0.5f) * 0.15f, SpriteEffects.None);
             Main.EntitySpriteDraw(DTAssetLib.SparkSmoothThin.Value, Projectile.Center - Main.screenPosition, null, Color.White with { A = 0 }, MathHelper.PiOver2, DTAssetLib.SparkSmoothThin.Value.Size() / 2, new Vector2(Scl, 0.5f) * 0.07f, SpriteEffects.None);

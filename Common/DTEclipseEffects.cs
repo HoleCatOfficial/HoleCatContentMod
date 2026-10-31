@@ -28,7 +28,7 @@ namespace DestroyerTest.Common
     {
         public override bool IsSceneEffectActive(Player player)
         {
-            return Main.eclipse;
+            return Main.eclipse && DTMusicConfig.instance.ReplaceVanillaTracks;
         }
 
         public override int Music => MusicLoader.GetMusicSlot("DestroyerTest/Assets/Music/SolarEclipse");

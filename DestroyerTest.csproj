@@ -71,6 +71,10 @@
 		<Reference Include="BreadLibrary">
 			<HintPath>lib\BreadLibrary.dll</HintPath>
 		</Reference>
+
+		<Reference Include="SoulsBossRushMod">
+			<HintPath>lib\SoulsBossRushMod.dll</HintPath>
+		</Reference>
 	</ItemGroup>
 
 	<ItemGroup>

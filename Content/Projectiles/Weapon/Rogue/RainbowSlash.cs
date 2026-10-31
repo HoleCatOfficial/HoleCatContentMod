@@ -44,6 +44,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Rogue
         public override bool PreDraw(ref Color lightColor)
         {
             Main.EntitySpriteDraw(DTAssetLib.SparkSmoothThin.Value, Projectile.Center - Main.screenPosition, null, Main.DiscoColor, Projectile.rotation, DTAssetLib.SparkSmoothThin.Value.Size() / 2, 0.3f, SpriteEffects.None);
+            Main.EntitySpriteDraw(DTAssetLib.SparkSmoothThin.Value, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, DTAssetLib.SparkSmoothThin.Value.Size() / 2, 0.15f, SpriteEffects.None);
             return true;
         }
 

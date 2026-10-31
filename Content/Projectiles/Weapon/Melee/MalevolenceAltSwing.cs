@@ -44,7 +44,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             SweepHighlightColor = ColorLib.Wretched2;
             UsesDefaultSweepFX = true;
             UsesFireSweepFX = true;
-            SweepScale = 0.5f;
+            SweepScale = 1.2f;
             SwingSpeed = 0.12f;
             WaitTimeMultiplier = 3.2f;
             RightClickDependant = true;

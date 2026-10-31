@@ -27,7 +27,7 @@ namespace DestroyerTest.Content.MeleeWeapons
 			Item.height = 76;
 			Item.value = Item.sellPrice(gold: 2, silver: 50);
 			Item.rare = ModContent.RarityType<HeliciteRarity>();
-			Item.UseSound = DTAssetLib.SwordSounds.StandardSwing with { Pitch = 1.4f, PitchVariance = 0.1f, MaxInstances = 0 };
+			Item.UseSound = DTAssetLib.SwordSounds.StandardSwing with { Pitch = 1.4f, PitchVariance = 0.4f, MaxInstances = 0, Volume = 0.7f };
 			Item.useTime = 7;
 			Item.useAnimation = 7;
 			Item.useStyle = ItemUseStyleID.Shoot;

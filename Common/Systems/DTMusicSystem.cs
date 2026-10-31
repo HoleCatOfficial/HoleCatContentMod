@@ -93,6 +93,12 @@ internal class MusicDisplayCalls : ModSystem
         AddMusic("Assets/Music/TenebrisCorruption", "TenebrisCorruption", "Author1", FranciumColors);
         AddMusic("Assets/Music/DTShimmerMusic", "Shimmer", "Author1", FranciumColors);
         AddMusic("Assets/Music/UnfinishedBoss", "BetaBoss", "Author2", ZantasColors);
+        AddMusic("Assets/Music/SolarEclipse", "SolarEclipse", "Author1", FranciumColors);
+
+        AddMusic("Assets/Music/BloodMoon/BloodMoonTier1", "BloodMoonTier1", "Author1", FranciumColors);
+        AddMusic("Assets/Music/BloodMoon/BloodMoonTier2", "BloodMoonTier2", "Author1", FranciumColors);
+        AddMusic("Assets/Music/BloodMoon/BloodMoonTier3", "BloodMoonTier3", "Author1", FranciumColors);
+
 
         //Rift Biome
         AddMusic_Rift("Assets/Music/RiftV2", "Rift.Surface", "Author1");

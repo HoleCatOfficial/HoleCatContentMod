@@ -1,5 +1,6 @@
 
 using System;
+using BreadLibrary.Core.Graphics.Pixelation;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Particles;
@@ -107,51 +108,55 @@ namespace DestroyerTest.Content.Equips
         }
     }
 
-	public class TenebrousArchmageDrawLayer : PlayerDrawLayer
+    internal sealed class TenebrousArchmageRingPixelDrawer : IPlayerPixelatedDrawer
     {
 
-        public override bool GetDefaultVisibility(PlayerDrawSet drawInfo) {
-			Player player = drawInfo.drawPlayer;
-			bool scepterActive = player.TryGetModPlayer<TenebrisScepterPlayer>(out var Scepter) && Scepter.Active;
-			bool magicActive = player.TryGetModPlayer<TenebrisMagicPlayer>(out var Magic) && Magic.Active;
-			return scepterActive || magicActive;
-		}
-        public override Position GetDefaultPosition() => new BeforeParent(PlayerDrawLayers.FrozenOrWebbedDebuff);
+        PixelLayer IPlayerPixelatedDrawer.PixelLayer => PixelLayer.AboveNPCs;
 
-        protected override void Draw(ref PlayerDrawSet drawInfo) 
+		void IPlayerPixelatedDrawer.DrawPixelated(Player player, SpriteBatch spriteBatch)
         {
-            Player player = drawInfo.drawPlayer;
-			bool scepterActive = player.TryGetModPlayer<TenebrisScepterPlayer>(out var Scepter) && Scepter.Active;
-			bool magicActive = player.TryGetModPlayer<TenebrisMagicPlayer>(out var Magic) && Magic.Active;
-			if (scepterActive && drawInfo.shadow == 0)
-            {
-                DrawRuneRing(ref drawInfo, 1f, 0.25f, Scepter.Rot);
-            }
-			if (magicActive && drawInfo.shadow == 0)
-            {
-                DrawRuneRing(ref drawInfo, 1f, 0.25f, Magic.Rot);
-            }
-		}
-
-        private void DrawRuneRing(ref PlayerDrawSet drawInfo, float Opacity = 1f, float Scale = 1f, float Rotation = 0f)
-        {
-            var Tex = DTAssetLib.RuneCircle.Value;
-
-			var position = drawInfo.Center - Main.screenPosition;
-			position = new Vector2((int)position.X, (int)position.Y);
-
-            drawInfo.DrawDataCache.Add(new DrawData(
-				Tex,
-				position,
-				null,
-				Color.White with {A = 0} * Opacity,
-				Rotation,
-				Tex.Size() * 0.5f,
-				Scale,
-				SpriteEffects.None,
-				0
-			));
+			DrawRuneRing(player);
         }
 
+		float rot = 0f;
+        private void DrawRuneRing(Player player)
+        {
+            var Tex = DTAssetLib.RuneCircle.Value;
+			rot += 0.06f;
+
+            var position = player.MountedCenter - Main.screenPosition;
+
+            Main.EntitySpriteDraw(Tex, position, null, Color.White with { A = 0 }, rot, Tex.Size() * 0.5f, 0.3f, SpriteEffects.None, 0);
+        }
+
+        bool IPlayerPixelatedDrawer.IsActive(Player player)
+        {
+            bool scepterActive = player.TryGetModPlayer<TenebrisScepterPlayer>(out var Scepter) && Scepter.Active;
+            bool magicActive = player.TryGetModPlayer<TenebrisMagicPlayer>(out var Magic) && Magic.Active;
+			return !player.dead && (scepterActive || magicActive);
+        }
+    }
+
+    [Autoload(Side = ModSide.Client)]
+    internal sealed class TenebrousArchmageRingPixelLoader : ModSystem
+    {
+        private static TenebrousArchmageRingPixelDrawer drawer;
+
+        public override void Load()
+        {
+            if (Main.dedServ)
+                return;
+
+            drawer = new TenebrousArchmageRingPixelDrawer();
+            PlayerPixelRegistry.Register(drawer);
+        }
+
+        public override void Unload()
+        {
+            if (!Main.dedServ && drawer is not null)
+                PlayerPixelRegistry.Unregister(drawer);
+
+            drawer = null;
+        }
     }
 }

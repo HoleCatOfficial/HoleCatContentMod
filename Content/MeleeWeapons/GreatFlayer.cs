@@ -1,5 +1,6 @@
 
 using DestroyerTest.Common;
+using DestroyerTest.Content.Magic;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Weapon.Melee;
 using DestroyerTest.Content.Remnants;
@@ -26,7 +27,7 @@ namespace DestroyerTest.Content.MeleeWeapons
 
 			if (ModLoader.HasMod("QoLCompendium"))
 			{
-                ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<RibChainsaw>();
+                ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<FleshVolley>();
             }
         }
 		public override void SetDefaults() 

@@ -48,6 +48,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         {
             Color color = OpusColorUtils.MultiLerp(Opus.Sine(1f, 0f), ColorLib.HeliciteColorMap);
             Main.EntitySpriteDraw(DTAssetLib.SparkSmoothThin.Value, (Projectile.Center + new Vector2(50f, 4 * Owner.direction).RotatedBy(Projectile.rotation - MathHelper.PiOver4)) - Main.screenPosition, null, color with { A = 0 }, Projectile.rotation - MathHelper.PiOver4, DTAssetLib.SparkSmoothThin.Value.Size() / 2, new Vector2(0.25f, 0.2f) * Projectile.scale, SpriteEffects.None);
+            Main.EntitySpriteDraw(DTAssetLib.SparkSmoothThin.Value, (Projectile.Center + new Vector2(50f, 4 * Owner.direction).RotatedBy(Projectile.rotation - MathHelper.PiOver4)) - Main.screenPosition, null, Color.White with { A = 0 }, Projectile.rotation - MathHelper.PiOver4, DTAssetLib.SparkSmoothThin.Value.Size() / 2, new Vector2(0.25f, 0.2f) * Projectile.scale * 0.6f, SpriteEffects.None);
 
             SpriteEffects Fx = Owner.direction == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
             float RotOffset = Owner.direction == 1 ? 0f : (MathHelper.PiOver2);
@@ -79,6 +80,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Projectile.rotation = (Owner.MountedCenter.DirectionTo(EndPoint)).ToRotation() + MathHelper.PiOver4;
 
             Projectile.Center = Vector2.Lerp(Owner.MountedCenter, EndPoint, visualProgress);
+
+            Lighting.AddLight(Projectile.Center, OpusColorUtils.MultiLerp(Opus.Sine(1f, 0f), ColorLib.HeliciteColorMap).ToVector3());
 
             if (progress >= 1f)
             {

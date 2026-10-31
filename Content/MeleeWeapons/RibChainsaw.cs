@@ -29,6 +29,8 @@ namespace DestroyerTest.Content.MeleeWeapons
             {
                 ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<WyvernTail>();
             }
+
+
 			ItemID.Sets.IsChainsaw[Type] = true;
         }
         public const int HoldoutDistance = 45;

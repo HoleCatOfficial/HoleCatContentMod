@@ -188,7 +188,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
             return averageLengthSample / NumSamplePoints;
         }
 
-        public float length = 2000f;
+        public float length = 8000f;
 
         public override void AI()
         {
@@ -236,7 +236,6 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
 
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
-            float length = 2000f; // however long your laser should be
 
             Vector2 start = Projectile.Center;
 

@@ -1759,10 +1759,10 @@ RiftElectrifier: {
 
 HeliciteShank: {
 	Tooltip:
-	'''
-	Jabs rapidly and inaccurately at the cursor.
-	Hits create small homing sparkles.
-	'''
+		'''
+		Jabs rapidly and inaccurately at the cursor.
+		Hits create small homing sparkles.
+		'''
 	DisplayName: Helicite Shank
 }
 
@@ -2848,7 +2848,11 @@ MalevolenceMantra: {
 
 Malevolence: {
 	DisplayName: Malevolence
-	Tooltip: Hits inflict cursed inferno.
+	Tooltip:
+		'''
+		Hits inflict cursed inferno.
+		Right click to swing in a larger radius and create homing darts.
+		'''
 }
 
 ShiningObelisk: {
@@ -5822,5 +5826,15 @@ TheAlkahest: {
 		Increases knockback and speed of melee weapons.
 		12% increased true melee damage.
 		Melee hits inflict Fusion Burn.
+		'''
+}
+
+FleshVolley: {
+	DisplayName: Book of Gore
+	Tooltip:
+		'''
+		Creates a volley of 5 gravity-affected flesh bombs.
+		Each one has a 50% chance to ignore gravity and home in on enemies.
+		Bombs explode in a large radius on contact.
 		'''
 }

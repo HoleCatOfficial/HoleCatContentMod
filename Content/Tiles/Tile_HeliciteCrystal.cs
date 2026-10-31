@@ -101,9 +101,9 @@ namespace DestroyerTest.Content.Tiles
 				float DistanceMult = MathHelper.Lerp(0f, 1f, distance / 160f);
 
 				float Modifier = Opus.Sine(0.25f, 0.05f) * DistanceMult;
-				r = (color.R * 0.05f) * Modifier;
-				g = (color.G * 0.05f) * Modifier;
-				b = (color.B * 0.05f) * Modifier;
+				r = (color.R * 0.006f) * Modifier;
+				g = (color.G * 0.006f) * Modifier;
+				b = (color.B * 0.006f) * Modifier;
 			}
 			else
 			{

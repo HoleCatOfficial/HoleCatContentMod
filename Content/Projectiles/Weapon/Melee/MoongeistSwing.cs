@@ -46,7 +46,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Glowmask = ModContent.Request<Texture2D>($"{Texture}_Glow");
         }
 
-        public override SoundStyle Swing => DTAssetLib.SwordSounds.MagicSwing with { Pitch = LastSwing == -1 ? -0.3f : 0f, PitchVariance = 0.1f, MaxInstances = 0 };
+        public override SoundStyle Swing => new SoundStyle(DTAssetLib.AudioPath + "/MoongeistSwing", 3) with { Pitch = LastSwing == -1 ? -0.3f : 0f, PitchVariance = 0.1f, MaxInstances = 0 };
 
         public override void HitNPCEffects(NPC npc, NPC.HitInfo hit, int damageDone)
         {
@@ -55,7 +55,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
             if (DTConfig.instance.ScreenshakeEffects)
             {
-                ScreenShakeSystem.ShakeAt(npc.Center, 7f, 20);
+                ScreenShakeSystem.ShakeAt(npc.Center, 7f, 60);
             }
 
             for (int i = 0; i < 12; i++)
@@ -80,7 +80,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Lighting.AddLight(Projectile.Center, Color.Aquamarine.ToVector3());
             Lighting.AddLight(npc.Center, Color.Aquamarine.ToVector3());
 
-            SoundEngine.PlaySound(DTAssetLib.Impacts.MagicHit with { MaxInstances = 0, PitchVariance = 0.6f, Variants = new(3) }, npc.Center);
+            SoundEngine.PlaySound(DTAssetLib.Impacts.MagicHit with { MaxInstances = 0, Pitch = 0.3f, PitchVariance = 0.6f, Variants = new(3) }, npc.Center);
            // SoundEngine.PlaySound(DTAssetLib.Impacts.WindHit with { MaxInstances = 0, PitchVariance = 0.4f, Pitch = -0.3f }, npc.Center);
         }
 

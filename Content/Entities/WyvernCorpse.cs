@@ -761,50 +761,53 @@ namespace DestroyerTest.Content.Entities
 
             CanDie = DeathTimer >= 301;
 
-            if (DestroyerTestMod.EternityIsActive || DestroyerTestMod.DeathIsActive)
+            if (!DTUtils.CalamityBossRushActive() && !FargoRushCompatibilitySystem.FargoRushActive)
             {
-                if (NPC.life <= NPC.lifeMax * 0.01f)
+                if (DestroyerTestMod.EternityIsActive || DestroyerTestMod.DeathIsActive)
                 {
-                    DeathTimer++;
-                    if (CanDie)
+                    if (NPC.life <= NPC.lifeMax * 0.01f)
                     {
-                        NPC.dontTakeDamage = false;
-                        NPC.StrikeInstantKill();
-                    }
-                    else
-                    {
-
-                        AITimer = 0;
-                        CurrentAttack = attackType.Follow;
-                        NPC.aiStyle = -1;
-                        NPC.dontTakeDamage = true;
-                        NPC.life = (int)(NPC.lifeMax * 0.01f);
-
-                        if (DeathTimer == 1)
+                        DeathTimer++;
+                        if (CanDie)
                         {
-                            StoredVolume = Main.musicVolume;
-                            SoundEngine.PlaySound(new SoundStyle(DTAssetLib.AudioFolder.Corpse + "/Death") { PauseBehavior = PauseBehavior.PauseWithGame, MaxInstances = 1 });
+                            NPC.dontTakeDamage = false;
+                            NPC.StrikeInstantKill();
+                        }
+                        else
+                        {
 
-                            foreach (Projectile proj in Main.projectile)
+                            AITimer = 0;
+                            CurrentAttack = attackType.Follow;
+                            NPC.aiStyle = -1;
+                            NPC.dontTakeDamage = true;
+                            NPC.life = (int)(NPC.lifeMax * 0.01f);
+
+                            if (DeathTimer == 1)
                             {
-                                if (proj.active && DTUtils.OwnedByBossNPC[proj.type] == Type)
+                                StoredVolume = Main.musicVolume;
+                                SoundEngine.PlaySound(new SoundStyle(DTAssetLib.AudioFolder.Corpse + "/Death") { PauseBehavior = PauseBehavior.PauseWithGame, MaxInstances = 1 });
+
+                                foreach (Projectile proj in Main.projectile)
                                 {
-                                    proj.active = false;
+                                    if (proj.active && DTUtils.OwnedByBossNPC[proj.type] == Type)
+                                    {
+                                        proj.active = false;
+                                    }
+                                }
+
+                                if (player.HasBuff<SoulInferno>())
+                                {
+                                    player.ClearBuff(ModContent.BuffType<SoulInferno>());
                                 }
                             }
 
-                            if (player.HasBuff<SoulInferno>())
-                            {
-                                player.ClearBuff(ModContent.BuffType<SoulInferno>());
-                            }
+                            NPC.velocity *= 0.97f;
+                            FlashOpacity = MathHelper.Lerp(0f, 1f, (float)DeathTimer / 300f);
+                            ScrollBackColor = Color.Lerp(ColorLib.Soul3, ColorLib.Soul, (float)DeathTimer / 300f);
+                            Main.musicVolume = MathHelper.Lerp(StoredVolume, 0, (float)DeathTimer / 300f);
                         }
 
-                        NPC.velocity *= 0.97f;
-                        FlashOpacity = MathHelper.Lerp(0f, 1f, (float)DeathTimer / 300f);
-                        ScrollBackColor = Color.Lerp(ColorLib.Soul3, ColorLib.Soul, (float)DeathTimer / 300f);
-                        Main.musicVolume = MathHelper.Lerp(StoredVolume, 0, (float)DeathTimer / 300f);
                     }
-
                 }
             }
              
@@ -850,7 +853,7 @@ namespace DestroyerTest.Content.Entities
             }
             if ((DestroyerTestMod.EternityIsActive || DestroyerTestMod.DeathIsActive) && !DestroyerTestMod.MasochistIsActive)
             {
-                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/MasoWyvern");
+                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/WyvEtern");
             }
             if (DestroyerTestMod.MasochistIsActive)
             {
@@ -1713,7 +1716,7 @@ namespace DestroyerTest.Content.Entities
                 {
                     if (Main.musicVolume < storedVolume)
                     {
-                        Main.musicVolume += 0.0001f;
+                        Main.musicVolume += 0.001f;
                     }
                 }
             }
@@ -1750,7 +1753,7 @@ namespace DestroyerTest.Content.Entities
             NPC.damage = 25;
             NPC.defense = 50;
             NPC.lifeMax = 20000;
-            if (DTUtils.CalamityBossRushActive())
+            if (DTUtils.CalamityBossRushActive() || FargoRushCompatibilitySystem.FargoRushActive)
             {
                 NPC.lifeMax = 900000;
                 NPC.defense = 60;
@@ -1877,17 +1880,7 @@ namespace DestroyerTest.Content.Entities
             switch (currentState)
             {
                 case AIState.Idle:
-                    if (DestroyerTestMod.EternityIsActive)
-                    {
-                        if (--AwakenTimer <= 0)
-                        {
-                            if (Main.rand.NextBool(5))
-                            {
-                                AwakenTimer = 1200;
-                                currentState = AIState.CrystalX;
-                            }
-                        }
-                    }
+                
                     break;
                 case AIState.Pikes:
                     {

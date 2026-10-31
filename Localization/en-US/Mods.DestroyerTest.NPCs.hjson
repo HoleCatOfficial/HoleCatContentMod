@@ -281,11 +281,13 @@ TenebrousConstruct: {
 	FightDialogue18: I can keep coming back with more and more power.
 	FightDialogue19: As many times as necessary...
 	FightDialogue20: Ow Im dead
+	KilledPlayer0: HA!
 	KilledPlayer1: Eat it!
 	KilledPlayer2: Suck it, brat!
 	KilledPlayer3: Thanks for finally getting out of my way!
 	KilledPlayer4: Hahahaha!!!
 	KilledPlayer5: Die! Die! Die!
+	KilledPlayer_SecondHalf0: Goodness! Gave me a workout!
 	KilledPlayer_SecondHalf1: Finally!
 	KilledPlayer_SecondHalf2: God, you take a long time to kill!
 	KilledPlayer_SecondHalf3: Wasting my time...

@@ -35,7 +35,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Projectile.width = 68;
             Projectile.height = 68;
             SweepColor = ColorLib.IchorCrystal2;
-            SweepScale = 1.2f;
+            SweepScale = 1.4f;
+            SwingSpeed = 0.22f;
 
             Glowmask = ModContent.Request<Texture2D>($"{Texture}_Glow");
         }
@@ -104,7 +105,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             }
 
             ScaleMult = 1.25f;
-            SparkEdge(Main.player[Projectile.owner], 1f, ColorLib.IchorCrystal3);
+            //SparkEdge(Main.player[Projectile.owner], 1f, ColorLib.IchorCrystal3);
         }
     }
 }

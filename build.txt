@@ -3,6 +3,6 @@ author = HoleCat and Shadey
 version = 2.1.7302
 modReferences = OpusLib, GlowmaskHelper, BreadLibrary
 dependencies = OpusLib, GlowmaskHelper, BreadLibrary
-weakReferences = FargowiltasSouls, Fargowiltas, ConstellationsOfOrion
+weakReferences = FargowiltasSouls, Fargowiltas, ConstellationsOfOrion, SoulsBossRushMod
 playableOnPreview = true
 homepage = https://linktr.ee/HoleCat

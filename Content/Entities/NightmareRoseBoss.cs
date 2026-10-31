@@ -144,7 +144,7 @@ namespace DestroyerTest.Content.Entities
                 NPC.lifeMax = 700000;
                 NPC.defense = 70;
             }
-            if (DTUtils.CalamityBossRushActive())
+            if (DTUtils.CalamityBossRushActive() || FargoRushCompatibilitySystem.FargoRushActive)
             {
                 NPC.lifeMax = 1000000;
                 NPC.defense = 120;
@@ -1149,7 +1149,7 @@ namespace DestroyerTest.Content.Entities
 
             SetChances(currentState);
 
-            if (currentState != AttackState.Desperation && currentState != AttackState.KillIdle)
+            if (currentState != AttackState.Desperation && currentState != AttackState.KillIdle && currentState != AttackState.SpawnIdle )
             {
                 if (Main.rand.NextBool(1200))
                 {
@@ -1431,7 +1431,7 @@ namespace DestroyerTest.Content.Entities
 
             IdleFX();
 
-            if (!DTUtils.CalamityBossRushActive())
+            if (!DTUtils.CalamityBossRushActive() && !FargoRushCompatibilitySystem.FargoRushActive)
             {
                 ModifyMusic();
             }
@@ -1465,7 +1465,7 @@ namespace DestroyerTest.Content.Entities
                         NPC.dontTakeDamage = true;
                         ShouldCenterCameraOnNPC = true;
                         player.channel = false;
-                        player.moveSpeed *= 0;
+                        player.SetCCed();
                         if (SpawnCount <= 0)
                         {
                             SoundEngine.PlaySound(SpawnIdle, NPCHead);
@@ -2937,7 +2937,7 @@ namespace DestroyerTest.Content.Entities
             NPC.defense = 16;
             NPC.lifeMax = 16000;
 
-            if (DTUtils.CalamityBossRushActive())
+            if (DTUtils.CalamityBossRushActive() || FargoRushCompatibilitySystem.FargoRushActive)
             {
                 NPC.lifeMax = 400000;
                 NPC.defense = 60;

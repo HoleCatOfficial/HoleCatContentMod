@@ -76,7 +76,7 @@ namespace DestroyerTest.Content.Equips
         {
             if (Active)
 			{
-				reduce -= (int)(item.mana * 0.84f);
+				reduce -= 0.16f;
 			}
         }
     }
