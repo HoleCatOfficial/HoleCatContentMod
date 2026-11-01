@@ -20,7 +20,9 @@ namespace DestroyerTest.Common.Systems
     public class FargoRushCompatibilitySystem : ModSystem
     {
         [JITWhenModsEnabled("SoulsBossRushMod")]
-        public static bool FargoRushActive => ModLoader.HasMod("SoulsBossRushMod") ? BossRushSystem.BossRushIsActive : false;
+        public bool active => BossRushSystem.BossRushIsActive;
+
+        public static bool FargoRushActive => ModLoader.HasMod("SoulsBossRushMod") ? ModContent.GetInstance<FargoRushCompatibilitySystem>().active : false;
 
         public override void PostSetupContent()
         {

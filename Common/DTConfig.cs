@@ -146,6 +146,9 @@ namespace DestroyerTest.Common
         [DefaultValue(true)]
         [ReloadRequired()]
         public bool Resprites { get; set; }
+
+        [DefaultValue(true)]
+        public bool NaturalFallDamageImmunity { get; set; }
     }
     
     public class DTConfigDataModifications : ModSystem

@@ -64,7 +64,7 @@ Conditions: {
 
 Configs: {
 	DTConfig: {
-		DisplayName: Main Config
+		DisplayName: "[i:1344] Main Config"
 
 		MinionExtrasToggle: {
 			Label: Minions Have Extra Effects
@@ -122,7 +122,7 @@ Configs: {
 	}
 
 	DTMusicConfig: {
-		DisplayName: Music Config
+		DisplayName: "[i:4715] Music Config"
 
 		NodeIdleMusic: {
 			Label: Nodes have Idle Music
@@ -141,7 +141,7 @@ Configs: {
 	}
 
 	DTOptimizationsConfig: {
-		DisplayName: Optimizations Config
+		DisplayName: "[i:18] Optimizations Config"
 
 		OptimizeGame: {
 			Label: General Optimizations
@@ -150,12 +150,12 @@ Configs: {
 
 		DisableExcessDusts: {
 			Label: Disable Excess Dusts
-			Tooltip: Dusts that exist solely for visuals will not be created.
+			Tooltip: Unnecessary Dusts will not be created.
 		}
 
 		DisableExcessParticles: {
 			Label: Disable Excess Particles
-			Tooltip: Particles that exist solely for visuals will not be created.
+			Tooltip: Unnecessary Particles will not be created.
 		}
 
 		DisableExcessTrails: {
@@ -165,7 +165,7 @@ Configs: {
 	}
 
 	DTUIConfig: {
-		DisplayName: UI Config
+		DisplayName: "[i:3611] UI Config"
 
 		RiftBarXPos: {
 			Label: Rift Charge Bar X Offset
@@ -198,7 +198,7 @@ Configs: {
 	}
 
 	DTVanillaChangesConfig: {
-		DisplayName: Vanilla Changes
+		DisplayName: "[i:4765] Vanilla Changes"
 
 		CobaltShieldRework: {
 			Label: "[i:156] Cobalt Shield Rework"
@@ -255,13 +255,23 @@ Configs: {
 				Talid is intended to be played with this enabled.
 				'''
 		}
+
+		NaturalFallDamageImmunity: {
+			Label: "[i:158] Natural Fall Damage Immunity"
+			Tooltip:
+				'''
+				Talid grants immunity to fall damage by default.
+				This renders multiple items useless such as the Lucky Horseshoe and its upgrades.
+				Talid's intended experience is not affected by this config.
+				'''
+		}
 	}
 }
 
 DropConditions: {
 	EternityMode: Eternity Mode
 	MasochistMode: Masochist Mode
-	EvilBiome: World Evil Biome.
-	ExpertOnly: Expert Mode.
-	NotExpert: Mods.DestroyerTest.DropConditions.NotExpert
+	EvilBiome: World Evil Biome
+	ExpertOnly: Expert Mode
+	NotExpert: Classic Mode
 }

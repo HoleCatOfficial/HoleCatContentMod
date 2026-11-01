@@ -20,14 +20,20 @@ namespace DestroyerTest.Content.Tiles.RoseGarden
             TileID.Sets.ChecksForMerge[Type] = true;
             TileID.Sets.BlockMergesWithMergeAllBlock[Type] = true;
             Main.tileBlockLight[Type] = true;
+            
             DustType = ModContent.DustType<SanctifiedBrickDust>();
             MineResist = 1.7f;
             MinPick = 200;
-
+            
             HitSound = SoundID.NPCHit2 with { Pitch = -2f, PitchVariance = 0.2f };
 
             LocalizedText name = CreateMapEntryName();
             AddMapEntry(new Color(79, 47, 81), name);
+        }
+
+        public override bool CanExplode(int i, int j)
+        {
+            return false;
         }
     }
 }
