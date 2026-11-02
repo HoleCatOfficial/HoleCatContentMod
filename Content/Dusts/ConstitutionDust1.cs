@@ -1,16 +1,13 @@
-using System.Runtime.CompilerServices;
 using DestroyerTest.Common;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using ReLogic.Content;
 using Terraria;
-using Terraria.GameContent;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Dusts
 {
-	public class ConstitutionDust1 : ModDust
+    public class ConstitutionDust1 : ModDust
     {
         public override void OnSpawn(Dust dust)
         {
@@ -34,7 +31,7 @@ namespace DestroyerTest.Content.Dusts
             dust.scale *= 0.98f;
             dust.rotation += 0.1f * dust.velocity.X;
 
-            Lighting.AddLight(dust.position,  ColorLib.StellarFireGradientLooping().ToVector3() * dust.scale);
+            Lighting.AddLight(dust.position, ColorLib.StellarFireGradientLooping().ToVector3() * dust.scale);
             return false;
         }
 

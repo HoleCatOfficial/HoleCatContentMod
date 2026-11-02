@@ -1,11 +1,7 @@
-﻿using BreadLibrary.Core.Graphics.Pixelation;
-using BreadLibrary.Core.Graphics.Spritebatch;
-using BreadLibrary.Core.Utilities;
-using DestroyerTest.Common;
+﻿using DestroyerTest.Common;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
-using SDL2;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent.Drawing;
@@ -46,7 +42,7 @@ namespace DestroyerTest.Content.Tiles
             TileObjectData.newTile.StyleLineSkip = 2;
             TileObjectData.addTile(Type);
 
-            
+
 
             AddMapEntry(new Color(239, 216, 112), Language.GetText("Mods.DestroyerTest.Tiles.MemoryPedistal"));
         }
@@ -114,9 +110,9 @@ namespace DestroyerTest.Content.Tiles
         {
             Tile tile = Main.tile[i, j];
             p = new Point(i, j);
-           
 
-            
+
+
             r += 0.003f;
 
             float scl = Opus.Sine(1.3f, 0.5f);
@@ -157,14 +153,14 @@ namespace DestroyerTest.Content.Tiles
 
             Tile tile = Main.tile[i, j];
 
- 
+
 
             if (!TileDrawing.IsVisible(tile) || tile.TileFrameX != 36 || tile.TileFrameY % 36 != 0 || (int)Main.timeForVisualEffects % 7 != 0 || !Main.rand.NextBool(3))
             {
                 return;
             }
 
-            
+
 
             int MusicNote = Main.rand.Next(570, 573);
             Vector2 SpawnPosition = new Vector2(i * 16 + 8, j * 16 - 8);
@@ -183,9 +179,9 @@ namespace DestroyerTest.Content.Tiles
 
             Gore.NewGore(new EntitySource_TileUpdate(i, j), SpawnPosition, NoteMovement, MusicNote, 0.8f);
 
-            
+
         }
 
-        
+
     }
 }

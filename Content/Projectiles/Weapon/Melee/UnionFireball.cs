@@ -1,19 +1,15 @@
-﻿using BreadLibrary.Core.Graphics.Particles;
+﻿using System;
+using System.Linq;
+using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
 using BreadLibrary.Core.Graphics.Spritebatch;
 using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
 using DestroyerTest.Common.Interfaces;
 using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib.Content.Particles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -79,7 +75,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
         public override bool PreDraw(ref Color lightColor)
         {
-            
+
             Main.EntitySpriteDraw(DTUtils.CenteredDraw(Projectile, Color.White with { A = 0 }));
             return false;
         }
@@ -104,7 +100,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Projectile.rotation = Projectile.velocity.ToRotation();
             Timer++;
 
-            TSpeed = MathHelper.Lerp(1f, 20f, (float)Timer / 300f);
+            TSpeed = MathHelper.Lerp(1f, 20f, Timer / 300f);
 
             if (Timer < 20)
             {
@@ -138,7 +134,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/Corpse/FleshBombExplode") with { PitchVariance = 1.0f, MaxInstances = 0 }, Projectile.Center);
-            
+
             for (int i = 0; i < 5; i++)
             {
                 LerpingFire Fire = new();

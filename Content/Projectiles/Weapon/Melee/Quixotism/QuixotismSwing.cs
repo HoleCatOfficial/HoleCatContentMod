@@ -1,4 +1,3 @@
-using BreadLibrary.Core.Graphics;
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
@@ -6,22 +5,15 @@ using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Particles.Orchestrated;
 using DestroyerTest.Content.Projectiles.ParentClasses;
-using DestroyerTest.Content.Projectiles.Weapon.Rogue;
- 
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using OpusLib.Content.Helpers;
 using OpusLib.Content.Particles;
-using System;
-using System.Collections.Generic;
-using System.IO;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.GameContent;
-using Terraria.GameContent.Drawing;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Melee.Quixotism
@@ -108,7 +100,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee.Quixotism
                     Opus.RadialSpreadDustRandom(ModContent.DustType<ColorableNeonDust>(), 7, npc.Center, 0, new Color(255, 219, 6), 1f, 3);
                     npc.AddBuff(ModContent.BuffType<SoulInferno>(), 120);
 
-                  
+
 
                     QuixoticParticle FX = new();
                     FX.Initiate(Main.rand.NextVector2FromRectangle(npc.Hitbox));

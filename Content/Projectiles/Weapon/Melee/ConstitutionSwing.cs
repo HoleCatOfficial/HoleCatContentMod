@@ -1,32 +1,23 @@
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Particles.Stellar;
 using DestroyerTest.Content.Projectiles.ParentClasses;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using OpusLib.Content.Helpers;
-using System;
-using System.Collections.Generic;
-using System.IO;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.GameContent;
-using Terraria.GameContent.Drawing;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 {
 
-	public class ConstitutionSwing : BaseBroadswordProjectile
-	{
+    public class ConstitutionSwing : BaseBroadswordProjectile
+    {
         public override string Texture => "DestroyerTest/Content/MeleeWeapons/Constitution";
-	    public override void SetDefaults()
+        public override void SetDefaults()
         {
             base.SetDefaults();
             Projectile.width = 52;
@@ -43,7 +34,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         {
             npc.AddBuff(ModContent.BuffType<GalantineBurn>(), 600);
             SoundEngine.PlaySound(DTAssetLib.Impacts.ShortShine with { MaxInstances = 0, PitchVariance = 0.4f }, npc.Center);
-            
+
         }
 
         private void DrawSweepFX2()
@@ -110,7 +101,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 ConstitutionParticle FX = new();
                 FX.Initialize(ppt[Main.rand.Next(15)], SwordLine.GetLineRotation.ToRotationVector2() * 2, 0.5f, 30);
                 ParticleEngine.BehindProjectiles.Add(FX);
-              
+
             }
 
             ScaleMult = 1.25f;

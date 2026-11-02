@@ -1,9 +1,7 @@
 using System.Collections.Generic;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.Particles;
- 
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -44,7 +42,7 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
         {
             Projectile.frame = Main.rand.Next(1, 4);
         }
-        
+
         public List<Vector2> TrailPositions = new();
         public List<float> TrailRotations = new();
         public Color colorofLight = Color.White;
@@ -135,7 +133,7 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/TenebrisSlinger/TenebrisSlingerArrowImpact", 4) with { PitchVariance = 0.4f });
-          
+
         }
 
 
@@ -143,7 +141,7 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
             SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/TenebrisSlinger/TenebrisSlingerArrowImpact", 4) with { PitchVariance = 0.4f });
-          
+
             for (int i = 0; i < 5; i++)
             {
                 Dust dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, ModContent.DustType<TenebrisDarkmatterDust>());

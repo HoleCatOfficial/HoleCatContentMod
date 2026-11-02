@@ -1,21 +1,21 @@
-using Terraria;
-using Terraria.ModLoader;
-using Terraria.ID;
-using Microsoft.Xna.Framework;
-using DestroyerTest.Content.Buffs;
+using System;
 using DestroyerTest.Common;
+using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Dusts;
+using DestroyerTest.Content.Equips;
+using DestroyerTest.Content.Projectiles.EntitiesProjectiles;
+using DestroyerTest.Content.Resources;
+using DestroyerTest.Content.RiftBiome;
+using DestroyerTest.Content.RiftBiome.RiftSurfaceResources;
+using Microsoft.Xna.Framework;
+using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
-using System;
-using Terraria.Localization;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.RiftBiome.RiftSurfaceResources;
-using DestroyerTest.Content.Equips;
-using DestroyerTest.Content.RiftBiome;
-using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.Projectiles.EntitiesProjectiles;
+using Terraria.ID;
+using Terraria.Localization;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Entities
 {
@@ -54,18 +54,18 @@ namespace DestroyerTest.Content.Entities
         }
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
-		{
-            bool v = (ModContent.GetInstance<RiftSurface>().IsBiomeActive(spawnInfo.Player) || 
+        {
+            bool v = (ModContent.GetInstance<RiftSurface>().IsBiomeActive(spawnInfo.Player) ||
             ModContent.GetInstance<RiftUnderground>().IsBiomeActive(spawnInfo.Player) ||
             ModContent.GetInstance<RiftDesert>().IsBiomeActive(spawnInfo.Player) ||
             ModContent.GetInstance<RiftDesertUnderground>().IsBiomeActive(spawnInfo.Player) ||
             ModContent.GetInstance<RiftTundra>().IsBiomeActive(spawnInfo.Player));
-			if (v)
-			{
-				return 0.5f;
-			}
-			return 0f;
-		}
+            if (v)
+            {
+                return 0.5f;
+            }
+            return 0f;
+        }
 
         public override void AI()
         {
@@ -82,7 +82,8 @@ namespace DestroyerTest.Content.Entities
             float stepSpeed = 0.6f;
             float gfxOffY = 0f;
 
-            if (NPC.collideX && NPC.velocity.Y == 0f) {
+            if (NPC.collideX && NPC.velocity.Y == 0f)
+            {
                 Collision.StepUp(
                     ref NPC.position,
                     ref NPC.velocity,
@@ -93,7 +94,7 @@ namespace DestroyerTest.Content.Entities
                 );
                 NPC.gfxOffY = gfxOffY;
             }
-            
+
 
             switch (currentState)
             {
@@ -146,7 +147,7 @@ namespace DestroyerTest.Content.Entities
         private void UpdateZap()
         {
             NPC.velocity = Vector2.Zero;
-            
+
             UpdateFrames();
 
             if (stateTimer % 30 == 0)
@@ -175,12 +176,12 @@ namespace DestroyerTest.Content.Entities
 
             foreach (Player player in Main.player)
             {
-                
+
                 if (player.active && Vector2.Distance(NPC.Center, player.Center) <= radius)
                 {
                     player.AddBuff(ModContent.BuffType<HeliouricShock>(), 600);
                     int DamDir1 = (NPC.Center.X > player.Center.X) ? -1 : 1;
-                    player.Hurt(new PlayerDeathReason() { CustomReason = NetworkText.FromKey("Mods.DestroyerTest.NPCs.TeslaScuttler.ZapDeathReason")}, 20, 0, false, false, DamDir1, false, 10, 5, 6);
+                    player.Hurt(new PlayerDeathReason() { CustomReason = NetworkText.FromKey("Mods.DestroyerTest.NPCs.TeslaScuttler.ZapDeathReason") }, 20, 0, false, false, DamDir1, false, 10, 5, 6);
                 }
             }
 
@@ -190,7 +191,7 @@ namespace DestroyerTest.Content.Entities
                 {
                     npc.AddBuff(ModContent.BuffType<HeliouricShock>(), 600);
                     int DamDir2 = (NPC.Center.X > npc.Center.X) ? -1 : 1;
-                    NPC.HitInfo hit = new NPC.HitInfo { Crit = false, Damage = 20, HitDirection = DamDir2, Knockback = 3};
+                    NPC.HitInfo hit = new NPC.HitInfo { Crit = false, Damage = 20, HitDirection = DamDir2, Knockback = 3 };
                     npc.StrikeNPC(hit, false, true);
                 }
             }
@@ -210,7 +211,7 @@ namespace DestroyerTest.Content.Entities
             if (currentState == State.Burrowed)
             {
                 HitCount++;
-                for(int u = 0; u < 10; u++)
+                for (int u = 0; u < 10; u++)
                 {
                     Dust.NewDust(NPC.position, NPC.width, NPC.height, ModContent.DustType<RiftClayDust>(), Main.rand.NextFloat(-5, 5), -10, 0, default, 1.5f);
                 }

@@ -1,8 +1,5 @@
-using DestroyerTest.Common;
-using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Weapon.Magic;
- 
+
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
@@ -46,5 +43,5 @@ namespace DestroyerTest.Content.Magic
             Projectile.NewProjectile(source, position, velocity.RotatedBy(RotationOffset2), ModContent.ProjectileType<IchorNodeCrystalFriendly>(), damage, knockback);
             return false;
         }
-	}
+    }
 }

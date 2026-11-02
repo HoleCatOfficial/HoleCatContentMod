@@ -1,13 +1,6 @@
-﻿
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Content.Projectiles.Weapon.Melee;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.Resources.Cloths;
+﻿using DestroyerTest.Content.Projectiles.Weapon.Melee;
 using DestroyerTest.Rarity;
-using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 

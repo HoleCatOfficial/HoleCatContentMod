@@ -1,20 +1,19 @@
+using DestroyerTest.Content.Projectiles.Weapon.Magic;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.DataStructures;
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Content.Projectiles.Weapon.Magic;
 
 namespace DestroyerTest.Content.Magic
 {
-	public class KeeperStaff : ModItem
-	{
+    public class KeeperStaff : ModItem
+    {
         public override void SetStaticDefaults()
         {
             ItemID.Sets.AnimatesAsSoul[Type] = true;
-            Main.RegisterItemAnimation(Type, new DrawAnimationVertical(2, 8)); 
+            Main.RegisterItemAnimation(Type, new DrawAnimationVertical(2, 8));
         }
         public override void SetDefaults()
         {
@@ -39,7 +38,7 @@ namespace DestroyerTest.Content.Magic
 
             Item.shoot = ModContent.ProjectileType<KeeperSoulProj>();
         }
-        
+
 
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
@@ -65,4 +64,4 @@ namespace DestroyerTest.Content.Magic
             return true;
         }
     }
-} 
+}

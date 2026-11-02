@@ -1,18 +1,14 @@
+using System.Linq;
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
-using DestroyerTest.Content.BossBar;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Particles;
-using GlowmaskHelper.Content;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
 using ReLogic.Content;
-using System.Linq;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
-using Terraria.GameContent.Personalities;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -111,7 +107,7 @@ namespace DestroyerTest.Content.Entities
             NPC.netAlways = true;
             NPC.dontCountMe = true;
             NPC.hide = true;
-           
+
         }
 
         public override bool? DrawHealthBar(byte hbPosition, ref float scale, ref Vector2 position) => new bool?(false);
@@ -159,7 +155,7 @@ namespace DestroyerTest.Content.Entities
 
         public override bool CanHitPlayer(Player target, ref int cooldownSlot)
         {
-          
+
             if (Parent == null)
             {
                 return true;
@@ -217,14 +213,14 @@ namespace DestroyerTest.Content.Entities
             NPC.dontTakeDamage = Parent.dontTakeDamage;
             NPC.damage = Parent.damage;
 
-            
+
             if (!Main.npc[(int)NPC.ai[1]].active)
             {
                 NPC.life = 0;
                 NPC.HitEffect(0, 10.0);
                 NPC.active = false;
             }
-           
+
             if (NPC.position.X > Main.npc[(int)NPC.ai[1]].position.X) NPC.spriteDirection = 1;
             if (NPC.position.X < Main.npc[(int)NPC.ai[1]].position.X) NPC.spriteDirection = -1;
         }
@@ -237,7 +233,7 @@ namespace DestroyerTest.Content.Entities
                 return;
             }
 
-            float Progress = (float)Parent.life / (float)Parent.lifeMax;
+            float Progress = Parent.life / (float)Parent.lifeMax;
             Frame = (int)MathHelper.Lerp(5, 0, Progress);
 
             NPC.frame.Y = Frame * frameHeight;
@@ -253,7 +249,7 @@ namespace DestroyerTest.Content.Entities
             {
                 if (DestroyerTestMod.MasochistIsActive)
                 {
-                    
+
                     texture = NPC.GetMasoTexture("DestroyerTest/Content/Entities/MasoMode", "WyvernCorpseBody1");
                     Glowtexture = NPC.GetMasoTexture("DestroyerTest/Content/Entities/MasoMode", "WyvernCorpseBody1");
                 }
@@ -273,15 +269,15 @@ namespace DestroyerTest.Content.Entities
             }
 
             SetTex();
-            
+
 
             Vector2 origin = NPC.frame.Size() * 0.5f;
             Vector2 drawPos = new Vector2(NPC.position.X - Main.screenPosition.X + (NPC.width / 2) - texture.Value.Width * NPC.scale / 2f + origin.X * NPC.scale, NPC.position.Y - Main.screenPosition.Y + NPC.height - (texture.Value.Height / 6) * NPC.scale + 4f + origin.Y * NPC.scale + 56f);
-            
+
             if (anyNodesAlive)
             {
                 //Opus.DrawNPCShadowsRotating(NPC, 6, ColorLib.Ichor);
-                float rotationOffset = 0.3f * (float)NPC.direction;
+                float rotationOffset = 0.3f * NPC.direction;
                 WyvernCorpseHead.DrawHealingShadow(NPC, new Vector2(0f, 6), drawPos, ColorLib.Ichor, rotationOffset);
                 WyvernCorpseHead.DrawHealingShadow(NPC, new Vector2(0f, 0f - 6), drawPos, ColorLib.Ichor, rotationOffset);
                 WyvernCorpseHead.DrawHealingShadow(NPC, new Vector2(6, 0f), drawPos, ColorLib.Ichor, rotationOffset);
@@ -289,14 +285,14 @@ namespace DestroyerTest.Content.Entities
             }
 
 
-            
+
 
             SpriteEffects effects = SpriteEffects.None;
             if (NPC.spriteDirection == 1) effects = SpriteEffects.FlipHorizontally;
             spriteBatch.Draw(texture.Value, new Vector2(NPC.position.X - Main.screenPosition.X + (NPC.width / 2) - texture.Value.Width * NPC.scale / 2f + origin.X * NPC.scale, NPC.position.Y - Main.screenPosition.Y + NPC.height - (texture.Value.Height / 6) * NPC.scale + 4f + origin.Y * NPC.scale + 56f), NPC.frame, drawColor * NPC.Opacity, NPC.rotation, origin, NPC.scale, effects, 0f);
             spriteBatch.Draw(Glowtexture.Value, new Vector2(NPC.position.X - Main.screenPosition.X + (NPC.width / 2) - texture.Value.Width * NPC.scale / 2f + origin.X * NPC.scale, NPC.position.Y - Main.screenPosition.Y + NPC.height - (texture.Value.Height / 6) * NPC.scale + 4f + origin.Y * NPC.scale + 56f), NPC.frame, Color.White * NPC.Opacity, NPC.rotation, origin, NPC.scale, effects, 0f);
 
-            
+
             return false;
         }
 
@@ -322,10 +318,10 @@ namespace DestroyerTest.Content.Entities
                 return;
             }
 
-            float Progress = (float)Parent.life / (float)Parent.lifeMax;
+            float Progress = Parent.life / (float)Parent.lifeMax;
 
-            float FirstQuarterProgress = (float)NPC.life / (float)NPC.lifeMax / 4;
-            float LastQuarterProgress = (float)NPC.life / (float)NPC.lifeMax * 0.75f;
+            float FirstQuarterProgress = NPC.life / (float)NPC.lifeMax / 4;
+            float LastQuarterProgress = NPC.life / (float)NPC.lifeMax * 0.75f;
 
             //Crimstone dusts stop appearing below 25% health.
             if (Progress > 0.25f)
@@ -351,7 +347,7 @@ namespace DestroyerTest.Content.Entities
 
             if (!DestroyerTestMod.MasochistIsActive)
             {
-                float Progress = (float)Parent.life / (float)Parent.lifeMax;
+                float Progress = Parent.life / (float)Parent.lifeMax;
 
                 if (Progress > 0.5f)
                 {
@@ -424,6 +420,6 @@ namespace DestroyerTest.Content.Entities
             Main.instance.DrawCacheNPCsBehindNonSolidTiles.Add(index);
         }
 
-        
+
     }
 }

@@ -1,44 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Consumables;
+﻿using System.Collections.Generic;
 using DestroyerTest.Content.Equips;
 using DestroyerTest.Content.Equips.Cards;
 using DestroyerTest.Content.Lorebooks;
 using DestroyerTest.Content.Magic;
 using DestroyerTest.Content.MeleeWeapons;
-using DestroyerTest.Content.Projectiles.Weapon.Melee;
 using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.RogueItems;
+using DestroyerTest.Content.ThrowerItems;
 using DestroyerTest.Content.Tiles;
-using DestroyerTest.Content.Tiles.Altar;
 using DestroyerTest.Content.Tiles.RoseGarden;
 using DestroyerTest.Content.Tiles.RoseGarden.Flowers;
 using DestroyerTest.Content.Tiles.RoseGarden.Walls;
 using DestroyerTest.Content.Tiles.Walls;
 using DestroyerTest.Content.Tools;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using OpusLib;
-using ReLogic.Content;
-using ReLogic.Utilities;
-using SteelSeries.GameSense;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.GameContent;
 using Terraria.GameContent.Generation;
-using Terraria.GameContent.Tile_Entities;
-using Terraria.Graphics;
-using Terraria.Graphics.Effects;
 using Terraria.ID;
 using Terraria.IO;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.ModLoader.IO;
-using Terraria.UI;
 using Terraria.WorldBuilding;
 
 namespace DestroyerTest.Common.Systems
@@ -59,7 +42,7 @@ namespace DestroyerTest.Common.Systems
 
         public override void PostUpdateWorld()
         {
-            
+
             if (JustPressed(Keys.F))
             {
                 //VesperGenTest((int)Main.MouseWorld.X / 16, (int)Main.MouseWorld.Y / 16);
@@ -76,7 +59,7 @@ namespace DestroyerTest.Common.Systems
 
 
         }
-        
+
         void HeliciteGenTest(int x, int y)
         {
             int outerRadius = Main.rand.Next(8, 12);
@@ -107,11 +90,11 @@ namespace DestroyerTest.Common.Systems
             WorldUtils.Gen(new Point(x, y), Cavity);
 
             GenShapeActionPair Mound = new GenShapeActionPair(new Shapes.Mound(5, 3), new Actions.SetTileKeepWall((ushort)ModContent.TileType<Tile_Dreamstone>(), true, true));
-            WorldUtils.Gen(new Point(x , y + 5), Mound);
+            WorldUtils.Gen(new Point(x, y + 5), Mound);
 
             Point ChestPoint = new Point(x + (Main.rand.NextBool() ? 0 : -1), y + 2);
             int Loot1;
-            
+
             if (!Framing.GetTileSafely(ChestPoint).HasTile)
             {
                 Loot1 = WorldGen.PlaceChest(ChestPoint.X, ChestPoint.Y, (ushort)ModContent.TileType<Tile_CerebralChest>());
@@ -127,31 +110,31 @@ namespace DestroyerTest.Common.Systems
                 {
                     if (chest1.item[inventoryIndex].type == ItemID.None)
                     {
-                        
+
 
                     }
                 }
             }
 
-        
-
-
-    }
-
-    private void VesperGenTest(int x, int y)
-    {
-
-
-        GenShapeActionPair DreamstoneGen = new GenShapeActionPair(new Shapes.Circle(Main.rand.Next(5, 11)), new Actions.SetTile((ushort)ModContent.TileType<Tile_Dreamstone>(), true, true));
-        WorldUtils.Gen(new Point(x, y), DreamstoneGen);
-
-        GenShapeActionPair VesperGen = new GenShapeActionPair(new ShapeRoot((double)Main.rand.NextFloat(MathHelper.TwoPi)), new Actions.SetTile((ushort)ModContent.TileType<Tile_VesperOre>(), true, true));
-        WorldUtils.Gen(new Point(x, y), VesperGen);
 
 
 
-        //WorldGen.OreRunner(x, y, 10, 19, (ushort)ModContent.TileType<Tile_Dreamstone>());
-    }
+        }
+
+        private void VesperGenTest(int x, int y)
+        {
+
+
+            GenShapeActionPair DreamstoneGen = new GenShapeActionPair(new Shapes.Circle(Main.rand.Next(5, 11)), new Actions.SetTile((ushort)ModContent.TileType<Tile_Dreamstone>(), true, true));
+            WorldUtils.Gen(new Point(x, y), DreamstoneGen);
+
+            GenShapeActionPair VesperGen = new GenShapeActionPair(new ShapeRoot((double)Main.rand.NextFloat(MathHelper.TwoPi)), new Actions.SetTile((ushort)ModContent.TileType<Tile_VesperOre>(), true, true));
+            WorldUtils.Gen(new Point(x, y), VesperGen);
+
+
+
+            //WorldGen.OreRunner(x, y, 10, 19, (ushort)ModContent.TileType<Tile_Dreamstone>());
+        }
 
         public void FirstFloor(int x, int y)
         {
@@ -172,9 +155,9 @@ namespace DestroyerTest.Common.Systems
             DTGenUtils.MakeDoor(Central, Room.RoomSide.Both);
             DTGenUtils.MakeHatch(Central, Room.HatchSide.Top, 4, Central.Center.X);
 
-            
 
-            
+
+
 
             Room ChestRoom1 = new Room(x + 32, y + 3, 16, 12, TT, WT);
             DTGenUtils.GenRoom(ChestRoom1);
@@ -190,16 +173,16 @@ namespace DestroyerTest.Common.Systems
 
             Hallway CenToChute = new Hallway(FirstToSecondFloorChute, Central, 9, TT, WT);
             DTGenUtils.GenHallway(CenToChute);
-            
+
             Room Dummy = new Room(x - 20, y + 22, 35, 18, TileID.Dirt, WallID.Dirt);
-             
+
             Chute FloorConnector = new Chute(FirstToSecondFloorChute, Dummy, x - 18, 9, TT, WT);
 
-            
+
 
             DTGenUtils.GenChute(FloorConnector);
 
-            
+
 
 
             //Deco
@@ -230,7 +213,7 @@ namespace DestroyerTest.Common.Systems
 
                 //WorldGen.PlaceObject(ChestRoom1.Interior.Location.X + ChestRoom1.Interior.Width - 1, ChestRoom1.Interior.Location.Y + 2, TileID.Torches);
 
-                
+
                 int Loot1 = WorldGen.PlaceChest(ChestRoom1.Interior.Location.X + 6, ChestRoom1.Interior.Location.Y + 7, (ushort)ModContent.TileType<Tile_NightmareChest>());
 
                 var chest1 = Main.chest[Loot1];
@@ -247,7 +230,7 @@ namespace DestroyerTest.Common.Systems
                         chest1.item[1].stack = Main.rand.Next(10, 21);
                     }
                 }
-                
+
             }
 
             //furnishChestTopFloor();
@@ -258,7 +241,7 @@ namespace DestroyerTest.Common.Systems
             }
         }
 
-        
+
         public void SecondFloor(int x, int y)
         {
             ushort TT = (ushort)ModContent.TileType<Tile_SanctifiedBrick>();
@@ -353,7 +336,7 @@ namespace DestroyerTest.Common.Systems
                 void Chest1()
                 {
                     int ChestX = SeedBank.Interior.Left + 2;
-                    int ChestY  = SeedBank.Interior.Bottom - 1;
+                    int ChestY = SeedBank.Interior.Bottom - 1;
 
                     WorldUtils.ClearChestLocation(ChestX, ChestY);
 
@@ -405,7 +388,7 @@ namespace DestroyerTest.Common.Systems
 
                                 Chest.item[slot].SetDefaults(Main.rand.NextBool() ? HerbTypes[selection] : SeedTypes[selection]);
 
-                                
+
                             }
 
                             Chest.item[Main.rand.Next(Chest.item.Length)].SetDefaults(ModContent.ItemType<UnstableSeedPouch>());
@@ -425,7 +408,7 @@ namespace DestroyerTest.Common.Systems
                     WorldGen.PlaceObject(X, Y, TileID.Platforms, style: 1);
                 }
 
-                
+
                 WorldGen.PlaceObject((SeedBank.Interior.Location.X + (SeedBank.Interior.Width / 2) - 3), SeedBank.Interior.Location.Y + 3, (ushort)ModContent.TileType<NeglectedRegardsDisplay>());
 
                 WorldGen.PlaceObject((SeedBank.Interior.Location.X + (SeedBank.Interior.Width / 2) - 2), SeedBank.Interior.Location.Y + 10, (ushort)ModContent.TileType<Tile_HoleisBed>());
@@ -517,7 +500,7 @@ namespace DestroyerTest.Common.Systems
             FurnishPaintingRoom();
             furnishSeedBank();
             furnishPotionRoom();
-      
+
         }
 
         public void ThirdFloor(int x, int y)
@@ -559,14 +542,14 @@ namespace DestroyerTest.Common.Systems
                 WorldGen.PlaceTile(X, Y, TileID.CorruptGrass);
             }
 
-            
+
 
             WorldGen.PlaceObject(ForestRoom.Interior.Location.X + 7, ForestRoom.Interior.Location.Y + ForestRoom.Interior.Height - 4, (ushort)ModContent.TileType<Tile_ForeignTree>());
 
 
             void furnishCritterRoom()
             {
-                
+
                 WorldGen.PlaceObject(CritterCollection.Interior.Left + 4, CritterCollection.Interior.Top + (CritterCollection.Interior.Height - 1), TileID.AmberBunnyCage);
                 WorldGen.PlaceObject(CritterCollection.Interior.Left + 4, CritterCollection.Interior.Top + (CritterCollection.Interior.Height - 4), TileID.CageGrubby);
 
@@ -640,7 +623,7 @@ namespace DestroyerTest.Common.Systems
                 new Actions.PlaceWall(WT)
             }));
 
-            
+
             WorldUtils.Gen(new Point(X - 120, Y + 145), new Shapes.Rectangle((60 * 2) - 1, 10), Actions.Chain(new GenAction[]
             {
                 new Modifiers.Offset(- 60, 0),
@@ -654,7 +637,7 @@ namespace DestroyerTest.Common.Systems
             }));
             WorldUtils.Gen(new Point(X, Y + 145), new ModShapes.InnerOutline(shapeData, true), new Actions.SetTile(TT, true));
 
-            
+
             ShapeData shapeData2 = new ShapeData();
             WorldUtils.Gen(new Point(X, Y + 146), new Shapes.Mound(61, 30), new Actions.Blank().Output(shapeData2));
             WorldUtils.Gen(new Point(X - 120, Y + 146), new Shapes.Rectangle((61 * 2) - 1, 10), Actions.Chain(new GenAction[]
@@ -1344,7 +1327,7 @@ namespace DestroyerTest.Common.Systems
 
         public void MainGen(int x, int y)
         {
-            
+
 
             SoundEngine.PlaySound(SoundID.Camera);
             SoundEngine.PlaySound(SoundID.Item14);
@@ -1409,7 +1392,7 @@ namespace DestroyerTest.Common.Systems
                     return true;
                 }
 
-                
+
                 if (tile.TileType == TileID.Ebonstone && valid())
                 {
                     if (!structurePlaced)

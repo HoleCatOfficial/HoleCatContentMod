@@ -1,22 +1,18 @@
 using BreadLibrary.Core.Utilities;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
 using ReLogic.Content;
-using ReLogic.Graphics;
 using Terraria;
-using Terraria.GameContent;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Dusts
 {
-	public class ColorableNeonDust : ModDust
-	{
-		public override void OnSpawn(Dust dust) 
-		{
-			dust.noGravity = true;
-			dust.noLight = false;
-		}
+    public class ColorableNeonDust : ModDust
+    {
+        public override void OnSpawn(Dust dust)
+        {
+            dust.noGravity = true;
+            dust.noLight = false;
+        }
 
         public override bool PreDraw(Dust dust)
         {
@@ -27,21 +23,22 @@ namespace DestroyerTest.Content.Dusts
             return false;
         }
 
-		public override bool Update(Dust dust) 
+        public override bool Update(Dust dust)
         {
-			dust.position += dust.velocity;
-			dust.rotation += dust.velocity.X * 0.15f;
-			dust.scale *= 0.9f;
+            dust.position += dust.velocity;
+            dust.rotation += dust.velocity.X * 0.15f;
+            dust.scale *= 0.9f;
 
-			float light = 0.05f * dust.scale;
+            float light = 0.05f * dust.scale;
 
-			Lighting.AddLight(dust.position, dust.color.ToVector3() * 0.3f);
+            Lighting.AddLight(dust.position, dust.color.ToVector3() * 0.3f);
 
-			if (dust.scale < 0.1f) {
-				dust.active = false;
-			}
+            if (dust.scale < 0.1f)
+            {
+                dust.active = false;
+            }
 
-			return true;
-		}
-	}
+            return true;
+        }
+    }
 }

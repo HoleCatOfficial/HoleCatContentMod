@@ -1,15 +1,8 @@
-using System.Collections.Generic;
-using System.Formats.Tar;
-using System.Runtime.CompilerServices;
 using DestroyerTest.Common;
 using DestroyerTest.Common.Interfaces;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
-using Terraria.Audio;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -59,7 +52,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
         public override bool PreDraw(ref Color lightColor)
         {
             Texture2D projectileTexture = ModContent.Request<Texture2D>("DestroyerTest/Content/Projectiles/Weapon/Scepter/HolyOrb").Value;
-            
+
             for (int i = 0; i < Projectile.oldPos.Length; i++)
             {
                 float progress = i / (float)Projectile.oldPos.Length;
@@ -105,12 +98,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 
             var d = Dust.NewDustPerfect(Projectile.Center, DustID.CrimsonSpray, Vector2.Zero, 50, Color.Red, 1f);
             d.noGravity = true;
-            
+
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
 
         }
-	}
+    }
 }

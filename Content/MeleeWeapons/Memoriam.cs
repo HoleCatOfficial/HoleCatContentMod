@@ -1,18 +1,10 @@
 using DestroyerTest.Common;
-using DestroyerTest.Content.Magic;
-using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Weapon.Melee;
-using DestroyerTest.Content.Projectiles.Weapon.Melee.Quixotism;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.Tiles;
 using DestroyerTest.Rarity;
 using GlowmaskHelper.Content;
-using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.MeleeWeapons

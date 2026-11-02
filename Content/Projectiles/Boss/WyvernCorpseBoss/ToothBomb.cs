@@ -5,10 +5,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.Enums;
-using Terraria.GameContent;
-using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -84,15 +80,17 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
             Projectile.rotation += Main.rand.NextFloat(-1f, 1.1f) * 0.1f;
             Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Blood, 0, 0, 0, default, 1.0f);
         }
-        
+
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
-            if (Projectile.velocity.X != oldVelocity.X) {
-				Projectile.velocity.X = -oldVelocity.X;
-				}
-			if (Projectile.velocity.Y != oldVelocity.Y) {
-				Projectile.velocity.Y = -oldVelocity.Y;
-			}
+            if (Projectile.velocity.X != oldVelocity.X)
+            {
+                Projectile.velocity.X = -oldVelocity.X;
+            }
+            if (Projectile.velocity.Y != oldVelocity.Y)
+            {
+                Projectile.velocity.Y = -oldVelocity.Y;
+            }
             return false;
         }
 

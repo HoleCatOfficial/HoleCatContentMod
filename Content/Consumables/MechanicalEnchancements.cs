@@ -1,12 +1,4 @@
-using System.Security.Cryptography.X509Certificates;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Scepter;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.Tiles;
-using DestroyerTest.Rarity;
-using Microsoft.Xna.Framework;
-using Newtonsoft.Json.Linq;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -63,7 +55,7 @@ namespace DestroyerTest.Content.Consumables
 
             if (Effects)
             {
-                
+
             }
         }
     }

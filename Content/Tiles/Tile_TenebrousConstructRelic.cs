@@ -1,7 +1,7 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using System;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.Enums;
@@ -17,7 +17,7 @@ namespace DestroyerTest.Content.Tiles
         public const int FrameWidth = 18 * 3;
         public const int FrameHeight = 18 * 4;
         public const int HorizontalFrames = 1;
-        public const int VerticalFrames = 1; 
+        public const int VerticalFrames = 1;
 
         public Asset<Texture2D> RelicTexture;
 
@@ -33,8 +33,8 @@ namespace DestroyerTest.Content.Tiles
         public override void SetStaticDefaults()
         {
             Main.tileShine[Type] = 400;
-            Main.tileFrameImportant[Type] = true; 
-            TileID.Sets.InteractibleByNPCs[Type] = true; 
+            Main.tileFrameImportant[Type] = true;
+            TileID.Sets.InteractibleByNPCs[Type] = true;
 
             TileObjectData.newTile.CopyFrom(TileObjectData.Style3x4);
             TileObjectData.newTile.LavaDeath = false;

@@ -1,9 +1,8 @@
 ﻿
+using System.IO;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Tiles;
-using System.IO;
 using Terraria;
-using Terraria.Audio;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -27,7 +26,7 @@ namespace DestroyerTest.Content.Consumables
         public override void SetDefaults()
         {
             Item.CloneDefaults(ItemID.ManaCrystal);
-            
+
             Item.UseSound = DTAssetLib.Impacts.KCrystalConsume;
         }
 
@@ -83,7 +82,7 @@ namespace DestroyerTest.Content.Consumables
         public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
         {
             ModPacket packet = Mod.GetPacket();
-            packet.Write((byte)HeliciteManaSyncMSG);
+            packet.Write(HeliciteManaSyncMSG);
             packet.Write((byte)Player.whoAmI);
             packet.Write((byte)KCrystals);
             packet.Send(toWho, fromWho);

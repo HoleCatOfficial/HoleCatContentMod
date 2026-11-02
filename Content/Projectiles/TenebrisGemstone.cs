@@ -1,6 +1,5 @@
 using DestroyerTest.Common;
-using DestroyerTest.Content.Particles;
- 
+
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.DataStructures;
@@ -47,7 +46,7 @@ namespace DestroyerTest.Content.Projectiles
             Lighting.AddLight(Projectile.Center, color.ToVector3() * 0.6f);
             if (Main.rand.NextBool(5))
             {
-              
+
             }
             Dust.NewDust(Projectile.position, Projectile.Hitbox.Width, Projectile.Hitbox.Height, DustID.TintableDustLighted, 0, 0, 0, color, 1.5f);
         }

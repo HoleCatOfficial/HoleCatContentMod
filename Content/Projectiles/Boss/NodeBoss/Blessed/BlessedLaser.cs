@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.ModLoader;
-using Terraria;
-using Microsoft.Xna.Framework;
+﻿using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
-using Microsoft.Xna.Framework.Graphics;
-using BreadLibrary.Core.Utilities;
-using OpusLib;
-using Terraria.DataStructures;
-using OpusLib.Content.Helpers;
-using Terraria.ID;
 using DestroyerTest.Content.Entities;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
+using OpusLib.Content.Helpers;
+using Terraria;
+using Terraria.DataStructures;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.Blessed
 {
@@ -49,11 +44,11 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.Blessed
             DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(2, true), Main.DiscoColor with { A = 0 }, Main.spriteBatch, BlendState.Additive, oF, WidthScl, 3f);
 
             DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.LaserRepeating(true), Main.DiscoColor with { A = 0 }, Main.spriteBatch, BlendState.Additive, oF, WidthScl, 3f);
-            
+
             DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(1, true), Color.White with { A = 0 }, Main.spriteBatch, BlendState.Additive, oF, WidthScl * 0.5f, 2f);
-            
+
             DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.LaserRepeating(true), Color.White with { A = 0 }, Main.spriteBatch, BlendState.Additive, oF, WidthScl * 0.5f, 2f);
-    
+
 
             return false;
         }

@@ -1,4 +1,6 @@
-﻿using DestroyerTest.Content.BossSummons;
+﻿using System;
+using System.Collections.Generic;
+using DestroyerTest.Content.BossSummons;
 using DestroyerTest.Content.CheatItems;
 using DestroyerTest.Content.Consumables.Flasks;
 using DestroyerTest.Content.Entities;
@@ -6,22 +8,15 @@ using DestroyerTest.Content.Equips;
 using DestroyerTest.Content.Equips.ScepterAccessories;
 using DestroyerTest.Content.Magic;
 using DestroyerTest.Content.MeleeWeapons;
-using DestroyerTest.Content.MeleeWeapons.SwordLineage;
 using DestroyerTest.Content.RangedItems;
 using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.RogueItems;
 using DestroyerTest.Content.Scepter;
 using DestroyerTest.Content.SummonItems;
+using DestroyerTest.Content.ThrowerItems;
 using DestroyerTest.Content.Tiles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
-using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 
@@ -197,13 +192,13 @@ namespace DestroyerTest.Common.Systems
                 sb.Draw(texture, centered, color);
             };
             public static BossChecklistEntry Constitution = new BossChecklistEntry(
-                Language.GetText("Mods.DestroyerTest.NPCs.ConstitutionBoss.InternalName"), 
-                Language.GetText("Mods.DestroyerTest.BossChecklist.ConstitutionBoss.Hint"), 
-                ModContent.NPCType<ConstitutionBoss>(), 
-                6.9999999f, 
+                Language.GetText("Mods.DestroyerTest.NPCs.ConstitutionBoss.InternalName"),
+                Language.GetText("Mods.DestroyerTest.BossChecklist.ConstitutionBoss.Hint"),
+                ModContent.NPCType<ConstitutionBoss>(),
+                6.9999999f,
                 DownedBossSystem.downedConstitutionCondition,
-                ConstitutionPortrait, 
-                ModContent.ItemType<BladeChunk>(), 
+                ConstitutionPortrait,
+                ModContent.ItemType<BladeChunk>(),
                 DTLootTables.ConstitutionLootTable);
 
 
@@ -216,7 +211,7 @@ namespace DestroyerTest.Common.Systems
             public static BossChecklistEntry BlessedNode = new BossChecklistEntry(
                 Language.GetText("Mods.DestroyerTest.NPCs.BlessedNodeMB.InternalName"),
                 Language.GetText("Mods.DestroyerTest.BossChecklist.BlessedNodeMB.Hint"),
-                ModContent.NPCType<BlessedNodeMB>(), 
+                ModContent.NPCType<BlessedNodeMB>(),
                 12.8f,
                 DownedBossSystem.downedBlessedNodeCondition,
                 BlessedNodePortrait,
@@ -231,13 +226,13 @@ namespace DestroyerTest.Common.Systems
                 sb.Draw(texture, centered, color);
             };
             public static BossChecklistEntry IchorNode = new BossChecklistEntry(
-                Language.GetText("Mods.DestroyerTest.NPCs.IchorNodeMB.InternalName"), 
-                Language.GetText("Mods.DestroyerTest.BossChecklist.IchorNodeMB.Hint"), 
-                ModContent.NPCType<IchorNodeMB>(), 
-                12.7f, 
-                DownedBossSystem.downedIchorNodeCondition, 
-                IchorNodePortrait, 
-                -1, 
+                Language.GetText("Mods.DestroyerTest.NPCs.IchorNodeMB.InternalName"),
+                Language.GetText("Mods.DestroyerTest.BossChecklist.IchorNodeMB.Hint"),
+                ModContent.NPCType<IchorNodeMB>(),
+                12.7f,
+                DownedBossSystem.downedIchorNodeCondition,
+                IchorNodePortrait,
+                -1,
                 DTLootTables.IchorNodeLootTable);
 
             public static Action<SpriteBatch, Rectangle, Color> CursedFlameNodePortrait = (SpriteBatch sb, Rectangle rect, Color color) =>
@@ -247,13 +242,13 @@ namespace DestroyerTest.Common.Systems
                 sb.Draw(texture, centered, color);
             };
             public static BossChecklistEntry CursedFlameNode = new BossChecklistEntry(
-                Language.GetText("Mods.DestroyerTest.NPCs.CursedFlameNodeMB.InternalName"), 
-                Language.GetText("Mods.DestroyerTest.BossChecklist.CursedFlameNodeMB.Hint"), 
-                ModContent.NPCType<CursedFlameNodeMB>(), 
-                12.7f, 
-                DownedBossSystem.downedCursedFlameNodeCondition, 
-                CursedFlameNodePortrait, 
-                -1, 
+                Language.GetText("Mods.DestroyerTest.NPCs.CursedFlameNodeMB.InternalName"),
+                Language.GetText("Mods.DestroyerTest.BossChecklist.CursedFlameNodeMB.Hint"),
+                ModContent.NPCType<CursedFlameNodeMB>(),
+                12.7f,
+                DownedBossSystem.downedCursedFlameNodeCondition,
+                CursedFlameNodePortrait,
+                -1,
                 DTLootTables.CursedFlameNodeLootTable);
 
 
@@ -362,7 +357,7 @@ namespace DestroyerTest.Common.Systems
 
             Mod.Logger.InfoFormat("Successfully registered Boss Checklist entry for {0}", Entry.BossName.Value);
         }
- 
+
 
         private void DoBossChecklistIntegration_NoSpawnItem(BossChecklistEntry Entry)
         {

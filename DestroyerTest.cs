@@ -1,40 +1,27 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.Consumables;
-using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Equips;
 using DestroyerTest.Content.Equips.ScepterAccessories;
-using DestroyerTest.Content.Magic;
 using DestroyerTest.Content.MeleeWeapons;
-using DestroyerTest.Content.MeleeWeapons.SwordLineage;
 using DestroyerTest.Content.MeleeWeapons.TwistedLineage;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.RiftArsenal;
-using DestroyerTest.Content.RogueItems;
 using DestroyerTest.Content.Scepter;
+using DestroyerTest.Content.ThrowerItems;
 using DestroyerTest.Content.Tiles.RoseGarden;
-using Hjson;
-using Microsoft.Build.Tasks.Deployment.ManifestUtilities;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Differencing;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoMod.Cil;
 using MonoMod.RuntimeDetour;
 using OpusLib;
 using OpusLib.Content.Helpers;
 using ReLogic.Content;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
-using Terraria.DataStructures;
-using Terraria.GameContent.UI;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -43,8 +30,8 @@ using static Terraria.Graphics.FinalFractalHelper;
 
 namespace DestroyerTest
 {
-	// Please read https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Modding-Guide#mod-skeleton-contents for more information about the various files in a mod.
-	public class DestroyerTestMod : Mod
+    // Please read https://github.com/tModLoader/tModLoader/wiki/Basic-tModLoader-Modding-Guide#mod-skeleton-contents for more information about the various files in a mod.
+    public class DestroyerTestMod : Mod
     {
         public DestroyerTestMod()
         {
@@ -149,10 +136,10 @@ namespace DestroyerTest
 
             return false;
         }
-        
+
         public static DTConfig Config;
         public static ModKeybind LunarInsigniaModeSwitchKeybind { get; private set; }
-		public static ModKeybind ArmorSetBonusHotKey { get; private set; }
+        public static ModKeybind ArmorSetBonusHotKey { get; private set; }
         public static ModKeybind DeadlyBlossomKeybind { get; private set; }
         public static ModKeybind ConstellationKeybind { get; private set; }
 
@@ -161,107 +148,107 @@ namespace DestroyerTest
         public void AddChestLoot()
         {
             ChestLootSystem.RegisterChestLoot(
-				ChestID.GoldLocked,
-				ModContent.ItemType<EnchantedScepter>(),
-				stack: 1,
-				rarity: 0.3333333333f
-			);
+                ChestID.GoldLocked,
+                ModContent.ItemType<EnchantedScepter>(),
+                stack: 1,
+                rarity: 0.3333333333f
+            );
             ChestLootSystem.RegisterChestLoot(
-				ChestID.GoldLocked,
-				ModContent.ItemType<FadedHood>(),
-				stack: 1,
-				rarity: 0.10f
-			);
+                ChestID.GoldLocked,
+                ModContent.ItemType<FadedHood>(),
+                stack: 1,
+                rarity: 0.10f
+            );
             ChestLootSystem.RegisterChestLoot(
-				ChestID.GoldLocked,
-				ModContent.ItemType<FadedRobes>(),
-				stack: 1,
-				rarity: 0.10f
-			);
+                ChestID.GoldLocked,
+                ModContent.ItemType<FadedRobes>(),
+                stack: 1,
+                rarity: 0.10f
+            );
             ChestLootSystem.RegisterChestLoot(
-				ChestID.SkyChest,
-				ModContent.ItemType<TurbulenceScroll>(),
-				stack: 1,
-				rarity: 0.66666666666f
-			);
+                ChestID.SkyChest,
+                ModContent.ItemType<TurbulenceScroll>(),
+                stack: 1,
+                rarity: 0.66666666666f
+            );
             ChestLootSystem.RegisterChestLoot(
-				ChestID.SkyChest,
-				ModContent.ItemType<StarScroll>(),
-				stack: 1,
-				rarity: 0.5f
-			);
+                ChestID.SkyChest,
+                ModContent.ItemType<StarScroll>(),
+                stack: 1,
+                rarity: 0.5f
+            );
             ChestLootSystem.RegisterChestLoot(
-				ChestID.ShadowLocked,
-				ModContent.ItemType<ShadowScepter>(),
-				stack: 1,
-				rarity: 0.70f
-			);
+                ChestID.ShadowLocked,
+                ModContent.ItemType<ShadowScepter>(),
+                stack: 1,
+                rarity: 0.70f
+            );
             ChestLootSystem.RegisterChestLoot(
-				ChestID.Water,
-				ModContent.ItemType<CoralScepter>(),
-				stack: 1,
-				rarity: 0.66666666666f
-			);
+                ChestID.Water,
+                ModContent.ItemType<CoralScepter>(),
+                stack: 1,
+                rarity: 0.66666666666f
+            );
             ChestLootSystem.RegisterChestLoot(
-				ChestID.Gold,
-				ModContent.ItemType<InsurgentCirclet>(),
-				stack: 1,
-				rarity: 0.05f
-			);
+                ChestID.Gold,
+                ModContent.ItemType<InsurgentCirclet>(),
+                stack: 1,
+                rarity: 0.05f
+            );
             ChestLootSystem.RegisterChestLoot(
-				ChestID.Gold,
-				ModContent.ItemType<InsurgentBodyArmor>(),
-				stack: 1,
-				rarity: 0.05f
-			);
+                ChestID.Gold,
+                ModContent.ItemType<InsurgentBodyArmor>(),
+                stack: 1,
+                rarity: 0.05f
+            );
             ChestLootSystem.RegisterChestLoot(
-				ChestID.Gold,
-				ModContent.ItemType<InsurgentFaulds>(),
-				stack: 1,
-				rarity: 0.05f
-			);
+                ChestID.Gold,
+                ModContent.ItemType<InsurgentFaulds>(),
+                stack: 1,
+                rarity: 0.05f
+            );
             ChestLootSystem.RegisterChestLoot(
-				ChestID.Gold,
-				ModContent.ItemType<RevenantMask>(),
-				stack: 1,
-				rarity: 0.03f
-			);
+                ChestID.Gold,
+                ModContent.ItemType<RevenantMask>(),
+                stack: 1,
+                rarity: 0.03f
+            );
             ChestLootSystem.RegisterChestLoot(
-				ChestID.Gold,
-				ModContent.ItemType<ForgottenPendant>(),
-				stack: 1,
-				rarity: 0.03f
-			);
+                ChestID.Gold,
+                ModContent.ItemType<ForgottenPendant>(),
+                stack: 1,
+                rarity: 0.03f
+            );
             ChestLootSystem.RegisterChestLoot(
-				ChestID.Frozen,
-				ModContent.ItemType<FrigidScroll>(),
-				stack: 1,
-				rarity: 0.10f
-			);
+                ChestID.Frozen,
+                ModContent.ItemType<FrigidScroll>(),
+                stack: 1,
+                rarity: 0.10f
+            );
             ChestLootSystem.RegisterChestLoot(
-				ChestID.Wooden,
-				ModContent.ItemType<MageGlove>(),
-				stack: 1,
-				rarity: 0.10f
-			);
+                ChestID.Wooden,
+                ModContent.ItemType<MageGlove>(),
+                stack: 1,
+                rarity: 0.10f
+            );
             ChestLootSystem.RegisterChestLoot(
-				ChestID.Wooden,
-				ModContent.ItemType<RosyGlove>(),
-				stack: 1,
-				rarity: 0.15f
-			);
+                ChestID.Wooden,
+                ModContent.ItemType<RosyGlove>(),
+                stack: 1,
+                rarity: 0.15f
+            );
             ChestLootSystem.RegisterChestLoot(
-				ChestID.Gold,
-				ModContent.ItemType<ScepterPolish>(),
-				stack: 1,
-				rarity: 0.15f
-			);
+                ChestID.Gold,
+                ModContent.ItemType<ScepterPolish>(),
+                stack: 1,
+                rarity: 0.15f
+            );
             ChestLootSystem.RegisterChestLoot(
-				ChestID.Sandstone,
-				ModContent.ItemType<ThunderScepter>(),
-				stack: 1,
-				rarity: 0.25f
-			);
+                ChestID.Sandstone,
+                ModContent.ItemType<ThunderScepter>(),
+                stack: 1,
+                rarity: 0.25f
+            );
             ChestLootSystem.RegisterChestLoot(
                 ChestID.Sandstone,
                 ModContent.ItemType<VoltaicFenzim>(),
@@ -286,59 +273,59 @@ namespace DestroyerTest
 
         public void NightmareChestLoot()
         {
-			ChestLootSystem.RegisterChestLoot(
-				new ChestID(ModContent.TileType<Tile_NightmareChest>(), 0),
-				ItemID.CopperCoin,
-				Min: 10,
-				Max: 90,
-				rarity: 0.7f
-			);
-			ChestLootSystem.RegisterChestLoot(
-				new ChestID(ModContent.TileType<Tile_NightmareChest>(), 0),
-				ItemID.SilverCoin,
-				Min: 10,
-				Max: 65,
-				rarity: 0.7f
-			);
-			ChestLootSystem.RegisterChestLoot(
-				new ChestID(ModContent.TileType<Tile_NightmareChest>(), 0),
-				ItemID.GoldCoin,
-				Min: 5,
-				Max: 15,
-				rarity: 0.7f
-			);
-			ChestLootSystem.RegisterChestLoot(
-				new ChestID(ModContent.TileType<Tile_NightmareChest>(), 0),
-				ItemID.PlatinumCoin,
-				Min: 1,
-				Max: 10,
-				rarity: 0.7f
-			);
             ChestLootSystem.RegisterChestLoot(
-				new ChestID(ModContent.TileType<Tile_NightmareChest>(), 0),
-				ItemID.MagicMirror,
-				stack: 1,
-				rarity: 0.10f
-			);
+                new ChestID(ModContent.TileType<Tile_NightmareChest>(), 0),
+                ItemID.CopperCoin,
+                Min: 10,
+                Max: 90,
+                rarity: 0.7f
+            );
             ChestLootSystem.RegisterChestLoot(
-				new ChestID(ModContent.TileType<Tile_NightmareChest>(), 0),
-				ItemID.UnholyArrow,
-				Min: 6,
-				Max: 22,
-				rarity: 0.5f
-			);
+                new ChestID(ModContent.TileType<Tile_NightmareChest>(), 0),
+                ItemID.SilverCoin,
+                Min: 10,
+                Max: 65,
+                rarity: 0.7f
+            );
             ChestLootSystem.RegisterChestLoot(
-				new ChestID(ModContent.TileType<Tile_NightmareChest>(), 0),
-				ItemID.WoodenArrow,
-				Min: 10,
-				Max: 40,
-				rarity: 0.5f
-			);
-			ChestLootSystem.RegisterChestLoot(
-				new ChestID(ModContent.TileType<Tile_NightmareChest>(), 0),
-				Opus.CommonPotion,
-				rarity: 0.8f
-			);
+                new ChestID(ModContent.TileType<Tile_NightmareChest>(), 0),
+                ItemID.GoldCoin,
+                Min: 5,
+                Max: 15,
+                rarity: 0.7f
+            );
+            ChestLootSystem.RegisterChestLoot(
+                new ChestID(ModContent.TileType<Tile_NightmareChest>(), 0),
+                ItemID.PlatinumCoin,
+                Min: 1,
+                Max: 10,
+                rarity: 0.7f
+            );
+            ChestLootSystem.RegisterChestLoot(
+                new ChestID(ModContent.TileType<Tile_NightmareChest>(), 0),
+                ItemID.MagicMirror,
+                stack: 1,
+                rarity: 0.10f
+            );
+            ChestLootSystem.RegisterChestLoot(
+                new ChestID(ModContent.TileType<Tile_NightmareChest>(), 0),
+                ItemID.UnholyArrow,
+                Min: 6,
+                Max: 22,
+                rarity: 0.5f
+            );
+            ChestLootSystem.RegisterChestLoot(
+                new ChestID(ModContent.TileType<Tile_NightmareChest>(), 0),
+                ItemID.WoodenArrow,
+                Min: 10,
+                Max: 40,
+                rarity: 0.5f
+            );
+            ChestLootSystem.RegisterChestLoot(
+                new ChestID(ModContent.TileType<Tile_NightmareChest>(), 0),
+                Opus.CommonPotion,
+                rarity: 0.8f
+            );
         }
 
         //Fables strategy
@@ -354,7 +341,7 @@ namespace DestroyerTest
         {
             orig(self);
 
-            var element = (UIElement)self;
+            var element = self;
 
 
             if (!element.GetType().IsAssignableTo(UIModItemType))
@@ -409,7 +396,7 @@ namespace DestroyerTest
 
             AddChestLoot();
 
-			DTCrossMod.LoadMods();
+            DTCrossMod.LoadMods();
 
 
         }
@@ -430,7 +417,7 @@ namespace DestroyerTest
 
             // Unregister the keybind
             LunarInsigniaModeSwitchKeybind = null;
-			ArmorSetBonusHotKey = null;
+            ArmorSetBonusHotKey = null;
             DeadlyBlossomKeybind = null;
             ConstellationKeybind = null;
 
@@ -444,7 +431,7 @@ namespace DestroyerTest
 
             fractalProfiles.Remove(ModContent.ItemType<RiftHypersabre>());
             fractalProfiles.Remove(ModContent.ItemType<SoulEdge>());
-			
+
             fractalProfiles.Remove(ModContent.ItemType<DarkFireSword>());
             fractalProfiles.Remove(ModContent.ItemType<TwilightInferno>());
             fractalProfiles.Remove(ModContent.ItemType<Exasperation>());
@@ -514,7 +501,7 @@ namespace DestroyerTest
 
         public static bool EternityIsActive => Eternity();
 
-		public static bool MasochistIsActive => EternityIsActive && Main.masterMode;
+        public static bool MasochistIsActive => EternityIsActive && Main.masterMode;
 
         public static bool RevenganceIsActive => Revengance();
 
@@ -551,7 +538,7 @@ namespace DestroyerTest
                         examplePlayer.SyncPlayer(-1, whoAmI, false);
                     }
                     break;
-       
+
                 default:
                     Logger.WarnFormat("DestroyerTest: Unknown Message type: {0}", msgType);
                     break;
@@ -596,7 +583,7 @@ namespace DestroyerTest
             Rectangle Frame = new Rectangle(0, currentFrame * 80, 80, 80);
 
             spriteBatch.Draw(Texture.Value, centerOfIcon, Frame, Color.White, 0f, new Vector2(40, 40), 1f, SpriteEffects.None, 0f);
-        
+
             if (Main.rand.NextBool(3))
             {
                 Spark spark = new();

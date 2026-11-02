@@ -1,20 +1,7 @@
-using DestroyerTest.Common;
-using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.MeleeWeapons;
-using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Content.Projectiles.Weapon.Rogue;
-  
+using DestroyerTest.Content.Projectiles.Weapon.Thrower;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Rarity;
- 
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
 using Terraria;
-using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 

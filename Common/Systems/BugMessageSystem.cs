@@ -1,16 +1,3 @@
-using Terraria;
-using Terraria.Graphics.Effects;
-using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using Terraria.Graphics;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
-using DestroyerTest.Common;
-using SteelSeries.GameSense;
-using ReLogic.Content;
-using System.Collections.Generic;
-using Terraria.UI;
-
 namespace DestroyerTest.Common.Systems
 {
     /*

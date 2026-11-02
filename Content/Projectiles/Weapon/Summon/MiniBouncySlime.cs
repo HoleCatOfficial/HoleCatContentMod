@@ -1,14 +1,7 @@
-using System;
-using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Projectiles.AmmoProjectiles;
-using DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 namespace DestroyerTest.Content.Projectiles.Weapon.Summon
@@ -207,7 +200,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
             {
                 IgnorePlatform = false;
             }
-            
+
             Projectile.rotation = 0;
         }
 
@@ -244,11 +237,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
 
             if (distance < 4f)
             {
-                for(int r = 0; r < 10; r++)
+                for (int r = 0; r < 10; r++)
                 {
                     Dust.NewDust(Projectile.Bottom, Projectile.width, 10, DustID.PinkSlime, Main.rand.NextFloat(-1.5f, 1.5f), Main.rand.NextFloat(-0.75f, 0.75f), 0, default, 1.35f);
                 }
-                
+
                 // Bounce slightly
                 Projectile.velocity *= -0.4f;
 
@@ -272,7 +265,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
                 B1 = false;
             }
 
-            if (Projectile.Bottom.Y < target.Bottom.Y -10)
+            if (Projectile.Bottom.Y < target.Bottom.Y - 10)
             {
                 IgnorePlatform = true;
             }
@@ -303,7 +296,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
             Projectile.frame = 0;
             if (oldVelocity.Y > 5)
             {
-                for(int r = 0; r < 10; r++)
+                for (int r = 0; r < 10; r++)
                 {
                     Dust.NewDust(Projectile.Bottom, Projectile.width, 10, DustID.PinkSlime, Main.rand.NextFloat(-1.5f, 1.5f), Main.rand.NextFloat(-0.75f, 0.75f), 0, default, 1.35f);
                 }

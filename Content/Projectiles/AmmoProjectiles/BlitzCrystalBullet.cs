@@ -1,14 +1,7 @@
-﻿using BreadLibrary.Core.Graphics.Particles;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.Particles;
- 
+﻿using DestroyerTest.Common;
+
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
-using OpusLib.Content.Particles;
-using System.Linq;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;

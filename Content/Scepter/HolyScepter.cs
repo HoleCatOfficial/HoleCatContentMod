@@ -1,24 +1,14 @@
-using System;
-using Microsoft.Xna.Framework;
+using DestroyerTest.Content.Projectiles.Weapon.Scepter;
+using DestroyerTest.Rarity.Scepter;
 using Terraria;
-using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.DataStructures;
- 
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.Resources.Cloths;
-using DestroyerTest.Rarity;
-using DestroyerTest.Rarity.Scepter;
-using DestroyerTest.Content.Projectiles.Weapon.Scepter;
 
 namespace DestroyerTest.Content.Scepter
 {
-	public class HolyScepter : ScepterItem
-	{
-		public override int Width => 46;
+    public class HolyScepter : ScepterItem
+    {
+        public override int Width => 46;
         public override int Height => 46;
 
         public override void SetStaticDefaults()
@@ -51,11 +41,12 @@ namespace DestroyerTest.Content.Scepter
             base.SetDefaults();
         }
 
-        public override void AddRecipes() {
+        public override void AddRecipes()
+        {
             CreateRecipe()
                 .AddIngredient(ItemID.HallowedBar, 15)
-				.AddTile(TileID.MythrilAnvil)
-				.Register();
-		}
+                .AddTile(TileID.MythrilAnvil)
+                .Register();
+        }
     }
-} 
+}

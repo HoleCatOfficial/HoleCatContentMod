@@ -1,47 +1,41 @@
 
-﻿using Terraria;
+using System;
+using DestroyerTest.Common;
+using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Resources;
+using DestroyerTest.Rarity;
+using Microsoft.Xna.Framework;
+using OpusLib;
+using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using DestroyerTest.Rarity;
-using Steamworks;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Tiles;
-using DestroyerTest.Content.Resources;
-using Microsoft.Xna.Framework;
-using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Buffs;
-using Terraria.DataStructures;
-using Microsoft.Xna.Framework.Graphics;
- 
-using System;
-using OpusLib;
-using Terraria.Audio;
-using DestroyerTest.Content.Projectiles;
 
 namespace DestroyerTest.Content.Equips
 {
-	[AutoloadEquip(EquipType.Head)]
-	public class DarkVesselSkull : ModItem
-	{
+    [AutoloadEquip(EquipType.Head)]
+    public class DarkVesselSkull : ModItem
+    {
 
-        public override void SetStaticDefaults() {
-			ArmorIDs.Head.Sets.DrawHead[Item.headSlot] = false; 
-		}
-
-		public override void SetDefaults() 
+        public override void SetStaticDefaults()
         {
-			Item.width = 28;
-			Item.height = 22;
-			Item.value = Item.sellPrice(gold: 70);
-			Item.rare = ModContent.RarityType<ShimmeringRarity>();
-			Item.defense = 32;
-		}
+            ArmorIDs.Head.Sets.DrawHead[Item.headSlot] = false;
+        }
+
+        public override void SetDefaults()
+        {
+            Item.width = 28;
+            Item.height = 22;
+            Item.value = Item.sellPrice(gold: 70);
+            Item.rare = ModContent.RarityType<ShimmeringRarity>();
+            Item.defense = 32;
+        }
 
         public bool Scepter = false;
         public bool Summoner = false;
         public bool Sentry = false;
-		public override bool IsArmorSet(Item head, Item body, Item legs) 
+        public override bool IsArmorSet(Item head, Item body, Item legs)
         {
             bool ArchmageSet = (body.type == ModContent.ItemType<TenebrousArchmageCoat>() && legs.type == ModContent.ItemType<TenebrousArchmagePants>());
             bool DemonSet = (body.type == ModContent.ItemType<TenebrousDemonChestplate>() && legs.type == ModContent.ItemType<TenebrousDemonChausses>());
@@ -56,9 +50,9 @@ namespace DestroyerTest.Content.Equips
                 Sentry = true;
                 return true;
             }
-			return false;
-		}
-		public override void UpdateArmorSet(Player player) 
+            return false;
+        }
+        public override void UpdateArmorSet(Player player)
         {
             if (Summoner)
             {
@@ -76,15 +70,16 @@ namespace DestroyerTest.Content.Equips
                     player.setBonus = Language.GetTextValue("Mods.DestroyerTest.Items.DarkVesselSkull.SentryBonus");
                 }
             }
-		}
+        }
 
-		public override void AddRecipes() {
-			CreateRecipe()
+        public override void AddRecipes()
+        {
+            CreateRecipe()
                 .AddIngredient<Tenebris>(8)
-				.AddTile(TileID.LunarCraftingStation)
-				.Register();
-		}
-	}
+                .AddTile(TileID.LunarCraftingStation)
+                .Register();
+        }
+    }
 
     public class DarkVesselSummoner : ModPlayer
     {
@@ -128,18 +123,18 @@ namespace DestroyerTest.Content.Equips
                 Player.AddBuff(ModContent.BuffType<ShadeThrasherBuff>(), 10);
 
                 if (!Flag1)
-				{
-					//Projectile.NewProjectile(Player.GetSource_None(), Player.Center, Vector2.One, ModContent.ProjectileType<ShadeThrasherFriendlyHead>(), 120, 7);
-					Flag1 = true;
-				}
-            }   
+                {
+                    //Projectile.NewProjectile(Player.GetSource_None(), Player.Center, Vector2.One, ModContent.ProjectileType<ShadeThrasherFriendlyHead>(), 120, 7);
+                    Flag1 = true;
+                }
+            }
             else
             {
                 if (Player.HasBuff<ShadeThrasherBuff>())
                 {
                     Player.ClearBuff(ModContent.BuffType<ShadeThrasherBuff>());
                 }
-            }    
+            }
         }
     }
 
@@ -166,20 +161,20 @@ namespace DestroyerTest.Content.Equips
                     if (Player.miscCounter % 60 == 0)
                     {
                         SoundEngine.PlaySound(SoundID.DD2_EtherianPortalSpawnEnemy);
-                        NPC.HitInfo strike = new NPC.HitInfo { Crit = false, Damage = 30, DamageType = null, HideCombatText = false, HitDirection = 0, InstantKill = false, Knockback = 0};
+                        NPC.HitInfo strike = new NPC.HitInfo { Crit = false, Damage = 30, DamageType = null, HideCombatText = false, HitDirection = 0, InstantKill = false, Knockback = 0 };
                         Opus.RingSpreadDust(dustType, 30, Player.Center, Radius, 0, ColorLib.TenebrisGradient, 2f, 8, offset: Main.rand.NextFloat(MathHelper.TwoPi));
 
                         foreach (NPC enemy in Main.npc)
                         {
                             if (!enemy.friendly && enemy.Center.Distance(Player.Center) < Radius)
                             {
-                                enemy.StrikeNPC(strike, false, true);    
+                                enemy.StrikeNPC(strike, false, true);
                                 enemy.AddBuff(ModContent.BuffType<ShimmeringFlames>(), 600);
                             }
                         }
                     }
                 }
-            }   
+            }
         }
 
         public override void OnHitByNPC(NPC npc, Player.HurtInfo hurtInfo)

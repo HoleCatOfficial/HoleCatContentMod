@@ -1,18 +1,8 @@
-﻿using DestroyerTest;
-using DestroyerTest.Common;
-using DestroyerTest.Content.MeleeWeapons;
-using DestroyerTest.Content.Projectiles;
+﻿using DestroyerTest.Common;
 using DestroyerTest.Content.Projectiles.Weapon.Melee;
 using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.Tiles;
-using DestroyerTest.Rarity;
 using GlowmaskHelper.Content;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Terraria;
-using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -60,7 +50,7 @@ namespace DestroyerTest.Content.MeleeWeapons.AncientSword
 
         public override void AddRecipes()
         {
-           
+
             CreateRecipe()
                 .AddIngredient<Lifeblade>()
                 .AddIngredient<HellArmorScrap>(14)

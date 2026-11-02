@@ -1,17 +1,8 @@
-﻿using Terraria;
+﻿using DestroyerTest.Content.Projectiles.ParentClasses;
+using Microsoft.Xna.Framework;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
-using Terraria.Audio;
-using DestroyerTest.Content.Consumables;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Dusts;
-using System;
-using Terraria.DataStructures;
-using System.IO;
-using DestroyerTest.Content.Projectiles.ParentClasses;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 {
@@ -45,7 +36,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 
             target.AddBuff(BuffID.OnFire, 240);
 
-            
+
 
             if (EffectCooldown <= 0)
             {
@@ -67,7 +58,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
         {
 
 
-        
+
             base.OnTileCollide(oldVelocity);
 
             return false; // Prevents the projectile from being destroyed on collision

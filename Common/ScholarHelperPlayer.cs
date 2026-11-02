@@ -1,10 +1,5 @@
 using DestroyerTest.Content.Consumables;
-using Microsoft.Xna.Framework;
-using Stubble.Core;
-using System;
-using System.IO;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Common

@@ -1,17 +1,10 @@
 ﻿using BreadLibrary.Core.Graphics.Particles;
-using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
@@ -43,7 +36,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
             SpriteBatch spriteBatch = Main.spriteBatch;
 
             //Projectile.DrawAfterimages(spriteBatch, DTAssetLib.SparkSmooth.Value, MainColor with { A = 0}, 1f, true, true, true);
-            
+
             //Main.EntitySpriteDraw(DTAssetLib.SparkSmooth.Value, Projectile.Center - Main.screenPosition, null, MainColor with { A = 0}, Projectile.rotation, DTAssetLib.SparkSmooth.Value.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
             return false;
         }
@@ -72,6 +65,6 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
             Projectile.penetrate--;
             return Projectile.penetrate == 1;
         }
-       
+
     }
 }

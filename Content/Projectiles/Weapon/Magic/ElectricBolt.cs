@@ -1,15 +1,7 @@
 using System.Collections.Generic;
-using System.Formats.Tar;
-using System.Runtime.CompilerServices;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Particles;
- 
+
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Terraria;
-using Terraria.Audio;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -51,7 +43,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
         private List<Vector2> trailPoints = new List<Vector2>();
         private Vector2 lastTickPosition;
         private const int MaxTrailCount = 60;
-        private const int DustSpawnStep = 3; 
+        private const int DustSpawnStep = 3;
 
         public override void AI()
         {
@@ -148,5 +140,5 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
         {
             target.AddBuff(BuffID.Electrified, 20 * 60);
         }
-	}
+    }
 }

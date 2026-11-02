@@ -1,21 +1,10 @@
-﻿using BreadLibrary.Core.Graphics.Particles;
+﻿using System.Collections.Generic;
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.ClasslessItems;
 using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Projectiles.Boss.NodeBoss.Blessed;
-using DestroyerTest.Content.Projectiles.Weapon.Magic;
-using DestroyerTest.Content.Projectiles.Weapon.Melee;
-using DestroyerTest.Content.Projectiles.Weapon.Summon;
-using DestroyerTest.Content.RangedItems;
-using DestroyerTest.Content.SummonItems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -90,7 +79,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Classless
 
         public Player Owner => Main.player[Projectile.owner];
 
-        public SoundStyle FireSound = SoundID.Item20 with {  };
+        public SoundStyle FireSound = SoundID.Item20 with { };
 
         Vector2 ShootPoint;
         float CubeRot = 0f;
@@ -147,7 +136,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Classless
             Vector2 dir = ShootPoint.DirectionTo(Main.MouseWorld);
 
             int[] Types = [ModContent.ProjectileType<SoulTriangle>(), ModContent.ProjectileType<SoulDart>(), ModContent.ProjectileType<SoulStar>()];
-            
+
             Projectile Shot1 = Projectile.NewProjectileDirect(Owner.GetSource_FromThis(), ShootPoint, dir.RotatedByRandom(0.1f) * Main.rand.NextFloat(10f, 18f), Types[Main.rand.Next(Types.Length)], Projectile.damage, Projectile.knockBack, Owner.whoAmI);
 
 

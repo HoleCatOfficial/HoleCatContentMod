@@ -13,16 +13,18 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
 {
     public class CorruptPetal : ModProjectile
     {
-        private NPC HomingTarget {
+        private NPC HomingTarget
+        {
             get => Projectile.ai[0] == 0 ? null : Main.npc[(int)Projectile.ai[0] - 1];
-            set {
+            set
+            {
                 Projectile.ai[0] = value == null ? 0 : value.whoAmI + 1;
             }
         }
 
         public ref float DelayTimer => ref Projectile.ai[1];
 
-        public override void SetStaticDefaults() 
+        public override void SetStaticDefaults()
         {
             Main.projFrames[Projectile.type] = 4;
             DTUtils.OwnedByBossNPC[Type] = ModContent.NPCType<Entities.NightmareRoseBoss>();
@@ -107,7 +109,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
                 float targetAngle = Projectile.AngleTo(HomingTarget.Center);
                 Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(3)).ToRotationVector2() * length;
                 Projectile.rotation = Projectile.velocity.ToRotation();
-            }  
+            }
         }
 
         public override void OnKill(int timeLeft)
@@ -121,7 +123,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
 
         private void AnimateProjectile()
         {
-           
+
             if (++Projectile.frameCounter >= 5)
             {
                 Projectile.frameCounter = 0;
@@ -132,16 +134,19 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
             }
         }
 
-        public NPC FindClosestNPC(float maxDetectDistance) 
+        public NPC FindClosestNPC(float maxDetectDistance)
         {
             NPC closestNPC = null;
 
             float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
 
-            foreach (var target in Main.ActiveNPCs) {
-                if (IsValidTarget(target)) {
+            foreach (var target in Main.ActiveNPCs)
+            {
+                if (IsValidTarget(target))
+                {
                     float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, Projectile.Center);
-                    if (sqrDistanceToTarget < sqrMaxDetectDistance) {
+                    if (sqrDistanceToTarget < sqrMaxDetectDistance)
+                    {
                         sqrMaxDetectDistance = sqrDistanceToTarget;
                         closestNPC = target;
                     }
@@ -151,7 +156,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
             return closestNPC;
         }
 
-        public bool IsValidTarget(NPC target) 
+        public bool IsValidTarget(NPC target)
         {
             return target.CanBeChasedBy();
         }

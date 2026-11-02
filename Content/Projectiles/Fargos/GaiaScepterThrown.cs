@@ -1,24 +1,21 @@
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
-using Terraria.Audio;
-using DestroyerTest.Content.Consumables;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Dusts;
-using System.IO;
 using DestroyerTest.Content.Projectiles.ParentClasses;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
-using DestroyerTest.Content.Projectiles.Weapon.Melee;
+using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Fargos
 {
     [JITWhenModsEnabled(DTCrossMod.FargosSoulsName)]
     public class GaiaScepterThrown : ModProjectile
     {
-        
+
         public override void SetDefaults()
         {
             Projectile.width = 150;
@@ -37,7 +34,7 @@ namespace DestroyerTest.Content.Projectiles.Fargos
         public override bool PreDraw(ref Color lightColor)
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
-			Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
+            Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
 
             Main.EntitySpriteDraw(projectileTexture, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, projectileTexture.Size() / 2, Projectile.scale, SpriteEffects.None, 0f);
             return false;

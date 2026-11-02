@@ -1,20 +1,9 @@
-﻿using System;
-using System.Linq;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Particles;
- 
+﻿using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Projectiles.ParentClasses;
 using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using OpusLib;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
-using DestroyerTest.Content.Buffs;
-using Microsoft.Build.Evaluation;
-using DestroyerTest.Content.Projectiles.ParentClasses;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 {

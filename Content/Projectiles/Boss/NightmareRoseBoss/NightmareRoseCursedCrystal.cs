@@ -1,11 +1,9 @@
+using System.Linq;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
-using ReLogic.Content;
-using System.Collections.Generic;
-using System.Linq;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -65,7 +63,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
         }
 
 
-       
+
         public float GlowMult = 1f;
         public int Dir => (int)Projectile.ai[1];
         public override void AI()

@@ -1,22 +1,14 @@
-using System;
+using System.Linq;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
+using OpusLib;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.Enums;
 using Terraria.GameContent;
-using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
- 
-using DestroyerTest.Content.Particles;
-using System.Collections.Generic;
-using OpusLib;
-using System.Linq;
 
 namespace DestroyerTest.Content.Projectiles.Boss
 {

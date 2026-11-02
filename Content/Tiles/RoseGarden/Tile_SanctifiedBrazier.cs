@@ -1,5 +1,4 @@
-﻿using FullSerializer.Internal;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria;
@@ -34,7 +33,7 @@ namespace DestroyerTest.Content.Tiles.RoseGarden
             Main.tileLighted[Type] = true;
             // We don't set Main.tileFlame
 
-            
+
 
             TileID.Sets.MultiTileSway[Type] = true;
 
@@ -80,7 +79,7 @@ namespace DestroyerTest.Content.Tiles.RoseGarden
             g = 0.8f;
             b = 0.8f;
 
-            
+
         }
 
         public override void EmitParticles(int i, int j, Tile tileCache, short tileFrameX, short tileFrameY, Color tileLight, bool visible)
@@ -116,7 +115,7 @@ namespace DestroyerTest.Content.Tiles.RoseGarden
                 }
             }
 
-            
+
         }
 
         public override bool PreDraw(int i, int j, SpriteBatch spriteBatch)

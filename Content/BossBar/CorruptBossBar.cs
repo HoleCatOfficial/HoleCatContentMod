@@ -36,7 +36,8 @@ namespace DestroyerTest.Content.BossBar
             life = npc.life;
             lifeMax = npc.lifeMax;
 
-            if (npc.ModNPC is NightmareRoseBoss head) {
+            if (npc.ModNPC is NightmareRoseBoss head)
+            {
                 shield = Main.npc
                     .Where(n => n.active && n.type == ModContent.NPCType<CursedFlameNode>())
                     .Sum(n => n.life);
@@ -48,7 +49,7 @@ namespace DestroyerTest.Content.BossBar
 
             return true;
         }
-        
-        
-	}
+
+
+    }
 }

@@ -1,7 +1,3 @@
-using DestroyerTest.Content.Projectiles;
-using Terraria;
-using Terraria.ModLoader;
-
 namespace DestroyerTest.Common.Blessings
 {
     public class HerbID

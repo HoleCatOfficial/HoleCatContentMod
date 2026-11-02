@@ -1,13 +1,9 @@
 
 using DestroyerTest.Common;
-using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.Tiles;
 using DestroyerTest.Content.Tiles.RiftConfigurator;
 using DestroyerTest.Rarity.Scepter;
-using Microsoft.Xna.Framework;
-using Steamworks;
 using Terraria;
-using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 

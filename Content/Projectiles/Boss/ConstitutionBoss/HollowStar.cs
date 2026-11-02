@@ -1,12 +1,11 @@
-using System;
 using DestroyerTest.Common;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using OpusLib;
 
 namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
 {
@@ -34,42 +33,42 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
         }
 
         public int Lifetime = 120;
-		public int Time = 0;
+        public int Time = 0;
 
         public Color MainColor = Color.White;
 
-		public bool StartKill = false;
-		public void UpdateLerpTime()
-		{
-			Time++;
+        public bool StartKill = false;
+        public void UpdateLerpTime()
+        {
+            Time++;
 
-			if (Time > Lifetime)
-			{
-				StartKill = true;
-			}
-		}
-		public float LifetimeCompletion
-		{
-			get
-			{
-				if (Lifetime <= 0)
-				{
-					return 0f;
-				}
+            if (Time > Lifetime)
+            {
+                StartKill = true;
+            }
+        }
+        public float LifetimeCompletion
+        {
+            get
+            {
+                if (Lifetime <= 0)
+                {
+                    return 0f;
+                }
 
-				return (float)Time / (float)Lifetime;
-			}
-		}
+                return Time / (float)Lifetime;
+            }
+        }
 
         public override void AI()
         {
             UpdateLerpTime();
-			MainColor = ColorLib.StellarFireGradient(LifetimeCompletion);
+            MainColor = ColorLib.StellarFireGradient(LifetimeCompletion);
             Projectile.rotation += Projectile.direction * 0.3f;
 
             if (Main.rand.NextBool(12))
             {
-                Dust dust = Dust.NewDustPerfect(Projectile.Center, DustID.TintableDustLighted, Projectile.velocity * 0.2f, 100,  ColorLib.StellarFireGradientLooping(), 1.2f);
+                Dust dust = Dust.NewDustPerfect(Projectile.Center, DustID.TintableDustLighted, Projectile.velocity * 0.2f, 100, ColorLib.StellarFireGradientLooping(), 1.2f);
                 dust.noGravity = true;
                 dust.fadeIn = 1.5f;
             }
@@ -79,7 +78,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
         public override bool PreDraw(ref Color lightColor)
         {
 
-            Color BeamColor =  MainColor;
+            Color BeamColor = MainColor;
             lightColor = BeamColor * Projectile.Opacity;
             SpriteBatch SB = Main.spriteBatch;
             Vector2 drawOrigin = new Vector2(TextureAssets.Projectile[Projectile.type].Value.Width * 0.5f, Projectile.height * 0.5f);

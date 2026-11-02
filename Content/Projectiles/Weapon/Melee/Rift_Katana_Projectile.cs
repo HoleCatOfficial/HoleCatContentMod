@@ -1,24 +1,23 @@
-using Terraria;
-using Terraria.ModLoader;
-using Terraria.ID;
-using Terraria.Audio;
-using Microsoft.Xna.Framework;
 using DestroyerTest.Common;
-using DestroyerTest.Content.MeleeWeapons;
-using Microsoft.Xna.Framework.Graphics;
-using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.MeleeWeapons;
+using Microsoft.Xna.Framework;
+using Terraria;
+using Terraria.Audio;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 {
     public class Rift_Katana_Projectile : ModProjectile
     {
-        SoundStyle EnemySlice = new SoundStyle($"DestroyerTest/Assets/Audio/TenebrousKatana/GoreSlice", 2) with {
-					Volume = 1.0f, 
-					Pitch = 0.0f, 
-					PitchVariance = 0.5f, 
-				}; 
-        public static int Swing_HitCount { get; set;} = 0;
+        SoundStyle EnemySlice = new SoundStyle($"DestroyerTest/Assets/Audio/TenebrousKatana/GoreSlice", 2) with
+        {
+            Volume = 1.0f,
+            Pitch = 0.0f,
+            PitchVariance = 0.5f,
+        };
+        public static int Swing_HitCount { get; set; } = 0;
         public override void SetStaticDefaults()
         {
             Main.projFrames[Type] = 8; // This projectile has 4 frames.
@@ -35,14 +34,17 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = -1;
             Projectile.netImportant = true;
-			Projectile.netUpdate = true;
+            Projectile.netUpdate = true;
         }
 
-        private void AnimateProjectile() {
+        private void AnimateProjectile()
+        {
             // Loop through the frames, assuming each frame lasts 5 ticks
-            if (++Projectile.frameCounter >= 4) {
+            if (++Projectile.frameCounter >= 4)
+            {
                 Projectile.frameCounter = 0;
-                if (++Projectile.frame >= Main.projFrames[Projectile.type]) {
+                if (++Projectile.frame >= Main.projFrames[Projectile.type])
+                {
                     Projectile.frame = 0;
                 }
             }
@@ -97,50 +99,24 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 Projectile.Kill();
             }
         }
-		
-		public static Vector2 CubicBezier(Vector2 start, Vector2 control1, Vector2 control2, Vector2 end, float t)
-		{
-			float u = 1 - t;
-			return (u * u * u * start) + (3 * u * u * t * control1) + (3 * u * t * t * control2) + (t * t * t * end);
-		}
 
-		
-		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
-		{
-			Player player = Main.LocalPlayer;
-			if (damageDone > 2600)
-			{
-				player.AddBuff(ModContent.BuffType<DaylightOverload>(), 600);
-			}
-			if (Main.rand.NextBool(6))
-			{
-				int p = Projectile.NewProjectile(
-					Entity.GetSource_FromThis(),
-					player.Center,
-					Vector2.Zero, // We'll manually set velocity later
-					ModContent.ProjectileType<Rift_Katana_Clone>(),
-					15,
-					2,
-					player.whoAmI
-				);
+        public static Vector2 CubicBezier(Vector2 start, Vector2 control1, Vector2 control2, Vector2 end, float t)
+        {
+            float u = 1 - t;
+            return (u * u * u * start) + (3 * u * u * t * control1) + (3 * u * t * t * control2) + (t * t * t * end);
+        }
 
-				if (Main.projectile[p].ModProjectile is Rift_Katana_Clone modProj)
-				{
-					modProj.start = player.Center;
-					if (player.direction == 1)
-					{
-						modProj.control1 = player.Center + new Vector2(-60, -30); // Example: behind + slightly up
-					}
-					if (player.direction == -1)
-					{
-						modProj.control1 = player.Center + new Vector2(60, -30);
-					}
-					modProj.control2 = player.Center + new Vector2(0, -120);  // Example: arcing high above
-					modProj.end = target.Center;
-				}
-			}
-			SoundEngine.PlaySound(EnemySlice, Projectile.position);
-		}
+
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            Player player = Main.LocalPlayer;
+            if (damageDone > 2600)
+            {
+                player.AddBuff(ModContent.BuffType<DaylightOverload>(), 600);
+            }
+
+            SoundEngine.PlaySound(EnemySlice, Projectile.position);
+        }
 
     }
 }

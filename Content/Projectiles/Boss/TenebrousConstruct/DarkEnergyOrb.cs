@@ -1,21 +1,11 @@
+using System.Linq;
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Projectiles.Boss.VampireBoss;
-using DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss;
-using DestroyerTest.Content.RiftArsenal;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
-using System;
-using System.Linq;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.Enums;
-using Terraria.GameContent;
-using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -44,7 +34,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.TenebrousConstruct
             Projectile.tileCollide = false;
             Projectile.penetrate = -1;
             Projectile.Opacity = 0f;
-         }
+        }
 
         float ro = 0;
         public override bool PreDraw(ref Color lightColor)
@@ -102,7 +92,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.TenebrousConstruct
             Projectile.ResetExcessTrailPoints();
             AnimateProjectile();
 
-            
+
 
             Projectile.ai[0]++;
 

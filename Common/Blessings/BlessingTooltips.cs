@@ -1,14 +1,9 @@
-﻿using DestroyerTest.Content.Resources;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using DestroyerTest.Content.Resources;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.ModLoader.IO;
 
 namespace DestroyerTest.Common.Blessings
 {
@@ -46,7 +41,7 @@ namespace DestroyerTest.Common.Blessings
         {
             if (OfferingItems.Contains(item.type))
             {
-                tooltips.Add(new TooltipLine(Mod, "OfferingItemLine", Language.GetTextValue("Mods.DestroyerTest.Blessings.OfferingItemTooltip")) { OverrideColor = ColorLib.Soul});
+                tooltips.Add(new TooltipLine(Mod, "OfferingItemLine", Language.GetTextValue("Mods.DestroyerTest.Blessings.OfferingItemTooltip")) { OverrideColor = ColorLib.Soul });
             }
             if (ModifierHerbs.Contains(item.type))
             {

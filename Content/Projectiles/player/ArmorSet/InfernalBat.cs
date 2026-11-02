@@ -1,25 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Reflection;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.RangedItems;
-using Humanizer;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
-using MonoMod.Cil;
 using MonoMod.RuntimeDetour;
-using MonoMod.RuntimeDetour.HookGen;
-using OpusLib;
-using OpusLib.Content.Helpers;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.GameContent;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -102,14 +89,14 @@ namespace DestroyerTest.Content.Projectiles.player.ArmorSet
             }
 
             Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, frame, Color.White, Projectile.rotation, origin, Projectile.scale, FX, 0f);
-       
+
 
             return false;
         }
 
         public override void OnSpawn(IEntitySource source)
         {
-           
+
         }
 
         public override bool? CanCutTiles()
@@ -174,7 +161,7 @@ namespace DestroyerTest.Content.Projectiles.player.ArmorSet
 
                 if (Projectile.ai[0] % 90 == 0)
                 {
-                    
+
 
                     int Targ = Projectile.AutoTarget();
 
@@ -188,7 +175,7 @@ namespace DestroyerTest.Content.Projectiles.player.ArmorSet
                             Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Projectile.Center.DirectionTo(target.Center), ModContent.ProjectileType<InfernalBatShot>(), (int)Owner.GetTotalDamage(DamageClass.Ranged).ApplyTo(45), 6f, Owner.whoAmI);
                         }
                     }
-                }    
+                }
             }
         }
 

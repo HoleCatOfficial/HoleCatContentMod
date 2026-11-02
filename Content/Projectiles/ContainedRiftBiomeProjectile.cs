@@ -1,18 +1,13 @@
 using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Dusts;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria;
-using Terraria.GameContent;
-using Terraria.ID;
-using Terraria.ModLoader;
 using OpusLib;
-using Terraria.Audio;
- 
-using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.RiftBiome;
 using ReLogic.Utilities;
+using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles
 {
@@ -37,22 +32,24 @@ namespace DestroyerTest.Content.Projectiles
         public bool InRange = false;
 
         SlotId LoopSlot;
-        public SoundStyle Loop = new SoundStyle("DestroyerTest/Assets/Audio/AuraLoop/ElectricLoop1") 
-        { 
+        public SoundStyle Loop = new SoundStyle("DestroyerTest/Assets/Audio/AuraLoop/ElectricLoop1")
+        {
             MaxInstances = 0,
             IsLooped = true,
             PauseBehavior = PauseBehavior.PauseWithGame
         };
-        
+
 
         public override void AI()
         {
             Projectile.rotation += Projectile.velocity.Length() * 0.01f;
             Projectile.velocity *= 0.98f;
 
-            if (!SoundEngine.TryGetActiveSound(LoopSlot, out var activeSound)) {
+            if (!SoundEngine.TryGetActiveSound(LoopSlot, out var activeSound))
+            {
                 var tracker = new ProjectileAudioTracker(Projectile);
-                LoopSlot = SoundEngine.PlaySound(Loop, Projectile.Center, soundInstance => {
+                LoopSlot = SoundEngine.PlaySound(Loop, Projectile.Center, soundInstance =>
+                {
                     soundInstance.Position = Projectile.Center;
                     return tracker.IsActiveAndInGame();
                 });
@@ -71,7 +68,7 @@ namespace DestroyerTest.Content.Projectiles
                 Dust EdgeDust = Dust.NewDustPerfect(dPos, ModContent.DustType<ColorableNeonDust>(), Inward, 0, ColorLib.Rift, 1.2f);
             }
 
-            foreach(Player player in Main.player)
+            foreach (Player player in Main.player)
             {
                 if (player.active && Vector2.Distance(player.Center, Projectile.Center) < 150f)
                 {

@@ -1,35 +1,35 @@
+using DestroyerTest.Content.Resources;
+using DestroyerTest.Rarity;
 using Terraria;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.Tiles;
-using DestroyerTest.Rarity;
 
 namespace DestroyerTest.Content.Equips
 {
-	[AutoloadEquip(EquipType.Legs)]
-	public class TenebrousArchmagePants : ModItem
-	{
+    [AutoloadEquip(EquipType.Legs)]
+    public class TenebrousArchmagePants : ModItem
+    {
 
 
-		public override void SetDefaults() {
-			Item.width = 22;
-			Item.height = 18;
-			Item.value = Item.sellPrice(gold: 1);
-			Item.rare = ModContent.RarityType<ShimmeringRarity>();
-			Item.defense = 31;
-		}
+        public override void SetDefaults()
+        {
+            Item.width = 22;
+            Item.height = 18;
+            Item.value = Item.sellPrice(gold: 1);
+            Item.rare = ModContent.RarityType<ShimmeringRarity>();
+            Item.defense = 31;
+        }
 
-		public override void UpdateEquip(Player player) 
-		{
-			player.GetCritChance(DamageClass.Magic) += 12;
-		}
-		public override void AddRecipes() {
-			CreateRecipe()
+        public override void UpdateEquip(Player player)
+        {
+            player.GetCritChance(DamageClass.Magic) += 12;
+        }
+        public override void AddRecipes()
+        {
+            CreateRecipe()
                 .AddIngredient<Tenebris>(8)
-				.AddTile(TileID.LunarCraftingStation)
-				.Register();
-		}
-	}
+                .AddTile(TileID.LunarCraftingStation)
+                .Register();
+        }
+    }
 }

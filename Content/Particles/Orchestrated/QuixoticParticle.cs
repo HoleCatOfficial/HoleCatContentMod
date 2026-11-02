@@ -2,17 +2,16 @@ using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
 using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
- 
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using Terraria;
 using Terraria.Graphics.Renderers;
-using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Particles.Orchestrated
 {
-    public class  QuixoticParticle : BaseParticle<QuixoticParticle>
+    public class QuixoticParticle : BaseParticle<QuixoticParticle>
     {
         public Vector2 position;
         public Color color = new Color(255, 219, 6);
@@ -64,14 +63,14 @@ namespace DestroyerTest.Content.Particles.Orchestrated
             this.scale = Scale;
         }
 
-        float LifetimeCompletion => (float)Lifetime / (float)MaxLifetime;
+        float LifetimeCompletion => Lifetime / (float)MaxLifetime;
         public override void Update(ref ParticleRendererSettings settings)
         {
             Lifetime++;
             _scale = MathHelper.Lerp(0f, scale, Utilities.Convert01To010(LifetimeCompletion));
             rotation += 0.1f;
             position += velocity;
-            
+
 
             if (Lifetime > MaxLifetime)
             {
@@ -113,13 +112,13 @@ namespace DestroyerTest.Content.Particles.Orchestrated
             this.scale = Scale;
         }
 
-        float LifetimeCompletion => (float)Lifetime / (float)MaxLifetime;
+        float LifetimeCompletion => Lifetime / (float)MaxLifetime;
         public override void Update(ref ParticleRendererSettings settings)
         {
             Lifetime++;
             _scale = MathHelper.Lerp(0f, scale, Utilities.Convert01To010(LifetimeCompletion));
             position += velocity;
-           
+
 
             if (Lifetime > MaxLifetime)
             {

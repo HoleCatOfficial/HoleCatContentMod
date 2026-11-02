@@ -1,5 +1,4 @@
-﻿using BreadLibrary.Core.Graphics;
-using BreadLibrary.Core.Graphics.Particles;
+﻿using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
 using BreadLibrary.Core.Graphics.Spritebatch;
 using BreadLibrary.Core.Utilities;
@@ -11,11 +10,6 @@ using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using OpusLib.Content.Helpers;
 using ReLogic.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -65,13 +59,13 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             spriteBatch.End();
 
             Cap.TransformMatrix = PixelationSystem.PixelationMatrix;
-            
+
 
             spriteBatch.Begin(Cap);
 
             //DTTrail.DrawTrailNoTaperPixelated(spriteBatch, BlendState.Additive, DTAssetLib.Streak(8, true).Value, L.GetPointsAlongLine(40).ToList(), [L.GetLineRotation], WidthScl * 50, color with { A = 0 }, oF * 0.1f);
 
-            
+
             DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(8, true), color with { A = 0 } * 0.5f, Main.spriteBatch, BlendState.Additive, oF, WidthScl);
             spriteBatch.End();
             spriteBatch.Begin(Cap);
@@ -86,27 +80,27 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             spriteBatch.End();
             spriteBatch.Begin(Cap);
             //Main.EntitySpriteDraw(DTAssetLib.Laser.Value, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(0, DTAssetLib.Laser.Value.Height / 2), new Vector2(1f, WidthScl * 0.15f), SpriteEffects.None);
-            
+
 
 
             Rot += 0.3f;
 
-            Main.EntitySpriteDraw(DTAssetLib.Star(3).Value, Projectile.Center - Main.screenPosition, null, color with { A = 0 }, Rot, DTAssetLib.Star(3).Value.Size() / 2, WidthScl * 1.4f , SpriteEffects.None);
+            Main.EntitySpriteDraw(DTAssetLib.Star(3).Value, Projectile.Center - Main.screenPosition, null, color with { A = 0 }, Rot, DTAssetLib.Star(3).Value.Size() / 2, WidthScl * 1.4f, SpriteEffects.None);
             Main.EntitySpriteDraw(DTAssetLib.Star(3).Value, Projectile.Center - Main.screenPosition, null, Color.White with { A = 0 }, Rot, DTAssetLib.Star(3).Value.Size() / 2, WidthScl * 1f, SpriteEffects.None);
 
 
             Main.EntitySpriteDraw(DTAssetLib.MiscSparkle144.Value, L.End - Main.screenPosition, null, color with { A = 0 }, 0f, DTAssetLib.MiscSparkle144.Value.Size() / 2, new Vector2(1f, WidthScl * 4f), SpriteEffects.None);
             Main.EntitySpriteDraw(DTAssetLib.MiscSparkle144.Value, L.End - Main.screenPosition, null, Color.White with { A = 0 }, 0f, DTAssetLib.MiscSparkle144.Value.Size() / 2, new Vector2(1f, WidthScl * 5f), SpriteEffects.None);
-            
+
             Main.EntitySpriteDraw(DTAssetLib.MiscSparkle144.Value, L.End - Main.screenPosition, null, color with { A = 0 }, MathHelper.PiOver2, DTAssetLib.MiscSparkle144.Value.Size() / 2, new Vector2(1f, WidthScl * 10f), SpriteEffects.None);
             Main.EntitySpriteDraw(DTAssetLib.MiscSparkle144.Value, L.End - Main.screenPosition, null, Color.White with { A = 0 }, MathHelper.PiOver2, DTAssetLib.MiscSparkle144.Value.Size() / 2, new Vector2(1f, WidthScl * 8f), SpriteEffects.None);
-            
+
             spriteBatch.ResetToDefault();
         }
 
         public override bool PreDraw(ref Color lightColor)
         {
-            
+
             return false;
         }
 
@@ -119,7 +113,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 
         SlotId LoopSlot;
 
-        public SoundStyle Loop = DTAssetLib.ElectricLoopSound(2) with 
+        public SoundStyle Loop = DTAssetLib.ElectricLoopSound(2) with
         {
             MaxInstances = 0,
             IsLooped = true,
@@ -189,7 +183,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             if (!SoundEngine.TryGetActiveSound(LoopSlot, out var activeSound))
             {
                 var tracker = new ProjectileAudioTracker(Projectile);
-                LoopSlot = SoundEngine.PlaySound(Loop, Projectile.Center, soundInstance => {
+                LoopSlot = SoundEngine.PlaySound(Loop, Projectile.Center, soundInstance =>
+                {
                     soundInstance.Position = Projectile.Center;
                     soundInstance.Pitch = WidthScl;
                     return tracker.IsActiveAndInGame();
@@ -228,7 +223,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
- 
+
 
             Vector2 start = L == null ? Projectile.Center : L.Start;
 
@@ -259,7 +254,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             target.AddBuff(ModContent.BuffType<DaylightOverload>(), 240);
         }
 
-        
+
     }
 
 }

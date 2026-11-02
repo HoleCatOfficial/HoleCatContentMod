@@ -1,27 +1,17 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Projectiles.Boss.VampireBoss;
-using DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss;
-using DestroyerTest.Content.RiftArsenal;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
 using OpusLib.Content.Particles;
 using ReLogic.Utilities;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.Enums;
-using Terraria.GameContent;
-using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
- 
+
 
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Magic
@@ -67,20 +57,20 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             Main.EntitySpriteDraw(DTAssetLib.CurseSigilRing.Value, Projectile.Center - Main.screenPosition, null, new Color(29, 226, 186) with { A = 0 }, r * -1.5f, DTAssetLib.CurseSigilRing.Value.Size() / 2, 0.25f * TextureScale, SpriteEffects.None);
         }
 
-       
+
         public float TextureScale = 1f;
         public int Leeway = 15;
 
         SlotId LoopSlot;
         public SoundStyle Loop = DTAssetLib.ElectricLoopSound(3) with
-        { 
+        {
             MaxInstances = 0,
             IsLooped = true,
             PauseBehavior = PauseBehavior.PauseWithGame
         };
 
-        public SoundStyle Killed = new SoundStyle("DestroyerTest/Assets/Audio/RiftCharge") 
-        { 
+        public SoundStyle Killed = new SoundStyle("DestroyerTest/Assets/Audio/RiftCharge")
+        {
             MaxInstances = 0,
             PitchVariance = 0.5f
         };
@@ -124,18 +114,20 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 
         public override void AI()
         {
-            
+
             Lighting.AddLight(Projectile.Center, new Color(29, 226, 186).ToVector3());
-          
+
 
             for (int i = 0; i < 4; i++)
             {
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.FireworksRGB, 0f, 0f, 0, new Color(29, 226, 186), 0.5f);
             }
 
-            if (!SoundEngine.TryGetActiveSound(LoopSlot, out var activeSound)) {
+            if (!SoundEngine.TryGetActiveSound(LoopSlot, out var activeSound))
+            {
                 var tracker = new ProjectileAudioTracker(Projectile);
-                LoopSlot = SoundEngine.PlaySound(Loop, Projectile.Center, soundInstance => {
+                LoopSlot = SoundEngine.PlaySound(Loop, Projectile.Center, soundInstance =>
+                {
                     soundInstance.Position = Projectile.Center;
                     soundInstance.Pitch = PitchVal;
                     return tracker.IsActiveAndInGame();
@@ -177,7 +169,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             }
             */
 
-            
+
 
             if (shouldActAsChanneling(player))
             {
@@ -248,14 +240,14 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 
         public void UpdateOwnedSubProj()
         {
-           
+
         }
 
         public override void ModifyDamageHitbox(ref Rectangle hitbox)
         {
             hitbox.Inflate(20, 20);
         }
-        
+
 
         public override void OnKill(int timeLeft)
         {

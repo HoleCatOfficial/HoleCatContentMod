@@ -1,20 +1,13 @@
-﻿using DestroyerTest.Common;
+﻿using System;
+using DestroyerTest.Common;
 using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.Magic;
 using DestroyerTest.Content.RiftArsenal;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using ReLogic.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.Enums;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -64,12 +57,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
                 effects = SpriteEffects.None;
                 rotationOffset = MathHelper.ToRadians(45f);
             }
-           
+
 
             Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, null, Projectile.GetAlpha(lightColor) * Projectile.Opacity, (Projectile.rotation + rotationOffset), origin, Projectile.scale, effects, 0);
 
             Main.EntitySpriteDraw(Glowmask.Value, Projectile.Center - Main.screenPosition, null, Color.White * Projectile.Opacity, (Projectile.rotation + rotationOffset), origin, Projectile.scale, effects, 0);
-            
+
 
             return false;
         }
@@ -127,7 +120,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             Projectile.rotation = Projectile.rotation.AngleLerp(TargetRot, 0.1f);
             Projectile.Center = Owner.Center;
 
-            
+
 
             if (BeamProjectile != null)
             {
@@ -152,7 +145,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
                 {
                     canMana = Owner.CheckMana(60, true, false);
                 }
-                
+
                 if (canMana)
                 {
                     if (BeamProjectile != null)
@@ -190,7 +183,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             }
         }
 
-        
+
 
 
         Player Owner => Main.player[Projectile.owner];

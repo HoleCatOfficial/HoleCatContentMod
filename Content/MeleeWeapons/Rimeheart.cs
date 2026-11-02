@@ -1,15 +1,5 @@
-﻿using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Projectiles.Weapon.Melee;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Rarity;
- 
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
+﻿using DestroyerTest.Content.Projectiles.Weapon.Melee;
 using Terraria;
-using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 

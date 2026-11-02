@@ -1,27 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BreadLibrary.Core;
 using BreadLibrary.Core.Graphics.Particles;
-using BreadLibrary.Core.Verlet;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss;
-using DestroyerTest.Content.Projectiles.Weapon.Summon;
-using DestroyerTest.Content.SummonItems;
 using Microsoft.CodeAnalysis;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
-using OpusLib.Content.Helpers;
-using ReLogic.Content;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -62,7 +51,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
             {
                 for (int i = 0; i < Projectile.oldPos.Length; i++)
                 {
-                    float fade = MathHelper.Lerp(0.5f, 0f, (float)i / (float)Projectile.oldPos.Length);
+                    float fade = MathHelper.Lerp(0.5f, 0f, i / (float)Projectile.oldPos.Length);
 
                     if (i != 0)
                     {

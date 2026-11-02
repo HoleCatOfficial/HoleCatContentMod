@@ -1,14 +1,12 @@
+using System;
+using System.Collections.Generic;
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Particles;
- 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
-using ReLogic.Content;
-using System;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -38,25 +36,25 @@ namespace DestroyerTest.Content.Projectiles.Boss
         }
 
         public float trailOffset = 0f;
-		public override bool PreDraw(ref Color lightColor)
-		{
-			lightColor = ColorLib.Soul;
-			trailOffset += 0.04f;
+        public override bool PreDraw(ref Color lightColor)
+        {
+            lightColor = ColorLib.Soul;
+            trailOffset += 0.04f;
 
 
-			SpriteBatch spriteBatch = Main.spriteBatch;
-			DTUtils Utility = new DTUtils();
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            DTUtils Utility = new DTUtils();
 
             Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
-			Opus.DrawGlowOnProj(Projectile, lightColor * GlowMult, true);
+            Opus.DrawGlowOnProj(Projectile, lightColor * GlowMult, true);
 
-			Opus.ReturnToDefaultDrawing(spriteBatch);
+            Opus.ReturnToDefaultDrawing(spriteBatch);
 
-			Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, TextureAssets.Projectile[Projectile.type].Value.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
+            Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, TextureAssets.Projectile[Projectile.type].Value.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
 
-			return false;
-		}
+            return false;
+        }
 
         public override void OnSpawn(IEntitySource source)
         {

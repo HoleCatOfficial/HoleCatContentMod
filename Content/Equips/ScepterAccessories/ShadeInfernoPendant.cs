@@ -1,13 +1,8 @@
 
 using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Resources;
 using DestroyerTest.Rarity.Scepter;
-using Microsoft.Xna.Framework;
-using Steamworks;
 using Terraria;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Equips.ScepterAccessories
@@ -23,7 +18,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
             Item.accessory = true;
         }
 
-        
+
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             player.GetDamage<ScepterClass>() += 0.055f;

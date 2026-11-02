@@ -1,22 +1,18 @@
-using System;
+using DestroyerTest.Common;
+using DestroyerTest.Content.Projectiles.Weapon.Scepter;
+using DestroyerTest.Rarity.Scepter;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.DataStructures;
- 
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Common;
-using DestroyerTest.Rarity;
-using DestroyerTest.Rarity.Scepter;
-using DestroyerTest.Content.Projectiles.Weapon.Scepter;  
 
 namespace DestroyerTest.Content.Scepter
 {
-	public class NatureScepter : ScepterItem
-	{
-		public override int Width => 56;
+    public class NatureScepter : ScepterItem
+    {
+        public override int Width => 56;
         public override int Height => 52;
 
         public override void SetStaticDefaults()
@@ -68,16 +64,17 @@ namespace DestroyerTest.Content.Scepter
             }
             return base.Shoot(player, source, position, velocity, type, damage, knockback);
         }
-        
 
-		public override void AddRecipes() {
-			CreateRecipe()
-				.AddIngredient(ItemID.RichMahogany, 16)
-				.AddIngredient(ItemID.JungleSpores, 12)
-				.AddTile(TileID.WorkBenches)
-				.Register();
-		}
+
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient(ItemID.RichMahogany, 16)
+                .AddIngredient(ItemID.JungleSpores, 12)
+                .AddTile(TileID.WorkBenches)
+                .Register();
+        }
 
 
     }
-} 
+}

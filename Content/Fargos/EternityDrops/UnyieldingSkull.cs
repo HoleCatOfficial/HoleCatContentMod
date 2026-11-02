@@ -1,11 +1,9 @@
-﻿using Microsoft.Xna.Framework;
+﻿using DestroyerTest.Common;
+using DestroyerTest.Rarity;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.Audio;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Rarity;
-using DestroyerTest.Common;
 
 namespace DestroyerTest.Content.Fargos.EternityDrops
 {

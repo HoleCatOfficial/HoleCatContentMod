@@ -1,9 +1,7 @@
 using DestroyerTest.Common;
 using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.Resources.Cloths;
 using DestroyerTest.Content.RiftBiome.RiftSurfaceResources;
 using DestroyerTest.Rarity;
-using DestroyerTest.Rarity.Scepter;
 using GlowmaskHelper.Content;
 using Terraria;
 using Terraria.ID;
@@ -41,7 +39,7 @@ namespace DestroyerTest.Content.Equips
 
         public override void UpdateEquip(Player player)
         {
-			player.GetCritChance(ModContent.GetInstance<ScepterClass>()) += 10;
+            player.GetCritChance(ModContent.GetInstance<ScepterClass>()) += 10;
         }
 
         public override void SetMatch(bool male, ref int equipSlot, ref bool robes)
@@ -50,12 +48,13 @@ namespace DestroyerTest.Content.Equips
             equipSlot = EquipLoader.GetEquipSlot(Mod, Name, EquipType.Legs);
         }
 
-        public override void AddRecipes() {
+        public override void AddRecipes()
+        {
             CreateRecipe()
                 .AddIngredient<Item_RiftStone>(40)
                 .AddIngredient<Living_Shadow>(60)
-				.AddTile(TileID.MythrilAnvil)
-				.Register();
+                .AddTile(TileID.MythrilAnvil)
+                .Register();
         }
-	}
+    }
 }

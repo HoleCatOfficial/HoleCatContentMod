@@ -1,17 +1,14 @@
+using System;
 using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Particles;
- 
 using Microsoft.Xna.Framework;
 using OpusLib.Content.Particles;
-using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ObjectData;
-using UtfUnknown.Core.Models.SingleByte.Finnish;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 {

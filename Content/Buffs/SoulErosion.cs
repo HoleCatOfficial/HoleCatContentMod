@@ -1,40 +1,37 @@
-using DestroyerTest.Common;
-using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.Particles;
- 
-using Terraria;
-using Terraria.DataStructures;
-using Terraria.ID;
-using Terraria.Localization;
-using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
 using System;
+using DestroyerTest.Content.Dusts;
+using Microsoft.Xna.Framework;
+using Terraria;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Buffs
 {
-	public class SoulErosion : ModBuff
-	{
-		public override void SetStaticDefaults()
-		{
-			Main.debuff[Type] = true;  // Is it a debuff?
-			Main.pvpBuff[Type] = true; // Players can give other players buffs, which are listed as pvpBuff
-			Main.buffNoSave[Type] = true; // Causes this buff not to persist when exiting and rejoining the world
-			BuffID.Sets.LongerExpertDebuff[Type] = true; // If this buff is a debuff, setting this to true will make this buff last twice as long on players in expert mode
-		}
+    public class SoulErosion : ModBuff
+    {
+        public override void SetStaticDefaults()
+        {
+            Main.debuff[Type] = true;  // Is it a debuff?
+            Main.pvpBuff[Type] = true; // Players can give other players buffs, which are listed as pvpBuff
+            Main.buffNoSave[Type] = true; // Causes this buff not to persist when exiting and rejoining the world
+            BuffID.Sets.LongerExpertDebuff[Type] = true; // If this buff is a debuff, setting this to true will make this buff last twice as long on players in expert mode
+        }
 
-		// Allows you to make this buff give certain effects to the given player
-		public override void Update(Player player, ref int buffIndex)
-		{
-			player.GetModPlayer<SEPlayer>().Eroding = true;
-		}
-		public override void Update(NPC target, ref int buffIndex) {
-			if (target.TryGetGlobalNPC<SETarget>(out var modNPC)) {
+        // Allows you to make this buff give certain effects to the given player
+        public override void Update(Player player, ref int buffIndex)
+        {
+            player.GetModPlayer<SEPlayer>().Eroding = true;
+        }
+        public override void Update(NPC target, ref int buffIndex)
+        {
+            if (target.TryGetGlobalNPC<SETarget>(out var modNPC))
+            {
                 modNPC.Eroding = true;
             }
-		}
-	}
-	
-	public class SETarget : GlobalNPC
+        }
+    }
+
+    public class SETarget : GlobalNPC
     {
         public override bool InstancePerEntity => true;
 
@@ -74,7 +71,7 @@ namespace DestroyerTest.Content.Buffs
     }
 
 
-	public class SEPlayer : ModPlayer
+    public class SEPlayer : ModPlayer
     {
         public bool Eroding;
         public float ErosionTimer;

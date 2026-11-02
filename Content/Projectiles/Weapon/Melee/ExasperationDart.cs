@@ -1,24 +1,15 @@
 ﻿using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.Particles;
- 
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using OpusLib.Content.Particles;
-using ReLogic.Content;
-using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using Terraria;
-using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.Utilities;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 {
@@ -60,7 +51,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
             Opus.DrawGlowOnProj(Projectile, Color.DarkMagenta, true);
 
-            
+
             for (int k = Projectile.oldPos.Length - 1; k > 0; k--)
             {
                 Vector2 drawPos = (Projectile.oldPos[k] - Main.screenPosition) + Projectile.Size / 2;
@@ -71,7 +62,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
             Opus.ReturnToDefaultDrawing(spriteBatch);
 
-            
+
 
             return false;
         }
@@ -81,7 +72,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         public override void AI()
         {
             Projectile.velocity = Projectile.velocity.RotatedBy(Opus.Sine(-0.2f, 0.2f, 0.5f));
-            Projectile.rotation = (Projectile.velocity.ToRotation() ) + MathHelper.PiOver4;
+            Projectile.rotation = (Projectile.velocity.ToRotation()) + MathHelper.PiOver4;
 
             Fire fire = new Fire();
             fire.PrepareFire(Projectile.Center, Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.3f, 0.3f), Color.Indigo, 1f, 100, FireDrawMode.Additive, PixelLayer.AboveProjectiles);

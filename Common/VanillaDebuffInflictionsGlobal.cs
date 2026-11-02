@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Projectiles.Boss.NodeBoss.Blessed;
 using Terraria;
@@ -15,12 +11,12 @@ namespace DestroyerTest.Common
     {
         public override bool InstancePerEntity => true;
 
-      
+
 
         public override void OnHitNPC(Projectile projectile, NPC target, NPC.HitInfo hit, int damageDone)
         {
             int Type = projectile.type;
-            
+
         }
 
         List<int> HallowedBossProjectiles = new()

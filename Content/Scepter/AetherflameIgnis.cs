@@ -1,17 +1,9 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using DestroyerTest.Content.Projectiles.Weapon.Scepter;
+using DestroyerTest.Rarity.Scepter;
 using Terraria;
-using Terraria.Audio;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.DataStructures;
-
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Common;
-using DestroyerTest.Rarity;
-using DestroyerTest.Rarity.Scepter;
-using DestroyerTest.Content.Projectiles.Weapon.Scepter;
-using Terraria.GameContent.ItemDropRules;
 
 namespace DestroyerTest.Content.Scepter
 {
@@ -28,7 +20,7 @@ namespace DestroyerTest.Content.Scepter
         public override void SetDefaults()
         {
             base.SetDefaults();
-            
+
             ShootDMG = 42;
             ShootCrit = 12;
             ThrowCrit = 8;
@@ -44,7 +36,7 @@ namespace DestroyerTest.Content.Scepter
 
             base.SetDefaults();
 
-            
+
         }
 
         public override void ShootDefaults()

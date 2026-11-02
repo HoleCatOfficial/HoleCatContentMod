@@ -1,20 +1,12 @@
 ﻿using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.BossSummons;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Consumables;
 using DestroyerTest.Content.Particles.Stellar;
-using DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss;
-using GlowmaskHelper.Content;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
 using OpusLib.Content.Particles;
-using ReLogic.Content;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 

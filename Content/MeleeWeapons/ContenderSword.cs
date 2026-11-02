@@ -1,11 +1,10 @@
+using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Projectiles.Weapon.Melee;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Projectiles.Weapon.Melee;
 
 namespace DestroyerTest.Content.MeleeWeapons
 {

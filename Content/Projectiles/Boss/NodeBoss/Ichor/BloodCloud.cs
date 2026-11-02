@@ -1,19 +1,14 @@
 using DestroyerTest.Common;
 using DestroyerTest.Content.Entities;
-using DestroyerTest.Content.Particles;
- 
+
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Terraria;
-using Terraria.Audio;
-using Terraria.GameContent;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.Ichor
 {
-	public class BloodCloud : ModProjectile
-	{
+    public class BloodCloud : ModProjectile
+    {
         public override void SetStaticDefaults()
         {
             Main.projFrames[Type] = 6;
@@ -30,13 +25,16 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.Ichor
             Projectile.timeLeft = 180;
             Projectile.penetrate = -1;
             Projectile.tileCollide = false;
-		}
+        }
 
-        private void AnimateProjectile() {
+        private void AnimateProjectile()
+        {
             // Loop through the frames, assuming each frame lasts 5 ticks
-            if (++Projectile.frameCounter >= 4) {
+            if (++Projectile.frameCounter >= 4)
+            {
                 Projectile.frameCounter = 0;
-                if (++Projectile.frame >= Main.projFrames[Projectile.type]) {
+                if (++Projectile.frame >= Main.projFrames[Projectile.type])
+                {
                     Projectile.frame = 0;
                 }
             }
@@ -50,5 +48,5 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.Ichor
                 Projectile.NewProjectile(Entity.GetSource_FromThis(), Main.rand.NextVector2FromRectangle(Projectile.Hitbox), new Vector2(0, 32), ModContent.ProjectileType<BloodRain>(), 15, 1);
             }
         }
-	}
+    }
 }

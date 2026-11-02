@@ -4,24 +4,20 @@ using System.Linq;
 using BreadLibrary.Core.Graphics.Pixelation;
 using BreadLibrary.Core.Graphics.Spritebatch;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Entities;
-using DestroyerTest.Content.Particles;
- 
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using OpusLib.Content.Helpers;
 using Terraria;
 using Terraria.DataStructures;
-using Terraria.Enums;
-using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame
 {
-	public class CursedFlameVortex : ModProjectile, IDrawPixelated
-	{
+    public class CursedFlameVortex : ModProjectile, IDrawPixelated
+    {
         public override string Texture => DTUtils.NoTexture;
         private Player HomingTarget
         {
@@ -79,7 +75,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame
 
             DTUtils.instance.ScrollingTextureSpine(Line, DTAssetLib.Line(1), ColorLib.CursedFlames * 0.5f, spriteBatch, BlendState.Additive, warnoffset, 2f);
 
-            
+
 
             return false;
         }
@@ -100,7 +96,6 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame
             {
                 List<ColoredVertex> ve = new List<ColoredVertex>();
                 List<ColoredVertex> ve2 = new List<ColoredVertex>();
-                float a = 0;
 
                 for (int i = Projectile.OldCenter().Length - 1; i > 0; i--)
                 {

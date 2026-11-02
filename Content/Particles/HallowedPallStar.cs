@@ -1,16 +1,11 @@
 using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
-using DestroyerTest.Common;
- 
-using Microsoft.CodeAnalysis;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
-using System;
 using Terraria;
 using Terraria.Graphics.Renderers;
 using Terraria.ModLoader;
-using static Terraria.GameContent.Animations.IL_Actions.Sprites;
 
 namespace DestroyerTest.Content.Particles
 {

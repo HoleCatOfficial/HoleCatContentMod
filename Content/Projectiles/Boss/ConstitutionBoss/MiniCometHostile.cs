@@ -1,60 +1,55 @@
-using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.Particles;
- 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using ReLogic.Content;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using OpusLib;
 
 namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
 {
-	public class MiniCometHostile : ModProjectile
-	{
+    public class MiniCometHostile : ModProjectile
+    {
 
-		private Player PLRTarget
-		{
-			get => Projectile.ai[1] == 0 ? null : Main.player[(int)Projectile.ai[1] - 1];
-			set
-			{
-				Projectile.ai[1] = value == null ? 0 : value.whoAmI + 1;
-			}
-		}
+        private Player PLRTarget
+        {
+            get => Projectile.ai[1] == 0 ? null : Main.player[(int)Projectile.ai[1] - 1];
+            set
+            {
+                Projectile.ai[1] = value == null ? 0 : value.whoAmI + 1;
+            }
+        }
 
-		public float DelayTimer;
+        public float DelayTimer;
 
-		public override void SetStaticDefaults()
-		{
+        public override void SetStaticDefaults()
+        {
             DTUtils.OwnedByBossNPC[Type] = ModContent.NPCType<Entities.ConstitutionBoss>();
         }
 
-		public override void SetDefaults()
-		{
-			Projectile.width = 72;
-			Projectile.height = 72;
+        public override void SetDefaults()
+        {
+            Projectile.width = 72;
+            Projectile.height = 72;
 
-			Projectile.DamageType = DamageClass.Generic;
-			Projectile.friendly = false;
-			Projectile.hostile = true;
-			Projectile.ignoreWater = true;
-			Projectile.light = 1f;
-			Projectile.timeLeft = 300;
-			Projectile.tileCollide = false;
-		}
+            Projectile.DamageType = DamageClass.Generic;
+            Projectile.friendly = false;
+            Projectile.hostile = true;
+            Projectile.ignoreWater = true;
+            Projectile.light = 1f;
+            Projectile.timeLeft = 300;
+            Projectile.tileCollide = false;
+        }
 
         private Asset<Texture2D> ProjTex => ModContent.Request<Texture2D>(Texture);
-		public override bool PreDraw(ref Color lightColor)
+        public override bool PreDraw(ref Color lightColor)
         {
-            lightColor =  ColorLib.StellarFireGradientLooping();
+            lightColor = ColorLib.StellarFireGradientLooping();
             SpriteBatch spriteBatch = Main.spriteBatch;
             DTUtils Utility = new DTUtils();
 
@@ -117,18 +112,18 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
         }
 
 
-		/// <summary>
-		/// Controls whether the Projectile is Hostile or Friendly.
-		/// <para/> 1 = Friendly, 2 = Hostile
-		/// <para/> Attempting to return an invalid value will kill the projectile.
-		/// </summary>
-		public int Mode;
+        /// <summary>
+        /// Controls whether the Projectile is Hostile or Friendly.
+        /// <para/> 1 = Friendly, 2 = Hostile
+        /// <para/> Attempting to return an invalid value will kill the projectile.
+        /// </summary>
+        public int Mode;
 
-		public List<Vector2> TrailPositions = new();
-		public List<float> TrailRotations = new();
-		private const int TrailLength = 40;
+        public List<Vector2> TrailPositions = new();
+        public List<float> TrailRotations = new();
+        private const int TrailLength = 40;
         public int HomingTime = 60;
-		public override void AI()
+        public override void AI()
         {
             TrailPositions.Insert(0, Projectile.Center);
             TrailRotations.Insert(0, Projectile.rotation);
@@ -151,7 +146,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
                 Mod.Logger.Warn("OilProjectile: Invalid Mode in ai[2]. Expected 1 or 2.");
             }
 
-            Lighting.AddLight(Projectile.Center,  ColorLib.StellarFireGradientLooping().ToVector3() * 0.2f);
+            Lighting.AddLight(Projectile.Center, ColorLib.StellarFireGradientLooping().ToVector3() * 0.2f);
 
             if (DelayTimer < 20)
             {
@@ -165,7 +160,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
             }
             float maxDetectRadius = 2800f;
 
-            
+
             Projectile.friendly = false;
             Projectile.hostile = true;
 
@@ -200,49 +195,49 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
                 Projectile.velocity = Projectile.velocity.SafeNormalize(Vector2.Zero) * speed;
             }
 
-            
+
         }
 
-		public Player FindClosestPlayer(float maxDetectDistance)
-		{
-			Player closestPlayer = null;
+        public Player FindClosestPlayer(float maxDetectDistance)
+        {
+            Player closestPlayer = null;
 
-			float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
+            float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
 
-			foreach (var target in Main.player)
-			{
-				if (IsValidPlayer(target))
-				{
-					float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, Projectile.Center);
+            foreach (var target in Main.player)
+            {
+                if (IsValidPlayer(target))
+                {
+                    float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, Projectile.Center);
 
-					if (sqrDistanceToTarget < sqrMaxDetectDistance)
-					{
-						sqrMaxDetectDistance = sqrDistanceToTarget;
-						closestPlayer = target;
-					}
-				}
-			}
+                    if (sqrDistanceToTarget < sqrMaxDetectDistance)
+                    {
+                        sqrMaxDetectDistance = sqrDistanceToTarget;
+                        closestPlayer = target;
+                    }
+                }
+            }
 
-			return closestPlayer;
-		}
+            return closestPlayer;
+        }
 
-		public bool IsValidPlayer(Player target)
-		{
-			return target.active == true && target.statLife > 1;
-		}
+        public bool IsValidPlayer(Player target)
+        {
+            return target.active == true && target.statLife > 1;
+        }
 
-		public override void OnHitPlayer(Player target, Player.HurtInfo info)
-		{
-			if (Mode == 2 || Mode == 4)
-			{
-				target.AddBuff(ModContent.BuffType<GalantineBurn>(), 300);
-			}
-		}
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
+        {
+            if (Mode == 2 || Mode == 4)
+            {
+                target.AddBuff(ModContent.BuffType<GalantineBurn>(), 300);
+            }
+        }
 
         public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(SoundID.Item10);
-			Dust.NewDust(Projectile.position, Projectile.Hitbox.Width, Projectile.Hitbox.Height, ModContent.DustType<ConstitutionDust1>(), Main.rand.NextFloat(-1, 1.1f), Main.rand.NextFloat(-1, 1.1f), 0,  ColorLib.StellarFireGradientLooping(), 2f);
+            Dust.NewDust(Projectile.position, Projectile.Hitbox.Width, Projectile.Hitbox.Height, ModContent.DustType<ConstitutionDust1>(), Main.rand.NextFloat(-1, 1.1f), Main.rand.NextFloat(-1, 1.1f), 0, ColorLib.StellarFireGradientLooping(), 2f);
         }
 
     }

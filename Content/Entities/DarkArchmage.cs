@@ -1,15 +1,10 @@
+using System;
 using DestroyerTest.Common;
 using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.RiftBiome;
 using Microsoft.Xna.Framework;
-using MonoMod.Cil;
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.Bestiary;
@@ -17,7 +12,6 @@ using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Utilities;
 
 namespace DestroyerTest.Content.Entities
 {
@@ -65,7 +59,7 @@ namespace DestroyerTest.Content.Entities
             });
 
             bestiaryEntry.Info.AddRange([
-				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.UndergroundCorruption
+                BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.UndergroundCorruption
             ]);
         }
 
@@ -145,7 +139,7 @@ namespace DestroyerTest.Content.Entities
                 Projectile.NewProjectile(Entity.GetSource_FromAI(), NPC.Center, vel.RotatedByRandom(1) * 7f, ModContent.ProjectileType<TenebrisStarHostile>(), 26, 8);
             }
         }
-        
+
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ShadeParticle>(), 3, 6, 14));

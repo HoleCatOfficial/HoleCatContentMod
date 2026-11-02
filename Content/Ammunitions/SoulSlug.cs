@@ -1,12 +1,7 @@
-﻿
-using rail;
+﻿using DestroyerTest.Content.Projectiles.AmmoProjectiles;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using DestroyerTest.Content.Projectiles.AmmoProjectiles;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.Tiles;
-using DestroyerTest.Content.Tiles.RiftConfigurator;
 
 namespace DestroyerTest.Content.Ammunitions
 {

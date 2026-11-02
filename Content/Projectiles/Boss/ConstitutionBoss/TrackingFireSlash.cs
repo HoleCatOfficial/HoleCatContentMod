@@ -3,15 +3,7 @@ using DestroyerTest.Content.Buffs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
-using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
@@ -82,7 +74,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
                     return 0f;
                 }
 
-                return (float)Time / (float)Lifetime;
+                return Time / (float)Lifetime;
             }
         }
 
@@ -123,7 +115,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
             float length = Projectile.velocity.Length();
             float targetAngle = Projectile.AngleTo(HomingTarget.Center);
             Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(4)).ToRotationVector2() * length;
-            
+
         }
 
         public Player FindPlayer(float maxDetectDistance)

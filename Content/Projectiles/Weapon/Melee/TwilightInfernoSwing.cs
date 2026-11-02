@@ -1,20 +1,13 @@
 using DestroyerTest.Common;
 using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles.ParentClasses;
- 
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using OpusLib.Content.Helpers;
-using System;
-using System.Collections.Generic;
-using System.IO;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.GameContent;
-using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -96,7 +89,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         {
             Counter++;
 
-            
+
 
 
             swordTip = Projectile.Center + Projectile.rotation.ToRotationVector2() * (Projectile.Size.Length() * Projectile.scale);

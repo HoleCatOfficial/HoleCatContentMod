@@ -1,15 +1,5 @@
 ﻿using DestroyerTest.Common;
-using DestroyerTest.Content.Particles;
-
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -56,7 +46,7 @@ namespace DestroyerTest.Content.Buffs
         {
             if (Active)
             {
-                Player.GetDamage<DTTrueMeleeClass >() += 0.25f;
+                Player.GetDamage<DTTrueMeleeClass>() += 0.25f;
             }
         }
     }

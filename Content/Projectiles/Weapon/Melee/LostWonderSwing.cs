@@ -1,22 +1,14 @@
 ﻿using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.ScreenShake;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles.ParentClasses;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
 using OpusLib.Content.Helpers;
-using System;
-using System.Collections.Generic;
-using System.IO;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.GameContent;
-using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -42,7 +34,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Glowmask = ModContent.Request<Texture2D>($"{Texture}_Glow");
         }
 
-        public override SoundStyle Swing => DTAssetLib.SwordSounds.RuneSong with { Pitch = LastSwing == -1 ? -0.3f : 0f, PitchVariance = 0.1f};
+        public override SoundStyle Swing => DTAssetLib.SwordSounds.RuneSong with { Pitch = LastSwing == -1 ? -0.3f : 0f, PitchVariance = 0.1f };
 
         public override void HitNPCEffects(NPC npc, NPC.HitInfo hit, int damageDone)
         {
@@ -75,7 +67,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             SoundEngine.PlaySound(DTAssetLib.Impacts.MetalImpact with { MaxInstances = 0, PitchVariance = 0.4f, Volume = 0.3f }, npc.Center);
             SoundEngine.PlaySound(DTAssetLib.Impacts.WindHit with { MaxInstances = 0, PitchVariance = 0.4f }, npc.Center);
         }
-  
+
         public override void DrawUnderBlade()
         {
 

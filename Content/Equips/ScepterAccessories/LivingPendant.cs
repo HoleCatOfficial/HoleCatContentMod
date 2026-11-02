@@ -1,15 +1,10 @@
 
 using DestroyerTest.Common;
 using DestroyerTest.Content.Projectiles.player.Accessory;
-using DestroyerTest.Content.Projectiles.Weapon.Scepter;
-using DestroyerTest.Content.Resources;
 using DestroyerTest.Rarity.Scepter;
-using Microsoft.Xna.Framework;
-using Steamworks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Equips.ScepterAccessories
@@ -78,11 +73,11 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
         {
             base.AI(projectile);
 
-            
+
         }
         public override void OnHitNPC(Projectile projectile, NPC target, NPC.HitInfo hit, int damageDone)
         {
-            if (Main.rand.NextBool(3) && Main.player[projectile.owner].GetModPlayer<LivingPendantPlayer>().Active && Main.player[projectile.owner].GetModPlayer<LivingPendantPlayer>().Cooldown <= 0) 
+            if (Main.rand.NextBool(3) && Main.player[projectile.owner].GetModPlayer<LivingPendantPlayer>().Active && Main.player[projectile.owner].GetModPlayer<LivingPendantPlayer>().Cooldown <= 0)
             {
                 SoundEngine.PlaySound(SoundID.DD2_DarkMageCastHeal);
                 Projectile.NewProjectile(projectile.GetSource_OnHit(target), target.Center, Main.rand.NextVector2CircularEdge(10f, 10f), ModContent.ProjectileType<LivingPendantHeal>(), 0, 0, projectile.owner, ai1: damageDone * 0.05f);

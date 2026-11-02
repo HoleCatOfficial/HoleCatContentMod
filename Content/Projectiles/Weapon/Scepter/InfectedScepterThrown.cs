@@ -1,20 +1,12 @@
+using DestroyerTest.Common;
+using DestroyerTest.Content.Projectiles.ParentClasses;
+using DestroyerTest.Content.Projectiles.Weapon.Magic;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
-using Terraria.Audio;
-using DestroyerTest.Content.Consumables;
-using DestroyerTest.Common;
-using Terraria.DataStructures;
-using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Buffs;
-using System.IO;
- 
-using DestroyerTest.Content.Projectiles.ParentClasses;
-using OpusLib;
-using DestroyerTest.Content.Projectiles.Weapon.Magic;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 {
@@ -47,10 +39,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
                 Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<CursedFlamesFriendly>(), Projectile.damage / 3, 0, Projectile.owner);
             }
         }
-    
+
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            for(int y = 0; y < 6; y++)
+            for (int y = 0; y < 6; y++)
             {
                 Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, new Vector2(Main.rand.NextFloat(-1, 1), Main.rand.NextFloat(-3, -2)), ProjectileID.GoldenShowerFriendly, Projectile.damage / 3, 0, Projectile.owner);
             }

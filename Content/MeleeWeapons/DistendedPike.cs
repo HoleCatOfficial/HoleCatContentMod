@@ -1,9 +1,6 @@
-using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Weapon.Melee;
-using DestroyerTest.Content.RangedItems;
 using DestroyerTest.Rarity;
 using Terraria;
-using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -53,4 +50,3 @@ namespace DestroyerTest.Content.MeleeWeapons
     }
 }
 
-		

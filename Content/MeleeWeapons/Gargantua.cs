@@ -1,17 +1,7 @@
-using DestroyerTest;
 using DestroyerTest.Common;
-using DestroyerTest.Content.MeleeWeapons;
-using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Weapon.Melee;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.Tiles;
 using DestroyerTest.Rarity;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Terraria;
-using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -19,7 +9,7 @@ namespace DestroyerTest.Content.MeleeWeapons
 {
 
     public class Gargantua : ModItem
-	{
+    {
         public override void SetStaticDefaults()
         {
             ItemID.Sets.ItemsThatAllowRepeatedRightClick[Type] = true;
@@ -46,7 +36,7 @@ namespace DestroyerTest.Content.MeleeWeapons
             Item.shoot = ModContent.ProjectileType<GargantuaProjectile>();
             Item.noUseGraphic = true;
             Item.channel = true;
-		}
+        }
 
         public override bool CanUseItem(Player player)
         {
@@ -58,12 +48,13 @@ namespace DestroyerTest.Content.MeleeWeapons
             return true;
         }
 
-        public override void AddRecipes() {
-			CreateRecipe()
+        public override void AddRecipes()
+        {
+            CreateRecipe()
                 .AddIngredient<Goliath>(1)
                 .AddIngredient(ItemID.SpectreBar, 10)
-				.AddTile(TileID.Anvils)
-				.Register();
-		}
+                .AddTile(TileID.Anvils)
+                .Register();
+        }
     }
 }

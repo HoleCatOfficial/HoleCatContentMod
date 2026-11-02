@@ -1,17 +1,10 @@
-
-using System.Collections.Generic;
 using System.Linq;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Buffs.Imbues;
 using DestroyerTest.Content.Projectiles.ParentClasses;
 using DestroyerTest.Content.Projectiles.player.Accessory;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.Tiles;
-using DestroyerTest.Content.Tiles.RiftConfigurator;
 using DestroyerTest.Rarity.Scepter;
 using Microsoft.Xna.Framework;
-using Steamworks;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -40,7 +33,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
         public static readonly float CritBonus = 1.2f;
         public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs((DMGBonus - 1f).ToString("P1"), CritBonus.ToString("F1") + "%");
 
-       
+
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             player.GetModPlayer<ElementalPendantPlayer>().Active = true;
@@ -100,7 +93,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
             }
             return base.Shoot(item, source, position, velocity, type, damage, knockback);
         }
-        
+
     }
 
     public class ElementalPendantGlobal : GlobalProjectile

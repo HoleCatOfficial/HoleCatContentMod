@@ -1,5 +1,4 @@
-﻿using System.IO;
-using BreadLibrary.Core.Graphics.Particles;
+﻿using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Common.Interfaces;
 using DestroyerTest.Content.Particles;
@@ -9,9 +8,6 @@ using OpusLib;
 using OpusLib.Content.Particles;
 using Terraria;
 using Terraria.Audio;
-using Terraria.Enums;
-using Terraria.GameContent;
-using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -102,7 +98,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter.DiscordScepter.Power
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             SoundEngine.PlaySound(SoundID.DD2_BetsysWrathImpact, Projectile.Center);
-            SoundEngine.PlaySound(DTAssetLib.Impacts.Malevolence with { Pitch = -0.5f}, Projectile.Center);
+            SoundEngine.PlaySound(DTAssetLib.Impacts.Malevolence with { Pitch = -0.5f }, Projectile.Center);
 
             BloomRingSharp Ring = new();
             Ring.Prepare(Projectile.Center, Vector2.Zero, ColorLib.CelestialGradient, 0.3f, 0.01f, 1f, BlendState.Additive);

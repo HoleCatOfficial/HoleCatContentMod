@@ -1,20 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
+using DestroyerTest.Common.Interfaces;
+using DestroyerTest.Content.Particles.Stellar;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using OpusLib;
-using System;
-using DestroyerTest.Common.Interfaces;
-using DestroyerTest.Content.Particles.Stellar;
-using BreadLibrary.Core.Graphics.Particles;
-using System.Linq;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 {
@@ -92,7 +87,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 
         public override void OnKill(int timeLeft)
         {
-           
+
         }
 
         void IStickyProjectile.OnStickToTarget(NPC target)

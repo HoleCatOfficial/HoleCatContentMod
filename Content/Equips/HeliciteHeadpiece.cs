@@ -1,64 +1,64 @@
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.SummonItems;
-using DestroyerTest.Content.Tiles;
-using DestroyerTest.Content.Tiles.Riftplate;
-using Terraria;
-using Terraria.ID;
-using Terraria.Localization;
-using Terraria.ModLoader;
-using DestroyerTest.Rarity;
-using DestroyerTest.Content.RiftBiome.RiftSurfaceResources;
-using DestroyerTest.Content.Tiles.RiftConfigurator;
-using Terraria.DataStructures;
-using Terraria.Audio;
-using DestroyerTest.Content.Projectiles.Weapon.Scepter;
 using DestroyerTest.Common;
+using DestroyerTest.Content.Projectiles.Weapon.Scepter;
+using DestroyerTest.Content.Resources;
+using DestroyerTest.Content.RiftBiome.RiftSurfaceResources;
+using DestroyerTest.Content.Tiles;
+using DestroyerTest.Content.Tiles.RiftConfigurator;
+using DestroyerTest.Rarity;
+using Terraria;
+using Terraria.Audio;
+using Terraria.DataStructures;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Equips
 {
-	[AutoloadEquip(EquipType.Head)]
-	public class HeliciteHeadpiece : ModItem
-	{
-		public override void SetStaticDefaults() {
-			ArmorIDs.Head.Sets.DrawHead[Item.headSlot] = false;
-		}
+    [AutoloadEquip(EquipType.Head)]
+    public class HeliciteHeadpiece : ModItem
+    {
+        public override void SetStaticDefaults()
+        {
+            ArmorIDs.Head.Sets.DrawHead[Item.headSlot] = false;
+        }
 
-		public override void SetDefaults() {
-			Item.width = 18; // Width of the item
-			Item.height = 18; // Height of the item
-			Item.value = Item.sellPrice(gold: 1); // How many coins the item is worth
-			Item.rare = ModContent.RarityType<HeliciteRarity>(); // The rarity of the item
-			Item.defense = 17; // The amount of defense the item will give when equipped
-		}
+        public override void SetDefaults()
+        {
+            Item.width = 18; // Width of the item
+            Item.height = 18; // Height of the item
+            Item.value = Item.sellPrice(gold: 1); // How many coins the item is worth
+            Item.rare = ModContent.RarityType<HeliciteRarity>(); // The rarity of the item
+            Item.defense = 17; // The amount of defense the item will give when equipped
+        }
 
-		public override bool IsArmorSet(Item head, Item body, Item legs) {
-			return body.type == ModContent.ItemType<HeliciteRobe>() && legs.type == ModContent.ItemType<HeliciteChausses>();
-		}
+        public override bool IsArmorSet(Item head, Item body, Item legs)
+        {
+            return body.type == ModContent.ItemType<HeliciteRobe>() && legs.type == ModContent.ItemType<HeliciteChausses>();
+        }
 
         public override void UpdateEquip(Player player)
         {
             player.GetDamage<ScepterClass>() += 0.08f;
         }
 
-		public override void UpdateArmorSet(Player player) 
-		{
+        public override void UpdateArmorSet(Player player)
+        {
             player.DefaultSetBonusText(player.armor[0]);
-            
+
             if (player.TryGetModPlayer<HeliciteScepterPlayer>(out var Scepter))
             {
                 Scepter.Active = true;
             }
-		}
-		public override void AddRecipes() {
-			CreateRecipe()
-				.AddIngredient<Living_Shadow>(8)
-				.AddIngredient<Item_HeliciteCrystal>(20)
-				.AddIngredient<Item_RiftClay>(6)
-				.AddTile<Tile_RiftConfigurator>()
-				.Register();
-		}
-	}
+        }
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient<Living_Shadow>(8)
+                .AddIngredient<Item_HeliciteCrystal>(20)
+                .AddIngredient<Item_RiftClay>(6)
+                .AddTile<Tile_RiftConfigurator>()
+                .Register();
+        }
+    }
 
     public class HeliciteScepterPlayer : ModPlayer
     {
@@ -106,7 +106,7 @@ namespace DestroyerTest.Content.Equips
                     ImmunityTime = 180;
                     Cooldown = 1200;
                     SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/HoleCatHookFreeze") with { PitchVariance = 0.5f }, Player.Center);
-                    for(int o = 0; o < 7; o++)
+                    for (int o = 0; o < 7; o++)
                     {
                         Projectile.NewProjectile(Player.GetSource_Accessory(Player.armor[0]), Player.Center, Main.rand.NextVector2Circular(2, 2), ModContent.ProjectileType<SolarTrail>(), 22, 10, Player.whoAmI);
                     }
@@ -124,7 +124,7 @@ namespace DestroyerTest.Content.Equips
                     ImmunityTime = 180;
                     Cooldown = 1200;
                     SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/HoleCatHookFreeze") with { PitchVariance = 0.5f }, Player.Center);
-                    for(int o = 0; o < 7; o++)
+                    for (int o = 0; o < 7; o++)
                     {
                         Projectile.NewProjectile(Player.GetSource_Accessory(Player.armor[0]), Player.Center, Main.rand.NextVector2Circular(2, 2), ModContent.ProjectileType<SolarTrail>(), 22, 10, Player.whoAmI);
                     }
@@ -142,7 +142,7 @@ namespace DestroyerTest.Content.Equips
                     ImmunityTime = 180;
                     Cooldown = 1200;
                     SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/HoleCatHookFreeze") with { PitchVariance = 0.5f }, Player.Center);
-                    for(int o = 0; o < 7; o++)
+                    for (int o = 0; o < 7; o++)
                     {
                         Projectile.NewProjectile(Player.GetSource_Accessory(Player.armor[0]), Player.Center, Main.rand.NextVector2Circular(2, 2), ModContent.ProjectileType<SolarTrail>(), 22, 10, Player.whoAmI);
                     }

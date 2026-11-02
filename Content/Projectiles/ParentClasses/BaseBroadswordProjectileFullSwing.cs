@@ -1,4 +1,7 @@
-﻿using BreadLibrary.Core.Graphics.Particles;
+﻿using System;
+using System.IO;
+using System.Runtime.CompilerServices;
+using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Particles;
@@ -8,13 +11,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib.Content.Helpers;
 using ReLogic.Content;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -389,7 +385,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
                 rotationOffset = MathHelper.ToRadians(45f);
             }
             else
-            { 
+            {
                 origin = new Vector2(texture.Width, texture.Height);
                 effects = SpriteEffects.FlipHorizontally;
                 rotationOffset = MathHelper.ToRadians(135f);

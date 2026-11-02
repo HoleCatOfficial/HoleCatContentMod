@@ -4,11 +4,6 @@ using DestroyerTest.Content.Equips.Cards.AstirDeck;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
@@ -56,7 +51,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
 
             */
 
-            
+
             return false;
         }
 
@@ -69,7 +64,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
 
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.None, RasterizerState.CullNone, null, PixelationSystem.PixelationMatrix);
-            
+
             for (int i = 0; i < Projectile.oldPos.Length; i++)
             {
                 float num = (Projectile.scale * 1.3f * Sc) * (Projectile.oldPos.Length - i) / (Projectile.oldPos.Length * 0.8f);

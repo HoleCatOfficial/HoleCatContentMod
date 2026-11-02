@@ -1,14 +1,12 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Linq;
+using DestroyerTest.Common;
+using DestroyerTest.Content.Projectiles.Weapon.Magic;
+using DestroyerTest.Rarity;
+using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.DataStructures;
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Content.Projectiles.Weapon.Magic;
-using DestroyerTest.Common;
-using DestroyerTest.Rarity;
-using System.Linq;
 
 namespace DestroyerTest.Content.Magic
 {

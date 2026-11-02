@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BreadLibrary.Core.Graphics.Particles;
+﻿using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Equips;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
@@ -17,7 +10,6 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
-using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -65,7 +57,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.Blessed
             {
                 Projectile.velocity *= 0.75f;
             }
-        
+
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)
@@ -90,7 +82,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.Blessed
 
         public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
-            
+
         }
     }
 
@@ -136,7 +128,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.Blessed
             Main.EntitySpriteDraw(DTAssetLib.Laser.Value, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(0, DTAssetLib.Laser.Value.Height / 2), new Vector2(1f, WidthScl * 0.5f), SpriteEffects.None);
 
             Opus.DrawTextureOnProj(DTAssetLib.Star(3), Projectile, Color.DarkGoldenrod with { A = 0 }, true, 0, WidthScl, WidthScl);
-            Opus.DrawTextureOnProj(DTAssetLib.Star(3), Projectile, Color.White with { A = 0}, true, 0, WidthScl, WidthScl);
+            Opus.DrawTextureOnProj(DTAssetLib.Star(3), Projectile, Color.White with { A = 0 }, true, 0, WidthScl, WidthScl);
             Main.spriteBatch.ResetToDefault();
             return false;
         }

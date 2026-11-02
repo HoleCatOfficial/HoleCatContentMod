@@ -1,25 +1,10 @@
-﻿
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.Resources.Cloths;
-using DestroyerTest.Content.Tiles;
-using Microsoft.Xna.Framework;
+﻿using DestroyerTest.Content.Projectiles.Weapon.Magic;
+using DestroyerTest.Content.Tiles.RiftConfigurator;
+using DestroyerTest.Content.Tiles.Riftplate;
+using DestroyerTest.Rarity;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using DestroyerTest.Rarity;
-using DestroyerTest.Content.Tiles.Riftplate;
-using Terraria.Audio;
-using DestroyerTest.Content.Tools;
-using DestroyerTest.Common;
-using System.Collections.Generic;
-
-using Terraria.Localization;
- 
-using DestroyerTest.Content.Tiles.RiftConfigurator;
-using DestroyerTest.Content.Projectiles.Weapon.Melee;
-using DestroyerTest.Content.Projectiles.Weapon.Magic;
 
 namespace DestroyerTest.Content.RiftArsenal
 {
@@ -44,7 +29,7 @@ namespace DestroyerTest.Content.RiftArsenal
             Item.useAnimation = 40;
             Item.useStyle = ItemUseStyleID.Shoot;
             Item.useTurn = true;
-          
+
 
             Item.knockBack = 7;
             Item.autoReuse = true;

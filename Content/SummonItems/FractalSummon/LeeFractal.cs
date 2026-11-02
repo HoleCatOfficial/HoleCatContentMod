@@ -18,7 +18,7 @@ namespace DestroyerTest.Content.SummonItems.FractalSummon
             ItemID.Sets.ItemNoGravity[Type] = true;
             ItemID.Sets.StaffMinionSlotsRequired[Type] = 1;
             ItemID.Sets.GamepadWholeScreenUseRange[Item.type] = true;
-			ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
+            ItemID.Sets.LockOnIgnoresCollision[Item.type] = true;
         }
         public override void SetDefaults()
         {
@@ -71,11 +71,11 @@ namespace DestroyerTest.Content.SummonItems.FractalSummon
         }
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
-		{
-			player.AddBuff(ModContent.BuffType<LeeFractalBuff>(), 60);
-			var projectile = Projectile.NewProjectileDirect(source, position, velocity, type, 200, knockback, Main.myPlayer);
-			projectile.originalDamage = 200;
-			return false;
-		}
+        {
+            player.AddBuff(ModContent.BuffType<LeeFractalBuff>(), 60);
+            var projectile = Projectile.NewProjectileDirect(source, position, velocity, type, 200, knockback, Main.myPlayer);
+            projectile.originalDamage = 200;
+            return false;
+        }
     }
 }

@@ -1,8 +1,6 @@
 
 using System;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.MeleeWeapons;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
@@ -11,12 +9,12 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 {
-	public class HoleCatHookJab : ModProjectile
+    public class HoleCatHookJab : ModProjectile
     {
         // Define the range of the Spear Projectile. These are overridable properties, in case you'll want to make a class inheriting from this one.
         public SoundStyle Jab = new SoundStyle("DestroyerTest/Assets/Audio/SwordSounds/QuickSwing", 4) with { MaxInstances = 0 };
-		protected virtual float HoldoutRangeMin => 24f;
-		protected virtual float HoldoutRangeMax => 600f;
+        protected virtual float HoldoutRangeMin => 24f;
+        protected virtual float HoldoutRangeMax => 600f;
 
         public override void SetDefaults()
         {
@@ -128,5 +126,5 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             */
         }
 
-	}
+    }
 }

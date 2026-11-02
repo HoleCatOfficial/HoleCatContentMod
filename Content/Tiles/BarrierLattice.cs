@@ -8,15 +8,16 @@ using Terraria.ObjectData;
 
 namespace DestroyerTest.Content.Tiles
 {
-	public class BarrierLatticeR : ModTile
-	{
-		public override void SetStaticDefaults() {
-			Main.tileShine[Type] = 500;
-			Main.tileSolid[Type] = true;
-			Main.tileSolidTop[Type] = false;
-			Main.tileFrameImportant[Type] = true;
+    public class BarrierLatticeR : ModTile
+    {
+        public override void SetStaticDefaults()
+        {
+            Main.tileShine[Type] = 500;
+            Main.tileSolid[Type] = true;
+            Main.tileSolidTop[Type] = false;
+            Main.tileFrameImportant[Type] = true;
 
-			TileObjectData.newTile = new TileObjectData(copyFrom:TileObjectData.Style1x1); // Create a new instance
+            TileObjectData.newTile = new TileObjectData(copyFrom: TileObjectData.Style1x1); // Create a new instance
             TileObjectData.newTile.UsesCustomCanPlace = true;
             TileObjectData.newTile.StyleHorizontal = true;
             TileObjectData.newTile.Width = 5;
@@ -29,18 +30,19 @@ namespace DestroyerTest.Content.Tiles
             TileObjectData.addTile(Type);
 
 
-			AddMapEntry(new Color(100, 100, 100), Language.GetText("Barrier")); 
-		}
-	}
+            AddMapEntry(new Color(100, 100, 100), Language.GetText("Barrier"));
+        }
+    }
     public class BarrierLatticeL : ModTile
-	{
-		public override void SetStaticDefaults() {
-			Main.tileShine[Type] = 500;
-			Main.tileSolid[Type] = true;
-			Main.tileSolidTop[Type] = false;
-			Main.tileFrameImportant[Type] = true;
+    {
+        public override void SetStaticDefaults()
+        {
+            Main.tileShine[Type] = 500;
+            Main.tileSolid[Type] = true;
+            Main.tileSolidTop[Type] = false;
+            Main.tileFrameImportant[Type] = true;
 
-			TileObjectData.newTile = new TileObjectData(copyFrom:TileObjectData.Style1x1); // Create a new instance
+            TileObjectData.newTile = new TileObjectData(copyFrom: TileObjectData.Style1x1); // Create a new instance
             TileObjectData.newTile.UsesCustomCanPlace = true;
             TileObjectData.newTile.StyleHorizontal = true;
             TileObjectData.newTile.Width = 5;
@@ -53,7 +55,7 @@ namespace DestroyerTest.Content.Tiles
             TileObjectData.addTile(Type);
 
 
-			AddMapEntry(new Color(100, 100, 100), Language.GetText("Barrier")); 
-		}
-	}
+            AddMapEntry(new Color(100, 100, 100), Language.GetText("Barrier"));
+        }
+    }
 }

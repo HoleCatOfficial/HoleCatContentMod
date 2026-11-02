@@ -1,24 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using DestroyerTest.Common;
-
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Content.Projectiles.AmmoProjectiles;
+﻿using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Resources;
- 
-using DestroyerTest.Content.RiftBiome;
-
-using DestroyerTest.Content.Tiles;
 using DestroyerTest.Content.Tiles.RiftConfigurator;
 using DestroyerTest.Content.Tiles.Riftplate;
-using DestroyerTest.Content.Tools;
 using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.RiftArsenal
@@ -55,7 +44,7 @@ namespace DestroyerTest.Content.RiftArsenal
             Item.knockBack = 5f;
             Item.noMelee = true;
 
-            Item.shoot = ProjectileID.PurificationPowder; 
+            Item.shoot = ProjectileID.PurificationPowder;
             Item.shootSpeed = 15f;
             Item.useAmmo = AmmoID.Bullet;
         }

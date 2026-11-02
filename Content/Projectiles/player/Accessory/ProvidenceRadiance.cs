@@ -1,20 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BreadLibrary.Core.Graphics;
+﻿using BreadLibrary.Core.Graphics;
 using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
 using BreadLibrary.Core.Graphics.Spritebatch;
 using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Equips.Cards;
-using DestroyerTest.Content.Equips.Cards.AstirDeck;
 using DestroyerTest.Content.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -24,7 +17,7 @@ using Terraria.ModLoader;
 namespace DestroyerTest.Content.Projectiles.player.Accessory
 {
     public class ProvidenceRadiance : ModProjectile, IDrawPixelated
-{
+    {
 
         public override void SetStaticDefaults()
         {
@@ -89,8 +82,8 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
 
             spriteBatch.Begin(Cap);
 
-      
-            
+
+
             Main.EntitySpriteDraw(Tex.Value, Projectile.Center - Main.screenPosition, null, Color.DarkGoldenrod with { A = 0 } * 0.15f, Rot, Tex.Value.Size() / 2, Projectile.scale * Sc * 0.2f, SpriteEffects.None, 0f);
             Main.EntitySpriteDraw(Tex.Value, Projectile.Center - Main.screenPosition, null, Color.DarkGoldenrod with { A = 0 } * 0.35f, Rot * 0.5f, Tex.Value.Size() / 2, Projectile.scale * 0.3f * Sc, SpriteEffects.None, 0f);
 
@@ -98,7 +91,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
             Main.EntitySpriteDraw(Tex.Value, Projectile.Center - Main.screenPosition, null, Color.Goldenrod with { A = 0 }, -Rot * 1.5f, Tex.Value.Size() / 2, Projectile.scale * 0.4f, SpriteEffects.None, 0f);
             Main.EntitySpriteDraw(Tex.Value, Projectile.Center - Main.screenPosition, null, Color.White with { A = 0 }, -Rot * 1.5f, Tex.Value.Size() / 2, Projectile.scale * 0.3f, SpriteEffects.None, 0f);
 
-            
+
             /*
             if (lightCast != null)
             {
@@ -148,13 +141,13 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
             }
 
             float Maximum = Main.hardMode ? 500f : 400f;
-            float MaxLife = (float)Owner.statLifeMax2;
+            float MaxLife = Owner.statLifeMax2;
             float Progress = MaxLife / Maximum;
 
             Projectile.scale = 0.5f * MathHelper.Lerp(1f, 3f, Progress);
 
-            Projectile.width =(int)(50 * MathHelper.Lerp(1f, 3f, Progress));
-            Projectile.height =(int)(50 * MathHelper.Lerp(1f, 3f, Progress));
+            Projectile.width = (int)(50 * MathHelper.Lerp(1f, 3f, Progress));
+            Projectile.height = (int)(50 * MathHelper.Lerp(1f, 3f, Progress));
 
             float CurrentSpeed = Owner.velocity.X;
             float MaxSpeed = Owner.maxRunSpeed;
@@ -166,16 +159,16 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
             Lighting.AddLight(Projectile.Center, Color.Goldenrod.ToVector3() * MathHelper.Lerp(1.5f, 2.4f, Progress));
 
             lightCast = new(Projectile.Center, Projectile.Center + (new Vector2(100, 0)), Color.Goldenrod);
-            
 
-            
+
+
             Projectile.Center = Owner.MountedCenter;
 
-            
+
             ProvidenceSpark spark = new(Owner);
             spark.PrepareSpark(Projectile.Center, Main.rand.NextVector2Circular(3f, 3f) * MathHelper.Lerp(1f, 3f, Progress), 0f, Main.rand.NextBool(12) ? Color.DeepPink : Color.Goldenrod, 0.8f, false, 20, SparkDrawMode.Additive, 1.7f * MathHelper.Lerp(1f, 3f, Progress));
             ParticleEngine.BehindProjectiles.Add(spark, PixelLayer.BehindTiles);
-            
+
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)

@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using DestroyerTest.Content.Equips;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -17,8 +15,8 @@ namespace DestroyerTest.Common
 
         public void DetectMassNPCHappiness()
         {
-            
-            foreach(NPC npc in Main.npc)
+
+            foreach (NPC npc in Main.npc)
             {
                 if (!npc.townNPC)
                 {
@@ -69,7 +67,7 @@ namespace DestroyerTest.Common
 
     public class VesperPowerItem : GlobalItem
     {
-        public override bool InstancePerEntity => true; 
+        public override bool InstancePerEntity => true;
         public bool powerup = false;
         public bool powerdown = false;
         public static List<int> VesperItems = new List<int>();

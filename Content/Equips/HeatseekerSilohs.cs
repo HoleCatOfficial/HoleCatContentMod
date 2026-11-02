@@ -1,18 +1,15 @@
-﻿using BreadLibrary.Core.Utilities;
+﻿using System;
+using System.Reflection;
+using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Projectiles.player.Accessory;
 using DestroyerTest.Content.Resources;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using Mono.Cecil.Cil;
-using MonoMod.Cil;
 using MonoMod.RuntimeDetour;
-using System;
-using System.Reflection;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent.Drawing;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.Localization;
@@ -42,7 +39,7 @@ namespace DestroyerTest.Content.Equips
                 rocketBootVisualsHook = new Hook(method, BootEffectsDetour);
             }
 
-            
+
         }
 
         public override void Unload()
@@ -52,7 +49,7 @@ namespace DestroyerTest.Content.Equips
         }
 
         public const int MyRocketBoots = 1999;
-        
+
         private static void BootEffectsDetour(orig_RocketBootVisuals orig, Player self)
         {
             if (self.vanityRocketBoots == MyRocketBoots)
@@ -74,8 +71,7 @@ namespace DestroyerTest.Content.Equips
                     int type = ModContent.DustType<RiftDust>();
                     float scale = 1.5f;
                     int alpha = 50;
-                    float num3 = 1f;
-                    Vector2 vector = new Vector2((float)(-num2) - self.velocity.X * 0.3f, 2f * self.gravDir - self.velocity.Y * 0.3f);
+                    Vector2 vector = new Vector2(-num2 - self.velocity.X * 0.3f, 2f * self.gravDir - self.velocity.Y * 0.3f);
                     Dust dust;
 
                     dust = Dust.NewDustDirect(r.TopLeft(), r.Width, r.Height, type, 0f, 0f, alpha, ColorLib.Rift, scale);
@@ -146,7 +142,7 @@ namespace DestroyerTest.Content.Equips
                 float scale = 1.5f;
                 int alpha = 100;
                 float num3 = 1f;
-                Vector2 vector = new Vector2((float)(-Dir) - player.velocity.X * 0.3f, 2f * player.gravDir - player.velocity.Y * 0.3f);
+                Vector2 vector = new Vector2(-Dir - player.velocity.X * 0.3f, 2f * player.gravDir - player.velocity.Y * 0.3f);
                 Dust dust;
 
                 dust = Dust.NewDustDirect(r.TopLeft(), r.Width, r.Height, type, 0f, 0f, alpha, ColorLib.Rift, scale);
@@ -293,7 +289,7 @@ namespace DestroyerTest.Content.Equips
                     SlamCooldown = 300;
                     player.controlDownHold = false;
 
-                    player.velocity = Vector2.Zero; 
+                    player.velocity = Vector2.Zero;
 
                     Projectile.NewProjectile(
                         player.GetSource_Accessory(Item),
@@ -305,7 +301,7 @@ namespace DestroyerTest.Content.Equips
                         player.whoAmI
                     );
 
-                    
+
                     HasSlammed = true;
                 }
                 else
@@ -317,7 +313,7 @@ namespace DestroyerTest.Content.Equips
                     }
                 }
             }
-           
+
 
 
         }
@@ -360,7 +356,7 @@ namespace DestroyerTest.Content.Equips
         {
             if (Active)
             {
-                
+
             }
         }
     }

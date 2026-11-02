@@ -1,21 +1,10 @@
-﻿using BreadLibrary.Core.Graphics.Particles;
+﻿using System.Collections.Generic;
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Projectiles.Boss.NodeBoss.Blessed;
-using DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss;
-using DestroyerTest.Content.Projectiles.Weapon.Magic;
-using DestroyerTest.Content.Projectiles.Weapon.Melee;
-using DestroyerTest.Content.Projectiles.Weapon.Summon;
 using DestroyerTest.Content.RangedItems;
-using DestroyerTest.Content.SummonItems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -155,7 +144,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Ranged
                     }
 
                     Projectile Shot2 = Projectile.NewProjectileDirect(Source, ShootPoint, dir * speed * 1000f, ProjectileID.GoldenShowerFriendly, damage, knockBack, Owner.whoAmI);
-                    
+
                 }
             }
 

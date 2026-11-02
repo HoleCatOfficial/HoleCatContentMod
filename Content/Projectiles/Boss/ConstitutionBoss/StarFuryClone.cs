@@ -1,4 +1,3 @@
-using System;
 using DestroyerTest.Common;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -57,7 +56,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
             }
 
             // Apply diagonal sprite rotation correction
-            
+
         }
 
         private void DoSlowingPhase(Player target)
@@ -115,15 +114,15 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
         {
             Vector2 FlankLeft = Projectile.velocity.RotatedBy(MathHelper.PiOver2);
             Vector2 FlankRight = Projectile.velocity.RotatedBy(-MathHelper.PiOver2);
-            
+
             SoundEngine.PlaySound(SoundID.Item14, Projectile.Center);
             Projectile.NewProjectile(Entity.GetSource_FromAI(), Projectile.Center, FlankLeft, ModContent.ProjectileType<HollowStar>(), Projectile.damage / 2, 3);
             Projectile.NewProjectile(Entity.GetSource_FromAI(), Projectile.Center, FlankRight, ModContent.ProjectileType<HollowStar>(), Projectile.damage / 2, 3);
-            
+
         }
         public override bool PreDraw(ref Color lightColor)
         {
-            Main.EntitySpriteDraw(DTAssetLib.StarFuryOutline.Value, Projectile.Center - Main.screenPosition, null,  ColorLib.StellarFireGradientLooping(), Projectile.rotation, new Vector2((Projectile.width + 4) / 2, (Projectile.height + 4) / 2), Projectile.scale, SpriteEffects.None, 0);
+            Main.EntitySpriteDraw(DTAssetLib.StarFuryOutline.Value, Projectile.Center - Main.screenPosition, null, ColorLib.StellarFireGradientLooping(), Projectile.rotation, new Vector2((Projectile.width + 4) / 2, (Projectile.height + 4) / 2), Projectile.scale, SpriteEffects.None, 0);
             Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(Projectile.width / 2, Projectile.height / 2), Projectile.scale, SpriteEffects.None, 0);
             return false;
         }

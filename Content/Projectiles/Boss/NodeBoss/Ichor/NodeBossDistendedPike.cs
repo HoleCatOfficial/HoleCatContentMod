@@ -1,5 +1,3 @@
-using System;
-using System.Xml;
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Entities;
@@ -11,7 +9,6 @@ using ReLogic.Content;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.Ichor
@@ -132,7 +129,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.Ichor
         }
         public override bool PreDraw(ref Color lightColor)
         {
-            
+
 
             Main.EntitySpriteDraw(DTAssetLib.NodeBossPikeOutline.Value, Projectile.Center - Main.screenPosition, null, ColorLib.IchorCrystalGradient, Projectile.rotation, new Vector2(DTAssetLib.NodeBossPikeOutline.Value.Width / 2, DTAssetLib.NodeBossPikeOutline.Value.Height / 2), Projectile.scale, SpriteEffects.None, 0);
             Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, new Vector2(Projectile.width / 2, Projectile.height / 2), Projectile.scale, SpriteEffects.None, 0);
@@ -246,7 +243,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.Ichor
 
         public override void OnKill(int timeLeft)
         {
-       
+
         }
         public override bool PreDraw(ref Color lightColor)
         {

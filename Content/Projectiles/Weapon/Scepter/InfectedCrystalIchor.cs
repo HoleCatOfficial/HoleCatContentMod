@@ -1,16 +1,10 @@
-using System.Collections.Generic;
-using System.Formats.Tar;
-using System.Runtime.CompilerServices;
 using DestroyerTest.Common;
 using DestroyerTest.Common.Interfaces;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Particles;
- 
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using Terraria;
-using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -39,7 +33,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 
         public override void SetStaticDefaults()
         {
-            ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true; 
+            ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true;
         }
 
         public override void SetDefaults()
@@ -100,5 +94,5 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
         {
             target.AddBuff(BuffID.Ichor, 600);
         }
-	}
+    }
 }

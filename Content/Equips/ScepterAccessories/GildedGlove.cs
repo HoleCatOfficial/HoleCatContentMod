@@ -1,12 +1,10 @@
 ﻿
 using DestroyerTest.Common;
-using DestroyerTest.Rarity;
 using DestroyerTest.Rarity.Scepter;
 using OpusLib.Content.Helpers;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Equips.ScepterAccessories

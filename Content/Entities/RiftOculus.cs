@@ -7,12 +7,10 @@ using DestroyerTest.Content.RiftBiome.RiftSurfaceResources;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
-using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Utilities;
 
 namespace DestroyerTest.Content.Entities
 {
@@ -67,10 +65,8 @@ namespace DestroyerTest.Content.Entities
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            SpriteEffects effects = SpriteEffects.None;
             if (NPC.direction == -1)
             {
-                effects = SpriteEffects.FlipHorizontally;
             }
             DrawCrystalCore(spriteBatch, NPC.Center);
             //Main.EntitySpriteDraw(TextureAssets.Npc[NPC.type].Value, NPC.Center - screenPos, NPC.frame, drawColor, NPC.rotation, new Vector2(TextureAssets.Npc[NPC.type].Value.Width / 2, TextureAssets.Npc[NPC.type].Value.Height / Main.npcFrameCount[NPC.type] / 2), NPC.scale, effects, 0);
@@ -79,25 +75,25 @@ namespace DestroyerTest.Content.Entities
         public void DrawCrystalCore(SpriteBatch spriteBatch, Vector2 Center)
         {
             DTUtils Utility = new DTUtils();
-            
-            for (int i = 0; i < TrailPositions.Count; i++)
-			{
-				float progress = i / (float)TrailLength;
-				float scale = MathHelper.Lerp(0.2f, 0.0001f, progress);
-				Color color = Color.Black;
 
-				Main.EntitySpriteDraw(
-					DTAssetLib.FeatheredCircle.Value,
-					TrailPositions[i] - Main.screenPosition,
-					null,
-					color,
-					TrailRotations[i],
-					DTAssetLib.FeatheredCircle.Value.Size() / 2f,
-					scale,
-					SpriteEffects.None,
-					0
-				);
-			}
+            for (int i = 0; i < TrailPositions.Count; i++)
+            {
+                float progress = i / (float)TrailLength;
+                float scale = MathHelper.Lerp(0.2f, 0.0001f, progress);
+                Color color = Color.Black;
+
+                Main.EntitySpriteDraw(
+                    DTAssetLib.FeatheredCircle.Value,
+                    TrailPositions[i] - Main.screenPosition,
+                    null,
+                    color,
+                    TrailRotations[i],
+                    DTAssetLib.FeatheredCircle.Value.Size() / 2f,
+                    scale,
+                    SpriteEffects.None,
+                    0
+                );
+            }
 
             Main.spriteBatch.Draw(
                 DTAssetLib.FeatheredCircle.Value,
@@ -113,7 +109,7 @@ namespace DestroyerTest.Content.Entities
         }
 
         public List<Vector2> TrailPositions = new();
-		public List<float> TrailRotations = new();
+        public List<float> TrailRotations = new();
         private const int TrailLength = 40;
         int t = 0;
 
@@ -145,18 +141,18 @@ namespace DestroyerTest.Content.Entities
         }
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
-		{
-            bool v = (ModContent.GetInstance<RiftSurface>().IsBiomeActive(spawnInfo.Player) || 
+        {
+            bool v = (ModContent.GetInstance<RiftSurface>().IsBiomeActive(spawnInfo.Player) ||
             ModContent.GetInstance<RiftUnderground>().IsBiomeActive(spawnInfo.Player) ||
             ModContent.GetInstance<RiftDesert>().IsBiomeActive(spawnInfo.Player) ||
             ModContent.GetInstance<RiftDesertUnderground>().IsBiomeActive(spawnInfo.Player) ||
             ModContent.GetInstance<RiftTundra>().IsBiomeActive(spawnInfo.Player));
-			if (v)
-			{
-				return 0.3f;
-			}
-			return 0f;
-		}
+            if (v)
+            {
+                return 0.3f;
+            }
+            return 0f;
+        }
 
         public override void HitEffect(NPC.HitInfo hit)
         {

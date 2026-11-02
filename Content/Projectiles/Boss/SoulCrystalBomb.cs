@@ -1,18 +1,11 @@
-using System;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.RiftArsenal;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.Enums;
-using Terraria.GameContent;
-using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
-using OpusLib;
 
 namespace DestroyerTest.Content.Projectiles.Boss
 {
@@ -64,7 +57,7 @@ namespace DestroyerTest.Content.Projectiles.Boss
             SpriteBatch spriteBatch = Main.spriteBatch;
             DTUtils.DrawCrystalCore(spriteBatch, Projectile.Center, Color.White, ColorLib.Soul, TextureRotationOffset, 2f);
         }
-        
+
 
         public override bool CanHitPlayer(Player target)
         {
@@ -77,18 +70,20 @@ namespace DestroyerTest.Content.Projectiles.Boss
         {
             Vector2 ToPlayer = Projectile.Center - Main.LocalPlayer.Center;
             TextureRotationOffset -= 0.5f;
-            Projectile.velocity *= 0.99f;                       
+            Projectile.velocity *= 0.99f;
             Projectile.rotation += Main.rand.NextFloat(-1f, 1.1f) * 0.1f;
         }
-        
+
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
-            if (Projectile.velocity.X != oldVelocity.X) {
-				Projectile.velocity.X = -oldVelocity.X;
-				}
-			if (Projectile.velocity.Y != oldVelocity.Y) {
-				Projectile.velocity.Y = -oldVelocity.Y;
-			}
+            if (Projectile.velocity.X != oldVelocity.X)
+            {
+                Projectile.velocity.X = -oldVelocity.X;
+            }
+            if (Projectile.velocity.Y != oldVelocity.Y)
+            {
+                Projectile.velocity.Y = -oldVelocity.Y;
+            }
             return false;
         }
 

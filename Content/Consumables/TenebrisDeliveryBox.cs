@@ -1,25 +1,10 @@
-
-using DestroyerTest.Common;
-using DestroyerTest.Content.Entities;
-using DestroyerTest.Content.Equips;
-using DestroyerTest.Content.Magic;
-using DestroyerTest.Content.Scepter;
-using DestroyerTest.Content.MeleeWeapons.SwordLineage;
-using DestroyerTest.Content.RogueItems;
-using DestroyerTest.Content.RangedItems;
-using DestroyerTest.Content.Tiles.AchievementPaintingTiles;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
+using DestroyerTest.Common.DropRules;
+using DestroyerTest.Content.Resources;
+using OpusLib.Content.Helpers;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using System.Collections.Generic;
-using Terraria.Localization;
-using DestroyerTest.Content.Resources;
-using OpusLib.Content.Helpers;
-using DestroyerTest.Common.DropRules;
 
 namespace DestroyerTest.Content.Consumables
 {

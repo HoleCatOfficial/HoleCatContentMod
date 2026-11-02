@@ -1,11 +1,8 @@
 using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
-using DestroyerTest.Common;
- 
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
-using System;
 using Terraria;
 using Terraria.Graphics.Renderers;
 using Terraria.ModLoader;
@@ -34,7 +31,7 @@ namespace DestroyerTest.Content.Particles
         public override void Update(ref ParticleRendererSettings settings)
         {
             Lifetime++;
-     
+
             if (LifetimeCompletion > 0.3f)
             {
                 color *= 0.85f;
@@ -53,9 +50,9 @@ namespace DestroyerTest.Content.Particles
             Texture2D texture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/PreMultiplied/ImpactCracks").Value;
             Vector2 origin = texture.Size() / 2f;
 
-            
 
-            spriteBatch.Draw(texture, position - Main.screenPosition, null, color with { A = 0}, rotation, origin, scale, SpriteEffects.None, 0f);
+
+            spriteBatch.Draw(texture, position - Main.screenPosition, null, color with { A = 0 }, rotation, origin, scale, SpriteEffects.None, 0f);
 
         }
     }

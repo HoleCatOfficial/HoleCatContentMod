@@ -1,16 +1,13 @@
+using System;
+using System.Collections.Generic;
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.MeleeWeapons;
 using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.RiftArsenal;
- 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -21,11 +18,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 {
     public class Tenebrous_Katana_Projectile : ModProjectile
     {
-        SoundStyle EnemySlice = new SoundStyle($"DestroyerTest/Assets/Audio/TenebrousKatana/GoreSlice", 2) with {
-					Volume = 1.0f, 
-					Pitch = 0.0f, 
-					PitchVariance = 0.5f, 
-				};
+        SoundStyle EnemySlice = new SoundStyle($"DestroyerTest/Assets/Audio/TenebrousKatana/GoreSlice", 2) with
+        {
+            Volume = 1.0f,
+            Pitch = 0.0f,
+            PitchVariance = 0.5f,
+        };
         public override void SetStaticDefaults()
         {
             Main.projFrames[Type] = 17;

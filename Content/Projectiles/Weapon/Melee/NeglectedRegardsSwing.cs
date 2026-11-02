@@ -1,26 +1,11 @@
 ﻿using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.MeleeWeapons;
-using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Particles.Orchestrated;
 using DestroyerTest.Content.Projectiles.ParentClasses;
-using DestroyerTest.Content.Projectiles.Weapon.Rogue;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
 using OpusLib.Content.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using System.IO;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.GameContent;
-using Terraria.GameContent.Drawing;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Melee
@@ -38,7 +23,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             base.SetDefaults();
             Projectile.width = 78;
             Projectile.height = 78;
-            SweepColor = new Color(20, 0 ,66);
+            SweepColor = new Color(20, 0, 66);
             SweepHighlightColor = new Color(44, 7, 128);
             UsesDefaultSweepFX = true;
             SweepScale = 1.5f;
@@ -68,7 +53,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             SwordLine = new Line(player.Center, swordTip);
             Vector2[] pt = SwordLine.GetPointsAlongLine(30);
 
-            
+
         }
 
         public override void HitNPCEffects(NPC npc, NPC.HitInfo hit, int damageDone)

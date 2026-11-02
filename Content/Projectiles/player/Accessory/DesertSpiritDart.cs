@@ -1,16 +1,9 @@
+using System.Linq;
 using BreadLibrary.Core.Graphics.Pixelation;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Particles;
- 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
-using System.Collections.Generic;
-using System.Formats.Tar;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Runtime.Intrinsics.X86;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -46,7 +39,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
             Projectile.width = 38;
             Projectile.height = 38;
             Projectile.DamageType = DamageClass.Generic;
-            Projectile.friendly = true; 
+            Projectile.friendly = true;
             Projectile.ignoreWater = true;
             Projectile.timeLeft = 600;
             Projectile.tileCollide = false;
@@ -57,9 +50,9 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
 
         public float trailOffset = 0;
         public override bool PreDraw(ref Color lightColor)
-		{
+        {
 
-			return false;
+            return false;
         }
 
         void IDrawPixelated.DrawPixelated(SpriteBatch spriteBatch)
@@ -71,11 +64,11 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
 
             Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, Projectile.Center - Main.screenPosition, null, FireColor with { A = 0 }, Projectile.rotation, TextureAssets.Projectile[Projectile.type].Value.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
 
-            DTTrail.DrawTrailPixelated(spriteBatch, BlendState.AlphaBlend, DTAssetLib.Streak(4, true).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 40, FireColor with { A = 0}, trailOffset, 1);
+            DTTrail.DrawTrailPixelated(spriteBatch, BlendState.AlphaBlend, DTAssetLib.Streak(4, true).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 40, FireColor with { A = 0 }, trailOffset, 1);
 
-            
-            
-            
+
+
+
             Opus.ReturnToDefaultDrawing(spriteBatch);
         }
 
@@ -93,10 +86,10 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
             return true;
         }
 
-     
 
-		public override void AI()
-		{
+
+        public override void AI()
+        {
             for (int i = 0; i < ProjectileID.Sets.TrailCacheLength[Type]; i++)
             {
                 if (Projectile.oldPos[i] == Vector2.Zero)
@@ -112,7 +105,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
                 DelayTimer += 1;
                 return;
             }
-            
+
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
 
             float maxDetectRadius = 4000f;
@@ -173,6 +166,6 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
             target.AddBuff(BuffID.ShadowFlame, 600);
         }
 
-        
+
     }
 }

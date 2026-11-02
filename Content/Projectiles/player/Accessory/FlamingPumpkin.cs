@@ -1,15 +1,9 @@
-﻿using System.Collections.Generic;
-using DestroyerTest.Common;
+﻿using DestroyerTest.Common;
 using DestroyerTest.Common.Interfaces;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.Particles;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
 using Terraria;
-using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -74,11 +68,11 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
 
             for (int i = 0; i < Projectile.oldPos.Length; i++)
             {
-                float Scale = MathHelper.Lerp(1f, 0f, (float)i / (float)Projectile.oldPos.Length);
-                Main.EntitySpriteDraw(DTAssetLib.PointGlowPreMultiplied.Value, Projectile.OldCenter()[i] - Main.screenPosition, null, Color.Orange with { A = 0} * 0.3f, 0f, DTAssetLib.PointGlowPreMultiplied.Value.Size() / 2, Scale, SpriteEffects.None);
+                float Scale = MathHelper.Lerp(1f, 0f, i / (float)Projectile.oldPos.Length);
+                Main.EntitySpriteDraw(DTAssetLib.PointGlowPreMultiplied.Value, Projectile.OldCenter()[i] - Main.screenPosition, null, Color.Orange with { A = 0 } * 0.3f, 0f, DTAssetLib.PointGlowPreMultiplied.Value.Size() / 2, Scale, SpriteEffects.None);
             }
 
-            Main.EntitySpriteDraw(DTUtils.CenteredDraw(Projectile, Color.White) with { effect = Projectile.direction == 1 ? SpriteEffects.None : SpriteEffects.FlipVertically});
+            Main.EntitySpriteDraw(DTUtils.CenteredDraw(Projectile, Color.White) with { effect = Projectile.direction == 1 ? SpriteEffects.None : SpriteEffects.FlipVertically });
             return false;
         }
 
@@ -112,7 +106,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
 
         public override void OnKill(int timeLeft)
         {
-            
+
 
 
         }

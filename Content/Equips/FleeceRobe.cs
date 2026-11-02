@@ -55,5 +55,5 @@ namespace DestroyerTest.Content.Equips
             .AddIngredient<LimeCloth>()
             .Register();
         }
-	}
+    }
 }

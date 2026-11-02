@@ -1,19 +1,16 @@
-using Terraria;
-using Terraria.ModLoader;
-using Terraria.ID;
-using DestroyerTest.Common;
-using ReLogic.Content;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework;
-using OpusLib.Content.Helpers;
-using Terraria.Audio;
-using DestroyerTest.Content.MeleeWeapons.Flails;
-using OpusLib;
-using DestroyerTest.Content.Dusts;
 using System;
- 
-using DestroyerTest.Content.Particles;
-using Terraria.GameContent;
+using DestroyerTest.Common;
+using DestroyerTest.Content.Dusts;
+using DestroyerTest.Content.MeleeWeapons.Flails;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
+using OpusLib.Content.Helpers;
+using ReLogic.Content;
+using Terraria;
+using Terraria.Audio;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Melee.Flail
 {
@@ -88,7 +85,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee.Flail
             Main.EntitySpriteDraw(Head.Value, Projectile.Center - Main.screenPosition, null, Color.White, Body.GetLineRotation + MathHelper.PiOver2, Head.Value.Size() / 2, Projectile.scale, SpriteEffects.None);
             return false;
         }
-        
+
 
         public Player Owner;
         public Player ItemCheckOwner;
@@ -127,8 +124,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee.Flail
             Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<ColorableNeonDust>(), Vector2.Zero, 0, ColorLib.Rift, 1f);
             //PRTLoader.NewParticle(PRTLoader.GetParticleID<SparkParticleNoGravity>(), Projectile.Center, Projectile.velocity * 0.05f, ColorLib.Rift, 0.5f, ai1: 2);
 
-        
-            foreach(Vector2 p in BodyPoints)
+
+            foreach (Vector2 p in BodyPoints)
             {
                 if (p != BodyPoints[0] && p != BodyPoints[5])
                 {
@@ -163,14 +160,14 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee.Flail
 
         public override void EmitEnchantmentVisualsAt(Vector2 boxPosition, int boxWidth, int boxHeight)
         {
-            
+
             boxWidth = 16;
             boxHeight = 16;
             Vector2 Offset = new Vector2(boxWidth / 2, boxHeight / 2);
-            
+
             if (Projectile.ai[2] > 10)
             {
-                foreach(Vector2 p in BodyPoints)
+                foreach (Vector2 p in BodyPoints)
                 {
                     if (p != BodyPoints[0])
                     {
@@ -214,7 +211,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee.Flail
 
                 if (c.hitcount < 4)
                 {
-                    SoundEngine.PlaySound(DTAssetLib.Charge.RiftFlailTick with { MaxInstances = 0, Pitch = c.p}, Projectile.Center);
+                    SoundEngine.PlaySound(DTAssetLib.Charge.RiftFlailTick with { MaxInstances = 0, Pitch = c.p }, Projectile.Center);
                 }
 
                 if (c.hitcount >= 4)

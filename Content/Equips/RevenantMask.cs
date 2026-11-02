@@ -1,16 +1,9 @@
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.SummonItems;
-using DestroyerTest.Content.Tiles;
+using DestroyerTest.Common;
+using DestroyerTest.Content.Projectiles.player.Accessory;
+using DestroyerTest.Rarity;
 using Terraria;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
-using DestroyerTest.Rarity;
-using DestroyerTest.Content.Tiles.Riftplate;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Content.Projectiles.player.Accessory;
 
 namespace DestroyerTest.Content.Equips
 {

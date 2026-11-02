@@ -1,15 +1,11 @@
+using System.Collections.Generic;
+using System.Linq;
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Common.Blessings;
 using DestroyerTest.Content.Particles;
- 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
-using ReLogic.Content;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
@@ -97,7 +93,7 @@ namespace DestroyerTest.Content.UI
             HerbSlot.Height.Set(24 * Main.UIScale, 0);
             HerbSlot.HAlign = 0.8f;
             HerbSlot.VAlign = 0.4f;
-            
+
             panel.Append(HerbSlot);
 
             //Button
@@ -123,7 +119,7 @@ namespace DestroyerTest.Content.UI
 
         public override void OnActivate()
         {
-            
+
         }
 
         protected override void DrawSelf(SpriteBatch spriteBatch)
@@ -141,7 +137,7 @@ namespace DestroyerTest.Content.UI
             ItemID.Deathweed,
             ItemID.Waterleaf,
             ItemID.Fireblossom,
-            ItemID.Shiverthorn  
+            ItemID.Shiverthorn
         };
 
         public SoundStyle Accept = new SoundStyle("DestroyerTest/Assets/Audio/Blessing/AcceptedBlessing");
@@ -214,9 +210,9 @@ namespace DestroyerTest.Content.UI
                     }
                     else
                     {
- 
 
-                        
+
+
 
                         RejectOffer();
                     }
@@ -245,7 +241,7 @@ namespace DestroyerTest.Content.UI
 
         public override void Update(GameTime gameTime)
         {
-            
+
             if (Visible)
             {
                 Main.LocalPlayer.creativeGodMode = true;

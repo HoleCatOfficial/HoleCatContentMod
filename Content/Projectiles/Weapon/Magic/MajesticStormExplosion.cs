@@ -1,25 +1,18 @@
-using System;
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.MeleeWeapons;
 using DestroyerTest.Content.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
 using OpusLib.Content.Particles;
 using Terraria;
-using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 {
-	public class MajesticStormExplosion : ModProjectile
-	{
+    public class MajesticStormExplosion : ModProjectile
+    {
         public override void SetDefaults()
         {
             Projectile.width = 100;
@@ -54,13 +47,13 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
                     ParticleEngine.BehindProjectiles.Add(Arc);
                 }
 
-                
+
             }
         }
 
-		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.AddBuff(BuffID.Electrified, 20 * 60);
         }
-	}
+    }
 }

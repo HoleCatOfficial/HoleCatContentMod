@@ -1,8 +1,14 @@
 
+using System;
+using DestroyerTest.Common;
+using DestroyerTest.Common.Systems;
+using DestroyerTest.Content.Dusts;
+using DestroyerTest.Content.RiftBiome;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
@@ -11,12 +17,6 @@ using Terraria.Map;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Default;
 using Terraria.ObjectData;
-using DestroyerTest.Common.Systems;
-using DestroyerTest.Content.RiftBiome;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Dusts;
-using Terraria.Audio;
-using System;
 
 namespace DestroyerTest.Content.Tiles
 {
@@ -61,7 +61,7 @@ namespace DestroyerTest.Content.Tiles
             TEModdedPylon moddedPylon = ModContent.GetInstance<RiftPylonTileEntity>();
             TileObjectData.newTile.HookCheckIfCanPlace = new PlacementHook(moddedPylon.PlacementPreviewHook_CheckIfCanPlace, 1, 0, true);
             TileObjectData.newTile.HookPostPlaceMyPlayer = new PlacementHook(moddedPylon.Hook_AfterPlacement, -1, 0, false);
-            
+
 
             TileObjectData.addTile(Type);
 
@@ -76,10 +76,10 @@ namespace DestroyerTest.Content.Tiles
             AddMapEntry(ColorLib.Rift, pylonName);
 
             DustType = ModContent.DustType<RiftDust>();
-			HitSound = new SoundStyle("DestroyerTest/Assets/Audio/Scholar/ShieldHit", 3)
-			{
-				PitchVariance = 0.5f
-			};
+            HitSound = new SoundStyle("DestroyerTest/Assets/Audio/Scholar/ShieldHit", 3)
+            {
+                PitchVariance = 0.5f
+            };
         }
 
         public override NPCShop.Entry GetNPCShopEntry()
@@ -148,19 +148,21 @@ namespace DestroyerTest.Content.Tiles
         {
             CustomDrawPylonCrystal(spriteBatch, i, j, crystalTexture, crystalHighlightTexture, new Vector2(0f, -12f), Color.White * 0.1f, Color.White, 1, 13);
         }
-        
+
         public void CustomDrawPylonCrystal(SpriteBatch spriteBatch, int i, int j, Asset<Texture2D> crystalTexture, Asset<Texture2D> crystalHighlightTexture, Vector2 crystalOffset, Color pylonShadowColor, Color dustColor, int dustChanceDenominator, int crystalVerticalFrameCount)
         {
             // Gets offscreen vector for different lighting modes
             Vector2 offscreenVector = new Vector2(Main.offScreenRange);
-            if (Main.drawToScreen) {
+            if (Main.drawToScreen)
+            {
                 offscreenVector = Vector2.Zero;
             }
 
             // Double check that the tile exists
             Point point = new Point(i, j);
             Tile tile = Main.tile[point.X, point.Y];
-            if (tile == null || !tile.HasTile) {
+            if (tile == null || !tile.HasTile)
+            {
                 return;
             }
 
@@ -168,13 +170,13 @@ namespace DestroyerTest.Content.Tiles
 
             // Calculate frame based on vanilla counters in order to line up the animation
 
-            
 
-            
+
+
 
             int frameY = customframecounter / crystalVerticalFrameCount;
 
-            
+
 
             // Frame our modded crystal sheet accordingly for proper drawing
             Rectangle crystalFrame = crystalTexture.Frame(1, crystalVerticalFrameCount, 0, frameY);
@@ -195,7 +197,8 @@ namespace DestroyerTest.Content.Tiles
             Vector2 drawingPosition = crystalPosition + offscreenVector + new Vector2(0f, sinusoidalOffset * 4f);
 
             // Do dust drawing
-            if (!Main.gamePaused && Main.instance.IsActive && (!Lighting.UpdateEveryFrame || Main.rand.NextBool(4)) && Main.rand.NextBool(dustChanceDenominator)) {
+            if (!Main.gamePaused && Main.instance.IsActive && (!Lighting.UpdateEveryFrame || Main.rand.NextBool(4)) && Main.rand.NextBool(dustChanceDenominator))
+            {
                 Rectangle dustBox = Utils.CenteredRectangle(crystalPosition, crystalFrame.Size());
                 int numForDust = Dust.NewDust(dustBox.TopLeft(), dustBox.Width, dustBox.Height, DustID.TintableDustLighted, 0f, 0f, 254, dustColor, 0.5f);
                 Dust obj = Main.dust[numForDust];
@@ -211,26 +214,31 @@ namespace DestroyerTest.Content.Tiles
             // Draw the shadow effect for the crystal
             float scale = (float)Math.Sin(Main.GlobalTimeWrappedHourly * ((float)Math.PI * 2f) / 1f) * 0.2f + 0.8f;
             Color shadowColor = pylonShadowColor * scale;
-            for (float shadowPos = 0f; shadowPos < 1f; shadowPos += 1f / 6f) {
+            for (float shadowPos = 0f; shadowPos < 1f; shadowPos += 1f / 6f)
+            {
                 spriteBatch.Draw(crystalTexture.Value, drawingPosition - Main.screenPosition + ((float)Math.PI * 2f * shadowPos).ToRotationVector2() * (6f + sinusoidalOffset * 2f), crystalFrame, shadowColor, 0f, origin, 1f, SpriteEffects.None, 0f);
             }
 
             // Interpret smart cursor outline color & draw it
             int selectionLevel = 0;
-            if (Main.InSmartCursorHighlightArea(point.X, point.Y, out bool actuallySelected)) {
+            if (Main.InSmartCursorHighlightArea(point.X, point.Y, out bool actuallySelected))
+            {
                 selectionLevel = 1;
-                if (actuallySelected) {
+                if (actuallySelected)
+                {
                     selectionLevel = 2;
                 }
             }
 
-            if (selectionLevel == 0) {
+            if (selectionLevel == 0)
+            {
                 return;
             }
 
             int averageBrightness = (color.R + color.G + color.B) / 3;
 
-            if (averageBrightness <= 10) {
+            if (averageBrightness <= 10)
+            {
                 return;
             }
 
@@ -246,11 +254,11 @@ namespace DestroyerTest.Content.Tiles
             DefaultMapClickHandle(mouseOver, pylonInfo, ModContent.GetInstance<Item_RiftPylon>().DisplayName.Key, ref mouseOverText);
         }
     }
-    
+
     /// <summary>
-	/// This is an empty child class that acts exactly like the default implementation of the abstract <seealso cref="TEModdedPylon"/>
-	/// class, which itself acts nearly identical to vanilla pylon TEs. This inheritance only exists so that modded pylon entities
-	/// will properly have their "Mod" property set, for I/O purposes. Has the sealed modifier since this TE acts identical to its parent.
-	/// </summary>
-	public sealed class RiftPylonTileEntity : TEModdedPylon { }
+    /// This is an empty child class that acts exactly like the default implementation of the abstract <seealso cref="TEModdedPylon"/>
+    /// class, which itself acts nearly identical to vanilla pylon TEs. This inheritance only exists so that modded pylon entities
+    /// will properly have their "Mod" property set, for I/O purposes. Has the sealed modifier since this TE acts identical to its parent.
+    /// </summary>
+    public sealed class RiftPylonTileEntity : TEModdedPylon { }
 }

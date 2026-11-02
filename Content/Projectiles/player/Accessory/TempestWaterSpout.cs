@@ -1,21 +1,15 @@
-using DestroyerTest.Common;
-using DestroyerTest.Content.Particles;
- 
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Terraria;
-using Terraria.Audio;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.player.Accessory
 {
-	public class TempestWaterSpout : ModProjectile
-	{
+    public class TempestWaterSpout : ModProjectile
+    {
         public override void SetStaticDefaults()
         {
-		}
+        }
 
         public override void SetDefaults()
         {
@@ -30,7 +24,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = 20;
             Projectile.alpha = 255;
-		}
+        }
 
 
         public override void AI()
@@ -49,5 +43,5 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
         {
             target.AddBuff(BuffID.Wet, 300);
         }
-	}
+    }
 }

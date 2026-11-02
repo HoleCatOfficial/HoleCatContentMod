@@ -1,24 +1,18 @@
-﻿using BreadLibrary.Core.Graphics.Pixelation;
+﻿using System.Collections.Generic;
+using BreadLibrary.Core.Graphics.Pixelation;
 using BreadLibrary.Core.Graphics.Spritebatch;
 using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
-using DestroyerTest.Content.MeleeWeapons;
-using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using Terraria.Utilities;
 
 
 namespace DestroyerTest.Content.Equips
@@ -92,7 +86,7 @@ namespace DestroyerTest.Content.Equips
                     AreaBuff = BuffID.CursedInferno;
                     player.GetModPlayer<QuiverOfDualityPlayer>().CurrentBuff = BuffID.CursedInferno;
                     SwitchCooldown = 60;
-                } 
+                }
             }
         }
 
@@ -185,7 +179,7 @@ namespace DestroyerTest.Content.Equips
                 if (quiverPlayer.Active)
                 {
                     Color c = quiverPlayer.CurrentBuff == BuffID.CursedInferno ? ColorLib.Wretched2 : ColorLib.IchorCrystal2;
-                    spriteBatch.Draw(DTAssetLib.BarrierRing.Value, player.MountedCenter - Main.screenPosition, null, c with { A = 0}, R, DTAssetLib.BarrierRing.Value.Size() / 2f, DTAssetLib.BarrierRing.Value.ScaleRingTextureToMatchRadius(400f, 1300), SpriteEffects.None, 0f);
+                    spriteBatch.Draw(DTAssetLib.BarrierRing.Value, player.MountedCenter - Main.screenPosition, null, c with { A = 0 }, R, DTAssetLib.BarrierRing.Value.Size() / 2f, DTAssetLib.BarrierRing.Value.ScaleRingTextureToMatchRadius(400f, 1300), SpriteEffects.None, 0f);
                 }
             }
 

@@ -2,12 +2,10 @@ using DestroyerTest.Common;
 using DestroyerTest.Common.Interfaces;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.Particles;
- 
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
-using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -150,7 +148,7 @@ namespace DestroyerTest.Content.Projectiles
                 //D.Normalize();
                 Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<SoulOfNightDust>(), D * 0.01f, 0, default, 3f);
             }
-            
+
         }
     }
 }

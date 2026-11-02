@@ -1,25 +1,13 @@
-using System;
 using System.Collections.Generic;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss;
-using DestroyerTest.Content.Projectiles.Boss.VampireBoss;
-using DestroyerTest.Content.RiftArsenal;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.Enums;
-using Terraria.GameContent;
-using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
-using OpusLib;
-using ReLogic.Utilities;
-using DestroyerTest.Content.Particles;
- 
-using Humanizer;
 
 namespace DestroyerTest.Content.Projectiles.player.ArmorSet
 {
@@ -44,9 +32,9 @@ namespace DestroyerTest.Content.Projectiles.player.ArmorSet
             DTUtils.DrawCrystalCore(spriteBatch, Projectile.Center, Color.White, new Color(184, 45, 117), TrailPositions, TextureRotationOffset, Projectile, TrailLength, 0.8f);
         }
 
-        
+
         public List<Vector2> TrailPositions = new();
-		public List<float> TrailRotations = new();
+        public List<float> TrailRotations = new();
         private const int TrailLength = 40;
         public float TextureRotationOffset = 0f;
         public float TextureScale = 1f;
@@ -65,7 +53,7 @@ namespace DestroyerTest.Content.Projectiles.player.ArmorSet
 
             TextureRotationOffset -= 0.5f;
             Lighting.AddLight(Projectile.Center, new Color(242, 209, 255).ToVector3() * 0.3f);
-            
+
 
             for (int i = 0; i < 4; i++)
             {
@@ -107,7 +95,7 @@ namespace DestroyerTest.Content.Projectiles.player.ArmorSet
                 Projectile.Center = Vector2.Lerp(Projectile.Center, GoalPos, 0.04f);
             }
         }
-        
+
 
         public override void OnKill(int timeLeft)
         {

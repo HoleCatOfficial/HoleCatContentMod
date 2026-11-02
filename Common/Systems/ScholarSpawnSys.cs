@@ -22,7 +22,7 @@ public class WorldFlags : ModSystem
     {
         ScholarSpawned = tag.GetBool("ScholarSpawned");
     }
-    
+
     public override void PostUpdateWorld()
     {
         if (!WorldFlags.ScholarSpawned && Main.dayTime && Main.time > Main.rand.Next(3200, 7900))
@@ -33,8 +33,8 @@ public class WorldFlags : ModSystem
                 if (player.active)
                 {
                     int npcIndex = NPC.NewNPC(player.GetSource_Misc("ScholarArrival"),
-                        (int)(Main.spawnTileX + 100), // Just off-screen
-                        (int)(Main.spawnTileY - 50),  // Slightly above
+                        Main.spawnTileX + 100, // Just off-screen
+                        Main.spawnTileY - 50,  // Slightly above
                         ModContent.NPCType<Scholar>());
                     Main.npc[npcIndex].homeTileX = (int)player.Center.X / 16;
                     Main.npc[npcIndex].homeTileY = (int)player.Center.Y / 16;

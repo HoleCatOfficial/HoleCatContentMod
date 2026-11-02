@@ -1,31 +1,24 @@
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Content.Tiles;
+using System;
+using System.Collections.Generic;
+using BreadLibrary.Core.Graphics.Particles;
+using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.MeleeWeapons;
+using DestroyerTest.Content.Particles;
+using DestroyerTest.Content.Resources;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using Terraria;
-using Terraria.ModLoader;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.Localization;
- 
-using OpusLib;
-using DestroyerTest.Content.Particles;
-using Microsoft.Xna.Framework;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.Resources;
-using System;
-using Microsoft.Xna.Framework.Audio;
-using Terraria.Audio;
-using DestroyerTest.Content.MeleeWeapons.SwordLineage;
-using DestroyerTest.Content.MeleeWeapons;
-using System.Collections.Generic;
-using Terraria.Graphics.Renderers;
-using BreadLibrary.Core.Graphics.Particles;
-using Microsoft.Xna.Framework.Graphics;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Common.Blessings
 {
     public class PrayerSystem : ModSystem
     {
-        
+
     }
 
     public class PrayerPlayer : ModPlayer
@@ -60,7 +53,7 @@ namespace DestroyerTest.Common.Blessings
 
         public void RejectOffer()
         {
-            
+
         }
 
         public void DisplayBlessingMessage()
@@ -265,13 +258,13 @@ namespace DestroyerTest.Common.Blessings
                     {
                         if (Main.windSpeedCurrent < 10f && !Main.IsItRaining)
                         {
-                            
+
                             Player.manaRegenBonus = 6;
                         }
                         break;
                     }
             }
-   
+
         }
 
         public override void PostUpdateRunSpeeds()
@@ -440,7 +433,7 @@ namespace DestroyerTest.Common.Blessings
             }
         }
 
-        
+
 
         public bool IsABlessingActive()
         {
@@ -512,7 +505,7 @@ namespace DestroyerTest.Common.Blessings
 
         public static Blessing StarScorn;
 
-        
+
 
         public static void RegisterBlessing(Blessing b)
         {
@@ -626,7 +619,7 @@ namespace DestroyerTest.Common.Blessings
     {
         public override void SetStaticDefaults()
         {
-            foreach(Blessing blessing in DTBlessings.AllBlessings)
+            foreach (Blessing blessing in DTBlessings.AllBlessings)
             {
                 if (blessing == DTBlessings.MilkywayStride)
                 {

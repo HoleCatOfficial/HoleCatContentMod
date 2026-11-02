@@ -1,22 +1,10 @@
-﻿using BreadLibrary.Core.Graphics.Pixelation;
-using BreadLibrary.Core.Graphics.Spritebatch;
-using BreadLibrary.Core.Utilities;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Equips;
-using DestroyerTest.Content.Projectiles;
+﻿using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Projectiles.Fargos;
-using DestroyerTest.Content.Projectiles.Pets;
-using DestroyerTest.Content.Resources;
 using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
-using OpusLib.Content.Helpers;
 using Terraria;
-using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Fargos.EternityDrops
@@ -92,7 +80,7 @@ namespace DestroyerTest.Content.Fargos.EternityDrops
         public override void Kill(double damage, int hitDirection, bool pvp, PlayerDeathReason damageSource)
         {
             for (int i = 0; i < Nodes.Length; i++)
-            { 
+            {
                 if (Nodes[i] != null)
                 {
                     Nodes[i].Kill();

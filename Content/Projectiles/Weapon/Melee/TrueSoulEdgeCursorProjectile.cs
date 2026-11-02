@@ -1,16 +1,9 @@
 ﻿using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.MeleeWeapons;
-using DestroyerTest.Content.Particles;
- 
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -43,7 +36,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Projectile.timeLeft = 240; // 10 seconds max lifespan
             Projectile.DamageType = DamageClass.MeleeNoSpeed;
             Projectile.tileCollide = false;
-            
+
         }
 
         public int trailLength = 10;
@@ -143,9 +136,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 Projectile.Opacity *= 0.9f;
             }
 
-            
 
-            
+
+
 
             Projectile.rotation += (Projectile.velocity.Length() * 0.2f) * Projectile.direction;
 

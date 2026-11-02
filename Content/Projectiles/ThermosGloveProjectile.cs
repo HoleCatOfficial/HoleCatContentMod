@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Particles;
@@ -74,7 +71,7 @@ namespace DestroyerTest.Content.Projectiles
                 Main.EntitySpriteDraw(Tx, Projectile.Center - Main.screenPosition, null, Color.Lerp(Color.Brown, Color.OrangeRed, Progress) with { A = 0 }, Projectile.Center.DirectionTo(Main.MouseWorld).ToRotation(), new Vector2(0f, Tx.Height / 2), new Vector2(MathHelper.Lerp(0f, 0.5f, Progress), 0.2f), SpriteEffects.None);
             }
             return false;
-            
+
         }
 
         SlotId LoopSlot;
@@ -102,7 +99,7 @@ namespace DestroyerTest.Content.Projectiles
             {
                 Projectile.active = false;
             }
-            
+
             if (Owner.HeldItem.ModItem is ThermosGlove Glove && Owner.controlUseItem && !Owner.CCed && !Deactivated)
             {
                 Plot = new Line(Projectile.Center, Projectile.Center + new Vector2(CurrentDistance, 0).RotatedBy(Projectile.Center.DirectionTo(Main.MouseWorld).ToRotation()));
@@ -142,7 +139,8 @@ namespace DestroyerTest.Content.Projectiles
                 if (!SoundEngine.TryGetActiveSound(LoopSlot, out var activeSound))
                 {
                     var tracker = new ProjectileAudioTracker(Projectile);
-                    LoopSlot = SoundEngine.PlaySound(Loop, Projectile.Center, soundInstance => {
+                    LoopSlot = SoundEngine.PlaySound(Loop, Projectile.Center, soundInstance =>
+                    {
                         soundInstance.Position = Projectile.Center;
                         soundInstance.Volume = V;
                         soundInstance.Pitch = P;
@@ -187,8 +185,6 @@ namespace DestroyerTest.Content.Projectiles
                         int i = Idx;
 
                         Point p = ExplosionPoints[i].ToTileCoordinates();
-
-                        Point resultPoint;
                         Rectangle SearchArea = Utils.CenteredRectangle(p.ToWorldCoordinates(), new Vector2(60, 60));
                         //Dust.DrawDebugBox(SearchArea);
 
@@ -214,7 +210,7 @@ namespace DestroyerTest.Content.Projectiles
 
                                 PixelParticle pixel = new();
                                 pixel.Initialize(ExplosionPoints[i], Main.rand.NextVector2Circular(1f, 1f), Color.OrangeRed, 2f);
-                                ParticleEngine.Particles.Add(pixel); 
+                                ParticleEngine.Particles.Add(pixel);
                             }
 
                             SoundEngine.PlaySound(SoundID.Item14);
@@ -224,7 +220,7 @@ namespace DestroyerTest.Content.Projectiles
 
                         Rectangle DMG = Utils.CenteredRectangle(ExplosionPoints[i], new Vector2(48, 48));
 
-                        foreach(NPC N in Main.ActiveNPCs)
+                        foreach (NPC N in Main.ActiveNPCs)
                         {
                             if (N.Hitbox.Intersects(DMG))
                             {

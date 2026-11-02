@@ -1,26 +1,18 @@
-using System;
-using Microsoft.Xna.Framework;
+using DestroyerTest.Content.Projectiles.Weapon.Scepter;
 using Terraria;
-using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.DataStructures;
- 
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.Projectiles.Weapon.Scepter;  
 
 namespace DestroyerTest.Content.Scepter
 {
-	public class EmberCane : ScepterItem
-	{
-		public override int Width => 46;
+    public class EmberCane : ScepterItem
+    {
+        public override int Width => 46;
         public override int Height => 38;
 
         public override void SetStaticDefaults()
         {
-            
+
             base.SetStaticDefaults();
         }
 
@@ -49,10 +41,11 @@ namespace DestroyerTest.Content.Scepter
             base.SetDefaults();
         }
 
-        public override void AddRecipes() {
-			CreateRecipe()
-				.AddIngredient(ItemID.AshWood, 12)
-				.Register();
-		}
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient(ItemID.AshWood, 12)
+                .Register();
+        }
     }
-} 
+}

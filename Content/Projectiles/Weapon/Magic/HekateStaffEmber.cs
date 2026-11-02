@@ -1,17 +1,9 @@
-using System.Collections.Generic;
-using System.Formats.Tar;
-using System.Runtime.CompilerServices;
 using BreadLibrary.Core.Graphics.Particles;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Particles;
- 
+
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Magic
@@ -39,7 +31,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
         public override void AI()
         {
             Player player = Main.player[Projectile.owner];
-            
+
             Lighting.AddLight(Projectile.Center, new Color(184, 45, 117).ToVector3() * 0.6f);
 
             PointGlowPreMultiplied Particle = new PointGlowPreMultiplied();
@@ -57,6 +49,6 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
         {
             return false;
         }
-        
-	}
+
+    }
 }

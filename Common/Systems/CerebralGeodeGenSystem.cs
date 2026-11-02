@@ -1,20 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DestroyerTest.Content.Consumables;
 using DestroyerTest.Content.Equips;
 using DestroyerTest.Content.Equips.Cards;
 using DestroyerTest.Content.Equips.ScepterAccessories;
-using DestroyerTest.Content.Lorebooks;
 using DestroyerTest.Content.Magic;
 using DestroyerTest.Content.MeleeWeapons;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.Scepter;
 using DestroyerTest.Content.Tiles;
-using DestroyerTest.Content.Tiles.RoseGarden;
-using DestroyerTest.Content.Tiles.RoseGarden.Flowers;
 using DestroyerTest.Content.Tiles.Walls;
 using DestroyerTest.Content.Tools;
 using Microsoft.Xna.Framework;
@@ -59,14 +51,14 @@ namespace DestroyerTest.Common.Systems
             {
                 ChestLootSystem.RegisterChestLoot(new ChestID(ModContent.TileType<Tile_CerebralChest>(), 0), StandardLoot[i].Item1, stack: StandardLoot[i].Item2, rarity: StandardLoot[i].Item3);
 
-                
+
             }
 
             ChestLootSystem.RegisterChestLoot(new ChestID(ModContent.TileType<Tile_CerebralChest>(), 0), Opus.CommonPotion, 0.6667f);
 
         }
 
-        
+
 
         public override void SetStaticDefaults()
         {
@@ -197,7 +189,7 @@ namespace DestroyerTest.Common.Systems
 
             if (tag.ContainsKey("SwirlStoneGeodePosition"))
             {
-                SwirlStoneGeodePosition= tag.Get<Vector2>("SwirlStoneGeodePosition");
+                SwirlStoneGeodePosition = tag.Get<Vector2>("SwirlStoneGeodePosition");
             }
         }
 
@@ -270,35 +262,35 @@ namespace DestroyerTest.Common.Systems
 
                 var chest1 = Main.chest[Loot];
 
-                
+
                 int SpecialItem()
                 {
                     switch (geodeType)
                     {
                         case CerebralGeodeType.ThermosGlove:
-                        {
-                            return ModContent.ItemType<ThermosGlove>();
-                        }
+                            {
+                                return ModContent.ItemType<ThermosGlove>();
+                            }
                         case CerebralGeodeType.ZyplonRing:
-                        {
-                            return ModContent.ItemType<ZyplonRing>();
-                        }
+                            {
+                                return ModContent.ItemType<ZyplonRing>();
+                            }
                         case CerebralGeodeType.Providence:
-                        {
-                            return ModContent.ItemType<Providence>();
-                        }
+                            {
+                                return ModContent.ItemType<Providence>();
+                            }
                         case CerebralGeodeType.TheCircle:
-                        {
-                            return ModContent.ItemType<TheCircle>();
-                        }
+                            {
+                                return ModContent.ItemType<TheCircle>();
+                            }
                         case CerebralGeodeType.Heavenbleed:
-                        {
-                            return ModContent.ItemType<Heavenbleed>();
-                        }
+                            {
+                                return ModContent.ItemType<Heavenbleed>();
+                            }
                         case CerebralGeodeType.SwirlStone:
-                        {
-                            return ModContent.ItemType<SwirlStone>();
-                        }
+                            {
+                                return ModContent.ItemType<SwirlStone>();
+                            }
                     }
 
                     return -1;
@@ -310,7 +302,7 @@ namespace DestroyerTest.Common.Systems
                 {
                     if (chest1.item[inventoryIndex].type == ItemID.None)
                     {
-                        
+
 
 
 
@@ -380,8 +372,8 @@ namespace DestroyerTest.Common.Systems
                     MainGen(x, y, type);
 
                     geodes.RemoveAt(index);
-                    
-                   
+
+
                 }
 
 

@@ -1,43 +1,33 @@
-using System.Collections.ObjectModel;
 using BreadLibrary.Core.Graphics.Particles;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Particles.PotionFlowers;
-using DestroyerTest.Content.Particles.Stellar;
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Content.Projectiles.Weapon.Magic;
- 
-using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.Audio;
-using Terraria.Enums;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.CheatItems
 {
-	public class ParticleTester : ModItem
-	{
+    public class ParticleTester : ModItem
+    {
 
 
-		public override void SetDefaults() 
+        public override void SetDefaults()
         {
             Item.UseSound = SoundID.Item4;
-			Item.width = 18; // The item texture's width.
-			Item.height = 18; // The item texture's height.
+            Item.width = 18; // The item texture's width.
+            Item.height = 18; // The item texture's height.
 
-			Item.useStyle = ItemUseStyleID.Shoot; // The useStyle of the Item.
-			Item.useTime = 60; // The time span of using the weapon. Remember in terraria, 60 frames is a second.
-			Item.useAnimation = 60; // The time span of the using animation of the weapon, suggest setting it the same as useTime.
-			Item.autoReuse = false; // Whether the weapon can be used more than once automatically by holding the use button.
-		}
+            Item.useStyle = ItemUseStyleID.Shoot; // The useStyle of the Item.
+            Item.useTime = 60; // The time span of using the weapon. Remember in terraria, 60 frames is a second.
+            Item.useAnimation = 60; // The time span of the using animation of the weapon, suggest setting it the same as useTime.
+            Item.autoReuse = false; // Whether the weapon can be used more than once automatically by holding the use button.
+        }
 
         public override bool? UseItem(Player player)
         {
-			LilliesOfImmortalityParticle P = new();
-			P.Spawn(Main.MouseWorld);
-			ParticleEngine.BehindProjectiles.Add(P);
+            LilliesOfImmortalityParticle P = new();
+            P.Spawn(Main.MouseWorld);
+            ParticleEngine.BehindProjectiles.Add(P);
             return true;
         }
-	}
+    }
 }

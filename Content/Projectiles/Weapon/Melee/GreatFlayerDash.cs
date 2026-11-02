@@ -1,23 +1,21 @@
-using Terraria;
-using Terraria.ModLoader;
-using Terraria.ID;
-using Terraria.Audio;
-using Microsoft.Xna.Framework;
 using DestroyerTest.Common;
 using DestroyerTest.Content.MeleeWeapons;
-using Microsoft.Xna.Framework.Graphics;
-using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Buffs;
+using Microsoft.Xna.Framework;
+using Terraria;
+using Terraria.Audio;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 {
     public class GreatFlayerDash : ModProjectile
     {
-        SoundStyle EnemySlice = new SoundStyle($"DestroyerTest/Assets/Audio/TenebrousKatana/GoreSlice", 2) with {
-            Volume = 1.0f, 
-            Pitch = 0.0f, 
-            PitchVariance = 0.5f, 
-        }; 
+        SoundStyle EnemySlice = new SoundStyle($"DestroyerTest/Assets/Audio/TenebrousKatana/GoreSlice", 2) with
+        {
+            Volume = 1.0f,
+            Pitch = 0.0f,
+            PitchVariance = 0.5f,
+        };
         public override void SetStaticDefaults()
         {
         }
@@ -33,10 +31,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = -1;
             Projectile.netImportant = true;
-			Projectile.netUpdate = true;
+            Projectile.netUpdate = true;
         }
         public override string Texture => "DestroyerTest/Content/MeleeWeapons/GreatFlayer";
-       
+
         public override void AI()
         {
             Player player = Main.player[Projectile.owner];
@@ -54,7 +52,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
                 Projectile.Center = desiredPos;
 
-                
+
                 Projectile.rotation = toCursor.ToRotation() + MathHelper.PiOver4;
 
                 // Shoot dust particles in a line from the tip
@@ -72,14 +70,14 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 Projectile.Kill();
             }
         }
-		
-		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
-		{
-			Player player = Main.LocalPlayer;
+
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            Player player = Main.LocalPlayer;
             target.AddBuff(BuffID.Bleeding, 300);
             target.AddBuff(BuffID.Ichor, 300);
-			SoundEngine.PlaySound(EnemySlice, Projectile.position);
-		}
+            SoundEngine.PlaySound(EnemySlice, Projectile.position);
+        }
 
     }
 }

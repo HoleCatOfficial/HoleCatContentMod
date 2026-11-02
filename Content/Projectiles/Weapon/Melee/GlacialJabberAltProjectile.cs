@@ -1,10 +1,8 @@
-﻿using Terraria;
-using Terraria.ModLoader;
-using Terraria.ID;
-using Microsoft.Xna.Framework;
-using DestroyerTest.Common;
+﻿using DestroyerTest.Common;
 using DestroyerTest.Content.MeleeWeapons;
+using Terraria;
 using Terraria.Audio;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 {
@@ -27,7 +25,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Projectile.DamageType = DamageClass.Melee;
         }
 
- 
+
 
         public override void AI()
         {
@@ -44,8 +42,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
             if (player.HeldItem.type == ModContent.ItemType<GlacialJabber>() && player.controlUseTile)
             {
-                
-                
+
+
 
                 Projectile.timeLeft = 20;
                 player.SetDummyItemTime(20);

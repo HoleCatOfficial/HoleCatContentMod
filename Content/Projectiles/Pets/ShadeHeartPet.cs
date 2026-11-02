@@ -1,20 +1,11 @@
-﻿using DestroyerTest.Common;
+﻿using System.Reflection;
+using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
-using Humanizer;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
-using MonoMod.Cil;
 using MonoMod.RuntimeDetour;
-using MonoMod.RuntimeDetour.HookGen;
 using OpusLib;
 using OpusLib.Content.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -61,7 +52,7 @@ namespace DestroyerTest.Content.Projectiles.Pets
             Main.projFrames[Projectile.type] = 9;
             Main.projPet[Projectile.type] = true;
             ProjectileID.Sets.LightPet[Projectile.type] = true;
-            
+
         }
 
         public override void SetDefaults()
@@ -75,7 +66,7 @@ namespace DestroyerTest.Content.Projectiles.Pets
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;
             Projectile.aiStyle = ProjAIStyleID.FloatBehindPet;
-   
+
         }
 
         public override bool PreDraw(ref Color lightColor)
@@ -169,7 +160,7 @@ namespace DestroyerTest.Content.Projectiles.Pets
             {
                 Dust dust = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.TintableDustLighted, Main.rand.NextFloat(-0.001f, 0.001f), Main.rand.NextFloat(-0.005f, 0.005f), 90, ColorLib.TenebrisMagenta, Main.rand.NextFloat(0.2f, 1.7f));
                 dust.velocity *= 0.08f;
-            }    
+            }
 
             if (LightAmount > 0.005f)
             {
@@ -190,8 +181,8 @@ namespace DestroyerTest.Content.Projectiles.Pets
                 LightAmount = 0.01f;
             }
 
-            
-            
+
+
             Vector3 LightColor = new Vector3(C.R * LightAmount, C.G * LightAmount, C.B * LightAmount);
             Lighting.AddLight(Projectile.Center, LightColor);
         }

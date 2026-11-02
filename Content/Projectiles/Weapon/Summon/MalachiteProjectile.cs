@@ -3,17 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using BreadLibrary.Core;
 using BreadLibrary.Core.Graphics.Particles;
-using BreadLibrary.Core.Graphics.Spritebatch;
-using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Equips.ScepterAccessories;
 using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Projectiles.AmmoProjectiles;
-using DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -22,8 +16,6 @@ using Terraria.Graphics;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Fargowiltas.UI.StatSheetUI;
-using static FargowiltasSouls.FargoSoulsSets;
 namespace DestroyerTest.Content.Projectiles.Weapon.Summon
 {
 
@@ -102,7 +94,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
 
                 for (int i = 0; i < Projectile.oldPos.Length; i++)
                 {
-                    float fade = MathHelper.Lerp(0.5f, 0f, (float)i / (float)Projectile.oldPos.Length);
+                    float fade = MathHelper.Lerp(0.5f, 0f, i / (float)Projectile.oldPos.Length);
 
                     if (i != 0)
                     {
@@ -114,7 +106,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
             shadrot += 0.1f;
             for (int i = 0; i < 4; i++)
             {
-                DrawData data = DTUtils.CenteredDraw(Projectile, Color.White with { A = 0} * 0.5f ) with { position = (Projectile.Center + new Vector2(2f, 0).RotatedBy((MathHelper.PiOver2 * i) + shadrot)) - Main.screenPosition };
+                DrawData data = DTUtils.CenteredDraw(Projectile, Color.White with { A = 0 } * 0.5f) with { position = (Projectile.Center + new Vector2(2f, 0).RotatedBy((MathHelper.PiOver2 * i) + shadrot)) - Main.screenPosition };
                 Main.EntitySpriteDraw(data);
             }
             Main.EntitySpriteDraw(DTUtils.CenteredDraw(Projectile, lightColor));
@@ -131,7 +123,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
         }
         public override bool? CanHitNPC(NPC target)
         {
-            return Projectile.ai[0] != 0 &&  Projectile.ManualCanHitFriendly(target);
+            return Projectile.ai[0] != 0 && Projectile.ManualCanHitFriendly(target);
         }
 
         int SnapChance = 24;
@@ -203,12 +195,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
                 Projectile.timeLeft = 2;
             }
 
-            if(Projectile.Center.Distance(Owner.Center) > 4000)
+            if (Projectile.Center.Distance(Owner.Center) > 4000)
             {
                 Projectile.Center = Owner.Center;
             }
 
-            
+
 
             if (Main.rand.NextBool(10))
             {
@@ -261,7 +253,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
 
         public void Idle()
         {
-            
+
 
             MalachiteOrganizer organizer = Owner.GetModPlayer<MalachiteOrganizer>();
             List<Projectile> siblings = organizer.Siblings;
@@ -330,7 +322,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
 
                 if (Projectile.ai[2] < 30)
                 {
-                    
+
                     if (Projectile.ai[2] == 1)
                     {
                         off = Main.rand.NextFloat(MathHelper.TwoPi);
@@ -345,7 +337,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
                     {
                         SoundEngine.PlaySound(DTAssetLib.SwordSounds.MediumHeavySwing with { Pitch = 1.5f, PitchVariance = 0.2f, MaxInstances = 0, Volume = 0.7f }, Projectile.Center);
                     }
-                  
+
 
                     Projectile.velocity = RememberedDirection * 30f;
 
@@ -365,13 +357,13 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
             //A linear slash
             if (Projectile.ai[1] == 2)
             {
-              
+
                 Projectile.ai[2]++;
-             
+
 
                 if (Projectile.ai[2] < 30)
                 {
-                   
+
                     if (Projectile.ai[2] == 1)
                     {
                         side = Main.rand.NextBool();
@@ -445,7 +437,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
 
             int siblingCount = Siblings.Count;
 
-            
+
         }
     }
 }

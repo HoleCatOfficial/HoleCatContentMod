@@ -1,6 +1,4 @@
 using DestroyerTest.Common;
-using DestroyerTest.Content.Resources.Cloths;
-using DestroyerTest.Rarity;
 using DestroyerTest.Rarity.Scepter;
 using Terraria;
 using Terraria.ID;
@@ -68,10 +66,10 @@ namespace DestroyerTest.Content.Equips.AetherianSet
 
         public override void AddRecipes()
         {
-			CreateRecipe()
-				.AddIngredient(ItemID.ShimmerBlock, 16)
-				.AddTile(TileID.Anvils)
-				.Register();
+            CreateRecipe()
+                .AddIngredient(ItemID.ShimmerBlock, 16)
+                .AddTile(TileID.Anvils)
+                .Register();
         }
-	}
+    }
 }

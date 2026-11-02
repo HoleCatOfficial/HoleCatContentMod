@@ -1,24 +1,13 @@
-﻿using BreadLibrary.Core.Graphics.Particles;
-using DestroyerTest.Content.Dusts;
+﻿using System.Collections.Generic;
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Tiles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using OpusLib;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
-using Terraria.Chat;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.ModLoader.IO;
-using Terraria.WorldBuilding;
 
 namespace DestroyerTest.Common.Systems
 {

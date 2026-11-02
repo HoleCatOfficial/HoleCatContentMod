@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DestroyerTest.Common;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -57,7 +53,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         }
         int time = 0;
         int MaxTime => (int)(7 * Owner.GetAttackSpeed<DTTrueMeleeClass>());
-        float progress => (float)time / (float)MaxTime;
+        float progress => time / (float)MaxTime;
         float visualProgress => 1f - MathF.Pow(2f, -7f * Owner.GetAttackSpeed<DTTrueMeleeClass>() * progress);
         Vector2 direction;
         Vector2 EndPoint;

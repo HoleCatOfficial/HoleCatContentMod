@@ -2,18 +2,11 @@
 using BreadLibrary.Core.Graphics.Pixelation;
 using DestroyerTest.Common;
 using DestroyerTest.Common.Interfaces;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.Particles;
- 
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using OpusLib.Content.Particles;
-using ReLogic.Content;
-using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -115,7 +108,7 @@ namespace DestroyerTest.Content.Projectiles
             }
         }
 
- 
+
 
         public override void AI()
         {

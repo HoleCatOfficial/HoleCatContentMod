@@ -1,16 +1,12 @@
-using System;
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Content.Projectiles.AmmoProjectiles;
 using DestroyerTest.Content.Projectiles.Weapon.Ranged;
 using DestroyerTest.Content.Resources;
- 
+
 using DestroyerTest.Content.RiftArsenal;
 using DestroyerTest.Content.Tiles.RiftConfigurator;
 using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -66,9 +62,10 @@ namespace DestroyerTest.Content.RangedItems
 
             Vector2 muzzleOffset = Vector2.Normalize(velocity) * 125f;
 
-			if (Collision.CanHit(position, 0, 0, position + muzzleOffset, 0, 0)) {
-				position += muzzleOffset;
-			}
+            if (Collision.CanHit(position, 0, 0, position + muzzleOffset, 0, 0))
+            {
+                position += muzzleOffset;
+            }
         }
-	}
+    }
 }

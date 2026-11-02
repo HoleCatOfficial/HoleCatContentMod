@@ -1,14 +1,9 @@
-using Microsoft.Xna.Framework;
+using DestroyerTest.Common;
+using DestroyerTest.Content.Projectiles.Weapon.Melee;
+using DestroyerTest.Rarity;
 using Terraria;
-using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.DataStructures;
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Rarity;
-using DestroyerTest.Common;
-using System;
-using DestroyerTest.Content.Projectiles.Weapon.Melee;
 
 namespace DestroyerTest.Content.MeleeWeapons
 {

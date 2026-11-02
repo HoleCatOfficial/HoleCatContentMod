@@ -1,18 +1,12 @@
-﻿using Terraria;
+﻿using DestroyerTest.Common;
+using DestroyerTest.Content.Projectiles.ParentClasses;
+using DestroyerTest.Content.Projectiles.Weapon.Melee;
+using Microsoft.Xna.Framework;
+using OpusLib;
+using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
-using Terraria.Audio;
-using DestroyerTest.Content.Consumables;
-using DestroyerTest.Common;
-using Terraria.GameContent.Drawing;
-using System.IO;
-using DestroyerTest.Content.Projectiles.ParentClasses;
-using OpusLib;
-using ReLogic.Content;
-using DestroyerTest.Content.Projectiles.Boss.NodeBoss.Blessed;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 {
@@ -42,7 +36,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             base.OnHitNPC(target, hit, damageDone);
-            
+
 
             if (hit.Crit)
             {
@@ -51,7 +45,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 
                 Opus.RingSpreadProjectile(ModContent.ProjectileType<BlessedNodeCrystalFriendly>(), 4, target.Center, 200, Projectile.damage, 4, -18, offset: Main.rand.NextFloat(MathHelper.TwoPi));
             }
-         
+
         }
     }
 }

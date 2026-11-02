@@ -1,24 +1,17 @@
-using System;
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.MeleeWeapons;
 using DestroyerTest.Content.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
 using Terraria;
-using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.GameContent.Drawing;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 {
-	public class HekateStaffExplosion : ModProjectile
-	{
+    public class HekateStaffExplosion : ModProjectile
+    {
         public override string Texture => DTUtils.NoTexture;
 
         public override void SetDefaults()
@@ -41,9 +34,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             ParticleEngine.Particles.Add(explosion);
         }
 
-		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.AddBuff(ModContent.BuffType<SoulErosion>(), 20 * 60);
         }
-	}
+    }
 }

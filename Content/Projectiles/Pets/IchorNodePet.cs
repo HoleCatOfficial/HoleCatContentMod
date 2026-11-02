@@ -1,19 +1,16 @@
 using System;
+using System.Collections.Generic;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Particles;
- 
+using GlowmaskHelper.Content;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.ID;
-using Terraria.ModLoader;
-using GlowmaskHelper.Content;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent;
-using OpusLib;
+using Terraria.ModLoader;
 
 
 namespace DestroyerTest.Content.Projectiles.Pets
@@ -46,7 +43,7 @@ namespace DestroyerTest.Content.Projectiles.Pets
         {
             SoundEngine.PlaySound(TP, Projectile.Center);
         }
-        
+
         public override bool PreDraw(ref Color lightColor)
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
@@ -157,7 +154,7 @@ namespace DestroyerTest.Content.Projectiles.Pets
             }
         }
 
-       
+
 
         private void KeepUp(float distSpeed, float distTeleport, Player master)
         {

@@ -1,28 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Consumables;
-using DestroyerTest.Content.Equips;
-using DestroyerTest.Content.Equips.ScepterAccessories;
-using DestroyerTest.Content.MeleeWeapons;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.Resources.Cloths;
-using DestroyerTest.Content.RiftArsenal;
-using DestroyerTest.Content.RiftBiomeSpread;
-using DestroyerTest.Content.Scepter;
-using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using ReLogic.Graphics;
 using Terraria;
 using Terraria.DataStructures;
-using Terraria.GameContent;
-using Terraria.GameContent.ItemDropRules;
-using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.UI.Chat;
 
 
 namespace DestroyerTest.Common
@@ -120,7 +103,7 @@ namespace DestroyerTest.Common
         {
             if (!Main.dedServ && ChargeBars != null && ChargeBarPositions != null)
             {
-                for(int i = 0; i < ChargeBars.Count; i++)
+                for (int i = 0; i < ChargeBars.Count; i++)
                 {
                     Vector2 targetPosition = new Vector2(Player.Center.X, Player.Bottom.Y + 10 + (25 * i));
 

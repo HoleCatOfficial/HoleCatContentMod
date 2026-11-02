@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.ModLoader;
+﻿using DestroyerTest.Content.Entities;
 using Terraria;
-using DestroyerTest.Content.Entities;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Common
 {
@@ -13,7 +8,7 @@ namespace DestroyerTest.Common
     {
         public override bool IsSceneEffectActive(Player player)
         {
-            foreach(NPC npc in Main.npc)
+            foreach (NPC npc in Main.npc)
             {
                 if (npc.active && player.Distance(npc.Center) < 1200)
                 {

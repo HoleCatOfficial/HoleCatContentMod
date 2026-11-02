@@ -62,7 +62,7 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
         {
             InvT++;
 
-           
+
 
             spriteBatch.Draw(Halo.Value, position + InventoryOffset, frame, Color.White with { A = 0 }, 0f, origin, scale, SpriteEffects.None, 0f);
         }
@@ -73,7 +73,7 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
         {
             WorT++;
 
-        
+
 
             spriteBatch.Draw(Halo.Value, (Item.position + WorldOffset) - Main.screenPosition, null, Color.White with { A = 0 }, rotation, Vector2.Zero, scale, SpriteEffects.None, 0f);
         }
@@ -86,7 +86,7 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
             }
 
         }
-        
+
         public override void AddRecipes()
         {
             CreateRecipe()
@@ -102,5 +102,5 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
                 .AddIngredient(ItemID.FallenStar, 6)
                 .Register();
         }
-	}
+    }
 }

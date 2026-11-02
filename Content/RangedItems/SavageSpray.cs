@@ -1,13 +1,8 @@
-﻿using DestroyerTest.Content.Projectiles.AmmoProjectiles;
-using DestroyerTest.Content.Resources;
-using Microsoft.Xna.Framework;
-using System.Collections.Generic;
+﻿using DestroyerTest.Content.Projectiles.Weapon.Ranged;
+using DestroyerTest.Rarity;
 using Terraria;
-using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using DestroyerTest.Content.Projectiles.Weapon.Ranged;
-using DestroyerTest.Rarity;
 
 namespace DestroyerTest.Content.RangedItems
 {

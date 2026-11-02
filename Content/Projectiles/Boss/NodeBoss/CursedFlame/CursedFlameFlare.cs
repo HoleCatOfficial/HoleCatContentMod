@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using BreadLibrary.Core.Graphics.Particles;
+﻿using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Entities;
 using DestroyerTest.Content.Particles;

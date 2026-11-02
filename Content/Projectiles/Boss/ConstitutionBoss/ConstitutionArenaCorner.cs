@@ -1,13 +1,9 @@
 using DestroyerTest.Common;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria;
-using Terraria.GameContent;
-using Terraria.ID;
-using Terraria.ModLoader;
 using OpusLib;
- 
-using DestroyerTest.Content.Particles.Stellar;
+using Terraria;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
 {
@@ -48,7 +44,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
         public Entities.ConstitutionBoss Constitution;
         public bool CheckActive()
         {
-            foreach(NPC Npc in Main.npc)
+            foreach (NPC Npc in Main.npc)
             {
                 if (Npc.active)
                 {

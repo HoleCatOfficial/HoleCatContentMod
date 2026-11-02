@@ -1,16 +1,12 @@
-using System.Text;
 using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
 using BreadLibrary.Core.Graphics.Spritebatch;
 using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Consumables;
 using DestroyerTest.Content.Magic;
- 
+
 using DestroyerTest.Content.Particles;
-using Humanizer;
-using Microsoft.CodeAnalysis;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
@@ -18,8 +14,6 @@ using OpusLib.Content.Helpers;
 using ReLogic.Utilities;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Magic
@@ -31,7 +25,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 
         public override void SetStaticDefaults()
         {
-            
+
         }
 
         public override void SetDefaults()
@@ -51,7 +45,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
         {
             SpriteBatch sb = Main.spriteBatch;
 
-            
+
 
             return false;
         }
@@ -86,7 +80,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
                 0
             );
 
-            float RingScale =  DTAssetLib.NightmareRoseArenaBorder.Value.ScaleRingTextureToMatchRadius(rad, 1327);
+            float RingScale = DTAssetLib.NightmareRoseArenaBorder.Value.ScaleRingTextureToMatchRadius(rad, 1327);
             Main.EntitySpriteDraw(DTAssetLib.NightmareRoseArenaBorder.Value, Projectile.Center - Main.screenPosition, null, ColorLib.CursedFlames with { A = 0 } * Projectile.Opacity, r, DTAssetLib.NightmareRoseArenaBorder.Value.Size() / 2, RingScale, SpriteEffects.FlipHorizontally, 0);
             Main.EntitySpriteDraw(DTAssetLib.NightmareRoseArenaBorder.Value, Projectile.Center - Main.screenPosition, null, OpusColorUtils.Pastel(ColorLib.CursedFlames, 0.75f) with { A = 0 } * Projectile.Opacity, r, DTAssetLib.NightmareRoseArenaBorder.Value.Size() / 2, RingScale, SpriteEffects.FlipHorizontally, 0);
             spriteBatch.ResetToDefault();
@@ -117,7 +111,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             if (!SoundEngine.TryGetActiveSound(LoopSlot, out var activeSound))
             {
                 var tracker = new ProjectileAudioTracker(Projectile);
-                LoopSlot = SoundEngine.PlaySound(Loop, Projectile.Center, soundInstance => {
+                LoopSlot = SoundEngine.PlaySound(Loop, Projectile.Center, soundInstance =>
+                {
                     soundInstance.Position = Projectile.Center;
                     return tracker.IsActiveAndInGame();
                 });
@@ -135,7 +130,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             if (player.HeldItem.type == ModContent.ItemType<Contempt>() && player.controlUseItem && !used)
             {
                 Good = true;
-                
+
 
                 if (HoldTime < 120)
                 {
@@ -143,8 +138,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
                 }
 
 
-                Projectile.Opacity = MathHelper.Lerp(0f, 1f, (float)HoldTime / 120f);
-                P = MathHelper.Lerp(-0.8f, 0f, (float)HoldTime / 120f);
+                Projectile.Opacity = MathHelper.Lerp(0f, 1f, HoldTime / 120f);
+                P = MathHelper.Lerp(-0.8f, 0f, HoldTime / 120f);
 
 
 
@@ -172,9 +167,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             else
             {
                 used = true;
-                Projectile.Opacity = MathHelper.Lerp(1f, 0f, ((float)Projectile.timeLeft / 120f).Inverse());
+                Projectile.Opacity = MathHelper.Lerp(1f, 0f, (Projectile.timeLeft / 120f).Inverse());
 
-                P = MathHelper.Lerp(0f, -0.8f, ((float)Projectile.timeLeft / 120f).Inverse());
+                P = MathHelper.Lerp(0f, -0.8f, (Projectile.timeLeft / 120f).Inverse());
             }
 
 
@@ -191,10 +186,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.AddBuff(ModContent.BuffType<Defilement>(), 180);
-           
+
         }
 
-       
+
 
     }
 

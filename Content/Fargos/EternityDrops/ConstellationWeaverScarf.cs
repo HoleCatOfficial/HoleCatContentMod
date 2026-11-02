@@ -1,22 +1,8 @@
-﻿using BreadLibrary.Core.Graphics.Pixelation;
-using BreadLibrary.Core.Graphics.Spritebatch;
-using BreadLibrary.Core.Utilities;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Equips;
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Content.Projectiles.OrionCrossover;
-using DestroyerTest.Content.Projectiles.Pets;
-using DestroyerTest.Content.Projectiles.player.Accessory;
-using DestroyerTest.Content.Resources;
+﻿using DestroyerTest.Content.Projectiles.player.Accessory;
 using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
-using OpusLib.Content.Helpers;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 

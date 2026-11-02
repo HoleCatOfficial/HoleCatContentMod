@@ -1,32 +1,14 @@
 ﻿
 using BreadLibrary.Core.Graphics.Particles;
-using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.MeleeWeapons;
-using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Particles.Orchestrated;
 using DestroyerTest.Content.Particles.Stellar;
 using DestroyerTest.Content.Projectiles.ParentClasses;
-using DestroyerTest.Content.Projectiles.Weapon.Melee;
-using DestroyerTest.Content.Projectiles.Weapon.Rogue;
- 
-using JetBrains.Annotations;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
 using OpusLib.Content.Helpers;
-using System;
-using System.Collections.Generic;
-using System.IO;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.GameContent;
-using Terraria.GameContent.Drawing;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.OrionCrossover
@@ -57,7 +39,7 @@ namespace DestroyerTest.Content.Projectiles.OrionCrossover
             Vector2 d = Main.MouseWorld - Sky;
             d.Normalize();
 
-            int Damage = (int)(Projectile.damage / 16);
+            int Damage = Projectile.damage / 16;
             Damage = (int)MathHelper.Clamp(Damage, 20, 600);
 
             Projectile.NewProjectile(Projectile.GetSource_OnHit(npc), Sky, d * 7, ModContent.ProjectileType<SabhatiMeteor>(), Damage, 3, Owner.whoAmI);
@@ -72,11 +54,11 @@ namespace DestroyerTest.Content.Projectiles.OrionCrossover
         }
         private void DrawSweepFX2()
         {
-           
+
         }
         public override void DrawUnderBlade()
         {
-           
+
         }
         public override void DrawOverBlade()
         {
@@ -99,7 +81,7 @@ namespace DestroyerTest.Content.Projectiles.OrionCrossover
             StellarPointGlow Glow = new StellarPointGlow();
             Glow.Initialize(ppt[Main.rand.Next(20)], SwordLine.GetLineRotation.ToRotationVector2() * 2, default, 2f);
             ParticleEngine.BehindProjectiles.Add(Glow);
-            
+
 
             ScaleMult = 2f;
 

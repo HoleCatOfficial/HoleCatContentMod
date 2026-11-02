@@ -1,14 +1,8 @@
 using System;
-using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Projectiles.AmmoProjectiles;
-using DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 

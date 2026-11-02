@@ -1,11 +1,8 @@
-﻿using DestroyerTest.Common;
+﻿using System.Collections.Generic;
 using DestroyerTest.Content.Magic;
-using DestroyerTest.Content.MeleeWeapons;
 using DestroyerTest.Content.Projectiles.Boss.NodeBoss.Blessed;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -52,7 +49,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             return false;
         }
 
-       
+
         public override void AI()
         {
             Player player = Main.player[Projectile.owner];

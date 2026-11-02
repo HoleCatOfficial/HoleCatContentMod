@@ -1,16 +1,5 @@
 using DestroyerTest.Common;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.Tiles;
-using DestroyerTest.Content.Tiles.Riftplate;
-using DestroyerTest.Content.Tools;
-using DestroyerTest.Rarity;
-
-using Microsoft.Xna.Framework;
-using System.Collections.Generic;
 using Terraria;
-using Terraria.Audio;
-using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 
@@ -27,9 +16,9 @@ namespace DestroyerTest.Content.RiftArsenal
 
         public override void UpdateInventory(Player player)
         {
-            
+
         }
-	}
+    }
 
     public class Recharge : ModPlayer, IRechargeFunctionality
     {

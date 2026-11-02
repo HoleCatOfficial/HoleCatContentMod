@@ -1,57 +1,35 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.IO;
-using System.Linq;
-using System.Runtime.Intrinsics.X86;
 using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
 using DestroyerTest.Common;
 using DestroyerTest.Common.Systems;
-using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Consumables;
 using DestroyerTest.Content.Consumables.Flasks;
 using DestroyerTest.Content.Equips;
 using DestroyerTest.Content.Equips.ScepterAccessories;
 using DestroyerTest.Content.Magic;
 using DestroyerTest.Content.MeleeWeapons;
-using DestroyerTest.Content.MeleeWeapons.SwordLineage;
-using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Particles.Stellar;
 using DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss;
 using DestroyerTest.Content.RangedItems;
 using DestroyerTest.Content.Remnants;
 using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.RiftBiome;
-using DestroyerTest.Content.RogueItems;
 using DestroyerTest.Content.Scepter;
-using DestroyerTest.Content.SummonItems;
+using DestroyerTest.Content.ThrowerItems;
 using DestroyerTest.Content.Tiles;
-using Humanizer.Localisation.DateToOrdinalWords;
-using log4net.Repository.Hierarchy;
-using Microsoft.Build.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoMod.Cil;
 using OpusLib;
 using OpusLib.Content.Helpers;
 using ReLogic.Content;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
-using Terraria.GameContent.Drawing;
-using Terraria.GameContent.Events;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Utilities;
-using Terraria.Social.Base;
-using Terraria.Utilities.Terraria.Utilities;
 
 namespace DestroyerTest.Content.Entities
 {
@@ -184,7 +162,7 @@ namespace DestroyerTest.Content.Entities
         public static SoundStyle WallWarn = new SoundStyle("DestroyerTest/Assets/Audio/NightmareRose/CursedFlamesWarn");
         public static SoundStyle Teleport = DTAssetLib.SwordSounds.ConSwing;
         public static SoundStyle Dash = DTAssetLib.SwordSounds.MagicSwing;
-    
+
     }
 
     [AutoloadBossHead]
@@ -204,7 +182,7 @@ namespace DestroyerTest.Content.Entities
             NPCID.Sets.MPAllowedEnemies[Type] = true;
             var drawModifier = new NPCID.Sets.NPCBestiaryDrawModifiers()
             {
-             
+
                 Position = Vector2.Zero,
             };
             NPCID.Sets.NPCBestiaryDrawOffset.Add(NPC.type, drawModifier);
@@ -239,7 +217,7 @@ namespace DestroyerTest.Content.Entities
                 NPC.defense = 70;
             }
 
-     
+
             NPC.HitSound = new SoundStyle("DestroyerTest/Assets/Audio/ConstitutionBoss/ConstitutionBossHit") with { PitchVariance = 1, MaxInstances = 100 };
             NPC.DeathSound = new SoundStyle("DestroyerTest/Assets/Audio/ConstitutionBoss/ConstitutionBossKill") with { PitchVariance = 1, MaxInstances = 1, Volume = 8 };
             NPC.noGravity = true;
@@ -308,7 +286,7 @@ namespace DestroyerTest.Content.Entities
             {
                 FablesTitleCardSystem.RegisterFablesBossIntro(new FablesTitleCardSystem.ConstitutionTitle());
             }
-            
+
         }
 
         public Line topSide = new Line(ArenaRect.TopRight(), ArenaRect.TopLeft());
@@ -317,7 +295,7 @@ namespace DestroyerTest.Content.Entities
         public Line rightSide = new Line(ArenaRect.BottomRight(), ArenaRect.TopRight());
         public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            
+
         }
 
         public int WO1 = 0;
@@ -325,7 +303,7 @@ namespace DestroyerTest.Content.Entities
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
 
-            
+
 
             if (LancesEternity)
             {
@@ -365,7 +343,7 @@ namespace DestroyerTest.Content.Entities
             WO2 += 6;
 
             float OuterWidth = Opus.Sine(1f, 0.6f);
-            float progress = (float)NPC.life / (float)NPC.lifeMax;
+            float progress = NPC.life / (float)NPC.lifeMax;
             float Progress = progress.Inverse();
 
 
@@ -449,7 +427,7 @@ namespace DestroyerTest.Content.Entities
                 Music = MusicLoader.GetMusicSlot("DestroyerTest/Assets/Music/ConstMasoPlaceholder");
             }
 
-            
+
         }
 
         public void NormalAI()
@@ -496,7 +474,7 @@ namespace DestroyerTest.Content.Entities
         public bool SpawnedHomingSlash = false;
 
         List<Projectile> OrbitingMines = new();
-        
+
         public void EternityAI()
         {
             Vector2[] P = Opus.GetEquidistantOrbitVectors(Main.masterMode ? 9 : 7, ArenaCTR, 0.01f, 500);
@@ -599,12 +577,12 @@ namespace DestroyerTest.Content.Entities
                 {
                     EternArenaMod = false;
 
-                    
+
                 }
 
                 Dangerous = false;
 
-                
+
 
                 if (ShotLance)
                 {
@@ -622,7 +600,7 @@ namespace DestroyerTest.Content.Entities
             if (AITimer < 4800 && AITimer >= 3600)
             {
                 SpawnedHomingSlash = false;
-                
+
             }
             if (AITimer > 3600)
             {
@@ -640,7 +618,7 @@ namespace DestroyerTest.Content.Entities
         public int EternArenaWidth = 0;
 
         public static Rectangle ArenaRect;
-        public List<Projectile>Corners = new List<Projectile>();
+        public List<Projectile> Corners = new List<Projectile>();
         public void Arena()
         {
             Player player = Main.player[NPC.target];
@@ -657,9 +635,9 @@ namespace DestroyerTest.Content.Entities
 
             Vector2 arenaCenter = ArenaCTR;
 
-            float left   = arenaCenter.X - HalfWidth;
-            float right  = arenaCenter.X + HalfWidth;
-            float top    = arenaCenter.Y - HalfHeight;
+            float left = arenaCenter.X - HalfWidth;
+            float right = arenaCenter.X + HalfWidth;
+            float top = arenaCenter.Y - HalfHeight;
             float bottom = arenaCenter.Y + HalfHeight;
 
             // X bounds
@@ -690,12 +668,12 @@ namespace DestroyerTest.Content.Entities
                     player.velocity.Y = 0;
             }
 
-            topSide    = new Line(ArenaRect.TopRight(), ArenaRect.TopLeft());
+            topSide = new Line(ArenaRect.TopRight(), ArenaRect.TopLeft());
             bottomSide = new Line(ArenaRect.BottomLeft(), ArenaRect.BottomRight());
-            leftSide   = new Line(ArenaRect.TopLeft(), ArenaRect.BottomLeft());
-            rightSide  = new Line(ArenaRect.BottomRight(), ArenaRect.TopRight());
+            leftSide = new Line(ArenaRect.TopLeft(), ArenaRect.BottomLeft());
+            rightSide = new Line(ArenaRect.BottomRight(), ArenaRect.TopRight());
 
-            
+
             int cornerID = ModContent.ProjectileType<ConstitutionArenaCorner>();
 
             if (Corners.Count < 4)
@@ -712,7 +690,7 @@ namespace DestroyerTest.Content.Entities
             }
 
             //Opus.RectDustRandom(DustID.TintableDustLighted, ArenaRect,  ColorLib.StellarFireGradientLooping(), 1f, 20);
-            
+
             if (Main.rand.NextBool(3))
             {
                 ConstitutionParticle Ambience = new();
@@ -750,7 +728,7 @@ namespace DestroyerTest.Content.Entities
             DeathTimer++;
             RecordArenaDims(out int W, out int H);
 
-            float Progress = (float)DeathTimer / (float)MaxDeathTimer;
+            float Progress = DeathTimer / (float)MaxDeathTimer;
             Progress = MathHelper.Clamp(Progress, 0f, 1f);
 
             arenaWidth = MathHelper.Lerp(W, 0f, Progress);
@@ -795,7 +773,7 @@ namespace DestroyerTest.Content.Entities
             }
         }
 
-        public  void TeleportFX()
+        public void TeleportFX()
         {
             SoundEngine.PlaySound(ConstitutionSounds.Teleport, NPC.Center);
             int points = 10; // 5 outer + 5 inner
@@ -892,7 +870,7 @@ namespace DestroyerTest.Content.Entities
             Vector2[] rights = rightSide.GetPointsAlongLine(WallShotCount(Main.masterMode, DTUtils.ClassicMode()));
             Vector2[] bottoms = bottomSide.GetPointsAlongLine(WallShotCount(Main.masterMode, DTUtils.ClassicMode()));
             Vector2[] lefts = leftSide.GetPointsAlongLine(WallShotCount(Main.masterMode, DTUtils.ClassicMode()));
-            
+
             NPC.aiStyle = -1;
             NPC.Center = ArenaCTR;
             if (WallShootCount == 0)
@@ -905,10 +883,10 @@ namespace DestroyerTest.Content.Entities
             if (WallShootCount == 60)
             {
                 SoundEngine.PlaySound(ConstitutionSounds.WallWarn);
-                for(int i = 0; i < tops.Length; i++)
+                for (int i = 0; i < tops.Length; i++)
                 {
                     Vector2 shotpos = tops[i];
-                    for(int t = 0; t < 8; t++)
+                    for (int t = 0; t < 8; t++)
                     {
                         ConstitutionParticle particle = new();
                         particle.Initialize(shotpos, new Vector2(0, 40), 1.6f, 60);
@@ -925,7 +903,7 @@ namespace DestroyerTest.Content.Entities
             }
             if (WallShootCount == 120)
             {
-                for(int i = 0; i < tops.Length; i++)
+                for (int i = 0; i < tops.Length; i++)
                 {
                     Vector2 shotpos = tops[i];
                     Projectile.NewProjectile(NPC.GetSource_FromAI(), shotpos, new Vector2(0, 20), ModContent.ProjectileType<ConstitutionStarHostile_NoHoming>(), ConstitutionDamageValues.WallSweepDamage(), 0);
@@ -936,10 +914,10 @@ namespace DestroyerTest.Content.Entities
             if (WallShootCount == 180)
             {
                 SoundEngine.PlaySound(ConstitutionSounds.WallWarn);
-                for(int i = 0; i < rights.Length; i++)
+                for (int i = 0; i < rights.Length; i++)
                 {
                     Vector2 shotpos = rights[i];
-                    for(int t = 0; t < 8; t++)
+                    for (int t = 0; t < 8; t++)
                     {
                         ConstitutionParticle particle = new();
                         particle.Initialize(shotpos, new Vector2(-40, 0), 1.6f, 60);
@@ -955,7 +933,7 @@ namespace DestroyerTest.Content.Entities
             }
             if (WallShootCount == 240)
             {
-                for(int i = 0; i < rights.Length; i++)
+                for (int i = 0; i < rights.Length; i++)
                 {
                     Vector2 shotpos = rights[i];
                     Projectile.NewProjectile(NPC.GetSource_FromAI(), shotpos, new Vector2(-20, 0), ModContent.ProjectileType<ConstitutionStarHostile_NoHoming>(), ConstitutionDamageValues.WallSweepDamage(), 0);
@@ -966,10 +944,10 @@ namespace DestroyerTest.Content.Entities
             if (WallShootCount == 300)
             {
                 SoundEngine.PlaySound(ConstitutionSounds.WallWarn);
-                for(int i = 0; i < bottoms.Length; i++)
+                for (int i = 0; i < bottoms.Length; i++)
                 {
                     Vector2 shotpos = bottoms[i];
-                    for(int t = 0; t < 8; t++)
+                    for (int t = 0; t < 8; t++)
                     {
                         ConstitutionParticle particle = new();
                         particle.Initialize(shotpos, new Vector2(0, -40), 1.6f, 60);
@@ -985,7 +963,7 @@ namespace DestroyerTest.Content.Entities
             }
             if (WallShootCount == 360)
             {
-                for(int i = 0; i < bottoms.Length; i++)
+                for (int i = 0; i < bottoms.Length; i++)
                 {
                     Vector2 shotpos = bottoms[i];
                     Projectile.NewProjectile(NPC.GetSource_FromAI(), shotpos, new Vector2(0, -20), ModContent.ProjectileType<ConstitutionStarHostile_NoHoming>(), ConstitutionDamageValues.WallSweepDamage(), 0);
@@ -996,10 +974,10 @@ namespace DestroyerTest.Content.Entities
             if (WallShootCount == 420)
             {
                 SoundEngine.PlaySound(ConstitutionSounds.WallWarn);
-                for(int i = 0; i < lefts.Length; i++)
+                for (int i = 0; i < lefts.Length; i++)
                 {
                     Vector2 shotpos = lefts[i];
-                    for(int t = 0; t < 8; t++)
+                    for (int t = 0; t < 8; t++)
                     {
                         ConstitutionParticle particle = new();
                         particle.Initialize(shotpos, new Vector2(40, 0), 1.6f, 60);
@@ -1015,7 +993,7 @@ namespace DestroyerTest.Content.Entities
             }
             if (WallShootCount == 480)
             {
-                for(int i = 0; i < lefts.Length; i++)
+                for (int i = 0; i < lefts.Length; i++)
                 {
                     Vector2 shotpos = lefts[i];
                     Projectile.NewProjectile(NPC.GetSource_FromAI(), shotpos, new Vector2(20, 0), ModContent.ProjectileType<ConstitutionStarHostile_NoHoming>(), ConstitutionDamageValues.WallSweepDamage(), 0);
@@ -1024,7 +1002,7 @@ namespace DestroyerTest.Content.Entities
 
             if (WallShootCount >= 540)
             {
-                
+
                 return;
             }
         }
@@ -1112,7 +1090,7 @@ namespace DestroyerTest.Content.Entities
                     chargeDuration = 35;
                     NPC.velocity *= 0.4f;
                 }
-            }            
+            }
         }
 
 
@@ -1376,7 +1354,7 @@ namespace DestroyerTest.Content.Entities
 
             foreach (NPC npc in Main.npc)
             {
-                if(npc.ModNPC is ConstitutionBoss con && npc.active)
+                if (npc.ModNPC is ConstitutionBoss con && npc.active)
                 {
                     if (ConstitutionBoss.ArenaRect.Contains((int)player.Center.X, (int)player.Center.Y))
                     {
@@ -1399,7 +1377,7 @@ namespace DestroyerTest.Content.Entities
 
         public override void SetStaticDefaults()
         {
-            
+
         }
     }
 }

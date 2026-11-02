@@ -1,33 +1,34 @@
-using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.GameContent;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Dusts
 {
-	public class RainbowDust : ModDust
-	{
-		public override void OnSpawn(Dust dust) {
-			dust.velocity *= 0.4f; // Multiply the dust's start velocity by 0.4, slowing it down
-			dust.noGravity = true; // Makes the dust have no gravity.
-			dust.noLight = false; // Makes the dust emit no light.
-		}
+    public class RainbowDust : ModDust
+    {
+        public override void OnSpawn(Dust dust)
+        {
+            dust.velocity *= 0.4f; // Multiply the dust's start velocity by 0.4, slowing it down
+            dust.noGravity = true; // Makes the dust have no gravity.
+            dust.noLight = false; // Makes the dust emit no light.
+        }
 
-		public override bool Update(Dust dust) { // Calls every frame the dust is active
-			dust.position += dust.velocity;
-			dust.rotation += dust.velocity.X * 0.15f;
-			dust.scale *= 0.99f;
+        public override bool Update(Dust dust)
+        { // Calls every frame the dust is active
+            dust.position += dust.velocity;
+            dust.rotation += dust.velocity.X * 0.15f;
+            dust.scale *= 0.99f;
             dust.color = Main.DiscoColor;
 
-			float light = 0.05f * dust.scale;
+            float light = 0.05f * dust.scale;
 
-			Lighting.AddLight(dust.position, Main.DiscoColor.ToVector3() * 0.3f);
+            Lighting.AddLight(dust.position, Main.DiscoColor.ToVector3() * 0.3f);
 
-			if (dust.scale < 0.1f) {
-				dust.active = false;
-			}
+            if (dust.scale < 0.1f)
+            {
+                dust.active = false;
+            }
 
-			return false; // Return false to prevent vanilla behavior.
-		}
-	}
+            return false; // Return false to prevent vanilla behavior.
+        }
+    }
 }

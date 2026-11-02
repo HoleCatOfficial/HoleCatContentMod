@@ -3,7 +3,6 @@ using GlowmaskHelper.Content;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -32,8 +31,8 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles.RiftRocket
             {
                 Projectile.PrepareBombToBlow();
             }
-     
-            Projectile.velocity.Y += 0.2f; 
+
+            Projectile.velocity.Y += 0.2f;
             Projectile.velocity *= 0.97f;
 
             if (Projectile.velocity.X > -0.1f && Projectile.velocity.X < 0.1f)
@@ -46,7 +45,7 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles.RiftRocket
                 Projectile.velocity.Y = 0f;
             }
 
-            Projectile.rotation += Projectile.velocity.X * 0.1f; 
+            Projectile.rotation += Projectile.velocity.X * 0.1f;
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)

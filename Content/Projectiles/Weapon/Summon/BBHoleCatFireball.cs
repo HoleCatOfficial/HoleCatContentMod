@@ -2,19 +2,11 @@
 using BreadLibrary.Core.Graphics.Pixelation;
 using DestroyerTest.Common;
 using DestroyerTest.Common.Interfaces;
-using DestroyerTest.Content.Dusts;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using OpusLib.Content.Particles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -61,7 +53,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
         public override bool PreDraw(ref Color lightColor)
         {
 
-            
+
             return false;
         }
 
@@ -92,7 +84,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
             }
 
 
-           
+
 
 
         }
@@ -100,7 +92,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
         public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(SoundID.DD2_KoboldExplosion, Projectile.Center);
-            
+
             for (int i = 0; i < 8; i++)
             {
                 LerpingFire F = new();

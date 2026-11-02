@@ -1,14 +1,7 @@
-using DestroyerTest.Common;
-using DestroyerTest.Content.Consumables;
-using DestroyerTest.Content.Dusts;
+using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
-using OpusLib.Content.Helpers;
-using System;
-using System.IO;
 using Terraria;
-using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -24,15 +17,17 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             ProjectileID.Sets.TrailingMode[Type] = 2;
             ProjectileID.Sets.TrailCacheLength[Type] = 12;
         }
-        
-        private NPC HomingTarget {
-				get => Projectile.ai[0] == 0 ? null : Main.npc[(int)Projectile.ai[0] - 1];
-				set {
-					Projectile.ai[0] = value == null ? 0 : value.whoAmI + 1;
-				}
-			}
 
-		public ref float DelayTimer => ref Projectile.ai[1];
+        private NPC HomingTarget
+        {
+            get => Projectile.ai[0] == 0 ? null : Main.npc[(int)Projectile.ai[0] - 1];
+            set
+            {
+                Projectile.ai[0] = value == null ? 0 : value.whoAmI + 1;
+            }
+        }
+
+        public ref float DelayTimer => ref Projectile.ai[1];
 
         public override void SetDefaults()
         {
@@ -60,13 +55,14 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             soundCooldown = reader.ReadInt32();
         }
 
-        
-		public override bool PreDraw(ref Color lightColor) {
-			// Draws an afterimage trail. See https://github.com/tModLoader/tModLoader/wiki/Basic-Projectile#afterimage-trail for more information.
 
-			Texture2D texture = TextureAssets.Projectile[Type].Value;
+        public override bool PreDraw(ref Color lightColor)
+        {
+            // Draws an afterimage trail. See https://github.com/tModLoader/tModLoader/wiki/Basic-Projectile#afterimage-trail for more information.
 
-			Vector2 drawOrigin = new Vector2(texture.Width * 0.5f, texture.Height * 0.5f);
+            Texture2D texture = TextureAssets.Projectile[Type].Value;
+
+            Vector2 drawOrigin = new Vector2(texture.Width * 0.5f, texture.Height * 0.5f);
 
             SpriteEffects Fx = SpriteEffects.None;
 
@@ -78,15 +74,16 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             {
                 Fx = SpriteEffects.None;
             }
-			for (int k = Projectile.oldPos.Length - 1; k > 0; k--) {
-				Vector2 drawPos = (Projectile.oldPos[k] - Main.screenPosition) + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
-				Color color = Projectile.GetAlpha(lightColor) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
-				Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, Fx, 0);
-			}
+            for (int k = Projectile.oldPos.Length - 1; k > 0; k--)
+            {
+                Vector2 drawPos = (Projectile.oldPos[k] - Main.screenPosition) + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
+                Color color = Projectile.GetAlpha(lightColor) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
+                Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, Fx, 0);
+            }
 
             Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, null, lightColor, Projectile.rotation, drawOrigin, Projectile.scale, Fx, 0);
             return false;
-		}
+        }
 
         public override void AI()
         {
@@ -104,62 +101,68 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 Opus.RadialProjectileRandomDir(ModContent.ProjectileType<ConstantineScytheNeedle>(), 2, Projectile.Center, (int)(Projectile.damage * 0.75f), 2, 6);
             }
             */
-            
-			Projectile.rotation += 0.2f * Projectile.direction;
+
+            Projectile.rotation += 0.2f * Projectile.direction;
 
             float maxDetectRadius = 700f;
-			if (HomingTarget == null) {
-				HomingTarget = FindClosestNPC(maxDetectRadius);
-			}
+            if (HomingTarget == null)
+            {
+                HomingTarget = FindClosestNPC(maxDetectRadius);
+            }
 
-			
-			if (HomingTarget != null && !IsValidTarget(HomingTarget)) {
-				HomingTarget = null;
-			}
 
-			if (HomingTarget == null)
-				return;
+            if (HomingTarget != null && !IsValidTarget(HomingTarget))
+            {
+                HomingTarget = null;
+            }
 
-			float length = Projectile.velocity.Length();
-			float targetAngle = Projectile.AngleTo(HomingTarget.Center);
-			Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(30)).ToRotationVector2() * length;
+            if (HomingTarget == null)
+                return;
+
+            float length = Projectile.velocity.Length();
+            float targetAngle = Projectile.AngleTo(HomingTarget.Center);
+            Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(30)).ToRotationVector2() * length;
             if (length < 20)
             {
                 Projectile.velocity *= 1.06f;
             }
 
-            
+
 
         }
-        
-        public NPC FindClosestNPC(float maxDetectDistance) {
-				NPC closestNPC = null;
 
-				float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
+        public NPC FindClosestNPC(float maxDetectDistance)
+        {
+            NPC closestNPC = null;
 
-				foreach (var target in Main.ActiveNPCs) {
+            float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
 
-					if (IsValidTarget(target)) {
-						
-						float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, Projectile.Center);
-
-						if (sqrDistanceToTarget < sqrMaxDetectDistance) {
-							sqrMaxDetectDistance = sqrDistanceToTarget;
-							closestNPC = target;
-						}
-					}
-				}
-
-				return closestNPC;
-			}
-
-			public bool IsValidTarget(NPC target) 
+            foreach (var target in Main.ActiveNPCs)
             {
-			
-				return target.CanBeChasedBy();
-			}
 
-        
+                if (IsValidTarget(target))
+                {
+
+                    float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, Projectile.Center);
+
+                    if (sqrDistanceToTarget < sqrMaxDetectDistance)
+                    {
+                        sqrMaxDetectDistance = sqrDistanceToTarget;
+                        closestNPC = target;
+                    }
+                }
+            }
+
+            return closestNPC;
+        }
+
+        public bool IsValidTarget(NPC target)
+        {
+
+            return target.CanBeChasedBy();
+        }
+
+
 
 
 
@@ -168,11 +171,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            
+
 
         }
 
-        
+
     }
 }
 

@@ -1,10 +1,6 @@
 
 using DestroyerTest.Common;
-using DestroyerTest.Content.Resources;
-using Microsoft.Xna.Framework;
-using Steamworks;
 using Terraria;
-using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 

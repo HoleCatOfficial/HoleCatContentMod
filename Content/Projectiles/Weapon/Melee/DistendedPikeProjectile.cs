@@ -1,15 +1,11 @@
 using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
-using DestroyerTest.Content.MeleeWeapons;
 using DestroyerTest.Content.Projectiles.ParentClasses;
 using DestroyerTest.Content.Projectiles.Weapon.Magic;
-using Microsoft.Build.Evaluation;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib.Content.Helpers;
-using System;
 using Terraria;
-using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 

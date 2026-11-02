@@ -1,12 +1,11 @@
 using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
 using DestroyerTest.Common;
- 
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using Terraria;
-using Terraria.GameContent;
 using Terraria.Graphics.Renderers;
 using Terraria.ModLoader;
 

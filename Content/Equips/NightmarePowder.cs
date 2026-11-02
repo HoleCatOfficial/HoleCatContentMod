@@ -1,28 +1,27 @@
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Projectiles.Pets;
-using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Equips
 {
-	public class NightmarePowder : ModItem
+    public class NightmarePowder : ModItem
     {
-		public override void SetDefaults() {
+        public override void SetDefaults()
+        {
             //Item.DefaultToVanitypet(ModContent.ProjectileType<RosePet>(), ModContent.BuffType<RosePetBuff>());
 
             Item.CloneDefaults(ItemID.ZephyrFish);
             Item.shoot = ModContent.ProjectileType<RosePet>();
             Item.buffType = ModContent.BuffType<RosePetBuff>();
 
-			Item.width = 22;
-			Item.height = 26;
-			Item.rare = ItemRarityID.Master;
-			Item.master = true;
+            Item.width = 22;
+            Item.height = 26;
+            Item.rare = ItemRarityID.Master;
+            Item.master = true;
             Item.value = Item.sellPrice(0, 5);
-		}
+        }
 
         public override bool? UseItem(Player player)
         {
@@ -32,5 +31,5 @@ namespace DestroyerTest.Content.Equips
             }
             return true;
         }
-	}
+    }
 }

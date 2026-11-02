@@ -1,23 +1,17 @@
-using System;
+using DestroyerTest.Common;
+using DestroyerTest.Content.Projectiles.Weapon.Scepter;
+using DestroyerTest.Rarity.Scepter;
 using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.DataStructures;
- 
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Common;
-using Terraria.GameContent.ItemDropRules;
-using DestroyerTest.Rarity;
-using DestroyerTest.Rarity.Scepter;
-using DestroyerTest.Content.Projectiles.Weapon.Scepter;  
 
 namespace DestroyerTest.Content.Scepter
 {
-	public class ScepterOfVespae : ScepterItem
-	{
-		public override int Width => 50;
+    public class ScepterOfVespae : ScepterItem
+    {
+        public override int Width => 50;
         public override int Height => 50;
 
         public override void SetStaticDefaults()
@@ -55,8 +49,8 @@ namespace DestroyerTest.Content.Scepter
             base.SetDefaults();
         }
 
-		public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
-		{
+        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        {
             if (player.altFunctionUse != 2)
             {
                 // Fire the first projectile (SoulOfLight_Projectile)
@@ -67,7 +61,7 @@ namespace DestroyerTest.Content.Scepter
             }
 
             return true;
-		}
+        }
 
         public override void AddRecipes()
         {
@@ -84,4 +78,4 @@ namespace DestroyerTest.Content.Scepter
 
 
     }
-} 
+}

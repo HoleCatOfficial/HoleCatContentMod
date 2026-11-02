@@ -1,17 +1,12 @@
+using System;
+using System.IO;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Particles;
- 
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
-using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -300,7 +295,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
 
 
-                Lighting.AddLight(player.Center,  ColorLib.StellarFireGradientLooping().ToVector3());
+                Lighting.AddLight(player.Center, ColorLib.StellarFireGradientLooping().ToVector3());
 
                 if (Timer >= execTime)
                 {
@@ -325,7 +320,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 }
 
 
-                Lighting.AddLight(player.Center,  ColorLib.StellarFireGradientLooping().ToVector3());
+                Lighting.AddLight(player.Center, ColorLib.StellarFireGradientLooping().ToVector3());
 
                 if (Timer >= execTime)
                 {
@@ -362,7 +357,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                     Projectile.NewProjectile(Entity.GetSource_FromThis(), player.Center, (Main.MouseWorld - player.Center) * 0.65f, ModContent.ProjectileType<StarHammerThrown>(), 20, 6, player.whoAmI);
                     HasThrown = true;
                 }
-                Lighting.AddLight(player.Center,  ColorLib.StellarFireGradientLooping().ToVector3());
+                Lighting.AddLight(player.Center, ColorLib.StellarFireGradientLooping().ToVector3());
                 if (HasThrown == true)
                 {
                     CurrentStage = AttackStage.Unwind;
@@ -446,5 +441,5 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Sound3 = false;
             Sound4 = false;
         }
-	}
+    }
 }

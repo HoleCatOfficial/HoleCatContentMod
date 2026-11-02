@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Resources;
-using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
@@ -33,7 +28,7 @@ namespace DestroyerTest.Content.Equips.HellSet
             Rectangle below = new Rectangle((int)player.position.X, (int)(player.position.Y + h), player.width, 2);
             if (Math.Abs(player.velocity.X) > 3.75f && (player.velocity.Y <= 0))
             {
-        
+
                 PointGlowPreMultiplied Glow = new PointGlowPreMultiplied();
                 Glow.Initialize(Main.rand.NextVector2FromRectangle(below), Main.rand.NextVector2Circular(1, 1), Color.OrangeRed, 0.5f);
                 ParticleEngine.ShaderParticles.Add(Glow);

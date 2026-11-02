@@ -1,10 +1,9 @@
+using DestroyerTest.Content.Equips.ScepterAccessories;
+using DestroyerTest.Content.Scepter;
 using Terraria;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.GameContent.ItemDropRules;
-using DestroyerTest.Content.Equips.ScepterAccessories;
-using DestroyerTest.Common.Systems;
-using DestroyerTest.Content.Scepter;
 
 namespace DestroyerTest.Common
 {

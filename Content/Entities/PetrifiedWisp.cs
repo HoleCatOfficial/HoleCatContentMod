@@ -1,24 +1,18 @@
-using System.Collections.Generic;
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.RiftArsenal;
 using DestroyerTest.Content.RiftBiome;
-using DestroyerTest.Content.RiftBiome.RiftSurfaceResources;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Utilities;
-using static Terraria.GameContent.Animations.IL_Actions.Sprites;
 
 namespace DestroyerTest.Content.Entities
 {
@@ -57,7 +51,7 @@ namespace DestroyerTest.Content.Entities
             NPC.value = 100f;
             NPC.knockBackResist = 0.2f;
             NPC.aiStyle = -1;
-            NPC.HitSound = new SoundStyle(DTAssetLib.AudioPath + "/PetrifiedWisp/Hit") { PitchVariance = 0.3f, MaxInstances = 0};
+            NPC.HitSound = new SoundStyle(DTAssetLib.AudioPath + "/PetrifiedWisp/Hit") { PitchVariance = 0.3f, MaxInstances = 0 };
             NPC.noTileCollide = true;
             NPC.noGravity = true;
             if (NPC.ai[0] == 0)
@@ -106,7 +100,7 @@ namespace DestroyerTest.Content.Entities
                     break;
             }
 
-            
+
 
 
             for (int i = 0; i < NPC.oldPos.Length; i++)
@@ -120,15 +114,15 @@ namespace DestroyerTest.Content.Entities
 
             Main.spriteBatch.Draw(DTAssetLib.FeatheredCircle.Value, Center - screenPos, null, ColorLib.Rift with { A = 0 }, TextureRotationOffset, DTAssetLib.FeatheredCircle.Value.Size() / 2f, scale, SpriteEffects.None, 1f);
 
-            
-            for (int i = 0; i < NPC.oldPos.Length; i++)
-			{
-				float progress = i / (float)NPC.oldPos.Length;
-                float trailscale = MathHelper.Lerp(scale * 0.7f, 0.001f, progress); 
-				Color color = Color.Black;
 
-				Main.EntitySpriteDraw(DTAssetLib.FeatheredCircle.Value, NPC.OldCenter()[i] - screenPos, null, color, NPC.rotation, DTAssetLib.FeatheredCircle.Value.Size() / 2f, trailscale, SpriteEffects.None, 0);
-			}
+            for (int i = 0; i < NPC.oldPos.Length; i++)
+            {
+                float progress = i / (float)NPC.oldPos.Length;
+                float trailscale = MathHelper.Lerp(scale * 0.7f, 0.001f, progress);
+                Color color = Color.Black;
+
+                Main.EntitySpriteDraw(DTAssetLib.FeatheredCircle.Value, NPC.OldCenter()[i] - screenPos, null, color, NPC.rotation, DTAssetLib.FeatheredCircle.Value.Size() / 2f, trailscale, SpriteEffects.None, 0);
+            }
 
             Main.spriteBatch.Draw(DTAssetLib.FeatheredCircle.Value, Center - screenPos, null, Color.Black, NPC.rotation, DTAssetLib.FeatheredCircle.Value.Size() / 2f, scale * 0.7f, SpriteEffects.None, 1f);
         }
@@ -156,8 +150,8 @@ namespace DestroyerTest.Content.Entities
             }
 
             time++;
-            
-            
+
+
             if (time < 90)
             {
                 NPC.velocity *= 0.95f;
@@ -174,18 +168,18 @@ namespace DestroyerTest.Content.Entities
         }
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
-		{
-            bool v = (ModContent.GetInstance<RiftSurface>().IsBiomeActive(spawnInfo.Player) || 
+        {
+            bool v = (ModContent.GetInstance<RiftSurface>().IsBiomeActive(spawnInfo.Player) ||
             ModContent.GetInstance<RiftUnderground>().IsBiomeActive(spawnInfo.Player) ||
             ModContent.GetInstance<RiftDesert>().IsBiomeActive(spawnInfo.Player) ||
             ModContent.GetInstance<RiftDesertUnderground>().IsBiomeActive(spawnInfo.Player) ||
             ModContent.GetInstance<RiftTundra>().IsBiomeActive(spawnInfo.Player));
-			if (v)
-			{
-				return 0.5f;
-			}
-			return 0f;
-		}
+            if (v)
+            {
+                return 0.5f;
+            }
+            return 0f;
+        }
 
         public override void HitEffect(NPC.HitInfo hit)
         {
@@ -222,7 +216,7 @@ namespace DestroyerTest.Content.Entities
                                 break;
                             }
                     }
-                    
+
                 }
             }
         }

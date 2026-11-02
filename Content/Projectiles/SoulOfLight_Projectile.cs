@@ -2,12 +2,10 @@ using DestroyerTest.Common;
 using DestroyerTest.Common.Interfaces;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.Particles;
- 
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
-using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -19,7 +17,7 @@ namespace DestroyerTest.Content.Projectiles
     public class SoulOfLight_Projectile : ModProjectile, IHomingProjectile
     {
 
-        public override void SetStaticDefaults() 
+        public override void SetStaticDefaults()
         {
             ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true;
             Main.projFrames[Projectile.type] = 4;
@@ -59,7 +57,7 @@ namespace DestroyerTest.Content.Projectiles
             Opus.ReturnToDefaultDrawing(spriteBatch);
             return true;
         }
-        
+
         public bool ExplodesWithPattern = false;
 
         bool IHomingProjectile.TracksNPCs => true;
@@ -140,16 +138,16 @@ namespace DestroyerTest.Content.Projectiles
 
         public override void OnKill(int timeLeft)
         {
-            SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/StarBurst2") with {MaxInstances = 0});
+            SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/StarBurst2") with { MaxInstances = 0 });
 
             var P = Polar.GenerateCurvedStar(4, 3, 200f, Projectile.Center, 10, 0.4f, 0f);
 
-            foreach(Vector2 p in P)
+            foreach (Vector2 p in P)
             {
                 Vector2 D = p - Projectile.Center;
                 Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<SoulOfLightDust>(), D * 0.01f, 0, default, 3f);
             }
-            
+
         }
     }
 }

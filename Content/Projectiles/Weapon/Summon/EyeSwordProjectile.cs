@@ -1,27 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using BreadLibrary.Core;
-using BreadLibrary.Core.Graphics.Particles;
-using BreadLibrary.Core.Graphics.Spritebatch;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Equips.ScepterAccessories;
-using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Projectiles.AmmoProjectiles;
-using DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent;
-using Terraria.Graphics;
-using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Fargowiltas.UI.StatSheetUI;
-using static FargowiltasSouls.FargoSoulsSets;
 namespace DestroyerTest.Content.Projectiles.Weapon.Summon
 {
 
@@ -52,7 +38,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
             Projectile.localNPCHitCooldown = 35;
         }
 
- 
+
 
         public override bool PreDraw(ref Color lightColor)
         {
@@ -79,7 +65,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
             {
                 SoundEngine.PlaySound(SoundID.DD2_KoboldFlyerChargeScream with { PitchVariance = 0.2f, MaxInstances = 0 });
             }
-            
+
 
         }
 

@@ -1,10 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Security.Policy;
 using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
 using BreadLibrary.Core.Graphics.Spritebatch;
@@ -21,49 +18,30 @@ using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Boss;
 using DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss;
-using DestroyerTest.Content.Projectiles.Boss.NodeBoss.Blessed;
 using DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame;
-using DestroyerTest.Content.Projectiles.Boss.VampireBoss;
 using DestroyerTest.Content.RangedItems;
 using DestroyerTest.Content.Remnants;
 using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.RiftBiome;
-using DestroyerTest.Content.RogueItems;
 using DestroyerTest.Content.SummonItems;
+using DestroyerTest.Content.ThrowerItems;
 using DestroyerTest.Content.Tiles;
 using DestroyerTest.Content.UI;
-using GlowmaskHelper.Content;
- 
-using log4net.Repository.Hierarchy;
-using Microsoft.Build.Utilities;
-using Microsoft.CodeAnalysis.FlowAnalysis;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
-using MonoMod.Cil;
 using OpusLib;
 using OpusLib.Content.Helpers;
 using OpusLib.Content.Particles;
-using rail;
 using ReLogic.Content;
-using ReLogic.Localization.IME;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
-using Terraria.GameContent.Drawing;
-using Terraria.GameContent.Events;
 using Terraria.GameContent.ItemDropRules;
-using Terraria.GameContent.Skies;
-using Terraria.Graphics;
-using Terraria.Graphics.CameraModifiers;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Utilities;
-using Terraria.UI;
-using Terraria.WorldBuilding;
 using Conditions = Terraria.GameContent.ItemDropRules.Conditions;
 
 namespace DestroyerTest.Content.Entities
@@ -100,7 +78,7 @@ namespace DestroyerTest.Content.Entities
             NPCID.Sets.TrailingMode[Type] = 3;
             NPCID.Sets.MPAllowedEnemies[Type] = true;
             var drawModifier = new NPCID.Sets.NPCBestiaryDrawModifiers()
-            { 
+            {
                 Position = new Vector2(0, 190),
             };
             NPCID.Sets.NPCBestiaryDrawOffset.Add(NPC.type, drawModifier);
@@ -271,7 +249,7 @@ namespace DestroyerTest.Content.Entities
                     }
                 case AttackState.Idle:
                     {
-                        
+
                         break;
                     }
                 case AttackState.CursedFlames:
@@ -332,7 +310,7 @@ namespace DestroyerTest.Content.Entities
                         if (Masochist)
                         {
                             weights[AttackState.DemoniteWhisper] = 0f;
-                            
+
                             weights[AttackState.WallDarts] = 0f;
                         }
                         break;
@@ -523,7 +501,7 @@ namespace DestroyerTest.Content.Entities
 
                 GroundValid = true;
 
-                GroundDone:;
+            GroundDone:;
 
                 Point TopLeft2 = SearchArea2.TopLeft().ToTileCoordinates();
 
@@ -544,7 +522,7 @@ namespace DestroyerTest.Content.Entities
 
                 AirValid = true;
 
-                AirDone:;
+            AirDone:;
 
                 if (GroundValid && !AirValid)
                 {
@@ -641,7 +619,7 @@ namespace DestroyerTest.Content.Entities
                 }
                 if (BestiaryTime > 360 && BestiaryTime < 480)
                 {
-                   
+
                 }
                 if (BestiaryTime > 480 && BestiaryTime < 600)
                 {
@@ -667,8 +645,8 @@ namespace DestroyerTest.Content.Entities
 
                 return false;
             }
-            
-           
+
+
 
             Texture2D GlowTex()
             {
@@ -682,12 +660,12 @@ namespace DestroyerTest.Content.Entities
                 }
             }
 
-            
-            
 
-            
 
-            
+
+
+
+
 
             if (anyNodesAlive)
             {
@@ -991,7 +969,7 @@ namespace DestroyerTest.Content.Entities
 
             }
 
-            
+
             //SunlightModification.Sunlight(1f, Color.Black, (float)TintCounter / (float)MaxTintCount);
         }
 
@@ -1024,7 +1002,7 @@ namespace DestroyerTest.Content.Entities
 
                 if (!track.IsPlaying)
                 {
-                    
+
                     track.Stop(AudioStopOptions.Immediate);
                     track.Reuse();
                     track.Play();
@@ -1149,7 +1127,7 @@ namespace DestroyerTest.Content.Entities
 
             SetChances(currentState);
 
-            if (currentState != AttackState.Desperation && currentState != AttackState.KillIdle && currentState != AttackState.SpawnIdle )
+            if (currentState != AttackState.Desperation && currentState != AttackState.KillIdle && currentState != AttackState.SpawnIdle)
             {
                 if (Main.rand.NextBool(1200))
                 {
@@ -1168,7 +1146,7 @@ namespace DestroyerTest.Content.Entities
             }
             else
             {
-                
+
 
                 if (!DestroyerTestMod.MasochistIsActive)
                 {
@@ -1317,7 +1295,7 @@ namespace DestroyerTest.Content.Entities
                     if (NodeShakeTimers[i] < 120)
                         NodeShakeTimers[i]++;
 
-                    NodeShakeMaxX[i] = MathHelper.Lerp(10f, 0f, (float)NodeShakeTimers[i] / 120f);
+                    NodeShakeMaxX[i] = MathHelper.Lerp(10f, 0f, NodeShakeTimers[i] / 120f);
                     NodeShakeMaxY[i] = NodeShakeMaxX[i];
 
                     if (cfNodes[i].active && cfNodes[i].life > 0)
@@ -1383,8 +1361,8 @@ namespace DestroyerTest.Content.Entities
                     cfNodes[i].SmoothMoveToPoint(NodePositions[i], 24f);
 
 
-                    
-         
+
+
                 }
 
                 if (NPC.life < (NPC.lifeMax * 0.75f))
@@ -1436,7 +1414,7 @@ namespace DestroyerTest.Content.Entities
                 ModifyMusic();
             }
 
-                NPC.velocity = Vector2.Zero;
+            NPC.velocity = Vector2.Zero;
 
             int MinionSpawnType = Main.rand.Next(new int[]
                 {
@@ -1491,7 +1469,7 @@ namespace DestroyerTest.Content.Entities
                             RoarWaveTimer = 180;
 
                             FablesTitleCard();
-                            
+
                             if (!DestroyerTestMod.MasochistIsActive)
                             {
                                 SoundEngine.PlaySound(SpawnRoar, NPCHead);
@@ -1502,7 +1480,7 @@ namespace DestroyerTest.Content.Entities
                                 Main.NewText("A torrent befalls the corruption...", ColorLib.CursedFlames);
                                 //Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, Vector2.Zero, ModContent.ProjectileType<NightmareeRoseBackgroundProj>(), 0, 0, ai0: 0);
                             }
-                            
+
                             currentState = AttackState.Idle;
                             NPC.dontTakeDamage = false;
                             SpawnCount = 0;
@@ -1531,7 +1509,7 @@ namespace DestroyerTest.Content.Entities
                         }
 
                         NPC.aiStyle = -1;
-                        
+
                         if (VingetteScale < 10)
                         {
                             VingetteScale += 0.75f;
@@ -1612,7 +1590,7 @@ namespace DestroyerTest.Content.Entities
                                     Projectile.NewProjectile(Entity.GetSource_FromThis(), NPCHead, velocity * 20f, ModContent.ProjectileType<CursedFlameProj>(), 15, 0);
                                     FlameInterval = 0;
                                 }
-                                
+
                             }
                             if (FlameTimer >= 240)
                             {
@@ -1774,7 +1752,7 @@ namespace DestroyerTest.Content.Entities
                                 for (int i = 0; i < 7; i++)
                                 {
                                     Vector2 Pos = new Vector2(NPC.Bottom.X + Main.rand.NextFloat(-1600, 1600), NPC.Bottom.Y + 20);
-                                    Projectile proj =  Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), Pos, new Vector2(Main.rand.NextFloat(-3f, 3f), -6f), ModContent.ProjectileType<VileSpike>(), 30, 4);
+                                    Projectile proj = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), Pos, new Vector2(Main.rand.NextFloat(-3f, 3f), -6f), ModContent.ProjectileType<VileSpike>(), 30, 4);
                                     proj.timeLeft = 480;
                                 }
 
@@ -1882,7 +1860,6 @@ namespace DestroyerTest.Content.Entities
                 case AttackState.OvergrownHammer:
                     {
                         ResetState();
-                        NPC Minion;
                         if (NPC.life < NPC.lifeMax * 0.4f && !HammerActive)
                         {
                             bool eternity = DestroyerTestMod.EternityIsActive;
@@ -1944,7 +1921,7 @@ namespace DestroyerTest.Content.Entities
                     break;
                 case AttackState.ArenaDivide:
                     {
-                        if (DestroyerTestMod.EternityIsActive|| DestroyerTestMod.DeathIsActive)
+                        if (DestroyerTestMod.EternityIsActive || DestroyerTestMod.DeathIsActive)
                         {
                             int interval = DestroyerTestMod.MasochistIsActive ? 15 : 60;
                             if (Main.GameUpdateCount % interval == 0)
@@ -1982,7 +1959,7 @@ namespace DestroyerTest.Content.Entities
                         {
                             ResetState();
                         }
-                        
+
                     }
                     break;
                 case AttackState.Desperation:
@@ -1990,7 +1967,7 @@ namespace DestroyerTest.Content.Entities
                         NPC.dontTakeDamage = true;
                         ModContent.GetInstance<NightmareRoseCameraModification>().ControlCam = true;
                         ShouldCenterCameraOnNPC = true;
-                        
+
                         for (int i = 0; i < NPC.maxBuffs; i++)
                         {
                             NPC.DelBuff(i);
@@ -2020,7 +1997,7 @@ namespace DestroyerTest.Content.Entities
                                 SoulBombSpawn();
                             }
 
-                            float progress = (float)DesperationTimer / 1200f;
+                            float progress = DesperationTimer / 1200f;
                             BorderRad = MathHelper.Lerp(1200f, 0f, progress);
                             //RingScale = MathHelper.Lerp(DTAssetLib.NightmareRoseArenaBorder.Value.ScaleRingTextureToMatchRadius(BorderRad, 1327), 0, progress);
 
@@ -2058,7 +2035,7 @@ namespace DestroyerTest.Content.Entities
                             GatherParticle();
                             DeathIdleTimer--;
 
-                            float progress = (float)DeathIdleTimer / 120f;
+                            float progress = DeathIdleTimer / 120f;
                             OverlayAlpha = MathHelper.Lerp(0f, 1f, progress.Inverse());
 
                             if (DeathIdleTimer % 20 == 0)
@@ -2180,7 +2157,7 @@ namespace DestroyerTest.Content.Entities
             }
         }
 
-       
+
 
 
         private Dictionary<AttackState, float> stateWeights = new()
@@ -2205,7 +2182,7 @@ namespace DestroyerTest.Content.Entities
 
         private AttackState GetRandomState()
         {
-            
+
             // Exclude the current state
             var validStates = stateWeights
                 .Where(pair => pair.Key != currentState && pair.Value > 0)
@@ -2303,7 +2280,7 @@ namespace DestroyerTest.Content.Entities
 
             Main.EntitySpriteDraw(DTAssetLib.GlowCone.Value, NPCHead - Main.screenPosition, null, ColorLib.CursedFlames, dir.ToRotation() + MathHelper.PiOver4, DTAssetLib.GlowCone.Value.Size() / 2, GlowConeScaling, SpriteEffects.None, 0);
 
-            
+
         }
 
 
@@ -2614,7 +2591,7 @@ namespace DestroyerTest.Content.Entities
                         }
                         Flag4 = true;
                     }
-                    
+
                     SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/TenebrisLasers"), NPCHead);
 
                     int Dir = FireLR ? -1 : 1;
@@ -2957,7 +2934,7 @@ namespace DestroyerTest.Content.Entities
 
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
         {
-         
+
         }
 
         public override bool CheckActive()
@@ -2967,7 +2944,7 @@ namespace DestroyerTest.Content.Entities
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            
+
 
             Texture2D Tex = TextureAssets.Npc[Type].Value;
             Texture2D GlowTex = ModContent.Request<Texture2D>(Texture + "_Glow").Value;

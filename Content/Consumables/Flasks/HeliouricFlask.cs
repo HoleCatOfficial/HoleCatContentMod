@@ -3,8 +3,6 @@ using DestroyerTest.Content.Buffs.Imbues;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
-using Newtonsoft.Json.Linq;
-using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 

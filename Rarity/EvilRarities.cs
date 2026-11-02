@@ -1,23 +1,18 @@
 using DestroyerTest.Common;
 using Microsoft.Xna.Framework;
 using OpusLib;
-using ReLogic.Graphics;
-using System;
-using Terraria;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.UI.Chat;
 
 namespace DestroyerTest.Rarity
 {
-	public class CrimsonSpecialRarity : ModRarity
+    public class CrimsonSpecialRarity : ModRarity
     {
         public override Color RarityColor => new Color(50, 0, 0); // Change color as needed
 
         public override int GetPrefixedRarity(int offset, float valueMult)
         {
-            if (offset > 0) 
+            if (offset > 0)
             {
                 return ItemRarityID.Green; // Upgrade to next rarity if necessary
             }
@@ -32,7 +27,7 @@ namespace DestroyerTest.Rarity
 
         public override int GetPrefixedRarity(int offset, float valueMult)
         {
-            if (offset > 0) 
+            if (offset > 0)
             {
                 return ItemRarityID.Green; // Upgrade to next rarity if necessary
             }
@@ -47,7 +42,7 @@ namespace DestroyerTest.Rarity
 
         public override int GetPrefixedRarity(int offset, float valueMult)
         {
-            if (offset > 0) 
+            if (offset > 0)
             {
                 return ItemRarityID.Green; // Upgrade to next rarity if necessary
             }

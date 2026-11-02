@@ -1,27 +1,20 @@
-
-using DestroyerTest.Common;
-using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Weapon.Summon;
-using Humanizer;
- 
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria;
 using Terraria.DataStructures;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Buffs
 {
-	// This class serves as an example of a debuff that causes constant loss of life
-	// See ExampleLifeRegenDebuffPlayer.UpdateBadLifeRegen at the end of the file for more information
-	public class StarConstructMinionBuff : ModBuff
+    // This class serves as an example of a debuff that causes constant loss of life
+    // See ExampleLifeRegenDebuffPlayer.UpdateBadLifeRegen at the end of the file for more information
+    public class StarConstructMinionBuff : ModBuff
     {
         public static readonly int FrameCount = 8; // Amount of frames we have on our animation spritesheet.
-		public static readonly int AnimationSpeed = 4; // In ticks.
+        public static readonly int AnimationSpeed = 4; // In ticks.
         public static readonly string AnimationSheetPath = "DestroyerTest/Content/Buffs/StarConstructMinionBuffAnim";
         private Asset<Texture2D> animatedTexture;
         public override void SetStaticDefaults()
@@ -74,19 +67,22 @@ namespace DestroyerTest.Content.Buffs
         }
 
         int grace = 120;
-		public override void Update(Player player, ref int buffIndex) {
-			// If the minions exist reset the buff time, otherwise remove the buff from the player
+        public override void Update(Player player, ref int buffIndex)
+        {
+            // If the minions exist reset the buff time, otherwise remove the buff from the player
             if (grace > 0)
             {
                 grace--;
             }
-			if ((player.ownedProjectileCounts[ModContent.ProjectileType<StarConstructMinion>()] > 0 || player.ownedProjectileCounts[ModContent.ProjectileType<StarConstructInactive>()] > 0) || grace > 0) {
-				player.buffTime[buffIndex] = 18000;
-			}
-			else {
-				player.DelBuff(buffIndex);
-				buffIndex--;
-			}
-		}
-	}
+            if ((player.ownedProjectileCounts[ModContent.ProjectileType<StarConstructMinion>()] > 0 || player.ownedProjectileCounts[ModContent.ProjectileType<StarConstructInactive>()] > 0) || grace > 0)
+            {
+                player.buffTime[buffIndex] = 18000;
+            }
+            else
+            {
+                player.DelBuff(buffIndex);
+                buffIndex--;
+            }
+        }
+    }
 }

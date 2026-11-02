@@ -1,14 +1,13 @@
+using System;
 using DestroyerTest.Common;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using OpusLib;
-using System;
-using Terraria.DataStructures;
-using Terraria.Audio;
 
 namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
 {
@@ -140,7 +139,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
             {
                 state = State.Move;
                 FadeOut = Math.Min(FadeOutTimer, FadeOut + 1);
-                
+
             }
 
             if (state == State.Move)
@@ -156,7 +155,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
 
         public void DisplayWarningTex()
         {
-            Color Drawcolor =  ColorLib.StellarFireGradientLooping() * (1f - FadeIn / (float)FadeInTimer);
+            Color Drawcolor = ColorLib.StellarFireGradientLooping() * (1f - FadeIn / (float)FadeInTimer);
             Vector2 Scale = new Vector2(0.05f, ScaleByVelocity);
 
             Main.EntitySpriteDraw(DTAssetLib.Trail(3).Value, Projectile.Center - Main.screenPosition, null, Drawcolor, Projectile.rotation - MathHelper.PiOver2, DTAssetLib.Trail(3).Value.Size() / 2, Scale, SpriteEffects.None, 0);
@@ -164,7 +163,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
 
         public override bool PreDraw(ref Color lightColor)
         {
-            Color BeamColor =  ColorLib.StellarFireGradientLooping();
+            Color BeamColor = ColorLib.StellarFireGradientLooping();
             lightColor = BeamColor;
             SpriteBatch SB = Main.spriteBatch;
 

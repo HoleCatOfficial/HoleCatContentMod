@@ -1,13 +1,11 @@
 ﻿using System;
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
 using GlowmaskHelper.Content;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -40,7 +38,7 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles.RiftRocket
             }
             else
             {
-               
+
                 if (Math.Abs(Projectile.velocity.X) >= 8f || Math.Abs(Projectile.velocity.Y) >= 8f)
                 {
                     counter++;
@@ -61,7 +59,7 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles.RiftRocket
 
             if (Projectile.velocity != Vector2.Zero)
             {
-                Projectile.rotation = (float)Math.Atan2(Projectile.velocity.Y, Projectile.velocity.X)   ;
+                Projectile.rotation = (float)Math.Atan2(Projectile.velocity.Y, Projectile.velocity.X);
             }
         }
 

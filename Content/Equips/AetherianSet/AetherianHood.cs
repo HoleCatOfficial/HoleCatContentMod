@@ -1,19 +1,10 @@
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.SummonItems;
-using DestroyerTest.Content.Tiles;
+using DestroyerTest.Common;
+using DestroyerTest.Content.Projectiles.ParentClasses;
+using DestroyerTest.Rarity.Scepter;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using DestroyerTest.Rarity;
-using DestroyerTest.Content.Tiles.Riftplate;
-using DestroyerTest.Common;
-using Microsoft.Xna.Framework;
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Content.Projectiles.player.ArmorSet;
-using DestroyerTest.Rarity.Scepter;
-using DestroyerTest.Content.Projectiles.ParentClasses;
 
 namespace DestroyerTest.Content.Equips.AetherianSet
 {
@@ -43,9 +34,9 @@ namespace DestroyerTest.Content.Equips.AetherianSet
         public override void UpdateArmorSet(Player player)
         {
             if (player.TryGetModPlayer<AetherianScepterPlayer>(out AetherianScepterPlayer Scptr))
-			{
-				Scptr.Active = true;
-			}
+            {
+                Scptr.Active = true;
+            }
             player.setBonus = Language.GetTextValue("Mods.DestroyerTest.Items.AetherianHood.SetBonus");
         }
 
@@ -61,13 +52,13 @@ namespace DestroyerTest.Content.Equips.AetherianSet
 
         public override void AddRecipes()
         {
-			CreateRecipe()
-				.AddIngredient(ItemID.ShimmerBlock, 9)
-				.AddTile(TileID.Anvils)
-				.Register();
+            CreateRecipe()
+                .AddIngredient(ItemID.ShimmerBlock, 9)
+                .AddTile(TileID.Anvils)
+                .Register();
         }
     }
-    
+
     public class AetherianScepterPlayer : ModPlayer
     {
         public bool Active;

@@ -2,8 +2,7 @@ using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
 using DestroyerTest.Common;
 using DestroyerTest.Common.Interfaces;
-using DestroyerTest.Content.Particles;
- 
+
 using Microsoft.Xna.Framework;
 using OpusLib.Content.Particles;
 using Terraria;
@@ -14,7 +13,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
 {
     public class Hellfire : ModProjectile, IHomingProjectile
     {
-        
+
         public float DelayTimer;
 
         bool IHomingProjectile.TracksNPCs => true;
@@ -47,7 +46,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
             Projectile.DamageType = DamageClass.Generic;
             Projectile.friendly = true;
             Projectile.hostile = false;
-            Projectile.ignoreWater = true; 
+            Projectile.ignoreWater = true;
             Projectile.timeLeft = 180;
             Projectile.tileCollide = true;
             Projectile.hide = true;

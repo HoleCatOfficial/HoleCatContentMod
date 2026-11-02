@@ -1,24 +1,11 @@
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.SummonItems;
-using DestroyerTest.Content.Tiles;
+using System.Collections.Generic;
+using DestroyerTest.Common;
+using DestroyerTest.Rarity;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using DestroyerTest.Rarity;
-using DestroyerTest.Content.Tiles.Riftplate;
-using DestroyerTest.Common;
- 
-using DestroyerTest.Content.Particles;
-using Microsoft.Xna.Framework;
-using Terraria.Audio;
-using Terraria.DataStructures;
-using Microsoft.Xna.Framework.Graphics;
-using System;
-using DestroyerTest.Content.RiftArsenal;
-using Steamworks;
-using System.Collections.Generic;
 
 namespace DestroyerTest.Content.Equips
 {
@@ -36,7 +23,7 @@ namespace DestroyerTest.Content.Equips
         public Shield InfernalShield = new Shield("InfernalShield", 136, 120, ColorLib.HellFire, SoundID.Research, SoundID.Item51, new SoundStyle("DestroyerTest/Assets/Audio/TO_Break") with { PitchVariance = 0.3f }, DMSG, 2, 2);
         public override void Load()
         {
-           
+
             if (Main.netMode == NetmodeID.Server)
             {
                 return;
@@ -65,24 +52,24 @@ namespace DestroyerTest.Content.Equips
 
         public override void UpdateArmorSet(Player player)
         {
-            
+
             player.ScepterClass().Range += 2;
             player.lavaImmune = true;
             player.DefaultSetBonusText(player.armor[0]);
         }
 
         public override void ModifyTooltips(List<TooltipLine> tooltips)
-		{
-			Item body = new Item();
-			body.SetDefaults(ModContent.ItemType<InfernalDress>());
-			Item legs = new Item();
-			legs.SetDefaults(0);
-			if (IsArmorSet(Item, body, legs))
-			{
-				var pityText = Language.GetText("Mods.DestroyerTest.ShieldPlayer.ShieldLine");
-				tooltips.Add(new TooltipLine(Mod, "ShieldInfo", pityText.Value));
-			}
-		}
+        {
+            Item body = new Item();
+            body.SetDefaults(ModContent.ItemType<InfernalDress>());
+            Item legs = new Item();
+            legs.SetDefaults(0);
+            if (IsArmorSet(Item, body, legs))
+            {
+                var pityText = Language.GetText("Mods.DestroyerTest.ShieldPlayer.ShieldLine");
+                tooltips.Add(new TooltipLine(Mod, "ShieldInfo", pityText.Value));
+            }
+        }
 
         public override void AddRecipes()
         {

@@ -1,15 +1,11 @@
 ﻿using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Particles.Stellar;
- 
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
-using System.Collections.Generic;
-using System.Formats.Tar;
-using System.Runtime.CompilerServices;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -169,7 +165,7 @@ namespace DestroyerTest.Content.Projectiles.OrionCrossover
             return target.CanBeChasedBy();
         }
 
-       
+
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             SoundEngine.PlaySound(DTAssetLib.Impacts.ExplosiveImpactBig, Projectile.Center);

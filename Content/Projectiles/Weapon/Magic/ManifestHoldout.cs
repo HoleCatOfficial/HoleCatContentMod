@@ -1,14 +1,13 @@
-using Terraria;
-using Terraria.ModLoader;
-using Terraria.ID;
-using Microsoft.Xna.Framework;
 using DestroyerTest.Common;
-using DestroyerTest.Content.MeleeWeapons;
-using Terraria.Audio;
 using DestroyerTest.Content.Magic;
-using Terraria.GameContent;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib.Content.Helpers;
+using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 {
@@ -55,7 +54,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 
             if (player.HeldItem.type == ModContent.ItemType<Manifest>() && player.channel == true)
             {
-                if(starScale < 1f)
+                if (starScale < 1f)
                 {
                     starScale += 0.05f;
                 }
@@ -81,7 +80,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
                 Projectile.direction = toCursor.X > 0 ? 1 : -1;
 
                 player.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, Projectile.rotation - (MathHelper.PiOver2 + MathHelper.PiOver4));
-            
+
                 Projectile.ai[0]++;
 
                 if (Projectile.ai[0] % 5 == 0 && starScale >= 1f)

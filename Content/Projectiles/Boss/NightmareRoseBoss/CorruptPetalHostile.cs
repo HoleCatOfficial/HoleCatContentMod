@@ -5,7 +5,6 @@ using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -17,9 +16,10 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
         // Correct asset path
         public override string Texture => "DestroyerTest/Content/Projectiles/Boss/NightmareRoseBoss/CorruptPetal";
 
-    
 
-        public override void SetStaticDefaults() {
+
+        public override void SetStaticDefaults()
+        {
             ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true; // Make the cultist resistant to this projectile, as it's resistant to all homing projectiles.
             Main.projFrames[Projectile.type] = 4; // Set the number of frames in the sprite sheet
             DTUtils.OwnedByBossNPC[Type] = ModContent.NPCType<Entities.NightmareRoseBoss>();
@@ -36,7 +36,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
             Projectile.timeLeft = 600; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
             Projectile.frame = 0; // Start at the first frame
             Projectile.netImportant = true;
-			Projectile.netUpdate = true;
+            Projectile.netUpdate = true;
         }
 
         public override bool PreDraw(ref Color lightColor)
@@ -54,7 +54,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
             // Handle animation
             AnimateProjectile();
             Projectile.rotation = Projectile.velocity.ToRotation();
-            
+
         }
 
         public override void OnKill(int timeLeft)

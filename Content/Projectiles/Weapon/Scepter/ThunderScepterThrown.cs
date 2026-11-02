@@ -1,17 +1,12 @@
 using System;
-using System.IO;
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Consumables;
-using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles.ParentClasses;
 using DestroyerTest.Content.Scepter;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -37,7 +32,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
             Projectile.rotation += 0.4f * Projectile.direction;
 
 
-            
+
             if (player.controlUseTile && player.HeldItem.type == ModContent.ItemType<ThunderScepter>())
             {
                 returning = false;
@@ -66,7 +61,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
                             }
 
                             target.AddBuff(BuffID.Electrified, 300);
-                            int Damage = (int)(Projectile.damage);
+                            int Damage = Projectile.damage;
                             target.SimpleStrikeNPC(Damage, Math.Sign((target.Center - Projectile.Center).X), false, 1f, DamageClass.Default);
 
                             if (target.life < 0)
@@ -88,7 +83,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
                 ArmCatchAnimate(player);
 
                 Projectile.SmoothMoveToPoint(player.MountedCenter, 32f, 100f);
-                
+
                 if (Projectile.Distance(player.MountedCenter) < 32)
                 {
                     HitCount = 0;

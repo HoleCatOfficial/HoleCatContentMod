@@ -1,4 +1,3 @@
-using DestroyerTest.Content.Resources.Cloths;
 using DestroyerTest.Rarity;
 using Terraria;
 using Terraria.ID;
@@ -41,7 +40,7 @@ namespace DestroyerTest.Content.Equips
             robes = true;
             equipSlot = EquipLoader.GetEquipSlot(Mod, Name, EquipType.Legs);
         }
-	}
+    }
 
     public class FadedRobeLifeRegen : ModPlayer
     {

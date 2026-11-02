@@ -1,32 +1,30 @@
-using System;
-using DestroyerTest.Content.Entities;
+using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.DataStructures;
-using Terraria.GameContent.ItemDropRules;
-using Terraria.ID;
 using Terraria.ModLoader;
-using DestroyerTest.Rarity;
 
 namespace DestroyerTest.Content.Resources
 {
-	public class ShimmeringSludge : ModItem
-	{
-		public override void SetStaticDefaults() {
-			Item.ResearchUnlockCount = 25;
-		}
+    public class ShimmeringSludge : ModItem
+    {
+        public override void SetStaticDefaults()
+        {
+            Item.ResearchUnlockCount = 25;
+        }
 
-		public override void SetDefaults() {
-			Item.width = 18;
-			Item.height = 18;
-			Item.maxStack = Item.CommonMaxStack;
-			Item.value = 1000;
-			Item.alpha = 0;
-			Item.rare = ModContent.RarityType<ShimmeringRarity>();
-		}
+        public override void SetDefaults()
+        {
+            Item.width = 18;
+            Item.height = 18;
+            Item.maxStack = Item.CommonMaxStack;
+            Item.value = 1000;
+            Item.alpha = 0;
+            Item.rare = ModContent.RarityType<ShimmeringRarity>();
+        }
 
-		public override void PostUpdate() {
-			Lighting.AddLight(Item.Center, Color.WhiteSmoke.ToVector3() * 0.55f * Main.essScale);
-		}
-	}
+        public override void PostUpdate()
+        {
+            Lighting.AddLight(Item.Center, Color.WhiteSmoke.ToVector3() * 0.55f * Main.essScale);
+        }
+    }
 }

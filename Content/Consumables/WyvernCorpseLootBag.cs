@@ -1,23 +1,13 @@
-
-using DestroyerTest.Common;
-using DestroyerTest.Content.Entities;
+using DestroyerTest.Common.DropRules;
+using DestroyerTest.Content.ClasslessItems;
 using DestroyerTest.Content.Equips;
 using DestroyerTest.Content.Magic;
-using DestroyerTest.Content.Scepter;
 using DestroyerTest.Content.MeleeWeapons;
-using DestroyerTest.Content.MeleeWeapons.SwordLineage;
-using DestroyerTest.Content.RangedItems;
 using DestroyerTest.Content.SummonItems;
-using DestroyerTest.Content.Tiles.AchievementPaintingTiles;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using DestroyerTest.Common.DropRules;
-using DestroyerTest.Content.ClasslessItems;
 
 namespace DestroyerTest.Content.Consumables
 {
@@ -26,7 +16,7 @@ namespace DestroyerTest.Content.Consumables
 
         public override void SetStaticDefaults()
         {
-            
+
             ItemID.Sets.BossBag[Type] = true;
             Item.ResearchUnlockCount = 5;
         }

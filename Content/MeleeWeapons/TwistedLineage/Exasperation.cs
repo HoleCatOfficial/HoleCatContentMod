@@ -1,14 +1,8 @@
-﻿using System;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Projectiles;
+﻿using DestroyerTest.Common;
 using DestroyerTest.Content.Projectiles.Weapon.Melee;
 using DestroyerTest.Content.Resources;
-using DestroyerTest.Rarity;
 using GlowmaskHelper.Content;
-using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 

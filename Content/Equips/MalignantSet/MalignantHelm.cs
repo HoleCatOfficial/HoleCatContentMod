@@ -1,23 +1,14 @@
-﻿using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.MeleeWeapons;
-using DestroyerTest.Content.Particles;
+﻿using DestroyerTest.Common;
+using DestroyerTest.Content.Projectiles.Weapon.Magic;
+using DestroyerTest.Content.Projectiles.Weapon.Scepter;
 using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.Resources.Cloths;
-using DestroyerTest.Content.SummonItems;
-using DestroyerTest.Content.Tiles;
 using DestroyerTest.Rarity;
+using GlowmaskHelper.Content;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
-using System;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Projectiles.Weapon.Scepter;
-using DestroyerTest.Content.Projectiles.Weapon.Magic;
-using GlowmaskHelper.Content;
 
 namespace DestroyerTest.Content.Equips.MalignantSet
 {
@@ -48,7 +39,7 @@ namespace DestroyerTest.Content.Equips.MalignantSet
         }
 
 
-       
+
         public override bool IsArmorSet(Item head, Item body, Item legs)
         {
             return body.type == ModContent.ItemType<MalignantBodyArmor>() && legs.type == ModContent.ItemType<MalignantLegPlates>();

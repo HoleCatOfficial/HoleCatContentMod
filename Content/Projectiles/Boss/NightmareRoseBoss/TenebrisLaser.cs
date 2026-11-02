@@ -1,23 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.ModLoader;
-using Terraria;
-using Microsoft.Xna.Framework;
-using DestroyerTest.Common;
-using Microsoft.Xna.Framework.Graphics;
-using BreadLibrary.Core.Utilities;
-using OpusLib;
-using Terraria.DataStructures;
-using OpusLib.Content.Helpers;
-using DestroyerTest.Content.Buffs;
-using Terraria.ID;
-using DestroyerTest.Content.Particles;
-using BreadLibrary.Core.Graphics.Particles;
-using OpusLib.Content.Particles;
+﻿using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
+using BreadLibrary.Core.Utilities;
+using DestroyerTest.Common;
+using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Particles;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
+using OpusLib.Content.Helpers;
+using OpusLib.Content.Particles;
+using Terraria;
+using Terraria.DataStructures;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
 {
@@ -85,7 +80,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
                 Fire fire = new();
                 fire.PrepareFire(L.End, Main.rand.NextVector2Circular(1f, 1f), DTUtils.RandomDirection(2), Main.rand.NextFloat(0.1f, 0.5f), ColorLib.TenebrisGradient, 1f, 30, FireDrawMode.Additive, PixelLayer.AboveTiles);
                 ParticleEngine.Particles.Add(fire);
-            
+
             }
 
 
@@ -192,7 +187,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
             L = new Line(Projectile.Center, Projectile.Center + new Vector2(length, 0).RotatedBy(Projectile.rotation));
 
             DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(3, true), ColorLib.TenebrisGradient with { A = 0 } * 0.8f, Main.spriteBatch, BlendState.Additive, oF2, WidthScl * 0.3f, 1f);
-            
+
             DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(8, true), ColorLib.TenebrisGradient with { A = 0 }, Main.spriteBatch, BlendState.Additive, oF, WidthScl * 0.5f, 1f);
 
             DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(3, true), Color.White with { A = 0 } * 0.8f, Main.spriteBatch, BlendState.Additive, oF2, WidthScl * 0.6f, 1f);

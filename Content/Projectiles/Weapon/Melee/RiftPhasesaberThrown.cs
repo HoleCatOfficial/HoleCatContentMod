@@ -1,16 +1,13 @@
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
+using System.IO;
+using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Dusts;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
+using Terraria;
 using Terraria.Audio;
-using DestroyerTest.Content.Consumables;
-using DestroyerTest.Common;
-using Terraria.GameContent.Drawing;
-using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.Buffs;
-using System.IO;
+using Terraria.GameContent;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 {
@@ -44,7 +41,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Projectile.timeLeft = 600; // 10 seconds max lifespan
             Projectile.DamageType = DamageClass.MeleeNoSpeed;
             Projectile.netImportant = true;
-			Projectile.netUpdate = true;
+            Projectile.netUpdate = true;
         }
 
         public override void SendExtraAI(BinaryWriter writer)
@@ -68,55 +65,55 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         }
 
         int trailLength = 10; // Adjust for desired effect
-		public override bool PreDraw(ref Color lightColor)
-			{
-				// Set lightColor to a reddish hue and adjust its transparency based on the projectile's time left
-				lightColor = new Color(255, 155, 0);
-				if (Projectile.timeLeft < 30)
-				{
-					lightColor *= ((float)Projectile.timeLeft / 30f); // Fade out glow as projectile nears expiration
-				}
+        public override bool PreDraw(ref Color lightColor)
+        {
+            // Set lightColor to a reddish hue and adjust its transparency based on the projectile's time left
+            lightColor = new Color(255, 155, 0);
+            if (Projectile.timeLeft < 30)
+            {
+                lightColor *= (Projectile.timeLeft / 30f); // Fade out glow as projectile nears expiration
+            }
 
-				// Prepare for sprite drawing
-				SpriteBatch spriteBatch = Main.spriteBatch;
-				Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
+            // Prepare for sprite drawing
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
 
-				// End previous spriteBatch before starting new ones
-				spriteBatch.End();
-				spriteBatch.Begin(SpriteSortMode.Immediate, null, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+            // End previous spriteBatch before starting new ones
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Immediate, null, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 
-				// Draw the main projectile
-				Main.EntitySpriteDraw(projectileTexture, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, projectileTexture.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
+            // Draw the main projectile
+            Main.EntitySpriteDraw(projectileTexture, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, projectileTexture.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
 
-				// End the AlphaBlend draw and start the Additive blend for the glow effect
-				spriteBatch.End();
-				spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+            // End the AlphaBlend draw and start the Additive blend for the glow effect
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 
-				// Draw the large colored glow
-				Texture2D glowTexture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/Cyclone1").Value;
-                if (returning)
-                {
-                    Main.EntitySpriteDraw(glowTexture, Projectile.Center - Main.screenPosition, null, lightColor, Projectile.rotation, glowTexture.Size() / 2, 0.1f * Projectile.scale, SpriteEffects.None, 0);
-                }
-                else
-                {
-                    Main.EntitySpriteDraw(glowTexture, Projectile.Center - Main.screenPosition, null, lightColor, Projectile.rotation, glowTexture.Size() / 2, 0.1f * Projectile.scale, SpriteEffects.FlipHorizontally, 0);
-                }
+            // Draw the large colored glow
+            Texture2D glowTexture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/Cyclone1").Value;
+            if (returning)
+            {
+                Main.EntitySpriteDraw(glowTexture, Projectile.Center - Main.screenPosition, null, lightColor, Projectile.rotation, glowTexture.Size() / 2, 0.1f * Projectile.scale, SpriteEffects.None, 0);
+            }
+            else
+            {
+                Main.EntitySpriteDraw(glowTexture, Projectile.Center - Main.screenPosition, null, lightColor, Projectile.rotation, glowTexture.Size() / 2, 0.1f * Projectile.scale, SpriteEffects.FlipHorizontally, 0);
+            }
 
-                spriteBatch.End();
-				spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
 
-				// Draw the large colored glow
-				Texture2D glowTexture2 = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/BloomRing").Value;
-                    
-                Main.EntitySpriteDraw(glowTexture2, Projectile.Center - Main.screenPosition, null, lightColor, Projectile.rotation, glowTexture2.Size() / 2, 0.4f * Projectile.scale, SpriteEffects.None, 0);
+            // Draw the large colored glow
+            Texture2D glowTexture2 = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/BloomRing").Value;
 
-				// Finalize drawing
-				spriteBatch.End();
-				spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+            Main.EntitySpriteDraw(glowTexture2, Projectile.Center - Main.screenPosition, null, lightColor, Projectile.rotation, glowTexture2.Size() / 2, 0.4f * Projectile.scale, SpriteEffects.None, 0);
 
-				return false; // Prevents default projectile rendering
-			}
+            // Finalize drawing
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+
+            return false; // Prevents default projectile rendering
+        }
 
         public override void AI()
         {
@@ -136,13 +133,13 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 SoundEngine.PlaySound(SoundID.Item15);
                 soundCooldown = 30; // Reset the cooldown to 30 ticks
             }
-            
+
             Player player = Main.player[Projectile.owner];
 
             // Always spinning
             Projectile.rotation += 0.4f * Projectile.direction;
 
-              // Generate flying dust effect
+            // Generate flying dust effect
             if (Main.rand.NextBool(3)) // 33% chance per tick
             {
                 Dust dust = Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<RiftDust>(), Projectile.velocity * 0.2f, 100, default, 1.2f);
@@ -207,17 +204,18 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         {
             target.AddBuff(ModContent.BuffType<DaylightOverload>(), 120);
             SoundEngine.PlaySound(SoundID.Item175, Projectile.position);
-           
+
             returning = true; // Immediately start returning when hitting something
         }
 
 
-        public override bool OnTileCollide(Vector2 oldVelocity) {
-            
+        public override bool OnTileCollide(Vector2 oldVelocity)
+        {
+
             // Play impact sound and spawn tile hit effects
             Collision.HitTiles(Projectile.position, Projectile.velocity, Projectile.width, Projectile.height);
-            
-    
+
+
 
             // Create a burst of dust on impact
             for (int i = 0; i < 10; i++)

@@ -1,14 +1,11 @@
-﻿using BreadLibrary.Core.Graphics.Particles;
+﻿using System.Linq;
+using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.Linq;
 using Terraria;
-using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -48,7 +45,7 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            
+
         }
 
         public override void OnKill(int timeLeft)

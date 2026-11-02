@@ -1,17 +1,10 @@
+using System.IO;
+using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
-using Terraria.Audio;
-using DestroyerTest.Content.Consumables;
-using DestroyerTest.Common;
-using Terraria.DataStructures;
-using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Buffs;
-using System.IO;
- 
+
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 {
@@ -36,7 +29,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Projectile.timeLeft = 600; // 10 seconds max lifespan
             Projectile.DamageType = DamageClass.Generic;
             Projectile.netImportant = true;
-			Projectile.netUpdate = true;
+            Projectile.netUpdate = true;
         }
 
         public override void SendExtraAI(BinaryWriter writer)
@@ -50,7 +43,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         {
             returning = reader.ReadBoolean();
             flightTime = reader.ReadInt32();
-          
+
             soundCooldown = reader.ReadInt32();
         }
 
@@ -70,10 +63,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 soundCooldown = 30; // Reset the cooldown to 30 ticks
             }
 
-            
-            
 
-            
+
+
+
             Player player = Main.player[Projectile.owner];
 
             if (Projectile.Center.Distance(player.Center) <= 60f)
@@ -82,7 +75,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             }
 
             // Always spinning
-                Projectile.rotation += 0.6f * Projectile.direction;
+            Projectile.rotation += 0.6f * Projectile.direction;
 
             if (!returning)
             {
@@ -101,7 +94,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 float speed = MathHelper.Lerp(Projectile.velocity.Length(), 15f, 0.08f); // Smooth acceleration
                 Projectile.velocity = returnDirection.SafeNormalize(Vector2.Zero) * speed;
 
-                
+
 
                 // If close enough, remove the projectile
                 if (returnDirection.LengthSquared() < 45f) // 4 pixels radius
@@ -116,10 +109,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         {
             SoundStyle Hit = new SoundStyle("DestroyerTest/Assets/Audio/EndemyImpact") with
             {
-            PitchVariance = 0.5f
+                PitchVariance = 0.5f
             };
 
-            
+
 
             Player player = Main.player[Main.myPlayer];  // Accessing the current player
             StarFall(player, player.Center, target.Center - player.Center);
@@ -132,32 +125,36 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         public void StarFall(Player player, Vector2 position, Vector2 velocity)
         {
             Vector2 target = Main.screenPosition + new Vector2(Main.mouseX, Main.mouseY);
-			float ceilingLimit = target.Y;
-			if (ceilingLimit > player.Center.Y - 200f) {
-				ceilingLimit = player.Center.Y - 200f;
-			}
-			// Loop these functions 3 times.
-			for (int i = 0; i < 8; i++) {
-				position = player.Center - new Vector2(Main.rand.NextFloat(401) * player.direction, 600f);
-				position.Y -= 100 * i;
-				Vector2 heading = target - position;
+            float ceilingLimit = target.Y;
+            if (ceilingLimit > player.Center.Y - 200f)
+            {
+                ceilingLimit = player.Center.Y - 200f;
+            }
+            // Loop these functions 3 times.
+            for (int i = 0; i < 8; i++)
+            {
+                position = player.Center - new Vector2(Main.rand.NextFloat(401) * player.direction, 600f);
+                position.Y -= 100 * i;
+                Vector2 heading = target - position;
 
-				if (heading.Y < 0f) {
-					heading.Y *= -1f;
-				}
+                if (heading.Y < 0f)
+                {
+                    heading.Y *= -1f;
+                }
 
-				if (heading.Y < 20f) {
-					heading.Y = 20f;
-				}
+                if (heading.Y < 20f)
+                {
+                    heading.Y = 20f;
+                }
 
-				heading.Normalize();
-				heading *= velocity.Length();
-				heading.Y += Main.rand.Next(-40, 41) * 0.02f;
-				Projectile.NewProjectile(Entity.GetSource_FromThis(), position, heading, ProjectileID.Starfury, (int)(Projectile.damage * 1.75f), 2f, player.whoAmI, 0f, ceilingLimit);
-			}
+                heading.Normalize();
+                heading *= velocity.Length();
+                heading.Y += Main.rand.Next(-40, 41) * 0.02f;
+                Projectile.NewProjectile(Entity.GetSource_FromThis(), position, heading, ProjectileID.Starfury, (int)(Projectile.damage * 1.75f), 2f, player.whoAmI, 0f, ceilingLimit);
+            }
         }
 
-  
+
 
         public override bool OnTileCollide(Vector2 oldVelocity)
         {

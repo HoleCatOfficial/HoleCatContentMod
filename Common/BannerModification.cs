@@ -1,13 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader;
-using Terraria.UI;
 
 namespace DestroyerTest.Common
 {
@@ -15,7 +9,7 @@ namespace DestroyerTest.Common
     {
         public override void Load()
         {
-            
+
         }
 
         public delegate void orig_UIPanel_DrawPanel(UIPanel self, SpriteBatch spriteBatch, Texture2D texture, Color color);

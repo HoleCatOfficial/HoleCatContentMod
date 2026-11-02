@@ -1,10 +1,6 @@
-﻿using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.Projectiles.player.Potion;
+﻿using DestroyerTest.Content.Projectiles.player.Potion;
 using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.DataStructures;
-using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Buffs

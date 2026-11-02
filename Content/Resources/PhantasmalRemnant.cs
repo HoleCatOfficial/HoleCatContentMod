@@ -1,15 +1,9 @@
-﻿using DestroyerTest.Content.Particles;
-using DestroyerTest.Rarity;
+﻿using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
-using OpusLib.Content.Helpers;
-using System;
-using System.Linq;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.GameContent;
-using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 

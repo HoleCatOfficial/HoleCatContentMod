@@ -1,11 +1,9 @@
-﻿using System;
-using DestroyerTest.Common;
+﻿using DestroyerTest.Common;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib.Content.Helpers;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -129,8 +127,8 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
             {
                 for (int i = 0; i < Projectile.oldPos.Length; i++)
                 {
-                    float Mult = MathHelper.Lerp(1f, 0f, (float)i / (float)Projectile.oldPos.Length);
-                    Color color = OpusColorUtils.MultiLerp((float)i / (float)Projectile.oldPos.Length, ColorLib.StellarFireColormap);
+                    float Mult = MathHelper.Lerp(1f, 0f, i / (float)Projectile.oldPos.Length);
+                    Color color = OpusColorUtils.MultiLerp(i / (float)Projectile.oldPos.Length, ColorLib.StellarFireColormap);
                     Main.EntitySpriteDraw(DTAssetLib.PointGlowPreMultiplied.Value, Projectile.OldCenter()[i] - Main.screenPosition, null, (color with { A = 0 } * 0.7f * Mult) * Projectile.Opacity, 0f, DTAssetLib.PointGlowPreMultiplied.Value.Size() / 2, 1f, SpriteEffects.None);
 
                     Main.EntitySpriteDraw(DTAssetLib.SparkSmoothThin.Value, Projectile.OldCenter()[i] - Main.screenPosition, null, (color with { A = 0 } * 0.8f * Mult) * Projectile.Opacity, i == 0 ? Projectile.velocity.ToRotation() : Projectile.oldRot[i], DTAssetLib.SparkSmoothThin.Value.Size() / 2, 0.1f, SpriteEffects.None);
@@ -139,8 +137,8 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
 
             Main.EntitySpriteDraw(DTAssetLib.LightNeedleTrail.Value, Projectile.Center, null, ColorLib.StellarFire5 with { A = 0 }, Projectile.rotation, DTAssetLib.LightNeedleTrail.Value.Size() / 2, 1f, SpriteEffects.None, 0);
             Main.EntitySpriteDraw(DTUtils.CenteredDraw(Projectile, Color.White with { A = 0 }));
-           
-            return false; 
+
+            return false;
         }
     }
 }

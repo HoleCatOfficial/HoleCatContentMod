@@ -1,18 +1,8 @@
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
-using Terraria.Audio;
-using DestroyerTest.Content.Consumables;
-using DestroyerTest.Common;
-using Terraria.DataStructures;
-using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Buffs;
-using System.IO;
- 
 using DestroyerTest.Content.Projectiles.ParentClasses;
+using Microsoft.Xna.Framework;
+using Terraria;
+using Terraria.Audio;
+using Terraria.ID;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 {
@@ -26,7 +16,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
             DustType = DustID.RedTorch;
             base.SetDefaults();
         }
-    
+
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             Player player = Main.player[Main.myPlayer];  // Accessing the current player

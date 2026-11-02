@@ -1,24 +1,14 @@
-using System;
-using System.Collections.Generic;
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
-using DestroyerTest.Common.Primitives;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Entities;
 using DestroyerTest.Content.Particles;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
- 
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
-using ReLogic.Content;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.Enums;
 using Terraria.GameContent;
-using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -51,31 +41,31 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
 
         public float YScale = 0.2f;
         public override bool PreDraw(ref Color lightColor)
-		{
-			lightColor = ColorLib.Soul;
+        {
+            lightColor = ColorLib.Soul;
             trailOffset += 0.04f;
-			
-			SpriteBatch spriteBatch = Main.spriteBatch;
+
+            SpriteBatch spriteBatch = Main.spriteBatch;
 
             Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
-			if (WaitTimer < 20)
-			{
-				Opus.DrawTextureOnProj(DTAssetLib.FadeLine, Projectile, DTColorUtils.Pastel(ColorLib.Soul2, 50), false, Projectile.rotation + MathHelper.PiOver2, 4f, 1f);
-			}
+            if (WaitTimer < 20)
+            {
+                Opus.DrawTextureOnProj(DTAssetLib.FadeLine, Projectile, DTColorUtils.Pastel(ColorLib.Soul2, 50), false, Projectile.rotation + MathHelper.PiOver2, 4f, 1f);
+            }
 
             Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, TextureAssets.Projectile[Projectile.type].Value.Size() / 2, new Vector2(Projectile.scale * 0.5f, (Projectile.scale * 0.5f) * YScale), SpriteEffects.None, 0);
 
-			Opus.ReturnToDefaultDrawing(spriteBatch);
+            Opus.ReturnToDefaultDrawing(spriteBatch);
 
-			return false;
-		}
+            return false;
+        }
 
         public int WaitTimer = 0;
         public bool SoundFlag = false;
 
-		public override void AI()
-		{
+        public override void AI()
+        {
 
             if (Main.rand.NextBool(3) && !DTOptimizationsConfig.instance.DisableExcessParticles)
             {
@@ -83,7 +73,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
 
                 Spark.PrepareSpark(Main.rand.NextVector2FromRectangle(Projectile.Hitbox), -(Projectile.velocity * 0.1f), 0f, DTColorUtils.Pastel(ColorLib.Soul, 0.8f), 1f, false, 40, SparkDrawMode.Additive);
                 ParticleEngine.BehindProjectiles.Add(Spark);
-                
+
             }
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
 

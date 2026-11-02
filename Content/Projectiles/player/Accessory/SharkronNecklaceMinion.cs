@@ -1,23 +1,20 @@
 using System;
 using System.Linq;
-using System.Collections.Generic;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.GameContent;
 
 namespace DestroyerTest.Content.Projectiles.player.Accessory
 {
     public class SharkronNecklaceMinion : ModProjectile
     {
-        private NPC target {
+        private NPC target
+        {
             get => Projectile.ai[0] == 0 ? null : Main.npc[(int)Projectile.ai[0] - 1];
-            set {
+            set
+            {
                 Projectile.ai[0] = value == null ? 0 : value.whoAmI + 1;
             }
         }
@@ -109,7 +106,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
             // Face the direction of orbit travel
             Projectile.rotation = Projectile.velocity.ToRotation();
 
-            
+
         }
 
 
@@ -122,29 +119,33 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
             Projectile.rotation = Projectile.velocity.ToRotation();
         }
 
-        public NPC FindClosestNPC(float maxDetectDistance) {
-				NPC closestNPC = null;
+        public NPC FindClosestNPC(float maxDetectDistance)
+        {
+            NPC closestNPC = null;
 
-				// Using squared values in distance checks will let us skip square root calculations, drastically improving this method's speed.
-				float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
+            // Using squared values in distance checks will let us skip square root calculations, drastically improving this method's speed.
+            float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
 
-				// Loop through all NPCs
-				foreach (var target in Main.ActiveNPCs) {
-					// Check if NPC able to be targeted. 
-					if (IsValidTarget(target)) {
-						// The DistanceSquared function returns a squared distance between 2 points, skipping relatively expensive square root calculations
-						float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, Projectile.Center);
+            // Loop through all NPCs
+            foreach (var target in Main.ActiveNPCs)
+            {
+                // Check if NPC able to be targeted. 
+                if (IsValidTarget(target))
+                {
+                    // The DistanceSquared function returns a squared distance between 2 points, skipping relatively expensive square root calculations
+                    float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, Projectile.Center);
 
-						// Check if it is within the radius
-						if (sqrDistanceToTarget < sqrMaxDetectDistance) {
-							sqrMaxDetectDistance = sqrDistanceToTarget;
-							closestNPC = target;
-						}
-					}
-				}
+                    // Check if it is within the radius
+                    if (sqrDistanceToTarget < sqrMaxDetectDistance)
+                    {
+                        sqrMaxDetectDistance = sqrDistanceToTarget;
+                        closestNPC = target;
+                    }
+                }
+            }
 
-				return closestNPC;
-			}
+            return closestNPC;
+        }
 
         public bool IsValidTarget(NPC target)
         {
@@ -158,7 +159,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
             // 7. doesn't have solid tiles blocking a line of sight between the projectile and NPC
             return target.CanBeChasedBy() && Collision.CanHit(Projectile.Center, 1, 1, target.position, target.width, target.height);
         }
-            
+
         public override void OnKill(int timeLeft)
         {
             for (int i = 0; i < 10; i++)
@@ -174,7 +175,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
             Gore.NewGore(entitySource, Projectile.position, new Vector2(Projectile.velocity.X + Main.rand.Next(-2, 2), Main.rand.Next(-5, 0)), Gore1);
             Gore.NewGore(entitySource, Projectile.position, new Vector2(Projectile.velocity.X + Main.rand.Next(-2, 2), Main.rand.Next(-5, 0)), Gore2);
             Gore.NewGore(entitySource, Projectile.position, new Vector2(Projectile.velocity.X + Main.rand.Next(-2, 2), Main.rand.Next(-5, 0)), Gore3);
-            SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/BloodBlobKill") with {MaxInstances = 0}, Projectile.position);
+            SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/BloodBlobKill") with { MaxInstances = 0 }, Projectile.position);
         }
     }
 }

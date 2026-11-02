@@ -1,18 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DestroyerTest.Common;
+﻿using DestroyerTest.Common;
 using DestroyerTest.Common.Interfaces;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.Projectiles.Weapon.Scepter;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib.Content.Helpers;
 using Terraria;
-using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -59,7 +52,7 @@ namespace DestroyerTest.Content.Projectiles.Fargos
             Projectile.tileCollide = true;
             Projectile.penetrate = 1;
             Projectile.extraUpdates = 5;
-            
+
         }
 
         public override void OnSpawn(IEntitySource source)

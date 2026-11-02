@@ -1,15 +1,10 @@
+using System;
+using System.Collections.Generic;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Particles;
- 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Formats.Tar;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.Drawing;
 using Terraria.Graphics;
@@ -200,7 +195,7 @@ namespace DestroyerTest.Content.SummonItems
             Main.projPet[Projectile.type] = true;
             ProjectileID.Sets.MinionSacrificable[Projectile.type] = true;
             ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true;
-            
+
         }
 
         public override void SetDefaults()
@@ -347,7 +342,7 @@ namespace DestroyerTest.Content.SummonItems
             {
                 IdleDust();
             }
-            
+
 
             Vector2 idlePosition = owner.Center;
             vectorToIdlePosition = idlePosition - Projectile.Center;
@@ -446,21 +441,28 @@ namespace DestroyerTest.Content.SummonItems
                 case IdleStyle.Chevron:
                     {
 
-                        
+
                         List<Projectile> minions = new List<Projectile>();
-                        if (UsesGroup) {
-                            for (int i = 0; i < Main.maxProjectiles; i++) {
+                        if (UsesGroup)
+                        {
+                            for (int i = 0; i < Main.maxProjectiles; i++)
+                            {
                                 if (Main.projectile[i].active &&
                                     Main.projectile[i].owner == Projectile.owner &&
-                                    Group.Contains(Main.projectile[i].type)) {
+                                    Group.Contains(Main.projectile[i].type))
+                                {
                                     minions.Add(Main.projectile[i]);
                                 }
                             }
-                        } else {
-                            for (int i = 0; i < Main.maxProjectiles; i++) {
+                        }
+                        else
+                        {
+                            for (int i = 0; i < Main.maxProjectiles; i++)
+                            {
                                 if (Main.projectile[i].active &&
                                     Main.projectile[i].owner == Projectile.owner &&
-                                    Main.projectile[i].type == Projectile.type) {
+                                    Main.projectile[i].type == Projectile.type)
+                                {
                                     minions.Add(Main.projectile[i]);
                                 }
                             }
@@ -615,7 +617,7 @@ namespace DestroyerTest.Content.SummonItems
 
                         Vector2 desiredPosition = owner.Center + offset;
 
-                        
+
                         // Force back to correct orbit radius, even if shoved
                         Vector2 actualOffset = Projectile.Center - owner.Center;
                         if (Math.Abs(actualOffset.Length() - orbitRadius) > 5f) // tolerance
@@ -683,19 +685,19 @@ namespace DestroyerTest.Content.SummonItems
             }
 
             // This code is required if your minion weapon has the targeting feature
-                if (owner.HasMinionAttackTargetNPC)
-                {
-                    NPC npc = Main.npc[owner.MinionAttackTargetNPC];
-                    float between = Vector2.Distance(npc.Center, Projectile.Center);
+            if (owner.HasMinionAttackTargetNPC)
+            {
+                NPC npc = Main.npc[owner.MinionAttackTargetNPC];
+                float between = Vector2.Distance(npc.Center, Projectile.Center);
 
-                    // Reasonable distance away so it doesn't target across multiple screens
-                    if (between < Range)
-                    {
-                        distanceFromTarget = between;
-                        targetCenter = npc.Center;
-                        foundTarget = true;
-                    }
+                // Reasonable distance away so it doesn't target across multiple screens
+                if (between < Range)
+                {
+                    distanceFromTarget = between;
+                    targetCenter = npc.Center;
+                    foundTarget = true;
                 }
+            }
 
             if (!foundTarget)
             {

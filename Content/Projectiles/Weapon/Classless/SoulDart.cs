@@ -1,18 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BreadLibrary.Core.Graphics.Particles;
+﻿using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Common.Interfaces;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using OpusLib.Content.Helpers;
 using Terraria;
-using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -72,10 +65,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Classless
 
             for (int i = 0; i < Projectile.oldPos.Length; i++)
             {
-                float prog = (float)i / (float)Projectile.oldPos.Length;
+                float prog = i / (float)Projectile.oldPos.Length;
                 float opacity = MathHelper.Lerp(1f, 0f, prog);
                 float scale = MathHelper.Lerp(Projectile.scale, 0f, prog);
-                Main.EntitySpriteDraw(projectileTexture, Projectile.OldCenter()[i] - Main.screenPosition, null, Color.White* opacity, Projectile.oldRot[i], projectileTexture.Size() / 2, scale, SpriteEffects.None);
+                Main.EntitySpriteDraw(projectileTexture, Projectile.OldCenter()[i] - Main.screenPosition, null, Color.White * opacity, Projectile.oldRot[i], projectileTexture.Size() / 2, scale, SpriteEffects.None);
             }
 
             Main.EntitySpriteDraw(projectileTexture, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, projectileTexture.Size() / 2, Projectile.scale, SpriteEffects.None);

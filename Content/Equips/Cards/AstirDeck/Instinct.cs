@@ -1,11 +1,6 @@
 ﻿using DestroyerTest.Common;
 using Microsoft.Xna.Framework;
 using OpusLib;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.Graphics;
@@ -35,7 +30,7 @@ namespace DestroyerTest.Content.Equips.Cards.AstirDeck
         }
     }
 
-    public class  InstinctPlayer : ModPlayer
+    public class InstinctPlayer : ModPlayer
     {
         public bool Active = false;
 
@@ -48,7 +43,7 @@ namespace DestroyerTest.Content.Equips.Cards.AstirDeck
         {
             if (Active)
             {
-                float T = (float)dodgeCooldown / 1200f;
+                float T = dodgeCooldown / 1200f;
 
                 float Off = MathHelper.Lerp(0, 20, T.Inverse());
                 Vector2 offset1 = new Vector2(Off, 0);
@@ -56,7 +51,7 @@ namespace DestroyerTest.Content.Equips.Cards.AstirDeck
 
                 Main.PlayerRenderer.DrawPlayer(camera, Player, Player.position + offset1, 0f, Player.position, 0.6f, 1f);
                 Main.PlayerRenderer.DrawPlayer(camera, Player, Player.position + offset2, 0f, Player.position, 0.6f, 1f);
-            }    
+            }
         }
 
         int dodgeCooldown = 0;

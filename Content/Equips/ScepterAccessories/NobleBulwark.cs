@@ -2,8 +2,6 @@
 using DestroyerTest.Common;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Rarity.Scepter;
-using Microsoft.Xna.Framework;
-using Steamworks;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -39,18 +37,19 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
                 .Register();
         }
     }
-    
+
     [AutoloadEquip(EquipType.Shield)]
-	public class NobleBulwarkPlatinum : ModItem
-	{
-		public override void SetDefaults() {
-			Item.width = 26;
-			Item.height = 23;
-			Item.value = Item.buyPrice(10);
-			Item.rare = ModContent.RarityType<PearlRarity>();
-			Item.accessory = true;
-			Item.defense = 12;
-		}
+    public class NobleBulwarkPlatinum : ModItem
+    {
+        public override void SetDefaults()
+        {
+            Item.width = 26;
+            Item.height = 23;
+            Item.value = Item.buyPrice(10);
+            Item.rare = ModContent.RarityType<PearlRarity>();
+            Item.accessory = true;
+            Item.defense = 12;
+        }
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             player.GetDamage(ModContent.GetInstance<ScepterClass>()) += 0.8f;
@@ -58,7 +57,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
             player.endurance = 1f - (0.1f * (1f - player.endurance));
         }
 
-		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
+        // Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.
         public override void AddRecipes()
         {
             CreateRecipe()
@@ -67,5 +66,5 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
                 .AddTile(TileID.Anvils)
                 .Register();
         }
-	}
+    }
 }

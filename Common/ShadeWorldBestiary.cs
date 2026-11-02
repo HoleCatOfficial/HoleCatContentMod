@@ -1,5 +1,4 @@
 ﻿using Terraria.ModLoader;
-using Terraria.GameContent.Bestiary;
 
 namespace DestroyerTest.Common
 {

@@ -1,12 +1,9 @@
 
-using DetroyerTest.Content.SHADEMANAGEMENT;
 using DestroyerTest.Common;
+using DestroyerTest.Common.Systems;
 using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.WorldBuilding;
-using DestroyerTest.Common.Systems;
 
 namespace DestroyerTest.Content.SHADEMANAGEMENT
 {
@@ -40,14 +37,14 @@ namespace DestroyerTest.Content.SHADEMANAGEMENT
         }
 
         public override void ModifySunLightColor(ref Color tileColor, ref Color backgroundColor)
+        {
+            if (InDarkness)
             {
-                if (InDarkness)
-                {
-                    // Set both tile and background colors to black
-                    tileColor = Color.Black;
-                    backgroundColor = Color.Black;
-                }
+                // Set both tile and background colors to black
+                tileColor = Color.Black;
+                backgroundColor = Color.Black;
             }
+        }
 
         public class ShadeScene : ModSceneEffect
         {

@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
 using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Spritebatch;
 using BreadLibrary.Core.Utilities;
@@ -13,45 +12,29 @@ using DestroyerTest.Content.BossBar;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Consumables;
 using DestroyerTest.Content.Equips;
-using DestroyerTest.Content.Magic;
 using DestroyerTest.Content.MeleeWeapons;
 using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Boss;
 using DestroyerTest.Content.Projectiles.Boss.NodeBoss.Ichor;
-using DestroyerTest.Content.Projectiles.Boss.VampireBoss;
 using DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss;
-using DestroyerTest.Content.RangedItems;
 using DestroyerTest.Content.Remnants;
 using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.RogueItems;
 using DestroyerTest.Content.SummonItems;
 using DestroyerTest.Content.Tiles;
 using DestroyerTest.Content.UI;
-using GlowmaskHelper.Content;
- 
-using log4net.Util;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using OpusLib.Content.Helpers;
 using ReLogic.Content;
-using ReLogic.Utilities;
 using Terraria;
 using Terraria.Audio;
-using Terraria.Cinematics;
 using Terraria.DataStructures;
 using Terraria.GameContent;
-using Terraria.GameContent.Animations;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Utilities;
-using UtfUnknown.Core.Models.SingleByte.Finnish;
-using static System.Net.Mime.MediaTypeNames;
-using static BreadLibrary.Core.SoftBodySim.SoftbodySim;
 
 namespace DestroyerTest.Content.Entities
 {
@@ -107,7 +90,7 @@ namespace DestroyerTest.Content.Entities
             {
 
 
-                
+
             };
             NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, value);
 
@@ -204,7 +187,7 @@ namespace DestroyerTest.Content.Entities
                 return;
             }
 
-            float Progress = (float)NPC.life / (float)NPC.lifeMax;
+            float Progress = NPC.life / (float)NPC.lifeMax;
             Frame = (int)MathHelper.Lerp(5, 0, Progress);
 
 
@@ -221,10 +204,10 @@ namespace DestroyerTest.Content.Entities
             {
                 if (DestroyerTestMod.MasochistIsActive)
                 {
-                    
+
                     texture = NPC.GetMasoTexture("DestroyerTest/Content/Entities/MasoMode", "WyvernCorpseHead");
                     Glowtexture = NPC.GetMasoTexture("DestroyerTest/Content/Entities/MasoMode", "WyvernCorpseHead");
-                   
+
                 }
                 else
                 {
@@ -275,7 +258,7 @@ namespace DestroyerTest.Content.Entities
                 //Why do you use noise 3 for noise 10's drawing?
                 //I don't know, but doing it any other way causes it to not fit properly on the screen without needing to scale up the texture further, and I like the scale it's at.
                 Main.EntitySpriteDraw(DTAssetLib.TilableNoise(10).Value, Position - Main.screenPosition, new Rectangle(EternityScrollX, EternityScrollY, Main.screenWidth, Main.screenHeight), (ColorLib.Soul3 with { A = 0 } * 0.5f) * GlobalOpacity, 0f, DTAssetLib.TilableNoise(3).Value.Size() / 2, 6f, SpriteEffects.None, 0f);
-                Main.EntitySpriteDraw(DTAssetLib.TilableNoise(10).Value, Position - Main.screenPosition, new Rectangle((int)(EternityScrollX * 1.2f), (int)(EternityScrollY * 1.2f),  Main.screenWidth, Main.screenHeight), (ScrollBackColor with { A = 0 } * 0.35f) * GlobalOpacity, 0f, DTAssetLib.TilableNoise(3).Value.Size() / 2, 6f, SpriteEffects.None, 0f);
+                Main.EntitySpriteDraw(DTAssetLib.TilableNoise(10).Value, Position - Main.screenPosition, new Rectangle((int)(EternityScrollX * 1.2f), (int)(EternityScrollY * 1.2f), Main.screenWidth, Main.screenHeight), (ScrollBackColor with { A = 0 } * 0.35f) * GlobalOpacity, 0f, DTAssetLib.TilableNoise(3).Value.Size() / 2, 6f, SpriteEffects.None, 0f);
                 Main.EntitySpriteDraw(DTAssetLib.TilableNoise(10).Value, Position - Main.screenPosition, new Rectangle((int)(EternityScrollX * 1.1f), (int)(EternityScrollY * 1.1f), Main.screenWidth, Main.screenHeight), (Color.White with { A = 0 } * 0.75f) * GlobalOpacity, 0f, DTAssetLib.TilableNoise(3).Value.Size() / 2, 6f, SpriteEffects.None, 0f);
 
 
@@ -285,10 +268,10 @@ namespace DestroyerTest.Content.Entities
                 }
 
                 spriteBatch.ResetToDefault();
-                
+
             }
 
-            
+
 
 
             if (CurrentAttack == attackType.OrganCircle)
@@ -319,7 +302,7 @@ namespace DestroyerTest.Content.Entities
             {
                 //Opus.DrawNPCShadowsRotating(NPC, 6, ColorLib.Ichor);
 
-                float rotationOffset = 0.3f * (float)NPC.direction;
+                float rotationOffset = 0.3f * NPC.direction;
                 DrawHealingShadow(NPC, new Vector2(0f, 6), drawPos, ColorLib.Ichor, rotationOffset);
                 DrawHealingShadow(NPC, new Vector2(0f, 0f - 6), drawPos, ColorLib.Ichor, rotationOffset);
                 DrawHealingShadow(NPC, new Vector2(6, 0f), drawPos, ColorLib.Ichor, rotationOffset);
@@ -385,10 +368,10 @@ namespace DestroyerTest.Content.Entities
 
         void ModifyHitDustAmounts()
         {
-            float Progress = (float)NPC.life / (float)NPC.lifeMax;
+            float Progress = NPC.life / (float)NPC.lifeMax;
 
-            float FirstQuarterProgress = (float)NPC.life / (float)NPC.lifeMax / 4;
-            float LastQuarterProgress = (float)NPC.life / (float)NPC.lifeMax * 0.75f;
+            float FirstQuarterProgress = NPC.life / (float)NPC.lifeMax / 4;
+            float LastQuarterProgress = NPC.life / (float)NPC.lifeMax * 0.75f;
 
             //Crimstone dusts stop appearing below 25% health.
             if (Progress > 0.25f)
@@ -405,7 +388,7 @@ namespace DestroyerTest.Content.Entities
 
         }
 
-        public float LifeProgress => (float)NPC.life / (float)NPC.lifeMax;
+        public float LifeProgress => NPC.life / (float)NPC.lifeMax;
         public override void HitEffect(NPC.HitInfo hit)
         {
             if (!DestroyerTestMod.MasochistIsActive)
@@ -607,7 +590,7 @@ namespace DestroyerTest.Content.Entities
                     int Me = NPC.whoAmI;
 
                     //Normal spawn order
-                    
+
                     for (int i = 0; i < 60; i++)
                     {
                         int WyvBodyInt = ModContent.NPCType<WyvernCorpseBody1>();
@@ -622,7 +605,7 @@ namespace DestroyerTest.Content.Entities
 
                         int BodySegment = NPC.NewNPC(NPC.GetSource_FromAI(), (int)(NPC.position.X + NPC.width / 2), (int)(NPC.position.Y + NPC.height), WyvBodyInt, Me, 0, Me);
 
-                      
+
 
                         Main.npc[BodySegment].ai[2] = NPC.whoAmI;
                         Main.npc[BodySegment].realLife = NPC.whoAmI;
@@ -638,7 +621,7 @@ namespace DestroyerTest.Content.Entities
 
                         Me = BodySegment;
                     }
-                    
+
 
                     //Reverse spawn order
 
@@ -674,7 +657,7 @@ namespace DestroyerTest.Content.Entities
                         Me = BodySegment;
                     }
                     */
-                
+
 
                     NPC.netUpdate = true;
                     SpawnFlag = true;
@@ -687,8 +670,8 @@ namespace DestroyerTest.Content.Entities
             {
                 IntroTime++;
 
-                FlashOpacity = MathHelper.Lerp(1f, 0f, (float)IntroTime / 120f);
-                ScrollBackColor = Color.Lerp(ColorLib.Soul, ColorLib.Soul3, (float)IntroTime / 120f);
+                FlashOpacity = MathHelper.Lerp(1f, 0f, IntroTime / 120f);
+                ScrollBackColor = Color.Lerp(ColorLib.Soul, ColorLib.Soul3, IntroTime / 120f);
             }
 
 
@@ -725,7 +708,7 @@ namespace DestroyerTest.Content.Entities
                 }
             }
 
-            
+
 
             nodeCount = iNodes.Count;
 
@@ -802,15 +785,15 @@ namespace DestroyerTest.Content.Entities
                             }
 
                             NPC.velocity *= 0.97f;
-                            FlashOpacity = MathHelper.Lerp(0f, 1f, (float)DeathTimer / 300f);
-                            ScrollBackColor = Color.Lerp(ColorLib.Soul3, ColorLib.Soul, (float)DeathTimer / 300f);
-                            Main.musicVolume = MathHelper.Lerp(StoredVolume, 0, (float)DeathTimer / 300f);
+                            FlashOpacity = MathHelper.Lerp(0f, 1f, DeathTimer / 300f);
+                            ScrollBackColor = Color.Lerp(ColorLib.Soul3, ColorLib.Soul, DeathTimer / 300f);
+                            Main.musicVolume = MathHelper.Lerp(StoredVolume, 0, DeathTimer / 300f);
                         }
 
                     }
                 }
             }
-             
+
             if (DestroyerTestMod.MasochistIsActive)
             {
                 player.AddBuff(ModContent.BuffType<Passion>(), 60);
@@ -1040,7 +1023,7 @@ namespace DestroyerTest.Content.Entities
                                         Vector2 Outer2 = StoredCenter + new Vector2(410, 0).RotatedBy(NeedleOffset + MathHelper.PiOver2);
                                         Projectile.NewProjectile(NPC.GetSource_FromAI(), Outer2, Outer2.DirectionFrom(StoredCenter) * 7f, ModContent.ProjectileType<SoulNeedle>(), 30, 2);
 
-                                       
+
                                     }
                                 }
                             }
@@ -1099,7 +1082,7 @@ namespace DestroyerTest.Content.Entities
                                         ParticleEngine.BehindProjectiles.Add(pixel);
                                     }
                                 }
-                                
+
                             }
 
 
@@ -1270,7 +1253,7 @@ namespace DestroyerTest.Content.Entities
                                             radiance.Parent = ring;
                                         }
                                     }
-                                    
+
                                 }
 
                                 if (AITimer == MatrixTime + 1020)
@@ -1342,7 +1325,7 @@ namespace DestroyerTest.Content.Entities
                     if (NodeShakeTimers[i] < 120)
                         NodeShakeTimers[i]++;
 
-                    NodeShakeMaxX[i] = MathHelper.Lerp(10f, 0f, (float)NodeShakeTimers[i] / 120f);
+                    NodeShakeMaxX[i] = MathHelper.Lerp(10f, 0f, NodeShakeTimers[i] / 120f);
                     NodeShakeMaxY[i] = NodeShakeMaxX[i];
 
                     if (iNodes[i].active && iNodes[i].life > 0)
@@ -1631,7 +1614,7 @@ namespace DestroyerTest.Content.Entities
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<PhantasmalRemnant>(), 1, 10, 22));
             npcLoot.Add(ItemDropRule.Common(ItemID.SoulofFlight, 1, 5, 20));
 
-            
+
 
             LeadingConditionRule notExpertRule = new LeadingConditionRule(new Conditions.NotExpert());
 
@@ -1648,7 +1631,7 @@ namespace DestroyerTest.Content.Entities
             npcLoot.Add(notExpertRule);
 
             npcLoot.Add(ItemDropRule.BossBag(ModContent.ItemType<WyvernCorpseLootBag>()));
-            
+
 
             npcLoot.Add(ItemDropRule.MasterModeDropOnAllPlayers(ModContent.ItemType<DivineVessel>()));
             npcLoot.Add(ItemDropRule.MasterModeCommonDrop(ModContent.ItemType<Item_WyvernCorpseRelic>()));
@@ -1699,11 +1682,11 @@ namespace DestroyerTest.Content.Entities
         {
             WyvernCorpseHead head = Main.npc.Where(n => n.active && n.type == ModContent.NPCType<WyvernCorpseHead>()).Select(n => n.ModNPC as WyvernCorpseHead).FirstOrDefault();
 
-            
+
             if (head != null)
             {
                 storedVolume = head.StoredVolume;
-                
+
             }
 
             if (ShouldFadeBackMusic)
@@ -1853,7 +1836,7 @@ namespace DestroyerTest.Content.Entities
             // Find the boss once per tick
             NPC bossNPC = Main.npc.FirstOrDefault(n => n.active && n.type == ModContent.NPCType<WyvernCorpseHead>());
 
-            
+
 
             if (bossNPC == null)
             {
@@ -1880,7 +1863,7 @@ namespace DestroyerTest.Content.Entities
             switch (currentState)
             {
                 case AIState.Idle:
-                
+
                     break;
                 case AIState.Pikes:
                     {

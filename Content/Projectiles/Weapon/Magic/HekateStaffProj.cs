@@ -1,27 +1,13 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Projectiles.Boss.VampireBoss;
-using DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss;
-using DestroyerTest.Content.RiftArsenal;
- 
-using Humanizer;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
 using ReLogic.Utilities;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.Enums;
-using Terraria.GameContent;
-using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static tModPorter.ProgressUpdate;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 {
@@ -54,9 +40,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
         {
             r += 0.1f;
 
-            
+
             DTTrail.DrawTrail(Main.spriteBatch, DTAssetLib.Streak(8, true).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 50f * TextureScale, new Color(184, 45, 117), r * -0.2f, 2);
-            
+
 
 
             Main.EntitySpriteDraw(DTAssetLib.Swirl.Value, Projectile.Center - Main.screenPosition, null, new Color(184, 45, 117) with { A = 0 }, r, DTAssetLib.Swirl.Value.Size() / 2, 0.5f * TextureScale, SpriteEffects.None);
@@ -74,8 +60,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 
         public float TextureScale = 1f;
         SlotId LoopSlot;
-        public SoundStyle Loop = new SoundStyle("DestroyerTest/Assets/Audio/AuraLoop/ShadowflameAuraLoop") 
-        { 
+        public SoundStyle Loop = new SoundStyle("DestroyerTest/Assets/Audio/AuraLoop/ShadowflameAuraLoop")
+        {
             MaxInstances = 0,
             IsLooped = true,
             PauseBehavior = PauseBehavior.PauseWithGame
@@ -120,13 +106,15 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             Lighting.AddLight(Projectile.Center, new Color(184, 45, 117).ToVector3());
 
             Projectile.ResetExcessTrailPoints();
-            
 
-           
 
-            if (!SoundEngine.TryGetActiveSound(LoopSlot, out var activeSound)) {
+
+
+            if (!SoundEngine.TryGetActiveSound(LoopSlot, out var activeSound))
+            {
                 var tracker = new ProjectileAudioTracker(Projectile);
-                LoopSlot = SoundEngine.PlaySound(Loop, Projectile.Center, soundInstance => {
+                LoopSlot = SoundEngine.PlaySound(Loop, Projectile.Center, soundInstance =>
+                {
                     soundInstance.Position = Projectile.Center;
                     soundInstance.Pitch = PitchVal;
                     return tracker.IsActiveAndInGame();
@@ -194,7 +182,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
                         Projectile Ember = Projectile.NewProjectileDirect(Projectile.InheritSource(Projectile), OuterPos, Vector2.Zero, ModContent.ProjectileType<HekateStaffEmber>(), Projectile.damage / 4, 4, Projectile.owner);
 
                         ownedEmbers.Add(Ember);
-                        
+
                     }
                     Leeway = 60;
                     TextureScale = 1f;
@@ -236,14 +224,14 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
         }
         public void UpdateOwnedSubProj()
         {
-           
+
         }
 
         public override void ModifyDamageHitbox(ref Rectangle hitbox)
         {
             hitbox.Inflate(20, 20);
         }
-        
+
 
         public override void OnKill(int timeLeft)
         {

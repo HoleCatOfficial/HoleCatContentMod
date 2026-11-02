@@ -1,28 +1,25 @@
 
+using System.Collections.Generic;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Entities;
+using DestroyerTest.Common.DropRules;
+using DestroyerTest.Content.Consumables.Flasks;
 using DestroyerTest.Content.Equips;
+using DestroyerTest.Content.Equips.ScepterAccessories;
+using DestroyerTest.Content.Fargos.EternityDrops;
 using DestroyerTest.Content.Magic;
-using DestroyerTest.Content.Scepter;
-using DestroyerTest.Content.MeleeWeapons.SwordLineage;
-using DestroyerTest.Content.RogueItems;
+using DestroyerTest.Content.MeleeWeapons;
 using DestroyerTest.Content.RangedItems;
-using DestroyerTest.Content.Tiles.AchievementPaintingTiles;
+using DestroyerTest.Content.Resources;
+using DestroyerTest.Content.Scepter;
+using DestroyerTest.Content.ThrowerItems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
-using Terraria.ModLoader;
-using System.Collections.Generic;
 using Terraria.Localization;
-using DestroyerTest.Content.Equips.ScepterAccessories;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.MeleeWeapons;
-using DestroyerTest.Content.Consumables.Flasks;
-using DestroyerTest.Common.DropRules;
-using DestroyerTest.Content.Fargos.EternityDrops;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Consumables
 {

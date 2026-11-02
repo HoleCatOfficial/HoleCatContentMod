@@ -1,15 +1,11 @@
-using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.SummonItems;
-using DestroyerTest.Content.Tiles;
 using DestroyerTest.Content.Tiles.RiftConfigurator;
 using DestroyerTest.Content.Tiles.Riftplate;
 using DestroyerTest.Rarity;
 using GlowmaskHelper.Content;
 using Terraria;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Equips
@@ -18,81 +14,83 @@ namespace DestroyerTest.Content.Equips
     // Providing the EquipType.Head value here will result in TML expecting a X_Head.png file to be placed next to the item's main texture.
     [AutoloadGlowmask]
     [AutoloadEquip(EquipType.Head)]
-	public class RiftPlateHoodedJaw : ModItem
-	{
+    public class RiftPlateHoodedJaw : ModItem
+    {
 
-		public override void SetStaticDefaults() {
-			// If your head equipment should draw hair while drawn, use one of the following:
-			// ArmorIDs.Head.Sets.DrawHead[Item.headSlot] = false; // Don't draw the head at all. Used by Space Creature Mask
-			ArmorIDs.Head.Sets.DrawHatHair[Item.headSlot] = true; // Draw hair as if a hat was covering the top. Used by Wizards Hat
-			// ArmorIDs.Head.Sets.DrawFullHair[Item.headSlot] = true; // Draw all hair as normal. Used by Mime Mask, Sunglasses
-			// ArmorIDs.Head.Sets.DrawsBackHairWithoutHeadgear[Item.headSlot] = true;
-		}
+        public override void SetStaticDefaults()
+        {
+            // If your head equipment should draw hair while drawn, use one of the following:
+            // ArmorIDs.Head.Sets.DrawHead[Item.headSlot] = false; // Don't draw the head at all. Used by Space Creature Mask
+            ArmorIDs.Head.Sets.DrawHatHair[Item.headSlot] = true; // Draw hair as if a hat was covering the top. Used by Wizards Hat
+                                                                  // ArmorIDs.Head.Sets.DrawFullHair[Item.headSlot] = true; // Draw all hair as normal. Used by Mime Mask, Sunglasses
+                                                                  // ArmorIDs.Head.Sets.DrawsBackHairWithoutHeadgear[Item.headSlot] = true;
+        }
 
-		public override void SetDefaults() {
-			Item.width = 18; // Width of the item
-			Item.height = 18; // Height of the item
-			Item.value = Item.sellPrice(gold: 1); // How many coins the item is worth
-			Item.rare = ModContent.RarityType<HeliciteRarity>(); // The rarity of the item
-			Item.defense = 8; // The amount of defense the item will give when equipped
-		}
-		
-		public override bool IsArmorSet(Item head, Item body, Item legs)
-		{
-			// Titan set
-			if (body.type == ModContent.ItemType<RiftplateTitanBody>() &&
-				legs.type == ModContent.ItemType<RiftplateTitanGreaves>())
-			{
-				return true;
-			}
+        public override void SetDefaults()
+        {
+            Item.width = 18; // Width of the item
+            Item.height = 18; // Height of the item
+            Item.value = Item.sellPrice(gold: 1); // How many coins the item is worth
+            Item.rare = ModContent.RarityType<HeliciteRarity>(); // The rarity of the item
+            Item.defense = 8; // The amount of defense the item will give when equipped
+        }
 
-			// Agility set
-			if (body.type == ModContent.ItemType<RiftplateAgilityArmor>() &&
-				legs.type == ModContent.ItemType<RiftplateAgilityLeggings>())
-			{
-				return true;
-			}
+        public override bool IsArmorSet(Item head, Item body, Item legs)
+        {
+            // Titan set
+            if (body.type == ModContent.ItemType<RiftplateTitanBody>() &&
+                legs.type == ModContent.ItemType<RiftplateTitanGreaves>())
+            {
+                return true;
+            }
 
-			// Anything else = not a valid set
-			return false;
-		}
+            // Agility set
+            if (body.type == ModContent.ItemType<RiftplateAgilityArmor>() &&
+                legs.type == ModContent.ItemType<RiftplateAgilityLeggings>())
+            {
+                return true;
+            }
 
-		public override void UpdateArmorSet(Player player) 
-		{
-			player.maxMinions += 4;
+            // Anything else = not a valid set
+            return false;
+        }
+
+        public override void UpdateArmorSet(Player player)
+        {
+            player.maxMinions += 4;
             player.AddBuff(ModContent.BuffType<RiftBallBuff>(), 30);
             if (player.body == ModContent.ItemType<RiftplateTitanBody>() &&
-				player.legs == ModContent.ItemType<RiftplateTitanGreaves>())
-			{
-				TitanBonus(player);
-			}
-			else if (player.body == ModContent.ItemType<RiftplateAgilityArmor>() &&
-					player.legs == ModContent.ItemType<RiftplateAgilityLeggings>())
-			{
-				AgilityBonus(player);
-			}
-		}
+                player.legs == ModContent.ItemType<RiftplateTitanGreaves>())
+            {
+                TitanBonus(player);
+            }
+            else if (player.body == ModContent.ItemType<RiftplateAgilityArmor>() &&
+                    player.legs == ModContent.ItemType<RiftplateAgilityLeggings>())
+            {
+                AgilityBonus(player);
+            }
+        }
 
-		private void TitanBonus(Player player)
-		{
-			player.GetDamage(DamageClass.Summon) += 0.25f;
-			player.statLifeMax2 += 15;
+        private void TitanBonus(Player player)
+        {
+            player.GetDamage(DamageClass.Summon) += 0.25f;
+            player.statLifeMax2 += 15;
             player.GetModPlayer<RiftBerserkerRunSpeeds>().Slow = true;
-		}
+        }
 
-		private void AgilityBonus(Player player)
-		{
-			player.GetAttackSpeed(DamageClass.SummonMeleeSpeed) += 0.16f;
+        private void AgilityBonus(Player player)
+        {
+            player.GetAttackSpeed(DamageClass.SummonMeleeSpeed) += 0.16f;
             player.GetModPlayer<RiftBerserkerRunSpeeds>().Fast = true;
-		}
+        }
 
-		public override void AddRecipes()
-		{
-			CreateRecipe()
-				.AddIngredient<Living_Shadow>(20)
-				.AddIngredient<Item_Riftplate>(20)
-				.AddTile<Tile_RiftConfigurator>()
-				.Register();
-		}
-	}
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient<Living_Shadow>(20)
+                .AddIngredient<Item_Riftplate>(20)
+                .AddTile<Tile_RiftConfigurator>()
+                .Register();
+        }
+    }
 }

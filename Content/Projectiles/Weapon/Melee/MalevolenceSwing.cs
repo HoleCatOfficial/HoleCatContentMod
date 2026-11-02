@@ -1,30 +1,14 @@
 ﻿
 using BreadLibrary.Core.Graphics.Particles;
-using BreadLibrary.Core.Graphics.Pixelation;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.MeleeWeapons;
 using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Particles.Orchestrated;
 using DestroyerTest.Content.Projectiles.ParentClasses;
-using DestroyerTest.Content.Projectiles.Weapon.Rogue;
- 
-using JetBrains.Annotations;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
 using OpusLib.Content.Helpers;
 using OpusLib.Content.Particles;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.GameContent;
 using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -65,7 +49,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             SoundEngine.PlaySound(DTAssetLib.Impacts.Malevolence with { MaxInstances = 0, Pitch = -0.2f, PitchVariance = 0.2f }, npc.Center);
             SoundEngine.PlaySound(DTAssetLib.Impacts.Malevolence with { MaxInstances = 0, Pitch = 0.3f, PitchVariance = 0.2f }, npc.Center);
             ParticleOrchestrator.RequestParticleSpawn(false, ParticleOrchestraType.TrueNightsEdge, new ParticleOrchestraSettings() { IndexOfPlayerWhoInvokedThis = (byte)Projectile.owner, PositionInWorld = npc.Center });
-        
+
             for (int i = 0; i < 9; i++)
             {
                 WretchedPointGlow Glow = new();
@@ -76,7 +60,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
         private void DrawSweepFX2()
         {
-          
+
         }
         public override void DrawUnderBlade()
         {
@@ -117,7 +101,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                     WretchedPointGlow Glow = new();
                     Glow.Prepare(ppt[Main.rand.Next(15)], (SwordLine.GetLineRotation + (LastSwing == 1 ? MathHelper.PiOver2 : -MathHelper.PiOver2)).ToRotationVector2() * 4, 2.3f);
                     ParticleEngine.Particles.Add(Glow);
-                }    
+                }
             }
             else
             {
@@ -133,7 +117,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 }
             }
 
-           
+
 
             ScaleMult = 1.9f;
 

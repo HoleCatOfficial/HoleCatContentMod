@@ -1,19 +1,15 @@
-﻿using BreadLibrary.Core.Graphics.Pixelation;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using BreadLibrary.Core.Graphics.Pixelation;
 using BreadLibrary.Core.Graphics.Spritebatch;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Particles;
- 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using OpusLib.Content.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Terraria;
 using Terraria.DataStructures;
-using Terraria.Enums;
-using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -79,7 +75,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
 
             DTUtils.instance.ScrollingTextureSpine(Line, DTAssetLib.Line(1), ColorLib.TenebrisGradient * 0.5f, spriteBatch, BlendState.Additive, warnoffset, 2f);
 
-            
+
 
             return false;
         }
@@ -101,7 +97,6 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
             {
                 List<ColoredVertex> ve = new List<ColoredVertex>();
                 List<ColoredVertex> ve2 = new List<ColoredVertex>();
-                float a = 0;
 
                 for (int i = Projectile.OldCenter().Length - 1; i > 0; i--)
                 {
@@ -151,7 +146,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
             Opus.ReturnToDefaultDrawing(spriteBatch);
         }
 
-    
+
         public override void AI()
         {
             for (int i = 0; i < ProjectileID.Sets.TrailCacheLength[Type]; i++)

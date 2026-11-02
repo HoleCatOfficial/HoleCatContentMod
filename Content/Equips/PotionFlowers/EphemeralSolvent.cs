@@ -53,7 +53,7 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
                 flower.EphemeralSolvent = true;
             }
         }
-        
+
         public override void AddRecipes()
         {
             CreateRecipe()
@@ -63,5 +63,5 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
                 .AddIngredient<StellarMatter>(12)
                 .Register();
         }
-	}
+    }
 }

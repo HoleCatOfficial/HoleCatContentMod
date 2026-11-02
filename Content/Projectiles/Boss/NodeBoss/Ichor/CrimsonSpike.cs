@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BreadLibrary.Core.Utilities;
+﻿using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
 using ReLogic.Content;
 using Terraria;
 using Terraria.DataStructures;
@@ -61,7 +55,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.Ichor
 
                 for (int i = 0; i < Projectile.oldPos.Length; i++)
                 {
-                    float fade = MathHelper.Lerp(1f, 0f, (float)i / (float)Projectile.oldPos.Length);
+                    float fade = MathHelper.Lerp(1f, 0f, i / (float)Projectile.oldPos.Length);
                     Main.EntitySpriteDraw(Afterimage.Value, Projectile.OldCenter()[i] - Main.screenPosition, frame, Color.Red * Projectile.Opacity * fade, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None);
                 }
             }

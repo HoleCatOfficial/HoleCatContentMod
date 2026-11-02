@@ -1,11 +1,5 @@
-﻿using DestroyerTest.Content.MeleeWeapons;
-using GlowmaskHelper.Content;
+﻿using GlowmaskHelper.Content;
 using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.Enums;
@@ -35,7 +29,7 @@ namespace DestroyerTest.Content.Tiles.RoseGarden.Flowers
             TileObjectData.newTile.CoordinatePadding = 2;
             TileObjectData.newTile.Origin = new Point16(5, 11);
             TileObjectData.newTile.AnchorBottom = new AnchorData(AnchorType.PlatformNonHammered | AnchorType.SolidTile | AnchorType.SolidWithTop, 5, 0);
-           
+
             TileObjectData.addTile(Type);
 
 
@@ -43,7 +37,7 @@ namespace DestroyerTest.Content.Tiles.RoseGarden.Flowers
 
             DustType = DustID.SpookyWood;
             MinPick = 300;
-            
+
         }
 
         public override void ModifyLight(int i, int j, ref float r, ref float g, ref float b)

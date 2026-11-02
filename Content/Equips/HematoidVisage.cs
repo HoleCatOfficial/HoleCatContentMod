@@ -1,19 +1,10 @@
-﻿using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.SummonItems;
-using DestroyerTest.Content.Tiles;
-using Terraria;
-using Terraria.ID;
-using Terraria.Localization;
-using Terraria.ModLoader;
-using DestroyerTest.Rarity;
-using DestroyerTest.Content.Tiles.Riftplate;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Projectiles.player.ArmorSet;
-using DestroyerTest.Rarity.Scepter;
-using Terraria.DataStructures;
-using Microsoft.Xna.Framework;
+﻿using DestroyerTest.Common;
 using DestroyerTest.Content.Projectiles.player.Accessory;
+using Microsoft.Xna.Framework;
+using Terraria;
+using Terraria.DataStructures;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Equips
 {
@@ -49,7 +40,7 @@ namespace DestroyerTest.Content.Equips
             Active = false;
         }
 
-       
+
     }
 
     public class HematoidVisageOwnedProjectiles : GlobalProjectile

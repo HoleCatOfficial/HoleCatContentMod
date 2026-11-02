@@ -1,27 +1,20 @@
-using System;
-using System.Linq;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Particles;
- 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using Terraria;
-using Terraria.Audio;
-using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using OpusLib;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
-using DestroyerTest.Content.Buffs;
 
 namespace DestroyerTest.Content.Projectiles.ParentClasses
 {
     public abstract class SpinningSlash : ModProjectile
     {
         public override string Texture => "DestroyerTest/Content/Extras/144Slash";
-        public override void SetStaticDefaults() {
-			Main.projFrames[Type] = 4;
-		}
+        public override void SetStaticDefaults()
+        {
+            Main.projFrames[Type] = 4;
+        }
         public override void SetDefaults()
         {
             Projectile.width = 170;
@@ -44,7 +37,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         public bool Blending = true;
 
 
-		public override bool PreDraw(ref Color lightColor)
+        public override bool PreDraw(ref Color lightColor)
         {
             lightColor = themeColor;
 
@@ -145,10 +138,13 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             return false;
         }
 
-        private void AnimateProjectile() {
-            if (++Projectile.frameCounter >= 60) {
+        private void AnimateProjectile()
+        {
+            if (++Projectile.frameCounter >= 60)
+            {
                 Projectile.frameCounter = 0;
-                if (++Projectile.frame >= Main.projFrames[Projectile.type]) {
+                if (++Projectile.frame >= Main.projFrames[Projectile.type])
+                {
                     Projectile.frame = 0;
                 }
             }
@@ -156,7 +152,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
         public virtual void ExtraEffects()
         {
-            
+
         }
 
         public float DustVelocityMultiplier = 2f;
@@ -169,7 +165,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             }
             if (Projectile.timeLeft < 40)
             {
-                Projectile.alpha += (int)(255f / 40f);;
+                Projectile.alpha += (int)(255f / 40f); ;
             }
 
             Rotation();
@@ -198,10 +194,11 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
                 }
             }
 
-            for (float i = -MathHelper.PiOver4; i <= MathHelper.PiOver4; i += MathHelper.PiOver2) {
-				Rectangle rectangle = Utils.CenteredRectangle(Projectile.Center + (Projectile.rotation + i).ToRotationVector2() * 70f * Projectile.scale, new Vector2(60f * Projectile.scale, 60f * Projectile.scale));
-				Projectile.EmitEnchantmentVisualsAt(rectangle.TopLeft(), rectangle.Width, rectangle.Height);
-			}
+            for (float i = -MathHelper.PiOver4; i <= MathHelper.PiOver4; i += MathHelper.PiOver2)
+            {
+                Rectangle rectangle = Utils.CenteredRectangle(Projectile.Center + (Projectile.rotation + i).ToRotationVector2() * 70f * Projectile.scale, new Vector2(60f * Projectile.scale, 60f * Projectile.scale));
+                Projectile.EmitEnchantmentVisualsAt(rectangle.TopLeft(), rectangle.Width, rectangle.Height);
+            }
         }
 
         public virtual void Rotation()

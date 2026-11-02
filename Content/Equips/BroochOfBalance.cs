@@ -1,32 +1,30 @@
 
+using System.Collections.Generic;
+using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Equips.ScepterAccessories;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
-using Terraria.GameContent.ItemDropRules;
-using System.Collections.Generic;
-using DestroyerTest.Content.Equips.ScepterAccessories;
 
 namespace DestroyerTest.Content.Equips
 {
-	public class BroochOfBalance : ModItem
-	{
-		public override void SetDefaults()
-		{
-			Item.width = 22;
-			Item.height = 44;
-			Item.maxStack = 1;
-			Item.value = 100;
-			Item.accessory = true;
-		}
+    public class BroochOfBalance : ModItem
+    {
+        public override void SetDefaults()
+        {
+            Item.width = 22;
+            Item.height = 44;
+            Item.maxStack = 1;
+            Item.value = 100;
+            Item.accessory = true;
+        }
 
-		public override void UpdateAccessory(Player player, bool hideVisual)
-		{
+        public override void UpdateAccessory(Player player, bool hideVisual)
+        {
             player.buffImmune[ModContent.BuffType<NightInferno>()] = true;
             player.buffImmune[ModContent.BuffType<LightInferno>()] = true;
             player.noKnockback = true;
-		}
+        }
 
         public static List<int> Shields = new List<int>
         {

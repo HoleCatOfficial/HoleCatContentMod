@@ -6,9 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using OpusLib.Content.Particles;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.GameContent;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles
@@ -88,7 +86,7 @@ namespace DestroyerTest.Content.Projectiles
 
             if (Projectile.frame < 2)
             {
-               // Dust.NewDustPerfect(Projectile.Center + Main.rand.NextVector2Circular(10, 10), DustID.)
+                // Dust.NewDustPerfect(Projectile.Center + Main.rand.NextVector2Circular(10, 10), DustID.)
             }
             else
             {

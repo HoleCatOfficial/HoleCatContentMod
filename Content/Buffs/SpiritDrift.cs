@@ -1,7 +1,5 @@
-using DestroyerTest.Content.Dusts;
 using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -69,31 +67,31 @@ namespace DestroyerTest.Content.Buffs
     }
 
     public class SDPlayer : ModPlayer
-	{
-		public bool Levitation;
+    {
+        public bool Levitation;
 
-		public override void ResetEffects()
-		{
-			Levitation = false;
-		}
+        public override void ResetEffects()
+        {
+            Levitation = false;
+        }
 
         public override void PostUpdateBuffs()
         {
             if (Levitation)
-			{
+            {
                 Player.velocity.Y = -4f;
                 Player.velocity.X *= 0.99f;
-			}
+            }
         }
-		public override void UpdateBadLifeRegen()
-		{
-			if (Levitation)
-			{
-				if (Player.lifeRegen > 0)
-					Player.lifeRegen = 0;
-				Player.lifeRegenTime = 0;
-				Player.lifeRegen -= 6;
-			}
-		}
-	}
+        public override void UpdateBadLifeRegen()
+        {
+            if (Levitation)
+            {
+                if (Player.lifeRegen > 0)
+                    Player.lifeRegen = 0;
+                Player.lifeRegenTime = 0;
+                Player.lifeRegen -= 6;
+            }
+        }
+    }
 }

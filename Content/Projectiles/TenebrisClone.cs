@@ -1,14 +1,7 @@
+using DestroyerTest.Common;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
-using Terraria.Audio;
-using DestroyerTest.Content.Consumables;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
-using System;
 
 namespace DestroyerTest.Content.Projectiles
 {
@@ -32,7 +25,7 @@ namespace DestroyerTest.Content.Projectiles
             Projectile.tileCollide = true;
             Projectile.alpha = 80; // Start fully transparent
         }
-    
+
 
         public override void AI()
         {
@@ -40,7 +33,7 @@ namespace DestroyerTest.Content.Projectiles
             Player player = Main.player[Projectile.owner];
 
 
-              // Generate flying dust effect
+            // Generate flying dust effect
             if (Main.rand.NextBool(3)) // 33% chance per tick
             {
                 Dust dust = Dust.NewDustPerfect(Projectile.Center, DustID.TintableDustLighted, Projectile.velocity * 0.2f, 100, ColorLib.TenebrisGradient, 1.2f);
@@ -48,7 +41,7 @@ namespace DestroyerTest.Content.Projectiles
                 dust.fadeIn = 1.5f;
             }
 
-           
+
         }
     }
 

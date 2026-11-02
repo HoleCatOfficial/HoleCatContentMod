@@ -2,17 +2,13 @@ using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.Particles.Stellar;
- 
+
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib.Content.Particles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
@@ -38,16 +34,16 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
         }
 
         private void AnimateProjectile()
-		{
-			if (++Projectile.frameCounter >= 1)
-			{
-				Projectile.frameCounter = 0;
-				if (++Projectile.frame >= Main.projFrames[Projectile.type])
-				{
-					Projectile.frame = 0;
-				}
-			}
-		}
+        {
+            if (++Projectile.frameCounter >= 1)
+            {
+                Projectile.frameCounter = 0;
+                if (++Projectile.frame >= Main.projFrames[Projectile.type])
+                {
+                    Projectile.frame = 0;
+                }
+            }
+        }
 
         public override void AI()
         {
@@ -84,7 +80,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 
             target.AddBuff(ModContent.BuffType<LightInferno>(), 300);
             target.AddBuff(ModContent.BuffType<NightInferno>(), 300);
-            
+
         }
 
         public override void OnKill(int timeLeft)

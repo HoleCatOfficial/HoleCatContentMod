@@ -1,14 +1,10 @@
 ﻿
 using System.Collections.Generic;
-using DestroyerTest.Common.Systems;
-using DestroyerTest.Content.Consumables;
-using Humanizer;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using OpusLib;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
@@ -35,7 +31,7 @@ namespace DestroyerTest.Common
             {
                 Main.EntitySpriteDraw(DTAssetLib.PointGlowPreMultiplied.Value, new Vector2(line.X, line.Y - 5) + FontAssets.MouseText.Value.MeasureString(line.Text) / 2, null, Opus.Sine(Color.GreenYellow, Color.Fuchsia, 0.2f) with { A = 0 } * 0.7f, 0f, DTAssetLib.PointGlowPreMultiplied.Value.Size() / 2, new Vector2(0.08f * FontAssets.MouseText.Value.MeasureString(line.Text).X, 1f) * Main.UIScale, SpriteEffects.None);
                 Utils.DrawBorderStringFourWay(Main.spriteBatch, FontAssets.MouseText.Value, line.Text, line.X, line.Y, Color.White, Opus.Sine(Color.GreenYellow, Color.Fuchsia, 0.2f), new Vector2(0.5f, 0.5f));
-                
+
                 return false;
             }
 
@@ -69,7 +65,7 @@ namespace DestroyerTest.Common
             TooltipLine ExtraLore = new TooltipLine(Mod, "RelicOfNepostriaExtraLore", Language.GetTextValue($"Mods.DestroyerTest.Items.{item.ModItem.Name}.NepostriaTooltip"));
             int ExtraLoreIndex = tooltips.IndexOf(tooltips.Find(t => t.Name == ExtraLore.Name));
 
-            TooltipLine Standard= new TooltipLine(Mod, "RelicOfNepostriaStandardTooltip", Language.GetTextValue("Mods.DestroyerTest.Extras.LegendaryItems.StandardTooltip")) { OverrideColor = Colors.CoinGold};
+            TooltipLine Standard = new TooltipLine(Mod, "RelicOfNepostriaStandardTooltip", Language.GetTextValue("Mods.DestroyerTest.Extras.LegendaryItems.StandardTooltip")) { OverrideColor = Colors.CoinGold };
             int StandardIndex = tooltips.IndexOf(tooltips.Find(t => t.Name == Standard.Name));
 
             tooltips.Add(Hint);

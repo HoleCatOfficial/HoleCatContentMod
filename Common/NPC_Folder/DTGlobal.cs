@@ -1,32 +1,28 @@
-using Terraria;
-using Terraria.ModLoader;
-using Terraria.ModLoader.IO;
-using Terraria.ID;
-using DestroyerTest.Content.Tiles;
-using DestroyerTest.Common.Systems;
-using DestroyerTest.Content.Entities;
-using Terraria.Audio;
-using DestroyerTest.Content.BossBars;
-using DestroyerTest.Content.Consumables;
-using DestroyerTest.Content.MeleeWeapons;
-using DestroyerTest.Content.Ammunitions;
-using DestroyerTest.Content.Scepter;
-using DestroyerTest.Content.Tools;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Asset.Menu.V5;
-using Terraria.DataStructures;
-using DestroyerTest.Content.Equips;
-using DestroyerTest.Content.Consumables.Flasks;
-using Terraria.GameContent.ItemDropRules;
 using DestroyerTest.Common.DropRules;
-using DestroyerTest.Content.MeleeWeapons.AncientSword;
+using DestroyerTest.Common.Systems;
+using DestroyerTest.Content.Ammunitions;
+using DestroyerTest.Content.Consumables;
+using DestroyerTest.Content.Consumables.Flasks;
+using DestroyerTest.Content.Entities;
+using DestroyerTest.Content.Equips;
 using DestroyerTest.Content.Equips.ScepterAccessories;
+using DestroyerTest.Content.MeleeWeapons;
+using DestroyerTest.Content.MeleeWeapons.AncientSword;
+using DestroyerTest.Content.Resources;
+using DestroyerTest.Content.Scepter;
+using DestroyerTest.Content.Tiles;
+using Terraria;
+using Terraria.Audio;
+using Terraria.DataStructures;
+using Terraria.GameContent.ItemDropRules;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Common.NPC_Folder
 {
-	public class DTGlobal : GlobalNPC
-	{
-		public override bool InstancePerEntity => true;
+    public class DTGlobal : GlobalNPC
+    {
+        public override bool InstancePerEntity => true;
         private bool KilledSpaz = false;
         private bool KilledRet = false;
         public static bool HasKilledAMechBoss = false;
@@ -85,7 +81,7 @@ namespace DestroyerTest.Common.NPC_Folder
                     NetMessage.SendData(MessageID.WorldData);
                 }
             }
-            if (npc.type == NPCID.EaterofWorldsHead  && !DownedBossSystem.downedEoWBoss)
+            if (npc.type == NPCID.EaterofWorldsHead && !DownedBossSystem.downedEoWBoss)
             {
                 DTUtils.NPCDownTally[NPCID.EaterofWorldsHead]++;
                 UpdateDivinePlayers();
@@ -105,7 +101,7 @@ namespace DestroyerTest.Common.NPC_Folder
                     NetMessage.SendData(MessageID.WorldData);
                 }
             }
-            if (npc.type == NPCID.QueenBee  && !DownedBossSystem.downedQueenBeeBoss)
+            if (npc.type == NPCID.QueenBee && !DownedBossSystem.downedQueenBeeBoss)
             {
                 DTUtils.NPCDownTally[NPCID.QueenBee]++;
                 UpdateDivinePlayers();
@@ -261,7 +257,7 @@ namespace DestroyerTest.Common.NPC_Folder
                 DownedBossSystem.downedGolemBoss = true;
                 ModContent.GetInstance<HeliciteSystem>().BlessWorldWithHelicite();
                 //Main.NewText("Fragments of the ancient sun embed themselves in the rock deep down...", ColorLib.TenebrisMagenta);
-                
+
                 if (Main.netMode == NetmodeID.Server)
                 {
                     NetMessage.SendData(MessageID.WorldData);
@@ -317,7 +313,7 @@ namespace DestroyerTest.Common.NPC_Folder
                 {
                     NetMessage.SendData(MessageID.WorldData);
                 }
-                
+
             }
             if (npc.type == NPCID.MoonLordCore && !DownedBossSystem.downedLunarBoss)
             {
@@ -345,9 +341,9 @@ namespace DestroyerTest.Common.NPC_Folder
                 UpdateDivinePlayers();
                 DownedBossSystem.downedNightmareRoseBoss = true;
                 if (Main.netMode == NetmodeID.Server)
-                    {
-                        NetMessage.SendData(MessageID.WorldData);
-                    }
+                {
+                    NetMessage.SendData(MessageID.WorldData);
+                }
             }
             if (npc.type == ModContent.NPCType<TenebrousConstruct>() && !DownedBossSystem.downedTenebrousConstructBoss)
             {
@@ -460,5 +456,5 @@ namespace DestroyerTest.Common.NPC_Folder
                 npcLoot.Add(ItemDropRule.ByCondition(new NotExpertDropRuleCondition(), ModContent.ItemType<TheAlkahest>(), 4));
             }
         }
-	}
+    }
 }

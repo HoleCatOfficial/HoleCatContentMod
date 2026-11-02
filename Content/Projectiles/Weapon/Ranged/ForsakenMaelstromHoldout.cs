@@ -1,18 +1,7 @@
-﻿using DestroyerTest.Common;
-using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Projectiles.Boss.NodeBoss.Blessed;
-using DestroyerTest.Content.Projectiles.Weapon.Melee;
-using DestroyerTest.Content.Projectiles.Weapon.Summon;
+﻿using System.Collections.Generic;
 using DestroyerTest.Content.RangedItems;
-using DestroyerTest.Content.SummonItems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -128,15 +117,15 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Ranged
 
             Projectile.ai[2]++;
             Projectile Shot1 = Projectile.NewProjectileDirect(Source, ShootPoint, Vel, ModContent.ProjectileType<ForsakenMaelstromFire>(), Owner.HeldItem.damage, Owner.HeldItem.knockBack, Owner.whoAmI);
-                    
+
             if (Projectile.ai[2] % 5 == 0)
             {
                 Projectile ExtraShot1 = Projectile.NewProjectileDirect(Source, ShootPoint, (Vel * 2f).RotatedBy(-0.1f), ModContent.ProjectileType<ForsakenMaelstromHomingFireball>(), Owner.HeldItem.damage, Owner.HeldItem.knockBack, Owner.whoAmI);
                 Projectile ExtraShot2 = Projectile.NewProjectileDirect(Source, ShootPoint, Vel * 2f, ModContent.ProjectileType<ForsakenMaelstromHomingFireball>(), Owner.HeldItem.damage, Owner.HeldItem.knockBack, Owner.whoAmI);
                 Projectile ExtraShot3 = Projectile.NewProjectileDirect(Source, ShootPoint, (Vel * 2f).RotatedBy(0.1f), ModContent.ProjectileType<ForsakenMaelstromHomingFireball>(), Owner.HeldItem.damage, Owner.HeldItem.knockBack, Owner.whoAmI);
             }
-                
-            
+
+
         }
 
         private bool CheckAmmoForConsumption(Player player, out int projToShoot, out float speed, out int damage, out float knockBack, out int usedAmmoItemId, out Item Beater)

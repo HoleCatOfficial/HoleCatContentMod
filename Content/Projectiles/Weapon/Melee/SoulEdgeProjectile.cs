@@ -1,15 +1,9 @@
 ﻿using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Particles;
- 
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
@@ -71,7 +65,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
         public override void AI()
         {
-            
+
 
             if (Projectile.timeLeft <= 60)
             {
@@ -86,7 +80,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 }
             }
 
-            
+
             // Always spinning
             Projectile.rotation += (Projectile.velocity.Length() * 0.06f) * Projectile.direction;
 

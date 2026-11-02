@@ -1,22 +1,14 @@
-using System;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.MeleeWeapons;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
 using Terraria;
-using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.EntitiesProjectiles
 {
-	public class TeslaScuttlerScaredExplosion : ModProjectile
-	{
+    public class TeslaScuttlerScaredExplosion : ModProjectile
+    {
         public override string Texture => DTUtils.NoTexture;
         public override void SetDefaults()
         {
@@ -37,9 +29,9 @@ namespace DestroyerTest.Content.Projectiles.EntitiesProjectiles
             }
         }
 
-		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.AddBuff(ModContent.BuffType<DaylightOverload>(), 20 * 60);
         }
-	}
+    }
 }

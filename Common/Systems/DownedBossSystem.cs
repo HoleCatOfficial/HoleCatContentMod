@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.IO;
 using Terraria;
 using Terraria.ModLoader;
@@ -7,39 +6,39 @@ using Terraria.ModLoader.IO;
 
 namespace DestroyerTest.Common.Systems
 {
-	public class DownedBossSystem : ModSystem
-	{	
-		public static bool downedEoCBoss = false;
+    public class DownedBossSystem : ModSystem
+    {
+        public static bool downedEoCBoss = false;
 
-		public static bool downedKingSlimeBoss = false;
+        public static bool downedKingSlimeBoss = false;
 
-		public static bool downedBoCBoss = false;
+        public static bool downedBoCBoss = false;
 
-		public static bool downedEoWBoss = false;
+        public static bool downedEoWBoss = false;
 
-		public static bool downedQueenBeeBoss = false;
+        public static bool downedQueenBeeBoss = false;
 
-		public static bool downedDeerclopsMiniBoss = false;
+        public static bool downedDeerclopsMiniBoss = false;
 
-		public static bool downedSkeletronBoss = false;
+        public static bool downedSkeletronBoss = false;
 
-		public static bool downedConstitutionBoss = false;
+        public static bool downedConstitutionBoss = false;
 
-		public static bool downedWallBoss = false;
+        public static bool downedWallBoss = false;
 
-		public static bool downedQueenSlimeBoss = false;
+        public static bool downedQueenSlimeBoss = false;
 
-		public static bool downedDestroyerBoss = false;
+        public static bool downedDestroyerBoss = false;
 
-		public static bool downedTwinsBoss = false;
+        public static bool downedTwinsBoss = false;
 
-		public static bool downedSkeletronPrimeBoss = false;
+        public static bool downedSkeletronPrimeBoss = false;
 
-		public static bool downedNautilusMiniBoss = false;
+        public static bool downedNautilusMiniBoss = false;
 
-		public static bool downedPlanteraBoss = false;
+        public static bool downedPlanteraBoss = false;
 
-		public static bool downedIchorNodeMiniBoss = false;
+        public static bool downedIchorNodeMiniBoss = false;
 
         public static bool downedCursedFlameNodeMiniBoss = false;
 
@@ -47,26 +46,26 @@ namespace DestroyerTest.Common.Systems
 
         public static bool downedGolemBoss = false;
 
-		public static bool downedFishronBoss = false;
+        public static bool downedFishronBoss = false;
 
-		public static bool downedEmpressBoss = false;
+        public static bool downedEmpressBoss = false;
 
-		public static bool downedCultistBoss = false;
+        public static bool downedCultistBoss = false;
 
-		public static bool downedLunarBoss = false;
+        public static bool downedLunarBoss = false;
 
-		public static bool downedWyvernCorpseBoss = false;
+        public static bool downedWyvernCorpseBoss = false;
 
-		public static bool downedNightmareRoseBoss = false;
+        public static bool downedNightmareRoseBoss = false;
 
         public static bool downedTenebrousConstructBoss = false;
 
         public static Func<bool> downedConstitutionConditionbool = () => downedConstitutionBoss;
-		public static Condition downedConstitutionCondition = new Condition("Mods.DestroyerTest.Conditions.ConstitutionBossDowned", downedConstitutionConditionbool);
+        public static Condition downedConstitutionCondition = new Condition("Mods.DestroyerTest.Conditions.ConstitutionBossDowned", downedConstitutionConditionbool);
 
 
-		public static Func<bool> downedAnyNodeConditionbool = () => (downedIchorNodeMiniBoss || downedCursedFlameNodeMiniBoss || downedBlessedNodeMiniBoss);
-		public static Condition downedAnyNodeCondition = new Condition("Mods.DestroyerTest.Conditions.AnyNodeBossDowned", downedAnyNodeConditionbool);
+        public static Func<bool> downedAnyNodeConditionbool = () => (downedIchorNodeMiniBoss || downedCursedFlameNodeMiniBoss || downedBlessedNodeMiniBoss);
+        public static Condition downedAnyNodeCondition = new Condition("Mods.DestroyerTest.Conditions.AnyNodeBossDowned", downedAnyNodeConditionbool);
 
         public static Func<bool> downedIchorNodeConditionbool = () => downedIchorNodeMiniBoss;
         public static Condition downedIchorNodeCondition = new Condition("Mods.DestroyerTest.Conditions.IchorNodeBossDowned", downedIchorNodeConditionbool);
@@ -79,41 +78,41 @@ namespace DestroyerTest.Common.Systems
 
 
         public static Func<bool> downedWyvernCorpseBossConditionbool = () => downedWyvernCorpseBoss;
-		public static Condition downedWyvernCorpseBossCondition = new Condition("Mods.DestroyerTest.Conditions.WyvernCorpseBossDowned", downedWyvernCorpseBossConditionbool);
-		
-		public static Func<bool> downedNightmareRoseBossConditionbool = () => downedNightmareRoseBoss;
-		public static Condition downedNightmareRoseBossCondition = new Condition("Mods.DestroyerTest.Conditions.NightmareRoseBossDowned", downedNightmareRoseBossConditionbool);
+        public static Condition downedWyvernCorpseBossCondition = new Condition("Mods.DestroyerTest.Conditions.WyvernCorpseBossDowned", downedWyvernCorpseBossConditionbool);
+
+        public static Func<bool> downedNightmareRoseBossConditionbool = () => downedNightmareRoseBoss;
+        public static Condition downedNightmareRoseBossCondition = new Condition("Mods.DestroyerTest.Conditions.NightmareRoseBossDowned", downedNightmareRoseBossConditionbool);
 
         public static Func<bool> downedTenebrousConstructBossConditionbool = () => downedTenebrousConstructBoss;
         public static Condition downedTenebrousConstructBossCondition = new Condition("Mods.DestroyerTest.Conditions.TenebrousConstructBossDowned", downedTenebrousConstructBossConditionbool);
 
         public override void ClearWorld()
-		{
-			downedEoCBoss = false;
-			downedKingSlimeBoss = false;
-			downedBoCBoss = false;
-			downedEoWBoss = false;
-			downedQueenBeeBoss = false;
-			downedDeerclopsMiniBoss = false;
-			downedSkeletronBoss = false;
-			downedConstitutionBoss = false;
-			downedWallBoss = false;
-			downedQueenSlimeBoss = false;
-			downedDestroyerBoss = false;
-			downedTwinsBoss = false;
-			downedSkeletronPrimeBoss = false;
-			downedNautilusMiniBoss = false;
-			downedPlanteraBoss = false;
-			downedIchorNodeMiniBoss = false;
-			downedCursedFlameNodeMiniBoss = false;
-			downedBlessedNodeMiniBoss = false;
-			downedFishronBoss = false;
-			downedEmpressBoss = false;
-			downedGolemBoss = false;
-			downedCultistBoss = false;
-			downedLunarBoss = false;
-			downedWyvernCorpseBoss = false;
-			downedNightmareRoseBoss = false;
+        {
+            downedEoCBoss = false;
+            downedKingSlimeBoss = false;
+            downedBoCBoss = false;
+            downedEoWBoss = false;
+            downedQueenBeeBoss = false;
+            downedDeerclopsMiniBoss = false;
+            downedSkeletronBoss = false;
+            downedConstitutionBoss = false;
+            downedWallBoss = false;
+            downedQueenSlimeBoss = false;
+            downedDestroyerBoss = false;
+            downedTwinsBoss = false;
+            downedSkeletronPrimeBoss = false;
+            downedNautilusMiniBoss = false;
+            downedPlanteraBoss = false;
+            downedIchorNodeMiniBoss = false;
+            downedCursedFlameNodeMiniBoss = false;
+            downedBlessedNodeMiniBoss = false;
+            downedFishronBoss = false;
+            downedEmpressBoss = false;
+            downedGolemBoss = false;
+            downedCultistBoss = false;
+            downedLunarBoss = false;
+            downedWyvernCorpseBoss = false;
+            downedNightmareRoseBoss = false;
             downedTenebrousConstructBoss = false;
         }
         public override void SaveWorldData(TagCompound tag)
@@ -279,36 +278,37 @@ namespace DestroyerTest.Common.Systems
             }
         }
 
-        public override void NetSend(BinaryWriter writer) {
-			writer.WriteFlags(
-				downedEoCBoss, 
-				downedKingSlimeBoss, 
-				downedBoCBoss, 
-				downedEoWBoss, 
-				downedQueenBeeBoss, 
-				downedDeerclopsMiniBoss, 
-				downedSkeletronBoss, 
-				downedConstitutionBoss
-				
-			);
-			writer.WriteFlags(
-				downedWallBoss,
-				downedQueenSlimeBoss, 
-				downedDestroyerBoss, 
-				downedTwinsBoss, 
-				downedSkeletronPrimeBoss, 
-				downedNautilusMiniBoss, 
-				downedPlanteraBoss, 
-				downedIchorNodeMiniBoss
-			);
-			writer.WriteFlags(
+        public override void NetSend(BinaryWriter writer)
+        {
+            writer.WriteFlags(
+                downedEoCBoss,
+                downedKingSlimeBoss,
+                downedBoCBoss,
+                downedEoWBoss,
+                downedQueenBeeBoss,
+                downedDeerclopsMiniBoss,
+                downedSkeletronBoss,
+                downedConstitutionBoss
+
+            );
+            writer.WriteFlags(
+                downedWallBoss,
+                downedQueenSlimeBoss,
+                downedDestroyerBoss,
+                downedTwinsBoss,
+                downedSkeletronPrimeBoss,
+                downedNautilusMiniBoss,
+                downedPlanteraBoss,
+                downedIchorNodeMiniBoss
+            );
+            writer.WriteFlags(
                 downedCursedFlameNodeMiniBoss,
                 downedBlessedNodeMiniBoss,
-				downedGolemBoss,
-				downedFishronBoss,
-				downedEmpressBoss, 
-				downedCultistBoss
-			);
+                downedGolemBoss,
+                downedFishronBoss,
+                downedEmpressBoss,
+                downedCultistBoss
+            );
 
             writer.WriteFlags(
                 downedLunarBoss,
@@ -319,35 +319,36 @@ namespace DestroyerTest.Common.Systems
 
         }
 
-		public override void NetReceive(BinaryReader reader) {
-			reader.ReadFlags(
-				out downedEoCBoss, 
-				out downedKingSlimeBoss, 
-				out downedBoCBoss, 
-				out downedEoWBoss, 
-				out downedQueenBeeBoss, 
-				out downedDeerclopsMiniBoss, 
-				out downedSkeletronBoss, 
-				out downedConstitutionBoss
-			);
-			reader.ReadFlags(
-				out downedWallBoss,
-				out downedQueenSlimeBoss, 
-				out downedDestroyerBoss, 
-				out downedTwinsBoss, 
-				out downedSkeletronPrimeBoss, 
-				out downedNautilusMiniBoss, 
-				out downedPlanteraBoss, 
-				out downedIchorNodeMiniBoss
-			);
-			reader.ReadFlags(
+        public override void NetReceive(BinaryReader reader)
+        {
+            reader.ReadFlags(
+                out downedEoCBoss,
+                out downedKingSlimeBoss,
+                out downedBoCBoss,
+                out downedEoWBoss,
+                out downedQueenBeeBoss,
+                out downedDeerclopsMiniBoss,
+                out downedSkeletronBoss,
+                out downedConstitutionBoss
+            );
+            reader.ReadFlags(
+                out downedWallBoss,
+                out downedQueenSlimeBoss,
+                out downedDestroyerBoss,
+                out downedTwinsBoss,
+                out downedSkeletronPrimeBoss,
+                out downedNautilusMiniBoss,
+                out downedPlanteraBoss,
+                out downedIchorNodeMiniBoss
+            );
+            reader.ReadFlags(
                 out downedCursedFlameNodeMiniBoss,
                 out downedBlessedNodeMiniBoss,
-				out downedGolemBoss,
-				out downedFishronBoss,
-				out downedEmpressBoss, 
-				out downedCultistBoss
-			);
+                out downedGolemBoss,
+                out downedFishronBoss,
+                out downedEmpressBoss,
+                out downedCultistBoss
+            );
 
             reader.ReadFlags(
                 out downedLunarBoss,
@@ -357,7 +358,7 @@ namespace DestroyerTest.Common.Systems
             );
 
         }
-	}
+    }
 
-	
+
 }

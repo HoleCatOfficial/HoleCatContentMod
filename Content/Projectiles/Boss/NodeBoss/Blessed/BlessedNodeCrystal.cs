@@ -6,7 +6,6 @@ using DestroyerTest.Content.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
-using ReLogic.Content;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -53,7 +52,6 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.Blessed
                 if (TrailPositions.Count > 1)
                 {
                     List<ColoredVertex> ve = new List<ColoredVertex>();
-                    float a = 0;
 
                     for (int i = TrailPositions.Count - 1; i > 0; i--)
                     {
@@ -286,7 +284,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.Blessed
                     Projectile.velocity *= 1.1f;
                 }
             }
-        
+
         }
 
         public override void OnHitPlayer(Player target, Player.HurtInfo info)

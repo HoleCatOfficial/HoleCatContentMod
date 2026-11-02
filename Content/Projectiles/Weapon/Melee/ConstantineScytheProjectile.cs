@@ -1,31 +1,22 @@
 
+using System;
 using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Utilities;
 using BreadLibrary.Core.Verlet;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles.ParentClasses;
- 
-using Microsoft.CodeAnalysis;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib.Content.Helpers;
-using ReLogic.Peripherals.RGB;
-using System;
-using System.IO;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.GameContent;
-using Terraria.GameContent.Drawing;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 {
-	public class ConstantineScytheProjectile : BaseBroadswordProjectile
-	{
+    public class ConstantineScytheProjectile : BaseBroadswordProjectile
+    {
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -67,7 +58,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Vector2 dir = Main.MouseWorld - Projectile.Center;
             dir.Normalize();
 
-            Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, dir * 6, ModContent.ProjectileType<ConstantineScytheClone>(), (int)(Projectile.damage *  0.75f), 3, Owner.whoAmI);
+            Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, dir * 6, ModContent.ProjectileType<ConstantineScytheClone>(), (int)(Projectile.damage * 0.75f), 3, Owner.whoAmI);
         }
 
 
@@ -146,7 +137,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         public override void DrawOverBlade()
         {
             if (Ribbon != null)
-            { 
+            {
                 RibbonDraw();
             }
 
@@ -223,7 +214,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
             //SparkEdge(Owner, 0.75f, Color.HotPink, 2);
 
-            
+
         }
 
         public override void PostAI()

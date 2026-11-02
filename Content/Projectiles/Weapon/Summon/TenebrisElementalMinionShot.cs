@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
 using BreadLibrary.Core.Graphics.Spritebatch;
@@ -12,7 +10,6 @@ using DestroyerTest.Content.Buffs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
-using OpusLib.Content.Helpers;
 using OpusLib.Content.Particles;
 using Terraria;
 using Terraria.Audio;
@@ -56,7 +53,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
         public override bool PreDraw(ref Color lightColor)
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
-            
+
 
             return false;
         }
@@ -98,7 +95,6 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
             {
                 List<ColoredVertex> ve = new List<ColoredVertex>();
                 List<ColoredVertex> ve2 = new List<ColoredVertex>();
-                float a = 0;
 
                 for (int i = Projectile.OldCenter().Length - 1; i > 0; i--)
                 {

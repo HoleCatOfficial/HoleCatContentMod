@@ -1,15 +1,12 @@
 using System;
 using System.Linq;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Particles;
- 
 using Microsoft.Xna.Framework;
+using OpusLib;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using OpusLib;
 
 namespace DestroyerTest.Content.Projectiles.player.Accessory
 {

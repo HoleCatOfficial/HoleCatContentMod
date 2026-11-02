@@ -1,9 +1,7 @@
-using Microsoft.Xna.Framework;
+using DestroyerTest.Content.Buffs;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.Audio;
-using DestroyerTest.Content.Buffs;
 
 namespace DestroyerTest.Content.Consumables
 {
@@ -18,7 +16,7 @@ namespace DestroyerTest.Content.Consumables
         public override void SetDefaults()
         {
             Item.width = 56;
-			Item.height = 22;
+            Item.height = 22;
             Item.useStyle = ItemUseStyleID.HoldUp;
             Item.useAnimation = 15;
             Item.useTime = 90;
@@ -38,5 +36,5 @@ namespace DestroyerTest.Content.Consumables
             }
             return true;
         }
-	}
+    }
 }

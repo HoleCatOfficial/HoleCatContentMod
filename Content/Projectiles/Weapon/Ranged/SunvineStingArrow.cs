@@ -1,14 +1,10 @@
 ﻿using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Particles.Stellar;
 using DestroyerTest.Content.Projectiles.Weapon.Scepter;
 using DestroyerTest.Content.RangedItems;
- 
+
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using Terraria;
@@ -60,7 +56,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Ranged
         {
             if (Owner.HeldItem.ModItem is SunvineSting Sting)
             {
-                SoundEngine.PlaySound(SoundID.Item112 with { Pitch = MathHelper.Lerp(-0.7f, 0f, (float)Sting.HitCount / 20f)}, Projectile.Center);
+                SoundEngine.PlaySound(SoundID.Item112 with { Pitch = MathHelper.Lerp(-0.7f, 0f, Sting.HitCount / 20f) }, Projectile.Center);
                 Sting.HitCount++;
                 Sting.ResetTime = 120;
             }

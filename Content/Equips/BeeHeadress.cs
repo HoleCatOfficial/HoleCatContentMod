@@ -1,17 +1,10 @@
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.SummonItems;
-using DestroyerTest.Content.Tiles;
+using DestroyerTest.Common;
+using DestroyerTest.Content.Scepter;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using DestroyerTest.Rarity;
-using DestroyerTest.Content.Tiles.Riftplate;
-using DestroyerTest.Common;
-using Microsoft.Xna.Framework;
-using System.IO;
-using DestroyerTest.Content.Scepter;
 
 namespace DestroyerTest.Content.Equips
 {

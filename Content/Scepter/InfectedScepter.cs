@@ -1,26 +1,19 @@
-using System;
+using DestroyerTest.Common;
+using DestroyerTest.Content.Projectiles.Weapon.Scepter;
+using DestroyerTest.Content.Resources;
+using DestroyerTest.Rarity.Scepter;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.DataStructures;
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Resources;
-using System.IO.Pipelines;
-using DestroyerTest.Rarity;
-using DestroyerTest.Rarity.Scepter;
-using DestroyerTest.Content.Projectiles.Weapon.Scepter;
-using OpusLib;
- 
-using DestroyerTest.Content.Particles;
 
 namespace DestroyerTest.Content.Scepter
 {
-	public class InfectedScepter : ScepterItem
-	{
-		public override int Width => 34;
+    public class InfectedScepter : ScepterItem
+    {
+        public override int Width => 34;
         public override int Height => 34;
 
         public override void SetStaticDefaults()
@@ -62,7 +55,7 @@ namespace DestroyerTest.Content.Scepter
 
         public override bool? UseItem(Player player)
         {
-            if(player.altFunctionUse != 2)
+            if (player.altFunctionUse != 2)
             {
                 //Opus.NewParticleFloatAI(PRTLoader.GetParticleID<Boom3>(), Main.MouseWorld, Vector2.Zero, ColorLib.Ichor, 0.001f, 0.05f);
                 //Opus.NewParticleFloatAI(PRTLoader.GetParticleID<Boom3>(), Main.MouseWorld, Vector2.Zero, ColorLib.CursedFlames, 0.001f, 0.1f);
@@ -77,7 +70,7 @@ namespace DestroyerTest.Content.Scepter
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            if(player.altFunctionUse != 2)
+            if (player.altFunctionUse != 2)
             {
                 return false;
             }
@@ -87,15 +80,16 @@ namespace DestroyerTest.Content.Scepter
             }
         }
 
-        public override void AddRecipes() {
-			CreateRecipe()
+        public override void AddRecipes()
+        {
+            CreateRecipe()
                 .AddIngredient(ItemID.GoldBar, 4)
                 .AddIngredient(ItemID.DemoniteBar, 2)
                 .AddIngredient(ItemID.CrimtaneBar, 2)
                 .AddIngredient<PrimalShards>(10)
                 .AddIngredient<WretchedShards>(10)
                 .AddTile(TileID.MythrilAnvil)
-				.Register();
-		}
+                .Register();
+        }
     }
-} 
+}

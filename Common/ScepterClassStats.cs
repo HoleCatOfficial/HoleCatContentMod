@@ -1,8 +1,5 @@
 using System.Collections.Generic;
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Content.Projectiles.player.Accessory;
 using Terraria;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Common
@@ -18,14 +15,14 @@ namespace DestroyerTest.Common
     /// <para/> <b>ManaBurstPower</b> - This integer is for a not-yet-implemented mechanic involving the player's mana. This currently does nothing.
 	/// </summary>
 	public class ScepterClassStats : ModPlayer
-    {   
-        
+    {
+
         /// <summary>
         /// An integer modifier affecting how far a scepter will fly before automatically returning to the player.
         /// <para/> The formula is as follows: 1f + (ScepterClassStats.Range * 0.01f). As you can observe, it is impossible to decrease the range, not that it would be useful to. For debuffs you can just decrease the effectiveness of the range multiplier.
         /// <para/><b>Note:</b> Because the thrown projectiles run on a timer, range value measures in <b>In-Game ticks</b>. 
         /// </summary>
-        public int Range { get; set; } 
+        public int Range { get; set; }
 
         /// <summary>
         /// A multiplicative modifer that affects how fast thrown scepters travel.
@@ -53,7 +50,7 @@ namespace DestroyerTest.Common
         /// </summary>
         public static List<Projectile> AllThrownScepters = new List<Projectile>
         {
-            
+
         };
 
         /// <summary>
@@ -62,7 +59,7 @@ namespace DestroyerTest.Common
         /// </summary>
         public static List<Projectile> AllScepterShots = new List<Projectile>
         {
-            
+
         };
 
         /// <summary>
@@ -86,5 +83,5 @@ namespace DestroyerTest.Common
         };
     }
 
-    
+
 }

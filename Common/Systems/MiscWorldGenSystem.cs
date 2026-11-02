@@ -1,37 +1,31 @@
-using Terraria;
-using Terraria.Graphics.Effects;
-using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using Terraria.Graphics;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
-using DestroyerTest.Common;
-using SteelSeries.GameSense;
-using ReLogic.Content;
 using System.Collections.Generic;
-using Terraria.UI;
-using Terraria.ID;
-using Terraria.WorldBuilding;
-using Terraria.IO;
-using Terraria.Localization;
 using DestroyerTest.Content.Tiles;
 using DestroyerTest.Content.Tiles.Altar;
+using Microsoft.Xna.Framework;
+using Terraria;
+using Terraria.ID;
+using Terraria.IO;
+using Terraria.Localization;
+using Terraria.ModLoader;
+using Terraria.WorldBuilding;
 
 namespace DestroyerTest.Common.Systems
 {
-	public class MiscWorldGenSystem : ModSystem
-	{
-		public static LocalizedText BeachGrassPassMessage { get; private set; }
+    public class MiscWorldGenSystem : ModSystem
+    {
+        public static LocalizedText BeachGrassPassMessage { get; private set; }
         public static LocalizedText AltarPassMessage { get; private set; }
 
-        public override void SetStaticDefaults() {
-			BeachGrassPassMessage = Language.GetText("Mods.DestroyerTest.WorldGen.BeachGrassPass");
+        public override void SetStaticDefaults()
+        {
+            BeachGrassPassMessage = Language.GetText("Mods.DestroyerTest.WorldGen.BeachGrassPass");
             AltarPassMessage = Language.GetText("Mods.DestroyerTest.WorldGen.AltarPass");
         }
 
-		// 4. We use the ModifyWorldGenTasks method to tell the game the order that our world generation code should run
-		public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight) {
-			int index = tasks.FindIndex(p => p.Name == "Stalac");
+        // 4. We use the ModifyWorldGenTasks method to tell the game the order that our world generation code should run
+        public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight)
+        {
+            int index = tasks.FindIndex(p => p.Name == "Stalac");
             if (index != -1)
             {
                 tasks.Insert(index + 1, new BeachGrassPass("Beach Grass", 100f));
@@ -43,14 +37,15 @@ namespace DestroyerTest.Common.Systems
                 tasks.Insert(index2 + 1, new AltarIslandPass("Altar Island", 100f));
             }
         }
-	}
+    }
 
-	public class BeachGrassPass : GenPass
-	{
-		public BeachGrassPass(string name, float loadWeight) : base(name, loadWeight) {
-		}
+    public class BeachGrassPass : GenPass
+    {
+        public BeachGrassPass(string name, float loadWeight) : base(name, loadWeight)
+        {
+        }
 
-		protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration) 
+        protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration)
         {
             progress.Message = MiscWorldGenSystem.BeachGrassPassMessage.Value;
             int grassWidth = 180;
@@ -95,7 +90,7 @@ namespace DestroyerTest.Common.Systems
             }
         }
 
-	}
+    }
 
     public class AltarIslandPass : GenPass
     {
@@ -114,7 +109,7 @@ namespace DestroyerTest.Common.Systems
             }
 
 
-            int BottomPadding = (int)(Main.maxTilesY - Main.worldSurface + 300);
+            int BottomPadding = (int)(Main.maxTilesY - Main.worldSurface + 100);
             Point GenPoint = WorldGen.RandomWorldPoint(100, 300, BottomPadding, 300);
 
             Point Relative(int x, int y)
@@ -127,9 +122,9 @@ namespace DestroyerTest.Common.Systems
             Point Torch1 = new Point(AltarTilePoint.X - 2, AltarTilePoint.Y + 1);
             Point Torch2 = new Point(Torch1.X + 7, Torch1.Y);
 
-            
+
             WorldGen.CloudIsland(GenPoint.X, GenPoint.Y);
-         
+
 
             void Layer(int startX, int y, int width, int tileType)
             {

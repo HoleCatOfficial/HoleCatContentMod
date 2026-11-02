@@ -1,20 +1,14 @@
 
 using DestroyerTest.Common;
-using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Weapon.Melee;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.Resources.Cloths;
-using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.MeleeWeapons
 {
-	public class SparkFrostCleaver : ModItem
-	{
+    public class SparkFrostCleaver : ModItem
+    {
 
         public override void SetStaticDefaults()
         {
@@ -22,20 +16,21 @@ namespace DestroyerTest.Content.MeleeWeapons
             DTUtils.TooltipScaleMult[Type] = 1.17f;
         }
 
-        public override void SetDefaults() {
-			Item.width = 96;
-			Item.height = 96;
-			Item.value = Item.sellPrice(gold: 2, silver: 50);
-			Item.rare = ItemRarityID.Green;
+        public override void SetDefaults()
+        {
+            Item.width = 96;
+            Item.height = 96;
+            Item.value = Item.sellPrice(gold: 2, silver: 50);
+            Item.rare = ItemRarityID.Green;
             Item.SetSpecialMeleeStats();
             Item.useStyle = ItemUseStyleID.Shoot;
-			Item.knockBack = 70;
-			Item.autoReuse = false;
-			Item.damage = 110;
-			Item.DamageType = DamageClass.Melee;
-			Item.noMelee = true; 
-			Item.noUseGraphic = true;
-			Item.shoot = ModContent.ProjectileType<SparkFrostCleaverSwing>();
+            Item.knockBack = 70;
+            Item.autoReuse = false;
+            Item.damage = 110;
+            Item.DamageType = DamageClass.Melee;
+            Item.noMelee = true;
+            Item.noUseGraphic = true;
+            Item.shoot = ModContent.ProjectileType<SparkFrostCleaverSwing>();
             Item.channel = true;
         }
 
@@ -44,19 +39,19 @@ namespace DestroyerTest.Content.MeleeWeapons
             return player.ownedProjectileCounts[Item.shoot] < 1;
         }
 
-        public override bool MeleePrefix() 
-		{
-			return true;
-		}
+        public override bool MeleePrefix()
+        {
+            return true;
+        }
 
-		public override void AddRecipes() 
-		{
-			CreateRecipe()
+        public override void AddRecipes()
+        {
+            CreateRecipe()
                 .AddIngredient(ItemID.WandofSparking)
-				.AddIngredient(ItemID.WandofFrosting)
-				.AddIngredient(ItemID.SoulofMight, 12)
-				.AddTile(TileID.MythrilAnvil)
-				.Register();
-		}
-	}
+                .AddIngredient(ItemID.WandofFrosting)
+                .AddIngredient(ItemID.SoulofMight, 12)
+                .AddTile(TileID.MythrilAnvil)
+                .Register();
+        }
+    }
 }

@@ -1,18 +1,9 @@
-﻿using DestroyerTest.Common;
-using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Projectiles.Boss.NodeBoss.Blessed;
+﻿using System.Collections.Generic;
+using DestroyerTest.Common;
 using DestroyerTest.Content.Projectiles.Weapon.Melee;
-using DestroyerTest.Content.Projectiles.Weapon.Summon;
 using DestroyerTest.Content.RangedItems;
-using DestroyerTest.Content.SummonItems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -86,10 +77,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Ranged
         public SoundStyle FireSound = new SoundStyle("DestroyerTest/Assets/Audio/PoisonVerseBurst");
 
         public bool[] Level = new bool[3];
-            
+
         private bool[] soundflag = new bool[3];
         private bool fireFlag = false;
-       
+
         public override void AI()
         {
             Vector2 dir = Main.MouseWorld - Projectile.Center;
@@ -97,7 +88,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Ranged
             Projectile.rotation = dir.ToRotation();
             Owner.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, dir.ToRotation() - MathHelper.PiOver2);
             Projectile.Center = Owner.Center + new Vector2(15, 0).RotatedBy(Projectile.rotation);
-            
+
 
             if (Owner.HeldItem.type == ModContent.ItemType<PureBow>() && Owner.controlUseItem && !fireFlag && !Owner.CCed && !Owner.dead)
             {
@@ -193,7 +184,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Ranged
             }
             else if (Level[1])
             {
-                
+
                 SoundEngine.PlaySound(SoundID.Item25 with { Pitch = 0.25f }, Projectile.Center);
 
                 Vector2 dir = Main.MouseWorld - Projectile.Center;
@@ -224,7 +215,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Ranged
                 Vector2 dir = Main.MouseWorld - Projectile.Center;
                 dir.Normalize();
                 Vector2 Vel = dir * 32;
-                if(CheckAmmoForConsumption(Owner, out int projToShoot, out float speed, out int damage, out float knockBack, out int usedAmmoItemId, out Item B))
+                if (CheckAmmoForConsumption(Owner, out int projToShoot, out float speed, out int damage, out float knockBack, out int usedAmmoItemId, out Item B))
                 {
                     projToShoot = Owner.FindAmmoDT(AmmoID.Arrow).shoot;
 

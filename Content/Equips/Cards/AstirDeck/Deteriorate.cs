@@ -1,11 +1,4 @@
-
-using System.Collections.Generic;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Equips.ScepterAccessories;
 using DestroyerTest.Content.Projectiles.player.Accessory;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
 using OpusLib.Content.Helpers;
 using Terraria;
@@ -15,25 +8,25 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Equips.Cards.AstirDeck
 {
-	public class Deteriorate : ModItem
-	{
+    public class Deteriorate : ModItem
+    {
         public override void SetStaticDefaults()
         {
             OpusNPCDropHelper.DropsFromNPC[Type] = new NPCDropData(NPCID.EaterofSouls, ItemDropRule.Common(Type, 20));
         }
         public override void SetDefaults()
-		{
-			Item.width = 16;
-			Item.height = 24;
-			Item.maxStack = 1;
-			Item.value = 1;
-			Item.accessory = true;
+        {
+            Item.width = 16;
+            Item.height = 24;
+            Item.maxStack = 1;
+            Item.value = 1;
+            Item.accessory = true;
             Item.rare = ItemRarityID.Blue;
-		}
+        }
 
-		public override void UpdateAccessory(Player player, bool hideVisual)
-		{
-			player.GetDamage(DamageClass.Throwing) += 0.3f;
+        public override void UpdateAccessory(Player player, bool hideVisual)
+        {
+            player.GetDamage(DamageClass.Throwing) += 0.3f;
 
             if (player.TryGetModPlayer<DeterioratePlayer>(out var deteriorate))
             {
@@ -42,7 +35,7 @@ namespace DestroyerTest.Content.Equips.Cards.AstirDeck
         }
     }
 
-    public class  DeterioratePlayer : ModPlayer
+    public class DeterioratePlayer : ModPlayer
     {
         public bool Active = false;
 
@@ -53,7 +46,7 @@ namespace DestroyerTest.Content.Equips.Cards.AstirDeck
     }
 
     internal class DeteriorateOwnedProjectiles : GlobalProjectile
-	{
+    {
         public override bool InstancePerEntity => true;
         public override void OnHitNPC(Projectile projectile, NPC target, NPC.HitInfo hit, int damageDone)
         {
@@ -67,5 +60,5 @@ namespace DestroyerTest.Content.Equips.Cards.AstirDeck
             }
         }
     }
-    
+
 }

@@ -1,13 +1,9 @@
-﻿using BreadLibrary.Core.Graphics.Particles;
+﻿using System;
+using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Graphics.Renderers;
 using Terraria.ModLoader;
@@ -39,13 +35,13 @@ namespace DestroyerTest.Content.Particles
 
         public override void Update(ref ParticleRendererSettings settings)
         {
-            Lifetime--; 
+            Lifetime--;
 
 
-            float progress = (float)Lifetime / (float)(maxLifetime);
+            float progress = Lifetime / (float)(maxLifetime);
             Opacity = MathHelper.Lerp(0f, 1f, progress);
             //scale = MathHelper.Lerp(InitScale, InitScale * 0.5f, progress);
-            
+
 
             if (Lifetime <= 0)
             {

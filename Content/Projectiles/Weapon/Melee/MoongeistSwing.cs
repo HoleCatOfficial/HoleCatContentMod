@@ -1,23 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using BreadLibrary.Core.Graphics.Particles;
-using BreadLibrary.Core.Graphics.Pixelation;
+﻿using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.ScreenShake;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles.ParentClasses;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
 using OpusLib.Content.Helpers;
-using OpusLib.Content.Particles;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.GameContent;
-using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -51,7 +42,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         public override void HitNPCEffects(NPC npc, NPC.HitInfo hit, int damageDone)
         {
             npc.AddBuff(BuffID.BrokenArmor, 300);
-            
+
 
             if (DTConfig.instance.ScreenshakeEffects)
             {
@@ -81,7 +72,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Lighting.AddLight(npc.Center, Color.Aquamarine.ToVector3());
 
             SoundEngine.PlaySound(DTAssetLib.Impacts.MagicHit with { MaxInstances = 0, Pitch = 0.3f, PitchVariance = 0.6f, Variants = new(3) }, npc.Center);
-           // SoundEngine.PlaySound(DTAssetLib.Impacts.WindHit with { MaxInstances = 0, PitchVariance = 0.4f, Pitch = -0.3f }, npc.Center);
+            // SoundEngine.PlaySound(DTAssetLib.Impacts.WindHit with { MaxInstances = 0, PitchVariance = 0.4f, Pitch = -0.3f }, npc.Center);
         }
 
         bool f1 = false;
@@ -96,7 +87,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                     star.Initialize(swordTip, Main.rand.NextVector2Circular(2f, 2f), Color.Aquamarine, 1f, Main.rand.NextFloat(-0.1f, 0.1f), 90);
                     ParticleEngine.Particles.Add(star);
                 }
-                
+
                 for (int i = 0; i < 2; i++)
                 {
                     Projectile.NewProjectile(Projectile.GetSource_FromThis(), swordTip, SwordLine.GetLineRotation.ToRotationVector2().RotatedByRandom(0.2f) * (Main.rand.NextFloat(20f, 30f) * Owner.GetTotalAttackSpeed(DamageClass.Melee)), ModContent.ProjectileType<MoongeistBolt>(), Projectile.damage / 12, 2f, Projectile.owner);

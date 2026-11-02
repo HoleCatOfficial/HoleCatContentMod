@@ -1,32 +1,16 @@
 
 using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
-using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.MeleeWeapons;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Particles.Orchestrated;
 using DestroyerTest.Content.Projectiles.ParentClasses;
- 
- 
-using log4net.Appender;
-using Microsoft.Build.Evaluation;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using OpusLib.Content.Helpers;
 using OpusLib.Content.Particles;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq.Expressions;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.GameContent;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Melee
@@ -52,11 +36,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         {
             base.HitNPCEffects(npc, hit, damageDone);
             SoundEngine.PlaySound(Hit);
-         
+
             var ScreenShake = Owner.GetModPlayer<ScreenshakePlayer>();
 
             int splatterdir = npc.position.X > Owner.MountedCenter.X ? 1 : -1;
-                for (int i = 0; i< 7; i++)
+            for (int i = 0; i < 7; i++)
             {
                 Spark Spark = new Spark();
                 Spark.PrepareSpark(npc.Center, new Vector2(Main.rand.NextFloat(2f, 6f) * splatterdir, 0).RotatedByRandom(0.1f), 0f, Color.Red, 1f, false, 30, SparkDrawMode.Additive);
@@ -72,14 +56,14 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Opus.RadialSpreadProjectileRandom(ModContent.ProjectileType<GargantuaStar>(), 2, npc.Center, (int)(Projectile.damage * 0.2f), (int)(Projectile.knockBack * 0.5f), 14f);
 
             if (hit.Crit)
-			{
+            {
                 ScreenShake.screenshakeMagnitude = 4;
                 ScreenShake.screenshakeTimer = 20;
                 for (int t = 0; t < 2; t++)
-				{
-					Projectile.NewProjectile(Projectile.GetSource_OnHit(npc), npc.Center, new Vector2(20f * splatterdir, 0).RotatedByRandom(0.1f), ModContent.ProjectileType<GoliathPhantom>(), (int)(Projectile.damage * 0.2f), 4, Projectile.owner);
-				}
-			}
+                {
+                    Projectile.NewProjectile(Projectile.GetSource_OnHit(npc), npc.Center, new Vector2(20f * splatterdir, 0).RotatedByRandom(0.1f), ModContent.ProjectileType<GoliathPhantom>(), (int)(Projectile.damage * 0.2f), 4, Projectile.owner);
+                }
+            }
         }
 
         public Vector2 swordTip;
@@ -102,7 +86,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 Projectile.Center + Projectile.rotation.ToRotationVector2() * (Projectile.Size.Length() * (Projectile.scale * 0.20f)),
             };
 
-            
+
 
             Vector2[] positions =
             {

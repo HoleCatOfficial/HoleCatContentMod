@@ -1,10 +1,8 @@
-using System;
-using System.Collections.Generic;
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Entities;
 using DestroyerTest.Content.Particles;
- 
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
@@ -15,66 +13,66 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame
 {
-	public class CursedFlameNapalm : ModProjectile
-	{
-		public override string Texture => DTUtils.NoTexture;
+    public class CursedFlameNapalm : ModProjectile
+    {
+        public override string Texture => DTUtils.NoTexture;
 
         public override void SetStaticDefaults()
         {
-			ProjectileID.Sets.TrailCacheLength[Type] = 40;
-			ProjectileID.Sets.TrailingMode[Type] = 3;
+            ProjectileID.Sets.TrailCacheLength[Type] = 40;
+            ProjectileID.Sets.TrailingMode[Type] = 3;
             DTUtils.OwnedByBossNPC[Type] = ModContent.NPCType<CursedFlameNodeMB>();
         }
 
-		public override void SetDefaults()
-		{
-			Projectile.width = 40;
-			Projectile.height = 40;
-			Projectile.DamageType = DamageClass.Generic;
-			Projectile.friendly = false;
-			Projectile.hostile = true;
-			Projectile.ignoreWater = true;
-			Projectile.light = 1f;
-			Projectile.timeLeft = 600;
-			Projectile.tileCollide = true;
-			Projectile.alpha = 160;
-		}
+        public override void SetDefaults()
+        {
+            Projectile.width = 40;
+            Projectile.height = 40;
+            Projectile.DamageType = DamageClass.Generic;
+            Projectile.friendly = false;
+            Projectile.hostile = true;
+            Projectile.ignoreWater = true;
+            Projectile.light = 1f;
+            Projectile.timeLeft = 600;
+            Projectile.tileCollide = true;
+            Projectile.alpha = 160;
+        }
 
-		public bool DrawTrail = true;
-		public bool FadeTrail = false;
-		public float TrailOpacity = 1f;
+        public bool DrawTrail = true;
+        public bool FadeTrail = false;
+        public float TrailOpacity = 1f;
 
-		public override void AI()
-		{
-			if (FadeTrail)
-			{
-				if (TrailOpacity > 0)
-				{
-					TrailOpacity -= 0.02f;
-				}
-				else
-				{
-					FadeTrail = false;
-					DrawTrail = false;
-				}
+        public override void AI()
+        {
+            if (FadeTrail)
+            {
+                if (TrailOpacity > 0)
+                {
+                    TrailOpacity -= 0.02f;
+                }
+                else
+                {
+                    FadeTrail = false;
+                    DrawTrail = false;
+                }
 
-			}
+            }
 
-			// Gravity + motion
-			Projectile.ai[0]++;
-			if (Projectile.ai[0] >= 5f)
-			{
-				Projectile.ai[0] = 5f;
-				Projectile.velocity.Y += 0.15f;
-			}
+            // Gravity + motion
+            Projectile.ai[0]++;
+            if (Projectile.ai[0] >= 5f)
+            {
+                Projectile.ai[0] = 5f;
+                Projectile.velocity.Y += 0.15f;
+            }
 
-			if (Projectile.velocity.Y > 16f)
-				Projectile.velocity.Y = 16f;
+            if (Projectile.velocity.Y > 16f)
+                Projectile.velocity.Y = 16f;
 
-			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
+            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
 
-			if (Main.rand.NextBool(3))
-			{
+            if (Main.rand.NextBool(3))
+            {
                 LerpingFire fire = new LerpingFire();
                 fire.PrepareFire(Projectile.Center, Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.3f, 0.3f), ColorLib.WretchedColorMap, 1.6f, 100, FireDrawMode.Additive);
                 ParticleEngine.BehindProjectiles.Add(fire);
@@ -88,30 +86,30 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame
             }
         }
 
-		public override bool PreDraw(ref Color lightColor)
-		{
-			SpriteBatch spriteBatch = Main.spriteBatch;
-			var glowTex = DTAssetLib.FeatheredCircle.Value;
-			DTUtils Utility = new DTUtils();
+        public override bool PreDraw(ref Color lightColor)
+        {
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            var glowTex = DTAssetLib.FeatheredCircle.Value;
+            DTUtils Utility = new DTUtils();
 
-			Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-			for (int i = 0; i < Projectile.oldPos.Length; i++)
-			{
-				float progress = i / (float)Projectile.oldPos.Length;
-				float scale = MathHelper.Lerp(1.5f, 0.0005f, progress);
-				Color color = DTColorUtils.MultiLerp(progress, ColorLib.WretchedColorMap) * TrailOpacity;
+            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+            for (int i = 0; i < Projectile.oldPos.Length; i++)
+            {
+                float progress = i / (float)Projectile.oldPos.Length;
+                float scale = MathHelper.Lerp(1.5f, 0.0005f, progress);
+                Color color = DTColorUtils.MultiLerp(progress, ColorLib.WretchedColorMap) * TrailOpacity;
 
-				Main.EntitySpriteDraw(
-					glowTex,
-					Projectile.OldCenter()[i] - Main.screenPosition,
-					null,
-					color,
-					Projectile.rotation,
-					glowTex.Size() / 2f,
-					scale,
-					SpriteEffects.None,
-					0
-				);
+                Main.EntitySpriteDraw(
+                    glowTex,
+                    Projectile.OldCenter()[i] - Main.screenPosition,
+                    null,
+                    color,
+                    Projectile.rotation,
+                    glowTex.Size() / 2f,
+                    scale,
+                    SpriteEffects.None,
+                    0
+                );
 
                 Main.EntitySpriteDraw(
                     glowTex,
@@ -126,18 +124,18 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame
                 );
             }
 
-			// draw main projectile glow
-			Main.EntitySpriteDraw(
-				glowTex,
-				Projectile.Center - Main.screenPosition,
-				null,
-				ColorLib.Wretched1,
-				Projectile.velocity.ToRotation(),
-				glowTex.Size() / 2f,
-				1.5f,
-				SpriteEffects.None,
-				0
-			);
+            // draw main projectile glow
+            Main.EntitySpriteDraw(
+                glowTex,
+                Projectile.Center - Main.screenPosition,
+                null,
+                ColorLib.Wretched1,
+                Projectile.velocity.ToRotation(),
+                glowTex.Size() / 2f,
+                1.5f,
+                SpriteEffects.None,
+                0
+            );
 
             Main.EntitySpriteDraw(
                 glowTex,
@@ -153,28 +151,28 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame
 
             Opus.ReturnToDefaultDrawing(spriteBatch);
 
-			return false;
-		}
+            return false;
+        }
 
-		public bool Flag1 = false;
-		public override bool OnTileCollide(Vector2 oldVelocity)
-		{
-			Projectile.velocity = Vector2.Zero;
-			DrawTrail = true;
-			FadeTrail = true;
-		
-			if (!Flag1)
-			{
-				Projectile.netUpdate = true;
-				Flag1 = true;
-			}
-			return false;
-		}
+        public bool Flag1 = false;
+        public override bool OnTileCollide(Vector2 oldVelocity)
+        {
+            Projectile.velocity = Vector2.Zero;
+            DrawTrail = true;
+            FadeTrail = true;
+
+            if (!Flag1)
+            {
+                Projectile.netUpdate = true;
+                Flag1 = true;
+            }
+            return false;
+        }
 
 
-		public override void OnHitPlayer(Player target, Player.HurtInfo info)
-		{
-			target.AddBuff(BuffID.CursedInferno, 240);
-		}
-	}
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
+        {
+            target.AddBuff(BuffID.CursedInferno, 240);
+        }
+    }
 }

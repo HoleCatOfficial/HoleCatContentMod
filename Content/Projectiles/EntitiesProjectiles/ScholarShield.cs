@@ -1,17 +1,14 @@
-using Terraria;
-using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using DestroyerTest.Content.Entities;
-using ReLogic.Content;
-using Microsoft.Xna.Framework.Graphics;
 using DestroyerTest.Common;
- 
-using DestroyerTest.Content.Particles;
-using Microsoft.Xna.Framework.Audio;
+using DestroyerTest.Content.Entities;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
+using ReLogic.Content;
+using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
-using OpusLib;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.EntitiesProjectiles
 {
@@ -64,7 +61,7 @@ namespace DestroyerTest.Content.Projectiles.EntitiesProjectiles
                 if (proj.active && (!proj.friendly || proj.hostile) && proj.Distance(Projectile.Center) <= (ShieldTex.Value.Width * ShieldTexScale) / 2)
                 {
                     SoundEngine.PlaySound(Deflect, proj.Center);
-                
+
                     proj.Kill();
                 }
             }
@@ -72,7 +69,7 @@ namespace DestroyerTest.Content.Projectiles.EntitiesProjectiles
             if (Main.rand.NextBool(5))
             {
                 Vector2 Edge = Projectile.Center + Main.rand.NextVector2CircularEdge((ShieldTex.Value.Width * ShieldTexScale) / 2, (ShieldTex.Value.Width * ShieldTexScale) / 2);
-                for(int i = 0; i < 3; i++)
+                for (int i = 0; i < 3; i++)
                 {
                     Dust.NewDustPerfect(Edge, DustID.FireworksRGB, Vector2.Zero, 0, ColorLib.JavelinEnergy, 2);
                 }
@@ -90,7 +87,7 @@ namespace DestroyerTest.Content.Projectiles.EntitiesProjectiles
                 }
             }
 
-            if (scholar == null || scholar.life > (int)(scholar.lifeMax / 2))
+            if (scholar == null || scholar.life > scholar.lifeMax / 2)
             {
                 return;
             }

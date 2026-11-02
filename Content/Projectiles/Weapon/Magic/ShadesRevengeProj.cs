@@ -1,24 +1,13 @@
+using System.Collections.Generic;
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Projectiles.Boss.VampireBoss;
-using DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss;
-using DestroyerTest.Content.RiftArsenal;
- 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using ReLogic.Utilities;
-using System;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.Enums;
-using Terraria.GameContent;
-using Terraria.GameContent.Drawing;
-using Terraria.Graphics.CameraModifiers;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -27,7 +16,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 {
     public class ShadesRevengeProj : ModProjectile
     {
-            
+
         public override void SetDefaults()
         {
             Projectile.width = 30;
@@ -84,25 +73,25 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             );
 
             Opus.ReturnToDefaultDrawing(spriteBatch);
-            
-            for (int i = 0; i < TrailPositions.Count; i++)
-			{
-				float progress = i / (float)TrailLength;
-				float scale = MathHelper.Lerp(1f, 0.001f, progress);
-				Color color = Color.Black;
 
-				Main.EntitySpriteDraw(
-					DTAssetLib.FeatheredCircle.Value,
-					TrailPositions[i] - Main.screenPosition,
-					null,
-					color,
-					Projectile.rotation,
-					DTAssetLib.FeatheredCircle.Value.Size() / 2f,
-					scale * TextureScale,
-					SpriteEffects.None,
-					0
-				);
-			}
+            for (int i = 0; i < TrailPositions.Count; i++)
+            {
+                float progress = i / (float)TrailLength;
+                float scale = MathHelper.Lerp(1f, 0.001f, progress);
+                Color color = Color.Black;
+
+                Main.EntitySpriteDraw(
+                    DTAssetLib.FeatheredCircle.Value,
+                    TrailPositions[i] - Main.screenPosition,
+                    null,
+                    color,
+                    Projectile.rotation,
+                    DTAssetLib.FeatheredCircle.Value.Size() / 2f,
+                    scale * TextureScale,
+                    SpriteEffects.None,
+                    0
+                );
+            }
 
             Main.spriteBatch.Draw(
                 DTAssetLib.FeatheredCircle.Value,
@@ -116,28 +105,28 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
                 1f
             );
 
-            
+
         }
 
-        
-        
+
+
         public List<Vector2> TrailPositions = new();
-		public List<float> TrailRotations = new();
+        public List<float> TrailRotations = new();
         private const int TrailLength = 40;
         public float TextureRotationOffset = 0f;
         public float TextureScale = 1f;
         public int Leeway = 15;
 
         SlotId LoopSlot;
-        public SoundStyle Loop = new SoundStyle("DestroyerTest/Assets/Audio/AuraLoop/TenebrisLoop") 
-        { 
+        public SoundStyle Loop = new SoundStyle("DestroyerTest/Assets/Audio/AuraLoop/TenebrisLoop")
+        {
             MaxInstances = 0,
             IsLooped = true,
             PauseBehavior = PauseBehavior.PauseWithGame
         };
 
-        public SoundStyle Killed = new SoundStyle("DestroyerTest/Assets/Audio/TenebrisTesticleKill") 
-        { 
+        public SoundStyle Killed = new SoundStyle("DestroyerTest/Assets/Audio/TenebrisTesticleKill")
+        {
             MaxInstances = 0,
             PitchVariance = 0.5f
         };
@@ -186,16 +175,18 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 
             TextureRotationOffset -= 0.5f;
             Lighting.AddLight(Projectile.Center, ColorLib.TenebrisGradient.ToVector3());
-  
+
 
             for (int i = 0; i < 4; i++)
             {
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.FireworksRGB, 0f, 0f, 0, ColorLib.TenebrisGradient, 0.85f);
             }
 
-            if (!SoundEngine.TryGetActiveSound(LoopSlot, out var activeSound)) {
+            if (!SoundEngine.TryGetActiveSound(LoopSlot, out var activeSound))
+            {
                 var tracker = new ProjectileAudioTracker(Projectile);
-                LoopSlot = SoundEngine.PlaySound(Loop, Projectile.Center, soundInstance => {
+                LoopSlot = SoundEngine.PlaySound(Loop, Projectile.Center, soundInstance =>
+                {
                     soundInstance.Position = Projectile.Center;
                     soundInstance.Pitch = PitchVal;
                     return tracker.IsActiveAndInGame();
@@ -235,7 +226,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             }
             */
 
-            
+
 
             if (shouldActAsChanneling(player))
             {
@@ -271,13 +262,13 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 
         }
 
-        
+
 
         public override void ModifyDamageHitbox(ref Rectangle hitbox)
         {
             hitbox.Inflate(20, 20);
         }
-        
+
 
         public override void OnKill(int timeLeft)
         {

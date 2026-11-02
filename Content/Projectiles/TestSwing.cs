@@ -1,8 +1,5 @@
 using DestroyerTest.Content.Projectiles.ParentClasses;
-using DestroyerTest.Content.RiftArsenal;
-using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles
 {
@@ -19,10 +16,10 @@ namespace DestroyerTest.Content.Projectiles
             Projectile.friendly = true;
         }
 
-        
+
         public override void AI()
         {
-            
+
         }
     }
 }

@@ -1,18 +1,13 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Security.Policy;
 using BreadLibrary.Core.Graphics.Particles;
-using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
 using DestroyerTest.Common.DropRules;
 using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.BossBar;
 using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Consumables;
 using DestroyerTest.Content.Equips;
 using DestroyerTest.Content.Equips.ScepterAccessories;
 using DestroyerTest.Content.Fargos.EternityDrops;
@@ -25,9 +20,8 @@ using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.SummonItems;
 using DestroyerTest.Content.Tiles;
 using DestroyerTest.Content.Tools;
-using GlowmaskHelper.Content;
- 
- 
+
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
@@ -41,7 +35,6 @@ using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.UI;
 
 namespace DestroyerTest.Content.Entities
 {
@@ -134,7 +127,7 @@ namespace DestroyerTest.Content.Entities
         public float ShieldScale = 1f;
         public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            float progress = (float)SentinelKillTally / (float)SentinelKillRequirement;
+            float progress = SentinelKillTally / (float)SentinelKillRequirement;
             if (CurrentAttack == AttackState.Dormant)
             {
 
@@ -152,7 +145,7 @@ namespace DestroyerTest.Content.Entities
 
             if (NPC.IsABestiaryIconDummy)
             {
-                
+
                 portraitoutlinerot += 0.05f;
                 for (int i = 0; i < 4; i++)
                 {
@@ -181,14 +174,14 @@ namespace DestroyerTest.Content.Entities
 
             Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
-            
+
 
             Main.EntitySpriteDraw(v, NPC.Center - screenPos, null, ColorLib.WretchedGradient() * ShieldOpacity, 0f, v.Size() / 2, ShieldScale, SpriteEffects.None);
 
 
-            Main.EntitySpriteDraw(DTAssetLib.BarrierRing.Value, NPC.Center - screenPos, null, OpusColorUtils.MultiLerp(((float)SentinelKillTally / (float)SentinelKillRequirement), ColorLib.WretchedColorMap) * ShieldOpacity, BorderRotation, DTAssetLib.BarrierRing.Value.Size() / 2, DTAssetLib.BarrierRing.Value.ScaleRingTextureToMatchRadius(1200f, 1300), SpriteEffects.None);
+            Main.EntitySpriteDraw(DTAssetLib.BarrierRing.Value, NPC.Center - screenPos, null, OpusColorUtils.MultiLerp((SentinelKillTally / (float)SentinelKillRequirement), ColorLib.WretchedColorMap) * ShieldOpacity, BorderRotation, DTAssetLib.BarrierRing.Value.Size() / 2, DTAssetLib.BarrierRing.Value.ScaleRingTextureToMatchRadius(1200f, 1300), SpriteEffects.None);
 
-            spriteBatch.DrawString(DTAssetLib.Doxent.Value, $"{SentinelKillTally} / {SentinelKillRequirement}", (NPC.Center + new Vector2(0, -90)) - screenPos, OpusColorUtils.MultiLerp(((float)SentinelKillTally / (float)SentinelKillRequirement), ColorLib.WretchedColorMap) * ShieldOpacity, 0f, DTAssetLib.Doxent.Value.MeasureString($"{SentinelKillTally} / {SentinelKillRequirement}") * 0.5f, 0.5f, SpriteEffects.None, 0f);
+            spriteBatch.DrawString(DTAssetLib.Doxent.Value, $"{SentinelKillTally} / {SentinelKillRequirement}", (NPC.Center + new Vector2(0, -90)) - screenPos, OpusColorUtils.MultiLerp((SentinelKillTally / (float)SentinelKillRequirement), ColorLib.WretchedColorMap) * ShieldOpacity, 0f, DTAssetLib.Doxent.Value.MeasureString($"{SentinelKillTally} / {SentinelKillRequirement}") * 0.5f, 0.5f, SpriteEffects.None, 0f);
             //Utils.DrawBorderString(spriteBatch, $"{SentinelKillTally} / {SentinelKillRequirement}", (NPC.Center + new Vector2(0, -90)) - screenPos, ColorLib.WretchedGradient() * ShieldOpacity, 3f, 0.5f, 0.5f);
             Opus.ReturnToDefaultDrawing(spriteBatch);
 
@@ -331,7 +324,7 @@ namespace DestroyerTest.Content.Entities
             {
                 case AttackState.Dormant:
                     {
-                        
+
                         DormantAI();
                         if ((SentinelKillTally < SentinelKillRequirement))
                         {
@@ -375,7 +368,7 @@ namespace DestroyerTest.Content.Entities
 
                         if (!DestroyerTestMod.EternityIsActive && !DestroyerTestMod.DeathIsActive)
                         {
-                            
+
 
 
                             if (StarTeleportPos == Vector2.Zero)
@@ -441,7 +434,7 @@ namespace DestroyerTest.Content.Entities
                                                 SpawnPos3 = player.MountedCenter + new Vector2(500, -300).RotatedBy(off);
 
                                                 Dir = new Vector2(-12f, 0).RotatedBy(off);
-   
+
                                                 break;
                                             }
                                         case 1:
@@ -556,7 +549,7 @@ namespace DestroyerTest.Content.Entities
                         break;
                     }
                 case AttackState.FlameSwarm:
-                {
+                    {
                         if (!DestroyerTestMod.EternityIsActive && !DestroyerTestMod.DeathIsActive)
                         {
                             KeepToPlayer(player.Center + new Vector2(0, -200));
@@ -566,7 +559,7 @@ namespace DestroyerTest.Content.Entities
                             NPC.velocity *= 0f;
                         }
 
-                    
+
                         FlameSwarmTimer++;
 
                         if (!DestroyerTestMod.EternityIsActive && !DestroyerTestMod.DeathIsActive)
@@ -587,7 +580,7 @@ namespace DestroyerTest.Content.Entities
                         }
                         else
                         {
-                            for(int i = 0; i < 3; i++)
+                            for (int i = 0; i < 3; i++)
                             {
                                 WretchedPointGlow glow = new();
                                 Vector2 RPoint = NPC.Center + Main.rand.NextVector2CircularEdge(1100, 1100);
@@ -620,7 +613,7 @@ namespace DestroyerTest.Content.Entities
                                 {
                                     Flares[i].SmoothMoveToPoint(Ideal[i], 20f);
                                 }
-                                 
+
                                 if (FlameSwarmTimer > 1800)
                                 {
                                     for (int i = 0; i < Flares.Length; i++)
@@ -633,12 +626,12 @@ namespace DestroyerTest.Content.Entities
                                     FlameSwarmTimer = 0;
                                     Flares = null;
                                 }
-                                
+
                             }
 
                         }
-                    break;
-                }
+                        break;
+                    }
                 case AttackState.Napalm:
                     {
                         KeepToPlayer(player.Center + new Vector2(0, -200));
@@ -665,7 +658,7 @@ namespace DestroyerTest.Content.Entities
                                     {
                                         Vector2 Velocity2 = new Vector2(i * 2f, -15);
 
-                                        
+
                                         Projectile.NewProjectile(Entity.GetSource_FromThis(), NPC.Center, Velocity2, ModContent.ProjectileType<CursedFlameNapalm>(), 20, 2);
                                     }
 
@@ -759,9 +752,9 @@ namespace DestroyerTest.Content.Entities
 
             int MaxRad = 1200;
             int currad = Opus.Sine(1200, 1000, 0.06f);
-            float progress = (float)currad / (float)MaxRad;
+            float progress = currad / (float)MaxRad;
 
-        
+
 
             foreach (Player p in Main.player)
             {
@@ -839,7 +832,7 @@ namespace DestroyerTest.Content.Entities
                     {
                         sentinel.Node = this;
                     }
-                    
+
                 }
             }
         }
@@ -914,7 +907,7 @@ namespace DestroyerTest.Content.Entities
         {
             SoundEngine.PlaySound(Wallwarn, NPC.Center);
             //Opus.NewParticleFloatAI(PRTLoader.GetParticleID<BloomRingSharp>(), NPC.Center, Vector2.Zero, ColorLib.CursedFlames, 0.01f, 1f);
-            
+
             for (int i = 0; i < 2; i++)
             {
                 Vector2 spawnPos = new Vector2(player.Center.X + Main.rand.Next(-200, 201), player.Center.Y + 1000);

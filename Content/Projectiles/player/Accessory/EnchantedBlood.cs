@@ -1,14 +1,5 @@
-using System.Formats.Tar;
-using System.Runtime.CompilerServices;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Particles;
- 
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Terraria;
-using Terraria.Audio;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -61,10 +52,10 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
             }
 
             if (DelayTimer < 10)
-                {
-                    DelayTimer += 1;
-                    return;
-                }
+            {
+                DelayTimer += 1;
+                return;
+            }
 
             float maxDetectRadius = 1400f; // The maximum radius at which a projectile can detect a target
 
@@ -126,5 +117,5 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
         {
             return target.CanBeChasedBy();
         }
-	}
+    }
 }

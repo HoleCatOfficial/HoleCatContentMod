@@ -13,8 +13,8 @@ namespace DestroyerTest.Content.Dusts
             dust.noLight = true; // No light emission
             int frameHeight = 32; // Adjust based on your texture
             dust.frame = new Rectangle(0, Main.rand.Next(4) * frameHeight, frameHeight, frameHeight);
-            
-            
+
+
 
             // Spawn the outline dust first
             int lowerIndex = Dust.NewDust(dust.position, 0, 0, ModContent.DustType<RiftCloudLower>(), dust.velocity.X, dust.velocity.Y);

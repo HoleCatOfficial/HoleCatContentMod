@@ -1,15 +1,11 @@
 ﻿
 using System.Collections.Generic;
-using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Resources;
-using FargowiltasSouls.Content.NPCs.EternityModeNPCs.VanillaEnemies.BloodMoon;
-using FargowiltasSouls.Core.ModPlayers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
-using ReLogic.Content;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -120,7 +116,7 @@ namespace DestroyerTest.Content.Equips
             if (Offensive)
             {
                 spriteBatch.Draw(DTAssetLib.PointGlowPreMultiplied.Value, position, null, new Color(204, 34, 150) with { A = 0 } * GlowOpacity, 0f, DTAssetLib.PointGlowPreMultiplied.Value.Size() / 2, 3.7f, SpriteEffects.None, 0f);
-            }    
+            }
 
             spriteBatch.Draw(T, position, frame, drawColor, 0f, new Vector2(frame.Width / 2, (frame.Height / 2)), scale * 2, SpriteEffects.None, 0f);
             return false;
@@ -254,7 +250,7 @@ namespace DestroyerTest.Content.Equips
 
         public Item Crown;
 
-    
+
         public override void Unload()
         {
             Crown = null;

@@ -6,7 +6,6 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -102,18 +101,18 @@ namespace DestroyerTest.Content.BossSummons
             return true;
         }
 
-        public override void AddRecipes() 
+        public override void AddRecipes()
         {
             CreateRecipe()
                 .AddIngredient<Tenebris>(3)
                 .AddIngredient(ItemID.DemoniteOre, 8)
                 .AddIngredient(ItemID.CorruptSeeds, 1)
                 .AddIngredient(ItemID.Book)
-				.Register();
-		}
+                .Register();
+        }
 
     }
-    
-    
-    
+
+
+
 }

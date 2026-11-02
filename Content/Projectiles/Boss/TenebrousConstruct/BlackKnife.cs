@@ -1,13 +1,8 @@
-﻿using BreadLibrary.Core;
+﻿using System.Linq;
+using BreadLibrary.Core;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Entities;
 using Microsoft.Xna.Framework;
 using OpusLib;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -73,7 +68,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.TenebrousConstruct
                     EndPoint = PrePositions[(int)Projectile.ai[1]];
                 }
             }
-            
+
         }
 
         int timer = 0;
@@ -81,7 +76,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.TenebrousConstruct
         {
             Projectile.ResetExcessTrailPoints();
             timer++;
-            float Prog = (float)timer / 90f;
+            float Prog = timer / 90f;
 
             //Dust.NewDustPerfect(PreEnd, DustID.FireworksRGB, newColor: Color.Red).noGravity = true;
 
@@ -99,7 +94,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.TenebrousConstruct
                     SoundEngine.PlaySound(DTAssetLib.SwordSounds.MetalSwing with { MaxInstances = 0, PitchVariance = 0.7f });
                     Projectile.velocity = EndPoint.DirectionTo(StoredPlayerCenter) * 40f;
                 }
-                
+
                 Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
             }
         }

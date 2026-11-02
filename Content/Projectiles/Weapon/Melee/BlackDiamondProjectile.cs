@@ -1,24 +1,18 @@
-﻿using Terraria;
-using Terraria.ModLoader;
-using Terraria.ID;
-using Microsoft.Xna.Framework;
+﻿using System;
+using BreadLibrary.Core.Graphics.Particles;
+using BreadLibrary.Core.Graphics.Pixelation;
+using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
-using DestroyerTest.Content.MeleeWeapons;
-using DestroyerTest.Content.MeleeWeapons.SwordLineage;
-using Terraria.Utilities.Terraria.Utilities;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.Audio;
-using OpusLib;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Particles.Orchestrated;
-using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Content.Projectiles.ParentClasses;
-using BreadLibrary.Core.Utilities;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using OpusLib.Content.Helpers;
-using DestroyerTest.Content.Dusts;
 using OpusLib.Content.Particles;
-using System;
-using BreadLibrary.Core.Graphics.Pixelation;
+using Terraria;
+using Terraria.Audio;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 {

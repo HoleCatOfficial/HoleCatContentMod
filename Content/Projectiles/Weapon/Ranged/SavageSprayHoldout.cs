@@ -1,20 +1,11 @@
-﻿using BreadLibrary.Core.Graphics.Particles;
+﻿using System.Collections.Generic;
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Projectiles.Boss.NodeBoss.Blessed;
 using DestroyerTest.Content.Projectiles.Weapon.Magic;
-using DestroyerTest.Content.Projectiles.Weapon.Melee;
-using DestroyerTest.Content.Projectiles.Weapon.Summon;
 using DestroyerTest.Content.RangedItems;
-using DestroyerTest.Content.SummonItems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -77,7 +68,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Ranged
 
         public override void DrawBehind(int index, List<int> behindNPCsAndTiles, List<int> behindNPCs, List<int> behindProjectiles, List<int> overPlayers, List<int> overWiresUI)
         {
-            
+
         }
         public override bool? CanHitNPC(NPC target)
         {
@@ -148,7 +139,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Ranged
             {
                 projToShoot = Owner.FindAmmoDT(AmmoID.Bullet).shoot;
 
-                
+
                 if (S != null)
                 {
                     var Source = Owner.GetSource_ItemUse_WithPotentialAmmo(S, usedAmmoItemId, "SavageSprayFire");

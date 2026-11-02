@@ -1,23 +1,13 @@
 ﻿
+using BreadLibrary.Core.Graphics.Particles;
+using BreadLibrary.Core.Graphics.Pixelation;
 using DestroyerTest.Common;
-
+using DestroyerTest.Content.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
-using Terraria.Enums;
-using Terraria.GameContent;
-using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
-using OpusLib;
-using System.Collections.Generic;
-using DestroyerTest.Content.Buffs;
-
-using DestroyerTest.Content.Particles;
-using Terraria.Audio;
-using OpusLib.Content.Particles;
-using BreadLibrary.Core.Graphics.Particles;
-using BreadLibrary.Core.Graphics.Pixelation;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 {
@@ -47,7 +37,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
         public override bool PreDraw(ref Color lightColor)
         {
 
-         
+
             return false;
         }
 
@@ -68,7 +58,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 
         public override void OnKill(int timeLeft)
         {
-            
+
         }
 
 

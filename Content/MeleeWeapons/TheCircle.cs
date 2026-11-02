@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DestroyerTest.Content.Projectiles.Weapon.Melee;
-using DestroyerTest.Content.Resources;
+﻿using DestroyerTest.Content.Projectiles.Weapon.Melee;
 using DestroyerTest.Rarity;
 using Terraria;
 using Terraria.ID;
@@ -31,9 +25,9 @@ namespace DestroyerTest.Content.MeleeWeapons
             Item.useAnimation = 25;
             Item.noMelee = true;
             Item.noUseGraphic = true;
-            Item.UseSound = SoundID.Item1; 
+            Item.UseSound = SoundID.Item1;
 
-            Item.damage = 17; 
+            Item.damage = 17;
             Item.DamageType = DamageClass.MeleeNoSpeed;
             Item.knockBack = 2.5f;
             Item.crit = 8;

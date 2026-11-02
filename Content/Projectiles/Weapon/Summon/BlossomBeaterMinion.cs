@@ -1,24 +1,16 @@
-﻿using BreadLibrary.Core.Graphics.Particles;
+﻿using System;
+using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Verlet;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Equips;
 using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss;
 using DestroyerTest.Content.SummonItems;
-using Microsoft.CodeAnalysis;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using OpusLib.Content.Helpers;
 using ReLogic.Content;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -62,7 +54,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
             Projectile.localNPCHitCooldown = 10;
 
 
-          
+
         }
 
         public float ScaleY;
@@ -108,7 +100,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
 
             if (!HoleCat)
             {
-                Opus.DrawProjectileShadowsRotating(Projectile, Opus.Sine(2f, 5.3f), ColorLib.CursedFlames with { A = 0}, 0.06f);
+                Opus.DrawProjectileShadowsRotating(Projectile, Opus.Sine(2f, 5.3f), ColorLib.CursedFlames with { A = 0 }, 0.06f);
             }
 
             if (DumbassShader != null)
@@ -149,7 +141,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
 
                 var style = 0;
 
-                
+
 
                 if (i == Vine.Positions.Length - 3)
                 {
@@ -172,7 +164,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
                 {
                     t = i / (float)(segmentCount - 1); // 0 at base, 1 at tip
                 }
-   
+
 
                 // Vertical stretch based on actual distance to next segment and texture height
                 var segmentDistance = start.Distance(end);
@@ -247,8 +239,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
             }
         }
 
-        
-        
+
+
         public Vector2 RandP;
 
         float glowAMT = 1f;
@@ -269,8 +261,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
                 Vine.Positions[^1] = player.MountedCenter;
                 Vine.Simulate(Vector2.Zero, Handle, 1.5f, 1f, collideWithPlayers: false, collideWithTiles: false);
             }
-           
-            
+
+
             Projectile.ai[1]++;
 
             if (glowAMT > 0f)
@@ -280,7 +272,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
 
             //CycleLine(ToPlayer);
 
-            
+
 
             if (!CheckActive(player))
             {
@@ -336,8 +328,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
                     }
                 case Condition.SweetSpot:
                     {
-                        
-                        
+
+
                         if (/*Main.GameUpdateCount % 600 == 0*/ Main.rand.NextBool(120))
                         {
                             RandP = player.MountedCenter + new Vector2(IdealDistanceFromPlayerExact, 0).RotatedByRandom(MathHelper.TwoPi);
@@ -349,12 +341,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
                             Projectile.velocity += toIdeal * 10f;
                         }
 
-                        
 
 
-                        
 
-                        
+
+
+
 
                         Projectile.velocity *= 0.995f;
 
@@ -413,7 +405,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
 
                 CanFire = false;
             }
-            
+
             FX.position = Muzzle;
             ParticleEngine.BehindProjectiles.Add(FX);
 
@@ -424,7 +416,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
                 {
                     var Config = ModContent.GetInstance<DTConfig>();
 
-                    
+
 
                     if (Config.MinionAmmoReplace)
                     {
@@ -453,7 +445,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
                             if (!HoleCat)
                             {
                                 C = ColorLib.CursedFlames;
-                                
+
                             }
                             else
                             {
@@ -463,7 +455,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
                             Lighting.AddLight(Muzzle, C.ToVector3() * glowAMT);
 
                             CanFire = true;
-                            
+
 
                             for (int i = 0; i < 4; i++)
                             {
@@ -482,7 +474,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
                             }
                             Projectile.velocity += dir * -4f;
 
-                            
+
                             Projectile bullet = Projectile.NewProjectileDirect(Source, Muzzle, Vel, projToShoot, damage, knockBack, player.whoAmI);
                             bullet.ArmorPenetration = 8;
 
@@ -524,7 +516,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
             knockBack = 0f;
             usedAmmoItemId = -1;
             Beater = null;
-            
+
             return false;
         }
         private void Rotation(bool foundTarget, Vector2 targetCenter)
@@ -628,7 +620,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
 
         private void Spread()
         {
-            
+
             foreach (Projectile proj in Main.projectile)
             {
                 if (proj == Projectile)
@@ -649,7 +641,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
                     }
                 }
             }
-            
+
         }
 
 

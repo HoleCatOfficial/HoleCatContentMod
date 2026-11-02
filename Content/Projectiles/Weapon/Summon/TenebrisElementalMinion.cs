@@ -6,13 +6,11 @@ using BreadLibrary.Core.Graphics.Pixelation;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using OpusLib.Content.Particles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -115,7 +113,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
             // Always reset lifetime while valid
             Projectile.timeLeft = 2;
 
-           
+
 
             var organizer = Owner.GetModPlayer<TEOrganizer>();
             List<Projectile> summons = organizer.Summons;
@@ -145,7 +143,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
 
             Vector2[] array = new Vector2[count];
             float num = MathF.PI * 2f / count;
-            float num2 = (float)Main.GameUpdateCount * (Utils.Clamp(0.001f * count, 0.001f, 0.5f));
+            float num2 = Main.GameUpdateCount * (Utils.Clamp(0.001f * count, 0.001f, 0.5f));
 
             for (int i = 0; i < count; i++)
             {
@@ -186,7 +184,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
             NPC Target = Main.npc[targetIndex];
 
             if (organizer.ShootTimer <= organizer.ShootStartup)
-            { 
+            {
                 return;
             }
 
@@ -222,7 +220,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
         {
             return player != null && player.active && !player.dead && player.HasBuff<TenebrisCrystalMinionBuff>();
         }
-      
+
 
     }
 
@@ -257,7 +255,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
             if (ShootTimer <= ShootStartup)
                 return;
 
-            if (ShootTimer% ShootInterval == 0)
+            if (ShootTimer % ShootInterval == 0)
             {
                 ShootIndex++;
 

@@ -1,19 +1,10 @@
-﻿using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
+﻿using DestroyerTest.Common;
+using DestroyerTest.Content.Buffs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
+using Terraria;
 using Terraria.Audio;
-using DestroyerTest.Content.Consumables;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Magic;
- 
-using DestroyerTest.Content.Particles;
-using System.Text;
-using ReLogic.Content;
-using OpusLib;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
 {
@@ -58,7 +49,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
         Entities.NightmareRoseBoss Rose = null;
         public override void AI()
         {
-            
+
             //To visualize radius. ignore.
             //Opus.RingDustOutwardRandomDir(DustID.Torch, 10, Projectile.Center, rad, 0, default, 0, 1f);
 
@@ -74,11 +65,11 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
                     Projectile.scale -= 0.02f;
                 }
             }
-            
+
 
             if (Rose == null)
             {
-                foreach(NPC T in Main.npc)
+                foreach (NPC T in Main.npc)
                 {
                     if (T.active && T.ModNPC is Entities.NightmareRoseBoss R)
                     {
@@ -106,7 +97,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
             }
         }
 
-    
+
         public override void OnHitPlayer(Player target, Player.HurtInfo info)
         {
             target.AddBuff(ModContent.BuffType<Enfeebled>(), 240);

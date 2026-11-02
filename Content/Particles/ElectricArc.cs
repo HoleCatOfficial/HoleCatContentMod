@@ -1,14 +1,11 @@
 using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
- 
-using Microsoft.CodeAnalysis;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using Terraria;
 using Terraria.Graphics.Renderers;
 using Terraria.ModLoader;
-using static Terraria.GameContent.Animations.IL_Actions.Sprites;
 
 namespace DestroyerTest.Content.Particles
 {
@@ -81,5 +78,5 @@ namespace DestroyerTest.Content.Particles
             Opus.ReturnToDefaultDrawing(spritebatch);
         }
     }
-    
+
 }

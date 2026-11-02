@@ -1,13 +1,4 @@
-
-using DestroyerTest.Common;
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.Tiles;
-using Microsoft.Xna.Framework;
-using Steamworks;
 using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Equips.ScepterAccessories
 {

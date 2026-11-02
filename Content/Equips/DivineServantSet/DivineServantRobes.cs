@@ -1,11 +1,7 @@
-﻿using DestroyerTest.Common;
-using DestroyerTest.Common.Systems;
-using DestroyerTest.Content.Resources.Cloths;
+﻿using DestroyerTest.Common.Systems;
 using DestroyerTest.Rarity;
-using DestroyerTest.Rarity.Scepter;
 using Terraria;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Equips.DivineServantSet
@@ -40,7 +36,7 @@ namespace DestroyerTest.Content.Equips.DivineServantSet
             Item.width = 34;
             Item.height = 30;
             Item.rare = ModContent.RarityType<SoulRarity>();
-            Item.defense = 22; 
+            Item.defense = 22;
         }
 
         public override void UpdateEquip(Player player)

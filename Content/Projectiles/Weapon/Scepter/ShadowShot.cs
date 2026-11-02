@@ -1,24 +1,18 @@
-using System.Collections.Generic;
-using System.IO;
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Common.Interfaces;
 using DestroyerTest.Content.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.Enums;
-using Terraria.GameContent;
-using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 {
-	public class ShadowShot : ModProjectile, IHomingProjectile
+    public class ShadowShot : ModProjectile, IHomingProjectile
     {
         bool IHomingProjectile.TracksNPCs => true;
 
@@ -59,7 +53,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
         {
             for (int i = 0; i < Projectile.oldPos.Length; i++)
             {
-                float Mult = MathHelper.Lerp(1f, 0f, (float)i / (float)Projectile.oldPos.Length);
+                float Mult = MathHelper.Lerp(1f, 0f, i / (float)Projectile.oldPos.Length);
                 Main.EntitySpriteDraw(DTAssetLib.PointGlowPreMultiplied.Value, Projectile.OldCenter()[i] - Main.screenPosition, null, (Color.DarkMagenta with { A = 0 } * 0.2f * Mult) * Projectile.Opacity, 0f, DTAssetLib.PointGlowPreMultiplied.Value.Size() / 2, 1f, SpriteEffects.None);
 
                 Main.EntitySpriteDraw(DTAssetLib.SparkSmoothThin.Value, Projectile.OldCenter()[i] - Main.screenPosition, null, (Color.DarkMagenta with { A = 0 } * 0.3f * Mult) * Projectile.Opacity, i == 0 ? Projectile.velocity.ToRotation() : Projectile.oldRot[i], DTAssetLib.SparkSmoothThin.Value.Size() / 2, 0.1f, SpriteEffects.None);

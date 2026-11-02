@@ -1,15 +1,12 @@
-﻿
-using System.Collections.Generic;
-using BreadLibrary.Core.Graphics.Particles;
+﻿using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Equips.ScepterAccessories;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Rarity;
 using GlowmaskHelper.Content;
- 
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -18,7 +15,6 @@ using OpusLib.Content.Particles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -34,7 +30,7 @@ namespace DestroyerTest.Content.Equips
             ItemID.Sets.AnimatesAsSoul[Type] = true;
             DTUtils.NoUpgradeStack[Type] = true;
         }
-        
+
         public override void SetDefaults()
         {
             Item.width = 38;

@@ -1,19 +1,12 @@
 using DestroyerTest.Common;
 using DestroyerTest.Content.Entities;
-using DestroyerTest.Content.Particles;
- 
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Terraria;
-using Terraria.Audio;
-using Terraria.GameContent;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.Ichor
 {
-	public class NodeSlam : ModProjectile
-	{
+    public class NodeSlam : ModProjectile
+    {
         public override void SetStaticDefaults()
         {
             DTUtils.OwnedByBossNPC[Type] = ModContent.NPCType<IchorNodeMB>();
@@ -29,11 +22,11 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.Ichor
             Projectile.timeLeft = 600;
             Projectile.penetrate = -1;
             Projectile.tileCollide = false;
-		}
+        }
 
         public override void AI()
         {
-            
+
         }
-	}
+    }
 }

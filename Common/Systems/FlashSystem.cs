@@ -1,11 +1,10 @@
-using Terraria;
-using Terraria.Graphics.Effects;
-using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using Terraria.Graphics;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
 using DestroyerTest.Common;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Terraria;
+using Terraria.GameContent;
+using Terraria.Graphics;
+using Terraria.ModLoader;
 
 public class ScreenFlashSystem : ModSystem
 {
@@ -13,7 +12,7 @@ public class ScreenFlashSystem : ModSystem
 
     public override void ModifyTransformMatrix(ref SpriteViewMatrix transform)
     {
-        if(DTConfig.instance.PhotosensitivityMode)
+        if (DTConfig.instance.PhotosensitivityMode)
         {
             return;
         }

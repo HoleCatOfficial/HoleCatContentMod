@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DestroyerTest.Content.Dusts;
+﻿using DestroyerTest.Content.Dusts;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
@@ -20,11 +15,11 @@ namespace DestroyerTest.Content.Tiles.RoseGarden
             TileID.Sets.ChecksForMerge[Type] = true;
             TileID.Sets.BlockMergesWithMergeAllBlock[Type] = true;
             Main.tileBlockLight[Type] = true;
-            
+
             DustType = ModContent.DustType<SanctifiedBrickDust>();
             MineResist = 1.7f;
             MinPick = 200;
-            
+
             HitSound = SoundID.NPCHit2 with { Pitch = -2f, PitchVariance = 0.2f };
 
             LocalizedText name = CreateMapEntryName();

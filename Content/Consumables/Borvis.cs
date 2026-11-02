@@ -1,17 +1,15 @@
-using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.Audio;
-using DestroyerTest.Content.Buffs;
 
 namespace DestroyerTest.Content.Consumables
 {
-	public class Borvis : ModItem
-	{
-		public override void SetStaticDefaults() {
-			Item.ResearchUnlockCount = 20;
-		}
+    public class Borvis : ModItem
+    {
+        public override void SetStaticDefaults()
+        {
+            Item.ResearchUnlockCount = 20;
+        }
 
         public override void SetDefaults()
         {
@@ -34,5 +32,5 @@ namespace DestroyerTest.Content.Consumables
         {
             return !player.HasBuff(BuffID.WellFed3);
         }
-	}
+    }
 }

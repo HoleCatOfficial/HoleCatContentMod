@@ -1,4 +1,3 @@
-using DestroyerTest.Content.Tiles;
 using DestroyerTest.Content.RiftBiome.RiftDesertResources;
 using Terraria;
 using Terraria.ID;
@@ -12,26 +11,29 @@ using Terraria.ModLoader;
 // It is possible to make a falling projectile not using ProjAIStyleID.FallingTile, but it is a lot of code.
 namespace DestroyerTest.Content.Projectiles
 {
-	public abstract class RiftSiltBallProjectile : ModProjectile
-	{
-		public override string Texture => "DestroyerTest/Content/Projectiles/RiftSiltBallProjectile";
+    public abstract class RiftSiltBallProjectile : ModProjectile
+    {
+        public override string Texture => "DestroyerTest/Content/Projectiles/RiftSiltBallProjectile";
 
-		public override void SetStaticDefaults() {
-			ProjectileID.Sets.FallingBlockDoesNotFallThroughPlatforms[Type] = true;
-			ProjectileID.Sets.ForcePlateDetection[Type] = true;
-		}
-	}
+        public override void SetStaticDefaults()
+        {
+            ProjectileID.Sets.FallingBlockDoesNotFallThroughPlatforms[Type] = true;
+            ProjectileID.Sets.ForcePlateDetection[Type] = true;
+        }
+    }
 
-	public class RiftSiltBallFallingProjectile : RiftSiltBallProjectile
-	{
-		public override void SetStaticDefaults() {
-			base.SetStaticDefaults();
-			ProjectileID.Sets.FallingBlockTileItem[Type] = new(ModContent.TileType<Tile_RiftSilt>(), ModContent.ItemType<Item_RiftSilt>());
-		}
+    public class RiftSiltBallFallingProjectile : RiftSiltBallProjectile
+    {
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            ProjectileID.Sets.FallingBlockTileItem[Type] = new(ModContent.TileType<Tile_RiftSilt>(), ModContent.ItemType<Item_RiftSilt>());
+        }
 
-		public override void SetDefaults() {
-			// The falling projectile when compared to the sandgun projectile is hostile.
-			Projectile.CloneDefaults(ProjectileID.EbonsandBallFalling);
-		}
-	}
+        public override void SetDefaults()
+        {
+            // The falling projectile when compared to the sandgun projectile is hostile.
+            Projectile.CloneDefaults(ProjectileID.EbonsandBallFalling);
+        }
+    }
 }

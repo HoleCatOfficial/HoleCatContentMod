@@ -1,47 +1,11 @@
-﻿using BreadLibrary.Core.Graphics.Particles;
-using BreadLibrary.Core.Graphics.Pixelation;
-using BreadLibrary.Core.Utilities;
-using DestroyerTest.Common.Systems;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.Entities;
-using DestroyerTest.Content.Magic;
-using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Particles.Stellar;
-using DestroyerTest.Rarity.Scepter;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
+﻿using System;
+using System.Reflection;
 using Microsoft.Xna.Framework.Graphics;
-using Mono.Cecil.Cil;
-using OpusLib;
-using OpusLib.Content.Helpers;
 using ReLogic.Content;
 using ReLogic.Graphics;
-using Steamworks;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.Metrics;
-using System.IO;
-using System.Linq;
-using System.Media;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.Intrinsics.X86;
-using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.GameContent;
-using Terraria.GameContent.ItemDropRules;
-using Terraria.Graphics;
-using Terraria.Graphics.Shaders;
-using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.ModLoader.IO;
-using Terraria.Modules;
-using Terraria.UI.Chat;
-using Terraria.Utilities;
-using Terraria.WorldBuilding;
 
 
 namespace DestroyerTest.Common
@@ -284,9 +248,9 @@ namespace DestroyerTest.Common
             public static string TenebrousTrialBossDefeats = AudioPath + "/TenebrousTrialBossDefeats";
         }
 
-        
-        
-        
+
+
+
 
         public static SoundStyle ChargeBreak = new SoundStyle($"{AudioPath}/ChargeBreak");
         public static SoundStyle CrystalBreak = new SoundStyle($"{AudioPath}/CrystalBreak");
@@ -345,7 +309,7 @@ namespace DestroyerTest.Common
             public static SoundStyle Accepted = new SoundStyle($"{Path}/AcceptedBlessing");
             public static SoundStyle Rejected = new SoundStyle($"{Path}/RejectedBlessing");
         }
-        
+
 
         public struct ScholarShieldSounds
         {

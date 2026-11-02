@@ -1,36 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Reflection;
 using System.Runtime.CompilerServices;
-using BreadLibrary.Core.Graphics;
 using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
 using BreadLibrary.Core.Graphics.Spritebatch;
 using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Particles.Orchestrated;
-using DestroyerTest.Content.Projectiles.Weapon.Rogue;
 using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using FargowiltasSouls.Core.AccessoryEffectSystem;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
 using OpusLib.Content.Helpers;
 using ReLogic.Content;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
-using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.Utilities.Terraria.Utilities;
 
 namespace DestroyerTest.Content.Projectiles.ParentClasses
 {
@@ -159,7 +147,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         public override bool PreAI()
         {
             AdjScale = 1f * Owner.GetAdjustedItemScale(Owner.HeldItem);
-            AdjustedScale = AdjScale  * ScaleMult;
+            AdjustedScale = AdjScale * ScaleMult;
             Projectile.scale = AdjustedScale;
             return true;
         }
@@ -442,7 +430,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
                 }
                 else
                 {
-                    FX  = SpriteEffects.None;
+                    FX = SpriteEffects.None;
                     rOffset = MathHelper.ToRadians(45f);
                 }
             }
@@ -450,7 +438,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             {
                 if (Projectile.spriteDirection > 0)
                 {
-                    FX  = SpriteEffects.FlipHorizontally;
+                    FX = SpriteEffects.FlipHorizontally;
                     rOffset = MathHelper.ToRadians(45f);
                 }
                 else
@@ -471,7 +459,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
         public float RotationManualOffset = 0f;
 
-        
+
 
         public override bool PreDraw(ref Color lightColor)
         {
@@ -517,7 +505,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
                 }
             }
 
-            
+
 
             DrawUnderBlade();
 
@@ -578,7 +566,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            HitCooldown = target.realLife == -1 ? HitCooldownGlobal * Projectile.extraUpdates : 15 * Projectile.extraUpdates; 
+            HitCooldown = target.realLife == -1 ? HitCooldownGlobal * Projectile.extraUpdates : 15 * Projectile.extraUpdates;
 
             if (CurrentState != State.Wait)
             {
@@ -595,9 +583,9 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
         #endregion
 
-        
 
-        
+
+
     }
 
 

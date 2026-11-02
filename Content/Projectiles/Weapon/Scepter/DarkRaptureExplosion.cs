@@ -1,20 +1,13 @@
-﻿using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
+﻿using BreadLibrary.Core.Graphics.Particles;
+using DestroyerTest.Common;
+using DestroyerTest.Content.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
-using Terraria.Audio;
-using DestroyerTest.Content.Consumables;
-using DestroyerTest.Common;
-using Terraria.GameContent.Drawing;
-using System.IO;
-using DestroyerTest.Content.Projectiles.ParentClasses;
 using OpusLib;
+using Terraria;
 using Terraria.DataStructures;
-using DestroyerTest.Content.Particles;
-using BreadLibrary.Core.Graphics.Particles;
-using DestroyerTest.Content.Dusts;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 {
@@ -48,7 +41,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
                 dust.noGravity = true;
             }
 
-           // Opus.RadialSpreadDustRandom(DustID.FireworksRGB, 4, Projectile.Center, 0, ColorLib.TenebrisMagenta, 1f, 5);
+            // Opus.RadialSpreadDustRandom(DustID.FireworksRGB, 4, Projectile.Center, 0, ColorLib.TenebrisMagenta, 1f, 5);
             //Opus.RadialSpreadDustRandom(DustID.FireworksRGB, 4, Projectile.Center, 0, ColorLib.TenebrisMagenta, 1f, 7);
             //Opus.RadialSpreadDustRandom(DustID.FireworksRGB, 6, Projectile.Center, 0, ColorLib.TenebrisMagenta, 1f, 9);
         }

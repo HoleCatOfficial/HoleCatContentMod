@@ -1,7 +1,6 @@
 ﻿using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Rarity;
-using Microsoft.Xna.Framework;
 using OpusLib.Content.Helpers;
 using Terraria;
 using Terraria.ID;

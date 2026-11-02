@@ -1,10 +1,5 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.Localization;
@@ -17,7 +12,7 @@ namespace DestroyerTest.Common
         public override bool InstancePerEntity => true;
         public override void SetStaticDefaults()
         {
-            
+
         }
 
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)

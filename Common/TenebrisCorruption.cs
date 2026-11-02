@@ -1,13 +1,7 @@
 ﻿using BreadLibrary.Core.Graphics.Particles;
-using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
 using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -22,7 +16,7 @@ namespace DestroyerTest.Common
 
         public override int Music => MusicLoader.GetMusicSlot("DestroyerTest/Assets/Music/TenebrisCorruption");
 
-        public override SceneEffectPriority Priority =>  SceneEffectPriority.BiomeHigh;
+        public override SceneEffectPriority Priority => SceneEffectPriority.BiomeHigh;
         public override float GetWeight(Player player)
         {
             return 1f;
@@ -33,7 +27,7 @@ namespace DestroyerTest.Common
             if (isActive)
             {
                 player.ZoneCorrupt = true;
-                Rectangle Screen = new Rectangle((int)Main.screenPosition.X, (int)Main.screenPosition.Y, (int)Main.screenWidth, (int)Main.screenHeight);
+                Rectangle Screen = new Rectangle((int)Main.screenPosition.X, (int)Main.screenPosition.Y, Main.screenWidth, Main.screenHeight);
                 if (Main.rand.NextBool(10))
                 {
                     Dust d = Dust.NewDustDirect(Main.screenPosition, Main.screenWidth, Main.screenHeight, ModContent.DustType<TenebrisDarkmatterDust>(), Main.rand.NextFloat(-2, 2), -10, 0, default, 2f);

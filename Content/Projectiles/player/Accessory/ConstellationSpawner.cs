@@ -1,20 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using BreadLibrary.Core.Graphics.Particles;
-using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
 using OpusLib.Content.Helpers;
 using OpusLib.Content.Particles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.GameContent;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.player.Accessory
@@ -84,7 +77,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
         public override void AI()
         {
             Projectile.Center = Main.player[Projectile.owner].Center;
-            
+
             for (int i = 0; i < ConstellationPoints.Count; i++)
             {
                 ConstellationPoints[i] += Main.player[Projectile.owner].velocity;
@@ -131,6 +124,6 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
             return false;
         }
 
- 
+
     }
 }

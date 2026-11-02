@@ -1,20 +1,13 @@
-using System;
-using System.Collections.Generic;
+using System.Linq;
+using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Particles;
+using DestroyerTest.Common.Interfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using Terraria;
-using Terraria.Audio;
-using Terraria.GameContent;
-using Terraria.Graphics;
 using Terraria.ID;
 using Terraria.ModLoader;
-using OpusLib;
-using System.Linq;
-using DestroyerTest.Common.Interfaces;
-using BreadLibrary.Core.Utilities;
 
 namespace DestroyerTest.Content.Projectiles.player.ArmorSet
 {

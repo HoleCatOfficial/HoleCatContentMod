@@ -1,22 +1,10 @@
 using DestroyerTest.Common;
-using DestroyerTest.Common.Systems;
-using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss;
 using DestroyerTest.Content.Projectiles.EntitiesProjectiles;
 using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.RiftBiome;
-using DestroyerTest.Content.Tools;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoMod.Cil;
 using OpusLib;
-using ReLogic.Content;
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -24,8 +12,6 @@ using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Utilities;
-using UtfUnknown.Core.Models.SingleByte.Finnish;
 
 namespace DestroyerTest.Content.Entities
 {
@@ -50,7 +36,7 @@ namespace DestroyerTest.Content.Entities
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
                 new FlavorTextBestiaryInfoElement(DTUtils.GetModNPCLocalizationEntry(this, 1)),
             });
-		}
+        }
 
         public override void SetDefaults()
         {
@@ -69,7 +55,7 @@ namespace DestroyerTest.Content.Entities
             NPC.knockBackResist = 0.0f;
             NPC.HitSound = SoundID.Item52;
             NPC.DeathSound = SoundID.Item110;
-		}
+        }
 
         public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {

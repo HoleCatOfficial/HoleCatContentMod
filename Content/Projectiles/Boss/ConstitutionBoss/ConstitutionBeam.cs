@@ -2,13 +2,11 @@ using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Particles.Stellar;
- 
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
 using Terraria;
 using Terraria.GameContent;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
@@ -33,30 +31,30 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
         }
 
         public int Lifetime = 300;
-		public int Time = 0;
+        public int Time = 0;
 
-		public bool StartKill = false;
-		public void UpdateLerpTime()
-		{
-			Time++;
+        public bool StartKill = false;
+        public void UpdateLerpTime()
+        {
+            Time++;
 
-			if (Time > Lifetime)
-			{
-				StartKill = true;
-			}
-		}
-		public float LifetimeCompletion
-		{
-			get
-			{
-				if (Lifetime <= 0)
-				{
-					return 0f;
-				}
+            if (Time > Lifetime)
+            {
+                StartKill = true;
+            }
+        }
+        public float LifetimeCompletion
+        {
+            get
+            {
+                if (Lifetime <= 0)
+                {
+                    return 0f;
+                }
 
-				return (float)Time / (float)Lifetime;
-			}
-		}
+                return Time / (float)Lifetime;
+            }
+        }
         public override void AI()
         {
             UpdateLerpTime();
@@ -65,7 +63,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
                 ConstitutionParticle Particle = new();
                 Particle.Initialize(Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Projectile.velocity * 0.15f, 1f, 120);
                 ParticleEngine.BehindProjectiles.Add(Particle);
-            }	
+            }
 
             if (!StartKill)
             {
@@ -90,7 +88,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
             Main.EntitySpriteDraw(DTAssetLib.ConstitutionBeamGlow.Value, Projectile.Center - Main.screenPosition, null, BeamColor * Projectile.Opacity, Projectile.rotation, DTAssetLib.ConstitutionBeamGlow.Value.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
             Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, Projectile.Center - Main.screenPosition, null, BeamColor * Projectile.Opacity, Projectile.rotation, TextureAssets.Projectile[Projectile.type].Value.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
             SB.ResetToDefault();
-           
+
             return false;
         }
     }

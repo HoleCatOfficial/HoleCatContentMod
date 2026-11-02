@@ -1,10 +1,7 @@
-using Microsoft.Xna.Framework;
+using DestroyerTest.Content.Projectiles.Weapon.Scepter;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using DestroyerTest.Content.Scepter;
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Content.Projectiles.Weapon.Scepter;
 
 namespace DestroyerTest.Content.Scepter
 {

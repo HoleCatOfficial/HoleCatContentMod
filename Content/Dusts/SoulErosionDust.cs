@@ -1,10 +1,8 @@
 ﻿using BreadLibrary.Core.Utilities;
-using DestroyerTest.Common;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria;
-using Terraria.GameContent;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Dusts
@@ -37,7 +35,7 @@ namespace DestroyerTest.Content.Dusts
             dust.scale *= 0.99f;
             dust.velocity *= 0.99f;
 
-        
+
 
             if (dust.scale < 0.1f)
             {

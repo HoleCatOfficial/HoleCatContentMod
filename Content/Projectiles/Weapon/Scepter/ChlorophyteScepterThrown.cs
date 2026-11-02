@@ -1,19 +1,10 @@
+using DestroyerTest.Content.Projectiles.ParentClasses;
+using DestroyerTest.Content.Projectiles.player.Accessory;
+using Microsoft.Xna.Framework;
+using OpusLib;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
-using Terraria.Audio;
-using DestroyerTest.Content.Consumables;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Dusts;
-using System;
-using Terraria.DataStructures;
-using System.IO;
-using DestroyerTest.Content.Projectiles.ParentClasses;
-using OpusLib;
-using DestroyerTest.Content.Projectiles.player.Accessory;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 {
@@ -39,9 +30,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
             base.OnHitNPC(target, hit, damageDone);
         }
 
-        
 
-        public override bool OnTileCollide(Vector2 oldVelocity) {
+
+        public override bool OnTileCollide(Vector2 oldVelocity)
+        {
 
 
             Opus.RadialSpreadProjectileRandom(ModContent.ProjectileType<PoisonCloud>(), 8, Projectile.Center, Projectile.damage, 5f, 8f);

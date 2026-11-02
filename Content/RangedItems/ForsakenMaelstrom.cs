@@ -1,14 +1,9 @@
-﻿using System.Collections.Generic;
-using DestroyerTest.Common;
+﻿using DestroyerTest.Common;
 using DestroyerTest.Content.Magic;
-using DestroyerTest.Content.Projectiles.AmmoProjectiles;
 using DestroyerTest.Content.Projectiles.Weapon.Ranged;
 using DestroyerTest.Content.Remnants;
-using DestroyerTest.Content.Resources;
 using DestroyerTest.Rarity;
-using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 

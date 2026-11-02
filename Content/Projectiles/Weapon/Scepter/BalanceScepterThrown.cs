@@ -1,19 +1,12 @@
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
+using System.Collections.Generic;
+using DestroyerTest.Content.Projectiles.ParentClasses;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
-using Terraria.Audio;
-using DestroyerTest.Content.Consumables;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Dusts;
-using System.IO;
-using DestroyerTest.Content.Projectiles.ParentClasses;
-using System.Collections.Generic;
-using DestroyerTest.Content.Buffs;
-using Terraria.ModLoader.Config;
 using OpusLib;
+using Terraria;
+using Terraria.Audio;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 {
@@ -38,45 +31,45 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
         public Vector2 np = Vector2.Zero;
         private void CacheTrail1()
         {
-           
+
         }
 
         private void CacheTrail2()
         {
             Vector2 lastPos = NightPoints.Count > 0 ? NightPoints[0] : np;
-			Vector2 newPos  = np;
+            Vector2 newPos = np;
 
-			float dist = Vector2.Distance(lastPos, newPos);
-			float step = 0.1f; // how closely to sample. tweak this!
+            float dist = Vector2.Distance(lastPos, newPos);
+            float step = 0.1f; // how closely to sample. tweak this!
 
-			if (dist > 0f)
-			{
-				int segments = (int)(dist / step);
+            if (dist > 0f)
+            {
+                int segments = (int)(dist / step);
 
-				for (int i = 1; i <= segments; i++)
-				{
-					Vector2 pos = Vector2.Lerp(lastPos, newPos, i / (float)segments);
-					NightPoints.Insert(0, pos);
-					NightRots.Insert(0, Projectile.rotation);
-				}
-			}
-			else
-			{
-				NightPoints.Insert(0, newPos);
-				NightRots.Insert(0, Projectile.rotation);
-			}
+                for (int i = 1; i <= segments; i++)
+                {
+                    Vector2 pos = Vector2.Lerp(lastPos, newPos, i / (float)segments);
+                    NightPoints.Insert(0, pos);
+                    NightRots.Insert(0, Projectile.rotation);
+                }
+            }
+            else
+            {
+                NightPoints.Insert(0, newPos);
+                NightRots.Insert(0, Projectile.rotation);
+            }
 
-			while (NightPoints.Count > TrailLength)
-				NightPoints.RemoveAt(NightPoints.Count - 1);
-			while (NightRots.Count > TrailLength)
-				NightRots.RemoveAt(NightRots.Count - 1);
+            while (NightPoints.Count > TrailLength)
+                NightPoints.RemoveAt(NightPoints.Count - 1);
+            while (NightRots.Count > TrailLength)
+                NightRots.RemoveAt(NightRots.Count - 1);
         }
 
         public float trailOffset = 0f;
         public override bool PreDraw(ref Color lightColor)
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
-                        
+
             trailOffset += 0.01f;
             Opus.StartSpriteBatchForTrails(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
             LightTrail();
@@ -94,9 +87,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 
         public void NightTrail()
         {
-          
+
         }
-  
+
         public override void AI()
         {
             base.AI();

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DestroyerTest.Common;
+﻿using DestroyerTest.Common;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib.Content.Helpers;
@@ -131,8 +126,8 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
             {
                 for (int i = 0; i < Projectile.oldPos.Length; i++)
                 {
-                    float Mult = MathHelper.Lerp(1f, 0f, (float)i / (float)Projectile.oldPos.Length);
-                    Color color = OpusColorUtils.MultiLerp((float)i / (float)Projectile.oldPos.Length, ColorLib.StellarFireColormap);
+                    float Mult = MathHelper.Lerp(1f, 0f, i / (float)Projectile.oldPos.Length);
+                    Color color = OpusColorUtils.MultiLerp(i / (float)Projectile.oldPos.Length, ColorLib.StellarFireColormap);
                     Main.EntitySpriteDraw(DTAssetLib.PointGlowPreMultiplied.Value, Projectile.OldCenter()[i] - Main.screenPosition, null, (color with { A = 0 } * 0.7f * Mult) * Projectile.Opacity, 0f, DTAssetLib.PointGlowPreMultiplied.Value.Size() / 2, 1f, SpriteEffects.None);
 
                     Main.EntitySpriteDraw(DTAssetLib.SparkSmoothThin.Value, Projectile.OldCenter()[i] - Main.screenPosition, null, (color with { A = 0 } * 0.8f * Mult) * Projectile.Opacity, i == 0 ? Projectile.velocity.ToRotation() : Projectile.oldRot[i], DTAssetLib.SparkSmoothThin.Value.Size() / 2, 0.1f, SpriteEffects.None);

@@ -1,14 +1,10 @@
 
 using System.Collections.Generic;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Projectiles.Weapon.Magic;
 using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.Tiles;
-using DestroyerTest.Content.Tiles.RiftConfigurator;
 using DestroyerTest.Rarity.Scepter;
 using Microsoft.Xna.Framework;
-using Steamworks;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
@@ -47,17 +43,17 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             if (player.TryGetModPlayer<CrimsonPendantScepterUsePlayer>(out CrimsonPendantScepterUsePlayer Crim))
-			{
-				Crim.Active = true;
-			}
+            {
+                Crim.Active = true;
+            }
             if (player.TryGetModPlayer<CorruptPendantScepterUsePlayer>(out CorruptPendantScepterUsePlayer Ebon))
-			{
-				Ebon.Active = true;
-			}
+            {
+                Ebon.Active = true;
+            }
             if (player.TryGetModPlayer<InfectedPendantScepterUsePlayer>(out InfectedPendantScepterUsePlayer Infected))
-			{
-				Infected.Active = true;
-			}
+            {
+                Infected.Active = true;
+            }
 
             player.GetCritChance(ModContent.GetInstance<ScepterClass>()) += CritBonus;
         }
@@ -75,13 +71,13 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
     }
 
     public class InfectedPendantScepterUsePlayer : ModPlayer
-	{
-		public bool Active = false;
+    {
+        public bool Active = false;
         public override void ResetEffects()
         {
             Active = false;
         }
-		public override void ModifyShootStats(Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
+        public override void ModifyShootStats(Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
             if (Active)
             {
@@ -115,5 +111,5 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
                 }
             }
         }
-	}
+    }
 }

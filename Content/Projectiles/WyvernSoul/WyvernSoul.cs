@@ -1,20 +1,13 @@
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
-using Terraria.Audio;
-using Terraria.DataStructures;
-using System.IO;
-using tModPorter;
 using System;
-using Terraria.ModLoader.IO;
 using System.Collections.Generic;
-using DestroyerTest.Content.Entities;
-using Terraria.GameContent.Drawing;
+using System.IO;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Projectiles.Weapon.Magic;
+using Microsoft.Xna.Framework;
+using Terraria;
+using Terraria.GameContent.Drawing;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.WyvernSoul
 {
@@ -466,7 +459,7 @@ namespace DestroyerTest.Content.Projectiles.WyvernSoul
             behindNPCsAndTiles.Add(index);
         }
     }
-    
-    
+
+
 
 }

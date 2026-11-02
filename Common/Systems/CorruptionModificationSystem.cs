@@ -1,20 +1,11 @@
 ﻿using DestroyerTest.Content.Tiles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using Terraria;
-using Terraria.Audio;
-using Terraria.Chat;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using Terraria.WorldBuilding;
 
 namespace DestroyerTest.Common.Systems
 {
@@ -35,15 +26,15 @@ namespace DestroyerTest.Common.Systems
 
         public static bool TenebrisSpawnRequirements(NPCSpawnInfo spawnInfo, bool surface = true)
         {
-            
+
             foreach (NPC N in Main.ActiveNPCs)
             {
                 if ((N.type == NPCID.LunarTowerNebula || N.type == NPCID.LunarTowerSolar || N.type == NPCID.LunarTowerVortex || N.type == NPCID.LunarTowerStardust) && spawnInfo.Player.Center.Distance(N.Center) < 100)
-                { 
+                {
                     return false;
                 }
             }
-            
+
 
             if (!surface)
             {
@@ -55,13 +46,13 @@ namespace DestroyerTest.Common.Systems
         public static bool GenTenebris = false;
         public override void PostUpdateWorld()
         {
-            
+
             if (!GenTenebris && DTFlags.TenebrisCanSpawnInWorldEvilBiome)
             {
                 //Generation();
                 GenTenebris = true;
             }
-            
+
 
             /*
             if (JustPressed(Keys.F))

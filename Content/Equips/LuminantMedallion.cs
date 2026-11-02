@@ -1,12 +1,9 @@
 ﻿
+using DestroyerTest.Common;
+using DestroyerTest.Content.Projectiles;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
-using Terraria.GameContent.ItemDropRules;
-using Terraria.DataStructures;
-using DestroyerTest.Content.Projectiles;
 
 namespace DestroyerTest.Content.Equips
 {

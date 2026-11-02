@@ -1,54 +1,47 @@
 
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
-using Terraria.GameContent.ItemDropRules;
-using System.Collections.Generic;
-using DestroyerTest.Content.Equips.ScepterAccessories;
-using DestroyerTest.Rarity;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.RiftBiome.RiftSurfaceResources;
-using DestroyerTest.Content.RiftBiome.RiftDesertResources;
-using Microsoft.Xna.Framework;
-using OpusLib;
 using System.Linq;
 using DestroyerTest.Content.Projectiles.player.Accessory;
+using Microsoft.Xna.Framework;
+using OpusLib;
+using Terraria;
+using Terraria.GameContent.ItemDropRules;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Equips
 {
-	public class ToxicCanister : ModItem
-	{
-		public override void SetDefaults()
-		{
-			Item.width = 60;
-			Item.height = 64;
-			Item.maxStack = 1;
-			Item.value = 100;
-			Item.accessory = true;
+    public class ToxicCanister : ModItem
+    {
+        public override void SetDefaults()
+        {
+            Item.width = 60;
+            Item.height = 64;
+            Item.maxStack = 1;
+            Item.value = 100;
+            Item.accessory = true;
             Item.rare = ItemRarityID.Red;
-		}
+        }
 
-		public override void UpdateAccessory(Player player, bool hideVisual)
-		{
-            if(player.TryGetModPlayer<ToxicCanisterPlayer>(out var toxic))
+        public override void UpdateAccessory(Player player, bool hideVisual)
+        {
+            if (player.TryGetModPlayer<ToxicCanisterPlayer>(out var toxic))
             {
                 toxic.Active = true;
             }
-		}
+        }
     }
 
     public class TCDROPNPC : GlobalNPC
-	{
-		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot) {
-			if (npc.type == NPCID.ToxicSludge) 
+    {
+        public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
+        {
+            if (npc.type == NPCID.ToxicSludge)
             {
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ToxicCanister>(), 20, 1, 1));
-			}
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ToxicCanister>(), 20, 1, 1));
+            }
 
-		}
-	}
+        }
+    }
 
     public class ToxicCanisterPlayer : ModPlayer
     {
@@ -136,7 +129,7 @@ namespace DestroyerTest.Content.Equips
                 }
             }
 
-            
+
 
             for (int i = 0; i < orbs.Length; i++)
             {

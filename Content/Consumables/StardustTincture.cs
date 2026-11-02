@@ -1,11 +1,6 @@
-﻿using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Consumables;
+﻿using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.Tiles;
-using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
-using Newtonsoft.Json.Linq;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;

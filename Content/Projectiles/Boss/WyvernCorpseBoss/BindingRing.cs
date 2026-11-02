@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BreadLibrary.Core.Graphics.Particles;
-using BreadLibrary.Core.Graphics.Pixelation;
+﻿using BreadLibrary.Core.Graphics.Pixelation;
 using BreadLibrary.Core.Graphics.Spritebatch;
 using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
@@ -12,8 +6,6 @@ using DestroyerTest.Content.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
-using OpusLib.Content.Particles;
-using ReLogic.Utilities;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -79,7 +71,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
                 player.Center = Projectile.Center + new Vector2(Projectile.ai[1] * 0.909f, 0).RotatedBy(player.DirectionFrom(Projectile.Center).ToRotation());
             }
 
-          
+
         }
 
         public override void OnKill(int timeLeft)

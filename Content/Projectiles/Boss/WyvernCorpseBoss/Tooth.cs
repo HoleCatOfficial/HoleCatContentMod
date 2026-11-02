@@ -1,8 +1,6 @@
 using DestroyerTest.Common;
 using DestroyerTest.Content.Entities;
-using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -14,7 +12,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
 
         public override string GlowTexture => "DestroyerTest/Content/Projectiles/Boss/WyvernCorpseBoss/Tooth";
 
-        public override void SetStaticDefaults() 
+        public override void SetStaticDefaults()
         {
             DTUtils.OwnedByBossNPC[Type] = ModContent.NPCType<WyvernCorpseHead>();
         }

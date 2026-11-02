@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Threading;
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
@@ -7,7 +5,6 @@ using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using OpusLib.Content.Helpers;
 using OpusLib.Content.Particles;
@@ -22,95 +19,95 @@ using Terraria.WorldBuilding;
 
 namespace DestroyerTest.Content.Tiles
 {
-	public class Tile_HeliciteCrystal : ModTile
-	{
-		public override void SetStaticDefaults()
-		{
-			TileID.Sets.Ore[Type] = true;
-			TileID.Sets.ChecksForMerge[Type] = true;
-			TileID.Sets.BlockMergesWithMergeAllBlock[Type] = true;
-			Main.tileSpelunker[Type] = true;
-			Main.tileOreFinderPriority[Type] = 765;
-			Main.tileSolid[Type] = true;
-			Main.tileLighted[Type] = true;
-			Main.tileBlendAll[Type] = true;
+    public class Tile_HeliciteCrystal : ModTile
+    {
+        public override void SetStaticDefaults()
+        {
+            TileID.Sets.Ore[Type] = true;
+            TileID.Sets.ChecksForMerge[Type] = true;
+            TileID.Sets.BlockMergesWithMergeAllBlock[Type] = true;
+            Main.tileSpelunker[Type] = true;
+            Main.tileOreFinderPriority[Type] = 765;
+            Main.tileSolid[Type] = true;
+            Main.tileLighted[Type] = true;
+            Main.tileBlendAll[Type] = true;
 
-			LocalizedText name = CreateMapEntryName();
-			AddMapEntry(new Color(255, 155, 0), name);
+            LocalizedText name = CreateMapEntryName();
+            AddMapEntry(new Color(255, 155, 0), name);
 
-			//DustType = ModContent.DustType<HeliciteCrystalDust>();
-			HitSound = new SoundStyle("DestroyerTest/Assets/Audio/Scholar/ShieldHit", 3) with { Pitch = 1.6f, PitchVariance = 0.2f, MaxInstances = 0 };
-			MineResist = 1.5f;
-			MinPick = 200;
-		}
+            //DustType = ModContent.DustType<HeliciteCrystalDust>();
+            HitSound = new SoundStyle("DestroyerTest/Assets/Audio/Scholar/ShieldHit", 3) with { Pitch = 1.6f, PitchVariance = 0.2f, MaxInstances = 0 };
+            MineResist = 1.5f;
+            MinPick = 200;
+        }
 
-		public override void NearbyEffects(int i, int j, bool closer)
-		{
-			Player player = Main.LocalPlayer;
-			Vector2 tileWorldPos = new Vector2(i * 16 + 8, j * 16 + 8);
+        public override void NearbyEffects(int i, int j, bool closer)
+        {
+            Player player = Main.LocalPlayer;
+            Vector2 tileWorldPos = new Vector2(i * 16 + 8, j * 16 + 8);
 
-			float distance = Vector2.Distance(player.Center, tileWorldPos);
+            float distance = Vector2.Distance(player.Center, tileWorldPos);
 
-			// About 10 tiles range (160px)
-			if (distance < 160f)
-			{
-				player.AddBuff(ModContent.BuffType<DaylightOverload>(), 60);
+            // About 10 tiles range (160px)
+            if (distance < 160f)
+            {
+                player.AddBuff(ModContent.BuffType<DaylightOverload>(), 60);
 
                 Color color = OpusColorUtils.MultiLerp(Opus.Sine(1f, 0f), ColorLib.HeliciteColorMap);
 
-                
-				// Optionally, sparkle when active
-                if (Main.rand.NextBool(100) && !Main.gamePaused && !Main.gameInactive)
-				{
-					PixelParticle Pixel = new();
-					Pixel.Initialize(tileWorldPos, tileWorldPos.DirectionTo(player.Center).RotatedByRandom(0.6f) * 0.5f, color, 2f);
-					ParticleEngine.Particles.Add(Pixel);
 
-					PointGlowPreMultiplied Glow = new();
+                // Optionally, sparkle when active
+                if (Main.rand.NextBool(100) && !Main.gamePaused && !Main.gameInactive)
+                {
+                    PixelParticle Pixel = new();
+                    Pixel.Initialize(tileWorldPos, tileWorldPos.DirectionTo(player.Center).RotatedByRandom(0.6f) * 0.5f, color, 2f);
+                    ParticleEngine.Particles.Add(Pixel);
+
+                    PointGlowPreMultiplied Glow = new();
                     Glow.Initialize(tileWorldPos, tileWorldPos.DirectionTo(player.Center).RotatedByRandom(0.6f) * 0.5f, color * 0.2f, 2f);
                     ParticleEngine.Particles.Add(Glow);
                 }
 
                 if (Main.rand.NextBool(600) && !Main.gamePaused && !Main.gameInactive)
                 {
-					HeliciteShineParticle shine = new();
-					shine.Initialize(tileWorldPos, tileWorldPos.DirectionTo(player.Center).RotatedByRandom(0.6f) * 0.2f);
+                    HeliciteShineParticle shine = new();
+                    shine.Initialize(tileWorldPos, tileWorldPos.DirectionTo(player.Center).RotatedByRandom(0.6f) * 0.2f);
                     ParticleEngine.Particles.Add(shine);
                 }
             }
-		}
+        }
 
-		public override void WalkDust(ref int dustType, ref bool makeDust, ref Color color)
-		{
-			makeDust = true;
-			dustType = ModContent.DustType<RiftDust>();
-		}
+        public override void WalkDust(ref int dustType, ref bool makeDust, ref Color color)
+        {
+            makeDust = true;
+            dustType = ModContent.DustType<RiftDust>();
+        }
 
-		public override void ModifyLight(int i, int j, ref float r, ref float g, ref float b)
-		{
+        public override void ModifyLight(int i, int j, ref float r, ref float g, ref float b)
+        {
             Player player = Main.LocalPlayer;
             Vector2 tileWorldPos = new Vector2(i * 16 + 8, j * 16 + 8);
 
             float distance = Vector2.Distance(player.Center, tileWorldPos);
-			Color color = OpusColorUtils.MultiLerp(Opus.Sine(1f, 0f), ColorLib.HeliciteColorMap);
+            Color color = OpusColorUtils.MultiLerp(Opus.Sine(1f, 0f), ColorLib.HeliciteColorMap);
 
 
 
             if (distance < 400f)
-			{
-				float DistanceMult = MathHelper.Lerp(0f, 1f, distance / 160f);
+            {
+                float DistanceMult = MathHelper.Lerp(0f, 1f, distance / 160f);
 
-				float Modifier = Opus.Sine(0.25f, 0.05f) * DistanceMult;
-				r = (color.R * 0.006f) * Modifier;
-				g = (color.G * 0.006f) * Modifier;
-				b = (color.B * 0.006f) * Modifier;
-			}
-			else
-			{
-				if (r > 0)
-				{
-					r -= 0.0005f;
-				}
+                float Modifier = Opus.Sine(0.25f, 0.05f) * DistanceMult;
+                r = (color.R * 0.006f) * Modifier;
+                g = (color.G * 0.006f) * Modifier;
+                b = (color.B * 0.006f) * Modifier;
+            }
+            else
+            {
+                if (r > 0)
+                {
+                    r -= 0.0005f;
+                }
 
                 if (g > 0)
                 {
@@ -121,8 +118,8 @@ namespace DestroyerTest.Content.Tiles
                 {
                     b -= 0.0005f;
                 }
-			}
-		}
+            }
+        }
 
         public override bool CreateDust(int i, int j, ref int type)
         {
@@ -130,9 +127,9 @@ namespace DestroyerTest.Content.Tiles
             Vector2 tileWorldPos = new Vector2(i * 16 + 8, j * 16 + 8);
 
 
-			LerpingBloomRingSharp Ring = new();
-			Ring.Prepare(tileWorldPos, Vector2.Zero, ColorLib.HeliciteColorMap, 0.05f, 0.01f, 0.3f);
-			ParticleEngine.Particles.Add(Ring);
+            LerpingBloomRingSharp Ring = new();
+            Ring.Prepare(tileWorldPos, Vector2.Zero, ColorLib.HeliciteColorMap, 0.05f, 0.01f, 0.3f);
+            ParticleEngine.Particles.Add(Ring);
 
 
             PixelParticle Pixel = new();
@@ -140,52 +137,59 @@ namespace DestroyerTest.Content.Tiles
             ParticleEngine.Particles.Add(Pixel);
 
             PointGlowPreMultiplied Glow = new();
-            Glow.Initialize(tileWorldPos,  Main.rand.NextVector2Circular(2f, 2f), ColorLib.HeliciteColorMap[Main.rand.Next(ColorLib.HeliciteColorMap.Length)] * 0.2f, 2f);
+            Glow.Initialize(tileWorldPos, Main.rand.NextVector2Circular(2f, 2f), ColorLib.HeliciteColorMap[Main.rand.Next(ColorLib.HeliciteColorMap.Length)] * 0.2f, 2f);
             ParticleEngine.Particles.Add(Glow);
             return false;
         }
-	}
+    }
 
-	
-	public class HeliciteSystem : ModSystem
-	{
-		public static LocalizedText HelicitePassMessage { get; private set; }
-		public static LocalizedText BlessedWithHeliciteMessage { get; private set; }
 
-		public override void SetStaticDefaults() {
-			HelicitePassMessage = Mod.GetLocalization($"WorldGen.{nameof(HelicitePassMessage)}");
-			BlessedWithHeliciteMessage = Mod.GetLocalization($"WorldGen.{nameof(BlessedWithHeliciteMessage)}");
-		}
+    public class HeliciteSystem : ModSystem
+    {
+        public static LocalizedText HelicitePassMessage { get; private set; }
+        public static LocalizedText BlessedWithHeliciteMessage { get; private set; }
 
-		// This method is called from MinionBossBody.OnKill the first time the boss is killed.
-		// The logic is located here for organizational purposes.
-		public void BlessWorldWithHelicite() {
-			if (Main.netMode == NetmodeID.MultiplayerClient) {
-				return; // This should not happen, but just in case.
-			}
+        public override void SetStaticDefaults()
+        {
+            HelicitePassMessage = Mod.GetLocalization($"WorldGen.{nameof(HelicitePassMessage)}");
+            BlessedWithHeliciteMessage = Mod.GetLocalization($"WorldGen.{nameof(BlessedWithHeliciteMessage)}");
+        }
 
-			// Since this happens during gameplay, we need to run this code on another thread. If we do not, the game will experience lag for a brief moment. This is especially necessary for world generation tasks that would take even longer to execute.
-			// See https://github.com/tModLoader/tModLoader/wiki/World-Generation/#long-running-tasks for more information.
-			ThreadPool.QueueUserWorkItem(_ => {
-				// Broadcast a message to notify the user.
-				if (Main.netMode == NetmodeID.SinglePlayer) {
-					Main.NewText(BlessedWithHeliciteMessage.Value, 255, 155, 0);
-				}
-				else if (Main.netMode == NetmodeID.Server) {
-					ChatHelper.BroadcastChatMessage(BlessedWithHeliciteMessage.ToNetworkText(), new Color(255, 155, 0));
-				}
+        // This method is called from MinionBossBody.OnKill the first time the boss is killed.
+        // The logic is located here for organizational purposes.
+        public void BlessWorldWithHelicite()
+        {
+            if (Main.netMode == NetmodeID.MultiplayerClient)
+            {
+                return; // This should not happen, but just in case.
+            }
 
-				// 100 controls how many splotches of ore are spawned into the world, scaled by world size. For comparison, the first 3 times altars are smashed about 275, 190, or 120 splotches of the respective hardmode ores are spawned. 
-				int splotches = (int)(100 * (Main.maxTilesX / 3000f));
-				int highestY = ModLoader.HasMod("Remnants") ? Main.UnderworldLayer - 80 : (int)Utils.Lerp(Main.rockLayer, Main.UnderworldLayer, 0.35);
-				for (int iteration = 0; iteration < splotches; iteration++) {
-					// Find a point in the lower half of the rock layer but above the underworld depth.
-					int i = WorldGen.genRand.Next(100, Main.maxTilesX - 100);
-					int j = WorldGen.genRand.Next(highestY, Main.UnderworldLayer);
+            // Since this happens during gameplay, we need to run this code on another thread. If we do not, the game will experience lag for a brief moment. This is especially necessary for world generation tasks that would take even longer to execute.
+            // See https://github.com/tModLoader/tModLoader/wiki/World-Generation/#long-running-tasks for more information.
+            ThreadPool.QueueUserWorkItem(_ =>
+            {
+                // Broadcast a message to notify the user.
+                if (Main.netMode == NetmodeID.SinglePlayer)
+                {
+                    Main.NewText(BlessedWithHeliciteMessage.Value, 255, 155, 0);
+                }
+                else if (Main.netMode == NetmodeID.Server)
+                {
+                    ChatHelper.BroadcastChatMessage(BlessedWithHeliciteMessage.ToNetworkText(), new Color(255, 155, 0));
+                }
 
-					// OreRunner will spawn Helicite in splotches. OnKill only runs on the server or single player, so it is safe to run world generation code.
+                // 100 controls how many splotches of ore are spawned into the world, scaled by world size. For comparison, the first 3 times altars are smashed about 275, 190, or 120 splotches of the respective hardmode ores are spawned. 
+                int splotches = (int)(100 * (Main.maxTilesX / 3000f));
+                int highestY = ModLoader.HasMod("Remnants") ? Main.UnderworldLayer - 80 : (int)Utils.Lerp(Main.rockLayer, Main.UnderworldLayer, 0.35);
+                for (int iteration = 0; iteration < splotches; iteration++)
+                {
+                    // Find a point in the lower half of the rock layer but above the underworld depth.
+                    int i = WorldGen.genRand.Next(100, Main.maxTilesX - 100);
+                    int j = WorldGen.genRand.Next(highestY, Main.UnderworldLayer);
 
-					Point P = new Point(i, j);
+                    // OreRunner will spawn Helicite in splotches. OnKill only runs on the server or single player, so it is safe to run world generation code.
+
+                    Point P = new Point(i, j);
 
                     int outerRadius = Main.rand.Next(8, 12);
                     ShapeData shapeData = new ShapeData();
@@ -201,44 +205,47 @@ namespace DestroyerTest.Content.Tiles
                     WorldUtils.Gen(P, OuterRing2);
 
                     WorldUtils.Gen(P, new Shapes.Circle(Main.rand.Next(2, 5)), new SwapSolidTileAndFrame((ushort)ModContent.TileType<Tile_HeliciteCrystal>()));
-                    
-					//WorldGen.OreRunner(i, j, WorldGen.genRand.Next(6, 11), WorldGen.genRand.Next(5, 9), (ushort)ModContent.TileType<Tile_HeliciteCrystal>());
+
+                    //WorldGen.OreRunner(i, j, WorldGen.genRand.Next(6, 11), WorldGen.genRand.Next(5, 9), (ushort)ModContent.TileType<Tile_HeliciteCrystal>());
                 }
-			});
-		}
-	}
+            });
+        }
+    }
 
-	public class HelicitePass : GenPass
-	{
-		public HelicitePass(string name, float loadWeight) : base(name, loadWeight) {
-		}
+    public class HelicitePass : GenPass
+    {
+        public HelicitePass(string name, float loadWeight) : base(name, loadWeight)
+        {
+        }
 
-        protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration) {
-			// progress.Message is the message shown to the user while the following code is running.
-			// Try to make your message clear. You can be a little bit clever, but make sure it is descriptive enough for troubleshooting purposes.
-			progress.Message = HeliciteSystem.HelicitePassMessage.Value;
+        protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration)
+        {
+            // progress.Message is the message shown to the user while the following code is running.
+            // Try to make your message clear. You can be a little bit clever, but make sure it is descriptive enough for troubleshooting purposes.
+            progress.Message = HeliciteSystem.HelicitePassMessage.Value;
 
-			// Ores are quite simple, we simply use a for loop and the WorldGen.TileRunner to place splotches of the specified Tile in the world.
-			// "6E-05" is "scientific notation". It simply means 0.00006 but in some ways is easier to read.
-			for (int k = 0; k < (int)(Main.maxTilesX * Main.maxTilesY * 6E-05); k++) {
-				// The inside of this for loop corresponds to one single splotch of our Ore.
-				// First, we randomly choose any coordinate in the world by choosing a random x and y value.
-				int x = WorldGen.genRand.Next(0, Main.maxTilesX);
+            // Ores are quite simple, we simply use a for loop and the WorldGen.TileRunner to place splotches of the specified Tile in the world.
+            // "6E-05" is "scientific notation". It simply means 0.00006 but in some ways is easier to read.
+            for (int k = 0; k < (int)(Main.maxTilesX * Main.maxTilesY * 6E-05); k++)
+            {
+                // The inside of this for loop corresponds to one single splotch of our Ore.
+                // First, we randomly choose any coordinate in the world by choosing a random x and y value.
+                int x = WorldGen.genRand.Next(0, Main.maxTilesX);
 
-				// WorldGen.worldSurfaceLow is actually the highest surface tile. In practice you might want to use WorldGen.rockLayer or other WorldGen values.
-				int y = WorldGen.genRand.Next((int)GenVars.worldSurfaceLow, Main.maxTilesY);
+                // WorldGen.worldSurfaceLow is actually the highest surface tile. In practice you might want to use WorldGen.rockLayer or other WorldGen values.
+                int y = WorldGen.genRand.Next((int)GenVars.worldSurfaceLow, Main.maxTilesY);
 
-				// Then, we call WorldGen.TileRunner with random "strength" and random "steps", as well as the Tile we wish to place.
-				// Feel free to experiment with strength and step to see the shape they generate.
-				WorldGen.TileRunner(x, y, WorldGen.genRand.Next(3, 6), WorldGen.genRand.Next(2, 6), ModContent.TileType<Tile_HeliciteCrystal>());
+                // Then, we call WorldGen.TileRunner with random "strength" and random "steps", as well as the Tile we wish to place.
+                // Feel free to experiment with strength and step to see the shape they generate.
+                WorldGen.TileRunner(x, y, WorldGen.genRand.Next(3, 6), WorldGen.genRand.Next(2, 6), ModContent.TileType<Tile_HeliciteCrystal>());
 
-				// Alternately, we could check the tile already present in the coordinate we are interested.
-				// Wrapping WorldGen.TileRunner in the following condition would make the ore only generate in Snow.
-				// Tile tile = Framing.GetTileSafely(x, y);
-				// if (tile.HasTile && tile.TileType == TileID.SnowBlock) {
-				// 	WorldGen.TileRunner(.....);
-				// }
-			}
-		}
-	}
+                // Alternately, we could check the tile already present in the coordinate we are interested.
+                // Wrapping WorldGen.TileRunner in the following condition would make the ore only generate in Snow.
+                // Tile tile = Framing.GetTileSafely(x, y);
+                // if (tile.HasTile && tile.TileType == TileID.SnowBlock) {
+                // 	WorldGen.TileRunner(.....);
+                // }
+            }
+        }
+    }
 }

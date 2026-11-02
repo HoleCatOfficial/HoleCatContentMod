@@ -1,22 +1,13 @@
-﻿using BreadLibrary.Core.Graphics.Particles;
+﻿using System;
+using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
 using BreadLibrary.Core.Utilities;
-using DestroyerTest.Common;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
-using OpusLib.Content.Helpers;
 using ReLogic.Content;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Graphics.Renderers;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Config;
 
 namespace DestroyerTest.Content.Particles
 {
@@ -69,7 +60,7 @@ namespace DestroyerTest.Content.Particles
         {
             HasExplicitPixelLayer = false;
             LifeTime++;
-            float Progress = (float)LifeTime / (float)MaxLifetime;
+            float Progress = LifeTime / (float)MaxLifetime;
 
             position += velocity;
             Rotation += Main.rand.NextFloat(0.1f) * Math.Sign(velocity.X);

@@ -1,20 +1,11 @@
-﻿using BreadLibrary.Core.Graphics.Particles;
-using BreadLibrary.Core.Utilities;
+﻿using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using OpusLib.Content.Helpers;
-using ReLogic.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
-using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
 
@@ -80,7 +71,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Ranged
             Vector2 start = Projectile.Center;
 
             Vector2 end = start + new Vector2(Main.rand.NextFloat(length), 0).RotatedBy(Projectile.rotation);
-            
+
         }
 
 

@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -38,9 +35,9 @@ namespace DestroyerTest.Common.Interfaces
         public int StickTime;
         public override void AI(Projectile projectile)
         {
-            
 
-            
+
+
 
             if (projectile.ModProjectile is IStickyProjectile sticky)
             {
@@ -127,7 +124,7 @@ namespace DestroyerTest.Common.Interfaces
                 {
                     if (sticky.CanBeUnstuck)
                     {
-                        Projectile oldest = stuckProjectiles .OrderBy(p => p.GetGlobalProjectile<StickyProjectileGlobal>().StickTime).First();
+                        Projectile oldest = stuckProjectiles.OrderBy(p => p.GetGlobalProjectile<StickyProjectileGlobal>().StickTime).First();
 
                         if (oldest.ModProjectile is IStickyProjectile oldSticky)
                         {

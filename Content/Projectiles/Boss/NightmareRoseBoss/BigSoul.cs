@@ -1,18 +1,14 @@
-using System;
+using System.Collections.Generic;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using ReLogic.Content;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.Enums;
-using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
-using OpusLib;
-using System.Collections.Generic;
 
 namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
 {
@@ -155,7 +151,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
                     Projectile.GetSource_FromThis(),
                     Projectile.Center,
                     velocity,
-                    ModContent.ProjectileType<TormentedSoul2>(), 
+                    ModContent.ProjectileType<TormentedSoul2>(),
                     Projectile.damage / 2,
                     Projectile.knockBack
                 );

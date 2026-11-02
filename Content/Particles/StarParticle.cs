@@ -1,13 +1,7 @@
 using BreadLibrary.Core.Graphics.Particles;
-using BreadLibrary.Core.Graphics.Pixelation;
 using BreadLibrary.Core.Utilities;
-using DestroyerTest.Common;
- 
-using Microsoft.CodeAnalysis;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
-using System;
 using Terraria;
 using Terraria.Graphics.Renderers;
 using Terraria.ModLoader;
@@ -78,7 +72,7 @@ namespace DestroyerTest.Content.Particles
             this.Lifetime = 0;
             this.MaxLifetime = Lifetime;
             this.blendState = BlendState;
-            this.Style = Style; 
+            this.Style = Style;
         }
 
 

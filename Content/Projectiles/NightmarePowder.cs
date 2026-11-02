@@ -1,14 +1,7 @@
-using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Entities;
-using DestroyerTest.Content.Particles;
- 
+
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Terraria;
-using Terraria.Enums;
-using Terraria.GameContent;
-using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -36,7 +29,7 @@ namespace DestroyerTest.Content.Projectiles
 
         public override void AI()
         {
-           
+
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)
@@ -58,6 +51,6 @@ namespace DestroyerTest.Content.Projectiles
         }
 
 
-	}
+    }
 
 }

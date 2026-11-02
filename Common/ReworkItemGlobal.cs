@@ -1,14 +1,7 @@
 ﻿using DestroyerTest.Content.Buffs.Imbues;
 using DestroyerTest.Content.Projectiles.Vanilla;
-using DestroyerTest.Content.Projectiles.Weapon.Melee;
 using DestroyerTest.Content.Scepter;
-using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ID;
@@ -21,7 +14,7 @@ namespace DestroyerTest.Common
         public static string VanillaOverridePath = "DestroyerTest/Content/Extras/VanillaTextures";
         public override void Load()
         {
-            
+
         }
         public override bool InstancePerEntity => true;
 

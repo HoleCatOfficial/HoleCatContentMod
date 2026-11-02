@@ -1,11 +1,6 @@
-using BreadLibrary.Core.Graphics.Pixelation;
-using DestroyerTest.Content.Equips;
-using DestroyerTest.Content.Equips.Cards.RiftenDeck;
-using DestroyerTest.Content.Equips.PetrifiedSet;
-using Humanizer;
-using Microsoft.Xna.Framework;
 using System.Collections.Generic;
-using System.Linq;
+using BreadLibrary.Core.Graphics.Pixelation;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -19,7 +14,7 @@ namespace DestroyerTest.Common
         public override void Load()
         {
             Instance = ModContent.GetInstance<ShieldManager>();
-            
+
             ActiveShields = new List<Shield>[Main.maxPlayers];
 
             for (int i = 0; i < Main.maxPlayers; i++)
@@ -43,14 +38,14 @@ namespace DestroyerTest.Common
             {
                 ActiveShields[i]?.Clear();
             }
-            
+
             ActiveShields = null;
             LoadedShields.Clear();
             LoadedShields = null;
             Instance = null;
 
             if (!Main.dedServ && Drawer is not null)
-            { 
+            {
                 PlayerPixelRegistry.Unregister(Drawer);
             }
             Drawer = null;

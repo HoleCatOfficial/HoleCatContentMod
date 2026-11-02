@@ -1,14 +1,10 @@
-﻿using BreadLibrary.Core.Graphics.Particles;
+﻿using System;
+using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
 using BreadLibrary.Core.Graphics.Spritebatch;
 using BreadLibrary.Core.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Graphics.Renderers;
 using Terraria.ModLoader;
@@ -52,7 +48,7 @@ namespace DestroyerTest.Content.Particles
 
         public override void Update(ref ParticleRendererSettings settings)
         {
-            float Progress = (float)Lifetime / (float)MaxLifetime;
+            float Progress = Lifetime / (float)MaxLifetime;
             Lifetime++;
             position += velocity;
 
@@ -70,8 +66,8 @@ namespace DestroyerTest.Content.Particles
 
         public override PixelLayer DefaultPixelLayer => PixelLayer.AboveProjectiles;
 
-    
-      
+
+
         public override void Draw(ref ParticleRendererSettings settings, SpriteBatch spriteBatch)
         {
             Texture2D texture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/TenebrousCloudParticle").Value;

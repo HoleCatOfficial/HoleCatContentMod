@@ -2,19 +2,15 @@ using System;
 using System.Collections.Generic;
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib.Content.Particles;
-using ReLogic.Content;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.Graphics.Renderers;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -27,7 +23,7 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
         {
             DTUtils.NoUpgradeStack[Type] = true;
             blocked = [ItemID.AnkhCharm, ItemID.AnkhShield, ItemID.BandofRegeneration, ItemID.CharmofMyths];
-            
+
 
             if (DTCrossMod.FargosSoulsIsLoaded)
             {
@@ -68,16 +64,16 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
             {
                 flower.Lillies = true;
             }
-            if(player.TryGetModPlayer<DjedPillarCharmPlayer>(out DjedPillarCharmPlayer modPlayer))
+            if (player.TryGetModPlayer<DjedPillarCharmPlayer>(out DjedPillarCharmPlayer modPlayer))
             {
                 modPlayer.Active = true;
             }
-            if(player.TryGetModPlayer<ShadeLilliesDash>(out ShadeLilliesDash Dash))
+            if (player.TryGetModPlayer<ShadeLilliesDash>(out ShadeLilliesDash Dash))
             {
                 Dash.Active = true;
             }
         }
-        
+
         public override void AddRecipes()
         {
             CreateRecipe()
@@ -87,7 +83,7 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
                 .AddIngredient<Tenebris>(6)
                 .Register();
         }
-	}
+    }
 
     public class ShadeLilliesDash : ModPlayer
     {
@@ -120,7 +116,7 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
             ImmunityDuration = 10;
             if (DashTimer > 0)
             {
-                
+
             }
         }
 
@@ -230,16 +226,16 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
                 }
             }
 
-           
+
 
             if (DashTimer > 0)
             {
                 Positions.Add(Player.MountedCenter);
-                
+
                 Player.eocDash = DashTimer;
                 Player.armorEffectDrawShadowEOCShield = true;
 
-                
+
                 if (Active)
                 {
                     for (int i = 0; i < Positions.Count; i++)
@@ -285,7 +281,7 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
 
         public override void ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers)
         {
-          
+
         }
 
         public override void ModifyHitByProjectile(Projectile proj, ref Player.HurtModifiers modifiers)

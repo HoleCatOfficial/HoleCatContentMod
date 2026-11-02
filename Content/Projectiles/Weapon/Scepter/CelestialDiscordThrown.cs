@@ -1,21 +1,11 @@
+using System;
+using DestroyerTest.Common;
+using DestroyerTest.Content.Projectiles.ParentClasses;
+using DestroyerTest.Content.Projectiles.Weapon.Scepter.DiscordScepter.Power;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
-using Terraria.Audio;
-using DestroyerTest.Content.Consumables;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Dusts;
-using System;
-using Terraria.DataStructures;
-using System.Collections.Generic;
-using System.IO;
- 
-using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Projectiles.ParentClasses;
-using DestroyerTest.Content.Projectiles.Weapon.Scepter.DiscordScepter.Power;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 {
@@ -41,15 +31,15 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
         }
 
 
-       
+
 
     }
     public class CDAreaParticle : ModProjectile
-        {
-            public override string Texture => DTUtils.NoTexture;
+    {
+        public override string Texture => DTUtils.NoTexture;
 
-            private int auraTimer = 600;
-            private float radius = 0f;
+        private int auraTimer = 600;
+        private float radius = 0f;
 
         public override void SetDefaults()
         {
@@ -61,25 +51,25 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
             Projectile.tileCollide = false;
             Projectile.scale = 0.1f;
             Projectile.hide = true; // Optional: hide if just visual
+        }
+
+        public override void AI()
+        {
+            auraTimer--;
+
+            // Interpolate radius from 0 to 300 over the first 30 ticks (auraTimer 600 -> 570)
+            if (auraTimer > 570)
+            {
+                float t = 1f - (auraTimer - 570) / 30f; // t goes from 0 to 1 as auraTimer goes from 600 to 570
+                radius = MathHelper.SmoothStep(0f, 300f, MathHelper.Clamp(t, 0f, 1f));
+            }
+            else
+            {
+                radius = 300f;
             }
 
-            public override void AI()
-            {
-                auraTimer--;
-
-                // Interpolate radius from 0 to 300 over the first 30 ticks (auraTimer 600 -> 570)
-                if (auraTimer > 570)
-                {
-                    float t = 1f - (auraTimer - 570) / 30f; // t goes from 0 to 1 as auraTimer goes from 600 to 570
-                    radius = MathHelper.SmoothStep(0f, 300f, MathHelper.Clamp(t, 0f, 1f));
-                }
-                else
-                {
-                    radius = 300f;
-                }
-
-                // Create the dust ring
-                int dustAmount = 8; // Number of dust particles in the ring
+            // Create the dust ring
+            int dustAmount = 8; // Number of dust particles in the ring
             for (int i = 0; i < dustAmount; i++)
             {
                 float angle = MathHelper.TwoPi * i / dustAmount;
@@ -87,34 +77,34 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
                 float timeOffset = Main.GameUpdateCount * 0.03f; // Adjust speed as needed
                 float dynamicAngle = angle + timeOffset;
                 Vector2 dustPos = Projectile.Center + radius * new Vector2((float)Math.Cos(dynamicAngle), (float)Math.Sin(dynamicAngle));
-           
+
             }
-                    if (auraTimer <= 30)
-                {
-                    float t = (float)auraTimer / 30f; // t goes from 1 to 0 as auraTimer goes from 30 to 0
-                    radius = MathHelper.SmoothStep(0f, 300f, t); // Smoothly shrink from 300 to 0
-                }
-                
-               
+            if (auraTimer <= 30)
+            {
+                float t = auraTimer / 30f; // t goes from 1 to 0 as auraTimer goes from 30 to 0
+                radius = MathHelper.SmoothStep(0f, 300f, t); // Smoothly shrink from 300 to 0
+            }
 
-                Vector2 damagebonusspawnpoint = Main.rand.NextVector2Circular(radius, radius) + Projectile.Center;
-          
 
-                // Apply buffs to players inside the radius
-                foreach (Player player in Main.player)
-                {
-                    if (player.active && !player.dead && Vector2.Distance(player.Center, Projectile.Center) <= radius)
-                    {
-                        player.GetDamage(DamageClass.Generic) += 0.25f;
-                    }
-                }
 
-                if (auraTimer <= 0)
+            Vector2 damagebonusspawnpoint = Main.rand.NextVector2Circular(radius, radius) + Projectile.Center;
+
+
+            // Apply buffs to players inside the radius
+            foreach (Player player in Main.player)
+            {
+                if (player.active && !player.dead && Vector2.Distance(player.Center, Projectile.Center) <= radius)
                 {
-                    Projectile.Kill();
+                    player.GetDamage(DamageClass.Generic) += 0.25f;
                 }
+            }
+
+            if (auraTimer <= 0)
+            {
+                Projectile.Kill();
             }
         }
+    }
 
 }
 

@@ -7,7 +7,6 @@ using OpusLib;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -17,7 +16,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
     {
         public override string Texture => DTUtils.NoTexture;
         public override void SetStaticDefaults()
-        { 
+        {
 
         }
 
@@ -91,7 +90,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
         public bool Bursting = false;
         public override void AI()
         {
-            
+
         }
 
         private void KnockbackNPCs()
@@ -112,10 +111,10 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
             {
                 if (plr.active && plr.Center.Distance(Projectile.Center) < 90f)
                 {
- 
+
                     Vector2 direction = (plr.Center - Projectile.Center).SafeNormalize(Vector2.Zero);
                     plr.velocity += direction * 15f;
-                    
+
                 }
             }
         }

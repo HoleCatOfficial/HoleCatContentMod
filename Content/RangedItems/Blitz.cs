@@ -1,12 +1,8 @@
-﻿using DestroyerTest.Content.Projectiles.AmmoProjectiles;
+﻿using DestroyerTest.Content.Projectiles.Weapon.Ranged;
 using DestroyerTest.Content.Resources;
-using Microsoft.Xna.Framework;
-using System.Collections.Generic;
 using Terraria;
-using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using DestroyerTest.Content.Projectiles.Weapon.Ranged;
 
 namespace DestroyerTest.Content.RangedItems
 {
@@ -30,7 +26,7 @@ namespace DestroyerTest.Content.RangedItems
 
             Item.knockBack = 10;
             Item.autoReuse = true;
-            Item.damage =  40;
+            Item.damage = 40;
             Item.DamageType = DamageClass.Ranged;
             Item.channel = true;
             Item.crit = 16;

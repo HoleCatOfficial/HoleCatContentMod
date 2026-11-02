@@ -1,10 +1,8 @@
-using DestroyerTest.Content.Tiles;
-using DestroyerTest.Content.RiftBiome.RiftSurfaceResources;
-using DestroyerTest.Content.RiftBiome.RiftDesertResources;
-using DestroyerTest.Content.RiftBiome;
 using System;
-using Terraria.ModLoader;
+using DestroyerTest.Content.RiftBiome.RiftDesertResources;
+using DestroyerTest.Content.RiftBiome.RiftSurfaceResources;
 using DestroyerTest.Content.RiftBiome.RiftTundraResources;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Common.Systems
 {
@@ -12,7 +10,8 @@ namespace DestroyerTest.Common.Systems
     {
         public int RiftSurfaceBlockCount;
 
-        public override void TileCountsAvailable(ReadOnlySpan<int> tileCounts) {
+        public override void TileCountsAvailable(ReadOnlySpan<int> tileCounts)
+        {
             RiftSurfaceBlockCount =
                 tileCounts[ModContent.TileType<Tile_RiftDirt>()] +
                 tileCounts[ModContent.TileType<Tile_RiftStone>()];
@@ -31,12 +30,13 @@ namespace DestroyerTest.Common.Systems
                 tileCounts[ModContent.TileType<Tile_RiftSilt>()];
         }
     }
-    
+
     public class RiftTundraTileCount : ModSystem
     {
         public int RiftTundraBlockCount;
 
-        public override void TileCountsAvailable(ReadOnlySpan<int> tileCounts) {
+        public override void TileCountsAvailable(ReadOnlySpan<int> tileCounts)
+        {
             RiftTundraBlockCount =
                 tileCounts[ModContent.TileType<Tile_RiftSnow>()] +
                 tileCounts[ModContent.TileType<Tile_RiftIce>()];

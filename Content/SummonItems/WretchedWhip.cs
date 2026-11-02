@@ -1,11 +1,4 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Projectiles.Weapon.Summon.SoulBoundWhip;
+﻿using DestroyerTest.Common;
 using DestroyerTest.Content.Projectiles.Weapon.Summon.WretchedWhip;
 using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
@@ -43,7 +36,7 @@ namespace DestroyerTest.Content.SummonItems
         {
             Projectile projectile = Projectile.NewProjectileDirect(source, position, velocity, type, damage, knockback, player.whoAmI);
             if (HitCount >= 5)
-            { 
+            {
                 if (projectile.ModProjectile is WretchedWhipProjectile wwp)
                 {
                     //SoundEngine.PlaySound(DTAssetLib.SwordSounds.QuickSwing with { Pitch = -1.4f }, position);

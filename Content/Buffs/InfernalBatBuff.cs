@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DestroyerTest.Content.Projectiles.Pets;
-using DestroyerTest.Content.Projectiles.player.ArmorSet;
+﻿using DestroyerTest.Content.Projectiles.player.ArmorSet;
 using Terraria;
 using Terraria.ModLoader;
 

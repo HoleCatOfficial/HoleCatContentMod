@@ -1,15 +1,11 @@
-﻿using BreadLibrary.Core.Utilities;
+﻿using System.Linq;
+using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
 using DestroyerTest.Common.Interfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using OpusLib.Content.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -81,7 +77,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 
             Main.EntitySpriteDraw(DTAssetLib.StarAura.Value, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, AuraOrigin, Projectile.scale * 1f, SpriteEffects.None, 0f);
 
-           
+
 
             Main.EntitySpriteDraw(DTAssetLib.ColorlessStar.Value, Projectile.Center - Main.screenPosition, null, Color.White, STRot, DTAssetLib.ColorlessStar.Value.Size() / 2, Projectile.scale, SpriteEffects.None, 0f);
 

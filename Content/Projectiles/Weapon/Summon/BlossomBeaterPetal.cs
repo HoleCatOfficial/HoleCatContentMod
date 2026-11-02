@@ -109,7 +109,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
                 Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(3)).ToRotationVector2() * length;
                 Projectile.rotation = Projectile.velocity.ToRotation();
             }
-            
+
 
         }
 

@@ -1,20 +1,13 @@
 using System;
-using System.Formats.Tar;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using BreadLibrary.Core.Graphics.Pixelation;
 using DestroyerTest.Common;
 using DestroyerTest.Common.Interfaces;
 using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Particles;
- 
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using Terraria;
-using Terraria.Audio;
-using Terraria.GameContent;
-using Terraria.Graphics.Renderers;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -95,7 +88,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
             spriteBatch.Draw(SparkTex, Projectile.Center - Main.screenPosition, null, Color.White with { A = 0 }, 0f, SparkOrigin, new Vector2(0.4f, 1f) * Modifiier * 1f, SpriteEffects.None, 0f);
             spriteBatch.Draw(SparkTex, Projectile.Center - Main.screenPosition, null, Color.White with { A = 0 }, MathHelper.PiOver2, SparkOrigin, new Vector2(0.4f, 2f) * Modifiier * 1f, SpriteEffects.None, 0f);
             spriteBatch.Draw(SparkTex, Projectile.Center - Main.screenPosition, null, Col() with { A = 0 }, MathHelper.PiOver2, SparkOrigin, Projectile.scale * Modifiier * 1.4f, SpriteEffects.None, 0f);
-            
+
             spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null, Col() with { A = 0 }, rot, origin, 0.3f * Projectile.scale, SpriteEffects.None, 0f);
             spriteBatch.Draw(texture, Projectile.Center - Main.screenPosition, null, Col() with { A = 0 }, -rot, origin, 0.245f * Projectile.scale, SpriteEffects.None, 0f);
 
@@ -137,7 +130,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
         float rot = 0f;
         public override void AI()
         {
-           
+
             Timer++;
 
             if (Timer < 90)

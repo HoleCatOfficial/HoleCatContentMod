@@ -1,17 +1,13 @@
-﻿using DestroyerTest.Content.Projectiles;
+﻿using DestroyerTest.Common;
+using DestroyerTest.Content.Entities;
+using DestroyerTest.Content.Projectiles.Weapon.Melee;
+using DestroyerTest.Rarity;
+using GlowmaskHelper.Content;
+using OpusLib.Content.Helpers;
 using Terraria;
-using Terraria.Audio;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using DestroyerTest.Rarity;
-using DestroyerTest.Content.Projectiles.Weapon.Melee;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Resources;
-using GlowmaskHelper.Content;
-using OpusLib;
-using OpusLib.Content.Helpers;
-using DestroyerTest.Content.Entities;
-using Terraria.GameContent.ItemDropRules;
 
 namespace DestroyerTest.Content.MeleeWeapons
 {

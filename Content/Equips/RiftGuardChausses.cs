@@ -6,12 +6,11 @@ using DestroyerTest.Rarity;
 using GlowmaskHelper.Content;
 using Terraria;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Equips
 {
-	[AutoloadEquip(EquipType.Legs)]
+    [AutoloadEquip(EquipType.Legs)]
     [AutoloadGlowmask]
     public class RiftGuardChausses : ModItem, IRechargeFunctionality
     {
@@ -24,66 +23,68 @@ namespace DestroyerTest.Content.Equips
         }
 
 
-        public override void SetDefaults() {
-			Item.width = 18;
-			Item.height = 18; 
-			Item.value = Item.sellPrice(gold: 1); 
-			Item.rare = ModContent.RarityType<RiftRarity>();
-			Item.defense = 15;
-		}
+        public override void SetDefaults()
+        {
+            Item.width = 18;
+            Item.height = 18;
+            Item.value = Item.sellPrice(gold: 1);
+            Item.rare = ModContent.RarityType<RiftRarity>();
+            Item.defense = 15;
+        }
 
         public override void UpdateEquip(Player player)
         {
             if (player.TryGetModPlayer<RiftGuardChaussesRunBonus>(out var Bonus))
-			{
-				Bonus.Active = true;
-				if (Energized)
-				{
-					Bonus.Charged = true;
-				}
-			}
+            {
+                Bonus.Active = true;
+                if (Energized)
+                {
+                    Bonus.Charged = true;
+                }
+            }
         }
 
 
-		public override void AddRecipes() {
-			CreateRecipe()
-				.AddIngredient<Item_Riftplate>(16)
-				.AddIngredient<ShadowCircuitry>(6)
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient<Item_Riftplate>(16)
+                .AddIngredient<ShadowCircuitry>(6)
                 .AddIngredient(ItemID.PalladiumBar, 10)
-				.AddTile<Tile_RiftConfigurator>()
-				.Register();
-			CreateRecipe()
-				.AddIngredient<Item_Riftplate>(16)
-				.AddIngredient<ShadowCircuitry>(6)
+                .AddTile<Tile_RiftConfigurator>()
+                .Register();
+            CreateRecipe()
+                .AddIngredient<Item_Riftplate>(16)
+                .AddIngredient<ShadowCircuitry>(6)
                 .AddIngredient(ItemID.CobaltBar, 10)
-				.AddTile<Tile_RiftConfigurator>()
-				.Register();
-		}
-	}
+                .AddTile<Tile_RiftConfigurator>()
+                .Register();
+        }
+    }
 
-	public class RiftGuardChaussesRunBonus : ModPlayer
-	{
-		public bool Active = false;
-		public bool Charged = false;
+    public class RiftGuardChaussesRunBonus : ModPlayer
+    {
+        public bool Active = false;
+        public bool Charged = false;
 
         public override void ResetEffects()
         {
             Active = false;
-			Charged = false;
+            Charged = false;
         }
 
         public override void PostUpdateRunSpeeds()
         {
             if (Active)
-			{
-				if (Charged)
-				{
-					Player.runAcceleration *= 1.2f;
-				}
-				Player.maxRunSpeed *= 1.22f;
-			}
+            {
+                if (Charged)
+                {
+                    Player.runAcceleration *= 1.2f;
+                }
+                Player.maxRunSpeed *= 1.22f;
+            }
         }
 
 
-	}
+    }
 }

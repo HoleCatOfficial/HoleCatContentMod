@@ -1,18 +1,9 @@
-using System;
-using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.Audio;
-using Terraria.ID;
-using Terraria.ModLoader;
-using Terraria.DataStructures;
- 
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Common;
-using Terraria.GameContent.ItemDropRules;
-using DestroyerTest.Rarity;
-using DestroyerTest.Rarity.Scepter;
 using DestroyerTest.Content.Projectiles.Weapon.Scepter;
 using DestroyerTest.Content.Projectiles.Weapon.Scepter.ElementalShots;
+using DestroyerTest.Rarity.Scepter;
+using Terraria;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 
 namespace DestroyerTest.Content.Scepter
@@ -60,4 +51,4 @@ namespace DestroyerTest.Content.Scepter
             Item.shootSpeed = 2;
         }
     }
-} 
+}

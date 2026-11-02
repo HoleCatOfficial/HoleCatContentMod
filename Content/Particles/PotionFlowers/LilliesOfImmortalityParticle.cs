@@ -3,16 +3,10 @@ using DestroyerTest.Content.Equips.PotionFlowers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.Graphics.Renderers;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Config;
 
 namespace DestroyerTest.Content.Particles.PotionFlowers
 {
@@ -52,7 +46,7 @@ namespace DestroyerTest.Content.Particles.PotionFlowers
                     Fx = SpriteEffects.None;
                     HasFlipped = true;
                 }
-                
+
             }
             if (WidthModifier > 0.5f)
             {
@@ -61,7 +55,7 @@ namespace DestroyerTest.Content.Particles.PotionFlowers
 
             Lifetime++;
 
-            Opacity = MathHelper.Lerp(1f, 0f, ((float)Lifetime / (float)MaxLifetime));
+            Opacity = MathHelper.Lerp(1f, 0f, (Lifetime / (float)MaxLifetime));
 
             if (Lifetime > MaxLifetime)
             {
@@ -72,7 +66,7 @@ namespace DestroyerTest.Content.Particles.PotionFlowers
         public override void Draw(ref ParticleRendererSettings settings, SpriteBatch spritebatch)
         {
             Texture2D Texture = TextureAssets.Item[ModContent.ItemType<LilliesOfImmortality>()].Value;
-            
+
             spritebatch.Draw(Texture, position - Main.screenPosition, null, Color.White * Opacity, 0f, Texture.Size() / 2, new Vector2(scale * WidthModifier, scale), Fx, 0f);
         }
 

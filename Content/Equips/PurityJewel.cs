@@ -1,15 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Remnants;
-using DestroyerTest.Rarity;
+﻿using DestroyerTest.Content.Buffs;
 using Terraria;
 using Terraria.DataStructures;
-using Terraria.GameContent.UI;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -54,7 +45,7 @@ namespace DestroyerTest.Content.Equips
                 .AddIngredient(ItemID.Sunflower)
                 .AddTile(TileID.LunarCraftingStation)
                 .Register();
-            
+
         }
     }
 

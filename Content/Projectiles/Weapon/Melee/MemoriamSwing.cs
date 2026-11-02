@@ -1,26 +1,14 @@
 ﻿using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.MeleeWeapons;
-using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Particles.Orchestrated;
 using DestroyerTest.Content.Projectiles.ParentClasses;
-using DestroyerTest.Content.Projectiles.Weapon.Rogue;
- 
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
 using OpusLib.Content.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using System.IO;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.GameContent;
 using Terraria.GameContent.Drawing;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Melee
@@ -31,7 +19,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
-           
+
         }
         public override void SetDefaults()
         {
@@ -47,7 +35,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
         public override SoundStyle Swing => DTAssetLib.SwordSounds.MemoriamSwing with { MaxInstances = 0, PitchVariance = 0.3f };
 
-        
+
 
         public Vector2 swordTip;
         public Line SwordLine;

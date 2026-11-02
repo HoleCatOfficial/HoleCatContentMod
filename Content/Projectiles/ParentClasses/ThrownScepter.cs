@@ -1,23 +1,17 @@
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using DestroyerTest.Common;
+using DestroyerTest.Common.Primitives;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
-using Terraria.Audio;
-using DestroyerTest.Content.Consumables;
-using DestroyerTest.Common;
-using System.IO;
 using OpusLib;
-using Terraria.Graphics.Shaders;
-using Humanizer;
-using System;
 using ReLogic.Content;
-using Terraria.Graphics;
-using BreadLibrary.Core.Utilities;
-using DestroyerTest.Common.Primitives;
-using System.Linq;
-using System.Collections.Generic;
+using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.ParentClasses
 {
@@ -96,16 +90,16 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         public virtual Asset<Texture2D> GlowMask { get; set; } = null;
         EmpressTrailDiagonal Trail = new();
         public override bool PreDraw(ref Color lightColor)
-		{
-			lightColor = ThemeColor;
-			if (Projectile.timeLeft < 30)
-			{
-				lightColor *= ((float)Projectile.timeLeft / 30f); 
-			}
+        {
+            lightColor = ThemeColor;
+            if (Projectile.timeLeft < 30)
+            {
+                lightColor *= (Projectile.timeLeft / 30f);
+            }
 
-			SpriteBatch spriteBatch = Main.spriteBatch;
-			Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
-			DTUtils Utility = new DTUtils();
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
+            DTUtils Utility = new DTUtils();
 
             Trail.ColorStart = ThemeColor;
             Trail.ColorEnd = ThemeColor * 0.4f;
@@ -127,9 +121,9 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
                 {
                     Main.EntitySpriteDraw(DTAssetLib.Cyclone(1).Value, Projectile.Center - Main.screenPosition, null, lightColor * 0.4f, Projectile.rotation, DTAssetLib.Cyclone(1).Value.Size() / 2, 0.1f * Projectile.scale, SpriteEffects.FlipHorizontally, 0);
                 }
-                        
+
                 Main.EntitySpriteDraw(DTAssetLib.BloomRing.Value, Projectile.Center - Main.screenPosition, null, lightColor * 0.4f, Projectile.rotation, DTAssetLib.BloomRing.Value.Size() / 2, 0.4f * Projectile.scale, SpriteEffects.None, 0);
-                    
+
                 Opus.ReturnToDefaultDrawing(spriteBatch);
 
                 Main.EntitySpriteDraw(projectileTexture, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, projectileTexture.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
@@ -143,7 +137,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             {
                 Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
-                
+
 
                 if (returning)
                 {
@@ -153,11 +147,11 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
                 {
                     Main.EntitySpriteDraw(DTAssetLib.Cyclone(1).Value, Projectile.Center - Main.screenPosition, null, DTColorUtils.Pastel(Main.DiscoColor, 0.4f) * 0.4f, Projectile.rotation, DTAssetLib.Cyclone(1).Value.Size() / 2, 0.1f * Projectile.scale, SpriteEffects.FlipHorizontally, 0);
                 }
-                        
+
                 Main.EntitySpriteDraw(DTAssetLib.BloomRing.Value, Projectile.Center - Main.screenPosition, null, DTColorUtils.Pastel(Main.DiscoColor, 0.4f) * 0.4f, Projectile.rotation, DTAssetLib.BloomRing.Value.Size() / 2, 0.4f * Projectile.scale, SpriteEffects.None, 0);
 
-                Main.EntitySpriteDraw(projectileTexture, Projectile.Center - Main.screenPosition, null, DTColorUtils.Pastel(Main.DiscoColor, 0.4f) * 0.6f, Projectile.rotation, projectileTexture.Size() / 2, Projectile.scale, SpriteEffects.None, 0);     
-                    
+                Main.EntitySpriteDraw(projectileTexture, Projectile.Center - Main.screenPosition, null, DTColorUtils.Pastel(Main.DiscoColor, 0.4f) * 0.6f, Projectile.rotation, projectileTexture.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
+
                 Opus.ReturnToDefaultDrawing(spriteBatch);
             }
 
@@ -168,7 +162,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
             //Utils.DrawRect(spriteBatch, DamageHitbox, Color.Red);
             return false;
-		}
+        }
 
         public override void AI()
         {
@@ -180,7 +174,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
             float Width = WidthDim * Projectile.scale;
-            float Height  = WidthDim * Projectile.scale;
+            float Height = WidthDim * Projectile.scale;
 
             Rectangle DamageHitbox = Utils.CenteredRectangle(Projectile.Center, new Vector2(Width, Height));
 
@@ -260,7 +254,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             {
                 Projectile.tileCollide = true;
             }
-            
+
             Projectile.rotation += (Projectile.velocity.Length() * 0.03f) * Projectile.direction;
             OldRotations.Add(Projectile.rotation);
 
@@ -279,10 +273,10 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             DTOptimizationsConfig optcfg = ModContent.GetInstance<DTOptimizationsConfig>();
 
 
-           
+
             if (!returning)
             {
-                
+
                 flightTime++;
                 float returnDelayMultiplier = 1f + (player.ScepterClass().Range * 0.01f);
                 int baseFlightTime = 60;
@@ -299,7 +293,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
             if (returning)
             {
-                
+
                 if (!OnReturnFlag)
                 {
                     OnReturn();
@@ -421,7 +415,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             if (!ArmorSetHelper_AetherianShimmerEffects)
             {
                 CommonTileCollideEffects(ref oldVelocity);
-                
+
                 TileCollideEffects();
             }
 

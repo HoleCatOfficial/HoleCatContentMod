@@ -1,5 +1,4 @@
 using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.Tiles;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
@@ -11,41 +10,42 @@ using Terraria.ObjectData;
 
 namespace DestroyerTest.Content.Tiles.Riftplate
 {
-	// You might have noticed that ExampleDoorClosed.png has 3 copies of the same sprite. These allow for random variation.
-	// Each time a door is closed, the game logic randomly chooses a random sprite for each of the 3 tiles.
-	// The random variation should be very subtle. Each tile is randomized independently.
-	// All doors do this, but the feature can be ignored by just repeating the same sprite 3 times as this example does.
-	public class Tile_RiftDoorClosed : ModTile
-	{
-		public override void SetStaticDefaults() {
-			// Properties
-			Main.tileFrameImportant[Type] = true;
-			Main.tileBlockLight[Type] = true;
-			Main.tileSolid[Type] = true;
-			Main.tileNoAttach[Type] = true;
-			Main.tileLavaDeath[Type] = true;
-			TileID.Sets.NotReallySolid[Type] = true;
-			TileID.Sets.DrawsWalls[Type] = true;
-			TileID.Sets.DisableSmartCursor[Type] = true;
-			TileID.Sets.OpenDoorID[Type] = ModContent.TileType<Tile_RiftDoorOpen>();
+    // You might have noticed that ExampleDoorClosed.png has 3 copies of the same sprite. These allow for random variation.
+    // Each time a door is closed, the game logic randomly chooses a random sprite for each of the 3 tiles.
+    // The random variation should be very subtle. Each tile is randomized independently.
+    // All doors do this, but the feature can be ignored by just repeating the same sprite 3 times as this example does.
+    public class Tile_RiftDoorClosed : ModTile
+    {
+        public override void SetStaticDefaults()
+        {
+            // Properties
+            Main.tileFrameImportant[Type] = true;
+            Main.tileBlockLight[Type] = true;
+            Main.tileSolid[Type] = true;
+            Main.tileNoAttach[Type] = true;
+            Main.tileLavaDeath[Type] = true;
+            TileID.Sets.NotReallySolid[Type] = true;
+            TileID.Sets.DrawsWalls[Type] = true;
+            TileID.Sets.DisableSmartCursor[Type] = true;
+            TileID.Sets.OpenDoorID[Type] = ModContent.TileType<Tile_RiftDoorOpen>();
 
-			AddToArray(ref TileID.Sets.RoomNeeds.CountsAsDoor);
+            AddToArray(ref TileID.Sets.RoomNeeds.CountsAsDoor);
 
-			HitSound = new SoundStyle("DestroyerTest/Assets/Audio/TenebrousConstruct/Hit", 5)
+            HitSound = new SoundStyle("DestroyerTest/Assets/Audio/TenebrousConstruct/Hit", 5)
             {
                 PitchVariance = 0.2f,
                 MaxInstances = 0
             };
             DustType = ModContent.DustType<RiftDust>();
-			AdjTiles = new int[] { TileID.ClosedDoor };
+            AdjTiles = new int[] { TileID.ClosedDoor };
 
-			// Names
-			AddMapEntry(new Color(102, 61, 0), Language.GetText("MapObject.Door"));
+            // Names
+            AddMapEntry(new Color(102, 61, 0), Language.GetText("MapObject.Door"));
 
-			// Placement
-			// In addition to copying from the TileObjectData.Something templates, modders can copy from specific tile types. CopyFrom won't copy subtile data, so style specific properties won't be copied, such as how Obsidian doors are immune to lava.
-			TileObjectData.newTile.CopyFrom(TileObjectData.GetTileData(TileID.ClosedDoor, 0));
-			/* This is what is copied from the ClosedDoor tile
+            // Placement
+            // In addition to copying from the TileObjectData.Something templates, modders can copy from specific tile types. CopyFrom won't copy subtile data, so style specific properties won't be copied, such as how Obsidian doors are immune to lava.
+            TileObjectData.newTile.CopyFrom(TileObjectData.GetTileData(TileID.ClosedDoor, 0));
+            /* This is what is copied from the ClosedDoor tile
 			TileObjectData.newTile.Width = 1;
 			TileObjectData.newTile.Height = 3;
 			TileObjectData.newTile.Origin = new Point16(0, 0);
@@ -66,22 +66,25 @@ namespace DestroyerTest.Content.Tiles.Riftplate
 			TileObjectData.newAlternate.Origin = new Point16(0, 2);
 			TileObjectData.addAlternate(0);
 			*/
-			TileObjectData.addTile(Type);
-		}
+            TileObjectData.addTile(Type);
+        }
 
-		public override bool HasSmartInteract(int i, int j, SmartInteractScanSettings settings) {
-			return true;
-		}
+        public override bool HasSmartInteract(int i, int j, SmartInteractScanSettings settings)
+        {
+            return true;
+        }
 
-		public override void NumDust(int i, int j, bool fail, ref int num) {
-			num = 1;
-		}
+        public override void NumDust(int i, int j, bool fail, ref int num)
+        {
+            num = 1;
+        }
 
-		public override void MouseOver(int i, int j) {
-			Player player = Main.LocalPlayer;
-			player.noThrow = 2;
-			player.cursorItemIconEnabled = true;
-			player.cursorItemIconID = ModContent.ItemType<Item_RiftDoor>();
-		}
-	}
+        public override void MouseOver(int i, int j)
+        {
+            Player player = Main.LocalPlayer;
+            player.noThrow = 2;
+            player.cursorItemIconEnabled = true;
+            player.cursorItemIconID = ModContent.ItemType<Item_RiftDoor>();
+        }
+    }
 }

@@ -1,9 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.Enums;
@@ -22,7 +17,7 @@ namespace DestroyerTest.Content.Tiles.RoseGarden
             Main.tileTable[Type] = true;
             Main.tileFrameImportant[Type] = true;
             TileObjectData.newTile = new TileObjectData(copyFrom: TileObjectData.Style1x1); // Create a new instance
-                
+
 
             TileObjectData.newTile.UsesCustomCanPlace = true;
             TileObjectData.newTile.StyleHorizontal = true;
@@ -49,7 +44,7 @@ namespace DestroyerTest.Content.Tiles.RoseGarden
             Tile T = Main.tile[left, top];
 
             T.ClearTile();
-            
+
         }
     }
 

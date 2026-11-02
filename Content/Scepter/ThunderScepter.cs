@@ -1,22 +1,15 @@
-using System;
-using Microsoft.Xna.Framework;
+using DestroyerTest.Content.Projectiles.Weapon.Scepter;
+using DestroyerTest.Rarity.Scepter;
+using OpusLib;
 using Terraria;
-using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.DataStructures;
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Rarity.Scepter;
-using DestroyerTest.Content.Projectiles.Weapon.Scepter;
-using OpusLib;
 
 namespace DestroyerTest.Content.Scepter
 {
-	public class ThunderScepter : ScepterItem
-	{
-		public override int Width => 36;
+    public class ThunderScepter : ScepterItem
+    {
+        public override int Width => 36;
         public override int Height => 34;
 
         public override void SetStaticDefaults()
@@ -54,4 +47,4 @@ namespace DestroyerTest.Content.Scepter
             base.SetDefaults();
         }
     }
-} 
+}

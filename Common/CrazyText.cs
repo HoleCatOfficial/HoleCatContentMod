@@ -1,12 +1,9 @@
 using System;
 using System.Linq;
-using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.ID;
+using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader;
 using Terraria.UI;
-using Terraria.GameContent;
-using Terraria.GameContent.UI.Elements;
 
 namespace DestroyerTest.Common
 {

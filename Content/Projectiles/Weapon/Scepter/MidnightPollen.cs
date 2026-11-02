@@ -1,19 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Formats.Tar;
-using System.Runtime.CompilerServices;
-using BreadLibrary.Core.Graphics.Particles;
+﻿using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Projectiles.Weapon.Magic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
@@ -29,14 +22,14 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 
         public override void SetDefaults()
         {
-            
+
             Projectile.DamageType = ModContent.GetInstance<ScepterClass>();
             Projectile.friendly = true;
             Projectile.hostile = false;
             Projectile.ignoreWater = true;
             Projectile.timeLeft = 240;
             Projectile.tileCollide = false;
-            GlobalMult = (float)Main.rand.Next(1, 4);
+            GlobalMult = Main.rand.Next(1, 4);
             Projectile.width = (int)(36 * GlobalMult);
             Projectile.height = (int)(36 * GlobalMult);
         }
@@ -67,7 +60,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
             XScale = Opus.Sine(0.2f, 1f, 0.2f);
             YScale = Opus.Sine(1f, 0.2f, 0.2f);
 
-            
+
             PixelParticle Particle = new PixelParticle();
             Particle.Initialize(Projectile.Center, Main.rand.NextVector2Circular(0.3f, 0.3f), Color.DarkViolet, 2f);
             ParticleEngine.Particles.Add(Particle);

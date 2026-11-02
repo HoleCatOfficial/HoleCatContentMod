@@ -1,14 +1,12 @@
-﻿using BreadLibrary.Core.Graphics.Particles;
+﻿using System.Linq;
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
- 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using OpusLib.Content.Particles;
-using System.Linq;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -83,13 +81,13 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
             BloomRingSharp Ring = new BloomRingSharp();
             Ring.Prepare(Projectile.Center, Vector2.Zero, Color.White, 0.1f, 0.001f, 0.2f, BlendState.Additive);
             ParticleEngine.Particles.Add(Ring);
-           
+
 
             var D1 = Opus.RadialSpreadDustRandom(DustID.FireworksRGB, 2, Projectile.Center, 0, Color.White, 2f, Main.rand.NextFloat(5f, 12f));
             var D2 = Opus.RadialSpreadDustRandom(DustID.FireworksRGB, 3, Projectile.Center, 0, Color.White, 0.6f, 3f);
             var D3 = Opus.RadialSpreadDustRandom(DustID.FireworksRGB, 5, Projectile.Center, 70, ColorLib.Soul, 1f, 4f);
 
-            for(int i =0; i < D1.Length; i++)
+            for (int i = 0; i < D1.Length; i++)
             {
                 D1[i].noGravity = true;
             }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DestroyerTest.Common;
+﻿using DestroyerTest.Common;
 using DestroyerTest.Content.Projectiles.player.ArmorSet;
 using DestroyerTest.Content.Resources;
 using Microsoft.Xna.Framework;

@@ -1,20 +1,14 @@
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles.ParentClasses;
- 
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
 using OpusLib.Content.Helpers;
 using ReLogic.Content;
-using System;
-using System.IO;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -24,7 +18,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
     {
         public override void SetStaticDefaults()
         {
-            
+
         }
 
         Asset<Texture2D> ColdTex;
@@ -47,7 +41,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
         public override SoundStyle Swing => DTAssetLib.SwordSounds.StandardSwing with { MaxInstances = 0, Pitch = -0.4f, PitchVariance = 0.3f };
 
-      
+
         public override void DrawUnderBlade()
         {
 
@@ -75,7 +69,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 rotationOffset = MathHelper.ToRadians(45f);
             }
             else
-            { 
+            {
                 origin = new Vector2(texture.Width, texture.Height);
                 effects = SpriteEffects.FlipHorizontally;
                 rotationOffset = MathHelper.ToRadians(135f);
@@ -83,9 +77,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
 
             Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, null, Color.White * Projectile.Opacity, (Projectile.rotation + rotationOffset) + RotationManualOffset, origin, Projectile.scale, effects, 0);
-            
+
             Main.EntitySpriteDraw(DTAssetLib.SparkFrostCleaverMask.Value, Projectile.Center - Main.screenPosition, null, Color.White * MaskOpacity, (Projectile.rotation + rotationOffset) + RotationManualOffset, origin, Projectile.scale, effects, 0);
-            
+
 
         }
 
@@ -99,7 +93,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         public override void ExtraEffects()
         {
             swordTip = Projectile.Center + Projectile.rotation.ToRotationVector2() * (Projectile.Size.Length() * Projectile.scale);
-           
+
             Hot = SwingCounter % 2 == 0;
 
             if (MaskOpacity > 0)
@@ -123,7 +117,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 SweepHighlightColor = Color.SkyBlue;
             }
 
-            
+
             ScaleMult = 1.17f;
         }
 

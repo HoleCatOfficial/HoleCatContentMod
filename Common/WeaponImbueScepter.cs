@@ -1,21 +1,16 @@
 
+using BreadLibrary.Core.Graphics.Particles;
+using BreadLibrary.Core.Graphics.Pixelation;
 using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Projectiles;
+using DestroyerTest.Content.Particles.Stellar;
 using DestroyerTest.Content.Projectiles.ParentClasses;
-using DestroyerTest.Content.Projectiles.player.Accessory;
- 
-using Microsoft.Build.Evaluation;
 using Microsoft.Xna.Framework;
+using OpusLib.Content.Particles;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using BreadLibrary.Core.Graphics.Particles;
-using DestroyerTest.Content.Particles.Stellar;
-using OpusLib.Content.Particles;
-using BreadLibrary.Core.Graphics.Pixelation;
 
 
 namespace DestroyerTest.Common
@@ -83,7 +78,7 @@ namespace DestroyerTest.Common
                         }
                     case WeaponImbuePlayer.Imbues.Defilement:
                         {
-                            
+
                             break;
                         }
                     case WeaponImbuePlayer.Imbues.FrostBite:
@@ -134,7 +129,7 @@ namespace DestroyerTest.Common
                         }
                     case WeaponImbuePlayer.Imbues.SpiritDrift:
                         {
-                            
+
                             break;
                         }
                     case WeaponImbuePlayer.Imbues.ShimmeringFlames:
@@ -146,7 +141,7 @@ namespace DestroyerTest.Common
                         }
                     case WeaponImbuePlayer.Imbues.SoulInferno:
                         {
-                            
+
                             break;
                         }
                     case WeaponImbuePlayer.Imbues.Withering:

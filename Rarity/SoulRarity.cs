@@ -1,12 +1,7 @@
-﻿using System;
+﻿using DestroyerTest.Common;
 using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.ModLoader;
-using Terraria.UI.Chat;
-using ReLogic.Graphics;
-using Terraria.GameContent;
 using Terraria.ID;
-using DestroyerTest.Common;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Rarity
 {

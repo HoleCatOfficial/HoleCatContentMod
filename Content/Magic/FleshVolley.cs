@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DestroyerTest.Common;
+﻿using DestroyerTest.Common;
 using DestroyerTest.Content.MeleeWeapons;
 using DestroyerTest.Content.Projectiles.Weapon.Magic;
-using DestroyerTest.Content.Projectiles.Weapon.Rogue;
 using DestroyerTest.Content.Remnants;
 using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;

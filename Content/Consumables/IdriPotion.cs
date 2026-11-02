@@ -1,47 +1,44 @@
-using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Consumables;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using Newtonsoft.Json.Linq;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Consumables
 {
-	public class IdriPotion : ModItem
-	{
-		public override void SetStaticDefaults() {
-			Item.ResearchUnlockCount = 20;
+    public class IdriPotion : ModItem
+    {
+        public override void SetStaticDefaults()
+        {
+            Item.ResearchUnlockCount = 20;
 
-			ItemID.Sets.DrinkParticleColors[Type] = [
-				new Color(111, 58, 95),
-				new Color(130, 86, 111),
-				new Color(82, 40, 69)
-			];
-		}
+            ItemID.Sets.DrinkParticleColors[Type] = [
+                new Color(111, 58, 95),
+                new Color(130, 86, 111),
+                new Color(82, 40, 69)
+            ];
+        }
 
         public int BuffToGrant = ModContent.BuffType<BlackGuard>();
-		public override void SetDefaults() {
-			Item.UseSound = SoundID.Item3;
-			Item.useStyle = ItemUseStyleID.DrinkLiquid;
-			Item.useTurn = true;
-			Item.useAnimation = 17;
-			Item.useTime = 17;
-			Item.maxStack = Item.CommonMaxStack;
-			Item.consumable = true;
-			Item.width = 20;
-			Item.height = 30;
-			Item.buffType = BuffToGrant;
-			
-			Item.value = Item.sellPrice(0, 2, 5);
-			Item.rare = ModContent.RarityType<CorruptionSpecialRarity>();
-		}
+        public override void SetDefaults()
+        {
+            Item.UseSound = SoundID.Item3;
+            Item.useStyle = ItemUseStyleID.DrinkLiquid;
+            Item.useTurn = true;
+            Item.useAnimation = 17;
+            Item.useTime = 17;
+            Item.maxStack = Item.CommonMaxStack;
+            Item.consumable = true;
+            Item.width = 20;
+            Item.height = 30;
+            Item.buffType = BuffToGrant;
+
+            Item.value = Item.sellPrice(0, 2, 5);
+            Item.rare = ModContent.RarityType<CorruptionSpecialRarity>();
+        }
 
         public override bool? UseItem(Player player)
         {
@@ -104,7 +101,7 @@ namespace DestroyerTest.Content.Consumables
             {
                 Cur = 0;
             }
-            
+
             if (Cur > 2)
             {
                 Cur = 0;
@@ -126,7 +123,7 @@ namespace DestroyerTest.Content.Consumables
                 BuffToGrant = ModContent.BuffType<Bravado>();
             }
 
-            AdvancedPopupRequest msg = new AdvancedPopupRequest { Color = Color.HotPink, DurationInFrames = 60, Text = NameToUse, Velocity = new Vector2(0, -15)};
+            AdvancedPopupRequest msg = new AdvancedPopupRequest { Color = Color.HotPink, DurationInFrames = 60, Text = NameToUse, Velocity = new Vector2(0, -15) };
             PopupText.NewText(msg, player.Center);
 
             Item.buffType = BuffToGrant;
@@ -142,6 +139,6 @@ namespace DestroyerTest.Content.Consumables
                 .AddIngredient<Dyrn>(10)
                 .AddTile(TileID.Bottles)
                 .Register();
-		}
-	}
+        }
+    }
 }

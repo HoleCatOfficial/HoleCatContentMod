@@ -1,13 +1,11 @@
+using System;
 using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
 using BreadLibrary.Core.Graphics.Spritebatch;
 using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
- 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
-using System;
 using Terraria;
 using Terraria.Graphics.Renderers;
 using Terraria.ModLoader;
@@ -86,10 +84,10 @@ namespace DestroyerTest.Content.Particles
 
             if (Lifetime < maxLifetime / 2)
             {
-                float progress = 1f - (float)Lifetime / (maxLifetime / 2f);
+                float progress = 1f - Lifetime / (maxLifetime / 2f);
                 Width = MathHelper.Lerp(1f, 0f, progress);
 
-      
+
             }
 
             if (Lifetime <= 0)
@@ -232,11 +230,11 @@ namespace DestroyerTest.Content.Particles
 
             if (usesColorMap)
             {
-                col = DTColorUtils.MultiLerp((float)(Lifetime / maxLifetime), ColorMap);
+                col = DTColorUtils.MultiLerp(Lifetime / maxLifetime, ColorMap);
             }
             else
             {
-                col = Color.Lerp(startcol, endcol, (float)(Lifetime / maxLifetime));
+                col = Color.Lerp(startcol, endcol, Lifetime / maxLifetime);
             }
 
             position += velocity;
@@ -259,7 +257,7 @@ namespace DestroyerTest.Content.Particles
 
             if (Lifetime < maxLifetime / 2)
             {
-                float progress = 1f - (float)Lifetime / (maxLifetime / 2f);
+                float progress = 1f - Lifetime / (maxLifetime / 2f);
                 Width = MathHelper.Lerp(1f, 0f, progress);
             }
 
@@ -330,7 +328,7 @@ namespace DestroyerTest.Content.Particles
             spritebatch.ResetToDefault();
         }
 
-       
+
     }
 
     public class HeatseekerSilohSpark : Spark
@@ -347,7 +345,7 @@ namespace DestroyerTest.Content.Particles
 
             if (Lifetime < maxLifetime / 2)
             {
-                float progress = 1f - (float)Lifetime / (maxLifetime / 2f);
+                float progress = 1f - Lifetime / (maxLifetime / 2f);
                 Width = MathHelper.Lerp(1f, 0f, progress);
                 LengthMultiplier = MathHelper.Lerp(_len, 0f, progress);
             }
@@ -380,7 +378,7 @@ namespace DestroyerTest.Content.Particles
 
             if (Lifetime < maxLifetime / 2)
             {
-                float progress = 1f - (float)Lifetime / (maxLifetime / 2f);
+                float progress = 1f - Lifetime / (maxLifetime / 2f);
                 Width = MathHelper.Lerp(1f, 0f, progress);
                 LengthMultiplier = MathHelper.Lerp(_len, 0f, progress);
             }
@@ -405,7 +403,7 @@ namespace DestroyerTest.Content.Particles
             spritebatch.Begin(Cap);
 
             spritebatch.Draw(GetTextureProperties().Item1, position - Main.screenPosition, GetTextureProperties().Item2, col with { A = 0 } * Opacity, rotation, GetTextureProperties().Item3, new Vector2(scale * Width * LengthMultiplier, scale) * 0.1f, SpriteEffects.None, 0f);
-            
+
             spritebatch.Draw(GetTextureProperties().Item1, position - Main.screenPosition, GetTextureProperties().Item2, Color.Black * Opacity, rotation, GetTextureProperties().Item3, new Vector2(scale * 0.5f * Width * LengthMultiplier, (scale) * 0.7f) * 0.1f, SpriteEffects.None, 0f);
 
             spritebatch.ResetToDefault();

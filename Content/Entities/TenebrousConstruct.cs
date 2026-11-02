@@ -1,9 +1,10 @@
+using System.Collections.Generic;
+using System.Linq;
 using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
 using BreadLibrary.Core.Graphics.Spritebatch;
 using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
-using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Equips;
@@ -13,37 +14,21 @@ using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Boss;
 using DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss;
 using DestroyerTest.Content.Projectiles.Boss.TenebrousConstruct;
-using DestroyerTest.Content.Projectiles.Weapon.Magic;
 using DestroyerTest.Content.Projectiles.Weapon.Summon;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.RiftBiome;
-using DestroyerTest.Content.RogueItems;
-using DestroyerTest.Content.SHADEMANAGEMENT;
+using DestroyerTest.Content.ThrowerItems;
 using DestroyerTest.Content.Tiles;
-using DestroyerTest.Content.Tools;
-using Humanizer;
-using Microsoft.Build.Evaluation;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoMod.Cil;
 using OpusLib;
 using ReLogic.Content;
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.IO;
-using System.Linq;
 using Terraria;
 using Terraria.Audio;
-using Terraria.Cinematics;
 using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Utilities;
-using UtfUnknown.Core.Models.SingleByte.Finnish;
 
 namespace DestroyerTest.Content.Entities
 {
@@ -249,10 +234,10 @@ namespace DestroyerTest.Content.Entities
                     }
                 }
 
-                
 
 
-                
+
+
 
                 /*
                 //Inner Ring
@@ -353,28 +338,28 @@ namespace DestroyerTest.Content.Entities
 
             for (int i = 0; i < NPC.oldPos.Length; i++)
             {
-                float Alpha = MathHelper.Lerp(0.2f, 0f, (float)i / (float)NPC.oldPos.Length);
-                Main.EntitySpriteDraw(TextureAssets.Npc[Type].Value, NPC.OldCenter()[i]- screenPos, NPC.frame, drawColor * Alpha, NPC.oldRot[i], new Vector2(NPC.width / 2, (NPC.frame.Height) / 2), NPC.scale, SpriteEffects.None);
+                float Alpha = MathHelper.Lerp(0.2f, 0f, i / (float)NPC.oldPos.Length);
+                Main.EntitySpriteDraw(TextureAssets.Npc[Type].Value, NPC.OldCenter()[i] - screenPos, NPC.frame, drawColor * Alpha, NPC.oldRot[i], new Vector2(NPC.width / 2, (NPC.frame.Height) / 2), NPC.scale, SpriteEffects.None);
             }
 
             if (DTConfig.instance.EnableDebugMessages)
             {
                 Utils.DrawBorderString(spriteBatch, InternalTimer.ToString(), (NPC.Center + new Vector2(0, -40)) - Main.screenPosition, Color.Red, 1f, 0.5f, 0.5f);
             }
-         
+
 
             // Left wing: origin at RIGHT edge, middle vertically
-            
+
             Main.EntitySpriteDraw(WingLeft.Value, NPC.Center - screenPos + new Vector2(-30, -30), null, Color.White with { A = 0 } * 0.5f * NPC.Opacity, 0f, originLeft, new Vector2(WingXScale * 2.15f, 2.15f), SpriteEffects.None, 0);
 
             Main.EntitySpriteDraw(WingLeft.Value, NPC.Center - screenPos + new Vector2(-30, -30), null, Color.White with { A = 0 } * NPC.Opacity, 0f, originLeft, new Vector2(WingXScale * 2, 2f), SpriteEffects.None, 0);
 
             // Right wing: origin at LEFT edge, middle vertically
-          
+
 
             Main.EntitySpriteDraw(WingRight.Value, NPC.Center - screenPos + new Vector2(30, -30), null, Color.White with { A = 0 } * 0.5f * NPC.Opacity, 0f, originRight, new Vector2(WingXScale * 2.15f, 2.15f), SpriteEffects.None, 0);
 
-            Main.EntitySpriteDraw(WingRight.Value, NPC.Center - screenPos + new Vector2(30, -30), null, Color.White with { A = 0 } * NPC.Opacity, 0f, originRight,  new Vector2(WingXScale * 2f, 2f), SpriteEffects.None, 0 );
+            Main.EntitySpriteDraw(WingRight.Value, NPC.Center - screenPos + new Vector2(30, -30), null, Color.White with { A = 0 } * NPC.Opacity, 0f, originRight, new Vector2(WingXScale * 2f, 2f), SpriteEffects.None, 0);
 
             Main.EntitySpriteDraw(Tex, NPC.Center - screenPos, sourceRect, Color.White, 0f, sourceRect.Size() / 2, 1f, SpriteEffects.None, 0);
 
@@ -419,11 +404,11 @@ namespace DestroyerTest.Content.Entities
         public int ConsumptionThreshold = 100;
         float LaserWarnOpacity = 0f;
         float LaserRotOffset = 0f;
-        public float ConsumptionProgress => (float)Consumed / (float)ConsumptionThreshold;
+        public float ConsumptionProgress => Consumed / (float)ConsumptionThreshold;
 
         void ControlDialogue()
         {
-            float Prog = ((float)NPC.life / (float)NPC.lifeMax).Inverse();
+            float Prog = (NPC.life / (float)NPC.lifeMax).Inverse();
             Prog = Utils.Clamp(Prog, 0f, 1f);
             CurrentDialogue = (int)MathHelper.Lerp(0, NumFightDialogueLines - 1, Prog);
             CurrentDialogue = Utils.Clamp(CurrentDialogue, 0, 20);
@@ -857,7 +842,7 @@ namespace DestroyerTest.Content.Entities
                             {
                                 LaserRotOffset += 0.01f;
 
-                                LaserWarnOpacity = MathHelper.Lerp(0f, 1f, Utilities.Convert01To010((float)(InternalTimer - SuckEnd) / 120f));
+                                LaserWarnOpacity = MathHelper.Lerp(0f, 1f, Utilities.Convert01To010((InternalTimer - SuckEnd) / 120f));
 
                             }
                             else
@@ -980,7 +965,7 @@ namespace DestroyerTest.Content.Entities
             ProjectileID.EmpressBlade,
         };
 
-        
+
 
         public override void OnHitByProjectile(Projectile projectile, NPC.HitInfo hit, int damageDone)
         {
@@ -1078,7 +1063,7 @@ namespace DestroyerTest.Content.Entities
 
             if (Active)
             {
-                Opacity = ((float)Subject.life / (float)Subject.lifeMax).Inverse();
+                Opacity = (Subject.life / (float)Subject.lifeMax).Inverse();
             }
             else
             {
@@ -1132,7 +1117,7 @@ namespace DestroyerTest.Content.Entities
                 Particle.color = ColorLib.TenebrisGradient * Opacity;
                 ParticleEngine.BehindProjectiles.Add(Particle);
             }
-            
+
         }
     }
 }

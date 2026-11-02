@@ -1,9 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -156,7 +151,7 @@ namespace DestroyerTest.Common.Interfaces
             float length = projectile.velocity.Length();
             float targetAngle = projectile.AngleTo(targetCenter);
             projectile.velocity = projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(homing.HomingTurnSpeed)).ToRotationVector2() * length;
-            
+
             if (homing.UsesHomingAcceleration)
             {
                 if (length < homing.HomingMaxAccel)

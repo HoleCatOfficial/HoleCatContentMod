@@ -1,14 +1,7 @@
-using System;
-
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Content.Projectiles.AmmoProjectiles;
 using DestroyerTest.Content.Projectiles.Weapon.Ranged;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Rarity;
-using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 

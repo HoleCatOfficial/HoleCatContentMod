@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Xna.Framework.Graphics;
-using MonoMod.RuntimeDetour.HookGen;
+﻿using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria;
 using Terraria.GameContent.UI.Elements;
@@ -20,7 +13,7 @@ namespace DestroyerTest.Common.Systems
         public override void OnModLoad()
         {
 
-            
+
         }
 
         public override void SetStaticDefaults()
@@ -53,7 +46,7 @@ namespace DestroyerTest.Common.Systems
                 }
 
             }
-            
+
             return orig(self);
         }
 

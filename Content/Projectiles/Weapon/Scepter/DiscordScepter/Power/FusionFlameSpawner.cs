@@ -1,11 +1,6 @@
-﻿using System;
-using System.IO;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Dusts;
+﻿using DestroyerTest.Common;
 using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.Audio;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Scepter.DiscordScepter.Power

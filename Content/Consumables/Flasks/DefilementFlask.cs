@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
+﻿using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs.Imbues;
 using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;

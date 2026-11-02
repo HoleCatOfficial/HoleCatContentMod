@@ -1,22 +1,14 @@
-using rail;
+using DestroyerTest.Content.Resources.Cloths;
+using DestroyerTest.Rarity.Scepter;
 using Terraria;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
-using DestroyerTest.Content.Tiles;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Rarity;
-using DestroyerTest.Content.Tiles.Riftplate;
-using DestroyerTest.Content.Tiles.RiftConfigurator;
-using DestroyerTest.Content.RiftBiome.RiftSurfaceResources;
-using DestroyerTest.Rarity.Scepter;
-using DestroyerTest.Content.Resources.Cloths;
 
 namespace DestroyerTest.Content.Equips
 {
-	[AutoloadEquip(EquipType.Body)]
-	public class ForgottenPlatemail : ModItem
-	{
+    [AutoloadEquip(EquipType.Body)]
+    public class ForgottenPlatemail : ModItem
+    {
         /*
         public int equipBack = -1;
         public int equipFront = -1;
@@ -38,13 +30,14 @@ namespace DestroyerTest.Content.Equips
         */
 
 
-		public override void SetDefaults() {
-			Item.width = 42;
-			Item.height = 24;
-			Item.value = Item.sellPrice(silver: 75);
-			Item.rare = ModContent.RarityType<PearlRarity>();
-			Item.defense = 7;
-		}
+        public override void SetDefaults()
+        {
+            Item.width = 42;
+            Item.height = 24;
+            Item.value = Item.sellPrice(silver: 75);
+            Item.rare = ModContent.RarityType<PearlRarity>();
+            Item.defense = 7;
+        }
 
         public override void UpdateEquip(Player player)
         {
@@ -60,5 +53,5 @@ namespace DestroyerTest.Content.Equips
             .AddTile(TileID.Anvils)
             .Register();
         }
-	}
+    }
 }

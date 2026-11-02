@@ -1,20 +1,10 @@
-﻿
-using DestroyerTest.Common.Systems;
-using DestroyerTest.Content.Entities;
+﻿using DestroyerTest.Content.Entities;
 using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Content.Tiles;
 using DestroyerTest.Content.Tiles.Altar;
 using Microsoft.Xna.Framework;
-using ReLogic.Graphics;
-using System;
-using System.Collections.Generic;
 using Terraria;
-using Terraria.Audio;
-using Terraria.GameContent;
-using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.UI.Chat;
 
 namespace DestroyerTest.Content.BossSummons
 {
@@ -40,7 +30,7 @@ namespace DestroyerTest.Content.BossSummons
             Item.maxStack = 1;
             Item.noMelee = true;
             Item.noUseGraphic = true;
-            
+
         }
 
         public override void ModifyResearchSorting(ref ContentSamples.CreativeHelper.ItemGroup itemGroup)

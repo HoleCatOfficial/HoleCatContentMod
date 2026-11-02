@@ -1,15 +1,8 @@
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
-using Terraria.Audio;
-using DestroyerTest.Content.Consumables;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Dusts;
-using System.IO;
 using DestroyerTest.Content.Projectiles.ParentClasses;
+using Terraria;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 {
@@ -29,7 +22,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
             base.AI();
             if (Main.rand.NextBool())
             {
-                Projectile.NewProjectile(Projectile.InheritSource(Projectile), Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Main.rand.NextVector2Circular(0.5f, 0.5f), ModContent.ProjectileType<SolarTrail>(), (int)(Projectile.damage / 5), 0f, Projectile.owner);
+                Projectile.NewProjectile(Projectile.InheritSource(Projectile), Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Main.rand.NextVector2Circular(0.5f, 0.5f), ModContent.ProjectileType<SolarTrail>(), Projectile.damage / 5, 0f, Projectile.owner);
             }
         }
     }

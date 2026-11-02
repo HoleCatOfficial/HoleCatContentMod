@@ -1,14 +1,6 @@
 ﻿using DestroyerTest.Common;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.RiftBiome.RiftSurfaceResources;
-using DestroyerTest.Content.Tiles;
-using DestroyerTest.Content.Tiles.RiftConfigurator;
-using DestroyerTest.Content.Tiles.Riftplate;
 using DestroyerTest.Rarity;
-using rail;
 using Terraria;
-using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Equips

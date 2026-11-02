@@ -1,22 +1,13 @@
-using System;
 using System.Collections.Generic;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Entities;
- 
-using DestroyerTest.Content.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
-using ReLogic.Content;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.Enums;
 using Terraria.GameContent;
-using Terraria.GameContent.Drawing;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
@@ -45,61 +36,61 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
 
         public float trailOffset = 0;
         public override bool PreDraw(ref Color lightColor)
-		{
-			lightColor = ColorLib.Soul;
+        {
+            lightColor = ColorLib.Soul;
             trailOffset += 0.04f;
-			
-			SpriteBatch spriteBatch = Main.spriteBatch;
-			DTUtils Utility = new DTUtils();
+
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            DTUtils Utility = new DTUtils();
 
             DTTrail.DrawTrail(spriteBatch, DTAssetLib.Streak(7).Value, TrailPositions, TrailRotations, 35, ColorLib.Soul, trailOffset);
 
             Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-        
-			Opus.DrawGlowOnProj(Projectile, lightColor, true);
+
+            Opus.DrawGlowOnProj(Projectile, lightColor, true);
 
             Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, TextureAssets.Projectile[Projectile.type].Value.Size() / 2, Projectile.scale * 0.5f, SpriteEffects.None, 0);
 
-			Opus.ReturnToDefaultDrawing(spriteBatch);
+            Opus.ReturnToDefaultDrawing(spriteBatch);
 
-			return false;
-		}
+            return false;
+        }
 
         public List<Vector2> TrailPositions = new();
-		public List<float> TrailRotations = new();
-		private const int TrailLength = 200;
+        public List<float> TrailRotations = new();
+        private const int TrailLength = 200;
 
-		public override void AI()
-		{
-			Vector2 lastPos = TrailPositions.Count > 0 ? TrailPositions[0] : Projectile.Center;
-			Vector2 newPos  = Projectile.Center;
+        public override void AI()
+        {
+            Vector2 lastPos = TrailPositions.Count > 0 ? TrailPositions[0] : Projectile.Center;
+            Vector2 newPos = Projectile.Center;
 
-			float dist = Vector2.Distance(lastPos, newPos);
-			float step = 1f; // how closely to sample. tweak this!
+            float dist = Vector2.Distance(lastPos, newPos);
+            float step = 1f; // how closely to sample. tweak this!
 
-			if (dist > 0f)
-			{
-				int segments = (int)(dist / step);
+            if (dist > 0f)
+            {
+                int segments = (int)(dist / step);
 
-				for (int i = 1; i <= segments; i++)
-				{
-					Vector2 pos = Vector2.Lerp(lastPos, newPos, i / (float)segments);
-					TrailPositions.Insert(0, pos);
-					TrailRotations.Insert(0, Projectile.rotation);
-				}
-			}
-			else
-			{
-				TrailPositions.Insert(0, newPos);
-				TrailRotations.Insert(0, Projectile.rotation);
-			}
+                for (int i = 1; i <= segments; i++)
+                {
+                    Vector2 pos = Vector2.Lerp(lastPos, newPos, i / (float)segments);
+                    TrailPositions.Insert(0, pos);
+                    TrailRotations.Insert(0, Projectile.rotation);
+                }
+            }
+            else
+            {
+                TrailPositions.Insert(0, newPos);
+                TrailRotations.Insert(0, Projectile.rotation);
+            }
 
 
-			// Cap trail
-			while (TrailPositions.Count > TrailLength)
-				TrailPositions.RemoveAt(TrailPositions.Count - 1);
-			while (TrailRotations.Count > TrailLength)
-				TrailRotations.RemoveAt(TrailRotations.Count - 1);
+            // Cap trail
+            while (TrailPositions.Count > TrailLength)
+                TrailPositions.RemoveAt(TrailPositions.Count - 1);
+            while (TrailRotations.Count > TrailLength)
+                TrailRotations.RemoveAt(TrailRotations.Count - 1);
 
             if (Main.rand.NextBool(3))
             {

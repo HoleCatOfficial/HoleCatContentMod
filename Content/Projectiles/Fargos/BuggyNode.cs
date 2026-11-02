@@ -1,18 +1,11 @@
 ﻿using DestroyerTest.Common;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria;
-using Terraria.Enums;
-using Terraria.GameContent;
-using Terraria.GameContent.Drawing;
-using Terraria.ID;
-using Terraria.ModLoader;
-using OpusLib;
-using DestroyerTest.Content.Projectiles.ParentClasses;
-using System.Collections.Generic;
 using DestroyerTest.Content.Fargos.EternityDrops;
+using Microsoft.Xna.Framework;
+using Terraria;
 using Terraria.Audio;
 using Terraria.Graphics.Shaders;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Fargos
 {

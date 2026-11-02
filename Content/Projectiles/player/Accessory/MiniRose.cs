@@ -1,17 +1,14 @@
+using System.Collections.Generic;
 using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Particles;
- 
-using Microsoft.Build.Evaluation;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using OpusLib.Content.Particles;
 using ReLogic.Utilities;
-using System;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -63,8 +60,8 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
         public List<Vector2> oldCenter = new List<Vector2>();
 
         public SlotId LoopSlot;
-        public SoundStyle Loop = new SoundStyle("DestroyerTest/Assets/Audio/AuraLoop/SpiritAura", 4) 
-        { 
+        public SoundStyle Loop = new SoundStyle("DestroyerTest/Assets/Audio/AuraLoop/SpiritAura", 4)
+        {
             MaxInstances = 0,
             IsLooped = true,
             PauseBehavior = PauseBehavior.PauseWithGame
@@ -95,12 +92,12 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
             {
                 Radius -= 1f;
             }
-            
+
             Vector2[] p = Opus.GetEquidistantOrbitVectors(dustAmount, Projectile.Center, 1f, Radius);
 
-            foreach(Vector2 dustPos in p)
+            foreach (Vector2 dustPos in p)
             {
-               
+
                 PointGlowPreMultiplied Glow = new PointGlowPreMultiplied();
                 Glow.Initialize(dustPos, Vector2.Zero, ColorLib.CursedFlames * 0.5f, 1f);
                 ParticleEngine.BehindProjectiles.Add(Glow);
@@ -143,9 +140,11 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
                 oldCenter.RemoveAt(19);
             }
 
-            if (!SoundEngine.TryGetActiveSound(LoopSlot, out var activeSound)) {
+            if (!SoundEngine.TryGetActiveSound(LoopSlot, out var activeSound))
+            {
                 var tracker = new ProjectileAudioTracker(Projectile);
-                LoopSlot = SoundEngine.PlaySound(Loop, Projectile.Center, soundInstance => {
+                LoopSlot = SoundEngine.PlaySound(Loop, Projectile.Center, soundInstance =>
+                {
                     soundInstance.Position = Projectile.Center;
                     soundInstance.Pitch = PitchVal;
                     return tracker.IsActiveAndInGame();

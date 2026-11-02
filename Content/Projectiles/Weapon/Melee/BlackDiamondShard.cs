@@ -2,15 +2,11 @@
 using BreadLibrary.Core.Graphics.Pixelation;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using OpusLib.Content.Helpers;
 using OpusLib.Content.Particles;
-using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;

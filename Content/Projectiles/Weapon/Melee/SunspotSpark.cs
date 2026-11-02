@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BreadLibrary.Core.Graphics.Particles;
+﻿using System.Linq;
 using DestroyerTest.Common;
 using DestroyerTest.Common.Interfaces;
-using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
@@ -185,7 +178,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
         int Timer = 0;
 
-        
+
         public override void AI()
         {
             Timer++;
@@ -199,7 +192,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             if (Timer < 90)
             {
                 Projectile.velocity *= 0.94f;
-                if(TurnDir == -1)
+                if (TurnDir == -1)
                 {
                     Projectile.velocity = Projectile.velocity.RotatedBy(-0.05f);
                 }
@@ -218,7 +211,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(SoundID.DD2_WitherBeastCrystalImpact, Projectile.Center);
-            
+
         }
     }
 }

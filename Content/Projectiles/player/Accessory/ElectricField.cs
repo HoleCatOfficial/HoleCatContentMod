@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Particles;
@@ -48,7 +44,8 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
             if (!SoundEngine.TryGetActiveSound(LoopSlot, out var activeSound))
             {
                 var tracker = new ProjectileAudioTracker(Projectile);
-                LoopSlot = SoundEngine.PlaySound(Loop, Projectile.Center, soundInstance => {
+                LoopSlot = SoundEngine.PlaySound(Loop, Projectile.Center, soundInstance =>
+                {
                     soundInstance.Position = Projectile.Center;
                     return tracker.IsActiveAndInGame();
                 });
@@ -132,7 +129,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
                         }
 
                         target.AddBuff(BuffID.Electrified, 300);
-                        int Damage = (int)(Projectile.damage);
+                        int Damage = Projectile.damage;
                         Damage = Utils.Clamp(Damage, 10, 100);
                         target.SimpleStrikeNPC(Damage, Math.Sign((target.Center - Projectile.Center).X), false, 1f, DamageClass.Default);
 

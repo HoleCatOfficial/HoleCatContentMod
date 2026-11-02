@@ -1,21 +1,19 @@
 using Terraria;
-using Terraria.Audio;
-using Terraria.ID;
 using Terraria.ModLoader;
-using DestroyerTest.Content.Consumables;
-using System.Security.Permissions;
 
 namespace DestroyerTest.Content.Buffs
 {
-	public class Vigor : ModBuff
-	{
-		public override void SetStaticDefaults() {
-			Main.buffNoSave[Type] = true;
-		}
-		public override void Update(Player player, ref int buffIndex) {
-			player.GetModPlayer<DalmonPlayer>().VigorBuff = true;
-		}
-	}
+    public class Vigor : ModBuff
+    {
+        public override void SetStaticDefaults()
+        {
+            Main.buffNoSave[Type] = true;
+        }
+        public override void Update(Player player, ref int buffIndex)
+        {
+            player.GetModPlayer<DalmonPlayer>().VigorBuff = true;
+        }
+    }
 
     public class DalmonPlayer : ModPlayer
     {
@@ -71,5 +69,5 @@ namespace DestroyerTest.Content.Buffs
             Player.runAcceleration *= accelMult;
             Player.wingAccRunSpeed *= flySpeedMult;
         }
-	}
+    }
 }

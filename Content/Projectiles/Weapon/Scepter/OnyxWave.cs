@@ -3,7 +3,6 @@ using DestroyerTest.Common;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
-using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.GameContent.Drawing;
 using Terraria.ID;
@@ -13,10 +12,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 {
     public class OnyxWave : ModProjectile
     {
-        public override void SetStaticDefaults() {
-			ProjectileID.Sets.TrailingMode[Type] = 2;
+        public override void SetStaticDefaults()
+        {
+            ProjectileID.Sets.TrailingMode[Type] = 2;
             ProjectileID.Sets.TrailCacheLength[Type] = 12;
-		}
+        }
 
         public override void SetDefaults()
         {
@@ -69,8 +69,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
         {
             target.AddBuff(BuffID.ShadowFlame, 600);
             ParticleOrchestrator.RequestParticleSpawn(clientOnly: false, ParticleOrchestraType.NightsEdge,
-				new ParticleOrchestraSettings { PositionInWorld = Main.rand.NextVector2FromRectangle(target.Hitbox) },
-				Projectile.owner);
+                new ParticleOrchestraSettings { PositionInWorld = Main.rand.NextVector2FromRectangle(target.Hitbox) },
+                Projectile.owner);
         }
 
 

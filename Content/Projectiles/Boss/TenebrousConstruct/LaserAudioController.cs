@@ -1,25 +1,9 @@
-﻿using BreadLibrary.Core;
-using BreadLibrary.Core.Graphics.Particles;
-using BreadLibrary.Core.Graphics.Pixelation;
-using BreadLibrary.Core.Graphics.Spritebatch;
-using BreadLibrary.Core.Utilities;
-using DestroyerTest.Common;
+﻿using DestroyerTest.Common;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
-using OpusLib.Content.Particles;
 using ReLogic.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.GameContent;
-using Terraria.Graphics.Shaders;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Boss.TenebrousConstruct
@@ -48,12 +32,13 @@ namespace DestroyerTest.Content.Projectiles.Boss.TenebrousConstruct
 
         public override void AI()
         {
-            float Prog = ((float)Projectile.timeLeft / 600f).Inverse();
+            float Prog = (Projectile.timeLeft / 600f).Inverse();
 
             if (!SoundEngine.TryGetActiveSound(LoopSlot, out var activeSound))
             {
                 var tracker = new ProjectileAudioTracker(Projectile);
-                LoopSlot = SoundEngine.PlaySound(Loop, Projectile.Center, soundInstance => {
+                LoopSlot = SoundEngine.PlaySound(Loop, Projectile.Center, soundInstance =>
+                {
                     //soundInstance.Position = Projectile.Center;
                     return tracker.IsActiveAndInGame();
                 });

@@ -1,45 +1,40 @@
 using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
-using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.RiftBiome;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoMod.Cil;
 using OpusLib.Content.Helpers;
-using System;
-using System.Collections.Generic;
-using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Utilities;
 
 namespace DestroyerTest.Content.Entities
 {
 
-	public class TenebrousSlime : ModNPC
-	{
+    public class TenebrousSlime : ModNPC
+    {
 
-		public override void SetStaticDefaults() {
-			immunities();
+        public override void SetStaticDefaults()
+        {
+            immunities();
             Main.npcFrameCount[NPC.type] = 2;
-			
-			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers() {
-				Velocity = 1f,
-				Direction = 1
-			};
 
-			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
-			NPCID.Sets.ShimmerTransformToNPC[Type] = -1;
+            NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers()
+            {
+                Velocity = 1f,
+                Direction = 1
+            };
+
+            NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
+            NPCID.Sets.ShimmerTransformToNPC[Type] = -1;
             Banner = Type;
             BannerItem = Mod.Find<ModItem>("Item_TenebrousSlimeBanner").Type;
 
         }
-		
-		public void immunities()
+
+        public void immunities()
         {
             NPCID.Sets.SpecificDebuffImmunity[Type][ModContent.BuffType<ShimmeringFlames>()] = true;
             NPCID.Sets.SpecificDebuffImmunity[Type][ModContent.BuffType<HaepiensBlizzard>()] = true;
@@ -59,32 +54,32 @@ namespace DestroyerTest.Content.Entities
             NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.SoulDrain] = true;
         }
 
-		public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
-		{
-			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
-				new FlavorTextBestiaryInfoElement("Originating from the Shade World, this mindless glob of sludge seeks to explore, but prefers not to be in the light, as is common with life in the shade world."),
-				new FlavorTextBestiaryInfoElement("In addition to freeing the moon lord from imprisonment, breaking the seal also tore open holes across space, allowing enemies from the shade world to enter yours."),
-				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.TheCorruption
-			});
-		}
+        public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+        {
+            bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
+                new FlavorTextBestiaryInfoElement("Originating from the Shade World, this mindless glob of sludge seeks to explore, but prefers not to be in the light, as is common with life in the shade world."),
+                new FlavorTextBestiaryInfoElement("In addition to freeing the moon lord from imprisonment, breaking the seal also tore open holes across space, allowing enemies from the shade world to enter yours."),
+                BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.TheCorruption
+            });
+        }
 
-		public int variant = 0;
+        public int variant = 0;
 
-		public override void SetDefaults()
-		{
-			NPC.width = 74;
-			NPC.height = 52;
-			NPC.aiStyle = DestroyerTestMod.EternityIsActive ? -1 : NPCAIStyleID.Slime;
-			NPC.damage = 15;
-			NPC.defense = 12;
-			NPC.lifeMax = 300;
-			NPC.HitSound = SoundID.Item154;
-			NPC.DeathSound = SoundID.NPCDeath1;
-			NPC.noGravity = false;
-			NPC.lavaImmune = true;
-			variant = Main.rand.Next(3);
-			NPC.Opacity = 0.75f;
-		}
+        public override void SetDefaults()
+        {
+            NPC.width = 74;
+            NPC.height = 52;
+            NPC.aiStyle = DestroyerTestMod.EternityIsActive ? -1 : NPCAIStyleID.Slime;
+            NPC.damage = 15;
+            NPC.defense = 12;
+            NPC.lifeMax = 300;
+            NPC.HitSound = SoundID.Item154;
+            NPC.DeathSound = SoundID.NPCDeath1;
+            NPC.noGravity = false;
+            NPC.lavaImmune = true;
+            variant = Main.rand.Next(3);
+            NPC.Opacity = 0.75f;
+        }
 
         int O = 0;
         float XScale = 1f;
@@ -112,10 +107,10 @@ namespace DestroyerTest.Content.Entities
                 return false;
             }
             O -= 20;
-			
 
-            
-			Main.EntitySpriteDraw(Tex, NPC.Center - Main.screenPosition, NPC.frame, drawColor * NPC.Opacity, NPC.rotation, new Vector2(NPC.frame.Width / 2, NPC.frame.Height / 2), new Vector2(NPC.scale * XScale, NPC.scale * YScale), SpriteEffects.None);
+
+
+            Main.EntitySpriteDraw(Tex, NPC.Center - Main.screenPosition, NPC.frame, drawColor * NPC.Opacity, NPC.rotation, new Vector2(NPC.frame.Width / 2, NPC.frame.Height / 2), new Vector2(NPC.scale * XScale, NPC.scale * YScale), SpriteEffects.None);
 
             Line Warn = new(NPC.Center, NPC.Center + new Vector2(0, 1300));
             if (DestroyerTestMod.EternityIsActive)
@@ -126,7 +121,7 @@ namespace DestroyerTest.Content.Entities
                     DTUtils.instance.ScrollingTextureSpine(Warn, DTAssetLib.ArrowTelegraphCont, drawColor with { A = 0 } * Opac, spriteBatch, BlendState.Additive, O, 0.3f);
                 }
             }
-            
+
             return false;
         }
 
@@ -146,21 +141,21 @@ namespace DestroyerTest.Content.Entities
 
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
-		{
+        {
             DTUtils Utility = new DTUtils();
             if (spawnInfo.Player.ZoneCorrupt == true && DTFlags.TenebrisCanSpawnInWorldEvilBiome == true)
             {
                 return 0.1f;
             }
-			return 0f;
-		}
+            return 0f;
+        }
 
-		public enum EternityAIState
-		{
-			Float,
-			Slam,
+        public enum EternityAIState
+        {
+            Float,
+            Slam,
             Idle
-		}
+        }
 
         EternityAIState state = EternityAIState.Idle;
 
@@ -170,8 +165,8 @@ namespace DestroyerTest.Content.Entities
             Player target = Main.player[NPC.target];
 
             if (DestroyerTestMod.EternityIsActive)
-			{
-                
+            {
+
                 Color c = Color.White;
                 switch (variant)
                 {
@@ -197,7 +192,7 @@ namespace DestroyerTest.Content.Entities
 
                             if (NPC.ai[0] < 120)
                             {
-                                
+
                                 NPC.SmoothMoveToPoint(target.Center + new Vector2(0, -300), 15f, 100);
                                 CurrentFrame = 1;
                             }

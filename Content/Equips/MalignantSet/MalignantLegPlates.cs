@@ -1,13 +1,8 @@
-﻿using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.Resources.Cloths;
+﻿using DestroyerTest.Content.Resources;
 using DestroyerTest.Rarity;
 using GlowmaskHelper.Content;
-using System.Drawing;
-using System.Numerics;
 using Terraria;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Equips.MalignantSet

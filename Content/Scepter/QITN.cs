@@ -1,17 +1,9 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using DestroyerTest.Content.Projectiles.Weapon.Scepter;
+using DestroyerTest.Content.Resources;
+using DestroyerTest.Rarity.Scepter;
 using Terraria;
-using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.DataStructures;
-
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Common;
-using DestroyerTest.Rarity;
-using DestroyerTest.Rarity.Scepter;
-using DestroyerTest.Content.Projectiles.Weapon.Scepter;
-using DestroyerTest.Content.Resources;
 
 namespace DestroyerTest.Content.Scepter
 {

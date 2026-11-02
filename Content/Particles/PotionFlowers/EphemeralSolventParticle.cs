@@ -3,16 +3,10 @@ using DestroyerTest.Content.Equips.PotionFlowers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.Graphics.Renderers;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Config;
 
 namespace DestroyerTest.Content.Particles.PotionFlowers
 {
@@ -60,7 +54,7 @@ namespace DestroyerTest.Content.Particles.PotionFlowers
                 HasFlipped = false;
             }
 
-            Opacity = MathHelper.Lerp(1f, 0f, ((float)Lifetime / (float)MaxLifetime));
+            Opacity = MathHelper.Lerp(1f, 0f, (Lifetime / (float)MaxLifetime));
 
             if (Lifetime > MaxLifetime)
             {

@@ -1,31 +1,27 @@
-using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using DestroyerTest.Common;
+using DestroyerTest.Content.Entities;
+using DestroyerTest.Content.Projectiles.Fargos;
+using DestroyerTest.Content.Projectiles.Weapon.Scepter.ElementalShots;
+using DestroyerTest.Content.Scepter;
+using DestroyerTest.Rarity.Scepter;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.DataStructures;
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Common;
-using DestroyerTest.Rarity;
-using DestroyerTest.Rarity.Scepter;
-using DestroyerTest.Content.Projectiles.Weapon.Scepter;
-using DestroyerTest.Content.Scepter;
-using DestroyerTest.Content.Projectiles.Fargos;
-using System.Collections.Generic;
 using Terraria.UI.Chat;
-using Terraria.GameContent;
-using DestroyerTest.Content.Projectiles.Weapon.Scepter.ElementalShots;
-using DestroyerTest.Content.Entities;
-using System.Collections.ObjectModel;
 
 namespace DestroyerTest.Content.Fargos.Scepter
 {
     [ExtendsFromMod(DTCrossMod.FargosSoulsName)]
     [JITWhenModsEnabled(DTCrossMod.FargosSoulsName)]
-	public class GaiaScepter: ScepterItem
-	{
-		public override int Width => 28;
+    public class GaiaScepter : ScepterItem
+    {
+        public override int Width => 28;
         public override int Height => 28;
 
         public override void SetStaticDefaults()
@@ -33,25 +29,25 @@ namespace DestroyerTest.Content.Fargos.Scepter
             base.SetStaticDefaults();
         }
 
-		public override void SetDefaults()
-		{
-			base.SetDefaults();
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
 
-			ShootDMG = 200;
-			ShootCrit = 2;
-			ThrowCrit = 40;
-			KB = 8;
-			AdditiveValue = Item.sellPrice(silver: 80);
-			Rarity = ModContent.RarityType<IncarnadineRarity>();
+            ShootDMG = 200;
+            ShootCrit = 2;
+            ThrowCrit = 40;
+            KB = 8;
+            AdditiveValue = Item.sellPrice(silver: 80);
+            Rarity = ModContent.RarityType<IncarnadineRarity>();
 
-			ShootID = ProjectileID.BladeOfGrass;
-			ThrowID = ModContent.ProjectileType<GaiaScepterThrown>();
+            ShootID = ProjectileID.BladeOfGrass;
+            ThrowID = ModContent.ProjectileType<GaiaScepterThrown>();
 
-			ShootSound = ConstitutionSounds.StellarVolley;
-			ThrowSound = SoundID.Item169;
+            ShootSound = ConstitutionSounds.StellarVolley;
+            ThrowSound = SoundID.Item169;
 
-			base.SetDefaults();
-		}
+            base.SetDefaults();
+        }
 
         public override void ShootDefaults()
         {
@@ -77,7 +73,7 @@ namespace DestroyerTest.Content.Fargos.Scepter
             ModContent.ProjectileType<TenebrisShot>(),
             ModContent.ProjectileType<VenomShot>()
         };
-        
+
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
             if (player.altFunctionUse != 2)
@@ -194,12 +190,13 @@ namespace DestroyerTest.Content.Fargos.Scepter
             return false;
         }
 
-        public override void AddRecipes() {
-			CreateRecipe()
+        public override void AddRecipes()
+        {
+            CreateRecipe()
                 .AddIngredient<ElementalScepter>()
-				
-				.AddTile(TileID.LunarCraftingStation)
-				.Register();
-		}
+
+                .AddTile(TileID.LunarCraftingStation)
+                .Register();
+        }
     }
-} 
+}

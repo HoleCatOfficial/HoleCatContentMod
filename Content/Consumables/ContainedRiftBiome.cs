@@ -1,12 +1,6 @@
 using DestroyerTest.Common;
-using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Content.Projectiles.Weapon.Magic;
- 
-using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.Enums;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -27,5 +21,5 @@ namespace DestroyerTest.Content.Consumables
             Item.useAnimation = 45;
             Item.SetShopValues(ItemRarityColor.LightRed4, 02500);
         }
-	}
+    }
 }

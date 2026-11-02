@@ -1,23 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using BreadLibrary.Core.Graphics.Particles;
-using BreadLibrary.Core.Graphics.Pixelation;
+﻿using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.ScreenShake;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles.ParentClasses;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using OpusLib.Content.Helpers;
-using OpusLib.Content.Particles;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.GameContent;
-using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -93,7 +84,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         float rot = 0f;
         public override void DrawUnderBlade()
         {
-            
+
         }
         public override void DrawOverBlade()
         {

@@ -1,24 +1,22 @@
-using System;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.MeleeWeapons;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using Terraria;
-using Terraria.Audio;
-using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.player.Accessory
 {
-	public class SpookySickleExplosion : ModProjectile
-	{
-        private void AnimateProjectile() {
-            if (++Projectile.frameCounter >= 3) {
+    public class SpookySickleExplosion : ModProjectile
+    {
+        private void AnimateProjectile()
+        {
+            if (++Projectile.frameCounter >= 3)
+            {
                 Projectile.frameCounter = 0;
-                if (++Projectile.frame >= Main.projFrames[Projectile.type]) {
+                if (++Projectile.frame >= Main.projFrames[Projectile.type])
+                {
                     Projectile.frame = 0;
                 }
             }
@@ -33,7 +31,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
             Projectile.timeLeft = 600;
             Projectile.tileCollide = false;
         }
-        
+
         public override bool PreDraw(ref Color lightColor)
         {
             var texture = Terraria.GameContent.TextureAssets.Projectile[Projectile.type].Value;
@@ -56,7 +54,8 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
             Main.projFrames[Projectile.type] = 5;
         }
 
-        public override void AI() {
+        public override void AI()
+        {
             AnimateProjectile();
             for (int f = 0; f < 25; f++)
             {
@@ -64,16 +63,16 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
                 Vector2 Dir = (Projectile.Center - Outer) * 0.005f;
                 Dust.NewDustPerfect(Projectile.Center, DustID.Torch, Dir, 150, default, 3);
             }
-			if (Projectile.frame == 4)
+            if (Projectile.frame == 4)
             {
                 Projectile.Kill();
             }
-		}
-
-
-		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
-        {
-            
         }
-	}
+
+
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        {
+
+        }
+    }
 }

@@ -1,16 +1,10 @@
 ﻿
 using DestroyerTest.Common;
-using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Weapon.Melee;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.Resources.Cloths;
 using DestroyerTest.Rarity;
-using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using UtfUnknown.Core.Models.SingleByte.Finnish;
 
 namespace DestroyerTest.Content.MeleeWeapons
 {

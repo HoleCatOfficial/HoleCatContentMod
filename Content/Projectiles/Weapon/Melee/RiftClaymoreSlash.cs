@@ -1,12 +1,12 @@
+using System;
+using System.Collections.Generic;
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.RiftArsenal;
- 
+
 using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -39,9 +39,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         }
 
         int F = 6;
-        private void AnimateProjectile() 
+        private void AnimateProjectile()
         {
-            if (++Projectile.frameCounter >= F) 
+            if (++Projectile.frameCounter >= F)
             {
                 Projectile.frameCounter = 0;
                 if (++Projectile.frame >= Main.projFrames[Projectile.type])
@@ -74,10 +74,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         }
 
         List<int> AttackFramesFront = new List<int>
-        { 
-            0, 
-            1, 
-            2, 
+        {
+            0,
+            1,
+            2,
             3,
             4,
             5,

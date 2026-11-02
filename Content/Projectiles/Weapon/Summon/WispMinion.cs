@@ -1,16 +1,11 @@
-﻿using DestroyerTest.Common;
+﻿using System;
+using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Projectiles.AmmoProjectiles;
-using DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
 using OpusLib.Content.Helpers;
-using SteelSeries.GameSense;
-using System;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -175,9 +170,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
                     {
                         off = (Targ - Projectile.Center).ToRotation() + Main.rand.NextFloat(-0.1f, 0.1f);
                     }
-                    
+
                 }
-                
+
             }
         }
 

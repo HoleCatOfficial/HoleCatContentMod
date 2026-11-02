@@ -1,17 +1,10 @@
 using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using Terraria;
-using Terraria.GameContent;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using GlowmaskHelper.Content;
-using ReLogic.Content;
-using Terraria.Audio;
-using OpusLib;
-using DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss;
-using System.Collections.Generic;
 
 namespace DestroyerTest.Content.Projectiles.player.ArmorSet
 {

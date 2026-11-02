@@ -1,13 +1,9 @@
 ﻿
 using DestroyerTest.Common;
 using DestroyerTest.Content.Projectiles.player.Accessory;
-using DestroyerTest.Content.Resources;
 using DestroyerTest.Rarity.Scepter;
 using Microsoft.Xna.Framework;
-using Steamworks;
 using Terraria;
-using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Equips.ScepterAccessories
@@ -24,7 +20,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
         }
 
 
-    
+
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             player.GetModPlayer<SwirlStonePlayer>().Active = true;
@@ -44,7 +40,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
         {
             if (Active)
             {
-                
+
             }
         }
     }

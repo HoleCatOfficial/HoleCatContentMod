@@ -1,20 +1,9 @@
-﻿using DestroyerTest.Common;
-using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Projectiles.AmmoProjectiles;
-using DestroyerTest.Content.Projectiles.Boss.NodeBoss.Blessed;
-using DestroyerTest.Content.Projectiles.Weapon.Melee;
-using DestroyerTest.Content.Projectiles.Weapon.Summon;
+﻿using System;
+using System.Collections.Generic;
+using DestroyerTest.Common;
 using DestroyerTest.Content.RangedItems;
-using DestroyerTest.Content.SummonItems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using OpusLib;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -90,7 +79,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Ranged
             if (Owner.controlUseItem && !Owner.CCed && !Owner.dead && Owner.HeldItem.type == ModContent.ItemType<SunvineSting>())
             {
                 Projectile.timeLeft = 60;
-               
+
                 Projectile.ai[0]++;
                 int interval = (int)(15 * Owner.GetAttackSpeed(DamageClass.Ranged));
 
@@ -118,9 +107,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Ranged
                         }
                     }
 
-                    
+
                 }
-              
+
             }
             else
             {

@@ -1,13 +1,10 @@
-using Terraria;
-using Terraria.ModLoader;
-using Terraria.ID;
-using Microsoft.Xna.Framework;
-using DestroyerTest.Common;
-using DestroyerTest.Content.MeleeWeapons;
-using Terraria.Audio;
 using DestroyerTest.Content.Magic;
-using Terraria.GameContent;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Terraria;
+using Terraria.GameContent;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 {

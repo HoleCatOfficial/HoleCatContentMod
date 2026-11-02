@@ -1,24 +1,9 @@
-﻿using Terraria;
-using Terraria.ModLoader;
-using Terraria.ID;
-using Microsoft.Xna.Framework;
-using DestroyerTest.Common;
-using DestroyerTest.Content.MeleeWeapons;
-using DestroyerTest.Content.MeleeWeapons.SwordLineage;
-using Terraria.Utilities.Terraria.Utilities;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.Audio;
-using OpusLib;
-using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Particles.Orchestrated;
-using BreadLibrary.Core.Graphics.Particles;
+﻿using DestroyerTest.Common;
 using DestroyerTest.Content.Projectiles.ParentClasses;
-using BreadLibrary.Core.Utilities;
-using OpusLib.Content.Helpers;
-using DestroyerTest.Content.Dusts;
-using OpusLib.Content.Particles;
-using System;
-using BreadLibrary.Core.Graphics.Pixelation;
+using Microsoft.Xna.Framework;
+using Terraria;
+using Terraria.Audio;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 {
@@ -46,7 +31,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
         public override void DrawUnder()
         {
-      
+
         }
 
         public override void ExtraEffects()
@@ -58,7 +43,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
             }
 
-     
+
         }
 
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)

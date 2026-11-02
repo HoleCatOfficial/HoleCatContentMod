@@ -1,16 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Formats.Tar;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using BreadLibrary.Core.Graphics.Particles;
+﻿using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -70,7 +64,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
             Explosion2.Prepare(Projectile.Center, Vector2.Zero, ColorLib.LifeEcho, 0.2f, 0.003f, 1.7f, BlendState.Additive);
             ParticleEngine.BehindProjectiles.Add(Explosion2);
 
-            
+
             for (int i = 0; i < 10; i++)
             {
                 PointGlowPreMultiplied FX = new();

@@ -1,51 +1,48 @@
+using DestroyerTest.Common;
+using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.Tiles;
+using DestroyerTest.Content.Tiles.RiftConfigurator;
 using DestroyerTest.Content.Tiles.Riftplate;
+using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
-using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
-using DestroyerTest.Rarity;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Tools;
-
-using System.Collections.Generic;
-using DestroyerTest.Content.Tiles.RiftConfigurator;
-using DestroyerTest.Common.Systems;
 
 
 namespace DestroyerTest.Content.Tools
 {
-		
-		
-	public class RiftFuse : ModItem
-	{
-		public override void SetDefaults() {
-			Item.width = 80; // The item texture's width.
-			Item.height = 80; // The item texture's height.
-			Item.value = Item.buyPrice(gold: 16); // The value of the weapon in copper coins.
-			Item.rare = ModContent.RarityType<RiftRarity>();
-		}
 
-		public override void AddRecipes() {
+
+    public class RiftFuse : ModItem
+    {
+        public override void SetDefaults()
+        {
+            Item.width = 80; // The item texture's width.
+            Item.height = 80; // The item texture's height.
+            Item.value = Item.buyPrice(gold: 16); // The value of the weapon in copper coins.
+            Item.rare = ModContent.RarityType<RiftRarity>();
+        }
+
+        public override void AddRecipes()
+        {
             CreateRecipe()
                 .AddIngredient<ShadowCircuitry>(24)
                 .AddIngredient<Item_Riftplate>(20)
                 .AddIngredient<RiftData>(3)
                 .AddTile<Tile_RiftConfigurator>()
-				.Register();
-		}
+                .Register();
+        }
 
         public override void UpdateInventory(Player player)
         {
             NoChargeLeft(player);
         }
 
-		public override bool CanRightClick() {
-                return true;
-            }
+        public override bool CanRightClick()
+        {
+            return true;
+        }
 
         private const int CrucibleProximityRange = 3;
 
@@ -71,9 +68,9 @@ namespace DestroyerTest.Content.Tools
                 }
             }
             else
-			{
-				return;
-			}
+            {
+                return;
+            }
         }
 
         public override bool ConsumeItem(Player player)
@@ -127,10 +124,10 @@ namespace DestroyerTest.Content.Tools
         {
             var modPlayer = player.GetModPlayer<LivingShadowPlayer>();
             if (modPlayer.LivingShadowCurrent == 0 && Sound == false)
-			{
-            Sound = true;
-            
+            {
+                Sound = true;
+
             }
         }
-	}
+    }
 }

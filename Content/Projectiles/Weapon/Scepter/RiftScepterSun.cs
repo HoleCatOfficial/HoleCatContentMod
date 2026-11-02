@@ -1,15 +1,11 @@
 ﻿using DestroyerTest.Common;
 using DestroyerTest.Content.RiftArsenal;
- 
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
-using ReLogic.Utilities;
-using System;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -47,7 +43,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
             SpriteBatch spriteBatch = Main.spriteBatch;
             Opus.DrawTextureOnProj(DTAssetLib.FeatheredCircle, Projectile, Color.Black, true, Projectile.rotation, Opus.Sine(2f, 2.5f), Opus.Sine(2f, 2.5f));
             Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-           
+
             Opus.DrawTextureOnProj(DTAssetLib.FeatheredCircle, Projectile, ColorLib.LightRift3, true, Projectile.rotation, 0.4f, 0.4f);
 
             Opus.DrawTextureOnProj(DTAssetLib.PointGlow, Projectile, ColorLib.Rift, true, Projectile.rotation, Opus.Sine(1f, 0.7f), Opus.Sine(1f, 0.7f));

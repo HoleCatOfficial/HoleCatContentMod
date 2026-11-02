@@ -1,30 +1,26 @@
-using Terraria;
-using Terraria.ID;
 using System;
-using Terraria.ModLoader;
-using DestroyerTest.Content.Resources.Cloths;
-using Microsoft.Xna.Framework;
-using ReLogic.Graphics;
-using Terraria.GameContent;
-using Terraria.UI.Chat;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.MeleeWeapons;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Rarity;
 using System.Collections.Generic;
-using DestroyerTest.Content.Equips;
-using DestroyerTest.Content.RiftArsenal;
-using Terraria.GameContent.ItemDropRules;
 using System.Linq;
-using DestroyerTest.Content.Consumables;
-using DestroyerTest.Content.Scepter;
+using DestroyerTest.Content.Equips;
 using DestroyerTest.Content.Equips.ScepterAccessories;
-using Terraria.DataStructures;
+using DestroyerTest.Content.MeleeWeapons;
+using DestroyerTest.Content.Resources;
+using DestroyerTest.Content.Resources.Cloths;
+using DestroyerTest.Content.Scepter;
 using DestroyerTest.Content.SummonItems;
+using DestroyerTest.Rarity;
+using Microsoft.Xna.Framework;
 using OpusLib;
-using Microsoft.Xna.Framework.Graphics;
 using OpusLib.Content.Helpers;
+using ReLogic.Graphics;
+using Terraria;
+using Terraria.DataStructures;
+using Terraria.GameContent;
+using Terraria.GameContent.ItemDropRules;
+using Terraria.ID;
 using Terraria.Localization;
+using Terraria.ModLoader;
+using Terraria.UI.Chat;
 
 namespace DestroyerTest.Common
 {
@@ -34,13 +30,13 @@ namespace DestroyerTest.Common
         public override bool InstancePerEntity => true;
         public override void OnCreated(Item item, ItemCreationContext context)
         {
-            
+
             RecipeItemCreationContext c = context as RecipeItemCreationContext;
             if (c == null)
             {
                 return;
             }
-            
+
             if (c.Recipe.HasTile(TileID.Furnaces))
             {
                 c.Recipe.AddOnCraftCallback(SootFurnaceRecipeCallback.GetSoot);
@@ -49,16 +45,16 @@ namespace DestroyerTest.Common
     }
 
     public static class SootFurnaceRecipeCallback
-	{
-		public static void GetSoot(Recipe recipe, Item item, List<Item> consumedItems, Item destinationStack) 
+    {
+        public static void GetSoot(Recipe recipe, Item item, List<Item> consumedItems, Item destinationStack)
         {
-			if (Main.rand.NextBool(200)) 
+            if (Main.rand.NextBool(200))
             {
-				
-				Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_FromThis(), ModContent.ItemType<Soot>(), Main.rand.Next(1, 5));
-			}
-		}
-	}
+
+                Main.LocalPlayer.QuickSpawnItem(Main.LocalPlayer.GetSource_FromThis(), ModContent.ItemType<Soot>(), Main.rand.Next(1, 5));
+            }
+        }
+    }
 
     public class SpecifySolutions : GlobalItem
     {
@@ -103,11 +99,11 @@ namespace DestroyerTest.Common
     {
         public override bool InstancePerEntity => true;
 
-        
+
 
         public override void UpdateInventory(Item item, Player player)
         {
-            
+
         }
         public override bool PreDrawTooltipLine(Item item, DrawableTooltipLine line, ref int yOffset)
         {
@@ -164,7 +160,7 @@ namespace DestroyerTest.Common
                 Color Out = Opus.Sine(Color.Black, CA, 0.2f);
                 Color In = Opus.Sine(Color.Black, Color.DarkRed, 0.4f);
 
-                
+
 
                 float scale = 1.25f;
 
@@ -185,7 +181,7 @@ namespace DestroyerTest.Common
                 Color In = Opus.Sine(Color.Black, ColorLib.Rift, 0.1f);
                 Color Out = Opus.Sine(ColorLib.Rift, Color.Black, 0.1f);
                 Utils.DrawBorderStringFourWay(Main.spriteBatch, FontAssets.MouseText.Value, line.Text, line.X, line.Y, In, Out, new Vector2(0.5f, 0.5f));
-                return false; 
+                return false;
             }
             if (item.rare == ModContent.RarityType<HeliciteRarity>() && line.Name == "ItemName")
             {
@@ -197,7 +193,7 @@ namespace DestroyerTest.Common
             }
             if (item.rare == ModContent.RarityType<CelestialRarity>() && line.Name == "ItemName")
             {
-                Color[] colors = [ColorLib.Solar, Color.Lerp(ColorLib.Solar, ColorLib.Nebula, 0.5f), ColorLib.Nebula, Color.Lerp(ColorLib.Nebula , ColorLib.Stardust, 0.5f), ColorLib.Stardust, Color.Lerp(ColorLib.Stardust, ColorLib.Vortex, 0.5f), ColorLib.Vortex, Color.Lerp(ColorLib.Vortex, ColorLib.Solar, 0.5f)];
+                Color[] colors = [ColorLib.Solar, Color.Lerp(ColorLib.Solar, ColorLib.Nebula, 0.5f), ColorLib.Nebula, Color.Lerp(ColorLib.Nebula, ColorLib.Stardust, 0.5f), ColorLib.Stardust, Color.Lerp(ColorLib.Stardust, ColorLib.Vortex, 0.5f), ColorLib.Vortex, Color.Lerp(ColorLib.Vortex, ColorLib.Solar, 0.5f)];
                 DTUtils.SweepColorOverString(line.Text, colors, Color.White, new Vector2(line.X, line.Y), -20);
                 return false;
             }
@@ -680,15 +676,15 @@ namespace DestroyerTest.Common
         public static void StaticDefaultToCloth(this Item item)
         {
             item.ResearchUnlockCount = 25;
-			ItemID.Sets.SortingPriorityMaterials[item.type] = 22;
+            ItemID.Sets.SortingPriorityMaterials[item.type] = 22;
         }
 
         public static void DefaultToCloth(this Item item)
         {
             item.width = 26;
-			item.height = 28;
-			item.value = 20;
-			item.maxStack = 9999;
+            item.height = 28;
+            item.value = 20;
+            item.maxStack = 9999;
             item.rare = ItemRarityID.White;
         }
 
@@ -853,7 +849,7 @@ namespace DestroyerTest.Common
         {
             TooltipLine line = new TooltipLine(Mod, "CobaltShieldRework", Language.GetTextValue("Mods.DestroyerTest.Extras.CobaltShieldRework"));
             if (DTVanillaChangesConfig.instance.CobaltShieldRework)
-            { 
+            {
                 if (item.type == ItemID.CobaltShield || item.type == ItemID.ObsidianShield)
                 {
                     tooltips.Add(line);

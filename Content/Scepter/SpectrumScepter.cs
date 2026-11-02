@@ -1,17 +1,7 @@
-﻿using System;
-using DestroyerTest.Common;
-using DestroyerTest.Content.MeleeWeapons;
-using DestroyerTest.Content.Projectiles;
+﻿using DestroyerTest.Content.MeleeWeapons;
 using DestroyerTest.Content.Projectiles.Weapon.Scepter;
-using DestroyerTest.Content.RangedItems;
-using DestroyerTest.Rarity;
 using DestroyerTest.Rarity.Scepter;
-using Microsoft.Xna.Framework;
-using OpusLib.Content.Helpers;
 using Terraria;
-using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 

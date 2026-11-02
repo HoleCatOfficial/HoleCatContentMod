@@ -1,53 +1,42 @@
-using Microsoft.Xna.Framework;
-using System.Collections.Generic;
+using DestroyerTest.Common;
+using DestroyerTest.Content.Projectiles.Weapon.Melee;
+using DestroyerTest.Content.Resources;
+using DestroyerTest.Rarity;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.Audio;
-using Terraria.DataStructures;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Content.Tiles;
-using DestroyerTest.Content.Resources;
-  
-using DestroyerTest.Content.Dusts;
-using DestroyerTest.Rarity;
-using Terraria.GameInput;
-
-using DestroyerTest.Common;
-using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Projectiles.Weapon.Melee;
 
 namespace DestroyerTest.Content.MeleeWeapons
 {
-	public class Tenebrous_Katana : ModItem
-	{
+    public class Tenebrous_Katana : ModItem
+    {
         public override void SetStaticDefaults()
         {
         }
 
-        public override void SetDefaults() {
-			Item.damage = 325;
+        public override void SetDefaults()
+        {
+            Item.damage = 325;
             Item.DamageType = ModContent.GetInstance<DTTrueMeleeClass>(); // Deals melee damage
             Item.width = 88;
-			Item.height = 196;
-			Item.useTime = 40;
-			Item.useAnimation = 40;
-			Item.channel = true; 
-			Item.useStyle = ItemUseStyleID.Shoot;
-			Item.knockBack = 0;
-			Item.value = 10000;
-			Item.rare = ModContent.RarityType<ShimmeringRarity>();
-			Item.autoReuse = true;
-			Item.shoot = ModContent.ProjectileType<Tenebrous_Katana_Projectile>();
-			Item.shootSpeed = 5f;
-			Item.channel = true;
+            Item.height = 196;
+            Item.useTime = 40;
+            Item.useAnimation = 40;
+            Item.channel = true;
+            Item.useStyle = ItemUseStyleID.Shoot;
+            Item.knockBack = 0;
+            Item.value = 10000;
+            Item.rare = ModContent.RarityType<ShimmeringRarity>();
+            Item.autoReuse = true;
+            Item.shoot = ModContent.ProjectileType<Tenebrous_Katana_Projectile>();
+            Item.shootSpeed = 5f;
+            Item.channel = true;
             Item.noUseGraphic = true; // This makes sure the item does not get shown when the player swings his hand
-		}
+        }
 
         public override bool CanUseItem(Player player)
         {
-			return player.ownedProjectileCounts[Item.shoot] < 1;
+            return player.ownedProjectileCounts[Item.shoot] < 1;
         }
 
         public override void UpdateInventory(Player player)
@@ -60,14 +49,15 @@ namespace DestroyerTest.Content.MeleeWeapons
             return true;
         }
 
-        public override void AddRecipes() {
-			CreateRecipe()
+        public override void AddRecipes()
+        {
+            CreateRecipe()
                 .AddIngredient<Tenebris>(10)
-				.AddIngredient<ShimmeringSludge>(12)
+                .AddIngredient<ShimmeringSludge>(12)
                 .AddIngredient(ItemID.Katana, 1)
-				.AddTile(TileID.LunarCraftingStation)
-				.Register();
-		}
+                .AddTile(TileID.LunarCraftingStation)
+                .Register();
+        }
 
-	}
+    }
 }

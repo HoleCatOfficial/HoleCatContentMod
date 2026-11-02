@@ -1,16 +1,8 @@
-﻿using System;
-using Microsoft.Xna.Framework;
+﻿using DestroyerTest.Content.Projectiles.Weapon.Scepter;
+using DestroyerTest.Rarity.Scepter;
 using Terraria;
-using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.DataStructures;
-
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.Projectiles.Weapon.Scepter;
-using DestroyerTest.Rarity.Scepter;
 
 namespace DestroyerTest.Content.Scepter
 {
@@ -36,7 +28,7 @@ namespace DestroyerTest.Content.Scepter
             KB = 2;
             AdditiveValue = Item.sellPrice(silver: 80);
             Rarity = ModContent.RarityType<PaleFuchsiaRarity>();
-            
+
 
             // Assign projectile types
             ShootID = ModContent.ProjectileType<MoltenStar>();

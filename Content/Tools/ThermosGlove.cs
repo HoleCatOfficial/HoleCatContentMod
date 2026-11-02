@@ -1,20 +1,8 @@
-﻿using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.Tiles;
-using DestroyerTest.Content.Tiles.Riftplate;
-using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.Audio;
-using Terraria.ID;
-using Terraria.Localization;
-using Terraria.ModLoader;
+﻿using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Rarity;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Tools;
-
-using System.Collections.Generic;
-using DestroyerTest.Content.Tiles.RiftConfigurator;
-using DestroyerTest.Common.Systems;
-using DestroyerTest.Content.Projectiles;
+using Terraria;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 
 namespace DestroyerTest.Content.Tools
@@ -44,9 +32,9 @@ namespace DestroyerTest.Content.Tools
 
         public override void UpdateInventory(Player player)
         {
-            
+
         }
 
-      
+
     }
 }

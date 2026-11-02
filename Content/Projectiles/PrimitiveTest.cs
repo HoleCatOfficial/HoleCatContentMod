@@ -1,15 +1,6 @@
-﻿using DestroyerTest.Common;
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
-using Terraria.Graphics;
-using Terraria.Graphics.Shaders;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles
@@ -72,10 +63,10 @@ namespace DestroyerTest.Content.Projectiles
             Projectile.Center = Main.MouseWorld;
         }
 
-        
+
         public override bool PreDraw(ref Color lightColor)
         {
-            
+
 
             return true;
         }

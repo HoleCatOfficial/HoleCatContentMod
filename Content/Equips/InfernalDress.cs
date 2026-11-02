@@ -2,7 +2,6 @@
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Resources.Cloths;
 using DestroyerTest.Rarity;
 using GlowmaskHelper.Content;
 using Microsoft.Xna.Framework;
@@ -51,14 +50,14 @@ namespace DestroyerTest.Content.Equips
 
         public override void UpdateEquip(Player player)
         {
-            Rectangle DustBox = Utils.CenteredRectangle(player.Bottom + new Vector2(0, -4), new Vector2(((int)player.width).WrapToTwo(), 12));
+            Rectangle DustBox = Utils.CenteredRectangle(player.Bottom + new Vector2(0, -4), new Vector2(player.width.WrapToTwo(), 12));
             if (Main.rand.NextBool(4))
             {
                 PixelParticlePlayer Pixel = new(player);
                 Pixel.Initialize((new Vector2(((int)DustBox.TopLeft().X).WrapToTwo(), ((int)DustBox.TopLeft().Y).WrapToTwo()) + new Vector2(Main.rand.Next(DustBox.Width).WrapToTwo(), Main.rand.Next(DustBox.Height).WrapToTwo())) + new Vector2(1f, 1f), new Vector2(0f, 0.2f), new Color(255, 49, 32), 2f, 30);
                 ParticleEngine.Particles.Add(Pixel);
             }
-            
+
             Lighting.AddLight(player.Center, new Color(255, 49, 32).ToVector3() * 0.5f);
         }
 
@@ -72,7 +71,7 @@ namespace DestroyerTest.Content.Equips
             .Register();
         }
     }
-    
+
     public class LegGlowmaskLayer : PlayerDrawLayer
     {
         public override Position GetDefaultPosition() => new AfterParent(PlayerDrawLayers.Leggings);

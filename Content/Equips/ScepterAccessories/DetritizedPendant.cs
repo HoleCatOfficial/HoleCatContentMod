@@ -1,8 +1,6 @@
 
 using DestroyerTest.Common;
-using DestroyerTest.Content.Resources;
 using Microsoft.Xna.Framework;
-using Steamworks;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -27,9 +25,9 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             if (player.TryGetModPlayer<CorruptPendantScepterUsePlayer>(out CorruptPendantScepterUsePlayer Scptr))
-			{
-				Scptr.Active = true;
-			}
+            {
+                Scptr.Active = true;
+            }
             player.GetDamage(ModContent.GetInstance<ScepterClass>()) *= 1.04f;
             player.GetArmorPenetration(DamageClass.Generic) += 1;
         }
@@ -44,14 +42,14 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
     }
 
     public class CorruptPendantScepterUsePlayer : ModPlayer
-	{
-		public bool Active = false;
+    {
+        public bool Active = false;
 
         public override void ResetEffects()
         {
             Active = false;
         }
-		public override void ModifyShootStats(Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
+        public override void ModifyShootStats(Item item, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
             if (Active)
             {
@@ -79,5 +77,5 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
             }
 
         }
-	}
+    }
 }

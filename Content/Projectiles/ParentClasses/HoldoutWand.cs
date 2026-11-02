@@ -1,29 +1,15 @@
-﻿using BreadLibrary.Core.Graphics;
+﻿using System;
+using System.IO;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Particles.Orchestrated;
-using DestroyerTest.Content.Projectiles.Weapon.Rogue;
- 
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
-using OpusLib.Content.Helpers;
 using ReLogic.Content;
-using System;
-using System.Collections.Generic;
-using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
-using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.Utilities.Terraria.Utilities;
-using XPT.Core.Audio.MP3Sharp.Decoding.Decoders.LayerIII;
 
 namespace DestroyerTest.Content.Projectiles.ParentClasses
 {
@@ -89,7 +75,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         }
 
         public abstract void Shoot();
-        
+
         public virtual Vector2 ShotPos()
         {
             Vector2 orig = Projectile.Center + new Vector2(-(Projectile.width / 2), Projectile.height / 2);
@@ -123,7 +109,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
                 targetAngle = (Main.MouseWorld - Owner.MountedCenter);
 
                 Projectile.rotation = targetAngle.ToRotation();
-              
+
             }
 
             if (!Owner.active || Owner.dead || Owner.noItems || Owner.CCed || !Owner.controlUseItem)

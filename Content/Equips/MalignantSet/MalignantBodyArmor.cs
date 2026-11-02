@@ -1,11 +1,7 @@
 ﻿using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.Resources.Cloths;
-using DestroyerTest.Content.Tiles;
 using DestroyerTest.Rarity;
-using rail;
 using Terraria;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Equips.MalignantSet
@@ -15,7 +11,7 @@ namespace DestroyerTest.Content.Equips.MalignantSet
     {
         public override void SetDefaults()
         {
-            Item.width = 34; 
+            Item.width = 34;
             Item.height = 22;
             Item.value = Item.sellPrice(gold: 1);
             Item.rare = ModContent.RarityType<WretchedRarity>();

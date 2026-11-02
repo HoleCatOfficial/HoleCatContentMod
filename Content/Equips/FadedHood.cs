@@ -1,17 +1,10 @@
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.SummonItems;
-using DestroyerTest.Content.Tiles;
+using DestroyerTest.Common;
+using DestroyerTest.Content.Projectiles.player.ArmorSet;
+using DestroyerTest.Rarity;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
-using DestroyerTest.Rarity;
-using DestroyerTest.Content.Tiles.Riftplate;
-using DestroyerTest.Common;
-using Microsoft.Xna.Framework;
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Content.Projectiles.player.ArmorSet;
 
 namespace DestroyerTest.Content.Equips
 {
@@ -47,12 +40,12 @@ namespace DestroyerTest.Content.Equips
             player.DefaultSetBonusText(player.armor[0]);
             player.ScepterClass().ThrowSpeedModifier += 0.35f;
             if (player.TryGetModPlayer<CultScepterPlayer>(out CultScepterPlayer Scptr))
-			{
-				Scptr.Active = true;
-			}
+            {
+                Scptr.Active = true;
+            }
         }
     }
-    
+
     public class CultScepterPlayer : ModPlayer
     {
         public bool Active;

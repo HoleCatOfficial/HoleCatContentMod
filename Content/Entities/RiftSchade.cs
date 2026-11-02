@@ -1,65 +1,65 @@
+using System;
 using DestroyerTest.Content.RiftBiome;
 using Microsoft.Xna.Framework;
-using MonoMod.Cil;
-using System;
-using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Utilities;
 
 namespace DestroyerTest.Content.Entities
 {
-	/// <summary>
-	/// This file shows off a critter npc. The unique thing about critters is how you can catch them with a bug net.
-	/// The important bits are: Main.npcCatchable, NPC.catchItem, and Item.makeNPC.
-	/// We will also show off adding an item to an existing RecipeGroup (see ExampleRecipes.AddRecipeGroups).
-	/// Additionally, this example shows an involved IL edit.
-	/// </summary>
-	public class RiftSchade : ModNPC
-	{
+    /// <summary>
+    /// This file shows off a critter npc. The unique thing about critters is how you can catch them with a bug net.
+    /// The important bits are: Main.npcCatchable, NPC.catchItem, and Item.makeNPC.
+    /// We will also show off adding an item to an existing RecipeGroup (see ExampleRecipes.AddRecipeGroups).
+    /// Additionally, this example shows an involved IL edit.
+    /// </summary>
+    public class RiftSchade : ModNPC
+    {
 
-		/// <summary>
-		/// Change the following code sequence in Wiring.HitWireSingle
-		/// <code>
-		///case 61:
-		///num115 = 361;
-		/// </code>
-		/// to
-		/// <code>
-		///case 61:
-		///num115 = Main.rand.NextBool() ? 361 : NPC.type
-		/// </code>
-		/// This causes the frog statue to spawn this NPC 50% of the time
-		/// </summary>
-		/// <param name="ilContext"> </param>
+        /// <summary>
+        /// Change the following code sequence in Wiring.HitWireSingle
+        /// <code>
+        ///case 61:
+        ///num115 = 361;
+        /// </code>
+        /// to
+        /// <code>
+        ///case 61:
+        ///num115 = Main.rand.NextBool() ? 361 : NPC.type
+        /// </code>
+        /// This causes the frog statue to spawn this NPC 50% of the time
+        /// </summary>
+        /// <param name="ilContext"> </param>
 
-		public override void SetStaticDefaults() {
-			// The frog is immune to confused
-			NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.OnFire] = true;
-		}
+        public override void SetStaticDefaults()
+        {
+            // The frog is immune to confused
+            NPCID.Sets.SpecificDebuffImmunity[Type][BuffID.OnFire] = true;
+        }
 
-		public override void SetDefaults() {
-			NPC.width = 30;
-			NPC.height = 20;
-			NPC.aiStyle = -1;
-			NPC.damage = 0;
-			NPC.defense = 0;
-			NPC.lifeMax = 1080;
-			NPC.HitSound = SoundID.NPCHit1;
-			NPC.DeathSound = SoundID.Item46;
+        public override void SetDefaults()
+        {
+            NPC.width = 30;
+            NPC.height = 20;
+            NPC.aiStyle = -1;
+            NPC.damage = 0;
+            NPC.defense = 0;
+            NPC.lifeMax = 1080;
+            NPC.HitSound = SoundID.NPCHit1;
+            NPC.DeathSound = SoundID.Item46;
             NPC.noGravity = true;
-			// Sets the above
-			NPC.lavaImmune = true;
+            // Sets the above
+            NPC.lavaImmune = true;
             NPC.noTileCollide = true;
             SpawnModBiomes = [ModContent.GetInstance<RiftSurface>().Type];
-		}
+        }
 
-        public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry) {
-			// We can use AddRange instead of calling Add multiple times in order to add multiple items at once
-			bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
+        public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
+        {
+            // We can use AddRange instead of calling Add multiple times in order to add multiple items at once
+            bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
 				// Sets the preferred biomes of this town NPC listed in the bestiary.
 
 				// Sets your NPC's flavor text in the bestiary.
@@ -70,7 +70,7 @@ namespace DestroyerTest.Content.Entities
 				//new FlavorTextBestiaryInfoElement("Mods.ExampleMod.Bestiary.ExamplePerson")
                 
 			});
-		}
+        }
         internal int MoveForwardForce = 2;
         internal int radiusofselection = 100;
         private Vector2 targetPosition;
@@ -104,7 +104,7 @@ namespace DestroyerTest.Content.Entities
                     break;
             }
         }
-            private void SelectNewTargetPosition()
+        private void SelectNewTargetPosition()
         {
             // Randomly select an angle between 0 and 2π radians
             float angle = Main.rand.NextFloat() * MathHelper.TwoPi;

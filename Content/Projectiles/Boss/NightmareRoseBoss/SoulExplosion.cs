@@ -1,14 +1,8 @@
-using Terraria;
-using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using Terraria.DataStructures;
- 
-using DestroyerTest.Content.Particles;
 using DestroyerTest.Common;
-using Microsoft.Build.Execution;
-using DestroyerTest.Content.Buffs;
-using Terraria.ID;
 using DestroyerTest.Content.Dusts;
+using Terraria;
+using Terraria.DataStructures;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
 {
@@ -36,15 +30,15 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
         {
             for (int c = 0; c < 4; c++)
             {
-               
+
             }
         }
 
         public override void AI()
         {
             Dust.NewDust(Projectile.position, Projectile.Hitbox.Width, Projectile.Hitbox.Height, ModContent.DustType<SoulDust>(), 0, 0, 0, ColorLib.Soul, 5f);
-            
-            
+
+
         }
 
         public override void OnHitPlayer(Player target, Player.HurtInfo info)

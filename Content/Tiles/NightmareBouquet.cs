@@ -1,15 +1,15 @@
-using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.DataStructures;
-using Terraria.ID;
-using Terraria.ModLoader;
-using Terraria.ObjectData;
-using Terraria.Enums;
-using Terraria.Audio;
-using Terraria.Localization;
 using System;
 using DestroyerTest.Content.Entities;
 using DestroyerTest.Rarity;
+using Microsoft.Xna.Framework;
+using Terraria;
+using Terraria.Audio;
+using Terraria.DataStructures;
+using Terraria.Enums;
+using Terraria.ID;
+using Terraria.Localization;
+using Terraria.ModLoader;
+using Terraria.ObjectData;
 
 namespace DestroyerTest.Content.Tiles
 {

@@ -1,22 +1,14 @@
-using System;
-using Microsoft.Xna.Framework;
+using DestroyerTest.Content.Projectiles.Weapon.Scepter;
+using DestroyerTest.Rarity.Scepter;
 using Terraria;
-using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.DataStructures;
- 
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Common;
-using DestroyerTest.Rarity;
-using DestroyerTest.Rarity.Scepter;
-using DestroyerTest.Content.Projectiles.Weapon.Scepter;  
 
 namespace DestroyerTest.Content.Scepter
 {
-	public class ShadowScepter : ScepterItem
-	{
-		public override int Width => 40;
+    public class ShadowScepter : ScepterItem
+    {
+        public override int Width => 40;
         public override int Height => 40;
 
         public override void SetStaticDefaults()
@@ -50,4 +42,4 @@ namespace DestroyerTest.Content.Scepter
         }
 
     }
-} 
+}

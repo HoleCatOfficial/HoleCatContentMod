@@ -1,8 +1,7 @@
-﻿using BreadLibrary.Core.Graphics.Particles;
-using BreadLibrary.Core.Graphics.Spritebatch;
+﻿using BreadLibrary.Core.Graphics.Spritebatch;
 using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
- 
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
@@ -58,5 +57,5 @@ namespace DestroyerTest.Content.Particles.Stellar
             Opus.ReturnToDefaultDrawing(spriteBatch);
         }
     }
- 
+
 }

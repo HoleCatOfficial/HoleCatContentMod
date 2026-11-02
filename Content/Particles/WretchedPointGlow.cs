@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Spritebatch;
 using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
@@ -64,7 +63,7 @@ namespace DestroyerTest.Content.Particles
             {
                 for (int i = 0; i < OldPositions.Count; i++)
                 {
-                    float SclMod = MathHelper.Lerp(0f, 1f, (float)i / 12f);
+                    float SclMod = MathHelper.Lerp(0f, 1f, i / 12f);
                     spriteBatch.Draw(texture, OldPositions[i] - Main.screenPosition, null, color * 0.3f, 0f, origin, scale * SclMod, SpriteEffects.None, 0f);
                 }
             }

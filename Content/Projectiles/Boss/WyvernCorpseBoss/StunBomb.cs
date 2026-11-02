@@ -1,19 +1,12 @@
 ﻿using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Entities;
 using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Projectiles.Boss.VampireBoss;
-using DestroyerTest.Content.RiftArsenal;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.Enums;
-using Terraria.GameContent;
-using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -33,13 +26,13 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
         public override void SetDefaults()
         {
             Projectile.width = 24;
-            Projectile.height = 24; 
+            Projectile.height = 24;
             Projectile.DamageType = DamageClass.Generic;
             Projectile.friendly = false;
             Projectile.hostile = true;
             Projectile.ignoreWater = true;
             Projectile.light = 1f;
-            Projectile.timeLeft = 120; 
+            Projectile.timeLeft = 120;
             Projectile.tileCollide = false;
             Projectile.ArmorPenetration = 100;
         }

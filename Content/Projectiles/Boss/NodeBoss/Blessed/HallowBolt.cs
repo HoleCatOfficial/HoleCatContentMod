@@ -5,13 +5,9 @@ using DestroyerTest.Content.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
-using OpusLib.Content.Helpers;
 using ReLogic.Content;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.Enums;
-using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -31,7 +27,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.Blessed
 
         public ref float DelayTimer => ref Projectile.ai[1];
 
- 
+
 
         public override void SetStaticDefaults()
         {
@@ -98,7 +94,6 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.Blessed
                 if (TrailPositions.Count > 1)
                 {
                     List<ColoredVertex> ve = new List<ColoredVertex>();
-                    float a = 0;
 
                     for (int i = TrailPositions.Count - 1; i > 0; i--)
                     {
@@ -124,7 +119,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.Blessed
 
             sb.Draw(texture.Value, drawPos, sourceRect, Main.DiscoColor, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0f);
 
-            
+
 
             sb.Draw(texture.Value, drawPos, sourceRect, Color.White, Projectile.rotation, origin, Projectile.scale * 0.65f, SpriteEffects.None, 0f);
             Opus.ReturnToDefaultDrawing(sb);

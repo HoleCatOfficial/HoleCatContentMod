@@ -1,15 +1,11 @@
 using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using GlowmaskHelper.Content;
-using ReLogic.Content;
-using Terraria.Audio;
-using OpusLib;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 {
@@ -125,7 +121,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
             for (int i = 0; i < 10; i++)
             {
-                Dust dust = Dust.NewDustPerfect(Projectile.Center, DustID.TintableDustLighted, Main.rand.NextVector2Circular(3, 3), 100,  ColorLib.StellarFireGradientLooping(), 1.5f);
+                Dust dust = Dust.NewDustPerfect(Projectile.Center, DustID.TintableDustLighted, Main.rand.NextVector2Circular(3, 3), 100, ColorLib.StellarFireGradientLooping(), 1.5f);
                 dust.noGravity = true;
                 dust.fadeIn = 1.5f;
             }

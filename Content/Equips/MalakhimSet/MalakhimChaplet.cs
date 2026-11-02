@@ -1,17 +1,14 @@
+using DestroyerTest.Common;
+using DestroyerTest.Content.Projectiles.player.ArmorSet;
+using DestroyerTest.Content.Resources;
+using DestroyerTest.Rarity.Scepter;
+using Microsoft.Xna.Framework;
+using OpusLib;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using DestroyerTest.Rarity;
-using DestroyerTest.Common;
-using DestroyerTest.Rarity.Scepter;
-using Microsoft.Xna.Framework;
-using DestroyerTest.Content.Projectiles;
-using OpusLib;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.Projectiles.player.ArmorSet;
- 
-using Terraria.Audio;
 
 namespace DestroyerTest.Content.Equips.MalakhimSet
 {
@@ -57,10 +54,10 @@ namespace DestroyerTest.Content.Equips.MalakhimSet
 
         public override void AddRecipes()
         {
-			CreateRecipe()
-				.AddIngredient<Vesper>(25)
-				.AddTile(TileID.Anvils)
-				.Register();
+            CreateRecipe()
+                .AddIngredient<Vesper>(25)
+                .AddTile(TileID.Anvils)
+                .Register();
         }
     }
 
@@ -111,7 +108,7 @@ namespace DestroyerTest.Content.Equips.MalakhimSet
             }
         }
     }
-    
+
     public class MalakhimOwnedProjectiles : GlobalProjectile
     {
         public override bool InstancePerEntity => true;

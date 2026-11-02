@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BreadLibrary.Core.Graphics.Particles;
+﻿using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
 using BreadLibrary.Core.Graphics.Spritebatch;
 using BreadLibrary.Core.Utilities;
@@ -12,7 +7,6 @@ using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
 using OpusLib.Content.Helpers;
 using ReLogic.Utilities;
 using Terraria;
@@ -64,7 +58,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.Streak(5, true), ColorLib.Rift with { A = 0 } * 0.2f, Main.spriteBatch, BlendState.Additive, oF, WidthScl * 1.2f);
             spriteBatch.End();
             spriteBatch.Begin(Cap);
-            
+
             DTUtils.instance.ScrollingTextureSpine(L, DTAssetLib.ZapTrail, Color.White, Main.spriteBatch, BlendState.Additive, oF, WidthScl);
             spriteBatch.End();
             spriteBatch.Begin(Cap);
@@ -164,7 +158,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             if (!SoundEngine.TryGetActiveSound(LoopSlot, out var activeSound))
             {
                 var tracker = new ProjectileAudioTracker(Projectile);
-                LoopSlot = SoundEngine.PlaySound(Loop, Projectile.Center, soundInstance => {
+                LoopSlot = SoundEngine.PlaySound(Loop, Projectile.Center, soundInstance =>
+                {
                     soundInstance.Position = Projectile.Center;
                     soundInstance.Pitch = WidthScl;
                     return tracker.IsActiveAndInGame();
@@ -223,7 +218,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             target.AddBuff(ModContent.BuffType<HeliouricShock>(), 240);
         }
 
-        
+
     }
-    
+
 }

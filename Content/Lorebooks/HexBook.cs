@@ -1,10 +1,6 @@
 using System.Collections.Generic;
-using DestroyerTest.Content.MeleeWeapons;
-using OpusLib.Content.Helpers;
 using OpusLib.Content.OpusBook;
 using Terraria;
-using Terraria.Audio;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Lorebooks
@@ -60,5 +56,5 @@ I turned my back, as it quickly wore off and allowed the wyvern to attack me."
                 });
             }
         }
-}
+    }
 }

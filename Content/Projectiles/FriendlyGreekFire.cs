@@ -1,17 +1,6 @@
-﻿using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria;
-using Terraria.GameContent;
+﻿using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using GlowmaskHelper.Content;
-using ReLogic.Content;
-using Terraria.Audio;
-using OpusLib;
-using DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss;
-using System.Collections.Generic;
 
 namespace DestroyerTest.Content.Projectiles
 {
@@ -26,7 +15,7 @@ namespace DestroyerTest.Content.Projectiles
             Projectile.CloneDefaults(ProjectileID.GreekFire1);
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = 20;
-            
+
             Projectile.friendly = true;
         }
 

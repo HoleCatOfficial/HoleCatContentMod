@@ -1,6 +1,6 @@
 ﻿
-using DestroyerTest.Content.Entities;
 using DestroyerTest.Common;
+using DestroyerTest.Content.Entities;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;

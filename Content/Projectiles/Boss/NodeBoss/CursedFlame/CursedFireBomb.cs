@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using BreadLibrary.Core.Graphics.Particles;
+﻿using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Entities;
 using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
 using OpusLib.Content.Helpers;
 using OpusLib.Content.Particles;
 using Terraria;
@@ -41,7 +37,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame
         Color WarnColor = Color.Black;
         float f = 0;
         public override bool PreDraw(ref Color lightColor)
-        { 
+        {
             f += 0.1f;
             DTUtils.DrawCrystalCore(Main.spriteBatch, Projectile.Center, Color.White, ColorLib.Wretched2, f, 1f);
 
@@ -51,7 +47,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame
 
         public override void AI()
         {
-            float prog = ((float)Projectile.timeLeft / 300f);
+            float prog = (Projectile.timeLeft / 300f);
 
             WarnColor = OpusColorUtils.MultiLerp(prog, ColorLib.WretchedColorMap);
 

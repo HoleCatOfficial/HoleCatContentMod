@@ -5,9 +5,7 @@ using DestroyerTest.Content.Particles;
 using Microsoft.Xna.Framework;
 using OpusLib;
 using Terraria;
-using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
@@ -25,9 +23,9 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
         public override void SetDefaults()
         {
             Projectile.width = 32;
-            Projectile.height = 32; 
+            Projectile.height = 32;
             Projectile.friendly = false;
-            Projectile.hostile = true; 
+            Projectile.hostile = true;
             Projectile.ignoreWater = true;
             Projectile.timeLeft = 180;
         }
@@ -36,7 +34,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
 
         public override void OnSpawn(IEntitySource source)
         {
-            
+
         }
 
         public override bool PreDraw(ref Color lightColor)

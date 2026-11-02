@@ -1,24 +1,14 @@
-
-using System;
-using System.Linq;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Buffs.Imbues;
 using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss;
 using DestroyerTest.Content.Remnants;
 using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using Terraria;
-using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.GameContent;
-using Terraria.GameContent.ObjectInteractions;
-using Terraria.GameInput;
-using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Equips
@@ -57,7 +47,7 @@ namespace DestroyerTest.Content.Equips
             }
         }
     }
-    
+
     public class GalantineIncensePlayer : ModPlayer
     {
         public bool Active = false;
@@ -119,7 +109,8 @@ namespace DestroyerTest.Content.Equips
     public class GalantineIncenseDrawLayer : PlayerDrawLayer
     {
 
-        public override bool GetDefaultVisibility(PlayerDrawSet drawInfo) {
+        public override bool GetDefaultVisibility(PlayerDrawSet drawInfo)
+        {
             Player player = drawInfo.drawPlayer;
 
             if (player.dead)
@@ -140,15 +131,15 @@ namespace DestroyerTest.Content.Equips
             }
             else
             {
-			    return false;
+                return false;
             }
-		}
+        }
         public override Position GetDefaultPosition() => new BeforeParent(PlayerDrawLayers.FrozenOrWebbedDebuff);
 
-        protected override void Draw(ref PlayerDrawSet drawInfo) 
+        protected override void Draw(ref PlayerDrawSet drawInfo)
         {
             Player player = drawInfo.drawPlayer;
-			if (player.TryGetModPlayer<GalantineIncensePlayer>(out var Incense))
+            if (player.TryGetModPlayer<GalantineIncensePlayer>(out var Incense))
             {
                 if (Incense.Active && drawInfo.shadow == 0)
                 {
@@ -159,27 +150,27 @@ namespace DestroyerTest.Content.Equips
                     DrawRingOfFire(ref drawInfo, 0.35f, 0.08f, Incense.TexRot);
                 }
             }
-			
-		}
+
+        }
 
         private void DrawRingOfFire(ref PlayerDrawSet drawInfo, float Opacity = 1f, float Scale = 1f, float Rotation = 0f)
         {
             var Tex = DTAssetLib.FireRing.Value;
 
-			var position = drawInfo.Center - Main.screenPosition;
-			position = new Vector2((int)position.X, (int)position.Y);
+            var position = drawInfo.Center - Main.screenPosition;
+            position = new Vector2((int)position.X, (int)position.Y);
 
             drawInfo.DrawDataCache.Add(new DrawData(
-				Tex,
-				position,
-				null,
-				ColorLib.StellarColor with {A = 0} * Opacity,
-				Rotation,
-				Tex.Size() * 0.5f,
-				Scale,
-				SpriteEffects.None,
-				0
-			));
+                Tex,
+                position,
+                null,
+                ColorLib.StellarColor with { A = 0 } * Opacity,
+                Rotation,
+                Tex.Size() * 0.5f,
+                Scale,
+                SpriteEffects.None,
+                0
+            ));
         }
 
     }

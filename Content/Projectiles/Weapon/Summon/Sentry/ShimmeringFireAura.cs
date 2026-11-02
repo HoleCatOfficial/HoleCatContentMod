@@ -5,11 +5,6 @@ using DestroyerTest.Content.Buffs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib.Content.Particles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -53,7 +48,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon.Sentry
 
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
-            
+
             return false;
         }
 
@@ -118,8 +113,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon.Sentry
 
             Projectile.velocity.X = 0f;
             Projectile.velocity.Y += 0.2f;
-           
-            
+
+
             Projectile.ai[2]++;
 
             NPC.HitInfo Hit = new NPC.HitInfo()
@@ -156,7 +151,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon.Sentry
         {
             for (int i = 0; i < 6; i++)
             {
-                Vector2 Pos = Projectile.Center + (Main.rand.NextVector2Unit((float)MathHelper.Pi, MathHelper.Pi) * Radius);
+                Vector2 Pos = Projectile.Center + (Main.rand.NextVector2Unit(MathHelper.Pi, MathHelper.Pi) * Radius);
                 Vector2 D = Projectile.Center - Pos;
                 D.Normalize();
 

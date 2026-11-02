@@ -27,5 +27,5 @@ namespace DestroyerTest.Content.Tiles
                 .AddTile(TileID.DemonAltar)
                 .Register();
         }
-	}
+    }
 }

@@ -1,15 +1,10 @@
 ﻿using System.Collections.Generic;
 using DestroyerTest.Common;
 using DestroyerTest.Common.Interfaces;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.Particles;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
 using Terraria;
-using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -64,13 +59,13 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
 
             for (int i = 0; i < Projectile.oldPos.Length; i++)
             {
-                float Scale = MathHelper.Lerp(1f, 0f, (float)i / (float)Projectile.oldPos.Length);
+                float Scale = MathHelper.Lerp(1f, 0f, i / (float)Projectile.oldPos.Length);
                 Main.EntitySpriteDraw(Back, Projectile.OldCenter()[i] - Main.screenPosition, null, Color.White, 0f, Back.Size() / 2, Scale, SpriteEffects.None);
             }
 
             for (int j = 0; j < Projectile.oldPos.Length; j++)
             {
-                float Scale = MathHelper.Lerp(1f, 0f, (float)j / (float)Projectile.oldPos.Length);
+                float Scale = MathHelper.Lerp(1f, 0f, j / (float)Projectile.oldPos.Length);
                 Main.EntitySpriteDraw(Front, Projectile.OldCenter()[j] - Main.screenPosition, null, Color.White with { A = 0 }, 0f, Front.Size() / 2, Scale, SpriteEffects.None);
             }
 
@@ -78,15 +73,15 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
             return false;
         }
 
-    
 
-      
+
+
         public override void AI()
         {
             DelayTimer++;
 
             Projectile.rotation = 0f;
-            
+
             if (DelayTimer < 30)
             {
                 Projectile.velocity *= 0.97f;
@@ -112,8 +107,8 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
                 Dust d = Dust.NewDustPerfect(Projectile.Center, DustID.FireworksRGB, Vel, 0, Color.Red, 1f);
                 d.noGravity = true;
             }
-            
-           
+
+
         }
     }
 }

@@ -1,13 +1,12 @@
+using System.Collections.Generic;
+using DestroyerTest.Common;
+using DestroyerTest.Content.Equips.NightSet;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
+using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader;
 using Terraria.UI;
-using DestroyerTest.Common;
-using System.Collections.Generic;
-using Terraria.GameContent.UI.Elements;
-using Terraria.Localization;
-using DestroyerTest.Content.Equips.NightSet;
 
 namespace DestroyerTest.Content.UI
 {
@@ -36,7 +35,7 @@ namespace DestroyerTest.Content.UI
             frameImage.Height.Set(22, 0f);
             frameImage.Color = Color.White * 0f;
             area.Append(frameImage);
-            
+
 
             Append(area);
         }
@@ -68,7 +67,7 @@ namespace DestroyerTest.Content.UI
                 DTUIConfig cfg = ModContent.GetInstance<DTUIConfig>();
 
                 // Calculate the frame based on cooldown
-                float progress = 1f - (float)nightPlayer.CooldownTime / 360f;
+                float progress = 1f - nightPlayer.CooldownTime / 360f;
                 int frame = (int)MathHelper.Clamp(progress * totalFrames, 0, totalFrames - 1); // <-- changed
 
                 Rectangle sourceRect = new Rectangle(

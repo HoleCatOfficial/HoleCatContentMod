@@ -1,17 +1,13 @@
-using System;
+using System.Collections.Generic;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using ReLogic.Content;
 using Terraria;
-using Terraria.DataStructures;
-using Terraria.Enums;
-using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
-using OpusLib;
-using System.Collections.Generic;
 
 namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
 {
@@ -80,7 +76,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
             return false;
         }
 
-        
+
 
         public List<Vector2> TrailPositions = new();
         public List<float> TrailRotations = new();

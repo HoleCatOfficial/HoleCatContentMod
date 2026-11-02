@@ -9,38 +9,40 @@ using Terraria.ObjectData;
 
 namespace DestroyerTest.Content.Tiles.Riftplate
 {
-	public class Tile_RiftBookcase : ModTile
-	{
-		public override void SetStaticDefaults() {
-			// Properties
-			Main.tileTable[Type] = true;
-			Main.tileSolidTop[Type] = true;
-			Main.tileNoAttach[Type] = true;
-			Main.tileLavaDeath[Type] = false;
-			Main.tileFrameImportant[Type] = true;
-			TileID.Sets.DisableSmartCursor[Type] = true;
-			TileID.Sets.IgnoredByNpcStepUp[Type] = true; // This line makes NPCs not try to step up this tile during their movement. Only use this for furniture with solid tops.
+    public class Tile_RiftBookcase : ModTile
+    {
+        public override void SetStaticDefaults()
+        {
+            // Properties
+            Main.tileTable[Type] = true;
+            Main.tileSolidTop[Type] = true;
+            Main.tileNoAttach[Type] = true;
+            Main.tileLavaDeath[Type] = false;
+            Main.tileFrameImportant[Type] = true;
+            TileID.Sets.DisableSmartCursor[Type] = true;
+            TileID.Sets.IgnoredByNpcStepUp[Type] = true; // This line makes NPCs not try to step up this tile during their movement. Only use this for furniture with solid tops.
 
-			HitSound = new SoundStyle("DestroyerTest/Assets/Audio/TenebrousConstruct/Hit", 5)
+            HitSound = new SoundStyle("DestroyerTest/Assets/Audio/TenebrousConstruct/Hit", 5)
             {
                 PitchVariance = 0.2f,
                 MaxInstances = 0
             };
             DustType = ModContent.DustType<RiftDust>();
-			AdjTiles = [TileID.Bookcases];
+            AdjTiles = [TileID.Bookcases];
 
-			// Placement
-			TileObjectData.newTile.CopyFrom(TileObjectData.Style3x4);
-			TileObjectData.newTile.StyleHorizontal = true;
-			TileObjectData.newTile.CoordinateHeights = [16, 16, 16, 16];
-			TileObjectData.addTile(Type);
+            // Placement
+            TileObjectData.newTile.CopyFrom(TileObjectData.Style3x4);
+            TileObjectData.newTile.StyleHorizontal = true;
+            TileObjectData.newTile.CoordinateHeights = [16, 16, 16, 16];
+            TileObjectData.addTile(Type);
 
-			// Etc
-			AddMapEntry(new Color(200, 200, 200), Language.GetText("MapObject.Bookcases"));
-		}
+            // Etc
+            AddMapEntry(new Color(200, 200, 200), Language.GetText("MapObject.Bookcases"));
+        }
 
-		public override void NumDust(int x, int y, bool fail, ref int num) {
-			num = fail ? 1 : 3;
-		}
-	}
+        public override void NumDust(int x, int y, bool fail, ref int num)
+        {
+            num = fail ? 1 : 3;
+        }
+    }
 }

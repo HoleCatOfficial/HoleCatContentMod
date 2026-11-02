@@ -1,13 +1,9 @@
-using Terraria;
-using Terraria.Graphics.Effects;
-using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using Terraria.Graphics;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
 using DestroyerTest.Common;
-using SteelSeries.GameSense;
-using ReLogic.Content;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Terraria;
+using Terraria.Graphics;
+using Terraria.ModLoader;
 
 public class ColorGradientOverlaySystem : ModSystem
 {
@@ -42,7 +38,7 @@ public class ColorGradientOverlaySystem : ModSystem
 
 
             spriteBatch.Draw(pixel, Main.screenPosition, Color.White * ColorVisibility);
-            
+
 
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.UIScaleMatrix);
@@ -84,7 +80,7 @@ public class ColorGradientOverlaySystem : ModSystem
         }
         if (DTFlags.StellarGogglesEquipped == false && ColorVisibility > 0.0f)
         {
-           FadeOutHaze(0.0f);
+            FadeOutHaze(0.0f);
         }
     }
 }

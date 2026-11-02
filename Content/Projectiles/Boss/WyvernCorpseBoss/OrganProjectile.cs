@@ -1,17 +1,10 @@
-using System.Collections.Generic;
 using System.IO;
-using System.Xml;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
-using OpusLib.Content.Helpers;
 using Terraria;
 using Terraria.Audio;
-using Terraria.Enums;
-using Terraria.GameContent;
-using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -41,18 +34,18 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
             Variant = Main.rand.Next(4);
             Projectile.frame = Variant;
         }
-        
-        
+
+
         public Vector2 toPlayer;
 
         public override void SendExtraAI(BinaryWriter writer)
         {
-          
+
         }
 
         public override void ReceiveExtraAI(BinaryReader reader)
         {
-          
+
         }
 
         public override bool PreDraw(ref Color lightColor)
@@ -70,7 +63,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
         public override void AI()
         {
             Player player = Main.player[(int)Projectile.ai[0]];
-          
+
             toPlayer = player.Center - Projectile.Center;
             toPlayer.Normalize();
 
@@ -82,7 +75,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
             }
 
 
-       
+
 
         }
 
@@ -90,7 +83,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
         {
 
         }
-        
+
 
 
         public override void OnKill(int timeLeft)
@@ -98,8 +91,8 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
             SoundEngine.PlaySound(SoundID.NPCDeath22, Projectile.Center);
 
 
-			Projectile spit = Projectile.NewProjectileDirect(Projectile.GetSource_Death(), Projectile.Center, toPlayer * 17, ModContent.ProjectileType<GoldenShowerNoGravity>(), (int)(Projectile.damage * 0.5f), 4);
+            Projectile spit = Projectile.NewProjectileDirect(Projectile.GetSource_Death(), Projectile.Center, toPlayer * 17, ModContent.ProjectileType<GoldenShowerNoGravity>(), (int)(Projectile.damage * 0.5f), 4);
 
-		}
+        }
     }
 }

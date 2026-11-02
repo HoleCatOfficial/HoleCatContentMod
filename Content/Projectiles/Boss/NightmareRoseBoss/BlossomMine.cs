@@ -1,23 +1,15 @@
-using System;
 using BreadLibrary.Core.Graphics.Pixelation;
 using BreadLibrary.Core.Graphics.Spritebatch;
 using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Projectiles.Boss.VampireBoss;
-using DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss;
- 
+
 using DestroyerTest.Content.Projectiles.Gores;
-using DestroyerTest.Content.RiftArsenal;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.Enums;
-using Terraria.GameContent;
-using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -71,7 +63,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
             for (int i = 0; i < V.Length; i++)
             {
                 Main.EntitySpriteDraw(LineTex, Projectile.Center - Main.screenPosition, null, new Color(43, 37, 154) with { A = 0 }, Projectile.Center.DirectionTo(V[i]).ToRotation(), new Vector2(0, LineTex.Height / 2), new Vector2(50f, 0.85f), SpriteEffects.None);
-                Main.EntitySpriteDraw(LineTex, Projectile.Center - Main.screenPosition, null, new Color(43, 37, 154) with { A = 0}, Projectile.Center.DirectionTo(V[i]).ToRotation(), new Vector2(0, LineTex.Height / 2), new Vector2(50f, 0.2f), SpriteEffects.None);
+                Main.EntitySpriteDraw(LineTex, Projectile.Center - Main.screenPosition, null, new Color(43, 37, 154) with { A = 0 }, Projectile.Center.DirectionTo(V[i]).ToRotation(), new Vector2(0, LineTex.Height / 2), new Vector2(50f, 0.2f), SpriteEffects.None);
             }
         }
 
@@ -88,7 +80,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
             IntialPos = Projectile.Center;
             rAmt = Main.rand.NextFloat(-0.001f, 0.001f);
         }
-        
+
         int DustAlpha = 255;
         float SoundPitch = 0f;
 
@@ -112,11 +104,11 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
                 DustAlpha -= 255 / 5;
                 Projectile.scale *= 1.01f;
                 SoundPitch += 1f / 5f;
-                SoundEngine.PlaySound(SoundID.Item42 with {Volume = 0.5f, Pitch = SoundPitch, MaxInstances = 0});
+                SoundEngine.PlaySound(SoundID.Item42 with { Volume = 0.5f, Pitch = SoundPitch, MaxInstances = 0 });
                 if (Projectile.timeLeft <= 60)
                 {
                     Opus.RadialSpreadDust(DustID.ShadowbeamStaff, 18, Projectile.Center, DustAlpha, default, 5f, 10, offset: Main.rand.NextFloat(MathHelper.TwoPi));
-                    SoundEngine.PlaySound(SoundID.Item167 with { MaxInstances = 0});
+                    SoundEngine.PlaySound(SoundID.Item167 with { MaxInstances = 0 });
                 }
             }
             if (Main.rand.NextBool(12))
@@ -142,6 +134,6 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
             Opus.RadialSpreadProjectile(ModContent.ProjectileType<CorruptPetalHostile>(), 8, Projectile.Center, Projectile.damage, 8, 22, offset: rOff);
         }
 
-      
+
     }
 }

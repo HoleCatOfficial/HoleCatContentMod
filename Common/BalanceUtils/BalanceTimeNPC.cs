@@ -1,12 +1,6 @@
-﻿using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.ModLoader;
-using Terraria;
+﻿using Terraria;
 using Terraria.DataStructures;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Common.BalanceUtils
 {
@@ -18,7 +12,7 @@ namespace DestroyerTest.Common.BalanceUtils
         float Time = 0f;
         public override void SetDefaults(NPC entity)
         {
-            
+
         }
 
         public override void OnSpawn(NPC npc, IEntitySource source)
@@ -32,7 +26,7 @@ namespace DestroyerTest.Common.BalanceUtils
         }
         public override void AI(NPC npc)
         {
-           // Time += 1f / 60f;
+            // Time += 1f / 60f;
         }
 
         public override void OnKill(NPC npc)

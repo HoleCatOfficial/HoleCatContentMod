@@ -1,22 +1,15 @@
 
-using DestroyerTest.Common;
-using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Content.Projectiles.player.Accessory;
- 
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Mono.Cecil;
-using OpusLib;
-using Steamworks;
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using DestroyerTest.Common;
+using DestroyerTest.Content.Projectiles.player.Accessory;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
-using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
 

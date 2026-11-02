@@ -1,5 +1,3 @@
-using DestroyerTest.Content.RiftBiome;
-using DestroyerTest.Content.RiftBiome.RiftDesertResources;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
@@ -7,27 +5,30 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.RiftBiome.RiftSurfaceResources
 {
-	public class Tile_RiftClay : ModTile
-	{
-		public override void SetStaticDefaults() {
-			Main.tileSolid[Type] = true;
-			TileID.Sets.ChecksForMerge[Type] = true;
-			TileID.Sets.BlockMergesWithMergeAllBlock[Type] = true;
-			Main.tileBlendAll[Type] = true;
-			
-			Main.tileBlockLight[Type] = true;
+    public class Tile_RiftClay : ModTile
+    {
+        public override void SetStaticDefaults()
+        {
+            Main.tileSolid[Type] = true;
+            TileID.Sets.ChecksForMerge[Type] = true;
+            TileID.Sets.BlockMergesWithMergeAllBlock[Type] = true;
+            Main.tileBlendAll[Type] = true;
 
-			DustType = DustID.Wraith;
+            Main.tileBlockLight[Type] = true;
 
-			AddMapEntry(new Color(15, 15, 15));
-		}
+            DustType = DustID.Wraith;
 
-		public override void NumDust(int i, int j, bool fail, ref int num) {
-			num = fail ? 1 : 3;
-		}
+            AddMapEntry(new Color(15, 15, 15));
+        }
 
-		public override void ChangeWaterfallStyle(ref int style) {
-			style = ModContent.GetInstance<RiftWaterfallStyle>().Slot;
-		}
-	}
+        public override void NumDust(int i, int j, bool fail, ref int num)
+        {
+            num = fail ? 1 : 3;
+        }
+
+        public override void ChangeWaterfallStyle(ref int style)
+        {
+            style = ModContent.GetInstance<RiftWaterfallStyle>().Slot;
+        }
+    }
 }

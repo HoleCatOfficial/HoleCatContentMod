@@ -1,13 +1,4 @@
-﻿
-using DestroyerTest.Common;
-using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.Equips;
-using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Projectiles.player.Potion;
-using Humanizer;
-using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.ID;
+﻿using Terraria;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Buffs
@@ -46,7 +37,7 @@ namespace DestroyerTest.Content.Buffs
 
         public override void GetHealLife(Item item, bool quickHeal, ref int healValue)
         {
-            if(Active)
+            if (Active)
             {
                 healValue = (int)(healValue * 1.2f);
             }

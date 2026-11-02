@@ -1,23 +1,15 @@
-using System;
-using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.Audio;
-using Terraria.ID;
-using Terraria.ModLoader;
-using Terraria.DataStructures;
- 
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Common;
-using DestroyerTest.Rarity;
-using DestroyerTest.Rarity.Scepter;
 using DestroyerTest.Content.Projectiles.Weapon.Scepter;
 using DestroyerTest.Content.Tiles;
 using DestroyerTest.Content.Tiles.RiftConfigurator;
+using DestroyerTest.Rarity.Scepter;
+using Terraria;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Scepter
 {
-	public class HeliciteScepter : ScepterItem
-	{
+    public class HeliciteScepter : ScepterItem
+    {
         public override int Width => 34;
         public override int Height => 34;
 
@@ -51,7 +43,8 @@ namespace DestroyerTest.Content.Scepter
             base.SetDefaults();
         }
 
-        public override void AddRecipes() {
+        public override void AddRecipes()
+        {
             CreateRecipe()
             .AddIngredient<HolyScepter>()
             .AddIngredient<Item_HeliciteCrystal>(35)
@@ -59,4 +52,4 @@ namespace DestroyerTest.Content.Scepter
             .Register();
         }
     }
-} 
+}

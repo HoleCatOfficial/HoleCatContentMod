@@ -1,25 +1,19 @@
-using System;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.MeleeWeapons;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
 using Terraria;
-using Terraria.Audio;
-using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.player.Accessory
 {
-	public class PoisonCloud : ModProjectile
-	{
-        private void AnimateProjectile() 
+    public class PoisonCloud : ModProjectile
+    {
+        private void AnimateProjectile()
         {
-            if (++Projectile.frameCounter >= 3) {
+            if (++Projectile.frameCounter >= 3)
+            {
                 Projectile.frameCounter = 0;
-                if (++Projectile.frame >= Main.projFrames[Projectile.type]) {
+                if (++Projectile.frame >= Main.projFrames[Projectile.type])
+                {
                     Projectile.frame = 0;
                 }
             }
@@ -42,10 +36,10 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
             Projectile.idStaticNPCHitCooldown = 20;
         }
 
-        public override void AI() 
+        public override void AI()
         {
             AnimateProjectile();
-            
+
             Projectile.velocity *= 0.95f;
 
             if (Projectile.timeLeft <= 30)
@@ -53,12 +47,12 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
                 Projectile.Opacity *= 0.8f;
                 Projectile.scale *= 1.01f;
             }
-		}
+        }
 
 
-		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.AddBuff(BuffID.Poisoned, 300);
         }
-	}
+    }
 }

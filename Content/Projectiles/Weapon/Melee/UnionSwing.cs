@@ -1,24 +1,11 @@
-﻿using BreadLibrary.Core.Graphics.Particles;
-using DestroyerTest.Common;
+﻿using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.MeleeWeapons;
-using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Particles.Stellar;
 using DestroyerTest.Content.Projectiles.ParentClasses;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
 using OpusLib.Content.Helpers;
-using System;
-using System.Collections.Generic;
-using System.IO;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.GameContent;
-using Terraria.GameContent.Drawing;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Melee
@@ -40,7 +27,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             ScaleMult = 1.36f;
             SweepScale = 1.6f;
 
-            
+
 
             Glowmask = ModContent.Request<Texture2D>($"{Texture}");
         }

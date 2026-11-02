@@ -1,20 +1,14 @@
 using DestroyerTest.Common;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+using DestroyerTest.Content.Projectiles.ParentClasses;
 using Terraria;
-using Terraria.Enums;
-using Terraria.GameContent;
 using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
-using OpusLib;
-using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.Projectiles.ParentClasses;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Scepter.ElementalShots
 {
-	public class LightShot : ElementalScepterShot
-	{
+    public class LightShot : ElementalScepterShot
+    {
         public override string Texture => DTUtils.NoTexture;
         public override void SetStaticDefaults()
         {
@@ -23,16 +17,16 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter.ElementalShots
 
         public override void SetDefaults()
         {
-			Projectile.DamageType = ModContent.GetInstance<ScepterClass>();
+            Projectile.DamageType = ModContent.GetInstance<ScepterClass>();
             Projectile.friendly = true;
             Projectile.hostile = false;
 
-			TrailColor = Main.DiscoColor;
-			DustColor = Main.DiscoColor;
-			TravelDust = DustID.FireworksRGB;
-			KillDust = DustID.FireworksRGB;
-			Projectile.Resize(16, 16);
-			TrailAmplitude = 10f;
+            TrailColor = Main.DiscoColor;
+            DustColor = Main.DiscoColor;
+            TravelDust = DustID.FireworksRGB;
+            KillDust = DustID.FireworksRGB;
+            Projectile.Resize(16, 16);
+            TrailAmplitude = 10f;
 
             DetectionRad = 1200;
         }
@@ -48,8 +42,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter.ElementalShots
         {
             base.OnHitNPC(target, hit, damageDone);
 
-            ParticleOrchestrator.RequestParticleSpawn(true, ParticleOrchestraType.ShimmerArrow, new ParticleOrchestraSettings { IndexOfPlayerWhoInvokedThis = (byte)Projectile.owner, PositionInWorld = target.Center});
-            ParticleOrchestrator.RequestParticleSpawn(true, ParticleOrchestraType.RainbowRodHit, new ParticleOrchestraSettings { IndexOfPlayerWhoInvokedThis = (byte)Projectile.owner, PositionInWorld = target.Center});
+            ParticleOrchestrator.RequestParticleSpawn(true, ParticleOrchestraType.ShimmerArrow, new ParticleOrchestraSettings { IndexOfPlayerWhoInvokedThis = (byte)Projectile.owner, PositionInWorld = target.Center });
+            ParticleOrchestrator.RequestParticleSpawn(true, ParticleOrchestraType.RainbowRodHit, new ParticleOrchestraSettings { IndexOfPlayerWhoInvokedThis = (byte)Projectile.owner, PositionInWorld = target.Center });
         }
     }
 }

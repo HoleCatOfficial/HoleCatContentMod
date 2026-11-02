@@ -16,7 +16,7 @@ public class ScreenshakePlayer : ModPlayer
         }
 
         screenshakeTimer--;
-        if (screenshakeTimer > 0 )
+        if (screenshakeTimer > 0)
         {
             isShaking = true;
             Main.screenPosition += new Vector2(Main.rand.Next(screenshakeMagnitude * -1, screenshakeMagnitude + 1), Main.rand.Next(screenshakeMagnitude * -1, screenshakeMagnitude + 1));
@@ -26,7 +26,7 @@ public class ScreenshakePlayer : ModPlayer
             isShaking = false;
         }
     }
-    
+
     public Vector2 GetShakeOffset()
     {
         if (screenshakeTimer <= 0)

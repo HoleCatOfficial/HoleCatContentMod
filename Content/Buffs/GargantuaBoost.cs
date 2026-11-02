@@ -2,25 +2,20 @@
 using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.MeleeWeapons;
-using DestroyerTest.Content.Particles;
-using Humanizer;
- 
+
 using Microsoft.Xna.Framework;
 using OpusLib.Content.Particles;
-using System.Collections.Generic;
-using System.Linq;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Buffs
 {
-	// This class serves as an example of a debuff that causes constant loss of life
-	// See ExampleLifeRegenDebuffPlayer.UpdateBadLifeRegen at the end of the file for more information
-	public class GargantuaBoost : ModBuff
-	{
+    // This class serves as an example of a debuff that causes constant loss of life
+    // See ExampleLifeRegenDebuffPlayer.UpdateBadLifeRegen at the end of the file for more information
+    public class GargantuaBoost : ModBuff
+    {
         public override void SetStaticDefaults()
         {
             Main.debuff[Type] = true;  // Is it a debuff?
@@ -28,7 +23,7 @@ namespace DestroyerTest.Content.Buffs
             Main.buffNoSave[Type] = true; // Causes this buff not to persist when exiting and rejoining the world
             Main.buffNoTimeDisplay[Type] = true;
             BuffID.Sets.LongerExpertDebuff[Type] = true; // If this buff is a debuff, setting this to true will make this buff last twice as long on players in expert mode
-            
+
         }
 
         // Allows you to make this buff give certain effects to the given player
@@ -43,8 +38,8 @@ namespace DestroyerTest.Content.Buffs
                 player.GetModPlayer<GargantuaBoostPlayer>().AttackBuff = true;
             }
 
-		}
-	}
+        }
+    }
 
 
 
@@ -100,6 +95,6 @@ namespace DestroyerTest.Content.Buffs
                 Player.lifeRegen -= 160;
             }
         }
-        
-	}
+
+    }
 }

@@ -1,14 +1,8 @@
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
-using Terraria.Audio;
-using DestroyerTest.Content.Consumables;
-using DestroyerTest.Common;
-using Terraria.GameContent.Drawing;
 using DestroyerTest.Content.Projectiles.ParentClasses;
+using Microsoft.Xna.Framework;
+using Terraria;
+using Terraria.GameContent.Drawing;
+using Terraria.ID;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 {
@@ -26,10 +20,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.velocity *= 0.75f;
-            
+
             ParticleOrchestrator.RequestParticleSpawn(clientOnly: false, ParticleOrchestraType.Keybrand,
-				new ParticleOrchestraSettings { PositionInWorld = Main.rand.NextVector2FromRectangle(target.Hitbox) },
-				Projectile.owner);
+                new ParticleOrchestraSettings { PositionInWorld = Main.rand.NextVector2FromRectangle(target.Hitbox) },
+                Projectile.owner);
             base.OnHitNPC(target, hit, damageDone);
         }
 

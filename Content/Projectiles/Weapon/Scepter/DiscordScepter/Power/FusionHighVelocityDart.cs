@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.Linq;
 using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
 using BreadLibrary.Core.Graphics.Spritebatch;
@@ -13,9 +11,7 @@ using OpusLib;
 using OpusLib.Content.Particles;
 using Terraria;
 using Terraria.Audio;
-using Terraria.Enums;
 using Terraria.GameContent;
-using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -141,7 +137,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter.DiscordScepter.Power
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
-        {  
+        {
             SoundEngine.PlaySound(DTAssetLib.Impacts.Malevolence with { Pitch = -0.5f }, Projectile.Center);
 
             BloomRingSharp Ring = new();

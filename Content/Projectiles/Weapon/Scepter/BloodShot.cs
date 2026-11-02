@@ -1,18 +1,9 @@
 ﻿using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
-using DestroyerTest.Common.Interfaces;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
-using OpusLib.Content.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -25,11 +16,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
     {
         public override string Texture => DTUtils.NoTexture;
 
-      
+
 
         public override void SetStaticDefaults()
         {
-           
+
         }
 
         public override void SetDefaults()
@@ -85,7 +76,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            
+
 
         }
 

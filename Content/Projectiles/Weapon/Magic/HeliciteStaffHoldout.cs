@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Magic;
@@ -12,11 +8,9 @@ using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using OpusLib.Content.Helpers;
 using ReLogic.Content;
-using ReLogic.Utilities;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.Enums;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -145,7 +139,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
                 BeamProjectile.Projectile.ai[0] = Projectile.rotation;
             }
 
-            
+
 
             if (Owner.controlUseItem && !Owner.dead && Owner.HeldItem.type == ModContent.ItemType<HeliciteStaff>())
             {
@@ -159,7 +153,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
                     beamWhoAmI = Beam.whoAmI;
                 }
 
-                
+
 
                 if (Projectile.ai[0] % 30 == 0)
                 {

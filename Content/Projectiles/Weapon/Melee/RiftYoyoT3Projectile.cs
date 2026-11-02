@@ -1,16 +1,12 @@
 
-using BreadLibrary.Core.Graphics.Particles;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Projectiles;
- 
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
-using OpusLib.Content.Particles;
-using ReLogic.Utilities;
 using System;
 using System.Collections.Generic;
+using BreadLibrary.Core.Graphics.Particles;
+using DestroyerTest.Common;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using OpusLib.Content.Particles;
+using ReLogic.Utilities;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -18,23 +14,24 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 {
-	public class RiftYoyoT3Projectile : ModProjectile
-	{
-		public override void SetStaticDefaults() {
-			// The following sets are only applicable to yoyo that use aiStyle 99.
+    public class RiftYoyoT3Projectile : ModProjectile
+    {
+        public override void SetStaticDefaults()
+        {
+            // The following sets are only applicable to yoyo that use aiStyle 99.
 
-			// YoyosLifeTimeMultiplier is how long in seconds the yoyo will stay out before automatically returning to the player. 
-			// Vanilla values range from 3f (Wood) to 16f (Chik), and defaults to -1f. Leaving as -1 will make the time infinite.
-			ProjectileID.Sets.YoyosLifeTimeMultiplier[Projectile.type] = -1f;
+            // YoyosLifeTimeMultiplier is how long in seconds the yoyo will stay out before automatically returning to the player. 
+            // Vanilla values range from 3f (Wood) to 16f (Chik), and defaults to -1f. Leaving as -1 will make the time infinite.
+            ProjectileID.Sets.YoyosLifeTimeMultiplier[Projectile.type] = -1f;
 
-			// YoyosMaximumRange is the maximum distance the yoyo sleep away from the player. 
-			// Vanilla values range from 130f (Wood) to 400f (Terrarian), and defaults to 200f.
-			ProjectileID.Sets.YoyosMaximumRange[Projectile.type] = 400f;
+            // YoyosMaximumRange is the maximum distance the yoyo sleep away from the player. 
+            // Vanilla values range from 130f (Wood) to 400f (Terrarian), and defaults to 200f.
+            ProjectileID.Sets.YoyosMaximumRange[Projectile.type] = 400f;
 
-			// YoyosTopSpeed is top speed of the yoyo Projectile.
-			// Vanilla values range from 9f (Wood) to 17.5f (Terrarian), and defaults to 10f.
-			ProjectileID.Sets.YoyosTopSpeed[Projectile.type] = 13f;
-		}
+            // YoyosTopSpeed is top speed of the yoyo Projectile.
+            // Vanilla values range from 9f (Wood) to 17.5f (Terrarian), and defaults to 10f.
+            ProjectileID.Sets.YoyosTopSpeed[Projectile.type] = 13f;
+        }
 
         public override void SetDefaults()
         {
@@ -48,7 +45,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Projectile.penetrate = -1; // All vanilla yoyos have infinite penetration. The number of enemies the yoyo can hit before being pulled back in is based on YoyosLifeTimeMultiplier.
                                        // Projectile.scale = 1f; // The scale of the projectile. Most yoyos are 1f, but a few are larger. The Kraken is the largest at 1.2f
             Projectile.netImportant = true;
-		}
+        }
 
         float AuraScale = 0.3f;
         float DebuffScale = 0.3f;
@@ -58,7 +55,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             {
                 Main.EntitySpriteDraw(DTAssetLib.FeatheredCircle.Value, Projectile.Center - Main.screenPosition, null, Color.Black * 0.65f, Projectile.rotation, DTAssetLib.FeatheredCircle.Value.Size() / 2, DebuffScale, SpriteEffects.None);
             }
-			DTUtils.DrawRiftBall(Projectile.Center, 0.2f, Main.spriteBatch, blendState: BlendState.Additive, TrailPositions, AuraScale);
+            DTUtils.DrawRiftBall(Projectile.Center, 0.2f, Main.spriteBatch, blendState: BlendState.Additive, TrailPositions, AuraScale);
 
             return true;
         }
@@ -135,8 +132,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             float val = ((DTAssetLib.FeatheredCircle.Value.Width * DebuffScale) / 2) - 0.1f;
             return val * val;
         }
-        public override void PostAI() 
-		{
+        public override void PostAI()
+        {
             base.PostAI();
             ScaleTimer++;
             CacheTrail();
@@ -144,7 +141,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             if (!SoundEngine.TryGetActiveSound(LoopSlot, out var activeSound))
             {
                 var tracker = new ProjectileAudioTracker(Projectile);
-                LoopSlot = SoundEngine.PlaySound(Loop, Projectile.Center, soundInstance => {
+                LoopSlot = SoundEngine.PlaySound(Loop, Projectile.Center, soundInstance =>
+                {
                     soundInstance.Position = Projectile.Center;
                     return tracker.IsActiveAndInGame();
                 });
@@ -168,21 +166,21 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 }
             }
 
-            foreach(NPC npc in Main.npc)
+            foreach (NPC npc in Main.npc)
             {
                 if (npc.active && npc.DistanceSQ(Projectile.Center) < DebuffDist())
                 {
                     npc.AddBuff(BuffID.Slow, 180);
                 }
             }
-            
-            if (Main.rand.NextBool(5)) 
-			{
-				Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.FireworksRGB, newColor: ColorLib.Rift);
 
-                if(AuraScale >= 1f)
+            if (Main.rand.NextBool(5))
+            {
+                Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.FireworksRGB, newColor: ColorLib.Rift);
+
+                if (AuraScale >= 1f)
                 {
-                    for(int i = 0; i < 3; i++)
+                    for (int i = 0; i < 3; i++)
                     {
                         Vector2 pos = Projectile.Center + Main.rand.NextVector2Circular((float)Math.Sqrt(DebuffDist()), (float)Math.Sqrt(DebuffDist()));
                         Vector2 d = Projectile.Center - pos;
@@ -192,7 +190,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                     }
                 }
             }
-		}
+        }
 
         public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
@@ -230,5 +228,5 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Ring.Prepare(Projectile.Center, Vector2.Zero, ColorLib.Rift, 0.1f, 0.01f, 1.8f, BlendState.Additive);
             ParticleEngine.BehindProjectiles.Add(Ring);
         }
-	}
+    }
 }

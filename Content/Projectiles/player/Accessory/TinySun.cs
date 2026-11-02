@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BreadLibrary.Core.Graphics.Pixelation;
+﻿using BreadLibrary.Core.Graphics.Pixelation;
 using BreadLibrary.Core.Graphics.Spritebatch;
 using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
@@ -18,7 +13,7 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.player.Accessory
 {
-    public class TinySun : ModProjectile, IDrawPixelated 
+    public class TinySun : ModProjectile, IDrawPixelated
     {
 
         public override void SetStaticDefaults()
@@ -81,7 +76,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
 
             Cap.TransformMatrix = PixelationSystem.PixelationMatrix;
 
-            
+
             spriteBatch.Begin(Cap);
 
             for (int i = 0; i < Projectile.oldPos.Length; i++)

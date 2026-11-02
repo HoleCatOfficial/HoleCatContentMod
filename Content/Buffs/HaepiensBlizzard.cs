@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using Terraria;
-using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -14,21 +13,26 @@ namespace DestroyerTest.Content.Buffs
     {
         private const float SpreadRadius = 100f; // Radius in pixels for buff spreading
 
-        public override void SetStaticDefaults() {
+        public override void SetStaticDefaults()
+        {
             Main.debuff[Type] = true;
             Main.pvpBuff[Type] = true;
             Main.buffNoSave[Type] = true;
             BuffID.Sets.LongerExpertDebuff[Type] = true;
         }
 
-        public override void Update(NPC target, ref int buffIndex) {
-            if (target.TryGetGlobalNPC<HBTarget>(out var modNPC)) {
+        public override void Update(NPC target, ref int buffIndex)
+        {
+            if (target.TryGetGlobalNPC<HBTarget>(out var modNPC))
+            {
                 modNPC.lifeRegenDebuff = true;
             }
 
             // Spread the buff to nearby NPCs
-            foreach (NPC npc in Main.npc) {
-                if (npc.active && !npc.friendly && npc.whoAmI != target.whoAmI && npc.Distance(target.Center) < SpreadRadius) {
+            foreach (NPC npc in Main.npc)
+            {
+                if (npc.active && !npc.friendly && npc.whoAmI != target.whoAmI && npc.Distance(target.Center) < SpreadRadius)
+                {
                     npc.AddBuff(Type, target.buffTime[buffIndex]); // Apply buff with same duration
                 }
             }
@@ -40,14 +44,14 @@ namespace DestroyerTest.Content.Buffs
         public override bool InstancePerEntity => true;
         public bool lifeRegenDebuff;
 
-        public override void ResetEffects(NPC npc) 
+        public override void ResetEffects(NPC npc)
         {
             lifeRegenDebuff = false;
         }
 
         public override void PostDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
-            if(lifeRegenDebuff)
+            if (lifeRegenDebuff)
             {
                 Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
                 spriteBatch.Draw(DTAssetLib.HaepienCircleBottom.Value, npc.Center - Main.screenPosition, null, Color.Aquamarine, Rot, DTAssetLib.HaepienCircleBottom.Value.Size() / 2, 0.5f, SpriteEffects.None, 0);
@@ -71,7 +75,7 @@ namespace DestroyerTest.Content.Buffs
 
                 Vector2[] pt = Opus.GetEquidistantOrbitVectors(6, npc.Center, RotSpeed, 25);
 
-                foreach(Vector2 p in pt)
+                foreach (Vector2 p in pt)
                 {
                     Dust.NewDustPerfect(p, ModContent.DustType<ColorableNeonDust>(), Vector2.Zero, 0, Color.Aquamarine, 1f);
                 }
@@ -79,8 +83,9 @@ namespace DestroyerTest.Content.Buffs
             }
         }
 
-        public override void UpdateLifeRegen(NPC npc, ref int damage) {
-            if (lifeRegenDebuff) 
+        public override void UpdateLifeRegen(NPC npc, ref int damage)
+        {
+            if (lifeRegenDebuff)
             {
                 if (npc.lifeRegen > 0)
                     npc.lifeRegen = 0;

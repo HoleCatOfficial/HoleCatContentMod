@@ -1,16 +1,15 @@
-using Terraria;
-using Terraria.ModLoader;
-using DestroyerTest.Content.MeleeWeapons;
+using DestroyerTest.Common;
 using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.Fargos.ReusableSummons;
-using DestroyerTest.Common;
+using Terraria;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Fargos
 {
     [JITWhenModsEnabled(DTCrossMod.FargosMutantName)]
-	public class FargosNPCShopFiller : GlobalNPC
-	{
-		public override bool InstancePerEntity => true;
+    public class FargosNPCShopFiller : GlobalNPC
+    {
+        public override bool InstancePerEntity => true;
         public override void ModifyShop(NPCShop shop)
         {
             if (ModLoader.TryGetMod(DTCrossMod.FargosMutantName, out Mod fargos))
@@ -32,5 +31,5 @@ namespace DestroyerTest.Content.Fargos
 
 
         }
-	}
+    }
 }

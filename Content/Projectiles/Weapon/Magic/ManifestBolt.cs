@@ -1,20 +1,11 @@
-using System.Collections.Generic;
-using System.Formats.Tar;
-using System.Runtime.CompilerServices;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.Particles;
- 
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Terraria;
-using Terraria.Audio;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace DestroyerTest.Content.Projectiles.Weapon
+namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 {
     public class ManifestBolt : ModProjectile
     {
@@ -57,12 +48,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon
 
         public override void AI()
         {
-            var d = Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<ColorableNeonDust>(), Vector2.Zero, 50,  Color.White, 0.5f);
+            var d = Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<ColorableNeonDust>(), Vector2.Zero, 50, Color.White, 0.5f);
             d.noGravity = true;
-            
 
-            Lighting.AddLight(Projectile.Center,  Color.White.ToVector3() * 0.6f);
-            
+
+            Lighting.AddLight(Projectile.Center, Color.White.ToVector3() * 0.6f);
+
 
             if (DelayTimer < 10)
             {
@@ -120,5 +111,5 @@ namespace DestroyerTest.Content.Projectiles.Weapon
         {
             return target.CanBeChasedBy();
         }
-	}
+    }
 }

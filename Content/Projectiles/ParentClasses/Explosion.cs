@@ -1,11 +1,7 @@
-using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.Audio;
-using DestroyerTest.Content.Particles;
- 
-using OpusLib;
 
 namespace DestroyerTest.Content.Projectiles.ParentClasses
 {
@@ -23,18 +19,18 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         /// The amount of time that passes before the actual explosion.
         /// <br/> Defaults to 0, meaning an instant explosion.
         /// </summary>
-        public virtual int Interval {get;} = 0;
+        public virtual int Interval { get; } = 0;
 
         /// <summary>
         /// The Sound that plays when the explosion occurs.
         /// </summary>
-        public virtual SoundStyle Sound {get;} = SoundID.DD2_KoboldExplosion;
+        public virtual SoundStyle Sound { get; } = SoundID.DD2_KoboldExplosion;
 
         /// <summary>
         /// The radius of the explosion. Used for dealing damage, applying debuffs, and anything else happening within the bounds of the explosion.
         /// <para/> This value is not related to the hitbox, which is always a 2x2 rectangle.
         /// </summary>
-        public abstract float AreaOfEffect {get;}
+        public abstract float AreaOfEffect { get; }
 
         public bool HasExploded { get; private set; }
 
@@ -68,7 +64,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         /// </summary>
         public virtual void PostExplosion()
         {
-        
+
         }
 
         #endregion
@@ -94,7 +90,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             }
 
             if (!PreExplode())
-            return;
+                return;
 
             if (IntervalCounter >= Interval)
             {

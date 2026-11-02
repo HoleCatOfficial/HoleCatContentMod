@@ -1,33 +1,19 @@
-﻿using BreadLibrary.Core.Graphics.Particles;
+﻿using System.Collections.Generic;
+using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
 using BreadLibrary.Core.Graphics.Spritebatch;
 using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
-using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.RiftBiome;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoMod.Cil;
-using OpusLib;
 using OpusLib.Content.Helpers;
 using OpusLib.Content.Particles;
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.IO;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
-using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Utilities;
 
 namespace DestroyerTest.Content.Entities
 {

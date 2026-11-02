@@ -1,9 +1,9 @@
-using Terraria;
-using Terraria.ModLoader;
+using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Terraria;
 using Terraria.GameContent;
-using System.IO;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.ParentClasses
 {
@@ -24,45 +24,48 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             Projectile.tileCollide = false;
         }
 
-        private enum AttackType 
-		{
-			
-			SwingDown,
-			
-			SwingUp,
-		}
+        private enum AttackType
+        {
 
-		private enum AttackStage 
-		{
-			Prepare,
-			Execute,
-			Unwind
-		}
+            SwingDown,
 
-		
-		private AttackType CurrentAttack {
-			get => (AttackType)Projectile.ai[0];
-			set => Projectile.ai[0] = (float)value;
-		}
+            SwingUp,
+        }
 
-		private AttackStage CurrentStage {
-			get => (AttackStage)Projectile.localAI[0];
-			set {
-				Projectile.localAI[0] = (float)value;
-				Progress = 0; 
-			}
-		}
+        private enum AttackStage
+        {
+            Prepare,
+            Execute,
+            Unwind
+        }
+
+
+        private AttackType CurrentAttack
+        {
+            get => (AttackType)Projectile.ai[0];
+            set => Projectile.ai[0] = (float)value;
+        }
+
+        private AttackStage CurrentStage
+        {
+            get => (AttackStage)Projectile.localAI[0];
+            set
+            {
+                Projectile.localAI[0] = (float)value;
+                Progress = 0;
+            }
+        }
 
 
         public Player Owner => Main.player[Projectile.owner];
         public int Progress;
         public virtual float spawnTime => 6f / Owner.GetTotalAttackSpeed(Projectile.DamageType);
-		public virtual float execTime => 12f / Owner.GetTotalAttackSpeed(Projectile.DamageType);
-		public virtual float killTime => 6f / Owner.GetTotalAttackSpeed(Projectile.DamageType);
+        public virtual float execTime => 12f / Owner.GetTotalAttackSpeed(Projectile.DamageType);
+        public virtual float killTime => 6f / Owner.GetTotalAttackSpeed(Projectile.DamageType);
         public const float RotUp = -MathHelper.PiOver2;
         public const float RotDown = MathHelper.PiOver2;
 
-        public bool Left {get; private set;}
+        public bool Left { get; private set; }
 
         public override void SendExtraAI(BinaryWriter writer)
         {
@@ -84,7 +87,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         private bool firsttickflag = false;
         public virtual void OnFirstTickSwing()
         {
-            
+
         }
         public virtual void DuringSwing(bool FirstTickOnly)
         {
@@ -100,18 +103,18 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
         public virtual void PostSwing()
         {
-            
+
         }
 
 
         public virtual void OnDownSwing()
         {
-            
+
         }
 
         public virtual void OnUpSwing()
         {
-            
+
         }
 
 
@@ -139,17 +142,17 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             {
                 case AttackStage.Prepare:
                     firsttickflag = false;
-                    
+
                     CurrentStage = AttackStage.Execute;
                     break;
 
                 case AttackStage.Execute:
-                    
+
                     CurrentStage = AttackStage.Unwind;
                     break;
 
                 case AttackStage.Unwind:
-                    
+
                     if (Owner.controlUseTile)
                     {
                         // flip swing direction

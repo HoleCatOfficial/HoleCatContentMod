@@ -1,16 +1,7 @@
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
-using Terraria.Audio;
-using DestroyerTest.Content.Consumables;
-using DestroyerTest.Common;
-using Terraria.GameContent.Drawing;
-using System.IO;
-using DestroyerTest.Content.Projectiles.ParentClasses;
 using DestroyerTest.Content.Dusts;
+using DestroyerTest.Content.Projectiles.ParentClasses;
+using Terraria;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 {

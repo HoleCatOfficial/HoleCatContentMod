@@ -2,17 +2,12 @@
 using BreadLibrary.Core.Graphics.Pixelation;
 using DestroyerTest.Common;
 using DestroyerTest.Common.Interfaces;
-using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
-using System.Collections.Generic;
-using System.Formats.Tar;
-using System.Runtime.CompilerServices;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -48,7 +43,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
         public override void SetDefaults()
         {
             Projectile.width = 36;
-            Projectile.height = 36; 
+            Projectile.height = 36;
             Projectile.DamageType = ModContent.GetInstance<ScepterClass>();
             Projectile.friendly = true;
             Projectile.hostile = false;

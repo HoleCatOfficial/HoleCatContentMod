@@ -1,13 +1,10 @@
-﻿using BreadLibrary.Core.Graphics.Particles;
+﻿using System.Collections.Generic;
+using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Particles.Stellar;
- 
 using Microsoft.Xna.Framework;
 using OpusLib.Content.Helpers;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -102,11 +99,11 @@ namespace DestroyerTest.Content.Buffs
                 Vector2 p1 = Main.rand.NextVector2FromRectangle(Utils.CenteredRectangle(Player.Center, Player.Size));
                 Vector2 d = Player.Center - p1;
                 d.Normalize();
-                
+
                 var P = DamnationParticle.Create(p1, new Vector2(Main.rand.NextFloat(-0.5f, 0.5f), Main.rand.NextFloat(-0.2f, 0.2f)), Main.rand.NextFloat(0.2f, 1.4f), 60, PixelLayer.AbovePlayer);
                 ParticleEngine.ShaderParticles.Add(P);
 
-                
+
             }
         }
 

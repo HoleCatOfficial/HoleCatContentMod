@@ -1,12 +1,9 @@
 ﻿
 using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Equips.ScepterAccessories;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib.Content.Helpers;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -64,7 +61,7 @@ namespace DestroyerTest.Content.Equips
         {
             if (Active)
             {
-                
+
                 if (hurtInfo.Damage > 20 && Cooldown <= 0)
                 {
                     foreach (NPC n in Main.ActiveNPCs)
@@ -76,14 +73,14 @@ namespace DestroyerTest.Content.Equips
                         }
                     }
                 }
-                
+
             }
         }
 
         int Cooldown = 0;
         public override void PostUpdateEquips()
         {
-            
+
             if (Active)
             {
                 if (Cooldown > 0)
@@ -124,7 +121,7 @@ namespace DestroyerTest.Content.Equips
                         Cooldown = 600;
                     }
 
-                   
+
                 }
             }
         }

@@ -1,14 +1,9 @@
 ﻿using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
- 
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Graphics.Renderers;
 using Terraria.ModLoader;
@@ -82,7 +77,7 @@ namespace DestroyerTest.Content.Particles
             }
 
             Opus.StartSpriteBatchWithBlending(spritebatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
-            
+
             spritebatch.Draw(Tex, position - Main.screenPosition, null, c(), rotation, Tex.Size() / 2f, scale, SpriteEffects.None, 0f);
 
             Opus.ReturnToDefaultDrawing(spritebatch);

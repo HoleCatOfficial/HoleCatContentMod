@@ -1,26 +1,23 @@
-using System;
+using System.Collections.Generic;
+using System.Linq;
 using DestroyerTest.Common;
+using DestroyerTest.Common.Interfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
+using OpusLib.Content.Helpers;
 using ReLogic.Content;
 using Terraria;
 using Terraria.DataStructures;
-using Terraria.Enums;
-using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
-using OpusLib;
-using System.Collections.Generic;
-using OpusLib.Content.Helpers;
-using System.Linq;
-using DestroyerTest.Common.Interfaces;
 
 namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
 {
     public class TormentedSoul : ModProjectile, IHomingProjectile
     {
 
-      
+
         public float DelayTimer;
 
         bool IHomingProjectile.TracksNPCs => false;
@@ -137,10 +134,10 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
             }
 
             DTUtils.instance.ScrollingTextureSpine(l, DTAssetLib.SoulStreak, Color.MediumPurple * WarnOpacity, Main.spriteBatch, BlendState.Additive, WOffset, 1f);
-            
+
 
             DTTrail.DrawTrail(sb, DTAssetLib.SoulStreak.Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 16, Color.MediumPurple, trailOffset, 5);
-            
+
             Opus.ReturnToDefaultDrawing(sb);
 
             sb.Draw(texture.Value, drawPos, sourceRect, Color.White, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0f);
@@ -167,8 +164,6 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
             Projectile.ResetExcessTrailPoints();
             AnimateProjectile();
             Dust.NewDustPerfect(Projectile.Center, DustID.DemonTorch, Scale: 1.8f);
-
-            float maxDetectRadius = 120f; // The maximum radius at which a projectile can detect a target
 
             Projectile.rotation = Projectile.velocity.ToRotation() - MathHelper.PiOver2;
 
@@ -203,8 +198,8 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
         public override void DrawEffects(PlayerDrawSet drawInfo, ref float r, ref float g, ref float b, ref float a, ref bool fullBright)
         {
 
-            
+
         }
-        
+
     }
 }

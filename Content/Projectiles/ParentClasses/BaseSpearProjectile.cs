@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using BreadLibrary.Core;
 using DestroyerTest.Common;
 using FargowiltasSouls.Content.Items.Accessories.Enchantments;
 using FargowiltasSouls.Core.AccessoryEffectSystem;
@@ -92,7 +87,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         {
 
         }
-        
+
         public virtual void AtFullExtension()
         {
 
@@ -124,7 +119,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
                 Projectile.rotation = targetAngle.ToRotation() + MathHelper.PiOver4;
 
-                
+
             }
 
             if (!Owner.active || Owner.dead || Owner.noItems || Owner.CCed || !Owner.controlUseItem)
@@ -237,7 +232,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         {
             Projectile.ai[0]++;
             Owner.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, Projectile.rotation + MathHelper.Pi + MathHelper.PiOver4);
-            
+
 
             progress = Projectile.ai[0] / (30f / (Owner.GetTotalAttackSpeed(DamageClass.Melee))); // 20 = duration of thrust
             progress = Saturate(progress);
@@ -272,7 +267,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
                     OnStartFlag = false;
                     OnExtendFlag = true;
                 }
-              
+
             }
 
             //Projectile.Center = Owner.MountedCenter + new Vector2(CurrentExtension, 0f).RotatedBy(targetAngle.ToRotation());

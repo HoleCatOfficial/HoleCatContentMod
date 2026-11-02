@@ -1,32 +1,22 @@
 ﻿
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Security.Policy;
-using BreadLibrary.Core;
 using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
 using DestroyerTest.Common.Systems;
-using DestroyerTest.Content.BossBar;
 using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Consumables;
 using DestroyerTest.Content.Equips;
 using DestroyerTest.Content.Magic;
 using DestroyerTest.Content.MeleeWeapons;
 using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss;
 using DestroyerTest.Content.Projectiles.Boss.NodeBoss.Blessed;
-using DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame;
 using DestroyerTest.Content.RangedItems;
 using DestroyerTest.Content.Scepter;
 using DestroyerTest.Content.Tools;
-using GlowmaskHelper.Content;
- 
- 
+
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
@@ -40,7 +30,6 @@ using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.UI;
 
 namespace DestroyerTest.Content.Entities
 {
@@ -120,7 +109,7 @@ namespace DestroyerTest.Content.Entities
 
         public void ResetData()
         {
-            
+
             SentinelKillTally = 0;
         }
 
@@ -137,7 +126,7 @@ namespace DestroyerTest.Content.Entities
         {
             if (CurrentAttack == AttackState.Dormant)
             {
-                DTUtils.DrawChargeBar(2f, (NPC.Center + new Vector2(0, 100)) - Main.screenPosition, (float)SentinelKillTally / (float)SentinelKillRequirement, Color.SkyBlue);
+                DTUtils.DrawChargeBar(2f, (NPC.Center + new Vector2(0, 100)) - Main.screenPosition, SentinelKillTally / (float)SentinelKillRequirement, Color.SkyBlue);
             }
 
             if (CurrentAttack == AttackState.Lasers)
@@ -162,8 +151,8 @@ namespace DestroyerTest.Content.Entities
 
             if (NPC.IsABestiaryIconDummy)
             {
-                
-                
+
+
                 portraitoutlinerot += 0.05f;
                 for (int i = 0; i < 4; i++)
                 {
@@ -199,15 +188,15 @@ namespace DestroyerTest.Content.Entities
             Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
 
-            
 
 
 
-            Main.EntitySpriteDraw(v, NPC.Center - screenPos, null, OpusColorUtils.MultiLerp(((float)SentinelKillTally / (float)SentinelKillRequirement).Inverse(), [Color.DeepSkyBlue, Color.SkyBlue]) * ShieldOpacity, 0f, v.Size() / 2, ShieldScale, SpriteEffects.None);
 
-            Main.EntitySpriteDraw(DTAssetLib.BarrierRing.Value, NPC.Center - screenPos, null, OpusColorUtils.MultiLerp(((float)SentinelKillTally / (float)SentinelKillRequirement).Inverse(), [Color.DeepSkyBlue, Color.SkyBlue]) * ShieldOpacity, BorderRotation, DTAssetLib.BarrierRing.Value.Size() / 2, DTAssetLib.BarrierRing.Value.ScaleRingTextureToMatchRadius(1200f, 1300), SpriteEffects.None);
+            Main.EntitySpriteDraw(v, NPC.Center - screenPos, null, OpusColorUtils.MultiLerp((SentinelKillTally / (float)SentinelKillRequirement).Inverse(), [Color.DeepSkyBlue, Color.SkyBlue]) * ShieldOpacity, 0f, v.Size() / 2, ShieldScale, SpriteEffects.None);
 
-            spriteBatch.DrawString(DTAssetLib.Doxent.Value, $"{SentinelKillTally} / {SentinelKillRequirement}", (NPC.Center + new Vector2(0, -90)) - screenPos, OpusColorUtils.MultiLerp(((float)SentinelKillTally / (float)SentinelKillRequirement).Inverse(), [Color.DeepSkyBlue, Color.SkyBlue]) * ShieldOpacity, 0f, DTAssetLib.Doxent.Value.MeasureString($"{SentinelKillTally} / {SentinelKillRequirement}") * 0.5f, 0.5f, SpriteEffects.None, 0f);
+            Main.EntitySpriteDraw(DTAssetLib.BarrierRing.Value, NPC.Center - screenPos, null, OpusColorUtils.MultiLerp((SentinelKillTally / (float)SentinelKillRequirement).Inverse(), [Color.DeepSkyBlue, Color.SkyBlue]) * ShieldOpacity, BorderRotation, DTAssetLib.BarrierRing.Value.Size() / 2, DTAssetLib.BarrierRing.Value.ScaleRingTextureToMatchRadius(1200f, 1300), SpriteEffects.None);
+
+            spriteBatch.DrawString(DTAssetLib.Doxent.Value, $"{SentinelKillTally} / {SentinelKillRequirement}", (NPC.Center + new Vector2(0, -90)) - screenPos, OpusColorUtils.MultiLerp((SentinelKillTally / (float)SentinelKillRequirement).Inverse(), [Color.DeepSkyBlue, Color.SkyBlue]) * ShieldOpacity, 0f, DTAssetLib.Doxent.Value.MeasureString($"{SentinelKillTally} / {SentinelKillRequirement}") * 0.5f, 0.5f, SpriteEffects.None, 0f);
             //Utils.DrawBorderString(spriteBatch, $"{SentinelKillTally} / {SentinelKillRequirement}", (NPC.Center + new Vector2(0, -90)) - screenPos, Color.SkyBlue * ShieldOpacity, 3f, 0.5f, 0.5f);
 
             Opus.ReturnToDefaultDrawing(spriteBatch);
@@ -278,7 +267,7 @@ namespace DestroyerTest.Content.Entities
         public Projectile[] EternityOwnedCrystalBombs;
         public (Vector2, float)[] EternityOwnedCrystalBombOrbits;
         public int EternityCrystalBombCount = 0;
-        
+
         public override void AI()
         {
 
@@ -311,17 +300,17 @@ namespace DestroyerTest.Content.Entities
 
             if (EternCooldownTime > 0)
             {
-                EternCooldownTime --;
+                EternCooldownTime--;
             }
 
             TryFindTileBelow();
 
-            
+
             if (!Main.dedServ && CurrentAttack != AttackState.Dormant)
             {
                 Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/BlessedNode");
             }
-             
+
 
             LaserRotOffset += 0.03f;
 
@@ -433,7 +422,7 @@ namespace DestroyerTest.Content.Entities
                     }
                 case AttackState.SummonKnives:
                     {
-                        
+
 
                         if (!DestroyerTestMod.EternityIsActive && !DestroyerTestMod.DeathIsActive)
                         {
@@ -479,7 +468,7 @@ namespace DestroyerTest.Content.Entities
                                         Spark warning = new();
                                         warning.PrepareSpark(NPC.Center, new Vector2(30f, 0).RotatedBy(angle), (new Vector2(30f, 0).RotatedBy(angle).ToRotation()), Main.DiscoColor, 1f, false, 60, SparkDrawMode.Additive, 6f);
                                         ParticleEngine.Particles.Add(warning);
-                                    
+
                                     }
 
                                     KnifeCount++;
@@ -545,7 +534,7 @@ namespace DestroyerTest.Content.Entities
                                 int X = 10 * GrandCrossXindex;
                                 float Y = -500;
 
-                                Vector2 Pos = NPC.Center + new Vector2((float)X, Y);
+                                Vector2 Pos = NPC.Center + new Vector2(X, Y);
 
                                 Projectile.NewProjectile(NPC.GetSource_FromAI(), Pos, new Vector2(0, 30).RotatedByRandom(0.05f), ModContent.ProjectileType<GrandCross>(), NPC.GetAttackDamage_ForProjectiles(20, 35), 5);
                                 GrandCrossXindex += 20;
@@ -644,7 +633,7 @@ namespace DestroyerTest.Content.Entities
                                     }
                                 }
 
-                               
+
                             }
 
                             if (EternityCrystalBombTimer >= 300)
@@ -679,7 +668,7 @@ namespace DestroyerTest.Content.Entities
                         }
                         break;
                     }
-                
+
             }
         }
 
@@ -801,7 +790,7 @@ namespace DestroyerTest.Content.Entities
 
                 if (DestroyerTestMod.EternityIsActive || DestroyerTestMod.DeathIsActive)
                 {
-                    
+
                 }
 
                 for (int i = 0; i < SpawnPositions.Length; i++)
@@ -915,7 +904,7 @@ namespace DestroyerTest.Content.Entities
                 Opus.RingSpreadProjectile(ModContent.ProjectileType<BlessedNodeCrystal2>(), 24, NPC.Center, 10, 10, 4, 1, offset: Main.rand.NextFloat(MathHelper.TwoPi));
             }
         }
-        
+
 
         public override void OnKill()
         {

@@ -1,18 +1,8 @@
-using System;
-using Microsoft.Xna.Framework;
+using DestroyerTest.Content.Projectiles.Weapon.Scepter;
+using DestroyerTest.Rarity.Scepter;
 using Terraria;
-using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.DataStructures;
- 
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Resources;
-using System.IO.Pipelines;
-using DestroyerTest.Rarity;
-using DestroyerTest.Rarity.Scepter;
-using DestroyerTest.Content.Projectiles.Weapon.Scepter;  
 
 namespace DestroyerTest.Content.Scepter
 {
@@ -50,13 +40,14 @@ namespace DestroyerTest.Content.Scepter
             // Refresh defaults after overriding values
             base.SetDefaults();
         }
-        
-        public override void AddRecipes() {
+
+        public override void AddRecipes()
+        {
             CreateRecipe()
                 .AddIngredient(ItemID.GlowingMushroom, 56)
                 .AddIngredient(ItemID.IronBar, 10)
-				.AddTile(TileID.Anvils)
-				.Register();
-		}
+                .AddTile(TileID.Anvils)
+                .Register();
+        }
     }
-} 
+}

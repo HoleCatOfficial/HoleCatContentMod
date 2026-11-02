@@ -5842,3 +5842,8 @@ FleshVolley: {
 		Bombs explode in a large radius on contact.
 		'''
 }
+
+Item_HeavensMusicBox: {
+	DisplayName: Item_ Heavens Music Box
+	Tooltip: ""
+}

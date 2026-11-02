@@ -1,15 +1,10 @@
-﻿using DestroyerTest.Common;
+﻿using System.Collections.Generic;
+using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.player.Potion
@@ -21,7 +16,7 @@ namespace DestroyerTest.Content.Projectiles.player.Potion
 
         public override void SetStaticDefaults()
         {
-            
+
         }
         public Player Owner => Main.player[Projectile.owner];
 
@@ -66,7 +61,7 @@ namespace DestroyerTest.Content.Projectiles.player.Potion
                     npcsInRange.Add(npc);
                 }
             }
-            return npcsInRange.ToArray();   
+            return npcsInRange.ToArray();
         }
 
         public override void AI()

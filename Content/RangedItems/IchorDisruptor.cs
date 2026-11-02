@@ -1,22 +1,15 @@
-using System;
-  
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Content.Projectiles.AmmoProjectiles;
 using DestroyerTest.Content.Projectiles.Weapon.Ranged;
 using DestroyerTest.Rarity;
-using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.RangedItems
 {
-	public class IchorDisruptor : ModItem
-	{
-		public override void SetDefaults() 
-		{
+    public class IchorDisruptor : ModItem
+    {
+        public override void SetDefaults()
+        {
             Item.width = 124;
             Item.height = 20;
             Item.value = Item.sellPrice(gold: 3, silver: 22);
@@ -44,13 +37,14 @@ namespace DestroyerTest.Content.RangedItems
         {
             return player.ownedProjectileCounts[Item.shoot] < 1;
         }
-        public override void AddRecipes() {
-			CreateRecipe()
-				.AddIngredient(ItemID.Ichor, 6)
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient(ItemID.Ichor, 6)
                 .AddIngredient(ItemID.TitaniumBar, 6)
                 .AddIngredient(ItemID.Boomstick)
                 .AddTile(TileID.MythrilAnvil)
-				.Register();
-		}
-	}
+                .Register();
+        }
+    }
 }

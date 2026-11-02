@@ -1,13 +1,9 @@
-﻿using Microsoft.Xna.Framework;
+﻿using DestroyerTest.Content.Magic;
+using DestroyerTest.Content.Projectiles.Weapon.Ranged;
+using DestroyerTest.Rarity;
 using Terraria;
-using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.DataStructures;
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Rarity;
-using DestroyerTest.Content.Projectiles.Weapon.Ranged;
-using DestroyerTest.Content.Magic;
 
 namespace DestroyerTest.Content.RangedItems
 {

@@ -1,17 +1,14 @@
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Dusts;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using GlowmaskHelper.Content;
-using ReLogic.Content;
-
-using Terraria.Audio;
-using OpusLib;
-using DestroyerTest.Content.Dusts;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Summon
 {
@@ -52,10 +49,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
 
             Projectile.velocity *= 0.99f;
             Projectile.rotation += 0.5f * Projectile.direction;
-        
+
             if (Main.rand.NextBool(3))
             {
-                Dust dust = Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<ConstitutionDust1>(), Projectile.velocity * 0.2f, 100,  ColorLib.StellarFireGradientLooping(), 1.2f);
+                Dust dust = Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<ConstitutionDust1>(), Projectile.velocity * 0.2f, 100, ColorLib.StellarFireGradientLooping(), 1.2f);
                 dust.noGravity = true;
                 dust.fadeIn = 1.5f;
             }
@@ -70,7 +67,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
                 MaxInstances = 0
             }, Projectile.Center);
 
-            Opus.RadialSpreadDustRandom(ModContent.DustType<ConstitutionDust1>(), 15, Projectile.Center, 0,  ColorLib.StellarFireGradientLooping(), 1f, 3);
+            Opus.RadialSpreadDustRandom(ModContent.DustType<ConstitutionDust1>(), 15, Projectile.Center, 0, ColorLib.StellarFireGradientLooping(), 1f, 3);
 
             DTUtils.ConstitutionStarExplosionEffects(Projectile);
 

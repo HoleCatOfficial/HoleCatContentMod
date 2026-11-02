@@ -1,19 +1,13 @@
-using System;
-using System.Linq;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Particles;
- 
+using DestroyerTest.Content.Buffs;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using OpusLib;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
-using DestroyerTest.Content.Buffs;
-using Microsoft.Build.Evaluation;
 
 namespace DestroyerTest.Content.Projectiles.player.Accessory
 {
@@ -42,31 +36,31 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
         }
 
         public int trailLength = 10;
-		public override bool PreDraw(ref Color lightColor)
-		{
-			lightColor = new Color(252, 121, 2);
+        public override bool PreDraw(ref Color lightColor)
+        {
+            lightColor = new Color(252, 121, 2);
 
-			SpriteBatch spriteBatch = Main.spriteBatch;
-			Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
 
             Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
-			Main.EntitySpriteDraw(
-				projectileTexture,
-				Projectile.Center - Main.screenPosition,
-				null,
-				lightColor,
-				Projectile.rotation,
-				projectileTexture.Size() / 2,
-				Projectile.scale,
-				SpriteEffects.None,
-				0
-			);
+            Main.EntitySpriteDraw(
+                projectileTexture,
+                Projectile.Center - Main.screenPosition,
+                null,
+                lightColor,
+                Projectile.rotation,
+                projectileTexture.Size() / 2,
+                Projectile.scale,
+                SpriteEffects.None,
+                0
+            );
 
             Opus.ReturnToDefaultDrawing(spriteBatch);
 
-			return false;
-		}
+            return false;
+        }
 
         public override void AI()
         {
@@ -76,7 +70,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
             {
                 Projectile.alpha -= 5;
             }
-            
+
             Player player = Main.player[Projectile.owner];
 
             Projectile.rotation += 0.2f * Projectile.direction;

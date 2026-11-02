@@ -1,89 +1,83 @@
 
 using DestroyerTest.Common;
-
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using Terraria;
-using Terraria.Enums;
 using Terraria.GameContent;
-using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
-using OpusLib;
-using System.Collections.Generic;
-using DestroyerTest.Content.Buffs;
- 
-using DestroyerTest.Content.Particles;
-using Terraria.Audio;
-using System;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 {
-	public class ElementalTrail : ModProjectile
-	{
+    public class ElementalTrail : ModProjectile
+    {
         public override string Texture => DTUtils.NoTexture;
 
-		private NPC HomingTarget {
+        private NPC HomingTarget
+        {
             get => Projectile.ai[0] == 0 ? null : Main.npc[(int)Projectile.ai[0] - 1];
-            set {
+            set
+            {
                 Projectile.ai[0] = value == null ? 0 : value.whoAmI + 1;
             }
         }
         public ref float DelayTimer => ref Projectile.ai[1];
-		
-		public override void SetStaticDefaults() {
-			ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true; // Make the cultist resistant to this projectile, as it's resistant to all homing projectiles.
-			ProjectileID.Sets.TrailingMode[Type] = 3;
-			ProjectileID.Sets.TrailCacheLength[Type] = 12;
+
+        public override void SetStaticDefaults()
+        {
+            ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true; // Make the cultist resistant to this projectile, as it's resistant to all homing projectiles.
+            ProjectileID.Sets.TrailingMode[Type] = 3;
+            ProjectileID.Sets.TrailCacheLength[Type] = 12;
             DTUtils.ThrowerProjectilesThatCantTriggerEquipEffects[Type] = true;
-		}
+        }
 
-		public override void SetDefaults()
-		{
-			Projectile.width = 16; // The width of projectile hitbox
-			Projectile.height = 16; // The height of projectile hitbox
+        public override void SetDefaults()
+        {
+            Projectile.width = 16; // The width of projectile hitbox
+            Projectile.height = 16; // The height of projectile hitbox
 
-			Projectile.DamageType = ModContent.GetInstance<ScepterClass>();
-			Projectile.friendly = true; // Can the projectile deal damage to enemies?
-			Projectile.hostile = false; // Can the projectile deal damage to the player?
-			Projectile.ignoreWater = true; // Does the projectile's speed be influenced by water?
-			Projectile.timeLeft = 300; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
-			Projectile.tileCollide = false;
+            Projectile.DamageType = ModContent.GetInstance<ScepterClass>();
+            Projectile.friendly = true; // Can the projectile deal damage to enemies?
+            Projectile.hostile = false; // Can the projectile deal damage to the player?
+            Projectile.ignoreWater = true; // Does the projectile's speed be influenced by water?
+            Projectile.timeLeft = 300; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
+            Projectile.tileCollide = false;
             Projectile.penetrate = -1;
-		}
-		public override bool PreDraw(ref Color lightColor)
-		{
+        }
+        public override bool PreDraw(ref Color lightColor)
+        {
 
-			SpriteBatch spriteBatch = Main.spriteBatch;
-			Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
-			DTUtils Utility = new DTUtils();
-			float opacity = Projectile.Opacity;
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
+            DTUtils Utility = new DTUtils();
+            float opacity = Projectile.Opacity;
 
-			Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
+            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
             Opus.DrawTextureOnProj(DTAssetLib.PointGlow, Projectile, drawColor * opacity, true, Projectile.rotation, Scale1, Scale1);
-			Opus.DrawTextureOnProj(DTAssetLib.Sparkle(5), Projectile, Color.White * opacity, false, 0f, Scale2, Scale2);
+            Opus.DrawTextureOnProj(DTAssetLib.Sparkle(5), Projectile, Color.White * opacity, false, 0f, Scale2, Scale2);
             Opus.DrawTextureOnProj(DTAssetLib.Sparkle(5), Projectile, Color.White * opacity, false, rot, Scale3, Scale3);
-            
 
-			Opus.ReturnToDefaultDrawing(spriteBatch);
 
-			return false;
-		}
+            Opus.ReturnToDefaultDrawing(spriteBatch);
+
+            return false;
+        }
 
         public float Scale1 = 0f;
         public float Scale2 = 0f;
         public float Scale3 = 0f;
         public Color drawColor;
         public float rot = 0;
-        
-		public override void AI()
-		{
+
+        public override void AI()
+        {
             rot += 0.05f;
             drawColor = Opus.Sine(new Color(34, 177, 76), new Color(0, 162, 232), 0.01f);
-			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
+            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
 
-			Projectile.rotation += (Projectile.velocity.Length() * 0.5f) * Projectile.direction;
+            Projectile.rotation += (Projectile.velocity.Length() * 0.5f) * Projectile.direction;
 
             Projectile.ai[2]++;
 
@@ -93,56 +87,62 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 
             Lighting.AddLight(Projectile.Center, drawColor.ToVector3() * Scale2);
 
-			if (Projectile.ai[2] > 200)
-			{
-				Projectile.Opacity -= 0.01f;
-			}
+            if (Projectile.ai[2] > 200)
+            {
+                Projectile.Opacity -= 0.01f;
+            }
 
-			Homing();
-		}
+            Homing();
+        }
 
-		public void Homing()
-		{
-			if(DelayTimer < 20)
+        public void Homing()
+        {
+            if (DelayTimer < 20)
             {
                 DelayTimer++;
                 return;
             }
 
-            if (HomingTarget == null) {
+            if (HomingTarget == null)
+            {
                 HomingTarget = FindClosestNPC(1200);
             }
 
-            if (HomingTarget != null && !IsValidTarget(HomingTarget)) {
+            if (HomingTarget != null && !IsValidTarget(HomingTarget))
+            {
                 HomingTarget = null;
             }
 
             if (HomingTarget == null)
-			{
-				Projectile.velocity *= 0.94f;
+            {
+                Projectile.velocity *= 0.94f;
                 return;
-			}
+            }
 
             float length = Projectile.velocity.Length();
             float targetAngle = Projectile.AngleTo(HomingTarget.Center);
             Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(30)).ToRotationVector2() * length;
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
-			if (length < 10)
-			{
-				Projectile.velocity *= 1.1f;
-			}
-			Projectile.penetrate = 1;
-		}
+            if (length < 10)
+            {
+                Projectile.velocity *= 1.1f;
+            }
+            Projectile.penetrate = 1;
+        }
 
-		public NPC FindClosestNPC(float maxDetectDistance) {
+        public NPC FindClosestNPC(float maxDetectDistance)
+        {
             NPC closestNPC = null;
 
             float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
 
-            foreach (var target in Main.ActiveNPCs) {
-                if (IsValidTarget(target)) {
+            foreach (var target in Main.ActiveNPCs)
+            {
+                if (IsValidTarget(target))
+                {
                     float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, Projectile.Center);
-                    if (sqrDistanceToTarget < sqrMaxDetectDistance) {
+                    if (sqrDistanceToTarget < sqrMaxDetectDistance)
+                    {
                         sqrMaxDetectDistance = sqrDistanceToTarget;
                         closestNPC = target;
                     }
@@ -152,7 +152,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
             return closestNPC;
         }
 
-        public bool IsValidTarget(NPC target) 
+        public bool IsValidTarget(NPC target)
         {
             if (Projectile.tileCollide == true)
             {
@@ -165,5 +165,5 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
         }
 
     }
-	
+
 }

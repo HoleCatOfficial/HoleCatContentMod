@@ -4,16 +4,17 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Tiles
 {
-	public class Item_CursedFlameNodeRelic : ModItem
-	{		
-        public override void SetDefaults() {
-			Item.DefaultToPlaceableTile(ModContent.TileType<Tile_CursedFlameNodeRelic>(), 0);
+    public class Item_CursedFlameNodeRelic : ModItem
+    {
+        public override void SetDefaults()
+        {
+            Item.DefaultToPlaceableTile(ModContent.TileType<Tile_CursedFlameNodeRelic>(), 0);
 
-			Item.width = 32;
-			Item.height = 50;
-			Item.rare = ItemRarityID.Master;
-			Item.master = true;
-			Item.value = Item.buyPrice(0, 5);
-		}
-	}
+            Item.width = 32;
+            Item.height = 50;
+            Item.rare = ItemRarityID.Master;
+            Item.master = true;
+            Item.value = Item.buyPrice(0, 5);
+        }
+    }
 }

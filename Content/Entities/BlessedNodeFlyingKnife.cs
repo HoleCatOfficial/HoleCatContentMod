@@ -1,21 +1,7 @@
-﻿using Terraria;
+﻿using Microsoft.Xna.Framework;
+using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.GameContent.Bestiary;
-using Terraria.ModLoader.Utilities;
-using DestroyerTest.Content.RiftBiome;
-using DestroyerTest.Common;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent.ItemDropRules;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.RiftBiome.RiftSurfaceResources;
-using Terraria.GameContent;
-using OpusLib;
-using Terraria.Audio;
-using System;
-using Terraria.DataStructures;
 
 namespace DestroyerTest.Content.Entities
 {

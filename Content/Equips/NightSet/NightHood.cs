@@ -1,26 +1,13 @@
 using System;
-using System.Configuration;
-using DestroyerTest.Content.Resources;
+using DestroyerTest.Common;
+using DestroyerTest.Content.Projectiles;
+using DestroyerTest.Rarity.Scepter;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameInput;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
-using DestroyerTest.Rarity.Scepter;
-using DestroyerTest.Content.MeleeWeapons;
-using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Tiles;
- 
-using DestroyerTest.Common;
- 
-using DestroyerTest.Content.Projectiles;
-using System.Security.Authentication.ExtendedProtection;
-using Mono.CompilerServices.SymbolWriter;
-using OpusLib;
-using Terraria.ModLoader.UI;
 
 namespace DestroyerTest.Content.Equips.NightSet
 {
@@ -65,7 +52,7 @@ namespace DestroyerTest.Content.Equips.NightSet
             player.ScepterClass().Range += 60;
             player.ScepterClass().ThrowSpeedModifier = 2f;
 
-            if (Math.Abs(player.velocity.X)> 5.5)
+            if (Math.Abs(player.velocity.X) > 5.5)
             {
                 for (int d = 0; d < 3; d++)
                 {
@@ -86,15 +73,15 @@ namespace DestroyerTest.Content.Equips.NightSet
         public override void AddRecipes()
         {
             CreateRecipe()
-				.AddIngredient(ItemID.DarkShard, 4)
-				.AddIngredient(ItemID.SoulofNight, 16)
-				.AddIngredient(ItemID.CobaltBar, 5)
-				.AddTile(TileID.DemonAltar)
-				.Register();
-			CreateRecipe()
                 .AddIngredient(ItemID.DarkShard, 4)
-				.AddIngredient(ItemID.SoulofNight, 16)
-				.AddIngredient(ItemID.PalladiumBar, 5)
+                .AddIngredient(ItemID.SoulofNight, 16)
+                .AddIngredient(ItemID.CobaltBar, 5)
+                .AddTile(TileID.DemonAltar)
+                .Register();
+            CreateRecipe()
+                .AddIngredient(ItemID.DarkShard, 4)
+                .AddIngredient(ItemID.SoulofNight, 16)
+                .AddIngredient(ItemID.PalladiumBar, 5)
                 .AddTile(TileID.DemonAltar)
                 .Register();
         }
@@ -113,7 +100,7 @@ namespace DestroyerTest.Content.Equips.NightSet
 
         public override void PostUpdateMiscEffects()
         {
-            
+
             if (Cooldown)
             {
                 if (CooldownTime > 0)
@@ -133,10 +120,10 @@ namespace DestroyerTest.Content.Equips.NightSet
                     CooldownTime = 360;
                 }
             }
-            
+
         }
     }
-    
+
     public class NightSetTeleGlobal : GlobalProjectile
     {
         public override bool InstancePerEntity => true;
@@ -177,7 +164,7 @@ namespace DestroyerTest.Content.Equips.NightSet
                             Vector2 RingPos = Main.rand.NextVector2CircularEdge(Rad, Rad);
                             Dust.NewDustPerfect(RingPos, DustID.DemonTorch, projectile.velocity, 100, default, 2f);
                         }
-                        
+
                         if (DestroyerTestMod.ArmorSetBonusHotKey.JustPressed)
                         {
                             player.Center = projectile.Center;
@@ -185,7 +172,7 @@ namespace DestroyerTest.Content.Equips.NightSet
                             Opus.RadialSpreadProjectile(ModContent.ProjectileType<SoulOfNight_Projectile>(), 8, player.Center, 35, 3, 6, offset: 0f);
                             pl.Cooldown = true;
                             CanTele = false;
-                        }   
+                        }
                     }
                 }
             }

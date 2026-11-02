@@ -6,7 +6,6 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.player.Accessory
@@ -20,7 +19,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
 
         public override void SetDefaults()
         {
-            
+
             Projectile.width = 128;
             Projectile.height = 128;
             Projectile.friendly = true;
@@ -30,7 +29,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = -1;
             Projectile.rotation = Main.rand.NextFloat(MathHelper.TwoPi);
-            
+
         }
 
         public override bool PreDraw(ref Color lightColor)

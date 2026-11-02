@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using DestroyerTest.Common;
-using DestroyerTest.Common.Systems;
-using DestroyerTest.Content.Entities;
+﻿using DestroyerTest.Common;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
 using ReLogic.Content;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace DestroyerTest.Asset.Menu.V5
+namespace DestroyerTest.Assets.Menu.V5
 {
     //Copied from Calamity Mod Github.
     public class MenuWyvern : ModMenu
@@ -55,7 +49,7 @@ namespace DestroyerTest.Asset.Menu.V5
             }
 
             spriteBatch.Draw(texture, drawOffset, null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
-            
+
             // Set the logo draw color to be white and the time to be noon
             // This is because there is not a day/night cycle in this menu, and changing colors would look bad
             drawColor = Color.White;
@@ -114,7 +108,7 @@ namespace DestroyerTest.Asset.Menu.V5
             }
 
             spriteBatch.Draw(texture, drawOffset, null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
-            
+
             // Set the logo draw color to be white and the time to be noon
             // This is because there is not a day/night cycle in this menu, and changing colors would look bad
             drawColor = Color.White;

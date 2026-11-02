@@ -1,22 +1,16 @@
 ﻿using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
-using Microsoft.CodeAnalysis;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using OpusLib.Content.Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Graphics.Renderers;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Particles
 {
-    public class SimpleExplosionParticle: BaseParticle<SimpleExplosionParticle>
+    public class SimpleExplosionParticle : BaseParticle<SimpleExplosionParticle>
     {
         public Vector2 position;
         public Vector2 velocity = Vector2.Zero;
@@ -60,7 +54,7 @@ namespace DestroyerTest.Content.Particles
             rotation = Main.rand.NextFloat(MathHelper.TwoPi);
         }
 
-       
+
         public override void Update(ref ParticleRendererSettings settings)
         {
             float Progress = scale / endScale;

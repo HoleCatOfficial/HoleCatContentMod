@@ -1,40 +1,15 @@
-﻿using BreadLibrary.Core.Utilities;
+﻿using System;
+using System.Collections.Generic;
 using DestroyerTest.Common;
 using DestroyerTest.Common.Systems;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Content.Projectiles.Boss;
-using DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss;
-using DestroyerTest.Content.Projectiles.Boss.TenebrousConstruct;
-using DestroyerTest.Content.Projectiles.Weapon.Magic;
-using DestroyerTest.Content.Projectiles.Weapon.Summon;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.RiftBiome;
-using DestroyerTest.Content.SHADEMANAGEMENT;
-using DestroyerTest.Content.Tools;
-using log4net.Repository.Hierarchy;
-using Microsoft.Build.Evaluation;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoMod.Cil;
-using OpusLib;
 using ReLogic.Content;
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.IO;
-using System.Linq;
 using Terraria;
 using Terraria.Audio;
-using Terraria.Cinematics;
-using Terraria.GameContent.Bestiary;
-using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Utilities;
 
 namespace DestroyerTest.Content.Entities
 {
@@ -56,7 +31,7 @@ namespace DestroyerTest.Content.Entities
         public override string MusicTitle()
         {
             return Language.GetTextValue("Mods.DestroyerTest.Music.TenebrousConstruct");
-        
+
         }
 
         public override string Name()
@@ -263,7 +238,7 @@ namespace DestroyerTest.Content.Entities
                     WingXScale += 0.005f;
                 }
 
-                if( WingXScale >= 1f )
+                if (WingXScale >= 1f)
                 {
                     if (!Roared)
                     {

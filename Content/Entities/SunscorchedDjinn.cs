@@ -1,24 +1,18 @@
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
-using Terraria.GameContent.Bestiary;
-using Terraria.ModLoader.Utilities;
-using DestroyerTest.Content.RiftBiome;
-using DestroyerTest.Common;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent.ItemDropRules;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.RiftBiome.RiftSurfaceResources;
-using Terraria.GameContent;
-using OpusLib;
-using Terraria.Audio;
 using System;
-using Terraria.DataStructures;
+using DestroyerTest.Common;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.EntitiesProjectiles;
-using DestroyerTest.Content.MeleeWeapons;
+using DestroyerTest.Content.Resources;
+using DestroyerTest.Content.RiftBiome;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent;
+using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ItemDropRules;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Entities
 {
@@ -78,12 +72,12 @@ namespace DestroyerTest.Content.Entities
         {
             if (AfterImages)
             {
-                
+
             }
 
             Texture2D Tex = TextureAssets.Npc[Type].Value;
             Vector2 Origin = new Vector2(NPC.frame.Width / 2, Tex.Height / Main.npcFrameCount[NPC.type] / 2);
-            
+
             SpriteEffects FX = NPC.spriteDirection == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
 
             Main.EntitySpriteDraw(Tex, NPC.Center - screenPos, NPC.frame, drawColor, NPC.rotation, Origin, 1f, FX, 0f);
@@ -104,12 +98,12 @@ namespace DestroyerTest.Content.Entities
 
             if (NPC.HasValidTarget)
             {
-                 player = Main.player[NPC.target];
+                player = Main.player[NPC.target];
             }
 
             NPC.rotation = NPC.velocity.ToRotation() * 0.1f;
             Lighting.AddLight(NPC.Center, ColorLib.Rift.ToVector3() * 0.6f);
-            
+
             if (NPC.HasValidTarget || NPC.Distance(player.Center) > 500f)
             {
 
@@ -121,19 +115,19 @@ namespace DestroyerTest.Content.Entities
                 AI_Idle(player);
                 return;
             }
-            
+
         }
 
         public void AI_Idle(Player player)
         {
             NPC.aiStyle = NPCAIStyleID.Firefly;
             AI_ValidateTarget(player);
-            
+
         }
 
         public void AI_ValidateTarget(Player target)
         {
-            if(target.dead || !target.active || Vector2.Distance(NPC.Center, target.Center) > 2000f)
+            if (target.dead || !target.active || Vector2.Distance(NPC.Center, target.Center) > 2000f)
             {
                 NPC.TargetClosest();
             }
@@ -162,7 +156,7 @@ namespace DestroyerTest.Content.Entities
             DirectionToPlayer = StoredCenter - NPC.Center;
 
             //Overshoot the end position past the stored location
-           
+
             Vector2 IdealVelocity = EndPosition - NPC.Center;
             IdealVelocity.Normalize();
 
@@ -201,7 +195,7 @@ namespace DestroyerTest.Content.Entities
                         SoundEngine.PlaySound(DTAssetLib.Djinn.Laugh with { PitchVariance = 0.4f }, NPC.Center);
 
                         Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, IdealVelocity.RotatedByRandom(0.4f) * 6f, ModContent.ProjectileType<SunscorchedDjinnBomb>(), 40, 80);
-                        
+
                     }
                 }
             }
@@ -217,26 +211,26 @@ namespace DestroyerTest.Content.Entities
 
             //Dust.NewDust(NPC.position, NPC.width, NPC.height, DustID.RedTorch);
             //Dust.NewDustPerfect(EndPosition, DustID.GreenTorch);
-            
+
 
         }
 
-     
+
 
         public void AI_Attack()
         {
-            
+
         }
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
-		{
+        {
             bool v = ModContent.GetInstance<RiftDesertUnderground>().IsBiomeActive(spawnInfo.Player);
-			if (v)
-			{
-				return 0.08f;
-			}
-			return 0f;
-		}
+            if (v)
+            {
+                return 0.08f;
+            }
+            return 0f;
+        }
 
         public override void HitEffect(NPC.HitInfo hit)
         {

@@ -1,35 +1,9 @@
-﻿using DestroyerTest.Common;
-using DestroyerTest.Content.Consumables;
-using DestroyerTest.Content.Lorebooks;
-using DestroyerTest.Content.Magic;
-using DestroyerTest.Content.MeleeWeapons;
-using DestroyerTest.Content.Projectiles.Weapon.Melee;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.Tiles;
-using DestroyerTest.Content.Tiles.Altar;
-using DestroyerTest.Content.Tiles.RoseGarden;
+﻿using DestroyerTest.Content.Tiles;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using ReLogic.Content;
-using SteelSeries.GameSense;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.GameContent;
 using Terraria.GameContent.Drawing;
-using Terraria.Graphics;
-using Terraria.Graphics.Effects;
-using Terraria.ID;
-using Terraria.IO;
-using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.UI;
-using Terraria.WorldBuilding;
-using static Terraria.GameContent.Animations.IL_Actions.NPCs;
 
 namespace DestroyerTest.Common.Systems
 {

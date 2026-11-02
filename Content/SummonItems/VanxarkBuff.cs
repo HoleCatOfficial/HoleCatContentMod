@@ -1,7 +1,6 @@
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using DestroyerTest.Content.Projectiles.Pets;
 
 namespace DestroyerTest.Content.SummonItems
 {

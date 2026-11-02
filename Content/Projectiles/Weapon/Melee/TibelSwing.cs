@@ -1,7 +1,6 @@
 ﻿using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.ScreenShake;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles.ParentClasses;
 
@@ -9,14 +8,8 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using OpusLib.Content.Helpers;
-using System;
-using System.Collections.Generic;
-using System.IO;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.GameContent;
-using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -72,7 +65,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             if (DTCrossMod.CallOfVoidIsLoaded)
             {
                 DTCrossMod.CallofVoid_AddVoidTouch(npc, 300, 2f, 1000, 16);
-                 if (DTCrossMod.CallOfVoidMod.TryFind("VoidStarF", out ModProjectile voidStar))
+                if (DTCrossMod.CallOfVoidMod.TryFind("VoidStarF", out ModProjectile voidStar))
                 {
                     for (int i = 0; i < 10; i++)
                     {

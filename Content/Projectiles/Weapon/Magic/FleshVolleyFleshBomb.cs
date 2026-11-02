@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BreadLibrary.Core.Graphics.Particles;
+﻿using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Common.Interfaces;
-using DestroyerTest.Content.Entities;
 using DestroyerTest.Content.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -56,7 +50,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             Projectile.hostile = false;
             Projectile.ignoreWater = true;
             Projectile.timeLeft = 300;
-           
+
             Homing = Main.rand.NextBool();
             Projectile.tileCollide = !Homing;
         }
@@ -112,7 +106,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
                         GlowOpacity += 0.05f;
                     }
 
-                    
+
                     Dust d = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.FireworksRGB, Projectile.velocity.X * -0.5f, Projectile.velocity.Y * -0.5f, 100 - ((int)GlowOpacity * 10), Color.Red, 1.0f);
                     d.noGravity = true;
                 }

@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.Initializers;
 using Terraria.Localization;
 using Terraria.ModLoader;
 
@@ -8,10 +7,10 @@ namespace DestroyerTest.Common.Systems;
 
 internal class MusicDisplayCalls : ModSystem
 {
-	public override void PostSetupContent()
-	{
-		if (!ModLoader.TryGetMod("MusicDisplay", out Mod display))
-			return;
+    public override void PostSetupContent()
+    {
+        if (!ModLoader.TryGetMod("MusicDisplay", out Mod display))
+            return;
 
         LocalizedText modName = Language.GetText("Mods.DestroyerTest.ModName");
 
@@ -47,7 +46,7 @@ internal class MusicDisplayCalls : ModSystem
             Main.DiscoColor
         };
 
-		void AddMusic(string path, string name, string AuthorName, Color[] colors)
+        void AddMusic(string path, string name, string AuthorName, Color[] colors)
         {
             LocalizedText author = Language.GetText($"Mods.DestroyerTest.Music.{AuthorName}");
             LocalizedText displayName = Language.GetText($"Mods.DestroyerTest.Music.{name}");
@@ -76,7 +75,7 @@ internal class MusicDisplayCalls : ModSystem
 
 
         //Boss Tracks
-		AddMusic("Assets/Music/Tribulation", "EvilBoss.Default", "Author1", FranciumColors);
+        AddMusic("Assets/Music/Tribulation", "EvilBoss.Default", "Author1", FranciumColors);
         AddMusic("Assets/Music/EternityEvils", "EvilBoss.Eternity", "Author2", ZantasColors);
         AddMusic("Assets/Music/MasoEvils", "EvilBoss.Eternity", "Author5", MiscColors);
         AddMusic("Assets/Music/EvilBossSecretSeed", "EvilBoss.SecretSeed", "Author4", JokeColors);
@@ -113,5 +112,5 @@ internal class MusicDisplayCalls : ModSystem
         AddMusic_Rift("Assets/Music/RiftIce", "Rift.Ice.Surface", "Author1");
 
         //Other
-	}
+    }
 }

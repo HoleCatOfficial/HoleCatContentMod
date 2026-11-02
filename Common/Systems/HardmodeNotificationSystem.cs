@@ -43,6 +43,6 @@ namespace DestroyerTest.Common.Systems
                 Flag1 = tag.GetBool("Flag1");
             }
         }
-        
+
     }
 }

@@ -1,23 +1,14 @@
-﻿using System;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss;
-using DestroyerTest.Content.Projectiles.Boss.VampireBoss;
-using DestroyerTest.Content.RiftArsenal;
+﻿using DestroyerTest.Common;
+using DestroyerTest.Content.Projectiles.Gores;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
+using OpusLib.Content.Helpers;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.Enums;
-using Terraria.GameContent;
-using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
-using OpusLib;
-
-using DestroyerTest.Content.Projectiles.Gores;
-using OpusLib.Content.Helpers;
 
 namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
 {
@@ -86,7 +77,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NightmareRoseBoss
 
             Projectile.ai[1]++;
 
-            
+
         }
 
         public override bool CanHitPlayer(Player target)

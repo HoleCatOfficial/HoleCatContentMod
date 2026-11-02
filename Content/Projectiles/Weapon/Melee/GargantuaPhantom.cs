@@ -1,22 +1,12 @@
 ﻿using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Projectiles.Boss.NodeBoss.Ichor;
- 
-using Microsoft.Build.Evaluation;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
-using ReLogic.Peripherals.RGB;
-using System;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
-using Terraria.Enums;
 using Terraria.GameContent;
-using Terraria.GameContent.Drawing;
-using Terraria.Graphics.Shaders;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Melee
@@ -105,14 +95,14 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             }
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver4;
 
- 
+
             Spark Spark = new Spark();
             Spark.PrepareSpark(Projectile.Center, Projectile.velocity * 0.1f, 0f, ColorLib.TenebrisMagenta, 0.5f, false, 30, SparkDrawMode.Additive);
             ParticleEngine.BehindProjectiles.Add(Spark);
-            
+
             if (Timer == 1f) // first tick of dashing phase
             {
-                
+
                 Vector2 direction = (target.Center - Projectile.Center).SafeNormalize(Vector2.Zero);
                 Projectile.velocity = direction * 50f;
                 Projectile.netUpdate = true;

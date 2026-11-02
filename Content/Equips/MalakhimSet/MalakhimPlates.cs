@@ -1,6 +1,4 @@
 using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.Resources.Cloths;
-using DestroyerTest.Rarity;
 using DestroyerTest.Rarity.Scepter;
 using Terraria;
 using Terraria.Audio;
@@ -57,21 +55,21 @@ namespace DestroyerTest.Content.Equips.MalakhimSet
                 HurtSounds.Active = true;
             }
 
-            
+
         }
 
-        
+
 
         public override void AddRecipes()
         {
-			CreateRecipe()
-				.AddIngredient<Vesper>(45)
+            CreateRecipe()
+                .AddIngredient<Vesper>(45)
                 .AddIngredient(ItemID.Silk, 10)
-				.AddTile(TileID.Anvils)
-				.Register();
+                .AddTile(TileID.Anvils)
+                .Register();
         }
     }
-    
+
     public class MalakhimHurtSounds : ModPlayer
     {
         public bool Active = false;

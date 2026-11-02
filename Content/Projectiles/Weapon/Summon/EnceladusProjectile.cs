@@ -3,16 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using BreadLibrary.Core;
 using BreadLibrary.Core.Graphics.Particles;
-using BreadLibrary.Core.Graphics.Spritebatch;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Equips.ScepterAccessories;
 using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Projectiles.AmmoProjectiles;
-using DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -20,8 +15,6 @@ using Terraria.Graphics;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static Fargowiltas.UI.StatSheetUI;
-using static FargowiltasSouls.FargoSoulsSets;
 namespace DestroyerTest.Content.Projectiles.Weapon.Summon
 {
 
@@ -96,7 +89,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
             {
                 for (int i = 0; i < Projectile.oldPos.Length; i++)
                 {
-                    float fade = MathHelper.Lerp(0.5f, 0f, (float)i / (float)Projectile.oldPos.Length);
+                    float fade = MathHelper.Lerp(0.5f, 0f, i / (float)Projectile.oldPos.Length);
 
                     if (i != 0)
                     {
@@ -197,7 +190,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
 
             Projectile.rotation = -MathHelper.PiOver4 + (-0.1f * myIndex * Owner.direction);
 
-            Vector2 targetPosition = Owner.MountedCenter + new Vector2((-10 * Owner.direction)  + (-10 * myIndex * Owner.direction), bob);
+            Vector2 targetPosition = Owner.MountedCenter + new Vector2((-10 * Owner.direction) + (-10 * myIndex * Owner.direction), bob);
 
             if (Projectile.Distance(targetPosition) < 2000)
             {
@@ -323,11 +316,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
                 {
 
                     off += 0.1f;
-                    
+
 
                     Projectile.rotation = Projectile.Center.DirectionTo(target.Center).ToRotation() + MathHelper.PiOver4;
                     Projectile.SmoothMoveToPoint(target.Center + new Vector2(300, 0).RotatedBy(off - MathHelper.PiOver2), 30f, 50);
-                    
+
                 }
                 if (Projectile.ai[2] > 20 && Projectile.ai[2] < 30)
                 {

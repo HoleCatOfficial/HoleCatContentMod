@@ -1,29 +1,25 @@
+using System.Collections.Generic;
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
+using DestroyerTest.Content.Equips.ScepterAccessories;
+using DestroyerTest.Content.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using Terraria;
-using Terraria.Enums;
-using Terraria.GameContent;
-using Terraria.GameContent.Drawing;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.Audio;
-using OpusLib;
-using System.Collections.Generic;
-using ReLogic.Content;
-using DestroyerTest.Content.Equips.ScepterAccessories;
-using System.Linq;
-using Terraria.Graphics.Shaders;
-using DestroyerTest.Content.Particles;
-using BreadLibrary.Core.Graphics.Particles;
 
 namespace DestroyerTest.Content.Projectiles.ParentClasses
 {
     public abstract class ElementalScepterShot : ModProjectile
     {
-        private NPC HomingTarget {
+        private NPC HomingTarget
+        {
             get => Projectile.ai[0] == 0 ? null : Main.npc[(int)Projectile.ai[0] - 1];
-            set {
+            set
+            {
                 Projectile.ai[0] = value == null ? 0 : value.whoAmI + 1;
             }
         }
@@ -73,10 +69,11 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         public int TrailType = 1;
         public float TrailAmplitude = 20f;
         public float TrailScroll = 0.04f;
-        
 
 
-        public override void SetStaticDefaults() {
+
+        public override void SetStaticDefaults()
+        {
             ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true;
         }
 
@@ -96,52 +93,51 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         }
 
         public float trailOffset = 0f;
-		public override bool PreDraw(ref Color lightColor)
-		{
-			lightColor = TrailColor;
-			trailOffset += TrailScroll;
+        public override bool PreDraw(ref Color lightColor)
+        {
+            lightColor = TrailColor;
+            trailOffset += TrailScroll;
 
-			SpriteBatch spriteBatch = Main.spriteBatch;
-			DTUtils Utility = new DTUtils();
+            SpriteBatch spriteBatch = Main.spriteBatch;
+            DTUtils Utility = new DTUtils();
 
-			Opus.StartSpriteBatchForTrails(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-			
-			if (TrailPositions.Count > 1)
-			{
-				List<ColoredVertex> ve = new List<ColoredVertex>();
-				float a = 0;
+            Opus.StartSpriteBatchForTrails(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
-				for (int i = TrailPositions.Count - 1; i > 0; i--)
-				{
-					float t = 1f - (i / (float)TrailPositions.Count); // fade toward tail
-					Color b = lightColor * t;
+            if (TrailPositions.Count > 1)
+            {
+                List<ColoredVertex> ve = new List<ColoredVertex>();
 
-					Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
-					Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * TrailAmplitude;
+                for (int i = TrailPositions.Count - 1; i > 0; i--)
+                {
+                    float t = 1f - (i / (float)TrailPositions.Count); // fade toward tail
+                    Color b = lightColor * t;
+
+                    Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
+                    Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * TrailAmplitude;
                     Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * TrailAmplitude;
 
-					DTUtils.AddStrips(ve, TrailPositions, i, offset, offset2, t, b, trailOffset);
-				}
+                    DTUtils.AddStrips(ve, TrailPositions, i, offset, offset2, t, b, trailOffset);
+                }
 
 
-				GraphicsDevice gd = Main.graphics.GraphicsDevice;
-				if (ve.Count >= 3)
-				{
+                GraphicsDevice gd = Main.graphics.GraphicsDevice;
+                if (ve.Count >= 3)
+                {
                     gd.Textures[0] = DTAssetLib.Streak(TrailType).Value;
-                    gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2); 
-				}
-			}
+                    gd.DrawUserPrimitives(PrimitiveType.TriangleStrip, ve.ToArray(), 0, ve.Count - 2);
+                }
+            }
 
-			Opus.DrawGlowOnProj(Projectile, lightColor, true);
+            Opus.DrawGlowOnProj(Projectile, lightColor, true);
 
-			Opus.ReturnToDefaultDrawing(spriteBatch);
+            Opus.ReturnToDefaultDrawing(spriteBatch);
 
             Main.EntitySpriteDraw(DTAssetLib.MiscSparkle144.Value, Projectile.Center - Main.screenPosition, null, TrailColor with { A = 0 } * 0.5f, Projectile.rotation, DTAssetLib.MiscSparkle144.Value.Size() / 2, new Vector2(1f, 1.5F + (0.1f * Projectile.velocity.Length())), SpriteEffects.None, 0);
 
-			Main.EntitySpriteDraw(DTAssetLib.MiscSparkle144.Value, Projectile.Center - Main.screenPosition, null, Color.White with { A = 0 }, Projectile.rotation, DTAssetLib.MiscSparkle144.Value.Size() / 2, new Vector2(0.5f, 1 + (0.1f * Projectile.velocity.Length())), SpriteEffects.None, 0);
+            Main.EntitySpriteDraw(DTAssetLib.MiscSparkle144.Value, Projectile.Center - Main.screenPosition, null, Color.White with { A = 0 }, Projectile.rotation, DTAssetLib.MiscSparkle144.Value.Size() / 2, new Vector2(0.5f, 1 + (0.1f * Projectile.velocity.Length())), SpriteEffects.None, 0);
 
-			return false;
-		}
+            return false;
+        }
 
         public List<Vector2> TrailPositions = new();
         public List<float> TrailRotations = new();
@@ -149,34 +145,34 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         private void CacheTrail()
         {
             Vector2 lastPos = TrailPositions.Count > 0 ? TrailPositions[0] : Projectile.Center;
-			Vector2 newPos  = Projectile.Center;
+            Vector2 newPos = Projectile.Center;
 
-			float dist = Vector2.Distance(lastPos, newPos);
-			float step = 1f; // how closely to sample. tweak this!
+            float dist = Vector2.Distance(lastPos, newPos);
+            float step = 1f; // how closely to sample. tweak this!
 
-			if (dist > 0f)
-			{
-				int segments = (int)(dist / step);
+            if (dist > 0f)
+            {
+                int segments = (int)(dist / step);
 
-				for (int i = 1; i <= segments; i++)
-				{
-					Vector2 pos = Vector2.Lerp(lastPos, newPos, i / (float)segments);
-					TrailPositions.Insert(0, pos);
-					TrailRotations.Insert(0, Projectile.rotation);
-				}
-			}
-			else
-			{
-				TrailPositions.Insert(0, newPos);
-				TrailRotations.Insert(0, Projectile.rotation);
-			}
+                for (int i = 1; i <= segments; i++)
+                {
+                    Vector2 pos = Vector2.Lerp(lastPos, newPos, i / (float)segments);
+                    TrailPositions.Insert(0, pos);
+                    TrailRotations.Insert(0, Projectile.rotation);
+                }
+            }
+            else
+            {
+                TrailPositions.Insert(0, newPos);
+                TrailRotations.Insert(0, Projectile.rotation);
+            }
 
 
-			// Cap trail
-			while (TrailPositions.Count > TrailLength)
-				TrailPositions.RemoveAt(TrailPositions.Count - 1);
-			while (TrailRotations.Count > TrailLength)
-				TrailRotations.RemoveAt(TrailRotations.Count - 1);
+            // Cap trail
+            while (TrailPositions.Count > TrailLength)
+                TrailPositions.RemoveAt(TrailPositions.Count - 1);
+            while (TrailRotations.Count > TrailLength)
+                TrailRotations.RemoveAt(TrailRotations.Count - 1);
         }
 
         public void DustSpawn1()
@@ -208,21 +204,23 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             return DelayTimer >= 20 && Projectile.ManualCanHitFriendly(target);
         }
 
-        public override void AI() 
+        public override void AI()
         {
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
-            
-            if(DelayTimer < 20)
+
+            if (DelayTimer < 20)
             {
                 DelayTimer++;
                 return;
             }
 
-            if (HomingTarget == null) {
+            if (HomingTarget == null)
+            {
                 HomingTarget = FindClosestNPC(DetectionRad);
             }
 
-            if (HomingTarget != null && !IsValidTarget(HomingTarget)) {
+            if (HomingTarget != null && !IsValidTarget(HomingTarget))
+            {
                 HomingTarget = null;
             }
 
@@ -251,15 +249,19 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             DustSpawn2();
         }
 
-        public NPC FindClosestNPC(float maxDetectDistance) {
+        public NPC FindClosestNPC(float maxDetectDistance)
+        {
             NPC closestNPC = null;
 
             float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
 
-            foreach (var target in Main.ActiveNPCs) {
-                if (IsValidTarget(target)) {
+            foreach (var target in Main.ActiveNPCs)
+            {
+                if (IsValidTarget(target))
+                {
                     float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, Projectile.Center);
-                    if (sqrDistanceToTarget < sqrMaxDetectDistance) {
+                    if (sqrDistanceToTarget < sqrMaxDetectDistance)
+                    {
                         sqrMaxDetectDistance = sqrDistanceToTarget;
                         closestNPC = target;
                     }
@@ -269,7 +271,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             return closestNPC;
         }
 
-        public bool IsValidTarget(NPC target) 
+        public bool IsValidTarget(NPC target)
         {
             if (Projectile.tileCollide == true)
             {

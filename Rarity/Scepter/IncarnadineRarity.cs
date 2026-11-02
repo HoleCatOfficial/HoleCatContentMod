@@ -1,12 +1,6 @@
-using System;
 using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.ModLoader;
-using Terraria.UI.Chat;
-using ReLogic.Graphics;
-using Terraria.GameContent;
 using Terraria.ID;
-using DestroyerTest.Content.Tiles;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Rarity.Scepter
 {
@@ -30,5 +24,5 @@ namespace DestroyerTest.Rarity.Scepter
             return Type;
         }
     }
-	
+
 }

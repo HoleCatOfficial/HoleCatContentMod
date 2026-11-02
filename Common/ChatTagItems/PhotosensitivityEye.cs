@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria.ModLoader;
-
-namespace DestroyerTest.Common.ChatTagItems
+﻿namespace DestroyerTest.Common.ChatTagItems
 {
     /*
     When it comes to these types of things prioritize clarity

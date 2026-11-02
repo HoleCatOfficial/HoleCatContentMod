@@ -1,13 +1,9 @@
 using DestroyerTest.Common;
 using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Entities;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.RiftBiome;
 using Microsoft.Xna.Framework;
-using System;
-using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -15,7 +11,6 @@ using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Utilities;
 
 namespace DestroyerTest.Content.Entities
 {
@@ -165,7 +160,7 @@ namespace DestroyerTest.Content.Entities
                 Dust.NewDust(NPC.Center, 50, 50, DustID.FireworksRGB, NPC.velocity.X * 0.4f, NPC.velocity.Y * 0.4f, 100, Colors[Main.rand.Next(Colors.Length)], Main.rand.NextFloat(0.01f, 1.0f));
             }
 
-           Player player = Main.player[NPC.target];
+            Player player = Main.player[NPC.target];
 
             // --- TURNING OUTSIDE OF CHARGES ---
             if (!charging)
@@ -212,7 +207,7 @@ namespace DestroyerTest.Content.Entities
                 if (Main.GameUpdateCount % 10 == 0)
                 {
                     SoundEngine.PlaySound(SoundID.Item20, NPC.Center);
-                    for (int t = 0;  t < 3; t++)
+                    for (int t = 0; t < 3; t++)
                     {
                         Projectile Fire = Projectile.NewProjectileDirect(NPC.GetSource_FromAI(), NPC.Center, NPC.velocity.RotatedByRandom(0.4f), ModContent.ProjectileType<TenebrisStarHostile_NoHoming>(), 20, 0f);
                         Fire.scale = 0.65f;
@@ -237,7 +232,7 @@ namespace DestroyerTest.Content.Entities
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ShimmeringSludge>(), 4, 20, 35));
             npcLoot.Add(ItemDropRule.Common(ItemID.SoulofNight, 1, 8, 20));
         }
-	}
+    }
 
     internal class DarkPredatorBody : WormBody
     {
@@ -315,13 +310,13 @@ namespace DestroyerTest.Content.Entities
             }
             base.AI();
         }
-        
+
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ShadeParticle>(), 3, 10, 20));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ShimmeringSludge>(), 4, 20, 35));
         }
-	}
+    }
 
     internal class DarkPredatorTail : WormTail
     {
@@ -376,7 +371,7 @@ namespace DestroyerTest.Content.Entities
 
             DarkPredatorHead.CommonWormInit(this);
         }
-        
+
         public bool MistakeFixed = false;
         public override void AI()
         {
@@ -399,5 +394,5 @@ namespace DestroyerTest.Content.Entities
                 Dust.NewDust(NPC.Center, 50, 50, DustID.TintableDustLighted, NPC.velocity.X * 0.4f, NPC.velocity.Y * 0.4f, 100, Colors[Main.rand.Next(Colors.Length)], Main.rand.NextFloat(0.01f, 1.0f));
             }
         }
-	}
+    }
 }

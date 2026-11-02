@@ -2,11 +2,10 @@ using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Particles;
- 
+
 using Microsoft.Xna.Framework;
 using OpusLib.Content.Particles;
 using Terraria;
-using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -14,39 +13,39 @@ using Terraria.ModLoader;
 namespace DestroyerTest.Content.Projectiles.player.Accessory
 {
     public class FrozenFire : ModProjectile
-	{
+    {
         public override string Texture => DTUtils.NoTexture;
 
-		public override void SetStaticDefaults()
-		{
+        public override void SetStaticDefaults()
+        {
 
-		}
+        }
 
-		public override void SetDefaults()
-		{
-			Projectile.width = 16;
-			Projectile.height = 16;
-			Projectile.friendly = true;
-			Projectile.hostile = false;
-			Projectile.ignoreWater = true;
-			Projectile.light = 0.1f;
-			Projectile.timeLeft = 60;
-			Projectile.tileCollide = false;
-			Projectile.alpha = 255;
-		}
+        public override void SetDefaults()
+        {
+            Projectile.width = 16;
+            Projectile.height = 16;
+            Projectile.friendly = true;
+            Projectile.hostile = false;
+            Projectile.ignoreWater = true;
+            Projectile.light = 0.1f;
+            Projectile.timeLeft = 60;
+            Projectile.tileCollide = false;
+            Projectile.alpha = 255;
+        }
 
-		
-		
-		public override void OnSpawn(IEntitySource source)
-		{
-			
-		}
+
+
+        public override void OnSpawn(IEntitySource source)
+        {
+
+        }
 
         Color Ice = new Color(40, 152, 240);
-		public override void AI()
-		{
+        public override void AI()
+        {
 
-			Lighting.AddLight(Projectile.Center, Ice.ToVector3() * 0.2f);
+            Lighting.AddLight(Projectile.Center, Ice.ToVector3() * 0.2f);
 
             Fire fire = new Fire();
             fire.PrepareFire(Projectile.Center, Vector2.Zero, DTUtils.RandomDirection(2), 0.1f, Ice, 0.3f, 100, FireDrawMode.Additive, PixelLayer.AboveProjectiles);
@@ -56,14 +55,14 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
             ParticleEngine.BehindProjectiles.Add(fire);
             ParticleEngine.BehindProjectiles.Add(fire2);
 
-			PointGlowPreMultiplied FX = new();
+            PointGlowPreMultiplied FX = new();
             FX.Initialize(Projectile.Center, Vector2.Zero, Ice * 0.25f, 1.5f);
-			ParticleEngine.BehindProjectiles.Add(FX);
-		}
-		
-		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
-		{
-			target.AddBuff(BuffID.Frostburn, 300);
-		}
+            ParticleEngine.BehindProjectiles.Add(FX);
+        }
+
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        {
+            target.AddBuff(BuffID.Frostburn, 300);
+        }
     }
 }

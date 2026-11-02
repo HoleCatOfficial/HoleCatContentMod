@@ -1,23 +1,20 @@
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
-using Terraria.GameContent.Bestiary;
-using Terraria.ModLoader.Utilities;
-using DestroyerTest.Content.RiftBiome;
-using DestroyerTest.Common;
 using System.Collections.Generic;
+using DestroyerTest.Common;
+using DestroyerTest.Content.Dusts;
+using DestroyerTest.Content.Resources;
+using DestroyerTest.Content.RiftBiome;
+using DestroyerTest.Content.RiftBiome.RiftSurfaceResources;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent.ItemDropRules;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.RiftBiome.RiftSurfaceResources;
-using Terraria.GameContent;
 using OpusLib;
-using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.Projectiles;
-using Terraria.Audio;
 using OpusLib.Content.Helpers;
-using Mono.Cecil.Cil;
+using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent;
+using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.ItemDropRules;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Entities
 {
@@ -48,7 +45,7 @@ namespace DestroyerTest.Content.Entities
 
         public override void FindFrame(int frameHeight)
         {
-            
+
             if (NPC.life < NPC.lifeMax / 2)
             {
                 NPC.frameCounter++;
@@ -71,7 +68,7 @@ namespace DestroyerTest.Content.Entities
                         frameIndex = 0;
                 }
             }
-        
+
 
             NPC.frame.Y = frameIndex * frameHeight;
         }
@@ -102,25 +99,25 @@ namespace DestroyerTest.Content.Entities
         public void DrawCrystalCore(SpriteBatch spriteBatch, Vector2 Center)
         {
             DTUtils Utility = new DTUtils();
-            
-            for (int i = 0; i < TrailPositions.Count; i++)
-			{
-				float progress = i / (float)TrailLength;
-				float scale = MathHelper.Lerp(0.5f, 0.0001f, progress);
-				Color color = Color.Black;
 
-				Main.EntitySpriteDraw(
-					DTAssetLib.FeatheredCircle.Value,
-					TrailPositions[i] - Main.screenPosition,
-					null,
-					color,
-					TrailRotations[i],
-					DTAssetLib.FeatheredCircle.Value.Size() / 2f,
-					scale,
-					SpriteEffects.None,
-					0
-				);
-			}
+            for (int i = 0; i < TrailPositions.Count; i++)
+            {
+                float progress = i / (float)TrailLength;
+                float scale = MathHelper.Lerp(0.5f, 0.0001f, progress);
+                Color color = Color.Black;
+
+                Main.EntitySpriteDraw(
+                    DTAssetLib.FeatheredCircle.Value,
+                    TrailPositions[i] - Main.screenPosition,
+                    null,
+                    color,
+                    TrailRotations[i],
+                    DTAssetLib.FeatheredCircle.Value.Size() / 2f,
+                    scale,
+                    SpriteEffects.None,
+                    0
+                );
+            }
 
             Main.spriteBatch.Draw(
                 DTAssetLib.FeatheredCircle.Value,
@@ -136,7 +133,7 @@ namespace DestroyerTest.Content.Entities
         }
 
         public List<Vector2> TrailPositions = new();
-		public List<float> TrailRotations = new();
+        public List<float> TrailRotations = new();
         private const int TrailLength = 40;
 
         int internalT = 0;
@@ -202,18 +199,18 @@ namespace DestroyerTest.Content.Entities
         }
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
-		{
-            bool v = (ModContent.GetInstance<RiftSurface>().IsBiomeActive(spawnInfo.Player) || 
+        {
+            bool v = (ModContent.GetInstance<RiftSurface>().IsBiomeActive(spawnInfo.Player) ||
             ModContent.GetInstance<RiftUnderground>().IsBiomeActive(spawnInfo.Player) ||
             ModContent.GetInstance<RiftDesert>().IsBiomeActive(spawnInfo.Player) ||
             ModContent.GetInstance<RiftDesertUnderground>().IsBiomeActive(spawnInfo.Player) ||
             ModContent.GetInstance<RiftTundra>().IsBiomeActive(spawnInfo.Player));
-			if (v)
-			{
-				return 0.3f;
-			}
-			return 0f;
-		}
+            if (v)
+            {
+                return 0.3f;
+            }
+            return 0f;
+        }
 
         public override void HitEffect(NPC.HitInfo hit)
         {

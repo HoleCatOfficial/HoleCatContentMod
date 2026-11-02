@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Projectiles.Weapon.Classless;
-using DestroyerTest.Content.Projectiles.Weapon.Magic;
-using DestroyerTest.Content.Resources;
 using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -52,7 +45,7 @@ namespace DestroyerTest.Content.ClasslessItems
         public override bool PreDrawTooltipLine(DrawableTooltipLine line, ref int yOffset)
         {
             Color baseColor = new Color(Main.DiscoR, Main.DiscoG, Main.DiscoB);
-            
+
             Vector3 HSL = Main.rgbToHsl(baseColor);
 
 
@@ -76,6 +69,6 @@ namespace DestroyerTest.Content.ClasslessItems
             }
             return true;
         }
-    
+
     }
 }

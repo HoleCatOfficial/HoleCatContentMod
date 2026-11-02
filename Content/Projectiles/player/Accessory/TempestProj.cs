@@ -1,5 +1,3 @@
-using DestroyerTest.Content.Particles;
- 
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;

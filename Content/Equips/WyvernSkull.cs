@@ -1,12 +1,8 @@
 
 using System.Linq;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.player.Accessory;
 using DestroyerTest.Content.Remnants;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.Tiles;
-using DestroyerTest.Content.Tiles.Riftplate;
 using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -19,25 +15,27 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Equips
 {
-	public class WyvernSkull : ModItem
-	{
+    public class WyvernSkull : ModItem
+    {
 
-		public override void SetStaticDefaults() {
-			
-		}
+        public override void SetStaticDefaults()
+        {
 
-		public override void SetDefaults() {
-			Item.width = 40;
-			Item.height = 66;
-			Item.value = 10000;
-			Item.rare = ModContent.RarityType<CrimsonSpecialRarity>(); // The rarity of the item
-			Item.accessory = true;
-		}
-        
+        }
+
+        public override void SetDefaults()
+        {
+            Item.width = 40;
+            Item.height = 66;
+            Item.value = 10000;
+            Item.rare = ModContent.RarityType<CrimsonSpecialRarity>(); // The rarity of the item
+            Item.accessory = true;
+        }
+
         public override void UpdateAccessory(Player player, bool hideVisual)
-            {
-                player.GetModPlayer<WyvernSkullDash>().DashAccessoryEquipped = true;
-            }
+        {
+            player.GetModPlayer<WyvernSkullDash>().DashAccessoryEquipped = true;
+        }
 
 
 
@@ -224,7 +222,7 @@ namespace DestroyerTest.Content.Equips
                         Wyvern.Value,
                         Set.drawPlayer.Center - Main.screenPosition + new Vector2(12, Set.drawPlayer.gfxOffY),
                         null,
-                        Color.White * ((float)Dash.DashTimer / (float)WyvernSkullDash.DashDuration),
+                        Color.White * (Dash.DashTimer / (float)WyvernSkullDash.DashDuration),
                         Set.drawPlayer.bodyRotation,
                         Wyvern.Value.Size() / 2f,
                         1f,
@@ -237,7 +235,7 @@ namespace DestroyerTest.Content.Equips
                         Wyvern.Value,
                         Set.drawPlayer.Center - Main.screenPosition + new Vector2(-12, Set.drawPlayer.gfxOffY),
                         null,
-                        Color.White * ((float)Dash.DashTimer / (float)WyvernSkullDash.DashDuration),
+                        Color.White * (Dash.DashTimer / (float)WyvernSkullDash.DashDuration),
                         Set.drawPlayer.bodyRotation,
                         Wyvern.Value.Size() / 2f,
                         1f,
@@ -251,7 +249,7 @@ namespace DestroyerTest.Content.Equips
         protected override void Draw(ref PlayerDrawSet drawInfo)
         {
             var modPlayer = drawInfo.drawPlayer.GetModPlayer<WyvernSkullDash>();
-            if (modPlayer.DashTimer > 0 &&  drawInfo.shadow == 0)
+            if (modPlayer.DashTimer > 0 && drawInfo.shadow == 0)
             {
                 drawInfo.DrawDataCache.Add(Data(drawInfo));
             }

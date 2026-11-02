@@ -1,18 +1,12 @@
 ﻿
+using DestroyerTest.Common;
+using DestroyerTest.Content.Projectiles.player.Accessory;
+using OpusLib.Content.Helpers;
 using Terraria;
+using Terraria.Audio;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
-using Terraria.GameContent.ItemDropRules;
-using System.Collections.Generic;
-using DestroyerTest.Content.Equips.ScepterAccessories;
-using DestroyerTest.Rarity;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.Projectiles.player.Accessory;
-using Microsoft.Xna.Framework;
-using OpusLib.Content.Helpers;
-using Terraria.Audio;
 
 namespace DestroyerTest.Content.Equips.Cards.AstirDeck
 {

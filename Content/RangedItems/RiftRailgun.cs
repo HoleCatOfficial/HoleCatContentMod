@@ -1,22 +1,6 @@
-using System;
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.Tiles;
-using DestroyerTest.Content.Tiles.Riftplate;
-using DestroyerTest.Content.Tiles.RiftConfigurator;
-using DestroyerTest.Rarity;
-using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.Audio;
-using Terraria.ID;
-using Terraria.Localization;
-using Terraria.ModLoader;
-using DestroyerTest.Content.Projectiles.Weapon.Magic;
-
-
 namespace DestroyerTest.Content.RangedItems
 {
-	/*
+    /*
 	public class RiftRailgun : ModItem
 	{
         SoundStyle ChargeUp = new SoundStyle("DestroyerTest/Assets/Audio/RailGunCharge");

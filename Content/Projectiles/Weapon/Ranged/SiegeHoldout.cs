@@ -1,20 +1,12 @@
-using Terraria;
-using Terraria.ModLoader;
-using Terraria.ID;
-using Terraria.Audio;
-using Microsoft.Xna.Framework;
-using DestroyerTest.Common;
-using DestroyerTest.Content.MeleeWeapons;
-using Microsoft.Xna.Framework.Graphics;
-using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Buffs;
 using System;
-using DestroyerTest.Content.Projectiles;
- 
-using Microsoft.Xna.Framework.Input;
-using Terraria.DataStructures;
-using DestroyerTest.Content.RangedItems;
 using DestroyerTest.Content.Projectiles.AmmoProjectiles;
+using DestroyerTest.Content.RangedItems;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Terraria;
+using Terraria.Audio;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Ranged
 {
@@ -37,7 +29,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Ranged
             Projectile.localNPCHitCooldown = -1;
         }
 
-        private void AnimateProjectile() {
+        private void AnimateProjectile()
+        {
             if (++Projectile.frameCounter >= 2)
             {
                 Projectile.frameCounter = 0;
@@ -73,7 +66,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Ranged
                 Vector2 toCursor = Main.MouseWorld - mountedCenter;
                 toCursor.Normalize();
                 Vector2 ShotPos = mountedCenter + toCursor * 70;
-                
+
                 Projectile.ai[0]++;
                 Projectile.timeLeft = 60;
                 HoldAnim(player);
@@ -87,7 +80,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Ranged
                 {
                     if (!ConsumeRocket(player, 1))
                         return;
-                        
+
                     SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/SiegeShoot") { MaxInstances = 0, PitchVariance = 0.2f }, Projectile.Center);
                     Projectile.NewProjectile(player.GetSource_ItemUse(player.HeldItem), ShotPos, toCursor, ModContent.ProjectileType<TenebrisRocketProjectile_NoTileDestroy>(), Projectile.damage, 10, Projectile.owner);
                     ShotFX(ShotPos);
@@ -108,27 +101,29 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Ranged
 
         public void ShotFX(Vector2 CTR)
         {
-            for (int k = 0; k < 2; k++) {
-				float speedMulti = 0.4f;
-				if (k == 1) {
-					speedMulti = 0.8f;
-				}
+            for (int k = 0; k < 2; k++)
+            {
+                float speedMulti = 0.4f;
+                if (k == 1)
+                {
+                    speedMulti = 0.8f;
+                }
 
-				Gore smokeGore = Gore.NewGoreDirect(Projectile.GetSource_Death(), CTR, default, Main.rand.Next(GoreID.Smoke1, GoreID.Smoke3 + 1));
-				smokeGore.velocity *= speedMulti;
-				smokeGore.velocity += Vector2.One;
-				smokeGore = Gore.NewGoreDirect(Projectile.GetSource_Death(), CTR, default, Main.rand.Next(GoreID.Smoke1, GoreID.Smoke3 + 1));
-				smokeGore.velocity *= speedMulti;
-				smokeGore.velocity.X -= 1f;
-				smokeGore.velocity.Y += 1f;
-				smokeGore = Gore.NewGoreDirect(Projectile.GetSource_Death(), CTR, default, Main.rand.Next(GoreID.Smoke1, GoreID.Smoke3 + 1));
-				smokeGore.velocity *= speedMulti;
-				smokeGore.velocity.X += 1f;
-				smokeGore.velocity.Y -= 1f;
-				smokeGore = Gore.NewGoreDirect(Projectile.GetSource_Death(), CTR, default, Main.rand.Next(GoreID.Smoke1, GoreID.Smoke3 + 1));
-				smokeGore.velocity *= speedMulti;
-				smokeGore.velocity -= Vector2.One;
-			}
+                Gore smokeGore = Gore.NewGoreDirect(Projectile.GetSource_Death(), CTR, default, Main.rand.Next(GoreID.Smoke1, GoreID.Smoke3 + 1));
+                smokeGore.velocity *= speedMulti;
+                smokeGore.velocity += Vector2.One;
+                smokeGore = Gore.NewGoreDirect(Projectile.GetSource_Death(), CTR, default, Main.rand.Next(GoreID.Smoke1, GoreID.Smoke3 + 1));
+                smokeGore.velocity *= speedMulti;
+                smokeGore.velocity.X -= 1f;
+                smokeGore.velocity.Y += 1f;
+                smokeGore = Gore.NewGoreDirect(Projectile.GetSource_Death(), CTR, default, Main.rand.Next(GoreID.Smoke1, GoreID.Smoke3 + 1));
+                smokeGore.velocity *= speedMulti;
+                smokeGore.velocity.X += 1f;
+                smokeGore.velocity.Y -= 1f;
+                smokeGore = Gore.NewGoreDirect(Projectile.GetSource_Death(), CTR, default, Main.rand.Next(GoreID.Smoke1, GoreID.Smoke3 + 1));
+                smokeGore.velocity *= speedMulti;
+                smokeGore.velocity -= Vector2.One;
+            }
         }
         public void Reload()
         {
@@ -184,7 +179,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Ranged
                 Projectile.rotation += MathHelper.Pi;
         }
 
-		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             Player player = Main.LocalPlayer;
 

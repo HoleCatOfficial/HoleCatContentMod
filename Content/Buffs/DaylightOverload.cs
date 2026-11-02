@@ -1,62 +1,60 @@
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
 using Microsoft.Xna.Framework;
 using OpusLib;
 using OpusLib.Content.Helpers;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Buffs
 {
-	public class DaylightOverload : ModBuff
-	{
-		public override void SetStaticDefaults()
-		{
-			Main.debuff[Type] = true;  // Is it a debuff?
-			Main.pvpBuff[Type] = true; // Players can give other players buffs, which are listed as pvpBuff
-			Main.buffNoSave[Type] = true; // Causes this buff not to persist when exiting and rejoining the world
-			BuffID.Sets.LongerExpertDebuff[Type] = true; // If this buff is a debuff, setting this to true will make this buff last twice as long on players in expert mode
-		}
+    public class DaylightOverload : ModBuff
+    {
+        public override void SetStaticDefaults()
+        {
+            Main.debuff[Type] = true;  // Is it a debuff?
+            Main.pvpBuff[Type] = true; // Players can give other players buffs, which are listed as pvpBuff
+            Main.buffNoSave[Type] = true; // Causes this buff not to persist when exiting and rejoining the world
+            BuffID.Sets.LongerExpertDebuff[Type] = true; // If this buff is a debuff, setting this to true will make this buff last twice as long on players in expert mode
+        }
 
-		// Allows you to make this buff give certain effects to the given player
-		public override void Update(Player player, ref int buffIndex)
-		{
-			player.GetModPlayer<DOPlayer>().lifeRegenDebuff = true;
-		}
-		public override void Update(NPC target, ref int buffIndex) 
-		{
-			if (target.TryGetGlobalNPC<DOTarget>(out var modNPC)) 
-			{
+        // Allows you to make this buff give certain effects to the given player
+        public override void Update(Player player, ref int buffIndex)
+        {
+            player.GetModPlayer<DOPlayer>().lifeRegenDebuff = true;
+        }
+        public override void Update(NPC target, ref int buffIndex)
+        {
+            if (target.TryGetGlobalNPC<DOTarget>(out var modNPC))
+            {
                 modNPC.lifeRegenDebuff = true;
             }
-		}
-	}
-	
-	public class DOTarget : GlobalNPC
+        }
+    }
+
+    public class DOTarget : GlobalNPC
     {
         public override bool InstancePerEntity => true; // Ensures each NPC has its own instance
 
         public bool lifeRegenDebuff;
 
-        public override void ResetEffects(NPC npc) {
+        public override void ResetEffects(NPC npc)
+        {
             lifeRegenDebuff = false;
         }
 
         public override void AI(NPC npc)
         {
-			if (lifeRegenDebuff)
-			{
+            if (lifeRegenDebuff)
+            {
                 //Dust.NewDust(npc.position, npc.width, npc.height, DustID.FireworksRGB, 0.0f, 0.5f, 0, ColorLib.DarkRift2, 1);
 
                 Color color = OpusColorUtils.MultiLerp(Opus.Sine(1f, 0f), ColorLib.HeliciteColorMap);
 
                 PixelParticle Pixel = new();
-				Pixel.Initialize(Main.rand.NextVector2FromRectangle(npc.Hitbox), new Vector2(0, -0.5f).RotatedByRandom(0.2f), color, 2f);
+                Pixel.Initialize(Main.rand.NextVector2FromRectangle(npc.Hitbox), new Vector2(0, -0.5f).RotatedByRandom(0.2f), color, 2f);
                 ParticleEngine.ShaderParticles.Add(Pixel);
 
                 PointGlowPreMultiplied Glow = new();
@@ -64,60 +62,60 @@ namespace DestroyerTest.Content.Buffs
                 ParticleEngine.ShaderParticles.Add(Glow);
 
                 if (Main.rand.NextBool(60))
-				{
+                {
                     HeliciteShineParticle Shine = new();
                     Shine.Initialize(npc.Center, Main.rand.NextVector2Circular(1f, 1f));
                     ParticleEngine.ShaderParticles.Add(Shine);
                 }
 
-				bool OwnedByBoss()
-				{
-					if (npc.realLife != -1)
-					{
-						if (Main.npc[npc.realLife].boss)
-						{
-							return true;
-						}
-					}
+                bool OwnedByBoss()
+                {
+                    if (npc.realLife != -1)
+                    {
+                        if (Main.npc[npc.realLife].boss)
+                        {
+                            return true;
+                        }
+                    }
 
-					return false;
-				}
+                    return false;
+                }
 
-				if (npc.boss == false && !OwnedByBoss())
+                if (npc.boss == false && !OwnedByBoss())
                 {
                     npc.velocity *= 0.65f;
                 }
-			}
+            }
             base.AI(npc);
         }
 
 
         public override void UpdateLifeRegen(NPC npc, ref int damage)
-		{
-			if (lifeRegenDebuff)
-			{
-				if (npc.lifeRegen > 0)
-				{
+        {
+            if (lifeRegenDebuff)
+            {
+                if (npc.lifeRegen > 0)
+                {
                     npc.lifeRegen = 0;
-				}
-				npc.lifeRegen -= 36;
-			}
-		}
+                }
+                npc.lifeRegen -= 36;
+            }
+        }
     }
 
-	public class DOPlayer : ModPlayer
-	{
-		public bool lifeRegenDebuff;
+    public class DOPlayer : ModPlayer
+    {
+        public bool lifeRegenDebuff;
 
-		public override void ResetEffects()
-		{
-			lifeRegenDebuff = false;
-		}
+        public override void ResetEffects()
+        {
+            lifeRegenDebuff = false;
+        }
 
         public override void PostUpdateBuffs()
         {
-			if (lifeRegenDebuff)
-			{
+            if (lifeRegenDebuff)
+            {
                 Color color = OpusColorUtils.MultiLerp(Opus.Sine(1f, 0f), ColorLib.HeliciteColorMap);
 
 
@@ -135,18 +133,18 @@ namespace DestroyerTest.Content.Buffs
                     Shine.Initialize(Player.Center, Main.rand.NextVector2Circular(1f, 1f));
                     ParticleEngine.ShaderParticles.Add(Shine);
                 }
-                
-				Player.moveSpeed *= 0.85f;
-			}
+
+                Player.moveSpeed *= 0.85f;
+            }
             base.PostUpdateBuffs();
         }
-		public override void UpdateBadLifeRegen()
-		{
-			if (lifeRegenDebuff)
-			{
-				Player.lifeRegenTime = 0;
-				Player.lifeRegen -= 16;
-			}
-		}
-	}
+        public override void UpdateBadLifeRegen()
+        {
+            if (lifeRegenDebuff)
+            {
+                Player.lifeRegenTime = 0;
+                Player.lifeRegen -= 16;
+            }
+        }
+    }
 }

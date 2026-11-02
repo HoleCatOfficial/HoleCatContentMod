@@ -1,19 +1,11 @@
-using Terraria;
-using Terraria.ModLoader;
-using Terraria.ID;
-using Microsoft.Xna.Framework;
-using DestroyerTest.Common;
-using DestroyerTest.Content.MeleeWeapons;
-using Terraria.Audio;
-using DestroyerTest.Content.Magic;
 using DestroyerTest.Content.Projectiles;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
-using System;
-using Terraria.DataStructures;
-using DestroyerTest.Content.Projectiles.Weapon.Rogue;
 using DestroyerTest.Content.Projectiles.Weapon.Ranged;
-using DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss;
+using DestroyerTest.Content.Projectiles.Weapon.Thrower;
+using Microsoft.Xna.Framework;
+using Terraria;
+using Terraria.Audio;
+using Terraria.DataStructures;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.RangedItems
 {
@@ -89,7 +81,7 @@ namespace DestroyerTest.Content.RangedItems
                     Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, Launch, type, Projectile.damage, Projectile.knockBack, player.whoAmI);
                     if (state == State.Empowered)
                     {
-                        
+
                         for (int r = 0; r < Main.rand.Next(3, 6); r++)
                         {
                             Vector2 LaunchRand = Launch.RotatedByRandom(1.35);
@@ -105,20 +97,20 @@ namespace DestroyerTest.Content.RangedItems
                 }
 
                 switch (state)
-                    {
-                        case State.Default:
-                            {
-                                type = ModContent.ProjectileType<GalantineArrow>();
-                                Shot = ShootRegular;
-                                break;
-                            }
-                        case State.Empowered:
-                            {
-                                Shot = ShootEmpowered;
-                                type = ModContent.ProjectileType<GalantineLanceFriendly>();
-                                break;
-                            }
-                    }
+                {
+                    case State.Default:
+                        {
+                            type = ModContent.ProjectileType<GalantineArrow>();
+                            Shot = ShootRegular;
+                            break;
+                        }
+                    case State.Empowered:
+                        {
+                            Shot = ShootEmpowered;
+                            type = ModContent.ProjectileType<GalantineLanceFriendly>();
+                            break;
+                        }
+                }
             }
             else
             {

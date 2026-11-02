@@ -1,15 +1,10 @@
-using System;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Particles;
- 
+
 using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ObjectData;
-using UtfUnknown.Core.Models.SingleByte.Finnish;
 
 namespace DestroyerTest.Content.Projectiles.player.Accessory
 {
@@ -63,9 +58,9 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
 
             if (Main.rand.NextBool(5))
             {
-                Dust.NewDust(Projectile.position, Projectile.width + 2, Projectile.height + 2, DustID.TintableDustLighted, Projectile.velocity.X * 0.2f, Projectile.velocity.Y * 0.2f, 150,  ColorLib.StellarFireGradientLooping(), 0.7f);
+                Dust.NewDust(Projectile.position, Projectile.width + 2, Projectile.height + 2, DustID.TintableDustLighted, Projectile.velocity.X * 0.2f, Projectile.velocity.Y * 0.2f, 150, ColorLib.StellarFireGradientLooping(), 0.7f);
             }
-            
+
             if (DelayTimer < 10)
             {
                 DelayTimer += 1;

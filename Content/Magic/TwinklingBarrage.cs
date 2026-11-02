@@ -1,10 +1,8 @@
 ﻿using DestroyerTest.Content.BossSummons;
-using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Weapon.Magic;
 using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.Enums;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -14,7 +12,7 @@ namespace DestroyerTest.Content.Magic
     {
         public override void SetDefaults()
         {
-            
+
             Item.width = 40;
             Item.height = 40;
             Item.useTime = 4;
@@ -35,7 +33,7 @@ namespace DestroyerTest.Content.Magic
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
             position = player.Center + Main.rand.NextVector2Circular(20, 20);
-            
+
             type = Main.rand.NextBool(10) ? ModContent.ProjectileType<StellarNeedle>() : ModContent.ProjectileType<StellarShard>();
 
             if (type == ModContent.ProjectileType<StellarNeedle>())

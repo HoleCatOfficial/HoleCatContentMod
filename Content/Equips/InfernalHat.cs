@@ -1,24 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using BreadLibrary.Core.Graphics.Particles;
+﻿using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.RiftArsenal;
-using DestroyerTest.Content.SummonItems;
-using DestroyerTest.Content.Tiles;
-using DestroyerTest.Content.Tiles.Riftplate;
 using DestroyerTest.Rarity;
 using GlowmaskHelper.Content;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Steamworks;
 using Terraria;
-using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Equips
@@ -52,7 +40,7 @@ namespace DestroyerTest.Content.Equips
 
         public override void UpdateEquip(Player player)
         {
-            Rectangle DustBox = Utils.CenteredRectangle(player.Top + new Vector2(0, 6), new Vector2(((int)player.width).WrapToTwo(), 10));
+            Rectangle DustBox = Utils.CenteredRectangle(player.Top + new Vector2(0, 6), new Vector2(player.width.WrapToTwo(), 10));
             if (Main.rand.NextBool(4))
             {
                 PixelParticlePlayer Pixel = new(player);
@@ -80,5 +68,5 @@ namespace DestroyerTest.Content.Equips
             .Register();
         }
     }
-    
+
 }

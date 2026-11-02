@@ -1,35 +1,32 @@
 
 using System.Linq;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.Tiles;
-using DestroyerTest.Content.Tiles.Riftplate;
+using DestroyerTest.Content.Projectiles.player.Accessory;
+using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using DestroyerTest.Rarity;
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Content.Projectiles.player.Accessory;
 
 namespace DestroyerTest.Content.Equips
 {
-	public class WyvernSkullRose : ModItem
-	{
+    public class WyvernSkullRose : ModItem
+    {
 
-		public override void SetStaticDefaults() {
-			
-		}
+        public override void SetStaticDefaults()
+        {
 
-		public override void SetDefaults() {
-			Item.width = 40;
-			Item.height = 66;
-			Item.value = 10000;
-			Item.rare = ModContent.RarityType<CrimsonSpecialRarity>(); // The rarity of the item
-			Item.accessory = true;
-		}
-        
+        }
+
+        public override void SetDefaults()
+        {
+            Item.width = 40;
+            Item.height = 66;
+            Item.value = 10000;
+            Item.rare = ModContent.RarityType<CrimsonSpecialRarity>(); // The rarity of the item
+            Item.accessory = true;
+        }
+
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             if (player.TryGetModPlayer<WyvernSkullRoseDash>(out WyvernSkullRoseDash Dash))
@@ -42,9 +39,9 @@ namespace DestroyerTest.Content.Equips
             }
         }
 
-		
 
-    public class WyvernSkullRoseDash : ModPlayer
+
+        public class WyvernSkullRoseDash : ModPlayer
         {
             bool HasWyvernSkullRoseEquipped()
             {
@@ -94,7 +91,7 @@ namespace DestroyerTest.Content.Equips
                     DashDir = DashUp;
                 }
                 else if (Player.controlRight && Player.releaseRight && Player.doubleTapCardinalTimer[DashRight] < 15 && HasWyvernSkullRoseEquipped())
-                DashDir = DashRight;
+                    DashDir = DashRight;
 
                 else if (Player.controlLeft && Player.releaseLeft && Player.doubleTapCardinalTimer[DashLeft] < 15 && HasWyvernSkullRoseEquipped())
                 {
@@ -157,7 +154,7 @@ namespace DestroyerTest.Content.Equips
 
                 if (DashDelay > 0)
                     DashDelay--;
-                
+
 
                 if (DashTimer > 0)
                 { // dash is active
@@ -197,6 +194,6 @@ namespace DestroyerTest.Content.Equips
             }
         }
 
-		
-	}
+
+    }
 }

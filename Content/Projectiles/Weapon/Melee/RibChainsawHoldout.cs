@@ -1,9 +1,8 @@
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.MeleeWeapons;
 using DestroyerTest.Content.Particles;
- 
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -16,12 +15,13 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 {
     public class RibChainsawHoldout : ModProjectile
     {
-        SoundStyle EnemySlice = new SoundStyle($"DestroyerTest/Assets/Audio/TenebrousKatana/GoreSlice", 2) with {
-					Volume = 1.0f, 
-					Pitch = 0.0f, 
-					PitchVariance = 0.5f, 
-				}; 
-        
+        SoundStyle EnemySlice = new SoundStyle($"DestroyerTest/Assets/Audio/TenebrousKatana/GoreSlice", 2) with
+        {
+            Volume = 1.0f,
+            Pitch = 0.0f,
+            PitchVariance = 0.5f,
+        };
+
         public override void SetStaticDefaults()
         {
             Main.projFrames[Type] = 2;
@@ -35,24 +35,27 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Projectile.tileCollide = false;
             Projectile.ignoreWater = true;
             Projectile.timeLeft = 40;
-            
+
             Projectile.usesLocalNPCImmunity = true;
             Projectile.localNPCHitCooldown = 10;
-            
+
             Projectile.netImportant = true;
             Projectile.hide = true;
             Projectile.DamageType = ModContent.GetInstance<DTTrueMeleeClass>();
         }
 
-        private void AnimateProjectile() {
-            if (++Projectile.frameCounter >= 4) {
+        private void AnimateProjectile()
+        {
+            if (++Projectile.frameCounter >= 4)
+            {
                 Projectile.frameCounter = 0;
-                if (++Projectile.frame >= Main.projFrames[Projectile.type]) {
+                if (++Projectile.frame >= Main.projFrames[Projectile.type])
+                {
                     Projectile.frame = 0;
                 }
             }
         }
-        
+
         public int SoundInterval = 20;
 
 
@@ -70,7 +73,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Vector2 origin = new Vector2(T.Width / 2f, frameHeight / 2f);
 
             SpriteEffects FX = Projectile.direction == 1 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
-            
+
             Main.EntitySpriteDraw(T, Projectile.Center - Main.screenPosition, frame, Projectile.GetAlpha(lightColor), Projectile.rotation, origin, Projectile.scale, FX, 0f);
             return false;
         }
@@ -128,9 +131,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Projectile.timeLeft = 2;
         }
 
-		
-		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
-		{
+
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
+        {
             Player player = Main.player[Projectile.owner];
             var ScreenShake = player.GetModPlayer<ScreenshakePlayer>();
             ScreenShake.screenshakeMagnitude = 4;

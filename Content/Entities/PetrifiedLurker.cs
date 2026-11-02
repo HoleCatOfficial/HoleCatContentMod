@@ -9,7 +9,6 @@ using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Utilities;
 
 namespace DestroyerTest.Content.Entities
 {
@@ -60,7 +59,8 @@ namespace DestroyerTest.Content.Entities
             float stepSpeed = 0.6f;
             float gfxOffY = 0f;
 
-            if (NPC.collideX && NPC.velocity.Y == 0f) {
+            if (NPC.collideX && NPC.velocity.Y == 0f)
+            {
                 Collision.StepUp(
                     ref NPC.position,
                     ref NPC.velocity,
@@ -93,20 +93,20 @@ namespace DestroyerTest.Content.Entities
         }
 
         public override float SpawnChance(NPCSpawnInfo spawnInfo)
-		{
-            bool v = (ModContent.GetInstance<RiftSurface>().IsBiomeActive(spawnInfo.Player) || 
+        {
+            bool v = (ModContent.GetInstance<RiftSurface>().IsBiomeActive(spawnInfo.Player) ||
             ModContent.GetInstance<RiftUnderground>().IsBiomeActive(spawnInfo.Player) ||
             ModContent.GetInstance<RiftDesert>().IsBiomeActive(spawnInfo.Player) ||
             ModContent.GetInstance<RiftDesertUnderground>().IsBiomeActive(spawnInfo.Player) ||
             ModContent.GetInstance<RiftTundra>().IsBiomeActive(spawnInfo.Player));
-			if (v)
-			{
-				return 0.5f;
-			}
-			return 0f;
-		}
+            if (v)
+            {
+                return 0.5f;
+            }
+            return 0f;
+        }
 
-        
+
 
 
         public override void HitEffect(NPC.HitInfo hit)

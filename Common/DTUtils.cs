@@ -1,14 +1,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Metrics;
-using System.IO;
 using System.Linq;
-using System.Media;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Runtime.Intrinsics.X86;
 using BreadLibrary.Core;
 using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
@@ -16,40 +9,28 @@ using BreadLibrary.Core.Graphics.Spritebatch;
 using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Entities;
-using DestroyerTest.Content.Magic;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Particles.Stellar;
 using DestroyerTest.Rarity.Scepter;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
-using Mono.Cecil.Cil;
 using OpusLib;
 using OpusLib.Content.Helpers;
 using OpusLib.Content.Particles;
 using ReLogic.Content;
 using ReLogic.Graphics;
-using Steamworks;
 using Terraria;
-using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
-using Terraria.GameContent.ItemDropRules;
-using Terraria.Graphics;
 using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using Terraria.Modules;
 using Terraria.UI.Chat;
-using Terraria.Utilities;
 using Terraria.WorldBuilding;
-using static System.Net.Mime.MediaTypeNames;
 using static DestroyerTest.Common.Room;
-using static Terraria.GameContent.Animations.IL_Actions.Sprites;
 
 namespace DestroyerTest.Common
 {
@@ -107,7 +88,7 @@ namespace DestroyerTest.Common
         {
             instance = ModContent.GetInstance<DTUtils>();
         }
-        
+
         public static string GetModNPCLocalizationEntry(ModNPC npc, int variant = 1)
         {
             return Language.GetTextValue($"Mods.DestroyerTest.NPCs.{npc.Name}.BestiaryEntry{variant}");
@@ -224,11 +205,11 @@ namespace DestroyerTest.Common
         public static int[] NPCDownTally = new int[99999];
 
         public static void InfectedScepter_RingSpreadProjectileAlternating(int ID1, int ID2, int Amount, Vector2 CTR, float Radius, int Dmg = 0, int KB = 0, float Speed = 2, float AI0 = 0, float AI1 = 0, float AI2 = 0, bool RandomOffset = false)
-		{
-			float rotationStep = MathHelper.TwoPi / Amount;
-			float baseRotation = RandomOffset ? Main.rand.NextFloat(MathHelper.TwoPi) : 0f;
+        {
+            float rotationStep = MathHelper.TwoPi / Amount;
+            float baseRotation = RandomOffset ? Main.rand.NextFloat(MathHelper.TwoPi) : 0f;
 
-			for (int i = 0; i < Amount; i++)
+            for (int i = 0; i < Amount; i++)
             {
                 float angle = rotationStep * i + baseRotation;
                 Vector2 position = CTR + new Vector2(Radius, 0f).RotatedBy(angle);
@@ -248,13 +229,13 @@ namespace DestroyerTest.Common
                     ai2: AI2
                 );
             }
-		}
+        }
 
         public static List<int> RiftEnemies = new List<int>
         {
             ModContent.NPCType<PetrifiedWisp>(),
-            ModContent.NPCType<PetrifiedHead>(),  
-            ModContent.NPCType<RiftDiggerHead>(),  
+            ModContent.NPCType<PetrifiedHead>(),
+            ModContent.NPCType<RiftDiggerHead>(),
         };
 
         private int ScrollingTextureTexOffset = 0;
@@ -265,7 +246,7 @@ namespace DestroyerTest.Common
         /// <param name="line"></param>
         /// <param name="texture"></param>
         /// <param name="scrollspeed"></param>
-        public void ScrollingTextureSpine(Line line, Asset<Texture2D> texture, Color drawColor, SpriteBatch spriteBatch,  BlendState blendState, int TexOffset, float Width = 1f)
+        public void ScrollingTextureSpine(Line line, Asset<Texture2D> texture, Color drawColor, SpriteBatch spriteBatch, BlendState blendState, int TexOffset, float Width = 1f)
         {
 
             if (texture == null)
@@ -274,11 +255,11 @@ namespace DestroyerTest.Common
                 return;
             }
 
-            
+
             var Cap = spriteBatch.Capture();
             spriteBatch.End();
             Cap.SamplerState = SamplerState.PointWrap;
-            
+
             spriteBatch.Begin(Cap);
             spriteBatch.Draw(texture.Value, line.Start - Main.screenPosition, new Rectangle(TexOffset, 0, (int)line.GetLineLength, texture.Value.Height), drawColor, line.GetLineRotation, new Vector2(0, texture.Value.Height) / 2, new Vector2(1, Width), SpriteEffects.None, 0);
             spriteBatch.ResetToDefault();
@@ -300,7 +281,7 @@ namespace DestroyerTest.Common
                 return;
             }
 
-            
+
             var Cap = spriteBatch.Capture();
 
             spriteBatch.End();
@@ -505,31 +486,31 @@ namespace DestroyerTest.Common
             }
 
             spriteBatch.Draw(Ball, Center - Main.screenPosition, null, ColorLib.Rift, Rot, Ball.Size() / 2, bottomscale, SpriteEffects.None, 1f);
-            
+
             Opus.ReturnToDefaultDrawing(spriteBatch);
 
             for (int i = 0; i < tail.Count; i++)
-			{
-				float progress = i / (float)(tail.Count - 1);
-				float scale = MathHelper.Lerp(Scale, 0.0001f, progress);
-				Color color = Color.Black;
+            {
+                float progress = i / (float)(tail.Count - 1);
+                float scale = MathHelper.Lerp(Scale, 0.0001f, progress);
+                Color color = Color.Black;
 
-				Main.EntitySpriteDraw(
-					DTAssetLib.FeatheredCircle.Value,
-					tail[i] - Main.screenPosition,
-					null,
-					color,
-					Rot,
-					Ball.Size() / 2f,
-					scale,
-					SpriteEffects.None,
-					0
-				);
-			}
+                Main.EntitySpriteDraw(
+                    DTAssetLib.FeatheredCircle.Value,
+                    tail[i] - Main.screenPosition,
+                    null,
+                    color,
+                    Rot,
+                    Ball.Size() / 2f,
+                    scale,
+                    SpriteEffects.None,
+                    0
+                );
+            }
 
             spriteBatch.Draw(Ball, Center - Main.screenPosition, null, Color.Black, Rot, Ball.Size() / 2, Scale, SpriteEffects.None, 0f);
 
-            
+
         }
 
         /// <summary>
@@ -609,25 +590,25 @@ namespace DestroyerTest.Common
                     0
                 );
             }
-            
-            for (int i = 0; i < TrailPositions.Count; i++)
-			{
-				float progress = i / (float)TrailLength;
-				float scale = MathHelper.Lerp(Scale, 0.001f, progress);
-				Color color = colorIN;
 
-				Main.EntitySpriteDraw(
-					DTAssetLib.FeatheredCircle.Value,
-					TrailPositions[i] - Main.screenPosition,
-					null,
+            for (int i = 0; i < TrailPositions.Count; i++)
+            {
+                float progress = i / (float)TrailLength;
+                float scale = MathHelper.Lerp(Scale, 0.001f, progress);
+                Color color = colorIN;
+
+                Main.EntitySpriteDraw(
+                    DTAssetLib.FeatheredCircle.Value,
+                    TrailPositions[i] - Main.screenPosition,
+                    null,
                     color with { A = 0 },
-					Projectile.rotation,
-					DTAssetLib.FeatheredCircle.Value.Size() / 2f,
-					scale,
-					SpriteEffects.None,
-					0
-				);
-			}
+                    Projectile.rotation,
+                    DTAssetLib.FeatheredCircle.Value.Size() / 2f,
+                    scale,
+                    SpriteEffects.None,
+                    0
+                );
+            }
 
             Main.spriteBatch.Draw(
                 DTAssetLib.Cyclone(2).Value,
@@ -692,7 +673,7 @@ namespace DestroyerTest.Common
 
         public static bool[] LegendaryWeapon = ItemID.Sets.Factory.CreateNamedSet("LegendaryWeapon").Description("Items in the set are considered special for multiple purposes.").RegisterBoolSet();
 
-        
+
 
         public static void IncompatibleWith(int itemType, int incompatibleType)
         {
@@ -767,7 +748,7 @@ namespace DestroyerTest.Common
         }
 
         public static bool[] ThrowerProjectilesThatCantTriggerEquipEffects = ProjectileID.Sets.Factory.CreateNamedSet("NoHematoidVisageActivation").Description("Cannot trigger the effects of Hematoid Visage and related items.").RegisterBoolSet();
-    
+
         public static bool CalamityBossRushActive()
         {
             if (ModLoader.HasMod("FranciumCalamityWeapons"))
@@ -913,34 +894,34 @@ namespace DestroyerTest.Common
     public static class DTStaticUtils
     {
         public static void DefaultToFlask(this Item item, int BuffType, int Rarity, int Value)
-		{
-			item.UseSound = SoundID.Item3;
-			item.useStyle = ItemUseStyleID.DrinkLiquid;
-			item.useTurn = true;
-			item.useAnimation = 17;
-			item.useTime = 17;
-			item.maxStack = Item.CommonMaxStack;
-			item.consumable = true;
-			item.buffType = BuffType;
-			item.buffTime = Item.flaskTime;
-			item.value = Value;
-			item.rare = Rarity;
-		}
+        {
+            item.UseSound = SoundID.Item3;
+            item.useStyle = ItemUseStyleID.DrinkLiquid;
+            item.useTurn = true;
+            item.useAnimation = 17;
+            item.useTime = 17;
+            item.maxStack = Item.CommonMaxStack;
+            item.consumable = true;
+            item.buffType = BuffType;
+            item.buffTime = Item.flaskTime;
+            item.value = Value;
+            item.rare = Rarity;
+        }
 
         public static void DefaultToVial(this Item item, int BuffType, int Rarity, int Value)
-		{
-			item.UseSound = SoundID.Item3;
-			item.useStyle = ItemUseStyleID.DrinkLiquid;
-			item.useTurn = true;
-			item.useAnimation = 17;
-			item.useTime = 17;
-			item.maxStack = Item.CommonMaxStack;
-			item.consumable = true;
-			item.buffType = BuffType;
-			item.buffTime = Item.flaskTime;
-			item.value = Value;
-			item.rare = Rarity;
-		}
+        {
+            item.UseSound = SoundID.Item3;
+            item.useStyle = ItemUseStyleID.DrinkLiquid;
+            item.useTurn = true;
+            item.useAnimation = 17;
+            item.useTime = 17;
+            item.maxStack = Item.CommonMaxStack;
+            item.consumable = true;
+            item.buffType = BuffType;
+            item.buffTime = Item.flaskTime;
+            item.value = Value;
+            item.rare = Rarity;
+        }
 
         public static bool ArmorSetBonusKey(this Player player)
         {
@@ -1053,7 +1034,7 @@ namespace DestroyerTest.Common
         }
 
         public static void SpecialColorInnerOuter(this DrawableTooltipLine line, Color strokeColor, Color textColor)
-        { 
+        {
             DynamicSpriteFont font = FontAssets.MouseText.Value;
             Vector2 position = new Vector2(line.X, line.Y);
 
@@ -1588,7 +1569,7 @@ namespace DestroyerTest.Common
         /// <returns></returns>
         public static float ScaleRingTextureToMatchRadius(this Texture2D Texture, float RadiusToCompare, int DistanceFromTextureCenter = 0)
         {
-            return RadiusToCompare / (float)DistanceFromTextureCenter;
+            return RadiusToCompare / DistanceFromTextureCenter;
         }
 
         public static void CommonRiftRocketExplosion(this Projectile projectile)
@@ -1597,7 +1578,7 @@ namespace DestroyerTest.Common
             Ring.Prepare(projectile.Center, Vector2.Zero, ColorLib.Rift, 0.1f, 0.01f, 0.7f, BlendState.Additive);
             ParticleEngine.Particles.Add(Ring);
 
-            for(int i = 0; i < 24; i++)
+            for (int i = 0; i < 24; i++)
             {
                 PixelParticle Pixel = new();
                 Pixel.Initialize(projectile.Center, Main.rand.NextVector2Circular(2f, 2f), ColorLib.Rift, 2f);
@@ -1607,7 +1588,7 @@ namespace DestroyerTest.Common
 
         public static Item FromID(this Item item, int ID)
         {
-            return  new Item(ID);
+            return new Item(ID);
         }
 
         // To achieve independence, some theft is required.
@@ -1739,7 +1720,7 @@ namespace DestroyerTest.Common
             return new Color(color.R, color.G, color.B, color.A);
         }
 
-        
+
     }
 
 
@@ -1747,12 +1728,12 @@ namespace DestroyerTest.Common
     {
         public override void PostSetupContent()
         {
-           DTUtils.TenebrisBuffImmunities = new int[]
-           {
+            DTUtils.TenebrisBuffImmunities = new int[]
+            {
                 ModContent.BuffType<ShimmeringFlames>(),
                 ModContent.BuffType<HaepiensInferno>(),
                 BuffID.OnFire,
-                BuffID.OnFire3, 
+                BuffID.OnFire3,
                 BuffID.CursedInferno,
                 BuffID.Frostburn,
                 BuffID.Frostburn2,
@@ -1764,7 +1745,7 @@ namespace DestroyerTest.Common
                 BuffID.ShadowFlame,
                 BuffID.Slimed,
                 BuffID.SoulDrain
-           };
+            };
         }
     }
 
@@ -1920,7 +1901,7 @@ namespace DestroyerTest.Common
         /// </summary>
         public static Color Soul3 = new Color(255, 182, 35);
 
-        public static Color[] SoulColorMap = 
+        public static Color[] SoulColorMap =
         [
             SoulLight,
             Soul,
@@ -2159,7 +2140,7 @@ namespace DestroyerTest.Common
 
         public static Color SpiritFireGradient(float t)
         {
-            
+
             t = MathHelper.Clamp(t, 0f, 3f);
 
             if (t < 1f)
@@ -2236,7 +2217,7 @@ namespace DestroyerTest.Common
         public static Color[] HeliciteColorMap = [HeliciteBlue, HeliciteCyan, HeliciteCyan, HeliciteYellow, HeliciteOrange];
     }
 
-    
+
 
 
     public static class Polar
@@ -2368,7 +2349,7 @@ namespace DestroyerTest.Common
                 float a1 = angles[next];
 
                 float delta = MathHelper.WrapAngle(a1 - a0);
-                
+
                 for (int i = 0; i <= samplesPerEdge; i++)
                 {
                     float t = i / (float)samplesPerEdge;
@@ -2448,12 +2429,11 @@ namespace DestroyerTest.Common
             {
                 Opus.StartSpriteBatchForTrails(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
-            
+
 
                 if (Positions.Count > 1)
                 {
                     List<ColoredVertex> ve = new List<ColoredVertex>();
-                    float a = 0;
 
                     for (int i = Positions.Count - 1; i > 0; i--)
                     {
@@ -2486,7 +2466,7 @@ namespace DestroyerTest.Common
                         Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * AdjAmplitude;
 
                         DTUtils.AddStrips(ve, Positions, i, offset, offset2, t, b, Scroll);
-                       
+
                     }
 
 
@@ -2522,14 +2502,13 @@ namespace DestroyerTest.Common
                 if (Positions.Count > 1)
                 {
                     List<ColoredVertex> ve = new List<ColoredVertex>();
-                    float a = 0;
 
                     for (int i = Positions.Count - 1; i > 0; i--)
                     {
                         float t = 1f - (i / (float)Positions.Count);
                         float taper = MathHelper.Lerp(1f, 0f, t);
                         float AdjAmplitude = Amplitude * 1;
-                       
+
                         Color b = color * t;
 
 
@@ -2598,7 +2577,6 @@ namespace DestroyerTest.Common
                 if (Positions.Count > 1)
                 {
                     List<ColoredVertex> ve = new List<ColoredVertex>();
-                    float a = 0;
 
                     for (int i = Positions.Count - 1; i > 0; i--)
                     {
@@ -2668,7 +2646,6 @@ namespace DestroyerTest.Common
                 if (Positions.Count > 1)
                 {
                     List<ColoredVertex> ve = new List<ColoredVertex>();
-                    float a = 0;
 
                     for (int i = Positions.Count - 1; i > 0; i--)
                     {
@@ -2716,7 +2693,7 @@ namespace DestroyerTest.Common
                 spriteBatch.ResetToDefault();
             }
         }
-        }
+    }
 
     public class DTGenUtils
     {
@@ -2727,7 +2704,7 @@ namespace DestroyerTest.Common
                 throw new Exception("DTGenUtils.GenRoom: The Room to be generated is null.");
             }
 
-            
+
 
             WorldUtils.Gen(room.Position, new GenShapeActionPair(new Shapes.Rectangle(room.Bounds.Width, room.Bounds.Height), new Actions.SetTile(room.TileType, false, true)));
             WorldUtils.Gen(room.Interior.Location, new GenShapeActionPair(new Shapes.Rectangle(room.Interior.Width, room.Interior.Height), new Actions.ClearTile(true)));
@@ -2744,7 +2721,7 @@ namespace DestroyerTest.Common
                 throw new Exception("DTGenUtils.GenHallway: The Hallway to be generated is null.");
             }
 
-            
+
 
 
             WorldUtils.Gen(hallway.Position, new GenShapeActionPair(new Shapes.Rectangle(hallway.Bounds.Width, hallway.Bounds.Height), new Actions.SetTile(hallway.TileType, false, true)));
@@ -2760,7 +2737,7 @@ namespace DestroyerTest.Common
                 throw new Exception("DTGenUtils.GenChute: The Chute to be generated is null.");
             }
 
-            
+
 
             WorldUtils.Gen(chute.Position, new GenShapeActionPair(new Shapes.Rectangle(chute.Bounds.Width, chute.Bounds.Height), new Actions.SetTile(chute.TileType, false, true)));
             WorldUtils.Gen(chute.Interior.Location, new GenShapeActionPair(new Shapes.Rectangle(chute.Interior.Width, chute.Interior.Height), new Actions.ClearTile(true)));
@@ -3038,7 +3015,7 @@ namespace DestroyerTest.Common
 
                 CarveDoor(x, y, 1);
 
-               
+
 
 
             }
@@ -3050,7 +3027,7 @@ namespace DestroyerTest.Common
 
                 CarveDoor(x, y, -1);
 
-              
+
 
 
             }

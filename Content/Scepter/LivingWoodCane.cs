@@ -1,22 +1,14 @@
-using System;
-using Microsoft.Xna.Framework;
+using DestroyerTest.Content.Projectiles.Weapon.Scepter;
+using DestroyerTest.Rarity.Scepter;
 using Terraria;
-using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.DataStructures;
- 
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Common;
-using DestroyerTest.Rarity;
-using DestroyerTest.Rarity.Scepter;
-using DestroyerTest.Content.Projectiles.Weapon.Scepter;
 
 namespace DestroyerTest.Content.Scepter
 {
-	public class LivingWoodCane : ScepterItem
-	{
-		public override int Width => 46;
+    public class LivingWoodCane : ScepterItem
+    {
+        public override int Width => 46;
         public override int Height => 38;
 
         public override void SetStaticDefaults()
@@ -49,12 +41,13 @@ namespace DestroyerTest.Content.Scepter
             base.SetDefaults();
         }
 
-        public override void AddRecipes() {
-			CreateRecipe()
+        public override void AddRecipes()
+        {
+            CreateRecipe()
                 .AddIngredient(ItemID.Wood, 25)
                 .AddTile(TileID.LivingLoom)
-				.Register();
-		}
+                .Register();
+        }
 
     }
-} 
+}

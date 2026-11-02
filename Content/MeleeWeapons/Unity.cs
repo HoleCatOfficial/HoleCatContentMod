@@ -1,17 +1,9 @@
-﻿using DestroyerTest.Common;
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Content.Projectiles.Weapon.Melee;
+﻿using DestroyerTest.Content.Projectiles.Weapon.Melee;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Rarity;
-using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.GameContent.Drawing;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Config;
 
 namespace DestroyerTest.Content.MeleeWeapons
 {
@@ -40,7 +32,7 @@ namespace DestroyerTest.Content.MeleeWeapons
 
             Item.DamageType = DamageClass.Melee;
             Item.damage = 140;
-            Item.knockBack = 4f; 
+            Item.knockBack = 4f;
             Item.crit = 6;
 
             Item.value = Item.buyPrice(gold: 16);
@@ -55,9 +47,9 @@ namespace DestroyerTest.Content.MeleeWeapons
 
         public override void UpdateInventory(Player player)
         {
-            
+
         }
-    
+
         public override bool CanUseItem(Player player)
         {
 

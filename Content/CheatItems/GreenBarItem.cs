@@ -1,16 +1,9 @@
-﻿using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Content.Resources;
-using Microsoft.Xna.Framework;
+﻿using DestroyerTest.Common;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using Terraria;
-using Terraria.Audio;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using DestroyerTest.Rarity;
-using DestroyerTest.Common;
-using DestroyerTest.Common.Systems;
-using OpusLib;
 
 
 namespace DestroyerTest.Content.CheatItems

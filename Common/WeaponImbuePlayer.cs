@@ -14,7 +14,7 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Common
 {
-	public class WeaponImbuePlayer : ModPlayer
+    public class WeaponImbuePlayer : ModPlayer
     {
 
         public enum Imbues
@@ -27,7 +27,7 @@ namespace DestroyerTest.Common
             FrostBite,
             FrostBurn,
             GalantineBurn,
-            HeliouricShock, 
+            HeliouricShock,
             Hellfire,
             Honey,
             Mud,
@@ -153,7 +153,7 @@ namespace DestroyerTest.Common
             }
 
 
-		}
+        }
 
         public override void OnHitNPCWithProj(Projectile proj, NPC target, NPC.HitInfo hit, int damageDone)
         {
@@ -161,7 +161,7 @@ namespace DestroyerTest.Common
             {
                 ApplyImbue(target);
             }
-		}
+        }
 
         public override void MeleeEffects(Item item, Rectangle hitbox)
         {
@@ -325,7 +325,7 @@ namespace DestroyerTest.Common
                 }
             }
 
-		}
+        }
 
         public override void EmitEnchantmentVisualsAt(Projectile projectile, Vector2 boxPosition, int boxWidth, int boxHeight)
         {
@@ -492,5 +492,5 @@ namespace DestroyerTest.Common
                 }
             }
         }
-	}
+    }
 }

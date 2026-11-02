@@ -1,15 +1,5 @@
 ﻿using DestroyerTest.Common;
-using DestroyerTest.Content.Particles;
- 
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -21,7 +11,7 @@ namespace DestroyerTest.Content.Buffs
         {
             Main.debuff[Type] = true;
             Main.pvpBuff[Type] = true;
-            Main.buffNoSave[Type] = true; 
+            Main.buffNoSave[Type] = true;
             BuffID.Sets.LongerExpertDebuff[Type] = true;
         }
 
@@ -59,7 +49,7 @@ namespace DestroyerTest.Content.Buffs
                 Player.GetAttackSpeed(DamageClass.Melee) -= 0.5f;
                 Player.GetAttackSpeed(DamageClass.MeleeNoSpeed) -= 0.5f;
                 Player.GetAttackSpeed(DamageClass.SummonMeleeSpeed) -= 0.5f;
-                
+
             }
         }
     }

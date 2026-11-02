@@ -1,9 +1,6 @@
 
 using DestroyerTest.Common;
-using DestroyerTest.Content.Resources;
 using DestroyerTest.Rarity.Scepter;
-using Microsoft.Xna.Framework;
-using Steamworks;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;

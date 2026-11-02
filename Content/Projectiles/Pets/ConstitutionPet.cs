@@ -1,11 +1,9 @@
 using System;
-using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Pets
@@ -31,16 +29,16 @@ namespace DestroyerTest.Content.Projectiles.Pets
         public override void OnSpawn(IEntitySource source)
         {
             SoundEngine.PlaySound(TP, Projectile.Center);
-            for(int f = 0; f < 8; f++)
+            for (int f = 0; f < 8; f++)
+            {
+                Vector2 Outer = Projectile.Center + Main.rand.NextVector2Circular(120, 120);
+                Vector2 Dir = Projectile.Center - Outer;
+                if (!Main.dedServ)
                 {
-                    Vector2 Outer = Projectile.Center + Main.rand.NextVector2Circular(120, 120);
-                    Vector2 Dir = Projectile.Center - Outer;
-                    if (!Main.dedServ)
-                    {
-                        Gore.NewGore(Entity.GetSource_FromThis(), Projectile.Center, Dir, 16, Main.rand.NextFloat(0.25f, 1f));
-                        Gore.NewGore(Entity.GetSource_FromThis(), Projectile.Center, Dir, 16, Main.rand.NextFloat(0.25f, 1f));
-                    }
+                    Gore.NewGore(Entity.GetSource_FromThis(), Projectile.Center, Dir, 16, Main.rand.NextFloat(0.25f, 1f));
+                    Gore.NewGore(Entity.GetSource_FromThis(), Projectile.Center, Dir, 16, Main.rand.NextFloat(0.25f, 1f));
                 }
+            }
         }
 
         public float Randomizer => Projectile.localAI[0];
@@ -137,7 +135,7 @@ namespace DestroyerTest.Content.Projectiles.Pets
             if (dist > distTeleport)
             {
                 SoundEngine.PlaySound(TP, Projectile.Center);
-                for(int f = 0; f < 8; f++)
+                for (int f = 0; f < 8; f++)
                 {
                     Vector2 Outer = Projectile.Center + Main.rand.NextVector2Circular(120, 120);
                     Vector2 Dir = Projectile.Center - Outer;

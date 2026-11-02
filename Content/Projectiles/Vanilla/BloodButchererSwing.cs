@@ -1,22 +1,14 @@
 ﻿using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles.ParentClasses;
- 
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using OpusLib.Content.Helpers;
-using System;
-using System.Collections.Generic;
-using System.IO;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.GameContent;
-using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -65,7 +57,7 @@ namespace DestroyerTest.Content.Projectiles.Vanilla
             Projectile.NewProjectile(Projectile.GetSource_OnHit(npc), npc.Center + (toOwner.RotatedByRandom(0.4f) * -3), Vector2.Zero, ProjectileID.BloodButcherer, Projectile.damage / 8, 0f, Owner.whoAmI);
             //SoundEngine.PlaySound(DTAssetLib.SwordSounds.LightGoreCut with { MaxInstances = 0, Pitch = -0.6f, PitchVariance = 1f, Volume = 0.6f }, npc.Center);
         }
-       
+
         public override void DrawUnderBlade()
         {
 
@@ -77,7 +69,7 @@ namespace DestroyerTest.Content.Projectiles.Vanilla
 
         public override void OnStartSwing()
         {
-           
+
         }
 
         public Vector2 swordTip;
@@ -94,7 +86,7 @@ namespace DestroyerTest.Content.Projectiles.Vanilla
             Vector2[] ppt = pt[10..30];
 
             if (Main.rand.NextBool(2))
-            { 
+            {
                 for (int i = 0; i < 2; i++)
                 {
                     Dust.NewDustPerfect(ppt[Main.rand.Next(15)], DustID.Blood, SwordLine.GetLineRotation.ToRotationVector2() * 2, 0, default, 1.8f);

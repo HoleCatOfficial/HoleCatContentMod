@@ -1,15 +1,8 @@
 ﻿using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
- 
-using Microsoft.CodeAnalysis;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Graphics.Renderers;
 using Terraria.ModLoader;
@@ -73,7 +66,7 @@ namespace DestroyerTest.Content.Particles
 
         public override void Draw(ref ParticleRendererSettings settings, SpriteBatch spriteBatch)
         {
-            
+
 
             Texture2D texture = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/DungeonSpiritParticle").Value;
 

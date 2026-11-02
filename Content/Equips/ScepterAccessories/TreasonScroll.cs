@@ -1,11 +1,4 @@
-
-using DestroyerTest.Common;
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Content.Resources;
-using Microsoft.Xna.Framework;
-using Steamworks;
 using Terraria;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -31,9 +24,9 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             if (player.TryGetModPlayer<ScrollScepterUsePlayer>(out ScrollScepterUsePlayer Scptr))
-			{
-				Scptr.TreasonScroll = true;
-			}
+            {
+                Scptr.TreasonScroll = true;
+            }
         }
     }
 }

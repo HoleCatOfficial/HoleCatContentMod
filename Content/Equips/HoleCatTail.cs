@@ -1,13 +1,8 @@
 ﻿using DestroyerTest.Common;
-using DestroyerTest.Content.Projectiles.player.Accessory;
 using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Equips
@@ -176,5 +171,5 @@ namespace DestroyerTest.Content.Equips
         }
 
     }
-    
+
 }

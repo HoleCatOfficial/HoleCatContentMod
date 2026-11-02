@@ -1,55 +1,48 @@
 
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
+using System.Linq;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
-using Terraria.GameContent.ItemDropRules;
-using System.Collections.Generic;
-using DestroyerTest.Content.Equips.ScepterAccessories;
-using DestroyerTest.Rarity;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.RiftBiome.RiftSurfaceResources;
-using DestroyerTest.Content.RiftBiome.RiftDesertResources;
+using DestroyerTest.Content.Projectiles.player.Accessory;
 using Microsoft.Xna.Framework;
 using OpusLib;
-using System.Linq;
-using DestroyerTest.Content.Projectiles.player.Accessory;
+using Terraria;
+using Terraria.GameContent.ItemDropRules;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Equips
 {
-	public class RiftCanister : ModItem
-	{
-		public override void SetDefaults()
-		{
-			Item.width = 132;
-			Item.height = 94;
-			Item.maxStack = 1;
-			Item.value = 100;
-			Item.accessory = true;
+    public class RiftCanister : ModItem
+    {
+        public override void SetDefaults()
+        {
+            Item.width = 132;
+            Item.height = 94;
+            Item.maxStack = 1;
+            Item.value = 100;
+            Item.accessory = true;
             Item.rare = ItemRarityID.Red;
-		}
+        }
 
-		public override void UpdateAccessory(Player player, bool hideVisual)
-		{
-            if(player.TryGetModPlayer<RiftCanisterPlayer>(out var rift))
+        public override void UpdateAccessory(Player player, bool hideVisual)
+        {
+            if (player.TryGetModPlayer<RiftCanisterPlayer>(out var rift))
             {
                 rift.Active = true;
             }
-		}
+        }
     }
 
     public class RCDROPNPC : GlobalNPC
-	{
-		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot) 
+    {
+        public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
         {
-			if (DTUtils.RiftSurfaceEnemies.Contains(npc.type)) 
+            if (DTUtils.RiftSurfaceEnemies.Contains(npc.type))
             {
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<RiftCanister>(), 20, 1, 1));
-			}
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<RiftCanister>(), 20, 1, 1));
+            }
 
-		}
-	}
+        }
+    }
 
     public class RiftCanisterPlayer : ModPlayer
     {
@@ -137,7 +130,7 @@ namespace DestroyerTest.Content.Equips
                 }
             }
 
-            
+
 
             for (int i = 0; i < orbs.Length; i++)
             {

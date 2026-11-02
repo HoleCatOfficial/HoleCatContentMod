@@ -1,9 +1,6 @@
 
 using DestroyerTest.Common;
-using DestroyerTest.Content.Resources;
 using DestroyerTest.Rarity.Scepter;
-using Microsoft.Xna.Framework;
-using Steamworks;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
@@ -25,12 +22,12 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
             Item.rare = ModContent.RarityType<WineRarity>();
             Item.accessory = true;
         }
-        
+
         public override bool CanAccessoryBeEquippedWith(Item equippedItem, Item incomingItem, Player player)
         {
             return (incomingItem.type != ModContent.ItemType<PendantofUnity>() || incomingItem.type != ModContent.ItemType<ElementalPendant>());
         }
-        
+
         public static readonly float DMGBonus = 0.15f;
         public static readonly int CritBonus = 14;
         public static readonly int RangeBonus = 35;

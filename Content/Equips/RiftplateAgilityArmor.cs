@@ -1,9 +1,7 @@
 using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.Tiles;
 using DestroyerTest.Content.Tiles.RiftConfigurator;
 using DestroyerTest.Content.Tiles.Riftplate;
 using DestroyerTest.Rarity;
-using GlowmaskHelper.Content;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -11,33 +9,33 @@ using Terraria.ModLoader;
 namespace DestroyerTest.Content.Equips
 {
 
-	[AutoloadEquip(EquipType.Body)]
+    [AutoloadEquip(EquipType.Body)]
     public class RiftplateAgilityArmor : ModItem
-	{
-		public override void SetDefaults() // Simple item properties. Nothing new here.
-		{
-			Item.width = 18;
-			Item.height = 18; 
-			Item.value = Item.sellPrice(gold: 1);
-			Item.rare = ModContent.RarityType<HeliciteRarity>(); // The rarity of the item
-			Item.defense = 43;
-		}
+    {
+        public override void SetDefaults() // Simple item properties. Nothing new here.
+        {
+            Item.width = 18;
+            Item.height = 18;
+            Item.value = Item.sellPrice(gold: 1);
+            Item.rare = ModContent.RarityType<HeliciteRarity>(); // The rarity of the item
+            Item.defense = 43;
+        }
 
-        public override void UpdateEquip(Player player) 
-		{
+        public override void UpdateEquip(Player player)
+        {
             player.GetModPlayer<RiftAgilityRunSpeeds>().Body = true;
-		}
+        }
 
-		public override void AddRecipes() //Added to make the item obtainable without needing cheat mods, since many swear by never using cheats, ever.
-		{
-			CreateRecipe()
+        public override void AddRecipes() //Added to make the item obtainable without needing cheat mods, since many swear by never using cheats, ever.
+        {
+            CreateRecipe()
                 .AddIngredient<Living_Shadow>(20)
                 .AddIngredient<Item_Riftplate>(20)
-				.AddIngredient(ItemID.AnkletoftheWind)
+                .AddIngredient(ItemID.AnkletoftheWind)
                 .AddTile<Tile_RiftConfigurator>()
                 .Register();
-		}
-	}
+        }
+    }
 
     public class RiftAgilityRunSpeeds : ModPlayer
     {

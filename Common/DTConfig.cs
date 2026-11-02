@@ -1,5 +1,4 @@
 using System.ComponentModel;
-using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
 
@@ -48,7 +47,7 @@ namespace DestroyerTest.Common
         [Range(120, 1200)]
         [DefaultValue(120f)]
         public int ScrollEffectsCooldown { get; set; }
-        
+
     }
 
     public class DTOptimizationsConfig : ModConfig
@@ -150,7 +149,7 @@ namespace DestroyerTest.Common
         [DefaultValue(true)]
         public bool NaturalFallDamageImmunity { get; set; }
     }
-    
+
     public class DTConfigDataModifications : ModSystem
     {
         public DTConfig genConfig = ModContent.GetInstance<DTConfig>();

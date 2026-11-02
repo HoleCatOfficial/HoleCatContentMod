@@ -1,16 +1,11 @@
+using DestroyerTest.Common;
+using DestroyerTest.Content.Projectiles.ParentClasses;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
-using Terraria.Audio;
-using DestroyerTest.Content.Consumables;
-using DestroyerTest.Common;
-using Terraria.GameContent.Drawing;
-using System.IO;
-using DestroyerTest.Content.Projectiles.ParentClasses;
-using OpusLib;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 {
@@ -32,8 +27,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
             if (Main.rand.NextBool(3))
             {
                 float RotOffset = Projectile.rotation - MathHelper.PiOver4;
-                Projectile.NewProjectile(Projectile.InheritSource(Projectile), Projectile.Center + new Vector2(10, 0).RotatedBy(RotOffset), new Vector2(3, 0).RotatedBy(RotOffset), ModContent.ProjectileType<ElementalTrail>(), (int)(Projectile.damage / 5), 0f, Projectile.owner);
-                Projectile.NewProjectile(Projectile.InheritSource(Projectile), Projectile.Center + new Vector2(10, 0).RotatedBy(RotOffset), new Vector2(-3, 0).RotatedBy(RotOffset), ModContent.ProjectileType<ElementalTrail>(), (int)(Projectile.damage / 5), 0f, Projectile.owner);
+                Projectile.NewProjectile(Projectile.InheritSource(Projectile), Projectile.Center + new Vector2(10, 0).RotatedBy(RotOffset), new Vector2(3, 0).RotatedBy(RotOffset), ModContent.ProjectileType<ElementalTrail>(), Projectile.damage / 5, 0f, Projectile.owner);
+                Projectile.NewProjectile(Projectile.InheritSource(Projectile), Projectile.Center + new Vector2(10, 0).RotatedBy(RotOffset), new Vector2(-3, 0).RotatedBy(RotOffset), ModContent.ProjectileType<ElementalTrail>(), Projectile.damage / 5, 0f, Projectile.owner);
             }
         }
 

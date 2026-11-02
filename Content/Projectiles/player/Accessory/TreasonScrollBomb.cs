@@ -1,6 +1,3 @@
-using System.Linq;
-using DestroyerTest.Content.Particles;
- 
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
@@ -47,7 +44,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
             Player player = Main.player[Projectile.owner];
             int damage = player.GetWeaponDamage(player.HeldItem);
             SoundEngine.PlaySound(SoundID.Item14, Projectile.Center);
-        
+
 
             for (int i = 0; i < Main.npc.Length; i++)
             {
@@ -89,6 +86,6 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
                 Dust.NewDustPerfect(dustPos, DustID.TintableDustLighted, Projectile.velocity, 100, Color.LavenderBlush, 1.2f);
             }
             Projectile.velocity *= 0.99f;
-        }   
+        }
     }
 }

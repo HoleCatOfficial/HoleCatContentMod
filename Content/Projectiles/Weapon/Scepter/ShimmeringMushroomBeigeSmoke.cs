@@ -1,16 +1,9 @@
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
+using DestroyerTest.Content.Buffs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Terraria;
 using Terraria.GameContent;
-using Terraria.Audio;
-using DestroyerTest.Content.Consumables;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
-using System;
- 
-using DestroyerTest.Content.Particles;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 {
@@ -68,7 +61,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
         {
             Projectile.velocity *= 0.99f;
             Projectile.rotation += 0.03f * Projectile.velocity.X;
-            
+
             if (Projectile.timeLeft < 60)
             {
                 Projectile.scale += 0.01f;

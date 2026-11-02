@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Ammunitions;
-using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.AmmoProjectiles;
 using DestroyerTest.Content.Resources;
-using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib.Content.Helpers;
 using OpusLib.Content.Particles;
 using Terraria;
-using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -97,7 +92,7 @@ namespace DestroyerTest.Content.RangedItems
         }
     }
 
-    public class  ReanimationNPC : GlobalNPC
+    public class ReanimationNPC : GlobalNPC
     {
         public bool Reanimated = false;
         public int ReanimationTimer = 0;
@@ -179,7 +174,7 @@ namespace DestroyerTest.Content.RangedItems
                     Reanimated = false;
                 }
 
-                
+
             }
         }
 

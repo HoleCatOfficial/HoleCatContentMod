@@ -1,6 +1,4 @@
-using DestroyerTest.Content.Dusts;
 using Terraria;
-using Terraria.GameContent.Bestiary;
 using Terraria.ID;
 using Terraria.ModLoader;
 

@@ -1,20 +1,15 @@
-﻿using BreadLibrary.Core.Graphics.Particles;
+﻿using System;
+using System.Collections.Generic;
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Entities;
-using DestroyerTest.Content.MeleeWeapons;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.RiftArsenal;
-using GlowmaskHelper.Content;
- 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
-using System;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -147,7 +142,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 Projectile.Center = mountedCenter;
 
                 Projectile.rotation = toCursor.ToRotation();
-                
+
                 FX = toCursor.X > 0 ? SpriteEffects.None : SpriteEffects.FlipVertically;
 
                 float MaxFShrink = (int)Math.Round(F * player.GetTotalAttackSpeed<DTTrueMeleeClass>().Inverse()) + 1;
@@ -155,7 +150,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 if (Projectile.ai[0]++ % 60 == 0 && F > MaxFShrink)
                 {
                     F--;
-                   
+
                 }
 
                 if (HitCooldown < HitCooldownMax)
@@ -224,7 +219,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Vector2 d = player.Center - target.Center;
             d.Normalize();
             Vector2 d2 = new Vector2(d.X * 0.3f, d.Y);
-            if (player.Center.Y <=  target.Center.Y && Math.Abs((player.Center.X - target.Center.X)) <= 50 && !DTConfig.instance.WeaponKickback)
+            if (player.Center.Y <= target.Center.Y && Math.Abs((player.Center.X - target.Center.X)) <= 50 && !DTConfig.instance.WeaponKickback)
             {
                 player.velocity += d2 * 3;
             }

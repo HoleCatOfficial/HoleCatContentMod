@@ -1,11 +1,11 @@
-﻿using BreadLibrary.Core.Graphics.Particles;
+﻿using System;
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Equips.Cards.AstirDeck;
 using DestroyerTest.Content.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
-using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -33,7 +33,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
             Projectile.timeLeft = 999;
             Projectile.tileCollide = false;
             Projectile.DamageType = DamageClass.Summon;
-  
+
         }
 
         SpriteEffects FX = SpriteEffects.None;
@@ -63,7 +63,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
         Player Owner => Main.player[Projectile.owner];
         public override void OnSpawn(IEntitySource source)
         {
-            
+
         }
         public enum State
         {
@@ -99,7 +99,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
             {
                 Projectile.timeLeft = 60;
 
-                
+
 
                 int chosen = -1;
 
@@ -162,7 +162,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
                     Target = Main.npc[TargetIndex];
                 }
 
-                
+
 
                 if (Target == null || !Target.active || TargetIndex <= -1)
                 {
@@ -233,7 +233,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
                                     Projectile.ai[0]++;
                                 }
 
-                                
+
 
                                 Vector2 Ideal = Target.Center + new Vector2(150, 0).RotatedBy(Projectile.localAI[0]);
 
@@ -250,7 +250,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
                                     Opus.RadialSpreadProjectile(ProjectileID.IceBolt, 8, Projectile.Center, Projectile.damage, 5, 8);
                                     Projectile.velocity = DirToTarget * 15;
                                     Projectile.localAI[1] = 1;
-                                    
+
                                 }
                                 else
                                 {
@@ -322,7 +322,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
         {
             SoundEngine.PlaySound(SoundID.Item14, Projectile.Center);
 
-            for(int i = 0; i < 10; i++)
+            for (int i = 0; i < 10; i++)
             {
                 Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.BorealWood, Main.rand.NextFloat(-1f, 1f), Main.rand.NextFloat(-1f, 1f), 50);
             }

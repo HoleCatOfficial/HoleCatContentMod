@@ -1,11 +1,8 @@
-using Terraria;
-using Terraria.ModLoader;
-using Terraria.ID;
-using Microsoft.Xna.Framework;
-using DestroyerTest.Common;
-using DestroyerTest.Content.MeleeWeapons;
-using Terraria.Audio;
 using DestroyerTest.Content.Magic;
+using Microsoft.Xna.Framework;
+using Terraria;
+using Terraria.Audio;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 {
@@ -26,10 +23,13 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             Projectile.timeLeft = 2000; // persistent
         }
 
-        private void AnimateProjectile() {
-            if (++Projectile.frameCounter >= 1) {
+        private void AnimateProjectile()
+        {
+            if (++Projectile.frameCounter >= 1)
+            {
                 Projectile.frameCounter = 0;
-                if (++Projectile.frame >= Main.projFrames[Projectile.type]) {
+                if (++Projectile.frame >= Main.projFrames[Projectile.type])
+                {
                     Projectile.frame = 0;
                 }
             }

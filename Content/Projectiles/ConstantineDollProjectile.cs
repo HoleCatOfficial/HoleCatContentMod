@@ -1,35 +1,30 @@
 using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Particles;
- 
+
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using OpusLib.Content.Particles;
 using Terraria;
 using Terraria.DataStructures;
-using Terraria.Enums;
-using Terraria.GameContent;
-using Terraria.GameContent.Drawing;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles
 {
-	public class ConstantineDollProjectile : ModProjectile
-	{
+    public class ConstantineDollProjectile : ModProjectile
+    {
 
         public override string Texture => DTUtils.NoTexture;
 
-        private Player HomingTarget {
-				get => Projectile.ai[0] == 0 ? null : Main.player[(int)Projectile.ai[0] - 1];
-				set {
-					Projectile.ai[0] = value == null ? 0 : value.whoAmI + 1;
-				}
-			}
+        private Player HomingTarget
+        {
+            get => Projectile.ai[0] == 0 ? null : Main.player[(int)Projectile.ai[0] - 1];
+            set
+            {
+                Projectile.ai[0] = value == null ? 0 : value.whoAmI + 1;
+            }
+        }
 
-		public ref float DelayTimer => ref Projectile.ai[1];
+        public ref float DelayTimer => ref Projectile.ai[1];
 
         public override void SetDefaults()
         {
@@ -45,14 +40,14 @@ namespace DestroyerTest.Content.Projectiles
             Projectile.timeLeft = 600; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
             Projectile.tileCollide = false;
             Projectile.alpha = 255;
-		}
+        }
 
 
 
-		public override void AI()
-		{
+        public override void AI()
+        {
             Player player = Main.LocalPlayer;
-			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
+            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
 
 
             Fire fire = new Fire();
@@ -81,46 +76,51 @@ namespace DestroyerTest.Content.Projectiles
             // We only rotate by 3 degrees an update to give it a smooth trajectory. Increase the rotation speed here to make tighter turns
             float length = Projectile.velocity.Length();
             float targetAngle = Projectile.AngleTo(HomingTarget.Center);
-			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
+            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
             Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(300)).ToRotationVector2() * length;
-			
-		}
 
-        public Player FindClosestPlayer(float maxDetectDistance) {
-                        Player closestPlayer = null;
+        }
 
-                        // Using squared values in distance checks will let us skip square root calculations, drastically improving this method's speed.
-                        float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
+        public Player FindClosestPlayer(float maxDetectDistance)
+        {
+            Player closestPlayer = null;
 
-                        // Loop through all NPCs
-                        foreach (var target in Main.player) {
-                            // Check if NPC able to be targeted. 
-                            if (IsValidTarget(target)) {
-                                // The DistanceSquared function returns a squared distance between 2 points, skipping relatively expensive square root calculations
-                                float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, Projectile.Center);
+            // Using squared values in distance checks will let us skip square root calculations, drastically improving this method's speed.
+            float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
 
-                                // Check if it is within the radius
-                                if (sqrDistanceToTarget < sqrMaxDetectDistance) {
-                                    sqrMaxDetectDistance = sqrDistanceToTarget;
-                                    closestPlayer = target;
-                                }
-                            }
-                        }
-
-                        return closestPlayer;
-                    }
-
-                    public bool IsValidTarget(Player target) {
-                        
-                        return (target.active == true && target.statLife > 1);
-                    }
-                public override void OnHitPlayer(Player target, Player.HurtInfo info)
+            // Loop through all NPCs
+            foreach (var target in Main.player)
+            {
+                // Check if NPC able to be targeted. 
+                if (IsValidTarget(target))
                 {
-                            info.Damage = 270000000;
-                            info.Dodgeable = false;
-                            target.KillMe(PlayerDeathReason.ByCustomReason(Terraria.Localization.NetworkText.FromLiteral($"{target.name} played stupid games and won stupid prizes.")), info.Damage, 0, false);
-                            Projectile.Kill();
+                    // The DistanceSquared function returns a squared distance between 2 points, skipping relatively expensive square root calculations
+                    float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, Projectile.Center);
+
+                    // Check if it is within the radius
+                    if (sqrDistanceToTarget < sqrMaxDetectDistance)
+                    {
+                        sqrMaxDetectDistance = sqrDistanceToTarget;
+                        closestPlayer = target;
                     }
-	}
+                }
+            }
+
+            return closestPlayer;
+        }
+
+        public bool IsValidTarget(Player target)
+        {
+
+            return (target.active == true && target.statLife > 1);
+        }
+        public override void OnHitPlayer(Player target, Player.HurtInfo info)
+        {
+            info.Damage = 270000000;
+            info.Dodgeable = false;
+            target.KillMe(PlayerDeathReason.ByCustomReason(Terraria.Localization.NetworkText.FromLiteral($"{target.name} played stupid games and won stupid prizes.")), info.Damage, 0, false);
+            Projectile.Kill();
+        }
+    }
 
 }

@@ -1,4 +1,6 @@
-﻿using BreadLibrary.Core.Graphics.Pixelation;
+﻿using System;
+using System.Collections.Generic;
+using BreadLibrary.Core.Graphics.Pixelation;
 using BreadLibrary.Core.Utilities;
 using BreadLibrary.Core.Verlet;
 using DestroyerTest.Common;
@@ -8,8 +10,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using ReLogic.Content;
-using System;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.Bestiary;
@@ -159,7 +159,7 @@ namespace DestroyerTest.Content.Entities
             {
                 Vector2 Root = NPC.Center + Offsets[i];
                 Vector2 AdjustedVelocity = Vector2.UnitX * MathF.Sin(Main.GameUpdateCount * 0.05f + NPC.whoAmI + i * MathHelper.Pi);
-                AdjustedVelocity *= 1-Math.Clamp(NPC.velocity.Length(), 0, 1);
+                AdjustedVelocity *= 1 - Math.Clamp(NPC.velocity.Length(), 0, 1);
                 Ropes[i].Simulate(AdjustedVelocity, Root, 1f, 0.5f, collideWithTiles: false, collideWithPlayers: false);
                 Ropes[i].Positions[0] = Root;
             }

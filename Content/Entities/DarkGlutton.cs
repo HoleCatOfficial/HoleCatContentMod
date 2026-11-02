@@ -1,14 +1,10 @@
 using DestroyerTest.Common;
 using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Entities;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.EntitiesProjectiles;
 using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.RiftBiome;
 using Microsoft.Xna.Framework;
-using System;
-using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -17,7 +13,6 @@ using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Utilities;
 
 namespace DestroyerTest.Content.Entities
 {
@@ -167,7 +162,7 @@ namespace DestroyerTest.Content.Entities
                 Dust.NewDust(NPC.Center, 50, 50, DustID.FireworksRGB, NPC.velocity.X * 0.4f, NPC.velocity.Y * 0.4f, 100, Colors[Main.rand.Next(Colors.Length)], Main.rand.NextFloat(0.01f, 1.0f));
             }
 
-           Player player = Main.player[NPC.target];
+            Player player = Main.player[NPC.target];
 
             // --- TURNING OUTSIDE OF CHARGES ---
             if (!charging)
@@ -238,14 +233,14 @@ namespace DestroyerTest.Content.Entities
 
 
         }
-        
+
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ShadeParticle>(), 3, 4, 17));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ShimmeringSludge>(), 4, 2, 9));
             npcLoot.Add(ItemDropRule.Common(ItemID.SoulofNight, 1, 8, 20));
         }
-	}
+    }
 
     internal class DarkGluttonBody : WormBody
     {
@@ -323,13 +318,13 @@ namespace DestroyerTest.Content.Entities
             }
             base.AI();
         }
-        
+
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ShadeParticle>(), 3, 4, 17));
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ShimmeringSludge>(), 4, 2, 9));
         }
-	}
+    }
 
     internal class DarkGluttonTail : WormTail
     {
@@ -384,7 +379,7 @@ namespace DestroyerTest.Content.Entities
 
             DarkGluttonHead.CommonWormInit(this);
         }
-        
+
         public bool MistakeFixed = false;
         public override void AI()
         {
@@ -407,5 +402,5 @@ namespace DestroyerTest.Content.Entities
                 Dust.NewDust(NPC.Center, 50, 50, DustID.TintableDustLighted, NPC.velocity.X * 0.4f, NPC.velocity.Y * 0.4f, 100, Colors[Main.rand.Next(Colors.Length)], Main.rand.NextFloat(0.01f, 1.0f));
             }
         }
-	}
+    }
 }

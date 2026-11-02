@@ -1,21 +1,16 @@
 
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
-using Terraria.GameContent.ItemDropRules;
 using System.Collections.Generic;
-using DestroyerTest.Content.Equips.ScepterAccessories;
-using DestroyerTest.Rarity;
+using DestroyerTest.Common;
 using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.Tiles;
+using DestroyerTest.Rarity;
+using Terraria;
 using Terraria.Localization;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Equips.Cards.RiftenDeck
 {
-	public class ShineShadeDeck : ModItem
-	{
+    public class ShineShadeDeck : ModItem
+    {
         public Shield ShineShadeShield = new Shield("HollowShield2", 330, 130, ColorLib.Rift, DTAssetLib.ScholarShieldSounds.Activate, DTAssetLib.Impacts.Deflect, DTAssetLib.Impacts.HeatseekerSilohSlam,
             new List<NetworkText>()
             {
@@ -28,17 +23,17 @@ namespace DestroyerTest.Content.Equips.Cards.RiftenDeck
         );
 
         public override void SetDefaults()
-		{
-			Item.width = 16;
-			Item.height = 24;
-			Item.maxStack = 1;
-			Item.value = 100;
-			Item.accessory = true;
+        {
+            Item.width = 16;
+            Item.height = 24;
+            Item.maxStack = 1;
+            Item.value = 100;
+            Item.accessory = true;
             Item.rare = ModContent.RarityType<HeliciteRarity>();
-		}
+        }
 
-		public override void UpdateAccessory(Player player, bool hideVisual)
-		{
+        public override void UpdateAccessory(Player player, bool hideVisual)
+        {
             player.GetDamage(DamageClass.Ranged) *= 1.05f;
             player.whipRangeMultiplier *= 1.08f;
             player.maxMinions += 1;
@@ -53,12 +48,12 @@ namespace DestroyerTest.Content.Equips.Cards.RiftenDeck
                 int tm = player.GetItemGrabRange(item);
                 tm = (int)(tm * 1.10f);
             }
-		}
+        }
 
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
             var shieldText = Language.GetText("Mods.DestroyerTest.ShieldPlayer.ShieldLine");
-			tooltips.Add(new TooltipLine(Mod, "ShieldInfo", shieldText.Value));
+            tooltips.Add(new TooltipLine(Mod, "ShieldInfo", shieldText.Value));
         }
 
         public override bool CanAccessoryBeEquippedWith(Item equippedItem, Item incomingItem, Player player)

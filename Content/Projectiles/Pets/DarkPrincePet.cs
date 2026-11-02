@@ -1,7 +1,5 @@
-﻿using System;
-using DestroyerTest.Common;
+﻿using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Particles;
 
 using Microsoft.Xna.Framework;
 using Terraria;
@@ -9,8 +7,6 @@ using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using GlowmaskHelper.Content;
-using OpusLib;
 
 
 namespace DestroyerTest.Content.Projectiles.Pets
@@ -39,7 +35,7 @@ namespace DestroyerTest.Content.Projectiles.Pets
         public override void OnSpawn(IEntitySource source)
         {
             SoundEngine.PlaySound(TP, Projectile.Center);
-           
+
         }
 
         private void AnimateProjectile()

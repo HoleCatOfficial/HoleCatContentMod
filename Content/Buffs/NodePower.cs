@@ -1,12 +1,5 @@
-using System.Xml;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.Particles;
- 
-using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.GameContent.Bestiary;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Buffs
@@ -22,9 +15,9 @@ namespace DestroyerTest.Content.Buffs
         }
 
         public override void Update(Player player, ref int buffIndex)
-		{
-			player.GetModPlayer<NodePowerPlayer>().Empower = true;
-		}
+        {
+            player.GetModPlayer<NodePowerPlayer>().Empower = true;
+        }
 
         // Allows you to make this buff give certain effects to the given player
         public override void Update(NPC target, ref int buffIndex)
@@ -56,7 +49,7 @@ namespace DestroyerTest.Content.Buffs
         {
             if (Empower)
             {
-               
+
             }
         }
 
@@ -92,7 +85,7 @@ namespace DestroyerTest.Content.Buffs
 
         public override void PostUpdateBuffs()
         {
-            
+
             if (Empower && DTFlags.NodeCharmEquipped)
             {
                 Player.GetDamage(DamageClass.Generic) *= 1.50f;
@@ -101,13 +94,13 @@ namespace DestroyerTest.Content.Buffs
 
         public override void UpdateLifeRegen()
         {
-            
+
             if (Empower && DTFlags.NodeCharmEquipped)
             {
                 Player.lifeRegen += 15;
             }
         }
-        
+
         public override void ModifyWeaponCrit(Item item, ref float crit)
         {
             if (Empower && DTFlags.NodeCharmEquipped)
@@ -118,5 +111,5 @@ namespace DestroyerTest.Content.Buffs
                 }
             }
         }
-	}
+    }
 }

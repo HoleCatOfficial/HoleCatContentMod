@@ -1,22 +1,12 @@
 ﻿using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Particles.Stellar;
 using DestroyerTest.Content.Projectiles.ParentClasses;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using OpusLib.Content.Helpers;
-using System;
-using System.Collections.Generic;
-using System.IO;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.GameContent;
-using Terraria.GameContent.Drawing;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Melee
@@ -35,7 +25,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Glowmask = ModContent.Request<Texture2D>($"{Texture}");
         }
 
-        public override SoundStyle Swing => DTAssetLib.SwordSounds.MagicSwing with { Pitch = Pitch};
+        public override SoundStyle Swing => DTAssetLib.SwordSounds.MagicSwing with { Pitch = Pitch };
 
         public float Pitch = -1;
         public int HitCount = 0;
@@ -138,9 +128,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Pitch = MathHelper.Lerp(-1, 0, T);
             ScaleMult = MathHelper.Lerp(1f, 2.2f, T);
             SwingSpeed = MathHelper.Lerp(0.08f, 0.2f, T);
-            
 
-            
+
+
 
             //SparkEdge(Main.player[Projectile.owner], 1f, ColorLib.Wretched3);
         }

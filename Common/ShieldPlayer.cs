@@ -1,22 +1,14 @@
-using BreadLibrary.Core.Graphics.Particles;
-using BreadLibrary.Core.Graphics.Pixelation;
-using BreadLibrary.Core.Graphics.Spritebatch;
-using BreadLibrary.Core.Utilities;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.SummonItems;
-using DestroyerTest.Content.Tiles;
-using DestroyerTest.Content.Tiles.Riftplate;
-using DestroyerTest.Rarity;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using BreadLibrary.Core.Graphics.Particles;
+using BreadLibrary.Core.Graphics.Pixelation;
+using BreadLibrary.Core.Graphics.Spritebatch;
+using DestroyerTest.Content.Dusts;
+using DestroyerTest.Content.Particles;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -93,7 +85,7 @@ namespace DestroyerTest.Common
                 return false;
             }
 
-            foreach(Shield S in ShieldManager.LoadedShields)
+            foreach (Shield S in ShieldManager.LoadedShields)
             {
                 if (S.InternalName == InternalName)
                 {
@@ -198,7 +190,7 @@ namespace DestroyerTest.Common
         void IDrawPixelated.DrawPixelated(SpriteBatch spriteBatch)
         {
             //Main.NewText("G");
-            
+
         }
 
         int DamageCooldown = 300;
@@ -234,7 +226,7 @@ namespace DestroyerTest.Common
                         SoundEngine.PlaySound(SoundID.DeerclopsStep with { MaxInstances = 0 }, Player.Center);
                         Durability++;
                     }
-                    
+
                 }
                 if (Durability == MaxDurability && !HealFlag)
                 {
@@ -249,7 +241,7 @@ namespace DestroyerTest.Common
                 DamageCooldown--;
             }
 
-           
+
 
             if (Active && Absorb && !Recharge)
             {
@@ -309,10 +301,10 @@ namespace DestroyerTest.Common
                 var vel = Player.velocity;
                 vel.Normalize();
                 var len = vel.Length();
-               
+
 
                 var WallDustPositions = Opus.GetEquidistantOrbitVectors(5, Player.MountedCenter, (0.05f * Player.direction) /*+ ((0.0005f * len) * Player.direction)*/, Radius);
-                foreach(Vector2 p in WallDustPositions)
+                foreach (Vector2 p in WallDustPositions)
                 {
                     Dust WallDust = Dust.NewDustPerfect(p, ModContent.DustType<ColorableNeonDust>(), Vector2.Zero, 0, themeColor, 1.35f);
                     WallDusts.Add(WallDust);
@@ -345,7 +337,7 @@ namespace DestroyerTest.Common
                     Player.statLife -= Decrement;
                     if (Player.statLife <= 0)
                     {
-                        Player.KillMe(deathReason, (double)RechargeHealthTax, 0, false);
+                        Player.KillMe(deathReason, RechargeHealthTax, 0, false);
                         Durability = MaxDurability;
                     }
 
@@ -368,7 +360,7 @@ namespace DestroyerTest.Common
 
             if (Active && Absorb)
             {
-                
+
             }
         }
 
@@ -378,7 +370,7 @@ namespace DestroyerTest.Common
         }
     }
 
-    
+
 
     public class ShieldGlobal : GlobalProjectile
     {
@@ -422,11 +414,11 @@ namespace DestroyerTest.Common
             position = new Vector2((int)position.X, (int)position.Y);
 
             Main.EntitySpriteDraw(DTAssetLib.ShieldRing.Value, position, null, color with { A = 0 }, 0f, DTAssetLib.ShieldRing.Size() / 2, Shield.CurrentShield.Radius / (DTAssetLib.ShieldRing.Value.Width / 2f), SpriteEffects.None, 0);
-            
+
 
             //spriteBatch.ResetToDefault();
         }
     }
 
-    
+
 }

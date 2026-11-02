@@ -1,11 +1,6 @@
 ﻿using DestroyerTest.Common;
 using DestroyerTest.Content.UI;
 using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;

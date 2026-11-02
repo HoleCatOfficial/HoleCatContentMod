@@ -1,15 +1,9 @@
+using System.Collections.Generic;
+using DestroyerTest.Content.UI;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.UI;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent.UI.Elements;
-using Terraria.Audio;
-using Terraria.ModLoader.UI;
-using Terraria.ID;
-using System.Collections.Generic;
-using DestroyerTest.Content.UI;
-using System;
 public class TextReaderSystem : ModSystem
 {
     internal PageReader bookUI;

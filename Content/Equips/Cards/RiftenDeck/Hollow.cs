@@ -1,28 +1,19 @@
 
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
-using Terraria.GameContent.ItemDropRules;
 using System.Collections.Generic;
-using DestroyerTest.Content.Equips.ScepterAccessories;
-using DestroyerTest.Rarity;
+using DestroyerTest.Common;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.RiftBiome.RiftSurfaceResources;
+using DestroyerTest.Rarity;
+using Terraria;
 using Terraria.DataStructures;
-using Microsoft.Xna.Framework;
-using Terraria.Audio;
+using Terraria.ID;
 using Terraria.Localization;
-using System;
-using Microsoft.Xna.Framework.Graphics;
-using BreadLibrary.Core.Graphics.Pixelation;
-using OpusLib;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Equips.Cards.RiftenDeck
 {
-	public class Hollow : ModItem
-	{
+    public class Hollow : ModItem
+    {
         public Shield HollowShield = new Shield("HollowShield", 200, 70, ColorLib.Rift, DTAssetLib.ScholarShieldSounds.Activate, DTAssetLib.Impacts.Deflect, DTAssetLib.Impacts.HeatseekerSilohSlam,
             new List<NetworkText>()
             {
@@ -36,29 +27,29 @@ namespace DestroyerTest.Content.Equips.Cards.RiftenDeck
         public override void SetStaticDefaults()
         {
             Main.RegisterItemAnimation(Item.type, new DrawAnimationVertical(6, 11));
-			ItemID.Sets.AnimatesAsSoul[Item.type] = true;
+            ItemID.Sets.AnimatesAsSoul[Item.type] = true;
         }
-		public override void SetDefaults()
-		{
-			Item.width = 16;
-			Item.height = 24;
-			Item.maxStack = 1;
-			Item.value = 100;
-			Item.accessory = true;
+        public override void SetDefaults()
+        {
+            Item.width = 16;
+            Item.height = 24;
+            Item.maxStack = 1;
+            Item.value = 100;
+            Item.accessory = true;
             Item.rare = ModContent.RarityType<RiftRarity>();
-		}
+        }
 
-		public override void UpdateAccessory(Player player, bool hideVisual)
-		{
+        public override void UpdateAccessory(Player player, bool hideVisual)
+        {
             ShieldManager.ActivateShield(HollowShield, player);
 
             player.statDefense += 10;
-		}
+        }
 
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
             var shieldText = Language.GetText("Mods.DestroyerTest.ShieldPlayer.ShieldLine");
-			tooltips.Add(new TooltipLine(Mod, "ShieldInfo", shieldText.Value));
+            tooltips.Add(new TooltipLine(Mod, "ShieldInfo", shieldText.Value));
         }
 
         public override void AddRecipes()

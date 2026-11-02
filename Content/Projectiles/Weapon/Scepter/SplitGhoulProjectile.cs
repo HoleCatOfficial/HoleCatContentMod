@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DestroyerTest.Common;
+﻿using DestroyerTest.Common;
 using DestroyerTest.Common.Interfaces;
 using Microsoft.Xna.Framework;
 using Terraria;

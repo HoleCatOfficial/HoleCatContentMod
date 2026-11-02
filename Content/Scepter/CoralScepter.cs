@@ -1,21 +1,13 @@
-using System;
-using Microsoft.Xna.Framework;
+using DestroyerTest.Content.Projectiles.Weapon.Scepter;
 using Terraria;
-using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.DataStructures;
- 
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.Projectiles.Weapon.Scepter;  
 
 namespace DestroyerTest.Content.Scepter
 {
-	public class CoralScepter : ScepterItem
-	{
-		public override int Width => 34;
+    public class CoralScepter : ScepterItem
+    {
+        public override int Width => 34;
         public override int Height => 34;
 
         public override void SetStaticDefaults()
@@ -48,13 +40,14 @@ namespace DestroyerTest.Content.Scepter
             base.SetDefaults();
         }
 
-        public override void AddRecipes() {
-			CreateRecipe()
-				.AddIngredient(ItemID.Coral, 12)
-				.AddIngredient<EnchantedScepter>()
-				.AddCondition(Condition.InBeach)
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient(ItemID.Coral, 12)
+                .AddIngredient<EnchantedScepter>()
+                .AddCondition(Condition.InBeach)
                 .AddCondition(Condition.InRain)
-				.Register();
-		}
+                .Register();
+        }
     }
-} 
+}

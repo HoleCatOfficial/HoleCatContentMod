@@ -1,22 +1,15 @@
-using System;
-using Microsoft.Xna.Framework;
+using DestroyerTest.Common;
+using DestroyerTest.Content.Projectiles.Weapon.Scepter;
+using DestroyerTest.Rarity.Scepter;
 using Terraria;
-using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.DataStructures;
- 
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Common;
-using DestroyerTest.Rarity;
-using DestroyerTest.Rarity.Scepter;
-using DestroyerTest.Content.Projectiles.Weapon.Scepter;  
 
 namespace DestroyerTest.Content.Scepter
 {
-	public class OnyxScepter : ScepterItem
-	{
-		public override int Width => 40;
+    public class OnyxScepter : ScepterItem
+    {
+        public override int Width => 40;
         public override int Height => 40;
 
         public override void SetStaticDefaults()
@@ -49,15 +42,16 @@ namespace DestroyerTest.Content.Scepter
             base.SetDefaults();
         }
 
-		public override void AddRecipes() {
-			CreateRecipe()
-				.AddIngredient(ItemID.DarkShard)
-				.AddIngredient(ItemID.SoulofNight, 12)
-				.AddIngredient<ShadowScepter>()
-				.AddTile(TileID.MythrilAnvil)
-				.Register();
-		}
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient(ItemID.DarkShard)
+                .AddIngredient(ItemID.SoulofNight, 12)
+                .AddIngredient<ShadowScepter>()
+                .AddTile(TileID.MythrilAnvil)
+                .Register();
+        }
 
 
     }
-} 
+}

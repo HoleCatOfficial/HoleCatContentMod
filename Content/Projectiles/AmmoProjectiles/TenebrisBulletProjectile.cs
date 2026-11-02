@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using System.Formats.Tar;
-using System.Runtime.CompilerServices;
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Common.Interfaces;
@@ -8,11 +5,8 @@ using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Terraria;
-using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -97,8 +91,8 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
                 _ => ColorLib.TenebrisBeige
             };
 
-            
-           
+
+
 
             if (DelayTimer < 100)
             {
@@ -107,7 +101,7 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
             }
         }
 
-        
+
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             if (hit.Crit)
@@ -123,7 +117,7 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
 
         public override void OnKill(int timeLeft)
         {
-            
+
         }
-	}
+    }
 }

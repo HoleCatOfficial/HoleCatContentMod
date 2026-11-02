@@ -2,22 +2,14 @@
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles.ParentClasses;
- 
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using OpusLib.Content.Helpers;
-using System;
-using System.Collections.Generic;
-using System.IO;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.GameContent;
-using Terraria.GameContent.Drawing;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Melee
@@ -72,7 +64,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Main.spriteBatch.UseBlendState(BlendState.NonPremultiplied);
 
             Main.EntitySpriteDraw(Tex, player.MountedCenter - Main.screenPosition, null, Color.Black * SweepOpacity, (Projectile.rotation + MathHelper.PiOver4) + rOffset, Tex.Size() / 2, (AdjustedScale * TexBasedMod), FX);
-            
+
             Main.EntitySpriteDraw(TexH, player.MountedCenter - Main.screenPosition, null, Color.Magenta * SweepOpacity, (Projectile.rotation + MathHelper.PiOver4) + rOffset, Tex.Size() / 2, (AdjustedScale * TexBasedMod), FX);
 
             Opus.ReturnToDefaultDrawing(Main.spriteBatch);

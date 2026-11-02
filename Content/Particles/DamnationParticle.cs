@@ -7,15 +7,9 @@ using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using OpusLib.Content.Helpers;
 using ReLogic.Content;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Graphics.Renderers;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Config;
 
 namespace DestroyerTest.Content.Particles
 {
@@ -47,7 +41,7 @@ namespace DestroyerTest.Content.Particles
         public override void Update(ref ParticleRendererSettings settings)
         {
             LifeTime++;
-            float Progress = (float)LifeTime / (float)MaxLifetime;
+            float Progress = LifeTime / (float)MaxLifetime;
 
             C = OpusColorUtils.MultiLerp(Progress, ColorLib.WretchedColorMap);
 
@@ -58,7 +52,7 @@ namespace DestroyerTest.Content.Particles
             {
                 ShouldBeRemovedFromRenderer = true;
             }
-    
+
         }
 
         public override void Draw(ref ParticleRendererSettings settings, SpriteBatch spritebatch)

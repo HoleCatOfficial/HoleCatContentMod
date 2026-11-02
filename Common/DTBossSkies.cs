@@ -1,16 +1,11 @@
-using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
-using Terraria.GameContent;
-using Terraria.ID;
-using Terraria.ModLoader;
-using OpusLib;
 using Terraria.Graphics.Effects;
-using DestroyerTest.Content.Entities;
+using Terraria.ModLoader;
 
-namespace DetroyerTest.Common
+namespace DestroyerTest.Common
 {
     //Uses Calamity Mod's Astral Sky Setup
     public class WyvernCorpseSky : CustomSky
@@ -25,7 +20,7 @@ namespace DetroyerTest.Common
 
         public override void Deactivate(params object[] args)
         {
-            foreach(NPC npc in Main.npc)
+            foreach (NPC npc in Main.npc)
             {
                 if (npc.type == ModContent.NPCType<WyvernCorpseHead>() && npc.active)
                 {
@@ -38,10 +33,10 @@ namespace DetroyerTest.Common
         {
             skyActive = true;
         }
-    
+
         public override void Draw(SpriteBatch spriteBatch, float minDepth, float maxDepth)
         {
-             // Small worlds, default draw height.
+            // Small worlds, default draw height.
             int AstralBiomeHeight = ((int)Main.worldSurface + (int)Main.worldSurface) / 2;
 
             // Medium worlds.
@@ -69,7 +64,7 @@ namespace DetroyerTest.Common
 
         public override void Update(GameTime gameTime)
         {
-            
+
             if (skyActive && opacity < 1f)
             {
                 opacity += 0.02f;
@@ -81,7 +76,7 @@ namespace DetroyerTest.Common
 
             Opacity = opacity;
 
-            foreach(NPC npc in Main.npc)
+            foreach (NPC npc in Main.npc)
             {
                 if (npc.type == ModContent.NPCType<WyvernCorpseHead>() && npc.active)
                 {

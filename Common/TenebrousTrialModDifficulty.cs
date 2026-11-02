@@ -1,25 +1,14 @@
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Terraria;
-using Terraria.ModLoader;
-using Terraria.ID;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using DestroyerTest.Common;
-using Terraria.Localization;
-using Terraria.ModLoader.IO;
-using System.Threading;
-using Terraria.Chat;
 using DestroyerTest.Common.Systems;
-using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Buffs;
+using Microsoft.Xna.Framework;
+using Terraria;
 using Terraria.Audio;
- 
-using DestroyerTest.Content.Particles;
+using Terraria.Chat;
+using Terraria.ID;
+using Terraria.Localization;
+using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 
 namespace DestroyerTest.Common
 {
@@ -234,15 +223,15 @@ namespace DestroyerTest.Common
 
             if (IsActive)
             {
-                
+
                 if (DownedBossSystem.downedLunarBoss == false)
                 {
                     OverlayManagement(player);
                 }
                 if (DPS > MaxDPS || DamagePerHit > MaxDamageperHit)
-                    {
-                        player.AddBuff(ModContent.BuffType<ShimmeringFlames>(), 60);
-                    }
+                {
+                    player.AddBuff(ModContent.BuffType<ShimmeringFlames>(), 60);
+                }
             }
         }
 
@@ -391,7 +380,7 @@ namespace DestroyerTest.Common
                         TenebrousTrialModDifficulty.VisionRadius += 10;
                         TTDifficulty.MaxDamageperHit += 8;
                         TTDifficulty.MaxDPS += 10;
-                        break;  
+                        break;
                     case NPCID.Plantera:
                         HandleBossDefeat(ref DownedBossSystem.downedPlanteraBoss, "DestroyerTest/Assets/Audio/TenebrousTrialBossDefeats/PlanteraDefeat_TT", "TenebrousTrial.PlanteraDefeated");
                         TenebrousTrialModDifficulty.VisionRadius += 30;

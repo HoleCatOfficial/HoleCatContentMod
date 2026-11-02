@@ -1,18 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BreadLibrary.Core.Graphics.Particles;
+﻿using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.player.Accessory
@@ -49,7 +42,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
 
             Player Owner = Main.player[Projectile.owner];
 
-       
+
             //Beeg boy
             SimpleExplosionParticle Burst1 = new SimpleExplosionParticle();
             Burst1.Prepare(Projectile.Center, Vector2.Zero, Color.SkyBlue * 0.5f, 0.1f, 0.01f, 2.5f, BlendState.Additive);
@@ -59,7 +52,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
             Burst2.Prepare(Projectile.Center, Vector2.Zero, Color.SkyBlue * 0.15f, 0.1f, 0.01f, 1.8f, BlendState.Additive);
             ParticleEngine.BehindProjectiles.Add(Burst2);
 
-            
+
         }
 
         public SoundStyle Burst = DTAssetLib.Impacts.WindHit;

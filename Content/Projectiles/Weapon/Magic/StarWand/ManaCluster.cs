@@ -1,13 +1,8 @@
-﻿using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
+﻿using System.Collections.Generic;
+using DestroyerTest.Common;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -55,7 +50,6 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic.StarWand
                 {
                     List<ColoredVertex> ve = new List<ColoredVertex>();
                     List<ColoredVertex> ve2 = new List<ColoredVertex>();
-                    float a = 0;
 
                     for (int i = TrailPositions.Count - 1; i > 0; i--)
                     {
@@ -133,7 +127,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic.StarWand
 
             Projectile.rotation += (0.4f * Projectile.velocity.Length()) * Projectile.direction;
 
-            if (Main.rand.NextBool (5))
+            if (Main.rand.NextBool(5))
             {
                 Projectile.velocity = Projectile.velocity.RotatedByRandom(1f);
             }

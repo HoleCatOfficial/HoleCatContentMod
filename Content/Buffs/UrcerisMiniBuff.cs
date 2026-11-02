@@ -1,14 +1,5 @@
-﻿
-using DestroyerTest.Common;
-using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Content.Projectiles.player.Accessory;
-using DestroyerTest.Content.Projectiles.Weapon.Summon;
-using Humanizer;
-using Microsoft.Xna.Framework;
+﻿using DestroyerTest.Content.Projectiles.player.Accessory;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Buffs

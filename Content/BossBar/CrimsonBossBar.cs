@@ -37,7 +37,8 @@ namespace DestroyerTest.Content.BossBar
             life = npc.life;
             lifeMax = npc.lifeMax;
 
-            if (npc.ModNPC is WyvernCorpseHead head) {
+            if (npc.ModNPC is WyvernCorpseHead head)
+            {
                 shield = Main.npc
                     .Where(n => n.active && n.type == ModContent.NPCType<IchorNode>())
                     .Sum(n => n.life);

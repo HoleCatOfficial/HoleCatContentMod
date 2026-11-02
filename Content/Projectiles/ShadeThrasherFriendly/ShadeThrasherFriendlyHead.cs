@@ -1,18 +1,10 @@
+using System;
+using System.IO;
+using DestroyerTest.Content.Buffs;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
-using Terraria.Audio;
-using Terraria.DataStructures;
-using System.IO;
-using tModPorter;
-using System;
-using Terraria.ModLoader.IO;
-using System.Collections.Generic;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Equips;
 
 namespace DestroyerTest.Content.Projectiles.ShadeThrasherFriendly
 {

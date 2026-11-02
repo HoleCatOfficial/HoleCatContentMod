@@ -1,15 +1,9 @@
-﻿using BreadLibrary.Core.Graphics.Particles;
+﻿using System;
+using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
- 
-using Microsoft.CodeAnalysis;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Graphics.Renderers;
 using Terraria.ModLoader;
@@ -44,7 +38,7 @@ namespace DestroyerTest.Content.Particles.Comaceratic
             velocity *= 0.96f;
             position += velocity;
             rotation += 0.07f * Math.Sign(velocity.X);
-            
+
             if (LifetimeCompletion > 0.6f)
             {
                 color *= 0.9f;

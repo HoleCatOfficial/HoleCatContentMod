@@ -1,16 +1,13 @@
 using System;
-using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Particles;
- 
+using GlowmaskHelper.Content;
 using Microsoft.Xna.Framework;
+using OpusLib;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.ID;
 using Terraria.ModLoader;
-using GlowmaskHelper.Content;
-using OpusLib;
 
 
 namespace DestroyerTest.Content.Projectiles.Pets
@@ -63,7 +60,7 @@ namespace DestroyerTest.Content.Projectiles.Pets
                 }
             }
         }
-        
+
         public float Randomizer => Projectile.localAI[0];
         private const int IdleModeSwitchTime = 480;
 
@@ -123,7 +120,7 @@ namespace DestroyerTest.Content.Projectiles.Pets
                 Projectile.rotation = float.Lerp(Projectile.rotation, Ob, 0.15f);
         }
 
-       
+
 
         private void KeepUp(float distSpeed, float distTeleport, Player master)
         {

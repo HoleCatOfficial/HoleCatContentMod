@@ -1,20 +1,11 @@
 ﻿using BreadLibrary.Core.Utilities;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Projectiles.player.Accessory;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using Mono.Cecil.Cil;
-using MonoMod.Cil;
-using System;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent.Drawing;
-using Terraria.Graphics.Shaders;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
-using static FargowiltasSouls.Content.Projectiles.EffectVisual;
 
 namespace DestroyerTest.Content.Equips
 {
@@ -30,9 +21,9 @@ namespace DestroyerTest.Content.Equips
             Item.value = Item.buyPrice(gold: 1);
         }
 
-  
 
-        
+
+
 
         int SlamCooldown = 0;
         bool Sound = true;

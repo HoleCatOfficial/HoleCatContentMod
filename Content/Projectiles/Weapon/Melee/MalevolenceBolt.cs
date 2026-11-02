@@ -1,21 +1,11 @@
-﻿
-using System;
-using System.Collections.Generic;
-using DestroyerTest.Common;
+﻿using DestroyerTest.Common;
 using DestroyerTest.Common.Interfaces;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.Entities;
-using DestroyerTest.Content.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
 using OpusLib.Content.Helpers;
 using Terraria;
 using Terraria.Audio;
-using Terraria.Enums;
 using Terraria.GameContent;
-using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -73,7 +63,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
             for (int i = 0; i < Projectile.oldPos.Length; i++)
             {
-                float prog = (float)i / (float)Projectile.oldPos.Length;
+                float prog = i / (float)Projectile.oldPos.Length;
                 float opacity = MathHelper.Lerp(1f, 0f, prog);
                 float scale = MathHelper.Lerp(Projectile.scale, 0f, prog);
                 Main.EntitySpriteDraw(projectileTexture, Projectile.OldCenter()[i] - Main.screenPosition, null, OpusColorUtils.MultiLerp(prog, ColorLib.WretchedColorMap) with { A = 0 } * opacity, Projectile.oldRot[i], projectileTexture.Size() / 2, scale, SpriteEffects.None);

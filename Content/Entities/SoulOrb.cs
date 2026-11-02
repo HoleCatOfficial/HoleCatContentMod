@@ -1,35 +1,16 @@
 ﻿
+using System;
 using DestroyerTest.Common;
-using DestroyerTest.Common.Systems;
-using DestroyerTest.Content.Consumables;
-using DestroyerTest.Content.Lorebooks;
-using DestroyerTest.Content.MeleeWeapons;
-using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss;
-using DestroyerTest.Content.Projectiles.EntitiesProjectiles;
-using DestroyerTest.Content.Resources.Cloths;
-using DestroyerTest.Content.RiftBiome;
-using DestroyerTest.Content.SummonItems;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using ReLogic.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.GameContent;
-using Terraria.GameContent.Bestiary;
-using Terraria.GameContent.ItemDropRules;
-using Terraria.GameContent.Personalities;
-using Terraria.GameContent.UI;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.ModLoader.IO;
-using Terraria.Utilities;
 
 namespace DestroyerTest.Content.Entities
 {
@@ -56,7 +37,7 @@ namespace DestroyerTest.Content.Entities
             NPC.lavaImmune = true;
             NPC.noTileCollide = true;
             NPC.knockBackResist = 0.5f;
-            
+
         }
 
         bool b1 = false;
@@ -93,7 +74,7 @@ namespace DestroyerTest.Content.Entities
 
 
             rOff -= 0.1f;
-            
+
             DTUtils.DrawCrystalCore(spriteBatch, NPC.Center, Color.White, Out, rOff, Scale);
             return false;
         }
@@ -127,9 +108,9 @@ namespace DestroyerTest.Content.Entities
         {
             Charge++;
 
-            ChargeProgress = (float)Charge / (float)MaxCharge;
+            ChargeProgress = Charge / (float)MaxCharge;
 
-            
+
 
             if (dying)
             {
@@ -174,7 +155,8 @@ namespace DestroyerTest.Content.Entities
             if (!SoundEngine.TryGetActiveSound(LoopSlot, out var activeSound))
             {
                 var tracker = new NPCAudioTracker(NPC);
-                LoopSlot = SoundEngine.PlaySound(Loop, NPC.Center, soundInstance => {
+                LoopSlot = SoundEngine.PlaySound(Loop, NPC.Center, soundInstance =>
+                {
                     soundInstance.Position = NPC.Center;
                     soundInstance.Pitch = PitchVal;
                     return tracker.IsActiveAndInGame();
@@ -192,7 +174,7 @@ namespace DestroyerTest.Content.Entities
 
                 KillHostile = true;
                 dying = true;
-                
+
             }
 
 

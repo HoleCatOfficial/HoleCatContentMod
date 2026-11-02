@@ -1,15 +1,14 @@
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
+using System;
+using DestroyerTest.Content.Buffs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using Terraria.GameContent;
-using Terraria.Audio;
-using System.Collections.Generic;
-using Terraria.DataStructures;
-using DestroyerTest.Content.Buffs;
 using OpusLib;
+using Terraria;
+using Terraria.Audio;
+using Terraria.DataStructures;
+using Terraria.GameContent;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.player.Potion
 {

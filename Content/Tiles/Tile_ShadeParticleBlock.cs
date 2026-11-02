@@ -10,24 +10,26 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Tiles
 {
-	public class Tile_ShadeParticleBlock : ModTile
-	{
-		public override void SetStaticDefaults() {
-			Main.tileSolid[Type] = true;
+    public class Tile_ShadeParticleBlock : ModTile
+    {
+        public override void SetStaticDefaults()
+        {
+            Main.tileSolid[Type] = true;
             Main.tileBlendAll[Type] = true;
             Main.tileLighted[Type] = true;
-            
+
             HitSound = SoundID.Item50;
-			DustType = DustID.BubbleBurst_White;
+            DustType = DustID.BubbleBurst_White;
             MineResist = 3.6f;
-            
 
-			AddMapEntry(ColorLib.TenebrisGradient);
-		}
 
-		public override void NumDust(int i, int j, bool fail, ref int num) {
-			num = fail ? 1 : 3;
-		}
+            AddMapEntry(ColorLib.TenebrisGradient);
+        }
+
+        public override void NumDust(int i, int j, bool fail, ref int num)
+        {
+            num = fail ? 1 : 3;
+        }
 
         bool Inner = false;
         public override bool TileFrame(int i, int j, ref bool resetFrame, ref bool noBreak)
@@ -116,5 +118,5 @@ namespace DestroyerTest.Content.Tiles
             drawData.colorTint = ColorLib.TenebrisGradient;
             drawData.finalColor = ColorLib.TenebrisGradient;
         }
-	}
+    }
 }

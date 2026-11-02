@@ -1,12 +1,11 @@
 using System;
 using System.Linq;
-using System.Xml;
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Entities;
 using DestroyerTest.Content.Particles;
- 
+
 using Microsoft.Xna.Framework;
 using OpusLib;
 using Terraria;
@@ -31,7 +30,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
         private HeartConnection[] connections = new HeartConnection[3];
         private bool initialized = false;
         private int hitCooldown = 0;
-        private int spawnGraceTimer = 60; 
+        private int spawnGraceTimer = 60;
         private bool dying = false;
 
         private SoundStyle kill = new SoundStyle("DestroyerTest/Assets/Audio/Impacts/IceMagicImpact", 3) with { PitchVariance = 0.4f };
@@ -71,7 +70,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
 
         public override void OnSpawn(IEntitySource source)
         {
-           
+
         }
 
         public override void AI()
@@ -274,7 +273,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
             for (int i = 0; i < 8; i++)
             {
                 Vector2 pos = Projectile.Center + Main.rand.NextVector2CircularEdge(40, 80);
-              
+
             }
         }
 

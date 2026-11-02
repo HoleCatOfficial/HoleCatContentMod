@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Projectiles.AmmoProjectiles;
-using DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
@@ -49,9 +47,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
         public override bool PreDraw(ref Color lightColor)
         {
             Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-            Opus.DrawGlowOnProj(Projectile,  ColorLib.StellarFireGradientLooping(), false);
+            Opus.DrawGlowOnProj(Projectile, ColorLib.StellarFireGradientLooping(), false);
             Opus.ReturnToDefaultDrawing(Main.spriteBatch);
-            Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, Projectile.Center - Main.screenPosition, null,  ColorLib.StellarFireGradientLooping(), Projectile.rotation, TextureAssets.Projectile[Projectile.type].Value.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
+            Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, Projectile.Center - Main.screenPosition, null, ColorLib.StellarFireGradientLooping(), Projectile.rotation, TextureAssets.Projectile[Projectile.type].Value.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
             return false;
         }
 

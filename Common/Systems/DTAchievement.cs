@@ -1,7 +1,4 @@
-using System.Collections;
 using System.IO;
-using Microsoft.Extensions.DependencyInjection;
-using Terraria;
 using Terraria.Achievements;
 using Terraria.GameContent.Achievements;
 using Terraria.ModLoader;
@@ -39,7 +36,8 @@ namespace DestroyerTest.Common.Systems
             );
         }
 
-        public override void NetReceive(BinaryReader reader) {
+        public override void NetReceive(BinaryReader reader)
+        {
             reader.ReadFlags(
                 out LivingShadowEmpower
             );

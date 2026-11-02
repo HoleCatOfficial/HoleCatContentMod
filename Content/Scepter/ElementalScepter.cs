@@ -1,28 +1,23 @@
-using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using DestroyerTest.Common;
+using DestroyerTest.Content.Projectiles.Weapon.Scepter;
+using DestroyerTest.Content.Projectiles.Weapon.Scepter.ElementalShots;
+using DestroyerTest.Content.Resources;
+using DestroyerTest.Rarity.Scepter;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.DataStructures;
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Common;
-using DestroyerTest.Rarity;
-using DestroyerTest.Rarity.Scepter;
-using DestroyerTest.Content.Projectiles.Weapon.Scepter;
-using System.Collections.Generic;
-using DestroyerTest.Content.Projectiles.Weapon.Scepter.ElementalShots;
-using DestroyerTest.Content.Resources;
-using System.Collections.ObjectModel;
-using System.Linq;
-using Terraria.GameContent;
 using Terraria.UI.Chat;
 
 namespace DestroyerTest.Content.Scepter
 {
-	public class ElementalScepter : ScepterItem
-	{
-		public override int Width => 48;
+    public class ElementalScepter : ScepterItem
+    {
+        public override int Width => 48;
         public override int Height => 48;
 
         public override void SetStaticDefaults()
@@ -78,7 +73,7 @@ namespace DestroyerTest.Content.Scepter
             ModContent.ProjectileType<LightShot2>(),
             ModContent.ProjectileType<VenomShot>()
         };
-        
+
         public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
         {
             if (player.altFunctionUse != 2)
@@ -152,7 +147,7 @@ namespace DestroyerTest.Content.Scepter
             return false; // we handled ALL drawing
         }
 
-        
+
 
         public static void RegisterScepterLine(Mod mod, string text, List<TooltipLine> tooltips)
         {
@@ -196,4 +191,4 @@ namespace DestroyerTest.Content.Scepter
             .Register();
         }
     }
-} 
+}

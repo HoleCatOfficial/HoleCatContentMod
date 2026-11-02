@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
-using ReLogic.Content;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;

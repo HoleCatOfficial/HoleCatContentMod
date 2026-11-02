@@ -1,15 +1,10 @@
-﻿using DestroyerTest.Common;
+﻿using System.Collections.Generic;
+using System.Linq;
+using DestroyerTest.Common;
 using DestroyerTest.Common.Interfaces;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Equips;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -106,7 +101,7 @@ namespace DestroyerTest.Content.Projectiles
 
         public override void OnKill(int timeLeft)
         {
-            
+
         }
 
     }
@@ -167,7 +162,7 @@ namespace DestroyerTest.Content.Projectiles
             DelayTimer++;
 
             Projectile.ResetExcessTrailPoints();
-          
+
             Dust.NewDust(Projectile.position, Projectile.Hitbox.Width, Projectile.Hitbox.Height, DustID.FireworksRGB, Main.rand.NextFloat(-1, 1.1f), Main.rand.NextFloat(-1, 1.1f), 0, ColorLib.Rift, 0.5f);
 
             Lighting.AddLight(Projectile.Center, ColorLib.Rift.ToVector3());

@@ -1,9 +1,9 @@
-using Terraria;
-using Terraria.ModLoader;
-using Terraria.ID;
-using Microsoft.Xna.Framework;
 using DestroyerTest.Common;
 using DestroyerTest.Content.MeleeWeapons;
+using Microsoft.Xna.Framework;
+using Terraria;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 {
@@ -23,14 +23,17 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Projectile.ignoreWater = true;
             Projectile.timeLeft = 20; // persistent
             Projectile.netImportant = true;
-			Projectile.netUpdate = true;
+            Projectile.netUpdate = true;
         }
 
-        private void AnimateProjectile() {
+        private void AnimateProjectile()
+        {
             // Loop through the frames, assuming each frame lasts 5 ticks
-            if (++Projectile.frameCounter >= 1) {
+            if (++Projectile.frameCounter >= 1)
+            {
                 Projectile.frameCounter = 0;
-                if (++Projectile.frame >= Main.projFrames[Projectile.type]) {
+                if (++Projectile.frame >= Main.projFrames[Projectile.type])
+                {
                     Projectile.frame = 0;
                 }
             }

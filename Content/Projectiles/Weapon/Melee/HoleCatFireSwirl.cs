@@ -1,16 +1,13 @@
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Consumables;
-using DestroyerTest.Content.Particles;
- 
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using OpusLib.Content.Particles;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -46,14 +43,14 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Player player = Main.player[Projectile.owner];
 
             Projectile.rotation += 0.1f * Projectile.direction;
-            
+
             for (int u = 0; u < 10; u++)
             {
                 int RadOuter = 200;
                 int RadInner = 180;
                 Vector2 Outer = Projectile.Center + Main.rand.NextVector2CircularEdge(Main.rand.NextFloat(RadInner, RadOuter), Main.rand.NextFloat(RadInner, RadOuter));
                 Dust.NewDustPerfect(Outer, DustID.TintableDustLighted, Projectile.velocity, 100, ColorLib.HoleCatFireGradient, 3);
-                
+
             }
         }
 
@@ -81,7 +78,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 LerpingFire fire = new LerpingFire();
                 fire.PrepareFire(Projectile.Center, Dir, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.3f, 0.3f), ColorLib.HoleCatFireColormap, 4f, 100, FireDrawMode.Additive);
                 ParticleEngine.BehindProjectiles.Add(fire);
-                
+
             }
         }
 

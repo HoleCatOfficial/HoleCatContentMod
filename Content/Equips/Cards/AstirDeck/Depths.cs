@@ -1,16 +1,11 @@
-﻿using BreadLibrary.Core.Graphics.Particles;
+﻿using System.Collections.Generic;
+using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Particles;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using ReLogic.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -70,7 +65,7 @@ namespace DestroyerTest.Content.Equips.Cards.AstirDeck
 
         Color HeatTextColor()
         {
-            float Progress = (float)Heat / (float)MaxHeat;
+            float Progress = Heat / (float)MaxHeat;
 
             return Color.Lerp(Color.IndianRed, Color.Orange, Progress);
         }
@@ -88,7 +83,7 @@ namespace DestroyerTest.Content.Equips.Cards.AstirDeck
         {
             Heat = (int)MathHelper.Clamp(Heat, 0, MaxHeat);
 
-            float Prog = (float)Heat / (float)MaxHeat;
+            float Prog = Heat / (float)MaxHeat;
             if (Active)
             {
                 int ty = ModContent.ProjectileType<DepthsAudioProjectile>();
@@ -159,7 +154,7 @@ namespace DestroyerTest.Content.Equips.Cards.AstirDeck
                         D.noGravity = true;
                     }
 
-                    if(Main.rand.NextBool(20))
+                    if (Main.rand.NextBool(20))
                     {
                         Spark S = new();
                         Color C = Color.Lerp(Color.Orange, Color.OrangeRed, Main.rand.NextFloat(1.01f));
@@ -167,7 +162,7 @@ namespace DestroyerTest.Content.Equips.Cards.AstirDeck
                         ParticleEngine.Particles.Add(S);
                         S.TrackPlayer[Player.whoAmI] = true;
 
-                        
+
                     }
                 }
 
@@ -177,7 +172,7 @@ namespace DestroyerTest.Content.Equips.Cards.AstirDeck
                 Player.statDefense -= DefenseLoss;
             }
 
-            
+
         }
 
         int DefenseLoss = 0;
@@ -232,7 +227,7 @@ namespace DestroyerTest.Content.Equips.Cards.AstirDeck
                     Projectile.timeLeft = 60;
                     Projectile.Center = player.Center;
 
-                    float Progress = (float)depths.Heat / (float)depths.MaxHeat;
+                    float Progress = depths.Heat / (float)depths.MaxHeat;
 
                     PitchVal = MathHelper.Lerp(-1f, 0f, Progress);
                     Vol = MathHelper.Lerp(0f, 0.5f, Progress);

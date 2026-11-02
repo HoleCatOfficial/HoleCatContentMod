@@ -1,41 +1,40 @@
 
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
+using Terraria;
 using Terraria.GameContent.ItemDropRules;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Equips
 {
-	public class RiftenOverloader : ModItem
-	{
-		public override void SetDefaults()
-		{
-			Item.width = 29;
-			Item.height = 18;
-			Item.maxStack = 1;
-			Item.value = 100;
-			Item.accessory = true;
-		}
+    public class RiftenOverloader : ModItem
+    {
+        public override void SetDefaults()
+        {
+            Item.width = 29;
+            Item.height = 18;
+            Item.maxStack = 1;
+            Item.value = 100;
+            Item.accessory = true;
+        }
 
-		public override void UpdateAccessory(Player player, bool hideVisual)
-		{
+        public override void UpdateAccessory(Player player, bool hideVisual)
+        {
             player.buffImmune[ModContent.BuffType<HeliouricShock>()] = true;
-		}
-	}
+        }
+    }
 
-	public class RODropNPC : GlobalNPC
-	{
+    public class RODropNPC : GlobalNPC
+    {
         public override bool InstancePerEntity => true;
 
         public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot)
         {
             if (DTUtils.RiftEnemies.Contains(npc.type))
-			{
-				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<RiftenOverloader>(), 30, 1, 1));
-			}
+            {
+                npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<RiftenOverloader>(), 30, 1, 1));
+            }
         }
 
-	}
+    }
 }

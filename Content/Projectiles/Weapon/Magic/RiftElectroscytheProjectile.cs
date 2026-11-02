@@ -1,12 +1,6 @@
-﻿using DestroyerTest.Common;
-using DestroyerTest.Content.Magic;
-using DestroyerTest.Content.MeleeWeapons;
-using DestroyerTest.Content.Projectiles.Boss.NodeBoss.Blessed;
+﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
-using System;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -87,7 +81,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
                         Projectile.netUpdate = true;
                     }
                 }
-                
+
 
                 if (AtFullSpeed)
                 {
@@ -109,7 +103,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
                     Speed *= 0.94f;
                 }
             }
-            
+
         }
     }
 }

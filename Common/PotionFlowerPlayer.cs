@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Content.Particles.PotionFlowers;
-using ReLogic.Reflection;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -190,7 +189,7 @@ namespace DestroyerTest.Common
                                     }
                                 }
                             }
-                            
+
 
                             UseCooldown = 0;
                         }
@@ -212,7 +211,7 @@ namespace DestroyerTest.Common
             {
                 Player.moveSpeed += 0.22f;
             }
-            
+
         }
 
         public override void PostUpdateRunSpeeds()

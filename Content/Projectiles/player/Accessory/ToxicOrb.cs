@@ -1,5 +1,3 @@
-using System.Linq;
-using DestroyerTest.Common;
 using DestroyerTest.Content.Equips;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -29,12 +27,13 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
         {
             Texture2D texture = TextureAssets.Projectile[Type].Value;
 
-			Vector2 drawOrigin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
-			for (int k = Projectile.oldPos.Length - 1; k > 0; k--) {
-				Vector2 drawPos = (Projectile.oldPos[k] - Main.screenPosition) + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
-				Color color = Projectile.GetAlpha(lightColor) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
-				Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
-			}
+            Vector2 drawOrigin = new Vector2(texture.Width * 0.5f, Projectile.height * 0.5f);
+            for (int k = Projectile.oldPos.Length - 1; k > 0; k--)
+            {
+                Vector2 drawPos = (Projectile.oldPos[k] - Main.screenPosition) + drawOrigin + new Vector2(0f, Projectile.gfxOffY);
+                Color color = Projectile.GetAlpha(lightColor) * ((Projectile.oldPos.Length - k) / (float)Projectile.oldPos.Length);
+                Main.EntitySpriteDraw(texture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale, SpriteEffects.None, 0);
+            }
             return true;
         }
 
@@ -55,7 +54,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
 
         private bool Validate(Player owner)
         {
-            foreach(Item i in owner.armor)
+            foreach (Item i in owner.armor)
             {
                 if (i.type == ModContent.ItemType<ToxicCanister>())
                 {

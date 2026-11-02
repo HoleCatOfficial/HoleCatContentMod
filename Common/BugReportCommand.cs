@@ -1,11 +1,3 @@
-using System;
-using System.Net.Http;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using Terraria;
-using Terraria.ModLoader;
-
 namespace DestroyerTest.Common
 {
     /*

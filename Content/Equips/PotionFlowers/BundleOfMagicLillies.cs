@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib.Content.Particles;
@@ -183,7 +177,7 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
 
                 if (Active)
                 {
-                  
+
                     Spark spark = new();
                     spark.PrepareSpark(Main.rand.NextVector2FromRectangle(Player.Hitbox), -Player.velocity * 0.5f, -Player.velocity.ToRotation() + MathHelper.PiOver2, new Color(182, 82, 240), 0.5f, false, 20, SparkDrawMode.Additive, 2f);
                     ParticleEngine.Particles.Add(spark);

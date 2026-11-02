@@ -1,33 +1,18 @@
-﻿
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.Tiles;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using Terraria;
-using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.GameContent;
-using Terraria.GameContent.Drawing;
-using Terraria.ID;
-using Terraria.ModLoader;
-using DestroyerTest.Rarity;
+﻿using System.Collections.Generic;
 using DestroyerTest.Common;
-using DestroyerTest.Content.SummonItems;
-using DestroyerTest.Content.MeleeWeapons;
-
-using Terraria.Localization;
-using DestroyerTest.Content.Entities;
-using System.Linq;
-using DestroyerTest.Content.Projectiles;
+using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Projectiles.Weapon.Summon;
-using DestroyerTest.Common.Systems;
+using Microsoft.Xna.Framework;
+using Terraria;
+using Terraria.DataStructures;
+using Terraria.ID;
+using Terraria.Localization;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.SummonItems
 {
-    public class Malachite  : ModItem
+    public class Malachite : ModItem
     {
         public override void SetStaticDefaults()
         {
@@ -65,32 +50,32 @@ namespace DestroyerTest.Content.SummonItems
 
         public override void ModifyWeaponDamage(Player player, ref StatModifier damage)
         {
-            switch(Level)
+            switch (Level)
             {
                 case 0:
                     {
                         damage += 0.0f;
                         break;
                     }
-                    //Skeletron
+                //Skeletron
                 case 1:
                     {
                         damage += 0.2f;
                         break;
                     }
-                    //WoF
+                //WoF
                 case 2:
                     {
                         damage += 0.8f;
                         break;
                     }
-                    //Plantera
+                //Plantera
                 case 3:
                     {
                         damage += 1.2f;
                         break;
                     }
-                    //Cultist
+                //Cultist
                 case 4:
                     {
                         damage += 1.8f;
@@ -123,7 +108,7 @@ namespace DestroyerTest.Content.SummonItems
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
             string Key = "Mods.DestroyerTest.Items.Malachite";
-            TooltipLine Level1Tooltip = new TooltipLine(Mod, "Level1Tooltip", Language.GetTextValue(Key + ".Level1Tooltip")) { OverrideColor = Level >= 1 ? Color.Goldenrod : Color.Gray};
+            TooltipLine Level1Tooltip = new TooltipLine(Mod, "Level1Tooltip", Language.GetTextValue(Key + ".Level1Tooltip")) { OverrideColor = Level >= 1 ? Color.Goldenrod : Color.Gray };
             TooltipLine Level2Tooltip = new TooltipLine(Mod, "Level2Tooltip", Language.GetTextValue(Key + ".Level2Tooltip")) { OverrideColor = Level >= 2 ? Color.Goldenrod : Color.Gray };
             TooltipLine Level3Tooltip = new TooltipLine(Mod, "Level3Tooltip", Language.GetTextValue(Key + ".Level3Tooltip")) { OverrideColor = Level >= 3 ? Color.Goldenrod : Color.Gray };
             TooltipLine Level4Tooltip = new TooltipLine(Mod, "Level4Tooltip", Language.GetTextValue(Key + ".Level4Tooltip")) { OverrideColor = Level >= 4 ? Color.Goldenrod : Color.Gray };

@@ -1,18 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.MeleeWeapons;
+﻿using DestroyerTest.Common;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
-using static FargowiltasSouls.Core.Systems.DashManager;
 
 namespace DestroyerTest.Content.Tiles.RoseGarden
 {
@@ -34,7 +26,7 @@ namespace DestroyerTest.Content.Tiles.RoseGarden
             DustType = DustID.Ebonwood;
 
             HitSound = DTAssetLib.Impacts.WoodBreak;
-           
+
 
             // Etc
             LocalizedText name = CreateMapEntryName();
@@ -44,7 +36,7 @@ namespace DestroyerTest.Content.Tiles.RoseGarden
         public override void KillMultiTile(int i, int j, int frameX, int frameY)
         {
             //Common Coins
-           
+
             Item.NewItem(Item.GetSource_None(), Utils.CenteredRectangle(new Point(i, j).ToWorldCoordinates(), new Vector2(2f, 2f)), ItemID.CopperCoin, Main.rand.Next(3, 17));
             Item.NewItem(Item.GetSource_None(), Utils.CenteredRectangle(new Point(i, j).ToWorldCoordinates(), new Vector2(2f, 2f)), ItemID.SilverCoin, Main.rand.Next(1, 9));
 
@@ -55,5 +47,5 @@ namespace DestroyerTest.Content.Tiles.RoseGarden
         }
     }
 
- 
+
 }

@@ -1,25 +1,14 @@
-﻿using Microsoft.Xna.Framework;
-using System.Collections.Generic;
+﻿using DestroyerTest.Content.Projectiles.Weapon.Melee;
+using DestroyerTest.Content.Resources;
+using DestroyerTest.Content.Tiles.RiftConfigurator;
+using DestroyerTest.Content.Tiles.Riftplate;
+using DestroyerTest.Rarity;
+using GlowmaskHelper.Content;
+using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.Audio;
-using Terraria.DataStructures;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Content.Tiles;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.Dusts;
-using DestroyerTest.Rarity;
-using Terraria.GameInput;
-
-using DestroyerTest.Common;
-using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Tiles.Riftplate;
- 
-using DestroyerTest.Content.Tiles.RiftConfigurator;
-using DestroyerTest.Content.Projectiles.Weapon.Melee;
-using GlowmaskHelper.Content;
 
 namespace DestroyerTest.Content.RiftArsenal
 {

@@ -1,17 +1,9 @@
-﻿using DestroyerTest.Common;
+﻿using System.Collections.Generic;
+using DestroyerTest.Common;
 using DestroyerTest.Content.MeleeWeapons;
-using DestroyerTest.Content.MeleeWeapons.SwordLineage;
-using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.OrionCrossover;
-using DestroyerTest.Content.Projectiles.Weapon.Melee;
-using DestroyerTest.Content.Resources;
 using DestroyerTest.Rarity;
-using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
 using Terraria;
-using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -71,7 +63,7 @@ namespace DestroyerTest.Content.OrionCrossover
         public override void AddRecipes()
         {
             CreateRecipe()
-                
+
                 .AddIngredient<Constitution>(1)
                 .AddIngredient(ItemID.Starfury, 1)
                 .AddTile(TileID.Anvils)

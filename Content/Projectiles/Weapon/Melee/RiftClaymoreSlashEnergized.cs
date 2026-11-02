@@ -1,6 +1,5 @@
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.RiftArsenal;
-using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ModLoader;
@@ -28,9 +27,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Projectile.localNPCHitCooldown = 60;
         }
 
-        private void AnimateProjectile() {
+        private void AnimateProjectile()
+        {
             // Loop through the frames, assuming each frame lasts 5 ticks
-            if (++Projectile.frameCounter >= 2) {
+            if (++Projectile.frameCounter >= 2)
+            {
                 Projectile.frameCounter = 0;
                 if (++Projectile.frame >= Main.projFrames[Projectile.type])
                 {

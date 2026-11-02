@@ -1,24 +1,15 @@
-using System;
-using Microsoft.Xna.Framework;
+using DestroyerTest.Content.Projectiles.Weapon.Scepter;
+using DestroyerTest.Content.Resources;
+using DestroyerTest.Rarity.Scepter;
 using Terraria;
-using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.DataStructures;
- 
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Common;
-  
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Rarity;
-using DestroyerTest.Rarity.Scepter;
-using DestroyerTest.Content.Projectiles.Weapon.Scepter;
 
 namespace DestroyerTest.Content.Scepter
 {
-	public class ObsidianOculus : ScepterItem
-	{
-		public override int Width => 48;
+    public class ObsidianOculus : ScepterItem
+    {
+        public override int Width => 48;
         public override int Height => 48;
 
         public override void SetStaticDefaults()
@@ -38,8 +29,8 @@ namespace DestroyerTest.Content.Scepter
             KB = 2;
             AdditiveValue = Item.sellPrice(silver: 80);
             Rarity = ModContent.RarityType<PearlRarity>();
-            
-            
+
+
 
             // Assign projectile types
             ShootID = ModContent.ProjectileType<ObsidianShard>();
@@ -60,15 +51,16 @@ namespace DestroyerTest.Content.Scepter
         }
 
 
-		public override void AddRecipes() {
-			CreateRecipe()
-				.AddIngredient(ItemID.Obsidian, 12)
-				.AddIngredient(ItemID.SilverBar, 8)
-				.AddIngredient<LifeEcho>(2)
-				.AddTile(TileID.WorkBenches)
-				.Register();
-		}
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient(ItemID.Obsidian, 12)
+                .AddIngredient(ItemID.SilverBar, 8)
+                .AddIngredient<LifeEcho>(2)
+                .AddTile(TileID.WorkBenches)
+                .Register();
+        }
 
 
     }
-} 
+}

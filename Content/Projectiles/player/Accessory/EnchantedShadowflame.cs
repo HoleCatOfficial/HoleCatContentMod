@@ -1,14 +1,5 @@
-using System.Formats.Tar;
-using System.Runtime.CompilerServices;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Particles;
- 
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Terraria;
-using Terraria.Audio;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -131,5 +122,5 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
         {
             target.AddBuff(BuffID.ShadowFlame, 120);
         }
-	}
+    }
 }

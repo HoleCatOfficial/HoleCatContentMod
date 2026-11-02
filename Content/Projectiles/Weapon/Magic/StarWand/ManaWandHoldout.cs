@@ -2,11 +2,6 @@
 using DestroyerTest.Content.Projectiles.ParentClasses;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.GameContent;
 using Terraria.ModLoader;
@@ -36,7 +31,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic.StarWand
 
         public override void Shoot()
         {
-            
+
             Vector2 angle = targetAngle;
             angle.Normalize();
             Terraria.Projectile.NewProjectile(Projectile.GetSource_FromAI(), ShotPos(), angle.RotatedByRandom(0.5f) * 20, ModContent.ProjectileType<ManaCluster>(), Projectile.damage, 5, Owner.whoAmI);

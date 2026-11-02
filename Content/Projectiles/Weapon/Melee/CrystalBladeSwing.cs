@@ -1,22 +1,13 @@
 ﻿using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles.ParentClasses;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using OpusLib.Content.Helpers;
-using System;
-using System.Collections.Generic;
-using System.IO;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.GameContent;
-using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -61,12 +52,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Vector2 T = npc.Center - Owner.Center;
             T.Normalize();
 
-           
+
             for (int i = 0; i < 5; i++)
             {
                 Spark S = new();
                 Vector2 V = (T * 4).RotatedByRandom(0.4f);
-                S.PrepareSpark(npc.Center,  V, V.ToRotation(), SweepColor, 0.6f, false, 60, SparkDrawMode.Additive, 1.5f);
+                S.PrepareSpark(npc.Center, V, V.ToRotation(), SweepColor, 0.6f, false, 60, SparkDrawMode.Additive, 1.5f);
                 ParticleEngine.Particles.Add(S);
 
                 if (hit.Crit)
@@ -80,7 +71,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
         public override void OnStartSwing()
         {
-          
+
         }
 
         public Vector2 swordTip;
@@ -108,7 +99,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 //PRTLoader.NewParticle(DTUtils.Fire[Main.rand.Next(DTUtils.Fire.Length)], pt[Main.rand.Next(30)], SwordLine.GetLineRotation.ToRotationVector2() * 2, ColorLib.Wretched3, 0.5f, 20, ai2: 2);
             }
 
-            
+
 
             int SparkAmt = (int)MathHelper.Lerp(0, 3, Utilities.Convert01To010(SlashProgress));
 

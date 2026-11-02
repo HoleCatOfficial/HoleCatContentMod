@@ -1,18 +1,12 @@
 using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using GlowmaskHelper.Content;
-using ReLogic.Content;
-using Terraria.Audio;
-using OpusLib;
-using DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss;
-using System.Collections.Generic;
-using Microsoft.Build.Evaluation;
 
 namespace DestroyerTest.Content.Projectiles.player.ArmorSet
 {
@@ -50,10 +44,10 @@ namespace DestroyerTest.Content.Projectiles.player.ArmorSet
 
             Dust trail = Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.Ice, 0f, 0f, 0, Color.White, 1f);
             trail.noGravity = true;
-            
+
             if (LifeTime < 15)
             {
-                
+
             }
             else
             {

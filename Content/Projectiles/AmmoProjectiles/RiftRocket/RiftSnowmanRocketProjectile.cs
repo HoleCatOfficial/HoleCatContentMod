@@ -1,5 +1,4 @@
-﻿using System;
-using DestroyerTest.Common;
+﻿using DestroyerTest.Common;
 using DestroyerTest.Common.Interfaces;
 using DestroyerTest.Content.Dusts;
 using GlowmaskHelper.Content;
@@ -65,15 +64,15 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles.RiftRocket
 
             }
 
-            
-            
+
+
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
             Projectile.velocity *= 0f;
             Projectile.timeLeft = 3;
-            return false; 
+            return false;
         }
 
         public override void PrepareBombToBlow()

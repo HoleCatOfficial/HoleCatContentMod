@@ -1,11 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss;
 using DestroyerTest.Content.Projectiles.HellWeapons;
 using DestroyerTest.Content.Projectiles.ParentClasses;
 using DestroyerTest.Content.Projectiles.player.Accessory;
@@ -148,7 +145,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
             base.SetDefaults();
         }
     }
-    
+
     public abstract class PostMoonlordScroll : Scroll
     {
         public override void SetDefaults()
@@ -241,7 +238,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
 
         public static void RemoveAllHitNPCEffects(Player player)
         {
-            
+
             ThrownScepter thrownScepter = Main.projectile.First(n => n.active && n.owner == player.whoAmI).ModProjectile as ThrownScepter;
 
             if (!HitNPCEventSubscriptions.TryGetValue(player, out var handlers))
@@ -249,7 +246,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
 
             foreach (EventHandler<NPC> handler in handlers)
             {
-                thrownScepter.HitNPCEvent -= handler;  
+                thrownScepter.HitNPCEvent -= handler;
             }
 
             HitNPCEventSubscriptions.Remove(player);
@@ -277,7 +274,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
         public bool SpookyScroll3 = false;
         public bool TenebrousScroll = false;
 
-        
+
         public int UseEffectCooldown = 0;
         public override void ResetEffects()
         {
@@ -324,19 +321,19 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
             {
                 if (HellfireScroll1)
                 {
-                  
+
                     if (item.DamageType == ModContent.GetInstance<ScepterClass>() && Player.altFunctionUse == 2)
                     {
                         if (Main.rand.NextBool(3))
                         {
                             for (int t = 0; t < 3; t++)
                             {
-                                 
-                                Projectile.NewProjectile(Player.GetSource_ItemUse(item), Player.Center, velocity.RotatedByRandom(2f), ModContent.ProjectileType<Hellfire>(), damage, knockback, Player.whoAmI );
+
+                                Projectile.NewProjectile(Player.GetSource_ItemUse(item), Player.Center, velocity.RotatedByRandom(2f), ModContent.ProjectileType<Hellfire>(), damage, knockback, Player.whoAmI);
                             }
                         }
                     }
-                    
+
                 }
                 if (CurseScroll)
                 {
@@ -500,26 +497,26 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
                     }
                 }
                 if (TurbulenceScroll)
+                {
+                    if (item.DamageType == ModContent.GetInstance<ScepterClass>() && Player.altFunctionUse == 2)
                     {
-                        if (item.DamageType == ModContent.GetInstance<ScepterClass>() && Player.altFunctionUse == 2)
+                        if (Main.rand.NextBool(3))
                         {
-                            if (Main.rand.NextBool(3))
+                            for (int t = 0; t < 5; t++)
                             {
-                                for (int t = 0; t < 5; t++)
-                                {
-                                    Projectile.NewProjectile(
-                                        Player.GetSource_ItemUse(item),
-                                        Player.Center,
-                                        velocity,
-                                        ProjectileID.WeatherPainShot,
-                                        damage / 4,
-                                        knockback,
-                                        Player.whoAmI
-                                    );
-                                }
+                                Projectile.NewProjectile(
+                                    Player.GetSource_ItemUse(item),
+                                    Player.Center,
+                                    velocity,
+                                    ProjectileID.WeatherPainShot,
+                                    damage / 4,
+                                    knockback,
+                                    Player.whoAmI
+                                );
                             }
                         }
                     }
+                }
                 if (GalantineScroll)
                 {
                     if (item.DamageType == ModContent.GetInstance<ScepterClass>() && Player.altFunctionUse == 2)
@@ -696,7 +693,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
                         }
                     }
                 }
-                
+
                 UseEffectCooldown = 0;
             }
         }
@@ -885,7 +882,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
             {
                 if (Main.rand.NextBool())
                 {
-                    Projectile.NewProjectile(Projectile.InheritSource(projectile), Main.rand.NextVector2FromRectangle(projectile.Hitbox), Main.rand.NextVector2Circular(0.5f, 0.5f), ModContent.ProjectileType<SolarTrail>(), (int)(projectile.damage / 5), 0f, projectile.owner);
+                    Projectile.NewProjectile(Projectile.InheritSource(projectile), Main.rand.NextVector2FromRectangle(projectile.Hitbox), Main.rand.NextVector2Circular(0.5f, 0.5f), ModContent.ProjectileType<SolarTrail>(), projectile.damage / 5, 0f, projectile.owner);
                 }
             }
             if (FrozenFireScroll && IsAThrownScepter)
@@ -896,9 +893,9 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
                 }
             }
         }
-        
+
         bool ReleasedSpore = false;
-        
+
         public static SoundStyle PoisonScrollSound = new SoundStyle("DestroyerTest/Assets/Audio/PoisonVerseBurst") { PitchVariance = 0.3f, MaxInstances = 0 };
         public void ThrownScepterOnReturn(ThrownScepter scepter)
         {
@@ -919,7 +916,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
         }
         public override void OnSpawn(Projectile projectile, IEntitySource source)
         {
-            
+
         }
 
         public override void OnHitNPC(Projectile projectile, NPC target, NPC.HitInfo hit, int damageDone)
@@ -930,7 +927,7 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
                 Projectile.NewProjectile(projectile.GetSource_OnHit(target), projectile.Center, Vector2.Zero, ProjectileID.InfernoFriendlyBlast, (int)(projectile.damage * 0.75f), 2, projectile.owner);
             }
 
-            if(IsAThrownScepter && HandScroll)
+            if (IsAThrownScepter && HandScroll)
             {
                 Opus.RingSpreadProjectileRandom(ProjectileID.InsanityShadowFriendly, 3, target.Center, 200, projectile.damage, 4, -14f);
             }
@@ -1024,6 +1021,6 @@ namespace DestroyerTest.Content.Equips.ScepterAccessories
             }
         }
 
-        
+
     }
 }

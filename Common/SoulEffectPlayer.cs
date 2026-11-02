@@ -1,4 +1,3 @@
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Common

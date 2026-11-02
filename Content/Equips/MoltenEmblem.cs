@@ -1,12 +1,7 @@
-﻿using System;
-using DestroyerTest.Content.MeleeWeapons;
-using DestroyerTest.Content.Projectiles;
-using Microsoft.Xna.Framework;
+﻿using DestroyerTest.Content.Projectiles;
 using OpusLib;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 

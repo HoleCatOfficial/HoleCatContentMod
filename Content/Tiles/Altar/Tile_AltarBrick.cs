@@ -1,11 +1,8 @@
 ﻿using DestroyerTest.Common;
 using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.DataStructures;
-using Terraria.Enums;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using Terraria.ObjectData;
 
 namespace DestroyerTest.Content.Tiles.Altar
 {
@@ -13,7 +10,7 @@ namespace DestroyerTest.Content.Tiles.Altar
     {
         public override void SetStaticDefaults()
         {
-            
+
             Main.tileSolid[Type] = true;
             Main.tileBlockLight[Type] = true;
             MineResist = 1f;

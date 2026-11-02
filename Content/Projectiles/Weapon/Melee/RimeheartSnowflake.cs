@@ -2,11 +2,6 @@
 using DestroyerTest.Common.Interfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -75,8 +70,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
             for (int i = 0; i < Projectile.oldPos.Length; i++)
             {
-                float Scale = MathHelper.Lerp(1f, 0f, (float)i / (float)Projectile.oldPos.Length);
-                
+                float Scale = MathHelper.Lerp(1f, 0f, i / (float)Projectile.oldPos.Length);
+
                 Main.EntitySpriteDraw(texture, Projectile.OldCenter()[i] - Main.screenPosition, frame, lightColor * 0.1f, Projectile.oldRot[i], origin, Scale, SpriteEffects.None);
             }
             return true;

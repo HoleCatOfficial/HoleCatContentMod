@@ -1,8 +1,6 @@
 ﻿using Terraria;
-using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using DestroyerTest.Content.Consumables;
 
 namespace DestroyerTest.Content.Buffs.Whip
 {

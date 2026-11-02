@@ -1,25 +1,20 @@
+using System;
+using System.Collections.Generic;
 using DestroyerTest.Common;
 using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.RiftBiome;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using MonoMod.Cil;
 using OpusLib;
 using ReLogic.Content;
-using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Utilities;
 
 namespace DestroyerTest.Content.Entities
 {
@@ -81,7 +76,7 @@ namespace DestroyerTest.Content.Entities
             });
 
             bestiaryEntry.Info.AddRange([
-				BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.TheCorruption
+                BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.TheCorruption
             ]);
         }
 
@@ -121,7 +116,7 @@ namespace DestroyerTest.Content.Entities
                 return;
             }
 
-            for(int i = 0; i < OwnedBits.Count; i++)
+            for (int i = 0; i < OwnedBits.Count; i++)
             {
                 TEBit bit = OwnedBits[i];
                 Rectangle Frame = new Rectangle(0, (int)bit.Dimensions.Y * Variety, (int)bit.Dimensions.X, (int)bit.Dimensions.Y);
@@ -213,7 +208,7 @@ namespace DestroyerTest.Content.Entities
                 return false;
             }
 
-            
+
 
             if (GetTexFromVariant() != null)
             {
@@ -330,7 +325,7 @@ namespace DestroyerTest.Content.Entities
             }
             else
             {
-                
+
 
                 if (Main.GameUpdateCount % 60 == 0)
                 {
@@ -346,7 +341,7 @@ namespace DestroyerTest.Content.Entities
 
         }
 
-        
+
         public override void ModifyNPCLoot(NPCLoot npcLoot)
         {
             npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ShadeParticle>(), 3, 1, 5));

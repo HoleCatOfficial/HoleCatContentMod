@@ -1,29 +1,18 @@
 using BreadLibrary.Core.Graphics.Particles;
-using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Projectiles.Boss.NodeBoss.Ichor;
- 
-using Microsoft.Build.Evaluation;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
-using ReLogic.Peripherals.RGB;
-using System;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
-using Terraria.Enums;
 using Terraria.GameContent;
-using Terraria.GameContent.Drawing;
-using Terraria.Graphics.Shaders;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 {
-	public class GoliathPhantom : ModProjectile
-	{
+    public class GoliathPhantom : ModProjectile
+    {
         private enum AIState
         {
             Slowing,
@@ -54,13 +43,13 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         public override bool PreDraw(ref Color lightColor)
         {
             //Main.spriteBatch.UseBlendState(BlendState.Additive);
-			Opus.DrawProjectileShadowsRotating(Projectile, 4, Color.Red, Opacity: 0.35f);
-			var T = TextureAssets.Projectile[Projectile.type].Value;
+            Opus.DrawProjectileShadowsRotating(Projectile, 4, Color.Red, Opacity: 0.35f);
+            var T = TextureAssets.Projectile[Projectile.type].Value;
 
             //Opus.ReturnToDefaultDrawing(Main.spriteBatch);
 
             Main.EntitySpriteDraw(T, Projectile.Center, null, Color.Red, Projectile.rotation, T.Size() / 2, Projectile.scale, SpriteEffects.None, 0f);
-            
+
             return false;
         }
 

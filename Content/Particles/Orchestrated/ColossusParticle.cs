@@ -1,13 +1,8 @@
 ﻿using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
- 
+
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
-using System.Collections.Generic;
-using Terraria;
 using Terraria.Graphics.Renderers;
-using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Particles.Orchestrated
 {
@@ -69,5 +64,5 @@ namespace DestroyerTest.Content.Particles.Orchestrated
             }
         }
     }
-    
+
 }

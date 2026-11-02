@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using BreadLibrary.Common.Whip;
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Buffs.Whip;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles.Weapon.Melee;
@@ -17,7 +16,6 @@ using ReLogic.Content;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -43,7 +41,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon.WretchedWhip
         public override void OnSpawn(IEntitySource source)
         {
             Projectile.aiStyle = -1;
-            
+
         }
 
         public override void Prepare()
@@ -83,7 +81,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon.WretchedWhip
             WretchedPointGlow glow = new();
             glow.Prepare(Projectile.WhipPointsForCollision[Projectile.WhipPointsForCollision.Count - 1], Main.rand.NextVector2Circular(1, 1), 1f);
             ParticleEngine.Particles.Add(glow);
-            
+
         }
 
         public override void PlayCrackSound()
@@ -130,7 +128,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon.WretchedWhip
 
 
             Projectile.GetWhipSettings(base.Projectile, out var timeToFlyOut, out var segments, out var rangeMultiplier);
-            float Progress = MathHelper.Clamp((float)Time / timeToFlyOut, 0f, 1f);
+            float Progress = MathHelper.Clamp(Time / timeToFlyOut, 0f, 1f);
 
             float OnePointProgress = (float)Math.Round(Progress, 1);
             float TwoPointProgress = (float)Math.Round(Progress, 2);
@@ -151,12 +149,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon.WretchedWhip
             if (Owner.HeldItem.ModItem is SummonItems.WretchedWhip Whip)
             {
                 Whip.HitCount++;
-                Pitch = MathHelper.Lerp(-3f, -2f, (float)Whip.HitCount / 5f);
+                Pitch = MathHelper.Lerp(-3f, -2f, Whip.HitCount / 5f);
             }
 
-            
 
-            
+
+
 
             if (PowerStrike)
             {

@@ -1,25 +1,22 @@
-﻿using DestroyerTest.Content.Projectiles;
+﻿using DestroyerTest.Content.Projectiles.Weapon.Melee;
+using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using DestroyerTest.Rarity;
-using DestroyerTest.Content.Projectiles.Weapon.Melee;
-using Microsoft.Xna.Framework;
 
 namespace DestroyerTest.Content.MeleeWeapons
 {
     public class GlacialJabber : ModItem
     {
-        public override void SetStaticDefaults() 
+        public override void SetStaticDefaults()
         {
             ItemID.Sets.ItemsThatAllowRepeatedRightClick[Type] = true;
         }
 
-        public override void SetDefaults() 
+        public override void SetDefaults()
         {
-            Item.width = 150; 
-            Item.height = 150; 
+            Item.width = 150;
+            Item.height = 150;
 
             Item.rare = ItemRarityID.Pink;
             Item.value = Item.sellPrice(silver: 10);
@@ -32,7 +29,7 @@ namespace DestroyerTest.Content.MeleeWeapons
 
             Item.damage = 16;
             Item.knockBack = 6.5f;
-            Item.noUseGraphic = true; 
+            Item.noUseGraphic = true;
             Item.DamageType = DamageClass.Melee;
             Item.noMelee = true;
 
@@ -64,16 +61,15 @@ namespace DestroyerTest.Content.MeleeWeapons
         {
             return true;
         }
-        public override void AddRecipes() 
+        public override void AddRecipes()
         {
-			CreateRecipe()
+            CreateRecipe()
                 .AddIngredient(ItemID.IceBlock, 5)
                 .AddIngredient(ItemID.PlatinumBar, 3)
                 .AddIngredient(ItemID.BorealWood, 3)
                 .AddTile(TileID.Anvils)
-				.Register();
-		    }
+                .Register();
         }
+    }
 }
 
-		

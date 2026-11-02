@@ -1,18 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DestroyerTest.Common;
+﻿using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
-using OpusLib.Content.Helpers;
 using ReLogic.Content;
 using Terraria;
-using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -61,7 +54,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
         }
 
 
-   
+
         public override void AI()
         {
 
@@ -85,5 +78,5 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
         }
 
     }
-    
+
 }

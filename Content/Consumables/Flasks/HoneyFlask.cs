@@ -1,12 +1,5 @@
-﻿using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs.Imbues;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.Tiles;
-using DestroyerTest.Rarity;
-using DestroyerTest.Rarity.Scepter;
+﻿using DestroyerTest.Content.Buffs.Imbues;
 using Microsoft.Xna.Framework;
-using Newtonsoft.Json.Linq;
-using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 

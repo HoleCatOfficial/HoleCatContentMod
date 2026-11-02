@@ -1,23 +1,19 @@
-using DestroyerTest.Content.Projectiles.AmmoProjectiles;
+using DestroyerTest.Content.Projectiles.Weapon.Ranged;
 using DestroyerTest.Content.Resources;
-using Microsoft.Xna.Framework;
-using System.Collections.Generic;
 using Terraria;
-using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using DestroyerTest.Content.Projectiles.Weapon.Ranged;
 
 namespace DestroyerTest.Content.RangedItems
 {
-	public class Siege : ModItem
-	{
-		public override void SetStaticDefaults() 
+    public class Siege : ModItem
+    {
+        public override void SetStaticDefaults()
         {
-			ItemID.Sets.IsRangedSpecialistWeapon[Type] = true;
-		}
+            ItemID.Sets.IsRangedSpecialistWeapon[Type] = true;
+        }
 
-		public override void SetDefaults()
+        public override void SetDefaults()
         {
             Item.width = 34;
             Item.height = 42;
@@ -37,7 +33,7 @@ namespace DestroyerTest.Content.RangedItems
             Item.noMelee = true;
             Item.noUseGraphic = true;
             Item.useTurn = true;
-    
+
             Item.shoot = ModContent.ProjectileType<SiegeHoldout>();
         }
 
@@ -46,14 +42,15 @@ namespace DestroyerTest.Content.RangedItems
             bool Rocket = player.HasItemInAnyInventory(ItemID.RocketI) || player.HasItemInAnyInventory(ItemID.RocketII) || player.HasItemInAnyInventory(ItemID.RocketIII) || player.HasItemInAnyInventory(ItemID.RocketIV);
             return player.ownedProjectileCounts[Item.shoot] < 1 && Rocket;
         }
-        
 
-        public override void AddRecipes() {
+
+        public override void AddRecipes()
+        {
             CreateRecipe()
                 .AddIngredient(ItemID.RocketLauncher, 1)
                 .AddIngredient<Tenebris>(5)
-				.AddTile(TileID.LunarCraftingStation)
-				.Register();
-		}
-	}
+                .AddTile(TileID.LunarCraftingStation)
+                .Register();
+        }
+    }
 }

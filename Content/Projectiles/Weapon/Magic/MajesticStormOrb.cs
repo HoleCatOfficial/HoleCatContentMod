@@ -1,16 +1,11 @@
 using System;
-using System.Collections.Generic;
-using System.Formats.Tar;
-using System.Runtime.CompilerServices;
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Particles;
- 
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
-using OpusLib.Content.Particles;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -73,11 +68,13 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 
             return false;
         }
-        private void AnimateProjectile() 
+        private void AnimateProjectile()
         {
-            if (++Projectile.frameCounter >= 10) {
+            if (++Projectile.frameCounter >= 10)
+            {
                 Projectile.frameCounter = 0;
-                if (++Projectile.frame >= Main.projFrames[Projectile.type]) {
+                if (++Projectile.frame >= Main.projFrames[Projectile.type])
+                {
                     Projectile.frame = 0;
                 }
             }
@@ -125,7 +122,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
                         }
 
                         target.AddBuff(BuffID.Electrified, 300);
-                        int Damage = (int)(Projectile.damage);
+                        int Damage = Projectile.damage;
                         Damage = Utils.Clamp(Damage, 10, 100);
                         target.SimpleStrikeNPC(Damage, Math.Sign((target.Center - Projectile.Center).X), false, 1f, DamageClass.Default);
 
@@ -148,5 +145,5 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
         {
             target.AddBuff(BuffID.Electrified, 20 * 60);
         }
-	}
+    }
 }

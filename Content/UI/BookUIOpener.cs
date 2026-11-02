@@ -1,7 +1,6 @@
 using DestroyerTest.Content.UI;
 using Terraria;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 

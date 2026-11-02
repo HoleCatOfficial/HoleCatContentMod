@@ -1,38 +1,41 @@
 
-﻿using Terraria;
+using DestroyerTest.Common;
+using DestroyerTest.Rarity.Scepter;
+using Terraria;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using DestroyerTest.Rarity.Scepter;
-using DestroyerTest.Common;
 
 namespace DestroyerTest.Content.Equips
 {
-	[AutoloadEquip(EquipType.Head)]
-	public class MythrilVisage : ModItem
-	{
-		public override void SetDefaults() {
-			Item.width = 24;
-			Item.height = 22;
-			Item.value = Item.sellPrice(gold: 70);
-			Item.rare = ModContent.RarityType<WineRarity>();
-			Item.defense = 10;
+    [AutoloadEquip(EquipType.Head)]
+    public class MythrilVisage : ModItem
+    {
+        public override void SetDefaults()
+        {
+            Item.width = 24;
+            Item.height = 22;
+            Item.value = Item.sellPrice(gold: 70);
+            Item.rare = ModContent.RarityType<WineRarity>();
+            Item.defense = 10;
 
-		}
-		public override bool IsArmorSet(Item head, Item body, Item legs) {
-			return body.type == ItemID.MythrilChainmail && legs.type == ItemID.MythrilGreaves;
-		}
+        }
+        public override bool IsArmorSet(Item head, Item body, Item legs)
+        {
+            return body.type == ItemID.MythrilChainmail && legs.type == ItemID.MythrilGreaves;
+        }
 
-		public static readonly int SoloRangeBonus = 30;
-		public static readonly int SetRangeBonus = 60;
+        public static readonly int SoloRangeBonus = 30;
+        public static readonly int SetRangeBonus = 60;
         public static readonly float ThrowSpeedBonus = 1.12f;
         public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(SoloRangeBonus);
-		public LocalizedText setBonus => base.Tooltip.WithFormatArgs(SetRangeBonus, (ThrowSpeedBonus - 1f).ToString("P1"));
-		public override void UpdateArmorSet(Player player) {
-			player.ScepterClass().Range += SetRangeBonus;
-			player.ScepterClass().ThrowSpeedModifier *= ThrowSpeedBonus;
-			player.DefaultSetBonusText(player.armor[0]);
-		}
+        public LocalizedText setBonus => base.Tooltip.WithFormatArgs(SetRangeBonus, (ThrowSpeedBonus - 1f).ToString("P1"));
+        public override void UpdateArmorSet(Player player)
+        {
+            player.ScepterClass().Range += SetRangeBonus;
+            player.ScepterClass().ThrowSpeedModifier *= ThrowSpeedBonus;
+            player.DefaultSetBonusText(player.armor[0]);
+        }
 
         public override void UpdateEquip(Player player)
         {
@@ -40,11 +43,12 @@ namespace DestroyerTest.Content.Equips
         }
 
 
-		public override void AddRecipes() {
-			CreateRecipe()
+        public override void AddRecipes()
+        {
+            CreateRecipe()
                 .AddIngredient(ItemID.MythrilBar, 10)
                 .AddTile(TileID.MythrilAnvil)
-				.Register();
-		}
-	}
+                .Register();
+        }
+    }
 }

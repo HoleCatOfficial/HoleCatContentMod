@@ -1,15 +1,8 @@
-﻿using BreadLibrary.Core.Graphics.Particles;
-using BreadLibrary.Core.Graphics.Pixelation;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Particles.Stellar;
+﻿using DestroyerTest.Common;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
-using OpusLib.Content.Helpers;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -83,7 +76,7 @@ namespace DestroyerTest.Content.Buffs
 
             if (lifeRegenDebuff)
             {
-                
+
                 Lighting.AddLight(npc.Center, ColorLib.CelestialGradient.ToVector3());
                 ShouldDraw = true;
             }
@@ -171,7 +164,7 @@ namespace DestroyerTest.Content.Buffs
 
             if (lifeRegenDebuff)
             {
-                
+
                 Lighting.AddLight(Player.MountedCenter, ColorLib.CelestialGradient.ToVector3());
                 ShouldDraw = true;
             }
@@ -214,14 +207,14 @@ namespace DestroyerTest.Content.Buffs
                         ShouldDraw = false;
                     }
 
-                    if (Opacity > 0 )
+                    if (Opacity > 0)
                     {
                         Opacity -= 0.05f;
                     }
                     else
                     {
                         Opacity = 0f;
-                        
+
                     }
                 }
             }
@@ -267,7 +260,7 @@ namespace DestroyerTest.Content.Buffs
                 {
                     for (int i = 0; i < fb.DrawPositions.Length; i++)
                     {
-                        DrawData data = new(DTAssetLib.FeatheredCircle.Value, fb.DrawPositions[i] - Main.screenPosition, null, ColorLib.CelestialGradient with { A = 0} * fb.Opacity, 0f, DTAssetLib.FeatheredCircle.Value.Size() / 2, 0.4f, SpriteEffects.None);
+                        DrawData data = new(DTAssetLib.FeatheredCircle.Value, fb.DrawPositions[i] - Main.screenPosition, null, ColorLib.CelestialGradient with { A = 0 } * fb.Opacity, 0f, DTAssetLib.FeatheredCircle.Value.Size() / 2, 0.4f, SpriteEffects.None);
                         drawInfo.DrawDataCache.Add(data);
 
                         DrawData data2 = new(DTAssetLib.FeatheredCircle.Value, fb.DrawPositions[i] - Main.screenPosition, null, Color.White with { A = 0 } * fb.Opacity, 0f, DTAssetLib.FeatheredCircle.Value.Size() / 2, 0.3f, SpriteEffects.None);

@@ -1,18 +1,13 @@
-
-using System.Runtime.CompilerServices;
 using DestroyerTest.Common;
+using DestroyerTest.Common.Interfaces;
 using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Particles;
- 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using Terraria;
-using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
-using OpusLib;
-using DestroyerTest.Common.Interfaces;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 {
@@ -90,5 +85,5 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
             Projectile.NewProjectile(Projectile.InheritSource(Projectile), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<FungusSporeExplosion>(), (int)(Projectile.damage * 0.1f), 4);
         }
 
-	}
+    }
 }

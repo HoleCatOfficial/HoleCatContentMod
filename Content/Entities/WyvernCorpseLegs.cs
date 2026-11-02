@@ -1,14 +1,11 @@
+using System.Linq;
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
-using DestroyerTest.Content.BossBar;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Particles;
-using GlowmaskHelper.Content;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
 using ReLogic.Content;
-using System.Linq;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -19,7 +16,7 @@ namespace DestroyerTest.Content.Entities
 {
     public class WyvernCorpseLegs : ModNPC
     {
-        
+
         public void immunities()
         {
             NPCID.Sets.SpecificDebuffImmunity[Type][ModContent.BuffType<HaepiensBlizzard>()] = true;
@@ -210,7 +207,7 @@ namespace DestroyerTest.Content.Entities
                 NPC.immortal = false;
             }
 
-           
+
 
             NPC.dontTakeDamage = Parent.dontTakeDamage;
             NPC.damage = Parent.damage;
@@ -233,7 +230,7 @@ namespace DestroyerTest.Content.Entities
                 return;
             }
 
-            float Progress = (float)Parent.life / (float)Parent.lifeMax;
+            float Progress = Parent.life / (float)Parent.lifeMax;
             Frame = (int)MathHelper.Lerp(5, 0, Progress);
 
 
@@ -278,7 +275,7 @@ namespace DestroyerTest.Content.Entities
             if (anyNodesAlive)
             {
                 //Opus.DrawNPCShadowsRotating(NPC, 6, ColorLib.Ichor);
-                float rotationOffset = 0.3f * (float)NPC.direction;
+                float rotationOffset = 0.3f * NPC.direction;
                 WyvernCorpseHead.DrawHealingShadow(NPC, new Vector2(0f, 6), drawPos, ColorLib.Ichor, rotationOffset);
                 WyvernCorpseHead.DrawHealingShadow(NPC, new Vector2(0f, 0f - 6), drawPos, ColorLib.Ichor, rotationOffset);
                 WyvernCorpseHead.DrawHealingShadow(NPC, new Vector2(6, 0f), drawPos, ColorLib.Ichor, rotationOffset);
@@ -306,10 +303,10 @@ namespace DestroyerTest.Content.Entities
                 return;
             }
 
-            float Progress = (float)Parent.life / (float)Parent.lifeMax;
+            float Progress = Parent.life / (float)Parent.lifeMax;
 
-            float FirstQuarterProgress = (float)NPC.life / (float)NPC.lifeMax / 4;
-            float LastQuarterProgress = (float)NPC.life / (float)NPC.lifeMax * 0.75f;
+            float FirstQuarterProgress = NPC.life / (float)NPC.lifeMax / 4;
+            float LastQuarterProgress = NPC.life / (float)NPC.lifeMax * 0.75f;
 
             //Crimstone dusts stop appearing below 25% health.
             if (Progress > 0.25f)
@@ -335,7 +332,7 @@ namespace DestroyerTest.Content.Entities
 
             if (!DestroyerTestMod.MasochistIsActive)
             {
-                float Progress = (float)Parent.life / (float)Parent.lifeMax;
+                float Progress = Parent.life / (float)Parent.lifeMax;
 
                 if (Progress > 0.5f)
                 {

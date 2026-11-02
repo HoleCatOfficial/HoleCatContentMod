@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DestroyerTest.Common.Interfaces;
+﻿using DestroyerTest.Common.Interfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.GameContent;
-using Terraria.Graphics;
-using Terraria.Graphics.Shaders;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -55,10 +48,10 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
             Projectile.idStaticNPCHitCooldown = 20;
         }
 
-      
+
         public override bool PreDraw(ref Color lightColor)
         {
-          
+
 
             Main.EntitySpriteDraw(TextureAssets.Projectile[Type].Value, Projectile.Center - Main.screenPosition, null, Color.White with { A = 0 }, Projectile.rotation, TextureAssets.Projectile[Type].Value.Size() / 2, new Vector2(1 + (0.2f * Projectile.velocity.Length()), 1f), SpriteEffects.None);
             return false;

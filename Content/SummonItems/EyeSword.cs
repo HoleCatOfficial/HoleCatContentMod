@@ -1,28 +1,10 @@
-﻿
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.Tiles;
+﻿using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Projectiles.Weapon.Summon;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
 using Terraria;
-using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.GameContent;
-using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
-using DestroyerTest.Rarity;
-using DestroyerTest.Common;
-using DestroyerTest.Content.SummonItems;
-using DestroyerTest.Content.MeleeWeapons;
-
-using Terraria.Localization;
-using DestroyerTest.Content.Entities;
-using System.Linq;
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Projectiles.Weapon.Summon;
 
 namespace DestroyerTest.Content.SummonItems
 {

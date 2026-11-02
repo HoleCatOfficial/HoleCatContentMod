@@ -1,27 +1,25 @@
 using DestroyerTest.Common;
-using Microsoft.Xna.Framework.Graphics;
 using Terraria;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Resources.Cloths
 {
-	public class BlueCloth : ModItem
-	{
-		public override void SetStaticDefaults() 
-		{
-			Item.StaticDefaultToCloth();
-		}
+    public class BlueCloth : ModItem
+    {
+        public override void SetStaticDefaults()
+        {
+            Item.StaticDefaultToCloth();
+        }
 
-		public override void SetDefaults() 
-		{
-			Item.DefaultToCloth();
-		}
+        public override void SetDefaults()
+        {
+            Item.DefaultToCloth();
+        }
 
-		public override void AddRecipes() 
-		{
-			Item.DefaultRecipe(ItemID.MushroomGrassSeeds);
-		}
-	}
+        public override void AddRecipes()
+        {
+            Item.DefaultRecipe(ItemID.MushroomGrassSeeds);
+        }
+    }
 }

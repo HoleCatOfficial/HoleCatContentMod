@@ -4,9 +4,6 @@ using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using ReLogic.Content;
 using Terraria;
-using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -60,8 +57,8 @@ namespace DestroyerTest.Content.Projectiles
 
             if (Projectile.timeLeft < 60)
             {
-                Projectile.Opacity = MathHelper.Lerp(1f, 0f, ((float)Projectile.timeLeft / 60f).Inverse());
-            }    
+                Projectile.Opacity = MathHelper.Lerp(1f, 0f, (Projectile.timeLeft / 60f).Inverse());
+            }
         }
 
         private void IndicateArena()
@@ -82,8 +79,8 @@ namespace DestroyerTest.Content.Projectiles
             Vector2 pos = Projectile.Bottom;
             Point posCoord = pos.ToTileCoordinates();
 
-            for(int i = posCoord.Y; i < Main.maxTilesY; i++)
-{
+            for (int i = posCoord.Y; i < Main.maxTilesY; i++)
+            {
                 Tile check = Framing.GetTileSafely(posCoord.X, i);
 
                 if (check.HasTile &&

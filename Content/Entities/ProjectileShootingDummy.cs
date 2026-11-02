@@ -1,23 +1,10 @@
-﻿using DestroyerTest.Common;
-using DestroyerTest.Common.Systems;
-using DestroyerTest.Content.Equips;
-using DestroyerTest.Content.Projectiles.EntitiesProjectiles;
-using DestroyerTest.Content.RiftBiome;
-using DestroyerTest.Content.Scepter;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using MonoMod.Cil;
-using OpusLib;
+﻿using OpusLib;
 using OpusLib.Content.Helpers;
-using System;
-using System.IO;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.Bestiary;
-using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Utilities;
 
 namespace DestroyerTest.Content.Entities
 {

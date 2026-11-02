@@ -1,18 +1,9 @@
+using DestroyerTest.Common;
+using DestroyerTest.Content.Projectiles.ParentClasses;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
-using Terraria.Audio;
-using DestroyerTest.Content.Consumables;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Dusts;
-using System;
-using Terraria.DataStructures;
-using System.IO;
- 
-using DestroyerTest.Content.Projectiles.ParentClasses;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 {
@@ -32,14 +23,15 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            
+
 
             Projectile.NewProjectile(Projectile.GetSource_OnHit(null), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<AreaParticle>(), 0, 0, Projectile.owner);
             base.OnHitNPC(target, hit, damageDone);
         }
 
-        public override bool OnTileCollide(Vector2 oldVelocity) {
-           
+        public override bool OnTileCollide(Vector2 oldVelocity)
+        {
+
 
             Projectile.NewProjectile(Projectile.GetSource_OnHit(null), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<AreaParticle>(), 0, 0, Projectile.owner);
 
@@ -49,46 +41,46 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 
     }
     public class AreaParticle : ModProjectile
+    {
+        public override string Texture => DTUtils.NoTexture;
+
+        private int auraTimer = 600;
+
+
+        public override void SetDefaults()
         {
-            public override string Texture => DTUtils.NoTexture;
+            Projectile.width = 2;
+            Projectile.height = 2;
+            Projectile.friendly = false;
+            Projectile.penetrate = -1;
+            Projectile.timeLeft = 1200;
+            Projectile.tileCollide = false;
+            Projectile.scale = 0.1f;
+            Projectile.hide = true; // Optional: hide if just visual
+        }
 
-            private int auraTimer = 600;
-          
+        private float radius = 250f;
+        public override void AI()
+        {
+            auraTimer--;
 
-            public override void SetDefaults()
+
+
+            // Apply buffs to players inside the radius
+            foreach (Player player in Main.player)
             {
-                Projectile.width = 2;
-                Projectile.height = 2;
-                Projectile.friendly = false;
-                Projectile.penetrate = -1;
-                Projectile.timeLeft = 1200;
-                Projectile.tileCollide = false;
-                Projectile.scale = 0.1f;
-                Projectile.hide = true; // Optional: hide if just visual
+                if (player.active && !player.dead && Vector2.Distance(player.Center, Projectile.Center) <= radius)
+                {
+                    player.AddBuff(BuffID.TitaniumStorm, 300);
+                }
             }
 
-            private float radius = 250f;
-            public override void AI()
+            if (auraTimer <= 0)
             {
-                auraTimer--;
-
-             
-
-                // Apply buffs to players inside the radius
-                foreach (Player player in Main.player)
-                {
-                    if (player.active && !player.dead && Vector2.Distance(player.Center, Projectile.Center) <= radius)
-                    {
-                        player.AddBuff(BuffID.TitaniumStorm, 300);
-                    }
-                }
-
-                if (auraTimer <= 0)
-                {
-                    Projectile.Kill();
-                }
+                Projectile.Kill();
             }
         }
+    }
 
 }
 

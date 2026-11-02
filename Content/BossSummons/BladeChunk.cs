@@ -2,7 +2,6 @@
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Entities;
-using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Particles.Stellar;
 using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
@@ -21,7 +20,7 @@ namespace DestroyerTest.Content.BossSummons
         public override void SetStaticDefaults()
         {
             Item.ResearchUnlockCount = 3;
-            ItemID.Sets.SortingPriorityBossSpawns[Type] = 12; 
+            ItemID.Sets.SortingPriorityBossSpawns[Type] = 12;
         }
 
         public override void SetDefaults()
@@ -44,7 +43,7 @@ namespace DestroyerTest.Content.BossSummons
 
         public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
         {
-            
+
 
             Main.EntitySpriteDraw(DTAssetLib.PointGlowPreMultiplied.Value, Item.Center - Main.screenPosition, null, ColorLib.StellarFireGradientLooping() with { A = 0 }, 0f, DTAssetLib.PointGlowPreMultiplied.Value.Size() / 2, Opus.Sine(1f, 1.7f), SpriteEffects.None);
             return true;

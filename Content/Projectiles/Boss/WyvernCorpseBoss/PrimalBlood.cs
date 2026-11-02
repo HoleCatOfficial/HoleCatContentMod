@@ -1,17 +1,11 @@
-using System;
 using System.Collections.Generic;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.Enums;
-using Terraria.GameContent;
-using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -44,11 +38,11 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
             SpriteBatch spriteBatch = Main.spriteBatch;
             DTUtils.DrawCrystalCore(spriteBatch, Projectile.Center, Color.White, Color.Red, TrailPositions, TextureRotationOffset, Projectile, TrailLength, 0.8f);
         }
-        
+
         public List<Vector2> TrailPositions = new();
-		public List<float> TrailRotations = new();
+        public List<float> TrailRotations = new();
         private const int TrailLength = 40;
-        
+
         public float TextureRotationOffset = 0f;
         public override void AI()
         {
@@ -88,7 +82,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
         {
             target.AddBuff(ModContent.BuffType<BloodHex>(), 300);
         }
-        
+
 
         public override void OnKill(int timeLeft)
         {

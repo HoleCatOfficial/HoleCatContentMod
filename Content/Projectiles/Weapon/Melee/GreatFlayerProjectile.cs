@@ -1,35 +1,25 @@
 using BreadLibrary.Core.Graphics.Particles;
-using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.MeleeWeapons;
 using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles.ParentClasses;
- 
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using OpusLib.Content.Helpers;
-using OpusLib.Content.Particles;
-using System;
-using System.Collections.Generic;
-using System.IO;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
-using Terraria.GameContent;
-using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 {
 
-	public class GreatFlayerProjectile : BaseBroadswordProjectile
-	{
+    public class GreatFlayerProjectile : BaseBroadswordProjectile
+    {
         public override string Texture => "DestroyerTest/Content/MeleeWeapons/GreatFlayer";
-        public override SoundStyle Swing => new SoundStyle("DestroyerTest/Assets/Audio/SwordSounds/Constitution/ConSwing", 6) with { MaxInstances = 0, PitchVariance = 0.3f, Pitch = -0.2f};
-		public SoundStyle Tooth = new SoundStyle("DestroyerTest/Assets/Audio/Corpse/ToothShoot") with { MaxInstances = 0 };
+        public override SoundStyle Swing => new SoundStyle("DestroyerTest/Assets/Audio/SwordSounds/Constitution/ConSwing", 6) with { MaxInstances = 0, PitchVariance = 0.3f, Pitch = -0.2f };
+        public SoundStyle Tooth = new SoundStyle("DestroyerTest/Assets/Audio/Corpse/ToothShoot") with { MaxInstances = 0 };
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -67,7 +57,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/Corpse/ToothShoot") with { MaxInstances = 0, PitchVariance = 0.4f }, npc.Center);
                 SoundEngine.PlaySound(DTAssetLib.Impacts.HellWeaponImpact with { MaxInstances = 0, PitchVariance = 0.4f, Pitch = -0.7f }, npc.Center);
             }
-           
+
             Owner.GetModPlayer<ScreenshakePlayer>().screenshakeMagnitude = 1;
             Owner.GetModPlayer<ScreenshakePlayer>().screenshakeTimer = 20;
 
@@ -202,7 +192,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 SweepColor = ColorLib.Ichor;
                 SweepHighlightColor = ColorLib.IchorCrystal4;
             }
-            
+
 
             //ScaleMult = 1.1f + MathHelper.Lerp(0, 0.3f, Utilities.Convert01To010(SlashProgress));
             swordTip = Projectile.Center + Projectile.rotation.ToRotationVector2() * (Projectile.Size.Length() * Projectile.scale);

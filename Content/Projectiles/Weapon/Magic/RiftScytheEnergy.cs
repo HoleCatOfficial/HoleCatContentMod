@@ -1,13 +1,9 @@
+using DestroyerTest.Content.Buffs;
+using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
-using Terraria.Audio;
-using DestroyerTest.Content.Consumables;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 {
@@ -33,10 +29,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             Projectile.timeLeft = 180; // 10 seconds max lifespan
             Projectile.DamageType = DamageClass.Magic;
             Projectile.netImportant = true;
-			Projectile.netUpdate = true;
+            Projectile.netUpdate = true;
         }
 
-    
+
 
         public override void AI()
         {
@@ -46,16 +42,16 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             {
                 Projectile.alpha -= 5;
             }
-            
-            
 
-            
+
+
+
             Player player = Main.player[Projectile.owner];
 
             // Always spinning
             Projectile.rotation += 0.4f * Projectile.direction;
 
-              // Generate flying dust effect
+            // Generate flying dust effect
             if (Main.rand.NextBool(3)) // 33% chance per tick
             {
                 Dust dust = Dust.NewDustPerfect(Projectile.Center, DustID.Lava, Projectile.velocity * 0.2f, 100, default, 1.2f);
@@ -63,7 +59,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
                 dust.fadeIn = 1.5f;
             }
 
-            
+
         }
 
 
@@ -75,13 +71,14 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
         {
             target.AddBuff(ModContent.BuffType<DaylightOverload>(), 120);
             SoundEngine.PlaySound(SoundID.Item122, Projectile.position);
-           
+
         }
 
-        public override bool OnTileCollide(Vector2 oldVelocity) {
+        public override bool OnTileCollide(Vector2 oldVelocity)
+        {
             SoundStyle Break = new SoundStyle("DestroyerTest/Assets/Audio/TO_Break") with
             {
-            PitchVariance = 0.5f
+                PitchVariance = 0.5f
             };
             // Play impact sound and spawn tile hit effects
             Collision.HitTiles(Projectile.position, Projectile.velocity, Projectile.width, Projectile.height);

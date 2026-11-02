@@ -1,6 +1,5 @@
 ﻿using DestroyerTest.Common;
 using DestroyerTest.Content.Magic;
-using DestroyerTest.Content.MeleeWeapons;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
@@ -80,7 +79,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
                 if (!SoundEngine.TryGetActiveSound(LoopSlot, out var activeSound))
                 {
                     var tracker = new ProjectileAudioTracker(Projectile);
-                    LoopSlot = SoundEngine.PlaySound(Loop, Projectile.Center, soundInstance => {
+                    LoopSlot = SoundEngine.PlaySound(Loop, Projectile.Center, soundInstance =>
+                    {
                         soundInstance.Position = Projectile.Center;
                         soundInstance.Pitch = PitchVal;
                         return tracker.IsActiveAndInGame();

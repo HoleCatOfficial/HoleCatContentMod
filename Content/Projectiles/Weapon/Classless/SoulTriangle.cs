@@ -1,23 +1,16 @@
 ﻿
 using System;
-using System.Collections.Generic;
 using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
 using DestroyerTest.Common;
 using DestroyerTest.Common.Interfaces;
 using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.Entities;
 using DestroyerTest.Content.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
-using OpusLib.Content.Helpers;
 using Terraria;
-using Terraria.Audio;
-using Terraria.Enums;
 using Terraria.GameContent;
-using Terraria.GameContent.Drawing;
 using Terraria.Graphics.Renderers;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -154,7 +147,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Classless
             Lifetime--;
 
 
-            float progress = (float)Lifetime / (float)(maxLifetime);
+            float progress = Lifetime / (float)(maxLifetime);
             Opacity = MathHelper.Lerp(0f, 1f, progress);
             //scale = MathHelper.Lerp(InitScale, InitScale * 0.5f, progress);
 

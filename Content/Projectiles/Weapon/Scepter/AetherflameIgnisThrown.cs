@@ -1,17 +1,9 @@
-﻿using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
+﻿using DestroyerTest.Content.Projectiles.ParentClasses;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
-using Terraria.Audio;
-using DestroyerTest.Content.Consumables;
-using DestroyerTest.Common;
-using Terraria.GameContent.Drawing;
-using System.IO;
-using DestroyerTest.Content.Projectiles.ParentClasses;
-using OpusLib;
 using ReLogic.Content;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
 {
@@ -26,7 +18,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
             HeightDim = 48;
             DustType = DustID.Torch;
 
-            
+
             base.SetDefaults();
         }
 
@@ -34,7 +26,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
         {
             base.PostAI();
 
-   
+
         }
     }
 }

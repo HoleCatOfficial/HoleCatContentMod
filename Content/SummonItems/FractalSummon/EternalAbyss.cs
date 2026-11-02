@@ -4,7 +4,6 @@ using System.Linq;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using Microsoft.Xna.Framework;
-using OpusLib;
 using OpusLib.Content.Helpers;
 using Terraria;
 using Terraria.ID;
@@ -66,7 +65,7 @@ namespace DestroyerTest.Content.SummonItems.FractalSummon
 
         //ALL OF Projectile is just decompiled terraria code.
 
-        private void GetMyGroupIndexAndFillBlackList(List<int> blackListedTargets, out int index, out int totalIndexesInGroup) 
+        private void GetMyGroupIndexAndFillBlackList(List<int> blackListedTargets, out int index, out int totalIndexesInGroup)
         {
             index = 0;
             totalIndexesInGroup = 0;
@@ -84,7 +83,7 @@ namespace DestroyerTest.Content.SummonItems.FractalSummon
             }
         }
 
-        private void GetIdlePosition(int stackedIndex, int totalIndexes, out Vector2 idleSpot, out float idleRotation) 
+        private void GetIdlePosition(int stackedIndex, int totalIndexes, out Vector2 idleSpot, out float idleRotation)
         {
             Player player = Main.player[Projectile.owner];
             int num1 = 1;
@@ -92,39 +91,39 @@ namespace DestroyerTest.Content.SummonItems.FractalSummon
             idleSpot = Vector2.Zero;
             if (num1 != 0)
             {
-                float num2 = (float) (((double) totalIndexes - 1.0) / 2.0);
-                idleSpot = player.Center + -Vector2.UnitY.RotatedBy(4.39822959899902 / (double) totalIndexes * ((double) stackedIndex - (double) num2), new Vector2()) * 40f;
+                float num2 = (float)((totalIndexes - 1.0) / 2.0);
+                idleSpot = player.Center + -Vector2.UnitY.RotatedBy(4.39822959899902 / totalIndexes * (stackedIndex - (double)num2), new Vector2()) * 40f;
                 idleRotation = 0.0f;
             }
             int num3 = stackedIndex + 1;
-            idleRotation = (float) ((double) num3 * 6.28318548202515 * 0.0166666675359011 * (double) player.direction + 1.57079637050629);
+            idleRotation = (float)(num3 * 6.28318548202515 * 0.0166666675359011 * player.direction + 1.57079637050629);
             idleRotation = MathHelper.WrapAngle(idleRotation);
             int num4 = num3 % totalIndexes;
-            Vector2 vector2 = new Vector2(0.0f, 0.5f).RotatedBy(((double) player.miscCounterNormalized * (2.0 + (double) num4) + (double) num4 * 0.5 + (double) player.direction * 1.29999995231628) * 6.28318548202515, new Vector2()) * 4f;
-            idleSpot = idleRotation.ToRotationVector2() * 10f + player.MountedCenter + new Vector2((float) (player.direction * (num3 * -6 - 16)), player.gravDir * -15f);
+            Vector2 vector2 = new Vector2(0.0f, 0.5f).RotatedBy(((double)player.miscCounterNormalized * (2.0 + num4) + num4 * 0.5 + player.direction * 1.29999995231628) * 6.28318548202515, new Vector2()) * 4f;
+            idleSpot = idleRotation.ToRotationVector2() * 10f + player.MountedCenter + new Vector2(player.direction * (num3 * -6 - 16), player.gravDir * -15f);
             idleSpot += vector2;
             idleRotation += 1.570796f;
         }
 
         private int TryAttackingNPCs(List<int> blackListedTargets, bool skipBodyCheck = false)
         {
-        Vector2 center = Main.player[Projectile.owner].Center;
-        int num1 = -1;
-        float num2 = -1f;
-        for (int index = 0; index < 200; ++index)
-        {
-            NPC npc = Main.npc[index];
-            if (npc.CanBeChasedBy((object) Projectile, false) && (npc.boss || !blackListedTargets.Contains(index)))
+            Vector2 center = Main.player[Projectile.owner].Center;
+            int num1 = -1;
+            float num2 = -1f;
+            for (int index = 0; index < 200; ++index)
             {
-            float num3 = npc.Distance(center);
-            if ((double) num3 <= 1000.0 && ((double) num3 <= (double) num2 || (double) num2 == -1.0) && (skipBodyCheck || Projectile.CanHitWithOwnBody((Entity) npc)))
-            {
-                num2 = num3;
-                num1 = index;
+                NPC npc = Main.npc[index];
+                if (npc.CanBeChasedBy(Projectile, false) && (npc.boss || !blackListedTargets.Contains(index)))
+                {
+                    float num3 = npc.Distance(center);
+                    if ((double)num3 <= 1000.0 && ((double)num3 <= (double)num2 || (double)num2 == -1.0) && (skipBodyCheck || Projectile.CanHitWithOwnBody(npc)))
+                    {
+                        num2 = num3;
+                        num1 = index;
+                    }
+                }
             }
-            }
-        }
-        return num1;
+            return num1;
         }
 
         private void Think(List<int> blacklist)

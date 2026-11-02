@@ -1,27 +1,7 @@
-using Terraria;
-using Terraria.ID;
 using System;
-using Terraria.ModLoader;
-using DestroyerTest.Content.Resources.Cloths;
-using Microsoft.Xna.Framework;
-using ReLogic.Graphics;
-using Terraria.GameContent;
-using Terraria.UI.Chat;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.MeleeWeapons;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Rarity;
-using System.Collections.Generic;
-using DestroyerTest.Content.Equips;
-using DestroyerTest.Content.RiftArsenal;
-using Terraria.GameContent.ItemDropRules;
-using System.Linq;
-using DestroyerTest.Content.Consumables;
-using DestroyerTest.Content.Scepter;
-using DestroyerTest.Content.Equips.ScepterAccessories;
-using Terraria.DataStructures;
-using DestroyerTest.Content.RiftBiomeSpread;
 using System.Reflection;
+using Terraria;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Common
 {
@@ -91,7 +71,7 @@ namespace DestroyerTest.Common
             }
 
             if (ModLoader.HasMod(FargosMutantName))
-            { 
+            {
                 FargosMutantIsLoaded = ModLoader.TryGetMod(FargosMutantName, out Mod frgoM);
                 FargosMutantMod = frgoM;
             }
@@ -214,7 +194,7 @@ namespace DestroyerTest.Common
             return null;
         }
 
- 
+
     }
 
     public class RogueCompatGlobalProjectile : GlobalProjectile
@@ -241,16 +221,16 @@ namespace DestroyerTest.Common
         {
             if (DTCrossMod.CalamityIsLoaded)
             {
-       
+
                 if (entity.DamageType == DamageClass.Throwing && DTCrossMod.CalamityMod.TryFind<DamageClass>("RogueDamageClass", out DamageClass rogueDamageClass))
                 {
                     entity.DamageType = rogueDamageClass;
                 }
 
-             
-                    
+
+
             }
-            
+
         }
     }
 

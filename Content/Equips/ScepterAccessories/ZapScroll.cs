@@ -1,19 +1,10 @@
-﻿
-using System;
-using DestroyerTest.Common;
-using DestroyerTest.Content.Equips.ScepterAccessories;
-using DestroyerTest.Rarity;
-using DestroyerTest.Rarity.Scepter;
-using Terraria;
-using Terraria.ID;
-using Terraria.Localization;
-using Terraria.ModLoader;
+﻿using Terraria;
 
 namespace DestroyerTest.Content.Equips.ScepterAccessories
 {
     public class ZapScroll : PreHardmodeScroll
     {
-        
+
         public override void SetDefaults()
         {
             Item.width = 32; // Width of the item

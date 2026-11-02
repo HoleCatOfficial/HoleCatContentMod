@@ -1,11 +1,9 @@
-using System;
 using DestroyerTest.Common;
 using DestroyerTest.Content.MeleeWeapons;
 using DestroyerTest.Content.Projectiles;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -53,10 +51,10 @@ namespace DestroyerTest.Content.Equips
                 Item.NewItem(Item.GetSource_FromThis(), player.Center, ModContent.ItemType<ConstantineScythe>());
                 Item.active = false;
             }
-        }   
-        
+        }
 
-        
+
+
 
 
 
@@ -74,7 +72,7 @@ namespace DestroyerTest.Content.Equips
 
         }
     }
-    
-   
+
+
 
 }

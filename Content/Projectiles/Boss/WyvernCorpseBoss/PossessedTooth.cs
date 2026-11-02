@@ -1,5 +1,3 @@
-using System;
-using System.Xml;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Entities;
 using Microsoft.Xna.Framework;
@@ -7,7 +5,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
-using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss

@@ -1,17 +1,10 @@
-﻿using DestroyerTest.Content.MeleeWeapons;
-using DestroyerTest.Content.Projectiles;
-using DestroyerTest.Content.Projectiles.Weapon.Magic;
-using DestroyerTest.Content.RangedItems;
+﻿using DestroyerTest.Content.Projectiles.Weapon.Magic;
 using DestroyerTest.Content.Scepter;
-using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
-using System.Linq;
 using Terraria;
-using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using UtfUnknown.Core.Models.SingleByte.Italian;
 
 namespace DestroyerTest.Content.Magic
 {
@@ -65,7 +58,7 @@ namespace DestroyerTest.Content.Magic
             else
             {
                 return false;
-            }    
+            }
         }
 
         public override bool CanUseItem(Player player)

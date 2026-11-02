@@ -1,18 +1,12 @@
 using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
-using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Magic;
-  
-using DestroyerTest.Content.Projectiles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using OpusLib.Content.Helpers;
 using Terraria;
 using Terraria.Graphics.Renderers;
-using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Particles
 {
@@ -32,10 +26,10 @@ namespace DestroyerTest.Content.Particles
 
         public float Scale1 = 0f;
         public float Scale2 = 0f;
-        
+
         public override void Update(ref ParticleRendererSettings settings)
         {
-            float Progress = (float)Lifetime / (float)MaxLifetime;
+            float Progress = Lifetime / (float)MaxLifetime;
 
             Scale1 = Opus.Sine(0.5f, 0.8f, 0.01f);
             Scale2 = Opus.Sine(0.1f, 0.5f, 0.2f);

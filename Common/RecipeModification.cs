@@ -1,17 +1,14 @@
+using System.Collections.Generic;
 using DestroyerTest.Content.Equips;
 using DestroyerTest.Content.Fargos.Scepter;
 using DestroyerTest.Content.MeleeWeapons;
-using DestroyerTest.Content.MeleeWeapons.SwordLineage;
 using DestroyerTest.Content.MeleeWeapons.TwistedLineage;
 using DestroyerTest.Content.OrionCrossover;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.RiftArsenal;
 using DestroyerTest.Content.Scepter;
-using System;
-using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Common
@@ -27,7 +24,7 @@ namespace DestroyerTest.Common
             recipeInk.Register();
         }
 
-        public override void PostAddRecipes() 
+        public override void PostAddRecipes()
         {
             List<int> PillarArmor = new List<int>
             {
@@ -221,7 +218,7 @@ namespace DestroyerTest.Common
                     }
                 }
             }
-		}
+        }
 
     }
 }

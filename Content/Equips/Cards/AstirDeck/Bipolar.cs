@@ -1,14 +1,5 @@
-﻿
-using DestroyerTest.Common;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Equips.ScepterAccessories;
-using DestroyerTest.Content.Projectiles.player.Accessory;
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Rarity;
-using Microsoft.Xna.Framework;
-using System.Collections.Generic;
+﻿using DestroyerTest.Content.Resources;
 using Terraria;
-using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 

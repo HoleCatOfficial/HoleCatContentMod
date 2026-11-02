@@ -1,21 +1,13 @@
-using System;
-using System.Xml;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss;
-using DestroyerTest.Content.Projectiles.Boss.VampireBoss;
-using DestroyerTest.Content.RiftArsenal;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.Enums;
-using Terraria.GameContent;
-using Terraria.GameContent.Drawing;
 using Terraria.ID;
 using Terraria.ModLoader;
-using OpusLib;
 
 namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
 {
@@ -52,7 +44,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
             for (int i = 0; i < Offsets.Length; i++)
             {
                 Vector2 D = Offsets[i] - Projectile.Center;
-                
+
 
                 Main.EntitySpriteDraw(TG.Value, Projectile.Center - Main.screenPosition, null, ColorLib.StellarFire3, D.ToRotation(), new Vector2(0, TG.Height() / 2), new Vector2(Len, 0.5f), SpriteEffects.None, 0f);
             }
@@ -64,37 +56,37 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
         public float TextureRotationOffset = 0f;
 
         public int Lifetime = 120;
-		public int Time = 0;
+        public int Time = 0;
 
-		public bool StartKill = false;
-		public void UpdateLerpTime()
-		{
-			Time++;
+        public bool StartKill = false;
+        public void UpdateLerpTime()
+        {
+            Time++;
 
-			if (Time > Lifetime)
-			{
-				StartKill = true;
-			}
-		}
-		public float LifetimeCompletion
-		{
-			get
-			{
-				if (Lifetime <= 0)
-				{
-					return 0f;
-				}
+            if (Time > Lifetime)
+            {
+                StartKill = true;
+            }
+        }
+        public float LifetimeCompletion
+        {
+            get
+            {
+                if (Lifetime <= 0)
+                {
+                    return 0f;
+                }
 
-				return (float)Time / (float)Lifetime;
-			}
-		}
+                return Time / (float)Lifetime;
+            }
+        }
 
         float WarnScale = 0f;
 
         public override void AI()
         {
             UpdateLerpTime();
-			MainColor = ColorLib.StellarFireGradient(LifetimeCompletion);
+            MainColor = ColorLib.StellarFireGradient(LifetimeCompletion);
 
             Vector2 ToPlayer = Projectile.Center - Main.LocalPlayer.Center;
             TextureRotationOffset -= 0.5f;
@@ -120,7 +112,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
             Vector2 Outward = new Vector2(0, -1).RotatedByRandom(MathHelper.TwoPi) * Main.rand.NextFloat(3, 6);
             for (int i = 0; i < 10; i++)
             {
-                Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.TintableDustLighted, Outward.X, Outward.Y, 100,  ColorLib.StellarFireGradientLooping(), 1.5f).noGravity = true;
+                Dust.NewDustDirect(Projectile.position, Projectile.width, Projectile.height, DustID.TintableDustLighted, Outward.X, Outward.Y, 100, ColorLib.StellarFireGradientLooping(), 1.5f).noGravity = true;
             }
 
             DTUtils.ConstitutionStarExplosionEffects(Projectile);

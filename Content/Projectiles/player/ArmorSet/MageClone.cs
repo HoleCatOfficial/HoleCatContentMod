@@ -1,14 +1,14 @@
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Particles;
- 
+
 using Microsoft.Xna.Framework;
 using OpusLib;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.Audio;
-using BreadLibrary.Core.Graphics.Particles;
 
 namespace DestroyerTest.Content.Projectiles.player.ArmorSet
 {
@@ -48,16 +48,16 @@ namespace DestroyerTest.Content.Projectiles.player.ArmorSet
             Lighting.AddLight(Projectile.Center, color.ToVector3() * Opus.Sine(0.3f, 0f));
             if (Main.rand.NextBool(10))
             {
-                
+
             }
             //Dust.NewDust(Projectile.position, Projectile.Hitbox.Width, Projectile.Hitbox.Height, DustID.TintableDustLighted, 0, 0, 0, color, 1.5f);
             if (Projectile.ai[0] < 300)
             {
                 Opus.RingSpreadDustRandom(DustID.TintableDustLighted, 3, ProjPos, 60, 0, color, 0.01f, 1f);
-                
+
             }
         }
-        
+
         public Vector2 ProjPos;
         public override void AI()
         {
@@ -82,11 +82,11 @@ namespace DestroyerTest.Content.Projectiles.player.ArmorSet
             Vector2 ShotDir = Main.MouseWorld - ProjPos;
             ShotDir = ShotDir.ToRotation().ToRotationVector2() * 20;
 
-            
+
 
             Projectile.ai[0]++;
 
-            
+
             if (Projectile.ai[0] >= 300)
             {
                 if (Projectile.ai[0] % 20 == 0)

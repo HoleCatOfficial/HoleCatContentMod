@@ -1,19 +1,11 @@
 ﻿using BreadLibrary.Core.Graphics.Particles;
-using BreadLibrary.Core.Graphics.Pixelation;
 using DestroyerTest.Common;
 using DestroyerTest.Common.Interfaces;
-using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
-using OpusLib.Content.Particles;
-using ReLogic.Content;
-using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -85,8 +77,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
             Vector2 drawOrigin = new Vector2(T.Width * 0.5f, T.Height * 0.5f);
             for (int k = Projectile.oldPos.Length - 1; k > 0; k--)
             {
-                Color color = Color.White with { A = 0 } * MathHelper.Lerp(0.5f, 0f, (float)(k) / (float)Projectile.oldPos.Length);
-                Color color2 = Color.Indigo with { A = 0 } * MathHelper.Lerp(0.5f, 0f, (float)(k) / (float)Projectile.oldPos.Length);
+                Color color = Color.White with { A = 0 } * MathHelper.Lerp(0.5f, 0f, k / (float)Projectile.oldPos.Length);
+                Color color2 = Color.Indigo with { A = 0 } * MathHelper.Lerp(0.5f, 0f, k / (float)Projectile.oldPos.Length);
 
                 Main.EntitySpriteDraw(DTAssetLib.PointGlowPreMultiplied.Value, Projectile.OldCenter()[k] - Main.screenPosition, null, color2, Projectile.rotation, DTAssetLib.PointGlowPreMultiplied.Value.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
 
@@ -130,7 +122,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
             X.Initialize(Main.rand.NextVector2FromRectangle(Projectile.Hitbox), Vector2.Zero, Color.Indigo, 0.5f, 30);
             ParticleEngine.BehindProjectiles.Add(X);
 
-            
+
 
             Lighting.AddLight(Projectile.Center, Color.DarkMagenta.ToVector3() * 0.2f);
 

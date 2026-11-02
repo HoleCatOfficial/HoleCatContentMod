@@ -1,17 +1,13 @@
 
 using System.Linq;
 using DestroyerTest.Common;
-using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.player.Accessory;
 using DestroyerTest.Content.Remnants;
 using DestroyerTest.Rarity;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent.ObjectInteractions;
 using Terraria.GameInput;
-using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Equips
@@ -48,7 +44,7 @@ namespace DestroyerTest.Content.Equips
             }
         }
     }
-    
+
     public class DBPlayer : ModPlayer
     {
         public bool Active = false;
@@ -71,13 +67,13 @@ namespace DestroyerTest.Content.Equips
         }
 
         public override void ProcessTriggers(TriggersSet triggersSet)
-		{
+        {
             if (DestroyerTestMod.DeadlyBlossomKeybind.JustPressed && Player.ownedProjectileCounts[ModContent.ProjectileType<MiniRose>()] < 1 && Active && Cooldown <= 0)
             {
                 SoundEngine.PlaySound(new SoundStyle("DestroyerTest/Assets/Audio/MiniRoseSummon") with { PitchVariance = 0.5f }, Player.Center);
-                Projectile.NewProjectile(Player.GetSource_Accessory(Player.armor.FirstOrDefault(item => item.type == ModContent.ItemType<DeadlyBlossom>() || item.type == ModContent.ItemType<WyvernSkullRose>())), Player.Center, Vector2.Zero, ModContent.ProjectileType<MiniRose>(), 0, 0, Player.whoAmI);	
+                Projectile.NewProjectile(Player.GetSource_Accessory(Player.armor.FirstOrDefault(item => item.type == ModContent.ItemType<DeadlyBlossom>() || item.type == ModContent.ItemType<WyvernSkullRose>())), Player.Center, Vector2.Zero, ModContent.ProjectileType<MiniRose>(), 0, 0, Player.whoAmI);
                 Cooldown = 1800;
             }
-		}
+        }
     }
 }

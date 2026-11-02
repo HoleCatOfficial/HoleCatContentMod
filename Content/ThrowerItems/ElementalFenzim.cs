@@ -1,0 +1,49 @@
+﻿using DestroyerTest.Content.Projectiles.Weapon.Thrower;
+using Terraria;
+using Terraria.ID;
+using Terraria.ModLoader;
+
+namespace DestroyerTest.Content.ThrowerItems
+{
+    public class ElementalFenzim : ModItem
+    {
+
+        public override void SetStaticDefaults()
+        {
+            ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<ExoticFenzim>();
+        }
+        public override void SetDefaults()
+        {
+            Item.width = 42;
+            Item.height = 44;
+            Item.value = Item.sellPrice(gold: 2, silver: 50);
+            Item.rare = ItemRarityID.Orange;
+            Item.useTime = 60;
+            Item.useAnimation = 20;
+            Item.useStyle = ItemUseStyleID.Swing;
+            Item.UseSound = SoundID.Item1;
+            Item.knockBack = 4;
+            Item.autoReuse = true;
+            Item.damage = 140;
+            Item.DamageType = DamageClass.Throwing;
+            Item.crit = 10;
+            Item.shoot = ModContent.ProjectileType<ElementalFenzimThrown>();
+            Item.shootSpeed = 55f;
+            Item.noUseGraphic = true;
+        }
+
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient<VoltaicFenzim>()
+                .AddIngredient<FrigidFenzim>()
+                .AddIngredient<HellfireFenzim>()
+                .AddIngredient<Fangshred>()
+                .AddIngredient<Zwei>()
+                .AddIngredient<CursedKunai>()
+                .AddIngredient(ItemID.ChlorophyteBar, 4)
+                .AddTile(TileID.MythrilAnvil)
+                .Register();
+        }
+    }
+}

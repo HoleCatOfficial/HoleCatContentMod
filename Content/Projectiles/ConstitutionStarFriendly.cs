@@ -1,22 +1,15 @@
+using System.Linq;
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Common.Interfaces;
 using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Dusts;
-using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Particles.Stellar;
- 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
 using ReLogic.Content;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -96,7 +89,7 @@ namespace DestroyerTest.Content.Projectiles
                     return 0f;
                 }
 
-                return (float)Time / (float)Lifetime;
+                return Time / (float)Lifetime;
             }
         }
 
@@ -258,7 +251,7 @@ namespace DestroyerTest.Content.Projectiles
                     return 0f;
                 }
 
-                return (float)Time / (float)Lifetime;
+                return Time / (float)Lifetime;
             }
         }
 

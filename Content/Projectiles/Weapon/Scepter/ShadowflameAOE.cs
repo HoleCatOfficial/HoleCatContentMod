@@ -36,26 +36,28 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Scepter
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
             Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-            Opus.DrawTextureOnProj(DTAssetLib.Swirl, Projectile,  new Color(179, 54, 201), true, Projectile.rotation, 1f, 1f);
-            Opus.DrawTextureOnProj(DTAssetLib.FireRing, Projectile,  new Color(204, 121, 219) * 0.85f, false, -Projectile.rotation, 0.125f, 0.125f);
-            Opus.DrawTextureOnProj(DTAssetLib.FireRing, Projectile,  new Color(179, 54, 201) * 0.85f, false, Projectile.rotation, 0.1f, 0.1f);
+            Opus.DrawTextureOnProj(DTAssetLib.Swirl, Projectile, new Color(179, 54, 201), true, Projectile.rotation, 1f, 1f);
+            Opus.DrawTextureOnProj(DTAssetLib.FireRing, Projectile, new Color(204, 121, 219) * 0.85f, false, -Projectile.rotation, 0.125f, 0.125f);
+            Opus.DrawTextureOnProj(DTAssetLib.FireRing, Projectile, new Color(179, 54, 201) * 0.85f, false, Projectile.rotation, 0.1f, 0.1f);
             Opus.ReturnToDefaultDrawing(spriteBatch);
         }
 
         SlotId LoopSlot;
-        public SoundStyle Loop = new SoundStyle("DestroyerTest/Assets/Audio/AuraLoop/ShadowflameAuraLoop") 
-        { 
+        public SoundStyle Loop = new SoundStyle("DestroyerTest/Assets/Audio/AuraLoop/ShadowflameAuraLoop")
+        {
             MaxInstances = 0,
             IsLooped = true,
             PauseBehavior = PauseBehavior.PauseWithGame
         };
-            
+
         public override void AI()
         {
 
-            if (!SoundEngine.TryGetActiveSound(LoopSlot, out var activeSound)) {
+            if (!SoundEngine.TryGetActiveSound(LoopSlot, out var activeSound))
+            {
                 var tracker = new ProjectileAudioTracker(Projectile);
-                LoopSlot = SoundEngine.PlaySound(Loop, Projectile.position, soundInstance => {
+                LoopSlot = SoundEngine.PlaySound(Loop, Projectile.position, soundInstance =>
+                {
                     soundInstance.Position = Projectile.position;
                     return tracker.IsActiveAndInGame();
                 });

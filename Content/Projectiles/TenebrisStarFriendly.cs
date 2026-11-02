@@ -1,22 +1,14 @@
+using System.Linq;
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Common.Interfaces;
 using DestroyerTest.Content.Buffs;
-using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Equips;
 using DestroyerTest.Content.Particles;
- 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
-using ReLogic.Content;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
 using Terraria;
-using Terraria.Audio;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -114,8 +106,6 @@ namespace DestroyerTest.Content.Projectiles
                 return;
             }
 
-            float maxDetectRadius = 2800f;
-
         }
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
@@ -131,8 +121,8 @@ namespace DestroyerTest.Content.Projectiles
             {
                 if (magicPlayer.Active)
                 {
-                    player.statMana += (int)(damageDone / 10);
-                    player.ManaEffect((int)(damageDone / 10));
+                    player.statMana += damageDone / 10;
+                    player.ManaEffect(damageDone / 10);
                     for (int u = 0; u < 16; u++)
                     {
                         Dust.NewDustPerfect(player.Center, DustID.FireworksRGB, Main.rand.NextVector2CircularEdge(6, 6), 0, ColorLib.TenebrisGradient);
@@ -226,8 +216,8 @@ namespace DestroyerTest.Content.Projectiles
             {
                 if (magicPlayer.Active)
                 {
-                    player.statMana += (int)(damageDone / 10);
-                    player.ManaEffect((int)(damageDone / 10));
+                    player.statMana += damageDone / 10;
+                    player.ManaEffect(damageDone / 10);
                     for (int u = 0; u < 16; u++)
                     {
                         Dust.NewDustPerfect(player.Center, DustID.FireworksRGB, Main.rand.NextVector2CircularEdge(6, 6), 0, ColorLib.TenebrisGradient);

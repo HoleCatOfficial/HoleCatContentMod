@@ -1,20 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using BreadLibrary.Core.Graphics.Pixelation;
+﻿using BreadLibrary.Core.Graphics.Pixelation;
 using BreadLibrary.Core.Graphics.Spritebatch;
 using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
-using DestroyerTest.Common.Systems;
-using DestroyerTest.Content.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using OpusLib;
 using ReLogic.Content;
 using Terraria;
-using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace DestroyerTest.Asset.Menu.V6
+namespace DestroyerTest.Assets.Menu.V6
 {
     //Copied from Calamity Mod Github.
     public class DreamMenu : ModMenu, IDrawPixelated
@@ -40,7 +34,7 @@ namespace DestroyerTest.Asset.Menu.V6
         bool IDrawPixelated.ShouldDrawPixelated => true;
         void IDrawPixelated.DrawPixelated(SpriteBatch spriteBatch)
         {
-            
+
         }
 
 

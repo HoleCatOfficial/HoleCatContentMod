@@ -1,6 +1,6 @@
 ﻿
-using DestroyerTest.Content.Entities;
 using DestroyerTest.Common;
+using DestroyerTest.Content.Entities;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -14,7 +14,7 @@ namespace DestroyerTest.Content.Fargos.ReusableSummons
         public override void SetStaticDefaults()
         {
             Item.ResearchUnlockCount = 3;
-          
+
 
             // If this would be for a vanilla boss that has no summon item, you would have to include this line here:
             NPCID.Sets.MPAllowedEnemies[ModContent.NPCType<SunscorchedDjinn>()] = true;

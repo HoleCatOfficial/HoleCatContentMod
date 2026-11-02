@@ -1,17 +1,11 @@
-using DestroyerTest.Content.Resources;
-using DestroyerTest.Content.Tiles;
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
-using DestroyerTest.Rarity;
-using DestroyerTest.Content.Tiles.Riftplate;
-using DestroyerTest.Content.Projectiles;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using GlowmaskHelper.Content;
-using Terraria.Audio;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Projectiles.Weapon.Summon;
+using DestroyerTest.Content.Resources;
+using DestroyerTest.Rarity;
+using Terraria;
+using Terraria.Audio;
+using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.SummonItems
 {
@@ -47,12 +41,12 @@ namespace DestroyerTest.Content.SummonItems
         }
 
         public override void AddRecipes()
-		{
-			CreateRecipe()
-				.AddIngredient(ModContent.ItemType<StellarMatter>(), 16)
-				.AddTile(TileID.WorkBenches)
-				.Register();
-		}
-		
-	}
+        {
+            CreateRecipe()
+                .AddIngredient(ModContent.ItemType<StellarMatter>(), 16)
+                .AddTile(TileID.WorkBenches)
+                .Register();
+        }
+
+    }
 }

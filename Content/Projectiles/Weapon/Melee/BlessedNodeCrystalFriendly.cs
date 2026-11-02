@@ -1,17 +1,13 @@
-﻿using BreadLibrary.Core;
+﻿using System;
+using System.Linq;
+using BreadLibrary.Core;
 using BreadLibrary.Core.Graphics.Particles;
-using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Projectiles.Weapon.Melee;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
-using ReLogic.Content;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -19,7 +15,7 @@ using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.Blessed
+namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 {
     public class BlessedNodeCrystalFriendly : ModProjectile
     {
@@ -134,9 +130,9 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.Blessed
             Projectile.tileCollide = false;
             Projectile.penetrate = -1;
 
-            
 
-            
+
+
         }
 
         public float trailOffset = 0f;
@@ -189,14 +185,14 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.Blessed
 
 
         public int timer = 0;
-        
+
         public override void AI()
         {
             Projectile.ResetExcessTrailPoints();
 
 
             timer++;
-            float Prog = (float)timer / 60f;
+            float Prog = timer / 60f;
             float endRotation = (SetMouse - Target).ToRotation();
 
             Vector2 startDir = Projectile.rotation.ToRotationVector2();
@@ -241,8 +237,8 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.Blessed
                     Projectile.Opacity = MathHelper.Lerp(1f, 0f, Projectile.ai[1] / 30f);
                 }
             }
-            
-            
+
+
             GlowMult = MathHelper.Lerp(0.25f, 1f, (float)Math.Sin(Main.GameUpdateCount * 0.05f) * 0.5f + 0.5f);
         }
 
@@ -264,7 +260,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.Blessed
 
         public override void OnKill(int timeLeft)
         {
-            
+
         }
     }
 }

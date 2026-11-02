@@ -1,17 +1,13 @@
 using DestroyerTest.Common;
-using DestroyerTest.Content.Particles;
-using DestroyerTest.Content.Projectiles.WyvernSoul;
 using DestroyerTest.Content.Buffs;
- 
+using DestroyerTest.Content.Projectiles.WyvernSoul;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
-using Terraria.GameContent;
-using Terraria.ID;
 using Terraria.ModLoader;
-using OpusLib;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 {
@@ -82,7 +78,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
         {
             DTUtils Utility = new DTUtils();
             Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-            
+
             Main.spriteBatch.Draw(
                 DTAssetLib.Cyclone(2).Value,
                 Center - Main.screenPosition,
@@ -118,5 +114,5 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
         {
             target.AddBuff(ModContent.BuffType<SoulInferno>(), 480);
         }
-	}
+    }
 }

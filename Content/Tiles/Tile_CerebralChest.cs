@@ -36,7 +36,7 @@ namespace DestroyerTest.Content.Tiles
             TileID.Sets.FriendlyFairyCanLureTo[Type] = true;
             TileID.Sets.GeneralPlacementTiles[Type] = false;
 
-            
+
             DustType = ModContent.DustType<VesperOreDust>();
             AdjTiles = [TileID.Containers2];
             VanillaFallbackOnModDeletion = TileID.Containers2;
