@@ -148,6 +148,10 @@ namespace DestroyerTest.Common
 
         [DefaultValue(true)]
         public bool NaturalFallDamageImmunity { get; set; }
+
+        [DefaultValue(true)]
+        [ReloadRequired()]
+        public bool BossRework { get; set; }
     }
 
     public class DTConfigDataModifications : ModSystem

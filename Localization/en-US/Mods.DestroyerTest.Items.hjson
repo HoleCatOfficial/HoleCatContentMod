@@ -2272,7 +2272,12 @@ TenebrousDemonVisor: {
 
 TenebrousChakram: {
 	DisplayName: Tenebrous Chakram
-	Tooltip: Summons homing stars as it travels.
+	Tooltip:
+		'''
+		Spins rapidly and penetrates four times.
+		After a few moments, it will slow to a stop and release Tenebris Stars that home in on enemies.
+		You can have up to six chakrams out at a time.
+		'''
 }
 
 TheBotanistsCurse: {

@@ -265,6 +265,16 @@ Configs: {
 				Talid's intended experience is not affected by this config.
 				'''
 		}
+
+		BossRework: {
+			Label: Boss Reworks
+			Tooltip: 
+			'''
+			Talid makes minor reworks to some vanilla bosses.
+			Currently this only applies to the Moon Lord.
+			Talid is intended to be played with this enabled.
+			'''
+		}
 	}
 }
 

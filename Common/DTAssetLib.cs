@@ -143,6 +143,8 @@ namespace DestroyerTest.Common
         public static Asset<Texture2D> ArrowTelegraphCont = ModContent.Request<Texture2D>($"{ExtrasPath}/DashTelegraphArrowContinuous", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> Warning = ModContent.Request<Texture2D>($"{ParticlePath}/WarningTriangle", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> ShineFlare = ModContent.Request<Texture2D>($"{ExtrasPath}/ShineFlare", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> DirectionalTelegraph = ModContent.Request<Texture2D>($"{ExtrasPath}/DirectionalTelegraph", AssetRequestMode.AsyncLoad);
+        public static Asset<Texture2D> DirectionalTelegraph2 = ModContent.Request<Texture2D>($"{ExtrasPath}/DirectionalTelegraph2", AssetRequestMode.AsyncLoad);
         public static Asset<Texture2D> Trail(int Variant)
         {
             if (Variant <= 0)

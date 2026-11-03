@@ -23,13 +23,15 @@ namespace DestroyerTest.Content.Projectiles
 
         bool IHomingProjectile.TracksPlayers => false;
 
-        float IHomingProjectile.HomingTurnSpeed => 15;
+        float TSpeed = 3f;
 
-        bool IHomingProjectile.UsesHomingAcceleration => false;
+        float IHomingProjectile.HomingTurnSpeed => TSpeed;
 
-        float IHomingProjectile.HomingAccelAmount => 1f;
+        bool IHomingProjectile.UsesHomingAcceleration => true;
 
-        float IHomingProjectile.HomingMaxAccel => 1f;
+        float IHomingProjectile.HomingAccelAmount => 1.02f;
+
+        float IHomingProjectile.HomingMaxAccel => 32f;
 
         float IHomingProjectile.DetectRadius => 2800;
 
@@ -89,6 +91,11 @@ namespace DestroyerTest.Content.Projectiles
             Projectile.ResetExcessTrailPoints();
 
             DelayTimer++;
+
+            if (DelayTimer % 10 == 0)
+            {
+                TSpeed++;
+            }
 
             Projectile.rotation += Projectile.direction * 0.07f;
 

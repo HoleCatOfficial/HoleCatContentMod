@@ -81,14 +81,9 @@ namespace DestroyerTest.Content.RangedItems
             player.SetCompositeArmFront(true, Player.CompositeArmStretchAmount.Full, armRotation);
         }
 
-
-
-
-
-        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        public override bool CanUseItem(Player player)
         {
-          
-            return true;
+            return player.ownedProjectileCounts[Item.shoot] < 6;
         }
 
         public override void AddRecipes()

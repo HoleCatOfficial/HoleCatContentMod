@@ -2829,20 +2829,28 @@ namespace DestroyerTest.Content.Entities
             {
                 float lerpFactor = 0.12f;
 
-                camPos = Vector2.Lerp(camPos, target, lerpFactor);
-
-                if (!NightmareRoseBoss.ShouldCenterCameraOnNPC)
+                if (Main.npc.Any(n => n.type == ModContent.NPCType<NightmareRoseBoss>()))
                 {
+                    camPos = Vector2.Lerp(camPos, target, lerpFactor);
 
-                    if (camPos.Distance(playerCenter - screenHalf) < 10)
+
+                    if (!NightmareRoseBoss.ShouldCenterCameraOnNPC)
                     {
-                        ControlCam = false;
-                        return;
+
+                        if (camPos.Distance(playerCenter - screenHalf) < 10)
+                        {
+                            ControlCam = false;
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        camPos = Vector2.Lerp(camPos, target, lerpFactor);
                     }
                 }
                 else
                 {
-                    camPos = Vector2.Lerp(camPos, target, lerpFactor);
+                    ControlCam = false;
                 }
             }
 
