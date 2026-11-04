@@ -5,6 +5,7 @@ using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
 using Microsoft.Xna.Framework;
+using OpusLib;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -23,7 +24,8 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
 
         bool IHomingProjectile.TracksPlayers => false;
 
-        float IHomingProjectile.HomingTurnSpeed => 0.8f;
+        float TSpeed = 0.8f;
+        float IHomingProjectile.HomingTurnSpeed => TSpeed;
 
         bool IHomingProjectile.UsesHomingAcceleration => true;
 
@@ -64,8 +66,21 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
         {
             Lighting.AddLight(Projectile.Center, color.ToVector3() * 0.6f);
 
-            var d = Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<ColorableNeonDust>(), Vector2.Zero, 0, color, 1f);
-            d.noGravity = true;
+            //var d = Dust.NewDustPerfect(Projectile.Center, ModContent.DustType<ColorableNeonDust>(), Vector2.Zero, 0, color, 1f);
+            //d.noGravity = true;
+
+            Spark spark = new();
+            spark.PrepareSpark(Projectile.Center, Projectile.velocity * 0.2f, Projectile.velocity.ToRotation() + MathHelper.PiOver2, color, 0.2f, false, 10, SparkDrawMode.Additive, 3f);
+            ParticleEngine.Particles.Add(spark);
+
+
+            Spark spark2 = new();
+            spark2.PrepareSpark(Projectile.Center + new Vector2(0, Opus.Sine(-6f, 6f, 0.3f)).RotatedBy(Projectile.velocity.ToRotation()), Projectile.velocity * 0.1f, Projectile.velocity.ToRotation() + MathHelper.PiOver2, color, 0.1f, false, 3, SparkDrawMode.Additive, 3f);
+            ParticleEngine.Particles.Add(spark2);
+
+            Spark spark3 = new();
+            spark3.PrepareSpark(Projectile.Center + new Vector2(0, Opus.Sine(6f, -6f, 0.3f)).RotatedBy(Projectile.velocity.ToRotation()), Projectile.velocity * 0.1f, Projectile.velocity.ToRotation() + MathHelper.PiOver2, color, 0.1f, false, 3, SparkDrawMode.Additive, 3f);
+            ParticleEngine.Particles.Add(spark3);
         }
 
         public override void AI()
@@ -91,7 +106,7 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
                 _ => ColorLib.TenebrisBeige
             };
 
-
+            TSpeed += 0.005f;
 
 
             if (DelayTimer < 100)

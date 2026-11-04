@@ -2263,9 +2263,9 @@ TenebrousDemonVisor: {
 	SetBonus:
 		'''
 		Shooting enemies builds charge up to three tiers.
-		Tier 1 increases Ranged Damage by 10% and Ranged Crit chance by 6%.
-		Tier 2 increases Ranged Damage by 20% and Ranged Crit chance by 12%.
-		Tier 3 increases Ranged Damage by 40% and Ranged Crit chance by 18%, and your weapon will fire a barrage of homing Tenerbis Stars.
+		Tier 1 increases Ranged Damage by 4% and Ranged Crit chance by 6%.
+		Tier 2 increases Ranged Damage by 8% and Ranged Crit chance by 12%.
+		Tier 3 increases Ranged Damage by 12% and Ranged Crit chance by 18%, and your weapon will fire a barrage of homing Tenerbis Stars.
 		Not using your weapon, or charging to 120 charge on Tier 3 will reset charge.
 		'''
 }
@@ -5849,6 +5849,25 @@ FleshVolley: {
 }
 
 Item_HeavensMusicBox: {
-	DisplayName: Item_ Heavens Music Box
+	DisplayName: Music Box (Menu - Heavens)
 	Tooltip: ""
+}
+
+HellCatalyst: {
+	DisplayName: Hell Catalyst
+	Tooltip:
+		'''
+		Velocity for bullets, flares, Jack O' Lanterns, and Stynger Bolts is doubled.
+		6% increased Ranged Damage.
+		'''
+}
+
+StockyPotion: {
+	DisplayName: Stocky Potion
+	Tooltip:
+		'''
+		Increases Defense, Max Life, and Life Regeneration.
+		Halves incoming knockback.
+		'fatass'
+		'''
 }

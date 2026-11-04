@@ -516,3 +516,8 @@ WretchedWhipTagBuff: {
 	DisplayName: Wretched Whip Tag Buff
 	Description: Mods.DestroyerTest.Buffs.WretchedWhipTagBuff.Description
 }
+
+Stocky: {
+	DisplayName: Stocky
+	Description: Mods.DestroyerTest.Buffs.Stocky.Description
+}

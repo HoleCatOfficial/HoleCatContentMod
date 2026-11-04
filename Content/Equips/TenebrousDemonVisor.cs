@@ -132,7 +132,7 @@ namespace DestroyerTest.Content.Equips
 
                     SoundFlag1 = true;
                 }
-                Player.GetDamage(DamageClass.Ranged) *= 1.1f;
+                Player.GetDamage(DamageClass.Ranged) += 0.04f;
                 Player.GetCritChance(DamageClass.Ranged) += 6;
                 Dust.NewDust(Player.position, Player.Hitbox.Width, Player.Hitbox.Height, DustID.FireworksRGB, (Player.velocity.X / 2) + Main.rand.NextFloat(-2, 2), (Player.velocity.Y / 2) + Main.rand.NextFloat(-2, 2), 200, ColorLib.TenebrisGradient, 0.4f);
                 if (Main.rand.NextBool(16))
@@ -155,7 +155,7 @@ namespace DestroyerTest.Content.Equips
 
                     SoundFlag2 = true;
                 }
-                Player.GetDamage(DamageClass.Ranged) *= 1.1f;
+                Player.GetDamage(DamageClass.Ranged) += 0.08f;
                 Player.GetCritChance(DamageClass.Ranged) += 6;
                 Dust.NewDust(Player.position, Player.Hitbox.Width, Player.Hitbox.Height, DustID.FireworksRGB, (Player.velocity.X / 2) + Main.rand.NextFloat(-2, 2), (Player.velocity.Y / 2) + Main.rand.NextFloat(-2, 2), 100, ColorLib.TenebrisGradient, 0.6f);
                 if (Main.rand.NextBool(12))
@@ -178,7 +178,7 @@ namespace DestroyerTest.Content.Equips
 
                     SoundFlag3 = true;
                 }
-                Player.GetDamage(DamageClass.Ranged) *= 1.2f;
+                Player.GetDamage(DamageClass.Ranged) += 0.12f;
                 Player.GetCritChance(DamageClass.Ranged) += 10;
                 Dust.NewDust(Player.position, Player.Hitbox.Width, Player.Hitbox.Height, DustID.FireworksRGB, (Player.velocity.X / 2) + Main.rand.NextFloat(-2, 2), (Player.velocity.Y / 2) + Main.rand.NextFloat(-2, 2), 0, ColorLib.TenebrisGradient, 1f);
                 if (Main.rand.NextBool(8))
@@ -296,9 +296,9 @@ namespace DestroyerTest.Content.Equips
                     {
                         for (int t = 0; t < 7; t++)
                         {
-                            Spark Spark = new Spark();
+                            HeatseekerSilohSpark Spark = new ();
 
-                            Spark.PrepareSpark(target.Center, (projectile.velocity.RotatedByRandom(0.2f) * 2), 0f, ColorLib.TenebrisGradient, 0.5f, false, 40, SparkDrawMode.Additive);
+                            Spark.PrepareSpark(target.Center, (projectile.velocity.RotatedByRandom(0.2f) * 2), 0.3f, ColorLib.TenebrisGradient, 0.5f, false, 40, SparkDrawMode.Additive, 4f);
                             ParticleEngine.ShaderParticles.Add(Spark);
                         }
                     }

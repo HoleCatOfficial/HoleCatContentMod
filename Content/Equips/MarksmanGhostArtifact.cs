@@ -20,9 +20,8 @@ namespace DestroyerTest.Content.Equips
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.GetDamage(DamageClass.Ranged) += 0.15f;
-            player.GetArmorPenetration(DamageClass.Ranged) += 10;
-            player.GetCritChance(DamageClass.Ranged) += 12;
+            player.GetDamage(DamageClass.Ranged) += 0.11f;
+            player.GetCritChance(DamageClass.Ranged) += 6;
             player.GetModPlayer<MarksmanGhostArtifactPlayer>().Active = true;
         }
 

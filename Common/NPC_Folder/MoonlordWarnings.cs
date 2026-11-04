@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BreadLibrary.Core.Graphics.Particles;
+using BreadLibrary.Core.Graphics.Spritebatch;
+using BreadLibrary.Core.Utilities;
+using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Projectiles.Boss;
 using FargowiltasSouls.Core.Toggler;
 using Microsoft.Xna.Framework;
@@ -125,6 +128,11 @@ namespace DestroyerTest.Common.NPC_Folder
                             Main.dust[dustIdx].velocity = Vector2.Normalize(npc.Center - vector239) * 3.5f * (10f - (float)i * 2f) / 10f;
                             Main.dust[dustIdx].noGravity = true;
                             Main.dust[dustIdx].scale = velocityMult;
+
+                            HeatseekerSilohSpark spark = new();
+                            Vector2 outer = npc.Center + Main.rand.NextVector2Circular(300, 200);
+                            spark.PrepareSpark(outer, outer.DirectionTo(npc.Center) * 3f, outer.DirectionTo(npc.Center).ToRotation() + MathHelper.PiOver2, Color.Aquamarine, 0.5f, false, 40, SparkDrawMode.Additive, 3f);
+                            ParticleEngine.Particles.Add(spark);
                         }
                     }
 
@@ -239,7 +247,10 @@ namespace DestroyerTest.Common.NPC_Folder
                             }
                         }
 
-
+                        HeatseekerSilohSpark spark = new();
+                        Vector2 outer = npc.Center + Main.rand.NextVector2Circular(300, 200);
+                        spark.PrepareSpark(outer, outer.DirectionTo(npc.Center) * 3f, outer.DirectionTo(npc.Center).ToRotation() + MathHelper.PiOver2, Color.Aquamarine, 0.5f, false, 40, SparkDrawMode.Additive, 3f);
+                        ParticleEngine.Particles.Add(spark);
                     }
 
                     if (mainTimer == 180f && Main.netMode != 1)
@@ -457,6 +468,50 @@ namespace DestroyerTest.Common.NPC_Folder
                     FreeEyeFlag = false;
                 }
             }
+        }
+
+        float Opacity;
+        int ScrollX = 0;
+        int ScrollY = 0;
+
+        public override bool PreDraw(NPC npc, SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            if (npc.type == NPCID.MoonLordCore)
+            {
+                if (npc.active)
+                {
+                    Player target = npc.HasValidTarget ? Main.player[npc.target] : Main.LocalPlayer;
+                    if (!target.dead)
+                    {
+                        if (Opacity < 1f)
+                        {
+                            Opacity += 0.01f;
+                        }
+                    }
+                    else
+                    {
+                        Opacity = 0f;
+                    }
+
+                    ScrollX += 2;
+                    ScrollY += 1;
+
+                    var Cap = spriteBatch.Capture();
+                    spriteBatch.End();
+
+                    Cap.SamplerState = SamplerState.PointWrap;
+                    Cap.BlendState = BlendState.Additive;
+
+                    spriteBatch.Begin(Cap);
+
+                    //Main.EntitySpriteDraw(DTAssetLib.TilableNoise(8).Value, Vector2.Zero, Utils.CenteredRectangle(npc.Center + new Vector2(ScrollX, ScrollY), DTAssetLib.TilableNoise(8).Value.Size() * 4f), Color.MediumSeaGreen, 0f, DTAssetLib.TilableNoise(8).Value.Size() / 2, 6f, SpriteEffects.None, 0f);
+                    //  Main.EntitySpriteDraw(DTAssetLib.TilableNoise(8).Value, Vector2.Zero, Utils.CenteredRectangle(npc.Center + new Vector2(ScrollX * -1.3f, ScrollY * -0.5f), DTAssetLib.TilableNoise(8).Value.Size() * 4f), Color.SeaGreen, 0f, DTAssetLib.TilableNoise(8).Value.Size() / 2, 6f, SpriteEffects.None, 0f);
+
+                    spriteBatch.ResetToDefault();
+                    return true;
+                }    
+            }
+            return base.PreDraw(npc, spriteBatch, screenPos, drawColor);
         }
 
         float HeadWarningMultiplier = 0f;

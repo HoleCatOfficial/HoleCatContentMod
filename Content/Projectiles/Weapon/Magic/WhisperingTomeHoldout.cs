@@ -56,6 +56,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
         public SoundStyle Loop = new SoundStyle("DestroyerTest/Assets/Audio/AuraLoop/LaserLoop1")
         {
             MaxInstances = 0,
+            Volume = 0.5f,
             IsLooped = true,
             PauseBehavior = PauseBehavior.PauseWithGame
         };

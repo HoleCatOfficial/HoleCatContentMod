@@ -43,11 +43,7 @@ namespace DestroyerTest.Content.RangedItems
 
         public override void AddRecipes()
         {
-            CreateRecipe()
-                .AddIngredient(ItemID.HellwingBow)
-                .AddIngredient<Item_HeliciteCrystal>(6)
-                .AddTile(TileID.Anvils)
-                .Register();
+
         }
 
         public override Vector2? HoldoutOffset()

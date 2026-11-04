@@ -17,7 +17,7 @@ namespace DestroyerTest.Content.Ammunitions
         {
             Item.width = 8;
             Item.height = 10;
-            Item.damage = 25;
+            Item.damage = 8;
             Item.DamageType = DamageClass.Ranged;
             Item.maxStack = Item.CommonMaxStack;
             Item.consumable = true;

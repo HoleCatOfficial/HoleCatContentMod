@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using DestroyerTest.Content.Equips;
 using DestroyerTest.Content.Equips.Cards;
+using DestroyerTest.Content.Equips.PotionFlowers;
 using DestroyerTest.Content.Lorebooks;
 using DestroyerTest.Content.Magic;
 using DestroyerTest.Content.MeleeWeapons;
@@ -1103,6 +1104,9 @@ namespace DestroyerTest.Common.Systems
                             int idx = Main.rand.Next(Chest.item.Length);
                             Chest.item[idx].SetDefaults(ModContent.ItemType<Dyrn>());
                             Chest.item[idx].stack = Main.rand.Next(20, 30);
+
+                            int idx2 = Main.rand.Next(Chest.item.Length);
+                            Chest.item[idx2].SetDefaults(ModContent.ItemType<FailedPotion>());
                             break;
                     }
                 }
@@ -1313,6 +1317,7 @@ namespace DestroyerTest.Common.Systems
                 int WandIndex = WorldGen.PlaceChest(Entry.Interior.Left + 10, Entry.Interior.Bottom - 1, TileID.Containers);
                 Chest WandChest = Main.chest[WandIndex];
                 WandChest.item[Main.rand.Next(WandChest.item.Length - 1)].SetDefaults(ModContent.ItemType<HekatesMystique>());
+                WandChest.item[Main.rand.Next(WandChest.item.Length - 1)].SetDefaults(ModContent.ItemType<BundleOfMagicLillies>());
 
                 WorldGen.PlaceObject(Entry.Interior.Left + 20, Entry.Interior.Bottom - 1, ModContent.TileType<Tile_DecoCrate>());
                 WorldGen.PlaceObject(Entry.Interior.Left + 22, Entry.Interior.Bottom - 1, ModContent.TileType<Tile_DecoCrate>());
@@ -1329,8 +1334,8 @@ namespace DestroyerTest.Common.Systems
         {
 
 
-            SoundEngine.PlaySound(SoundID.Camera);
-            SoundEngine.PlaySound(SoundID.Item14);
+            //SoundEngine.PlaySound(SoundID.Camera);
+            //SoundEngine.PlaySound(SoundID.Item14);
 
             Point origin = new Point(x, y);
 

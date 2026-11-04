@@ -30,6 +30,33 @@ namespace DestroyerTest.Content.Equips.PotionFlowers
             Item.rare = ItemRarityID.Blue;
         }
 
+        float Offset = 0f;
+        public override bool PreDrawInInventory(SpriteBatch spriteBatch, Vector2 position, Rectangle frame, Color drawColor, Color itemColor, Vector2 origin, float scale)
+        {
+            Offset += 0.1f;
+
+            for (int i = 0; i < 4; i++)
+            {
+                float angle = Offset + (MathHelper.TwoPi / 4f) * i;
+                Vector2 offset = new Vector2(0, 3).RotatedBy(angle);
+                Main.EntitySpriteDraw(ModContent.Request<Texture2D>(Texture).Value, position + offset, frame, Color.MediumSlateBlue with { A = 0 }, 0f, origin, scale, SpriteEffects.None, 0);
+            }
+            return true;
+        }
+
+        public override bool PreDrawInWorld(SpriteBatch spriteBatch, Color lightColor, Color alphaColor, ref float rotation, ref float scale, int whoAmI)
+        {
+            Offset += 0.1f;
+
+            for (int i = 0; i < 4; i++)
+            {
+                float angle = Offset + (MathHelper.TwoPi / 4f) * i;
+                Vector2 offset = new Vector2(0, 3).RotatedBy(angle);
+                Main.EntitySpriteDraw(ModContent.Request<Texture2D>(Texture).Value, Item.Center - Main.screenPosition + offset, null, Color.MediumSlateBlue with { A = 0 }, rotation, ModContent.Request<Texture2D>(Texture).Value.Size() / 2f, scale, SpriteEffects.None, 0);
+            }
+            return true;
+        }
+
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             if (player.TryGetModPlayer<LilliesDash>(out LilliesDash Dash))

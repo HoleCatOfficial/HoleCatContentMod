@@ -49,6 +49,7 @@ namespace DestroyerTest.Content.Fargos.Melee
 
         public override void AddRecipes()
         {
+            /*
             if (DTCrossMod.FargosSoulsIsLoaded)
             {
 
@@ -58,7 +59,7 @@ namespace DestroyerTest.Content.Fargos.Melee
                     .AddTile(TileID.LunarCraftingStation)
                     .Register();
             }
-
+            */
         }
     }
 }

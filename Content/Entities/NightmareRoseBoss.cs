@@ -2793,7 +2793,7 @@ namespace DestroyerTest.Content.Entities
     {
         private Vector2 camPos;
         private bool hasCamPos = false;
-        public bool ControlCam = true;
+        public bool ControlCam = false;
 
         public override void ModifyScreenPosition()
         {
