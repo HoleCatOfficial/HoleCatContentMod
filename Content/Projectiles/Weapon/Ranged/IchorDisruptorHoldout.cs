@@ -140,10 +140,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Ranged
 
                     for (int i = 0; i < 3; i++)
                     {
-                        Projectile Shot1 = Projectile.NewProjectileDirect(Source, ShootPoint, dir.RotatedByRandom(0.1f) * speed * 1000f, projToShoot, damage, knockBack, Owner.whoAmI);
+                        Projectile Shot1 = Projectile.NewProjectileDirect(Source, ShootPoint, dir.RotatedByRandom(0.1f) * speed, projToShoot, damage, knockBack, Owner.whoAmI);
                     }
 
-                    Projectile Shot2 = Projectile.NewProjectileDirect(Source, ShootPoint, dir * speed * 1000f, ProjectileID.GoldenShowerFriendly, damage, knockBack, Owner.whoAmI);
+                    Projectile Shot2 = Projectile.NewProjectileDirect(Source, ShootPoint, dir * speed, ProjectileID.GoldenShowerFriendly, damage, knockBack, Owner.whoAmI);
 
                 }
             }

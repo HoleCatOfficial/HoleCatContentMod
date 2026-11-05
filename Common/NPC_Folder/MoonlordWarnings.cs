@@ -7,6 +7,7 @@ using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Spritebatch;
 using BreadLibrary.Core.Utilities;
 using DestroyerTest.Content.Particles;
+using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Projectiles.Boss;
 using FargowiltasSouls.Core.Toggler;
 using Microsoft.Xna.Framework;
@@ -62,6 +63,21 @@ namespace DestroyerTest.Common.NPC_Folder
             MaxInstances = 0
         };
 
+        public override void SetStaticDefaults()
+        {
+            NPCID.Sets.MustAlwaysDraw[NPCID.MoonLordCore] = true;
+            NPCID.Sets.MustAlwaysDraw[NPCID.MoonLordFreeEye] = true;
+            NPCID.Sets.MustAlwaysDraw[NPCID.MoonLordHead] = true;
+            NPCID.Sets.MustAlwaysDraw[NPCID.MoonLordHand] = true;
+        }
+
+        public override void SetDefaults(NPC entity)
+        {
+            if (entity.type == NPCID.MoonLordCore || entity.type == NPCID.MoonLordHead || entity.type == NPCID.MoonLordHand)
+            {
+                entity.takenDamageMultiplier = 0.92f;
+            }
+        }
 
         bool HeadFlag = false;
         bool HeadFlag2 = false;
@@ -87,9 +103,12 @@ namespace DestroyerTest.Common.NPC_Folder
             HandAI(npc);
         }
 
+        int coreShieldDelay = 0;
+        bool makeCoreShield = false;
+        int DecideShieldCore = 0;
         void CoreAI(NPC npc)
         {
-            
+            Player target = Main.player[npc.target];
             if (npc.aiStyle == NPCAIStyleID.MoonLordCore)
             {
                 if (npc.ai[0] == 1f)
@@ -101,11 +120,11 @@ namespace DestroyerTest.Common.NPC_Folder
                     {
                         if (npc.localAI[1] % 2 == 0)
                         {
-                            SoundEngine.PlaySound(CoreBoltWarning, npc.Center);
+                            SoundEngine.PlaySound(CoreBoltWarning);
                         }
                         else
                         {
-                            SoundEngine.PlaySound(CoreLaserWarning, npc.Center);
+                            SoundEngine.PlaySound(CoreLaserWarning);
                         }
 
                         npc.localAI[1]++;
@@ -143,21 +162,29 @@ namespace DestroyerTest.Common.NPC_Folder
                             if (npc.localAI[0] == 270 + 120)
                             {
                                 SoundEngine.PlaySound(LaserFire with { Pitch = -0.5f }, npc.Center);
-                                Opus.RadialSpreadProjectile(ProjectileID.PhantasmalBolt, 24, npc.Center, 25, 3, 7);
+                                Opus.RadialSpreadProjectile(ModContent.ProjectileType<MoonlordFusionBolt>(), 24, npc.Center, 25, 3, 7);
                             }
                             if (npc.localAI[0] == 270 + 120 + 7)
                             {
                                 SoundEngine.PlaySound(LaserFire with { Pitch = -0.25f }, npc.Center);
-                                Opus.RadialSpreadProjectile(ProjectileID.PhantasmalBolt, 28, npc.Center, 25, 3, 7);
+                                Opus.RadialSpreadProjectile(ModContent.ProjectileType<MoonlordFusionBolt>(), 28, npc.Center, 25, 3, 7);
                             }
                             if (npc.localAI[0] == 270 + 120 + 14)
                             {
                                 SoundEngine.PlaySound(LaserFire with { Pitch = 0f }, npc.Center);
-                                Opus.RadialSpreadProjectile(ProjectileID.PhantasmalBolt, 32, npc.Center, 25, 3, 7);
+                                Opus.RadialSpreadProjectile(ModContent.ProjectileType<MoonlordFusionBolt>(), 32, npc.Center, 25, 3, 7);
                             }
-                            if (npc.localAI[0] >= 270 + 120 + 15)
+                            if (npc.localAI[0] == 270 + 120 + 15)
                             {
-    
+                                if (Main.masterMode)
+                                {
+                                    DecideShieldCore++;
+
+                                    makeCoreShield = true;
+                                    
+                                }
+
+                                
                             }
                         }
                     }
@@ -178,6 +205,35 @@ namespace DestroyerTest.Common.NPC_Folder
                     if (npc.localAI[0] >= 270 + 120 + 15 + 120 && npc.localAI[1] % 2 == 0)
                     {
                         npc.localAI[0] = 0;
+                    }
+
+                    if (makeCoreShield)
+                    {
+                        coreShieldDelay++;
+                        if (coreShieldDelay >= 60)
+                        {
+                            if (Main.netMode != 1)
+                            {
+                                SoundEngine.PlaySound(DTAssetLib.FrigidFenzim.Hit with { Pitch = -1f }, npc.Center);
+                                BloomRingSharp ring = new();
+                                ring.Prepare(npc.Center, Vector2.Zero, Color.Aquamarine, 0.1f, 0.05f, 1.7f, BlendState.Additive);
+                                ParticleEngine.Particles.Add(ring);
+                                Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<MoonlordMasterShield>(), 0, 0f, Main.myPlayer, npc.whoAmI, target.whoAmI);
+                            }
+                            makeCoreShield = false;
+                            coreShieldDelay = 0;
+                        }
+                        else
+                        {
+                            Vector2 dustPos = npc.Center + (new Vector2(150, 0).RotatedBy(npc.DirectionTo(target.Center).ToRotation()));
+                            Rectangle DustRect = Utils.CenteredRectangle(dustPos, new Vector2(400, 400));
+                            Vector2 spawnPos = Main.rand.NextVector2FromRectangle(DustRect);
+
+                            for (int i = 0; i < 2; i++)
+                            {
+                                Dust.NewDustPerfect(spawnPos, DustID.Phantasmal, spawnPos.DirectionTo(dustPos) * 8f);
+                            }
+                        }
                     }
                 }
             }
@@ -234,7 +290,7 @@ namespace DestroyerTest.Common.NPC_Folder
                         {
                             if (!HeadFlag)
                             {
-                                SoundEngine.PlaySound(LaserWarning2, npc.Center);
+                                SoundEngine.PlaySound(LaserWarning2);
                                 HeadFlag = true;
                             }
                         }
@@ -242,7 +298,7 @@ namespace DestroyerTest.Common.NPC_Folder
                         {
                             if (!HeadFlag2)
                             {
-                                SoundEngine.PlaySound(LaserWarning, npc.Center);
+                                SoundEngine.PlaySound(LaserWarning);
                                 HeadFlag2 = true;
                             }
                         }
@@ -301,6 +357,9 @@ namespace DestroyerTest.Common.NPC_Folder
             }
         }
 
+        int handShieldDelay = 0;
+        bool makeHandShield = false;
+        int DecideShield = 0;
         void HandAI(NPC npc)
         {
             if (npc.aiStyle == NPCAIStyleID.MoonLordHand)
@@ -355,12 +414,57 @@ namespace DestroyerTest.Common.NPC_Folder
                     }
                     if ((mainTimer == duration - 14f || mainTimer == duration - 7f || mainTimer == duration) && Main.netMode != 1)
                     {
-                        HandBoltFlag = false;
+                        if (HandBoltFlag)
+                        {
+                            if (Main.masterMode)
+                            {
+                                DecideShield++;
+
+                                if (DecideShield % 2 == 0)
+                                {
+                                    makeHandShield = true;
+                                }
+                            }
+
+                            HandBoltFlag = false;
+                        }
+                        
+
+                        
                     }
                 }
                 if (npc.ai[0] != 3f)
                 {
                     HandBoltFlag = false;
+                }
+
+                if (makeHandShield)
+                {
+                    handShieldDelay++;
+                    if (handShieldDelay >= 90)
+                    {
+                        if (Main.netMode != 1)
+                        {
+                            SoundEngine.PlaySound(DTAssetLib.FrigidFenzim.Hit with { Pitch = -1f }, npc.Center);
+                            BloomRingSharp ring = new();
+                            ring.Prepare(npc.Center, Vector2.Zero, Color.Aquamarine, 0.1f, 0.05f, 1.7f, BlendState.Additive);
+                            ParticleEngine.Particles.Add(ring);
+                            Projectile.NewProjectile(npc.GetSource_FromAI(), npc.Center, Vector2.Zero, ModContent.ProjectileType<MoonlordMasterShield>(), 0, 0f, Main.myPlayer, npc.whoAmI, target.whoAmI);
+                        }
+                        makeHandShield = false;
+                        handShieldDelay = 0;
+                    }
+                    else
+                    {
+                        Vector2 dustPos = npc.Center + (new Vector2(150, 0).RotatedBy(npc.DirectionTo(target.Center).ToRotation()));
+                        Rectangle DustRect = Utils.CenteredRectangle(dustPos, new Vector2(400, 400));
+                        Vector2 spawnPos = Main.rand.NextVector2FromRectangle(DustRect);
+
+                        for (int i = 0; i < 2; i++)
+                        {
+                            Dust.NewDustPerfect(spawnPos, DustID.Phantasmal, spawnPos.DirectionTo(dustPos) * 8f);
+                        }
+                    }
                 }
             }
         }
@@ -1046,7 +1150,7 @@ namespace DestroyerTest.Common.NPC_Folder
                     }
 
 
-                    if (npc.localAI[0] > 600 && npc.localAI[0] < 270 + 70 && basic)
+                    if (npc.localAI[0] > 270 && npc.localAI[0] < 270 + 70 && basic)
                     {
                         
                         if (BasicCoreBoltWarningMultiplier < 1f)
@@ -1060,9 +1164,9 @@ namespace DestroyerTest.Common.NPC_Folder
                     {
                         if (BasicCoreBoltWarningMultiplier > 0f)
                         {
-                            BasicCoreBoltWarningMultiplier -= 0.01f;
+                            BasicCoreBoltWarningMultiplier -= 0.1f;
 
-                            if (BasicCoreBoltWarningMultiplier < 0.02f)
+                            if (BasicCoreBoltWarningMultiplier < 0.11f)
                             {
                                 BasicCoreBoltWarningMultiplier = 0;
                             }
@@ -1075,16 +1179,16 @@ namespace DestroyerTest.Common.NPC_Folder
                     }
 
                     CoreBoltsExtraRot += 0.1f;
-                    Main.EntitySpriteDraw(DTAssetLib.Corona.Value, npc.Center - Main.screenPosition, null, Color.MediumAquamarine with { A = 0 } * 0.65f * BigCoreBoltWarningMultiplier, CoreBoltsExtraRot * 0.5f, DTAssetLib.Corona.Value.Size() / 2, 1f, SpriteEffects.None);
-                    Main.EntitySpriteDraw(DTAssetLib.Corona.Value, npc.Center - Main.screenPosition, null, Color.MediumAquamarine with { A = 0 } * 0.7f * BigCoreBoltWarningMultiplier, CoreBoltsExtraRot * 0.6f, DTAssetLib.Corona.Value.Size() / 2, 0.75f, SpriteEffects.None);
-                    Main.EntitySpriteDraw(DTAssetLib.Corona.Value, npc.Center - Main.screenPosition, null, Color.MediumAquamarine with { A = 0 } * 0.75f * BigCoreBoltWarningMultiplier, CoreBoltsExtraRot * 0.7f, DTAssetLib.Corona.Value.Size() / 2, 0.5f, SpriteEffects.None);
+                    Main.EntitySpriteDraw(DTAssetLib.Corona.Value, npc.Center - Main.screenPosition, null, ColorLib.CelestialGradient with { A = 0 } * 0.65f * BigCoreBoltWarningMultiplier, CoreBoltsExtraRot * 0.5f, DTAssetLib.Corona.Value.Size() / 2, 1f, SpriteEffects.None);
+                    Main.EntitySpriteDraw(DTAssetLib.Corona.Value, npc.Center - Main.screenPosition, null, ColorLib.CelestialGradient with { A = 0 } * 0.7f * BigCoreBoltWarningMultiplier, CoreBoltsExtraRot * 0.6f, DTAssetLib.Corona.Value.Size() / 2, 0.75f, SpriteEffects.None);
+                    Main.EntitySpriteDraw(DTAssetLib.Corona.Value, npc.Center - Main.screenPosition, null, ColorLib.CelestialGradient  with { A = 0 } * 0.75f * BigCoreBoltWarningMultiplier, CoreBoltsExtraRot * 0.7f, DTAssetLib.Corona.Value.Size() / 2, 0.5f, SpriteEffects.None);
 
-                    Main.EntitySpriteDraw(DTAssetLib.CurseSigilRing.Value, npc.Center - Main.screenPosition, null, Color.MediumAquamarine with { A = 0 } * BigCoreBoltWarningMultiplier, CoreBoltsExtraRot * 1.5f, DTAssetLib.CurseSigilRing.Value.Size() / 2, 0.5f, SpriteEffects.None);
-                    Main.EntitySpriteDraw(DTAssetLib.CurseSigilRing.Value, npc.Center - Main.screenPosition, null, Color.MediumAquamarine with { A = 0 } * BigCoreBoltWarningMultiplier, CoreBoltsExtraRot * -1.5f, DTAssetLib.CurseSigilRing.Value.Size() / 2, 0.65f, SpriteEffects.None);
+                    Main.EntitySpriteDraw(DTAssetLib.CurseSigilRing.Value, npc.Center - Main.screenPosition, null, ColorLib.CelestialGradient with { A = 0 } * BigCoreBoltWarningMultiplier, CoreBoltsExtraRot * 1.5f, DTAssetLib.CurseSigilRing.Value.Size() / 2, 0.5f, SpriteEffects.None);
+                    Main.EntitySpriteDraw(DTAssetLib.CurseSigilRing.Value, npc.Center - Main.screenPosition, null, ColorLib.CelestialGradient with { A = 0 } * BigCoreBoltWarningMultiplier, CoreBoltsExtraRot * -1.5f, DTAssetLib.CurseSigilRing.Value.Size() / 2, 0.65f, SpriteEffects.None);
 
-                    Main.EntitySpriteDraw(DTAssetLib.ShineFlare.Value, npc.Center - Main.screenPosition, null, Color.MediumAquamarine with { A = 0 }, CoreBoltsExtraRot, DTAssetLib.ShineFlare.Value.Size() / 2, Opus.Sine(0.4f, 0.6f, 0.5f) * BigCoreBoltWarningMultiplier, SpriteEffects.None);
+                    Main.EntitySpriteDraw(DTAssetLib.ShineFlare.Value, npc.Center - Main.screenPosition, null, Color.MediumAquamarine with { A = 0 }, CoreBoltsExtraRot, DTAssetLib.ShineFlare.Value.Size() / 2, Opus.Sine(0.8f, 1.6f, 0.5f) * BigCoreBoltWarningMultiplier, SpriteEffects.None);
 
-                    if (npc.localAI[0] > 600 && npc.localAI[0] < 270 + 180 && !basic)
+                    if (npc.localAI[0] > 270 && npc.localAI[0] < 270 + 120 && npc.localAI[1] % 2 == 0)
                     {
                         if (BigCoreBoltWarningMultiplier < 1f)
                         {
@@ -1099,9 +1203,9 @@ namespace DestroyerTest.Common.NPC_Folder
                     {
                         if (BigCoreBoltWarningMultiplier > 0f)
                         {
-                            BigCoreBoltWarningMultiplier -= 0.01f;
+                            BigCoreBoltWarningMultiplier -= 0.1f;
 
-                            if (BigCoreBoltWarningMultiplier < 0.02f)
+                            if (BigCoreBoltWarningMultiplier < 0.11f)
                             {
                                 BigCoreBoltWarningMultiplier = 0;
                             }

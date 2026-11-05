@@ -1,5 +1,6 @@
 ﻿using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Resources;
 using DestroyerTest.Rarity;
 using OpusLib.Content.Helpers;
 using Terraria;
@@ -35,7 +36,18 @@ namespace DestroyerTest.Content.Consumables
             Item.rare = ModContent.RarityType<ShimmeringRarity>();
             Item.value = Item.buyPrice(gold: 1);
             Item.buffType = ModContent.BuffType<ShadeInfernoRingBuff>();
-            Item.buffTime = 12000;
+            Item.buffTime = 18000;
+        }
+
+        public override void AddRecipes()
+        {
+            CreateRecipe()
+                .AddIngredient(ItemID.Bottle)
+                .AddIngredient(ItemID.InfernoPotion)
+                .AddIngredient<ShimmeringShards>(2)
+                .AddIngredient<Dyrn>(4)
+                .AddTile(TileID.Bottles)
+                .Register();
         }
     }
 }

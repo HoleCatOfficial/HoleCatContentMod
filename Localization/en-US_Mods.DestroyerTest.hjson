@@ -267,12 +267,13 @@ Configs: {
 		}
 
 		BossRework: {
-			Label: Boss Reworks
+			Label: "[i:557] Boss Reworks"
 			Tooltip:
 				'''
 				Talid makes minor reworks to some vanilla bosses.
 				Currently this only applies to the Moon Lord.
-				Talid is intended to be played with this enabled.
+				These reworks will not account for other mods' reworks.
+				Talid is intended to be played with this enabled, but this should be disabled if you are using another mod that already reworks bosses.
 				'''
 		}
 	}

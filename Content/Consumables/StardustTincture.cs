@@ -40,6 +40,7 @@ namespace DestroyerTest.Content.Consumables
         public override void AddRecipes()
         {
             CreateRecipe()
+                .AddIngredient(ItemID.Bottle)
                 .AddIngredient(ItemID.SummoningPotion)
                 .AddIngredient(ItemID.Ale)
                 .AddIngredient(ItemID.FragmentStardust, 8)

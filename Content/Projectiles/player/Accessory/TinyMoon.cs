@@ -113,9 +113,13 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
                 Projectile.timeLeft = 60;
             }
 
-            if (Main.MouseWorld.Distance(Projectile.Center) < 120 * Projectile.scale * Sc)
+            if (Main.MouseWorld.Distance(Projectile.Center) < 240 * Projectile.scale * Sc)
             {
-                Vis = MathHelper.Lerp(0f, 1f, Main.MouseWorld.Distance(Projectile.Center) / (120 * Projectile.scale * Sc));
+                Vis = MathHelper.Lerp(0.2f, 1f, Main.MouseWorld.Distance(Projectile.Center) / (80 * Projectile.scale * Sc));
+            }
+            if (Main.MouseWorld.Distance(Projectile.Center) < 60 * Projectile.scale * Sc)
+            {
+                Vis = 0.2f;
             }
 
             Projectile.scale = 1f + Owner.GetAdjustedItemScale(Owner.HeldItem);

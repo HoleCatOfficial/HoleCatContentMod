@@ -53,7 +53,7 @@ namespace DestroyerTest.Content.Equips
 
         public override void UpdateArmorSet(Player player)
         {
-            player.AddBuff(ModContent.BuffType<InfernalBatBuff>(), 60);
+            player.GetModPlayer<InfernalHatPlayer>().Active = true;
             player.lavaImmune = true;
             player.DefaultSetBonusText(player.armor[0]);
         }
@@ -66,6 +66,31 @@ namespace DestroyerTest.Content.Equips
             .AddIngredient(ItemID.Obsidian, 2)
             .AddTile(TileID.Anvils)
             .Register();
+        }
+    }
+
+    public class InfernalHatPlayer : ModPlayer
+    {
+        public bool Active = false;
+
+        public override void ResetEffects()
+        {
+            Active = false;
+        }
+
+        public override void PostUpdateEquips()
+        {
+            if (Active)
+            {
+                Player.AddBuff(ModContent.BuffType<InfernalBatBuff>(), 60);
+            }
+            else
+            {
+                if (Player.HasBuff<InfernalBatBuff>())
+                {
+                    Player.ClearBuff(ModContent.BuffType<InfernalBatBuff>());
+                }
+            }
         }
     }
 

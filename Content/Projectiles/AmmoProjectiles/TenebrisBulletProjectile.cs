@@ -1,3 +1,4 @@
+
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Common.Interfaces;
@@ -7,6 +8,7 @@ using DestroyerTest.Content.Particles;
 using Microsoft.Xna.Framework;
 using OpusLib;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -132,7 +134,23 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
 
         public override void OnKill(int timeLeft)
         {
+            Color color = Variant switch
+            {
+                0 => ColorLib.TenebrisBlue,
+                1 => ColorLib.TenebrisMagenta,
+                _ => ColorLib.TenebrisBeige
+            };
 
+            if (timeLeft <= 1)
+            {
+                SoundEngine.PlaySound(DTAssetLib.Impacts.IceImpact with { Pitch = 1.2f, MaxInstances = 0 }, Projectile.Center);
+                for (int i = 0; i < 9; i++)
+                {
+                    Spark spark = new();
+                    spark.PrepareSpark(Projectile.Center, Main.rand.NextVector2Circular(3f, 6f), Projectile.velocity.ToRotation() + MathHelper.PiOver2, color, 0.3f, false, 10, SparkDrawMode.Additive, 3f);
+                    ParticleEngine.Particles.Add(spark);
+                }
+            }
         }
     }
 }

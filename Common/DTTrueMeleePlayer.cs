@@ -81,6 +81,8 @@ namespace DestroyerTest.Common
                     scale += 0.1f;
                 }
             }
+
+            
         }
     }
 }

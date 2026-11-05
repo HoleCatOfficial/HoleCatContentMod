@@ -141,7 +141,7 @@ namespace DestroyerTest.Content.Projectiles.player.ArmorSet
 
             if (CheckActive())
             {
-                Projectile.timeLeft = 120;
+                Projectile.timeLeft = 10;
             }
             else
             {

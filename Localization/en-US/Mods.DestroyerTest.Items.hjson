@@ -5437,7 +5437,7 @@ ZapScroll: {
 
 BundleOfMagicLillies: {
 	DisplayName: Bundle of Magic Lillies
-	Tooltip: You can perform fastx dashes that grant immunity to NPC collision and dont create momentum. (May have unpredictable behaviour when combined with other dashes)
+	Tooltip: You can perform fast dashes that grant immunity to NPC collision and dont create momentum. (May have unpredictable behaviour when combined with other dashes)
 }
 
 SunplateBreaker: {
@@ -5869,5 +5869,28 @@ StockyPotion: {
 		Increases Defense, Max Life, and Life Regeneration.
 		Halves incoming knockback.
 		'fatass'
+		'''
+}
+
+LesserGravityStone: {
+	DisplayName: Lesser Gravity Stone
+	Tooltip: Reduces gravity loss in space.
+}
+
+GreaterGravityStone: {
+	DisplayName: Greater Gravity Stone
+	Tooltip:
+		'''
+		Negates the gravity loss in space.
+		You are more affected by gravity.
+		'''
+}
+
+OtherworldlyTonic: {
+	DisplayName: Otherworldly Tonic
+	Tooltip:
+		'''
+		Increases Thrower damage and wing time.
+		The taste is so nasty it makes you nauseous and slows you down.
 		'''
 }

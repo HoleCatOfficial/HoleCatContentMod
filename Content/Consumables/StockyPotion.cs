@@ -40,6 +40,7 @@ namespace DestroyerTest.Content.Consumables
         public override void AddRecipes()
         {
             CreateRecipe(4)
+                .AddIngredient(ItemID.Bottle)
                 .AddIngredient(ItemID.LifeforcePotion)
                 .AddIngredient(ItemID.RegenerationPotion)
                 .AddIngredient<Dyrn>(5)
