@@ -37,3 +37,8 @@ RoseGardenUnderground: {
 	DisplayName: Hekate's Garden
 	TownNPCDialogueName: The Evil Garden
 }
+
+Border: {
+	DisplayName: Mods.DestroyerTest.Biomes.Border.DisplayName
+	TownNPCDialogueName: Mods.DestroyerTest.Biomes.Border.TownNPCDialogueName
+}

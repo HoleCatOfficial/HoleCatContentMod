@@ -2697,6 +2697,64 @@ namespace DestroyerTest.Common
 
     public class DTGenUtils
     {
+        /// <summary>
+        /// Returns false if a high enough percentage of surrounding tiles are not solid.
+        /// Use this to smooth out isolated tiles and sharp points.
+        /// </summary>
+        /// <param name="Sample"> The point being tested. </param>
+        /// <param name="Sensitivity"> The percentage of surrounding tiles requeired to be empty to turn the sampled tile empty. Defaults to 50%. </param>
+        /// <returns></returns>
+        public static bool SmoothTiles(Point Sample, float Sensitivity = 0.5f)
+        {
+            //Sensitivity is tuned to 0.5f as 50%. A majority percentage of tiles that need to be empty for X to turn empty.
+
+            if (!Framing.GetTileSafely(Sample).HasTile)
+            {
+                //No changes. Conditions couldnt be measured.
+                return true;
+            }
+
+            Tile tile = Framing.GetTileSafely(Sample);
+            int EmptyTiles = 0;
+            int TotalTiles = 8;
+            
+
+            for (int i = -1; i < 2; i++)
+            {
+                int X = Sample.X + i;
+
+                for (int j = -1; j < 2; j++) //Can be done verbatim since the scan area has equal dimensions.
+                {
+                    if (i == 0 && j == 0)
+                    {
+                        //Skip. This would be our sample point.
+                        continue;
+                    }
+
+                    int Y = Sample.Y + j;
+
+                    Tile neighbor = Framing.GetTileSafely(X, Y);
+
+                    if (!neighbor.HasTile)
+                    {
+                        EmptyTiles++;
+                    }
+
+
+                }
+            }
+
+            float percentage = (float)EmptyTiles / (float)TotalTiles;
+
+            if (percentage >= Sensitivity)
+            {
+                return false;
+            }
+
+            //No changes. Conditions were met.
+            return true;
+        }
+
         public static void GenRoom(Room room)
         {
             if (room == null)
