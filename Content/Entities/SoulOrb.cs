@@ -80,7 +80,7 @@ namespace DestroyerTest.Content.Entities
         }
 
         public int Charge = 0;
-        public const int MaxCharge = 1000;
+        public int MaxCharge = 500;
         public float ChargeProgress;
 
         bool KillHostile = false;
@@ -149,7 +149,7 @@ namespace DestroyerTest.Content.Entities
 
                 PitchVal = MathHelper.Lerp(-2f, 0f, ChargeProgress);
 
-                NPC.SmoothMoveToPoint(target.MountedCenter, 12f);
+                NPC.SmoothMoveToPoint(target.MountedCenter, 12f, 100);
             }
 
             if (!SoundEngine.TryGetActiveSound(LoopSlot, out var activeSound))

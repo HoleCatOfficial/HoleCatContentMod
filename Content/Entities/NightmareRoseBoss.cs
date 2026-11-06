@@ -448,6 +448,9 @@ namespace DestroyerTest.Content.Entities
         bool ShouldCheckForTilesOnSpawn = true;
         public override void OnSpawn(IEntitySource source)
         {
+            // TODO: Reimplement this in a way that doesnt suck.
+
+            /*
             ShouldCheckForTilesOnSpawn = !DTUtils.CalamityBossRushActive() && !DestroyerTestMod.EternityIsActive && !DestroyerTestMod.DeathIsActive;
 
             if (ShouldCheckForTilesOnSpawn)
@@ -460,27 +463,6 @@ namespace DestroyerTest.Content.Entities
                 //Visualize
                 Dust.QuickBox(SearchArea.TopLeft(), SearchArea.BottomRight(), 12, Color.Red, null);
                 Dust.QuickBox(SearchArea2.TopLeft(), SearchArea2.BottomRight(), 12, Color.Red, null);
-
-
-                /*
-                bool TileCheck = WorldUtils.Find(
-                    SearchArea.TopLeft().ToTileCoordinates(),
-                    Searches.Chain(new Searches.Rectangle(1, 1),
-                    new GenCondition[]
-                    {
-                    new Terraria.WorldBuilding.Conditions.IsSolid().AreaAnd(125, 8),
-                    }),
-                    out resultPoint);
-
-                bool AirCheck = WorldUtils.Find(
-                    SearchArea.TopLeft().ToTileCoordinates(),
-                    Searches.Chain(new Searches.Rectangle(1, 1),
-                    new GenCondition[]
-                    {
-                    new Terraria.WorldBuilding.Conditions.IsSolid().AreaAnd(125, 100),
-                    }),
-                    out resultPoint2);
-                */
 
                 Point TopLeft = SearchArea.TopLeft().ToTileCoordinates();
 
@@ -565,8 +547,19 @@ namespace DestroyerTest.Content.Entities
 
                 SunlightModification.Reset();
             }
-        }
 
+            */
+
+
+            NPC.life = NPC.lifeMax;
+            BorderActive = true;
+            currentState = AttackState.SpawnIdle;
+            NPCHead = NPC.Center + new Vector2(0, -79);
+            Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Bottom, Vector2.Zero, ModContent.ProjectileType<SpawnSoul>(), 0, 0);
+
+            SunlightModification.Reset();
+        }
+        
         void ShineHead()
         {
             SmallShine shine = new SmallShine();

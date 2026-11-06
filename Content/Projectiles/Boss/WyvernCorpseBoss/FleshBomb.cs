@@ -24,20 +24,31 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
         }
         public override void SetDefaults()
         {
-            Projectile.width = 24; // The width of projectile hitbox
-            Projectile.height = 24; // The height of projectile hitbox
-
-            Projectile.DamageType = DamageClass.Generic;
-            Projectile.friendly = false; // Can the projectile deal damage to enemies?
-            Projectile.hostile = true; // Can the projectile deal damage to the player?
-            Projectile.ignoreWater = true; // Does the projectile's speed be influenced by water?
-            Projectile.light = 1f; // How much light emit around the projectile
-            Projectile.timeLeft = 120; // The live time for the projectile (60 = 1 second, so 600 is 10 seconds)
+            Projectile.width = 24;
+            Projectile.height = 24;
+            Projectile.friendly = false;
+            Projectile.hostile = true;
+            Projectile.ignoreWater = true;
+            Projectile.timeLeft = 120;
             Projectile.tileCollide = false;
             Projectile.alpha = 0;
             Projectile.ArmorPenetration = 100;
         }
 
+        float GlowOpacity = 0f;
+        public override bool PreDraw(ref Color lightColor)
+        {
+            Texture2D glow = ModContent.Request<Texture2D>(DTAssetLib.ExtrasPath + "/FleshBombOutline").Value;
+
+            Main.EntitySpriteDraw(DTAssetLib.Circle.Value, Projectile.Center - Main.screenPosition, null, (Color.Red * GlowOpacity * Projectile.Opacity) * 0.5f, 0f, DTAssetLib.Circle.Size() / 2, DTAssetLib.Circle.Value.ScaleRingTextureToMatchRadius(100, 300), SpriteEffects.None);
+
+            Main.EntitySpriteDraw(glow, Projectile.Center - Main.screenPosition, null, Color.Red * GlowOpacity * Projectile.Opacity, Projectile.rotation, glow.Size() / 2, Projectile.scale, SpriteEffects.None);
+            
+
+            Main.EntitySpriteDraw(DTUtils.CenteredDraw(Projectile, Color.White));
+
+            return false;
+        }
         public override bool CanHitPlayer(Player target)
         {
 
@@ -56,8 +67,26 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
             Projectile.velocity *= 0.99f;
             Projectile.rotation += Main.rand.NextFloat(-1f, 1.1f) * 0.1f;
             Dust.NewDust(Projectile.position, Projectile.width, Projectile.height, DustID.Blood, 0, 0, 0, default, 1.0f);
-            if (Projectile.timeLeft == 1)
+
+            
+            if (Projectile.timeLeft < 20)
             {
+                Vector2 dustPos = Projectile.Center;
+                Rectangle DustRect = Utils.CenteredRectangle(dustPos, new Vector2(200, 200));
+                Vector2 spawnPos = Main.rand.NextVector2FromRectangle(DustRect);
+
+                for (int i = 0; i < 4; i++)
+                {
+                    Dust.NewDustPerfect(spawnPos, DustID.FireworksRGB, spawnPos.DirectionTo(dustPos) * 8f, newColor: Color.Red);
+                }
+
+                GlowOpacity += 0.1f;
+
+                Projectile.scale += 0.03f;
+            }
+            if (Projectile.timeLeft == 0)
+            {
+                Projectile.Opacity = 0;
                 Projectile.Resize(200, 200);
             }
         }
@@ -67,10 +96,10 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
             SoundEngine.PlaySound(BombBlow, Projectile.Center);
 
             SimpleExplosionParticle Explosion = new();
-            Explosion.Prepare(Projectile.Center, Vector2.Zero, Color.Red, 0.1f, 0.05f, 1.7f, BlendState.Additive);
+            Explosion.Prepare(Projectile.Center, Vector2.Zero, Color.Red, 0.1f, 0.05f, 1.7f, BlendState.AlphaBlend);
             ParticleEngine.BehindProjectiles.Add(Explosion);
             SimpleExplosionParticle Explosion2 = new();
-            Explosion2.Prepare(Projectile.Center, Vector2.Zero, Color.Red * 0.5f, 0.1f, 0.05f, 1f, BlendState.Additive);
+            Explosion2.Prepare(Projectile.Center, Vector2.Zero, Color.Red * 0.5f, 0.1f, 0.05f, 1f, BlendState.AlphaBlend);
             ParticleEngine.BehindProjectiles.Add(Explosion2);
 
             Opus.RadialSpreadDustRandom(DustID.Blood, 10, Projectile.Center, 0, default, 1f, 8);

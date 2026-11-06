@@ -126,10 +126,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             SoundEngine.PlaySound(BombBlow, Projectile.Center);
 
             SimpleExplosionParticle Explosion = new();
-            Explosion.Prepare(Projectile.Center, Vector2.Zero, Color.Red, 0.1f, 0.05f, 1.7f, BlendState.Additive);
+            Explosion.Prepare(Projectile.Center, Vector2.Zero, Color.Red, 0.1f, 0.05f, 1.7f, BlendState.AlphaBlend);
             ParticleEngine.BehindProjectiles.Add(Explosion);
             SimpleExplosionParticle Explosion2 = new();
-            Explosion2.Prepare(Projectile.Center, Vector2.Zero, Color.Red * 0.5f, 0.1f, 0.05f, 1f, BlendState.Additive);
+            Explosion2.Prepare(Projectile.Center, Vector2.Zero, Color.Red * 0.5f, 0.1f, 0.05f, 1f, BlendState.AlphaBlend);
             ParticleEngine.BehindProjectiles.Add(Explosion2);
 
             Opus.RadialSpreadDustRandom(DustID.Blood, 10, Projectile.Center, 0, default, 1f, 8);

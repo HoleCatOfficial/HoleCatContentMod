@@ -1,5 +1,7 @@
 ﻿using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
+using BreadLibrary.Core.Graphics.Spritebatch;
+using BreadLibrary.Core.Utilities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
@@ -83,32 +85,27 @@ namespace DestroyerTest.Content.Particles
 
         public override void Draw(ref ParticleRendererSettings settings, SpriteBatch spritebatch)
         {
-            var Tex = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/SimpleExplosionParticle").Value;
+            var Tex = (blendState == BlendState.AlphaBlend ||  blendState == BlendState.NonPremultiplied) ? ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/SimpleExplosionParticle_NonPreMultiplied").Value : ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/SimpleExplosionParticle").Value;
 
             Color c()
             {
-                if (blendState == BlendState.Additive)
-                {
-                    return color with { A = 0 } * Opacity;
-                }
-                else
-                {
-                    return color * Opacity;
-                }
+
+                return color * Opacity;
+                
             }
 
-            if (blendState != BlendState.Additive)
-            {
-                Opus.StartSpriteBatchWithBlending(spritebatch, blendState, SpriteSortMode.Immediate);
-            }
-            else
-            {
-                Opus.StartSpriteBatchWithBlending(spritebatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
-            }
+
+            var Cap = spritebatch.Capture();
+
+            spritebatch.End();
+
+            Cap.BlendState = blendState;
+
+            spritebatch.Begin(Cap);
 
             spritebatch.Draw(Tex, position - Main.screenPosition, null, c(), rotation, Tex.Size() / 2f, scale, SpriteEffects.None, 0f);
 
-            Opus.ReturnToDefaultDrawing(spritebatch);
+            spritebatch.ResetToDefault();
         }
     }
 
@@ -229,32 +226,27 @@ namespace DestroyerTest.Content.Particles
 
         public override void Draw(ref ParticleRendererSettings settings, SpriteBatch spritebatch)
         {
-            var Tex = ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/SimpleExplosionParticle").Value;
+            var Tex = (blendState == BlendState.AlphaBlend || blendState == BlendState.NonPremultiplied) ? ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/SimpleExplosionParticle_NonPreMultiplied").Value : ModContent.Request<Texture2D>("DestroyerTest/Content/Particles/SimpleExplosionParticle").Value;
 
             Color c()
             {
-                if (blendState == BlendState.Additive)
-                {
-                    return color with { A = 0 } * Opacity;
-                }
-                else
-                {
-                    return color * Opacity;
-                }
+
+                return color * Opacity;
+
             }
 
-            if (blendState != BlendState.Additive)
-            {
-                Opus.StartSpriteBatchWithBlending(spritebatch, blendState, SpriteSortMode.Immediate);
-            }
-            else
-            {
-                Opus.StartSpriteBatchWithBlending(spritebatch, BlendState.AlphaBlend, SpriteSortMode.Immediate);
-            }
+
+            var Cap = spritebatch.Capture();
+
+            spritebatch.End();
+
+            Cap.BlendState = blendState;
+
+            spritebatch.Begin(Cap);
 
             spritebatch.Draw(Tex, position - Main.screenPosition, null, c(), rotation, Tex.Size() / 2f, scale, SpriteEffects.None, 0f);
 
-            Opus.ReturnToDefaultDrawing(spritebatch);
+            spritebatch.ResetToDefault();
         }
     }
 }

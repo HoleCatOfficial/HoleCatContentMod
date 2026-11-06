@@ -440,10 +440,10 @@ namespace DestroyerTest.Content.Entities
                                     float Y = NPC.Center.Y + 900;
 
 
-                                    Projectile.NewProjectile(NPC.GetSource_FromAI(), new Vector2(X, Y), new Vector2(0, -40), ModContent.ProjectileType<CrimsonSpike>(), 15, 2);
+                                    Projectile.NewProjectile(NPC.GetSource_FromAI(), new Vector2(X, Y), new Vector2(0, -40), ModContent.ProjectileType<CrimsonSpike>(), 35, 2);
                                     if (i != 0)
                                     {
-                                        Projectile.NewProjectile(NPC.GetSource_FromAI(), new Vector2(AltX, Y), new Vector2(0, -40), ModContent.ProjectileType<CrimsonSpike>(), 15, 2);
+                                        Projectile.NewProjectile(NPC.GetSource_FromAI(), new Vector2(AltX, Y), new Vector2(0, -40), ModContent.ProjectileType<CrimsonSpike>(), 35, 2);
                                     }
 
 
@@ -456,7 +456,7 @@ namespace DestroyerTest.Content.Entities
                                     float Y = NPC.Center.Y + (-900 + ((i * 16) * 12));
 
 
-                                    Projectile.NewProjectile(NPC.GetSource_FromAI(), new Vector2(X, Y), new Vector2(-40 * Side, 0), ModContent.ProjectileType<CrimsonSpike>(), 15, 2);
+                                    Projectile.NewProjectile(NPC.GetSource_FromAI(), new Vector2(X, Y), new Vector2(-40 * Side, 0), ModContent.ProjectileType<CrimsonSpike>(), 35, 2);
                                 }
 
 
