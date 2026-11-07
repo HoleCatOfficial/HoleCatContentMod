@@ -5894,3 +5894,13 @@ OtherworldlyTonic: {
 		The taste is so nasty it makes you nauseous and slows you down.
 		'''
 }
+
+Item_CarbonaceousShale: {
+	DisplayName: Item_ Carbonaceous Shale
+	Tooltip: ""
+}
+
+MidnightMossWand: {
+	DisplayName: Midnight Moss Wand
+	Tooltip: ""
+}

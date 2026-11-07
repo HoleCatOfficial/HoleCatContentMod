@@ -1,4 +1,5 @@
 ﻿using System;
+using DestroyerTest.Common.BorderGeneration;
 using DestroyerTest.Content.RiftBiome.RiftDesertResources;
 using DestroyerTest.Content.RiftBiome.RiftSurfaceResources;
 using DestroyerTest.Content.RiftBiome.RiftTundraResources;
@@ -13,7 +14,7 @@ namespace DestroyerTest.Common.Systems
 
         public override void TileCountsAvailable(ReadOnlySpan<int> tileCounts)
         {
-            BlockCount = tileCounts[TileID.Titanstone];
+            BlockCount = tileCounts[BorderTerrainGeneration.TileType];
               
         }
     }

@@ -27,7 +27,7 @@ namespace DestroyerTest.Content.BorderBiome
         {
            
         }
-        public override string BestiaryIcon => "DestroyerTest/Assets/Textures/RiftIcon";
+        public override string BestiaryIcon => "DestroyerTest/Assets/Textures/BorderIcon";
         public override string BackgroundPath => base.BackgroundPath;
         public override Color? BackgroundColor => base.BackgroundColor;
         public override string MapBackground => BackgroundPath;
@@ -40,7 +40,7 @@ namespace DestroyerTest.Content.BorderBiome
             return b1;
         }
 
-        public override SceneEffectPriority Priority => SceneEffectPriority.BiomeMedium; 
+        public override SceneEffectPriority Priority => SceneEffectPriority.BiomeHigh; 
         
     }
 }

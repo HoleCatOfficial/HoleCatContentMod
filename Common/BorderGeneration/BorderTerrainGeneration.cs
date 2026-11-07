@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using DestroyerTest.Common.Systems;
+using DestroyerTest.Content.BorderBiome.Tiles;
+using DestroyerTest.Content.Tiles;
 using Microsoft.Xna.Framework;
+using MonoMod.RuntimeDetour;
 using Terraria;
 using Terraria.ID;
 using Terraria.IO;
@@ -22,6 +26,7 @@ namespace DestroyerTest.Common.BorderGeneration
     2. Shelf Digging (DONE): The horizontal spaces will be generated first.
     3. Chute Digging (DONE-ish): The sparse chutes will generate after.
     4. Lava: The border has lava pools, though not as many as the caverns.
+    4.5: Water where lava would be: Under the jungle, moss will grow on the shale.
     5. Tile Smoothing.
 
     For the time being, since this is just a proof of concept, Titanstone will be used.
@@ -29,6 +34,26 @@ namespace DestroyerTest.Common.BorderGeneration
     public class BorderTerrainGeneration : ModSystem
     {
         public int[] FloorY;
+
+        public static int TileType;
+
+        public override void SetStaticDefaults()
+        {
+            TileType = ModContent.TileType<Tile_CarbonaceousShale>();
+
+        }
+
+        private ILHook mushroomPatchHook;
+
+
+
+        public override void Unload()
+        {
+            TileType = -1;
+            mushroomPatchHook.Dispose();
+        }
+
+
         public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight)
         {
             int index = tasks.FindIndex(p => p.Name == "Full Desert");
@@ -54,6 +79,12 @@ namespace DestroyerTest.Common.BorderGeneration
                 tasks.Insert(index + 3, new BorderCeilingHolesPass("Border Generation: Ceiling Continuity", 100f, Main.UnderworldLayer - (height() + 15)));
 
                 tasks.Insert(index + 4, new BorderChutePass("Border Generation: Chutes", 100f, 2, 9));
+
+                tasks.Insert(index + 5, new BorderLakePass("Border Generation: Midnight Lake", 100f, 1));
+
+                tasks.Insert(index + 6, new BorderMossPass("Border Generation: Midnight Moss", 100f, Main.UnderworldLayer - height(), Main.UnderworldLayer));
+
+                
             }
         }
     }
@@ -77,12 +108,12 @@ namespace DestroyerTest.Common.BorderGeneration
             {
                 int X = intervals[i];
 
-                WorldGen.TileRunner(X, lowerBound, 22, 9, TileID.Titanstone, addTile: true, overRide: true);
-                WorldGen.TileRunner(X, upperBound, 22, 9, TileID.Titanstone, addTile: true, overRide: true);
+                WorldGen.TileRunner(X, lowerBound, 22, 9, BorderTerrainGeneration.TileType, addTile: true, overRide: true);
+                WorldGen.TileRunner(X, upperBound, 22, 9, BorderTerrainGeneration.TileType, addTile: true, overRide: true);
 
                 for (int j = 0; j < height; j++)
                 {
-                    WorldGen.TileRunner(X, upperBound + (j * 10), 22, 9, TileID.Titanstone, addTile: true, overRide: true);
+                    WorldGen.TileRunner(X, upperBound + (j * 10), 22, 9, BorderTerrainGeneration.TileType, addTile: true, overRide: true);
                 }
 
 
@@ -207,17 +238,17 @@ namespace DestroyerTest.Common.BorderGeneration
             {
                 Point Sample = new Point(intervals[i], YSample);
 
-                WorldGen.TileRunner(intervals[i], YSample, 18, 9, TileID.Titanstone, overRide: true);
-                WorldGen.TileRunner(intervals[i], YSample - 10, 18, 9, TileID.Titanstone, overRide: true);
+                WorldGen.TileRunner(intervals[i], YSample, 18, 9, BorderTerrainGeneration.TileType, overRide: true);
+                WorldGen.TileRunner(intervals[i], YSample - 10, 18, 9, BorderTerrainGeneration.TileType, overRide: true);
 
                 if (WorldGen.genRand.NextBool(5))
                 {
-                    WorldGen.TileRunner(intervals[i], YSample - 22, 24, 9, TileID.Titanstone, overRide: true);
+                    WorldGen.TileRunner(intervals[i], YSample - 22, 24, 9, BorderTerrainGeneration.TileType, overRide: true);
                 }
 
                 if (WorldGen.genRand.NextBool(12))
                 {
-                    WorldGen.TileRunner(intervals[i], YSample - 24, 30, 9, TileID.Titanstone, overRide: true);
+                    WorldGen.TileRunner(intervals[i], YSample - 24, 30, 9, BorderTerrainGeneration.TileType, overRide: true);
                 }
             }
         }
@@ -273,6 +304,125 @@ namespace DestroyerTest.Common.BorderGeneration
                 }
             }
 
+
+        }
+    }
+
+    public class BorderMossPass : GenPass
+    {
+
+        int upperBound;
+        int lowerBound;
+
+        public BorderMossPass(string name, float loadWeight, int UpperBound, int LowerBound) : base(name, loadWeight)
+        {
+            upperBound = UpperBound;
+            lowerBound = LowerBound;
+        }
+
+        protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration)
+        {
+            int minX = 0;
+            int maxX = 0;
+            bool flag4 = false;
+            bool flag5 = false;
+
+            for (int num153 = 5; num153 < Main.maxTilesX - 5; num153++)
+            {
+                for (int num154 = 0; (double)num154 < Main.worldSurface + 20.0; num154++)
+                {
+                    if (Main.tile[num153, num154].HasTile && Main.tile[num153, num154].TileType == 60)
+                    {
+                        minX = num153;
+                        flag4 = true;
+                        break;
+                    }
+                }
+
+                if (flag4)
+                {
+                    break;
+                }
+            }
+
+            for (int num155 = Main.maxTilesX - 5; num155 > 5; num155--)
+            {
+                for (int num156 = 0; (double)num156 < Main.worldSurface + 20.0; num156++)
+                {
+                    if (Main.tile[num155, num156].HasTile && Main.tile[num155, num156].TileType == 60)
+                    {
+                        maxX = num155;
+                        flag5 = true;
+                        break;
+                    }
+                }
+
+                if (flag5)
+                {
+                    break;
+                }
+            }
+
+
+
+
+            int width = (int)(maxX - minX);
+            Rectangle scanArea = new Rectangle(GenVars.jungleOriginX - (width / 2), upperBound, width, lowerBound - upperBound);
+
+            WorldGen.TileRunner(scanArea.X, scanArea.Y, 23, 4, TileID.AmethystGemspark, true);
+
+            var system = ModContent.GetInstance<BorderTerrainGeneration>();
+
+
+            for (int i = 0; i < scanArea.Width; i++)
+            {
+                for (int j = 0; j < scanArea.Height; j++)
+                {
+                    int x = scanArea.X + i;
+                    int y = scanArea.Y + j;
+
+                    Tile tile = Framing.GetTileSafely(x, y);
+
+                    if (tile.HasTile)
+                    {
+                        bool HasExposedSide()
+                        {
+                            return !Framing.GetTileSafely(x + 1, y).HasTile ||
+                                   !Framing.GetTileSafely(x - 1, y).HasTile ||
+                                   !Framing.GetTileSafely(x, y + 1).HasTile ||
+                                   !Framing.GetTileSafely(x, y - 1).HasTile;
+                        }
+                        if (HasExposedSide() && tile.TileType == BorderTerrainGeneration.TileType)
+                        {
+                            tile.TileType = (ushort)ModContent.TileType<MidnightMoss_CarbonaceousShale>();
+                        }
+                    }
+
+                    //system.Mod.Logger.Info($"Scanned: {scanned}, Matching tiles: {matchingTiles}");
+                }
+            }
+        }
+    }
+
+    public class BorderLakePass : GenPass
+    {
+        int width = 0;
+        public BorderLakePass(string name, float loadWeight, int Width) : base(name, loadWeight)
+        {
+            width = Width;
+        }
+
+        protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration)
+        {
+            
+           
+            var system = ModContent.GetInstance<BorderTerrainGeneration>();
+
+            WorldUtils.Gen(new Point(GenVars.jungleOriginX, system.FloorY[2] - 8), new Shapes.Mound(80, 40), new Actions.ClearTile(true));
+
+            WorldUtils.Gen(new Point(GenVars.jungleOriginX, system.FloorY[2] - 8), new Shapes.Circle(80, 20), new Actions.ClearTile(true));
+
+            WorldUtils.Gen(new Point(GenVars.jungleOriginX, system.FloorY[2] - 8), new Shapes.Circle(80, 8), new Actions.SetLiquid(LiquidID.Water));
 
         }
     }

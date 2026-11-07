@@ -32,5 +32,6 @@ Tile_CerebralChest: {
 	Locked: Locked Cerebral Chest
 }
 
-Tile_SanctifiedBrick.MapEntry: Mods.DestroyerTest.Tiles.Tile_SanctifiedBrick.MapEntry
-Tile_DecoCrate.MapEntry: Mods.DestroyerTest.Tiles.Tile_DecoCrate.MapEntry
+Tile_SanctifiedBrick.MapEntry: Sanctified Brick
+Tile_DecoCrate.MapEntry: Crate
+Tile_CarbonaceousShale.MapEntry: Carbonaceous Shale
