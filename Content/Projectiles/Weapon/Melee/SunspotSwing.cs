@@ -1,4 +1,5 @@
 ﻿using BreadLibrary.Core.Graphics.Particles;
+using BreadLibrary.Core.ScreenShake;
 using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Particles;
@@ -68,12 +69,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 if (!npc.active)
                 {
 
-                    Owner.GetModPlayer<ScreenshakePlayer>().screenshakeMagnitude = 4;
-                    Owner.GetModPlayer<ScreenshakePlayer>().screenshakeTimer = 20;
+                    ScreenShakeSystem.ShakeAt(npc.Center, 30, 30, frequency: 0.15f);
                     SoundEngine.PlaySound(DTAssetLib.Impacts.MagicHit with { MaxInstances = 0, PitchVariance = 0.6f }, npc.Center);
-                    SoundEngine.PlaySound(DTAssetLib.ScholarShieldSounds.Break with { MaxInstances = 0, PitchVariance = 0.6f, Volume = 0.65f }, npc.Center);
+                    SoundEngine.PlaySound(DTAssetLib.ScholarShieldSounds.Break with { MaxInstances = 0, PitchVariance = 0.6f, Volume = 0.7f }, npc.Center);
                     Spark FX = new();
-                    FX.PrepareSpark(npc.Center, r.ToRotationVector2() * 0.001f, r, ColorLib.Rift, 1f, false, 60, SparkDrawMode.Additive, 8f);
+                    FX.PrepareSpark(npc.Center, r.ToRotationVector2() * 0.001f, r, SweepColor, 1f, false, 60, SparkDrawMode.Additive, 8f);
                     ParticleEngine.Particles.Add(FX);
                     Spark FX2 = new();
                     FX2.PrepareSpark(npc.Center, r.ToRotationVector2() * 0.001f, r, Color.White, 0.75f, false, 60, SparkDrawMode.Additive, 6f);
@@ -97,12 +97,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 if (!parent.active)
                 {
 
-                    Owner.GetModPlayer<ScreenshakePlayer>().screenshakeMagnitude = 4;
-                    Owner.GetModPlayer<ScreenshakePlayer>().screenshakeTimer = 20;
+                    ScreenShakeSystem.ShakeAt(npc.Center, 30, 30, frequency: 0.15f);
                     SoundEngine.PlaySound(DTAssetLib.Impacts.MagicHit with { MaxInstances = 0, PitchVariance = 0.6f }, parent.Center);
-                    SoundEngine.PlaySound(DTAssetLib.ScholarShieldSounds.Break with { MaxInstances = 0, PitchVariance = 0.6f, Volume = 0.65f }, parent.Center);
+                    SoundEngine.PlaySound(DTAssetLib.ScholarShieldSounds.Break with { MaxInstances = 0, PitchVariance = 0.6f, Volume = 0.7f }, parent.Center);
                     Spark FX = new();
-                    FX.PrepareSpark(parent.Center, r.ToRotationVector2() * 0.001f, r, ColorLib.Rift, 1f, false, 60, SparkDrawMode.Additive, 8f);
+                    FX.PrepareSpark(parent.Center, r.ToRotationVector2() * 0.001f, r, SweepColor, 1f, false, 60, SparkDrawMode.Additive, 8f);
                     ParticleEngine.Particles.Add(FX);
                     Spark FX2 = new();
                     FX2.PrepareSpark(parent.Center, r.ToRotationVector2() * 0.001f, r, Color.White, 0.75f, false, 60, SparkDrawMode.Additive, 6f);

@@ -4,6 +4,7 @@ using System.Linq;
 using BreadLibrary.Core.Graphics.Particles;
 using BreadLibrary.Core.Graphics.Pixelation;
 using BreadLibrary.Core.Graphics.Spritebatch;
+using BreadLibrary.Core.Utilities;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
 using Microsoft.Xna.Framework;
@@ -404,9 +405,7 @@ namespace DestroyerTest.Common
             var Shield = player.GetModPlayer<ShieldPlayer>();
 
             var Cap = spriteBatch.Capture();
-            //Cap.TransformMatrix = PixelationSystem.PixelationMatrix;
-
-            //spriteBatch.UseBlendState(BlendState.Additive);
+            Cap.TransformMatrix = PixelationSystem.PixelationMatrix;
 
 
             Color color = Shield.CurrentShield.themeColor;
@@ -416,7 +415,7 @@ namespace DestroyerTest.Common
             Main.EntitySpriteDraw(DTAssetLib.ShieldRing.Value, position, null, color with { A = 0 }, 0f, DTAssetLib.ShieldRing.Size() / 2, Shield.CurrentShield.Radius / (DTAssetLib.ShieldRing.Value.Width / 2f), SpriteEffects.None, 0);
 
 
-            //spriteBatch.ResetToDefault();
+            spriteBatch.ResetToDefault();
         }
     }
 
