@@ -44,6 +44,10 @@ namespace DestroyerTest.Common
             {
                 FlaskOfFireDefaults(entity);
             }
+            if (entity.type == ItemID.BeamSword)
+            {
+                BeamSwordDefaults(entity);
+            }
         }
 
         private void FlaskOfFireDefaults(Item item)
@@ -85,9 +89,31 @@ namespace DestroyerTest.Common
             item.channel = true;
         }
 
+        private void BeamSwordDefaults(Item item)
+        {
+            item.rare = ItemRarityID.LightRed;
+            item.useStyle = ItemUseStyleID.Shoot;
+            item.damage = 60;
+            item.useAnimation = 20;
+            item.useTime = 35;
+            item.autoReuse = true;
+            item.channel = true;
+            item.width = 30;
+            item.height = 30;
+            item.shoot = ModContent.ProjectileType<BeamSwordSwing>();
+            item.shootSpeed = 0;
+            item.knockBack = 6.5f;
+            item.noUseGraphic = true;
+            item.noMelee = true;
+            item.DamageType = DamageClass.Melee;
+            item.value = Item.sellPrice(0, 3);
+            item.ChangePlayerDirectionOnShoot = true;
+            item.useTurn = true;
+        }
+
         public override bool CanUseItem(Item item, Player player)
         {
-            if (item.type == ItemID.BloodButcherer)
+            if (item.type == ItemID.BloodButcherer || item.type == ItemID.BeamSword)
             {
                 return player.ownedProjectileCounts[item.shoot] < 1;
             }

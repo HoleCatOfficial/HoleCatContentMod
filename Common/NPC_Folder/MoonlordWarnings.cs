@@ -108,9 +108,10 @@ namespace DestroyerTest.Common.NPC_Folder
         int DecideShieldCore = 0;
         void CoreAI(NPC npc)
         {
-            Player target = Main.player[npc.target];
+           
             if (npc.aiStyle == NPCAIStyleID.MoonLordCore)
             {
+                Player target = Main.player[npc.target];
                 if (npc.ai[0] == 1f)
                 {
                     npc.localAI[0]++;
