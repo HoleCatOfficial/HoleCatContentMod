@@ -28,7 +28,7 @@ namespace DestroyerTest.Content.BorderBiome.Tiles
             Main.tileBlockLight[Type] = true;
             TileID.Sets.CanBeClearedDuringOreRunner[Type] = true;
 
-            AddMapEntry(new Color(43, 42, 54));
+            AddMapEntry(new Color(54, 42, 42));
 
             DustType = ModContent.DustType<CrimsonCarbonaceousShaleDust>();
 

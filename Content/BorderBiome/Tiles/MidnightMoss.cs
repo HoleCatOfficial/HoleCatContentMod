@@ -67,10 +67,15 @@ namespace DestroyerTest.Content.BorderBiome.Tiles
                 if (Main.rand.NextBool(15))
                 {
                     PointGlowPreMultiplied glow = new();
-
                     glow.Initialize(new Point(i, j).ToWorldCoordinates(), Main.rand.NextVector2Circular(2f, 2f), new Color(172, 23, 232) * 0.05f, 5f);
-
                     ParticleEngine.Particles.Add(glow);
+                }
+
+                if (Main.rand.NextBool(90))
+                {
+                    PixelParticle pixel = new();
+                    pixel.Initialize(new Point(i, j).ToWorldCoordinates(), Main.rand.NextVector2Circular(0.4f, 0.4f), new Color(172, 23, 232) * 0.5f, 2f);
+                    ParticleEngine.Particles.Add(pixel);
                 }
             }
         }
@@ -84,6 +89,21 @@ namespace DestroyerTest.Content.BorderBiome.Tiles
                 if (tile.TileType == BorderTerrainGeneration.TileType)
                 {
                     tileToCreate = ModContent.TileType<MidnightMoss_CarbonaceousShale>();
+                }
+
+                if (tile.TileType == ModContent.TileType<Tile_CorruptCarbonaceousShale>())
+                {
+                    tileToCreate = ModContent.TileType<MidnightMoss_CorruptCarbonaceousShale>();
+                }
+
+                if (tile.TileType == ModContent.TileType<Tile_CrimsonCarbonaceousShale>())
+                {
+                    tileToCreate = ModContent.TileType<MidnightMoss_CrimsonCarbonaceousShale>();
+                }
+
+                if (tile.TileType == ModContent.TileType<Tile_HallowCarbonaceousShale>())
+                {
+                    tileToCreate = ModContent.TileType<MidnightMoss_HallowCarbonaceousShale>();
                 }
             }
             return;
@@ -118,6 +138,36 @@ namespace DestroyerTest.Content.BorderBiome.Tiles
                             grassHasSpread = true;
                         }
                     }
+
+                    else if (neighbor.TileType == ModContent.TileType<Tile_CorruptCarbonaceousShale>())
+                    {
+                        WorldGen.SpreadGrass(i2, j2, ModContent.TileType<Tile_CorruptCarbonaceousShale>(), grassType, repeat: false, tileColor);
+                        if (neighbor.TileType == grassType)
+                        {
+                            WorldGen.SquareTileFrame(i2, j2);
+                            grassHasSpread = true;
+                        }
+                    }
+
+                    else if (neighbor.TileType == ModContent.TileType<Tile_CrimsonCarbonaceousShale>())
+                    {
+                        WorldGen.SpreadGrass(i2, j2, ModContent.TileType<Tile_CrimsonCarbonaceousShale>(), grassType, repeat: false, tileColor);
+                        if (neighbor.TileType == grassType)
+                        {
+                            WorldGen.SquareTileFrame(i2, j2);
+                            grassHasSpread = true;
+                        }
+                    }
+
+                    else if (neighbor.TileType == ModContent.TileType<Tile_HallowCarbonaceousShale>())
+                    {
+                        WorldGen.SpreadGrass(i2, j2, ModContent.TileType<Tile_HallowCarbonaceousShale>(), grassType, repeat: false, tileColor);
+                        if (neighbor.TileType == grassType)
+                        {
+                            WorldGen.SquareTileFrame(i2, j2);
+                            grassHasSpread = true;
+                        }
+                    }
                 }
             }
 
@@ -139,6 +189,57 @@ namespace DestroyerTest.Content.BorderBiome.Tiles
         }
     }
 
-    //Crimson and corruption variants later.
-  
+    public class MidnightMoss_CorruptCarbonaceousShale : MidnightMoss
+    {
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+
+            TileID.Sets.NeedsGrassFraming[Type] = true;
+
+            TileID.Sets.NeedsGrassFramingDirt[Type] = ModContent.TileType<Tile_CorruptCarbonaceousShale>();
+
+            //To
+            TileLoader.RegisterSimpleConversion(ModContent.TileType<MidnightMoss_CarbonaceousShale>(), BiomeConversionID.Corruption, Type);
+            //And fro
+            TileLoader.RegisterConversion(Type, BiomeConversionID.Purity, ModContent.TileType<MidnightMoss_CarbonaceousShale>());
+        }
+    }
+
+    public class MidnightMoss_CrimsonCarbonaceousShale : MidnightMoss
+    {
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+
+            TileID.Sets.NeedsGrassFraming[Type] = true;
+
+            TileID.Sets.NeedsGrassFramingDirt[Type] = ModContent.TileType<Tile_CrimsonCarbonaceousShale>();
+
+
+            //To
+            TileLoader.RegisterSimpleConversion(ModContent.TileType<MidnightMoss_CarbonaceousShale>(), BiomeConversionID.Crimson, Type);
+            //And fro
+            TileLoader.RegisterConversion(Type, BiomeConversionID.Purity, ModContent.TileType<MidnightMoss_CarbonaceousShale>());
+        }
+    }
+
+    public class MidnightMoss_HallowCarbonaceousShale : MidnightMoss
+    {
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+
+            TileID.Sets.NeedsGrassFraming[Type] = true;
+
+            TileID.Sets.NeedsGrassFramingDirt[Type] = ModContent.TileType<Tile_HallowCarbonaceousShale>();
+
+
+            //To
+            TileLoader.RegisterSimpleConversion(ModContent.TileType<MidnightMoss_CarbonaceousShale>(), BiomeConversionID.Hallow, Type);
+            //And fro
+            TileLoader.RegisterConversion(Type, BiomeConversionID.Purity, ModContent.TileType<MidnightMoss_CarbonaceousShale>());
+        }
+    }
+
 }

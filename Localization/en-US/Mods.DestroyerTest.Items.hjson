@@ -5896,11 +5896,26 @@ OtherworldlyTonic: {
 }
 
 Item_CarbonaceousShale: {
-	DisplayName: Item_ Carbonaceous Shale
+	DisplayName: Carbonaceous Shale
 	Tooltip: ""
 }
 
 MidnightMossWand: {
 	DisplayName: Midnight Moss Wand
+	Tooltip: Places Midnight Moss on all Carbonaceous Shale types.
+}
+
+Item_CorruptCarbonaceousShale: {
+	DisplayName: Corrupt Carbonaceous Shale
+	Tooltip: ""
+}
+
+Item_CrimsonCarbonaceousShale: {
+	DisplayName: Crimson Carbonaceous Shale
+	Tooltip: ""
+}
+
+Item_HallowCarbonaceousShale: {
+	DisplayName: Hallow Carbonaceous Shale
 	Tooltip: ""
 }

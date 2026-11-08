@@ -50,7 +50,7 @@ namespace DestroyerTest.Common.BorderGeneration
         public override void Unload()
         {
             TileType = -1;
-            mushroomPatchHook.Dispose();
+
         }
 
 
@@ -298,7 +298,6 @@ namespace DestroyerTest.Common.BorderGeneration
                     for (int j = 0; j < chuteX.Length; j++)
                     {
                         WorldGen.digTunnel(chuteX[j], system.FloorY[i] - 16, WorldGen.genRand.Next(5, 10) * (WorldGen.genRand.NextBool() ? 1 : -1), 10, chutelength(), 12);
-                        
                     }
 
                 }
