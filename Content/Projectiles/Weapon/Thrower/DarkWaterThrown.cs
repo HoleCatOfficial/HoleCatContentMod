@@ -57,6 +57,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Thrower
 
 
 
+
             }
         }
 
@@ -68,7 +69,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Thrower
         public override void OnKill(int timeLeft)
         {
             SoundEngine.PlaySound(SoundID.Item92 with { PitchVariance = 0.3f }, Projectile.Center);
-            SoundEngine.PlaySound(SoundID.Shatter with { PitchVariance = 0.3f, Pitch = -1 }, Projectile.Center);
+            SoundEngine.PlaySound(SoundID.DD2_DrakinShot with { PitchVariance = 0.3f }, Projectile.Center);
+            SoundEngine.PlaySound(new SoundStyle(DTAssetLib.AudioPath + "/TO_Break")with { PitchVariance = 0.1f, Pitch = 0.1f }, Projectile.Center);
+
+            Projectile.NewProjectile(Projectile.GetSource_Death(), Projectile.Center, Vector2.Zero, ModContent.ProjectileType<DarkWaterAura>(), Projectile.damage, 3, Projectile.owner);
 
             for (int i = 0; i < 4; i++)
             {

@@ -6,8 +6,12 @@ using System.Text;
 using System.Threading.Tasks;
 using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.BorderBiome.Tiles;
+using DestroyerTest.Content.BorderBiome.Walls;
 using DestroyerTest.Content.Tiles;
 using Microsoft.Xna.Framework;
+using Mono.Cecil;
+using Mono.Cecil.Cil;
+using MonoMod.Cil;
 using MonoMod.RuntimeDetour;
 using Terraria;
 using Terraria.ID;
@@ -31,26 +35,44 @@ namespace DestroyerTest.Common.BorderGeneration
 
     For the time being, since this is just a proof of concept, Titanstone will be used.
     */
+
     public class BorderTerrainGeneration : ModSystem
     {
         public int[] FloorY;
 
         public static int TileType;
 
+        int height()
+        {
+            if (WorldGen.GetWorldSize() == 0)
+            {
+                return 150;
+            }
+            if (WorldGen.GetWorldSize() == 1)
+            {
+                return 250;
+            }
+            return 450;
+        }
+
         public override void SetStaticDefaults()
         {
             TileType = ModContent.TileType<Tile_CarbonaceousShale>();
-
         }
 
-        private ILHook mushroomPatchHook;
+     
 
+        public override void Load()
+        {
 
+        }
+       
+
+        int MinimumY => Main.UnderworldLayer - height();
 
         public override void Unload()
         {
             TileType = -1;
-
         }
 
 
@@ -58,31 +80,22 @@ namespace DestroyerTest.Common.BorderGeneration
         {
             int index = tasks.FindIndex(p => p.Name == "Full Desert");
 
-            int height()
-            {
-                if (WorldGen.GetWorldSize() == 0)
-                {
-                    return 150;
-                }
-                if (WorldGen.GetWorldSize() == 1)
-                {
-                    return 250;
-                }
-                return 450;
-            }
+            
             if (index != -1)
             {
                 tasks.Insert(index + 1, new BorderGroundworkPass("Border Generation: Groundwork", 100f, Main.UnderworldLayer, Main.UnderworldLayer - height()));
 
-                tasks.Insert(index + 2, new BorderHorizontalCavePass("Border Generation: Long Caves", 100f, Main.UnderworldLayer, Main.UnderworldLayer - height()));
+                tasks.Insert(index + 2, new BorderWallPass("Border Generation: Wall Runner", 100f, Main.UnderworldLayer, Main.UnderworldLayer - (height() + 20)));
 
-                tasks.Insert(index + 3, new BorderCeilingHolesPass("Border Generation: Ceiling Continuity", 100f, Main.UnderworldLayer - (height() + 15)));
+                tasks.Insert(index + 3, new BorderHorizontalCavePass("Border Generation: Long Caves", 100f, Main.UnderworldLayer, Main.UnderworldLayer - height()));
 
-                tasks.Insert(index + 4, new BorderChutePass("Border Generation: Chutes", 100f, 2, 9));
+                tasks.Insert(index + 4, new BorderCeilingHolesPass("Border Generation: Ceiling Continuity", 100f, Main.UnderworldLayer - (height() + 15)));
 
-                tasks.Insert(index + 5, new BorderLakePass("Border Generation: Midnight Lake", 100f, 1));
+                tasks.Insert(index + 5, new BorderChutePass("Border Generation: Chutes", 100f, 2, 9));
 
-                tasks.Insert(index + 6, new BorderMossPass("Border Generation: Midnight Moss", 100f, Main.UnderworldLayer - height(), Main.UnderworldLayer));
+                tasks.Insert(index + 6, new BorderLakePass("Border Generation: Midnight Lake", 100f, 1));
+
+                tasks.Insert(index + 7, new BorderMossPass("Border Generation: Midnight Moss", 100f, Main.UnderworldLayer - height(), Main.UnderworldLayer));
 
                 
             }
@@ -104,6 +117,7 @@ namespace DestroyerTest.Common.BorderGeneration
             int[] intervals = Enumerable.Range(0, Main.maxTilesX + 1).Where(i => i % 10 == 0).ToArray();
             int height = 45;
 
+            
             for (int i = 1; i < intervals.Length; i++)
             {
                 int X = intervals[i];
@@ -211,6 +225,12 @@ namespace DestroyerTest.Common.BorderGeneration
 
                     WorldGen.digTunnel(intervals[j], floors[i] + 50, WorldGen.genRand.Next(-10, 11), 0, cavelength(), cavesize());
 
+
+                    if (Main.rand.NextBool(3))
+                    {
+                        Point wallHolePoint = new Point(intervals[j] + Main.rand.Next(-6, 6), floors[i] + 50 + Main.rand.Next(-6, 6));
+                        WorldUtils.Gen(wallHolePoint, new Shapes.Circle(Main.rand.Next(15, 30), Main.rand.Next(6, 10)), new Actions.ClearWall(true));
+                    }
 
                 }
             }
@@ -368,7 +388,7 @@ namespace DestroyerTest.Common.BorderGeneration
             int width = (int)(maxX - minX);
             Rectangle scanArea = new Rectangle(GenVars.jungleOriginX - (width / 2), upperBound, width, lowerBound - upperBound);
 
-            WorldGen.TileRunner(scanArea.X, scanArea.Y, 23, 4, TileID.AmethystGemspark, true);
+            //WorldGen.TileRunner(scanArea.X, scanArea.Y, 23, 4, TileID.AmethystGemspark, true);
 
             var system = ModContent.GetInstance<BorderTerrainGeneration>();
 
@@ -422,6 +442,39 @@ namespace DestroyerTest.Common.BorderGeneration
             WorldUtils.Gen(new Point(GenVars.jungleOriginX, system.FloorY[2] - 8), new Shapes.Circle(80, 20), new Actions.ClearTile(true));
 
             WorldUtils.Gen(new Point(GenVars.jungleOriginX, system.FloorY[2] - 8), new Shapes.Circle(80, 8), new Actions.SetLiquid(LiquidID.Water));
+
+        }
+    }
+
+    public class BorderWallPass : GenPass
+    {
+        int lowerBound = 0;
+        int upperBound = 0;
+        public BorderWallPass(string name, float loadWeight, int LowerBound, int UpperBound) : base(name, loadWeight)
+        {
+            lowerBound = LowerBound;
+            upperBound = UpperBound;
+        }
+
+        protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration)
+        {
+
+            for (int i = 0; i < Main.maxTilesX; i++)
+            {
+                int sine = (int)(Math.Sin(i * (Math.PI * 2 / 24)) * 4);
+
+                for (int j = 0; j < lowerBound - upperBound; j++)
+                {
+                    WorldGen.PlaceWall(i, upperBound + j, ModContent.WallType<Wall_CarbonaceousShaleWall>());
+                }
+
+                for (int k = 0; k < 4 + sine; k++)
+                {
+                    WorldGen.PlaceWall(i, upperBound - k, ModContent.WallType<Wall_CarbonaceousShaleWall>());
+                }
+            }
+
+
 
         }
     }

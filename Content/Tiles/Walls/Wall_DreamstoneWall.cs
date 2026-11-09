@@ -10,7 +10,6 @@ namespace DestroyerTest.Content.Tiles.Walls
     {
         public override void SetStaticDefaults()
         {
-            Main.wallHouse[Type] = true;
 
             DustType = ModContent.DustType<DreamstoneDust>();
             VanillaFallbackOnModDeletion = WallID.Stone;

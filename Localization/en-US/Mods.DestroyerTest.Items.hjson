@@ -5919,3 +5919,8 @@ Item_HallowCarbonaceousShale: {
 	DisplayName: Hallow Carbonaceous Shale
 	Tooltip: ""
 }
+
+DarkWater: {
+	DisplayName: Dark Water
+	Tooltip: ""
+}
