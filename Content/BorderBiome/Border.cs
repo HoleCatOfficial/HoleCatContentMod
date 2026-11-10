@@ -21,7 +21,7 @@ namespace DestroyerTest.Content.BorderBiome
     {
         public override CaptureBiome.TileColorStyle TileColorStyle => CaptureBiome.TileColorStyle.Mushroom;
 
-        public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/BorderPlaceholder");
+        public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/BorderMusic");
 
         public override void OnInBiome(Player player)
         {
