@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using DestroyerTest.Content.Tiles;
 using DestroyerTest.Content.Tiles.Altar;
@@ -26,7 +27,7 @@ namespace DestroyerTest.Common.Systems
         public override void ModifyWorldGenTasks(List<GenPass> tasks, ref double totalWeight)
         {
             int index = tasks.FindIndex(p => p.Name == "Stalac");
-            if (index != -1)
+            if (index != -1 && DTVanillaChangesConfig.instance.WorldGeneration)
             {
                 tasks.Insert(index + 1, new BeachGrassPass("Beach Grass", 100f));
             }
@@ -36,6 +37,88 @@ namespace DestroyerTest.Common.Systems
             {
                 tasks.Insert(index2 + 1, new AltarIslandPass("Altar Island", 100f));
             }
+
+            int index3 = tasks.FindIndex(p => p.Name == "Mushroom Patches");
+            if (index3 != -1 && DTVanillaChangesConfig.instance.WorldGeneration)
+            {
+                tasks.Insert(index3 + 1, new SurfaceMushroomPass("Surface Mushrooms", 100f));
+            }
+        }
+    }
+
+    public class SurfaceMushroomPass : GenPass
+    {
+        public SurfaceMushroomPass(string name, float loadWeight) : base(name, loadWeight)
+        {
+
+        }
+
+        protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration)
+        {
+            int minX = 0;
+            int maxX = 0;
+            bool flag4 = false;
+            bool flag5 = false;
+
+            for (int num153 = 5; num153 < Main.maxTilesX - 5; num153++)
+            {
+                for (int num154 = 0; (double)num154 < Main.worldSurface + 20.0; num154++)
+                {
+                    if (Main.tile[num153, num154].HasTile && Main.tile[num153, num154].TileType == 60)
+                    {
+                        minX = num153;
+                        flag4 = true;
+                        break;
+                    }
+                }
+
+                if (flag4)
+                {
+                    break;
+                }
+            }
+
+            for (int num155 = Main.maxTilesX - 5; num155 > 5; num155--)
+            {
+                for (int num156 = 0; (double)num156 < Main.worldSurface + 20.0; num156++)
+                {
+                    if (Main.tile[num155, num156].HasTile && Main.tile[num155, num156].TileType == 60)
+                    {
+                        maxX = num155;
+                        flag5 = true;
+                        break;
+                    }
+                }
+
+                if (flag5)
+                {
+                    break;
+                }
+            }
+
+            bool flipacoin = Main.rand.NextBool();
+
+            int startX = flipacoin ? maxX - 400 : minX;
+            int endX = flipacoin ? maxX : minX + 400;
+
+            for (int x = startX; x < endX; x++)
+            {
+                for (int y = 0; y < Main.worldSurface; y++)
+                {
+                    Tile tile = Main.tile[x, y];
+
+                    if (!tile.HasTile)
+                    {
+                        continue;
+                    }
+
+                    if (tile.TileType == TileID.JungleGrass)
+                    {
+                        tile.TileType = TileID.MushroomGrass;
+                    }
+                }
+            }
+
         }
     }
 
@@ -48,14 +131,14 @@ namespace DestroyerTest.Common.Systems
         protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration)
         {
             progress.Message = MiscWorldGenSystem.BeachGrassPassMessage.Value;
-            int grassWidth = 180;
+            int grassWidth = 480;
 
             // Left side
-            int leftStartX = WorldGen.beachDistance;
+            int leftStartX = 0;
             int leftEndX = leftStartX + grassWidth;
 
             // Right side
-            int rightEndX = Main.maxTilesX - WorldGen.beachDistance;
+            int rightEndX = Main.maxTilesX;
             int rightStartX = rightEndX - grassWidth;
 
             // Iterate horizontally over strips
@@ -69,14 +152,14 @@ namespace DestroyerTest.Common.Systems
 
                     if (tile.TileType == TileID.Grass)
                     {
-                        WorldGen.PlaceTile(x, y, ModContent.TileType<BeachGrass>(), true, true);
+                        tile.TileType = (ushort)ModContent.TileType<BeachGrass>();
                     }
                 }
             }
 
             for (int x = rightStartX; x < rightEndX; x++)
             {
-                for (int y = 0; y < Main.worldSurface; y++)
+                for (int y = 0; y < Main.worldSurface + 30; y++)
                 {
                     Tile tile = Main.tile[x, y];
                     if (!tile.HasTile)
@@ -84,13 +167,13 @@ namespace DestroyerTest.Common.Systems
 
                     if (tile.TileType == TileID.Grass)
                     {
-                        WorldGen.PlaceTile(x, y, ModContent.TileType<BeachGrass>(), true, true);
+                        tile.TileType = (ushort)ModContent.TileType<BeachGrass>();
                     }
                 }
             }
         }
-
     }
+    
 
     public class AltarIslandPass : GenPass
     {

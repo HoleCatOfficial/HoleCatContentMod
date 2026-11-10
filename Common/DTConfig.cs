@@ -152,6 +152,10 @@ namespace DestroyerTest.Common
         [DefaultValue(true)]
         [ReloadRequired()]
         public bool BossRework { get; set; }
+
+        [DefaultValue(true)]
+        [ReloadRequired()]
+        public bool WorldGeneration { get; set; }
     }
 
     public class DTConfigDataModifications : ModSystem
