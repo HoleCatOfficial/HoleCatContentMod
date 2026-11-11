@@ -66,6 +66,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Thrower
             );
 
             Vector2 origin = new Vector2(texture.Width / 2f, frameHeight / 2f);
+
+            if (Stuck)
+            {
+                Main.EntitySpriteDraw(DTAssetLib.BloomRingSharp.Value, Projectile.Center - Main.screenPosition, null, Color.DeepSkyBlue * 0.2f * Projectile.Opacity, Projectile.rotation, DTAssetLib.BloomRingSharp.Value.Size() / 2, DTAssetLib.BloomRingSharp.Value.ScaleRingTextureToMatchRadius(effectRadius, 1024), FX, 0f);
+            }
+
             Main.EntitySpriteDraw(texture, Projectile.Center - Main.screenPosition, frame, lightColor * Projectile.Opacity, Projectile.rotation, origin, Projectile.scale, FX, 0f);
             Main.EntitySpriteDraw(textureGlow, Projectile.Center - Main.screenPosition, frame, Color.White * Projectile.Opacity, Projectile.rotation, origin, Projectile.scale, FX, 0f);
             return false;

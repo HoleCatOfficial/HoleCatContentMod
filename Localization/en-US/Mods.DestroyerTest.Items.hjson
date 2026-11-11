@@ -5011,8 +5011,12 @@ SpiritArrow: {
 }
 
 ReanimationBow: {
-	DisplayName: Reanimation Bow
-	Tooltip: Using [i:DestroyerTest/SpiritArrow] Vital Arrows allows you to reanimate the undead, allowing them to deal damage on your behalf!
+	DisplayName: Bow of Possession
+	Tooltip:
+		'''
+		Using [i:DestroyerTest/SpiritArrow] Vital Arrows allows you to infest the undead with rogue spirits, dealing area-of-effect damage to other undead.
+		'The undead make wonderful peons, for their lifeless bodies are void of any meaningful resistance or consciousness.'
+		'''
 }
 
 LaserPointer: {
