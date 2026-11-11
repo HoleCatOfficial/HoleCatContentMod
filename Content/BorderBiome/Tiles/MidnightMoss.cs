@@ -8,6 +8,7 @@ using DestroyerTest.Common;
 using DestroyerTest.Common.BorderGeneration;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
+using DestroyerTest.Content.Tiles.Plants;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -117,6 +118,23 @@ namespace DestroyerTest.Content.BorderBiome.Tiles
 
             Tile above = Main.tile[i, j - 1];
 
+            if (!above.HasTile && WorldGen.genRand.NextBool(10))
+            {
+                WorldGen.PlaceTile(i, j - 1, ModContent.TileType<MidnightMossPlants>(), mute: true);
+                if (above.HasTile)
+                {
+                    above.CopyPaintAndCoating(tile); // Plants that grow on grass inherit the paint of the grass.
+
+                    // Manually assign a random placement style. Since this tile doesn't use a TileObjectData, we need to do this here.
+                    above.TileFrameX = (short)(WorldGen.genRand.Next(11) * 18);
+                }
+
+                if (Main.netMode == NetmodeID.Server && above.HasTile)
+                {
+                    NetMessage.SendTileSquare(-1, i, j - 1);
+                }
+            }
+
             // Attempt to spread grass to neighboring "dirt" tiles.
             TileColorCache tileColor = tile.BlockColorAndCoating();
             bool grassHasSpread = false;
@@ -174,6 +192,20 @@ namespace DestroyerTest.Content.BorderBiome.Tiles
             if (Main.netMode == NetmodeID.Server && grassHasSpread)
             {
                 NetMessage.SendTileSquare(-1, i, j, 3);
+            }
+        }
+
+        // Support Flower Boots. Unlike in RandomUpdate, only the "flower" styles of ExamplePlants will be placed.
+        public override void FlowerBootsPlaceFlowers(int i, int j)
+        {
+            Tile above = Main.tile[i, j - 1];
+            above.HasTile = true;
+            above.TileType = (ushort)ModContent.TileType<MidnightMossPlants>();
+            above.TileFrameX = (short)(Main.rand.Next(6, 11) * 18); // Styles 6, 7, 8, 9, and 10 are the flower looking styles.
+            above.CopyPaintAndCoating(Main.tile[i, j]);
+            if (Main.netMode == NetmodeID.MultiplayerClient)
+            {
+                NetMessage.SendTileSquare(-1, i, j - 1);
             }
         }
     }

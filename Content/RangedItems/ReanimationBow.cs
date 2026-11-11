@@ -1,6 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using BreadLibrary.Core.Graphics.Particles;
+using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
+using DestroyerTest.Common.NPC_Folder;
+using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Projectiles.AmmoProjectiles;
 using DestroyerTest.Content.Resources;
 using Microsoft.Xna.Framework;
@@ -8,6 +12,7 @@ using Microsoft.Xna.Framework.Graphics;
 using OpusLib.Content.Helpers;
 using OpusLib.Content.Particles;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -144,7 +149,7 @@ namespace DestroyerTest.Content.RangedItems
                 if (!Release && F1)
                 {
                     BloomRing Ring = new();
-                    Ring.Prepare(npc.Center, Vector2.Zero, ColorLib.LifeEcho, 0.05f, 0.01f, 2f, BlendState.Additive);
+                    Ring.Prepare(npc.Center, Vector2.Zero, Color.Yellow * GlowOpacity, 0.05f, 0.01f, 2f, Utilities.SubtractiveBlending);
                     ParticleEngine.Particles.Add(Ring);
 
                     Release = true;
@@ -156,15 +161,29 @@ namespace DestroyerTest.Content.RangedItems
                 }
             }
 
-            Main.EntitySpriteDraw(DTAssetLib.PointGlowPreMultiplied.Value, npc.Center - screenPos, null, ColorLib.LifeEcho * GlowOpacity, 0f, DTAssetLib.PointGlowPreMultiplied.Value.Size() / 2, 1.5f, SpriteEffects.None);
 
+            spriteBatch.UseBlendState(Utilities.SubtractiveBlending);
+
+            
+            Main.EntitySpriteDraw(DTAssetLib.PointGlowPreMultiplied.Value, npc.Center - screenPos, null, Color.Yellow * GlowOpacity, 0f, DTAssetLib.PointGlowPreMultiplied.Value.Size() / 2, 5f, SpriteEffects.None);
+            Main.EntitySpriteDraw(DTAssetLib.BloomRing.Value, npc.Center - screenPos, null, Color.Yellow * GlowOpacity, 0f, DTAssetLib.BloomRing.Value.Size() / 2, DTAssetLib.BloomRing.Value.ScaleRingTextureToMatchRadius(150f, 74), SpriteEffects.None);
+
+            spriteBatch.ResetToDefault();
             return true;
         }
 
+        int t = 0;
+        bool f2 = false;
         public override void AI(NPC npc)
         {
             if (Reanimated)
             {
+                if (!f2)
+                {
+                    SoundEngine.PlaySound(MoonlordWarnings.LaserWarning with { Pitch = -1f, PitchVariance = 0.2f }, npc.Center);
+                    SoundEngine.PlaySound(DTAssetLib.Impacts.KCrystalConsume with { PitchVariance = 0.2f }, npc.Center);
+                    f2 = true;
+                }
                 if (ReanimationTimer > 0)
                 {
                     ReanimationTimer--;
@@ -174,12 +193,38 @@ namespace DestroyerTest.Content.RangedItems
                     Reanimated = false;
                 }
 
+                t++;
+                foreach (NPC n in Main.ActiveNPCs)
+                {
+                    if (n.Center.Distance(npc.Center) < 150 && t % 20 == 0)
+                    {
+                        int direction = !float.IsNaN(npc.DirectionTo(npc.Center).X) ? Math.Sign(npc.DirectionTo(npc.Center).X) : 1;
+                        n.SimpleStrikeNPC(10, direction, false, 2, damageVariation: false);
+                        n.AddBuff(ModContent.BuffType<SoulErosion>(), 120);
+                    }
+                }
 
+
+            }
+            else
+            {
+                if (f2)
+                {
+                    SoundEngine.PlaySound(DTAssetLib.FrigidFenzim.Crit with { Pitch = -0.5f, PitchVariance = 0.2f }, npc.Center);
+                    f2 = false;
+                }
             }
         }
 
         public override void OnKill(NPC npc)
         {
+            if (Reanimated)
+            {
+                SoundEngine.PlaySound(DTAssetLib.FrigidFenzim.Crit with { Pitch = -0.5f, PitchVariance = 0.2f }, npc.Center);
+                BloomRing Ring = new();
+                Ring.Prepare(npc.Center, Vector2.Zero, Color.Yellow * GlowOpacity, 0.05f, 0.01f, 2f, Utilities.SubtractiveBlending);
+                ParticleEngine.Particles.Add(Ring);
+            }
             Reanimated = false;
         }
 

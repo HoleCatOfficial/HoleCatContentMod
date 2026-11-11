@@ -2429,6 +2429,8 @@ namespace DestroyerTest.Common
             {
                 Opus.StartSpriteBatchForTrails(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
+                
+
 
 
                 if (Positions.Count > 1)
@@ -2548,7 +2550,8 @@ namespace DestroyerTest.Common
                     }
                 }
 
-                Opus.ReturnToDefaultDrawing(Main.spriteBatch);
+                spriteBatch.ResetToDefault();
+                //Opus.ReturnToDefaultDrawing(Main.spriteBatch);
             }
 
         }

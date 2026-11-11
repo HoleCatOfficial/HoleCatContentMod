@@ -14,6 +14,7 @@ using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using MonoMod.RuntimeDetour;
 using Terraria;
+using Terraria.GameContent.Generation;
 using Terraria.ID;
 using Terraria.IO;
 using Terraria.ModLoader;
@@ -42,7 +43,7 @@ namespace DestroyerTest.Common.BorderGeneration
 
         public static int TileType;
 
-        int height()
+        public int height()
         {
             if (WorldGen.GetWorldSize() == 0)
             {
@@ -60,6 +61,8 @@ namespace DestroyerTest.Common.BorderGeneration
             TileType = ModContent.TileType<Tile_CarbonaceousShale>();
         }
 
+        public int MossStartX;
+        public int MossEndX;
      
 
         public override void Load()
@@ -97,7 +100,7 @@ namespace DestroyerTest.Common.BorderGeneration
 
                 tasks.Insert(index + 7, new BorderMossPass("Border Generation: Midnight Moss", 100f, Main.UnderworldLayer - height(), Main.UnderworldLayer));
 
-                
+                tasks.Insert(index + 8, new BorderVinePass("Border Generation: Midnight Moss Vines", 100f, Main.UnderworldLayer, Main.UnderworldLayer - height()));
             }
         }
     }
@@ -383,7 +386,7 @@ namespace DestroyerTest.Common.BorderGeneration
             }
 
 
-
+            
 
             int width = (int)(maxX - minX);
             Rectangle scanArea = new Rectangle(GenVars.jungleOriginX - (width / 2), upperBound, width, lowerBound - upperBound);
@@ -391,7 +394,8 @@ namespace DestroyerTest.Common.BorderGeneration
             //WorldGen.TileRunner(scanArea.X, scanArea.Y, 23, 4, TileID.AmethystGemspark, true);
 
             var system = ModContent.GetInstance<BorderTerrainGeneration>();
-
+            system.MossStartX = minX;
+            system.MossEndX = maxX;
 
             for (int i = 0; i < scanArea.Width; i++)
             {
@@ -465,12 +469,77 @@ namespace DestroyerTest.Common.BorderGeneration
 
                 for (int j = 0; j < lowerBound - upperBound; j++)
                 {
-                    WorldGen.PlaceWall(i, upperBound + j, ModContent.WallType<Wall_CarbonaceousShaleWall>());
+                    Main.tile[i, upperBound + j].WallType = (ushort)ModContent.WallType<Wall_CarbonaceousShaleWall>();
+                    //WorldGen.PlaceWall(i, upperBound + j, ModContent.WallType<Wall_CarbonaceousShaleWall>());
                 }
 
                 for (int k = 0; k < 4 + sine; k++)
                 {
-                    WorldGen.PlaceWall(i, upperBound - k, ModContent.WallType<Wall_CarbonaceousShaleWall>());
+                    Main.tile[i, upperBound - k].WallType = (ushort)ModContent.WallType<Wall_CarbonaceousShaleWall>();
+                    //WorldGen.PlaceWall(i, upperBound - k, ModContent.WallType<Wall_CarbonaceousShaleWall>());
+                }
+            }
+
+
+
+        }
+    }
+
+    public class BorderVinePass : GenPass
+    {
+        int lowerBound = 0;
+        int upperBound = 0;
+        public BorderVinePass(string name, float loadWeight, int LowerBound, int UpperBound) : base(name, loadWeight)
+        {
+            lowerBound = LowerBound;
+            upperBound = UpperBound;
+        }
+
+        protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration)
+        {
+            var system = ModContent.GetInstance<BorderTerrainGeneration>();
+            int range = (lowerBound - upperBound);
+            int width = system.MossEndX - system.MossStartX;
+
+            bool IsMidnightMoss(ushort type)
+            {
+                return type == ModContent.TileType<MidnightMoss>()
+                    || type == ModContent.TileType<MidnightMoss_CarbonaceousShale>()
+                    || type == ModContent.TileType<MidnightMoss_CorruptCarbonaceousShale>()
+                    || type == ModContent.TileType<MidnightMoss_CrimsonCarbonaceousShale>()
+                    || type == ModContent.TileType<MidnightMoss_HallowCarbonaceousShale>();
+            }
+
+            for (int i = 0; i < Main.maxTilesX; i++)
+            {
+                int x = i;
+
+                
+                for (int j = 0; j < range; j++)
+                {
+                    int y = upperBound + j;
+
+                    Tile t = Main.tile[x, y];
+                   
+
+                    if (t.HasTile)
+                    {
+
+                        if (IsMidnightMoss(t.TileType) && !t.BottomSlope && Main.rand.NextBool(4))
+                        {
+                            Tile below = Main.tile[x, y + 1];
+
+                            if (!below.HasTile)
+                            {
+                                new ActionVines(3, 8, ModContent.TileType<MidnightMossVine>()).Apply(new Point(x, y + 1), x, y + 1);
+                                WorldGen.RangeFrame(x - 1, y - 1, x + 1, y + 10);
+                            }
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
                 }
             }
 

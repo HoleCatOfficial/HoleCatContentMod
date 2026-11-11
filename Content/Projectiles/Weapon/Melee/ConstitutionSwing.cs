@@ -23,12 +23,16 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Projectile.width = 52;
             Projectile.height = 50;
             SweepColor = ColorLib.StellarFireGradientLooping();
+            SweepHighlightColor = ColorLib.StellarFireGradientLooping();
+            UsesDefaultSweepFX = true;
+            UsesFireSweepFX = true;
+            SweepScale = 1.1f;
             SwingSpeed = 0.17f;
 
             //Glowmask = ModContent.Request<Texture2D>($"{Texture}_Glow");
         }
 
-        public override SoundStyle Swing => DTAssetLib.SwordSounds.MagicSwing;
+        public override SoundStyle Swing => DTAssetLib.SwordSounds.MagicSwing with { Pitch = 0.4f, PitchVariance = 0.3f };
 
         public override void HitNPCEffects(NPC npc, NPC.HitInfo hit, int damageDone)
         {
@@ -65,7 +69,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         }
         public override void DrawUnderBlade()
         {
-            DrawSweepFX2();
+            //DrawSweepFX2();
         }
         public override void DrawOverBlade()
         {
@@ -79,7 +83,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             Vector2 toMouse = Main.MouseWorld - Projectile.Center;
             toMouse.Normalize();
 
-            Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, (toMouse * (7 * Owner.GetTotalAttackSpeed(DamageClass.Melee))), ModContent.ProjectileType<StellarFireSlash>(), Projectile.damage, 5, Projectile.owner);
+            SoundEngine.PlaySound(DTAssetLib.SwordSounds.SpiritOfJusticeSwing with { Pitch = 0.4f, PitchVariance = 0.3f }, Projectile.Center);
+
+            Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, (toMouse * (30 * Owner.GetTotalAttackSpeed(DamageClass.Melee))), ModContent.ProjectileType<StellarFireSlash>(), Projectile.damage, 5, Projectile.owner, LastSwing);
         }
 
         public Vector2 swordTip;
@@ -99,7 +105,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 //Dust.NewDustPerfect(ppt[Main.rand.Next(15)], ModContent.DustType<ColorableNeonDust>(), SwordLine.GetLineRotation.ToRotationVector2() * 2, 0, ColorLib.CursedFlames * 0.5f, 3f);
 
                 ConstitutionParticle FX = new();
-                FX.Initialize(ppt[Main.rand.Next(15)], SwordLine.GetLineRotation.ToRotationVector2() * 2, 0.5f, 30);
+                FX.Initialize(ppt[Main.rand.Next(15)], (SwordLine.GetLineRotation + (MathHelper.PiOver2 * Owner.direction)).ToRotationVector2(), Main.rand.NextFloat(0.7f, 1f), 30);
                 ParticleEngine.BehindProjectiles.Add(FX);
 
             }

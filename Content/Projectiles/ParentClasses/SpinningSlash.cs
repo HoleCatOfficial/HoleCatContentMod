@@ -15,6 +15,8 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         {
             Main.projFrames[Type] = 4;
         }
+
+        public int initTime = 0;
         public override void SetDefaults()
         {
             Projectile.width = 170;
@@ -23,7 +25,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             Projectile.penetrate = -1;
             Projectile.light = 0.5f;
             Projectile.ignoreWater = true;
-            Projectile.timeLeft = 240;
+            Projectile.timeLeft = initTime = 240;
             Projectile.DamageType = DamageClass.Melee;
             Projectile.tileCollide = false;
             Projectile.alpha = 255;
@@ -140,7 +142,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
         private void AnimateProjectile()
         {
-            if (++Projectile.frameCounter >= 60)
+            if (++Projectile.frameCounter >= (int)((float)initTime / (float)Main.projFrames[Type]))
             {
                 Projectile.frameCounter = 0;
                 if (++Projectile.frame >= Main.projFrames[Projectile.type])

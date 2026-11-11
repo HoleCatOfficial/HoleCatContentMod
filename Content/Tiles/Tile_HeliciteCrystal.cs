@@ -1,6 +1,7 @@
 using System.Threading;
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
+using DestroyerTest.Common.BorderGeneration;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
 using DestroyerTest.Content.Particles;
@@ -180,7 +181,7 @@ namespace DestroyerTest.Content.Tiles
 
                 // 100 controls how many splotches of ore are spawned into the world, scaled by world size. For comparison, the first 3 times altars are smashed about 275, 190, or 120 splotches of the respective hardmode ores are spawned. 
                 int splotches = (int)(100 * (Main.maxTilesX / 3000f));
-                int highestY = ModLoader.HasMod("Remnants") ? Main.UnderworldLayer - 80 : (int)Utils.Lerp(Main.rockLayer, Main.UnderworldLayer, 0.35);
+                int highestY = ModLoader.HasMod("Remnants") ? Main.UnderworldLayer - 80 : Main.UnderworldLayer - ModContent.GetInstance<BorderTerrainGeneration>().height();
                 for (int iteration = 0; iteration < splotches; iteration++)
                 {
                     // Find a point in the lower half of the rock layer but above the underworld depth.

@@ -25,7 +25,7 @@ namespace DestroyerTest.Content.BorderBiome
 
         public override void OnInBiome(Player player)
         {
-           
+            Main.UseHeatDistortion = true;
         }
         public override string BestiaryIcon => "DestroyerTest/Assets/Textures/BorderIcon";
         public override string BackgroundPath => base.BackgroundPath;
