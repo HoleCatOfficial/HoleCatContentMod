@@ -280,12 +280,12 @@ Configs: {
 		WorldGeneration: {
 			Label: "[i:4765] World Generation"
 			Tooltip:
-			'''
-			Talid makes some additions to vanilla worldgen. Namely:
-			- The unimplemented Beach Grass tile now generates next to the beaches.
-			- Part of the jungle's surface is a surface mushroom biome. Due to Terraria's programming only expecting you to get a surface biome in hardmode, hardmode enemies will spawn there.
-			Talid is intended to be played with this enabled.
-			'''
+				'''
+				Talid makes some additions to vanilla worldgen. Namely:
+				- The unimplemented Beach Grass tile now generates next to the beaches.
+				- Part of the jungle's surface is a surface mushroom biome. Due to Terraria's programming only expecting you to get a surface biome in hardmode, hardmode enemies will spawn there.
+				Talid is intended to be played with this enabled.
+				'''
 		}
 	}
 }

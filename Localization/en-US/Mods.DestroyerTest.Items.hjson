@@ -2742,7 +2742,11 @@ CurseScroll: {
 }
 
 StellarMatter: {
-	Tooltip: The source of Constitution's sentience. Without this, it is just a sword.
+	Tooltip:
+	'''
+	A considerably softer equivalent to blade chunks. Before they harden into their heavy, solid shell, all Consitutions are made of this.
+	Possesses untapped energy reserves.
+	'''
 	DisplayName: Stellar Matter
 }
 

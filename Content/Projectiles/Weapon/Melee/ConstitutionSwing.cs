@@ -1,6 +1,7 @@
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
+using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Particles.Stellar;
 using DestroyerTest.Content.Projectiles.ParentClasses;
 using Microsoft.Xna.Framework;
@@ -9,6 +10,7 @@ using OpusLib;
 using OpusLib.Content.Helpers;
 using Terraria;
 using Terraria.Audio;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles.Weapon.Melee
@@ -26,8 +28,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             SweepHighlightColor = ColorLib.StellarFireGradientLooping();
             UsesDefaultSweepFX = true;
             UsesFireSweepFX = true;
+            WaitTimeMultiplier = 1.5f;
             SweepScale = 1.1f;
-            SwingSpeed = 0.17f;
+            SwingSpeed = 0.2f;
 
             //Glowmask = ModContent.Request<Texture2D>($"{Texture}_Glow");
         }
@@ -36,9 +39,19 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
         public override void HitNPCEffects(NPC npc, NPC.HitInfo hit, int damageDone)
         {
-            npc.AddBuff(ModContent.BuffType<GalantineBurn>(), 600);
-            SoundEngine.PlaySound(DTAssetLib.Impacts.ShortShine with { MaxInstances = 0, PitchVariance = 0.4f }, npc.Center);
 
+            npc.AddBuff(ModContent.BuffType<GalantineBurn>(), 600);
+
+            for (int i = 0; i < 12; i++)
+            {
+                Spark spark = new();
+                spark.PrepareSpark(npc.Center, npc.Center.DirectionFrom(Owner.Center).RotatedByRandom(0.2f) * (Main.rand.NextFloat(10f, 24f) * Owner.GetTotalAttackSpeed(DamageClass.Melee)), npc.Center.DirectionFrom(Owner.Center).ToRotation() + MathHelper.PiOver2, ColorLib.StellarFireColormap[Main.rand.Next(ColorLib.StellarFireColormap.Length)], 0.5f, false, 15, SparkDrawMode.Additive, 4f);
+                ParticleEngine.Particles.Add(spark);
+            }
+
+            SoundEngine.PlaySound(DTAssetLib.Impacts.WindHit with { MaxInstances = 0, PitchVariance = 0.4f, Volume = 0.5f }, npc.Center);
+            SoundEngine.PlaySound(SoundID.DD2_WitherBeastDeath with { MaxInstances = 0, PitchVariance = 0.4f, Volume = 1.6f }, npc.Center);
+            SoundEngine.PlaySound(SoundID.DD2_CrystalCartImpact with { MaxInstances = 0, PitchVariance = 0.4f, Volume = 1.6f }, npc.Center);
         }
 
         private void DrawSweepFX2()
@@ -85,7 +98,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
             SoundEngine.PlaySound(DTAssetLib.SwordSounds.SpiritOfJusticeSwing with { Pitch = 0.4f, PitchVariance = 0.3f }, Projectile.Center);
 
-            Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, (toMouse * (30 * Owner.GetTotalAttackSpeed(DamageClass.Melee))), ModContent.ProjectileType<StellarFireSlash>(), Projectile.damage, 5, Projectile.owner, LastSwing);
+            Projectile.NewProjectile(Projectile.GetSource_FromAI(), Projectile.Center, (toMouse * (30 * Owner.GetTotalAttackSpeed(DamageClass.Melee) * (1f + Owner.GetAdjustedItemScale(Owner.HeldItem)))), ModContent.ProjectileType<StellarFireSlash>(), Projectile.damage, 5, Projectile.owner, LastSwing);
         }
 
         public Vector2 swordTip;

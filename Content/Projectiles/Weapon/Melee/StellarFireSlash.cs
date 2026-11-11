@@ -18,6 +18,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         public override void SetDefaults()
         {
             base.SetDefaults();
+            Projectile.scale = 1f + Main.player[Projectile.owner].GetAdjustedItemScale(Main.player[Projectile.owner].HeldItem);
             Projectile.timeLeft = initTime = 60;
             Blending = true;
             themeColor = ColorLib.StellarFireGradient(stellarFireTime);
