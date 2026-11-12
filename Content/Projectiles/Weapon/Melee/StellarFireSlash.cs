@@ -18,7 +18,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Projectile.scale = 1f + Main.player[Projectile.owner].GetAdjustedItemScale(Main.player[Projectile.owner].HeldItem);
+           
             Projectile.timeLeft = initTime = 60;
             Blending = true;
             themeColor = ColorLib.StellarFireGradient(stellarFireTime);
@@ -30,6 +30,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         public float stellarFireTime;
         public override bool PreAI()
         {
+            Projectile.scale = 1f + Main.player[Projectile.owner].GetAdjustedItemScale(Main.player[Projectile.owner].HeldItem);
             stellarFireTime = (Projectile.timeLeft / (float)initTime).Inverse();
             themeColor = ColorLib.StellarFireGradient(stellarFireTime);
             Projectile.velocity *= 0.93f;

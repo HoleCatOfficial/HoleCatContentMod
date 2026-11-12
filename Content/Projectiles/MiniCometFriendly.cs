@@ -1,10 +1,12 @@
 using System.Collections.Generic;
 using DestroyerTest.Common;
+using DestroyerTest.Common.Interfaces;
 using DestroyerTest.Content.Buffs;
 using DestroyerTest.Content.Dusts;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
+using OpusLib.Content.Helpers;
 using ReLogic.Content;
 using Terraria;
 using Terraria.Audio;
@@ -13,21 +15,15 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Content.Projectiles
 {
-    public class MiniCometFriendly : ModProjectile
+    public class MiniCometFriendly : ModProjectile, IHomingProjectile
     {
-        private NPC NPCTarget
-        {
-            get => Projectile.ai[0] == 0 ? null : Main.npc[(int)Projectile.ai[0] - 1];
-            set
-            {
-                Projectile.ai[0] = value == null ? 0 : value.whoAmI + 1;
-            }
-        }
 
         public float DelayTimer;
 
         public override void SetStaticDefaults()
         {
+            ProjectileID.Sets.TrailCacheLength[Type] = 40;
+            ProjectileID.Sets.TrailingMode[Type] = 3;
             ProjectileID.Sets.CultistIsResistantTo[Projectile.type] = true;
         }
 
@@ -46,148 +42,67 @@ namespace DestroyerTest.Content.Projectiles
         }
 
         private Asset<Texture2D> ProjTex => ModContent.Request<Texture2D>(Texture);
+
+        public bool TracksNPCs => true;
+
+        public bool TracksPlayers => false;
+
+        public float HomingTurnSpeed => 10;
+
+        public bool UsesHomingAcceleration => false;
+
+        public float HomingAccelAmount => 1f;
+
+        public float HomingMaxAccel => 1f;
+
+        public float DetectRadius => 1200;
+
+        public bool CanHome => DelayTimer > 20;
+
         public override bool PreDraw(ref Color lightColor)
         {
             lightColor = ColorLib.StellarFireGradientLooping();
             SpriteBatch spriteBatch = Main.spriteBatch;
             DTUtils Utility = new DTUtils();
 
-            Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-
-            for (int k = TrailPositions.Count - 1; k > 0; k--)
+            for (int i = 0; i < Projectile.oldPos.Length; i++)
             {
-                Vector2 drawPos = TrailPositions[k] - Main.screenPosition + new Vector2(0f, Projectile.gfxOffY);
-                Color color = Projectile.GetAlpha(lightColor) * ((TrailPositions.Count - k) / (float)TrailPositions.Count);
-                Main.EntitySpriteDraw(
-                    ProjTex.Value,
-                    drawPos,
-                    null,
-                    color,
-                    Projectile.rotation,
-                    ProjTex.Size() / 2f,  // proper origin
-                    Projectile.scale,
-                    SpriteEffects.None,
-                    0
-                );
+                float Mult = MathHelper.Lerp(1f, 0f, i / (float)Projectile.oldPos.Length);
+                Color color = OpusColorUtils.MultiLerp(i / (float)Projectile.oldPos.Length, ColorLib.StellarFireColormap);
+                Main.EntitySpriteDraw(DTAssetLib.PointGlowPreMultiplied.Value, Projectile.OldCenter()[i] - Main.screenPosition, null, (color with { A = 0 } * 0.2f * Mult) * Projectile.Opacity, 0f, DTAssetLib.PointGlowPreMultiplied.Value.Size() / 2, 1f, SpriteEffects.None);
+
+                Main.EntitySpriteDraw(DTAssetLib.SparkSmoothThin.Value, Projectile.OldCenter()[i] - Main.screenPosition, null, (color with { A = 0 } * 0.3f * Mult) * Projectile.Opacity, i == 0 ? Projectile.velocity.ToRotation() : Projectile.oldRot[i], DTAssetLib.SparkSmoothThin.Value.Size() / 2, 0.1f, SpriteEffects.None);
             }
 
-            Opus.ReturnToDefaultDrawing(spriteBatch);
 
-            Opus.DrawTextureOnProj(ProjTex, Projectile, Color.White, true, Projectile.rotation, 1f, 1f);
+            Opus.DrawTextureOnProj(DTAssetLib.SparkSmoothThin, Projectile, Color.White with { A = 0 }, false, Projectile.rotation + MathHelper.PiOver2, 0.2f, 0.1f);
 
             return false;
         }
 
 
-
-        public List<Vector2> TrailPositions = new();
-        public List<float> TrailRotations = new();
-        private const int TrailLength = 40;
-        public int HomingTime = 60;
         public override void AI()
         {
-            TrailPositions.Insert(0, Projectile.Center);
-            TrailRotations.Insert(0, Projectile.rotation);
-
-            // Cap trail
-            while (TrailPositions.Count > TrailLength)
-                TrailPositions.RemoveAt(TrailPositions.Count - 1);
-            while (TrailRotations.Count > TrailLength)
-                TrailRotations.RemoveAt(TrailRotations.Count - 1);
 
             DelayTimer++;
 
 
             Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
 
-            Lighting.AddLight(Projectile.Center, ColorLib.StellarFireGradientLooping().ToVector3() * 0.2f);
-
-            if (DelayTimer < 20)
-            {
-                DelayTimer += 1;
-                return;
-            }
-
-            if (HomingTime > 0 && DelayTimer >= 20)
-            {
-                HomingTime--;
-            }
-            float maxDetectRadius = 2800f;
-
-
-            if (NPCTarget == null)
-            {
-                NPCTarget = FindClosestNPC(maxDetectRadius);
-            }
-
-
-            if (NPCTarget != null && !IsValidNPC(NPCTarget))
-            {
-                NPCTarget = null;
-            }
-
-
-            if (NPCTarget == null)
-                return;
-
-            float targetAngle = Projectile.AngleTo(NPCTarget.Center);
-            if (HomingTime > 0)
-            {
-                Projectile.velocity = Projectile.velocity.ToRotation().AngleTowards(targetAngle, MathHelper.ToRadians(15)).ToRotationVector2() * Projectile.velocity.Length();
-            }
-
-            // Acceleration
-            float speed = Projectile.velocity.Length();
-            float desiredSpeed = 20f; // your top speed
-            float acceleration = 0.3f; // how quickly it ramps up
-            if (HomingTime > 0)
-            {
-                if (speed < desiredSpeed)
-                    speed += acceleration;
-                Projectile.velocity = Projectile.velocity.SafeNormalize(Vector2.Zero) * speed;
-            }
+            Lighting.AddLight(Projectile.Center, ColorLib.StellarFire1.ToVector3() * 0.2f);
 
         }
-        public NPC FindClosestNPC(float maxDetectDistance)
-        {
-            NPC closestNPC = null;
-
-            float sqrMaxDetectDistance = maxDetectDistance * maxDetectDistance;
-
-            foreach (var target in Main.ActiveNPCs)
-            {
-                if (IsValidNPC(target))
-                {
-
-                    float sqrDistanceToTarget = Vector2.DistanceSquared(target.Center, Projectile.Center);
-
-                    if (sqrDistanceToTarget < sqrMaxDetectDistance)
-                    {
-                        sqrMaxDetectDistance = sqrDistanceToTarget;
-                        closestNPC = target;
-                    }
-                }
-            }
-
-            return closestNPC;
-        }
-
-        public bool IsValidNPC(NPC target)
-        {
-            return target.CanBeChasedBy();
-        }
-
+     
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.AddBuff(ModContent.BuffType<GalantineBurn>(), 300);
         }
 
 
-
         public override void OnKill(int timeLeft)
         {
-            SoundEngine.PlaySound(SoundID.Item10);
-            Dust.NewDust(Projectile.position, Projectile.Hitbox.Width, Projectile.Hitbox.Height, ModContent.DustType<ConstitutionDust1>(), Main.rand.NextFloat(-1, 1.1f), Main.rand.NextFloat(-1, 1.1f), 0, ColorLib.StellarFireGradientLooping(), 2f);
+            SoundEngine.PlaySound(SoundID.Item10, Projectile.Center);
+
         }
 
     }
