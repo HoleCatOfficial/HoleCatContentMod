@@ -1,7 +1,9 @@
 
 using System.Linq;
+using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Dusts;
+using DestroyerTest.Content.Particles;
 using DestroyerTest.Content.Resources;
 using DestroyerTest.Content.Tiles.RiftConfigurator;
 using DestroyerTest.Content.Tiles.Riftplate;
@@ -41,8 +43,7 @@ namespace DestroyerTest.Content.Equips
             Item.UseSound = SoundID.Item24;
         }
 
-        public override void VerticalWingSpeeds(Player player, ref float ascentWhenFalling, ref float ascentWhenRising,
-            ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend)
+        public override void VerticalWingSpeeds(Player player, ref float ascentWhenFalling, ref float ascentWhenRising, ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend)
         {
             ascentWhenFalling = 0.85f; // Falling glide speed
             ascentWhenRising = 0.15f; // Rising speed
@@ -84,7 +85,7 @@ namespace DestroyerTest.Content.Equips
         public const int DashLeft = 3;
 
         public int DashCooldown = 60; // Time (frames) between starting dashes. If this is shorter than DashDuration you can start a new dash before an old one has finished
-        public int DashDuration = 40; // Duration of the dash afterimage effect in frames
+        public int DashDuration = 60; // Duration of the dash afterimage effect in frames
 
         // The initial velocity.  10 velocity is about 37.5 tiles/second or 50 mph
         public float DashVelocity = 20f;
@@ -153,7 +154,15 @@ namespace DestroyerTest.Content.Equips
                 DashTimer = DashDuration;
                 Player.velocity = newVelocity;
 
-                Dust.NewDust(newVelocity, 15, 15, ModContent.DustType<ColorableNeonDust>(), 6f, 0f, 0, ColorLib.Rift, 10f);
+
+
+                for (int i = 0; i < 6; i++)
+                {
+                    PixelParticle particle = new();
+                    particle.Initialize(Main.rand.NextVector2FromRectangle(Player.Hitbox), Player.velocity * Main.rand.NextFloat(0.1f, 0.15f), ColorLib.Rift, 2f);
+                    ParticleEngine.Particles.Add(particle);
+                }
+
                 SoundEngine.PlaySound(new SoundStyle($"DestroyerTest/Assets/Audio/RiftDash"));
 
             }
@@ -165,6 +174,17 @@ namespace DestroyerTest.Content.Equips
             {
                 Player.eocDash = DashTimer;
                 Player.armorEffectDrawShadowEOCShield = true;
+
+                PixelParticle particle = new();
+                particle.Initialize(Main.rand.NextVector2FromRectangle(Player.Hitbox), -Player.velocity * 0.2f, ColorLib.Rift, 2f);
+                ParticleEngine.Particles.Add(particle);
+
+                if (Main.rand.NextBool(3))
+                {
+                    ElectricArc arc = new();
+                    arc.Create(Main.rand.NextVector2FromRectangle(Player.Hitbox), ColorLib.Rift, 0.8f, 0.6f);
+                    ParticleEngine.Particles.Add(arc);
+                }
 
                 DashTimer--;
             }

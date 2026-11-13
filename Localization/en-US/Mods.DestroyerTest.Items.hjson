@@ -5902,3 +5902,13 @@ OtherworldlyTonic: {
 		The taste is so nasty it makes you nauseous and slows you down.
 		'''
 }
+
+GhostBoa: {
+	DisplayName: Ghost Boa
+	Tooltip:
+		'''
+		Gathers spirits in the boa's mouth, costing 4 mana per second and increasing with mana regen.
+		Release to spit them out.
+		Spirits are released as charges that home in and explode, damaging a large radius amd releasing bouncing sub-charges.
+		'''
+}

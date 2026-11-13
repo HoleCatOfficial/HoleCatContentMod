@@ -13,7 +13,7 @@ namespace DestroyerTest.Content.RiftArsenal
             Item.width = 38;
             Item.height = 34;
             Item.DefaultToWhip(ModContent.ProjectileType<RiftWhipProjectile>(), 70, 2, 10);
-            Item.rare = ModContent.RarityType<HeliciteRarity>();
+            Item.rare = ModContent.RarityType<RiftRarity>();
             Item.autoReuse = true;
 
         }

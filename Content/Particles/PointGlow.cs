@@ -18,12 +18,17 @@ namespace DestroyerTest.Content.Particles
         public Color color;
         public float scale;
 
+        public float InitScale = 0f;
+
+        public bool shrink = false;
+
         public void Initialize(Vector2 Position, Vector2 Velocity, Color Color, float Scale)
         {
             this.position = Position;
             this.velocity = Velocity;
             this.color = Color;
-            this.scale = Scale;
+            this.scale = this.InitScale = Scale;
+            
         }
 
         public void Initialize(Vector2 Position, Vector2 Velocity, Color Color, float Scale, int Lifetime)
@@ -31,8 +36,18 @@ namespace DestroyerTest.Content.Particles
             this.position = Position;
             this.velocity = Velocity;
             this.color = Color;
-            this.scale = Scale;
+            this.scale = this.InitScale = Scale;
             this.MaxLifetime = Lifetime;
+        }
+
+        public void Initialize(Vector2 Position, Vector2 Velocity, Color Color, float Scale, int Lifetime, bool Shrink)
+        {
+            this.position = Position;
+            this.velocity = Velocity;
+            this.color = Color;
+            this.scale = this.InitScale = Scale;
+            this.MaxLifetime = Lifetime;
+            this.shrink = Shrink;
         }
 
 
@@ -42,10 +57,23 @@ namespace DestroyerTest.Content.Particles
             Lifetime++;
             position += velocity;
 
-            if (Progress > 0.5f)
+            if (shrink)
             {
-                color *= 0.95f;
-                scale *= 0.95f;
+                scale = MathHelper.Lerp(InitScale, 0f, Progress);
+
+                if (Progress > 0.5f)
+                {
+                    color *= 0.95f;
+                }
+            }
+            else
+            {
+
+                if (Progress > 0.5f)
+                {
+                    color *= 0.95f;
+                    scale *= 0.95f;
+                }
             }
 
             if (Lifetime > MaxLifetime)

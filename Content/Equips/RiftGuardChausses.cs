@@ -29,7 +29,7 @@ namespace DestroyerTest.Content.Equips
             Item.height = 18;
             Item.value = Item.sellPrice(gold: 1);
             Item.rare = ModContent.RarityType<RiftRarity>();
-            Item.defense = 15;
+            Item.defense = 8;
         }
 
         public override void UpdateEquip(Player player)
