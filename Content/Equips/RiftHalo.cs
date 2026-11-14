@@ -46,7 +46,7 @@ namespace DestroyerTest.Content.Equips
 
         public override void UpdateArmorSet(Player player)
         {
-            player.AddBuff(ModContent.BuffType<RiftBallBuff>(), 30);
+            player.GetModPlayer<RiftBallPlayer>().Active = true;
             player.GetDamage(ModContent.GetInstance<ScepterClass>()) *= 1.12f;
             player.ScepterClass().Range += 100;
             player.ScepterClass().ThrowSpeedModifier *= 1.45f;

@@ -29,7 +29,7 @@ namespace DestroyerTest.Content.Equips
             Item.width = 18; // Width of the item
             Item.height = 18; // Height of the item
             Item.value = Item.sellPrice(gold: 1); // How many coins the item is worth
-            Item.rare = ModContent.RarityType<HeliciteRarity>(); // The rarity of the item
+            Item.rare = ModContent.RarityType<RiftRarity>(); // The rarity of the item
             Item.defense = 10; // The amount of defense the item will give when equipped
         }
 
@@ -64,7 +64,7 @@ namespace DestroyerTest.Content.Equips
         public override void UpdateArmorSet(Player player)
         {
 
-            player.AddBuff(ModContent.BuffType<RiftBallBuff>(), 30);
+            player.GetModPlayer<RiftBallPlayer>().Active = true;
             if (player.body == ModContent.ItemType<RiftplateTitanBody>() &&
                 player.legs == ModContent.ItemType<RiftplateTitanGreaves>())
             {
@@ -101,6 +101,31 @@ namespace DestroyerTest.Content.Equips
                 .AddIngredient<Item_Riftplate>(20)
                 .AddTile<Tile_RiftConfigurator>()
                 .Register();
+        }
+    }
+
+    public class RiftBallPlayer : ModPlayer
+    {
+        public bool Active = false;
+
+        public override void ResetEffects()
+        {
+            Active = false;
+        }
+
+        public override void PostUpdateEquips()
+        {
+            if (Active)
+            {
+                Player.AddBuff(ModContent.BuffType<RiftBallBuff>(), 60);
+            }
+            else
+            {
+                if (Player.HasBuff(ModContent.BuffType<RiftBallBuff>()))
+                {
+                    Player.ClearBuff(ModContent.BuffType<RiftBallBuff>());
+                }
+            }
         }
     }
 

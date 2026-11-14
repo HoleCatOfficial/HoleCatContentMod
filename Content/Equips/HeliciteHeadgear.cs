@@ -40,6 +40,7 @@ namespace DestroyerTest.Content.Equips
         public override void UpdateArmorSet(Player player)
         {
             player.DefaultSetBonusText(player.armor[0]);
+            player.GetDamage(DamageClass.Magic) += 0.16f;
             player.GetModPlayer<HeliciteMage>().Active = true;
         }
         public override void AddRecipes()

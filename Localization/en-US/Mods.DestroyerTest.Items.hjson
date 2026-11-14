@@ -1191,11 +1191,11 @@ WhackAMole_Master_Painting: {
 MageGlove: {
 	Tooltip:
 		'''
-		A rugged, reliable glove.
+		A tough, reliable leather glove.
 		Increases Scepter Class attack speed by 5%.
 		Increases Scepter Class Damage by 10%
 		'''
-	DisplayName: Mage Glove
+	DisplayName: Rugged Glove
 }
 
 ScepterAchievementBag: {
@@ -2742,7 +2742,11 @@ CurseScroll: {
 }
 
 StellarMatter: {
-	Tooltip: The source of Constitution's sentience. Without this, it is just a sword.
+	Tooltip:
+		'''
+		A considerably softer equivalent to blade chunks. Before they harden into their heavy, solid shell, all Consitutions are made of this.
+		Possesses untapped energy reserves.
+		'''
 	DisplayName: Stellar Matter
 }
 
@@ -5899,32 +5903,12 @@ OtherworldlyTonic: {
 		'''
 }
 
-Item_CarbonaceousShale: {
-	DisplayName: Carbonaceous Shale
-	Tooltip: ""
-}
-
-MidnightMossWand: {
-	DisplayName: Midnight Moss Wand
-	Tooltip: Places Midnight Moss on all Carbonaceous Shale types.
-}
-
-Item_CorruptCarbonaceousShale: {
-	DisplayName: Corrupt Carbonaceous Shale
-	Tooltip: ""
-}
-
-Item_CrimsonCarbonaceousShale: {
-	DisplayName: Crimson Carbonaceous Shale
-	Tooltip: ""
-}
-
-Item_HallowCarbonaceousShale: {
-	DisplayName: Hallow Carbonaceous Shale
-	Tooltip: ""
-}
-
-DarkWater: {
-	DisplayName: Dark Water
-	Tooltip: ""
+GhostBoa: {
+	DisplayName: Ghost Boa
+	Tooltip:
+		'''
+		Gathers spirits in the boa's mouth, costing 4 mana per second and increasing with mana regen.
+		Release to spit them out.
+		Spirits are released as charges that home in and explode, damaging a large radius amd releasing bouncing sub-charges.
+		'''
 }

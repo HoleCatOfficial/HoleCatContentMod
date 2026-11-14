@@ -856,5 +856,7 @@ MoonlordMasterShield.DisplayName: Moonlord Master Shield
 MoonlordFusionBolt.DisplayName: Moonlord Fusion Bolt
 BeamSwordSwing.DisplayName: Beam Sword Swing
 SwordBeam.DisplayName: Sword Beam
-DarkWaterAura.DisplayName: Dark Water Aura
-DarkWaterThrown.DisplayName: Dark Water Thrown
+GhostBoaHoldout.DisplayName: Ghost Boa Holdout
+SpectralCharge1.DisplayName: Spectral Charge1
+SpectralCharge2.DisplayName: Spectral Charge2
+SpectralChargeExplosion.DisplayName: Spectral Charge Explosion

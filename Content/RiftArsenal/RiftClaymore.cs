@@ -53,12 +53,5 @@ namespace DestroyerTest.Content.RiftArsenal
             return true;
         }
 
-        public override void AddRecipes()
-        {
-            CreateRecipe()
-                .AddIngredient<Item_Riftplate>(28)
-                .AddTile<Tile_RiftConfigurator>()
-            .Register();
-        }
     }
 }

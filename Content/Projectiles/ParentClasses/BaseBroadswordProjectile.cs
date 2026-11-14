@@ -165,6 +165,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             if (ActiveCondition)
             {
                 Owner.SetDummyItemTime(60);
+                Owner.heldProj = Projectile.whoAmI;
 
                 if (CurrentState == State.Wait)
                 {

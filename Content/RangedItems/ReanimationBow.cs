@@ -164,7 +164,7 @@ namespace DestroyerTest.Content.RangedItems
 
             spriteBatch.UseBlendState(Utilities.SubtractiveBlending);
 
-            
+
             Main.EntitySpriteDraw(DTAssetLib.PointGlowPreMultiplied.Value, npc.Center - screenPos, null, Color.Yellow * GlowOpacity, 0f, DTAssetLib.PointGlowPreMultiplied.Value.Size() / 2, 5f, SpriteEffects.None);
             Main.EntitySpriteDraw(DTAssetLib.BloomRing.Value, npc.Center - screenPos, null, Color.Yellow * GlowOpacity, 0f, DTAssetLib.BloomRing.Value.Size() / 2, DTAssetLib.BloomRing.Value.ScaleRingTextureToMatchRadius(150f, 74), SpriteEffects.None);
 

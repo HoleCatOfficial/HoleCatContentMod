@@ -31,7 +31,7 @@ namespace DestroyerTest.Content.Equips
             Item.width = 18; // Width of the item
             Item.height = 18; // Height of the item
             Item.value = Item.sellPrice(gold: 1); // How many coins the item is worth
-            Item.rare = ModContent.RarityType<HeliciteRarity>(); // The rarity of the item
+            Item.rare = ModContent.RarityType<RiftRarity>(); // The rarity of the item
             Item.defense = 8; // The amount of defense the item will give when equipped
         }
 
@@ -58,7 +58,7 @@ namespace DestroyerTest.Content.Equips
         public override void UpdateArmorSet(Player player)
         {
             player.maxMinions += 4;
-            player.AddBuff(ModContent.BuffType<RiftBallBuff>(), 30);
+            player.GetModPlayer<RiftBallPlayer>().Active = true;
             if (player.body == ModContent.ItemType<RiftplateTitanBody>() &&
                 player.legs == ModContent.ItemType<RiftplateTitanGreaves>())
             {

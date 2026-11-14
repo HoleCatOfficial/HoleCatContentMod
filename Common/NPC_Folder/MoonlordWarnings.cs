@@ -761,12 +761,15 @@ namespace DestroyerTest.Common.NPC_Folder
 
                 HeadLaserExtraRot += 0.1f;
 
-                Main.EntitySpriteDraw(DTAssetLib.Corona.Value, npc.Center - Main.screenPosition, null, Color.MediumAquamarine with { A = 0 } * 0.65f * HeadWarningMultiplier, HeadLaserExtraRot * 0.5f, DTAssetLib.Corona.Value.Size() / 2, 1f, SpriteEffects.None);
-                Main.EntitySpriteDraw(DTAssetLib.Corona.Value, npc.Center - Main.screenPosition, null, Color.MediumAquamarine with { A = 0 } * 0.7f * HeadWarningMultiplier, HeadLaserExtraRot * 0.6f, DTAssetLib.Corona.Value.Size() / 2, 0.75f, SpriteEffects.None);
-                Main.EntitySpriteDraw(DTAssetLib.Corona.Value, npc.Center - Main.screenPosition, null, Color.MediumAquamarine with { A = 0 } * 0.75f * HeadWarningMultiplier, HeadLaserExtraRot * 0.7f, DTAssetLib.Corona.Value.Size() / 2, 0.5f, SpriteEffects.None);
+                if (!DTConfig.instance.PhotosensitivityMode)
+                {
+                    Main.EntitySpriteDraw(DTAssetLib.Corona.Value, npc.Center - Main.screenPosition, null, Color.MediumAquamarine with { A = 0 } * 0.65f * HeadWarningMultiplier, HeadLaserExtraRot * 0.5f, DTAssetLib.Corona.Value.Size() / 2, 1f, SpriteEffects.None);
+                    Main.EntitySpriteDraw(DTAssetLib.Corona.Value, npc.Center - Main.screenPosition, null, Color.MediumAquamarine with { A = 0 } * 0.7f * HeadWarningMultiplier, HeadLaserExtraRot * 0.6f, DTAssetLib.Corona.Value.Size() / 2, 0.75f, SpriteEffects.None);
+                    Main.EntitySpriteDraw(DTAssetLib.Corona.Value, npc.Center - Main.screenPosition, null, Color.MediumAquamarine with { A = 0 } * 0.75f * HeadWarningMultiplier, HeadLaserExtraRot * 0.7f, DTAssetLib.Corona.Value.Size() / 2, 0.5f, SpriteEffects.None);
 
-                Main.EntitySpriteDraw(DTAssetLib.CurseSigilRing.Value, npc.Center - Main.screenPosition, null, Color.MediumAquamarine with { A = 0 } * HeadWarningMultiplier, HeadLaserExtraRot * 1.5f, DTAssetLib.CurseSigilRing.Value.Size() / 2, 0.5f, SpriteEffects.None);
-                Main.EntitySpriteDraw(DTAssetLib.CurseSigilRing.Value, npc.Center - Main.screenPosition, null, Color.MediumAquamarine with { A = 0 } * HeadWarningMultiplier, HeadLaserExtraRot * -1.5f, DTAssetLib.CurseSigilRing.Value.Size() / 2, 0.65f, SpriteEffects.None);
+                    Main.EntitySpriteDraw(DTAssetLib.CurseSigilRing.Value, npc.Center - Main.screenPosition, null, Color.MediumAquamarine with { A = 0 } * HeadWarningMultiplier, HeadLaserExtraRot * 1.5f, DTAssetLib.CurseSigilRing.Value.Size() / 2, 0.5f, SpriteEffects.None);
+                    Main.EntitySpriteDraw(DTAssetLib.CurseSigilRing.Value, npc.Center - Main.screenPosition, null, Color.MediumAquamarine with { A = 0 } * HeadWarningMultiplier, HeadLaserExtraRot * -1.5f, DTAssetLib.CurseSigilRing.Value.Size() / 2, 0.65f, SpriteEffects.None);
+                }
 
                 Main.EntitySpriteDraw(DTAssetLib.ShineFlare.Value, npc.Center - Main.screenPosition, null, Color.MediumAquamarine with { A = 0 }, HeadLaserExtraRot, DTAssetLib.ShineFlare.Value.Size() / 2, Opus.Sine(0.4f, 0.6f, 0.5f) * HeadWarningMultiplier, SpriteEffects.None);
 
@@ -1180,12 +1183,16 @@ namespace DestroyerTest.Common.NPC_Folder
                     }
 
                     CoreBoltsExtraRot += 0.1f;
-                    Main.EntitySpriteDraw(DTAssetLib.Corona.Value, npc.Center - Main.screenPosition, null, ColorLib.CelestialGradient with { A = 0 } * 0.65f * BigCoreBoltWarningMultiplier, CoreBoltsExtraRot * 0.5f, DTAssetLib.Corona.Value.Size() / 2, 1f, SpriteEffects.None);
-                    Main.EntitySpriteDraw(DTAssetLib.Corona.Value, npc.Center - Main.screenPosition, null, ColorLib.CelestialGradient with { A = 0 } * 0.7f * BigCoreBoltWarningMultiplier, CoreBoltsExtraRot * 0.6f, DTAssetLib.Corona.Value.Size() / 2, 0.75f, SpriteEffects.None);
-                    Main.EntitySpriteDraw(DTAssetLib.Corona.Value, npc.Center - Main.screenPosition, null, ColorLib.CelestialGradient  with { A = 0 } * 0.75f * BigCoreBoltWarningMultiplier, CoreBoltsExtraRot * 0.7f, DTAssetLib.Corona.Value.Size() / 2, 0.5f, SpriteEffects.None);
 
-                    Main.EntitySpriteDraw(DTAssetLib.CurseSigilRing.Value, npc.Center - Main.screenPosition, null, ColorLib.CelestialGradient with { A = 0 } * BigCoreBoltWarningMultiplier, CoreBoltsExtraRot * 1.5f, DTAssetLib.CurseSigilRing.Value.Size() / 2, 0.5f, SpriteEffects.None);
-                    Main.EntitySpriteDraw(DTAssetLib.CurseSigilRing.Value, npc.Center - Main.screenPosition, null, ColorLib.CelestialGradient with { A = 0 } * BigCoreBoltWarningMultiplier, CoreBoltsExtraRot * -1.5f, DTAssetLib.CurseSigilRing.Value.Size() / 2, 0.65f, SpriteEffects.None);
+                    if (!DTConfig.instance.PhotosensitivityMode)
+                    {
+                        Main.EntitySpriteDraw(DTAssetLib.Corona.Value, npc.Center - Main.screenPosition, null, ColorLib.CelestialGradient with { A = 0 } * 0.65f * BigCoreBoltWarningMultiplier, CoreBoltsExtraRot * 0.5f, DTAssetLib.Corona.Value.Size() / 2, 1f, SpriteEffects.None);
+                        Main.EntitySpriteDraw(DTAssetLib.Corona.Value, npc.Center - Main.screenPosition, null, ColorLib.CelestialGradient with { A = 0 } * 0.7f * BigCoreBoltWarningMultiplier, CoreBoltsExtraRot * 0.6f, DTAssetLib.Corona.Value.Size() / 2, 0.75f, SpriteEffects.None);
+                        Main.EntitySpriteDraw(DTAssetLib.Corona.Value, npc.Center - Main.screenPosition, null, ColorLib.CelestialGradient with { A = 0 } * 0.75f * BigCoreBoltWarningMultiplier, CoreBoltsExtraRot * 0.7f, DTAssetLib.Corona.Value.Size() / 2, 0.5f, SpriteEffects.None);
+
+                        Main.EntitySpriteDraw(DTAssetLib.CurseSigilRing.Value, npc.Center - Main.screenPosition, null, ColorLib.CelestialGradient with { A = 0 } * BigCoreBoltWarningMultiplier, CoreBoltsExtraRot * 1.5f, DTAssetLib.CurseSigilRing.Value.Size() / 2, 0.5f, SpriteEffects.None);
+                        Main.EntitySpriteDraw(DTAssetLib.CurseSigilRing.Value, npc.Center - Main.screenPosition, null, ColorLib.CelestialGradient with { A = 0 } * BigCoreBoltWarningMultiplier, CoreBoltsExtraRot * -1.5f, DTAssetLib.CurseSigilRing.Value.Size() / 2, 0.65f, SpriteEffects.None);
+                    }
 
                     Main.EntitySpriteDraw(DTAssetLib.ShineFlare.Value, npc.Center - Main.screenPosition, null, Color.MediumAquamarine with { A = 0 }, CoreBoltsExtraRot, DTAssetLib.ShineFlare.Value.Size() / 2, Opus.Sine(0.8f, 1.6f, 0.5f) * BigCoreBoltWarningMultiplier, SpriteEffects.None);
 

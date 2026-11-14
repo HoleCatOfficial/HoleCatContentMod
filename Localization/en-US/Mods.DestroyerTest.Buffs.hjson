@@ -468,7 +468,7 @@ Passion: {
 }
 
 WretchedWhipSpeedBoost: {
-	DisplayName: Malign
+	DisplayName: Fever
 	Description: ""
 }
 
@@ -479,7 +479,7 @@ Brute: {
 
 FusionBurn: {
 	DisplayName: Fusion Burn
-	Description: Cosmic resonance erupts all over you!
+	Description: Cosmic resonance fries you inside and out!
 }
 
 MalachiteBuff: {

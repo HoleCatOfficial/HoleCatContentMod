@@ -54,7 +54,6 @@ namespace DestroyerTest.Content.Equips
 
         public override void UpdateArmorSet(Player player)
         {
-            player.AddBuff(ModContent.BuffType<RiftBallBuff>(), 30);
             if (player.TryGetModPlayer<RiftGuardPlayer>(out var guard))
             {
                 guard.Active = true;

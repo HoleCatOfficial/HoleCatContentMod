@@ -42,8 +42,8 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
             cap.BlendState = BlendState.Additive;
             spriteBatch.Begin(cap);
 
-           // DTTrail.DrawTrail(Main.spriteBatch, DTAssetLib.Streak(1, true).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 16, ColorLib.LifeEcho, off);
-            
+            // DTTrail.DrawTrail(Main.spriteBatch, DTAssetLib.Streak(1, true).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 16, ColorLib.LifeEcho, off);
+
             //Main.EntitySpriteDraw(DTUtils.CenteredDraw(Projectile, Color.White with { A = 0 } * 0.5f));
             Main.spriteBatch.ResetToDefault();
             Main.EntitySpriteDraw(DTUtils.CenteredDraw(Projectile, Color.White));
@@ -66,22 +66,22 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles
 
             //if (Projectile.ai[0]++ % 2 == 0)
             //{
-                BloomRingSharp ring = new();
-                ring.Prepare(Projectile.Center, Vector2.Zero, Color.Yellow * 0.8f, 0.005f, 0.001f, 0.08f, Utilities.SubtractiveBlending);
-                ParticleEngine.Particles.Add(ring);
+            BloomRingSharp ring = new();
+            ring.Prepare(Projectile.Center, Vector2.Zero, Color.Yellow * 0.8f, 0.005f, 0.001f, 0.08f, Utilities.SubtractiveBlending);
+            ParticleEngine.Particles.Add(ring);
 
-                
-                BloomRingSharp ring2 = new();
-                ring2.Prepare(Projectile.Center, Vector2.Zero, ColorLib.LifeEcho * 0.5f, 0.005f, 0.001f, 0.1f, BlendState.Additive);
-                ParticleEngine.Particles.Add(ring2);
-                
-           // }
+
+            BloomRingSharp ring2 = new();
+            ring2.Prepare(Projectile.Center, Vector2.Zero, ColorLib.LifeEcho * 0.5f, 0.005f, 0.001f, 0.1f, BlendState.Additive);
+            ParticleEngine.Particles.Add(ring2);
+
+            // }
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
 
-            
+
         }
 
         public override void OnKill(int timeLeft)

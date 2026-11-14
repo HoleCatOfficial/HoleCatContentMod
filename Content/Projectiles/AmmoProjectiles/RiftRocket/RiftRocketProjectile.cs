@@ -3,6 +3,7 @@ using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Particles;
 using GlowmaskHelper.Content;
+using Humanizer;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
@@ -32,7 +33,7 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles.RiftRocket
         int counter = 0;
         public override void AI()
         {
-            if (Projectile.owner == Main.myPlayer && Projectile.timeLeft <= 3)
+            if (Projectile.owner == Main.myPlayer && Projectile.timeLeft <= 1)
             {
                 Projectile.PrepareBombToBlow();
             }
@@ -49,6 +50,10 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles.RiftRocket
                     PixelParticle Pixel = new();
                     Pixel.Initialize(Main.rand.NextVector2FromRectangle(DRect), -Projectile.velocity * 0.1f, ColorLib.Rift, 2f);
                     ParticleEngine.Particles.Add(Pixel);
+
+                    Spark spark = new();
+                    spark.PrepareSpark(Main.rand.NextVector2FromRectangle(DRect), -Projectile.velocity * 0.4f, Projectile.velocity.ToRotation() + MathHelper.PiOver2, ColorLib.DarkRift2, 0.3f, false, 10, SparkDrawMode.Additive, 3f);
+                    ParticleEngine.BehindProjectiles.Add(spark);
                 }
 
                 if (Math.Abs(Projectile.velocity.X) <= 15f && Math.Abs(Projectile.velocity.Y) <= 15f)
@@ -81,7 +86,7 @@ namespace DestroyerTest.Content.Projectiles.AmmoProjectiles.RiftRocket
 
         public override void OnKill(int timeLeft)
         {
-            SoundEngine.PlaySound(DTAssetLib.Impacts.HeatseekerSilohSlam, Projectile.Center);
+            SoundEngine.PlaySound(DTAssetLib.Impacts.HeatseekerSilohSlam with { MaxInstances = 0, PitchVariance = 0.5f }, Projectile.Center);
             Projectile.CommonRiftRocketExplosion();
         }
     }
