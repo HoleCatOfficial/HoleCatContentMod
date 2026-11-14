@@ -4,3 +4,5 @@ Talid has a credits cutscene planned at some point. This document will keep trac
 Concepts: ImperiumOfMan69
 
 ColoredVertex Utilities: HoCha113
+
+Border WorldGen IL Edits: sm0othestcriminal

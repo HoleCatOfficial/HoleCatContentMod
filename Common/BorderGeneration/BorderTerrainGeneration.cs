@@ -63,18 +63,66 @@ namespace DestroyerTest.Common.BorderGeneration
 
         public int MossStartX;
         public int MossEndX;
-     
+
+        private ILHook _mushroomHook;
 
         public override void Load()
         {
+            //Mushroom Edit
+            Type hiddenClassType = typeof(WorldGen).GetNestedType("<>c", BindingFlags.NonPublic);
+            if (hiddenClassType != null)
+            {
+                MethodInfo targetMethod = hiddenClassType.GetMethod("<AddGenPasses>b__288_20", BindingFlags.NonPublic | BindingFlags.Instance);
+                if (targetMethod != null)
+                {
+                    _mushroomHook = new ILHook(targetMethod, PatchMushroomGeneration);
+                }
+            }
+
 
         }
-       
 
-        int MinimumY => Main.UnderworldLayer - height();
+
+        private void PatchMushroomGeneration(ILContext il)
+        {
+            ILCursor c = new ILCursor(il);
+            int yCoordLocalIndex = -1;
+            int flagLocalIndex = -1;
+
+            if (!c.TryGotoNext(MoveType.After,
+                i => i.MatchLdsfld(typeof(Main), nameof(Main.maxTilesY)),
+                i => i.MatchLdcI4(300),
+                i => i.MatchSub(),
+                i => i.MatchCallvirt(out _),
+                i => i.MatchStloc(out yCoordLocalIndex),
+                i => i.MatchLdcI4(0),
+                i => i.MatchStloc(out flagLocalIndex)))
+            {
+                Mod.Logger.Error("Could not find Mushroom patch generation bytecode!");
+                return;
+            }
+
+            c.Emit(OpCodes.Ldloc, yCoordLocalIndex);
+
+            c.EmitDelegate<Func<int, bool>>((yCoord) => {
+                // Blocks the patch if it tries to spawn in your custom biome depth
+                return yCoord > (MinimumY);
+            });
+
+            ILLabel skipOverrideLabel = c.DefineLabel();
+            c.Emit(OpCodes.Brfalse_S, skipOverrideLabel);
+
+            c.Emit(OpCodes.Ldc_I4_1);
+            c.Emit(OpCodes.Stloc, flagLocalIndex);
+
+            c.MarkLabel(skipOverrideLabel);
+        }
+
+        int MinimumY => Main.UnderworldLayer - (height() + 40);
 
         public override void Unload()
         {
+            _mushroomHook?.Dispose();
             TileType = -1;
         }
 
