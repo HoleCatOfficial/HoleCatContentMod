@@ -32,6 +32,7 @@ namespace DestroyerTest.Content.Magic
             Item.channel = true;
             Item.InterruptChannelOnHurt = false;
             Item.StopAnimationOnHurt = false;
+            
             Item.useTurn = true;
 
             Item.noMelee = true;

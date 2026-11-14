@@ -37,11 +37,7 @@ namespace DestroyerTest.Content.Magic
 
         public override void AddRecipes()
         {
-            CreateRecipe()
-                .AddIngredient(ItemID.BlackInk, 4)
-                .AddIngredient(ItemID.GoldBar, 4)
-                .AddTile(TileID.Anvils)
-                .Register();
+
         }
     }
 }

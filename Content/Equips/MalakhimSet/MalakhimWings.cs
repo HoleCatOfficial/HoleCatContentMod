@@ -16,7 +16,7 @@ namespace DestroyerTest.Content.Equips.MalakhimSet
             // Fly time: 180 ticks = 3 seconds
             // Fly speed: 9
             // Acceleration multiplier: 2.5
-            ArmorIDs.Wing.Sets.Stats[Item.wingSlot] = new WingStats(80, 5f, 1.4f);
+            ArmorIDs.Wing.Sets.Stats[Item.wingSlot] = new WingStats(90, 3.5f, 1.4f);
         }
 
         public override void SetDefaults()
@@ -31,7 +31,7 @@ namespace DestroyerTest.Content.Equips.MalakhimSet
         public override void VerticalWingSpeeds(Player player, ref float ascentWhenFalling, ref float ascentWhenRising, ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float constantAscend)
         {
             ascentWhenFalling = 3.0f; // Falling glide speed
-            ascentWhenRising = 1.8f; // Rising speed
+            ascentWhenRising = 1.3f; // Rising speed
             maxCanAscendMultiplier = 1.45f;
             maxAscentMultiplier = 1.45f;
             constantAscend = 0.135f;

@@ -1,16 +1,16 @@
 ConstitutionDefeat: {
 	FriendlyName: All that for a drop of blood...
-	Description: Defeat Constitution, the Heaven Descendant Blade.
+	Description: Defeat a Constitution.
 }
 
 NightmareRoseDefeat: {
 	FriendlyName: Weed Whacker
-	Description: Free the Conglomerate Child of Mother Darkness.
+	Description: Put Idri out of his misery.
 }
 
 WyvernCorpseDefeat: {
 	FriendlyName: Morticide
-	Description: Return the Great Wyvern to their place among the clouds.
+	Description: Return The Great Wyvern to their place among the clouds.
 }
 
 RiftEmpower: {

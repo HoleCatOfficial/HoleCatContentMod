@@ -1191,11 +1191,11 @@ WhackAMole_Master_Painting: {
 MageGlove: {
 	Tooltip:
 		'''
-		A rugged, reliable glove.
+		A tough, reliable leather glove.
 		Increases Scepter Class attack speed by 5%.
 		Increases Scepter Class Damage by 10%
 		'''
-	DisplayName: Mage Glove
+	DisplayName: Rugged Glove
 }
 
 ScepterAchievementBag: {
