@@ -56,28 +56,72 @@ namespace DestroyerTest.Common.BorderGeneration
             return 450;
         }
 
+
         public override void SetStaticDefaults()
         {
             TileType = ModContent.TileType<Tile_CarbonaceousShale>();
+        }
+
+
+        public override void PreWorldGen()
+        {
+            if (DTCrossMod.RemnantsIsLoaded)
+            {
+                throw new Exception("Due to how Remnants does its tile setting, The Border cannot generate as intended. Disable Remnants to be able to generate The Border.");
+            }
         }
 
         public int MossStartX;
         public int MossEndX;
 
         private ILHook _mushroomHook;
+        private ILHook _mahoganyHook;
+        private ILHook _graniteHook;
+        private ILHook _marbleHook;
+        private ILHook _templeHook;
 
         public override void Load()
         {
+            //Thank you to sm0othestcriminal for these IL edits.
             //Mushroom Edit
             Type hiddenClassType = typeof(WorldGen).GetNestedType("<>c", BindingFlags.NonPublic);
+            BindingFlags allFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static;
+
             if (hiddenClassType != null)
             {
-                MethodInfo targetMethod = hiddenClassType.GetMethod("<AddGenPasses>b__288_20", BindingFlags.NonPublic | BindingFlags.Instance);
-                if (targetMethod != null)
+                MethodInfo targetMethodMushroom = hiddenClassType.GetMethod("<AddGenPasses>b__288_20", BindingFlags.NonPublic | BindingFlags.Instance);
+                if (targetMethodMushroom != null)
                 {
-                    _mushroomHook = new ILHook(targetMethod, PatchMushroomGeneration);
+                    _mushroomHook = new ILHook(targetMethodMushroom, PatchMushroomGeneration);
+                }
+
+
+                MethodInfo targetMethodTemple = hiddenClassType.GetMethod("<AddGenPasses>b__288_45", allFlags);
+                if (targetMethodTemple != null)
+                {
+                    _templeHook = new ILHook(targetMethodTemple, PatchTempleDepth);
                 }
             }
+
+            MethodInfo targetMethodTree = typeof(Terraria.GameContent.Biomes.MahoganyTreeBiome).GetMethod("Place", BindingFlags.Public | BindingFlags.Instance);
+            if (targetMethodTree != null)
+            {
+                _mahoganyHook = new ILHook(targetMethodTree, PatchMahoganyBiome);
+            }
+
+            MethodInfo graniteMethod = typeof(Terraria.GameContent.Biomes.GraniteBiome).GetMethod("Place", BindingFlags.Public | BindingFlags.Instance);
+            if (graniteMethod != null)
+            {
+                _graniteHook = new ILHook(graniteMethod, PatchBiomeDepth);
+            }
+
+            MethodInfo marbleMethod = typeof(Terraria.GameContent.Biomes.MarbleBiome).GetMethod("Place", BindingFlags.Public | BindingFlags.Instance);
+            if (marbleMethod != null)
+            {
+                _marbleHook = new ILHook(marbleMethod, PatchBiomeDepth);
+            }
+
+
 
 
         }
@@ -118,11 +162,111 @@ namespace DestroyerTest.Common.BorderGeneration
             c.MarkLabel(skipOverrideLabel);
         }
 
+        private void PatchMahoganyBiome(ILContext il)
+        {
+            ILCursor c = new ILCursor(il);
+
+            c.Emit(OpCodes.Ldarg_1);
+
+            c.EmitDelegate<Func<Point, bool>>((origin) => {
+                // Blocks the giant tree if it tries to spawn in your custom biome depth
+                return origin.Y > (MinimumY);
+            });
+
+            ILLabel continueLabel = c.DefineLabel();
+            c.Emit(OpCodes.Brfalse_S, continueLabel);
+
+            c.Emit(OpCodes.Ldc_I4_0);
+            c.Emit(OpCodes.Ret);
+
+            c.MarkLabel(continueLabel);
+        }
+
+        private void PatchBiomeDepth(ILContext il)
+        {
+            ILCursor c = new ILCursor(il);
+
+            c.Emit(OpCodes.Ldarg_1);
+
+            c.EmitDelegate<Func<Point, bool>>((origin) => {
+                // Blocks Granite and Marble from generating inside the custom biome
+                return origin.Y > (MinimumY);
+            });
+
+            ILLabel continueLabel = c.DefineLabel();
+            c.Emit(OpCodes.Brfalse_S, continueLabel);
+
+            c.Emit(OpCodes.Ldc_I4_0);
+            c.Emit(OpCodes.Ret);
+
+            c.MarkLabel(continueLabel);
+        }
+
+        private void PatchTempleDepth(ILContext il)
+        {
+            ILCursor scout = new ILCursor(il);
+            if (!scout.TryGotoNext(MoveType.Before, i => i.MatchCall(typeof(WorldGen), "makeTemple"))) return;
+
+            ILLabel retryLabel = null;
+            if (!scout.TryGotoPrev(MoveType.Before, i => i.MatchBrtrue(out retryLabel))) return;
+
+            ILCursor c = new ILCursor(il);
+            int patchCount = 0;
+
+            while (c.TryGotoNext(MoveType.Before, i => i.MatchCall(typeof(WorldGen), "makeTemple")))
+            {
+                patchCount++;
+
+                if (patchCount <= 2)
+                {
+                    c.Emit(OpCodes.Dup);
+                    c.EmitDelegate<Func<int, bool>>((y) => {
+                        // Dynamically pull the centralized limit
+                        return y > GetTempleDepthLimit();
+                    });
+
+                    ILLabel safeLabel = c.DefineLabel();
+                    c.Emit(OpCodes.Brfalse_S, safeLabel);
+
+                    c.Emit(OpCodes.Pop);
+                    c.Emit(OpCodes.Pop);
+
+                    c.Emit(OpCodes.Ldc_I4_0);
+                    c.Emit(OpCodes.Stloc_3);
+
+                    c.Emit(OpCodes.Br, retryLabel);
+
+                    c.MarkLabel(safeLabel);
+                }
+                else if (patchCount == 3)
+                {
+                    c.EmitDelegate<Func<int, int>>((y) => {
+                        // The failsafe now mathematically perfectly matches the loop threshold
+                        int depthLimit = GetTempleDepthLimit();
+                        return y > depthLimit ? depthLimit : y;
+                    });
+                }
+
+                c.Index++;
+            }
+        }
+   
+
         int MinimumY => Main.UnderworldLayer - (height() + 40);
+
+        public static int GetTempleDepthLimit()
+        {
+            var system = ModContent.GetInstance<BorderTerrainGeneration>();
+            return Main.UnderworldLayer - (system.height() + 150);
+        }
 
         public override void Unload()
         {
             _mushroomHook?.Dispose();
+            _mahoganyHook?.Dispose();
+            _graniteHook?.Dispose();
+            _marbleHook?.Dispose();
+            _templeHook?.Dispose();
             TileType = -1;
         }
 
@@ -131,24 +275,31 @@ namespace DestroyerTest.Common.BorderGeneration
         {
             int index = tasks.FindIndex(p => p.Name == "Full Desert");
 
-            
-            if (index != -1)
+            //The underworld pass turns all water in the cavern layer into lava, so we have to place it after.
+            int lakeindex = tasks.FindIndex(p => p.Name == "Corruption");
+
+            if (!DTCrossMod.RemnantsIsLoaded)
             {
-                tasks.Insert(index + 1, new BorderGroundworkPass("Border Generation: Groundwork", 100f, Main.UnderworldLayer, Main.UnderworldLayer - height()));
+                if (lakeindex > 0)
+                {
+                    tasks.Insert(lakeindex, new BorderLakePass("Border Generation: Midnight Lake", 100f, 1));
+                }
+                if (index != -1)
+                {
+                    tasks.Insert(index + 1, new BorderGroundworkPass("Border Generation: Groundwork", 100f, Main.UnderworldLayer, Main.UnderworldLayer - height()));
 
-                tasks.Insert(index + 2, new BorderWallPass("Border Generation: Wall Runner", 100f, Main.UnderworldLayer, Main.UnderworldLayer - (height() + 20)));
+                    tasks.Insert(index + 2, new BorderWallPass("Border Generation: Wall Runner", 100f, Main.UnderworldLayer, Main.UnderworldLayer - (height() + 20)));
 
-                tasks.Insert(index + 3, new BorderHorizontalCavePass("Border Generation: Long Caves", 100f, Main.UnderworldLayer, Main.UnderworldLayer - height()));
+                    tasks.Insert(index + 3, new BorderHorizontalCavePass("Border Generation: Long Caves", 100f, Main.UnderworldLayer, Main.UnderworldLayer - height()));
 
-                tasks.Insert(index + 4, new BorderCeilingHolesPass("Border Generation: Ceiling Continuity", 100f, Main.UnderworldLayer - (height() + 15)));
+                    tasks.Insert(index + 4, new BorderCeilingHolesPass("Border Generation: Ceiling Continuity", 100f, Main.UnderworldLayer - (height() + 15)));
 
-                tasks.Insert(index + 5, new BorderChutePass("Border Generation: Chutes", 100f, 2, 9));
+                    tasks.Insert(index + 5, new BorderChutePass("Border Generation: Chutes", 100f, 2, 9));
 
-                tasks.Insert(index + 6, new BorderLakePass("Border Generation: Midnight Lake", 100f, 1));
+                    tasks.Insert(index + 6, new BorderMossPass("Border Generation: Midnight Moss", 100f, Main.UnderworldLayer - height(), Main.UnderworldLayer));
 
-                tasks.Insert(index + 7, new BorderMossPass("Border Generation: Midnight Moss", 100f, Main.UnderworldLayer - height(), Main.UnderworldLayer));
-
-                tasks.Insert(index + 8, new BorderVinePass("Border Generation: Midnight Moss Vines", 100f, Main.UnderworldLayer, Main.UnderworldLayer - height()));
+                    tasks.Insert(index + 7, new BorderVinePass("Border Generation: Midnight Moss Vines", 100f, Main.UnderworldLayer, Main.UnderworldLayer - height()));
+                }
             }
         }
     }

@@ -5919,22 +5919,22 @@ MidnightMossWand: {
 }
 
 Item_CarbonaceousShale: {
-	DisplayName: Item_ Carbonaceous Shale
+	DisplayName: Carbonaceous Shale
 	Tooltip: ""
 }
 
 Item_CorruptCarbonaceousShale: {
-	DisplayName: Item_ Corrupt Carbonaceous Shale
+	DisplayName: Corrupt Carbonaceous Shale
 	Tooltip: ""
 }
 
 Item_CrimsonCarbonaceousShale: {
-	DisplayName: Item_ Crimson Carbonaceous Shale
+	DisplayName: Crimson Carbonaceous Shale
 	Tooltip: ""
 }
 
 Item_HallowCarbonaceousShale: {
-	DisplayName: Item_ Hallow Carbonaceous Shale
+	DisplayName: Hallow Carbonaceous Shale
 	Tooltip: ""
 }
 
