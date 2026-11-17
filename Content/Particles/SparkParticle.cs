@@ -6,6 +6,7 @@ using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib.Content.Helpers;
 using Terraria;
 using Terraria.Graphics.Renderers;
 using Terraria.ModLoader;
@@ -230,7 +231,7 @@ namespace DestroyerTest.Content.Particles
 
             if (usesColorMap)
             {
-                col = DTColorUtils.MultiLerp(Lifetime / maxLifetime, ColorMap);
+                col = OpusColorUtils.MultiLerp(Lifetime / maxLifetime, ColorMap);
             }
             else
             {

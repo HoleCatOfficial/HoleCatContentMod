@@ -26,7 +26,7 @@ namespace DestroyerTest.Content.Particles.Stellar
 
             float LifetimeCompletion = (float)Lifetime / MaxLifetime;
 
-            color = DTColorUtils.MultiLerp(LifetimeCompletion, ColorLib.StellarFireColormap);
+            color = OpusColorUtils.MultiLerp(LifetimeCompletion, ColorLib.StellarFireColormap);
             position += velocity;
 
             if (LifetimeCompletion > 0.5f)

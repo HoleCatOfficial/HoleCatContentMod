@@ -25,10 +25,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             base.SetDefaults();
             Projectile.width = 122;
             Projectile.height = 122;
-            SweepColor = ColorLib.TenebrisMagenta;
+            SweepColor = ColorLib.TenebrisMagenta.Darken(0.5f);
+            SweepHighlightColor = ColorLib.TenebrisMagenta;
             SwingSpeed = 0.10f;
             UsesDefaultSweepFX = true;
-            SweepScale = 1.7f;
+            SweepScale = 2.9f;
         }
         public override void HitNPCEffects(NPC npc, NPC.HitInfo hit, int damageDone)
         {
@@ -75,7 +76,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
             SwordLine = new Line(Owner.Center, swordTip);
 
-            ScaleMult = 1.6f;
+            ScaleMult = 1f;
 
             Vector2[] Pos = new Vector2[4]
             {
@@ -85,29 +86,56 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
                 Projectile.Center + Projectile.rotation.ToRotationVector2() * (Projectile.Size.Length() * (Projectile.scale * 0.20f)),
             };
 
-            Fire[] fire = new Fire[5]
+
+
+            Vector2[] positions =
             {
-                new Fire(),
-                new Fire(),
-                new Fire(),
-                new Fire(),
-                new Fire()
+                swordTip,
+                Pos[0],
+                Pos[1],
+                Pos[2],
+                Pos[3]
             };
 
-            fire[0].PrepareFire(swordTip, Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.12f, 0.12f), ColorLib.TenebrisMagenta, 2f, 40, FireDrawMode.Additive, PixelLayer.AboveProjectiles);
-            ParticleEngine.BehindProjectiles.Add(fire[0]);
+            float[] alpha =
+            {
+                1f,
+                0.8f,
+                0.6f,
+                0.4f,
+                0.2f
+            };
 
-            fire[1].PrepareFire(Pos[0], Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.12f, 0.12f), ColorLib.TenebrisMagenta * 0.8f, 2f, 35, FireDrawMode.Additive, PixelLayer.AboveProjectiles);
-            ParticleEngine.BehindProjectiles.Add(fire[1]);
+            int[] lifetime =
+            {
+                40,
+                35,
+                30,
+                25,
+                10
+            };
 
-            fire[2].PrepareFire(Pos[1], Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.12f, 0.12f), ColorLib.TenebrisMagenta * 0.6f, 2f, 30, FireDrawMode.Additive, PixelLayer.AboveProjectiles);
-            ParticleEngine.BehindProjectiles.Add(fire[2]);
+            if (CurrentState != State.Wait)
+            {
+                for (int i = 0; i < positions.Length; i++)
+                {
+                    Fire fire = new Fire();
+                    Vector2 RandSpeed = (SwordLine.GetLineRotation - MathHelper.PiOver2).ToRotationVector2().RotatedByRandom(0.2f) * Main.rand.NextFloat(2f, 6f);
 
-            fire[3].PrepareFire(Pos[2], Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.12f, 0.12f), ColorLib.TenebrisMagenta * 0.4f, 2f, 25, FireDrawMode.Additive, PixelLayer.AboveProjectiles);
-            ParticleEngine.BehindProjectiles.Add(fire[3]);
+                    fire.PrepareFire(
+                        positions[Main.rand.Next(positions.Length)],
+                        RandSpeed,
+                        DTUtils.RandomDirection(2),
+                        Main.rand.NextFloat(-0.12f, 0.12f),
+                        ColorLib.TenebrisMagenta * 0.5f,
+                        1.25f,
+                        lifetime[i],
+                        FireDrawMode.Additive,
+                        PixelLayer.AboveProjectiles);
 
-            fire[4].PrepareFire(Pos[3], Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.12f, 0.12f), ColorLib.TenebrisMagenta * 0.2f, 2f, 10, FireDrawMode.Additive, PixelLayer.AboveProjectiles);
-            ParticleEngine.BehindProjectiles.Add(fire[4]);
+                    ParticleEngine.BehindProjectiles.Add(fire);
+                }
+            }
         }
     }
 

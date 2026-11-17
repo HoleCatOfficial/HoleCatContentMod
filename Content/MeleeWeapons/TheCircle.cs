@@ -38,5 +38,10 @@ namespace DestroyerTest.Content.MeleeWeapons
             Item.shoot = ModContent.ProjectileType<TheCircleProjectile>();
             Item.shootSpeed = 16f;
         }
+
+        public override bool MeleePrefix()
+        {
+            return true;
+        }
     }
 }

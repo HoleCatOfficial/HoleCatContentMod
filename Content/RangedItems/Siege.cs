@@ -43,6 +43,10 @@ namespace DestroyerTest.Content.RangedItems
             return player.ownedProjectileCounts[Item.shoot] < 1 && Rocket;
         }
 
+        public override bool RangedPrefix()
+        {
+            return true;
+        }
 
         public override void AddRecipes()
         {

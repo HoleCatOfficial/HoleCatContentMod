@@ -42,6 +42,10 @@ namespace DestroyerTest.Content.Magic
             Item.rare = ModContent.RarityType<StellarRarity>();
         }
 
+        public override bool MagicPrefix()
+        {
+            return true;
+        }
 
         public override void AddRecipes()
         {

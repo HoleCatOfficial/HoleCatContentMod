@@ -3,6 +3,7 @@ using DestroyerTest.Common;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
+using OpusLib.Content.Helpers;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -55,7 +56,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic.StarWand
                     {
                         float t = 1f - (i / (float)TrailPositions.Count); // fade toward tail
                         Color b = lightColor * t;
-                        Color b2 = DTColorUtils.Pastel(lightColor, 0.75f) * t;
+                        Color b2 = OpusColorUtils.Pastel(lightColor, 0.75f) * t;
 
                         Vector2 dir = (TrailPositions[i] - TrailPositions[i - 1]).ToRotation().ToRotationVector2();
                         Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * 10;

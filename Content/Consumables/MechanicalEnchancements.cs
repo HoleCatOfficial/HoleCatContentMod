@@ -2,6 +2,7 @@ using DestroyerTest.Common;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 
 namespace DestroyerTest.Content.Consumables
 {
@@ -10,6 +11,18 @@ namespace DestroyerTest.Content.Consumables
         public override void SetStaticDefaults()
         {
             Item.ResearchUnlockCount = 1;
+        }
+
+        public override bool Consumed()
+        {
+            if (Main.LocalPlayer.whoAmI == Main.myPlayer)
+            {
+                if (Main.LocalPlayer.TryGetModPlayer<MechanicalEnhancementsPlayer>(out var Enchancement))
+                {
+                    return Enchancement.EnhancedJorkingMethods = true;
+                }
+            }
+            return false;
         }
 
         public override void SetDefaults()
@@ -46,6 +59,18 @@ namespace DestroyerTest.Content.Consumables
             Effects = false;
         }
 
+        public override void SaveData(TagCompound tag)
+        {
+            tag.Add("ME_consumed", EnhancedJorkingMethods);
+        }
+
+        public override void LoadData(TagCompound tag)
+        {
+            if (tag.ContainsKey("ME_consumed"))
+            {
+                EnhancedJorkingMethods = tag.GetBool("ME_consumed");
+            }
+        }
         public override void PostUpdateMiscEffects()
         {
             if (EnhancedJorkingMethods)

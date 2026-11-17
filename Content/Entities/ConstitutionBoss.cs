@@ -352,10 +352,10 @@ namespace DestroyerTest.Content.Entities
             ScrollingTextureSpine(leftSide, DTAssetLib.Streak(2, true), OpusColorUtils.MultiLerp(Progress, ColorLib.StellarFireColormap) with { A = 0 } * 0.75f, spriteBatch, WO1, OuterWidth);
             ScrollingTextureSpine(rightSide, DTAssetLib.Streak(2, true), OpusColorUtils.MultiLerp(Progress, ColorLib.StellarFireColormap) with { A = 0 } * 0.75f, spriteBatch, WO1, OuterWidth);
 
-            ScrollingTextureSpine(topSide, DTAssetLib.Streak(1, true), DTColorUtils.Pastel(OpusColorUtils.MultiLerp(Progress, ColorLib.StellarFireColormap), 0.6f) with { A = 0 }, spriteBatch, WO2, 0.2f);
-            ScrollingTextureSpine(bottomSide, DTAssetLib.Streak(1, true), DTColorUtils.Pastel(OpusColorUtils.MultiLerp(Progress, ColorLib.StellarFireColormap), 0.6f) with { A = 0 }, spriteBatch, WO2, 0.2f);
-            ScrollingTextureSpine(leftSide, DTAssetLib.Streak(1, true), DTColorUtils.Pastel(OpusColorUtils.MultiLerp(Progress, ColorLib.StellarFireColormap), 0.6f) with { A = 0 }, spriteBatch, WO2, 0.2f);
-            ScrollingTextureSpine(rightSide, DTAssetLib.Streak(1, true), DTColorUtils.Pastel(OpusColorUtils.MultiLerp(Progress, ColorLib.StellarFireColormap), 0.6f) with { A = 0 }, spriteBatch, WO2, 0.2f);
+            ScrollingTextureSpine(topSide, DTAssetLib.Streak(1, true),OpusColorUtils.Pastel(OpusColorUtils.MultiLerp(Progress, ColorLib.StellarFireColormap), 0.6f) with { A = 0 }, spriteBatch, WO2, 0.2f);
+            ScrollingTextureSpine(bottomSide, DTAssetLib.Streak(1, true),OpusColorUtils.Pastel(OpusColorUtils.MultiLerp(Progress, ColorLib.StellarFireColormap), 0.6f) with { A = 0 }, spriteBatch, WO2, 0.2f);
+            ScrollingTextureSpine(leftSide, DTAssetLib.Streak(1, true),OpusColorUtils.Pastel(OpusColorUtils.MultiLerp(Progress, ColorLib.StellarFireColormap), 0.6f) with { A = 0 }, spriteBatch, WO2, 0.2f);
+            ScrollingTextureSpine(rightSide, DTAssetLib.Streak(1, true),OpusColorUtils.Pastel(OpusColorUtils.MultiLerp(Progress, ColorLib.StellarFireColormap), 0.6f) with { A = 0 }, spriteBatch, WO2, 0.2f);
 
         }
 

@@ -5912,3 +5912,8 @@ GhostBoa: {
 		Spirits are released as charges that home in and explode, damaging a large radius amd releasing bouncing sub-charges.
 		'''
 }
+
+LunacyParasite: {
+	DisplayName: Lunacy Parasite
+	Tooltip: ""
+}

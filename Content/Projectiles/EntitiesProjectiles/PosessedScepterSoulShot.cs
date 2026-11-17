@@ -4,6 +4,7 @@ using DestroyerTest.Content.Buffs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
+using OpusLib.Content.Helpers;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -36,7 +37,7 @@ namespace DestroyerTest.Content.Projectiles.EntitiesProjectiles
             DTTrail.DrawTrail(spriteBatch, DTAssetLib.SoulStreak.Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 12f, ColorLib.PossessedScepterColor, trailOffset);
 
 
-            Opus.DrawTextureOnProj(DTAssetLib.PointGlowPreMultiplied, Projectile, DTColorUtils.Pastel(ColorLib.PossessedScepterColor, 0.4f) with { A = 0 }, false, 0f, 0.7f, 0.7f);
+            Opus.DrawTextureOnProj(DTAssetLib.PointGlowPreMultiplied, Projectile, OpusColorUtils.Pastel(ColorLib.PossessedScepterColor, 0.4f) with { A = 0 }, false, 0f, 0.7f, 0.7f);
 
             Opus.DrawTextureOnProj(DTAssetLib.Star(3), Projectile, ColorLib.PossessedScepterColor with { A = 0 }, false, 0f, S, S);
 

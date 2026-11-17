@@ -16,7 +16,7 @@ namespace DestroyerTest.Content.MeleeWeapons
         }
         public override void SetDefaults()
         {
-            Item.UseSound = SoundID.Item101;
+            //Item.UseSound = SoundID.Item101;
             Item.width = 122;
             Item.height = 122;
 

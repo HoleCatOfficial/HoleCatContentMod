@@ -6,6 +6,7 @@ using DestroyerTest.Content.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
+using OpusLib.Content.Helpers;
 using OpusLib.Content.Particles;
 using Terraria;
 using Terraria.Audio;
@@ -200,7 +201,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Thrower
             ParticleEngine.ShaderParticles.Add(ExplosionFX);
 
             BloomRingSharp Ring = new BloomRingSharp();
-            Ring.Prepare(Projectile.Center, Vector2.Zero, DTColorUtils.Pastel(Color.SeaGreen, 0.2f), 0.05f, 0.01f, 1f, BlendState.Additive);
+            Ring.Prepare(Projectile.Center, Vector2.Zero, OpusColorUtils.Pastel(Color.SeaGreen, 0.2f), 0.05f, 0.01f, 1f, BlendState.Additive);
             ParticleEngine.ShaderParticles.Add(Ring);
 
             Opus.RadialSpreadProjectile(ModContent.ProjectileType<ElementalFenzimSpark>(), 6, target.Center, Projectile.damage / 3, 4, 24f, ai0: Main.rand.Next(7), offset: Main.rand.NextFloat(MathHelper.TwoPi));
@@ -229,7 +230,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Thrower
             ParticleEngine.ShaderParticles.Add(ExplosionFX);
 
             BloomRingSharp Ring = new BloomRingSharp();
-            Ring.Prepare(Projectile.Center, Vector2.Zero, DTColorUtils.Pastel(Color.SeaGreen, 0.2f), 0.05f, 0.01f, 1f, BlendState.Additive);
+            Ring.Prepare(Projectile.Center, Vector2.Zero, OpusColorUtils.Pastel(Color.SeaGreen, 0.2f), 0.05f, 0.01f, 1f, BlendState.Additive);
             ParticleEngine.ShaderParticles.Add(Ring);
 
             returning = true;

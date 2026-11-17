@@ -17,7 +17,7 @@ namespace DestroyerTest.Content.MeleeWeapons
         public override void SetDefaults()
         {
             Item.damage = 325;
-            Item.DamageType = ModContent.GetInstance<DTTrueMeleeClass>(); // Deals melee damage
+            Item.DamageType = ModContent.GetInstance<DTTrueMeleeClass>();
             Item.width = 88;
             Item.height = 196;
             Item.useTime = 40;
@@ -31,7 +31,7 @@ namespace DestroyerTest.Content.MeleeWeapons
             Item.shoot = ModContent.ProjectileType<Tenebrous_Katana_Projectile>();
             Item.shootSpeed = 5f;
             Item.channel = true;
-            Item.noUseGraphic = true; // This makes sure the item does not get shown when the player swings his hand
+            Item.noUseGraphic = true;
         }
 
         public override bool CanUseItem(Player player)

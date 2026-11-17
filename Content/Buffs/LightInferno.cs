@@ -5,6 +5,7 @@ using DestroyerTest.Common;
 using DestroyerTest.Content.Particles;
 
 using Microsoft.Xna.Framework;
+using OpusLib.Content.Helpers;
 using OpusLib.Content.Particles;
 using Terraria;
 using Terraria.ID;
@@ -91,7 +92,7 @@ namespace DestroyerTest.Content.Buffs
                 if (Main.rand.NextBool(6))
                 {
                     StarParticle Star = new();
-                    Star.Initialize(Main.rand.NextVector2FromRectangle(npc.Hitbox), Vector2.Zero, DTColorUtils.Pastel(SoulOfLightColor, 75f), 1f);
+                    Star.Initialize(Main.rand.NextVector2FromRectangle(npc.Hitbox), Vector2.Zero, OpusColorUtils.Pastel(SoulOfLightColor, 75f), 1f);
                     ParticleEngine.ShaderParticles.Add(Star);
                 }
 
@@ -132,7 +133,7 @@ namespace DestroyerTest.Content.Buffs
                 if (Main.rand.NextBool(6))
                 {
                     StarParticle Star = new();
-                    Star.Initialize(Main.rand.NextVector2FromRectangle(Player.Hitbox), Vector2.Zero, DTColorUtils.Pastel(SoulOfLightColor, 75f), 1f);
+                    Star.Initialize(Main.rand.NextVector2FromRectangle(Player.Hitbox), Vector2.Zero, OpusColorUtils.Pastel(SoulOfLightColor, 75f), 1f);
                     ParticleEngine.ShaderParticles.Add(Star);
                 }
                 if (Player.lifeRegen > 0)

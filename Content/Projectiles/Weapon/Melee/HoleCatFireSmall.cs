@@ -3,6 +3,7 @@ using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using OpusLib.Content.Helpers;
 using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
@@ -47,7 +48,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
         {
             SpriteBatch spriteBatch = Main.spriteBatch;
             float progress = Projectile.timeLeft / 300;
-            Color C = DTColorUtils.MultiLerp(progress, ColorLib.HoleCatFireColormap);
+            Color C = OpusColorUtils.MultiLerp(progress, ColorLib.HoleCatFireColormap);
             DTUtils.DrawCrystalCore(spriteBatch, Projectile.Center, Color.White, C, TrailPositions, TextureRotationOffset, Projectile, TrailLength, 0.8f);
         }
 

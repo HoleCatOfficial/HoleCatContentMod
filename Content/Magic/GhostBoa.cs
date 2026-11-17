@@ -47,6 +47,10 @@ namespace DestroyerTest.Content.Magic
             return player.ownedProjectileCounts[Item.shoot] < 1;
         }
 
+        public override bool MagicPrefix()
+        {
+            return true;
+        }
 
         public override void AddRecipes()
         {

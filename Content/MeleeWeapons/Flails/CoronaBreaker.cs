@@ -24,8 +24,8 @@ namespace DestroyerTest.Content.MeleeWeapons.Flails
         public override void SetDefaults()
         {
             Item.useStyle = ItemUseStyleID.Shoot;
-            Item.useAnimation = 45;
-            Item.useTime = 45;
+            Item.useAnimation = 30;
+            Item.useTime = 30;
             Item.knockBack = 5.5f;
             Item.width = 66;
             Item.height = 46;
@@ -38,6 +38,7 @@ namespace DestroyerTest.Content.MeleeWeapons.Flails
             Item.value = Item.sellPrice(gold: 1, silver: 50);
             Item.DamageType = DamageClass.Melee;
             Item.noMelee = true;
+            Item.autoReuse = true;
         }
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
@@ -50,6 +51,11 @@ namespace DestroyerTest.Content.MeleeWeapons.Flails
         public override bool CanUseItem(Player player)
         {
             return player.ownedProjectileCounts[Item.shoot] < 1;
+        }
+
+        public override bool MeleePrefix()
+        {
+            return true;
         }
 
         public override void AddRecipes()

@@ -6,6 +6,7 @@ using DestroyerTest.Content.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
+using OpusLib.Content.Helpers;
 using OpusLib.Content.Particles;
 using Terraria;
 using Terraria.ID;
@@ -97,7 +98,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame
             {
                 float progress = i / (float)Projectile.oldPos.Length;
                 float scale = MathHelper.Lerp(1.5f, 0.0005f, progress);
-                Color color = DTColorUtils.MultiLerp(progress, ColorLib.WretchedColorMap) * TrailOpacity;
+                Color color = OpusLib.Content.Helpers.OpusColorUtils.MultiLerp(progress, ColorLib.WretchedColorMap) * TrailOpacity;
 
                 Main.EntitySpriteDraw(
                     glowTex,
@@ -115,7 +116,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame
                     glowTex,
                     Projectile.OldCenter()[i] - Main.screenPosition,
                     null,
-                    DTColorUtils.Pastel(color, 0.8f),
+                    OpusColorUtils.Pastel(color, 0.8f),
                     Projectile.rotation,
                     glowTex.Size() / 2f,
                     scale * 0.4f,
@@ -141,7 +142,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.NodeBoss.CursedFlame
                 glowTex,
                 Projectile.Center - Main.screenPosition,
                 null,
-                DTColorUtils.Pastel(ColorLib.Wretched1, 0.8f),
+                OpusColorUtils.Pastel(ColorLib.Wretched1, 0.8f),
                 Projectile.velocity.ToRotation(),
                 glowTex.Size() / 2f,
                 1.5f * 0.4f,

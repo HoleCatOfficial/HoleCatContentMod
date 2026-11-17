@@ -396,11 +396,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Summon
             {
                 if (!HoleCat)
                 {
-                    FX.Initiate(Muzzle, Projectile.rotation + MathHelper.PiOver2, DTColorUtils.Pastel(ColorLib.CursedFlames, 0.3f), 0.15f, 10);
+                    FX.Initiate(Muzzle, Projectile.rotation + MathHelper.PiOver2, OpusColorUtils.Pastel(ColorLib.CursedFlames, 0.3f), 0.15f, 10);
                 }
                 else
                 {
-                    FX.Initiate(Muzzle, Projectile.rotation + MathHelper.PiOver2, DTColorUtils.Pastel(ColorLib.HoleCatFireBeige, 0.3f), 0.15f, 10);
+                    FX.Initiate(Muzzle, Projectile.rotation + MathHelper.PiOver2, OpusColorUtils.Pastel(ColorLib.HoleCatFireBeige, 0.3f), 0.15f, 10);
                 }
 
                 CanFire = false;

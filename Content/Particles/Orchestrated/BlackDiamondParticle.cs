@@ -1,6 +1,7 @@
 ﻿using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using Microsoft.Xna.Framework;
+using OpusLib.Content.Helpers;
 using Terraria;
 using Terraria.Graphics.Renderers;
 
@@ -39,10 +40,10 @@ namespace DestroyerTest.Content.Particles.Orchestrated
                 Left.PrepareSpark(position, new Vector2(-2f, 0).RotatedBy(rotation), 0f, ColorLib.TenebrisBlue, 1f, false, 40, SparkDrawMode.Additive);
                 Right.PrepareSpark(position, new Vector2(2f, 0).RotatedBy(rotation), 0f, ColorLib.TenebrisBlue, 1f, false, 40, SparkDrawMode.Additive);
 
-                UpLeft.PrepareSpark(position, new Vector2(-0.3f, -0.3f).RotatedBy(rotation), 0f, DTColorUtils.Pastel(ColorLib.TenebrisBlue, 0.9f), 0.5f, false, 40, SparkDrawMode.Additive);
-                UpRight.PrepareSpark(position, new Vector2(0.3f, -0.3f).RotatedBy(rotation), 0f, DTColorUtils.Pastel(ColorLib.TenebrisBlue, 0.9f), 0.5f, false, 40, SparkDrawMode.Additive);
-                DownLeft.PrepareSpark(position, new Vector2(-0.3f, 0.3f).RotatedBy(rotation), 0f, DTColorUtils.Pastel(ColorLib.TenebrisBlue, 0.9f), 0.5f, false, 40, SparkDrawMode.Additive);
-                DownRight.PrepareSpark(position, new Vector2(0.3f, 0.3f).RotatedBy(rotation), 0f, DTColorUtils.Pastel(ColorLib.TenebrisBlue, 0.9f), 0.5f, false, 40, SparkDrawMode.Additive);
+                UpLeft.PrepareSpark(position, new Vector2(-0.3f, -0.3f).RotatedBy(rotation), 0f, OpusColorUtils.Pastel(ColorLib.TenebrisBlue, 0.9f), 0.5f, false, 40, SparkDrawMode.Additive);
+                UpRight.PrepareSpark(position, new Vector2(0.3f, -0.3f).RotatedBy(rotation), 0f, OpusColorUtils.Pastel(ColorLib.TenebrisBlue, 0.9f), 0.5f, false, 40, SparkDrawMode.Additive);
+                DownLeft.PrepareSpark(position, new Vector2(-0.3f, 0.3f).RotatedBy(rotation), 0f, OpusColorUtils.Pastel(ColorLib.TenebrisBlue, 0.9f), 0.5f, false, 40, SparkDrawMode.Additive);
+                DownRight.PrepareSpark(position, new Vector2(0.3f, 0.3f).RotatedBy(rotation), 0f, OpusColorUtils.Pastel(ColorLib.TenebrisBlue, 0.9f), 0.5f, false, 40, SparkDrawMode.Additive);
 
                 ParticleEngine.BehindProjectiles.Add(Up);
                 ParticleEngine.BehindProjectiles.Add(Down);

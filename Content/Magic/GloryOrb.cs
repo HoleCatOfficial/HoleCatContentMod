@@ -61,6 +61,10 @@ namespace DestroyerTest.Content.Magic
             }
         }
 
+        public override bool MagicPrefix()
+        {
+            return true;
+        }
         public override bool CanUseItem(Player player)
         {
             return player.ownedProjectileCounts[Item.shoot] < 1;

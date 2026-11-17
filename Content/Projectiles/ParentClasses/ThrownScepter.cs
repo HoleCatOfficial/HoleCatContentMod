@@ -6,6 +6,7 @@ using DestroyerTest.Common.Primitives;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
+using OpusLib.Content.Helpers;
 using ReLogic.Content;
 using Terraria;
 using Terraria.Audio;
@@ -141,16 +142,16 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
                 if (returning)
                 {
-                    Main.EntitySpriteDraw(DTAssetLib.Cyclone(1).Value, Projectile.Center - Main.screenPosition, null, DTColorUtils.Pastel(Main.DiscoColor, 0.4f) * 0.4f, Projectile.rotation, DTAssetLib.Cyclone(1).Value.Size() / 2, 0.1f * Projectile.scale, SpriteEffects.None, 0);
+                    Main.EntitySpriteDraw(DTAssetLib.Cyclone(1).Value, Projectile.Center - Main.screenPosition, null, OpusColorUtils.Pastel(Main.DiscoColor, 0.4f) * 0.4f, Projectile.rotation, DTAssetLib.Cyclone(1).Value.Size() / 2, 0.1f * Projectile.scale, SpriteEffects.None, 0);
                 }
                 else
                 {
-                    Main.EntitySpriteDraw(DTAssetLib.Cyclone(1).Value, Projectile.Center - Main.screenPosition, null, DTColorUtils.Pastel(Main.DiscoColor, 0.4f) * 0.4f, Projectile.rotation, DTAssetLib.Cyclone(1).Value.Size() / 2, 0.1f * Projectile.scale, SpriteEffects.FlipHorizontally, 0);
+                    Main.EntitySpriteDraw(DTAssetLib.Cyclone(1).Value, Projectile.Center - Main.screenPosition, null, OpusColorUtils.Pastel(Main.DiscoColor, 0.4f) * 0.4f, Projectile.rotation, DTAssetLib.Cyclone(1).Value.Size() / 2, 0.1f * Projectile.scale, SpriteEffects.FlipHorizontally, 0);
                 }
 
-                Main.EntitySpriteDraw(DTAssetLib.BloomRing.Value, Projectile.Center - Main.screenPosition, null, DTColorUtils.Pastel(Main.DiscoColor, 0.4f) * 0.4f, Projectile.rotation, DTAssetLib.BloomRing.Value.Size() / 2, 0.4f * Projectile.scale, SpriteEffects.None, 0);
+                Main.EntitySpriteDraw(DTAssetLib.BloomRing.Value, Projectile.Center - Main.screenPosition, null, OpusColorUtils.Pastel(Main.DiscoColor, 0.4f) * 0.4f, Projectile.rotation, DTAssetLib.BloomRing.Value.Size() / 2, 0.4f * Projectile.scale, SpriteEffects.None, 0);
 
-                Main.EntitySpriteDraw(projectileTexture, Projectile.Center - Main.screenPosition, null, DTColorUtils.Pastel(Main.DiscoColor, 0.4f) * 0.6f, Projectile.rotation, projectileTexture.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
+                Main.EntitySpriteDraw(projectileTexture, Projectile.Center - Main.screenPosition, null, OpusColorUtils.Pastel(Main.DiscoColor, 0.4f) * 0.6f, Projectile.rotation, projectileTexture.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
 
                 Opus.ReturnToDefaultDrawing(spriteBatch);
             }
@@ -265,7 +266,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             }
             else if (Main.rand.NextBool(3) && ArmorSetHelper_AetherianShimmerEffects)
             {
-                Dust dust = Dust.NewDustPerfect(Projectile.Center, DustID.TintableDustLighted, Projectile.velocity * 0.2f, 100, DTColorUtils.Pastel(Main.DiscoColor, 0.4f), 1.2f);
+                Dust dust = Dust.NewDustPerfect(Projectile.Center, DustID.TintableDustLighted, Projectile.velocity * 0.2f, 100, OpusColorUtils.Pastel(Main.DiscoColor, 0.4f), 1.2f);
                 dust.noGravity = true;
             }
 

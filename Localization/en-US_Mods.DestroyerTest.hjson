@@ -46,7 +46,8 @@ Extras: {
 	}
 
 	ThankYouMessage: Thank you for playing!!!
-	CobaltShieldRework: Talid: Knockback reduction modified from 100% to 75%
+	CobaltShieldRework: Talid: Knockback reduction modified from 100% to 75%.
+	OneTimeConsumableInfo: You have already consumed this upgrade.
 }
 
 Conditions: {

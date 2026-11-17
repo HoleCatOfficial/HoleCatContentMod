@@ -33,6 +33,11 @@ namespace DestroyerTest.Content.RangedItems
             Item.shootSpeed = 10f;
         }
 
+        public override bool RangedPrefix()
+        {
+            return true;
+        }
+
         public override bool CanUseItem(Player player)
         {
             return player.ownedProjectileCounts[Item.shoot] < 1;
