@@ -640,6 +640,8 @@ namespace DestroyerTest.Content.Entities
             float top = arenaCenter.Y - HalfHeight;
             float bottom = arenaCenter.Y + HalfHeight;
 
+            player.wingTime = player.wingTimeMax;
+
             // X bounds
             if (player.position.X < left)
             {
@@ -1212,7 +1214,7 @@ namespace DestroyerTest.Content.Entities
                 else
                 {
                     Vector2[] Ps = bottomSide.GetPointsAlongLine(12);
-                    Main.NewText($"u={u}, top={(u % 2 == 0)}");
+                    //Main.NewText($"u={u}, top={(u % 2 == 0)}");
                     if (u % 2 == 0)
                     {
                         Ps = topSide.GetPointsAlongLine(12);

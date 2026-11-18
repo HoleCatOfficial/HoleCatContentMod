@@ -10,8 +10,8 @@ namespace DestroyerTest.Content.Scepter
 {
     public class HeliciteScepter : ScepterItem
     {
-        public override int Width => 34;
-        public override int Height => 34;
+        public override int Width => 68;
+        public override int Height => 68;
 
         public override void SetStaticDefaults()
         {
@@ -24,7 +24,7 @@ namespace DestroyerTest.Content.Scepter
             base.SetDefaults();
 
             // Override stats unique to this scepter
-            ShootDMG = 100;
+            ShootDMG = 130;
             ShootCrit = 4;
             ThrowCrit = 64;
             KB = 1;

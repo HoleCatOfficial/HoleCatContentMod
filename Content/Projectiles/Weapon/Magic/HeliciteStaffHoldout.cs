@@ -101,6 +101,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             Vector2 Dir = Main.MouseWorld - Projectile.Center;
             Dir.Normalize();
 
+            Projectile.rotation = Dir.ToRotation();
+
             var SpawnPT = Dir * 50;
 
             Projectile Beam = Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(), Projectile.Center + Dir, Vector2.Zero, ModContent.ProjectileType<HeliosBeam>(), Projectile.damage, 10, Owner.whoAmI, Projectile.rotation);

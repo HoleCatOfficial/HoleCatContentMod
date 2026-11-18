@@ -254,12 +254,15 @@ namespace DestroyerTest.Content.Entities
 
                 Vector2 Position = Main.Camera.ScaledPosition;
 
+                Main.EntitySpriteDraw(DTAssetLib.Square.Value, Position - Main.screenPosition, new Rectangle((int)(EternityScrollX * 1.1f), (int)(EternityScrollY * 1.1f), Main.screenWidth, Main.screenHeight), (ColorLib.Soul3.Darken(0.7f)) * GlobalOpacity, 0f, DTAssetLib.TilableNoise(3).Value.Size() / 2, 40f, SpriteEffects.None, 0f);
 
                 //Why do you use noise 3 for noise 10's drawing?
                 //I don't know, but doing it any other way causes it to not fit properly on the screen without needing to scale up the texture further, and I like the scale it's at.
                 Main.EntitySpriteDraw(DTAssetLib.TilableNoise(10).Value, Position - Main.screenPosition, new Rectangle(EternityScrollX, EternityScrollY, Main.screenWidth, Main.screenHeight), (ColorLib.Soul3 with { A = 0 } * 0.5f) * GlobalOpacity, 0f, DTAssetLib.TilableNoise(3).Value.Size() / 2, 6f, SpriteEffects.None, 0f);
                 Main.EntitySpriteDraw(DTAssetLib.TilableNoise(10).Value, Position - Main.screenPosition, new Rectangle((int)(EternityScrollX * 1.2f), (int)(EternityScrollY * 1.2f), Main.screenWidth, Main.screenHeight), (ScrollBackColor with { A = 0 } * 0.35f) * GlobalOpacity, 0f, DTAssetLib.TilableNoise(3).Value.Size() / 2, 6f, SpriteEffects.None, 0f);
                 Main.EntitySpriteDraw(DTAssetLib.TilableNoise(10).Value, Position - Main.screenPosition, new Rectangle((int)(EternityScrollX * 1.1f), (int)(EternityScrollY * 1.1f), Main.screenWidth, Main.screenHeight), (Color.White with { A = 0 } * 0.75f) * GlobalOpacity, 0f, DTAssetLib.TilableNoise(3).Value.Size() / 2, 6f, SpriteEffects.None, 0f);
+
+             
 
 
                 if (!DTConfig.instance.PhotosensitivityMode)

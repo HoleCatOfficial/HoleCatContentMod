@@ -98,6 +98,7 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
                 lightColor *= (Projectile.timeLeft / 30f);
             }
 
+            Vector2 Size = new Vector2(WidthDim, HeightDim);
             SpriteBatch spriteBatch = Main.spriteBatch;
             Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
             DTUtils Utility = new DTUtils();
@@ -116,14 +117,14 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
                 if (returning)
                 {
-                    Main.EntitySpriteDraw(DTAssetLib.Cyclone(1).Value, Projectile.Center - Main.screenPosition, null, lightColor * 0.4f, Projectile.rotation, DTAssetLib.Cyclone(1).Value.Size() / 2, 0.1f * Projectile.scale, SpriteEffects.None, 0);
+                    Main.EntitySpriteDraw(DTAssetLib.Cyclone(1).Value, Projectile.Center - Main.screenPosition, null, lightColor * 0.4f, Projectile.rotation, DTAssetLib.Cyclone(1).Value.Size() / 2, DTAssetLib.Cyclone(1).Value.ScaleRingTextureToMatchRadius(Size.Length(), 296) * Projectile.scale * 0.5f, SpriteEffects.FlipHorizontally, 0);
                 }
                 else
                 {
-                    Main.EntitySpriteDraw(DTAssetLib.Cyclone(1).Value, Projectile.Center - Main.screenPosition, null, lightColor * 0.4f, Projectile.rotation, DTAssetLib.Cyclone(1).Value.Size() / 2, 0.1f * Projectile.scale, SpriteEffects.FlipHorizontally, 0);
+                    Main.EntitySpriteDraw(DTAssetLib.Cyclone(1).Value, Projectile.Center - Main.screenPosition, null, lightColor * 0.4f, Projectile.rotation, DTAssetLib.Cyclone(1).Value.Size() / 2, DTAssetLib.Cyclone(1).Value.ScaleRingTextureToMatchRadius(Size.Length(), 296) * Projectile.scale * 0.5f, SpriteEffects.None, 0);
                 }
 
-                Main.EntitySpriteDraw(DTAssetLib.BloomRing.Value, Projectile.Center - Main.screenPosition, null, lightColor * 0.4f, Projectile.rotation, DTAssetLib.BloomRing.Value.Size() / 2, 0.4f * Projectile.scale, SpriteEffects.None, 0);
+                Main.EntitySpriteDraw(DTAssetLib.BloomRing.Value, Projectile.Center - Main.screenPosition, null, lightColor * 0.4f, Projectile.rotation, DTAssetLib.BloomRing.Value.Size() / 2, DTAssetLib.BloomRing.Value.ScaleRingTextureToMatchRadius(Size.Length(), 73) * Projectile.scale * 0.5f, SpriteEffects.None, 0);
 
                 Opus.ReturnToDefaultDrawing(spriteBatch);
 
@@ -142,14 +143,14 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
 
                 if (returning)
                 {
-                    Main.EntitySpriteDraw(DTAssetLib.Cyclone(1).Value, Projectile.Center - Main.screenPosition, null, OpusColorUtils.Pastel(Main.DiscoColor, 0.4f) * 0.4f, Projectile.rotation, DTAssetLib.Cyclone(1).Value.Size() / 2, 0.1f * Projectile.scale, SpriteEffects.None, 0);
+                    Main.EntitySpriteDraw(DTAssetLib.Cyclone(1).Value, Projectile.Center - Main.screenPosition, null, OpusColorUtils.Pastel(Main.DiscoColor, 0.4f) * 0.4f, Projectile.rotation, DTAssetLib.Cyclone(1).Value.Size() / 2, DTAssetLib.Cyclone(1).Value.ScaleRingTextureToMatchRadius(Size.Length(), 296) * Projectile.scale * 0.5f, SpriteEffects.FlipHorizontally, 0);
                 }
                 else
                 {
-                    Main.EntitySpriteDraw(DTAssetLib.Cyclone(1).Value, Projectile.Center - Main.screenPosition, null, OpusColorUtils.Pastel(Main.DiscoColor, 0.4f) * 0.4f, Projectile.rotation, DTAssetLib.Cyclone(1).Value.Size() / 2, 0.1f * Projectile.scale, SpriteEffects.FlipHorizontally, 0);
+                    Main.EntitySpriteDraw(DTAssetLib.Cyclone(1).Value, Projectile.Center - Main.screenPosition, null, OpusColorUtils.Pastel(Main.DiscoColor, 0.4f) * 0.4f, Projectile.rotation, DTAssetLib.Cyclone(1).Value.Size() / 2, DTAssetLib.Cyclone(1).Value.ScaleRingTextureToMatchRadius(Size.Length(), 296) * Projectile.scale * 0.5f, SpriteEffects.None, 0);
                 }
 
-                Main.EntitySpriteDraw(DTAssetLib.BloomRing.Value, Projectile.Center - Main.screenPosition, null, OpusColorUtils.Pastel(Main.DiscoColor, 0.4f) * 0.4f, Projectile.rotation, DTAssetLib.BloomRing.Value.Size() / 2, 0.4f * Projectile.scale, SpriteEffects.None, 0);
+                Main.EntitySpriteDraw(DTAssetLib.BloomRing.Value, Projectile.Center - Main.screenPosition, null, OpusColorUtils.Pastel(Main.DiscoColor, 0.4f) * 0.4f, Projectile.rotation, DTAssetLib.BloomRing.Value.Size() / 2, DTAssetLib.BloomRing.Value.ScaleRingTextureToMatchRadius(Size.Length(), 73) * Projectile.scale * 0.5f, SpriteEffects.None, 0);
 
                 Main.EntitySpriteDraw(projectileTexture, Projectile.Center - Main.screenPosition, null, OpusColorUtils.Pastel(Main.DiscoColor, 0.4f) * 0.6f, Projectile.rotation, projectileTexture.Size() / 2, Projectile.scale, SpriteEffects.None, 0);
 
