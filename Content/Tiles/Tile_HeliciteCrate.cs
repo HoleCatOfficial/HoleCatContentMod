@@ -26,7 +26,7 @@ namespace DestroyerTest.Content.Tiles
 
             // Etc
             LocalizedText name = CreateMapEntryName();
-            AddMapEntry(new Color(255, 155, 0), name);
+            AddMapEntry(new Color(200, 200, 200), name);
         }
 
         public override void WalkDust(ref int dustType, ref bool makeDust, ref Color color)

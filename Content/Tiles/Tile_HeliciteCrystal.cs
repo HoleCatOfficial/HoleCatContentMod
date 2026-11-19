@@ -33,7 +33,7 @@ namespace DestroyerTest.Content.Tiles
             Main.tileBlendAll[Type] = true;
 
             LocalizedText name = CreateMapEntryName();
-            AddMapEntry(new Color(255, 155, 0), name);
+            AddMapEntry(new Color(200, 200, 200), name);
 
             //DustType = ModContent.DustType<HeliciteCrystalDust>();
             HitSound = new SoundStyle("DestroyerTest/Assets/Audio/Scholar/ShieldHit", 3) with { Pitch = 1.6f, PitchVariance = 0.2f, MaxInstances = 0 };

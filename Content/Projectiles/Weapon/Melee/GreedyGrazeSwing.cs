@@ -13,7 +13,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 {
     public class GreedyGrazeSwing : BaseBroadswordProjectileFullSwing
     {
-        public SoundStyle Hit = DTAssetLib.Impacts.FleshHit with { Pitch = -1f, PitchVariance = 0.4f, MaxInstances = 0 };
+        public SoundStyle Hit = DTAssetLib.Impacts.Malevolence with { Pitch = -1f, PitchVariance = 0.4f, MaxInstances = 0 };
 
         public override SoundStyle Swing => DTAssetLib.SwordSounds.RuneSong with { Volume = 1.0f, Pitch = -0.7f, PitchVariance = 0.2f, MaxInstances = 0 };
         public override void SetDefaults()
@@ -26,7 +26,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             SwingSpeed = 0.14f;
             Projectile.extraUpdates = 1;
             UsesDefaultSweepFX = true;
-            SweepScale = 1f;
+            SweepScale = 1.5f;
             Glowmask = TextureAssets.Projectile[Type];
         }
         public override void HitNPCEffects(NPC npc, NPC.HitInfo hit, int damageDone)
@@ -40,7 +40,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             for (int i = 0; i < 7; i++)
             {
                 Spark Spark = new Spark();
-                Spark.PrepareSpark(npc.Center, new Vector2(Main.rand.NextFloat(2f, 6f) * splatterdir, 0).RotatedByRandom(0.1f), 0f, ColorLib.Ichor, 1f, false, 30, SparkDrawMode.Additive);
+                Spark.PrepareSpark(npc.Center, npc.Center.DirectionFrom(Owner.Center).RotatedByRandom(0.1f) * Main.rand.Next(2, 9), 0f, ColorLib.Ichor, 1f, false, 30, SparkDrawMode.Additive);
                 ParticleEngine.BehindProjectiles.Add(Spark);
             }
 
@@ -60,8 +60,6 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             swordTip = Projectile.Center + Projectile.rotation.ToRotationVector2() * (Projectile.Size.Length() * Projectile.scale);
 
             SwordLine = new Line(Owner.Center, swordTip);
-
-            ScaleMult = 1.6f;
 
         }
     }
