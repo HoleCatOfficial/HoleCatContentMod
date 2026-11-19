@@ -35,6 +35,10 @@ namespace DestroyerTest.Content.Magic
             Item.SetShopValues(ItemRarityColor.LightRed4, 02500);
         }
 
+        public override bool MagicPrefix()
+        {
+            return true;
+        }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             float RotationOffset1 = Main.rand.NextFloat(-0.35f, 0.36f);

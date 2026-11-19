@@ -2,6 +2,7 @@
 using DestroyerTest.Common;
 
 using Microsoft.Xna.Framework;
+using OpusLib.Content.Helpers;
 using Terraria.Graphics.Renderers;
 
 namespace DestroyerTest.Content.Particles.Orchestrated
@@ -43,10 +44,10 @@ namespace DestroyerTest.Content.Particles.Orchestrated
                 Left.PrepareSpark(position, new Vector2(-0.5f, 0), 0f, ColorLib.TenebrisMagenta, 0.75f, false, 40, SparkDrawMode.Additive);
                 Right.PrepareSpark(position, new Vector2(0.5f, 0), 0f, ColorLib.TenebrisMagenta, 0.75f, false, 40, SparkDrawMode.Additive);
 
-                UpLeft.PrepareSpark(position, new Vector2(-0.3f, -0.3f), 0f, DTColorUtils.Pastel(ColorLib.TenebrisMagenta, 0.9f), 0.5f, false, 40, SparkDrawMode.Additive);
-                UpRight.PrepareSpark(position, new Vector2(0.3f, -0.3f), 0f, DTColorUtils.Pastel(ColorLib.TenebrisMagenta, 0.9f), 0.5f, false, 40, SparkDrawMode.Additive);
-                DownLeft.PrepareSpark(position, new Vector2(-0.3f, 0.3f), 0f, DTColorUtils.Pastel(ColorLib.TenebrisMagenta, 0.9f), 0.5f, false, 40, SparkDrawMode.Additive);
-                DownRight.PrepareSpark(position, new Vector2(0.3f, 0.3f), 0f, DTColorUtils.Pastel(ColorLib.TenebrisMagenta, 0.9f), 0.5f, false, 40, SparkDrawMode.Additive);
+                UpLeft.PrepareSpark(position, new Vector2(-0.3f, -0.3f), 0f, OpusColorUtils.Pastel(ColorLib.TenebrisMagenta, 0.9f), 0.5f, false, 40, SparkDrawMode.Additive);
+                UpRight.PrepareSpark(position, new Vector2(0.3f, -0.3f), 0f, OpusColorUtils.Pastel(ColorLib.TenebrisMagenta, 0.9f), 0.5f, false, 40, SparkDrawMode.Additive);
+                DownLeft.PrepareSpark(position, new Vector2(-0.3f, 0.3f), 0f, OpusColorUtils.Pastel(ColorLib.TenebrisMagenta, 0.9f), 0.5f, false, 40, SparkDrawMode.Additive);
+                DownRight.PrepareSpark(position, new Vector2(0.3f, 0.3f), 0f, OpusColorUtils.Pastel(ColorLib.TenebrisMagenta, 0.9f), 0.5f, false, 40, SparkDrawMode.Additive);
 
                 ParticleEngine.BehindProjectiles.Add(Up);
                 ParticleEngine.BehindProjectiles.Add(Down);

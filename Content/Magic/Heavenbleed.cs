@@ -76,6 +76,11 @@ namespace DestroyerTest.Content.Magic
             return false;
         }
 
+        public override bool MagicPrefix()
+        {
+            return true;
+        }
+
         public override bool CanUseItem(Player player)
         {
 

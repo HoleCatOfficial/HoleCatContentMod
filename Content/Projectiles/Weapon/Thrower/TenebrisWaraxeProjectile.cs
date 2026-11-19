@@ -5,6 +5,7 @@ using DestroyerTest.Content.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
+using OpusLib.Content.Helpers;
 using OpusLib.Content.Particles;
 using Terraria;
 using Terraria.Audio;
@@ -162,7 +163,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Thrower
             ParticleEngine.BehindProjectiles.Add(ExplosionFX);
 
             BloomRingSharp Ring = new BloomRingSharp();
-            Ring.Prepare(target.Center, Vector2.Zero, DTColorUtils.Pastel(clr, 0.5f), 0.02f, 0.01f, 0.3f, BlendState.Additive);
+            Ring.Prepare(target.Center, Vector2.Zero, OpusColorUtils.Pastel(clr, 0.5f), 0.02f, 0.01f, 0.3f, BlendState.Additive);
             ParticleEngine.BehindProjectiles.Add(Ring);
 
             float X = -Projectile.oldVelocity.X * 0.5f;
@@ -203,7 +204,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Thrower
             ParticleEngine.BehindProjectiles.Add(ExplosionFX);
 
             BloomRingSharp Ring = new BloomRingSharp();
-            Ring.Prepare(Projectile.Center, Vector2.Zero, DTColorUtils.Pastel(clr, 0.5f), 0.02f, 0.01f, 0.3f, BlendState.Additive);
+            Ring.Prepare(Projectile.Center, Vector2.Zero, OpusColorUtils.Pastel(clr, 0.5f), 0.02f, 0.01f, 0.3f, BlendState.Additive);
             ParticleEngine.BehindProjectiles.Add(Ring);
 
             float X = -oldVelocity.X * 0.5f;

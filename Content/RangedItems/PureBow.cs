@@ -41,5 +41,10 @@ namespace DestroyerTest.Content.RangedItems
         {
             return player.ownedProjectileCounts[Item.shoot] < 1;
         }
+
+        public override bool RangedPrefix()
+        {
+            return true;
+        }
     }
 }

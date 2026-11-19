@@ -4,10 +4,11 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 
 namespace DestroyerTest.Content.Fargos.EternityDrops
 {
-    public class UnyieldingSkull : ModItem
+    public class UnyieldingSkull : OneTimeConsumable
     {
         public override void SetStaticDefaults()
         {
@@ -19,8 +20,8 @@ namespace DestroyerTest.Content.Fargos.EternityDrops
             Item.width = 56;
             Item.height = 22;
             Item.useStyle = ItemUseStyleID.HoldUp;
-            Item.useAnimation = 15;
-            Item.useTime = 90;
+            Item.useAnimation = 180;
+            Item.useTime = 180;
             Item.useTurn = true;
             Item.UseSound = new SoundStyle(DTAssetLib.AudioPath + "/UnyieldingSkullConsume");
             Item.maxStack = 1;
@@ -37,6 +38,23 @@ namespace DestroyerTest.Content.Fargos.EternityDrops
             }
             return true;
         }
+
+        public override bool Consumed()
+        {
+            if (Main.LocalPlayer.TryGetModPlayer<UnyieldingSkullUpgrade>(out var upgrade))
+            {
+                return upgrade.PermaBuff;
+            }
+            return true;
+        }
+
+        public override void OnConsume(Player player)
+        {
+            if (player.TryGetModPlayer<UnyieldingSkullUpgrade>(out var upgrade))
+            {
+                upgrade.PermaBuff = true;
+            }
+        }
     }
 
     public class UnyieldingSkullUpgrade : ModPlayer
@@ -50,6 +68,19 @@ namespace DestroyerTest.Content.Fargos.EternityDrops
                 Player.GetCritChance(DamageClass.Summon) += 8f;
                 Player.GetKnockback(DamageClass.Summon) += 0.22f;
                 Player.maxTurrets += 1;
+            }
+        }
+
+        public override void SaveData(TagCompound tag)
+        {
+            tag.Add("US_consumed", PermaBuff);
+        }
+
+        public override void LoadData(TagCompound tag)
+        {
+            if (tag.ContainsKey("US_consumed"))
+            {
+                PermaBuff = tag.GetBool("US_consumed");
             }
         }
     }

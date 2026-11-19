@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
+using OpusLib.Content.Helpers;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -34,7 +35,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
 
         public override bool PreDraw(ref Color lightColor)
         {
-            lightColor = DTColorUtils.FromHex("#601082");
+            lightColor = OpusColorUtils.FromHex("#601082");
             Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
 
             int frameHeight = projectileTexture.Height / Main.projFrames[Projectile.type];
@@ -49,7 +50,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
             Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Deferred);
             Main.EntitySpriteDraw(projectileTexture, Projectile.Center - Main.screenPosition, frame, lightColor * 0.6f, Projectile.rotation, origin, Projectile.scale * 1.2f, SpriteEffects.None, 0);
             Main.EntitySpriteDraw(projectileTexture, Projectile.Center - Main.screenPosition, frame, lightColor, Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
-            Main.EntitySpriteDraw(projectileTexture, Projectile.Center - Main.screenPosition, frame, DTColorUtils.Pastel(lightColor, 0.4f), Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
+            Main.EntitySpriteDraw(projectileTexture, Projectile.Center - Main.screenPosition, frame, OpusColorUtils.Pastel(lightColor, 0.4f), Projectile.rotation, origin, Projectile.scale, SpriteEffects.None, 0);
             Opus.ReturnToDefaultDrawing(Main.spriteBatch);
             return false;
         }

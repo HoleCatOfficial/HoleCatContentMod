@@ -10,35 +10,22 @@ namespace DestroyerTest.Content.MeleeWeapons
 {
     public class Icemourne : ModItem
     {
-
-        //Weapon Properties
         public override void SetDefaults()
         {
-            // Common Properties
             Item.width = 76;
             Item.height = 76;
             Item.value = Item.sellPrice(gold: 2, silver: 50);
             Item.rare = ItemRarityID.Pink;
-
-            // Use Properties
-            // Note that useTime and useAnimation for this item don't actually affect the behavior because the held projectile handles that. 
-            // Each attack takes a different amount of time to execute
-            // Conforming to the item useTime and useAnimation makes it much harder to design
-            // It does, however, affect the item tooltip, so don't leave it out.
             Item.useTime = 20;
             Item.useAnimation = 20;
             Item.useStyle = ItemUseStyleID.Swing;
             Item.UseSound = SoundID.Item66;
-
-            // Weapon Properties
-            Item.knockBack = 5;  // The knockback of your sword, this is dynamically adjusted in the projectile code.
-            Item.autoReuse = true; // This determines whether the weapon has autoswing
-            Item.damage = 15; // The damage of your sword, this is dynamically adjusted in the projectile code.
-            Item.DamageType = ModContent.GetInstance<DTTrueMeleeClass>(); // Deals melee damage
-            Item.crit = 16; // The critical strike chance the weapon has. The player, by default, has a 4% critical strike chance.
-
-            // Projectile Properties
-            Item.shoot = ModContent.ProjectileType<IcemourneWave>(); // The sword as a projectile
+            Item.knockBack = 5;
+            Item.autoReuse = true;
+            Item.damage = 15;
+            Item.DamageType = ModContent.GetInstance<DTTrueMeleeClass>();
+            Item.crit = 16;
+            Item.shoot = ModContent.ProjectileType<IcemourneWave>();
         }
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
@@ -57,7 +44,6 @@ namespace DestroyerTest.Content.MeleeWeapons
         public override void OnHitNPC(Player player, NPC target, NPC.HitInfo hit, int damageDone)
         {
             player.AddBuff(BuffID.Chilled, 60);
-            target.AddBuff(BuffID.Frostburn, 600);
         }
 
 

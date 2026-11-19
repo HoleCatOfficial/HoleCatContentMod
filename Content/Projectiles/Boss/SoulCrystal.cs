@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using BreadLibrary.Core.Graphics.Particles;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Buffs;
@@ -7,6 +8,7 @@ using DestroyerTest.Content.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
+using OpusLib.Content.Helpers;
 using Terraria;
 using Terraria.Audio;
 using Terraria.DataStructures;
@@ -20,6 +22,8 @@ namespace DestroyerTest.Content.Projectiles.Boss
     {
         public override void SetStaticDefaults()
         {
+            ProjectileID.Sets.TrailCacheLength[Type] = 30;
+            ProjectileID.Sets.TrailingMode[Type] = 3;
         }
 
         public override void SetDefaults()
@@ -45,6 +49,8 @@ namespace DestroyerTest.Content.Projectiles.Boss
             SpriteBatch spriteBatch = Main.spriteBatch;
             DTUtils Utility = new DTUtils();
 
+            DTTrail.DrawTrail(spriteBatch, DTAssetLib.Streak(2, true).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 20, ColorLib.Soul3, trailOffset);
+
             Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
 
             Opus.DrawGlowOnProj(Projectile, lightColor * GlowMult, true);
@@ -61,9 +67,6 @@ namespace DestroyerTest.Content.Projectiles.Boss
 
         }
 
-        public List<Vector2> TrailPositions = new();
-        public List<float> TrailRotations = new();
-        private const int TrailLength = 400;
         public float GlowMult = 1f;
         public override void AI()
         {
@@ -77,7 +80,7 @@ namespace DestroyerTest.Content.Projectiles.Boss
 
                 Spark Spark = new Spark();
 
-                Spark.PrepareSpark(Main.rand.NextVector2FromRectangle(Projectile.Hitbox), (-Projectile.velocity * 0.5f).RotatedByRandom(0.05f), 0f, DTColorUtils.Pastel(ColorLib.Soul, 0.2f), 1f, false, 40, SparkDrawMode.Additive);
+                Spark.PrepareSpark(Main.rand.NextVector2FromRectangle(Projectile.Hitbox), (-Projectile.velocity * 0.5f).RotatedByRandom(0.05f), Projectile.velocity.ToRotation() + MathHelper.PiOver2, OpusColorUtils.Pastel(ColorLib.Soul, 0.2f), 1f, false, 40, SparkDrawMode.Additive);
                 ParticleEngine.ShaderParticles.Add(Spark);
             }
 

@@ -39,6 +39,11 @@ namespace DestroyerTest.Content.RangedItems
             Item.shootSpeed = 10f;
         }
 
+        public override bool RangedPrefix()
+        {
+            return true;
+        }
+
         public override void AddRecipes()
         {
             CreateRecipe()

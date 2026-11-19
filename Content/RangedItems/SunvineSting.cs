@@ -60,6 +60,10 @@ namespace DestroyerTest.Content.RangedItems
             }
         }
 
+        public override bool RangedPrefix()
+        {
+            return true;
+        }
 
         public override void AddRecipes()
         {

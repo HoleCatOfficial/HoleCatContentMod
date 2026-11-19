@@ -3,6 +3,7 @@ using DestroyerTest.Content.Buffs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
+using OpusLib.Content.Helpers;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -46,7 +47,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.ConstitutionBoss
             SpriteBatch spriteBatch = Main.spriteBatch;
             Opus.StartSpriteBatchWithBlending(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
             Main.EntitySpriteDraw(DTAssetLib.FireSwing.Value, Projectile.Center - Main.screenPosition, null, ColorLib.StellarFireGradientLooping(), Projectile.rotation, DTAssetLib.FireSwing.Value.Size() / 2, 1f, SpriteEffects.None, 0f);
-            Main.EntitySpriteDraw(DTAssetLib.FireSwingHighlight.Value, Projectile.Center - Main.screenPosition, null, DTColorUtils.Pastel(ColorLib.StellarFireGradientLooping(), 0.7f), Projectile.rotation, DTAssetLib.FireSwingHighlight.Value.Size() / 2, 1f, SpriteEffects.None, 0f);
+            Main.EntitySpriteDraw(DTAssetLib.FireSwingHighlight.Value, Projectile.Center - Main.screenPosition, null, OpusColorUtils.Pastel(ColorLib.StellarFireGradientLooping(), 0.7f), Projectile.rotation, DTAssetLib.FireSwingHighlight.Value.Size() / 2, 1f, SpriteEffects.None, 0f);
             Opus.ReturnToDefaultDrawing(spriteBatch);
         }
 

@@ -1614,7 +1614,7 @@ Item_RiftConfiguratorFurniture: {
 }
 
 Item_RiftConfigurator: {
-	DisplayName: Item_ Rift Configurator
+	DisplayName: Rift Configurator
 	Tooltip: ""
 }
 
@@ -5343,7 +5343,7 @@ IdriGreatsword: {
 	DisplayName: Relic of the Fallen
 	Tooltip:
 		'''
-		Swings in a circle, ignoreing 100 points of enemy defense and inflicting Soul Inferno on critical hits.
+		Swings in a circle, ignoring 100 points of enemy defense and inflicting Soul Inferno on critical hits.
 
 		'A worn and well-used greatsword. Judging from where it came from, one can inferred who owned it last.'
 		'''
@@ -5913,32 +5913,27 @@ GhostBoa: {
 		'''
 }
 
-MidnightMossWand: {
-	DisplayName: Midnight Moss Wand
+LunacyParasite: {
+	DisplayName: Lunacy Parasite
 	Tooltip: ""
 }
 
-Item_CarbonaceousShale: {
-	DisplayName: Carbonaceous Shale
+Item_BloodMoonTier1MusicBox: {
+	DisplayName: Blood Moon Tier1 Music Box
 	Tooltip: ""
 }
 
-Item_CorruptCarbonaceousShale: {
-	DisplayName: Corrupt Carbonaceous Shale
+Item_BloodMoonTier2MusicBox: {
+	DisplayName: Blood Moon Tier2 Music Box
 	Tooltip: ""
 }
 
-Item_CrimsonCarbonaceousShale: {
-	DisplayName: Crimson Carbonaceous Shale
+Item_BloodMoonTier3MusicBox: {
+	DisplayName: Blood Moon Tier3 Music Box
 	Tooltip: ""
 }
 
-Item_HallowCarbonaceousShale: {
-	DisplayName: Hallow Carbonaceous Shale
-	Tooltip: ""
-}
-
-DarkWater: {
-	DisplayName: Dark Water
+Item_GardenMusicBox: {
+	DisplayName: Garden Music Box
 	Tooltip: ""
 }

@@ -6,6 +6,7 @@ using DestroyerTest.Content.Particles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
+using OpusLib.Content.Helpers;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -51,7 +52,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
 
             if (WaitTimer < 20)
             {
-                Opus.DrawTextureOnProj(DTAssetLib.FadeLine, Projectile, DTColorUtils.Pastel(ColorLib.Soul2, 50), false, Projectile.rotation + MathHelper.PiOver2, 4f, 1f);
+                Opus.DrawTextureOnProj(DTAssetLib.FadeLine, Projectile, OpusColorUtils.Pastel(ColorLib.Soul2, 50), false, Projectile.rotation + MathHelper.PiOver2, 4f, 1f);
             }
 
             Main.EntitySpriteDraw(TextureAssets.Projectile[Projectile.type].Value, Projectile.Center - Main.screenPosition, null, Color.White, Projectile.rotation, TextureAssets.Projectile[Projectile.type].Value.Size() / 2, new Vector2(Projectile.scale * 0.5f, (Projectile.scale * 0.5f) * YScale), SpriteEffects.None, 0);
@@ -71,7 +72,7 @@ namespace DestroyerTest.Content.Projectiles.Boss.WyvernCorpseBoss
             {
                 Spark Spark = new Spark();
 
-                Spark.PrepareSpark(Main.rand.NextVector2FromRectangle(Projectile.Hitbox), -(Projectile.velocity * 0.1f), 0f, DTColorUtils.Pastel(ColorLib.Soul, 0.8f), 1f, false, 40, SparkDrawMode.Additive);
+                Spark.PrepareSpark(Main.rand.NextVector2FromRectangle(Projectile.Hitbox), -(Projectile.velocity * 0.1f), 0f, OpusColorUtils.Pastel(ColorLib.Soul, 0.8f), 1f, false, 40, SparkDrawMode.Additive);
                 ParticleEngine.BehindProjectiles.Add(Spark);
 
             }

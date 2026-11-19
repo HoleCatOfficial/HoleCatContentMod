@@ -58,7 +58,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             }
 
             Opus.StartSpriteBatchWithBlending(Main.spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
-            Main.EntitySpriteDraw(Tex, player.MountedCenter - Main.screenPosition, null, DTColorUtils.MultiLerp(SlashProgress, ColorLib.IchorCrystalColorMap) * SweepOpacity, (Projectile.rotation + MathHelper.PiOver4) + rOffset, Tex.Size() / 2, AdjustedScale * SweepScale, FX);
+            Main.EntitySpriteDraw(Tex, player.MountedCenter - Main.screenPosition, null, OpusColorUtils.MultiLerp(SlashProgress, ColorLib.IchorCrystalColorMap) * SweepOpacity, (Projectile.rotation + MathHelper.PiOver4) + rOffset, Tex.Size() / 2, AdjustedScale * base.SweepScale, FX);
             Opus.ReturnToDefaultDrawing(Main.spriteBatch);
         }
 

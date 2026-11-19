@@ -34,6 +34,10 @@ namespace DestroyerTest.Content.MeleeWeapons.Flails
             Item.noMelee = true;
         }
 
+        public override bool MeleePrefix()
+        {
+            return true;
+        }
         public override void AddRecipes()
         {
             CreateRecipe()

@@ -6,6 +6,7 @@ using DestroyerTest.Common.Interfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
+using OpusLib.Content.Helpers;
 using OpusLib.Content.Particles;
 using Terraria;
 using Terraria.Audio;
@@ -125,7 +126,7 @@ namespace DestroyerTest.Content.Projectiles
             }
 
             Fire fireX = new Fire();
-            fireX.PrepareFire(Projectile.Center, Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.3f, 0.3f), DTColorUtils.Pastel(Color.Purple, 0.4f), 0.3f, 100, FireDrawMode.Additive, PixelLayer.AboveProjectiles);
+            fireX.PrepareFire(Projectile.Center, Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.3f, 0.3f), OpusColorUtils.Pastel(Color.Purple, 0.4f), 0.3f, 100, FireDrawMode.Additive, PixelLayer.AboveProjectiles);
             ParticleEngine.BehindProjectiles.Add(fireX);
 
             if (Main.rand.NextBool(4) && !DTOptimizationsConfig.instance.DisableExcessParticles)
@@ -135,7 +136,7 @@ namespace DestroyerTest.Content.Projectiles
                 ParticleEngine.BehindProjectiles.Add(fire2);
 
                 Fire fire3 = new Fire();
-                fire3.PrepareFire(Projectile.Center, Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.3f, 0.3f), DTColorUtils.Pastel(Color.HotPink, 0.5f), 0.35f, 100, FireDrawMode.Additive, PixelLayer.AboveProjectiles);
+                fire3.PrepareFire(Projectile.Center, Vector2.Zero, DTUtils.RandomDirection(2), Main.rand.NextFloat(-0.3f, 0.3f), OpusColorUtils.Pastel(Color.HotPink, 0.5f), 0.35f, 100, FireDrawMode.Additive, PixelLayer.AboveProjectiles);
                 ParticleEngine.BehindProjectiles.Add(fire3);
             }
 

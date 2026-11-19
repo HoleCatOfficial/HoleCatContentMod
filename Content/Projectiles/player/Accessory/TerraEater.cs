@@ -50,7 +50,7 @@ namespace DestroyerTest.Content.Projectiles.player.Accessory
         {
             for (int i = 0; i < Projectile.oldPos.Length; i++)
             {
-                float Mult = MathHelper.Lerp(1f, 0f, i / (float)Projectile.oldPos.Length);
+                float Mult = MathHelper.Lerp(0f, 1f, i / (float)Projectile.oldPos.Length);
                 Color col = Color.Lerp(Color.DarkCyan, Color.DarkSeaGreen, i / (float)Projectile.oldPos.Length);
                 Main.EntitySpriteDraw(DTAssetLib.PointGlowPreMultiplied.Value, Projectile.OldCenter()[i] - Main.screenPosition, null, (col with { A = 0 } * 0.2f * Mult) * Projectile.Opacity, 0f, DTAssetLib.PointGlowPreMultiplied.Value.Size() / 2, 1f, SpriteEffects.None);
             }

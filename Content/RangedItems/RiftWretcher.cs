@@ -51,6 +51,10 @@ namespace DestroyerTest.Content.RangedItems
                 .Register();
         }
 
+        public override bool RangedPrefix()
+        {
+            return true;
+        }
         public override Vector2? HoldoutOffset()
         {
             return new Vector2(8f, 0f);

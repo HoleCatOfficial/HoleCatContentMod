@@ -28,7 +28,7 @@ namespace DestroyerTest.Content.Particles
 
             float LifetimeCompletion = (float)Lifetime / MaxLifetime;
 
-            color = DTColorUtils.MultiLerp(LifetimeCompletion, ColorLib.WretchedColorMap);
+            color = OpusColorUtils.MultiLerp(LifetimeCompletion, ColorLib.WretchedColorMap);
             position += velocity;
 
             OldPositions.Add(position);

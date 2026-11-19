@@ -1,4 +1,6 @@
 using BreadLibrary.Core.Graphics.Pixelation;
+using BreadLibrary.Core.Graphics.Spritebatch;
+using BreadLibrary.Core.Utilities;
 using DestroyerTest.Common;
 using DestroyerTest.Content.Projectiles;
 using DestroyerTest.Content.Resources;
@@ -103,7 +105,15 @@ namespace DestroyerTest.Content.Equips
 
         void IPlayerPixelatedDrawer.DrawPixelated(Player player, SpriteBatch spriteBatch)
         {
+            var cap = spriteBatch.Capture();
+
+            spriteBatch.End();
+
+            cap.TransformMatrix = PixelationSystem.PixelationMatrix;
+
+            spriteBatch.Begin(cap);
             DrawRuneRing(player);
+            spriteBatch.ResetToDefault();
         }
 
         float rot = 0f;

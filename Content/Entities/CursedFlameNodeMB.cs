@@ -131,7 +131,7 @@ namespace DestroyerTest.Content.Entities
             if (CurrentAttack == AttackState.Dormant)
             {
 
-                DTUtils.DrawChargeBar(2f, (NPC.Center + new Vector2(0, 100)) - Main.screenPosition, progress, DTColorUtils.MultiLerp(progress, ColorLib.WretchedColorMap));
+                DTUtils.DrawChargeBar(2f, (NPC.Center + new Vector2(0, 100)) - Main.screenPosition, progress, OpusColorUtils.MultiLerp(progress, ColorLib.WretchedColorMap));
             }
         }
 

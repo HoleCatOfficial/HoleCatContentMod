@@ -4,6 +4,7 @@ using DestroyerTest.Content.Buffs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
+using OpusLib.Content.Helpers;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -57,7 +58,7 @@ namespace DestroyerTest.Content.Projectiles.Boss
 
             if (WaitTimer < 20)
             {
-                Opus.DrawTextureOnProj(DTAssetLib.FadeLine, Projectile, DTColorUtils.Pastel(ColorLib.TenebrisGradient, 50), false, Projectile.rotation + MathHelper.PiOver2, 4f, 1f);
+                Opus.DrawTextureOnProj(DTAssetLib.FadeLine, Projectile, OpusColorUtils.Pastel(ColorLib.TenebrisGradient, 50), false, Projectile.rotation + MathHelper.PiOver2, 4f, 1f);
             }
 
 

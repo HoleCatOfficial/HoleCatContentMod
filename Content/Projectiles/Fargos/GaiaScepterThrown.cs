@@ -4,6 +4,7 @@ using DestroyerTest.Content.Projectiles.ParentClasses;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
+using OpusLib.Content.Helpers;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
@@ -53,7 +54,7 @@ namespace DestroyerTest.Content.Projectiles.Fargos
             }
             else if (Main.rand.NextBool(3) && s.ArmorSetHelper_AetherianShimmerEffects)
             {
-                Dust dust = Dust.NewDustPerfect(Projectile.Center, DustID.TintableDustLighted, Projectile.velocity * 0.2f, 100, DTColorUtils.Pastel(Main.DiscoColor, 0.4f), 1.2f);
+                Dust dust = Dust.NewDustPerfect(Projectile.Center, DustID.TintableDustLighted, Projectile.velocity * 0.2f, 100, OpusColorUtils.Pastel(Main.DiscoColor, 0.4f), 1.2f);
                 dust.noGravity = true;
             }
 

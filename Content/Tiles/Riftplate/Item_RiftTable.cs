@@ -20,7 +20,6 @@ namespace DestroyerTest.Content.Tiles.Riftplate
             CreateRecipe()
                 .AddIngredient<Item_Riftplate>(6)
                 .AddIngredient<Item_Riftpane>(4)
-                .AddIngredient<Item_HeliciteCrystal>(2)
                 .AddTile<Tile_RiftCrucible>()
                 .Register();
         }

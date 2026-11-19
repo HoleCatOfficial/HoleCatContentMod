@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Terraria;
+using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
@@ -8,38 +9,37 @@ namespace DestroyerTest.Common
 {
     public abstract class OneTimeConsumable : ModItem
     {
-        public bool Consumed = false;
+        public abstract bool Consumed();
 
         public abstract void OnConsume(Player player);
 
+        public override bool? UseItem(Player player)
+        {
+
+            return true;
+        }
+
         public override bool ConsumeItem(Player player)
         {
-            OnConsume(player);
-            Consumed = true;
+
             return true;
+        }
+
+        public override void OnConsumeItem(Player player)
+        {
+            OnConsume(player);
+            
         }
         public override bool CanUseItem(Player player)
         {
-            return !Consumed;
+            return true;
         }
-
-        public override void SaveData(TagCompound tag)
-        {
-            tag["Consumed"] = Consumed;
-        }
-
-        public override void LoadData(TagCompound tag)
-        {
-            Consumed = tag.GetBool("Consumed");
-        }
-
-
 
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
-            TooltipLine Info = new TooltipLine(Mod, "AlreadyConsumed", Language.GetTextValue("Mods.DestroyerTest.OneTimeConsumableInfo"));
+            TooltipLine Info = new TooltipLine(Mod, "AlreadyConsumed", Language.GetTextValue("Mods.DestroyerTest.Extras.OneTimeConsumableInfo")) { OverrideColor = Colors.CoinGold };
 
-            if (Consumed)
+            if (Consumed())
             {
                 tooltips.Add(Info);
             }

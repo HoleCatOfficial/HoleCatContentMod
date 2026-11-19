@@ -23,18 +23,6 @@ namespace DestroyerTest.Content.Projectiles.Fargos
         {
             base.AI();
 
-            if (!DTCrossMod.FargosSoulsIsLoaded || !DTCrossMod.FargosSoulsMod.TryFind<ModProjectile>("GildedSceptreProj", out var SC))
-            {
-                return;
-            }
-
-            if (returning)
-            {
-                if (Main.GameUpdateCount % 15 == 0)
-                {
-                    Projectile.NewProjectile(Projectile.GetSource_FromThis(), Projectile.Center, Vector2.Zero, SC.Type, Projectile.damage / 2, 3f, Projectile.owner);
-                }
-            }
         }
     }
 }

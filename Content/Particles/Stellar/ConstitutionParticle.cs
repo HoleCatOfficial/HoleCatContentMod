@@ -5,6 +5,7 @@ using DestroyerTest.Common;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
+using OpusLib.Content.Helpers;
 using Terraria;
 using Terraria.Graphics.Renderers;
 using Terraria.ModLoader;
@@ -37,7 +38,7 @@ namespace DestroyerTest.Content.Particles.Stellar
 
             position += velocity;
 
-            color = DTColorUtils.MultiLerp(LifetimeCompletion, ColorLib.StellarFireColormap);
+            color = OpusColorUtils.MultiLerp(LifetimeCompletion, ColorLib.StellarFireColormap);
 
             if (LifetimeCompletion > 0.5f)
             {

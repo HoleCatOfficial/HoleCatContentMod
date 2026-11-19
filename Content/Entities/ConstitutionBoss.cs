@@ -352,10 +352,10 @@ namespace DestroyerTest.Content.Entities
             ScrollingTextureSpine(leftSide, DTAssetLib.Streak(2, true), OpusColorUtils.MultiLerp(Progress, ColorLib.StellarFireColormap) with { A = 0 } * 0.75f, spriteBatch, WO1, OuterWidth);
             ScrollingTextureSpine(rightSide, DTAssetLib.Streak(2, true), OpusColorUtils.MultiLerp(Progress, ColorLib.StellarFireColormap) with { A = 0 } * 0.75f, spriteBatch, WO1, OuterWidth);
 
-            ScrollingTextureSpine(topSide, DTAssetLib.Streak(1, true), DTColorUtils.Pastel(OpusColorUtils.MultiLerp(Progress, ColorLib.StellarFireColormap), 0.6f) with { A = 0 }, spriteBatch, WO2, 0.2f);
-            ScrollingTextureSpine(bottomSide, DTAssetLib.Streak(1, true), DTColorUtils.Pastel(OpusColorUtils.MultiLerp(Progress, ColorLib.StellarFireColormap), 0.6f) with { A = 0 }, spriteBatch, WO2, 0.2f);
-            ScrollingTextureSpine(leftSide, DTAssetLib.Streak(1, true), DTColorUtils.Pastel(OpusColorUtils.MultiLerp(Progress, ColorLib.StellarFireColormap), 0.6f) with { A = 0 }, spriteBatch, WO2, 0.2f);
-            ScrollingTextureSpine(rightSide, DTAssetLib.Streak(1, true), DTColorUtils.Pastel(OpusColorUtils.MultiLerp(Progress, ColorLib.StellarFireColormap), 0.6f) with { A = 0 }, spriteBatch, WO2, 0.2f);
+            ScrollingTextureSpine(topSide, DTAssetLib.Streak(1, true),OpusColorUtils.Pastel(OpusColorUtils.MultiLerp(Progress, ColorLib.StellarFireColormap), 0.6f) with { A = 0 }, spriteBatch, WO2, 0.2f);
+            ScrollingTextureSpine(bottomSide, DTAssetLib.Streak(1, true),OpusColorUtils.Pastel(OpusColorUtils.MultiLerp(Progress, ColorLib.StellarFireColormap), 0.6f) with { A = 0 }, spriteBatch, WO2, 0.2f);
+            ScrollingTextureSpine(leftSide, DTAssetLib.Streak(1, true),OpusColorUtils.Pastel(OpusColorUtils.MultiLerp(Progress, ColorLib.StellarFireColormap), 0.6f) with { A = 0 }, spriteBatch, WO2, 0.2f);
+            ScrollingTextureSpine(rightSide, DTAssetLib.Streak(1, true),OpusColorUtils.Pastel(OpusColorUtils.MultiLerp(Progress, ColorLib.StellarFireColormap), 0.6f) with { A = 0 }, spriteBatch, WO2, 0.2f);
 
         }
 
@@ -639,6 +639,8 @@ namespace DestroyerTest.Content.Entities
             float right = arenaCenter.X + HalfWidth;
             float top = arenaCenter.Y - HalfHeight;
             float bottom = arenaCenter.Y + HalfHeight;
+
+            player.wingTime = player.wingTimeMax;
 
             // X bounds
             if (player.position.X < left)
@@ -1212,7 +1214,7 @@ namespace DestroyerTest.Content.Entities
                 else
                 {
                     Vector2[] Ps = bottomSide.GetPointsAlongLine(12);
-                    Main.NewText($"u={u}, top={(u % 2 == 0)}");
+                    //Main.NewText($"u={u}, top={(u % 2 == 0)}");
                     if (u % 2 == 0)
                     {
                         Ps = topSide.GetPointsAlongLine(12);
