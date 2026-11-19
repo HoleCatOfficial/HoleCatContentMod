@@ -1,4 +1,5 @@
 using DestroyerTest.Common;
+using DestroyerTest.Content.Projectiles.Fargos;
 using DestroyerTest.Content.Projectiles.Weapon.Scepter;
 using DestroyerTest.Content.Scepter;
 using DestroyerTest.Rarity.Scepter;
@@ -39,8 +40,8 @@ namespace DestroyerTest.Content.Fargos.Scepter
             Rarity = ModContent.RarityType<PearlRarity>();
 
             // Assign projectile types
-            ShootID = ProjectileID.BladeOfGrass;
-            ThrowID = ModContent.ProjectileType<ChlorophyteScepterThrown>();
+            ShootID = ModContent.ProjectileType<TwistedSpirit>();
+            ThrowID = ModContent.ProjectileType<TwistedScepterThrown>();
 
             // Optional: change sounds
             ShootSound = SoundID.Item25;
@@ -48,15 +49,6 @@ namespace DestroyerTest.Content.Fargos.Scepter
 
             // Refresh defaults after overriding values
             base.SetDefaults();
-        }
-
-        public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
-        {
-            if (player.altFunctionUse != 2)
-            {
-                Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<NatureShot>(), 60, 3.2f, player.whoAmI);
-            }
-            return true;
         }
     }
 }

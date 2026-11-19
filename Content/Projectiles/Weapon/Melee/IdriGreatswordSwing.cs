@@ -18,7 +18,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
     {
         public SoundStyle Hit = DTAssetLib.IdriGreatswordSlice(ChildSafety.Disabled) with { PitchVariance = 0.4f, MaxInstances = 0 };
 
-        public override SoundStyle Swing => DTAssetLib.SwordSounds.QuickSwing with { Pitch = -1f };
+        public override SoundStyle Swing => DTAssetLib.SwordSounds.ConSwing with { Pitch = -1f };
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -29,9 +29,9 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
             SwingSpeed = 0.12f;
             UsesDefaultSweepFX = true;
             ScaleMult = 1.6f;
-            SweepScale = 1.8f;
+            SweepScale = 2.6f;
             Projectile.ArmorPenetration = 100;
-            Projectile.extraUpdates = 3;
+            Projectile.extraUpdates = 5;
         }
         public override void HitNPCEffects(NPC npc, NPC.HitInfo hit, int damageDone)
         {

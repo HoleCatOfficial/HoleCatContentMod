@@ -28,7 +28,7 @@ namespace DestroyerTest.Common
         public override void OnConsumeItem(Player player)
         {
             OnConsume(player);
-            Main.NewText("Consumed");
+            
         }
         public override bool CanUseItem(Player player)
         {

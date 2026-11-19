@@ -192,11 +192,13 @@ namespace DestroyerTest.Content.Fargos.Scepter
 
         public override void AddRecipes()
         {
+            /*
             CreateRecipe()
                 .AddIngredient<ElementalScepter>()
 
                 .AddTile(TileID.LunarCraftingStation)
                 .Register();
+            */
         }
     }
 }
