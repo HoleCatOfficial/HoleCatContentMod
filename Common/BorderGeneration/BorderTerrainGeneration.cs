@@ -171,7 +171,7 @@ namespace DestroyerTest.Common.BorderGeneration
 
             c.EmitDelegate<Func<Point, bool>>((origin) => {
                 // Blocks the giant tree if it tries to spawn in your custom biome depth
-                return origin.Y > (MinimumY);
+                return origin.Y > (MinimumY - 70);
             });
 
             ILLabel continueLabel = c.DefineLabel();
@@ -794,16 +794,16 @@ namespace DestroyerTest.Common.BorderGeneration
 
                                 if (!Main.tile[x + 1, y - 1].HasTile && !Main.tile[x - 1, y - 1].HasTile && !Main.tile[x + 1, y - 2].HasTile && !Main.tile[x - 1, y - 2].HasTile)
                                 {
-                                    WorldGen.Place3x2(x - 1, y - 2, (ushort)ModContent.TileType<Tile_Shale3x2RubbleNatural>(), Main.rand.Next(6));
+                                    WorldGen.Place3x2(x - 1, y - 2, (ushort)ModContent.TileType<Tile_Shale3x2RubbleNatural>(), Main.rand.Next(7));
                                 }
                                     
                                 if (!Main.tile[x + 1, y - 1].HasTile && !Main.tile[x - 1, y - 1].HasTile)
                                 {
-                                    WorldGen.Place2x1(WorldGen.genRand.NextBool() ? x - 1 : x, y - 1, (ushort)ModContent.TileType<Tile_Shale2x1RubbleNatural>(), Main.rand.Next(6));
+                                    WorldGen.Place2x1(WorldGen.genRand.NextBool() ? x - 1 : x, y - 1, (ushort)ModContent.TileType<Tile_Shale2x1RubbleNatural>(), Main.rand.Next(7));
                                 }
                                 else
                                 {
-                                    WorldGen.Place1x1(x, y - 1, ModContent.TileType<Tile_Shale1x1RubbleNatural>(), Main.rand.Next(6));
+                                    WorldGen.Place1x1(x, y - 1, ModContent.TileType<Tile_Shale1x1RubbleNatural>(), Main.rand.Next(7));
                                 }
                                 
                             }
