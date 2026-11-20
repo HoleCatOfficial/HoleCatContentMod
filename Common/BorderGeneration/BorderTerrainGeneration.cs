@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DestroyerTest.Common.Systems;
 using DestroyerTest.Content.BorderBiome.Tiles;
+using DestroyerTest.Content.BorderBiome.Tiles.Rubble;
 using DestroyerTest.Content.BorderBiome.Walls;
 using DestroyerTest.Content.Tiles;
 using Microsoft.Xna.Framework;
@@ -275,11 +276,17 @@ namespace DestroyerTest.Common.BorderGeneration
         {
             int index = tasks.FindIndex(p => p.Name == "Full Desert");
 
+            int rubbleindex = tasks.FindIndex(p => p.Name == "Smooth World");
+
             //The underworld pass turns all water in the cavern layer into lava, so we have to place it after.
-            int lakeindex = tasks.FindIndex(p => p.Name == "Corruption");
+            int lakeindex = tasks.FindIndex(p => p.Name == "Settle Liquids Again");
 
             if (!DTCrossMod.RemnantsIsLoaded)
             {
+                if (rubbleindex != -1)
+                {
+                    tasks.Insert(rubbleindex + 1, new BorderRubblePass("Border Generation: Rubble", 100f, Main.UnderworldLayer, Main.UnderworldLayer - height()));
+                }
                 if (lakeindex > 0)
                 {
                     tasks.Insert(lakeindex, new BorderLakePass("Border Generation: Midnight Lake", 100f, 1));
@@ -296,9 +303,11 @@ namespace DestroyerTest.Common.BorderGeneration
 
                     tasks.Insert(index + 5, new BorderChutePass("Border Generation: Chutes", 100f, 2, 9));
 
-                    tasks.Insert(index + 6, new BorderMossPass("Border Generation: Midnight Moss", 100f, Main.UnderworldLayer - height(), Main.UnderworldLayer));
+                    
 
-                    tasks.Insert(index + 7, new BorderVinePass("Border Generation: Midnight Moss Vines", 100f, Main.UnderworldLayer, Main.UnderworldLayer - height()));
+                    tasks.Insert(index + 7, new BorderMossPass("Border Generation: Midnight Moss", 100f, Main.UnderworldLayer - height(), Main.UnderworldLayer));
+
+                    tasks.Insert(index + 8, new BorderVinePass("Border Generation: Midnight Moss Vines", 100f, Main.UnderworldLayer, Main.UnderworldLayer - height()));
                 }
             }
         }
@@ -702,11 +711,7 @@ namespace DestroyerTest.Common.BorderGeneration
 
             bool IsMidnightMoss(ushort type)
             {
-                return type == ModContent.TileType<MidnightMoss>()
-                    || type == ModContent.TileType<MidnightMoss_CarbonaceousShale>()
-                    || type == ModContent.TileType<MidnightMoss_CorruptCarbonaceousShale>()
-                    || type == ModContent.TileType<MidnightMoss_CrimsonCarbonaceousShale>()
-                    || type == ModContent.TileType<MidnightMoss_HallowCarbonaceousShale>();
+                return type == ModContent.TileType<MidnightMoss>() || type == ModContent.TileType<MidnightMoss_CarbonaceousShale>() || type == ModContent.TileType<MidnightMoss_CorruptCarbonaceousShale>() || type == ModContent.TileType<MidnightMoss_CrimsonCarbonaceousShale>()  || type == ModContent.TileType<MidnightMoss_HallowCarbonaceousShale>();
             }
 
             for (int i = 0; i < Main.maxTilesX; i++)
@@ -741,8 +746,75 @@ namespace DestroyerTest.Common.BorderGeneration
                     }
                 }
             }
+        }
+    }
+
+    public class BorderRubblePass : GenPass
+    {
+        int lowerBound = 0;
+        int upperBound = 0;
+        public BorderRubblePass(string name, float loadWeight, int LowerBound, int UpperBound) : base(name, loadWeight)
+        {
+            lowerBound = LowerBound;
+            upperBound = UpperBound;
+        }
+
+        protected override void ApplyPass(GenerationProgress progress, GameConfiguration configuration)
+        {
+            var system = ModContent.GetInstance<BorderTerrainGeneration>();
+            int range = (lowerBound - upperBound);
+            int width = system.MossEndX - system.MossStartX;
+
+            bool IsShale(ushort type)
+            {
+                return type == ModContent.TileType<Tile_CarbonaceousShale>() || type == ModContent.TileType<Tile_CorruptCarbonaceousShale>() || type == ModContent.TileType<Tile_CrimsonCarbonaceousShale>() || type == ModContent.TileType<Tile_HallowCarbonaceousShale>();
+            }
+
+            for (int i = 0; i < Main.maxTilesX; i++)
+            {
+                int x = i;
 
 
+                for (int j = 0; j < range; j++)
+                {
+                    int y = upperBound + j;
+
+                    Tile t = Main.tile[x, y];
+
+
+                    if (t.HasTile)
+                    {
+
+                        if (IsShale(t.TileType) && !t.TopSlope && Main.rand.NextBool(4))
+                        {
+                            Tile above = Main.tile[x, y - 1];
+
+                            if (!above.HasTile)
+                            {
+
+                                if (!Main.tile[x + 1, y - 1].HasTile && !Main.tile[x - 1, y - 1].HasTile && !Main.tile[x + 1, y - 2].HasTile && !Main.tile[x - 1, y - 2].HasTile)
+                                {
+                                    WorldGen.Place3x2(x - 1, y - 2, (ushort)ModContent.TileType<Tile_Shale3x2RubbleNatural>(), Main.rand.Next(6));
+                                }
+                                    
+                                if (!Main.tile[x + 1, y - 1].HasTile && !Main.tile[x - 1, y - 1].HasTile)
+                                {
+                                    WorldGen.Place2x1(WorldGen.genRand.NextBool() ? x - 1 : x, y - 1, (ushort)ModContent.TileType<Tile_Shale2x1RubbleNatural>(), Main.rand.Next(6));
+                                }
+                                else
+                                {
+                                    WorldGen.Place1x1(x, y - 1, ModContent.TileType<Tile_Shale1x1RubbleNatural>(), Main.rand.Next(6));
+                                }
+                                
+                            }
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+                }
+            }
 
         }
     }

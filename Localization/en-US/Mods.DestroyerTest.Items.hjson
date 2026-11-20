@@ -5937,3 +5937,33 @@ Item_GardenMusicBox: {
 	DisplayName: Garden Music Box
 	Tooltip: ""
 }
+
+MidnightMossWand: {
+	DisplayName: Midnight Moss Wand
+	Tooltip: ""
+}
+
+Item_CarbonaceousShale: {
+	DisplayName: Item_ Carbonaceous Shale
+	Tooltip: ""
+}
+
+Item_CorruptCarbonaceousShale: {
+	DisplayName: Item_ Corrupt Carbonaceous Shale
+	Tooltip: ""
+}
+
+Item_CrimsonCarbonaceousShale: {
+	DisplayName: Item_ Crimson Carbonaceous Shale
+	Tooltip: ""
+}
+
+Item_HallowCarbonaceousShale: {
+	DisplayName: Item_ Hallow Carbonaceous Shale
+	Tooltip: ""
+}
+
+DarkWater: {
+	DisplayName: Dark Water
+	Tooltip: ""
+}
