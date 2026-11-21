@@ -43,7 +43,16 @@ namespace DestroyerTest.Common
             new PotionProfile("HoneyFin", ItemID.Honeyfin, 120),
             new PotionProfile("GreaterHealing", ItemID.GreaterHealingPotion, 150),
             new PotionProfile("SuperHealing", ItemID.SuperHealingPotion, 200),
+            
         };
+
+        public override void SetStaticDefaults()
+        {
+            if (DTCrossMod.CallOfVoidIsLoaded)
+            {
+                Potions.Add(new PotionProfile("VoidHealingPotion", DTCrossMod.GetItem(DTCrossMod.CallOfVoidMod, "VoidHealingPotion").Type, 300));
+            }
+        }
 
         bool IsRegisteredPotion(int itemType)
         {
