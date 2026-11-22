@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -33,12 +35,10 @@ namespace DestroyerTest.Common.Interfaces
         NPC StuckNPC;
 
         public int StickTime;
+        public Vector2 StickOffset;
         public override void AI(Projectile projectile)
         {
-
-
-
-
+            //See Quixotism's Swing Projectile for a more common application of this kind of cast. https://github.com/HoleCatOfficial/HoleCatContentMod/blob/main/Content/Projectiles/Weapon/Melee/Quixotism/QuixotismSwing.cs
             if (projectile.ModProjectile is IStickyProjectile sticky)
             {
                 if (sticky.IsStickingToTarget)
@@ -48,7 +48,7 @@ namespace DestroyerTest.Common.Interfaces
 
                     if (StuckNPC != null && StuckNPC.active)
                     {
-                        projectile.Center = StuckNPC.Center - projectile.velocity * 2f;
+                        projectile.Center = StuckNPC.Center + StickOffset;
                         projectile.gfxOffY = StuckNPC.gfxOffY;
 
                         if (sticky.DuringStick != null)
@@ -77,9 +77,10 @@ namespace DestroyerTest.Common.Interfaces
         }
 
         bool flag1 = false;
+        List<Projectile> stuckProjectiles = new();
         public override void OnHitNPC(Projectile projectile, NPC target, NPC.HitInfo hit, int damageDone)
         {
-            List<Projectile> stuckProjectiles = new();
+            
             if (projectile.ModProjectile is IStickyProjectile sticky)
             {
                 for (int i = 0; i < Main.maxProjectiles; i++)
@@ -99,6 +100,9 @@ namespace DestroyerTest.Common.Interfaces
                         continue;
 
                     StickyProjectileGlobal global = proj.GetGlobalProjectile<StickyProjectileGlobal>();
+
+                    StickOffset = projectile.Center - target.Center;
+                    projectile.netUpdate = true;
 
                     if (global.StuckNPC == target)
                     {

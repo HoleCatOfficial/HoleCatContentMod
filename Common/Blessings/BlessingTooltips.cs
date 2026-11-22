@@ -7,6 +7,11 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Common.Blessings
 {
+    /// <summary>
+    /// OBSOLETE
+    /// The way blessings are currently implemented involves combinations of items.
+    /// The items have this displayed in their tooltips.
+    /// </summary>
     public class BlessingTooltips : GlobalItem
     {
         public override bool InstancePerEntity => true;
@@ -26,15 +31,16 @@ namespace DestroyerTest.Common.Blessings
             ModContent.ItemType<StellarMatter>()
         };
 
+        //While originally all herbs were planned to be covered, I ultimately didn't have it in me to do all of them, especially considering how very boring it was to set up a new blessing.
         public static List<int> ModifierHerbs = new List<int>
         {
             ItemID.Daybloom,
             ItemID.Moonglow,
-            ItemID.Blinkroot,
-            ItemID.Deathweed,
-            ItemID.Waterleaf,
-            ItemID.Fireblossom,
-            ItemID.Shiverthorn
+            //ItemID.Blinkroot,
+            //ItemID.Deathweed,
+            //ItemID.Waterleaf,
+            //ItemID.Fireblossom,
+            //ItemID.Shiverthorn
         };
 
         public override void ModifyTooltips(Item item, List<TooltipLine> tooltips)

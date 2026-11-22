@@ -181,6 +181,19 @@ namespace DestroyerTest.Common
             return null;
         }
 
+        public static ModProjectile GetProjectile(Mod mod, string projName)
+        {
+            if (ModLoader.HasMod(mod.Name))
+            {
+                if (mod.TryFind(projName, out ModProjectile proj))
+                {
+                    return proj;
+                }
+            }
+
+            return null;
+        }
+
         public static ModNPC GetNPC(Mod mod, string npcName)
         {
             if (ModLoader.HasMod(mod.Name))

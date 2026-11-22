@@ -27,7 +27,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Thrower
             Projectile.friendly = true;
             Projectile.hostile = false;
             Projectile.DamageType = DamageClass.Throwing;
-            Projectile.penetrate = 2;
+            Projectile.penetrate = -1;
             Projectile.timeLeft = 600;
             Projectile.light = 0.5f;
             Projectile.ignoreWater = true;
@@ -57,7 +57,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Thrower
                 // Run once when the projectile first sticks
                 if (!Flag1)
                 {
-                    Projectile.timeLeft = 240; // Stays stuck for ~2 seconds
+                    Projectile.timeLeft = 60; // Stays stuck for ~2 seconds
                     Projectile.velocity = Vector2.Zero; // Stop movement
                     Projectile.tileCollide = false; // Don’t unstick from walls
                     Flag1 = true;

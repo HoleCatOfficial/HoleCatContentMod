@@ -49,7 +49,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Thrower
 
                 WasStuckInNPC = true;
                 Projectile.velocity *= Vector2.Zero;
-                Projectile.Center = stuck.Center - StoredVelocity * 2f;
+                Projectile.Center = stuck.Center + stuckOffset + new Vector2(DigAmount, 0).RotatedBy(Projectile.rotation);
                 Projectile.gfxOffY = stuck.gfxOffY;
 
 
@@ -99,6 +99,10 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Thrower
         bool WasStuckInNPC = false;
         NPC stuck = null;
 
+        int DigAmount = 0;
+        Vector2 stuckOffset;
+
+
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             target.AddBuff(ModContent.BuffType<LightInferno>(), 300);
@@ -108,8 +112,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Thrower
                 if (!StuckInNPC)
                 {
                     stuck = target;
+
                     Projectile.timeLeft = 300;
                     StoredVelocity = Projectile.oldVelocity;
+                    stuckOffset = Projectile.Center - target.Center;
+                    Projectile.netUpdate = true;
                     SoundEngine.PlaySound(DTAssetLib.Impacts.Malevolence with { MaxInstances = 0, PitchVariance = 0.2f, Pitch = -0.8f }, Projectile.Center);
                     SoundEngine.PlaySound(DTAssetLib.Impacts.FleshHit with { MaxInstances = 0, PitchVariance = 0.2f }, Projectile.Center);
 
@@ -128,11 +135,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Thrower
                     for (int i = 0; i < 4; i++)
                     {
                         Spark Spark = new Spark();
-                        Spark.PrepareSpark(Projectile.Center, (Projectile.rotation + MathHelper.Pi + Main.rand.NextFloat(-0.6f, 0.7f)).ToRotationVector2() * Main.rand.Next(9, 20), Projectile.rotation + MathHelper.PiOver2, ColorLib.SoulOfLightColor, 0.6f, false, 15, SparkDrawMode.Additive, 3f);
+                        Spark.PrepareSpark(Projectile.Center, (Projectile.rotation + MathHelper.Pi + Main.rand.NextFloat(-0.3f, 0.4f)).ToRotationVector2() * Main.rand.Next(9, 20), Projectile.rotation + MathHelper.PiOver2, ColorLib.SoulOfLightColor, 0.6f, false, 15, SparkDrawMode.Additive, 3f);
                         ParticleEngine.BehindProjectiles.Add(Spark);
                     }
 
-                    Projectile.position += new Vector2(4, 0).RotatedBy(Projectile.rotation);
+                    DigAmount += 4;
+                    //Projectile.position += new Vector2(4, 0).RotatedBy(Projectile.rotation);
                 }
             }
         }

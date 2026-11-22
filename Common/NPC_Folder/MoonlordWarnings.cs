@@ -21,9 +21,24 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Common.NPC_Folder
 {
+    /*
+    __/\\\________/\\\______/\\\_        
+     _\/\\\_____/\\\//___/\\\\\\\_       
+      _\/\\\__/\\\//_____\/////\\\_      
+       _\/\\\\\\//\\\_________\/\\\_     
+        _\/\\\//_\//\\\________\/\\\_    
+         _\/\\\____\//\\\_______\/\\\_   
+          _\/\\\_____\//\\\______\/\\\_  
+           _\/\\\______\//\\\_____\/\\\_ 
+            _\///________\///______\///_  
+    https://symboldb.org/font-generator/big/
+    */
+
     public class MoonlordWarnings : GlobalNPC
     {
         public override bool InstancePerEntity => true;
+
+        //If you have soundstyles, you should make them static for ease of access from other classes.
         public static SoundStyle LaserWarning = new SoundStyle("DestroyerTest/Assets/Audio/Moonlord/LaserCharge")
         {
             PitchVariance = 0.2f,
@@ -63,8 +78,11 @@ namespace DestroyerTest.Common.NPC_Folder
             MaxInstances = 0
         };
 
+
         public override void SetStaticDefaults()
         {
+            //Similar to DrawScreenCheckFluff for projectiles.
+            //This stops drawcode from being suspended when the moonlord's components are off-screen.
             NPCID.Sets.MustAlwaysDraw[NPCID.MoonLordCore] = true;
             NPCID.Sets.MustAlwaysDraw[NPCID.MoonLordFreeEye] = true;
             NPCID.Sets.MustAlwaysDraw[NPCID.MoonLordHead] = true;
@@ -73,22 +91,21 @@ namespace DestroyerTest.Common.NPC_Folder
 
         public override void SetDefaults(NPC entity)
         {
-            if (entity.type == NPCID.MoonLordCore || entity.type == NPCID.MoonLordHead || entity.type == NPCID.MoonLordHand)
+            //Moonlord gets 8% damage reduction in Talid's Master Mode changes
+            if (Main.masterMode && DTVanillaChangesConfig.instance.BossRework)
             {
-                entity.takenDamageMultiplier = 0.92f;
+                if (entity.type == NPCID.MoonLordCore || entity.type == NPCID.MoonLordHead || entity.type == NPCID.MoonLordHand)
+                {
+                    entity.takenDamageMultiplier = 0.92f;
+                }
             }
         }
 
         bool HeadFlag = false;
         bool HeadFlag2 = false;
-
         bool HeadBoltFlag = false;
-
-
         bool FreeEyeFlag = false;
-
         bool FreeEyeBoltFlag = false;
-
         bool HandBoltFlag = false;
         public override void AI(NPC npc)
         {
@@ -97,6 +114,13 @@ namespace DestroyerTest.Common.NPC_Folder
                 return;
             }
 
+            //You will have a hard time understanding these.
+            //Why am I so confident about that?
+            //Because I struggled with understanding how Moonlord's AI works, and I was rather competent at the time that this code was written.
+            //So greatly did I struggle that, to be entirely honest with you, I have no idea how to progress past a certain point with this endeavor.
+            //Working from the top down is doomed from the start because each timer creates tangents when you try to investigate what it does.
+            //Working from the bottom only gets you so far before you inevitably have to figure out what all the timers are doing and what all the num___ values mean.
+            //This is code that, despite my initiative to go over and do honestly, I can't get as far as AI did because my brain can't keep track of all the unlabeled values at once.
             CoreAI(npc);
             HeadAI(npc);
             FreeEyeAI(npc);
@@ -251,7 +275,6 @@ namespace DestroyerTest.Common.NPC_Folder
                 if (npc.ai[0] >= 0f)
                 {
                     float previous = npc.ai[0];
-                    // npc.ai[1]++;
                     int attackPattern = (int)Main.npc[(int)npc.ai[3]].ai[2];
                     int set = 2;
                     int current = 0;
@@ -272,14 +295,7 @@ namespace DestroyerTest.Common.NPC_Folder
                         duration = NPC.MoonLordAttacksArray[attackPattern, set, 1, current];
                         elapsed = 0;
                     }
-                    //npc.ai[0] = NPC.MoonLordAttacksArray[attackPattern, set, 0, current];
                     mainTimer = (int)npc.ai[1] - elapsed;
-                    /*
-                    if (npc.ai[0] != previous)
-                    {
-                        npc.netUpdate = true;
-                    }
-                    */
                 }
 
                 //Deathray attack type

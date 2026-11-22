@@ -20,6 +20,20 @@ using Terraria.ModLoader;
 
 namespace DestroyerTest.Common.NPC_Folder
 {
+    /*
+    __/\\\________/\\\______/\\\_        
+     _\/\\\_____/\\\//___/\\\\\\\_       
+      _\/\\\__/\\\//_____\/////\\\_      
+       _\/\\\\\\//\\\_________\/\\\_     
+        _\/\\\//_\//\\\________\/\\\_    
+         _\/\\\____\//\\\_______\/\\\_   
+          _\/\\\_____\//\\\______\/\\\_  
+           _\/\\\______\//\\\_____\/\\\_ 
+            _\///________\///______\///_  
+    https://symboldb.org/font-generator/big/
+    */
+
+    //This class is rather messy, and is one of two prime warnings to NOT godclass your stuff.
     public class DTGlobal : GlobalNPC
     {
         public override bool InstancePerEntity => true;
@@ -30,6 +44,7 @@ namespace DestroyerTest.Common.NPC_Folder
         bool flag1 = false;
         public override void OnSpawn(NPC npc, IEntitySource source)
         {
+            //I have no idea why this is here. Genuinely I have no idea.
             if (npc.type == ModContent.NPCType<WyvernCorpseHead>())
             {
                 flag1 = false;
@@ -366,23 +381,10 @@ namespace DestroyerTest.Common.NPC_Folder
             }
         }
 
-        public bool OldActive;
         public override void AI(NPC npc)
         {
             base.AI(npc);
 
-            if (OldActive && !npc.active)
-            {
-                foreach (Projectile projectile in Main.projectile)
-                {
-                    if (DTUtils.OwnedByBossNPC[projectile.type] == npc.type)
-                    {
-                        projectile.active = false;
-                    }
-                }
-            }
-
-            OldActive = npc.active;
         }
 
         public override void SetupTravelShop(int[] shop, ref int nextSlot)
