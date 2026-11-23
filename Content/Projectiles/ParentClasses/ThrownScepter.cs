@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using DestroyerTest.Common;
-using DestroyerTest.Common.Primitives;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using OpusLib;
@@ -89,7 +88,6 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
         }
 
         public virtual Asset<Texture2D> GlowMask { get; set; } = null;
-        EmpressTrailDiagonal Trail = new();
         public override bool PreDraw(ref Color lightColor)
         {
             lightColor = ThemeColor;
@@ -102,14 +100,6 @@ namespace DestroyerTest.Content.Projectiles.ParentClasses
             SpriteBatch spriteBatch = Main.spriteBatch;
             Texture2D projectileTexture = TextureAssets.Projectile[Projectile.type].Value;
             DTUtils Utility = new DTUtils();
-
-            Trail.ColorStart = ThemeColor;
-            Trail.ColorEnd = ThemeColor * 0.4f;
-
-            if (OldRotations.Count > 2)
-            {
-                //Trail.Draw(Projectile, Projectile.OldCenter().ToList(), OldRotations);
-            }
 
             if (!ArmorSetHelper_AetherianShimmerEffects)
             {

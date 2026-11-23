@@ -5915,25 +5915,36 @@ GhostBoa: {
 
 LunacyParasite: {
 	DisplayName: Lunacy Parasite
-	Tooltip: ""
+	Tooltip: Grants an additional Accessory Slot
 }
 
 Item_BloodMoonTier1MusicBox: {
-	DisplayName: Blood Moon Tier1 Music Box
+	DisplayName: Blood Moon Music Box
 	Tooltip: ""
 }
 
 Item_BloodMoonTier2MusicBox: {
-	DisplayName: Blood Moon Tier2 Music Box
+	DisplayName: Blood Moon Music Box
 	Tooltip: ""
 }
 
 Item_BloodMoonTier3MusicBox: {
-	DisplayName: Blood Moon Tier3 Music Box
+	DisplayName: Blood Moon Music Box
 	Tooltip: ""
 }
 
 Item_GardenMusicBox: {
 	DisplayName: Garden Music Box
 	Tooltip: ""
+}
+
+HellDisc: {
+	DisplayName: Hell Disc
+	Tooltip:
+		'''
+		You can throw two heavy discs that home in on enemies before slamming into them.
+		Upon hit, they recoil before returning to you.
+		Right click to throw up to three miniature discs that deal 20% less damage and don't home in, but travel twice as fast.
+		All projectiles inflict hellfire. 
+		'''
 }
