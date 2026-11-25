@@ -57,8 +57,8 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Melee
 
             if (TrailPositions.Count > 1)
             {
-                List<ColoredVertex> ve = new List<ColoredVertex>();
-                List<ColoredVertex> ve2 = new List<ColoredVertex>();
+                List<Common.ColoredVertex> ve = new List<Common.ColoredVertex>();
+                List<Common.ColoredVertex> ve2 = new List<Common.ColoredVertex>();
 
                 for (int i = TrailPositions.Count - 1; i > 0; i--)
                 {

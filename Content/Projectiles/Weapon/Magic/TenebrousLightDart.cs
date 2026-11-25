@@ -54,7 +54,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
             Opus.StartSpriteBatchForTrails(spriteBatch, BlendState.Additive, SpriteSortMode.Immediate);
             if (TrailPositions.Count > 1)
             {
-                List<ColoredVertex> ve = new List<ColoredVertex>();
+                List<Common.ColoredVertex> ve = new List<Common.ColoredVertex>();
 
                 for (int i = TrailPositions.Count - 1; i > 0; i--)
                 {
@@ -65,12 +65,12 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
                     Vector2 offset = dir.RotatedBy(MathHelper.ToRadians(90)) * 16;
                     Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * 16;
 
-                    ve.Add(new ColoredVertex(
+                    ve.Add(new Common.ColoredVertex(
                         TrailPositions[i] - Main.screenPosition + offset,
                         new Vector3(t - trailOffset, 1, 1),
                         b));
 
-                    ve.Add(new ColoredVertex(
+                    ve.Add(new Common.ColoredVertex(
                         TrailPositions[i] - Main.screenPosition + offset2,
                         new Vector3(t - trailOffset, 0, 1),
                         b));

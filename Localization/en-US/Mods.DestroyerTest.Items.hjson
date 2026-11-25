@@ -5948,3 +5948,26 @@ HellDisc: {
 		All projectiles inflict hellfire. 
 		'''
 }
+
+VisionOfNil: {
+	DisplayName: Vision Of Nil
+	Tooltip:
+		'''
+		Combines and enhances the effects of the [i:DestroyerTest/ShadeHeart], the [i:CalamityEntropy/ThiefsPocketwatchOfEclipse] Eclipse Pocketwatch, the [i:DestroyerTest/HematoidVisage] Hematoid Visage, and the [i:4006] Stalkers Quiver.
+		[i:DestroyerTest/ShadeHeart][i:CalamityEntropy/ThiefsPocketwatchOfEclipse] 21% increased damage 
+		[i:DestroyerTest/ShadeHeart] Attacks ignore 30 points of enemy defense.
+		[i:DestroyerTest/ShadeHeart] Grants immunity to Shimmering Flames and Void Touched.
+		[i:DestroyerTest/ShadeHeart] 17% reduced incoming damage.
+		[i:DestroyerTest/ShadeHeart] You emit light and get a pet that doesn't consume pet slots.
+		[i:DestroyerTest/ShadeHeart] When damaged you release bursts of homing Void Stars.
+		[i:DestroyerTest/ShadeHeart] Minions inflict Void Touched and have a chance to create bursts of homing Void Stars when hitting an enemy.
+		[i:DestroyerTest/ShadeHeart] Massively boosted natural life regen.
+		[i:CalamityEntropy/ThiefsPocketwatchOfEclipse] 20% increased ultimate charge rate.
+		[i:CalamityEntropy/ThiefsPocketwatchOfEclipse] 15% increased damage during a Solar Eclipse.
+		[i:DestroyerTest/HematoidVisage] Thrower and Ranged proejctiles have a chance to create bursts of homing Void Stars when hitting an enemy.
+		[i:4006] Arrows inflict Void Touched.
+		[i:4006] Reduced aggro.
+		You are surrounded by void clouds.
+		"Given tangible form, nothingness draws in all matter nearby. It can't help but do so."
+		'''
+}

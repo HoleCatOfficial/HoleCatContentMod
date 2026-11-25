@@ -241,7 +241,7 @@ namespace DestroyerTest.Content.Equips
         }
     }
 
-    public class ShadeHeartDrawLayer : PlayerDrawLayer
+    public class VoidHeartDrawLayer : PlayerDrawLayer
     {
 
         public override bool GetDefaultVisibility(PlayerDrawSet drawInfo)
@@ -252,7 +252,7 @@ namespace DestroyerTest.Content.Equips
                 return false;
             }
 
-            if (player.TryGetModPlayer<ShadeHeartPlayer>(out var Heart))
+            if (player.TryGetModPlayer<VoidHeartPlayer>(out var Heart))
             {
                 if (Heart.Active)
                 {
@@ -273,39 +273,16 @@ namespace DestroyerTest.Content.Equips
         protected override void Draw(ref PlayerDrawSet drawInfo)
         {
             Player player = drawInfo.drawPlayer;
-            if (player.TryGetModPlayer<ShadeHeartPlayer>(out var Heart))
+            if (player.TryGetModPlayer<VoidHeartPlayer>(out var Heart))
             {
                 if (Heart.Active && drawInfo.shadow == 0)
                 {
-                    DrawRingOfFire(ref drawInfo, 0.25f, 1f, -Heart.TexRot);
-                    DrawRingOfFire(ref drawInfo, 0.125f, 1f, -Heart.TexRot * 2);
-                    DrawRingOfFire(ref drawInfo, 0.125f, 1.5f, Heart.TexRot * 1.5f);
-                    DrawRingOfFire(ref drawInfo, 0.35f, 1.28f, -Heart.TexRot * 0.5f);
-                    DrawRingOfFire(ref drawInfo, 0.35f, 1.08f, Heart.TexRot);
+                   
                 }
             }
 
         }
 
-        private void DrawRingOfFire(ref PlayerDrawSet drawInfo, float Opacity = 1f, float Scale = 1f, float Rotation = 0f)
-        {
-            var Tex = DTAssetLib.AuraRing.Value;
-
-            var position = drawInfo.Center - Main.screenPosition;
-            position = new Vector2((int)position.X, (int)position.Y);
-
-            drawInfo.DrawDataCache.Add(new DrawData(
-                Tex,
-                position,
-                null,
-                ColorLib.TenebrisGradient with { A = 0 } * Opacity,
-                Rotation,
-                Tex.Size() * 0.5f,
-                Scale,
-                SpriteEffects.None,
-                0
-            ));
-        }
-
+       
     }
 }

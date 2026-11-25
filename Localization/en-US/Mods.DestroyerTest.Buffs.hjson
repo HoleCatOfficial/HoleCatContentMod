@@ -526,3 +526,8 @@ Warped: {
 	DisplayName: Warped
 	Description: You are stronger, but are very nauseous.
 }
+
+VoidHeartBuff: {
+	DisplayName: Vision of Nil
+	Description: Your eyes reject what they see.
+}

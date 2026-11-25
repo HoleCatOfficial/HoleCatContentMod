@@ -63,7 +63,7 @@ namespace DestroyerTest.Content.Projectiles
 
                 if (TrailPositions.Count > 1)
                 {
-                    List<ColoredVertex> ve = new List<ColoredVertex>();
+                    List<Common.ColoredVertex> ve = new List<Common.ColoredVertex>();
 
                     for (int i = TrailPositions.Count - 1; i > 0; i--)
                     {
@@ -75,12 +75,12 @@ namespace DestroyerTest.Content.Projectiles
                         Vector2 offset2 = dir.RotatedBy(MathHelper.ToRadians(-90)) * 32;
 
                         /*
-						ve.Add(new ColoredVertex(
+						ve.Add(new Common.ColoredVertex(
 							TrailPositions[i] - Main.screenPosition + offset,
 							new Vector3(t, 1, 1),
 							b));
 
-						ve.Add(new ColoredVertex(
+						ve.Add(new Common.ColoredVertex(
 							TrailPositions[i] - Main.screenPosition + offset2,
 							new Vector3(t, 0, 1),
 							b));

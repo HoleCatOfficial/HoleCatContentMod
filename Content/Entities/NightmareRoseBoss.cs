@@ -969,8 +969,8 @@ namespace DestroyerTest.Content.Entities
         public void ModifyMusic()
         {
             int tribID = MusicLoader.GetMusicSlot(Mod, "Assets/Music/Tribulation");
-            int eternID = MusicLoader.GetMusicSlot(Mod, "Assets/Music/EternityEvils");
-            int masoID = MusicLoader.GetMusicSlot(Mod, "Assets/Music/MasoEvils");
+            int eternID = MusicLoader.GetMusicSlot(Mod, /*"Assets/Music/EternityEvils"*/ "Assets/Music/UnfinishedBoss2");
+            int masoID = MusicLoader.GetMusicSlot(Mod, /*"Assets/Music/MasoEvils"*/ "Assets/Music/UnfinishedBoss2");
             int secretSeedID = MusicLoader.GetMusicSlot(Mod, "Assets/Music/EvilBossSecretSeed");
             int idleID = MusicLoader.GetMusicSlot(Mod, "Assets/Music/RoseIdle");
 

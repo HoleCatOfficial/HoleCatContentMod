@@ -75,6 +75,14 @@
 		<Reference Include="SoulsBossRushMod">
 			<HintPath>lib\SoulsBossRushMod.dll</HintPath>
 		</Reference>
+
+		<Reference Include="CalamityEntropy">
+			<HintPath>lib\CalamityEntropy.dll</HintPath>
+		</Reference>
+
+		<Reference Include="InnoVault">
+			<HintPath>lib\InnoVault.dll</HintPath>
+		</Reference>
 	</ItemGroup>
 
 	<ItemGroup>

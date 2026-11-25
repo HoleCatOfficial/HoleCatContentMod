@@ -150,14 +150,14 @@ namespace DestroyerTest.Common
             spriteBatch.Draw(barFrame, drawPos, null, Color.White * Opacity, 0f, barOrigin, barScale, 0f, 0f);
         }
 
-        public static void AddStrips(List<ColoredVertex> List, List<Vector2> Vex, int Index, Vector2 off1, Vector2 off2, float Fade, Color CLR, float stripMotion = 0f)
+        public static void AddStrips(List<Common.ColoredVertex> List, List<Vector2> Vex, int Index, Vector2 off1, Vector2 off2, float Fade, Color CLR, float stripMotion = 0f)
         {
-            List.Add(new ColoredVertex(Vex[Index] - Main.screenPosition + off1, new Vector3(Fade - stripMotion, 1, 1), CLR));
-            List.Add(new ColoredVertex(Vex[Index] - Main.screenPosition + off2, new Vector3(Fade - stripMotion, 0, 1), CLR));
+            List.Add(new Common.ColoredVertex(Vex[Index] - Main.screenPosition + off1, new Vector3(Fade - stripMotion, 1, 1), CLR));
+            List.Add(new Common.ColoredVertex(Vex[Index] - Main.screenPosition + off2, new Vector3(Fade - stripMotion, 0, 1), CLR));
         }
 
         public static void AddStrips_ArenaWalls(
-            List<ColoredVertex> list,
+            List<Common.ColoredVertex> list,
             List<Vector2> vex,
             int index,
             Vector2 off1,
@@ -165,12 +165,12 @@ namespace DestroyerTest.Common
             float u,
             Color clr)
         {
-            list.Add(new ColoredVertex(
+            list.Add(new Common.ColoredVertex(
                 vex[index] - Main.screenPosition + off1,
                 new Vector3(u, 0, 1),
                 clr));
 
-            list.Add(new ColoredVertex(
+            list.Add(new Common.ColoredVertex(
                 vex[index] - Main.screenPosition + off2,
                 new Vector3(u, 1, 1),
                 clr));
@@ -2351,7 +2351,7 @@ namespace DestroyerTest.Common
 
                 if (Positions.Count > 1)
                 {
-                    List<ColoredVertex> ve = new List<ColoredVertex>();
+                    List<Common.ColoredVertex> ve = new List<Common.ColoredVertex>();
 
                     for (int i = Positions.Count - 1; i > 0; i--)
                     {
@@ -2419,7 +2419,7 @@ namespace DestroyerTest.Common
 
                 if (Positions.Count > 1)
                 {
-                    List<ColoredVertex> ve = new List<ColoredVertex>();
+                    List<Common.ColoredVertex> ve = new List<Common.ColoredVertex>();
 
                     for (int i = Positions.Count - 1; i > 0; i--)
                     {
@@ -2494,7 +2494,7 @@ namespace DestroyerTest.Common
 
                 if (Positions.Count > 1)
                 {
-                    List<ColoredVertex> ve = new List<ColoredVertex>();
+                    List<Common.ColoredVertex> ve = new List<Common.ColoredVertex>();
 
                     for (int i = Positions.Count - 1; i > 0; i--)
                     {
@@ -2563,7 +2563,7 @@ namespace DestroyerTest.Common
 
                 if (Positions.Count > 1)
                 {
-                    List<ColoredVertex> ve = new List<ColoredVertex>();
+                    List<Common.ColoredVertex> ve = new List<Common.ColoredVertex>();
 
                     for (int i = Positions.Count - 1; i > 0; i--)
                     {
