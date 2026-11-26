@@ -230,7 +230,7 @@ EchoFluid: {
 
 LifeEcho: {
 	DisplayName: Life Echo
-	Tooltip: The energy of simple creatures.
+	Tooltip: A fleeting memory from a life once lived.
 }
 
 Living_Shadow: {
@@ -725,8 +725,8 @@ IOU: {
 }
 
 SoulEdge: {
-	DisplayName: Soul Edge
-	Tooltip: A dried-out, cold sword. Listening closely to the nooks of the wood makes you the audience of the wails of lost souls.
+	DisplayName: Distant Rage
+	Tooltip: Projects a small sword illusion.
 }
 
 BiCape: {
@@ -768,8 +768,12 @@ Horizon: {
 }
 
 TrueSoulEdge: {
-	DisplayName: True Soul Edge
-	Tooltip: Shoots a phantom that slows down before stabbing into an enemy at high speed.
+	DisplayName: Possessed Claymore
+	Tooltip:
+	'''
+	Follows the mouse cursor, drawing in spirits to grow in size.
+	Hitting enemies decreases the size.
+	'''
 }
 
 Extruder: {
@@ -1767,7 +1771,7 @@ HeliciteShank: {
 }
 
 AuraThiefBreastplate: {
-	DisplayName: Aura Thief Breastplate
+	DisplayName: Hollow Walker Breastplate
 	Tooltip:
 		'''
 		7% increased Melee speed.
@@ -1777,7 +1781,7 @@ AuraThiefBreastplate: {
 }
 
 AuraThiefCuisses: {
-	DisplayName: Aura Thief Cuisses
+	DisplayName: Hollow Walker Cuisses
 	Tooltip:
 		'''
 		35% increased Run Speed.
@@ -1787,7 +1791,7 @@ AuraThiefCuisses: {
 }
 
 AuraThiefHeadgear: {
-	DisplayName: Aura Thief Headgear
+	DisplayName: Hollow Walker Headgear
 	Tooltip: Headgear of thievery and dishonor. As pale as your eyes.
 	SetBonus:
 		'''
@@ -1835,8 +1839,8 @@ WrittenPromise: {
 }
 
 AuraClaws: {
-	DisplayName: Aura Claws
-	Tooltip: The stolen dreams of the dead reap from you that which you pride yourself upon...
+	DisplayName: Faint Wings
+	Tooltip: They have a foggy appearance, and aren't quite tangible.
 }
 
 EvermoltenSteel: {
@@ -2657,7 +2661,7 @@ DetritizedPendant: {
 
 AuraThiefHeadress: {
 	Tooltip: A headress of thievery and dishonor. As pale as your eyes.
-	DisplayName: Aura Thief Headress
+	DisplayName:  Hollow Walker Headress
 	SetBonus:
 		'''
 		You have a chance to create a homing vortex of spirits when using your scepter.
@@ -4845,7 +4849,7 @@ QITN: {
 	Tooltip:
 		'''
 		The wood is frozen solid.
-		Shoots weak bursts of spirits that pierce 4 times.
+		Shoots weak projections that pierce 4 times.
 		'''
 }
 
@@ -5006,19 +5010,19 @@ MarksmanGhostArtifact: {
 }
 
 SpiritArrow: {
-	DisplayName: Vital Arrow
+	DisplayName: Hushed Arrow
 	Tooltip:
 		'''
-		Imbued with the ghoulish essence of the undead.
+		It seems to emit quiet sounds, but when you listen, you hear nothing.
 		May find its best use with a certain bow...
 		'''
 }
 
 ReanimationBow: {
-	DisplayName: Bow of Possession
+	DisplayName: Bow of Silencing
 	Tooltip:
 		'''
-		Using [i:DestroyerTest/SpiritArrow] Vital Arrows allows you to infest the undead with rogue spirits, dealing area-of-effect damage to other undead.
+		Using [i:DestroyerTest/SpiritArrow] Hushed Arrows allows you to 'silence' undead enemies, dealing area-of-effect damage to other undead.
 		'The undead make wonderful peons, for their lifeless bodies are void of any meaningful resistance or consciousness.'
 		'''
 }

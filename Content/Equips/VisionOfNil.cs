@@ -270,7 +270,7 @@ namespace DestroyerTest.Content.Equips
                 Opus.RadialSpreadProjectile(ModContent.ProjectileType<VoidStarF>(), 6, target.Center, (int)Player.GetTotalDamage(DamageClass.Summon).ApplyTo(55), 12, 16, offset: Main.rand.NextFloat(MathHelper.TwoPi));
             }
 
-            if ((proj.DamageType.CountsAsClass(DamageClass.Throwing) || proj.DamageType.CountsAsClass(DamageClass.Ranged)) && Main.rand.NextBool(3))
+            if ((proj.DamageType.CountsAsClass(DamageClass.Throwing) || proj.DamageType.CountsAsClass(DamageClass.Ranged)) && Main.rand.NextBool(3) && Active)
             {
                 SoundEngine.PlaySound(MoonlordWarnings.LaserFire with { Volume = 0.35f, PitchVariance = 0.5f }, target.Center);
                 Opus.RadialSpreadProjectile(ModContent.ProjectileType<VoidStarF>(), 3, target.Center, (int)Player.GetTotalDamage(DamageClass.Generic).ApplyTo(55), 12, 16, offset: Main.rand.NextFloat(MathHelper.TwoPi));
