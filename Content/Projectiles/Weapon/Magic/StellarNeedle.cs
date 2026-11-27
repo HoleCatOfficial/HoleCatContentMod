@@ -41,7 +41,7 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
 
             SpriteBatch spriteBatch = Main.spriteBatch;
 
-            DTTrail.DrawTrail(spriteBatch, DTAssetLib.Streak(13, true).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 10f, ColorLib.StellarFire3, trailOffset, 10);
+            DTTrail.DrawTrail(spriteBatch, DTAssetLib.Streak(1, true).Value, Projectile.OldCenter().ToList(), Projectile.oldRot.ToList(), 10f, ColorLib.StellarFire3, trailOffset, 10);
 
             Main.EntitySpriteDraw(DTUtils.CenteredDraw(Projectile, Color.White));
 
@@ -71,9 +71,11 @@ namespace DestroyerTest.Content.Projectiles.Weapon.Magic
         {
             Projectile.ResetExcessTrailPoints();
 
+            /*
             StellarPointGlow particle = new();
             particle.Prepare(Projectile.Center, Projectile.velocity * 0.1f, 1.3f);
             ParticleEngine.BehindProjectiles.Add(particle);
+            */
 
             Lighting.AddLight(Projectile.Center, ColorLib.StellarFire2.ToVector3());
 

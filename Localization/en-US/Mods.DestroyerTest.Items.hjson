@@ -770,10 +770,10 @@ Horizon: {
 TrueSoulEdge: {
 	DisplayName: Possessed Claymore
 	Tooltip:
-	'''
-	Follows the mouse cursor, drawing in spirits to grow in size.
-	Hitting enemies decreases the size.
-	'''
+		'''
+		Follows the mouse cursor, drawing in spirits to grow in size.
+		Hitting enemies decreases the size.
+		'''
 }
 
 Extruder: {
@@ -2661,7 +2661,7 @@ DetritizedPendant: {
 
 AuraThiefHeadress: {
 	Tooltip: A headress of thievery and dishonor. As pale as your eyes.
-	DisplayName:  Hollow Walker Headress
+	DisplayName: Hollow Walker Headress
 	SetBonus:
 		'''
 		You have a chance to create a homing vortex of spirits when using your scepter.

@@ -18,7 +18,7 @@ namespace DestroyerTest.Content.Magic
             Item.useTime = 4;
             Item.useAnimation = 20;
             Item.UseSound = SoundID.Item9;
-            Item.mana = 25;
+            Item.mana = 7;
             Item.autoReuse = true;
             Item.DamageType = DamageClass.Magic;
             Item.SetWeaponValues(10, 6, 5);
@@ -52,7 +52,7 @@ namespace DestroyerTest.Content.Magic
             CreateRecipe()
                 .AddIngredient<BladeChunk>()
                 .AddIngredient(ItemID.ManaCrystal)
-                .AddIngredient(ItemID.Leather, 3)
+                .AddIngredient(ItemID.Silk, 3)
                 .Register();
         }
 
