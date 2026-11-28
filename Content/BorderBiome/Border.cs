@@ -19,7 +19,7 @@ namespace DestroyerTest.Content.BorderBiome
 {
     public class Border : ModBiome
     {
-        public override CaptureBiome.TileColorStyle TileColorStyle => CaptureBiome.TileColorStyle.Mushroom;
+        public override CaptureBiome.TileColorStyle TileColorStyle => CaptureBiome.TileColorStyle.Crimson;
 
         public override int Music => MusicLoader.GetMusicSlot(Mod, "Assets/Music/BorderMusic");
 

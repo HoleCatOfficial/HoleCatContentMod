@@ -42,16 +42,8 @@ namespace DestroyerTest.Content.Particles
         {
             float Progress = (float)Lifetime / MaxLifetime;
             Lifetime++;
-            movementRemainder += velocity;
 
-            Vector2 movement = new Vector2(
-                ((int)movementRemainder.X).WrapToTwo(),
-                ((int)movementRemainder.Y).WrapToTwo()
-            );
-
-            movementRemainder -= movement;
-
-            position += movement;
+            position += velocity;
 
 
             if (Progress > 0.5f)
@@ -123,14 +115,8 @@ namespace DestroyerTest.Content.Particles
         {
             float Progress = (float)Lifetime / MaxLifetime;
             Lifetime++;
-            movementRemainder += velocity;
-            movementRemainder += Player.velocity;
+            position += velocity;
 
-            Vector2 movement = new Vector2(((int)movementRemainder.X).WrapToTwo(), ((int)movementRemainder.Y).WrapToTwo());
-
-            movementRemainder -= movement;
-
-            position += movement;
 
 
 
